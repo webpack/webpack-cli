@@ -1,0 +1,17 @@
+{
+  "name": "webpack-cli",
+  "version": "0.0.1",
+  "description": "CLI for webpack & friends",
+  "license": "MIT",
+  "preferGlobal": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webpack/webpack-cli.git"
+  },
+  "bin": {
+    "webpack-cli": "./bin/cli.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
