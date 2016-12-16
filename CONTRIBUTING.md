@@ -86,6 +86,14 @@ In case you've got a small change in most of the cases your pull request would b
 * Follow the existing coding style
 * Write a [good commit message](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
 
+
+## Contributor License Agreement
+
+When submitting your contribution, a CLA (Contributor License Agreement) bot will come by to verify that you signed the CLA. If you are submitting a PR for the first time, it will link you to the right place to sign it. If you have committed your contributions using an email that is not the same as your email used on GitHub, the CLA bot can't accept your contribution.
+
+Run `git config user.email` to see your Git email, and verify it with [your GitHub email](https://github.com/settings/emails).
+
+
 ## Documentation
 
 webpack is insanely feature rich and documentation is a time sink. We
