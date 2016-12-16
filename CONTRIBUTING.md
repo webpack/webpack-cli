@@ -37,15 +37,41 @@ yarn link
 yarn link webpack-cli
 ```
 
-To run the entire test suite use:
-
-```bash
-yarn test
-```
+* To run the entire test suite use: `yarn test`
 
 ## Editor Config
 
 The [.editorconfig](https://github.com/webpack/webpack-cli/blob/master/.editorconfig) in the root should ensure consistent formatting. Please make sure you've [installed the plugin](http://editorconfig.org/#download) if your text editor needs one.
+
+## Branching Model
+
+We based our branching model on [git flow](http://nvie.com/posts/a-successful-git-branching-model/). Instead of working with a `develop` base branch, we use instead the `master` branch. We do it to ease a bit the workflow. However, we find useful adding prefixes to the branches.
+
+## Naming a branch
+
+Making a branch in your fork for your contribution is helpful in the following ways:
+
+* It allows you to submit more than one contribution in a single PR.
+* It allows us to identify what your contribution is about from the branch name.
+
+You will want to checkout the `master` branch locally before creating your new branch.
+
+There are two types of branches:
+
+* Feature
+* Bugfix
+
+### Features
+
+If your contribution is something new, like a option for the cli, you can create a branch with the following prefix:
+
+`feature/<the-new-feature>`
+
+### Fixes
+
+If you are fixing a existing bug, you can create a branch with the following prefix:
+
+`bugfix/<the-fix>`
 
 ## Submitting Changes
 
@@ -54,7 +80,7 @@ may suggest some changes, improvements or implementation alternatives.
 
 In case you've got a small change in most of the cases your pull request would be accepted quicker.
 
-### How to increase chance of having a pull request accepted?
+## Submitting a good Pull Request
 
 * Write tests
 * Follow the existing coding style
