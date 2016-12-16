@@ -11,7 +11,7 @@ Most of the time, when webpack does not work correctly, it might be a configurat
 
 If you are still having difficulty after looking over your configuration carefully, please post
 a question to [StackOverflow with the webpack-cli tag](http://stackoverflow.com/tags/webpack-cli). Questions
-that include your webpack.config.js and relevant files, this way you help others to help you.
+that include your `webpack.config.js` and relevant files, this way you help others to help you.
 
 **If you have discovered a bug or have a feature suggestion, feel free to create an issue on Github.**
 
@@ -21,7 +21,7 @@ that include your webpack.config.js and relevant files, this way you help others
   *Note: Node 6 or greater would be better for "best results".*
 * Fork the **webpack-cli** repo at [https://github.com/webpack/webpack-cli](https://github.com/webpack/webpack-cli).
 * `git clone <your-clone-url> && cd webpack-cli`
-* `git checkout develop`
+* Install the commit validator: `npm run install-commit-validator`
 
 ### Setup with npm
 * Install the dependencies: `npm install`
@@ -86,6 +86,31 @@ In case you've got a small change in most of the cases your pull request would b
 * Follow the existing coding style
 * Write a [good commit message](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
 
+## Commit message format
+
+Our commit messages format follows the [angular.js commits format](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#commit-message-format).
+
+We don't use the scope. The template of a commit would look like this:
+
+### Commit Message Format
+Each commit message consists of a **header**, a **body** and a **footer**.  The header has a special
+format that includes a **type** and a **subject**:
+
+```
+<type>: <subject>
+<BLANK LINE>
+<body>
+<BLANK LINE>
+<footer>
+```
+
+The **header** is mandatory.
+
+Any line of the commit message cannot be longer 100 characters. This allows the message to be easier
+to read on GitHub as well as in several git tools.
+
+For more information about what each part of the template mean, head up to the documentation in the
+[angular repo](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#commit-message-format)
 
 ## Contributor License Agreement
 
@@ -96,6 +121,6 @@ Run `git config user.email` to see your Git email, and verify it with [your GitH
 
 ## Documentation
 
-webpack is insanely feature rich and documentation is a time sink. We
+webpack is feature rich and documentation is a time sink. We
 greatly appreciate any time spent fixing typos or clarifying sections in the
 documentation.

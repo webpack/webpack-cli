@@ -13,10 +13,12 @@
   },
   "main": "./bin/cli.js",
   "scripts": {
-    "lint": "eslint ./lib"
+    "lint": "eslint ./lib",
+    "install-commit-validator": "fit-commit-js install"
   },
   "dependencies": {
     "enhanced-resolve": "^3.0.2",
+    "fit-commit-js": "^0.3.1",
     "interpret": "^1.0.1",
     "supports-color": "^3.1.2",
     "webpack": "^2.2.0-rc.0",
