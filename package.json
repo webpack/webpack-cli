@@ -13,5 +13,15 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "enhanced-resolve": "^3.0.2",
+    "interpret": "^1.0.1",
+    "supports-color": "^3.1.2",
+    "webpack": "^2.2.0-rc.0",
+    "yargs": "^6.5.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.12.2"
   }
 }
