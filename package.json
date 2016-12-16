@@ -11,6 +11,7 @@
   "bin": {
     "webpack-cli": "./bin/cli.js"
   },
+  "main": "./bin/cli.js",
   "scripts": {
     "lint": "eslint ./lib"
   },
