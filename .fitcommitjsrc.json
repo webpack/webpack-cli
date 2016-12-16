@@ -1,0 +1,24 @@
+{
+	"validators": {
+		"lineLength": {
+			"enabled": true,
+			"maxLineLength": 100,
+			"subjectMaxLength": 100
+		},
+		"emptyLines": {
+			"enabled": false
+		},
+		"tags": {
+			"enabled": true,
+			"tags": "feat, fix, docs, style, refactor, perf, test, chore, revert",
+			"lineOfTheTag": 1
+		},
+		"subjectTense": {
+			"enabled": true
+		},
+		"wip": {
+			"enabled": true,
+			"branch": "master"
+		}
+	}
+}
