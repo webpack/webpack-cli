@@ -14,17 +14,31 @@
   "main": "./bin/cli.js",
   "scripts": {
     "lint": "eslint ./lib",
-    "install-commit-validator": "fit-commit-js install"
+    "install-commit-validator": "fit-commit-js install",
+    "test": "jest"
   },
   "dependencies": {
     "enhanced-resolve": "^3.0.2",
     "fit-commit-js": "^0.3.1",
+    "inquirer": "^2.0.0",
     "interpret": "^1.0.1",
     "supports-color": "^3.1.2",
     "webpack": "^2.2.0-rc.0",
     "yargs": "^6.5.0"
   },
   "devDependencies": {
-    "eslint": "^3.12.2"
+    "eslint": "^3.12.2",
+    "jest": "^18.0.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "rootDir": ".",
+    "testRegex": "/tests/.*|(test|spec).js",
+    "moduleFileExtensions": [
+      "js"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ]
   }
 }
