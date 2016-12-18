@@ -29,7 +29,8 @@
   },
   "devDependencies": {
     "eslint": "^3.12.2",
-    "jest": "^18.0.0"
+    "jest": "^18.0.0",
+    "mock-stdin": "^0.3.1"
   },
   "jest": {
     "testEnvironment": "node",
