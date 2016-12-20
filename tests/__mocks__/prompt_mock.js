@@ -1,6 +1,6 @@
 'use strict';
 
-var inquirer = jest.genMockFromModule('inquirer')
+const inquirer = jest.genMockFromModule('inquirer')
 
 function prompt(questions, spec) {
 	 return questions.subscribe(q => {
