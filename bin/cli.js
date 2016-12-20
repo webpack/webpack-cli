@@ -15,7 +15,7 @@ try {
 	// TODO catch properly
 }
 var yargs = require('yargs')
-	.usage('webpack ' + require('../package.json').version + '\n' +
+	.usage('webpack-cli ' + require('../package.json').version + '\n' +
 		'Usage: https://webpack.github.io/docs/cli.html\n' +
 		'Usage without config file: webpack <entry> [<entry>] <output>\n' +
 		'Usage with config file: webpack');
@@ -338,5 +338,7 @@ function processOptions(options) {
 		compiler.run(compilerCallback);
 
 }
-
-processOptions(options);
+function runConfig() {
+  require('../lib/inquirer.js');
+}
+options.init ? runConfig() : processOptions(options);

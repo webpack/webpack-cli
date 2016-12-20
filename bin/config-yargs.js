@@ -24,6 +24,11 @@ module.exports = function(yargs) {
 				describe: 'Enviroment passed to the config, when it is a function',
 				group: CONFIG_GROUP
 			},
+			'init': {
+				type: 'boolean',
+				describe: 'Initializes a new webpack configuration',
+				group: BASIC_GROUP
+			},
 			'context': {
 				type: 'string',
 				describe: 'The root directory for resolving entry point and stats',
