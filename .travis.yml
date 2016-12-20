@@ -8,10 +8,13 @@ node_js:
 
 sudo: true
 
-before_script:
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
+before_install:
+  - curl -o- -L https://yarnpkg.com/install.sh | bash
+  - ~/.yarn/bin/yarn global add npm@latest
+
+install: ~/.yarn/bin/yarn
 
 script:
+  - ~/.yarn/bin/yarn run test-ci
   - npm run lint
   - npm run test
