@@ -34,8 +34,7 @@
   },
   "jest": {
     "testEnvironment": "node",
-    "rootDir": ".",
-    "testRegex": "/tests/.*|(test|spec).js",
+    "testPathDirs":["tests"],
     "moduleFileExtensions": [
       "js"
     ],
