@@ -6,7 +6,7 @@ node_js:
   - "6"
   - "stable"
 
-sudo: true
+sudo: false
 
 before_script:
   - export DISPLAY=:99.0
