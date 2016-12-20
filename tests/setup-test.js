@@ -5,7 +5,7 @@ const questions = require('../lib/observable-questions');
  * TODO: Write Tests
  */
 
- jest.useRealTimers()
+ jest.useRealTimers();
 
  describe('Inquirer', function () {
 	 let stdin;
@@ -20,8 +20,8 @@ const questions = require('../lib/observable-questions');
 			 stdin.send('output.js\n');
 		 });
 		 inquirer.prompt(questions).ui.process.subscribe(function (response) {
-			 expect(response.entryLogic).toBe('index.js')
-			 expect(response.outputLogic).toBe('output.js')
+			 expect(response.answer).toBe('index.js')
+			 expect(response.answer).toBe('output.js')
 		 })
 	 });
  });
