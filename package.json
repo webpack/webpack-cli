@@ -9,9 +9,9 @@
     "url": "git+https://github.com/webpack/webpack-cli.git"
   },
   "bin": {
-    "webpack-cli": "./bin/cli.js"
+    "webpack-cli": "./bin/webpack-cli.js"
   },
-  "main": "./bin/cli.js",
+  "main": "./bin/webpack-cli.js",
   "scripts": {
     "lint": "eslint ./lib",
     "install-commit-validator": "fit-commit-js install",
@@ -31,8 +31,7 @@
   },
   "devDependencies": {
     "eslint": "^3.12.2",
-    "jest": "^18.0.0",
-    "mock-stdin": "^0.3.1"
+    "jest": "^18.0.0"
   },
   "jest": {
     "testEnvironment": "node",
