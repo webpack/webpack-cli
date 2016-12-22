@@ -9,9 +9,9 @@
     "url": "git+https://github.com/webpack/webpack-cli.git"
   },
   "bin": {
-    "webpack-cli": "./bin/webpack-cli.js"
+    "webpack-cli": "./bin/webpack.js"
   },
-  "main": "./bin/webpack-cli.js",
+  "main": "./bin/webpack.js",
   "scripts": {
     "lint": "eslint ./lib",
     "install-commit-validator": "fit-commit-js install",
