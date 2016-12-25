@@ -5,6 +5,6 @@ const questions = require('../../lib/observable-questions');
 
 describe('Inquirer', function () {
 	it('Should recieve input and handle answers', function () {
-		inquirer.prompt(questions)
+		inquirer.prompt(questions);
 	});
 });
