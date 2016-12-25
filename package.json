@@ -24,23 +24,24 @@
     "fit-commit-js": "^0.3.1",
     "inquirer": "^2.0.0",
     "interpret": "^1.0.1",
+    "jscodeshift": "^0.3.30",
+    "recast": "git://github.com/kalcifer/recast.git#bug/allowbreak",
     "rx": "^4.1.0",
     "supports-color": "^3.1.2",
     "webpack": "^2.2.0-rc.0",
     "yargs": "^6.5.0"
   },
   "devDependencies": {
+    "babel-jest": "^18.0.0",
     "eslint": "^3.12.2",
     "jest": "^18.0.0"
   },
   "jest": {
     "testEnvironment": "node",
     "rootDir": ".",
-    "testPathDirs": [
-      "tests"
-    ],
     "moduleFileExtensions": [
-      "js"
+      "js",
+      "json"
     ],
     "testPathIgnorePatterns": [
       "/node_modules/"
