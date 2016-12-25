@@ -32,6 +32,7 @@
     "yargs": "^6.5.0"
   },
   "devDependencies": {
+    "babel-jest": "^18.0.0",
     "eslint": "^3.12.2",
     "jest": "^18.0.0"
   },
