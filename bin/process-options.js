@@ -152,7 +152,6 @@ module.exports = function processOptions(yargs, argv) {
 	}
 
 	function compilerCallback(err, stats) {
-		//console.log(stats)
 		if(!options.watch || err) {
 			// Do not keep cache anymore
 			compiler.purgeInputFileSystem();
