@@ -5,7 +5,6 @@ const inquirer = jest.genMockFromModule('inquirer');
 function prompt(questions) {
 	return questions.subscribe(q => {
 		expect(q.message).toContain('?');
-		expect(q.name).toContain('Logic');
 		expect(q.type).toBe('input');
 	});
 }

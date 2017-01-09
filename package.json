@@ -13,15 +13,20 @@
   },
   "main": "./bin/webpack.js",
   "scripts": {
-    "lint": "eslint ./lib",
+    "lint:bin": "eslint ./bin",
+    "lint:lib": "eslint ./lib",
+    "lint:test": "eslint ./tests",
+    "lint": "npm run lint:bin && npm run lint:lib && npm run lint:test",
     "install-commit-validator": "fit-commit-js install",
-    "test": "jest"
+    "test": "jest --verbose"
   },
   "dependencies": {
     "babel-core": "^6.21.0",
     "babel-preset-es2015": "^6.18.0",
+    "babel-preset-stage-3": "^6.17.0",
     "enhanced-resolve": "^3.0.2",
     "fit-commit-js": "^0.3.1",
+    "got": "^6.6.3",
     "inquirer": "^2.0.0",
     "interpret": "^1.0.1",
     "jscodeshift": "^0.3.30",
@@ -32,7 +37,9 @@
     "yargs": "^6.5.0"
   },
   "devDependencies": {
+    "babel-eslint": "^6.1.2",
     "babel-jest": "^18.0.0",
+    "babel-polyfill": "^6.20.0",
     "eslint": "^3.12.2",
     "jest": "^18.0.0"
   },

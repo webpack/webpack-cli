@@ -7,7 +7,7 @@
 node_modules
 
 # npm-debug log
-npm-debug.log
+npm-debug.*
 
 # yarn log
 yarn-error.log
