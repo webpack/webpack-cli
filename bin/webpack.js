@@ -159,4 +159,12 @@ if(argv.verbose) {
 var processOptions = require('./process-options');
 var initInquirer = require('../lib/initialize');
 
-argv.init ? initInquirer(argv._) : processOptions(yargs,argv);
+if(argv.init) {
+	initInquirer(argv._);
+} else if(argv.migrate) {
+	const dummyConfigLoc = require.resolve(path.join(process.cwd(), 'example/webpack.config.js'));
+	const outputConfigLoc = path.join(process.cwd(), 'example/neo-webpack.config.js');
+	require('../lib/migrate.js')(dummyConfigLoc, outputConfigLoc);
+} else {
+	processOptions(yargs,argv);
+}
