@@ -20,6 +20,11 @@ module.exports = function(yargs) {
 				'plugin if specified',
 				group: INIT_GROUP
 			},
+			'migrate': {
+				type: 'boolean',
+				describe: 'Migrate your webpack configuration from webpack 1 to webpack 2',
+				group: INIT_GROUP
+			},
 			'config': {
 				type: 'string',
 				describe: 'Path to the config file',
