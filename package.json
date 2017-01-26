@@ -16,6 +16,7 @@
     "lint:bin": "eslint ./bin",
     "lint:lib": "eslint ./lib",
     "lint:test": "eslint ./tests",
+    "lint:staged": "lint-staged",
     "lint": "npm run lint:bin && npm run lint:lib && npm run lint:test",
     "install-commit-validator": "fit-commit-js install",
     "test": "jest --verbose"
@@ -39,12 +40,14 @@
     "yargs": "^6.5.0"
   },
   "devDependencies": {
-    "babel-eslint": "^6.1.2",
     "babel-cli": "^6.18.0",
+    "babel-eslint": "^6.1.2",
     "babel-jest": "^18.0.0",
     "babel-polyfill": "^6.20.0",
     "eslint": "^3.12.2",
-    "jest": "^18.0.0"
+    "jest": "^18.0.0",
+    "lint-staged": "^3.2.8",
+    "pre-commit": "^1.2.2"
   },
   "jest": {
     "testEnvironment": "node",
@@ -56,5 +59,12 @@
     "testPathIgnorePatterns": [
       "/node_modules/"
     ]
-  }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "pre-commit": "lint:staged"
 }
