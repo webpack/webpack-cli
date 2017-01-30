@@ -15,6 +15,14 @@ that include your `webpack.config.js` and relevant files, this way you help othe
 
 **If you have discovered a bug or have a feature suggestion, feel free to create an issue on Github.**
 
+## Your first Contribution
+
+First of all you will need to create an issue in github for the feature of bugfix that you wand to work on. When you open a new issue, there will be a template that will be automatically added to the text of the issue, which you would need to fill in. Doing this will help us to understand better what the ticket is about.
+
+After you've created the issue, we will have a look, and provide feedback to your ticket. In case is a bugfix that you want to fix, we might help you with background information about the issue, so you make an informed fix.
+
+In case you are suggesting a new feature, we will match your idea with our current roadmap, and will open conversations about it. Once the discussion has been done, and the tasks cleared, then you're ready to code.
+
 ## Setup
 
 * Install [Node.js](https://nodejs.org/) if you don't have it already.
@@ -73,7 +81,15 @@ If you are fixing a existing bug, you can create a branch with the following pre
 
 `bugfix/<the-fix>`
 
-## Submitting Changes
+## Testing
+
+Every bugfix or feature that you submit, needs to be tested. Writing tests for code is very important to prevent future bugs, and to help to discover promptly possible new bugs.
+
+Is important that you test the logic of the code you're writing, and that your tests really go through all your lines, branches and statements. This is the only way we will have to ensure that the code coverage is high enough to ensure the users of the cli, that they are using a solid tool.
+
+In case you need a hand and pointers to how to write your tests. Reach to us, and we will gladly point you out to the direction.
+
+## Pull Requests
 
 After getting some feedback, push to your fork and submit a pull request. We
 may suggest some changes, improvements or implementation alternatives.
