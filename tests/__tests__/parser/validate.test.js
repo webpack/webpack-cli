@@ -1,5 +1,13 @@
 'use strict';
 require('babel-polyfill');
+
+
+/*
+ * We should find a more convinient way to test this. Also, the error message is written with
+ * Chalk, so copying what is in the error message is hard. Regardless, it should have a slighlty more
+ * specific test case instead of checking only the error type.
+ */
+
 const validateAddons = require('../../../lib/utils/validate-addons');
 
 describe('Addon Validation', () => {
