@@ -10,6 +10,7 @@ function mockPromise(value) {
 }
 function spawnChild(pkg) {}
 
+// Could need a fix, like that we don't log to console and just return an expect instead or smth.
 function getLoc(option) {
 	let packageModule;
 	option.filter( (pkg) => {
