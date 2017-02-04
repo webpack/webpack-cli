@@ -12,6 +12,9 @@
     "webpack-cli": "./bin/webpack.js"
   },
   "main": "./bin/webpack.js",
+  "engines": {
+    "node": ">=4.0.0"
+  },
   "scripts": {
     "lint:bin": "eslint ./bin",
     "lint:lib": "eslint ./lib",
@@ -46,6 +49,7 @@
     "babel-jest": "^18.0.0",
     "babel-polyfill": "^6.20.0",
     "eslint": "^3.12.2",
+    "eslint-plugin-node": "^3.0.5",
     "jest": "^18.0.0",
     "lint-staged": "^3.2.8",
     "pre-commit": "^1.2.2"
