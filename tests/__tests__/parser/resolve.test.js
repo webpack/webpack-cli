@@ -1,6 +1,6 @@
 'use strict';
 
-const parser = require('resolve.mock');
+const parser = require('resolve.mock'); // eslint-disable-line
 
 describe('Parser', () => {
 
