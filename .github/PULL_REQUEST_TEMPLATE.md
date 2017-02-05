@@ -3,9 +3,13 @@
 **What kind of change does this PR introduce?**
 <!-- E.g. a bugfix, feature, refactoring, build related change, etc… -->
 
-**Did you add tests for your changes?**
-
-**If relevant, did you update the documentation?**
+**Checklist**
+* [ ] I have read the contributing guidelines
+* [ ] My changes have tests
+* [ ] My code is Documented
+* [ ] The code style is followed
+* [ ] The build passes
+* [ ] My commits followed the guidelines
 
 **Summary**
 
