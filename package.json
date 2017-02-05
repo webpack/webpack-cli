@@ -37,7 +37,7 @@
     "rx": "^4.1.0",
     "supports-color": "^3.1.2",
     "webpack": "^2.2.0-rc.0",
-    "webpack-addons-ylvis": "0.0.25",
+    "webpack-addons-ylvis": "0.0.27",
     "yargs": "^6.5.0"
   },
   "devDependencies": {
