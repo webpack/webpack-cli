@@ -14,7 +14,7 @@ module.exports = function processOptions(yargs, argv) {
 	if(typeof options.then === 'function') {
 		options.then(processOptions).catch(function(err) {
 			console.error(err.stack || err);
-			process.exit(); // eslint-disable-line
+			process.exit();
 		});
 		return;
 	}
@@ -139,7 +139,7 @@ module.exports = function processOptions(yargs, argv) {
 				console.error('\u001b[1m\u001b[31m' + e.message + '\u001b[39m\u001b[22m');
 			else
 				console.error(e.message);
-			process.exit(1); // eslint-disable-line no-process-exit
+			process.exit(1);
 		}
 		throw e;
 	}
@@ -160,8 +160,7 @@ module.exports = function processOptions(yargs, argv) {
 			lastHash = null;
 			console.error(err.stack || err);
 			if(err.details) console.error(err.details);
-			process.exit(1); // eslint-disable-line
-			return;
+			process.exit(1);
 		}
 		if(outputOptions.json) {
 			process.stdout.write(JSON.stringify(stats.toJson(outputOptions), null, 2) + '\n');
@@ -173,7 +172,7 @@ module.exports = function processOptions(yargs, argv) {
 		}
 		if(!options.watch && stats.hasErrors()) {
 			process.on('exit', function() {
-				process.exit(2); // eslint-disable-line
+				process.exit(2);
 			});
 		}
 	}
@@ -182,7 +181,7 @@ module.exports = function processOptions(yargs, argv) {
 		var watchOptions = primaryOptions.watchOptions || primaryOptions.watch || {};
 		if(watchOptions.stdin) {
 			process.stdin.on('end', function() {
-				process.exit(0); // eslint-disable-line
+				process.exit(0);
 			});
 			process.stdin.resume();
 		}
