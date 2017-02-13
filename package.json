@@ -41,6 +41,8 @@
     "yargs": "^6.5.0"
   },
   "devDependencies": {
+    "ajv": "^4.11.3",
+    "ajv-keywords": "^1.5.1",
     "babel-cli": "^6.18.0",
     "babel-eslint": "^6.1.2",
     "babel-jest": "^18.0.0",
