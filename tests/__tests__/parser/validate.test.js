@@ -1,7 +1,7 @@
 /* eslint node/no-unsupported-features: 0 */
 
 'use strict';
-require('babel-polyfill') //eslint-disable-line
+require('babel-polyfill'); //eslint-disable-line
 
 
 /*
