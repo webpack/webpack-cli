@@ -1,0 +1,20 @@
+exports[`utils createOrUpdatePluginByName should add an object as an argument 1`] = `
+"[new Plugin({
+  foo: true
+})]"
+`;
+
+exports[`utils createOrUpdatePluginByName should create a new plugin with arguments 1`] = `
+"{ plugins: [new Plugin({
+  foo: bar
+})] }"
+`;
+
+exports[`utils createOrUpdatePluginByName should create a new plugin without arguments 1`] = `"{ plugins: [new Plugin()] }"`;
+
+exports[`utils createOrUpdatePluginByName should merge options objects 1`] = `
+"[new Plugin({
+  foo: false,
+  bar: baz
+})]"
+`;
