@@ -1,4 +1,4 @@
-exports[`bannerPlugin transforms correctly 1`] = `
+exports[`bannerPlugin transforms correctly using "bannerPlugin-0" data 1`] = `
 "module.exports = {
     plugins: [
         new webpack.BannerPlugin({
@@ -6,6 +6,24 @@ exports[`bannerPlugin transforms correctly 1`] = `
             entryOnly: true,
             \'banner\': \'Banner\'
         })
+    ]
+}
+"
+`;
+
+exports[`bannerPlugin transforms correctly using "bannerPlugin-1" data 1`] = `
+"// Should do nothing if there is no banner plugin
+module.exports = {
+    plugins: []
+}
+"
+`;
+
+exports[`bannerPlugin transforms correctly using "bannerPlugin-2" data 1`] = `
+"// Only transform if it uses the old format
+module.exports = {
+    plugins: [
+        new webpack.BannerPlugin({})
     ]
 }
 "
