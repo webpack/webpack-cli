@@ -15,6 +15,7 @@ exports[`utils createOrUpdatePluginByName should create a new plugin without arg
 exports[`utils createOrUpdatePluginByName should merge options objects 1`] = `
 "[new Plugin({
   foo: false,
-  bar: baz
+  bar: baz,
+  baz-long: true
 })]"
 `;
