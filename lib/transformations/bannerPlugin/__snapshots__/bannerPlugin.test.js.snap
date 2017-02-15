@@ -1,9 +1,12 @@
-module.exports = {
+exports[`bannerPlugin transforms correctly 1`] = `
+"module.exports = {
     plugins: [
         new webpack.BannerPlugin({
             raw: true,
             entryOnly: true,
-            'banner': 'Banner'
+            \'banner\': \'Banner\'
         })
     ]
 }
+"
+`;

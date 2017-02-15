@@ -1,0 +1,33 @@
+exports[`removeJsonLoader transforms correctly 1`] = `
+"export default [{
+    module: {
+        rules: [{
+            test: /\\.yml/,
+            use: [\'another-loader\', \'yml-loader\']
+        }]
+    }
+}, {
+    module: {
+        rules: [{
+            test: /\\.yml/,
+            use: \'yml-loader\'
+        }]
+    }
+}, {
+    module: {
+        rules: []
+    }
+}, {
+    module: {
+        rules: [{
+            test: /\\.yml/,
+            use: [\'another-loader\', \'yml-loader\']
+        }, {
+            test: /\\.yml/,
+            use: \'yml-loader\'
+        }]
+    }
+}];
+
+"
+`;
