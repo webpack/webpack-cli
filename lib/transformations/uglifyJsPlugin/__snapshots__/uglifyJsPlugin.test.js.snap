@@ -1,4 +1,4 @@
-exports[`uglifyJsPlugin transforms correctly 1`] = `
+exports[`uglifyJsPlugin transforms correctly using "uglifyJsPlugin-0" data 1`] = `
 "module.exports = {
     plugins: [
         new webpack.optimize.UglifyJsPlugin({
@@ -6,8 +6,11 @@ exports[`uglifyJsPlugin transforms correctly 1`] = `
         })
     ]
 }
+"
+`;
 
-module.exports = {
+exports[`uglifyJsPlugin transforms correctly using "uglifyJsPlugin-1" data 1`] = `
+"module.exports = {
     devtool: \"source-map\",
     plugins: [
         new webpack.optimize.UglifyJsPlugin({
@@ -15,8 +18,11 @@ module.exports = {
         })
     ]
 }
+"
+`;
 
-module.exports = {
+exports[`uglifyJsPlugin transforms correctly using "uglifyJsPlugin-2" data 1`] = `
+"module.exports = {
     devtool: \"cheap-source-map\",
     plugins: [
         new webpack.optimize.UglifyJsPlugin({

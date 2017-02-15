@@ -1,11 +1,17 @@
-exports[`removeDeprecatedPlugins transforms correctly 1`] = `
+exports[`removeDeprecatedPlugins transforms correctly using "removeDeprecatedPlugins-0" data 1`] = `
 "// Works for OccurrenceOrderPlugin
 module.exports = {}
+"
+`;
 
-// Works for DedupePlugin
+exports[`removeDeprecatedPlugins transforms correctly using "removeDeprecatedPlugins-1" data 1`] = `
+"// Works for DedupePlugin
 module.exports = {}
+"
+`;
 
-// Doesn\'t remove unmatched plugins
+exports[`removeDeprecatedPlugins transforms correctly using "removeDeprecatedPlugins-2" data 1`] = `
+"// Doesn\'t remove unmatched plugins
 module.exports = {
     plugins: [new webpack.optimize.UglifyJsPlugin()]
 }
