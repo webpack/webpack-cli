@@ -1,6 +1,7 @@
-'use strict';
-require('babel-polyfill');
+/* eslint node/no-unsupported-features: 0 */
 
+'use strict';
+require('babel-polyfill'); // eslint-disable-line
 
 /*
  * We should find a more convinient way to test this. Also, the error message is written with
