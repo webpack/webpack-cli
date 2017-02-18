@@ -6,9 +6,8 @@ const initialConfig = jest.genMockFromModule('../../../lib/utils/initial-config'
 const Rx = require('rx');
 const got = require('got');
 
-let mockInitialize = {};
 
-mockInitialize.exists = function exists(pkg) {
+function exists(pkg) {
 	const hostname = 'https://www.npmjs.org';
 	const pkgUrl = `${hostname}/package/${pkg}`;
 	return got(pkgUrl, {method: 'HEAD'})
@@ -20,15 +19,14 @@ mockInitialize.exists = function exists(pkg) {
 			});
 }
 
-mockInitialize.validateAddon = async (addon) => mockInitialize.exists(addon)
 
-mockInitialize.validateAddons = async (addon) => {
+async function validateAddons(addon) {
 	return Object.keys(addon).forEach( (pkg) => {
-		return mockInitialize.exists(addon[pkg]);
+		return exists(addon[pkg]);
 	});
 }
 
-mockInitialize.init = function init(pkg, answer) {
+function init(pkg, answer) {
 	// In the regular module, this is automatically an empty array, becomes `pkg.length == 0`
 	// We're adding manually the answers here as an argument for testing
 	if(!pkg) {
@@ -38,4 +36,8 @@ mockInitialize.init = function init(pkg, answer) {
 }
 
 
-module.exports = mockInitialize
+module.exports = {
+	exists,
+	validateAddons,
+	init
+}
