@@ -1,8 +1,7 @@
 /* eslint-disable */
 'use strict';
-
-const inquirer = jest.genMockFromModule('inquirer');
 const Rx = require('rx');
+const inquirer = jest.genMockFromModule('inquirer');
 
 function prompt(questions, config, testAnswer) {
  	return questions.reduce(function (newOpts, ans) {

@@ -1,10 +1,10 @@
 'use strict';
 /* eslint-disable */
+const Rx = require('rx');
+const got = require('got');
 const questions = require('../../../lib/utils/observable-questions');
 const prompt = require('prompt.mock');
 const initialConfig = jest.genMockFromModule('../../../lib/utils/initial-config');
-const Rx = require('rx');
-const got = require('got');
 
 
 function exists(pkg) {
