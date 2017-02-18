@@ -21,9 +21,11 @@ function exists(pkg) {
 
 
 async function validateAddons(addon) {
-	return Object.keys(addon).forEach( (pkg) => {
-		return exists(addon[pkg]);
-	});
+	let arr = [];
+	for(let k of addon) {
+		arr.push(await exists(k))
+	}
+	return arr;
 }
 
 function init(pkg, answer) {
