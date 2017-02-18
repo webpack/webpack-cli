@@ -1,3 +1,4 @@
+/* eslint-disable */
 const parser = jest.genMockFromModule('../../../lib/parser/index.js');
 const path = require('path');
 

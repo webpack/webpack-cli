@@ -22,7 +22,7 @@
     "lint:staged": "lint-staged",
     "lint": "npm run lint:bin && npm run lint:lib && npm run lint:test",
     "install-commit-validator": "fit-commit-js install",
-    "test": "jest --verbose"
+    "test": "jest --verbose initialize.test.js"
   },
   "dependencies": {
     "babel-core": "^6.21.0",
