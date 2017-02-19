@@ -5,8 +5,8 @@ exports[`loaderOptionsPlugin transforms correctly 1`] = `
         new webpack.optimize.UglifyJsPlugin(),
         new webpack.optimize.LoaderOptionsPlugin({
             foo: \'bar\',
-            \'debug\': true,
-            \'minimize\': true
+            debug: true,
+            minimize: true
         })
     ]
 }

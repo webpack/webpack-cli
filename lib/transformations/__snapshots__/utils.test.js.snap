@@ -1,12 +1,12 @@
 exports[`utils createOrUpdatePluginByName should add an object as an argument 1`] = `
 "[new Plugin({
-  \"foo\": true
+  foo: true
 })]"
 `;
 
 exports[`utils createOrUpdatePluginByName should create a new plugin with arguments 1`] = `
 "{ plugins: [new Plugin({
-  \"foo\": \"bar\"
+  foo: \"bar\"
 })] }"
 `;
 
@@ -14,38 +14,39 @@ exports[`utils createOrUpdatePluginByName should create a new plugin without arg
 
 exports[`utils createOrUpdatePluginByName should merge options objects 1`] = `
 "[new Plugin({
-  \"foo\": false,
-  \"bar\": \"baz\",
-  \"baz-long\": true
+  foo: true,
+  bar: \"baz\",
+  foo: false,
+  baz-long: true
 })]"
 `;
 
 exports[`utils createProperty should create properties for Boolean 1`] = `
 "{
-    \"foo\": true
+    foo: true
 }"
 `;
 
 exports[`utils createProperty should create properties for Number 1`] = `
 "{
-    \"foo\": -1
+    foo: -1
 }"
 `;
 
 exports[`utils createProperty should create properties for String 1`] = `
 "{
-    \"foo\": \"bar\"
+    foo: \"bar\"
 }"
 `;
 
 exports[`utils createProperty should create properties for complex keys 1`] = `
 "{
-    \"foo-bar\": \"bar\"
+    foo-bar: \"bar\"
 }"
 `;
 
 exports[`utils createProperty should create properties for non-literal keys 1`] = `
 "{
-    1: \"bar\"
+    1: "bar"
 }"
 `;
