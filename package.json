@@ -60,7 +60,6 @@
   },
   "jest": {
     "testEnvironment": "node",
-    "verbose": true,
     "rootDir": ".",
     "moduleFileExtensions": [
       "js",
