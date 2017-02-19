@@ -6,7 +6,7 @@ const inquirer = jest.genMockFromModule('inquirer');
 function prompt(questions, config, testAnswer) {
  	return questions.reduce(function (newOpts, ans) {
 		return attachAnswers(newOpts, testAnswer);
-	}, Object.assign(config, require('../../../lib/utils/initial-config')))
+	}, Object.assign(config, require('../../lib/utils/initial-config')))
   	.map(newOpts => {
 		return checkEmptyAnswers(newOpts);
 	});

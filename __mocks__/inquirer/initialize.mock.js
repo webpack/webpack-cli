@@ -2,9 +2,9 @@
 /* eslint-disable */
 const Rx = require('rx');
 const got = require('got');
-const questions = require('../../../lib/utils/observable-questions');
+const questions = require('../../lib/utils/initial-questions');
 const prompt = require('prompt.mock');
-const initialConfig = jest.genMockFromModule('../../../lib/utils/initial-config');
+const initialConfig = jest.genMockFromModule('../../lib/utils/initial-config');
 
 
 function exists(pkg) {

@@ -18,11 +18,11 @@
   "scripts": {
     "lint:bin": "eslint ./bin",
     "lint:lib": "eslint ./lib",
-    "lint:test": "eslint ./tests",
+    "lint:test": "eslint ./__mocks__",
     "lint:staged": "lint-staged",
     "lint": "npm run lint:bin && npm run lint:lib && npm run lint:test",
     "install-commit-validator": "fit-commit-js install",
-    "test": "jest --verbose"
+    "test": "jest"
   },
   "dependencies": {
     "babel-core": "^6.21.0",
@@ -59,6 +59,7 @@
   },
   "jest": {
     "testEnvironment": "node",
+    "verbose": true,
     "rootDir": ".",
     "moduleFileExtensions": [
       "js",
