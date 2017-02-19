@@ -128,6 +128,69 @@ to read on GitHub as well as in several git tools.
 For more information about what each part of the template mean, head up to the documentation in the
 [angular repo](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#commit-message-format)
 
+## --migrate with the CLI
+
+This is a new feature in development for the CLI.
+
+```
+webpack --migrate <your-config-name>
+```
+
+The expected result of the above command is to take the mentioned `webpack` configuration and create a new configuration file which is compatible with webpack 2.
+It should be a valid new config and should keep intact all the features from the original config.
+The new config will be as readable as possible (may be add some comments).
+
+With [#40](https://github.com/webpack/webpack-cli/pull/40), we have been able to add basic scaffolding and do many of the conversions recommended in the [docs](https://webpack.js.org/guides/migrating/).
+
+### How it's being done
+
+We use [`jscodeshift`](https://github.com/facebook/jscodeshift) transforms called `codemods` to accomplish this.
+We have written a bunch of transformations under [/lib/transformations](https://github.com/webpack/webpack-cli/tree/master/lib/transformations),divided logically.
+We convert the existing webpack config to [AST](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey/Parser_API). We then parse this tree for the specific features and modify it to conform to webpack v2...
+
+#### Structure of a transform
+
+The directory structure of a transform looks as follows -
+
+```sh
+|
+|--__snapshots__
+|--__testfixtures__
+|  |
+|  |--transform-name.input.js
+|
+|--transform-name.js
+|--transform-name.test.js
+```
+
+`transform-name.js`
+
+This file contains the actual transformation codemod. It applies specific transformation and parsing logic to accomplish its job
+There are utilities available under `/lib/utils.js` which can help you with this.
+
+`transform-name.test.js`
+
+This is where you declare a new test case for your transformation.
+Each test will refer to an input webpack config snippet.
+Conventionally we write them in `\_\_testfixtures\_\_`.
+
+```
+const defineTest = require('../defineTest');
+
+defineTest(__dirname, 'transform-name.input1.js');
+defineTest(__dirname, 'transform-name.input2.js');
+```
+
+`defineTest` is a helper test method which helps us to run tests on all the transforms uniformly.
+It takes the input file given as parameter and uses jest to create a snapshot of the output. This effectively tests the correctness of our transformation.
+
+### TODO
+
+This is still in a very raw form. We'd like to take this as close to a truly useful tool as possible.
+We will still need to
+  - Support all kinds of webpack configuration(made using merge tools)
+  - Test these transforms against real world configurations.
+
 ## Contributor License Agreement
 
 When submitting your contribution, a CLA (Contributor License Agreement) bot will come by to verify that you signed the CLA. If you are submitting a PR for the first time, it will link you to the right place to sign it. If you have committed your contributions using an email that is not the same as your email used on GitHub, the CLA bot can't accept your contribution.
