@@ -6,7 +6,7 @@
 
 [![Build Status](https://travis-ci.org/webpack/webpack-cli.svg)](https://travis-ci.org/webpack/webpack-cli)
 [![Dependency Status](https://david-dm.org/webpack/webpack-cli.svg)](https://david-dm.org/webpack/webpack-cli)
-[![Code Climate](https://codeclimate.com/github/webpack/webpack-cli/badges/gpa.svg)](https://codeclimate.com/github/webpack/webpack-cli)
+[![codecov](https://codecov.io/gh/webpack/webpack-cli/branch/master/graph/badge.svg)](https://codecov.io/gh/webpack/webpack-cli)
 [![chat on gitter](https://badges.gitter.im/webpack/webpack.svg)](https://gitter.im/webpack/webpack)
 
 # Webpack CLI
@@ -18,6 +18,8 @@ This project intends to be the main cli package of webpack. Here we will encapsu
 
 # Roadmap to the first release
 
-- Migrate to webpack-cli all the current cli options available in webpack
+- Migrate to `webpack-cli` all the current cli options available in webpack
 - Create a `webpack-cli init` command that serves to set a configuration of webpack to the user
 - create a `webpack-cli migrate` command that serves to migrate an existing configuration from webpack 1 to webpack 2.
+
+Note: For more info about each feature, check out the wiki section.

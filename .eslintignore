@@ -1,1 +1,3 @@
 __testfixtures__
+lib/parser
+tests/__mocks__/parser/
