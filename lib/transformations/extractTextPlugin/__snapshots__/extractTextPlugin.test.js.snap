@@ -1,9 +1,6 @@
 exports[`extractTextPlugin transforms correctly 1`] = `
 "let ExtractTextPlugin = require(\'extract-text-webpack-plugin\');
 
-let extractCSS = new ExtractTextPlugin(\'stylesheets/[name].css\');
-let extractLESS = new ExtractTextPlugin(\'stylesheets/[name].less\');
-
 module.export = {
     module: {
         rules: [
