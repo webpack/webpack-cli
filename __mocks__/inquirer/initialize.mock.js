@@ -1,8 +1,9 @@
+/* eslint node/no-unsupported-features: 0 */
 'use strict';
-/* eslint-disable */
 const Rx = require('rx');
 const got = require('got');
 const questions = require('../../lib/utils/initial-questions');
+//eslint-disable-next-line
 const prompt = require('prompt.mock');
 const initialConfig = jest.genMockFromModule('../../lib/utils/initial-config');
 
@@ -19,11 +20,11 @@ function exists(pkg) {
 			});
 }
 
-
+//
 async function validateAddons(addon) {
 	let arr = [];
 	for(let k of addon) {
-		arr.push(await exists(k))
+		arr.push(await exists(k));
 	}
 	return arr;
 }
@@ -42,4 +43,4 @@ module.exports = {
 	exists,
 	validateAddons,
 	init
-}
+};
