@@ -18,17 +18,18 @@
   "scripts": {
     "lint:bin": "eslint ./bin",
     "lint:lib": "eslint ./lib",
-    "lint:test": "eslint ./tests",
+    "lint:test": "eslint ./__mocks__",
     "lint:staged": "lint-staged",
     "lint": "npm run lint:bin && npm run lint:lib && npm run lint:test",
     "install-commit-validator": "fit-commit-js install",
-    "test": "jest --verbose"
+    "test": "jest"
   },
   "dependencies": {
     "babel-core": "^6.21.0",
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-stage-3": "^6.17.0",
     "chalk": "^1.1.3",
+    "cross-spawn": "^5.0.1",
     "diff": "^3.2.0",
     "enhanced-resolve": "^3.0.2",
     "fit-commit-js": "^0.3.1",
@@ -41,9 +42,12 @@
     "rx": "^4.1.0",
     "supports-color": "^3.1.2",
     "webpack": "^2.2.0-rc.0",
+    "webpack-addons-ylvis": "0.0.27",
     "yargs": "^6.5.0"
   },
   "devDependencies": {
+    "ajv": "^4.11.3",
+    "ajv-keywords": "^1.5.1",
     "babel-cli": "^6.18.0",
     "babel-eslint": "^6.1.2",
     "babel-jest": "^18.0.0",
