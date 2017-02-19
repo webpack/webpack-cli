@@ -1,5 +1,6 @@
 exports[`extractTextPlugin transforms correctly 1`] = `
 "let ExtractTextPlugin = require(\'extract-text-webpack-plugin\');
+let HTMLWebpackPlugin = require(\'html-webpack-plugin\');
 
 module.export = {
     module: {
