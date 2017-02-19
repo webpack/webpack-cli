@@ -11,14 +11,9 @@ exports[`loaders transforms correctly using "loaders-0" data 1`] = `
         rules: [{
             test: /\\.css$/,
             use: [{
-                loader: \'style-loader\'
+                \'loader\': \'style\'
             }, {
-                loader: \'css-loader\',
-                options: {
-                    modules: true,
-                    importLoaders: 1,
-                    string: \'test123\'
-                }
+                \'loader\': \'css?modules&importLoaders=1&string=test123\'
             }]
         }]
     }
@@ -84,14 +79,9 @@ exports[`loaders transforms correctly using "loaders-1" data 1`] = `
         rules: [{
             test: /\\.css$/,
             use: [{
-                loader: \'style-loader\'
+                \'loader\': \'style\'
             }, {
-                loader: \'css-loader\',
-                options: {
-                    modules: true,
-                    importLoaders: 1,
-                    string: \'test123\'
-                }
+                \'loader\': \'css?modules&importLoaders=1&string=test123\'
             }]
         }]
     }
