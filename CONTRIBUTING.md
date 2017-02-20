@@ -1,8 +1,8 @@
 # Contributing
 
 From opening a bug report to creating a pull request: every contribution is
-appreciated and welcomed. If you're planning a new feature or change
-the api please create an issue first. This way we can ensure that your precious
+appreciated and welcomed. If you're planning a new feature or changing
+the api, please create an issue first. This way we can ensure that your precious
 work is not in vain.
 
 ## Issues
@@ -10,16 +10,18 @@ work is not in vain.
 Most of the time, when webpack does not work correctly, it might be a configuration issue.
 
 If you are still having difficulty after looking over your configuration carefully, please post
-a question to [StackOverflow with the webpack-cli tag](http://stackoverflow.com/tags/webpack-cli). Questions
-that include your `webpack.config.js` and relevant files, this way you help others to help you.
+a question to [StackOverflow with the webpack-cli tag](http://stackoverflow.com/tags/webpack-cli). Please ensure that your questions
+that include your `webpack.config.js` and relevant files. This way you help others to help you.
 
 **If you have discovered a bug or have a feature suggestion, feel free to create an issue on Github.**
 
 ## Your first Contribution
 
-First of all you will need to create an issue in github for the feature of bugfix that you wand to work on. When you open a new issue, there will be a template that will be automatically added to the text of the issue, which you would need to fill in. Doing this will help us to understand better what the ticket is about.
+First of all you will need to create an issue in github for the feature or bugfix that you want to work on. When you open a new issue, there will be a template that will be automatically added to the text of the issue, which you would need to fill in. Doing this will help us to understand better what the ticket is about.
 
-After you've created the issue, we will have a look, and provide feedback to your ticket. In case is a bugfix that you want to fix, we might help you with background information about the issue, so you make an informed fix.
+After you've created the issue, we will have a look, and provide feedback to your ticket. 
+
+In case it is a bug that you want to fix, we might help you with background information about the issue, so you can make an informed fix.
 
 In case you are suggesting a new feature, we will match your idea with our current roadmap, and will open conversations about it. Once the discussion has been done, and the tasks cleared, then you're ready to code.
 
@@ -53,7 +55,7 @@ The [.editorconfig](https://github.com/webpack/webpack-cli/blob/master/.editorco
 
 ## Branching Model
 
-We based our branching model on [git flow](http://nvie.com/posts/a-successful-git-branching-model/). Instead of working with a `develop` base branch, we use instead the `master` branch. We do it to ease a bit the workflow. However, we find useful adding prefixes to the branches.
+We base our branching model on [git flow](http://nvie.com/posts/a-successful-git-branching-model/). Instead of working with a `develop` base branch, we use the `master` branch. We do it to ease the workflow a bit. However, we find that adding prefixes to the branches is useful.
 
 ## Naming a branch
 
@@ -77,17 +79,17 @@ If your contribution is something new, like a option for the cli, you can create
 
 ### Fixes
 
-If you are fixing a existing bug, you can create a branch with the following prefix:
+If you are fixing an existing bug, you can create a branch with the following prefix:
 
 `bugfix/<the-fix>`
 
 ## Testing
 
-Every bugfix or feature that you submit, needs to be tested. Writing tests for code is very important to prevent future bugs, and to help to discover promptly possible new bugs.
+Every bugfix or feature that you submit, needs to be tested. Writing tests for code is very important to prevent future bugs, and help to discover possible new bugs promptly.
 
-Is important that you test the logic of the code you're writing, and that your tests really go through all your lines, branches and statements. This is the only way we will have to ensure that the code coverage is high enough to ensure the users of the cli, that they are using a solid tool.
+It is important that you test the logic of the code you're writing, and that your tests really go through all your lines, branches and statements. This is the only way to ensure that the code coverage is high enough to ensure the users of the cli, that they are using a solid tool.
 
-In case you need a hand and pointers to how to write your tests. Reach to us, and we will gladly point you out to the direction.
+In case you need a hand or pointers on to how to write your tests, do not hesitate to reach out to us. We will gladly point you in the right direction.
 
 ## Pull Requests
 
@@ -138,7 +140,7 @@ webpack --migrate <your-config-name>
 
 The expected result of the above command is to take the mentioned `webpack` configuration and create a new configuration file which is compatible with webpack 2.
 It should be a valid new config and should keep intact all the features from the original config.
-The new config will be as readable as possible (may be add some comments).
+The new config will be as readable as possible (may add some comments).
 
 With [#40](https://github.com/webpack/webpack-cli/pull/40), we have been able to add basic scaffolding and do many of the conversions recommended in the [docs](https://webpack.js.org/guides/migrating/).
 
@@ -146,7 +148,7 @@ With [#40](https://github.com/webpack/webpack-cli/pull/40), we have been able to
 
 We use [`jscodeshift`](https://github.com/facebook/jscodeshift) transforms called `codemods` to accomplish this.
 We have written a bunch of transformations under [/lib/transformations](https://github.com/webpack/webpack-cli/tree/master/lib/transformations),divided logically.
-We convert the existing webpack config to [AST](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey/Parser_API). We then parse this tree for the specific features and modify it to conform to webpack v2...
+We convert the existing webpack config to [AST](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey/Parser_API). We then parse this tree for the specific features and modify it to conform to webpack v2.
 
 #### Structure of a transform
 
