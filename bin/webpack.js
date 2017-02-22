@@ -162,9 +162,13 @@ var initInquirer = require('../lib/initialize');
 if(argv.init) {
 	initInquirer(argv._);
 } else if(argv.migrate) {
-	const dummyConfigLoc = require.resolve(path.join(process.cwd(), 'example/webpack.config.js'));
-	const outputConfigLoc = path.join(process.cwd(), 'example/neo-webpack.config.js');
-	require('../lib/migrate.js')(dummyConfigLoc, outputConfigLoc);
+	const filePaths = argv._;
+	if (!filePaths.length) {
+		throw new Error('Please specify a path to your webpack config');
+	}
+	const inputConfigPath = path.resolve(process.cwd(), filePaths[0]);
+
+	require('../lib/migrate.js')(inputConfigPath, inputConfigPath);
 } else {
 	processOptions(yargs,argv);
 }
