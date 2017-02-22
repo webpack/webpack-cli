@@ -11,3 +11,6 @@ npm-debug.*
 
 # yarn log
 yarn-error.log
+
+# Jest Coverage
+coverage

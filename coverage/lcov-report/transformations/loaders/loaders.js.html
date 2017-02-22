@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for transformations/loaders/loaders.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">transformations/loaders</a> loaders.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">82.43% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>61/74</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">87.88% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>29/33</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">90.63% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>29/32</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">79.69% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>51/64</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138</td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">161x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">64x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">161x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">161x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">68x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">161x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">68x</span>
+<span class="cline-any cline-yes">125x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">70x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const utils = require('../utils');
+&nbsp;
+module.exports = function(j, ast) {
+&nbsp;
+	const createArrayExpression = function(p) {
+		let objs = p.parent.node.value.value.split('!')
+			.map(val =&gt; j.objectExpression([
+				utils.createProperty(j, 'loader', val)
+			]));
+		let loaderArray = j.arrayExpression(objs);
+		p.parent.node.value = loaderArray;
+		return p;
+	};
+&nbsp;
+	const createLoaderWithQuery = <span class="fstat-no" title="function not covered" >p </span>=&gt; {
+		let properties = <span class="cstat-no" title="statement not covered" >p.value.properties;</span>
+		let loaderValue = <span class="cstat-no" title="statement not covered" >properties</span>
+			.reduce(<span class="fstat-no" title="function not covered" >(v</span>al, prop) =&gt; <span class="cstat-no" title="statement not covered" >prop.key.name === 'loader' ? prop.value.value : val,</span> '');
+		let loader = <span class="cstat-no" title="statement not covered" >loaderValue.split('?')[0];</span>
+		let query = <span class="cstat-no" title="statement not covered" >loaderValue.split('?')[1];</span>
+		let options = <span class="cstat-no" title="statement not covered" >query.split('&amp;').map(<span class="fstat-no" title="function not covered" >op</span>tion =&gt; {</span>
+			const param = <span class="cstat-no" title="statement not covered" >option.split('=');</span>
+			const key = <span class="cstat-no" title="statement not covered" >param[0];</span>
+			const val = <span class="cstat-no" title="statement not covered" >param[1] || true;</span> // No value in query string means it is truthy value
+<span class="cstat-no" title="statement not covered" >			return j.objectProperty(j.identifier(key), utils.createLiteral(val));</span>
+		});
+		let loaderProp = <span class="cstat-no" title="statement not covered" >utils.createProperty(j, 'loader', loader);</span>
+		let queryProp = <span class="cstat-no" title="statement not covered" >j.property('init', j.identifier('options'), j.objectExpression(options));</span>
+<span class="cstat-no" title="statement not covered" >		return j.objectExpression([loaderProp, queryProp]);</span>
+	};
+&nbsp;
+	const findLoaderWithQueryString = p =&gt; {
+		return p.value.properties
+			.reduce((predicate, prop) =&gt; {
+				return utils.safeTraverse(prop, ['value', 'value', 'indexOf'])
+					&amp;&amp; prop.value.value.indexOf('?') &gt; -1
+					|| predicate;
+			}, false);
+	};
+&nbsp;
+	const checkForLoader = p =&gt; p.value.name === 'loaders' &amp;&amp; utils.safeTraverse(p,
+		['parent', 'parent', 'parent', 'node', 'key', 'name']) === 'module';
+&nbsp;
+	const fitIntoLoaders = p =&gt; {
+		let loaders;
+		p.value.properties.map(prop =&gt; {
+			const keyName = prop.key.name;
+			if (keyName === 'loaders') {
+				loaders = prop.value;
+			}
+		});
+		p.value.properties.map(prop =&gt; {
+			const keyName = prop.key.name;
+			if (keyName !== 'loaders') {
+				const enforceVal = keyName === 'preLoaders' ? 'pre' : 'post';
+&nbsp;
+				prop.value.elements.map(elem =&gt; {
+					elem.properties.push(utils.createProperty(j, 'enforce', enforceVal));
+					if (loaders &amp;&amp; loaders.type === 'ArrayExpression') {
+						loaders.elements.push(elem);
+					} else {
+						prop.key.name = 'loaders';
+					}
+				});
+			}
+		});
+		if (loaders) {
+			p.value.properties = p.value.properties.filter(prop =&gt; prop.key.name === 'loaders');
+		}
+		return p;
+	};
+&nbsp;
+	const prepostLoaders = () =&gt; ast
+		.find(j.ObjectExpression)
+		.filter(p =&gt; utils.findObjWithOneOfKeys(p, ['preLoaders', 'postLoaders']))
+		.forEach(p =&gt; p = fitIntoLoaders(p));
+&nbsp;
+	const loadersToRules = () =&gt; ast
+		.find(j.Identifier)
+		.filter(checkForLoader)
+		.forEach(p =&gt; p.value.name = 'rules');
+&nbsp;
+	const loaderToUse = () =&gt; ast
+		.find(j.Identifier)
+		.filter(p =&gt; {
+			return (p.value.name === 'loaders' || p.value.name === 'loader')
+				&amp;&amp; utils.safeTraverse(p,
+					['parent', 'parent', 'parent', 'parent', 'node', 'key', 'name']) === 'rules';
+		})
+		.forEach(p =&gt; p.value.name = 'use');
+&nbsp;
+	const loadersInArray = () =&gt; ast
+		.find(j.Identifier)
+		.filter(p =&gt; {
+			return p.value.name === 'use'
+				&amp;&amp; p.parent.node.value.type === 'Literal'
+				&amp;&amp; p.parent.node.value.value.indexOf('!') &gt; 0;
+		})
+		.forEach(createArrayExpression);
+&nbsp;
+	const loaderWithQueryParam = () =&gt; ast
+		.find(j.ObjectExpression)
+		.filter(p =&gt; utils.findObjWithOneOfKeys(p, 'loader'))
+		.filter(findLoaderWithQueryString)
+		.replaceWith(createLoaderWithQuery);
+&nbsp;
+	const loaderWithQueryProp = () =&gt; ast
+		.find(j.Identifier)
+		.filter(p =&gt; p.value.name === 'query')
+		.replaceWith(j.identifier('options'));
+&nbsp;
+	const addLoaderSuffix = () =&gt; ast
+		.find(j.ObjectExpression)
+		.forEach(path =&gt; {
+			path.value.properties.forEach(prop =&gt; {
+				if ((prop.key.name === 'loader' || prop.key.name === 'use')
+					&amp;&amp; utils.safeTraverse(prop, ['value', 'value'])
+					&amp;&amp; prop.value.value.indexOf('-loader') === -1) {
+					prop.value = j.literal(prop.value.value + '-loader');
+				}
+			});
+		})
+		.toSource();
+&nbsp;
+	const transforms = [
+		prepostLoaders,
+		loadersToRules,
+		loaderToUse,
+		loadersInArray,
+		loaderWithQueryParam,
+		loaderWithQueryProp,
+		addLoaderSuffix
+	];
+	transforms.forEach(t =&gt; t());
+&nbsp;
+	return ast;
+};
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sat Feb 25 2017 14:58:04 GMT+0100 (CET)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>
