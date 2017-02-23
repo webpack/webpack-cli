@@ -37,6 +37,7 @@
     "inquirer": "^2.0.0",
     "interpret": "^1.0.1",
     "jscodeshift": "^0.3.30",
+    "listr": "^0.11.0",
     "loader-utils": "^0.2.16",
     "lodash": "^4.17.4",
     "recast": "git://github.com/kalcifer/recast.git#bug/allowbreak",
