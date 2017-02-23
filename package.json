@@ -59,17 +59,6 @@
     "lint-staged": "^3.2.8",
     "pre-commit": "^1.2.2"
   },
-  "jest": {
-    "testEnvironment": "node",
-    "rootDir": ".",
-    "moduleFileExtensions": [
-      "js",
-      "json"
-    ],
-    "testPathIgnorePatterns": [
-      "/node_modules/"
-    ]
-  },
   "lint-staged": {
     "*.js": [
       "eslint --fix",
