@@ -38,6 +38,7 @@
     "interpret": "^1.0.1",
     "jscodeshift": "^0.3.30",
     "loader-utils": "^0.2.16",
+    "lodash": "^4.17.4",
     "recast": "git://github.com/kalcifer/recast.git#bug/allowbreak",
     "rx": "^4.1.0",
     "supports-color": "^3.1.2",
