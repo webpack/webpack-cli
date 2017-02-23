@@ -51,11 +51,11 @@
     "ajv-keywords": "^1.5.1",
     "babel-cli": "^6.18.0",
     "babel-eslint": "^6.1.2",
-    "babel-jest": "^18.0.0",
+    "babel-jest": "^19.0.0",
     "babel-polyfill": "^6.20.0",
     "eslint": "^3.12.2",
     "eslint-plugin-node": "^3.0.5",
-    "jest": "^18.0.0",
+    "jest": "^19.0.2",
     "lint-staged": "^3.2.8",
     "pre-commit": "^1.2.2"
   },

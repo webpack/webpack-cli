@@ -1,9 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
 exports[`removeJsonLoader transforms correctly using "removeJsonLoader-0" data 1`] = `
 "export default {
     module: {
         rules: [{
-            test: /\\.yml/,
-            use: [\'another-loader\', \'yml-loader\']
+            test: /\\\\.yml/,
+            use: ['another-loader', 'yml-loader']
         }]
     }
 }
@@ -15,8 +17,8 @@ exports[`removeJsonLoader transforms correctly using "removeJsonLoader-1" data 1
 "export default {
     module: {
         rules: [{
-            test: /\\.yml/,
-            use: \'yml-loader\'
+            test: /\\\\.yml/,
+            use: 'yml-loader'
         }]
     }
 }
@@ -36,11 +38,11 @@ exports[`removeJsonLoader transforms correctly using "removeJsonLoader-3" data 1
 "export default {
     module: {
         rules: [{
-            test: /\\.yml/,
-            use: [\'another-loader\', \'yml-loader\']
+            test: /\\\\.yml/,
+            use: ['another-loader', 'yml-loader']
         }, {
-            test: /\\.yml/,
-            use: \'yml-loader\'
+            test: /\\\\.yml/,
+            use: 'yml-loader'
         }]
     }
 }
