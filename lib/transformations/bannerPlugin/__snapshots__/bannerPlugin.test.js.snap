@@ -1,10 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
 exports[`bannerPlugin transforms correctly using "bannerPlugin-0" data 1`] = `
 "module.exports = {
     plugins: [
         new webpack.BannerPlugin({
             raw: true,
             entryOnly: true,
-            \'banner\': \'Banner\'
+            'banner': 'Banner'
         })
     ]
 }

@@ -1,3 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
 exports[`loaderOptionsPlugin transforms correctly using "loaderOptionsPlugin-0" data 1`] = `
 "// Do not create LoaderOptionsPlugin is not necessary
 module.exports = {
@@ -14,9 +16,9 @@ exports[`loaderOptionsPlugin transforms correctly using "loaderOptionsPlugin-1" 
     plugins: [
         new webpack.optimize.UglifyJsPlugin(),
         new webpack.optimize.LoaderOptionsPlugin({
-            foo: \'bar\',
-            \'debug\': true,
-            \'minimize\': true
+            foo: 'bar',
+            'debug': true,
+            'minimize': true
         })
     ]
 }
@@ -24,12 +26,12 @@ exports[`loaderOptionsPlugin transforms correctly using "loaderOptionsPlugin-1" 
 `;
 
 exports[`loaderOptionsPlugin transforms correctly using "loaderOptionsPlugin-2" data 1`] = `
-"// Don\'t modify LoaderOptionsPlugin
+"// Don't modify LoaderOptionsPlugin
 module.exports = {
     plugins: [
         new SomePlugin(),
         new webpack.optimize.LoaderOptionsPlugin({
-            foo: \'bar\'
+            foo: 'bar'
         })
     ]
 }

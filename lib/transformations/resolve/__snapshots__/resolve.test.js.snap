@@ -1,21 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
 exports[`resolve transforms correctly 1`] = `
-"import path from \'path\';
+"import path from 'path';
 
 export default [{
     resolve: {
-        modules: [path.resolve(\'/src\')]
+        modules: [path.resolve('/src')]
     }
 }, {
     resolve: {
-        modules: [path.resolve(\'/src\')]
+        modules: [path.resolve('/src')]
     }
 }, {
     resolve: {
-        modules: [path.resolve(\'/src\'), \'node_modules\']
+        modules: [path.resolve('/src'), 'node_modules']
     }
 }, {
     resolve: {
-        modules: [\'node_modules\', path.resolve(\'/src\')]
+        modules: ['node_modules', path.resolve('/src')]
     }
 }];
 "

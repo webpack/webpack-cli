@@ -1,3 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
 exports[`removeDeprecatedPlugins transforms correctly using "removeDeprecatedPlugins-0" data 1`] = `
 "// Works for OccurrenceOrderPlugin
 module.exports = {}
@@ -11,7 +13,7 @@ module.exports = {}
 `;
 
 exports[`removeDeprecatedPlugins transforms correctly using "removeDeprecatedPlugins-2" data 1`] = `
-"// Doesn\'t remove unmatched plugins
+"// Doesn't remove unmatched plugins
 module.exports = {
     plugins: [new webpack.optimize.UglifyJsPlugin()]
 }

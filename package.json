@@ -22,7 +22,7 @@
     "lint:staged": "lint-staged",
     "lint": "npm run lint:bin && npm run lint:lib && npm run lint:test",
     "install-commit-validator": "fit-commit-js install",
-    "test": "jest"
+    "test": "jest --coverage"
   },
   "dependencies": {
     "babel-core": "^6.21.0",
@@ -51,24 +51,13 @@
     "ajv-keywords": "^1.5.1",
     "babel-cli": "^6.18.0",
     "babel-eslint": "^6.1.2",
-    "babel-jest": "^18.0.0",
+    "babel-jest": "^19.0.0",
     "babel-polyfill": "^6.20.0",
     "eslint": "^3.12.2",
     "eslint-plugin-node": "^3.0.5",
-    "jest": "^18.0.0",
+    "jest": "^19.0.2",
     "lint-staged": "^3.2.8",
     "pre-commit": "^1.2.2"
-  },
-  "jest": {
-    "testEnvironment": "node",
-    "rootDir": ".",
-    "moduleFileExtensions": [
-      "js",
-      "json"
-    ],
-    "testPathIgnorePatterns": [
-      "/node_modules/"
-    ]
   },
   "lint-staged": {
     "*.js": [

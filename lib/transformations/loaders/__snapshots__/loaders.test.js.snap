@@ -1,30 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
 exports[`loaders transforms correctly using "loaders-0" data 1`] = `
 "export default [{
     module: {
         rules: [{
-            test: /\\.js$/,
-            use: \'babel-loader\'
+            test: /\\\\.js$/,
+            use: 'babel-loader'
         }]
     }
 }, {
     module: {
         rules: [{
-            test: /\\.css$/,
+            test: /\\\\.css$/,
             use: [{
-                \'loader\': \'style\'
+                'loader': 'style'
             }, {
-                \'loader\': \'css?modules&importLoaders=1&string=test123\'
+                'loader': 'css?modules&importLoaders=1&string=test123'
             }]
         }]
     }
 }, {
     module: {
         rules: [{
-            test: /\\.css$/,
+            test: /\\\\.css$/,
             use: [{
-                loader: \'style-loader\'
+                loader: 'style-loader'
             }, {
-                loader: \'css-loader\',
+                loader: 'css-loader',
                 options: {
                     modules: true
                 }
@@ -34,39 +36,39 @@ exports[`loaders transforms correctly using "loaders-0" data 1`] = `
 }, {
     module: {
         rules:[{
-            test: /\\.js$/,
-            use: \'eslint-loader\',
-            \'enforce\': \'pre\'
+            test: /\\\\.js$/,
+            use: 'eslint-loader',
+            'enforce': 'pre'
         }]
     }
 }, {
     module: {
         rules:[{
-            test: /\\.js$/,
-            use: \'my-post-loader\',
-            \'enforce\': \'post\'
+            test: /\\\\.js$/,
+            use: 'my-post-loader',
+            'enforce': 'post'
         }]
     }
 }, {
     module: {
         rules: [{
-            test: /\\.js$/,
-            use: \'babel-loader\'
+            test: /\\\\.js$/,
+            use: 'babel-loader'
         }, {
-            test: /\\.js$/,
-            use: \'eslint-loader\',
-            \'enforce\': \'pre\'
+            test: /\\\\.js$/,
+            use: 'eslint-loader',
+            'enforce': 'pre'
         }]
     }
 }, {
     module: {
         rules: [{
-            test: /\\.js$/,
-            use: \'babel-loader\'
+            test: /\\\\.js$/,
+            use: 'babel-loader'
         }, {
-            test: /\\.js$/,
-            use: \'my-post-loader\',
-            \'enforce\': \'post\'
+            test: /\\\\.js$/,
+            use: 'my-post-loader',
+            'enforce': 'post'
         }]
     }
 }];
@@ -77,11 +79,11 @@ exports[`loaders transforms correctly using "loaders-1" data 1`] = `
 "export default {
     module: {
         rules: [{
-            test: /\\.css$/,
+            test: /\\\\.css$/,
             use: [{
-                \'loader\': \'style\'
+                'loader': 'style'
             }, {
-                \'loader\': \'css?modules&importLoaders=1&string=test123\'
+                'loader': 'css?modules&importLoaders=1&string=test123'
             }]
         }]
     }
@@ -93,11 +95,11 @@ exports[`loaders transforms correctly using "loaders-2" data 1`] = `
 "export default {
     module: {
         rules: [{
-            test: /\\.css$/,
+            test: /\\\\.css$/,
             use: [{
-                loader: \'style-loader\'
+                loader: 'style-loader'
             }, {
-                loader: \'css-loader\',
+                loader: 'css-loader',
                 options: {
                     modules: true
                 }
@@ -112,9 +114,9 @@ exports[`loaders transforms correctly using "loaders-3" data 1`] = `
 "export default {
     module: {
         rules:[{
-            test: /\\.js$/,
-            use: \'eslint-loader\',
-            \'enforce\': \'pre\'
+            test: /\\\\.js$/,
+            use: 'eslint-loader',
+            'enforce': 'pre'
         }]
     }
 }
@@ -125,9 +127,9 @@ exports[`loaders transforms correctly using "loaders-4" data 1`] = `
 "export default {
     module: {
         rules:[{
-            test: /\\.js$/,
-            use: \'my-post-loader\',
-            \'enforce\': \'post\'
+            test: /\\\\.js$/,
+            use: 'my-post-loader',
+            'enforce': 'post'
         }]
     }
 }
@@ -138,12 +140,12 @@ exports[`loaders transforms correctly using "loaders-5" data 1`] = `
 "export default {
     module: {
         rules: [{
-            test: /\\.js$/,
-            use: \'babel-loader\'
+            test: /\\\\.js$/,
+            use: 'babel-loader'
         }, {
-            test: /\\.js$/,
-            use: \'eslint-loader\',
-            \'enforce\': \'pre\'
+            test: /\\\\.js$/,
+            use: 'eslint-loader',
+            'enforce': 'pre'
         }]
     }
 }
@@ -154,12 +156,12 @@ exports[`loaders transforms correctly using "loaders-6" data 1`] = `
 "export default {
     module: {
         rules: [{
-            test: /\\.js$/,
-            use: \'babel-loader\'
+            test: /\\\\.js$/,
+            use: 'babel-loader'
         }, {
-            test: /\\.js$/,
-            use: \'my-post-loader\',
-            \'enforce\': \'post\'
+            test: /\\\\.js$/,
+            use: 'my-post-loader',
+            'enforce': 'post'
         }]
     }
 }
