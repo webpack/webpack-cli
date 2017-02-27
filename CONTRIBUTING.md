@@ -186,6 +186,11 @@ defineTest(__dirname, 'transform-name.input2.js');
 `defineTest` is a helper test method which helps us to run tests on all the transforms uniformly.
 It takes the input file given as parameter and uses jest to create a snapshot of the output. This effectively tests the correctness of our transformation.
 
+### Integration Testing
+
+All the `webpack` fixtures from the wild can be dropped into `lib/transformations/__testfixtures__`.
+Jest will pick these up and snapshot them. The snaps can be verified for proper transformation of the configuration.
+
 ### TODO
 
 This is still in a very raw form. We'd like to take this as close to a truly useful tool as possible.
