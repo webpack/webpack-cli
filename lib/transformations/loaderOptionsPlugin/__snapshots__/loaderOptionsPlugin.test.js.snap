@@ -37,3 +37,24 @@ module.exports = {
 }
 "
 `;
+
+exports[`loaderOptionsPlugin transforms correctly using "loaderOptionsPlugin-3" data 1`] = `
+"// Don't modify LoaderOptionsPlugin
+
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+module.exports = {
+    entry: ['./index.js'],
+    output: {
+        filename: 'bundle.js'
+    },
+    module: {
+		rules: [{
+			test: /\\\\.css$/,
+			use: ExtractTextPlugin.extract([
+				'css-loader'
+			])
+		}]
+	},
+}
+"
+`;
