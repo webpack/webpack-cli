@@ -1,7 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`outputPath transforms correctly using "outputPath-0" data 1`] = `
-"module.exports = {
+"const path = require('path');
+module.exports = {
 	output: {
 		path: path.join(__dirname, 'dist')
 	}
