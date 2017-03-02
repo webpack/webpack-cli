@@ -6,7 +6,7 @@ Object {
   "loc": null,
   "regex": null,
   "type": "Literal",
-  "value": "strintLiteral",
+  "value": "stringLiteral",
 }
 `;
 
@@ -70,4 +70,48 @@ exports[`utils createProperty should create properties for non-literal keys 1`] 
 "{
     1: \\"bar\\"
 }"
+`;
+
+exports[`utils getRequire should create a require statement 1`] = `
+Object {
+  "comments": null,
+  "declarations": Array [
+    Object {
+      "comments": null,
+      "id": Object {
+        "comments": null,
+        "loc": null,
+        "name": "filesys",
+        "type": "Identifier",
+        "typeAnnotation": null,
+      },
+      "init": Object {
+        "arguments": Array [
+          Object {
+            "comments": null,
+            "loc": null,
+            "regex": null,
+            "type": "Literal",
+            "value": "fs",
+          },
+        ],
+        "callee": Object {
+          "comments": null,
+          "loc": null,
+          "name": "require",
+          "type": "Identifier",
+          "typeAnnotation": null,
+        },
+        "comments": null,
+        "loc": null,
+        "type": "CallExpression",
+      },
+      "loc": null,
+      "type": "VariableDeclarator",
+    },
+  ],
+  "kind": "const",
+  "loc": null,
+  "type": "VariableDeclaration",
+}
 `;
