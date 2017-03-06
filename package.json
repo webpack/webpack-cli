@@ -44,6 +44,7 @@
     "supports-color": "^3.1.2",
     "webpack": "^2.2.0-rc.0",
     "webpack-addons-ylvis": "0.0.27",
+    "webpack-chain": "^1.4.3",
     "yargs": "^6.5.0"
   },
   "devDependencies": {
