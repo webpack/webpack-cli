@@ -1,24 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`utils createLiteral should create basic literal 1`] = `
-Object {
-  "comments": null,
-  "loc": null,
-  "regex": null,
-  "type": "Literal",
-  "value": "strintLiteral",
-}
-`;
+exports[`utils createLiteral should create basic literal 1`] = `"\\"stringLiteral\\""`;
 
-exports[`utils createLiteral should create boolean 1`] = `
-Object {
-  "comments": null,
-  "loc": null,
-  "regex": null,
-  "type": "Literal",
-  "value": true,
-}
-`;
+exports[`utils createLiteral should create boolean 1`] = `"true"`;
 
 exports[`utils createOrUpdatePluginByName should add an object as an argument 1`] = `
 "[new Plugin({
@@ -71,3 +55,5 @@ exports[`utils createProperty should create properties for non-literal keys 1`] 
     1: \\"bar\\"
 }"
 `;
+
+exports[`utils getRequire should create a require statement 1`] = `"const filesys = require(\\"fs\\");"`;
