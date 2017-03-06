@@ -166,9 +166,11 @@ if(argv.init) {
 	if (!filePaths.length) {
 		throw new Error('Please specify a path to your webpack config');
 	}
+	const outputConfigName = filePaths[1] || `${filePaths[0]}v2.js`;
 	const inputConfigPath = path.resolve(process.cwd(), filePaths[0]);
+	const outputConfigPath = path.resolve(process.cwd(), outputConfigName);
 
-	require('../lib/migrate.js')(inputConfigPath, inputConfigPath);
+	require('../lib/migrate.js')(inputConfigPath, outputConfigPath);
 } else {
 	processOptions(yargs,argv);
 }
