@@ -37,7 +37,6 @@ var yargs = require('yargs')
 
 require('./config-yargs')(yargs);
 
-
 var DISPLAY_GROUP = 'Stats options:';
 var BASIC_GROUP = 'Basic options:';
 
@@ -140,12 +139,30 @@ yargs.options({
 		type: 'boolean',
 		group: DISPLAY_GROUP,
 		describe: 'Show more details'
+	},
+	'stats': {
+		type: 'string',
+		describe: 'Display information using a preset(Accepted presets: none, errors-only, minimal, normal, verbose)',
+		group: DISPLAY_GROUP
 	}
 });
 
 var argv = yargs.argv;
 
-if(argv.verbose) {
+if (argv.stats) {
+	for (let key in argv) {
+		const value = argv[key];
+
+		if ((key.indexOf('display-') == 0 ||
+         key.match(/hide-modules/)    ||
+         key.match(/verbose/)
+        ) && value ) {
+			throw new Error(`Please omit ${ key } if you are using stats`);
+		}
+	}
+}
+
+if(argv.verbose && !argv.stats) {
 	argv['display-reasons'] = true;
 	argv['display-entrypoints'] = true;
 	argv['display-used-exports'] = true;
