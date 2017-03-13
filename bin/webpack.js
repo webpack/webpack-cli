@@ -142,8 +142,9 @@ yargs.options({
 	},
 	'stats': {
 		type: 'string',
-		describe: 'Display information using a preset(Accepted presets: none, errors-only, minimal, normal, verbose)',
-		group: DISPLAY_GROUP
+		group: DISPLAY_GROUP,
+		describe: 'Display with a preset (Accepted presets: ' + '\n' +
+		'none, errors-only, minimal, normal, verbose)'
 	}
 });
 
