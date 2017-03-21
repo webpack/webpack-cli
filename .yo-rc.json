@@ -1,5 +1,5 @@
 {
-  "webpack": {
+  "webpack-addons-ylvis": {
     "inquirer": [
       {
         "type": "input",
@@ -10,29 +10,17 @@
         "type": "input",
         "name": "output",
         "message": "What is the name of the output directory in your application?"
-      }
-    ],
-    "config": {
-      "entry": " ",
-      "output": " "
-    }
-  },
-  "webpack-cli": {
-    "inquirer": [
-      {
-        "type": "input",
-        "name": "entry",
-        "message": "What is the name of the entry point in your application?"
       },
       {
         "type": "input",
-        "name": "output",
-        "message": "What is the name of the output directory in your application?"
+        "name": "resolve",
+        "message": "This is resolve peeps"
       }
     ],
     "config": {
       "entry": " ",
-      "output": " "
+      "output": " ",
+      "resolve": " "
     },
     "childDependencies": [
       "webpack-addons-preact"
