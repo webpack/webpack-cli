@@ -30,3 +30,15 @@ export default (config) => {
 }
 "
 `;
+
+exports[`removeDeprecatedPlugins transforms correctly using "removeDeprecatedPlugins-4" data 1`] = `
+"// This should throw
+const inst = new webpack.optimize.OccurrenceOrderPlugin()
+export default (config) => {
+    config.plugins = [
+        inst
+    ]
+    return config
+}
+"
+`;
