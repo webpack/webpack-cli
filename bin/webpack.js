@@ -7,6 +7,9 @@
 var path = require('path');
 // var fs = require('fs');
 // Local version replace global one
+
+process.title = 'webpack';
+
 try {
 	var localWebpack = require.resolve(path.join(process.cwd(), 'node_modules', 'webpack-cli', 'bin', 'webpack.js'));
 	if(localWebpack && path.relative(localWebpack, __filename) !== '') {

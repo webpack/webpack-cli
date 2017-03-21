@@ -1,0 +1,41 @@
+{
+  "webpack": {
+    "inquirer": [
+      {
+        "type": "input",
+        "name": "entry",
+        "message": "What is the name of the entry point in your application?"
+      },
+      {
+        "type": "input",
+        "name": "output",
+        "message": "What is the name of the output directory in your application?"
+      }
+    ],
+    "config": {
+      "entry": " ",
+      "output": " "
+    }
+  },
+  "webpack-cli": {
+    "inquirer": [
+      {
+        "type": "input",
+        "name": "entry",
+        "message": "What is the name of the entry point in your application?"
+      },
+      {
+        "type": "input",
+        "name": "output",
+        "message": "What is the name of the output directory in your application?"
+      }
+    ],
+    "config": {
+      "entry": " ",
+      "output": " "
+    },
+    "childDependencies": [
+      "webpack-addons-preact"
+    ]
+  }
+}

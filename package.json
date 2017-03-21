@@ -43,8 +43,11 @@
     "rx": "^4.1.0",
     "supports-color": "^3.1.2",
     "webpack": "^2.2.0-rc.0",
+    "webpack-addons": "0.0.20",
     "webpack-addons-ylvis": "0.0.27",
-    "yargs": "^6.5.0"
+    "yargs": "^6.5.0",
+    "yeoman-environment": "^1.6.6",
+    "yeoman-generator": "^1.1.1"
   },
   "devDependencies": {
     "ajv": "^4.11.3",
