@@ -40,7 +40,6 @@ var yargs = require('yargs')
 
 require('./config-yargs')(yargs);
 
-
 var DISPLAY_GROUP = 'Stats options:';
 var BASIC_GROUP = 'Basic options:';
 
@@ -159,19 +158,15 @@ if(argv.verbose) {
 	argv['display-cached-assets'] = true;
 }
 
-var processOptions = require('./process-options');
-var initInquirer = require('../lib/initialize');
-
 if(argv.init) {
-	initInquirer(argv._);
+	require('../lib/initialize')(argv._);
 } else if(argv.migrate) {
 	const filePaths = argv._;
 	if (!filePaths.length) {
 		throw new Error('Please specify a path to your webpack config');
 	}
 	const inputConfigPath = path.resolve(process.cwd(), filePaths[0]);
-
 	require('../lib/migrate.js')(inputConfigPath, inputConfigPath);
 } else {
-	processOptions(yargs,argv);
+	require('./process-options')(yargs,argv);
 }

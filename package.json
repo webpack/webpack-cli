@@ -25,6 +25,7 @@
     "test": "jest --coverage"
   },
   "dependencies": {
+    "babel-code-frame": "^6.22.0",
     "babel-core": "^6.21.0",
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-stage-3": "^6.17.0",
@@ -37,8 +38,11 @@
     "inquirer": "^2.0.0",
     "interpret": "^1.0.1",
     "jscodeshift": "^0.3.30",
+    "listr": "^0.11.0",
     "loader-utils": "^0.2.16",
     "lodash": "^4.17.4",
+    "p-each-series": "^1.0.0",
+    "p-lazy": "^1.0.0",
     "recast": "git://github.com/kalcifer/recast.git#bug/allowbreak",
     "rx": "^4.1.0",
     "supports-color": "^3.1.2",
