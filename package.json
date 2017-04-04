@@ -51,7 +51,7 @@
     "webpack-addons-ylvis": "0.0.32",
     "yargs": "^6.5.0",
     "yeoman-environment": "^1.6.6",
-    "yeoman-generator": "^1.1.1"
+    "yeoman-generator": "git://github.com/ev1stensberg/generator.git#Feature-getArgument"
   },
   "devDependencies": {
     "ajv": "^4.11.3",
