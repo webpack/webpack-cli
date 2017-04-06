@@ -1,3 +1,5 @@
+"use strict";
+
 module.exports = function processOptions(yargs, argv) {
 	// process Promise
 	function ifArg(name, fn, init) {

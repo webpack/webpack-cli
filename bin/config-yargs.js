@@ -1,3 +1,5 @@
+"use strict";
+
 var CONFIG_GROUP = "Config options:";
 var BASIC_GROUP = "Basic options:";
 var MODULE_GROUP = "Module options:";
