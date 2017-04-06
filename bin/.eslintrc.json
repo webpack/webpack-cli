@@ -1,0 +1,5 @@
+{
+  "rules": {
+    "node/no-missing-require": 0
+  }
+}
