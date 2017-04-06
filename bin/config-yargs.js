@@ -17,7 +17,7 @@ module.exports = function(yargs) {
 			'init': {
 				type: 'boolean',
 				describe: 'Initializes a new webpack configuration or loads a' + '\n' +
-				'plugin if specified',
+					'plugin if specified',
 				group: INIT_GROUP
 			},
 			'migrate': {

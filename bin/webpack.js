@@ -162,11 +162,11 @@ if(argv.init) {
 	require('../lib/initialize')(argv._);
 } else if(argv.migrate) {
 	const filePaths = argv._;
-	if (!filePaths.length) {
+	if(!filePaths.length) {
 		throw new Error('Please specify a path to your webpack config');
 	}
 	const inputConfigPath = path.resolve(process.cwd(), filePaths[0]);
 	require('../lib/migrate.js')(inputConfigPath, inputConfigPath);
 } else {
-	require('./process-options')(yargs,argv);
+	require('./process-options')(yargs, argv);
 }
