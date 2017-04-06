@@ -1,5 +1,5 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 function getPath(part) {
 	return path.join(process.cwd(), part);
@@ -11,7 +11,7 @@ function validateOptions(opts) {
 		try {
 			fs.readFileSync(part);
 		} catch(err) {
-			throw new Error('Did not find the file');
+			throw new Error("Did not find the file");
 		}
 	});
 }
