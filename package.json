@@ -21,7 +21,7 @@
     "lint": "npm run lint:style && npm run lint:js",
     "lint:staged": "lint-staged",
     "install-commit-validator": "fit-commit-js install",
-    "pretest": "npm run lint",
+    "pretest": "npm run lint:js",
     "test": "jest --coverage"
   },
   "lint-staged": {
