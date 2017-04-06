@@ -17,7 +17,7 @@
   },
   "scripts": {
     "lint:js": "eslint \"**/*.js\"",
-    "lint:style": "beautify-lint \"{lib,bin,__mocks__}/**/!(__testfixtures__)/**.js\"",
+    "lint:style": "beautify-lint \"{lib,bin,__mocks__}/**/!(__testfixtures__)/*.js\" \"{lib,bin,__mocks__}/**.js\"",
     "lint": "npm run lint:style && npm run lint:js",
     "lint:staged": "lint-staged",
     "install-commit-validator": "fit-commit-js install",
