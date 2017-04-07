@@ -16,14 +16,22 @@
     "node": ">=4.0.0"
   },
   "scripts": {
-    "lint:bin": "eslint ./bin",
-    "lint:lib": "eslint ./lib",
-    "lint:test": "eslint ./__mocks__",
+    "lint:js": "eslint \"**/*.js\"",
+    "lint:style": "beautify-lint \"{lib,bin,__mocks__}/**/!(__testfixtures__)/*.js\" \"{lib,bin,__mocks__}/**.js\"",
+    "lint": "npm run lint:style && npm run lint:js",
     "lint:staged": "lint-staged",
-    "lint": "npm run lint:bin && npm run lint:lib && npm run lint:test",
     "install-commit-validator": "fit-commit-js install",
+    "pretest": "npm run lint:js",
     "test": "jest --coverage"
   },
+  "lint-staged": {
+    "{lib,bin,__mocks__}/**/!(__testfixtures__)/**.js": [
+      "beautify-rewrite",
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "pre-commit": "lint:staged",
   "dependencies": {
     "babel-code-frame": "^6.22.0",
     "babel-core": "^6.21.0",
@@ -60,17 +68,11 @@
     "babel-eslint": "^6.1.2",
     "babel-jest": "^19.0.0",
     "babel-polyfill": "^6.20.0",
+    "beautify-lint": "^1.0.4",
     "eslint": "^3.12.2",
     "eslint-plugin-node": "^3.0.5",
     "jest": "^19.0.2",
     "lint-staged": "^3.2.8",
     "pre-commit": "^1.2.2"
-  },
-  "lint-staged": {
-    "*.js": [
-      "eslint --fix",
-      "git add"
-    ]
-  },
-  "pre-commit": "lint:staged"
+  }
 }

@@ -1,55 +1,59 @@
 {
-  "parserOptions": {
-    "ecmaVersion": 6,
-    "sourceType": "module"
-  },
-  "parser": "babel-eslint",
+  "root": true,
   "env": {
     "node": true,
-    "commonjs": true,
     "es6": true,
     "jest": true
   },
-  "extends": "eslint:recommended",
+  "extends": [
+    "eslint:recommended",
+    "plugin:node/recommended"
+  ],
   "plugins": [
     "node"
   ],
   "rules": {
-    "indent": [
-      "error",
-      "tab"
-    ],
-    "linebreak-style": [
-      "error",
-      "unix"
-    ],
-    "quotes": [
-      "error",
-      "single"
-    ],
-    "semi": [
-      "error",
-      "always"
-    ],
-    "no-unused-vars": 1,
-    "no-console": 0,
-    "node/exports-style": [
-      "error",
-      "module.exports"
-    ],
-    "node/no-unsupported-features": "error",
-    "node/no-deprecated-api": "error",
-    "node/no-missing-import": "error",
-    "node/no-missing-require": [
-      "error",
-      {
-        "allowModules": [
-          "webpack"
-        ]
+    "quotes": ["error", "double"],
+    "no-undef": "error",
+    "no-extra-semi": "error",
+    "semi": "error",
+    "no-template-curly-in-string": "error",
+    "no-caller": "error",
+    "yoda": "error",
+    "eqeqeq": "error",
+    "global-require": "off",
+    "brace-style": "error",
+    "eol-last": "error",
+    "indent": ["error", "tab", { "SwitchCase": 1 }],
+    "no-extra-bind": "warn",
+    "no-empty": "off",
+    "no-multiple-empty-lines": "error",
+    "no-multi-spaces": "error",
+    "no-process-exit": "warn",
+    "space-in-parens": "error",
+    "no-trailing-spaces": "error",
+    "no-use-before-define": "off",
+    "no-unused-vars": ["error", {"args": "none"}],
+    "key-spacing": "error",
+    "space-infix-ops": "error",
+    "no-unsafe-negation": "error",
+    "no-loop-func": "warn",
+    "space-before-function-paren": ["error", "never"],
+    "space-before-blocks": "error",
+    "object-curly-spacing": ["error", "always"],
+    "keyword-spacing": ["error", {
+      "after": false,
+      "overrides": {
+        "try": {"after": true},
+        "else": {"after": true},
+        "throw": {"after": true},
+        "case": {"after": true},
+        "return": {"after": true},
+        "finally": {"after": true},
+        "do": {"after": true}
       }
-    ],
-    "node/no-unpublished-bin": "error",
-    "node/no-unpublished-require": "error",
-    "node/process-exit-as-throw": "error"
+    }],
+    "no-console": "off",
+    "valid-jsdoc": "error"
   }
 }
