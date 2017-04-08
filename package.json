@@ -44,7 +44,6 @@
     "p-each-series": "^1.0.0",
     "p-lazy": "^1.0.0",
     "recast": "git://github.com/kalcifer/recast.git#bug/allowbreak",
-    "rx": "^4.1.0",
     "supports-color": "^3.1.2",
     "webpack": "^2.2.0-rc.0",
     "webpack-addons": "0.0.20",
