@@ -15,9 +15,6 @@ This project intends to be the main cli package of webpack. Here we will encapsu
 
 **Note** The package is still in work in progress. In case you want to contribute, reach to us, so we can point you out how and when you can help us.
 
+# Table of Content
 
-# Roadmap to the first release
-
-- Migrate to webpack-cli all the current cli options available in webpack
-- Create a `webpack-cli init` command that serves to set a configuration of webpack to the user
-- create a `webpack-cli migrate` command that serves to migrate an existing configuration from webpack 1 to webpack 2.
+1. [Introduction](#introduction)
