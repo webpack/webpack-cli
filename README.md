@@ -21,7 +21,7 @@ The `migrate` feature aims to ease the transition version 1, to version 2 of web
 
 `webpack --migrate <config>`
 
-[Read more about migrating]()
+[Read more about migrating](MIGRATE.md)
 
 ## Creating new webpack projects
 
@@ -29,4 +29,4 @@ The `init` feature allows users to get started with webpack, fast. Through scaff
 
 `webpack --init [webpack-addons-<package>]`
 
-[Read more about scaffolding]()
+[Read more about scaffolding](SCAFFOLDING.md)
