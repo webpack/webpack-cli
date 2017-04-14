@@ -14,4 +14,6 @@ To build a great scaffold, you got to know the API. As we are running the scaffo
 
 To create an addon, you create a [`yeoman-generator`](http://yeoman.io/authoring/). In the generator, you can create all the properties webpack has, as well as custom logic on top.
 
-[How do I compose a webpack-addon?]()
+Before going forward, please read [How do I compose a webpack-addon?]()
+
+## webpack-addons
