@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`entry transforms correctly using "entry-0" data 1`] = `
+"module.exports = {
+  entry: 'index.js'
+}
+"
+`;
