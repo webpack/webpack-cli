@@ -2,10 +2,12 @@
 
 exports[`externals transforms correctly using "externals-0" data 1`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    externals: /react/
 }
 "
 `;
