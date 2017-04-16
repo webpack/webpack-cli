@@ -6,3 +6,10 @@ exports[`entry transforms correctly using "entry-0" data 1`] = `
 }
 "
 `;
+
+exports[`entry transforms correctly using "entry-0" data 2`] = `
+"module.exports = {
+  entry: index.js,app.js
+}
+"
+`;
