@@ -13,3 +13,13 @@ exports[`entry transforms correctly using "entry-0" data 2`] = `
 }
 "
 `;
+
+exports[`entry transforms correctly using "entry-0" data 3`] = `
+"module.exports = {
+  'entry': {
+    'index': 'index.js',
+    'app': 'app.js'
+  }
+}
+"
+`;
