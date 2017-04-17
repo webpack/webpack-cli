@@ -1,5 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`utils createIdentifierOrLiteral should create basic literal 1`] = `"'stringLiteral'"`;
+
+exports[`utils createIdentifierOrLiteral should create boolean 1`] = `"true"`;
+
 exports[`utils createLiteral should create basic literal 1`] = `"\\"stringLiteral\\""`;
 
 exports[`utils createLiteral should create boolean 1`] = `"true"`;

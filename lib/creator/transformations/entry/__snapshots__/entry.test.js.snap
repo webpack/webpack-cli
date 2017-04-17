@@ -2,23 +2,23 @@
 
 exports[`entry transforms correctly using "entry-0" data 1`] = `
 "module.exports = {
-  'entry': 'index.js'
+  entry: 'index.js'
 }
 "
 `;
 
 exports[`entry transforms correctly using "entry-0" data 2`] = `
 "module.exports = {
-  'entry': ['index.js', 'app.js']
+  entry: ['index.js', 'app.js']
 }
 "
 `;
 
 exports[`entry transforms correctly using "entry-0" data 3`] = `
 "module.exports = {
-  'entry': {
-    'index': 'index.js',
-    'app': 'app.js'
+  entry: {
+    index: 'index.js',
+    app: 'app.js'
   }
 }
 "
