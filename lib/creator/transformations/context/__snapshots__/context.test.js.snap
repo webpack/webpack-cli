@@ -18,7 +18,18 @@ exports[`context transforms correctly using "context-1" data 1`] = `
 	output: {
 		filename: 'bundle.js'
 	},
-	context: path.resolve(__dirname, \\"app\\")
+	context: './some/fake/path'
+}
+"
+`;
+
+exports[`context transforms correctly using "context-2" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	},
+	context: contextVariable
 }
 "
 `;

@@ -37,3 +37,10 @@ exports[`entry transforms correctly using "entry-0" data 5`] = `
 }
 "
 `;
+
+exports[`entry transforms correctly using "entry-0" data 6`] = `
+"module.exports = {
+  entry: entryStringVariable
+}
+"
+`;
