@@ -1,24 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`target transforms correctly using "target-0" data 1`] = `
+exports[`devtool transforms correctly using "devtools-0" data 1`] = `
 "module.exports = {
     entry: 'index.js',
     output: {
 		filename: 'bundle.js'
 	},
 
-    target: async-node
+    devtools: 'source-map'
 }
 "
 `;
 
-exports[`target transforms correctly using "target-1" data 1`] = `
+exports[`devtool transforms correctly using "devtools-1" data 1`] = `
 "module.exports = {
 	entry: 'index.js',
 	output: {
 		filename: 'bundle.js'
 	},
-	target: async-node
+	devtools: 'source-map'
 }
 "
 `;

@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`amd transforms correctly using "others-0" data 1`] = `
+"module.exports = {
+    entry: 'index.js',
+    output: {
+		filename: 'bundle.js'
+	},
+
+    amd: {
+        jQuery: true,
+        kQuery: false
+    }
+}
+"
+`;
+
+exports[`bail transforms correctly using "others-0" data 1`] = `
+"module.exports = {
+    entry: 'index.js',
+    output: {
+		filename: 'bundle.js'
+	},
+
+    bail: true
+}
+"
+`;
+
+exports[`cache transforms correctly using "others-0" data 1`] = `
+"module.exports = {
+    entry: 'index.js',
+    output: {
+		filename: 'bundle.js'
+	},
+
+    cache: true
+}
+"
+`;
+
+exports[`profile transforms correctly using "others-0" data 1`] = `
+"module.exports = {
+    entry: 'index.js',
+    output: {
+		filename: 'bundle.js'
+	},
+
+    profile: true
+}
+"
+`;
