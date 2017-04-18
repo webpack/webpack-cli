@@ -120,3 +120,18 @@ exports[`externals transforms correctly using "externals-1" data 7`] = `
 }
 "
 `;
+
+exports[`externals transforms correctly using "externals-1" data 8`] = `
+"module.exports = {
+    entry: 'index.js',
+    output: {
+		filename: 'bundle.js'
+	},
+
+    externals: [
+        myObj,
+        function(context, request, callback) {if (/^yourregex$/.test(request)){return callback(null, 'commonjs ' + request);}callback();}
+    ]
+}
+"
+`;
