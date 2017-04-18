@@ -1,5 +1,22 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`utils checkIfExistsAndAddValue should create new prop if none exist 1`] = `
+"
+			module.exports = {
+                entry: 'index.js',
+                externals: \\"React\\"
+            }
+			"
+`;
+
+exports[`utils checkIfExistsAndAddValue should override prop if it exists 1`] = `
+"
+			module.exports = {
+				entry: \\"app.js\\"
+			}
+			"
+`;
+
 exports[`utils createIdentifierOrLiteral should create basic literal 1`] = `"'stringLiteral'"`;
 
 exports[`utils createIdentifierOrLiteral should create boolean 1`] = `"true"`;
