@@ -12,28 +12,38 @@ exports[`devtool transforms correctly using "devtools-0" data 1`] = `
 "
 `;
 
-exports[`devtool transforms correctly using "devtools-1" data 1`] = `
+exports[`devtool transforms correctly using "devtools-0" data 2`] = `
 "module.exports = {
     entry: 'index.js',
     output: {
 		filename: 'bundle.js'
 	},
 
-    devtools: 'eval',
     devtool: 'cheap-module-source-map'
 }
 "
 `;
 
-exports[`devtool transforms correctly using "devtools-2" data 1`] = `
+exports[`devtool transforms correctly using "devtools-0" data 3`] = `
 "module.exports = {
     entry: 'index.js',
     output: {
 		filename: 'bundle.js'
 	},
 
-    devtools: {},
     devtool: myVariable
+}
+"
+`;
+
+exports[`devtool transforms correctly using "devtools-0" data 4`] = `
+"module.exports = {
+    entry: 'index.js',
+    output: {
+		filename: 'bundle.js'
+	},
+
+    devtool: false
 }
 "
 `;
