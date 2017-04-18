@@ -14,13 +14,11 @@ exports[`target transforms correctly using "target-0" data 1`] = `
 
 exports[`target transforms correctly using "target-1" data 1`] = `
 "module.exports = {
-    entry: 'index.js',
-    output: {
+	entry: 'index.js',
+	output: {
 		filename: 'bundle.js'
 	},
-
-    target: 'node',
-    target: async-node
+	target: async-node
 }
 "
 `;
