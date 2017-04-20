@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`top-scope transforms correctly using "top-scope-0" data 1`] = `
+"var test = 'me';
+module.exports = {}
+"
+`;
