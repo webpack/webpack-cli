@@ -36,7 +36,8 @@ exports[`module transforms correctly using "module-0" data 1`] = `
             loader: 'url-loader',
             options: {
                 limit: 10000,
-                name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
+                name: utils.assetsPath('fonts/[name].[hash:7].[ext]'),
+                someArr: [Hey]
             }
         }]
     }
