@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`amd transforms correctly using "others-0" data 1`] = `
+exports[`amd transforms correctly using "other-0" data 1`] = `
 "module.exports = {
     entry: 'index.js',
     output: {
@@ -15,7 +15,7 @@ exports[`amd transforms correctly using "others-0" data 1`] = `
 "
 `;
 
-exports[`bail transforms correctly using "others-0" data 1`] = `
+exports[`bail transforms correctly using "other-0" data 1`] = `
 "module.exports = {
     entry: 'index.js',
     output: {
@@ -27,7 +27,7 @@ exports[`bail transforms correctly using "others-0" data 1`] = `
 "
 `;
 
-exports[`cache transforms correctly using "others-0" data 1`] = `
+exports[`cache transforms correctly using "other-0" data 1`] = `
 "module.exports = {
     entry: 'index.js',
     output: {
@@ -39,7 +39,7 @@ exports[`cache transforms correctly using "others-0" data 1`] = `
 "
 `;
 
-exports[`cache transforms correctly using "others-0" data 2`] = `
+exports[`cache transforms correctly using "other-0" data 2`] = `
 "module.exports = {
     entry: 'index.js',
     output: {
@@ -51,7 +51,7 @@ exports[`cache transforms correctly using "others-0" data 2`] = `
 "
 `;
 
-exports[`profile transforms correctly using "others-0" data 1`] = `
+exports[`profile transforms correctly using "other-0" data 1`] = `
 "module.exports = {
     entry: 'index.js',
     output: {
