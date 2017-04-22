@@ -39,6 +39,18 @@ exports[`cache transforms correctly using "others-0" data 1`] = `
 "
 `;
 
+exports[`cache transforms correctly using "others-0" data 2`] = `
+"module.exports = {
+    entry: 'index.js',
+    output: {
+		filename: 'bundle.js'
+	},
+
+    cache: cacheVal
+}
+"
+`;
+
 exports[`profile transforms correctly using "others-0" data 1`] = `
 "module.exports = {
     entry: 'index.js',
