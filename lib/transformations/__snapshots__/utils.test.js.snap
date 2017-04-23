@@ -87,12 +87,6 @@ exports[`utils createProperty should create properties for non-literal keys 1`] 
 }"
 `;
 
-exports[`utils createSingularProperty should create an single property with no nested properties 1`] = `
-"module.exports = {
-  context: Heyho
-}"
-`;
-
 exports[`utils getRequire should create a require statement 1`] = `"const filesys = require(\\"fs\\");"`;
 
 exports[`utils isAssignment should allow custom transform functions instead of singularProperty 1`] = `
