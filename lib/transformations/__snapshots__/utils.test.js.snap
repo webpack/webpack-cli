@@ -101,10 +101,30 @@ exports[`utils isAssignment should invoke a callback if parent type is Assignmen
 }"
 `;
 
+exports[`utils loopThroughObjects Use recursion and add elements to an node 1`] = `
+"module.exports = {
+  hello: {
+    webpack: cli
+  }
+}"
+`;
+
 exports[`utils pushCreateProperty should create an object or property and push the value to a node 1`] = `
 "module.exports = {
 				pushMe: {
                     just: pushed
+                }
+			}"
+`;
+
+exports[`utils pushObjectKeys should push object to an node using Object.keys 1`] = `
+"module.exports = {
+				pushMe: {
+                    hello: {
+                        world: {
+                            its: 'great'
+                        }
+                    }
                 }
 			}"
 `;

@@ -26,19 +26,30 @@ exports[`entry transforms correctly using "entry-0" data 3`] = `
 
 exports[`entry transforms correctly using "entry-0" data 4`] = `
 "module.exports = {
-  entry: () => 'index.js'
+  entry: {
+    something,
+    app: 'app.js',
+    else
+  }
 }
 "
 `;
 
 exports[`entry transforms correctly using "entry-0" data 5`] = `
 "module.exports = {
-  entry: () => new Promise((resolve) => resolve(['./app', './router']))
+  entry: () => 'index.js'
 }
 "
 `;
 
 exports[`entry transforms correctly using "entry-0" data 6`] = `
+"module.exports = {
+  entry: () => new Promise((resolve) => resolve(['./app', './router']))
+}
+"
+`;
+
+exports[`entry transforms correctly using "entry-0" data 7`] = `
 "module.exports = {
   entry: entryStringVariable
 }
