@@ -23,9 +23,59 @@ To create an `addon`, you must create a [`yeoman-generator`](http://yeoman.io/au
 Objects are made using strings, while strings are made using double strings. This means that in order for you to create an string, you have to wrap it inside another string for us to validate it correctly.
 
 
-### `opts.env.configuration`
-### `opts.env.configuration.myObj`
-### `myObj.webpackOptions`
-### `merge`
-### `myObj.topScope`
-### `myObj.configName`
+### `opts.env.configuration`(Required)
+
+Initialized inside the constructor of your generator in order for the CLI to work.
+
+```js
+constructor(args, opts) {
+		super(args, opts);
+		opts.env.configuration = {};
+	}
+```
+### `opts.env.configuration.myObj` (required)
+
+`myObj` is your scaffold. This is where you will add options for the CLI to transform into a configuration. You can name it anything, and you can also add more objects, that could represent a `dev.config` or `prod.config`.
+
+```js
+constructor(args, opts) {
+		super(args, opts);
+		opts.env.configuration = {
+			dev: {},
+			prod: {}
+		};
+	}
+```
+
+### `myObj.webpackOptions` (required)
+
+As with a regular webpack configuration, this property behaves the same. Inside `webpackOptions` you can declare the properties you want to scaffold. You can for instance, scaffold `entry`, `output` and `context`.
+
+(Inside a yeoman method)
+```js
+this.options.env.configuration.dev.webpackOptions = {
+entry: '\'app.js\'',
+output: {....},
+merge: 'myConfig'
+};
+```
+If you want to use `webpack-merge`, you can supply `webpackOptions` with the merge property, and the configuration you want to merge it with. 
+
+### `myObj.topScope`(optional)
+
+The `topScope` property is a way for the authors to add special behaviours, like functions that could be called inside a configuration, or variable initializations and module imports. 
+
+```js
+this.options.env.configuration.dev.topScope = [
+'var webpack = require(\'webpack\');'
+'var path = require(\'path\');'
+];
+```
+
+### `myObj.configName`(optional)
+
+If you want to name your `webpack.config.js` something special, you can do that.
+
+```js
+this.options.env.configuration.dev.configName = 'base';
+```
