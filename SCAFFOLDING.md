@@ -6,7 +6,7 @@ Through yeoman, the `webpack --init` feature allows people to create scaffolds a
 
 ## Writing a good scaffold
 
-Before writing any code, you should analyze your purpose for the scaffold. Should it be generalistic? Should it be targeted for a library, such as [react](https://facebook.github.io/react/)? Furthermore, you should decide if you want to ask users for your scaffold such as **"What is your entry point?"**, or scaffold a boilerplate.
+Before writing any code, you should analyze your purpose for the scaffold. Should it be generalistic? Should it be targeted for a library, such as [react](https://facebook.github.io/react/)? Furthermore, you should decide if you want to make user interactions in your `addon`, or just scaffold an boilerplate with preconfigured settings.
 
 ## webpack-addons
 
@@ -14,15 +14,18 @@ Before writing any code, you should analyze your purpose for the scaffold. Shoul
 
 ## webpack-addons-yourpackage
 
-In order for `webpack-cli` to compile your package, it relies on a prefix of `webpack-addons`. The package must also be published on npm. If you are curious on how to create your very own `addon`, please read [How do I compose a webpack-addon?](https://github.com/ev1stensberg/webpack-addons-demo).
+In order for `webpack-cli` to compile your package, it relies on a prefix of `webpack-addons`. The package must also be published on npm. If you are curious about how you can create your very own `addon`, please read [How do I compose a webpack-addon?](https://github.com/ev1stensberg/webpack-addons-demo).
 
 ## API
 
-To build a great scaffold, you got to know the API. As we are running the scaffolding through yeoman, we support [their API](http://yeoman.io/learning/). To create an addon, you must create a [`yeoman-generator`](http://yeoman.io/authoring/). In the generator, you can create all the properties webpack has, as well as custom logic on top.
+To create an `addon`, you must create a [`yeoman-generator`](http://yeoman.io/authoring/). Because of that, you can optionally extend your generator to include methods from the [Yeoman API](http://yeoman.io/learning/). Its worth noting that we support all the properties of a regular webpack configuration. In order for us to do this, there's a thing you need to remember.
 
-- `opts.env.configuration`
-- `opts.env.configuration.myObj`
-- `myObj.webpackOptions`
- - `merge`
-- `myObj.topScope`
-- `myObj.configName`
+Objects are made using strings, while strings are made using double strings. This means that in order for you to create an string, you have to wrap it inside another string for us to validate it correctly.
+
+
+### `opts.env.configuration`
+### `opts.env.configuration.myObj`
+### `myObj.webpackOptions`
+### `merge`
+### `myObj.topScope`
+### `myObj.configName`
