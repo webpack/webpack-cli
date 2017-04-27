@@ -11,13 +11,13 @@
 
 # Webpack CLI
 
-This project intends to be the main cli package of webpack. Here we will encapsulate all the features and code related to the command line. From sending options to the compiler, to initialize and migrate from version to version. To avoid breaking changes and making people unhappy, we are keeping the old features. While we keep the old features, we've added some other, `init`and `migrate`. 
+Webpack CLI encapsulates all code related to CLI handling. It captures options and sends them to webpack compiler. You can also find functionality for initializing a project and migrating between versions. For the time being, it is backwards-compatible with the CLI included in webpack itself.
 
 **Note** The package is still in work in progress. In case you want to contribute, reach to us, so we can point you out how and when you can help us.
 
 ## Migration from webpack v1 to v2
 
-The `migrate` feature aims to ease the transition version 1, to version 2 of webpack. This feature will allow users to switch to the new version of webpack, without having to refactor themselves.
+The `migrate` feature eases the transition from version 1, to version 2 of webpack. This feature allows users to switch to the new version of webpack, without having to refactor themselves.
 
 `webpack --migrate <config>`
 
