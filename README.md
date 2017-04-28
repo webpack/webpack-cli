@@ -17,7 +17,7 @@ Webpack CLI encapsulates all code related to CLI handling. It captures options a
 
 ## Migration from webpack v1 to v2
 
-The `migrate` feature eases the transition from [version 1](http://webpack.github.io/docs/), to [version 2](https://gist.github.com/sokra/27b24881210b56bbaff7) and allows users to switch to the new version of webpack without having to extensively [refactor](https://webpack.js.org/guides/migrating/).
+The `migrate` feature eases the transition from [version 1](http://webpack.github.io/docs/) to [version 2](https://gist.github.com/sokra/27b24881210b56bbaff7). `migrate` also allows users to switch to the new version of webpack without having to extensively [refactor](https://webpack.js.org/guides/migrating/).
 
 `webpack --migrate <config>`
 
