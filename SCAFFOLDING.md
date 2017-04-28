@@ -1,12 +1,14 @@
 # Introduction
 
-Setting up webpack for the first time is hard. Writing advanced configurations like offline support for [PWA](https://developers.google.com/web/progressive-web-apps/)'s are even harder. The `init` feature is designed to support people that want to create their own configuration or initializing other projects people create.
+Setting up webpack for the first time is hard. Writing advanced configurations to optimize performance is even harder. The `init` feature is designed to support people that want to create their own configuration or initializing other projects people create.
 
-Through yeoman, the `webpack --init` feature allows people to create scaffolds and generate new projects quickly. An npm dependency that scaffolds a `webpack.config.js` through `webpack-cli` is what we refer to as an **addon**.
+Through [yeoman](http://yeoman.io/), the `webpack --init` feature allows people to create scaffolds and generate new projects quickly. An npm dependency that scaffolds a `webpack.config.js` through `webpack-cli` is what we refer to as an **addon**.
 
 ## Writing a good scaffold
 
-Before writing any code, you should analyze your purpose for the scaffold. Should it be generalistic? Should it be targeted for a library, such as [react](https://facebook.github.io/react/)? Furthermore, you should decide if you want to make user interactions in your `addon`, or just scaffold an boilerplate with preconfigured settings.
+Before writing a webpack-cli scaffold, think about what you're trying to achieve. Do you want a "general" scaffold that could be used by any project or type of app? Do you want something very focused - like a scaffold that writes both your webpack configuration file and your framework code? It's also useful to think about the user experience for your scaffold.
+
+`webpack-cli` offers an experience that is interactive and you can prompt users for questions (like, "What is your entry point?") to help customize the output accordingly.
 
 ## webpack-addons
 
