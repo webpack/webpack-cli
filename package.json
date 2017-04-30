@@ -44,6 +44,7 @@
     "lodash": "^4.17.4",
     "p-each-series": "^1.0.0",
     "p-lazy": "^1.0.0",
+    "prettier": "^1.2.2",
     "recast": "git://github.com/kalcifer/recast.git#bug/allowbreak",
     "supports-color": "^3.1.2",
     "webpack": "^2.2.0-rc.0",
