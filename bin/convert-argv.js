@@ -122,7 +122,7 @@ module.exports = function(yargs, argv, convertOptions) {
 	function processConfiguredOptions(options) {
 		if(options === null || typeof options !== 'object') {
 			console.error('Config did not export an object or a function returning an object.');
-			process.exit(-1);
+			process.exit(-1); // eslint-disable-line
 		}
 
 		// process Promise
@@ -224,16 +224,10 @@ module.exports = function(yargs, argv, convertOptions) {
 					options[optionName || name] = false;
 			});
 		}
-		//eslint-disable-next-line
-		function mapArgToPath(name, optionName) {
-			ifArg(name, function(str) {
-				options[optionName || name] = path.resolve(str);
-			});
-		}
 
 		function loadPlugin(name) {
 			var loadUtils = require('loader-utils');
-			var args = null;
+			var args;
 			try {
 				var p = name && name.indexOf('?');
 				if(p > -1) {
@@ -242,7 +236,7 @@ module.exports = function(yargs, argv, convertOptions) {
 				}
 			} catch(e) {
 				console.log('Invalid plugin arguments ' + name + ' (' + e + ').');
-				process.exit(-1);
+				process.exit(-1); // eslint-disable-line
 			}
 
 			var path;
@@ -251,7 +245,7 @@ module.exports = function(yargs, argv, convertOptions) {
 				path = resolve.sync(process.cwd(), name);
 			} catch(e) {
 				console.log('Cannot resolve plugin ' + name + '.');
-				process.exit(-1);
+				process.exit(-1); // eslint-disable-line
 			}
 			var Plugin;
 			try {
@@ -281,7 +275,11 @@ module.exports = function(yargs, argv, convertOptions) {
 		}
 
 		ifArgPair('entry', function(name, entry) {
-			options.entry[name] = entry;
+			if(typeof options.entry[name] !== 'undefined' && options.entry[name] !== null) {
+				options.entry[name] = [].concat(options.entry[name]).concat(entry);
+			} else {
+				options.entry[name] = entry;
+			}
 		}, function() {
 			ensureObject(options, 'entry');
 		});
@@ -322,7 +320,7 @@ module.exports = function(yargs, argv, convertOptions) {
 
 		ifArg('output-path', function(value) {
 			ensureObject(options, 'output');
-			options.output.path = value;
+			options.output.path = path.resolve(value);
 		});
 
 		ifArg('output-filename', function(value) {
@@ -454,7 +452,7 @@ module.exports = function(yargs, argv, convertOptions) {
 
 		ifArg('prefetch', function(request) {
 			ensureArray(options, 'plugins');
-			var PrefetchPlugin = require('webpack/PrefetchPlugin');
+			var PrefetchPlugin = require('webpack/lib/PrefetchPlugin');
 			options.plugins.push(new PrefetchPlugin(request));
 		});
 
@@ -468,14 +466,8 @@ module.exports = function(yargs, argv, convertOptions) {
 			} else {
 				name = value;
 			}
-			var ProvidePlugin = require('webpack/ProvidePlugin');
+			var ProvidePlugin = require('webpack/lib/ProvidePlugin');
 			options.plugins.push(new ProvidePlugin(name, value));
-		});
-
-		ifBooleanArg('labeled-modules', function() {
-			ensureArray(options, 'plugins');
-			var LabeledModulesPlugin = require('webpack/lib/dependencies/LabeledModulesPlugin');
-			options.plugins.push(new LabeledModulesPlugin());
 		});
 
 		ifArg('plugin', function(value) {
@@ -490,19 +482,20 @@ module.exports = function(yargs, argv, convertOptions) {
 		if(noOutputFilenameDefined) {
 			ensureObject(options, 'output');
 			if(convertOptions && convertOptions.outputFilename) {
-				options.output.path = path.dirname(convertOptions.outputFilename);
+				options.output.path = path.resolve(path.dirname(convertOptions.outputFilename));
 				options.output.filename = path.basename(convertOptions.outputFilename);
 			} else if(argv._.length > 0) {
 				options.output.filename = argv._.pop();
-				options.output.path = path.dirname(options.output.filename);
+				options.output.path = path.resolve(path.dirname(options.output.filename));
 				options.output.filename = path.basename(options.output.filename);
 			} else if(configFileLoaded) {
 				throw new Error('\'output.filename\' is required, either in config file or as --output-filename');
-			} else {
+			}
+			else {
 				console.error('No configuration file found and no output filename configured via CLI option.');
 				console.error('A configuration file could be named \'webpack.config.js\' in the current directory.');
 				console.error('Use --help to display the CLI options.');
-				process.exit(-1);
+				process.exit(-1); // eslint-disable-line
 			}
 		}
 
@@ -549,7 +542,7 @@ module.exports = function(yargs, argv, convertOptions) {
 				console.error('A configuration file could be named \'webpack.config.js\' in the current directory.');
 			}
 			console.error('Use --help to display the CLI options.');
-			process.exit(-1);
+			process.exit(-1); // eslint-disable-line
 		}
 	}
 };

@@ -5,40 +5,23 @@
 	Author Tobias Koppers @sokra
 */
 var path = require('path');
-// var fs = require('fs');
+
 // Local version replace global one
-
-process.title = 'webpack';
-
 try {
-	var localWebpack = require.resolve(path.join(process.cwd(), 'node_modules', 'webpack-cli', 'bin', 'webpack.js'));
-	if(localWebpack && path.relative(localWebpack, __filename) !== '') {
+	var localWebpack = require.resolve(path.join(process.cwd(), 'node_modules',
+	'webpack', 'node_modules', 'webpack-cli', 'bin', 'webpack.js'));
+	if(__filename !== localWebpack) {
 		return require(localWebpack);
-	}
-} catch(e) {
-	/*
-	// Delete Cache, Retry and leave it if the path isn`t valid.
-	// swap with webpack-cli later
-	var dirPath = path.join(process.cwd(), 'node_modules', 'webpack', 'bin');
-	var retryLocal;
-	fs.readdir(dirPath, function(err, files) {
-		files.filter( (file) => {
-			delete require.cache[file];
-		});
-
-		// TODO: If path is wrong, leave it to higher powers until we publish on npm
-		// Could also install and load and install through github
-		return require(path.join(dirPath, 'webpack.js'))
-	});
-	*/
-}
+	} //eslint-disable-next-line
+} catch(e) {}
 var yargs = require('yargs')
-	.usage('webpack-cli ' + require('../package.json').version + '\n' +
-		'Usage: https://webpack.github.io/docs/cli.html\n' +
+	.usage('webpack ' + require('../package.json').version + '\n' +
+		'Usage: https://webpack.js.org/api/cli/\n' +
 		'Usage without config file: webpack <entry> [<entry>] <output>\n' +
 		'Usage with config file: webpack');
 
 require('./config-yargs')(yargs);
+
 
 var DISPLAY_GROUP = 'Stats options:';
 var BASIC_GROUP = 'Basic options:';
@@ -93,6 +76,11 @@ yargs.options({
 		group: DISPLAY_GROUP,
 		describe: 'Display even excluded modules in the output'
 	},
+	'display-max-modules': {
+		type: 'number',
+		group: DISPLAY_GROUP,
+		describe: 'Sets the maximum number of visible modules in output'
+	},
 	'display-chunks': {
 		type: 'boolean',
 		group: DISPLAY_GROUP,
@@ -123,6 +111,11 @@ yargs.options({
 		group: DISPLAY_GROUP,
 		describe: 'Display reasons about module inclusion in the output'
 	},
+	'display-depth': {
+		type: 'boolean',
+		group: DISPLAY_GROUP,
+		describe: 'Display distance from entry point for each module'
+	},
 	'display-used-exports': {
 		type: 'boolean',
 		group: DISPLAY_GROUP,
@@ -149,6 +142,7 @@ var argv = yargs.argv;
 
 if(argv.verbose) {
 	argv['display-reasons'] = true;
+	argv['display-depth'] = true;
 	argv['display-entrypoints'] = true;
 	argv['display-used-exports'] = true;
 	argv['display-provided-exports'] = true;
@@ -157,16 +151,224 @@ if(argv.verbose) {
 	argv['display-cached'] = true;
 	argv['display-cached-assets'] = true;
 }
-
 if(argv.init) {
-	require('../lib/initialize')(argv._);
+	return require('../lib/initialize')(argv._);
 } else if(argv.migrate) {
 	const filePaths = argv._;
 	if (!filePaths.length) {
 		throw new Error('Please specify a path to your webpack config');
 	}
 	const inputConfigPath = path.resolve(process.cwd(), filePaths[0]);
-	require('../lib/migrate.js')(inputConfigPath, inputConfigPath);
+	return require('../lib/migrate.js')(inputConfigPath, inputConfigPath);
 } else {
-	require('./process-options')(yargs,argv);
+	var options = require('./convert-argv')(yargs, argv);
+	return processOptions(options);
+}
+
+function ifArg(name, fn, init) {
+	if(Array.isArray(argv[name])) {
+		if(init) init();
+		argv[name].forEach(fn);
+	} else if(typeof argv[name] !== 'undefined') {
+		if(init) init();
+		fn(argv[name], -1);
+	}
+}
+//eslint-disable-next-line
+function processOptions(options) {
+	// process Promise
+	if(typeof options.then === 'function') {
+		options.then(processOptions).catch(function(err) {
+			console.error(err.stack || err);
+			process.exit(1); // eslint-disable-line
+		});
+		return;
+	}
+
+	var firstOptions = [].concat(options)[0];
+	var statsPresetToOptions = require('webpack/lib/Stats.js').presetToOptions;
+
+	var outputOptions = options.stats;
+	if(typeof outputOptions === 'boolean' || typeof outputOptions === 'string') {
+		outputOptions = statsPresetToOptions(outputOptions);
+	} else if(!outputOptions) {
+		outputOptions = {};
+	}
+	outputOptions = Object.create(outputOptions);
+	if(Array.isArray(options) && !outputOptions.children) {
+		outputOptions.children = options.map(o => o.stats);
+	}
+	if(typeof outputOptions.context === 'undefined')
+		outputOptions.context = firstOptions.context;
+
+	ifArg('json', function(bool) {
+		if(bool)
+			outputOptions.json = bool;
+	});
+
+	if(typeof outputOptions.colors === 'undefined')
+		outputOptions.colors = require('supports-color');
+
+	ifArg('sort-modules-by', function(value) {
+		outputOptions.modulesSort = value;
+	});
+
+	ifArg('sort-chunks-by', function(value) {
+		outputOptions.chunksSort = value;
+	});
+
+	ifArg('sort-assets-by', function(value) {
+		outputOptions.assetsSort = value;
+	});
+
+	ifArg('display-exclude', function(value) {
+		outputOptions.exclude = value;
+	});
+
+	if(!outputOptions.json) {
+		if(typeof outputOptions.cached === 'undefined')
+			outputOptions.cached = false;
+		if(typeof outputOptions.cachedAssets === 'undefined')
+			outputOptions.cachedAssets = false;
+
+		ifArg('display-chunks', function(bool) {
+			outputOptions.modules = !bool;
+			outputOptions.chunks = bool;
+		});
+
+		ifArg('display-entrypoints', function(bool) {
+			outputOptions.entrypoints = bool;
+		});
+
+		ifArg('display-reasons', function(bool) {
+			outputOptions.reasons = bool;
+		});
+
+		ifArg('display-depth', function(bool) {
+			outputOptions.depth = bool;
+		});
+
+		ifArg('display-used-exports', function(bool) {
+			outputOptions.usedExports = bool;
+		});
+
+		ifArg('display-provided-exports', function(bool) {
+			outputOptions.providedExports = bool;
+		});
+
+		ifArg('display-error-details', function(bool) {
+			outputOptions.errorDetails = bool;
+		});
+
+		ifArg('display-origins', function(bool) {
+			outputOptions.chunkOrigins = bool;
+		});
+
+		ifArg('display-max-modules', function(value) {
+			outputOptions.maxModules = value;
+		});
+
+		ifArg('display-cached', function(bool) {
+			if(bool)
+				outputOptions.cached = true;
+		});
+
+		ifArg('display-cached-assets', function(bool) {
+			if(bool)
+				outputOptions.cachedAssets = true;
+		});
+
+		if(!outputOptions.exclude)
+			outputOptions.exclude = ['node_modules', 'bower_components', 'components'];
+
+		if(argv['display-modules']) {
+			outputOptions.maxModules = Infinity;
+			outputOptions.exclude = undefined;
+		}
+	} else {
+		if(typeof outputOptions.chunks === 'undefined')
+			outputOptions.chunks = true;
+		if(typeof outputOptions.entrypoints === 'undefined')
+			outputOptions.entrypoints = true;
+		if(typeof outputOptions.modules === 'undefined')
+			outputOptions.modules = true;
+		if(typeof outputOptions.chunkModules === 'undefined')
+			outputOptions.chunkModules = true;
+		if(typeof outputOptions.reasons === 'undefined')
+			outputOptions.reasons = true;
+		if(typeof outputOptions.cached === 'undefined')
+			outputOptions.cached = true;
+		if(typeof outputOptions.cachedAssets === 'undefined')
+			outputOptions.cachedAssets = true;
+	}
+
+	ifArg('hide-modules', function(bool) {
+		if(bool) {
+			outputOptions.modules = false;
+			outputOptions.chunkModules = false;
+		}
+	});
+
+	var webpack = require('webpack/lib/webpack.js');
+
+	Error.stackTraceLimit = 30;
+	var lastHash = null;
+	var compiler;
+	try {
+		compiler = webpack(options);
+	} catch(e) {
+		var WebpackOptionsValidationError = require('webpack/lib/WebpackOptionsValidationError');
+		if(e instanceof WebpackOptionsValidationError) {
+			if(argv.color)
+				console.error('\u001b[1m\u001b[31m' + e.message + '\u001b[39m\u001b[22m');
+			else
+				console.error(e.message);
+			process.exit(1); // eslint-disable-line no-process-exit
+		}
+		throw e;
+	}
+
+	if(argv.progress) {
+		var ProgressPlugin = require('webpack/lib/ProgressPlugin');
+		compiler.apply(new ProgressPlugin({
+			profile: argv.profile
+		}));
+	}
+
+	function compilerCallback(err, stats) {
+		if(!options.watch || err) {
+			// Do not keep cache anymore
+			compiler.purgeInputFileSystem();
+		}
+		if(err) {
+			lastHash = null;
+			console.error(err.stack || err);
+			if(err.details) console.error(err.details);
+			process.exit(1); // eslint-disable-line
+		}
+		if(outputOptions.json) {
+			process.stdout.write(JSON.stringify(stats.toJson(outputOptions), null, 2) + '\n');
+		} else if(stats.hash !== lastHash) {
+			lastHash = stats.hash;
+			process.stdout.write(stats.toString(outputOptions) + '\n');
+		}
+		if(!options.watch && stats.hasErrors()) {
+			process.on('exit', function() {
+				process.exit(2); // eslint-disable-line
+			});
+		}
+	}
+	if(firstOptions.watch || options.watch) {
+		var watchOptions = firstOptions.watchOptions || firstOptions.watch || options.watch || {};
+		if(watchOptions.stdin) {
+			process.stdin.on('end', function() {
+				process.exit(0); // eslint-disable-line
+			});
+			process.stdin.resume();
+		}
+		compiler.watch(watchOptions, compilerCallback);
+		console.log('\nWebpack is watching the files…\n');
+	} else
+		compiler.run(compilerCallback);
+
 }
