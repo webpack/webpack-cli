@@ -11,13 +11,22 @@
 
 # Webpack CLI
 
-This project intends to be the main cli package of webpack. Here we will encapsulate all the features and code related to the command line. From sending options to the compiler, to initialize and migrate from version to version.
+Webpack CLI encapsulates all code related to CLI handling. It captures options and sends them to webpack compiler. You can also find functionality for initializing a project and migrating between versions. For the time being, it is backwards-compatible with the CLI included in webpack itself.
 
 **Note** The package is still in work in progress. In case you want to contribute, reach to us, so we can point you out how and when you can help us.
 
+## Migration from webpack v1 to v2
 
-# Roadmap to the first release
+The `migrate` feature eases the transition from [version 1](http://webpack.github.io/docs/) to [version 2](https://gist.github.com/sokra/27b24881210b56bbaff7). `migrate` also allows users to switch to the new version of webpack without having to extensively [refactor](https://webpack.js.org/guides/migrating/).
 
-- Migrate to webpack-cli all the current cli options available in webpack
-- Create a `webpack-cli init` command that serves to set a configuration of webpack to the user
-- create a `webpack-cli migrate` command that serves to migrate an existing configuration from webpack 1 to webpack 2.
+`webpack --migrate <config>`
+
+[Read more about migrating](MIGRATE.md)
+
+## Creating new webpack projects
+
+The `init` feature allows users to get started with webpack, fast. Through scaffolding, people can create their own configuration in order to faster initialize new projects for various of use cases.
+
+`webpack --init [webpack-addons-<package>]`
+
+[Read more about scaffolding](SCAFFOLDING.md)
