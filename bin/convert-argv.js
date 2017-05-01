@@ -122,7 +122,7 @@ module.exports = function(yargs, argv, convertOptions) {
 	function processConfiguredOptions(options) {
 		if(options === null || typeof options !== 'object') {
 			console.error('Config did not export an object or a function returning an object.');
-			process.exit(-1); // eslint-disable-line
+			process.exitCode = -1;
 		}
 
 		// process Promise
@@ -236,7 +236,7 @@ module.exports = function(yargs, argv, convertOptions) {
 				}
 			} catch(e) {
 				console.log('Invalid plugin arguments ' + name + ' (' + e + ').');
-				process.exit(-1); // eslint-disable-line
+				process.exitCode = -1;
 			}
 
 			var path;
@@ -245,7 +245,7 @@ module.exports = function(yargs, argv, convertOptions) {
 				path = resolve.sync(process.cwd(), name);
 			} catch(e) {
 				console.log('Cannot resolve plugin ' + name + '.');
-				process.exit(-1); // eslint-disable-line
+				process.exitCode = -1;
 			}
 			var Plugin;
 			try {
@@ -495,7 +495,7 @@ module.exports = function(yargs, argv, convertOptions) {
 				console.error('No configuration file found and no output filename configured via CLI option.');
 				console.error('A configuration file could be named \'webpack.config.js\' in the current directory.');
 				console.error('Use --help to display the CLI options.');
-				process.exit(-1); // eslint-disable-line
+				process.exitCode = -1;
 			}
 		}
 
@@ -542,7 +542,7 @@ module.exports = function(yargs, argv, convertOptions) {
 				console.error('A configuration file could be named \'webpack.config.js\' in the current directory.');
 			}
 			console.error('Use --help to display the CLI options.');
-			process.exit(-1); // eslint-disable-line
+			process.exitCode = -1;
 		}
 	}
 };

@@ -17,7 +17,6 @@ var yargs = require('yargs')
 		'Usage: https://webpack.js.org/api/cli/\n' +
 		'Usage without config file: webpack <entry> [<entry>] <output>\n' +
 		'Usage with config file: webpack');
-
 require('./config-yargs')(yargs);
 
 
@@ -178,7 +177,7 @@ function processOptions(options) {
 	if(typeof options.then === 'function') {
 		options.then(processOptions).catch(function(err) {
 			console.error(err.stack || err);
-			process.exit(1); // eslint-disable-line
+			process.exitCode = -1;
 		});
 		return;
 	}
@@ -321,7 +320,7 @@ function processOptions(options) {
 				console.error('\u001b[1m\u001b[31m' + e.message + '\u001b[39m\u001b[22m');
 			else
 				console.error(e.message);
-			process.exit(1); // eslint-disable-line no-process-exit
+			process.exitCode = 1;
 		}
 		throw e;
 	}
@@ -342,7 +341,7 @@ function processOptions(options) {
 			lastHash = null;
 			console.error(err.stack || err);
 			if(err.details) console.error(err.details);
-			process.exit(1); // eslint-disable-line
+			process.exitCode = 1;
 		}
 		if(outputOptions.json) {
 			process.stdout.write(JSON.stringify(stats.toJson(outputOptions), null, 2) + '\n');
@@ -352,7 +351,7 @@ function processOptions(options) {
 		}
 		if(!options.watch && stats.hasErrors()) {
 			process.on('exit', function() {
-				process.exit(2); // eslint-disable-line
+				process.exitCode = 2;
 			});
 		}
 	}
@@ -360,7 +359,7 @@ function processOptions(options) {
 		var watchOptions = firstOptions.watchOptions || firstOptions.watch || options.watch || {};
 		if(watchOptions.stdin) {
 			process.stdin.on('end', function() {
-				process.exit(0); // eslint-disable-line
+				process.exitCode = 0;
 			});
 			process.stdin.resume();
 		}
