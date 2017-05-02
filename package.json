@@ -48,7 +48,7 @@
     "recast": "git://github.com/kalcifer/recast.git#bug/allowbreak",
     "supports-color": "^3.1.2",
     "webpack": "^2.2.0-rc.0",
-    "webpack-addons": "^1.0.5",
+    "webpack-addons": "^1.1.0",
     "yargs": "^6.5.0",
     "yeoman-environment": "^1.6.6",
     "yeoman-generator": "git://github.com/ev1stensberg/generator.git#Feature-getArgument"
