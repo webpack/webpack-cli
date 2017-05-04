@@ -1,4 +1,22 @@
-module.exports = function processOptions(yargs, argv) {
+var yargs = require('yargs');
+
+module.exports.command = ['start', '*'];
+module.exports.description = 'Run webpack process';
+module.exports.builder = require('./start/config-yargs');
+module.exports.handler = function processOptions(argv) {
+
+	// Vervose output
+	if(argv.verbose) {
+		argv['display-reasons'] = true;
+		argv['display-entrypoints'] = true;
+		argv['display-used-exports'] = true;
+		argv['display-provided-exports'] = true;
+		argv['display-error-details'] = true;
+		argv['display-modules'] = true;
+		argv['display-cached'] = true;
+		argv['display-cached-assets'] = true;
+	}
+
 	// process Promise
 	function ifArg(name, fn, init) {
 		if(Array.isArray(argv[name])) {
@@ -9,7 +27,7 @@ module.exports = function processOptions(yargs, argv) {
 			fn(argv[name], -1);
 		}
 	}
-	var options = require('./convert-argv')(yargs, argv);
+	var options = require('../lib/utils/convert-argv')(yargs, argv);
 
 	if(typeof options.then === 'function') {
 		options.then(processOptions).catch(function(err) {
