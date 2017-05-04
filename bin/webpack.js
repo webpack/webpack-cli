@@ -1,17 +1,24 @@
+#!/usr/bin/env node
 /*
 	MIT License http://www.opensource.org/licenses/mit-license.php
 	Author Tobias Koppers @sokra
 */
 var path = require('path');
+var resolveCwd = require('resolve-cwd');
 
-// Local version replace global one
-try {
-	var localWebpack = require.resolve(path.join(process.cwd(), 'node_modules',
-	'webpack', 'node_modules', 'webpack-cli', 'bin', 'webpack.js'));
-	if(__filename !== localWebpack) {
-		return require(localWebpack);
-	} //eslint-disable-next-line
-} catch(e) {}
+var localCLI = resolveCwd.silent('webpack-cli/bin/webpack');
+
+if (localCLI && path.relative(localCLI, __filename) !== '') {
+	require(localCLI);
+} else {
+	try {
+		require('./webpack');
+	} catch (err) {
+		console.error(`\n  ${err.message}`);
+		process.exitCode = 1;
+	}
+}
+
 var yargs = require('yargs')
 	.usage('webpack ' + require('../package.json').version + '\n' +
 		'Usage: https://webpack.js.org/api/cli/\n' +

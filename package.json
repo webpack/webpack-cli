@@ -46,6 +46,7 @@
     "p-lazy": "^1.0.0",
     "prettier": "^1.2.2",
     "recast": "git://github.com/kalcifer/recast.git#bug/allowbreak",
+    "resolve-cwd": "^2.0.0",
     "supports-color": "^3.1.2",
     "webpack": "^2.2.0-rc.0",
     "webpack-addons": "^1.1.0",
