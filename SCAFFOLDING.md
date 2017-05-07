@@ -2,7 +2,7 @@
 
 Setting up webpack for the first time is hard. Writing advanced configurations to optimize performance is even harder. The `init` feature is designed to support people that want to create their own configuration or initializing other projects people create.
 
-Through [yeoman](http://yeoman.io/), the `webpack --init` feature allows people to create scaffolds and generate new projects quickly. An npm dependency that scaffolds a `webpack.config.js` through `webpack-cli` is what we refer to as an **addon**.
+Through [yeoman](http://yeoman.io/), the `webpack-cli --init` feature allows people to create scaffolds and generate new projects quickly. An npm dependency that scaffolds a `webpack.config.js` through `webpack-cli` is what we refer to as an **addon**.
 
 ## Writing a good scaffold
 
