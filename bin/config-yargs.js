@@ -33,7 +33,7 @@ module.exports = function(yargs) {
 				requiresArg: true
 			},
 			'env': {
-				describe: 'Enviroment passed to the config, when it is a function',
+				describe: 'Environment passed to the config, when it is a function',
 				group: CONFIG_GROUP
 			},
 			'context': {
@@ -149,7 +149,7 @@ module.exports = function(yargs) {
 			},
 			'target': {
 				type: 'string',
-				describe: 'The targeted execution enviroment',
+				describe: 'The targeted execution environment',
 				group: ADVANCED_GROUP,
 				requiresArg: true
 			},
@@ -166,12 +166,6 @@ module.exports = function(yargs) {
 				describe: 'Watch the filesystem for changes',
 				group: BASIC_GROUP
 			},
-			'save': {
-				type: 'boolean',
-				alias: 's',
-				describe: 'Rebuilds on save regardless of changes in watch mode',
-				group: BASIC_GROUP
-			},
 			'watch-stdin': {
 				type: 'boolean',
 				alias: 'stdin',
@@ -185,7 +179,7 @@ module.exports = function(yargs) {
 			},
 			'watch-poll': {
 				type: 'boolean',
-				describe: 'The polling intervall for watching (also enable polling)',
+				describe: 'The polling interval for watching (also enable polling)',
 				group: ADVANCED_GROUP
 			},
 			'hot': {

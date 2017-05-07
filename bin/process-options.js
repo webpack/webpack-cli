@@ -139,7 +139,7 @@ module.exports = function processOptions(yargs, argv) {
 				console.error('\u001b[1m\u001b[31m' + e.message + '\u001b[39m\u001b[22m');
 			else
 				console.error(e.message);
-			process.exit(1);
+			process.exitCode = 1;
 		}
 		throw e;
 	}
@@ -160,7 +160,7 @@ module.exports = function processOptions(yargs, argv) {
 			lastHash = null;
 			console.error(err.stack || err);
 			if(err.details) console.error(err.details);
-			process.exit(1);
+			process.exitCode = 1;
 		}
 		if(outputOptions.json) {
 			process.stdout.write(JSON.stringify(stats.toJson(outputOptions), null, 2) + '\n');
@@ -172,7 +172,7 @@ module.exports = function processOptions(yargs, argv) {
 		}
 		if(!options.watch && stats.hasErrors()) {
 			process.on('exit', function() {
-				process.exit(2);
+				process.exitCode = 2;
 			});
 		}
 	}
@@ -181,7 +181,7 @@ module.exports = function processOptions(yargs, argv) {
 		var watchOptions = primaryOptions.watchOptions || primaryOptions.watch || {};
 		if(watchOptions.stdin) {
 			process.stdin.on('end', function() {
-				process.exit(0);
+				process.exitCode = 0;
 			});
 			process.stdin.resume();
 		}
