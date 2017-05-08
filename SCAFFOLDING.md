@@ -8,7 +8,7 @@ Through [yeoman](http://yeoman.io/), the `webpack-cli init` feature allows peopl
 
 We ask several questions in the default generator to get you started.
 
-</hr>
+---
 
 1. `Will you be creating multiple bundles? (Y/n)`
 
