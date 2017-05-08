@@ -16,14 +16,13 @@ module.exports = {
 		requiresArg: true
 	},
 	'env': {
-		describe: 'Enviroment passed to the config, when it is a function',
+		describe: 'Environment passed to the config, when it is a function',
 		group: CONFIG_GROUP
 	},
 	'json': {
 		type: 'boolean',
 		alias: 'j',
-		describe: 'Prints the result as JSON.',
-		group: BASIC_GROUP
+		describe: 'Prints the result as JSON.'
 	},
 	'progress': {
 		type: 'boolean',
@@ -156,6 +155,11 @@ module.exports = {
 		group: DISPLAY_GROUP,
 		describe: 'Display even excluded modules in the output'
 	},
+	'display-max-modules': {
+		type: 'number',
+		group: DISPLAY_GROUP,
+		describe: 'Sets the maximum number of visible modules in output'
+	},
 	'display-chunks': {
 		type: 'boolean',
 		group: DISPLAY_GROUP,
@@ -186,6 +190,11 @@ module.exports = {
 		group: DISPLAY_GROUP,
 		describe: 'Display reasons about module inclusion in the output'
 	},
+	'display-depth': {
+		type: 'boolean',
+		group: DISPLAY_GROUP,
+		describe: 'Display distance from entry point for each module'
+	},
 	'display-used-exports': {
 		type: 'boolean',
 		group: DISPLAY_GROUP,
@@ -205,6 +214,12 @@ module.exports = {
 		type: 'boolean',
 		group: DISPLAY_GROUP,
 		describe: 'Show more details'
+	},
+	'save': {
+		type: 'boolean',
+		alias: 's',
+		describe: 'Rebuilds on save regardless of changes in watch mode',
+		group: BASIC_GROUP
 	},
 	'records-input-path': {
 		type: 'string',
@@ -232,7 +247,7 @@ module.exports = {
 	},
 	'target': {
 		type: 'string',
-		describe: 'The targeted execution enviroment',
+		describe: 'The targeted execution environment',
 		group: ADVANCED_GROUP,
 		requiresArg: true
 	},
@@ -249,12 +264,6 @@ module.exports = {
 		describe: 'Watch the filesystem for changes',
 		group: BASIC_GROUP
 	},
-	'save': {
-		type: 'boolean',
-		alias: 's',
-		describe: 'Rebuilds on save regardless of changes in watch mode',
-		group: BASIC_GROUP
-	},
 	'watch-stdin': {
 		type: 'boolean',
 		alias: 'stdin',
@@ -268,7 +277,7 @@ module.exports = {
 	},
 	'watch-poll': {
 		type: 'boolean',
-		describe: 'The polling intervall for watching (also enable polling)',
+		describe: 'The polling interval for watching (also enable polling)',
 		group: ADVANCED_GROUP
 	},
 	'hot': {
