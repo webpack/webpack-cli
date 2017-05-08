@@ -33,4 +33,4 @@ If you answered `Yes` to `Question 3`, this will be enabled. The default value f
 
 7. `Name your 'webpack.[name].js?' [default: 'prod/config']`
 
-If you answered `Yes` to `Question 3`, the default name of your configuration will be `webpack.prod.js`, otherwise it will be `webpack.config.js` if you don't supply an answer. Other good options to answer to this question is: `dev`, `base`, `production` or `development`.
+If you answered `Yes` to `Question 3`, the default name of your configuration will be `webpack.prod.js`, otherwise it will be `webpack.config.js` if you don't answer. Other good options to answer to this question is: `dev`, `base`, `production` or `development`.
