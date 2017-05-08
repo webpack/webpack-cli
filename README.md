@@ -19,7 +19,7 @@ Webpack CLI encapsulates all code related to CLI handling. It captures options a
 
 The `migrate` feature eases the transition from [version 1](http://webpack.github.io/docs/) to [version 2](https://gist.github.com/sokra/27b24881210b56bbaff7). `migrate` also allows users to switch to the new version of webpack without having to extensively [refactor](https://webpack.js.org/guides/migrating/).
 
-`webpack-cli --migrate <config>`
+`webpack-cli migrate <config>`
 
 [Read more about migrating](MIGRATE.md)
 
@@ -27,6 +27,6 @@ The `migrate` feature eases the transition from [version 1](http://webpack.githu
 
 The `init` feature allows users to get started with webpack, fast. Through scaffolding, people can create their own configuration in order to faster initialize new projects for various of use cases.
 
-`webpack-cli --init [webpack-addons-<package>]`
+`webpack-cli init [webpack-addons-<package>]`
 
 [Read more about scaffolding](SCAFFOLDING.md)

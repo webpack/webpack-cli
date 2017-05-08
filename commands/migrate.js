@@ -1,14 +1,14 @@
 const fs = require('fs');
+const path = require('path');
 const chalk = require('chalk');
 const diff = require('diff');
 const inquirer = require('inquirer');
 const PLazy = require('p-lazy');
 const Listr = require('listr');
-const validateSchema = require('./utils/validateSchema.js');
-const webpackOptionsSchema = require('./utils/webpackOptionsSchema.json');
-const WebpackOptionsValidationError = require('./utils/WebpackOptionsValidationError');
+const webpackOptionsSchema = require('../lib/utils/webpackOptionsSchema.json');
+const WebpackOptionsValidationError = require('../lib/utils/WebpackOptionsValidationError');
 
-module.exports = function transformFile(currentConfigPath, outputConfigPath, options) {
+function transformFile(currentConfigPath, outputConfigPath, options) {
 	const recastOptions = Object.assign({
 		quote: 'single'
 	}, options);
@@ -34,7 +34,7 @@ module.exports = function transformFile(currentConfigPath, outputConfigPath, opt
 		{
 			title: 'Migrating config from v1 to v2',
 			task: (ctx) => {
-				const transformations = require('./transformations').transformations;
+				const transformations = require('../lib/transformations/index').transformations;
 				return new Listr(Object.keys(transformations).map(key => {
 					const transform = transformations[key];
 					return {
@@ -69,12 +69,15 @@ module.exports = function transformFile(currentConfigPath, outputConfigPath, opt
 				.then(answers => {
 					if (answers['confirmMigration']) {
 						fs.writeFile(outputConfigPath, result, 'utf8', (err) => {
-							const webpackOptionsValidationErrors = validateSchema(webpackOptionsSchema, require(outputConfigPath));
+							const webpackOptionsValidationErrors = require('../lib/utils/validateSchema')(
+								webpackOptionsSchema,
+								require(outputConfigPath));
 							if (err) {
 								throw err;
 							}
 							else if (webpackOptionsValidationErrors.length) {
-								throw new WebpackOptionsValidationError(webpackOptionsValidationErrors);
+								throw new WebpackOptionsValidationError(
+									webpackOptionsValidationErrors);
 							} else {
 								console.log(chalk.green(`\n ✔︎ New webpack v2 config file is at ${outputConfigPath}`));
 							}
@@ -89,4 +92,16 @@ module.exports = function transformFile(currentConfigPath, outputConfigPath, opt
 			console.error(err);
 			process.exitCode = 1;
 		});
+}
+
+module.exports.command = 'migrate [configPath]';
+module.exports.description = 'Migrate webpack config from v1 to v2 format';
+module.exports.handler = argv => {
+	const configPath = argv.configPath;
+	if (!configPath) {
+		throw new Error('Please specify a path to your webpack config');
+	}
+	const inputConfigPath = path.resolve(process.cwd(), configPath);
+	// Transform config to the same file
+	return transformFile(inputConfigPath, inputConfigPath);
 };

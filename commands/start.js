@@ -1,4 +1,23 @@
-module.exports = function processOptions(yargs, argv) {
+var yargs = require('yargs');
+
+module.exports.command = ['start', '*'];
+module.exports.description = 'Run webpack process';
+module.exports.builder = require('./start/config-yargs');
+module.exports.handler = function processOptions(argv) {
+
+	// Vervose output
+	if(argv.verbose) {
+		argv['display-reasons'] = true;
+		argv['display-depth'] = true;
+		argv['display-entrypoints'] = true;
+		argv['display-used-exports'] = true;
+		argv['display-provided-exports'] = true;
+		argv['display-error-details'] = true;
+		argv['display-modules'] = true;
+		argv['display-cached'] = true;
+		argv['display-cached-assets'] = true;
+	}
+
 	// process Promise
 	function ifArg(name, fn, init) {
 		if(Array.isArray(argv[name])) {
@@ -9,24 +28,30 @@ module.exports = function processOptions(yargs, argv) {
 			fn(argv[name], -1);
 		}
 	}
-	var options = require('./convert-argv')(yargs, argv);
+	var options = require('../lib/utils/convert-argv')(yargs, argv);
 
+	// process Promise
 	if(typeof options.then === 'function') {
 		options.then(processOptions).catch(function(err) {
 			console.error(err.stack || err);
-			process.exit();
+			process.exitCode = -1;
 		});
 		return;
 	}
 
-	var firstOptions = Array.isArray(options) ? (options[0] || {}) : options;
+	var firstOptions = [].concat(options)[0];
+	var statsPresetToOptions = require('webpack/lib/Stats.js').presetToOptions;
 
-	if(typeof options.stats === 'boolean' || typeof options.stats === 'string') {
-		var statsPresetToOptions = require('webpack/lib/Stats.js').presetToOptions;
-		options.stats = statsPresetToOptions(options.stats);
+	var outputOptions = options.stats;
+	if(typeof outputOptions === 'boolean' || typeof outputOptions === 'string') {
+		outputOptions = statsPresetToOptions(outputOptions);
+	} else if(!outputOptions) {
+		outputOptions = {};
 	}
-
-	var outputOptions = Object.create(options.stats || firstOptions.stats || {});
+	outputOptions = Object.create(outputOptions);
+	if(Array.isArray(options) && !outputOptions.children) {
+		outputOptions.children = options.map(o => o.stats);
+	}
 	if(typeof outputOptions.context === 'undefined')
 		outputOptions.context = firstOptions.context;
 
@@ -73,6 +98,10 @@ module.exports = function processOptions(yargs, argv) {
 			outputOptions.reasons = bool;
 		});
 
+		ifArg('display-depth', function(bool) {
+			outputOptions.depth = bool;
+		});
+
 		ifArg('display-used-exports', function(bool) {
 			outputOptions.usedExports = bool;
 		});
@@ -89,6 +118,10 @@ module.exports = function processOptions(yargs, argv) {
 			outputOptions.chunkOrigins = bool;
 		});
 
+		ifArg('display-max-modules', function(value) {
+			outputOptions.maxModules = value;
+		});
+
 		ifArg('display-cached', function(bool) {
 			if(bool)
 				outputOptions.cached = true;
@@ -99,8 +132,13 @@ module.exports = function processOptions(yargs, argv) {
 				outputOptions.cachedAssets = true;
 		});
 
-		if(!outputOptions.exclude && !argv['display-modules'])
-			outputOptions.exclude = ['node_modules', 'bower_components', 'jam', 'components'];
+		if(!outputOptions.exclude)
+			outputOptions.exclude = ['node_modules', 'bower_components', 'components'];
+
+		if(argv['display-modules']) {
+			outputOptions.maxModules = Infinity;
+			outputOptions.exclude = undefined;
+		}
 	} else {
 		if(typeof outputOptions.chunks === 'undefined')
 			outputOptions.chunks = true;
@@ -166,9 +204,7 @@ module.exports = function processOptions(yargs, argv) {
 			process.stdout.write(JSON.stringify(stats.toJson(outputOptions), null, 2) + '\n');
 		} else if(stats.hash !== lastHash) {
 			lastHash = stats.hash;
-			process.stdout.write( '\n' + new Date() + '\n' + '\n');
 			process.stdout.write(stats.toString(outputOptions) + '\n');
-			if(argv.s) lastHash = null;
 		}
 		if(!options.watch && stats.hasErrors()) {
 			process.on('exit', function() {
@@ -176,9 +212,8 @@ module.exports = function processOptions(yargs, argv) {
 			});
 		}
 	}
-	if(options.watch) {
-		var primaryOptions = !Array.isArray(options) ? options : options[0];
-		var watchOptions = primaryOptions.watchOptions || primaryOptions.watch || {};
+	if(firstOptions.watch || options.watch) {
+		var watchOptions = firstOptions.watchOptions || firstOptions.watch || options.watch || {};
 		if(watchOptions.stdin) {
 			process.stdin.on('end', function() {
 				process.exitCode = 0;
