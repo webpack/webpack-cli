@@ -130,12 +130,12 @@ to read on GitHub as well as in several git tools.
 For more information about what each part of the template mean, head up to the documentation in the
 [angular repo](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#commit-message-format)
 
-## --migrate with the CLI
+## Migrating config from v1 to v2 format
 
-This is a new feature in development for the CLI.
+`migrate` command allows automatic migration from v1 to v2 webpack config formats.
 
 ```
-webpack --migrate <your-config-name>
+webpack migrate <your-config-name>
 ```
 
 The expected result of the above command is to take the mentioned `webpack` configuration and create a new configuration file which is compatible with webpack 2.
