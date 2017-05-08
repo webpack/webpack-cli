@@ -6,9 +6,9 @@ We ask several questions in the default generator to get you started.
 
 ---
 
-1. `Will you be creating multiple bundles? (Y/n)`
+1. `Will your application have multiple entry points? (Y/n)`
 
-What we are meaning here, is if you want to provide your bundle a single or multiple [entry points](https://webpack.js.org/configuration/entry-context/#entry). If you have only one entry to your app, answer yes. If you got more modules you want to bundle, answer no.
+What we are meaning here, is if you want to provide your bundle a single or multiple [entry points](https://webpack.js.org/configuration/entry-context/#entry). If you have more than one entry point to your app, answer yes. If you only have one, answer no.
 
 2. `Which folder will your generated bundles be in? [default: dist]`
 
