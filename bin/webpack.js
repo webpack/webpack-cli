@@ -155,10 +155,11 @@ if(argv.verbose) {
 	argv['display-cached'] = true;
 	argv['display-cached-assets'] = true;
 }
-if(argv.init) {
-	return require('../lib/initialize')(argv._);
-} else if(argv.migrate) {
-	const filePaths = argv._;
+if(argv._.includes('init')) {
+	const initPkgs = argv._.length === 1 ? [] : [argv._.pop()];
+	return require('../lib/initialize')(initPkgs);
+} else if(argv._.includes('migrate')) {
+	const filePaths = argv._.length === 1 ? [] : [argv._.pop()];
 	if (!filePaths.length) {
 		throw new Error('Please specify a path to your webpack config');
 	}
