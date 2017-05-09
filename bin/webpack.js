@@ -26,16 +26,15 @@ Usage: $0 <cmd> [args]
 
 Usage without config file: webpack <entry> [<entry>] <output>
 Usage with config file: webpack
-
-More: https://webpack.github.io/docs/cli.html
 `)
+	.epilogue('for more information see https://webpack.github.io/docs/cli.html')
+	.commandDir(path.join(__dirname, '..', 'commands'))
+	.demandCommand(1, 'Command not specified. Try `webpack-cli start --help`')
 	.help()
 	.alias('help', 'h', '?')
 	.version()
 	.alias('version', 'v')
-	.commandDir(path.join(__dirname, '..', 'commands'))
 	.wrap(yargs.terminalWidth())
 	.strict();
 
 yargs.argv;
-
