@@ -6,7 +6,7 @@ We ask several questions in the default generator to get you started.
 
 ---
 
-1. `Will your application have multiple entry points? (Y/n)`
+1. `Will your application have multiple bundles? (Y/n)`
 
 What we are meaning here, is if you want to provide your bundle a single or multiple [entry points](https://webpack.js.org/configuration/entry-context/#entry). If you have more than one entry point to your app, answer yes. If you only have one, answer no.
 
