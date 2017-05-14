@@ -1,5 +1,9 @@
 # Change Log
 
+<a name="1.3.0"></a>
+
+## 1.3.0 (2017-05-02)
+
 ### Bug Fixes
 
 * add safe traverse to loaderoptionsplugin ([#77](https://github.com/webpack/webpack-cli/issues/77)) ([4020043](https://github.com/webpack/webpack-cli/commit/4020043))
