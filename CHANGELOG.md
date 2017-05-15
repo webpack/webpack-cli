@@ -1,7 +1,7 @@
 # Change Log
 
-<a name="1.3.1"></a>
-## 1.3.1 (2017-05-15)
+<a name="1.3.2"></a>
+## 1.3.2 (2017-05-15)
 
 
 ### Bug Fixes
@@ -12,9 +12,9 @@
 * use correct test function ([#129](https://github.com/webpack/webpack-cli/issues/129)) ([3464d9e](https://github.com/webpack/webpack-cli/commit/3464d9e))
 
 
-<a name="1.3.0"></a>
+<a name="1.3.1"></a>
 
-## 1.3.0 (2017-05-02)
+## 1.3.1 (2017-05-02)
 
 ### Bug Fixes
 
