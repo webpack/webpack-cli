@@ -6,7 +6,7 @@ exports[`bannerPlugin transforms correctly using "bannerPlugin-0" data 1`] = `
         new webpack.BannerPlugin({
             raw: true,
             entryOnly: true,
-            'banner': 'Banner'
+            banner: 'Banner'
         })
     ]
 }

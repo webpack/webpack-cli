@@ -26,8 +26,8 @@ module.exports = {
             sourceMap: true,
         }),
 		new webpack.optimize.LoaderOptionsPlugin({
-            \\"debug\\": true,
-            \\"minimize\\": true,
+            debug: true,
+            minimize: true,
         })
 	],
 	debug: true
@@ -92,8 +92,8 @@ module.exports = {
             sourceMap: true
         }),
 		new webpack.optimize.LoaderOptionsPlugin({
-            'debug': true,
-            'minimize': true
+            debug: true,
+            minimize: true
         })
 	],
 	debug: true
