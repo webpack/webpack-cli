@@ -14,7 +14,9 @@ module.exports = {
 	module: {
 		rules: [{
 			test: /.js$/,
-			use: \\"babel\\",
+			use: [{
+                loader: \\"babel-loader\\",
+            }],
 			include: path.join(__dirname, 'src')
 		}]
 	},
@@ -26,8 +28,8 @@ module.exports = {
             sourceMap: true,
         }),
 		new webpack.optimize.LoaderOptionsPlugin({
-            \\"debug\\": true,
-            \\"minimize\\": true,
+            debug: true,
+            minimize: true,
         })
 	],
 	debug: true
@@ -49,7 +51,9 @@ module.exports = {
 	module: {
 		rules: [{
 			test: /.js$/,
-			use: ['babel'],
+			use: [{
+                loader: 'babel-loader'
+            }],
 			include: path.join(__dirname, 'src')
 		}]
 	},
@@ -80,7 +84,9 @@ module.exports = {
 	module: {
 		rules: [{
 			test: /.js$/,
-			use: 'babel',
+			use: [{
+                loader: 'babel-loader'
+            }],
 			include: path.join(__dirname, 'src')
 		}]
 	},
@@ -92,8 +98,8 @@ module.exports = {
             sourceMap: true
         }),
 		new webpack.optimize.LoaderOptionsPlugin({
-            'debug': true,
-            'minimize': true
+            debug: true,
+            minimize: true
         })
 	],
 	debug: true
