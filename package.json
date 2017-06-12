@@ -73,5 +73,8 @@
       "git add"
     ]
   },
-  "pre-commit": "lint:staged"
+  "pre-commit": "lint:staged",
+  "jest": {
+    "testEnvironment": "node"
+  }
 }
