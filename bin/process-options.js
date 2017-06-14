@@ -21,6 +21,10 @@ module.exports = function processOptions(yargs, argv) {
 
 	var firstOptions = Array.isArray(options) ? (options[0] || {}) : options;
 
+	ifArg('stats', function (value) {
+		options.stats = value;
+	});
+
 	if(typeof options.stats === 'boolean' || typeof options.stats === 'string') {
 		var statsPresetToOptions = require('webpack/lib/Stats.js').presetToOptions;
 		options.stats = statsPresetToOptions(options.stats);
@@ -50,9 +54,11 @@ module.exports = function processOptions(yargs, argv) {
 		outputOptions.assetsSort = value;
 	});
 
-	ifArg('display-exclude', function(value) {
-		outputOptions.exclude = value;
-	});
+	if (!argv.stats) {
+		ifArg('display-exclude', function(value) {
+			outputOptions.exclude = value;
+		});
+	}
 
 	if(!outputOptions.json) {
 		if(typeof outputOptions.cached === 'undefined')
@@ -60,44 +66,48 @@ module.exports = function processOptions(yargs, argv) {
 		if(typeof outputOptions.cachedAssets === 'undefined')
 			outputOptions.cachedAssets = false;
 
-		ifArg('display-chunks', function(bool) {
-			outputOptions.modules = !bool;
-			outputOptions.chunks = bool;
-		});
+		if (!argv.stats) {
+			ifArg('display-chunks', function(bool) {
+				outputOptions.modules = !bool;
+				outputOptions.chunks = bool;
+			});
 
-		ifArg('display-entrypoints', function(bool) {
-			outputOptions.entrypoints = bool;
-		});
+			ifArg('display-entrypoints', function(bool) {
+				outputOptions.entrypoints = bool;
+			});
 
-		ifArg('display-reasons', function(bool) {
-			outputOptions.reasons = bool;
-		});
+			ifArg('display-reasons', function(bool) {
+				outputOptions.reasons = bool;
+			});
 
-		ifArg('display-used-exports', function(bool) {
-			outputOptions.usedExports = bool;
-		});
+			ifArg('display-used-exports', function(bool) {
+				outputOptions.usedExports = bool;
+			});
 
-		ifArg('display-provided-exports', function(bool) {
-			outputOptions.providedExports = bool;
-		});
+			ifArg('display-provided-exports', function(bool) {
+				outputOptions.providedExports = bool;
+			});
 
-		ifArg('display-error-details', function(bool) {
-			outputOptions.errorDetails = bool;
-		});
+			ifArg('display-error-details', function(bool) {
+				outputOptions.errorDetails = bool;
+			});
 
-		ifArg('display-origins', function(bool) {
-			outputOptions.chunkOrigins = bool;
-		});
+			ifArg('display-origins', function(bool) {
+				outputOptions.chunkOrigins = bool;
+			});
 
-		ifArg('display-cached', function(bool) {
-			if(bool)
-				outputOptions.cached = true;
-		});
+			ifArg('display-cached', function(bool) {
+				if(bool)
+					outputOptions.cached = true;
+			});
 
-		ifArg('display-cached-assets', function(bool) {
-			if(bool)
-				outputOptions.cachedAssets = true;
-		});
+			ifArg('display-cached-assets', function(bool) {
+				if(bool)
+					outputOptions.cachedAssets = true;
+			});
+		} else {
+			outputOptions.modules = true;
+		}
 
 		if(!outputOptions.exclude && !argv['display-modules'])
 			outputOptions.exclude = ['node_modules', 'bower_components', 'jam', 'components'];
@@ -118,12 +128,14 @@ module.exports = function processOptions(yargs, argv) {
 			outputOptions.cachedAssets = true;
 	}
 
-	ifArg('hide-modules', function(bool) {
-		if(bool) {
-			outputOptions.modules = false;
-			outputOptions.chunkModules = false;
-		}
-	});
+	if (!argv.stats) {
+		ifArg('hide-modules', function(bool) {
+			if(bool) {
+				outputOptions.modules = false;
+				outputOptions.chunkModules = false;
+			}
+		});
+	}
 
 	var webpack = require('webpack/lib/webpack.js');
 

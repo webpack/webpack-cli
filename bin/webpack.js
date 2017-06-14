@@ -26,7 +26,6 @@ var yargs = require('yargs')
 		'Usage with config file: webpack');
 require('./config-yargs')(yargs);
 
-
 var DISPLAY_GROUP = 'Stats options:';
 var BASIC_GROUP = 'Basic options:';
 
@@ -139,12 +138,31 @@ yargs.options({
 		type: 'boolean',
 		group: DISPLAY_GROUP,
 		describe: 'Show more details'
+	},
+	'stats': {
+		type: 'string',
+		group: DISPLAY_GROUP,
+		describe: 'Display with a preset (Accepted presets: ' + '\n' +
+		'none, errors-only, minimal, normal, verbose)'
 	}
 });
 
 var argv = yargs.argv;
 
-if(argv.verbose) {
+if (argv.stats) {
+	for (let key in argv) {
+		const value = argv[key];
+
+		if ((key.indexOf('display-') == 0 ||
+         key.match(/hide-modules/)    ||
+         key.match(/verbose/)
+        ) && value ) {
+			throw new Error(`Please omit ${ key } if you are using stats`);
+		}
+	}
+}
+
+if(argv.verbose && !argv.stats) {
 	argv['display-reasons'] = true;
 	argv['display-depth'] = true;
 	argv['display-entrypoints'] = true;
