@@ -3,6 +3,7 @@
 exports[`module transforms correctly using "module-0" data 1`] = `
 "module.exports = {
     entry: 'index.js',
+
     output: {
 		filename: 'bundle.js'
 	},
@@ -13,6 +14,7 @@ exports[`module transforms correctly using "module-0" data 1`] = `
             loader: 'eslint-loader',
             enforce: 'pre',
             include: [customObj, 'Stringy'],
+
             options: {
                 formatter: 'someOption'
             }
@@ -27,6 +29,7 @@ exports[`module transforms correctly using "module-0" data 1`] = `
         }, {
             test: /\\\\.(png|jpe?g|gif|svg)(\\\\?.*)?$/,
             loader: 'url-loader',
+
             options: {
                 limit: 10000,
                 name: utils.assetsPath('img/[name].[hash:7].[ext]')
@@ -34,6 +37,7 @@ exports[`module transforms correctly using "module-0" data 1`] = `
         }, {
             test: /\\\\.(woff2?|eot|ttf|otf)(\\\\?.*)?$/,
             loader: 'url-loader',
+
             options: {
                 limit: 10000,
                 name: utils.assetsPath('fonts/[name].[hash:7].[ext]'),
@@ -48,6 +52,7 @@ exports[`module transforms correctly using "module-0" data 1`] = `
 exports[`module transforms correctly using "module-0" data 2`] = `
 "module.exports = {
     entry: 'index.js',
+
     output: {
 		filename: 'bundle.js'
 	},
@@ -58,6 +63,7 @@ exports[`module transforms correctly using "module-0" data 2`] = `
             loader: 'eslint-loader',
             enforce: 'pre',
             include: [customObj, 'Stringy'],
+
             options: {
                 formatter: 'someOption'
             }
@@ -72,6 +78,7 @@ exports[`module transforms correctly using "module-0" data 2`] = `
         }, {
             test: /\\\\.(png|jpe?g|gif|svg)(\\\\?.*)?$/,
             loader: 'url-loader',
+
             options: {
                 limit: 10000,
                 name: utils.assetsPath('img/[name].[hash:7].[ext]'),
@@ -81,6 +88,7 @@ exports[`module transforms correctly using "module-0" data 2`] = `
             test: /\\\\.(woff2?|eot|ttf|otf)(\\\\?.*)?$/,
             loader: 'url-loader',
             {{#if_eq build 'standalone'}},
+
             options: {
                 limit: 10000,
                 name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
@@ -94,20 +102,24 @@ exports[`module transforms correctly using "module-0" data 2`] = `
 exports[`module transforms correctly using "module-1" data 1`] = `
 "module.exports = {
     entry: 'index.js',
+
     output: {
 		filename: 'bundle.js'
 	},
 
     module: {
         noParse: /jquery|lodash/,
+
         rules: [{
             test: /\\\\.js$/,
+
             parser: {
                 amd: false
             },
 
             use: ['htmllint-loader', {
                 loader: 'html-loader',
+
                 options: {
                     hello: 'world'
                 }

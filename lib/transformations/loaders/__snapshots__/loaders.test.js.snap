@@ -18,6 +18,7 @@ exports[`loaders transforms correctly using "loaders-0" data 1`] = `
                 loader: 'style-loader'
             }, {
                 loader: 'css-loader',
+
                 options: {
                     modules: true,
                     importLoaders: 1,
@@ -44,6 +45,7 @@ exports[`loaders transforms correctly using "loaders-0" data 1`] = `
     module: {
         rules:[{
             test: /\\\\.js$/,
+
             use: [{
                 loader: 'eslint-loader'
             }],
@@ -55,6 +57,7 @@ exports[`loaders transforms correctly using "loaders-0" data 1`] = `
     module: {
         rules:[{
             test: /\\\\.js$/,
+
             use: [{
                 loader: 'my-post-loader'
             }],
@@ -71,6 +74,7 @@ exports[`loaders transforms correctly using "loaders-0" data 1`] = `
             }]
         }, {
             test: /\\\\.js$/,
+
             use: [{
                 loader: 'eslint-loader'
             }],
@@ -87,6 +91,7 @@ exports[`loaders transforms correctly using "loaders-0" data 1`] = `
             }]
         }, {
             test: /\\\\.js$/,
+
             use: [{
                 loader: 'my-post-loader'
             }],
@@ -107,6 +112,7 @@ exports[`loaders transforms correctly using "loaders-1" data 1`] = `
                 loader: 'style-loader'
             }, {
                 loader: 'css-loader',
+
                 options: {
                     modules: true,
                     importLoaders: 1,
@@ -143,6 +149,7 @@ exports[`loaders transforms correctly using "loaders-3" data 1`] = `
     module: {
         rules:[{
             test: /\\\\.js$/,
+
             use: [{
                 loader: 'eslint-loader'
             }],
@@ -159,6 +166,7 @@ exports[`loaders transforms correctly using "loaders-4" data 1`] = `
     module: {
         rules:[{
             test: /\\\\.js$/,
+
             use: [{
                 loader: 'my-post-loader'
             }],
@@ -180,6 +188,7 @@ exports[`loaders transforms correctly using "loaders-5" data 1`] = `
             }]
         }, {
             test: /\\\\.js$/,
+
             use: [{
                 loader: 'eslint-loader'
             }],
@@ -201,6 +210,7 @@ exports[`loaders transforms correctly using "loaders-6" data 1`] = `
             }]
         }, {
             test: /\\\\.js$/,
+
             use: [{
                 loader: 'my-post-loader'
             }],
@@ -242,6 +252,7 @@ exports[`loaders transforms correctly using "loaders-8" data 1`] = `
                     loader: 'style-loader'
                 }, {
                     loader: 'css-loader',
+
                     options: {
                         modules: true,
                         importLoaders: 1,

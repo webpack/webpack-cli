@@ -3,6 +3,7 @@
 exports[`amd transforms correctly using "other-0" data 1`] = `
 "module.exports = {
     entry: 'index.js',
+
     output: {
 		filename: 'bundle.js'
 	},
@@ -18,6 +19,7 @@ exports[`amd transforms correctly using "other-0" data 1`] = `
 exports[`bail transforms correctly using "other-0" data 1`] = `
 "module.exports = {
     entry: 'index.js',
+
     output: {
 		filename: 'bundle.js'
 	},
@@ -30,6 +32,7 @@ exports[`bail transforms correctly using "other-0" data 1`] = `
 exports[`cache transforms correctly using "other-0" data 1`] = `
 "module.exports = {
     entry: 'index.js',
+
     output: {
 		filename: 'bundle.js'
 	},
@@ -42,6 +45,7 @@ exports[`cache transforms correctly using "other-0" data 1`] = `
 exports[`cache transforms correctly using "other-0" data 2`] = `
 "module.exports = {
     entry: 'index.js',
+
     output: {
 		filename: 'bundle.js'
 	},
@@ -64,6 +68,7 @@ exports[`merge transforms correctly using "other-0" data 1`] = `
 exports[`profile transforms correctly using "other-0" data 1`] = `
 "module.exports = {
     entry: 'index.js',
+
     output: {
 		filename: 'bundle.js'
 	},

@@ -3,6 +3,7 @@
 exports[`resolve transforms correctly using "resolve-0" data 1`] = `
 "module.exports = {
     entry: 'index.js',
+
     output: {
 		filename: 'bundle.js'
 	},
@@ -24,6 +25,7 @@ exports[`resolve transforms correctly using "resolve-0" data 1`] = `
         mainFiles: ['noMainFileHere', iGuess],
         modules: [one, 'two'],
         unsafeCache: false,
+
         resolveLoader: {
             modules: ['node_modules', mode_nodules],
             extensions: [jsVal, '.json'],

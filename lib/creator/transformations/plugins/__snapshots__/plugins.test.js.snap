@@ -3,6 +3,7 @@
 exports[`plugins transforms correctly using "plugins-0" data 1`] = `
 "module.exports = {
     entry: 'index.js',
+
     output: {
 		filename: 'bundle.js'
 	},

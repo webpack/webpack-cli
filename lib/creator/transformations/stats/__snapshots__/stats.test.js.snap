@@ -3,6 +3,7 @@
 exports[`stats transforms correctly using "stats-0" data 1`] = `
 "module.exports = {
     entry: 'index.js',
+
     output: {
 		filename: 'bundle.js'
 	},
@@ -45,6 +46,7 @@ exports[`stats transforms correctly using "stats-0" data 1`] = `
 exports[`stats transforms correctly using "stats-0" data 2`] = `
 "module.exports = {
     entry: 'index.js',
+
     output: {
 		filename: 'bundle.js'
 	},
