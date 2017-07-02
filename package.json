@@ -20,7 +20,8 @@
     "lint:codeOnly": "eslint \"{lib,bin,__mocks__}/**/!(__testfixtures__)/*.js\" \"{lib,bin,__mocks__}/**.js\"",
     "precommit": "lint-staged",
     "pretest": "npm run lint",
-    "test": "jest --coverage"
+    "test": "jest --coverage --runInBand --testPathPattern=lib",
+    "test:E2E": "jest --testPathPattern=E2E"
   },
   "lint-staged": {
     "{lib,bin,__mocks__}/**/!(__testfixtures__)/**.js": [
