@@ -70,10 +70,7 @@
     "eslint-plugin-node": "^5.1.0",
     "eslint-plugin-prettier": "^2.1.2",
     "jest": "^20.0.4",
-<<<<<<< HEAD
-=======
     "jest-cli": "^20.0.4",
->>>>>>> 6badbfd... f
     "lint-staged": "^4.0.2",
     "pre-commit": "^1.2.2"
   }
