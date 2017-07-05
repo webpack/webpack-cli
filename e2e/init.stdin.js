@@ -5,7 +5,7 @@ const assert = require('assert');
 // Webpack-cli -> soren binPath="YourPathToWebpackCLI" -- init
 // Alternatively, clone webpack-cli and run 'Soren' inside the repo
 
-describe('webpack', () => {
+describe('init', () => {
 	question('Will your application have multiple bundles? (Y/n)', 'n', (answer) => {
 		assert.equal(answer, 'n');
 	});
