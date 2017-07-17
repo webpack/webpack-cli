@@ -15,7 +15,7 @@ exports[`loaderOptionsPlugin transforms correctly using "loaderOptionsPlugin-1" 
     debug: true,
     plugins: [
         new webpack.optimize.UglifyJsPlugin(),
-        new webpack.optimize.LoaderOptionsPlugin({
+        new webpack.LoaderOptionsPlugin({
             foo: 'bar',
             debug: true,
             minimize: true
@@ -30,7 +30,7 @@ exports[`loaderOptionsPlugin transforms correctly using "loaderOptionsPlugin-2" 
 module.exports = {
     plugins: [
         new SomePlugin(),
-        new webpack.optimize.LoaderOptionsPlugin({
+        new webpack.LoaderOptionsPlugin({
             foo: 'bar'
         })
     ]
