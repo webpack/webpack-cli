@@ -27,7 +27,7 @@ module.exports = {
 		new webpack.optimize.UglifyJsPlugin({
             sourceMap: true,
         }),
-		new webpack.optimize.LoaderOptionsPlugin({
+		new webpack.LoaderOptionsPlugin({
             debug: true,
             minimize: true,
         })
@@ -97,7 +97,7 @@ module.exports = {
 		new webpack.optimize.UglifyJsPlugin({
             sourceMap: true
         }),
-		new webpack.optimize.LoaderOptionsPlugin({
+		new webpack.LoaderOptionsPlugin({
             debug: true,
             minimize: true
         })
