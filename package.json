@@ -36,10 +36,11 @@
     "babel-preset-stage-3": "^6.24.1",
     "chalk": "^2.0.1",
     "cross-spawn": "^5.1.0",
-    "diff": "^3.2.0",
+    "diff": "^3.3.0",
     "enhanced-resolve": "^3.3.0",
+    "global-modules": "^1.0.0",
     "got": "^7.1.0",
-    "inquirer": "^3.1.1",
+    "inquirer": "^3.2.0",
     "interpret": "^1.0.3",
     "jscodeshift": "^0.3.32",
     "listr": "^0.12.0",
@@ -47,10 +48,11 @@
     "lodash": "^4.17.4",
     "p-each-series": "^1.0.0",
     "p-lazy": "^1.0.0",
+    "prettier": "^1.5.3",
     "recast": "git://github.com/kalcifer/recast.git#bug/allowbreak",
     "rx": "^4.1.0",
-    "supports-color": "^4.1.0",
-    "webpack": "^3.0.0",
+    "supports-color": "^4.2.0",
+    "webpack": "^3.3.0",
     "webpack-addons": "1.1.2",
     "webpack-addons-ylvis": "0.0.34",
     "yargs": "^8.0.2",
@@ -58,18 +60,21 @@
     "yeoman-generator": "git://github.com/ev1stensberg/generator.git#Feature-getArgument"
   },
   "devDependencies": {
-    "ajv": "^5.2.0",
+    "ajv": "^5.2.2",
     "ajv-keywords": "^2.1.0",
     "babel-cli": "^6.24.1",
     "babel-eslint": "^7.2.3",
     "babel-jest": "^20.0.3",
     "babel-polyfill": "^6.23.0",
-    "eslint": "^4.1.1",
+    "eslint": "^4.2.0",
     "eslint-plugin-node": "^5.1.0",
     "eslint-plugin-prettier": "^2.1.2",
     "jest": "^20.0.4",
-    "lint-staged": "^4.0.0",
-    "pre-commit": "^1.2.2",
-    "prettier": "^1.5.2"
+<<<<<<< HEAD
+=======
+    "jest-cli": "^20.0.4",
+>>>>>>> 6badbfd... f
+    "lint-staged": "^4.0.2",
+    "pre-commit": "^1.2.2"
   }
 }
