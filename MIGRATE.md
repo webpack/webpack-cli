@@ -4,7 +4,7 @@ The `migrate` feature eases the transition from [version 1](http://webpack.githu
 also allows users to switch to the new version of webpack without having to extensively [refactor](https://webpack.js.org/guides/migrating/).
 
 ### Usage
-To use `migrate`, run the following command, with the value of `<config` being a path to an existing webpack configuration file
+To use `migrate`, run the following command, with the value of `<config>` being a path to an existing webpack configuration file
 
 ```bash
 webpack-cli migrate <config>
