@@ -4,71 +4,72 @@ The `migrate` feature eases the transition from [version 1](http://webpack.githu
 also allows users to switch to the new version of webpack without having to extensively [refactor](https://webpack.js.org/guides/migrating/).
 
 ### Usage
-To use migrate, run the following command, with the path being an existing webpack configuration file
+To use `migrate`, run the following command, with the value of `<config` being a path to an existing webpack configuration file
 
 ```bash
-  webpack-cli migrate <config>
+webpack-cli migrate <config>
 ```
 
 Given a basic configuration file like so:
 
 ```javascript
-	const ExtractTextPlugin = require('extract-text-webpack-plugin');
-	const HtmlWebpackPlugin = require('html-webpack-plugin');
-	const path = require('path');
-	const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-	const webpack = require('webpack');
-	
-	module.exports = {
-	
-	  entry: {
-		index: './src/index.js',
-		vendor: './src/vendor.js'
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const webpack = require('webpack');
+
+module.exports = {
+
+  entry: {
+	index: './src/index.js',
+	vendor: './src/vendor.js'
+  },
+
+  output: {
+	filename: '[name].[chunkhash].js',
+	chunkFilename: '[name].[chunkhash].js',
+	path: path.resolve(__dirname, 'dist')
+  },
+
+  module: {
+	loaders: [
+	  {
+		test: /\.js$/,
+		exclude: /node_modules/,
+		loader: 'babel',
+		query: {
+		  presets: ['es2015']
+		}
 	  },
-	
-	  output: {
-		filename: '[name].[chunkhash].js',
-		chunkFilename: '[name].[chunkhash].js',
-		path: path.resolve(__dirname, 'dist')
-	  },
-	
-	  module: {
-		loaders: [
-		  {
-			test: /\.js$/,
-			exclude: /node_modules/,
-			loader: 'babel',
-			query: {
-			  presets: ['es2015']
-			}
-		  },
-		  {
-			test: /\.(scss|css)$/,
-			loader: ExtractTextPlugin.extract('style', 'css!sass')
-		  }
-		]
-	  },
-	
-	  plugins: [
-		new UglifyJSPlugin(),
-	
-		new ExtractTextPlugin('styles-[contentHash].css'),
-	
-		new webpack.optimize.CommonsChunkPlugin({
-		  name: 'common',
-		  filename: 'common-[hash].min.js'
-		}),
-	
-		new HtmlWebpackPlugin()
-	  ]
-	
-	};
+	  {
+		test: /\.(scss|css)$/,
+		loader: ExtractTextPlugin.extract('style', 'css!sass')
+	  }
+	]
+  },
+
+  plugins: [
+	new UglifyJSPlugin(),
+
+	new ExtractTextPlugin('styles-[contentHash].css'),
+
+	new webpack.optimize.CommonsChunkPlugin({
+	  name: 'common',
+	  filename: 'common-[hash].min.js'
+	}),
+
+	new HtmlWebpackPlugin()
+  ]
+
+};
 ```
 
 The `migrate` command, when run, will show the proposed changes to the config file in the terminal, prompting the user to
 accept the changes or not:
 
 ```bash
+$ webpack-cli migrate ./webpack.config.js
  ✔ Reading webpack config
  ✔ Migrating config from v1 to v2
 -     loaders: [
@@ -93,62 +94,62 @@ accept the changes or not:
 After it has run, we have our new webpack config file!
 
 ```javascript
-	const ExtractTextPlugin = require('extract-text-webpack-plugin');
-	const HtmlWebpackPlugin = require('html-webpack-plugin');
-	const path = require('path');
-	const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-	const webpack = require('webpack');
-	
-	module.exports = {
-	
-	  entry: {
-		index: './src/index.js',
-		vendor: './src/vendor.js'
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const webpack = require('webpack');
+
+module.exports = {
+
+  entry: {
+	index: './src/index.js',
+	vendor: './src/vendor.js'
+  },
+
+  output: {
+	filename: '[name].[chunkhash].js',
+	chunkFilename: '[name].[chunkhash].js',
+	path: path.resolve(__dirname, 'dist')
+  },
+
+  module: {
+	rules: [
+	  {
+		test: /\.js$/,
+		exclude: /node_modules/,
+		use: [{
+		  loader: 'babel-loader'
+		}],
+		options: {
+		  presets: ['es2015']
+		}
 	  },
-	
-	  output: {
-		filename: '[name].[chunkhash].js',
-		chunkFilename: '[name].[chunkhash].js',
-		path: path.resolve(__dirname, 'dist')
-	  },
-	
-	  module: {
-		rules: [
-		  {
-			test: /\.js$/,
-			exclude: /node_modules/,
-			use: [{
-			  loader: 'babel-loader'
-			}],
-			options: {
-			  presets: ['es2015']
-			}
-		  },
-		  {
-			test: /\.(scss|css)$/,
-			use: ExtractTextPlugin.extract({
-			  fallback: 'style',
-			  use: 'css!sass'
-			})
-		  }
-		]
-	  },
-	
-	  plugins: [
-		new UglifyJSPlugin(),
-	
-		new ExtractTextPlugin('styles-[contentHash].css'),
-	
-		new webpack.optimize.CommonsChunkPlugin({
-		  name: 'common',
-		  filename: 'common-[hash].min.js'
-		}),
-	
-		new HtmlWebpackPlugin()
-	  ]
-	
-	};
+	  {
+		test: /\.(scss|css)$/,
+		use: ExtractTextPlugin.extract({
+		  fallback: 'style',
+		  use: 'css!sass'
+		})
+	  }
+	]
+  },
+
+  plugins: [
+	new UglifyJSPlugin(),
+
+	new ExtractTextPlugin('styles-[contentHash].css'),
+
+	new webpack.optimize.CommonsChunkPlugin({
+	  name: 'common',
+	  filename: 'common-[hash].min.js'
+	}),
+
+	new HtmlWebpackPlugin()
+  ]
+
+};
 ```
 
 **Note: This command does NOT handle updating dependencies in _package.json_, it is only a migration tool for the config
-file itself.  The user is expected to manage dependencies themself.**
+file itself.  The user is expected to manage dependencies themselves.**
