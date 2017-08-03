@@ -158,4 +158,4 @@ In summary, we can see the follow changes were made
 1.  All loaders now have to have the *loader* suffix, e.g. `babel` -> `babel-loader`
 
 **Note: This command does NOT handle updating dependencies in _package.json_, it is only a migration tool for the config
-file itself.  The user is expected to manage dependencies themselves.**
+file itself.  Users are expected to manage dependencies themselves.**
