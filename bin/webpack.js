@@ -169,6 +169,8 @@ if(argv._.includes('init')) {
 	return require('../lib/migrate.js')(inputConfigPath, inputConfigPath);
 } else if(argv._.includes('generate-loader')) {
 	return require('../lib/generate-loader/index.js')();
+} else if(argv._.includes('generate-plugin')) {
+	return require('../lib/generate-plugin/index.js')();
 } else {
 	var options = require('./convert-argv')(yargs, argv);
 
