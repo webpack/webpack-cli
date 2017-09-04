@@ -25,6 +25,16 @@ module.exports = function(yargs) {
 				describe: 'Migrate your webpack configuration from webpack 1 to webpack 2',
 				group: INIT_GROUP
 			},
+			'generate-loader': {
+				type: 'boolean',
+				describe: 'Generates a new webpack loader project',
+				group: INIT_GROUP
+			},
+			'generate-plugin': {
+				type: 'boolean',
+				describe: 'Generates a new webpack plugin project',
+				group: INIT_GROUP
+			},
 			'config': {
 				type: 'string',
 				describe: 'Path to the config file',
