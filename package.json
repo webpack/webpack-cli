@@ -42,6 +42,7 @@
     "listr": "^0.11.0",
     "loader-utils": "^0.2.16",
     "lodash": "^4.17.4",
+    "mkdirp": "^0.5.1",
     "p-each-series": "^1.0.0",
     "p-lazy": "^1.0.0",
     "prettier": "^1.2.2",
