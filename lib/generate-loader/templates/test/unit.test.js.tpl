@@ -1,6 +1,6 @@
 import fs from 'fs';
-import { runLoaders } from 'loader-runner';
 import Promise from 'bluebird';
+import { runLoaders } from 'loader-runner';
 import { getFixtureResource, getFixture, getLoader } from './test-utils';
 
 const runLoadersPromise = Promise.promisify(runLoaders);
