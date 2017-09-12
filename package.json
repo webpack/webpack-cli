@@ -18,7 +18,7 @@
   "scripts": {
     "lint": "eslint \"**/*.js\"",
     "lint:codeOnly": "eslint \"{lib,bin,__mocks__}/**/!(__testfixtures__)/*.js\" \"{lib,bin,__mocks__}/**.js\"",
-    "lint:staged": "lint-staged",
+    "precommit": "lint-staged",
     "pretest": "npm run lint",
     "test": "jest --coverage"
   },
@@ -28,7 +28,6 @@
       "git add"
     ]
   },
-  "pre-commit": "lint:staged",
   "jest": {
     "testEnvironment": "node"
   },
@@ -71,9 +70,9 @@
     "babel-polyfill": "^6.23.0",
     "eslint": "^4.2.0",
     "eslint-plugin-node": "^5.1.0",
+    "husky": "^0.14.3",
     "jest": "^20.0.4",
     "jest-cli": "^20.0.4",
-    "lint-staged": "^4.0.2",
-    "pre-commit": "^1.2.2"
+    "lint-staged": "^4.1.3"
   }
 }
