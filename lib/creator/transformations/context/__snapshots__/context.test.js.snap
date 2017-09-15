@@ -8,7 +8,7 @@ exports[`context transforms correctly using "context-0" data 1`] = `
 		filename: 'bundle.js'
 	},
 
-    context: path.resolve(__dirname, \\"app\\")
+    context: path.resolve(__dirname, 'app')
 }
 "
 `;
