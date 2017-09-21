@@ -17,3 +17,6 @@ coverage
 
 # Dist build
 dist
+
+# Test Compilation
+test/js/*

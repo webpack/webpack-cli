@@ -31,7 +31,7 @@ if (localCLI && path.relative(localCLI, __filename) !== "") {
 }
 // eslint-disable-next-line
 var yargs = require("yargs").usage(
-	"webpack " +
+	"webpack-cli " +
 		require("../package.json").version +
 		"\n" +
 		"Usage: https://webpack.js.org/api/cli/\n" +
