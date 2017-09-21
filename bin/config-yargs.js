@@ -10,7 +10,7 @@ var INIT_GROUP = "Initialization:";
 module.exports = function(yargs) {
 	yargs
 		.help("help")
-		.alias("help", "h", "?")
+		.alias("help", "h")
 		.version()
 		.alias("version", "v")
 		.options({

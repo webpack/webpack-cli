@@ -1,26 +1,35 @@
 #!/usr/bin/env node
+
 /*
 	MIT License http://www.opensource.org/licenses/mit-license.php
 	Author Tobias Koppers @sokra
 */
-"use strict";
-
 var path = require("path");
 var resolveCwd = require("resolve-cwd");
-
+// Local version replace global one
 var localCLI = resolveCwd.silent("webpack-cli/bin/webpack");
 
-if (localCLI && path.relative(localCLI, __filename) !== "") {
-	require(localCLI);
-} else {
-	try {
-		require("./webpack");
-	} catch (err) {
-		console.error(`\n  ${err.message}`);
-		process.exitCode = 1;
-	}
-}
+if (process.argv.slice(2).includes("init")) {
+	const initPkgs =
+		process.argv.slice(2).length === 1 ? [] : [process.argv.slice(2).pop()];
 
+	return require("../dist/initialize")(initPkgs);
+} else if (process.argv.slice(2).includes("migrate")) {
+	const filePaths =
+		process.argv.slice(2).length === 1 ? [] : [process.argv.slice(2).pop()];
+	if (!filePaths.length) {
+		throw new Error("Please specify a path to your webpack config");
+	}
+	const inputConfigPath = path.resolve(process.cwd(), filePaths[0]);
+
+	return require("../dist/migrate.js")(inputConfigPath, inputConfigPath);
+}
+if (localCLI && path.relative(localCLI, __filename) !== "") {
+	return require(localCLI);
+} else {
+	return require("webpack/bin/webpack");
+}
+// eslint-disable-next-line
 var yargs = require("yargs").usage(
 	"webpack " +
 		require("../package.json").version +
@@ -29,8 +38,8 @@ var yargs = require("yargs").usage(
 		"Usage without config file: webpack <entry> [<entry>] <output>\n" +
 		"Usage with config file: webpack"
 );
-require("./config-yargs")(yargs);
 
+require("./config-yargs")(yargs);
 var DISPLAY_GROUP = "Stats options:";
 var BASIC_GROUP = "Basic options:";
 
@@ -134,10 +143,22 @@ yargs.options({
 		group: DISPLAY_GROUP,
 		describe: "Display information about exports provided from modules"
 	},
+	"display-optimization-bailout": {
+		type: "boolean",
+		group: DISPLAY_GROUP,
+		describe:
+			"Display information about why optimization bailed out for modules"
+	},
 	"display-error-details": {
 		type: "boolean",
 		group: DISPLAY_GROUP,
 		describe: "Display details about errors"
+	},
+	display: {
+		type: "string",
+		group: DISPLAY_GROUP,
+		describe:
+			"Select display preset (verbose, detailed, normal, minimal, errors-only, none)"
 	},
 	verbose: {
 		type: "boolean",
@@ -145,247 +166,239 @@ yargs.options({
 		describe: "Show more details"
 	}
 });
+// yargs will terminate the process early when the user uses help or version.
+// This causes large help outputs to be cut short (https://github.com/nodejs/node/wiki/API-changes-between-v0.10-and-v4#process).
+// To prevent this we use the yargs.parse API and exit the process normally
 
-var argv = yargs.argv;
-
-if (argv.verbose) {
-	argv["display-reasons"] = true;
-	argv["display-depth"] = true;
-	argv["display-entrypoints"] = true;
-	argv["display-used-exports"] = true;
-	argv["display-provided-exports"] = true;
-	argv["display-error-details"] = true;
-	argv["display-modules"] = true;
-	argv["display-cached"] = true;
-	argv["display-cached-assets"] = true;
-}
-if (argv._.includes("init")) {
-	const initPkgs = argv._.length === 1 ? [] : [argv._.pop()];
-
-	return require("../lib/initialize")(initPkgs);
-} else if (argv._.includes("migrate")) {
-	const filePaths = argv._.length === 1 ? [] : [argv._.pop()];
-	if (!filePaths.length) {
-		throw new Error("Please specify a path to your webpack config");
-	}
-	const inputConfigPath = path.resolve(process.cwd(), filePaths[0]);
-
-	return require("../lib/migrate.js")(inputConfigPath, inputConfigPath);
-} else {
-	var options = require("./convert-argv")(yargs, argv);
-
-	return processOptions(options);
-}
-
-function ifArg(name, fn, init) {
-	if (Array.isArray(argv[name])) {
-		if (init) init();
-		argv[name].forEach(fn);
-	} else if (typeof argv[name] !== "undefined") {
-		if (init) init();
-		fn(argv[name], -1);
-	}
-}
 //eslint-disable-next-line
-function processOptions(options) {
-	// process Promise
-	if (typeof options.then === "function") {
-		options.then(processOptions).catch(function(err) {
-			console.error(err.stack || err);
-			process.exitCode = -1;
-		});
+yargs.parse(process.argv.slice(2), (err, argv, output) => {
+	// arguments validation failed
+	if (err && output) {
+		console.error(output);
+		process.exitCode = 1;
 		return;
 	}
-
-	var firstOptions = [].concat(options)[0];
-	var statsPresetToOptions = require("webpack/lib/Stats.js").presetToOptions;
-
-	var outputOptions = options.stats;
-	if (typeof outputOptions === "boolean" || typeof outputOptions === "string") {
-		outputOptions = statsPresetToOptions(outputOptions);
-	} else if (!outputOptions) {
-		outputOptions = {};
+	if (output) {
+		console.log(output);
+		return;
 	}
-	outputOptions = Object.create(outputOptions);
-	if (Array.isArray(options) && !outputOptions.children) {
-		outputOptions.children = options.map(o => o.stats);
-	}
-	if (typeof outputOptions.context === "undefined")
-		outputOptions.context = firstOptions.context;
-
-	ifArg("json", function(bool) {
-		if (bool) outputOptions.json = bool;
-	});
-
-	if (typeof outputOptions.colors === "undefined")
-		outputOptions.colors = require("supports-color");
-
-	ifArg("sort-modules-by", function(value) {
-		outputOptions.modulesSort = value;
-	});
-
-	ifArg("sort-chunks-by", function(value) {
-		outputOptions.chunksSort = value;
-	});
-
-	ifArg("sort-assets-by", function(value) {
-		outputOptions.assetsSort = value;
-	});
-
-	ifArg("display-exclude", function(value) {
-		outputOptions.exclude = value;
-	});
-
-	if (!outputOptions.json) {
-		if (typeof outputOptions.cached === "undefined")
-			outputOptions.cached = false;
-		if (typeof outputOptions.cachedAssets === "undefined")
-			outputOptions.cachedAssets = false;
-
-		ifArg("display-chunks", function(bool) {
-			outputOptions.modules = !bool;
-			outputOptions.chunks = bool;
-		});
-
-		ifArg("display-entrypoints", function(bool) {
-			outputOptions.entrypoints = bool;
-		});
-
-		ifArg("display-reasons", function(bool) {
-			outputOptions.reasons = bool;
-		});
-
-		ifArg("display-depth", function(bool) {
-			outputOptions.depth = bool;
-		});
-
-		ifArg("display-used-exports", function(bool) {
-			outputOptions.usedExports = bool;
-		});
-
-		ifArg("display-provided-exports", function(bool) {
-			outputOptions.providedExports = bool;
-		});
-
-		ifArg("display-error-details", function(bool) {
-			outputOptions.errorDetails = bool;
-		});
-
-		ifArg("display-origins", function(bool) {
-			outputOptions.chunkOrigins = bool;
-		});
-
-		ifArg("display-max-modules", function(value) {
-			outputOptions.maxModules = value;
-		});
-
-		ifArg("display-cached", function(bool) {
-			if (bool) outputOptions.cached = true;
-		});
-
-		ifArg("display-cached-assets", function(bool) {
-			if (bool) outputOptions.cachedAssets = true;
-		});
-
-		if (!outputOptions.exclude)
-			outputOptions.exclude = [
-				"node_modules",
-				"bower_components",
-				"components"
-			];
-
-		if (argv["display-modules"]) {
-			outputOptions.maxModules = Infinity;
-			outputOptions.exclude = undefined;
-		}
-	} else {
-		if (typeof outputOptions.chunks === "undefined")
-			outputOptions.chunks = true;
-		if (typeof outputOptions.entrypoints === "undefined")
-			outputOptions.entrypoints = true;
-		if (typeof outputOptions.modules === "undefined")
-			outputOptions.modules = true;
-		if (typeof outputOptions.chunkModules === "undefined")
-			outputOptions.chunkModules = true;
-		if (typeof outputOptions.reasons === "undefined")
-			outputOptions.reasons = true;
-		if (typeof outputOptions.cached === "undefined")
-			outputOptions.cached = true;
-		if (typeof outputOptions.cachedAssets === "undefined")
-			outputOptions.cachedAssets = true;
+	if (argv.verbose) {
+		argv["display"] = "verbose";
 	}
 
-	ifArg("hide-modules", function(bool) {
-		if (bool) {
-			outputOptions.modules = false;
-			outputOptions.chunkModules = false;
-		}
-	});
+	var options = require("./convert-argv")(yargs, argv);
 
-	var webpack = require("webpack/lib/webpack.js");
-
-	Error.stackTraceLimit = 30;
-	var lastHash = null;
-	var compiler;
-	try {
-		compiler = webpack(options);
-	} catch (e) {
-		var WebpackOptionsValidationError = require("webpack/lib/WebpackOptionsValidationError");
-		if (e instanceof WebpackOptionsValidationError) {
-			if (argv.color)
-				console.error(
-					"\u001b[1m\u001b[31m" + e.message + "\u001b[39m\u001b[22m"
-				);
-			else console.error(e.message);
-			process.exitCode = 1;
+	function ifArg(name, fn, init) {
+		if (Array.isArray(argv[name])) {
+			if (init) init();
+			argv[name].forEach(fn);
+		} else if (typeof argv[name] !== "undefined") {
+			if (init) init();
+			fn(argv[name], -1);
 		}
-		throw e;
 	}
 
-	if (argv.progress) {
-		var ProgressPlugin = require("webpack/lib/ProgressPlugin");
-		compiler.apply(
-			new ProgressPlugin({
-				profile: argv.profile
-			})
-		);
-	}
+	function processOptions(options) {
+		// process Promise
+		if (typeof options.then === "function") {
+			options.then(processOptions).catch(function(err) {
+				console.error(err.stack || err);
+				process.exit(1); // eslint-disable-line
+			});
+			return;
+		}
 
-	function compilerCallback(err, stats) {
-		if (!options.watch || err) {
-			// Do not keep cache anymore
-			compiler.purgeInputFileSystem();
+		var firstOptions = [].concat(options)[0];
+		var statsPresetToOptions = require("webpack/lib/Stats.js").presetToOptions;
+
+		var outputOptions = options.stats;
+		if (
+			typeof outputOptions === "boolean" ||
+			typeof outputOptions === "string"
+		) {
+			outputOptions = statsPresetToOptions(outputOptions);
+		} else if (!outputOptions) {
+			outputOptions = {};
 		}
-		if (err) {
-			lastHash = null;
-			console.error(err.stack || err);
-			if (err.details) console.error(err.details);
-			process.exitCode = 1;
+
+		ifArg("display", function(preset) {
+			outputOptions = statsPresetToOptions(preset);
+		});
+
+		outputOptions = Object.create(outputOptions);
+		if (Array.isArray(options) && !outputOptions.children) {
+			outputOptions.children = options.map(o => o.stats);
 		}
-		if (outputOptions.json) {
-			process.stdout.write(
-				JSON.stringify(stats.toJson(outputOptions), null, 2) + "\n"
+		if (typeof outputOptions.context === "undefined")
+			outputOptions.context = firstOptions.context;
+
+		ifArg("json", function(bool) {
+			if (bool) outputOptions.json = bool;
+		});
+
+		if (typeof outputOptions.colors === "undefined")
+			outputOptions.colors = require("supports-color");
+
+		ifArg("sort-modules-by", function(value) {
+			outputOptions.modulesSort = value;
+		});
+
+		ifArg("sort-chunks-by", function(value) {
+			outputOptions.chunksSort = value;
+		});
+
+		ifArg("sort-assets-by", function(value) {
+			outputOptions.assetsSort = value;
+		});
+
+		ifArg("display-exclude", function(value) {
+			outputOptions.exclude = value;
+		});
+
+		if (!outputOptions.json) {
+			if (typeof outputOptions.cached === "undefined")
+				outputOptions.cached = false;
+			if (typeof outputOptions.cachedAssets === "undefined")
+				outputOptions.cachedAssets = false;
+
+			ifArg("display-chunks", function(bool) {
+				if (bool) {
+					outputOptions.modules = false;
+					outputOptions.chunks = true;
+					outputOptions.chunkModules = true;
+				}
+			});
+
+			ifArg("display-entrypoints", function(bool) {
+				if (bool) outputOptions.entrypoints = true;
+			});
+
+			ifArg("display-reasons", function(bool) {
+				if (bool) outputOptions.reasons = true;
+			});
+
+			ifArg("display-depth", function(bool) {
+				if (bool) outputOptions.depth = true;
+			});
+
+			ifArg("display-used-exports", function(bool) {
+				if (bool) outputOptions.usedExports = true;
+			});
+
+			ifArg("display-provided-exports", function(bool) {
+				if (bool) outputOptions.providedExports = true;
+			});
+
+			ifArg("display-optimization-bailout", function(bool) {
+				if (bool) outputOptions.optimizationBailout = bool;
+			});
+
+			ifArg("display-error-details", function(bool) {
+				if (bool) outputOptions.errorDetails = true;
+			});
+
+			ifArg("display-origins", function(bool) {
+				if (bool) outputOptions.chunkOrigins = true;
+			});
+
+			ifArg("display-max-modules", function(value) {
+				outputOptions.maxModules = +value;
+			});
+
+			ifArg("display-cached", function(bool) {
+				if (bool) outputOptions.cached = true;
+			});
+
+			ifArg("display-cached-assets", function(bool) {
+				if (bool) outputOptions.cachedAssets = true;
+			});
+
+			if (!outputOptions.exclude)
+				outputOptions.exclude = [
+					"node_modules",
+					"bower_components",
+					"components"
+				];
+
+			if (argv["display-modules"]) {
+				outputOptions.maxModules = Infinity;
+				outputOptions.exclude = undefined;
+				outputOptions.modules = true;
+			}
+		}
+
+		ifArg("hide-modules", function(bool) {
+			if (bool) {
+				outputOptions.modules = false;
+				outputOptions.chunkModules = false;
+			}
+		});
+
+		var webpack = require("webpack/lib/webpack.js");
+
+		Error.stackTraceLimit = 30;
+		var lastHash = null;
+		var compiler;
+		try {
+			compiler = webpack(options);
+		} catch (e) {
+			var WebpackOptionsValidationError = require("webpack/lib/WebpackOptionsValidationError");
+			if (e instanceof WebpackOptionsValidationError) {
+				if (argv.color)
+					console.error(
+						"\u001b[1m\u001b[31m" + e.message + "\u001b[39m\u001b[22m"
+					);
+				else console.error(e.message);
+				process.exit(1); // eslint-disable-line no-process-exit
+			}
+			throw e;
+		}
+		if (argv.progress) {
+			var ProgressPlugin = require("webpack/lib/ProgressPlugin");
+			compiler.apply(
+				new ProgressPlugin({
+					profile: argv.profile
+				})
 			);
-		} else if (stats.hash !== lastHash) {
-			lastHash = stats.hash;
-			process.stdout.write(stats.toString(outputOptions) + "\n");
 		}
-		if (!options.watch && stats.hasErrors()) {
-			process.on("exit", function() {
+
+		function compilerCallback(err, stats) {
+			if (!options.watch || err) {
+				// Do not keep cache anymore
+				compiler.purgeInputFileSystem();
+			}
+			if (err) {
+				lastHash = null;
+				console.error(err.stack || err);
+				if (err.details) console.error(err.details);
+				process.exit(1); // eslint-disable-line
+			}
+			if (outputOptions.json) {
+				process.stdout.write(
+					JSON.stringify(stats.toJson(outputOptions), null, 2) + "\n"
+				);
+			} else if (stats.hash !== lastHash) {
+				lastHash = stats.hash;
+				var statsString = stats.toString(outputOptions);
+				if (statsString) process.stdout.write(statsString + "\n");
+			}
+			if (!options.watch && stats.hasErrors()) {
 				process.exitCode = 2;
-			});
+			}
 		}
+		if (firstOptions.watch || options.watch) {
+			var watchOptions =
+				firstOptions.watchOptions || firstOptions.watch || options.watch || {};
+			if (watchOptions.stdin) {
+				process.stdin.on("end", function() {
+					process.exit(); // eslint-disable-line
+				});
+				process.stdin.resume();
+			}
+			compiler.watch(watchOptions, compilerCallback);
+			console.log("\nWebpack is watching the files…\n");
+		} else compiler.run(compilerCallback);
 	}
-	if (firstOptions.watch || options.watch) {
-		var watchOptions =
-			firstOptions.watchOptions || firstOptions.watch || options.watch || {};
-		if (watchOptions.stdin) {
-			process.stdin.on("end", function() {
-				process.exitCode = 0;
-			});
-			process.stdin.resume();
-		}
-		compiler.watch(watchOptions, compilerCallback);
-		console.log("\nWebpack is watching the files…\n");
-	} else compiler.run(compilerCallback);
-}
+
+	processOptions(options);
+});

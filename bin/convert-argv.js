@@ -1,9 +1,8 @@
-"use strict";
-
 var path = require("path");
 var fs = require("fs");
 fs.existsSync = fs.existsSync || path.existsSync;
 var interpret = require("interpret");
+var prepareOptions = require("./prepareOptions");
 
 module.exports = function(yargs, argv, convertOptions) {
 	var options = [];
@@ -20,7 +19,7 @@ module.exports = function(yargs, argv, convertOptions) {
 		argv["optimize-minimize"] = true;
 		argv["define"] = []
 			.concat(argv["define"] || [])
-			.concat("process.env.NODE_ENV='production'");
+			.concat("process.env.NODE_ENV=\"production\"");
 	}
 
 	var configFileLoaded = false;
@@ -103,14 +102,7 @@ module.exports = function(yargs, argv, convertOptions) {
 
 		var requireConfig = function requireConfig(configPath) {
 			var options = require(configPath);
-			var isES6DefaultExportedFunc =
-				typeof options === "object" &&
-				options !== null &&
-				typeof options.default === "function";
-			if (typeof options === "function" || isES6DefaultExportedFunc) {
-				options = isES6DefaultExportedFunc ? options.default : options;
-				options = options(argv.env, argv);
-			}
+			options = prepareOptions(options, argv);
 			return options;
 		};
 
@@ -134,7 +126,7 @@ module.exports = function(yargs, argv, convertOptions) {
 			console.error(
 				"Config did not export an object or a function returning an object."
 			);
-			process.exit(-1);
+			process.exit(-1); // eslint-disable-line
 		}
 
 		// process Promise
@@ -145,6 +137,22 @@ module.exports = function(yargs, argv, convertOptions) {
 		// process ES6 default
 		if (typeof options === "object" && typeof options.default === "object") {
 			return processConfiguredOptions(options.default);
+		}
+
+		// filter multi-config by name
+		if (Array.isArray(options) && argv["config-name"]) {
+			var namedOptions = options.filter(function(opt) {
+				return opt.name === argv["config-name"];
+			});
+			if (namedOptions.length === 0) {
+				console.error(
+					"Configuration with name '" + argv["config-name"] + "' was not found."
+				);
+				process.exit(-1); // eslint-disable-line
+			} else if (namedOptions.length === 1) {
+				return processConfiguredOptions(namedOptions[0]);
+			}
+			options = namedOptions;
 		}
 
 		if (Array.isArray(options)) {
@@ -169,11 +177,12 @@ module.exports = function(yargs, argv, convertOptions) {
 			options.watchOptions.aggregateTimeout = +argv["watch-aggregate-timeout"];
 		}
 
-		if (argv["watch-poll"]) {
+		if (typeof argv["watch-poll"] !== undefined) {
 			options.watchOptions = options.watchOptions || {};
-			if (typeof argv["watch-poll"] !== "boolean")
+			if (argv["watch-poll"] === "true" || argv["watch-poll"] === "")
+				options.watchOptions.poll = true;
+			else if (!isNaN(argv["watch-poll"]))
 				options.watchOptions.poll = +argv["watch-poll"];
-			else options.watchOptions.poll = true;
 		}
 
 		if (argv["watch-stdin"]) {
@@ -233,21 +242,22 @@ module.exports = function(yargs, argv, convertOptions) {
 		}
 
 		function mapArgToBoolean(name, optionName) {
+			if (options[optionName || name]) {
+				options[name] = true;
+			}
+			//eslint-disable-next-line
+			if (name && options[name] == true) {
+				return;
+			}
 			ifArg(name, function(bool) {
 				if (bool === true) options[optionName || name] = true;
 				else if (bool === false) options[optionName || name] = false;
 			});
 		}
-		//eslint-disable-next-line
-		function mapArgToPath(name, optionName) {
-			ifArg(name, function(str) {
-				options[optionName || name] = path.resolve(str);
-			});
-		}
 
 		function loadPlugin(name) {
 			var loadUtils = require("loader-utils");
-			var args = null;
+			var args;
 			try {
 				var p = name && name.indexOf("?");
 				if (p > -1) {
@@ -256,7 +266,7 @@ module.exports = function(yargs, argv, convertOptions) {
 				}
 			} catch (e) {
 				console.log("Invalid plugin arguments " + name + " (" + e + ").");
-				process.exit(-1);
+				process.exit(-1); // eslint-disable-line
 			}
 
 			var path;
@@ -265,7 +275,7 @@ module.exports = function(yargs, argv, convertOptions) {
 				path = resolve.sync(process.cwd(), name);
 			} catch (e) {
 				console.log("Cannot resolve plugin " + name + ".");
-				process.exit(-1);
+				process.exit(-1); // eslint-disable-line
 			}
 			var Plugin;
 			try {
@@ -297,14 +307,21 @@ module.exports = function(yargs, argv, convertOptions) {
 		ifArgPair(
 			"entry",
 			function(name, entry) {
-				options.entry[name] = entry;
+				if (
+					typeof options.entry[name] !== "undefined" &&
+					options.entry[name] !== null
+				) {
+					options.entry[name] = [].concat(options.entry[name]).concat(entry);
+				} else {
+					options.entry[name] = entry;
+				}
 			},
 			function() {
 				ensureObject(options, "entry");
 			}
 		);
 
-		function bindLoaders(arg, collection) {
+		function bindRules(arg) {
 			ifArgPair(
 				arg,
 				function(name, binding) {
@@ -312,28 +329,31 @@ module.exports = function(yargs, argv, convertOptions) {
 						name = binding;
 						binding += "-loader";
 					}
-					options.module[collection].push({
+					var rule = {
+						/* eslint-disable no-useless-escape */
 						test: new RegExp(
 							"\\." +
-								// eslint thinks that the escapes are useless,
-								// however, when testing them, the special regex chars
-								// mess up with the regex we want to use to check.
-								// eslint-disable-next-line
 								name.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") +
 								"$"
-						),
+						) /* eslint-enable no-useless-escape */,
 						loader: binding
-					});
+					};
+					if (arg === "module-bind-pre") {
+						rule.enforce = "pre";
+					} else if (arg === "module-bind-post") {
+						rule.enforce = "post";
+					}
+					options.module.rules.push(rule);
 				},
 				function() {
 					ensureObject(options, "module");
-					ensureArray(options.module, collection);
+					ensureArray(options.module, "rules");
 				}
 			);
 		}
-		bindLoaders("module-bind", "loaders");
-		bindLoaders("module-bind-pre", "preLoaders");
-		bindLoaders("module-bind-post", "postLoaders");
+		bindRules("module-bind");
+		bindRules("module-bind-pre");
+		bindRules("module-bind-post");
 
 		var defineObject;
 		ifArgPair(
@@ -357,7 +377,7 @@ module.exports = function(yargs, argv, convertOptions) {
 
 		ifArg("output-path", function(value) {
 			ensureObject(options, "output");
-			options.output.path = value;
+			options.output.path = path.resolve(value);
 		});
 
 		ifArg("output-filename", function(value) {
@@ -502,7 +522,7 @@ module.exports = function(yargs, argv, convertOptions) {
 
 		ifArg("prefetch", function(request) {
 			ensureArray(options, "plugins");
-			var PrefetchPlugin = require("webpack/PrefetchPlugin");
+			var PrefetchPlugin = require("webpack/lib/PrefetchPlugin");
 			options.plugins.push(new PrefetchPlugin(request));
 		});
 
@@ -516,14 +536,8 @@ module.exports = function(yargs, argv, convertOptions) {
 			} else {
 				name = value;
 			}
-			var ProvidePlugin = require("webpack/ProvidePlugin");
+			var ProvidePlugin = require("webpack/lib/ProvidePlugin");
 			options.plugins.push(new ProvidePlugin(name, value));
-		});
-
-		ifBooleanArg("labeled-modules", function() {
-			ensureArray(options, "plugins");
-			var LabeledModulesPlugin = require("webpack/lib/dependencies/LabeledModulesPlugin");
-			options.plugins.push(new LabeledModulesPlugin());
 		});
 
 		ifArg("plugin", function(value) {
@@ -534,15 +548,18 @@ module.exports = function(yargs, argv, convertOptions) {
 		mapArgToBoolean("bail");
 
 		mapArgToBoolean("profile");
-
 		if (noOutputFilenameDefined) {
 			ensureObject(options, "output");
 			if (convertOptions && convertOptions.outputFilename) {
-				options.output.path = path.dirname(convertOptions.outputFilename);
+				options.output.path = path.resolve(
+					path.dirname(convertOptions.outputFilename)
+				);
 				options.output.filename = path.basename(convertOptions.outputFilename);
 			} else if (argv._.length > 0) {
 				options.output.filename = argv._.pop();
-				options.output.path = path.dirname(options.output.filename);
+				options.output.path = path.resolve(
+					path.dirname(options.output.filename)
+				);
 				options.output.filename = path.basename(options.output.filename);
 			} else if (configFileLoaded) {
 				throw new Error(
@@ -556,7 +573,7 @@ module.exports = function(yargs, argv, convertOptions) {
 					"A configuration file could be named 'webpack.config.js' in the current directory."
 				);
 				console.error("Use --help to display the CLI options.");
-				process.exit(-1);
+				process.exit(-1); // eslint-disable-line
 			}
 		}
 
@@ -584,7 +601,12 @@ module.exports = function(yargs, argv, convertOptions) {
 				if (i < 0 || (j >= 0 && j < i)) {
 					var resolved = path.resolve(content);
 					if (fs.existsSync(resolved)) {
-						addTo("main", resolved);
+						addTo(
+							"main",
+							`${resolved}${fs.statSync(resolved).isDirectory()
+								? path.sep
+								: ""}`
+						);
 					} else {
 						addTo("main", content);
 					}
@@ -609,7 +631,7 @@ module.exports = function(yargs, argv, convertOptions) {
 				);
 			}
 			console.error("Use --help to display the CLI options.");
-			process.exit(-1);
+			process.exit(-1); // eslint-disable-line
 		}
 	}
 };
