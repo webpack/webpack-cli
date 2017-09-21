@@ -17,5 +17,7 @@ before_script:
   - bash <(curl -s https://codecov.io/bash)
 
 script:
+  - npm run prepublish
+  - npm run test:cli
   - npm run lint
   - npm run test
