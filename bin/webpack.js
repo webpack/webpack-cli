@@ -12,7 +12,7 @@ var localCLI = resolveCwd.silent("webpack-cli/bin/webpack");
 if (process.argv.slice(2).includes("init")) {
 	const initPkgs =
 		process.argv.slice(2).length === 1 ? [] : [process.argv.slice(2).pop()];
-
+	//eslint-disable-next-line
 	return require("../dist/initialize")(initPkgs);
 } else if (process.argv.slice(2).includes("migrate")) {
 	const filePaths =
@@ -21,7 +21,7 @@ if (process.argv.slice(2).includes("init")) {
 		throw new Error("Please specify a path to your webpack config");
 	}
 	const inputConfigPath = path.resolve(process.cwd(), filePaths[0]);
-
+	//eslint-disable-next-line
 	return require("../dist/migrate.js")(inputConfigPath, inputConfigPath);
 }
 if (localCLI && path.relative(localCLI, __filename) !== "") {
