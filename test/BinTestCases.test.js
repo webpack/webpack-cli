@@ -1,7 +1,6 @@
 /* globals describe it before */
 "use strict";
 
-const should = require("should");
 const path = require("path");
 const fs = require("fs");
 const spawn = require("child_process").spawn;
@@ -52,7 +51,7 @@ describe("BinTestCases", function() {
 			category.tests.forEach(function(testName) {
 				const testDirectory = path.join(casesPath, category.name, testName);
 				const testArgs = getTestSpecificArguments(testDirectory) || defaultArgs;
-				const testAssertions = require(path.join(testDirectory, "test.js"));
+				const testAssertions = require(path.join(testDirectory, "stdin.js"));
 				const outputPath = path.join(
 					path.resolve(casesPath, "../js/bin"),
 					category.name,
@@ -74,8 +73,8 @@ describe("BinTestCases", function() {
 
 				if (asyncExists) {
 					describe(testName, function() {
-						it("should run successfully", function(done) {
-							this.timeout(10000);
+						test("should run successfully", function(done) {
+							jest.setTimeout(10000);
 							const child = spawn(process.execPath, [cmd].concat(args), opts);
 							child.on("close", function(code) {
 								env.code = code;
@@ -106,8 +105,8 @@ describe("BinTestCases", function() {
 					});
 				} else {
 					describe(testName, function() {
-						before(function(done) {
-							this.timeout(20000);
+						beforeEach(function(done) {
+							jest.setTimeout(20000);
 
 							const child = spawn(process.execPath, [cmd].concat(args), opts);
 
@@ -129,11 +128,11 @@ describe("BinTestCases", function() {
 							});
 						});
 
-						it("should not cause any errors", function() {
-							should(env.error).be.empty();
+						test("should not cause any errors", function() {
+							expect(env.error).toHaveLength(0);
 						});
 
-						it("should run successfully", function() {
+						test("should run successfully", function() {
 							const stdout = convertToArrayOfLines(env.stdout);
 							const stderr = convertToArrayOfLines(env.stderr);
 							testAssertions(env.code, stdout, stderr);
