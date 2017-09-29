@@ -1,0 +1,11 @@
+[ignore]
+
+[include]
+
+[libs]
+flow-typed
+
+[options]
+module.system.node.resolve_dirname=./lib/
+module.system.node.resolve_dirname=node_modules
+experimental.const_params=false
