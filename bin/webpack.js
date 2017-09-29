@@ -159,11 +159,11 @@ if (argv.verbose) {
 	argv["display-cached"] = true;
 	argv["display-cached-assets"] = true;
 }
-if (argv._.includes("init")) {
+if (argv._.indexOf("init") >= 0) {
 	const initPkgs = argv._.length === 1 ? [] : [argv._.pop()];
 
 	return require("../lib/initialize")(initPkgs);
-} else if (argv._.includes("migrate")) {
+} else if (argv._.indexOf("migrate") >= 0) {
 	const filePaths = argv._.length === 1 ? [] : [argv._.pop()];
 	if (!filePaths.length) {
 		throw new Error("Please specify a path to your webpack config");
@@ -171,6 +171,10 @@ if (argv._.includes("init")) {
 	const inputConfigPath = path.resolve(process.cwd(), filePaths[0]);
 
 	return require("../lib/migrate.js")(inputConfigPath, inputConfigPath);
+} else if (argv._.indexOf("generate-loader") >= 0) {
+	return require("../lib/generate-loader/index.js")();
+} else if (argv._.indexOf("generate-plugin") >= 0) {
+	return require("../lib/generate-plugin/index.js")();
 } else {
 	var options = require("./convert-argv")(yargs, argv);
 
