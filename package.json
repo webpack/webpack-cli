@@ -32,9 +32,7 @@
   },
   "jest": {
     "testEnvironment": "node",
-    "modulePathIgnorePatterns": [
-      "dist"
-    ]
+     "modulePathIgnorePatterns": ["dist"]
   },
   "dependencies": {
     "babel-code-frame": "^6.22.0",
