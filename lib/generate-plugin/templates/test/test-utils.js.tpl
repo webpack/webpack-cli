@@ -44,7 +44,7 @@ function getLoader(withOptions) {
  * @returns {Object|Array} - Returns an object or array of objects representing the webpack configuration options
  */
 function getExampleConfig(exampleName) {
-	return require(`../examples/${exampleName}/webpack.config.js`); //eslint-disable-line
+	return require(`../examples/${exampleName}/webpack.config.js`);
 }
 
 /**

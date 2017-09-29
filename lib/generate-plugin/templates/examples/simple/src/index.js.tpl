@@ -4,8 +4,8 @@ const getLazyModule = () => System.import('./lazy-module');
 
 setTimeout(() => {
   getLazyModule.then((modDefault) => {
-    console.log(modDefault); //eslint-disable-line
+    console.log(modDefault);
   });
 }, 300);
 
-console.log(esmModule); //eslint-disable-line
+console.log(esmModule);

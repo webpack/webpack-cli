@@ -13,7 +13,7 @@ test('should append transformations to JavaScript module', async () => {
 	const buildStats = await runWebpackExampleInMemory('simple');
 	const { modules } = buildStats;
 
-	const moduleToTest = modules[0].source()._source._value; //eslint-disable-line
+	const moduleToTest = modules[0].source()._source._value;
 	const loadedString = '* Original Source From Loader';
 
 	expect(moduleToTest).toEqual(expect.stringContaining(loadedString));
