@@ -27,6 +27,7 @@ if (process.argv.slice(2).indexOf("init") >= 0) {
 	return require("../lib/generate-loader/index.js")();
 } else if (process.argv.slice(2).indexOf("generate-plugin") >= 0) {
 	return require("../lib/generate-plugin/index.js")();
+}
 if (localCLI && path.relative(localCLI, __filename) !== "") {
 	return require(localCLI);
 } else {
