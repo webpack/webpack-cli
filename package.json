@@ -21,7 +21,7 @@
     "lint:codeOnly": "eslint \"{lib,bin,__mocks__}/**/!(__testfixtures__)/*.js\" \"{lib,bin,__mocks__}/**.js\"",
     "precommit": "lint-staged",
     "prepublish": "flow-remove-types lib/ -d dist/",
-    "postinstall": "flow-remove-types lib/ -d dist/",
+    "postinstall": "node ./node_modules/flow-remove-types/flow-remove-types lib/ -d dist/",
     "pretest": "npm run lint",
     "test": "jest --coverage"
   },
