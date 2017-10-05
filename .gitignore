@@ -14,3 +14,9 @@ yarn-error.log
 
 # Jest Coverage
 coverage
+
+# Dist build
+dist
+
+# Test Compilation
+test/js/*

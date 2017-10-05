@@ -17,8 +17,10 @@
   },
   "scripts": {
     "lint": "eslint \"**/*.js\"",
+    "format": "prettier-eslint \"bin/**/**/*.js\" --write && prettier-eslint \"lib/**/**/*.js\" --write && prettier-eslint \"test/**/**/*.js\" --write",
     "lint:codeOnly": "eslint \"{lib,bin,__mocks__}/**/!(__testfixtures__)/*.js\" \"{lib,bin,__mocks__}/**.js\"",
     "precommit": "lint-staged",
+    "prepublish": "flow-remove-types lib/ -d dist/",
     "pretest": "npm run lint",
     "test": "jest --coverage"
   },
@@ -29,7 +31,8 @@
     ]
   },
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+     "modulePathIgnorePatterns": ["dist"]
   },
   "dependencies": {
     "babel-code-frame": "^6.22.0",
@@ -39,11 +42,11 @@
     "chalk": "^2.0.1",
     "cross-spawn": "^5.1.0",
     "diff": "^3.3.0",
-    "enhanced-resolve": "^3.3.0",
+    "enhanced-resolve": "^3.4.1",
     "global-modules": "^1.0.0",
     "got": "^7.1.0",
     "inquirer": "^3.2.0",
-    "interpret": "^1.0.3",
+    "interpret": "^1.0.4",
     "jscodeshift": "^0.3.32",
     "listr": "^0.12.0",
     "loader-utils": "^1.1.0",
@@ -53,12 +56,13 @@
     "p-lazy": "^1.0.0",
     "prettier": "^1.5.3",
     "recast": "git://github.com/kalcifer/recast.git#bug/allowbreak",
+    "resolve-cwd": "^2.0.0",
     "rx": "^4.1.0",
-    "supports-color": "^4.2.0",
-    "webpack": "^3.3.0",
+    "supports-color": "^4.4.0",
+    "webpack": "^3.6.0",
     "webpack-addons": "1.1.2",
     "webpack-addons-ylvis": "0.0.34",
-    "yargs": "^8.0.2",
+    "yargs": "^9.0.1",
     "yeoman-environment": "^2.0.0",
     "yeoman-generator": "git://github.com/ev1stensberg/generator.git#Feature-getArgument"
   },
@@ -72,8 +76,10 @@
     "eslint": "^4.2.0",
     "eslint-plugin-node": "^5.1.0",
     "husky": "^0.14.3",
-    "jest": "^20.0.4",
-    "jest-cli": "^20.0.4",
-    "lint-staged": "^4.1.3"
+    "jest": "^21.1.0",
+    "jest-cli": "^21.1.0",
+    "lint-staged": "^4.1.3",
+    "prettier-eslint-cli": "^4.3.2",
+    "should": "^13.1.0"
   }
 }
