@@ -13,7 +13,7 @@
   },
   "main": "./bin/webpack.js",
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=5.0.0"
   },
   "scripts": {
     "lint": "eslint \"**/*.js\"",
