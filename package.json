@@ -22,7 +22,8 @@
     "precommit": "lint-staged",
     "prepublish": "flow-remove-types lib/ -d dist/",
     "pretest": "npm run lint",
-    "test": "jest --coverage"
+    "test": "jest --coverage --runInBand --testPathPattern=lib",
+    "test:e2e": "jest --testPathPattern=e2e"
   },
   "lint-staged": {
     "{lib,bin,__mocks__}/**/!(__testfixtures__)/**.js": [

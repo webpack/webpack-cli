@@ -205,3 +205,12 @@ Run `git config user.email` to see your Git email, and verify it with [your GitH
 webpack is feature rich and documentation is a time sink. We
 greatly appreciate any time spent fixing typos or clarifying sections in the
 documentation.
+
+## Testing with Docker
+
+Make sure to have installed docker before you continue.
+
+```sh
+$ docker build -t webpack-cli .
+$ docker run webpack-cli
+```
