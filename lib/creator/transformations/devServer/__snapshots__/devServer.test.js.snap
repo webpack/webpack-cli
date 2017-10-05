@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`devServer transforms correctly using "devServer-0" data 1`] = `
+"module.exports = {
+    entry: 'index.js',
+
+    output: {
+		filename: 'bundle.js'
+	},
+
+    devServer: {
+        contentBase: path.join(__dirname, 'dist'),
+        compress: true,
+        port: 9000
+    }
+}
+"
+`;
+
+exports[`devServer transforms correctly using "devServer-1" data 1`] = `
+"module.exports = {
+    entry: 'index.js',
+
+    output: {
+		filename: 'bundle.js'
+	},
+
+    devServer: someVar
+}
+"
+`;
