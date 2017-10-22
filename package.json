@@ -1,6 +1,6 @@
 {
   "name": "webpack-cli",
-  "version": "1.3.3",
+  "version": "1.4.0",
   "description": "CLI for webpack & friends",
   "license": "MIT",
   "preferGlobal": true,
@@ -20,7 +20,6 @@
     "format": "prettier-eslint \"bin/**/**/*.js\" --write && prettier-eslint \"lib/**/**/*.js\" --write && prettier-eslint \"test/**/**/*.js\" --write",
     "lint:codeOnly": "eslint \"{lib,bin,__mocks__}/**/!(__testfixtures__)/*.js\" \"{lib,bin,__mocks__}/**.js\"",
     "precommit": "lint-staged",
-    "prepublish": "flow-remove-types lib/ -d dist/",
     "pretest": "npm run lint",
     "test": "jest --coverage"
   },
