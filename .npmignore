@@ -8,3 +8,8 @@ lib
 .editorconfig
 .eslintignore
 __mocks__
+__testfixtures__
+*.test.js
+*.input.js
+types.js
+*.spec.js
