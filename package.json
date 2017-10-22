@@ -1,6 +1,6 @@
 {
   "name": "webpack-cli",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "CLI for webpack & friends",
   "license": "MIT",
   "preferGlobal": true,
@@ -13,13 +13,15 @@
   },
   "main": "./bin/webpack.js",
   "engines": {
-    "node": ">=5.0.0"
+    "node": ">=4.0.0"
   },
   "scripts": {
     "lint": "eslint \"**/*.js\"",
     "format": "prettier-eslint \"bin/**/**/*.js\" --write && prettier-eslint \"lib/**/**/*.js\" --write && prettier-eslint \"test/**/**/*.js\" --write",
+    "format:dist": "prettier-eslint \"dist/**/**/*.js\" --write",
     "lint:codeOnly": "eslint \"{lib,bin,__mocks__}/**/!(__testfixtures__)/*.js\" \"{lib,bin,__mocks__}/**.js\"",
     "precommit": "lint-staged",
+    "prepublish": "flow-remove-types lib/ -d dist/ && npm run format:dist",
     "pretest": "npm run lint",
     "test": "jest --coverage"
   },
@@ -30,7 +32,10 @@
     ]
   },
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "modulePathIgnorePatterns": [
+      "dist"
+    ]
   },
   "dependencies": {
     "babel-code-frame": "^6.22.0",
@@ -71,8 +76,12 @@
     "babel-eslint": "^7.2.3",
     "babel-jest": "^20.0.3",
     "babel-polyfill": "^6.23.0",
+    "babel-preset-flow": "^6.23.0",
     "eslint": "^4.2.0",
+    "eslint-plugin-flowtype": "^2.35.1",
     "eslint-plugin-node": "^5.1.0",
+    "flow-bin": "^0.49.1",
+    "flow-remove-types": "^1.2.1",
     "husky": "^0.14.3",
     "jest": "^21.1.0",
     "jest-cli": "^21.1.0",

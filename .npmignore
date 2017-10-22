@@ -1,0 +1,15 @@
+test
+coverage
+lib
+.travis.yml
+.eslintrc*
+.fitcommitjsrc.json
+.vscode
+.editorconfig
+.eslintignore
+__mocks__
+__testfixtures__
+*.test.js
+*.input.js
+types.js
+*.spec.js
