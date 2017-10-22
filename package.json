@@ -13,14 +13,15 @@
   },
   "main": "./bin/webpack.js",
   "engines": {
-    "node": ">=5.0.0"
+    "node": ">=4.0.0"
   },
   "scripts": {
     "lint": "eslint \"**/*.js\"",
     "format": "prettier-eslint \"bin/**/**/*.js\" --write && prettier-eslint \"lib/**/**/*.js\" --write && prettier-eslint \"test/**/**/*.js\" --write",
+    "format:dist": "prettier-eslint \"dist/**/**/*.js\" --write",
     "lint:codeOnly": "eslint \"{lib,bin,__mocks__}/**/!(__testfixtures__)/*.js\" \"{lib,bin,__mocks__}/**.js\"",
     "precommit": "lint-staged",
-    "prepublish": "flow-remove-types lib/ -d dist/",
+    "prepublish": "flow-remove-types lib/ -d dist/ && npm run format:dist",
     "pretest": "npm run lint",
     "test": "jest --coverage"
   },

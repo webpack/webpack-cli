@@ -9,24 +9,19 @@ var resolveCwd = require("resolve-cwd");
 // Local version replace global one
 var localCLI = resolveCwd.silent("webpack-cli/bin/webpack");
 
-if (process.argv.slice(2).indexOf("init") >= 0) {
-	const initPkgs =
-		process.argv.slice(2).length === 1 ? [] : [process.argv.slice(2).pop()];
-	//eslint-disable-next-line
-	return require("../dist/initialize")(initPkgs);
-} else if (process.argv.slice(2).indexOf("migrate") >= 0) {
-	const filePaths =
-		process.argv.slice(2).length === 1 ? [] : [process.argv.slice(2).pop()];
-	if (!filePaths.length) {
-		throw new Error("Please specify a path to your webpack config");
-	}
-	const inputConfigPath = path.resolve(process.cwd(), filePaths[0]);
-	//eslint-disable-next-line
-	return require("../dist/migrate.js")(inputConfigPath, inputConfigPath);
-} else if (process.argv.slice(2).indexOf("generate-loader") >= 0) {
-	return require("../lib/generate-loader/index.js")();
-} else if (process.argv.slice(2).indexOf("generate-plugin") >= 0) {
-	return require("../lib/generate-plugin/index.js")();
+const NON_COMPILATION_ARGS = [
+	"init",
+	"migrate",
+	"generate-loader",
+	"generate-plugin"
+];
+
+const NON_COMPILATION_CMD = process.argv.find(arg => {
+	return NON_COMPILATION_ARGS.find(a => a === arg);
+});
+
+if (NON_COMPILATION_CMD) {
+	return require("../dist/index")(NON_COMPILATION_CMD, process.argv);
 }
 
 if (localCLI && path.relative(localCLI, __filename) !== "") {
