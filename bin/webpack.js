@@ -21,6 +21,7 @@ const NON_COMPILATION_CMD = process.argv.find(arg => {
 });
 
 if (NON_COMPILATION_CMD) {
+	// eslint-disable-next-line
 	return require("../dist/index")(NON_COMPILATION_CMD, process.argv);
 }
 
