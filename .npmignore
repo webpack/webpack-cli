@@ -1,0 +1,10 @@
+test
+coverage
+lib
+.travis.yml
+.eslintrc*
+.fitcommitjsrc.json
+.vscode
+.editorconfig
+.eslintignore
+__mocks__
