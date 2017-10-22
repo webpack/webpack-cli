@@ -1,6 +1,6 @@
 {
   "name": "webpack-cli",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "CLI for webpack & friends",
   "license": "MIT",
   "preferGlobal": true,
@@ -62,7 +62,7 @@
     "resolve-cwd": "^2.0.0",
     "rx": "^4.1.0",
     "supports-color": "^4.4.0",
-    "webpack": "^3.6.0",
+    "webpack": "^3.8.1",
     "webpack-addons": "1.1.2",
     "webpack-addons-ylvis": "0.0.34",
     "yargs": "^9.0.1",

@@ -67,7 +67,7 @@
 /* 0 */
 /***/ (function(module, exports) {
 
-throw new Error("Module parse failed: /Users/evenstensberg/Documents/webpack-cli/test/binCases/errors/parse/index.js Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| }\n| ");
+throw new Error("Module parse failed: Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| }\n| ");
 
 /***/ })
 /******/ ]);
