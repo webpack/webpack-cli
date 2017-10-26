@@ -64,7 +64,6 @@
     "supports-color": "^4.4.0",
     "webpack": "^3.8.1",
     "webpack-addons": "1.1.2",
-    "webpack-addons-ylvis": "0.0.34",
     "yargs": "^9.0.1",
     "yeoman-environment": "^2.0.0",
     "yeoman-generator": "git://github.com/ev1stensberg/generator.git#Feature-getArgument"
