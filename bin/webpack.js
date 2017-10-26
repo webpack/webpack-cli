@@ -4,7 +4,7 @@
 	MIT License http://www.opensource.org/licenses/mit-license.php
 	Author Tobias Koppers @sokra
 */
-var path = require("path");
+
 var resolveCwd = require("resolve-cwd");
 // Local version replace global one
 var localCLI = resolveCwd.silent("webpack-cli/bin/webpack");
@@ -25,11 +25,15 @@ if (NON_COMPILATION_CMD) {
 	return require("../dist/index")(NON_COMPILATION_CMD, process.argv);
 }
 
-if (localCLI && path.relative(localCLI, __filename) !== "") {
-	return require(localCLI);
-} else {
-	return require("webpack/bin/webpack");
+if (localCLI && localCLI !== __filename) {
+	try {
+		return require(localCLI);
+	} catch (err) {
+		console.error(`\n  ${err.message}`);
+		process.exit(1);
+	}
 }
+
 // eslint-disable-next-line
 var yargs = require("yargs").usage(
 	"webpack-cli " +
