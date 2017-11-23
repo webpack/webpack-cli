@@ -284,6 +284,7 @@ module.exports = function(yargs, argv, convertOptions) {
 				console.log("Cannot load plugin " + name + ". (" + path + ")");
 				throw e;
 			}
+
 			try {
 				return new Plugin(args);
 			} catch (e) {
@@ -302,6 +303,10 @@ module.exports = function(yargs, argv, convertOptions) {
 			if (!Array.isArray(parent[name])) {
 				parent[name] = [];
 			}
+		}
+		function addPlugin(options, plugin) {
+			ensureArray(options, "plugins");
+			options.plugins.unshift(plugin);
 		}
 
 		ifArgPair(
@@ -369,9 +374,8 @@ module.exports = function(yargs, argv, convertOptions) {
 				defineObject = {};
 			},
 			function() {
-				ensureArray(options, "plugins");
 				var DefinePlugin = require("webpack/lib/DefinePlugin");
-				options.plugins.push(new DefinePlugin(defineObject));
+				addPlugin(options, new DefinePlugin(defineObject));
 			}
 		);
 
@@ -440,15 +444,14 @@ module.exports = function(yargs, argv, convertOptions) {
 		mapArgToBoolean("cache");
 
 		ifBooleanArg("hot", function() {
-			ensureArray(options, "plugins");
 			var HotModuleReplacementPlugin = require("webpack/lib/HotModuleReplacementPlugin");
-			options.plugins.push(new HotModuleReplacementPlugin());
+			addPlugin(options, new HotModuleReplacementPlugin());
 		});
 
 		ifBooleanArg("debug", function() {
-			ensureArray(options, "plugins");
 			var LoaderOptionsPlugin = require("webpack/lib/LoaderOptionsPlugin");
-			options.plugins.push(
+			addPlugin(
+				options,
 				new LoaderOptionsPlugin({
 					debug: true
 				})
@@ -482,9 +485,9 @@ module.exports = function(yargs, argv, convertOptions) {
 		});
 
 		ifArg("optimize-max-chunks", function(value) {
-			ensureArray(options, "plugins");
 			var LimitChunkCountPlugin = require("webpack/lib/optimize/LimitChunkCountPlugin");
-			options.plugins.push(
+			addPlugin(
+				options,
 				new LimitChunkCountPlugin({
 					maxChunks: parseInt(value, 10)
 				})
@@ -492,9 +495,9 @@ module.exports = function(yargs, argv, convertOptions) {
 		});
 
 		ifArg("optimize-min-chunk-size", function(value) {
-			ensureArray(options, "plugins");
 			var MinChunkSizePlugin = require("webpack/lib/optimize/MinChunkSizePlugin");
-			options.plugins.push(
+			addPlugin(
+				options,
 				new MinChunkSizePlugin({
 					minChunkSize: parseInt(value, 10)
 				})
@@ -502,10 +505,10 @@ module.exports = function(yargs, argv, convertOptions) {
 		});
 
 		ifBooleanArg("optimize-minimize", function() {
-			ensureArray(options, "plugins");
 			var UglifyJsPlugin = require("webpack/lib/optimize/UglifyJsPlugin");
 			var LoaderOptionsPlugin = require("webpack/lib/LoaderOptionsPlugin");
-			options.plugins.push(
+			addPlugin(
+				options,
 				new UglifyJsPlugin({
 					sourceMap:
 						options.devtool &&
@@ -513,7 +516,8 @@ module.exports = function(yargs, argv, convertOptions) {
 							options.devtool.indexOf("source-map") >= 0)
 				})
 			);
-			options.plugins.push(
+			addPlugin(
+				options,
 				new LoaderOptionsPlugin({
 					minimize: true
 				})
@@ -521,13 +525,11 @@ module.exports = function(yargs, argv, convertOptions) {
 		});
 
 		ifArg("prefetch", function(request) {
-			ensureArray(options, "plugins");
 			var PrefetchPlugin = require("webpack/lib/PrefetchPlugin");
-			options.plugins.push(new PrefetchPlugin(request));
+			addPlugin(options, new PrefetchPlugin(request));
 		});
 
 		ifArg("provide", function(value) {
-			ensureArray(options, "plugins");
 			var idx = value.indexOf("=");
 			var name;
 			if (idx >= 0) {
@@ -537,12 +539,11 @@ module.exports = function(yargs, argv, convertOptions) {
 				name = value;
 			}
 			var ProvidePlugin = require("webpack/lib/ProvidePlugin");
-			options.plugins.push(new ProvidePlugin(name, value));
+			addPlugin(options, new ProvidePlugin(name, value));
 		});
 
 		ifArg("plugin", function(value) {
-			ensureArray(options, "plugins");
-			options.plugins.push(loadPlugin(value));
+			addPlugin(options, loadPlugin(value));
 		});
 
 		mapArgToBoolean("bail");
