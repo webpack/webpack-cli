@@ -1,145 +1,151 @@
-/* globals describe it before */
+/* globals describe it beforeEach */
 "use strict";
 
 const path = require("path");
 const fs = require("fs");
-const spawn = require("child_process").spawn;
+const child_process = require("child_process");
+
+function spawn(args, options) {
+	if(process.env.running_under_istanbul) {
+		args = ["--no-deprecation", require.resolve("istanbul/lib/cli.js"), "cover", "--report", "none", "--print", "none", "--include-pid", "--dir", path.resolve("coverage"), "--", require.resolve("webpack/test/helpers/exec-in-directory.js"), options.cwd].concat(args);
+		options = Object.assign({}, options, {
+			cwd: undefined
+		});
+	}
+	return child_process.spawn(process.execPath, ["--no-deprecation"].concat(args), options);
+}
 
 function loadOptsFile(optsPath) {
 	// Options file parser from Mocha
 	// https://github.com/mochajs/mocha/blob/2bb2b9fa35818db7a02e5068364b0c417436b1af/bin/options.js#L25-L31
-	return fs
-		.readFileSync(optsPath, "utf8")
+	return fs.readFileSync(optsPath, "utf8")
 		.replace(/\\\s/g, "%20")
 		.split(/\s/)
 		.filter(Boolean)
-		.map(function(value) {
-			return value.replace(/%20/g, " ");
-		});
+		.map((value) => value.replace(/%20/g, " "));
 }
 
 function getTestSpecificArguments(testDirectory) {
 	try {
 		return loadOptsFile(path.join(testDirectory, "test.opts"));
-	} catch (e) {
+	} catch(e) {
 		return null;
 	}
 }
 
 function convertToArrayOfLines(outputArray) {
-	if (outputArray.length === 0) return outputArray;
+	if(outputArray.length === 0) return outputArray;
 	return outputArray.join("").split("\n");
+}
+
+function findTestsRecursive(readPath) {
+	const entries = fs.readdirSync(readPath);
+	const isAnyTests = entries.indexOf("stdin.js") !== -1;
+
+	const folders = entries
+		.map(entry => path.join(readPath, entry))
+		.filter(entry => fs.statSync(entry).isDirectory());
+
+	const result = isAnyTests ? [readPath] : [];
+
+	return result.concat(folders.map(findTestsRecursive).reduce((acc, list) => acc.concat(list), []));
 }
 
 const casesPath = path.join(__dirname, "binCases");
 const defaultArgs = loadOptsFile(path.join(casesPath, "test.opts"));
 
 describe("BinTestCases", function() {
-	const categoryDirectories = fs.readdirSync(casesPath).filter(folder => {
-		return fs.statSync(path.join(casesPath, folder)).isDirectory();
-	});
+	const tests = findTestsRecursive(casesPath);
 
-	const categories = categoryDirectories.map(function(categoryDirectory) {
-		return {
-			name: categoryDirectory,
-			tests: fs.readdirSync(path.join(casesPath, categoryDirectory))
+	tests.forEach(testDirectory => {
+		const testName = testDirectory.replace(casesPath, "");
+		const testArgs = getTestSpecificArguments(testDirectory) || defaultArgs;
+		const testAssertions = require(path.join(testDirectory, "stdin.js"));
+		const outputPath = path.join(path.resolve(casesPath, "../js/bin"), testName);
+
+		const cmd = `${path.resolve(process.cwd(), "bin/webpack.js")}`;
+		const args = testArgs.concat(["--output-path", `${outputPath}`]);
+		const opts = {
+			cwd: path.resolve("./", testDirectory)
 		};
-	});
 
-	categories.forEach(function(category) {
-		describe(category.name, function() {
-			category.tests.forEach(function(testName) {
-				const testDirectory = path.join(casesPath, category.name, testName);
-				const testArgs = getTestSpecificArguments(testDirectory) || defaultArgs;
-				const testAssertions = require(path.join(testDirectory, "stdin.js"));
-				const outputPath = path.join(
-					path.resolve(casesPath, "../js/bin"),
-					category.name,
-					testName
-				);
+		const asyncExists = fs.existsSync(path.join(testDirectory, "async"));
 
-				const cmd = `${path.resolve(process.cwd(), "bin/webpack.js")}`;
-				const args = testArgs.concat(["--output-path", `${outputPath}`]);
-				const opts = {
-					cwd: path.resolve("./", testDirectory)
-				};
-				const asyncExists = fs.existsSync(path.join(testDirectory, "async"));
+		const env = {
+			stdout: [],
+			stderr: [],
+			error: []
+		};
 
-				const env = {
-					stdout: [],
-					stderr: [],
-					error: []
-				};
+		if(asyncExists) {
+			describe(testName, function() {
+				it("should run successfully", function(done) {
+					jest.setTimeout(10000);
+					const child = spawn([cmd].concat(args), opts);
 
-				if (asyncExists) {
-					describe(testName, function() {
-						test("should run successfully", function(done) {
-							jest.setTimeout(10000);
-							const child = spawn(process.execPath, [cmd].concat(args), opts);
-							child.on("close", function(code) {
-								env.code = code;
-							});
-
-							child.on("error", function(error) {
-								env.error.push(error);
-							});
-
-							child.stdout.on("data", data => {
-								env.stdout.push(data);
-							});
-
-							child.stderr.on("data", data => {
-								env.stderr.push(data);
-							});
-							setTimeout(() => {
-								if (env.code) {
-									done(`Watch didn't run ${env.error}`);
-								}
-
-								const stdout = convertToArrayOfLines(env.stdout);
-								const stderr = convertToArrayOfLines(env.stderr);
-								testAssertions(stdout, stderr, done);
-								child.kill();
-							}, 3000); // wait a little to get an output
-						});
+					child.on("close", (code) => {
+						env.code = code;
 					});
-				} else {
-					describe(testName, function() {
-						beforeEach(function(done) {
-							jest.setTimeout(20000);
 
-							const child = spawn(process.execPath, [cmd].concat(args), opts);
-
-							child.on("close", function(code) {
-								env.code = code;
-								done();
-							});
-
-							child.on("error", function(error) {
-								env.error.push(error);
-							});
-
-							child.stdout.on("data", data => {
-								env.stdout.push(data);
-							});
-
-							child.stderr.on("data", data => {
-								env.stderr.push(data);
-							});
-						});
-
-						test("should not cause any errors", function() {
-							expect(env.error).toHaveLength(0);
-						});
-
-						test("should run successfully", function() {
-							const stdout = convertToArrayOfLines(env.stdout);
-							const stderr = convertToArrayOfLines(env.stderr);
-							testAssertions(env.code, stdout, stderr);
-						});
+					child.on("error", (error) => {
+						env.error.push(error);
 					});
-				}
+
+					child.stdout.on("data", (data) => {
+						env.stdout.push(data);
+					});
+
+					child.stderr.on("data", (data) => {
+						env.stderr.push(data);
+					});
+
+					setTimeout(() => {
+						if(env.code) {
+							done(`Watch didn't run ${env.error}`);
+						}
+
+						const stdout = convertToArrayOfLines(env.stdout);
+						const stderr = convertToArrayOfLines(env.stderr);
+						testAssertions(stdout, stderr, done);
+						child.kill();
+					}, 8000); // wait a little to get an output
+				});
 			});
-		});
+		} else {
+			describe(testName, function() {
+				beforeEach(function(done) {
+					jest.setTimeout(20000);
+
+					const child = spawn([cmd].concat(args), opts);
+
+					child.on("close", (code) => {
+						env.code = code;
+						done();
+					});
+
+					child.on("error", (error) => {
+						env.error.push(error);
+					});
+
+					child.stdout.on("data", (data) => {
+						env.stdout.push(data);
+					});
+
+					child.stderr.on("data", (data) => {
+						env.stderr.push(data);
+					});
+				});
+
+				it("should not cause any errors", function() {
+					expect(env.error).toHaveLength(0);
+				});
+
+				it("should run successfully", function() {
+					const stdout = convertToArrayOfLines(env.stdout);
+					const stderr = convertToArrayOfLines(env.stderr);
+					testAssertions(env.code, stdout, stderr);
+				});
+			});
+		}
 	});
 });
