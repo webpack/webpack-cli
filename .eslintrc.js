@@ -9,6 +9,7 @@ module.exports = {
 	},
 	"parserOptions": { "ecmaVersion": 2017 },
 	"rules": {
+		"no-useless-escape": "off",
 		"quote-props": ["error", "as-needed"],
 		"no-dupe-keys": "error",
 		"quotes": ["error", "double"],

@@ -8,6 +8,7 @@
 var resolveCwd = require("resolve-cwd");
 // Local version replace global one
 var localCLI = resolveCwd.silent("webpack-cli/bin/webpack");
+var ErrorHelpers = require("webpack/lib/ErrorHelpers");
 
 const NON_COMPILATION_ARGS = [
 	"init",
@@ -34,7 +35,6 @@ if (localCLI && localCLI !== __filename) {
 	}
 }
 
-// eslint-disable-next-line
 var yargs = require("yargs").usage(
 	"webpack-cli " +
 		require("../package.json").version +
@@ -45,6 +45,7 @@ var yargs = require("yargs").usage(
 );
 
 require("./config-yargs")(yargs);
+
 var DISPLAY_GROUP = "Stats options:";
 var BASIC_GROUP = "Basic options:";
 
@@ -171,27 +172,49 @@ yargs.options({
 		describe: "Show more details"
 	}
 });
+
 // yargs will terminate the process early when the user uses help or version.
 // This causes large help outputs to be cut short (https://github.com/nodejs/node/wiki/API-changes-between-v0.10-and-v4#process).
 // To prevent this we use the yargs.parse API and exit the process normally
-
-//eslint-disable-next-line
 yargs.parse(process.argv.slice(2), (err, argv, output) => {
+	Error.stackTraceLimit = 30;
+
 	// arguments validation failed
 	if (err && output) {
 		console.error(output);
 		process.exitCode = 1;
 		return;
 	}
+
+	// help or version info
 	if (output) {
 		console.log(output);
 		return;
 	}
+
 	if (argv.verbose) {
 		argv["display"] = "verbose";
 	}
 
-	var options = require("./convert-argv")(yargs, argv);
+	try {
+		var options = require("./convert-argv")(yargs, argv);
+	} catch (err) {
+		if (err.name !== "ValidationError") {
+			throw err;
+		}
+
+		var stack = ErrorHelpers.cleanUpWebpackOptions(err.stack, err.message);
+		var message = err.message + "\n" + stack;
+
+		if (argv.color) {
+			console.error(`\u001b[1m\u001b[31m${message}\u001b[39m\u001b[22m`);
+		} else {
+			console.error(message);
+		}
+
+		process.exitCode = 1;
+		return;
+	}
 
 	function ifArg(name, fn, init) {
 		if (Array.isArray(argv[name])) {
@@ -236,11 +259,13 @@ yargs.parse(process.argv.slice(2), (err, argv, output) => {
 		}
 		if (typeof outputOptions.context === "undefined")
 			outputOptions.context = firstOptions.context;
+
 		ifArg("env", function(value) {
 			if (outputOptions.env) {
 				outputOptions._env = value;
 			}
 		});
+
 		ifArg("json", function(bool) {
 			if (bool) outputOptions.json = bool;
 		});
@@ -345,23 +370,24 @@ yargs.parse(process.argv.slice(2), (err, argv, output) => {
 
 		var webpack = require("webpack/lib/webpack.js");
 
-		Error.stackTraceLimit = 30;
 		var lastHash = null;
 		var compiler;
 		try {
 			compiler = webpack(options);
-		} catch (e) {
-			var WebpackOptionsValidationError = require("webpack/lib/WebpackOptionsValidationError");
-			if (e instanceof WebpackOptionsValidationError) {
+		} catch (err) {
+			if (err.name === "WebpackOptionsValidationError") {
 				if (argv.color)
 					console.error(
-						"\u001b[1m\u001b[31m" + e.message + "\u001b[39m\u001b[22m"
+						`\u001b[1m\u001b[31m${err.message}\u001b[39m\u001b[22m`
 					);
-				else console.error(e.message);
-				process.exit(1); // eslint-disable-line no-process-exit
+				else console.error(err.message);
+				// eslint-disable-next-line no-process-exit
+				process.exit(1);
 			}
-			throw e;
+
+			throw err;
 		}
+
 		if (argv.progress) {
 			var ProgressPlugin = require("webpack/lib/ProgressPlugin");
 			compiler.apply(

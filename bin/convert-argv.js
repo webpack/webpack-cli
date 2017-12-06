@@ -107,7 +107,9 @@ module.exports = function(yargs, argv, convertOptions) {
 		};
 
 		var requireConfig = function requireConfig(configPath) {
-			var options = require(configPath);
+			var options = (function WEBPACK_OPTIONS() {
+				return require(configPath);
+			})();
 			options = prepareOptions(options, argv);
 			return options;
 		};
@@ -248,13 +250,6 @@ module.exports = function(yargs, argv, convertOptions) {
 		}
 
 		function mapArgToBoolean(name, optionName) {
-			if (options[optionName || name]) {
-				options[name] = true;
-			}
-			//eslint-disable-next-line
-			if (name && options[name] == true) {
-				return;
-			}
 			ifArg(name, function(bool) {
 				if (bool === true) options[optionName || name] = true;
 				else if (bool === false) options[optionName || name] = false;
@@ -290,7 +285,6 @@ module.exports = function(yargs, argv, convertOptions) {
 				console.log("Cannot load plugin " + name + ". (" + path + ")");
 				throw e;
 			}
-
 			try {
 				return new Plugin(args);
 			} catch (e) {
@@ -310,10 +304,12 @@ module.exports = function(yargs, argv, convertOptions) {
 				parent[name] = [];
 			}
 		}
+
 		function addPlugin(options, plugin) {
 			ensureArray(options, "plugins");
 			options.plugins.unshift(plugin);
 		}
+
 		ifArg("mode", function(value) {
 			options.mode = value;
 		});
@@ -344,12 +340,11 @@ module.exports = function(yargs, argv, convertOptions) {
 						binding += "-loader";
 					}
 					var rule = {
-						/* eslint-disable no-useless-escape */
 						test: new RegExp(
 							"\\." +
 								name.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") +
 								"$"
-						) /* eslint-enable no-useless-escape */,
+						), // eslint-disable-line no-useless-escape
 						loader: binding
 					};
 					if (arg === "module-bind-pre") {
@@ -558,6 +553,7 @@ module.exports = function(yargs, argv, convertOptions) {
 		mapArgToBoolean("bail");
 
 		mapArgToBoolean("profile");
+
 		if (noOutputFilenameDefined) {
 			ensureObject(options, "output");
 			if (convertOptions && convertOptions.outputFilename) {
