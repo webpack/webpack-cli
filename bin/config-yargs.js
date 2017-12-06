@@ -28,6 +28,16 @@ module.exports = function(yargs) {
 					"Migrate your webpack configuration from webpack 1 to webpack 2",
 				group: INIT_GROUP
 			},
+			add: {
+				type: "boolean",
+				describe: "Adds a webpack component to your configuration file",
+				group: INIT_GROUP
+			},
+			remove: {
+				type: "boolean",
+				describe: "Removes a webpack component to your configuration file",
+				group: INIT_GROUP
+			},
 			"generate-loader": {
 				type: "boolean",
 				describe: "Generates a new webpack loader project",

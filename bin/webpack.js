@@ -13,6 +13,8 @@ var ErrorHelpers = require("webpack/lib/ErrorHelpers");
 const NON_COMPILATION_ARGS = [
 	"init",
 	"migrate",
+	"add",
+	"remove",
 	"generate-loader",
 	"generate-plugin"
 ];
