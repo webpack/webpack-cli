@@ -50,7 +50,7 @@
     "got": "^7.1.0",
     "inquirer": "^3.2.0",
     "interpret": "^1.0.4",
-    "jscodeshift": "^0.3.32",
+    "jscodeshift": "^0.4.0",
     "listr": "^0.12.0",
     "loader-utils": "^1.1.0",
     "lodash": "^4.17.4",
