@@ -1,5 +1,5 @@
 var yeoman = require("yeoman-environment");
-var PluginGenerator = require("./plugin-generator").PluginGenerator;
+var PluginGenerator = require("../generators/plugin-generator").PluginGenerator;
 
 /**
  * Runs a yeoman generator to create a new webpack plugin project
