@@ -15,6 +15,7 @@ const NON_COMPILATION_ARGS = [
 	"migrate",
 	"add",
 	"remove",
+	"update",
 	"generate-loader",
 	"generate-plugin"
 ];
