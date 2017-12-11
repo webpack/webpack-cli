@@ -1,7 +1,6 @@
 "use strict";
 
 const got = require("got");
-const chalk = require("chalk");
 const constant = value => () => value;
 
 /*

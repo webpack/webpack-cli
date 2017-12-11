@@ -1,5 +1,5 @@
 "use strict";
-
+const chalk = require("chalk");
 const npmExists = require("./npm-exists");
 const resolvePackages = require("./resolve-packages");
 
@@ -17,14 +17,14 @@ module.exports = function npmPackagesExists(pkg) {
 	let acceptedPackages = [];
 	pkg.forEach(addon => {
 		//eslint-disable-next-line
-	if (addon.length <= 14 || addon.slice(0, 14) !== "webpack-addons") {
-		throw new TypeError(
-			chalk.bold(`${addon} isn't a valid name.\n`) +
-				chalk.red(
-					"\nIt should be prefixed with 'webpack-addons', but have different suffix.\n"
-				)
-		);
-	}
+		if (addon.length <= 14 || addon.slice(0, 14) !== "webpack-addons") {
+			throw new TypeError(
+				chalk.bold(`${addon} isn't a valid name.\n`) +
+					chalk.red(
+						"\nIt should be prefixed with 'webpack-addons', but have different suffix.\n"
+					)
+			);
+		}
 		npmExists(addon)
 			.then(moduleExists => {
 				if (!moduleExists) {
