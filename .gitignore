@@ -19,6 +19,3 @@ yarn-error.log
 
 # Test Compilation
 test/js/*
-
-# IDE
-.idea

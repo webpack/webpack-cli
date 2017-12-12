@@ -188,10 +188,11 @@
 			group: DISPLAY_GROUP,
 			describe: "Show more details"
 		},
-		"display-watch-messages": {
-			type: "boolean",
+		"info-verbosity": {
+			type: "string",
+			default: "info",
 			group: DISPLAY_GROUP,
-			describe: "Display watch lifecycle messages e.g. Started watching files..."
+			describe: "Controls the output of lifecycle messaging e.g. Started watching files... (verbose, info, none)"
 		}
 	});
 
@@ -404,8 +405,8 @@
 				}
 			});
 
-			ifArg("display-watch-messages", function(bool) {
-				if (bool) outputOptions.displayWatchMessages = true;
+			ifArg("info-verbosity", function(value) {
+				outputOptions.infoVerbosity = value;
 			});
 
 			var webpack = require("webpack/lib/webpack.js");
@@ -474,7 +475,7 @@
 					process.stdin.resume();
 				}
 				compiler.watch(watchOptions, compilerCallback);
-				if (outputOptions.displayWatchMessages)
+				if (outputOptions.infoVerbosity !== "none")
 					console.log("\nWebpack is watching the files…\n");
 			} else compiler.run(compilerCallback);
 		}
