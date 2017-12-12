@@ -187,6 +187,11 @@
 			type: "boolean",
 			group: DISPLAY_GROUP,
 			describe: "Show more details"
+		},
+		"display-watch-messages": {
+			type: "boolean",
+			group: DISPLAY_GROUP,
+			describe: "Display watch lifecycle messages e.g. Started watching files..."
 		}
 	});
 
@@ -399,6 +404,10 @@
 				}
 			});
 
+			ifArg("display-watch-messages", function(bool) {
+				if (bool) outputOptions.displayWatchMessages = true;
+			});
+
 			var webpack = require("webpack/lib/webpack.js");
 
 			var lastHash = null;
@@ -465,7 +474,8 @@
 					process.stdin.resume();
 				}
 				compiler.watch(watchOptions, compilerCallback);
-				console.log("\nWebpack is watching the files…\n");
+				if (outputOptions.displayWatchMessages)
+					console.log("\nWebpack is watching the files…\n");
 			} else compiler.run(compilerCallback);
 		}
 
