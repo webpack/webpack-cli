@@ -88,6 +88,7 @@
     "prettier-eslint-cli": "^4.3.2"
   },
   "optionalDependencies": {
-    "schema-utils": "^0.4.2"
+    "schema-utils": "^0.4.2",
+    "webpack": "^4.0.0-alpha.0"
   }
 }
