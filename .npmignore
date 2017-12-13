@@ -7,7 +7,6 @@ lib
 .vscode
 .editorconfig
 .eslintignore
-__mocks__
 __testfixtures__
 *.test.js
 *.input.js
