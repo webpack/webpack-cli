@@ -22,7 +22,7 @@ _Please care to share a few details_
 ---
 ##Do you want to report a *bug*?
 
-_Provide a general summary of the bug in the title above_
+_Provide a general summary of the bug in the title above and please share a few details_
 
 ### Configuration
 A great way to do this is to provide your configuration via a GitHub gist.
