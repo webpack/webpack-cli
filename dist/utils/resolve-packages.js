@@ -4,7 +4,7 @@ const path = require("path");
 const chalk = require("chalk");
 const globalPath = require("global-modules");
 
-const creator = require("../creator/index").creator;
+const creator = require("../init/index").creator;
 
 const spawnChild = require("./package-manager").spawnChild;
 

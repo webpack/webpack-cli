@@ -1,6 +1,6 @@
 ## webpack-migrate
 
-The `migrate` feature eases the transition from [version 1](http://webpack.github.io/docs/) to [version 2](https://gist.github.com/sokra/27b24881210b56bbaff7). `migrate` 
+The `migrate` feature eases the transition from [version 1](http://webpack.github.io/docs/) to [version 2](https://gist.github.com/sokra/27b24881210b56bbaff7). `migrate`
 also allows users to switch to the new version of webpack without having to extensively [refactor](https://webpack.js.org/guides/migrating/).
 
 ### Usage
@@ -39,7 +39,7 @@ module.exports = {
 		exclude: /node_modules/,
 		loader: 'babel',
 		query: {
-		  presets: ['es2015']
+		  presets: ['env']
 		}
 	  },
 	  {
@@ -122,7 +122,7 @@ module.exports = {
 		  loader: 'babel-loader'
 		}],
 		options: {
-		  presets: ['es2015']
+		  presets: ['env']
 		}
 	  },
 	  {
@@ -153,7 +153,7 @@ module.exports = {
 
 In summary, we can see the follow changes were made
 1.  The webpack schema for using loaders has changed
-    - `loaders` is now `module.rules` 
+    - `loaders` is now `module.rules`
     -  `query` is now `options`
 1.  All loaders now have to have the *loader* suffix, e.g. `babel` -> `babel-loader`
 
