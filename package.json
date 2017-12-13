@@ -62,7 +62,6 @@
     "recast": "git://github.com/kalcifer/recast.git#bug/allowbreak",
     "resolve-cwd": "^2.0.0",
     "supports-color": "^4.4.0",
-    "webpack": "next",
     "webpack-addons": "^1.1.4",
     "yargs": "^9.0.1",
     "yeoman-environment": "^2.0.0",
