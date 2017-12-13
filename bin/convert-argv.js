@@ -609,9 +609,9 @@ module.exports = function(yargs, argv, convertOptions) {
 					if (fs.existsSync(resolved)) {
 						addTo(
 							"main",
-							`${resolved}${
-								fs.statSync(resolved).isDirectory() ? path.sep : ""
-							}`
+							`${resolved}${fs.statSync(resolved).isDirectory()
+								? path.sep
+								: ""}`
 						);
 					} else {
 						addTo("main", content);
