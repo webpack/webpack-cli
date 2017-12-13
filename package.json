@@ -63,7 +63,7 @@
     "resolve-cwd": "^2.0.0",
     "rx": "^4.1.0",
     "supports-color": "^4.4.0",
-    "webpack": "^4.0.0-alpha.0",
+    "webpack": "next",
     "webpack-addons": "^1.1.4",
     "yargs": "^9.0.1",
     "yeoman-environment": "^2.0.0",
