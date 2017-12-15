@@ -62,15 +62,12 @@
     "recast": "git://github.com/kalcifer/recast.git#bug/allowbreak",
     "resolve-cwd": "^2.0.0",
     "supports-color": "^4.4.0",
-    "webpack": "next",
     "webpack-addons": "^1.1.4",
     "yargs": "^9.0.1",
     "yeoman-environment": "^2.0.0",
     "yeoman-generator": "git://github.com/ev1stensberg/generator.git#Feature-getArgument"
   },
   "devDependencies": {
-    "ajv": "^5.2.2",
-    "ajv-keywords": "^2.1.0",
     "babel-cli": "^6.24.1",
     "babel-eslint": "^7.2.3",
     "babel-jest": "^20.0.3",
@@ -85,9 +82,10 @@
     "jest": "^21.2.1",
     "jest-cli": "^21.2.1",
     "lint-staged": "^4.1.3",
-    "prettier-eslint-cli": "^4.3.2"
+    "prettier-eslint-cli": "^4.6.1"
   },
   "optionalDependencies": {
-    "schema-utils": "^0.4.2"
+    "schema-utils": "^0.4.2",
+    "webpack": "^4.0.0-alpha.0"
   }
 }
