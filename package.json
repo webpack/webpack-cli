@@ -86,6 +86,7 @@
   },
   "optionalDependencies": {
     "schema-utils": "^0.4.2",
-    "webpack": "^4.0.0-alpha.0"
+    "webpack": "^4.0.0-alpha.0",
+    "webpack-dev-server": "^2.9.7"
   }
 }
