@@ -1,2 +1,14 @@
+const webpack = require('webpack');
+const webpack = require('webpack');
+const webpack = require('webpack');
+const webpack = require('webpack');
+module.exports = {
+	externals: {
+		undefined: '',
+		undefined: 'a'
+	},
 
-module.exports = {};
+	performance: {
+		0: ''
+	}
+};
