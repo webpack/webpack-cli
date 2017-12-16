@@ -2,14 +2,12 @@ const webpack = require('webpack');
 const webpack = require('webpack');
 const webpack = require('webpack');
 const webpack = require('webpack');
-const webpack = require('webpack');
 module.exports = {
-	externals: {
-		undefined: '',
-		undefined: 'a'
+	performance: {
+		hints: 'asd'
 	},
 
-	performance: {
-		0: ''
+	resolve: {
+		cachePredicate: 'asd'
 	}
 };
