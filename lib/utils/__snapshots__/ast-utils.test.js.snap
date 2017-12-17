@@ -23,6 +23,8 @@ exports[`utils createArrayWithChildren should find an prop that matches key and 
 
 exports[`utils createEmptyArrayProperty should create an array with no properties 1`] = `"its-lit: []"`;
 
+exports[`utils createEmptyCallableFunctionWithArguments Should create a empty function with a name 1`] = `"ringoStarr(\\"/* Add your arguments here */\\")"`;
+
 exports[`utils createExternalRegExp should create an regExp property that has been parsed by jscodeshift 1`] = `"\\"\\\\t\\""`;
 
 exports[`utils createIdentifierOrLiteral should create basic literal 1`] = `"'stringLiteral'"`;
@@ -96,7 +98,7 @@ exports[`utils isAssignment should invoke a callback if parent type is Assignmen
 }"
 `;
 
-exports[`utils loopThroughObjects Use recursion and add elements to an node 1`] = `
+exports[`utils loopThroughObjects Should use recursion and add elements to a node 1`] = `
 "module.exports = {
   hello: {
     webpack: cli
