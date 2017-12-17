@@ -16,6 +16,24 @@ exports[`amd transforms correctly using "other-0" data 1`] = `
 "
 `;
 
+exports[`amd transforms correctly using "other-1" data 1`] = `
+"module.exports = {
+	bail: true,
+	cache: true,
+	profile: true,
+	merge: 'NotMuch',
+	parallelism: 69,
+	recordsInputPath: 'somethign',
+	recordsOutputPath: 'else',
+	recordsPath: 'Brooklyn',
+	amd: {
+		jQuery: false,
+		kQuery: true
+	}
+};
+"
+`;
+
 exports[`bail transforms correctly using "other-0" data 1`] = `
 "module.exports = {
     entry: 'index.js',
@@ -26,6 +44,25 @@ exports[`bail transforms correctly using "other-0" data 1`] = `
 
     bail: true
 }
+"
+`;
+
+exports[`bail transforms correctly using "other-1" data 1`] = `
+"module.exports = {
+	bail: false,
+	cache: true,
+	profile: true,
+	merge: 'NotMuch',
+	parallelism: 69,
+	recordsInputPath: 'somethign',
+	recordsOutputPath: 'else',
+	recordsPath: 'Brooklyn',
+	amd: {
+        jQuery: true,
+        kQuery: false,
+        bail: false
+    }
+};
 "
 `;
 
@@ -55,6 +92,44 @@ exports[`cache transforms correctly using "other-0" data 2`] = `
 "
 `;
 
+exports[`cache transforms correctly using "other-1" data 1`] = `
+"module.exports = {
+	bail: true,
+	cache: false,
+	profile: true,
+	merge: 'NotMuch',
+	parallelism: 69,
+	recordsInputPath: 'somethign',
+	recordsOutputPath: 'else',
+	recordsPath: 'Brooklyn',
+	amd: {
+        jQuery: true,
+        kQuery: false,
+        cache: false
+    }
+};
+"
+`;
+
+exports[`cache transforms correctly using "other-1" data 2`] = `
+"module.exports = {
+	bail: true,
+	cache: cacheKey,
+	profile: true,
+	merge: 'NotMuch',
+	parallelism: 69,
+	recordsInputPath: 'somethign',
+	recordsOutputPath: 'else',
+	recordsPath: 'Brooklyn',
+	amd: {
+        jQuery: true,
+        kQuery: false,
+        cache: cacheKey
+    }
+};
+"
+`;
+
 exports[`merge transforms correctly using "other-0" data 1`] = `
 "module.exports = merge(myConfig, {
 	entry: 'index.js',
@@ -62,6 +137,56 @@ exports[`merge transforms correctly using "other-0" data 1`] = `
 		filename: 'bundle.js'
 	}
 });
+"
+`;
+
+exports[`merge transforms correctly using "other-1" data 1`] = `
+"module.exports = merge(TheirConfig, {
+	bail: true,
+	cache: true,
+	profile: true,
+	merge: 'NotMuch',
+	parallelism: 69,
+	recordsInputPath: 'somethign',
+	recordsOutputPath: 'else',
+	recordsPath: 'Brooklyn',
+	amd: {
+		jQuery: true,
+		kQuery: false
+	}
+});
+"
+`;
+
+exports[`parallelism transforms correctly using "other-0" data 1`] = `
+"module.exports = {
+    entry: 'index.js',
+
+    output: {
+		filename: 'bundle.js'
+	},
+
+    parallelism: 10
+}
+"
+`;
+
+exports[`parallelism transforms correctly using "other-1" data 1`] = `
+"module.exports = {
+	bail: true,
+	cache: true,
+	profile: true,
+	merge: 'NotMuch',
+	parallelism: 20,
+	recordsInputPath: 'somethign',
+	recordsOutputPath: 'else',
+	recordsPath: 'Brooklyn',
+	amd: {
+        jQuery: true,
+        kQuery: false,
+        parallelism: 20
+    }
+};
 "
 `;
 
@@ -75,5 +200,117 @@ exports[`profile transforms correctly using "other-0" data 1`] = `
 
     profile: true
 }
+"
+`;
+
+exports[`profile transforms correctly using "other-1" data 1`] = `
+"module.exports = {
+	bail: true,
+	cache: true,
+	profile: false,
+	merge: 'NotMuch',
+	parallelism: 69,
+	recordsInputPath: 'somethign',
+	recordsOutputPath: 'else',
+	recordsPath: 'Brooklyn',
+	amd: {
+        jQuery: true,
+        kQuery: false,
+        profile: false
+    }
+};
+"
+`;
+
+exports[`recordsInputPath transforms correctly using "other-0" data 1`] = `
+"module.exports = {
+    entry: 'index.js',
+
+    output: {
+		filename: 'bundle.js'
+	},
+
+    recordsInputPath: path.join('dist', mine)
+}
+"
+`;
+
+exports[`recordsInputPath transforms correctly using "other-1" data 1`] = `
+"module.exports = {
+	bail: true,
+	cache: true,
+	profile: true,
+	merge: 'NotMuch',
+	parallelism: 69,
+	recordsInputPath: path.join('dist', ours),
+	recordsOutputPath: 'else',
+	recordsPath: 'Brooklyn',
+	amd: {
+		jQuery: true,
+		kQuery: false
+	}
+};
+"
+`;
+
+exports[`recordsOutputPath transforms correctly using "other-0" data 1`] = `
+"module.exports = {
+    entry: 'index.js',
+
+    output: {
+		filename: 'bundle.js'
+	},
+
+    recordsOutputPath: path.join('src', yours)
+}
+"
+`;
+
+exports[`recordsOutputPath transforms correctly using "other-1" data 1`] = `
+"module.exports = {
+	bail: true,
+	cache: true,
+	profile: true,
+	merge: 'NotMuch',
+	parallelism: 69,
+	recordsInputPath: 'somethign',
+	recordsOutputPath: path.join('src', theirs),
+	recordsPath: 'Brooklyn',
+	amd: {
+		jQuery: true,
+		kQuery: false
+	}
+};
+"
+`;
+
+exports[`recordsPath transforms correctly using "other-0" data 1`] = `
+"module.exports = {
+    entry: 'index.js',
+
+    output: {
+		filename: 'bundle.js'
+	},
+
+    recordsPath: path.join(__dirname, 'records.json')
+}
+"
+`;
+
+exports[`recordsPath transforms correctly using "other-1" data 1`] = `
+"module.exports = {
+	bail: true,
+	cache: true,
+	profile: true,
+	merge: 'NotMuch',
+	parallelism: 69,
+	recordsInputPath: 'somethign',
+	recordsOutputPath: 'else',
+	recordsPath: path.resolve(__dirname, 'gradle.json'),
+	amd: {
+		jQuery: true,
+		kQuery: false
+	}
+};
 "
 `;
