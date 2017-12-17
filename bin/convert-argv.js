@@ -203,6 +203,7 @@ module.exports = function(yargs, argv, convertOptions) {
 	}
 
 	function processOptions(options) {
+		// eslint-disable-next-line no-unused-vars
 		var noOutputFilenameDefined = !options.output || !options.output.filename;
 
 		function ifArg(name, fn, init, finalize) {
