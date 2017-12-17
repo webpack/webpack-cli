@@ -55,6 +55,7 @@
     "listr": "^0.12.0",
     "loader-utils": "^1.1.0",
     "lodash": "^4.17.4",
+    "log-symbols": "2.1.0",
     "mkdirp": "^0.5.1",
     "p-each-series": "^1.0.0",
     "p-lazy": "^1.0.0",
