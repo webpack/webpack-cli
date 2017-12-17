@@ -21,8 +21,8 @@
     "format:dist": "prettier-eslint \"dist/**/**/*.js\" --write",
     "lint:codeOnly": "eslint \"{lib,bin}/**/!(__testfixtures__)/*.js\" \"{lib,bin}/**.js\"",
     "precommit": "lint-staged",
-    "prepare": "flow-remove-types lib/ -d dist/ && npm run format:dist",
-    "pretest": "npm run lint",
+    "prepare": "flow-remove-types lib/ -d dist/ && yarn format:dist",
+    "pretest": "yarn lint",
     "test": "jest --coverage"
   },
   "lint-staged": {
