@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: generators/utils/validate.js</title>
+    <title>JSDoc: Source: utils/hashtable.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: generators/utils/validate.js</h1>
+    <h1 class="page-title">Source: utils/hashtable.js</h1>
 
     
 
@@ -26,22 +26,25 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>"use strict";
-
-/**
+            <pre class="prettyprint source linenums"><code>/**
+ * Combined hashtable that sorts duplicate elements
+ * https://stackoverflow.com/questions/9229645/remove-duplicate-values-from-js-array
  *
- * Validates an input to check if an input is provided
- *
- * @param {String} value - The input string to validate
- * @returns {String | Boolean } Returns truthy if its long enough
- * Or a string if the user hasn't written anything
+ * @param {Array} a Array to lookup
+ * @returns {Array} A sorted array with removed dupe elements
  */
-module.exports = value => {
-	const pass = value.length;
-	if (pass) {
-		return true;
-	}
-	return "Please specify an answer!";
+module.exports = function hashtable(a) {
+	var prims = { boolean: {}, number: {}, string: {} },
+		objs = [];
+
+	return a.filter(function(item) {
+		var type = typeof item;
+		if (type in prims)
+			return prims[type].hasOwnProperty(item)
+				? false
+				: (prims[type][item] = true);
+		else return objs.indexOf(item) >= 0 ? false : objs.push(item);
+	});
 };
 </code></pre>
         </article>
