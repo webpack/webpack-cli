@@ -46,7 +46,7 @@ rules:
 
 
 
-# Report specific error message if mocha for unit tests fails
+# Report specific error message if jest tests fails
 - filters:
     ensure:
       value: "{{report_ci}}"
