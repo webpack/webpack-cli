@@ -39,3 +39,45 @@ exports[`resolve transforms correctly using "resolve-0" data 1`] = `
 }
 "
 `;
+
+exports[`resolve transforms correctly using "resolve-1" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	},
+	resolve: {
+        alias: {
+            inject: {{#isdf_eq buildasda 'staasdndalone'}},
+            hello: \\"'world'\\",
+            inject_1: {{/asd}},
+            world: \\"hello\\",
+            hello: 'worlasdd',
+            world: asdc
+        },
+
+        aliasFields: [\\"'browser'\\", \\"wars\\", 'browser', wars, 'as'],
+        descriptionFiles: [\\"'a'\\", \\"b\\", \\"'c'\\", 'a', b, 'c', 'd', e, f],
+        enforceExtension: false,
+        enforceModuleExtension: false,
+        extensions: [\\"hey\\", \\"ho\\", hey, ho, ok, 'ho'],
+        mainFields: [\\"main\\", \\"'story'\\", main, 'story', ok, main, 'story', no, 'main'],
+        mainFiles: [\\"'noMainFileHere'\\", \\"iGuess\\", 'noMainFileHere', iGuess, niGuess],
+        modules: [\\"one\\", \\"'two'\\", one, 'two', 'ok', mode_nodules],
+        unsafeCache: false,
+
+        resolveLoader: {
+			modules: [\\"'node_modules'\\", \\"mode_nodules\\", 'node_modules', mode_nodules, 'ok'],
+			extensions: [\\"jsVal\\", \\"'.json'\\", jsVal, '.json', ok, 'ho'],
+			mainFields: [\\"loader\\", \\"'main'\\", loader, 'main', ok, 'story', loader, 'main', no],
+			moduleExtensions: [\\"'-loader'\\", \\"value\\", '-loader', value, '-kn', ok]
+		},
+
+        plugins: [\\"somePlugin\\", \\"'stringVal'\\", somePlugin, 'stringVal'],
+        symlinks: true,
+        enforceExtension: true,
+        symlinks: false
+    }
+}
+"
+`;

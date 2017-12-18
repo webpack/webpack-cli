@@ -17,3 +17,16 @@ exports[`performance transforms correctly using "performance-0" data 1`] = `
 }
 "
 `;
+
+exports[`performance transforms correctly using "performance-1" data 1`] = `
+"module.exports = {
+	performance: {
+		hints: 'nuclear-warning',
+		maxEntrypointSize: 400000,
+		maxAssetSize: 6969,
+		assetFilter:
+			un(assetFilename) {return assetFilename.endsWith('.js');}
+	}
+}
+"
+`;
