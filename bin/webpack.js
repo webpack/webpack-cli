@@ -428,7 +428,7 @@ yargs.parse(process.argv.slice(2), (err, argv, output) => {
 			var watchOptions =
 				firstOptions.watchOptions || firstOptions.watch || options.watch || {};
 			if (watchOptions.stdin) {
-				process.stdin.on("end", function() {
+				process.stdin.on("end", function(_) {
 					process.exit(); // eslint-disable-line
 				});
 				process.stdin.resume();
