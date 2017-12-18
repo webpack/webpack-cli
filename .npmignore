@@ -13,3 +13,4 @@ __testfixtures__
 types.js
 *.spec.js
 docs
+jsdoc.json
