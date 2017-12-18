@@ -12,3 +12,4 @@ __testfixtures__
 *.input.js
 types.js
 *.spec.js
+docs

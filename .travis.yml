@@ -11,10 +11,6 @@ sudo: false
 notifications:
   email: false
 
-before_install:
-- yarn global add eslint
-- yarn global add eslint-plugin-node
-- yarn global add eslint-plugin-flowtype
 before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start

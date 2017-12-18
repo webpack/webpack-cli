@@ -16,14 +16,15 @@
     "node": ">=4.0.0"
   },
   "scripts": {
-    "lint": "eslint \"**/*.js\"",
+    "lint": "./node_modules/eslint/bin/eslint.js \"**/*.js\"",
     "format": "prettier-eslint \"bin/**/**/*.js\" --write && prettier-eslint \"lib/**/**/*.js\" --write && prettier-eslint \"test/**/**/*.js\" --write",
     "format:dist": "prettier-eslint \"dist/**/**/*.js\" --write",
     "lint:codeOnly": "eslint \"{lib,bin}/**/!(__testfixtures__)/*.js\" \"{lib,bin}/**.js\"",
     "precommit": "lint-staged",
     "prepare": "flow-remove-types lib/ -d dist/ && yarn format:dist",
     "pretest": "yarn lint",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "jsdoc": "jsdoc -c jsdoc.json -r -d docs"
   },
   "lint-staged": {
     "{lib,bin}/**/!(__testfixtures__)/**.js": [
@@ -82,6 +83,7 @@
     "husky": "^0.14.3",
     "jest": "^21.2.1",
     "jest-cli": "^21.2.1",
+    "jsdoc": "^3.5.5",
     "lint-staged": "^4.1.3",
     "prettier-eslint-cli": "^4.6.1"
   },
