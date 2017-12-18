@@ -16,11 +16,16 @@ const NON_COMPILATION_ARGS = [
 	"add",
 	"remove",
 	"update",
+	"serve",
 	"generate-loader",
 	"generate-plugin"
 ];
 
 const NON_COMPILATION_CMD = process.argv.find(arg => {
+	if (arg === "serve") {
+		global.process.argv = global.process.argv.filter(a => a !== "serve");
+		process.argv = global.process.argv;
+	}
 	return NON_COMPILATION_ARGS.find(a => a === arg);
 });
 
