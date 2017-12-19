@@ -1,0 +1,15 @@
+comment: off
+
+parsers:
+  javascript:
+    enable_partials: yes
+
+coverage:
+  status:
+    project:
+      default:
+        threshold: 1%
+        if_not_found: success
+    patch:
+      default:
+        if_not_found: success
