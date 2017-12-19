@@ -66,11 +66,12 @@ module.exports = function(yargs) {
 				requiresArg: true
 			},
 			"config-register": {
-				type: "string",
+				type: "array",
 				alias: "r",
-				describe: "Allows to use import/export in the webpack configuration",
+				describe:
+					"Preload one or more modules before loading the webpack configuration",
 				group: CONFIG_GROUP,
-				defaultDescription: "@std/esm or babel-register",
+				defaultDescription: "module id or path",
 				requiresArg: true
 			},
 			"config-name": {

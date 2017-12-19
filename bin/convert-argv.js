@@ -104,21 +104,9 @@ module.exports = function(yargs, argv, convertOptions) {
 
 		var requireConfig = function requireConfig(configPath) {
 			var options = (function WEBPACK_OPTIONS() {
-				if (argv.configRegister === "@std/esm") {
-					return require(path.resolve(
-						process.cwd(),
-						"node_modules",
-						"@std/esm"
-					))(module, {
-						esm: "js"
-					})(configPath);
-				} else if (argv.configRegister === "babel-register") {
-					require(path.resolve(
-						process.cwd(),
-						"node_modules",
-						"babel-register"
-					))({
-						presets: ["es2015"]
+				if (argv.configRegister.length) {
+					argv.configRegister.forEach(dep => {
+						require(dep)(configPath);
 					});
 					return require(configPath);
 				} else {
