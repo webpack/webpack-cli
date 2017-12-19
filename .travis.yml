@@ -19,4 +19,4 @@ before_script:
 script:
   - yarn prepare
   - yarn lint
-  - yarn test
+  - yarn test:ci
