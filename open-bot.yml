@@ -31,11 +31,6 @@ rules:
       ensure_1:
         value: "{{status_1.state}}"
         equals: "failure"
-    not:
-      any:
-        ensure_3:
-          value: "{{status_1.state}}"
-          equals: "pending"
   actions:
     label:
       add: "PR: CI-not-ok"
@@ -58,7 +53,7 @@ rules:
       state: "failed"
       allow_failure: false
       config:
-        env: JOB_PART=unit
+        env: JOB_PART=integration
     fetch: travis_job.log
     string_cleanup:
       id: logResult
@@ -76,8 +71,6 @@ rules:
         ``` text
         {{{logResult}}}
         ```
-
-        Instead of updating these (outdated?) unit tests, you can choose to delete them and add integration tests instead. That would be great.
 
         See [complete report here]({{status.target_url}}).
     set:
@@ -138,7 +131,7 @@ rules:
       message: |-
         @{{commit.author.login}} The most important CI builds failed. This way your PR can't be merged.
 
-        Please take a look at the CI results from [travis]({{status_1.target_url}}) ({{status_1.state}}) and [appveyor]({{status_2.target_url}}) ({{status_2.state}}) and fix these issues.
+        Please take a look at the CI results from [travis]({{status_1.target_url}}) ({{status_1.state}}) and fix these issues.
 
 
 # add conflict label to pull requests with conflict

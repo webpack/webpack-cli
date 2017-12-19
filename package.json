@@ -24,8 +24,9 @@
     "prepublish": "flow-remove-types lib/ -d dist/ && npm run format:dist",
     "pretest": "npm run lint",
     "test": "jest --coverage",
-    "travis:unit": "npm run test",
-    "travis:lint": "npm run lint"
+    "dist": "flow-remove-types lib/ -d dist/ && npm run format:dist",
+    "travis:integration": "npm run dist && npm run test",
+    "travis:lint": "npm run dist && npm run lint"
   },
   "lint-staged": {
     "{lib,bin,__mocks__}/**/!(__testfixtures__)/**.js": [
