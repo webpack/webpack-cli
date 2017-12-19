@@ -1,0 +1,27 @@
+clone_depth: 10
+
+version: "{build}"
+
+environment:
+  fast_finish: true
+  matrix:
+    - nodejs_version: "6"
+      platform: x86
+
+build: off
+
+install:
+  - ps: Install-Product node $env:nodejs_version $env:platform
+  - npm install yarn -g
+  - yarn
+test_script:
+  - node --version
+  - npm --version
+  - yarn --version
+  - which yarn
+  - yarn prepare
+  - yarn lint
+  - yarn test
+
+cache:
+  - node_modules -> appveyor.yml,package.json,yarn.lock
