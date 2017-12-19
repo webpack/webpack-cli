@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: init/transformations/externals/externals.js</title>
+    <title>JSDoc: Source: generate-loader/loader-generator.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: init/transformations/externals/externals.js</h1>
+    <h1 class="page-title">Source: generate-loader/loader-generator.js</h1>
 
     
 
@@ -26,114 +26,63 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>"use strict";
-
-const utils = require("../../../utils/ast-utils");
+            <pre class="prettyprint source linenums"><code>var path = require("path");
+var _ = require("lodash");
+var webpackGenerator = require("../utils/webpack-generator");
 
 /**
+ * Formats a string into webpack loader format
+ * (eg: 'style-loader', 'raw-loader')
  *
- * Transform for externals. Finds the externals property from yeoman and creates a
- * property based on what the user has given us.
- *
- * @param j — jscodeshift API
- * @param ast - jscodeshift API
- * @param {any} webpackProperties - transformation object to scaffold
- * @param {String} action - action that indicates what to be done to the AST
- * @returns ast - jscodeshift API
+ * @param {string} name A loader name to be formatted
+ * @returns {string} The formatted string
  */
+function makeLoaderName(name) {
+	name = _.kebabCase(name);
+	if (!/loader$/.test(name)) {
+		name += "-loader";
+	}
+	return name;
+}
 
-module.exports = function externalsTransform(
-	j,
-	ast,
-	webpackProperties,
-	action
-) {
-	function createExternalProperty(p) {
-		if (
-			webpackProperties instanceof RegExp ||
-			typeof webpackProperties === "string"
-		) {
-			return utils.pushCreateProperty(j, p, "externals", webpackProperties);
+/**
+ * A yeoman generator class for creating a webpack
+ * loader project. It adds some starter loader code
+ * and runs `webpack-defaults`.
+ *
+ * @class LoaderGenerator
+ * @extends {Generator}
+ */
+var LoaderGenerator = webpackGenerator(
+	[
+		{
+			type: "input",
+			name: "name",
+			message: "Loader name",
+			default: "my-loader",
+			filter: makeLoaderName,
+			validate: str => str.length > 0
 		}
-		if (Array.isArray(webpackProperties)) {
-			const externalArray = utils.createArrayWithChildren(
-				j,
-				"externals",
-				webpackProperties,
-				true
-			);
-			return p.value.properties.push(externalArray);
-		} else {
-			utils.pushCreateProperty(j, p, "externals", j.objectExpression([]));
-			return utils.pushObjectKeys(j, p, webpackProperties, "externals");
-		}
-	}
-	if (webpackProperties) {
-		if (action === "init") {
-			return ast
-				.find(j.ObjectExpression)
-				.filter(
-					p =>
-						utils.safeTraverse(p, [
-							"parent",
-							"value",
-							"left",
-							"property",
-							"name"
-						]) === "exports"
-				)
-				.forEach(createExternalProperty);
-		} else if (action === "add") {
-			const externalNode = utils.findRootNodesByName(j, ast, "externals");
-			if (externalNode.size() !== 0 &amp;&amp; typeof webpackProperties === "object") {
-				return ast
-					.find(j.ObjectExpression)
-					.filter(
-						p =>
-							utils.safeTraverse(p, ["parentPath", "value", "key", "name"]) ===
-							"externals"
-					)
-					.filter(p => {
-						Object.keys(webpackProperties).forEach(prop => {
-							// need to check for every prop beneath, use the recursion util
-							utils.checkIfExistsAndAddValue(
-								j,
-								p,
-								prop,
-								utils.createIdentifierOrLiteral(j, webpackProperties[prop])
-							);
-						});
-						return ast;
-					});
-			} else if (
-				externalNode.size() !== 0 &amp;&amp;
-				Array.isArray(webpackProperties)
-			) {
-				// Todo
-			} else if (externalNode.size() !== 0 &amp;&amp; webpackProperties.length) {
-				return ast
-					.find(j.ObjectExpression)
-					.filter(
-						p =>
-							utils.safeTraverse(p, ["parentPath", "value", "key", "name"]) ===
-							"externals"
-					)
-					.forEach(p => {
-						j(p).replaceWith(
-							utils.createIdentifierOrLiteral(j, webpackProperties)
-						);
-					});
-			} else {
-				return externalsTransform(j, ast, webpackProperties, "init");
-			}
-		} else if (action === "remove") {
-			// TODO
-		} else if (action === "update") {
-			// TODO
-		}
-	} else {
-		return ast;
-	}
+	],
+	path.join(__dirname, "templates"),
+	[
+		"src/cjs.js.tpl",
+		"test/test-utils.js.tpl",
+		"test/unit.test.js.tpl",
+		"test/functional.test.js.tpl",
+		"test/fixtures/simple-file.js.tpl",
+		"examples/simple/webpack.config.js.tpl",
+		"examples/simple/src/index.js.tpl",
+		"examples/simple/src/lazy-module.js.tpl",
+		"examples/simple/src/static-esm-module.js.tpl"
+	],
+	["src/_index.js.tpl"],
+	gen => ({ name: gen.props.name })
+);
+
+module.exports = {
+	makeLoaderName,
+	LoaderGenerator
 };
 </code></pre>
         </article>
@@ -151,7 +100,7 @@ module.exports = function externalsTransform(
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Dec 19 2017 16:14:19 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Dec 19 2017 16:13:31 GMT+0100 (CET)
 </footer>
 
 <script> prettyPrint(); </script>

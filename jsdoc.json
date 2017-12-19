@@ -5,6 +5,6 @@
           "dist/"
       ],
       "includePattern": "dist/.+\\.js$",
-      "excludePattern": "dist/migrate/.+\\.js$"
+      "excludePattern": "dist/migrate"
   }
 }

@@ -66,7 +66,14 @@ module.exports = {
 			}
 		],
 		"node/no-unpublished-bin": "error",
-		"node/no-unpublished-require": "error",
+		"node/no-unpublished-require": [
+			"error",
+			{
+				"allowModules": [
+					"webpack"
+				]
+			}
+		],
 		"eol-last": ["error", "always"],
 		"newline-per-chained-call": "off",
 		"node/process-exit-as-throw": "error"

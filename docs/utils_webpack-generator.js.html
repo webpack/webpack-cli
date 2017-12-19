@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: init/transformations/externals/externals.js</title>
+    <title>JSDoc: Source: utils/webpack-generator.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: init/transformations/externals/externals.js</h1>
+    <h1 class="page-title">Source: utils/webpack-generator.js</h1>
 
     
 
@@ -26,115 +26,83 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>"use strict";
-
-const utils = require("../../../utils/ast-utils");
+            <pre class="prettyprint source linenums"><code>var path = require("path");
+var mkdirp = require("mkdirp");
+var Generator = require("yeoman-generator");
+var copyUtils = require("../utils/copy-utils");
 
 /**
+ * Creates a Yeoman Generator that generates a project conforming
+ * to webpack-defaults.
  *
- * Transform for externals. Finds the externals property from yeoman and creates a
- * property based on what the user has given us.
+ * @param {any[]} prompts An array of Yeoman prompt objects
  *
- * @param j — jscodeshift API
- * @param ast - jscodeshift API
- * @param {any} webpackProperties - transformation object to scaffold
- * @param {String} action - action that indicates what to be done to the AST
- * @returns ast - jscodeshift API
+ * @param {string} templateDir Absolute path to template directory
+ *
+ * @param {string[]} copyFiles An array of file paths (relative to `./templates`)
+ * of files to be copied to the generated project. File paths should be of the
+ * form `path/to/file.js.tpl`.
+ *
+ * @param {string[]} copyTemplateFiles An array of file paths (relative to
+ * `./templates`) of files to be copied to the generated project. Template
+ * file paths should be of the form `path/to/_file.js.tpl`.
+ *
+ * @param {Function} templateFn A function that is passed a generator instance and
+ * returns an object containing data to be supplied to the template files.
+ *
+ * @returns {Generator} A class extending Generator
  */
-
-module.exports = function externalsTransform(
-	j,
-	ast,
-	webpackProperties,
-	action
+function webpackGenerator(
+	prompts,
+	templateDir,
+	copyFiles,
+	copyTemplateFiles,
+	templateFn
 ) {
-	function createExternalProperty(p) {
-		if (
-			webpackProperties instanceof RegExp ||
-			typeof webpackProperties === "string"
-		) {
-			return utils.pushCreateProperty(j, p, "externals", webpackProperties);
+	//eslint-disable-next-line
+	return class extends Generator {
+		prompting() {
+			return this.prompt(prompts).then(props => {
+				this.props = props;
+			});
 		}
-		if (Array.isArray(webpackProperties)) {
-			const externalArray = utils.createArrayWithChildren(
-				j,
-				"externals",
-				webpackProperties,
-				true
-			);
-			return p.value.properties.push(externalArray);
-		} else {
-			utils.pushCreateProperty(j, p, "externals", j.objectExpression([]));
-			return utils.pushObjectKeys(j, p, webpackProperties, "externals");
-		}
-	}
-	if (webpackProperties) {
-		if (action === "init") {
-			return ast
-				.find(j.ObjectExpression)
-				.filter(
-					p =>
-						utils.safeTraverse(p, [
-							"parent",
-							"value",
-							"left",
-							"property",
-							"name"
-						]) === "exports"
-				)
-				.forEach(createExternalProperty);
-		} else if (action === "add") {
-			const externalNode = utils.findRootNodesByName(j, ast, "externals");
-			if (externalNode.size() !== 0 &amp;&amp; typeof webpackProperties === "object") {
-				return ast
-					.find(j.ObjectExpression)
-					.filter(
-						p =>
-							utils.safeTraverse(p, ["parentPath", "value", "key", "name"]) ===
-							"externals"
-					)
-					.filter(p => {
-						Object.keys(webpackProperties).forEach(prop => {
-							// need to check for every prop beneath, use the recursion util
-							utils.checkIfExistsAndAddValue(
-								j,
-								p,
-								prop,
-								utils.createIdentifierOrLiteral(j, webpackProperties[prop])
-							);
-						});
-						return ast;
-					});
-			} else if (
-				externalNode.size() !== 0 &amp;&amp;
-				Array.isArray(webpackProperties)
-			) {
-				// Todo
-			} else if (externalNode.size() !== 0 &amp;&amp; webpackProperties.length) {
-				return ast
-					.find(j.ObjectExpression)
-					.filter(
-						p =>
-							utils.safeTraverse(p, ["parentPath", "value", "key", "name"]) ===
-							"externals"
-					)
-					.forEach(p => {
-						j(p).replaceWith(
-							utils.createIdentifierOrLiteral(j, webpackProperties)
-						);
-					});
-			} else {
-				return externalsTransform(j, ast, webpackProperties, "init");
+
+		default() {
+			var currentDirName = path.basename(this.destinationPath());
+			if (currentDirName !== this.props.name) {
+				this.log(`
+				Your project must be inside a folder named ${this.props.name}
+				I will create this folder for you.
+				`);
+				mkdirp(this.props.name);
+				var pathToProjectDir = this.destinationPath(this.props.name);
+				this.destinationRoot(pathToProjectDir);
 			}
-		} else if (action === "remove") {
-			// TODO
-		} else if (action === "update") {
-			// TODO
 		}
-	} else {
-		return ast;
-	}
-};
+
+		writing() {
+			this.copy = copyUtils.generatorCopy(this, templateDir);
+			this.copyTpl = copyUtils.generatorCopyTpl(
+				this,
+				templateDir,
+				templateFn(this)
+			);
+
+			copyFiles.forEach(this.copy);
+			copyTemplateFiles.forEach(this.copyTpl);
+		}
+
+		install() {
+			this.npmInstall(["webpack-defaults", "bluebird"], {
+				"save-dev": true
+			}).then(() => {
+				this.spawnCommand("npm", ["run", "webpack-defaults"]);
+			});
+		}
+	};
+}
+
+module.exports = webpackGenerator;
 </code></pre>
         </article>
     </section>
@@ -151,7 +119,7 @@ module.exports = function externalsTransform(
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Dec 19 2017 16:14:19 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Dec 19 2017 16:13:31 GMT+0100 (CET)
 </footer>
 
 <script> prettyPrint(); </script>
