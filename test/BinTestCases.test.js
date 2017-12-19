@@ -137,7 +137,7 @@ describe("BinTestCases", function() {
 			});
 		} else {
 			describe(testName, function() {
-				beforeEach(function(done) {
+				beforeEach(function(done)	 {
 					jest.setTimeout(20000);
 
 					const child = spawn([cmd].concat(args), opts);
