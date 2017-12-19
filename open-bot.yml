@@ -53,7 +53,7 @@ rules:
       state: "failed"
       allow_failure: false
       config:
-        env: JOB_PART=unit
+        env: JOB_PART=integration
     fetch: travis_job.log
     string_cleanup:
       id: logResult
