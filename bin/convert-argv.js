@@ -3,10 +3,8 @@ var fs = require("fs");
 fs.existsSync = fs.existsSync || path.existsSync;
 var interpret = require("interpret");
 var prepareOptions = require("./prepareOptions");
-
 module.exports = function(yargs, argv, convertOptions) {
 	var options = [];
-
 	// Shortcuts
 	if (argv.d) {
 		argv.debug = true;
@@ -27,7 +25,6 @@ module.exports = function(yargs, argv, convertOptions) {
 			argv.mode = "production";
 		}
 	}
-
 	var configFileLoaded = false;
 	var configFiles = [];
 	var extensions = Object.keys(interpret.extensions).sort(function(a, b) {
@@ -85,7 +82,6 @@ module.exports = function(yargs, argv, convertOptions) {
 			}
 		}
 	}
-
 	if (configFiles.length > 0) {
 		var registerCompiler = function registerCompiler(moduleDescriptor) {
 			if (moduleDescriptor) {
@@ -108,7 +104,26 @@ module.exports = function(yargs, argv, convertOptions) {
 
 		var requireConfig = function requireConfig(configPath) {
 			var options = (function WEBPACK_OPTIONS() {
-				return require(configPath);
+				if (argv.configRegister === "@std/esm") {
+					return require(path.resolve(
+						process.cwd(),
+						"node_modules",
+						"@std/esm"
+					))(module, {
+						esm: "js"
+					})(configPath);
+				} else if (argv.configRegister === "babel-register") {
+					require(path.resolve(
+						process.cwd(),
+						"node_modules",
+						"babel-register"
+					))({
+						presets: ["es2015"]
+					});
+					return require(configPath);
+				} else {
+					return require(configPath);
+				}
 			})();
 			options = prepareOptions(options, argv);
 			return options;

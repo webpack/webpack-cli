@@ -29,34 +29,12 @@
             <pre class="prettyprint source linenums"><code>"use strict";
 
 const inquirer = require("inquirer");
-const logSymbols = require("log-symbols");
-const fs = require("fs");
 const path = require("path");
 const glob = require("glob-all");
 const chalk = require("chalk");
 const spawn = require("cross-spawn");
 const List = require("webpack-addons").List;
-const getPackageManager = require("../utils/package-manager").getPackageManager;
-
-
-/**
- *
- * Attaches a promise to the installation of the package
- *
- * @param {Function} child - The function to attach a promise to
- * @returns {Promise} promise - Returns a promise to the installation
- */
-
-function processPromise(child) {
-	return new Promise(function(resolve, reject) {
-		//eslint-disable-line
-		if (child.status !== 0) {
-			reject();
-		} else {
-			resolve();
-		}
-	});
-}
+const processPromise = require("../utils/resolve-packages").processPromise;
 
 /**
  *
@@ -66,9 +44,10 @@ function processPromise(child) {
  * @returns {Void}
  */
 
-const spawnNPMWithArg = (cmd) => spawn.sync("npm", ["install",'webpack-dev-server',  cmd], {
+const spawnNPMWithArg = cmd =>
+	spawn.sync("npm", ["install", "webpack-dev-server", cmd], {
 		stdio: "inherit"
-});
+	});
 
 /**
  *
@@ -78,10 +57,10 @@ const spawnNPMWithArg = (cmd) => spawn.sync("npm", ["install",'webpack-dev-serve
  * @returns {Void}
  */
 
-const spawnYarnWithArg = (cmd) => spawn.sync("yarn", ['add','webpack-dev-server', cmd], {
-	stdio: "inherit"
+const spawnYarnWithArg = cmd =>
+	spawn.sync("yarn", ["add", "webpack-dev-server", cmd], {
+		stdio: "inherit"
 	});
-
 
 /**
  *
@@ -91,102 +70,143 @@ const spawnYarnWithArg = (cmd) => spawn.sync("yarn", ['add','webpack-dev-server'
  * @returns {String} string with given path
  */
 
-const getRootPathModule = (dep) => glob.sync([
-	path.resolve(process.cwd(), dep),
-	path.join(process.cwd(), '..', dep),
-	path.join(process.cwd(), '..', '..', dep),
-	path.join(process.cwd(), '..', '..', '..', dep),
-]).pop();
-
+const getRootPathModule = dep =>
+	glob
+		.sync([
+			path.resolve(process.cwd(), dep),
+			path.join(process.cwd(), "..", dep),
+			path.join(process.cwd(), "..", "..", dep),
+			path.join(process.cwd(), "..", "..", "..", dep)
+		])
+		.pop();
 
 /**
  *
-* Prompts for installing the devServer and running it
+ * Prompts for installing the devServer and running it
  *
  * @param {Object} args - args processed from the CLI
  * @returns {Function} invokes the devServer API
  */
-module.exports = function serve() {
+
+function serve() {
 	let packageJSONPath = getRootPathModule("package.json");
-	if(!packageJSONPath) {
-		console.log('\n',chalk.red("✖ Could not find your package.json file"), '\n');
+	if (!packageJSONPath) {
+		console.log(
+			"\n",
+			chalk.red("✖ Could not find your package.json file"),
+			"\n"
+		);
 		process.exit(1);
 	}
 	let packageJSON = require(packageJSONPath);
-		/*
-		 * We gotta do this, cause some configs might not have devdep,
-		 * dep or optional dep, so we'd need sanity checks for each
-		*/
-		console.log(packageJSON, "heyoon")
-	let hasDevServerDep = packageJSON ? Object.keys(packageJSON).filter( (p) => (packageJSON[p]['webpack-dev-server'])) : [];
+	/*
+	 * We gotta do this, cause some configs might not have devdep,
+	 * dep or optional dep, so we'd need sanity checks for each
+	*/
+	let hasDevServerDep = packageJSON
+		? Object.keys(packageJSON).filter(p => packageJSON[p]["webpack-dev-server"])
+		: [];
 
-	if(hasDevServerDep.length) {
-		let WDSPath = getRootPathModule("node_modules/webpack-dev-server/bin/webpack-dev-server.js");
-		if(!WDSPath) {
-			console.log('\n',chalk.red("✖ Could not find the webpack-dev-server dependency in node_modules root path"));
-			console.log(chalk.bold.green(" ✔︎"), "Try this command:", chalk.bold.green(
-				"rm -rf node_modules &amp;&amp; npm install"
-			));
+	if (hasDevServerDep.length) {
+		let WDSPath = getRootPathModule(
+			"node_modules/webpack-dev-server/bin/webpack-dev-server.js"
+		);
+		if (!WDSPath) {
+			console.log(
+				"\n",
+				chalk.red(
+					"✖ Could not find the webpack-dev-server dependency in node_modules root path"
+				)
+			);
+			console.log(
+				chalk.bold.green(" ✔︎"),
+				"Try this command:",
+				chalk.bold.green("rm -rf node_modules &amp;&amp; npm install")
+			);
 			process.exit(1);
 		}
 		return require(WDSPath);
 	} else {
 		process.stdout.write(
 			"\n" +
-				chalk.bold("✖ We didn't find any webpack-dev-server dependency in your project,")
-				+ "\n" +
-				chalk.bold.green("  'webpack serve'") + " " + chalk.bold("requires you to have it installed ") +
+				chalk.bold(
+					"✖ We didn't find any webpack-dev-server dependency in your project,"
+				) +
+				"\n" +
+				chalk.bold.green("  'webpack serve'") +
+				" " +
+				chalk.bold("requires you to have it installed ") +
 				"\n\n"
 		);
-		return inquirer.prompt([
-			{
-				type: "confirm",
-				name: "confirmDevserver",
-				message: "Do you want to install it? (default: Y)",
-				default: "Y"
-			}
-		]).then(answer => {
-			if(answer["confirmDevserver"]) {
-				return inquirer.prompt(List("confirmDepType", "What kind of dependency do you want it to be under? (default: devDependency)", ['devDependency', 'optionalDependency', 'dependency'])).then( depTypeAns => {
-					const packager = getRootPathModule("package-lock.json") ? "npm" : "yarn";
-					let spawnAction;
-					if(depTypeAns['confirmDepType'] === 'devDependency') {
-						if(packager === "yarn") {
-							spawnAction = () =>  spawnYarnWithArg('--dev')
-						} else {
-							spawnAction = () => spawnNPMWithArg('--save-dev')
-						}
-					}
-					if(depTypeAns['confirmDepType'] === 'dependency') {
-						if(packager === "yarn") {
-							spawnAction = () =>  spawnYarnWithArg(' ')
-						} else {
-							spawnAction = () => spawnNPMWithArg('--save')
-						}
-					}
-					if(depTypeAns['confirmDepType'] === 'optionalDependency') {
-						if(packager === "yarn") {
-							spawnAction = () =>  spawnYarnWithArg('--optional')
-						} else {
-							spawnNPMWithArg('--save-optional')
-						}
-					}
-					return processPromise(spawnAction()).then( () => {
-						// Recursion doesn't work well with require call being cached
-						delete require.cache[require.resolve(packageJSONPath)];
-						return serve();
-					})
-				})
-			} else {
-				console.log(chalk.bold.red("✖ Serve aborted due cancelling"));
+		return inquirer
+			.prompt([
+				{
+					type: "confirm",
+					name: "confirmDevserver",
+					message: "Do you want to install it? (default: Y)",
+					default: "Y"
+				}
+			])
+			.then(answer => {
+				if (answer["confirmDevserver"]) {
+					return inquirer
+						.prompt(
+							List(
+								"confirmDepType",
+								"What kind of dependency do you want it to be under? (default: devDependency)",
+								["devDependency", "optionalDependency", "dependency"]
+							)
+						)
+						.then(depTypeAns => {
+							const packager = getRootPathModule("package-lock.json")
+								? "npm"
+								: "yarn";
+							let spawnAction;
+							if (depTypeAns["confirmDepType"] === "devDependency") {
+								if (packager === "yarn") {
+									spawnAction = _ => spawnYarnWithArg("--dev");
+								} else {
+									spawnAction = _ => spawnNPMWithArg("--save-dev");
+								}
+							}
+							if (depTypeAns["confirmDepType"] === "dependency") {
+								if (packager === "yarn") {
+									spawnAction = _ => spawnYarnWithArg(" ");
+								} else {
+									spawnAction = _ => spawnNPMWithArg("--save");
+								}
+							}
+							if (depTypeAns["confirmDepType"] === "optionalDependency") {
+								if (packager === "yarn") {
+									spawnAction = _ => spawnYarnWithArg("--optional");
+								} else {
+									spawnAction = _ => spawnNPMWithArg("--save-optional");
+								}
+							}
+							return processPromise(spawnAction()).then(_ => {
+								// Recursion doesn't work well with require call being cached
+								delete require.cache[require.resolve(packageJSONPath)];
+								return serve();
+							});
+						});
+				} else {
+					console.log(chalk.bold.red("✖ Serve aborted due cancelling"));
+					process.exitCode = 1;
+				}
+			})
+			.catch(err => {
+				console.log(chalk.red("✖ Serve aborted due to some errors"));
+				console.error(err);
 				process.exitCode = 1;
-			}
-		}).catch(err => {
-			console.log(chalk.red("✖ Serve aborted due to some errors"));
-			console.error(err);
-			process.exitCode = 1;
-		})
+			});
 	}
+}
+
+module.exports = {
+	serve,
+	getRootPathModule,
+	spawnNPMWithArg,
+	spawnYarnWithArg
 };
 </code></pre>
         </article>
@@ -198,13 +218,13 @@ module.exports = function serve() {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AddGenerator.html">AddGenerator</a></li><li><a href="InitGenerator.html">InitGenerator</a></li><li><a href="LoaderGenerator.html">LoaderGenerator</a></li><li><a href="PluginGenerator.html">PluginGenerator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#checkIfExistsAndAddValue">checkIfExistsAndAddValue</a></li><li><a href="global.html#createArrayWithChildren">createArrayWithChildren</a></li><li><a href="global.html#createEmptyArrayProperty">createEmptyArrayProperty</a></li><li><a href="global.html#createEmptyCallableFunctionWithArguments">createEmptyCallableFunctionWithArguments</a></li><li><a href="global.html#createExternalRegExp">createExternalRegExp</a></li><li><a href="global.html#createIdentifierOrLiteral">createIdentifierOrLiteral</a></li><li><a href="global.html#createLiteral">createLiteral</a></li><li><a href="global.html#createObjectWithSuppliedProperty">createObjectWithSuppliedProperty</a></li><li><a href="global.html#createOrUpdatePluginByName">createOrUpdatePluginByName</a></li><li><a href="global.html#createProperty">createProperty</a></li><li><a href="global.html#creator">creator</a></li><li><a href="global.html#defineTest">defineTest</a></li><li><a href="global.html#findPluginsByName">findPluginsByName</a></li><li><a href="global.html#findRootNodesByName">findRootNodesByName</a></li><li><a href="global.html#findVariableToPlugin">findVariableToPlugin</a></li><li><a href="global.html#generatorCopy">generatorCopy</a></li><li><a href="global.html#generatorCopyTpl">generatorCopyTpl</a></li><li><a href="global.html#getPackageManager">getPackageManager</a></li><li><a href="global.html#getRequire">getRequire</a></li><li><a href="global.html#getRootPathModule">getRootPathModule</a></li><li><a href="global.html#isAssignment">isAssignment</a></li><li><a href="global.html#isType">isType</a></li><li><a href="global.html#loaderCreator">loaderCreator</a></li><li><a href="global.html#loopThroughObjects">loopThroughObjects</a></li><li><a href="global.html#makeLoaderName">makeLoaderName</a></li><li><a href="global.html#pluginCreator">pluginCreator</a></li><li><a href="global.html#processPromise">processPromise</a></li><li><a href="global.html#pushCreateProperty">pushCreateProperty</a></li><li><a href="global.html#pushObjectKeys">pushObjectKeys</a></li><li><a href="global.html#replaceAt">replaceAt</a></li><li><a href="global.html#runSingleTansform">runSingleTansform</a></li><li><a href="global.html#spawnChild">spawnChild</a></li><li><a href="global.html#spawnNPM">spawnNPM</a></li><li><a href="global.html#spawnNPMWithArg">spawnNPMWithArg</a></li><li><a href="global.html#spawnYarn">spawnYarn</a></li><li><a href="global.html#spawnYarnWithArg">spawnYarnWithArg</a></li><li><a href="global.html#transformsObject">transformsObject</a></li><li><a href="global.html#traverseAndGetProperties">traverseAndGetProperties</a></li><li><a href="global.html#webpackGenerator">webpackGenerator</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AddGenerator.html">AddGenerator</a></li><li><a href="InitGenerator.html">InitGenerator</a></li><li><a href="LoaderGenerator.html">LoaderGenerator</a></li><li><a href="PluginGenerator.html">PluginGenerator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#checkIfExistsAndAddValue">checkIfExistsAndAddValue</a></li><li><a href="global.html#createArrayWithChildren">createArrayWithChildren</a></li><li><a href="global.html#createEmptyArrayProperty">createEmptyArrayProperty</a></li><li><a href="global.html#createEmptyCallableFunctionWithArguments">createEmptyCallableFunctionWithArguments</a></li><li><a href="global.html#createExternalRegExp">createExternalRegExp</a></li><li><a href="global.html#createIdentifierOrLiteral">createIdentifierOrLiteral</a></li><li><a href="global.html#createLiteral">createLiteral</a></li><li><a href="global.html#createObjectWithSuppliedProperty">createObjectWithSuppliedProperty</a></li><li><a href="global.html#createOrUpdatePluginByName">createOrUpdatePluginByName</a></li><li><a href="global.html#createProperty">createProperty</a></li><li><a href="global.html#creator">creator</a></li><li><a href="global.html#defineTest">defineTest</a></li><li><a href="global.html#findPluginsByName">findPluginsByName</a></li><li><a href="global.html#findRootNodesByName">findRootNodesByName</a></li><li><a href="global.html#findVariableToPlugin">findVariableToPlugin</a></li><li><a href="global.html#generatorCopy">generatorCopy</a></li><li><a href="global.html#generatorCopyTpl">generatorCopyTpl</a></li><li><a href="global.html#getPackageManager">getPackageManager</a></li><li><a href="global.html#getRequire">getRequire</a></li><li><a href="global.html#getRootPathModule">getRootPathModule</a></li><li><a href="global.html#isAssignment">isAssignment</a></li><li><a href="global.html#isType">isType</a></li><li><a href="global.html#loaderCreator">loaderCreator</a></li><li><a href="global.html#loopThroughObjects">loopThroughObjects</a></li><li><a href="global.html#makeLoaderName">makeLoaderName</a></li><li><a href="global.html#pluginCreator">pluginCreator</a></li><li><a href="global.html#processPromise">processPromise</a></li><li><a href="global.html#pushCreateProperty">pushCreateProperty</a></li><li><a href="global.html#pushObjectKeys">pushObjectKeys</a></li><li><a href="global.html#replaceAt">replaceAt</a></li><li><a href="global.html#resolvePackages">resolvePackages</a></li><li><a href="global.html#runSingleTansform">runSingleTansform</a></li><li><a href="global.html#serve">serve</a></li><li><a href="global.html#spawnChild">spawnChild</a></li><li><a href="global.html#spawnNPM">spawnNPM</a></li><li><a href="global.html#spawnNPMWithArg">spawnNPMWithArg</a></li><li><a href="global.html#spawnYarn">spawnYarn</a></li><li><a href="global.html#spawnYarnWithArg">spawnYarnWithArg</a></li><li><a href="global.html#transformsObject">transformsObject</a></li><li><a href="global.html#traverseAndGetProperties">traverseAndGetProperties</a></li><li><a href="global.html#webpackGenerator">webpackGenerator</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Dec 19 2017 13:32:26 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Dec 19 2017 15:40:49 GMT+0100 (CET)
 </footer>
 
 <script> prettyPrint(); </script>

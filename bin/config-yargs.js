@@ -19,7 +19,7 @@ module.exports = function(yargs) {
 				describe:
 					"Initializes a new webpack configuration or loads a" +
 					"\n" +
-					"plugin if specified",
+					"addon if specified",
 				group: INIT_GROUP
 			},
 			migrate: {
@@ -53,12 +53,19 @@ module.exports = function(yargs) {
 				describe: "Generates a new webpack plugin project",
 				group: INIT_GROUP
 			},
-
 			config: {
 				type: "string",
 				describe: "Path to the config file",
 				group: CONFIG_GROUP,
 				defaultDescription: "webpack.config.js or webpackfile.js",
+				requiresArg: true
+			},
+			"config-register": {
+				type: "string",
+				alias: "r",
+				describe: "Allows to use import/export in the webpack configuration",
+				group: CONFIG_GROUP,
+				defaultDescription: "@std/esm or babel-register",
 				requiresArg: true
 			},
 			"config-name": {
