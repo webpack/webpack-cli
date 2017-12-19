@@ -16,7 +16,4 @@ before_script:
   - sh -e /etc/init.d/xvfb start
   - bash <(curl -s https://codecov.io/bash)
 
-script:
-  - npm run prepublish
-  - npm run lint
-  - npm run test
+script: npm run travis:$JOB_PART
