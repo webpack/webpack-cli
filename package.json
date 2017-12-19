@@ -27,8 +27,8 @@
     "test:ci": "jest --ci && codecov -f coverage/coverage-final.json",
     "jsdoc": "jsdoc -c jsdoc.json -r -d docs",
     "prepublish": "flow-remove-types lib/ -d dist/ && npm run format:dist",
-    "travis:unit": "npm run test",
-    "travis:lint": "npm run lint"
+    "travis:integration": "yarn prepare && npm run test:ci",
+    "travis:lint": "yarn prepare && yarn lint"
   },
   "lint-staged": {
     "{lib,bin}/**/!(__testfixtures__)/**.js": [
