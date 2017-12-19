@@ -106,7 +106,7 @@ module.exports = function(yargs, argv, convertOptions) {
 			var options = (function WEBPACK_OPTIONS() {
 				if (argv.configRegister.length) {
 					argv.configRegister.forEach(dep => {
-						require(dep)(configPath);
+						require(dep);
 					});
 					return require(configPath);
 				} else {
