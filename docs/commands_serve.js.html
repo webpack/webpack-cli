@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: utils/resolve-packages.js</title>
+    <title>JSDoc: Source: commands/serve.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: utils/resolve-packages.js</h1>
+    <h1 class="page-title">Source: commands/serve.js</h1>
 
     
 
@@ -28,13 +28,16 @@
         <article>
             <pre class="prettyprint source linenums"><code>"use strict";
 
+const inquirer = require("inquirer");
+const logSymbols = require("log-symbols");
+const fs = require("fs");
 const path = require("path");
+const glob = require("glob-all");
 const chalk = require("chalk");
-const globalPath = require("global-modules");
+const spawn = require("cross-spawn");
+const List = require("webpack-addons").List;
+const getPackageManager = require("../utils/package-manager").getPackageManager;
 
-const creator = require("../init/index").creator;
-
-const spawnChild = require("./package-manager").spawnChild;
 
 /**
  *
@@ -57,42 +60,133 @@ function processPromise(child) {
 
 /**
  *
- * Resolves and installs the packages, later sending them to @creator
+ * Installs WDS using NPM with --save --dev etc
  *
- * @param {String[]} pkg - The dependencies to be installed
- * @returns {Function|Error} creator - Builds
- * a webpack configuration through yeoman or throws an error
+ * @param {Object} cmd - arg to spawn with
+ * @returns {Void}
  */
 
-module.exports = function resolvePackages(pkg) {
-	Error.stackTraceLimit = 30;
+const spawnNPMWithArg = (cmd) => spawn.sync("npm", ["install",'webpack-dev-server',  cmd], {
+		stdio: "inherit"
+});
 
-	let packageLocations = [];
+/**
+ *
+ * Installs WDS using Yarn with add etc
+ *
+ * @param {Object} cmd - arg to spawn with
+ * @returns {Void}
+ */
 
-	pkg.forEach(addon => {
-		processPromise(spawnChild(addon))
-			.then(_ => {
-				try {
-					packageLocations.push(path.resolve(globalPath, addon));
-				} catch (err) {
-					console.log("Package wasn't validated correctly..");
-					console.log("Submit an issue for", pkg, "if this persists");
-					console.log("\nReason: \n");
-					console.error(chalk.bold.red(err));
-					process.exitCode = 1;
-				}
-			})
-			.catch(err => {
-				console.log("Package Coudln't be installed, aborting..");
-				console.log("\nReason: \n");
-				console.error(chalk.bold.red(err));
-				process.exitCode = 1;
-			})
-			.then(_ => {
-				if (packageLocations.length === pkg.length)
-					return creator(packageLocations);
-			});
+const spawnYarnWithArg = (cmd) => spawn.sync("yarn", ['add','webpack-dev-server', cmd], {
+	stdio: "inherit"
 	});
+
+
+/**
+ *
+ * Find the path of a given module
+ *
+ * @param {Object} dep - dependency to find
+ * @returns {String} string with given path
+ */
+
+const getRootPathModule = (dep) => glob.sync([
+	path.resolve(process.cwd(), dep),
+	path.join(process.cwd(), '..', dep),
+	path.join(process.cwd(), '..', '..', dep),
+	path.join(process.cwd(), '..', '..', '..', dep),
+]).pop();
+
+
+/**
+ *
+* Prompts for installing the devServer and running it
+ *
+ * @param {Object} args - args processed from the CLI
+ * @returns {Function} invokes the devServer API
+ */
+module.exports = function serve() {
+	let packageJSONPath = getRootPathModule("package.json");
+	if(!packageJSONPath) {
+		console.log('\n',chalk.red("✖ Could not find your package.json file"), '\n');
+		process.exit(1);
+	}
+	let packageJSON = require(packageJSONPath);
+		/*
+		 * We gotta do this, cause some configs might not have devdep,
+		 * dep or optional dep, so we'd need sanity checks for each
+		*/
+		console.log(packageJSON, "heyoon")
+	let hasDevServerDep = packageJSON ? Object.keys(packageJSON).filter( (p) => (packageJSON[p]['webpack-dev-server'])) : [];
+
+	if(hasDevServerDep.length) {
+		let WDSPath = getRootPathModule("node_modules/webpack-dev-server/bin/webpack-dev-server.js");
+		if(!WDSPath) {
+			console.log('\n',chalk.red("✖ Could not find the webpack-dev-server dependency in node_modules root path"));
+			console.log(chalk.bold.green(" ✔︎"), "Try this command:", chalk.bold.green(
+				"rm -rf node_modules &amp;&amp; npm install"
+			));
+			process.exit(1);
+		}
+		return require(WDSPath);
+	} else {
+		process.stdout.write(
+			"\n" +
+				chalk.bold("✖ We didn't find any webpack-dev-server dependency in your project,")
+				+ "\n" +
+				chalk.bold.green("  'webpack serve'") + " " + chalk.bold("requires you to have it installed ") +
+				"\n\n"
+		);
+		return inquirer.prompt([
+			{
+				type: "confirm",
+				name: "confirmDevserver",
+				message: "Do you want to install it? (default: Y)",
+				default: "Y"
+			}
+		]).then(answer => {
+			if(answer["confirmDevserver"]) {
+				return inquirer.prompt(List("confirmDepType", "What kind of dependency do you want it to be under? (default: devDependency)", ['devDependency', 'optionalDependency', 'dependency'])).then( depTypeAns => {
+					const packager = getRootPathModule("package-lock.json") ? "npm" : "yarn";
+					let spawnAction;
+					if(depTypeAns['confirmDepType'] === 'devDependency') {
+						if(packager === "yarn") {
+							spawnAction = () =>  spawnYarnWithArg('--dev')
+						} else {
+							spawnAction = () => spawnNPMWithArg('--save-dev')
+						}
+					}
+					if(depTypeAns['confirmDepType'] === 'dependency') {
+						if(packager === "yarn") {
+							spawnAction = () =>  spawnYarnWithArg(' ')
+						} else {
+							spawnAction = () => spawnNPMWithArg('--save')
+						}
+					}
+					if(depTypeAns['confirmDepType'] === 'optionalDependency') {
+						if(packager === "yarn") {
+							spawnAction = () =>  spawnYarnWithArg('--optional')
+						} else {
+							spawnNPMWithArg('--save-optional')
+						}
+					}
+					return processPromise(spawnAction()).then( () => {
+						// Recursion doesn't work well with require call being cached
+						delete require.cache[require.resolve(packageJSONPath)];
+						return serve();
+					})
+				})
+			} else {
+				console.log(chalk.bold.red("✖ Serve aborted due cancelling"));
+				process.exitCode = 1;
+			}
+		}).catch(err => {
+			console.log(chalk.red("✖ Serve aborted due to some errors"));
+			console.error(err);
+			process.exitCode = 1;
+		})
+	}
 };
 </code></pre>
         </article>
