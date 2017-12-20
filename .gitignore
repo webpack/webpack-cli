@@ -13,7 +13,7 @@ npm-debug.*
 yarn-error.log
 
 # Jest Coverage
-coverage
+/coverage
 
 # Distribution Build
 dist

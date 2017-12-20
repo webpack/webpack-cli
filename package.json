@@ -23,8 +23,8 @@
     "precommit": "lint-staged",
     "prepare": "flow-remove-types lib/ -d dist/ && yarn format:dist",
     "pretest": "yarn lint",
-    "test": "jest --coverage",
-    "test:ci": "jest --coverage --ci",
+    "test": "jest",
+    "test:ci": "jest --ci",
     "jsdoc": "jsdoc -c jsdoc.json -r -d docs"
   },
   "lint-staged": {
@@ -37,7 +37,9 @@
     "testEnvironment": "node",
     "modulePathIgnorePatterns": [
       "dist"
-    ]
+    ],
+    "coverageDirectory": "./coverage/",
+    "collectCoverage": true
   },
   "dependencies": {
     "babel-code-frame": "^6.22.0",
