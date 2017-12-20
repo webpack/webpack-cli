@@ -24,7 +24,7 @@
     "prepare": "flow-remove-types lib/ -d dist/ && yarn format:dist",
     "pretest": "yarn lint",
     "test": "jest",
-    "test:ci": "jest --ci",
+    "test:ci": "jest --ci && codecov",
     "jsdoc": "jsdoc -c jsdoc.json -r -d docs"
   },
   "lint-staged": {
