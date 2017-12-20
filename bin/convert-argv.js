@@ -110,7 +110,7 @@ module.exports = function(yargs, argv, convertOptions) {
 						process.cwd()
 					);
 					argv.configRegister.forEach(dep => {
-						return require(dep);
+						require(dep);
 					});
 					return require(configPath);
 				} else {
