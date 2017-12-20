@@ -5,6 +5,7 @@
 </div>
 
 [![Build Status](https://travis-ci.org/webpack/webpack-cli.svg)](https://travis-ci.org/webpack/webpack-cli)
+[![Build status](https://ci.appveyor.com/api/projects/status/c2a37nlrfv9mg64f?svg=true)](https://ci.appveyor.com/project/ev1stensberg/webpack-cli)
 [![Dependency Status](https://david-dm.org/webpack/webpack-cli.svg)](https://david-dm.org/webpack/webpack-cli)
 [![Code Climate](https://codeclimate.com/github/webpack/webpack-cli/badges/gpa.svg)](https://codeclimate.com/github/webpack/webpack-cli)
 [![chat on gitter](https://badges.gitter.im/webpack/webpack.svg)](https://gitter.im/webpack/webpack)
@@ -28,3 +29,8 @@ The `init` feature allows users to get started with webpack, fast. Through scaff
 `webpack-cli init webpack-addons-<package>`
 
 [Read more about scaffolding](SCAFFOLDING.md)
+
+## Contributing and Internal Documentation
+
+The webpack family welcomes any contributor, small or big. We are happy to elaborate, guide you through the source code and find issues you might want to work on! To get started have a look at our [documentation on contributing](CONTRIBUTING.md), or our [Internal Documentation]()
+
