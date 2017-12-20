@@ -22,6 +22,7 @@ script:
   - yarn prepare
   - yarn lint
   - yarn test:ci
+  - codecov
 
 after_success:
   - bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"

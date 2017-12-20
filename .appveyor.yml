@@ -14,6 +14,8 @@ install:
   - ps: Install-Product node $env:nodejs_version $env:platform
   - npm install yarn -g
   - yarn
+  - yarn add global codecov
+
 test_script:
   - node --version
   - npm --version
