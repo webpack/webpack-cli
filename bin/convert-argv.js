@@ -517,17 +517,7 @@ module.exports = function(yargs, argv, convertOptions) {
 		});
 
 		ifBooleanArg("optimize-minimize", function() {
-			var UglifyJsPlugin = require("webpack/lib/optimize/UglifyJsPlugin");
 			var LoaderOptionsPlugin = require("webpack/lib/LoaderOptionsPlugin");
-			addPlugin(
-				options,
-				new UglifyJsPlugin({
-					sourceMap:
-						options.devtool &&
-						(options.devtool.indexOf("sourcemap") >= 0 ||
-							options.devtool.indexOf("source-map") >= 0)
-				})
-			);
 			addPlugin(
 				options,
 				new LoaderOptionsPlugin({
