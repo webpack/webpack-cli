@@ -1,10 +1,22 @@
 language: node_js
 
-node_js:
-  - "6"
-  - "7"
-  - "8"
-  - "stable"
+matrix:
+  include:
+    - os: linux
+      node_js: "stable"
+      env: JOB_PART=lint
+    - os: linux
+      node_js: "stable"
+      env: JOB_PART=integration
+    - os: linux
+      node_js: "8"
+      env: JOB_PART=integration
+    - os: linux
+      node_js: "7"
+      env: JOB_PART=integraton
+    - os: linux
+      node_js: "6"
+      env: JOB_PART=integraton
 
 sudo: false
 
