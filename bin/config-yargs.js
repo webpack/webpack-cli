@@ -44,12 +44,12 @@ module.exports = function(yargs) {
 				describe: "Updates a webpack component to your configuration file",
 				group: INIT_GROUP
 			},
-			*/
 			make: {
 				type: "boolean",
 				describe: "Converts a webpack configuration to a makefile",
 				group: INIT_GROUP
 			},
+			*/
 			"generate-loader": {
 				type: "boolean",
 				describe: "Generates a new webpack loader project",

@@ -17,9 +17,9 @@ const NON_COMPILATION_ARGS = [
 	/*
 	"remove",
 	"update",
+	"make",
 	*/
 	"serve",
-	"make",
 	"generate-loader",
 	"generate-plugin"
 ];
