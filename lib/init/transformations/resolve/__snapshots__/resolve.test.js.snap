@@ -25,14 +25,6 @@ exports[`resolve transforms correctly using "resolve-0" data 1`] = `
         mainFiles: ['noMainFileHere', iGuess],
         modules: [one, 'two'],
         unsafeCache: false,
-
-        resolveLoader: {
-            modules: ['node_modules', mode_nodules],
-            extensions: [jsVal, '.json'],
-            mainFields: [loader, 'main'],
-            moduleExtensions: ['-loader', value]
-        },
-
         plugins: [somePlugin, 'stringVal'],
         symlinks: true
     }
@@ -47,37 +39,30 @@ exports[`resolve transforms correctly using "resolve-1" data 1`] = `
 		filename: 'bundle.js'
 	},
 	resolve: {
-        alias: {
-            inject: {{#isdf_eq buildasda 'staasdndalone'}},
-            hello: \\"'world'\\",
-            inject_1: {{/asd}},
-            world: \\"hello\\",
-            hello: 'worlasdd',
-            world: asdc
-        },
-
-        aliasFields: [\\"'browser'\\", \\"wars\\", 'browser', wars, 'as'],
-        descriptionFiles: [\\"'a'\\", \\"b\\", \\"'c'\\", 'a', b, 'c', 'd', e, f],
-        enforceExtension: false,
-        enforceModuleExtension: false,
-        extensions: [\\"hey\\", \\"ho\\", hey, ho, ok, 'ho'],
-        mainFields: [\\"main\\", \\"'story'\\", main, 'story', ok, main, 'story', no, 'main'],
-        mainFiles: [\\"'noMainFileHere'\\", \\"iGuess\\", 'noMainFileHere', iGuess, niGuess],
-        modules: [\\"one\\", \\"'two'\\", one, 'two', 'ok', mode_nodules],
-        unsafeCache: false,
-
-        resolveLoader: {
-			modules: [\\"'node_modules'\\", \\"mode_nodules\\", 'node_modules', mode_nodules, 'ok'],
-			extensions: [\\"jsVal\\", \\"'.json'\\", jsVal, '.json', ok, 'ho'],
-			mainFields: [\\"loader\\", \\"'main'\\", loader, 'main', ok, 'story', loader, 'main', no],
-			moduleExtensions: [\\"'-loader'\\", \\"value\\", '-loader', value, '-kn', ok]
+		alias: {
+			inject: {{#isdf_eq buildasda 'staasdndalone'}},
+			hello: 'worlasdd',
+			inject_1: {{/asd}},
+			world: asdc
 		},
-
-        plugins: [\\"somePlugin\\", \\"'stringVal'\\", somePlugin, 'stringVal'],
-        symlinks: true,
-        enforceExtension: true,
-        symlinks: false
-    }
+		aliasFields: [\\"'browser'\\", \\"wars\\", 'as'],
+		descriptionFiles: [\\"'a'\\", \\"b\\", \\"'c'\\", 'd', e, f],
+		enforceExtension: true,
+		enforceModuleExtension: false,
+		extensions: [\\"hey\\", \\"ho\\", ok, 'ho'],
+		mainFields: [\\"main\\", \\"'story'\\", ok],
+		mainFiles: [\\"'noMainFileHere'\\", \\"iGuess\\", niGuess],
+		modules: [\\"one\\", \\"'two'\\"],
+		unsafeCache: false,
+		resolveLoader: {
+			modules: [\\"'node_modules'\\", \\"mode_nodules\\"],
+			extensions: [\\"jsVal\\", \\"'.json'\\", ok, 'ho'],
+			mainFields: [\\"loader\\", \\"'main'\\", ok, 'story'],
+			moduleExtensions: [\\"'-loader'\\", \\"value\\"]
+		},
+		plugins: [\\"somePlugin\\", \\"'stringVal'\\"],
+		symlinks: false
+	}
 }
 "
 `;
