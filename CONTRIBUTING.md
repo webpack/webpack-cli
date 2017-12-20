@@ -31,7 +31,6 @@ In case you are suggesting a new feature, we will match your idea with our curre
   *Note: Node 6 or greater would be better for "best results".*
 * Fork the **webpack-cli** repo at [https://github.com/webpack/webpack-cli](https://github.com/webpack/webpack-cli).
 * `git clone <your-clone-url> && cd webpack-cli`
-* Install the commit validator: `npm run install-commit-validator`
 
 ### Setup with npm
 * Install the dependencies: `npm install`
