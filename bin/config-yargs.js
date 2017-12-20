@@ -33,6 +33,7 @@ module.exports = function(yargs) {
 				describe: "Adds a webpack component to your configuration file",
 				group: INIT_GROUP
 			},
+			/*
 			remove: {
 				type: "boolean",
 				describe: "Removes a webpack component to your configuration file",
@@ -43,6 +44,7 @@ module.exports = function(yargs) {
 				describe: "Updates a webpack component to your configuration file",
 				group: INIT_GROUP
 			},
+			*/
 			make: {
 				type: "boolean",
 				describe: "Converts a webpack configuration to a makefile",

@@ -14,8 +14,10 @@ const NON_COMPILATION_ARGS = [
 	"init",
 	"migrate",
 	"add",
+	/*
 	"remove",
 	"update",
+	*/
 	"serve",
 	"make",
 	"generate-loader",

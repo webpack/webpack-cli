@@ -23,9 +23,9 @@ exports[`utils createArrayWithChildren should find an prop that matches key and 
 
 exports[`utils createEmptyArrayProperty should create an array with no properties 1`] = `"its-lit: []"`;
 
-exports[`utils createEmptyCallableFunctionWithArguments Should create a empty function with a name 1`] = `"ringoStarr(\\"/* Add your arguments here */\\")"`;
-
 exports[`utils createExternalRegExp should create an regExp property that has been parsed by jscodeshift 1`] = `"\\"\\\\t\\""`;
+
+exports[`utils createFunctionWithArguments Should create a empty function with a name 1`] = `"ringoStar(\\"/* Add your arguments here */\\")"`;
 
 exports[`utils createIdentifierOrLiteral should create basic literal 1`] = `"'stringLiteral'"`;
 
