@@ -13,10 +13,10 @@ matrix:
       env: JOB_PART=integration
     - os: linux
       node_js: "7"
-      env: JOB_PART=integraton
+      env: JOB_PART=integration
     - os: linux
       node_js: "6"
-      env: JOB_PART=integraton
+      env: JOB_PART=integration
 
 sudo: false
 
