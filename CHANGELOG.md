@@ -1,5 +1,47 @@
 # Change Log
 
+<a name="2.0.0"></a>
+## 2.0.0 (2017-12-21)
+
+* Adds add
+* Remove some mocks
+* Remove validationschema and ajv dependencies
+* Update Jest & Jest-cli
+* Remove unused dependencies
+* Creator is now init
+* Using env preset ( #197 )
+* Using yarn ( #203 )
+* Using peer dep of webpack
+* Transformations is now migrate
+* Init has its own generator
+* Commands are refactored into a HOC and sent to a folder for each command with an helper for scaffolding aliases
+* Using RawList instead of List for better usability ( 541ba62 )
+* lib/transformations/util is now in lib/utils/ast-utils
+* Each AST module now has an extra argument that specifies action to be done
+* FindPluginsByRoot is now FindRootByName and more generalistic
+* Added ast util function createEmptyCallableFunctionWithArguments
+* #214
+* #215 ( Committed directly to master )
+* #217
+* topScope now checks if the import already is present
+* Updated test errors/issue-5576, remember to sync with webpack/next
+* #218
+* Migrate now uses prettier ( 972d4cd )
+* Added transform for mode (e1f512c)
+* Remove recast fork (b416d9c)
+* New Transforms ( 28680c9 )
+* JSdocs are added (285846a)
+* Adds serve alias ( #204 )
+* Migrate has new config validation logic ( 5d4430a)
+* webpack serve is added ( 992bfe2 )
+* webpack --config-register and webpack -r is added (ab94211)
+* Adds webpack make for makefile generation (4f9a4f8)
+* Added appveyor ( c5c9746 )
+* Remove commit-validate from docs ( #222 )
+* Added transform resolveLoader (3c90e83)
+* Using v8-compile-cache ( 0564ceb )
+* Adds webpack-cli bot #224
+
 <a name="1.3.2"></a>
 ## 1.3.2 (2017-05-15)
 
