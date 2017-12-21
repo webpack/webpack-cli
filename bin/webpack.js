@@ -4,7 +4,7 @@
 	MIT License http://www.opensource.org/licenses/mit-license.php
 	Author Tobias Koppers @sokra
 */
-
+require("v8-compile-cache");
 var resolveCwd = require("resolve-cwd");
 // Local version replace global one
 var localCLI = resolveCwd.silent("webpack-cli/bin/webpack");
@@ -13,11 +13,22 @@ var ErrorHelpers = require("webpack/lib/ErrorHelpers");
 const NON_COMPILATION_ARGS = [
 	"init",
 	"migrate",
+	"add",
+	/*
+	"remove",
+	"update",
+	"make",
+	*/
+	"serve",
 	"generate-loader",
 	"generate-plugin"
 ];
 
 const NON_COMPILATION_CMD = process.argv.find(arg => {
+	if (arg === "serve") {
+		global.process.argv = global.process.argv.filter(a => a !== "serve");
+		process.argv = global.process.argv;
+	}
 	return NON_COMPILATION_ARGS.find(a => a === arg);
 });
 
@@ -425,7 +436,7 @@ yargs.parse(process.argv.slice(2), (err, argv, output) => {
 			var watchOptions =
 				firstOptions.watchOptions || firstOptions.watch || options.watch || {};
 			if (watchOptions.stdin) {
-				process.stdin.on("end", function() {
+				process.stdin.on("end", function(_) {
 					process.exit(); // eslint-disable-line
 				});
 				process.stdin.resume();

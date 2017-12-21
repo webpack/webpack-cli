@@ -1,0 +1,114 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`entry transforms correctly using "entry-0" data 1`] = `
+"module.exports = {
+  entry: 'index.js'
+}
+"
+`;
+
+exports[`entry transforms correctly using "entry-0" data 2`] = `
+"module.exports = {
+  entry: ['index.js', 'app.js']
+}
+"
+`;
+
+exports[`entry transforms correctly using "entry-0" data 3`] = `
+"module.exports = {
+  entry: {
+    index: 'index.js',
+    app: 'app.js'
+  }
+}
+"
+`;
+
+exports[`entry transforms correctly using "entry-0" data 4`] = `
+"module.exports = {
+  entry: {
+    something,
+    app: 'app.js',
+    else
+  }
+}
+"
+`;
+
+exports[`entry transforms correctly using "entry-0" data 5`] = `
+"module.exports = {
+  entry: () => 'index.js'
+}
+"
+`;
+
+exports[`entry transforms correctly using "entry-0" data 6`] = `
+"module.exports = {
+  entry: () => new Promise((resolve) => resolve(['./app', './router']))
+}
+"
+`;
+
+exports[`entry transforms correctly using "entry-0" data 7`] = `
+"module.exports = {
+  entry: entryStringVariable
+}
+"
+`;
+
+exports[`entry transforms correctly using "entry-0" data 8`] = `
+"module.exports = {
+  entry: 'index.js'
+}
+"
+`;
+
+exports[`entry transforms correctly using "entry-0" data 9`] = `
+"module.exports = {
+  entry: ['index.js', 'app.js']
+}
+"
+`;
+
+exports[`entry transforms correctly using "entry-0" data 10`] = `
+"module.exports = {
+  entry: {
+    something,
+    ed: 'eddy.js',
+    else
+  }
+}
+"
+`;
+
+exports[`entry transforms correctly using "entry-0" data 11`] = `
+"module.exports = {
+  entry: () => new Promise((resolve) => resolve(['./app', './router']))
+}
+"
+`;
+
+exports[`entry transforms correctly using "entry-0" data 12`] = `
+"module.exports = {
+  entry: entryStringVariable
+}
+"
+`;
+
+exports[`entry transforms correctly using "entry-1" data 1`] = `
+"module.exports = {
+	entry: {
+        index: 'outdex.js',
+        ed: 'sheeran',
+        app: 'nap.js'
+    }
+}
+"
+`;
+
+exports[`entry transforms correctly using "entry-1" data 2`] = `
+"module.exports = {
+	entry: () => 'index.js'
+}
+"
+`;

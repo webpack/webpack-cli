@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`plugins transforms correctly using "plugins-0" data 1`] = `
+"module.exports = {
+    entry: 'index.js',
+
+    output: {
+		filename: 'bundle.js'
+	},
+
+    plugins: [
+        new webpack.optimize.CommonsChunkPlugin({name:'vendor',filename:'vendor-[hash].min.js'})
+    ]
+}
+"
+`;
+
+exports[`plugins transforms correctly using "plugins-0" data 2`] = `
+"module.exports = {
+    entry: 'index.js',
+
+    output: {
+		filename: 'bundle.js'
+	},
+
+    plugins: [new webpack.optimize.DefinePlugin()]
+}
+"
+`;
+
+exports[`plugins transforms correctly using "plugins-1" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	},
+	plugins: [
+        'something',
+        new webpack.optimize.DefinePlugin()('/* Add your arguments here */')
+    ]
+}
+"
+`;

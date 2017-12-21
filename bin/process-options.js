@@ -178,7 +178,7 @@ module.exports = function processOptions(yargs, argv) {
 			if (argv.s) lastHash = null;
 		}
 		if (!options.watch && stats.hasErrors()) {
-			process.on("exit", function() {
+			process.on("exit", function(_) {
 				process.exitCode = 2;
 			});
 		}
@@ -188,7 +188,7 @@ module.exports = function processOptions(yargs, argv) {
 		var watchOptions =
 			primaryOptions.watchOptions || primaryOptions.watch || {};
 		if (watchOptions.stdin) {
-			process.stdin.on("end", function() {
+			process.stdin.on("end", function(_) {
 				process.exitCode = 0;
 			});
 			process.stdin.resume();

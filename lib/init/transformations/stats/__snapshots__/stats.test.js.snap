@@ -1,0 +1,110 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`stats transforms correctly using "stats-0" data 1`] = `
+"module.exports = {
+    entry: 'index.js',
+
+    output: {
+		filename: 'bundle.js'
+	},
+
+    stats: {
+        assets: true,
+        assetsSort: 'field',
+        cached: true,
+        cachedAssets: true,
+        children: true,
+        chunks: true,
+        chunkModules: true,
+        chunkOrigins: true,
+        chunksSort: 'field',
+        context: '../src/',
+        colors: true,
+        depth: false,
+        entrypoints: customVal,
+        errors: true,
+        errorDetails: true,
+        exclude: [],
+        hash: true,
+        maxModules: 15,
+        modules: true,
+        modulesSort: 'field',
+        performance: true,
+        providedExports: false,
+        publicPath: true,
+        reasons: true,
+        source: true,
+        timings: true,
+        usedExports: false,
+        version: true,
+        warnings: true
+    }
+}
+"
+`;
+
+exports[`stats transforms correctly using "stats-0" data 2`] = `
+"module.exports = {
+    entry: 'index.js',
+
+    output: {
+		filename: 'bundle.js'
+	},
+
+    stats: 'errors-only'
+}
+"
+`;
+
+exports[`stats transforms correctly using "stats-0" data 3`] = `
+"module.exports = {
+    entry: 'index.js',
+
+    output: {
+		filename: 'bundle.js'
+	},
+
+    stats: {
+        assets: true,
+        assetsSort: 'naw',
+        cached: true,
+        cachedAssets: true,
+        children: true,
+        chunks: true,
+        version: true,
+        warnings: false
+    }
+}
+"
+`;
+
+exports[`stats transforms correctly using "stats-1" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	},
+	stats: {
+        assets: true,
+        assetsSort: 'naw',
+        cached: true,
+        cachedAssets: true,
+        children: true,
+        chunks: true,
+        version: true,
+        warnings: false
+    }
+}
+"
+`;
+
+exports[`stats transforms correctly using "stats-1" data 2`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	},
+	stats: 'errors-only'
+}
+"
+`;

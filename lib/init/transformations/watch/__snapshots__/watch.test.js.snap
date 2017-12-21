@@ -1,0 +1,93 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`watch transforms correctly using "watch-0" data 1`] = `
+"module.exports = {
+    entry: 'index.js',
+
+    output: {
+		filename: 'bundle.js'
+	},
+
+    watch: true
+}
+"
+`;
+
+exports[`watch transforms correctly using "watch-0" data 2`] = `
+"module.exports = {
+    entry: 'index.js',
+
+    output: {
+		filename: 'bundle.js'
+	},
+
+    watch: false
+}
+"
+`;
+
+exports[`watch transforms correctly using "watch-0" data 3`] = `
+"module.exports = {
+    entry: 'index.js',
+
+    output: {
+		filename: 'bundle.js'
+	},
+
+    watch: true
+}
+"
+`;
+
+exports[`watch transforms correctly using "watch-0" data 4`] = `
+"module.exports = {
+    entry: 'index.js',
+
+    output: {
+		filename: 'bundle.js'
+	},
+
+    watch: false
+}
+"
+`;
+
+exports[`watch transforms correctly using "watch-1" data 1`] = `
+"module.exports = {
+    entry: 'index.js',
+
+    output: {
+		filename: 'bundle.js'
+	},
+
+    watch: true
+}
+"
+`;
+
+exports[`watch transforms correctly using "watch-1" data 2`] = `
+"module.exports = {
+    entry: 'index.js',
+
+    output: {
+		filename: 'bundle.js'
+	},
+
+    watch: false
+}
+"
+`;
+
+exports[`watch transforms correctly using "watch-4" data 1`] = `
+"module.exports = {
+	watch: false
+}
+"
+`;
+
+exports[`watch transforms correctly using "watch-4" data 2`] = `
+"module.exports = {
+	watch: somehin
+}
+"
+`;

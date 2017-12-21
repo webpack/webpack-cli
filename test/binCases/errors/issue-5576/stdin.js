@@ -5,9 +5,7 @@ module.exports = function testAssertions(code, stdout, stderr) {
 	expect(stdout[0]).toContain("Hash: ");
 	expect(stdout[1]).toContain("Version: ");
 	expect(stdout[2]).toContain("Time: ");
-	expect(stdout[4]).toContain(
-		"ERROR in Entry module not found: Error: Can't resolve"
-	);
+	expect(stdout[4]).toContain("bundle.js");
 
 	expect(stderr).toHaveLength(0);
 };

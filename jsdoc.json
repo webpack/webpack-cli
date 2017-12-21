@@ -1,0 +1,10 @@
+
+{
+  "source": {
+      "include": [
+          "dist/"
+      ],
+      "includePattern": "dist/.+\\.js$",
+      "excludePattern": "dist/migrate"
+  }
+}

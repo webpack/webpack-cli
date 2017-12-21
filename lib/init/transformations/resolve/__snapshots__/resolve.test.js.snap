@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`resolve transforms correctly using "resolve-0" data 1`] = `
+"module.exports = {
+    entry: 'index.js',
+
+    output: {
+		filename: 'bundle.js'
+	},
+
+    resolve: {
+        alias: {
+            {{#if_eq build 'standalone'}},
+            hello: 'world',
+            {{/if_eq}},
+            world: hello
+        },
+
+        aliasFields: ['browser', wars],
+        descriptionFiles: ['a', b],
+        enforceExtension: false,
+        enforceModuleExtension: false,
+        extensions: [hey, 'ho'],
+        mainFields: [main, 'story'],
+        mainFiles: ['noMainFileHere', iGuess],
+        modules: [one, 'two'],
+        unsafeCache: false,
+        plugins: [somePlugin, 'stringVal'],
+        symlinks: true
+    }
+}
+"
+`;
+
+exports[`resolve transforms correctly using "resolve-1" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	},
+	resolve: {
+		alias: {
+			inject: {{#isdf_eq buildasda 'staasdndalone'}},
+			hello: 'worlasdd',
+			inject_1: {{/asd}},
+			world: asdc
+		},
+		aliasFields: [\\"'browser'\\", \\"wars\\", 'as'],
+		descriptionFiles: [\\"'a'\\", \\"b\\", \\"'c'\\", 'd', e, f],
+		enforceExtension: true,
+		enforceModuleExtension: false,
+		extensions: [\\"hey\\", \\"ho\\", ok, 'ho'],
+		mainFields: [\\"main\\", \\"'story'\\", ok],
+		mainFiles: [\\"'noMainFileHere'\\", \\"iGuess\\", niGuess],
+		modules: [\\"one\\", \\"'two'\\"],
+		unsafeCache: false,
+		resolveLoader: {
+			modules: [\\"'node_modules'\\", \\"mode_nodules\\"],
+			extensions: [\\"jsVal\\", \\"'.json'\\", ok, 'ho'],
+			mainFields: [\\"loader\\", \\"'main'\\", ok, 'story'],
+			moduleExtensions: [\\"'-loader'\\", \\"value\\"]
+		},
+		plugins: [\\"somePlugin\\", \\"'stringVal'\\"],
+		symlinks: false
+	}
+}
+"
+`;

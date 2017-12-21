@@ -13,20 +13,24 @@
   },
   "main": "./bin/webpack.js",
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=6.11.5"
   },
   "scripts": {
-    "lint": "eslint \"**/*.js\"",
+    "lint": "./node_modules/eslint/bin/eslint.js \"**/*.js\"",
     "format": "prettier-eslint \"bin/**/**/*.js\" --write && prettier-eslint \"lib/**/**/*.js\" --write && prettier-eslint \"test/**/**/*.js\" --write",
     "format:dist": "prettier-eslint \"dist/**/**/*.js\" --write",
-    "lint:codeOnly": "eslint \"{lib,bin,__mocks__}/**/!(__testfixtures__)/*.js\" \"{lib,bin,__mocks__}/**.js\"",
+    "lint:codeOnly": "eslint \"{lib,bin}/**/!(__testfixtures__)/*.js\" \"{lib,bin}/**.js\"",
     "precommit": "lint-staged",
-    "prepublish": "flow-remove-types lib/ -d dist/ && npm run format:dist",
-    "pretest": "npm run lint",
-    "test": "jest --coverage"
+    "prepare": "flow-remove-types lib/ -d dist/ && yarn format:dist",
+    "pretest": "yarn lint",
+    "test": "jest",
+    "test:ci": "jest --ci && codecov -f coverage/coverage-final.json",
+    "jsdoc": "jsdoc -c jsdoc.json -r -d docs",
+    "travis:integration": "yarn prepare && yarn test:ci",
+    "travis:lint": "yarn prepare && yarn lint"
   },
   "lint-staged": {
-    "{lib,bin,__mocks__}/**/!(__testfixtures__)/**.js": [
+    "{lib,bin}/**/!(__testfixtures__)/**.js": [
       "eslint --fix",
       "git add"
     ]
@@ -35,17 +39,20 @@
     "testEnvironment": "node",
     "modulePathIgnorePatterns": [
       "dist"
-    ]
+    ],
+    "coverageDirectory": "./coverage/",
+    "collectCoverage": true
   },
   "dependencies": {
     "babel-code-frame": "^6.22.0",
     "babel-core": "^6.25.0",
-    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-env": "^1.6.1",
     "babel-preset-stage-3": "^6.24.1",
     "chalk": "^2.0.1",
     "cross-spawn": "^5.1.0",
     "diff": "^3.3.0",
     "enhanced-resolve": "^3.4.1",
+    "glob-all": "^3.1.0",
     "global-modules": "^1.0.0",
     "got": "^7.1.0",
     "inquirer": "^3.2.0",
@@ -54,22 +61,21 @@
     "listr": "^0.12.0",
     "loader-utils": "^1.1.0",
     "lodash": "^4.17.4",
+    "log-symbols": "2.1.0",
     "mkdirp": "^0.5.1",
     "p-each-series": "^1.0.0",
     "p-lazy": "^1.0.0",
     "prettier": "^1.5.3",
-    "recast": "git://github.com/kalcifer/recast.git#bug/allowbreak",
+    "recast": "^0.13.0",
     "resolve-cwd": "^2.0.0",
-    "rx": "^4.1.0",
     "supports-color": "^4.4.0",
-    "webpack-addons": "^1.1.4",
+    "v8-compile-cache": "^1.1.0",
+    "webpack-addons": "^1.1.5",
     "yargs": "^9.0.1",
     "yeoman-environment": "^2.0.0",
     "yeoman-generator": "git://github.com/ev1stensberg/generator.git#Feature-getArgument"
   },
   "devDependencies": {
-    "ajv": "^5.2.2",
-    "ajv-keywords": "^2.1.0",
     "babel-cli": "^6.24.1",
     "babel-eslint": "^7.2.3",
     "babel-jest": "^20.0.3",
@@ -81,11 +87,13 @@
     "flow-bin": "^0.49.1",
     "flow-remove-types": "^1.2.1",
     "husky": "^0.14.3",
-    "jest": "^21.1.0",
-    "jest-cli": "^21.1.0",
+    "jest": "^21.2.1",
+    "jest-cli": "^21.2.1",
+    "jsdoc": "^3.5.5",
     "lint-staged": "^4.1.3",
-    "prettier-eslint-cli": "^4.3.2",
-    "should": "^13.1.0",
-    "webpack": "^4.0.0-alpha.1"
+    "prettier-eslint-cli": "^4.6.1",
+    "schema-utils": "^0.4.2",
+    "webpack": "^4.0.0-alpha.1",
+    "webpack-dev-server": "^2.9.7"
   }
 }

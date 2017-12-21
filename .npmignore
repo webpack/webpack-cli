@@ -7,9 +7,12 @@ lib
 .vscode
 .editorconfig
 .eslintignore
-__mocks__
 __testfixtures__
 *.test.js
 *.input.js
 types.js
 *.spec.js
+docs
+jsdoc.json
+.appveyor.yml
+.codecov.yml

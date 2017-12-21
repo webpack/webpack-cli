@@ -19,7 +19,7 @@ module.exports = function(yargs) {
 				describe:
 					"Initializes a new webpack configuration or loads a" +
 					"\n" +
-					"plugin if specified",
+					"addon if specified",
 				group: INIT_GROUP
 			},
 			migrate: {
@@ -28,6 +28,28 @@ module.exports = function(yargs) {
 					"Migrate your webpack configuration from webpack 1 to webpack 2",
 				group: INIT_GROUP
 			},
+			add: {
+				type: "boolean",
+				describe: "Adds a webpack component to your configuration file",
+				group: INIT_GROUP
+			},
+			/*
+			remove: {
+				type: "boolean",
+				describe: "Removes a webpack component to your configuration file",
+				group: INIT_GROUP
+			},
+			update: {
+				type: "boolean",
+				describe: "Updates a webpack component to your configuration file",
+				group: INIT_GROUP
+			},
+			make: {
+				type: "boolean",
+				describe: "Converts a webpack configuration to a makefile",
+				group: INIT_GROUP
+			},
+			*/
 			"generate-loader": {
 				type: "boolean",
 				describe: "Generates a new webpack loader project",
@@ -38,12 +60,20 @@ module.exports = function(yargs) {
 				describe: "Generates a new webpack plugin project",
 				group: INIT_GROUP
 			},
-
 			config: {
 				type: "string",
 				describe: "Path to the config file",
 				group: CONFIG_GROUP,
 				defaultDescription: "webpack.config.js or webpackfile.js",
+				requiresArg: true
+			},
+			"config-register": {
+				type: "array",
+				alias: "r",
+				describe:
+					"Preload one or more modules before loading the webpack configuration",
+				group: CONFIG_GROUP,
+				defaultDescription: "module id or path",
 				requiresArg: true
 			},
 			"config-name": {

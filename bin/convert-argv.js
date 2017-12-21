@@ -3,10 +3,8 @@ var fs = require("fs");
 fs.existsSync = fs.existsSync || path.existsSync;
 var interpret = require("interpret");
 var prepareOptions = require("./prepareOptions");
-
 module.exports = function(yargs, argv, convertOptions) {
 	var options = [];
-
 	// Shortcuts
 	if (argv.d) {
 		argv.debug = true;
@@ -27,7 +25,6 @@ module.exports = function(yargs, argv, convertOptions) {
 			argv.mode = "production";
 		}
 	}
-
 	var configFileLoaded = false;
 	var configFiles = [];
 	var extensions = Object.keys(interpret.extensions).sort(function(a, b) {
@@ -85,7 +82,6 @@ module.exports = function(yargs, argv, convertOptions) {
 			}
 		}
 	}
-
 	if (configFiles.length > 0) {
 		var registerCompiler = function registerCompiler(moduleDescriptor) {
 			if (moduleDescriptor) {
@@ -108,7 +104,18 @@ module.exports = function(yargs, argv, convertOptions) {
 
 		var requireConfig = function requireConfig(configPath) {
 			var options = (function WEBPACK_OPTIONS() {
-				return require(configPath);
+				if (argv.configRegister && argv.configRegister.length) {
+					module.paths.unshift(
+						path.resolve(process.cwd(), "node_modules"),
+						process.cwd()
+					);
+					argv.configRegister.forEach(dep => {
+						require(dep);
+					});
+					return require(configPath);
+				} else {
+					return require(configPath);
+				}
 			})();
 			options = prepareOptions(options, argv);
 			return options;
@@ -203,6 +210,7 @@ module.exports = function(yargs, argv, convertOptions) {
 	}
 
 	function processOptions(options) {
+		// eslint-disable-next-line no-unused-vars
 		var noOutputFilenameDefined = !options.output || !options.output.filename;
 
 		function ifArg(name, fn, init, finalize) {
@@ -509,17 +517,7 @@ module.exports = function(yargs, argv, convertOptions) {
 		});
 
 		ifBooleanArg("optimize-minimize", function() {
-			var UglifyJsPlugin = require("webpack/lib/optimize/UglifyJsPlugin");
 			var LoaderOptionsPlugin = require("webpack/lib/LoaderOptionsPlugin");
-			addPlugin(
-				options,
-				new UglifyJsPlugin({
-					sourceMap:
-						options.devtool &&
-						(options.devtool.indexOf("sourcemap") >= 0 ||
-							options.devtool.indexOf("source-map") >= 0)
-				})
-			);
 			addPlugin(
 				options,
 				new LoaderOptionsPlugin({
@@ -554,35 +552,6 @@ module.exports = function(yargs, argv, convertOptions) {
 
 		mapArgToBoolean("profile");
 
-		if (noOutputFilenameDefined) {
-			ensureObject(options, "output");
-			if (convertOptions && convertOptions.outputFilename) {
-				options.output.path = path.resolve(
-					path.dirname(convertOptions.outputFilename)
-				);
-				options.output.filename = path.basename(convertOptions.outputFilename);
-			} else if (argv._.length > 0) {
-				options.output.filename = argv._.pop();
-				options.output.path = path.resolve(
-					path.dirname(options.output.filename)
-				);
-				options.output.filename = path.basename(options.output.filename);
-			} else if (configFileLoaded) {
-				throw new Error(
-					"'output.filename' is required, either in config file or as --output-filename"
-				);
-			} else {
-				console.error(
-					"No configuration file found and no output filename configured via CLI option."
-				);
-				console.error(
-					"A configuration file could be named 'webpack.config.js' in the current directory."
-				);
-				console.error("Use --help to display the CLI options.");
-				process.exit(-1); // eslint-disable-line
-			}
-		}
-
 		if (argv._.length > 0) {
 			if (Array.isArray(options.entry) || typeof options.entry === "string") {
 				options.entry = {
@@ -609,9 +578,9 @@ module.exports = function(yargs, argv, convertOptions) {
 					if (fs.existsSync(resolved)) {
 						addTo(
 							"main",
-							`${resolved}${fs.statSync(resolved).isDirectory()
-								? path.sep
-								: ""}`
+							`${resolved}${
+								fs.statSync(resolved).isDirectory() ? path.sep : ""
+							}`
 						);
 					} else {
 						addTo("main", content);
@@ -620,24 +589,6 @@ module.exports = function(yargs, argv, convertOptions) {
 					addTo(content.substr(0, i), content.substr(i + 1));
 				}
 			});
-		}
-
-		if (!options.entry) {
-			if (configFileLoaded) {
-				console.error("Configuration file found but no entry configured.");
-			} else {
-				console.error(
-					"No configuration file found and no entry configured via CLI option."
-				);
-				console.error(
-					"When using the CLI you need to provide at least two arguments: entry and output."
-				);
-				console.error(
-					"A configuration file could be named 'webpack.config.js' in the current directory."
-				);
-			}
-			console.error("Use --help to display the CLI options.");
-			process.exit(-1); // eslint-disable-line
 		}
 	}
 };
