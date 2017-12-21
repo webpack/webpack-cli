@@ -32,5 +32,5 @@ The `init` feature allows users to get started with webpack, fast. Through scaff
 
 ## Contributing and Internal Documentation
 
-The webpack family welcomes any contributor, small or big. We are happy to elaborate, guide you through the source code and find issues you might want to work on! To get started have a look at our [documentation on contributing](CONTRIBUTING.md), or our [Internal Documentation]()
+The webpack family welcomes any contributor, small or big. We are happy to elaborate, guide you through the source code and find issues you might want to work on! To get started have a look at our [documentation on contributing](CONTRIBUTING.md), or our [Internal Documentation](https://webpack.github.io/webpack-cli/)
 
