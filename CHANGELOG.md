@@ -9,38 +9,38 @@
 * Update Jest & Jest-cli
 * Remove unused dependencies
 * Creator is now init
-* Using env preset ( #197 )
-* Using yarn ( #203 )
+* Using env preset ([#197](https://github.com/webpack/webpack-cli/pull/197))
+* Using Yarn ([#203](https://github.com/webpack/webpack-cli/pull/203))
 * Using peer dep of webpack
 * Transformations is now migrate
 * Init has its own generator
 * Commands are refactored into a HOC and sent to a folder for each command with an helper for scaffolding aliases
-* Using RawList instead of List for better usability ( 541ba62 )
+* Using RawList instead of List for better usability ([82c64db](https://github.com/webpack/webpack-cli/commit/541ba62f02c4a1fcc807eac62a551fcae3f2d2c3)
 * lib/transformations/util is now in lib/utils/ast-utils
 * Each AST module now has an extra argument that specifies action to be done
 * FindPluginsByRoot is now FindRootByName and more generalistic
 * Added ast util function createEmptyCallableFunctionWithArguments
-* #214
-* #215 ( Committed directly to master )
-* #217
+* Refactor for readability ([#214](https://github.com/webpack/webpack-cli/pull/214))
+* Remove dist from repo ([#215](https://github.com/webpack/webpack-cli/pull/215))
+* Remove entry and output validation ([#217](https://github.com/webpack/webpack-cli/pull/217))
 * topScope now checks if the import already is present
 * Updated test errors/issue-5576, remember to sync with webpack/next
-* #218
-* Migrate now uses prettier ( 972d4cd )
-* Added transform for mode (e1f512c)
-* Remove recast fork (b416d9c)
-* New Transforms ( 28680c9 )
-* JSdocs are added (285846a)
-* Adds serve alias ( #204 )
-* Migrate has new config validation logic ( 5d4430a)
-* webpack serve is added ( 992bfe2 )
-* webpack --config-register and webpack -r is added (ab94211)
-* Adds webpack make for makefile generation (4f9a4f8)
-* Added appveyor ( c5c9746 )
-* Remove commit-validate from docs ( #222 )
-* Added transform resolveLoader (3c90e83)
-* Using v8-compile-cache ( 0564ceb )
-* Adds webpack-cli bot #224
+* User friendly startup message ([#218](https://github.com/webpack/webpack-cli/pull/218))
+* Migrate now uses prettier ([88aaaa2](https://github.com/webpack/webpack-cli/commit/972d4cd90061644aa2f4aaac33d2d80cb4a56d57)
+* Added transform for mode ([972d4cd](https://github.com/webpack/webpack-cli/commit/e1f512c9bb96694dd623562dc4cef411ed004c2c)
+* Remove recast fork ([fba04da](https://github.com/webpack/webpack-cli/commit/b416d9c50138ef343b8bac6e3f66fdd5b917857d)
+* New transforms ([b416d9c](https://github.com/webpack/webpack-cli/commit/28680c944dca0860ca59a38910840a641b418d18)
+* JSdocs are added ([47de46a](https://github.com/webpack/webpack-cli/commit/285846a4cb1f976edcdb36629cf247d8017ff956)
+* Added serve alias ([#204](https://github.com/webpack/webpack-cli/pull/204))
+* Migrate has new validate logic ([c4c68e8](https://github.com/webpack/webpack-cli/commit/5d4430a6a5531cd8084e5a591f7884e746e21b2f)
+* webpack serve logic ([5d4430a](https://github.com/webpack/webpack-cli/commit/992bfe2b08b98aebb43c68d5e5a92320ba3e32a8)
+* webpack --config-register and webpack -r is added ([1f24d19](https://github.com/webpack/webpack-cli/commit/ab9421136887b7e9e10f25a39b59fb32f07b5037)
+* work on makefile generation ([d86e1ce](https://github.com/webpack/webpack-cli/commit/4f9a4f88a8bd113762a54c05b3b9fe6f459855db)
+* Appveyor is added ([9b2f6f5](https://github.com/webpack/webpack-cli/commit/c5c97462d6ccfa4c02fd79206fa075815520cd88)
+* Remove commit-validate from docs ([#222](https://github.com/webpack/webpack-cli/pull/222))
+* Added transform ResolveLoader ([7c713ce](https://github.com/webpack/webpack-cli/commit/3c90e83fa7b8dd5fbecaee5d1b9d8f0279600096)
+* Using v8-compile-cache ([7e57314](https://github.com/webpack/webpack-cli/commit/0564ceb77a995239d0be7a022b948cbd727773a4)
+* Adds webpack-cli bot ([#224](https://github.com/webpack/webpack-cli/pull/224))
 
 <a name="1.3.2"></a>
 ## 1.3.2 (2017-05-15)
