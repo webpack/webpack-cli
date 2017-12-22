@@ -1,6 +1,6 @@
 {
   "name": "webpack-cli",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "CLI for webpack & friends",
   "license": "MIT",
   "preferGlobal": true,
