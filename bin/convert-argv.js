@@ -7,11 +7,10 @@ module.exports = function(yargs, argv, convertOptions) {
 	var options = [];
 	// Shortcuts
 	if (argv.o) {
-		var pathMeta = argv.o.split(path.sep);
+		argv["output-filename"] = path.basename(argv.o);
 
-		argv["output-filename"] = pathMeta.pop();
-		if (pathMeta[0] === ".") {
-			argv["output-path"] = path.resolve(process.cwd(), pathMeta.join(path.sep));
+		if (!path.isAbsolute(argv.o)) {
+			argv["output-path"] = path.resolve(process.cwd(), path.dirname(argv.o));
 		}
 	}
 
@@ -357,8 +356,8 @@ module.exports = function(yargs, argv, convertOptions) {
 					var rule = {
 						test: new RegExp(
 							"\\." +
-								name.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") +
-								"$"
+							name.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") +
+							"$"
 						), // eslint-disable-line no-useless-escape
 						loader: binding
 					};
