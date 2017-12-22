@@ -6,6 +6,14 @@ var prepareOptions = require("./prepareOptions");
 module.exports = function(yargs, argv, convertOptions) {
 	var options = [];
 	// Shortcuts
+	if (argv.o) {
+		argv["output-filename"] = path.basename(argv.o);
+
+		if (!path.isAbsolute(argv.o)) {
+			argv["output-path"] = path.resolve(process.cwd(), path.dirname(argv.o));
+		}
+	}
+
 	if (argv.d) {
 		argv.debug = true;
 		argv["output-pathinfo"] = true;
@@ -210,8 +218,6 @@ module.exports = function(yargs, argv, convertOptions) {
 	}
 
 	function processOptions(options) {
-		// eslint-disable-next-line no-unused-vars
-		var noOutputFilenameDefined = !options.output || !options.output.filename;
 
 		function ifArg(name, fn, init, finalize) {
 			if (Array.isArray(argv[name])) {
@@ -350,8 +356,8 @@ module.exports = function(yargs, argv, convertOptions) {
 					var rule = {
 						test: new RegExp(
 							"\\." +
-								name.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") +
-								"$"
+							name.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") +
+							"$"
 						), // eslint-disable-line no-useless-escape
 						loader: binding
 					};
@@ -398,8 +404,8 @@ module.exports = function(yargs, argv, convertOptions) {
 
 		ifArg("output-filename", function(value) {
 			ensureObject(options, "output");
+
 			options.output.filename = value;
-			noOutputFilenameDefined = false;
 		});
 
 		ifArg("output-chunk-filename", function(value) {
