@@ -131,6 +131,7 @@ module.exports = function(yargs) {
 				requiresArg: true
 			},
 			"output-filename": {
+				alias: "o",
 				type: "string",
 				describe: "The output filename of the bundle",
 				group: OUTPUT_GROUP,

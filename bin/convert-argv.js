@@ -6,6 +6,15 @@ var prepareOptions = require("./prepareOptions");
 module.exports = function(yargs, argv, convertOptions) {
 	var options = [];
 	// Shortcuts
+	if (argv.o) {
+		var pathMeta = argv.o.split(path.sep);
+
+		argv["output-filename"] = pathMeta.pop();
+		if (pathMeta[0] === ".") {
+			argv["output-path"] = path.resolve(process.cwd(), pathMeta.join(path.sep));
+		}
+	}
+
 	if (argv.d) {
 		argv.debug = true;
 		argv["output-pathinfo"] = true;
@@ -210,8 +219,6 @@ module.exports = function(yargs, argv, convertOptions) {
 	}
 
 	function processOptions(options) {
-		// eslint-disable-next-line no-unused-vars
-		var noOutputFilenameDefined = !options.output || !options.output.filename;
 
 		function ifArg(name, fn, init, finalize) {
 			if (Array.isArray(argv[name])) {
@@ -398,8 +405,8 @@ module.exports = function(yargs, argv, convertOptions) {
 
 		ifArg("output-filename", function(value) {
 			ensureObject(options, "output");
+
 			options.output.filename = value;
-			noOutputFilenameDefined = false;
 		});
 
 		ifArg("output-chunk-filename", function(value) {

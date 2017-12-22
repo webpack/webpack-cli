@@ -9,7 +9,6 @@ var resolveCwd = require("resolve-cwd");
 // Local version replace global one
 var localCLI = resolveCwd.silent("webpack-cli/bin/webpack");
 var ErrorHelpers = require("webpack/lib/ErrorHelpers");
-
 const NON_COMPILATION_ARGS = [
 	"init",
 	"migrate",
@@ -51,7 +50,7 @@ var yargs = require("yargs").usage(
 		require("../package.json").version +
 		"\n" +
 		"Usage: https://webpack.js.org/api/cli/\n" +
-		"Usage without config file: webpack <entry> [<entry>] <output>\n" +
+		"Usage without config file: webpack <entry> [<entry>] --output [-o] <output>\n" +
 		"Usage with config file: webpack"
 );
 
