@@ -8,7 +8,7 @@ require("v8-compile-cache");
 var resolveCwd = require("resolve-cwd");
 // Local version replace global one
 var localCLI = resolveCwd.silent("webpack-cli/bin/webpack");
-var ErrorHelpers = require("webpack/lib/ErrorHelpers");
+var ErrorHelpers = require("./ErrorHelpers");
 const NON_COMPILATION_ARGS = [
 	"init",
 	"migrate",
@@ -247,7 +247,7 @@ yargs.parse(process.argv.slice(2), (err, argv, output) => {
 		}
 
 		var firstOptions = [].concat(options)[0];
-		var statsPresetToOptions = require("webpack/lib/Stats.js").presetToOptions;
+		var statsPresetToOptions = require("webpack").Stats.presetToOptions;
 
 		var outputOptions = options.stats;
 		if (
@@ -378,7 +378,7 @@ yargs.parse(process.argv.slice(2), (err, argv, output) => {
 			}
 		});
 
-		var webpack = require("webpack/lib/webpack.js");
+		var webpack = require("webpack");
 
 		var lastHash = null;
 		var compiler;
@@ -399,7 +399,7 @@ yargs.parse(process.argv.slice(2), (err, argv, output) => {
 		}
 
 		if (argv.progress) {
-			var ProgressPlugin = require("webpack/lib/ProgressPlugin");
+			var ProgressPlugin = require("webpack").ProgressPlugin;
 			compiler.apply(
 				new ProgressPlugin({
 					profile: argv.profile

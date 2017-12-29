@@ -19,7 +19,7 @@ function spawn(args, options) {
 			"--dir",
 			path.resolve("coverage"),
 			"--",
-			require.resolve("webpack/test/helpers/exec-in-directory.js"),
+			require.resolve("./helpers/exec-in-directory.js"),
 			options.cwd
 		].concat(args);
 		options = Object.assign({}, options, {

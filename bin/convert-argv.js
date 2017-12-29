@@ -392,7 +392,7 @@ module.exports = function(yargs, argv, convertOptions) {
 				defineObject = {};
 			},
 			function() {
-				var DefinePlugin = require("webpack/lib/DefinePlugin");
+				var DefinePlugin = require("webpack").DefinePlugin;
 				addPlugin(options, new DefinePlugin(defineObject));
 			}
 		);
@@ -462,12 +462,12 @@ module.exports = function(yargs, argv, convertOptions) {
 		mapArgToBoolean("cache");
 
 		ifBooleanArg("hot", function() {
-			var HotModuleReplacementPlugin = require("webpack/lib/HotModuleReplacementPlugin");
+			var HotModuleReplacementPlugin = require("webpack").HotModuleReplacementPlugin;
 			addPlugin(options, new HotModuleReplacementPlugin());
 		});
 
 		ifBooleanArg("debug", function() {
-			var LoaderOptionsPlugin = require("webpack/lib/LoaderOptionsPlugin");
+			var LoaderOptionsPlugin = require("webpack").LoaderOptionsPlugin;
 			addPlugin(
 				options,
 				new LoaderOptionsPlugin({
@@ -503,7 +503,7 @@ module.exports = function(yargs, argv, convertOptions) {
 		});
 
 		ifArg("optimize-max-chunks", function(value) {
-			var LimitChunkCountPlugin = require("webpack/lib/optimize/LimitChunkCountPlugin");
+			var LimitChunkCountPlugin = require("webpack").optimize.LimitChunkCountPlugin;
 			addPlugin(
 				options,
 				new LimitChunkCountPlugin({
@@ -513,7 +513,7 @@ module.exports = function(yargs, argv, convertOptions) {
 		});
 
 		ifArg("optimize-min-chunk-size", function(value) {
-			var MinChunkSizePlugin = require("webpack/lib/optimize/MinChunkSizePlugin");
+			var MinChunkSizePlugin = require("webpack").optimize.MinChunkSizePlugin;
 			addPlugin(
 				options,
 				new MinChunkSizePlugin({
@@ -523,7 +523,7 @@ module.exports = function(yargs, argv, convertOptions) {
 		});
 
 		ifBooleanArg("optimize-minimize", function() {
-			var LoaderOptionsPlugin = require("webpack/lib/LoaderOptionsPlugin");
+			var LoaderOptionsPlugin = require("webpack").LoaderOptionsPlugin;
 			addPlugin(
 				options,
 				new LoaderOptionsPlugin({
@@ -533,7 +533,7 @@ module.exports = function(yargs, argv, convertOptions) {
 		});
 
 		ifArg("prefetch", function(request) {
-			var PrefetchPlugin = require("webpack/lib/PrefetchPlugin");
+			var PrefetchPlugin = require("webpack").PrefetchPlugin;
 			addPlugin(options, new PrefetchPlugin(request));
 		});
 
@@ -546,7 +546,7 @@ module.exports = function(yargs, argv, convertOptions) {
 			} else {
 				name = value;
 			}
-			var ProvidePlugin = require("webpack/lib/ProvidePlugin");
+			var ProvidePlugin = require("webpack").ProvidePlugin;
 			addPlugin(options, new ProvidePlugin(name, value));
 		});
 
