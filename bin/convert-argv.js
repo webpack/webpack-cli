@@ -6,14 +6,6 @@ var prepareOptions = require("./prepareOptions");
 module.exports = function(yargs, argv, convertOptions) {
 	var options = [];
 	// Shortcuts
-	if (argv.o) {
-		argv["output-filename"] = path.basename(argv.o);
-
-		if (!path.isAbsolute(argv.o)) {
-			argv["output-path"] = path.resolve(process.cwd(), path.dirname(argv.o));
-		}
-	}
-
 	if (argv.d) {
 		argv.debug = true;
 		argv["output-pathinfo"] = true;
@@ -33,6 +25,16 @@ module.exports = function(yargs, argv, convertOptions) {
 			argv.mode = "production";
 		}
 	}
+
+	if (argv.output) {
+		let output = argv.output;
+		if (!path.isAbsolute(argv.o)) {
+			output = path.resolve(process.cwd(), output);
+		}
+		argv["output-filename"] = path.basename(output);
+		argv["output-path"] = path.dirname(output);
+	}
+
 	var configFileLoaded = false;
 	var configFiles = [];
 	var extensions = Object.keys(interpret.extensions).sort(function(a, b) {
