@@ -220,7 +220,6 @@ module.exports = function(yargs, argv, convertOptions) {
 	}
 
 	function processOptions(options) {
-
 		function ifArg(name, fn, init, finalize) {
 			if (Array.isArray(argv[name])) {
 				if (init) {
@@ -358,8 +357,8 @@ module.exports = function(yargs, argv, convertOptions) {
 					var rule = {
 						test: new RegExp(
 							"\\." +
-							name.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") +
-							"$"
+								name.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") +
+								"$"
 						), // eslint-disable-line no-useless-escape
 						loader: binding
 					};

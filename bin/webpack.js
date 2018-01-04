@@ -17,7 +17,7 @@
 	}
 
 	require("v8-compile-cache");
-	var ErrorHelpers = require("webpack/lib/ErrorHelpers");
+	var ErrorHelpers = require("./errorHelpers");
 
 	const NON_COMPILATION_ARGS = [
 		"init",
@@ -154,7 +154,8 @@
 		"display-used-exports": {
 			type: "boolean",
 			group: DISPLAY_GROUP,
-			describe: "Display information about used exports in modules (Tree Shaking)"
+			describe:
+				"Display information about used exports in modules (Tree Shaking)"
 		},
 		"display-provided-exports": {
 			type: "boolean",
@@ -249,7 +250,8 @@
 			}
 
 			var firstOptions = [].concat(options)[0];
-			var statsPresetToOptions = require("webpack/lib/Stats.js").presetToOptions;
+			var statsPresetToOptions = require("webpack/lib/Stats.js")
+				.presetToOptions;
 
 			var outputOptions = options.stats;
 			if (
@@ -435,7 +437,10 @@
 			}
 			if (firstOptions.watch || options.watch) {
 				var watchOptions =
-					firstOptions.watchOptions || firstOptions.watch || options.watch || {};
+					firstOptions.watchOptions ||
+					firstOptions.watch ||
+					options.watch ||
+					{};
 				if (watchOptions.stdin) {
 					process.stdin.on("end", function(_) {
 						process.exit(); // eslint-disable-line
