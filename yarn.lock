@@ -1907,14 +1907,6 @@ end-of-stream@^1.0.0, end-of-stream@^1.1.0:
   dependencies:
     once "^1.4.0"
 
-enhanced-resolve@4.0.0-beta.2:
-  version "4.0.0-beta.2"
-  resolved "https://registry.yarnpkg.com/enhanced-resolve/-/enhanced-resolve-4.0.0-beta.2.tgz#a13a9da2340712c4f3dacf27e26717e2eae69c24"
-  dependencies:
-    graceful-fs "^4.1.2"
-    memory-fs "^0.4.0"
-    tapable "^1.0.0-beta.4"
-
 enhanced-resolve@^3.4.1:
   version "3.4.1"
   resolved "https://registry.yarnpkg.com/enhanced-resolve/-/enhanced-resolve-3.4.1.tgz#0421e339fd71419b3da13d129b3979040230476e"
@@ -1923,6 +1915,14 @@ enhanced-resolve@^3.4.1:
     memory-fs "^0.4.0"
     object-assign "^4.0.1"
     tapable "^0.2.7"
+
+enhanced-resolve@^4.0.0-beta.2:
+  version "4.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/enhanced-resolve/-/enhanced-resolve-4.0.0-beta.4.tgz#17e14aea8ded4d6daa4a6bff67f2d38fcca76452"
+  dependencies:
+    graceful-fs "^4.1.2"
+    memory-fs "^0.4.0"
+    tapable "^1.0.0-beta.4"
 
 errno@^0.1.3, errno@^0.1.4:
   version "0.1.6"
@@ -6136,16 +6136,16 @@ webpack-sources@^1.0.1:
     source-list-map "^2.0.0"
     source-map "~0.6.1"
 
-webpack@^4.0.0-alpha.1:
-  version "4.0.0-alpha.1"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-4.0.0-alpha.1.tgz#64ca5d3b280683189f9c68a765736d77787c3290"
+webpack@^4.0.0-alpha.3:
+  version "4.0.0-alpha.3"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-4.0.0-alpha.3.tgz#7138567754af201b08669a603bdbe7b0df96fc39"
   dependencies:
     acorn "^5.0.0"
     acorn-dynamic-import "^2.0.0"
     ajv "^5.1.5"
     ajv-keywords "^2.0.0"
     async "^2.1.2"
-    enhanced-resolve "4.0.0-beta.2"
+    enhanced-resolve "^4.0.0-beta.2"
     eslint-scope "^3.7.1"
     loader-runner "^2.3.0"
     loader-utils "^1.1.0"
@@ -6153,7 +6153,6 @@ webpack@^4.0.0-alpha.1:
     mkdirp "~0.5.0"
     node-libs-browser "^2.0.0"
     schema-utils "^0.4.2"
-    source-map "^0.5.3"
     tapable "^1.0.0-beta.5"
     uglifyjs-webpack-plugin "^1.1.1"
     watchpack "^1.4.0"
