@@ -1,4 +1,4 @@
-bot: "webpack-bot"
+bot: "webpack-cli bot"
 rules:
 
 # Add ci-ok, ci-not-ok labels depending on travis status
