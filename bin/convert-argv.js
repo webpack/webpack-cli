@@ -3,6 +3,10 @@ var fs = require("fs");
 fs.existsSync = fs.existsSync || path.existsSync;
 var interpret = require("interpret");
 var prepareOptions = require("./prepareOptions");
+var webpackConfigurationSchema = require("../schemas/webpackConfigurationSchema.json");
+var validateSchema = require("webpack/lib/validateSchema");
+var WebpackOptionsValidationError = require("webpack/lib/WebpackOptionsValidationError");
+
 module.exports = function(...args) {
 	var argv = args[1] || args[0];
 	var options = [];
@@ -148,10 +152,10 @@ module.exports = function(...args) {
 	}
 
 	function processConfiguredOptions(options) {
-		if (options === null || typeof options !== "object") {
-			console.error(
-				"Config did not export an object or a function returning an object."
-			);
+		var webpackConfigurationValidationErrors = validateSchema(webpackConfigurationSchema, options);
+		if (webpackConfigurationValidationErrors.length) {
+			var error = new WebpackOptionsValidationError(webpackConfigurationValidationErrors);
+			console.error(error.message);
 			process.exit(-1); // eslint-disable-line
 		}
 
