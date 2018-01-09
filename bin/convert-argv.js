@@ -4,8 +4,8 @@ fs.existsSync = fs.existsSync || path.existsSync;
 var interpret = require("interpret");
 var prepareOptions = require("./prepareOptions");
 var webpackConfigurationSchema = require("../schemas/webpackConfigurationSchema.json");
-var validateSchema = require("webpack/lib/validateSchema");
-var WebpackOptionsValidationError = require("webpack/lib/WebpackOptionsValidationError");
+var validateSchema = require("webpack").validateSchema;
+var WebpackOptionsValidationError = require("webpack").WebpackOptionsValidationError;
 
 module.exports = function(...args) {
 	var argv = args[1] || args[0];
