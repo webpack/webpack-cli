@@ -62,6 +62,10 @@
 	var BASIC_GROUP = "Basic options:";
 
 	yargs.options({
+		silent: {
+			type: "boolean",
+			describe: "Prevent output from being displayed in stdout"
+		},
 		json: {
 			type: "boolean",
 			alias: "j",
@@ -228,6 +232,14 @@
 			process.exitCode = 1;
 			return;
 		}
+
+		/**
+		 * When --silent flag is present, an object with a no-op write method is
+		 * used in place of process.stout
+		 */
+		var stdout = argv.silent ? {
+			write: () => {}
+		} : process.stdout;
 
 		function ifArg(name, fn, init) {
 			if (Array.isArray(argv[name])) {
@@ -423,13 +435,13 @@
 					process.exit(1); // eslint-disable-line
 				}
 				if (outputOptions.json) {
-					process.stdout.write(
+					stdout.write(
 						JSON.stringify(stats.toJson(outputOptions), null, 2) + "\n"
 					);
 				} else if (stats.hash !== lastHash) {
 					lastHash = stats.hash;
 					var statsString = stats.toString(outputOptions);
-					if (statsString) process.stdout.write(statsString + "\n");
+					if (statsString) stdout.write(statsString + "\n");
 				}
 				if (!options.watch && stats.hasErrors()) {
 					process.exitCode = 2;
