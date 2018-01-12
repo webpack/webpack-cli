@@ -281,7 +281,10 @@
 			});
 
 			ifArg("json", function(bool) {
-				if (bool) outputOptions.json = bool;
+				if (bool) {
+					outputOptions.json = bool;
+					outputOptions.modules = bool;
+				}
 			});
 
 			if (typeof outputOptions.colors === "undefined")
