@@ -18,7 +18,6 @@
   "scripts": {
     "lint": "eslint \"**/*.js\"",
     "format": "prettier-eslint \"bin/**/*.js\" \"lib/**/*.js\" \"test/**/*.js\" --write",
-    "format:dist": "prettier-eslint \"dist/**/*.js\" --write",
     "lint:codeOnly": "eslint \"{lib,bin}/**/!(__testfixtures__)/*.js\" \"{lib,bin}/**.js\"",
     "precommit": "lint-staged",
     "prepare": "yarn format",
@@ -40,9 +39,6 @@
   },
   "jest": {
     "testEnvironment": "node",
-    "modulePathIgnorePatterns": [
-      "dist"
-    ],
     "collectCoverage": true,
     "coverageReporters": [
       "none"
