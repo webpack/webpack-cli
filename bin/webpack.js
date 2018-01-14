@@ -43,7 +43,7 @@
 
 	if (NON_COMPILATION_CMD) {
 		// eslint-disable-next-line
-		require("../dist/index")(NON_COMPILATION_CMD, process.argv);
+		require("../lib/index")(NON_COMPILATION_CMD, process.argv);
 		return;
 	}
 
