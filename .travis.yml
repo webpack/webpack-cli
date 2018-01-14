@@ -26,10 +26,6 @@ notifications:
 install:
   - yarn add global codecov
   - yarn add global eslint
-  - yarn add babel-core
-  - yarn add global babel-eslint
-  - yarn add global eslint-plugin-node
-  - yarn add global eslint-plugin-flowtype@latest
 
 before_script:
   - export DISPLAY=:99.0

@@ -237,9 +237,11 @@
 		 * When --silent flag is present, an object with a no-op write method is
 		 * used in place of process.stout
 		 */
-		var stdout = argv.silent ? {
-			write: () => {}
-		} : process.stdout;
+		var stdout = argv.silent
+			? {
+				write: () => {}
+			}
+			: process.stdout;
 
 		function ifArg(name, fn, init) {
 			if (Array.isArray(argv[name])) {

@@ -1,13 +1,13 @@
 module.exports = {
 	"root": true,
-	"plugins": ["node", "flowtype"],
-	"extends": ["eslint:recommended", "plugin:node/recommended", "plugin:flowtype/recommended"],
+	"plugins": ["node"],
+	"extends": ["eslint:recommended", "plugin:node/recommended"],
 	"env": {
 		"node": true,
 		"es6": true,
 		"jest": true
 	},
-	"parserOptions": { "ecmaVersion": 2017 },
+	"parserOptions": { "ecmaVersion": 2017, "sourceType": "module"},
 	"rules": {
 		"no-useless-escape": "off",
 		"quote-props": ["error", "as-needed"],

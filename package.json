@@ -21,7 +21,7 @@
     "format:dist": "prettier-eslint \"dist/**/*.js\" --write",
     "lint:codeOnly": "eslint \"{lib,bin}/**/!(__testfixtures__)/*.js\" \"{lib,bin}/**.js\"",
     "precommit": "lint-staged",
-    "prepare": "flow-remove-types lib/ -d dist/ && yarn format:dist",
+    "prepare": "yarn format",
     "pretest": "yarn lint",
     "test": "nyc jest",
     "reportCoverage": "nyc report --reporter=json && codecov -f coverage/coverage-final.json --disable=gcov",
@@ -29,7 +29,7 @@
     "appveyor:prepare": "yarn prepare",
     "appveyor:lint": "yarn lint",
     "appveyor:test": "nyc jest && yarn reportCoverage",
-    "travis:integration": "yarn prepare && yarn test && yarn reportCoverage",
+    "travis:integration": "yarn prepare && nyc jest && yarn reportCoverage",
     "travis:lint": "yarn lint"
   },
   "lint-staged": {
@@ -92,6 +92,8 @@
     "yeoman-generator": "git://github.com/ev1stensberg/generator.git#Feature-getArgument"
   },
   "devDependencies": {
+    "eslint": "^4.2.0",
+    "eslint-plugin-node": "^5.1.0",
     "flow-bin": "^0.49.1",
     "flow-remove-types": "^1.2.1",
     "husky": "^0.14.3",
