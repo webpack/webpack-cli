@@ -26,24 +26,11 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>//      
-// eslint-disable-next-line node/no-unsupported-features
-             
-             
-       
-           
-          
-             
-                     
-                   
-                 
-                  
+            <pre class="prettyprint source linenums"><code>const hashtable = require("./hashtable");
 
-const hashtable = require("./hashtable");
-
-function safeTraverse(obj        , paths          )       {
-	let val         = obj;
-	let idx         = 0;
+function safeTraverse(obj, paths) {
+	let val = obj;
+	let idx = 0;
 
 	while (idx &lt; paths.length) {
 		if (!val) {
@@ -56,7 +43,7 @@ function safeTraverse(obj        , paths          )       {
 }
 
 // Convert nested MemberExpressions to strings like webpack.optimize.DedupePlugin
-function memberExpressionToPathString(path        )         {
+function memberExpressionToPathString(path) {
 	if (path &amp;&amp; path.object) {
 		return [memberExpressionToPathString(path.object), path.property.name].join(
 			"."
@@ -66,7 +53,7 @@ function memberExpressionToPathString(path        )         {
 }
 
 // Convert Array&lt;string> like ['webpack', 'optimize', 'DedupePlugin'] to nested MemberExpressions
-function pathsToMemberExpression(j             , paths          ) {
+function pathsToMemberExpression(j, paths) {
 	if (!paths.length) {
 		return null;
 	} else if (paths.length === 1) {
@@ -92,11 +79,7 @@ function pathsToMemberExpression(j             , paths          ) {
  * @returns {Node} Node that has the pluginName
  */
 
-function findPluginsByName(
-	j             ,
-	node          ,
-	pluginNamesArray          
-)           {
+function findPluginsByName(j, node, pluginNamesArray) {
 	return node.find(j.NewExpression).filter(path => {
 		return pluginNamesArray.some(
 			plugin =>
@@ -115,11 +98,7 @@ function findPluginsByName(
  * @returns {Node} found node and
  */
 
-function findRootNodesByName(
-	j             ,
-	node          ,
-	propName        
-)                      {
+function findRootNodesByName(j, node, propName) {
 	return node.find(j.Property, { key: { name: propName } });
 }
 
@@ -133,11 +112,7 @@ function findRootNodesByName(
  * @returns {Node}
  */
 
-function createProperty(
-	j             ,
-	key                 ,
-	value     
-)               {
+function createProperty(j, key, value) {
 	return j.property(
 		"init",
 		createIdentifierOrLiteral(j, key),
@@ -154,11 +129,8 @@ function createProperty(
  * @returns {Node}
  */
 
-function createLiteral(
-	j             ,
-	val                           
-)                  {
-	let literalVal      = val;
+function createLiteral(j, val) {
+	let literalVal = val;
 	// We'll need String to native type conversions
 	if (typeof val === "string") {
 		// 'true' => true
@@ -180,7 +152,7 @@ function createLiteral(
  * @returns {Node}
  */
 
-function createIdentifierOrLiteral(j             , val     )      {
+function createIdentifierOrLiteral(j, val) {
 	// IPath&lt;IIdentifier> | IPath&lt;ILiteral> doesn't work, find another way
 	let literalVal = val;
 	// We'll need String to native type conversions
@@ -224,12 +196,7 @@ function createIdentifierOrLiteral(j             , val     )      {
  * @returns {Void}
  */
 
-function createOrUpdatePluginByName(
-	j             ,
-	rootNodePath          ,
-	pluginName        ,
-	options     
-) {
+function createOrUpdatePluginByName(j, rootNodePath, pluginName, options) {
 	const pluginInstancePath = findPluginsByName(j, j(rootNodePath), [
 		pluginName
 	]);
@@ -253,7 +220,7 @@ function createOrUpdatePluginByName(
 						.find(j.ObjectExpression)
 						.get("properties");
 
-					optionsProps.forEach((opt     ) => {
+					optionsProps.forEach(opt => {
 						// Search for same keys in the existing object
 						const existingProps = j(currentProps)
 							.find(j.Identifier)
@@ -298,12 +265,8 @@ function createOrUpdatePluginByName(
  * @returns {String} variable name - ex. 'var s = require(s) gives "s"`
  */
 
-function findVariableToPlugin(
-	j             ,
-	rootNode          ,
-	pluginPackageName        
-)          {
-	const moduleVarNames                        = rootNode
+function findVariableToPlugin(j, rootNode, pluginPackageName) {
+	const moduleVarNames = rootNode
 		.find(j.VariableDeclarator)
 		.filter(j.filters.VariableDeclarator.requiresModule(pluginPackageName))
 		.nodes();
@@ -319,11 +282,11 @@ function findVariableToPlugin(
  * @returns {Boolean}
  */
 
-function isType(path          , type        )          {
+function isType(path, type) {
 	return path.type === type;
 }
 
-function findObjWithOneOfKeys(p          , keyNames          )          {
+function findObjWithOneOfKeys(p, keyNames) {
 	return p.value.properties.reduce((predicate, prop) => {
 		const name = prop.key.name;
 		return keyNames.indexOf(name) > -1 || predicate;
@@ -339,11 +302,7 @@ function findObjWithOneOfKeys(p          , keyNames          )          {
  * @returns {Node} - the created ast
  */
 
-function getRequire(
-	j             ,
-	constName        ,
-	packagePath        
-)                             {
+function getRequire(j, constName, packagePath) {
 	return j.variableDeclaration("const", [
 		j.variableDeclarator(
 			j.identifier(constName),
@@ -362,12 +321,7 @@ function getRequire(
  * @returns {Void}
  */
 
-function checkIfExistsAndAddValue(
-	j             ,
-	node                          ,
-	key        ,
-	value        
-)       {
+function checkIfExistsAndAddValue(j, node, key, value) {
 	const existingProp = node.value.properties.filter(
 		prop => prop.key.name === key
 	);
@@ -388,10 +342,7 @@ function checkIfExistsAndAddValue(
  * @param {String} key - array name
  * @returns {Array} arr - An empty array
  */
-function createEmptyArrayProperty(
-	j             ,
-	key        
-)                              {
+function createEmptyArrayProperty(j, key) {
 	return j.property("init", j.identifier(key), j.arrayExpression([]));
 }
 
@@ -406,15 +357,10 @@ function createEmptyArrayProperty(
  * @returns {Array} arr - An array with the object properties
  */
 
-function createArrayWithChildren(
-	j             ,
-	key        ,
-	subProps                   ,
-	shouldDropKeys         
-) {
+function createArrayWithChildren(j, key, subProps, shouldDropKeys) {
 	let arr = createEmptyArrayProperty(j, key);
 	if (shouldDropKeys) {
-		subProps.forEach((subProperty          ) => {
+		subProps.forEach(subProperty => {
 			let objectOfArray = j.objectExpression([]);
 			if (typeof subProperty !== "string") {
 				loopThroughObjects(j, objectOfArray, subProperty);
@@ -445,18 +391,11 @@ function createArrayWithChildren(
  * nothing is left
  */
 
-function loopThroughObjects(
-	j             ,
-	p                   ,
-	obj        
-)       {
+function loopThroughObjects(j, p, obj) {
 	Object.keys(obj).forEach(prop => {
 		if (prop.indexOf("inject") >= 0) {
 			// TODO to insert the type of node, identifier or literal
-			const propertyExpression           = createIdentifierOrLiteral(
-				j,
-				obj[prop]
-			);
+			const propertyExpression = createIdentifierOrLiteral(j, obj[prop]);
 			return p.properties.push(propertyExpression);
 		}
 		// eslint-disable-next-line no-irregular-whitespace
@@ -494,11 +433,7 @@ function loopThroughObjects(
  * @returns {Node} - An property with the supplied property
  */
 
-function createObjectWithSuppliedProperty(
-	j             ,
-	key        ,
-	prop     
-)               {
+function createObjectWithSuppliedProperty(j, key, prop) {
 	return j.property("init", j.identifier(key), prop);
 }
 
@@ -510,7 +445,7 @@ function createObjectWithSuppliedProperty(
  * @returns {Node} - A literal node with the found regexp
  */
 
-function createExternalRegExp(j             , prop     )                  {
+function createExternalRegExp(j, prop) {
 	let regExpProp = prop.__paths[0].value.program.body[0].expression;
 	return j.literal(regExpProp.value);
 }
@@ -526,13 +461,8 @@ function createExternalRegExp(j             , prop     )                  {
  * @returns {Node} - Returns node the pushed property
  */
 
-function pushCreateProperty(
-	j             ,
-	p                          ,
-	key        ,
-	val     
-)         {
-	let property                                               ;
+function pushCreateProperty(j, p, key, val) {
+	let property;
 	const findProp = findRootNodesByName(j, j(p), key);
 	if (findProp.size()) {
 		findProp.filter(p => {
@@ -560,13 +490,7 @@ function pushCreateProperty(
  * subProperty is an array, else it will invoke a function that will push a single node
  */
 
-function pushObjectKeys(
-	j             ,
-	p          ,
-	webpackProperties        ,
-	name        ,
-	reassign     
-)      {
+function pushObjectKeys(j, p, webpackProperties, name, reassign) {
 	p.value.properties
 		.filter(n => safeTraverse(n, ["key", "name"]) === name)
 		.forEach(prop => {
@@ -670,13 +594,7 @@ function pushObjectKeys(
  * @returns {Function} cb - Returns the callback and pushes a new node
  */
 
-function isAssignment(
-	j             ,
-	p          ,
-	cb            ,
-	identifier        ,
-	property        
-)      {
+function isAssignment(j, p, cb, identifier, property) {
 	if (p.parent.value.type === "AssignmentExpression") {
 		if (j) {
 			return cb(j, p, identifier, property);
@@ -696,11 +614,7 @@ function isAssignment(
  * function
  */
 
-function createFunctionWithArguments(
-	j             ,
-	p          ,
-	name        
-)      {
+function createFunctionWithArguments(j, p, name) {
 	if (typeof name === "object") {
 		let node;
 		Object.keys(name).forEach(key => {
@@ -804,7 +718,7 @@ module.exports = {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Dec 21 2017 16:51:05 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Jan 15 2018 00:04:44 GMT+0100 (CET)
 </footer>
 
 <script> prettyPrint(); </script>
