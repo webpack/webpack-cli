@@ -3,6 +3,3 @@ coverage
 test
 dist
 docs
-lib/migrate/**
-lib/types.js
-lib/utils/ast-utils.js

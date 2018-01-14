@@ -15,6 +15,10 @@ install:
   - npm install yarn -g
   - yarn
   - yarn add global codecov
+  - yarn add global eslint
+  - yarn add global babel-eslint
+  - yarn add global eslint-plugin-node
+  - yarn add global eslint-plugin-flowtype@latest
 
 test_script:
   - node --version
