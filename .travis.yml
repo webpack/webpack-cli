@@ -25,6 +25,7 @@ notifications:
 
 install:
   - yarn add global codecov
+  - yarn add global eslint
 
 before_script:
   - export DISPLAY=:99.0

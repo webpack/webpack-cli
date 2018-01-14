@@ -2,9 +2,9 @@
 {
   "source": {
       "include": [
-          "dist/"
+          "lib/"
       ],
-      "includePattern": "dist/.+\\.js$",
-      "excludePattern": "dist/migrate"
+      "includePattern": "lib/.+\\.js$",
+      "excludePattern": "lib/migrate"
   }
 }

@@ -17,8 +17,5 @@ yarn-error.log
 /coverage
 /.nyc_output
 
-# Distribution Build
-dist
-
 # Test Compilation
 test/js/*
