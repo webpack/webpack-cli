@@ -90,7 +90,6 @@ It is important that you test the logic of the code you're writing, and that you
 
 In case you need a hand or pointers on to how to write your tests, do not hesitate to reach out to us. We will gladly point you in the right direction.
 
-Check out [`travis.yml`]((https://github.com/webpack/webpack-cli/blob/master/.travis.yml)) to see how to install those globally
 ## Pull Requests
 
 After getting some feedback, push to your fork and submit a pull request. We
