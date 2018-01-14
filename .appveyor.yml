@@ -19,6 +19,7 @@ install:
   - yarn add global babel-eslint
   - yarn add global eslint-plugin-node
   - yarn add global eslint-plugin-flowtype@latest
+  - yarn add babel-core
 
 test_script:
   - node --version
