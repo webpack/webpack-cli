@@ -1,6 +1,5 @@
 test
 coverage
-lib
 .travis.yml
 .eslintrc*
 .fitcommitjsrc.json
