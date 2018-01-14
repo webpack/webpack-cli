@@ -4,4 +4,3 @@
 --output-chunk-filename [id].chunk.js
 --target async-node
 --plugin uglifyjs-webpack-plugin
---config-register babel-register
