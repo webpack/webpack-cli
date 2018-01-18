@@ -438,6 +438,12 @@
 				);
 			}
 
+			if (outputOptions.infoVerbosity === "verbose") {
+				compiler.hooks.beforeCompile.tap("WebpackInfo", (compilation) => {
+					console.log("\nCompilation starting…\n");
+				});
+			}
+
 			function compilerCallback(err, stats) {
 				if (!options.watch || err) {
 					// Do not keep cache anymore
@@ -477,6 +483,12 @@
 				compiler.watch(watchOptions, compilerCallback);
 				if (outputOptions.infoVerbosity !== "none")
 					console.log("\nWebpack is watching the files…\n");
+
+				if (outputOptions.infoVerbosity === "verbose") {
+					compiler.hooks.afterCompile.tap("WebpackInfo", (compilation) => {
+						console.log("\nCompilation finished\n");
+					});
+				}
 			} else compiler.run(compilerCallback);
 		}
 
