@@ -444,6 +444,9 @@
 				compiler.hooks.beforeCompile.tap("WebpackInfo", (compilation) => {
 					console.log("\nCompilation starting…\n");
 				});
+				compiler.hooks.afterCompile.tap("WebpackInfo", (compilation) => {
+					console.log("\nCompilation finished\n");
+				});
 			}
 
 			function compilerCallback(err, stats) {
@@ -485,12 +488,6 @@
 				compiler.watch(watchOptions, compilerCallback);
 				if (outputOptions.infoVerbosity !== "none")
 					console.log("\nWebpack is watching the files…\n");
-
-				if (outputOptions.infoVerbosity === "verbose") {
-					compiler.hooks.afterCompile.tap("WebpackInfo", (compilation) => {
-						console.log("\nCompilation finished\n");
-					});
-				}
 			} else compiler.run(compilerCallback);
 		}
 
