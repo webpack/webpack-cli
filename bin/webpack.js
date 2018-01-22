@@ -406,7 +406,7 @@
 			});
 
 			ifArg("info-verbosity", function(value) {
-				if (typeof value !== "string" || !["none", "info", "verbose"].includes(value))
+				if (!["none", "info", "verbose"].includes(value))
 					throw new Error("Invalid configuration object. \n configuration['info-verbosity'] should be one of these:\n \"none\" | \"info\" | \"verbose\"");
 				outputOptions.infoVerbosity = value;
 			});
