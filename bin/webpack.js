@@ -187,6 +187,12 @@
 			type: "boolean",
 			group: DISPLAY_GROUP,
 			describe: "Show more details"
+		},
+		"info-verbosity": {
+			type: "string",
+			default: "info",
+			group: DISPLAY_GROUP,
+			describe: "Controls the output of lifecycle messaging e.g. Started watching files... (verbose, info, none)"
 		}
 	});
 
@@ -399,6 +405,12 @@
 				}
 			});
 
+			ifArg("info-verbosity", function(value) {
+				if (!["none", "info", "verbose"].includes(value))
+					throw new Error("Invalid configuration object. \n configuration['info-verbosity'] should be one of these:\n \"none\" | \"info\" | \"verbose\"");
+				outputOptions.infoVerbosity = value;
+			});
+
 			var webpack = require("webpack/lib/webpack.js");
 
 			var lastHash = null;
@@ -426,6 +438,15 @@
 						profile: argv.profile
 					})
 				);
+			}
+
+			if (outputOptions.infoVerbosity === "verbose") {
+				compiler.hooks.beforeCompile.tap("WebpackInfo", (compilation) => {
+					console.log("\nCompilation starting…\n");
+				});
+				compiler.hooks.afterCompile.tap("WebpackInfo", (compilation) => {
+					console.log("\nCompilation finished\n");
+				});
 			}
 
 			function compilerCallback(err, stats) {
@@ -465,7 +486,8 @@
 					process.stdin.resume();
 				}
 				compiler.watch(watchOptions, compilerCallback);
-				console.log("\nWebpack is watching the files…\n");
+				if (outputOptions.infoVerbosity !== "none")
+					console.log("\nWebpack is watching the files…\n");
 			} else compiler.run(compilerCallback);
 		}
 

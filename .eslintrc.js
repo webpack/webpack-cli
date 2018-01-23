@@ -70,7 +70,8 @@ module.exports = {
 			"error",
 			{
 				"allowModules": [
-					"webpack"
+					"webpack",
+					"webpack-dev-server"
 				]
 			}
 		],
