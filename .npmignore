@@ -1,6 +1,5 @@
 test
 coverage
-lib
 .travis.yml
 .eslintrc*
 .fitcommitjsrc.json
@@ -16,3 +15,4 @@ docs
 jsdoc.json
 .appveyor.yml
 .codecov.yml
+*.snap

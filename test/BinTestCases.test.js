@@ -6,30 +6,21 @@ const fs = require("fs");
 const child_process = require("child_process");
 
 function spawn(args, options) {
-	if (process.env.running_under_istanbul) {
-		args = [
-			"--no-deprecation",
-			require.resolve("istanbul/lib/cli.js"),
-			"cover",
-			"--report",
-			"none",
-			"--print",
-			"none",
-			"--include-pid",
-			"--dir",
-			path.resolve("coverage"),
-			"--",
-			require.resolve("./helpers/exec-in-directory.js"),
-			options.cwd
-		].concat(args);
-		options = Object.assign({}, options, {
-			cwd: undefined
-		});
-	}
 	return child_process.spawn(
 		process.execPath,
-		["--no-deprecation"].concat(args),
-		options
+		[
+			require.resolve("nyc/bin/nyc.js"),
+			"--reporter",
+			"none",
+			"--no-all",
+			process.execPath,
+			"--no-deprecation",
+			require.resolve("./helpers/exec-in-directory.js"),
+			options.cwd
+		].concat(args),
+		Object.assign({}, options, {
+			cwd: undefined
+		})
 	);
 }
 
@@ -87,10 +78,10 @@ describe("BinTestCases", function() {
 			testName
 		);
 
-		const cmd = `${path.resolve(process.cwd(), "bin/webpack.js")}`;
+		const cmd = `${path.resolve(__dirname, "../bin/webpack.js")}`;
 		const args = testArgs.concat(["--output-path", `${outputPath}`]);
 		const opts = {
-			cwd: path.resolve("./", testDirectory)
+			cwd: testDirectory
 		};
 
 		const asyncExists = fs.existsSync(path.join(testDirectory, "async"));
@@ -104,7 +95,7 @@ describe("BinTestCases", function() {
 		if (asyncExists) {
 			describe(testName, function() {
 				it("should run successfully", function(done) {
-					jest.setTimeout(10000);
+					jest.setTimeout(20000);
 					const child = spawn([cmd].concat(args), opts);
 
 					child.on("close", code => {
@@ -130,15 +121,21 @@ describe("BinTestCases", function() {
 
 						const stdout = convertToArrayOfLines(env.stdout);
 						const stderr = convertToArrayOfLines(env.stderr);
-						testAssertions(stdout, stderr, done);
+						try {
+							testAssertions(stdout, stderr, done);
+						} catch(e) {
+							console.log(`### stderr ###\n${env.stderr.join("")}`);
+							console.log(`### stdout ###\n${env.stdout.join("")}`);
+							throw e;
+						}
 						child.kill();
 					}, 8000); // wait a little to get an output
 				});
 			});
 		} else {
 			describe(testName, function() {
-				beforeEach(function(done)	 {
-					jest.setTimeout(20000);
+				beforeAll(function(done) {
+					jest.setTimeout(30000);
 
 					const child = spawn([cmd].concat(args), opts);
 
@@ -167,7 +164,13 @@ describe("BinTestCases", function() {
 				it("should run successfully", function() {
 					const stdout = convertToArrayOfLines(env.stdout);
 					const stderr = convertToArrayOfLines(env.stderr);
-					testAssertions(env.code, stdout, stderr);
+					try {
+						testAssertions(env.code, stdout, stderr);
+					} catch(e) {
+						console.log(`### stderr ###\n${env.stderr.join("")}`);
+						console.log(`### stdout ###\n${env.stdout.join("")}`);
+						throw e;
+					}
 				});
 			});
 		}

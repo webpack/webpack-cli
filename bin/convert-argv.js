@@ -6,14 +6,6 @@ var prepareOptions = require("./prepareOptions");
 module.exports = function(yargs, argv, convertOptions) {
 	var options = [];
 	// Shortcuts
-	if (argv.o) {
-		argv["output-filename"] = path.basename(argv.o);
-
-		if (!path.isAbsolute(argv.o)) {
-			argv["output-path"] = path.resolve(process.cwd(), path.dirname(argv.o));
-		}
-	}
-
 	if (argv.d) {
 		argv.debug = true;
 		argv["output-pathinfo"] = true;
@@ -33,6 +25,16 @@ module.exports = function(yargs, argv, convertOptions) {
 			argv.mode = "production";
 		}
 	}
+
+	if (argv.output) {
+		let output = argv.output;
+		if (!path.isAbsolute(argv.o)) {
+			output = path.resolve(process.cwd(), output);
+		}
+		argv["output-filename"] = path.basename(output);
+		argv["output-path"] = path.dirname(output);
+	}
+
 	var configFileLoaded = false;
 	var configFiles = [];
 	var extensions = Object.keys(interpret.extensions).sort(function(a, b) {
@@ -218,7 +220,6 @@ module.exports = function(yargs, argv, convertOptions) {
 	}
 
 	function processOptions(options) {
-
 		function ifArg(name, fn, init, finalize) {
 			if (Array.isArray(argv[name])) {
 				if (init) {
@@ -356,8 +357,8 @@ module.exports = function(yargs, argv, convertOptions) {
 					var rule = {
 						test: new RegExp(
 							"\\." +
-							name.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") +
-							"$"
+								name.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") +
+								"$"
 						), // eslint-disable-line no-useless-escape
 						loader: binding
 					};
@@ -462,7 +463,8 @@ module.exports = function(yargs, argv, convertOptions) {
 		mapArgToBoolean("cache");
 
 		ifBooleanArg("hot", function() {
-			var HotModuleReplacementPlugin = require("webpack").HotModuleReplacementPlugin;
+			var HotModuleReplacementPlugin = require("webpack")
+				.HotModuleReplacementPlugin;
 			addPlugin(options, new HotModuleReplacementPlugin());
 		});
 
@@ -503,7 +505,8 @@ module.exports = function(yargs, argv, convertOptions) {
 		});
 
 		ifArg("optimize-max-chunks", function(value) {
-			var LimitChunkCountPlugin = require("webpack").optimize.LimitChunkCountPlugin;
+			var LimitChunkCountPlugin = require("webpack").optimize
+				.LimitChunkCountPlugin;
 			addPlugin(
 				options,
 				new LimitChunkCountPlugin({

@@ -123,6 +123,12 @@ module.exports = function(yargs) {
 				group: MODULE_GROUP,
 				requiresArg: true
 			},
+			output: {
+				alias: "o",
+				describe: "The output path and file for compilation assets",
+				group: OUTPUT_GROUP,
+				requiresArg: true
+			},
 			"output-path": {
 				type: "string",
 				describe: "The output path for compilation assets",
@@ -131,7 +137,6 @@ module.exports = function(yargs) {
 				requiresArg: true
 			},
 			"output-filename": {
-				alias: "o",
 				type: "string",
 				describe: "The output filename of the bundle",
 				group: OUTPUT_GROUP,

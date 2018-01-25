@@ -21,9 +21,9 @@ test_script:
   - npm --version
   - yarn --version
   - which yarn
-  - yarn prepare
-  - yarn lint
-  - yarn test:ci
+  - yarn appveyor:prepare
+  - yarn appveyor:lint
+  - yarn appveyor:test
 
 cache:
   - node_modules -> appveyor.yml,package.json,yarn.lock

@@ -25,12 +25,11 @@ notifications:
 
 install:
   - yarn add global codecov
+  - yarn add global eslint
 
 before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
 
-after_success:
-  - bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"
-
-script: npm run travis:$JOB_PART
+script:
+  - npm run travis:$JOB_PART

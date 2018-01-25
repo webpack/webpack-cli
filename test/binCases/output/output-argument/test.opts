@@ -1,0 +1,3 @@
+./index.js
+-o ../../../js/bin/output/output-argument/bundle.js
+--target async-node

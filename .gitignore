@@ -15,9 +15,7 @@ yarn-error.log
 
 # Jest Coverage
 /coverage
-
-# Distribution Build
-dist
+/.nyc_output
 
 # Test Compilation
 test/js/*
