@@ -17,7 +17,7 @@
 	}
 
 	require("v8-compile-cache");
-	var ErrorHelpers = require("./errorHelpers");
+	var ErrorHelpers = require("./ErrorHelpers");
 
 	const NON_COMPILATION_ARGS = [
 		"init",
