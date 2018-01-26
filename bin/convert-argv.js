@@ -3,7 +3,8 @@ var fs = require("fs");
 fs.existsSync = fs.existsSync || path.existsSync;
 var interpret = require("interpret");
 var prepareOptions = require("./prepareOptions");
-module.exports = function(yargs, argv, convertOptions) {
+module.exports = function(...args) {
+	var argv = args[1] || args[0];
 	var options = [];
 	// Shortcuts
 	if (argv.d) {
