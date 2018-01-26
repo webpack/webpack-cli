@@ -192,7 +192,8 @@
 			type: "string",
 			default: "info",
 			group: DISPLAY_GROUP,
-			describe: "Controls the output of lifecycle messaging e.g. Started watching files... (verbose, info, none)"
+			describe:
+				"Controls the output of lifecycle messaging e.g. Started watching files... (verbose, info, none)"
 		}
 	});
 
@@ -412,7 +413,9 @@
 
 			ifArg("info-verbosity", function(value) {
 				if (!["none", "info", "verbose"].includes(value))
-					throw new Error("Invalid configuration object. \n configuration['info-verbosity'] should be one of these:\n \"none\" | \"info\" | \"verbose\"");
+					throw new Error(
+						"Invalid configuration object. \n configuration['info-verbosity'] should be one of these:\n \"none\" | \"info\" | \"verbose\""
+					);
 				outputOptions.infoVerbosity = value;
 			});
 
@@ -446,10 +449,10 @@
 			}
 
 			if (outputOptions.infoVerbosity === "verbose") {
-				compiler.hooks.beforeCompile.tap("WebpackInfo", (compilation) => {
+				compiler.hooks.beforeCompile.tap("WebpackInfo", compilation => {
 					console.log("\nCompilation starting…\n");
 				});
-				compiler.hooks.afterCompile.tap("WebpackInfo", (compilation) => {
+				compiler.hooks.afterCompile.tap("WebpackInfo", compilation => {
 					console.log("\nCompilation finished\n");
 				});
 			}
