@@ -196,6 +196,11 @@
 		}
 	});
 
+	if (yargs.argv._.length === 0) {
+		yargs.showHelp();
+		return;
+	}
+
 	// yargs will terminate the process early when the user uses help or version.
 	// This causes large help outputs to be cut short (https://github.com/nodejs/node/wiki/API-changes-between-v0.10-and-v4#process).
 	// To prevent this we use the yargs.parse API and exit the process normally
