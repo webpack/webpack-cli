@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: utils/run-prettier.js</title>
+    <title>JSDoc: Source: migrate/extractTextPlugin/extractTextPlugin.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: utils/run-prettier.js</h1>
+    <h1 class="page-title">Source: migrate/extractTextPlugin/extractTextPlugin.js</h1>
 
     
 
@@ -26,49 +26,63 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>"use strict";
-
-const prettier = require("prettier");
-const fs = require("fs");
-const chalk = require("chalk");
+            <pre class="prettyprint source linenums"><code>const utils = require("../../utils/ast-utils");
 
 /**
  *
- * Runs prettier and later prints the output configuration
+ * Check whether `node` is the invocation of the plugin denoted by `pluginName`
  *
- * @param {String} outputPath - Path to write the config to
- * @param {Node} source - AST to write at the given path
- * @param {Function} cb - exectues a callback after execution if supplied
- * @returns {Function} Writes a file at given location and prints messages accordingly
+ * @param {object} j — jscodeshift top-level import
+ * @param {Node} node — ast node to check
+ * @param {string} pluginName
+ * @returns {boolean}
  */
 
-module.exports = function runPrettier(outputPath, source, cb) {
-	function validateConfig() {
-		let prettySource;
-		let error;
-		try {
-			prettySource = prettier.format(source, {
-				singleQuote: true,
-				useTabs: true,
-				tabWidth: 1
-			});
-		} catch (err) {
-			process.stdout.write(
-				"\n" +
-					chalk.yellow(
-						`WARNING: Could not apply prettier to ${outputPath}` +
-							" due validation error, but the file has been created\n"
-					)
+function findInvocation(j, node, pluginName) {
+	let found = false;
+	found =
+		j(node)
+			.find(j.MemberExpression)
+			.filter(p => p.get("object").value.name === pluginName)
+			.size() > 0;
+	return found;
+}
+
+/**
+ *
+ * Transform for ExtractTextPlugin arguments. Consolidates arguments into single options object.
+ *
+ * @param {object} j — jscodeshift top-level import
+ * @param {Collection} ast — jscodeshift Collection to transform
+ * @returns {Collection} ast — jscodeshift Collection
+ */
+
+module.exports = function(j, ast) {
+	const changeArguments = function(p) {
+		const args = p.value.arguments;
+
+		const literalArgs = args.filter(p => utils.isType(p, "Literal"));
+		if (literalArgs &amp;&amp; literalArgs.length > 1) {
+			const newArgs = j.objectExpression(
+				literalArgs.map((p, index) =>
+					utils.createProperty(j, index === 0 ? "fallback" : "use", p.value)
+				)
 			);
-			prettySource = source;
-			error = err;
+			p.value.arguments = [newArgs];
 		}
-		if (cb) {
-			return cb(error);
-		}
-		return fs.writeFileSync(outputPath, prettySource, "utf8");
-	}
-	return fs.writeFile(outputPath, source, "utf8", validateConfig);
+		return p;
+	};
+	const name = utils.findVariableToPlugin(
+		j,
+		ast,
+		"extract-text-webpack-plugin"
+	);
+	if (!name) return ast;
+
+	return ast
+		.find(j.CallExpression)
+		.filter(p => findInvocation(j, p, name))
+		.forEach(changeArguments);
 };
 </code></pre>
         </article>

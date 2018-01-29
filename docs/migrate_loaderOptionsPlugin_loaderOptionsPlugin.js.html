@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: utils/run-prettier.js</title>
+    <title>JSDoc: Source: migrate/loaderOptionsPlugin/loaderOptionsPlugin.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: utils/run-prettier.js</h1>
+    <h1 class="page-title">Source: migrate/loaderOptionsPlugin/loaderOptionsPlugin.js</h1>
 
     
 
@@ -26,49 +26,52 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>"use strict";
-
-const prettier = require("prettier");
-const fs = require("fs");
-const chalk = require("chalk");
+            <pre class="prettyprint source linenums"><code>const isEmpty = require("lodash/isEmpty");
+const findPluginsByName = require("../../utils/ast-utils").findPluginsByName;
+const createOrUpdatePluginByName = require("../../utils/ast-utils")
+	.createOrUpdatePluginByName;
+const safeTraverse = require("../../utils/ast-utils").safeTraverse;
 
 /**
  *
- * Runs prettier and later prints the output configuration
+ * Transform which adds context information for old loaders by injecting a `LoaderOptionsPlugin`
  *
- * @param {String} outputPath - Path to write the config to
- * @param {Node} source - AST to write at the given path
- * @param {Function} cb - exectues a callback after execution if supplied
- * @returns {Function} Writes a file at given location and prints messages accordingly
+ * @param {object} j — jscodeshift top-level import
+ * @param {Collection} ast — jscodeshift Collection to transform
+ * @returns {Collection} ast — jscodeshift Collection
+ *
  */
 
-module.exports = function runPrettier(outputPath, source, cb) {
-	function validateConfig() {
-		let prettySource;
-		let error;
-		try {
-			prettySource = prettier.format(source, {
-				singleQuote: true,
-				useTabs: true,
-				tabWidth: 1
-			});
-		} catch (err) {
-			process.stdout.write(
-				"\n" +
-					chalk.yellow(
-						`WARNING: Could not apply prettier to ${outputPath}` +
-							" due validation error, but the file has been created\n"
-					)
-			);
-			prettySource = source;
-			error = err;
-		}
-		if (cb) {
-			return cb(error);
-		}
-		return fs.writeFileSync(outputPath, prettySource, "utf8");
+module.exports = function(j, ast) {
+	const loaderOptions = {};
+
+	// If there is debug: true, set debug: true in the plugin
+	// TODO: remove global debug setting
+	// TODO: I can't figure out how to find the topmost `debug: true`. help!
+	if (ast.find(j.Identifier, { name: "debug" }).size()) {
+		loaderOptions.debug = true;
 	}
-	return fs.writeFile(outputPath, source, "utf8", validateConfig);
+
+	// If there is UglifyJsPlugin, set minimize: true
+	if (findPluginsByName(j, ast, ["webpack.optimize.UglifyJsPlugin"]).size()) {
+		loaderOptions.minimize = true;
+	}
+
+	return ast
+		.find(j.ArrayExpression)
+		.filter(
+			path =>
+				safeTraverse(path, ["parent", "value", "key", "name"]) === "plugins"
+		)
+		.forEach(path => {
+			!isEmpty(loaderOptions) &amp;&amp;
+				createOrUpdatePluginByName(
+					j,
+					path,
+					"webpack.LoaderOptionsPlugin",
+					loaderOptions
+				);
+		});
 };
 </code></pre>
         </article>

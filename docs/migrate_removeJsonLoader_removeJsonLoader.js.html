@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: utils/run-prettier.js</title>
+    <title>JSDoc: Source: migrate/removeJsonLoader/removeJsonLoader.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: utils/run-prettier.js</h1>
+    <h1 class="page-title">Source: migrate/removeJsonLoader/removeJsonLoader.js</h1>
 
     
 
@@ -26,49 +26,74 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>"use strict";
-
-const prettier = require("prettier");
-const fs = require("fs");
-const chalk = require("chalk");
+            <pre class="prettyprint source linenums"><code>const utils = require("../../utils/ast-utils");
 
 /**
  *
- * Runs prettier and later prints the output configuration
+ * Transform which removes the json loader from all possible declarations
  *
- * @param {String} outputPath - Path to write the config to
- * @param {Node} source - AST to write at the given path
- * @param {Function} cb - exectues a callback after execution if supplied
- * @returns {Function} Writes a file at given location and prints messages accordingly
+ * @param {object} j — jscodeshift top-level import
+ * @param {Collection} ast — jscodeshift Collection to transform
+ * @returns {Collection} ast — jscodeshift Collection
  */
 
-module.exports = function runPrettier(outputPath, source, cb) {
-	function validateConfig() {
-		let prettySource;
-		let error;
-		try {
-			prettySource = prettier.format(source, {
-				singleQuote: true,
-				useTabs: true,
-				tabWidth: 1
-			});
-		} catch (err) {
-			process.stdout.write(
-				"\n" +
-					chalk.yellow(
-						`WARNING: Could not apply prettier to ${outputPath}` +
-							" due validation error, but the file has been created\n"
-					)
-			);
-			prettySource = source;
-			error = err;
+module.exports = function(j, ast) {
+	/**
+	 *
+	 * Remove the loader with name `name` from the given NodePath
+	 *
+	 * @param {NodePath} path — NodePath to remove the loader from
+	 * @param {string} name — the name of the loader to remove
+	 *
+	 */
+
+	function removeLoaderByName(path, name) {
+		const loadersNode = path.value.value;
+		switch (loadersNode.type) {
+			case j.ArrayExpression.name: {
+				let loaders = loadersNode.elements.map(p => {
+					return utils.safeTraverse(p, ["properties", "0", "value", "value"]);
+				});
+				const loaderIndex = loaders.indexOf(name);
+				if (loaders.length &amp;&amp; loaderIndex > -1) {
+					// Remove loader from the array
+					loaders.splice(loaderIndex, 1);
+					// and from AST
+					loadersNode.elements.splice(loaderIndex, 1);
+				}
+
+				// If there are no loaders left, remove the whole Rule object
+				if (loaders.length === 0) {
+					j(path.parent).remove();
+				}
+				break;
+			}
+			case j.Literal.name: {
+				// If only the loader with the matching name was used
+				// we can remove the whole Property node completely
+				if (loadersNode.value === name) {
+					j(path.parent).remove();
+				}
+				break;
+			}
 		}
-		if (cb) {
-			return cb(error);
-		}
-		return fs.writeFileSync(outputPath, prettySource, "utf8");
 	}
-	return fs.writeFile(outputPath, source, "utf8", validateConfig);
+
+	function removeLoaders(ast) {
+		ast
+			.find(j.Property, { key: { name: "use" } })
+			.forEach(path => removeLoaderByName(path, "json-loader"));
+
+		ast
+			.find(j.Property, { key: { name: "loader" } })
+			.forEach(path => removeLoaderByName(path, "json-loader"));
+	}
+
+	const transforms = [removeLoaders];
+
+	transforms.forEach(t => t(ast));
+
+	return ast;
 };
 </code></pre>
         </article>

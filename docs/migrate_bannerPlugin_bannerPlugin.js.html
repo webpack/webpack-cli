@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: utils/run-prettier.js</title>
+    <title>JSDoc: Source: migrate/bannerPlugin/bannerPlugin.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: utils/run-prettier.js</h1>
+    <h1 class="page-title">Source: migrate/bannerPlugin/bannerPlugin.js</h1>
 
     
 
@@ -26,49 +26,38 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>"use strict";
-
-const prettier = require("prettier");
-const fs = require("fs");
-const chalk = require("chalk");
+            <pre class="prettyprint source linenums"><code>const utils = require("../../utils/ast-utils");
 
 /**
  *
- * Runs prettier and later prints the output configuration
+ * Transform for BannerPlugin arguments. Consolidates first and second argument (if
+ * both are present) into single options object.
  *
- * @param {String} outputPath - Path to write the config to
- * @param {Node} source - AST to write at the given path
- * @param {Function} cb - exectues a callback after execution if supplied
- * @returns {Function} Writes a file at given location and prints messages accordingly
+ * @param {object} j — jscodeshift top-level import
+ * @param {Collection} ast — jscodeshift Collection to transform
+ * @returns {Collection} ast — jscodeshift Collection
  */
 
-module.exports = function runPrettier(outputPath, source, cb) {
-	function validateConfig() {
-		let prettySource;
-		let error;
-		try {
-			prettySource = prettier.format(source, {
-				singleQuote: true,
-				useTabs: true,
-				tabWidth: 1
-			});
-		} catch (err) {
-			process.stdout.write(
-				"\n" +
-					chalk.yellow(
-						`WARNING: Could not apply prettier to ${outputPath}` +
-							" due validation error, but the file has been created\n"
-					)
-			);
-			prettySource = source;
-			error = err;
-		}
-		if (cb) {
-			return cb(error);
-		}
-		return fs.writeFileSync(outputPath, prettySource, "utf8");
-	}
-	return fs.writeFile(outputPath, source, "utf8", validateConfig);
+module.exports = function(j, ast) {
+	return utils
+		.findPluginsByName(j, ast, ["webpack.BannerPlugin"])
+		.forEach(path => {
+			const args = path.value.arguments; // any node
+			// If the first argument is a literal replace it with object notation
+			// See https://webpack.js.org/guides/migrating/#bannerplugin-breaking-change
+			if (args &amp;&amp; args.length > 1 &amp;&amp; args[0].type === j.Literal.name) {
+				// and remove the first argument
+				path.value.arguments = [path.value.arguments[1]];
+				utils.createOrUpdatePluginByName(
+					j,
+					path.parent,
+					"webpack.BannerPlugin",
+					{
+						banner: args[0].value
+					}
+				);
+			}
+		});
 };
 </code></pre>
         </article>

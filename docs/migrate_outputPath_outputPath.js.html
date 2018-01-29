@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: utils/run-prettier.js</title>
+    <title>JSDoc: Source: migrate/outputPath/outputPath.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: utils/run-prettier.js</h1>
+    <h1 class="page-title">Source: migrate/outputPath/outputPath.js</h1>
 
     
 
@@ -26,50 +26,80 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>"use strict";
-
-const prettier = require("prettier");
-const fs = require("fs");
-const chalk = require("chalk");
+            <pre class="prettyprint source linenums"><code>const utils = require("../../utils/ast-utils");
 
 /**
  *
- * Runs prettier and later prints the output configuration
+ * Transform which adds `path.join` call to `output.path` literals
  *
- * @param {String} outputPath - Path to write the config to
- * @param {Node} source - AST to write at the given path
- * @param {Function} cb - exectues a callback after execution if supplied
- * @returns {Function} Writes a file at given location and prints messages accordingly
+ * @param {object} j — jscodeshift top-level import
+ * @param {Collection} ast — jscodeshift Collection to transform
+ * @returns {Collection} ast — jscodeshift Collection
  */
 
-module.exports = function runPrettier(outputPath, source, cb) {
-	function validateConfig() {
-		let prettySource;
-		let error;
-		try {
-			prettySource = prettier.format(source, {
-				singleQuote: true,
-				useTabs: true,
-				tabWidth: 1
-			});
-		} catch (err) {
-			process.stdout.write(
-				"\n" +
-					chalk.yellow(
-						`WARNING: Could not apply prettier to ${outputPath}` +
-							" due validation error, but the file has been created\n"
-					)
+module.exports = function(j, ast) {
+	const literalOutputPath = ast
+		.find(j.ObjectExpression)
+		.filter(
+			p =>
+				utils.safeTraverse(p, ["parentPath", "value", "key", "name"]) ===
+				"output"
+		)
+		.find(j.Property)
+		.filter(
+			p =>
+				utils.safeTraverse(p, ["value", "key", "name"]) === "path" &amp;&amp;
+				utils.safeTraverse(p, ["value", "value", "type"]) === "Literal"
+		);
+
+	if (literalOutputPath) {
+		let pathVarName = "path";
+		let isPathPresent = false;
+		const pathDecalaration = ast
+			.find(j.VariableDeclarator)
+			.filter(
+				p =>
+					utils.safeTraverse(p, ["value", "init", "callee", "name"]) ===
+					"require"
+			)
+			.filter(
+				p =>
+					utils.safeTraverse(p, ["value", "init", "arguments"]) &amp;&amp;
+					p.value.init.arguments.reduce((isPresent, a) => {
+						return (a.type === "Literal" &amp;&amp; a.value === "path") || isPresent;
+					}, false)
 			);
-			prettySource = source;
-			error = err;
+
+		if (pathDecalaration) {
+			isPathPresent = true;
+			pathDecalaration.forEach(p => {
+				pathVarName = utils.safeTraverse(p, ["value", "id", "name"]);
+			});
 		}
-		if (cb) {
-			return cb(error);
+		const finalPathName = pathVarName;
+		literalOutputPath
+			.find(j.Literal)
+			.replaceWith(p => replaceWithPath(j, p, finalPathName));
+
+		if (!isPathPresent) {
+			const pathRequire = utils.getRequire(j, "path", "path");
+			return ast
+				.find(j.Program)
+				.replaceWith(p =>
+					j.program([].concat(pathRequire).concat(p.value.body))
+				);
 		}
-		return fs.writeFileSync(outputPath, prettySource, "utf8");
 	}
-	return fs.writeFile(outputPath, source, "utf8", validateConfig);
+	return ast;
 };
+
+function replaceWithPath(j, p, pathVarName) {
+	const convertedPath = j.callExpression(
+		j.memberExpression(j.identifier(pathVarName), j.identifier("join"), false),
+		[j.identifier("__dirname"), p.value]
+	);
+	return convertedPath;
+}
 </code></pre>
         </article>
     </section>

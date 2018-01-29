@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: utils/run-prettier.js</title>
+    <title>JSDoc: Source: migrate/uglifyJsPlugin/uglifyJsPlugin.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: utils/run-prettier.js</h1>
+    <h1 class="page-title">Source: migrate/uglifyJsPlugin/uglifyJsPlugin.js</h1>
 
     
 
@@ -26,49 +26,38 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>"use strict";
-
-const prettier = require("prettier");
-const fs = require("fs");
-const chalk = require("chalk");
+            <pre class="prettyprint source linenums"><code>const findPluginsByName = require("../../utils/ast-utils").findPluginsByName;
 
 /**
  *
- * Runs prettier and later prints the output configuration
+ * Transform which adds a `sourceMap: true` option to instantiations of the UglifyJsPlugin
  *
- * @param {String} outputPath - Path to write the config to
- * @param {Node} source - AST to write at the given path
- * @param {Function} cb - exectues a callback after execution if supplied
- * @returns {Function} Writes a file at given location and prints messages accordingly
+ * @param {object} j — jscodeshift top-level import
+ * @param {Collection} ast — jscodeshift Collection to transform
+ * @returns {Collection} ast — jscodeshift Collection
  */
 
-module.exports = function runPrettier(outputPath, source, cb) {
-	function validateConfig() {
-		let prettySource;
-		let error;
-		try {
-			prettySource = prettier.format(source, {
-				singleQuote: true,
-				useTabs: true,
-				tabWidth: 1
-			});
-		} catch (err) {
-			process.stdout.write(
-				"\n" +
-					chalk.yellow(
-						`WARNING: Could not apply prettier to ${outputPath}` +
-							" due validation error, but the file has been created\n"
-					)
-			);
-			prettySource = source;
-			error = err;
-		}
-		if (cb) {
-			return cb(error);
-		}
-		return fs.writeFileSync(outputPath, prettySource, "utf8");
+module.exports = function(j, ast) {
+	function createSourceMapsProperty() {
+		return j.property("init", j.identifier("sourceMap"), j.identifier("true"));
 	}
-	return fs.writeFile(outputPath, source, "utf8", validateConfig);
+
+	return findPluginsByName(j, ast, ["webpack.optimize.UglifyJsPlugin"]).forEach(
+		path => {
+			const args = path.value.arguments;
+
+			if (args.length) {
+				// Plugin is called with object as arguments
+				j(path)
+					.find(j.ObjectExpression)
+					.get("properties")
+					.value.push(createSourceMapsProperty());
+			} else {
+				// Plugin is called without arguments
+				args.push(j.objectExpression([createSourceMapsProperty()]));
+			}
+		}
+	);
 };
 </code></pre>
         </article>
