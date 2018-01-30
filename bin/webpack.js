@@ -17,7 +17,7 @@
 	}
 
 	require("v8-compile-cache");
-	var ErrorHelpers = require("./ErrorHelpers");
+	var ErrorHelpers = require("./errorHelpers");
 
 	const NON_COMPILATION_ARGS = [
 		"init",
@@ -434,7 +434,7 @@
 			}
 
 			if (argv.progress) {
-				var ProgressPlugin = require("webpack").processPlugin;
+				var ProgressPlugin = require("webpack").ProcessPlugin;
 				compiler.apply(
 					new ProgressPlugin({
 						profile: argv.profile
