@@ -221,7 +221,7 @@
 		}
 
 		try {
-			var options = require("./convert-argv")(yargs, argv);
+			var options = require("./convert-argv")(argv);
 		} catch (err) {
 			if (err.name !== "ValidationError") {
 				throw err;
