@@ -9,7 +9,7 @@ module.exports = function processOptions(yargs, argv) {
 			fn(argv[name], -1);
 		}
 	}
-	var options = require("./convert-argv")(yargs, argv);
+	var options = require("./convert-argv")(argv);
 
 	if (typeof options.then === "function") {
 		options.then(processOptions).catch(function(err) {
