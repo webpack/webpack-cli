@@ -1,5 +1,6 @@
 # IDE folders
 .idea
+.vscode
 
 # Mac OS X Finder
 .DS_Store
