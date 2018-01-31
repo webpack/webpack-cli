@@ -152,9 +152,14 @@ module.exports = function(...args) {
 	}
 
 	function processConfiguredOptions(options) {
-		var webpackConfigurationValidationErrors = validateSchema(webpackConfigurationSchema, options);
+		var webpackConfigurationValidationErrors = validateSchema(
+			webpackConfigurationSchema,
+			options
+		);
 		if (webpackConfigurationValidationErrors.length) {
-			var error = new WebpackOptionsValidationError(webpackConfigurationValidationErrors);
+			var error = new WebpackOptionsValidationError(
+				webpackConfigurationValidationErrors
+			);
 			console.error(error.message);
 			process.exit(-1); // eslint-disable-line
 		}

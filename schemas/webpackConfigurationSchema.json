@@ -14,7 +14,7 @@
     },
     {
       "instanceof": "Function",
-      "description": "A function returning a configuration object, or an array of configuration objects."
+      "description": "A promise that resolves with a configuration object, or an array of configuration objects."
     }
   ]
 }
