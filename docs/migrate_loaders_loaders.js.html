@@ -34,9 +34,9 @@
  * moves loader configuration into rules array, transforms query strings and
  * props into loader options, and adds -loader suffix to loader names.
  *
- * @param {object} j — jscodeshift top-level import
- * @param {Collection} ast — jscodeshift Collection to transform
- * @returns {Collection} ast — jscodeshift Collection
+ * @param {Object} j — jscodeshift top-level import
+ * @param {Node} ast — jscodeshift ast to transform
+ * @returns {Node} ast — jscodeshift ast
  */
 
 module.exports = function(j, ast) {
@@ -75,8 +75,9 @@ module.exports = function(j, ast) {
 	 *     loader: 'css'
 	 *   }]
 	 * }
-	 * @param  {NodePath} path — wrapped ast object expression
-	 * @returns {NodePath} path
+	 *
+	 * @param  {Node} path — object expression ast
+	 * @returns {Node} path
 	 */
 
 	const createArrayExpressionFromArray = function(path) {
@@ -126,8 +127,8 @@ module.exports = function(j, ast) {
 	 *
 	 * Puts query parameters from loader value into options object
 	 *
-	 * @param {NodePath} p — wrapped ast object expression node for loader object
-	 * @returns {Node} objectExpression — An object expression containing the query paramters
+	 * @param {Node} p — object expression ast for loader object
+	 * @returns {Node} objectExpression — an object expression containing the query paramters
 	 */
 
 	const createLoaderWithQuery = p => {
@@ -157,8 +158,8 @@ module.exports = function(j, ast) {
 	 *
 	 * Determine whether a loader has a query string
 	 *
-	 * @param {NodePath} p — wrapped ast object expression node for loader object
-	 * @returns {boolean} Whether the loader value contains a query string
+	 * @param {Node} p — object expression ast for loader object
+	 * @returns {Boolean} — whether the loader value contains a query string
 	 */
 
 	const findLoaderWithQueryString = p => {
@@ -176,8 +177,8 @@ module.exports = function(j, ast) {
 	 * If the path value is `loaders` and it’s located in `module` object
 	 * we assume it’s the loader's section.
 	 *
-	 * @param  {NodePath} path — wrapped ast identifier node
-	 * @returns {boolean}
+	 * @param {Node} path — identifier ast
+	 * @returns {Boolean}
 	 */
 
 	const checkForLoader = path =>
@@ -194,8 +195,8 @@ module.exports = function(j, ast) {
 	/**
 	 * Puts pre- or postLoader into `loaders` object and adds the appropriate `enforce` property
 	 *
-	 * @param {NodePath} p — wrapped ast object expression that has a key for either 'preLoaders' or 'postLoaders'
-	 * @returns {NodePath} p
+	 * @param {Node} p — object expression ast that has a key for either 'preLoaders' or 'postLoaders'
+	 * @returns {Node} p
 	 */
 
 	const fitIntoLoaders = p => {
@@ -229,9 +230,9 @@ module.exports = function(j, ast) {
 	};
 
 	/**
-	 * Find pre- and postLoaders in ast and put them into the `loaders` array
+	 * Find pre and postLoaders in the ast and put them into the `loaders` array
 	 *
-	 * @returns {Collection} jscodeshift Collection
+	 * @returns {Node} ast — jscodeshift ast
 	 */
 
 	const prepostLoaders = () =>
@@ -243,7 +244,7 @@ module.exports = function(j, ast) {
 	/**
 	 * Convert top level `loaders` to `rules`
 	 *
-	 * @returns {Collection} jscodeshift Collection
+	 * @returns {Node} ast — jscodeshift ast
 	 */
 
 	const loadersToRules = () =>
@@ -255,7 +256,7 @@ module.exports = function(j, ast) {
 	/**
 	 * Convert `loader` and `loaders` to Array of {Rule.Use}
 	 *
-	 * @returns {Collection} jscodeshift Collection
+	 * @returns {Node} ast — jscodeshift ast
 	 */
 
 	const loadersToArrayExpression = () =>
@@ -275,7 +276,7 @@ module.exports = function(j, ast) {
 			.forEach(createArrayExpressionFromArray);
 
 	/**
-	 * Find loaders with options encoded as query string and replace it with options obejct
+	 * Find loaders with options encoded as a query string and replace the string with an options object
 	 *
 	 * i.e. for loader like
 	 *
@@ -293,7 +294,7 @@ module.exports = function(j, ast) {
 	 *   }
 	 * }
 	 *
-	 * @returns {Collection} jscodeshift Collection
+	 * @returns {Node} ast — jscodeshift ast
 	 */
 
 	const loaderWithQueryParam = () =>
@@ -304,7 +305,7 @@ module.exports = function(j, ast) {
 			.replaceWith(createLoaderWithQuery);
 
 	/**
-	 * Find nodes with `query` key and replace it with `options`
+	 * Find nodes with a `query` key and replace it with `options`
 	 *
 	 * i.e. for
 	 * {
@@ -317,7 +318,7 @@ module.exports = function(j, ast) {
 	 *   options: { ... }
 	 * }
 	 *
-	 * @returns {Collection} jscodeshift Collection
+	 * @returns {Node} ast — jscodeshift ast
 	 */
 
 	const loaderWithQueryProp = () =>
@@ -327,9 +328,10 @@ module.exports = function(j, ast) {
 			.replaceWith(j.identifier("options"));
 
 	/**
-	 * Add required `-loader` suffix to loader with missing suffix
+	 * Add required `-loader` suffix to a loader with missing suffix
 	 * e.g. for `babel` it should generate `babel-loader`
-	 * @returns {Collection} jscodeshift Collection
+	 *
+	 * @returns {Node} ast — jscodeshift ast
 	 */
 
 	const addLoaderSuffix = () =>
@@ -373,7 +375,7 @@ module.exports = function(j, ast) {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Jan 29 2018 21:50:31 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Jan 31 2018 18:50:16 GMT-0500 (EST)
 </footer>
 
 <script> prettyPrint(); </script>
