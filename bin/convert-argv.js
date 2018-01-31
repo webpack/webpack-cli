@@ -160,7 +160,10 @@ module.exports = function(...args) {
 			var error = new WebpackOptionsValidationError(
 				webpackConfigurationValidationErrors
 			);
-			console.error(error.message);
+			console.error(
+				error.message,
+				`\nReceived: ${typeof options} : ${JSON.stringify(options, null, 2)}`
+			);
 			process.exit(-1); // eslint-disable-line
 		}
 
