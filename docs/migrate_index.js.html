@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: init/transformations/devServer/devServer.js</title>
+    <title>JSDoc: Source: migrate/index.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: init/transformations/devServer/devServer.js</h1>
+    <h1 class="page-title">Source: migrate/index.js</h1>
 
     
 
@@ -26,94 +26,84 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>"use strict";
+            <pre class="prettyprint source linenums"><code>const jscodeshift = require("jscodeshift");
+const pEachSeries = require("p-each-series");
+const PLazy = require("p-lazy");
 
-const utils = require("../../../utils/ast-utils");
+const loadersTransform = require("./loaders/loaders");
+const resolveTransform = require("./resolve/resolve");
+const removeJsonLoaderTransform = require("./removeJsonLoader/removeJsonLoader");
+const uglifyJsPluginTransform = require("./uglifyJsPlugin/uglifyJsPlugin");
+const loaderOptionsPluginTransform = require("./loaderOptionsPlugin/loaderOptionsPlugin");
+const bannerPluginTransform = require("./bannerPlugin/bannerPlugin");
+const extractTextPluginTransform = require("./extractTextPlugin/extractTextPlugin");
+const removeDeprecatedPluginsTransform = require("./removeDeprecatedPlugins/removeDeprecatedPlugins");
+
+const transformsObject = {
+	loadersTransform,
+	resolveTransform,
+	removeJsonLoaderTransform,
+	uglifyJsPluginTransform,
+	loaderOptionsPluginTransform,
+	bannerPluginTransform,
+	extractTextPluginTransform,
+	removeDeprecatedPluginsTransform
+};
+
+const transformations = Object.keys(transformsObject).reduce((res, key) => {
+	res[key] = (ast, source) =>
+		transformSingleAST(ast, source, transformsObject[key]);
+	return res;
+}, {});
+
+function transformSingleAST(ast, source, transformFunction) {
+	return new PLazy((resolve, reject) => {
+		setTimeout(_ => {
+			try {
+				resolve(transformFunction(jscodeshift, ast, source));
+			} catch (err) {
+				reject(err);
+			}
+		}, 0);
+	});
+}
 
 /**
  *
- * Transform for devServer. Finds the devServer property from yeoman and creates a
- * property based on what the user has given us.
+ * Transforms a given piece of source code by applying selected transformations to the AST.
+ * By default, transforms a webpack version 1 configuration file into a webpack version 2
+ * configuration file.
  *
- * @param j — jscodeshift API
- * @param ast - jscodeshift API
- * @param {any} webpackProperties - transformation object to scaffold
- * @param {String} action - action that indicates what to be done to the AST
- * @returns ast - jscodeshift API
+ * @param {String} source - source file contents
+ * @param {Function[]} [transforms] - List of transformation functions, defined in the
+ * order to apply them in. By default, all defined transfomations.
+ * @param {Object} [options] - recast formatting options
+ * @returns {String} source — transformed source code
  */
 
-module.exports = function devServerTransform(
-	j,
-	ast,
-	webpackProperties,
-	action
-) {
-	function createDevServerProperty(p) {
-		utils.pushCreateProperty(j, p, "devServer", j.objectExpression([]));
-		return utils.pushObjectKeys(j, p, webpackProperties, "devServer");
-	}
-	if (webpackProperties) {
-		if (action === "init" &amp;&amp; typeof webpackProperties === "object") {
-			return ast
-				.find(j.ObjectExpression)
-				.filter(p => utils.isAssignment(null, p, createDevServerProperty));
-		} else if (action === "init" &amp;&amp; webpackProperties.length) {
-			return ast
-				.find(j.ObjectExpression)
-				.filter(p =>
-					utils.isAssignment(
-						j,
-						p,
-						utils.pushCreateProperty,
-						"devServer",
-						webpackProperties
-					)
-				);
-		} else if (action === "add") {
-			const devServerNode = utils.findRootNodesByName(j, ast, "devServer");
-			if (devServerNode.size() !== 0 &amp;&amp; typeof webpackProperties === "object") {
-				return ast
-					.find(j.ObjectExpression)
-					.filter(
-						p =>
-							utils.safeTraverse(p, ["parentPath", "value", "key", "name"]) ===
-							"devServer"
-					)
-					.filter(p => {
-						Object.keys(webpackProperties).forEach(prop => {
-							utils.checkIfExistsAndAddValue(
-								j,
-								p,
-								prop,
-								utils.createIdentifierOrLiteral(j, webpackProperties[prop])
-							);
-						});
-						return ast;
-					});
-			} else if (devServerNode.size() !== 0 &amp;&amp; webpackProperties.length) {
-				return ast
-					.find(j.ObjectExpression)
-					.filter(
-						p =>
-							utils.safeTraverse(p, ["parentPath", "value", "key", "name"]) ===
-							"devServer"
-					)
-					.forEach(p => {
-						j(p).replaceWith(
-							utils.createIdentifierOrLiteral(j, webpackProperties)
-						);
-					});
-			} else {
-				return devServerTransform(j, ast, webpackProperties, "init");
-			}
-		} else if (action === "remove") {
-			// TODO
-		} else if (action === "update") {
-			// TODO
-		}
-	} else {
-		return ast;
-	}
+function transform(source, transforms, options) {
+	const ast = jscodeshift(source);
+	const recastOptions = Object.assign(
+		{
+			quote: "single"
+		},
+		options
+	);
+	transforms =
+		transforms || Object.keys(transformations).map(k => transformations[k]);
+	return pEachSeries(transforms, f => f(ast, source))
+		.then(_ => {
+			return ast.toSource(recastOptions);
+		})
+		.catch(err => {
+			console.error(err);
+		});
+}
+
+module.exports = {
+	transform,
+	transformSingleAST,
+	transformations
 };
 </code></pre>
         </article>

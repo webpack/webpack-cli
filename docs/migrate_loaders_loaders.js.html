@@ -34,9 +34,9 @@
  * moves loader configuration into rules array, transforms query strings and
  * props into loader options, and adds -loader suffix to loader names.
  *
- * @param {Object} j — jscodeshift top-level import
- * @param {Node} ast — jscodeshift ast to transform
- * @returns {Node} ast — jscodeshift ast
+ * @param {Object} j - jscodeshift top-level import
+ * @param {Node} ast - jscodeshift ast to transform
+ * @returns {Node} ast - jscodeshift ast
  */
 
 module.exports = function(j, ast) {
@@ -76,7 +76,7 @@ module.exports = function(j, ast) {
 	 *   }]
 	 * }
 	 *
-	 * @param  {Node} path — object expression ast
+	 * @param  {Node} path - object expression ast
 	 * @returns {Node} path
 	 */
 
@@ -127,8 +127,8 @@ module.exports = function(j, ast) {
 	 *
 	 * Puts query parameters from loader value into options object
 	 *
-	 * @param {Node} p — object expression ast for loader object
-	 * @returns {Node} objectExpression — an object expression containing the query paramters
+	 * @param {Node} p - object expression ast for loader object
+	 * @returns {Node} objectExpression - an object expression containing the query paramters
 	 */
 
 	const createLoaderWithQuery = p => {
@@ -158,8 +158,8 @@ module.exports = function(j, ast) {
 	 *
 	 * Determine whether a loader has a query string
 	 *
-	 * @param {Node} p — object expression ast for loader object
-	 * @returns {Boolean} — whether the loader value contains a query string
+	 * @param {Node} p - object expression ast for loader object
+	 * @returns {Boolean} - whether the loader value contains a query string
 	 */
 
 	const findLoaderWithQueryString = p => {
@@ -177,7 +177,7 @@ module.exports = function(j, ast) {
 	 * If the path value is `loaders` and it’s located in `module` object
 	 * we assume it’s the loader's section.
 	 *
-	 * @param {Node} path — identifier ast
+	 * @param {Node} path - identifier ast
 	 * @returns {Boolean}
 	 */
 
@@ -195,7 +195,7 @@ module.exports = function(j, ast) {
 	/**
 	 * Puts pre- or postLoader into `loaders` object and adds the appropriate `enforce` property
 	 *
-	 * @param {Node} p — object expression ast that has a key for either 'preLoaders' or 'postLoaders'
+	 * @param {Node} p - object expression ast that has a key for either 'preLoaders' or 'postLoaders'
 	 * @returns {Node} p
 	 */
 
@@ -232,7 +232,7 @@ module.exports = function(j, ast) {
 	/**
 	 * Find pre and postLoaders in the ast and put them into the `loaders` array
 	 *
-	 * @returns {Node} ast — jscodeshift ast
+	 * @returns {Node} ast - jscodeshift ast
 	 */
 
 	const prepostLoaders = () =>
@@ -244,7 +244,7 @@ module.exports = function(j, ast) {
 	/**
 	 * Convert top level `loaders` to `rules`
 	 *
-	 * @returns {Node} ast — jscodeshift ast
+	 * @returns {Node} ast - jscodeshift ast
 	 */
 
 	const loadersToRules = () =>
@@ -256,7 +256,7 @@ module.exports = function(j, ast) {
 	/**
 	 * Convert `loader` and `loaders` to Array of {Rule.Use}
 	 *
-	 * @returns {Node} ast — jscodeshift ast
+	 * @returns {Node} ast - jscodeshift ast
 	 */
 
 	const loadersToArrayExpression = () =>
@@ -294,7 +294,7 @@ module.exports = function(j, ast) {
 	 *   }
 	 * }
 	 *
-	 * @returns {Node} ast — jscodeshift ast
+	 * @returns {Node} ast - jscodeshift ast
 	 */
 
 	const loaderWithQueryParam = () =>
@@ -318,7 +318,7 @@ module.exports = function(j, ast) {
 	 *   options: { ... }
 	 * }
 	 *
-	 * @returns {Node} ast — jscodeshift ast
+	 * @returns {Node} ast - jscodeshift ast
 	 */
 
 	const loaderWithQueryProp = () =>
@@ -331,7 +331,7 @@ module.exports = function(j, ast) {
 	 * Add required `-loader` suffix to a loader with missing suffix
 	 * e.g. for `babel` it should generate `babel-loader`
 	 *
-	 * @returns {Node} ast — jscodeshift ast
+	 * @returns {Node} ast - jscodeshift ast
 	 */
 
 	const addLoaderSuffix = () =>
@@ -369,13 +369,13 @@ module.exports = function(j, ast) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AddGenerator.html">AddGenerator</a></li><li><a href="InitGenerator.html">InitGenerator</a></li><li><a href="LoaderGenerator.html">LoaderGenerator</a></li><li><a href="PluginGenerator.html">PluginGenerator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#checkIfExistsAndAddValue">checkIfExistsAndAddValue</a></li><li><a href="global.html#createArrayWithChildren">createArrayWithChildren</a></li><li><a href="global.html#createEmptyArrayProperty">createEmptyArrayProperty</a></li><li><a href="global.html#createExternalRegExp">createExternalRegExp</a></li><li><a href="global.html#createFunctionWithArguments">createFunctionWithArguments</a></li><li><a href="global.html#createIdentifierOrLiteral">createIdentifierOrLiteral</a></li><li><a href="global.html#createLiteral">createLiteral</a></li><li><a href="global.html#createObjectWithSuppliedProperty">createObjectWithSuppliedProperty</a></li><li><a href="global.html#createOrUpdatePluginByName">createOrUpdatePluginByName</a></li><li><a href="global.html#createProperty">createProperty</a></li><li><a href="global.html#creator">creator</a></li><li><a href="global.html#defineTest">defineTest</a></li><li><a href="global.html#findInvocation">findInvocation</a></li><li><a href="global.html#findPluginsByName">findPluginsByName</a></li><li><a href="global.html#findRootNodesByName">findRootNodesByName</a></li><li><a href="global.html#findVariableToPlugin">findVariableToPlugin</a></li><li><a href="global.html#generatorCopy">generatorCopy</a></li><li><a href="global.html#generatorCopyTpl">generatorCopyTpl</a></li><li><a href="global.html#getPackageManager">getPackageManager</a></li><li><a href="global.html#getRequire">getRequire</a></li><li><a href="global.html#getRootPathModule">getRootPathModule</a></li><li><a href="global.html#isAssignment">isAssignment</a></li><li><a href="global.html#isType">isType</a></li><li><a href="global.html#loaderCreator">loaderCreator</a></li><li><a href="global.html#loopThroughObjects">loopThroughObjects</a></li><li><a href="global.html#makeLoaderName">makeLoaderName</a></li><li><a href="global.html#pluginCreator">pluginCreator</a></li><li><a href="global.html#processPromise">processPromise</a></li><li><a href="global.html#pushCreateProperty">pushCreateProperty</a></li><li><a href="global.html#pushObjectKeys">pushObjectKeys</a></li><li><a href="global.html#replaceAt">replaceAt</a></li><li><a href="global.html#resolvePackages">resolvePackages</a></li><li><a href="global.html#runSingleTansform">runSingleTansform</a></li><li><a href="global.html#serve">serve</a></li><li><a href="global.html#spawnChild">spawnChild</a></li><li><a href="global.html#spawnNPM">spawnNPM</a></li><li><a href="global.html#spawnNPMWithArg">spawnNPMWithArg</a></li><li><a href="global.html#spawnYarn">spawnYarn</a></li><li><a href="global.html#spawnYarnWithArg">spawnYarnWithArg</a></li><li><a href="global.html#transformsObject">transformsObject</a></li><li><a href="global.html#traverseAndGetProperties">traverseAndGetProperties</a></li><li><a href="global.html#webpackGenerator">webpackGenerator</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AddGenerator.html">AddGenerator</a></li><li><a href="InitGenerator.html">InitGenerator</a></li><li><a href="LoaderGenerator.html">LoaderGenerator</a></li><li><a href="PluginGenerator.html">PluginGenerator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#checkIfExistsAndAddValue">checkIfExistsAndAddValue</a></li><li><a href="global.html#createArrayWithChildren">createArrayWithChildren</a></li><li><a href="global.html#createEmptyArrayProperty">createEmptyArrayProperty</a></li><li><a href="global.html#createExternalRegExp">createExternalRegExp</a></li><li><a href="global.html#createFunctionWithArguments">createFunctionWithArguments</a></li><li><a href="global.html#createIdentifierOrLiteral">createIdentifierOrLiteral</a></li><li><a href="global.html#createLiteral">createLiteral</a></li><li><a href="global.html#createObjectWithSuppliedProperty">createObjectWithSuppliedProperty</a></li><li><a href="global.html#createOrUpdatePluginByName">createOrUpdatePluginByName</a></li><li><a href="global.html#createProperty">createProperty</a></li><li><a href="global.html#creator">creator</a></li><li><a href="global.html#defineTest">defineTest</a></li><li><a href="global.html#findInvocation">findInvocation</a></li><li><a href="global.html#findPluginsByName">findPluginsByName</a></li><li><a href="global.html#findRootNodesByName">findRootNodesByName</a></li><li><a href="global.html#findVariableToPlugin">findVariableToPlugin</a></li><li><a href="global.html#generatorCopy">generatorCopy</a></li><li><a href="global.html#generatorCopyTpl">generatorCopyTpl</a></li><li><a href="global.html#getPackageManager">getPackageManager</a></li><li><a href="global.html#getRequire">getRequire</a></li><li><a href="global.html#getRootPathModule">getRootPathModule</a></li><li><a href="global.html#isAssignment">isAssignment</a></li><li><a href="global.html#isType">isType</a></li><li><a href="global.html#loaderCreator">loaderCreator</a></li><li><a href="global.html#loopThroughObjects">loopThroughObjects</a></li><li><a href="global.html#makeLoaderName">makeLoaderName</a></li><li><a href="global.html#pluginCreator">pluginCreator</a></li><li><a href="global.html#processPromise">processPromise</a></li><li><a href="global.html#pushCreateProperty">pushCreateProperty</a></li><li><a href="global.html#pushObjectKeys">pushObjectKeys</a></li><li><a href="global.html#replaceAt">replaceAt</a></li><li><a href="global.html#resolvePackages">resolvePackages</a></li><li><a href="global.html#runSingleTansform">runSingleTansform</a></li><li><a href="global.html#serve">serve</a></li><li><a href="global.html#spawnChild">spawnChild</a></li><li><a href="global.html#spawnNPM">spawnNPM</a></li><li><a href="global.html#spawnNPMWithArg">spawnNPMWithArg</a></li><li><a href="global.html#spawnYarn">spawnYarn</a></li><li><a href="global.html#spawnYarnWithArg">spawnYarnWithArg</a></li><li><a href="global.html#transform">transform</a></li><li><a href="global.html#transformsObject">transformsObject</a></li><li><a href="global.html#traverseAndGetProperties">traverseAndGetProperties</a></li><li><a href="global.html#webpackGenerator">webpackGenerator</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Jan 31 2018 18:50:16 GMT-0500 (EST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Jan 31 2018 21:26:21 GMT-0500 (EST)
 </footer>
 
 <script> prettyPrint(); </script>
