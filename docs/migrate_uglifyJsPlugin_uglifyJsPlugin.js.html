@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: init/transformations/other/parallelism.js</title>
+    <title>JSDoc: Source: migrate/uglifyJsPlugin/uglifyJsPlugin.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: init/transformations/other/parallelism.js</h1>
+    <h1 class="page-title">Source: migrate/uglifyJsPlugin/uglifyJsPlugin.js</h1>
 
     
 
@@ -26,65 +26,38 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>"use strict";
-
-const utils = require("../../../utils/ast-utils");
+            <pre class="prettyprint source linenums"><code>const findPluginsByName = require("../../utils/ast-utils").findPluginsByName;
 
 /**
  *
- * Transform for parallelism. Finds the parallelism property from yeoman and creates a
- * property based on what the user has given us.
+ * Transform which adds a `sourceMap: true` option to instantiations of the UglifyJsPlugin
  *
- * @param j — jscodeshift API
- * @param ast - jscodeshift API
- * @param {any} webpackProperties - transformation object to scaffold
- * @param {String} action - action that indicates what to be done to the AST
- * @returns ast - jscodeshift API
+ * @param {Object} j - jscodeshift top-level import
+ * @param {Node} ast - jscodeshift ast to transform
+ * @returns {Node} ast - jscodeshift ast
  */
 
-module.exports = function parallelismTransform(
-	j,
-	ast,
-	webpackProperties,
-	action
-) {
-	if (webpackProperties) {
-		if (action === "init") {
-			return ast
-				.find(j.ObjectExpression)
-				.filter(p =>
-					utils.isAssignment(
-						j,
-						p,
-						utils.pushCreateProperty,
-						"parallelism",
-						webpackProperties
-					)
-				);
-		} else if (action === "add") {
-			const parallelismNode = utils.findRootNodesByName(j, ast, "parallelism");
-			if (parallelismNode.size() !== 0) {
-				return ast
-					.find(j.ObjectExpression)
-					.filter(p =>
-						utils.checkIfExistsAndAddValue(
-							j,
-							p,
-							"parallelism",
-							utils.createIdentifierOrLiteral(j, webpackProperties)
-						)
-					);
-			} else {
-				return parallelismTransform(j, ast, webpackProperties, "init");
-			}
-		} else if (action === "remove") {
-			// TODO
-		} else if (action === "update") {
-			// TODO
-		}
-	} else {
-		return ast;
+module.exports = function(j, ast) {
+	function createSourceMapsProperty() {
+		return j.property("init", j.identifier("sourceMap"), j.identifier("true"));
 	}
+
+	return findPluginsByName(j, ast, ["webpack.optimize.UglifyJsPlugin"]).forEach(
+		path => {
+			const args = path.value.arguments;
+
+			if (args.length) {
+				// Plugin is called with object as arguments
+				j(path)
+					.find(j.ObjectExpression)
+					.get("properties")
+					.value.push(createSourceMapsProperty());
+			} else {
+				// Plugin is called without arguments
+				args.push(j.objectExpression([createSourceMapsProperty()]));
+			}
+		}
+	);
 };
 </code></pre>
         </article>

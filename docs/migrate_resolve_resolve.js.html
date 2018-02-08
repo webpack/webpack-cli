@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: init/transformations/other/parallelism.js</title>
+    <title>JSDoc: Source: migrate/resolve/resolve.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: init/transformations/other/parallelism.js</h1>
+    <h1 class="page-title">Source: migrate/resolve/resolve.js</h1>
 
     
 
@@ -26,65 +26,77 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>"use strict";
-
-const utils = require("../../../utils/ast-utils");
-
-/**
+            <pre class="prettyprint source linenums"><code>/**
  *
- * Transform for parallelism. Finds the parallelism property from yeoman and creates a
- * property based on what the user has given us.
+ * Transform which consolidates the `resolve.root` configuration option into the `resolve.modules` array
  *
- * @param j — jscodeshift API
- * @param ast - jscodeshift API
- * @param {any} webpackProperties - transformation object to scaffold
- * @param {String} action - action that indicates what to be done to the AST
- * @returns ast - jscodeshift API
+ * @param {Object} j - jscodeshift top-level import
+ * @param {Node} ast - jscodeshift ast to transform
+ * @returns {Node} ast - jscodeshift ast
  */
 
-module.exports = function parallelismTransform(
-	j,
-	ast,
-	webpackProperties,
-	action
-) {
-	if (webpackProperties) {
-		if (action === "init") {
-			return ast
-				.find(j.ObjectExpression)
-				.filter(p =>
-					utils.isAssignment(
-						j,
-						p,
-						utils.pushCreateProperty,
-						"parallelism",
-						webpackProperties
-					)
-				);
-		} else if (action === "add") {
-			const parallelismNode = utils.findRootNodesByName(j, ast, "parallelism");
-			if (parallelismNode.size() !== 0) {
-				return ast
-					.find(j.ObjectExpression)
-					.filter(p =>
-						utils.checkIfExistsAndAddValue(
-							j,
-							p,
-							"parallelism",
-							utils.createIdentifierOrLiteral(j, webpackProperties)
-						)
-					);
-			} else {
-				return parallelismTransform(j, ast, webpackProperties, "init");
-			}
-		} else if (action === "remove") {
-			// TODO
-		} else if (action === "update") {
-			// TODO
+module.exports = function transformer(j, ast) {
+	const getRootVal = p => {
+		return p.node.value.properties.filter(prop => prop.key.name === "root")[0];
+	};
+
+	const getRootIndex = p => {
+		return p.node.value.properties.reduce((rootIndex, prop, index) => {
+			return prop.key.name === "root" ? index : rootIndex;
+		}, -1);
+	};
+
+	const isModulePresent = p => {
+		const modules = p.node.value.properties.filter(
+			prop => prop.key.name === "modules"
+		);
+		return modules.length > 0 &amp;&amp; modules[0];
+	};
+
+	/**
+	 *
+	 * Add a `modules` property to the `resolve` object or update the existing one
+	 * based on what is already in `resolve.root`
+	 *
+	 * @param {Node} p - ast node that represents the `resolve` property
+	 * @returns {Node} p - ast node that represents the updated `resolve` property
+	 */
+
+	const createModuleArray = p => {
+		const rootVal = getRootVal(p);
+		let modulesVal = null;
+		if (rootVal.value.type === "ArrayExpression") {
+			modulesVal = rootVal.value.elements;
+		} else {
+			modulesVal = [rootVal.value];
 		}
-	} else {
-		return ast;
-	}
+		let module = isModulePresent(p);
+
+		if (!module) {
+			module = j.property(
+				"init",
+				j.identifier("modules"),
+				j.arrayExpression(modulesVal)
+			);
+			p.node.value.properties = p.node.value.properties.concat([module]);
+		} else {
+			module.value.elements = module.value.elements.concat(modulesVal);
+		}
+		const rootIndex = getRootIndex(p);
+		p.node.value.properties.splice(rootIndex, 1);
+		return p;
+	};
+
+	return ast
+		.find(j.Property)
+		.filter(p => {
+			return (
+				p.node.key.name === "resolve" &amp;&amp;
+				p.node.value.properties.filter(prop => prop.key.name === "root")
+					.length === 1
+			);
+		})
+		.forEach(createModuleArray);
 };
 </code></pre>
         </article>

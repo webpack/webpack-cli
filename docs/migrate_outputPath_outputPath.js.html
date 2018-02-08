@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: init/transformations/other/parallelism.js</title>
+    <title>JSDoc: Source: migrate/outputPath/outputPath.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: init/transformations/other/parallelism.js</h1>
+    <h1 class="page-title">Source: migrate/outputPath/outputPath.js</h1>
 
     
 
@@ -26,66 +26,80 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>"use strict";
-
-const utils = require("../../../utils/ast-utils");
+            <pre class="prettyprint source linenums"><code>const utils = require("../../utils/ast-utils");
 
 /**
  *
- * Transform for parallelism. Finds the parallelism property from yeoman and creates a
- * property based on what the user has given us.
+ * Transform which adds `path.join` call to `output.path` literals
  *
- * @param j — jscodeshift API
- * @param ast - jscodeshift API
- * @param {any} webpackProperties - transformation object to scaffold
- * @param {String} action - action that indicates what to be done to the AST
- * @returns ast - jscodeshift API
+ * @param {Object} j - jscodeshift top-level import
+ * @param {Node} ast - jscodeshift ast to transform
+ * @returns {Node} ast - jscodeshift ast
  */
 
-module.exports = function parallelismTransform(
-	j,
-	ast,
-	webpackProperties,
-	action
-) {
-	if (webpackProperties) {
-		if (action === "init") {
-			return ast
-				.find(j.ObjectExpression)
-				.filter(p =>
-					utils.isAssignment(
-						j,
-						p,
-						utils.pushCreateProperty,
-						"parallelism",
-						webpackProperties
-					)
-				);
-		} else if (action === "add") {
-			const parallelismNode = utils.findRootNodesByName(j, ast, "parallelism");
-			if (parallelismNode.size() !== 0) {
-				return ast
-					.find(j.ObjectExpression)
-					.filter(p =>
-						utils.checkIfExistsAndAddValue(
-							j,
-							p,
-							"parallelism",
-							utils.createIdentifierOrLiteral(j, webpackProperties)
-						)
-					);
-			} else {
-				return parallelismTransform(j, ast, webpackProperties, "init");
-			}
-		} else if (action === "remove") {
-			// TODO
-		} else if (action === "update") {
-			// TODO
+module.exports = function(j, ast) {
+	const literalOutputPath = ast
+		.find(j.ObjectExpression)
+		.filter(
+			p =>
+				utils.safeTraverse(p, ["parentPath", "value", "key", "name"]) ===
+				"output"
+		)
+		.find(j.Property)
+		.filter(
+			p =>
+				utils.safeTraverse(p, ["value", "key", "name"]) === "path" &amp;&amp;
+				utils.safeTraverse(p, ["value", "value", "type"]) === "Literal"
+		);
+
+	if (literalOutputPath) {
+		let pathVarName = "path";
+		let isPathPresent = false;
+		const pathDecalaration = ast
+			.find(j.VariableDeclarator)
+			.filter(
+				p =>
+					utils.safeTraverse(p, ["value", "init", "callee", "name"]) ===
+					"require"
+			)
+			.filter(
+				p =>
+					utils.safeTraverse(p, ["value", "init", "arguments"]) &amp;&amp;
+					p.value.init.arguments.reduce((isPresent, a) => {
+						return (a.type === "Literal" &amp;&amp; a.value === "path") || isPresent;
+					}, false)
+			);
+
+		if (pathDecalaration) {
+			isPathPresent = true;
+			pathDecalaration.forEach(p => {
+				pathVarName = utils.safeTraverse(p, ["value", "id", "name"]);
+			});
 		}
-	} else {
-		return ast;
+		const finalPathName = pathVarName;
+		literalOutputPath
+			.find(j.Literal)
+			.replaceWith(p => replaceWithPath(j, p, finalPathName));
+
+		if (!isPathPresent) {
+			const pathRequire = utils.getRequire(j, "path", "path");
+			return ast
+				.find(j.Program)
+				.replaceWith(p =>
+					j.program([].concat(pathRequire).concat(p.value.body))
+				);
+		}
 	}
+	return ast;
 };
+
+function replaceWithPath(j, p, pathVarName) {
+	const convertedPath = j.callExpression(
+		j.memberExpression(j.identifier(pathVarName), j.identifier("join"), false),
+		[j.identifier("__dirname"), p.value]
+	);
+	return convertedPath;
+}
 </code></pre>
         </article>
     </section>

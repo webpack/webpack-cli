@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: init/transformations/other/parallelism.js</title>
+    <title>JSDoc: Source: migrate/bannerPlugin/bannerPlugin.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: init/transformations/other/parallelism.js</h1>
+    <h1 class="page-title">Source: migrate/bannerPlugin/bannerPlugin.js</h1>
 
     
 
@@ -26,65 +26,38 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>"use strict";
-
-const utils = require("../../../utils/ast-utils");
+            <pre class="prettyprint source linenums"><code>const utils = require("../../utils/ast-utils");
 
 /**
  *
- * Transform for parallelism. Finds the parallelism property from yeoman and creates a
- * property based on what the user has given us.
+ * Transform for BannerPlugin arguments. Consolidates first and second argument (if
+ * both are present) into single options object.
  *
- * @param j — jscodeshift API
- * @param ast - jscodeshift API
- * @param {any} webpackProperties - transformation object to scaffold
- * @param {String} action - action that indicates what to be done to the AST
- * @returns ast - jscodeshift API
+ * @param {Object} j - jscodeshift top-level import
+ * @param {Node} ast - jscodeshift ast to transform
+ * @returns {Node} ast - jscodeshift ast
  */
 
-module.exports = function parallelismTransform(
-	j,
-	ast,
-	webpackProperties,
-	action
-) {
-	if (webpackProperties) {
-		if (action === "init") {
-			return ast
-				.find(j.ObjectExpression)
-				.filter(p =>
-					utils.isAssignment(
-						j,
-						p,
-						utils.pushCreateProperty,
-						"parallelism",
-						webpackProperties
-					)
+module.exports = function(j, ast) {
+	return utils
+		.findPluginsByName(j, ast, ["webpack.BannerPlugin"])
+		.forEach(path => {
+			const args = path.value.arguments; // any node
+			// If the first argument is a literal replace it with object notation
+			// See https://webpack.js.org/guides/migrating/#bannerplugin-breaking-change
+			if (args &amp;&amp; args.length > 1 &amp;&amp; args[0].type === j.Literal.name) {
+				// and remove the first argument
+				path.value.arguments = [path.value.arguments[1]];
+				utils.createOrUpdatePluginByName(
+					j,
+					path.parent,
+					"webpack.BannerPlugin",
+					{
+						banner: args[0].value
+					}
 				);
-		} else if (action === "add") {
-			const parallelismNode = utils.findRootNodesByName(j, ast, "parallelism");
-			if (parallelismNode.size() !== 0) {
-				return ast
-					.find(j.ObjectExpression)
-					.filter(p =>
-						utils.checkIfExistsAndAddValue(
-							j,
-							p,
-							"parallelism",
-							utils.createIdentifierOrLiteral(j, webpackProperties)
-						)
-					);
-			} else {
-				return parallelismTransform(j, ast, webpackProperties, "init");
 			}
-		} else if (action === "remove") {
-			// TODO
-		} else if (action === "update") {
-			// TODO
-		}
-	} else {
-		return ast;
-	}
+		});
 };
 </code></pre>
         </article>

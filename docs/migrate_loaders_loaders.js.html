@@ -1,4 +1,32 @@
-const utils = require("../../utils/ast-utils");
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: migrate/loaders/loaders.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: migrate/loaders/loaders.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const utils = require("../../utils/ast-utils");
 
 /**
  *
@@ -111,7 +139,7 @@ module.exports = function(j, ast) {
 		);
 		let loader = loaderValue.split("?")[0];
 		let query = loaderValue.split("?")[1];
-		let options = query.split("&").map(option => {
+		let options = query.split("&amp;").map(option => {
 			const param = option.split("=");
 			const key = param[0];
 			const val = param[1] || true; // No value in query string means it is truthy value
@@ -137,7 +165,7 @@ module.exports = function(j, ast) {
 	const findLoaderWithQueryString = p => {
 		return p.value.properties.reduce((predicate, prop) => {
 			return (
-				(utils.safeTraverse(prop, ["value", "value", "indexOf"]) &&
+				(utils.safeTraverse(prop, ["value", "value", "indexOf"]) &amp;&amp;
 					prop.value.value.indexOf("?") > -1) ||
 				predicate
 			);
@@ -154,7 +182,7 @@ module.exports = function(j, ast) {
 	 */
 
 	const checkForLoader = path =>
-		path.value.name === "loaders" &&
+		path.value.name === "loaders" &amp;&amp;
 		utils.safeTraverse(path, [
 			"parent",
 			"parent",
@@ -185,7 +213,7 @@ module.exports = function(j, ast) {
 				const enforceVal = keyName === "preLoaders" ? "pre" : "post";
 				prop.value.elements.map(elem => {
 					elem.properties.push(utils.createProperty(j, "enforce", enforceVal));
-					if (loaders && loaders.type === "ArrayExpression") {
+					if (loaders &amp;&amp; loaders.type === "ArrayExpression") {
 						loaders.elements.push(elem);
 					} else {
 						prop.key.name = "loaders";
@@ -253,7 +281,7 @@ module.exports = function(j, ast) {
 	 * i.e. for loader like
 	 *
 	 * {
-	 *   loader: 'css?modules&importLoaders=1&string=test123'
+	 *   loader: 'css?modules&amp;importLoaders=1&amp;string=test123'
 	 * }
 	 *
 	 * it should generate
@@ -310,8 +338,8 @@ module.exports = function(j, ast) {
 		ast.find(j.ObjectExpression).forEach(path => {
 			path.value.properties.forEach(prop => {
 				if (
-					prop.key.name === "loader" &&
-					utils.safeTraverse(prop, ["value", "value"]) &&
+					prop.key.name === "loader" &amp;&amp;
+					utils.safeTraverse(prop, ["value", "value"]) &amp;&amp;
 					!prop.value.value.endsWith("-loader")
 				) {
 					prop.value = j.literal(prop.value.value + "-loader");
@@ -331,3 +359,26 @@ module.exports = function(j, ast) {
 
 	return ast;
 };
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AddGenerator.html">AddGenerator</a></li><li><a href="InitGenerator.html">InitGenerator</a></li><li><a href="LoaderGenerator.html">LoaderGenerator</a></li><li><a href="PluginGenerator.html">PluginGenerator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#checkIfExistsAndAddValue">checkIfExistsAndAddValue</a></li><li><a href="global.html#createArrayWithChildren">createArrayWithChildren</a></li><li><a href="global.html#createEmptyArrayProperty">createEmptyArrayProperty</a></li><li><a href="global.html#createExternalRegExp">createExternalRegExp</a></li><li><a href="global.html#createFunctionWithArguments">createFunctionWithArguments</a></li><li><a href="global.html#createIdentifierOrLiteral">createIdentifierOrLiteral</a></li><li><a href="global.html#createLiteral">createLiteral</a></li><li><a href="global.html#createObjectWithSuppliedProperty">createObjectWithSuppliedProperty</a></li><li><a href="global.html#createOrUpdatePluginByName">createOrUpdatePluginByName</a></li><li><a href="global.html#createProperty">createProperty</a></li><li><a href="global.html#creator">creator</a></li><li><a href="global.html#defineTest">defineTest</a></li><li><a href="global.html#findInvocation">findInvocation</a></li><li><a href="global.html#findPluginsByName">findPluginsByName</a></li><li><a href="global.html#findRootNodesByName">findRootNodesByName</a></li><li><a href="global.html#findVariableToPlugin">findVariableToPlugin</a></li><li><a href="global.html#generatorCopy">generatorCopy</a></li><li><a href="global.html#generatorCopyTpl">generatorCopyTpl</a></li><li><a href="global.html#getPackageManager">getPackageManager</a></li><li><a href="global.html#getRequire">getRequire</a></li><li><a href="global.html#getRootPathModule">getRootPathModule</a></li><li><a href="global.html#isAssignment">isAssignment</a></li><li><a href="global.html#isType">isType</a></li><li><a href="global.html#loaderCreator">loaderCreator</a></li><li><a href="global.html#loopThroughObjects">loopThroughObjects</a></li><li><a href="global.html#makeLoaderName">makeLoaderName</a></li><li><a href="global.html#pluginCreator">pluginCreator</a></li><li><a href="global.html#processPromise">processPromise</a></li><li><a href="global.html#pushCreateProperty">pushCreateProperty</a></li><li><a href="global.html#pushObjectKeys">pushObjectKeys</a></li><li><a href="global.html#replaceAt">replaceAt</a></li><li><a href="global.html#resolvePackages">resolvePackages</a></li><li><a href="global.html#runSingleTansform">runSingleTansform</a></li><li><a href="global.html#serve">serve</a></li><li><a href="global.html#spawnChild">spawnChild</a></li><li><a href="global.html#spawnNPM">spawnNPM</a></li><li><a href="global.html#spawnNPMWithArg">spawnNPMWithArg</a></li><li><a href="global.html#spawnYarn">spawnYarn</a></li><li><a href="global.html#spawnYarnWithArg">spawnYarnWithArg</a></li><li><a href="global.html#transform">transform</a></li><li><a href="global.html#transformsObject">transformsObject</a></li><li><a href="global.html#traverseAndGetProperties">traverseAndGetProperties</a></li><li><a href="global.html#webpackGenerator">webpackGenerator</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Feb 07 2018 11:36:26 GMT-0500 (EST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

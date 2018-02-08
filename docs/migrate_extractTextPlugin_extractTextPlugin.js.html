@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: init/transformations/other/parallelism.js</title>
+    <title>JSDoc: Source: migrate/extractTextPlugin/extractTextPlugin.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: init/transformations/other/parallelism.js</h1>
+    <h1 class="page-title">Source: migrate/extractTextPlugin/extractTextPlugin.js</h1>
 
     
 
@@ -26,65 +26,63 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>"use strict";
-
-const utils = require("../../../utils/ast-utils");
+            <pre class="prettyprint source linenums"><code>const utils = require("../../utils/ast-utils");
 
 /**
  *
- * Transform for parallelism. Finds the parallelism property from yeoman and creates a
- * property based on what the user has given us.
+ * Check whether `node` is the invocation of the plugin denoted by `pluginName`
  *
- * @param j — jscodeshift API
- * @param ast - jscodeshift API
- * @param {any} webpackProperties - transformation object to scaffold
- * @param {String} action - action that indicates what to be done to the AST
- * @returns ast - jscodeshift API
+ * @param {Object} j - jscodeshift top-level import
+ * @param {Node} node - ast node to check
+ * @param {String} pluginName - name of the plugin
+ * @returns {Boolean} isPluginInvocation - whether `node` is the invocation of the plugin denoted by `pluginName`
  */
 
-module.exports = function parallelismTransform(
-	j,
-	ast,
-	webpackProperties,
-	action
-) {
-	if (webpackProperties) {
-		if (action === "init") {
-			return ast
-				.find(j.ObjectExpression)
-				.filter(p =>
-					utils.isAssignment(
-						j,
-						p,
-						utils.pushCreateProperty,
-						"parallelism",
-						webpackProperties
-					)
-				);
-		} else if (action === "add") {
-			const parallelismNode = utils.findRootNodesByName(j, ast, "parallelism");
-			if (parallelismNode.size() !== 0) {
-				return ast
-					.find(j.ObjectExpression)
-					.filter(p =>
-						utils.checkIfExistsAndAddValue(
-							j,
-							p,
-							"parallelism",
-							utils.createIdentifierOrLiteral(j, webpackProperties)
-						)
-					);
-			} else {
-				return parallelismTransform(j, ast, webpackProperties, "init");
-			}
-		} else if (action === "remove") {
-			// TODO
-		} else if (action === "update") {
-			// TODO
+function findInvocation(j, node, pluginName) {
+	let found = false;
+	found =
+		j(node)
+			.find(j.MemberExpression)
+			.filter(p => p.get("object").value.name === pluginName)
+			.size() > 0;
+	return found;
+}
+
+/**
+ *
+ * Transform for ExtractTextPlugin arguments. Consolidates arguments into single options object.
+ *
+ * @param {Object} j - jscodeshift top-level import
+ * @param {Node} ast - jscodeshift ast to transform
+ * @returns {Node} ast - jscodeshift ast
+ */
+
+module.exports = function(j, ast) {
+	const changeArguments = function(p) {
+		const args = p.value.arguments;
+
+		const literalArgs = args.filter(p => utils.isType(p, "Literal"));
+		if (literalArgs &amp;&amp; literalArgs.length > 1) {
+			const newArgs = j.objectExpression(
+				literalArgs.map((p, index) =>
+					utils.createProperty(j, index === 0 ? "fallback" : "use", p.value)
+				)
+			);
+			p.value.arguments = [newArgs];
 		}
-	} else {
-		return ast;
-	}
+		return p;
+	};
+	const name = utils.findVariableToPlugin(
+		j,
+		ast,
+		"extract-text-webpack-plugin"
+	);
+	if (!name) return ast;
+
+	return ast
+		.find(j.CallExpression)
+		.filter(p => findInvocation(j, p, name))
+		.forEach(changeArguments);
 };
 </code></pre>
         </article>
