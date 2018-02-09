@@ -11,7 +11,7 @@ const webpackOptionsFlag = "WEBPACK_OPTIONS";
 exports.cutOffByFlag = (stack, flag) => {
 	stack = stack.split("\n");
 	for (let i = 0; i < stack.length; i++)
-		if (stack[i].indexOf(flag) >= 0) stack.length = i;
+		if (stack[i].includes(flag)) stack.length = i;
 	return stack.join("\n");
 };
 
@@ -28,7 +28,7 @@ exports.cutOffMultilineMessage = (stack, message) => {
 	return stack
 		.reduce(
 			(acc, line, idx) =>
-				line.indexOf(message[idx]) < 0 ? acc.concat(line) : acc,
+				line.includes(message[idx]) ? acc : acc.concat(line),
 			[]
 		)
 		.join("\n");
