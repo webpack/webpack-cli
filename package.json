@@ -22,7 +22,7 @@
     "precommit": "lint-staged",
     "prepare": "yarn format",
     "pretest": "yarn lint",
-    "test": "nyc jest",
+    "test": "nyc jest test/BinTestCases.test.js",
     "reportCoverage": "nyc report --reporter=json && codecov -f coverage/coverage-final.json --disable=gcov",
     "jsdoc": "jsdoc -c jsdoc.json -r -d docs",
     "appveyor:prepare": "yarn prepare",

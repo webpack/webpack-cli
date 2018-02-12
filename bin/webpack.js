@@ -272,10 +272,7 @@
 			}
 
 			const firstOptions = [].concat(options)[0];
-			const statsPresetToOptions = require("webpack/lib/Stats.js")
-				.presetToOptions;
-			var firstOptions = [].concat(options)[0];
-			var statsPresetToOptions = require("webpack").Stats.presetToOptions;
+			const statsPresetToOptions = require("webpack").Stats.presetToOptions;
 
 			let outputOptions = options.stats;
 			if (
@@ -417,8 +414,7 @@
 				outputOptions.infoVerbosity = value;
 			});
 
-			const webpack = require("webpack/lib/webpack.js");
-			var webpack = require("webpack");
+			const webpack = require("webpack");
 
 			let lastHash = null;
 			let compiler;
@@ -440,8 +436,7 @@
 			}
 
 			if (argv.progress) {
-				const ProgressPlugin = require("webpack/lib/ProgressPlugin");
-				var ProgressPlugin = require("webpack").ProcessPlugin;
+				const ProgressPlugin = require("webpack").ProcessPlugin;
 				compiler.apply(
 					new ProgressPlugin({
 						profile: argv.profile

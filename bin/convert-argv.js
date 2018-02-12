@@ -40,12 +40,12 @@ module.exports = function(...args) {
 		argv["output-path"] = path.dirname(output);
 	}
 
-	var configFileLoaded = false;
-	var configFiles = [];
-	var extensions = Object.keys(interpret.extensions).sort(function(a, b) {
+	let configFileLoaded = false;
+	let configFiles = [];
+	const extensions = Object.keys(interpret.extensions).sort(function(a, b) {
 		return a === ".js" ? -1 : b === ".js" ? 1 : a.length - b.length;
 	});
-	var defaultConfigFiles = ["webpack.config", "webpackfile"]
+	const defaultConfigFiles = ["webpack.config", "webpackfile"]
 		.map(function(filename) {
 			return extensions.map(function(ext) {
 				return {
@@ -98,14 +98,14 @@ module.exports = function(...args) {
 		}
 	}
 	if (configFiles.length > 0) {
-		var registerCompiler = function registerCompiler(moduleDescriptor) {
+		const registerCompiler = function registerCompiler(moduleDescriptor) {
 			if (moduleDescriptor) {
 				if (typeof moduleDescriptor === "string") {
 					require(moduleDescriptor);
 				} else if (!Array.isArray(moduleDescriptor)) {
 					moduleDescriptor.register(require(moduleDescriptor.module));
 				} else {
-					for (var i = 0; i < moduleDescriptor.length; i++) {
+					for (let i = 0; i < moduleDescriptor.length; i++) {
 						try {
 							registerCompiler(moduleDescriptor[i]);
 							break;
@@ -117,8 +117,8 @@ module.exports = function(...args) {
 			}
 		};
 
-		var requireConfig = function requireConfig(configPath) {
-			var options = (function WEBPACK_OPTIONS() {
+		const requireConfig = function requireConfig(configPath) {
+			let options = (function WEBPACK_OPTIONS() {
 				if (argv.configRegister && argv.configRegister.length) {
 					module.paths.unshift(
 						path.resolve(process.cwd(), "node_modules"),
@@ -152,12 +152,12 @@ module.exports = function(...args) {
 	}
 
 	function processConfiguredOptions(options) {
-		var webpackConfigurationValidationErrors = validateSchema(
+		const webpackConfigurationValidationErrors = validateSchema(
 			webpackConfigurationSchema,
 			options
 		);
 		if (webpackConfigurationValidationErrors.length) {
-			var error = new WebpackOptionsValidationError(
+			const error = new WebpackOptionsValidationError(
 				webpackConfigurationValidationErrors
 			);
 			console.error(
@@ -179,7 +179,7 @@ module.exports = function(...args) {
 
 		// filter multi-config by name
 		if (Array.isArray(options) && argv["config-name"]) {
-			var namedOptions = options.filter(function(opt) {
+			const namedOptions = options.filter(function(opt) {
 				return opt.name === argv["config-name"];
 			});
 			if (namedOptions.length === 0) {
@@ -257,7 +257,7 @@ module.exports = function(...args) {
 			ifArg(
 				name,
 				function(content, idx) {
-					var i = content.indexOf("=");
+					const i = content.indexOf("=");
 					if (i < 0) {
 						return fn(null, content, idx);
 					} else {
@@ -285,10 +285,10 @@ module.exports = function(...args) {
 		}
 
 		function loadPlugin(name) {
-			var loadUtils = require("loader-utils");
-			var args;
+			const loadUtils = require("loader-utils");
+			let args;
 			try {
-				var p = name && name.indexOf("?");
+				const p = name && name.indexOf("?");
 				if (p > -1) {
 					args = loadUtils.parseQuery(name.substring(p));
 					name = name.substring(0, p);
@@ -298,15 +298,15 @@ module.exports = function(...args) {
 				process.exit(-1); // eslint-disable-line
 			}
 
-			var path;
+			let path;
 			try {
-				var resolve = require("enhanced-resolve");
+				const resolve = require("enhanced-resolve");
 				path = resolve.sync(process.cwd(), name);
 			} catch (e) {
 				console.log("Cannot resolve plugin " + name + ".");
 				process.exit(-1); // eslint-disable-line
 			}
-			var Plugin;
+			let Plugin;
 			try {
 				Plugin = require(path);
 			} catch (e) {
@@ -367,7 +367,7 @@ module.exports = function(...args) {
 						name = binding;
 						binding += "-loader";
 					}
-					var rule = {
+					const rule = {
 						test: new RegExp(
 							"\\." +
 								name.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") +
@@ -392,7 +392,7 @@ module.exports = function(...args) {
 		bindRules("module-bind-pre");
 		bindRules("module-bind-post");
 
-		var defineObject;
+		let defineObject;
 		ifArgPair(
 			"define",
 			function(name, value) {
@@ -406,7 +406,7 @@ module.exports = function(...args) {
 				defineObject = {};
 			},
 			function() {
-				var DefinePlugin = require("webpack").DefinePlugin;
+				const DefinePlugin = require("webpack").DefinePlugin;
 				addPlugin(options, new DefinePlugin(defineObject));
 			}
 		);
@@ -476,13 +476,13 @@ module.exports = function(...args) {
 		mapArgToBoolean("cache");
 
 		ifBooleanArg("hot", function() {
-			var HotModuleReplacementPlugin = require("webpack")
+			const HotModuleReplacementPlugin = require("webpack")
 				.HotModuleReplacementPlugin;
 			addPlugin(options, new HotModuleReplacementPlugin());
 		});
 
 		ifBooleanArg("debug", function() {
-			var LoaderOptionsPlugin = require("webpack").LoaderOptionsPlugin;
+			const LoaderOptionsPlugin = require("webpack").LoaderOptionsPlugin;
 			addPlugin(
 				options,
 				new LoaderOptionsPlugin({
@@ -518,7 +518,7 @@ module.exports = function(...args) {
 		});
 
 		ifArg("optimize-max-chunks", function(value) {
-			var LimitChunkCountPlugin = require("webpack").optimize
+			const LimitChunkCountPlugin = require("webpack").optimize
 				.LimitChunkCountPlugin;
 			addPlugin(
 				options,
@@ -529,7 +529,7 @@ module.exports = function(...args) {
 		});
 
 		ifArg("optimize-min-chunk-size", function(value) {
-			var MinChunkSizePlugin = require("webpack").optimize.MinChunkSizePlugin;
+			const MinChunkSizePlugin = require("webpack").optimize.MinChunkSizePlugin;
 			addPlugin(
 				options,
 				new MinChunkSizePlugin({
@@ -539,7 +539,7 @@ module.exports = function(...args) {
 		});
 
 		ifBooleanArg("optimize-minimize", function() {
-			var LoaderOptionsPlugin = require("webpack").LoaderOptionsPlugin;
+			const LoaderOptionsPlugin = require("webpack").LoaderOptionsPlugin;
 			addPlugin(
 				options,
 				new LoaderOptionsPlugin({
@@ -549,20 +549,20 @@ module.exports = function(...args) {
 		});
 
 		ifArg("prefetch", function(request) {
-			var PrefetchPlugin = require("webpack").PrefetchPlugin;
+			const PrefetchPlugin = require("webpack").PrefetchPlugin;
 			addPlugin(options, new PrefetchPlugin(request));
 		});
 
 		ifArg("provide", function(value) {
-			var idx = value.indexOf("=");
-			var name;
+			const idx = value.indexOf("=");
+			let name;
 			if (idx >= 0) {
 				name = value.substr(0, idx);
 				value = value.substr(idx + 1);
 			} else {
 				name = value;
 			}
-			var ProvidePlugin = require("webpack").ProvidePlugin;
+			const ProvidePlugin = require("webpack").ProvidePlugin;
 			addPlugin(options, new ProvidePlugin(name, value));
 		});
 
@@ -582,7 +582,7 @@ module.exports = function(...args) {
 			}
 			ensureObject(options, "entry");
 
-			var addTo = function addTo(name, entry) {
+			const addTo = function addTo(name, entry) {
 				if (options.entry[name]) {
 					if (!Array.isArray(options.entry[name])) {
 						options.entry[name] = [options.entry[name]];
@@ -593,10 +593,10 @@ module.exports = function(...args) {
 				}
 			};
 			argv._.forEach(function(content) {
-				var i = content.indexOf("=");
-				var j = content.indexOf("?");
+				const i = content.indexOf("=");
+				const j = content.indexOf("?");
 				if (i < 0 || (j >= 0 && j < i)) {
-					var resolved = path.resolve(content);
+					const resolved = path.resolve(content);
 					if (fs.existsSync(resolved)) {
 						addTo(
 							"main",
