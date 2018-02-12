@@ -196,7 +196,6 @@
 				"Controls the output of lifecycle messaging e.g. Started watching files... (verbose, info, none)"
 		}
 	});
-
 	// yargs will terminate the process early when the user uses help or version.
 	// This causes large help outputs to be cut short (https://github.com/nodejs/node/wiki/API-changes-between-v0.10-and-v4#process).
 	// To prevent this we use the yargs.parse API and exit the process normally
@@ -462,9 +461,12 @@
 				if (err) {
 					lastHash = null;
 					console.error(err.stack || err);
-					if (err.details) console.error(err.details);
-					process.exit(1); // eslint-disable-line
+					if (err.details) {
+						console.error(err.details);
+					}
+					process.exit(1);
 				}
+
 				if (outputOptions.json) {
 					stdout.write(
 						JSON.stringify(stats.toJson(outputOptions), null, 2) + "\n"
@@ -474,10 +476,20 @@
 					const statsString = stats.toString(outputOptions);
 					if (statsString) stdout.write(statsString + "\n");
 				}
+
 				if (!options.watch && stats.hasErrors()) {
 					process.exitCode = 2;
+
+					const fs = require("fs");
+					const context = stats.compilation.compiler.context;
+					const configPath = context + "/webpack.config.js";
+					const configMissing = !fs.existsSync(configPath);
+					if (yargs.argv._.length === 0 && configMissing) {
+						yargs.showHelp("log");
+					}
 				}
 			}
+
 			if (firstOptions.watch || options.watch) {
 				const watchOptions =
 					firstOptions.watchOptions ||
@@ -493,7 +505,9 @@
 				compiler.watch(watchOptions, compilerCallback);
 				if (outputOptions.infoVerbosity !== "none")
 					console.log("\nWebpack is watching the files…\n");
-			} else compiler.run(compilerCallback);
+			} else {
+				compiler.run(compilerCallback);
+			}
 		}
 
 		processOptions(options);
