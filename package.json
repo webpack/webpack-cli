@@ -85,7 +85,7 @@
     "webpack-addons": "^1.1.5",
     "yargs": "^9.0.1",
     "yeoman-environment": "^2.0.0",
-    "yeoman-generator": "git://github.com/ev1stensberg/generator.git#Feature-getArgument"
+    "yeoman-generator": "https://github.com/ev1stensberg/generator.git#Feature-getArgument"
   },
   "devDependencies": {
     "eslint": "^4.2.0",

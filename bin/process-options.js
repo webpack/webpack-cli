@@ -9,7 +9,7 @@ module.exports = function processOptions(yargs, argv) {
 			fn(argv[name], -1);
 		}
 	}
-	var options = require("./convert-argv")(argv);
+	const options = require("./convert-argv")(argv);
 
 	if (typeof options.then === "function") {
 		options.then(processOptions).catch(function(err) {
@@ -19,14 +19,15 @@ module.exports = function processOptions(yargs, argv) {
 		return;
 	}
 
-	var firstOptions = Array.isArray(options) ? options[0] || {} : options;
+	const firstOptions = Array.isArray(options) ? options[0] || {} : options;
 
 	if (typeof options.stats === "boolean" || typeof options.stats === "string") {
+		const statsPresetToOptions = require("webpack/lib/Stats.js").presetToOptions;
 		var statsPresetToOptions = require("webpack").Stats.presetToOptions;
 		options.stats = statsPresetToOptions(options.stats);
 	}
 
-	var outputOptions = Object.create(options.stats || firstOptions.stats || {});
+	const outputOptions = Object.create(options.stats || firstOptions.stats || {});
 	if (typeof outputOptions.context === "undefined")
 		outputOptions.context = firstOptions.context;
 
@@ -127,14 +128,16 @@ module.exports = function processOptions(yargs, argv) {
 		}
 	});
 
+	const webpack = require("webpack/lib/webpack.js");
 	var webpack = require("webpack");
 
 	Error.stackTraceLimit = 30;
-	var lastHash = null;
-	var compiler;
+	let lastHash = null;
+	let compiler;
 	try {
 		compiler = webpack(options);
 	} catch (e) {
+		const WebpackOptionsValidationError = require("webpack/lib/WebpackOptionsValidationError");
 		var WebpackOptionsValidationError = require("webpack")
 			.WebpackOptionsValidationError;
 		if (e instanceof WebpackOptionsValidationError) {
@@ -149,6 +152,7 @@ module.exports = function processOptions(yargs, argv) {
 	}
 
 	if (argv.progress) {
+		const ProgressPlugin = require("webpack/lib/ProgressPlugin");
 		var ProgressPlugin = require("webpack").ProgressPlugin;
 		compiler.apply(
 			new ProgressPlugin({
@@ -185,8 +189,8 @@ module.exports = function processOptions(yargs, argv) {
 		}
 	}
 	if (options.watch) {
-		var primaryOptions = !Array.isArray(options) ? options : options[0];
-		var watchOptions =
+		const primaryOptions = !Array.isArray(options) ? options : options[0];
+		const watchOptions =
 			primaryOptions.watchOptions || primaryOptions.watch || {};
 		if (watchOptions.stdin) {
 			process.stdin.on("end", function(_) {

@@ -1,11 +1,15 @@
-var path = require("path");
-var fs = require("fs");
+const path = require("path");
+const fs = require("fs");
 fs.existsSync = fs.existsSync || path.existsSync;
-var interpret = require("interpret");
-var prepareOptions = require("./prepareOptions");
+const interpret = require("interpret");
+const prepareOptions = require("./prepareOptions");
+const webpackConfigurationSchema = require("../schemas/webpackConfigurationSchema.json");
+const validateSchema = require("webpack").validateSchema;
+const WebpackOptionsValidationError = require("webpack").WebpackOptionsValidationError;
+
 module.exports = function(...args) {
-	var argv = args[1] || args[0];
-	var options = [];
+	const argv = args[1] || args[0];
+	const options = [];
 	// Shortcuts
 	if (argv.d) {
 		argv.debug = true;
@@ -54,11 +58,11 @@ module.exports = function(...args) {
 			return a.concat(i);
 		}, []);
 
-	var i;
+	let i;
 	if (argv.config) {
-		var getConfigExtension = function getConfigExtension(configPath) {
+		const getConfigExtension = function getConfigExtension(configPath) {
 			for (i = extensions.length - 1; i >= 0; i--) {
-				var tmpExt = extensions[i];
+				const tmpExt = extensions[i];
 				if (
 					configPath.indexOf(tmpExt, configPath.length - tmpExt.length) > -1
 				) {
@@ -68,22 +72,22 @@ module.exports = function(...args) {
 			return path.extname(configPath);
 		};
 
-		var mapConfigArg = function mapConfigArg(configArg) {
-			var resolvedPath = path.resolve(configArg);
-			var extension = getConfigExtension(resolvedPath);
+		const mapConfigArg = function mapConfigArg(configArg) {
+			const resolvedPath = path.resolve(configArg);
+			const extension = getConfigExtension(resolvedPath);
 			return {
 				path: resolvedPath,
 				ext: extension
 			};
 		};
 
-		var configArgList = Array.isArray(argv.config)
+		const configArgList = Array.isArray(argv.config)
 			? argv.config
 			: [argv.config];
 		configFiles = configArgList.map(mapConfigArg);
 	} else {
 		for (i = 0; i < defaultConfigFiles.length; i++) {
-			var webpackConfig = defaultConfigFiles[i].path;
+			const webpackConfig = defaultConfigFiles[i].path;
 			if (fs.existsSync(webpackConfig)) {
 				configFiles.push({
 					path: webpackConfig,
@@ -148,9 +152,17 @@ module.exports = function(...args) {
 	}
 
 	function processConfiguredOptions(options) {
-		if (options === null || typeof options !== "object") {
+		var webpackConfigurationValidationErrors = validateSchema(
+			webpackConfigurationSchema,
+			options
+		);
+		if (webpackConfigurationValidationErrors.length) {
+			var error = new WebpackOptionsValidationError(
+				webpackConfigurationValidationErrors
+			);
 			console.error(
-				"Config did not export an object or a function returning an object."
+				error.message,
+				`\nReceived: ${typeof options} : ${JSON.stringify(options, null, 2)}`
 			);
 			process.exit(-1); // eslint-disable-line
 		}
