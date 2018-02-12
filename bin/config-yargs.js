@@ -1,5 +1,5 @@
-var CONFIG_GROUP = "Config options:";
-var BASIC_GROUP = "Basic options:";
+const CONFIG_GROUP = "Config options:";
+const BASIC_GROUP = "Basic options:";
 const MODULE_GROUP = "Module options:";
 const OUTPUT_GROUP = "Output options:";
 const ADVANCED_GROUP = "Advanced options:";
