@@ -271,8 +271,7 @@
 			}
 
 			const firstOptions = [].concat(options)[0];
-			const statsPresetToOptions = require("webpack/lib/Stats.js")
-				.presetToOptions;
+			const statsPresetToOptions = require("webpack").Stats.presetToOptions;
 
 			let outputOptions = options.stats;
 			if (
@@ -414,7 +413,7 @@
 				outputOptions.infoVerbosity = value;
 			});
 
-			const webpack = require("webpack/lib/webpack.js");
+			const webpack = require("webpack");
 
 			let lastHash = null;
 			let compiler;
@@ -426,8 +425,7 @@
 						console.error(
 							`\u001b[1m\u001b[31m${err.message}\u001b[39m\u001b[22m`
 						);
-					else
-						console.error(err.message);
+					else console.error(err.message);
 					// eslint-disable-next-line no-process-exit
 					process.exit(1);
 				}
@@ -436,7 +434,7 @@
 			}
 
 			if (argv.progress) {
-				const ProgressPlugin = require("webpack/lib/ProgressPlugin");
+				const ProgressPlugin = require("webpack").ProcessPlugin;
 				compiler.apply(
 					new ProgressPlugin({
 						profile: argv.profile
