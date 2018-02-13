@@ -5,7 +5,8 @@ const interpret = require("interpret");
 const prepareOptions = require("./prepareOptions");
 const webpackConfigurationSchema = require("../schemas/webpackConfigurationSchema.json");
 const validateSchema = require("webpack").validateSchema;
-const WebpackOptionsValidationError = require("webpack").WebpackOptionsValidationError;
+const WebpackOptionsValidationError = require("webpack")
+	.WebpackOptionsValidationError;
 
 module.exports = function(...args) {
 	const argv = args[1] || args[0];

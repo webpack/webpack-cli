@@ -26,7 +26,9 @@ module.exports = function processOptions(yargs, argv) {
 		options.stats = statsPresetToOptions(options.stats);
 	}
 
-	const outputOptions = Object.create(options.stats || firstOptions.stats || {});
+	const outputOptions = Object.create(
+		options.stats || firstOptions.stats || {}
+	);
 	if (typeof outputOptions.context === "undefined")
 		outputOptions.context = firstOptions.context;
 
@@ -135,7 +137,8 @@ module.exports = function processOptions(yargs, argv) {
 	try {
 		compiler = webpack(options);
 	} catch (e) {
-		const WebpackOptionsValidationError = require("webpack").WebpackOptionsValidationError;
+		const WebpackOptionsValidationError = require("webpack")
+			.WebpackOptionsValidationError;
 
 		if (e instanceof WebpackOptionsValidationError) {
 			if (argv.color)

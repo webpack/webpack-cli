@@ -426,8 +426,7 @@
 						console.error(
 							`\u001b[1m\u001b[31m${err.message}\u001b[39m\u001b[22m`
 						);
-					else
-						console.error(err.message);
+					else console.error(err.message);
 					// eslint-disable-next-line no-process-exit
 					process.exit(1);
 				}
