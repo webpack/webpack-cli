@@ -439,7 +439,7 @@
 			}
 
 			if (argv.progress) {
-				const ProgressPlugin = require("webpack").ProcessPlugin;
+				const ProgressPlugin = require("webpack").ProgressPlugin;
 				compiler.apply(
 					new ProgressPlugin({
 						profile: argv.profile
