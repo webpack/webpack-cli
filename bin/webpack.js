@@ -179,7 +179,15 @@
 		},
 		display: {
 			type: "string",
-			choices: ["", "verbose", "detailed", "normal", "minimal", "errors-only", "none"],
+			choices: [
+				"",
+				"verbose",
+				"detailed",
+				"normal",
+				"minimal",
+				"errors-only",
+				"none"
+			],
 			group: DISPLAY_GROUP,
 			describe: "Select display preset"
 		},
