@@ -179,9 +179,9 @@
 		},
 		display: {
 			type: "string",
+			choices: ["", "verbose", "detailed", "normal", "minimal", "errors-only", "none"],
 			group: DISPLAY_GROUP,
-			describe:
-				"Select display preset (verbose, detailed, normal, minimal, errors-only, none)"
+			describe: "Select display preset"
 		},
 		verbose: {
 			type: "boolean",
@@ -191,9 +191,10 @@
 		"info-verbosity": {
 			type: "string",
 			default: "info",
+			choices: ["none", "info", "verbose"],
 			group: DISPLAY_GROUP,
 			describe:
-				"Controls the output of lifecycle messaging e.g. Started watching files... (verbose, info, none)"
+				"Controls the output of lifecycle messaging e.g. Started watching files..."
 		}
 	});
 	// yargs will terminate the process early when the user uses help or version.
@@ -406,10 +407,6 @@
 			});
 
 			ifArg("info-verbosity", function(value) {
-				if (!["none", "info", "verbose"].includes(value))
-					throw new Error(
-						"Invalid configuration object. \n configuration['info-verbosity'] should be one of these:\n \"none\" | \"info\" | \"verbose\""
-					);
 				outputOptions.infoVerbosity = value;
 			});
 
