@@ -207,6 +207,10 @@ module.exports = function(...args) {
 			options.context = process.cwd();
 		}
 
+		if (!options.entry) {
+			options.entry = "./src";
+		}
+
 		if (argv.watch) {
 			options.watch = true;
 		}
