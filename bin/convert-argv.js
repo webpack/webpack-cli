@@ -208,7 +208,7 @@ module.exports = function(...args) {
 		}
 
 		if (!options.entry) {
-			options.entry = ["./src"];
+			options.entry = "./src";
 		}
 
 		if (argv.watch) {
