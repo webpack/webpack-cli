@@ -25,6 +25,7 @@ module.exports = {
     {value: 'docs', name: 'docs:      Documentation'},
     {value: 'deps', name: 'deps:      Dependency bumps only'},
     {value: 'cli', name: 'cli:       core CLI things'},
-    {value: 'misc', name: 'misc:      Other formats like tweaks and such'}
+    {value: 'misc', name: 'misc:      Other formats like tweaks and such'},
+    {value: 'chore', name: 'chore:      Updating docs, linting etc'},
   ]
 };
