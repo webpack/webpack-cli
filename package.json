@@ -17,7 +17,6 @@
   },
   "scripts": {
     "lint": "eslint \"**/*.js\"",
-    "f":"prettier-eslint \"build/changelog-generator/index.js\" --write",
     "format": "prettier-eslint \"bin/**/*.js\" \"lib/**/*.js\" \"test/**/*.js\" --write",
     "lint:codeOnly": "eslint \"{lib,bin}/**/!(__testfixtures__)/*.js\" \"{lib,bin}/**.js\"",
     "precommit": "lint-staged",
