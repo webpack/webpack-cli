@@ -17,7 +17,6 @@ matrix:
     - os: linux
       node_js: "6"
       env: JOB_PART=integration
-
 sudo: false
 
 notifications:
@@ -33,3 +32,4 @@ before_script:
 
 script:
   - npm run travis:$JOB_PART
+  - commitlint-travis
