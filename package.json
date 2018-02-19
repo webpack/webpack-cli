@@ -32,7 +32,6 @@
     "travis:lint": "yarn lint && yarn bundlesize",
     "bundlesize": "bundlesize",
     "commitmsg": "commitlint -e $GIT_PARAMS",
-    "commit": "commit",
     "changelog": "conventional-changelog --config ./build/changelog-generator/index.js --infile changelog.md --same-file"
   },
   "lint-staged": {
