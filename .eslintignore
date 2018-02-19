@@ -2,6 +2,3 @@
 coverage
 test
 docs
-.cz-config.js
-/build/**
-commitlint.config.js
