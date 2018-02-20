@@ -16,3 +16,4 @@ jsdoc.json
 .appveyor.yml
 .codecov.yml
 *.snap
+build
