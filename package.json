@@ -32,7 +32,7 @@
     "travis:lint": "yarn lint && yarn bundlesize",
     "bundlesize": "bundlesize",
     "commitmsg": "commitlint -e $GIT_PARAMS",
-    "changelog": "conventional-changelog --config ./build/changelog-generator/index.js --infile changelog.md --same-file"
+    "changelog": "conventional-changelog --config ./build/changelog-generator/index.js --infile CHANGELOG.md --same-file"
   },
   "lint-staged": {
     "{lib,bin}/**/!(__testfixtures__)/**.js": [
