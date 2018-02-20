@@ -235,23 +235,14 @@ module.exports = function(...args) {
 
 	function processOptions(options) {
 		function ifArg(name, fn, init, finalize) {
-			if (Array.isArray(argv[name])) {
-				if (init) {
-					init();
-				}
-				argv[name].forEach(fn);
-				if (finalize) {
-					finalize();
-				}
-			} else if (typeof argv[name] !== "undefined" && argv[name] !== null) {
-				if (init) {
-					init();
-				}
-				fn(argv[name], -1);
-				if (finalize) {
-					finalize();
-				}
-			}
+			const isArray = Array.isArray(argv[name]);
+			const isSet = typeof argv[name] !== "undefined" && argv[name] !== null;
+			if (!isArray || !isSet) return;
+
+			init && init();
+			if (isArray) argv[name].forEach(fn);
+			else if (isSet) fn(argv[name], -1);
+			finalize && finalize();
 		}
 
 		function ifArgPair(name, fn, init, finalize) {
