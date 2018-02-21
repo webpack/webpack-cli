@@ -237,7 +237,7 @@ module.exports = function(...args) {
 		function ifArg(name, fn, init, finalize) {
 			const isArray = Array.isArray(argv[name]);
 			const isSet = typeof argv[name] !== "undefined" && argv[name] !== null;
-			if (!isArray || !isSet) return;
+			if (!isArray && !isSet) return;
 
 			init && init();
 			if (isArray) argv[name].forEach(fn);
