@@ -32,7 +32,9 @@
     "travis:lint": "yarn lint && yarn bundlesize",
     "bundlesize": "bundlesize",
     "commitmsg": "commitlint -e $GIT_PARAMS",
-    "changelog": "conventional-changelog --config ./build/changelog-generator/index.js --infile CHANGELOG.md --same-file"
+    "changelog": "conventional-changelog --config ./build/changelog-generator/index.js --infile CHANGELOG.md --same-file",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "lint-staged": {
     "{lib,bin}/**/!(__testfixtures__)/**.js": [
@@ -111,7 +113,8 @@
     "webpack-addons": "^1.1.5",
     "yargs": "9.0.1",
     "yeoman-environment": "^2.0.0",
-    "yeoman-generator": "https://github.com/ev1stensberg/generator.git#Feature-getArgument"
+    "yeoman-generator": "https://github.com/ev1stensberg/generator.git#Feature-getArgument",
+    "snyk": "^1.69.7"
   },
   "devDependencies": {
     "@commitlint/cli": "^6.1.0",
@@ -136,5 +139,6 @@
     "schema-utils": "^0.4.2",
     "webpack": "^4.0.0-beta.1",
     "webpack-dev-server": "^2.9.7"
-  }
+  },
+  "snyk": true
 }
