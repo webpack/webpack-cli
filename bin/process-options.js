@@ -14,7 +14,7 @@ module.exports = function processOptions(yargs, argv) {
 	if (typeof options.then === "function") {
 		options.then(processOptions).catch(function(err) {
 			console.error(err.stack || err);
-			process.exit();
+			process.exitCode = 1;
 		});
 		return;
 	}
