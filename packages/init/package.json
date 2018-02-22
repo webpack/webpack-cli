@@ -1,0 +1,21 @@
+{
+    "name": "webpack-cli-init",
+    "version": "2.0.6",
+    "description": "CLI for webpack & friends",
+    "license": "MIT",
+    "private": true,
+    "engines": {
+      "node": ">=6.11.5"
+    },
+    "dependencies": {
+      "chalk": "^2.0.1",
+      "jscodeshift": "^0.4.0",
+      "p-each-series": "^1.0.0",
+      "prettier": "^1.5.3",
+      "webpack-cli-utils": "2.0.6",
+      "webpack-cli-generators": "2.0.6",
+      "yeoman-environment": "^2.0.0",
+      "yeoman-generator": "https://github.com/ev1stensberg/generator.git#Feature-getArgument"
+    }
+  }
+  
