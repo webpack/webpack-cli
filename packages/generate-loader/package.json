@@ -1,0 +1,15 @@
+{
+    "name": "webpack-loader-generator",
+    "version": "2.0.6",
+    "description": "CLI for webpack & friends",
+    "license": "MIT",
+    "private": true,
+    "engines": {
+      "node": ">=6.11.5"
+    },
+    "dependencies": {      
+      "webpack-cli-generators": "2.0.6",
+      "yeoman-environment": "^2.0.0"
+    }
+  }
+  

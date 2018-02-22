@@ -1,0 +1,30 @@
+{
+    "name": "webpack-cli-commands",
+    "version": "2.0.6",
+    "description": "CLI for webpack & friends",
+    "license": "MIT",
+    "private": true,
+    "engines": {
+      "node": ">=6.11.5"
+    },
+    "dependencies": {
+      "chalk": "^2.0.1",
+      "cross-spawn": "^5.1.0",
+      "diff": "^3.3.0",
+      "jscodeshift": "^0.4.0",
+      "inquirer": "^3.2.0",
+      "listr": "^0.12.0",
+      "p-lazy": "^1.0.0",
+      "webpack-addons": "^1.1.5",
+      "webpack-cli-generators": "2.0.6",
+      "webpack-cli-migrate": "2.0.6",
+      "webpack-cli-init": "2.0.6",
+      "webpack-cli-utils": "2.0.6",
+      "yeoman-environment": "^2.0.0",
+      "yeoman-generator": "https://github.com/ev1stensberg/generator.git#Feature-getArgument"
+    },
+    "devDependencies": {
+        "webpack": "^4.0.0-beta.1"
+    }
+  }
+  
