@@ -88,7 +88,7 @@ module.exports = function(yargs) {
 			},
 			mode: {
 				type: "string",
-				choices: ["development", "production"],
+				choices: ["development", "production", "none"],
 				describe: "Mode to use",
 				group: CONFIG_GROUP,
 				requiresArg: true
