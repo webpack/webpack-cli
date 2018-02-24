@@ -22,8 +22,8 @@
 	const NON_COMPILATION_ARGS = [
 		"init",
 		"migrate",
-		"add",
 		/*
+		"add",
 		"remove",
 		"update",
 		"make",
