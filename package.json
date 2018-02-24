@@ -1,6 +1,6 @@
 {
   "name": "webpack-cli",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "CLI for webpack & friends",
   "license": "MIT",
   "preferGlobal": true,
@@ -107,6 +107,7 @@
     "recast": "^0.13.0",
     "resolve-cwd": "^2.0.0",
     "supports-color": "^4.4.0",
+    "uglifyjs-webpack-plugin": "^1.2.2",
     "v8-compile-cache": "^1.1.0",
     "webpack-addons": "^1.1.5",
     "yargs": "9.0.1",
