@@ -1,3 +1,54 @@
+ <a name="2.0.7"></a>
+# 2.0.7 (2018-02-24)
+[Full Changelog](https://github.com/webpack/webpack-cli/compare/v2.0.4...v2.0.7)
+
+## Chore
+
+* .gitignore: ignore .vscode ([ab0eacc](https://github.com/webpack/webpack-cli/commit/ab0eacc))
+* .gitignore: ignore .vscode ([a322505](https://github.com/webpack/webpack-cli/commit/a322505))
+* add: temp remove add from cli ([f663215](https://github.com/webpack/webpack-cli/commit/f663215))
+* deps: bump uglify dep and cli version ([81a9f1e](https://github.com/webpack/webpack-cli/commit/81a9f1e))
+
+## Feat
+
+* show help when no options given ([a7ee15a](https://github.com/webpack/webpack-cli/commit/a7ee15a))
+* chore: add project tools and utilities ([#270](https://github.com/webpack/webpack-cli/pull/270))
+
+## Fix
+
+* Resolve webpack dependencies ([#251](https://github.com/webpack/webpack-cli/pull/251))
+* change help logic ([d67f4b7](https://github.com/webpack/webpack-cli/commit/d67f4b7))
+
+## Improvement
+
+* add an option to watch messaging. Add .idea to .gitignore ([#200](https://github.com/webpack/webpack-cli/pull/200))
+
+## Refactor
+
+* convert-args: remove unused arguments ([#253](https://github.com/webpack/webpack-cli/pull/253))
+
+## Style
+
+* run formatter ([7be0da7](https://github.com/webpack/webpack-cli/commit/7be0da7))
+
+## Tests
+
+* add test for showing help on no options ([cf43939](https://github.com/webpack/webpack-cli/commit/cf43939))
+
+## Misc
+
+* remove yargs major update due security compromise ([9bd7ed4](https://github.com/webpack/webpack-cli/commit/9bd7ed4))
+* Revert "Show help on no command" ([#276](https://github.com/webpack/webpack-cli/pull/276))
+* v.2.0.6 ([4333088](https://github.com/webpack/webpack-cli/commit/4333088))
+* fix typo.. ([0f1cee6](https://github.com/webpack/webpack-cli/commit/0f1cee6))
+* 2.0.5 ([94ac6db](https://github.com/webpack/webpack-cli/commit/94ac6db))
+* Change from git:// to https:// ([#259](https://github.com/webpack/webpack-cli/pull/259))
+* Issue 249 fixed and other enums refactored ([#264](https://github.com/webpack/webpack-cli/pull/264))
+* Refactor bin directory ([#263](https://github.com/webpack/webpack-cli/pull/263))
+* Add jsdoc comments for migrate ([#255](https://github.com/webpack/webpack-cli/pull/255))
+* [feature] configuration validation ([#240](https://github.com/webpack/webpack-cli/pull/240))
+* refactor: reduce code duplication use process.exitCode instead of process.exit ([#272](https://github.com/webpack/webpack-cli/pull/272))
+
  <a name="2.0.6"></a>
 # 2.0.6 (2018-02-20)
 [Full Changelog](https://github.com/webpack/webpack-cli/compare/v2.0.4...v2.0.6)
