@@ -108,9 +108,9 @@
     "uglifyjs-webpack-plugin": "^1.2.2",
     "v8-compile-cache": "^1.1.0",
     "webpack-addons": "^1.1.5",
+    "webpack-fork-yeoman-generator": "^1.1.1",
     "yargs": "9.0.1",
-    "yeoman-environment": "^2.0.0",
-    "yeoman-generator": "https://github.com/ev1stensberg/generator.git#Feature-getArgument"
+    "yeoman-environment": "^2.0.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^6.1.0",
