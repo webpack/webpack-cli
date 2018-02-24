@@ -31,13 +31,11 @@
     "travis:integration": "yarn prepare && nyc jest && yarn reportCoverage",
     "travis:lint": "yarn lint && yarn bundlesize",
     "bundlesize": "bundlesize",
-    "commitmsg": "commitlint -e $GIT_PARAMS",
     "changelog": "conventional-changelog --config ./build/changelog-generator/index.js --infile CHANGELOG.md --same-file"
   },
   "lint-staged": {
     "{lib,bin}/**/!(__testfixtures__)/**.js": [
       "eslint --fix",
-      "npm run commitmsg",
       "git add"
     ]
   },
