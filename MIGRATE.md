@@ -68,23 +68,23 @@ module.exports = {
 The `migrate` command, when run, will show the proposed changes to the config file in the terminal, prompting the user to
 accept the changes or not:
 
-```bash
+```diff
 $ webpack-cli migrate ./webpack.config.js
  ✔ Reading webpack config
  ✔ Migrating config from v1 to v2
--     loaders: [
-+     rules: [
--         loader: 'babel',
-        query: {
-+         use: [{
-          loader: 'babel-loader'
-        }],
-        options: {
--         loader: ExtractTextPlugin.extract('style', 'css!sass')
-+         use: ExtractTextPlugin.extract({
-          fallback: 'style',
-          use: 'css!sass'
-        })
+-    loaders: [
++      rules: [
+-        loader: 'babel',
+-          query: {
++            use: [{
++              loader: 'babel-loader'
++            }],
++            options: {
+-              loader: ExtractTextPlugin.extract('style', 'css!sass')
++              use: ExtractTextPlugin.extract({
++                fallback: 'style',
++                use: 'css!sass'
++              })
 ? Are you sure these changes are fine? Yes
 
  ✔︎ New webpack v2 config file is at /Users/obuckley/Workspace/github/repos/webpack-migrate-sandbox/webpack.config.js
