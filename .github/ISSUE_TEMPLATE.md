@@ -1,4 +1,4 @@
-<!-- Before creating an issue please make sure you are using the latest version of webpack. -->
+<!-- Before creating an issue please make sure you are using the latest version of webpack and webpack-cli. -->
 
 **Do you want to request a *feature* or report a *bug*?**
 <!-- Please ask questions on StackOverflow or the webpack Gitter (https://gitter.im/webpack/webpack). Questions will be closed. -->
@@ -12,4 +12,4 @@
 
 **If this is a feature request, what is motivation or use case for changing the behavior?**
 
-**Please mention other relevant information such as the browser version, Node.js version, Operating System and programming language.**
+**Please mention other relevant information such as the Node.js version, webpack and webpack-cli versions, browser version, operating system.**
