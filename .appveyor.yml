@@ -24,6 +24,7 @@ test_script:
   - yarn appveyor:prepare
   - yarn appveyor:lint
   - yarn appveyor:test
+  - yarn bundlesize
 
 cache:
   - node_modules -> appveyor.yml,package.json,yarn.lock

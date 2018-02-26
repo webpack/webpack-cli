@@ -1,10 +1,16 @@
-var path = require("path");
-var fs = require("fs");
+const path = require("path");
+const fs = require("fs");
 fs.existsSync = fs.existsSync || path.existsSync;
-var interpret = require("interpret");
-var prepareOptions = require("./prepareOptions");
-module.exports = function(yargs, argv, convertOptions) {
-	var options = [];
+const interpret = require("interpret");
+const prepareOptions = require("./prepareOptions");
+const webpackConfigurationSchema = require("../schemas/webpackConfigurationSchema.json");
+const validateSchema = require("webpack").validateSchema;
+const WebpackOptionsValidationError = require("webpack")
+	.WebpackOptionsValidationError;
+
+module.exports = function(...args) {
+	const argv = args[1] || args[0];
+	const options = [];
 	// Shortcuts
 	if (argv.d) {
 		argv.debug = true;
@@ -35,12 +41,12 @@ module.exports = function(yargs, argv, convertOptions) {
 		argv["output-path"] = path.dirname(output);
 	}
 
-	var configFileLoaded = false;
-	var configFiles = [];
-	var extensions = Object.keys(interpret.extensions).sort(function(a, b) {
+	let configFileLoaded = false;
+	let configFiles = [];
+	const extensions = Object.keys(interpret.extensions).sort(function(a, b) {
 		return a === ".js" ? -1 : b === ".js" ? 1 : a.length - b.length;
 	});
-	var defaultConfigFiles = ["webpack.config", "webpackfile"]
+	const defaultConfigFiles = ["webpack.config", "webpackfile"]
 		.map(function(filename) {
 			return extensions.map(function(ext) {
 				return {
@@ -53,11 +59,11 @@ module.exports = function(yargs, argv, convertOptions) {
 			return a.concat(i);
 		}, []);
 
-	var i;
+	let i;
 	if (argv.config) {
-		var getConfigExtension = function getConfigExtension(configPath) {
+		const getConfigExtension = function getConfigExtension(configPath) {
 			for (i = extensions.length - 1; i >= 0; i--) {
-				var tmpExt = extensions[i];
+				const tmpExt = extensions[i];
 				if (
 					configPath.indexOf(tmpExt, configPath.length - tmpExt.length) > -1
 				) {
@@ -67,22 +73,22 @@ module.exports = function(yargs, argv, convertOptions) {
 			return path.extname(configPath);
 		};
 
-		var mapConfigArg = function mapConfigArg(configArg) {
-			var resolvedPath = path.resolve(configArg);
-			var extension = getConfigExtension(resolvedPath);
+		const mapConfigArg = function mapConfigArg(configArg) {
+			const resolvedPath = path.resolve(configArg);
+			const extension = getConfigExtension(resolvedPath);
 			return {
 				path: resolvedPath,
 				ext: extension
 			};
 		};
 
-		var configArgList = Array.isArray(argv.config)
+		const configArgList = Array.isArray(argv.config)
 			? argv.config
 			: [argv.config];
 		configFiles = configArgList.map(mapConfigArg);
 	} else {
 		for (i = 0; i < defaultConfigFiles.length; i++) {
-			var webpackConfig = defaultConfigFiles[i].path;
+			const webpackConfig = defaultConfigFiles[i].path;
 			if (fs.existsSync(webpackConfig)) {
 				configFiles.push({
 					path: webpackConfig,
@@ -93,14 +99,14 @@ module.exports = function(yargs, argv, convertOptions) {
 		}
 	}
 	if (configFiles.length > 0) {
-		var registerCompiler = function registerCompiler(moduleDescriptor) {
+		const registerCompiler = function registerCompiler(moduleDescriptor) {
 			if (moduleDescriptor) {
 				if (typeof moduleDescriptor === "string") {
 					require(moduleDescriptor);
 				} else if (!Array.isArray(moduleDescriptor)) {
 					moduleDescriptor.register(require(moduleDescriptor.module));
 				} else {
-					for (var i = 0; i < moduleDescriptor.length; i++) {
+					for (let i = 0; i < moduleDescriptor.length; i++) {
 						try {
 							registerCompiler(moduleDescriptor[i]);
 							break;
@@ -112,8 +118,8 @@ module.exports = function(yargs, argv, convertOptions) {
 			}
 		};
 
-		var requireConfig = function requireConfig(configPath) {
-			var options = (function WEBPACK_OPTIONS() {
+		const requireConfig = function requireConfig(configPath) {
+			let options = (function WEBPACK_OPTIONS() {
 				if (argv.configRegister && argv.configRegister.length) {
 					module.paths.unshift(
 						path.resolve(process.cwd(), "node_modules"),
@@ -147,9 +153,17 @@ module.exports = function(yargs, argv, convertOptions) {
 	}
 
 	function processConfiguredOptions(options) {
-		if (options === null || typeof options !== "object") {
+		const webpackConfigurationValidationErrors = validateSchema(
+			webpackConfigurationSchema,
+			options
+		);
+		if (webpackConfigurationValidationErrors.length) {
+			const error = new WebpackOptionsValidationError(
+				webpackConfigurationValidationErrors
+			);
 			console.error(
-				"Config did not export an object or a function returning an object."
+				error.message,
+				`\nReceived: ${typeof options} : ${JSON.stringify(options, null, 2)}`
 			);
 			process.exit(-1); // eslint-disable-line
 		}
@@ -166,7 +180,7 @@ module.exports = function(yargs, argv, convertOptions) {
 
 		// filter multi-config by name
 		if (Array.isArray(options) && argv["config-name"]) {
-			var namedOptions = options.filter(function(opt) {
+			const namedOptions = options.filter(function(opt) {
 				return opt.name === argv["config-name"];
 			});
 			if (namedOptions.length === 0) {
@@ -221,30 +235,21 @@ module.exports = function(yargs, argv, convertOptions) {
 
 	function processOptions(options) {
 		function ifArg(name, fn, init, finalize) {
-			if (Array.isArray(argv[name])) {
-				if (init) {
-					init();
-				}
-				argv[name].forEach(fn);
-				if (finalize) {
-					finalize();
-				}
-			} else if (typeof argv[name] !== "undefined" && argv[name] !== null) {
-				if (init) {
-					init();
-				}
-				fn(argv[name], -1);
-				if (finalize) {
-					finalize();
-				}
-			}
+			const isArray = Array.isArray(argv[name]);
+			const isSet = typeof argv[name] !== "undefined" && argv[name] !== null;
+			if (!isArray && !isSet) return;
+
+			init && init();
+			if (isArray) argv[name].forEach(fn);
+			else if (isSet) fn(argv[name], -1);
+			finalize && finalize();
 		}
 
 		function ifArgPair(name, fn, init, finalize) {
 			ifArg(
 				name,
 				function(content, idx) {
-					var i = content.indexOf("=");
+					const i = content.indexOf("=");
 					if (i < 0) {
 						return fn(null, content, idx);
 					} else {
@@ -272,10 +277,10 @@ module.exports = function(yargs, argv, convertOptions) {
 		}
 
 		function loadPlugin(name) {
-			var loadUtils = require("loader-utils");
-			var args;
+			const loadUtils = require("loader-utils");
+			let args;
 			try {
-				var p = name && name.indexOf("?");
+				const p = name && name.indexOf("?");
 				if (p > -1) {
 					args = loadUtils.parseQuery(name.substring(p));
 					name = name.substring(0, p);
@@ -285,15 +290,15 @@ module.exports = function(yargs, argv, convertOptions) {
 				process.exit(-1); // eslint-disable-line
 			}
 
-			var path;
+			let path;
 			try {
-				var resolve = require("enhanced-resolve");
+				const resolve = require("enhanced-resolve");
 				path = resolve.sync(process.cwd(), name);
 			} catch (e) {
 				console.log("Cannot resolve plugin " + name + ".");
 				process.exit(-1); // eslint-disable-line
 			}
-			var Plugin;
+			let Plugin;
 			try {
 				Plugin = require(path);
 			} catch (e) {
@@ -354,7 +359,7 @@ module.exports = function(yargs, argv, convertOptions) {
 						name = binding;
 						binding += "-loader";
 					}
-					var rule = {
+					const rule = {
 						test: new RegExp(
 							"\\." +
 								name.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") +
@@ -379,7 +384,7 @@ module.exports = function(yargs, argv, convertOptions) {
 		bindRules("module-bind-pre");
 		bindRules("module-bind-post");
 
-		var defineObject;
+		let defineObject;
 		ifArgPair(
 			"define",
 			function(name, value) {
@@ -393,7 +398,7 @@ module.exports = function(yargs, argv, convertOptions) {
 				defineObject = {};
 			},
 			function() {
-				var DefinePlugin = require("webpack/lib/DefinePlugin");
+				const DefinePlugin = require("webpack").DefinePlugin;
 				addPlugin(options, new DefinePlugin(defineObject));
 			}
 		);
@@ -463,12 +468,13 @@ module.exports = function(yargs, argv, convertOptions) {
 		mapArgToBoolean("cache");
 
 		ifBooleanArg("hot", function() {
-			var HotModuleReplacementPlugin = require("webpack/lib/HotModuleReplacementPlugin");
+			const HotModuleReplacementPlugin = require("webpack")
+				.HotModuleReplacementPlugin;
 			addPlugin(options, new HotModuleReplacementPlugin());
 		});
 
 		ifBooleanArg("debug", function() {
-			var LoaderOptionsPlugin = require("webpack/lib/LoaderOptionsPlugin");
+			const LoaderOptionsPlugin = require("webpack").LoaderOptionsPlugin;
 			addPlugin(
 				options,
 				new LoaderOptionsPlugin({
@@ -504,7 +510,8 @@ module.exports = function(yargs, argv, convertOptions) {
 		});
 
 		ifArg("optimize-max-chunks", function(value) {
-			var LimitChunkCountPlugin = require("webpack/lib/optimize/LimitChunkCountPlugin");
+			const LimitChunkCountPlugin = require("webpack").optimize
+				.LimitChunkCountPlugin;
 			addPlugin(
 				options,
 				new LimitChunkCountPlugin({
@@ -514,7 +521,7 @@ module.exports = function(yargs, argv, convertOptions) {
 		});
 
 		ifArg("optimize-min-chunk-size", function(value) {
-			var MinChunkSizePlugin = require("webpack/lib/optimize/MinChunkSizePlugin");
+			const MinChunkSizePlugin = require("webpack").optimize.MinChunkSizePlugin;
 			addPlugin(
 				options,
 				new MinChunkSizePlugin({
@@ -524,7 +531,7 @@ module.exports = function(yargs, argv, convertOptions) {
 		});
 
 		ifBooleanArg("optimize-minimize", function() {
-			var LoaderOptionsPlugin = require("webpack/lib/LoaderOptionsPlugin");
+			const LoaderOptionsPlugin = require("webpack").LoaderOptionsPlugin;
 			addPlugin(
 				options,
 				new LoaderOptionsPlugin({
@@ -534,20 +541,20 @@ module.exports = function(yargs, argv, convertOptions) {
 		});
 
 		ifArg("prefetch", function(request) {
-			var PrefetchPlugin = require("webpack/lib/PrefetchPlugin");
+			const PrefetchPlugin = require("webpack").PrefetchPlugin;
 			addPlugin(options, new PrefetchPlugin(request));
 		});
 
 		ifArg("provide", function(value) {
-			var idx = value.indexOf("=");
-			var name;
+			const idx = value.indexOf("=");
+			let name;
 			if (idx >= 0) {
 				name = value.substr(0, idx);
 				value = value.substr(idx + 1);
 			} else {
 				name = value;
 			}
-			var ProvidePlugin = require("webpack/lib/ProvidePlugin");
+			const ProvidePlugin = require("webpack").ProvidePlugin;
 			addPlugin(options, new ProvidePlugin(name, value));
 		});
 
@@ -567,7 +574,7 @@ module.exports = function(yargs, argv, convertOptions) {
 			}
 			ensureObject(options, "entry");
 
-			var addTo = function addTo(name, entry) {
+			const addTo = function addTo(name, entry) {
 				if (options.entry[name]) {
 					if (!Array.isArray(options.entry[name])) {
 						options.entry[name] = [options.entry[name]];
@@ -578,10 +585,10 @@ module.exports = function(yargs, argv, convertOptions) {
 				}
 			};
 			argv._.forEach(function(content) {
-				var i = content.indexOf("=");
-				var j = content.indexOf("?");
+				const i = content.indexOf("=");
+				const j = content.indexOf("?");
 				if (i < 0 || (j >= 0 && j < i)) {
-					var resolved = path.resolve(content);
+					const resolved = path.resolve(content);
 					if (fs.existsSync(resolved)) {
 						addTo(
 							"main",

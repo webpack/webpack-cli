@@ -1152,7 +1152,8 @@
 
         
 <div class="param-desc">
-    -  Returns the node for the createdfunction
+    -  Returns the node for the created
+function
 </div>
 
 
@@ -1756,7 +1757,8 @@
 
 
 <div class="description">
-    Findes or creates a node for a given plugin name string with options objectIf plugin decalaration already exist, options are merged.
+    Findes or creates a node for a given plugin name string with options object
+If plugin decalaration already exist, options are merged.
 </div>
 
 
@@ -2186,7 +2188,8 @@
 
 
 <div class="description">
-    Runs yeoman and runs the transformations based on the objectbuilt up from an author/user
+    Runs yeoman and runs the transformations based on the object
+built up from an author/user
 </div>
 
 
@@ -2306,7 +2309,8 @@
 
         
 <div class="param-desc">
-    runTransform - Run transformations based on the finishedyeoman instance
+    runTransform - Run transformations based on the finished
+yeoman instance
 </div>
 
 
@@ -2343,7 +2347,8 @@
 
 
 <div class="description">
-    Handles some boilerplate around defining a simple jest/Jasmine test for ajscodeshift transform.
+    Handles some boilerplate around defining a simple jest/Jasmine test for a
+jscodeshift transform.
 </div>
 
 
@@ -2405,7 +2410,8 @@
 
             
 
-            <td class="description last">contains the name of the directory the test is located in. This                                  should normally be passed via __dirname.</td>
+            <td class="description last">contains the name of the directory the test is located in. This
+                                  should normally be passed via __dirname.</td>
         </tr>
 
     
@@ -2436,7 +2442,8 @@
 
             
 
-            <td class="description last">contains the filename of the transform being tested,                                  excluding the .js extension.</td>
+            <td class="description last">contains the filename of the transform being tested,
+                                  excluding the .js extension.</td>
         </tr>
 
     
@@ -2469,7 +2476,12 @@
 
             
 
-            <td class="description last">Optionally contains the name of the file with the test                                  data. If not specified, it defaults to the same value as `transformName`.                                  This will be suffixed with ".input.js" for the input file and ".output.js"                                  for the expected output. For example, if set to "foo", we will read the                                  "foo.input.js" file, pass this to the transform, and expect its output to                                  be equal to the contents of "foo.output.js".</td>
+            <td class="description last">Optionally contains the name of the file with the test
+                                  data. If not specified, it defaults to the same value as `transformName`.
+                                  This will be suffixed with ".input.js" for the input file and ".output.js"
+                                  for the expected output. For example, if set to "foo", we will read the
+                                  "foo.input.js" file, pass this to the transform, and expect its output to
+                                  be equal to the contents of "foo.output.js".</td>
         </tr>
 
     
@@ -2628,6 +2640,209 @@
     
 
     
+    <h4 class="name" id="findInvocation"><span class="type-signature"></span>findInvocation<span class="signature">(j, node, pluginName)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Check whether `node` is the invocation of the plugin denoted by `pluginName`
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>j</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">jscodeshift top-level import</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>node</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Node</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">ast node to check</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>pluginName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">name of the plugin</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="migrate_extractTextPlugin_extractTextPlugin.js.html">migrate/extractTextPlugin/extractTextPlugin.js</a>, <a href="migrate_extractTextPlugin_extractTextPlugin.js.html#line13">line 13</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    isPluginInvocation - whether `node` is the invocation of the plugin denoted by `pluginName`
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="findPluginsByName"><span class="type-signature"></span>findPluginsByName<span class="signature">(j, node, pluginNamesArray)</span><span class="type-signature"> &rarr; {Node}</span></h4>
     
 
@@ -2636,7 +2851,8 @@
 
 
 <div class="description">
-    Find paths that match `new name.space.PluginName()` for agiven array of plugin names
+    Find paths that match `new name.space.PluginName()` for a
+given array of plugin names
 </div>
 
 
@@ -3245,7 +3461,8 @@
 
 
 <div class="description">
-    Takes in a file path in the `./templates` directory. Copies thatfile to the destination, with the `.tpl` extension stripped.
+    Takes in a file path in the `./templates` directory. Copies that
+file to the destination, with the `.tpl` extension stripped.
 </div>
 
 
@@ -3425,7 +3642,9 @@
 
 
 <div class="description">
-    Takes in a file path in the `./templates` directory. Copies thatfile to the destination, with the `.tpl` extension and `_` prefixstripped. Passes `this.props` to the template.
+    Takes in a file path in the `./templates` directory. Copies that
+file to the destination, with the `.tpl` extension and `_` prefix
+stripped. Passes `this.props` to the template.
 </div>
 
 
@@ -3523,7 +3742,8 @@
 
             
 
-            <td class="description last">An object containing the data passed tothe template files.</td>
+            <td class="description last">An object containing the data passed to
+the template files.</td>
         </tr>
 
     
@@ -3628,7 +3848,8 @@
 
 
 <div class="description">
-    Returns the name of package manager to use,preferring yarn over npm if available
+    Returns the name of package manager to use,
+preferring yarn over npm if available
 </div>
 
 
@@ -4096,7 +4317,9 @@
 
 
 <div class="description">
-    Checks if we are at the correct node and later invokes a callbackfor the transforms to either use their own transform function oruse pushCreateProperty if the transform doesn't expect any properties
+    Checks if we are at the correct node and later invokes a callback
+for the transforms to either use their own transform function or
+use pushCreateProperty if the transform doesn't expect any properties
 </div>
 
 
@@ -4240,7 +4463,8 @@
 
             
 
-            <td class="description last">WebpackOptions that later will be converted viapushCreateProperty via WebpackOptions[identifier]</td>
+            <td class="description last">WebpackOptions that later will be converted via
+pushCreateProperty via WebpackOptions[identifier]</td>
         </tr>
 
     
@@ -4791,7 +5015,8 @@
 
         
 <div class="param-desc">
-    - Either pushes the node, or reruns untilnothing is left
+    - Either pushes the node, or reruns until
+nothing is left
 </div>
 
 
@@ -4831,7 +5056,8 @@
 
 
 <div class="description">
-    Formats a string into webpack loader format(eg: 'style-loader', 'raw-loader')
+    Formats a string into webpack loader format
+(eg: 'style-loader', 'raw-loader')
 </div>
 
 
@@ -5660,7 +5886,8 @@
 
         
 <div class="param-desc">
-    Returns a function that will push a node ifsubProperty is an array, else it will invoke a function that will push a single node
+    Returns a function that will push a node if
+subProperty is an array, else it will invoke a function that will push a single node
 </div>
 
 
@@ -5700,7 +5927,8 @@
 
 
 <div class="description">
-    Replaces the string with a substring at the given indexhttps://gist.github.com/efenacigiray/9367920
+    Replaces the string with a substring at the given index
+https://gist.github.com/efenacigiray/9367920
 </div>
 
 
@@ -6023,7 +6251,8 @@
 
         
 <div class="param-desc">
-    creator - Buildsa webpack configuration through yeoman or throws an error
+    creator - Builds
+a webpack configuration through yeoman or throws an error
 </div>
 
 
@@ -6063,7 +6292,15 @@
 
 
 <div class="description">
-    Utility function to run a jscodeshift script within a unit test.This makes several assumptions about the environment.Notes:- The test should be located in a subdirectory next to the transform itself.  Commonly tests are located in a directory called __tests__.- Test data should be located in a directory called __testfixtures__  alongside the transform and __tests__ directory.
+    Utility function to run a jscodeshift script within a unit test.
+This makes several assumptions about the environment.
+
+Notes:
+- The test should be located in a subdirectory next to the transform itself.
+  Commonly tests are located in a directory called __tests__.
+
+- Test data should be located in a directory called __testfixtures__
+  alongside the transform and __tests__ directory.
 </div>
 
 
@@ -6125,7 +6362,8 @@
 
             
 
-            <td class="description last">contains the name of the directory the test is located in. This                                  should normally be passed via __dirname.</td>
+            <td class="description last">contains the name of the directory the test is located in. This
+                                  should normally be passed via __dirname.</td>
         </tr>
 
     
@@ -6156,7 +6394,8 @@
 
             
 
-            <td class="description last">contains the filename of the transform being tested,                                  excluding the .js extension.</td>
+            <td class="description last">contains the filename of the transform being tested,
+                                  excluding the .js extension.</td>
         </tr>
 
     
@@ -6189,7 +6428,12 @@
 
             
 
-            <td class="description last">Optionally contains the name of the file with the test                                  data. If not specified, it defaults to the same value as `transformName`.                                  This will be suffixed with ".input.js" for the input file and ".output.js"                                  for the expected output. For example, if set to "foo", we will read the                                  "foo.input.js" file, pass this to the transform, and expect its output to                                  be equal to the contents of "foo.output.js".</td>
+            <td class="description last">Optionally contains the name of the file with the test
+                                  data. If not specified, it defaults to the same value as `transformName`.
+                                  This will be suffixed with ".input.js" for the input file and ".output.js"
+                                  for the expected output. For example, if set to "foo", we will read the
+                                  "foo.input.js" file, pass this to the transform, and expect its output to
+                                  be equal to the contents of "foo.output.js".</td>
         </tr>
 
     
@@ -7334,6 +7578,242 @@
     
 
     
+    <h4 class="name" id="transform"><span class="type-signature"></span>transform<span class="signature">(source, transforms<span class="signature-attributes">opt</span>, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {String}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Transforms a given piece of source code by applying selected transformations to the AST.
+By default, transforms a webpack version 1 configuration file into a webpack version 2
+configuration file.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>source</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">source file contents</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>transforms</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;function()></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">List of transformation functions, defined in the
+order to apply them in. By default, all defined transfomations.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">recast formatting options</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="migrate_index.js.html">migrate/index.js</a>, <a href="migrate_index.js.html#line56">line 56</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    source — transformed source code
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="traverseAndGetProperties"><span class="type-signature"></span>traverseAndGetProperties<span class="signature">(arr, prop)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
     
 
@@ -7485,7 +7965,8 @@
 
         
 <div class="param-desc">
-    hasProp - Boolean indicating if the propertyis present
+    hasProp - Boolean indicating if the property
+is present
 </div>
 
 
@@ -7522,7 +8003,8 @@
 
 
 <div class="description">
-    Creates a Yeoman Generator that generates a project conformingto webpack-defaults.
+    Creates a Yeoman Generator that generates a project conforming
+to webpack-defaults.
 </div>
 
 
@@ -7620,7 +8102,9 @@
 
             
 
-            <td class="description last">An array of file paths (relative to `./templates`)of files to be copied to the generated project. File paths should be of theform `path/to/file.js.tpl`.</td>
+            <td class="description last">An array of file paths (relative to `./templates`)
+of files to be copied to the generated project. File paths should be of the
+form `path/to/file.js.tpl`.</td>
         </tr>
 
     
@@ -7643,7 +8127,9 @@
 
             
 
-            <td class="description last">An array of file paths (relative to`./templates`) of files to be copied to the generated project. Templatefile paths should be of the form `path/to/_file.js.tpl`.</td>
+            <td class="description last">An array of file paths (relative to
+`./templates`) of files to be copied to the generated project. Template
+file paths should be of the form `path/to/_file.js.tpl`.</td>
         </tr>
 
     
@@ -7666,7 +8152,8 @@
 
             
 
-            <td class="description last">A function that is passed a generator instance andreturns an object containing data to be supplied to the template files.</td>
+            <td class="description last">A function that is passed a generator instance and
+returns an object containing data to be supplied to the template files.</td>
         </tr>
 
     
@@ -7773,13 +8260,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AddGenerator.html">AddGenerator</a></li><li><a href="InitGenerator.html">InitGenerator</a></li><li><a href="LoaderGenerator.html">LoaderGenerator</a></li><li><a href="PluginGenerator.html">PluginGenerator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#checkIfExistsAndAddValue">checkIfExistsAndAddValue</a></li><li><a href="global.html#createArrayWithChildren">createArrayWithChildren</a></li><li><a href="global.html#createEmptyArrayProperty">createEmptyArrayProperty</a></li><li><a href="global.html#createExternalRegExp">createExternalRegExp</a></li><li><a href="global.html#createFunctionWithArguments">createFunctionWithArguments</a></li><li><a href="global.html#createIdentifierOrLiteral">createIdentifierOrLiteral</a></li><li><a href="global.html#createLiteral">createLiteral</a></li><li><a href="global.html#createObjectWithSuppliedProperty">createObjectWithSuppliedProperty</a></li><li><a href="global.html#createOrUpdatePluginByName">createOrUpdatePluginByName</a></li><li><a href="global.html#createProperty">createProperty</a></li><li><a href="global.html#creator">creator</a></li><li><a href="global.html#defineTest">defineTest</a></li><li><a href="global.html#findPluginsByName">findPluginsByName</a></li><li><a href="global.html#findRootNodesByName">findRootNodesByName</a></li><li><a href="global.html#findVariableToPlugin">findVariableToPlugin</a></li><li><a href="global.html#generatorCopy">generatorCopy</a></li><li><a href="global.html#generatorCopyTpl">generatorCopyTpl</a></li><li><a href="global.html#getPackageManager">getPackageManager</a></li><li><a href="global.html#getRequire">getRequire</a></li><li><a href="global.html#getRootPathModule">getRootPathModule</a></li><li><a href="global.html#isAssignment">isAssignment</a></li><li><a href="global.html#isType">isType</a></li><li><a href="global.html#loaderCreator">loaderCreator</a></li><li><a href="global.html#loopThroughObjects">loopThroughObjects</a></li><li><a href="global.html#makeLoaderName">makeLoaderName</a></li><li><a href="global.html#pluginCreator">pluginCreator</a></li><li><a href="global.html#processPromise">processPromise</a></li><li><a href="global.html#pushCreateProperty">pushCreateProperty</a></li><li><a href="global.html#pushObjectKeys">pushObjectKeys</a></li><li><a href="global.html#replaceAt">replaceAt</a></li><li><a href="global.html#resolvePackages">resolvePackages</a></li><li><a href="global.html#runSingleTansform">runSingleTansform</a></li><li><a href="global.html#serve">serve</a></li><li><a href="global.html#spawnChild">spawnChild</a></li><li><a href="global.html#spawnNPM">spawnNPM</a></li><li><a href="global.html#spawnNPMWithArg">spawnNPMWithArg</a></li><li><a href="global.html#spawnYarn">spawnYarn</a></li><li><a href="global.html#spawnYarnWithArg">spawnYarnWithArg</a></li><li><a href="global.html#transformsObject">transformsObject</a></li><li><a href="global.html#traverseAndGetProperties">traverseAndGetProperties</a></li><li><a href="global.html#webpackGenerator">webpackGenerator</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AddGenerator.html">AddGenerator</a></li><li><a href="InitGenerator.html">InitGenerator</a></li><li><a href="LoaderGenerator.html">LoaderGenerator</a></li><li><a href="PluginGenerator.html">PluginGenerator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#checkIfExistsAndAddValue">checkIfExistsAndAddValue</a></li><li><a href="global.html#createArrayWithChildren">createArrayWithChildren</a></li><li><a href="global.html#createEmptyArrayProperty">createEmptyArrayProperty</a></li><li><a href="global.html#createExternalRegExp">createExternalRegExp</a></li><li><a href="global.html#createFunctionWithArguments">createFunctionWithArguments</a></li><li><a href="global.html#createIdentifierOrLiteral">createIdentifierOrLiteral</a></li><li><a href="global.html#createLiteral">createLiteral</a></li><li><a href="global.html#createObjectWithSuppliedProperty">createObjectWithSuppliedProperty</a></li><li><a href="global.html#createOrUpdatePluginByName">createOrUpdatePluginByName</a></li><li><a href="global.html#createProperty">createProperty</a></li><li><a href="global.html#creator">creator</a></li><li><a href="global.html#defineTest">defineTest</a></li><li><a href="global.html#findInvocation">findInvocation</a></li><li><a href="global.html#findPluginsByName">findPluginsByName</a></li><li><a href="global.html#findRootNodesByName">findRootNodesByName</a></li><li><a href="global.html#findVariableToPlugin">findVariableToPlugin</a></li><li><a href="global.html#generatorCopy">generatorCopy</a></li><li><a href="global.html#generatorCopyTpl">generatorCopyTpl</a></li><li><a href="global.html#getPackageManager">getPackageManager</a></li><li><a href="global.html#getRequire">getRequire</a></li><li><a href="global.html#getRootPathModule">getRootPathModule</a></li><li><a href="global.html#isAssignment">isAssignment</a></li><li><a href="global.html#isType">isType</a></li><li><a href="global.html#loaderCreator">loaderCreator</a></li><li><a href="global.html#loopThroughObjects">loopThroughObjects</a></li><li><a href="global.html#makeLoaderName">makeLoaderName</a></li><li><a href="global.html#pluginCreator">pluginCreator</a></li><li><a href="global.html#processPromise">processPromise</a></li><li><a href="global.html#pushCreateProperty">pushCreateProperty</a></li><li><a href="global.html#pushObjectKeys">pushObjectKeys</a></li><li><a href="global.html#replaceAt">replaceAt</a></li><li><a href="global.html#resolvePackages">resolvePackages</a></li><li><a href="global.html#runSingleTansform">runSingleTansform</a></li><li><a href="global.html#serve">serve</a></li><li><a href="global.html#spawnChild">spawnChild</a></li><li><a href="global.html#spawnNPM">spawnNPM</a></li><li><a href="global.html#spawnNPMWithArg">spawnNPMWithArg</a></li><li><a href="global.html#spawnYarn">spawnYarn</a></li><li><a href="global.html#spawnYarnWithArg">spawnYarnWithArg</a></li><li><a href="global.html#transform">transform</a></li><li><a href="global.html#transformsObject">transformsObject</a></li><li><a href="global.html#traverseAndGetProperties">traverseAndGetProperties</a></li><li><a href="global.html#webpackGenerator">webpackGenerator</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Jan 15 2018 00:04:44 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Feb 25 2018 15:08:40 GMT+0100 (CET)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -8,22 +8,22 @@
 (function() {
 	// wrap in IIFE to be able to use return
 
-	var resolveCwd = require("resolve-cwd");
+	const resolveCwd = require("resolve-cwd");
 	// Local version replace global one
-	var localCLI = resolveCwd.silent("webpack-cli/bin/webpack");
+	const localCLI = resolveCwd.silent("webpack-cli/bin/webpack");
 	if (localCLI && localCLI !== __filename) {
 		require(localCLI);
 		return;
 	}
 
 	require("v8-compile-cache");
-	var ErrorHelpers = require("./errorHelpers");
+	const ErrorHelpers = require("./errorHelpers");
 
 	const NON_COMPILATION_ARGS = [
 		"init",
 		"migrate",
-		"add",
 		/*
+		"add",
 		"remove",
 		"update",
 		"make",
@@ -47,7 +47,7 @@
 		return;
 	}
 
-	var yargs = require("yargs").usage(
+	const yargs = require("yargs").usage(
 		"webpack-cli " +
 			require("../package.json").version +
 			"\n" +
@@ -58,8 +58,8 @@
 
 	require("./config-yargs")(yargs);
 
-	var DISPLAY_GROUP = "Stats options:";
-	var BASIC_GROUP = "Basic options:";
+	const DISPLAY_GROUP = "Stats options:";
+	const BASIC_GROUP = "Basic options:";
 
 	yargs.options({
 		silent: {
@@ -179,14 +179,30 @@
 		},
 		display: {
 			type: "string",
+			choices: [
+				"",
+				"verbose",
+				"detailed",
+				"normal",
+				"minimal",
+				"errors-only",
+				"none"
+			],
 			group: DISPLAY_GROUP,
-			describe:
-				"Select display preset (verbose, detailed, normal, minimal, errors-only, none)"
+			describe: "Select display preset"
 		},
 		verbose: {
 			type: "boolean",
 			group: DISPLAY_GROUP,
 			describe: "Show more details"
+		},
+		"info-verbosity": {
+			type: "string",
+			default: "info",
+			choices: ["none", "info", "verbose"],
+			group: DISPLAY_GROUP,
+			describe:
+				"Controls the output of lifecycle messaging e.g. Started watching files..."
 		}
 	});
 
@@ -213,15 +229,16 @@
 			argv["display"] = "verbose";
 		}
 
+		let options;
 		try {
-			var options = require("./convert-argv")(yargs, argv);
+			options = require("./convert-argv")(argv);
 		} catch (err) {
 			if (err.name !== "ValidationError") {
 				throw err;
 			}
 
-			var stack = ErrorHelpers.cleanUpWebpackOptions(err.stack, err.message);
-			var message = err.message + "\n" + stack;
+			const stack = ErrorHelpers.cleanUpWebpackOptions(err.stack, err.message);
+			const message = err.message + "\n" + stack;
 
 			if (argv.color) {
 				console.error(`\u001b[1m\u001b[31m${message}\u001b[39m\u001b[22m`);
@@ -237,7 +254,7 @@
 		 * When --silent flag is present, an object with a no-op write method is
 		 * used in place of process.stout
 		 */
-		var stdout = argv.silent
+		const stdout = argv.silent
 			? {
 				write: () => {}
 			}
@@ -263,11 +280,10 @@
 				return;
 			}
 
-			var firstOptions = [].concat(options)[0];
-			var statsPresetToOptions = require("webpack/lib/Stats.js")
-				.presetToOptions;
+			const firstOptions = [].concat(options)[0];
+			const statsPresetToOptions = require("webpack").Stats.presetToOptions;
 
-			var outputOptions = options.stats;
+			let outputOptions = options.stats;
 			if (
 				typeof outputOptions === "boolean" ||
 				typeof outputOptions === "string"
@@ -399,10 +415,14 @@
 				}
 			});
 
-			var webpack = require("webpack/lib/webpack.js");
+			ifArg("info-verbosity", function(value) {
+				outputOptions.infoVerbosity = value;
+			});
 
-			var lastHash = null;
-			var compiler;
+			const webpack = require("webpack");
+
+			let lastHash = null;
+			let compiler;
 			try {
 				compiler = webpack(options);
 			} catch (err) {
@@ -420,12 +440,21 @@
 			}
 
 			if (argv.progress) {
-				var ProgressPlugin = require("webpack/lib/ProgressPlugin");
+				const ProgressPlugin = require("webpack").ProgressPlugin;
 				compiler.apply(
 					new ProgressPlugin({
 						profile: argv.profile
 					})
 				);
+			}
+
+			if (outputOptions.infoVerbosity === "verbose") {
+				compiler.hooks.beforeCompile.tap("WebpackInfo", compilation => {
+					console.log("\nCompilation starting…\n");
+				});
+				compiler.hooks.afterCompile.tap("WebpackInfo", compilation => {
+					console.log("\nCompilation finished\n");
+				});
 			}
 
 			function compilerCallback(err, stats) {
@@ -445,7 +474,7 @@
 					);
 				} else if (stats.hash !== lastHash) {
 					lastHash = stats.hash;
-					var statsString = stats.toString(outputOptions);
+					const statsString = stats.toString(outputOptions);
 					if (statsString) stdout.write(statsString + "\n");
 				}
 				if (!options.watch && stats.hasErrors()) {
@@ -453,7 +482,7 @@
 				}
 			}
 			if (firstOptions.watch || options.watch) {
-				var watchOptions =
+				const watchOptions =
 					firstOptions.watchOptions ||
 					firstOptions.watch ||
 					options.watch ||
@@ -465,7 +494,8 @@
 					process.stdin.resume();
 				}
 				compiler.watch(watchOptions, compilerCallback);
-				console.log("\nWebpack is watching the files…\n");
+				if (outputOptions.infoVerbosity !== "none")
+					console.log("\nWebpack is watching the files…\n");
 			} else compiler.run(compilerCallback);
 		}
 

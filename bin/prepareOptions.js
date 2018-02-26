@@ -2,15 +2,11 @@
 
 module.exports = function prepareOptions(options, argv) {
 	argv = argv || {};
-
 	options = handleExport(options);
 
-	if (Array.isArray(options)) {
-		options = options.map(_options => handleFunction(_options, argv));
-	} else {
-		options = handleFunction(options, argv);
-	}
-	return options;
+	return Array.isArray(options)
+		? options.map(_options => handleFunction(_options, argv))
+		: handleFunction(options, argv);
 };
 
 function handleExport(options) {
@@ -18,8 +14,8 @@ function handleExport(options) {
 		typeof options === "object" &&
 		options !== null &&
 		typeof options.default !== "undefined";
-	options = isES6DefaultExported ? options.default : options;
-	return options;
+
+	return isES6DefaultExported ? options.default : options;
 }
 
 function handleFunction(options, argv) {

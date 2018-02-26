@@ -1,14 +1,14 @@
 const chalk = require("chalk");
 const logSymbols = require("log-symbols");
 
-var CONFIG_GROUP = "Config options:";
-var BASIC_GROUP = "Basic options:";
-var MODULE_GROUP = "Module options:";
-var OUTPUT_GROUP = "Output options:";
-var ADVANCED_GROUP = "Advanced options:";
-var RESOLVE_GROUP = "Resolving options:";
-var OPTIMIZE_GROUP = "Optimizing options:";
-var INIT_GROUP = "Initialization:";
+const CONFIG_GROUP = "Config options:";
+const BASIC_GROUP = "Basic options:";
+const MODULE_GROUP = "Module options:";
+const OUTPUT_GROUP = "Output options:";
+const ADVANCED_GROUP = "Advanced options:";
+const RESOLVE_GROUP = "Resolving options:";
+const OPTIMIZE_GROUP = "Optimizing options:";
+const INIT_GROUP = "Initialization:";
 
 module.exports = function(yargs) {
 	yargs
@@ -91,7 +91,8 @@ module.exports = function(yargs) {
 			},
 			mode: {
 				type: "string",
-				describe: "Mode to use (production or development)",
+				choices: ["development", "production"],
+				describe: "Mode to use",
 				group: CONFIG_GROUP,
 				requiresArg: true
 			},

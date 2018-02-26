@@ -9,24 +9,26 @@ module.exports = function processOptions(yargs, argv) {
 			fn(argv[name], -1);
 		}
 	}
-	var options = require("./convert-argv")(yargs, argv);
+	const options = require("./convert-argv")(argv);
 
 	if (typeof options.then === "function") {
 		options.then(processOptions).catch(function(err) {
 			console.error(err.stack || err);
-			process.exit();
+			process.exitCode = 1;
 		});
 		return;
 	}
 
-	var firstOptions = Array.isArray(options) ? options[0] || {} : options;
+	const firstOptions = Array.isArray(options) ? options[0] || {} : options;
 
 	if (typeof options.stats === "boolean" || typeof options.stats === "string") {
-		var statsPresetToOptions = require("webpack/lib/Stats.js").presetToOptions;
+		const statsPresetToOptions = require("webpack").Stats.presetToOptions;
 		options.stats = statsPresetToOptions(options.stats);
 	}
 
-	var outputOptions = Object.create(options.stats || firstOptions.stats || {});
+	const outputOptions = Object.create(
+		options.stats || firstOptions.stats || {}
+	);
 	if (typeof outputOptions.context === "undefined")
 		outputOptions.context = firstOptions.context;
 
@@ -127,15 +129,17 @@ module.exports = function processOptions(yargs, argv) {
 		}
 	});
 
-	var webpack = require("webpack/lib/webpack.js");
+	const webpack = require("webpack");
 
 	Error.stackTraceLimit = 30;
-	var lastHash = null;
-	var compiler;
+	let lastHash = null;
+	let compiler;
 	try {
 		compiler = webpack(options);
 	} catch (e) {
-		var WebpackOptionsValidationError = require("webpack/lib/WebpackOptionsValidationError");
+		const WebpackOptionsValidationError = require("webpack")
+			.WebpackOptionsValidationError;
+
 		if (e instanceof WebpackOptionsValidationError) {
 			if (argv.color)
 				console.error(
@@ -148,7 +152,7 @@ module.exports = function processOptions(yargs, argv) {
 	}
 
 	if (argv.progress) {
-		var ProgressPlugin = require("webpack/lib/ProgressPlugin");
+		const ProgressPlugin = require("webpack").ProgressPlugin;
 		compiler.apply(
 			new ProgressPlugin({
 				profile: argv.profile
@@ -184,8 +188,8 @@ module.exports = function processOptions(yargs, argv) {
 		}
 	}
 	if (options.watch) {
-		var primaryOptions = !Array.isArray(options) ? options : options[0];
-		var watchOptions =
+		const primaryOptions = !Array.isArray(options) ? options : options[0];
+		const watchOptions =
 			primaryOptions.watchOptions || primaryOptions.watch || {};
 		if (watchOptions.stdin) {
 			process.stdin.on("end", function(_) {
