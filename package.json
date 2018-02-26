@@ -109,7 +109,7 @@
     "v8-compile-cache": "^1.1.2",
     "webpack-addons": "^1.1.5",
     "webpack-fork-yeoman-generator": "^1.1.1",
-    "yargs": "11.0.0",
+    "yargs": "9.0.1",
     "yeoman-environment": "^2.0.0"
   },
   "peerDependencies": {
