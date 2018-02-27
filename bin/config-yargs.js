@@ -114,13 +114,13 @@ module.exports = function(yargs) {
 			},
 			"module-bind-post": {
 				type: "string",
-				describe: "",
+				describe: "Bind an extension to a post loader",
 				group: MODULE_GROUP,
 				requiresArg: true
 			},
 			"module-bind-pre": {
 				type: "string",
-				describe: "",
+				describe: "Bind an extension to a pre loader",
 				group: MODULE_GROUP,
 				requiresArg: true
 			},
