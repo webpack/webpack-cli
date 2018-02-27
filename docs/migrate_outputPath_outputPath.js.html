@@ -55,7 +55,7 @@ module.exports = function(j, ast) {
 	if (literalOutputPath) {
 		let pathVarName = "path";
 		let isPathPresent = false;
-		const pathDecalaration = ast
+		const pathDeclaration = ast
 			.find(j.VariableDeclarator)
 			.filter(
 				p =>
@@ -70,9 +70,9 @@ module.exports = function(j, ast) {
 					}, false)
 			);
 
-		if (pathDecalaration) {
+		if (pathDeclaration) {
 			isPathPresent = true;
-			pathDecalaration.forEach(p => {
+			pathDeclaration.forEach(p => {
 				pathVarName = utils.safeTraverse(p, ["value", "id", "name"]);
 			});
 		}
