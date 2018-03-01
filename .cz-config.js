@@ -13,19 +13,17 @@
 'use strict';
 
 module.exports = {
-  allowBreakingChanges: ['ast'],
-  allowCustomScopes: true,
-  scopes: [],
-  types: [
-    {value: 'new_feature', name: 'new_feature: A new feature'}, {
-      value: 'ast',
-      name: 'ast:      init, migrate, add, etc'
-    },
-    {value: 'tests', name: 'tests:     Tests, jest, binTestCases etc'},
-    {value: 'docs', name: 'docs:      Documentation'},
-    {value: 'deps', name: 'deps:      Dependency bumps only'},
-    {value: 'cli', name: 'cli:       core CLI things'},
-    {value: 'misc', name: 'misc:      Other formats like tweaks and such'},
-    {value: 'chore', name: 'chore:      Updating docs, linting etc'},
-  ]
+	allowBreakingChanges: ["ast"],
+	allowCustomScopes: true,
+	scopes: [],
+	types: [
+		{ value: "feat", name: "feat:		A new feature" },
+		{ value: "ast", name: "ast:		init, migrate, add, etc" },
+		{ value: "tests", name: "tests:	Tests, jest, binTestCases, etc" },
+		{ value: "docs", name: "docs:		Documentation" },
+		{ value: "deps", name: "deps:		Dependency bumps only" },
+		{ value: "cli", name: "cli:		Core CLI things" },
+		{ value: "misc", name: "misc:		Other formats like tweaks and such" },
+		{ value: "chore", name: "chore:	Updating docs, linting, etc" },
+	]
 };
