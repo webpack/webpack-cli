@@ -1,5 +1,5 @@
 {
-  "oneOf": [
+  "anyOf": [
     {
       "type": "object",
       "description": "A webpack configuration object."
@@ -13,7 +13,7 @@
       }
     },
     {
-      "instanceof": "Function",
+      "instanceof": "Promise",
       "description": "A promise that resolves with a configuration object, or an array of configuration objects."
     }
   ]
