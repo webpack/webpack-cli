@@ -80,7 +80,7 @@
 			type: "boolean",
 			alias: "colors",
 			default: function supportsColor() {
-				return require("supports-color").stdout;
+				return require("supports-color");
 			},
 			group: DISPLAY_GROUP,
 			describe: "Enables/Disables colors on the console"
@@ -318,7 +318,7 @@
 			});
 
 			if (typeof outputOptions.colors === "undefined")
-				outputOptions.colors = require("supports-color").stdout;
+				outputOptions.colors = require("supports-color");
 
 			ifArg("sort-modules-by", function(value) {
 				outputOptions.modulesSort = value;
