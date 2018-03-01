@@ -17,7 +17,7 @@ module.exports = {
 	allowCustomScopes: true,
 	scopes: [],
 	types: [
-		{ value: "new_feature", name: "new_feature:		A new feature" },
+		{ value: "feat", name: "feat:		A new feature" },
 		{ value: "ast", name: "ast:		init, migrate, add, etc" },
 		{ value: "tests", name: "tests:	Tests, jest, binTestCases, etc" },
 		{ value: "docs", name: "docs:		Documentation" },
