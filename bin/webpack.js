@@ -257,7 +257,7 @@
 		const stdout = argv.silent
 			? {
 				write: () => {}
-			}
+			  } // eslint-disable-line
 			: process.stdout;
 
 		function ifArg(name, fn, init) {
