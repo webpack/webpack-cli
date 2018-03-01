@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`transform should not transform if no transformations defined: 
+exports[`
 module.exports = {
 	devtool: 'eval',
 	entry: [
