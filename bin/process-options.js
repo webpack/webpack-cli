@@ -37,7 +37,7 @@ module.exports = function processOptions(yargs, argv) {
 	});
 
 	if (typeof outputOptions.colors === "undefined")
-		outputOptions.colors = require("supports-color").stdout;
+		outputOptions.colors = require("supports-color");
 
 	ifArg("sort-modules-by", function(value) {
 		outputOptions.modulesSort = value;
