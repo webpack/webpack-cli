@@ -12,8 +12,8 @@ build: off
 
 install:
   - ps: Install-Product node $env:nodejs_version $env:platform
+  - npm install
   - npm install --global codecov
-  - npm install --save-dev eslint@4.18.1
   - npm install eslint-plugin-node@latest --save-dev
 
 test_script:
