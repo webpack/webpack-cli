@@ -441,11 +441,9 @@
 
 			if (argv.progress) {
 				const ProgressPlugin = require("webpack").ProgressPlugin;
-				compiler.apply(
-					new ProgressPlugin({
-						profile: argv.profile
-					})
-				);
+				new ProgressPlugin({
+					profile: argv.profile
+				}).apply(compiler);
 			}
 
 			if (outputOptions.infoVerbosity === "verbose") {
