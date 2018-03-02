@@ -1,9 +1,11 @@
-<a href="https://gitter.im/webpack/webpack">
-<div align="center"><a href="https://github.com/webpack/webpack-cli">
-  <img width="200" height="200" src="https://webpack.js.org/assets/icon-square-big.svg">
-</a>
+<div align="center">
+	<a href="https://github.com/webpack/webpack-cli">
+		<img width="200" height="200" src="https://webpack.js.org/assets/icon-square-big.svg">
+	</a>
 </div>
+<br>
 
+[![npm](https://img.shields.io/npm/v/webpack-cli.svg)](https://www.npmjs.com/package/webpack-cli)
 [![Build Status](https://travis-ci.org/webpack/webpack-cli.svg)](https://travis-ci.org/webpack/webpack-cli)
 [![Build status](https://ci.appveyor.com/api/projects/status/c2a37nlrfv9mg64f?svg=true)](https://ci.appveyor.com/project/ev1stensberg/webpack-cli)
 [![Dependency Status](https://david-dm.org/webpack/webpack-cli.svg)](https://david-dm.org/webpack/webpack-cli)
