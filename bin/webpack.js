@@ -318,7 +318,7 @@
 			});
 
 			if (typeof outputOptions.colors === "undefined")
-				outputOptions.colors = require("supports-color");
+				outputOptions.colors = require("supports-color").stdout;
 
 			ifArg("sort-modules-by", function(value) {
 				outputOptions.modulesSort = value;
