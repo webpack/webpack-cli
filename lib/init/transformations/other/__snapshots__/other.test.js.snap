@@ -23,7 +23,7 @@ exports[`amd transforms correctly using "other-1" data 1`] = `
 	profile: true,
 	merge: 'NotMuch',
 	parallelism: 69,
-	recordsInputPath: 'somethign',
+	recordsInputPath: 'something',
 	recordsOutputPath: 'else',
 	recordsPath: 'Brooklyn',
 	amd: {
@@ -54,7 +54,7 @@ exports[`bail transforms correctly using "other-1" data 1`] = `
 	profile: true,
 	merge: 'NotMuch',
 	parallelism: 69,
-	recordsInputPath: 'somethign',
+	recordsInputPath: 'something',
 	recordsOutputPath: 'else',
 	recordsPath: 'Brooklyn',
 	amd: {
@@ -99,7 +99,7 @@ exports[`cache transforms correctly using "other-1" data 1`] = `
 	profile: true,
 	merge: 'NotMuch',
 	parallelism: 69,
-	recordsInputPath: 'somethign',
+	recordsInputPath: 'something',
 	recordsOutputPath: 'else',
 	recordsPath: 'Brooklyn',
 	amd: {
@@ -118,7 +118,7 @@ exports[`cache transforms correctly using "other-1" data 2`] = `
 	profile: true,
 	merge: 'NotMuch',
 	parallelism: 69,
-	recordsInputPath: 'somethign',
+	recordsInputPath: 'something',
 	recordsOutputPath: 'else',
 	recordsPath: 'Brooklyn',
 	amd: {
@@ -147,7 +147,7 @@ exports[`merge transforms correctly using "other-1" data 1`] = `
 	profile: true,
 	merge: 'NotMuch',
 	parallelism: 69,
-	recordsInputPath: 'somethign',
+	recordsInputPath: 'something',
 	recordsOutputPath: 'else',
 	recordsPath: 'Brooklyn',
 	amd: {
@@ -178,7 +178,7 @@ exports[`parallelism transforms correctly using "other-1" data 1`] = `
 	profile: true,
 	merge: 'NotMuch',
 	parallelism: 20,
-	recordsInputPath: 'somethign',
+	recordsInputPath: 'something',
 	recordsOutputPath: 'else',
 	recordsPath: 'Brooklyn',
 	amd: {
@@ -210,7 +210,7 @@ exports[`profile transforms correctly using "other-1" data 1`] = `
 	profile: false,
 	merge: 'NotMuch',
 	parallelism: 69,
-	recordsInputPath: 'somethign',
+	recordsInputPath: 'something',
 	recordsOutputPath: 'else',
 	recordsPath: 'Brooklyn',
 	amd: {
@@ -273,7 +273,7 @@ exports[`recordsOutputPath transforms correctly using "other-1" data 1`] = `
 	profile: true,
 	merge: 'NotMuch',
 	parallelism: 69,
-	recordsInputPath: 'somethign',
+	recordsInputPath: 'something',
 	recordsOutputPath: path.join('src', theirs),
 	recordsPath: 'Brooklyn',
 	amd: {
@@ -304,7 +304,7 @@ exports[`recordsPath transforms correctly using "other-1" data 1`] = `
 	profile: true,
 	merge: 'NotMuch',
 	parallelism: 69,
-	recordsInputPath: 'somethign',
+	recordsInputPath: 'something',
 	recordsOutputPath: 'else',
 	recordsPath: path.resolve(__dirname, 'gradle.json'),
 	amd: {
