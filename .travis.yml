@@ -23,8 +23,9 @@ notifications:
   email: false
 
 install:
-  - yarn add global codecov
-  - yarn add global eslint
+  - npm install
+  - npm install --global codecov
+  - npm install --global eslint
 
 before_script:
   - export DISPLAY=:99.0
