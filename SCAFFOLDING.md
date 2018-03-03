@@ -19,7 +19,7 @@ webpack-addon?](https://github.com/ev1stensberg/webpack-addons-demo).
 
 If the package is on npm, its name must have a prefix of `webpack-addons`.
 
-If the package is on your local filesystem, it can be named whatever you want. Pass the name of the package as a relative path to its root directory.
+If the package is on your local filesystem, it can be named whatever you want. Pass the path to the package.
 
 ## API
 
