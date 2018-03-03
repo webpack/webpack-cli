@@ -80,7 +80,7 @@
 			type: "boolean",
 			alias: "colors",
 			default: function supportsColor() {
-				return require("supports-color");
+				return require("supports-color").supportsColor;
 			},
 			group: DISPLAY_GROUP,
 			describe: "Enables/Disables colors on the console"
@@ -257,7 +257,7 @@
 		const stdout = argv.silent
 			? {
 				write: () => {}
-			}
+			  } // eslint-disable-line
 			: process.stdout;
 
 		function ifArg(name, fn, init) {
@@ -318,7 +318,7 @@
 			});
 
 			if (typeof outputOptions.colors === "undefined")
-				outputOptions.colors = require("supports-color");
+				outputOptions.colors = require("supports-color").stdout;
 
 			ifArg("sort-modules-by", function(value) {
 				outputOptions.modulesSort = value;
@@ -441,11 +441,9 @@
 
 			if (argv.progress) {
 				const ProgressPlugin = require("webpack").ProgressPlugin;
-				compiler.apply(
-					new ProgressPlugin({
-						profile: argv.profile
-					})
-				);
+				new ProgressPlugin({
+					profile: argv.profile
+				}).apply(compiler);
 			}
 
 			if (outputOptions.infoVerbosity === "verbose") {

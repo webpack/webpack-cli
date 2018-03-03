@@ -12,19 +12,17 @@ build: off
 
 install:
   - ps: Install-Product node $env:nodejs_version $env:platform
-  - npm install yarn -g
-  - yarn
-  - yarn add global codecov
+  - npm install
+  - npm install --global codecov
+  - npm install eslint-plugin-node@latest --save-dev
 
 test_script:
   - node --version
   - npm --version
-  - yarn --version
-  - which yarn
-  - yarn appveyor:prepare
-  - yarn appveyor:lint
-  - yarn appveyor:test
-  - yarn bundlesize
+  - which npm
+  - npm run appveyor:lint
+  - npm run appveyor:test
+  - npm run bundlesize
 
 cache:
-  - node_modules -> appveyor.yml,package.json,yarn.lock
+  - node_modules -> appveyor.yml,package.json,package-lock.json

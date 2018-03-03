@@ -153,11 +153,9 @@ module.exports = function processOptions(yargs, argv) {
 
 	if (argv.progress) {
 		const ProgressPlugin = require("webpack").ProgressPlugin;
-		compiler.apply(
-			new ProgressPlugin({
-				profile: argv.profile
-			})
-		);
+		new ProgressPlugin({
+			profile: argv.profile
+		}).apply(compiler);
 	}
 
 	function compilerCallback(err, stats) {

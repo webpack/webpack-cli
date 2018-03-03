@@ -1,3 +1,86 @@
+ <a name="2.0.10"></a>
+# 2.0.10 (2018-03-02)
+[Full Changelog](https://github.com/webpack/webpack-cli/compare/v2.0.4...v2.0.10)
+
+## New Features
+
+* show help when no options given ([a7ee15a](https://github.com/webpack/webpack-cli/commit/a7ee15a))
+* chore: add project tools and utilities ([#270](https://github.com/webpack/webpack-cli/pull/270))
+
+## Ast
+
+* init: fix init command ([d36cd4f](https://github.com/webpack/webpack-cli/commit/d36cd4f))
+
+## Chore
+
+* .gitignore: ignore .vscode ([a322505](https://github.com/webpack/webpack-cli/commit/a322505))
+* .gitignore: ignore .vscode ([ab0eacc](https://github.com/webpack/webpack-cli/commit/ab0eacc))
+* add: temp remove add from cli ([f663215](https://github.com/webpack/webpack-cli/commit/f663215))
+* changelog: v.2.0.7 changelog ([a165269](https://github.com/webpack/webpack-cli/commit/a165269))
+* clean: remove unused dependency ([4a395d7](https://github.com/webpack/webpack-cli/commit/4a395d7))
+* deps: bump uglify dep and cli version ([81a9f1e](https://github.com/webpack/webpack-cli/commit/81a9f1e))
+* packager: remove yarn ([#302](https://github.com/webpack/webpack-cli/pull/302))
+* pkg.json: remove commitmsg cmd ([4dff074](https://github.com/webpack/webpack-cli/commit/4dff074))
+* refactor: update supports-color usage ([4566fde](https://github.com/webpack/webpack-cli/commit/4566fde))
+* refactor: update supports-color usage ([97b2df3](https://github.com/webpack/webpack-cli/commit/97b2df3))
+* revert: revert yargs to 9.0.1 ([7ef13ef](https://github.com/webpack/webpack-cli/commit/7ef13ef))
+* upgrade: update all dependencies, devDependencies ([4bf64bf](https://github.com/webpack/webpack-cli/commit/4bf64bf))
+* version: v.2.0.9 ([4cf5e17](https://github.com/webpack/webpack-cli/commit/4cf5e17))
+
+## CLI
+
+* devServer: change devServer path ([c27e961](https://github.com/webpack/webpack-cli/commit/c27e961))
+* version: v.2.0.8 ([9406912](https://github.com/webpack/webpack-cli/commit/9406912))
+
+## Fix
+
+* generator: use yeoman clone ([0b4269c](https://github.com/webpack/webpack-cli/commit/0b4269c))
+* yeoman-generator fork issue ([#294](https://github.com/webpack/webpack-cli/pull/294))
+* Resolve webpack dependencies ([#251](https://github.com/webpack/webpack-cli/pull/251))
+* change help logic ([d67f4b7](https://github.com/webpack/webpack-cli/commit/d67f4b7))
+
+## Improvement
+
+* add an option to watch messaging. Add .idea to .gitignore ([#200](https://github.com/webpack/webpack-cli/pull/200))
+
+## Refactor
+
+* convert-args: remove unused arguments ([#253](https://github.com/webpack/webpack-cli/pull/253))
+
+## Style
+
+* run formatter ([7be0da7](https://github.com/webpack/webpack-cli/commit/7be0da7))
+
+## Tests
+
+* add test for showing help on no options ([cf43939](https://github.com/webpack/webpack-cli/commit/cf43939))
+* mode: add mode tests ([#285](https://github.com/webpack/webpack-cli/pull/285))
+* update: migrate snapshot ([3c4e6f7](https://github.com/webpack/webpack-cli/commit/3c4e6f7))
+* update: migrate snapshot ([c322067](https://github.com/webpack/webpack-cli/commit/c322067))
+
+## Misc
+
+* refactor: reduce code duplication use process.exitCode instead of process.exit ([#272](https://github.com/webpack/webpack-cli/pull/272))
+* [feature] configuration validation ([#240](https://github.com/webpack/webpack-cli/pull/240))
+* Commitlint ([#300](https://github.com/webpack/webpack-cli/pull/300))
+* Change from git:// to https:// ([#259](https://github.com/webpack/webpack-cli/pull/259))
+* Add jsdoc comments for migrate ([#255](https://github.com/webpack/webpack-cli/pull/255))
+* strict Promise configuration validation ([#298](https://github.com/webpack/webpack-cli/pull/298))
+* Refactor bin directory ([#263](https://github.com/webpack/webpack-cli/pull/263))
+* Issue 249 fixed and other enums refactored ([#264](https://github.com/webpack/webpack-cli/pull/264))
+* remove yargs major update due security compromise ([9bd7ed4](https://github.com/webpack/webpack-cli/commit/9bd7ed4))
+* Revert "Show help on no command" ([#276](https://github.com/webpack/webpack-cli/pull/276))
+* 2.0.5 ([94ac6db](https://github.com/webpack/webpack-cli/commit/94ac6db))
+* v.2.0.6 ([4333088](https://github.com/webpack/webpack-cli/commit/4333088))
+* fix typo.. ([0f1cee6](https://github.com/webpack/webpack-cli/commit/0f1cee6))
+* binTestCases: remove obsolete snapshot ([42301d7](https://github.com/webpack/webpack-cli/commit/42301d7))
+* dep: add webpack 4 as peer dependency ([#297](https://github.com/webpack/webpack-cli/pull/297))
+* migrate: prettify output ([#281](https://github.com/webpack/webpack-cli/pull/281))
+* revert: revert supports-color usage ([f8e819a](https://github.com/webpack/webpack-cli/commit/f8e819a))
+* revert: revert supports-color usage ([75f706b](https://github.com/webpack/webpack-cli/commit/75f706b))
+* syntax: prettify ([5cb146f](https://github.com/webpack/webpack-cli/commit/5cb146f))
+* yargs: add description for module-bind-* args ([#286](https://github.com/webpack/webpack-cli/pull/286))
+
  <a name="2.0.9"></a>
 # 2.0.9 (2018-02-25)
 [Full Changelog](https://github.com/webpack/webpack-cli/compare/v2.0.4...v2.0.9)
