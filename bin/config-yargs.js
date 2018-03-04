@@ -1,6 +1,3 @@
-const chalk = require("chalk");
-const logSymbols = require("log-symbols");
-
 const CONFIG_GROUP = "Config options:";
 const BASIC_GROUP = "Basic options:";
 const MODULE_GROUP = "Module options:";
@@ -352,15 +349,9 @@ module.exports = function(yargs) {
 				group: BASIC_GROUP
 			}
 		})
-		.demandCommand(1,
-			"\n" + logSymbols.error + chalk.blue(" ERROR ") + "Insufficient number of arguments provided " +
-			"\n" + logSymbols.info + chalk.blue(" INFO ") + "Alternatively, run `webpack(-cli) --help` for usage info." +
-			"\n\n"
-		)
 		.fail((msg, err, yargs) => {
 			if (err) throw err; // preserve stack
 			process.stdout.write(msg);
-			process.exit(1);
 		})
 		.strict();
 };

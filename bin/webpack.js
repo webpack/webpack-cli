@@ -4,6 +4,8 @@
 	MIT License http://www.opensource.org/licenses/mit-license.php
 	Author Tobias Koppers @sokra
 */
+const chalk = require("chalk");
+const logSymbols = require("log-symbols");
 
 (function() {
 	// wrap in IIFE to be able to use return
@@ -474,8 +476,19 @@
 					);
 				} else if (stats.hash !== lastHash) {
 					lastHash = stats.hash;
-					const statsString = stats.toString(outputOptions);
-					if (statsString) stdout.write(statsString + "\n");
+					if (stats.compilation && stats.compilation.errors.length !== 0) {
+						const errors = stats.compilation.errors;
+						if (errors[0].name === "EntryModuleNotFoundError") {
+							stdout.write(
+								"\n" + logSymbols.error + chalk.blue(" ERROR ") + "Insufficient number of arguments provided " +
+								"\n" + logSymbols.info + chalk.blue(" INFO ") + "Alternatively, run `webpack(-cli) --help` for usage info." +
+								"\n\n"
+							);
+						}
+					} else {
+						const statsString = stats.toString(outputOptions);
+						if (statsString) stdout.write(statsString + "\n");
+					}
 				}
 				if (!options.watch && stats.hasErrors()) {
 					process.exitCode = 2;
