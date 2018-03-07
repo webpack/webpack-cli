@@ -25,6 +25,6 @@ module.exports = {
 		{ value: "cli", name: "cli:		Core CLI things" },
 		{ value: "misc", name: "misc:		Other formats like tweaks and such" },
 		{ value: "chore", name: "chore:	Updating docs, linting, etc" },
-		{ value: "fix", name: "fix: it fixes a small bug" }
+		{ value: "fix", name: "fix: various fixes" }
 	]
 };
