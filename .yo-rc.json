@@ -1,33 +1,42 @@
 {
+  "webpack-addons-demo": {
+    "configuration": {
+      "dev": {
+        "webpackOptions": {}
+      }
+    }
+  },
   "webpack-cli": {
-    "webpackOptions": {
+    "configuration": {
       "config": {
         "webpackOptions": {
           "module": {
             "rules": [
               {
                 "test": {},
-                "exclude": "/node_modules/",
-                "loader": "'babel-loader'",
-                "options": {
-                  "presets": [
-                    "'env'"
-                  ]
-                }
-              },
-              {
-                "test": {},
-                "use": "ExtractTextPlugin.extract({ \n\t\t\t\t\t\t\t\tuse: [{\n\t\t\t\t\t\t\t\t\tloader: \"css-loader\",\n\t\t\t\t\t\t\t\t\toptions: {\n\t\t\t\t\t\t\t\t\t\tsourceMap: true\n\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t}, {\n\t\t\t\t\t\t\t\t\tloader: \"sass-loader\",\n\t\t\t\t\t\t\t\t\toptions: {\n\t\t\t\t\t\t\t\t\t\tsourceMap: true\n\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t}],\n\t\t\t\t\t\t\t\tfallback: \"style-loader\"\n\t\t\t\t\t\t\t })"
+                "use": [
+                  {
+                    "loader": "'style-loader'"
+                  },
+                  {
+                    "loader": "'css-loader'"
+                  },
+                  {
+                    "loader": "'sass-loader'"
+                  }
+                ]
               }
             ]
           },
           "plugins": [
-            "new UglifyJSPlugin()",
-            "new ExtractTextPlugin('style.css')"
+            "new UglifyJSPlugin()"
           ],
-          "entry": "\"n\"",
+          "entry": {
+            "a": "\"d.js\""
+          },
           "output": {
-            "filename": "'[name].bundle.js'",
+            "filename": "'[name].[chunkhash].js'",
+            "chunkFilename": "'[name].[chunkhash].js'",
             "path": "path.resolve(__dirname, 'dist')"
           }
         },
@@ -37,43 +46,7 @@
           "/*\n * We've enabled UglifyJSPlugin for you! This minifies your app\n * in order to load faster and run less javascript.\n *\n * https://github.com/webpack-contrib/uglifyjs-webpack-plugin\n *\n */",
           "const UglifyJSPlugin = require('uglifyjs-webpack-plugin');",
           "\n",
-          "/*\n * We've enabled ExtractTextPlugin for you. This allows your app to\n * use css modules that will be moved into a separate CSS file instead of inside\n * one of your module entries!\n *\n * https://github.com/webpack-contrib/extract-text-webpack-plugin\n *\n */",
-          "const ExtractTextPlugin = require('extract-text-webpack-plugin');",
-          "\n"
-        ],
-        "configName": "prod"
-      }
-    },
-    "configuration": {
-      "config": {
-        "webpackOptions": {
-          "module": {
-            "rules": [
-              {
-                "test": {},
-                "use": "ExtractTextPlugin.extract({ \n\t\t\t\t\t\t\t\tuse: [{\n\t\t\t\t\t\t\t\t\tloader: \"css-loader\",\n\t\t\t\t\t\t\t\t\toptions: {\n\t\t\t\t\t\t\t\t\t\tsourceMap: true\n\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t}, {\n\t\t\t\t\t\t\t\t\tloader: \"sass-loader\",\n\t\t\t\t\t\t\t\t\toptions: {\n\t\t\t\t\t\t\t\t\t\tsourceMap: true\n\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t}],\n\t\t\t\t\t\t\t\tfallback: \"style-loader\"\n\t\t\t\t\t\t\t })"
-              }
-            ]
-          },
-          "plugins": [
-            "new UglifyJSPlugin()",
-            "new ExtractTextPlugin('style.css')"
-          ],
-          "entry": "\"a\"",
-          "output": {
-            "filename": "'[name].bundle.js'",
-            "path": "path.resolve(__dirname, 'a')"
-          }
-        },
-        "topScope": [
-          "const webpack = require('webpack')",
-          "const path = require('path')",
-          "/*\n * We've enabled UglifyJSPlugin for you! This minifies your app\n * in order to load faster and run less javascript.\n *\n * https://github.com/webpack-contrib/uglifyjs-webpack-plugin\n *\n */",
-          "const UglifyJSPlugin = require('uglifyjs-webpack-plugin');",
-          "\n",
-          "/*\n * We've enabled ExtractTextPlugin for you. This allows your app to\n * use css modules that will be moved into a separate CSS file instead of inside\n * one of your module entries!\n *\n * https://github.com/webpack-contrib/extract-text-webpack-plugin\n *\n */",
-          "const ExtractTextPlugin = require('extract-text-webpack-plugin');",
-          "\n"
+          "/*\n * We've enabled commonsChunkPlugin for you. This allows your app to\n * load faster and it splits the modules you provided as entries across\n * different bundles!\n *\n * https://webpack.js.org/plugins/commons-chunk-plugin/\n *\n */"
         ]
       }
     }
