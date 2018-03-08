@@ -81,6 +81,7 @@
   },
   "dependencies": {
     "chalk": "^2.3.1",
+    "cosmiconfig": "^4.0.0",
     "cross-spawn": "^6.0.4",
     "diff": "^3.3.0",
     "enhanced-resolve": "^4.0.0",
@@ -104,7 +105,7 @@
     "webpack-addons": "^1.1.5",
     "yargs": "^11.0.0",
     "yeoman-environment": "^2.0.0",
-    "yeoman-generator": "github:ev1stensberg/generator#Feature-getArgument"
+    "yeoman-generator": "^2.0.3"
   },
   "peerDependencies": {
     "webpack": "^4.0.0-beta.1"
@@ -129,7 +130,7 @@
     "nyc": "^11.4.1",
     "prettier-eslint-cli": "^4.7.1",
     "schema-utils": "^0.4.5",
-    "webpack": "^4.0.1",
+    "webpack": "^4.1.1",
     "webpack-dev-server": "^3.0.0"
   }
 }
