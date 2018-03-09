@@ -22,7 +22,6 @@ test_script:
   - which npm
   - npm run appveyor:lint
   - npm run appveyor:test
-  - npm run bundlesize
 
 cache:
   - node_modules -> appveyor.yml,package.json,package-lock.json
