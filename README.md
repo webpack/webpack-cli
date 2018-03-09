@@ -14,7 +14,7 @@
 
 # Webpack CLI
 
-Webpack CLI encapsulates all code related to CLI handling. It captures options and sends them to webpack compiler. You can also find functionality for initializing a project and migrating between versions. For the time being, it is backwards-compatible with the CLI included in webpack itself.
+Webpack CLI encapsulates all code related to CLI handling. It captures options and sends them to webpack compiler. You can also find functionality for initializing a project and migrating between versions.
 
 ## Migration from webpack v1 to v2
 
