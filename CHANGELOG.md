@@ -1,3 +1,36 @@
+ <a name="2.0.11"></a>
+# 2.0.11 (2018-03-10)
+[Full Changelog](https://github.com/webpack/webpack-cli/compare/v2.0.10...v2.0.11)
+
+## Chore
+
+* bundlesize: change threshold ([2aedfda](https://github.com/webpack/webpack-cli/commit/2aedfda))
+* deps: upgrade deps ([#319](https://github.com/webpack/webpack-cli/pull/319))
+* docs: update docs ([3307e3b](https://github.com/webpack/webpack-cli/commit/3307e3b))
+* es6: changed 'var' into 'const' where convenient ([#325](https://github.com/webpack/webpack-cli/pull/325))
+* test: updated tests file names ([#324](https://github.com/webpack/webpack-cli/pull/324))
+
+## CLI
+
+* init: Refactor Yeoman ([#323](https://github.com/webpack/webpack-cli/pull/323))
+* tapable: Remove Tapable#apply calls ([#305](https://github.com/webpack/webpack-cli/pull/305))
+
+## Docs
+
+* update README to remove inconsistent CLI messaging (#327) ([#328](https://github.com/webpack/webpack-cli/pull/328))
+
+## Fix
+
+* migrate: move options to use ([#308](https://github.com/webpack/webpack-cli/pull/308))
+* adding 'fix' to whitelist ([10a00df](https://github.com/webpack/webpack-cli/commit/10a00df))
+
+## Misc
+
+* deps: clean up dependencies ([7078282](https://github.com/webpack/webpack-cli/commit/7078282))
+* generator: Allow local paths to generators ([#265](https://github.com/webpack/webpack-cli/pull/265))
+* grammar: revise spelling and incorrect syntax ([#293](https://github.com/webpack/webpack-cli/pull/293))
+* readme: add npm badge ([#303](https://github.com/webpack/webpack-cli/pull/303))
+
  <a name="2.0.10"></a>
 # 2.0.10 (2018-03-02)
 [Full Changelog](https://github.com/webpack/webpack-cli/compare/v2.0.4...v2.0.10)
