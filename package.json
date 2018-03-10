@@ -64,7 +64,7 @@
     },
     {
       "path": "./lib/init/**/**.js",
-      "maxSize": "1.5 kB"
+      "maxSize": "1.6 kB"
     },
     {
       "path": "./lib/utils/**.js",
