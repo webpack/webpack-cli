@@ -12,6 +12,10 @@
 # Node dependencies
 node_modules
 
+# yarn
+
+yarn.lock
+
 # npm-debug log
 npm-debug.*
 
