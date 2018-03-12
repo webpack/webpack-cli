@@ -12,7 +12,6 @@ module.exports = {
 
 exports[`loaderOptionsPlugin transforms correctly using "loaderOptionsPlugin-1" data 1`] = `
 "module.exports = {
-    debug: true,
     plugins: [
         new webpack.optimize.UglifyJsPlugin(),
         new webpack.LoaderOptionsPlugin({
