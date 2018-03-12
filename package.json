@@ -98,6 +98,7 @@
     "p-each-series": "^1.0.0",
     "p-lazy": "^1.0.0",
     "prettier": "^1.5.3",
+    "recast": "^0.14.5",
     "resolve-cwd": "^2.0.0",
     "supports-color": "^5.3.0",
     "v8-compile-cache": "^1.1.2",
