@@ -1,0 +1,3 @@
+--entry ./index.js
+--display normal
+--build-delimiter success
