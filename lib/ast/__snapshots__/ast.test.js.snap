@@ -2,10 +2,16 @@
 
 exports[`amd transforms correctly using "other-0" data 1`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    amd: {
+        jQuery: true,
+        kQuery: false
+    }
 }
 "
 `;
@@ -30,10 +36,13 @@ exports[`amd transforms correctly using "other-1" data 1`] = `
 
 exports[`bail transforms correctly using "other-0" data 1`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    bail: true
 }
 "
 `;
@@ -58,20 +67,26 @@ exports[`bail transforms correctly using "other-1" data 1`] = `
 
 exports[`cache transforms correctly using "other-0" data 1`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    cache: true
 }
 "
 `;
 
 exports[`cache transforms correctly using "other-0" data 2`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    cache: cacheVal
 }
 "
 `;
@@ -114,37 +129,47 @@ exports[`cache transforms correctly using "other-1" data 2`] = `
 
 exports[`context transforms correctly using "context-0" data 1`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    context: path.resolve(__dirname, 'app')
 }
 "
 `;
 
 exports[`context transforms correctly using "context-1" data 1`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    context: './some/fake/path'
 }
 "
 `;
 
 exports[`context transforms correctly using "context-2" data 1`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    context: contextVariable
 }
 "
 `;
 
 exports[`context transforms correctly using "context-3" data 1`] = `
 "module.exports = {
-	entry: 'index.js',
+    entry: 'index.js',
+    context: path.join('dist', mist)
 }
 "
 `;
@@ -159,30 +184,47 @@ exports[`context transforms correctly using "context-4" data 1`] = `
 
 exports[`devServer transforms correctly using "devServer-0" data 1`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
 	},
+
+    devServer: {
+        contentBase: path.join(__dirname, 'dist'),
+        compress: true,
+        port: 9000
+    }
 }
 "
 `;
 
 exports[`devServer transforms correctly using "devServer-1" data 1`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    devServer: someVar
 }
 "
 `;
 
 exports[`devServer transforms correctly using "devServer-2" data 1`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    devServer: {
+        contentBase: path.join(__dirname, 'dist'),
+        compress: true,
+        port: 9000
+    }
 }
 "
 `;
@@ -217,70 +259,91 @@ exports[`devServer transforms correctly using "devServer-4" data 1`] = `
 
 exports[`devtool transforms correctly using "devtool-0" data 1`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    devtool: 'source-map'
 }
 "
 `;
 
 exports[`devtool transforms correctly using "devtool-0" data 2`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    devtool: myVariable
 }
 "
 `;
 
 exports[`devtool transforms correctly using "devtool-1" data 1`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    devtool: 'cheap-module-source-map'
 }
 "
 `;
 
 exports[`devtool transforms correctly using "devtool-1" data 2`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    devtool: false
 }
 "
 `;
 
 exports[`devtool transforms correctly using "devtool-2" data 1`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    devtool: 'source-map'
 }
 "
 `;
 
 exports[`devtool transforms correctly using "devtool-3" data 1`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    devtool: myVariable
 }
 "
 `;
 
 exports[`devtool transforms correctly using "devtool-3" data 2`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    devtool: 'cheap-module-source-map'
 }
 "
 `;
@@ -308,62 +371,97 @@ exports[`devtool transforms correctly using "devtool-4" data 2`] = `
 `;
 
 exports[`entry transforms correctly using "entry-0" data 1`] = `
-"module.exports = {}
+"module.exports = {
+  entry: 'index.js'
+}
 "
 `;
 
 exports[`entry transforms correctly using "entry-0" data 2`] = `
-"module.exports = {}
+"module.exports = {
+  entry: ['index.js', 'app.js']
+}
 "
 `;
 
 exports[`entry transforms correctly using "entry-0" data 3`] = `
-"module.exports = {}
+"module.exports = {
+  entry: {
+    index: 'index.js',
+    app: 'app.js'
+  }
+}
 "
 `;
 
 exports[`entry transforms correctly using "entry-0" data 4`] = `
-"module.exports = {}
+"module.exports = {
+  entry: {
+    inject: something,
+    app: 'app.js',
+    inject_1: else
+  }
+}
 "
 `;
 
 exports[`entry transforms correctly using "entry-0" data 5`] = `
-"module.exports = {}
+"module.exports = {
+  entry: () => 'index.js'
+}
 "
 `;
 
 exports[`entry transforms correctly using "entry-0" data 6`] = `
-"module.exports = {}
+"module.exports = {
+  entry: () => new Promise((resolve) => resolve(['./app', './router']))
+}
 "
 `;
 
 exports[`entry transforms correctly using "entry-0" data 7`] = `
-"module.exports = {}
+"module.exports = {
+  entry: entryStringVariable
+}
 "
 `;
 
 exports[`entry transforms correctly using "entry-0" data 8`] = `
-"module.exports = {}
+"module.exports = {
+  entry: 'index.js'
+}
 "
 `;
 
 exports[`entry transforms correctly using "entry-0" data 9`] = `
-"module.exports = {}
+"module.exports = {
+  entry: ['index.js', 'app.js']
+}
 "
 `;
 
 exports[`entry transforms correctly using "entry-0" data 10`] = `
-"module.exports = {}
+"module.exports = {
+  entry: {
+    inject: something,
+    ed: 'eddy.js',
+    inject_1: else
+  }
+}
 "
 `;
 
 exports[`entry transforms correctly using "entry-0" data 11`] = `
-"module.exports = {}
+"module.exports = {
+  entry: () => new Promise((resolve) => resolve(['./app', './router']))
+}
 "
 `;
 
 exports[`entry transforms correctly using "entry-0" data 12`] = `
-"module.exports = {}
+"module.exports = {
+  entry: entryStringVariable
+}
 "
 `;
 
@@ -389,70 +487,112 @@ exports[`entry transforms correctly using "entry-1" data 2`] = `
 
 exports[`externals transforms correctly using "externals-0" data 1`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    externals: {}
 }
 "
 `;
 
 exports[`externals transforms correctly using "externals-1" data 1`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    externals: {
+        jquery: 'jQuery',
+        react: 'react'
+    }
 }
 "
 `;
 
 exports[`externals transforms correctly using "externals-1" data 2`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    externals: myObj
 }
 "
 `;
 
 exports[`externals transforms correctly using "externals-1" data 3`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    externals: {
+        jquery: 'jQuery',
+        react: reactObj
+    }
 }
 "
 `;
 
 exports[`externals transforms correctly using "externals-1" data 4`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    externals: {
+        jquery: 'jQuery',
+        react: [reactObj, path.join(__dirname, 'app'), 'jquery']
+    }
 }
 "
 `;
 
 exports[`externals transforms correctly using "externals-1" data 5`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    externals: {
+        lodash: {
+            commonjs: 'lodash',
+            amd: 'lodash',
+            root: '_'
+        }
+    }
 }
 "
 `;
 
 exports[`externals transforms correctly using "externals-1" data 6`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    externals: {
+        lodash: {
+            commonjs: lodash,
+            amd: hidash,
+            root: _
+        }
+    }
 }
 "
 `;
@@ -479,10 +619,13 @@ exports[`externals transforms correctly using "externals-1" data 8`] = `
 
 exports[`merge transforms correctly using "other-0" data 1`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    merge: myConfig
 }
 "
 `;
@@ -506,12 +649,16 @@ exports[`merge transforms correctly using "other-1" data 1`] = `
 `;
 
 exports[`mode transforms correctly using "mode-1" data 1`] = `
-"module.exports = {};
+"module.exports = {
+  mode: 'production'
+};
 "
 `;
 
 exports[`mode transforms correctly using "mode-1" data 2`] = `
-"module.exports = {};
+"module.exports = {
+  mode: modeVariable
+};
 "
 `;
 
@@ -627,10 +774,21 @@ exports[`module transforms correctly using "module-2" data 1`] = `
 
 exports[`node transforms correctly using "node-0" data 1`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    node: {
+        console: false,
+        global: true,
+        process: true,
+        Buffer: true,
+        __filename: mock,
+        __dirname: mock,
+        setImmediate: true
+    }
 }
 "
 `;
@@ -661,10 +819,13 @@ exports[`output transforms correctly using "output-1" data 1`] = `
 
 exports[`parallelism transforms correctly using "other-0" data 1`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    parallelism: 10
 }
 "
 `;
@@ -689,10 +850,18 @@ exports[`parallelism transforms correctly using "other-1" data 1`] = `
 
 exports[`performance transforms correctly using "performance-0" data 1`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    performance: {
+        hints: 'warning',
+        maxEntrypointSize: 400000,
+        maxAssetSize: 100000,
+        assetFilter: function(assetFilename) {return assetFilename.endsWith('.js');}
+    }
 }
 "
 `;
@@ -714,20 +883,28 @@ exports[`performance transforms correctly using "performance-1" data 1`] = `
 
 exports[`plugins transforms correctly using "plugins-0" data 1`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    plugins: [
+        new webpack.optimize.CommonsChunkPlugin({name:'vendor',filename:'vendor-[hash].min.js'})
+    ]
 }
 "
 `;
 
 exports[`plugins transforms correctly using "plugins-0" data 2`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    plugins: new webpack.optimize.DefinePlugin()
 }
 "
 `;
@@ -745,10 +922,13 @@ exports[`plugins transforms correctly using "plugins-1" data 1`] = `
 
 exports[`profile transforms correctly using "other-0" data 1`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    profile: true
 }
 "
 `;
@@ -773,10 +953,13 @@ exports[`profile transforms correctly using "other-1" data 1`] = `
 
 exports[`recordsInputPath transforms correctly using "other-0" data 1`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    recordsInputPath: path.join('dist', mine)
 }
 "
 `;
@@ -801,10 +984,13 @@ exports[`recordsInputPath transforms correctly using "other-1" data 1`] = `
 
 exports[`recordsOutputPath transforms correctly using "other-0" data 1`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    recordsOutputPath: path.join('src', yours)
 }
 "
 `;
@@ -829,10 +1015,13 @@ exports[`recordsOutputPath transforms correctly using "other-1" data 1`] = `
 
 exports[`recordsPath transforms correctly using "other-0" data 1`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    recordsPath: path.join(__dirname, 'records.json')
 }
 "
 `;
@@ -857,10 +1046,32 @@ exports[`recordsPath transforms correctly using "other-1" data 1`] = `
 
 exports[`resolve transforms correctly using "resolve-0" data 1`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    resolve: {
+        alias: {
+            inject: {{#if_eq build 'standalone'}},
+            hello: 'world',
+            inject_1: {{/if_eq}},
+            world: hello
+        },
+
+        aliasFields: ['browser', wars],
+        descriptionFiles: ['a', b],
+        enforceExtension: false,
+        enforceModuleExtension: false,
+        extensions: [hey, 'ho'],
+        mainFields: [main, 'story'],
+        mainFiles: ['noMainFileHere', iGuess],
+        modules: [one, 'two'],
+        unsafeCache: false,
+        plugins: [somePlugin, 'stringVal'],
+        symlinks: true
+    }
 }
 "
 `;
@@ -902,10 +1113,17 @@ exports[`resolve transforms correctly using "resolve-1" data 1`] = `
 
 exports[`resolveLoader transforms correctly using "resolveLoader-0" data 1`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    resolveLoader: {
+        modules: ['ok', mode_nodules],
+        mainFields: [no, 'main'],
+        moduleExtensions: ['-kn', ok]
+    }
 }
 "
 `;
@@ -925,30 +1143,78 @@ exports[`resolveLoader transforms correctly using "resolveLoader-1" data 1`] = `
 
 exports[`stats transforms correctly using "stats-0" data 1`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    stats: {
+        assets: true,
+        assetsSort: 'field',
+        cached: true,
+        cachedAssets: true,
+        children: true,
+        chunks: true,
+        chunkModules: true,
+        chunkOrigins: true,
+        chunksSort: 'field',
+        context: '../src/',
+        colors: true,
+        depth: false,
+        entrypoints: customVal,
+        errors: true,
+        errorDetails: true,
+        exclude: [],
+        hash: true,
+        maxModules: 15,
+        modules: true,
+        modulesSort: 'field',
+        performance: true,
+        providedExports: false,
+        publicPath: true,
+        reasons: true,
+        source: true,
+        timings: true,
+        usedExports: false,
+        version: true,
+        warnings: true
+    }
 }
 "
 `;
 
 exports[`stats transforms correctly using "stats-0" data 2`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    stats: 'errors-only'
 }
 "
 `;
 
 exports[`stats transforms correctly using "stats-0" data 3`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    stats: {
+        assets: true,
+        assetsSort: 'naw',
+        cached: true,
+        cachedAssets: true,
+        children: true,
+        chunks: true,
+        version: true,
+        warnings: false
+    }
 }
 "
 `;
@@ -991,40 +1257,52 @@ exports[`stats transforms correctly using "stats-1" data 2`] = `
 
 exports[`target transforms correctly using "target-0" data 1`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    target: 'async-node'
 }
 "
 `;
 
 exports[`target transforms correctly using "target-0" data 2`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    target: 'async-node'
 }
 "
 `;
 
 exports[`target transforms correctly using "target-1" data 1`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    target: node
 }
 "
 `;
 
 exports[`target transforms correctly using "target-1" data 2`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    target: 'node'
 }
 "
 `;
@@ -1041,73 +1319,95 @@ exports[`target transforms correctly using "target-2" data 1`] = `
 `;
 
 exports[`top-scope transforms correctly using "top-scope-0" data 1`] = `
-"module.exports = {}
+"module.exports = {
+  top-scope: [const test = 'me';]
+}
 "
 `;
 
 exports[`top-scope transforms correctly using "top-scope-1" data 1`] = `
 "const webpack = require(\\"webpack\\");
 
-module.exports = {}
+module.exports = {
+  top-scope: [const webpack = require('webpack');]
+}
 "
 `;
 
 exports[`watch transforms correctly using "watch-0" data 1`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    watch: true
 }
 "
 `;
 
 exports[`watch transforms correctly using "watch-0" data 2`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    watch: false
 }
 "
 `;
 
 exports[`watch transforms correctly using "watch-0" data 3`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    watch: true
 }
 "
 `;
 
 exports[`watch transforms correctly using "watch-0" data 4`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    watch: false
 }
 "
 `;
 
 exports[`watch transforms correctly using "watch-1" data 1`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    watch: true
 }
 "
 `;
 
 exports[`watch transforms correctly using "watch-1" data 2`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    watch: false
 }
 "
 `;
@@ -1128,40 +1428,68 @@ exports[`watch transforms correctly using "watch-4" data 2`] = `
 
 exports[`watchOptions transforms correctly using "watch-0" data 1`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    watchOptions: {
+        aggregateTimeout: 300,
+        poll: 1000,
+        ignored: /node_modules/
+    }
 }
 "
 `;
 
 exports[`watchOptions transforms correctly using "watch-0" data 2`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    watchOptions: {
+        aggregateTimeout: 300,
+        poll: 1000,
+        ignored: /node_modules/
+    }
 }
 "
 `;
 
 exports[`watchOptions transforms correctly using "watch-1" data 1`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    watchOptions: {
+        aggregateTimeout: 300,
+        poll: 1000,
+        ignored: /node_modules/
+    }
 }
 "
 `;
 
 exports[`watchOptions transforms correctly using "watch-2" data 1`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    watchOptions: {
+        aggregateTimeout: 300,
+        poll: 1000,
+        ignored: /node_modules/
+    }
 }
 "
 `;
