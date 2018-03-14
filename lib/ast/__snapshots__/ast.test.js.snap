@@ -1,0 +1,1199 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`amd transforms correctly using "other-0" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`amd transforms correctly using "other-1" data 1`] = `
+"module.exports = {
+	bail: true,
+	cache: true,
+	profile: true,
+	merge: 'NotMuch',
+	parallelism: 69,
+	recordsInputPath: 'something',
+	recordsOutputPath: 'else',
+	recordsPath: 'Brooklyn',
+	amd: {
+		jQuery: true,
+		kQuery: false
+	}
+};
+"
+`;
+
+exports[`bail transforms correctly using "other-0" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`bail transforms correctly using "other-1" data 1`] = `
+"module.exports = {
+	bail: true,
+	cache: true,
+	profile: true,
+	merge: 'NotMuch',
+	parallelism: 69,
+	recordsInputPath: 'something',
+	recordsOutputPath: 'else',
+	recordsPath: 'Brooklyn',
+	amd: {
+		jQuery: true,
+		kQuery: false
+	}
+};
+"
+`;
+
+exports[`cache transforms correctly using "other-0" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`cache transforms correctly using "other-0" data 2`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`cache transforms correctly using "other-1" data 1`] = `
+"module.exports = {
+	bail: true,
+	cache: true,
+	profile: true,
+	merge: 'NotMuch',
+	parallelism: 69,
+	recordsInputPath: 'something',
+	recordsOutputPath: 'else',
+	recordsPath: 'Brooklyn',
+	amd: {
+		jQuery: true,
+		kQuery: false
+	}
+};
+"
+`;
+
+exports[`cache transforms correctly using "other-1" data 2`] = `
+"module.exports = {
+	bail: true,
+	cache: true,
+	profile: true,
+	merge: 'NotMuch',
+	parallelism: 69,
+	recordsInputPath: 'something',
+	recordsOutputPath: 'else',
+	recordsPath: 'Brooklyn',
+	amd: {
+		jQuery: true,
+		kQuery: false
+	}
+};
+"
+`;
+
+exports[`context transforms correctly using "context-0" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`context transforms correctly using "context-1" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`context transforms correctly using "context-2" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`context transforms correctly using "context-3" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+}
+"
+`;
+
+exports[`context transforms correctly using "context-4" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	context: 'reassign me like one of your french girls'
+}
+"
+`;
+
+exports[`devServer transforms correctly using "devServer-0" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	},
+}
+"
+`;
+
+exports[`devServer transforms correctly using "devServer-1" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`devServer transforms correctly using "devServer-2" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`devServer transforms correctly using "devServer-3" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	},
+	devServer: {
+	contentBase: \\"edSheeran\\",
+	compress: true,
+	port: 9000
+}
+}
+"
+`;
+
+exports[`devServer transforms correctly using "devServer-4" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	},
+	devServer: {
+		empti: \\"ness\\"
+	}
+}
+"
+`;
+
+exports[`devtool transforms correctly using "devtool-0" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`devtool transforms correctly using "devtool-0" data 2`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`devtool transforms correctly using "devtool-1" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`devtool transforms correctly using "devtool-1" data 2`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`devtool transforms correctly using "devtool-2" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`devtool transforms correctly using "devtool-3" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`devtool transforms correctly using "devtool-3" data 2`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`devtool transforms correctly using "devtool-4" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	},
+	devtool: 'eval'
+}
+"
+`;
+
+exports[`devtool transforms correctly using "devtool-4" data 2`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	},
+	devtool: 'eval'
+}
+"
+`;
+
+exports[`entry transforms correctly using "entry-0" data 1`] = `
+"module.exports = {}
+"
+`;
+
+exports[`entry transforms correctly using "entry-0" data 2`] = `
+"module.exports = {}
+"
+`;
+
+exports[`entry transforms correctly using "entry-0" data 3`] = `
+"module.exports = {}
+"
+`;
+
+exports[`entry transforms correctly using "entry-0" data 4`] = `
+"module.exports = {}
+"
+`;
+
+exports[`entry transforms correctly using "entry-0" data 5`] = `
+"module.exports = {}
+"
+`;
+
+exports[`entry transforms correctly using "entry-0" data 6`] = `
+"module.exports = {}
+"
+`;
+
+exports[`entry transforms correctly using "entry-0" data 7`] = `
+"module.exports = {}
+"
+`;
+
+exports[`entry transforms correctly using "entry-0" data 8`] = `
+"module.exports = {}
+"
+`;
+
+exports[`entry transforms correctly using "entry-0" data 9`] = `
+"module.exports = {}
+"
+`;
+
+exports[`entry transforms correctly using "entry-0" data 10`] = `
+"module.exports = {}
+"
+`;
+
+exports[`entry transforms correctly using "entry-0" data 11`] = `
+"module.exports = {}
+"
+`;
+
+exports[`entry transforms correctly using "entry-0" data 12`] = `
+"module.exports = {}
+"
+`;
+
+exports[`entry transforms correctly using "entry-1" data 1`] = `
+"module.exports = {
+	entry: {
+		index: 'index.js',
+		ed: 'sheeran'
+	}
+}
+"
+`;
+
+exports[`entry transforms correctly using "entry-1" data 2`] = `
+"module.exports = {
+	entry: {
+		index: 'index.js',
+		ed: 'sheeran'
+	}
+}
+"
+`;
+
+exports[`externals transforms correctly using "externals-0" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`externals transforms correctly using "externals-1" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`externals transforms correctly using "externals-1" data 2`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`externals transforms correctly using "externals-1" data 3`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`externals transforms correctly using "externals-1" data 4`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`externals transforms correctly using "externals-1" data 5`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`externals transforms correctly using "externals-1" data 6`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`externals transforms correctly using "externals-1" data 7`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`externals transforms correctly using "externals-1" data 8`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`merge transforms correctly using "other-0" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`merge transforms correctly using "other-1" data 1`] = `
+"module.exports = {
+	bail: true,
+	cache: true,
+	profile: true,
+	merge: 'NotMuch',
+	parallelism: 69,
+	recordsInputPath: 'something',
+	recordsOutputPath: 'else',
+	recordsPath: 'Brooklyn',
+	amd: {
+		jQuery: true,
+		kQuery: false
+	}
+};
+"
+`;
+
+exports[`mode transforms correctly using "mode-1" data 1`] = `
+"module.exports = {};
+"
+`;
+
+exports[`mode transforms correctly using "mode-1" data 2`] = `
+"module.exports = {};
+"
+`;
+
+exports[`mode transforms correctly using "mode-2" data 1`] = `
+"module.exports = {
+	mode: 'development'
+}
+"
+`;
+
+exports[`mode transforms correctly using "mode-2" data 2`] = `
+"module.exports = {
+	mode: 'development'
+}
+"
+`;
+
+exports[`module transforms correctly using "module-0" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`module transforms correctly using "module-0" data 2`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`module transforms correctly using "module-0" data 3`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`module transforms correctly using "module-1" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`module transforms correctly using "module-1" data 2`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`module transforms correctly using "module-2" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	},
+	module: {
+		rules: [
+			{
+				loader: \\"'eslint-loader'\\",
+				enforce: \\"'pre'\\",
+				include: [\\"hey\\", \\"'Stringy'\\"],
+				options: {
+					formatter: \\"'someOption'\\"
+				}
+			},
+			{
+				loader: \\"'vue-loader'\\",
+				options: \\"vueObject\\"
+			},
+			{
+				loader: \\"'babel-loader'\\",
+				include: [\\"resolve('src')\\", \\"resolve('test')\\"]
+			},
+			{
+				loader: \\"'url-loader'\\",
+				options: {
+					limit: 10000,
+					name: \\"utils.assetsPath('img/[name].[hash:7].[ext]')\\",
+					inject: \\"{{#if_eq build 'standalone'}}\\"
+				}
+			},
+			{
+				loader: \\"'url-loader'\\",
+				inject: \\"{{#if_eq build 'standalone'}}\\",
+				options: {
+					limit: \\"10000\\",
+					name: \\"utils.assetsPath('fonts/[name].[hash:7].[ext]')\\"
+				}
+			}
+		]
+	},
+}
+"
+`;
+
+exports[`node transforms correctly using "node-0" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`output transforms correctly using "output-0" data 1`] = `
+"module.exports = {
+	entry: 'index.js'
+}
+"
+`;
+
+exports[`output transforms correctly using "output-1" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: \\"'bundle'\\",
+		path: \\"'dist/assets'\\",
+		pathinfo: true,
+		publicPath: \\"'https://google.com'\\",
+		sourceMapFilename: \\"'[name].map'\\",
+		sourcePrefix: jscodeshift(\\"'\\\\t'\\"),
+		umdNamedDefine: true,
+		strictModuleExceptionHandling: true
+	},
+}
+"
+`;
+
+exports[`parallelism transforms correctly using "other-0" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`parallelism transforms correctly using "other-1" data 1`] = `
+"module.exports = {
+	bail: true,
+	cache: true,
+	profile: true,
+	merge: 'NotMuch',
+	parallelism: 69,
+	recordsInputPath: 'something',
+	recordsOutputPath: 'else',
+	recordsPath: 'Brooklyn',
+	amd: {
+		jQuery: true,
+		kQuery: false
+	}
+};
+"
+`;
+
+exports[`performance transforms correctly using "performance-0" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`performance transforms correctly using "performance-1" data 1`] = `
+"module.exports = {
+	performance: {
+		hints: \\"'warning'\\",
+		maxEntrypointSize: 400000,
+		maxAssetSize: 100000,
+		assetFilter:
+			\\"function(assetFilename) {\\" +
+			\\"return assetFilename.endsWith('.js');\\" +
+			\\"}\\"
+	}
+}
+"
+`;
+
+exports[`plugins transforms correctly using "plugins-0" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`plugins transforms correctly using "plugins-0" data 2`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`plugins transforms correctly using "plugins-1" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	},
+	plugins: ['something']
+}
+"
+`;
+
+exports[`profile transforms correctly using "other-0" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`profile transforms correctly using "other-1" data 1`] = `
+"module.exports = {
+	bail: true,
+	cache: true,
+	profile: true,
+	merge: 'NotMuch',
+	parallelism: 69,
+	recordsInputPath: 'something',
+	recordsOutputPath: 'else',
+	recordsPath: 'Brooklyn',
+	amd: {
+		jQuery: true,
+		kQuery: false
+	}
+};
+"
+`;
+
+exports[`recordsInputPath transforms correctly using "other-0" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`recordsInputPath transforms correctly using "other-1" data 1`] = `
+"module.exports = {
+	bail: true,
+	cache: true,
+	profile: true,
+	merge: 'NotMuch',
+	parallelism: 69,
+	recordsInputPath: 'something',
+	recordsOutputPath: 'else',
+	recordsPath: 'Brooklyn',
+	amd: {
+		jQuery: true,
+		kQuery: false
+	}
+};
+"
+`;
+
+exports[`recordsOutputPath transforms correctly using "other-0" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`recordsOutputPath transforms correctly using "other-1" data 1`] = `
+"module.exports = {
+	bail: true,
+	cache: true,
+	profile: true,
+	merge: 'NotMuch',
+	parallelism: 69,
+	recordsInputPath: 'something',
+	recordsOutputPath: 'else',
+	recordsPath: 'Brooklyn',
+	amd: {
+		jQuery: true,
+		kQuery: false
+	}
+};
+"
+`;
+
+exports[`recordsPath transforms correctly using "other-0" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`recordsPath transforms correctly using "other-1" data 1`] = `
+"module.exports = {
+	bail: true,
+	cache: true,
+	profile: true,
+	merge: 'NotMuch',
+	parallelism: 69,
+	recordsInputPath: 'something',
+	recordsOutputPath: 'else',
+	recordsPath: 'Brooklyn',
+	amd: {
+		jQuery: true,
+		kQuery: false
+	}
+};
+"
+`;
+
+exports[`resolve transforms correctly using "resolve-0" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`resolve transforms correctly using "resolve-1" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	},
+	resolve: {
+		alias: {
+			inject: \\"{{#if_eq build 'standalone'}}\\",
+			hello: \\"'world'\\",
+			inject_1: \\"{{/if_eq}}\\",
+			world: \\"hello\\"
+		},
+		aliasFields: [\\"'browser'\\", \\"wars\\"],
+		descriptionFiles: [\\"'a'\\", \\"b\\", \\"'c'\\"],
+		enforceExtension: false,
+		enforceModuleExtension: false,
+		extensions: [\\"hey\\", \\"ho\\"],
+		mainFields: [\\"main\\", \\"'story'\\"],
+		mainFiles: [\\"'noMainFileHere'\\", \\"iGuess\\"],
+		modules: [\\"one\\", \\"'two'\\"],
+		unsafeCache: false,
+		resolveLoader: {
+			modules: [\\"'node_modules'\\", \\"mode_nodules\\"],
+			extensions: [\\"jsVal\\", \\"'.json'\\"],
+			mainFields: [\\"loader\\", \\"'main'\\"],
+			moduleExtensions: [\\"'-loader'\\", \\"value\\"]
+		},
+		plugins: [\\"somePlugin\\", \\"'stringVal'\\"],
+		symlinks: true
+	}
+}
+"
+`;
+
+exports[`resolveLoader transforms correctly using "resolveLoader-0" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`resolveLoader transforms correctly using "resolveLoader-1" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	},
+	resolveLoader: {
+		moduleExtensions: [ '-loader' ]
+	}
+}
+"
+`;
+
+exports[`stats transforms correctly using "stats-0" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`stats transforms correctly using "stats-0" data 2`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`stats transforms correctly using "stats-0" data 3`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`stats transforms correctly using "stats-1" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	},
+	stats: {
+		assets: false,
+		assetsSort: \\"'gold'\\",
+		cached: true,
+		cachedAssets: true,
+		children: false,
+		chunks: true,
+	}
+}
+"
+`;
+
+exports[`stats transforms correctly using "stats-1" data 2`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	},
+	stats: {
+		assets: false,
+		assetsSort: \\"'gold'\\",
+		cached: true,
+		cachedAssets: true,
+		children: false,
+		chunks: true,
+	}
+}
+"
+`;
+
+exports[`target transforms correctly using "target-0" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`target transforms correctly using "target-0" data 2`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`target transforms correctly using "target-1" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`target transforms correctly using "target-1" data 2`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`target transforms correctly using "target-2" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	},
+	target: 'something'
+}
+"
+`;
+
+exports[`top-scope transforms correctly using "top-scope-0" data 1`] = `
+"module.exports = {}
+"
+`;
+
+exports[`top-scope transforms correctly using "top-scope-1" data 1`] = `
+"const webpack = require(\\"webpack\\");
+
+module.exports = {}
+"
+`;
+
+exports[`watch transforms correctly using "watch-0" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`watch transforms correctly using "watch-0" data 2`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`watch transforms correctly using "watch-0" data 3`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`watch transforms correctly using "watch-0" data 4`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`watch transforms correctly using "watch-1" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`watch transforms correctly using "watch-1" data 2`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`watch transforms correctly using "watch-4" data 1`] = `
+"module.exports = {
+	watch: 'someone'
+}
+"
+`;
+
+exports[`watch transforms correctly using "watch-4" data 2`] = `
+"module.exports = {
+	watch: 'someone'
+}
+"
+`;
+
+exports[`watchOptions transforms correctly using "watch-0" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`watchOptions transforms correctly using "watch-0" data 2`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`watchOptions transforms correctly using "watch-1" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`watchOptions transforms correctly using "watch-2" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	}
+}
+"
+`;
+
+exports[`watchOptions transforms correctly using "watch-3" data 1`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	},
+	watchOptions: {
+		aggregateTimeout: 100,
+		poll: 90,
+		ignored: \\"/ok/\\"
+	},
+	watch: 'me'
+}
+"
+`;
+
+exports[`watchOptions transforms correctly using "watch-3" data 2`] = `
+"module.exports = {
+	entry: 'index.js',
+	output: {
+		filename: 'bundle.js'
+	},
+	watchOptions: {
+		aggregateTimeout: 100,
+		poll: 90,
+		ignored: \\"/ok/\\"
+	},
+	watch: 'me'
+}
+"
+`;
