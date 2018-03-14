@@ -61,27 +61,32 @@ module.exports = {
 exports[`transform should respect recast options 1`] = `
 "
 module.exports = {
-	devtool: 'eval',
-	entry: [
+    devtool: 'eval',
+
+    entry: [
 		'./src/index'
 	],
-	output: {
+
+    output: {
 		path: path.join(__dirname, 'dist'),
 		filename: 'index.js'
 	},
-	module: {
+
+    module: {
 		rules: [{
-			test: /.js$/,
+			test: /\.js$/,
 			use: [{
                 loader: \\"babel-loader\\",
             }],
 			include: path.join(__dirname, 'src')
 		}]
 	},
-	resolve: {
+
+    resolve: {
         modules: ['node_modules', path.resolve('/src')],
     },
-	plugins: [
+
+    plugins: [
 		new webpack.optimize.UglifyJsPlugin({
             sourceMap: true,
         }),
@@ -90,7 +95,6 @@ module.exports = {
             minimize: true,
         })
 	],
-	debug: true
 };
 "
 `;
@@ -131,27 +135,32 @@ module.exports = {
 exports[`transform should transform using all transformations 1`] = `
 "
 module.exports = {
-	devtool: 'eval',
-	entry: [
+    devtool: 'eval',
+
+    entry: [
 		'./src/index'
 	],
-	output: {
+
+    output: {
 		path: path.join(__dirname, 'dist'),
 		filename: 'index.js'
 	},
-	module: {
+
+    module: {
 		rules: [{
-			test: /.js$/,
+			test: /\.js$/,
 			use: [{
                 loader: 'babel-loader'
             }],
 			include: path.join(__dirname, 'src')
 		}]
 	},
-	resolve: {
+
+    resolve: {
         modules: ['node_modules', path.resolve('/src')]
     },
-	plugins: [
+
+    plugins: [
 		new webpack.optimize.UglifyJsPlugin({
             sourceMap: true
         }),
@@ -159,8 +168,7 @@ module.exports = {
             debug: true,
             minimize: true
         })
-	],
-	debug: true
+	]
 };
 "
 `;
