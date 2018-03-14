@@ -1,3 +1,30 @@
+ <a name="2.0.12"></a>
+# 2.0.12 (2018-03-14)
+[Full Changelog](https://github.com/webpack/webpack-cli/compare/v2.0.11...v2.0.12)
+
+## New Features
+
+* support --build-delimiter for opt-in output delimiter (#192) ([#340](https://github.com/webpack/webpack-cli/pull/340))
+
+## Chore
+
+* gitignore: add vim swap files to gitignore ([3448fb5](https://github.com/webpack/webpack-cli/commit/3448fb5))
+* scaffolding: update docs ([#336](https://github.com/webpack/webpack-cli/pull/336))
+
+## Fix
+
+* removes debug in migrate ([#342](https://github.com/webpack/webpack-cli/pull/342))
+
+## Tests
+
+* snapshot: update snapshot ([bd8ccda](https://github.com/webpack/webpack-cli/commit/bd8ccda))
+
+## Misc
+
+* cz: fix type description ([#339](https://github.com/webpack/webpack-cli/pull/339))
+* init: fix global-modules require statement in package-manager ([610aa02](https://github.com/webpack/webpack-cli/commit/610aa02))
+* init-generator: cleanup ([b8c3145](https://github.com/webpack/webpack-cli/commit/b8c3145))
+
  <a name="2.0.11"></a>
 # 2.0.11 (2018-03-10)
 [Full Changelog](https://github.com/webpack/webpack-cli/compare/v2.0.10...v2.0.11)
