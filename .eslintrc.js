@@ -61,7 +61,10 @@ module.exports = {
 			"error",
 			{
 				"allowModules": [
-					"webpack"
+					"webpack",
+					"webapack-cli-utils",
+					"webpack-loader-generators",
+					"webpack-plugin-generators"
 				]
 			}
 		],
@@ -72,6 +75,18 @@ module.exports = {
 				"allowModules": [
 					"webpack",
 					"webpack-dev-server"
+				]
+			}
+		],
+		"node/no-extraneous-require": [
+			"error",
+			{
+				"allowModules": [					
+					"webpack-cli-migrate",
+					"webpack-cli-generators",
+					"webpack-cli-utils",
+					"webpack-loader-generators",
+					"webpack-plugin-generators"
 				]
 			}
 		],
