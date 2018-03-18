@@ -63,8 +63,9 @@ module.exports = {
 				"resolvePaths": ["./packages"],
 				"allowModules": [
 					"webpack",
-					"webapack-cli-utils",
 					"webpack-cli-generators",
+					"webpack-cli-migrate",
+					"webpack-cli-utils",
 					"webpack-loader-generators",
 					"webpack-plugin-generators"
 				]
