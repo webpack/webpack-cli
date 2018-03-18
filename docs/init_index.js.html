@@ -33,7 +33,7 @@ const j = require("jscodeshift");
 const chalk = require("chalk");
 const pEachSeries = require("p-each-series");
 
-const runPrettier = require("../utils/run-prettier");
+const runPrettier = require("webpack-cli-utils/run-prettier");
 
 const entryTransform = require("./transformations/entry/entry");
 const outputTransform = require("./transformations/output/output");
