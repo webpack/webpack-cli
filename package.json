@@ -24,6 +24,7 @@
     "format": "prettier-eslint \"bin/**/*.js\" \"packages/**/*.js\" \"test/**/*.js\" --write",
     "lint:codeOnly": "eslint \"{packages,bin}/**/!(__testfixtures__)/*.js\" \"{packages,bin}/**.js\"",
     "precommit": "lint-staged",
+    "pretest": "npm run lint",
     "test": "nyc jest",
     "reportCoverage": "nyc report --reporter=json && codecov -f coverage/coverage-final.json --disable=gcov",
     "jsdoc": "jsdoc -c jsdoc.json -r -d docs",
