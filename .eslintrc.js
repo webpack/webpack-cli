@@ -60,10 +60,11 @@ module.exports = {
 		"node/no-missing-require": [
 			"error",
 			{
+				"resolvePaths": ["./packages"],
 				"allowModules": [
 					"webpack",
-					"webapack-cli-utils/*",
-					"webpack-cli-generators/*",
+					"webapack-cli-utils",
+					"webpack-cli-generators",
 					"webpack-loader-generators",
 					"webpack-plugin-generators"
 				]
