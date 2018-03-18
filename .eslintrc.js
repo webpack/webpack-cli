@@ -64,6 +64,7 @@ module.exports = {
 				"allowModules": [
 					"webpack",
 					"webpack-cli-generators",
+					"webpack-cli-init",
 					"webpack-cli-migrate",
 					"webpack-cli-utils",
 					"webpack-loader-generators",
