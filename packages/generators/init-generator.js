@@ -31,7 +31,11 @@ module.exports = class InitGenerator extends Generator {
 	constructor(args, opts) {
 		super(args, opts);
 		this.isProd = false;
-		this.dependencies = ["webpack", "uglifyjs-webpack-plugin"];
+		this.dependencies = [
+			"webpack",
+			"webpack-cli",
+			"uglifyjs-webpack-plugin"
+		];
 		this.configuration = {
 			config: {
 				webpackOptions: {},
