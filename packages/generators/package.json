@@ -14,8 +14,6 @@
       "log-symbols": "2.2.0",
       "mkdirp": "^0.5.1",
       "webpack-addons": "^1.1.5",
-      "webpack-cli-generators": "2.0.12",
-      "webpack-cli-init": "2.0.12",
       "webpack-cli-utils": "2.0.12",
       "yeoman-generator": "^2.0.3"
     },
