@@ -1,3 +1,15 @@
+ <a name="2.0.13"></a>
+# 2.0.13 (2018-03-22)
+[Full Changelog](https://github.com/webpack/webpack-cli/compare/2.0.12...2.0.13)
+
+## Chore
+
+* pkg: explicitly include files for release ([#349](https://github.com/webpack/webpack-cli/pull/349))
+
+## CLI
+
+* init: add webpack-cli dep ([#347](https://github.com/webpack/webpack-cli/pull/347))
+
  <a name="2.0.12"></a>
 # 2.0.12 (2018-03-14)
 [Full Changelog](https://github.com/webpack/webpack-cli/compare/v2.0.11...v2.0.12)
