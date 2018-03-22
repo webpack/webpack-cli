@@ -131,5 +131,10 @@
     "schema-utils": "^0.4.5",
     "webpack": "^4.1.1",
     "webpack-dev-server": "^3.0.0"
-  }
+  },
+  "files": [
+    "bin",
+    "lib",
+    "schemas"
+  ]
 }
