@@ -47,14 +47,13 @@
 		return;
 	}
 
-	const yargs = require("yargs").usage(
-		"webpack-cli " +
-			require("../package.json").version +
-			"\n" +
-			"Usage: https://webpack.js.org/api/cli/\n" +
-			"Usage without config file: webpack <entry> [<entry>] --output [-o] <output>\n" +
-			"Usage with config file: webpack"
-	);
+	const yargs = require("yargs").usage(`webpack-cli ${require("../package.json").version}
+
+Usage: webpack-cli [options]
+       webpack-cli [options] --entry <entry> --output <output>
+       webpack-cli [options] <entries...> --output <output>
+
+For more information, see https://webpack.js.org/api/cli/.`);
 
 	require("./config-yargs")(yargs);
 
