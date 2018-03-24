@@ -41,7 +41,8 @@
     "testEnvironment": "node",
     "collectCoverage": true,
     "coverageReporters": [
-      "none"
+      "json",
+      "html"
     ]
   },
   "nyc": {
