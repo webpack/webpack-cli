@@ -22,8 +22,11 @@ sudo: false
 notifications:
   email: false
 
+before_install:
+  - npm i -g npm
+
 install:
-  - npm install
+  - npm ci
   - npm install --global codecov
   - npm install --global eslint
 
