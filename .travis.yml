@@ -22,6 +22,9 @@ sudo: false
 notifications:
   email: false
 
+before_install:
+  - npm i -g npm@5.8.0
+
 install:
   - npm ci
   - npm install --global codecov
