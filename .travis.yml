@@ -23,7 +23,7 @@ notifications:
   email: false
 
 install:
-  - npm install
+  - npm ci
   - npm install --global codecov
   - npm install --global eslint
 
