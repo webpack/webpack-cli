@@ -30,7 +30,8 @@
 		*/
 		"serve",
 		"generate-loader",
-		"generate-plugin"
+		"generate-plugin",
+		"info"
 	];
 
 	const NON_COMPILATION_CMD = process.argv.find(arg => {
