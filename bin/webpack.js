@@ -44,7 +44,9 @@
 
 	if (NON_COMPILATION_CMD) {
 		// eslint-disable-next-line
-		require("../lib/index")(NON_COMPILATION_CMD, process.argv);
+		const WebpackCLI = require("../lib/index")
+		const instance = new WebpackCLI();
+		instance.run(NON_COMPILATION_CMD, process.argv);
 		return;
 	}
 
