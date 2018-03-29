@@ -8,13 +8,11 @@
 (function() {
 	// wrap in IIFE to be able to use return
 
-	const resolveCwd = require("resolve-cwd");
-	// Local version replace global one
-	const localCLI = resolveCwd.silent("webpack-cli/bin/webpack");
-	if (localCLI && localCLI !== __filename) {
-		require(localCLI);
+	const importLocal = require('import-local');
+	// Prefer the local installation of webpack-cli
+	if (importLocal(__filename)) {
 		return;
-	}
+  	}
 
 	require("v8-compile-cache");
 	const ErrorHelpers = require("./errorHelpers");
