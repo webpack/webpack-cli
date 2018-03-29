@@ -482,7 +482,9 @@
 				} else if (stats.hash !== lastHash) {
 					lastHash = stats.hash;
 					const statsString = stats.toString(outputOptions);
-					const delimiter = outputOptions.buildDelimiter ? `${outputOptions.buildDelimiter}\n` : "";
+					const delimiter = outputOptions.buildDelimiter
+						? `${outputOptions.buildDelimiter}\n`
+						: "";
 					if (statsString) stdout.write(`${statsString}\n${delimiter}`);
 				}
 				if (!options.watch && stats.hasErrors()) {
