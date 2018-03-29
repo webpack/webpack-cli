@@ -48,7 +48,9 @@
 		return;
 	}
 
-	const yargs = require("yargs").usage(`webpack-cli ${require("../package.json").version}
+	const yargs = require("yargs").usage(`webpack-cli ${
+		require("../package.json").version
+	}
 
 Usage: webpack-cli [options]
        webpack-cli [options] --entry <entry> --output <output>
