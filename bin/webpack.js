@@ -8,11 +8,11 @@
 (function() {
 	// wrap in IIFE to be able to use return
 
-	const importLocal = require('import-local');
+	const importLocal = require("import-local");
 	// Prefer the local installation of webpack-cli
 	if (importLocal(__filename)) {
 		return;
-  	}
+	}
 
 	require("v8-compile-cache");
 	const ErrorHelpers = require("./errorHelpers");
