@@ -20,11 +20,9 @@ module.exports = function(j, ast) {
 	// If there is debug: true, set debug: true in the plugin
 	if (ast.find(j.Identifier, { name: "debug" }).size()) {
 		loaderOptions.debug = true;
-		ast
-			.find(j.Identifier, { name: "debug" })
-			.forEach(p => {
-				p.parent.prune();
-			});
+		ast.find(j.Identifier, { name: "debug" }).forEach(p => {
+			p.parent.prune();
+		});
 	}
 
 	// If there is UglifyJsPlugin, set minimize: true

@@ -31,11 +31,7 @@ module.exports = class InitGenerator extends Generator {
 	constructor(args, opts) {
 		super(args, opts);
 		this.isProd = false;
-		this.dependencies = [
-			"webpack",
-			"webpack-cli",
-			"uglifyjs-webpack-plugin"
-		];
+		this.dependencies = ["webpack", "webpack-cli", "uglifyjs-webpack-plugin"];
 		this.configuration = {
 			config: {
 				webpackOptions: {},
@@ -119,7 +115,9 @@ module.exports = class InitGenerator extends Generator {
 					Confirm("prodConfirm", "Are you going to use this in production?")
 				]);
 			})
-			.then(prodConfirmAnswer => this.isProd = prodConfirmAnswer["prodConfirm"])
+			.then(
+				prodConfirmAnswer => (this.isProd = prodConfirmAnswer["prodConfirm"])
+			)
 			.then(() => {
 				return this.prompt([
 					Confirm("babelConfirm", "Will you be using ES2015?")
@@ -398,8 +396,9 @@ module.exports = class InitGenerator extends Generator {
 			)
 		])
 			.then(nameTypeAnswer => {
-				this.configuration.config.configName = nameTypeAnswer["nameType"].length ?
-					nameTypeAnswer["nameType"] : defaultName;
+				this.configuration.config.configName = nameTypeAnswer["nameType"].length
+					? nameTypeAnswer["nameType"]
+					: defaultName;
 			})
 			.then(() => {
 				asyncNamePrompt();
