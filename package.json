@@ -15,7 +15,6 @@
   "engines": {
     "node": ">=6.11.5"
   },
-  "private": true,
   "workspaces": [
     "packages/*"
   ],
