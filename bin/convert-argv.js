@@ -313,8 +313,8 @@ module.exports = function(...args) {
 			}
 		}
 
-		function ensureObject(parent, name) {
-			if (typeof parent[name] !== "object" || parent[name] === null) {
+		function ensureObject(parent, name, force) {
+			if (force || typeof parent[name] !== "object" || parent[name] === null) {
 				parent[name] = {};
 			}
 		}
@@ -347,7 +347,7 @@ module.exports = function(...args) {
 				}
 			},
 			function() {
-				ensureObject(options, "entry");
+				ensureObject(options, "entry", true);
 			}
 		);
 
@@ -567,12 +567,7 @@ module.exports = function(...args) {
 		mapArgToBoolean("profile");
 
 		if (argv._.length > 0) {
-			if (Array.isArray(options.entry) || typeof options.entry === "string") {
-				options.entry = {
-					main: options.entry
-				};
-			}
-			ensureObject(options, "entry");
+			ensureObject(options, "entry", true);
 
 			const addTo = function addTo(name, entry) {
 				if (options.entry[name]) {
