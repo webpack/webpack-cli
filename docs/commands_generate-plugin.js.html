@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: utils/npm-packages-exists.js</title>
+    <title>JSDoc: Source: commands/generate-plugin.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: utils/npm-packages-exists.js</h1>
+    <h1 class="page-title">Source: commands/generate-plugin.js</h1>
 
     
 
@@ -26,69 +26,24 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>"use strict";
-const chalk = require("chalk");
-const isLocalPath = require("./is-local-path");
-const npmExists = require("./npm-exists");
-const resolvePackages = require("./resolve-packages").resolvePackages;
-
-const WEBPACK_ADDON_PREFIX = "webpack-addons";
+            <pre class="prettyprint source linenums"><code>const yeoman = require("yeoman-environment");
+const { PluginGenerator } = require("../generators/plugin-generator");
 
 /**
- *
- * Loops through an array and checks if a package is registered
- * on npm and throws an error if it is not.
- *
- * @param {String[]} pkg - Array of packages to check existence of
- * @returns {Array} resolvePackages - Returns an process to install the packages
+ * Runs a yeoman generator to create a new webpack plugin project
+ * @returns {void}
  */
 
-module.exports = function npmPackagesExists(pkg) {
-	let acceptedPackages = [];
+function pluginCreator() {
+	const env = yeoman.createEnv();
+	const generatorName = "webpack-plugin-generator";
 
-	function resolvePackagesIfReady() {
-		if (acceptedPackages.length === pkg.length)
-			return resolvePackages(acceptedPackages);
-	}
+	env.registerStub(PluginGenerator, generatorName);
 
-	pkg.forEach(addon => {
-		if (isLocalPath(addon)) {
-			// If the addon is a path to a local folder, no name validation is necessary.
-			acceptedPackages.push(addon);
-			resolvePackagesIfReady();
-			return;
-		}
+	env.run(generatorName);
+}
 
-		// The addon is on npm; validate name and existence
-		if (
-			addon.length &lt;= WEBPACK_ADDON_PREFIX.length ||
-			addon.slice(0, WEBPACK_ADDON_PREFIX.length) !== WEBPACK_ADDON_PREFIX
-		) {
-			throw new TypeError(
-				chalk.bold(`${addon} isn't a valid name.\n`) +
-					chalk.red(
-						`\nIt should be prefixed with '${WEBPACK_ADDON_PREFIX}', but have different suffix.\n`
-					)
-			);
-		}
-
-		npmExists(addon)
-			.then(moduleExists => {
-				if (!moduleExists) {
-					Error.stackTraceLimit = 0;
-					throw new TypeError(`Cannot resolve location of package ${addon}.`);
-				}
-				if (moduleExists) {
-					acceptedPackages.push(addon);
-				}
-			})
-			.catch(err => {
-				console.error(err.stack || err);
-				process.exit(0);
-			})
-			.then(resolvePackagesIfReady);
-	});
-};
+module.exports = pluginCreator;
 </code></pre>
         </article>
     </section>
