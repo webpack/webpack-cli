@@ -32,6 +32,13 @@
 		"info"
 	];
 
+	const nodeFlags = process.argv.filter((arg) => arg.includes("node."));
+
+	if (nodeFlags.length) {
+		require("./process-node-flags")(process.argv, nodeFlags);
+		return;
+	}
+
 	const NON_COMPILATION_CMD = process.argv.find(arg => {
 		if (arg === "serve") {
 			global.process.argv = global.process.argv.filter(a => a !== "serve");
@@ -261,8 +268,8 @@ For more information, see https://webpack.js.org/api/cli/.`);
 		 */
 		const stdout = argv.silent
 			? {
-				write: () => {}
-			  } // eslint-disable-line
+				write: () => { }
+			} // eslint-disable-line
 			: process.stdout;
 
 		function ifArg(name, fn, init) {

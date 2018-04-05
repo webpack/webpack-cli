@@ -1,0 +1,5 @@
+--node.no-deprecation
+--node.trace-deprecation
+--node.no-warnings
+--node.trace
+./index.js
