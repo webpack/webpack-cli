@@ -1,8 +1,9 @@
 // const { spawn } = require("child_process");
 const spawn = require("cross-spawn");
+const path = require("path");
 
 module.exports = function(argv) {
-	const args = [require.resolve("webpack-cli")];
+	const args = [path.join(__dirname, "webpack.js")];
 
 	argv.slice(2).forEach((arg) => {
 		if (arg.includes("node.")) {
