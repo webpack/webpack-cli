@@ -35,7 +35,7 @@
 	const nodeFlags = process.argv.filter((arg) => arg.includes("node."));
 
 	if (nodeFlags.length) {
-		require("./process-node-flags")(process.argv, nodeFlags);
+		require("./process-node-flags")(process.argv);
 		return;
 	}
 
