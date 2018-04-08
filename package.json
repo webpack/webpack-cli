@@ -16,7 +16,7 @@
     "node": ">=6.11.5"
   },
   "scripts": {
-    "lint": "eslint \"**/*.js\"",
+    "lint": "eslint \"**/*.js\" --fix",
     "format": "prettier-eslint \"bin/**/*.js\" \"lib/**/*.js\" \"test/**/*.js\" --write",
     "lint:codeOnly": "eslint \"{lib,bin}/**/!(__testfixtures__)/*.js\" \"{lib,bin}/**.js\"",
     "precommit": "lint-staged",
@@ -131,6 +131,7 @@
     "nyc": "^11.6.0",
     "prettier-eslint-cli": "^4.7.1",
     "schema-utils": "^0.4.5",
+    "uri-js": "^4.2.0",
     "webpack": "^4.2.0",
     "webpack-dev-server": "^3.0.0"
   },
