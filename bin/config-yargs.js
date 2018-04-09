@@ -7,6 +7,11 @@ const RESOLVE_GROUP = "Resolving options:";
 const OPTIMIZE_GROUP = "Optimizing options:";
 const INIT_GROUP = "Initialization:";
 
+const availableModes = () => {
+	const webpackOptionsSchema = require("webpack/schemas/WebpackOptions.json");
+	return webpackOptionsSchema.properties.mode.enum;
+};
+
 module.exports = function(yargs) {
 	yargs
 		.help("help")
@@ -88,7 +93,7 @@ module.exports = function(yargs) {
 			},
 			mode: {
 				type: "string",
-				choices: ["development", "production", "none"],
+				choices: availableModes(),
 				describe: "Mode to use",
 				group: CONFIG_GROUP,
 				requiresArg: true
