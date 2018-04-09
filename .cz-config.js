@@ -19,6 +19,7 @@ module.exports = {
 	// sort type values in asc
 	types: [
 		{ value: "ast", name: "ast:		init, migrate, add, etc" },
+		{ value: "break", name: "break: changes that break the behaviour of the cli" },
 		{ value: "chore", name: "chore:	Updating deps, docs, linting, etc" },
 		{ value: "cli", name: "cli:		Core CLI things" },
 		{ value: "docs", name: "docs:		Documentation" },
