@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`extractTextPlugin transforms correctly 1`] = `
+exports[`extractTextPlugin transforms correctly using "extractTextPlugin-0" data 1`] = `
 "const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.export = {
@@ -9,6 +9,54 @@ module.export = {
             {
                 test: /\\\\.css$/,
                 use: (process.env.NODE_ENV === 'production' ? [MiniCssExtractPlugin.loader, 'css-loader'] : ['style-loader', { loader: 'test-object-loader' }, 'css-loader'])
+            }
+        ]
+    },
+    plugins: [
+        new Foo(),
+        new MiniCssExtractPlugin({
+            filename: 'foo.css'
+        })
+    ]
+}
+"
+`;
+
+exports[`extractTextPlugin transforms correctly using "extractTextPlugin-1" data 1`] = `
+"const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
+module.export = {
+    module: {
+        rules: [
+            {
+                test: /\\\\.css$/,
+                use: ['css-hot-loader'].concat((process.env.NODE_ENV === 'production' ? [MiniCssExtractPlugin.loader, 'css-loader'] : ['style-loader', 'css-loader']))
+            }
+        ]
+    },
+    plugins: [
+        new Foo(),
+        new MiniCssExtractPlugin({
+            filename: 'foo.css'
+        })
+    ]
+}
+"
+`;
+
+exports[`extractTextPlugin transforms correctly using "extractTextPlugin-2" data 1`] = `
+"const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
+module.export = {
+    module: {
+        rules: [
+            {
+                test: /\\\\.css$/,
+                use: [
+                    'foo-loader',
+                    (process.env.NODE_ENV === 'production' ? [MiniCssExtractPlugin.loader, 'css-loader'] : ['style-loader', 'css-loader']),
+                    'bar-loader'
+                ]
             }
         ]
     },
