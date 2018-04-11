@@ -18,10 +18,7 @@ module.exports = {
     plugins: [],
 
     optimization: {
-        minimizer: [new UglifyJsPlugin({
-            sourceMap: true,
-            compress: {}
-        })]
+        minimize: true
     }
 }
 "
@@ -34,10 +31,7 @@ module.exports = {
     plugins: [],
 
     optimization: {
-        minimizer: [new Uglify({
-            sourceMap: true,
-            compress: {}
-        })]
+        minimize: true
     }
 }
 "
@@ -110,9 +104,7 @@ module.exports = {
     debug: true,
 
     optimization: {
-        minimizer: [new UglifyJsPlugin({
-            sourceMap: true
-        })]
+        minimize: true
     }
 };
 "
