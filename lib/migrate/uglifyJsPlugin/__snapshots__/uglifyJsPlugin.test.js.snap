@@ -2,8 +2,6 @@
 
 exports[`uglifyJsPlugin transforms correctly using "uglifyJsPlugin-0" data 1`] = `
 "module.exports = {
-    plugins: [],
-
     optimization: {
         minimize: true
     }
@@ -15,8 +13,6 @@ exports[`uglifyJsPlugin transforms correctly using "uglifyJsPlugin-1" data 1`] =
 "const UglifyJsPlugin  = require('uglifyjs-webpack-plugin');
 module.exports = {
     devtool: \\"source-map\\",
-    plugins: [],
-
     optimization: {
         minimize: true,
 
@@ -33,8 +29,6 @@ exports[`uglifyJsPlugin transforms correctly using "uglifyJsPlugin-2" data 1`] =
 "const Uglify  = require('uglifyjs-webpack-plugin');
 module.exports = {
     devtool: \\"source-map\\",
-    plugins: [],
-
     optimization: {
         minimize: true,
 
