@@ -90,7 +90,7 @@ exports[`utils createProperty should create properties for non-literal keys 1`] 
 }"
 `;
 
-exports[`utils findPluginsArrayAndRemoveIfEmpty should not remove plugins property, since it has length > 0 1`] = `
+exports[`utils findPluginsArrayAndRemoveIfEmpty It should not remove plugins array, given an array with length greater than zero 1`] = `
 "
 				const a = {
 					plugins: [
