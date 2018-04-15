@@ -1,4 +1,5 @@
 const hashtable = require("./hashtable");
+const validateIdentifier = require("./validate-identifier");
 
 function safeTraverse(obj, paths) {
 	let val = obj;
@@ -149,8 +150,8 @@ function createIdentifierOrLiteral(j, val) {
 			return createExternalRegExp(j, val);
 		} else {
 			// Use identifier instead
-			// TODO: Check if literalVal is a valid Identifier!
-			return j.identifier(literalVal);
+			if (!validateIdentifier.isKeyword(literalVal) || !validateIdentifier.isIdentifierStart(literalVal) || !validateIdentifier.isIdentifierChar(literalVal))
+				return j.identifier(literalVal);
 		}
 	}
 	return j.literal(literalVal);
