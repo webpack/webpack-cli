@@ -34,6 +34,7 @@ const topScopeTransform = require("./transformations/top-scope/top-scope");
 const devServerTransform = require("./transformations/devServer/devServer");
 const modeTransform = require("./transformations/mode/mode");
 const resolveLoaderTransform = require("./transformations/resolveLoader/resolveLoader");
+const optimizationTransform = require("./transformations/optimization/optimization");
 
 const transformsObject = {
 	entryTransform,
@@ -62,7 +63,8 @@ const transformsObject = {
 	recordsInputPathTransform,
 	recordsOutputPathTransform,
 	recordsPathTransform,
-	resolveLoaderTransform
+	resolveLoaderTransform,
+	optimizationTransform
 };
 
 /**
