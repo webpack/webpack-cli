@@ -60,8 +60,15 @@ module.exports = {
 		"node/no-missing-require": [
 			"error",
 			{
+				"resolvePaths": ["./packages"],
 				"allowModules": [
-					"webpack"
+					"webpack",
+					"webpack-cli-generators",
+					"webpack-cli-init",
+					"webpack-cli-migrate",
+					"webpack-cli-utils",
+					"webpack-loader-generators",
+					"webpack-plugin-generators"
 				]
 			}
 		],
@@ -72,6 +79,18 @@ module.exports = {
 				"allowModules": [
 					"webpack",
 					"webpack-dev-server"
+				]
+			}
+		],
+		"node/no-extraneous-require": [
+			"error",
+			{
+				"allowModules": [					
+					"webpack-cli-migrate",
+					"webpack-cli-generators",
+					"webpack-cli-utils",
+					"webpack-loader-generators",
+					"webpack-plugin-generators"
 				]
 			}
 		],
