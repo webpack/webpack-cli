@@ -69,7 +69,7 @@
     },
     {
       "path": "./lib/utils/**.js",
-      "maxSize": "5.25 kB"
+      "maxSize": "5.32 kB"
     }
   ],
   "config": {
