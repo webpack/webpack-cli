@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`moduleConcatenationPlugin transforms correctly using "moduleConcatenationPlugin-0" data 1`] = `
+"module.export = {
+    optimizations: {
+        concatenateModules: true
+    }
+}
+"
+`;
+
+exports[`moduleConcatenationPlugin transforms correctly using "moduleConcatenationPlugin-1" data 1`] = `
+"module.export = {
+	optimizations: {
+        splitChunks: false,
+        concatenateModules: true
+    },
+    plugins: [new Foo()]
+}
+"
+`;
+
+exports[`moduleConcatenationPlugin transforms correctly using "moduleConcatenationPlugin-2" data 1`] = `
+"module.export = {
+	optimizations: {
+        concatenateModules: true
+    },
+    plugins: [new Foo()]
+}
+"
+`;
