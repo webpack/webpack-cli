@@ -9,6 +9,13 @@ exports[`mode transforms correctly using "mode-1" data 1`] = `
 
 exports[`mode transforms correctly using "mode-1" data 2`] = `
 "module.exports = {
+  mode: 'development'
+};
+"
+`;
+
+exports[`mode transforms correctly using "mode-1" data 3`] = `
+"module.exports = {
   mode: modeVariable
 };
 "
@@ -24,6 +31,13 @@ exports[`mode transforms correctly using "mode-2" data 1`] = `
 exports[`mode transforms correctly using "mode-2" data 2`] = `
 "module.exports = {
 	mode: 'production'
+}
+"
+`;
+
+exports[`mode transforms correctly using "mode-2" data 3`] = `
+"module.exports = {
+	mode: 'development'
 }
 "
 `;
