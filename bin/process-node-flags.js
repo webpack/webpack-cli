@@ -1,6 +1,15 @@
 const spawn = require("cross-spawn");
 const path = require("path");
-
+/**
+ * Lookup for prefixed arguments (node.)
+ * place them before webpack cli arguments and spawns
+ * a different process using these V8/Node flags.
+ * By Doing that, user has the power to provide any node options, e.g --max-old-space-size=1024
+ * and these are going to be correctly used.
+ *
+ * @param  {array} argv - Arguments input by the user directly to CLI
+ * @returns {Void} void
+ */
 module.exports = function(argv) {
 	const args = [path.join(__dirname, "webpack.js")];
 
@@ -26,8 +35,10 @@ module.exports = function(argv) {
 		});
 	});
 
-	// Terminate children
-	// just in case the current one is terminated.
+	/**
+	 * Terminate children
+	 * just in case the current one is terminated.
+	 */
 	process.on("SIGINT", () => {
 		webpackCliProcess.kill("SIGINT");
 		webpackCliProcess.kill("SIGTERM");
