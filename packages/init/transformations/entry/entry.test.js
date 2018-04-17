@@ -3,6 +3,7 @@
 const defineTest = require("webpack-cli-utils/defineTest");
 
 defineTest(__dirname, "entry", "entry-0", "'index.js'", "init");
+defineTest(__dirname, "entry", "entry-0", "\"index.js\"", "init");
 defineTest(__dirname, "entry", "entry-0", ["'index.js'", "'app.js'"], "init");
 defineTest(
 	__dirname,

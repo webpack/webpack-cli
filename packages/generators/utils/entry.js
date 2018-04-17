@@ -7,9 +7,9 @@ const validate = require("./validate");
  *
  * Prompts for entry points, either if it has multiple or one entry
  *
- * @param {Object} self - A variable holding the instance of the prompting
- * @param {Object} answer - Previous answer from asking if the user wants single or multiple entries
- * @returns {Object} An Object that holds the answers given by the user, later used to scaffold
+ * @param	{Object} self 	- A variable holding the instance of the prompting
+ * @param	{Object} answer - Previous answer from asking if the user wants single or multiple entries
+ * @returns	{Object} An Object that holds the answers given by the user, later used to scaffold
  */
 
 module.exports = (self, answer) => {
@@ -28,7 +28,7 @@ module.exports = (self, answer) => {
 				let webpackEntryPoint = {};
 				entryIdentifiers = multipleEntriesAnswer["multipleEntries"].split(",");
 				function forEachPromise(obj, fn) {
-					return obj.reduce(function(promise, prop) {
+					return obj.reduce((promise, prop) => {
 						const trimmedProp = prop.trim();
 						return promise.then(n => {
 							if (n) {
@@ -40,7 +40,7 @@ module.exports = (self, answer) => {
 										!n[val].includes("path") &&
 										!n[val].includes("process")
 									) {
-										n[val] = `"'${n[val]}.js'"`;
+										n[val] = `\'${n[val].replace(/"|'/g,"").concat(".js")}\'`;
 									}
 									webpackEntryPoint[val] = n[val];
 								});
@@ -59,18 +59,18 @@ module.exports = (self, answer) => {
 							validate
 						)
 					])
-				).then(propAns => {
-					Object.keys(propAns).forEach(val => {
+				).then(entryPropAnswer => {
+					Object.keys(entryPropAnswer).forEach(val => {
 						if (
-							propAns[val].charAt(0) !== "(" &&
-							propAns[val].charAt(0) !== "[" &&
-							!propAns[val].includes("function") &&
-							!propAns[val].includes("path") &&
-							!propAns[val].includes("process")
+							entryPropAnswer[val].charAt(0) !== "(" &&
+							entryPropAnswer[val].charAt(0) !== "[" &&
+							!entryPropAnswer[val].includes("function") &&
+							!entryPropAnswer[val].includes("path") &&
+							!entryPropAnswer[val].includes("process")
 						) {
-							propAns[val] = `"'${propAns[val]}.js'"`;
+							entryPropAnswer[val] = `\'${entryPropAnswer[val].replace(/"|'/g,"").concat(".js")}\'`;
 						}
-						webpackEntryPoint[val] = propAns[val];
+						webpackEntryPoint[val] = entryPropAnswer[val];
 					});
 					return webpackEntryPoint;
 				});
@@ -83,7 +83,11 @@ module.exports = (self, answer) => {
 					"Which module will be the first to enter the application? [default: ./src/index]"
 				)
 			])
-			.then(singularAnswer => `"${singularAnswer["singularEntry"]}"`);
+			.then(singularEntryAnswer => {
+				let { singularEntry } = singularEntryAnswer;
+				if (singularEntry.indexOf("\"") >= 0) singularEntry = singularEntry.replace(/"/g, "'");
+				return singularEntry;
+			});
 	}
 	return result;
 };

@@ -72,8 +72,8 @@ const transformsObject = {
  * Maps back transforms that needs to be run using the configuration
  * provided.
  *
- * @param {Object} transformObject - An Object with all transformations
- * @param {Object} config - Configuration to transform
+ * @param	{Object} transformObject 	- An Object with all transformations
+ * @param	{Object} config 			- Configuration to transform
  * @returns {Object} - An Object with the transformations to be run
  */
 
@@ -104,8 +104,8 @@ function mapOptionsToTransform(transformObject, config) {
  *
  * Runs the transformations from an object we get from yeoman
  *
- * @param {Object} webpackProperties - Configuration to transform
- * @param {String} action - Action to be done on the given ast
+ * @param	{Object} webpackProperties 	- Configuration to transform
+ * @param	{String} action 			- Action to be done on the given ast
  * @returns {Promise} - A promise that writes each transform, runs prettier
  * and writes the file
  */
