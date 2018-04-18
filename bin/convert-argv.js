@@ -40,7 +40,9 @@ module.exports = function(...args) {
 		argv["output-filename"] = path.basename(output);
 		argv["output-path"] = path.dirname(output);
 	}
-
+	if(!argv.mode) {
+		argv.mode = "none";
+	}
 	let configFileLoaded = false;
 	let configFiles = [];
 	const extensions = Object.keys(interpret.extensions).sort(function(a, b) {
