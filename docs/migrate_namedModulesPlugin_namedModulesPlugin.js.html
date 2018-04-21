@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: init/transformations/devServer/devServer.js</title>
+    <title>JSDoc: Source: migrate/namedModulesPlugin/namedModulesPlugin.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: init/transformations/devServer/devServer.js</h1>
+    <h1 class="page-title">Source: migrate/namedModulesPlugin/namedModulesPlugin.js</h1>
 
     
 
@@ -26,94 +26,35 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>"use strict";
-
-const utils = require("webpack-cli-utils/ast-utils");
+            <pre class="prettyprint source linenums"><code>const {
+	addOrUpdateConfigObject,
+	findAndRemovePluginByName
+} = require("../../utils/ast-utils");
 
 /**
  *
- * Transform for devServer. Finds the devServer property from yeoman and creates a
- * property based on what the user has given us.
+ * Transform for NamedModulesPlugin. If found, removes the
+ * plugin and sets optimizations.namedModules to true
  *
- * @param j — jscodeshift API
- * @param ast - jscodeshift API
- * @param {any} webpackProperties - transformation object to scaffold
- * @param {String} action - action that indicates what to be done to the AST
- * @returns ast - jscodeshift API
+ * @param {Object} j - jscodeshift top-level import
+ * @param {Node} ast - jscodeshift ast to transform
+ * @returns {Node} ast - jscodeshift ast
  */
+module.exports = function(j, ast) {
+	// Remove old plugin
+	const root = findAndRemovePluginByName(j, ast, "webpack.NamedModulesPlugin");
 
-module.exports = function devServerTransform(
-	j,
-	ast,
-	webpackProperties,
-	action
-) {
-	function createDevServerProperty(p) {
-		utils.pushCreateProperty(j, p, "devServer", j.objectExpression([]));
-		return utils.pushObjectKeys(j, p, webpackProperties, "devServer");
-	}
-	if (webpackProperties) {
-		if (action === "init" &amp;&amp; typeof webpackProperties === "object") {
-			return ast
-				.find(j.ObjectExpression)
-				.filter(p => utils.isAssignment(null, p, createDevServerProperty));
-		} else if (action === "init" &amp;&amp; webpackProperties.length) {
-			return ast
-				.find(j.ObjectExpression)
-				.filter(p =>
-					utils.isAssignment(
-						j,
-						p,
-						utils.pushCreateProperty,
-						"devServer",
-						webpackProperties
-					)
-				);
-		} else if (action === "add") {
-			const devServerNode = utils.findRootNodesByName(j, ast, "devServer");
-			if (devServerNode.size() !== 0 &amp;&amp; typeof webpackProperties === "object") {
-				return ast
-					.find(j.ObjectExpression)
-					.filter(
-						p =>
-							utils.safeTraverse(p, ["parentPath", "value", "key", "name"]) ===
-							"devServer"
-					)
-					.filter(p => {
-						Object.keys(webpackProperties).forEach(prop => {
-							utils.checkIfExistsAndAddValue(
-								j,
-								p,
-								prop,
-								utils.createIdentifierOrLiteral(j, webpackProperties[prop])
-							);
-						});
-						return ast;
-					});
-			} else if (devServerNode.size() !== 0 &amp;&amp; webpackProperties.length) {
-				return ast
-					.find(j.ObjectExpression)
-					.filter(
-						p =>
-							utils.safeTraverse(p, ["parentPath", "value", "key", "name"]) ===
-							"devServer"
-					)
-					.forEach(p => {
-						j(p).replaceWith(
-							utils.createIdentifierOrLiteral(j, webpackProperties)
-						);
-					});
-			} else {
-				return devServerTransform(j, ast, webpackProperties, "init");
-			}
-		} else if (action === "remove") {
-			// TODO
-		} else if (action === "update") {
-			// TODO
-		}
-	} else {
-		return ast;
-	}
+	// Add new optimizations option
+	root &amp;&amp;
+		addOrUpdateConfigObject(
+			j,
+			root,
+			"optimizations",
+			"namedModules",
+			j.booleanLiteral(true)
+		);
+
+	return ast;
 };
 </code></pre>
         </article>
