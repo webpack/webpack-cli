@@ -26,7 +26,6 @@ module.exports = {
 		{ value: "feat", name: "feat:		A new feature" },
 		{ value: "fix", name: "fix:		Bugs, typos, etc" },
 		{ value: "misc", name: "misc:		Other formats like tweaks and such" },
-		{ value: "tests", name: "tests:	Tests, jest, binTestCases, etc" },
-		{ value: "break", name: "break: changes that break the behaviour of the cli" }
+		{ value: "tests", name: "tests:	Tests, jest, binTestCases, etc" }
 	]
 };
