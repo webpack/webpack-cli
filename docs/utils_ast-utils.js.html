@@ -27,6 +27,7 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>const hashtable = require("./hashtable");
+const validateIdentifier = require("./validate-identifier");
 
 function safeTraverse(obj, paths) {
 	let val = obj;
@@ -177,11 +178,78 @@ function createIdentifierOrLiteral(j, val) {
 			return createExternalRegExp(j, val);
 		} else {
 			// Use identifier instead
-			// TODO: Check if literalVal is a valid Identifier!
-			return j.identifier(literalVal);
+			if (!validateIdentifier.isKeyword(literalVal) || !validateIdentifier.isIdentifierStart(literalVal) || !validateIdentifier.isIdentifierChar(literalVal))
+				return j.identifier(literalVal);
 		}
 	}
 	return j.literal(literalVal);
+}
+
+/**
+ *
+ * Adds or updates the value of a key within a root
+ * webpack configuration property that's of type Object.
+ *
+ * @param {any} j — jscodeshift API
+ * @param {Node} rootNode - node of root webpack configuration
+ * @param {String} configProperty - key of an Object webpack configuration property
+ * @param {String} key - key within the configuration object to update
+ * @param {Object} value - the value to set for the key
+ * @returns {Void}
+ */
+
+function addOrUpdateConfigObject(j, rootNode, configProperty, key, value) {
+	const propertyExists = rootNode.properties.filter(
+		node => node.key.name === configProperty
+	).length;
+
+	if (propertyExists) {
+		rootNode.properties
+			.filter(path => path.key.name === configProperty)
+			.forEach(path => {
+				const newProperties = path.value.properties.filter(
+					path => path.key.name !== key
+				);
+				newProperties.push(j.objectProperty(j.identifier(key), value));
+				path.value.properties = newProperties;
+			});
+	} else {
+		rootNode.properties.push(
+			j.objectProperty(
+				j.identifier(configProperty),
+				j.objectExpression([j.objectProperty(j.identifier(key), value)])
+			)
+		);
+	}
+}
+
+/**
+ *
+ * Finds and removes a node for a given plugin name. If the plugin
+ * is the last in the plugins array, the array is also removed.
+ *
+ * @param {any} j — jscodeshift API
+ * @param {Node} node - node to start search from
+ * @param {String} pluginName - name of the plugin to remove
+ * @returns {Node | Void} - path to the root webpack configuration object if plugin is found
+ */
+
+function findAndRemovePluginByName(j, node, pluginName) {
+	let rootPath;
+
+	findPluginsByName(j, node, [pluginName])
+		.filter(path => safeTraverse(path, ["parent", "value"]))
+		.forEach(path => {
+			rootPath = safeTraverse(path, ["parent", "parent", "parent", "value"]);
+			const arrayPath = path.parent.value;
+			if (arrayPath.elements &amp;&amp; arrayPath.elements.length === 1) {
+				j(path.parent.parent).remove();
+			} else {
+				j(path).remove();
+			}
+		});
+
+	return rootPath;
 }
 
 /**
@@ -684,6 +752,8 @@ module.exports = {
 	createProperty,
 	findPluginsByName,
 	findRootNodesByName,
+	addOrUpdateConfigObject,
+	findAndRemovePluginByName,
 	createOrUpdatePluginByName,
 	findVariableToPlugin,
 	isType,
@@ -712,13 +782,13 @@ module.exports = {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AddGenerator.html">AddGenerator</a></li><li><a href="InitGenerator.html">InitGenerator</a></li><li><a href="LoaderGenerator.html">LoaderGenerator</a></li><li><a href="PluginGenerator.html">PluginGenerator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#checkIfExistsAndAddValue">checkIfExistsAndAddValue</a></li><li><a href="global.html#createArrayWithChildren">createArrayWithChildren</a></li><li><a href="global.html#createEmptyArrayProperty">createEmptyArrayProperty</a></li><li><a href="global.html#createExternalRegExp">createExternalRegExp</a></li><li><a href="global.html#createFunctionWithArguments">createFunctionWithArguments</a></li><li><a href="global.html#createIdentifierOrLiteral">createIdentifierOrLiteral</a></li><li><a href="global.html#createLiteral">createLiteral</a></li><li><a href="global.html#createObjectWithSuppliedProperty">createObjectWithSuppliedProperty</a></li><li><a href="global.html#createOrUpdatePluginByName">createOrUpdatePluginByName</a></li><li><a href="global.html#createProperty">createProperty</a></li><li><a href="global.html#defineTest">defineTest</a></li><li><a href="global.html#findInvocation">findInvocation</a></li><li><a href="global.html#findPluginsByName">findPluginsByName</a></li><li><a href="global.html#findRootNodesByName">findRootNodesByName</a></li><li><a href="global.html#findVariableToPlugin">findVariableToPlugin</a></li><li><a href="global.html#generatorCopy">generatorCopy</a></li><li><a href="global.html#generatorCopyTpl">generatorCopyTpl</a></li><li><a href="global.html#getPackageManager">getPackageManager</a></li><li><a href="global.html#getPathToGlobalPackages">getPathToGlobalPackages</a></li><li><a href="global.html#getRequire">getRequire</a></li><li><a href="global.html#getRootPathModule">getRootPathModule</a></li><li><a href="global.html#isAssignment">isAssignment</a></li><li><a href="global.html#isType">isType</a></li><li><a href="global.html#loaderCreator">loaderCreator</a></li><li><a href="global.html#loopThroughObjects">loopThroughObjects</a></li><li><a href="global.html#makeLoaderName">makeLoaderName</a></li><li><a href="global.html#mapOptionsToTransform">mapOptionsToTransform</a></li><li><a href="global.html#pluginCreator">pluginCreator</a></li><li><a href="global.html#processPromise">processPromise</a></li><li><a href="global.html#pushCreateProperty">pushCreateProperty</a></li><li><a href="global.html#pushObjectKeys">pushObjectKeys</a></li><li><a href="global.html#replaceAt">replaceAt</a></li><li><a href="global.html#resolvePackages">resolvePackages</a></li><li><a href="global.html#runMigration">runMigration</a></li><li><a href="global.html#runSingleTransform">runSingleTransform</a></li><li><a href="global.html#serve">serve</a></li><li><a href="global.html#spawnChild">spawnChild</a></li><li><a href="global.html#spawnNPM">spawnNPM</a></li><li><a href="global.html#spawnNPMWithArg">spawnNPMWithArg</a></li><li><a href="global.html#spawnYarn">spawnYarn</a></li><li><a href="global.html#spawnYarnWithArg">spawnYarnWithArg</a></li><li><a href="global.html#transform">transform</a></li><li><a href="global.html#traverseAndGetProperties">traverseAndGetProperties</a></li><li><a href="global.html#webpackGenerator">webpackGenerator</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AddGenerator.html">AddGenerator</a></li><li><a href="InitGenerator.html">InitGenerator</a></li><li><a href="LoaderGenerator.html">LoaderGenerator</a></li><li><a href="PluginGenerator.html">PluginGenerator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addOrUpdateConfigObject">addOrUpdateConfigObject</a></li><li><a href="global.html#checkIfExistsAndAddValue">checkIfExistsAndAddValue</a></li><li><a href="global.html#createArrayWithChildren">createArrayWithChildren</a></li><li><a href="global.html#createEmptyArrayProperty">createEmptyArrayProperty</a></li><li><a href="global.html#createExternalRegExp">createExternalRegExp</a></li><li><a href="global.html#createFunctionWithArguments">createFunctionWithArguments</a></li><li><a href="global.html#createIdentifierOrLiteral">createIdentifierOrLiteral</a></li><li><a href="global.html#createLiteral">createLiteral</a></li><li><a href="global.html#createObjectWithSuppliedProperty">createObjectWithSuppliedProperty</a></li><li><a href="global.html#createOrUpdatePluginByName">createOrUpdatePluginByName</a></li><li><a href="global.html#createProperty">createProperty</a></li><li><a href="global.html#defineTest">defineTest</a></li><li><a href="global.html#findAndRemovePluginByName">findAndRemovePluginByName</a></li><li><a href="global.html#findInvocation">findInvocation</a></li><li><a href="global.html#findPluginsByName">findPluginsByName</a></li><li><a href="global.html#findRootNodesByName">findRootNodesByName</a></li><li><a href="global.html#findVariableToPlugin">findVariableToPlugin</a></li><li><a href="global.html#generatorCopy">generatorCopy</a></li><li><a href="global.html#generatorCopyTpl">generatorCopyTpl</a></li><li><a href="global.html#getPackageManager">getPackageManager</a></li><li><a href="global.html#getPathToGlobalPackages">getPathToGlobalPackages</a></li><li><a href="global.html#getRequire">getRequire</a></li><li><a href="global.html#getRootPathModule">getRootPathModule</a></li><li><a href="global.html#isAssignment">isAssignment</a></li><li><a href="global.html#isType">isType</a></li><li><a href="global.html#loaderCreator">loaderCreator</a></li><li><a href="global.html#loopThroughObjects">loopThroughObjects</a></li><li><a href="global.html#makeLoaderName">makeLoaderName</a></li><li><a href="global.html#mapOptionsToTransform">mapOptionsToTransform</a></li><li><a href="global.html#pluginCreator">pluginCreator</a></li><li><a href="global.html#processPromise">processPromise</a></li><li><a href="global.html#pushCreateProperty">pushCreateProperty</a></li><li><a href="global.html#pushObjectKeys">pushObjectKeys</a></li><li><a href="global.html#replaceAt">replaceAt</a></li><li><a href="global.html#resolvePackages">resolvePackages</a></li><li><a href="global.html#runMigration">runMigration</a></li><li><a href="global.html#runSingleTransform">runSingleTransform</a></li><li><a href="global.html#serve">serve</a></li><li><a href="global.html#spawnChild">spawnChild</a></li><li><a href="global.html#spawnNPM">spawnNPM</a></li><li><a href="global.html#spawnNPMWithArg">spawnNPMWithArg</a></li><li><a href="global.html#spawnYarn">spawnYarn</a></li><li><a href="global.html#spawnYarnWithArg">spawnYarnWithArg</a></li><li><a href="global.html#transform">transform</a></li><li><a href="global.html#traverseAndGetProperties">traverseAndGetProperties</a></li><li><a href="global.html#webpackGenerator">webpackGenerator</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Apr 05 2018 03:21:04 GMT+0200 (CEST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Apr 21 2018 09:19:38 GMT+0300 (EEST)
 </footer>
 
 <script> prettyPrint(); </script>

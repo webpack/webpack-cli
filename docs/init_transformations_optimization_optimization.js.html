@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: init/transformations/watch/watchOptions.js</title>
+    <title>JSDoc: Source: init/transformations/optimization/optimization.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: init/transformations/watch/watchOptions.js</h1>
+    <h1 class="page-title">Source: init/transformations/optimization/optimization.js</h1>
 
     
 
@@ -32,7 +32,7 @@ const utils = require("../../../utils/ast-utils");
 
 /**
  *
- * Transform for watchOptions. Finds the watchOptions property from yeoman and creates a
+ * Transform for optimization. Finds the optimization property from yeoman and creates a
  * property based on what the user has given us.
  *
  * @param j — jscodeshift API
@@ -42,21 +42,17 @@ const utils = require("../../../utils/ast-utils");
  * @returns ast - jscodeshift API
  */
 
-module.exports = function watchOptionsTransform(
-	j,
-	ast,
-	webpackProperties,
-	action
-) {
-	function createWatchOptionsProperty(p) {
-		utils.pushCreateProperty(j, p, "watchOptions", j.objectExpression([]));
-		return utils.pushObjectKeys(j, p, webpackProperties, "watchOptions");
+module.exports = function profileTransform(j, ast, webpackProperties, action) {
+	function createProfileProperty(p) {
+		utils.pushCreateProperty(j, p, "optimization", j.objectExpression([]));
+		return utils.pushObjectKeys(j, p, webpackProperties, "optimization");
 	}
+
 	if (webpackProperties || typeof webpackProperties === "boolean") {
 		if (action === "init" &amp;&amp; typeof webpackProperties === "object") {
 			return ast
 				.find(j.ObjectExpression)
-				.filter(p => utils.isAssignment(null, p, createWatchOptionsProperty));
+				.filter(p => utils.isAssignment(null, p, createProfileProperty));
 		} else if (
 			action === "init" &amp;&amp;
 			(webpackProperties.length || typeof webpackProperties === "boolean")
@@ -68,55 +64,12 @@ module.exports = function watchOptionsTransform(
 						j,
 						p,
 						utils.pushCreateProperty,
-						"watchOptions",
+						"optimization",
 						webpackProperties
 					)
 				);
 		} else if (action === "add") {
-			const watchOptionsNode = utils.findRootNodesByName(
-				j,
-				ast,
-				"watchOptions"
-			);
-			if (
-				watchOptionsNode.size() !== 0 &amp;&amp;
-				typeof webpackProperties === "object"
-			) {
-				return ast
-					.find(j.ObjectExpression)
-					.filter(
-						p =>
-							utils.safeTraverse(p, ["parentPath", "value", "key", "name"]) ===
-							"watchOptions"
-					)
-					.filter(p => {
-						Object.keys(webpackProperties).forEach(prop => {
-							utils.checkIfExistsAndAddValue(
-								j,
-								p,
-								prop,
-								utils.createIdentifierOrLiteral(j, webpackProperties[prop])
-							);
-						});
-						return ast;
-					});
-			} else if (
-				watchOptionsNode.size() !== 0 &amp;&amp;
-				(typeof webpackProperties === "boolean" || webpackProperties.length > 0)
-			) {
-				return ast
-					.find(j.ObjectExpression)
-					.filter(p =>
-						utils.checkIfExistsAndAddValue(
-							j,
-							p,
-							"watchOptions",
-							utils.createIdentifierOrLiteral(j, webpackProperties)
-						)
-					);
-			} else {
-				return watchOptionsTransform(j, ast, webpackProperties, "init");
-			}
+			// TODO
 		} else if (action === "remove") {
 			// TODO
 		} else if (action === "update") {
