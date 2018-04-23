@@ -14,53 +14,46 @@ module.exports = function(yargs) {
 		.alias("help", "h")
 		.version()
 		.alias("version", "v")
+		// These commands are not actually handled by yargs, as webpack.js
+		// pre-emptively looks for them prior to yargs processing. This is
+		// strictly for --help output
+		.command(
+			"init",
+			"Initializes a new webpack configuration or loads a addon if " +
+			"specified",
+		)
+		.command(
+			"migrate",
+			"Migrate your webpack configuration from webpack 1 to webpack 2"
+		)
+		.command(
+			"add",
+			"Adds a webpack component to your configuration file"
+		)
+		// .command(
+		// 	"remove",
+		// 	"Removes a webpack component to your configuration file"
+		// )
+		// .command(
+		// 	"update",
+		// 	"Updates a webpack component to your configuration file"
+		// )
+		// .command(
+		// 	"make",
+		// 	"Converts a webpack configuration to a makefile"
+		// )
+		.command(
+			"generate-loader",
+			 "Generates a new webpack loader project"
+		)
+		.command(
+			"generate-plugin",
+			"Generates a new webpack plugin project"
+		)
+		.updateStrings({
+			'Commands:': 'Sub Commands:'
+		})
 		.options({
-			init: {
-				type: "boolean",
-				describe:
-					"Initializes a new webpack configuration or loads a" +
-					"\n" +
-					"addon if specified",
-				group: INIT_GROUP
-			},
-			migrate: {
-				type: "boolean",
-				describe:
-					"Migrate your webpack configuration from webpack 1 to webpack 2",
-				group: INIT_GROUP
-			},
-			add: {
-				type: "boolean",
-				describe: "Adds a webpack component to your configuration file",
-				group: INIT_GROUP
-			},
-			/*
-			remove: {
-				type: "boolean",
-				describe: "Removes a webpack component to your configuration file",
-				group: INIT_GROUP
-			},
-			update: {
-				type: "boolean",
-				describe: "Updates a webpack component to your configuration file",
-				group: INIT_GROUP
-			},
-			make: {
-				type: "boolean",
-				describe: "Converts a webpack configuration to a makefile",
-				group: INIT_GROUP
-			},
-			*/
-			"generate-loader": {
-				type: "boolean",
-				describe: "Generates a new webpack loader project",
-				group: INIT_GROUP
-			},
-			"generate-plugin": {
-				type: "boolean",
-				describe: "Generates a new webpack plugin project",
-				group: INIT_GROUP
-			},
 			config: {
 				type: "string",
 				describe: "Path to the config file",
