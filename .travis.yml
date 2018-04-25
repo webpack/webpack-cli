@@ -1,3 +1,6 @@
+sudo: false
+notifications:
+  email: false
 language: node_js
 node_js:
   - "8"
@@ -11,7 +14,9 @@ matrix:
       env: JOB_PART=lint
     - os: linux
       node_js: "stable"
-      env: JOB_PART=integration
+      env: 
+        - JOB_PART=integration
+        - test=test
     - os: linux
       node_js: "8"
       env: JOB_PART=integration
@@ -21,18 +26,12 @@ matrix:
     - os: linux
       node_js: "6"
       env: JOB_PART=integration
-sudo: false
-
-notifications:
-  email: false
 
 before_install:
   - npm i -g npm@latest
   - npm ci
-
-install:
-  - npm install --g codecov
-  - npm install --g eslint
+  - npm install -g codecov
+  - npm install -g eslint
 
 before_script:
   - export DISPLAY=:99.0
@@ -40,9 +39,7 @@ before_script:
 
 jobs:
   include:
-    - stage: test
-      script: JOB_PART
-    - stage: commint lint
+    - stage: commit lint
       script: commitlint-travis
     - stage: NPM release
       if: branch = master
