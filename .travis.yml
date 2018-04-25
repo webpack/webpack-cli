@@ -40,8 +40,6 @@ before_script:
 
 jobs:
   include:
-    - stage: tests
-      script: npm run travis:$JOB_PART
     - stage: commint lint
       script: commitlint-travis
     - stage: NPM release
