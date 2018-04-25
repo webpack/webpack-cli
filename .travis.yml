@@ -24,7 +24,6 @@ matrix:
     - os: linux
       node_js: "6"
       env: JOB_PART=integration
-script: echo $JOB_PART
 
 before_install:
   - npm i -g npm@latest
@@ -38,10 +37,6 @@ before_script:
 
 jobs:
   include:
-    -stage: test
-      env: JOB_PART=lint
-    - stage: test2
-      env: JOB_PART=integration
     - stage: commit lint
       script: commitlint-travis
     - stage: NPM release
