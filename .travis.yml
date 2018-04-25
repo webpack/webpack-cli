@@ -40,6 +40,8 @@ jobs:
   include:
     -stage: test
       env: JOB_PART=lint
+    - stage: test2
+      env: JOB_PART=integration
     - stage: commit lint
       script: commitlint-travis
     - stage: NPM release
