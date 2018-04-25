@@ -43,7 +43,7 @@ jobs:
     - stage: commint lint
       script: commitlint-travis
     - stage: NPM release
-      node_js: "7"
+      node_js: "8"
       script: echo "Deploying new webpack-cli version to npm ..."
       deploy:
         script: npx semantic-release
