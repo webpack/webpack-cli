@@ -39,7 +39,7 @@ before_script:
 jobs:
   include:
     -stage: test
-      env: $JOB_PART
+      env: JOB_PART=lint
     - stage: commit lint
       script: commitlint-travis
     - stage: NPM release
