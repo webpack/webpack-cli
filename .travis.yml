@@ -23,12 +23,12 @@ notifications:
   email: false
 
 before_install:
-  - npm i -g npm
+  - npm i -g npm@latest
+  - npm ci
 
 install:
-  - npm ci
-  - npm install --global codecov
-  - npm install --global eslint
+  - npm install --g codecov
+  - npm install --g eslint
 
 before_script:
   - export DISPLAY=:99.0
