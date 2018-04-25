@@ -9,8 +9,7 @@ exports[`amd transforms correctly using "other-0" data 1`] = `
 	},
 
     amd: {
-        jQuery: true,
-        kQuery: false
+        jQuery: true
     }
 }
 "
@@ -379,7 +378,7 @@ exports[`entry transforms correctly using "entry-0" data 1`] = `
 
 exports[`entry transforms correctly using "entry-0" data 2`] = `
 "module.exports = {
-  entry: ['index.js', 'app.js']
+  entry: ['index.js',, 'app.js',,]
 }
 "
 `;
@@ -435,7 +434,7 @@ exports[`entry transforms correctly using "entry-0" data 8`] = `
 
 exports[`entry transforms correctly using "entry-0" data 9`] = `
 "module.exports = {
-  entry: ['index.js', 'app.js']
+  entry: ['index.js',, 'app.js',,]
 }
 "
 `;
@@ -553,7 +552,7 @@ exports[`externals transforms correctly using "externals-1" data 4`] = `
 
     externals: {
         jquery: 'jQuery',
-        react: [reactObj, path.join(__dirname, 'app'), 'jquery']
+        react: [reactObj,, path.join(__dirname, 'app'),, 'jquery',,]
     }
 }
 "
@@ -599,20 +598,33 @@ exports[`externals transforms correctly using "externals-1" data 6`] = `
 
 exports[`externals transforms correctly using "externals-1" data 7`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    externals: [{
+        a: false,
+        b: true,
+        './ext': ./hey
+    },, function(context, request, callback) {if (/^yourregex$/.test(request)){return callback(null, 'commonjs ' + request);}callback();},,]
 }
 "
 `;
 
 exports[`externals transforms correctly using "externals-1" data 8`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    externals: [
+        myObj,
+    ,    function(context, request, callback) {if (/^yourregex$/.test(request)){return callback(null, 'commonjs ' + request);}callback();},
+    ,]
 }
 "
 `;
@@ -678,50 +690,204 @@ exports[`mode transforms correctly using "mode-2" data 2`] = `
 
 exports[`module transforms correctly using "module-0" data 1`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    module: {
+        rules: [{
+            test: {},
+            loader: 'eslint-loader',
+            enforce: 'pre',
+            include: [customObj,, 'Stringy',,],
+
+            options: {
+                formatter: 'someOption'
+            }
+        },, {
+            test: {},
+            loader: 'vue-loader',
+            options: vueObject
+        },, {
+            test: {},
+            loader: 'babel-loader',
+            include: [resolve('src'),, resolve('test'),,]
+        },, {
+            test: {},
+            loader: 'url-loader',
+
+            options: {
+                limit: 10000,
+                name: utils.assetsPath('img/[name].[hash:7].[ext]')
+            }
+        },, {
+            test: {},
+            loader: 'url-loader',
+
+            options: {
+                limit: 10000,
+                name: utils.assetsPath('fonts/[name].[hash:7].[ext]'),
+                someArr: [Hey,,]
+            }
+        },,]
+    }
 }
 "
 `;
 
 exports[`module transforms correctly using "module-0" data 2`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    module: {
+        rules: [{{#if_eq build 'standalone'}},, {
+            test: {},
+            loader: 'eslint-loader',
+            enforce: 'pre',
+            include: [customObj,, 'Stringy',,],
+
+            options: {
+                formatter: 'someOption'
+            }
+        },, {
+            test: {},
+            loader: 'vue-loader',
+            options: vueObject
+        },, {
+            test: {},
+            loader: 'babel-loader',
+            include: [resolve('src'),, resolve('test'),,]
+        },, {
+            test: {},
+            loader: 'url-loader',
+
+            options: {
+                limit: 10000,
+                name: utils.assetsPath('img/[name].[hash:7].[ext]'),
+                inject: {{#if_eq build 'standalone'}}
+            }
+        },, {
+            test: {},
+            loader: 'url-loader',
+            inject: {{#if_eq build 'standalone'}},
+
+            options: {
+                limit: 10000,
+                name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
+            }
+        },,]
+    }
 }
 "
 `;
 
 exports[`module transforms correctly using "module-0" data 3`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    module: {
+        rules: [{
+            test: {},
+            loader: 'eslint-loader',
+            enforce: 'pre',
+            include: [customObj,, 'Stringy',,],
+
+            options: {
+                formatter: 'someOption'
+            }
+        },, {
+            test: {},
+            loader: 'vue-loader',
+            options: vueObject
+        },, {
+            test: {},
+            loader: 'babel-loader',
+            include: [resolve('src'),, resolve('test'),,]
+        },, {
+            test: {},
+            loader: 'url-loader',
+
+            options: {
+                limit: 10000,
+                name: utils.assetsPath('img/[name].[hash:7].[ext]')
+            }
+        },, {
+            test: {},
+            loader: 'url-loader',
+
+            options: {
+                limit: 10000,
+                name: utils.assetsPath('fonts/[name].[hash:7].[ext]'),
+                someArr: [Hey,,]
+            }
+        },,]
+    }
 }
 "
 `;
 
 exports[`module transforms correctly using "module-1" data 1`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    module: {
+        noParse: {},
+
+        rules: [{
+            test: {},
+            parser: {},
+
+            use: ['htmllint-loader',, {
+                loader: 'html-loader',
+
+                options: {
+                    hello: 'world'
+                }
+            },,]
+        },,]
+    }
 }
 "
 `;
 
 exports[`module transforms correctly using "module-1" data 2`] = `
 "module.exports = {
-	entry: 'index.js',
-	output: {
+    entry: 'index.js',
+
+    output: {
 		filename: 'bundle.js'
-	}
+	},
+
+    module: {
+        noParse: {},
+
+        rules: [{
+            test: {},
+            parser: {},
+
+            use: ['htmllint-loader',, {
+                loader: 'html-loader',
+
+                options: {
+                    hello: 'world'
+                }
+            },,]
+        },,]
+    }
 }
 "
 `;
@@ -781,7 +947,6 @@ exports[`node transforms correctly using "node-0" data 1`] = `
 	},
 
     node: {
-        console: false,
         global: true,
         process: true,
         Buffer: true,
@@ -795,7 +960,111 @@ exports[`node transforms correctly using "node-0" data 1`] = `
 
 exports[`output transforms correctly using "output-0" data 1`] = `
 "module.exports = {
-	entry: 'index.js'
+    entry: 'index.js',
+
+    output: {
+        filename: 'bundle',
+        path: 'dist/assets',
+        pathinfo: true,
+        publicPath: 'https://google.com',
+        sourceMapFilename: '[name].map',
+
+        sourcePrefix: {
+            __paths: [{
+                value: {
+                    type: File,
+                    end: 3,
+
+                    loc: {
+                        start: {
+                            line: 1
+                        },
+
+                        end: {
+                            line: 1,
+                            column: 3
+                        },
+
+                        lines: {
+                            length: 1
+                        }
+                    },
+
+                    program: {
+                        type: Program,
+                        end: 3,
+
+                        loc: {
+                            start: {
+                                line: 1
+                            },
+
+                            end: {
+                                line: 1,
+                                column: 3
+                            },
+
+                            lines: {
+                                length: 1
+                            }
+                        },
+
+                        sourceType: module,
+
+                        body: [{
+                            type: ExpressionStatement,
+                            end: 3,
+
+                            loc: {
+                                start: {
+                                    line: 1
+                                },
+
+                                end: {
+                                    line: 1,
+                                    column: 3
+                                },
+
+                                lines: {
+                                    length: 1
+                                }
+                            },
+
+                            expression: {
+                                type: Literal,
+                                end: 3,
+
+                                loc: {
+                                    start: {
+                                        line: 1
+                                    },
+
+                                    end: {
+                                        line: 1,
+                                        column: 3
+                                    },
+
+                                    lines: {
+                                        length: 1
+                                    }
+                                },
+
+                                value: 0,
+                                raw: '	'
+                            },
+
+                            directive: 0
+                        },,]
+                    }
+                }
+            },,],
+
+            _types: [File,, Node,, Printable,,]
+        },
+
+        umdNamedDefine: true,
+        strictModuleExceptionHandling: true
+    }
 }
 "
 `;
@@ -890,8 +1159,8 @@ exports[`plugins transforms correctly using "plugins-0" data 1`] = `
 	},
 
     plugins: [
-        new webpack.optimize.CommonsChunkPlugin({name:'vendor',filename:'vendor-[hash].min.js'})
-    ]
+        new webpack.optimize.CommonsChunkPlugin({name:'vendor',filename:'vendor-[hash].min.js'}),
+    ,]
 }
 "
 `;
@@ -1060,16 +1329,13 @@ exports[`resolve transforms correctly using "resolve-0" data 1`] = `
             world: hello
         },
 
-        aliasFields: ['browser', wars],
-        descriptionFiles: ['a', b],
-        enforceExtension: false,
-        enforceModuleExtension: false,
-        extensions: [hey, 'ho'],
-        mainFields: [main, 'story'],
-        mainFiles: ['noMainFileHere', iGuess],
-        modules: [one, 'two'],
-        unsafeCache: false,
-        plugins: [somePlugin, 'stringVal'],
+        aliasFields: ['browser',, wars,,],
+        descriptionFiles: ['a',, b,,],
+        extensions: [hey,, 'ho',,],
+        mainFields: [main,, 'story',,],
+        mainFiles: ['noMainFileHere',, iGuess,,],
+        modules: [one,, 'two',,],
+        plugins: [somePlugin,, 'stringVal',,],
         symlinks: true
     }
 }
@@ -1120,9 +1386,9 @@ exports[`resolveLoader transforms correctly using "resolveLoader-0" data 1`] = `
 	},
 
     resolveLoader: {
-        modules: ['ok', mode_nodules],
-        mainFields: [no, 'main'],
-        moduleExtensions: ['-kn', ok]
+        modules: ['ok',, mode_nodules,,],
+        mainFields: [no,, 'main',,],
+        moduleExtensions: ['-kn',, ok,,]
     }
 }
 "
@@ -1161,7 +1427,6 @@ exports[`stats transforms correctly using "stats-0" data 1`] = `
         chunksSort: 'field',
         context: '../src/',
         colors: true,
-        depth: false,
         entrypoints: customVal,
         errors: true,
         errorDetails: true,
@@ -1171,12 +1436,10 @@ exports[`stats transforms correctly using "stats-0" data 1`] = `
         modules: true,
         modulesSort: 'field',
         performance: true,
-        providedExports: false,
         publicPath: true,
         reasons: true,
         source: true,
         timings: true,
-        usedExports: false,
         version: true,
         warnings: true
     }
@@ -1212,8 +1475,7 @@ exports[`stats transforms correctly using "stats-0" data 3`] = `
         cachedAssets: true,
         children: true,
         chunks: true,
-        version: true,
-        warnings: false
+        version: true
     }
 }
 "
@@ -1320,7 +1582,7 @@ exports[`target transforms correctly using "target-2" data 1`] = `
 
 exports[`top-scope transforms correctly using "top-scope-0" data 1`] = `
 "module.exports = {
-  top-scope: [const test = 'me';]
+  top-scope: [const test = 'me';,,]
 }
 "
 `;
@@ -1329,7 +1591,7 @@ exports[`top-scope transforms correctly using "top-scope-1" data 1`] = `
 "const webpack = require(\\"webpack\\");
 
 module.exports = {
-  top-scope: [const webpack = require('webpack');]
+  top-scope: [const webpack = require('webpack');,,]
 }
 "
 `;
