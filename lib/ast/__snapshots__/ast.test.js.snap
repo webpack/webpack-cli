@@ -9,7 +9,8 @@ exports[`amd transforms correctly using "other-0" data 1`] = `
 	},
 
     amd: {
-        jQuery: true
+        jQuery: true,
+        kQuery: false
     }
 }
 "
@@ -378,7 +379,7 @@ exports[`entry transforms correctly using "entry-0" data 1`] = `
 
 exports[`entry transforms correctly using "entry-0" data 2`] = `
 "module.exports = {
-  entry: ['index.js',, 'app.js',,]
+  entry: ['index.js', 'app.js']
 }
 "
 `;
@@ -434,7 +435,7 @@ exports[`entry transforms correctly using "entry-0" data 8`] = `
 
 exports[`entry transforms correctly using "entry-0" data 9`] = `
 "module.exports = {
-  entry: ['index.js',, 'app.js',,]
+  entry: ['index.js', 'app.js']
 }
 "
 `;
@@ -492,7 +493,7 @@ exports[`externals transforms correctly using "externals-0" data 1`] = `
 		filename: 'bundle.js'
 	},
 
-    externals: {}
+    externals: /react/
 }
 "
 `;
@@ -552,7 +553,7 @@ exports[`externals transforms correctly using "externals-1" data 4`] = `
 
     externals: {
         jquery: 'jQuery',
-        react: [reactObj,, path.join(__dirname, 'app'),, 'jquery',,]
+        react: [reactObj, path.join(__dirname, 'app'), 'jquery']
     }
 }
 "
@@ -608,7 +609,7 @@ exports[`externals transforms correctly using "externals-1" data 7`] = `
         a: false,
         b: true,
         './ext': ./hey
-    },, function(context, request, callback) {if (/^yourregex$/.test(request)){return callback(null, 'commonjs ' + request);}callback();},,]
+    }, function(context, request, callback) {if (/^yourregex$/.test(request)){return callback(null, 'commonjs ' + request);}callback();}]
 }
 "
 `;
@@ -623,8 +624,8 @@ exports[`externals transforms correctly using "externals-1" data 8`] = `
 
     externals: [
         myObj,
-    ,    function(context, request, callback) {if (/^yourregex$/.test(request)){return callback(null, 'commonjs ' + request);}callback();},
-    ,]
+        function(context, request, callback) {if (/^yourregex$/.test(request)){return callback(null, 'commonjs ' + request);}callback();}
+    ]
 }
 "
 `;
@@ -698,40 +699,40 @@ exports[`module transforms correctly using "module-0" data 1`] = `
 
     module: {
         rules: [{
-            test: {},
+            test: /\\\\.(js|vue)$/,
             loader: 'eslint-loader',
             enforce: 'pre',
-            include: [customObj,, 'Stringy',,],
+            include: [customObj, 'Stringy'],
 
             options: {
                 formatter: 'someOption'
             }
-        },, {
-            test: {},
+        }, {
+            test: /\\\\.vue$/,
             loader: 'vue-loader',
             options: vueObject
-        },, {
-            test: {},
+        }, {
+            test: /\\\\.js$/,
             loader: 'babel-loader',
-            include: [resolve('src'),, resolve('test'),,]
-        },, {
-            test: {},
+            include: [resolve('src'), resolve('test')]
+        }, {
+            test: /\\\\.(png|jpe?g|gif|svg)(\\\\?.*)?$/,
             loader: 'url-loader',
 
             options: {
                 limit: 10000,
                 name: utils.assetsPath('img/[name].[hash:7].[ext]')
             }
-        },, {
-            test: {},
+        }, {
+            test: /\\\\.(woff2?|eot|ttf|otf)(\\\\?.*)?$/,
             loader: 'url-loader',
 
             options: {
                 limit: 10000,
                 name: utils.assetsPath('fonts/[name].[hash:7].[ext]'),
-                someArr: [Hey,,]
+                someArr: [Hey]
             }
-        },,]
+        }]
     }
 }
 "
@@ -746,25 +747,25 @@ exports[`module transforms correctly using "module-0" data 2`] = `
 	},
 
     module: {
-        rules: [{{#if_eq build 'standalone'}},, {
-            test: {},
+        rules: [{{#if_eq build 'standalone'}}, {
+            test: /\\\\.(js|vue)$/,
             loader: 'eslint-loader',
             enforce: 'pre',
-            include: [customObj,, 'Stringy',,],
+            include: [customObj, 'Stringy'],
 
             options: {
                 formatter: 'someOption'
             }
-        },, {
-            test: {},
+        }, {
+            test: /\\\\.vue$/,
             loader: 'vue-loader',
             options: vueObject
-        },, {
-            test: {},
+        }, {
+            test: /\\\\.js$/,
             loader: 'babel-loader',
-            include: [resolve('src'),, resolve('test'),,]
-        },, {
-            test: {},
+            include: [resolve('src'), resolve('test')]
+        }, {
+            test: /\\\\.(png|jpe?g|gif|svg)(\\\\?.*)?$/,
             loader: 'url-loader',
 
             options: {
@@ -772,8 +773,8 @@ exports[`module transforms correctly using "module-0" data 2`] = `
                 name: utils.assetsPath('img/[name].[hash:7].[ext]'),
                 inject: {{#if_eq build 'standalone'}}
             }
-        },, {
-            test: {},
+        }, {
+            test: /\\\\.(woff2?|eot|ttf|otf)(\\\\?.*)?$/,
             loader: 'url-loader',
             inject: {{#if_eq build 'standalone'}},
 
@@ -781,7 +782,7 @@ exports[`module transforms correctly using "module-0" data 2`] = `
                 limit: 10000,
                 name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
             }
-        },,]
+        }]
     }
 }
 "
@@ -797,40 +798,40 @@ exports[`module transforms correctly using "module-0" data 3`] = `
 
     module: {
         rules: [{
-            test: {},
+            test: /\\\\.(js|vue)$/,
             loader: 'eslint-loader',
             enforce: 'pre',
-            include: [customObj,, 'Stringy',,],
+            include: [customObj, 'Stringy'],
 
             options: {
                 formatter: 'someOption'
             }
-        },, {
-            test: {},
+        }, {
+            test: /\\\\.vue$/,
             loader: 'vue-loader',
             options: vueObject
-        },, {
-            test: {},
+        }, {
+            test: /\\\\.js$/,
             loader: 'babel-loader',
-            include: [resolve('src'),, resolve('test'),,]
-        },, {
-            test: {},
+            include: [resolve('src'), resolve('test')]
+        }, {
+            test: /\\\\.(png|jpe?g|gif|svg)(\\\\?.*)?$/,
             loader: 'url-loader',
 
             options: {
                 limit: 10000,
                 name: utils.assetsPath('img/[name].[hash:7].[ext]')
             }
-        },, {
-            test: {},
+        }, {
+            test: /\\\\.(woff2?|eot|ttf|otf)(\\\\?.*)?$/,
             loader: 'url-loader',
 
             options: {
                 limit: 10000,
                 name: utils.assetsPath('fonts/[name].[hash:7].[ext]'),
-                someArr: [Hey,,]
+                someArr: [Hey]
             }
-        },,]
+        }]
     }
 }
 "
@@ -845,20 +846,23 @@ exports[`module transforms correctly using "module-1" data 1`] = `
 	},
 
     module: {
-        noParse: {},
+        noParse: /jquery|lodash/,
 
         rules: [{
-            test: {},
-            parser: {},
+            test: /\\\\.js$/,
 
-            use: ['htmllint-loader',, {
+            parser: {
+                amd: false
+            },
+
+            use: ['htmllint-loader', {
                 loader: 'html-loader',
 
                 options: {
                     hello: 'world'
                 }
-            },,]
-        },,]
+            }]
+        }]
     }
 }
 "
@@ -873,20 +877,23 @@ exports[`module transforms correctly using "module-1" data 2`] = `
 	},
 
     module: {
-        noParse: {},
+        noParse: /jquery|lodash/,
 
         rules: [{
-            test: {},
-            parser: {},
+            test: /\\\\.js$/,
 
-            use: ['htmllint-loader',, {
+            parser: {
+                amd: false
+            },
+
+            use: ['htmllint-loader', {
                 loader: 'html-loader',
 
                 options: {
                     hello: 'world'
                 }
-            },,]
-        },,]
+            }]
+        }]
     }
 }
 "
@@ -947,6 +954,7 @@ exports[`node transforms correctly using "node-0" data 1`] = `
 	},
 
     node: {
+        console: false,
         global: true,
         process: true,
         Buffer: true,
@@ -968,100 +976,7 @@ exports[`output transforms correctly using "output-0" data 1`] = `
         pathinfo: true,
         publicPath: 'https://google.com',
         sourceMapFilename: '[name].map',
-
-        sourcePrefix: {
-            __paths: [{
-                value: {
-                    type: File,
-                    end: 3,
-
-                    loc: {
-                        start: {
-                            line: 1
-                        },
-
-                        end: {
-                            line: 1,
-                            column: 3
-                        },
-
-                        lines: {
-                            length: 1
-                        }
-                    },
-
-                    program: {
-                        type: Program,
-                        end: 3,
-
-                        loc: {
-                            start: {
-                                line: 1
-                            },
-
-                            end: {
-                                line: 1,
-                                column: 3
-                            },
-
-                            lines: {
-                                length: 1
-                            }
-                        },
-
-                        sourceType: module,
-
-                        body: [{
-                            type: ExpressionStatement,
-                            end: 3,
-
-                            loc: {
-                                start: {
-                                    line: 1
-                                },
-
-                                end: {
-                                    line: 1,
-                                    column: 3
-                                },
-
-                                lines: {
-                                    length: 1
-                                }
-                            },
-
-                            expression: {
-                                type: Literal,
-                                end: 3,
-
-                                loc: {
-                                    start: {
-                                        line: 1
-                                    },
-
-                                    end: {
-                                        line: 1,
-                                        column: 3
-                                    },
-
-                                    lines: {
-                                        length: 1
-                                    }
-                                },
-
-                                value: 0,
-                                raw: '	'
-                            },
-
-                            directive: 0
-                        },,]
-                    }
-                }
-            },,],
-
-            _types: [File,, Node,, Printable,,]
-        },
-
+        sourcePrefix: '\\\\t',
         umdNamedDefine: true,
         strictModuleExceptionHandling: true
     }
@@ -1159,8 +1074,8 @@ exports[`plugins transforms correctly using "plugins-0" data 1`] = `
 	},
 
     plugins: [
-        new webpack.optimize.CommonsChunkPlugin({name:'vendor',filename:'vendor-[hash].min.js'}),
-    ,]
+        new webpack.optimize.CommonsChunkPlugin({name:'vendor',filename:'vendor-[hash].min.js'})
+    ]
 }
 "
 `;
@@ -1329,13 +1244,16 @@ exports[`resolve transforms correctly using "resolve-0" data 1`] = `
             world: hello
         },
 
-        aliasFields: ['browser',, wars,,],
-        descriptionFiles: ['a',, b,,],
-        extensions: [hey,, 'ho',,],
-        mainFields: [main,, 'story',,],
-        mainFiles: ['noMainFileHere',, iGuess,,],
-        modules: [one,, 'two',,],
-        plugins: [somePlugin,, 'stringVal',,],
+        aliasFields: ['browser', wars],
+        descriptionFiles: ['a', b],
+        enforceExtension: false,
+        enforceModuleExtension: false,
+        extensions: [hey, 'ho'],
+        mainFields: [main, 'story'],
+        mainFiles: ['noMainFileHere', iGuess],
+        modules: [one, 'two'],
+        unsafeCache: false,
+        plugins: [somePlugin, 'stringVal'],
         symlinks: true
     }
 }
@@ -1386,9 +1304,9 @@ exports[`resolveLoader transforms correctly using "resolveLoader-0" data 1`] = `
 	},
 
     resolveLoader: {
-        modules: ['ok',, mode_nodules,,],
-        mainFields: [no,, 'main',,],
-        moduleExtensions: ['-kn',, ok,,]
+        modules: ['ok', mode_nodules],
+        mainFields: [no, 'main'],
+        moduleExtensions: ['-kn', ok]
     }
 }
 "
@@ -1427,6 +1345,7 @@ exports[`stats transforms correctly using "stats-0" data 1`] = `
         chunksSort: 'field',
         context: '../src/',
         colors: true,
+        depth: false,
         entrypoints: customVal,
         errors: true,
         errorDetails: true,
@@ -1436,10 +1355,12 @@ exports[`stats transforms correctly using "stats-0" data 1`] = `
         modules: true,
         modulesSort: 'field',
         performance: true,
+        providedExports: false,
         publicPath: true,
         reasons: true,
         source: true,
         timings: true,
+        usedExports: false,
         version: true,
         warnings: true
     }
@@ -1475,7 +1396,8 @@ exports[`stats transforms correctly using "stats-0" data 3`] = `
         cachedAssets: true,
         children: true,
         chunks: true,
-        version: true
+        version: true,
+        warnings: false
     }
 }
 "
@@ -1582,7 +1504,7 @@ exports[`target transforms correctly using "target-2" data 1`] = `
 
 exports[`top-scope transforms correctly using "top-scope-0" data 1`] = `
 "module.exports = {
-  top-scope: [const test = 'me';,,]
+  top-scope: [const test = 'me';]
 }
 "
 `;
@@ -1591,7 +1513,7 @@ exports[`top-scope transforms correctly using "top-scope-1" data 1`] = `
 "const webpack = require(\\"webpack\\");
 
 module.exports = {
-  top-scope: [const webpack = require('webpack');,,]
+  top-scope: [const webpack = require('webpack');]
 }
 "
 `;
