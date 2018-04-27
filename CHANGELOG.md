@@ -1,3 +1,66 @@
+ <a name="2.0.14"></a>
+# 2.0.14 (2018-04-05)
+[Full Changelog](https://github.com/webpack/webpack-cli/compare/2.0.13...2.0.14)
+
+## New Features
+
+* use npm ci for tests (#367) ([#368](https://github.com/webpack/webpack-cli/pull/368))
+* add envinfo as `webpack-cli info` command ([51ab19f](https://github.com/webpack/webpack-cli/commit/51ab19f))
+* --entry should override config.entry (#155) ([#358](https://github.com/webpack/webpack-cli/pull/358))
+
+## Chore
+
+* coverage: added reporters inside package.json ([c7d80fb](https://github.com/webpack/webpack-cli/commit/c7d80fb))
+* upgrade: webpack 4.2 and other dependencies ([#362](https://github.com/webpack/webpack-cli/pull/362))
+* version: v.2.0.13 ([2222f1d](https://github.com/webpack/webpack-cli/commit/2222f1d))
+
+## CLI
+
+* refactor: improve folder structure ([#371](https://github.com/webpack/webpack-cli/pull/371))
+
+## Fix
+
+* loader,plugin: fix generators path bug ([b4bfafb](https://github.com/webpack/webpack-cli/commit/b4bfafb))
+
+ <a name="2.0.13"></a>
+# 2.0.13 (2018-03-22)
+[Full Changelog](https://github.com/webpack/webpack-cli/compare/2.0.12...2.0.13)
+
+## Chore
+
+* pkg: explicitly include files for release ([#349](https://github.com/webpack/webpack-cli/pull/349))
+
+## CLI
+
+* init: add webpack-cli dep ([#347](https://github.com/webpack/webpack-cli/pull/347))
+
+ <a name="2.0.12"></a>
+# 2.0.12 (2018-03-14)
+[Full Changelog](https://github.com/webpack/webpack-cli/compare/v2.0.11...v2.0.12)
+
+## New Features
+
+* support --build-delimiter for opt-in output delimiter (#192) ([#340](https://github.com/webpack/webpack-cli/pull/340))
+
+## Chore
+
+* gitignore: add vim swap files to gitignore ([3448fb5](https://github.com/webpack/webpack-cli/commit/3448fb5))
+* scaffolding: update docs ([#336](https://github.com/webpack/webpack-cli/pull/336))
+
+## Fix
+
+* removes debug in migrate ([#342](https://github.com/webpack/webpack-cli/pull/342))
+
+## Tests
+
+* snapshot: update snapshot ([bd8ccda](https://github.com/webpack/webpack-cli/commit/bd8ccda))
+
+## Misc
+
+* cz: fix type description ([#339](https://github.com/webpack/webpack-cli/pull/339))
+* init: fix global-modules require statement in package-manager ([610aa02](https://github.com/webpack/webpack-cli/commit/610aa02))
+* init-generator: cleanup ([b8c3145](https://github.com/webpack/webpack-cli/commit/b8c3145))
+
  <a name="2.0.11"></a>
 # 2.0.11 (2018-03-10)
 [Full Changelog](https://github.com/webpack/webpack-cli/compare/v2.0.10...v2.0.11)

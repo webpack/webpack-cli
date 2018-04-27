@@ -16,7 +16,7 @@ This answers to the output directory of your application. The output directory i
 
 3. `Are you going to use this in production? (Y/n)`
 
-If you answer `Yes` to this, we add [`ExtractTextPlugin`](https://github.com/webpack-contrib/extract-text-webpack-plugin) to your project. This means that your style files will be separated in production from the bundles where they are used. If you answer `No`, we will not use the plugin, and `Question 6` will be ignored by default.
+If you answer `Yes` to this, we add [`MinCssExtractPlugin`](https://github.com/webpack-contrib/mini-css-extract-plugin) to your project. This means that your style files will be separated in production from the bundles where they are used. If you answer `No`, we will not use the plugin, and `Question 6` will be ignored by default.
 
 4. `Will you be using ES2015? (Y/n)`
 

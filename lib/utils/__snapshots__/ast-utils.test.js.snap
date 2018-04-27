@@ -61,4 +61,20 @@ exports[`utils createProperty should create properties for non-literal keys 1`] 
 }"
 `;
 
+exports[`utils findPluginsArrayAndRemoveIfEmpty It should not remove plugins array, given an array with length greater than zero 1`] = `
+"
+				const a = {
+					plugins: [
+						new MyCustomPlugin()
+					]
+				}
+			"
+`;
+
+exports[`utils findPluginsArrayAndRemoveIfEmpty should remove plugins property 1`] = `
+"
+				const a = {}
+			"
+`;
+
 exports[`utils getRequire should create a require statement 1`] = `"const filesys = require(\\"fs\\");"`;

@@ -81,16 +81,12 @@ module.exports = {
 	resolve: {
         modules: ['node_modules', path.resolve('/src')],
     },
-	plugins: [
-		new webpack.optimize.UglifyJsPlugin({
-            sourceMap: true,
-        }),
-		new webpack.LoaderOptionsPlugin({
-            debug: true,
-            minimize: true,
-        })
-	],
-	debug: true
+	plugins: [new webpack.LoaderOptionsPlugin({
+        debug: true,
+    })],
+	optimization: {
+        minimize: true,
+    }
 };
 "
 `;
@@ -151,16 +147,12 @@ module.exports = {
 	resolve: {
         modules: ['node_modules', path.resolve('/src')]
     },
-	plugins: [
-		new webpack.optimize.UglifyJsPlugin({
-            sourceMap: true
-        }),
-		new webpack.LoaderOptionsPlugin({
-            debug: true,
-            minimize: true
-        })
-	],
-	debug: true
+	plugins: [new webpack.LoaderOptionsPlugin({
+        debug: true
+    })],
+	optimization: {
+        minimize: true
+    }
 };
 "
 `;
