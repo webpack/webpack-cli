@@ -13,7 +13,7 @@ const path = require("path");
 module.exports = function(argv) {
 	const args = [path.join(__dirname, "webpack.js")];
 
-	argv.slice(2).forEach((arg) => {
+	argv.slice(2).forEach(arg => {
 		if (arg.includes("node.")) {
 			args.unshift(arg.replace("node.", ""));
 		} else {
@@ -22,7 +22,7 @@ module.exports = function(argv) {
 	});
 
 	const webpackCliProcess = spawn(process.execPath, args, {
-		stdio: "inherit",
+		stdio: "inherit"
 	});
 
 	webpackCliProcess.on("exit", (code, signal) => {
@@ -43,5 +43,4 @@ module.exports = function(argv) {
 		webpackCliProcess.kill("SIGINT");
 		webpackCliProcess.kill("SIGTERM");
 	});
-
 };

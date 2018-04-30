@@ -32,7 +32,7 @@
 		"info"
 	];
 
-	const nodeFlags = process.argv.filter((arg) => arg.includes("node."));
+	const nodeFlags = process.argv.filter(arg => arg.includes("node."));
 
 	if (nodeFlags.length) {
 		require("./process-node-flags")(process.argv);
@@ -60,6 +60,7 @@
 Usage: webpack-cli [options]
        webpack-cli [options] --entry <entry> --output <output>
        webpack-cli [options] <entries...> --output <output>
+       webpack-cli <command> [options]
 
 For more information, see https://webpack.js.org/api/cli/.`);
 
@@ -268,8 +269,8 @@ For more information, see https://webpack.js.org/api/cli/.`);
 		 */
 		const stdout = argv.silent
 			? {
-				write: () => { }
-			} // eslint-disable-line
+				write: () => {}
+			  } // eslint-disable-line
 			: process.stdout;
 
 		function ifArg(name, fn, init) {
