@@ -24,3 +24,6 @@ yarn-error.log
 
 # Test Compilation
 test/js/*
+
+# Yeoman file
+.yo-rc.json

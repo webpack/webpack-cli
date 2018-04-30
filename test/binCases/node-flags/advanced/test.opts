@@ -1,0 +1,11 @@
+--node.max_old_space_size=1024
+--node.no-warnings
+--node.turbo_jt
+--display-used-exports
+--display-entrypoints
+--profile
+--bail
+--labeled-modules
+--optimize-minimize
+--mode production
+./index.js
