@@ -1,4 +1,14 @@
+<<<<<<< HEAD:packages/migrate/uglifyJsPlugin/uglifyJsPlugin.js
 const findPluginsByName = require("webpack-cli-utils/ast-utils").findPluginsByName;
+=======
+const {
+	findPluginsByName,
+	safeTraverse,
+	createProperty,
+	getRequire,
+	findPluginsArrayAndRemoveIfEmpty
+} = require("../../utils/ast-utils");
+>>>>>>> ast(cli): Recursively parse AST (#341):lib/migrate/uglifyJsPlugin/uglifyJsPlugin.js
 
 /**
  *
@@ -19,7 +29,9 @@ module.exports = function(j, ast) {
 
 	const searchForRequirePlugin = ast
 		.find(j.VariableDeclarator)
-		.filter(j.filters.VariableDeclarator.requiresModule("uglifyjs-webpack-plugin"));
+		.filter(
+			j.filters.VariableDeclarator.requiresModule("uglifyjs-webpack-plugin")
+		);
 
 	/**
 	 * Look for a variable declaration which requires uglifyjs-webpack-plugin
@@ -29,7 +41,9 @@ module.exports = function(j, ast) {
 		pluginVariableAssignment = node.value.id.name;
 	});
 
-	pluginVariableAssignment = !pluginVariableAssignment ? "webpack.optimize.UglifyJsPlugin" : pluginVariableAssignment;
+	pluginVariableAssignment = !pluginVariableAssignment
+		? "webpack.optimize.UglifyJsPlugin"
+		: pluginVariableAssignment;
 
 	findPluginsByName(j, ast, [pluginVariableAssignment]).forEach(node => {
 		let expressionContent;
@@ -44,7 +58,7 @@ module.exports = function(j, ast) {
 		 * Otherwise, rely on default options
 		 */
 		if (pluginOptions.length) {
-		/*
+			/*
 		 * If user is using UglifyJsPlugin directly from webpack
 		 * transformation must:
 		 * - remove it
@@ -53,27 +67,55 @@ module.exports = function(j, ast) {
 		 */
 			if (pluginVariableAssignment.includes("webpack")) {
 				// create require for uglify-webpack-plugin
-				const pathRequire = getRequire(j, "UglifyJsPlugin", "uglifyjs-webpack-plugin");
+				const pathRequire = getRequire(
+					j,
+					"UglifyJsPlugin",
+					"uglifyjs-webpack-plugin"
+				);
 				// append to source code.
-				ast.find(j.Program).replaceWith(p => j.program([].concat(pathRequire).concat(p.value.body)));
+				ast
+					.find(j.Program)
+					.replaceWith(p =>
+						j.program([].concat(pathRequire).concat(p.value.body))
+					);
 
 				expressionContent = j.property(
 					"init",
 					j.identifier("minimizer"),
-					j.arrayExpression([j.newExpression(j.identifier("UglifyJsPlugin"), [pluginOptions[0]])])
+					j.arrayExpression([
+						j.newExpression(j.identifier("UglifyJsPlugin"), [pluginOptions[0]])
+					])
 				);
 			} else {
-				expressionContent = j.property("init", j.identifier("minimizer"), j.arrayExpression([node.value]));
+				expressionContent = j.property(
+					"init",
+					j.identifier("minimizer"),
+					j.arrayExpression([node.value])
+				);
 			}
 		} else {
 			searchForRequirePlugin.forEach(node => j(node).remove());
 		}
 
 		const minimizeProperty = createProperty(j, "minimize", "true");
-		expressionContent = (expressionContent) ? [minimizeProperty, expressionContent] : [minimizeProperty];
-
 		// creates optimization property at the body of the config.
-		pushCreateProperty(j, configBody, "optimization", j.objectExpression(expressionContent));
+		if (expressionContent) {
+			configBody.value.properties.push(
+				j.property(
+					"init",
+					j.identifier("optimization"),
+					j.objectExpression([minimizeProperty, expressionContent])
+				)
+			);
+		} else {
+			configBody.value.properties.push(
+				j.property(
+					"init",
+					j.identifier("optimization"),
+					j.objectExpression([minimizeProperty])
+				)
+			);
+		}
 
 		// remove the old Uglify plugin from Plugins array.
 		j(node).remove();

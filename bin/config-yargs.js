@@ -140,14 +140,16 @@ module.exports = function(yargs) {
 			},
 			"output-filename": {
 				type: "string",
-				describe: optionsSchema.definitions.output.properties.filename.description,
+				describe:
+					optionsSchema.definitions.output.properties.filename.description,
 				group: OUTPUT_GROUP,
 				defaultDescription: "[name].js",
 				requiresArg: true
 			},
 			"output-chunk-filename": {
 				type: "string",
-				describe: optionsSchema.definitions.output.properties.chunkFilename.description,
+				describe:
+					optionsSchema.definitions.output.properties.chunkFilename.description,
 				group: OUTPUT_GROUP,
 				defaultDescription:
 					"filename with [id] instead of [name] or [id] prefixed",
@@ -155,25 +157,30 @@ module.exports = function(yargs) {
 			},
 			"output-source-map-filename": {
 				type: "string",
-				describe: optionsSchema.definitions.output.properties.sourceMapFilename.description,
+				describe:
+					optionsSchema.definitions.output.properties.sourceMapFilename
+						.description,
 				group: OUTPUT_GROUP,
 				requiresArg: true
 			},
 			"output-public-path": {
 				type: "string",
-				describe: optionsSchema.definitions.output.properties.publicPath.description,
+				describe:
+					optionsSchema.definitions.output.properties.publicPath.description,
 				group: OUTPUT_GROUP,
 				requiresArg: true
 			},
 			"output-jsonp-function": {
 				type: "string",
-				describe: optionsSchema.definitions.output.properties.jsonpFunction.description,
+				describe:
+					optionsSchema.definitions.output.properties.jsonpFunction.description,
 				group: OUTPUT_GROUP,
 				requiresArg: true
 			},
 			"output-pathinfo": {
 				type: "boolean",
-				describe: optionsSchema.definitions.output.properties.pathinfo.description,
+				describe:
+					optionsSchema.definitions.output.properties.pathinfo.description,
 				group: OUTPUT_GROUP
 			},
 			"output-library": {
@@ -184,7 +191,8 @@ module.exports = function(yargs) {
 			},
 			"output-library-target": {
 				type: "string",
-				describe: optionsSchema.definitions.output.properties.libraryTarget.description,
+				describe:
+					optionsSchema.definitions.output.properties.libraryTarget.description,
 				choices: optionsSchema.definitions.output.properties.libraryTarget.enum,
 				group: OUTPUT_GROUP,
 				requiresArg: true
@@ -235,18 +243,24 @@ module.exports = function(yargs) {
 			"watch-stdin": {
 				type: "boolean",
 				alias: "stdin",
-				describe: optionsSchema.properties.watchOptions.properties.stdin.description,
+				describe:
+					optionsSchema.properties.watchOptions.properties.stdin.description,
 				group: ADVANCED_GROUP
 			},
 			"watch-aggregate-timeout": {
-				describe: optionsSchema.properties.watchOptions.properties.aggregateTimeout.description,
-				type: optionsSchema.properties.watchOptions.properties.aggregateTimeout.type,
+				describe:
+					optionsSchema.properties.watchOptions.properties.aggregateTimeout
+						.description,
+				type:
+					optionsSchema.properties.watchOptions.properties.aggregateTimeout
+						.type,
 				group: ADVANCED_GROUP,
 				requiresArg: true
 			},
 			"watch-poll": {
 				type: "string",
-				describe: optionsSchema.properties.watchOptions.properties.poll.description,
+				describe:
+					optionsSchema.properties.watchOptions.properties.poll.description,
 				group: ADVANCED_GROUP
 			},
 			hot: {
@@ -267,13 +281,15 @@ module.exports = function(yargs) {
 			},
 			"resolve-alias": {
 				type: "string",
-				describe: optionsSchema.definitions.resolve.properties.alias.description,
+				describe:
+					optionsSchema.definitions.resolve.properties.alias.description,
 				group: RESOLVE_GROUP,
 				requiresArg: true
 			},
 			"resolve-extensions": {
 				type: "array",
-				describe: optionsSchema.definitions.resolve.properties.alias.description,
+				describe:
+					optionsSchema.definitions.resolve.properties.alias.description,
 				group: RESOLVE_GROUP,
 				requiresArg: true
 			},
@@ -289,13 +305,16 @@ module.exports = function(yargs) {
 				requiresArg: true
 			},
 			"optimize-min-chunk-size": {
-				describe: optionsSchema.properties.optimization.properties.splitChunks.oneOf[1].properties.minSize.description,
+				describe:
+					optionsSchema.properties.optimization.properties.splitChunks.oneOf[1]
+						.properties.minSize.description,
 				group: OPTIMIZE_GROUP,
 				requiresArg: true
 			},
 			"optimize-minimize": {
 				type: "boolean",
-				describe: optionsSchema.properties.optimization.properties.minimize.description,
+				describe:
+					optionsSchema.properties.optimization.properties.minimize.description,
 				group: OPTIMIZE_GROUP
 			},
 			prefetch: {

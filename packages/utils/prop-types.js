@@ -19,6 +19,7 @@ module.exports = new Set([
 	"module",
 	"node",
 	"output",
+	"optimizations",
 	"parallelism",
 	"performance",
 	"plugins",
@@ -29,7 +30,8 @@ module.exports = new Set([
 	"resolve",
 	"resolveLoader",
 	"stats",
+	"splitChunks",
 	"target",
 	"watch",
-	"watchOptions",
+	"watchOptions"
 ]);
