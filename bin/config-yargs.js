@@ -6,7 +6,6 @@ const OUTPUT_GROUP = "Output options:";
 const ADVANCED_GROUP = "Advanced options:";
 const RESOLVE_GROUP = "Resolving options:";
 const OPTIMIZE_GROUP = "Optimizing options:";
-const INIT_GROUP = "Initialization:";
 
 module.exports = function(yargs) {
 	yargs
@@ -14,45 +13,6 @@ module.exports = function(yargs) {
 		.alias("help", "h")
 		.version()
 		.alias("version", "v")
-		// These commands are not actually handled by yargs, as webpack.js
-		// pre-emptively looks for them prior to yargs processing. This is
-		// strictly for --help output
-		.command(
-			"init",
-			"Initializes a new webpack configuration or loads a addon if " +
-			"specified",
-		)
-		.command(
-			"migrate",
-			"Migrate your webpack configuration from webpack 1 to webpack 2"
-		)
-		.command(
-			"add",
-			"Adds a webpack component to your configuration file"
-		)
-		// .command(
-		// 	"remove",
-		// 	"Removes a webpack component to your configuration file"
-		// )
-		// .command(
-		// 	"update",
-		// 	"Updates a webpack component to your configuration file"
-		// )
-		// .command(
-		// 	"make",
-		// 	"Converts a webpack configuration to a makefile"
-		// )
-		.command(
-			"generate-loader",
-			 "Generates a new webpack loader project"
-		)
-		.command(
-			"generate-plugin",
-			"Generates a new webpack plugin project"
-		)
-		.updateStrings({
-			'Commands:': 'Sub Commands:'
-		})
 		.options({
 			config: {
 				type: "string",
@@ -358,6 +318,5 @@ module.exports = function(yargs) {
 					"shortcut for --optimize-minimize --define process.env.NODE_ENV=\"production\"",
 				group: BASIC_GROUP
 			}
-		})
-		.strict();
+		});
 };
