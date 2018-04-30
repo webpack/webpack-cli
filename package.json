@@ -15,6 +15,9 @@
   "engines": {
     "node": ">=6.11.5"
   },
+  "keywords": [
+    "webpack", "cli", "scaffolding", "module", "bundler"    
+  ],
   "scripts": {
     "lint": "eslint \"**/*.js\"",
     "format": "prettier-eslint \"bin/**/*.js\" \"lib/**/*.js\" \"test/**/*.js\" --write",
