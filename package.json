@@ -30,7 +30,8 @@
     "travis:lint": "npm run lint && npm run bundlesize",
     "bundlesize": "bundlesize",
     "changelog": "conventional-changelog --config ./build/changelog-generator/index.js --infile CHANGELOG.md --same-file",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "travis-deploy-once": "travis-deploy-once"
   },
   "lint-staged": {
     "{lib,bin}/**/!(__testfixtures__)/**.js": [
@@ -132,9 +133,10 @@
     "nyc": "^11.6.0",
     "prettier-eslint-cli": "^4.7.1",
     "schema-utils": "^0.4.5",
-    "semantic-release": "^15.1.7",
+    "semantic-release": "^15.1.8",
     "webpack": "^4.2.0",
-    "webpack-dev-server": "^3.0.0"
+    "webpack-dev-server": "^3.0.0",
+    "travis-deploy-once": "^5.0.0"
   },
   "files": [
     "bin",
