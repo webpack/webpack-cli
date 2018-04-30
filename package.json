@@ -1,6 +1,6 @@
 {
   "name": "webpack-cli",
-  "version": "0.0.0-development",
+  "version": "2.1.1",
   "description": "CLI for webpack & friends",
   "license": "MIT",
   "preferGlobal": true,
@@ -16,7 +16,11 @@
     "node": ">=6.11.5"
   },
   "keywords": [
-    "webpack", "cli", "scaffolding", "module", "bundler"    
+    "webpack",
+    "cli",
+    "scaffolding",
+    "module",
+    "bundler"
   ],
   "scripts": {
     "lint": "eslint \"**/*.js\"",
