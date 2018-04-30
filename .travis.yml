@@ -6,7 +6,9 @@ node_js:
   - "8"
   - "7"
   - "6"
-
+cache:
+  directories:
+    - ~/.npm
 matrix:
   include:
     - os: linux
@@ -41,10 +43,7 @@ jobs:
       script: commitlint-travis
     - stage: NPM release
       if: branch = master
-      node_js: "8"
+      node_js: "lts/*"
       script: echo "Deploying new webpack-cli version to npm ..."
       deploy:
-        script: npx semantic-release
-        provider: npm
-        api_key: $NPM_API_KEY
-        on: deploy-npm-release
+        script: npm run travis-deploy-once "npm run semantic-release"
