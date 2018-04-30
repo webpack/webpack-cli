@@ -53,6 +53,7 @@
 Usage: webpack-cli [options]
        webpack-cli [options] --entry <entry> --output <output>
        webpack-cli [options] <entries...> --output <output>
+       webpack-cli <command> [options]
 
 For more information, see https://webpack.js.org/api/cli/.`);
 
