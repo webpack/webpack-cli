@@ -6,7 +6,6 @@ const OUTPUT_GROUP = "Output options:";
 const ADVANCED_GROUP = "Advanced options:";
 const RESOLVE_GROUP = "Resolving options:";
 const OPTIMIZE_GROUP = "Optimizing options:";
-const INIT_GROUP = "Initialization:";
 
 module.exports = function(yargs) {
 	yargs
@@ -15,52 +14,6 @@ module.exports = function(yargs) {
 		.version()
 		.alias("version", "v")
 		.options({
-			init: {
-				type: "boolean",
-				describe:
-					"Initializes a new webpack configuration or loads a" +
-					"\n" +
-					"addon if specified",
-				group: INIT_GROUP
-			},
-			migrate: {
-				type: "boolean",
-				describe:
-					"Migrate your webpack configuration from webpack 1 to webpack 2",
-				group: INIT_GROUP
-			},
-			add: {
-				type: "boolean",
-				describe: "Adds a webpack component to your configuration file",
-				group: INIT_GROUP
-			},
-			/*
-			remove: {
-				type: "boolean",
-				describe: "Removes a webpack component to your configuration file",
-				group: INIT_GROUP
-			},
-			update: {
-				type: "boolean",
-				describe: "Updates a webpack component to your configuration file",
-				group: INIT_GROUP
-			},
-			make: {
-				type: "boolean",
-				describe: "Converts a webpack configuration to a makefile",
-				group: INIT_GROUP
-			},
-			*/
-			"generate-loader": {
-				type: "boolean",
-				describe: "Generates a new webpack loader project",
-				group: INIT_GROUP
-			},
-			"generate-plugin": {
-				type: "boolean",
-				describe: "Generates a new webpack plugin project",
-				group: INIT_GROUP
-			},
 			config: {
 				type: "string",
 				describe: "Path to the config file",
@@ -365,6 +318,5 @@ module.exports = function(yargs) {
 					"shortcut for --optimize-minimize --define process.env.NODE_ENV=\"production\"",
 				group: BASIC_GROUP
 			}
-		})
-		.strict();
+		});
 };
