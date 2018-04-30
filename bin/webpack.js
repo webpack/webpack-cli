@@ -32,6 +32,13 @@
 		"info"
 	];
 
+	const nodeFlags = process.argv.filter(arg => arg.includes("node."));
+
+	if (nodeFlags.length) {
+		require("./process-node-flags")(process.argv);
+		return;
+	}
+
 	const NON_COMPILATION_CMD = process.argv.find(arg => {
 		if (arg === "serve") {
 			global.process.argv = global.process.argv.filter(a => a !== "serve");
@@ -53,6 +60,7 @@
 Usage: webpack-cli [options]
        webpack-cli [options] --entry <entry> --output <output>
        webpack-cli [options] <entries...> --output <output>
+       webpack-cli <command> [options]
 
 For more information, see https://webpack.js.org/api/cli/.`);
 
