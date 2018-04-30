@@ -108,7 +108,7 @@
     "webpack-addons": "^1.1.5",
     "yargs": "^11.1.0",
     "yeoman-environment": "^2.0.0",
-    "yeoman-generator": "^2.0.3"
+    "yeoman-generator": "^2.0.4"
   },
   "peerDependencies": {
     "webpack": "^4.0.0"
