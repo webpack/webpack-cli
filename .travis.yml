@@ -41,7 +41,7 @@ jobs:
   include:
     - stage: commit lint
       script: commitlint-travis
-
-after_success:
-  - echo "Deploying new webpack-cli version to npm ..."
-  - npm run travis-deploy-once "npm run semantic-release"
+    - stage: NPM release
+      if: branch = master
+      node_js: "lts/*"
+      script: npm run travis-deploy-once "npm run semantic-release"
