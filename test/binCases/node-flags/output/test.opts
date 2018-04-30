@@ -1,6 +1,0 @@
---node.no-deprecation
---node.no-warnings
---display-used-exports
---display-entrypoints
---mode production
-./index.js
