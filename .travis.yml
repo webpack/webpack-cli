@@ -18,6 +18,9 @@ matrix:
       node_js: "stable"
       env: JOB_PART=integration
     - os: linux
+      node_js: "10"
+      env: JOB_PART=integration
+    - os: linux
       node_js: "8"
       env: JOB_PART=integration
     - os: linux
