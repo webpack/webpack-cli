@@ -1,5 +1,5 @@
 const yeoman = require("yeoman-environment");
-const PluginGenerator = require("webpack-cli-generators/plugin-generator").PluginGenerator;
+const PluginGenerator = require("@webpack-cli/generators/plugin-generator").PluginGenerator;
 
 /**
  * Runs a yeoman generator to create a new webpack plugin project
@@ -7,7 +7,7 @@ const PluginGenerator = require("webpack-cli-generators/plugin-generator").Plugi
  */
 function pluginCreator() {
 	const env = yeoman.createEnv();
-	const generatorName = "webpack-plugin-generator";
+	const generatorName = "@webpack-cli/plugin";
 
 	env.registerStub(PluginGenerator, generatorName);
 

@@ -39,7 +39,7 @@ const validate = require("webpack").validate;
 const WebpackOptionsValidationError = require("webpack")
 	.WebpackOptionsValidationError;
 
-const runPrettier = require("webpack-cli-utils/run-prettier");
+const runPrettier = require("@webpack-cli/utils/run-prettier");
 
 /**
 *
@@ -88,7 +88,7 @@ module.exports = function migrate(
 		{
 			title: "Migrating config from v1 to v2",
 			task: ctx => {
-				const transformations = require("webpack-cli-migrate").transformations;
+				const transformations = require("@webpack-cli/migrate").transformations;
 				return new Listr(
 					Object.keys(transformations).map(key => {
 						const transform = transformations[key];

@@ -1,7 +1,7 @@
 {
-    "name": "webpack-cli-migrate",
-    "version":"2.0.12",
-    "description": "CLI for webpack & friends",
+    "name": "@webpack-cli/migrate",
+    "version":"2.0.13",
+    "description": "A migrator for Webpack CLI",
     "license": "MIT",
     "engines": {
       "node": ">=6.11.5"
@@ -13,6 +13,6 @@
       "lodash": "^4.17.5",
       "p-each-series": "^1.0.0",
       "p-lazy": "^1.0.0",
-      "webpack-cli-utils": "2.0.12"
+      "@webpack-cli/utils": "2.0.13"
     }
   }

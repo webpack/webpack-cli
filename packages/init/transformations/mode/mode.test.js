@@ -1,6 +1,6 @@
 "use strict";
 
-const defineTest = require("webpack-cli-utils/defineTest");
+const defineTest = require("@webpack-cli/utils/defineTest");
 
 defineTest(__dirname, "mode", "mode-1", "'production'", "init");
 defineTest(__dirname, "mode", "mode-1", "modeVariable", "init");

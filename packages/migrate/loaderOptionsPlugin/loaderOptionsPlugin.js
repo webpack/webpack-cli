@@ -1,8 +1,8 @@
 const isEmpty = require("lodash/isEmpty");
-const findPluginsByName = require("webpack-cli-utils/ast-utils").findPluginsByName;
-const createOrUpdatePluginByName = require("webpack-cli-utils/ast-utils")
+const findPluginsByName = require("@webpack-cli/utils/ast-utils").findPluginsByName;
+const createOrUpdatePluginByName = require("@webpack-cli/utils/ast-utils")
 	.createOrUpdatePluginByName;
-const safeTraverse = require("webpack-cli-utils/ast-utils").safeTraverse;
+const safeTraverse = require("@webpack-cli/utils/ast-utils").safeTraverse;
 
 /**
  *

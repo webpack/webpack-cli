@@ -1,5 +1,5 @@
 const yeoman = require("yeoman-environment");
-const { LoaderGenerator } = require("webpack-cli-generators/loader-generator");
+const { LoaderGenerator } = require("@webpack-cli/generators/loader-generator");
 
 /**
  * Runs a yeoman generator to create a new webpack loader project

@@ -1,6 +1,6 @@
 "use strict";
 
-const defineTest = require("webpack-cli-utils/defineTest");
+const defineTest = require("@webpack-cli/utils/defineTest");
 
 defineTest(__dirname, "externals", "externals-0", /react/, "init");
 defineTest(

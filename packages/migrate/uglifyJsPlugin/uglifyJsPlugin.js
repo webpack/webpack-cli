@@ -1,4 +1,4 @@
-const findPluginsByName = require("webpack-cli-utils/ast-utils").findPluginsByName;
+const findPluginsByName = require("@webpack-cli/utils/ast-utils").findPluginsByName;
 
 /**
  *

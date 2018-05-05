@@ -1,6 +1,6 @@
 "use strict";
 
-const defineTest = require("webpack-cli-utils/defineTest");
+const defineTest = require("@webpack-cli/utils/defineTest");
 
 defineTest(__dirname, "devtool", "devtool-0", "'source-map'", "init");
 defineTest(__dirname, "devtool", "devtool-0", "myVariable", "init");
