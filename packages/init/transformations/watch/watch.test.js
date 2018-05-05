@@ -1,6 +1,6 @@
 "use strict";
 
-const defineTest = require("webpack-cli-utils/defineTest");
+const defineTest = require("@webpack-cli/utils/defineTest");
 
 defineTest(__dirname, "watch", "watch-0", true, "init");
 defineTest(__dirname, "watch", "watch-0", false, "init");

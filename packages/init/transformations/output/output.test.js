@@ -1,6 +1,6 @@
 "use strict";
 
-const defineTest = require("webpack-cli-utils/defineTest");
+const defineTest = require("@webpack-cli/utils/defineTest");
 const jscodeshift = require("jscodeshift");
 
 defineTest(

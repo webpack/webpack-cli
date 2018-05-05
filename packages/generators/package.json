@@ -1,7 +1,7 @@
 {
-    "name": "webpack-cli-generators",
-    "version":"2.0.12",
-    "description": "CLI for webpack & friends",
+    "name": "@webpack-cli/generators",
+    "version":"2.0.13",
+    "description": "Generators for webpack CLI",
     "license": "MIT",
     "engines": {
       "node": ">=6.11.5"
@@ -13,7 +13,7 @@
       "log-symbols": "2.2.0",
       "mkdirp": "^0.5.1",
       "webpack-addons": "^1.1.5",
-      "webpack-cli-utils": "2.0.12",
+      "@webpack-cli/utils": "2.0.13",
       "yeoman-generator": "^2.0.3"
     },
     "devDependencies": {

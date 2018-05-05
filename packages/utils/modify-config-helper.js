@@ -4,7 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const chalk = require("chalk");
 const yeoman = require("yeoman-environment");
-const runTransform = require("webpack-cli-init");
+const runTransform = require("@webpack-cli/init");
 const Generator = require("yeoman-generator");
 
 /**

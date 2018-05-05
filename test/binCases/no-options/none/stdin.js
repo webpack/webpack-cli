@@ -10,6 +10,6 @@ module.exports = function testAssertions(code, stdout, stderr) {
 	expect(stdout[5]).toContain("WARNING");
 	expect(stdout[6]).toContain("The \'mode\' option has not been set");
 	expect(stdout[7]).toContain("");
-	expect(stdout[8]).toContain("ERROR in Entry module not found");
+	expect(stdout[9]).toContain("ERROR in Entry module not found");
 	expect(stderr).toHaveLength(0);
 };

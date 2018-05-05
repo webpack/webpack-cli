@@ -1,7 +1,7 @@
 {
-    "name": "webpack-cli-utils",
-    "version":"2.0.12",
-    "description": "CLI for webpack & friends",
+    "name": "@webpack-cli/utils",
+    "version":"2.0.13",
+    "description": "A utility module for webpack CLI",
     "license": "MIT",
     "engines": {
       "node": ">=6.11.5"
@@ -13,7 +13,7 @@
       "got": "^8.2.0",
       "jscodeshift": "^0.5.0",
       "prettier": "^1.5.3",
-      "webpack-cli-init": "2.0.12",
+      "@webpack-cli/init": "2.0.13",
       "yeoman-environment": "^2.0.0",
       "yeoman-generator": "^2.0.3"
     }

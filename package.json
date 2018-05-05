@@ -4,6 +4,7 @@
   "description": "CLI for webpack & friends",
   "license": "MIT",
   "preferGlobal": true,
+  "private": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/webpack/webpack-cli.git"
@@ -32,7 +33,9 @@
     "travis:integration": "nyc jest && npm run reportCoverage",
     "travis:lint": "npm run lint && npm run bundlesize",
     "bundlesize": "bundlesize",
-    "changelog": "conventional-changelog --config ./build/changelog-generator/index.js --infile CHANGELOG.md --same-file"
+    "changelog": "conventional-changelog --config ./build/changelog-generator/index.js --infile CHANGELOG.md --same-file",
+    "clean:all": "rimraf node_modules packages/*/node_modules",
+    "bootstrap": "npm run clean:all && npm install && lerna bootstrap"
   },
   "lint-staged": {
     "{packages,bin}/**/!(__testfixtures__)/**.js": [
@@ -135,6 +138,7 @@
     "lint-staged": "^7.0.0",
     "nyc": "^11.6.0",
     "prettier-eslint-cli": "^4.7.1",
+    "rimraf": "2.6.2",
     "schema-utils": "^0.4.5",
     "webpack": "^4.2.0",
     "webpack-dev-server": "^3.0.0"
