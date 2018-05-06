@@ -11,7 +11,7 @@ const Listr = require("listr");
 const { validate } = require("webpack");
 const { WebpackOptionsValidationError } = require("webpack");
 
-const runPrettier = require("../utils/run-prettier");
+const runPrettier = require("@webpack-cli/utils/run-prettier");
 
 /**
  *
@@ -101,7 +101,7 @@ function runMigration(currentConfigPath, outputConfigPath) {
 		{
 			title: "Migrating config to newest version",
 			task: ctx => {
-				const transformations = require("../migrate").transformations;
+				const transformations = require("@webpack-cli/migrate").transformations;
 				return new Listr(
 					Object.keys(transformations).map(key => {
 						const transform = transformations[key];

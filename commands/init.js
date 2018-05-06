@@ -1,8 +1,8 @@
 "use strict";
 
-const npmPackagesExists = require("../utils/npm-packages-exists");
-const defaultGenerator = require("../generators/init-generator");
-const modifyHelper = require("../utils/modify-config-helper");
+const npmPackagesExists = require("@webpack-cli/utils/npm-packages-exists");
+const defaultGenerator = require("@webpack-cli/generators/init-generator");
+const modifyHelper = require("@webpack-cli/utils/modify-config-helper");
 
 /**
  *

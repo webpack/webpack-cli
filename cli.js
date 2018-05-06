@@ -59,7 +59,7 @@ Usage: webpack-cli [options]
 
 For more information, see https://webpack.js.org/api/cli/.`);
 
-	require("./config-yargs")(yargs);
+	require("./utils/config-yargs")(yargs);
 
 	const DISPLAY_GROUP = "Stats options:";
 	const BASIC_GROUP = "Basic options:";

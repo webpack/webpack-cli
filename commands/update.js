@@ -1,7 +1,7 @@
 "use strict";
 
-const defaultGenerator = require("../generators/update-generator");
-const modifyHelper = require("../utils/modify-config-helper");
+const defaultGenerator = require("@webpack-cli/generators/update-generator");
+const modifyHelper = require("@webpack-cli/utils/modify-config-helper");
 
 /**
  * Is called and returns a scaffolding instance, updating properties
