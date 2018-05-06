@@ -41,11 +41,9 @@
 	});
 
 	if (NON_COMPILATION_CMD) {
-		// eslint-disable-next-line
-		if (NON_COMPILATION_CMD === "serve") {
-			return require(`./commands/${NON_COMPILATION_CMD}`).serve();
-		}
-		return require(`./commands/${NON_COMPILATION_CMD}`)(...process.argv);
+		// TODO: prompt if package isn't installed, run installed package otherwise.
+		//return require(`./commands/${NON_COMPILATION_CMD}`)(...process.argv);
+		return;
 	}
 
 	const yargs = require("yargs").usage(`webpack-cli ${

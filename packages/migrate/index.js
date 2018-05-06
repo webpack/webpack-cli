@@ -1,81 +1,204 @@
-const jscodeshift = require("jscodeshift");
-const pEachSeries = require("p-each-series");
+"use strict";
+
+const fs = require("fs");
+const path = require("path");
+const chalk = require("chalk");
+const diff = require("diff");
+const inquirer = require("inquirer");
 const PLazy = require("p-lazy");
+const Listr = require("listr");
 
-const loadersTransform = require("./loaders/loaders");
-const resolveTransform = require("./resolve/resolve");
-const removeJsonLoaderTransform = require("./removeJsonLoader/removeJsonLoader");
-const uglifyJsPluginTransform = require("./uglifyJsPlugin/uglifyJsPlugin");
-const loaderOptionsPluginTransform = require("./loaderOptionsPlugin/loaderOptionsPlugin");
-const bannerPluginTransform = require("./bannerPlugin/bannerPlugin");
-const extractTextPluginTransform = require("./extractTextPlugin/extractTextPlugin");
-const noEmitOnErrorsPluginTransform = require("./noEmitOnErrorsPlugin/noEmitOnErrorsPlugin");
-const removeDeprecatedPluginsTransform = require("./removeDeprecatedPlugins/removeDeprecatedPlugins");
+const { validate } = require("webpack");
+const { WebpackOptionsValidationError } = require("webpack");
 
-const transformsObject = {
-	loadersTransform,
-	resolveTransform,
-	removeJsonLoaderTransform,
-	uglifyJsPluginTransform,
-	loaderOptionsPluginTransform,
-	bannerPluginTransform,
-	extractTextPluginTransform,
-	noEmitOnErrorsPluginTransform,
-	removeDeprecatedPluginsTransform
-};
-
-const transformations = Object.keys(transformsObject).reduce((res, key) => {
-	res[key] = (ast, source) =>
-		transformSingleAST(ast, source, transformsObject[key]);
-	return res;
-}, {});
-
-function transformSingleAST(ast, source, transformFunction) {
-	return new PLazy((resolve, reject) => {
-		setTimeout(_ => {
-			try {
-				resolve(transformFunction(jscodeshift, ast, source));
-			} catch (err) {
-				reject(err);
-			}
-		}, 0);
-	});
-}
+const runPrettier = require("@webpack-cli/utils/run-prettier");
 
 /**
  *
- * Transforms a given piece of source code by applying selected transformations to the AST.
- * By default, transforms a webpack version 1 configuration file into a webpack version 2
- * configuration file.
+ * Runs migration on a given configuration using AST's and promises
+ * to sequentially transform a configuration file.
  *
- * @param {String} source - source file contents
- * @param {Function[]} [transforms] - List of transformation functions, defined in the
- * order to apply them in. By default, all defined transformations.
- * @param {Object} [options] - recast formatting options
- * @returns {String} source — transformed source code
+ * @param {Array} args - Migrate arguments such as input and
+ * output path
+ * @returns {Function} Runs the migration using the 'runMigrate'
+ * function.
  */
 
-function transform(source, transforms, options) {
-	const ast = jscodeshift(source);
-	const recastOptions = Object.assign(
+module.exports = function migrate(...args) {
+	const filePaths = args.slice(3);
+	if (!filePaths.length) {
+		const errMsg = "\n ✖ Please specify a path to your webpack config \n ";
+		console.error(chalk.red(errMsg));
+		return;
+	}
+	const currentConfigPath = path.resolve(process.cwd(), filePaths[0]);
+	let outputConfigPath;
+	if (!filePaths[1]) {
+		return inquirer
+			.prompt([
+				{
+					type: "confirm",
+					name: "confirmPath",
+					message:
+						"Migration output path not specified. " +
+						"Do you want to use your existing webpack " +
+						"configuration?",
+					default: "Y"
+				}
+			])
+			.then(ans => {
+				if (!ans["confirmPath"]) {
+					console.error(chalk.red("✖ ︎Migration aborted due no output path"));
+					return;
+				}
+				outputConfigPath = path.resolve(process.cwd(), filePaths[0]);
+				return runMigration(currentConfigPath, outputConfigPath);
+			})
+			.catch(err => {
+				console.error(err);
+			});
+	}
+	outputConfigPath = path.resolve(process.cwd(), filePaths[1]);
+	return runMigration(currentConfigPath, outputConfigPath);
+};
+
+/**
+ *
+ * Runs migration on a given configuration using AST's and promises
+ * to sequentially transform a configuration file.
+ *
+ * @param {String} currentConfigPath - input path for config
+ * @param {String} outputConfigPath - output path for config
+ * @returns {Promise} Runs the migration using a promise that
+ * will throw any errors during each transform or output if the
+ * user decides to abort the migration
+ */
+
+function runMigration(currentConfigPath, outputConfigPath) {
+	const recastOptions = {
+		quote: "single"
+	};
+	const tasks = new Listr([
 		{
-			quote: "single"
+			title: "Reading webpack config",
+			task: ctx =>
+				new PLazy((resolve, reject) => {
+					fs.readFile(currentConfigPath, "utf8", (err, content) => {
+						if (err) {
+							reject(err);
+						}
+						try {
+							const jscodeshift = require("jscodeshift");
+							ctx.source = content;
+							ctx.ast = jscodeshift(content);
+							resolve();
+						} catch (err) {
+							reject("Error generating AST", err);
+						}
+					});
+				})
 		},
-		options
-	);
-	transforms =
-		transforms || Object.keys(transformations).map(k => transformations[k]);
-	return pEachSeries(transforms, f => f(ast, source))
-		.then(_ => {
-			return ast.toSource(recastOptions);
+		{
+			title: "Migrating config to newest version",
+			task: ctx => {
+				const transformations = require("@webpack-cli/migrate").transformations;
+				return new Listr(
+					Object.keys(transformations).map(key => {
+						const transform = transformations[key];
+						return {
+							title: key,
+							task: _ => transform(ctx.ast, ctx.source)
+						};
+					})
+				);
+			}
+		}
+	]);
+
+	tasks
+		.run()
+		.then(ctx => {
+			const result = ctx.ast.toSource(recastOptions);
+			const diffOutput = diff.diffLines(ctx.source, result);
+			diffOutput.forEach(diffLine => {
+				if (diffLine.added) {
+					process.stdout.write(chalk.green(`+ ${diffLine.value}`));
+				} else if (diffLine.removed) {
+					process.stdout.write(chalk.red(`- ${diffLine.value}`));
+				}
+			});
+			return inquirer
+				.prompt([
+					{
+						type: "confirm",
+						name: "confirmMigration",
+						message: "Are you sure these changes are fine?",
+						default: "Y"
+					}
+				])
+				.then(answers => {
+					if (answers["confirmMigration"]) {
+						return inquirer.prompt([
+							{
+								type: "confirm",
+								name: "confirmValidation",
+								message:
+									"Do you want to validate your configuration? " +
+									"(If you're using webpack merge, validation isn't useful)",
+								default: "Y"
+							}
+						]);
+					} else {
+						console.log(chalk.red("✖ Migration aborted"));
+					}
+				})
+				.then(answer => {
+					if (!answer) return;
+
+					runPrettier(outputConfigPath, result, err => {
+						if (err) {
+							throw err;
+						}
+					});
+
+					if (answer["confirmValidation"]) {
+						const webpackOptionsValidationErrors = validate(
+							require(outputConfigPath)
+						);
+						if (webpackOptionsValidationErrors.length) {
+							console.log(
+								chalk.red(
+									"\n✖ Your configuration validation wasn't successful \n"
+								)
+							);
+							console.error(
+								new WebpackOptionsValidationError(
+									webpackOptionsValidationErrors
+								).message
+							);
+						}
+					}
+					console.log(
+						chalk.green(
+							`\n✔︎ New webpack config file is at ${outputConfigPath}.`
+						)
+					);
+					console.log(
+						chalk.green(
+							"✔︎ Heads up! Updating to the latest version could contain breaking changes."
+						)
+					);
+					console.log(
+						chalk.green(
+							"✔︎ Plugin and loader dependencies may need to be updated."
+						)
+					);
+				});
 		})
 		.catch(err => {
+			const errMsg = "\n ✖ ︎Migration aborted due to some errors: \n";
+			console.error(chalk.red(errMsg));
 			console.error(err);
+			process.exitCode = 1;
 		});
 }
-
-module.exports = {
-	transform,
-	transformSingleAST,
-	transformations
-};
