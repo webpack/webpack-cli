@@ -14,6 +14,7 @@
   "dependencies": {
     "jscodeshift": "^0.5.0",
     "p-each-series": "^1.0.0",
-    "p-lazy": "^1.0.0"
+    "p-lazy": "^1.0.0",
+    "@webpack-cli/utils": "0.0.1"
   }
 }
