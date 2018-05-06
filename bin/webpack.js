@@ -42,8 +42,10 @@
 
 	if (NON_COMPILATION_CMD) {
 		// eslint-disable-next-line
-		require("../lib/index")(NON_COMPILATION_CMD, process.argv);
-		return;
+		if (NON_COMPILATION_CMD === "serve") {
+			return require(`./commands/${NON_COMPILATION_CMD}`).serve();
+		}
+		return require(`./commands/${NON_COMPILATION_CMD}`)(...process.argv);
 	}
 
 	const yargs = require("yargs").usage(`webpack-cli ${

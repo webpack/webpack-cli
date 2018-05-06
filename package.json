@@ -136,14 +136,15 @@
     "jest": "^22.4.3",
     "jest-cli": "^22.4.3",
     "jsdoc": "^3.5.5",
+    "lerna": "^2.11.0",
     "lint-staged": "^7.0.0",
     "nyc": "^11.6.0",
     "prettier-eslint-cli": "^4.7.1",
     "schema-utils": "^0.4.5",
     "semantic-release": "^15.1.8",
+    "travis-deploy-once": "^5.0.0",
     "webpack": "^4.2.0",
-    "webpack-dev-server": "^3.0.0",
-    "travis-deploy-once": "^5.0.0"
+    "webpack-dev-server": "^3.0.0"
   },
   "files": [
     "bin",
