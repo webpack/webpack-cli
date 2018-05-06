@@ -3,7 +3,7 @@ const fs = require("fs");
 fs.existsSync = fs.existsSync || path.existsSync;
 const interpret = require("interpret");
 const prepareOptions = require("./prepareOptions");
-const webpackConfigurationSchema = require("../schemas/webpackConfigurationSchema.json");
+const webpackConfigurationSchema = require("./webpackConfigurationSchema.json");
 const validateSchema = require("webpack").validateSchema;
 const WebpackOptionsValidationError = require("webpack")
 	.WebpackOptionsValidationError;

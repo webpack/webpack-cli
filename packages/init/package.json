@@ -1,0 +1,11 @@
+{
+  "name": "@webpack-cli/init",
+  "version": "0.0.1",
+  "description": "init command for webpack-cli",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT"
+}

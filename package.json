@@ -3,15 +3,14 @@
   "version": "2.1.2",
   "description": "CLI for webpack & friends",
   "license": "MIT",
-  "preferGlobal": true,
   "repository": {
     "type": "git",
     "url": "https://github.com/webpack/webpack-cli.git"
   },
   "bin": {
-    "webpack-cli": "./bin/webpack.js"
+    "webpack-cli": "./cli.js"
   },
-  "main": "./bin/webpack.js",
+  "main": "./cli.js",
   "engines": {
     "node": ">=6.11.5"
   },
@@ -22,10 +21,13 @@
     "module",
     "bundler"
   ],
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "lint": "eslint \"**/*.js\"",
-    "format": "prettier-eslint \"bin/**/*.js\" \"lib/**/*.js\" \"test/**/*.js\" --write",
-    "lint:codeOnly": "eslint \"{lib,bin}/**/!(__testfixtures__)/*.js\" \"{lib,bin}/**.js\"",
+    "format": "prettier-eslint \"utils/**/*.js\" \"cli.js\" \"test/**/*.js\" --write",
+    "lint:codeOnly": "eslint \"cli.js\" \"{utils}/**/!(__testfixtures__)/*.js\" \"{utils}/**.js\"",
     "precommit": "lint-staged",
     "pretest": "npm run lint",
     "test": "nyc jest",
@@ -38,7 +40,9 @@
     "bundlesize": "bundlesize",
     "changelog": "conventional-changelog --config ./build/changelog-generator/index.js --infile CHANGELOG.md --same-file",
     "semantic-release": "semantic-release",
-    "travis-deploy-once": "travis-deploy-once"
+    "travis-deploy-once": "travis-deploy-once",
+    "clean:all": "rimraf node_modules packages/*/node_modules",
+    "bootstrap": "npm run clean:all && npm install && lerna bootstrap"
   },
   "lint-staged": {
     "{lib,bin}/**/!(__testfixtures__)/**.js": [
@@ -55,12 +59,9 @@
     ]
   },
   "nyc": {
-    "exclude": [
-      "**/__testfixtures__/**"
-    ],
     "include": [
-      "lib/**.js",
-      "bin/**.js"
+      "utils/**.js",
+      "./cli.js"
     ],
     "reporter": [
       "lcov"
@@ -69,15 +70,15 @@
   },
   "bundlesize": [
     {
-      "path": "./lib/migrate/**.js",
+      "path": "./packages/migrate/**.js",
       "maxSize": "1 kB"
     },
     {
-      "path": "./lib/init/**/**.js",
+      "path": "./packages/init/**/**.js",
       "maxSize": "1.6 kB"
     },
     {
-      "path": "./lib/utils/**.js",
+      "path": "./packages/utils/**.js",
       "maxSize": "5.32 kB"
     }
   ],
@@ -140,6 +141,7 @@
     "lint-staged": "^7.0.0",
     "nyc": "^11.6.0",
     "prettier-eslint-cli": "^4.7.1",
+    "rimraf": "^2.6.2",
     "schema-utils": "^0.4.5",
     "semantic-release": "^15.1.8",
     "travis-deploy-once": "^5.0.0",

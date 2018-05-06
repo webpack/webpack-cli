@@ -15,7 +15,7 @@
 	}
 
 	require("v8-compile-cache");
-	const ErrorHelpers = require("./errorHelpers");
+	const ErrorHelpers = require("./utils/errorHelpers");
 
 	const NON_COMPILATION_ARGS = [
 		"init",
@@ -49,7 +49,7 @@
 	}
 
 	const yargs = require("yargs").usage(`webpack-cli ${
-		require("../package.json").version
+		require("./package.json").version
 	}
 
 Usage: webpack-cli [options]
@@ -239,7 +239,7 @@ For more information, see https://webpack.js.org/api/cli/.`);
 
 		let options;
 		try {
-			options = require("./convert-argv")(argv);
+			options = require("./utils/convert-argv")(argv);
 		} catch (err) {
 			if (err.name !== "ValidationError") {
 				throw err;
