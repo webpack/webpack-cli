@@ -340,6 +340,35 @@ function findVariableToPlugin(j, rootNode, pluginPackageName) {
 
 /**
  *
+ * Get an property named topScope from yeoman and inject it to the top scope of
+ * the config, outside module.exports
+ *
+ * @param j — jscodeshift API
+ * @param ast - jscodeshift API
+ * @param {any} values - topScope property to add
+ * @returns ast - jscodeshift API
+ */
+
+function parseTopScope(j, ast, values) {
+	function createTopScopeProperty(p) {
+		values.forEach(n => {
+			if (
+				!p.value.body[0].declarations ||
+				n.indexOf(p.value.body[0].declarations[0].id.name) <= 0
+			) {
+				p.value.body.splice(-1, 0, n);
+			}
+		});
+	}
+	if (values) {
+		return ast.find(j.Program).filter(p => createTopScopeProperty(p));
+	} else {
+		return ast;
+	}
+};
+
+/**
+ *
  * Returns true if type is given type
  * @param {Node} path - pathNode
  * @param {String} type - node type
@@ -349,6 +378,11 @@ function findVariableToPlugin(j, rootNode, pluginPackageName) {
 function isType(path, type) {
 	return path.type === type;
 }
+
+/**
+ *
+ * TBD
+ */
 
 function findObjWithOneOfKeys(p, keyNames) {
 	return p.value.properties.reduce((predicate, prop) => {
@@ -444,5 +478,6 @@ module.exports = {
 	createIdentifierOrLiteral,
 	findObjWithOneOfKeys,
 	getRequire,
-	addProperty
+	addProperty,
+	parseTopScope
 };

@@ -31,6 +31,9 @@ module.exports = function astTransform(j, ast, value, action, key) {
 			})
 			.filter(p => p.value.properties);
 		return root.forEach(p => {
+			if(key == "topScope") {
+				utils.parseTopScope(j, p, value);
+			}
 			utils.addProperty(j, p, key, value);
 		});
 	}
