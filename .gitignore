@@ -27,3 +27,6 @@ test/js/*
 
 # Yeoman file
 .yo-rc.json
+
+# Lerna log
+lerna-debug.log
