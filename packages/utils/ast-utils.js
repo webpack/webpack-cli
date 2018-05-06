@@ -367,6 +367,52 @@ function parseTopScope(j, ast, values) {
 	}
 };
 
+
+/**
+ *
+ * Transform for merge. Finds the merge property from yeoman and creates a way
+ * for users to allow webpack-merge in their scaffold
+ *
+ * @param j — jscodeshift API
+ * @param ast - jscodeshift API
+ * @param {any} values - value to use with merge
+ * @returns ast - jscodeshift API
+ */
+
+function parseMerge(j, ast, values) {
+	function createMergeProperty(p) {
+		// FIXME Use j.callExp()
+		let exportsDecl = p.value.body.map(n => {
+			if (n.expression) {
+				return n.expression.right;
+			}
+		});
+		const bodyLength = exportsDecl.length;
+		let newVal = {};
+		newVal.type = "ExpressionStatement";
+		newVal.expression = {
+			type: "AssignmentExpression",
+			operator: "=",
+			left: {
+				type: "MemberExpression",
+				computed: false,
+				object: j.identifier("module"),
+				property: j.identifier("exports")
+			},
+			right: j.callExpression(j.identifier("merge"), [
+				j.identifier(values),
+				exportsDecl.pop()
+			])
+		};
+		p.value.body[bodyLength - 1] = newVal;
+	}
+	if (values) {
+		return ast.find(j.Program).filter(p => createMergeProperty(p));
+	} else {
+		return ast;
+	}
+};
+
 /**
  *
  * Returns true if type is given type
@@ -479,5 +525,6 @@ module.exports = {
 	findObjWithOneOfKeys,
 	getRequire,
 	addProperty,
-	parseTopScope
+	parseTopScope,
+	parseMerge
 };

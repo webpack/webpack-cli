@@ -33,8 +33,11 @@ module.exports = function astTransform(j, ast, value, action, key) {
 		return root.forEach(p => {
 			if(key == "topScope") {
 				utils.parseTopScope(j, p, value);
+			} else if(key == "merge") {
+				utils.parseMerge(j, p, value);
+			} else {
+				utils.addProperty(j, p, key, value);
 			}
-			utils.addProperty(j, p, key, value);
 		});
 	}
 };
