@@ -1,8 +1,8 @@
 "use strict";
 
-const utils = require("../utils/ast-utils");
+const utils = require("./ast-utils");
 
-module.exports = function astTransform(j, ast, value, action, key) {
+module.exports = function recursiveTransform(j, ast, value, action, key) {
 	const node = utils.findRootNodesByName(j, ast, key);
 	if (node.size() !== 0) {
 		// push to existing key

@@ -1,7 +1,7 @@
 "use strict";
 
-const transform = require("./index").transform;
-const transformations = require("./index").transformations;
+const transform = require("./migrate").transform;
+const transformations = require("./migrate").transformations;
 
 const input = `
 module.exports = {

@@ -4,7 +4,7 @@ const {
 	createProperty,
 	getRequire,
 	findPluginsArrayAndRemoveIfEmpty
-} = require("../../utils/ast-utils");
+} = require("@webpack-cli/utils/ast-utils");
 
 /**
  *

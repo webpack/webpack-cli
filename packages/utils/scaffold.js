@@ -5,9 +5,9 @@ const j = require("jscodeshift");
 const chalk = require("chalk");
 const pEachSeries = require("p-each-series");
 
-const runPrettier = require("../utils/run-prettier");
-const astTransform = require("../ast");
-const propTypes = require("../utils/prop-types");
+const runPrettier = require("./run-prettier");
+const astTransform = require("./recursive-parser");
+const propTypes = require("./prop-types");
 
 /**
  *

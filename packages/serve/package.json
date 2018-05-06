@@ -8,5 +8,11 @@
   },
   "keywords": [],
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^2.4.1",
+    "cross-spawn": "^6.0.5",
+    "inquirer": "^5.2.0",
+    "webpack-addons": "^1.1.5"
+  }
 }

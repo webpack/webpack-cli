@@ -1,4 +1,4 @@
-const utils = require("../../utils/ast-utils");
+const utils = require("@webpack-cli/utils/ast-utils");
 
 /**
  *

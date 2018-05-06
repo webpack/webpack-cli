@@ -1,6 +1,6 @@
 "use strict";
 
-const defineTest = require("../../utils/defineTest");
+const defineTest = require("@webpack-cli/utils/defineTest");
 
 defineTest(__dirname, "uglifyJsPlugin", "uglifyJsPlugin-0");
 defineTest(__dirname, "uglifyJsPlugin", "uglifyJsPlugin-1");

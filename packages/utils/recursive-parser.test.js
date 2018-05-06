@@ -1,11 +1,11 @@
 "use strict";
 
-const defineTest = require("../utils/defineTest");
-const propTypes = require("../utils/prop-types");
+const defineTest = require("./defineTest");
+const propTypes = require("./prop-types");
 
 defineTest(
 	__dirname,
-	propTypes[0],
+	"entry",
 	"fixture-1",
 	{
 		objects: "are",

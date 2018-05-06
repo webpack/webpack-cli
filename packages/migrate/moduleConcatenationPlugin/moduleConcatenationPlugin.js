@@ -1,7 +1,7 @@
 const {
 	addOrUpdateConfigObject,
 	findAndRemovePluginByName
-} = require("../../utils/ast-utils");
+} = require("@webpack-cli/utils/ast-utils");
 
 /**
  *

@@ -4,8 +4,16 @@
   "description": "Migrate command for webpack-cli",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^22.4.3"
+  },
+  "dependencies": {
+    "jscodeshift": "^0.5.0",
+    "p-each-series": "^1.0.0",
+    "p-lazy": "^1.0.0"
+  }
 }

@@ -44,7 +44,7 @@ function runSingleTransform(
 	let module;
 	// Assumes transform and test are on the same level
 	if (action) {
-		module = require(path.join(dirName, "index.js"));
+		module = require(path.join(dirName, "recursive-parser" + ".js"));
 	} else {
 		module = require(path.join(dirName, transformName + ".js"));
 	}
