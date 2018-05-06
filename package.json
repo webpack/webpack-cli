@@ -3,7 +3,6 @@
   "version": "2.0.15",
   "description": "CLI for webpack & friends",
   "license": "MIT",
-  "preferGlobal": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/webpack/webpack-cli.git"
