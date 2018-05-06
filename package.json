@@ -25,8 +25,8 @@
     "packages/*"
   ],
   "scripts": {
-    "lint": "eslint \"**/*.js\"",
-    "format": "prettier-eslint \"utils/**/*.js\" \"cli.js\" \"test/**/*.js\" --write",
+    "lint": "eslint \"utils/*.js\" \"cli.js\" \"packages/**/*.js\"",
+    "format": "prettier-eslint \"utils/**/*.js\" \"cli.js\" \"test/**/*.js\" \"packages/**/*.js\" --write",
     "lint:codeOnly": "eslint \"cli.js\" \"{utils}/**/!(__testfixtures__)/*.js\" \"{utils}/**.js\"",
     "precommit": "lint-staged",
     "pretest": "npm run lint",

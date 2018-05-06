@@ -8,5 +8,10 @@
   },
   "keywords": [],
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "glob-all": "^3.1.0",
+    "webpack-addons": "^1.1.5",
+    "yeoman-generator": "^2.0.5"
+  }
 }

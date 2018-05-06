@@ -365,8 +365,7 @@ function parseTopScope(j, ast, values) {
 	} else {
 		return ast;
 	}
-};
-
+}
 
 /**
  *
@@ -411,7 +410,7 @@ function parseMerge(j, ast, values) {
 	} else {
 		return ast;
 	}
-};
+}
 
 /**
  *

@@ -7,10 +7,11 @@ const Input = require("webpack-addons").Input;
 
 const webpackSchema = require("webpack/schemas/WebpackOptions");
 const webpackDevServerSchema = require("webpack-dev-server/lib/optionsSchema.json");
-const PROP_TYPES = require("../utils/prop-types");
+const PROP_TYPES = require("@webpack-utils/utils/prop-types");
 
-const getPackageManager = require("../utils/package-manager").getPackageManager;
-const npmExists = require("../utils/npm-exists");
+const getPackageManager = require("@webpack-cli/utils/package-manager")
+	.getPackageManager;
+const npmExists = require("@webpack-cli/utils/npm-exists");
 const entryQuestions = require("./utils/entry");
 
 /**
