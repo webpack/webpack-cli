@@ -1,12 +1,11 @@
 #!/usr/bin/env node
 
-const spawn = require("child_process").spawn;
+const spawn = require("cross-spawn");
 const path = require("path");
 const args = [path.join(__dirname, "_webpack")];
 
 process.argv.slice(2).forEach(arg => {
 	const normalizedArg = arg.replace("node.", "");
-	console.log("aerg", arg);
 	if (arg.includes("node.")) {
 		args.unshift(normalizedArg);
 	} else {
@@ -15,8 +14,7 @@ process.argv.slice(2).forEach(arg => {
 });
 
 const proc = spawn(process.execPath, args, {
-	stdio: "inherit",
-	shell: true
+	stdio: "inherit"
 });
 
 proc.on("exit", (code, signal) => {

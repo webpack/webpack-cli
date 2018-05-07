@@ -511,9 +511,4 @@ For more information, see https://webpack.js.org/api/cli/.`);
 
 		processOptions(options);
 	});
-
-	const v8 = require("v8");
-	const memory = (v8.getHeapStatistics().total_available_size / 1024 / 1024 / 1024).toFixed(2);
-	console.log(`total memory: ${memory}`);
-
 })();
