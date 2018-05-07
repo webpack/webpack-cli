@@ -1,4 +1,11 @@
+sudo: false
+notifications:
+  email: false
 language: node_js
+node_js:
+  - "8"
+  - "7"
+  - "6"
 
 matrix:
   include:
@@ -17,23 +24,18 @@ matrix:
     - os: linux
       node_js: "6"
       env: JOB_PART=integration
-sudo: false
-
-notifications:
-  email: false
 
 before_install:
-  - npm i -g npm
-
-install:
+  - npm i -g npm@latest
   - npm ci
-  - npm install --global codecov
-  - npm install --global eslint
+  - npm install -g codecov
+  - npm install -g eslint
 
-before_script:
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
-
-script:
-  - npm run travis:$JOB_PART
-  - commitlint-travis
+jobs:
+  include:
+    - stage: commit lint
+      script: commitlint-travis
+    - stage: NPM release
+      if: branch = master
+      node_js: "lts/*"
+      script: npm run travis-deploy-once "npm run semantic-release"

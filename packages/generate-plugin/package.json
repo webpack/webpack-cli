@@ -1,13 +1,16 @@
 {
-    "name": "webpack-plugin-generator",
-    "version":"2.0.12",
-    "description": "CLI for webpack & friends",
-    "license": "MIT",
-    "engines": {
-      "node": ">=6.11.5"
-    },
-    "dependencies": {      
-      "webpack-cli-generators": "2.0.12",
-      "yeoman-environment": "^2.0.0"
-    }
+  "name": "@webpack-cli/generate-plugin",
+  "version": "0.0.1",
+  "description": "A scaffold for generating a plugin",
+  "main": "index.js",
+  "directories": {
+    "example": "examples",
+    "test": "test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "yeoman-environment": "^2.0.6"
   }
+}

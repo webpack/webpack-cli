@@ -1,0 +1,15 @@
+{
+  "name": "serve",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^2.4.1",
+    "cross-spawn": "^6.0.5",
+    "inquirer": "^5.2.0",
+    "webpack-addons": "^1.1.5"
+  }
+}

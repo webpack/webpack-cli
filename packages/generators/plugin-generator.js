@@ -21,7 +21,7 @@ const PluginGenerator = webpackGenerator(
 			validate: str => str.length > 0
 		}
 	],
-	path.join(__dirname, "../generate-plugin/templates"),
+	path.resolve(__dirname, "..", "generate-plugin"),
 	[
 		"src/cjs.js.tpl",
 		"test/test-utils.js.tpl",

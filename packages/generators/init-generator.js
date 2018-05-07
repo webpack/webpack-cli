@@ -4,9 +4,6 @@ const Generator = require("yeoman-generator");
 const chalk = require("chalk");
 const logSymbols = require("log-symbols");
 
-const createCommonsChunkPlugin = require("webpack-addons")
-	.createCommonsChunkPlugin;
-
 const Input = require("webpack-addons").Input;
 const Confirm = require("webpack-addons").Confirm;
 const List = require("webpack-addons").List;
@@ -31,11 +28,7 @@ module.exports = class InitGenerator extends Generator {
 	constructor(args, opts) {
 		super(args, opts);
 		this.isProd = false;
-		this.dependencies = [
-			"webpack",
-			"webpack-cli",
-			"uglifyjs-webpack-plugin"
-		];
+		this.dependencies = ["webpack", "webpack-cli", "uglifyjs-webpack-plugin"];
 		this.configuration = {
 			config: {
 				webpackOptions: {},
@@ -47,7 +40,6 @@ module.exports = class InitGenerator extends Generator {
 	prompting() {
 		const done = this.async();
 		const self = this;
-		let oneOrMoreEntries;
 		let regExpForStyles;
 		let ExtractUseProps;
 		let outputPath = "dist";
@@ -87,9 +79,9 @@ module.exports = class InitGenerator extends Generator {
 				return entryQuestions(self, entryTypeAnswer);
 			})
 			.then(entryOptions => {
-				this.configuration.config.webpackOptions.entry = entryOptions;
-				oneOrMoreEntries = Object.keys(entryOptions);
-
+				if (entryOptions !== "\"\"") {
+					this.configuration.config.webpackOptions.entry = entryOptions;
+				}
 				return this.prompt([
 					Input(
 						"outputType",
@@ -98,8 +90,9 @@ module.exports = class InitGenerator extends Generator {
 				]);
 			})
 			.then(outputTypeAnswer => {
-				if (!this.configuration.config.webpackOptions.entry.length) {
-					this.configuration.config.topScope.push(tooltip.commonsChunk());
+				// As entry is not required anymore and we dont set it to be an empty string or """""
+				// it can be undefined so falsy check is enough (vs entry.length);
+				if (!this.configuration.config.webpackOptions.entry) {
 					this.configuration.config.webpackOptions.output = {
 						filename: "'[name].[chunkhash].js'",
 						chunkFilename: "'[name].[chunkhash].js'"
@@ -119,7 +112,12 @@ module.exports = class InitGenerator extends Generator {
 					Confirm("prodConfirm", "Are you going to use this in production?")
 				]);
 			})
-			.then(prodConfirmAnswer => this.isProd = prodConfirmAnswer["prodConfirm"])
+			.then(prodConfirmAnswer => {
+				this.isProd = prodConfirmAnswer["prodConfirm"];
+				this.configuration.config.webpackOptions.mode = this.isProd
+					? "'production'"
+					: "'development'";
+			})
 			.then(() => {
 				return this.prompt([
 					Confirm("babelConfirm", "Will you be using ES2015?")
@@ -294,14 +292,12 @@ module.exports = class InitGenerator extends Generator {
 						this.dependencies.push("style-loader", "css-loader");
 						regExpForStyles = `${new RegExp(/\.css$/)}`;
 						if (this.isProd) {
-							ExtractUseProps.push(
-								{
-									loader: "'css-loader'",
-									options: {
-										sourceMap: true
-									}
+							ExtractUseProps.push({
+								loader: "'css-loader'",
+								options: {
+									sourceMap: true
 								}
-							);
+							});
 						} else {
 							ExtractUseProps.push(
 								{
@@ -349,11 +345,9 @@ module.exports = class InitGenerator extends Generator {
 							);
 						}
 
-						ExtractUseProps.unshift(
-							{
-								loader: "MiniCssExtractPlugin.loader"
-							}
-						);
+						ExtractUseProps.unshift({
+							loader: "MiniCssExtractPlugin.loader"
+						});
 
 						const moduleRulesObj = {
 							test: regExpForStyles,
@@ -378,19 +372,27 @@ module.exports = class InitGenerator extends Generator {
 						);
 					}
 				}
-			})
-			.then(() => {
-				if (this.configuration.config.webpackOptions.entry.length === 0) {
-					oneOrMoreEntries.forEach(prop => {
-						this.configuration.config.webpackOptions.plugins.push(
-							createCommonsChunkPlugin(prop)
-						);
-					});
-				}
+				// add splitChunks options for transparency
+				// defaults coming from: https://webpack.js.org/plugins/split-chunks-plugin/#optimization-splitchunks
+				this.configuration.config.topScope.push(tooltip.splitChunks());
+				this.configuration.config.webpackOptions.optimization = {
+					splitChunks: {
+						chunks: "'async'",
+						minSize: 30000,
+						minChunks: 1,
+						// for production name is recommended to be off
+						name: !this.isProd,
+						cacheGroups: {
+							vendors: {
+								test: "/[\\\\/]node_modules[\\\\/]/",
+								priority: -10
+							}
+						}
+					}
+				};
 				done();
 			});
 	}
-
 	installPlugins() {
 		const asyncNamePrompt = this.async();
 		const defaultName = this.isProd ? "prod" : "config";
@@ -401,8 +403,9 @@ module.exports = class InitGenerator extends Generator {
 			)
 		])
 			.then(nameTypeAnswer => {
-				this.configuration.config.configName = nameTypeAnswer["nameType"].length ?
-					nameTypeAnswer["nameType"] : defaultName;
+				this.configuration.config.configName = nameTypeAnswer["nameType"].length
+					? nameTypeAnswer["nameType"]
+					: defaultName;
 			})
 			.then(() => {
 				asyncNamePrompt();

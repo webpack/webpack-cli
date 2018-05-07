@@ -1,0 +1,158 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`transform should not transform if no transformations defined: 
+module.exports = {
+	devtool: 'eval',
+	entry: [
+		'./src/index'
+	],
+	output: {
+		path: path.join(__dirname, 'dist'),
+		filename: 'index.js'
+	},
+	module: {
+		loaders: [{
+			test: /.js$/,
+			loaders: ['babel'],
+			include: path.join(__dirname, 'src')
+		}]
+	},
+	resolve: {
+		root: path.resolve('/src'),
+		modules: ['node_modules']
+	},
+	plugins: [
+		new webpack.optimize.UglifyJsPlugin(),
+		new webpack.optimize.OccurrenceOrderPlugin()
+	],
+	debug: true
+};
+ 1`] = `
+"
+module.exports = {
+	devtool: 'eval',
+	entry: [
+		'./src/index'
+	],
+	output: {
+		path: path.join(__dirname, 'dist'),
+		filename: 'index.js'
+	},
+	module: {
+		loaders: [{
+			test: /.js$/,
+			loaders: ['babel'],
+			include: path.join(__dirname, 'src')
+		}]
+	},
+	resolve: {
+		root: path.resolve('/src'),
+		modules: ['node_modules']
+	},
+	plugins: [
+		new webpack.optimize.UglifyJsPlugin(),
+		new webpack.optimize.OccurrenceOrderPlugin()
+	],
+	debug: true
+};
+"
+`;
+
+exports[`transform should respect recast options 1`] = `
+"
+module.exports = {
+	devtool: 'eval',
+	entry: [
+		'./src/index'
+	],
+	output: {
+		path: path.join(__dirname, 'dist'),
+		filename: 'index.js'
+	},
+	module: {
+		rules: [{
+			test: /.js$/,
+			use: [{
+                loader: \\"babel-loader\\",
+            }],
+			include: path.join(__dirname, 'src')
+		}]
+	},
+	resolve: {
+        modules: ['node_modules', path.resolve('/src')],
+    },
+	plugins: [new webpack.LoaderOptionsPlugin({
+        debug: true,
+    })],
+	optimization: {
+        minimize: true,
+    }
+};
+"
+`;
+
+exports[`transform should transform only using specified transformations 1`] = `
+"
+module.exports = {
+	devtool: 'eval',
+	entry: [
+		'./src/index'
+	],
+	output: {
+		path: path.join(__dirname, 'dist'),
+		filename: 'index.js'
+	},
+	module: {
+		rules: [{
+			test: /.js$/,
+			use: [{
+                loader: 'babel-loader'
+            }],
+			include: path.join(__dirname, 'src')
+		}]
+	},
+	resolve: {
+		root: path.resolve('/src'),
+		modules: ['node_modules']
+	},
+	plugins: [
+		new webpack.optimize.UglifyJsPlugin(),
+		new webpack.optimize.OccurrenceOrderPlugin()
+	],
+	debug: true
+};
+"
+`;
+
+exports[`transform should transform using all transformations 1`] = `
+"
+module.exports = {
+	devtool: 'eval',
+	entry: [
+		'./src/index'
+	],
+	output: {
+		path: path.join(__dirname, 'dist'),
+		filename: 'index.js'
+	},
+	module: {
+		rules: [{
+			test: /.js$/,
+			use: [{
+                loader: 'babel-loader'
+            }],
+			include: path.join(__dirname, 'src')
+		}]
+	},
+	resolve: {
+        modules: ['node_modules', path.resolve('/src')]
+    },
+	plugins: [new webpack.LoaderOptionsPlugin({
+        debug: true
+    })],
+	optimization: {
+        minimize: true
+    }
+};
+"
+`;

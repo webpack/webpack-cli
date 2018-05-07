@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`namedModulesPlugin transforms correctly using "namedModulesPlugin-0" data 1`] = `
+"module.export = {
+    optimizations: {
+        namedModules: true
+    }
+}
+"
+`;
+
+exports[`namedModulesPlugin transforms correctly using "namedModulesPlugin-1" data 1`] = `
+"module.export = {
+	optimizations: {
+        splitChunks: false,
+        namedModules: true
+    },
+    plugins: [new Foo()]
+}
+"
+`;
+
+exports[`namedModulesPlugin transforms correctly using "namedModulesPlugin-2" data 1`] = `
+"module.export = {
+	optimizations: {
+        namedModules: true
+    },
+    plugins: [new Foo()]
+}
+"
+`;

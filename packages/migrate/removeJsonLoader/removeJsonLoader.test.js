@@ -1,6 +1,6 @@
 "use strict";
 
-const defineTest = require("webpack-cli-utils//defineTest");
+const defineTest = require("@webpack-cli/utils/defineTest");
 
 defineTest(__dirname, "removeJsonLoader", "removeJsonLoader-0");
 defineTest(__dirname, "removeJsonLoader", "removeJsonLoader-1");

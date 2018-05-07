@@ -1,0 +1,9 @@
+{
+  "name": "@webpack-cli/make",
+  "version": "1.0.0",
+  "description": "Makefile for webpack",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "MIT"
+}

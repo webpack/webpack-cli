@@ -1,0 +1,8 @@
+{
+  "name": "@webpack-cli/info",
+  "version": "0.0.1",
+  "description": "Outputs env info for the ease of debug",
+  "main": "index.js",
+  "author": "",
+  "license": "MIT"
+}
