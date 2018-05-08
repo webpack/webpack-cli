@@ -64,11 +64,19 @@ function spawnChild(pkg) {
  */
 
 function getPackageManager() {
-	if (spawn.sync("yarn", [" --version"], { stdio: "ignore" }).error) {
+	const hasLocalNPM = fs.existsSync(
+		path.resolve(process.cwd(), "package-lock.json")
+	);
+	const hasLocalYarn = fs.existsSync(path.resolve(process.cwd(), "yarn.lock"));
+	if (hasLocalNPM) {
 		return "npm";
+	} else if (hasLocalYarn) {
+		return "yarn";
+	} else if (spawn.sync("yarn", [" --version"], { stdio: "ignore" }).error) {
+		return "npm";
+	} else {
+		return "yarn";
 	}
-
-	return "yarn";
 }
 
 /**
