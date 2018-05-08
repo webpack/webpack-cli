@@ -3,7 +3,6 @@
 module.exports = function testAssertions(code, stdout, stderr) {
 	expect(code).toBe(2);
 	expect(stdout).toEqual(expect.anything());
-	console.log('printing value of error', stdout[1]);
 	expect(stdout[1]).toContain("ERROR Insufficient number of arguments provided");
 	expect(stdout[2]).toContain("Alternatively, run `webpack(-cli) --help` for usage info");
 	expect(stdout[4]).toContain("Hash: ");
