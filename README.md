@@ -14,6 +14,8 @@
 
 # Webpack CLI
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/webpack/webpack-cli.svg)](https://greenkeeper.io/)
+
 Webpack CLI encapsulates all code related to CLI handling. It captures options and sends them to webpack compiler. You can also find functionality for initializing a project and migrating between versions.
 
 ## Migration from webpack v1 to v2
