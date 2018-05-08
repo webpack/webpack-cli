@@ -39,10 +39,15 @@ before_install:
   # Add the key to the authentication agent
   - DISPLAY=":0.0" SSH_ASKPASS="/tmp/askpass" setsid ssh-add /tmp/git_deploy_key </dev/null
 
-  - npm i -g npm@latest
+  - '[[ $(node -v) =~ ^v9.*$ ]] || npm install -g npm@latest' # skipped when using node 9
+  - npm install -g greenkeeper-lockfile@1
   - npm ci
   - npm install -g codecov
   - npm install -g eslint
+
+before_script: greenkeeper-lockfile-update
+after_script: greenkeeper-lockfile-upload
+
 jobs:
   include:
     - stage: commit lint
