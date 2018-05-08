@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`
+exports[`transform should not transform if no transformations defined: 
 module.exports = {
 	devtool: 'eval',
 	entry: [
@@ -81,16 +81,12 @@ module.exports = {
 	resolve: {
         modules: ['node_modules', path.resolve('/src')],
     },
-	plugins: [
-		new webpack.optimize.UglifyJsPlugin({
-            sourceMap: true,
-        }),
-		new webpack.LoaderOptionsPlugin({
-            debug: true,
-            minimize: true,
-        })
-	],
-	debug: true
+	plugins: [new webpack.LoaderOptionsPlugin({
+        debug: true,
+    })],
+	optimization: {
+        minimize: true,
+    }
 };
 "
 `;
@@ -151,16 +147,12 @@ module.exports = {
 	resolve: {
         modules: ['node_modules', path.resolve('/src')]
     },
-	plugins: [
-		new webpack.optimize.UglifyJsPlugin({
-            sourceMap: true
-        }),
-		new webpack.LoaderOptionsPlugin({
-            debug: true,
-            minimize: true
-        })
-	],
-	debug: true
+	plugins: [new webpack.LoaderOptionsPlugin({
+        debug: true
+    })],
+	optimization: {
+        minimize: true
+    }
 };
 "
 `;

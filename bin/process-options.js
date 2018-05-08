@@ -98,6 +98,10 @@ module.exports = function processOptions(yargs, argv) {
 			if (bool) outputOptions.cachedAssets = true;
 		});
 
+		ifArg("build-delimiter", function(value) {
+			outputOptions.buildDelimiter = value;
+		});
+
 		if (!outputOptions.exclude && !argv["display-modules"])
 			outputOptions.exclude = [
 				"node_modules",
@@ -153,11 +157,9 @@ module.exports = function processOptions(yargs, argv) {
 
 	if (argv.progress) {
 		const ProgressPlugin = require("webpack").ProgressPlugin;
-		compiler.apply(
-			new ProgressPlugin({
-				profile: argv.profile
-			})
-		);
+		new ProgressPlugin({
+			profile: argv.profile
+		}).apply(compiler);
 	}
 
 	function compilerCallback(err, stats) {
@@ -177,8 +179,11 @@ module.exports = function processOptions(yargs, argv) {
 			);
 		} else if (stats.hash !== lastHash) {
 			lastHash = stats.hash;
+			const delimiter = outputOptions.buildDelimiter
+				? `${outputOptions.buildDelimiter}\n`
+				: "";
 			process.stdout.write("\n" + new Date() + "\n" + "\n");
-			process.stdout.write(stats.toString(outputOptions) + "\n");
+			process.stdout.write(`${stats.toString(outputOptions)}\n${delimiter}`);
 			if (argv.s) lastHash = null;
 		}
 		if (!options.watch && stats.hasErrors()) {

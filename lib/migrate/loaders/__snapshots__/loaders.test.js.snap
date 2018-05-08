@@ -229,12 +229,14 @@ exports[`loaders transforms correctly using "loaders-7" data 1`] = `
             {
                 test: /\\\\.js$/,
                 exclude: /(node_modules)/,
+
                 use: [{
-                    loader: 'babel-loader'
-                }],
-                options: {
-                    presets: ['env']
-                }
+                    loader: 'babel-loader',
+
+                    options: {
+                        presets: ['env']
+                    }
+                }]
             }
         ]
     }

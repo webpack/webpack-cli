@@ -42,7 +42,7 @@ const writerOpts = {
 			commit.type = "tests";
 		} else if (commit.type === "cli") {
 			commit.type = "CLI";
-		} else if (commit.type === "new_feature") {
+		} else if (commit.type === "new_feature" || commit.type === "feat") {
 			commit.type = "New Features";
 		}
 

@@ -14,7 +14,12 @@ Before writing a `webpack-cli` scaffold, think about what you're trying to achie
 
 ## webpack-addons-yourpackage
 
-In order for `webpack-cli` to compile your package, it relies on a prefix of `webpack-addons`. The package must also be published on npm. If you are curious about how you can create your very own `addon`, please read [How do I compose a webpack-addon?](https://github.com/ev1stensberg/webpack-addons-demo).
+In order for `webpack-cli` to compile your package, it must be available on npm or on your local filesystem. If you are curious about how you can create your very own `addon`, please read [How do I compose a
+webpack-addon?](https://github.com/ev1stensberg/webpack-addons-demo).
+
+If the package is on npm, its name must have a prefix of `webpack-addons`.
+
+If the package is on your local filesystem, it can be named whatever you want. Pass the path to the package.
 
 ## API
 
@@ -23,7 +28,7 @@ To create an `addon`, you must create a [`yeoman-generator`](http://yeoman.io/au
 Objects are made using strings, while strings are made using double strings. This means that in order for you to create an string, you have to wrap it inside another string for us to validate it correctly.
 
 
-### `opts.env.configuration`(Required)
+### `opts.env.configuration`(required)
 
 Initialized inside the constructor of your generator in order for the CLI to work.
 
@@ -78,4 +83,14 @@ If you want to name your `webpack.config.js` something special, you can do that.
 
 ```js
 this.options.env.configuration.dev.configName = 'base';
+```
+
+### `writing` (required)
+
+For the scaffolding instance to run, you need to write your configuration to a `.yo-rc.json` file. This could be done using one of the lifecycles in the yeoman generator, such as the `writing` method.
+
+```js
+writing() {
+	this.config.set('configuration', myObj)
+}
 ```

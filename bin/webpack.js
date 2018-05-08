@@ -10,11 +10,9 @@ const logSymbols = require("log-symbols");
 (function() {
 	// wrap in IIFE to be able to use return
 
-	const resolveCwd = require("resolve-cwd");
-	// Local version replace global one
-	const localCLI = resolveCwd.silent("webpack-cli/bin/webpack");
-	if (localCLI && localCLI !== __filename) {
-		require(localCLI);
+	const importLocal = require("import-local");
+	// Prefer the local installation of webpack-cli
+	if (importLocal(__filename)) {
 		return;
 	}
 
@@ -32,7 +30,8 @@ const logSymbols = require("log-symbols");
 		*/
 		"serve",
 		"generate-loader",
-		"generate-plugin"
+		"generate-plugin",
+		"info"
 	];
 
 	const NON_COMPILATION_CMD = process.argv.find(arg => {
@@ -49,14 +48,16 @@ const logSymbols = require("log-symbols");
 		return;
 	}
 
-	const yargs = require("yargs").usage(
-		"webpack-cli " +
-			require("../package.json").version +
-			"\n" +
-			"Usage: https://webpack.js.org/api/cli/\n" +
-			"Usage without config file: webpack <entry> [<entry>] --output [-o] <output>\n" +
-			"Usage with config file: webpack"
-	);
+	const yargs = require("yargs").usage(`webpack-cli ${
+		require("../package.json").version
+	}
+
+Usage: webpack-cli [options]
+       webpack-cli [options] --entry <entry> --output <output>
+       webpack-cli [options] <entries...> --output <output>
+       webpack-cli <command> [options]
+
+For more information, see https://webpack.js.org/api/cli/.`);
 
 	require("./config-yargs")(yargs);
 
@@ -82,7 +83,7 @@ const logSymbols = require("log-symbols");
 			type: "boolean",
 			alias: "colors",
 			default: function supportsColor() {
-				return require("supports-color");
+				return require("supports-color").supportsColor;
 			},
 			group: DISPLAY_GROUP,
 			describe: "Enables/Disables colors on the console"
@@ -205,6 +206,11 @@ const logSymbols = require("log-symbols");
 			group: DISPLAY_GROUP,
 			describe:
 				"Controls the output of lifecycle messaging e.g. Started watching files..."
+		},
+		"build-delimiter": {
+			type: "string",
+			group: DISPLAY_GROUP,
+			describe: "Display custom text after build output"
 		}
 	});
 
@@ -259,7 +265,7 @@ const logSymbols = require("log-symbols");
 		const stdout = argv.silent
 			? {
 				write: () => {}
-			}
+			  } // eslint-disable-line
 			: process.stdout;
 
 		function ifArg(name, fn, init) {
@@ -320,7 +326,7 @@ const logSymbols = require("log-symbols");
 			});
 
 			if (typeof outputOptions.colors === "undefined")
-				outputOptions.colors = require("supports-color");
+				outputOptions.colors = require("supports-color").stdout;
 
 			ifArg("sort-modules-by", function(value) {
 				outputOptions.modulesSort = value;
@@ -421,6 +427,10 @@ const logSymbols = require("log-symbols");
 				outputOptions.infoVerbosity = value;
 			});
 
+			ifArg("build-delimiter", function(value) {
+				outputOptions.buildDelimiter = value;
+			});
+
 			const webpack = require("webpack");
 
 			let lastHash = null;
@@ -443,11 +453,9 @@ const logSymbols = require("log-symbols");
 
 			if (argv.progress) {
 				const ProgressPlugin = require("webpack").ProgressPlugin;
-				compiler.apply(
-					new ProgressPlugin({
-						profile: argv.profile
-					})
-				);
+				new ProgressPlugin({
+					profile: argv.profile
+				}).apply(compiler);
 			}
 
 			if (outputOptions.infoVerbosity === "verbose") {
@@ -476,6 +484,7 @@ const logSymbols = require("log-symbols");
 					);
 				} else if (stats.hash !== lastHash) {
 					lastHash = stats.hash;
+<<<<<<< HEAD
 					if (stats.compilation && stats.compilation.errors.length !== 0) {
 						const errors = stats.compilation.errors;
 						if (errors[0].name === "EntryModuleNotFoundError") {
@@ -489,6 +498,13 @@ const logSymbols = require("log-symbols");
 						const statsString = stats.toString(outputOptions);
 						if (statsString) stdout.write(statsString + "\n");
 					}
+=======
+					const statsString = stats.toString(outputOptions);
+					const delimiter = outputOptions.buildDelimiter
+						? `${outputOptions.buildDelimiter}\n`
+						: "";
+					if (statsString) stdout.write(`${statsString}\n${delimiter}`);
+>>>>>>> upstream/master
 				}
 				if (!options.watch && stats.hasErrors()) {
 					process.exitCode = 2;
