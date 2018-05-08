@@ -484,7 +484,6 @@ For more information, see https://webpack.js.org/api/cli/.`);
 					);
 				} else if (stats.hash !== lastHash) {
 					lastHash = stats.hash;
-<<<<<<< HEAD
 					if (stats.compilation && stats.compilation.errors.length !== 0) {
 						const errors = stats.compilation.errors;
 						if (errors[0].name === "EntryModuleNotFoundError") {
@@ -498,13 +497,11 @@ For more information, see https://webpack.js.org/api/cli/.`);
 						const statsString = stats.toString(outputOptions);
 						if (statsString) stdout.write(statsString + "\n");
 					}
-=======
 					const statsString = stats.toString(outputOptions);
 					const delimiter = outputOptions.buildDelimiter
 						? `${outputOptions.buildDelimiter}\n`
 						: "";
 					if (statsString) stdout.write(`${statsString}\n${delimiter}`);
->>>>>>> upstream/master
 				}
 				if (!options.watch && stats.hasErrors()) {
 					process.exitCode = 2;

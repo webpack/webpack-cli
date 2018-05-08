@@ -318,14 +318,5 @@ module.exports = function(yargs) {
 					"shortcut for --optimize-minimize --define process.env.NODE_ENV=\"production\"",
 				group: BASIC_GROUP
 			}
-<<<<<<< HEAD
-		})
-		.fail((msg, err, yargs) => {
-			if (err) throw err; // preserve stack
-			process.stdout.write(msg);
-		})
-		.strict();
-=======
 		});
->>>>>>> upstream/master
 };
