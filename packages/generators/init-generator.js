@@ -409,9 +409,9 @@ module.exports = class InitGenerator extends Generator {
 			})
 			.then(() => {
 				asyncNamePrompt();
-				this.runInstall(getPackageManager(), this.dependencies, {
-					"save-dev": true
-				});
+				const packager = getPackageManager();
+				const opts = packager === "yarn" ? { dev: true } : { "save-dev": true };
+				this.runInstall(packager, this.dependencies, opts);
 			});
 	}
 
