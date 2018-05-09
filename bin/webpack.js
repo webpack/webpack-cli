@@ -32,14 +32,12 @@
 		"info"
 	];
 
-
 	const hasNodeFlags = process.argv.filter(arg => arg.includes("node."));
 
 	if (hasNodeFlags.length) {
 		require("./process-node-options")(process.argv);
 		return;
 	}
-
 
 	const NON_COMPILATION_CMD = process.argv.find(arg => {
 		if (arg === "serve") {
