@@ -30,10 +30,15 @@ module.exports = (argvs) => {
 		}
 	});
 
-	// terminate children
+	// when process was terminated ([Ctrl/Cmd]+C)
 	process.on("SIGINT", () => {
 		webpackCliProcess.kill("SIGINT");
 		webpackCliProcess.kill("SIGTERM");
+	});
+
+	// when main process was exited.
+	process.on("exit", (code) => {
+		webpackCliProcess.kill("SIGINT");
 	});
 };
 
