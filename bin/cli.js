@@ -43,9 +43,9 @@
 		"info"
 	];
 
-	const hasNodeFlags = process.argv.filter(arg => arg.includes("node."));
+	const hasNodeFlags = process.argv.some(arg => arg.includes("node."));
 
-	if (hasNodeFlags.length) {
+	if (hasNodeFlags) {
 		require("./process-node-options")(process.argv);
 		return;
 	}
