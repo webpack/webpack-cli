@@ -68,7 +68,7 @@ function webpackGenerator(
 			this.npmInstall(["webpack-defaults", "bluebird"], {
 				"save-dev": true
 			}).then(() => {
-				this.spawnCommand("npm", ["run", "webpack-defaults"]);
+				this.spawnCommand("npm", ["run", "defaults"]);
 			});
 		}
 	};

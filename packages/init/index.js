@@ -5,6 +5,7 @@ const j = require("jscodeshift");
 const chalk = require("chalk");
 const pEachSeries = require("p-each-series");
 
+<<<<<<< HEAD:packages/init/index.js
 const runPrettier = require("webpack-cli-utils/run-prettier");
 
 const entryTransform = require("./transformations/entry/entry");
@@ -34,6 +35,7 @@ const topScopeTransform = require("./transformations/top-scope/top-scope");
 const devServerTransform = require("./transformations/devServer/devServer");
 const modeTransform = require("./transformations/mode/mode");
 const resolveLoaderTransform = require("./transformations/resolveLoader/resolveLoader");
+const optimizationTransform = require("./transformations/optimization/optimization");
 
 const transformsObject = {
 	entryTransform,
@@ -62,48 +64,35 @@ const transformsObject = {
 	recordsInputPathTransform,
 	recordsOutputPathTransform,
 	recordsPathTransform,
-	resolveLoaderTransform
+	resolveLoaderTransform,
+	optimizationTransform
 };
+=======
+const runPrettier = require("../utils/run-prettier");
+const astTransform = require("../ast");
+const propTypes = require("../utils/prop-types");
+>>>>>>> ast(cli): Recursively parse AST (#341):lib/init/index.js
 
 /**
  *
  * Maps back transforms that needs to be run using the configuration
  * provided.
  *
- * @param {Object} transformObject - An Object with all transformations
- * @param {Object} config - Configuration to transform
+ * @param	{Object} transformObject 	- An Object with all transformations
+ * @param	{Object} config 			- Configuration to transform
  * @returns {Object} - An Object with the transformations to be run
  */
 
-function mapOptionsToTransform(transformObject, config) {
-	return Object.keys(transformObject)
-		.map(transformKey => {
-			const stringVal = transformKey.substr(
-				0,
-				transformKey.indexOf("Transform")
-			);
-			if (Object.keys(config.webpackOptions).length) {
-				if (config.webpackOptions[stringVal]) {
-					return [
-						transformObject[transformKey],
-						config.webpackOptions[stringVal]
-					];
-				} else {
-					return [transformObject[transformKey], config[stringVal]];
-				}
-			} else {
-				return [transformObject[transformKey]];
-			}
-		})
-		.filter(e => e[1]);
+function mapOptionsToTransform(config) {
+	return Object.keys(config.webpackOptions).filter(k => propTypes.has(k));
 }
 
 /**
  *
  * Runs the transformations from an object we get from yeoman
  *
- * @param {Object} webpackProperties - Configuration to transform
- * @param {String} action - Action to be done on the given ast
+ * @param	{Object} webpackProperties 	- Configuration to transform
+ * @param	{String} action 			- Action to be done on the given ast
  * @returns {Promise} - A promise that writes each transform, runs prettier
  * and writes the file
  */
@@ -117,7 +106,7 @@ module.exports = function runTransform(webpackProperties, action) {
 
 	webpackConfig.forEach(scaffoldPiece => {
 		const config = webpackProperties[scaffoldPiece];
-		const transformations = mapOptionsToTransform(transformsObject, config);
+		const transformations = mapOptionsToTransform(config);
 		const ast = j(
 			initActionNotDefined
 				? webpackProperties.configFile
@@ -126,11 +115,7 @@ module.exports = function runTransform(webpackProperties, action) {
 		const transformAction = action || null;
 
 		return pEachSeries(transformations, f => {
-			if (!f[1]) {
-				return f[0](j, ast, transformAction);
-			} else {
-				return f[0](j, ast, f[1], transformAction);
-			}
+			return astTransform(j, ast, config.webpackOptions[f], transformAction, f);
 		})
 			.then(_ => {
 				let configurationName;

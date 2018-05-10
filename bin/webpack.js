@@ -8,11 +8,9 @@
 (function() {
 	// wrap in IIFE to be able to use return
 
-	const resolveCwd = require("resolve-cwd");
-	// Local version replace global one
-	const localCLI = resolveCwd.silent("webpack-cli/bin/webpack");
-	if (localCLI && localCLI !== __filename) {
-		require(localCLI);
+	const importLocal = require("import-local");
+	// Prefer the local installation of webpack-cli
+	if (importLocal(__filename)) {
 		return;
 	}
 
@@ -34,6 +32,13 @@
 		"info"
 	];
 
+	const hasNodeFlags = process.argv.filter(arg => arg.includes("node."));
+
+	if (hasNodeFlags.length) {
+		require("./process-node-options")(process.argv);
+		return;
+	}
+
 	const NON_COMPILATION_CMD = process.argv.find(arg => {
 		if (arg === "serve") {
 			global.process.argv = global.process.argv.filter(a => a !== "serve");
@@ -48,11 +53,14 @@
 		return;
 	}
 
-	const yargs = require("yargs").usage(`webpack-cli ${require("../package.json").version}
+	const yargs = require("yargs").usage(`webpack-cli ${
+		require("../package.json").version
+	}
 
 Usage: webpack-cli [options]
        webpack-cli [options] --entry <entry> --output <output>
        webpack-cli [options] <entries...> --output <output>
+       webpack-cli <command> [options]
 
 For more information, see https://webpack.js.org/api/cli/.`);
 
@@ -482,7 +490,9 @@ For more information, see https://webpack.js.org/api/cli/.`);
 				} else if (stats.hash !== lastHash) {
 					lastHash = stats.hash;
 					const statsString = stats.toString(outputOptions);
-					const delimiter = outputOptions.buildDelimiter ? `${outputOptions.buildDelimiter}\n` : "";
+					const delimiter = outputOptions.buildDelimiter
+						? `${outputOptions.buildDelimiter}\n`
+						: "";
 					if (statsString) stdout.write(`${statsString}\n${delimiter}`);
 				}
 				if (!options.watch && stats.hasErrors()) {

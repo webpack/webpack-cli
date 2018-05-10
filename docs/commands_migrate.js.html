@@ -29,42 +29,83 @@
             <pre class="prettyprint source linenums"><code>"use strict";
 
 const fs = require("fs");
+const path = require("path");
 const chalk = require("chalk");
 const diff = require("diff");
 const inquirer = require("inquirer");
 const PLazy = require("p-lazy");
 const Listr = require("listr");
 
-const validate = require("webpack").validate;
-const WebpackOptionsValidationError = require("webpack")
-	.WebpackOptionsValidationError;
+const { validate } = require("webpack");
+const { WebpackOptionsValidationError } = require("webpack");
 
 const runPrettier = require("webpack-cli-utils/run-prettier");
 
 /**
-*
-* Runs migration on a given configuration using AST's and promises
-* to sequentially transform a configuration file.
-*
-* @param {String} currentConfigPath - Location of the configuration to be migrated
-* @param {String} outputConfigPath - Location to where the configuration should be written
-* @param {Object} options - Any additional options regarding code style of the written configuration
+ *
+ * Runs migration on a given configuration using AST's and promises
+ * to sequentially transform a configuration file.
+ *
+ * @param {Array} args - Migrate arguments such as input and
+ * output path
+ * @returns {Function} Runs the migration using the 'runMigrate'
+ * function.
+ */
 
-* @returns {Promise} Runs the migration using a promise that will throw any errors during each transform
-* or output if the user decides to abort the migration
-*/
+module.exports = function migrate(...args) {
+	const filePaths = args.slice(3);
+	if (!filePaths.length) {
+		const errMsg = "\n ✖ Please specify a path to your webpack config \n ";
+		console.error(chalk.red(errMsg));
+		return;
+	}
+	const currentConfigPath = path.resolve(process.cwd(), filePaths[0]);
+	let outputConfigPath;
+	if (!filePaths[1]) {
+		return inquirer
+			.prompt([
+				{
+					type: "confirm",
+					name: "confirmPath",
+					message:
+						"Migration output path not specified. " +
+						"Do you want to use your existing webpack " +
+						"configuration?",
+					default: "Y"
+				}
+			])
+			.then(ans => {
+				if (!ans["confirmPath"]) {
+					console.error(chalk.red("✖ ︎Migration aborted due no output path"));
+					return;
+				}
+				outputConfigPath = path.resolve(process.cwd(), filePaths[0]);
+				return runMigration(currentConfigPath, outputConfigPath);
+			})
+			.catch(err => {
+				console.error(err);
+			});
+	}
+	outputConfigPath = path.resolve(process.cwd(), filePaths[1]);
+	return runMigration(currentConfigPath, outputConfigPath);
+};
 
-module.exports = function migrate(
-	currentConfigPath,
-	outputConfigPath,
-	options
-) {
-	const recastOptions = Object.assign(
-		{
-			quote: "single"
-		},
-		options
-	);
+/**
+ *
+ * Runs migration on a given configuration using AST's and promises
+ * to sequentially transform a configuration file.
+ *
+ * @param {String} currentConfigPath - input path for config
+ * @param {String} outputConfigPath - output path for config
+ * @returns {Promise} Runs the migration using a promise that
+ * will throw any errors during each transform or output if the
+ * user decides to abort the migration
+ */
+
+function runMigration(currentConfigPath, outputConfigPath) {
+	const recastOptions = {
+		quote: "single"
+	};
 	const tasks = new Listr([
 		{
 			title: "Reading webpack config",
@@ -86,7 +127,7 @@ module.exports = function migrate(
 				})
 		},
 		{
-			title: "Migrating config from v1 to v2",
+			title: "Migrating config to newest version",
 			task: ctx => {
 				const transformations = require("webpack-cli-migrate").transformations;
 				return new Listr(
@@ -167,17 +208,28 @@ module.exports = function migrate(
 					}
 					console.log(
 						chalk.green(
-							`\n ✔︎ New webpack v2 config file is at ${outputConfigPath}`
+							`\n✔︎ New webpack config file is at ${outputConfigPath}.`
+						)
+					);
+					console.log(
+						chalk.green(
+							"✔︎ Heads up! Updating to the latest version could contain breaking changes."
+						)
+					);
+					console.log(
+						chalk.green(
+							"✔︎ Plugin and loader dependencies may need to be updated."
 						)
 					);
 				});
 		})
 		.catch(err => {
-			console.log(chalk.red("✖ ︎Migration aborted due to some errors"));
+			const errMsg = "\n ✖ ︎Migration aborted due to some errors: \n";
+			console.error(chalk.red(errMsg));
 			console.error(err);
 			process.exitCode = 1;
 		});
-};
+}
 </code></pre>
         </article>
     </section>
@@ -188,13 +240,13 @@ module.exports = function migrate(
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AddGenerator.html">AddGenerator</a></li><li><a href="InitGenerator.html">InitGenerator</a></li><li><a href="LoaderGenerator.html">LoaderGenerator</a></li><li><a href="PluginGenerator.html">PluginGenerator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#checkIfExistsAndAddValue">checkIfExistsAndAddValue</a></li><li><a href="global.html#createArrayWithChildren">createArrayWithChildren</a></li><li><a href="global.html#createEmptyArrayProperty">createEmptyArrayProperty</a></li><li><a href="global.html#createExternalRegExp">createExternalRegExp</a></li><li><a href="global.html#createFunctionWithArguments">createFunctionWithArguments</a></li><li><a href="global.html#createIdentifierOrLiteral">createIdentifierOrLiteral</a></li><li><a href="global.html#createLiteral">createLiteral</a></li><li><a href="global.html#createObjectWithSuppliedProperty">createObjectWithSuppliedProperty</a></li><li><a href="global.html#createOrUpdatePluginByName">createOrUpdatePluginByName</a></li><li><a href="global.html#createProperty">createProperty</a></li><li><a href="global.html#defineTest">defineTest</a></li><li><a href="global.html#findInvocation">findInvocation</a></li><li><a href="global.html#findPluginsByName">findPluginsByName</a></li><li><a href="global.html#findRootNodesByName">findRootNodesByName</a></li><li><a href="global.html#findVariableToPlugin">findVariableToPlugin</a></li><li><a href="global.html#generatorCopy">generatorCopy</a></li><li><a href="global.html#generatorCopyTpl">generatorCopyTpl</a></li><li><a href="global.html#getPackageManager">getPackageManager</a></li><li><a href="global.html#getPathToGlobalPackages">getPathToGlobalPackages</a></li><li><a href="global.html#getRequire">getRequire</a></li><li><a href="global.html#getRootPathModule">getRootPathModule</a></li><li><a href="global.html#isAssignment">isAssignment</a></li><li><a href="global.html#isType">isType</a></li><li><a href="global.html#loaderCreator">loaderCreator</a></li><li><a href="global.html#loopThroughObjects">loopThroughObjects</a></li><li><a href="global.html#makeLoaderName">makeLoaderName</a></li><li><a href="global.html#mapOptionsToTransform">mapOptionsToTransform</a></li><li><a href="global.html#pluginCreator">pluginCreator</a></li><li><a href="global.html#processPromise">processPromise</a></li><li><a href="global.html#pushCreateProperty">pushCreateProperty</a></li><li><a href="global.html#pushObjectKeys">pushObjectKeys</a></li><li><a href="global.html#replaceAt">replaceAt</a></li><li><a href="global.html#resolvePackages">resolvePackages</a></li><li><a href="global.html#runSingleTransform">runSingleTransform</a></li><li><a href="global.html#serve">serve</a></li><li><a href="global.html#spawnChild">spawnChild</a></li><li><a href="global.html#spawnNPM">spawnNPM</a></li><li><a href="global.html#spawnNPMWithArg">spawnNPMWithArg</a></li><li><a href="global.html#spawnYarn">spawnYarn</a></li><li><a href="global.html#spawnYarnWithArg">spawnYarnWithArg</a></li><li><a href="global.html#transform">transform</a></li><li><a href="global.html#traverseAndGetProperties">traverseAndGetProperties</a></li><li><a href="global.html#webpackGenerator">webpackGenerator</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AddGenerator.html">AddGenerator</a></li><li><a href="InitGenerator.html">InitGenerator</a></li><li><a href="LoaderGenerator.html">LoaderGenerator</a></li><li><a href="PluginGenerator.html">PluginGenerator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addOrUpdateConfigObject">addOrUpdateConfigObject</a></li><li><a href="global.html#addProperty">addProperty</a></li><li><a href="global.html#createIdentifierOrLiteral">createIdentifierOrLiteral</a></li><li><a href="global.html#createLiteral">createLiteral</a></li><li><a href="global.html#createOrUpdatePluginByName">createOrUpdatePluginByName</a></li><li><a href="global.html#createProperty">createProperty</a></li><li><a href="global.html#defineTest">defineTest</a></li><li><a href="global.html#findAndRemovePluginByName">findAndRemovePluginByName</a></li><li><a href="global.html#findInvocation">findInvocation</a></li><li><a href="global.html#findPluginsArrayAndRemoveIfEmpty">findPluginsArrayAndRemoveIfEmpty</a></li><li><a href="global.html#findPluginsByName">findPluginsByName</a></li><li><a href="global.html#findRootNodesByName">findRootNodesByName</a></li><li><a href="global.html#findVariableToPlugin">findVariableToPlugin</a></li><li><a href="global.html#generatorCopy">generatorCopy</a></li><li><a href="global.html#generatorCopyTpl">generatorCopyTpl</a></li><li><a href="global.html#getPackageManager">getPackageManager</a></li><li><a href="global.html#getPathToGlobalPackages">getPathToGlobalPackages</a></li><li><a href="global.html#getRequire">getRequire</a></li><li><a href="global.html#getRootPathModule">getRootPathModule</a></li><li><a href="global.html#isType">isType</a></li><li><a href="global.html#loaderCreator">loaderCreator</a></li><li><a href="global.html#makeLoaderName">makeLoaderName</a></li><li><a href="global.html#mapOptionsToTransform">mapOptionsToTransform</a></li><li><a href="global.html#pluginCreator">pluginCreator</a></li><li><a href="global.html#processPromise">processPromise</a></li><li><a href="global.html#replaceAt">replaceAt</a></li><li><a href="global.html#resolvePackages">resolvePackages</a></li><li><a href="global.html#runMigration">runMigration</a></li><li><a href="global.html#runSingleTransform">runSingleTransform</a></li><li><a href="global.html#serve">serve</a></li><li><a href="global.html#spawnChild">spawnChild</a></li><li><a href="global.html#spawnNPM">spawnNPM</a></li><li><a href="global.html#spawnNPMWithArg">spawnNPMWithArg</a></li><li><a href="global.html#spawnYarn">spawnYarn</a></li><li><a href="global.html#spawnYarnWithArg">spawnYarnWithArg</a></li><li><a href="global.html#transform">transform</a></li><li><a href="global.html#traverseAndGetProperties">traverseAndGetProperties</a></li><li><a href="global.html#webpackGenerator">webpackGenerator</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Mar 22 2018 17:23:55 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun May 06 2018 17:19:19 GMT+0200 (CEST)
 </footer>
 
 <script> prettyPrint(); </script>

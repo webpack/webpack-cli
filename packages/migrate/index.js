@@ -9,6 +9,7 @@ const uglifyJsPluginTransform = require("./uglifyJsPlugin/uglifyJsPlugin");
 const loaderOptionsPluginTransform = require("./loaderOptionsPlugin/loaderOptionsPlugin");
 const bannerPluginTransform = require("./bannerPlugin/bannerPlugin");
 const extractTextPluginTransform = require("./extractTextPlugin/extractTextPlugin");
+const noEmitOnErrorsPluginTransform = require("./noEmitOnErrorsPlugin/noEmitOnErrorsPlugin");
 const removeDeprecatedPluginsTransform = require("./removeDeprecatedPlugins/removeDeprecatedPlugins");
 
 const transformsObject = {
@@ -19,6 +20,7 @@ const transformsObject = {
 	loaderOptionsPluginTransform,
 	bannerPluginTransform,
 	extractTextPluginTransform,
+	noEmitOnErrorsPluginTransform,
 	removeDeprecatedPluginsTransform
 };
 

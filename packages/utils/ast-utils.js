@@ -1,4 +1,4 @@
-const hashtable = require("./hashtable");
+const validateIdentifier = require("./validate-identifier");
 
 function safeTraverse(obj, paths) {
 	let val = obj;
@@ -57,6 +57,27 @@ function findPluginsByName(j, node, pluginNamesArray) {
 			plugin =>
 				memberExpressionToPathString(path.get("callee").value) === plugin
 		);
+	});
+}
+
+/**
+ * It lookouts for the plugins property and, if the array is empty, it removes it from the AST
+ * @param  {any} j - jscodeshift API
+ * @param  {Node} rootNode - node to start search from
+ * @returns {Node} rootNode modified AST.
+ */
+
+function findPluginsArrayAndRemoveIfEmpty(j, rootNode) {
+	return rootNode.find(j.Identifier, { name: "plugins" }).forEach(node => {
+		const elements = safeTraverse(node, [
+			"parent",
+			"value",
+			"value",
+			"elements"
+		]);
+		if (!elements.length) {
+			j(node.parent).remove();
+		}
 	});
 }
 
@@ -144,16 +165,87 @@ function createIdentifierOrLiteral(j, val) {
 			literalVal = Number(val);
 			return j.literal(literalVal);
 		}
-
 		if (val.__paths) {
-			return createExternalRegExp(j, val);
+			let regExpVal = val.__paths[0].value.program.body[0].expression;
+			return j.literal(regExpVal.value);
 		} else {
 			// Use identifier instead
-			// TODO: Check if literalVal is a valid Identifier!
-			return j.identifier(literalVal);
+			if (
+				!validateIdentifier.isKeyword(literalVal) ||
+				!validateIdentifier.isIdentifierStart(literalVal) ||
+				!validateIdentifier.isIdentifierChar(literalVal)
+			)
+				return j.identifier(literalVal);
 		}
 	}
 	return j.literal(literalVal);
+}
+
+/**
+ *
+ * Adds or updates the value of a key within a root
+ * webpack configuration property that's of type Object.
+ *
+ * @param {any} j — jscodeshift API
+ * @param {Node} rootNode - node of root webpack configuration
+ * @param {String} configProperty - key of an Object webpack configuration property
+ * @param {String} key - key within the configuration object to update
+ * @param {Object} value - the value to set for the key
+ * @returns {Void}
+ */
+
+function addOrUpdateConfigObject(j, rootNode, configProperty, key, value) {
+	const propertyExists = rootNode.properties.filter(
+		node => node.key.name === configProperty
+	).length;
+
+	if (propertyExists) {
+		rootNode.properties
+			.filter(path => path.key.name === configProperty)
+			.forEach(path => {
+				const newProperties = path.value.properties.filter(
+					path => path.key.name !== key
+				);
+				newProperties.push(j.objectProperty(j.identifier(key), value));
+				path.value.properties = newProperties;
+			});
+	} else {
+		rootNode.properties.push(
+			j.objectProperty(
+				j.identifier(configProperty),
+				j.objectExpression([j.objectProperty(j.identifier(key), value)])
+			)
+		);
+	}
+}
+
+/**
+ *
+ * Finds and removes a node for a given plugin name. If the plugin
+ * is the last in the plugins array, the array is also removed.
+ *
+ * @param {any} j — jscodeshift API
+ * @param {Node} node - node to start search from
+ * @param {String} pluginName - name of the plugin to remove
+ * @returns {Node | Void} - path to the root webpack configuration object if plugin is found
+ */
+
+function findAndRemovePluginByName(j, node, pluginName) {
+	let rootPath;
+
+	findPluginsByName(j, node, [pluginName])
+		.filter(path => safeTraverse(path, ["parent", "value"]))
+		.forEach(path => {
+			rootPath = safeTraverse(path, ["parent", "parent", "parent", "value"]);
+			const arrayPath = path.parent.value;
+			if (arrayPath.elements && arrayPath.elements.length === 1) {
+				j(path.parent.parent).remove();
+			} else {
+				j(path).remove();
+			}
+		});
+
+	return rootPath;
 }
 
 /**
@@ -285,392 +377,72 @@ function getRequire(j, constName, packagePath) {
 
 /**
  *
- * If a prop exists, it overrides it, else it creates a new one
+ * Recursively adds an object/property to a node
  * @param {any} j — jscodeshift API
- * @param {Node} node - objectexpression to check
- * @param {String} key - Key of the property
- * @param {String} value - computed value of the property
- * @returns {Void}
+ * @param {Node} p - AST node
+ * @param {String} key - key of a key/val object
+ * @param {Any} value - Any type of object
+ * @returns {Node} - the created ast
  */
 
-function checkIfExistsAndAddValue(j, node, key, value) {
-	const existingProp = node.value.properties.filter(
-		prop => prop.key.name === key
-	);
-	let prop;
-	if (existingProp.length > 0) {
-		prop = existingProp[0];
-		prop.value = value;
+function addProperty(j, p, key, value) {
+	let valForNode;
+	if (!p) {
+		return;
+	}
+	if (Array.isArray(value)) {
+		const arr = j.arrayExpression([]);
+		value.filter(val => val).forEach(val => {
+			addProperty(j, arr, null, val);
+		});
+		valForNode = arr;
+	} else if (
+		typeof value === "object" &&
+		!(value.__paths || value instanceof RegExp)
+	) {
+		// object -> loop through it
+		let objectExp = j.objectExpression([]);
+		Object.keys(value).forEach(prop => {
+			addProperty(j, objectExp, prop, value[prop]);
+		});
+		valForNode = objectExp;
 	} else {
-		prop = j.property("init", j.identifier(key), value);
-		node.value.properties.push(prop);
+		valForNode = createIdentifierOrLiteral(j, value);
 	}
-}
-
-/**
- *
- * Creates an empty array
- * @param {any} j — jscodeshift API
- * @param {String} key - array name
- * @returns {Array} arr - An empty array
- */
-function createEmptyArrayProperty(j, key) {
-	return j.property("init", j.identifier(key), j.arrayExpression([]));
-}
-
-/**
- *
- * Creates an array and iterates on an object with properties
- *
- * @param {any} j — jscodeshift API
- * @param {String} key - object name
- * @param {String} subProps - computed value of the property
- * @param {Boolean} shouldDropKeys - bool to ask to use obj.keys or not
- * @returns {Array} arr - An array with the object properties
- */
-
-function createArrayWithChildren(j, key, subProps, shouldDropKeys) {
-	let arr = createEmptyArrayProperty(j, key);
-	if (shouldDropKeys) {
-		subProps.forEach(subProperty => {
-			let objectOfArray = j.objectExpression([]);
-			if (typeof subProperty !== "string") {
-				loopThroughObjects(j, objectOfArray, subProperty);
-				arr.value.elements.push(objectOfArray);
-			} else {
-				return arr.value.elements.push(
-					createIdentifierOrLiteral(j, subProperty)
-				);
-			}
-		});
+	let pushVal;
+	if (key) {
+		pushVal = j.property("init", j.identifier(key), valForNode);
 	} else {
-		Object.keys(subProps[key]).forEach(subProperty => {
-			arr.value.elements.push(
-				createIdentifierOrLiteral(j, subProps[key][subProperty])
-			);
-		});
+		pushVal = valForNode;
 	}
-	return arr;
-}
-
-/**
- *
- * Loops through an object and adds property to an object with no identifier
- * @param {any} j — jscodeshift API
- * @param {Node} p - node to add value to
- * @param {Object} obj - Object to loop through
- * @returns {Function | Node} - Either pushes the node, or reruns until
- * nothing is left
- */
-
-function loopThroughObjects(j, p, obj) {
-	Object.keys(obj).forEach(prop => {
-		if (prop.indexOf("inject") >= 0) {
-			// TODO to insert the type of node, identifier or literal
-			const propertyExpression = createIdentifierOrLiteral(j, obj[prop]);
-			return p.properties.push(propertyExpression);
-		}
-		// eslint-disable-next-line no-irregular-whitespace
-		if (typeof obj[prop] !== "object" || obj[prop] instanceof RegExp) {
-			p.properties.push(
-				createObjectWithSuppliedProperty(
-					j,
-					prop,
-					createIdentifierOrLiteral(j, obj[prop])
-				)
-			);
-		} else if (Array.isArray(obj[prop])) {
-			let arrayProp = createArrayWithChildren(j, prop, obj[prop], true);
-			p.properties.push(arrayProp);
-		} else {
-			let objectBlock = j.objectExpression([]);
-			let propertyOfBlock = createObjectWithSuppliedProperty(
-				j,
-				prop,
-				objectBlock
-			);
-			loopThroughObjects(j, objectBlock, obj[prop]);
-			p.properties.push(propertyOfBlock);
-		}
-	});
-}
-
-/**
- *
- * Creates an object with an supplied property as parameter
- *
- * @param {any} j — jscodeshift API
- * @param {String} key - object name
- * @param {Node} prop - property to be added
- * @returns {Node} - An property with the supplied property
- */
-
-function createObjectWithSuppliedProperty(j, key, prop) {
-	return j.property("init", j.identifier(key), prop);
-}
-
-/**
- *
- * Finds a regexp property with an already parsed AST from the user
- * @param {any} j — jscodeshift API
- * @param {String} prop - property to find the value at
- * @returns {Node} - A literal node with the found regexp
- */
-
-function createExternalRegExp(j, prop) {
-	let regExpProp = prop.__paths[0].value.program.body[0].expression;
-	return j.literal(regExpProp.value);
-}
-
-/**
- *
- * Creates a property and pushes the value to a node
- *
- * @param {any} j — jscodeshift API
- * @param {Node} p - Node to push against
- * @param {String} key - key used as identifier
- * @param {String} val - property value
- * @returns {Node} - Returns node the pushed property
- */
-
-function pushCreateProperty(j, p, key, val) {
-	let property;
-	const findProp = findRootNodesByName(j, j(p), key);
-	if (findProp.size()) {
-		findProp.filter(p => {
-			p.value.value = createIdentifierOrLiteral(j, val);
-		});
-	} else {
-		if (val.hasOwnProperty("type")) {
-			property = val;
-		} else {
-			property = createIdentifierOrLiteral(j, val);
-		}
-		return p.value.properties.push(
-			createObjectWithSuppliedProperty(j, key, property)
-		);
+	if (p.properties) {
+		p.properties.push(pushVal);
+		return p;
 	}
-}
-
-/**
- *
- * @param {any} j — jscodeshift API
- * @param {Node} p - path to push
- * @param {Object} webpackProperties - The object to loop over
- * @param {String} name - Key that will be the identifier we find and add values to
- * @returns {Node | Function} Returns a function that will push a node if
- * subProperty is an array, else it will invoke a function that will push a single node
- */
-
-function pushObjectKeys(j, p, webpackProperties, name, reassign) {
-	p.value.properties
-		.filter(n => safeTraverse(n, ["key", "name"]) === name)
-		.forEach(prop => {
-			Object.keys(webpackProperties).forEach(webpackProp => {
-				try {
-					webpackProperties[webpackProp] = JSON.parse(
-						webpackProperties[webpackProp]
-					);
-				} catch (err) {}
-
-				if (webpackProp.indexOf("inject") >= 0) {
-					if (reassign) {
-						return checkIfExistsAndAddValue(
-							j,
-							prop,
-							webpackProp,
-							webpackProperties[webpackProp]
-						);
-					} else {
-						return prop.value.properties.push(
-							createIdentifierOrLiteral(j, webpackProperties[webpackProp])
-						);
-					}
-				} else if (Array.isArray(webpackProperties[webpackProp])) {
-					if (reassign) {
-						return j(p)
-							.find(j.Property, { key: { name: webpackProp } })
-							.filter(props => props.value.key.name === webpackProp)
-							.forEach(property => {
-								let markedProps = [];
-								let propsToMerge = [];
-								property.value.value.elements.forEach(elem => {
-									if (elem.value) {
-										markedProps.push(elem.value);
-									}
-								});
-								webpackProperties[webpackProp].forEach(underlyingprop => {
-									if (typeof underlyingprop === "object") {
-										//TODO loaders
-										return;
-									}
-									if (!markedProps.includes(underlyingprop)) {
-										propsToMerge.push(underlyingprop);
-									}
-								});
-								const hashtableForProps = hashtable(propsToMerge);
-								hashtableForProps.forEach(elem => {
-									property.value.value.elements.push(
-										createIdentifierOrLiteral(j, elem)
-									);
-								});
-							});
-					} else {
-						const propArray = createArrayWithChildren(
-							j,
-							webpackProp,
-							webpackProperties[webpackProp],
-							true
-						);
-						return prop.value.properties.push(propArray);
-					}
-				} else if (
-					typeof webpackProperties[webpackProp] !== "object" ||
-					webpackProperties[webpackProp].__paths ||
-					webpackProperties[webpackProp] instanceof RegExp
-				) {
-					return pushCreateProperty(
-						j,
-						prop,
-						webpackProp,
-						webpackProperties[webpackProp]
-					);
-				} else {
-					if (!reassign) {
-						pushCreateProperty(j, prop, webpackProp, j.objectExpression([]));
-					}
-					return pushObjectKeys(
-						j,
-						prop,
-						webpackProperties[webpackProp],
-						webpackProp,
-						reassign
-					);
-				}
-			});
-		});
-}
-
-/**
- *
- * Checks if we are at the correct node and later invokes a callback
- * for the transforms to either use their own transform function or
- * use pushCreateProperty if the transform doesn't expect any properties
- *
- * @param {any} j — jscodeshift API
- * @param {Node} p - Node to push against
- * @param {Function} cb - callback to be invoked
- * @param {String} identifier - key to use as property
- * @param {Object} property - WebpackOptions that later will be converted via
- * pushCreateProperty via WebpackOptions[identifier]
- * @returns {Function} cb - Returns the callback and pushes a new node
- */
-
-function isAssignment(j, p, cb, identifier, property) {
-	if (p.parent.value.type === "AssignmentExpression") {
-		if (j) {
-			return cb(j, p, identifier, property);
-		} else {
-			return cb(p);
-		}
+	if (p.value && p.value.properties) {
+		p.value.properties.push(pushVal);
+		return p;
 	}
-}
-
-/**
- *
- * Creates a function call with arguments
- * @param {any} j — jscodeshift API
- * @param {Node} p - Node to push against
- * @param {String} name - Name for the given function
- * @returns {Node} -  Returns the node for the created
- * function
- */
-
-function createFunctionWithArguments(j, p, name) {
-	if (typeof name === "object") {
-		let node;
-		Object.keys(name).forEach(key => {
-			const pluginExist = findPluginsByName(j, j(p), [key]);
-			if (pluginExist.size() !== 0) {
-				let pluginName =
-					key.indexOf("webpack") >= 0
-						? key.indexOf("webpack.optimize") >= 0
-							? key.replace("webpack.optimize.", " ")
-							: key.replace("webpack.", " ")
-						: key;
-				pluginExist
-					.filter(
-						p => pluginName.trim(" ") === p.value.callee.property.name.trim(" ")
-					)
-					.forEach(n => {
-						Object.keys(name[key]).forEach(subKey => {
-							const foundNode = findRootNodesByName(j, j(n), subKey);
-							if (foundNode.size() !== 0) {
-								foundNode.forEach(n => {
-									j(n).replaceWith(
-										createObjectWithSuppliedProperty(
-											j,
-											subKey,
-											createIdentifierOrLiteral(j, name[key][subKey])
-										)
-									);
-									node = createObjectWithSuppliedProperty(
-										j,
-										subKey,
-										createIdentifierOrLiteral(j, name[key][subKey])
-									);
-								});
-							} else {
-								const method = j.property(
-									"init",
-									createLiteral(j, subKey),
-									createIdentifierOrLiteral(j, name[key][subKey])
-								);
-								n.value.arguments[0].properties.push(method);
-								node = null;
-								//node.arguments.push(j.objectExpression([method]));
-							}
-						});
-					});
-				return node;
-			}
-			node = j.newExpression(j.identifier(key), []);
-			return Object.keys(name[key]).forEach(subKey => {
-				const method = createObjectWithSuppliedProperty(
-					j,
-					subKey,
-					createIdentifierOrLiteral(j, name[key][subKey])
-				);
-				node.arguments.push(j.objectExpression([method]));
-			});
-		});
-		return node;
+	if (p.elements) {
+		p.elements.push(pushVal);
+		return p;
 	}
-	return j.callExpression(j.identifier(name), [
-		j.literal("/* Add your arguments here */")
-	]);
+	return;
 }
-
 module.exports = {
 	safeTraverse,
 	createProperty,
 	findPluginsByName,
 	findRootNodesByName,
+	addOrUpdateConfigObject,
+	findAndRemovePluginByName,
 	createOrUpdatePluginByName,
 	findVariableToPlugin,
+	findPluginsArrayAndRemoveIfEmpty,
 	isType,
 	createLiteral,
 	createIdentifierOrLiteral,
 	findObjWithOneOfKeys,
 	getRequire,
-	checkIfExistsAndAddValue,
-	createArrayWithChildren,
-	createEmptyArrayProperty,
-	createObjectWithSuppliedProperty,
-	createExternalRegExp,
-	createFunctionWithArguments,
-	pushCreateProperty,
-	pushObjectKeys,
-	isAssignment,
-	loopThroughObjects
+	addProperty
 };

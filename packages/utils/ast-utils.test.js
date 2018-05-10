@@ -67,6 +67,30 @@ describe("utils", () => {
 		});
 	});
 
+	describe("findPluginsArrayAndRemoveIfEmpty", () => {
+		it("should remove plugins property", () => {
+			const ast = j(`
+				const a = {
+					plugins: []
+				}
+			`);
+			utils.findPluginsArrayAndRemoveIfEmpty(j, ast);
+			expect(ast.toSource()).toMatchSnapshot();
+		});
+
+		it("It should not remove plugins array, given an array with length greater than zero", () => {
+			const ast = j(`
+				const a = {
+					plugins: [
+						new MyCustomPlugin()
+					]
+				}
+			`);
+			utils.findPluginsArrayAndRemoveIfEmpty(j, ast);
+			expect(ast.toSource()).toMatchSnapshot();
+		});
+	});
+
 	describe("findRootNodesByName", () => {
 		it("should find plugins: [] nodes", () => {
 			const ast = j(`
@@ -184,189 +208,6 @@ const a = { plugs: [] }
 		it("should create a require statement", () => {
 			const require = utils.getRequire(j, "filesys", "fs");
 			expect(j(require).toSource()).toMatchSnapshot();
-		});
-	});
-
-	describe("checkIfExistsAndAddValue", () => {
-		it("should create new prop if none exist", () => {
-			const ast = j(`
-			module.exports = {
-				entry: 'index.js'
-			}
-			`);
-			ast
-				.find(j.ObjectExpression)
-				.forEach(node =>
-					utils.checkIfExistsAndAddValue(
-						j,
-						node,
-						"externals",
-						j.literal("React")
-					)
-				);
-			expect(ast.toSource()).toMatchSnapshot();
-		});
-		it("should override prop if it exists", () => {
-			const ast = j(`
-			module.exports = {
-				entry: 'index.js'
-			}
-			`);
-			ast
-				.find(j.ObjectExpression)
-				.forEach(node =>
-					utils.checkIfExistsAndAddValue(j, node, "entry", j.literal("app.js"))
-				);
-			expect(ast.toSource()).toMatchSnapshot();
-		});
-	});
-	describe("createArrayWithChildren", () => {
-		it("should find an prop that matches key and create an array with it", () => {
-			const ast = j("{}");
-			let key = "react";
-			let reactArr = {
-				react: ["'bo'"]
-			};
-			const arr = utils.createArrayWithChildren(j, key, reactArr, false);
-			ast.find(j.Program).forEach(node => j(node).replaceWith(arr));
-			expect(ast.toSource()).toMatchSnapshot();
-		});
-		it("should add all children of an array to a new one with a supplied key", () => {
-			const ast = j("{}");
-			let key = "myVeryOwnKey";
-			let helloWorldArray = ["'hello'", "world"];
-			const arr = utils.createArrayWithChildren(j, key, helloWorldArray, true);
-			ast.find(j.Program).forEach(node => j(node).replaceWith(arr));
-			expect(ast.toSource()).toMatchSnapshot();
-		});
-	});
-	describe("createEmptyArrayProperty", () => {
-		it("should create an array with no properties", () => {
-			const ast = j("{}");
-			const arr = utils.createEmptyArrayProperty(j, "its-lit");
-			ast.find(j.Program).forEach(node => j(node).replaceWith(arr));
-			expect(ast.toSource()).toMatchSnapshot();
-		});
-	});
-
-	describe("createObjectWithSuppliedProperty", () => {
-		it("should create an object with a property supplied by us", () => {
-			const ast = j("{}");
-			const prop = utils.createObjectWithSuppliedProperty(
-				j,
-				"its-lit",
-				j.objectExpression([])
-			);
-			ast.find(j.Program).forEach(node => j(node).replaceWith(prop));
-			expect(ast.toSource()).toMatchSnapshot();
-		});
-	});
-	describe("createExternalRegExp", () => {
-		it("should create an regExp property that has been parsed by jscodeshift", () => {
-			const ast = j("{}");
-			const reg = j("'\t'");
-			const prop = utils.createExternalRegExp(j, reg);
-			ast.find(j.Program).forEach(node => j(node).replaceWith(prop));
-			expect(ast.toSource()).toMatchSnapshot();
-		});
-	});
-	describe("pushCreateProperty", () => {
-		it("should create an object or property and push the value to a node", () => {
-			const ast = j(`module.exports = {
-				pushMe: {}
-			}`);
-			ast
-				.find(j.Identifier)
-				.filter(n => n.value.name === "pushMe")
-				.forEach(node => {
-					const heavyNodeNoSafeTraverse = node.parentPath.value;
-					utils.pushCreateProperty(
-						j,
-						heavyNodeNoSafeTraverse,
-						"just",
-						"pushed"
-					);
-				});
-			expect(ast.toSource()).toMatchSnapshot();
-		});
-	});
-	describe("pushObjectKeys", () => {
-		it("should push object to an node using Object.keys", () => {
-			const ast = j(`module.exports = {
-				pushMe: {}
-			}`);
-			const webpackProperties = {
-				hello: {
-					world: {
-						its: "'great'"
-					}
-				}
-			};
-			ast.find(j.ObjectExpression).forEach(node => {
-				utils.pushObjectKeys(j, node, webpackProperties, "pushMe");
-			});
-			expect(ast.toSource()).toMatchSnapshot();
-		});
-	});
-	describe("loopThroughObjects", () => {
-		it("Should use recursion and add elements to a node", () => {
-			const ast = j("module.exports = {}");
-			const webpackProperties = {
-				hello: {
-					webpack: "cli"
-				}
-			};
-			ast.find(j.ObjectExpression).forEach(node => {
-				return utils.loopThroughObjects(j, node.value, webpackProperties);
-			});
-			expect(ast.toSource()).toMatchSnapshot();
-		});
-	});
-	describe("createFunctionWithArguments", () => {
-		it("Should create a empty function with a name", () => {
-			const ast = j("module.exports = {plugins: []}");
-			const pluginsNode = utils.findRootNodesByName(j, ast, "plugins");
-			pluginsNode.forEach(node => {
-				let expectedPlugin = utils.createFunctionWithArguments(
-					j,
-					node,
-					"ringoStar"
-				);
-				expect(j(expectedPlugin).toSource()).toMatchSnapshot();
-			});
-		});
-	});
-	describe("isAssignment", () => {
-		it("should invoke a callback if parent type is AssignmentExpression", () => {
-			const ast = j("module.exports = {}");
-			const myObj = "Heyho";
-			const myKey = "context";
-
-			ast
-				.find(j.ObjectExpression)
-				.filter(n =>
-					utils.isAssignment(j, n, utils.pushCreateProperty, myKey, myObj)
-				);
-			expect(ast.toSource()).toMatchSnapshot();
-		});
-		it("should allow custom transform functions instead of singularProperty", () => {
-			const ast = j("module.exports = {}");
-
-			function createPluginsProperty(p) {
-				const webpackProperties = {
-					plugins: ["one", "two", "three"]
-				};
-				const pluginArray = utils.createArrayWithChildren(
-					j,
-					"plugins",
-					webpackProperties
-				);
-				return p.value.properties.push(pluginArray);
-			}
-			ast
-				.find(j.ObjectExpression)
-				.filter(n => utils.isAssignment(null, n, createPluginsProperty));
-			expect(ast.toSource()).toMatchSnapshot();
 		});
 	});
 });

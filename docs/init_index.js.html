@@ -33,6 +33,7 @@ const j = require("jscodeshift");
 const chalk = require("chalk");
 const pEachSeries = require("p-each-series");
 
+<<<<<<< HEAD
 const runPrettier = require("webpack-cli-utils/run-prettier");
 
 const entryTransform = require("./transformations/entry/entry");
@@ -62,6 +63,7 @@ const topScopeTransform = require("./transformations/top-scope/top-scope");
 const devServerTransform = require("./transformations/devServer/devServer");
 const modeTransform = require("./transformations/mode/mode");
 const resolveLoaderTransform = require("./transformations/resolveLoader/resolveLoader");
+const optimizationTransform = require("./transformations/optimization/optimization");
 
 const transformsObject = {
 	entryTransform,
@@ -90,48 +92,35 @@ const transformsObject = {
 	recordsInputPathTransform,
 	recordsOutputPathTransform,
 	recordsPathTransform,
-	resolveLoaderTransform
+	resolveLoaderTransform,
+	optimizationTransform
 };
+=======
+const runPrettier = require("../utils/run-prettier");
+const astTransform = require("../ast");
+const propTypes = require("../utils/prop-types");
+>>>>>>> ast(cli): Recursively parse AST (#341)
 
 /**
  *
  * Maps back transforms that needs to be run using the configuration
  * provided.
  *
- * @param {Object} transformObject - An Object with all transformations
- * @param {Object} config - Configuration to transform
+ * @param	{Object} transformObject 	- An Object with all transformations
+ * @param	{Object} config 			- Configuration to transform
  * @returns {Object} - An Object with the transformations to be run
  */
 
-function mapOptionsToTransform(transformObject, config) {
-	return Object.keys(transformObject)
-		.map(transformKey => {
-			const stringVal = transformKey.substr(
-				0,
-				transformKey.indexOf("Transform")
-			);
-			if (Object.keys(config.webpackOptions).length) {
-				if (config.webpackOptions[stringVal]) {
-					return [
-						transformObject[transformKey],
-						config.webpackOptions[stringVal]
-					];
-				} else {
-					return [transformObject[transformKey], config[stringVal]];
-				}
-			} else {
-				return [transformObject[transformKey]];
-			}
-		})
-		.filter(e => e[1]);
+function mapOptionsToTransform(config) {
+	return Object.keys(config.webpackOptions).filter(k => propTypes.has(k));
 }
 
 /**
  *
  * Runs the transformations from an object we get from yeoman
  *
- * @param {Object} webpackProperties - Configuration to transform
- * @param {String} action - Action to be done on the given ast
+ * @param	{Object} webpackProperties 	- Configuration to transform
+ * @param	{String} action 			- Action to be done on the given ast
  * @returns {Promise} - A promise that writes each transform, runs prettier
  * and writes the file
  */
@@ -145,7 +134,7 @@ module.exports = function runTransform(webpackProperties, action) {
 
 	webpackConfig.forEach(scaffoldPiece => {
 		const config = webpackProperties[scaffoldPiece];
-		const transformations = mapOptionsToTransform(transformsObject, config);
+		const transformations = mapOptionsToTransform(config);
 		const ast = j(
 			initActionNotDefined
 				? webpackProperties.configFile
@@ -154,11 +143,7 @@ module.exports = function runTransform(webpackProperties, action) {
 		const transformAction = action || null;
 
 		return pEachSeries(transformations, f => {
-			if (!f[1]) {
-				return f[0](j, ast, transformAction);
-			} else {
-				return f[0](j, ast, f[1], transformAction);
-			}
+			return astTransform(j, ast, config.webpackOptions[f], transformAction, f);
 		})
 			.then(_ => {
 				let configurationName;
@@ -209,13 +194,13 @@ module.exports = function runTransform(webpackProperties, action) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AddGenerator.html">AddGenerator</a></li><li><a href="InitGenerator.html">InitGenerator</a></li><li><a href="LoaderGenerator.html">LoaderGenerator</a></li><li><a href="PluginGenerator.html">PluginGenerator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#checkIfExistsAndAddValue">checkIfExistsAndAddValue</a></li><li><a href="global.html#createArrayWithChildren">createArrayWithChildren</a></li><li><a href="global.html#createEmptyArrayProperty">createEmptyArrayProperty</a></li><li><a href="global.html#createExternalRegExp">createExternalRegExp</a></li><li><a href="global.html#createFunctionWithArguments">createFunctionWithArguments</a></li><li><a href="global.html#createIdentifierOrLiteral">createIdentifierOrLiteral</a></li><li><a href="global.html#createLiteral">createLiteral</a></li><li><a href="global.html#createObjectWithSuppliedProperty">createObjectWithSuppliedProperty</a></li><li><a href="global.html#createOrUpdatePluginByName">createOrUpdatePluginByName</a></li><li><a href="global.html#createProperty">createProperty</a></li><li><a href="global.html#defineTest">defineTest</a></li><li><a href="global.html#findInvocation">findInvocation</a></li><li><a href="global.html#findPluginsByName">findPluginsByName</a></li><li><a href="global.html#findRootNodesByName">findRootNodesByName</a></li><li><a href="global.html#findVariableToPlugin">findVariableToPlugin</a></li><li><a href="global.html#generatorCopy">generatorCopy</a></li><li><a href="global.html#generatorCopyTpl">generatorCopyTpl</a></li><li><a href="global.html#getPackageManager">getPackageManager</a></li><li><a href="global.html#getPathToGlobalPackages">getPathToGlobalPackages</a></li><li><a href="global.html#getRequire">getRequire</a></li><li><a href="global.html#getRootPathModule">getRootPathModule</a></li><li><a href="global.html#isAssignment">isAssignment</a></li><li><a href="global.html#isType">isType</a></li><li><a href="global.html#loaderCreator">loaderCreator</a></li><li><a href="global.html#loopThroughObjects">loopThroughObjects</a></li><li><a href="global.html#makeLoaderName">makeLoaderName</a></li><li><a href="global.html#mapOptionsToTransform">mapOptionsToTransform</a></li><li><a href="global.html#pluginCreator">pluginCreator</a></li><li><a href="global.html#processPromise">processPromise</a></li><li><a href="global.html#pushCreateProperty">pushCreateProperty</a></li><li><a href="global.html#pushObjectKeys">pushObjectKeys</a></li><li><a href="global.html#replaceAt">replaceAt</a></li><li><a href="global.html#resolvePackages">resolvePackages</a></li><li><a href="global.html#runSingleTransform">runSingleTransform</a></li><li><a href="global.html#serve">serve</a></li><li><a href="global.html#spawnChild">spawnChild</a></li><li><a href="global.html#spawnNPM">spawnNPM</a></li><li><a href="global.html#spawnNPMWithArg">spawnNPMWithArg</a></li><li><a href="global.html#spawnYarn">spawnYarn</a></li><li><a href="global.html#spawnYarnWithArg">spawnYarnWithArg</a></li><li><a href="global.html#transform">transform</a></li><li><a href="global.html#traverseAndGetProperties">traverseAndGetProperties</a></li><li><a href="global.html#webpackGenerator">webpackGenerator</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AddGenerator.html">AddGenerator</a></li><li><a href="InitGenerator.html">InitGenerator</a></li><li><a href="LoaderGenerator.html">LoaderGenerator</a></li><li><a href="PluginGenerator.html">PluginGenerator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addOrUpdateConfigObject">addOrUpdateConfigObject</a></li><li><a href="global.html#addProperty">addProperty</a></li><li><a href="global.html#createIdentifierOrLiteral">createIdentifierOrLiteral</a></li><li><a href="global.html#createLiteral">createLiteral</a></li><li><a href="global.html#createOrUpdatePluginByName">createOrUpdatePluginByName</a></li><li><a href="global.html#createProperty">createProperty</a></li><li><a href="global.html#defineTest">defineTest</a></li><li><a href="global.html#findAndRemovePluginByName">findAndRemovePluginByName</a></li><li><a href="global.html#findInvocation">findInvocation</a></li><li><a href="global.html#findPluginsArrayAndRemoveIfEmpty">findPluginsArrayAndRemoveIfEmpty</a></li><li><a href="global.html#findPluginsByName">findPluginsByName</a></li><li><a href="global.html#findRootNodesByName">findRootNodesByName</a></li><li><a href="global.html#findVariableToPlugin">findVariableToPlugin</a></li><li><a href="global.html#generatorCopy">generatorCopy</a></li><li><a href="global.html#generatorCopyTpl">generatorCopyTpl</a></li><li><a href="global.html#getPackageManager">getPackageManager</a></li><li><a href="global.html#getPathToGlobalPackages">getPathToGlobalPackages</a></li><li><a href="global.html#getRequire">getRequire</a></li><li><a href="global.html#getRootPathModule">getRootPathModule</a></li><li><a href="global.html#isType">isType</a></li><li><a href="global.html#loaderCreator">loaderCreator</a></li><li><a href="global.html#makeLoaderName">makeLoaderName</a></li><li><a href="global.html#mapOptionsToTransform">mapOptionsToTransform</a></li><li><a href="global.html#pluginCreator">pluginCreator</a></li><li><a href="global.html#processPromise">processPromise</a></li><li><a href="global.html#replaceAt">replaceAt</a></li><li><a href="global.html#resolvePackages">resolvePackages</a></li><li><a href="global.html#runMigration">runMigration</a></li><li><a href="global.html#runSingleTransform">runSingleTransform</a></li><li><a href="global.html#serve">serve</a></li><li><a href="global.html#spawnChild">spawnChild</a></li><li><a href="global.html#spawnNPM">spawnNPM</a></li><li><a href="global.html#spawnNPMWithArg">spawnNPMWithArg</a></li><li><a href="global.html#spawnYarn">spawnYarn</a></li><li><a href="global.html#spawnYarnWithArg">spawnYarnWithArg</a></li><li><a href="global.html#transform">transform</a></li><li><a href="global.html#traverseAndGetProperties">traverseAndGetProperties</a></li><li><a href="global.html#webpackGenerator">webpackGenerator</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Mar 22 2018 17:23:55 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun May 06 2018 17:19:19 GMT+0200 (CEST)
 </footer>
 
 <script> prettyPrint(); </script>

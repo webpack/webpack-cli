@@ -1,3 +1,4 @@
+const optionsSchema = require("webpack/schemas/WebpackOptions.json");
 const CONFIG_GROUP = "Config options:";
 const BASIC_GROUP = "Basic options:";
 const MODULE_GROUP = "Module options:";
@@ -5,7 +6,6 @@ const OUTPUT_GROUP = "Output options:";
 const ADVANCED_GROUP = "Advanced options:";
 const RESOLVE_GROUP = "Resolving options:";
 const OPTIMIZE_GROUP = "Optimizing options:";
-const INIT_GROUP = "Initialization:";
 
 module.exports = function(yargs) {
 	yargs
@@ -14,52 +14,6 @@ module.exports = function(yargs) {
 		.version()
 		.alias("version", "v")
 		.options({
-			init: {
-				type: "boolean",
-				describe:
-					"Initializes a new webpack configuration or loads a" +
-					"\n" +
-					"addon if specified",
-				group: INIT_GROUP
-			},
-			migrate: {
-				type: "boolean",
-				describe:
-					"Migrate your webpack configuration from webpack 1 to webpack 2",
-				group: INIT_GROUP
-			},
-			add: {
-				type: "boolean",
-				describe: "Adds a webpack component to your configuration file",
-				group: INIT_GROUP
-			},
-			/*
-			remove: {
-				type: "boolean",
-				describe: "Removes a webpack component to your configuration file",
-				group: INIT_GROUP
-			},
-			update: {
-				type: "boolean",
-				describe: "Updates a webpack component to your configuration file",
-				group: INIT_GROUP
-			},
-			make: {
-				type: "boolean",
-				describe: "Converts a webpack configuration to a makefile",
-				group: INIT_GROUP
-			},
-			*/
-			"generate-loader": {
-				type: "boolean",
-				describe: "Generates a new webpack loader project",
-				group: INIT_GROUP
-			},
-			"generate-plugin": {
-				type: "boolean",
-				describe: "Generates a new webpack plugin project",
-				group: INIT_GROUP
-			},
 			config: {
 				type: "string",
 				describe: "Path to the config file",
@@ -87,22 +41,22 @@ module.exports = function(yargs) {
 				group: CONFIG_GROUP
 			},
 			mode: {
-				type: "string",
-				choices: ["development", "production"],
-				describe: "Mode to use",
+				type: optionsSchema.properties.mode.type,
+				choices: optionsSchema.properties.mode.enum,
+				describe: optionsSchema.properties.mode.description,
 				group: CONFIG_GROUP,
 				requiresArg: true
 			},
 			context: {
-				type: "string",
-				describe: "The root directory for resolving entry point and stats",
+				type: optionsSchema.properties.context.type,
+				describe: optionsSchema.properties.context.description,
 				group: BASIC_GROUP,
 				defaultDescription: "The current directory",
 				requiresArg: true
 			},
 			entry: {
 				type: "string",
-				describe: "The entry point",
+				describe: optionsSchema.properties.entry.description,
 				group: BASIC_GROUP,
 				requiresArg: true
 			},
@@ -132,21 +86,23 @@ module.exports = function(yargs) {
 			},
 			"output-path": {
 				type: "string",
-				describe: "The output path for compilation assets",
+				describe: optionsSchema.definitions.output.properties.path.description,
 				group: OUTPUT_GROUP,
 				defaultDescription: "The current directory",
 				requiresArg: true
 			},
 			"output-filename": {
 				type: "string",
-				describe: "The output filename of the bundle",
+				describe:
+					optionsSchema.definitions.output.properties.filename.description,
 				group: OUTPUT_GROUP,
 				defaultDescription: "[name].js",
 				requiresArg: true
 			},
 			"output-chunk-filename": {
 				type: "string",
-				describe: "The output filename for additional chunks",
+				describe:
+					optionsSchema.definitions.output.properties.chunkFilename.description,
 				group: OUTPUT_GROUP,
 				defaultDescription:
 					"filename with [id] instead of [name] or [id] prefixed",
@@ -154,26 +110,30 @@ module.exports = function(yargs) {
 			},
 			"output-source-map-filename": {
 				type: "string",
-				describe: "The output filename for the SourceMap",
+				describe:
+					optionsSchema.definitions.output.properties.sourceMapFilename
+						.description,
 				group: OUTPUT_GROUP,
 				requiresArg: true
 			},
 			"output-public-path": {
 				type: "string",
-				describe: "The public path for the assets",
+				describe:
+					optionsSchema.definitions.output.properties.publicPath.description,
 				group: OUTPUT_GROUP,
 				requiresArg: true
 			},
 			"output-jsonp-function": {
 				type: "string",
-				describe: "The name of the jsonp function used for chunk loading",
+				describe:
+					optionsSchema.definitions.output.properties.jsonpFunction.description,
 				group: OUTPUT_GROUP,
 				requiresArg: true
 			},
 			"output-pathinfo": {
 				type: "boolean",
 				describe:
-					"Include a comment with the request for every dependency (require, import, etc.)",
+					optionsSchema.definitions.output.properties.pathinfo.description,
 				group: OUTPUT_GROUP
 			},
 			"output-library": {
@@ -185,25 +145,26 @@ module.exports = function(yargs) {
 			"output-library-target": {
 				type: "string",
 				describe:
-					"The type for exposing the exports of the entry point as library",
+					optionsSchema.definitions.output.properties.libraryTarget.description,
+				choices: optionsSchema.definitions.output.properties.libraryTarget.enum,
 				group: OUTPUT_GROUP,
 				requiresArg: true
 			},
 			"records-input-path": {
 				type: "string",
-				describe: "Path to the records file (reading)",
+				describe: optionsSchema.properties.recordsInputPath.description,
 				group: ADVANCED_GROUP,
 				requiresArg: true
 			},
 			"records-output-path": {
 				type: "string",
-				describe: "Path to the records file (writing)",
+				describe: optionsSchema.properties.recordsOutputPath.description,
 				group: ADVANCED_GROUP,
 				requiresArg: true
 			},
 			"records-path": {
 				type: "string",
-				describe: "Path to the records file",
+				describe: optionsSchema.properties.recordsPath.description,
 				group: ADVANCED_GROUP,
 				requiresArg: true
 			},
@@ -215,13 +176,13 @@ module.exports = function(yargs) {
 			},
 			target: {
 				type: "string",
-				describe: "The targeted execution environment",
+				describe: optionsSchema.properties.target.description,
 				group: ADVANCED_GROUP,
 				requiresArg: true
 			},
 			cache: {
 				type: "boolean",
-				describe: "Enable in memory caching",
+				describe: optionsSchema.properties.cache.description,
 				default: null,
 				group: ADVANCED_GROUP,
 				defaultDescription: "It's enabled by default when watching"
@@ -229,23 +190,30 @@ module.exports = function(yargs) {
 			watch: {
 				type: "boolean",
 				alias: "w",
-				describe: "Watch the filesystem for changes",
+				describe: optionsSchema.properties.watch.description,
 				group: BASIC_GROUP
 			},
 			"watch-stdin": {
 				type: "boolean",
 				alias: "stdin",
-				describe: "Exit the process when stdin is closed",
+				describe:
+					optionsSchema.properties.watchOptions.properties.stdin.description,
 				group: ADVANCED_GROUP
 			},
 			"watch-aggregate-timeout": {
-				describe: "Timeout for gathering changes while watching",
+				describe:
+					optionsSchema.properties.watchOptions.properties.aggregateTimeout
+						.description,
+				type:
+					optionsSchema.properties.watchOptions.properties.aggregateTimeout
+						.type,
 				group: ADVANCED_GROUP,
 				requiresArg: true
 			},
 			"watch-poll": {
 				type: "string",
-				describe: "The polling interval for watching (also enable polling)",
+				describe:
+					optionsSchema.properties.watchOptions.properties.poll.description,
 				group: ADVANCED_GROUP
 			},
 			hot: {
@@ -260,22 +228,21 @@ module.exports = function(yargs) {
 			},
 			devtool: {
 				type: "string",
-				describe:
-					"Enable devtool for better debugging experience (Example: --devtool eval-cheap-module-source-map)",
+				describe: optionsSchema.properties.devtool.description,
 				group: BASIC_GROUP,
 				requiresArg: true
 			},
 			"resolve-alias": {
 				type: "string",
 				describe:
-					"Setup a module alias for resolving (Example: jquery-plugin=jquery.plugin)",
+					optionsSchema.definitions.resolve.properties.alias.description,
 				group: RESOLVE_GROUP,
 				requiresArg: true
 			},
 			"resolve-extensions": {
 				type: "array",
 				describe:
-					"Setup extensions that should be used to resolve modules (Example: --resolve-extensions .es6,.js)",
+					optionsSchema.definitions.resolve.properties.alias.description,
 				group: RESOLVE_GROUP,
 				requiresArg: true
 			},
@@ -291,13 +258,16 @@ module.exports = function(yargs) {
 				requiresArg: true
 			},
 			"optimize-min-chunk-size": {
-				describe: "Try to keep the chunk size above a limit",
+				describe:
+					optionsSchema.properties.optimization.properties.splitChunks.oneOf[1]
+						.properties.minSize.description,
 				group: OPTIMIZE_GROUP,
 				requiresArg: true
 			},
 			"optimize-minimize": {
 				type: "boolean",
-				describe: "Minimize javascript and switches loaders to minimizing",
+				describe:
+					optionsSchema.properties.optimization.properties.minimize.description,
 				group: OPTIMIZE_GROUP
 			},
 			prefetch: {
@@ -325,14 +295,14 @@ module.exports = function(yargs) {
 				requiresArg: true
 			},
 			bail: {
-				type: "boolean",
-				describe: "Abort the compilation on first error",
+				type: optionsSchema.properties.bail.type,
+				describe: optionsSchema.properties.bail.description,
 				group: ADVANCED_GROUP,
 				default: null
 			},
 			profile: {
 				type: "boolean",
-				describe: "Profile the compilation and include information in stats",
+				describe: optionsSchema.properties.profile.description,
 				group: ADVANCED_GROUP,
 				default: null
 			},
@@ -348,6 +318,5 @@ module.exports = function(yargs) {
 					"shortcut for --optimize-minimize --define process.env.NODE_ENV=\"production\"",
 				group: BASIC_GROUP
 			}
-		})
-		.strict();
+		});
 };

@@ -179,7 +179,9 @@ module.exports = function processOptions(yargs, argv) {
 			);
 		} else if (stats.hash !== lastHash) {
 			lastHash = stats.hash;
-			const delimiter = outputOptions.buildDelimiter ? `${outputOptions.buildDelimiter}\n` : "";
+			const delimiter = outputOptions.buildDelimiter
+				? `${outputOptions.buildDelimiter}\n`
+				: "";
 			process.stdout.write("\n" + new Date() + "\n" + "\n");
 			process.stdout.write(`${stats.toString(outputOptions)}\n${delimiter}`);
 			if (argv.s) lastHash = null;
