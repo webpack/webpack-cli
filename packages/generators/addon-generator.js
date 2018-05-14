@@ -1,7 +1,7 @@
 const path = require("path");
 const mkdirp = require("mkdirp");
 const Generator = require("yeoman-generator");
-const copyUtils = require("webpack-cli-utils/copy-utils");
+const copyUtils = require("@webpack-cli/utils/copy-utils");
 
 /**
  * Creates a Yeoman Generator that generates a project conforming

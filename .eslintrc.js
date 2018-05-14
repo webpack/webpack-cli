@@ -63,12 +63,12 @@ module.exports = {
 				"resolvePaths": ["./packages"],
 				"allowModules": [
 					"webpack",
-					"webpack-cli-generators",
-					"webpack-cli-init",
-					"webpack-cli-migrate",
-					"webpack-cli-utils",
-					"webpack-loader-generators",
-					"webpack-plugin-generators"
+					"@webpack-cli/generators",
+					"@webpack-cli/init",
+					"@webpack-cli/migrate",
+					"@webpack-cli/utils",
+					"@webpack-cli/generate-loader",
+					"@webpack-cli/generate-plugin"
 				]
 			}
 		],
@@ -92,11 +92,11 @@ module.exports = {
 			"error",
 			{
 				"allowModules": [					
-					"webpack-cli-migrate",
-					"webpack-cli-generators",
-					"webpack-cli-utils",
-					"webpack-loader-generators",
-					"webpack-plugin-generators"
+					"@webpack-cli/migrate",
+					"@webpack-cli/generators",
+					"@webpack-cli/utils",
+					"@webpack-cli/generate-loader",
+					"@webpack-cli/generate-plugin"
 				]
 			}
 		],

@@ -8,7 +8,7 @@ const Input = require("webpack-addons").Input;
 const Confirm = require("webpack-addons").Confirm;
 const List = require("webpack-addons").List;
 
-const getPackageManager = require("webpack-cli-utils/package-manager")
+const getPackageManager = require("@webpack-cli/utils/package-manager")
 	.getPackageManager;
 
 const entryQuestions = require("./utils/entry");
