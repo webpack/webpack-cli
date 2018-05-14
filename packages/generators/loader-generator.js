@@ -1,6 +1,6 @@
 const path = require("path");
 const _ = require("lodash");
-const webpackGenerator = require("./webpack-generator");
+const addonGenerator = require("./addon-generator");
 
 /**
  * Formats a string into webpack loader format
@@ -26,7 +26,7 @@ function makeLoaderName(name) {
  * @extends {Generator}
  */
 
-const LoaderGenerator = webpackGenerator(
+const LoaderGenerator = addonGenerator(
 	[
 		{
 			type: "input",

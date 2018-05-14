@@ -31,9 +31,9 @@ module.exports = function recursiveTransform(j, ast, value, action, key) {
 			})
 			.filter(p => p.value.properties);
 		return root.forEach(p => {
-			if (key == "topScope") {
+			if (key === "topScope") {
 				utils.parseTopScope(j, p, value);
-			} else if (key == "merge") {
+			} else if (key === "merge") {
 				utils.parseMerge(j, p, value);
 			} else {
 				utils.addProperty(j, p, key, value);

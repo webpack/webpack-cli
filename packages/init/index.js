@@ -6,8 +6,8 @@ const chalk = require("chalk");
 const pEachSeries = require("p-each-series");
 
 const runPrettier = require("../utils/run-prettier");
-const astTransform = require("../ast");
-const propTypes = require("../utils/prop-types");
+const astTransform = require("@webpack-cli/utils/recursive-parser");
+const propTypes = require("@webpack-cli/utils/prop-types");
 
 /**
  *

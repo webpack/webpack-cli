@@ -1,6 +1,6 @@
 const path = require("path");
 const _ = require("lodash");
-const webpackGenerator = require("./webpack-generator");
+const addonGenerator = require("./addon-generator");
 
 /**
  * A yeoman generator class for creating a webpack
@@ -10,7 +10,7 @@ const webpackGenerator = require("./webpack-generator");
  * @class PluginGenerator
  * @extends {Generator}
  */
-const PluginGenerator = webpackGenerator(
+const PluginGenerator = addonGenerator(
 	[
 		{
 			type: "input",

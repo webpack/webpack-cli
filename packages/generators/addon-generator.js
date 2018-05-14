@@ -24,7 +24,7 @@ const copyUtils = require("webpack-cli-utils/copy-utils");
  *
  * @returns {Generator} A class extending Generator
  */
-function webpackGenerator(
+function addonGenerator(
 	prompts,
 	templateDir,
 	copyFiles,
@@ -74,4 +74,4 @@ function webpackGenerator(
 	};
 }
 
-module.exports = webpackGenerator;
+module.exports = addonGenerator;

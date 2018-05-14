@@ -1,7 +1,6 @@
 "use strict";
 
 const defineTest = require("./defineTest");
-const propTypes = require("./prop-types");
 
 defineTest(
 	__dirname,
