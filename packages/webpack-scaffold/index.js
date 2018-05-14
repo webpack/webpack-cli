@@ -42,10 +42,6 @@ function parseValue(regexp) {
 	return jscodeshift(regexp);
 }
 
-function createCommonsChunkPlugin(value) {
-	return `new webpack.optimize.CommonsChunkPlugin({name:'${value}',filename:'${value}-[hash].min.js'})`;
-}
-
 function createRequire(val) {
 	return `const ${val} = require('${val}');`;
 }
@@ -109,7 +105,6 @@ module.exports = {
 	createAssetFilterFunction,
 	createExternalFunction,
 	parseValue,
-	createCommonsChunkPlugin,
 	createRequire,
 	List,
 	RawList,

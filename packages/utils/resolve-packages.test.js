@@ -44,9 +44,9 @@ describe("resolve-packages", () => {
 	});
 
 	it("should resolve a location of a published module", () => {
-		moduleLoc = getLoc(["webpack-addons-ylvis"]);
+		moduleLoc = getLoc(["webpack-scaffold-ylvis"]);
 		expect(moduleLoc).toEqual([
-			path.normalize("../../node_modules/webpack-addons-ylvis")
+			path.normalize("../../node_modules/webpack-scaffold-ylvis")
 		]);
 	});
 
@@ -61,10 +61,10 @@ describe("resolve-packages", () => {
 		 * we validate each package on each run, we can catch and build the questions in init gradually
 		 * while we get one filepath at the time. If not, this is a workaround.
 		 */
-		moduleLoc = getLoc(["webpack-addons-ylvis", "webpack-addons-noop"]);
+		moduleLoc = getLoc(["webpack-scaffold-ylvis", "webpack-scaffold-noop"]);
 		expect(moduleLoc).toEqual([
-			path.normalize("../../node_modules/webpack-addons-ylvis"),
-			path.normalize("../../node_modules/webpack-addons-noop")
+			path.normalize("../../node_modules/webpack-scaffold-ylvis"),
+			path.normalize("../../node_modules/webpack-scaffold-noop")
 		]);
 	});
 });

@@ -23,13 +23,13 @@ describe("npmPackagesExists", () => {
 
 	test("resolves packages when they are available on npm", done => {
 		require("./npm-exists").mockImplementation(() => Promise.resolve(true));
-		npmPackagesExists(["webpack-addons-foobar"]);
+		npmPackagesExists(["webpack-scaffold-foobar"]);
 		setTimeout(() => {
 			expect(
 				mockResolvePackages.mock.calls[
 					mockResolvePackages.mock.calls.length - 1
 				][0]
-			).toEqual(["webpack-addons-foobar"]);
+			).toEqual(["webpack-scaffold-foobar"]);
 			done();
 		}, 10);
 	});

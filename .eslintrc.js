@@ -68,7 +68,8 @@ module.exports = {
 					"@webpack-cli/migrate",
 					"@webpack-cli/utils",
 					"@webpack-cli/generate-loader",
-					"@webpack-cli/generate-plugin"
+					"@webpack-cli/generate-plugin",
+					"@webpack-cli/webpack-scaffold"
 				]
 			}
 		],
@@ -84,7 +85,8 @@ module.exports = {
 					"@webpack-cli/migrate",
 					"@webpack-cli/utils",
 					"@webpack-cli/generate-loader",
-					"@webpack-cli/generate-plugin"
+					"@webpack-cli/generate-plugin",
+					"@webpack-cli/webpack-scaffold"
 				]
 			}
 		],
@@ -96,7 +98,8 @@ module.exports = {
 					"@webpack-cli/generators",
 					"@webpack-cli/utils",
 					"@webpack-cli/generate-loader",
-					"@webpack-cli/generate-plugin"
+					"@webpack-cli/generate-plugin",
+					"@webpack-cli/webpack-scaffold"
 				]
 			}
 		],

@@ -40,11 +40,6 @@ describe("utils", () => {
 			expect(utils.createExternalFunction("js")).toMatchSnapshot();
 		});
 	});
-	describe("createCommonsChunkPlugin", () => {
-		it("should stringify an commonChunksPlugin", () => {
-			expect(utils.createCommonsChunkPlugin("vendor")).toMatchSnapshot();
-		});
-	});
 	describe("createRequire", () => {
 		it("should stringify an require statement", () => {
 			expect(utils.createRequire("webpack")).toMatchSnapshot();

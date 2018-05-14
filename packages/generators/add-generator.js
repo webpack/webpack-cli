@@ -1,9 +1,9 @@
 const Generator = require("yeoman-generator");
 const glob = require("glob-all");
 const path = require("path");
-const Confirm = require("webpack-addons").Confirm;
-const List = require("webpack-addons").List;
-const Input = require("webpack-addons").Input;
+const Confirm = require("@webpack-cli/webpack-scaffold").Confirm;
+const List = require("@webpack-cli/webpack-scaffold").List;
+const Input = require("@webpack-cli/webpack-scaffold").Input;
 
 const webpackSchema = require("webpack/schemas/WebpackOptions");
 const webpackDevServerSchema = require("webpack-dev-server/lib/optionsSchema.json");

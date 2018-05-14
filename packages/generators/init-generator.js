@@ -4,9 +4,9 @@ const Generator = require("yeoman-generator");
 const chalk = require("chalk");
 const logSymbols = require("log-symbols");
 
-const Input = require("webpack-addons").Input;
-const Confirm = require("webpack-addons").Confirm;
-const List = require("webpack-addons").List;
+const Input = require("@webpack-cli/webpack-scaffold").Input;
+const Confirm = require("@webpack-cli/webpack-scaffold").Confirm;
+const List = require("@webpack-cli/webpack-scaffold").List;
 
 const getPackageManager = require("@webpack-cli/utils/package-manager")
 	.getPackageManager;

@@ -4,7 +4,7 @@ const isLocalPath = require("./is-local-path");
 const npmExists = require("./npm-exists");
 const resolvePackages = require("./resolve-packages").resolvePackages;
 
-const WEBPACK_ADDON_PREFIX = "webpack-addons";
+const WEBPACK_ADDON_PREFIX = "webpack-scaffold";
 
 /**
  *

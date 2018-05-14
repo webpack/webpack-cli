@@ -4,7 +4,7 @@ const inquirer = require("inquirer");
 const path = require("path");
 const chalk = require("chalk");
 const spawn = require("cross-spawn");
-const List = require("webpack-addons").List;
+const List = require("@webpack-cli/webpack-scaffold").List;
 const processPromise = require("@webpack-cli/utils/resolve-packages")
 	.processPromise;
 

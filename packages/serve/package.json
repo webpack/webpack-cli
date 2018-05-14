@@ -10,6 +10,6 @@
     "chalk": "^2.4.1",
     "cross-spawn": "^6.0.5",
     "inquirer": "^5.2.0",
-    "webpack-addons": "^1.1.5"
+    "@webpack-cli/webpack-scaffold": "^0.0.1"
   }
 }

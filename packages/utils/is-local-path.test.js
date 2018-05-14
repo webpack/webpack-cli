@@ -15,7 +15,7 @@ describe("is-local-path", () => {
 	});
 
 	it("returns false for npm packages names", () => {
-		expect(isLocalPath("webpack-addons-ylvis")).toBe(false);
+		expect(isLocalPath("webpack-scaffold-ylvis")).toBe(false);
 	});
 
 	it("returns false for scoped npm package names", () => {

@@ -1,8 +1,6 @@
-# webpack-addons
+# webpack-scaffold
 
-[![Build Status](https://travis-ci.org/webpack-contrib/webpack-addons.svg?branch=master)](https://travis-ci.org/webpack-contrib/webpack-addons)
-
-This is the utility suite for creating a webpack `addon`. It contains utility functions to assist with inquirer prompting and scaffolding.
+This is the utility suite for creating a webpack `scaffold`. It contains utility functions to assist with inquirer prompting and scaffolding.
 
 # API
 
@@ -25,7 +23,7 @@ Param: `String`
 Generally used when dealing with an entry point as an arrow function.
 
 ```js
-const createArrowFunction = require('webpack-addons').createArrowFunction;
+const createArrowFunction = require('@webpack-cli/webpack-scaffold').createArrowFunction;
 
 this.configuration.myScaffold.webpackOptions.entry = createArrowFunction('app.js')
 // entry: () => 'app.js'
@@ -37,7 +35,7 @@ Param: `String`
 
 Used when creating a function that returns a single value.
 ```js
-const createRegularFunction = require('webpack-addons').createRegularFunction;
+const createRegularFunction = require('@webpack-cli/webpack-scaffold').createRegularFunction;
 
 this.configuration.myScaffold.webpackOptions.entry = createRegularFunction('app.js')
 // entry: function() { return 'app.js' }
@@ -49,7 +47,7 @@ Param: `Array` | `String`
 Used to create an dynamic entry point.
 
 ```js
-const createDynamicPromise = require('webpack-addons').createDynamicPromise;
+const createDynamicPromise = require('@webpack-cli/webpack-scaffold').createDynamicPromise;
 
 this.confguration.myScaffold.webpackOptions.entry = createDynamicPromise('app.js')
 // entry: () => new Promise((resolve) => resolve('app.js'))
@@ -65,7 +63,7 @@ Param: `String`
 Used to create an [assetFilterFunction](https://webpack.js.org/configuration/performance/#performance-assetfilter)
 
 ```js
-const createAssetFilterFunction = require('webpack-addons').createAssetFilterFunction;
+const createAssetFilterFunction = require('@webpack-cli/webpack-scaffold').createAssetFilterFunction;
 
 this.configuration.myScaffold.webpackOptions.performance.assetFilter = createAssetFilterFunction('js')
 // assetFilter: function (assetFilename) { return assetFilename.endsWith('.js'); }
@@ -78,7 +76,7 @@ Param: `String`
 Used to create an [general function from Externals](https://webpack.js.org/configuration/externals/#function)
 
 ```js
-const createExternalFunction = require('webpack-addons').createExternalFunction;
+const createExternalFunction = require('@webpack-cli/webpack-scaffold').createExternalFunction;
 
 this.configuration.myScaffold.webpackOptions.externals = [createExternalFunction('^yourregex$')]
 /*
@@ -92,24 +90,6 @@ externals: [
 
 */
 ```
-## createCommonsChunkPlugin
-
-Param: `String`
-
-Used to create a general [`CommonsChunkPlugin`](https://webpack.js.org/plugins/commons-chunk-plugin/).
-
-```js
-const createCommonsChunkPlugin = require('webpack-addons').createCommonsChunkPlugin;
-
-this.configuration.myScaffold.webpackOptions.plugins = [createCommonsChunkPlugin('vendor')]
-/*
-plugins: [
- new webpack.optimize.CommonsChunkPlugin({
-    name: 'vendor',
-    filename: 'vendor-[hash].min.js',
-  })
-*/
-```
 
 ## createRequire
 
@@ -118,7 +98,7 @@ Param: `String`
 Used to create a module in `topScope`
 
 ```js
-const createRequire = require('webpack-addons').createRequire;
+const createRequire = require('@webpack-cli/webpack-scaffold').createRequire;
 
 this.configuration.myScaffold.topScope = [createRequire('webpack')]
 // const webpack = require('webpack')

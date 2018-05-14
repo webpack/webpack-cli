@@ -1,6 +1,6 @@
 "use strict";
 
-const InputValidate = require("webpack-addons").InputValidate;
+const InputValidate = require("@webpack-cli/webpack-scaffold").InputValidate;
 const validate = require("./validate");
 
 /**
