@@ -16,6 +16,9 @@ matrix:
       node_js: "stable"
       env: JOB_PART=integration
     - os: linux
+      node_js: "10"
+      env: JOB_PART=integration
+    - os: linux
       node_js: "8"
       env: JOB_PART=integration
     - os: linux
@@ -38,10 +41,12 @@ before_install:
   - DISPLAY=":0.0" SSH_ASKPASS="/tmp/askpass" setsid ssh-add /tmp/git_deploy_key </dev/null
 
   - '[[ $(node -v) =~ ^v9.*$ ]] || npm install -g npm@latest' # skipped when using node 9
-  - npm install -g greenkeeper-lockfile@1
+
+install:
   - npm ci
   - npm install -g codecov
   - npm install -g eslint
+  - npm install -g greenkeeper-lockfile@1
 
 before_script: greenkeeper-lockfile-update
 after_script: greenkeeper-lockfile-upload
