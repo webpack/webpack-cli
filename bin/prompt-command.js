@@ -1,25 +1,5 @@
 // based on https://github.com/webpack/webpack/blob/master/bin/webpack.js
-module.exports = function promptForInstallation(command, options) {
-	const cp = require("child_process");
-	return new Promise((resolve, reject) => {
-		const executedCommand = cp.spawn(command, options, {
-			stdio: "inherit",
-			shell: true
-		});
-
-		executedCommand.on("error", error => {
-			reject(error);
-		});
-
-		executedCommand.on("exit", code => {
-			if (code === 0) {
-				resolve(true);
-			} else {
-				reject();
-			}
-		});
-	});
-}
+module.exports = function promptForInstallation(package, ...args) {
 
 let packageIsInstalled = false;
 try {
@@ -44,9 +24,9 @@ if (!packageIsInstalled) {
 
 	const commandToBeRun = `${packageManager} ${options.join(" ")}`;
 
-	const question = `Would you like to install ${packageIsInstalled}? (That will run ${commandToBeRun}) (yes/NO)`;
+	const question = `Would you like to install ${package}? (That will run ${commandToBeRun}) (yes/NO)`;
 
-	console.error(`The CLI moved into a separate package: @webpack-cli/${package}`);
+	console.error(`The command moved into a separate package: @webpack-cli/${package}`);
 	const questionInterface = readLine.createInterface({
 		input: process.stdin,
 		output: process.stdout
@@ -59,7 +39,7 @@ if (!packageIsInstalled) {
 			case "1": {
 				runCommand(packageManager, options)
 					.then(result => {
-						return require(`@webpack-cli/${package}`); //eslint-disable-line
+						return require(`@webpack-cli/${package}`)(...args); //eslint-disable-line
 					})
 					.catch(error => {
 						console.error(error);
@@ -69,7 +49,7 @@ if (!packageIsInstalled) {
 			}
 			default: {
 				console.error(
-					"It needs to be installed alongside webpack to use the CLI"
+					"It needs to be installed alongside webpack CLI to use the command"
 				);
 				process.exitCode = 1;
 				break;
@@ -77,5 +57,6 @@ if (!packageIsInstalled) {
 		}
 	});
 } else {
-	require(package); // eslint-disable-line
+	require(package)(...args); // eslint-disable-line
+}
 }
