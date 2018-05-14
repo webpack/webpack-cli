@@ -1,3 +1,27 @@
+ <a name="2.0.14"></a>
+# 2.0.14 (2018-04-05)
+[Full Changelog](https://github.com/webpack/webpack-cli/compare/2.0.13...2.0.14)
+
+## New Features
+
+* use npm ci for tests (#367) ([#368](https://github.com/webpack/webpack-cli/pull/368))
+* add envinfo as `webpack-cli info` command ([51ab19f](https://github.com/webpack/webpack-cli/commit/51ab19f))
+* --entry should override config.entry (#155) ([#358](https://github.com/webpack/webpack-cli/pull/358))
+
+## Chore
+
+* coverage: added reporters inside package.json ([c7d80fb](https://github.com/webpack/webpack-cli/commit/c7d80fb))
+* upgrade: webpack 4.2 and other dependencies ([#362](https://github.com/webpack/webpack-cli/pull/362))
+* version: v.2.0.13 ([2222f1d](https://github.com/webpack/webpack-cli/commit/2222f1d))
+
+## CLI
+
+* refactor: improve folder structure ([#371](https://github.com/webpack/webpack-cli/pull/371))
+
+## Fix
+
+* loader,plugin: fix generators path bug ([b4bfafb](https://github.com/webpack/webpack-cli/commit/b4bfafb))
+
  <a name="2.0.13"></a>
 # 2.0.13 (2018-03-22)
 [Full Changelog](https://github.com/webpack/webpack-cli/compare/2.0.12...2.0.13)

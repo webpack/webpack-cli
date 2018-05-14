@@ -17,23 +17,27 @@ module.exports = {
  *
  */`;
 	},
-	commonsChunk: _ => {
+	splitChunks: _ => {
 		return `/*
- * We've enabled commonsChunkPlugin for you. This allows your app to
- * load faster and it splits the modules you provided as entries across
- * different bundles!
+ * SplitChunksPlugin is enabled by default and replaced
+ * deprecated CommonsChunkPlugin. It automatically identifies modules which
+ * should be splitted of chunk by heuristics using module duplication count and
+ * module category (i. e. node_modules). And splits the chunks…
  *
- * https://webpack.js.org/plugins/commons-chunk-plugin/
+ * It is safe to remove "splitChunks" from the generated configuration
+ * and was added as an educational example.
+ *
+ * https://webpack.js.org/plugins/split-chunks-plugin/
  *
  */`;
 	},
 	cssPlugin: _ => {
 		return `/*
- * We've enabled ExtractTextPlugin for you. This allows your app to
+ * We've enabled MiniCssExtractPlugin for you. This allows your app to
  * use css modules that will be moved into a separate CSS file instead of inside
  * one of your module entries!
  *
- * https://github.com/webpack-contrib/extract-text-webpack-plugin
+ * https://github.com/webpack-contrib/mini-css-extract-plugin
  *
  */`;
 	},

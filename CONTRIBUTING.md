@@ -121,6 +121,17 @@ format that includes a **type** and a **subject**:
 <footer>
 ```
 
+This is the list of *type* of commits that we accept: 
+* ast
+* chore
+* cli
+* docs
+* feat
+* fix
+* misc
+* tests
+* break
+
 The **header** is mandatory.
 
 Any line of the commit message cannot be longer 100 characters. This allows the message to be easier

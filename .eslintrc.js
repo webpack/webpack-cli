@@ -78,7 +78,13 @@ module.exports = {
 			{
 				"allowModules": [
 					"webpack",
-					"webpack-dev-server"
+					"webpack-dev-server",
+					"@webpack-cli/generators",
+					"@webpack-cli/init",
+					"@webpack-cli/migrate",
+					"@webpack-cli/utils",
+					"@webpack-cli/generate-loader",
+					"@webpack-cli/generate-plugin"
 				]
 			}
 		],

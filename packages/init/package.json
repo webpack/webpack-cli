@@ -1,16 +1,11 @@
 {
-    "name": "webpack-cli-init",
-    "version":"2.0.12",
-    "description": "CLI for webpack & friends",
-    "license": "MIT",
-    "engines": {
-      "node": ">=6.11.5"
-    },
-    "dependencies": {
-      "chalk": "^2.3.2",
-      "jscodeshift": "^0.5.0",
-      "p-each-series": "^1.0.0",
-      "prettier": "^1.5.3",
-      "webpack-cli-utils": "2.0.12"
-    }
+  "name": "@webpack-cli/init",
+  "version": "0.0.1",
+  "description": "init command for webpack-cli",
+  "main": "index.js",
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@webpack-cli/utils": "0.0.1"  
   }
+}

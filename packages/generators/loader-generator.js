@@ -25,6 +25,7 @@ function makeLoaderName(name) {
  * @class LoaderGenerator
  * @extends {Generator}
  */
+
 const LoaderGenerator = webpackGenerator(
 	[
 		{
@@ -36,7 +37,7 @@ const LoaderGenerator = webpackGenerator(
 			validate: str => str.length > 0
 		}
 	],
-	path.join(__dirname, "templates"),
+	path.resolve(__dirname, "..", "generate-loader"),
 	[
 		"src/cjs.js.tpl",
 		"test/test-utils.js.tpl",
@@ -48,7 +49,9 @@ const LoaderGenerator = webpackGenerator(
 		"examples/simple/src/lazy-module.js.tpl",
 		"examples/simple/src/static-esm-module.js.tpl"
 	],
-	["src/_index.js.tpl"],
+	[
+		"src/_index.js.tpl"
+	],
 	gen => ({ name: gen.props.name })
 );
 

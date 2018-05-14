@@ -4,9 +4,6 @@ const Generator = require("yeoman-generator");
 const chalk = require("chalk");
 const logSymbols = require("log-symbols");
 
-const createCommonsChunkPlugin = require("webpack-addons")
-	.createCommonsChunkPlugin;
-
 const Input = require("webpack-addons").Input;
 const Confirm = require("webpack-addons").Confirm;
 const List = require("webpack-addons").List;
@@ -31,11 +28,7 @@ module.exports = class InitGenerator extends Generator {
 	constructor(args, opts) {
 		super(args, opts);
 		this.isProd = false;
-		this.dependencies = [
-			"webpack",
-			"webpack-cli",
-			"uglifyjs-webpack-plugin"
-		];
+		this.dependencies = ["webpack", "webpack-cli", "uglifyjs-webpack-plugin"];
 		this.configuration = {
 			config: {
 				webpackOptions: {},
@@ -47,7 +40,6 @@ module.exports = class InitGenerator extends Generator {
 	prompting() {
 		const done = this.async();
 		const self = this;
-		let oneOrMoreEntries;
 		let regExpForStyles;
 		let ExtractUseProps;
 		let outputPath = "dist";
@@ -87,9 +79,9 @@ module.exports = class InitGenerator extends Generator {
 				return entryQuestions(self, entryTypeAnswer);
 			})
 			.then(entryOptions => {
-				this.configuration.config.webpackOptions.entry = entryOptions;
-				oneOrMoreEntries = Object.keys(entryOptions);
-
+				if (entryOptions !== "\"\"") {
+					this.configuration.config.webpackOptions.entry = entryOptions;
+				}
 				return this.prompt([
 					Input(
 						"outputType",
@@ -98,15 +90,16 @@ module.exports = class InitGenerator extends Generator {
 				]);
 			})
 			.then(outputTypeAnswer => {
-				if (!this.configuration.config.webpackOptions.entry.length) {
-					this.configuration.config.topScope.push(tooltip.commonsChunk());
+				// As entry is not required anymore and we dont set it to be an empty string or """""
+				// it can be undefined so falsy check is enough (vs entry.length);
+				if (!this.configuration.config.webpackOptions.entry) {
 					this.configuration.config.webpackOptions.output = {
 						filename: "'[name].[chunkhash].js'",
 						chunkFilename: "'[name].[chunkhash].js'"
 					};
 				} else {
 					this.configuration.config.webpackOptions.output = {
-						filename: "'[name].bundle.js'"
+						filename: "'[name].[chunkhash].js'"
 					};
 				}
 				if (outputTypeAnswer["outputType"].length) {
@@ -119,7 +112,12 @@ module.exports = class InitGenerator extends Generator {
 					Confirm("prodConfirm", "Are you going to use this in production?")
 				]);
 			})
-			.then(prodConfirmAnswer => this.isProd = prodConfirmAnswer["prodConfirm"])
+			.then(prodConfirmAnswer => {
+				this.isProd = prodConfirmAnswer["prodConfirm"];
+				this.configuration.config.webpackOptions.mode = this.isProd
+					? "'production'"
+					: "'development'";
+			})
 			.then(() => {
 				return this.prompt([
 					Confirm("babelConfirm", "Will you be using ES2015?")
@@ -149,9 +147,7 @@ module.exports = class InitGenerator extends Generator {
 				]);
 			})
 			.then(stylingTypeAnswer => {
-				if (!this.isProd) {
-					ExtractUseProps = [];
-				}
+				ExtractUseProps = [];
 				switch (stylingTypeAnswer["stylingType"]) {
 					case "SASS":
 						this.dependencies.push(
@@ -162,20 +158,20 @@ module.exports = class InitGenerator extends Generator {
 						);
 						regExpForStyles = `${new RegExp(/\.(scss|css)$/)}`;
 						if (this.isProd) {
-							ExtractUseProps = `
-								use: [{
-									loader: "css-loader",
+							ExtractUseProps.push(
+								{
+									loader: "'css-loader'",
 									options: {
 										sourceMap: true
 									}
-								}, {
-									loader: "sass-loader",
+								},
+								{
+									loader: "'sass-loader'",
 									options: {
 										sourceMap: true
 									}
-								}],
-								fallback: "style-loader"
-							`;
+								}
+							);
 						} else {
 							ExtractUseProps.push(
 								{
@@ -199,20 +195,20 @@ module.exports = class InitGenerator extends Generator {
 							"css-loader"
 						);
 						if (this.isProd) {
-							ExtractUseProps = `
-								use: [{
-									loader: "css-loader",
+							ExtractUseProps.push(
+								{
+									loader: "'css-loader'",
 									options: {
 										sourceMap: true
 									}
-								}, {
-									loader: "less-loader",
+								},
+								{
+									loader: "'less-loader'",
 									options: {
 										sourceMap: true
 									}
-								}],
-								fallback: "style-loader"
-							`;
+								}
+							);
 						} else {
 							ExtractUseProps.push(
 								{
@@ -246,28 +242,26 @@ module.exports = class InitGenerator extends Generator {
 						);
 						regExpForStyles = `${new RegExp(/\.css$/)}`;
 						if (this.isProd) {
-							ExtractUseProps = `
-								use: [{
-									loader: "style-loader"
-								},{
-									loader: "css-loader",
+							ExtractUseProps.push(
+								{
+									loader: "'css-loader'",
 									options: {
 										sourceMap: true,
 										importLoaders: 1
 									}
-								}, {
-									loader: "postcss-loader",
+								},
+								{
+									loader: "'postcss-loader'",
 									options: {
-										plugins: function () {
+										plugins: `function () {
 											return [
 												precss,
 												autoprefixer
 											];
-										}
+										}`
 									}
-								}],
-								fallback: "style-loader"
-							`;
+								}
+							);
 						} else {
 							ExtractUseProps.push(
 								{
@@ -298,15 +292,12 @@ module.exports = class InitGenerator extends Generator {
 						this.dependencies.push("style-loader", "css-loader");
 						regExpForStyles = `${new RegExp(/\.css$/)}`;
 						if (this.isProd) {
-							ExtractUseProps = `
-								use: [{
-									loader: "css-loader",
-									options: {
-										sourceMap: true
-									}
-								}],
-								fallback: "style-loader"
-							`;
+							ExtractUseProps.push({
+								loader: "'css-loader'",
+								options: {
+									sourceMap: true
+								}
+							});
 						} else {
 							ExtractUseProps.push(
 								{
@@ -326,42 +317,48 @@ module.exports = class InitGenerator extends Generator {
 				}
 			})
 			.then(() => {
-				// Ask if the user wants to use extractPlugin
-				return this.prompt([
-					Input(
-						"extractPlugin",
-						"If you want to bundle your CSS files, what will you name the bundle? (press enter to skip)"
-					)
-				]);
+				if (this.isProd) {
+					// Ask if the user wants to use extractPlugin
+					return this.prompt([
+						Input(
+							"extractPlugin",
+							"If you want to bundle your CSS files, what will you name the bundle? (press enter to skip)"
+						)
+					]);
+				}
 			})
 			.then(extractPluginAnswer => {
-				const cssBundleName = extractPluginAnswer["extractPlugin"];
 				if (regExpForStyles) {
 					if (this.isProd) {
+						const cssBundleName = extractPluginAnswer["extractPlugin"];
 						this.configuration.config.topScope.push(tooltip.cssPlugin());
-						// TODO: Replace with regular version once v.4 is out
-						this.dependencies.push("extract-text-webpack-plugin@next");
+						this.dependencies.push("mini-css-extract-plugin");
 
 						if (cssBundleName.length !== 0) {
 							this.configuration.config.webpackOptions.plugins.push(
-								`new ExtractTextPlugin('${cssBundleName}.[contentHash].css')`
+								// TODO: use [contenthash] after it is supported
+								`new MiniCssExtractPlugin({ filename:'${cssBundleName}.[chunkhash].css' })`
 							);
 						} else {
 							this.configuration.config.webpackOptions.plugins.push(
-								"new ExtractTextPlugin('style.css')"
+								"new MiniCssExtractPlugin({ filename:'style.css' })"
 							);
 						}
 
+						ExtractUseProps.unshift({
+							loader: "MiniCssExtractPlugin.loader"
+						});
+
 						const moduleRulesObj = {
 							test: regExpForStyles,
-							use: `ExtractTextPlugin.extract({ ${ExtractUseProps} })`
+							use: ExtractUseProps
 						};
 
 						this.configuration.config.webpackOptions.module.rules.push(
 							moduleRulesObj
 						);
 						this.configuration.config.topScope.push(
-							"const ExtractTextPlugin = require('extract-text-webpack-plugin');",
+							"const MiniCssExtractPlugin = require('mini-css-extract-plugin');",
 							"\n"
 						);
 					} else {
@@ -375,19 +372,27 @@ module.exports = class InitGenerator extends Generator {
 						);
 					}
 				}
-			})
-			.then(() => {
-				if (this.configuration.config.webpackOptions.entry.length === 0) {
-					oneOrMoreEntries.forEach(prop => {
-						this.configuration.config.webpackOptions.plugins.push(
-							createCommonsChunkPlugin(prop)
-						);
-					});
-				}
+				// add splitChunks options for transparency
+				// defaults coming from: https://webpack.js.org/plugins/split-chunks-plugin/#optimization-splitchunks
+				this.configuration.config.topScope.push(tooltip.splitChunks());
+				this.configuration.config.webpackOptions.optimization = {
+					splitChunks: {
+						chunks: "'async'",
+						minSize: 30000,
+						minChunks: 1,
+						// for production name is recommended to be off
+						name: !this.isProd,
+						cacheGroups: {
+							vendors: {
+								test: "/[\\\\/]node_modules[\\\\/]/",
+								priority: -10
+							}
+						}
+					}
+				};
 				done();
 			});
 	}
-
 	installPlugins() {
 		const asyncNamePrompt = this.async();
 		const defaultName = this.isProd ? "prod" : "config";
@@ -398,14 +403,15 @@ module.exports = class InitGenerator extends Generator {
 			)
 		])
 			.then(nameTypeAnswer => {
-				this.configuration.config.configName = nameTypeAnswer["nameType"].length ?
-					nameTypeAnswer["nameType"] : defaultName;
+				this.configuration.config.configName = nameTypeAnswer["nameType"].length
+					? nameTypeAnswer["nameType"]
+					: defaultName;
 			})
 			.then(() => {
 				asyncNamePrompt();
-				this.runInstall(getPackageManager(), this.dependencies, {
-					"save-dev": true
-				});
+				const packager = getPackageManager();
+				const opts = packager === "yarn" ? { dev: true } : { "save-dev": true };
+				this.runInstall(packager, this.dependencies, opts);
 			});
 	}
 

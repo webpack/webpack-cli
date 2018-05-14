@@ -1,0 +1,8 @@
+{
+  "name": "@webpack-cli/add",
+  "version": "0.0.1",
+  "description": "A scaffold for adding new properties",
+  "main": "index.js",
+  "author": "",
+  "license": "MIT"
+}

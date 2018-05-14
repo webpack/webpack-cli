@@ -7,10 +7,11 @@ const Input = require("webpack-addons").Input;
 
 const webpackSchema = require("webpack/schemas/WebpackOptions");
 const webpackDevServerSchema = require("webpack-dev-server/lib/optionsSchema.json");
-const PROP_TYPES = require("webpack-cli-utils/prop-types");
+const PROP_TYPES = require("@webpack-utils/utils/prop-types");
 
-const getPackageManager = require("webpack-cli-utils/package-manager").getPackageManager;
-const npmExists = require("webpack-cli-utils/npm-exists");
+const getPackageManager = require("@webpack-cli/utils/package-manager")
+	.getPackageManager;
+const npmExists = require("@webpack-cli/utils/npm-exists");
 const entryQuestions = require("./utils/entry");
 
 /**
@@ -18,11 +19,11 @@ const entryQuestions = require("./utils/entry");
  * Replaces the string with a substring at the given index
  * https://gist.github.com/efenacigiray/9367920
  *
- * @param {String} string - string to be modified
- * @param {Number} index - index to replace from
- * @param {String} replace - string to replace starting from index
+ * @param	{String} string - string to be modified
+ * @param	{Number} index - index to replace from
+ * @param	{String} replace - string to replace starting from index
  *
- * @returns {String} string - The newly mutated string
+ * @returns	{String} string - The newly mutated string
  *
  */
 function replaceAt(string, index, replace) {
@@ -33,10 +34,10 @@ function replaceAt(string, index, replace) {
  *
  * Checks if the given array has a given property
  *
- * @param {Array} arr - array to check
- * @param {String} prop - property to check existence of
+ * @param	{Array} arr - array to check
+ * @param	{String} prop - property to check existence of
  *
- * @returns {Boolean} hasProp - Boolean indicating if the property
+ * @returns	{Boolean} hasProp - Boolean indicating if the property
  * is present
  */
 const traverseAndGetProperties = (arr, prop) => {
@@ -52,9 +53,9 @@ const traverseAndGetProperties = (arr, prop) => {
 /**
  *
  * Generator for adding properties
- * @class AddGenerator
- * @extends Generator
- * @returns {Void} After execution, transforms are triggered
+ * @class	AddGenerator
+ * @extends	Generator
+ * @returns	{Void} After execution, transforms are triggered
  *
  */
 
@@ -65,7 +66,9 @@ module.exports = class AddGenerator extends Generator {
 		this.configuration = {
 			config: {
 				webpackOptions: {},
-				topScope: ["const webpack = require('webpack')"]
+				topScope: [
+					"const webpack = require('webpack')"
+				]
 			}
 		};
 	}
@@ -75,7 +78,8 @@ module.exports = class AddGenerator extends Generator {
 		let action;
 		let self = this;
 		let manualOrListInput = action =>
-			Input("actionAnswer", `what do you want to add to ${action}?`);
+			Input("actionAnswer", `What do you want to add to ${action}?`);
+
 		// first index indicates if it has a deep prop, 2nd indicates what kind of
 		let isDeepProp = [false, false];
 
@@ -104,7 +108,7 @@ module.exports = class AddGenerator extends Generator {
 							return entryQuestions(self, entryTypeAnswer);
 						})
 						.then(entryOptions => {
-							this.configuration.config.webpackOptions[action] = entryOptions;
+							this.configuration.config.webpackOptions.entry = entryOptions;
 							this.configuration.config.item = action;
 						});
 				}
@@ -219,7 +223,7 @@ module.exports = class AddGenerator extends Generator {
 						}
 						manualOrListInput = List(
 							"actionAnswer",
-							`what do you want to add to ${action}?`,
+							`What do you want to add to ${action}?`,
 							Object.keys(defOrPropDescription)
 						);
 						// We know we're gonna append some deep prop like module.rule
@@ -234,7 +238,7 @@ module.exports = class AddGenerator extends Generator {
 						);
 						manualOrListInput = List(
 							"actionAnswer",
-							`what do you want to add to ${action}?`,
+							`What do you want to add to ${action}?`,
 							Object.keys(webpackDevserverSchemaProp.properties)
 						);
 						// We know we are in a devServer.prop scenario
@@ -395,18 +399,18 @@ module.exports = class AddGenerator extends Generator {
 						// Either we are adding directly at the property, else we're in a prop.theOne scenario
 						const actionMessage =
 							isDeepProp[1] === "other"
-								? `what do you want the key on ${action} to be? (press enter if you want it directly as a value on the property)`
-								: `what do you want the value of ${isDeepProp[1]} to be?`;
+								? `What do you want the key on ${action} to be? (press enter if you want it directly as a value on the property)`
+								: `What do you want the value of ${isDeepProp[1]} to be?`;
 
 						this.prompt([Input("deepProp", actionMessage)]).then(
 							deepPropAns => {
 								// The other option needs to be validated of either being empty or not
 								if (isDeepProp[1] === "other") {
 									let othersDeepPropKey = deepPropAns.deepProp
-										? `what do you want the value of ${
+										? `What do you want the value of ${
 											deepPropAns.deepProp
 										  } to be?` // eslint-disable-line
-										: `what do you want to be the value of ${action} to be?`;
+										: `What do you want to be the value of ${action} to be?`;
 									// Push the answer to the array we have created, so we can use it later
 									isDeepProp.push(deepPropAns.deepProp);
 									this.prompt([Input("deepProp", othersDeepPropKey)]).then(
@@ -446,5 +450,9 @@ module.exports = class AddGenerator extends Generator {
 					}
 				}
 			});
+	}
+
+	writing() {
+		this.config.set("configuration", this.configuration);
 	}
 };
