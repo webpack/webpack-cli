@@ -1,5 +1,5 @@
 {
-  "name": "webpack-scaffold",
+  "name": "@webpack-cli/webpack-scaffold",
   "version": "0.0.1",
   "description": "Utility files for webpack-scaffold",
   "main": "index.js",
