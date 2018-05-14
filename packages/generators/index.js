@@ -1,10 +1,10 @@
-import addGenerator from "./add-generator";
-import initGenerator from "./init-generator";
-import loaderGenerator from "./loader-generator";
-import pluginGenerator from "./plugin-generator";
-import removeGenerator from "./remove-generator";
-import updateGenerator from "./update-generator";
-import addonGenerator from "./addon-generator";
+const addGenerator = require("./add-generator");
+const initGenerator = require("./init-generator");
+const loaderGenerator = require("./loader-generator");
+const pluginGenerator = require("./plugin-generator");
+const removeGenerator = require("./remove-generator");
+const updateGenerator = require("./update-generator");
+const addonGenerator = require("./addon-generator");
 
 module.exports = {
 	addGenerator,
@@ -13,5 +13,5 @@ module.exports = {
 	pluginGenerator,
 	removeGenerator,
 	updateGenerator,
-	webpackGenerator
+	addonGenerator
 };

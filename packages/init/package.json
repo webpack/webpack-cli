@@ -7,6 +7,7 @@
   "license": "MIT",
   "dependencies": {
     "@webpack-cli/utils": "0.0.1",
+    "chalk": "^2.4.1",
     "jscodeshift": "^0.5.0",
     "p-each-series": "^1.0.0"
   }

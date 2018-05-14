@@ -4,5 +4,8 @@
   "description": "Outputs env info for the ease of debug",
   "main": "index.js",
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "envinfo": "^5.6.0"
+  }
 }

@@ -105,7 +105,7 @@
     "yargs": "^11.1.0"
   },
   "peerDependencies": {
-    "webpack": "^4.0.0"
+    "webpack": "^4.x.x"
   },
   "devDependencies": {
     "@commitlint/cli": "^6.1.3",
