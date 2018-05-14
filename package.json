@@ -8,9 +8,9 @@
     "url": "https://github.com/webpack/webpack-cli.git"
   },
   "bin": {
-    "webpack-cli": "./cli.js"
+    "webpack-cli": "./bin/cli.js"
   },
-  "main": "./cli.js",
+  "main": "./bin/cli.js",
   "engines": {
     "node": ">=6.11.5"
   },
@@ -25,9 +25,9 @@
     "packages/*"
   ],
   "scripts": {
-    "lint": "eslint ./utils/*.js ./cli.js ./packages/**/*.js ./test/**/*.js",
+    "lint": "eslint ./bin/*.js  ./packages/**/*.js ./test/**/*.js",
     "format": "prettier-eslint ./utils/**/*.js ./cli.js ./test/**/*.js ./packages/**/*.js --write",
-    "lint:codeOnly": "eslint \"cli.js\" \"{utils}/**/!(__testfixtures__)/*.js\" \"{utils}/**.js\"",
+    "lint:codeOnly": "eslint \"{utils}/**/!(__testfixtures__)/*.js\" \"{utils}/**.js\"",
     "precommit": "lint-staged",
     "pretest": "npm run lint",
     "test": "lerna run test",

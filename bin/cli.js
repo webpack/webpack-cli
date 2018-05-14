@@ -15,7 +15,7 @@
 	}
 
 	require("v8-compile-cache");
-	const ErrorHelpers = require("./utils/errorHelpers");
+	const ErrorHelpers = require("./errorHelpers");
 
 	const NON_COMPILATION_ARGS = [
 		"init",
@@ -47,7 +47,7 @@
 	}
 
 	const yargs = require("yargs").usage(`webpack-cli ${
-		require("./package.json").version
+		require("../package.json").version
 	}
 
 Usage: webpack-cli [options]
@@ -57,7 +57,7 @@ Usage: webpack-cli [options]
 
 For more information, see https://webpack.js.org/api/cli/.`);
 
-	require("./utils/config-yargs")(yargs);
+	require("./config-yargs")(yargs);
 
 	const DISPLAY_GROUP = "Stats options:";
 	const BASIC_GROUP = "Basic options:";
@@ -237,7 +237,7 @@ For more information, see https://webpack.js.org/api/cli/.`);
 
 		let options;
 		try {
-			options = require("./utils/convert-argv")(argv);
+			options = require("./convert-argv")(argv);
 		} catch (err) {
 			if (err.name !== "ValidationError") {
 				throw err;
