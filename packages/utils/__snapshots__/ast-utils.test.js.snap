@@ -1,32 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`utils checkIfExistsAndAddValue should create new prop if none exist 1`] = `
-"
-			module.exports = {
-                entry: 'index.js',
-                externals: \\"React\\"
-            }
-			"
-`;
-
-exports[`utils checkIfExistsAndAddValue should override prop if it exists 1`] = `
-"
-			module.exports = {
-				entry: \\"app.js\\"
-			}
-			"
-`;
-
-exports[`utils createArrayWithChildren should add all children of an array to a new one with a supplied key 1`] = `"myVeryOwnKey: ['hello', world]"`;
-
-exports[`utils createArrayWithChildren should find an prop that matches key and create an array with it 1`] = `"react: ['bo']"`;
-
-exports[`utils createEmptyArrayProperty should create an array with no properties 1`] = `"its-lit: []"`;
-
-exports[`utils createExternalRegExp should create an regExp property that has been parsed by jscodeshift 1`] = `"\\"\\\\t\\""`;
-
-exports[`utils createFunctionWithArguments Should create a empty function with a name 1`] = `"ringoStar(\\"/* Add your arguments here */\\")"`;
-
 exports[`utils createIdentifierOrLiteral should create basic literal 1`] = `"'stringLiteral'"`;
 
 exports[`utils createIdentifierOrLiteral should create boolean 1`] = `"true"`;
@@ -34,8 +7,6 @@ exports[`utils createIdentifierOrLiteral should create boolean 1`] = `"true"`;
 exports[`utils createLiteral should create basic literal 1`] = `"\\"stringLiteral\\""`;
 
 exports[`utils createLiteral should create boolean 1`] = `"true"`;
-
-exports[`utils createObjectWithSuppliedProperty should create an object with a property supplied by us 1`] = `"its-lit: {}"`;
 
 exports[`utils createOrUpdatePluginByName should add an object as an argument 1`] = `
 "[new Plugin({
@@ -90,44 +61,20 @@ exports[`utils createProperty should create properties for non-literal keys 1`] 
 }"
 `;
 
+exports[`utils findPluginsArrayAndRemoveIfEmpty It should not remove plugins array, given an array with length greater than zero 1`] = `
+"
+				const a = {
+					plugins: [
+						new MyCustomPlugin()
+					]
+				}
+			"
+`;
+
+exports[`utils findPluginsArrayAndRemoveIfEmpty should remove plugins property 1`] = `
+"
+				const a = {}
+			"
+`;
+
 exports[`utils getRequire should create a require statement 1`] = `"const filesys = require(\\"fs\\");"`;
-
-exports[`utils isAssignment should allow custom transform functions instead of singularProperty 1`] = `
-"module.exports = {
-  plugins: [one, two, three]
-}"
-`;
-
-exports[`utils isAssignment should invoke a callback if parent type is AssignmentExpression 1`] = `
-"module.exports = {
-  context: Heyho
-}"
-`;
-
-exports[`utils loopThroughObjects Should use recursion and add elements to a node 1`] = `
-"module.exports = {
-  hello: {
-    webpack: cli
-  }
-}"
-`;
-
-exports[`utils pushCreateProperty should create an object or property and push the value to a node 1`] = `
-"module.exports = {
-				pushMe: {
-                    just: pushed
-                }
-			}"
-`;
-
-exports[`utils pushObjectKeys should push object to an node using Object.keys 1`] = `
-"module.exports = {
-				pushMe: {
-                    hello: {
-                        world: {
-                            its: 'great'
-                        }
-                    }
-                }
-			}"
-`;

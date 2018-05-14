@@ -66,9 +66,7 @@ module.exports = class AddGenerator extends Generator {
 		this.configuration = {
 			config: {
 				webpackOptions: {},
-				topScope: [
-					"const webpack = require('webpack')"
-				]
+				topScope: ["const webpack = require('webpack')"]
 			}
 		};
 	}
