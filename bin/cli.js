@@ -41,9 +41,7 @@
 	});
 
 	if (NON_COMPILATION_CMD) {
-		// TODO: prompt if package isn't installed, run installed package otherwise.
-		//return require(`./commands/${NON_COMPILATION_CMD}`)(...process.argv);
-		return;
+		return require('./prompt-command')(NON_COMPILATION_CMD, ...process.argv);
 	}
 
 	const yargs = require("yargs").usage(`webpack-cli ${
