@@ -41,7 +41,7 @@
 	});
 
 	if (NON_COMPILATION_CMD) {
-		return require('./prompt-command')(NON_COMPILATION_CMD, ...process.argv);
+		return require("./prompt-command")(NON_COMPILATION_CMD, ...process.argv);
 	}
 
 	const yargs = require("yargs").usage(`webpack-cli ${
