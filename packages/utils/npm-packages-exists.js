@@ -4,7 +4,7 @@ const isLocalPath = require("./is-local-path");
 const npmExists = require("./npm-exists");
 const resolvePackages = require("./resolve-packages").resolvePackages;
 
-const WEBPACK_ADDON_PREFIX = "webpack-scaffold";
+const WEBPACK_SCAFFOLD_PREFIX = "webpack-scaffold";
 
 /**
  *
@@ -33,13 +33,13 @@ module.exports = function npmPackagesExists(pkg) {
 
 		// The addon is on npm; validate name and existence
 		if (
-			addon.length <= WEBPACK_ADDON_PREFIX.length ||
-			addon.slice(0, WEBPACK_ADDON_PREFIX.length) !== WEBPACK_ADDON_PREFIX
+			addon.length <= WEBPACK_SCAFFOLD_PREFIX.length ||
+			addon.slice(0, WEBPACK_SCAFFOLD_PREFIX.length) !== WEBPACK_SCAFFOLD_PREFIX
 		) {
 			throw new TypeError(
 				chalk.bold(`${addon} isn't a valid name.\n`) +
 					chalk.red(
-						`\nIt should be prefixed with '${WEBPACK_ADDON_PREFIX}', but have different suffix.\n`
+						`\nIt should be prefixed with '${WEBPACK_SCAFFOLD_PREFIX}', but have different suffix.\n`
 					)
 			);
 		}
