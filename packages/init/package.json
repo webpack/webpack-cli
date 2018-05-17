@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/init",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "init command for webpack-cli",
   "main": "index.js",
   "author": "",
