@@ -27,7 +27,7 @@
   "scripts": {
     "lint": "eslint ./bin/*.js  ./packages/**/*.js ./test/**/*.js",
     "format": "prettier-eslint ./bin/*.js ./test/**/*.js ./packages/**/*.js --write",
-    "lint:codeOnly": "eslint \"{utils}/**/!(__testfixtures__)/*.js\" \"{utils}/**.js\"",
+    "lint:codeOnly": "eslint \"{bin}/**/!(__testfixtures__)/*.js\" \"{bin}/**.js\"",
     "precommit": "lint-staged",
     "pretest": "npm run lint",
     "test": "lerna run test",
