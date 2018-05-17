@@ -29,9 +29,10 @@ const runCommand = (command, args) => {
 };
 
 module.exports = function promptForInstallation(packages, ...args) {
+	const nameOfPackage = "@webpack-cli/" + packages;
 	let packageIsInstalled = false;
 	try {
-		require.resolve(packages);
+		require.resolve(nameOfPackage);
 		packageIsInstalled = true;
 	} catch (err) {
 		packageIsInstalled = false;
@@ -44,7 +45,6 @@ module.exports = function promptForInstallation(packages, ...args) {
 		const isYarn = fs.existsSync(path.resolve(process.cwd(), "yarn.lock"));
 
 		const packageManager = isYarn ? "yarn" : "npm";
-		const nameOfPackage = "@webpack-cli/" + packages;
 		const options = ["install", "-D", nameOfPackage];
 
 		if (isYarn) {
@@ -74,7 +74,7 @@ module.exports = function promptForInstallation(packages, ...args) {
 							if (packages === "serve") {
 								return require(`@webpack-cli/${packages}`).serve();
 							}
-							return require(`@webpack-cli/${packages}`)(...args); //eslint-disable-line
+							return require(nameOfPackage)(...args); //eslint-disable-line
 						})
 						.catch(error => {
 							console.error(error);
@@ -92,6 +92,6 @@ module.exports = function promptForInstallation(packages, ...args) {
 			}
 		});
 	} else {
-		require(packages)(...args); // eslint-disable-line
+		require(nameOfPackage)(...args); // eslint-disable-line
 	}
 };
