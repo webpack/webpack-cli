@@ -31,13 +31,20 @@ const runCommand = (command, args) => {
 module.exports = function promptForInstallation(packages, ...args) {
 	const nameOfPackage = "@webpack-cli/" + packages;
 	let packageIsInstalled = false;
+	let pathForCmd;
 	try {
-		require.resolve(nameOfPackage);
+		const path = require("path");
+		pathForCmd = path.resolve(
+			process.cwd(),
+			"node_modules",
+			"@webpack-cli",
+			packages
+		);
+		require.resolve(pathForCmd);
 		packageIsInstalled = true;
 	} catch (err) {
 		packageIsInstalled = false;
 	}
-
 	if (!packageIsInstalled) {
 		const path = require("path");
 		const fs = require("fs");
@@ -71,10 +78,16 @@ module.exports = function promptForInstallation(packages, ...args) {
 					//eslint-disable-next-line
 					runCommand(packageManager, options)
 						.then(result => {
+							pathForCmd = path.resolve(
+								process.cwd(),
+								"node_modules",
+								"@webpack-cli",
+								packages
+							);
 							if (packages === "serve") {
-								return require(`@webpack-cli/${packages}`).serve();
+								return require(pathForCmd).serve();
 							}
-							return require(nameOfPackage)(...args); //eslint-disable-line
+							return require(pathForCmd)(...args); //eslint-disable-line
 						})
 						.catch(error => {
 							console.error(error);
@@ -92,6 +105,6 @@ module.exports = function promptForInstallation(packages, ...args) {
 			}
 		});
 	} else {
-		require(nameOfPackage)(...args); // eslint-disable-line
+		require(pathForCmd)(...args); // eslint-disable-line
 	}
 };
