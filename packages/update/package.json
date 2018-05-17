@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/update",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "",
   "main": "index.js",
   "keywords": [],
@@ -10,7 +10,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@webpack-cli/generators": "0.0.2",
-    "@webpack-cli/utils": "0.0.2"
+    "@webpack-cli/generators": "^0.0.3",
+    "@webpack-cli/utils": "^0.0.3"
   }
 }
