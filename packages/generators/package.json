@@ -7,6 +7,8 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@webpack-cli/utils": "^0.0.1",
+    "@webpack-cli/webpack-scaffold": "^0.0.1",
     "chalk": "^2.4.1",
     "glob-all": "^3.1.0",
     "lodash": "^4.17.10",
@@ -14,9 +16,7 @@
     "mkdirp": "^0.5.1",
     "webpack-addons": "^1.1.5",
     "webpack-dev-server": "^3.1.4",
-    "yeoman-generator": "^2.0.5",
-    "@webpack-cli/utils": "0.0.1",
-    "@webpack-cli/webpack-scaffold": "0.0.1"
+    "yeoman-generator": "^2.0.5"
   },
   "peerDependencies": {
     "webpack": "^4.0.0"

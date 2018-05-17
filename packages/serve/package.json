@@ -7,9 +7,9 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@webpack-cli/webpack-scaffold": "^0.0.1",
     "chalk": "^2.4.1",
     "cross-spawn": "^6.0.5",
-    "inquirer": "^5.2.0",
-    "@webpack-cli/webpack-scaffold": "^0.0.1"
+    "inquirer": "^5.2.0"
   }
 }

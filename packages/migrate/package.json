@@ -15,7 +15,7 @@
     "webpack": "^4.x.x"
   },
   "dependencies": {
-    "@webpack-cli/utils": "0.0.1",
+    "@webpack-cli/utils": "^0.0.1",
     "chalk": "^2.4.1",
     "diff": "^3.5.0",
     "inquirer": "^5.2.0",
