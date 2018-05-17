@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/add",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A scaffold for adding new properties",
   "main": "index.js",
   "author": "",
@@ -9,7 +9,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@webpack-cli/generators": "^0.0.3",
-    "@webpack-cli/utils": "^0.0.3"
+    "@webpack-cli/generators": "^0.0.4",
+    "@webpack-cli/utils": "^0.0.4"
   }
 }
