@@ -1,6 +1,34 @@
 // based on https://github.com/webpack/webpack/blob/master/bin/webpack.js
-module.exports = function promptForInstallation(packages, ...args) {
 
+/**
+ * @param {string} command process to run
+ * @param {string[]} args commandline arguments
+ * @returns {Promise<void>} promise
+ */
+const runCommand = (command, args) => {
+	const cp = require("child_process");
+	return new Promise((resolve, reject) => {
+		resolve();
+		const executedCommand = cp.spawn(command, args, {
+			stdio: "inherit",
+			shell: true
+		});
+
+		executedCommand.on("error", error => {
+			reject(error);
+		});
+
+		executedCommand.on("exit", code => {
+			if (code === 0) {
+				resolve();
+			} else {
+				reject();
+			}
+		});
+	});
+};
+
+module.exports = function promptForInstallation(packages, ...args) {
 	let packageIsInstalled = false;
 	try {
 		require.resolve(packages);
@@ -16,7 +44,8 @@ module.exports = function promptForInstallation(packages, ...args) {
 		const isYarn = fs.existsSync(path.resolve(process.cwd(), "yarn.lock"));
 
 		const packageManager = isYarn ? "yarn" : "npm";
-		const options = ["install", "-D", packages];
+		const nameOfPackage = "@webpack-cli/" + packages;
+		const options = ["install", "-D", nameOfPackage];
 
 		if (isYarn) {
 			options[0] = "add";
@@ -26,7 +55,9 @@ module.exports = function promptForInstallation(packages, ...args) {
 
 		const question = `Would you like to install ${packages}? (That will run ${commandToBeRun}) (yes/NO)`;
 
-		console.error(`The command moved into a separate package: @webpack-cli/${packages}`);
+		console.error(
+			`The command moved into a separate package: ${nameOfPackage}`
+		);
 		const questionInterface = readLine.createInterface({
 			input: process.stdin,
 			output: process.stdout
@@ -40,6 +71,9 @@ module.exports = function promptForInstallation(packages, ...args) {
 					//eslint-disable-next-line
 					runCommand(packageManager, options)
 						.then(result => {
+							if (packages === "serve") {
+								return require(`@webpack-cli/${packages}`).serve();
+							}
 							return require(`@webpack-cli/${packages}`)(...args); //eslint-disable-line
 						})
 						.catch(error => {
@@ -50,7 +84,7 @@ module.exports = function promptForInstallation(packages, ...args) {
 				}
 				default: {
 					console.error(
-						"It needs to be installed alongside webpack CLI to use the command"
+						`${nameOfPackage} needs to be installed in order to run the command.`
 					);
 					process.exitCode = 1;
 					break;

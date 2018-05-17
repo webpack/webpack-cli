@@ -1,5 +1,5 @@
 {
-  "name": "serve",
+  "name": "@webpack-cli/serve",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
