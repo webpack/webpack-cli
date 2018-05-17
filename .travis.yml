@@ -49,6 +49,7 @@ install:
   - npm install -g codecov
   - npm install -g eslint
   - npm install -g greenkeeper-lockfile@1
+  - lerna bootstrap
 
 before_script: greenkeeper-lockfile-update
 after_script: greenkeeper-lockfile-upload
