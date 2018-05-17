@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/init",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "init command for webpack-cli",
   "main": "index.js",
   "author": "",
@@ -9,6 +9,7 @@
     "access": "public"
   },
   "dependencies": {
+    "@webpack-cli/generators": "^0.0.4",
     "@webpack-cli/utils": "^0.0.4",
     "chalk": "^2.4.1",
     "jscodeshift": "^0.5.0",
