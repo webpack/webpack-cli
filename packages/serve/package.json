@@ -4,6 +4,9 @@
   "description": "",
   "main": "index.js",
   "keywords": [],
+  "publishConfig": {
+    "access": "public"
+  },
   "author": "",
   "license": "MIT",
   "dependencies": {

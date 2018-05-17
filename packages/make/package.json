@@ -5,5 +5,8 @@
   "main": "index.js",
   "keywords": [],
   "author": "",
+  "publishConfig": {
+    "access": "public"
+  },
   "license": "MIT"
 }

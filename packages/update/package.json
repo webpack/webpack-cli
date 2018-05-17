@@ -4,6 +4,13 @@
   "description": "",
   "main": "index.js",
   "keywords": [],
+  "publishConfig": {
+    "access": "public"
+  },
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@webpack-cli/utils": "^0.0.1",
+    "@webpack-cli/generators": "^0.0.1"
+  }
 }
