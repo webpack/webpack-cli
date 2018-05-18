@@ -87,8 +87,12 @@ module.exports = (self, answer) => {
 			])
 			.then(singularEntryAnswer => {
 				let { singularEntry } = singularEntryAnswer;
-				if (singularEntry.indexOf("\"") >= 0)
+				if (singularEntry.indexOf("\"") >= 0) {
 					singularEntry = singularEntry.replace(/"/g, "'");
+				}
+				if (singularEntry.length <= 0) {
+					singularEntry = "'./src/index.js'";
+				}
 				return singularEntry;
 			});
 	}
