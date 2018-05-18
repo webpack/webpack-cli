@@ -91,7 +91,7 @@ module.exports = (self, answer) => {
 					singularEntry = singularEntry.replace(/"/g, "'");
 				}
 				if (singularEntry.length <= 0) {
-					singularEntry = "'./src/index.js'";
+					self.usingDefaults = true;
 				}
 				return singularEntry;
 			});

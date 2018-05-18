@@ -10,10 +10,13 @@
 module.exports = _ => {
 	return {
 		test: `${new RegExp(/\.js$/)}`,
-		exclude: "/node_modules/",
+		include: ["path.resolve(__dirname, 'src')"],
 		loader: "'babel-loader'",
 		options: {
-			presets: ["'env'"]
+			presets: ["'env'", {
+				modules: false
+			}],
+			plugins: ["'syntax-dynamic-import'"]
 		}
 	};
 };

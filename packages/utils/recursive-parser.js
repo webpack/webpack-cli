@@ -36,7 +36,9 @@ module.exports = function recursiveTransform(j, ast, value, action, key) {
 			} else if (key === "merge") {
 				utils.parseMerge(j, p, value);
 			} else {
-				utils.addProperty(j, p, key, value);
+				if (value) {
+					utils.addProperty(j, p, key, value);
+				}
 			}
 		});
 	}

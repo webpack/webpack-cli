@@ -29,7 +29,14 @@ module.exports = class InitGenerator extends Generator {
 	constructor(args, opts) {
 		super(args, opts);
 		this.isProd = false;
-		this.dependencies = ["webpack", "webpack-cli", "uglifyjs-webpack-plugin"];
+		(this.usingDefaults = false),
+		(this.dependencies = [
+			"webpack",
+			"webpack-cli",
+			"uglifyjs-webpack-plugin",
+			"babel-plugin-syntax-dynamic-import",
+			"path"
+		]);
 		this.configuration = {
 			config: {
 				webpackOptions: {},
@@ -93,12 +100,15 @@ module.exports = class InitGenerator extends Generator {
 			.then(outputTypeAnswer => {
 				// As entry is not required anymore and we dont set it to be an empty string or """""
 				// it can be undefined so falsy check is enough (vs entry.length);
-				if (!this.configuration.config.webpackOptions.entry) {
+				if (
+					!this.configuration.config.webpackOptions.entry &&
+					!this.usingDefaults
+				) {
 					this.configuration.config.webpackOptions.output = {
 						filename: "'[name].[chunkhash].js'",
 						chunkFilename: "'[name].[chunkhash].js'"
 					};
-				} else {
+				} else if (!this.usingDefaults) {
 					this.configuration.config.webpackOptions.output = {
 						filename: "'[name].[chunkhash].js'"
 					};
@@ -106,7 +116,9 @@ module.exports = class InitGenerator extends Generator {
 				if (outputTypeAnswer["outputType"].length) {
 					outputPath = outputTypeAnswer["outputType"];
 				}
-				this.configuration.config.webpackOptions.output.path = `path.resolve(__dirname, '${outputPath}')`;
+				if (!this.usingDefaults) {
+					this.configuration.config.webpackOptions.output.path = `path.resolve(__dirname, '${outputPath}')`;
+				}
 			})
 			.then(() => {
 				return this.prompt([
@@ -394,9 +406,13 @@ module.exports = class InitGenerator extends Generator {
 				done();
 			});
 	}
+	/*
 	installPlugins() {
 		const asyncNamePrompt = this.async();
 		const defaultName = this.isProd ? "prod" : "config";
+		if(this.isProd) {
+			this.dependencies = this.dependencies.filter(p => p !== "uglifyjs-webpack-plugin");
+		}
 		this.prompt([
 			Input(
 				"nameType",
@@ -415,6 +431,7 @@ module.exports = class InitGenerator extends Generator {
 				this.runInstall(packager, this.dependencies, opts);
 			});
 	}
+	*/
 
 	writing() {
 		this.config.set("configuration", this.configuration);
