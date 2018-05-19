@@ -22,7 +22,7 @@ module.exports = function processOptions(yargs, argv) {
 	const firstOptions = Array.isArray(options) ? options[0] || {} : options;
 
 	if (typeof options.stats === "boolean" || typeof options.stats === "string") {
-		const statsPresetToOptions = require("webpack").Stats.presetToOptions;
+		const statsPresetToOptions = process.webpackModule.Stats.presetToOptions;
 		options.stats = statsPresetToOptions(options.stats);
 	}
 
@@ -133,7 +133,7 @@ module.exports = function processOptions(yargs, argv) {
 		}
 	});
 
-	const webpack = require("webpack");
+	const webpack = process.webpackModule;
 
 	Error.stackTraceLimit = 30;
 	let lastHash = null;
@@ -141,7 +141,7 @@ module.exports = function processOptions(yargs, argv) {
 	try {
 		compiler = webpack(options);
 	} catch (e) {
-		const WebpackOptionsValidationError = require("webpack")
+		const WebpackOptionsValidationError = process.webpackModule
 			.WebpackOptionsValidationError;
 
 		if (e instanceof WebpackOptionsValidationError) {
@@ -156,7 +156,7 @@ module.exports = function processOptions(yargs, argv) {
 	}
 
 	if (argv.progress) {
-		const ProgressPlugin = require("webpack").ProgressPlugin;
+		const ProgressPlugin = process.webpackModule.ProgressPlugin;
 		new ProgressPlugin({
 			profile: argv.profile
 		}).apply(compiler);

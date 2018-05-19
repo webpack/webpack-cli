@@ -1,4 +1,4 @@
-const webpack = require("webpack");
+const webpack = process.webpackModule;
 const nodeEnvironment = process.env.NODE_ENV;
 const _ = require("lodash");
 

@@ -5,7 +5,7 @@ const Confirm = require("@webpack-cli/webpack-scaffold").Confirm;
 const List = require("@webpack-cli/webpack-scaffold").List;
 const Input = require("@webpack-cli/webpack-scaffold").Input;
 
-const webpackSchema = require("webpack/schemas/WebpackOptions");
+const webpackSchema = require("webpack-cli/optionsSchema.json");
 const webpackDevServerSchema = require("webpack-dev-server/lib/optionsSchema.json");
 const PROP_TYPES = require("@webpack-cli/utils/prop-types");
 

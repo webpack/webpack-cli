@@ -8,8 +8,8 @@ const inquirer = require("inquirer");
 const PLazy = require("p-lazy");
 const Listr = require("listr");
 
-const { validate } = require("webpack");
-const { WebpackOptionsValidationError } = require("webpack");
+const { validate } = process.webpackModule;
+const { WebpackOptionsValidationError } = process.webpackModule;
 
 const runPrettier = require("@webpack-cli/utils/run-prettier");
 

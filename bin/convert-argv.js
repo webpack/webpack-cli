@@ -4,8 +4,8 @@ fs.existsSync = fs.existsSync || path.existsSync;
 const interpret = require("interpret");
 const prepareOptions = require("./prepareOptions");
 const webpackConfigurationSchema = require("./webpackConfigurationSchema.json");
-const validateSchema = require("webpack").validateSchema;
-const WebpackOptionsValidationError = require("webpack")
+const validateSchema = process.webpackModule.validateSchema;
+const WebpackOptionsValidationError = process.webpackModule
 	.WebpackOptionsValidationError;
 
 module.exports = function(...args) {
@@ -398,7 +398,7 @@ module.exports = function(...args) {
 				defineObject = {};
 			},
 			function() {
-				const DefinePlugin = require("webpack").DefinePlugin;
+				const DefinePlugin = process.webpackModule.DefinePlugin;
 				addPlugin(options, new DefinePlugin(defineObject));
 			}
 		);
@@ -468,13 +468,13 @@ module.exports = function(...args) {
 		mapArgToBoolean("cache");
 
 		ifBooleanArg("hot", function() {
-			const HotModuleReplacementPlugin = require("webpack")
+			const HotModuleReplacementPlugin = process.webpackModule
 				.HotModuleReplacementPlugin;
 			addPlugin(options, new HotModuleReplacementPlugin());
 		});
 
 		ifBooleanArg("debug", function() {
-			const LoaderOptionsPlugin = require("webpack").LoaderOptionsPlugin;
+			const LoaderOptionsPlugin = process.webpackModule.LoaderOptionsPlugin;
 			addPlugin(
 				options,
 				new LoaderOptionsPlugin({
@@ -510,7 +510,7 @@ module.exports = function(...args) {
 		});
 
 		ifArg("optimize-max-chunks", function(value) {
-			const LimitChunkCountPlugin = require("webpack").optimize
+			const LimitChunkCountPlugin = process.webpackModule.optimize
 				.LimitChunkCountPlugin;
 			addPlugin(
 				options,
@@ -521,7 +521,7 @@ module.exports = function(...args) {
 		});
 
 		ifArg("optimize-min-chunk-size", function(value) {
-			const MinChunkSizePlugin = require("webpack").optimize.MinChunkSizePlugin;
+			const MinChunkSizePlugin = process.webpackModule.optimize.MinChunkSizePlugin;
 			addPlugin(
 				options,
 				new MinChunkSizePlugin({
@@ -531,7 +531,7 @@ module.exports = function(...args) {
 		});
 
 		ifBooleanArg("optimize-minimize", function() {
-			const LoaderOptionsPlugin = require("webpack").LoaderOptionsPlugin;
+			const LoaderOptionsPlugin = process.webpackModule.LoaderOptionsPlugin;
 			addPlugin(
 				options,
 				new LoaderOptionsPlugin({
@@ -541,7 +541,7 @@ module.exports = function(...args) {
 		});
 
 		ifArg("prefetch", function(request) {
-			const PrefetchPlugin = require("webpack").PrefetchPlugin;
+			const PrefetchPlugin = process.webpackModule.PrefetchPlugin;
 			addPlugin(options, new PrefetchPlugin(request));
 		});
 
@@ -554,7 +554,7 @@ module.exports = function(...args) {
 			} else {
 				name = value;
 			}
-			const ProvidePlugin = require("webpack").ProvidePlugin;
+			const ProvidePlugin = process.webpackModule.ProvidePlugin;
 			addPlugin(options, new ProvidePlugin(name, value));
 		});
 
