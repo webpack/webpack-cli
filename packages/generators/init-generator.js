@@ -400,7 +400,6 @@ module.exports = class InitGenerator extends Generator {
 			});
 	}
 	installPlugins() {
-		const defaultName = this.isProd ? "prod" : "config";
 		if (this.isProd) {
 			this.dependencies = this.dependencies.filter(
 				p => p !== "uglifyjs-webpack-plugin"
