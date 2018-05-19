@@ -74,8 +74,6 @@ module.exports = class InitGenerator extends Generator {
 		this.configuration.config.topScope.push(
 			"const webpack = require('webpack')",
 			"const path = require('path')",
-			tooltip.uglify(),
-			"const UglifyJSPlugin = require('uglifyjs-webpack-plugin');",
 			"\n"
 		);
 
@@ -406,12 +404,19 @@ module.exports = class InitGenerator extends Generator {
 				done();
 			});
 	}
-	/*
 	installPlugins() {
 		const asyncNamePrompt = this.async();
 		const defaultName = this.isProd ? "prod" : "config";
-		if(this.isProd) {
-			this.dependencies = this.dependencies.filter(p => p !== "uglifyjs-webpack-plugin");
+		if (this.isProd) {
+			this.dependencies = this.dependencies.filter(
+				p => p !== "uglifyjs-webpack-plugin"
+			);
+		} else {
+			this.configuration.config.topScope.push(
+				tooltip.uglify(),
+				"const UglifyJSPlugin = require('uglifyjs-webpack-plugin');",
+				"\n"
+			);
 		}
 		this.prompt([
 			Input(
@@ -431,7 +436,6 @@ module.exports = class InitGenerator extends Generator {
 				this.runInstall(packager, this.dependencies, opts);
 			});
 	}
-	*/
 
 	writing() {
 		this.config.set("configuration", this.configuration);

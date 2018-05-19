@@ -429,6 +429,84 @@ function addProperty(j, p, key, value) {
 	}
 	return;
 }
+
+/**
+ *
+ * Get an property named topScope from yeoman and inject it to the top scope of
+ * the config, outside module.exports
+ *
+ * @param j — jscodeshift API
+ * @param ast - jscodeshift API
+ * @param {any} value - transformation object to scaffold
+ * @param {String} action - action that indicates what to be done to the AST
+ * @returns ast - jscodeshift API
+ */
+
+function parseTopScope(j, ast, value, action) {
+	function createTopScopeProperty(p) {
+		value.forEach(n => {
+			if (
+				!p.value.body[0].declarations ||
+				n.indexOf(p.value.body[0].declarations[0].id.name) <= 0
+			) {
+				p.value.body.splice(-1, 0, n);
+			}
+		});
+	}
+	if (value) {
+		return ast.find(j.Program).filter(p => createTopScopeProperty(p));
+	} else {
+		return ast;
+	}
+}
+
+("use strict");
+
+/**
+ *
+ * Transform for merge. Finds the merge property from yeoman and creates a way
+ * for users to allow webpack-merge in their scaffold
+ *
+ * @param j — jscodeshift API
+ * @param ast - jscodeshift API
+ * @param {any} value - transformation object to scaffold
+ * @param {String} action - action that indicates what to be done to the AST
+ * @returns ast - jscodeshift API
+ */
+
+function parseMerge(j, ast, value, action) {
+	function createMergeProperty(p) {
+		// FIXME Use j.callExp()
+		let exportsDecl = p.value.body.map(n => {
+			if (n.expression) {
+				return n.expression.right;
+			}
+		});
+		const bodyLength = exportsDecl.length;
+		let newVal = {};
+		newVal.type = "ExpressionStatement";
+		newVal.expression = {
+			type: "AssignmentExpression",
+			operator: "=",
+			left: {
+				type: "MemberExpression",
+				computed: false,
+				object: j.identifier("module"),
+				property: j.identifier("exports")
+			},
+			right: j.callExpression(j.identifier("merge"), [
+				j.identifier(value),
+				exportsDecl.pop()
+			])
+		};
+		p.value.body[bodyLength - 1] = newVal;
+	}
+	if (value) {
+		return ast.find(j.Program).filter(p => createMergeProperty(p));
+	} else {
+		return ast;
+	}
+}
 module.exports = {
 	safeTraverse,
 	createProperty,
@@ -444,5 +522,7 @@ module.exports = {
 	createIdentifierOrLiteral,
 	findObjWithOneOfKeys,
 	getRequire,
-	addProperty
+	addProperty,
+	parseTopScope,
+	parseMerge
 };

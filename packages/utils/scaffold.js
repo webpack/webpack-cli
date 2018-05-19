@@ -43,15 +43,23 @@ module.exports = function runTransform(webpackProperties, action) {
 	webpackConfig.forEach(scaffoldPiece => {
 		const config = webpackProperties[scaffoldPiece];
 		const transformations = mapOptionsToTransform(config);
+		if (config.topScope) {
+			transformations.push("topScope");
+		}
+		if (config.merge) {
+			transformations.push("merge");
+		}
 		const ast = j(
 			initActionNotDefined
 				? webpackProperties.configFile
 				: "module.exports = {}"
 		);
 		const transformAction = action || null;
-
 		return pEachSeries(transformations, f => {
-			return astTransform(j, ast, config.webpackOptions[f], transformAction, f);
+			if (f === "merge" || f === "topScope") {
+				return astTransform(j, ast, f, config[f], transformAction);
+			}
+			return astTransform(j, ast, f, config.webpackOptions[f], transformAction);
 		})
 			.then(_ => {
 				let configurationName;
