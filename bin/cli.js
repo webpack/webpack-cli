@@ -13,15 +13,17 @@
 	if (importLocal(__filename)) {
 		return;
 	}
-	
+
 	require("v8-compile-cache");
 
 	// try local module, fallback to global
 	try {
 		require.resolve("webpack");
 		process.webpackModule = require("webpack");
-	} catch(err) {
-		const globalPathToWebpack = require("global-modules-path").getPath("webpack");
+	} catch (err) {
+		const globalPathToWebpack = require("global-modules-path").getPath(
+			"webpack"
+		);
 		process.webpackModule = require(globalPathToWebpack);
 	}
 	const ErrorHelpers = require("./errorHelpers");

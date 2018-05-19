@@ -5,8 +5,8 @@ const interpret = require("interpret");
 const prepareOptions = require("./prepareOptions");
 const webpackConfigurationSchema = require("./webpackConfigurationSchema.json");
 const validateSchema = process.webpackModule.validateSchema;
-const WebpackOptionsValidationError = process.webpackModule
-	.WebpackOptionsValidationError;
+const WebpackOptionsValidationError =
+	process.webpackModule.WebpackOptionsValidationError;
 
 module.exports = function(...args) {
 	const argv = args[1] || args[0];
@@ -468,8 +468,8 @@ module.exports = function(...args) {
 		mapArgToBoolean("cache");
 
 		ifBooleanArg("hot", function() {
-			const HotModuleReplacementPlugin = process.webpackModule
-				.HotModuleReplacementPlugin;
+			const HotModuleReplacementPlugin =
+				process.webpackModule.HotModuleReplacementPlugin;
 			addPlugin(options, new HotModuleReplacementPlugin());
 		});
 
@@ -510,8 +510,8 @@ module.exports = function(...args) {
 		});
 
 		ifArg("optimize-max-chunks", function(value) {
-			const LimitChunkCountPlugin = process.webpackModule.optimize
-				.LimitChunkCountPlugin;
+			const LimitChunkCountPlugin =
+				process.webpackModule.optimize.LimitChunkCountPlugin;
 			addPlugin(
 				options,
 				new LimitChunkCountPlugin({
@@ -521,7 +521,8 @@ module.exports = function(...args) {
 		});
 
 		ifArg("optimize-min-chunk-size", function(value) {
-			const MinChunkSizePlugin = process.webpackModule.optimize.MinChunkSizePlugin;
+			const MinChunkSizePlugin =
+				process.webpackModule.optimize.MinChunkSizePlugin;
 			addPlugin(
 				options,
 				new MinChunkSizePlugin({

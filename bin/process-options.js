@@ -141,8 +141,8 @@ module.exports = function processOptions(yargs, argv) {
 	try {
 		compiler = webpack(options);
 	} catch (e) {
-		const WebpackOptionsValidationError = process.webpackModule
-			.WebpackOptionsValidationError;
+		const WebpackOptionsValidationError =
+			process.webpackModule.WebpackOptionsValidationError;
 
 		if (e instanceof WebpackOptionsValidationError) {
 			if (argv.color)
