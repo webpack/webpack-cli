@@ -119,17 +119,12 @@ module.exports = class InitGenerator extends Generator {
 				}
 			})
 			.then(() => {
-				return this.prompt([
-					Confirm("prodConfirm", "Are you going to use this in production?")
-				]);
-			})
-			.then(prodConfirmAnswer => {
-				this.isProd = prodConfirmAnswer["prodConfirm"];
+				console.log(this.usingDefaults);
+				this.isProd = this.usingDefaults ? true : false;
+				this.configuration.config.configName = this.isProd ? "prod" : "dev";
 				this.configuration.config.webpackOptions.mode = this.isProd
 					? "'production'"
 					: "'development'";
-			})
-			.then(() => {
 				return this.prompt([
 					Confirm("babelConfirm", "Will you be using ES2015?")
 				]);
@@ -405,7 +400,6 @@ module.exports = class InitGenerator extends Generator {
 			});
 	}
 	installPlugins() {
-		const asyncNamePrompt = this.async();
 		const defaultName = this.isProd ? "prod" : "config";
 		if (this.isProd) {
 			this.dependencies = this.dependencies.filter(
@@ -418,25 +412,10 @@ module.exports = class InitGenerator extends Generator {
 				"\n"
 			);
 		}
-		this.prompt([
-			Input(
-				"nameType",
-				`Name your 'webpack.[name].js?' [default: '${defaultName}']:`
-			)
-		])
-			.then(nameTypeAnswer => {
-				this.configuration.config.configName = nameTypeAnswer["nameType"].length
-					? nameTypeAnswer["nameType"]
-					: defaultName;
-			})
-			.then(() => {
-				asyncNamePrompt();
-				const packager = getPackageManager();
-				const opts = packager === "yarn" ? { dev: true } : { "save-dev": true };
-				this.runInstall(packager, this.dependencies, opts);
-			});
+		const packager = getPackageManager();
+		const opts = packager === "yarn" ? { dev: true } : { "save-dev": true };
+		this.runInstall(packager, this.dependencies, opts);
 	}
-
 	writing() {
 		this.config.set("configuration", this.configuration);
 	}
