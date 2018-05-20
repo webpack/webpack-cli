@@ -25,7 +25,7 @@
     "packages/*"
   ],
   "scripts": {
-    "lint": "eslint ./bin/*.js  ./packages/**/*.js ./test/**/*.js",
+    "lint": "eslint \"./bin/*.js\" \"./test/**/*.js\" \"{packages}/**/!(node_modules)/*.js\" ",
     "format": "prettier-eslint ./bin/*.js ./test/**/*.js ./packages/**/*.js --write",
     "lint:codeOnly": "eslint \"{bin}/**/!(__testfixtures__)/*.js\" \"{bin}/**.js\"",
     "precommit": "lint-staged",
@@ -94,11 +94,11 @@
     }
   },
   "dependencies": {
-    "chalk": "^2.3.2",
+    "chalk": "^2.4.1",
     "cross-spawn": "^6.0.5",
     "enhanced-resolve": "^4.0.0",
     "import-local": "^1.0.0",
-    "inquirer": "^5.1.0",
+    "inquirer": "^5.2.0",
     "interpret": "^1.0.4",
     "loader-utils": "^1.1.0",
     "supports-color": "^5.3.0",
@@ -132,9 +132,9 @@
     "rimraf": "^2.6.2",
     "schema-utils": "^0.4.5",
     "semantic-release": "^15.1.8",
+    "travis-deploy-once": "^5.0.0",
     "webpack": "^4.2.0",
-    "webpack-dev-server": "^3.0.0",
-    "travis-deploy-once": "^5.0.0"
+    "webpack-dev-server": "^3.1.4"
   },
   "files": [
     "bin",
