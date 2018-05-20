@@ -79,7 +79,9 @@ For more information, see https://webpack.js.org/api/cli/.`);
 			type: "boolean",
 			alias: "colors",
 			default: function supportsColor() {
-				return require("supports-color").supportsColor;
+				if (process.stdout.isTTY === true) {
+					return require("supports-color").supportsColor;
+				}
 			},
 			group: DISPLAY_GROUP,
 			describe: "Enables/Disables colors on the console"
@@ -321,7 +323,10 @@ For more information, see https://webpack.js.org/api/cli/.`);
 				}
 			});
 
-			if (typeof outputOptions.colors === "undefined")
+			if (
+				typeof outputOptions.colors === "undefined" &&
+				process.stdout.isTTY === true
+			)
 				outputOptions.colors = require("supports-color").stdout;
 
 			ifArg("sort-modules-by", function(value) {
