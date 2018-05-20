@@ -29,7 +29,7 @@ The `migrate` feature eases the transition from [version 1](http://webpack.githu
 
 The `init` feature allows users to get started with webpack, fast. Through scaffolding, people can create their own configuration in order to faster initialize new projects for various of use cases.
 
-`webpack-cli init webpack-addons-<package>`
+`webpack-cli init webpack-scaffold-<package>`
 
 [Read more about scaffolding](SCAFFOLDING.md)
 

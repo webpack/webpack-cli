@@ -78,7 +78,7 @@ describe("BinTestCases", function() {
 			testName
 		);
 
-		const cmd = `${path.resolve(__dirname, "../bin/webpack.js")}`;
+		const cmd = `${path.resolve(__dirname, "../cli.js")}`;
 		const args = testArgs.concat(["--output-path", `${outputPath}`]);
 		const opts = {
 			cwd: testDirectory

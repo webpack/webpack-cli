@@ -2,8 +2,8 @@
 {
   "source": {
       "include": [
-          "lib/"
+        "packages/"
       ],
-      "includePattern": "lib/.+\\.js$"
+      "includePattern": "packages/.+\\.js$"
   }
 }
