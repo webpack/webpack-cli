@@ -22,36 +22,28 @@ module.exports = function recursiveTransform(j, ast, key, value, action) {
 					"object",
 					"name"
 				]) === "module" &&
-			utils.safeTraverse(p, [
-				"parentPath",
-				"value",
-				"left",
-				"property",
-				"name"
-			]) === "exports"
+				utils.safeTraverse(p, [
+					"parentPath",
+					"value",
+					"left",
+					"property",
+					"name"
+				]) === "exports"
 			);
 		})
 		.filter(p => p.value.properties);
 
 	if (node.size() !== 0) {
 		// select node with existing key
-		return root
-			.find(j.Property, {
-				key: {
-					name: key
-				}
-			}).forEach(p => {
-				if (action === "add" || action === "update") {
+		return utils.findRootNodesByName(
+			j, root, key
+		)
+			.forEach(p => {
+				if (action === "add") {
 				// update property/replace
 					j(p).replaceWith(
-						j.property(
-							"init",
-							j.literal(key),
-							j.literal(value)
-						)
+						utils.updateProperty(j, p, key, value)
 					);
-				} else if (action === "remove") {
-					j(p).remove();
 				}
 			});
 	} else {
