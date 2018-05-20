@@ -27,3 +27,6 @@ test/js/*
 
 # Yeoman file
 .yo-rc.json
+
+# Yarn lock file
+yarn.lock
