@@ -34,8 +34,7 @@ module.exports = class InitGenerator extends Generator {
 			"webpack",
 			"webpack-cli",
 			"uglifyjs-webpack-plugin",
-			"babel-plugin-syntax-dynamic-import",
-			"path"
+			"babel-plugin-syntax-dynamic-import"
 		]);
 		this.configuration = {
 			config: {
