@@ -518,10 +518,10 @@ function parseMerge(j, ast, value, action) {
  */
 
 function updateProperty(j, p, key, value) {
-	let valForNode;
 	if (!p) {
 		return;
 	}
+	let valForNode;
 	if (Array.isArray(value)) {
 		let arrExp = j.arrayExpression([]);
 		if (safeTraverse(p, [
