@@ -498,7 +498,7 @@ For more information, see https://webpack.js.org/api/cli/.`);
 					lastHash = stats.hash;
 					if (stats.compilation && stats.compilation.errors.length !== 0) {
 						const errors = stats.compilation.errors;
-						if (errors[0].name === "EntryModuleNotFoundError") {
+						if (errors[0].name === "EntryModuleNotFoundError" && outputOptions.entry === undefined) {
 							stdout.write(
 								"\n" + " ERROR Insufficient number of arguments provided " +
 								"\n" + " INFO Alternatively, run `webpack(-cli) --help` for usage info." +
