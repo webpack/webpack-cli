@@ -34,7 +34,7 @@
     "reportCoverage": "nyc report --reporter=json && codecov -f coverage/coverage-final.json --disable=gcov",
     "jsdoc": "jsdoc -c jsdoc.json -r -d docs",
     "appveyor:lint": "lerna bootstrap && npm run lint",
-    "appveyor:test": "lerna run test && npm run reportCoverage",
+    "appveyor:test": "lerna run test",
     "travis:integration": "lerna run test && npm run reportCoverage",
     "travis:lint": "lerna bootstrap && npm run lint && npm run bundlesize",
     "bundlesize": "bundlesize",

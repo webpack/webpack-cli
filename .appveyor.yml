@@ -16,8 +16,6 @@ install:
   - npm ci
   - npm install --global codecov
   - npm install eslint-plugin-node@latest --save-dev
-  - npm install eslint-config-prettier@latest --save-dev
-  - npm install eslint-plugin-prettier@latest --save-dev
 
 test_script:
   - node --version
