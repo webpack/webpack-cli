@@ -21,3 +21,71 @@ exports[`init transforms correctly using "fixture-1" data 1`] = `
   }
 };"
 `;
+
+exports[`entry transforms correctly using "fixture-2" data 1`] = `
+"const webpack = require(\\"webpack\\");
+
+module.exports = {
+	entry: {
+        ed: 'index.js',
+        sheeran: \\"yea, good shit\\",
+        objects: are,
+
+        super: [yeah, {
+            test: /\\\\.(js|vue)$/,
+            loader: 'eslint-loader',
+            enforce: 'pre',
+            include: [customObj, 'Stringy'],
+
+            options: {
+                formatter: 'someOption'
+            }
+        }],
+
+        nice: ':)',
+        man: () => duper
+    },
+    devtool: 'eval',
+}
+"
+`;
+
+exports[`entry transforms correctly using "fixture-2" data 2`] = `
+"const webpack = require(\\"webpack\\");
+
+module.exports = {
+	entry: 'src/index.js',
+    devtool: 'eval',
+}
+"
+`;
+
+exports[`entry transforms correctly using "fixture-2" data 3`] = `
+"const webpack = require(\\"webpack\\");
+
+module.exports = {
+	entry: {
+        ed: 'index.js',
+        sheeran: \\"yea, good shit\\",
+        a: aaaa.js,
+        b: bbbb.js
+    },
+    devtool: 'eval',
+}
+"
+`;
+
+exports[`mode transforms correctly using "fixture-2" data 1`] = `
+"const webpack = require(\\"webpack\\");
+
+module.exports = {
+    entry: {
+        ed: 'index.js',
+        sheeran: \\"yea, good shit\\"
+    },
+
+    devtool: 'eval',
+    mode: 'development'
+}
+"
+`;
