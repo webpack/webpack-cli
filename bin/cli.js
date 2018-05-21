@@ -496,9 +496,9 @@ For more information, see https://webpack.js.org/api/cli/.`);
 					);
 				} else if (stats.hash !== lastHash) {
 					lastHash = stats.hash;
-					if (stats.compilation && stats.compilation.errors.length !== 0) {
+					if (stats.compilation && stats.compilation.errors.length !== 0 && outputOptions.entry === undefined) {
 						const errors = stats.compilation.errors;
-						if (errors[0].name === "EntryModuleNotFoundError" && outputOptions.entry === undefined) {
+						if (errors[0].name === "EntryModuleNotFoundError") {
 							stdout.write(
 								"\n" + " ERROR Insufficient number of arguments provided " +
 								"\n" + " INFO Alternatively, run `webpack(-cli) --help` for usage info." +
