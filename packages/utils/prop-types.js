@@ -19,7 +19,7 @@ module.exports = new Set([
 	"module",
 	"node",
 	"output",
-	"optimizations",
+	"optimization",
 	"parallelism",
 	"performance",
 	"plugins",
@@ -33,5 +33,6 @@ module.exports = new Set([
 	"splitChunks",
 	"target",
 	"watch",
-	"watchOptions"
+	"watchOptions",
+	"topScope"
 ]);

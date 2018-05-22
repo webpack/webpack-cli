@@ -14,10 +14,6 @@ What we are meaning here, is if you want to provide your bundle a single or mult
 
 This answers to the output directory of your application. The output directory is where servers or your `index.html` will read the generated bundle from.
 
-3. `Are you going to use this in production? (Y/n)`
-
-If you answer `Yes` to this, we add [`MinCssExtractPlugin`](https://github.com/webpack-contrib/mini-css-extract-plugin) to your project. This means that your style files will be separated in production from the bundles where they are used. If you answer `No`, we will not use the plugin, and `Question 6` will be ignored by default.
-
 4. `Will you be using ES2015? (Y/n)`
 
 If you answer `Yes` to this question, we will add [`ES2015`](https://babeljs.io/learn-es2015/) to your webpack configuration, which will allow you to use modern JavaScript in your project.
@@ -29,8 +25,4 @@ If you use any sort of style in your project, such as [`.less`](http://lesscss.o
 6. `If you want to bundle your CSS files, what will you name the bundle? (press 
 enter to skip)`
 
-If you answered `Yes` to `Question 3`, this will be enabled. The default value for your generated CSS file is `style.[contentHash].css`, which will collect all your `.less`, `.scss` or `.css` into one file. This will make your build faster in production.
-
-7. `Name your 'webpack.[name].js?' [default: 'prod/config']`
-
-If you answered `Yes` to `Question 3`, the default name of your configuration will be `webpack.prod.js`, otherwise it will be `webpack.config.js` if you don't answer. Other good options to answer to this question is: `dev`, `base`, `production` or `development`.
+If you indicate based on previous questions that you are using production, this will be enabled. The default value for your generated CSS file is `style.[contentHash].css`, which will collect all your `.less`, `.scss` or `.css` into one file. This will make your build faster in production.

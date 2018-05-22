@@ -29,7 +29,13 @@ module.exports = class InitGenerator extends Generator {
 	constructor(args, opts) {
 		super(args, opts);
 		this.isProd = false;
-		this.dependencies = ["webpack", "webpack-cli", "uglifyjs-webpack-plugin"];
+		(this.usingDefaults = false),
+		(this.dependencies = [
+			"webpack",
+			"webpack-cli",
+			"uglifyjs-webpack-plugin",
+			"babel-plugin-syntax-dynamic-import"
+		]);
 		this.configuration = {
 			config: {
 				webpackOptions: {},
@@ -67,8 +73,6 @@ module.exports = class InitGenerator extends Generator {
 		this.configuration.config.topScope.push(
 			"const webpack = require('webpack')",
 			"const path = require('path')",
-			tooltip.uglify(),
-			"const UglifyJSPlugin = require('uglifyjs-webpack-plugin');",
 			"\n"
 		);
 
@@ -93,12 +97,15 @@ module.exports = class InitGenerator extends Generator {
 			.then(outputTypeAnswer => {
 				// As entry is not required anymore and we dont set it to be an empty string or """""
 				// it can be undefined so falsy check is enough (vs entry.length);
-				if (!this.configuration.config.webpackOptions.entry) {
+				if (
+					!this.configuration.config.webpackOptions.entry &&
+					!this.usingDefaults
+				) {
 					this.configuration.config.webpackOptions.output = {
 						filename: "'[name].[chunkhash].js'",
 						chunkFilename: "'[name].[chunkhash].js'"
 					};
-				} else {
+				} else if (!this.usingDefaults) {
 					this.configuration.config.webpackOptions.output = {
 						filename: "'[name].[chunkhash].js'"
 					};
@@ -106,20 +113,17 @@ module.exports = class InitGenerator extends Generator {
 				if (outputTypeAnswer["outputType"].length) {
 					outputPath = outputTypeAnswer["outputType"];
 				}
-				this.configuration.config.webpackOptions.output.path = `path.resolve(__dirname, '${outputPath}')`;
+				if (!this.usingDefaults) {
+					this.configuration.config.webpackOptions.output.path = `path.resolve(__dirname, '${outputPath}')`;
+				}
 			})
 			.then(() => {
-				return this.prompt([
-					Confirm("prodConfirm", "Are you going to use this in production?")
-				]);
-			})
-			.then(prodConfirmAnswer => {
-				this.isProd = prodConfirmAnswer["prodConfirm"];
+				console.log(this.usingDefaults);
+				this.isProd = this.usingDefaults ? true : false;
+				this.configuration.config.configName = this.isProd ? "prod" : "dev";
 				this.configuration.config.webpackOptions.mode = this.isProd
 					? "'production'"
 					: "'development'";
-			})
-			.then(() => {
 				return this.prompt([
 					Confirm("babelConfirm", "Will you be using ES2015?")
 				]);
@@ -395,27 +399,21 @@ module.exports = class InitGenerator extends Generator {
 			});
 	}
 	installPlugins() {
-		const asyncNamePrompt = this.async();
-		const defaultName = this.isProd ? "prod" : "config";
-		this.prompt([
-			Input(
-				"nameType",
-				`Name your 'webpack.[name].js?' [default: '${defaultName}']:`
-			)
-		])
-			.then(nameTypeAnswer => {
-				this.configuration.config.configName = nameTypeAnswer["nameType"].length
-					? nameTypeAnswer["nameType"]
-					: defaultName;
-			})
-			.then(() => {
-				asyncNamePrompt();
-				const packager = getPackageManager();
-				const opts = packager === "yarn" ? { dev: true } : { "save-dev": true };
-				this.runInstall(packager, this.dependencies, opts);
-			});
+		if (this.isProd) {
+			this.dependencies = this.dependencies.filter(
+				p => p !== "uglifyjs-webpack-plugin"
+			);
+		} else {
+			this.configuration.config.topScope.push(
+				tooltip.uglify(),
+				"const UglifyJSPlugin = require('uglifyjs-webpack-plugin');",
+				"\n"
+			);
+		}
+		const packager = getPackageManager();
+		const opts = packager === "yarn" ? { dev: true } : { "save-dev": true };
+		this.runInstall(packager, this.dependencies, opts);
 	}
-
 	writing() {
 		this.config.set("configuration", this.configuration);
 	}

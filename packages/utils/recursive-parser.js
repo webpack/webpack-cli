@@ -2,7 +2,12 @@
 
 const utils = require("./ast-utils");
 
-module.exports = function recursiveTransform(j, ast, value, action, key) {
+module.exports = function recursiveTransform(j, ast, key, value, action) {
+	if (key === "topScope") {
+		return utils.parseTopScope(j, ast, value, action);
+	} else if (key === "merge") {
+		return utils.parseMerge(j, ast, value, action);
+	}
 	const node = utils.findRootNodesByName(j, ast, key);
 	if (node.size() !== 0) {
 		// push to existing key
@@ -31,11 +36,7 @@ module.exports = function recursiveTransform(j, ast, value, action, key) {
 			})
 			.filter(p => p.value.properties);
 		return root.forEach(p => {
-			if (key === "topScope") {
-				utils.parseTopScope(j, p, value);
-			} else if (key === "merge") {
-				utils.parseMerge(j, p, value);
-			} else {
+			if (value) {
 				utils.addProperty(j, p, key, value);
 			}
 		});
