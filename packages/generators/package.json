@@ -10,8 +10,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@webpack-cli/utils": "latest",
-    "@webpack-cli/webpack-scaffold": "latest",
+    "@webpack-cli/utils": "^0.0.4",
+    "@webpack-cli/webpack-scaffold": "^0.0.4",
     "chalk": "^2.4.1",
     "glob-all": "^3.1.0",
     "lodash": "^4.17.10",
