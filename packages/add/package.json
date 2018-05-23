@@ -9,7 +9,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@webpack-cli/generators": "^0.0.4",
-    "@webpack-cli/utils": "^0.0.4"
+    "@webpack-cli/generators": "latest",
+    "@webpack-cli/utils": "latest"
   }
 }
