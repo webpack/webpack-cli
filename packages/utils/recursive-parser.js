@@ -2,7 +2,7 @@
 
 const utils = require("./ast-utils");
 
-module.exports = function recursiveTransform(j, ast, key, value, action) {
+module.exports = function recursiveTransform(j, ast, value, action, key) {
 	if (key === "topScope") {
 		return utils.parseTopScope(j, ast, value, action);
 	} else if (key === "merge") {

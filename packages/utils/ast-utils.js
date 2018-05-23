@@ -432,7 +432,6 @@ function addProperty(j, p, key, value) {
 
 /**
  *
-<<<<<<< HEAD
  * Get an property named topScope from yeoman and inject it to the top scope of
  * the config, outside module.exports
  *
@@ -508,7 +507,9 @@ function parseMerge(j, ast, value, action) {
 		return ast;
 	}
 }
-=======
+
+/**
+ *
  * Recursively updates an object/property to a node
  * @param {any} j — jscodeshift API
  * @param {Node} p - AST node
@@ -562,7 +563,6 @@ function updateProperty(j, p, key, value) {
 	return pushVal;
 }
 
->>>>>>> ast(parser): add command
 module.exports = {
 	safeTraverse,
 	createProperty,
@@ -579,10 +579,7 @@ module.exports = {
 	findObjWithOneOfKeys,
 	getRequire,
 	addProperty,
-<<<<<<< HEAD
 	parseTopScope,
-	parseMerge
-=======
-	updateProperty
->>>>>>> ast(parser): add command
+	parseMerge,
+	updateProperty,
 };
