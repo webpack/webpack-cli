@@ -17,6 +17,7 @@ exports[`init transforms correctly using "fixture-1" data 1`] = `
     }],
 
     nice: ':)',
+    foo: Promise.resolve(),
     man: () => duper
   }
 };"
@@ -43,9 +44,11 @@ module.exports = {
         }],
 
         nice: ':)',
+        foo: Promise.resolve(),
         man: () => duper
     },
-    devtool: 'eval',
+	devtool: 'eval',
+	mode: 'development'
 }
 "
 `;
@@ -55,7 +58,8 @@ exports[`entry transforms correctly using "fixture-2" data 2`] = `
 
 module.exports = {
 	entry: 'src/index.js',
-    devtool: 'eval',
+	devtool: 'eval',
+	mode: 'development'
 }
 "
 `;
@@ -70,7 +74,8 @@ module.exports = {
         a: aaaa.js,
         b: bbbb.js
     },
-    devtool: 'eval',
+	devtool: 'eval',
+	mode: 'development'
 }
 "
 `;
@@ -79,13 +84,12 @@ exports[`mode transforms correctly using "fixture-2" data 1`] = `
 "const webpack = require(\\"webpack\\");
 
 module.exports = {
-    entry: {
+	entry: {
         ed: 'index.js',
         sheeran: \\"yea, good shit\\"
     },
-
-    devtool: 'eval',
-    mode: 'development'
+	devtool: 'eval',
+	mode: 'production'
 }
 "
 `;

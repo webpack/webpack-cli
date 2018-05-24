@@ -5,5 +5,6 @@ module.exports = {
         ed: 'index.js',
         sheeran: "yea, good shit"
     },
-    devtool: 'eval',
+	devtool: 'eval',
+	mode: 'development'
 }

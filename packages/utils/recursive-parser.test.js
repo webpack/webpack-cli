@@ -22,6 +22,7 @@ defineTest(
 			}
 		],
 		nice: "':)'",
+		foo: "Promise.resolve()",
 		man: "() => duper"
 	}
 );
@@ -46,6 +47,7 @@ defineTest(
 			}
 		],
 		nice: "':)'",
+		foo: "Promise.resolve()",
 		man: "() => duper"
 	},
 	"add"
@@ -55,7 +57,7 @@ defineTest(
 	__dirname,
 	"mode",
 	"fixture-2",
-	"'development'",
+	"'production'",
 	"add"
 );
 
