@@ -15,6 +15,6 @@
   "license": "MIT",
   "dependencies": {
     "@webpack-cli/generators": "^0.0.4",
-    "yeoman-environment": "^2.0.6"
+    "yeoman-environment": "^2.1.1"
   }
 }
