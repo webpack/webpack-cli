@@ -8,16 +8,16 @@ Before writing a `webpack-cli` scaffold, think about what you're trying to achie
 
 `webpack-cli` offers an experience that is interactive and you can prompt users for questions (like, "What is your entry point?") to help customize the output accordingly.
 
-## webpack-addons
+## webpack-scaffold
 
-[`webpack-addons`](https://github.com/webpack-contrib/webpack-addons) is a utility suite for creating addons. It contains functions that could be of use for creating an addon yourself.
+`webpack-scaffold` is a utility suite for creating addons. It contains functions that could be of use for creating an addon yourself.
 
-## webpack-addons-yourpackage
+## webpack-scaffold-yourpackage
 
-In order for `webpack-cli` to compile your package, it must be available on npm or on your local filesystem. If you are curious about how you can create your very own `addon`, please read [How do I compose a
-webpack-addon?](https://github.com/ev1stensberg/webpack-addons-demo).
+In order for `webpack-cli` to compile your package, it must be available on npm or on your local filesystem. If you are curious about how you can create your very own `scaffold`, please read [How do I compose a
+webpack-addon?](https://github.com/ev1stensberg/webpack-scaffold-demo).
 
-If the package is on npm, its name must have a prefix of `webpack-addons`.
+If the package is on npm, its name must have a prefix of `webpack-scaffold`.
 
 If the package is on your local filesystem, it can be named whatever you want. Pass the path to the package.
 

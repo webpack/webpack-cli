@@ -1,0 +1,31 @@
+{
+  "name": "@webpack-cli/migrate",
+  "version": "0.0.4",
+  "description": "Migrate command for webpack-cli",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "jest": "^22.4.3"
+  },
+  "peerDependencies": {
+    "webpack": "^4.x.x"
+  },
+  "dependencies": {
+    "@webpack-cli/utils": "^0.0.4",
+    "chalk": "^2.4.1",
+    "diff": "^3.5.0",
+    "inquirer": "^5.2.0",
+    "jscodeshift": "^0.5.0",
+    "listr": "^0.14.1",
+    "lodash": "^4.17.10",
+    "p-each-series": "^1.0.0",
+    "p-lazy": "^1.0.0"
+  }
+}

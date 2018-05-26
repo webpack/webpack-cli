@@ -25,5 +25,11 @@ yarn-error.log
 # Test Compilation
 test/js/*
 
+# lerna log
+lerna-debug.log
+
 # Yeoman file
 .yo-rc.json
+
+# Yarn lock file
+yarn.lock

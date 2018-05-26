@@ -1,4 +1,4 @@
-const optionsSchema = require("webpack/schemas/WebpackOptions.json");
+const optionsSchema = require("./optionsSchema.json");
 const CONFIG_GROUP = "Config options:";
 const BASIC_GROUP = "Basic options:";
 const MODULE_GROUP = "Module options:";

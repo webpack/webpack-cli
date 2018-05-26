@@ -1,0 +1,14 @@
+{
+  "name": "@webpack-cli/info",
+  "version": "0.0.4",
+  "description": "Outputs env info for the ease of debug",
+  "main": "index.js",
+  "author": "",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "envinfo": "^5.7.0"
+  }
+}
