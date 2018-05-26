@@ -4,6 +4,8 @@
 	MIT License http://www.opensource.org/licenses/mit-license.php
 	Author Tobias Koppers @sokra
 */
+const chalk = require("chalk");
+
 (function() {
 	// wrap in IIFE to be able to use return
 
