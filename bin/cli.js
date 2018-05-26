@@ -4,9 +4,6 @@
 	MIT License http://www.opensource.org/licenses/mit-license.php
 	Author Tobias Koppers @sokra
 */
-const chalk = require("chalk");
-const logSymbols = require("log-symbols");
-
 (function() {
 	// wrap in IIFE to be able to use return
 
@@ -503,8 +500,8 @@ For more information, see https://webpack.js.org/api/cli/.`);
 						if (errors[0].name === "EntryModuleNotFoundError") {
 							stdout.write("\n" + chalk.red(errors[0].error.toString()) + "\n");
 							stdout.write(
-								"\n" + logSymbols.error + chalk.blue(" ERROR ") + "Insufficient number of arguments provided " +
-								"\n" + logSymbols.info + chalk.blue(" INFO ") + "Alternatively, run `webpack(-cli) --help` for usage info." +
+								"\n" + chalk.blue(" ERROR ") + "Insufficient number of arguments provided " +
+								"\n" + chalk.blue(" INFO ") + "Alternatively, run `webpack(-cli) --help` for usage info." +
 								"\n\n"
 							);
 							process.exit(0);
