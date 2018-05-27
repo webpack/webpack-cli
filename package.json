@@ -133,7 +133,7 @@
     "eslint-plugin-node": "^6.0.1",
     "husky": "^0.14.3",
     "jest": "^22.4.4",
-    "jest-cli": "^22.4.4",
+    "jest-cli": "^23.0.1",
     "jsdoc": "^3.5.5",
     "lint-staged": "^7.1.2",
     "nyc": "^11.8.0",
