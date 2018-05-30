@@ -4,8 +4,9 @@ const defineTest = require("./defineTest");
 
 defineTest(
 	__dirname,
-	"entry",
+	"init",
 	"fixture-1",
+	"entry",
 	{
 		objects: "are",
 		super: [
@@ -22,6 +23,5 @@ defineTest(
 		],
 		nice: "':)'",
 		man: "() => duper"
-	},
-	"init"
+	}
 );
