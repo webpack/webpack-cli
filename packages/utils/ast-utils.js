@@ -525,10 +525,10 @@ function updateProperty(j, p, key, value) {
 	let valForNode;
 	if (Array.isArray(value)) {
 		let arrExp = j.arrayExpression([]);
-		if (safeTraverse(p, [
-			"value",
-			"value",
-		]) && p.value.value.type === "ArrayExpression") {
+		if (
+			safeTraverse(p, ["value", "value"]) &&
+			p.value.value.type === "ArrayExpression"
+		) {
 			arrExp = p.value.value;
 		}
 		value.forEach(val => {
@@ -540,10 +540,10 @@ function updateProperty(j, p, key, value) {
 		!(value.__paths || value instanceof RegExp)
 	) {
 		let objectExp = j.objectExpression([]);
-		if (safeTraverse(p, [
-			"value",
-			"value",
-		]) && p.value.value.type === "ObjectExpression") {
+		if (
+			safeTraverse(p, ["value", "value"]) &&
+			p.value.value.type === "ObjectExpression"
+		) {
 			objectExp = p.value.value;
 		}
 		// object -> loop through it
@@ -581,5 +581,5 @@ module.exports = {
 	addProperty,
 	parseTopScope,
 	parseMerge,
-	updateProperty,
+	updateProperty
 };

@@ -28,68 +28,44 @@ exports[`entry transforms correctly using "fixture-2" data 1`] = `
 
 module.exports = {
 	entry: {
-        ed: 'index.js',
-        sheeran: \\"yea, good shit\\",
-        objects: are,
+        objects: \\"are\\",
 
-        super: [yeah, {
-            test: /\\\\.(js|vue)$/,
-            loader: 'eslint-loader',
+        super: [
+            \\"yeah\\",
+            {
+                test: new RegExp(/\\\\.(js|vue)$/),
+                loader: \\"'eslint-loader'\\",
+                enforce: \\"'pre'\\",
+                include: [\\"customObj\\", \\"'Stringy'\\"],
+                options: {
+                    formatter: \\"'oki'\\",
+                    updateMe: \\"sure\\"
+                }
+            }
+        ],
+
+        nice: \\"':)'\\",
+        foo: \\"Promise.resolve()\\",
+        man: \\"() => duper\\",
+        mode: \\"yaaa\\",
+        objects: are not,
+
+        super: [op, {
+            test: /\\\\.(wasm|c)$/,
+            loader: 'pia-loader',
             enforce: 'pre',
-            include: [customObj, 'Stringy'],
+            include: [asd, 'Stringy'],
 
             options: {
-                formatter: 'someOption'
+                formatter: 'nao'
             }
         }],
 
-        nice: ':)',
+        nice: '=)',
         foo: Promise.resolve(),
-        man: () => duper
-    },
-	devtool: 'eval',
-	mode: 'development'
-}
-"
-`;
-
-exports[`entry transforms correctly using "fixture-2" data 2`] = `
-"const webpack = require(\\"webpack\\");
-
-module.exports = {
-	entry: 'src/index.js',
-	devtool: 'eval',
-	mode: 'development'
-}
-"
-`;
-
-exports[`entry transforms correctly using "fixture-2" data 3`] = `
-"const webpack = require(\\"webpack\\");
-
-module.exports = {
-	entry: {
-        ed: 'index.js',
-        sheeran: \\"yea, good shit\\",
-        a: aaaa.js,
-        b: bbbb.js
-    },
-	devtool: 'eval',
-	mode: 'development'
-}
-"
-`;
-
-exports[`mode transforms correctly using "fixture-2" data 1`] = `
-"const webpack = require(\\"webpack\\");
-
-module.exports = {
-	entry: {
-        ed: 'index.js',
-        sheeran: \\"yea, good shit\\"
-    },
-	devtool: 'eval',
-	mode: 'production'
+        man: () => nice!!,
+        mode: super-man
+    }
 }
 "
 `;

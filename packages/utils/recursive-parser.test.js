@@ -27,55 +27,28 @@ defineTest(
 	}
 );
 
-// Tests for _add_ command
 defineTest(
 	__dirname,
 	"entry",
 	"fixture-2",
 	{
-		objects: "are",
+		objects: "are not",
 		super: [
-			"yeah",
+			"op",
 			{
-				test: new RegExp(/\.(js|vue)$/),
-				loader: "'eslint-loader'",
+				test: new RegExp(/\.(wasm|c)$/),
+				loader: "'pia-loader'",
 				enforce: "'pre'",
-				include: ["customObj", "'Stringy'"],
+				include: ["asd", "'Stringy'"],
 				options: {
-					formatter: "'someOption'"
+					formatter: "'nao'"
 				}
 			}
 		],
-		nice: "':)'",
+		nice: "'=)'",
 		foo: "Promise.resolve()",
-		man: "() => duper"
-	},
-	"add"
-);
-
-defineTest(
-	__dirname,
-	"mode",
-	"fixture-2",
-	"'production'",
-	"add"
-);
-
-defineTest(
-	__dirname,
-	"entry",
-	"fixture-2",
-	"'src/index.js'",
-	"add"
-);
-
-defineTest(
-	__dirname,
-	"entry",
-	"fixture-2",
-	{
-		a: "aaaa.js",
-		b: "bbbb.js"
+		man: "() => nice!!",
+		mode: "super-man"
 	},
 	"add"
 );

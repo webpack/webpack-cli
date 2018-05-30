@@ -2,9 +2,24 @@ const webpack = require("webpack");
 
 module.exports = {
 	entry: {
-        ed: 'index.js',
-        sheeran: "yea, good shit"
-    },
-	devtool: 'eval',
-	mode: 'development'
+            objects: "are",
+            super: [
+                "yeah",
+                {
+                    test: new RegExp(/\.(js|vue)$/),
+                    loader: "'eslint-loader'",
+                    enforce: "'pre'",
+                    include: ["customObj", "'Stringy'"],
+                    options: {
+                        formatter: "'oki'",
+                        updateMe: "sure"
+                    }
+                }
+            ],
+            nice: "':)'",
+            foo: "Promise.resolve()",
+            man: "() => duper",
+            mode: "yaaa"
+
+    }
 }

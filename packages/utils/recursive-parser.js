@@ -35,17 +35,12 @@ module.exports = function recursiveTransform(j, ast, value, action, key) {
 
 	if (node.size() !== 0) {
 		// select node with existing key
-		return utils.findRootNodesByName(
-			j, root, key
-		)
-			.forEach(p => {
-				if (action === "add") {
+		return utils.findRootNodesByName(j, root, key).forEach(p => {
+			if (action === "add") {
 				// update property/replace
-					j(p).replaceWith(
-						utils.updateProperty(j, p, key, value)
-					);
-				}
-			});
+				j(p).replaceWith(utils.updateProperty(j, p, key, value));
+			}
+		});
 	} else {
 		return root.forEach(p => {
 			if (value) {
