@@ -357,7 +357,7 @@ For more information, see https://webpack.js.org/api/cli/.`);
 				});
 
 				ifArg("display-entrypoints", function(bool) {
-					if (bool) outputOptions.entrypoints = true;
+					outputOptions.entrypoints = bool;
 				});
 
 				ifArg("display-reasons", function(bool) {
