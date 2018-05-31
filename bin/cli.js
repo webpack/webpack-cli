@@ -4,6 +4,7 @@
 	MIT License http://www.opensource.org/licenses/mit-license.php
 	Author Tobias Koppers @sokra
 */
+
 (function() {
 	// wrap in IIFE to be able to use return
 
@@ -505,9 +506,6 @@ For more information, see https://webpack.js.org/api/cli/.`);
 								"\n\n"
 							);
 						}
-					} else {
-						const statsString = stats.toString(outputOptions);
-						if (statsString) stdout.write(statsString + "\n");
 					}
 					const statsString = stats.toString(outputOptions);
 					const delimiter = outputOptions.buildDelimiter
