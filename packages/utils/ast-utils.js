@@ -14,6 +14,10 @@ function safeTraverse(obj, paths) {
 	return val;
 }
 
+function safeTraverseAndGetType(p, traversalArray) {
+	return safeTraverse(p, traversalArray).type;
+}
+
 // Convert nested MemberExpressions to strings like webpack.optimize.DedupePlugin
 function memberExpressionToPathString(path) {
 	if (path && path.object) {
@@ -526,8 +530,10 @@ function updateProperty(j, p, key, value) {
 	if (Array.isArray(value)) {
 		let arrExp = j.arrayExpression([]);
 		if (
-			safeTraverse(p, ["value", "value"]) &&
-			p.value.value.type === "ArrayExpression"
+			safeTraverseAndGetType(
+				p,
+				["value", "value"]
+			) === "ArrayExpression"
 		) {
 			arrExp = p.value.value;
 		}
@@ -541,8 +547,10 @@ function updateProperty(j, p, key, value) {
 	) {
 		let objectExp = j.objectExpression([]);
 		if (
-			safeTraverse(p, ["value", "value"]) &&
-			p.value.value.type === "ObjectExpression"
+			safeTraverseAndGetType(
+				p,
+				["value", "value"]
+			) === "ObjectExpression"
 		) {
 			objectExp = p.value.value;
 		}
