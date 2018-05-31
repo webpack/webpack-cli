@@ -4,7 +4,7 @@
   "description": "Utility files for webpack-scaffold",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest --detectOpenHandles"
   },
   "publishConfig": {
     "access": "public"
