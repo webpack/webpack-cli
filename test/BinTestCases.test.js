@@ -167,8 +167,8 @@ describe("BinTestCases", function() {
 					try {
 						testAssertions(env.code, stdout, stderr);
 					} catch(e) {
-						console.log(`### stderr ###\n${env.stderr.join("")}`);
-						console.log(`### stdout ###\n${env.stdout.join("")}`);
+					//	console.log(`### stderr ###\n${env.stderr.join("")}`);
+					//	console.log(`### stdout ###\n${env.stdout.join("")}`);
 						throw e;
 					}
 				});

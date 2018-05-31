@@ -12,7 +12,7 @@ module.exports = function testAssertions(code, stdout, stderr) {
 	expect(stdout[9]).toContain("\"baz\": true");
 	expect(stdout[10]).toContain("}");
 	expect(stdout[12]).toContain("null.js");
-	expect(stdout[14]).toContain("./index.js");
-	expect(stdout[14]).toContain("[built]");
+	expect(stdout[13]).toContain("./index.js");
+	expect(stdout[13]).toContain("[built]");
 	expect(stderr).toHaveLength(0);
 };
