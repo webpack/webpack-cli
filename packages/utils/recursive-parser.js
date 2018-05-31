@@ -38,7 +38,7 @@ module.exports = function recursiveTransform(j, ast, value, action, key) {
 		return utils.findRootNodesByName(j, root, key).forEach(p => {
 			if (action === "add") {
 				// update property/replace
-				j(p).replaceWith(utils.updateProperty(j, p, key, value));
+				j(p).replaceWith(utils.addProperty(j, p, key, value, true));
 			}
 		});
 	} else {

@@ -14,8 +14,9 @@ function safeTraverse(obj, paths) {
 	return val;
 }
 
-function safeTraverseAndGetType(p, traversalArray) {
-	return safeTraverse(p, traversalArray).type;
+function safeTraverseAndGetType(p) {
+	const pathValue = safeTraverse(p, ["value", "value"]);
+	return pathValue ? pathValue.type : false;
 }
 
 // Convert nested MemberExpressions to strings like webpack.optimize.DedupePlugin
@@ -386,26 +387,37 @@ function getRequire(j, constName, packagePath) {
  * @param {Node} p - AST node
  * @param {String} key - key of a key/val object
  * @param {Any} value - Any type of object
+ * @param {Boolean} update - Flag to check if node needs to update
  * @returns {Node} - the created ast
  */
 
-function addProperty(j, p, key, value) {
-	let valForNode;
+function addProperty(j, p, key, value, update = false) {
 	if (!p) {
 		return;
 	}
+	let valForNode;
 	if (Array.isArray(value)) {
-		const arr = j.arrayExpression([]);
-		value.filter(val => val).forEach(val => {
-			addProperty(j, arr, null, val);
+		let arrExp = j.arrayExpression([]);
+		if (
+			safeTraverseAndGetType(p) === "ArrayExpression"
+		) {
+			arrExp = p.value.value;
+		}
+		value.forEach(val => {
+			addProperty(j, arrExp, null, val);
 		});
-		valForNode = arr;
+		valForNode = arrExp;
 	} else if (
 		typeof value === "object" &&
 		!(value.__paths || value instanceof RegExp)
 	) {
-		// object -> loop through it
 		let objectExp = j.objectExpression([]);
+		if (
+			safeTraverseAndGetType(p) === "ObjectExpression"
+		) {
+			objectExp = p.value.value;
+		}
+		// object -> loop through it
 		Object.keys(value).forEach(prop => {
 			addProperty(j, objectExp, prop, value[prop]);
 		});
@@ -419,6 +431,11 @@ function addProperty(j, p, key, value) {
 	} else {
 		pushVal = valForNode;
 	}
+
+	// incase of _add_ or while updating a property,
+	// we only return the generated pushVal which will be replace the node path
+	if (update) return pushVal;
+
 	if (p.properties) {
 		p.properties.push(pushVal);
 		return p;
@@ -510,66 +527,6 @@ function parseMerge(j, ast, value, action) {
 	} else {
 		return ast;
 	}
-}
-
-/**
- *
- * Recursively updates an object/property to a node
- * @param {any} j — jscodeshift API
- * @param {Node} p - AST node
- * @param {String} key - key of a key/val object
- * @param {Any} value - Any type of object
- * @returns {Node} - the updated ast
- */
-
-function updateProperty(j, p, key, value) {
-	if (!p) {
-		return;
-	}
-	let valForNode;
-	if (Array.isArray(value)) {
-		let arrExp = j.arrayExpression([]);
-		if (
-			safeTraverseAndGetType(
-				p,
-				["value", "value"]
-			) === "ArrayExpression"
-		) {
-			arrExp = p.value.value;
-		}
-		value.forEach(val => {
-			addProperty(j, arrExp, null, val);
-		});
-		valForNode = arrExp;
-	} else if (
-		typeof value === "object" &&
-		!(value.__paths || value instanceof RegExp)
-	) {
-		let objectExp = j.objectExpression([]);
-		if (
-			safeTraverseAndGetType(
-				p,
-				["value", "value"]
-			) === "ObjectExpression"
-		) {
-			objectExp = p.value.value;
-		}
-		// object -> loop through it
-		Object.keys(value).forEach(prop => {
-			addProperty(j, objectExp, prop, value[prop]);
-		});
-		valForNode = objectExp;
-	} else {
-		valForNode = createIdentifierOrLiteral(j, value);
-	}
-	let pushVal;
-	if (key) {
-		pushVal = j.property("init", j.identifier(key), valForNode);
-	} else {
-		pushVal = valForNode;
-	}
-	return pushVal;
-}
 
 module.exports = {
 	safeTraverse,
@@ -588,6 +545,5 @@ module.exports = {
 	getRequire,
 	addProperty,
 	parseTopScope,
-	parseMerge,
-	updateProperty
+	parseMerge
 };
