@@ -30,7 +30,7 @@
     "lint:codeOnly": "eslint \"{bin}/**/!(__testfixtures__)/*.js\" \"{bin}/**.js\"",
     "precommit": "lint-staged",
     "pretest": "npm run lint",
-    "test": "nyc lerna exec npm test",
+    "test": "jest && nyc lerna exec npm test",
     "reportCoverage": "nyc report --reporter=json && codecov -f coverage/coverage-final.json --disable=gcov",
     "jsdoc": "jsdoc -c jsdoc.json -r -d docs",
     "appveyor:lint": "lerna bootstrap && npm run lint",
@@ -56,6 +56,9 @@
     "coverageReporters": [
       "json",
       "html"
+    ],
+    "modulePathIgnorePatterns": [
+      "./packages"
     ]
   },
   "nyc": {
