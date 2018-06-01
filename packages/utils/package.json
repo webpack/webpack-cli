@@ -4,7 +4,7 @@
   "description": "webpack-cli utility files",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest --detectOpenHandles"
   },
   "publishConfig": {
     "access": "public"

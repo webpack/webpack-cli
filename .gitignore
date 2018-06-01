@@ -19,8 +19,8 @@ npm-debug.*
 yarn-error.log
 
 # Jest Coverage
-/coverage
-/.nyc_output
+coverage
+.nyc_output
 
 # Test Compilation
 test/js/*
