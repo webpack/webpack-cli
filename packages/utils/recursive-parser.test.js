@@ -29,8 +29,9 @@ defineTest(
 
 defineTest(
 	__dirname,
-	"entry",
+	"add",
 	"fixture-2",
+	"entry",
 	{
 		objects: "are not",
 		super: [
@@ -49,6 +50,5 @@ defineTest(
 		foo: "Promise.resolve()",
 		man: "() => nice!!",
 		mode: "super-man"
-	},
-	"add"
+	}
 );

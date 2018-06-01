@@ -1,6 +1,12 @@
 const validateIdentifier = require("./validate-identifier");
 
-// Traverse safely over a path object for array for paths
+/**
+ *
+ * Traverse safely over a path object for array for paths
+ * @param {Object} obj - Object on which we traverse
+ * @param {Array} paths - Array of strings containing the traversal path
+ * @returns {Any} Value at given traversal path
+ */
 function safeTraverse(obj, paths) {
 	let val = obj;
 	let idx = 0;
@@ -15,9 +21,14 @@ function safeTraverse(obj, paths) {
 	return val;
 }
 
-// Traverse safely and return `type` for path object with value.value property
-function safeTraverseAndGetType(p) {
-	const pathValue = safeTraverse(p, ["value", "value"]);
+/**
+ *
+ * Traverse safely and return `type` for path object with value.value property
+ * @param {Node} path - pathNode
+ * @returns {String|Boolean} type at given path.
+ */
+function safeTraverseAndGetType(path) {
+	const pathValue = safeTraverse(path, ["value", "value"]);
 	return pathValue ? pathValue.type : false;
 }
 
@@ -389,11 +400,11 @@ function getRequire(j, constName, packagePath) {
  * @param {Node} p - AST node
  * @param {String} key - key of a key/val object
  * @param {Any} value - Any type of object
- * @param {Boolean} update - Flag to check if node needs to update
+ * @param {String} action - Action to be done on the given ast
  * @returns {Node} - the created ast
  */
 
-function addProperty(j, p, key, value, update = false) {
+function addProperty(j, p, key, value, action) {
 	if (!p) {
 		return;
 	}
@@ -436,7 +447,7 @@ function addProperty(j, p, key, value, update = false) {
 
 	// incase of _add_ or while updating a property,
 	// we only return the generated pushVal which will be replace the node path
-	if (update) return pushVal;
+	if (action === "update") return pushVal;
 
 	if (p.properties) {
 		p.properties.push(pushVal);

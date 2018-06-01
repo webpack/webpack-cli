@@ -224,16 +224,18 @@ const a = { plugs: [] }
 		});
 
 		it("should safe traverse thrice", () => {
-			const VALUE = "a value";
+			const type = {
+				type: "NodeType"
+			};
 			const p = {
-				value: {
+				parent: {
 					value: {
-						value: VALUE
+						value: type
 					}
 				}
 			};
-			const require = utils.safeTraverse(p, ["value", "value", "value"]);
-			expect(require).toEqual(VALUE);
+			const require = utils.safeTraverse(p, ["parent", "value", "value"]);
+			expect(require).toEqual(type);
 		});
 	});
 
