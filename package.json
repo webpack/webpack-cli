@@ -126,6 +126,7 @@
     "jest": "^22.4.4",
     "jest-cli": "^23.0.1",
     "jsdoc": "^3.5.5",
+    "lerna": "^2.11.0",
     "lint-staged": "^7.1.2",
     "nyc": "^11.8.0",
     "prettier-eslint-cli": "^4.7.1",
