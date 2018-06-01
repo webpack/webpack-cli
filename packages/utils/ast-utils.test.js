@@ -213,16 +213,16 @@ const a = { plugs: [] }
 
 	describe("safeTraverse", () => {
 		it("should safe traverse", () => {
-			const type = {
+			const testObject = {
 				type: "NodeType"
 			};
 			const p = {
-				value: {
-					value: type
+				foo: {
+					bar: testObject
 				}
 			};
-			const require = utils.safeTraverse(p, ["value", "value"]);
-			expect(require).toEqual(type);
+			const require = utils.safeTraverse(p, ["foo", "bar"]);
+			expect(require).toEqual(testObject);
 		});
 
 		it("should safe traverse thrice", () => {
