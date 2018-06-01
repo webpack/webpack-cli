@@ -447,7 +447,7 @@ function addProperty(j, p, key, value, action) {
 
 	// incase of _add_ or while updating a property,
 	// we only return the generated pushVal which will be replace the node path
-	if (action === "update") return pushVal;
+	if (action === "add") return pushVal;
 
 	if (p.properties) {
 		p.properties.push(pushVal);

@@ -266,4 +266,88 @@ const a = { plugs: [] }
 			expect(require).toEqual(false);
 		});
 	});
+
+	describe("addProperty", () => {
+		it("add entry property while init", () => {
+			const ast = j("module.exports = {}");
+			const propertyValue = {
+				objects: "are",
+				super: [
+					"yeah",
+					{
+						test: new RegExp(/\.(js|vue)$/),
+						loader: "'eslint-loader'",
+						enforce: "'pre'",
+						include: ["customObj", "'Stringy'"],
+						options: {
+							formatter: "'someOption'"
+						}
+					}
+				],
+				nice: "':)'",
+				foo: "Promise.resolve()",
+				man: "() => duper"
+			};
+
+			const root = ast
+				.find(j.ObjectExpression);
+
+			root.forEach(p => {
+				utils.addProperty(j, p, "entry", propertyValue);
+			});
+
+			expect(ast.toSource()).toMatchSnapshot();
+		});
+
+		it("add entry property while add", () => {
+			const ast = j(`module.exports = {
+				entry: {
+					objects: are,
+
+					super: [yeah, {
+					  test: /\\\\.(js|vue)$/,
+					  loader: 'eslint-loader',
+					  enforce: 'pre',
+					  include: [customObj, 'Stringy'],
+
+					  options: {
+						formatter: 'someOption'
+					  }
+					}],
+
+					nice: ':)',
+					foo: Promise.resolve(),
+					man: () => duper
+				}
+			}`);
+			const propertyValue = {
+				objects: "are not",
+				super: [
+					"op",
+					{
+						test: new RegExp(/\.(wasm|c)$/),
+						loader: "'pia-loader'",
+						enforce: "'pre'",
+						include: ["asd", "'Stringy'"],
+						options: {
+							formatter: "'nao'"
+						}
+					}
+				],
+				nice: "'=)'",
+				foo: "Promise.resolve()",
+				man: "() => nice!!",
+				mode: "super-man"
+			};
+
+			const root = ast
+				.find(j.ObjectExpression);
+
+			utils.findRootNodesByName(j, root, "entry").forEach(p => {
+				j(p).replaceWith(utils.addProperty(j, p, "entry", propertyValue, "add"));
+			});
+
+			expect(ast.toSource()).toMatchSnapshot();
+		});
+	});
 });
