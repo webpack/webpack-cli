@@ -62,4 +62,6 @@ jobs:
     - stage: NPM release
       if: branch = master
       node_js: "lts/*"
-      script: npm run travis-deploy-once "npm run semantic-release"
+      script: 
+        - npm run changelog
+        - npm run travis-deploy-once "npm run semantic-release"
