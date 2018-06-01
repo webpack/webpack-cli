@@ -210,4 +210,58 @@ const a = { plugs: [] }
 			expect(j(require).toSource()).toMatchSnapshot();
 		});
 	});
+
+	describe("safeTraverse", () => {
+		it("should safe traverse", () => {
+			const VALUE = "a value";
+			const p = {
+				value: {
+					value: VALUE
+				}
+			};
+			const require = utils.safeTraverse(p, ["value", "value"]);
+			expect(require).toEqual(VALUE);
+		});
+
+		it("should safe traverse thrice", () => {
+			const VALUE = "a value";
+			const p = {
+				value: {
+					value: {
+						value: VALUE
+					}
+				}
+			};
+			const require = utils.safeTraverse(p, ["value", "value", "value"]);
+			expect(require).toEqual(VALUE);
+		});
+	});
+
+	describe("safeTraverseAndGetType", () => {
+		it("should safe traverse and get type", () => {
+			const NODE_TYPE = "NodeType";
+			const p = {
+				value: {
+					value: {
+						type: NODE_TYPE
+					}
+				}
+			};
+			const require = utils.safeTraverseAndGetType(p);
+			expect(require).toEqual(NODE_TYPE);
+		});
+
+		it("should safe traverse and return false if not found", () => {
+			const NODE_TYPE = "NodeType";
+			const p = {
+				ed: {
+					sheeran: {
+						type: NODE_TYPE
+					}
+				}
+			};
+			const require = utils.safeTraverseAndGetType(p);
+			expect(require).toEqual(false);
+		});
+	});
 });

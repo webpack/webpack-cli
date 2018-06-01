@@ -1,5 +1,6 @@
 const validateIdentifier = require("./validate-identifier");
 
+// Traverse safely over a path object for array for paths
 function safeTraverse(obj, paths) {
 	let val = obj;
 	let idx = 0;
@@ -14,6 +15,7 @@ function safeTraverse(obj, paths) {
 	return val;
 }
 
+// Traverse safely and return `type` for path object with value.value property
 function safeTraverseAndGetType(p) {
 	const pathValue = safeTraverse(p, ["value", "value"]);
 	return pathValue ? pathValue.type : false;
@@ -527,9 +529,11 @@ function parseMerge(j, ast, value, action) {
 	} else {
 		return ast;
 	}
+}
 
 module.exports = {
 	safeTraverse,
+	safeTraverseAndGetType,
 	createProperty,
 	findPluginsByName,
 	findRootNodesByName,
