@@ -24,7 +24,7 @@ function safeTraverse(obj, paths) {
 /**
  *
  * Traverse safely and return `type` for path object with value.value property
- * @param {Node} path - pathNode
+ * @param {Node} path - AST node
  * @returns {String|Boolean} type at given path.
  */
 function safeTraverseAndGetType(path) {
@@ -359,7 +359,7 @@ function findVariableToPlugin(j, rootNode, pluginPackageName) {
 /**
  *
  * Returns true if type is given type
- * @param {Node} path - pathNode
+ * @param {Node} path - AST node
  * @param {String} type - node type
  * @returns {Boolean}
  */
@@ -445,7 +445,6 @@ function addProperty(j, p, key, value, action) {
 		pushVal = valForNode;
 	}
 
-	// incase of _add_ or while updating a property,
 	// we only return the generated pushVal which will be replace the node path
 	if (action === "add") return pushVal;
 

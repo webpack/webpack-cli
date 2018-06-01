@@ -236,8 +236,8 @@ const a = { plugs: [] }
 					}
 				}
 			};
-			const require = utils.safeTraverse(p, ["parent", "value", "value"]);
-			expect(require).toEqual(type);
+			const traversedValue = utils.safeTraverse(p, ["parent", "value", "value"]);
+			expect(traversedValue).toEqual(type);
 		});
 	});
 
@@ -251,43 +251,36 @@ const a = { plugs: [] }
 					}
 				}
 			};
-			const require = utils.safeTraverseAndGetType(p);
-			expect(require).toEqual(NODE_TYPE);
+			const typeValue = utils.safeTraverseAndGetType(p);
+			expect(typeValue).toEqual(NODE_TYPE);
 		});
 
 		it("should safe traverse and return false if not found", () => {
 			const NODE_TYPE = "NodeType";
 			const p = {
-				ed: {
-					sheeran: {
+				foo: {
+					bar: {
 						type: NODE_TYPE
 					}
 				}
 			};
-			const require = utils.safeTraverseAndGetType(p);
-			expect(require).toEqual(false);
+			const typeValue = utils.safeTraverseAndGetType(p);
+			expect(typeValue).toEqual(false);
 		});
 	});
 
 	describe("addProperty", () => {
-		it("add entry property while init", () => {
+		it("add entry property using init", () => {
 			const ast = j("module.exports = {}");
 			const propertyValue = {
 				objects: "are",
 				super: [
 					"yeah",
 					{
-						test: new RegExp(/\.(js|vue)$/),
 						loader: "'eslint-loader'",
-						enforce: "'pre'",
-						include: ["customObj", "'Stringy'"],
-						options: {
-							formatter: "'someOption'"
-						}
 					}
 				],
 				nice: "':)'",
-				foo: "Promise.resolve()",
 				man: "() => duper"
 			};
 
@@ -301,45 +294,28 @@ const a = { plugs: [] }
 			expect(ast.toSource()).toMatchSnapshot();
 		});
 
-		it("add entry property while add", () => {
+		it("add entry property using add", () => {
 			const ast = j(`module.exports = {
 				entry: {
 					objects: are,
-
 					super: [yeah, {
-					  test: /\\\\.(js|vue)$/,
-					  loader: 'eslint-loader',
-					  enforce: 'pre',
-					  include: [customObj, 'Stringy'],
-
 					  options: {
 						formatter: 'someOption'
 					  }
 					}],
-
-					nice: ':)',
-					foo: Promise.resolve(),
 					man: () => duper
 				}
 			}`);
 			const propertyValue = {
-				objects: "are not",
+				objects: "are",
 				super: [
-					"op",
+					"yeah",
 					{
-						test: new RegExp(/\.(wasm|c)$/),
-						loader: "'pia-loader'",
-						enforce: "'pre'",
-						include: ["asd", "'Stringy'"],
-						options: {
-							formatter: "'nao'"
-						}
+						loader: "'eslint-loader'",
 					}
 				],
-				nice: "'=)'",
-				foo: "Promise.resolve()",
-				man: "() => nice!!",
-				mode: "super-man"
+				nice: "':)'",
+				man: "() => duper"
 			};
 
 			const root = ast
