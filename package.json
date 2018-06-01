@@ -30,12 +30,12 @@
     "lint:codeOnly": "eslint \"{bin}/**/!(__testfixtures__)/*.js\" \"{bin}/**.js\"",
     "precommit": "lint-staged",
     "pretest": "npm run lint",
-    "test": "jest && nyc lerna exec npm test",
+    "test": "nyc jest",
     "reportCoverage": "nyc report --reporter=json && codecov -f coverage/coverage-final.json --disable=gcov",
     "jsdoc": "jsdoc -c jsdoc.json -r -d docs",
     "appveyor:lint": "lerna bootstrap && npm run lint",
-    "appveyor:test": "lerna run test",
-    "travis:integration": "lerna run test && npm run reportCoverage",
+    "appveyor:test": "npm run test",
+    "travis:integration": "npm run test && npm run reportCoverage",
     "travis:lint": "lerna bootstrap && npm run lint && npm run bundlesize",
     "bundlesize": "bundlesize",
     "changelog": "conventional-changelog --config ./build/changelog-generator/index.js --infile CHANGELOG.md --same-file",
@@ -56,9 +56,6 @@
     "coverageReporters": [
       "json",
       "html"
-    ],
-    "modulePathIgnorePatterns": [
-      "./packages"
     ]
   },
   "nyc": {
