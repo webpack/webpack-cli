@@ -1,0 +1,287 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`utils Inquirer should make an Input object with validation 1`] = `
+Object {
+  "message": "what is your plugin?",
+  "name": "plugins",
+  "type": "input",
+  "validate": [Function],
+}
+`;
+
+exports[`utils createArrowFunction should stringify an arrow function 1`] = `"() => 'app.js'"`;
+
+exports[`utils createAssetFilterFunction should stringify an assetFilterFunction 1`] = `
+"function (assetFilename) {
+ return assetFilename.endsWith('.js');
+}"
+`;
+
+exports[`utils createDynamicPromise should stringify an array 1`] = `"() => new Promise((resolve) => resolve(['app.js','index.js']))"`;
+
+exports[`utils createDynamicPromise should stringify an single value 1`] = `"() => new Promise((resolve) => resolve('app.js'))"`;
+
+exports[`utils createExternalFunction should stringify an ExternalFunction 1`] = `
+"
+ function (context, request, callback) {
+ if (/js/.test(request)){
+   return callback(null, 'commonjs' + request);
+}
+callback();
+}"
+`;
+
+exports[`utils createRegularFunction should stringify an regular function 1`] = `
+"function () {
+ return 'app.js'
+}"
+`;
+
+exports[`utils createRequire should stringify an require statement 1`] = `"const webpack = require('webpack');"`;
+
+exports[`utils parseValue should parse value 1`] = `
+Collection {
+  "__paths": Array [
+    NodePath {
+      "__childCache": null,
+      "name": null,
+      "parentPath": null,
+      "value": Node {
+        "end": 4,
+        "loc": SourceLocation {
+          "end": Object {
+            "column": 4,
+            "line": 1,
+          },
+          "indent": 0,
+          "lines": Lines {
+            "length": 1,
+            "name": null,
+            Symbol(recastLinesSecret): Object {
+              "cachedSourceMap": null,
+              "infos": Array [
+                Object {
+                  "indent": 4,
+                  "line": "	",
+                  "locked": false,
+                  "sliceEnd": 1,
+                  "sliceStart": 1,
+                },
+              ],
+              "mappings": Array [],
+              "name": null,
+            },
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "program": Node {
+          "body": Array [],
+          "end": 4,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 4,
+              "line": 1,
+            },
+            "indent": 4,
+            "lines": Lines {
+              "length": 1,
+              "name": null,
+              Symbol(recastLinesSecret): Object {
+                "cachedSourceMap": null,
+                "infos": Array [
+                  Object {
+                    "indent": 4,
+                    "line": "	",
+                    "locked": false,
+                    "sliceEnd": 1,
+                    "sliceStart": 1,
+                  },
+                ],
+                "mappings": Array [],
+                "name": null,
+              },
+            },
+            "start": Object {
+              "column": 4,
+              "line": 1,
+            },
+          },
+          "sourceType": "module",
+          "start": 0,
+          "type": "Program",
+        },
+        "start": 0,
+        "type": "File",
+      },
+    },
+  ],
+  "_parent": undefined,
+  "_types": Array [
+    "File",
+    "Node",
+    "Printable",
+  ],
+}
+`;
+
+exports[`utils parseValue should parse value with raw value 1`] = `
+Collection {
+  "__paths": Array [
+    NodePath {
+      "__childCache": null,
+      "name": null,
+      "parentPath": null,
+      "value": Node {
+        "end": 5,
+        "loc": SourceLocation {
+          "end": Object {
+            "column": 5,
+            "line": 1,
+          },
+          "indent": 0,
+          "lines": Lines {
+            "length": 1,
+            "name": null,
+            Symbol(recastLinesSecret): Object {
+              "cachedSourceMap": null,
+              "infos": Array [
+                Object {
+                  "indent": 0,
+                  "line": "hello",
+                  "locked": false,
+                  "sliceEnd": 5,
+                  "sliceStart": 0,
+                },
+              ],
+              "mappings": Array [],
+              "name": null,
+            },
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "program": Node {
+          "body": Array [
+            Node {
+              "end": 5,
+              "expression": Node {
+                "end": 5,
+                "loc": SourceLocation {
+                  "end": Position {
+                    "column": 5,
+                    "line": 1,
+                  },
+                  "identifierName": "hello",
+                  "indent": 0,
+                  "lines": Lines {
+                    "length": 1,
+                    "name": null,
+                    Symbol(recastLinesSecret): Object {
+                      "cachedSourceMap": null,
+                      "infos": Array [
+                        Object {
+                          "indent": 0,
+                          "line": "hello",
+                          "locked": false,
+                          "sliceEnd": 5,
+                          "sliceStart": 0,
+                        },
+                      ],
+                      "mappings": Array [],
+                      "name": null,
+                    },
+                  },
+                  "start": Position {
+                    "column": 0,
+                    "line": 1,
+                  },
+                },
+                "name": "hello",
+                "start": 0,
+                "type": "Identifier",
+              },
+              "loc": SourceLocation {
+                "end": Position {
+                  "column": 5,
+                  "line": 1,
+                },
+                "indent": 0,
+                "lines": Lines {
+                  "length": 1,
+                  "name": null,
+                  Symbol(recastLinesSecret): Object {
+                    "cachedSourceMap": null,
+                    "infos": Array [
+                      Object {
+                        "indent": 0,
+                        "line": "hello",
+                        "locked": false,
+                        "sliceEnd": 5,
+                        "sliceStart": 0,
+                      },
+                    ],
+                    "mappings": Array [],
+                    "name": null,
+                  },
+                },
+                "start": Position {
+                  "column": 0,
+                  "line": 1,
+                },
+              },
+              "start": 0,
+              "type": "ExpressionStatement",
+            },
+          ],
+          "end": 5,
+          "loc": SourceLocation {
+            "end": Object {
+              "column": 5,
+              "line": 1,
+            },
+            "indent": 0,
+            "lines": Lines {
+              "length": 1,
+              "name": null,
+              Symbol(recastLinesSecret): Object {
+                "cachedSourceMap": null,
+                "infos": Array [
+                  Object {
+                    "indent": 0,
+                    "line": "hello",
+                    "locked": false,
+                    "sliceEnd": 5,
+                    "sliceStart": 0,
+                  },
+                ],
+                "mappings": Array [],
+                "name": null,
+              },
+            },
+            "start": Object {
+              "column": 0,
+              "line": 1,
+            },
+          },
+          "sourceType": "module",
+          "start": 0,
+          "type": "Program",
+        },
+        "start": 0,
+        "type": "File",
+      },
+    },
+  ],
+  "_parent": undefined,
+  "_types": Array [
+    "File",
+    "Node",
+    "Printable",
+  ],
+}
+`;

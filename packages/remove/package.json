@@ -1,0 +1,16 @@
+{
+  "name": "@webpack-cli/remove",
+  "version": "0.0.4",
+  "description": "Scaffold for removing elements from configurations",
+  "main": "index.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@webpack-cli/generators": "^0.0.4",
+    "@webpack-cli/utils": "^0.0.4"
+  }
+}

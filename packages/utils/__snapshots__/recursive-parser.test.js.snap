@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`add transforms correctly using "fixture-2" data 1`] = `
+"const webpack = require(\\"webpack\\");
+
+module.exports = {
+	entry: {
+        objects: \\"are\\",
+
+        super: [
+            \\"yeah\\",
+            {
+                test: new RegExp(/\\\\.(js|vue)$/),
+                loader: \\"'eslint-loader'\\",
+                enforce: \\"'pre'\\",
+                include: [\\"customObj\\", \\"'Stringy'\\"],
+                options: {
+                    formatter: \\"'oki'\\",
+                    updateMe: \\"sure\\"
+                }
+            }
+        ],
+
+        nice: \\"':)'\\",
+        foo: \\"Promise.resolve()\\",
+        man: \\"() => duper\\",
+        mode: \\"yaaa\\",
+        objects: are not,
+
+        super: [op, {
+            test: /\\\\.(wasm|c)$/,
+            loader: 'pia-loader',
+            enforce: 'pre',
+            include: [asd, 'Stringy'],
+
+            options: {
+                formatter: 'nao'
+            }
+        }],
+
+        nice: '=)',
+        foo: Promise.resolve(),
+        man: () => nice!!,
+        mode: super-man
+    }
+}
+"
+`;
+
+exports[`init transforms correctly using "fixture-1" data 1`] = `
+"module.exports = {
+  entry: {
+    objects: are,
+
+    super: [yeah, {
+      test: /\\\\.(js|vue)$/,
+      loader: 'eslint-loader',
+      enforce: 'pre',
+      include: [customObj, 'Stringy'],
+
+      options: {
+        formatter: 'someOption'
+      }
+    }],
+
+    nice: ':)',
+    foo: Promise.resolve(),
+    man: () => duper
+  }
+};"
+`;
