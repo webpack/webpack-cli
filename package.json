@@ -132,21 +132,6 @@
         }
       ]
     },
-    "prepare": [
-      {
-        "path": "@semantic-release/changelog",
-        "changelogFile": "CHANGELOG.md"
-      },
-      "@semantic-release/npm",
-      {
-        "assets": [
-          "package.json",
-          "bin/*.js",
-          "docs"
-        ],
-        "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
-      }
-    ],
     "generateNotes": {
       "preset": "angular",
       "writerOpts": {
@@ -164,16 +149,7 @@
           "breaking"
         ]
       }
-    },
-    "success": [
-      "@semantic-release/github",
-      {
-        "successComment": "Congratulations! :tada: This issue has been resolved in version ${nextRelease.version} :tada:\n\nThe release is available on [GitHub release](<github_release_url>). Thank you for contributing to webpack-cli! :blue_heart:"
-      }
-    ],
-    "publish": [
-      "@semantic-release/github"
-    ]
+    }
   },
   "dependencies": {
     "chalk": "^2.4.1",
