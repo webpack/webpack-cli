@@ -90,6 +90,85 @@
       "config": "./.cz-config.js"
     }
   },
+  "release": {
+    "analyzeCommits": {
+      "preset": "angular",
+      "releaseRules": [
+        {
+          "type": "chore",
+          "release": "patch"
+        },
+        {
+          "type": "feat",
+          "release": "minor"
+        },
+        {
+          "type": "ast",
+          "release": "patch"
+        },
+        {
+          "type": "fix",
+          "release": "patch"
+        },
+        {
+          "type": "break",
+          "release": "major"
+        },
+        {
+          "type": "cli",
+          "release": "patch"
+        },
+        {
+          "type": "misc",
+          "release": "patch"
+        },
+        {
+          "type": "tests",
+          "release": "patch"
+        },
+        {
+          "type": "docs",
+          "release": "patch"
+        }
+      ]
+    },
+    "prepare": [
+      {
+        "path": "@semantic-release/changelog",
+        "changelogFile": "CHANGELOG.md"
+      },
+      "@semantic-release/npm",
+      {
+        "assets": ["package.json", "bin/*.js", "docs"],
+        "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+      }
+    ],
+    "generateNotes": {
+      "preset": "angular",
+      "writerOpts": {
+        "commitsSort": [
+          "subject",
+          "scope"
+        ]
+      },
+      "parserOpts": {
+        "noteKeywords": [
+          "BREAKING CHANGE",
+          "BREAKING CHANGES",
+          "BREAKING",
+          "break",
+          "breaking"
+        ]
+      }
+    },
+    "success": [
+      "@semantic-release/github",
+      {
+        "successComment": "Congratulations! :tada: This issue has been resolved in version ${nextRelease.version} :tada:\n\nThe release is available on [GitHub release](<github_release_url>). Thank you for contributing to webpack-cli! :blue_heart:"
+      }
+    ],
+    "publish": ["@semantic-release/github"]
+  },
   "dependencies": {
     "chalk": "^2.4.1",
     "cross-spawn": "^6.0.5",
@@ -108,6 +187,7 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^6.2.0",
+    "@commitlint/config-angular": "^6.1.3",
     "@commitlint/config-lerna-scopes": "^6.1.3",
     "@commitlint/prompt-cli": "^6.1.3",
     "@commitlint/travis-cli": "^6.2.0",
