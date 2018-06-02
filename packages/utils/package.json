@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/utils",
-  "version": "0.0.4",
+  "version": "0.0.7",
   "description": "webpack-cli utility files",
   "main": "index.js",
   "scripts": {
