@@ -78,7 +78,7 @@ describe("BinTestCases", function() {
 			testName
 		);
 
-		const cmd = `${path.resolve(__dirname, "../cli.js")}`;
+		const cmd = `${path.resolve(__dirname, "..", "bin", "cli.js")}`;
 		const args = testArgs.concat(["--output-path", `${outputPath}`]);
 		const opts = {
 			cwd: testDirectory
@@ -167,8 +167,8 @@ describe("BinTestCases", function() {
 					try {
 						testAssertions(env.code, stdout, stderr);
 					} catch(e) {
-						console.log(`### stderr ###\n${env.stderr.join("")}`);
-						console.log(`### stdout ###\n${env.stdout.join("")}`);
+					//	console.log(`### stderr ###\n${env.stderr.join("")}`);
+					//	console.log(`### stdout ###\n${env.stdout.join("")}`);
 						throw e;
 					}
 				});

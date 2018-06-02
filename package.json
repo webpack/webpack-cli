@@ -30,12 +30,12 @@
     "lint:codeOnly": "eslint \"{bin}/**/!(__testfixtures__)/*.js\" \"{bin}/**.js\"",
     "precommit": "lint-staged",
     "pretest": "npm run lint",
-    "test": "lerna run test",
+    "test": "nyc jest",
     "reportCoverage": "nyc report --reporter=json && codecov -f coverage/coverage-final.json --disable=gcov",
     "jsdoc": "jsdoc -c jsdoc.json -r -d docs",
     "appveyor:lint": "lerna bootstrap && npm run lint",
-    "appveyor:test": "lerna run test",
-    "travis:integration": "lerna run test && npm run reportCoverage",
+    "appveyor:test": "npm run test",
+    "travis:integration": "npm run test && npm run reportCoverage",
     "travis:lint": "lerna bootstrap && npm run lint && npm run bundlesize",
     "bundlesize": "bundlesize",
     "changelog": "conventional-changelog --config ./build/changelog-generator/index.js --infile CHANGELOG.md --same-file",
@@ -56,15 +56,12 @@
     "coverageReporters": [
       "json",
       "html"
-    ],
-    "modulePathIgnorePatterns": [
-      "./packages"
     ]
   },
   "nyc": {
     "include": [
-      "utils/**.js",
-      "./cli.js"
+      "bin/**.js",
+      "packages/**/*.js"
     ],
     "reporter": [
       "lcov"
@@ -93,11 +90,89 @@
       "config": "./.cz-config.js"
     }
   },
+  "release": {
+    "analyzeCommits": {
+      "preset": "angular",
+      "releaseRules": [
+        {
+          "type": "chore",
+          "release": "patch"
+        },
+        {
+          "type": "feat",
+          "release": "minor"
+        },
+        {
+          "type": "ast",
+          "release": "patch"
+        },
+        {
+          "type": "fix",
+          "release": "patch"
+        },
+        {
+          "type": "break",
+          "release": "major"
+        },
+        {
+          "type": "cli",
+          "release": "patch"
+        },
+        {
+          "type": "misc",
+          "release": "patch"
+        },
+        {
+          "type": "tests",
+          "release": "patch"
+        },
+        {
+          "type": "docs",
+          "release": "patch"
+        }
+      ]
+    },
+    "prepare": [
+      {
+        "path": "@semantic-release/changelog",
+        "changelogFile": "CHANGELOG.md"
+      },
+      "@semantic-release/npm",
+      {
+        "assets": ["package.json", "bin/*.js", "docs"],
+        "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+      }
+    ],
+    "generateNotes": {
+      "preset": "angular",
+      "writerOpts": {
+        "commitsSort": [
+          "subject",
+          "scope"
+        ]
+      },
+      "parserOpts": {
+        "noteKeywords": [
+          "BREAKING CHANGE",
+          "BREAKING CHANGES",
+          "BREAKING",
+          "break",
+          "breaking"
+        ]
+      }
+    },
+    "success": [
+      "@semantic-release/github",
+      {
+        "successComment": "Congratulations! :tada: This issue has been resolved in version ${nextRelease.version} :tada:\n\nThe release is available on [GitHub release](<github_release_url>). Thank you for contributing to webpack-cli! :blue_heart:"
+      }
+    ],
+    "publish": ["@semantic-release/github"]
+  },
   "dependencies": {
     "chalk": "^2.4.1",
     "cross-spawn": "^6.0.5",
     "enhanced-resolve": "^4.0.0",
-    "global-modules": "^1.0.0",
     "global-modules-path": "^2.1.0",
     "import-local": "^1.0.0",
     "inquirer": "^5.2.0",
@@ -112,20 +187,21 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^6.2.0",
+    "@commitlint/config-angular": "^6.1.3",
     "@commitlint/config-lerna-scopes": "^6.1.3",
     "@commitlint/prompt-cli": "^6.1.3",
     "@commitlint/travis-cli": "^6.2.0",
     "bundlesize": "^0.17.0",
     "codecov": "^3.0.2",
-    "commitizen": "^2.9.6",
-    "conventional-changelog-cli": "^1.3.22",
+    "commitizen": "^2.10.1",
+    "conventional-changelog-cli": "^2.0.0",
     "conventional-changelog-lint-config-cz": "^0.3.0",
     "cz-customizable": "^5.2.0",
     "eslint": "^4.19.1",
     "eslint-plugin-node": "^6.0.1",
     "husky": "^0.14.3",
     "jest": "^22.4.4",
-    "jest-cli": "^22.4.4",
+    "jest-cli": "^23.0.1",
     "jsdoc": "^3.5.5",
     "lerna": "^2.11.0",
     "lint-staged": "^7.1.2",

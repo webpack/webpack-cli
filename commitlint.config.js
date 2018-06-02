@@ -7,7 +7,7 @@
 "use strict";
 
 module.exports = {
-	extends: ["cz", "@commitlint/config-lerna-scopes"],
+	extends: ["cz", "@commitlint/config-lerna-scopes", "@commitlint/config-angular"],
 	rules: {
 		"body-leading-blank": [1, "always"],
 		"body-tense": [1, "always", ["present-imperative"]],
