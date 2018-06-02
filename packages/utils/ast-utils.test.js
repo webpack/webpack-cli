@@ -210,4 +210,122 @@ const a = { plugs: [] }
 			expect(j(require).toSource()).toMatchSnapshot();
 		});
 	});
+
+	describe("safeTraverse", () => {
+		it("should safe traverse", () => {
+			const testObject = {
+				type: "NodeType"
+			};
+			const p = {
+				foo: {
+					bar: testObject
+				}
+			};
+			const require = utils.safeTraverse(p, ["foo", "bar"]);
+			expect(require).toEqual(testObject);
+		});
+
+		it("should safe traverse thrice", () => {
+			const type = {
+				type: "NodeType"
+			};
+			const p = {
+				parent: {
+					value: {
+						value: type
+					}
+				}
+			};
+			const traversedValue = utils.safeTraverse(p, ["parent", "value", "value"]);
+			expect(traversedValue).toEqual(type);
+		});
+	});
+
+	describe("safeTraverseAndGetType", () => {
+		it("should safe traverse and get type", () => {
+			const NODE_TYPE = "NodeType";
+			const p = {
+				value: {
+					value: {
+						type: NODE_TYPE
+					}
+				}
+			};
+			const typeValue = utils.safeTraverseAndGetType(p);
+			expect(typeValue).toEqual(NODE_TYPE);
+		});
+
+		it("should safe traverse and return false if not found", () => {
+			const NODE_TYPE = "NodeType";
+			const p = {
+				foo: {
+					bar: {
+						type: NODE_TYPE
+					}
+				}
+			};
+			const typeValue = utils.safeTraverseAndGetType(p);
+			expect(typeValue).toEqual(false);
+		});
+	});
+
+	describe("addProperty", () => {
+		it("add entry property using init", () => {
+			const ast = j("module.exports = {}");
+			const propertyValue = {
+				objects: "are",
+				super: [
+					"yeah",
+					{
+						loader: "'eslint-loader'",
+					}
+				],
+				nice: "':)'",
+				man: "() => duper"
+			};
+
+			const root = ast
+				.find(j.ObjectExpression);
+
+			root.forEach(p => {
+				utils.addProperty(j, p, "entry", propertyValue);
+			});
+
+			expect(ast.toSource()).toMatchSnapshot();
+		});
+
+		it("add entry property using add", () => {
+			const ast = j(`module.exports = {
+				entry: {
+					objects: are,
+					super: [yeah, {
+					  options: {
+						formatter: 'someOption'
+					  }
+					}],
+					man: () => duper
+				}
+			}`);
+			const propertyValue = {
+				objects: "are",
+				super: [
+					"yeah",
+					{
+						loader: "'eslint-loader'",
+					}
+				],
+				nice: "':)'",
+				man: "() => duper"
+			};
+
+			const root = ast
+				.find(j.ObjectExpression);
+
+			utils.findRootNodesByName(j, root, "entry").forEach(p => {
+				j(p).replaceWith(utils.addProperty(j, p, "entry", propertyValue, "add"));
+			});
+
+			expect(ast.toSource()).toMatchSnapshot();
+		});
+	});
 });

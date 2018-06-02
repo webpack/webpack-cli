@@ -1,5 +1,12 @@
 const validateIdentifier = require("./validate-identifier");
 
+/**
+ *
+ * Traverse safely over a path object for array for paths
+ * @param {Object} obj - Object on which we traverse
+ * @param {Array} paths - Array of strings containing the traversal path
+ * @returns {Any} Value at given traversal path
+ */
 function safeTraverse(obj, paths) {
 	let val = obj;
 	let idx = 0;
@@ -12,6 +19,17 @@ function safeTraverse(obj, paths) {
 		idx++;
 	}
 	return val;
+}
+
+/**
+ *
+ * Traverse safely and return `type` for path object with value.value property
+ * @param {Node} path - AST node
+ * @returns {String|Boolean} type at given path.
+ */
+function safeTraverseAndGetType(path) {
+	const pathValue = safeTraverse(path, ["value", "value"]);
+	return pathValue ? pathValue.type : false;
 }
 
 // Convert nested MemberExpressions to strings like webpack.optimize.DedupePlugin
@@ -341,7 +359,7 @@ function findVariableToPlugin(j, rootNode, pluginPackageName) {
 /**
  *
  * Returns true if type is given type
- * @param {Node} path - pathNode
+ * @param {Node} path - AST node
  * @param {String} type - node type
  * @returns {Boolean}
  */
@@ -382,26 +400,37 @@ function getRequire(j, constName, packagePath) {
  * @param {Node} p - AST node
  * @param {String} key - key of a key/val object
  * @param {Any} value - Any type of object
+ * @param {String} action - Action to be done on the given ast
  * @returns {Node} - the created ast
  */
 
-function addProperty(j, p, key, value) {
-	let valForNode;
+function addProperty(j, p, key, value, action) {
 	if (!p) {
 		return;
 	}
+	let valForNode;
 	if (Array.isArray(value)) {
-		const arr = j.arrayExpression([]);
-		value.filter(val => val).forEach(val => {
-			addProperty(j, arr, null, val);
+		let arrExp = j.arrayExpression([]);
+		if (
+			safeTraverseAndGetType(p) === "ArrayExpression"
+		) {
+			arrExp = p.value.value;
+		}
+		value.forEach(val => {
+			addProperty(j, arrExp, null, val);
 		});
-		valForNode = arr;
+		valForNode = arrExp;
 	} else if (
 		typeof value === "object" &&
 		!(value.__paths || value instanceof RegExp)
 	) {
-		// object -> loop through it
 		let objectExp = j.objectExpression([]);
+		if (
+			safeTraverseAndGetType(p) === "ObjectExpression"
+		) {
+			objectExp = p.value.value;
+		}
+		// object -> loop through it
 		Object.keys(value).forEach(prop => {
 			addProperty(j, objectExp, prop, value[prop]);
 		});
@@ -415,6 +444,10 @@ function addProperty(j, p, key, value) {
 	} else {
 		pushVal = valForNode;
 	}
+
+	// we only return the generated pushVal which will be replace the node path
+	if (action === "add") return pushVal;
+
 	if (p.properties) {
 		p.properties.push(pushVal);
 		return p;
@@ -507,8 +540,10 @@ function parseMerge(j, ast, value, action) {
 		return ast;
 	}
 }
+
 module.exports = {
 	safeTraverse,
+	safeTraverseAndGetType,
 	createProperty,
 	findPluginsByName,
 	findRootNodesByName,

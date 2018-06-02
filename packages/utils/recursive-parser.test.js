@@ -23,6 +23,33 @@ defineTest(
 			}
 		],
 		nice: "':)'",
+		foo: "Promise.resolve()",
 		man: "() => duper"
+	}
+);
+
+defineTest(
+	__dirname,
+	"add",
+	"fixture-2",
+	"entry",
+	{
+		objects: "are not",
+		super: [
+			"op",
+			{
+				test: new RegExp(/\.(wasm|c)$/),
+				loader: "'pia-loader'",
+				enforce: "'pre'",
+				include: ["asd", "'Stringy'"],
+				options: {
+					formatter: "'nao'"
+				}
+			}
+		],
+		nice: "'=)'",
+		foo: "Promise.resolve()",
+		man: "() => nice!!",
+		mode: "super-man"
 	}
 );
