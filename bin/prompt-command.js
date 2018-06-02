@@ -30,8 +30,9 @@ const runCommand = (command, args) => {
 
 module.exports = function promptForInstallation(packages, ...args) {
 	const nameOfPackage = "@webpack-cli/" + packages;
-	let packageIsInstalled = false;
+	let packageIsInstalled = true;
 	let pathForCmd;
+	/*
 	try {
 		const path = require("path");
 		pathForCmd = path.resolve(
@@ -45,6 +46,7 @@ module.exports = function promptForInstallation(packages, ...args) {
 	} catch (err) {
 		packageIsInstalled = false;
 	}
+	*/
 	if (!packageIsInstalled) {
 		const path = require("path");
 		const fs = require("fs");
@@ -105,6 +107,6 @@ module.exports = function promptForInstallation(packages, ...args) {
 			}
 		});
 	} else {
-		require(pathForCmd)(...args); // eslint-disable-line
+		require("../packages/add")(...args); // eslint-disable-line
 	}
 };
