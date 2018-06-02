@@ -496,6 +496,17 @@ For more information, see https://webpack.js.org/api/cli/.`);
 					);
 				} else if (stats.hash !== lastHash) {
 					lastHash = stats.hash;
+					if (stats.compilation && stats.compilation.errors.length !== 0) {
+						const errors = stats.compilation.errors;
+						if (errors[0].name === "EntryModuleNotFoundError") {
+							console.error(
+								"\n\u001b[1m\u001b[31mInsufficient number of arguments or no entry found."
+							);
+							console.error(
+								"\u001b[1m\u001b[31mAlternatively, run 'webpack(-cli) --help' for usage info.\u001b[39m\u001b[22m\n"
+							);
+						}
+					}
 					const statsString = stats.toString(outputOptions);
 					const delimiter = outputOptions.buildDelimiter
 						? `${outputOptions.buildDelimiter}\n`
