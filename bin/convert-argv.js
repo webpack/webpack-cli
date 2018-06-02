@@ -398,7 +398,7 @@ module.exports = function(...args) {
 				defineObject = {};
 			},
 			function() {
-				const DefinePlugin = process.webpackModule.DefinePlugin;
+				const DefinePlugin = require("webpack").DefinePlugin;
 				addPlugin(options, new DefinePlugin(defineObject));
 			}
 		);
@@ -468,13 +468,13 @@ module.exports = function(...args) {
 		mapArgToBoolean("cache");
 
 		ifBooleanArg("hot", function() {
-			const HotModuleReplacementPlugin =
-				process.webpackModule.HotModuleReplacementPlugin;
+			const HotModuleReplacementPlugin = require("webpack")
+				.HotModuleReplacementPlugin;
 			addPlugin(options, new HotModuleReplacementPlugin());
 		});
 
 		ifBooleanArg("debug", function() {
-			const LoaderOptionsPlugin = process.webpackModule.LoaderOptionsPlugin;
+			const LoaderOptionsPlugin = require("webpack").LoaderOptionsPlugin;
 			addPlugin(
 				options,
 				new LoaderOptionsPlugin({
@@ -510,8 +510,8 @@ module.exports = function(...args) {
 		});
 
 		ifArg("optimize-max-chunks", function(value) {
-			const LimitChunkCountPlugin =
-				process.webpackModule.optimize.LimitChunkCountPlugin;
+			const LimitChunkCountPlugin = require("webpack").optimize
+				.LimitChunkCountPlugin;
 			addPlugin(
 				options,
 				new LimitChunkCountPlugin({
@@ -521,8 +521,7 @@ module.exports = function(...args) {
 		});
 
 		ifArg("optimize-min-chunk-size", function(value) {
-			const MinChunkSizePlugin =
-				process.webpackModule.optimize.MinChunkSizePlugin;
+			const MinChunkSizePlugin = require("webpack").optimize.MinChunkSizePlugin;
 			addPlugin(
 				options,
 				new MinChunkSizePlugin({
@@ -532,7 +531,7 @@ module.exports = function(...args) {
 		});
 
 		ifBooleanArg("optimize-minimize", function() {
-			const LoaderOptionsPlugin = process.webpackModule.LoaderOptionsPlugin;
+			const LoaderOptionsPlugin = require("webpack").LoaderOptionsPlugin;
 			addPlugin(
 				options,
 				new LoaderOptionsPlugin({
@@ -542,7 +541,7 @@ module.exports = function(...args) {
 		});
 
 		ifArg("prefetch", function(request) {
-			const PrefetchPlugin = process.webpackModule.PrefetchPlugin;
+			const PrefetchPlugin = require("webpack").PrefetchPlugin;
 			addPlugin(options, new PrefetchPlugin(request));
 		});
 
@@ -555,7 +554,7 @@ module.exports = function(...args) {
 			} else {
 				name = value;
 			}
-			const ProvidePlugin = process.webpackModule.ProvidePlugin;
+			const ProvidePlugin = require("webpack").ProvidePlugin;
 			addPlugin(options, new ProvidePlugin(name, value));
 		});
 

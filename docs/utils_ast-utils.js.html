@@ -1,4 +1,32 @@
-const validateIdentifier = require("./validate-identifier");
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: utils/ast-utils.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: utils/ast-utils.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const validateIdentifier = require("./validate-identifier");
 
 /**
  *
@@ -11,7 +39,7 @@ function safeTraverse(obj, paths) {
 	let val = obj;
 	let idx = 0;
 
-	while (idx < paths.length) {
+	while (idx &lt; paths.length) {
 		if (!val) {
 			return null;
 		}
@@ -34,7 +62,7 @@ function safeTraverseAndGetType(path) {
 
 // Convert nested MemberExpressions to strings like webpack.optimize.DedupePlugin
 function memberExpressionToPathString(path) {
-	if (path && path.object) {
+	if (path &amp;&amp; path.object) {
 		return [memberExpressionToPathString(path.object), path.property.name].join(
 			"."
 		);
@@ -42,7 +70,7 @@ function memberExpressionToPathString(path) {
 	return path.name;
 }
 
-// Convert Array<string> like ['webpack', 'optimize', 'DedupePlugin'] to nested MemberExpressions
+// Convert Array&lt;string> like ['webpack', 'optimize', 'DedupePlugin'] to nested MemberExpressions
 function pathsToMemberExpression(j, paths) {
 	if (!paths.length) {
 		return null;
@@ -164,7 +192,7 @@ function createLiteral(j, val) {
  */
 
 function createIdentifierOrLiteral(j, val) {
-	// IPath<IIdentifier> | IPath<ILiteral> doesn't work, find another way
+	// IPath&lt;IIdentifier> | IPath&lt;ILiteral> doesn't work, find another way
 	let literalVal = val;
 	// We'll need String to native type conversions
 	if (typeof val === "string" || val.__paths) {
@@ -256,7 +284,7 @@ function findAndRemovePluginByName(j, node, pluginName) {
 		.forEach(path => {
 			rootPath = safeTraverse(path, ["parent", "parent", "parent", "value"]);
 			const arrayPath = path.parent.value;
-			if (arrayPath.elements && arrayPath.elements.length === 1) {
+			if (arrayPath.elements &amp;&amp; arrayPath.elements.length === 1) {
 				j(path.parent.parent).remove();
 			} else {
 				j(path).remove();
@@ -419,7 +447,7 @@ function addProperty(j, p, key, value, action) {
 		});
 		valForNode = arrExp;
 	} else if (
-		typeof value === "object" &&
+		typeof value === "object" &amp;&amp;
 		!(value.__paths || value instanceof RegExp)
 	) {
 		let objectExp = j.objectExpression([]);
@@ -448,7 +476,7 @@ function addProperty(j, p, key, value, action) {
 		p.properties.push(pushVal);
 		return p;
 	}
-	if (p.value && p.value.properties) {
+	if (p.value &amp;&amp; p.value.properties) {
 		p.value.properties.push(pushVal);
 		return p;
 	}
@@ -476,7 +504,7 @@ function parseTopScope(j, ast, value, action) {
 		value.forEach(n => {
 			if (
 				!p.value.body[0].declarations ||
-				n.indexOf(p.value.body[0].declarations[0].id.name) <= 0
+				n.indexOf(p.value.body[0].declarations[0].id.name) &lt;= 0
 			) {
 				p.value.body.splice(-1, 0, n);
 			}
@@ -557,3 +585,26 @@ module.exports = {
 	parseTopScope,
 	parseMerge
 };
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AddGenerator.html">AddGenerator</a></li><li><a href="InitGenerator.html">InitGenerator</a></li><li><a href="LoaderGenerator.html">LoaderGenerator</a></li><li><a href="PluginGenerator.html">PluginGenerator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addonGenerator">addonGenerator</a></li><li><a href="global.html#addOrUpdateConfigObject">addOrUpdateConfigObject</a></li><li><a href="global.html#addProperty">addProperty</a></li><li><a href="global.html#createIdentifierOrLiteral">createIdentifierOrLiteral</a></li><li><a href="global.html#createLiteral">createLiteral</a></li><li><a href="global.html#createOrUpdatePluginByName">createOrUpdatePluginByName</a></li><li><a href="global.html#createProperty">createProperty</a></li><li><a href="global.html#defineTest">defineTest</a></li><li><a href="global.html#findAndRemovePluginByName">findAndRemovePluginByName</a></li><li><a href="global.html#findInvocation">findInvocation</a></li><li><a href="global.html#findPluginsArrayAndRemoveIfEmpty">findPluginsArrayAndRemoveIfEmpty</a></li><li><a href="global.html#findPluginsByName">findPluginsByName</a></li><li><a href="global.html#findRootNodesByName">findRootNodesByName</a></li><li><a href="global.html#findVariableToPlugin">findVariableToPlugin</a></li><li><a href="global.html#generatorCopy">generatorCopy</a></li><li><a href="global.html#generatorCopyTpl">generatorCopyTpl</a></li><li><a href="global.html#getPackageManager">getPackageManager</a></li><li><a href="global.html#getPathToGlobalPackages">getPathToGlobalPackages</a></li><li><a href="global.html#getRequire">getRequire</a></li><li><a href="global.html#getRootPathModule">getRootPathModule</a></li><li><a href="global.html#isType">isType</a></li><li><a href="global.html#loaderCreator">loaderCreator</a></li><li><a href="global.html#makeLoaderName">makeLoaderName</a></li><li><a href="global.html#mapOptionsToTransform">mapOptionsToTransform</a></li><li><a href="global.html#parseMerge">parseMerge</a></li><li><a href="global.html#parseTopScope">parseTopScope</a></li><li><a href="global.html#pluginCreator">pluginCreator</a></li><li><a href="global.html#processPromise">processPromise</a></li><li><a href="global.html#replaceAt">replaceAt</a></li><li><a href="global.html#resolvePackages">resolvePackages</a></li><li><a href="global.html#runMigration">runMigration</a></li><li><a href="global.html#runSingleTransform">runSingleTransform</a></li><li><a href="global.html#safeTraverse">safeTraverse</a></li><li><a href="global.html#safeTraverseAndGetType">safeTraverseAndGetType</a></li><li><a href="global.html#serve">serve</a></li><li><a href="global.html#spawnChild">spawnChild</a></li><li><a href="global.html#spawnNPM">spawnNPM</a></li><li><a href="global.html#spawnNPMWithArg">spawnNPMWithArg</a></li><li><a href="global.html#spawnYarn">spawnYarn</a></li><li><a href="global.html#spawnYarnWithArg">spawnYarnWithArg</a></li><li><a href="global.html#transform">transform</a></li><li><a href="global.html#traverseAndGetProperties">traverseAndGetProperties</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Jun 02 2018 17:44:07 GMT+0200 (CEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

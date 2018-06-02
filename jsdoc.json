@@ -1,9 +1,17 @@
 
 {
+  "tags": {
+    "allowUnknownTags": true
+  },
   "source": {
       "include": [
         "packages/"
       ],
-      "includePattern": "packages/.+\\.js$"
+      "exclude": [
+        "node_modules",
+        "packages/**/node_modules"
+      ],
+      "includePattern": "packages/*/.+\\.js$",
+      "excludePattern": "node_modules/*"
   }
 }

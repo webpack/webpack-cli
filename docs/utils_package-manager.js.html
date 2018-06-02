@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: utils/package-manager.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: utils/package-manager.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>"use strict";
+
+const path = require("path");
+const fs = require("fs");
+const spawn = require("cross-spawn");
+
+const SPAWN_FUNCTIONS = {
+	npm: spawnNPM,
+	yarn: spawnYarn
+};
+
+/**
+ *
+ * Spawns a new process using npm
+ *
+ * @param {String} pkg - The dependency to be installed
+ * @param {Boolean} isNew - indicates if it needs to be updated or installed
+ * @returns {Function} spawn - Installs the package
+ */
+
+function spawnNPM(pkg, isNew) {
+	return spawn.sync("npm", [isNew ? "install" : "update", "-g", pkg], {
+		stdio: "inherit"
+	});
+}
+
+/**
+ *
+ * Spawns a new process using yarn
+ *
+ * @param {String} pkg - The dependency to be installed
+ * @param {Boolean} isNew - indicates if it needs to be updated or installed
+ * @returns {Function} spawn - Installs the package
+ */
+
+function spawnYarn(pkg, isNew) {
+	return spawn.sync("yarn", ["global", isNew ? "add" : "upgrade", pkg], {
+		stdio: "inherit"
+	});
+}
+/**
+ *
+ * Spawns a new process that installs the addon/dependency
+ *
+ * @param {String} pkg - The dependency to be installed
+ * @returns {Function} spawn - Installs the package
+ */
+
+function spawnChild(pkg) {
+	const rootPath = getPathToGlobalPackages();
+	const pkgPath = path.resolve(rootPath, pkg);
+	const packageManager = getPackageManager();
+	const isNew = !fs.existsSync(pkgPath);
+
+	return SPAWN_FUNCTIONS[packageManager](pkg, isNew);
+}
+
+/**
+ *
+ * Returns the name of package manager to use,
+ * preferring yarn over npm if available
+ *
+ * @returns {String} - The package manager name
+ */
+
+function getPackageManager() {
+	const hasLocalNPM = fs.existsSync(
+		path.resolve(process.cwd(), "package-lock.json")
+	);
+	const hasLocalYarn = fs.existsSync(path.resolve(process.cwd(), "yarn.lock"));
+	if (hasLocalNPM) {
+		return "npm";
+	} else if (hasLocalYarn) {
+		return "yarn";
+	} else if (spawn.sync("yarn", [" --version"], { stdio: "ignore" }).error) {
+		return "npm";
+	} else {
+		return "yarn";
+	}
+}
+
+/**
+ *
+ * Returns the path to globally installed
+ * npm packages, depending on the available
+ * package manager determined by `getPackageManager`
+ *
+ * @returns {String} path - Path to global node_modules folder
+ */
+function getPathToGlobalPackages() {
+	const manager = getPackageManager();
+
+	if (manager === "yarn") {
+		try {
+			const yarnDir = spawn
+				.sync("yarn", ["global", "dir"])
+				.stdout.toString()
+				.trim();
+			return path.join(yarnDir, "node_modules");
+		} catch (e) {
+			// Default to the global npm path below
+		}
+	}
+
+	return require("global-modules");
+}
+
+module.exports = {
+	getPackageManager,
+	getPathToGlobalPackages,
+	spawnChild
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AddGenerator.html">AddGenerator</a></li><li><a href="InitGenerator.html">InitGenerator</a></li><li><a href="LoaderGenerator.html">LoaderGenerator</a></li><li><a href="PluginGenerator.html">PluginGenerator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addonGenerator">addonGenerator</a></li><li><a href="global.html#addOrUpdateConfigObject">addOrUpdateConfigObject</a></li><li><a href="global.html#addProperty">addProperty</a></li><li><a href="global.html#createIdentifierOrLiteral">createIdentifierOrLiteral</a></li><li><a href="global.html#createLiteral">createLiteral</a></li><li><a href="global.html#createOrUpdatePluginByName">createOrUpdatePluginByName</a></li><li><a href="global.html#createProperty">createProperty</a></li><li><a href="global.html#defineTest">defineTest</a></li><li><a href="global.html#findAndRemovePluginByName">findAndRemovePluginByName</a></li><li><a href="global.html#findInvocation">findInvocation</a></li><li><a href="global.html#findPluginsArrayAndRemoveIfEmpty">findPluginsArrayAndRemoveIfEmpty</a></li><li><a href="global.html#findPluginsByName">findPluginsByName</a></li><li><a href="global.html#findRootNodesByName">findRootNodesByName</a></li><li><a href="global.html#findVariableToPlugin">findVariableToPlugin</a></li><li><a href="global.html#generatorCopy">generatorCopy</a></li><li><a href="global.html#generatorCopyTpl">generatorCopyTpl</a></li><li><a href="global.html#getPackageManager">getPackageManager</a></li><li><a href="global.html#getPathToGlobalPackages">getPathToGlobalPackages</a></li><li><a href="global.html#getRequire">getRequire</a></li><li><a href="global.html#getRootPathModule">getRootPathModule</a></li><li><a href="global.html#isType">isType</a></li><li><a href="global.html#loaderCreator">loaderCreator</a></li><li><a href="global.html#makeLoaderName">makeLoaderName</a></li><li><a href="global.html#mapOptionsToTransform">mapOptionsToTransform</a></li><li><a href="global.html#parseMerge">parseMerge</a></li><li><a href="global.html#parseTopScope">parseTopScope</a></li><li><a href="global.html#pluginCreator">pluginCreator</a></li><li><a href="global.html#processPromise">processPromise</a></li><li><a href="global.html#replaceAt">replaceAt</a></li><li><a href="global.html#resolvePackages">resolvePackages</a></li><li><a href="global.html#runMigration">runMigration</a></li><li><a href="global.html#runSingleTransform">runSingleTransform</a></li><li><a href="global.html#safeTraverse">safeTraverse</a></li><li><a href="global.html#safeTraverseAndGetType">safeTraverseAndGetType</a></li><li><a href="global.html#serve">serve</a></li><li><a href="global.html#spawnChild">spawnChild</a></li><li><a href="global.html#spawnNPM">spawnNPM</a></li><li><a href="global.html#spawnNPMWithArg">spawnNPMWithArg</a></li><li><a href="global.html#spawnYarn">spawnYarn</a></li><li><a href="global.html#spawnYarnWithArg">spawnYarnWithArg</a></li><li><a href="global.html#transform">transform</a></li><li><a href="global.html#traverseAndGetProperties">traverseAndGetProperties</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Jun 02 2018 17:44:07 GMT+0200 (CEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

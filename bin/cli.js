@@ -16,16 +16,6 @@
 
 	require("v8-compile-cache");
 
-	// try local module, fallback to global
-	try {
-		require.resolve("webpack");
-		process.webpackModule = require("webpack");
-	} catch (err) {
-		const globalPathToWebpack = require("global-modules-path").getPath(
-			"webpack"
-		);
-		process.webpackModule = require(globalPathToWebpack);
-	}
 	const ErrorHelpers = require("./errorHelpers");
 
 	const NON_COMPILATION_ARGS = [
@@ -298,7 +288,7 @@ For more information, see https://webpack.js.org/api/cli/.`);
 			}
 
 			const firstOptions = [].concat(options)[0];
-			const statsPresetToOptions = process.webpackModule.Stats.presetToOptions;
+			const statsPresetToOptions = require("webpack").Stats.presetToOptions;
 
 			let outputOptions = options.stats;
 			if (
@@ -443,7 +433,7 @@ For more information, see https://webpack.js.org/api/cli/.`);
 				outputOptions.buildDelimiter = value;
 			});
 
-			const webpack = process.webpackModule;
+			const webpack = require("webpack");
 
 			let lastHash = null;
 			let compiler;
@@ -464,7 +454,7 @@ For more information, see https://webpack.js.org/api/cli/.`);
 			}
 
 			if (argv.progress) {
-				const ProgressPlugin = process.webpackModule.ProgressPlugin;
+				const ProgressPlugin = require("webpack").ProgressPlugin;
 				new ProgressPlugin({
 					profile: argv.profile
 				}).apply(compiler);

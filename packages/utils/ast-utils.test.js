@@ -236,7 +236,11 @@ const a = { plugs: [] }
 					}
 				}
 			};
-			const traversedValue = utils.safeTraverse(p, ["parent", "value", "value"]);
+			const traversedValue = utils.safeTraverse(p, [
+				"parent",
+				"value",
+				"value"
+			]);
 			expect(traversedValue).toEqual(type);
 		});
 	});
@@ -277,15 +281,14 @@ const a = { plugs: [] }
 				super: [
 					"yeah",
 					{
-						loader: "'eslint-loader'",
+						loader: "'eslint-loader'"
 					}
 				],
 				nice: "':)'",
 				man: "() => duper"
 			};
 
-			const root = ast
-				.find(j.ObjectExpression);
+			const root = ast.find(j.ObjectExpression);
 
 			root.forEach(p => {
 				utils.addProperty(j, p, "entry", propertyValue);
@@ -311,18 +314,19 @@ const a = { plugs: [] }
 				super: [
 					"yeah",
 					{
-						loader: "'eslint-loader'",
+						loader: "'eslint-loader'"
 					}
 				],
 				nice: "':)'",
 				man: "() => duper"
 			};
 
-			const root = ast
-				.find(j.ObjectExpression);
+			const root = ast.find(j.ObjectExpression);
 
 			utils.findRootNodesByName(j, root, "entry").forEach(p => {
-				j(p).replaceWith(utils.addProperty(j, p, "entry", propertyValue, "add"));
+				j(p).replaceWith(
+					utils.addProperty(j, p, "entry", propertyValue, "add")
+				);
 			});
 
 			expect(ast.toSource()).toMatchSnapshot();

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: generators/addon-generator.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: generators/addon-generator.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const path = require("path");
+const mkdirp = require("mkdirp");
+const Generator = require("yeoman-generator");
+const copyUtils = require("@webpack-cli/utils/copy-utils");
+
+/**
+ * Creates a Yeoman Generator that generates a project conforming
+ * to webpack-defaults.
+ *
+ * @param {any[]} prompts An array of Yeoman prompt objects
+ *
+ * @param {string} templateDir Absolute path to template directory
+ *
+ * @param {string[]} copyFiles An array of file paths (relative to `./templates`)
+ * of files to be copied to the generated project. File paths should be of the
+ * form `path/to/file.js.tpl`.
+ *
+ * @param {string[]} copyTemplateFiles An array of file paths (relative to
+ * `./templates`) of files to be copied to the generated project. Template
+ * file paths should be of the form `path/to/_file.js.tpl`.
+ *
+ * @param {Function} templateFn A function that is passed a generator instance and
+ * returns an object containing data to be supplied to the template files.
+ *
+ * @returns {Generator} A class extending Generator
+ */
+function addonGenerator(
+	prompts,
+	templateDir,
+	copyFiles,
+	copyTemplateFiles,
+	templateFn
+) {
+	//eslint-disable-next-line
+	return class extends Generator {
+		prompting() {
+			return this.prompt(prompts).then(props => {
+				this.props = props;
+			});
+		}
+
+		default() {
+			const currentDirName = path.basename(this.destinationPath());
+			if (currentDirName !== this.props.name) {
+				this.log(`
+				Your project must be inside a folder named ${this.props.name}
+				I will create this folder for you.
+				`);
+				mkdirp(this.props.name);
+				const pathToProjectDir = this.destinationPath(this.props.name);
+				this.destinationRoot(pathToProjectDir);
+			}
+		}
+
+		writing() {
+			this.copy = copyUtils.generatorCopy(this, templateDir);
+			this.copyTpl = copyUtils.generatorCopyTpl(
+				this,
+				templateDir,
+				templateFn(this)
+			);
+
+			copyFiles.forEach(this.copy);
+			copyTemplateFiles.forEach(this.copyTpl);
+		}
+
+		install() {
+			this.npmInstall(["webpack-defaults", "bluebird"], {
+				"save-dev": true
+			}).then(() => {
+				this.spawnCommand("npm", ["run", "defaults"]);
+			});
+		}
+	};
+}
+
+module.exports = addonGenerator;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AddGenerator.html">AddGenerator</a></li><li><a href="InitGenerator.html">InitGenerator</a></li><li><a href="LoaderGenerator.html">LoaderGenerator</a></li><li><a href="PluginGenerator.html">PluginGenerator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addonGenerator">addonGenerator</a></li><li><a href="global.html#addOrUpdateConfigObject">addOrUpdateConfigObject</a></li><li><a href="global.html#addProperty">addProperty</a></li><li><a href="global.html#createIdentifierOrLiteral">createIdentifierOrLiteral</a></li><li><a href="global.html#createLiteral">createLiteral</a></li><li><a href="global.html#createOrUpdatePluginByName">createOrUpdatePluginByName</a></li><li><a href="global.html#createProperty">createProperty</a></li><li><a href="global.html#defineTest">defineTest</a></li><li><a href="global.html#findAndRemovePluginByName">findAndRemovePluginByName</a></li><li><a href="global.html#findInvocation">findInvocation</a></li><li><a href="global.html#findPluginsArrayAndRemoveIfEmpty">findPluginsArrayAndRemoveIfEmpty</a></li><li><a href="global.html#findPluginsByName">findPluginsByName</a></li><li><a href="global.html#findRootNodesByName">findRootNodesByName</a></li><li><a href="global.html#findVariableToPlugin">findVariableToPlugin</a></li><li><a href="global.html#generatorCopy">generatorCopy</a></li><li><a href="global.html#generatorCopyTpl">generatorCopyTpl</a></li><li><a href="global.html#getPackageManager">getPackageManager</a></li><li><a href="global.html#getPathToGlobalPackages">getPathToGlobalPackages</a></li><li><a href="global.html#getRequire">getRequire</a></li><li><a href="global.html#getRootPathModule">getRootPathModule</a></li><li><a href="global.html#isType">isType</a></li><li><a href="global.html#loaderCreator">loaderCreator</a></li><li><a href="global.html#makeLoaderName">makeLoaderName</a></li><li><a href="global.html#mapOptionsToTransform">mapOptionsToTransform</a></li><li><a href="global.html#parseMerge">parseMerge</a></li><li><a href="global.html#parseTopScope">parseTopScope</a></li><li><a href="global.html#pluginCreator">pluginCreator</a></li><li><a href="global.html#processPromise">processPromise</a></li><li><a href="global.html#replaceAt">replaceAt</a></li><li><a href="global.html#resolvePackages">resolvePackages</a></li><li><a href="global.html#runMigration">runMigration</a></li><li><a href="global.html#runSingleTransform">runSingleTransform</a></li><li><a href="global.html#safeTraverse">safeTraverse</a></li><li><a href="global.html#safeTraverseAndGetType">safeTraverseAndGetType</a></li><li><a href="global.html#serve">serve</a></li><li><a href="global.html#spawnChild">spawnChild</a></li><li><a href="global.html#spawnNPM">spawnNPM</a></li><li><a href="global.html#spawnNPMWithArg">spawnNPMWithArg</a></li><li><a href="global.html#spawnYarn">spawnYarn</a></li><li><a href="global.html#spawnYarnWithArg">spawnYarnWithArg</a></li><li><a href="global.html#transform">transform</a></li><li><a href="global.html#traverseAndGetProperties">traverseAndGetProperties</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Jun 02 2018 17:44:07 GMT+0200 (CEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
