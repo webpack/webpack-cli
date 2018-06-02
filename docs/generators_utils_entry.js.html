@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: generators/utils/entry.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: generators/utils/entry.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>"use strict";
+
+const InputValidate = require("@webpack-cli/webpack-scaffold").InputValidate;
+const validate = require("./validate");
+
+/**
+ *
+ * Prompts for entry points, either if it has multiple or one entry
+ *
+ * @param	{Object} self 	- A variable holding the instance of the prompting
+ * @param	{Object} answer - Previous answer from asking if the user wants single or multiple entries
+ * @returns	{Object} An Object that holds the answers given by the user, later used to scaffold
+ */
+
+module.exports = (self, answer) => {
+	let entryIdentifiers;
+	let result;
+	if (answer["entryType"] === true) {
+		result = self
+			.prompt([
+				InputValidate(
+					"multipleEntries",
+					"Type the names you want for your modules (entry files), separated by comma [example: app,vendor]",
+					validate
+				)
+			])
+			.then(multipleEntriesAnswer => {
+				let webpackEntryPoint = {};
+				entryIdentifiers = multipleEntriesAnswer["multipleEntries"].split(",");
+				function forEachPromise(obj, fn) {
+					return obj.reduce((promise, prop) => {
+						const trimmedProp = prop.trim();
+						return promise.then(n => {
+							if (n) {
+								Object.keys(n).forEach(val => {
+									if (
+										n[val].charAt(0) !== "(" &amp;&amp;
+										n[val].charAt(0) !== "[" &amp;&amp;
+										!n[val].includes("function") &amp;&amp;
+										!n[val].includes("path") &amp;&amp;
+										!n[val].includes("process")
+									) {
+										n[val] = `\'${n[val].replace(/"|'/g, "").concat(".js")}\'`;
+									}
+									webpackEntryPoint[val] = n[val];
+								});
+							} else {
+								n = {};
+							}
+							return fn(trimmedProp);
+						});
+					}, Promise.resolve());
+				}
+				return forEachPromise(entryIdentifiers, entryProp =>
+					self.prompt([
+						InputValidate(
+							`${entryProp}`,
+							`What is the location of "${entryProp}"? [example: ./src/${entryProp}]`,
+							validate
+						)
+					])
+				).then(entryPropAnswer => {
+					Object.keys(entryPropAnswer).forEach(val => {
+						if (
+							entryPropAnswer[val].charAt(0) !== "(" &amp;&amp;
+							entryPropAnswer[val].charAt(0) !== "[" &amp;&amp;
+							!entryPropAnswer[val].includes("function") &amp;&amp;
+							!entryPropAnswer[val].includes("path") &amp;&amp;
+							!entryPropAnswer[val].includes("process")
+						) {
+							entryPropAnswer[val] = `\'${entryPropAnswer[val]
+								.replace(/"|'/g, "")
+								.concat(".js")}\'`;
+						}
+						webpackEntryPoint[val] = entryPropAnswer[val];
+					});
+					return webpackEntryPoint;
+				});
+			});
+	} else {
+		result = self
+			.prompt([
+				InputValidate(
+					"singularEntry",
+					"Which module will be the first to enter the application? [default: ./src/index]"
+				)
+			])
+			.then(singularEntryAnswer => {
+				let { singularEntry } = singularEntryAnswer;
+				if (singularEntry.indexOf("\"") >= 0) {
+					singularEntry = singularEntry.replace(/"/g, "'");
+				}
+				if (singularEntry.length &lt;= 0) {
+					self.usingDefaults = true;
+				}
+				return singularEntry;
+			});
+	}
+	return result;
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AddGenerator.html">AddGenerator</a></li><li><a href="InitGenerator.html">InitGenerator</a></li><li><a href="LoaderGenerator.html">LoaderGenerator</a></li><li><a href="PluginGenerator.html">PluginGenerator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addonGenerator">addonGenerator</a></li><li><a href="global.html#addOrUpdateConfigObject">addOrUpdateConfigObject</a></li><li><a href="global.html#addProperty">addProperty</a></li><li><a href="global.html#createIdentifierOrLiteral">createIdentifierOrLiteral</a></li><li><a href="global.html#createLiteral">createLiteral</a></li><li><a href="global.html#createOrUpdatePluginByName">createOrUpdatePluginByName</a></li><li><a href="global.html#createProperty">createProperty</a></li><li><a href="global.html#defineTest">defineTest</a></li><li><a href="global.html#findAndRemovePluginByName">findAndRemovePluginByName</a></li><li><a href="global.html#findInvocation">findInvocation</a></li><li><a href="global.html#findPluginsArrayAndRemoveIfEmpty">findPluginsArrayAndRemoveIfEmpty</a></li><li><a href="global.html#findPluginsByName">findPluginsByName</a></li><li><a href="global.html#findRootNodesByName">findRootNodesByName</a></li><li><a href="global.html#findVariableToPlugin">findVariableToPlugin</a></li><li><a href="global.html#generatorCopy">generatorCopy</a></li><li><a href="global.html#generatorCopyTpl">generatorCopyTpl</a></li><li><a href="global.html#getPackageManager">getPackageManager</a></li><li><a href="global.html#getPathToGlobalPackages">getPathToGlobalPackages</a></li><li><a href="global.html#getRequire">getRequire</a></li><li><a href="global.html#getRootPathModule">getRootPathModule</a></li><li><a href="global.html#isType">isType</a></li><li><a href="global.html#loaderCreator">loaderCreator</a></li><li><a href="global.html#makeLoaderName">makeLoaderName</a></li><li><a href="global.html#mapOptionsToTransform">mapOptionsToTransform</a></li><li><a href="global.html#parseMerge">parseMerge</a></li><li><a href="global.html#parseTopScope">parseTopScope</a></li><li><a href="global.html#pluginCreator">pluginCreator</a></li><li><a href="global.html#processPromise">processPromise</a></li><li><a href="global.html#replaceAt">replaceAt</a></li><li><a href="global.html#resolvePackages">resolvePackages</a></li><li><a href="global.html#runMigration">runMigration</a></li><li><a href="global.html#runSingleTransform">runSingleTransform</a></li><li><a href="global.html#safeTraverse">safeTraverse</a></li><li><a href="global.html#safeTraverseAndGetType">safeTraverseAndGetType</a></li><li><a href="global.html#serve">serve</a></li><li><a href="global.html#spawnChild">spawnChild</a></li><li><a href="global.html#spawnNPM">spawnNPM</a></li><li><a href="global.html#spawnNPMWithArg">spawnNPMWithArg</a></li><li><a href="global.html#spawnYarn">spawnYarn</a></li><li><a href="global.html#spawnYarnWithArg">spawnYarnWithArg</a></li><li><a href="global.html#transform">transform</a></li><li><a href="global.html#traverseAndGetProperties">traverseAndGetProperties</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Jun 02 2018 17:44:07 GMT+0200 (CEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

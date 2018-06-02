@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: migrate/uglifyJsPlugin/uglifyJsPlugin.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: migrate/uglifyJsPlugin/uglifyJsPlugin.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const {
+	findPluginsByName,
+	safeTraverse,
+	createProperty,
+	getRequire,
+	findPluginsArrayAndRemoveIfEmpty
+} = require("@webpack-cli/utils/ast-utils");
+
+/**
+ *
+ * Transform which:
+ * - Removes UglifyWebpackPlugin from plugins array, if no options is passed to the plugin.
+ *	 and adds `optimization.minimize: true` to config
+ *
+ * - If any configuration is passed to UglifyWebpackPlugin
+ *   plugin instantiation is moved to `optimization.minimizer`.
+ *
+ * @param {Object} j - jscodeshift top-level import
+ * @param {Node} ast - jscodeshift ast to transform
+ * @returns {Node} ast - jscodeshift ast
+ */
+
+module.exports = function(j, ast) {
+	let pluginVariableAssignment;
+
+	const searchForRequirePlugin = ast
+		.find(j.VariableDeclarator)
+		.filter(
+			j.filters.VariableDeclarator.requiresModule("uglifyjs-webpack-plugin")
+		);
+
+	/**
+	 * Look for a variable declaration which requires uglifyjs-webpack-plugin
+	 * saves the name of this variable.
+	 */
+	searchForRequirePlugin.forEach(node => {
+		pluginVariableAssignment = node.value.id.name;
+	});
+
+	pluginVariableAssignment = !pluginVariableAssignment
+		? "webpack.optimize.UglifyJsPlugin"
+		: pluginVariableAssignment;
+
+	findPluginsByName(j, ast, [pluginVariableAssignment]).forEach(node => {
+		let expressionContent;
+		const configBody = safeTraverse(node, ["parent", "parent", "parent"]);
+
+		// options passed to plugin
+		const pluginOptions = node.value.arguments;
+
+		/**
+		 * check if there are any options passed to UglifyWebpackPlugin
+		 * If so, they are moved to optimization.minimizer.
+		 * Otherwise, rely on default options
+		 */
+		if (pluginOptions.length) {
+			/*
+		 * If user is using UglifyJsPlugin directly from webpack
+		 * transformation must:
+		 * - remove it
+		 * - add require for uglify-webpack-plugin
+		 * - add to minimizer
+		 */
+			if (pluginVariableAssignment.includes("webpack")) {
+				// create require for uglify-webpack-plugin
+				const pathRequire = getRequire(
+					j,
+					"UglifyJsPlugin",
+					"uglifyjs-webpack-plugin"
+				);
+				// append to source code.
+				ast
+					.find(j.Program)
+					.replaceWith(p =>
+						j.program([].concat(pathRequire).concat(p.value.body))
+					);
+
+				expressionContent = j.property(
+					"init",
+					j.identifier("minimizer"),
+					j.arrayExpression([
+						j.newExpression(j.identifier("UglifyJsPlugin"), [pluginOptions[0]])
+					])
+				);
+			} else {
+				expressionContent = j.property(
+					"init",
+					j.identifier("minimizer"),
+					j.arrayExpression([node.value])
+				);
+			}
+		} else {
+			searchForRequirePlugin.forEach(node => j(node).remove());
+		}
+
+		const minimizeProperty = createProperty(j, "minimize", "true");
+		// creates optimization property at the body of the config.
+		if (expressionContent) {
+			configBody.value.properties.push(
+				j.property(
+					"init",
+					j.identifier("optimization"),
+					j.objectExpression([minimizeProperty, expressionContent])
+				)
+			);
+		} else {
+			configBody.value.properties.push(
+				j.property(
+					"init",
+					j.identifier("optimization"),
+					j.objectExpression([minimizeProperty])
+				)
+			);
+		}
+
+		// remove the old Uglify plugin from Plugins array.
+		j(node).remove();
+	});
+
+	findPluginsArrayAndRemoveIfEmpty(j, ast);
+
+	return ast;
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AddGenerator.html">AddGenerator</a></li><li><a href="InitGenerator.html">InitGenerator</a></li><li><a href="LoaderGenerator.html">LoaderGenerator</a></li><li><a href="PluginGenerator.html">PluginGenerator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addonGenerator">addonGenerator</a></li><li><a href="global.html#addOrUpdateConfigObject">addOrUpdateConfigObject</a></li><li><a href="global.html#addProperty">addProperty</a></li><li><a href="global.html#createIdentifierOrLiteral">createIdentifierOrLiteral</a></li><li><a href="global.html#createLiteral">createLiteral</a></li><li><a href="global.html#createOrUpdatePluginByName">createOrUpdatePluginByName</a></li><li><a href="global.html#createProperty">createProperty</a></li><li><a href="global.html#defineTest">defineTest</a></li><li><a href="global.html#findAndRemovePluginByName">findAndRemovePluginByName</a></li><li><a href="global.html#findInvocation">findInvocation</a></li><li><a href="global.html#findPluginsArrayAndRemoveIfEmpty">findPluginsArrayAndRemoveIfEmpty</a></li><li><a href="global.html#findPluginsByName">findPluginsByName</a></li><li><a href="global.html#findRootNodesByName">findRootNodesByName</a></li><li><a href="global.html#findVariableToPlugin">findVariableToPlugin</a></li><li><a href="global.html#generatorCopy">generatorCopy</a></li><li><a href="global.html#generatorCopyTpl">generatorCopyTpl</a></li><li><a href="global.html#getPackageManager">getPackageManager</a></li><li><a href="global.html#getPathToGlobalPackages">getPathToGlobalPackages</a></li><li><a href="global.html#getRequire">getRequire</a></li><li><a href="global.html#getRootPathModule">getRootPathModule</a></li><li><a href="global.html#isType">isType</a></li><li><a href="global.html#loaderCreator">loaderCreator</a></li><li><a href="global.html#makeLoaderName">makeLoaderName</a></li><li><a href="global.html#mapOptionsToTransform">mapOptionsToTransform</a></li><li><a href="global.html#parseMerge">parseMerge</a></li><li><a href="global.html#parseTopScope">parseTopScope</a></li><li><a href="global.html#pluginCreator">pluginCreator</a></li><li><a href="global.html#processPromise">processPromise</a></li><li><a href="global.html#replaceAt">replaceAt</a></li><li><a href="global.html#resolvePackages">resolvePackages</a></li><li><a href="global.html#runMigration">runMigration</a></li><li><a href="global.html#runSingleTransform">runSingleTransform</a></li><li><a href="global.html#safeTraverse">safeTraverse</a></li><li><a href="global.html#safeTraverseAndGetType">safeTraverseAndGetType</a></li><li><a href="global.html#serve">serve</a></li><li><a href="global.html#spawnChild">spawnChild</a></li><li><a href="global.html#spawnNPM">spawnNPM</a></li><li><a href="global.html#spawnNPMWithArg">spawnNPMWithArg</a></li><li><a href="global.html#spawnYarn">spawnYarn</a></li><li><a href="global.html#spawnYarnWithArg">spawnYarnWithArg</a></li><li><a href="global.html#transform">transform</a></li><li><a href="global.html#traverseAndGetProperties">traverseAndGetProperties</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Jun 02 2018 17:44:07 GMT+0200 (CEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
