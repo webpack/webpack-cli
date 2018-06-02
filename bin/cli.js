@@ -499,11 +499,11 @@ For more information, see https://webpack.js.org/api/cli/.`);
 					if (stats.compilation && stats.compilation.errors.length !== 0) {
 						const errors = stats.compilation.errors;
 						if (errors[0].name === "EntryModuleNotFoundError") {
-							stdout.write("\n" + errors[0].error.toString() + "\n");
-							stdout.write(
-								"\n" + "Insufficient number of arguments provided " +
-								"\n" + "Alternatively, run `webpack(-cli) --help` for usage info." +
-								"\n\n"
+							console.error(
+								"\n\u001b[1m\u001b[31mInsufficient number of arguments or no entry found."
+							);
+							console.error(
+								"\u001b[1m\u001b[31mAlternatively, run 'webpack(-cli) --help' for usage info.\u001b[39m\u001b[22m\n"
 							);
 						}
 					}
