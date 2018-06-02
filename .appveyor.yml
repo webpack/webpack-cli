@@ -13,6 +13,7 @@ build: off
 install:
   - ps: Install-Product node $env:nodejs_version $env:platform
   - npm i -g npm
+  - npm i
   - npm ci
   - npm install --global codecov
   - npm install eslint-plugin-node@latest --save-dev

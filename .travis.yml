@@ -3,6 +3,7 @@ notifications:
   email: false
 language: node_js
 node_js:
+  - "10"
   - "8"
   - "7"
   - "6"
@@ -49,6 +50,7 @@ install:
   - npm install -g codecov
   - npm install -g eslint
   - npm install -g greenkeeper-lockfile@1
+  - lerna bootstrap
 
 before_script: greenkeeper-lockfile-update
 after_script: greenkeeper-lockfile-upload
@@ -60,4 +62,6 @@ jobs:
     - stage: NPM release
       if: branch = master
       node_js: "lts/*"
-      script: npm run travis-deploy-once "npm run semantic-release"
+      script: 
+        - npm run changelog
+        - npm run travis-deploy-once "npm run semantic-release"
