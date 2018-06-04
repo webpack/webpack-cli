@@ -13,9 +13,7 @@ module.exports = _ => {
 		include: ["path.resolve(__dirname, 'src')"],
 		loader: "'babel-loader'",
 		options: {
-			presets: ["'env'", {
-				modules: false
-			}],
+			presets: [["'env'", { "'modules'": false }]],
 			plugins: ["'syntax-dynamic-import'"]
 		}
 	};
