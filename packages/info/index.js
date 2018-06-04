@@ -6,9 +6,9 @@ const envinfo = require("envinfo");
  * Prints debugging information for webpack issue reporting
  */
 
-module.exports = function info() {
+module.exports = async function info() {
 	console.log(
-		envinfo.run({
+		await envinfo.run({
 			System: ["OS", "CPU"],
 			Binaries: ["Node", "Yarn", "npm"],
 			Browsers: ["Chrome", "Firefox", "Safari"],
