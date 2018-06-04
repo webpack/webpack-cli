@@ -69,7 +69,6 @@ module.exports = class InitGenerator extends Generator {
 		this.configuration.config.webpackOptions.module = {
 			rules: []
 		};
-		this.configuration.config.webpackOptions.plugins = getDefaultPlugins();
 		this.configuration.config.topScope.push(
 			"const webpack = require('webpack')",
 			"const path = require('path')",
@@ -118,12 +117,12 @@ module.exports = class InitGenerator extends Generator {
 				}
 			})
 			.then(() => {
-				console.log(this.usingDefaults);
 				this.isProd = this.usingDefaults ? true : false;
 				this.configuration.config.configName = this.isProd ? "prod" : "dev";
 				this.configuration.config.webpackOptions.mode = this.isProd
 					? "'production'"
 					: "'development'";
+				this.configuration.config.webpackOptions.plugins = this.isProd ? [] : getDefaultPlugins();
 				return this.prompt([
 					Confirm("babelConfirm", "Will you be using ES2015?")
 				]);
