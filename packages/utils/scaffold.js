@@ -38,7 +38,7 @@ module.exports = function runTransform(webpackProperties, action) {
 	const webpackConfig = Object.keys(webpackProperties).filter(p => {
 		return p !== "configFile" && p !== "configPath";
 	});
-	const initActionNotDefined = action && action !== "init" ? true : false;
+	const addActionDefined = action && action === "add";
 
 	webpackConfig.forEach(scaffoldPiece => {
 		const config = webpackProperties[scaffoldPiece];
@@ -50,7 +50,7 @@ module.exports = function runTransform(webpackProperties, action) {
 			transformations.push("merge");
 		}
 		const ast = j(
-			initActionNotDefined
+			addActionDefined
 				? webpackProperties.configFile
 				: "module.exports = {}"
 		);
@@ -69,7 +69,7 @@ module.exports = function runTransform(webpackProperties, action) {
 					configurationName = "webpack." + config.configName + ".js";
 				}
 
-				const outputPath = initActionNotDefined
+				const outputPath = addActionDefined
 					? webpackProperties.configPath
 					: path.join(process.cwd(), configurationName);
 				const source = ast.toSource({
@@ -82,7 +82,7 @@ module.exports = function runTransform(webpackProperties, action) {
 				console.error(err.message ? err.message : err);
 			});
 	});
-	if (initActionNotDefined && webpackProperties.config.item) {
+	if (addActionDefined && webpackProperties.config.item) {
 		process.stdout.write(
 			"\n" +
 				chalk.green(

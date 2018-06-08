@@ -40,8 +40,7 @@ module.exports = function recursiveTransform(j, ast, key, value, action) {
 				// update property/replace
 				j(p).replaceWith(utils.addProperty(j, p, key, value, action));
 			} else if (action === "remove") {
-				// remove property
-				j(p).remove();
+				j(p).replaceWith(utils.addProperty(j, p, key, value, action));
 			}
 		});
 	} else {
