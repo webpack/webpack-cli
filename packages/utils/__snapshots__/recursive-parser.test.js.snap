@@ -25,23 +25,23 @@ module.exports = {
         foo: \\"Promise.resolve()\\",
         man: \\"() => duper\\",
         mode: \\"yaaa\\",
-        objects: are not,
+        objects: 'are not',
 
-        super: [op, {
-            test: /\\\\.(wasm|c)$/,
-            loader: 'pia-loader',
-            enforce: 'pre',
-            include: [asd, 'Stringy'],
+        super: ['op', {
+            test: '/\\\\.(wasm|c)$/',
+            loader: ''pia-loader'',
+            enforce: ''pre'',
+            include: ['asd', ''Stringy''],
 
             options: {
-                formatter: 'nao'
+                formatter: ''nao''
             }
         }],
 
-        nice: '=)',
-        foo: Promise.resolve(),
-        man: () => nice!!,
-        mode: super-man
+        nice: ''=)'',
+        foo: 'Promise.resolve()',
+        man: '() => nice!!',
+        mode: 'super-man'
     }
 }
 "
@@ -50,22 +50,22 @@ module.exports = {
 exports[`init transforms correctly using "fixture-1" data 1`] = `
 "module.exports = {
   entry: {
-    objects: are,
+    objects: 'are',
 
-    super: [yeah, {
-      test: /\\\\.(js|vue)$/,
-      loader: 'eslint-loader',
-      enforce: 'pre',
-      include: [customObj, 'Stringy'],
+    super: ['yeah', {
+      test: '/\\\\.(js|vue)$/',
+      loader: ''eslint-loader'',
+      enforce: ''pre'',
+      include: ['customObj', ''Stringy''],
 
       options: {
-        formatter: 'someOption'
+        formatter: ''someOption''
       }
     }],
 
-    nice: ':)',
-    foo: Promise.resolve(),
-    man: () => duper
+    nice: '':)'',
+    foo: 'Promise.resolve()',
+    man: '() => duper'
   }
 };"
 `;
