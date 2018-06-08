@@ -34,11 +34,13 @@ module.exports = class RemoveGenerator extends Generator {
 	}
 
 	getPropTypes() {
-		return Object.keys(this.configuration.config.webpackOptions);
+		return Object.keys(this.webpackOptions);
 	}
 
 	getModuleLoaders() {
-		return this.webpackOptions.module.rules.map(rule => rule ? rule.loader : null);
+		if (this.webpackOptions.module && this.webpackOptions.module.rules) {
+			return this.webpackOptions.module.rules.map(rule => rule ? rule.loader : null);
+		}
 	}
 
 	prompting() {
@@ -61,9 +63,15 @@ module.exports = class RemoveGenerator extends Generator {
 				propValue = this.webpackOptions[propType];
 				if (typeof propValue === "object") {
 					if (Array.isArray(propValue)) {
-						// TODO: handle Array<string>, Array<object>
-						console.log("TODO: array type node");
-						return;
+						return this.prompt([
+							List(
+								"arrayItem",
+								`Which key do you want to remove from ${propType}?`,
+								Array.from(propValue)
+							)
+						]).then(({ arrayItem }) => {
+							this.webpackOptions[propType] = propValue.filter(item => item !== arrayItem);
+						});
 					} else {
 						return this.prompt([
 							List(
@@ -76,22 +84,28 @@ module.exports = class RemoveGenerator extends Generator {
 								if (propType === "module" && keyType === "rules") {
 									return this.prompt([
 										List(
-											"rule",
+											"loader",
 											"Which loader do you want to remove?",
 											Array.from(this.getModuleLoaders())
 										)
 									])
-										.then(({ rule }) => {
-											const loaderIndex = this.getModuleLoaders().indexOf(rule);
-											this.webpackOptions.module.rules[loaderIndex] = null;
+										.then(({ loader }) => {
+											this.webpackOptions.module.rules =
+											this.webpackOptions.module.rules
+												.filter((rule) => rule.loader !== loader);
 										});
 								} else {
-									this.webpackOptions[propType][keyType] = null;
+									// remove the complete prop object if there is only one key
+									if (Object.keys(this.webpackOptions[propType]).length <= 1) {
+										delete this.webpackOptions[propType];
+									} else {
+										delete this.webpackOptions[propType][keyType];
+									}
 								}
 							});
 					}
 				} else {
-					this.webpackOptions[propType] = null;
+					delete this.webpackOptions[propType];
 				}
 			})
 			.then(() => {
