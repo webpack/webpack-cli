@@ -432,6 +432,7 @@ function addProperty(j, p, key, value, action) {
 		});
 		valForNode = objectExp;
 	} else {
+		value = `'${value}'`;
 		valForNode = createIdentifierOrLiteral(j, value);
 	}
 	let pushVal;
