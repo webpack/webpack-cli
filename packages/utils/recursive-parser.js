@@ -39,6 +39,8 @@ module.exports = function recursiveTransform(j, ast, key, value, action) {
 			if (action === "add") {
 				// update property/replace
 				j(p).replaceWith(utils.addProperty(j, p, key, value, action));
+			} else if (action === "remove") {
+				j(p).replaceWith(utils.addProperty(j, p, key, value, action));
 			}
 		});
 	} else {

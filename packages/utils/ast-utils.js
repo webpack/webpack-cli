@@ -436,6 +436,7 @@ function addProperty(j, p, key, value, action) {
 		});
 		valForNode = objectExp;
 	} else {
+		value = `'${value}'`;
 		valForNode = createIdentifierOrLiteral(j, value);
 	}
 	let pushVal;
@@ -446,7 +447,7 @@ function addProperty(j, p, key, value, action) {
 	}
 
 	// we only return the generated pushVal which will be replace the node path
-	if (action === "add") return pushVal;
+	if (action === "add" || action === "remove") return pushVal;
 
 	if (p.properties) {
 		p.properties.push(pushVal);

@@ -32,8 +32,8 @@
 		"init",
 		"migrate",
 		"add",
-		/*
 		"remove",
+		/*
 		"update",
 		"make",
 		*/
