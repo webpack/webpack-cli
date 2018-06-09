@@ -11,6 +11,13 @@ const modifyHelper = require("@webpack-cli/utils/modify-config-helper");
  *
  */
 
-module.exports = function add() {
-	return modifyHelper("add", defaultGenerator);
+module.exports = function add(...args) {
+	const DEFAULT_WEBPACK_CONFIG_FILENAME = "webpack.config.js";
+
+	const filePaths = args.slice(3);
+	let configFile = DEFAULT_WEBPACK_CONFIG_FILENAME;
+	if (filePaths.length) {
+		configFile = filePaths[0];
+	}
+	return modifyHelper("add", defaultGenerator, configFile);
 };

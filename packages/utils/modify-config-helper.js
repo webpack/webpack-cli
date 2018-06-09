@@ -4,8 +4,9 @@ const fs = require("fs");
 const path = require("path");
 const chalk = require("chalk");
 const yeoman = require("yeoman-environment");
-const runTransform = require("./scaffold");
 const Generator = require("yeoman-generator");
+const logSymbols = require("log-symbols");
+const runTransform = require("./scaffold");
 
 /**
  *
@@ -13,16 +14,42 @@ const Generator = require("yeoman-generator");
  * generator scaffold followed up by a transform
  *
  * @param {String} action — action to be done (add, remove, update, init)
- * @param {Class} name - Name for the given function
+ * @param {Class} generator - Yeoman generator class
+ * @param {String} configFile - Name of the existing/default webpack configuration file
+ * @param {Array} packages - List of packages to resolve
  * @returns {Function} runTransform - Returns a transformation instance
  */
 
-module.exports = function modifyHelperUtil(action, generator, packages) {
-	let configPath = path.resolve(process.cwd(), "webpack.config.js");
-	const webpackConfigExists = fs.existsSync(configPath);
-	if (!webpackConfigExists) {
-		configPath = null;
+module.exports = function modifyHelperUtil(action, generator, configFile, packages) {
+	let configPath = null;
+
+	if (action !== "init") {
+		configPath = path.resolve(process.cwd(), configFile);
+		const webpackConfigExists = fs.existsSync(configPath);
+		if (webpackConfigExists) {
+			process.stdout.write(
+				"\n" +
+					logSymbols.success +
+					chalk.green(" SUCCESS ") +
+					"Found config " +
+					chalk.cyan(configFile + "\n") +
+					"\n"
+			);
+		} else {
+			process.stdout.write(
+				"\n" +
+					logSymbols.error +
+					chalk.red(" ERROR ") +
+					chalk.cyan(configFile) +
+					" not found. Please specify a valid path to your webpack config like " +
+					chalk.white("$ ") +
+					chalk.cyan(`webpack-cli ${action} webpack.dev.js`) +
+					"\n"
+			);
+			return;
+		}
 	}
+
 	const env = yeoman.createEnv("webpack", null);
 	const generatorName = `webpack-${action}-generator`;
 
