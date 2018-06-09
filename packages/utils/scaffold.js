@@ -38,7 +38,7 @@ module.exports = function runTransform(webpackProperties, action) {
 	const webpackConfig = Object.keys(webpackProperties).filter(p => {
 		return p !== "configFile" && p !== "configPath";
 	});
-	const addActionDefined = action && action === "add";
+	const addActionDefined = action && action === "add" ? true : false;
 
 	webpackConfig.forEach(scaffoldPiece => {
 		const config = webpackProperties[scaffoldPiece];
