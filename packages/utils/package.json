@@ -18,6 +18,7 @@
     "got": "^8.3.1",
     "jest": "^22.4.4",
     "jscodeshift": "^0.5.0",
+    "log-symbols": "^2.2.0",
     "p-each-series": "^1.0.0",
     "prettier": "^1.12.1",
     "yeoman-environment": "^2.1.1",
