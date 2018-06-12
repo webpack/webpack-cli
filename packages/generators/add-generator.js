@@ -2,10 +2,7 @@ const Generator = require("yeoman-generator");
 const glob = require("glob-all");
 const path = require("path");
 const inquirerAutoComplete = require("inquirer-autocomplete-prompt");
-const Confirm = require("@webpack-cli/webpack-scaffold").Confirm;
-const List = require("@webpack-cli/webpack-scaffold").List;
-const Input = require("@webpack-cli/webpack-scaffold").Input;
-const AutoComplete = require("@webpack-cli/webpack-scaffold").AutoComplete;
+const { AutoComplete, Confirm, Input, List } = require("@webpack-cli/webpack-scaffold");
 
 const webpackSchema = require("./utils/optionsSchema.json");
 const webpackDevServerSchema = require("webpack-dev-server/lib/optionsSchema.json");
@@ -66,13 +63,11 @@ const traverseAndGetProperties = (arr, prop) => {
  */
 const searchProps = (answers, input) => {
 	input = input || "";
-	return new Promise(resolve => {
-		resolve(
-			PROPS.filter(food =>
-				food.toLowerCase().includes(input.toLowerCase())
-			)
-		);
-	});
+	return new Promise.resolve(
+		PROPS.filter(food =>
+			food.toLowerCase().includes(input.toLowerCase())
+		)
+	);
 };
 
 /**
