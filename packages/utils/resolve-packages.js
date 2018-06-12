@@ -3,7 +3,7 @@
 const path = require("path");
 const chalk = require("chalk");
 
-const modifyConfig = require("./modify-config-helper");
+const modifyConfigHelper = require("./modify-config-helper");
 
 const getPathToGlobalPackages = require("./package-manager")
 	.getPathToGlobalPackages;
@@ -45,7 +45,7 @@ function resolvePackages(pkg) {
 
 	function invokeGeneratorIfReady() {
 		if (packageLocations.length === pkg.length)
-			return modifyConfig("init", null, null, packageLocations);
+			return modifyConfigHelper("init", null, null, packageLocations);
 	}
 
 	pkg.forEach(addon => {

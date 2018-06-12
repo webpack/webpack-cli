@@ -1,12 +1,12 @@
 "use strict";
 
 const defaultGenerator = require("@webpack-cli/generators/add-generator");
-const modifyHelper = require("@webpack-cli/utils/modify-config-helper");
+const modifyConfigHelper = require("@webpack-cli/utils/modify-config-helper");
 
 /**
  * Is called and returns a scaffolding instance, adding properties
  *
- * @returns {Function} modifyHelper - A helper function that uses the action
+ * @returns {Function} modifyConfigHelper - A helper function that uses the action
  * 	we're given on a generator
  *
  */
@@ -19,5 +19,5 @@ module.exports = function add(...args) {
 	if (filePaths.length) {
 		configFile = filePaths[0];
 	}
-	return modifyHelper("add", defaultGenerator, configFile);
+	return modifyConfigHelper("add", defaultGenerator, configFile);
 };

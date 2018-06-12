@@ -2,7 +2,7 @@
 
 const npmPackagesExists = require("@webpack-cli/utils/npm-packages-exists");
 const defaultGenerator = require("@webpack-cli/generators/init-generator");
-const modifyHelper = require("@webpack-cli/utils/modify-config-helper");
+const modifyConfigHelper = require("@webpack-cli/utils/modify-config-helper");
 
 /**
  *
@@ -19,7 +19,7 @@ module.exports = function initializeInquirer(...args) {
 	const packages = args.slice(3);
 
 	if (packages.length === 0) {
-		return modifyHelper("init", defaultGenerator);
+		return modifyConfigHelper("init", defaultGenerator);
 	}
 	return npmPackagesExists(packages);
 };
