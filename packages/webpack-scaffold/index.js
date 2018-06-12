@@ -98,6 +98,14 @@ function Confirm(name, message) {
 	};
 }
 
+function AutoComplete(name, message, options = {}) {
+	return Object.assign({
+		type: "autocomplete",
+		name,
+		message,
+	}, options);
+}
+
 module.exports = {
 	createArrowFunction,
 	createDynamicPromise,
@@ -111,5 +119,6 @@ module.exports = {
 	CheckList,
 	Input,
 	InputValidate,
-	Confirm
+	Confirm,
+	AutoComplete
 };
