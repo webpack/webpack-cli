@@ -139,7 +139,11 @@
       },
       "@semantic-release/npm",
       {
-        "assets": ["package.json", "bin/*.js", "docs"],
+        "assets": [
+          "package.json",
+          "bin/*.js",
+          "docs"
+        ],
         "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
       }
     ],
@@ -167,10 +171,13 @@
         "successComment": "Congratulations! :tada: This issue has been resolved in version ${nextRelease.version} :tada:\n\nThe release is available on [GitHub release](<github_release_url>). Thank you for contributing to webpack-cli! :blue_heart:"
       }
     ],
-    "publish": ["@semantic-release/github"]
+    "publish": [
+      "@semantic-release/github"
+    ]
   },
   "dependencies": {
     "chalk": "^2.4.1",
+    "chokidar": "^2.0.3",
     "cross-spawn": "^6.0.5",
     "enhanced-resolve": "^4.0.0",
     "global-modules-path": "^2.1.0",
