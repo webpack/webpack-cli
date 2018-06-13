@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const defineTest_1 = require("@webpack-cli/utils/defineTest");
+const path_1 = require("path");
+const dirName = path_1.join(__dirname, "..");
+defineTest_1.default(dirName, "loaders", "loaders-0");
+defineTest_1.default(dirName, "loaders", "loaders-1");
+defineTest_1.default(dirName, "loaders", "loaders-2");
+defineTest_1.default(dirName, "loaders", "loaders-3");
+defineTest_1.default(dirName, "loaders", "loaders-4");
+defineTest_1.default(dirName, "loaders", "loaders-5");
+defineTest_1.default(dirName, "loaders", "loaders-6");
+defineTest_1.default(dirName, "loaders", "loaders-7");
+defineTest_1.default(dirName, "loaders", "loaders-8");

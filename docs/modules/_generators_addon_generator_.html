@@ -83,15 +83,15 @@
 				<h2>Functions</h2>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
 					<a name="addongenerator" class="tsd-anchor"></a>
-					<h3>addon<wbr>Generator</h3>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> addon<wbr>Generator</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">addon<wbr>Generator<span class="tsd-signature-symbol">(</span>prompts<span class="tsd-signature-symbol">: </span><a href="../interfaces/_add_node_modules__webpack_cli_generators_node_modules__webpack_cli_webpack_scaffold_index_.iinquirerscaffoldobject.html" class="tsd-signature-type">IInquirerScaffoldObject</a><span class="tsd-signature-symbol">[]</span>, templateDir<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, copyFiles<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span>, copyTemplateFiles<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span>, templateFn<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">AddOnGenerator</span></li>
+						<li class="tsd-signature tsd-kind-icon">addon<wbr>Generator<span class="tsd-signature-symbol">(</span>prompts<span class="tsd-signature-symbol">: </span><a href="_add_node_modules__webpack_cli_generators_utils_entry_.customgenerator.generator.html#questions" class="tsd-signature-type">Questions</a>, templateDir<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, copyFiles<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span>, copyTemplateFiles<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span>, templateFn<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Generator</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/webpack/webpack-cli/blob/398e39a/packages/generators/addon-generator.ts#L29">generators/addon-generator.ts:29</a></li>
+									<li>Defined in <a href="https://github.com/ematipico/webpack-cli/blob/f0031fd/packages/generators/addon-generator.ts#L28">generators/addon-generator.ts:28</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -103,42 +103,52 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>prompts: <a href="../interfaces/_add_node_modules__webpack_cli_generators_node_modules__webpack_cli_webpack_scaffold_index_.iinquirerscaffoldobject.html" class="tsd-signature-type">IInquirerScaffoldObject</a><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>prompts: <a href="_add_node_modules__webpack_cli_generators_utils_entry_.customgenerator.generator.html#questions" class="tsd-signature-type">Questions</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>An array of Yeoman prompt objects</p>
+										<div class="lead">
+											<p>An array of Yeoman prompt objects</p>
+										</div>
 									</div>
 								</li>
 								<li>
 									<h5>templateDir: <span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Absolute path to template directory</p>
+										<div class="lead">
+											<p>Absolute path to template directory</p>
+										</div>
 									</div>
 								</li>
 								<li>
 									<h5>copyFiles: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>An array of file paths (relative to <code>./templates</code>)
-											of files to be copied to the generated project. File paths should be of the
-										form <code>path/to/file.js.tpl</code>.</p>
+										<div class="lead">
+											<p>An array of file paths (relative to <code>./templates</code>)
+												of files to be copied to the generated project. File paths should be of the
+											form <code>path/to/file.js.tpl</code>.</p>
+										</div>
 									</div>
 								</li>
 								<li>
 									<h5>copyTemplateFiles: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>An array of file paths (relative to
-											<code>./templates</code>) of files to be copied to the generated project. Template
-										file paths should be of the form <code>path/to/_file.js.tpl</code>.</p>
+										<div class="lead">
+											<p>An array of file paths (relative to
+												<code>./templates</code>) of files to be copied to the generated project. Template
+											file paths should be of the form <code>path/to/_file.js.tpl</code>.</p>
+										</div>
 									</div>
 								</li>
 								<li>
 									<h5>templateFn: <span class="tsd-signature-type">Function</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>A function that is passed a generator instance and
-										returns an object containing data to be supplied to the template files.</p>
+										<div class="lead">
+											<p>A function that is passed a generator instance and
+											returns an object containing data to be supplied to the template files.</p>
+										</div>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">AddOnGenerator</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Generator</span></h4>
 							<p>A class extending Generator</p>
 						</li>
 					</ul>

@@ -14,8 +14,7 @@ import npmPackagesExists from "@webpack-cli/utils/npm-packages-exists";
  */
 
 export default function initializeInquirer(...args: string[]): Function | void {
-	const packages = args.slice(3);
-
+	const packages: string[] = args.slice(3);
 	if (packages.length === 0) {
 		return modifyConfigHelper("init", defaultGenerator);
 	}

@@ -1,6 +1,14 @@
 {
 	"extends": "./tsconfig.base.json",
 	"compilerOptions": {
-		"allowJs": true
-	}
+		"allowJs": true,
+		"target": "es6",
+		"module": "commonjs",
+		"moduleResolution": "node",
+		// "allowJs": true,
+		"allowSyntheticDefaultImports": true,
+		"skipLibCheck": true
+	},
+	"include": ["packages/**/*.ts"],
+	"exclude": ["node_modules/**", "packages/*/node_modules/**", "lib/**/*.js", "./cli.js"]
 }
