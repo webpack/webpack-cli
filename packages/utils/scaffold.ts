@@ -4,14 +4,12 @@ import pEachSeries = require("p-each-series");
 import * as path from "path";
 import { getPackageManager } from "./package-manager";
 
-import { findProjectRoot } from "./path-utils";
-
-import { Error } from "./types";
-import { Config, TransformConfig } from "./types";
+import { Config, TransformConfig } from "./modify-config-helper";
 import propTypes from "./prop-types";
 import astTransform from "./recursive-parser";
 import runPrettier from "./run-prettier";
 import { Node } from "./types/NodePath";
+import { Error } from "./types/index";
 
 /**
  *
