@@ -3,8 +3,14 @@
 'use strict';
 const semver = require('semver');
 const version = require('../package.json').engines.node;
+const importLocal = require("import-local");
 
 require("v8-compile-cache");
+
+// Prefer the local installation of webpack-cli
+if (importLocal(__filename)) {
+    return;
+}
 process.title = "webpack";
 
 
