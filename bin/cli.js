@@ -521,7 +521,7 @@ For more information, see https://webpack.js.org/api/cli/.`);
 				}
 				compiler.watch(watchOptions, compilerCallback);
 				if (outputOptions.infoVerbosity !== "none")
-					console.log("\nWebpack is watching the files…\n");
+					console.log("\nwebpack is watching the files…\n");
 			} else compiler.run(compilerCallback);
 		}
 
