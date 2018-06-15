@@ -11,6 +11,8 @@
 [![Dependency Status](https://david-dm.org/webpack/webpack-cli.svg)](https://david-dm.org/webpack/webpack-cli)
 [![Code Climate](https://codeclimate.com/github/webpack/webpack-cli/badges/gpa.svg)](https://codeclimate.com/github/webpack/webpack-cli)
 [![chat on gitter](https://badges.gitter.im/webpack/webpack.svg)](https://gitter.im/webpack/webpack)
+[![Greenkeeper badge](https://badges.greenkeeper.io/webpack/webpack-cli.svg)](https://greenkeeper.io/)
+[![Install Size](https://packagephobia.now.sh/badge?p=webpack-cli)](https://packagephobia.now.sh/result?p=webpack-cli)
 
 # Webpack CLI
 
@@ -28,7 +30,7 @@ The `migrate` feature eases the transition from [version 1](http://webpack.githu
 
 The `init` feature allows users to get started with webpack, fast. Through scaffolding, people can create their own configuration in order to faster initialize new projects for various of use cases.
 
-`webpack-cli init webpack-addons-<package>`
+`webpack-cli init webpack-scaffold-<package>`
 
 [Read more about scaffolding](SCAFFOLDING.md)
 

@@ -1,0 +1,18 @@
+{
+  "name": "@webpack-cli/init",
+  "version": "0.0.8",
+  "description": "init command for webpack-cli",
+  "main": "index.js",
+  "author": "",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@webpack-cli/generators": "^0.0.8",
+    "@webpack-cli/utils": "^0.0.8",
+    "chalk": "^2.4.1",
+    "jscodeshift": "^0.5.0",
+    "p-each-series": "^1.0.0"
+  }
+}

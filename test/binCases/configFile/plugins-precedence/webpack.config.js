@@ -1,4 +1,4 @@
-var DefinePlugin = require("webpack").DefinePlugin;
+var DefinePlugin = require('webpack').DefinePlugin;
 var path = require("path");
 
 module.exports = {

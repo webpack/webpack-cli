@@ -32,14 +32,12 @@ const Generator = require("yeoman-generator");
 const chalk = require("chalk");
 const logSymbols = require("log-symbols");
 
-const createCommonsChunkPlugin = require("webpack-addons")
-	.createCommonsChunkPlugin;
+const Input = require("@webpack-cli/webpack-scaffold").Input;
+const Confirm = require("@webpack-cli/webpack-scaffold").Confirm;
+const List = require("@webpack-cli/webpack-scaffold").List;
 
-const Input = require("webpack-addons").Input;
-const Confirm = require("webpack-addons").Confirm;
-const List = require("webpack-addons").List;
-
-const getPackageManager = require("../utils/package-manager").getPackageManager;
+const getPackageManager = require("@webpack-cli/utils/package-manager")
+	.getPackageManager;
 
 const entryQuestions = require("./utils/entry");
 const getBabelPlugin = require("./utils/module");
@@ -59,7 +57,13 @@ module.exports = class InitGenerator extends Generator {
 	constructor(args, opts) {
 		super(args, opts);
 		this.isProd = false;
-		this.dependencies = ["webpack", "webpack-cli", "uglifyjs-webpack-plugin"];
+		(this.usingDefaults = false),
+		(this.dependencies = [
+			"webpack",
+			"webpack-cli",
+			"uglifyjs-webpack-plugin",
+			"babel-plugin-syntax-dynamic-import"
+		]);
 		this.configuration = {
 			config: {
 				webpackOptions: {},
@@ -71,7 +75,6 @@ module.exports = class InitGenerator extends Generator {
 	prompting() {
 		const done = this.async();
 		const self = this;
-		let oneOrMoreEntries;
 		let regExpForStyles;
 		let ExtractUseProps;
 		let outputPath = "dist";
@@ -98,8 +101,6 @@ module.exports = class InitGenerator extends Generator {
 		this.configuration.config.topScope.push(
 			"const webpack = require('webpack')",
 			"const path = require('path')",
-			tooltip.uglify(),
-			"const UglifyJSPlugin = require('uglifyjs-webpack-plugin');",
 			"\n"
 		);
 
@@ -111,9 +112,9 @@ module.exports = class InitGenerator extends Generator {
 				return entryQuestions(self, entryTypeAnswer);
 			})
 			.then(entryOptions => {
-				this.configuration.config.webpackOptions.entry = entryOptions;
-				oneOrMoreEntries = Object.keys(entryOptions);
-
+				if (entryOptions !== "\"\"") {
+					this.configuration.config.webpackOptions.entry = entryOptions;
+				}
 				return this.prompt([
 					Input(
 						"outputType",
@@ -122,31 +123,35 @@ module.exports = class InitGenerator extends Generator {
 				]);
 			})
 			.then(outputTypeAnswer => {
-				if (!this.configuration.config.webpackOptions.entry.length) {
-					this.configuration.config.topScope.push(tooltip.commonsChunk());
+				// As entry is not required anymore and we dont set it to be an empty string or """""
+				// it can be undefined so falsy check is enough (vs entry.length);
+				if (
+					!this.configuration.config.webpackOptions.entry &amp;&amp;
+					!this.usingDefaults
+				) {
 					this.configuration.config.webpackOptions.output = {
 						filename: "'[name].[chunkhash].js'",
 						chunkFilename: "'[name].[chunkhash].js'"
 					};
-				} else {
+				} else if (!this.usingDefaults) {
 					this.configuration.config.webpackOptions.output = {
-						filename: "'[name].bundle.js'"
+						filename: "'[name].[chunkhash].js'"
 					};
 				}
 				if (outputTypeAnswer["outputType"].length) {
 					outputPath = outputTypeAnswer["outputType"];
 				}
-				this.configuration.config.webpackOptions.output.path = `path.resolve(__dirname, '${outputPath}')`;
+				if (!this.usingDefaults) {
+					this.configuration.config.webpackOptions.output.path = `path.resolve(__dirname, '${outputPath}')`;
+				}
 			})
 			.then(() => {
-				return this.prompt([
-					Confirm("prodConfirm", "Are you going to use this in production?")
-				]);
-			})
-			.then(
-				prodConfirmAnswer => (this.isProd = prodConfirmAnswer["prodConfirm"])
-			)
-			.then(() => {
+				console.log(this.usingDefaults);
+				this.isProd = this.usingDefaults ? true : false;
+				this.configuration.config.configName = this.isProd ? "prod" : "dev";
+				this.configuration.config.webpackOptions.mode = this.isProd
+					? "'production'"
+					: "'development'";
 				return this.prompt([
 					Confirm("babelConfirm", "Will you be using ES2015?")
 				]);
@@ -175,9 +180,7 @@ module.exports = class InitGenerator extends Generator {
 				]);
 			})
 			.then(stylingTypeAnswer => {
-				if (!this.isProd) {
-					ExtractUseProps = [];
-				}
+				ExtractUseProps = [];
 				switch (stylingTypeAnswer["stylingType"]) {
 					case "SASS":
 						this.dependencies.push(
@@ -188,20 +191,20 @@ module.exports = class InitGenerator extends Generator {
 						);
 						regExpForStyles = `${new RegExp(/\.(scss|css)$/)}`;
 						if (this.isProd) {
-							ExtractUseProps = `
-								use: [{
-									loader: "css-loader",
+							ExtractUseProps.push(
+								{
+									loader: "'css-loader'",
 									options: {
 										sourceMap: true
 									}
-								}, {
-									loader: "sass-loader",
+								},
+								{
+									loader: "'sass-loader'",
 									options: {
 										sourceMap: true
 									}
-								}],
-								fallback: "style-loader"
-							`;
+								}
+							);
 						} else {
 							ExtractUseProps.push(
 								{
@@ -225,20 +228,20 @@ module.exports = class InitGenerator extends Generator {
 							"css-loader"
 						);
 						if (this.isProd) {
-							ExtractUseProps = `
-								use: [{
-									loader: "css-loader",
+							ExtractUseProps.push(
+								{
+									loader: "'css-loader'",
 									options: {
 										sourceMap: true
 									}
-								}, {
-									loader: "less-loader",
+								},
+								{
+									loader: "'less-loader'",
 									options: {
 										sourceMap: true
 									}
-								}],
-								fallback: "style-loader"
-							`;
+								}
+							);
 						} else {
 							ExtractUseProps.push(
 								{
@@ -272,28 +275,26 @@ module.exports = class InitGenerator extends Generator {
 						);
 						regExpForStyles = `${new RegExp(/\.css$/)}`;
 						if (this.isProd) {
-							ExtractUseProps = `
-								use: [{
-									loader: "style-loader"
-								},{
-									loader: "css-loader",
+							ExtractUseProps.push(
+								{
+									loader: "'css-loader'",
 									options: {
 										sourceMap: true,
 										importLoaders: 1
 									}
-								}, {
-									loader: "postcss-loader",
+								},
+								{
+									loader: "'postcss-loader'",
 									options: {
-										plugins: function () {
+										plugins: `function () {
 											return [
 												precss,
 												autoprefixer
 											];
-										}
+										}`
 									}
-								}],
-								fallback: "style-loader"
-							`;
+								}
+							);
 						} else {
 							ExtractUseProps.push(
 								{
@@ -324,15 +325,12 @@ module.exports = class InitGenerator extends Generator {
 						this.dependencies.push("style-loader", "css-loader");
 						regExpForStyles = `${new RegExp(/\.css$/)}`;
 						if (this.isProd) {
-							ExtractUseProps = `
-								use: [{
-									loader: "css-loader",
-									options: {
-										sourceMap: true
-									}
-								}],
-								fallback: "style-loader"
-							`;
+							ExtractUseProps.push({
+								loader: "'css-loader'",
+								options: {
+									sourceMap: true
+								}
+							});
 						} else {
 							ExtractUseProps.push(
 								{
@@ -352,42 +350,48 @@ module.exports = class InitGenerator extends Generator {
 				}
 			})
 			.then(() => {
-				// Ask if the user wants to use extractPlugin
-				return this.prompt([
-					Input(
-						"extractPlugin",
-						"If you want to bundle your CSS files, what will you name the bundle? (press enter to skip)"
-					)
-				]);
+				if (this.isProd) {
+					// Ask if the user wants to use extractPlugin
+					return this.prompt([
+						Input(
+							"extractPlugin",
+							"If you want to bundle your CSS files, what will you name the bundle? (press enter to skip)"
+						)
+					]);
+				}
 			})
 			.then(extractPluginAnswer => {
-				const cssBundleName = extractPluginAnswer["extractPlugin"];
 				if (regExpForStyles) {
 					if (this.isProd) {
+						const cssBundleName = extractPluginAnswer["extractPlugin"];
 						this.configuration.config.topScope.push(tooltip.cssPlugin());
-						// TODO: Replace with regular version once v.4 is out
-						this.dependencies.push("extract-text-webpack-plugin@next");
+						this.dependencies.push("mini-css-extract-plugin");
 
 						if (cssBundleName.length !== 0) {
 							this.configuration.config.webpackOptions.plugins.push(
-								`new ExtractTextPlugin('${cssBundleName}.[contentHash].css')`
+								// TODO: use [contenthash] after it is supported
+								`new MiniCssExtractPlugin({ filename:'${cssBundleName}.[chunkhash].css' })`
 							);
 						} else {
 							this.configuration.config.webpackOptions.plugins.push(
-								"new ExtractTextPlugin('style.css')"
+								"new MiniCssExtractPlugin({ filename:'style.css' })"
 							);
 						}
 
+						ExtractUseProps.unshift({
+							loader: "MiniCssExtractPlugin.loader"
+						});
+
 						const moduleRulesObj = {
 							test: regExpForStyles,
-							use: `ExtractTextPlugin.extract({ ${ExtractUseProps} })`
+							use: ExtractUseProps
 						};
 
 						this.configuration.config.webpackOptions.module.rules.push(
 							moduleRulesObj
 						);
 						this.configuration.config.topScope.push(
-							"const ExtractTextPlugin = require('extract-text-webpack-plugin');",
+							"const MiniCssExtractPlugin = require('mini-css-extract-plugin');",
 							"\n"
 						);
 					} else {
@@ -401,41 +405,43 @@ module.exports = class InitGenerator extends Generator {
 						);
 					}
 				}
-			})
-			.then(() => {
-				if (this.configuration.config.webpackOptions.entry.length === 0) {
-					oneOrMoreEntries.forEach(prop => {
-						this.configuration.config.webpackOptions.plugins.push(
-							createCommonsChunkPlugin(prop)
-						);
-					});
-				}
+				// add splitChunks options for transparency
+				// defaults coming from: https://webpack.js.org/plugins/split-chunks-plugin/#optimization-splitchunks
+				this.configuration.config.topScope.push(tooltip.splitChunks());
+				this.configuration.config.webpackOptions.optimization = {
+					splitChunks: {
+						chunks: "'async'",
+						minSize: 30000,
+						minChunks: 1,
+						// for production name is recommended to be off
+						name: !this.isProd,
+						cacheGroups: {
+							vendors: {
+								test: "/[\\\\/]node_modules[\\\\/]/",
+								priority: -10
+							}
+						}
+					}
+				};
 				done();
 			});
 	}
-
 	installPlugins() {
-		const asyncNamePrompt = this.async();
-		const defaultName = this.isProd ? "prod" : "config";
-		this.prompt([
-			Input(
-				"nameType",
-				`Name your 'webpack.[name].js?' [default: '${defaultName}']:`
-			)
-		])
-			.then(nameTypeAnswer => {
-				this.configuration.config.configName = nameTypeAnswer["nameType"].length
-					? nameTypeAnswer["nameType"]
-					: defaultName;
-			})
-			.then(() => {
-				asyncNamePrompt();
-				this.runInstall(getPackageManager(), this.dependencies, {
-					"save-dev": true
-				});
-			});
+		if (this.isProd) {
+			this.dependencies = this.dependencies.filter(
+				p => p !== "uglifyjs-webpack-plugin"
+			);
+		} else {
+			this.configuration.config.topScope.push(
+				tooltip.uglify(),
+				"const UglifyJSPlugin = require('uglifyjs-webpack-plugin');",
+				"\n"
+			);
+		}
+		const packager = getPackageManager();
+		const opts = packager === "yarn" ? { dev: true } : { "save-dev": true };
+		this.runInstall(packager, this.dependencies, opts);
 	}
-
 	writing() {
 		this.config.set("configuration", this.configuration);
 	}
@@ -450,13 +456,13 @@ module.exports = class InitGenerator extends Generator {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AddGenerator.html">AddGenerator</a></li><li><a href="InitGenerator.html">InitGenerator</a></li><li><a href="LoaderGenerator.html">LoaderGenerator</a></li><li><a href="PluginGenerator.html">PluginGenerator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#checkIfExistsAndAddValue">checkIfExistsAndAddValue</a></li><li><a href="global.html#createArrayWithChildren">createArrayWithChildren</a></li><li><a href="global.html#createEmptyArrayProperty">createEmptyArrayProperty</a></li><li><a href="global.html#createExternalRegExp">createExternalRegExp</a></li><li><a href="global.html#createFunctionWithArguments">createFunctionWithArguments</a></li><li><a href="global.html#createIdentifierOrLiteral">createIdentifierOrLiteral</a></li><li><a href="global.html#createLiteral">createLiteral</a></li><li><a href="global.html#createObjectWithSuppliedProperty">createObjectWithSuppliedProperty</a></li><li><a href="global.html#createOrUpdatePluginByName">createOrUpdatePluginByName</a></li><li><a href="global.html#createProperty">createProperty</a></li><li><a href="global.html#defineTest">defineTest</a></li><li><a href="global.html#findInvocation">findInvocation</a></li><li><a href="global.html#findPluginsByName">findPluginsByName</a></li><li><a href="global.html#findRootNodesByName">findRootNodesByName</a></li><li><a href="global.html#findVariableToPlugin">findVariableToPlugin</a></li><li><a href="global.html#generatorCopy">generatorCopy</a></li><li><a href="global.html#generatorCopyTpl">generatorCopyTpl</a></li><li><a href="global.html#getPackageManager">getPackageManager</a></li><li><a href="global.html#getPathToGlobalPackages">getPathToGlobalPackages</a></li><li><a href="global.html#getRequire">getRequire</a></li><li><a href="global.html#getRootPathModule">getRootPathModule</a></li><li><a href="global.html#isAssignment">isAssignment</a></li><li><a href="global.html#isType">isType</a></li><li><a href="global.html#loaderCreator">loaderCreator</a></li><li><a href="global.html#loopThroughObjects">loopThroughObjects</a></li><li><a href="global.html#makeLoaderName">makeLoaderName</a></li><li><a href="global.html#mapOptionsToTransform">mapOptionsToTransform</a></li><li><a href="global.html#pluginCreator">pluginCreator</a></li><li><a href="global.html#processPromise">processPromise</a></li><li><a href="global.html#pushCreateProperty">pushCreateProperty</a></li><li><a href="global.html#pushObjectKeys">pushObjectKeys</a></li><li><a href="global.html#replaceAt">replaceAt</a></li><li><a href="global.html#resolvePackages">resolvePackages</a></li><li><a href="global.html#runMigration">runMigration</a></li><li><a href="global.html#runSingleTransform">runSingleTransform</a></li><li><a href="global.html#serve">serve</a></li><li><a href="global.html#spawnChild">spawnChild</a></li><li><a href="global.html#spawnNPM">spawnNPM</a></li><li><a href="global.html#spawnNPMWithArg">spawnNPMWithArg</a></li><li><a href="global.html#spawnYarn">spawnYarn</a></li><li><a href="global.html#spawnYarnWithArg">spawnYarnWithArg</a></li><li><a href="global.html#transform">transform</a></li><li><a href="global.html#traverseAndGetProperties">traverseAndGetProperties</a></li><li><a href="global.html#webpackGenerator">webpackGenerator</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AddGenerator.html">AddGenerator</a></li><li><a href="InitGenerator.html">InitGenerator</a></li><li><a href="LoaderGenerator.html">LoaderGenerator</a></li><li><a href="PluginGenerator.html">PluginGenerator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addonGenerator">addonGenerator</a></li><li><a href="global.html#addOrUpdateConfigObject">addOrUpdateConfigObject</a></li><li><a href="global.html#addProperty">addProperty</a></li><li><a href="global.html#createIdentifierOrLiteral">createIdentifierOrLiteral</a></li><li><a href="global.html#createLiteral">createLiteral</a></li><li><a href="global.html#createOrUpdatePluginByName">createOrUpdatePluginByName</a></li><li><a href="global.html#createProperty">createProperty</a></li><li><a href="global.html#defineTest">defineTest</a></li><li><a href="global.html#findAndRemovePluginByName">findAndRemovePluginByName</a></li><li><a href="global.html#findInvocation">findInvocation</a></li><li><a href="global.html#findPluginsArrayAndRemoveIfEmpty">findPluginsArrayAndRemoveIfEmpty</a></li><li><a href="global.html#findPluginsByName">findPluginsByName</a></li><li><a href="global.html#findRootNodesByName">findRootNodesByName</a></li><li><a href="global.html#findVariableToPlugin">findVariableToPlugin</a></li><li><a href="global.html#generatorCopy">generatorCopy</a></li><li><a href="global.html#generatorCopyTpl">generatorCopyTpl</a></li><li><a href="global.html#getPackageManager">getPackageManager</a></li><li><a href="global.html#getPathToGlobalPackages">getPathToGlobalPackages</a></li><li><a href="global.html#getRequire">getRequire</a></li><li><a href="global.html#getRootPathModule">getRootPathModule</a></li><li><a href="global.html#isType">isType</a></li><li><a href="global.html#loaderCreator">loaderCreator</a></li><li><a href="global.html#makeLoaderName">makeLoaderName</a></li><li><a href="global.html#mapOptionsToTransform">mapOptionsToTransform</a></li><li><a href="global.html#parseMerge">parseMerge</a></li><li><a href="global.html#parseTopScope">parseTopScope</a></li><li><a href="global.html#pluginCreator">pluginCreator</a></li><li><a href="global.html#processPromise">processPromise</a></li><li><a href="global.html#replaceAt">replaceAt</a></li><li><a href="global.html#resolvePackages">resolvePackages</a></li><li><a href="global.html#runMigration">runMigration</a></li><li><a href="global.html#runSingleTransform">runSingleTransform</a></li><li><a href="global.html#safeTraverse">safeTraverse</a></li><li><a href="global.html#safeTraverseAndGetType">safeTraverseAndGetType</a></li><li><a href="global.html#serve">serve</a></li><li><a href="global.html#spawnChild">spawnChild</a></li><li><a href="global.html#spawnNPM">spawnNPM</a></li><li><a href="global.html#spawnNPMWithArg">spawnNPMWithArg</a></li><li><a href="global.html#spawnYarn">spawnYarn</a></li><li><a href="global.html#spawnYarnWithArg">spawnYarnWithArg</a></li><li><a href="global.html#transform">transform</a></li><li><a href="global.html#traverseAndGetProperties">traverseAndGetProperties</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Apr 05 2018 03:21:04 GMT+0200 (CEST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Jun 02 2018 17:44:07 GMT+0200 (CEST)
 </footer>
 
 <script> prettyPrint(); </script>

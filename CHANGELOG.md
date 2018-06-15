@@ -1,3 +1,16 @@
+ <a name="2.1.3"></a>
+# 2.1.3 (2018-05-06)
+[Full Changelog](https://github.com/webpack/webpack-cli/compare/v2.1.2...v2.1.3)
+
+## Chore
+
+* pkg: remove prefer global ([4149c53](https://github.com/webpack/webpack-cli/commit/4149c53))
+* templates: Update issue templates ([#432](https://github.com/webpack/webpack-cli/pull/432))
+
+## CLI
+
+* cmds: revise yargs command ([#422](https://github.com/webpack/webpack-cli/pull/422))
+
  <a name="2.0.14"></a>
 # 2.0.14 (2018-04-05)
 [Full Changelog](https://github.com/webpack/webpack-cli/compare/2.0.13...2.0.14)

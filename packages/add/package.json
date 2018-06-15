@@ -1,0 +1,15 @@
+{
+  "name": "@webpack-cli/add",
+  "version": "0.0.8",
+  "description": "A scaffold for adding new properties",
+  "main": "index.js",
+  "author": "",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@webpack-cli/generators": "^0.0.8",
+    "@webpack-cli/utils": "^0.0.8"
+  }
+}

@@ -28,176 +28,28 @@
         <article>
             <pre class="prettyprint source linenums"><code>"use strict";
 
-const path = require("path");
-const j = require("jscodeshift");
-const chalk = require("chalk");
-const pEachSeries = require("p-each-series");
-
-const runPrettier = require("../utils/run-prettier");
-
-const entryTransform = require("./transformations/entry/entry");
-const outputTransform = require("./transformations/output/output");
-const contextTransform = require("./transformations/context/context");
-const resolveTransform = require("./transformations/resolve/resolve");
-const devtoolTransform = require("./transformations/devtool/devtool");
-const targetTransform = require("./transformations/target/target");
-const watchTransform = require("./transformations/watch/watch");
-const watchOptionsTransform = require("./transformations/watch/watchOptions");
-const externalsTransform = require("./transformations/externals/externals");
-const nodeTransform = require("./transformations/node/node");
-const performanceTransform = require("./transformations/performance/performance");
-const statsTransform = require("./transformations/stats/stats");
-const amdTransform = require("./transformations/other/amd");
-const bailTransform = require("./transformations/other/bail");
-const cacheTransform = require("./transformations/other/cache");
-const profileTransform = require("./transformations/other/profile");
-const mergeTransform = require("./transformations/other/merge");
-const parallelismTransform = require("./transformations/other/parallelism");
-const recordsInputPathTransform = require("./transformations/other/recordsInputPath");
-const recordsOutputPathTransform = require("./transformations/other/recordsOutputPath");
-const recordsPathTransform = require("./transformations/other/recordsPath");
-const moduleTransform = require("./transformations/module/module");
-const pluginsTransform = require("./transformations/plugins/plugins");
-const topScopeTransform = require("./transformations/top-scope/top-scope");
-const devServerTransform = require("./transformations/devServer/devServer");
-const modeTransform = require("./transformations/mode/mode");
-const resolveLoaderTransform = require("./transformations/resolveLoader/resolveLoader");
-
-const transformsObject = {
-	entryTransform,
-	outputTransform,
-	contextTransform,
-	resolveTransform,
-	devtoolTransform,
-	targetTransform,
-	watchTransform,
-	watchOptionsTransform,
-	externalsTransform,
-	nodeTransform,
-	performanceTransform,
-	statsTransform,
-	amdTransform,
-	bailTransform,
-	cacheTransform,
-	profileTransform,
-	moduleTransform,
-	pluginsTransform,
-	topScopeTransform,
-	mergeTransform,
-	devServerTransform,
-	modeTransform,
-	parallelismTransform,
-	recordsInputPathTransform,
-	recordsOutputPathTransform,
-	recordsPathTransform,
-	resolveLoaderTransform
-};
+const npmPackagesExists = require("@webpack-cli/utils/npm-packages-exists");
+const defaultGenerator = require("@webpack-cli/generators/init-generator");
+const modifyHelper = require("@webpack-cli/utils/modify-config-helper");
 
 /**
  *
- * Maps back transforms that needs to be run using the configuration
- * provided.
+ * First function to be called after running the init flag. This is a check,
+ * if we are running the init command with no arguments or if we got dependencies
  *
- * @param {Object} transformObject - An Object with all transformations
- * @param {Object} config - Configuration to transform
- * @returns {Object} - An Object with the transformations to be run
+ * @param	{Array}		args - array of arguments such as
+ * packages included when running the init command
+ * @returns	{Function}	creator/npmPackagesExists - returns an installation of the package,
+ * followed up with a yeoman instance of that if there's packages. If not, it creates a defaultGenerator
  */
 
-function mapOptionsToTransform(transformObject, config) {
-	return Object.keys(transformObject)
-		.map(transformKey => {
-			const stringVal = transformKey.substr(
-				0,
-				transformKey.indexOf("Transform")
-			);
-			if (Object.keys(config.webpackOptions).length) {
-				if (config.webpackOptions[stringVal]) {
-					return [
-						transformObject[transformKey],
-						config.webpackOptions[stringVal]
-					];
-				} else {
-					return [transformObject[transformKey], config[stringVal]];
-				}
-			} else {
-				return [transformObject[transformKey]];
-			}
-		})
-		.filter(e => e[1]);
-}
+module.exports = function initializeInquirer(...args) {
+	const packages = args.slice(3);
 
-/**
- *
- * Runs the transformations from an object we get from yeoman
- *
- * @param {Object} webpackProperties - Configuration to transform
- * @param {String} action - Action to be done on the given ast
- * @returns {Promise} - A promise that writes each transform, runs prettier
- * and writes the file
- */
-
-module.exports = function runTransform(webpackProperties, action) {
-	// webpackOptions.name sent to nameTransform if match
-	const webpackConfig = Object.keys(webpackProperties).filter(p => {
-		return p !== "configFile" &amp;&amp; p !== "configPath";
-	});
-	const initActionNotDefined = action &amp;&amp; action !== "init" ? true : false;
-
-	webpackConfig.forEach(scaffoldPiece => {
-		const config = webpackProperties[scaffoldPiece];
-		const transformations = mapOptionsToTransform(transformsObject, config);
-		const ast = j(
-			initActionNotDefined
-				? webpackProperties.configFile
-				: "module.exports = {}"
-		);
-		const transformAction = action || null;
-
-		return pEachSeries(transformations, f => {
-			if (!f[1]) {
-				return f[0](j, ast, transformAction);
-			} else {
-				return f[0](j, ast, f[1], transformAction);
-			}
-		})
-			.then(_ => {
-				let configurationName;
-				if (!config.configName) {
-					configurationName = "webpack.config.js";
-				} else {
-					configurationName = "webpack." + config.configName + ".js";
-				}
-
-				const outputPath = initActionNotDefined
-					? webpackProperties.configPath
-					: path.join(process.cwd(), configurationName);
-				const source = ast.toSource({
-					quote: "single"
-				});
-
-				runPrettier(outputPath, source);
-			})
-			.catch(err => {
-				console.error(err.message ? err.message : err);
-			});
-	});
-	if (initActionNotDefined &amp;&amp; webpackProperties.config.item) {
-		process.stdout.write(
-			"\n" +
-				chalk.green(
-					`Congratulations! ${
-						webpackProperties.config.item
-					} has been ${action}ed!\n`
-				)
-		);
-	} else {
-		process.stdout.write(
-			"\n" +
-				chalk.green(
-					"Congratulations! Your new webpack configuration file has been created!\n"
-				)
-		);
+	if (packages.length === 0) {
+		return modifyHelper("init", defaultGenerator);
 	}
+	return npmPackagesExists(packages);
 };
 </code></pre>
         </article>
@@ -209,13 +61,13 @@ module.exports = function runTransform(webpackProperties, action) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AddGenerator.html">AddGenerator</a></li><li><a href="InitGenerator.html">InitGenerator</a></li><li><a href="LoaderGenerator.html">LoaderGenerator</a></li><li><a href="PluginGenerator.html">PluginGenerator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#checkIfExistsAndAddValue">checkIfExistsAndAddValue</a></li><li><a href="global.html#createArrayWithChildren">createArrayWithChildren</a></li><li><a href="global.html#createEmptyArrayProperty">createEmptyArrayProperty</a></li><li><a href="global.html#createExternalRegExp">createExternalRegExp</a></li><li><a href="global.html#createFunctionWithArguments">createFunctionWithArguments</a></li><li><a href="global.html#createIdentifierOrLiteral">createIdentifierOrLiteral</a></li><li><a href="global.html#createLiteral">createLiteral</a></li><li><a href="global.html#createObjectWithSuppliedProperty">createObjectWithSuppliedProperty</a></li><li><a href="global.html#createOrUpdatePluginByName">createOrUpdatePluginByName</a></li><li><a href="global.html#createProperty">createProperty</a></li><li><a href="global.html#defineTest">defineTest</a></li><li><a href="global.html#findInvocation">findInvocation</a></li><li><a href="global.html#findPluginsByName">findPluginsByName</a></li><li><a href="global.html#findRootNodesByName">findRootNodesByName</a></li><li><a href="global.html#findVariableToPlugin">findVariableToPlugin</a></li><li><a href="global.html#generatorCopy">generatorCopy</a></li><li><a href="global.html#generatorCopyTpl">generatorCopyTpl</a></li><li><a href="global.html#getPackageManager">getPackageManager</a></li><li><a href="global.html#getPathToGlobalPackages">getPathToGlobalPackages</a></li><li><a href="global.html#getRequire">getRequire</a></li><li><a href="global.html#getRootPathModule">getRootPathModule</a></li><li><a href="global.html#isAssignment">isAssignment</a></li><li><a href="global.html#isType">isType</a></li><li><a href="global.html#loaderCreator">loaderCreator</a></li><li><a href="global.html#loopThroughObjects">loopThroughObjects</a></li><li><a href="global.html#makeLoaderName">makeLoaderName</a></li><li><a href="global.html#mapOptionsToTransform">mapOptionsToTransform</a></li><li><a href="global.html#pluginCreator">pluginCreator</a></li><li><a href="global.html#processPromise">processPromise</a></li><li><a href="global.html#pushCreateProperty">pushCreateProperty</a></li><li><a href="global.html#pushObjectKeys">pushObjectKeys</a></li><li><a href="global.html#replaceAt">replaceAt</a></li><li><a href="global.html#resolvePackages">resolvePackages</a></li><li><a href="global.html#runMigration">runMigration</a></li><li><a href="global.html#runSingleTransform">runSingleTransform</a></li><li><a href="global.html#serve">serve</a></li><li><a href="global.html#spawnChild">spawnChild</a></li><li><a href="global.html#spawnNPM">spawnNPM</a></li><li><a href="global.html#spawnNPMWithArg">spawnNPMWithArg</a></li><li><a href="global.html#spawnYarn">spawnYarn</a></li><li><a href="global.html#spawnYarnWithArg">spawnYarnWithArg</a></li><li><a href="global.html#transform">transform</a></li><li><a href="global.html#traverseAndGetProperties">traverseAndGetProperties</a></li><li><a href="global.html#webpackGenerator">webpackGenerator</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AddGenerator.html">AddGenerator</a></li><li><a href="InitGenerator.html">InitGenerator</a></li><li><a href="LoaderGenerator.html">LoaderGenerator</a></li><li><a href="PluginGenerator.html">PluginGenerator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addonGenerator">addonGenerator</a></li><li><a href="global.html#addOrUpdateConfigObject">addOrUpdateConfigObject</a></li><li><a href="global.html#addProperty">addProperty</a></li><li><a href="global.html#createIdentifierOrLiteral">createIdentifierOrLiteral</a></li><li><a href="global.html#createLiteral">createLiteral</a></li><li><a href="global.html#createOrUpdatePluginByName">createOrUpdatePluginByName</a></li><li><a href="global.html#createProperty">createProperty</a></li><li><a href="global.html#defineTest">defineTest</a></li><li><a href="global.html#findAndRemovePluginByName">findAndRemovePluginByName</a></li><li><a href="global.html#findInvocation">findInvocation</a></li><li><a href="global.html#findPluginsArrayAndRemoveIfEmpty">findPluginsArrayAndRemoveIfEmpty</a></li><li><a href="global.html#findPluginsByName">findPluginsByName</a></li><li><a href="global.html#findRootNodesByName">findRootNodesByName</a></li><li><a href="global.html#findVariableToPlugin">findVariableToPlugin</a></li><li><a href="global.html#generatorCopy">generatorCopy</a></li><li><a href="global.html#generatorCopyTpl">generatorCopyTpl</a></li><li><a href="global.html#getPackageManager">getPackageManager</a></li><li><a href="global.html#getPathToGlobalPackages">getPathToGlobalPackages</a></li><li><a href="global.html#getRequire">getRequire</a></li><li><a href="global.html#getRootPathModule">getRootPathModule</a></li><li><a href="global.html#isType">isType</a></li><li><a href="global.html#loaderCreator">loaderCreator</a></li><li><a href="global.html#makeLoaderName">makeLoaderName</a></li><li><a href="global.html#mapOptionsToTransform">mapOptionsToTransform</a></li><li><a href="global.html#parseMerge">parseMerge</a></li><li><a href="global.html#parseTopScope">parseTopScope</a></li><li><a href="global.html#pluginCreator">pluginCreator</a></li><li><a href="global.html#processPromise">processPromise</a></li><li><a href="global.html#replaceAt">replaceAt</a></li><li><a href="global.html#resolvePackages">resolvePackages</a></li><li><a href="global.html#runMigration">runMigration</a></li><li><a href="global.html#runSingleTransform">runSingleTransform</a></li><li><a href="global.html#safeTraverse">safeTraverse</a></li><li><a href="global.html#safeTraverseAndGetType">safeTraverseAndGetType</a></li><li><a href="global.html#serve">serve</a></li><li><a href="global.html#spawnChild">spawnChild</a></li><li><a href="global.html#spawnNPM">spawnNPM</a></li><li><a href="global.html#spawnNPMWithArg">spawnNPMWithArg</a></li><li><a href="global.html#spawnYarn">spawnYarn</a></li><li><a href="global.html#spawnYarnWithArg">spawnYarnWithArg</a></li><li><a href="global.html#transform">transform</a></li><li><a href="global.html#traverseAndGetProperties">traverseAndGetProperties</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Apr 05 2018 03:21:04 GMT+0200 (CEST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Jun 02 2018 17:44:07 GMT+0200 (CEST)
 </footer>
 
 <script> prettyPrint(); </script>

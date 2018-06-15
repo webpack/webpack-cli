@@ -5,7 +5,7 @@ version: "{build}"
 environment:
   fast_finish: true
   matrix:
-    - nodejs_version: "6"
+    - nodejs_version: "8"
       platform: x86
 
 build: off
@@ -13,6 +13,7 @@ build: off
 install:
   - ps: Install-Product node $env:nodejs_version $env:platform
   - npm i -g npm
+  - npm i
   - npm ci
   - npm install --global codecov
   - npm install eslint-plugin-node@latest --save-dev

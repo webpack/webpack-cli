@@ -1,0 +1,17 @@
+{
+  "name": "@webpack-cli/webpack-scaffold",
+  "version": "0.0.8",
+  "description": "Utility files for webpack-scaffold",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --detectOpenHandles"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "jscodeshift": "^0.5.0"
+  }
+}
