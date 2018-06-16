@@ -21,6 +21,9 @@
     "module",
     "bundler"
   ],
+  "files": [
+    "bin"
+  ],
   "scripts": {
     "lint": "eslint \"./bin/*.js\" \"./test/**/*.js\" \"{packages}/**/!(node_modules)/*.js\" ",
     "format": "prettier-eslint ./bin/*.js ./test/**/*.js ./packages/**/*.js --write",
@@ -188,10 +191,5 @@
     "travis-deploy-once": "^5.0.0",
     "webpack": "^4.8.3",
     "webpack-dev-server": "^3.1.4"
-  },
-  "files": [
-    "bin",
-    "lib",
-    "schemas"
-  ]
+  }
 }
