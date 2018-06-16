@@ -37,7 +37,6 @@
     "bundlesize": "bundlesize",
     "changelog": "conventional-changelog --config ./build/changelog-generator/index.js --infile CHANGELOG.md --same-file",
     "semantic-release": "semantic-release",
-    "travis-deploy-once": "travis-deploy-once",
     "clean:all": "rimraf node_modules package-lock.json packages/*/node_modules packages/*/package-lock.json",
     "bootstrap": "npm run clean:all && npm install && lerna bootstrap"
   },
@@ -87,63 +86,6 @@
       "config": "./.cz-config.js"
     }
   },
-  "release": {
-    "analyzeCommits": {
-      "preset": "angular",
-      "releaseRules": [
-        {
-          "type": "feat",
-          "release": "minor"
-        },
-        {
-          "type": "ast",
-          "release": "patch"
-        },
-        {
-          "type": "fix",
-          "release": "patch"
-        },
-        {
-          "type": "break",
-          "release": "major"
-        },
-        {
-          "type": "cli",
-          "release": "patch"
-        },
-        {
-          "type": "misc",
-          "release": "patch"
-        },
-        {
-          "type": "tests",
-          "release": "patch"
-        },
-        {
-          "type": "docs",
-          "release": "patch"
-        }
-      ]
-    },
-    "generateNotes": {
-      "preset": "angular",
-      "writerOpts": {
-        "commitsSort": [
-          "subject",
-          "scope"
-        ]
-      },
-      "parserOpts": {
-        "noteKeywords": [
-          "BREAKING CHANGE",
-          "BREAKING CHANGES",
-          "BREAKING",
-          "break",
-          "breaking"
-        ]
-      }
-    }
-  },
   "dependencies": {
     "chalk": "^2.4.1",
     "cross-spawn": "^6.0.5",
@@ -184,8 +126,6 @@
     "prettier-eslint-cli": "^4.7.1",
     "rimraf": "^2.6.2",
     "schema-utils": "^0.4.5",
-    "semantic-release": "^15.5.0",
-    "travis-deploy-once": "^5.0.0",
     "webpack": "^4.8.3",
     "webpack-dev-server": "^3.1.4"
   },
