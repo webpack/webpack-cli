@@ -1,0 +1,4 @@
+__snapshots__
+__testfixtures__
+*.test.*
+defineTest.*
