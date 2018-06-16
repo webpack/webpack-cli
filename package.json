@@ -92,10 +92,6 @@
       "preset": "angular",
       "releaseRules": [
         {
-          "type": "chore",
-          "release": "patch"
-        },
-        {
           "type": "feat",
           "release": "minor"
         },
