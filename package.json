@@ -25,22 +25,25 @@
     "bin"
   ],
   "scripts": {
-    "lint": "eslint \"./bin/*.js\" \"./test/**/*.js\" \"./packages/**/!(node_modules)/*.js\" ",
-    "format": "prettier-eslint ./bin/*.js ./test/**/*.js ./packages/**/*.js --write",
-    "lint:codeOnly": "eslint \"{bin}/**/!(__testfixtures__)/*.js\" \"{bin}/**.js\"",
-    "precommit": "lint-staged",
-    "pretest": "npm run lint",
-    "test": "nyc jest",
-    "reportCoverage": "nyc report --reporter=json && codecov -f coverage/coverage-final.json --disable=gcov",
-    "jsdoc": "jsdoc -c jsdoc.json -r -d docs",
     "appveyor:lint": "lerna bootstrap && npm run lint",
     "appveyor:test": "npm run test",
-    "travis:integration": "npm run test && npm run reportCoverage",
-    "travis:lint": "lerna bootstrap && npm run lint && npm run bundlesize",
+    "bootstrap": "npm run clean:all && npm install && lerna bootstrap",
+    "build": "tsc",
     "bundlesize": "bundlesize",
     "changelog": "conventional-changelog --config ./build/changelog-generator/index.js --infile CHANGELOG.md --same-file",
     "clean:all": "rimraf node_modules package-lock.json packages/*/node_modules packages/*/package-lock.json",
-    "bootstrap": "npm run clean:all && npm install && lerna bootstrap"
+    "format": "prettier-eslint ./bin/*.js ./test/**/*.js ./packages/**/*.js --write",
+    "jsdoc": "jsdoc -c jsdoc.json -r -d docs",
+    "lint:codeOnly": "eslint \"{bin}/**/!(__testfixtures__)/*.js\" \"{bin}/**.js\"",
+    "lint": "eslint \"./bin/*.js\" \"./test/**/*.js\" \"{packages}/**/!(node_modules)/*.test.js\" && npm run tslint",
+    "precommit": "lint-staged",
+    "pretest": "npm run lint",
+    "reportCoverage": "nyc report --reporter=json && codecov -f coverage/coverage-final.json --disable=gcov",
+    "test": "nyc jest",
+    "travis:integration": "npm run test && npm run reportCoverage",
+    "travis:lint": "lerna bootstrap && npm run lint && npm run bundlesize",
+    "tslint": "tslint -c tslint.json \"{packages}/**/!(node_modules)/*.ts\"",
+    "watch": "tsc -w"
   },
   "lint-staged": {
     "{packages,bin}/**/!(__testfixtures__)/**.js": [
@@ -128,6 +131,8 @@
     "prettier-eslint-cli": "^4.7.1",
     "rimraf": "^2.6.2",
     "schema-utils": "^0.4.5",
+    "tslint": "^5.10.0",
+    "typescript": "^2.9.2",
     "webpack": "^4.8.3",
     "webpack-dev-server": "^3.1.4"
   }
