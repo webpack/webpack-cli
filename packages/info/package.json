@@ -10,5 +10,8 @@
   },
   "dependencies": {
     "envinfo": "^5.7.0"
+  },
+  "devDependencies": {
+    "typescript": "^2.9.2"
   }
 }
