@@ -1,4 +1,4 @@
-import envinfo from "envinfo";
+import * as envinfo from "envinfo";
 
 /**
  * Prints debugging information for webpack issue reporting
