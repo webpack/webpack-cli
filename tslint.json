@@ -4,7 +4,13 @@
         "tslint:recommended"
     ],
     "jsRules": {},
-    "rules": {},
+    "rules": {
+      "indent": [
+        true,
+        "tabs",
+        4
+      ]
+    },
     "rulesDirectory": [],
     "linterOptions": {
       "exclude": [
