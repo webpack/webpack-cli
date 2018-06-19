@@ -9,6 +9,9 @@
         true,
         "tabs",
         4
+      ],
+      "ban-types": [
+        false
       ]
     },
     "rulesDirectory": [],
