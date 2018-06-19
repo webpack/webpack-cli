@@ -42,7 +42,7 @@
     "test": "nyc jest",
     "travis:integration": "npm run test && npm run reportCoverage",
     "travis:lint": "lerna bootstrap && npm run lint && npm run bundlesize",
-    "tslint": "tslint -c tslint.json \"{packages}/**/!(node_modules)/*.ts\"",
+    "tslint": "tslint -c tslint.json \"packages/**/*.ts\"",
     "watch": "tsc -w"
   },
   "lint-staged": {
