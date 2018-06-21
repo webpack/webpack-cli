@@ -36,7 +36,6 @@
     "travis:lint": "lerna bootstrap && npm run lint && npm run bundlesize",
     "bundlesize": "bundlesize",
     "changelog": "conventional-changelog --config ./build/changelog-generator/index.js --infile CHANGELOG.md --same-file",
-    "semantic-release": "semantic-release",
     "clean:all": "rimraf node_modules package-lock.json packages/*/node_modules packages/*/package-lock.json",
     "bootstrap": "npm run clean:all && npm install && lerna bootstrap"
   },
