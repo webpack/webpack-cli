@@ -7,7 +7,7 @@ module.exports = {
     "context": "Determines where webpack will look for files",
     "entry": "The entry point of your application",
     "module-bind": "Bind an extension to a loader",
-    "module-bind-post":  "Bind an extension to a post loader"
+    "module-bind-post":  "Bind an extension to a post loader",
     "module-bind-pre":  "Bind an extension to a pre loader",
     "output": "The output path and file for compilation assets",
     "o": "Shortcut for output",
