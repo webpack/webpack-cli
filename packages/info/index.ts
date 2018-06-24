@@ -1,19 +1,17 @@
-"use strict";
-
-const envinfo = require("envinfo");
+import * as envinfo from "envinfo";
 
 /**
  * Prints debugging information for webpack issue reporting
  */
 
-module.exports = async function info() {
+export default async function info() {
 	console.log(
 		await envinfo.run({
-			System: ["OS", "CPU"],
 			Binaries: ["Node", "Yarn", "npm"],
 			Browsers: ["Chrome", "Firefox", "Safari"],
+			System: ["OS", "CPU"],
+			npmGlobalPackages: ["webpack", "webpack-cli"],
 			npmPackages: "*webpack*",
-			npmGlobalPackages: ["webpack", "webpack-cli"]
-		})
+		}),
 	);
-};
+}
