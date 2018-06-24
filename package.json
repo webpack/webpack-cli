@@ -8,7 +8,7 @@
     "url": "https://github.com/webpack/webpack-cli.git"
   },
   "bin": {
-    "webpack-cli": "./bin/cli.js"
+    "webpack-cli": "./bin/webpack.js"
   },
   "main": "./bin/cli.js",
   "engines": {
@@ -101,6 +101,7 @@
     "interpret": "^1.1.0",
     "loader-utils": "^1.1.0",
     "supports-color": "^5.4.0",
+    "update-notifier": "^2.5.0",
     "v8-compile-cache": "^2.0.0",
     "yargs": "^11.1.0"
   },
