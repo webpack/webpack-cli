@@ -2,7 +2,7 @@
 
 'use strict';
 const semver = require('semver');
-const version = require('../package.json').engines.node;
+const version = require('./package.json').engines.node;
 const importLocal = require("import-local");
 
 require("v8-compile-cache");
@@ -24,4 +24,4 @@ if (!semver.satisfies(process.version, version)) {
   process.exit(1);
 }
 
-require('./run');
+require('./lib/run');
