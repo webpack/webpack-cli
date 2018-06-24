@@ -1,9 +1,8 @@
 const Generator = require("yeoman-generator");
 const glob = require("glob-all");
 const path = require("path");
-const Confirm = require("@webpack-cli/webpack-scaffold").Confirm;
-const List = require("@webpack-cli/webpack-scaffold").List;
-const Input = require("@webpack-cli/webpack-scaffold").Input;
+const inquirerAutoComplete = require("inquirer-autocomplete-prompt");
+const { AutoComplete, Confirm, Input, List } = require("@webpack-cli/webpack-scaffold");
 
 const webpackSchema = require("./utils/optionsSchema.json");
 const webpackDevServerSchema = require("webpack-dev-server/lib/optionsSchema.json");
@@ -13,6 +12,8 @@ const getPackageManager = require("@webpack-cli/utils/package-manager")
 	.getPackageManager;
 const npmExists = require("@webpack-cli/utils/npm-exists");
 const entryQuestions = require("./utils/entry");
+
+const PROPS = Array.from(PROP_TYPES.keys());
 
 /**
  *
@@ -52,6 +53,25 @@ const traverseAndGetProperties = (arr, prop) => {
 
 /**
  *
+ * Search config properties
+ *
+ * @param {Object} answers	Prompt answers object
+ * @param {String} input	Input search string
+ *
+ * @returns {Promise} Returns promise which resolves to filtered props
+ *
+ */
+const searchProps = (answers, input) => {
+	input = input || "";
+	return Promise.resolve(
+		PROPS.filter(food =>
+			food.toLowerCase().includes(input.toLowerCase())
+		)
+	);
+};
+
+/**
+ *
  * Generator for adding properties
  * @class	AddGenerator
  * @extends	Generator
@@ -69,6 +89,8 @@ module.exports = class AddGenerator extends Generator {
 				topScope: ["const webpack = require('webpack')"]
 			}
 		};
+		const { registerPrompt } = this.env.adapter.promptModule;
+		registerPrompt("autocomplete", inquirerAutoComplete);
 	}
 
 	prompting() {
@@ -82,10 +104,14 @@ module.exports = class AddGenerator extends Generator {
 		let isDeepProp = [false, false];
 
 		return this.prompt([
-			List(
+			AutoComplete(
 				"actionType",
 				"What property do you want to add to?",
-				Array.from(PROP_TYPES.keys())
+				{
+					pageSize: 7,
+					source: searchProps,
+					suggestOnly: false,
+				}
 			)
 		])
 			.then(actionTypeAnswer => {
