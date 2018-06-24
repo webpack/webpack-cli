@@ -8,9 +8,9 @@
     "url": "https://github.com/webpack/webpack-cli.git"
   },
   "bin": {
-    "webpack-cli": "./bin/cli.js"
+    "webpack-cli": "cli.js"
   },
-  "main": "./bin/cli.js",
+  "main": "cli.js",
   "engines": {
     "node": ">=6.11.5"
   },
@@ -22,7 +22,7 @@
     "bundler"
   ],
   "files": [
-    "bin"
+    "lib"
   ],
   "scripts": {
     "bootstrap": "npm run clean:all && npm install && lerna bootstrap",
