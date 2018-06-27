@@ -8,6 +8,8 @@ const Generator = require("yeoman-generator");
 const logSymbols = require("log-symbols");
 const runTransform = require("./scaffold");
 
+const DEFAULT_WEBPACK_CONFIG_FILENAME = "webpack.config.js";
+
 /**
  *
  * Looks up the webpack.config in the user's path and runs a given
@@ -20,7 +22,7 @@ const runTransform = require("./scaffold");
  * @returns {Function} runTransform - Returns a transformation instance
  */
 
-module.exports = function modifyHelperUtil(action, generator, configFile, packages) {
+module.exports = function modifyHelperUtil(action, generator, configFile = DEFAULT_WEBPACK_CONFIG_FILENAME, packages) {
 	let configPath = null;
 
 	if (action !== "init") {
