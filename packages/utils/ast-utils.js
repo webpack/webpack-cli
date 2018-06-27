@@ -537,6 +537,67 @@ function parseMerge(j, ast, value, action) {
 	}
 }
 
+/**
+ *
+ * Removes an object/property from the config
+ * @param {any} j — jscodeshift API
+ * @param {Node} ast - AST node
+ * @param {String} key - key of a key/val object
+ * @param {Any} value - Any type of object
+ * @returns {Node} - the created ast
+ */
+
+function removeProperty(j, ast, key, value) {
+
+	// override for module.rules / loaders
+	if (key === "module" && value.rules) {
+		return ast
+			.find(j.Property, {
+				value: {
+					type: "Literal",
+					value: value.rules[0].loader
+				}
+			})
+			.forEach(p =>{
+				j(p.parent).remove();
+			});
+	}
+
+	// value => array
+	if (Array.isArray(value)) {
+		return ast
+			.find(j.Literal, {
+				value: value[0]
+			})
+			.forEach(p =>{
+				const configKey = safeTraverse(p, ["parent", "parent", "node", "key", "name"]);
+				if (configKey === key) {
+					j(p).remove();
+				}
+			});
+	}
+
+	// value => literal string / boolean / nested object
+	let objKeyToRemove = null;
+	if (value === null) {
+		objKeyToRemove = key;
+	} else if (typeof value === "object") {
+		for (const innerKey in value) {
+			if (value[innerKey] === null) objKeyToRemove = innerKey;
+		}
+	}
+	return ast
+		.find(j.Property, {
+			key: {
+				type: "Identifier",
+				name: objKeyToRemove
+			},
+		})
+		.forEach(p => {
+			j(p).remove();
+		});
+}
+
 module.exports = {
 	safeTraverse,
 	safeTraverseAndGetType,
@@ -555,5 +616,6 @@ module.exports = {
 	getRequire,
 	addProperty,
 	parseTopScope,
-	parseMerge
+	parseMerge,
+	removeProperty
 };
