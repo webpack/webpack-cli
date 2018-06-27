@@ -1,5 +1,5 @@
 **/__testfixtures__/*
 coverage
-test
+test/binCases/errors/parse/index.js
 docs
 node_modules
