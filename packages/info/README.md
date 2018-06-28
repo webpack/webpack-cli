@@ -14,7 +14,7 @@ npm i -D @webpack-cli/info
 
 ### Node
 ```js
-const envinfo = require("webpack-cli/info");
+const envinfo = require("@webpack-cli/info");
 envinfo();
 ```
 
