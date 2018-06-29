@@ -1,4 +1,4 @@
-# webpack-cli Info
+# webpack-cli info
 
 ## Description
 
