@@ -3,9 +3,6 @@
   "version": "0.0.8",
   "description": "Utility files for webpack-scaffold",
   "main": "index.js",
-  "scripts": {
-    "test": "jest --detectOpenHandles"
-  },
   "publishConfig": {
     "access": "public"
   },
@@ -16,5 +13,9 @@
   },
   "devDependencies": {
     "typescript": "^2.9.2"
+  },
+  "scripts": {
+    "test": "jest --detectOpenHandles",
+    "build": "tsc"
   }
 }

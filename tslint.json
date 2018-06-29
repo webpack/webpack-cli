@@ -12,7 +12,10 @@
       ],
       "ban-types": [
         false
-      ]
+      ],
+      "no-console": {
+        "severity": "warning"
+      }
     },
     "rulesDirectory": [],
     "linterOptions": {
