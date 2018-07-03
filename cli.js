@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 
 'use strict';
-const semver = require('semver');
-const version = require('./package.json').engines.node;
+
 const importLocal = require("import-local");
 
 require("v8-compile-cache");
@@ -13,6 +12,14 @@ if (importLocal(__filename)) {
 }
 process.title = "webpack";
 
+const updateNotifier = require('update-notifier');
+const packageJson = require('./package.json');
+
+updateNotifier({pkg: packageJson}).notify();
+
+const semver = require('semver');
+
+const version = packageJson.engines.node;
 
 if (!semver.satisfies(process.version, version)) {
   const rawVersion = version.replace(/[^\d\.]*/, '');
