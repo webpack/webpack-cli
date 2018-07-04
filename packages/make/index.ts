@@ -1,5 +1,3 @@
-"use strict";
-
 /**
  * Is called and returns a scaffolding instance, adding properties
  *
@@ -7,6 +5,6 @@
  *
  */
 
-module.exports = function make() {
+export default function make() {
 	return console.log("make me");
-};
+}
