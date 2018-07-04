@@ -1,7 +1,5 @@
-"use strict";
-
-const defaultGenerator = require("@webpack-cli/generators/remove-generator");
-const modifyConfigHelper = require("@webpack-cli/utils/modify-config-helper");
+import defaultGenerator from "@webpack-cli/generators/remove-generator";
+import modifyConfigHelper from "@webpack-cli/utils/modify-config-helper";
 
 /**
  * Is called and returns a scaffolding instance, removing properties
@@ -11,6 +9,6 @@ const modifyConfigHelper = require("@webpack-cli/utils/modify-config-helper");
  *
  */
 
-module.exports = function() {
+export default function() {
 	return modifyConfigHelper("remove", defaultGenerator);
-};
+}
