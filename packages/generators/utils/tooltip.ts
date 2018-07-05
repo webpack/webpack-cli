@@ -1,4 +1,3 @@
-"use strict";
 /**
  *
  * Tooltip object that consists of tooltips for various of
@@ -7,17 +6,19 @@
  * @returns {Object} An Object that consists of tooltip methods to be invoked
  */
 
-module.exports = {
-	uglify: _ => {
+export default {
+	cssPlugin: (_?: void): string => {
 		return `/*
- * We've enabled UglifyJSPlugin for you! This minifies your app
- * in order to load faster and run less javascript.
+ * We've enabled MiniCssExtractPlugin for you. This allows your app to
+ * use css modules that will be moved into a separate CSS file instead of inside
+ * one of your module entries!
  *
- * https://github.com/webpack-contrib/uglifyjs-webpack-plugin
+ * https://github.com/webpack-contrib/mini-css-extract-plugin
  *
  */`;
 	},
-	splitChunks: _ => {
+
+	splitChunks: (_?: void): string => {
 		return `/*
  * SplitChunksPlugin is enabled by default and replaced
  * deprecated CommonsChunkPlugin. It automatically identifies modules which
@@ -31,17 +32,8 @@ module.exports = {
  *
  */`;
 	},
-	cssPlugin: _ => {
-		return `/*
- * We've enabled MiniCssExtractPlugin for you. This allows your app to
- * use css modules that will be moved into a separate CSS file instead of inside
- * one of your module entries!
- *
- * https://github.com/webpack-contrib/mini-css-extract-plugin
- *
- */`;
-	},
-	postcss: _ => {
+
+	postcss: (_?: void): string => {
 		return `/*
  * We've enabled Postcss, autoprefixer and precss for you. This allows your app
  * to lint  CSS, support variables and mixins, transpile future CSS syntax,
@@ -56,5 +48,15 @@ module.exports = {
  * https://github.com/jonathantneal/precss
  *
  */`;
-	}
+	},
+
+	uglify: (_?: void): string => {
+		return `/*
+ * We've enabled UglifyJSPlugin for you! This minifies your app
+ * in order to load faster and run less javascript.
+ *
+ * https://github.com/webpack-contrib/uglifyjs-webpack-plugin
+ *
+ */`;
+	},
 };

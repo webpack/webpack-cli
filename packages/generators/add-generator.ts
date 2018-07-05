@@ -1,19 +1,27 @@
-const Generator = require("yeoman-generator");
-const glob = require("glob-all");
-const path = require("path");
-const inquirerAutoComplete = require("inquirer-autocomplete-prompt");
-const { AutoComplete, Confirm, Input, List } = require("@webpack-cli/webpack-scaffold");
+import Generator = require("yeoman-generator");
 
-const webpackSchema = require("./utils/optionsSchema.json");
-const webpackDevServerSchema = require("webpack-dev-server/lib/optionsSchema.json");
-const PROP_TYPES = require("@webpack-cli/utils/prop-types");
+import * as glob from "glob-all";
+import * as autoComplete from "inquirer-autocomplete-prompt";
+import * as path from "path";
+import webpackDevServerSchema from "webpack-dev-server/lib/optionsSchema.json";
 
-const getPackageManager = require("@webpack-cli/utils/package-manager")
-	.getPackageManager;
-const npmExists = require("@webpack-cli/utils/npm-exists");
-const entryQuestions = require("./utils/entry");
+import * as npmExists from "@webpack-cli/utils/npm-exists";
+import { getPackageManager } from "@webpack-cli/utils/package-manager";
+import * as PROP_TYPES from "@webpack-cli/utils/prop-types";
+import {
+	AutoComplete,
+	Confirm,
+	IInquirerInput,
+	IInquirerList,
+	Input,
+	List,
+} from "@webpack-cli/webpack-scaffold";
 
-const PROPS = Array.from(PROP_TYPES.keys());
+import { ISchemaProperties, IWebpackOptions } from "./types";
+import entryQuestions from "./utils/entry";
+import webpackSchema from "./utils/optionsSchema.json";
+
+const PROPS: string[] = Array.from(PROP_TYPES.keys());
 
 /**
  *
@@ -27,8 +35,8 @@ const PROPS = Array.from(PROP_TYPES.keys());
  * @returns	{String} string - The newly mutated string
  *
  */
-function replaceAt(string, index, replace) {
-	return string.substring(0, index) + replace + string.substring(index + 1);
+function replaceAt(str: string, index: number, replace: string): string {
+	return str.substring(0, index) + replace + str.substring(index + 1);
 }
 
 /**
@@ -41,9 +49,9 @@ function replaceAt(string, index, replace) {
  * @returns	{Boolean} hasProp - Boolean indicating if the property
  * is present
  */
-const traverseAndGetProperties = (arr, prop) => {
-	let hasProp = false;
-	arr.forEach(p => {
+const traverseAndGetProperties = (arr: object[], prop: string): boolean => {
+	let hasProp: boolean = false;
+	arr.forEach((p: object) => {
 		if (p[prop]) {
 			hasProp = true;
 		}
@@ -61,12 +69,12 @@ const traverseAndGetProperties = (arr, prop) => {
  * @returns {Promise} Returns promise which resolves to filtered props
  *
  */
-const searchProps = (answers, input) => {
+const searchProps = (answers: object, input: string): Promise<string[]> => {
 	input = input || "";
 	return Promise.resolve(
-		PROPS.filter(food =>
-			food.toLowerCase().includes(input.toLowerCase())
-		)
+		PROPS.filter((prop: string) =>
+			prop.toLowerCase().includes(input.toLowerCase()),
+		),
 	);
 };
 
@@ -79,29 +87,40 @@ const searchProps = (answers, input) => {
  *
  */
 
-module.exports = class AddGenerator extends Generator {
+export default class AddGenerator extends Generator {
+	private dependencies: string[];
+	private configuration: {
+		config: {
+			configName?: string,
+			topScope?: string[],
+			item?: string;
+			webpackOptions?: IWebpackOptions,
+		},
+	};
+
 	constructor(args, opts) {
 		super(args, opts);
 		this.dependencies = [];
 		this.configuration = {
 			config: {
+				topScope: ["const webpack = require('webpack')"],
 				webpackOptions: {},
-				topScope: ["const webpack = require('webpack')"]
-			}
+			},
 		};
 		const { registerPrompt } = this.env.adapter.promptModule;
-		registerPrompt("autocomplete", inquirerAutoComplete);
+		registerPrompt("autocomplete", autoComplete);
 	}
 
-	prompting() {
-		let done = this.async();
-		let action;
-		let self = this;
-		let manualOrListInput = action =>
-			Input("actionAnswer", `What do you want to add to ${action}?`);
+	public prompting() {
+		const done: (_?: void) => void | boolean = this.async();
+		let action: string;
+		const self: this = this;
+		const manualOrListInput: (promptAction: string) => IInquirerInput = (promptAction: string) =>
+			Input("actionAnswer", `What do you want to add to ${promptAction}?`);
+		let inputPrompt: IInquirerInput;
 
 		// first index indicates if it has a deep prop, 2nd indicates what kind of
-		let isDeepProp = [false, false];
+		const isDeepProp: any[] = [false, false];
 
 		return this.prompt([
 			AutoComplete(
@@ -111,10 +130,12 @@ module.exports = class AddGenerator extends Generator {
 					pageSize: 7,
 					source: searchProps,
 					suggestOnly: false,
-				}
-			)
+				},
+			),
 		])
-			.then(actionTypeAnswer => {
+			.then((actionTypeAnswer: {
+				actionType: string,
+			}) => {
 				// Set initial prop, like devtool
 				this.configuration.config.webpackOptions[
 					actionTypeAnswer.actionType
@@ -122,47 +143,54 @@ module.exports = class AddGenerator extends Generator {
 				// update the action variable, we're using it later
 				action = actionTypeAnswer.actionType;
 			})
-			.then(() => {
+			.then((_: void) => {
 				if (action === "entry") {
 					return this.prompt([
-						Confirm("entryType", "Will your application have multiple bundles?")
+						Confirm("entryType", "Will your application have multiple bundles?"),
 					])
-						.then(entryTypeAnswer => {
+						.then((entryTypeAnswer: {
+							entryType: boolean,
+						}) => {
 							// Ask different questions for entry points
 							return entryQuestions(self, entryTypeAnswer);
 						})
-						.then(entryOptions => {
+						.then((entryOptions: {
+							entryType: boolean;
+						}) => {
 							this.configuration.config.webpackOptions.entry = entryOptions;
 							this.configuration.config.item = action;
 						});
 				}
-				let temp = action;
+				const temp: string = action;
 				if (action === "resolveLoader") {
 					action = "resolve";
 				}
-				const webpackSchemaProp = webpackSchema.definitions[action];
+				const webpackSchemaProp: ISchemaProperties = webpackSchema.definitions[action];
 				/*
 				 * https://github.com/webpack/webpack/blob/next/schemas/WebpackOptions.json
 				 * Find the properties directly in the properties prop, or the anyOf prop
 				 */
-				let defOrPropDescription = webpackSchemaProp
+				let defOrPropDescription: object = webpackSchemaProp
 					? webpackSchemaProp.properties
 					: webpackSchema.properties[action].properties
 						? webpackSchema.properties[action].properties
 						: webpackSchema.properties[action].anyOf
 							? webpackSchema.properties[action].anyOf.filter(
-								p => p.properties || p.enum
-							  ) // eslint-disable-line
+								(p: {
+									properties?: object,
+									enum?: any[],
+								}) => p.properties || p.enum,
+							  )
 							: null;
 				if (Array.isArray(defOrPropDescription)) {
 					// Todo: Generalize these to go through the array, then merge enum with props if needed
-					const hasPropertiesProp = traverseAndGetProperties(
+					const hasPropertiesProp: boolean = traverseAndGetProperties(
 						defOrPropDescription,
-						"properties"
+						"properties",
 					);
-					const hasEnumProp = traverseAndGetProperties(
+					const hasEnumProp: boolean = traverseAndGetProperties(
 						defOrPropDescription,
-						"enum"
+						"enum",
 					);
 					/* as we know he schema only has two arrays that might hold our values,
 					 * check them for either having arr.enum or arr.properties
@@ -176,19 +204,19 @@ module.exports = class AddGenerator extends Generator {
 						}
 						// TODO: manually implement stats and devtools like sourcemaps
 					} else if (hasEnumProp) {
-						const originalPropDesc = defOrPropDescription[0].enum;
+						const originalPropDesc: object = defOrPropDescription[0].enum;
 						// Array -> Object -> Merge objects into one for compat in manualOrListInput
 						defOrPropDescription = Object.keys(defOrPropDescription[0].enum)
-							.map(p => {
+							.map((p: string) => {
 								return Object.assign(
 									{},
 									{
-										[originalPropDesc[p]]: "noop"
-									}
+										[originalPropDesc[p]]: "noop",
+									},
 								);
 							})
-							.reduce((result, currentObject) => {
-								for (let key in currentObject) {
+							.reduce((result: object, currentObject: object) => {
+								for (const key in currentObject) {
 									if (currentObject.hasOwnProperty(key)) {
 										result[key] = currentObject[key];
 									}
@@ -198,25 +226,25 @@ module.exports = class AddGenerator extends Generator {
 					}
 				}
 				// WDS has its own schema, so we gonna need to check that too
-				const webpackDevserverSchemaProp =
+				const webpackDevserverSchemaProp: ISchemaProperties =
 					action === "devServer" ? webpackDevServerSchema : null;
 				// Watch has a boolean arg, but we need to append to it manually
 				if (action === "watch") {
 					defOrPropDescription = {
+						false: {},
 						true: {},
-						false: {}
 					};
 				}
 				if (action === "mode") {
 					defOrPropDescription = {
 						development: {},
-						production: {}
+						production: {},
 					};
 				}
 				action = temp;
 				if (action === "resolveLoader") {
 					defOrPropDescription = Object.assign(defOrPropDescription, {
-						moduleExtensions: {}
+						moduleExtensions: {},
 					});
 				}
 				// If we've got a schema prop or devServer Schema Prop
@@ -226,29 +254,29 @@ module.exports = class AddGenerator extends Generator {
 						if (action !== "devtool") {
 							// Add the option of adding an own variable if the user wants
 							defOrPropDescription = Object.assign(defOrPropDescription, {
-								other: {}
+								other: {},
 							});
 						} else {
 							// The schema doesn't have the source maps we can prompt, so add those
 							defOrPropDescription = Object.assign(defOrPropDescription, {
-								eval: {},
 								"cheap-eval-source-map": {},
 								"cheap-module-eval-source-map": {},
-								"eval-source-map": {},
-								"cheap-source-map": {},
 								"cheap-module-source-map": {},
-								"inline-cheap-source-map": {},
-								"inline-cheap-module-source-map": {},
-								"source-map": {},
-								"inline-source-map": {},
+								"cheap-source-map": {},
+								"eval": {},
+								"eval-source-map": {},
 								"hidden-source-map": {},
-								"nosources-source-map": {}
+								"inline-cheap-module-source-map": {},
+								"inline-cheap-source-map": {},
+								"inline-source-map": {},
+								"nosources-source-map": {},
+								"source-map": {},
 							});
 						}
-						manualOrListInput = List(
+						inputPrompt = List(
 							"actionAnswer",
 							`What do you want to add to ${action}?`,
-							Object.keys(defOrPropDescription)
+							Object.keys(defOrPropDescription),
 						);
 						// We know we're gonna append some deep prop like module.rule
 						isDeepProp[0] = true;
@@ -257,26 +285,30 @@ module.exports = class AddGenerator extends Generator {
 						webpackDevserverSchemaProp.properties = Object.assign(
 							webpackDevserverSchemaProp.properties,
 							{
-								other: {}
-							}
+								other: {},
+							},
 						);
-						manualOrListInput = List(
+						inputPrompt = List(
 							"actionAnswer",
 							`What do you want to add to ${action}?`,
-							Object.keys(webpackDevserverSchemaProp.properties)
+							Object.keys(webpackDevserverSchemaProp.properties),
 						);
 						// We know we are in a devServer.prop scenario
 						isDeepProp[0] = true;
 					} else {
 						// manual input if non-existent
-						manualOrListInput = manualOrListInput(action);
+						inputPrompt = manualOrListInput(action);
 					}
 				} else {
-					manualOrListInput = manualOrListInput(action);
+					inputPrompt = manualOrListInput(action);
 				}
-				return this.prompt([manualOrListInput]);
+				return this.prompt([
+					inputPrompt,
+				]);
 			})
-			.then(answerToAction => {
+			.then((answerToAction: {
+				actionAnswer: string,
+			}) => {
 				if (!answerToAction) {
 					done();
 					return;
@@ -286,54 +318,55 @@ module.exports = class AddGenerator extends Generator {
 				 * find the names of each natively plugin and check if it matches
 				*/
 				if (action === "plugins") {
-					const pluginExist = glob
+					const pluginExist: string = glob
 						.sync([
 							"node_modules/webpack/lib/*Plugin.js",
-							"node_modules/webpack/lib/**/*Plugin.js"
+							"node_modules/webpack/lib/**/*Plugin.js",
 						])
-						.map(p =>
+						.map((p: string) =>
 							p
 								.split("/")
 								.pop()
-								.replace(".js", "")
+								.replace(".js", ""),
 						)
 						.find(
-							p => p.toLowerCase().indexOf(answerToAction.actionAnswer) >= 0
+							(p: string) => p.toLowerCase().indexOf(answerToAction.actionAnswer) >= 0,
 						);
+
 					if (pluginExist) {
 						this.configuration.config.item = pluginExist;
-						const pluginsSchemaPath = glob
+						const pluginsSchemaPath: string = glob
 							.sync([
 								"node_modules/webpack/schemas/plugins/*Plugin.json",
-								"node_modules/webpack/schemas/plugins/**/*Plugin.json"
+								"node_modules/webpack/schemas/plugins/**/*Plugin.json",
 							])
 							.find(
-								p =>
+								(p: string) =>
 									p
 										.split("/")
 										.pop()
 										.replace(".json", "")
 										.toLowerCase()
-										.indexOf(answerToAction.actionAnswer) >= 0
+										.indexOf(answerToAction.actionAnswer) >= 0,
 							);
 						if (pluginsSchemaPath) {
-							const constructorPrefix =
+							const constructorPrefix: string =
 								pluginsSchemaPath.indexOf("optimize") >= 0
 									? "webpack.optimize"
 									: "webpack";
-							const resolvePluginsPath = path.resolve(pluginsSchemaPath);
-							const pluginSchema = resolvePluginsPath
+							const resolvePluginsPath: string = path.resolve(pluginsSchemaPath);
+							const pluginSchema: object = resolvePluginsPath
 								? require(resolvePluginsPath)
 								: null;
-							let pluginsSchemaProps = ["other"];
+							let pluginsSchemaProps: string[] = ["other"];
 							if (pluginSchema) {
 								Object.keys(pluginSchema)
-									.filter(p => Array.isArray(pluginSchema[p]))
-									.forEach(p => {
-										Object.keys(pluginSchema[p]).forEach(n => {
+									.filter((p: string) => Array.isArray(pluginSchema[p]))
+									.forEach((p: string) => {
+										Object.keys(pluginSchema[p]).forEach((n: string) => {
 											if (pluginSchema[p][n].properties) {
 												pluginsSchemaProps = Object.keys(
-													pluginSchema[p][n].properties
+													pluginSchema[p][n].properties,
 												);
 											}
 										});
@@ -344,22 +377,26 @@ module.exports = class AddGenerator extends Generator {
 								List(
 									"pluginsPropType",
 									`What property do you want to add ${pluginExist}?`,
-									pluginsSchemaProps
-								)
-							]).then(pluginsPropAnswer => {
+									pluginsSchemaProps,
+								),
+							]).then((pluginsPropAnswer: {
+								pluginsPropType: string,
+							}) => {
 								return this.prompt([
 									Input(
 										"pluginsPropTypeVal",
 										`What value should ${pluginExist}.${
 											pluginsPropAnswer.pluginsPropType
-										} have?`
-									)
-								]).then(valForProp => {
+										} have?`,
+									),
+								]).then((valForProp: {
+									pluginsPropTypeVal: string,
+								}) => {
 									this.configuration.config.webpackOptions[action] = {
 										[`${constructorPrefix}.${pluginExist}`]: {
 											[pluginsPropAnswer.pluginsPropType]:
-												valForProp.pluginsPropTypeVal
-										}
+												valForProp.pluginsPropTypeVal,
+										},
 									};
 									done();
 								});
@@ -372,39 +409,40 @@ module.exports = class AddGenerator extends Generator {
 						}
 					} else {
 						// If its not in webpack, check npm
-						npmExists(answerToAction.actionAnswer).then(p => {
-							if (p) {
-								this.dependencies.push(answerToAction.actionAnswer);
-								const normalizePluginName = answerToAction.actionAnswer.replace(
-									"-webpack-plugin",
-									"Plugin"
-								);
-								const pluginName = replaceAt(
-									normalizePluginName,
-									0,
-									normalizePluginName.charAt(0).toUpperCase()
-								);
-								this.configuration.config.topScope.push(
-									`const ${pluginName} = require("${
-										answerToAction.actionAnswer
-									}")`
-								);
-								this.configuration.config.webpackOptions[
-									action
-								] = `new ${pluginName}`;
-								this.configuration.config.item = answerToAction.actionAnswer;
-								done();
-								this.runInstall(getPackageManager(), this.dependencies, {
-									"save-dev": true
-								});
-							} else {
-								console.error(
-									answerToAction.actionAnswer,
-									"doesn't exist on NPM or is built in webpack, please check for any misspellings."
-								);
-								process.exit(0);
-							}
-						});
+						npmExists(answerToAction.actionAnswer)
+							.then((p: string) => {
+								if (p) {
+									this.dependencies.push(answerToAction.actionAnswer);
+									const normalizePluginName: string = answerToAction.actionAnswer.replace(
+										"-webpack-plugin",
+										"Plugin",
+									);
+									const pluginName: string = replaceAt(
+										normalizePluginName,
+										0,
+										normalizePluginName.charAt(0).toUpperCase(),
+									);
+									this.configuration.config.topScope.push(
+										`const ${pluginName} = require("${
+											answerToAction.actionAnswer
+										}")`,
+									);
+									this.configuration.config.webpackOptions[
+										action
+									] = `new ${pluginName}`;
+									this.configuration.config.item = answerToAction.actionAnswer;
+									done();
+									this.runInstall(getPackageManager(), this.dependencies, {
+										"save-dev": true,
+									});
+								} else {
+									console.error(
+										answerToAction.actionAnswer,
+										"doesn't exist on NPM or is built in webpack, please check for any misspellings.",
+									);
+									process.exit(0);
+								}
+							});
 					}
 				} else {
 					// If we're in the scenario with a deep-property
@@ -421,49 +459,57 @@ module.exports = class AddGenerator extends Generator {
 							return;
 						}
 						// Either we are adding directly at the property, else we're in a prop.theOne scenario
-						const actionMessage =
+						const actionMessage: string =
 							isDeepProp[1] === "other"
 								? `What do you want the key on ${action} to be? (press enter if you want it directly as a value on the property)`
 								: `What do you want the value of ${isDeepProp[1]} to be?`;
 
-						this.prompt([Input("deepProp", actionMessage)]).then(
-							deepPropAns => {
+						this.prompt([
+							Input("deepProp", actionMessage),
+						]).then(
+							(deepPropAns: {
+								deepProp: string,
+							}) => {
 								// The other option needs to be validated of either being empty or not
 								if (isDeepProp[1] === "other") {
-									let othersDeepPropKey = deepPropAns.deepProp
+									const othersDeepPropKey: string = deepPropAns.deepProp
 										? `What do you want the value of ${
 											deepPropAns.deepProp
 										  } to be?` // eslint-disable-line
 										: `What do you want to be the value of ${action} to be?`;
 									// Push the answer to the array we have created, so we can use it later
 									isDeepProp.push(deepPropAns.deepProp);
-									this.prompt([Input("deepProp", othersDeepPropKey)]).then(
-										deepPropAns => {
+									this.prompt([
+										Input("innerProp", othersDeepPropKey),
+									]).then(
+										(innerPropAns: {
+											innerProp,
+										}) => {
 											// Check length, if it has none, add the prop directly on the given action
 											if (isDeepProp[2].length === 0) {
 												this.configuration.config.item = action;
 												this.configuration.config.webpackOptions[action] =
-													deepPropAns.deepProp;
+													innerPropAns.innerProp;
 											} else {
 												// If not, we're adding to something like devServer.myProp
 												this.configuration.config.item =
 													action + "." + isDeepProp[2];
 												this.configuration.config.webpackOptions[action] = {
-													[isDeepProp[2]]: deepPropAns.deepProp
+													[isDeepProp[2]]: innerPropAns.innerProp,
 												};
 											}
 											done();
-										}
+										},
 									);
 								} else {
 									// We got the schema prop, we've correctly prompted it, and can add it directly
 									this.configuration.config.item = action + "." + isDeepProp[1];
 									this.configuration.config.webpackOptions[action] = {
-										[isDeepProp[1]]: deepPropAns.deepProp
+										[isDeepProp[1]]: deepPropAns.deepProp,
 									};
 									done();
 								}
-							}
+							},
 						);
 					} else {
 						// We're asking for input-only
@@ -476,7 +522,7 @@ module.exports = class AddGenerator extends Generator {
 			});
 	}
 
-	writing() {
+	public writing() {
 		this.config.set("configuration", this.configuration);
 	}
-};
+}

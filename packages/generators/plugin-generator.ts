@@ -1,6 +1,7 @@
-const path = require("path");
-const _ = require("lodash");
-const addonGenerator = require("./addon-generator");
+import * as _ from "lodash";
+import * as path from "path";
+
+import addonGenerator from "./addon-generator";
 
 /**
  * A yeoman generator class for creating a webpack
@@ -13,13 +14,13 @@ const addonGenerator = require("./addon-generator");
 const PluginGenerator = addonGenerator(
 	[
 		{
-			type: "input",
-			name: "name",
-			message: "Plugin name",
 			default: "my-webpack-plugin",
 			filter: _.kebabCase,
-			validate: str => str.length > 0
-		}
+			message: "Plugin name",
+			name: "name",
+			type: "input",
+			validate: (str: string) => str.length > 0,
+		},
 	],
 	path.resolve(__dirname, "..", "generate-plugin"),
 	[
@@ -28,12 +29,10 @@ const PluginGenerator = addonGenerator(
 		"test/functional.test.js.tpl",
 		"examples/simple/src/index.js.tpl",
 		"examples/simple/src/lazy-module.js.tpl",
-		"examples/simple/src/static-esm-module.js.tpl"
+		"examples/simple/src/static-esm-module.js.tpl",
 	],
 	["src/_index.js.tpl", "examples/simple/_webpack.config.js.tpl"],
-	gen => ({ name: _.upperFirst(_.camelCase(gen.props.name)) })
+	(gen: IYeoman) => ({ name: _.upperFirst(_.camelCase(gen.props.name)) }),
 );
 
-module.exports = {
-	PluginGenerator
-};
+export default PluginGenerator;

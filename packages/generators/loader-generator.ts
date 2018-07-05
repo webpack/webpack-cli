@@ -1,6 +1,7 @@
-const path = require("path");
-const _ = require("lodash");
-const addonGenerator = require("./addon-generator");
+import * as _ from "lodash";
+import * as path from "path";
+
+import addonGenerator from "./addon-generator";
 
 /**
  * Formats a string into webpack loader format
@@ -9,7 +10,7 @@ const addonGenerator = require("./addon-generator");
  * @param {string} name A loader name to be formatted
  * @returns {string} The formatted string
  */
-function makeLoaderName(name) {
+export function makeLoaderName(name: string): string {
 	name = _.kebabCase(name);
 	if (!/loader$/.test(name)) {
 		name += "-loader";
@@ -29,13 +30,13 @@ function makeLoaderName(name) {
 const LoaderGenerator = addonGenerator(
 	[
 		{
-			type: "input",
-			name: "name",
-			message: "Loader name",
 			default: "my-loader",
 			filter: makeLoaderName,
-			validate: str => str.length > 0
-		}
+			message: "Loader name",
+			name: "name",
+			type: "input",
+			validate: (str: string) => str.length > 0,
+		},
 	],
 	path.resolve(__dirname, "..", "generate-loader"),
 	[
@@ -47,13 +48,10 @@ const LoaderGenerator = addonGenerator(
 		"examples/simple/webpack.config.js.tpl",
 		"examples/simple/src/index.js.tpl",
 		"examples/simple/src/lazy-module.js.tpl",
-		"examples/simple/src/static-esm-module.js.tpl"
+		"examples/simple/src/static-esm-module.js.tpl",
 	],
 	["src/_index.js.tpl"],
-	gen => ({ name: gen.props.name })
+	(gen: IYeoman) => ({ name: gen.props.name }),
 );
 
-module.exports = {
-	makeLoaderName,
-	LoaderGenerator
-};
+export default LoaderGenerator;

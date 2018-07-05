@@ -1,9 +1,10 @@
-const Generator = require("yeoman-generator");
-const path = require("path");
-const fs = require("fs");
-const { List } = require("@webpack-cli/webpack-scaffold");
+import * as fs from "fs";
+import * as path from "path";
+import Generator = require("yeoman-generator");
 
-const PROP_TYPES = require("@webpack-cli/utils/prop-types");
+import * as PROP_TYPES from "@webpack-cli/utils/prop-types";
+import { List } from "@webpack-cli/webpack-scaffold";
+import { IWebpackOptions } from "./types";
 
 /**
  *
@@ -14,17 +15,26 @@ const PROP_TYPES = require("@webpack-cli/utils/prop-types");
  *
  */
 
-module.exports = class RemoveGenerator extends Generator {
+export default class RemoveGenerator extends Generator {
+	private configuration: {
+		config: {
+			configName?: string,
+			topScope?: string[],
+			webpackOptions?: IWebpackOptions,
+		},
+	};
+	private webpackOptions: IWebpackOptions | string;
+
 	constructor(args, opts) {
 		super(args, opts);
 		this.configuration = {
 			config: {
 				webpackOptions: {},
-			}
+			},
 		};
 
-		let configPath = path.resolve(process.cwd(), "webpack.config.js");
-		const webpackConfigExists = fs.existsSync(configPath);
+		let configPath: string = path.resolve(process.cwd(), "webpack.config.js");
+		const webpackConfigExists: boolean = fs.existsSync(configPath);
 		if (!webpackConfigExists) {
 			configPath = null;
 			// end the generator stating webpack config not found or to specify the config
@@ -32,28 +42,30 @@ module.exports = class RemoveGenerator extends Generator {
 		this.webpackOptions = require(configPath);
 	}
 
-	getPropTypes() {
+	public getPropTypes(): string[] {
 		return Object.keys(this.webpackOptions);
 	}
 
-	getModuleLoaders() {
-		if (this.webpackOptions.module && this.webpackOptions.module.rules) {
-			return this.webpackOptions.module.rules.map(rule => rule ? rule.loader : null);
+	public getModuleLoadersNames(): string[] {
+		if (typeof this.webpackOptions === "object") {
+			if (this.webpackOptions.module && this.webpackOptions.module.rules) {
+				return this.webpackOptions.module.rules.map((rule: any) => rule ? rule.loader : null);
+			}
 		}
 	}
 
-	prompting() {
-		const done = this.async();
-		let propValue;
+	public prompting() {
+		const done: (_?: void) => void | boolean = this.async();
+		let propValue: object | string | boolean;
 
 		return this.prompt([
 			List(
 				"propType",
 				"Which property do you want to remove?",
-				Array.from(this.getPropTypes())
-			)
+				Array.from(this.getPropTypes()),
+			),
 		])
-			.then(({ propType }) => {
+			.then(({ propType }: { propType: string }) => {
 				if (!PROP_TYPES.has(propType)) {
 					console.log("Invalid webpack config prop");
 					return;
@@ -66,9 +78,9 @@ module.exports = class RemoveGenerator extends Generator {
 							List(
 								"keyType",
 								`Which key do you want to remove from ${propType}?`,
-								Array.from(propValue)
-							)
-						]).then(({ keyType }) => {
+								Array.from(propValue),
+							),
+						]).then(({ keyType }: { keyType: string }) => {
 							this.configuration.config.webpackOptions[propType] = [ keyType ];
 						});
 					} else {
@@ -76,24 +88,26 @@ module.exports = class RemoveGenerator extends Generator {
 							List(
 								"keyType",
 								`Which key do you want to remove from ${propType}?`,
-								Array.from(Object.keys(propValue))
-							)
+								Array.from(Object.keys(propValue)),
+							),
 						])
-							.then(({ keyType }) => {
+							.then(({ keyType }: { keyType: string }) => {
 								if (propType === "module" && keyType === "rules") {
 									return this.prompt([
 										List(
 											"rule",
 											"Which loader do you want to remove?",
-											Array.from(this.getModuleLoaders())
-										)
+											Array.from(this.getModuleLoadersNames()),
+										),
 									])
-										.then(({ rule }) => {
-											const loaderIndex = this.getModuleLoaders().indexOf(rule);
-											const loader = this.webpackOptions.module.rules[loaderIndex];
-											this.configuration.config.webpackOptions.module = {
-												rules: [ loader ]
-											};
+										.then(({ rule }: { rule: string }) => {
+											if (typeof this.webpackOptions === "object") {
+												const loaderIndex: number = this.getModuleLoadersNames().indexOf(rule);
+												const loader: object = this.webpackOptions.module.rules[loaderIndex];
+												this.configuration.config.webpackOptions.module = {
+													rules: [ loader ],
+												};
+											}
 										});
 								} else {
 									// remove the complete prop object if there is only one key
@@ -101,7 +115,7 @@ module.exports = class RemoveGenerator extends Generator {
 										this.configuration.config.webpackOptions[propType] = null;
 									} else {
 										this.configuration.config.webpackOptions[propType] = {
-											[keyType]: null
+											[keyType]: null,
 										};
 									}
 								}
@@ -111,12 +125,12 @@ module.exports = class RemoveGenerator extends Generator {
 					this.configuration.config.webpackOptions[propType] = null;
 				}
 			})
-			.then(() => {
+			.then((_: void) => {
 				done();
 			});
 	}
 
-	writing() {
+	public writing() {
 		this.config.set("configuration", this.configuration);
 	}
-};
+}

@@ -15,6 +15,12 @@
       ],
       "no-console": {
         "severity": "warning"
+      },
+      "max-line-length": {
+        "options": {
+          "limit": 120
+        },
+        "severity": "warn"
       }
     },
     "rulesDirectory": [],
