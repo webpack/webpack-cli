@@ -1,7 +1,9 @@
-const path = require("path");
-const mkdirp = require("mkdirp");
-const Generator = require("yeoman-generator");
-const copyUtils = require("@webpack-cli/utils/copy-utils");
+import * as mkdirp from "mkdirp";
+import * as path from "path";
+import Generator = require("yeoman-generator");
+
+import * as copyUtils from "@webpack-cli/utils/copy-utils";
+import { IScaffoldBaseObject } from "@webpack-cli/webpack-scaffold";
 
 /**
  * Creates a Yeoman Generator that generates a project conforming
@@ -24,54 +26,57 @@ const copyUtils = require("@webpack-cli/utils/copy-utils");
  *
  * @returns {Generator} A class extending Generator
  */
-function addonGenerator(
-	prompts,
-	templateDir,
-	copyFiles,
-	copyTemplateFiles,
-	templateFn
+export default function addonGenerator(
+	prompts: IScaffoldBaseObject[],
+	templateDir: string,
+	copyFiles: string[],
+	copyTemplateFiles: string[],
+	templateFn: Function,
 ) {
-	//eslint-disable-next-line
-	return class extends Generator {
-		prompting() {
-			return this.prompt(prompts).then(props => {
+	return class AddOnGenerator extends Generator {
+		public props: IScaffoldBaseObject;
+		private copy: (value: string, index: number, array: string[]) => void;
+		private copyTpl: (value: string, index: number, array: string[]) => void;
+
+		public prompting() {
+			return this.prompt(prompts).then((props: IScaffoldBaseObject) => {
 				this.props = props;
 			});
 		}
 
-		default() {
-			const currentDirName = path.basename(this.destinationPath());
+		public default() {
+			const currentDirName: string = path.basename(this.destinationPath());
 			if (currentDirName !== this.props.name) {
 				this.log(`
 				Your project must be inside a folder named ${this.props.name}
 				I will create this folder for you.
 				`);
-				mkdirp(this.props.name);
-				const pathToProjectDir = this.destinationPath(this.props.name);
+				mkdirp(this.props.name, (err: object) => {
+					console.error("Failed to create directory", err);
+				});
+				const pathToProjectDir: string = this.destinationPath(this.props.name);
 				this.destinationRoot(pathToProjectDir);
 			}
 		}
 
-		writing() {
+		public writing() {
 			this.copy = copyUtils.generatorCopy(this, templateDir);
 			this.copyTpl = copyUtils.generatorCopyTpl(
 				this,
 				templateDir,
-				templateFn(this)
+				templateFn(this),
 			);
 
 			copyFiles.forEach(this.copy);
 			copyTemplateFiles.forEach(this.copyTpl);
 		}
 
-		install() {
+		public install() {
 			this.npmInstall(["webpack-defaults", "bluebird"], {
-				"save-dev": true
-			}).then(() => {
+				"save-dev": true,
+			}).then((_: void) => {
 				this.spawnCommand("npm", ["run", "defaults"]);
 			});
 		}
 	};
 }
-
-module.exports = addonGenerator;

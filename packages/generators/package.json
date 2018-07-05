@@ -24,5 +24,16 @@
   },
   "peerDependencies": {
     "webpack": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.110",
+    "@types/log-symbols": "^2.0.0",
+    "@types/mkdirp": "^0.5.2",
+    "@types/node": "^10.3.6",
+    "@types/webpack-dev-server": "^2.9.4",
+    "typescript": "^2.9.2"
+  },
+  "scripts": {
+    "build": "tsc"
   }
 }

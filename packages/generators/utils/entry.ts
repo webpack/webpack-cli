@@ -1,7 +1,10 @@
-"use strict";
+import { InputValidate } from "@webpack-cli/webpack-scaffold";
 
-const InputValidate = require("@webpack-cli/webpack-scaffold").InputValidate;
-const validate = require("./validate");
+import validate from "./validate";
+
+interface IEntry extends IYeoman {
+	usingDefaults?: boolean;
+}
 
 /**
  *
@@ -12,27 +15,33 @@ const validate = require("./validate");
  * @returns	{Object} An Object that holds the answers given by the user, later used to scaffold
  */
 
-module.exports = (self, answer) => {
-	let entryIdentifiers;
-	let result;
-	if (answer["entryType"] === true) {
+export default function entry(self: IEntry, answer: {
+	entryType: boolean;
+}): Promise<{}> {
+	let entryIdentifiers: string[];
+	let result: Promise<{}>;
+	if (answer.entryType === true) {
 		result = self
 			.prompt([
 				InputValidate(
 					"multipleEntries",
 					"Type the names you want for your modules (entry files), separated by comma [example: app,vendor]",
-					validate
-				)
+					validate,
+				),
 			])
-			.then(multipleEntriesAnswer => {
-				let webpackEntryPoint = {};
-				entryIdentifiers = multipleEntriesAnswer["multipleEntries"].split(",");
-				function forEachPromise(obj, fn) {
-					return obj.reduce((promise, prop) => {
-						const trimmedProp = prop.trim();
-						return promise.then(n => {
+			.then((multipleEntriesAnswer: {
+				multipleEntries: string,
+			}) => {
+				const webpackEntryPoint: object = {};
+				entryIdentifiers = multipleEntriesAnswer.multipleEntries.split(",");
+
+				function forEachPromise(entries: string[], fn: (entryProp: string) => Promise<{} | void>) {
+					return entries.reduce((promise: Promise<{}>, prop: string) => {
+						const trimmedProp: string = prop.trim();
+
+						return promise.then((n: object) => {
 							if (n) {
-								Object.keys(n).forEach(val => {
+								Object.keys(n).forEach((val: string) => {
 									if (
 										n[val].charAt(0) !== "(" &&
 										n[val].charAt(0) !== "[" &&
@@ -51,16 +60,16 @@ module.exports = (self, answer) => {
 						});
 					}, Promise.resolve());
 				}
-				return forEachPromise(entryIdentifiers, entryProp =>
+				return forEachPromise(entryIdentifiers, (entryProp: string): Promise<{} | void> =>
 					self.prompt([
 						InputValidate(
 							`${entryProp}`,
 							`What is the location of "${entryProp}"? [example: ./src/${entryProp}]`,
-							validate
-						)
-					])
-				).then(entryPropAnswer => {
-					Object.keys(entryPropAnswer).forEach(val => {
+							validate,
+						),
+					]),
+				).then((entryPropAnswer: object) => {
+					Object.keys(entryPropAnswer).forEach((val: string) => {
 						if (
 							entryPropAnswer[val].charAt(0) !== "(" &&
 							entryPropAnswer[val].charAt(0) !== "[" &&
@@ -82,10 +91,12 @@ module.exports = (self, answer) => {
 			.prompt([
 				InputValidate(
 					"singularEntry",
-					"Which module will be the first to enter the application? [default: ./src/index]"
-				)
+					"Which module will be the first to enter the application? [default: ./src/index]",
+				),
 			])
-			.then(singularEntryAnswer => {
+			.then((singularEntryAnswer: {
+				singularEntry: string,
+			}) => {
 				let { singularEntry } = singularEntryAnswer;
 				if (singularEntry.indexOf("\"") >= 0) {
 					singularEntry = singularEntry.replace(/"/g, "'");
@@ -97,4 +108,4 @@ module.exports = (self, answer) => {
 			});
 	}
 	return result;
-};
+}
