@@ -41,7 +41,7 @@ export default function entry(self: IEntry, answer: {
 
 						return promise.then((n: object) => {
 							if (n) {
-								Object.keys(n).forEach((val: string) => {
+								Object.keys(n).forEach((val: string): void => {
 									if (
 										n[val].charAt(0) !== "(" &&
 										n[val].charAt(0) !== "[" &&
@@ -68,8 +68,8 @@ export default function entry(self: IEntry, answer: {
 							validate,
 						),
 					]),
-				).then((entryPropAnswer: object) => {
-					Object.keys(entryPropAnswer).forEach((val: string) => {
+				).then((entryPropAnswer: object): object => {
+					Object.keys(entryPropAnswer).forEach((val: string): void => {
 						if (
 							entryPropAnswer[val].charAt(0) !== "(" &&
 							entryPropAnswer[val].charAt(0) !== "[" &&
@@ -96,7 +96,7 @@ export default function entry(self: IEntry, answer: {
 			])
 			.then((singularEntryAnswer: {
 				singularEntry: string,
-			}) => {
+			}): string => {
 				let { singularEntry } = singularEntryAnswer;
 				if (singularEntry.indexOf("\"") >= 0) {
 					singularEntry = singularEntry.replace(/"/g, "'");

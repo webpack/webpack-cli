@@ -49,7 +49,9 @@ export default class RemoveGenerator extends Generator {
 	public getModuleLoadersNames(): string[] {
 		if (typeof this.webpackOptions === "object") {
 			if (this.webpackOptions.module && this.webpackOptions.module.rules) {
-				return this.webpackOptions.module.rules.map((rule: any) => rule ? rule.loader : null);
+				return this.webpackOptions.module.rules.map((rule: {
+					loader: string;
+				}) => rule ? rule.loader : null);
 			}
 		}
 	}
@@ -65,7 +67,7 @@ export default class RemoveGenerator extends Generator {
 				Array.from(this.getPropTypes()),
 			),
 		])
-			.then(({ propType }: { propType: string }) => {
+			.then(({ propType }: { propType: string }): Promise<{}> => {
 				if (!PROP_TYPES.has(propType)) {
 					console.log("Invalid webpack config prop");
 					return;
@@ -80,7 +82,7 @@ export default class RemoveGenerator extends Generator {
 								`Which key do you want to remove from ${propType}?`,
 								Array.from(propValue),
 							),
-						]).then(({ keyType }: { keyType: string }) => {
+						]).then(({ keyType }: { keyType: string }): void => {
 							this.configuration.config.webpackOptions[propType] = [ keyType ];
 						});
 					} else {
@@ -91,7 +93,7 @@ export default class RemoveGenerator extends Generator {
 								Array.from(Object.keys(propValue)),
 							),
 						])
-							.then(({ keyType }: { keyType: string }) => {
+							.then(({ keyType }: { keyType: string }): Promise<{}> => {
 								if (propType === "module" && keyType === "rules") {
 									return this.prompt([
 										List(
@@ -100,7 +102,7 @@ export default class RemoveGenerator extends Generator {
 											Array.from(this.getModuleLoadersNames()),
 										),
 									])
-										.then(({ rule }: { rule: string }) => {
+										.then(({ rule }: { rule: string }): void => {
 											if (typeof this.webpackOptions === "object") {
 												const loaderIndex: number = this.getModuleLoadersNames().indexOf(rule);
 												const loader: object = this.webpackOptions.module.rules[loaderIndex];
@@ -125,7 +127,7 @@ export default class RemoveGenerator extends Generator {
 					this.configuration.config.webpackOptions[propType] = null;
 				}
 			})
-			.then((_: void) => {
+			.then((_: void): void => {
 				done();
 			});
 	}

@@ -19,7 +19,7 @@ const PluginGenerator = addonGenerator(
 			message: "Plugin name",
 			name: "name",
 			type: "input",
-			validate: (str: string) => str.length > 0,
+			validate: (str: string): boolean => str.length > 0,
 		},
 	],
 	path.resolve(__dirname, "..", "generate-plugin"),
@@ -32,7 +32,7 @@ const PluginGenerator = addonGenerator(
 		"examples/simple/src/static-esm-module.js.tpl",
 	],
 	["src/_index.js.tpl", "examples/simple/_webpack.config.js.tpl"],
-	(gen: IYeoman) => ({ name: _.upperFirst(_.camelCase(gen.props.name)) }),
+	(gen: IYeoman): object => ({ name: _.upperFirst(_.camelCase(gen.props.name)) }),
 );
 
 export default PluginGenerator;

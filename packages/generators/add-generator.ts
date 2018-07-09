@@ -51,7 +51,7 @@ function replaceAt(str: string, index: number, replace: string): string {
  */
 const traverseAndGetProperties = (arr: object[], prop: string): boolean => {
 	let hasProp: boolean = false;
-	arr.forEach((p: object) => {
+	arr.forEach((p: object): void => {
 		if (p[prop]) {
 			hasProp = true;
 		}
@@ -72,7 +72,7 @@ const traverseAndGetProperties = (arr: object[], prop: string): boolean => {
 const searchProps = (answers: object, input: string): Promise<string[]> => {
 	input = input || "";
 	return Promise.resolve(
-		PROPS.filter((prop: string) =>
+		PROPS.filter((prop: string): boolean =>
 			prop.toLowerCase().includes(input.toLowerCase()),
 		),
 	);
@@ -207,7 +207,7 @@ export default class AddGenerator extends Generator {
 						const originalPropDesc: object = defOrPropDescription[0].enum;
 						// Array -> Object -> Merge objects into one for compat in manualOrListInput
 						defOrPropDescription = Object.keys(defOrPropDescription[0].enum)
-							.map((p: string) => {
+							.map((p: string): object => {
 								return Object.assign(
 									{},
 									{
@@ -215,7 +215,7 @@ export default class AddGenerator extends Generator {
 									},
 								);
 							})
-							.reduce((result: object, currentObject: object) => {
+							.reduce((result: object, currentObject: object): object => {
 								for (const key in currentObject) {
 									if (currentObject.hasOwnProperty(key)) {
 										result[key] = currentObject[key];
@@ -323,14 +323,14 @@ export default class AddGenerator extends Generator {
 							"node_modules/webpack/lib/*Plugin.js",
 							"node_modules/webpack/lib/**/*Plugin.js",
 						])
-						.map((p: string) =>
+						.map((p: string): string =>
 							p
 								.split("/")
 								.pop()
 								.replace(".js", ""),
 						)
 						.find(
-							(p: string) => p.toLowerCase().indexOf(answerToAction.actionAnswer) >= 0,
+							(p: string): boolean => p.toLowerCase().indexOf(answerToAction.actionAnswer) >= 0,
 						);
 
 					if (pluginExist) {
@@ -341,7 +341,7 @@ export default class AddGenerator extends Generator {
 								"node_modules/webpack/schemas/plugins/**/*Plugin.json",
 							])
 							.find(
-								(p: string) =>
+								(p: string): boolean =>
 									p
 										.split("/")
 										.pop()
@@ -361,9 +361,9 @@ export default class AddGenerator extends Generator {
 							let pluginsSchemaProps: string[] = ["other"];
 							if (pluginSchema) {
 								Object.keys(pluginSchema)
-									.filter((p: string) => Array.isArray(pluginSchema[p]))
-									.forEach((p: string) => {
-										Object.keys(pluginSchema[p]).forEach((n: string) => {
+									.filter((p: string): boolean => Array.isArray(pluginSchema[p]))
+									.forEach((p: string): void => {
+										Object.keys(pluginSchema[p]).forEach((n: string): void => {
 											if (pluginSchema[p][n].properties) {
 												pluginsSchemaProps = Object.keys(
 													pluginSchema[p][n].properties,

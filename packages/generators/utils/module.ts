@@ -1,4 +1,4 @@
-interface IModule {
+interface IModule extends Object {
 	include: string[];
 	loader: string;
 	options: {

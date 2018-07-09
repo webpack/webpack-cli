@@ -6,6 +6,6 @@
  * that consists of the uglify plugin
  */
 
-export default function(): string[] {
+export default function(_?: void): string[] {
 	return ["new UglifyJSPlugin()"];
 }
