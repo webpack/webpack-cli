@@ -68,7 +68,7 @@ declare module "yeoman-generator" {
 		type?: string;
 		name: string;
 		message: string | ((answers: Object) => string);
-		choices?: any[] | ((answers: Object) => any);
+		choices?: string[] | ((answers: Object) => string);
 		default?: string | number | string[] | number[] | ((answers: Object) => (string | number | string[] | number[]));
 		validate?: ((input: string) => boolean | string);
 		when?: ((answers: Object) => boolean) | boolean;
@@ -78,7 +78,7 @@ declare module "yeoman-generator" {
 
 	// tslint:disable-next-line
 	class NamedBase extends YeomanGeneratorBase implements INamedBase {
-		constructor(args: string | string[], options: any);
+		constructor(args: string | string[], options: object);
 	}
 
 	// tslint:disable-next-line

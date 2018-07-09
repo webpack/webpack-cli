@@ -35,7 +35,7 @@ const LoaderGenerator = addonGenerator(
 			message: "Loader name",
 			name: "name",
 			type: "input",
-			validate: (str: string) => str.length > 0,
+			validate: (str: string): boolean => str.length > 0,
 		},
 	],
 	path.resolve(__dirname, "..", "generate-loader"),
@@ -51,7 +51,7 @@ const LoaderGenerator = addonGenerator(
 		"examples/simple/src/static-esm-module.js.tpl",
 	],
 	["src/_index.js.tpl"],
-	(gen: IYeoman) => ({ name: gen.props.name }),
+	(gen: IYeoman): object => ({ name: gen.props.name }),
 );
 
 export default LoaderGenerator;

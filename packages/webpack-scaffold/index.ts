@@ -4,7 +4,7 @@ export interface IScaffoldBaseObject {
 	type?: string;
 	name: string;
 	message: string;
-	choices?: ((answers: Object) => any) | any[];
+	choices?: ((answers: Object) => string) | string[];
 	default?: string | number | string[] | number[] | ((answers: Object) => (string | number | string[] | number[]));
 	validate?: ((input: string) => boolean | string);
 	when?: ((answers: Object) => boolean) | boolean;
