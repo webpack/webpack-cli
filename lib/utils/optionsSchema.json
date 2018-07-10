@@ -1,0 +1,962 @@
+{
+    "entry": {
+        "type": ["string", "object", "Function", "Array"],
+    
+      "externals": {
+        "type": ["string", "object", "boolean", "Function", "RegExp", "Array"],
+      },
+      "module": {
+        "type": ["boolean", "RegExp"],
+        "properties": {
+          "exprContextCritical": {
+            "type": ["boolean"]
+          },
+          "exprContextRecursive": {
+            "type": ["boolean"]
+          },
+          "exprContextRegExp": {
+                "type": ["boolean", "RegExp"]
+          },
+          "exprContextRequest": {
+            "type": ["string"]
+          },
+          "noParse": {
+            "type": ["RegExp", "array", "Function", "string"]
+          },
+          "rules": {
+            "type": ["Array"]
+          },
+          "unknownContextCritical": {
+            "type": ["boolean"]
+          },
+          "unknownContextRecursive": {
+            "type": ["boolean"]
+          },
+          "unknownContextRegExp": {
+            "type": ["boolean", "RegExp"]
+          },
+          "unknownContextRequest": {
+            "type": ["string"]
+          },
+          "unsafeCache": {
+            "type": ["boolean", "Function"]
+          },
+          "wrappedContextCritical": {
+            "type": ["boolean"]
+          },
+          "wrappedContextRecursive": {
+            "type": ["boolean"]
+          },
+          "wrappedContextRegExp": {
+            "instanceof": ["RegExp"]
+          },
+          "strictExportPresence": {
+            "type": ["boolean"]
+          },
+          "strictThisContextOnImports": {
+            "type": ["boolean", "object"]
+          }
+        }
+      },
+      "output": {
+        "properties": {
+          "auxiliaryComment": {
+                "type": ["string", "object"],
+                "properties": {
+                  "amd": {
+                    "type": ["string"]
+                  },
+                  "commonjs": {
+                    "type": ["string"]
+                  },
+                  "commonjs2": {
+                    "type": ["string"]
+                  },
+                  "root": {
+                    "type": ["string"]
+                  }
+                }
+            }
+          },
+          "chunkFilename": {
+            "type": ["string"]
+          },
+          "webassemblyModuleFilename": {
+            "type": ["string"]
+          },
+          "globalObject": {
+            "type": ["string"]
+          },
+          "crossOriginLoading": {
+            "type": [false, "anonymous", "use-credentials"]
+          },
+          "jsonpScriptType": {
+            "types": [false, "text/javascript", "module"]
+          },
+          "chunkLoadTimeout": {
+            "type": ["number"]
+          },
+          "devtoolFallbackModuleFilenameTemplate": {
+            "type": ["string", "Function"]
+          },
+          "devtoolLineToLine": {
+            "type": ["boolean", "object"]
+          },
+          "devtoolModuleFilenameTemplate": {
+            "type": ["string", "Function"]
+          },
+          "devtoolNamespace": {
+            "type": ["string"]
+          },
+          "filename": {
+            "type": ["string", "Function"]
+          },
+          "hashDigest": {
+            "type": ["latin1", "hex", "base64"]
+          },
+          "hashDigestLength": {
+            "type": ["number"]
+          },
+          "hashFunction": {
+            "type": ["string","Function"]
+          },
+          "hashSalt": {
+            "type": ["string"]
+          },
+          "hotUpdateChunkFilename": {
+            "type": ["string","Function"]
+          },
+          "hotUpdateFunction": {
+            "type": "string"
+          },
+          "hotUpdateMainFilename": {
+            "type": [ "string", "Function"]
+          },
+          "jsonpFunction": {
+            "type": ["string"]
+          },
+          "chunkCallbackName": {
+            "type": ["string"]
+          },
+          "library": {
+            "type": [ "string", "array", "object"],
+            "properties": {
+              "root": {
+                "type": ["string"]
+              },
+              "amd": {
+                "type": ["string"]
+              },
+              "commonjs": {
+                "type": ["string"]
+              }
+            }
+          },
+          "libraryTarget": {
+            "type": [
+              "var",
+              "assign",
+              "this",
+              "window",
+              "self",
+              "global",
+              "commonjs",
+              "commonjs2",
+              "commonjs-module",
+              "amd",
+              "umd",
+              "umd2",
+              "jsonp"
+            ]
+          },
+          "libraryExport": {
+            "type": ["string"]
+          },
+          "path": {
+            "type": ["string"]
+          },
+          "pathinfo": {
+            "type": ["boolean"]
+          },
+          "publicPath": {
+            "type": ["string", "Function"]
+          },
+          "sourceMapFilename": {
+            "type": ["string"]
+          },
+          "sourcePrefix": {
+            "type": ["string"]
+          },
+          "strictModuleExceptionHandling": {
+            "type": ["boolean"]
+          },
+          "umdNamedDefine": {
+            "type": ["boolean"]
+          }
+        }
+      },
+      "resolve": {
+        "properties": {
+          "alias": {
+            "type": [
+              {
+                "additionalProperties": {
+                  "type": ["string"]
+                },
+                "type": ["object"]
+              },
+              {
+                "items": {
+                  "properties": {
+                    "alias": {
+                      "type": ["string"]
+                    },
+                    "name": {
+                      "type": ["string"]
+                    },
+                    "onlyModule": {
+                      "type": ["boolean"]
+                    }
+                  },
+                  "type": ["object"]
+                },
+                "type": ["array"]
+              }
+            ]
+          },
+          "aliasFields": {
+            "type": ["Array"]
+          },
+          "cachePredicate": {
+            "type": ["Function"]
+          },
+          "cacheWithContext": {
+            "type": ["boolean"]
+          },
+          "descriptionFiles": {
+            "type": ["Array"]
+          },
+          "enforceExtension": {
+            "type": ["boolean"]
+          },
+          "enforceModuleExtension": {
+            "type": ["boolean"]
+          },
+          "extensions": {
+            "type": ["Array"]
+          },
+          "fileSystem": {
+            "type": []
+          },
+          "mainFields": {
+            "type": ["Array"]
+          },
+          "mainFiles": {
+            "type": ["Array"]
+          },
+          "moduleExtensions": {
+            "type": ["Array"]
+          },
+          "modules": {
+            "type": ["Array"]
+          },
+          "plugins": {
+            "type": ["Array"]
+          },
+          "resolver": {
+            "type": []
+          },
+          "symlinks": {
+            "type": ["boolean"]
+          },
+          "concord": {
+            "type": ["boolean"]
+          },
+          "unsafeCache": {
+            "type": ["boolean", "object"]
+          },
+          "useSyncFileSystemCalls": {
+            "type": ["boolean"]
+          }
+        }
+      },
+      "ruleSet-condition": {
+        "type": ["RegExp", "string", "Function", "#/definitions/ruleSet-conditions",
+          {
+            "properties": {
+              "and": {
+                "type": ["#/definitions/ruleSet-conditions"]
+              },
+              "exclude": {
+                "type": ["#/definitions/ruleSet-condition"]
+              },
+              "include": {
+                "type": ["#/definitions/ruleSet-condition"]
+              },
+              "not": {
+                "type": ["#/definitions/ruleSet-conditions"]
+              },
+              "or": {
+                "type": ["#/definitions/ruleSet-conditions"]
+              },
+              "test": {
+                "type": ["#/definitions/ruleSet-condition"]
+              }
+            },
+            "type": ["object"]
+          }
+        ]
+      },
+      "ruleSet-conditions": {
+        "items": {
+          "type": ["#/definitions/ruleSet-condition"]
+        },
+        "type": ["array"]
+      },
+      "ruleSet-loader": {
+        "type": ["string"]
+      },
+      "ruleSet-query": {
+        "type": [ "object", "string"]
+      },
+      "ruleSet-rule": {
+        "properties": {
+          "enforce": {
+            "type": ["pre","post"]
+          },
+          "exclude": {
+            "type": [ "#/definitions/ruleSet-condition"]
+          },
+          "include": {
+            "type": ["#/definitions/ruleSet-condition"]
+          },
+          "issuer": {
+            "type": ["#/definitions/ruleSet-condition"]
+          },
+          "loader": {
+            "type": ["#/definitions/ruleSet-loader", "#/definitions/ruleSet-use"]
+          },
+          "loaders": {
+            "type": ["#/definitions/ruleSet-use"]
+          },
+          "oneOf": {
+            "type": ["#/definitions/ruleSet-rules"]
+          },
+          "options": {
+            "type": ["#/definitions/ruleSet-query"]
+          },
+          "parser": {
+            "type": ["object"]
+          },
+          "resolve": {
+            "type": ["object"],
+            "anyOf": ["#/definitions/resolve"]
+          },
+          "sideEffects": {
+            "type": ["boolean"]
+          },
+          "query": {
+            "type": ["#/definitions/ruleSet-query"]
+          },
+          "type": {
+            "type": [
+              "javascript/auto",
+              "javascript/dynamic",
+              "javascript/esm",
+              "json",
+              "webassembly/experimental"
+            ]
+          },
+          "resource": {
+            "type": ["#/definitions/ruleSet-condition"]
+          },
+          "resourceQuery": {
+            "type": [ "#/definitions/ruleSet-condition"]
+          },
+          "compiler": {
+            "type": ["#/definitions/ruleSet-condition"]
+          },
+          "rules": {
+            "type": ["#/definitions/ruleSet-rules"]
+          },
+          "test": {
+            "type": [ "#/definitions/ruleSet-condition"]
+          },
+          "use": {
+            "type": ["#/definitions/ruleSet-use"]
+          }
+        },
+        "type": ["object"]
+      },
+      "ruleSet-rules": {
+        "items": {
+          "type": ["#/definitions/ruleSet-rule"]
+        },
+        "type": ["array"]
+      },
+      "ruleSet-use": {
+        "type": ["#/definitions/ruleSet-use-item", "Function",
+          {
+            "items": {
+              "type": [ "#/definitions/ruleSet-use-item"]
+            },
+            "type": ["array"]
+          }
+        ]
+      },
+      "ruleSet-use-item": {
+        "type": ["#/definitions/ruleSet-loader", "Function",
+          {
+            "properties": {
+              "loader": {
+                "type": [ "#/definitions/ruleSet-loader"]
+              },
+              "options": {
+                "type": ["#/definitions/ruleSet-query"]
+              },
+              "ident": {
+                "type": ["string"]
+              },
+              "query": {
+                "types": [ "#/definitions/ruleSet-query"]
+              }
+            },
+            "type": ["object"]
+          }
+        ]
+      },
+      "filter-item-types": {
+        "type": ["RegExp", "String", "Function"]
+      },
+      "filter-types": {
+        "type": [ "#/definitions/filter-item-types", {
+            "type": ["array"],
+            "items": {
+              "types": ["#/definitions/filter-item-types"]
+            }
+          }
+        ]
+      }
+    },
+    "properties": {
+      "mode": {
+        "type": [
+          "development",
+          "production",
+          "none"
+        ]
+      },
+      "amd": {
+        "type": []
+      },
+      "bail": {
+        "type": ["boolean"]
+      },
+      "cache": {
+        "type": [ "boolean", "object"]
+      },
+      "context": {
+        "type": ["string"],
+      },
+      "dependencies": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "devServer": {
+        "type": ["object"]
+      },
+      "devtool": {
+        "type": ["string", false]
+      },
+      "entry": {
+        "type": ["#/definitions/entry"]
+      },
+      "externals": {
+        "type": [ "#/definitions/externals"]
+      },
+      "loader": {
+        "type": ["object"]
+      },
+      "module": {
+        "type": [ "#/definitions/module"]
+      },
+      "name": {
+        "type": "string"
+      },
+      "node": {
+        "type": [false, "object"],
+        "properties": {
+            "object": {
+              "type": [
+                false,
+                true,
+                "mock",
+                "empty"
+              ]
+            },
+            "undefined": {
+              "Buffer": {
+                "type": [
+                  false,
+                  true,
+                  "mock"
+                ]
+              },
+              "__dirname": {
+                "type": [
+                  false,
+                  true,
+                  "mock"
+                ]
+              },
+              "__filename": {
+                "type": [
+                  false,
+                  true,
+                  "mock"
+                ]
+              },
+              "console": {
+                "type": [
+                  false,
+                  true,
+                  "mock"
+                ]
+              },
+              "global": {
+                "type": ["boolean"]
+              },
+              "process": {
+                "type": [
+                  false,
+                  true,
+                  "mock"
+                ]
+              }
+            },
+          }
+      },
+      "output": {
+        "type": [ "#/definitions/output"]
+      },
+      "optimization": {
+        "type": ["object"],
+        "properties": {
+          "removeAvailableModules": {
+            "type": ["boolean"]
+          },
+          "removeEmptyChunks": {
+            "type": ["boolean"]
+          },
+          "mergeDuplicateChunks": {
+            "type": ["boolean"]
+          },
+          "flagIncludedChunks": {
+            "type": ["boolean"]
+          },
+          "occurrenceOrder": {
+            "type": ["boolean"]
+          },
+          "sideEffects": {
+            "type": ["boolean"]
+          },
+          "providedExports": {
+            "type": ["boolean"]
+          },
+          "usedExports": {
+            "type": ["boolean"]
+          },
+          "concatenateModules": {
+            "type": ["boolean"]
+          },
+          "splitChunks": {
+            "type": [false],
+            "TODO": {
+                "type": ["object"],
+                "properties": {
+                  "chunks": {
+                    "type": [
+                      {
+                        "type": [
+                          "initial",
+                          "async",
+                          "all",
+                          "Function"
+                        ]
+                      }
+                    ]
+                  },
+                  "minSize": {
+                    "type": ["number"]
+                  },
+                  "minChunks": {
+                    "type": ["number"]
+                  },
+                  "maxAsyncRequests": {
+                    "type": ["number"],
+                  },
+                  "maxInitialRequests": {
+                    "type": ["number"],
+                  },
+                  "name": {
+                    "type": [ "boolean","Function","string"]
+                  },
+                  "filename": {
+                    "type": ["string"],
+                  },
+                  "automaticNameDelimiter": {
+                    "type": ["string"],
+                  },
+                  "cacheGroups": {
+                    "type": ["object"],
+                    "properties": {
+                      "type": [false, "Function", "string","RegExp", {
+                          "type": "object",
+                          "properties": {
+                            "test": {
+                              "type": [ "Function", "string", "RegExp"]
+                            },
+                            "chunks": {
+                              "type": [
+                                    "initial",
+                                    "async",
+                                    "all",
+                                    "Function"
+                                  ]
+                            },
+                            "enforce": {
+                              "type": ["boolean"]
+                            },
+                            "priority": {
+                              "type": ["number"]
+                            },
+                            "minSize": {
+                              "type": ["number"]
+                            },
+                            "minChunks": {
+                              "type": ["number"]
+                            },
+                            "maxAsyncRequests": {
+                              "type": ["number"],
+                            },
+                            "maxInitialRequests": {
+                              "type": ["number"],
+                            },
+                            "reuseExistingChunk": {
+                              "type": ["boolean"]
+                            },
+                            "name": {
+                              "type": ["boolean","Function", "string"]
+                            },
+                            "filename": {
+                              "type": ["string"]
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "runtimeChunk": {
+            "type": ["boolean", "single","multiple",  {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": [ "string", "Function"]
+                }
+              }
+            }]
+          },
+          "noEmitOnErrors": {
+            "type": ["boolean"]
+          },
+          "namedModules": {
+            "type": ["boolean"]
+          },
+          "namedChunks": {
+            "type": ["boolean"]
+          },
+          "portableRecords": {
+            "type": ["boolean"]
+          },
+          "minimize": {
+            "type": ["boolean"]
+          },
+          "minimizer": {
+            "type": ["array"],
+            "properties": {
+              "type": [ "#/definitions/common.pluginObject", "#/definitions/common.pluginFunction"]
+            }
+          },
+          "nodeEnv": {
+            "type": [false, "string"]
+          }
+        }
+      },
+      "parallelism": {
+        "type": ["number"]
+      },
+      "performance": {
+        "type": [false,
+          {
+            "properties": {
+              "assetFilter": {
+                "type": ["Function"]
+              },
+              "hints": {
+                "type": [
+                  false,
+                  "warning",
+                  "error"
+                ]
+              },
+              "maxEntrypointSize": {
+                "type": ["number"]
+              },
+              "maxAssetSize": {
+                "type": ["number"]
+              }
+            },
+          }
+        ]
+      },
+      "plugins": {
+        "type": ["array"],
+        "properties": {
+          "type": [ "#/definitions/common.pluginObject", "#/definitions/common.pluginFunction"]
+        }
+      },
+      "profile": {
+        "type": ["boolean"]
+      },
+      "recordsInputPath": {
+        "type": ["string"]
+      },
+      "recordsOutputPath": {
+        "type": ["string"],
+      },
+      "recordsPath": {
+        "type": ["string"],
+      },
+      "resolve": {
+        "type": ["#/definitions/resolve"]
+      },
+      "resolveLoader": {
+        "type": [ "#/definitions/resolve"]
+      },
+      "serve": {
+        "type": ["object"]
+      },
+      "stats": {
+        "type": [
+          {
+            "type": ["object"],
+            "properties": {
+              "all": {
+                "type": ["boolean"],
+              },
+              "context": {
+                "type": ["string"]
+              },
+              "hash": {
+                "type": ["boolean"],
+              },
+              "version": {
+                "type": ["boolean"],
+              },
+              "timings": {
+                "type": ["boolean"],
+              },
+              "builtAt": {
+                "type": ["boolean"],
+              },
+              "performance": {
+                "type": ["boolean"],
+              },
+              "depth": {
+                "type": ["boolean"],
+              },
+              "assets": {
+                "type": ["boolean"],
+              },
+              "env": {
+                "type": ["boolean"],
+              },
+              "colors": {
+                "oneOf": ["boolean", {
+                    "type": "object",
+                    "properties": {
+                      "bold": {
+                        "type": ["string"]
+                      },
+                      "red": {
+                        "type": ["string"]
+                      },
+                      "green": {
+                        "type": ["string"]
+                      },
+                      "cyan": {
+                        "type": ["string"]
+                      },
+                      "magenta": {
+                        "type": ["string"]
+                      },
+                      "yellow": {
+                        "type": ["string"]
+                      }
+                    }
+                  }
+                ]
+              },
+              "maxModules": {
+                "type": ["number"]
+              },
+              "chunks": {
+                "type": ["boolean"]
+              },
+              "chunkModules": {
+                "type": ["boolean"]
+              },
+              "modules": {
+                "type": ["boolean"],
+              },
+              "nestedModules": {
+                "type": ["boolean"],
+              },
+              "moduleAssets": {
+                "type": ["boolean"],
+              },
+              "children": {
+                "type": ["boolean"],
+              },
+              "cached": {
+                "type": ["boolean"],
+              },
+              "cachedAssets": {
+                "type": ["boolean"],
+              },
+              "reasons": {
+                "type": ["boolean"],
+              },
+              "source": {
+                "type": ["boolean"],
+              },
+              "warnings": {
+                "type": ["boolean"],
+              },
+              "errors": {
+                "type": ["boolean"],
+              },
+              "warningsFilter": {
+                "type": ["#/definitions/filter-types"]
+              },
+              "excludeAssets": {
+                "type": [ "#/definitions/filter-types"]
+              },
+              "excludeModules": {
+                "type": ["#/definitions/filter-types", "boolean"]
+              },
+              "exclude": {
+                "type": ["#/definitions/filter-types", "boolean"]
+              },
+              "entrypoints": {
+                "type": ["boolean"],
+              },
+              "chunkGroups": {
+                "type": ["boolean"],
+              },
+              "errorDetails": {
+                "type": ["boolean"],
+              },
+              "chunkOrigins": {
+                "type": ["boolean"],
+              },
+              "modulesSort": {
+                "type": ["string"],
+              },
+              "moduleTrace": {
+                "type": ["boolean"],
+              },
+              "chunksSort": {
+                "type": ["string"],
+              },
+              "assetsSort": {
+                "type": ["string"],
+              },
+              "publicPath": {
+                "type": ["boolean"],
+              },
+              "outputPath": {
+                "type": ["boolean"],
+              },
+              "providedExports": {
+                "type": ["boolean"],
+              },
+              "usedExports": {
+                "type": ["boolean"],
+              },
+              "optimizationBailout": {
+                "type": ["boolean"],
+              }
+            }
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": [
+              "none",
+              "errors-only",
+              "minimal",
+              "normal",
+              "detailed",
+              "verbose"
+            ]
+          }
+        ]
+      },
+      "target": {
+        "type": [
+          {
+            "type": [
+              "web",
+              "webworker",
+              "node",
+              "async-node",
+              "node-webkit",
+              "electron-main",
+              "electron-renderer"
+            ]
+          },
+          {
+            "type": "Function"
+          }
+        ]
+      },
+      "watch": {
+        "type": ["boolean"]
+      },
+      "watchOptions": {
+        "properties": {
+          "aggregateTimeout": {
+            "type": ["number"]
+          },
+          "ignored": {
+            "type": []
+          },
+          "stdin": {
+            "type": ["boolean"]
+          },
+          "poll": {
+            "type": ["boolean", "number"]
+          }
+        }
+      }
+    }
+  }
+  
