@@ -3,16 +3,22 @@
   "version": "0.0.8",
   "description": "Migrate command for webpack-cli",
   "main": "index.js",
-  "scripts": {
-    "test": "jest"
-  },
   "author": "",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
   "devDependencies": {
-    "jest": "^22.4.3"
+    "@types/chalk": "^2.2.0",
+    "@types/diff": "^3.5.1",
+    "@types/inquirer": "0.0.41",
+    "@types/listr": "^0.13.0",
+    "@types/lodash": "^4.14.109",
+    "@types/node": "^10.3.3",
+    "@types/p-each-series": "^1.0.0",
+    "@types/p-lazy": "^1.0.0",
+    "jest": "^22.4.3",
+    "typescript": "^2.9.2"
   },
   "peerDependencies": {
     "webpack": "^4.x.x"
@@ -27,5 +33,10 @@
     "lodash": "^4.17.10",
     "p-each-series": "^1.0.0",
     "p-lazy": "^1.0.0"
+  },
+  "scripts": {
+    "test": "jest",
+    "build": "tsc",
+    "watch": "tsc -w"
   }
 }

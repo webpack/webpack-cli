@@ -1,5 +1,8 @@
-const chalk = require("chalk");
-const utils = require("@webpack-cli/utils/ast-utils");
+import chalk from "chalk";
+
+import * as utils from "@webpack-cli/utils/ast-utils";
+
+import { IJSCodeshift, INode } from "../types/NodePath";
 
 /**
  *
@@ -11,23 +14,25 @@ const utils = require("@webpack-cli/utils/ast-utils");
  * @returns {Node} ast - jscodeshift ast
  */
 
-module.exports = function(j, ast, source) {
+export default function(j: IJSCodeshift, ast: INode) {
+
 	// List of deprecated plugins to remove
 	// each item refers to webpack.optimize.[NAME] construct
-	const deprecatedPlugingsList = [
+	const deprecatedPlugingsList: string[] = [
 		"webpack.optimize.OccurrenceOrderPlugin",
-		"webpack.optimize.DedupePlugin"
+		"webpack.optimize.DedupePlugin",
 	];
 
 	return utils
 		.findPluginsByName(j, ast, deprecatedPlugingsList)
-		.forEach(path => {
+		.forEach((path: INode): void => {
 			// For now we only support the case where plugins are defined in an Array
-			const arrayPath = utils.safeTraverse(path, ["parent", "value"]);
+			const arrayPath: INode = utils.safeTraverse(path, ["parent", "value"]);
+
 			if (arrayPath && utils.isType(arrayPath, "ArrayExpression")) {
 				// Check how many plugins are defined and
 				// if there is only last plugin left remove `plugins: []` node
-				const arrayElementsPath = utils.safeTraverse(arrayPath, ["elements"]);
+				const arrayElementsPath: INode[] = utils.safeTraverse(arrayPath, ["elements"]);
 				if (arrayElementsPath && arrayElementsPath.length === 1) {
 					j(path.parent.parent).remove();
 				} else {
@@ -37,8 +42,8 @@ module.exports = function(j, ast, source) {
 				console.log(`
 ${chalk.red("Please remove deprecated plugins manually. ")}
 See ${chalk.underline(
-		"https://webpack.js.org/guides/migrating/"
+		"https://webpack.js.org/guides/migrating/",
 	)} for more information.`);
 			}
 		});
-};
+}
