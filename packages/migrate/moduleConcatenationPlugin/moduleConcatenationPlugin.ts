@@ -1,7 +1,9 @@
-const {
+import {
 	addOrUpdateConfigObject,
-	findAndRemovePluginByName
-} = require("@webpack-cli/utils/ast-utils");
+	findAndRemovePluginByName,
+} from "@webpack-cli/utils/ast-utils";
+
+import { IJSCodeshift, INode } from "../types/NodePath";
 
 /**
  *
@@ -12,19 +14,24 @@ const {
  * @param {Node} ast - jscodeshift ast to transform
  * @returns {Node} ast - jscodeshift ast
  */
-module.exports = function(j, ast) {
+export default function(j: IJSCodeshift, ast: INode): INode {
 	// Remove old plugin
-	const root = findAndRemovePluginByName(j, ast, "webpack.NamedModulesPlugin");
+	const root: INode = findAndRemovePluginByName(
+		j,
+		ast,
+		"webpack.optimize.ModuleConcatenationPlugin",
+	);
 
 	// Add new optimizations option
-	root &&
+	if (root) {
 		addOrUpdateConfigObject(
 			j,
 			root,
 			"optimizations",
-			"namedModules",
-			j.booleanLiteral(true)
+			"concatenateModules",
+			j.booleanLiteral(true),
 		);
+	}
 
 	return ast;
-};
+}

@@ -1,4 +1,6 @@
-const utils = require("@webpack-cli/utils/ast-utils");
+import * as utils from "@webpack-cli/utils/ast-utils";
+
+import { IJSCodeshift, INode } from "../types/NodePath";
 
 /**
  *
@@ -10,11 +12,11 @@ const utils = require("@webpack-cli/utils/ast-utils");
  * @returns {Node} ast - jscodeshift ast
  */
 
-module.exports = function(j, ast) {
+export default function(j: IJSCodeshift, ast: INode): INode {
 	return utils
 		.findPluginsByName(j, ast, ["webpack.BannerPlugin"])
-		.forEach(path => {
-			const args = path.value.arguments; // any node
+		.forEach((path: INode): void => {
+			const args: INode[] = path.value.arguments; // any node
 			// If the first argument is a literal replace it with object notation
 			// See https://webpack.js.org/guides/migrating/#bannerplugin-breaking-change
 			if (args && args.length > 1 && args[0].type === j.Literal.name) {
@@ -25,9 +27,9 @@ module.exports = function(j, ast) {
 					path.parent,
 					"webpack.BannerPlugin",
 					{
-						banner: args[0].value
-					}
+						banner: args[0].value,
+					},
 				);
 			}
 		});
-};
+}

@@ -1,4 +1,6 @@
-const utils = require("@webpack-cli/utils/ast-utils");
+import * as utils from "@webpack-cli/utils/ast-utils";
+
+import { IJSCodeshift, INode } from "../types/NodePath";
 
 /**
  *
@@ -9,24 +11,26 @@ const utils = require("@webpack-cli/utils/ast-utils");
  * @returns {Node} ast - jscodeshift ast
  */
 
-module.exports = function(j, ast) {
+export default function(j: IJSCodeshift, ast: INode): INode {
 	/**
 	 *
 	 * Remove the loader with name `name` from the given NodePath
 	 *
 	 * @param {Node} path - ast to remove the loader from
 	 * @param {String} name - the name of the loader to remove
-	 *
+	 * @returns {void}
 	 */
 
-	function removeLoaderByName(path, name) {
-		const loadersNode = path.value.value;
+	function removeLoaderByName(path: INode, name: string): void {
+		const loadersNode: INode = path.value.value;
+
 		switch (loadersNode.type) {
 			case j.ArrayExpression.name: {
-				let loaders = loadersNode.elements.map(p => {
+				const loaders: string[] = loadersNode.elements.map((p: INode): string => {
 					return utils.safeTraverse(p, ["properties", "0", "value", "value"]);
 				});
-				const loaderIndex = loaders.indexOf(name);
+
+				const loaderIndex: number = loaders.indexOf(name);
 				if (loaders.length && loaderIndex > -1) {
 					// Remove loader from the array
 					loaders.splice(loaderIndex, 1);
@@ -51,19 +55,19 @@ module.exports = function(j, ast) {
 		}
 	}
 
-	function removeLoaders(ast) {
-		ast
+	function removeLoaders(astNode: INode) {
+		astNode
 			.find(j.Property, { key: { name: "use" } })
-			.forEach(path => removeLoaderByName(path, "json-loader"));
+			.forEach((path: INode): void => removeLoaderByName(path, "json-loader"));
 
-		ast
+		astNode
 			.find(j.Property, { key: { name: "loader" } })
-			.forEach(path => removeLoaderByName(path, "json-loader"));
+			.forEach((path: INode): void => removeLoaderByName(path, "json-loader"));
 	}
 
-	const transforms = [removeLoaders];
+	const transforms: Array<(astNode: INode) => void> = [removeLoaders];
 
-	transforms.forEach(t => t(ast));
+	transforms.forEach((t: (astNode: INode) => void): void => t(ast));
 
 	return ast;
-};
+}

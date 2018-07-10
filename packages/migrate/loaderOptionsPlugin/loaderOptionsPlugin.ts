@@ -1,9 +1,17 @@
-const isEmpty = require("lodash/isEmpty");
-const findPluginsByName = require("@webpack-cli/utils/ast-utils")
-	.findPluginsByName;
-const createOrUpdatePluginByName = require("@webpack-cli/utils/ast-utils")
-	.createOrUpdatePluginByName;
-const safeTraverse = require("@webpack-cli/utils/ast-utils").safeTraverse;
+import isEmpty = require("lodash/isEmpty");
+
+import {
+	createOrUpdatePluginByName,
+	findPluginsByName,
+	safeTraverse,
+} from "@webpack-cli/utils/ast-utils";
+
+import { IJSCodeshift, INode } from "../types/NodePath";
+
+interface ILoaderOptions {
+	debug?: boolean;
+	minimize?: boolean;
+}
 
 /**
  *
@@ -15,15 +23,18 @@ const safeTraverse = require("@webpack-cli/utils/ast-utils").safeTraverse;
  *
  */
 
-module.exports = function(j, ast) {
-	const loaderOptions = {};
+export default function(j: IJSCodeshift, ast: INode): void {
+	const loaderOptions: ILoaderOptions = {};
 
 	// If there is debug: true, set debug: true in the plugin
 	if (ast.find(j.Identifier, { name: "debug" }).size()) {
 		loaderOptions.debug = true;
-		ast.find(j.Identifier, { name: "debug" }).forEach(p => {
-			p.parent.prune();
-		});
+
+		ast
+			.find(j.Identifier, { name: "debug" })
+			.forEach((p: INode): void => {
+				p.parent.prune();
+			});
 	}
 
 	// If there is UglifyJsPlugin, set minimize: true
@@ -34,16 +45,17 @@ module.exports = function(j, ast) {
 	return ast
 		.find(j.ArrayExpression)
 		.filter(
-			path =>
-				safeTraverse(path, ["parent", "value", "key", "name"]) === "plugins"
+			(path: INode): boolean =>
+				safeTraverse(path, ["parent", "value", "key", "name"]) === "plugins",
 		)
-		.forEach(path => {
-			!isEmpty(loaderOptions) &&
+		.forEach((path: INode): void => {
+			if (!isEmpty(loaderOptions)) {
 				createOrUpdatePluginByName(
 					j,
 					path,
 					"webpack.LoaderOptionsPlugin",
-					loaderOptions
+					loaderOptions,
 				);
+			}
 		});
-};
+}

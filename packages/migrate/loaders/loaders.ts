@@ -1,4 +1,6 @@
-const utils = require("@webpack-cli/utils/ast-utils");
+import * as utils from "@webpack-cli/utils/ast-utils";
+
+import { IJSCodeshift, INode } from "../types/NodePath";
 
 /**
  *
@@ -11,7 +13,7 @@ const utils = require("@webpack-cli/utils/ast-utils");
  * @returns {Node} ast - jscodeshift ast
  */
 
-module.exports = function(j, ast) {
+export default function(j: IJSCodeshift, ast: INode): INode {
 	/**
 	 * Creates an Array expression out of loaders string
 	 *
@@ -52,43 +54,43 @@ module.exports = function(j, ast) {
 	 * @returns {Node} path - object expression ast with array expression instead of loaders string
 	 */
 
-	const createArrayExpressionFromArray = function(path) {
-		const value = path.value;
+	const createArrayExpressionFromArray = (path: INode): INode => {
+		const value: INode = path.value;
 		// Find paths with `loaders` keys in the given Object
-		const paths = value.properties.filter(prop =>
-			prop.key.name.startsWith("loader")
+		const paths: INode[] = value.properties.filter((prop: INode): boolean =>
+			prop.key.name.startsWith("loader"),
 		);
 		// For each pair of key and value
-		paths.forEach(pair => {
+		paths.forEach((pair: INode): void => {
 			// Replace 'loaders' Identifier with 'use'
 			pair.key.name = "use";
 			// If the value is an Array
 			if (pair.value.type === j.ArrayExpression.name) {
 				// replace its elements
-				const pairValue = pair.value;
+				const pairValue: INode = pair.value;
 				pair.value = j.arrayExpression(
-					pairValue.elements.map(arrElement => {
+					pairValue.elements.map((arrElement: INode): INode => {
 						// If items of the array are Strings
 						if (arrElement.type === j.Literal.name) {
 							// Replace with `{ loader: LOADER }` Object
 							return j.objectExpression([
-								utils.createProperty(j, "loader", arrElement.value)
+								utils.createProperty(j, "loader", arrElement.value),
 							]);
 						}
 						// otherwise keep the existing element
 						return arrElement;
-					})
+					}),
 				);
-				//	If the value is String of loaders like 'style!css'
+				// 	If the value is String of loaders like 'style!css'
 			} else if (pair.value.type === j.Literal.name) {
 				// Replace it with Array expression of loaders
-				const literalValue = pair.value;
+				const literalValue: INode = pair.value;
 				pair.value = j.arrayExpression(
-					literalValue.value.split("!").map(loader => {
+					literalValue.value.split("!").map((loader: string): INode => {
 						return j.objectExpression([
-							utils.createProperty(j, "loader", loader)
+							utils.createProperty(j, "loader", loader),
 						]);
-					})
+					}),
 				);
 			}
 		});
@@ -103,25 +105,25 @@ module.exports = function(j, ast) {
 	 * @returns {Node} objectExpression - an new object expression ast containing the query parameters
 	 */
 
-	const createLoaderWithQuery = p => {
-		let properties = p.value.properties;
-		let loaderValue = properties.reduce(
-			(val, prop) => (prop.key.name === "loader" ? prop.value.value : val),
-			""
+	const createLoaderWithQuery = (p: INode): INode => {
+		const properties: INode[] = p.value.properties;
+		const loaderValue: string = properties.reduce(
+			(val: string, prop: INode): string => (prop.key.name === "loader" ? prop.value.value : val),
+			"",
 		);
-		let loader = loaderValue.split("?")[0];
-		let query = loaderValue.split("?")[1];
-		let options = query.split("&").map(option => {
-			const param = option.split("=");
-			const key = param[0];
-			const val = param[1] || true; // No value in query string means it is truthy value
+		const loader: string = loaderValue.split("?")[0];
+		const query: string = loaderValue.split("?")[1];
+		const options: INode[] = query.split("&").map((option: string): INode => {
+			const param: string[] = option.split("=");
+			const key: string = param[0];
+			const val: string | boolean = param[1] || true; // No value in query string means it is truthy value
 			return j.objectProperty(j.identifier(key), utils.createLiteral(j, val));
 		});
-		let loaderProp = utils.createProperty(j, "loader", loader);
-		let queryProp = j.property(
+		const loaderProp: INode = utils.createProperty(j, "loader", loader);
+		const queryProp: INode = j.property(
 			"init",
 			j.identifier("options"),
-			j.objectExpression(options)
+			j.objectExpression(options),
 		);
 		return j.objectExpression([loaderProp, queryProp]);
 	};
@@ -134,8 +136,8 @@ module.exports = function(j, ast) {
 	 * @returns {Boolean} hasLoaderQueryString - whether the loader object contains a query string
 	 */
 
-	const findLoaderWithQueryString = p => {
-		return p.value.properties.reduce((predicate, prop) => {
+	const findLoaderWithQueryString = (p: INode): boolean => {
+		return p.value.properties.reduce((predicate: boolean, prop: INode): boolean => {
 			return (
 				(utils.safeTraverse(prop, ["value", "value", "indexOf"]) &&
 					prop.value.value.indexOf("?") > -1) ||
@@ -153,7 +155,7 @@ module.exports = function(j, ast) {
 	 * @returns {Boolean} isLoadersProp - whether the identifier is the `loaders` prop in the `module` object
 	 */
 
-	const checkForLoader = path =>
+	const checkForLoader = (path: INode): boolean =>
 		path.value.name === "loaders" &&
 		utils.safeTraverse(path, [
 			"parent",
@@ -161,7 +163,7 @@ module.exports = function(j, ast) {
 			"parent",
 			"node",
 			"key",
-			"name"
+			"name",
 		]) === "module";
 
 	/**
@@ -171,19 +173,19 @@ module.exports = function(j, ast) {
 	 * @returns {Node} p - object expression with a `loaders` object and appropriate `enforce` properties
 	 */
 
-	const fitIntoLoaders = p => {
-		let loaders;
-		p.value.properties.map(prop => {
+	const fitIntoLoaders = (p: INode): INode => {
+		let loaders: INode = null;
+		p.value.properties.map((prop: INode): void => {
 			const keyName = prop.key.name;
 			if (keyName === "loaders") {
 				loaders = prop.value;
 			}
 		});
-		p.value.properties.map(prop => {
+		p.value.properties.map((prop: INode): void => {
 			const keyName = prop.key.name;
 			if (keyName !== "loaders") {
-				const enforceVal = keyName === "preLoaders" ? "pre" : "post";
-				prop.value.elements.map(elem => {
+				const enforceVal: string = keyName === "preLoaders" ? "pre" : "post";
+				prop.value.elements.map((elem: INode): void => {
 					elem.properties.push(utils.createProperty(j, "enforce", enforceVal));
 					if (loaders && loaders.type === "ArrayExpression") {
 						loaders.elements.push(elem);
@@ -195,7 +197,7 @@ module.exports = function(j, ast) {
 		});
 		if (loaders) {
 			p.value.properties = p.value.properties.filter(
-				prop => prop.key.name === "loaders"
+				(prop: INode): boolean => prop.key.name === "loaders",
 			);
 		}
 		return p;
@@ -207,10 +209,10 @@ module.exports = function(j, ast) {
 	 * @returns {Node} ast - jscodeshift ast
 	 */
 
-	const prepostLoaders = () =>
+	const prepostLoaders = (_?: void): void =>
 		ast
 			.find(j.ObjectExpression)
-			.filter(p => utils.findObjWithOneOfKeys(p, ["preLoaders", "postLoaders"]))
+			.filter((p: INode): boolean => utils.findObjWithOneOfKeys(p, ["preLoaders", "postLoaders"]))
 			.forEach(fitIntoLoaders);
 
 	/**
@@ -219,11 +221,11 @@ module.exports = function(j, ast) {
 	 * @returns {Node} ast - jscodeshift ast
 	 */
 
-	const loadersToRules = () =>
+	const loadersToRules = (_?: void): void =>
 		ast
 			.find(j.Identifier)
 			.filter(checkForLoader)
-			.forEach(p => (p.value.name = "rules"));
+			.forEach((p: INode): string => (p.value.name = "rules"));
 
 	/**
 	 * Convert `loader` and `loaders` to Array of {Rule.Use}
@@ -231,19 +233,19 @@ module.exports = function(j, ast) {
 	 * @returns {Node} ast - jscodeshift ast
 	 */
 
-	const loadersToArrayExpression = () =>
+	const loadersToArrayExpression = (_?: void): INode | void =>
 		ast
 			.find(j.ObjectExpression)
-			.filter(path => utils.findObjWithOneOfKeys(path, ["loader", "loaders"]))
+			.filter((path: INode): boolean => utils.findObjWithOneOfKeys(path, ["loader", "loaders"]))
 			.filter(
-				path =>
+				(path: INode): boolean =>
 					utils.safeTraverse(path, [
 						"parent",
 						"parent",
 						"node",
 						"key",
-						"name"
-					]) === "rules"
+						"name",
+					]) === "rules",
 			)
 			.forEach(createArrayExpressionFromArray);
 
@@ -269,10 +271,10 @@ module.exports = function(j, ast) {
 	 * @returns {Node} ast - jscodeshift ast
 	 */
 
-	const loaderWithQueryParam = () =>
+	const loaderWithQueryParam = (_?: void): INode =>
 		ast
 			.find(j.ObjectExpression)
-			.filter(p => utils.findObjWithOneOfKeys(p, ["loader"]))
+			.filter((p: INode): boolean => utils.findObjWithOneOfKeys(p, ["loader"]))
 			.filter(findLoaderWithQueryString)
 			.replaceWith(createLoaderWithQuery);
 
@@ -293,10 +295,10 @@ module.exports = function(j, ast) {
 	 * @returns {Node} ast - jscodeshift ast
 	 */
 
-	const loaderWithQueryProp = () =>
+	const loaderWithQueryProp = (_?: void): INode =>
 		ast
 			.find(j.Identifier)
-			.filter(p => p.value.name === "query")
+			.filter((p: INode): boolean => p.value.name === "query")
 			.replaceWith(j.identifier("options"));
 
 	/**
@@ -306,9 +308,9 @@ module.exports = function(j, ast) {
 	 * @returns {Node} ast - jscodeshift ast
 	 */
 
-	const addLoaderSuffix = () =>
-		ast.find(j.ObjectExpression).forEach(path => {
-			path.value.properties.forEach(prop => {
+	const addLoaderSuffix = (_?: void): void =>
+		ast.find(j.ObjectExpression).forEach((path: INode): void => {
+			path.value.properties.forEach((prop: INode): void => {
 				if (
 					prop.key.name === "loader" &&
 					utils.safeTraverse(prop, ["value", "value"]) &&
@@ -327,10 +329,10 @@ module.exports = function(j, ast) {
 	 * @returns {Node} objectExpression - an use object expression ast containing the options and loader
 	 */
 
-	const fitOptionsToUse = p => {
-		let options;
-		p.value.properties.forEach(prop => {
-			const keyName = prop.key.name;
+	const fitOptionsToUse = (p: INode): INode => {
+		let options: INode = null;
+		p.value.properties.forEach((prop: INode): void => {
+			const keyName: string = prop.key.name;
 			if (keyName === "options") {
 				options = prop;
 			}
@@ -338,10 +340,10 @@ module.exports = function(j, ast) {
 
 		if (options) {
 			p.value.properties = p.value.properties.filter(
-				prop => prop.key.name !== "options"
+				(prop: INode): boolean => prop.key.name !== "options",
 			);
 
-			p.value.properties.forEach(prop => {
+			p.value.properties.forEach((prop: INode): void => {
 				const keyName = prop.key.name;
 				if (keyName === "use") {
 					prop.value.elements[0].properties.push(options);
@@ -358,10 +360,10 @@ module.exports = function(j, ast) {
 	 * @returns {Node} ast - jscodeshift ast
 	 */
 
-	const moveOptionsToUse = () =>
+	const moveOptionsToUse = (_?: void): void =>
 		ast
 			.find(j.ObjectExpression)
-			.filter(p => utils.findObjWithOneOfKeys(p, ["use"]))
+			.filter((p: INode): boolean => utils.findObjWithOneOfKeys(p, ["use"]))
 			.forEach(fitOptionsToUse);
 
 	const transforms = [
@@ -371,9 +373,9 @@ module.exports = function(j, ast) {
 		loaderWithQueryParam,
 		loaderWithQueryProp,
 		addLoaderSuffix,
-		moveOptionsToUse
+		moveOptionsToUse,
 	];
-	transforms.forEach(t => t());
+	transforms.forEach((t: Function): void => t());
 
 	return ast;
-};
+}
