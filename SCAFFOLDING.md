@@ -15,7 +15,7 @@ Before writing a `webpack-cli` scaffold, think about what you're trying to achie
 ## webpack-scaffold-yourpackage
 
 In order for `webpack-cli` to compile your package, it must be available on npm or on your local filesystem. If you are curious about how you can create your very own `scaffold`, please read [How do I compose a
-webpack-addon?](https://github.com/ev1stensberg/webpack-scaffold-demo).
+webpack-addon?](https://github.com/ev1stensberg/webpack-addons-demo).
 
 If the package is on npm, its name must have a prefix of `webpack-scaffold`.
 
