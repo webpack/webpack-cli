@@ -57,7 +57,7 @@ export default function runTransform(webpackProperties: IWebpackProperties, acti
 		return pEachSeries(transformations, (f: string): boolean | INode => {
 			return astTransform(j, ast, config.webpackOptions[f], transformAction, f);
 		})
-			.then((_?: any) => {
+			.then((value: string[]): void | PromiseLike <void> => {
 				let configurationName: string = "webpack.config.js";
 				if (config.configName) {
 					configurationName = "webpack." + config.configName + ".js";

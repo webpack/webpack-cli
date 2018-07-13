@@ -74,7 +74,7 @@ export default function modifyHelperUtil(
 		}
 	}
 
-	const env: IYeoman = yeoman.createEnv("webpack", null);
+	const env = yeoman.createEnv("webpack", null);
 	const generatorName: string = `webpack-${action}-generator`;
 
 	if (!generator) {

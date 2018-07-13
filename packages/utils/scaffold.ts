@@ -66,7 +66,7 @@ export default function runTransform(transformConfig: ITransformConfig, action: 
 			}
 			return astTransform(j, ast, f, config.webpackOptions[f], transformAction);
 		})
-			.then((_: any) => {
+			.then((value: string[]): void | PromiseLike <void> => {
 				let configurationName: string;
 				if (!config.configName) {
 					configurationName = "webpack.config.js";

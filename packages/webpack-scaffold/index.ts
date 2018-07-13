@@ -1,6 +1,6 @@
 import * as jscodeshift from "jscodeshift";
 
-export interface IScaffoldBaseObject {
+export interface IInquirerScaffoldObject {
 	type?: string;
 	name: string;
 	message: string;
@@ -12,11 +12,11 @@ export interface IScaffoldBaseObject {
 	filter?: (name: string) => string;
 }
 
-export interface IInquirerList extends IScaffoldBaseObject {
+export interface IInquirerList extends IInquirerScaffoldObject {
 	choices?: string[];
 }
 
-export interface IInquirerInput extends IScaffoldBaseObject {
+export interface IInquirerInput extends IInquirerScaffoldObject {
 	validate?: (input: string) => string | boolean;
 }
 
@@ -110,7 +110,7 @@ export function InputValidate(name: string, message: string, cb?: (input: string
 	};
 }
 
-export function Confirm(name: string, message: string): IScaffoldBaseObject {
+export function Confirm(name: string, message: string): IInquirerScaffoldObject {
 	return {
 		message,
 		name,

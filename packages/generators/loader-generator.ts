@@ -10,7 +10,7 @@ import addonGenerator from "./addon-generator";
  * @param {string} name A loader name to be formatted
  * @returns {string} The formatted string
  */
-export function makeLoaderName(name: string): string {
+function makeLoaderName(name: string): string {
 	name = _.kebabCase(name);
 	if (!/loader$/.test(name)) {
 		name += "-loader";
@@ -51,7 +51,7 @@ const LoaderGenerator = addonGenerator(
 		"examples/simple/src/static-esm-module.js.tpl",
 	],
 	["src/_index.js.tpl"],
-	(gen: IYeoman): object => ({ name: gen.props.name }),
+	(gen): object => ({ name: gen.props.name }),
 );
 
 export default LoaderGenerator;

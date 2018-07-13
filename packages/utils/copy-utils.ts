@@ -17,7 +17,7 @@ interface IGenerator {
  * @returns {Function} A curried function that takes a file path and copies it
  */
 export const generatorCopy = (
-	generator: any,
+	generator,
 	templateDir: string,
 ): (filePath: string) => void => (filePath: string): void => {
 	const sourceParts: string[] = templateDir.split(path.delimiter);
@@ -43,7 +43,7 @@ export const generatorCopy = (
  * @returns {Function} A curried function that takes a file path and copies it
  */
 export const generatorCopyTpl = (
-	generator: any,
+	generator,
 	templateDir: string,
 	templateData: object,
 ): (filePath: string) => void => (filePath: string): void => {
