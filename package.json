@@ -115,6 +115,7 @@
     "@commitlint/prompt-cli": "^7.0.0",
     "@commitlint/travis-cli": "^7.0.0",
     "@types/node": "^10.5.1",
+    "@types/jest": "^23.1.1",
     "bundlesize": "^0.17.0",
     "codecov": "^3.0.2",
     "commitizen": "^2.10.1",

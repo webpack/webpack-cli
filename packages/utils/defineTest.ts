@@ -1,7 +1,26 @@
-"use strict";
+import * as fs from "fs";
+import * as path from "path";
+import { IJSCodeshift, INode } from "./types/NodePath";
 
-const fs = require("fs");
-const path = require("path");
+interface IModule {
+	(
+		jscodeshift: IJSCodeshift,
+		ast: INode,
+		initOptions: string | boolean | object,
+		action: string,
+		transformName?: string,
+	): INode;
+	default: transformType;
+	parser: string;
+}
+
+type transformType = (
+	jscodeshift: IJSCodeshift,
+	ast: INode,
+	initOptions: string | boolean | object,
+	action: string,
+	transformName?: string,
+) => INode;
 
 /**
  * Utility function to run a jscodeshift script within a unit test.
@@ -28,20 +47,20 @@ const path = require("path");
  * @return {Function} Function that fires of the transforms
  */
 function runSingleTransform(
-	dirName,
-	transformName,
-	testFilePrefix,
-	initOptions,
-	action
-) {
+	dirName: string,
+	transformName: string,
+	testFilePrefix: string,
+	initOptions: object | boolean | string,
+	action: string,
+): string {
 	if (!testFilePrefix) {
 		testFilePrefix = transformName;
 	}
-	const fixtureDir = path.join(dirName, "__testfixtures__");
-	const inputPath = path.join(fixtureDir, testFilePrefix + ".input.js");
-	const source = fs.readFileSync(inputPath, "utf8");
+	const fixtureDir: string = path.join(dirName, "__testfixtures__");
+	const inputPath: string = path.join(fixtureDir, testFilePrefix + ".input.js");
+	const source: string = fs.readFileSync(inputPath, "utf8");
 
-	let module;
+	let module: IModule;
 	// Assumes transform and test are on the same level
 	if (action) {
 		module = require(path.join(dirName, "recursive-parser" + ".js"));
@@ -53,24 +72,24 @@ function runSingleTransform(
 
 	// Jest resets the module registry after each test, so we need to always get
 	// a fresh copy of jscodeshift on every test run.
-	let jscodeshift = require("jscodeshift/dist/core");
+	let jscodeshift: IJSCodeshift = require("jscodeshift/dist/core");
 	if (module.parser) {
 		jscodeshift = jscodeshift.withParser(module.parser);
 	}
-	const ast = jscodeshift(source);
+	const ast: INode = jscodeshift(source);
 	if (initOptions || typeof initOptions === "boolean") {
 		return transform(
 			jscodeshift,
 			ast,
 			initOptions,
 			action,
-			transformName
+			transformName,
 		).toSource({
-			quote: "single"
+			quote: "single",
 		});
 	}
 	return transform(jscodeshift, ast, source, action).toSource({
-		quote: "single"
+		quote: "single",
 	});
 }
 
@@ -91,14 +110,14 @@ function runSingleTransform(
  * @param  {String} action init, update or remove, decides how to format the AST
  * @return {Void} Jest makes sure to execute the globally defined functions
  */
-function defineTest(
-	dirName,
-	transformName,
-	testFilePrefix,
-	transformObject,
-	action
-) {
-	const testName = testFilePrefix
+export default function defineTest(
+	dirName: string,
+	transformName: string,
+	testFilePrefix: string,
+	transformObject: object,
+	action: string,
+): void {
+	const testName: string = testFilePrefix
 		? `transforms correctly using "${testFilePrefix}" data`
 		: "transforms correctly";
 	describe(transformName, () => {
@@ -108,10 +127,9 @@ function defineTest(
 				transformName,
 				testFilePrefix,
 				transformObject,
-				action
+				action,
 			);
 			expect(output).toMatchSnapshot();
 		});
 	});
 }
-module.exports = defineTest;

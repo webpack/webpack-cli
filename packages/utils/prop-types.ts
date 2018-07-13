@@ -5,7 +5,7 @@
  * @returns {Set} A new set with accepted webpack properties
  */
 
-module.exports = new Set([
+const PROP_TYPES: Set<string> = new Set([
 	"amd",
 	"bail",
 	"cache",
@@ -18,8 +18,8 @@ module.exports = new Set([
 	"mode",
 	"module",
 	"node",
-	"output",
 	"optimization",
+	"output",
 	"parallelism",
 	"performance",
 	"plugins",
@@ -29,10 +29,12 @@ module.exports = new Set([
 	"recordsPath",
 	"resolve",
 	"resolveLoader",
-	"stats",
 	"splitChunks",
+	"stats",
 	"target",
+	"topScope",
 	"watch",
 	"watchOptions",
-	"topScope"
 ]);
+
+export default PROP_TYPES;

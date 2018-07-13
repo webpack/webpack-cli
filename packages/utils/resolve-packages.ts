@@ -1,14 +1,14 @@
-"use strict";
+import chalk from "chalk";
+import * as path from "path";
 
-const path = require("path");
-const chalk = require("chalk");
+import isLocalPath from "./is-local-path";
+import modifyConfigHelper from "./modify-config-helper";
+import { getPathToGlobalPackages } from "./package-manager";
+import { spawnChild } from "./package-manager";
 
-const modifyConfigHelper = require("./modify-config-helper");
-
-const getPathToGlobalPackages = require("./package-manager")
-	.getPathToGlobalPackages;
-const isLocalPath = require("./is-local-path");
-const spawnChild = require("./package-manager").spawnChild;
+interface IChildProcess {
+	status: number;
+}
 
 /**
  *
@@ -18,9 +18,8 @@ const spawnChild = require("./package-manager").spawnChild;
  * @returns {Promise} promise - Returns a promise to the installation
  */
 
-function processPromise(child) {
-	return new Promise(function(resolve, reject) {
-		//eslint-disable-line
+export function processPromise(child: IChildProcess): Promise<any> {
+	return new Promise((resolve: (_?: void) => void, reject: (_?: void) => void) => {
 		if (child.status !== 0) {
 			reject();
 		} else {
@@ -38,20 +37,21 @@ function processPromise(child) {
  * a webpack configuration through yeoman or throws an error
  */
 
-function resolvePackages(pkg) {
+export function resolvePackages(pkg: string[]): Function | void {
 	Error.stackTraceLimit = 30;
 
-	let packageLocations = [];
+	const packageLocations: string[] = [];
 
-	function invokeGeneratorIfReady() {
-		if (packageLocations.length === pkg.length)
+	function invokeGeneratorIfReady(): Function {
+		if (packageLocations.length === pkg.length) {
 			return modifyConfigHelper("init", null, null, packageLocations);
+		}
 	}
 
-	pkg.forEach(addon => {
+	pkg.forEach((addon: string) => {
 		// Resolve paths to modules on local filesystem
 		if (isLocalPath(addon)) {
-			let absolutePath = addon;
+			let absolutePath: string = addon;
 
 			try {
 				absolutePath = path.resolve(process.cwd(), addon);
@@ -70,9 +70,9 @@ function resolvePackages(pkg) {
 
 		// Resolve modules on npm registry
 		processPromise(spawnChild(addon))
-			.then(_ => {
+			.then((_: void) => {
 				try {
-					const globalPath = getPathToGlobalPackages();
+					const globalPath: string = getPathToGlobalPackages();
 					packageLocations.push(path.resolve(globalPath, addon));
 				} catch (err) {
 					console.log("Package wasn't validated correctly..");
@@ -82,7 +82,7 @@ function resolvePackages(pkg) {
 					process.exitCode = 1;
 				}
 			})
-			.catch(err => {
+			.catch((err: string) => {
 				console.log("Package couldn't be installed, aborting..");
 				console.log("\nReason: \n");
 				console.error(chalk.bold.red(err));
@@ -91,8 +91,3 @@ function resolvePackages(pkg) {
 			.then(invokeGeneratorIfReady);
 	});
 }
-
-module.exports = {
-	resolvePackages,
-	processPromise
-};

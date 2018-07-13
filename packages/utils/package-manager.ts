@@ -1,12 +1,17 @@
-"use strict";
+import { SpawnSyncReturns } from "child_process";
 
-const path = require("path");
-const fs = require("fs");
-const spawn = require("cross-spawn");
+import * as spawn from "cross-spawn";
+import * as fs from "fs";
+import * as path from "path";
 
-const SPAWN_FUNCTIONS = {
+interface ISpawnFunctions {
+	npm: (pkg: string, isNew: boolean) => SpawnSyncReturns<Buffer>;
+	yarn: (pkg: string, isNew: boolean) => SpawnSyncReturns<Buffer>;
+}
+
+const SPAWN_FUNCTIONS: ISpawnFunctions = {
 	npm: spawnNPM,
-	yarn: spawnYarn
+	yarn: spawnYarn,
 };
 
 /**
@@ -18,9 +23,9 @@ const SPAWN_FUNCTIONS = {
  * @returns {Function} spawn - Installs the package
  */
 
-function spawnNPM(pkg, isNew) {
+function spawnNPM(pkg: string, isNew: boolean): SpawnSyncReturns<Buffer> {
 	return spawn.sync("npm", [isNew ? "install" : "update", "-g", pkg], {
-		stdio: "inherit"
+		stdio: "inherit",
 	});
 }
 
@@ -33,9 +38,9 @@ function spawnNPM(pkg, isNew) {
  * @returns {Function} spawn - Installs the package
  */
 
-function spawnYarn(pkg, isNew) {
+function spawnYarn(pkg: string, isNew: boolean): SpawnSyncReturns<Buffer> {
 	return spawn.sync("yarn", ["global", isNew ? "add" : "upgrade", pkg], {
-		stdio: "inherit"
+		stdio: "inherit",
 	});
 }
 /**
@@ -46,11 +51,11 @@ function spawnYarn(pkg, isNew) {
  * @returns {Function} spawn - Installs the package
  */
 
-function spawnChild(pkg) {
-	const rootPath = getPathToGlobalPackages();
-	const pkgPath = path.resolve(rootPath, pkg);
-	const packageManager = getPackageManager();
-	const isNew = !fs.existsSync(pkgPath);
+export function spawnChild(pkg: string): SpawnSyncReturns<Buffer> {
+	const rootPath: string = getPathToGlobalPackages();
+	const pkgPath: string = path.resolve(rootPath, pkg);
+	const packageManager: string = getPackageManager();
+	const isNew: boolean = !fs.existsSync(pkgPath);
 
 	return SPAWN_FUNCTIONS[packageManager](pkg, isNew);
 }
@@ -63,11 +68,11 @@ function spawnChild(pkg) {
  * @returns {String} - The package manager name
  */
 
-function getPackageManager() {
-	const hasLocalNPM = fs.existsSync(
-		path.resolve(process.cwd(), "package-lock.json")
+export function getPackageManager(): string {
+	const hasLocalNPM: boolean = fs.existsSync(
+		path.resolve(process.cwd(), "package-lock.json"),
 	);
-	const hasLocalYarn = fs.existsSync(path.resolve(process.cwd(), "yarn.lock"));
+	const hasLocalYarn: boolean = fs.existsSync(path.resolve(process.cwd(), "yarn.lock"));
 	if (hasLocalNPM) {
 		return "npm";
 	} else if (hasLocalYarn) {
@@ -87,8 +92,8 @@ function getPackageManager() {
  *
  * @returns {String} path - Path to global node_modules folder
  */
-function getPathToGlobalPackages() {
-	const manager = getPackageManager();
+export function getPathToGlobalPackages(): string {
+	const manager: string = getPackageManager();
 
 	if (manager === "yarn") {
 		try {
@@ -104,9 +109,3 @@ function getPathToGlobalPackages() {
 
 	return require("global-modules");
 }
-
-module.exports = {
-	getPackageManager,
-	getPathToGlobalPackages,
-	spawnChild
-};

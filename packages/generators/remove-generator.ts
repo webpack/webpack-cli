@@ -2,7 +2,7 @@ import * as fs from "fs";
 import * as path from "path";
 import Generator = require("yeoman-generator");
 
-import * as PROP_TYPES from "@webpack-cli/utils/prop-types";
+import PROP_TYPES from "@webpack-cli/utils/prop-types";
 import { List } from "@webpack-cli/webpack-scaffold";
 import { IWebpackOptions } from "./types";
 

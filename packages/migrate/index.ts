@@ -7,7 +7,7 @@ import pLazy = require("p-lazy");
 import * as path from "path";
 import { validate, WebpackOptionsValidationError } from "webpack";
 
-import * as runPrettier from "@webpack-cli/utils/run-prettier";
+import runPrettier from "@webpack-cli/utils/run-prettier";
 
 import { transformations } from "./migrate";
 import { IJSCodeshift, INode } from "./types/NodePath";

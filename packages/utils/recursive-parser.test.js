@@ -1,6 +1,6 @@
 "use strict";
 
-const defineTest = require("./defineTest");
+const defineTest = require("./defineTest").default;
 
 
 defineTest(

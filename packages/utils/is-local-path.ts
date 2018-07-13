@@ -1,7 +1,5 @@
-"use strict";
-
-const fs = require("fs");
-const path = require("path");
+import * as fs from "fs";
+import * as path from "path";
 
 /**
  * Attempts to detect whether the string is a local path regardless of its
@@ -14,6 +12,6 @@ const path = require("path");
  * @returns {Boolean} whether the string could be a path to a local file or directory
  */
 
-module.exports = function(str) {
+export default function(str: string): boolean {
 	return path.isAbsolute(str) || /^\./.test(str) || fs.existsSync(str);
-};
+}

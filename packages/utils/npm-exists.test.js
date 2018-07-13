@@ -1,5 +1,5 @@
 "use strict";
-const exists = require("./npm-exists");
+const exists = require("./npm-exists").default;
 
 describe("npm-exists", () => {
 	it("should successfully existence of a published module", () => {

@@ -3,10 +3,11 @@ import * as j from "jscodeshift";
 import pEachSeries = require("p-each-series");
 import * as path from "path";
 
-import * as propTypes from "@webpack-cli/utils/prop-types";
-import * as astTransform from "@webpack-cli/utils/recursive-parser";
-import * as runPrettier from "@webpack-cli/utils/run-prettier";
+import propTypes from "@webpack-cli/utils/prop-types";
+import astTransform from "@webpack-cli/utils/recursive-parser";
+import runPrettier from "@webpack-cli/utils/run-prettier";
 
+import { INode } from "@webpack-cli/utils/types/NodePath";
 import { IError } from "./types";
 import { IConfiguration, IWebpackProperties } from "./types/Transform";
 
@@ -53,7 +54,7 @@ export default function runTransform(webpackProperties: IWebpackProperties, acti
 		);
 		const transformAction: string | null = action || null;
 
-		return pEachSeries(transformations, (f: string): Promise<string[]> => {
+		return pEachSeries(transformations, (f: string): boolean | INode => {
 			return astTransform(j, ast, config.webpackOptions[f], transformAction, f);
 		})
 			.then((_?: any) => {

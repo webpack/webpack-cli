@@ -5,9 +5,9 @@ import * as autoComplete from "inquirer-autocomplete-prompt";
 import * as path from "path";
 import webpackDevServerSchema from "webpack-dev-server/lib/optionsSchema.json";
 
-import * as npmExists from "@webpack-cli/utils/npm-exists";
+import npmExists from "@webpack-cli/utils/npm-exists";
 import { getPackageManager } from "@webpack-cli/utils/package-manager";
-import * as PROP_TYPES from "@webpack-cli/utils/prop-types";
+import PROP_TYPES from "@webpack-cli/utils/prop-types";
 import {
 	AutoComplete,
 	Confirm,

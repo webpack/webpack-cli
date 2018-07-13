@@ -57,7 +57,7 @@ export default function(j: IJSCodeshift, ast: INode): INode | void {
 			.replaceWith((p: INode): INode => replaceWithPath(j, p, finalPathName));
 
 		if (!isPathPresent) {
-			const pathRequire: INode[] = utils.getRequire(j, "path", "path");
+			const pathRequire: INode = utils.getRequire(j, "path", "path");
 			return ast
 				.find(j.Program)
 				.replaceWith((p: INode): INode =>

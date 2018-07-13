@@ -1,6 +1,6 @@
-import * as defaultGenerator from "@webpack-cli/generators/init-generator";
-import * as modifyConfigHelper from "@webpack-cli/utils/modify-config-helper";
-import * as npmPackagesExists from "@webpack-cli/utils/npm-packages-exists";
+import defaultGenerator from "@webpack-cli/generators/init-generator";
+import modifyConfigHelper from "@webpack-cli/utils/modify-config-helper";
+import npmPackagesExists from "@webpack-cli/utils/npm-packages-exists";
 
 /**
  *
@@ -13,7 +13,7 @@ import * as npmPackagesExists from "@webpack-cli/utils/npm-packages-exists";
  * followed up with a yeoman instance of that if there's packages. If not, it creates a defaultGenerator
  */
 
-export default function initializeInquirer(...args: string[]): Function {
+export default function initializeInquirer(...args: string[]): Function | void {
 	const packages: string[] = args.slice(3);
 
 	if (packages.length === 0) {
