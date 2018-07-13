@@ -1,10 +1,10 @@
-"use strict";
-const chalk = require("chalk");
-const isLocalPath = require("./is-local-path");
-const npmExists = require("./npm-exists");
-const resolvePackages = require("./resolve-packages").resolvePackages;
+import chalk from "chalk";
 
-const WEBPACK_SCAFFOLD_PREFIX = "webpack-scaffold";
+import isLocalPath from "./is-local-path";
+import npmExists from "./npm-exists";
+import { resolvePackages } from "./resolve-packages";
+
+const WEBPACK_SCAFFOLD_PREFIX: string = "webpack-scaffold";
 
 /**
  *
@@ -15,15 +15,16 @@ const WEBPACK_SCAFFOLD_PREFIX = "webpack-scaffold";
  * @returns {Array} resolvePackages - Returns an process to install the packages
  */
 
-module.exports = function npmPackagesExists(pkg) {
-	let acceptedPackages = [];
+export default function npmPackagesExists(pkg: string[]): void {
+	const acceptedPackages: string[] = [];
 
 	function resolvePackagesIfReady() {
-		if (acceptedPackages.length === pkg.length)
+		if (acceptedPackages.length === pkg.length) {
 			return resolvePackages(acceptedPackages);
+		}
 	}
 
-	pkg.forEach(addon => {
+	pkg.forEach((addon: string): void => {
 		if (isLocalPath(addon)) {
 			// If the addon is a path to a local folder, no name validation is necessary.
 			acceptedPackages.push(addon);
@@ -39,13 +40,13 @@ module.exports = function npmPackagesExists(pkg) {
 			throw new TypeError(
 				chalk.bold(`${addon} isn't a valid name.\n`) +
 					chalk.red(
-						`\nIt should be prefixed with '${WEBPACK_SCAFFOLD_PREFIX}', but have different suffix.\n`
-					)
+						`\nIt should be prefixed with '${WEBPACK_SCAFFOLD_PREFIX}', but have different suffix.\n`,
+					),
 			);
 		}
 
 		npmExists(addon)
-			.then(moduleExists => {
+			.then((moduleExists: boolean) => {
 				if (!moduleExists) {
 					Error.stackTraceLimit = 0;
 					throw new TypeError(`Cannot resolve location of package ${addon}.`);
@@ -54,10 +55,10 @@ module.exports = function npmPackagesExists(pkg) {
 					acceptedPackages.push(addon);
 				}
 			})
-			.catch(err => {
+			.catch((err: IError) => {
 				console.error(err.stack || err);
 				process.exit(0);
 			})
 			.then(resolvePackagesIfReady);
 	});
-};
+}

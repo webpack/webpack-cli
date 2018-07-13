@@ -209,7 +209,7 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 	 * @returns {Node} ast - jscodeshift ast
 	 */
 
-	const prepostLoaders = (_?: void): void =>
+	const prepostLoaders = (_?: void): INode =>
 		ast
 			.find(j.ObjectExpression)
 			.filter((p: INode): boolean => utils.findObjWithOneOfKeys(p, ["preLoaders", "postLoaders"]))
@@ -221,7 +221,7 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 	 * @returns {Node} ast - jscodeshift ast
 	 */
 
-	const loadersToRules = (_?: void): void =>
+	const loadersToRules = (_?: void): INode =>
 		ast
 			.find(j.Identifier)
 			.filter(checkForLoader)
@@ -308,7 +308,7 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 	 * @returns {Node} ast - jscodeshift ast
 	 */
 
-	const addLoaderSuffix = (_?: void): void =>
+	const addLoaderSuffix = (_?: void): INode =>
 		ast.find(j.ObjectExpression).forEach((path: INode): void => {
 			path.value.properties.forEach((prop: INode): void => {
 				if (
@@ -360,7 +360,7 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 	 * @returns {Node} ast - jscodeshift ast
 	 */
 
-	const moveOptionsToUse = (_?: void): void =>
+	const moveOptionsToUse = (_?: void): INode =>
 		ast
 			.find(j.ObjectExpression)
 			.filter((p: INode): boolean => utils.findObjWithOneOfKeys(p, ["use"]))

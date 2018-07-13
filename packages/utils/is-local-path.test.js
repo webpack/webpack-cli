@@ -1,6 +1,6 @@
 "use strict";
 
-const isLocalPath = require("./is-local-path");
+const isLocalPath = require("./is-local-path").default;
 const path = require("path");
 
 describe("is-local-path", () => {

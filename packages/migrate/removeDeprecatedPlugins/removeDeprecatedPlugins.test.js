@@ -1,6 +1,6 @@
 "use strict";
 
-const defineTest = require("@webpack-cli/utils/defineTest");
+const defineTest = require("@webpack-cli/utils/defineTest").default;
 
 defineTest(__dirname, "removeDeprecatedPlugins", "removeDeprecatedPlugins-0");
 defineTest(__dirname, "removeDeprecatedPlugins", "removeDeprecatedPlugins-1");

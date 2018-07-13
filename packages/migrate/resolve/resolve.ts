@@ -9,7 +9,7 @@ import { IJSCodeshift, INode } from "../types/NodePath";
  * @returns {Node} ast - jscodeshift ast
  */
 
-export default function transformer(j: IJSCodeshift, ast: INode): INode[] | void {
+export default function transformer(j: IJSCodeshift, ast: INode): INode {
 
 	const getRootVal = (p: INode): INode => {
 		return p.node.value.properties.filter((prop: INode): boolean => prop.key.name === "root")[0];

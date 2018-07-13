@@ -23,7 +23,7 @@ interface ILoaderOptions {
  *
  */
 
-export default function(j: IJSCodeshift, ast: INode): void {
+export default function(j: IJSCodeshift, ast: INode): INode {
 	const loaderOptions: ILoaderOptions = {};
 
 	// If there is debug: true, set debug: true in the plugin
