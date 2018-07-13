@@ -3,7 +3,7 @@ import * as path from "path";
 import Generator = require("yeoman-generator");
 
 import * as copyUtils from "@webpack-cli/utils/copy-utils";
-import { IScaffoldBaseObject } from "@webpack-cli/webpack-scaffold";
+import { IInquirerScaffoldObject } from "@webpack-cli/webpack-scaffold";
 
 /**
  * Creates a Yeoman Generator that generates a project conforming
@@ -27,19 +27,19 @@ import { IScaffoldBaseObject } from "@webpack-cli/webpack-scaffold";
  * @returns {Generator} A class extending Generator
  */
 export default function addonGenerator(
-	prompts: IScaffoldBaseObject[],
+	prompts: IInquirerScaffoldObject[],
 	templateDir: string,
 	copyFiles: string[],
 	copyTemplateFiles: string[],
 	templateFn: Function,
 ) {
 	return class AddOnGenerator extends Generator {
-		public props: IScaffoldBaseObject;
+		public props: IInquirerScaffoldObject;
 		private copy: (value: string, index: number, array: string[]) => void;
 		private copyTpl: (value: string, index: number, array: string[]) => void;
 
 		public prompting() {
-			return this.prompt(prompts).then((props: IScaffoldBaseObject) => {
+			return this.prompt(prompts).then((props: IInquirerScaffoldObject) => {
 				this.props = props;
 			});
 		}

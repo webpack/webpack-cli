@@ -32,7 +32,7 @@ const PluginGenerator = addonGenerator(
 		"examples/simple/src/static-esm-module.js.tpl",
 	],
 	["src/_index.js.tpl", "examples/simple/_webpack.config.js.tpl"],
-	(gen: IYeoman): object => ({ name: _.upperFirst(_.camelCase(gen.props.name)) }),
+	(gen): object => ({ name: _.upperFirst(_.camelCase(gen.props.name)) }),
 );
 
 export default PluginGenerator;
