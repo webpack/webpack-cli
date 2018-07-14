@@ -1,7 +1,7 @@
 "use strict";
 
 const path = require("path");
-const chalk = require("chalk");
+const color = require("turbocolor");
 
 const modifyConfigHelper = require("./modify-config-helper");
 
@@ -60,7 +60,7 @@ function resolvePackages(pkg) {
 			} catch (err) {
 				console.log(`Cannot find a generator at ${absolutePath}.`);
 				console.log("\nReason:\n");
-				console.error(chalk.bold.red(err));
+				console.error(color.bold.red(err));
 				process.exitCode = 1;
 			}
 
@@ -78,14 +78,14 @@ function resolvePackages(pkg) {
 					console.log("Package wasn't validated correctly..");
 					console.log("Submit an issue for", pkg, "if this persists");
 					console.log("\nReason: \n");
-					console.error(chalk.bold.red(err));
+					console.error(color.bold.red(err));
 					process.exitCode = 1;
 				}
 			})
 			.catch(err => {
 				console.log("Package couldn't be installed, aborting..");
 				console.log("\nReason: \n");
-				console.error(chalk.bold.red(err));
+				console.error(color.bold.red(err));
 				process.exitCode = 1;
 			})
 			.then(invokeGeneratorIfReady);

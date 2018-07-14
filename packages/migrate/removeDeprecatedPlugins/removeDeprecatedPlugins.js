@@ -1,4 +1,4 @@
-const chalk = require("chalk");
+const color = require("turbocolor");
 const utils = require("@webpack-cli/utils/ast-utils");
 
 /**
@@ -35,8 +35,8 @@ module.exports = function(j, ast, source) {
 				}
 			} else {
 				console.log(`
-${chalk.red("Please remove deprecated plugins manually. ")}
-See ${chalk.underline(
+${color.red("Please remove deprecated plugins manually. ")}
+See ${color.underline(
 		"https://webpack.js.org/guides/migrating/"
 	)} for more information.`);
 			}

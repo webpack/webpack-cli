@@ -2,7 +2,7 @@
 
 const inquirer = require("inquirer");
 const path = require("path");
-const chalk = require("chalk");
+const color = require("turbocolor");
 const spawn = require("cross-spawn");
 const List = require("@webpack-cli/webpack-scaffold").List;
 const processPromise = require("@webpack-cli/utils/resolve-packages")
@@ -57,7 +57,7 @@ function serve() {
 	if (!packageJSONPath) {
 		console.log(
 			"\n",
-			chalk.red("✖ Could not find your package.json file"),
+			color.red("✖ Could not find your package.json file"),
 			"\n"
 		);
 		process.exit(1);
@@ -78,14 +78,14 @@ function serve() {
 		if (!WDSPath) {
 			console.log(
 				"\n",
-				chalk.red(
+				color.red(
 					"✖ Could not find the webpack-dev-server dependency in node_modules root path"
 				)
 			);
 			console.log(
-				chalk.bold.green(" ✔︎"),
+				color.bold.green(" ✔︎"),
 				"Try this command:",
-				chalk.bold.green("rm -rf node_modules && npm install")
+				color.bold.green("rm -rf node_modules && npm install")
 			);
 			process.exit(1);
 		}
@@ -93,14 +93,14 @@ function serve() {
 	} else {
 		process.stdout.write(
 			"\n" +
-				chalk.bold(
-					"✖ We didn't find any webpack-dev-server dependency in your project,"
-				) +
-				"\n" +
-				chalk.bold.green("  'webpack serve'") +
-				" " +
-				chalk.bold("requires you to have it installed ") +
-				"\n\n"
+			color.bold(
+				"✖ We didn't find any webpack-dev-server dependency in your project,"
+			) +
+			"\n" +
+			color.bold.green("  'webpack serve'") +
+			" " +
+			color.bold("requires you to have it installed ") +
+			"\n\n"
 		);
 		return inquirer
 			.prompt([
@@ -154,12 +154,12 @@ function serve() {
 							});
 						});
 				} else {
-					console.log(chalk.bold.red("✖ Serve aborted due cancelling"));
+					console.log(color.bold.red("✖ Serve aborted due cancelling"));
 					process.exitCode = 1;
 				}
 			})
 			.catch(err => {
-				console.log(chalk.red("✖ Serve aborted due to some errors"));
+				console.log(color.red("✖ Serve aborted due to some errors"));
 				console.error(err);
 				process.exitCode = 1;
 			});

@@ -2,7 +2,7 @@
 
 const path = require("path");
 const j = require("jscodeshift");
-const chalk = require("chalk");
+const color = require("turbocolor");
 const pEachSeries = require("p-each-series");
 
 const runPrettier = require("@webpack-cli/utils/run-prettier");
@@ -77,7 +77,7 @@ module.exports = function runTransform(webpackProperties, action) {
 	if (initActionNotDefined && webpackProperties.config.item) {
 		process.stdout.write(
 			"\n" +
-				chalk.green(
+				color.green(
 					`Congratulations! ${
 						webpackProperties.config.item
 					} has been ${action}ed!\n`
@@ -86,7 +86,7 @@ module.exports = function runTransform(webpackProperties, action) {
 	} else {
 		process.stdout.write(
 			"\n" +
-				chalk.green(
+				color.green(
 					"Congratulations! Your new webpack configuration file has been created!\n"
 				)
 		);
