@@ -2,7 +2,7 @@
 
 ## Description
 
-It returns a set of information related to the local enviroment.
+This pacakge returns a set of information related to the local enviroment.
 
 ## Installation
 
@@ -13,6 +13,7 @@ npm i -D @webpack-cli/info
 ## Usage
 
 ### Node
+
 ```js
 const envinfo = require("@webpack-cli/info");
 envinfo();
