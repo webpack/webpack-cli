@@ -123,7 +123,7 @@ describe("BinTestCases", function() {
 						const stderr = convertToArrayOfLines(env.stderr);
 						try {
 							testAssertions(stdout, stderr, done);
-						} catch(e) {
+						} catch (e) {
 							console.log(`### stderr ###\n${env.stderr.join("")}`);
 							console.log(`### stdout ###\n${env.stdout.join("")}`);
 							throw e;
@@ -166,7 +166,7 @@ describe("BinTestCases", function() {
 					const stderr = convertToArrayOfLines(env.stderr);
 					try {
 						testAssertions(env.code, stdout, stderr);
-					} catch(e) {
+					} catch (e) {
 					//	console.log(`### stderr ###\n${env.stderr.join("")}`);
 					//	console.log(`### stdout ###\n${env.stdout.join("")}`);
 						throw e;

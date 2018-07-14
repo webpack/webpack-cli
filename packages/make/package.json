@@ -8,5 +8,11 @@
   "publishConfig": {
     "access": "public"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^2.9.2"
+  },
+  "scripts": {
+    "build": "tsc"
+  }
 }

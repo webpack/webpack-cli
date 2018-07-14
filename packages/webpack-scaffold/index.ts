@@ -1,17 +1,23 @@
 import * as jscodeshift from "jscodeshift";
 
-interface IScaffoldBaseObject {
-	type: string;
+export interface IScaffoldBaseObject {
+	type?: string;
 	name: string;
 	message: string;
+	choices?: ((answers: Object) => string) | string[];
+	default?: string | number | string[] | number[] | ((answers: Object) => (string | number | string[] | number[]));
+	validate?: ((input: string) => boolean | string);
+	when?: ((answers: Object) => boolean) | boolean;
+	store?: boolean;
+	filter?: (name: string) => string;
 }
 
-interface IInquirerList extends IScaffoldBaseObject {
+export interface IInquirerList extends IScaffoldBaseObject {
 	choices?: string[];
 }
 
-interface IInquirerInput extends IScaffoldBaseObject {
-	validate?: Function;
+export interface IInquirerInput extends IScaffoldBaseObject {
+	validate?: (input: string) => string | boolean;
 }
 
 export function createArrowFunction(value: Function): string {
@@ -95,7 +101,7 @@ export function Input(name: string, message: string): IInquirerInput {
 	};
 }
 
-export function InputValidate(name: string, message: string, cb: Function): IInquirerInput {
+export function InputValidate(name: string, message: string, cb?: (input: string) => string | boolean): IInquirerInput {
 	return {
 		message,
 		name,
