@@ -1,5 +1,5 @@
 "use strict";
-const chalk = require("chalk");
+const color = require("turbocolor");
 const isLocalPath = require("./is-local-path");
 const npmExists = require("./npm-exists");
 const resolvePackages = require("./resolve-packages").resolvePackages;
@@ -37,10 +37,10 @@ module.exports = function npmPackagesExists(pkg) {
 			addon.slice(0, WEBPACK_SCAFFOLD_PREFIX.length) !== WEBPACK_SCAFFOLD_PREFIX
 		) {
 			throw new TypeError(
-				chalk.bold(`${addon} isn't a valid name.\n`) +
-					chalk.red(
-						`\nIt should be prefixed with '${WEBPACK_SCAFFOLD_PREFIX}', but have different suffix.\n`
-					)
+				color.bold(`${addon} isn't a valid name.\n`) +
+				color.red(
+					`\nIt should be prefixed with '${WEBPACK_SCAFFOLD_PREFIX}', but have different suffix.\n`
+				)
 			);
 		}
 

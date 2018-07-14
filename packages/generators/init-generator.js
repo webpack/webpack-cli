@@ -1,7 +1,7 @@
 "use strict";
 
 const Generator = require("yeoman-generator");
-const chalk = require("chalk");
+const color = require("turbocolor");
 const logSymbols = require("log-symbols");
 
 const Input = require("@webpack-cli/webpack-scaffold").Input;
@@ -53,16 +53,16 @@ module.exports = class InitGenerator extends Generator {
 		process.stdout.write(
 			"\n" +
 				logSymbols.info +
-				chalk.blue(" INFO ") +
+				color.blue(" INFO ") +
 				"For more information and a detailed description of each question, have a look at " +
-				chalk.bold.green(
+				color.bold.green(
 					"https://github.com/webpack/webpack-cli/blob/master/INIT.md"
 				) +
 				"\n"
 		);
 		process.stdout.write(
 			logSymbols.info +
-				chalk.blue(" INFO ") +
+				color.blue(" INFO ") +
 				"Alternatively, run `webpack(-cli) --help` for usage info." +
 				"\n\n"
 		);

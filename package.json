@@ -86,7 +86,7 @@
     }
   },
   "dependencies": {
-    "chalk": "^2.4.1",
+    "turbocolor": "^2.0.1",
     "cross-spawn": "^6.0.5",
     "enhanced-resolve": "^4.0.0",
     "global-modules-path": "^2.1.0",

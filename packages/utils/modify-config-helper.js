@@ -2,7 +2,7 @@
 
 const fs = require("fs");
 const path = require("path");
-const chalk = require("chalk");
+const color = require("turbocolor");
 const yeoman = require("yeoman-environment");
 const Generator = require("yeoman-generator");
 const logSymbols = require("log-symbols");
@@ -29,22 +29,22 @@ module.exports = function modifyHelperUtil(action, generator, configFile, packag
 		if (webpackConfigExists) {
 			process.stdout.write(
 				"\n" +
-					logSymbols.success +
-					chalk.green(" SUCCESS ") +
-					"Found config " +
-					chalk.cyan(configFile + "\n") +
-					"\n"
+				logSymbols.success +
+				color.green(" SUCCESS ") +
+				"Found config " +
+				color.cyan(configFile + "\n") +
+				"\n"
 			);
 		} else {
 			process.stdout.write(
 				"\n" +
-					logSymbols.error +
-					chalk.red(" ERROR ") +
-					chalk.cyan(configFile) +
-					" not found. Please specify a valid path to your webpack config like " +
-					chalk.white("$ ") +
-					chalk.cyan(`webpack-cli ${action} webpack.dev.js`) +
-					"\n"
+				logSymbols.error +
+				color.red(" ERROR ") +
+				color.cyan(configFile) +
+				" not found. Please specify a valid path to your webpack config like " +
+				color.white("$ ") +
+				color.cyan(`webpack-cli ${action} webpack.dev.js`) +
+				"\n"
 			);
 			return;
 		}
@@ -80,10 +80,10 @@ module.exports = function modifyHelperUtil(action, generator, configFile, packag
 			configModule = tmpConfig;
 		} catch (err) {
 			console.error(
-				chalk.red("\nCould not find a yeoman configuration file.\n")
+				color.red("\nCould not find a yeoman configuration file.\n")
 			);
 			console.error(
-				chalk.red(
+				color.red(
 					"\nPlease make sure to use 'this.config.set('configuration', this.configuration);' at the end of the generator.\n"
 				)
 			);

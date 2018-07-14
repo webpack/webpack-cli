@@ -11,7 +11,7 @@
   "license": "MIT",
   "dependencies": {
     "@webpack-cli/webpack-scaffold": "^0.0.8",
-    "chalk": "^2.4.1",
+    "turbocolor": "^2.0.1",
     "cross-spawn": "^6.0.5",
     "inquirer": "^5.2.0"
   }

@@ -2,7 +2,7 @@
 
 const fs = require("fs");
 const path = require("path");
-const chalk = require("chalk");
+const color = require("turbocolor");
 const diff = require("diff");
 const inquirer = require("inquirer");
 const PLazy = require("p-lazy");
@@ -28,7 +28,7 @@ module.exports = function migrate(...args) {
 	const filePaths = args.slice(3);
 	if (!filePaths.length) {
 		const errMsg = "\n ✖ Please specify a path to your webpack config \n ";
-		console.error(chalk.red(errMsg));
+		console.error(color.red(errMsg));
 		return;
 	}
 	const currentConfigPath = path.resolve(process.cwd(), filePaths[0]);
@@ -48,7 +48,7 @@ module.exports = function migrate(...args) {
 			])
 			.then(ans => {
 				if (!ans["confirmPath"]) {
-					console.error(chalk.red("✖ ︎Migration aborted due no output path"));
+					console.error(color.red("✖ ︎Migration aborted due no output path"));
 					return;
 				}
 				outputConfigPath = path.resolve(process.cwd(), filePaths[0]);
@@ -122,9 +122,9 @@ function runMigration(currentConfigPath, outputConfigPath) {
 			const diffOutput = diff.diffLines(ctx.source, result);
 			diffOutput.forEach(diffLine => {
 				if (diffLine.added) {
-					process.stdout.write(chalk.green(`+ ${diffLine.value}`));
+					process.stdout.write(color.green(`+ ${diffLine.value}`));
 				} else if (diffLine.removed) {
-					process.stdout.write(chalk.red(`- ${diffLine.value}`));
+					process.stdout.write(color.red(`- ${diffLine.value}`));
 				}
 			});
 			return inquirer
@@ -149,7 +149,7 @@ function runMigration(currentConfigPath, outputConfigPath) {
 							}
 						]);
 					} else {
-						console.log(chalk.red("✖ Migration aborted"));
+						console.log(color.red("✖ Migration aborted"));
 					}
 				})
 				.then(answer => {
@@ -167,7 +167,7 @@ function runMigration(currentConfigPath, outputConfigPath) {
 						);
 						if (webpackOptionsValidationErrors.length) {
 							console.log(
-								chalk.red(
+								color.red(
 									"\n✖ Your configuration validation wasn't successful \n"
 								)
 							);
@@ -179,17 +179,17 @@ function runMigration(currentConfigPath, outputConfigPath) {
 						}
 					}
 					console.log(
-						chalk.green(
+						color.green(
 							`\n✔︎ New webpack config file is at ${outputConfigPath}.`
 						)
 					);
 					console.log(
-						chalk.green(
+						color.green(
 							"✔︎ Heads up! Updating to the latest version could contain breaking changes."
 						)
 					);
 					console.log(
-						chalk.green(
+						color.green(
 							"✔︎ Plugin and loader dependencies may need to be updated."
 						)
 					);
@@ -197,7 +197,7 @@ function runMigration(currentConfigPath, outputConfigPath) {
 		})
 		.catch(err => {
 			const errMsg = "\n ✖ ︎Migration aborted due to some errors: \n";
-			console.error(chalk.red(errMsg));
+			console.error(color.red(errMsg));
 			console.error(err);
 			process.exitCode = 1;
 		});

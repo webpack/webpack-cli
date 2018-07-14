@@ -2,7 +2,7 @@
 
 const prettier = require("prettier");
 const fs = require("fs");
-const chalk = require("chalk");
+const color = require("turbocolor");
 
 /**
  *
@@ -27,10 +27,10 @@ module.exports = function runPrettier(outputPath, source, cb) {
 		} catch (err) {
 			process.stdout.write(
 				"\n" +
-					chalk.yellow(
-						`WARNING: Could not apply prettier to ${outputPath}` +
-							" due validation error, but the file has been created\n"
-					)
+				color.yellow(
+					`WARNING: Could not apply prettier to ${outputPath}` +
+					" due validation error, but the file has been created\n"
+				)
 			);
 			prettySource = source;
 			error = err;
