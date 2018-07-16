@@ -85,9 +85,9 @@ module.exports = function promptForInstallation(packages, ...args) {
 								packages
 							);
 							if (packages === "serve") {
-								return require(pathForCmd).serve();
+								return require(pathForCmd).default.serve();
 							}
-							return require(pathForCmd)(...args); //eslint-disable-line
+							return require(pathForCmd).default(...args); //eslint-disable-line
 						})
 						.catch(error => {
 							console.error(error);
@@ -105,6 +105,6 @@ module.exports = function promptForInstallation(packages, ...args) {
 			}
 		});
 	} else {
-		require(pathForCmd)(...args); // eslint-disable-line
+		require(pathForCmd).default(...args); // eslint-disable-line
 	}
 };
