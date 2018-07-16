@@ -6,13 +6,13 @@
 A. **Local setup**
 
 Follow given steps to locally setup `webpack-cli init` by installing dependencies:
-1. Create `package.json` through npm
+1. Create `package.json` through npm.
 
 	```shell
 	$ npm init
 	```
 
-2. Install `webpack` and `webpack-cli` as devDependencies
+2. Install `webpack` and `webpack-cli` as devDependencies.
 
 	```shell
     $ npm install --save-dev webpack webpack-cli
@@ -27,7 +27,7 @@ Follow given steps to locally setup `webpack-cli init` by installing dependencie
 B. **Global Setup**
 
 Follow following steps to setup `webpack-cli init` globally:
-1. Install `webpack` and `webpack-cli` globally
+1. Install `webpack` and `webpack-cli` globally.
 	```shell
 	$ npm install -g webpack webpack-cli
 	```
