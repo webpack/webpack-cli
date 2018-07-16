@@ -1,10 +1,45 @@
-## webpack init
+# webpack-cli init
 
-Through [yeoman](http://yeoman.io/), the `webpack-cli init` feature allows people to create scaffolds and generate new projects quickly. An npm dependency that scaffolds a `webpack.config.js` through `webpack-cli` is what we refer to as an **addon**.
+`webpack-cli init` is used to initialize `webpack` projects quickly by scaffolding configuration and installing modules required for the project as per user preferences.
 
-We ask several questions in the default generator to get you started.
+## Initial Setup
+Follow given steps to setup `webpack-cli init` by installing dependencies:
+1. Create `package.json` through npm
 
----
+	```shell
+    	$ npm init
+    ```
+
+2. Install `webpack` and `webpack-cli` as devDependencies
+
+	```shell
+    	$ npm install --save-dev webpack webpack-cli
+    ```
+
+3. Optional step : Install @webpack-cli/init package to add init addon
+
+	```shell
+    	$ npm install -D @webpack-cli/init
+    ```
+    
+4. Add following line under scripts in `package.json`
+
+	```json
+    	...
+        "scripts": {
+        	...
+            "project-init" : "webpack-cli init",
+        }
+        ...
+    ```
+    
+## Usage
+If followed above setup run:
+```
+	$ npm run project-init
+```
+
+### Questions asked by generator
 
 1. `Will your application have multiple bundles? (Y/n)`
 
