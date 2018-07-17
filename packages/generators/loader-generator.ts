@@ -10,7 +10,7 @@ import addonGenerator from "./addon-generator";
  * @param {string} name A loader name to be formatted
  * @returns {string} The formatted string
  */
-function makeLoaderName(name: string): string {
+export function makeLoaderName(name: string): string {
 	name = _.kebabCase(name);
 	if (!/loader$/.test(name)) {
 		name += "-loader";
