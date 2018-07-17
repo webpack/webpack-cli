@@ -114,7 +114,7 @@
     "conventional-changelog-lint-config-cz": "^0.3.0",
     "cz-customizable": "^5.2.0",
     "eslint": "^5.0.1",
-    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-node": "^7.0.0",
     "husky": "^0.14.3",
     "jest": "^22.4.4",
     "jest-cli": "^23.0.1",
