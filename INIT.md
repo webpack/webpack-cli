@@ -18,7 +18,7 @@ Follow given steps to locally setup `webpack-cli init` by installing dependencie
     $ npm install --save-dev webpack webpack-cli
     ```
 
-3. Install @webpack-cli/init package to add init addon
+3. Install `@webpack-cli/init` package to add init addon
 
 	```shell
     $ npm install -D @webpack-cli/init
@@ -29,12 +29,12 @@ B. **Global Setup**
 Follow following steps to setup `webpack-cli init` globally:
 1. Install `webpack` and `webpack-cli` globally
 	```shell
-	$ sudo npm install -g webpack webpack-cli
+	$ npm install -g webpack webpack-cli
 	```
 	
-2. Install @webpack-cli/init package to add init addon
+2. Install `@webpack-cli/init` package to add init addon
 	```shell
-	$ sudo npm install -g @webpack-cli/init
+	$ npm install -g @webpack-cli/init
 	```
     
 ## Usage
@@ -52,17 +52,25 @@ $ webpack-cli init
 
 1. `Will your application have multiple bundles? (Y/n)`
 
+> *Property/key to resolve: [entry](https://webpack.js.org/configuration/entry-context/#entry)*
+
 What we are meaning here, is if you want to provide your bundle a single or multiple [entry points](https://webpack.js.org/configuration/entry-context/#entry). If you have more than one entry point to your app, answer yes. If you only have one, answer no.
 
 2. `Which folder will your generated bundles be in? [default: dist]`
 
-This answers to the output directory of your application. The output directory is where servers or your `index.html` will read the generated bundle from.
+> *Property/key to resolve: [output.path](https://webpack.js.org/configuration/output/#output-path)*
+
+This answers to the [output directory](https://webpack.js.org/configuration/output/#output-path) of your application. The output directory is where servers or your `index.html` will read the generated bundle from.
 
 4. `Will you be using ES2015? (Y/n)`
+
+> *Property/key to resolve: [module.rules](https://webpack.js.org/configuration/module/#module-rules) (for .js files)*
 
 If you answer `Yes` to this question, we will add [`ES2015`](https://babeljs.io/learn-es2015/) to your webpack configuration, which will allow you to use modern JavaScript in your project.
 
 5. `Will you use one of the below CSS solutions?`
+
+> *Property/key to resolve: [module.rules](https://webpack.js.org/configuration/module/#module-rules) (for .scss,.less,.css,.postCSS files)*
 
 If you use any sort of style in your project, such as [`.less`](http://lesscss.org/), [`.scss`](http://sass-lang.com/),  [`.css`](https://developer.mozilla.org/en-US/docs/Web/CSS) or [`postCSS`](http://postcss.org/) you will need to declare this here. If you don't use CSS, answer no.
 
