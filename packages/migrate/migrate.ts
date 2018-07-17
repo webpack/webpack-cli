@@ -25,17 +25,19 @@ interface ITransformsObject {
 	uglifyJsPluginTransform: object;
 }
 
+/* tslint:disable object-literal-sort-keys */
 const transformsObject: ITransformsObject = {
+	loadersTransform,
+	resolveTransform,
+	removeJsonLoaderTransform,
+	uglifyJsPluginTransform,
+	loaderOptionsPluginTransform,
 	bannerPluginTransform,
 	extractTextPluginTransform,
-	loaderOptionsPluginTransform,
-	loadersTransform,
 	noEmitOnErrorsPluginTransform,
 	removeDeprecatedPluginsTransform,
-	removeJsonLoaderTransform,
-	resolveTransform,
-	uglifyJsPluginTransform,
 };
+/* tslint:enable object-literal-sort-keys */
 
 export const transformations =
 	Object
