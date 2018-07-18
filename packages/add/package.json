@@ -11,5 +11,12 @@
   "dependencies": {
     "@webpack-cli/generators": "^0.0.8",
     "@webpack-cli/utils": "^0.0.8"
+  },
+  "devDependencies": {
+    "@types/node": "^10.3.6",
+    "typescript": "^2.9.2"
+  },
+  "scripts": {
+    "build": "tsc"
   }
 }

@@ -16,5 +16,12 @@
   "dependencies": {
     "@webpack-cli/generators": "^0.0.8",
     "yeoman-environment": "^2.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^10.3.6",
+    "typescript": "^2.9.2"
+  },
+  "scripts": {
+    "build": "tsc"
   }
 }

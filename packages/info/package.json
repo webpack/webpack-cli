@@ -10,5 +10,12 @@
   },
   "dependencies": {
     "envinfo": "^5.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "^10.5.1",
+    "typescript": "^2.9.2"
+  },
+  "scripts": {
+    "build": "tsc"
   }
 }

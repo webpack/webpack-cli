@@ -1,0 +1,33 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended"
+    ],
+    "jsRules": {},
+    "rules": {
+      "indent": [
+        true,
+        "tabs",
+        4
+      ],
+      "ban-types": [
+        false
+      ],
+      "no-console": {
+        "severity": "warning"
+      },
+      "max-line-length": {
+        "options": {
+          "limit": 120
+        },
+        "severity": "warn"
+      }
+    },
+    "rulesDirectory": [],
+    "linterOptions": {
+      "exclude": [
+        "node_modules/**",
+        "packages/*/node_modules/**"
+      ]
+    }
+}
