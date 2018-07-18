@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/make",
-  "version": "0.0.8",
+  "version": "0.1.0",
   "description": "Makefile for webpack",
   "main": "index.js",
   "keywords": [],

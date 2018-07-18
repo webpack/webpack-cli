@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/webpack-scaffold",
-  "version": "0.0.8",
+  "version": "0.1.0",
   "description": "Utility files for webpack-scaffold",
   "main": "index.js",
   "publishConfig": {

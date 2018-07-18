@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/update",
-  "version": "0.0.8",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "keywords": [],
@@ -10,8 +10,8 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@webpack-cli/generators": "^0.0.8",
-    "@webpack-cli/utils": "^0.0.8"
+    "@webpack-cli/generators": "^0.1.0",
+    "@webpack-cli/utils": "^0.1.0"
   },
   "devDependencies": {
     "typescript": "^2.9.2"
