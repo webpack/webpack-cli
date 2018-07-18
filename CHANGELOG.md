@@ -1,3 +1,80 @@
+ <a name="3.1.0"></a>
+# 3.1.0 (2018-07-18)
+[Full Changelog](https://github.com/webpack/webpack-cli/compare/v3.0.8...v3.1.0)
+
+## New Features
+
+* generators: add typescript support ([c1844f8](https://github.com/webpack/webpack-cli/commit/c1844f8))
+* init: add typescript support ([222ccdc](https://github.com/webpack/webpack-cli/commit/222ccdc))
+* make: add typescript support ([4b574d9](https://github.com/webpack/webpack-cli/commit/4b574d9))
+* remove: add typescript support ([f1623ed](https://github.com/webpack/webpack-cli/commit/f1623ed))
+* scaffold: add typescript support ([eaf6fdf](https://github.com/webpack/webpack-cli/commit/eaf6fdf))
+* scaffold: add typescript support ([f611c27](https://github.com/webpack/webpack-cli/commit/f611c27))
+* serve: add typescript support ([d313421](https://github.com/webpack/webpack-cli/commit/d313421))
+* types: add webpack types schema ([90909e4](https://github.com/webpack/webpack-cli/commit/90909e4))
+* typescript: setup base infra ([fe25465](https://github.com/webpack/webpack-cli/commit/fe25465))
+* typescript: setup base infra ([373a304](https://github.com/webpack/webpack-cli/commit/373a304))
+* update: add typescript support ([53505b9](https://github.com/webpack/webpack-cli/commit/53505b9))
+* utils: add typescript support ([47702cb](https://github.com/webpack/webpack-cli/commit/47702cb))
+
+## Ast
+
+* parser: remove ([7f51c27](https://github.com/webpack/webpack-cli/commit/7f51c27))
+* parser: remove ([faeec57](https://github.com/webpack/webpack-cli/commit/faeec57))
+
+## Chore
+
+* add-cmd: add typescript support ([fb98933](https://github.com/webpack/webpack-cli/commit/fb98933))
+* add-cmd: add typescript support ([d730841](https://github.com/webpack/webpack-cli/commit/d730841))
+* build: fix eslint pattern ([#529](https://github.com/webpack/webpack-cli/pull/529))
+* build: fix ci ([#535](https://github.com/webpack/webpack-cli/pull/535))
+* ci: fix build ([#534](https://github.com/webpack/webpack-cli/pull/534))
+* ci: fix build ([#534](https://github.com/webpack/webpack-cli/pull/534))
+* ci: remove semantic release ([#516](https://github.com/webpack/webpack-cli/pull/516))
+* ci: update appveyor config, script ([f220c9e](https://github.com/webpack/webpack-cli/commit/f220c9e))
+* ci: update travis script ([00df5ba](https://github.com/webpack/webpack-cli/commit/00df5ba))
+* update pkg.lock ([817f99c](https://github.com/webpack/webpack-cli/commit/817f99c))
+* fix minor build infra ([87dd419](https://github.com/webpack/webpack-cli/commit/87dd419))
+* Update eslint to the latest version 🚀 ([#526](https://github.com/webpack/webpack-cli/pull/526))
+* update gitignore ([fdc82b9](https://github.com/webpack/webpack-cli/commit/fdc82b9))
+* add missing READMES to packages ([#545](https://github.com/webpack/webpack-cli/pull/545))
+* docs: Updated working link for webpack addon. ([#543](https://github.com/webpack/webpack-cli/pull/543))
+* generate-loader,plugin: add typescript support ([971b31a](https://github.com/webpack/webpack-cli/commit/971b31a))
+* info: add typescript support ([ca133ab](https://github.com/webpack/webpack-cli/commit/ca133ab))
+* info: add typescript support ([2c69df0](https://github.com/webpack/webpack-cli/commit/2c69df0))
+* migrate: add typescript support ([82a7dec](https://github.com/webpack/webpack-cli/commit/82a7dec))
+* package: update eslint-plugin-node to version 7.0.0 ([507a4a6](https://github.com/webpack/webpack-cli/commit/507a4a6))
+* package: update lockfile ([a3d41fb](https://github.com/webpack/webpack-cli/commit/a3d41fb))
+* release: whitelist/blacklist release files ([#514](https://github.com/webpack/webpack-cli/pull/514))
+* release: whitelist/blacklist release files ([#514](https://github.com/webpack/webpack-cli/pull/514))
+* release: whitelist/blacklist release files ([#514](https://github.com/webpack/webpack-cli/pull/514))
+* scripts: fix pretest ([55efce6](https://github.com/webpack/webpack-cli/commit/55efce6))
+* scripts: remove semantic-release ([#525](https://github.com/webpack/webpack-cli/pull/525))
+* template: tiny fix for bug template ([51dc005](https://github.com/webpack/webpack-cli/commit/51dc005))
+
+## Docs
+
+* update jsdoc ([#507](https://github.com/webpack/webpack-cli/pull/507))
+* update jsdoc ([#507](https://github.com/webpack/webpack-cli/pull/507))
+* update jsdoc ([#507](https://github.com/webpack/webpack-cli/pull/507))
+* pkg: readme file for add package ([#498](https://github.com/webpack/webpack-cli/pull/498))
+* pkg: readme info ([#497](https://github.com/webpack/webpack-cli/pull/497))
+* pkg: readme info ([#497](https://github.com/webpack/webpack-cli/pull/497))
+
+## Fix
+
+* default named import bug ([ce956c0](https://github.com/webpack/webpack-cli/commit/ce956c0))
+* generators: named export ([8adbe9e](https://github.com/webpack/webpack-cli/commit/8adbe9e))
+
+## Tests
+
+* fix: bin test outputs ([#552](https://github.com/webpack/webpack-cli/pull/552))
+* migrate: fix transforms order issue ([938e5f9](https://github.com/webpack/webpack-cli/commit/938e5f9))
+
+## Misc
+
+* Update yargs to the latest version 🚀 ([#533](https://github.com/webpack/webpack-cli/pull/533))
+
   <a name="0.0.8-development"></a>
 # 0.0.8-development (2018-06-15, webpack CLI v.3)
 [Full Changelog](https://github.com/webpack/webpack-cli/compare/v2.1.5...v0.0.8-development)
