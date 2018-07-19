@@ -21,7 +21,7 @@ Follow given steps to locally setup `webpack-cli init` by installing dependencie
 3. Install `@webpack-cli/init` package to add init addon
 
 	```shell
-    $ npm install -D @webpack-cli/init
+    $ npm install --save-dev @webpack-cli/init
     ```
 	
 B. **Global Setup**
@@ -48,7 +48,7 @@ B. **For global setup**
 $ webpack-cli init
 ```
 
-### Questions asked by generator
+### Description of questions asked by generator
 
 1. `Will your application have multiple bundles? (Y/n)`
 
