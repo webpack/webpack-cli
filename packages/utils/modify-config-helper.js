@@ -20,7 +20,12 @@ const runTransform = require("./scaffold");
  * @returns {Function} runTransform - Returns a transformation instance
  */
 
-module.exports = function modifyHelperUtil(action, generator, configFile, packages) {
+module.exports = function modifyHelperUtil(
+	action,
+	generator,
+	configFile,
+	packages
+) {
 	let configPath = null;
 
 	if (action !== "init") {

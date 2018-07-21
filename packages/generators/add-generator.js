@@ -2,7 +2,12 @@ const Generator = require("yeoman-generator");
 const glob = require("glob-all");
 const path = require("path");
 const inquirerAutoComplete = require("inquirer-autocomplete-prompt");
-const { AutoComplete, Confirm, Input, List } = require("@webpack-cli/webpack-scaffold");
+const {
+	AutoComplete,
+	Confirm,
+	Input,
+	List
+} = require("@webpack-cli/webpack-scaffold");
 
 const webpackSchema = require("./utils/optionsSchema.json");
 const webpackDevServerSchema = require("webpack-dev-server/lib/optionsSchema.json");
@@ -64,9 +69,7 @@ const traverseAndGetProperties = (arr, prop) => {
 const searchProps = (answers, input) => {
 	input = input || "";
 	return Promise.resolve(
-		PROPS.filter(food =>
-			food.toLowerCase().includes(input.toLowerCase())
-		)
+		PROPS.filter(food => food.toLowerCase().includes(input.toLowerCase()))
 	);
 };
 
@@ -104,15 +107,11 @@ module.exports = class AddGenerator extends Generator {
 		let isDeepProp = [false, false];
 
 		return this.prompt([
-			AutoComplete(
-				"actionType",
-				"What property do you want to add to?",
-				{
-					pageSize: 7,
-					source: searchProps,
-					suggestOnly: false,
-				}
-			)
+			AutoComplete("actionType", "What property do you want to add to?", {
+				pageSize: 7,
+				source: searchProps,
+				suggestOnly: false
+			})
 		])
 			.then(actionTypeAnswer => {
 				// Set initial prop, like devtool

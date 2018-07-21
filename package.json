@@ -32,10 +32,10 @@
     "bundlesize": "bundlesize",
     "changelog": "conventional-changelog --config ./build/changelog-generator/index.js --infile CHANGELOG.md --same-file",
     "clean:all": "rimraf node_modules package-lock.json packages/*/node_modules packages/*/package-lock.json",
-    "format": "prettier-eslint ./bin/*.js ./test/**/*.js ./packages/**/*.js --write",
+    "format": "prettier-eslint ./lib/**/*.js ./test/**/*.js ./packages/**/*.js --write",
     "jsdoc": "jsdoc -c jsdoc.json -r -d docs",
-    "lint:codeOnly": "eslint \"{bin}/**/!(__testfixtures__)/*.js\" \"{bin}/**.js\"",
-    "lint": "eslint \"./bin/*.js\" \"./test/**/*.js\" \"{packages}/**/!(node_modules)/*.test.js\" && npm run tslint",
+    "lint:codeOnly": "eslint \"{lib}/**/!(__testfixtures__)/*.js\" \"{lib}/**.js\"",
+    "lint": "eslint \"./lib/*.js\" \"./test/**/*.js\" \"{packages}/**/!(node_modules)/*.test.js\" && npm run tslint",
     "precommit": "lint-staged",
     "pretest": "npm run lint",
     "reportCoverage": "nyc report --reporter=json && codecov -f coverage/coverage-final.json --disable=gcov",
@@ -46,7 +46,7 @@
     "watch": "tsc -w"
   },
   "lint-staged": {
-    "{packages,bin}/**/!(__testfixtures__)/**.js": [
+    "{packages,lib}/**/!(__testfixtures__)/**.js": [
       "eslint --fix",
       "git add"
     ]
@@ -61,7 +61,7 @@
   },
   "nyc": {
     "include": [
-      "bin/**.js",
+      "lib/**.js",
       "packages/**/*.js"
     ],
     "reporter": [
