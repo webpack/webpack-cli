@@ -52,7 +52,7 @@
     }
   },
   "lint-staged": {
-    "{packages,bin}/**/!(__testfixtures__)/**.js": [
+    "{packages,lib}/**/!(__testfixtures__)/**.js": [
       "eslint --fix",
       "git add"
     ],
@@ -75,7 +75,7 @@
   },
   "nyc": {
     "include": [
-      "bin/**.js",
+      "lib/**.js",
       "packages/**/*.js"
     ],
     "reporter": [
