@@ -94,6 +94,7 @@
   "dependencies": {
     "chalk": "^2.4.1",
     "command-line-args": "^5.0.2",
+    "command-line-usage": "^5.0.5",
     "cross-spawn": "^6.0.5",
     "import-local": "^1.0.0",
     "inquirer": "^6.0.0",
