@@ -22,6 +22,7 @@ test_script:
   - node --version
   - npm --version
   - which npm
+  - npm run appveyor:build
   - npm run appveyor:lint
   - npm run appveyor:test
 
