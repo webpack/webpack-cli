@@ -1,7 +1,11 @@
 # webpack-cli migrate
 
-The `webpack-cli migrate` feature eases the transition from version 1 to version 2. `webpack-cli migrate`
-also allows users to switch to the new version of webpack without having to extensively.
+The `webpack-cli migrate` feature eases the transition from:
+- `version 1` to `version 2`
+- `version 2` to `version 4`
+
+`webpack-cli migrate` also allows users to switch to the new version of webpack without having to do it extensively.
+
 ## Installation
 > Requires installation of `webpack` and `webpack-cli`
 ### A. Local Setup
@@ -14,7 +18,7 @@ $ npm install -g @webpack-cli/migrate
 ```
 
 ## Usage
-To use `webpack-cli migrate`, run the following command, with the value of `<config>` being a path to an existing webpack configuration file
+To use `webpack-cli migrate`, run the following command, with the value of `<config>` being a path to an existing webpack configuration file. `<config>` can be `webpack.config.js` , `webpack.prod.js` or any webpack configuration.
 ### A. Local Setup
 ```bash
 npx webpack-cli migrate <config>
@@ -164,12 +168,15 @@ module.exports = {
 
 };
 ```
-## Changes Reflected after migration
-In summary, we can see the follow changes were made
+## Changes reflected after migration
+We can see the follow changes after migration:
 1.  The webpack schema for using loaders has changed
     - `loaders` is now `module.rules`
     -  `query` is now `options`
-1.  All loaders now have to have the *loader* suffix, e.g. `babel` -> `babel-loader`
+2.  All loaders now have to have the *loader* suffix, e.g. `babel` -> `babel-loader`
+3.  `NamedModulesPlugin` migrated to `optimizations.namedModules`
+4.  `NoEmitOnErrorsPlugin` migrated to `optimizations.noEmitOnErrors`
+5.  `ModuleConcatenationPlugin` migrated to `optimizations.concatenateModules`
 ---
 **Note: This command does NOT handle updating dependencies in _package.json_, it is only a migration tool for the config
 file itself.  Users are expected to manage dependencies themselves.**
