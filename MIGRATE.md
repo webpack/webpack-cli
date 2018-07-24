@@ -21,11 +21,11 @@ $ npm install -g @webpack-cli/migrate
 To use `webpack-cli migrate`, run the following command, with the value of `<config>` being a path to an existing webpack configuration file. `<config>` can be `webpack.config.js` , `webpack.prod.js` or any webpack configuration.
 ### A. Local Setup
 ```bash
-npx webpack-cli migrate <config>
+$ npx webpack-cli migrate <config>
 ```
 ### B. Global Setup
 ```bash
-webpack-cli migrate <config>
+$ webpack-cli migrate <config>
 ```
 ### Usage Example
 Given a basic configuration file like so:
@@ -169,7 +169,7 @@ module.exports = {
 };
 ```
 ## Changes reflected after migration
-We can see the follow changes after migration:
+We can see the following changes after migration:
 1.  The webpack schema for using loaders has changed
     - `loaders` is now `module.rules`
     -  `query` is now `options`
