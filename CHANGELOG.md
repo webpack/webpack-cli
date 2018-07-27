@@ -1,6 +1,6 @@
  <a name="3.1.0"></a>
 # 3.1.0 (2018-07-18)
-[Full Changelog](https://github.com/webpack/webpack-cli/compare/v3.0.8...v3.1.0)
+[Full Changelog](https://github.com/webpack/webpack-cli/compare/v3.0.8...v.3.1.0)
 
 ## New Features
 
