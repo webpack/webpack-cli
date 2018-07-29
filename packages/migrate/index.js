@@ -24,8 +24,7 @@ const runPrettier = require("@webpack-cli/utils/run-prettier");
  * function.
  */
 
-module.exports = function migrate(...args) {
-	const filePaths = args.slice(3);
+module.exports = function migrate(filePaths) {
 	if (!filePaths.length) {
 		const errMsg = "\n ✖ Please specify a path to your webpack config \n ";
 		console.error(chalk.red(errMsg));

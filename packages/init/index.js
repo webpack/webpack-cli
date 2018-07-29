@@ -15,9 +15,7 @@ const modifyConfigHelper = require("@webpack-cli/utils/modify-config-helper");
  * followed up with a yeoman instance of that if there's packages. If not, it creates a defaultGenerator
  */
 
-module.exports = function initializeInquirer(...args) {
-	const packages = args.slice(3);
-
+module.exports = function initializeInquirer(packages) {
 	if (packages.length === 0) {
 		return modifyConfigHelper("init", defaultGenerator);
 	}
