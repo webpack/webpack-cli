@@ -1,0 +1,12 @@
+"use strict";
+
+module.exports = function testAssertions(code, stdout, stderr) {
+	expect(code).toBe(0);
+	expect(stdout).toEqual(expect.anything());
+	expect(stdout[5]).toContain("bundle.js");
+	expect(stdout[7]).toMatch(/index\.js.*\{0\}/);
+	expect(stderr).toHaveLength(0);
+
+	const output = require("fs").readFileSync(require("path").join(__dirname, "../../../js/bin/output/output-library/bundle.js"), "utf-8");
+	expect(output).toContain("window.key1=window.key1||{},window.key1.key2=function");
+};
