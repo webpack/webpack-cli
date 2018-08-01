@@ -34,6 +34,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "jest --detectOpenHandles"
+    "test": "jest --detectOpenHandles",
+    "watch": "npm run build && tsc -w"
   }
 }

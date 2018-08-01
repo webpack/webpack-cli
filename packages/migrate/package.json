@@ -37,6 +37,6 @@
   "scripts": {
     "test": "jest",
     "build": "tsc",
-    "watch": "tsc -w"
+    "watch": "npm run build && tsc -w"
   }
 }

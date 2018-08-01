@@ -21,6 +21,7 @@
     "typescript": "^2.9.2"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "watch": "npm run build && tsc -w"
   }
 }
