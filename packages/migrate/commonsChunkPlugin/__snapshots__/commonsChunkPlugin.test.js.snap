@@ -1,0 +1,99 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-0" data 1`] = `
+"module.export = {
+    optimizations: {
+        splitChunks: {
+            cacheGroup: {
+                common: {
+                    name: 'common',
+                    chunks: 'initial'
+                },
+
+                vendor: {
+                    name: 'vendor',
+                    test: '/node_modules/',
+                    chunks: 'initial'
+                },
+
+                minChunks: 2
+            }
+        }
+    }
+}
+"
+`;
+
+exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-1" data 1`] = `
+"module.export = {
+    optimizations: {
+        splitChunks: {
+            cacheGroup: {
+                common: {
+                    name: 'common',
+                    chunks: 'initial'
+                },
+
+                vendor: {
+                    name: 'vendor',
+                    test: '/node_modules/',
+                    chunks: 'initial'
+                }
+            }
+        }
+    }
+}
+"
+`;
+
+exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-2" data 1`] = `
+"module.export = {
+    optimizations: {
+        splitChunks: {
+            cacheGroup: {
+                vendor: {
+                    name: 'vendor',
+                    test: '/node_modules/',
+                    chunks: 'initial'
+                }
+            }
+        }
+    }
+}
+"
+`;
+
+exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-3" data 1`] = `
+"module.export = {
+    optimizations: {
+        splitChunks: {
+            cacheGroup: {
+                commons: {
+                    name: 'commons',
+                    chunks: 'initial'
+                }
+            }
+        }
+    }
+}
+"
+`;
+
+exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-4" data 1`] = `
+"module.export = {
+    optimizations: {
+        splitChunks: {
+            cacheGroup: {
+                main: {
+                    name: 'main'
+                },
+
+                chunks: 'async',
+                minSize: 0,
+                minChunks: 2
+            }
+        }
+    }
+}
+"
+`;
