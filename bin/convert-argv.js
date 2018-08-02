@@ -441,7 +441,7 @@ module.exports = function(...args) {
 
 		ifArg("output-library", function(value) {
 			ensureObject(options, "output");
-			if (typeof options.output.library === "undefined") {
+			if (!options.output.library) {
 				options.output.library = [];
 			}
 			options.output.library.push(value);

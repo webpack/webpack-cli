@@ -1,5 +1,5 @@
 ./index.js
--o ../../../js/bin/output/output-library/bundle.js
+-o ../../../js/bin/output/output-library-many/bundle.js
 --target async-node
 --output-library-target window
 --output-library key1 --output-library key2
