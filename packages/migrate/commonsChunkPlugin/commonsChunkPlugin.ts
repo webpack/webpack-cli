@@ -21,10 +21,11 @@ import { IJSCodeshift, INode } from "../types/NodePath";
 export default function(j: IJSCodeshift, ast: INode): INode {
 
 	let pluginProps: INode[];
-	const cacheGroupsArray: INode[] = [];
+	const cacheGroupsProps: INode[] = [];
+	const splitChunksProps: INode[] = [];
 
 	// find old options
-	const CommonsChunkPlugin = findPluginsByName(j, ast, ["webpack.CommonsChunkPlugin"]);
+	const CommonsChunkPlugin = findPluginsByName(j, ast, ["webpack.optimize.CommonsChunkPlugin"]);
 
 	if (!CommonsChunkPlugin.size()) { return ast; }
 
@@ -91,18 +92,28 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 		switch (p.key.name) {
 			case "names":
 				p.value.elements.forEach((chunkName) => {
-					cacheGroupsArray.push(
-						createChunkCache(chunkName),
-					);
+					if (chunkName.value === "runtime") {
+						splitChunksProps.push(
+							createProperty(
+								j,
+								"runtimeChunk",
+								true,
+							),
+						);
+					} else {
+						cacheGroupsProps.push(
+							createChunkCache(chunkName),
+						);
+					}
 				});
 				break;
 			case "name":
-				cacheGroupsArray.push(
+				cacheGroupsProps.push(
 					createChunkCache(p.value),
 				);
 				break;
 			case "async":
-				cacheGroupsArray.push(
+				cacheGroupsProps.push(
 					createProperty(
 						j,
 						"chunks",
@@ -112,19 +123,38 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 				break;
 			case "minSize":
 			case "minChunks":
-				cacheGroupsArray.push(
-					createProperty(
-						j,
-						p.key.name,
-						p.value.value,
-					),
-				);
-				break;
+			const { value: pathValue } = p;
+			let propValue;
+
+			if (pathValue.name === "Infinity") {
+				propValue = Infinity;
+			} else {
+				propValue = pathValue.value;
+			}
+
+			cacheGroupsProps.push(
+				createProperty(
+					j,
+					p.key.name,
+					propValue,
+				),
+			);
+			break;
 		}
 	});
 
 	// Remove old plugin
-	const root: INode = findAndRemovePluginByName(j, ast, "webpack.CommonsChunkPlugin");
+	const root: INode = findAndRemovePluginByName(j, ast, "webpack.optimize.CommonsChunkPlugin");
+
+	const rootProps = [
+		...splitChunksProps,
+	];
+
+	if (cacheGroupsProps.length > 0) {
+		rootProps.push(
+			...cacheGroupsProps,
+		);
+	}
 
 	// Add new optimizations splitChunks option
 	if (root) {
@@ -134,11 +164,7 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 			"optimizations",
 			"splitChunks",
 			j.objectExpression([
-				j.property(
-					"init",
-					createIdentifierOrLiteral(j, "cacheGroup"),
-					j.objectExpression(cacheGroupsArray),
-				),
+				...rootProps,
 			]),
 		);
 	}

@@ -1,6 +1,6 @@
 module.export = {
     plugins: [
-        new webpack.CommonsChunkPlugin({
+        new webpack.optimize.CommonsChunkPlugin({
 			name: "main",
             async: true,
             minSize: 0,
