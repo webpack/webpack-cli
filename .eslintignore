@@ -1,5 +1,11 @@
 **/__testfixtures__/*
 coverage
-test
 docs
 node_modules
+test/binCases/errors/parse/index.js
+test/**/bundle.js
+test/**/*.bundle.js
+test/**/null.js
+test/**/main.js
+test/**/cliEntry.js
+test/**/foo.js

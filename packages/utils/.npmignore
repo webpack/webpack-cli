@@ -1,0 +1,6 @@
+__snapshots__
+__testfixtures__
+types
+*.test.*
+defineTest.*
+*.ts

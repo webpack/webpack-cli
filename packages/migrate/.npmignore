@@ -1,0 +1,6 @@
+__snapshots__
+__testfixtures__
+*.test.*
+**/__snapshots__
+**/__testfixtures__
+**/*.test.*

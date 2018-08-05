@@ -32,17 +32,6 @@ matrix:
       env: JOB_PART=integration
 
 before_install:
-  # Decrypt the git_deploy_key.enc key into /tmp/git_deploy_key
-  - openssl aes-256-cbc -K $encrypted_04be16cef0a7_key -iv $encrypted_04be16cef0a7_iv -in git_deploy_key.enc -out /tmp/git_deploy_key -d
-  # Make sure only the current user can read the private key
-  - chmod 600 /tmp/git_deploy_key
-  # Create a script to return the passphrase environment variable to ssh-add
-  - echo 'echo ${SSH_PASSPHRASE}' > /tmp/askpass && chmod +x /tmp/askpass
-  # Start the authentication agent
-  - eval "$(ssh-agent -s)"
-  # Add the key to the authentication agent
-  - DISPLAY=":0.0" SSH_ASKPASS="/tmp/askpass" setsid ssh-add /tmp/git_deploy_key </dev/null
-
   - '[[ $(node -v) =~ ^v9.*$ ]] || npm install -g npm@latest' # skipped when using node 9
 
 install:
@@ -59,9 +48,3 @@ jobs:
   include:
     - stage: commit lint
       script: commitlint-travis
-    - stage: NPM release
-      if: branch = master
-      node_js: "lts/*"
-      script:
-        - npm run changelog
-        - npm run travis-deploy-once "npm run semantic-release"

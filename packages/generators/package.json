@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/generators",
-  "version": "0.0.8",
+  "version": "0.1.0",
   "description": "Webpack-CLI generators",
   "main": "index.js",
   "keywords": [],
@@ -10,8 +10,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@webpack-cli/utils": "^0.0.8",
-    "@webpack-cli/webpack-scaffold": "^0.0.8",
+    "@webpack-cli/utils": "^0.1.0",
+    "@webpack-cli/webpack-scaffold": "^0.1.0",
     "chalk": "^2.4.1",
     "glob-all": "^3.1.0",
     "inquirer-autocomplete-prompt": "^0.12.2",
@@ -24,5 +24,17 @@
   },
   "peerDependencies": {
     "webpack": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.110",
+    "@types/log-symbols": "^2.0.0",
+    "@types/mkdirp": "^0.5.2",
+    "@types/node": "^10.3.6",
+    "@types/webpack-dev-server": "^2.9.4",
+    "typescript": "^2.9.2"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "npm run build && tsc -w"
   }
 }

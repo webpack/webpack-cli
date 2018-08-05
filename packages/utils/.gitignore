@@ -1,0 +1,6 @@
+/*.js
+/**/*.js
+!*.test.js
+!/**/*.test.js
+!/**/__testfixtures__/*.js
+!/**/__snapshots__/*.js

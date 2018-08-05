@@ -1,24 +1,76 @@
-## webpack init
+# webpack-cli init
 
-Through [yeoman](http://yeoman.io/), the `webpack-cli init` feature allows people to create scaffolds and generate new projects quickly. An npm dependency that scaffolds a `webpack.config.js` through `webpack-cli` is what we refer to as an **addon**.
+`webpack-cli init` is used to initialize `webpack` projects quickly by scaffolding configuration and installing modules required for the project as per user preferences.
 
-We ask several questions in the default generator to get you started.
+## Initial Setup
+A. **Local setup**
 
----
+Follow given steps to locally setup `webpack-cli init` by installing dependencies:
+1. Create `package.json` through npm
+
+	```shell
+	$ npm init
+	```
+
+2. Install `webpack` and `webpack-cli` as devDependencies
+
+	```shell
+    $ npm install --save-dev webpack webpack-cli
+    ```
+
+3. Install `@webpack-cli/init` package to add init addon
+
+	```shell
+    $ npm install --save-dev @webpack-cli/init
+    ```
+	
+B. **Global Setup**
+
+Follow following steps to setup `webpack-cli init` globally:
+1. Install `webpack` and `webpack-cli` globally
+	```shell
+	$ npm install -g webpack webpack-cli
+	```
+	
+2. Install `@webpack-cli/init` package to add init addon
+	```shell
+	$ npm install -g @webpack-cli/init
+	```
+    
+## Usage
+A. **For local setup**:
+```shell
+$ npx webpack-cli init
+```
+
+B. **For global setup**
+```shell
+$ webpack-cli init
+```
+
+### Description of questions asked by generator
 
 1. `Will your application have multiple bundles? (Y/n)`
+
+> *Property/key to resolve: [entry](https://webpack.js.org/configuration/entry-context/#entry)*
 
 What we are meaning here, is if you want to provide your bundle a single or multiple [entry points](https://webpack.js.org/configuration/entry-context/#entry). If you have more than one entry point to your app, answer yes. If you only have one, answer no.
 
 2. `Which folder will your generated bundles be in? [default: dist]`
 
-This answers to the output directory of your application. The output directory is where servers or your `index.html` will read the generated bundle from.
+> *Property/key to resolve: [output.path](https://webpack.js.org/configuration/output/#output-path)*
+
+This answers to the [output directory](https://webpack.js.org/configuration/output/#output-path) of your application. The output directory is where servers or your `index.html` will read the generated bundle from.
 
 4. `Will you be using ES2015? (Y/n)`
+
+> *Property/key to resolve: [module.rules](https://webpack.js.org/configuration/module/#module-rules) (for .js files)*
 
 If you answer `Yes` to this question, we will add [`ES2015`](https://babeljs.io/learn-es2015/) to your webpack configuration, which will allow you to use modern JavaScript in your project.
 
 5. `Will you use one of the below CSS solutions?`
+
+> *Property/key to resolve: [module.rules](https://webpack.js.org/configuration/module/#module-rules) (for .scss,.less,.css,.postCSS files)*
 
 If you use any sort of style in your project, such as [`.less`](http://lesscss.org/), [`.scss`](http://sass-lang.com/),  [`.css`](https://developer.mozilla.org/en-US/docs/Web/CSS) or [`postCSS`](http://postcss.org/) you will need to declare this here. If you don't use CSS, answer no.
 

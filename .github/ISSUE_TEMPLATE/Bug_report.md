@@ -25,7 +25,7 @@ A clear and concise description of what you expected to happen.
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
-**Please paste the results of `webpack-cli info` here, and mention other relevant information*
+**Please paste the results of `webpack-cli info` here, and mention other relevant information**
 
 **Additional context**
 Add any other context about the problem here like linking to an similar issue you might think is the cause.
