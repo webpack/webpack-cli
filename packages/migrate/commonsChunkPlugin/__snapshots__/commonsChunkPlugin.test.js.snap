@@ -4,20 +4,22 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-0" da
 "module.export = {
     optimizations: {
         splitChunks: {
-            common: {
-                chunks: 'initial',
-                enforce: true,
-                name: 'common'
-            },
+            minChunks: 2,
 
-            vendor: {
-                chunks: 'initial',
-                enforce: true,
-                name: 'vendor',
-                test: '/node_modules/'
-            },
+            cacheGroups: {
+                common: {
+                    chunks: 'initial',
+                    enforce: true,
+                    name: 'common'
+                },
 
-            minChunks: 2
+                vendor: {
+                    chunks: 'initial',
+                    enforce: true,
+                    name: 'vendor',
+                    test: '/node_modules/'
+                }
+            }
         }
     }
 }
@@ -28,17 +30,19 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-1" da
 "module.export = {
     optimizations: {
         splitChunks: {
-            common: {
-                chunks: 'initial',
-                enforce: true,
-                name: 'common'
-            },
+            cacheGroups: {
+                common: {
+                    chunks: 'initial',
+                    enforce: true,
+                    name: 'common'
+                },
 
-            vendor: {
-                chunks: 'initial',
-                enforce: true,
-                name: 'vendor',
-                test: '/node_modules/'
+                vendor: {
+                    chunks: 'initial',
+                    enforce: true,
+                    name: 'vendor',
+                    test: '/node_modules/'
+                }
             }
         }
     }
@@ -50,11 +54,13 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-2" da
 "module.export = {
     optimizations: {
         splitChunks: {
-            vendor: {
-                chunks: 'initial',
-                enforce: true,
-                name: 'vendor',
-                test: '/node_modules/'
+            cacheGroups: {
+                vendor: {
+                    chunks: 'initial',
+                    enforce: true,
+                    name: 'vendor',
+                    test: '/node_modules/'
+                }
             }
         }
     }
@@ -66,10 +72,12 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-3" da
 "module.export = {
     optimizations: {
         splitChunks: {
-            commons: {
-                chunks: 'initial',
-                enforce: true,
-                name: 'commons'
+            cacheGroups: {
+                commons: {
+                    chunks: 'initial',
+                    enforce: true,
+                    name: 'commons'
+                }
             }
         }
     }
@@ -81,17 +89,20 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-4" da
 "module.export = {
     optimizations: {
         splitChunks: {
-            main: {
+            minSize: 0,
+            minChunks: 2,
+
+            cacheGroups: {
+                main: {
+                    chunks: 'initial',
+                    enforce: true,
+                    name: 'main'
+                },
+
                 chunks: 'initial',
                 enforce: true,
-                name: 'main'
-            },
-
-            chunks: 'initial',
-            enforce: true,
-            name: true,
-            minSize: 0,
-            minChunks: 2
+                name: true
+            }
         }
     }
 }

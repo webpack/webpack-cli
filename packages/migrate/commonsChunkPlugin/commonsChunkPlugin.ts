@@ -49,18 +49,22 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 
 	// create chunk cache group option
 	function createChunkCache(chunkName) {
+		const chunkCacheProps = [
+			...commonProperties,
+			createProperty(
+				j,
+				"name",
+				chunkName.value,
+			),
+		];
+
 		switch (chunkName.value) {
 			case "vendor":
 				return j.property(
 					"init",
 					createIdentifierOrLiteral(j, chunkName.value),
 					j.objectExpression([
-						...commonProperties,
-						createProperty(
-							j,
-							"name",
-							chunkName.value,
-						),
+						...chunkCacheProps,
 						createProperty(
 							j,
 							"test",
@@ -76,12 +80,7 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 					"init",
 					createIdentifierOrLiteral(j, chunkName.value),
 					j.objectExpression([
-						...commonProperties,
-						createProperty(
-							j,
-							"name",
-							chunkName.value,
-						),
+						...chunkCacheProps,
 					]),
 				);
 		}
@@ -117,7 +116,7 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 					...commonProperties,
 					createProperty(
 						j,
-						"name",
+						"name", // todo: fix async case
 						p.value.value,
 					),
 				);
@@ -139,7 +138,7 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 			propValue = pathValue.value;
 		}
 
-		 cacheGroupsProps.push(
+		 splitChunksProps.push(
 			createProperty(
 				j,
 				p.key.name,
@@ -157,9 +156,16 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 		...splitChunksProps,
 	];
 
+	// create root props only if cache groups props are present: 5-input
  if (cacheGroupsProps.length > 0) {
 		rootProps.push(
-			...cacheGroupsProps,
+			j.property(
+				"init",
+					createIdentifierOrLiteral(j, "cacheGroups"),
+					j.objectExpression([
+						...cacheGroupsProps,
+					]),
+			),
 		);
 	}
 
