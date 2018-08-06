@@ -5,14 +5,16 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-0" da
     optimizations: {
         splitChunks: {
             common: {
-                name: 'common',
-                chunks: 'initial'
+                chunks: 'initial',
+                enforce: true,
+                name: 'common'
             },
 
             vendor: {
+                chunks: 'initial',
+                enforce: true,
                 name: 'vendor',
-                test: '/node_modules/',
-                chunks: 'initial'
+                test: '/node_modules/'
             },
 
             minChunks: 2
@@ -27,14 +29,16 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-1" da
     optimizations: {
         splitChunks: {
             common: {
-                name: 'common',
-                chunks: 'initial'
+                chunks: 'initial',
+                enforce: true,
+                name: 'common'
             },
 
             vendor: {
+                chunks: 'initial',
+                enforce: true,
                 name: 'vendor',
-                test: '/node_modules/',
-                chunks: 'initial'
+                test: '/node_modules/'
             }
         }
     }
@@ -47,9 +51,10 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-2" da
     optimizations: {
         splitChunks: {
             vendor: {
+                chunks: 'initial',
+                enforce: true,
                 name: 'vendor',
-                test: '/node_modules/',
-                chunks: 'initial'
+                test: '/node_modules/'
             }
         }
     }
@@ -62,8 +67,9 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-3" da
     optimizations: {
         splitChunks: {
             commons: {
-                name: 'commons',
-                chunks: 'initial'
+                chunks: 'initial',
+                enforce: true,
+                name: 'commons'
             }
         }
     }
@@ -76,10 +82,14 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-4" da
     optimizations: {
         splitChunks: {
             main: {
+                chunks: 'initial',
+                enforce: true,
                 name: 'main'
             },
 
-            chunks: 'async',
+            chunks: 'initial',
+            enforce: true,
+            name: true,
             minSize: 0,
             minChunks: 2
         }

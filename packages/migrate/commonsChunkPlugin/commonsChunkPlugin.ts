@@ -24,6 +24,19 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 	const cacheGroupsProps: INode[] = [];
 	const splitChunksProps: INode[] = [];
 
+	const commonProperties: INode[] = [
+		createProperty(
+			j,
+			"chunks",
+			"initial",
+		),
+		createProperty(
+			j,
+			"enforce",
+			true,
+		),
+	];
+
 	// find old options
 	const CommonsChunkPlugin = findPluginsByName(j, ast, ["webpack.optimize.CommonsChunkPlugin"]);
 
@@ -36,13 +49,6 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 
 	// create chunk cache group option
 	function createChunkCache(chunkName) {
-		const commonProperties: INode[] = [
-			createProperty(
-				j,
-				"name",
-				chunkName.value,
-			),
-		];
 		switch (chunkName.value) {
 			case "vendor":
 				return j.property(
@@ -52,36 +58,30 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 						...commonProperties,
 						createProperty(
 							j,
-							"test",
-							"/node_modules/",
+							"name",
+							chunkName.value,
 						),
 						createProperty(
 							j,
-							"chunks",
-							"initial",
+							"test",
+							"/node_modules/",
 						),
 					]),
 				);
 			case "common":
 			case "commons":
-				return j.property(
-					"init",
-					createIdentifierOrLiteral(j, chunkName.value),
-					j.objectExpression([
-						...commonProperties,
-						createProperty(
-							j,
-							"chunks",
-							"initial",
-						),
-					]),
-				);
+				// TODO works as default for now
 			default:
 				return j.property(
 					"init",
 					createIdentifierOrLiteral(j, chunkName.value),
 					j.objectExpression([
 						...commonProperties,
+						createProperty(
+							j,
+							"name",
+							chunkName.value,
+						),
 					]),
 				);
 		}
@@ -114,50 +114,57 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 				break;
 			case "async":
 				cacheGroupsProps.push(
+					...commonProperties,
 					createProperty(
 						j,
-						"chunks",
-						"async",
+						"name",
+						p.value.value,
 					),
 				);
 				break;
 			case "minSize":
 			case "minChunks":
 			const { value: pathValue } = p;
-			let propValue;
 
-			if (pathValue.name === "Infinity") {
-				propValue = Infinity;
-			} else {
-				propValue = pathValue.value;
+			// minChunk is a function
+			if (pathValue.type === "ArrowFunctionExpression" || pathValue.test === "FunctionExpression") {
+				break;
 			}
 
-			cacheGroupsProps.push(
-				createProperty(
-					j,
-					p.key.name,
-					propValue,
-				),
-			);
-			break;
+			let propValue;
+
+		 if (pathValue.name === "Infinity") {
+			propValue = Infinity;
+		} else {
+			propValue = pathValue.value;
+		}
+
+		 cacheGroupsProps.push(
+			createProperty(
+				j,
+				p.key.name,
+				propValue,
+			),
+		);
+		 break;
 		}
 	});
 
 	// Remove old plugin
 	const root: INode = findAndRemovePluginByName(j, ast, "webpack.optimize.CommonsChunkPlugin");
 
-	const rootProps = [
+ const rootProps = [
 		...splitChunksProps,
 	];
 
-	if (cacheGroupsProps.length > 0) {
+ if (cacheGroupsProps.length > 0) {
 		rootProps.push(
 			...cacheGroupsProps,
 		);
 	}
 
 	// Add new optimizations splitChunks option
-	if (root) {
+ if (root) {
 		addOrUpdateConfigObject(
 			j,
 			root,
@@ -169,5 +176,5 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 		);
 	}
 
-	return ast;
+ return ast;
 }
