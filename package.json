@@ -130,7 +130,7 @@
     "nyc": "^12.0.1",
     "prettier-eslint-cli": "^4.7.1",
     "rimraf": "^2.6.2",
-    "schema-utils": "^0.4.5",
+    "schema-utils": "^1.0.0",
     "tslint": "^5.10.0",
     "typescript": "^2.9.2",
     "webpack": "^4.8.3",
