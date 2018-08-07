@@ -1,7 +1,6 @@
 import {
 	addOrUpdateConfigObject,
 	createIdentifierOrLiteral,
-	createLiteral,
 	createProperty,
 	findAndRemovePluginByName,
 	findPluginsByName,
@@ -10,177 +9,192 @@ import {
 import { IJSCodeshift, INode } from "../types/NodePath";
 
 /**
- *
- * Transform for CommonsChunkPlugin. If found, removes the
- * plugin and sets optimizations.namedModules to true
- *
- * @param {Object} j - jscodeshift top-level import
- * @param {Node} ast - jscodeshift ast to transform
- * @returns {Node} ast - jscodeshift ast
- */
+	*
+	* Transform for CommonsChunkPlugin. If found, removes the
+	* plugin and sets optimizations.namedModules to true
+	*
+	* @param {Object} j - jscodeshift top-level import
+	* @param {Node} ast - jscodeshift ast to transform
+	* @returns {Node} ast - jscodeshift ast
+	*/
 export default function(j: IJSCodeshift, ast: INode): INode {
-
-	let pluginProps: INode[];
-	const cacheGroupsProps: INode[] = [];
 	const splitChunksProps: INode[] = [];
+	const cacheGroupsProps: INode[] = [];
+	const optimizationProps: object = {};
 
-	const commonProperties: INode[] = [
-		createProperty(
-			j,
-			"chunks",
-			"initial",
-		),
-		createProperty(
-			j,
-			"enforce",
-			true,
-		),
+	const commonCacheGroupsProps: INode[] = [
+		createProperty(j, "chunks", "initial"),
+		createProperty(j, "enforce", true),
 	];
 
 	// find old options
-	const CommonsChunkPlugin = findPluginsByName(j, ast, ["webpack.optimize.CommonsChunkPlugin"]);
+	const CommonsChunkPlugin = findPluginsByName(j, ast, [
+		"webpack.optimize.CommonsChunkPlugin",
+	]);
 
-	if (!CommonsChunkPlugin.size()) { return ast; }
-
-	CommonsChunkPlugin
-		.forEach((path: INode): void => {
-			pluginProps = path.value.arguments[0].properties; // any node
-		});
-
-	// create chunk cache group option
-	function createChunkCache(chunkName) {
-		const chunkCacheProps = [
-			...commonProperties,
-			createProperty(
-				j,
-				"name",
-				chunkName.value,
-			),
-		];
-
-		switch (chunkName.value) {
-			case "vendor":
-				return j.property(
-					"init",
-					createIdentifierOrLiteral(j, chunkName.value),
-					j.objectExpression([
-						...chunkCacheProps,
-						createProperty(
-							j,
-							"test",
-							"/node_modules/",
-						),
-					]),
-				);
-			case "common":
-			case "commons":
-				// TODO works as default for now
-			default:
-				return j.property(
-					"init",
-					createIdentifierOrLiteral(j, chunkName.value),
-					j.objectExpression([
-						...chunkCacheProps,
-					]),
-				);
-		}
+	if (!CommonsChunkPlugin.size()) {
+		return ast;
 	}
 
-	// iterate old props and map new props
-	pluginProps.forEach((p: INode): void => {
-		switch (p.key.name) {
-			case "names":
-				p.value.elements.forEach((chunkName) => {
-					if (chunkName.value === "runtime") {
-						splitChunksProps.push(
-							createProperty(
-								j,
-								"runtimeChunk",
-								true,
-							),
-						);
-					} else {
-						cacheGroupsProps.push(
-							createChunkCache(chunkName),
-						);
+	// iterate each CommonsChunkPlugin instance
+
+	// cache group options based on keys
+	const cacheGroup: object = {};
+
+	const cacheGroups: INode[] = [];
+
+	CommonsChunkPlugin.forEach(
+		(path: INode): void => {
+			const CCPProps = path.value.arguments[0].properties;
+
+			let chunkKey: string;
+
+			// iterate CCP props and map SCP props
+			CCPProps.forEach(
+				(p: INode): void => {
+					const propKey = p.key.name;
+
+					switch (propKey) {
+						case "names":
+						p.value.elements.forEach((chunkName) => {
+							if (chunkName.value === "runtime") {
+								optimizationProps["runtimeChunk"] = createIdentifierOrLiteral( // tslint:disable-line
+									j,
+									true,
+								);
+							} else {
+								if (!Array.isArray(cacheGroup[chunkName.value])) {
+									cacheGroup[chunkName.value] = [];
+								}
+
+								if (chunkName.value === "vendor") {
+									cacheGroup[chunkName.value].push(
+										createProperty(j, "test", "/node_modules/"),
+									);
+								}
+							}
+						});
+						break;
+						case "name":
+						chunkKey = propKey;
+						if (!Array.isArray(cacheGroup[p.value.value])) {
+							cacheGroup[p.value.value] = [];
+						}
+						if (p.value.value === "vendor") {
+							cacheGroup[p.value.value].push(
+								createProperty(j, "test", "/node_modules/"),
+							);
+						}
+
+						break;
+						case "async":
+						splitChunksProps.push(createProperty(j, "chunks", "async"));
+						break;
+						case "minSize":
+						case "minChunks":
+						const { value: pathValue } = p;
+
+						// minChunk is a function
+						if (
+							pathValue.type === "ArrowFunctionExpression" ||
+							pathValue.type === "FunctionExpression"
+						) {
+							if (!Array.isArray(cacheGroup[chunkKey])) {
+								cacheGroup[chunkKey] = [];
+							}
+							cacheGroup[chunkKey].push(
+								j.property(
+									"init",
+									createIdentifierOrLiteral(j, "test"),
+									pathValue,
+								),
+							);
+							break;
+						}
+
+						let propValue;
+
+						if (pathValue.name === "Infinity") {
+							propValue = Infinity;
+						} else {
+							propValue = pathValue.value;
+						}
+
+						splitChunksProps.push(createProperty(j, p.key.name, propValue));
+						break;
 					}
-				});
-				break;
-			case "name":
-				cacheGroupsProps.push(
-					createChunkCache(p.value),
-				);
-				break;
-			case "async":
-				cacheGroupsProps.push(
-					...commonProperties,
-					createProperty(
-						j,
-						"name", // todo: fix async case
-						p.value.value,
+				},
+			);
+
+			Object.keys(cacheGroup).forEach((chunkName) => {
+				const chunkProps = [
+					...commonCacheGroupsProps,
+					createProperty(j, "name", chunkName),
+				];
+
+				if (
+					cacheGroup[chunkName] &&
+					Array.isArray(cacheGroup[chunkName]) &&
+					cacheGroup[chunkName].length > 0
+				) {
+					chunkProps.push(...cacheGroup[chunkName]);
+				}
+
+				cacheGroups.push(
+					j.property(
+						"init",
+						createIdentifierOrLiteral(j, chunkName),
+						j.objectExpression([...chunkProps]),
 					),
 				);
-				break;
-			case "minSize":
-			case "minChunks":
-			const { value: pathValue } = p;
+			});
 
-			// minChunk is a function
-			if (pathValue.type === "ArrowFunctionExpression" || pathValue.test === "FunctionExpression") {
-				break;
+			if (cacheGroups.length > 0) {
+				cacheGroupsProps.push(...cacheGroups);
 			}
-
-			let propValue;
-
-		 if (pathValue.name === "Infinity") {
-			propValue = Infinity;
-		} else {
-			propValue = pathValue.value;
-		}
-
-		 splitChunksProps.push(
-			createProperty(
-				j,
-				p.key.name,
-				propValue,
-			),
-		);
-		 break;
-		}
-	});
+		},
+	);
 
 	// Remove old plugin
-	const root: INode = findAndRemovePluginByName(j, ast, "webpack.optimize.CommonsChunkPlugin");
+	const root: INode = findAndRemovePluginByName(
+		j,
+		ast,
+		"webpack.optimize.CommonsChunkPlugin",
+	);
 
- const rootProps = [
-		...splitChunksProps,
-	];
+	const rootProps = [...splitChunksProps];
 
 	// create root props only if cache groups props are present: 5-input
- if (cacheGroupsProps.length > 0) {
+	if (cacheGroupsProps.length > 0) {
 		rootProps.push(
 			j.property(
 				"init",
-					createIdentifierOrLiteral(j, "cacheGroups"),
-					j.objectExpression([
-						...cacheGroupsProps,
-					]),
+				createIdentifierOrLiteral(j, "cacheGroups"),
+				j.objectExpression([...cacheGroupsProps]),
 			),
 		);
 	}
 
 	// Add new optimizations splitChunks option
- if (root) {
+	if (root) {
 		addOrUpdateConfigObject(
 			j,
 			root,
 			"optimizations",
 			"splitChunks",
-			j.objectExpression([
-				...rootProps,
-			]),
+			j.objectExpression([...rootProps]),
 		);
+
+		Object.keys(optimizationProps).forEach((key) => {
+			addOrUpdateConfigObject(
+				j,
+				root,
+				"optimizations",
+				key,
+				optimizationProps[key],
+			);
+		});
 	}
 
- return ast;
+	return ast;
 }
