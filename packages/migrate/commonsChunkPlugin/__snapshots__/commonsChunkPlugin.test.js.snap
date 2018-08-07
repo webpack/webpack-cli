@@ -8,15 +8,15 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-0" da
 
             cacheGroups: {
                 common: {
+                    name: 'common',
                     chunks: 'initial',
-                    enforce: true,
-                    name: 'common'
+                    enforce: true
                 },
 
                 vendor: {
+                    name: 'vendor',
                     chunks: 'initial',
                     enforce: true,
-                    name: 'vendor',
                     test: '/node_modules/'
                 }
             }
@@ -32,15 +32,15 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-1" da
         splitChunks: {
             cacheGroups: {
                 common: {
+                    name: 'common',
                     chunks: 'initial',
-                    enforce: true,
-                    name: 'common'
+                    enforce: true
                 },
 
                 vendor: {
+                    name: 'vendor',
                     chunks: 'initial',
                     enforce: true,
-                    name: 'vendor',
                     test: '/node_modules/'
                 }
             }
@@ -56,9 +56,9 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-2" da
         splitChunks: {
             cacheGroups: {
                 vendor: {
+                    name: 'vendor',
                     chunks: 'initial',
                     enforce: true,
-                    name: 'vendor',
                     test: '/node_modules/'
                 }
             }
@@ -74,9 +74,9 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-3" da
         splitChunks: {
             cacheGroups: {
                 commons: {
+                    name: 'commons',
                     chunks: 'initial',
-                    enforce: true,
-                    name: 'commons'
+                    enforce: true
                 }
             }
         }
@@ -95,8 +95,6 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-4" da
 
             cacheGroups: {
                 main: {
-                    chunks: 'initial',
-                    enforce: true,
                     name: 'main'
                 }
             }
@@ -112,9 +110,9 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-5" da
         splitChunks: {
             cacheGroups: {
                 main: {
+                    name: 'main',
                     chunks: 'initial',
-                    enforce: true,
-                    name: 'main'
+                    enforce: true
                 }
             }
         },
@@ -131,15 +129,15 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-6" da
         splitChunks: {
             cacheGroups: {
                 main: {
+                    name: 'main',
                     chunks: 'initial',
-                    enforce: true,
-                    name: 'main'
+                    enforce: true
                 },
 
                 name: {
+                    name: 'name',
                     chunks: 'initial',
                     enforce: true,
-                    name: 'name',
                     test: ({ resource }) => /node_modules/.test(resource),
 
                     test: ({ resource }) => {
@@ -178,15 +176,15 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-7" da
 
             cacheGroups: {
                 main: {
+                    name: 'main',
                     chunks: 'initial',
-                    enforce: true,
-                    name: 'main'
+                    enforce: true
                 },
 
                 vendor: {
+                    name: 'vendor',
                     chunks: 'initial',
                     enforce: true,
-                    name: 'vendor',
                     test: '/node_modules/'
                 }
             }

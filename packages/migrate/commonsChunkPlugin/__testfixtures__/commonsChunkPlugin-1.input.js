@@ -1,7 +1,7 @@
 module.export = {
-    plugins: [
-        new webpack.optimize.CommonsChunkPlugin({
-            names: ["common", "vendor"]
-        })
-    ]
+	plugins: [
+		new webpack.optimize.CommonsChunkPlugin({
+			names: ["common", "vendor"]
+		})
+	]
 }
