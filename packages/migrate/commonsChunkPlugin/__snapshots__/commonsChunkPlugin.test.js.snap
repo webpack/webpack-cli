@@ -131,12 +131,6 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-6" da
                 main: {
                     name: 'main',
                     chunks: 'initial',
-                    enforce: true
-                },
-
-                name: {
-                    name: 'name',
-                    chunks: 'initial',
                     enforce: true,
                     test: ({ resource }) => /node_modules/.test(resource),
 
@@ -253,20 +247,19 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-10" d
 "module.export = {
     optimizations: {
         splitChunks: {
-            cacheGroups: {
-                app: {
-                    name: 'app',
-                    chunks: 'initial',
-                    enforce: true
-                },
+            minChunks: Infinity,
 
-                runtime: {
-                    name: 'runtime',
+            cacheGroups: {
+                modules: {
+                    name: 'modules',
                     chunks: 'initial',
-                    enforce: true
+                    enforce: true,
+                    test: ({ resource }) => /node_modules/.test(resource)
                 }
             }
-        }
+        },
+
+        runtimeChunk: true
     }
 }
 "

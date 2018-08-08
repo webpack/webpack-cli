@@ -81,16 +81,23 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 							break;
 
 						case "name":
-							chunkKey = propKey;
-							if (!Array.isArray(cacheGroup[p.value.value])) {
-								cacheGroup[p.value.value] = [];
-							}
-							if (p.value.value === "vendor") {
-								cacheGroup[p.value.value].push(
-									createProperty(j, "test", "/node_modules/"),
+							const nameKey = p.value.value;
+							if (nameKey === "runtime") {
+								optimizationProps["runtimeChunk"] = createIdentifierOrLiteral( // tslint:disable-line
+									j,
+									true,
 								);
+							} else {
+								chunkKey = nameKey;
+								if (!Array.isArray(cacheGroup[nameKey])) {
+									cacheGroup[nameKey] = [];
+								}
+								if (nameKey === "vendor") {
+									cacheGroup[nameKey].push(
+										createProperty(j, "test", "/node_modules/"),
+									);
+								}
 							}
-
 						 break;
 
 						case "async":
@@ -107,6 +114,7 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 								pathValue.type === "ArrowFunctionExpression" ||
 								pathValue.type === "FunctionExpression"
 							) {
+
 								if (!Array.isArray(cacheGroup[chunkKey])) {
 									cacheGroup[chunkKey] = [];
 								}
