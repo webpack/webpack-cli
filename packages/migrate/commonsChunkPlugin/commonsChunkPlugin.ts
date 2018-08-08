@@ -37,14 +37,19 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 	}
 
 	// cache group options based on keys
-	const cacheGroup: object = {};
-	const cacheGroups: INode[] = [];
+	let cacheGroup: object = {};
+	let cacheGroups: INode[] = [];
 	let isAsyncChunk: boolean = false;
 
 	// iterate each CommonsChunkPlugin instance
 	CommonsChunkPlugin.forEach(
 		(path: INode): void => {
 			const CCPProps: INode[] = path.value.arguments[0].properties;
+
+			// reset chunks from old props
+			cacheGroup = {};
+			cacheGroups = [];
+			isAsyncChunk = false;
 
 			let chunkKey: string;
 

@@ -193,3 +193,81 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-7" da
 }
 "
 `;
+
+exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-8" data 1`] = `
+"module.export = {
+    optimizations: {
+        splitChunks: {
+            cacheGroups: {
+                main: {
+                    name: 'main',
+                    chunks: 'initial',
+                    enforce: true
+                },
+
+                vendor: {
+                    name: 'vendor',
+                    chunks: 'initial',
+                    enforce: true,
+                    test: '/node_modules/'
+                },
+
+                app: {
+                    name: 'app',
+                    chunks: 'initial',
+                    enforce: true
+                }
+            }
+        }
+    }
+}
+"
+`;
+
+exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-9" data 1`] = `
+"module.export = {
+    optimizations: {
+        splitChunks: {
+            cacheGroups: {
+                main: {
+                    name: 'main',
+                    chunks: 'initial',
+                    enforce: true
+                },
+
+                app: {
+                    name: 'app',
+                    chunks: 'initial',
+                    enforce: true
+                }
+            }
+        },
+
+        runtimeChunk: true
+    }
+}
+"
+`;
+
+exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-10" data 1`] = `
+"module.export = {
+    optimizations: {
+        splitChunks: {
+            cacheGroups: {
+                app: {
+                    name: 'app',
+                    chunks: 'initial',
+                    enforce: true
+                },
+
+                runtime: {
+                    name: 'runtime',
+                    chunks: 'initial',
+                    enforce: true
+                }
+            }
+        }
+    }
+}
+"
+`;
