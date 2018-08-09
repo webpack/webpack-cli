@@ -9,20 +9,20 @@ import {
 import { IJSCodeshift, INode } from "../types/NodePath";
 
 /**
-	*
-	* Transform for CommonsChunkPlugin. If found, removes the
-	* plugin and sets optimizations.namedModules to true
-	*
-	* @param {Object} j - jscodeshift top-level import
-	* @param {Node} ast - jscodeshift ast to transform
-	* @returns {Node} ast - jscodeshift ast
-	*/
+ *
+ * Transform for CommonsChunkPlugin. If found, removes the
+ * plugin and sets optimizations.namedModules to true
+ *
+ * @param {Object} j - jscodeshift top-level import
+ * @param {Node} ast - jscodeshift ast to transform
+ * @returns {Node} ast - jscodeshift ast
+ */
 export default function(j: IJSCodeshift, ast: INode): INode {
 	const splitChunksProps: INode[] = [];
 	const cacheGroupsProps: INode[] = [];
 	const optimizationProps: object = {};
 
-	const commonCacheGroupsProps: INode[] = [
+	let commonCacheGroupsProps: INode[] = [
 		createProperty(j, "chunks", "initial"),
 		createProperty(j, "enforce", true),
 	];
@@ -50,8 +50,13 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 			cacheGroup = {};
 			cacheGroups = [];
 			isAsyncChunk = false;
+			commonCacheGroupsProps = [
+				createProperty(j, "chunks", "initial"),
+				createProperty(j, "enforce", true),
+			];
 
 			let chunkKey: string;
+			let chunkCount: number = 0;
 
 			// iterate CCP props and map SCP props
 			CCPProps.forEach(
@@ -62,50 +67,55 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 						case "names":
 							p.value.elements.forEach((chunkName) => {
 								if (chunkName.value === "runtime") {
-									optimizationProps["runtimeChunk"] = createIdentifierOrLiteral( // tslint:disable-line
-										j,
-										true,
-									);
+									optimizationProps["runtimeChunk"] = j.objectExpression([ // tslint:disable-line
+										createProperty(j, "name", chunkName.value),
+									]);
 								} else {
+									chunkCount++;
 									if (!Array.isArray(cacheGroup[chunkName.value])) {
 										cacheGroup[chunkName.value] = [];
-									}
-
-									if (chunkName.value === "vendor") {
-										cacheGroup[chunkName.value].push(
-											createProperty(j, "test", "/node_modules/"),
-										);
 									}
 								}
 							});
 							break;
 
 						case "name":
+							chunkCount++;
 							const nameKey = p.value.value;
 							if (nameKey === "runtime") {
-								optimizationProps["runtimeChunk"] = createIdentifierOrLiteral( // tslint:disable-line
-									j,
-									true,
-								);
+								optimizationProps["runtimeChunk"] = j.objectExpression([ // tslint:disable-line
+									createProperty(j, "name", nameKey),
+								]);
 							} else {
 								chunkKey = nameKey;
+
 								if (!Array.isArray(cacheGroup[nameKey])) {
 									cacheGroup[nameKey] = [];
 								}
-								if (nameKey === "vendor") {
-									cacheGroup[nameKey].push(
-										createProperty(j, "test", "/node_modules/"),
-									);
-								}
 							}
-						 break;
+							break;
+
+						case "filename":
+							if (chunkKey) {
+								if (!Array.isArray(cacheGroup[chunkKey])) {
+									cacheGroup[chunkKey] = [];
+								}
+								cacheGroup[chunkKey].push(
+									createProperty(j, propKey, p.value.value),
+								);
+							}
+							break;
 
 						case "async":
 							splitChunksProps.push(createProperty(j, "chunks", "async"));
 							isAsyncChunk = true;
-						 break;
+							break;
 
 						case "minSize":
+							splitChunksProps.push(
+								j.property("init", createIdentifierOrLiteral(j, propKey), p.value),
+							);
+							break;
 						case "minChunks":
 							const { value: pathValue }: INode = p;
 
@@ -114,7 +124,6 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 								pathValue.type === "ArrowFunctionExpression" ||
 								pathValue.type === "FunctionExpression"
 							) {
-
 								if (!Array.isArray(cacheGroup[chunkKey])) {
 									cacheGroup[chunkKey] = [];
 								}
@@ -125,19 +134,8 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 										pathValue,
 									),
 								);
-								break;
 							}
-
-							let propValue: INode;
-
-							if (pathValue.name === "Infinity") {
-								propValue = Infinity;
-							} else {
-								propValue = pathValue.value;
-							}
-
-							splitChunksProps.push(createProperty(j, p.key.name, propValue));
-						 break;
+							break;
 					}
 				},
 			);
@@ -147,7 +145,20 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 					createProperty(j, "name", chunkName),
 				];
 
-				if (!isAsyncChunk) { chunkProps.push(...commonCacheGroupsProps); }
+				if (isAsyncChunk) {
+					chunkProps.push(j.property(
+						"init",
+						createIdentifierOrLiteral(j, "minChunks"),
+						createIdentifierOrLiteral(j, chunkCount),
+					));
+				} else {
+					chunkProps.push(...commonCacheGroupsProps,
+						j.property(
+						"init",
+						createIdentifierOrLiteral(j, "minChunks"),
+						createIdentifierOrLiteral(j, chunkCount),
+					));
+				}
 
 				if (
 					cacheGroup[chunkName] &&
@@ -181,7 +192,6 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 
 	const rootProps: INode[] = [...splitChunksProps];
 
-	// create root props only if cache groups props are present: 5-input
 	if (cacheGroupsProps.length > 0) {
 		rootProps.push(
 			j.property(

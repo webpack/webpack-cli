@@ -2,15 +2,6 @@ module.export = {
 	plugins: [
 		new webpack.optimize.CommonsChunkPlugin({
 			name: "main",
-			minChunks: ({ resource }) => /node_modules/.test(resource),
-			minChunks: ({ resource }) => {
-				var foo = "bar";
-				return /node_modules/.test(resource);
-			},
-			minChunks: function ({ resource }) {
-				var foo = "bar";
-				return /node_modules/.test(resource);
-			},
 			minChunks: function ({ resource }) {
 				var foo = "bar";
 				if (foo) {
