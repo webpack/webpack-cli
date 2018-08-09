@@ -2,21 +2,28 @@
 
 exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-0" data 1`] = `
 "module.export = {
+    entry: {
+		app: './src/app.js',
+		vendor: './src/vendors.js',
+	},
+
     optimizations: {
         splitChunks: {
             cacheGroups: {
-                common: {
-                    name: 'common',
+                app: {
+                    name: 'app',
                     chunks: 'initial',
                     enforce: true,
-                    minChunks: 2
+                    minChunks: 2,
+                    test: 'app'
                 },
 
                 vendor: {
                     name: 'vendor',
                     chunks: 'initial',
                     enforce: true,
-                    minChunks: 2
+                    minChunks: 2,
+                    test: 'vendor'
                 }
             }
         }
@@ -27,6 +34,10 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-0" da
 
 exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-1" data 1`] = `
 "module.export = {
+    entry: {
+		vendor: './src/vendors.js',
+	},
+
     optimizations: {
         splitChunks: {
             cacheGroups: {
@@ -41,7 +52,8 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-1" da
                     name: 'vendor',
                     chunks: 'initial',
                     enforce: true,
-                    minChunks: 2
+                    minChunks: 2,
+                    test: 'vendor'
                 }
             }
         }
@@ -52,6 +64,10 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-1" da
 
 exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-2" data 1`] = `
 "module.export = {
+    entry: {
+		vendor: './src/vendors.js',
+	},
+
     optimizations: {
         splitChunks: {
             cacheGroups: {
@@ -59,7 +75,8 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-2" da
                     name: 'vendor',
                     chunks: 'initial',
                     enforce: true,
-                    minChunks: 1
+                    minChunks: 1,
+                    test: 'vendor'
                 }
             }
         }
@@ -89,6 +106,10 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-3" da
 
 exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-4" data 1`] = `
 "module.export = {
+    entry: {
+		main: './src/index.js',
+	},
+
     optimizations: {
         splitChunks: {
             chunks: 'async',
@@ -97,7 +118,8 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-4" da
             cacheGroups: {
                 main: {
                     name: 'main',
-                    minChunks: 1
+                    minChunks: 1,
+                    test: 'main'
                 }
             }
         }
@@ -108,6 +130,10 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-4" da
 
 exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-5" data 1`] = `
 "module.export = {
+    entry: {
+		main: './src/index.js',
+	},
+
     optimizations: {
         splitChunks: {
             cacheGroups: {
@@ -115,7 +141,8 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-5" da
                     name: 'main',
                     chunks: 'initial',
                     enforce: true,
-                    minChunks: 1
+                    minChunks: 1,
+                    test: 'main'
                 }
             }
         },
@@ -130,6 +157,10 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-5" da
 
 exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-6a" data 1`] = `
 "module.export = {
+    entry: {
+		main: './src/index.js',
+	},
+
     optimizations: {
         splitChunks: {
             cacheGroups: {
@@ -138,6 +169,7 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-6a" d
                     chunks: 'initial',
                     enforce: true,
                     minChunks: 1,
+                    test: 'main',
                     test: ({ resource }) => /node_modules/.test(resource)
                 }
             }
@@ -149,6 +181,10 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-6a" d
 
 exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-6b" data 1`] = `
 "module.export = {
+    entry: {
+		main: './src/index.js',
+	},
+
     optimizations: {
         splitChunks: {
             cacheGroups: {
@@ -157,6 +193,7 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-6b" d
                     chunks: 'initial',
                     enforce: true,
                     minChunks: 1,
+                    test: 'main',
 
                     test: ({ resource }) => {
                         var foo = \\"bar\\";
@@ -172,6 +209,10 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-6b" d
 
 exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-6c" data 1`] = `
 "module.export = {
+    entry: {
+		main: './src/index.js',
+	},
+
     optimizations: {
         splitChunks: {
             cacheGroups: {
@@ -180,6 +221,7 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-6c" d
                     chunks: 'initial',
                     enforce: true,
                     minChunks: 1,
+                    test: 'main',
 
                     test: function ({ resource }) {
                         var foo = \\"bar\\";
@@ -195,6 +237,10 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-6c" d
 
 exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-6d" data 1`] = `
 "module.export = {
+    entry: {
+		main: './src/index.js',
+	},
+
     optimizations: {
         splitChunks: {
             cacheGroups: {
@@ -203,6 +249,7 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-6d" d
                     chunks: 'initial',
                     enforce: true,
                     minChunks: 1,
+                    test: 'main',
 
                     test: function ({ resource }) {
                         var foo = \\"bar\\";
@@ -224,31 +271,10 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-6d" d
 
 exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-7" data 1`] = `
 "module.export = {
-    optimizations: {
-        splitChunks: {
-            cacheGroups: {
-                main: {
-                    name: 'main',
-                    chunks: 'initial',
-                    enforce: true,
-                    minChunks: 2
-                },
+    entry: {
+		main: './src/index.js',
+	},
 
-                vendor: {
-                    name: 'vendor',
-                    chunks: 'initial',
-                    enforce: true,
-                    minChunks: 2
-                }
-            }
-        }
-    }
-}
-"
-`;
-
-exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-11" data 1`] = `
-"module.export = {
     optimizations: {
         splitChunks: {
             minSize: 3000,
@@ -258,7 +284,8 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-11" d
                     name: 'main',
                     chunks: 'initial',
                     enforce: true,
-                    minChunks: 1
+                    minChunks: 1,
+                    test: 'main'
                 }
             }
         }

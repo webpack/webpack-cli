@@ -1,8 +1,12 @@
 module.export = {
+	entry: {
+		main: './src/index.js',
+	},
+
 	plugins: [
 		new webpack.optimize.CommonsChunkPlugin({
-			names: ["main", "vendor"],
-			minChunks: Infinity,
-		})
+			name: "main",
+			minSize: 3000,
+		}),
 	]
 }

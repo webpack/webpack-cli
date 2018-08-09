@@ -13,7 +13,3 @@ defineTest(__dirname, "commonsChunkPlugin", "commonsChunkPlugin-6b");
 defineTest(__dirname, "commonsChunkPlugin", "commonsChunkPlugin-6c");
 defineTest(__dirname, "commonsChunkPlugin", "commonsChunkPlugin-6d");
 defineTest(__dirname, "commonsChunkPlugin", "commonsChunkPlugin-7");
-// defineTest(__dirname, "commonsChunkPlugin", "commonsChunkPlugin-8");
-// defineTest(__dirname, "commonsChunkPlugin", "commonsChunkPlugin-9");
-// defineTest(__dirname, "commonsChunkPlugin", "commonsChunkPlugin-10");
-defineTest(__dirname, "commonsChunkPlugin", "commonsChunkPlugin-11");

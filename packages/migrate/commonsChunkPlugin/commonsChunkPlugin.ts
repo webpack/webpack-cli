@@ -4,6 +4,7 @@ import {
 	createProperty,
 	findAndRemovePluginByName,
 	findPluginsByName,
+	findRootNodesByName,
 } from "@webpack-cli/utils/ast-utils";
 
 import { IJSCodeshift, INode } from "../types/NodePath";
@@ -65,23 +66,36 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 
 					switch (propKey) {
 						case "names":
-							p.value.elements.forEach((chunkName) => {
-								if (chunkName.value === "runtime") {
+							p.value.elements.forEach(({ value: chunkValue }) => {
+								if (chunkValue === "runtime") {
 									optimizationProps["runtimeChunk"] = j.objectExpression([ // tslint:disable-line
-										createProperty(j, "name", chunkName.value),
+										createProperty(j, "name", chunkValue),
 									]);
 								} else {
 									chunkCount++;
-									if (!Array.isArray(cacheGroup[chunkName.value])) {
-										cacheGroup[chunkName.value] = [];
+
+									if (!Array.isArray(cacheGroup[chunkValue])) {
+										cacheGroup[chunkValue] = [];
 									}
+
+									findRootNodesByName(j, ast, "entry").forEach(
+										({ value: { value: { properties: entries }} },
+									) => {
+										entries.forEach(({ key: { name: entryName }}) =>
+											entryName === chunkValue ? cacheGroup[chunkValue].push(
+													createProperty(j, "test", entryName),
+											) : null,
+										);
+									});
 								}
 							});
 							break;
 
 						case "name":
 							chunkCount++;
+
 							const nameKey = p.value.value;
+
 							if (nameKey === "runtime") {
 								optimizationProps["runtimeChunk"] = j.objectExpression([ // tslint:disable-line
 									createProperty(j, "name", nameKey),
@@ -92,6 +106,16 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 								if (!Array.isArray(cacheGroup[nameKey])) {
 									cacheGroup[nameKey] = [];
 								}
+
+								findRootNodesByName(j, ast, "entry").forEach(
+									({ value: { value: { properties: entries }} },
+								) => {
+									entries.forEach(({ key: { name: entryName }}) =>
+										entryName === nameKey ? cacheGroup[nameKey].push(
+												createProperty(j, "test", entryName),
+										) : null,
+									);
+								});
 							}
 							break;
 
@@ -116,7 +140,8 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 								j.property("init", createIdentifierOrLiteral(j, propKey), p.value),
 							);
 							break;
-						case "minChunks":
+
+						case "minChunks" :
 							const { value: pathValue }: INode = p;
 
 							// minChunk is a function
