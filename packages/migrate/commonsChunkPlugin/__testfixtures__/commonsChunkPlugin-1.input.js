@@ -1,4 +1,4 @@
-module.export = {
+module.exports = {
 	entry: {
 		vendor: './src/vendors.js',
 	},

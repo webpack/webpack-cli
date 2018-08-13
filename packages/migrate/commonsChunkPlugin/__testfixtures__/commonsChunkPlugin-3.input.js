@@ -1,4 +1,4 @@
-module.export = {
+module.exports = {
 	plugins: [
 		new webpack.optimize.CommonsChunkPlugin({
 			name: "commons",

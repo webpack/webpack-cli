@@ -66,7 +66,7 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 
 					switch (propKey) {
 						case "names":
-							p.value.elements.forEach(({ value: chunkValue }) => {
+							p.value.elements.forEach(({ value: chunkValue }): void => {
 								if (chunkValue === "runtime") {
 									optimizationProps["runtimeChunk"] = j.objectExpression([ // tslint:disable-line
 										createProperty(j, "name", chunkValue),
@@ -80,8 +80,8 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 
 									findRootNodesByName(j, ast, "entry").forEach(
 										({ value: { value: { properties: entries }} },
-									) => {
-										entries.forEach(({ key: { name: entryName }}) =>
+									): void => {
+										entries.forEach(({ key: { name: entryName }}): void =>
 											entryName === chunkValue ? cacheGroup[chunkValue].push(
 													createProperty(j, "test", entryName),
 											) : null,
@@ -109,8 +109,8 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 
 								findRootNodesByName(j, ast, "entry").forEach(
 									({ value: { value: { properties: entries }} },
-								) => {
-									entries.forEach(({ key: { name: entryName }}) =>
+								): void => {
+									entries.forEach(({ key: { name: entryName }}): void =>
 										entryName === nameKey ? cacheGroup[nameKey].push(
 												createProperty(j, "test", entryName),
 										) : null,
@@ -165,7 +165,7 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 				},
 			);
 
-			Object.keys(cacheGroup).forEach((chunkName) => {
+			Object.keys(cacheGroup).forEach((chunkName: string): void => {
 				const chunkProps: INode[] = [
 					createProperty(j, "name", chunkName),
 				];
@@ -237,7 +237,7 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 			j.objectExpression([...rootProps]),
 		);
 
-		Object.keys(optimizationProps).forEach((key) => {
+		Object.keys(optimizationProps).forEach((key: string): void => {
 			addOrUpdateConfigObject(
 				j,
 				root,

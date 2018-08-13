@@ -1,4 +1,4 @@
-module.export = {
+module.exports = {
 	entry: {
 		app: './src/app.js',
 		vendor: './src/vendors.js',
