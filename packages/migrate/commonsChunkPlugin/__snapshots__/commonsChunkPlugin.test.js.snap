@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-0" data 1`] = `
-"module.export = {
+"module.exports = {
     entry: {
 		app: './src/app.js',
 		vendor: './src/vendors.js',
@@ -33,7 +33,7 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-0" da
 `;
 
 exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-1" data 1`] = `
-"module.export = {
+"module.exports = {
     entry: {
 		vendor: './src/vendors.js',
 	},
@@ -63,7 +63,7 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-1" da
 `;
 
 exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-2" data 1`] = `
-"module.export = {
+"module.exports = {
     entry: {
 		vendor: './src/vendors.js',
 	},
@@ -86,7 +86,7 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-2" da
 `;
 
 exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-3" data 1`] = `
-"module.export = {
+"module.exports = {
     optimizations: {
         splitChunks: {
             cacheGroups: {
@@ -105,7 +105,7 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-3" da
 `;
 
 exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-4" data 1`] = `
-"module.export = {
+"module.exports = {
     entry: {
 		main: './src/index.js',
 	},
@@ -129,7 +129,7 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-4" da
 `;
 
 exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-5" data 1`] = `
-"module.export = {
+"module.exports = {
     entry: {
 		main: './src/index.js',
 	},
@@ -156,7 +156,7 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-5" da
 `;
 
 exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-6a" data 1`] = `
-"module.export = {
+"module.exports = {
     entry: {
 		main: './src/index.js',
 	},
@@ -180,7 +180,7 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-6a" d
 `;
 
 exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-6b" data 1`] = `
-"module.export = {
+"module.exports = {
     entry: {
 		main: './src/index.js',
 	},
@@ -208,7 +208,7 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-6b" d
 `;
 
 exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-6c" data 1`] = `
-"module.export = {
+"module.exports = {
     entry: {
 		main: './src/index.js',
 	},
@@ -236,7 +236,7 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-6c" d
 `;
 
 exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-6d" data 1`] = `
-"module.export = {
+"module.exports = {
     entry: {
 		main: './src/index.js',
 	},
@@ -270,7 +270,7 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-6d" d
 `;
 
 exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-7" data 1`] = `
-"module.export = {
+"module.exports = {
     entry: {
 		main: './src/index.js',
 	},
