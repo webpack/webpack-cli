@@ -45,14 +45,14 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-1" da
                     name: 'common',
                     chunks: 'initial',
                     enforce: true,
-                    minChunks: 2
+                    minChunks: 1
                 },
 
                 vendor: {
                     name: 'vendor',
                     chunks: 'initial',
                     enforce: true,
-                    minChunks: 2,
+                    minChunks: 1,
                     test: 'vendor'
                 }
             }
@@ -94,7 +94,6 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-3" da
                     name: 'commons',
                     chunks: 'initial',
                     enforce: true,
-                    minChunks: 1,
                     filename: 'commons.js'
                 }
             }
@@ -113,9 +112,10 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-4" da
     optimizations: {
         splitChunks: {
             chunks: 'async',
-            minSize: 2000,
 
             cacheGroups: {
+                minSize: 2000,
+
                 main: {
                     name: 'main',
                     minChunks: 1,
@@ -169,8 +169,14 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-6a" d
                     chunks: 'initial',
                     enforce: true,
                     minChunks: 1,
-                    test: 'main',
-                    test: ({ resource }) => /node_modules/.test(resource)
+
+                    test: module => {
+                        if (module.getChunks().some(chunk => chunk.name === 'main'))
+                            return true;
+
+                        const fn = ({ resource }) => /node_modules/.test(resource);
+                        return fn(module);
+                    }
                 }
             }
         }
@@ -193,11 +199,17 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-6b" d
                     chunks: 'initial',
                     enforce: true,
                     minChunks: 1,
-                    test: 'main',
 
-                    test: ({ resource }) => {
-                        var foo = \\"bar\\";
-                        return /node_modules/.test(resource);
+                    test: module => {
+                        if (module.getChunks().some(chunk => chunk.name === 'main'))
+                            return true;
+
+                        const fn = ({ resource }) => {
+                            // some code
+                            return /node_modules/.test(resource);
+                        };
+
+                        return fn(module);
                     }
                 }
             }
@@ -221,11 +233,17 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-6c" d
                     chunks: 'initial',
                     enforce: true,
                     minChunks: 1,
-                    test: 'main',
 
-                    test: function ({ resource }) {
-                        var foo = \\"bar\\";
-                        return /node_modules/.test(resource);
+                    test: module => {
+                        if (module.getChunks().some(chunk => chunk.name === 'main'))
+                            return true;
+
+                        const fn = function ({ resource }) {
+                            // some code
+                            return /node_modules/.test(resource);
+                        };
+
+                        return fn(module);
                     }
                 }
             }
@@ -249,17 +267,20 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-6d" d
                     chunks: 'initial',
                     enforce: true,
                     minChunks: 1,
-                    test: 'main',
 
-                    test: function ({ resource }) {
-                        var foo = \\"bar\\";
-                        if (foo) {
-                            return /node_modulesfoo/.test(resource);
-                        } else if (foo === \\"something\\") {
-                            return /node_modulesbar/.test(resource);
-                        } else {
-                            return /node_modulesbaz/.test(resource);
-                        }
+                    test: module => {
+                        if (module.getChunks().some(chunk => chunk.name === 'main'))
+                            return true;
+
+                        const fn = function ({ resource }) {
+                            if (foo) {
+                                return /node_modulesfoo/.test(resource);
+                            } else {
+                                return /node_modulesbaz/.test(resource);
+                            }
+                        };
+
+                        return fn(module);
                     }
                 }
             }
@@ -277,9 +298,9 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-7" da
 
     optimizations: {
         splitChunks: {
-            minSize: 3000,
-
             cacheGroups: {
+                minSize: 3000,
+
                 main: {
                     name: 'main',
                     chunks: 'initial',

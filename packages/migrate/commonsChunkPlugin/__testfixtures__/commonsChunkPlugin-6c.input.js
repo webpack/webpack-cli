@@ -7,7 +7,7 @@ module.exports = {
 		new webpack.optimize.CommonsChunkPlugin({
 			name: "main",
 			minChunks: function ({ resource }) {
-				var foo = "bar";
+				// some code
 				return /node_modules/.test(resource);
 			},
 		})

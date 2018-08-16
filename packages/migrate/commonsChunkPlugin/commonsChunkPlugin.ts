@@ -72,8 +72,6 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 										createProperty(j, "name", chunkValue),
 									]);
 								} else {
-									chunkCount++;
-
 									if (!Array.isArray(cacheGroup[chunkValue])) {
 										cacheGroup[chunkValue] = [];
 									}
@@ -81,19 +79,20 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 									findRootNodesByName(j, ast, "entry").forEach(
 										({ value: { value: { properties: entries }} },
 									): void => {
-										entries.forEach(({ key: { name: entryName }}): void =>
-											entryName === chunkValue ? cacheGroup[chunkValue].push(
+										chunkCount = entries.length;
+										entries.forEach(({ key: { name: entryName }}): void => {
+											if (entryName === chunkValue) {
+												cacheGroup[chunkValue].push(
 													createProperty(j, "test", entryName),
-											) : null,
-										);
+												);
+											}
+										});
 									});
 								}
 							});
 							break;
 
 						case "name":
-							chunkCount++;
-
 							const nameKey = p.value.value;
 
 							if (nameKey === "runtime") {
@@ -110,11 +109,14 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 								findRootNodesByName(j, ast, "entry").forEach(
 									({ value: { value: { properties: entries }} },
 								): void => {
-									entries.forEach(({ key: { name: entryName }}): void =>
-										entryName === nameKey ? cacheGroup[nameKey].push(
+									chunkCount = entries.length;
+									entries.forEach(({ key: { name: entryName }}): void => {
+										if (entryName === nameKey) {
+											cacheGroup[nameKey].push(
 												createProperty(j, "test", entryName),
-										) : null,
-									);
+											);
+										}
+									});
 								});
 							}
 							break;
@@ -136,7 +138,7 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 							break;
 
 						case "minSize":
-							splitChunksProps.push(
+							cacheGroupsProps.push(
 								j.property("init", createIdentifierOrLiteral(j, propKey), p.value),
 							);
 							break;
@@ -152,13 +154,9 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 								if (!Array.isArray(cacheGroup[chunkKey])) {
 									cacheGroup[chunkKey] = [];
 								}
-								cacheGroup[chunkKey].push(
-									j.property(
-										"init",
-										createIdentifierOrLiteral(j, "test"),
-										pathValue,
-									),
-								);
+
+								cacheGroup[chunkKey] = cacheGroup[chunkKey].map((prop) =>
+									prop.key.name === "test" ? mergeTestPropArrowFunction(j, chunkKey, pathValue) : prop);
 							}
 							break;
 					}
@@ -170,19 +168,20 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 					createProperty(j, "name", chunkName),
 				];
 
-				if (isAsyncChunk) {
-					chunkProps.push(j.property(
-						"init",
-						createIdentifierOrLiteral(j, "minChunks"),
-						createIdentifierOrLiteral(j, chunkCount),
-					));
-				} else {
-					chunkProps.push(...commonCacheGroupsProps,
+				const chunkPropsToAdd = [];
+
+				if (!isAsyncChunk) {
+					chunkProps.push(...commonCacheGroupsProps);
+				}
+
+				if (chunkCount > 0) {
+					chunkProps.push(
 						j.property(
-						"init",
-						createIdentifierOrLiteral(j, "minChunks"),
-						createIdentifierOrLiteral(j, chunkCount),
-					));
+							"init",
+							createIdentifierOrLiteral(j, "minChunks"),
+							createIdentifierOrLiteral(j, chunkCount),
+						),
+					);
 				}
 
 				if (
@@ -250,3 +249,58 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 
 	return ast;
 }
+
+// merge test entry prop and function expression. case 6[x]
+const mergeTestPropArrowFunction = (j, chunkKey, testFunc) => {
+	return j.property(
+		"init",
+		createIdentifierOrLiteral(j, "test"),
+		j.arrowFunctionExpression(
+			[j.identifier("module")],
+			j.blockStatement([
+				j.ifStatement(
+					j.callExpression(
+						j.memberExpression(
+							j.callExpression(
+								j.memberExpression(
+									j.identifier("module"),
+									j.identifier("getChunks"),
+								),
+								[],
+							),
+							j.identifier("some"),
+							false,
+						),
+						[j.arrowFunctionExpression(
+							[j.identifier("chunk")],
+							j.binaryExpression(
+								"===",
+								j.memberExpression(
+									j.identifier("chunk"),
+									j.identifier("name"),
+								),
+								j.literal(chunkKey),
+							),
+						)],
+					),
+					j.returnStatement(
+						j.literal(true),
+					),
+				),
+				j.variableDeclaration(
+					"const",
+					[j.variableDeclarator(
+						j.identifier("fn"),
+						testFunc,
+					)],
+				),
+				j.returnStatement(
+					j.callExpression(
+						j.identifier("fn"),
+						[j.identifier("module")],
+					),
+				),
+			]),
+		),
+	);
+};
