@@ -138,7 +138,7 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 							break;
 
 						case "minSize":
-							cacheGroupsProps.push(
+							splitChunksProps.push(
 								j.property("init", createIdentifierOrLiteral(j, propKey), p.value),
 							);
 							break;

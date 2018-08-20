@@ -112,10 +112,9 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-4" da
     optimizations: {
         splitChunks: {
             chunks: 'async',
+            minSize: 2000,
 
             cacheGroups: {
-                minSize: 2000,
-
                 main: {
                     name: 'main',
                     minChunks: 1,
@@ -298,9 +297,9 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-7" da
 
     optimizations: {
         splitChunks: {
-            cacheGroups: {
-                minSize: 3000,
+            minSize: 3000,
 
+            cacheGroups: {
                 main: {
                     name: 'main',
                     chunks: 'initial',
