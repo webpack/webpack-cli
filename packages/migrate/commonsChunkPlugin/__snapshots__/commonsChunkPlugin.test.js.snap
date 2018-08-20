@@ -14,7 +14,6 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-0" da
                     name: 'app',
                     chunks: 'initial',
                     enforce: true,
-                    minChunks: 2,
                     test: 'app'
                 },
 
@@ -22,7 +21,6 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-0" da
                     name: 'vendor',
                     chunks: 'initial',
                     enforce: true,
-                    minChunks: 2,
                     test: 'vendor'
                 }
             }
@@ -44,15 +42,13 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-1" da
                 common: {
                     name: 'common',
                     chunks: 'initial',
-                    enforce: true,
-                    minChunks: 1
+                    enforce: true
                 },
 
                 vendor: {
                     name: 'vendor',
                     chunks: 'initial',
                     enforce: true,
-                    minChunks: 1,
                     test: 'vendor'
                 }
             }
@@ -75,7 +71,6 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-2" da
                     name: 'vendor',
                     chunks: 'initial',
                     enforce: true,
-                    minChunks: 1,
                     test: 'vendor'
                 }
             }
@@ -117,7 +112,6 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-4" da
             cacheGroups: {
                 main: {
                     name: 'main',
-                    minChunks: 1,
                     test: 'main'
                 }
             }
@@ -140,7 +134,6 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-5" da
                     name: 'main',
                     chunks: 'initial',
                     enforce: true,
-                    minChunks: 1,
                     test: 'main'
                 }
             }
@@ -167,7 +160,6 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-6a" d
                     name: 'main',
                     chunks: 'initial',
                     enforce: true,
-                    minChunks: 1,
 
                     test: module => {
                         if (module.getChunks().some(chunk => chunk.name === 'main'))
@@ -197,7 +189,6 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-6b" d
                     name: 'main',
                     chunks: 'initial',
                     enforce: true,
-                    minChunks: 1,
 
                     test: module => {
                         if (module.getChunks().some(chunk => chunk.name === 'main'))
@@ -231,7 +222,6 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-6c" d
                     name: 'main',
                     chunks: 'initial',
                     enforce: true,
-                    minChunks: 1,
 
                     test: module => {
                         if (module.getChunks().some(chunk => chunk.name === 'main'))
@@ -265,7 +255,6 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-6d" d
                     name: 'main',
                     chunks: 'initial',
                     enforce: true,
-                    minChunks: 1,
 
                     test: module => {
                         if (module.getChunks().some(chunk => chunk.name === 'main'))
@@ -304,7 +293,6 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-7" da
                     name: 'main',
                     chunks: 'initial',
                     enforce: true,
-                    minChunks: 1,
                     test: 'main'
                 }
             }

@@ -164,17 +164,17 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 			);
 
 			Object.keys(cacheGroup).forEach((chunkName: string): void => {
-				const chunkProps: INode[] = [
+				let chunkProps: INode[] = [
 					createProperty(j, "name", chunkName),
 				];
 
-				const chunkPropsToAdd = [];
+				const chunkPropsToAdd = cacheGroup[chunkName];
 
 				if (!isAsyncChunk) {
 					chunkProps.push(...commonCacheGroupsProps);
 				}
 
-				if (chunkCount > 0) {
+				if (chunkCount > 1) {
 					chunkProps.push(
 						j.property(
 							"init",
@@ -184,12 +184,18 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 					);
 				}
 
+				const chunkPropsKeys = chunkPropsToAdd.some((prop) => prop.key.name === "test" && prop.value.type === "Literal");
+
+				if (chunkPropsKeys) {
+					chunkProps = chunkProps.filter((prop) => prop.key.name !== "minChunks");
+				}
+
 				if (
-					cacheGroup[chunkName] &&
-					Array.isArray(cacheGroup[chunkName]) &&
-					cacheGroup[chunkName].length > 0
+					chunkPropsToAdd &&
+					Array.isArray(chunkPropsToAdd) &&
+					chunkPropsToAdd.length > 0
 				) {
-					chunkProps.push(...cacheGroup[chunkName]);
+					chunkProps.push(...chunkPropsToAdd);
 				}
 
 				cacheGroups.push(
