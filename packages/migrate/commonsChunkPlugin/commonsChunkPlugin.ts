@@ -40,7 +40,6 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 	// cache group options based on keys
 	let cacheGroup: object = {};
 	let cacheGroups: INode[] = [];
-	let isAsyncChunk: boolean = false;
 
 	// iterate each CommonsChunkPlugin instance
 	CommonsChunkPlugin.forEach(
@@ -50,7 +49,7 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 			// reset chunks from old props
 			cacheGroup = {};
 			cacheGroups = [];
-			isAsyncChunk = false;
+
 			commonCacheGroupsProps = [
 				createProperty(j, "chunks", "initial"),
 				createProperty(j, "enforce", true),
@@ -133,12 +132,19 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 							break;
 
 						case "async":
-							splitChunksProps.push(createProperty(j, "chunks", "async"));
-							isAsyncChunk = true;
+							if (!Array.isArray(cacheGroup[chunkKey])) {
+								cacheGroup[chunkKey] = [];
+							}
+							cacheGroup[chunkKey].push(
+								createProperty(j, "chunks", "async"),
+							);
 							break;
 
 						case "minSize":
-							splitChunksProps.push(
+							if (!Array.isArray(cacheGroup[chunkKey])) {
+								cacheGroup[chunkKey] = [];
+							}
+							cacheGroup[chunkKey].push(
 								j.property("init", createIdentifierOrLiteral(j, propKey), p.value),
 							);
 							break;
@@ -169,10 +175,12 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 				];
 
 				const chunkPropsToAdd = cacheGroup[chunkName];
+				const chunkPropsKeys = chunkPropsToAdd.map((prop) => prop.key.name);
 
-				if (!isAsyncChunk) {
-					chunkProps.push(...commonCacheGroupsProps);
-				}
+				commonCacheGroupsProps =
+					commonCacheGroupsProps.filter((commonProp) => !chunkPropsKeys.includes(commonProp.key.name));
+
+				chunkProps.push(...commonCacheGroupsProps);
 
 				if (chunkCount > 1) {
 					chunkProps.push(
@@ -184,9 +192,10 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 					);
 				}
 
-				const chunkPropsKeys = chunkPropsToAdd.some((prop) => prop.key.name === "test" && prop.value.type === "Literal");
+				const chunkPropsContainTest =
+					chunkPropsToAdd.some((prop) => prop.key.name === "test" && prop.value.type === "Literal");
 
-				if (chunkPropsKeys) {
+				if (chunkPropsContainTest) {
 					chunkProps = chunkProps.filter((prop) => prop.key.name !== "minChunks");
 				}
 

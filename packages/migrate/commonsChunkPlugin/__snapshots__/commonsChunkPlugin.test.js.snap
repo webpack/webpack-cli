@@ -106,13 +106,13 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-4" da
 
     optimizations: {
         splitChunks: {
-            chunks: 'async',
-            minSize: 2000,
-
             cacheGroups: {
                 main: {
                     name: 'main',
-                    test: 'main'
+                    enforce: true,
+                    test: 'main',
+                    chunks: 'async',
+                    minSize: 2000
                 }
             }
         }
@@ -286,14 +286,13 @@ exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-7" da
 
     optimizations: {
         splitChunks: {
-            minSize: 3000,
-
             cacheGroups: {
                 main: {
                     name: 'main',
                     chunks: 'initial',
                     enforce: true,
-                    test: 'main'
+                    test: 'main',
+                    minSize: 3000
                 }
             }
         }
