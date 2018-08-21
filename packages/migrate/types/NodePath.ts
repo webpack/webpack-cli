@@ -71,6 +71,12 @@ export interface IJSCodeshift extends Object {
 	property?: (type: string, key: INode, value: INode) => INode;
 	program?: (nodes: INode[]) => INode;
 	booleanLiteral?: (bool: boolean) => INode;
+	arrowFunctionExpression?: (params: INode[], body: INode, exp: INode) => INode;
+	blockStatement?: (body: INode[]) => INode;
+	ifStatement?: (test: INode, consequent: INode, alternate?: INode) => INode;
+	returnStatement?: (arg: INode) => INode;
+	binaryExpression?: (operator: string, left: INode, right: INode) => INode;
+
 	Property?: IExpressionObject;
 	NewExpression?: IExpressionObject;
 	CallExpression?: IExpressionObject;
@@ -83,6 +89,7 @@ export interface IJSCodeshift extends Object {
 	ObjectExpression?: IExpressionObject;
 	BlockStatement?: IExpressionObject;
 	Program?: IExpressionObject;
+	ArrowFunctionExpression?: IExpressionObject;
 	filters?: {
 		VariableDeclarator: {
 			requiresModule: Function,
