@@ -102,7 +102,8 @@
     "loader-utils": "^1.1.0",
     "supports-color": "^5.4.0",
     "update-notifier": "^2.5.0",
-    "v8-compile-cache": "^2.0.0"
+    "v8-compile-cache": "^2.0.0",
+    "webpack-log": "^1.2.0"
   },
   "peerDependencies": {
     "webpack": "^4.x.x"
