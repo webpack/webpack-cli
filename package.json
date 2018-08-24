@@ -113,7 +113,6 @@
     "@commitlint/config-angular": "^7.0.0",
     "@commitlint/config-lerna-scopes": "^7.0.0",
     "@commitlint/prompt-cli": "^7.0.0",
-    "@commitlint/travis-cli": "^7.0.0",
     "@types/jest": "^23.1.1",
     "@types/node": "^10.5.1",
     "bundlesize": "^0.17.0",
