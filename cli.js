@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-'use strict';
+"use strict";
 
 require("v8-compile-cache");
 
@@ -8,30 +8,35 @@ const importLocal = require("import-local");
 
 // Prefer the local installation of webpack-cli
 if (importLocal(__filename)) {
-    return;
+	return;
 }
 process.title = "webpack";
 
-const logger = require('webpack-log');
-process.cliLogger = logger({name: 'cli'});
+const logger = require("webpack-log");
+process.cliLogger = logger({ name: "cli" });
 
-const updateNotifier = require('update-notifier');
-const packageJson = require('./package.json');
+const updateNotifier = require("update-notifier");
+const packageJson = require("./package.json");
 
-updateNotifier({pkg: packageJson}).notify();
+updateNotifier({ pkg: packageJson }).notify();
 
-const semver = require('semver');
+const semver = require("semver");
 
 const version = packageJson.engines.node;
 
 if (!semver.satisfies(process.version, version)) {
-  const rawVersion = version.replace(/[^\d\.]*/, '');
-  process.cliLogger.error(
-      'webpack CLI requires at least Node v' + rawVersion + '. ' +
-      'You have ' + process.version + '.\n' +
-      'See https://webpack.js.org/ ' +
-      'for migration help and similar.');
-  process.exit(1);
+	const rawVersion = version.replace(/[^\d\.]*/, "");
+	process.cliLogger.error(
+		"webpack CLI requires at least Node v" +
+			rawVersion +
+			". " +
+			"You have " +
+			process.version +
+			".\n" +
+			"See https://webpack.js.org/ " +
+			"for migration help and similar."
+	);
+	process.exit(1);
 }
 
-require('./lib/run');
+require("./lib/run");
