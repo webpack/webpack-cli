@@ -36,7 +36,7 @@
     "format": "prettier-eslint ./lib/**/*.js ./cli.js ./lib/*.js ./test/**/*.js ./packages/**/*.js --write",
     "jsdoc": "jsdoc -c jsdoc.json -r -d docs",
     "lint:codeOnly": "eslint \"{lib}/**/!(__testfixtures__)/*.js\" \"{lib}/**.js\"",
-    "lint": "eslint \"./lib/*.js\" \"./cli.js\" \"./test/**/*.js\" \"{packages}/**/!(node_modules)/*.test.js\" && npm run tslint",
+    "lint": "eslint \"./lib/**/*.js\" \"./cli.js\" \"./lib/*.js\" \"./test/**/*.js\" \"{packages}/**/!(node_modules)/*.test.js\" && npm run tslint",
     "precommit": "lint-staged",
     "reportCoverage": "nyc report --reporter=json && codecov -f coverage/coverage-final.json --disable=gcov",
     "test": "nyc jest --maxWorkers=4 --reporters=default --reporters=jest-junit",
