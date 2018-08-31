@@ -97,7 +97,7 @@
     "cross-spawn": "^6.0.5",
     "enhanced-resolve": "^4.0.0",
     "global-modules-path": "^2.1.0",
-    "import-local": "^1.0.0",
+    "import-local": "^2.0.0",
     "interpret": "^1.1.0",
     "loader-utils": "^1.1.0",
     "supports-color": "^5.4.0",
