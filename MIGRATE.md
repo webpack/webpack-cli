@@ -1,15 +1,33 @@
-## webpack-migrate
+# webpack-cli migrate
 
-The `migrate` feature eases the transition from [version 1](http://webpack.github.io/docs/) to [version 2](https://gist.github.com/sokra/27b24881210b56bbaff7). `migrate`
-also allows users to switch to the new version of webpack without having to extensively [refactor](https://webpack.js.org/guides/migrating/).
+The `webpack-cli migrate` feature eases the transition from:
+- `version 1` to `version 2`
+- `version 2` to `version 4`
 
-### Usage
-To use `migrate`, run the following command, with the value of `<config>` being a path to an existing webpack configuration file
+`webpack-cli migrate` also allows users to switch to the new version of webpack without having to do it extensively.
 
-```bash
-webpack-cli migrate <config>
+## Installation
+> Requires installation of `webpack` and `webpack-cli`
+### A. Local Setup
+```shell
+$ npm install --save-dev @webpack-cli/migrate
+```
+### B. Global Setup
+```shell
+$ npm install -g @webpack-cli/migrate
 ```
 
+## Usage
+To use `webpack-cli migrate`, run the following command, with the value of `<config>` being a path to an existing webpack configuration file. `<config>` can be `webpack.config.js` , `webpack.prod.js` or any webpack configuration.
+### A. Local Setup
+```bash
+$ npx webpack-cli migrate <config>
+```
+### B. Global Setup
+```bash
+$ webpack-cli migrate <config>
+```
+### Usage Example
 Given a basic configuration file like so:
 
 ```javascript
@@ -150,12 +168,15 @@ module.exports = {
 
 };
 ```
-
-In summary, we can see the follow changes were made
+## Changes reflected after migration
+We can see the following changes after migration:
 1.  The webpack schema for using loaders has changed
     - `loaders` is now `module.rules`
     -  `query` is now `options`
-1.  All loaders now have to have the *loader* suffix, e.g. `babel` -> `babel-loader`
-
+2.  All loaders now have to have the *loader* suffix, e.g. `babel` -> `babel-loader`
+3.  `NamedModulesPlugin` migrated to `optimizations.namedModules`
+4.  `NoEmitOnErrorsPlugin` migrated to `optimizations.noEmitOnErrors`
+5.  `ModuleConcatenationPlugin` migrated to `optimizations.concatenateModules`
+---
 **Note: This command does NOT handle updating dependencies in _package.json_, it is only a migration tool for the config
 file itself.  Users are expected to manage dependencies themselves.**

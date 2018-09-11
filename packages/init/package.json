@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/init",
-  "version": "0.0.8",
+  "version": "0.1.0",
   "description": "init command for webpack-cli",
   "main": "index.js",
   "author": "",
@@ -9,10 +9,19 @@
     "access": "public"
   },
   "dependencies": {
-    "@webpack-cli/generators": "^0.0.8",
-    "@webpack-cli/utils": "^0.0.8",
+    "@webpack-cli/generators": "^0.1.0",
+    "@webpack-cli/utils": "^0.1.0",
     "chalk": "^2.4.1",
     "jscodeshift": "^0.5.0",
     "p-each-series": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^10.3.6",
+    "@types/p-each-series": "^1.0.0",
+    "typescript": "^2.9.2"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "npm run build && tsc -w"
   }
 }

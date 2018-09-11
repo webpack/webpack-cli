@@ -5,6 +5,6 @@ module.exports = (/*env*/) => {
 			output: {
 				filename: "entry.bundle.js"
 			}
-		})
+		});
 	});
-}
+};

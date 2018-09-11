@@ -34,5 +34,5 @@ lerna-debug.log
 # Yarn lock file
 yarn.lock
 
-# Custom typings
-custom_typing/*.js
+# source maps of docs
+docs/**/*.map
