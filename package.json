@@ -1,140 +1,145 @@
 {
-	"name": "webpack-cli",
-	"version": "3.0.8",
-	"description": "CLI for webpack & friends",
-	"license": "MIT",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/webpack/webpack-cli.git"
-	},
-	"bin": {
-		"webpack-cli": "cli.js"
-	},
-	"main": "cli.js",
-	"engines": {
-		"node": ">=6.11.5"
-	},
-	"keywords": [
-		"webpack",
-		"cli",
-		"scaffolding",
-		"module",
-		"bundler"
-	],
-	"files": [
-		"lib"
-	],
-	"scripts": {
-		"appveyor:lint": "lerna bootstrap && npm run lint",
-		"appveyor:test": "npm run test",
-		"bootstrap": "npm run clean:all && npm install && lerna bootstrap",
-		"build": "tsc",
-		"bundlesize": "bundlesize",
-		"changelog": "conventional-changelog --config ./build/changelog-generator/index.js --infile CHANGELOG.md --same-file",
-		"clean:all": "rimraf node_modules package-lock.json packages/*/node_modules packages/*/package-lock.json",
-		"format": "prettier-eslint ./lib/**/*.js ./test/**/*.js ./packages/**/*.js --write",
-		"jsdoc": "jsdoc -c jsdoc.json -r -d docs",
-		"lint:codeOnly": "eslint \"{lib}/**/!(__testfixtures__)/*.js\" \"{lib}/**.js\"",
-		"lint": "eslint \"./lib/*.js\" \"./test/**/*.js\" \"{packages}/**/!(node_modules)/*.test.js\" && npm run tslint",
-		"precommit": "lint-staged",
-		"pretest": "npm run lint",
-		"reportCoverage": "nyc report --reporter=json && codecov -f coverage/coverage-final.json --disable=gcov",
-		"test": "nyc jest",
-		"travis:integration": "npm run test && npm run reportCoverage",
-		"travis:lint": "lerna bootstrap && npm run lint && npm run bundlesize",
-		"tslint": "tslint -c tslint.json \"packages/**/*.ts\"",
-		"watch": "tsc -w"
-	},
-	"lint-staged": {
-		"{packages,lib}/**/!(__testfixtures__)/**.js": [
-			"eslint --fix",
-			"git add"
-		]
-	},
-	"jest": {
-		"testEnvironment": "node",
-		"collectCoverage": true,
-		"coverageReporters": [
-			"json",
-			"html"
-		]
-	},
-	"nyc": {
-		"include": [
-			"lib/**.js",
-			"packages/**/*.js"
-		],
-		"reporter": [
-			"lcov"
-		],
-		"all": true
-	},
-	"bundlesize": [
-		{
-			"path": "./packages/migrate/**.js",
-			"maxSize": "1 kB"
-		},
-		{
-			"path": "./packages/init/**/**.js",
-			"maxSize": "1.6 kB"
-		},
-		{
-			"path": "./packages/utils/**.js",
-			"maxSize": "5.32 kB"
-		}
-	],
-	"config": {
-		"commitizen": {
-			"path": "./node_modules/cz-customizable"
-		},
-		"cz-customizable": {
-			"config": "./.cz-config.js"
-		}
-	},
-	"dependencies": {
-		"chalk": "^2.4.1",
-		"command-line-args": "^5.0.2",
-		"command-line-usage": "^5.0.5",
-		"cross-spawn": "^6.0.5",
-		"import-local": "^1.0.0",
-		"inquirer": "^6.0.0",
-		"interpret": "^1.1.0",
-		"loader-utils": "^1.1.0",
-		"supports-color": "^5.4.0",
-		"update-notifier": "^2.5.0",
-		"v8-compile-cache": "^2.0.0",
-		"semver": "^5.5.1"
-	},
-	"peerDependencies": {
-		"webpack": "^4.x.x"
-	},
-	"devDependencies": {
-		"@commitlint/cli": "^7.0.0",
-		"@commitlint/config-angular": "^7.0.0",
-		"@commitlint/config-lerna-scopes": "^7.0.0",
-		"@commitlint/prompt-cli": "^7.0.0",
-		"@commitlint/travis-cli": "^7.0.0",
-		"bundlesize": "^0.17.0",
-		"codecov": "^3.0.2",
-		"commitizen": "^2.10.1",
-		"conventional-changelog-cli": "^2.0.0",
-		"conventional-changelog-lint-config-cz": "^0.3.0",
-		"cz-customizable": "^5.2.0",
-		"eslint": "^4.19.1",
-		"eslint-plugin-node": "^6.0.1",
-		"husky": "^0.14.3",
-		"jest": "^22.4.4",
-		"jest-cli": "^23.0.1",
-		"jsdoc": "^3.5.5",
-		"lerna": "^2.11.0",
-		"lint-staged": "^7.1.2",
-		"nyc": "^12.0.1",
-		"prettier-eslint-cli": "^4.7.1",
-		"rimraf": "^2.6.2",
-		"schema-utils": "^0.4.5",
-		"tslint": "^5.10.0",
-		"typescript": "^2.9.2",
-		"webpack": "^4.8.3",
-		"webpack-dev-server": "^3.1.4"
-	}
+  "name": "webpack-cli",
+  "version": "3.0.8",
+  "description": "CLI for webpack & friends",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/webpack/webpack-cli.git"
+  },
+  "bin": {
+    "webpack-cli": "cli.js"
+  },
+  "main": "cli.js",
+  "engines": {
+    "node": ">=6.11.5"
+  },
+  "keywords": [
+    "webpack",
+    "cli",
+    "scaffolding",
+    "module",
+    "bundler"
+  ],
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "appveyor:lint": "lerna bootstrap && npm run lint",
+    "appveyor:test": "npm run test",
+    "bootstrap": "npm run clean:all && npm install && lerna bootstrap",
+    "build": "tsc",
+    "bundlesize": "bundlesize",
+    "changelog": "conventional-changelog --config ./build/changelog-generator/index.js --infile CHANGELOG.md --same-file",
+    "clean:all": "rimraf node_modules package-lock.json packages/*/node_modules packages/*/package-lock.json",
+    "format": "prettier-eslint ./lib/**/*.js ./cli.js ./lib/*.js ./test/**/*.js ./packages/**/*.js --write",
+    "jsdoc": "jsdoc -c jsdoc.json -r -d docs",
+    "lint:codeOnly": "eslint \"{lib}/**/!(__testfixtures__)/*.js\" \"{lib}/**.js\"",
+    "lint": "eslint \"./lib/**/*.js\" \"./cli.js\" \"./lib/*.js\" \"./test/**/*.js\" \"{packages}/**/!(node_modules)/*.test.js\" && npm run tslint",
+    "precommit": "lint-staged",
+    "pretest": "npm run lint",
+    "reportCoverage": "nyc report --reporter=json && codecov -f coverage/coverage-final.json --disable=gcov",
+    "test": "nyc jest",
+    "travis:integration": "npm run test && npm run reportCoverage",
+    "travis:lint": "lerna bootstrap && npm run lint && npm run bundlesize",
+    "tslint": "tslint -c tslint.json \"packages/**/*.ts\"",
+    "watch": "tsc -w"
+  },
+  "lint-staged": {
+    "{packages,lib}/**/!(__testfixtures__)/**.js": [
+      "eslint --fix",
+      "git add"
+    ],
+    "{lib}/!(__testfixtures__)/**.js": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "collectCoverage": true,
+    "coverageReporters": [
+      "json",
+      "html"
+    ]
+  },
+  "nyc": {
+    "include": [
+      "lib/**.js",
+      "packages/**/*.js"
+    ],
+    "reporter": [
+      "lcov"
+    ],
+    "all": true
+  },
+  "bundlesize": [
+    {
+      "path": "./packages/migrate/**.js",
+      "maxSize": "1 kB"
+    },
+    {
+      "path": "./packages/init/**/**.js",
+      "maxSize": "1.6 kB"
+    },
+    {
+      "path": "./packages/utils/**.js",
+      "maxSize": "5.32 kB"
+    }
+  ],
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-customizable"
+    },
+    "cz-customizable": {
+      "config": "./.cz-config.js"
+    }
+  },
+  "dependencies": {
+    "chalk": "^2.4.1",
+    "command-line-args": "^5.0.2",
+    "command-line-usage": "^5.0.5",
+    "cross-spawn": "^6.0.5",
+    "import-local": "^1.0.0",
+    "inquirer": "^6.0.0",
+    "interpret": "^1.1.0",
+    "loader-utils": "^1.1.0",
+    "supports-color": "^5.4.0",
+    "update-notifier": "^2.5.0",
+    "v8-compile-cache": "^2.0.0",
+    "webpack-log": "^1.2.0",
+    "semver": "^5.5.1"
+  },
+  "peerDependencies": {
+    "webpack": "^4.x.x"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^7.0.0",
+    "@commitlint/config-angular": "^7.0.0",
+    "@commitlint/config-lerna-scopes": "^7.0.0",
+    "@commitlint/prompt-cli": "^7.0.0",
+    "@commitlint/travis-cli": "^7.0.0",
+    "bundlesize": "^0.17.0",
+    "codecov": "^3.0.2",
+    "commitizen": "^2.10.1",
+    "conventional-changelog-cli": "^2.0.0",
+    "conventional-changelog-lint-config-cz": "^0.3.0",
+    "cz-customizable": "^5.2.0",
+    "eslint": "^4.19.1",
+    "eslint-plugin-node": "^6.0.1",
+    "husky": "^0.14.3",
+    "jest": "^22.4.4",
+    "jest-cli": "^23.0.1",
+    "jsdoc": "^3.5.5",
+    "lerna": "^2.11.0",
+    "lint-staged": "^7.1.2",
+    "nyc": "^12.0.1",
+    "prettier-eslint-cli": "^4.7.1",
+    "rimraf": "^2.6.2",
+    "schema-utils": "^0.4.5",
+    "tslint": "^5.10.0",
+    "typescript": "^2.9.2",
+    "webpack": "^4.8.3",
+    "webpack-dev-server": "^3.1.4"
+  }
 }
