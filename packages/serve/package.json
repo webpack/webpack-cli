@@ -14,12 +14,12 @@
     "@webpack-cli/webpack-scaffold": "^0.1.0",
     "chalk": "^2.4.1",
     "cross-spawn": "^6.0.5",
-    "inquirer": "^5.2.0"
+    "inquirer": "^6.2.0"
   },
   "devDependencies": {
     "@types/cross-spawn": "^6.0.0",
-    "@types/inquirer": "0.0.42",
-    "@types/node": "^10.5.1",
+    "@types/inquirer": "0.0.43",
+    "@types/node": "^10.9.4",
     "typescript": "^2.9.2"
   },
   "scripts": {
