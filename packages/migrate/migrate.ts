@@ -3,6 +3,7 @@ import pEachSeries = require("p-each-series");
 import pLazy = require("p-lazy");
 
 import bannerPluginTransform from "./bannerPlugin/bannerPlugin";
+import commonsChunkPluginTransform from "./commonsChunkPlugin/commonsChunkPlugin";
 import extractTextPluginTransform from "./extractTextPlugin/extractTextPlugin";
 import loaderOptionsPluginTransform from "./loaderOptionsPlugin/loaderOptionsPlugin";
 import loadersTransform from "./loaders/loaders";
@@ -15,6 +16,7 @@ import uglifyJsPluginTransform from "./uglifyJsPlugin/uglifyJsPlugin";
 
 interface ITransformsObject {
 	bannerPluginTransform: object;
+	commonsChunkPluginTransform?: object;
 	extractTextPluginTransform: object;
 	loaderOptionsPluginTransform: object;
 	loadersTransform: object;
@@ -36,6 +38,7 @@ const transformsObject: ITransformsObject = {
 	extractTextPluginTransform,
 	noEmitOnErrorsPluginTransform,
 	removeDeprecatedPluginsTransform,
+	commonsChunkPluginTransform,
 };
 /* tslint:enable object-literal-sort-keys */
 
