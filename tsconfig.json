@@ -1,18 +1,6 @@
 {
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "allowJs": true,
-    "allowSyntheticDefaultImports": true,
-    "skipLibCheck": true,
-    "declaration": true
-  },
-  "include": [
-    "packages/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules/**",
-    "packages/*/node_modules/**"
-  ]
+    "allowJs": true
+  }
 }
