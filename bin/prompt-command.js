@@ -105,6 +105,10 @@ module.exports = function promptForInstallation(packages, ...args) {
 			}
 		});
 	} else {
-		require(pathForCmd).default(...args); // eslint-disable-line
+          let p = require(pathForCmd), c = p[packages];
+          if (typeof c !== 'function' && typeof p.default === 'function') {
+	    c = p.default;
+          }
+          c(...args); // eslint-disable-line
 	}
 };
