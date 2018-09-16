@@ -35,6 +35,7 @@
     "lint:codeOnly": "eslint \"{bin}/**/!(__testfixtures__)/*.js\" \"{bin}/**.js\"",
     "lint": "eslint \"./bin/*.js\" \"./test/**/*.js\" \"packages/**/!(node_modules)/*.test.js\"",
     "precommit": "lint-staged",
+    "commitmsg": "commitlint -E GIT_PARAMS",
     "pretest": "npm run build && npm run lint && npm run tslint",
     "reportCoverage": "nyc report --reporter=json && codecov -f coverage/coverage-final.json --disable=gcov",
     "test": "nyc jest",
@@ -46,6 +47,10 @@
   "lint-staged": {
     "{packages,bin}/**/!(__testfixtures__)/**.js": [
       "eslint --fix",
+      "git add"
+    ],
+    "{packages,bin}/**/!(__testfixtures__)/**.ts": [
+      "tslint --fix",
       "git add"
     ]
   },
@@ -106,7 +111,6 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^7.1.2",
-    "@commitlint/config-angular": "^7.1.2",
     "@commitlint/config-lerna-scopes": "^7.1.2",
     "@commitlint/prompt-cli": "^7.1.2",
     "@commitlint/travis-cli": "^7.1.2",
