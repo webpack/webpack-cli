@@ -34,6 +34,7 @@ In case you are suggesting a new feature, we will match your idea with our curre
 
 ### Setup with npm
 * Install the dependencies: `npm install`
+* Bootstrap the packages:`npx lerna bootstrap`
 * Run the tests with: `npm test`
 
 ### Setup with yarn
@@ -42,6 +43,7 @@ In case you are suggesting a new feature, we will match your idea with our curre
 
 ```bash
 yarn install
+yarn lerna bootstrap
 yarn link
 yarn link webpack-cli
 ```
