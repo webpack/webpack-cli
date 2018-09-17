@@ -34,7 +34,7 @@ In case you are suggesting a new feature, we will match your idea with our curre
 
 ### Setup with npm
 * Install the dependencies: `npm install`
-* Bootstrap the packages:`npx lerna bootstrap`
+* Bootstrap the packages:`npm run bootstrap`
 * Run the tests with: `npm test`
 
 ### Setup with yarn
