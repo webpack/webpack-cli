@@ -41,8 +41,7 @@ In case you are suggesting a new feature, we will match your idea with our curre
 * Install the dependencies and link them
 
 ```bash
-yarn install
-yarn lerna bootstrap
+yarn bootstrap
 yarn link
 yarn link webpack-cli
 ```
