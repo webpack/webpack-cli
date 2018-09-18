@@ -25,9 +25,6 @@
     "bin"
   ],
   "scripts": {
-    "appveyor:build": "lerna bootstrap && npm run build",
-    "appveyor:lint": "npm run lint && npm run tslint",
-    "appveyor:test": "npm run test",
     "bootstrap": "npm run clean:all && npm install && lerna bootstrap",
     "build": "tsc",
     "bundlesize": "bundlesize",
