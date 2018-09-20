@@ -1,3 +1,3 @@
 {
-  "extends": "../../tsconfig.declarations.json"
+  "extends": "../../tsconfig.packages.json"
 }
