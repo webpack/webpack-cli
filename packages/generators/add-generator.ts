@@ -461,7 +461,9 @@ export default class AddGenerator extends Generator {
 						// Either we are adding directly at the property, else we're in a prop.theOne scenario
 						const actionMessage: string =
 							isDeepProp[1] === "other"
-								? `What do you want the key on ${action} to be? (press enter if you want it directly as a value on the property)`
+								? `What do you want the key on ${
+									action
+								   } to be? (press enter if you want it directly as a value on the property)`
 								: `What do you want the value of ${isDeepProp[1]} to be?`;
 
 						this.prompt([
