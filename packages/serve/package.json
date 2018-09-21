@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "",
   "main": "index.js",
+  "types": "index.d.ts",
   "keywords": [],
   "publishConfig": {
     "access": "public"

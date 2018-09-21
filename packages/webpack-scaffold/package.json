@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "Utility files for webpack-scaffold",
   "main": "index.js",
+  "types": "index.d.ts",
   "publishConfig": {
     "access": "public"
   },
