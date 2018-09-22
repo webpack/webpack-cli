@@ -23,7 +23,9 @@ describe("npmPackagesExists", () => {
 	});
 
 	test("resolves packages when they are available on npm", done => {
-		require("./npm-exists").default.mockImplementation(() => Promise.resolve(true));
+		require("./npm-exists").default.mockImplementation(() =>
+			Promise.resolve(true)
+		);
 		npmPackagesExists(["webpack-scaffold-foobar"]);
 		setTimeout(() => {
 			expect(
