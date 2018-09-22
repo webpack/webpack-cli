@@ -117,6 +117,7 @@
     "interpret": "^1.1.0",
     "lightercollective": "^0.1.0",
     "loader-utils": "^1.1.0",
+    "semver": "^5.5.1",
     "supports-color": "^5.4.0",
     "update-notifier": "^2.5.0",
     "v8-compile-cache": "^2.0.0",
