@@ -6,11 +6,6 @@
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true
   },
-  "include": [
-    "packages/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules/**",
-    "packages/*/node_modules/**"
-  ]
+  "include": ["packages/**/*.ts"],
+  "exclude": ["node_modules/**", "packages/*/node_modules/**", "packages/*/__tests__/*.test.ts"]
 }
