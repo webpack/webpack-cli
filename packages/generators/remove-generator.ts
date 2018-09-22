@@ -69,7 +69,7 @@ export default class RemoveGenerator extends Generator {
 		])
 			.then(({ propType }: { propType: string }): Promise<{}> => {
 				if (!PROP_TYPES.has(propType)) {
-					console.log("Invalid webpack config prop");
+					console.error("Invalid webpack config prop");
 					return;
 				}
 

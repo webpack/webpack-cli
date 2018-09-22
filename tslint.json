@@ -13,9 +13,7 @@
       "ban-types": [
         false
       ],
-      "no-console": {
-        "severity": "off"
-      }
+      "no-console": [true, "log"]
     },
     "rulesDirectory": [],
     "linterOptions": {

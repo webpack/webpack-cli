@@ -6,5 +6,5 @@
  */
 
 export default function make() {
-	return console.log("make me");
+	return;
 }
