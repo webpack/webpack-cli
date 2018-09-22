@@ -54,7 +54,7 @@ const getRootPathModule = (dep: string): string => path.resolve(process.cwd(), d
 function serve() {
 	const packageJSONPath: string = getRootPathModule("package.json");
 	if (!packageJSONPath) {
-		console.log(
+		console.error(
 			"\n",
 			chalk.red("✖ Could not find your package.json file"),
 			"\n",
@@ -75,13 +75,13 @@ function serve() {
 			"node_modules/webpack-dev-server/bin/webpack-dev-server.js",
 		);
 		if (!WDSPath) {
-			console.log(
+			console.error(
 				"\n",
 				chalk.red(
 					"✖ Could not find the webpack-dev-server dependency in node_modules root path",
 				),
 			);
-			console.log(
+			console.info(
 				chalk.bold.green(" ✔︎"),
 				"Try this command:",
 				chalk.bold.green("rm -rf node_modules && npm install"),
@@ -158,12 +158,12 @@ function serve() {
 							});
 						});
 				} else {
-					console.log(chalk.bold.red("✖ Serve aborted due cancelling"));
+					console.error(chalk.bold.red("✖ Serve aborted due cancelling"));
 					process.exitCode = 1;
 				}
 			})
 			.catch((err: object) => {
-				console.log(chalk.red("✖ Serve aborted due to some errors"));
+				console.error(chalk.red("✖ Serve aborted due to some errors"));
 				console.error(err);
 				process.exitCode = 1;
 			});

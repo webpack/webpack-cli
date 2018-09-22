@@ -8,7 +8,7 @@ export default function recursiveTransform(
 		if (Array.isArray(value)) {
 			return utils.parseTopScope(j, ast, value, action);
 		}
-		console.log("Error in parsing top scope, Array required");
+		console.error("Error in parsing top scope, Array required");
 		return false;
 	} else if (key === "merge") {
 		if (typeof value === "string") {
