@@ -36,7 +36,7 @@
     "lint": "eslint \"./bin/*.js\" \"./test/**/*.js\" \"packages/**/!(node_modules)/*.test.js\"",
     "precommit": "lint-staged",
     "commitmsg": "commitlint -E GIT_PARAMS",
-    "pretest": "npm run build && npm run lint && npm run tslint",
+    "prsetest": "npm run build && npm run lint && npm run tslint",
     "reportCoverage": "nyc report --reporter=json && codecov -f coverage/coverage-final.json --disable=gcov",
     "test": "nyc jest",
     "travis:integration": "npm run build && npm run test && npm run reportCoverage",
@@ -61,9 +61,14 @@
       "json",
       "html"
     ],
-    "moduleNameMapper": {
+    "transform": {
       "^.+\\.(ts)?$": "ts-jest"
-    }
+    },
+    "testRegex": "/__tests__/.*\\.(js|ts)$",
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ]
   },
   "nyc": {
     "include": [
