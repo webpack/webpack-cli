@@ -1,7 +1,4 @@
-"use strict";
-
-const transform = require("./migrate").transform;
-const transformations = require("./migrate").transformations;
+import { transform, transformations } from "../migrate";
 
 const input = `
 module.exports = {
@@ -33,34 +30,30 @@ module.exports = {
 `;
 
 describe("transform", () => {
-	it("should not transform if no transformations defined", done => {
-		transform(input, []).then(output => {
+	it("should not transform if no transformations defined", async () => {
+		transform(input, []).then((output) => {
 			expect(output).toMatchSnapshot(input);
-			done();
 		});
 	});
 
-	it("should transform using all transformations", done => {
-		transform(input).then(output => {
+	it("should transform using all transformations", async () => {
+		transform(input).then((output) => {
 			expect(output).toMatchSnapshot();
-			done();
 		});
 	});
 
-	it("should transform only using specified transformations", done => {
-		transform(input, [transformations.loadersTransform]).then(output => {
+	it("should transform only using specified transformations", async () => {
+		transform(input, [transformations.loadersTransform]).then((output) => {
 			expect(output).toMatchSnapshot();
-			done();
 		});
 	});
 
-	it("should respect recast options", done => {
+	it("should respect recast options", async () => {
 		transform(input, undefined, {
 			quote: "double",
-			trailingComma: true
-		}).then(output => {
+			trailingComma: true,
+		}).then((output) => {
 			expect(output).toMatchSnapshot();
-			done();
 		});
 	});
 });

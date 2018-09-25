@@ -42,7 +42,7 @@ const transformsObject: ITransformsObject = {
 };
 /* tslint:enable object-literal-sort-keys */
 
-export const transformations =
+export const transformations: any =
 	Object
 		.keys(transformsObject)
 		.reduce((res: object, key: string): object => {
