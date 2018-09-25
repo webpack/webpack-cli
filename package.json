@@ -31,12 +31,14 @@
     "changelog": "conventional-changelog --config ./build/changelog-generator/index.js --infile CHANGELOG.md --same-file",
     "clean:all": "rimraf node_modules packages/*/node_modules",
     "commit": "git-cz",
+    "commitmsg": "commitlint -E GIT_PARAMS",
     "docs": "typedoc",
     "format": "prettier-eslint ./bin/*.js ./test/**/*.js ./packages/**/*.js --write",
     "lint:codeOnly": "eslint \"{bin}/**/!(__testfixtures__)/*.js\" \"{bin}/**.js\"",
     "lint": "eslint \"./bin/*.js\" \"./test/**/*.js\" \"packages/**/!(node_modules)/*.test.js\"",
     "postinstall": "lerna bootstrap",
     "pretest": "npm run build && npm run lint && npm run tslint",
+    "precommit": "lint-staged",
     "reportCoverage": "nyc report --reporter=json && codecov -f coverage/coverage-final.json --disable=gcov",
     "test": "nyc jest",
     "travis:integration": "npm run build && npm run test && npm run reportCoverage",
@@ -67,9 +69,14 @@
       "json",
       "html"
     ],
-    "moduleNameMapper": {
+    "transform": {
       "^.+\\.(ts)?$": "ts-jest"
-    }
+    },
+    "testRegex": "/__tests__/.*\\.(js|ts)$",
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ]
   },
   "nyc": {
     "include": [
