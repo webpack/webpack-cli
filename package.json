@@ -34,8 +34,6 @@
     "format": "prettier-eslint ./bin/*.js ./test/**/*.js ./packages/**/*.js --write",
     "lint:codeOnly": "eslint \"{bin}/**/!(__testfixtures__)/*.js\" \"{bin}/**.js\"",
     "lint": "eslint \"./bin/*.js\" \"./test/**/*.js\" \"packages/**/!(node_modules)/*.test.js\"",
-    "precommit": "lint-staged",
-    "commitmsg": "commitlint -E GIT_PARAMS",
     "pretest": "npm run build && npm run lint && npm run tslint",
     "reportCoverage": "nyc report --reporter=json && codecov -f coverage/coverage-final.json --disable=gcov",
     "test": "nyc jest",
@@ -43,6 +41,12 @@
     "travis:lint": "lerna bootstrap && npm run build && npm run lint && npm run tslint && npm run bundlesize",
     "tslint": "tslint -c tslint.json \"packages/**/*.ts\"",
     "watch": "npm run build && tsc -w"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
   },
   "lint-staged": {
     "{packages,bin}/**/!(__testfixtures__)/**.js": [
@@ -126,7 +130,7 @@
     "conventional-changelog-cli": "^2.0.5",
     "eslint": "^5.5.0",
     "eslint-plugin-node": "^7.0.1",
-    "husky": "^0.14.3",
+    "husky": "^1.0.0",
     "jest": "^23.6.0",
     "jest-cli": "^23.6.0",
     "lerna": "^3.4.0",
