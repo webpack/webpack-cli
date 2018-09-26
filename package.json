@@ -126,7 +126,7 @@
     "conventional-changelog-cli": "^2.0.5",
     "eslint": "^5.5.0",
     "eslint-plugin-node": "^7.0.1",
-    "husky": "^0.14.3",
+    "husky": "^1.0.0",
     "jest": "^23.6.0",
     "jest-cli": "^23.6.0",
     "lerna": "^3.4.0",
