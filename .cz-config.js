@@ -19,7 +19,7 @@ module.exports = {
 	// sort type values in asc
 	types: [
 		{ value: "ast", name: "ast:		init, migrate, add, etc" },
-		{ value: "break", name: "break: changes that break the behaviour of the cli" },
+		{ value: "break", name: "break:	Changes that break the behaviour of the cli" },
 		{ value: "chore", name: "chore:	Updating deps, docs, linting, etc" },
 		{ value: "cli", name: "cli:		Core CLI things" },
 		{ value: "docs", name: "docs:		Documentation" },
@@ -27,6 +27,5 @@ module.exports = {
 		{ value: "fix", name: "fix:		Bugs, typos, etc" },
 		{ value: "misc", name: "misc:		Other formats like tweaks and such" },
 		{ value: "tests", name: "tests:	Tests, jest, binTestCases, etc" },
-		{ value: "break", name: "break: changes that break the behaviour of the cli" }
 	]
 };
