@@ -107,6 +107,8 @@ In case you've got a small change in most of the cases your pull request would b
 
 Our commit messages format follows the [angular.js commits format](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#commit-message-format).
 
+You can use `npm run commit` script to have an interactive way for making commits that follow our guidelines.
+
 We don't use the scope. The template of a commit would look like this:
 
 ### Commit Message Format
@@ -123,6 +125,7 @@ format that includes a **type** and a **subject**:
 
 This is the list of *type* of commits that we accept: 
 * ast
+* break
 * chore
 * cli
 * docs
@@ -130,7 +133,6 @@ This is the list of *type* of commits that we accept:
 * fix
 * misc
 * tests
-* break
 
 The **header** is mandatory.
 
