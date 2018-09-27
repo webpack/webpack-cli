@@ -4,7 +4,7 @@
 	</a>
 </div>
 <p align="center">
-  A scaffolding tool for webpack.
+  The official CLI of webpack
 </p>
 <br>
 
@@ -17,7 +17,7 @@
 [![Greenkeeper badge](https://badges.greenkeeper.io/webpack/webpack-cli.svg)](https://greenkeeper.io/)
 [![Install Size](https://packagephobia.now.sh/badge?p=webpack-cli)](https://packagephobia.now.sh/result?p=webpack-cli)
 
-# Webpack CLI
+# webpack CLI
 
 * [About](#about)
 * [Getting Started](#getting-started)
@@ -37,36 +37,34 @@
 
 ## About
 
-Webpack CLI is a CLI tool for providing a flexible set of commands for developers to increase speed when setting up a custom webpack project. As of webpack v4, webpack is not expecting a configuration file but in many cases, developers want to create a more custom webpack configuration based on their use-cases and needs. Exactly all of these cases with webpack CLI we are providing a set of tools so improve the setup of custom webpack configuration. 
+webpack CLI is a CLI tool for providing a flexible set of commands for developers to increase speed when setting up a custom webpack project. As of webpack v4, webpack is not expecting a configuration file but often, developers want to create a more custom webpack configuration based on their use-cases and needs. Exactly all these cases with webpack CLI we are providing a set of tools to improve the setup of custom webpack configuration. 
 
 ### How to install
 
 When you have followed the [Getting Started](https://webpack.js.org/guides/getting-started/) guide of webpack then webpack CLI is already installed!
 
-Otherwise `npm install --save-dev webpack-cli` will install it. 
+Otherwise `npm install --save-dev webpack-cli` or `yarn add webpack-cli --dev` will install it. 
 
 ### Commands
 
-In order to simplify many common tasks when using webpack in your projects, webpack CLI provides different commands according to their use-cases.
-
-webpack CLI is organized as a [multi-package repository](https://github.com/lerna/lerna) and every command is developed in the `packages` Folder.
+Supporting developers is an important task for webpack CLI. Thus, webpack CLI provides different commands for many common tasks. We organize webpack CLI as a [multi-package repository](https://github.com/lerna/lerna). Every command has a dedicated subfolder in the `packages` Folder.
 
 ## Getting started
 
-When you have followed the [Getting Started](https://webpack.js.org/guides/getting-started/) guide of webpack then webpack CLI is already installed! Otherwise you would need to install webpack CLI and the packages you want to use. If we want to use the `init` functionality to create a new `webpack.config.js` configuration file:
+When you have followed the [Getting Started](https://webpack.js.org/guides/getting-started/) guide of webpack then webpack CLI is already installed! Otherwise, you would need to install webpack CLI and the packages you want to use. If we want to use the `init` functionality to create a new `webpack.config.js` configuration file:
 
 ```sh
 npm i webpack-cli @webpack-cli/init
 npx webpack-cli init
 ```
 
-After asking multiple questions related to your project and as a result create a webpack.config.js based on your selected answers. 
+You will answer many questions when running the `init` so webpack CLI can provide the best fitting configuration.  
 
-## How it works
+## webpack Add-ons 
 
-With v3 of webpack CLI we introduced a scaffolding as an integral part of it. The idea is that creating complex webpack configuration for different use-cases can be difficult and we want to make it easy for everyone to be able to create and share their solutions. For this purpose `webpack-scaffold` was created. It is a utility suite for creating these addons. It contains functions that could be of use for creating an addon yourself.
+With v3 of webpack CLI, we introduced scaffolding as an integral part of the CLI. Our goal is to simplify the creation of webpack configurations for different purposes. Additionally, sharing such solutions with the community is beneficial and with webpack Addon's we want to allow this. We provide `webpack-scaffold` as a utility suite for creating these add-ons. It contains functions that could be of use for creating an addon yourself.
 
-For a much more comprehensive guide, we recommend reading our [Scaffolding](./SCAFFOLDING.md) documentation or checkout the example project [How do I compose a webpack-addon?](https://github.com/ev1stensberg/webpack-addons-demo).
+You can read more about[Scaffolding](./SCAFFOLDING.md) or check out the example project [How do I compose a webpack-addon?](https://github.com/ev1stensberg/webpack-addons-demo).
 
 ## Contributing and Internal Documentation
 
