@@ -66,9 +66,14 @@
       "json",
       "html"
     ],
-    "moduleNameMapper": {
+    "transform": {
       "^.+\\.(ts)?$": "ts-jest"
-    }
+    },
+    "testRegex": "/__tests__/.*\\.(js|ts)$",
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ]
   },
   "nyc": {
     "include": [
