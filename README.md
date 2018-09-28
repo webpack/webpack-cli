@@ -64,7 +64,7 @@ You will answer many questions when running the `init` so webpack CLI can provid
 
 With v3 of webpack CLI, we introduced scaffolding as an integral part of the CLI. Our goal is to simplify the creation of webpack configurations for different purposes. Additionally, sharing such solutions with the community is beneficial and with webpack Addon's we want to allow this. We provide `webpack-scaffold` as a utility suite for creating these add-ons. It contains functions that could be of use for creating an addon yourself.
 
-You can read more about[Scaffolding](./SCAFFOLDING.md) or check out the example project [How do I compose a webpack-addon?](https://github.com/ev1stensberg/webpack-addons-demo).
+You can read more about [Scaffolding](./SCAFFOLDING.md) or check out the example project [How do I compose a webpack-addon?](https://github.com/ev1stensberg/webpack-addons-demo).
 
 ## Contributing and Internal Documentation
 
