@@ -27,12 +27,12 @@ init([null, null, ...myPacakges]);
 ```
 
 ### CLI (via `webpack-cli`)
-**For `default` generator**
+**Via defaults**
 
 ```bash
 npx webpack-cli init
 ```
-**For `addon` generator**
+**Via custom scaffold**
 1. Using package on `npm`
 
 ```bash
