@@ -20,8 +20,9 @@
 # webpack CLI
 
 * [About](#about)
+  - [How to install](#how-to-install)
 * [Getting Started](#getting-started)
-* [webpack-cli Scaffolds](#webpack-cli-scaffolds)
+* [webpack CLI Scaffolds](#webpack-cli-scaffolds)
 * Commands
   - [`webpack-cli init`](./packages/init/README.md#webpack-cli-init)
   - [`webpack-cli add`](./packages/add/README.md#webpack-cli-add)
