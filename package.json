@@ -43,7 +43,8 @@
     "travis:integration": "npm run build && npm run test && npm run reportCoverage",
     "travis:lint": "lerna bootstrap && npm run build && npm run lint && npm run tslint && npm run bundlesize",
     "tslint": "tslint -c tslint.json \"packages/**/*.ts\"",
-    "watch": "npm run build && tsc -w"
+    "watch": "npm run build && tsc -w",
+    "test:local": "jest --watch"
   },
   "husky": {
     "hooks": {
@@ -71,7 +72,7 @@
     "transform": {
       "^.+\\.(ts)?$": "ts-jest"
     },
-    "testRegex": "/__tests__/.*\\.(js|ts)$",
+    "testRegex": "/__tests__/.*\\.(test.js|test.ts)$",
     "moduleFileExtensions": [
       "ts",
       "js"
