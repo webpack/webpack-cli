@@ -459,13 +459,21 @@ For more information, see https://webpack.js.org/api/cli/.`);
 					profile: argv.profile
 				}).apply(compiler);
 			}
-
 			if (outputOptions.infoVerbosity === "verbose") {
-				compiler.hooks.beforeCompile.tap("WebpackInfo", compilation => {
-					console.log("\nCompilation starting…\n");
-				});
-				compiler.hooks.afterCompile.tap("WebpackInfo", compilation => {
-					console.log("\nCompilation finished\n");
+				if (argv.w) {
+					compiler.hooks.watchRun.tap("WebpackInfo", compilation => {
+						const compilationName = compilation.name ? compilation.name : "";
+						console.log("\nCompilation " + compilationName + " starting…\n");
+					});
+				} else {
+					compiler.hooks.beforeRun.tap("WebpackInfo", compilation => {
+						const compilationName = compilation.name ? compilation.name : "";
+						console.log("\nCompilation " + compilationName + " starting…\n");
+					});
+				}
+				compiler.hooks.done.tap("WebpackInfo", compilation => {
+					const compilationName = compilation.name ? compilation.name : "";
+					console.log("\nCompilation " + compilationName + " finished\n");
 				});
 			}
 
