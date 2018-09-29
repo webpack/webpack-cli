@@ -20,18 +20,25 @@ const resolveSchema = schema => {
 const findPropertyInSchema = (schema, property, subProperty) => {
 	if (!schema) return null;
 	if (subProperty) {
-		if (schema[property] && typeof schema[property] === "object" && subProperty in schema[property]) {
+		if (
+			schema[property] &&
+			typeof schema[property] === "object" &&
+			subProperty in schema[property]
+		) {
 			return resolveSchema(schema[property][subProperty]);
 		}
 	} else {
-		if (property in schema)
-			return resolveSchema(schema[property]);
+		if (property in schema) return resolveSchema(schema[property]);
 	}
 	for (const name of nestedProperties) {
 		if (schema[name]) {
 			for (const item of schema[name]) {
 				const resolvedItem = resolveSchema(item);
-				const result = findPropertyInSchema(resolvedItem, property, subProperty);
+				const result = findPropertyInSchema(
+					resolvedItem,
+					property,
+					subProperty
+				);
 				if (result) return result;
 			}
 		}
@@ -44,7 +51,9 @@ const getSchemaInfo = (path, property, subProperty) => {
 	let current = optionsSchema;
 	for (const segment of pathSegments) {
 		if (segment === "*") {
-			current = findPropertyInSchema(current, "additionalProperties") || findPropertyInSchema(current, "items");
+			current =
+				findPropertyInSchema(current, "additionalProperties") ||
+				findPropertyInSchema(current, "items");
 		} else {
 			current = findPropertyInSchema(current, "properties", segment);
 		}
@@ -147,16 +156,14 @@ module.exports = function(yargs) {
 			},
 			"output-filename": {
 				type: "string",
-				describe:
-					getSchemaInfo("output.filename", "description"),
+				describe: getSchemaInfo("output.filename", "description"),
 				group: OUTPUT_GROUP,
 				defaultDescription: "[name].js",
 				requiresArg: true
 			},
 			"output-chunk-filename": {
 				type: "string",
-				describe:
-					getSchemaInfo("output.chunkFilename", "description"),
+				describe: getSchemaInfo("output.chunkFilename", "description"),
 				group: OUTPUT_GROUP,
 				defaultDescription:
 					"filename with [id] instead of [name] or [id] prefixed",
@@ -164,29 +171,25 @@ module.exports = function(yargs) {
 			},
 			"output-source-map-filename": {
 				type: "string",
-				describe:
-					getSchemaInfo("output.sourceMapFilename", "description"),
+				describe: getSchemaInfo("output.sourceMapFilename", "description"),
 				group: OUTPUT_GROUP,
 				requiresArg: true
 			},
 			"output-public-path": {
 				type: "string",
-				describe:
-					getSchemaInfo("output.publicPath", "description"),
+				describe: getSchemaInfo("output.publicPath", "description"),
 				group: OUTPUT_GROUP,
 				requiresArg: true
 			},
 			"output-jsonp-function": {
 				type: "string",
-				describe:
-					getSchemaInfo("output.jsonpFunction", "description"),
+				describe: getSchemaInfo("output.jsonpFunction", "description"),
 				group: OUTPUT_GROUP,
 				requiresArg: true
 			},
 			"output-pathinfo": {
 				type: "boolean",
-				describe:
-					getSchemaInfo("output.pathinfo", "description"),
+				describe: getSchemaInfo("output.pathinfo", "description"),
 				group: OUTPUT_GROUP
 			},
 			"output-library": {
@@ -197,8 +200,7 @@ module.exports = function(yargs) {
 			},
 			"output-library-target": {
 				type: "string",
-				describe:
-					getSchemaInfo("output.libraryTarget", "description"),
+				describe: getSchemaInfo("output.libraryTarget", "description"),
 				choices: getSchemaInfo("output.libraryTarget", "enum"),
 				group: OUTPUT_GROUP,
 				requiresArg: true
@@ -249,22 +251,18 @@ module.exports = function(yargs) {
 			"watch-stdin": {
 				type: "boolean",
 				alias: "stdin",
-				describe:
-					getSchemaInfo("watchOptions.stdin", "description"),
+				describe: getSchemaInfo("watchOptions.stdin", "description"),
 				group: ADVANCED_GROUP
 			},
 			"watch-aggregate-timeout": {
-				describe:
-					getSchemaInfo("watchOptions.aggregateTimeout", "description"),
-				type:
-					getSchemaInfo("watchOptions.aggregateTimeout", "type"),
+				describe: getSchemaInfo("watchOptions.aggregateTimeout", "description"),
+				type: getSchemaInfo("watchOptions.aggregateTimeout", "type"),
 				group: ADVANCED_GROUP,
 				requiresArg: true
 			},
 			"watch-poll": {
 				type: "string",
-				describe:
-					getSchemaInfo("watchOptions.poll", "description"),
+				describe: getSchemaInfo("watchOptions.poll", "description"),
 				group: ADVANCED_GROUP
 			},
 			hot: {
@@ -285,15 +283,13 @@ module.exports = function(yargs) {
 			},
 			"resolve-alias": {
 				type: "string",
-				describe:
-					getSchemaInfo("resolve.alias", "description"),
+				describe: getSchemaInfo("resolve.alias", "description"),
 				group: RESOLVE_GROUP,
 				requiresArg: true
 			},
 			"resolve-extensions": {
 				type: "array",
-				describe:
-					getSchemaInfo("resolve.alias", "description"),
+				describe: getSchemaInfo("resolve.alias", "description"),
 				group: RESOLVE_GROUP,
 				requiresArg: true
 			},
@@ -309,15 +305,16 @@ module.exports = function(yargs) {
 				requiresArg: true
 			},
 			"optimize-min-chunk-size": {
-				describe:
-					getSchemaInfo("optimization.splitChunks.minSize", "description"),
+				describe: getSchemaInfo(
+					"optimization.splitChunks.minSize",
+					"description"
+				),
 				group: OPTIMIZE_GROUP,
 				requiresArg: true
 			},
 			"optimize-minimize": {
 				type: "boolean",
-				describe:
-					getSchemaInfo("optimization.minimize", "description"),
+				describe: getSchemaInfo("optimization.minimize", "description"),
 				group: OPTIMIZE_GROUP
 			},
 			prefetch: {
