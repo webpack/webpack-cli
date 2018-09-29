@@ -15,35 +15,36 @@ import { IJSCodeshift, INode } from "../types/NodePath";
  */
 
 export default function(j: IJSCodeshift, ast: INode) {
+  // List of deprecated plugins to remove
+  // each item refers to webpack.optimize.[NAME] construct
+  const deprecatedPlugingsList: string[] = [
+	"webpack.optimize.OccurrenceOrderPlugin",
+	"webpack.optimize.DedupePlugin",
+  ];
 
-	// List of deprecated plugins to remove
-	// each item refers to webpack.optimize.[NAME] construct
-	const deprecatedPlugingsList: string[] = [
-		"webpack.optimize.OccurrenceOrderPlugin",
-		"webpack.optimize.DedupePlugin",
-	];
+  return utils.findPluginsByName(j, ast, deprecatedPlugingsList).forEach(
+	(path: INode): void => {
+		// For now we only support the case where plugins are defined in an Array
+		const arrayPath: INode = utils.safeTraverse(path, ["parent", "value"]);
 
-	return utils
-		.findPluginsByName(j, ast, deprecatedPlugingsList)
-		.forEach((path: INode): void => {
-			// For now we only support the case where plugins are defined in an Array
-			const arrayPath: INode = utils.safeTraverse(path, ["parent", "value"]);
-
-			if (arrayPath && utils.isType(arrayPath, "ArrayExpression")) {
-				// Check how many plugins are defined and
-				// if there is only last plugin left remove `plugins: []` node
-				const arrayElementsPath: INode[] = utils.safeTraverse(arrayPath, ["elements"]);
-				if (arrayElementsPath && arrayElementsPath.length === 1) {
-					j(path.parent.parent).remove();
-				} else {
-					j(path).remove();
-				}
-			} else {
-				console.error(`
+		if (arrayPath && utils.isType(arrayPath, "ArrayExpression")) {
+		// Check how many plugins are defined and
+		// if there is only last plugin left remove `plugins: []` node
+		const arrayElementsPath: INode[] = utils.safeTraverse(arrayPath, [
+			"elements",
+		]);
+		if (arrayElementsPath && arrayElementsPath.length === 1) {
+			j(path.parent.parent).remove();
+		} else {
+			j(path).remove();
+		}
+		} else {
+		console.error(`
 ${chalk.red("Please remove deprecated plugins manually. ")}
 See ${chalk.underline(
-		"https://webpack.js.org/guides/migrating/",
-	)} for more information.`);
-			}
-		});
+			"https://webpack.js.org/guides/migrating/",
+		)} for more information.`);
+		}
+	},
+  );
 }

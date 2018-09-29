@@ -3,23 +3,23 @@ import * as path from "path";
 import { IJSCodeshift, INode } from "./types/NodePath";
 
 interface IModule {
-	(
-		jscodeshift: IJSCodeshift,
-		ast: INode,
-		initOptions: string | boolean | object,
-		action: string,
-		transformName?: string,
-	): INode;
-	default: transformType;
-	parser: string;
-}
-
-type transformType = (
+  (
 	jscodeshift: IJSCodeshift,
 	ast: INode,
 	initOptions: string | boolean | object,
 	action: string,
 	transformName?: string,
+  ): INode;
+  default: transformType;
+  parser: string;
+}
+
+type transformType = (
+  jscodeshift: IJSCodeshift,
+  ast: INode,
+  initOptions: string | boolean | object,
+  action: string,
+  transformName?: string,
 ) => INode;
 
 /**
@@ -47,50 +47,54 @@ type transformType = (
  * @return {Function} Function that fires of the transforms
  */
 function runSingleTransform(
-	dirName: string,
-	transformName: string,
-	testFilePrefix: string,
-	initOptions: object | boolean | string,
-	action: string,
+  dirName: string,
+  transformName: string,
+  testFilePrefix: string,
+  initOptions: object | boolean | string,
+  action: string,
 ): string {
-	if (!testFilePrefix) {
-		testFilePrefix = transformName;
-	}
-	const fixtureDir: string = path.join(dirName, "__testfixtures__");
-	const inputPath: string = path.join(fixtureDir, testFilePrefix + ".input.js");
-	const source: string = fs.readFileSync(inputPath, "utf8");
+  if (!testFilePrefix) {
+	testFilePrefix = transformName;
+  }
+  const fixtureDir: string = path.join(
+	dirName,
+	"__tests__",
+	"__testfixtures__",
+  );
+  const inputPath: string = path.join(fixtureDir, testFilePrefix + ".input.ts");
+  const source: string = fs.readFileSync(inputPath, "utf8");
 
-	let module: IModule;
-	// Assumes transform and test are on the same level
-	if (action) {
-		module = require(path.join(dirName, "recursive-parser" + ".js"));
-	} else {
-		module = require(path.join(dirName, transformName + ".js"));
-	}
-	// Handle ES6 modules using default export for the transform
-	const transform = module.default ? module.default : module;
+  let module: IModule;
+  // Assumes transform and test are on the same level
+  if (action) {
+	module = require(path.join(dirName, "recursive-parser" + ".ts"));
+  } else {
+	module = require(path.join(dirName, transformName + ".ts"));
+  }
+  // Handle ES6 modules using default export for the transform
+  const transform = module.default ? module.default : module;
 
-	// Jest resets the module registry after each test, so we need to always get
-	// a fresh copy of jscodeshift on every test run.
-	let jscodeshift: IJSCodeshift = require("jscodeshift/dist/core");
-	if (module.parser) {
-		jscodeshift = jscodeshift.withParser(module.parser);
-	}
-	const ast: INode = jscodeshift(source);
-	if (initOptions || typeof initOptions === "boolean") {
-		return transform(
-			jscodeshift,
-			ast,
-			initOptions,
-			action,
-			transformName,
-		).toSource({
-			quote: "single",
-		});
-	}
-	return transform(jscodeshift, ast, source, action).toSource({
+  // Jest resets the module registry after each test, so we need to always get
+  // a fresh copy of jscodeshift on every test run.
+  let jscodeshift: IJSCodeshift = require("jscodeshift/dist/core");
+  if (module.parser) {
+	jscodeshift = jscodeshift.withParser(module.parser);
+  }
+  const ast: INode = jscodeshift(source);
+  if (initOptions || typeof initOptions === "boolean") {
+	return transform(
+		jscodeshift,
+		ast,
+		initOptions,
+		action,
+		transformName,
+	).toSource({
 		quote: "single",
 	});
+  }
+  return transform(jscodeshift, ast, source, action).toSource({
+	quote: "single",
+  });
 }
 
 /**
@@ -111,25 +115,25 @@ function runSingleTransform(
  * @return {Void} Jest makes sure to execute the globally defined functions
  */
 export default function defineTest(
-	dirName: string,
-	transformName: string,
-	testFilePrefix: string,
-	transformObject: object,
-	action: string,
+  dirName: string,
+  transformName: string,
+  testFilePrefix?: string,
+  transformObject?: object,
+  action?: string,
 ): void {
-	const testName: string = testFilePrefix
-		? `transforms correctly using "${testFilePrefix}" data`
-		: "transforms correctly";
-	describe(transformName, () => {
-		it(testName, () => {
-			const output = runSingleTransform(
-				dirName,
-				transformName,
-				testFilePrefix,
-				transformObject,
-				action,
-			);
-			expect(output).toMatchSnapshot();
-		});
+  const testName: string = testFilePrefix
+	? `transforms correctly using "${testFilePrefix}" data`
+	: "transforms correctly";
+  describe(transformName, () => {
+	it(testName, () => {
+		const output = runSingleTransform(
+		dirName,
+		transformName,
+		testFilePrefix,
+		transformObject,
+		action,
+		);
+		expect(output).toMatchSnapshot();
 	});
+  });
 }
