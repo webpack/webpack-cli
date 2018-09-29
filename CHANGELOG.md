@@ -1,3 +1,28 @@
+ <a name="3.1.2"></a>
+# 3.1.2 (2018-09-29)
+[Full Changelog](https://github.com/webpack/webpack-cli/compare/v3.1.1...v3.1.2)
+
+## Chore
+
+* deps: upgrade husky ([#611](https://github.com/webpack/webpack-cli/pull/611))
+* docs: update readme ([93ebcc2](https://github.com/webpack/webpack-cli/commit/93ebcc2))
+* scripts: add commit script, cz-customizable ([#612](https://github.com/webpack/webpack-cli/pull/612))
+
+## Docs
+
+* init: update headers ([dc4ded9](https://github.com/webpack/webpack-cli/commit/dc4ded9))
+* init: update init documentation ([2ccf9a9](https://github.com/webpack/webpack-cli/commit/2ccf9a9))
+* readme: update webpack-cli to webpack CLI ([f3a225a](https://github.com/webpack/webpack-cli/commit/f3a225a))
+* readme: change addons to scaffolds ([747aef9](https://github.com/webpack/webpack-cli/commit/747aef9))
+* readme: update links ([f8187f1](https://github.com/webpack/webpack-cli/commit/f8187f1))
+* readme: update README.md ([#614](https://github.com/webpack/webpack-cli/pull/614))
+* readme: update Readme based on feedback ([da05c2f](https://github.com/webpack/webpack-cli/commit/da05c2f))
+
+## Fix
+
+* tapable: fix hook options ([9aed0dc](https://github.com/webpack/webpack-cli/commit/9aed0dc))
+* replace test regex ([d4e1614](https://github.com/webpack/webpack-cli/commit/d4e1614))
+
  <a name="3.1.1"></a>
 # 3.1.1 (2018-09-23)
 [Full Changelog](https://github.com/webpack/webpack-cli/compare/v0.1.0...v3.1.1)
