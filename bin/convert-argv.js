@@ -441,7 +441,8 @@ module.exports = function(...args) {
 
 		ifArg("output-library", function(value) {
 			ensureObject(options, "output");
-			options.output.library = value;
+			ensureArray(options.output, "library");
+			options.output.library.push(value);
 		});
 
 		ifArg("output-library-target", function(value) {

@@ -68,9 +68,11 @@ const defaultArgs = loadOptsFile(path.join(casesPath, "test.opts"));
 
 describe("BinTestCases", function() {
 	const tests = findTestsRecursive(casesPath);
+	const patternFilter = process.env.BIN_TEST_CASES_GREP ? new RegExp(process.env.BIN_TEST_CASES_GREP) : null;
 
 	tests.forEach(testDirectory => {
 		const testName = testDirectory.replace(casesPath, "");
+		if (patternFilter && !testName.match(patternFilter)) return;
 		const testArgs = getTestSpecificArguments(testDirectory) || defaultArgs;
 		const testAssertions = require(path.join(testDirectory, "stdin.js"));
 		const outputPath = path.join(

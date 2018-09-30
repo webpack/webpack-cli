@@ -193,7 +193,7 @@ module.exports = function(yargs) {
 				group: OUTPUT_GROUP
 			},
 			"output-library": {
-				type: "string",
+				type: "array",
 				describe: "Expose the exports of the entry point as library",
 				group: OUTPUT_GROUP,
 				requiresArg: true

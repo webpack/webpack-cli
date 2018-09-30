@@ -33,20 +33,49 @@ In case you are suggesting a new feature, we will match your idea with our curre
 * `git clone <your-clone-url> && cd webpack-cli`
 
 ### Setup with npm
-* Install the dependencies and bootstrap the packages: `npm install`
-* Run the tests with: `npm test`
+
+* Install the dependencies and link them:
+
+ ```bash
+npm install
+npm link
+npm link webpack-cli
+```
+
+* Run all the tests with:
+  - `npm run test`
+
+* To test a single CLI (flag) test case:
+  - `BIN_TEST_CASES_GREP=/myCase jest test/BinTestCases.test.js`
+
+* To test a single CLI (other type of) test case:
+  - `jest path/to/my-test.js` 
+
+* To test linting:
+  - `npm run lint && npm run tslint`
 
 ### Setup with yarn
-* If you don't have yarn yet: `npm install -g yarn`
+* If you don't have yarn yet: 
+  - `npm install -g yarn`
 * Install the dependencies and link them
 
 ```bash
-yarn bootstrap
+yarn
 yarn link
 yarn link webpack-cli
 ```
 
-* To run the entire test suite use: `yarn test`
+* Run all the tests with:
+  - `yarn test`
+
+* To test a single CLI (flag) test case:
+    - `BIN_TEST_CASES_GREP=/myCase jest test/BinTestCases.test.js`
+
+* To test a single CLI (other type of) test case:
+    - `jest path/to/my-test.js`
+
+* To test linting:
+    - `yarn lint && yarn tslint`
 
 ## Editor Config
 
