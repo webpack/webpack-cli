@@ -5,6 +5,8 @@ const path = require("path");
 const fs = require("fs");
 const child_process = require("child_process");
 
+const migratedTests = ["config-name"];
+
 function spawn(args, options) {
 	return child_process.spawn(
 		process.execPath,
@@ -53,6 +55,7 @@ function findTestsRecursive(readPath) {
 	const isAnyTests = entries.indexOf("stdin.js") !== -1;
 
 	const folders = entries
+		.filter(entry => !migratedTests.includes(entry))
 		.map(entry => path.join(readPath, entry))
 		.filter(entry => fs.statSync(entry).isDirectory());
 

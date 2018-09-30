@@ -67,9 +67,15 @@
       "json",
       "html"
     ],
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/test/testUtils.js"
+    ],
     "moduleNameMapper": {
-      "^.+\\.(ts)?$": "ts-jest"
-    }
+      "^.+\\.ts$": "ts-jest"
+    },
+    "watchPathIgnorePatterns": [
+      "<rootDir>/test/js/bin"
+    ]
   },
   "nyc": {
     "include": [
@@ -133,6 +139,7 @@
     "cz-customizable": "^5.2.0",
     "eslint": "^5.5.0",
     "eslint-plugin-node": "^7.0.1",
+    "execa": "^1.0.0",
     "husky": "^1.0.0",
     "jest": "^23.6.0",
     "jest-cli": "^23.6.0",
