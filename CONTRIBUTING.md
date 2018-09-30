@@ -34,7 +34,7 @@ In case you are suggesting a new feature, we will match your idea with our curre
 
 ### Setup with npm
 
-* Install the dependencies and bootstrap the packages: 
+* Install the dependencies and link them:
 
  ```bash
 npm install
@@ -42,7 +42,7 @@ npm link
 npm link webpack-cli
 ```
 
-* To run the tests with:
+* Run all the tests with:
   - `npm run test`
 
 * To test a single CLI (flag) test case:
@@ -65,7 +65,7 @@ yarn link
 yarn link webpack-cli
 ```
 
-* To run the entire test suite use: 
+* Run all the tests with:
   - `yarn test`
 
 * To test a single CLI (flag) test case:
