@@ -1,21 +1,23 @@
 {
   "name": "@webpack-cli/webpack-scaffold",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Utility files for webpack-scaffold",
   "main": "index.js",
+  "types": "index.d.ts",
   "publishConfig": {
     "access": "public"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "jscodeshift": "^0.5.0"
+    "jscodeshift": "^0.5.1"
   },
   "devDependencies": {
     "typescript": "^2.9.2"
   },
   "scripts": {
     "test": "jest --detectOpenHandles",
-    "build": "tsc"
+    "build": "tsc",
+    "watch": "npm run build && tsc -w"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/info",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Outputs env info for the ease of debug",
   "main": "index.js",
   "author": "",
@@ -16,6 +16,7 @@
     "typescript": "^2.9.2"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "watch": "npm run build && tsc -w"
   }
 }

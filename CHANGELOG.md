@@ -1,3 +1,81 @@
+ <a name="3.1.2"></a>
+# 3.1.2 (2018-09-29)
+[Full Changelog](https://github.com/webpack/webpack-cli/compare/v3.1.1...v3.1.2)
+
+## Chore
+
+* deps: upgrade husky ([#611](https://github.com/webpack/webpack-cli/pull/611))
+* docs: update readme ([93ebcc2](https://github.com/webpack/webpack-cli/commit/93ebcc2))
+* scripts: add commit script, cz-customizable ([#612](https://github.com/webpack/webpack-cli/pull/612))
+
+## Docs
+
+* init: update headers ([dc4ded9](https://github.com/webpack/webpack-cli/commit/dc4ded9))
+* init: update init documentation ([2ccf9a9](https://github.com/webpack/webpack-cli/commit/2ccf9a9))
+* readme: update webpack-cli to webpack CLI ([f3a225a](https://github.com/webpack/webpack-cli/commit/f3a225a))
+* readme: change addons to scaffolds ([747aef9](https://github.com/webpack/webpack-cli/commit/747aef9))
+* readme: update links ([f8187f1](https://github.com/webpack/webpack-cli/commit/f8187f1))
+* readme: update README.md ([#614](https://github.com/webpack/webpack-cli/pull/614))
+* readme: update Readme based on feedback ([da05c2f](https://github.com/webpack/webpack-cli/commit/da05c2f))
+
+## Fix
+
+* tapable: fix hook options ([9aed0dc](https://github.com/webpack/webpack-cli/commit/9aed0dc))
+* replace test regex ([d4e1614](https://github.com/webpack/webpack-cli/commit/d4e1614))
+
+ <a name="3.1.1"></a>
+# 3.1.1 (2018-09-23)
+[Full Changelog](https://github.com/webpack/webpack-cli/compare/v0.1.0...v3.1.1)
+
+## New Features
+
+* migrate: CommonChunksPlugin to SplitChunksPlugin ([#558](https://github.com/webpack/webpack-cli/pull/558))
+* types: types for packages ([#578](https://github.com/webpack/webpack-cli/pull/578))
+
+## Chore
+
+* ci: add commitlint when trying to commit ([#595](https://github.com/webpack/webpack-cli/pull/595))
+* ci: Set up CI with Azure Pipelines ([89d3a19](https://github.com/webpack/webpack-cli/commit/89d3a19))
+* ci: fix commitlint ([#592](https://github.com/webpack/webpack-cli/pull/592))
+* ci: Add a status badge for the azure pipelines CI build ([#601](https://github.com/webpack/webpack-cli/pull/601))
+* deps: resync package-lock, upgrade major version ([d892b4d](https://github.com/webpack/webpack-cli/commit/d892b4d))
+* deps: Bump lerna version ([#583](https://github.com/webpack/webpack-cli/pull/583))
+* deps: removing inquirer as default package ([#555](https://github.com/webpack/webpack-cli/pull/555))
+* fix: fix clean all script ([6be0478](https://github.com/webpack/webpack-cli/commit/6be0478))
+* Update schema-utils to the latest version 🚀 ([#565](https://github.com/webpack/webpack-cli/pull/565))
+* update pkg.lock ([76c8277](https://github.com/webpack/webpack-cli/commit/76c8277))
+* remove editorconfig from testfixtures ([#560](https://github.com/webpack/webpack-cli/pull/560))
+* lint: fix tslint warnings ([cf0bf4a](https://github.com/webpack/webpack-cli/commit/cf0bf4a))
+* lint: turn off console log warning ([db5f570](https://github.com/webpack/webpack-cli/commit/db5f570))
+* lint: remove or replace console.log with console.error ([e425642](https://github.com/webpack/webpack-cli/commit/e425642))
+* package: update lerna to version 3.0.0 ([08c424d](https://github.com/webpack/webpack-cli/commit/08c424d))
+* scripts: update ts watch ([336ad3e](https://github.com/webpack/webpack-cli/commit/336ad3e))
+* tests: added first ts test for info package ([#584](https://github.com/webpack/webpack-cli/pull/584))
+
+## CLI
+
+* allow array value for --ouput-library ([#559](https://github.com/webpack/webpack-cli/pull/559))
+
+## Docs
+
+* fixed latest changelog link ([#556](https://github.com/webpack/webpack-cli/pull/556))
+* migrate documentaion ([#554](https://github.com/webpack/webpack-cli/pull/554))
+* init documentaion ([#547](https://github.com/webpack/webpack-cli/pull/547))
+* contribution: fix the setup workflow #591 ([#597](https://github.com/webpack/webpack-cli/pull/597))
+* typedoc: add ts docs ([#571](https://github.com/webpack/webpack-cli/pull/571))
+
+## Fix
+
+* generate-loader: include example template in npm package ([d26ea82](https://github.com/webpack/webpack-cli/commit/d26ea82))
+* generate-plugin: include example template in npm package ([77fa723](https://github.com/webpack/webpack-cli/commit/77fa723))
+* package: update import-local to version 2.0.0 🚀 ([#576](https://github.com/webpack/webpack-cli/pull/576))
+* prettier: add parser, filePath ([#553](https://github.com/webpack/webpack-cli/pull/553))
+* schema: resolve references in schema ([#605](https://github.com/webpack/webpack-cli/pull/605))
+
+## Misc
+
+* Revert "cli: allow array value for --ouput-library (#559)" ([#561](https://github.com/webpack/webpack-cli/pull/561))
+
  <a name="3.1.0"></a>
 # 3.1.0 (2018-07-18)
 [Full Changelog](https://github.com/webpack/webpack-cli/compare/v3.0.8...v.3.1.0)

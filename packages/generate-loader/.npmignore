@@ -1,5 +1,4 @@
-examples
-test
+test/fixtures
 types
 templates/test
 *.ts

@@ -33,3 +33,6 @@ lerna-debug.log
 
 # Yarn lock file
 yarn.lock
+
+# source maps of docs
+docs/**/*.map

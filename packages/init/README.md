@@ -27,6 +27,19 @@ init([null, null, ...myPacakges]);
 ```
 
 ### CLI (via `webpack-cli`)
+**Via defaults**
+
 ```bash
 npx webpack-cli init
+```
+**Via custom scaffold**
+1. Using package on `npm`
+
+```bash
+npx webpack-cli init webpack-scaffold-[name]
+```
+2. Using path to local directory
+
+```bash
+npx webapck-cli init [path]
 ```

@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/add",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "A scaffold for adding new properties",
   "main": "index.js",
   "author": "",
@@ -9,14 +9,15 @@
     "access": "public"
   },
   "dependencies": {
-    "@webpack-cli/generators": "^0.1.0",
-    "@webpack-cli/utils": "^0.1.0"
+    "@webpack-cli/generators": "^0.1.2",
+    "@webpack-cli/utils": "^0.1.2"
   },
   "devDependencies": {
-    "@types/node": "^10.3.6",
+    "@types/node": "^10.9.4",
     "typescript": "^2.9.2"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "watch": "npm run build && tsc -w"
   }
 }

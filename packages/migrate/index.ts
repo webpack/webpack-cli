@@ -178,7 +178,7 @@ function runMigration(currentConfigPath: string, outputConfigPath: string): Prom
 							},
 						]);
 					} else {
-						console.log(chalk.red("✖ Migration aborted"));
+						console.error(chalk.red("✖ Migration aborted"));
 					}
 				})
 				.then((answer: {
@@ -198,7 +198,7 @@ function runMigration(currentConfigPath: string, outputConfigPath: string): Prom
 						);
 
 						if (webpackOptionsValidationErrors.length) {
-							console.log(
+							console.error(
 								chalk.red(
 									"\n✖ Your configuration validation wasn't successful \n",
 								),
@@ -211,18 +211,18 @@ function runMigration(currentConfigPath: string, outputConfigPath: string): Prom
 						}
 					}
 
-					console.log(
+					console.info(
 						chalk.green(
 							`\n✔︎ New webpack config file is at ${outputConfigPath}.`,
 						),
 					);
-					console.log(
+					console.info(
 						chalk.green(
 							"✔︎ Heads up! Updating to the latest version could contain breaking changes.",
 						),
 					);
 
-					console.log(
+					console.info(
 						chalk.green(
 							"✔︎ Plugin and loader dependencies may need to be updated.",
 						),

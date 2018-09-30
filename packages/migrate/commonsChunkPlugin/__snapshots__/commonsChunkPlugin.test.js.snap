@@ -1,0 +1,302 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-0" data 1`] = `
+"module.exports = {
+    entry: {
+		app: './src/app.js',
+		vendor: './src/vendors.js',
+	},
+
+    optimizations: {
+        splitChunks: {
+            cacheGroups: {
+                app: {
+                    name: 'app',
+                    chunks: 'initial',
+                    enforce: true,
+                    test: 'app'
+                },
+
+                vendor: {
+                    name: 'vendor',
+                    chunks: 'initial',
+                    enforce: true,
+                    test: 'vendor'
+                }
+            }
+        }
+    }
+}
+"
+`;
+
+exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-1" data 1`] = `
+"module.exports = {
+    entry: {
+		vendor: './src/vendors.js',
+	},
+
+    optimizations: {
+        splitChunks: {
+            cacheGroups: {
+                common: {
+                    name: 'common',
+                    chunks: 'initial',
+                    enforce: true
+                },
+
+                vendor: {
+                    name: 'vendor',
+                    chunks: 'initial',
+                    enforce: true,
+                    test: 'vendor'
+                }
+            }
+        }
+    }
+}
+"
+`;
+
+exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-2" data 1`] = `
+"module.exports = {
+    entry: {
+		vendor: './src/vendors.js',
+	},
+
+    optimizations: {
+        splitChunks: {
+            cacheGroups: {
+                vendor: {
+                    name: 'vendor',
+                    chunks: 'initial',
+                    enforce: true,
+                    test: 'vendor'
+                }
+            }
+        }
+    }
+}
+"
+`;
+
+exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-3" data 1`] = `
+"module.exports = {
+    optimizations: {
+        splitChunks: {
+            cacheGroups: {
+                commons: {
+                    name: 'commons',
+                    chunks: 'initial',
+                    enforce: true,
+                    filename: 'commons.js'
+                }
+            }
+        }
+    }
+}
+"
+`;
+
+exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-4" data 1`] = `
+"module.exports = {
+    entry: {
+		main: './src/index.js',
+	},
+
+    optimizations: {
+        splitChunks: {
+            cacheGroups: {
+                main: {
+                    name: 'main',
+                    enforce: true,
+                    test: 'main',
+                    chunks: 'async',
+                    minSize: 2000
+                }
+            }
+        }
+    }
+}
+"
+`;
+
+exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-5" data 1`] = `
+"module.exports = {
+    entry: {
+		main: './src/index.js',
+	},
+
+    optimizations: {
+        splitChunks: {
+            cacheGroups: {
+                main: {
+                    name: 'main',
+                    chunks: 'initial',
+                    enforce: true,
+                    test: 'main'
+                }
+            }
+        },
+
+        runtimeChunk: {
+            name: 'runtime'
+        }
+    }
+}
+"
+`;
+
+exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-6a" data 1`] = `
+"module.exports = {
+    entry: {
+		main: './src/index.js',
+	},
+
+    optimizations: {
+        splitChunks: {
+            cacheGroups: {
+                main: {
+                    name: 'main',
+                    chunks: 'initial',
+                    enforce: true,
+
+                    test: module => {
+                        if (module.getChunks().some(chunk => chunk.name === 'main'))
+                            return true;
+
+                        const fn = ({ resource }) => /node_modules/.test(resource);
+                        return fn(module);
+                    }
+                }
+            }
+        }
+    }
+}
+"
+`;
+
+exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-6b" data 1`] = `
+"module.exports = {
+    entry: {
+		main: './src/index.js',
+	},
+
+    optimizations: {
+        splitChunks: {
+            cacheGroups: {
+                main: {
+                    name: 'main',
+                    chunks: 'initial',
+                    enforce: true,
+
+                    test: module => {
+                        if (module.getChunks().some(chunk => chunk.name === 'main'))
+                            return true;
+
+                        const fn = ({ resource }) => {
+                            // some code
+                            return /node_modules/.test(resource);
+                        };
+
+                        return fn(module);
+                    }
+                }
+            }
+        }
+    }
+}
+"
+`;
+
+exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-6c" data 1`] = `
+"module.exports = {
+    entry: {
+		main: './src/index.js',
+	},
+
+    optimizations: {
+        splitChunks: {
+            cacheGroups: {
+                main: {
+                    name: 'main',
+                    chunks: 'initial',
+                    enforce: true,
+
+                    test: module => {
+                        if (module.getChunks().some(chunk => chunk.name === 'main'))
+                            return true;
+
+                        const fn = function ({ resource }) {
+                            // some code
+                            return /node_modules/.test(resource);
+                        };
+
+                        return fn(module);
+                    }
+                }
+            }
+        }
+    }
+}
+"
+`;
+
+exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-6d" data 1`] = `
+"module.exports = {
+    entry: {
+		main: './src/index.js',
+	},
+
+    optimizations: {
+        splitChunks: {
+            cacheGroups: {
+                main: {
+                    name: 'main',
+                    chunks: 'initial',
+                    enforce: true,
+
+                    test: module => {
+                        if (module.getChunks().some(chunk => chunk.name === 'main'))
+                            return true;
+
+                        const fn = function ({ resource }) {
+                            if (foo) {
+                                return /node_modulesfoo/.test(resource);
+                            } else {
+                                return /node_modulesbaz/.test(resource);
+                            }
+                        };
+
+                        return fn(module);
+                    }
+                }
+            }
+        }
+    }
+}
+"
+`;
+
+exports[`commonsChunkPlugin transforms correctly using "commonsChunkPlugin-7" data 1`] = `
+"module.exports = {
+    entry: {
+		main: './src/index.js',
+	},
+
+    optimizations: {
+        splitChunks: {
+            cacheGroups: {
+                main: {
+                    name: 'main',
+                    chunks: 'initial',
+                    enforce: true,
+                    test: 'main',
+                    minSize: 3000
+                }
+            }
+        }
+    }
+}
+"
+`;

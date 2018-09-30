@@ -1,8 +1,9 @@
 {
   "name": "@webpack-cli/migrate",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Migrate command for webpack-cli",
   "main": "index.js",
+  "types": "index.d.ts",
   "author": "",
   "license": "MIT",
   "publishConfig": {
@@ -11,25 +12,25 @@
   "devDependencies": {
     "@types/chalk": "^2.2.0",
     "@types/diff": "^3.5.1",
-    "@types/inquirer": "0.0.41",
+    "@types/inquirer": "0.0.43",
     "@types/listr": "^0.13.0",
-    "@types/lodash": "^4.14.109",
+    "@types/lodash": "^4.14.116",
     "@types/node": "^10.3.3",
     "@types/p-each-series": "^1.0.0",
     "@types/p-lazy": "^1.0.0",
-    "jest": "^22.4.3",
+    "jest": "^23.6.0",
     "typescript": "^2.9.2"
   },
   "peerDependencies": {
     "webpack": "^4.x.x"
   },
   "dependencies": {
-    "@webpack-cli/utils": "^0.1.0",
+    "@webpack-cli/utils": "^0.1.2",
     "chalk": "^2.4.1",
     "diff": "^3.5.0",
-    "inquirer": "^5.2.0",
-    "jscodeshift": "^0.5.0",
-    "listr": "^0.14.1",
+    "inquirer": "^6.2.0",
+    "jscodeshift": "^0.5.1",
+    "listr": "^0.14.2",
     "lodash": "^4.17.10",
     "p-each-series": "^1.0.0",
     "p-lazy": "^1.0.0"
@@ -37,6 +38,6 @@
   "scripts": {
     "test": "jest",
     "build": "tsc",
-    "watch": "tsc -w"
+    "watch": "npm run build && tsc -w"
   }
 }
