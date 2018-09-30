@@ -33,7 +33,7 @@ In case you are suggesting a new feature, we will match your idea with our curre
 * `git clone <your-clone-url> && cd webpack-cli`
 
 ### Setup with npm
-* Install the dependencies and bootstrap the packages: `npm run bootstrap`
+* Install the dependencies and bootstrap the packages: `npm install`
 * Run the tests with: `npm test`
 
 ### Setup with yarn
