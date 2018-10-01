@@ -9,15 +9,14 @@ import modifyConfigHelper from "@webpack-cli/utils/modify-config-helper";
  * 	we're given on a generator
  *
  */
+const DEFAULT_WEBPACK_CONFIG_FILENAME: string = "webpack.config.js";
 
 export default function add(...args: string[]): Function {
-	const DEFAULT_WEBPACK_CONFIG_FILENAME: string = "webpack.config.js";
+  const filePaths: string[] = args.slice(3);
+  let configFile: string = DEFAULT_WEBPACK_CONFIG_FILENAME;
+  if (filePaths.length) {
+	configFile = filePaths[0];
+  }
 
-	const filePaths: string[] = args.slice(3);
-	let configFile: string = DEFAULT_WEBPACK_CONFIG_FILENAME;
-	if (filePaths.length) {
-		configFile = filePaths[0];
-	}
-
-	return modifyConfigHelper("add", defaultGenerator, configFile);
+  return modifyConfigHelper("add", defaultGenerator, configFile);
 }
