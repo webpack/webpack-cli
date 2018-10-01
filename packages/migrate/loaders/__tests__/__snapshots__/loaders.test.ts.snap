@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`loaders transforms correctly using "loaders-0" data 1`] = `
-"export default [
+"module.exports = [
   {
 	module: {
 		rules: [
@@ -118,7 +118,7 @@ exports[`loaders transforms correctly using "loaders-0" data 1`] = `
 `;
 
 exports[`loaders transforms correctly using "loaders-1" data 1`] = `
-"export default {
+"module.exports = {
   module: {
 	rules: [
 		{
@@ -142,7 +142,7 @@ exports[`loaders transforms correctly using "loaders-1" data 1`] = `
 `;
 
 exports[`loaders transforms correctly using "loaders-2" data 1`] = `
-"export default {
+"module.exports = {
   module: {
 	rules: [
 		{
@@ -163,7 +163,7 @@ exports[`loaders transforms correctly using "loaders-2" data 1`] = `
 `;
 
 exports[`loaders transforms correctly using "loaders-3" data 1`] = `
-"export default {
+"module.exports = {
   module: {
 	rules: [
 		{
@@ -181,7 +181,7 @@ exports[`loaders transforms correctly using "loaders-3" data 1`] = `
 `;
 
 exports[`loaders transforms correctly using "loaders-4" data 1`] = `
-"export default {
+"module.exports = {
   module: {
 	rules: [
 		{
@@ -199,7 +199,7 @@ exports[`loaders transforms correctly using "loaders-4" data 1`] = `
 `;
 
 exports[`loaders transforms correctly using "loaders-5" data 1`] = `
-"export default {
+"module.exports = {
   module: {
     rules: [{
     use: [{
@@ -220,7 +220,7 @@ exports[`loaders transforms correctly using "loaders-5" data 1`] = `
 `;
 
 exports[`loaders transforms correctly using "loaders-6" data 1`] = `
-"export default {
+"module.exports = {
   module: {
     rules: [{
     use: [{
@@ -241,7 +241,7 @@ exports[`loaders transforms correctly using "loaders-6" data 1`] = `
 `;
 
 exports[`loaders transforms correctly using "loaders-7" data 1`] = `
-"export default {
+"module.exports = {
   module: {
 	rules: [
 		{
@@ -264,27 +264,26 @@ exports[`loaders transforms correctly using "loaders-7" data 1`] = `
 `;
 
 exports[`loaders transforms correctly using "loaders-8" data 1`] = `
-"import * as path from \\"path\\";
-module.exports = {
-  module: {
-	rules: [
-		{
-		include: path.join(__dirname, \\"src\\"),
-		use: [{
-          loader: 'style-loader'
-        }, {
-          loader: 'css-loader',
+"module.exports = {
+	module: {
+		rules: [
+			{
+				include: path.join(__dirname, \\"src\\"),
+				use: [{
+                    loader: 'style-loader'
+                }, {
+                    loader: 'css-loader',
 
-          options: {
-            modules: true,
-            importLoaders: 1,
-            string: 'test123'
-          }
-        }],
-		test: /\\\\.js$/,
-		},
-	],
-  },
+                    options: {
+                        modules: true,
+                        importLoaders: 1,
+                        string: 'test123'
+                    }
+                }],
+				test: /\\\\.js$/
+			}
+		]
+	}
 };
 "
 `;

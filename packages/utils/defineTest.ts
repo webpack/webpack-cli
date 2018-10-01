@@ -61,7 +61,7 @@ function runSingleTransform(
 	"__tests__",
 	"__testfixtures__",
   );
-  const inputPath: string = path.join(fixtureDir, testFilePrefix + ".input.ts");
+  const inputPath: string = path.join(fixtureDir, testFilePrefix + ".input.js");
   const source: string = fs.readFileSync(inputPath, "utf8");
 
   let module: IModule;
