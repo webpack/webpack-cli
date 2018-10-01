@@ -10,21 +10,19 @@ exports[`outputPath transforms correctly using "outputPath-0" data 1`] = `
 `;
 
 exports[`outputPath transforms correctly using "outputPath-1" data 1`] = `
-"import * as path from \\"path\\";
-module.exports = {
-  output: {
-	path: path.join(__dirname, \\"dist\\"),
-  },
+"module.exports = {
+	output: {
+		path: path.join(__dirname, \\"dist\\")
+	}
 };
 "
 `;
 
 exports[`outputPath transforms correctly using "outputPath-2" data 1`] = `
-"import * as path from \\"path\\";
-module.exports = {
-  output: {
-	path: path.join(__dirname, \\"dist\\"),
-  },
+"module.exports = {
+	output: {
+		path: path.join(__dirname, \\"dist\\")
+	}
 };
 "
 `;

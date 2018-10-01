@@ -1,29 +1,28 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`resolve transforms correctly 1`] = `
-"import * as path from \\"path\\";
-
-export default [
-  {
-	resolve: {
-		modules: [path.resolve(\\"/src\\")],
+"const path = require(\\"patch\\");
+module.exports = [
+	{
+		resolve: {
+			modules: [path.resolve(\\"/src\\")]
+		}
 	},
-  },
-  {
-	resolve: {
-		modules: [path.resolve(\\"/src\\")],
+	{
+		resolve: {
+			modules: [path.resolve(\\"/src\\")]
+		}
 	},
-  },
-  {
-	resolve: {
-		modules: [path.resolve(\\"/src\\"), \\"node_modules\\"],
+	{
+		resolve: {
+			modules: [path.resolve(\\"/src\\"), \\"node_modules\\"]
+		}
 	},
-  },
-  {
-	resolve: {
-      modules: [\\"node_modules\\", path.resolve(\\"/src\\")]
-    },
-  },
+	{
+		resolve: {
+            modules: [\\"node_modules\\", path.resolve(\\"/src\\")]
+        }
+	}
 ];
 "
 `;
