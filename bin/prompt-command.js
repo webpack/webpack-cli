@@ -58,6 +58,15 @@ module.exports = function promptForInstallation(packages, ...args) {
 			options[0] = "add";
 		}
 
+		if (packages === "init") {
+			if (isYarn) {
+				options.splice(1, 1); // remove '-D'
+				options.splice(0, 0, "global");
+			} else {
+				options[1] = "-g";
+			}
+		}
+
 		const commandToBeRun = `${packageManager} ${options.join(" ")}`;
 
 		const question = `Would you like to install ${packages}? (That will run ${commandToBeRun}) (yes/NO)`;
