@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`array 1`] = `
+"Child
+                Asset       Size  Chunks             Chunk Names
+    entry-a.bundle.js  952 bytes       0  [emitted]  main
+    Entrypoint main = entry-a.bundle.js
+    [0] ./entry-a.js 31 bytes {0} [built]
+Child
+                Asset       Size  Chunks             Chunk Names
+    entry-b.bundle.js  952 bytes       0  [emitted]  main
+    Entrypoint main = entry-b.bundle.js
+    [0] ./entry-b.js 31 bytes {0} [built]"
+`;
