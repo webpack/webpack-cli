@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`info-verbosity 1`] = `
+" 1 asset
+Entrypoint main = main.js
+[0] ./index.js 134 bytes {0} [built] [failed] [1 error]
+
+WARNING in configuration
+The 'mode' option has not been set, webpack will fallback to 'production' for this value. Set 'mode' option to 'development' or 'production' to enable defaults for each environment.
+You can also set it to 'none' to disable any default behavior. Learn more: https://webpack.js.org/concepts/mode/
+
+ERROR in ./index.js 1:0
+Module parse failed: Unexpected token (1:0)
+You may need an appropriate loader to handle this file type.
+> }
+| 
+"
+`;
