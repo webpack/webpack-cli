@@ -1,8 +1,8 @@
-"usr strict";
+"use strict";
 
 const run = require("../../../testUtils");
 
-test("array", () => {
+test("function", () => {
 	const { code, stdout, stderr } = run(__dirname, [
 		"--config",
 		"./webpack.config.js",

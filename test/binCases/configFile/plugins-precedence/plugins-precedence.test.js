@@ -2,26 +2,25 @@
 
 const run = require("../../../testUtils");
 
-test("found-many", () => {
+test("plugins-precedence", () => {
 	const { code, stdout, stderr } = run(__dirname, [
+		"--entry",
+		"./index.js",
 		"--config",
 		"./webpack.config.js",
-		"--config-name",
-		"bar",
 		"--output-filename",
 		"[name].js",
 		"--output-chunk-filename",
 		"[id].chunk.js",
 		"--target",
 		"async-node",
-		"--mode",
-		"production"
+		"--define",
+		"TEST=\"ok\""
 	]);
 
 	expect(code).toBe(0);
 	expect(stdout).toEqual(expect.anything());
-	expect(stdout).toContain("./index2.js");
-	expect(stdout).toContain("./index3.js");
+	expect(stdout).toContain("ok.js");
 	expect(stderr).toHaveLength(0);
 	expect(stdout).toMatchSnapshot();
 });

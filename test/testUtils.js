@@ -16,7 +16,7 @@ function runWebpack(testCase, args) {
 	// const cwd = path.resolve(testCase);
 	const cwd = path.resolve(testCase);
 
-	const outputPath = path.resolve(__dirname, "js/bin", testCase);
+	const outputPath = path.resolve(testCase, "bin");
 	const argsWithOutput = args.concat("--output-path", outputPath);
 
 	const result = spawnSync(WEBPACK_PATH, argsWithOutput, {
