@@ -9,4 +9,5 @@ test("profile", () => {
 	expect(stdout).toEqual(expect.anything());
 	expect(stdout).toContain("factory:");
 	expect(stderr).toHaveLength(0);
+	// no snapshot here
 });
