@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`named-entry 1`] = `
+"  Asset       Size  Chunks             Chunk Names
+ foo.js  947 bytes       0  [emitted]  foo
+null.js  948 bytes       1  [emitted]  null
+Entrypoint foo = foo.js
+Entrypoint null = null.js
+[0] ./a.js 26 bytes {0} [built]
+[1] ./index.js 26 bytes {1} [built]"
+`;
