@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`profile 1`] = `
+"  Asset        Size  Chunks             Chunk Names
+main.js  1010 bytes       0  [emitted]  main
+Entrypoint main = main.js
+[0] ./index.js 66 bytes {0} [built]
+    factory:81ms building:20ms = 101ms
+[1] ./foo.js 39 bytes {0} [built]
+    [0] 101ms -> factory:9ms building:5ms = 115ms
+[2] ./bar.js 20 bytes {0} [built]
+    [0] 101ms -> [1] 14ms -> factory:1ms building:2ms = 118ms
+
+WARNING in configuration
+The 'mode' option has not been set, webpack will fallback to 'production' for this value. Set 'mode' option to 'development' or 'production' to enable defaults for each environment.
+You can also set it to 'none' to disable any default behavior. Learn more: https://webpack.js.org/concepts/mode/"
+`;

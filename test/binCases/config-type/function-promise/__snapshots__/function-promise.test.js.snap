@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`function 1`] = `
+exports[`function-promise 1`] = `
 "          Asset       Size  Chunks             Chunk Names
 entry.bundle.js  950 bytes       0  [emitted]  main
 Entrypoint main = entry.bundle.js

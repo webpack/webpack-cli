@@ -1,4 +1,4 @@
-"usr strict";
+"use strict";
 
 const run = require("../../../testUtils");
 
