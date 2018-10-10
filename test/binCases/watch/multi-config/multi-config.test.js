@@ -1,9 +1,9 @@
 "use strict";
 
 const { runWatch } = require("../../../testUtils");
+jest.setTimeout(10000);
 
 test("multi-config", done => {
-	jest.setTimeout(10000);
 	runWatch(__dirname).then(result => {
 		const { stdout, stderr } = result;
 		expect(stdout).toContain("");

@@ -1,9 +1,9 @@
 "use strict";
 
 const { runWatch } = require("../../../testUtils");
+jest.setTimeout(10000);
 
 test("multi-config-watch-opt", done => {
-	jest.setTimeout(10000);
 	runWatch(__dirname, [
 		"--entry",
 		"./index.js",

@@ -25,5 +25,4 @@ test("module-bind", () => {
 	expect(stdout).toContain("pre-loaded pre");
 	expect(stdout).toContain("post-loaded post");
 	expect(stderr).toHaveLength(0);
-	expect(stdout).toMatchSnapshot();
 });
