@@ -8,5 +8,4 @@ test("none", () => {
 	expect(code).toBe(0);
 	expect(stdout).toHaveLength(0);
 	expect(stderr).toHaveLength(0);
-	expect(stdout).toMatchSnapshot();
 });

@@ -8,5 +8,4 @@ test("production", () => {
 	expect(stdout).toEqual(expect.anything());
 	expect(stderr).toContain("Insufficient number of arguments or no entry found.");
 	expect(stderr).toContain("Alternatively, run 'webpack(-cli) --help' for usage info.");
-	expect(stdout).toMatchSnapshot();
 });

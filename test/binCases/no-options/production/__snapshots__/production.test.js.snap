@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`production 1`] = `
-"
-ERROR in Entry module not found: Error: Can't resolve './src' in '/Users/ematipico/www/temp/webpack-cli/test/binCases/no-options/production'
-"
-`;
