@@ -1,6 +1,6 @@
 "use strict";
 
-const run = require("../../../testUtils");
+const { run } = require("../../../testUtils");
 
 test("display-entrypoints", () => {
 	const { stdout, stderr } = run(__dirname, ["--display-entrypoints", "false"]);

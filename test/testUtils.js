@@ -1,7 +1,8 @@
 "use strict";
 
 const path = require("path");
-const { sync: spawnSync } = require("execa");
+const execa = require("execa");
+const { sync: spawnSync } = execa;
 
 const WEBPACK_PATH = path.resolve(__dirname, "../bin/cli.js");
 
@@ -12,7 +13,7 @@ const WEBPACK_PATH = path.resolve(__dirname, "../bin/cli.js");
  * @param {*} args Array of arguments to pass to webpack
  * @returns {Object} The webpack output
  */
-function runWebpack(testCase, args) {
+function run(testCase, args = []) {
 	// const cwd = path.resolve(testCase);
 	const cwd = path.resolve(testCase);
 
@@ -30,6 +31,25 @@ function runWebpack(testCase, args) {
 	return result;
 }
 
+function runWatch(testCase, args = []) {
+	const cwd = path.resolve(testCase);
+
+	const outputPath = path.resolve(testCase, "bin");
+	const argsWithOutput = args.concat("--output-path", outputPath);
+
+	return new Promise(resolve => {
+		// try {
+		execa(WEBPACK_PATH, argsWithOutput, {
+			cwd,
+			timeout: 8000,
+			reject: false
+		}).then(result => {
+			result.stdout = removeTimeStrings(result.stdout);
+			resolve(result);
+		});
+	});
+}
+
 function removeTimeStrings(stdout) {
 	if (stdout === "") {
 		return "";
@@ -42,5 +62,4 @@ function removeTimeStrings(stdout) {
 		.filter(line => !line.includes("Built at"))
 		.join("\n");
 }
-
-module.exports = runWebpack;
+module.exports = { run, runWatch };
