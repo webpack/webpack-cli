@@ -13,14 +13,14 @@
     "chalk": "^2.4.1",
     "cross-spawn": "^6.0.5",
     "global-modules": "^1.0.0",
-    "got": "^8.3.2",
+    "got": "^9.2.2",
     "jest": "^23.6.0",
     "jscodeshift": "^0.5.1",
     "log-symbols": "^2.2.0",
     "p-each-series": "^1.0.0",
     "prettier": "^1.14.2",
     "yeoman-environment": "^2.3.3",
-    "yeoman-generator": "^2.0.5"
+    "yeoman-generator": "^3.1.1"
   },
   "devDependencies": {
     "@types/chalk": "^2.2.0",
@@ -31,7 +31,7 @@
     "@types/node": "^10.9.4",
     "@types/p-each-series": "^1.0.0",
     "@types/prettier": "^1.13.2",
-    "typescript": "^2.9.2"
+    "typescript": "^3.1.3"
   },
   "scripts": {
     "build": "tsc",

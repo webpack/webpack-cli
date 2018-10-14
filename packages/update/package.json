@@ -15,7 +15,7 @@
     "@webpack-cli/utils": "^0.1.2"
   },
   "devDependencies": {
-    "typescript": "^2.9.2"
+    "typescript": "^3.1.3"
   },
   "scripts": {
     "build": "tsc",
