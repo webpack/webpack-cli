@@ -1,10 +1,9 @@
 "use strict";
 
 const { runWatch } = require("../../../testUtils");
-jest.setTimeout(10000);
 
 test("single-config", done => {
-	runWatch(__dirname, [
+	return runWatch(__dirname, [
 		"--entry",
 		"./index.js",
 		"--config",

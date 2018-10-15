@@ -3,6 +3,7 @@
 const path = require("path");
 const execa = require("execa");
 const { sync: spawnSync } = execa;
+const { Writable } = require("readable-stream");
 
 const WEBPACK_PATH = path.resolve(__dirname, "../bin/cli.js");
 
@@ -38,12 +39,25 @@ function runWatch(testCase, args = []) {
 	const argsWithOutput = args.concat("--output-path", outputPath);
 
 	return new Promise(resolve => {
-		// try {
-		execa(WEBPACK_PATH, argsWithOutput, {
+		const watchPromise = execa(WEBPACK_PATH, argsWithOutput, {
 			cwd,
-			timeout: 8000,
 			reject: false
-		}).then(result => {
+		});
+
+		watchPromise.stdout.pipe(
+			new Writable({
+				write(chunk, encoding, callback) {
+					const output = chunk.toString("utf8");
+
+					if (output.includes("Time")) {
+						watchPromise.kill();
+					}
+
+					callback();
+				}
+			})
+		);
+		watchPromise.then(result => {
 			result.stdout = removeTimeStrings(result.stdout);
 			resolve(result);
 		});

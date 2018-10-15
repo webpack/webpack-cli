@@ -72,11 +72,7 @@
 		],
 		"moduleNameMapper": {
 			"^.+\\.ts$": "ts-jest"
-		},
-		"watchPathIgnorePatterns": [
-			"<rootDir>/test/binCases/**/bin",
-			"<rootDir>/test/binCases/**/**/bin"
-		]
+		}
 	},
 	"nyc": {
 		"include": [
@@ -148,6 +144,7 @@
 		"lint-staged": "^7.2.2",
 		"nyc": "^13.0.1",
 		"prettier-eslint-cli": "^4.7.1",
+		"readable-stream": "^3.0.6",
 		"rimraf": "^2.6.2",
 		"schema-utils": "^1.0.0",
 		"ts-jest": "^23.10.1",

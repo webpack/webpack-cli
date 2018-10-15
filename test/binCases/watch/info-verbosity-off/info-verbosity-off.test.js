@@ -1,10 +1,8 @@
 "use strict";
 
 const { runWatch } = require("../../../testUtils");
-jest.setTimeout(10000);
-
-test("info-verbosity-off", done => {
-	runWatch(__dirname, [
+test("info-verbosity-off", () => {
+	return runWatch(__dirname, [
 		"--entry ",
 		"./index.js",
 		"--config",
@@ -26,6 +24,6 @@ test("info-verbosity-off", done => {
 
 		expect(stderr).toHaveLength(0);
 		expect(stdout).toMatchSnapshot();
-		done();
+		return;
 	});
 });
