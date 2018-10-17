@@ -1,0 +1,22 @@
+{
+  "groups": {
+    "default": {
+      "packages": [
+        "package.json",
+        "packages/add/package.json",
+        "packages/generate-loader/package.json",
+        "packages/generate-plugin/package.json",
+        "packages/generators/package.json",
+        "packages/info/package.json",
+        "packages/init/package.json",
+        "packages/make/package.json",
+        "packages/migrate/package.json",
+        "packages/remove/package.json",
+        "packages/serve/package.json",
+        "packages/update/package.json",
+        "packages/utils/package.json",
+        "packages/webpack-scaffold/package.json"
+      ]
+    }
+  }
+}
