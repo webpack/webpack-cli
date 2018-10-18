@@ -147,6 +147,6 @@
     "typedoc-plugin-monorepo": "^0.1.0",
     "typescript": "^2.9.2",
     "webpack": "^4.19.1",
-    "webpack-dev-server": "^3.1.8"
+    "webpack-dev-server": "^3.1.9"
   }
 }
