@@ -36,7 +36,7 @@ install:
   - npm install -g eslint
   - npm install -g greenkeeper-lockfile@2
   - lerna bootstrap
-  - cd packages/ui/public && npm ci && cd ../../
+  - cd packages/ui/public && npm ci && cd ../../../
 
 before_script: greenkeeper-lockfile-update
 after_script: greenkeeper-lockfile-upload
