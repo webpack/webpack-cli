@@ -39,7 +39,8 @@
 		"pretest": "npm run build && npm run lint && npm run tslint",
 		"reportCoverage": "nyc report --reporter=json && codecov -f coverage/coverage-final.json --disable=gcov",
 		"test": "nyc jest",
-		"travis:integration": "npm run build && npm run test && npm run reportCoverage",
+		"test:ci": "nyc jest --maxWorkers=4",
+		"travis:integration": "npm run pretest && npm run test:ci && npm run reportCoverage",
 		"travis:lint": "lerna bootstrap && npm run build && npm run lint && npm run tslint && npm run bundlesize",
 		"tslint": "tslint -c tslint.json \"packages/**/*.ts\"",
 		"watch": "npm run build && tsc -w"

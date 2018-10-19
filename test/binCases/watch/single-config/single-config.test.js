@@ -1,8 +1,7 @@
 "use strict";
 
 const { runWatch } = require("../../../testUtils");
-jest.setTimeout(30000);
-test("single-config", done => {
+test("single-config", () => {
 	return runWatch(__dirname, [
 		"--entry",
 		"./index.js",
@@ -24,6 +23,6 @@ test("single-config", done => {
 
 		expect(stderr).toHaveLength(0);
 		expect(stdout).toMatchSnapshot();
-		done();
+		return;
 	});
 });
