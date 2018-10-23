@@ -1,5 +1,5 @@
 {
-  "name": "@webpack-cli/ui",
+  "name": "@webpack-cli/ui-gui",
   "version": "0.0.1",
   "dependencies": {
     "react": "^16.5.2",
