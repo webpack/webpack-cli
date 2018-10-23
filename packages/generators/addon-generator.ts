@@ -75,9 +75,11 @@ export default function addonGenerator(
 		public install() {
 			this.npmInstall(["webpack-defaults", "bluebird"], {
 				"save-dev": true,
-			}).then((_: void): void => {
-				this.spawnCommand("npm", ["run", "defaults"]);
 			});
+		}
+
+		public end() {
+			this.spawnCommand("npm", ["run", "defaults"]);
 		}
 	};
 }

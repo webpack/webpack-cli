@@ -439,7 +439,7 @@ export default class InitGenerator extends Generator {
 			dev?: boolean,
 			"save-dev"?: boolean,
 		} = packager === "yarn" ? { dev: true } : { "save-dev": true };
-		this.runInstall(packager, this.dependencies, opts);
+		this.scheduleInstallTask(packager, this.dependencies, opts);
 	}
 
 	public writing() {
