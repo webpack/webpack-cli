@@ -22,7 +22,7 @@
     "typescript": "^2.9.2"
   },
   "peerDependencies": {
-    "webpack": "^4.x.x"
+    "webpack": "^4.23.1"
   },
   "dependencies": {
     "@webpack-cli/utils": "^0.1.2",
