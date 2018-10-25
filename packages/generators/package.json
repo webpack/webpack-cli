@@ -23,7 +23,7 @@
     "yeoman-generator": "^3.1.1"
   },
   "peerDependencies": {
-    "webpack": "^4.x.x"
+    "webpack": "4.x.x"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.116",
