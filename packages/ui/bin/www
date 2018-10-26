@@ -4,7 +4,7 @@
  */
 
 const path = require('path');
-const app = require("../../ui-server")(path.join(__dirname, "../../ui-gui/build"));
+const app = require("../../ui-server")(path.join(__dirname, "../../ui-gui"));
 const debug = require("debug")("ui:server");
 const http = require("http");
 
