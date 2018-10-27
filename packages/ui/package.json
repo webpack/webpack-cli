@@ -1,0 +1,13 @@
+{
+  "name": "@webpack-cli/ui",
+  "version": "0.0.1",
+  "description": "GUI for webpack-cli",
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "@webpack-cli/ui-server": "0.0.0",
+    "@webpack-cli/ui-gui": "0.0.1"
+  },
+  "license": "MIT"
+}
