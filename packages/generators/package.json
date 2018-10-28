@@ -18,6 +18,7 @@
     "lodash": "^4.17.10",
     "log-symbols": "^2.2.0",
     "mkdirp": "^0.5.1",
+    "webpack": "4.x.x",
     "webpack-addons": "^1.1.5",
     "webpack-dev-server": "^3.1.8",
     "yeoman-generator": "^3.1.1"
