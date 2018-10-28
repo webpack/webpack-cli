@@ -15,7 +15,6 @@ const WEBPACK_PATH = path.resolve(__dirname, "../bin/cli.js");
  * @returns {Object} The webpack output
  */
 function run(testCase, args = []) {
-	// const cwd = path.resolve(testCase);
 	const cwd = path.resolve(testCase);
 
 	const outputPath = path.resolve(testCase, "bin");
