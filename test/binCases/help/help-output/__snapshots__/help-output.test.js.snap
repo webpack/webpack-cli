@@ -111,8 +111,9 @@ Optimizing options:
                              optimization.minimizer.                   [boolean]
 
 Stats options:
-  --color, --colors               Enables/Disables colors on the console
+  --color, --colors               Force colors on the console
                                            [boolean] [default: (supports-color)]
+  --no-color, --no-colors         Force no colors on the console       [boolean]
   --sort-modules-by               Sorts the modules list by property in module
                                                                         [string]
   --sort-chunks-by                Sorts the chunks list by property in chunk
