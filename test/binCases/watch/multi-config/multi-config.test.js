@@ -1,14 +1,17 @@
 "use strict";
 
-const { runWatch } = require("../../../testUtils");
-test("multi-config", done => {
-	return runWatch(__dirname).then(result => {
-		const { stdout, stderr } = result;
-		expect(stdout).toContain("");
-		expect(stdout).toContain("webpack is watching the files…");
+/* eslint-disable node/no-unsupported-features  */
+/* eslint-disable node/no-unsupported-features/es-syntax  */
 
-		expect(stderr).toHaveLength(0);
-		expect(stdout).toMatchSnapshot();
-		return;
-	});
+const { runWatch } = require("../../../testUtils");
+
+test("multi-config", async(done) => {
+	const result = await runWatch(__dirname);
+	const { stdout, stderr } = result;
+	expect(stdout).toContain("");
+	expect(stdout).toContain("webpack is watching the files…");
+
+	expect(stderr).toHaveLength(0);
+	expect(stdout).toMatchSnapshot();
+	done();
 });

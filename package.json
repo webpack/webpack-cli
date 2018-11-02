@@ -126,6 +126,7 @@
     "@commitlint/travis-cli": "^7.1.2",
     "@types/jest": "^23.3.2",
     "@types/node": "^10.9.4",
+    "babel-preset-env": "^1.7.0",
     "bundlesize": "^0.17.0",
     "codecov": "^3.1.0",
     "commitizen": "^3.0.0",

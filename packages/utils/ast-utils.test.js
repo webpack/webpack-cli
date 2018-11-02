@@ -36,9 +36,7 @@ describe("utils", () => {
 			const ast = j(`
 { foo: new webpack.optimize.UglifyJsPlugin() }
 `);
-			const res = utils.findPluginsByName(j, ast, [
-				"webpack.optimize.UglifyJsPlugin"
-			]);
+			const res = utils.findPluginsByName(j, ast, ["webpack.optimize.UglifyJsPlugin"]);
 			expect(res.size()).toEqual(1);
 		});
 
@@ -49,10 +47,7 @@ describe("utils", () => {
 	new TestPlugin()
 ]
 `);
-			const res = utils.findPluginsByName(j, ast, [
-				"UglifyJsPlugin",
-				"TestPlugin"
-			]);
+			const res = utils.findPluginsByName(j, ast, ["UglifyJsPlugin", "TestPlugin"]);
 			expect(res.size()).toEqual(2);
 		});
 
@@ -60,9 +55,7 @@ describe("utils", () => {
 			const ast = j(`
 { foo: new UglifyJsPlugin() }
 `);
-			const res = utils.findPluginsByName(j, ast, [
-				"webpack.optimize.UglifyJsPlugin"
-			]);
+			const res = utils.findPluginsByName(j, ast, ["webpack.optimize.UglifyJsPlugin"]);
 			expect(res.size()).toEqual(0);
 		});
 	});
@@ -236,11 +229,7 @@ const a = { plugs: [] }
 					}
 				}
 			};
-			const traversedValue = utils.safeTraverse(p, [
-				"parent",
-				"value",
-				"value"
-			]);
+			const traversedValue = utils.safeTraverse(p, ["parent", "value", "value"]);
 			expect(traversedValue).toEqual(type);
 		});
 	});
@@ -324,9 +313,7 @@ const a = { plugs: [] }
 			const root = ast.find(j.ObjectExpression);
 
 			utils.findRootNodesByName(j, root, "entry").forEach(p => {
-				j(p).replaceWith(
-					utils.addProperty(j, p, "entry", propertyValue, "add")
-				);
+				j(p).replaceWith(utils.addProperty(j, p, "entry", propertyValue, "add"));
 			});
 
 			expect(ast.toSource()).toMatchSnapshot();
