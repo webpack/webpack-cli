@@ -1,10 +1,21 @@
-# webpack-cli ui-gui
-GUI for `webpack-cli ui`
+# preact material app
 
-#### Package Structure (base: `./`)
-1. `./`: Backend will serve from root folder
-1. `./src` : contains source
-2. `./dist`: contains bundled resources
+Super performant `Material` app for preact world using [preact-material-components](https://github.com/prateekbh/preact-material-components)
 
-> For frontend development: run `npm run serve`
-> For building sources : run `npm run build`
+## CLI Commands
+
+``` bash
+# install dependencies
+npm install
+
+# serve with hot reload at localhost:8080
+npm run dev
+
+# build for production with minification
+npm run build
+
+# test the production build locally
+npm run serve
+```
+
+For detailed explanation on how things work, checkout the [CLI Readme](https://github.com/developit/preact-cli/blob/master/README.md).
