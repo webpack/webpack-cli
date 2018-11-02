@@ -1,9 +1,14 @@
-# preact material app
+# webpack-cli ui-gui
 
-Super performant `Material` app for preact world using [preact-material-components](https://github.com/prateekbh/preact-material-components)
+GUI for `webpack-cli ui`
+
+#### Package Structure (base: `./`)
+
+1. `./`: Backend will serve from root folder
+2. `./src` : contains source
+3. `./build`: contains bundled resources
 
 ## CLI Commands
-
 ``` bash
 # install dependencies
 npm install
@@ -16,6 +21,3 @@ npm run build
 
 # test the production build locally
 npm run serve
-```
-
-For detailed explanation on how things work, checkout the [CLI Readme](https://github.com/developit/preact-cli/blob/master/README.md).
