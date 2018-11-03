@@ -1,14 +1,16 @@
 "use strict";
 
 jest.setTimeout(10E6);
+/* eslint-disable node/no-unsupported-features  */
+/* eslint-disable node/no-unsupported-features/es-syntax  */
 
 const { run } = require("../../../testUtils");
 
-test("single-config", () => {
-	const { code, stdout, stderr } = run(__dirname);
+test("single-config", async(done) => {
+	const { code, stdout, stderr } = await run(__dirname);
 
 	expect(code).toBe(0);
-	expect(stdout).toEqual(expect.anything());
+	expect(stdout).toContain("");
 	expect(stdout).toContain("main.js");
 	expect(stdout).toContain("chunk");
 	expect(stdout).not.toContain("./index.js");
@@ -17,4 +19,5 @@ test("single-config", () => {
 
 	expect(stderr).toHaveLength(0);
 	expect(stdout).toMatchSnapshot();
+	done();
 });
