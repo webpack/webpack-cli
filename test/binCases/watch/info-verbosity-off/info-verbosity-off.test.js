@@ -1,5 +1,6 @@
 "use strict";
 
+jest.setTimeout(10E5);
 /* eslint-disable node/no-unsupported-features  */
 /* eslint-disable node/no-unsupported-features/es-syntax  */
 
