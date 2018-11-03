@@ -1,8 +1,14 @@
 "use strict";
 
+/* eslint-disable node/no-unsupported-features  */
+/* eslint-disable node/no-unsupported-features/es-syntax  */
+
+jest.setTimeout(10E6);
+
 const { runWatch } = require("../../../testUtils");
-test("single-config", () => {
-	return runWatch(__dirname, [
+
+test("single-config", async(done) => {
+	const result = await runWatch(__dirname, [
 		"--entry",
 		"./index.js",
 		"--config",
@@ -14,15 +20,16 @@ test("single-config", () => {
 		"--target",
 		"async-node",
 		"--watch"
-	]).then(result => {
-		const { stdout, stderr } = result;
-		expect(stdout).toContain("");
-		expect(stdout).toEqual(expect.anything());
-		expect(stdout).toContain("");
-		expect(stdout).toContain("webpack is watching the files…");
+	]);
 
-		expect(stderr).toHaveLength(0);
-		expect(stdout).toMatchSnapshot();
-		return;
-	});
+	const { stdout, stderr } = result;
+	expect(stdout).toContain("");
+	expect(stdout).toEqual(expect.anything());
+	expect(stdout).toContain("");
+	expect(stdout).toContain("webpack is watching the files…");
+
+	expect(stderr).toHaveLength(0);
+	expect(stdout).toMatchSnapshot();
+	done();
+
 });
