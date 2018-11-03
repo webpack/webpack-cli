@@ -1,5 +1,7 @@
 "use strict";
 
+jest.setTimeout(10E6);
+
 const { run } = require("../../../testUtils");
 
 test("single-config", () => {
