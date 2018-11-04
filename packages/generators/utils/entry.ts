@@ -77,9 +77,7 @@ export default function entry(self: IEntry, answer: {
 							!entryPropAnswer[val].includes("path") &&
 							!entryPropAnswer[val].includes("process")
 						) {
-							entryPropAnswer[val] = `\'${entryPropAnswer[val]
-								.replace(/"|'/g, "")
-								.concat(".js")}\'`;
+							entryPropAnswer[val] = `\'${entryPropAnswer[val].replace(/"|'/g, "")}\'`;
 						}
 						webpackEntryPoint[val] = entryPropAnswer[val];
 					});
