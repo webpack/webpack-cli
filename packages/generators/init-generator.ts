@@ -151,9 +151,9 @@ export default class InitGenerator extends Generator {
 						getBabelPlugin(),
 					);
 					this.dependencies.push(
-						"babel-core",
 						"babel-loader",
-						"babel-preset-env",
+						"@babel/core",
+						"@babel/preset-env",
 					);
 				}
 			})
