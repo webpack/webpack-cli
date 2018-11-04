@@ -11,9 +11,7 @@ module.exports = function prepareOptions(options, argv) {
 
 function handleExport(options) {
 	const isES6DefaultExported =
-		typeof options === "object" &&
-		options !== null &&
-		typeof options.default !== "undefined";
+		typeof options === "object" && options !== null && typeof options.default !== "undefined";
 
 	return isES6DefaultExported ? options.default : options;
 }

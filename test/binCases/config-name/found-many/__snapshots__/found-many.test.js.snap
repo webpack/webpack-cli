@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`found-many 1`] = `
+"Child bar:
+      Asset       Size  Chunks             Chunk Names
+    main.js  945 bytes       0  [emitted]  main
+    Entrypoint main = main.js
+    [0] ./index2.js 24 bytes {0} [built]
+Child bar:
+      Asset       Size  Chunks             Chunk Names
+    main.js  930 bytes       0  [emitted]  main
+    Entrypoint main = main.js
+    [0] ./index3.js 0 bytes {0} [built]"
+`;
