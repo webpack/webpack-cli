@@ -3,7 +3,7 @@ import Generator = require("yeoman-generator");
 import * as glob from "glob-all";
 import * as autoComplete from "inquirer-autocomplete-prompt";
 import * as path from "path";
-import webpackDevServerSchema from "webpack-dev-server/lib/optionsSchema.json";
+import webpackDevServerSchema from "webpack-dev-server/lib/options.json";
 
 import npmExists from "@webpack-cli/utils/npm-exists";
 import { getPackageManager } from "@webpack-cli/utils/package-manager";
