@@ -82,5 +82,6 @@ jobs:
       - script: |
           npm test
         displayName: "Run tests"
-env:
-    nproc: 4
+
+variables:
+  nproc: 4
