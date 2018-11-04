@@ -19,6 +19,7 @@ import {
 import { ISchemaProperties, IWebpackOptions } from "./types";
 import entryQuestions from "./utils/entry";
 
+// tslint:disable:no-var-requires
 const webpackDevServerSchema = require("webpack-dev-server/lib/options.json");
 const webpackSchema = require("./utils/optionsSchema.json");
 const PROPS: string[] = Array.from(PROP_TYPES.keys());
