@@ -22,7 +22,7 @@ interface IYeoman {
 	public destinationRoot(rootPath?: string): string;
 	public destinationPath(...path: string[]): string;
 	public run(target: string, options?: object, done?: Function): IRunEnv;
-	public runInstall(packager: string, dependencies: string[], options?: object): void;
+	public scheduleInstallTask(packager: string, dependencies: string[], options?: object): void;
 	public on(event: string, listener: Function): this;
 	public async(): (_?: void) => void | boolean;
 	public prompt(opt: IPromptOptions[]): Promise<>;
@@ -51,7 +51,7 @@ declare module "yeoman-generator" {
 		public destinationRoot(rootPath?: string): string;
 		public destinationPath(...path: string[]): string;
 		public run(target: string, options?: object, done?: Function): IRunEnv;
-		public runInstall(packager: string, dependencies: string[], options?: object): void;
+		public scheduleInstallTask(packager: string, dependencies: string[], options?: object): void;
 		public on(event: string, listener: Function): this;
 		public async(): (_?: void) => void | boolean;
 		public prompt(opt: IPromptOptions[]): Promise<>;

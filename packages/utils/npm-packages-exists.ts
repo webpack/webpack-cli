@@ -47,12 +47,11 @@ export default function npmPackagesExists(pkg: string[]): void {
 
 		npmExists(addon)
 			.then((moduleExists: boolean) => {
-				if (!moduleExists) {
-					Error.stackTraceLimit = 0;
-					throw new TypeError(`Cannot resolve location of package ${addon}.`);
-				}
 				if (moduleExists) {
 					acceptedPackages.push(addon);
+				} else {
+					Error.stackTraceLimit = 0;
+					throw new TypeError(`Cannot resolve location of package ${addon}.`);
 				}
 			})
 			.catch((err: IError) => {

@@ -432,7 +432,7 @@ export default class AddGenerator extends Generator {
 									] = `new ${pluginName}`;
 									this.configuration.config.item = answerToAction.actionAnswer;
 									done();
-									this.runInstall(getPackageManager(), this.dependencies, {
+									this.scheduleInstallTask(getPackageManager(), this.dependencies, {
 										"save-dev": true,
 									});
 								} else {

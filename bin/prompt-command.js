@@ -78,9 +78,7 @@ module.exports = function promptForInstallation(packages, ...args) {
 
 		const question = `Would you like to install ${packages}? (That will run ${commandToBeRun}) (yes/NO)`;
 
-		console.error(
-			`The command moved into a separate package: ${nameOfPackage}`
-		);
+		console.error(`The command moved into a separate package: ${nameOfPackage}`);
 		const questionInterface = readLine.createInterface({
 			input: process.stdin,
 			output: process.stdout
@@ -94,12 +92,7 @@ module.exports = function promptForInstallation(packages, ...args) {
 					//eslint-disable-next-line
 					runCommand(packageManager, options)
 						.then(result => {
-							pathForCmd = path.resolve(
-								process.cwd(),
-								"node_modules",
-								"@webpack-cli",
-								packages
-							);
+							pathForCmd = path.resolve(process.cwd(), "node_modules", "@webpack-cli", packages);
 							if (packages === "serve") {
 								return require(pathForCmd).default.serve();
 							}
@@ -112,9 +105,7 @@ module.exports = function promptForInstallation(packages, ...args) {
 					break;
 				}
 				default: {
-					console.error(
-						`${nameOfPackage} needs to be installed in order to run the command.`
-					);
+					console.error(`${nameOfPackage} needs to be installed in order to run the command.`);
 					process.exitCode = 1;
 					break;
 				}

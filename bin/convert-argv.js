@@ -5,8 +5,7 @@ const interpret = require("interpret");
 const prepareOptions = require("./prepareOptions");
 const webpackConfigurationSchema = require("./webpackConfigurationSchema.json");
 const validateSchema = require("webpack").validateSchema;
-const WebpackOptionsValidationError = require("webpack")
-	.WebpackOptionsValidationError;
+const WebpackOptionsValidationError = require("webpack").WebpackOptionsValidationError;
 
 module.exports = function(...args) {
 	const argv = args[1] || args[0];
@@ -24,9 +23,7 @@ module.exports = function(...args) {
 	}
 	if (argv.p) {
 		argv["optimize-minimize"] = true;
-		argv["define"] = []
-			.concat(argv["define"] || [])
-			.concat("process.env.NODE_ENV=\"production\"");
+		argv["define"] = [].concat(argv["define"] || []).concat("process.env.NODE_ENV=\"production\"");
 		if (!argv.mode) {
 			argv.mode = "production";
 		}
@@ -64,9 +61,7 @@ module.exports = function(...args) {
 		const getConfigExtension = function getConfigExtension(configPath) {
 			for (i = extensions.length - 1; i >= 0; i--) {
 				const tmpExt = extensions[i];
-				if (
-					configPath.indexOf(tmpExt, configPath.length - tmpExt.length) > -1
-				) {
+				if (configPath.indexOf(tmpExt, configPath.length - tmpExt.length) > -1) {
 					return tmpExt;
 				}
 			}
@@ -82,9 +77,7 @@ module.exports = function(...args) {
 			};
 		};
 
-		const configArgList = Array.isArray(argv.config)
-			? argv.config
-			: [argv.config];
+		const configArgList = Array.isArray(argv.config) ? argv.config : [argv.config];
 		configFiles = configArgList.map(mapConfigArg);
 	} else {
 		for (i = 0; i < defaultConfigFiles.length; i++) {
@@ -121,10 +114,7 @@ module.exports = function(...args) {
 		const requireConfig = function requireConfig(configPath) {
 			let options = (function WEBPACK_OPTIONS() {
 				if (argv.configRegister && argv.configRegister.length) {
-					module.paths.unshift(
-						path.resolve(process.cwd(), "node_modules"),
-						process.cwd()
-					);
+					module.paths.unshift(path.resolve(process.cwd(), "node_modules"), process.cwd());
 					argv.configRegister.forEach(dep => {
 						require(dep);
 					});
@@ -153,18 +143,10 @@ module.exports = function(...args) {
 	}
 
 	function processConfiguredOptions(options) {
-		const webpackConfigurationValidationErrors = validateSchema(
-			webpackConfigurationSchema,
-			options
-		);
+		const webpackConfigurationValidationErrors = validateSchema(webpackConfigurationSchema, options);
 		if (webpackConfigurationValidationErrors.length) {
-			const error = new WebpackOptionsValidationError(
-				webpackConfigurationValidationErrors
-			);
-			console.error(
-				error.message,
-				`\nReceived: ${typeof options} : ${JSON.stringify(options, null, 2)}`
-			);
+			const error = new WebpackOptionsValidationError(webpackConfigurationValidationErrors);
+			console.error(error.message, `\nReceived: ${typeof options} : ${JSON.stringify(options, null, 2)}`);
 			process.exit(-1); // eslint-disable-line
 		}
 
@@ -184,9 +166,7 @@ module.exports = function(...args) {
 				return opt.name === argv["config-name"];
 			});
 			if (namedOptions.length === 0) {
-				console.error(
-					"Configuration with name '" + argv["config-name"] + "' was not found."
-				);
+				console.error("Configuration with name '" + argv["config-name"] + "' was not found.");
 				process.exit(-1); // eslint-disable-line
 			} else if (namedOptions.length === 1) {
 				return processConfiguredOptions(namedOptions[0]);
@@ -218,10 +198,8 @@ module.exports = function(...args) {
 
 		if (typeof argv["watch-poll"] !== "undefined") {
 			options.watchOptions = options.watchOptions || {};
-			if (argv["watch-poll"] === "true" || argv["watch-poll"] === "")
-				options.watchOptions.poll = true;
-			else if (!isNaN(argv["watch-poll"]))
-				options.watchOptions.poll = +argv["watch-poll"];
+			if (argv["watch-poll"] === "true" || argv["watch-poll"] === "") options.watchOptions.poll = true;
+			else if (!isNaN(argv["watch-poll"])) options.watchOptions.poll = +argv["watch-poll"];
 		}
 
 		if (argv["watch-stdin"]) {
@@ -337,10 +315,7 @@ module.exports = function(...args) {
 		ifArgPair(
 			"entry",
 			function(name, entry) {
-				if (
-					typeof options.entry[name] !== "undefined" &&
-					options.entry[name] !== null
-				) {
+				if (typeof options.entry[name] !== "undefined" && options.entry[name] !== null) {
 					options.entry[name] = [].concat(options.entry[name]).concat(entry);
 				} else {
 					options.entry[name] = entry;
@@ -360,11 +335,7 @@ module.exports = function(...args) {
 						binding += "-loader";
 					}
 					const rule = {
-						test: new RegExp(
-							"\\." +
-								name.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") +
-								"$"
-						), // eslint-disable-line no-useless-escape
+						test: new RegExp("\\." + name.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") + "$"), // eslint-disable-line no-useless-escape
 						loader: binding
 					};
 					if (arg === "module-bind-pre") {
@@ -469,8 +440,7 @@ module.exports = function(...args) {
 		mapArgToBoolean("cache");
 
 		ifBooleanArg("hot", function() {
-			const HotModuleReplacementPlugin = require("webpack")
-				.HotModuleReplacementPlugin;
+			const HotModuleReplacementPlugin = require("webpack").HotModuleReplacementPlugin;
 			addPlugin(options, new HotModuleReplacementPlugin());
 		});
 
@@ -511,8 +481,7 @@ module.exports = function(...args) {
 		});
 
 		ifArg("optimize-max-chunks", function(value) {
-			const LimitChunkCountPlugin = require("webpack").optimize
-				.LimitChunkCountPlugin;
+			const LimitChunkCountPlugin = require("webpack").optimize.LimitChunkCountPlugin;
 			addPlugin(
 				options,
 				new LimitChunkCountPlugin({
@@ -586,12 +555,7 @@ module.exports = function(...args) {
 				if (i < 0 || (j >= 0 && j < i)) {
 					const resolved = path.resolve(content);
 					if (fs.existsSync(resolved)) {
-						addTo(
-							"main",
-							`${resolved}${
-								fs.statSync(resolved).isDirectory() ? path.sep : ""
-							}`
-						);
+						addTo("main", `${resolved}${fs.statSync(resolved).isDirectory() ? path.sep : ""}`);
 					} else {
 						addTo("main", content);
 					}

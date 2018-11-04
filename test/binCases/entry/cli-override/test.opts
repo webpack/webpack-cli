@@ -1,4 +1,0 @@
---entry cliEntry=./index.js
---config ./webpack.config.js
---output-filename [name].js
---output-chunk-filename [id].chunk.js

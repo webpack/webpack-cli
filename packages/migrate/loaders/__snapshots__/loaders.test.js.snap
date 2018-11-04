@@ -234,7 +234,7 @@ exports[`loaders transforms correctly using "loaders-7" data 1`] = `
                     loader: 'babel-loader',
 
                     options: {
-                        presets: ['env']
+                        presets: ['@babel/preset-env']
                     }
                 }]
             }

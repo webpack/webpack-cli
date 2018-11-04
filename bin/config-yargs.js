@@ -20,11 +20,7 @@ const resolveSchema = schema => {
 const findPropertyInSchema = (schema, property, subProperty) => {
 	if (!schema) return null;
 	if (subProperty) {
-		if (
-			schema[property] &&
-			typeof schema[property] === "object" &&
-			subProperty in schema[property]
-		) {
+		if (schema[property] && typeof schema[property] === "object" && subProperty in schema[property]) {
 			return resolveSchema(schema[property][subProperty]);
 		}
 	} else {
@@ -34,11 +30,7 @@ const findPropertyInSchema = (schema, property, subProperty) => {
 		if (schema[name]) {
 			for (const item of schema[name]) {
 				const resolvedItem = resolveSchema(item);
-				const result = findPropertyInSchema(
-					resolvedItem,
-					property,
-					subProperty
-				);
+				const result = findPropertyInSchema(resolvedItem, property, subProperty);
 				if (result) return result;
 			}
 		}
@@ -51,9 +43,7 @@ const getSchemaInfo = (path, property, subProperty) => {
 	let current = optionsSchema;
 	for (const segment of pathSegments) {
 		if (segment === "*") {
-			current =
-				findPropertyInSchema(current, "additionalProperties") ||
-				findPropertyInSchema(current, "items");
+			current = findPropertyInSchema(current, "additionalProperties") || findPropertyInSchema(current, "items");
 		} else {
 			current = findPropertyInSchema(current, "properties", segment);
 		}
@@ -87,8 +77,7 @@ module.exports = function(yargs) {
 			"config-register": {
 				type: "array",
 				alias: "r",
-				describe:
-					"Preload one or more modules before loading the webpack configuration",
+				describe: "Preload one or more modules before loading the webpack configuration",
 				group: CONFIG_GROUP,
 				defaultDescription: "module id or path",
 				requiresArg: true
@@ -165,8 +154,7 @@ module.exports = function(yargs) {
 				type: "string",
 				describe: getSchemaInfo("output.chunkFilename", "description"),
 				group: OUTPUT_GROUP,
-				defaultDescription:
-					"filename with [id] instead of [name] or [id] prefixed",
+				defaultDescription: "filename with [id] instead of [name] or [id] prefixed",
 				requiresArg: true
 			},
 			"output-source-map-filename": {
@@ -305,10 +293,7 @@ module.exports = function(yargs) {
 				requiresArg: true
 			},
 			"optimize-min-chunk-size": {
-				describe: getSchemaInfo(
-					"optimization.splitChunks.minSize",
-					"description"
-				),
+				describe: getSchemaInfo("optimization.splitChunks.minSize", "description"),
 				group: OPTIMIZE_GROUP,
 				requiresArg: true
 			},
@@ -325,8 +310,7 @@ module.exports = function(yargs) {
 			},
 			provide: {
 				type: "string",
-				describe:
-					"Provide these modules as free vars in all modules (Example: --provide jQuery=jquery)",
+				describe: "Provide these modules as free vars in all modules (Example: --provide jQuery=jquery)",
 				group: ADVANCED_GROUP,
 				requiresArg: true
 			},
@@ -355,14 +339,12 @@ module.exports = function(yargs) {
 			},
 			d: {
 				type: "boolean",
-				describe:
-					"shortcut for --debug --devtool eval-cheap-module-source-map --output-pathinfo",
+				describe: "shortcut for --debug --devtool eval-cheap-module-source-map --output-pathinfo",
 				group: BASIC_GROUP
 			},
 			p: {
 				type: "boolean",
-				describe:
-					"shortcut for --optimize-minimize --define process.env.NODE_ENV=\"production\"",
+				describe: "shortcut for --optimize-minimize --define process.env.NODE_ENV=\"production\"",
 				group: BASIC_GROUP
 			}
 		});

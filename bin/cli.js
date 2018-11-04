@@ -45,9 +45,7 @@
 		return require("./prompt-command")(NON_COMPILATION_CMD, ...process.argv);
 	}
 
-	const yargs = require("yargs").usage(`webpack-cli ${
-		require("../package.json").version
-	}
+	const yargs = require("yargs").usage(`webpack-cli ${require("../package.json").version}
 
 Usage: webpack-cli [options]
        webpack-cli [options] --entry <entry> --output <output>
@@ -80,12 +78,16 @@ For more information, see https://webpack.js.org/api/cli/.`);
 			type: "boolean",
 			alias: "colors",
 			default: function supportsColor() {
-				if (process.stdout.isTTY === true) {
-					return require("supports-color").supportsColor;
-				}
+				return require("supports-color").stdout;
 			},
 			group: DISPLAY_GROUP,
-			describe: "Enables/Disables colors on the console"
+			describe: "Force colors on the console"
+		},
+		"no-color": {
+			type: "boolean",
+			alias: "no-colors",
+			group: DISPLAY_GROUP,
+			describe: "Force no colors on the console"
 		},
 		"sort-modules-by": {
 			type: "string",
@@ -160,8 +162,7 @@ For more information, see https://webpack.js.org/api/cli/.`);
 		"display-used-exports": {
 			type: "boolean",
 			group: DISPLAY_GROUP,
-			describe:
-				"Display information about used exports in modules (Tree Shaking)"
+			describe: "Display information about used exports in modules (Tree Shaking)"
 		},
 		"display-provided-exports": {
 			type: "boolean",
@@ -171,8 +172,7 @@ For more information, see https://webpack.js.org/api/cli/.`);
 		"display-optimization-bailout": {
 			type: "boolean",
 			group: DISPLAY_GROUP,
-			describe:
-				"Display information about why optimization bailed out for modules"
+			describe: "Display information about why optimization bailed out for modules"
 		},
 		"display-error-details": {
 			type: "boolean",
@@ -181,15 +181,7 @@ For more information, see https://webpack.js.org/api/cli/.`);
 		},
 		display: {
 			type: "string",
-			choices: [
-				"",
-				"verbose",
-				"detailed",
-				"normal",
-				"minimal",
-				"errors-only",
-				"none"
-			],
+			choices: ["", "verbose", "detailed", "normal", "minimal", "errors-only", "none"],
 			group: DISPLAY_GROUP,
 			describe: "Select display preset"
 		},
@@ -203,8 +195,7 @@ For more information, see https://webpack.js.org/api/cli/.`);
 			default: "info",
 			choices: ["none", "info", "verbose"],
 			group: DISPLAY_GROUP,
-			describe:
-				"Controls the output of lifecycle messaging e.g. Started watching files..."
+			describe: "Controls the output of lifecycle messaging e.g. Started watching files..."
 		},
 		"build-delimiter": {
 			type: "string",
@@ -291,10 +282,7 @@ For more information, see https://webpack.js.org/api/cli/.`);
 			const statsPresetToOptions = require("webpack").Stats.presetToOptions;
 
 			let outputOptions = options.stats;
-			if (
-				typeof outputOptions === "boolean" ||
-				typeof outputOptions === "string"
-			) {
+			if (typeof outputOptions === "boolean" || typeof outputOptions === "string") {
 				outputOptions = statsPresetToOptions(outputOptions);
 			} else if (!outputOptions) {
 				outputOptions = {};
@@ -308,8 +296,7 @@ For more information, see https://webpack.js.org/api/cli/.`);
 			if (Array.isArray(options) && !outputOptions.children) {
 				outputOptions.children = options.map(o => o.stats);
 			}
-			if (typeof outputOptions.context === "undefined")
-				outputOptions.context = firstOptions.context;
+			if (typeof outputOptions.context === "undefined") outputOptions.context = firstOptions.context;
 
 			ifArg("env", function(value) {
 				if (outputOptions.env) {
@@ -324,11 +311,7 @@ For more information, see https://webpack.js.org/api/cli/.`);
 				}
 			});
 
-			if (
-				typeof outputOptions.colors === "undefined" &&
-				process.stdout.isTTY === true
-			)
-				outputOptions.colors = require("supports-color").stdout;
+			if (typeof outputOptions.colors === "undefined") outputOptions.colors = require("supports-color").stdout;
 
 			ifArg("sort-modules-by", function(value) {
 				outputOptions.modulesSort = value;
@@ -347,10 +330,8 @@ For more information, see https://webpack.js.org/api/cli/.`);
 			});
 
 			if (!outputOptions.json) {
-				if (typeof outputOptions.cached === "undefined")
-					outputOptions.cached = false;
-				if (typeof outputOptions.cachedAssets === "undefined")
-					outputOptions.cachedAssets = false;
+				if (typeof outputOptions.cached === "undefined") outputOptions.cached = false;
+				if (typeof outputOptions.cachedAssets === "undefined") outputOptions.cachedAssets = false;
 
 				ifArg("display-chunks", function(bool) {
 					if (bool) {
@@ -404,12 +385,7 @@ For more information, see https://webpack.js.org/api/cli/.`);
 					if (bool) outputOptions.cachedAssets = true;
 				});
 
-				if (!outputOptions.exclude)
-					outputOptions.exclude = [
-						"node_modules",
-						"bower_components",
-						"components"
-					];
+				if (!outputOptions.exclude) outputOptions.exclude = ["node_modules", "bower_components", "components"];
 
 				if (argv["display-modules"]) {
 					outputOptions.maxModules = Infinity;
@@ -441,10 +417,7 @@ For more information, see https://webpack.js.org/api/cli/.`);
 				compiler = webpack(options);
 			} catch (err) {
 				if (err.name === "WebpackOptionsValidationError") {
-					if (argv.color)
-						console.error(
-							`\u001b[1m\u001b[31m${err.message}\u001b[39m\u001b[22m`
-						);
+					if (argv.color) console.error(`\u001b[1m\u001b[31m${err.message}\u001b[39m\u001b[22m`);
 					else console.error(err.message);
 					// eslint-disable-next-line no-process-exit
 					process.exit(1);
@@ -489,26 +462,20 @@ For more information, see https://webpack.js.org/api/cli/.`);
 					process.exit(1); // eslint-disable-line
 				}
 				if (outputOptions.json) {
-					stdout.write(
-						JSON.stringify(stats.toJson(outputOptions), null, 2) + "\n"
-					);
+					stdout.write(JSON.stringify(stats.toJson(outputOptions), null, 2) + "\n");
 				} else if (stats.hash !== lastHash) {
 					lastHash = stats.hash;
 					if (stats.compilation && stats.compilation.errors.length !== 0) {
 						const errors = stats.compilation.errors;
 						if (errors[0].name === "EntryModuleNotFoundError") {
-							console.error(
-								"\n\u001b[1m\u001b[31mInsufficient number of arguments or no entry found."
-							);
+							console.error("\n\u001b[1m\u001b[31mInsufficient number of arguments or no entry found.");
 							console.error(
 								"\u001b[1m\u001b[31mAlternatively, run 'webpack(-cli) --help' for usage info.\u001b[39m\u001b[22m\n"
 							);
 						}
 					}
 					const statsString = stats.toString(outputOptions);
-					const delimiter = outputOptions.buildDelimiter
-						? `${outputOptions.buildDelimiter}\n`
-						: "";
+					const delimiter = outputOptions.buildDelimiter ? `${outputOptions.buildDelimiter}\n` : "";
 					if (statsString) stdout.write(`${statsString}\n${delimiter}`);
 				}
 				if (!options.watch && stats.hasErrors()) {
@@ -516,11 +483,7 @@ For more information, see https://webpack.js.org/api/cli/.`);
 				}
 			}
 			if (firstOptions.watch || options.watch) {
-				const watchOptions =
-					firstOptions.watchOptions ||
-					firstOptions.watch ||
-					options.watch ||
-					{};
+				const watchOptions = firstOptions.watchOptions || firstOptions.watch || options.watch || {};
 				if (watchOptions.stdin) {
 					process.stdin.on("end", function(_) {
 						process.exit(); // eslint-disable-line
@@ -528,8 +491,7 @@ For more information, see https://webpack.js.org/api/cli/.`);
 					process.stdin.resume();
 				}
 				compiler.watch(watchOptions, compilerCallback);
-				if (outputOptions.infoVerbosity !== "none")
-					console.log("\nwebpack is watching the files…\n");
+				if (outputOptions.infoVerbosity !== "none") console.log("\nwebpack is watching the files…\n");
 			} else compiler.run(compilerCallback);
 		}
 
