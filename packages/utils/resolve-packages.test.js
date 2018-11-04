@@ -45,9 +45,7 @@ describe("resolve-packages", () => {
 
 	it("should resolve a location of a published module", () => {
 		moduleLoc = getLoc(["webpack-scaffold-ylvis"]);
-		expect(moduleLoc).toEqual([
-			path.normalize("../../node_modules/webpack-scaffold-ylvis")
-		]);
+		expect(moduleLoc).toEqual([path.normalize("../../node_modules/webpack-scaffold-ylvis")]);
 	});
 
 	it("should be empty if argument is blank", () => {

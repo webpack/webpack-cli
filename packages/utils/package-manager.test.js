@@ -65,11 +65,7 @@ describe("package-manager", () => {
 		const packageName = "some-pkg";
 
 		packageManager.spawnChild(packageName);
-		expect(spawn.sync).toHaveBeenLastCalledWith(
-			"yarn",
-			["global", "add", packageName],
-			{ stdio: "inherit" }
-		);
+		expect(spawn.sync).toHaveBeenLastCalledWith("yarn", ["global", "add", packageName], { stdio: "inherit" });
 	});
 
 	it("should spawn yarn upgrade from spawnChild", () => {
@@ -78,11 +74,7 @@ describe("package-manager", () => {
 		mockUpdateYarnOnce();
 
 		packageManager.spawnChild(packageName);
-		expect(spawn.sync).toHaveBeenLastCalledWith(
-			"yarn",
-			["global", "upgrade", packageName],
-			{ stdio: "inherit" }
-		);
+		expect(spawn.sync).toHaveBeenLastCalledWith("yarn", ["global", "upgrade", packageName], { stdio: "inherit" });
 	});
 
 	it("should spawn npm install from spawnChild", () => {
@@ -90,11 +82,7 @@ describe("package-manager", () => {
 
 		mockSpawnErrorTwice();
 		packageManager.spawnChild(packageName);
-		expect(spawn.sync).toHaveBeenLastCalledWith(
-			"npm",
-			["install", "-g", packageName],
-			{ stdio: "inherit" }
-		);
+		expect(spawn.sync).toHaveBeenLastCalledWith("npm", ["install", "-g", packageName], { stdio: "inherit" });
 	});
 
 	it("should spawn npm update from spawnChild", () => {
@@ -103,11 +91,7 @@ describe("package-manager", () => {
 		mockUpdateNPMOnce();
 
 		packageManager.spawnChild(packageName);
-		expect(spawn.sync).toHaveBeenLastCalledWith(
-			"npm",
-			["update", "-g", packageName],
-			{ stdio: "inherit" }
-		);
+		expect(spawn.sync).toHaveBeenLastCalledWith("npm", ["update", "-g", packageName], { stdio: "inherit" });
 	});
 
 	it("should return the yarn global dir from getPathToGlobalPackages if yarn is installed", () => {
