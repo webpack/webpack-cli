@@ -16,7 +16,7 @@ To run the scaffolding instance programmatically, install it as a dependency. Wh
 
 ### Node
 ```js
-const remove = require("@webpack-cli/remove");
+const remove = require("@webpack-cli/remove").default;
 remove();
 ```
 
