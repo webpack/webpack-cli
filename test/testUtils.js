@@ -75,4 +75,42 @@ function removeTimeStrings(stdout) {
 		.filter(line => !line.includes("Built at"))
 		.join("\n");
 }
-module.exports = { run, runWatch };
+
+function extractHash(stdout) {
+	if (stdout === "") {
+		return null;
+	}
+
+	let hashArray = stdout.match(/Hash.*\n/gm).map(hashLine => hashLine.replace(/Hash:(.*)/, "$1").trim());
+
+	// If logs are full of errors and we don't find hash
+	if (hashArray.length === 0) {
+		return null;
+	}
+
+	let hashInfo = {
+		hash: hashArray[0],
+		config: []
+	};
+
+	// Multiple config were found
+	if (hashArray.length > 1) {
+		const childArray = stdout.match(/Child.*\n/gm).map(childLine => childLine.replace(/Child(.*):/, "$1").trim());
+
+		// We don't need global hash anymore
+		// so we'll remove it to maintain 1:1 parity between config and hash
+		hashArray.shift();
+
+		const configCount = childArray.length;
+		for (let configIdx = 0; configIdx < configCount; configIdx++) {
+			hashInfo["config"].push({
+				name: childArray[configIdx],
+				hash: hashArray[configIdx]
+			});
+		}
+	}
+
+	return hashInfo;
+}
+
+module.exports = { run, runWatch, extractHash };
