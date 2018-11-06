@@ -3,6 +3,8 @@ const app = require('../../app.js');
 
 const port = process.env.PORT || 8000;
 
+console.log(port);
+
 app(path.join('..', '..', 'static')).listen(port, () => {
 	console.log(`server started on 127.0.0.1:${port}`);
 });

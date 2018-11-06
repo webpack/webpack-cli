@@ -9,6 +9,7 @@
     "@webpack-cli/init": "^0.1.2",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
+    "execa": "^1.0.0",
     "express": "~4.16.0",
     "morgan": "~1.9.0",
     "webpack": "^4.24.0",

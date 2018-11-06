@@ -3,6 +3,6 @@ const { Router } = require('express');
 const init = require('./init');
 
 const router = new Router();
-router.get('/init', init);
+router.post('/init', init);
 
 module.exports = router;
