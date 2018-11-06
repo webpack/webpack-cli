@@ -1,5 +1,5 @@
 "use strict";
-const utils = require("../index");
+import * as utils from "../index";
 
 describe("utils", () => {
 	describe("createArrowFunction", () => {
@@ -18,7 +18,7 @@ describe("utils", () => {
 		});
 		it("should stringify an array", () => {
 			expect(
-				utils.createDynamicPromise(["app.js", "index.js"])
+				utils.createDynamicPromise(["app.js", "index.js"]),
 			).toMatchSnapshot();
 		});
 	});
@@ -48,49 +48,49 @@ describe("utils", () => {
 	describe("Inquirer", () => {
 		it("should make an List object", () => {
 			expect(utils.List("entry", "does it work?", ["Yes", "Maybe"])).toEqual({
-				type: "list",
-				name: "entry",
+				choices: ["Yes", "Maybe"],
 				message: "does it work?",
-				choices: ["Yes", "Maybe"]
+				name: "entry",
+				type: "list",
 			});
 		});
 		it("should make an RawList object", () => {
 			expect(
-				utils.RawList("output", "does it work?", ["Yes", "Maybe"])
+				utils.RawList("output", "does it work?", ["Yes", "Maybe"]),
 			).toEqual({
-				type: "rawlist",
-				name: "output",
+				choices: ["Yes", "Maybe"],
 				message: "does it work?",
-				choices: ["Yes", "Maybe"]
+				name: "output",
+				type: "rawlist",
 			});
 		});
 		it("should make an CheckList object", () => {
 			expect(
-				utils.CheckList("context", "does it work?", ["Yes", "Maybe"])
+				utils.CheckList("context", "does it work?", ["Yes", "Maybe"]),
 			).toEqual({
-				type: "checkbox",
-				name: "context",
+				choices: ["Yes", "Maybe"],
 				message: "does it work?",
-				choices: ["Yes", "Maybe"]
+				name: "context",
+				type: "checkbox",
 			});
 		});
 		it("should make an Input object", () => {
 			expect(utils.Input("plugins", "what is your plugin?")).toEqual({
-				type: "input",
+				message: "what is your plugin?",
 				name: "plugins",
-				message: "what is your plugin?"
+				type: "input",
 			});
 		});
 		it("should make an Confirm object", () => {
 			expect(utils.Confirm("context", "what is your context?")).toEqual({
-				type: "confirm",
+				message: "what is your context?",
 				name: "context",
-				message: "what is your context?"
+				type: "confirm",
 			});
 		});
 		it("should make an Input object with validation", () => {
 			expect(
-				utils.InputValidate("plugins", "what is your plugin?", () => {})
+				utils.InputValidate("plugins", "what is your plugin?", () => true),
 			).toMatchSnapshot();
 		});
 	});

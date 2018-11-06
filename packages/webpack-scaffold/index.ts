@@ -20,19 +20,19 @@ export interface IInquirerInput extends IInquirerScaffoldObject {
 	validate?: (input: string) => string | boolean;
 }
 
-export function createArrowFunction(value: Function): string {
+export function createArrowFunction(value: string): string {
 	return `() => '${value}'`;
 }
 
-export function createRegularFunction(value: Function): string {
+export function createRegularFunction(value: string): string {
 	return `function () {\n return '${value}'\n}`;
 }
 
-export function createDynamicPromise(arrOrString: Function[] | string): string {
+export function createDynamicPromise(arrOrString: string[] | string): string {
 	if (Array.isArray(arrOrString)) {
 		return (
 			"() => new Promise((resolve) => resolve([" +
-			arrOrString.map((func: Function) => {
+			arrOrString.map((func: string) => {
 				return "'" + func + "'";
 			}) +
 			"]))"
