@@ -6,6 +6,6 @@ router.get("/", function(req, res, next) {
 	res.json({ title: "Express" });
 });
 
-router.use(require('./api'));
+router.use('/api', require('./api'));
 
 module.exports = router;
