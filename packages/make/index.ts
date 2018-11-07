@@ -13,9 +13,7 @@ import {
  */
 export default function make() {
 	const userDirectory: String = process.cwd();
-
 	let isBase: Boolean = false;
-	let dependencyTree: Object;
 
 	if (fs.existsSync(__dirname + "/base")) {
 		isBase = true;
@@ -23,7 +21,7 @@ export default function make() {
 		storeBase(userDirectory);
 	}
 
-	dependencyTree = getDependencyTree();
+	const dependencyTree: Object = getDependencyTree();
 
 	if (!isBase) {
 		builder(dependencyTree);
