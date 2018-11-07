@@ -2,7 +2,18 @@
 
 ## Description
 
-This package contains the logic to run a makefile command similar to C in webpack. 
+This package contains the logic to build only changed files and files depending on them in webpack.
+
+#### Dependency tree
+Package create dependency tree according to source files.
+A typical dependency tree looks like
+```json
+	{
+		"src/foo.js" : ["bar", "webpack", . . . , etc],
+		"src/bar.js" : ["./utils/apple", . . . ,etc],
+		"src/utils.apple.js" : ["path", . . . . , etc]
+	}
+```
 
 ## Installation
 

@@ -16,5 +16,8 @@
   "scripts": {
     "build": "tsc",
     "watch": "npm run build && tsc -w"
+  },
+  "dependencies": {
+    "jscodeshift": "^0.5.1"
   }
 }
