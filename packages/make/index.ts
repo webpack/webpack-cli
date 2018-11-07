@@ -12,7 +12,7 @@ import {
  *
  */
 export default function make() {
-	const userDirectory: String = process.cwd();
+	const userDirectory: fs.PathLike = process.cwd();
 	let isBase: Boolean = false;
 
 	if (fs.existsSync(__dirname + "/base")) {
@@ -29,4 +29,5 @@ export default function make() {
 		const changedTree: Object = getChangedTree(userDirectory);
 		builder(changedTree);
 	}
+	storeBase(userDirectory);
 }
