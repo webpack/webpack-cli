@@ -78,15 +78,20 @@ function removeTimeStrings(stdout) {
 
 function extractHash(stdout) {
 	if (stdout === "") {
-		return null;
+		throw new Error("stdout is empty");
 	}
 
-	let hashArray = stdout.match(/Hash.*\n/gm).map(hashLine => hashLine.replace(/Hash:(.*)/, "$1").trim());
+	let hashArray = stdout.match(/Hash.*/gm);
 
 	// If logs are full of errors and we don't find hash
-	if (hashArray.length === 0) {
-		return null;
+	if (!hashArray) {
+		throw new Error(
+			`could not find hash in the stdout
+			OUTPUT: ${stdout}`
+		);
 	}
+
+	hashArray = hashArray.map(hashLine => hashLine.replace(/Hash:(.*)/, "$1").trim());
 
 	let hashInfo = {
 		hash: hashArray[0],
@@ -95,12 +100,24 @@ function extractHash(stdout) {
 
 	// Multiple config were found
 	if (hashArray.length > 1) {
-		const childArray = stdout.match(/Child.*\n/gm).map(childLine => childLine.replace(/Child(.*):/, "$1").trim());
+		let childArray = stdout.match(/Child.*/gm);
+
+		if (!childArray) {
+			throw new Error(
+				`could not find config in the stdout
+				OUTPUT: ${stdout}`
+			);
+		}
+
+		childArray = childArray.map(childLine => childLine.replace(/Child(.*):/, "$1").trim());
 
 		// We don't need global hash anymore
 		// so we'll remove it to maintain 1:1 parity between config and hash
 		hashArray.shift();
-
+		if (hashArray.length !== childArray.length) {
+			throw new Error(`The stdout is corrupted. Hash count and config count do not match.
+			OUTPUT: ${stdout}`);
+		}
 		const configCount = childArray.length;
 		for (let configIdx = 0; configIdx < configCount; configIdx++) {
 			hashInfo["config"].push({
