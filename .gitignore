@@ -2,6 +2,9 @@
 .idea
 .vscode
 
+# TS type definations
+*.d.ts
+
 # Vim swap files
 .s[a-z][a-z]
 .*.s[a-z][a-z]
