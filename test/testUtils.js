@@ -115,7 +115,7 @@ function extractHash(stdout) {
 
 	hashArray = hashArray.map(hashLine => hashLine.replace(/Hash:(.*)/, "$1").trim());
 
-	let hashInfo = {
+	const hashInfo = {
 		hash: hashArray[0],
 		config: []
 	};

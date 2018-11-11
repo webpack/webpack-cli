@@ -4,13 +4,13 @@ const { extractHash } = require("./testUtils");
 
 describe("extractHash functionality", () => {
 	it("should throw Error if there is empty string", () => {
-		let stdout = "";
+		const stdout = "";
 
 		expect(() => extractHash(stdout)).toThrowError();
 	});
 
 	it("should throw Error if there is no hash value", () => {
-		let stdout = `Entrypoint main = main.js
+		const stdout = `Entrypoint main = main.js
         [./src/index.js] 2.52 KiB {main} [built] [failed] [1 error]
         ERROR in ./src/index.js
         Module build failed (from ./node_modules/babel-loader/lib/index.js):
@@ -20,7 +20,7 @@ describe("extractHash functionality", () => {
 	});
 
 	it("should throw Error if hash count and config count do not match", () => {
-		let stdout = `Hash: c6fe1f550a76720b1eaec6fe1f550a76720b1eae
+		const stdout = `Hash: c6fe1f550a76720b1eaec6fe1f550a76720b1eae
         Version: webpack 4.25.0
         Child index1:
             Hash: c6fe1f550a76720b1eae
@@ -40,9 +40,9 @@ describe("extractHash functionality", () => {
 	});
 
 	it("should fetch hash if there is only single config", () => {
-		let actualGlobalHash = "c961f4babc1cda156fa0";
+		const actualGlobalHash = "c961f4babc1cda156fa0";
 
-		let stdout = `Hash: ${actualGlobalHash}
+		const stdout = `Hash: ${actualGlobalHash}
         Version: webpack 4.25.0
         Time: 865ms
         Built at: 11/05/2018 6:30:19 PM
@@ -54,7 +54,7 @@ describe("extractHash functionality", () => {
         Module build failed (from ./node_modules/babel-loader/lib/index.js):
         TypeError: Cannot read property 'bindings' of null`;
 
-		let hashInfo = extractHash(stdout);
+		const hashInfo = extractHash(stdout);
 
 		expect(hashInfo).not.toBeNull();
 		expect(hashInfo.hash).toBe(actualGlobalHash);
@@ -62,14 +62,14 @@ describe("extractHash functionality", () => {
 	});
 
 	it("should fetch hash if there is more than one config", () => {
-		let actualGlobalHash = "c6fe1f550a76720b1eaec6fe1f550a76720b2aed";
-		let config1Hash = "c6fe1f550a76720b1eae";
-		let config1Name = "index1";
+		const actualGlobalHash = "c6fe1f550a76720b1eaec6fe1f550a76720b2aed";
+		const config1Hash = "c6fe1f550a76720b1eae";
+		const config1Name = "index1";
 
-		let config2Hash = "c6fe1f550a76720b2aed";
-		let config2Name = "index2";
+		const config2Hash = "c6fe1f550a76720b2aed";
+		const config2Name = "index2";
 
-		let stdout = `Hash: ${actualGlobalHash}
+		const stdout = `Hash: ${actualGlobalHash}
 Version: webpack 4.25.0
 Child ${config1Name}:
     Hash: ${config1Hash}
@@ -92,7 +92,7 @@ Child ${config2Name}:
     Entrypoint main = main.js
     [0] ./src/index.2.js 48 bytes {0} [built]`;
 
-		let hashInfo = extractHash(stdout);
+		const hashInfo = extractHash(stdout);
 
 		expect(hashInfo).not.toBeNull();
 		expect(hashInfo.hash).toBe(actualGlobalHash);
