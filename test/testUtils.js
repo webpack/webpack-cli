@@ -76,6 +76,28 @@ function removeTimeStrings(stdout) {
 		.join("\n");
 }
 
+/**
+ * @typedef {Object} Config
+ * @property {string} name - name of config
+ * @property {string} hash - hash of config
+ *
+ * @typedef {Object} HashInfo
+ * @property {string} hash - global hash value
+ * @property {Array.<Config>} config
+ */
+
+/**
+ * Description
+ *
+ * @param {string} stdout stdout of generic webpack output
+ * @returns {HashInfo} - an object containing hash-info
+ * @throws Will throw an error if {@link stdout}
+ * 		- is empty
+ * 		- does not contain Hash
+ *      - does not contain Hash
+ * 		- if multiple configs then, count(hash) !== count(Child) + 1 (+1 is for global hash)
+ *
+ */
 function extractHash(stdout) {
 	if (stdout === "") {
 		throw new Error("stdout is empty");
