@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "jscodeshift": "^0.5.1",
-    "node-dir": "^0.1.17"
+    "node-dir": "^0.1.17",
+    "shelljs": "^0.8.2"
   }
 }
