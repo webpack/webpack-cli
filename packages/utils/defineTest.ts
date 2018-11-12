@@ -18,7 +18,7 @@ type transformType = (
   jscodeshift: IJSCodeshift,
   ast: INode,
   initOptions: string | boolean | object,
-  action: string,
+  action: object | string,
   transformName?: string,
 ) => INode;
 
@@ -51,7 +51,7 @@ function runSingleTransform(
   transformName: string,
   testFilePrefix: string,
   initOptions: object | boolean | string,
-  action: string,
+  action: object | string,
 ): string {
   if (!testFilePrefix) {
 	testFilePrefix = transformName;
@@ -118,8 +118,8 @@ export default function defineTest(
   dirName: string,
   transformName: string,
   testFilePrefix?: string,
-  transformObject?: object,
-  action?: string,
+  transformObject?: object | string,
+  action?: object | string,
 ): void {
   const testName: string = testFilePrefix
 	? `transforms correctly using "${testFilePrefix}" data`
