@@ -12,7 +12,7 @@ export default class NotFound extends Component {
 						<h2 class=" mdc-typography--title">404! Page not found.</h2>
 					</div>
 					<div class={style.cardBody}>
-						Looks like the page you are trying to access, doesn't exist.
+						Looks like the page you are trying to access, doesn\'t exist.
 					</div>
 				</Card>
 			</div>
