@@ -57,7 +57,7 @@ exports[`utils createOrUpdatePluginByName should create a new plugin with argume
 })] }"
 `;
 
-exports[`utils createOrUpdatePluginByName should create a new plugin without arguments 1`] = `"{ plugins: [new Plugin({})] }"`;
+exports[`utils createOrUpdatePluginByName should create a new plugin without arguments 1`] = `"{ plugins: [new Plugin()] }"`;
 
 exports[`utils createOrUpdatePluginByName should merge options objects 1`] = `
 "[new Plugin({

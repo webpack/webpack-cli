@@ -106,7 +106,7 @@ const a = { plugs: [] }
 		it("should create a new plugin without arguments", () => {
 			const ast = j("{ plugins: [] }");
 			ast.find(j.ArrayExpression).forEach((node) => {
-				utils.createOrUpdatePluginByName(j, node, "Plugin", {});
+				utils.createOrUpdatePluginByName(j, node, "Plugin");
 			});
 			expect(ast.toSource()).toMatchSnapshot();
 		});
