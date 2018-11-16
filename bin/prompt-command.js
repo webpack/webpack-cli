@@ -34,8 +34,20 @@ module.exports = function promptForInstallation(packages, ...args) {
 	let pathForCmd;
 	try {
 		const path = require("path");
-		pathForCmd = path.resolve(process.cwd(), "node_modules", "@webpack-cli", packages);
-		require.resolve(pathForCmd);
+		const fs = require("fs");
+		pathForCmd = path.resolve(
+			process.cwd(),
+			"node_modules",
+			"@webpack-cli",
+			packages
+		);
+		if (!fs.existsSync(pathForCmd)) {
+			const globalModules = require("global-modules");
+			pathForCmd = globalModules + "/@webpack-cli/" + packages;
+			require.resolve(pathForCmd);
+		} else {
+			require.resolve(pathForCmd);
+		}
 		packageIsInstalled = true;
 	} catch (err) {
 		packageIsInstalled = false;
@@ -51,6 +63,15 @@ module.exports = function promptForInstallation(packages, ...args) {
 
 		if (isYarn) {
 			options[0] = "add";
+		}
+
+		if (packages === "init") {
+			if (isYarn) {
+				options.splice(1, 1); // remove '-D'
+				options.splice(0, 0, "global");
+			} else {
+				options[1] = "-g";
+			}
 		}
 
 		const commandToBeRun = `${packageManager} ${options.join(" ")}`;

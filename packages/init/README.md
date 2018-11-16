@@ -17,7 +17,7 @@ To run the package programmatically, install it as a dependency. When using the 
 ### Node
 
 ```js
-const init = require("@webpack-cli/init");
+const init = require("@webpack-cli/init").default;
 
 // this will run the default init instance
 init();

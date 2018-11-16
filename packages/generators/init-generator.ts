@@ -146,14 +146,14 @@ export default class InitGenerator extends Generator {
 			.then((babelConfirmAnswer: {
 				babelConfirm: boolean;
 			}) => {
-				if (babelConfirmAnswer.babelConfirm === true) {
+				if (babelConfirmAnswer.babelConfirm) {
 					this.configuration.config.webpackOptions.module.rules.push(
 						getBabelPlugin(),
 					);
 					this.dependencies.push(
-						"babel-core",
 						"babel-loader",
-						"babel-preset-env",
+						"@babel/core",
+						"@babel/preset-env",
 					);
 				}
 			})

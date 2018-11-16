@@ -24,7 +24,7 @@ export default function(): IModule {
 			],
 			presets: [
 				[
-					"'env'",
+					"'@babel/preset-env'",
 					{
 						"'modules'": false,
 					},

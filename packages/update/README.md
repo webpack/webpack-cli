@@ -16,7 +16,7 @@ To run the scaffolding instance programmatically, install it as a dependency. Wh
 
 ### Node
 ```js
-const update = require("@webpack-cli/update");
+const update = require("@webpack-cli/update").default;
 update();
 ```
 

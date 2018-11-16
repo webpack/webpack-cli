@@ -20,7 +20,7 @@ export default function entry(self: IEntry, answer: {
 }): Promise<{}> {
 	let entryIdentifiers: string[];
 	let result: Promise<{}>;
-	if (answer.entryType === true) {
+	if (answer.entryType) {
 		result = self
 			.prompt([
 				InputValidate(
@@ -77,9 +77,7 @@ export default function entry(self: IEntry, answer: {
 							!entryPropAnswer[val].includes("path") &&
 							!entryPropAnswer[val].includes("process")
 						) {
-							entryPropAnswer[val] = `\'${entryPropAnswer[val]
-								.replace(/"|'/g, "")
-								.concat(".js")}\'`;
+							entryPropAnswer[val] = `\'${entryPropAnswer[val].replace(/"|'/g, "")}\'`;
 						}
 						webpackEntryPoint[val] = entryPropAnswer[val];
 					});
@@ -98,9 +96,7 @@ export default function entry(self: IEntry, answer: {
 				singularEntry: string,
 			}): string => {
 				let { singularEntry } = singularEntryAnswer;
-				if (singularEntry.indexOf("\"") >= 0) {
-					singularEntry = singularEntry.replace(/"/g, "'");
-				}
+				singularEntry = `\'${singularEntry.replace(/"|'/g, "")}\'`;
 				if (singularEntry.length <= 0) {
 					self.usingDefaults = true;
 				}
