@@ -1,7 +1,7 @@
 "use strict";
 
-const isLocalPath = require("./is-local-path").default;
-const path = require("path");
+import * as path from "path";
+import isLocalPath from "../is-local-path";
 
 describe("is-local-path", () => {
 	it("returns true for paths beginning in the current directory", () => {

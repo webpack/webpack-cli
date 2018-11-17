@@ -1,10 +1,11 @@
-const npmPackagesExists = require("./npm-packages-exists").default;
-// console.log('npmPackagesExists: ', npmPackagesExists);
+import npmPackagesExists from "../npm-packages-exists";
+import {resolvePackages} from "../resolve-packages";
 
-jest.mock("./npm-exists");
-jest.mock("./resolve-packages");
+jest.mock("../npm-exists");
+jest.mock("../resolve-packages");
 
-const mockResolvePackages = require("./resolve-packages").resolvePackages;
+// TS is not aware that jest changes the type of resolvePackages
+const mockResolvePackages = resolvePackages as jest.Mock<typeof resolvePackages>;
 
 describe("npmPackagesExists", () => {
 	test("resolves packages when they are available on the local filesystem", () => {
@@ -16,12 +17,12 @@ describe("npmPackagesExists", () => {
 		expect(() => npmPackagesExists(["my-webpack-addon"])).toThrowError(TypeError);
 	});
 
-	test("resolves packages when they are available on npm", done => {
-		require("./npm-exists").default.mockImplementation(() => Promise.resolve(true));
+	test("resolves packages when they are available on npm", (done) => {
+		require("../npm-exists").default.mockImplementation(() => Promise.resolve(true));
 		npmPackagesExists(["webpack-scaffold-foobar"]);
 		setTimeout(() => {
 			expect(mockResolvePackages.mock.calls[mockResolvePackages.mock.calls.length - 1][0]).toEqual([
-				"webpack-scaffold-foobar"
+				"webpack-scaffold-foobar",
 			]);
 			done();
 		}, 10);

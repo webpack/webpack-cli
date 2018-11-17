@@ -75,7 +75,8 @@
     "testRegex": "/__tests__/.*\\.(test.js|test.ts)$",
     "moduleFileExtensions": [
       "ts",
-      "js"
+      "js",
+      "json"
     ]
   },
   "nyc": {

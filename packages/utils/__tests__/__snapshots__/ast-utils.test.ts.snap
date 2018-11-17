@@ -12,14 +12,13 @@ exports[`utils addProperty add entry property using add 1`] = `
                   }],
 
                   man: () => duper,
+                  man: () => duper,
+                  nice: ':)',
                   objects: are,
 
                   super: [yeah, {
                     loader: 'eslint-loader'
-                  }],
-
-                  nice: ':)',
-                  man: () => duper
+                  }]
                 }
 			}"
 `;
@@ -27,14 +26,13 @@ exports[`utils addProperty add entry property using add 1`] = `
 exports[`utils addProperty add entry property using init 1`] = `
 "module.exports = {
   entry: {
+    man: () => duper,
+    nice: ':)',
     objects: are,
 
     super: [yeah, {
       loader: 'eslint-loader'
-    }],
-
-    nice: ':)',
-    man: () => duper
+    }]
   }
 }"
 `;
