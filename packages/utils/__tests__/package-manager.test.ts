@@ -1,31 +1,31 @@
 "use strict";
 
-const path = require("path");
+import * as path from "path";
+import * as packageManager from "../package-manager";
 
 jest.mock("cross-spawn");
 jest.mock("fs");
 
 describe("package-manager", () => {
-	const packageManager = require("./package-manager");
 	const spawn = require("cross-spawn");
 	const fs = require("fs");
 
 	const defaultSyncResult = {
-		pid: 1234,
+		error: null,
 		output: [null, null, null],
-		stdout: null,
-		stderr: null,
+		pid: 1234,
 		signal: null,
 		status: 1,
-		error: null
+		stderr: null,
+		stdout: null,
 	};
 
 	function mockSpawnErrorOnce() {
 		spawn.sync.mockReturnValueOnce(
 			Object.assign({}, defaultSyncResult, {
+				error: new Error(),
 				status: null,
-				error: new Error()
-			})
+			}),
 		);
 	}
 
@@ -101,8 +101,8 @@ describe("package-manager", () => {
 		// Mock stdout of `yarn global dir`
 		spawn.sync.mockReturnValueOnce({
 			stdout: {
-				toString: () => `${yarnDir}\n`
-			}
+				toString: () => `${yarnDir}\n`,
+			},
 		});
 		const globalPath = packageManager.getPathToGlobalPackages();
 		const expected = path.join(yarnDir, "node_modules");
