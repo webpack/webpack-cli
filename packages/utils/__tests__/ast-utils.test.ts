@@ -2,6 +2,7 @@
 
 import * as j from "jscodeshift/dist/core";
 import * as utils from "../ast-utils";
+import { INode } from "../types/NodePath";
 
 describe("utils", () => {
 	describe("createProperty", () => {
@@ -105,7 +106,7 @@ const a = { plugs: [] }
 	describe("createOrUpdatePluginByName", () => {
 		it("should create a new plugin without arguments", () => {
 			const ast = j("{ plugins: [] }");
-			ast.find(j.ArrayExpression).forEach((node) => {
+			ast.find(j.ArrayExpression).forEach((node: INode) => {
 				utils.createOrUpdatePluginByName(j, node, "Plugin");
 			});
 			expect(ast.toSource()).toMatchSnapshot();
@@ -113,7 +114,7 @@ const a = { plugs: [] }
 
 		it("should create a new plugin with arguments", () => {
 			const ast = j("{ plugins: [] }");
-			ast.find(j.ArrayExpression).forEach((node) => {
+			ast.find(j.ArrayExpression).forEach((node: INode) => {
 				utils.createOrUpdatePluginByName(j, node, "Plugin", {
 					foo: "bar",
 				});
@@ -123,7 +124,7 @@ const a = { plugs: [] }
 
 		it("should add an object as an argument", () => {
 			const ast = j("[new Plugin()]");
-			ast.find(j.ArrayExpression).forEach((node) => {
+			ast.find(j.ArrayExpression).forEach((node: INode) => {
 				utils.createOrUpdatePluginByName(j, node, "Plugin", {
 					foo: true,
 				});
@@ -133,7 +134,7 @@ const a = { plugs: [] }
 
 		it("should merge options objects", () => {
 			const ast = j("[new Plugin({ foo: true })]");
-			ast.find(j.ArrayExpression).forEach((node) => {
+			ast.find(j.ArrayExpression).forEach((node: INode) => {
 				utils.createOrUpdatePluginByName(j, node, "Plugin", {
 					bar: "baz",
 					foo: false,
