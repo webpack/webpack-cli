@@ -81,7 +81,7 @@ module.exports = function(...args) {
 
 		for (i = 0; i < defaultConfigFileNames.length; i++) {
 			const webpackConfigName = defaultConfigFileNames[i];
-			var pathToWebpackConfig = findup(webpackConfigName);
+			const pathToWebpackConfig = findup(webpackConfigName);
 
 			if (pathToWebpackConfig) {
 				const resolvedPath = path.resolve(pathToWebpackConfig);
