@@ -34,7 +34,7 @@ install:
   - npm ci
   - npm install -g codecov
   - npm install -g eslint
-  - lerna bootstrap
+  - travis_wait lerna bootstrap
 
 jobs:
   include:
