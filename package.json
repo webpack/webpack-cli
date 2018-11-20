@@ -38,8 +38,8 @@
     "postinstall": "lerna bootstrap",
     "pretest": "npm run build && npm run lint && npm run tslint",
     "reportCoverage": "nyc report --reporter=json && codecov -f coverage/coverage-final.json --disable=gcov",
-    "test": "nyc jest --maxWorkers=4",
-    "test:ci": "nyc jest --maxWorkers=$(nproc)",
+    "test": "nyc jest --maxWorkers=4 --reporters=default --reporters=jest-junit",
+    "test:ci": "nyc jest --maxWorkers=$(nproc) --reporters=default --reporters=jest-junit",
     "travis:integration": "npm run build && npm run test && npm run reportCoverage",
     "travis:lint": "lerna bootstrap && npm run build && npm run lint && npm run tslint && npm run bundlesize",
     "tslint": "tslint -c tslint.json \"packages/**/*.ts\"",
@@ -66,7 +66,8 @@
     "collectCoverage": true,
     "coverageReporters": [
       "json",
-      "html"
+      "html",
+      "cobertura"
     ],
     "moduleNameMapper": {
       "^.+\\.(ts)?$": "ts-jest"
@@ -140,6 +141,7 @@
     "husky": "^1.0.0",
     "jest": "^23.6.0",
     "jest-cli": "^23.6.0",
+    "jest-junit": "^5.0.0",
     "lerna": "^3.4.0",
     "lint-staged": "7.x.x",
     "nyc": "^13.0.1",
