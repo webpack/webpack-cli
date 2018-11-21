@@ -88,7 +88,7 @@ export default function modifyHelperUtil(
 	}
 	env.registerStub(generator, generatorName);
 
-	env.run(generatorName).on("end", (_: void) => {
+	env.run(generatorName).then((_: void) => {
 		let configModule: object;
 		try {
 			const confPath: string = path.resolve(process.cwd(), ".yo-rc.json");
@@ -122,5 +122,8 @@ export default function modifyHelperUtil(
 			configModule,
 		);
 		return runTransform(transformConfig, action);
+	}).catch((err) => {
+		console.error(chalk.red("\nUnexpected Error, please file an issue to https://github.com/webpack/webpack-cli\n"));
+		console.error(err);
 	});
 }
