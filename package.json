@@ -135,7 +135,7 @@
     "babel-preset-env": "^1.7.0",
     "bundlesize": "^0.17.0",
     "codecov": "^3.1.0",
-    "commitizen": "^2.10.1",
+    "commitizen": "^3.0.4",
     "commitlint-config-cz": "^0.10.1",
     "conventional-changelog-cli": "^2.0.11",
     "cz-customizable": "^5.3.0",
