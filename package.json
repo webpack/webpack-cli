@@ -43,7 +43,7 @@
     "travis:integration": "npm run build && npm run test && npm run reportCoverage",
     "travis:lint": "lerna bootstrap && npm run build && npm run lint && npm run tslint && npm run bundlesize",
     "tslint": "tslint -c tslint.json \"packages/**/*.ts\"",
-    "watch": "tsc -w"
+    "watch": "npm run build && tsc -w"
   },
   "husky": {
     "hooks": {
@@ -56,11 +56,7 @@
       "eslint --fix",
       "git add"
     ],
-    "{lib}/!(__testfixtures__)/**.js": [
-      "eslint --fix",
-      "git add"
-    ],
-    "{packages,bin}/**/!(__testfixtures__)/**.ts": [
+    "{packages,lib}/**/!(__testfixtures__)/**.ts": [
       "tslint --fix",
       "git add"
     ]
