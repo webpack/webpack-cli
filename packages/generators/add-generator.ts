@@ -1,3 +1,5 @@
+import Generator = require("yeoman-generator");
+
 import * as glob from "glob-all";
 import * as autoComplete from "inquirer-autocomplete-prompt";
 import * as path from "path";
@@ -50,13 +52,11 @@ function replaceAt(str: string, index: number, replace: string): string {
  */
 const traverseAndGetProperties = (arr: object[], prop: string): boolean => {
 	let hasProp: boolean = false;
-	arr.forEach(
-		(p: object): void => {
-			if (p[prop]) {
-				hasProp = true;
-			}
-		},
-	);
+	arr.forEach((p: object): void => {
+		if (p[prop]) {
+			hasProp = true;
+		}
+	});
 	return hasProp;
 };
 
@@ -73,9 +73,8 @@ const traverseAndGetProperties = (arr: object[], prop: string): boolean => {
 const searchProps = (answers: object, input: string): Promise<string[]> => {
 	input = input || "";
 	return Promise.resolve(
-		PROPS.filter(
-			(prop: string): boolean =>
-				prop.toLowerCase().includes(input.toLowerCase()),
+		PROPS.filter((prop: string): boolean =>
+			prop.toLowerCase().includes(input.toLowerCase()),
 		),
 	);
 };
@@ -93,11 +92,11 @@ export default class AddGenerator extends Generator {
 	private dependencies: string[];
 	private configuration: {
 		config: {
-			configName?: string;
-			topScope?: string[];
+			configName?: string,
+			topScope?: string[],
 			item?: string;
-			webpackOptions?: IWebpackOptions;
-		};
+			webpackOptions?: IWebpackOptions,
+		},
 	};
 
 	constructor(args, opts) {
@@ -117,22 +116,27 @@ export default class AddGenerator extends Generator {
 		const done: (_?: void) => void | boolean = this.async();
 		let action: string;
 		const self: this = this;
-		const manualOrListInput: (promptAction: string) => IInquirerInput = (
-			promptAction: string,
-		) => Input("actionAnswer", `What do you want to add to ${promptAction}?`);
+		const manualOrListInput: (promptAction: string) => IInquirerInput = (promptAction: string) =>
+			Input("actionAnswer", `What do you want to add to ${promptAction}?`);
 		let inputPrompt: IInquirerInput;
 
 		// first index indicates if it has a deep prop, 2nd indicates what kind of
 		const isDeepProp: any[] = [false, false];
 
 		return this.prompt([
-			AutoComplete("actionType", "What property do you want to add to?", {
-				pageSize: 7,
-				source: searchProps,
-				suggestOnly: false,
-			}),
+			AutoComplete(
+				"actionType",
+				"What property do you want to add to?",
+				{
+					pageSize: 7,
+					source: searchProps,
+					suggestOnly: false,
+				},
+			),
 		])
-			.then((actionTypeAnswer: { actionType: string }) => {
+			.then((actionTypeAnswer: {
+				actionType: string,
+			}) => {
 				// Set initial prop, like devtool
 				this.configuration.config.webpackOptions[
 					actionTypeAnswer.actionType
@@ -145,11 +149,15 @@ export default class AddGenerator extends Generator {
 					return this.prompt([
 						Confirm("entryType", "Will your application have multiple bundles?"),
 					])
-						.then((entryTypeAnswer: { entryType: boolean }) => {
+						.then((entryTypeAnswer: {
+							entryType: boolean,
+						}) => {
 							// Ask different questions for entry points
 							return entryQuestions(self, entryTypeAnswer);
 						})
-						.then((entryOptions: { entryType: boolean }) => {
+						.then((entryOptions: {
+							entryType: boolean;
+						}) => {
 							this.configuration.config.webpackOptions.entry = entryOptions;
 							this.configuration.config.item = action;
 						});
@@ -158,8 +166,7 @@ export default class AddGenerator extends Generator {
 				if (action === "resolveLoader") {
 					action = "resolve";
 				}
-				const webpackSchemaProp: ISchemaProperties =
-					webpackSchema.definitions[action];
+				const webpackSchemaProp: ISchemaProperties = webpackSchema.definitions[action];
 				/*
 				 * https://github.com/webpack/webpack/blob/next/schemas/WebpackOptions.json
 				 * Find the properties directly in the properties prop, or the anyOf prop
@@ -170,8 +177,10 @@ export default class AddGenerator extends Generator {
 						? webpackSchema.properties[action].properties
 						: webpackSchema.properties[action].anyOf
 							? webpackSchema.properties[action].anyOf.filter(
-									(p: { properties?: object; enum?: any[] }) =>
-										p.properties || p.enum,
+								(p: {
+									properties?: object,
+									enum?: any[],
+								}) => p.properties || p.enum,
 							  )
 							: null;
 				if (Array.isArray(defOrPropDescription)) {
@@ -199,16 +208,14 @@ export default class AddGenerator extends Generator {
 						const originalPropDesc: object = defOrPropDescription[0].enum;
 						// Array -> Object -> Merge objects into one for compat in manualOrListInput
 						defOrPropDescription = Object.keys(defOrPropDescription[0].enum)
-							.map(
-								(p: string): object => {
-									return Object.assign(
-										{},
-										{
-											[originalPropDesc[p]]: "noop",
-										},
-									);
-								},
-							)
+							.map((p: string): object => {
+								return Object.assign(
+									{},
+									{
+										[originalPropDesc[p]]: "noop",
+									},
+								);
+							})
 							.reduce((result: object, currentObject: object): object => {
 								for (const key in currentObject) {
 									if (currentObject.hasOwnProperty(key)) {
@@ -296,9 +303,13 @@ export default class AddGenerator extends Generator {
 				} else {
 					inputPrompt = manualOrListInput(action);
 				}
-				return this.prompt([inputPrompt]);
+				return this.prompt([
+					inputPrompt,
+				]);
 			})
-			.then((answerToAction: { actionAnswer: string }) => {
+			.then((answerToAction: {
+				actionAnswer: string,
+			}) => {
 				if (!answerToAction) {
 					done();
 					return;
@@ -313,16 +324,14 @@ export default class AddGenerator extends Generator {
 							"node_modules/webpack/lib/*Plugin.js",
 							"node_modules/webpack/lib/**/*Plugin.js",
 						])
-						.map(
-							(p: string): string =>
-								p
-									.split("/")
-									.pop()
-									.replace(".js", ""),
+						.map((p: string): string =>
+							p
+								.split("/")
+								.pop()
+								.replace(".js", ""),
 						)
 						.find(
-							(p: string): boolean =>
-								p.toLowerCase().indexOf(answerToAction.actionAnswer) >= 0,
+							(p: string): boolean => p.toLowerCase().indexOf(answerToAction.actionAnswer) >= 0,
 						);
 
 					if (pluginExist) {
@@ -346,31 +355,23 @@ export default class AddGenerator extends Generator {
 								pluginsSchemaPath.indexOf("optimize") >= 0
 									? "webpack.optimize"
 									: "webpack";
-							const resolvePluginsPath: string = path.resolve(
-								pluginsSchemaPath,
-							);
+							const resolvePluginsPath: string = path.resolve(pluginsSchemaPath);
 							const pluginSchema: object = resolvePluginsPath
 								? require(resolvePluginsPath)
 								: null;
 							let pluginsSchemaProps: string[] = ["other"];
 							if (pluginSchema) {
 								Object.keys(pluginSchema)
-									.filter(
-										(p: string): boolean => Array.isArray(pluginSchema[p]),
-									)
-									.forEach(
-										(p: string): void => {
-											Object.keys(pluginSchema[p]).forEach(
-												(n: string): void => {
-													if (pluginSchema[p][n].properties) {
-														pluginsSchemaProps = Object.keys(
-															pluginSchema[p][n].properties,
-														);
-													}
-												},
-											);
-										},
-									);
+									.filter((p: string): boolean => Array.isArray(pluginSchema[p]))
+									.forEach((p: string): void => {
+										Object.keys(pluginSchema[p]).forEach((n: string): void => {
+											if (pluginSchema[p][n].properties) {
+												pluginsSchemaProps = Object.keys(
+													pluginSchema[p][n].properties,
+												);
+											}
+										});
+									});
 							}
 
 							return this.prompt([
@@ -379,7 +380,9 @@ export default class AddGenerator extends Generator {
 									`What property do you want to add ${pluginExist}?`,
 									pluginsSchemaProps,
 								),
-							]).then((pluginsPropAnswer: { pluginsPropType: string }) => {
+							]).then((pluginsPropAnswer: {
+								pluginsPropType: string,
+							}) => {
 								return this.prompt([
 									Input(
 										"pluginsPropTypeVal",
@@ -387,7 +390,9 @@ export default class AddGenerator extends Generator {
 											pluginsPropAnswer.pluginsPropType
 										} have?`,
 									),
-								]).then((valForProp: { pluginsPropTypeVal: string }) => {
+								]).then((valForProp: {
+									pluginsPropTypeVal: string,
+								}) => {
 									this.configuration.config.webpackOptions[action] = {
 										[`${constructorPrefix}.${pluginExist}`]: {
 											[pluginsPropAnswer.pluginsPropType]:
@@ -462,19 +467,27 @@ export default class AddGenerator extends Generator {
 								   } to be? (press enter if you want it directly as a value on the property)`
 								: `What do you want the value of ${isDeepProp[1]} to be?`;
 
-						this.prompt([Input("deepProp", actionMessage)]).then(
-							(deepPropAns: { deepProp: string }) => {
+						this.prompt([
+							Input("deepProp", actionMessage),
+						]).then(
+							(deepPropAns: {
+								deepProp: string,
+							}) => {
 								// The other option needs to be validated of either being empty or not
 								if (isDeepProp[1] === "other") {
 									const othersDeepPropKey: string = deepPropAns.deepProp
 										? `What do you want the value of ${
-												deepPropAns.deepProp
+											deepPropAns.deepProp
 										  } to be?` // eslint-disable-line
 										: `What do you want to be the value of ${action} to be?`;
 									// Push the answer to the array we have created, so we can use it later
 									isDeepProp.push(deepPropAns.deepProp);
-									this.prompt([Input("innerProp", othersDeepPropKey)]).then(
-										(innerPropAns: { innerProp }) => {
+									this.prompt([
+										Input("innerProp", othersDeepPropKey),
+									]).then(
+										(innerPropAns: {
+											innerProp,
+										}) => {
 											// Check length, if it has none, add the prop directly on the given action
 											if (isDeepProp[2].length === 0) {
 												this.configuration.config.item = action;
