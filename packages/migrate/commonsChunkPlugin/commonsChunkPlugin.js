@@ -127,46 +127,46 @@ function default_1(j, ast) {
 			const chunkPropsKeys = chunkPropsToAdd.map((prop) => prop.key.name);
 			commonCacheGroupsProps =
                 commonCacheGroupsProps.filter((commonProp) => !chunkPropsKeys.includes(commonProp.key.name));
-			chunkProps.push(...commonCacheGroupsProps);
-			if (chunkCount > 1) {
-				chunkProps.push(j.property("init", ast_utils_1.createIdentifierOrLiteral(j, "minChunks"), ast_utils_1.createIdentifierOrLiteral(j, chunkCount)));
-			}
-			const chunkPropsContainTest = chunkPropsToAdd.some((prop) => prop.key.name === "test" && prop.value.type === "Literal");
-			if (chunkPropsContainTest) {
-				chunkProps = chunkProps.filter((prop) => prop.key.name !== "minChunks");
-			}
-			if (chunkPropsToAdd &&
+            chunkProps.push(...commonCacheGroupsProps);
+            if (chunkCount > 1) {
+                chunkProps.push(j.property("init", ast_utils_1.createIdentifierOrLiteral(j, "minChunks"), ast_utils_1.createIdentifierOrLiteral(j, chunkCount)));
+            }
+            const chunkPropsContainTest = chunkPropsToAdd.some((prop) => prop.key.name === "test" && prop.value.type === "Literal");
+            if (chunkPropsContainTest) {
+                chunkProps = chunkProps.filter((prop) => prop.key.name !== "minChunks");
+            }
+            if (chunkPropsToAdd &&
                 Array.isArray(chunkPropsToAdd) &&
                 chunkPropsToAdd.length > 0) {
-				chunkProps.push(...chunkPropsToAdd);
-			}
-			cacheGroups.push(j.property("init", ast_utils_1.createIdentifierOrLiteral(j, chunkName), j.objectExpression([...chunkProps])));
-		});
-		if (cacheGroups.length > 0) {
-			cacheGroupsProps.push(...cacheGroups);
-		}
-	});
-	// Remove old plugin
-	const root = ast_utils_1.findAndRemovePluginByName(j, ast, "webpack.optimize.CommonsChunkPlugin");
-	const rootProps = [...splitChunksProps];
-	if (cacheGroupsProps.length > 0) {
-		rootProps.push(j.property("init", ast_utils_1.createIdentifierOrLiteral(j, "cacheGroups"), j.objectExpression([...cacheGroupsProps])));
-	}
-	// Add new optimizations splitChunks option
-	if (root) {
-		ast_utils_1.addOrUpdateConfigObject(j, root, "optimizations", "splitChunks", j.objectExpression([...rootProps]));
-		Object.keys(optimizationProps).forEach((key) => {
-			ast_utils_1.addOrUpdateConfigObject(j, root, "optimizations", key, optimizationProps[key]);
-		});
-	}
-	return ast;
+                chunkProps.push(...chunkPropsToAdd);
+            }
+            cacheGroups.push(j.property("init", ast_utils_1.createIdentifierOrLiteral(j, chunkName), j.objectExpression([...chunkProps])));
+        });
+        if (cacheGroups.length > 0) {
+            cacheGroupsProps.push(...cacheGroups);
+        }
+    });
+    // Remove old plugin
+    const root = ast_utils_1.findAndRemovePluginByName(j, ast, "webpack.optimize.CommonsChunkPlugin");
+    const rootProps = [...splitChunksProps];
+    if (cacheGroupsProps.length > 0) {
+        rootProps.push(j.property("init", ast_utils_1.createIdentifierOrLiteral(j, "cacheGroups"), j.objectExpression([...cacheGroupsProps])));
+    }
+    // Add new optimizations splitChunks option
+    if (root) {
+        ast_utils_1.addOrUpdateConfigObject(j, root, "optimizations", "splitChunks", j.objectExpression([...rootProps]));
+        Object.keys(optimizationProps).forEach((key) => {
+            ast_utils_1.addOrUpdateConfigObject(j, root, "optimizations", key, optimizationProps[key]);
+        });
+    }
+    return ast;
 }
 exports.default = default_1;
 // merge test entry prop and function expression. case 6[x]
 const mergeTestPropArrowFunction = (j, chunkKey, testFunc) => {
-	return j.property("init", ast_utils_1.createIdentifierOrLiteral(j, "test"), j.arrowFunctionExpression([j.identifier("module")], j.blockStatement([
-		j.ifStatement(j.callExpression(j.memberExpression(j.callExpression(j.memberExpression(j.identifier("module"), j.identifier("getChunks")), []), j.identifier("some"), false), [j.arrowFunctionExpression([j.identifier("chunk")], j.binaryExpression("===", j.memberExpression(j.identifier("chunk"), j.identifier("name")), j.literal(chunkKey)))]), j.returnStatement(j.literal(true))),
-		j.variableDeclaration("const", [j.variableDeclarator(j.identifier("fn"), testFunc)]),
-		j.returnStatement(j.callExpression(j.identifier("fn"), [j.identifier("module")])),
-	])));
+    return j.property("init", ast_utils_1.createIdentifierOrLiteral(j, "test"), j.arrowFunctionExpression([j.identifier("module")], j.blockStatement([
+        j.ifStatement(j.callExpression(j.memberExpression(j.callExpression(j.memberExpression(j.identifier("module"), j.identifier("getChunks")), []), j.identifier("some"), false), [j.arrowFunctionExpression([j.identifier("chunk")], j.binaryExpression("===", j.memberExpression(j.identifier("chunk"), j.identifier("name")), j.literal(chunkKey)))]), j.returnStatement(j.literal(true))),
+        j.variableDeclaration("const", [j.variableDeclarator(j.identifier("fn"), testFunc)]),
+        j.returnStatement(j.callExpression(j.identifier("fn"), [j.identifier("module")])),
+    ])));
 };
