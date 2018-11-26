@@ -14,7 +14,6 @@ test("not-found", () => {
 		"production",
 	]);
 	expect(code).toBe(0);
-	expect(stdout).toEqual(expect.anything());
 	expect(stdout).toContain("./src/index.js");
 	expect(stderr).toHaveLength(0);
 });
