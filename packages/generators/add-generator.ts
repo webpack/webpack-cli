@@ -73,7 +73,9 @@ const traverseAndGetProperties = (arr: object[], prop: string): boolean => {
 const searchProps = (answers: object, input: string): Promise<string[]> => {
 	input = input || "";
 	return Promise.resolve(
-		PROPS.filter(food => food.toLowerCase().includes(input.toLowerCase()))
+		PROPS.filter((prop: string): boolean =>
+			prop.toLowerCase().includes(input.toLowerCase()),
+		),
 	);
 };
 
