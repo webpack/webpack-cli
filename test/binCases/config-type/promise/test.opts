@@ -1,3 +1,0 @@
---config ./webpack.config.js
---target async-node
---mode production

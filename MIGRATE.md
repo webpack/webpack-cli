@@ -57,7 +57,7 @@ module.exports = {
 		exclude: /node_modules/,
 		loader: 'babel',
 		query: {
-		  presets: ['env']
+		  presets: ['@babel/preset-env']
 		}
 	  },
 	  {
@@ -140,7 +140,7 @@ module.exports = {
 		  loader: 'babel-loader'
 		}],
 		options: {
-		  presets: ['env']
+		  presets: ['@babel/preset-env']
 		}
 	  },
 	  {

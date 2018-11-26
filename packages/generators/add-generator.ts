@@ -1,8 +1,6 @@
 import * as glob from "glob-all";
 import * as autoComplete from "inquirer-autocomplete-prompt";
 import * as path from "path";
-import webpackDevServerSchema from "webpack-dev-server/lib/optionsSchema.json";
-import Generator = require("yeoman-generator");
 
 import npmExists from "@webpack-cli/utils/npm-exists";
 import { getPackageManager } from "@webpack-cli/utils/package-manager";
@@ -18,8 +16,10 @@ import {
 
 import { ISchemaProperties, IWebpackOptions } from "./types";
 import entryQuestions from "./utils/entry";
-import webpackSchema from "./utils/optionsSchema.json";
 
+// tslint:disable:no-var-requires
+const webpackDevServerSchema = require("webpack-dev-server/lib/options.json");
+const webpackSchema = require("./utils/optionsSchema.json");
 const PROPS: string[] = Array.from(PROP_TYPES.keys());
 
 /**
@@ -405,39 +405,40 @@ export default class AddGenerator extends Generator {
 						}
 					} else {
 						// If its not in webpack, check npm
-						npmExists(answerToAction.actionAnswer).then((p: string) => {
-							if (p) {
-								this.dependencies.push(answerToAction.actionAnswer);
-								const normalizePluginName: string = answerToAction.actionAnswer.replace(
-									"-webpack-plugin",
-									"Plugin",
-								);
-								const pluginName: string = replaceAt(
-									normalizePluginName,
-									0,
-									normalizePluginName.charAt(0).toUpperCase(),
-								);
-								this.configuration.config.topScope.push(
-									`const ${pluginName} = require("${
-										answerToAction.actionAnswer
-									}")`,
-								);
-								this.configuration.config.webpackOptions[
-									action
-								] = `new ${pluginName}`;
-								this.configuration.config.item = answerToAction.actionAnswer;
-								done();
-								this.runInstall(getPackageManager(), this.dependencies, {
-									"save-dev": true,
-								});
-							} else {
-								console.error(
-									answerToAction.actionAnswer,
-									"doesn't exist on NPM or is built in webpack, please check for any misspellings.",
-								);
-								process.exit(0);
-							}
-						});
+						npmExists(answerToAction.actionAnswer)
+							.then((p: string) => {
+								if (p) {
+									this.dependencies.push(answerToAction.actionAnswer);
+									const normalizePluginName: string = answerToAction.actionAnswer.replace(
+										"-webpack-plugin",
+										"Plugin",
+									);
+									const pluginName: string = replaceAt(
+										normalizePluginName,
+										0,
+										normalizePluginName.charAt(0).toUpperCase(),
+									);
+									this.configuration.config.topScope.push(
+										`const ${pluginName} = require("${
+											answerToAction.actionAnswer
+										}")`,
+									);
+									this.configuration.config.webpackOptions[
+										action
+									] = `new ${pluginName}`;
+									this.configuration.config.item = answerToAction.actionAnswer;
+									done();
+									this.scheduleInstallTask(getPackageManager(), this.dependencies, {
+										"save-dev": true,
+									});
+								} else {
+									console.error(
+										answerToAction.actionAnswer,
+										"doesn't exist on NPM or is built in webpack, please check for any misspellings.",
+									);
+									process.exit(0);
+								}
+							});
 					}
 				} else {
 					// If we're in the scenario with a deep-property
@@ -456,7 +457,9 @@ export default class AddGenerator extends Generator {
 						// Either we are adding directly at the property, else we're in a prop.theOne scenario
 						const actionMessage: string =
 							isDeepProp[1] === "other"
-								? `What do you want the key on ${action} to be? (press enter if you want it directly as a value on the property)`
+								? `What do you want the key on ${
+									action
+								   } to be? (press enter if you want it directly as a value on the property)`
 								: `What do you want the value of ${isDeepProp[1]} to be?`;
 
 						this.prompt([Input("deepProp", actionMessage)]).then(

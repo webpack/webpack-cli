@@ -5,7 +5,6 @@ language: node_js
 node_js:
   - "10"
   - "8"
-  - "7"
   - "6"
 cache:
   directories:
@@ -25,9 +24,6 @@ matrix:
       node_js: "8"
       env: JOB_PART=integration
     - os: linux
-      node_js: "7"
-      env: JOB_PART=integration
-    - os: linux
       node_js: "6"
       env: JOB_PART=integration
 
@@ -35,14 +31,9 @@ before_install:
   - '[[ $(node -v) =~ ^v9.*$ ]] || npm install -g npm@latest' # skipped when using node 9
 
 install:
-  - npm ci
+  - travis_wait npm ci
   - npm install -g codecov
   - npm install -g eslint
-  - npm install -g greenkeeper-lockfile@2
-  - lerna bootstrap
-
-before_script: greenkeeper-lockfile-update
-after_script: greenkeeper-lockfile-upload
 
 jobs:
   include:

@@ -39,7 +39,7 @@ export default function(j: IJSCodeshift, ast: INode) {
 					j(path).remove();
 				}
 			} else {
-				console.log(`
+				console.error(`
 ${chalk.red("Please remove deprecated plugins manually. ")}
 See ${chalk.underline(
 		"https://webpack.js.org/guides/migrating/",

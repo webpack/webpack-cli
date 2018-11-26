@@ -148,14 +148,14 @@ export default class InitGenerator extends Generator {
 			.then((babelConfirmAnswer: {
 				babelConfirm: boolean;
 			}) => {
-				if (babelConfirmAnswer.babelConfirm === true) {
+				if (babelConfirmAnswer.babelConfirm) {
 					this.configuration.config.webpackOptions.module.rules.push(
 						getBabelPlugin(),
 					);
 					this.dependencies.push(
-						"babel-core",
 						"babel-loader",
-						"babel-preset-env",
+						"@babel/core",
+						"@babel/preset-env",
 					);
 				}
 			})
@@ -441,7 +441,7 @@ export default class InitGenerator extends Generator {
 			dev?: boolean,
 			"save-dev"?: boolean,
 		} = packager === "yarn" ? { dev: true } : { "save-dev": true };
-		this.runInstall(packager, this.dependencies, opts);
+		this.scheduleInstallTask(packager, this.dependencies, opts);
 	}
 
 	public writing() {

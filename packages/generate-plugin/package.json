@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/generate-plugin",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "A scaffold for generating a plugin",
   "main": "index.js",
   "directories": {
@@ -14,12 +14,12 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@webpack-cli/generators": "^0.1.0",
-    "yeoman-environment": "^2.1.1"
+    "@webpack-cli/generators": "^0.1.2",
+    "yeoman-environment": "^2.3.4"
   },
   "devDependencies": {
-    "@types/node": "^10.3.6",
-    "typescript": "^2.9.2"
+    "@types/node": "^10.12.9",
+    "typescript": "^3.1.6"
   },
   "scripts": {
     "build": "tsc",

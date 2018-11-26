@@ -1,8 +1,9 @@
 {
   "name": "@webpack-cli/remove",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Scaffold for removing elements from configurations",
   "main": "index.js",
+  "types": "index.d.ts",
   "publishConfig": {
     "access": "public"
   },
@@ -10,11 +11,11 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@webpack-cli/generators": "^0.1.0",
-    "@webpack-cli/utils": "^0.1.0"
+    "@webpack-cli/generators": "^0.1.2",
+    "@webpack-cli/utils": "^0.1.2"
   },
   "devDependencies": {
-    "typescript": "^2.9.2"
+    "typescript": "^3.1.6"
   },
   "scripts": {
     "build": "tsc",
