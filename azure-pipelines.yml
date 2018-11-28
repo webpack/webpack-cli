@@ -28,6 +28,16 @@ jobs:
       - script: |
           npm test
         displayName: "Run tests"
+      - task: PublishTestResults@2
+        displayName: 'Publish Test Results'
+        inputs:
+          testResultsFiles: '**junit*.xml'
+          testRunTitle: TestRun ${{ parameters.name }} $(node_version)
+      - task: PublishCodeCoverageResults@1
+        displayName: 'Publish code coverage results'
+        inputs: 
+          codeCoverageTool: 'cobertura'
+          summaryFileLocation: '**/coverage/cobertura-coverage.xml'
   - job: macos
     pool:
       vmImage: "macOS 10.13"
@@ -55,6 +65,16 @@ jobs:
       - script: |
           npm test
         displayName: "Run tests"
+      - task: PublishTestResults@2
+        displayName: 'Publish Test Results'
+        inputs:
+          testResultsFiles: '**junit*.xml'
+          testRunTitle: TestRun ${{ parameters.name }} $(node_version)
+      - task: PublishCodeCoverageResults@1
+        displayName: 'Publish code coverage results'
+        inputs: 
+          codeCoverageTool: 'cobertura'
+          summaryFileLocation: '**/coverage/cobertura-coverage.xml'
   - job: windows
     pool:
       vmImage: vs2017-win2016
@@ -82,6 +102,16 @@ jobs:
       - script: |
           npm test
         displayName: "Run tests"
+      - task: PublishTestResults@2
+        displayName: 'Publish Test Results'
+        inputs:
+          testResultsFiles: '**junit*.xml'
+          testRunTitle: TestRun ${{ parameters.name }} $(node_version)
+      - task: PublishCodeCoverageResults@1
+        displayName: 'Publish code coverage results'
+        inputs: 
+          codeCoverageTool: 'cobertura'
+          summaryFileLocation: '**coverage/cobertura-coverage.xml'
 
 variables:
   nproc: 4
