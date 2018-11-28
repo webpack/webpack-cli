@@ -4,11 +4,20 @@ import modifyConfigHelper from "@webpack-cli/utils/modify-config-helper";
 /**
  * Is called and returns a scaffolding instance, updating properties
  *
+ * @param	{String[]} args - array of arguments such as
  * @returns {Function} modifyConfigHelper - A helper function that uses the action
  * 	we're given on a generator
  *
  */
 
-export default function() {
-	return modifyConfigHelper("update", defaultGenerator);
+export default function update(...args: string[]): Function {
+	const DEFAULT_WEBPACK_CONFIG_FILENAME: string = "webpack.config.js";
+
+	const filePaths: string[] = args.slice(3);
+	let configFile: string = DEFAULT_WEBPACK_CONFIG_FILENAME;
+	if (filePaths.length) {
+		configFile = filePaths[0];
+	}
+
+	return modifyConfigHelper("update", defaultGenerator, configFile);
 }

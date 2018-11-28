@@ -3,7 +3,6 @@ import Generator = require("yeoman-generator");
 import * as glob from "glob-all";
 import * as autoComplete from "inquirer-autocomplete-prompt";
 import * as path from "path";
-import webpackDevServerSchema from "webpack-dev-server/lib/optionsSchema.json";
 
 import npmExists from "@webpack-cli/utils/npm-exists";
 import { getPackageManager } from "@webpack-cli/utils/package-manager";
@@ -19,8 +18,10 @@ import {
 
 import { ISchemaProperties, IWebpackOptions } from "./types";
 import entryQuestions from "./utils/entry";
-import webpackSchema from "./utils/optionsSchema.json";
 
+// tslint:disable:no-var-requires
+const webpackDevServerSchema = require("webpack-dev-server/lib/options.json");
+const webpackSchema = require("./utils/optionsSchema.json");
 const PROPS: string[] = Array.from(PROP_TYPES.keys());
 
 /**
