@@ -5,7 +5,9 @@
   "description": "GUI for webpack-cli ui",
   "main": "src/index.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=production && npm run -s serve || npm run -s dev",
+    "start": "per-env",
+    "start:development": "npm run -s dev",
+    "start:production": "npm run -s serve",
     "build": "preact build",
     "serve": "preact build && preact serve",
     "dev": "preact watch",
@@ -24,8 +26,8 @@
     "build/*"
   ],
   "devDependencies": {
-    "cross-env": "^5.2.0",
-    "preact-cli": "^2.0.0"
+    "preact-cli": "^2.0.0",
+    "per-env": "^1.0.2"
   },
   "dependencies": {
     "preact": "^8.2.1",
