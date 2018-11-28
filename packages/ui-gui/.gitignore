@@ -57,6 +57,7 @@ typings/
 # dotenv environment variables file
 .env
 
+# stores custom attributes of its containing folder in mac os
 .DS_Store
 
 # lock files
