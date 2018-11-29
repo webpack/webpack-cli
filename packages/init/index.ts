@@ -1,6 +1,7 @@
 import defaultGenerator from "@webpack-cli/generators/init-generator";
 import modifyConfigHelper from "@webpack-cli/utils/modify-config-helper";
 import npmPackagesExists from "@webpack-cli/utils/npm-packages-exists";
+import runTransform from "@webpack-cli/utils/scaffold";
 
 /**
  *
@@ -20,4 +21,30 @@ export default function initializeInquirer(...args: string[]): Function | void {
 		return modifyConfigHelper("init", defaultGenerator);
 	}
 	return npmPackagesExists(packages);
+}
+
+export function UIManager(dependencies: string[]) {
+	// tslint:disable-next-line:no-var-requires
+	const npm = require("npm");
+	const returnObject: {
+		errors: String[],
+	} = {errors: []};
+	// Install Dependencies
+	npm.load((err) => {
+		if (err) {
+			return { error: err};
+		}
+		dependencies.forEach( (d) => {
+			process.stdout.write(`🛫 Installing ${d}  \n`);
+			npm.commands.install([d], (er , data) => {
+				if (er) { returnObject.errors.push(er); }
+				if (data) {
+					process.stdout.write(`.`);
+				}
+			});
+			process.stdout.write(`.. done`);
+		});
+	});
+
+	return returnObject;
 }
