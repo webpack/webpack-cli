@@ -12,7 +12,7 @@ if (importLocal(__filename)) {
 }
 process.title = "webpack";
 process.cliLogger = require('webpack-log')({
-	name: 'cli'
+	name: 'webpack'
 });
 
 const updateNotifier = require("update-notifier");
