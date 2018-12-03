@@ -6,29 +6,50 @@ node_js:
   - "10"
   - "8"
   - "6"
+
 cache:
   directories:
     - ~/.npm
+os:
+  - windows
+  - linux
 matrix:
   include:
-    - os: linux
-      node_js: "stable"
+    - node_js: "8"
       env: JOB_PART=lint
-    - os: linux
-      node_js: "stable"
+      os: linux
+    - node_js: "10"
+      env: JOB_PART=lint
+      os: linux
+    - node_js: "stable"
+      env: JOB_PART=lint
+      os: linux
+    - node_js: "8"
       env: JOB_PART=integration
-    - os: linux
-      node_js: "10"
+      os: linux
+    - node_js: "10"
       env: JOB_PART=integration
-    - os: linux
-      node_js: "8"
+      os: linux
+    - node_js: "stable"
       env: JOB_PART=integration
-    - os: linux
-      node_js: "6"
+      os: linux
+    - node_js: "8"
       env: JOB_PART=integration
+      os: windows
+    - node_js: "10"
+      env: JOB_PART=integration
+      os: windows
+    - node_js: "stable"
+      env: JOB_PART=integration
+      os: windows
 
 before_install:
-  - '[[ $(node -v) =~ ^v9.*$ ]] || npm install -g npm@latest' # skipped when using node 9
+  - if [[ "$TRAVIS_OS_NAME" == 'windows' && `node -v` = v6* ]]; then 
+      node `npm prefix -g`/node_modules/npm/bin/npm-cli.js i -g npm@latest;
+    fi
+  - if [[ "$TRAVIS_OS_NAME" == 'linux' ]]; then
+      npm i -g npm@latest;
+    fi
 
 install:
   - travis_wait npm ci
@@ -39,3 +60,4 @@ jobs:
   include:
     - stage: commit lint
       script: commitlint-travis
+      os: linux
