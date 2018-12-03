@@ -1,6 +1,6 @@
 "use strict";
 
-const { run } = require("../../../testUtils");
+const { run } = require("../../../testUtils.ts");
 
 test("info-verbosity", () => {
 	const { stderr, stdout, code } = run(__dirname, ["a", "bundle.js", "--mode", "production"]);

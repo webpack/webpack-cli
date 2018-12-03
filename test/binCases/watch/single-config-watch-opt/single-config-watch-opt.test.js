@@ -1,6 +1,6 @@
 "use strict";
 
-const { runWatch } = require("../../../testUtils");
+const { runWatch } = require("../../../testUtils.ts");
 test("single-config-watch-opt", () => {
 	runWatch(__dirname, [
 		"--entry",

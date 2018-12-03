@@ -1,6 +1,6 @@
 "use strict";
 
-const { run } = require("../../../testUtils");
+const { run } = require("../../../testUtils.ts");
 
 test("output-argument", () => {
 	const { code, stdout } = run(__dirname, [

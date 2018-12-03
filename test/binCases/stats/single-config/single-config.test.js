@@ -4,7 +4,7 @@ jest.setTimeout(10E6);
 /* eslint-disable node/no-unsupported-features  */
 /* eslint-disable node/no-unsupported-features/es-syntax  */
 
-const { run } = require("../../../testUtils");
+const { run } = require("../../../testUtils.ts");
 
 test("single-config", async(done) => {
 	const { code, stdout, stderr } = await run(__dirname);

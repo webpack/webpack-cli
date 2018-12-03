@@ -1,6 +1,6 @@
 "use strict";
 
-const { extractHash } = require("./testUtils");
+import { extractHash } from "./testUtils";
 
 describe("extractHash functionality", () => {
 	it("should throw Error if there is empty string", () => {
@@ -30,10 +30,12 @@ describe("extractHash functionality", () => {
             main.js  956 bytes       0  [emitted]  main
             Entrypoint main = main.js
             [0] ./src/index.1.js 48 bytes {0} [built]
-        
+
             WARNING in configuration
-            The 'mode' option has not been set, webpack will fallback to 'production' for this value. Set 'mode' option to 'development' or 'production' to enable defaults for each environment.
-            You can also set it to 'none' to disable any default behavior. Learn more: https://webpack.js.org/concepts/mode/
+            The 'mode' option has not been set, webpack will fallback to 'production' for this value.
+            Set 'mode' option to 'development' or 'production' to enable defaults for each environment.
+            You can also set it to 'none' to disable any default behavior.
+            Learn more: https://webpack.js.org/concepts/mode/
         Child index2:`;
 
 		expect(() => extractHash(stdout)).toThrowError();
@@ -81,8 +83,10 @@ Child ${config1Name}:
     [0] ./src/index.1.js 48 bytes {0} [built]
 
     WARNING in configuration
-    The 'mode' option has not been set, webpack will fallback to 'production' for this value. Set 'mode' option to 'development' or 'production' to enable defaults for each environment.
-    You can also set it to 'none' to disable any default behavior. Learn more: https://webpack.js.org/concepts/mode/
+    The 'mode' option has not been set, webpack will fallback to 'production' for this value.
+    Set 'mode' option to 'development' or 'production' to enable defaults for each environment.
+    You can also set it to 'none' to disable any default behavior.
+    Learn more: https://webpack.js.org/concepts/mode/
 Child ${config2Name}:
     Hash: ${config2Hash}
     Time: 123ms

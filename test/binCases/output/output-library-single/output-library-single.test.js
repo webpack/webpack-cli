@@ -1,6 +1,6 @@
 "use strict";
 
-const { run } = require("../../../testUtils");
+const { run } = require("../../../testUtils.ts");
 
 const { readFileSync } = require("fs");
 const { resolve } = require("path");

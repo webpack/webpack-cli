@@ -1,6 +1,6 @@
 "use strict";
 
-const { run } = require("../../../testUtils");
+const { run } = require("../../../testUtils.ts");
 
 test("invalid-array", () => {
 	const { code, stderr } = run(__dirname, [

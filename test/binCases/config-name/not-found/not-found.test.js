@@ -1,6 +1,6 @@
 "use strict";
 
-const { run } = require("../../../testUtils");
+const { run } = require("../../../testUtils.ts");
 
 test("not-found", () => {
 	const { code, stdout, stderr } = run(__dirname, ["--config", "./webpack.config.js", "--config-name", "foo"]);

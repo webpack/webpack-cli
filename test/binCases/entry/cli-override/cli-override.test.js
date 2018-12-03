@@ -1,6 +1,6 @@
 "use strict";
 
-const { run } = require("../../../testUtils");
+const { run } = require("../../../testUtils.ts");
 
 test("cli-override", () => {
 	const { code, stdout, stderr } = run(__dirname, [

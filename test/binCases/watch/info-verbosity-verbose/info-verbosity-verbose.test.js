@@ -4,7 +4,7 @@ jest.setTimeout(10E6);
 /* eslint-disable node/no-unsupported-features  */
 /* eslint-disable node/no-unsupported-features/es-syntax  */
 
-const { runWatch } = require("../../../testUtils");
+const { runWatch } = require("../../../testUtils.ts");
 
 test("info-verbosity-verbose", async(done) => {
 	const result = await runWatch(__dirname, [

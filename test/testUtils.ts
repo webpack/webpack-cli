@@ -1,20 +1,30 @@
 "use strict";
+import * as execa from "execa";
+import * as path from "path";
+import { Writable } from "readable-stream";
 
-const path = require("path");
-const execa = require("execa");
 const { sync: spawnSync } = execa;
-const { Writable } = require("readable-stream");
 
 const WEBPACK_PATH = path.resolve(__dirname, "../bin/cli.js");
+
+export interface IHash extends Object {
+	hash: string;
+	name: string;
+}
+
+export interface IHashInfo extends Object {
+	config?: IHash[];
+	hash: string;
+}
 
 /**
  * Description
  *
- * @param {*} testCase The path to folder that contains the webpack.config.js
- * @param {*} args Array of arguments to pass to webpack
+ * @param {string} testCase The path to folder that contains the webpack.config.js
+ * @param {Array} args Array of arguments to pass to webpack
  * @returns {Object} The webpack output
  */
-function run(testCase, args = []) {
+function run(testCase: string, args = []): any {
 	const cwd = path.resolve(testCase);
 
 	const outputPath = path.resolve(testCase, "bin");
@@ -22,7 +32,7 @@ function run(testCase, args = []) {
 
 	const result = spawnSync(WEBPACK_PATH, argsWithOutput, {
 		cwd,
-		reject: false
+		reject: false,
 	});
 
 	// TODO: STRIP OUT THE OUTPUT
@@ -31,16 +41,16 @@ function run(testCase, args = []) {
 	return result;
 }
 
-function runWatch(testCase, args = []) {
+function runWatch(testCase: string, args = []) {
 	const cwd = path.resolve(testCase);
 
 	const outputPath = path.resolve(testCase, "bin");
 	const argsWithOutput = args.concat("--output-path", outputPath);
 
-	return new Promise(resolve => {
+	return new Promise((resolve) => {
 		const watchPromise = execa(WEBPACK_PATH, argsWithOutput, {
 			cwd,
-			reject: false
+			reject: false,
 		});
 
 		watchPromise.stdout.pipe(
@@ -53,26 +63,26 @@ function runWatch(testCase, args = []) {
 					}
 
 					callback();
-				}
-			})
+				},
+			}),
 		);
-		watchPromise.then(result => {
+		watchPromise.then((result) => {
 			result.stdout = removeTimeStrings(result.stdout);
 			resolve(result);
 		});
 	});
 }
 
-function removeTimeStrings(stdout) {
+function removeTimeStrings(stdout: string): string {
 	if (stdout === "") {
 		return "";
 	}
 	return stdout
 		.split("\n")
-		.filter(line => !line.includes("Hash"))
-		.filter(line => !line.includes("Version"))
-		.filter(line => !line.includes("Time"))
-		.filter(line => !line.includes("Built at"))
+		.filter((line: string) => !line.includes("Hash"))
+		.filter((line: string) => !line.includes("Version"))
+		.filter((line: string) => !line.includes("Time"))
+		.filter((line: string) => !line.includes("Built at"))
 		.join("\n");
 }
 
@@ -98,40 +108,40 @@ function removeTimeStrings(stdout) {
  * 		- if multiple configs then, count(hash) !== count(Child) + 1 (+1 is for global hash)
  *
  */
-function extractHash(stdout) {
+function extractHash(stdout: string): IHashInfo {
 	if (stdout === "") {
 		throw new Error("stdout is empty");
 	}
 
-	let hashArray = stdout.match(/Hash.*/gm);
+	let hashArray: string[] = stdout.match(/Hash.*/gm);
 
 	// If logs are full of errors and we don't find hash
 	if (!hashArray) {
 		throw new Error(
 			`could not find hash in the stdout
-			OUTPUT: ${stdout}`
+			OUTPUT: ${stdout}`,
 		);
 	}
 
-	hashArray = hashArray.map(hashLine => hashLine.replace(/Hash:(.*)/, "$1").trim());
+	hashArray = hashArray.map((hashLine: string) => hashLine.replace(/Hash:(.*)/, "$1").trim());
 
-	const hashInfo = {
+	const hashInfo: IHashInfo = {
+		config: [],
 		hash: hashArray[0],
-		config: []
 	};
 
 	// Multiple config were found
 	if (hashArray.length > 1) {
-		let childArray = stdout.match(/Child.*/gm);
+		let childArray: string[] = stdout.match(/Child.*/gm);
 
 		if (!childArray) {
 			throw new Error(
 				`could not find config in the stdout
-				OUTPUT: ${stdout}`
+				OUTPUT: ${stdout}`,
 			);
 		}
 
-		childArray = childArray.map(childLine => childLine.replace(/Child(.*):/, "$1").trim());
+		childArray = childArray.map((childLine: string) => childLine.replace(/Child(.*):/, "$1").trim());
 
 		// We don't need global hash anymore
 		// so we'll remove it to maintain 1:1 parity between config and hash
@@ -142,9 +152,9 @@ function extractHash(stdout) {
 		}
 		const configCount = childArray.length;
 		for (let configIdx = 0; configIdx < configCount; configIdx++) {
-			hashInfo["config"].push({
+			hashInfo.config.push({
+				hash: hashArray[configIdx],
 				name: childArray[configIdx],
-				hash: hashArray[configIdx]
 			});
 		}
 	}
@@ -152,4 +162,4 @@ function extractHash(stdout) {
 	return hashInfo;
 }
 
-module.exports = { run, runWatch, extractHash };
+export { run, runWatch, extractHash };

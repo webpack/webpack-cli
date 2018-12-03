@@ -5,7 +5,7 @@
 
 jest.setTimeout(10E6);
 
-const { runWatch } = require("../../../testUtils");
+const { runWatch } = require("../../../testUtils.ts");
 
 test("single-config", async(done) => {
 	const result = await runWatch(__dirname, [
