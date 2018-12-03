@@ -1,5 +1,6 @@
 import defaultGenerator from "@webpack-cli/generators/init-generator";
 import modifyConfigHelper from "@webpack-cli/utils/modify-config-helper";
+import {ITransformConfig} from "@webpack-cli/utils/modify-config-helper";
 import npmPackagesExists from "@webpack-cli/utils/npm-packages-exists";
 import runTransform from "@webpack-cli/utils/scaffold";
 
@@ -23,12 +24,19 @@ export default function initializeInquirer(...args: string[]): Function | void {
 	return npmPackagesExists(packages);
 }
 
-export function UIManager(dependencies: string[]) {
-	// tslint:disable-next-line:no-var-requires
+/**
+ * UI Manager function which takes answers and dependendencies as input
+ * and generates required scaffolds
+ * @param dependencies - array of packages needed to be installed
+ * @param config - Config object to be returned from UI
+ */
+
+export function UIManager(dependencies: string[], config: ITransformConfig) {
 	const npm = require("npm");
 	const returnObject: {
 		errors: String[],
 	} = {errors: []};
+
 	// Install Dependencies
 	npm.load((err) => {
 		if (err) {
@@ -46,5 +54,7 @@ export function UIManager(dependencies: string[]) {
 		});
 	});
 
+	// Generate scaffolds
+	runTransform(config, "init");
 	return returnObject;
 }
