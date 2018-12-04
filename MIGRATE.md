@@ -34,7 +34,7 @@ Given a basic configuration file like so:
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
 
 module.exports = {
@@ -68,7 +68,7 @@ module.exports = {
   },
 
   plugins: [
-	new UglifyJSPlugin(),
+	new TerserPlugin(),
 
 	new ExtractTextPlugin('styles-[contentHash].css'),
 
@@ -115,7 +115,7 @@ After it has run, we have our new webpack config file!
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
 
 module.exports = {
@@ -154,7 +154,7 @@ module.exports = {
   },
 
   plugins: [
-	new UglifyJSPlugin(),
+	new TerserPlugin(),
 
 	new ExtractTextPlugin('styles-[contentHash].css'),
 
