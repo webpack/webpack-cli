@@ -43,7 +43,7 @@ const config = {
 
 switch (nodeEnvironment) {
 	case "production":
-		config.plugins.push(new webpack.optimize.UglifyJsPlugin());
+		config.plugins.push(new webpack.optimize.TerserPlugin());
 	case "preproduction":
 		config.output.path = __dirname + "/dist";
 		config.plugins.push(new webpack.optimize.DedupePlugin());

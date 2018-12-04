@@ -11,8 +11,8 @@ import noEmitOnErrorsPluginTransform from "./noEmitOnErrorsPlugin/noEmitOnErrors
 import removeDeprecatedPluginsTransform from "./removeDeprecatedPlugins/removeDeprecatedPlugins";
 import removeJsonLoaderTransform from "./removeJsonLoader/removeJsonLoader";
 import resolveTransform from "./resolve/resolve";
+import terserPluginTransform from "./terserPlugin/terserPlugin";
 import { INode } from "./types/NodePath";
-import uglifyJsPluginTransform from "./uglifyJsPlugin/uglifyJsPlugin";
 
 interface ITransformsObject {
 	bannerPluginTransform: object;
@@ -24,7 +24,7 @@ interface ITransformsObject {
 	removeDeprecatedPluginsTransform: object;
 	removeJsonLoaderTransform: object;
 	resolveTransform: object;
-	uglifyJsPluginTransform: object;
+	terserPluginTransform: object;
 }
 
 /* tslint:disable object-literal-sort-keys */
@@ -32,7 +32,7 @@ const transformsObject: ITransformsObject = {
 	loadersTransform,
 	resolveTransform,
 	removeJsonLoaderTransform,
-	uglifyJsPluginTransform,
+	terserPluginTransform,
 	loaderOptionsPluginTransform,
 	bannerPluginTransform,
 	extractTextPluginTransform,
