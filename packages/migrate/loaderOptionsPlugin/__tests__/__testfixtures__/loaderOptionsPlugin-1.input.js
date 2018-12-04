@@ -1,9 +1,9 @@
 module.exports = {
-    debug: true,
-    plugins: [
-        new webpack.optimize.UglifyJsPlugin(),
-        new webpack.LoaderOptionsPlugin({
-            foo: 'bar'
-        })
-    ]
+	debug: true,
+	plugins: [
+		new webpack.optimize.TerserPlugin(),
+		new webpack.LoaderOptionsPlugin({
+			foo: 'bar'
+		})
+	]
 }
