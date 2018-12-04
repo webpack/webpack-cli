@@ -11,10 +11,10 @@ import { IJSCodeshift, INode } from "../types/NodePath";
 /**
  *
  * Transform which:
- * Removes UglifyWebpackPlugin from plugins array, if no options is passed to the plugin.
+ * Removes TerserWebpackPlugin from plugins array, if no options is passed to the plugin.
  * and adds `optimization.minimize: true` to config
  *
- * If any configuration is passed to UglifyWebpackPlugin
+ * If any configuration is passed to TerserWebpackPlugin
  * plugin instantiation is moved to `optimization.minimizer`.
  *
  * @param {Object} j - jscodeshift top-level import
@@ -54,7 +54,7 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 			const pluginOptions: INode[] = node.value.arguments;
 
 			/**
-			 * check if there are any options passed to UglifyWebpackPlugin
+			 * check if there are any options passed to TerserWebpackPlugin
 			 * If so, they are moved to optimization.minimizer.
 			 * Otherwise, rely on default options
 			 */
@@ -63,11 +63,11 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 			* If user is using TerserPlugin directly from webpack
 			* transformation must:
 			* - remove it
-			* - add require for uglify-webpack-plugin
+			* - add require for terser-webpack-plugin
 			* - add to minimizer
 			*/
 				if (pluginVariableAssignment && pluginVariableAssignment.includes("webpack")) {
-					// create require for uglify-webpack-plugin
+					// create require for terser-webpack-plugin
 					const pathRequire: INode = getRequire(
 						j,
 						"TerserPlugin",
@@ -118,7 +118,7 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 				);
 			}
 
-			// remove the old Uglify plugin from Plugins array.
+			// remove the old Terser plugin from Plugins array.
 			j(node).remove();
 		});
 
