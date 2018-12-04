@@ -29,11 +29,11 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 	const searchForRequirePlugin: INode = ast
 		.find(j.VariableDeclarator)
 		.filter(
-			j.filters.VariableDeclarator.requiresModule("uglifyjs-webpack-plugin"),
+			j.filters.VariableDeclarator.requiresModule("terser-webpack-plugin"),
 		);
 
 	/**
-	 * Look for a variable declaration which requires uglifyjs-webpack-plugin
+	 * Look for a variable declaration which requires terser-webpack-plugin
 	 * saves the name of this variable.
 	 */
 	searchForRequirePlugin.forEach((node: INode): void => {
@@ -41,7 +41,7 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 	});
 
 	pluginVariableAssignment = !pluginVariableAssignment
-		? "webpack.optimize.UglifyJsPlugin"
+		? "webpack.optimize.TerserPlugin"
 		: pluginVariableAssignment;
 
 	findPluginsByName(j, ast, [pluginVariableAssignment])
@@ -60,7 +60,7 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 			 */
 			if (pluginOptions.length) {
 				/*
-			* If user is using UglifyJsPlugin directly from webpack
+			* If user is using TerserPlugin directly from webpack
 			* transformation must:
 			* - remove it
 			* - add require for uglify-webpack-plugin
@@ -70,8 +70,8 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 					// create require for uglify-webpack-plugin
 					const pathRequire: INode = getRequire(
 						j,
-						"UglifyJsPlugin",
-						"uglifyjs-webpack-plugin",
+						"TerserPlugin",
+						"terser-webpack-plugin",
 					);
 					// append to source code.
 					ast
@@ -84,7 +84,7 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 						"init",
 						j.identifier("minimizer"),
 						j.arrayExpression([
-							j.newExpression(j.identifier("UglifyJsPlugin"), [pluginOptions[0]]),
+							j.newExpression(j.identifier("TerserPlugin"), [pluginOptions[0]]),
 						]),
 					);
 				} else {
