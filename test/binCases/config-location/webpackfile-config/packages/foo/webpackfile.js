@@ -1,7 +1,5 @@
-var path = require("path");
+const path = require("path");
 
-module.exports = [
-	{
-		entry: path.resolve(__dirname, "./index1")
-	},
-];
+module.exports = {
+	entry: path.resolve(__dirname, "./index1")
+};
