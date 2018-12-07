@@ -69,7 +69,8 @@ module.exports = function(...args) {
 		const configArgList = Array.isArray(argv.config) ? argv.config : [argv.config];
 		configFiles = configArgList.map(mapConfigArg);
 	} else {
-		const webpackConfigFileRegExp = `(webpack.config|webpackfile)(${extensions.join("|")})`;
+		const defaultConfigFiles = ["webpack.config", "webpackfile"];
+		const webpackConfigFileRegExp = `(${defaultConfigFiles.join("|")})(${extensions.join("|")})`;
 		const pathToWebpackConfig = findup(webpackConfigFileRegExp);
 
 		if (pathToWebpackConfig) {
