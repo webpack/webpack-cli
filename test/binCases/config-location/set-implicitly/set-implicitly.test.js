@@ -10,8 +10,6 @@ test("set-implicitly", () => {
 		"[id].chunk.js",
 		"--target",
 		"async-node",
-		"--mode",
-		"production",
 	]);
 	expect(code).toBe(0);
 	expect(stdout).toEqual(expect.anything());
