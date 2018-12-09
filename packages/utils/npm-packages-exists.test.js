@@ -1,5 +1,4 @@
 const npmPackagesExists = require("./npm-packages-exists").default;
-// console.log('npmPackagesExists: ', npmPackagesExists);
 
 jest.mock("./npm-exists");
 jest.mock("./resolve-packages");
