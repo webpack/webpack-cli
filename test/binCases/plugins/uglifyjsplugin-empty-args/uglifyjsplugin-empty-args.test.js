@@ -1,6 +1,6 @@
 "use strict";
 
-const { run } = require("../../../testUtils");
+const { run, extractSummary } = require("../../../testUtils");
 
 test.skip("uglifyjsplugin-empty-args", () => {
 	const { code, stdout, stderr } = run(__dirname, [
@@ -18,11 +18,13 @@ test.skip("uglifyjsplugin-empty-args", () => {
 		"uglifyjs-webpack-plugin"
 	]);
 
+	const summary = extractSummary(stdout);
+
 	expect(code).toBe(0);
 
-	expect(stdout).toEqual(expect.anything());
-	expect(stdout).toContain("bytes"); // without uglifyjs it's multiple kBs
+	expect(summary).toEqual(expect.anything());
+	expect(summary).toContain("bytes"); // without uglifyjs it's multiple kBs
 
 	expect(stderr).toHaveLength(0);
-	expect(stdout).toMatchSnapshot();
+	expect(summary).toMatchSnapshot();
 });
