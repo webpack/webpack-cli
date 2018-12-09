@@ -25,9 +25,6 @@ function run(testCase, args = []) {
 		reject: false
 	});
 
-	// TODO: STRIP OUT THE OUTPUT
-	result.stdout = removeTimeStrings(result.stdout);
-
 	return result;
 }
 
@@ -57,13 +54,12 @@ function runWatch(testCase, args = []) {
 			})
 		);
 		watchPromise.then(result => {
-			result.stdout = removeTimeStrings(result.stdout);
 			resolve(result);
 		});
 	});
 }
 
-function removeTimeStrings(stdout) {
+function extractSummary(stdout) {
 	if (stdout === "") {
 		return "";
 	}
@@ -152,4 +148,4 @@ function extractHash(stdout) {
 	return hashInfo;
 }
 
-module.exports = { run, runWatch, extractHash };
+module.exports = { run, runWatch, extractHash, extractSummary };
