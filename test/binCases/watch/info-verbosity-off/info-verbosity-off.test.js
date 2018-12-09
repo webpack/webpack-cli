@@ -1,12 +1,12 @@
 "use strict";
 
-jest.setTimeout(10E6);
+jest.setTimeout(10e6);
 /* eslint-disable node/no-unsupported-features  */
 /* eslint-disable node/no-unsupported-features/es-syntax  */
 
-const { runWatch } = require("../../../testUtils");
+const { runWatch, extractSummary } = require("../../../testUtils");
 
-test("info-verbosity-off", async(done) => {
+test("info-verbosity-off", async done => {
 	const result = await runWatch(__dirname, [
 		"--entry ",
 		"./index.js",
@@ -23,11 +23,14 @@ test("info-verbosity-off", async(done) => {
 		"none"
 	]);
 	const { stdout, stderr } = result;
-	expect(stdout).toEqual(expect.anything());
-	expect(stdout).toContain("");
-	expect(stdout).not.toContain("webpack is watching the files…");
+
+	const summary = extractSummary(stdout);
+
+	expect(summary).toEqual(expect.anything());
+	expect(summary).toContain("");
+	expect(summary).not.toContain("webpack is watching the files…");
 
 	expect(stderr).toHaveLength(0);
-	expect(stdout).toMatchSnapshot();
+	expect(summary).toMatchSnapshot();
 	done();
 });
