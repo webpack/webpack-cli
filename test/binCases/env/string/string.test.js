@@ -1,6 +1,6 @@
 "use strict";
 
-const { run } = require("../../../testUtils");
+const { run, extractSummary } = require("../../../testUtils");
 
 test("string", () => {
 	const { code, stdout } = run(__dirname, [
@@ -18,9 +18,11 @@ test("string", () => {
 		"async-node"
 	]);
 
+	const summary = extractSummary(stdout);
+
 	expect(code).toBe(0);
-	expect(stdout).toEqual(expect.anything());
-	expect(stdout).toContain("Environment (--env): \"foo\"");
-	expect(stdout).toContain("null.js");
-	expect(stdout).toMatchSnapshot();
+	expect(summary).toEqual(expect.anything());
+	expect(summary).toContain("Environment (--env): \"foo\"");
+	expect(summary).toContain("null.js");
+	expect(summary).toMatchSnapshot();
 });
