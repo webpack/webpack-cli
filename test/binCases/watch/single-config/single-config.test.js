@@ -5,7 +5,7 @@
 
 jest.setTimeout(10E6);
 
-const { runWatch } = require("../../../testUtils");
+const { runWatch, extractSummary } = require("../../../testUtils");
 
 test("single-config", async(done) => {
 	const result = await runWatch(__dirname, [
@@ -23,13 +23,16 @@ test("single-config", async(done) => {
 	]);
 
 	const { stdout, stderr } = result;
-	expect(stdout).toContain("");
-	expect(stdout).toEqual(expect.anything());
-	expect(stdout).toContain("");
-	expect(stdout).toContain("webpack is watching the files…");
+
+	const summary = extractSummary(stdout);
+
+	expect(summary).toContain("");
+	expect(summary).toEqual(expect.anything());
+	expect(summary).toContain("");
+	expect(summary).toContain("webpack is watching the files…");
 
 	expect(stderr).toHaveLength(0);
-	expect(stdout).toMatchSnapshot();
+	expect(summary).toMatchSnapshot();
 	done();
 
 });

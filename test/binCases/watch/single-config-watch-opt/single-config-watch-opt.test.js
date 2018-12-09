@@ -1,6 +1,6 @@
 "use strict";
 
-const { runWatch } = require("../../../testUtils");
+const { runWatch, extractSummary } = require("../../../testUtils");
 test("single-config-watch-opt", () => {
 	runWatch(__dirname, [
 		"--entry",
@@ -16,13 +16,16 @@ test("single-config-watch-opt", () => {
 		"--watch"
 	]).then(result => {
 		const { stdout, stderr } = result;
-		expect(stdout).toEqual(expect.anything());
-		expect(stdout).toContain("");
-		expect(stdout).toContain("webpack is watching the files…");
+
+		const summary = extractSummary(stdout);
+
+		expect(summary).toEqual(expect.anything());
+		expect(summary).toContain("");
+		expect(summary).toContain("webpack is watching the files…");
 
 		expect(stderr).toHaveLength(0);
 
-		expect(stdout).toMatchSnapshot();
+		expect(summary).toMatchSnapshot();
 		return;
 	});
 });
