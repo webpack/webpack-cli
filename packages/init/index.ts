@@ -3,7 +3,7 @@ import modifyConfigHelper from "@webpack-cli/utils/modify-config-helper";
 import {ITransformConfig} from "@webpack-cli/utils/modify-config-helper";
 import npmPackagesExists from "@webpack-cli/utils/npm-packages-exists";
 import runTransform from "@webpack-cli/utils/scaffold";
-
+import { spawnChild } from "@webpack-cli/utils/package-manager"
 /**
  *
  * First function to be called after running the init flag. This is a check,
@@ -32,25 +32,15 @@ export default function initializeInquirer(...args: string[]): Function | void {
  */
 
 export function UIManager(dependencies: string[], config: ITransformConfig) {
-	const npm = require("npm");
 	const returnObject: {
 		errors: String[],
 	} = {errors: []};
 
 	// Install Dependencies
-	npm.load((err) => {
-		if (err) {
-			return { error: err};
-		}
-		dependencies.forEach( (d) => {
-			process.stdout.write(`🛫 Installing ${d}  \n`);
-			npm.commands.install([d], (er , data) => {
-				if (er) { returnObject.errors.push(er); }
-				if (data) {
-					process.stdout.write(`.`);
-				}
-			});
-			process.stdout.write(`.. done`);
+	dependencies.forEach((pkg) => {
+		const pkgInstallSpawn = spawnChild(pkg);
+		pkgInstallSpawn.stderr.on("data", (data) => {
+			returnObject.errors.push(data);
 		});
 	});
 
