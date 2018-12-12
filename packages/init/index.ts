@@ -2,8 +2,8 @@ import defaultGenerator from "@webpack-cli/generators/init-generator";
 import modifyConfigHelper from "@webpack-cli/utils/modify-config-helper";
 import {ITransformConfig} from "@webpack-cli/utils/modify-config-helper";
 import npmPackagesExists from "@webpack-cli/utils/npm-packages-exists";
+import { spawnChild } from "@webpack-cli/utils/package-manager";
 import runTransform from "@webpack-cli/utils/scaffold";
-import { spawnChild } from "@webpack-cli/utils/package-manager"
 /**
  *
  * First function to be called after running the init flag. This is a check,
@@ -39,9 +39,9 @@ export function UIManager(dependencies: string[], config: ITransformConfig) {
 	// Install Dependencies
 	dependencies.forEach((pkg) => {
 		const pkgInstallSpawn = spawnChild(pkg);
-		pkgInstallSpawn.stderr.on("data", (data) => {
-			returnObject.errors.push(data);
-		});
+		if (pkgInstallSpawn.stderr) {
+			returnObject.errors.push(pkgInstallSpawn.stderr.toString());
+		}
 	});
 
 	// Generate scaffolds
