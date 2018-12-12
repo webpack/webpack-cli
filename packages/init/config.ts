@@ -1,6 +1,7 @@
 // Interface from @webpack-cli/generators/types
 import {IWebpackOptions} from "@webpack-cli/generators/types";
 import {ITransformConfig} from "@webpack-cli/utils/modify-config-helper";
+import { PathLike } from "fs";
 /**
  * Config class responsible for handling config generation
  */
@@ -9,10 +10,14 @@ export class Config {
 	private configName: string;
 	private topScope: string[];
 	private webpackOptions: IWebpackOptions;
+	private merge: object;
+	private configPath: string;
 	constructor() {
 		this.configName = "";
 		this.topScope = [""];
 		this.webpackOptions = {};
+		this.merge = {};
+		this.configPath = process.cwd();
 	}
 
 	public pushToTopScope(...args: string[]): void {
@@ -33,10 +38,11 @@ export class Config {
 		const outputConfig = {
 			config: {
 				configName: this.configName,
+				merge: this.merge,
 				topScope: this.topScope,
 				webpackOptions: this.webpackOptions,
 			},
-			configPath : process.cwd(),
+			configPath : this.configPath,
 		};
 		return outputConfig;
 	}
