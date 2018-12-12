@@ -1,5 +1,5 @@
 // Interface from @webpack-cli/generators/types
-import {IWebpackOptions} from "@webpack-cli/generators/types"
+import {IWebpackOptions} from "@webpack-cli/generators/types";
 import {ITransformConfig} from "@webpack-cli/utils/modify-config-helper";
 /**
  * Config class responsible for handling config generation
@@ -26,7 +26,7 @@ export class Config {
 	}
 
 	public setWebpackOption(optionName: string, value: any): void {
-		this.webpackOptions.optionName = value;
+		this.webpackOptions[optionName] = value;
 	}
 
 	public exportConfig(): ITransformConfig {
