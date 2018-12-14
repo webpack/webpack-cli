@@ -1,12 +1,14 @@
 import * as fs from "fs";
+import * as j from "jscodeshift";
 import * as dir from "node-dir";
 import * as shell from "shelljs";
+
 /**
  * @returns storeBase() , getDependenencyTree(), getChangedTree(), builder()
  *
  */
 
-const log = (text) => process.stdout.write(text);
+const log = (text: any) => process.stdout.write(text);
 
 export function storeBase(userDirectory: fs.PathLike) {
 	/**
@@ -42,6 +44,60 @@ export function storeBase(userDirectory: fs.PathLike) {
 		}
 	});
 	return;
+}
+
+// Interface for a typical file
+interface IFile {
+	source: string;
+	extension: string;
+}
+
+function getImports(fileName: string): string[] {
+
+	const file = importFile(fileName);
+	const ast = j(file.source);
+
+	const imports = [];
+	switch (file.extension) {
+		case "ts":
+
+			// For static imports
+			ast.find(j.ImportDeclaration).forEach((path) => {
+				imports.push(path.value.source.value);
+			});
+
+			// For dynamic imports using import()
+			ast.find(j.CallExpression).forEach((path) => {
+				if (path.value.callee.name === "import") {
+					imports.push(path.value.arguments[0].value);
+				}
+			});
+
+			break;
+
+		case "js":
+
+			// for require() imports
+			ast.find(j.CallExpression).forEach((path) => {
+				if (path.value.callee.name === "require") {
+				imports.push(path.value.arguments[0].value);
+				}
+			});
+
+			// TODO: for static imports in Babel
+	}
+
+	return imports;
+}
+
+function importFile(fileName: string): IFile {
+	const file = {
+		extension: "",
+		source: "",
+	};
+	file.source = fs.readFileSync(fileName).toString();
+	file.extension = fileName.split(".").pop();
+	return file;
 }
 
 export function getDependencyTree() {
