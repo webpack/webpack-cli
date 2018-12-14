@@ -53,6 +53,13 @@ export class Config {
 	public setWebpackOption(optionName: string, value: any): void {
 		this.webpackOptions[optionName] = value;
 	}
+	/**
+	 * mergeWith
+	 * @param config Object to be merged with the given config
+	 */
+	public mergeWith(config: object): void {
+		this.merge = config;
+	}
 
 	/**
 	 * exportConfig()
