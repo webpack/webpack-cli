@@ -25,13 +25,13 @@ export default function initializeInquirer(...args: string[]): Function | void {
 }
 
 /**
- * UI Manager function which takes answers and dependendencies as input
+ * scaffoldProject function which takes answers and dependendencies as input
  * and generates required scaffolds
  * @param dependencies - array of packages needed to be installed
  * @param config - Config object to be returned from UI
  */
 
-export function UIManager(dependencies: string[], config: ITransformConfig) {
+export function scaffoldProject(dependencies: string[], config: ITransformConfig) {
 	const returnObject: {
 		errors: String[],
 	} = {errors: []};
