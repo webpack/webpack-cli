@@ -9,11 +9,11 @@
     "access": "public"
   },
   "dependencies": {
-    "envinfo": "^5.12.1"
+    "envinfo": "5.12.1"
   },
   "devDependencies": {
-    "@types/node": "^10.5.1",
-    "typescript": "^3.1.6"
+    "@types/node": "10.5.1",
+    "typescript": "3.1.6"
   },
   "scripts": {
     "build": "tsc",
