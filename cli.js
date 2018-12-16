@@ -39,4 +39,4 @@ if (!semver.satisfies(process.version, version)) {
 	process.exit(1);
 }
 
-require("./lib/run");
+require("./lib/bootstrap");
