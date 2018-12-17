@@ -10,10 +10,10 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "jscodeshift": "0.5.1"
+    "jscodeshift": "^0.5.1"
   },
   "devDependencies": {
-    "typescript": "3.1.6"
+    "typescript": "^3.1.6"
   },
   "scripts": {
     "test": "jest --detectOpenHandles",
