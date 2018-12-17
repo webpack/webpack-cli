@@ -1,9 +1,18 @@
 # webpack-scaffold
 
 This is the utility suite for creating a webpack `scaffold`. It contains utility functions to assist with inquirer prompting and scaffolding.
+# Installation
 
 # API
 
+1. [parseValue()](#parsevalue)
+2. [createArrowFunction()](#createarrowfunction)
+3. [createRegularFunction()](#createregularfunction)
+4. [createDynamicPromise()](#createdynamicpromise)
+5. [createAssetFilterFunction()](#createassetfilterfunction)
+6. [createExternalFunction()](#createexternalfunction)
+7. [createRequire()](#createrequire)
+8. Inquirer: [List](#list), [RawList](#rawlist), [CheckList](#checklist), [Input](#input), [InputValidate](#inputvalidate), [Confirm](#confirm)
 ## parseValue  
 
 Param: `String`
@@ -11,7 +20,7 @@ Param: `String`
 Used when you cannot use regular conventions. Handy for examples like `RegExp` or `output.sourcePrefix`
 
 ```js
-const parseValue = require('webpack-addons').parseValue;
+const parseValue = require('@webpack-cli/webpack-scaffold').parseValue;
 
 this.configuration.myScaffold.webpackOptions.output.sourcePrefix = parseValue('\t')
 // sourcePrefix: '\t'
