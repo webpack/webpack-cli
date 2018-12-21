@@ -8,15 +8,15 @@ router.get("/", function(req, res, next) {
 	const Q = require("../../utils/questioner").default;
 	let questioner = new Q();
 
-	questioner.question({
+	questioner.start({
 		action: "question",
 		question: {
 			question: "Do you want to start scaffold?",
 			type: "Binary"
 		}
 	}).then((data) => {
-		console.log(data.answer);
-		return { action: "exit" };
+		console.log(data);
+		return questioner.question({ action: "exit" });
 	});
 
 	res.json({
