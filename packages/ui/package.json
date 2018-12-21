@@ -3,11 +3,12 @@
   "version": "0.0.1",
   "description": "GUI for webpack-cli",
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www.js"
   },
   "dependencies": {
+    "@webpack-cli/ui-gui": "0.0.1",
     "@webpack-cli/ui-server": "0.0.0",
-    "@webpack-cli/ui-gui": "0.0.1"
+    "debug": "4.1.0"
   },
   "license": "MIT"
 }

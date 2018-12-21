@@ -3,8 +3,8 @@
  * Module dependencies.
  */
 
-const path = require('path');
-const app = require("../../ui-server")(path.join(__dirname, "../../ui-gui"));
+const path = require("path");
+const app = require("../../ui-server")(path.join(__dirname, "../../ui-gui/build")); // eslint-disable-line
 const debug = require("debug")("ui:server");
 const http = require("http");
 
@@ -67,11 +67,9 @@ function onError(error) {
 		case "EACCES":
 			console.error(bind + " requires elevated privileges");
 			process.exit(1);
-			break;
 		case "EADDRINUSE":
 			console.error(bind + " is already in use");
 			process.exit(1);
-			break;
 		default:
 			throw error;
 	}
