@@ -128,7 +128,13 @@ export default class InitGenerator extends Generator {
 				if (outputTypeAnswer.outputType.length) {
 					outputPath = outputTypeAnswer.outputType;
 				}
-				if (!this.usingDefaults) {
+				// If entry is single and default output path is chosen
+				// output path is default to 'dist' by webpack
+				const isSingleEntry = typeof this.configuration.config.webpackOptions.entry === "string";
+				if (
+					!this.usingDefaults &&
+					!(outputTypeAnswer.outputType.length === 0 && isSingleEntry)
+				) {
 					this.configuration.config.webpackOptions.output.path = `path.resolve(__dirname, '${outputPath}')`;
 				}
 			})
