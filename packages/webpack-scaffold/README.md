@@ -1,4 +1,4 @@
-# webpack-cli webpack-scaffold
+# webpack-scaffold
 
 This is the utility suite for creating a webpack `scaffold`. It contains utility functions to assist with inquirer prompting and scaffolding.
 # Installation
