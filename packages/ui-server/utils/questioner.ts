@@ -3,56 +3,47 @@ import * as net from "net";
 export default class Questioner {
 	public port: number;
 	public address: string;
-	private socket: net.Socket;
+	private client: net.Socket;
 	private server: net.Server;
 
 	constructor() {
 		this.port = 1234;
 		this.address = "localhost";
-		this.socket = new net.Socket();
-
-		// Create Server
-		this.server = net.createServer((socket) => {
-			socket.pipe(socket);
-		}).listen(this.port, this.address);
-
-		// Connect to server
-		this.init();
-
 	}
+	public start(ques: {action: string, question?: object}) {
 
-	public question(ques: {action: string, question?: object}) {
-		const q = this;
 		return new Promise((resolve, reject) => {
+			// Create Server
+			this.server = net.createServer((socket) => {
+				process.stdout.write(`Client Connected on ${socket.remotePort}\n`);
+				this.client = socket;
+				this.client.write(JSON.stringify(ques));
 
-			q.socket.write(ques);
-			if (ques.action === "exit") {
-				q.socket.destroy();
-				q.server.close();
-			}
+				this.client.on("data", (data: string) => {
+					resolve(JSON.parse(data).answer);
+				});
 
-			q.socket.on("data", (data) => {
-				if (data.toJSON().data[0].action === "answer") {
-					resolve(data);
-				}
-				if (data.toJSON().data[0].action === "exit") {
-					q.socket.destroy();
-					q.server.close();
-				}
-			});
-
-			q.socket.on("error", (err) => {
-				reject(err);
-				q.socket.destroy();
-				q.server.close();
-			});
-
+				this.client.on("close", () => {
+					reject();
+				});
+			}).listen(this.port, this.address);
+			this.server.maxConnections = 1;
 		});
 	}
-
-	private init() {
-		const q = this;
-		q.socket.connect(q.port, q.address);
+	public question(ques: {action: string, question?: object}) {
+		return new Promise((resolve, reject) => {
+			if (ques.action === "exit") {
+				this.client.destroy();
+				this.server.close();
+				resolve();
+			}
+			this.client.write(JSON.stringify(ques));
+			this.client.on("data", (data: string) => {
+				resolve(JSON.parse(data).answer);
+			});
+			this.client.on("close", (err) => {
+				reject(err);
+			});
+		});
 	}
-
 }

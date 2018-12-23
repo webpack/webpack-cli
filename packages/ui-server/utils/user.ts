@@ -1,5 +1,4 @@
 import * as net from "net";
-
 export default class User {
 	private port: number;
 	private address: string;
@@ -13,22 +12,25 @@ export default class User {
 
 	public answer(ans: { action: string, answer?: any}) {
 		const user = this.socket;
-		return new Promise((resolve, reject) => {
-			user.write(ans);
-			if (ans.action === "exit") {
-				user.destroy();
+		user.write(JSON.stringify(ans));
+	}
+	public async question() {
+		const ques = await this.getQuestion().catch((err) => {
+			process.stdout.write(err);
+		});
+		return ques;
+	}
+	private async getQuestion() {
+		return await new Promise((resolve, reject) => {
+			const user = this.socket;
+			if (user.destroyed) {
+				resolve();
 			}
-			user.on("data", (data) => {
-				if (data.toJSON().data[0].action === "question") {
-					resolve(data);
-				}
-				if (data.toJSON().data[0].action === "exit") {
-					user.destroy();
-				}
+			user.on("data", (data: string) => {
+				resolve(JSON.parse(data).question);
 			});
 			user.on("error", (err) => {
 				reject(err);
-				user.destroy();
 			});
 		});
 	}
