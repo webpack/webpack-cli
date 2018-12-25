@@ -152,7 +152,7 @@
     "jest-cli": "^23.6.0",
     "jest-junit": "^5.2.0",
     "jsdoc": "^3.5.5",
-    "lerna": "^3.4.3",
+    "lerna": "^3.8.0",
     "lint-staged": "7.x.x",
     "nyc": "^13.1.0",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
