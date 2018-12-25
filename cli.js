@@ -2,7 +2,7 @@
 
 "use strict";
 
-/* require("v8-compile-cache"); */
+require("v8-compile-cache");
 
 const importLocal = require("import-local");
 
