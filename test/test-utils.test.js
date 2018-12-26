@@ -1,6 +1,8 @@
 "use strict";
 
-const { extractHash } = require("./testUtils");
+const { extractHash, appendDataIfFileExists } = require("./testUtils");
+const { writeFileSync, unlinkSync, readFileSync } = require("fs");
+const { resolve } = require("path");
 
 describe("extractHash functionality", () => {
 	it("should throw Error if there is empty string", () => {
@@ -99,5 +101,31 @@ Child ${config2Name}:
 		expect(hashInfo.config).toHaveLength(2);
 		expect(hashInfo.config[0]).toEqual({ name: config1Name, hash: config1Hash });
 		expect(hashInfo.config[1]).toEqual({ name: config2Name, hash: config2Hash });
+	});
+});
+
+describe("appendFile functionality", () => {
+	describe("positive test-cases", () => {
+		const junkFile = resolve(__dirname, "junkFile.js");
+
+		beforeEach(() => {
+			writeFileSync(junkFile, "");
+		});
+		afterEach(() => {
+			unlinkSync(junkFile);
+		});
+		it("should append data to file if file exists", () => {
+			const expectedData = "//junk comment";
+			appendDataIfFileExists(__dirname, junkFile, expectedData);
+			const actualData = readFileSync(junkFile).toString();
+
+			expect(actualData).toBe(expectedData);
+		});
+	});
+
+	describe("negative test-cases", () => {
+		it("should throw error if file does not exist", () => {
+			expect(() => appendDataIfFileExists(__dirname, "does-not-exist.js", "junk data")).toThrowError();
+		});
 	});
 });
