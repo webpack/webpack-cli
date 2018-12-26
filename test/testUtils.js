@@ -148,4 +148,23 @@ function extractHash(stdout) {
 	return hashInfo;
 }
 
-module.exports = { run, runWatch, extractHash, extractSummary };
+/*eslint valid-jsdoc: ["error", { "requireReturn": false }]*/
+/**
+ *
+ * @param {*} testCase - testCase directory
+ * @param {*} file - file relative to testCase
+ * @param {*} data - data to append
+ * @throws - throw an Error if file does not exist
+ */
+function appendDataIfFileExists(testCase, file, data) {
+	const { existsSync, appendFileSync } = require("fs");
+
+	const filePath = path.resolve(testCase, file);
+	if (existsSync(filePath)) {
+		appendFileSync(filePath, data);
+	} else {
+		throw new Error(`Oops! ${filePath} does not exist!`);
+	}
+}
+
+module.exports = { run, runWatch, extractHash, extractSummary, appendDataIfFileExists };
