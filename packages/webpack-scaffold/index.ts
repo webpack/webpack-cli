@@ -125,3 +125,11 @@ export function AutoComplete(name: string, message: string, options: object = {}
 		type: "autocomplete",
 	}, options);
 }
+
+export function Color(name: string, message: string) {
+	return {
+		message,
+		name,
+		type: "color",
+	};
+}

@@ -10,7 +10,7 @@ export default class User {
 		this.init();
 	}
 
-	public answer(ans: { action: string, answer?: any}) {
+	public answer(ans: { action: string, answer?: object}) {
 		const user = this.socket;
 		user.write(JSON.stringify(ans));
 	}

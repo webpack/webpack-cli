@@ -30,7 +30,7 @@ export default class Questioner {
 			this.server.maxConnections = 1;
 		});
 	}
-	public question(ques: {action: string, question?: object}) {
+	public question(ques: {action: string, question?: object|object[]}) {
 		return new Promise((resolve, reject) => {
 			if (ques.action === "exit") {
 				this.client.destroy();
