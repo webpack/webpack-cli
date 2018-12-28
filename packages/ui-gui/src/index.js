@@ -1,1 +1,4 @@
-import "./styles/app.scss";
+import './style';
+import App from './components/app';
+
+export default App;
