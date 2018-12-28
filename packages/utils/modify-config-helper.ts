@@ -125,8 +125,10 @@ export default function modifyHelperUtil(
 	}).catch((err) => {
 		console.error(
 			chalk.red(
-				// tslint:disable-next-line:max-line-length
-				"\nUnexpected Error, please file an issue to https://github.com/webpack/webpack-cli/issues/new?template=Bug_report.md \n",
+				`
+Unexpected Error
+please file an issue here https://github.com/webpack/webpack-cli/issues/new?template=Bug_report.md
+				`,
 			),
 		);
 		console.error(err);
