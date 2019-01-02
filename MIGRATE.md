@@ -105,7 +105,7 @@ $ webpack-cli migrate ./webpack.config.js
 +              })
 ? Are you sure these changes are fine? Yes
 
- ✔︎ The new webpack v2 config file is at /Users/obuckley/Workspace/github/repos/webpack-migrate-sandbox/webpack.config.js
+ ✔︎ New webpack v2 config file is at /Users/obuckley/Workspace/github/repos/webpack-migrate-sandbox/webpack.config.js
 ```
 
 
