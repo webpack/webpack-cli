@@ -59,7 +59,6 @@ export default class InitGenerator extends Generator {
 		const self: this = this;
 		let regExpForStyles: string;
 		let ExtractUseProps: object[];
-		let outputPath: string = "dist";
 
 		process.stdout.write(
 			"\n" +
@@ -125,11 +124,9 @@ export default class InitGenerator extends Generator {
 						filename: "'[name].[chunkhash].js'",
 					};
 				}
-				if (outputTypeAnswer.outputType.length) {
-					outputPath = outputTypeAnswer.outputType;
-				}
-				if (!this.usingDefaults) {
-					this.configuration.config.webpackOptions.output.path = `path.resolve(__dirname, '${outputPath}')`;
+				if (!this.usingDefaults && outputTypeAnswer.outputType.length) {
+					this.configuration.config.webpackOptions.output.path =
+						`path.resolve(__dirname, '${outputTypeAnswer.outputType}')`;
 				}
 			})
 			.then((_: void) => {
