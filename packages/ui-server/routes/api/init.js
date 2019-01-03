@@ -1,3 +1,4 @@
+/* eslint-disable node/no-unpublished-require */
 /**
  * Endpoint for @webpack-cli/init
  */
@@ -5,17 +6,36 @@ const express = require("express");
 const router = express.Router();
 
 router.get("/", function(req, res, next) {
-	const Q = require("../../utils/questioner").default;
-	let questioner = new Q();
+
+	const Config = require("../../../init/config").Config;
+	const scaffoldProject = require("../../../init").scaffoldProject;
+	const Questioner = require("../../utils/questioner").default;
+
+	let config = new Config();
+	let questioner = new Questioner();
+
+	const dependencies = [
+		"webpack",
+		"webpack-cli",
+		"uglifyjs-webpack-plugin",
+		"babel-plugin-syntax-dynamic-import",
+	];
+
+	config.pushToTopScope(
+		"const webpack = require('webpack')",
+		"const path = require('path')",
+		"\n"
+	);
+
+	config.setWebpackOption("module",{
+		rules: []
+	});
 
 	questioner.start({
 		action: "question",
-		question: {
-			question: "Do you want to start scaffold?",
-			type: "Binary"
-		}
+		question: "A dummy question for reference"
 	}).then((data) => {
-		console.log(data);
+		scaffoldProject(dependencies,config.exportConfig());
 		return questioner.question({ action: "exit" });
 	});
 

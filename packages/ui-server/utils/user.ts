@@ -1,10 +1,13 @@
-import * as net from "net";
+import {Socket} from "net";
+
 export default class User {
+
 	private port: number;
 	private address: string;
-	private socket: net.Socket;
+	private socket: Socket;
+
 	constructor(port: number, address: string) {
-		this.socket = new net.Socket();
+		this.socket = new Socket();
 		this.port = port;
 		this.address = address;
 		this.init();
@@ -14,13 +17,15 @@ export default class User {
 		const user = this.socket;
 		user.write(JSON.stringify(ans));
 	}
-	public async question() {
+
+	public async question(): Promise<object|void> {
 		const ques = await this.getQuestion().catch((err) => {
-			process.stdout.write(err);
+			process.stderr.write(err);
 		});
 		return ques;
 	}
-	private async getQuestion() {
+
+	private async getQuestion(): Promise<object|void> {
 		return await new Promise((resolve, reject) => {
 			const user = this.socket;
 			if (user.destroyed) {

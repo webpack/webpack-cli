@@ -4,6 +4,7 @@ import {ITransformConfig} from "@webpack-cli/utils/modify-config-helper";
 import npmPackagesExists from "@webpack-cli/utils/npm-packages-exists";
 import { spawnChild } from "@webpack-cli/utils/package-manager";
 import runTransform from "@webpack-cli/utils/scaffold";
+
 /**
  *
  * First function to be called after running the init flag. This is a check,
@@ -31,9 +32,9 @@ export default function initializeInquirer(...args: string[]): Function | void {
  * @param config - Config object to be returned from UI
  */
 
-export function scaffoldProject(dependencies: string[], config: ITransformConfig) {
+export function scaffoldProject(dependencies: string[], config: ITransformConfig): {errors: string[]} {
 	const returnObject: {
-		errors: String[],
+		errors: string[],
 	} = {errors: []};
 
 	// Install Dependencies

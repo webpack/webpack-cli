@@ -7,23 +7,11 @@ import {ITransformConfig} from "@webpack-cli/utils/modify-config-helper";
  */
 export class Config {
 	// Data members
-	private configName: string;
-	private topScope: string[];
-	private webpackOptions: IWebpackOptions;
-	private merge: object;
-	private configPath: string;
-
-	/**
-	 * Contructor for config class
-	 * @summary sets default values of each Data member
-	 */
-	constructor() {
-		this.configName = "";
-		this.topScope = [""];
-		this.webpackOptions = {};
-		this.merge = {};
-		this.configPath = process.cwd();
-	}
+	private configName: string = "";
+	private topScope: string[] = [""];
+	private webpackOptions: IWebpackOptions = {};
+	private merge: object = {};
+	private configPath: string = process.cwd();
 
 	/**
 	 * pushToTopScope
@@ -46,6 +34,13 @@ export class Config {
 	}
 
 	/**
+	 * setConfigPath
+	 * @param configPath : string (path to config that should be generated)
+	 */
+	public setConfigPath(configPath: string): void {
+		this.configPath = configPath;
+	}
+	/**
 	 * setWebpackOption
 	 * @param optionName A option Name in accordance to interface IWebpackOptions
 	 * @param value The vaule of the optionName
@@ -53,6 +48,7 @@ export class Config {
 	public setWebpackOption(optionName: string, value: any): void {
 		this.webpackOptions[optionName] = value;
 	}
+
 	/**
 	 * mergeWith
 	 * @param config Object to be merged with the given config
