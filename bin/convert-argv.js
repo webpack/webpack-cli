@@ -77,7 +77,7 @@ module.exports = function(...args) {
 			const resolvedPath = path.resolve(pathToWebpackConfig);
 			configFiles.push({
 				path: resolvedPath,
-				ext: resolvedPath.split(".").pop(),
+				ext: resolvedPath.split(".").pop()
 			});
 		}
 	}

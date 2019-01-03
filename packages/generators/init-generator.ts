@@ -96,6 +96,14 @@ export default class InitGenerator extends Generator {
 				return entryQuestions(self, entryTypeAnswer);
 			})
 			.then((entryOptions: object | string) => {
+				if(typeof entryOptions === 'string' &&  entryOptions.length > 0) {
+					return this.prompt([
+						Input(
+							"outputType",
+							"Which folder will your generated bundles be in? [default: dist]:",
+						),
+					]);
+				}
 				if (entryOptions !== "\"\"") {
 					this.configuration.config.webpackOptions.entry = entryOptions;
 				}
@@ -132,9 +140,9 @@ export default class InitGenerator extends Generator {
 			.then((_: void) => {
 				this.isProd = this.usingDefaults ? true : false;
 				this.configuration.config.configName = this.isProd ? "prod" : "dev";
-				this.configuration.config.webpackOptions.mode = this.isProd
-					? "'production'"
-					: "'development'";
+				if(!this.isProd) {
+					this.configuration.config.webpackOptions.mode = "'development'";
+				}
 				this.configuration.config.webpackOptions.plugins = this.isProd ? [] : getDefaultPlugins();
 				return this.prompt([
 					Confirm("babelConfirm", "Will you be using ES2015?"),

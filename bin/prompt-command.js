@@ -35,12 +35,7 @@ module.exports = function promptForInstallation(packages, ...args) {
 	try {
 		const path = require("path");
 		const fs = require("fs");
-		pathForCmd = path.resolve(
-			process.cwd(),
-			"node_modules",
-			"@webpack-cli",
-			packages
-		);
+		pathForCmd = path.resolve(process.cwd(), "node_modules", "@webpack-cli", packages);
 		if (!fs.existsSync(pathForCmd)) {
 			const globalModules = require("global-modules");
 			pathForCmd = globalModules + "/@webpack-cli/" + packages;
