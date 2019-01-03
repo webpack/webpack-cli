@@ -1,9 +1,18 @@
 # webpack-scaffold
 
 This is the utility suite for creating a webpack `scaffold`. It contains utility functions to assist with inquirer prompting and scaffolding.
-
+# Installation
+<!-- TODO: To be added as part of issue #712  -->
 # API
 
+1. [parseValue()](#parsevalue)
+2. [createArrowFunction()](#createarrowfunction)
+3. [createRegularFunction()](#createregularfunction)
+4. [createDynamicPromise()](#createdynamicpromise)
+5. [createAssetFilterFunction()](#createassetfilterfunction)
+6. [createExternalFunction()](#createexternalfunction)
+7. [createRequire()](#createrequire)
+8. Inquirer: [List](#list), [RawList](#rawlist), [CheckList](#checklist), [Input](#input), [InputValidate](#inputvalidate), [Confirm](#confirm)
 ## parseValue  
 
 Param: `String`
@@ -11,7 +20,7 @@ Param: `String`
 Used when you cannot use regular conventions. Handy for examples like `RegExp` or `output.sourcePrefix`
 
 ```js
-const parseValue = require('webpack-addons').parseValue;
+const parseValue = require('@webpack-cli/webpack-scaffold').parseValue;
 
 this.configuration.myScaffold.webpackOptions.output.sourcePrefix = parseValue('\t')
 // sourcePrefix: '\t'
@@ -112,6 +121,7 @@ Param: `name<String>, message<String>, choices<Array>`
 
 Creates a List from Inquirer
 ```js
+const List = require('@webpack-cli/webpack-scaffold').List;
 List('entry', 'what kind of entry do you want?', ['Array', 'Function'])
 ```
 
@@ -121,6 +131,7 @@ Param: `name<String>, message<String>, choices<Array>`
 
 Creates a RawList from Inquirer
 ```js
+const RawList = require('@webpack-cli/webpack-scaffold').RawList;
 RawList('entry', 'what kind of entry do you want?', ['Array', 'Function'])
 ```
 
@@ -130,6 +141,7 @@ Param: `name<String>, message<String>, choices<Array>`
 
 Creates a CheckList(`checkbox`) from Inquirer
 ```js
+const CheckList = require('@webpack-cli/webpack-scaffold').CheckList;
 CheckList('entry', 'what kind of entry do you want?', ['Array', 'Function'])
 ```
 
@@ -139,6 +151,7 @@ Param: `name<String>, message<String>`
 
 Creates an Input from Inquirer
 ```js
+const Input = require('@webpack-cli/webpack-scaffold').Input;
 Input('entry', 'what is your entry point?')
 ```
 
@@ -148,6 +161,7 @@ Param: `name<String>, message<String>, validate<Function>`
 
 Creates an Input from Inquirer
 ```js
+const Input = require('@webpack-cli/webpack-scaffold').Input;
 const validation = (value) => {
     if(value.length > 4) {
         return true;
@@ -164,5 +178,6 @@ Param: `name<String>, message<String>`
 
 Creates an Input from Inquirer
 ```js
+const Confirm = require('@webpack-cli/webpack-scaffold').Confirm;
 Confirm('contextConfirm', 'Is this your context?')
 ```

@@ -45,7 +45,7 @@ function spawnYarn(pkg: string, isNew: boolean): SpawnSyncReturns<Buffer> {
 }
 /**
  *
- * Spawns a new process that installs the addon/dependency
+ * Spawns a new process that installs the scaffold/dependency
  *
  * @param {String} pkg - The dependency to be installed
  * @returns {Function} spawn - Installs the package

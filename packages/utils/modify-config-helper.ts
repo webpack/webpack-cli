@@ -123,7 +123,14 @@ export default function modifyHelperUtil(
 		);
 		return runTransform(transformConfig, action);
 	}).catch((err) => {
-		console.error(chalk.red("\nUnexpected Error, please file an issue to https://github.com/webpack/webpack-cli\n"));
+		console.error(
+			chalk.red(
+				`
+Unexpected Error
+please file an issue here https://github.com/webpack/webpack-cli/issues/new?template=Bug_report.md
+				`,
+			),
+		);
 		console.error(err);
 	});
 }

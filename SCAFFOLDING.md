@@ -10,12 +10,12 @@ Before writing a `webpack-cli` scaffold, think about what you're trying to achie
 
 ## webpack-scaffold
 
-`webpack-scaffold` is a utility suite for creating addons. It contains functions that could be of use for creating an addon yourself.
+`webpack-scaffold` is a utility suite for creating scaffolds. It contains functions that could be of use for creating an scaffold yourself.
 
 ## webpack-scaffold-yourpackage
 
 In order for `webpack-cli` to compile your package, it must be available on npm or on your local filesystem. If you are curious about how you can create your very own `scaffold`, please read [How do I compose a
-webpack-addon?](https://github.com/ev1stensberg/webpack-addons-demo).
+webpack-scaffold?](https://github.com/evenstensberg/webpack-scaffold-demo).
 
 If the package is on npm, its name must have a prefix of `webpack-scaffold`.
 
@@ -23,7 +23,7 @@ If the package is on your local filesystem, it can be named whatever you want. P
 
 ## API
 
-To create an `addon`, you must create a [`yeoman-generator`](http://yeoman.io/authoring/). Because of that, you can optionally extend your generator to include methods from the [Yeoman API](http://yeoman.io/learning/). Its worth noting that we support all the properties of a regular webpack configuration. In order for us to do this, there's a thing you need to remember.
+To create a `scaffold`, you must create a [`yeoman-generator`](http://yeoman.io/authoring/). Because of that, you can optionally extend your generator to include methods from the [Yeoman API](http://yeoman.io/learning/). Its worth noting that we support all the properties of a regular webpack configuration. In order for us to do this, there's a thing you need to remember.
 
 Objects are made using strings, while strings are made using double strings. This means that in order for you to create an string, you have to wrap it inside another string for us to validate it correctly.
 
