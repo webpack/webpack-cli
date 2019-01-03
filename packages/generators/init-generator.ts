@@ -96,7 +96,7 @@ export default class InitGenerator extends Generator {
 				return entryQuestions(self, entryTypeAnswer);
 			})
 			.then((entryOptions: object | string) => {
-				if(typeof entryOptions === 'string' &&  entryOptions.length > 0) {
+				if (typeof entryOptions === "string" && entryOptions.length > 0) {
 					return this.prompt([
 						Input(
 							"outputType",
@@ -140,7 +140,7 @@ export default class InitGenerator extends Generator {
 			.then((_: void) => {
 				this.isProd = this.usingDefaults ? true : false;
 				this.configuration.config.configName = this.isProd ? "prod" : "dev";
-				if(!this.isProd) {
+				if (!this.isProd) {
 					this.configuration.config.webpackOptions.mode = "'development'";
 				}
 				this.configuration.config.webpackOptions.plugins = this.isProd ? [] : getDefaultPlugins();
