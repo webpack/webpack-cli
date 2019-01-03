@@ -29,7 +29,7 @@
     "build": "tsc",
     "bundlesize": "bundlesize",
     "changelog": "conventional-changelog --config ./build/changelog-generator/index.js --infile CHANGELOG.md --same-file",
-    "clean:all": "rimraf node_modules packages/*/node_modules package-lock.json packages/*/package-lock.json",
+    "clean:all": "rimraf node_modules package-lock.json packages/*/{node_modules,package-lock.json}",
     "commit": "git-cz",
     "docs": "typedoc",
     "format": "prettier-eslint ./bin/*.js ./test/**/*.js ./packages/**/*.js --write",
