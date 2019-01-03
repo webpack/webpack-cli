@@ -18,6 +18,8 @@
     "watch": "npm run build && tsc -w"
   },
   "dependencies": {
+    "@types/node-dir": "0.0.32",
+    "@types/shelljs": "^0.8.1",
     "jscodeshift": "^0.5.1",
     "node-dir": "^0.1.17",
     "shelljs": "^0.8.2"

@@ -84,7 +84,11 @@ function getImports(fileName: string): string[] {
 				}
 			});
 
-			// TODO: for static imports in Babel
+			// for static imports in Babel
+			ast.find(j.ImportDeclaration).forEach((path) => {
+				imports.push(path.value.source.value);
+			});
+			break;
 	}
 
 	return imports;
