@@ -2,7 +2,9 @@
 
 This is the utility suite for creating a webpack `scaffold`. It contains utility functions to assist with inquirer prompting and scaffolding.
 # Installation
-<!-- TODO: To be added as part of issue #712  -->
+```bash
+npm i -D webpack-cli @webpack-cli/webpack-scaffold
+```
 # API
 
 1. [parseValue()](#parsevalue)
@@ -13,7 +15,7 @@ This is the utility suite for creating a webpack `scaffold`. It contains utility
 6. [createExternalFunction()](#createexternalfunction)
 7. [createRequire()](#createrequire)
 8. Inquirer: [List](#list), [RawList](#rawlist), [CheckList](#checklist), [Input](#input), [InputValidate](#inputvalidate), [Confirm](#confirm)
-## parseValue  
+## parseValue
 
 Param: `String`
 
