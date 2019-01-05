@@ -6,6 +6,7 @@ const prepareOptions = require("./prepareOptions");
 const webpackConfigurationSchema = require("./webpackConfigurationSchema.json");
 const validateSchema = require("webpack").validateSchema;
 const WebpackOptionsValidationError = require("webpack").WebpackOptionsValidationError;
+const findup = require("findup-sync");
 
 module.exports = function(...args) {
 	const argv = args[1] || args[0];
@@ -43,18 +44,6 @@ module.exports = function(...args) {
 	const extensions = Object.keys(interpret.extensions).sort(function(a, b) {
 		return a === ".js" ? -1 : b === ".js" ? 1 : a.length - b.length;
 	});
-	const defaultConfigFiles = ["webpack.config", "webpackfile"]
-		.map(function(filename) {
-			return extensions.map(function(ext) {
-				return {
-					path: path.resolve(filename + ext),
-					ext: ext
-				};
-			});
-		})
-		.reduce(function(a, i) {
-			return a.concat(i);
-		}, []);
 
 	let i;
 	if (argv.config) {
@@ -80,15 +69,16 @@ module.exports = function(...args) {
 		const configArgList = Array.isArray(argv.config) ? argv.config : [argv.config];
 		configFiles = configArgList.map(mapConfigArg);
 	} else {
-		for (i = 0; i < defaultConfigFiles.length; i++) {
-			const webpackConfig = defaultConfigFiles[i].path;
-			if (fs.existsSync(webpackConfig)) {
-				configFiles.push({
-					path: webpackConfig,
-					ext: defaultConfigFiles[i].ext
-				});
-				break;
-			}
+		const defaultConfigFiles = ["webpack.config", "webpackfile"];
+		const webpackConfigFileRegExp = `(${defaultConfigFiles.join("|")})(${extensions.join("|")})`;
+		const pathToWebpackConfig = findup(webpackConfigFileRegExp);
+
+		if (pathToWebpackConfig) {
+			const resolvedPath = path.resolve(pathToWebpackConfig);
+			configFiles.push({
+				path: resolvedPath,
+				ext: resolvedPath.split(".").pop()
+			});
 		}
 	}
 	if (configFiles.length > 0) {

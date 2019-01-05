@@ -48,13 +48,13 @@ export function resolvePackages(pkg: string[]): Function | void {
 		}
 	}
 
-	pkg.forEach((addon: string) => {
+	pkg.forEach((scaffold: string) => {
 		// Resolve paths to modules on local filesystem
-		if (isLocalPath(addon)) {
-			let absolutePath: string = addon;
+		if (isLocalPath(scaffold)) {
+			let absolutePath: string = scaffold;
 
 			try {
-				absolutePath = path.resolve(process.cwd(), addon);
+				absolutePath = path.resolve(process.cwd(), scaffold);
 				require.resolve(absolutePath);
 				packageLocations.push(absolutePath);
 			} catch (err) {
@@ -69,11 +69,11 @@ export function resolvePackages(pkg: string[]): Function | void {
 		}
 
 		// Resolve modules on npm registry
-		processPromise(spawnChild(addon))
+		processPromise(spawnChild(scaffold))
 			.then((_: void) => {
 				try {
 					const globalPath: string = getPathToGlobalPackages();
-					packageLocations.push(path.resolve(globalPath, addon));
+					packageLocations.push(path.resolve(globalPath, scaffold));
 				} catch (err) {
 					console.error("Package wasn't validated correctly..");
 					console.error("Submit an issue for", pkg, "if this persists");

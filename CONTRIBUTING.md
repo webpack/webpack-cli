@@ -2,7 +2,7 @@
 
 From opening a bug report to creating a pull request: every contribution is
 appreciated and welcomed. If you're planning a new feature or changing
-the api, please create an issue first. This way we can ensure that your precious
+the API, please create an issue first. This way we can ensure that your precious
 work is not in vain.
 
 ## Issues
@@ -17,7 +17,7 @@ that include your `webpack.config.js` and relevant files. This way you help othe
 
 ## Your first Contribution
 
-First of all you will need to create an issue in github for the feature or bugfix that you want to work on. When you open a new issue, there will be a template that will be automatically added to the text of the issue, which you would need to fill in. Doing this will help us to understand better what the ticket is about.
+First of all, you will need to create an issue in Github for the feature or bugfix that you want to work on. When you open a new issue, there will be a template that will be automatically added to the text of the issue, which you would need to fill in. Doing this will help us to understand better what the ticket is about.
 
 After you've created the issue, we will have a look, and provide feedback to your ticket. 
 
@@ -101,7 +101,7 @@ There are two types of branches:
 
 ### Features
 
-If your contribution is something new, like a option for the cli, you can create a branch with the following prefix:
+If your contribution is something new, like an option for the cli, you can create a branch with the following prefix:
 
 `feature/<the-new-feature>`
 
@@ -124,7 +124,7 @@ In case you need a hand or pointers on to how to write your tests, do not hesita
 After getting some feedback, push to your fork and submit a pull request. We
 may suggest some changes, improvements or implementation alternatives.
 
-In case you've got a small change in most of the cases your pull request would be accepted quicker.
+In case you've got a small change in most of the cases, your pull request would be accepted quicker.
 
 ## Submitting a good Pull Request
 
@@ -136,7 +136,7 @@ In case you've got a small change in most of the cases your pull request would b
 
 Our commit messages format follows the [angular.js commits format](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#commit-message-format).
 
-You can use `npm run commit` script to have an interactive way for making commits that follow our guidelines.
+You can use `npm run commit` script to have an interactive way of making commits that follow our guidelines.
 
 We don't use the scope. The template of a commit would look like this:
 
@@ -232,7 +232,7 @@ It takes the input file given as parameter and uses jest to create a snapshot of
 This is still in a very raw form. We'd like to take this as close to a truly useful tool as possible.
 We will still need to
   - Support all kinds of webpack configuration(made using merge tools)
-  - Test these transforms against real world configurations.
+  - Test these transforms against real-world configurations.
 
 ## Contributor License Agreement
 

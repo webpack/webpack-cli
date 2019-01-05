@@ -24,34 +24,34 @@ export default function npmPackagesExists(pkg: string[]): void {
 		}
 	}
 
-	pkg.forEach((addon: string): void => {
-		if (isLocalPath(addon)) {
-			// If the addon is a path to a local folder, no name validation is necessary.
-			acceptedPackages.push(addon);
+	pkg.forEach((scaffold: string): void => {
+		if (isLocalPath(scaffold)) {
+			// If the scaffold is a path to a local folder, no name validation is necessary.
+			acceptedPackages.push(scaffold);
 			resolvePackagesIfReady();
 			return;
 		}
 
-		// The addon is on npm; validate name and existence
+		// The scaffold is on npm; validate name and existence
 		if (
-			addon.length <= WEBPACK_SCAFFOLD_PREFIX.length ||
-			addon.slice(0, WEBPACK_SCAFFOLD_PREFIX.length) !== WEBPACK_SCAFFOLD_PREFIX
+			scaffold.length <= WEBPACK_SCAFFOLD_PREFIX.length ||
+			scaffold.slice(0, WEBPACK_SCAFFOLD_PREFIX.length) !== WEBPACK_SCAFFOLD_PREFIX
 		) {
 			throw new TypeError(
-				chalk.bold(`${addon} isn't a valid name.\n`) +
+				chalk.bold(`${scaffold} isn't a valid name.\n`) +
 					chalk.red(
 						`\nIt should be prefixed with '${WEBPACK_SCAFFOLD_PREFIX}', but have different suffix.\n`,
 					),
 			);
 		}
 
-		npmExists(addon)
+		npmExists(scaffold)
 			.then((moduleExists: boolean) => {
 				if (moduleExists) {
-					acceptedPackages.push(addon);
+					acceptedPackages.push(scaffold);
 				} else {
 					Error.stackTraceLimit = 0;
-					throw new TypeError(`Cannot resolve location of package ${addon}.`);
+					throw new TypeError(`Cannot resolve location of package ${scaffold}.`);
 				}
 			})
 			.catch((err: IError) => {
