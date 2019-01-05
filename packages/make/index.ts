@@ -11,23 +11,20 @@ import {
  * @returns void
  *
  */
-export default function make() {
-	const userDirectory: fs.PathLike = process.cwd();
+export default function make(base: string, entry: string) {
 	let isBase: Boolean = false;
+	const currentTree: object = getDependencyTree(base, entry);
 
 	if (fs.existsSync(__dirname + "/base")) {
 		isBase = true;
-	} else {
-		storeBase(userDirectory);
 	}
-
-	const dependencyTree: Object = getDependencyTree();
 
 	if (!isBase) {
-		builder(dependencyTree);
+		storeBase(base, currentTree);
+		builder(currentTree);
 	} else {
-		const changedTree: Object = getChangedTree(userDirectory);
+		const baseTree = getDependencyTree(__dirname + "/base", entry);
+		const changedTree = getChangedTree(baseTree, currentTree, base);
 		builder(changedTree);
 	}
-	storeBase(userDirectory);
 }

@@ -1,49 +1,17 @@
 import * as fs from "fs";
 import * as j from "jscodeshift";
-import * as dir from "node-dir";
-import * as shell from "shelljs";
+import { exec } from "shelljs";
 
 /**
- * @returns storeBase() , getDependenencyTree(), getChangedTree(), builder()
- *
+ * 	Stores base state at ../base/ from `base` using `tree`
+ * 	@returns void
  */
-
-const log = (text: any) => process.stdout.write(text);
-
-export function storeBase(userDirectory: fs.PathLike) {
-	/**
-	 * 	Stores base state at ./base/ from userDirectory
-	 * 	@returns void
-	 */
-	if (!fs.existsSync(__dirname + "/base")) {
-		fs.mkdirSync(__dirname + "/base");
-	}
-	dir.files(userDirectory.toString(),
-	(err, files) => {
-		if (err) {
-			log(`[make] Error: ${err}`);
-		} else {
-			files.forEach( (file) => {
-				file = file.slice( userDirectory.toString().length);
-				const baseDir: fs.PathLike = file.split("/").slice(0, -1).join("/");
-				if (file.match(/.*(.js|.ts|.scss)$/g)) {
-					if (!fs.existsSync(__dirname + "/base/" + baseDir) && baseDir !== "") {
-						shell.mkdir("-p", __dirname + "/base/" + baseDir);
-					}
-					fs.appendFile(__dirname + "/base" + file, "", (e) => {
-						if (e) { log(`[make](storeBase,append) ${err}\n`); }
-					});
-					fs.copyFile(userDirectory + file, __dirname + "/base" + file, (e) => {
-						if (e) { log(`[make](storeBase, copy) ${err}`); }
-					});
-					log(`Stored: ${file}\n`);
-				} else {
-					log(`Not Stored: ${file}\n`);
-				}
-			});
-		}
+export function storeBase(base: string, tree: object) {
+	Object.keys(tree).forEach((file) => {
+		const folder = file.split("/").splice(-1, 1).join("/");
+		exec(`mkdir -p ../base/${folder}`);
+		fs.copyFileSync(base + file, __dirname + "../base/" + file);
 	});
-	return;
 }
 
 // Interface for a typical file
@@ -104,27 +72,54 @@ function importFile(fileName: string): IFile {
 	return file;
 }
 
-export function getDependencyTree() {
-	/**
-	 *  Retuns dependency tree from ./base tree
-	 *  @returns Object
-	 */
-	return {};
+function getDependencyTreeHelper(base: string, entry: string, dependencyTree: object, currentDepth: string): object {
+	const imports = getImports(base + entry);
+	if (imports.length > 0) {
+		imports.forEach((imp) => {
+			// Currently assuming each file is import with its extension
+			// And ignoring node_modules
+			if (fs.existsSync(base + imp)) {
+				const fileLocation =  imp.split("/").splice(-1, 1).join("/");
+				dependencyTree[entry].push(currentDepth + imp);
+				base += fileLocation;
+				currentDepth += fileLocation;
+				dependencyTree = getDependencyTreeHelper(base, imp, dependencyTree, currentDepth);
+			}
+		});
+	}
+	return dependencyTree;
 }
 
-export function getChangedTree(userDirectory: fs.PathLike) {
-	/**
-	 *  Retuns dependency tree of changed files when files
-	 *  from userDirectory are compared from ./base tree
-	 *  @returns Object
-	 */
-	return {};
+/**
+ *  Retuns dependency tree from base tree
+ *  @returns Object
+ */
+export function getDependencyTree(base: string, entry: string): object {
+	return getDependencyTreeHelper(base, entry, {}, "");
 }
 
+export function getChangedTree(baseTree: object, currentTree: object, base: string): object {
+	const filesToBuild = {};
+	for (const file in currentTree) {
+		if (currentTree[file] !== baseTree[file]) {
+			filesToBuild[file] = currentTree[file];
+		} else {
+			const baseFile = fs.readFileSync(__dirname + "../base/" + file);
+			const currentFile = fs.readFileSync(base + file);
+			exec(`diff ${currentFile} ${baseFile}`, (code, stdout, stderr) => {
+				if (stdout !== "") {
+					filesToBuild[file] = currentFile;
+				}
+			});
+		}
+	}
+	return filesToBuild;
+}
+/**
+ *  Build files according to files in tree
+ *  @returns void
+ */
 export function builder(tree: Object) {
-	/**
-	 *  Build files according to files in tree
-	 *  @returns void
-	 */
+
 	return;
 }
