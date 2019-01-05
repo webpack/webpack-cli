@@ -69,15 +69,17 @@ module.exports = function(...args) {
 		const configArgList = Array.isArray(argv.config) ? argv.config : [argv.config];
 		configFiles = configArgList.map(mapConfigArg);
 	} else {
-		const defaultConfigFiles = ["webpack.config", "webpackfile"];
-		const webpackConfigFileRegExp = `(${defaultConfigFiles.join("|")})(${extensions.join("|")})`;
+		const defaultConfigFileNames = ["webpack.config", "webpackfile"].join("|");
+		const webpackConfigFileRegExp = `(${defaultConfigFileNames})(${extensions.join("|")})`;
 		const pathToWebpackConfig = findup(webpackConfigFileRegExp);
 
 		if (pathToWebpackConfig) {
 			const resolvedPath = path.resolve(pathToWebpackConfig);
+			const actualConfigFileName = path.basename(resolvedPath);
+			const ext = actualConfigFileName.replace(new RegExp(defaultConfigFileNames), "");
 			configFiles.push({
 				path: resolvedPath,
-				ext: resolvedPath.split(".").pop()
+				ext,
 			});
 		}
 	}
