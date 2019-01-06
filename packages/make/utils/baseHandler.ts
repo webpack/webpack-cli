@@ -2,22 +2,22 @@ import * as fs from "fs";
 import * as j from "jscodeshift";
 import { exec } from "shelljs";
 
+// Interface for a typical file
+interface IFile {
+	source: string;
+	extension: string;
+}
+
 /**
  * 	Stores base state at ../base/ from `base` using `tree`
  * 	@returns void
  */
-export function storeBase(base: string, tree: object) {
+export function storeBase(base: string, tree: object): void {
 	Object.keys(tree).forEach((file) => {
 		const folder = file.split("/").splice(-1, 1).join("/");
 		exec(`mkdir -p ../base/${folder}`);
 		fs.copyFileSync(base + file, __dirname + "../base/" + file);
 	});
-}
-
-// Interface for a typical file
-interface IFile {
-	source: string;
-	extension: string;
 }
 
 function getImports(fileName: string): string[] {
@@ -101,22 +101,25 @@ export function getDependencyTree(base: string, entry: string): object {
 export function getChangedTree(baseTree: object, currentTree: object, base: string): object {
 	const filesToBuild = {};
 	for (const file in currentTree) {
+		// If dependencies changed
 		if (currentTree[file] !== baseTree[file]) {
 			filesToBuild[file] = currentTree[file];
 		} else {
 			const baseFile = fs.readFileSync(__dirname + "../base/" + file);
 			const currentFile = fs.readFileSync(base + file);
 			exec(`diff ${currentFile} ${baseFile}`, (code, stdout, stderr) => {
+				// If there is difference between files
 				if (stdout !== "") {
-					filesToBuild[file] = currentFile;
+					filesToBuild[file] = currentTree[file];
 				}
 			});
 		}
 	}
 	return filesToBuild;
 }
+
 /**
- *  Build files according to files in tree
+ *  Build files according to files that are keys in tree
  *  @returns void
  */
 export function builder(tree: Object) {
