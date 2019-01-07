@@ -16,7 +16,7 @@ const copyFilePath = path.resolve(__dirname, copyFile);
 // create copy of "index.js" => "index_copy.js"
 beforeEach(() => {
 	// fs.copyFileSync was added in Added in: v8.5.0
-	// We should migrate it once we stop support for v6.x
+	// We should refactor the below code once our minimal supported version is v8.5.0
 	fs.createReadStream(fileToChangePath).pipe(fs.createWriteStream(copyFilePath));
 });
 
