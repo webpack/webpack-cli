@@ -1,3 +1,29 @@
+ <a name="3.2.1"></a>
+# 3.2.1 (2019-01-07)
+[Full Changelog](https://github.com/webpack/webpack-cli/compare/v0.1.3...v3.2.1)
+
+## Chore
+
+* dependency: add `node-ts` as devDependency ([#724](https://github.com/webpack/webpack-cli/pull/724))
+
+## Docs
+
+* scaffold: Add installation guide for packages/webpack-scaffold ([#727](https://github.com/webpack/webpack-cli/pull/727))
+
+## Fix
+
+* bin: extension detection ([#724](https://github.com/webpack/webpack-cli/pull/724))
+
+## Tests
+
+* bin: add `webpack.config.ts` related test ([#724](https://github.com/webpack/webpack-cli/pull/724))
+* bin: add `.babelrc` to webpack-babel-config test ([#724](https://github.com/webpack/webpack-cli/pull/724))
+* bin: add `webpack.config.babel.js` related test ([#724](https://github.com/webpack/webpack-cli/pull/724))
+
+## Misc
+
+* replace opencollective with light vers ([848bf4b](https://github.com/webpack/webpack-cli/commit/848bf4b))
+
  <a name="3.2.0"></a>
 # 3.2.0 (2019-01-03)
 [Full Changelog](https://github.com/webpack/webpack-cli/compare/v3.1.2...v3.2.0)
