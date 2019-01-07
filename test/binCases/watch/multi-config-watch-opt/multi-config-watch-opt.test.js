@@ -3,7 +3,7 @@
 /* eslint-disable node/no-unsupported-features  */
 /* eslint-disable node/no-unsupported-features/es-syntax  */
 
-jest.setTimeout(10e6);
+jest.setTimeout(10E6);
 
 const { runWatch, extractSummary } = require("../../../testUtils");
 
