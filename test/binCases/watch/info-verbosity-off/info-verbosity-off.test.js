@@ -51,13 +51,17 @@ test.only("info-verbosity-off", async done => {
 		"none"
 	]);
 
-	var outputCount = 0;
+	var firstTimeOutput = true;
 	var hash1;
 
 	webpackProc.stdout.on("data", data => {
 		data = data.toString();
 
-		if (outputCount === 0) {
+		// We get webpack output after running test
+		// Since we are running the webpack in watch mode, changing file will generate additional output
+		// First time output will be validated fully
+		// Hash of the The subsequent output will be tested against that of first time output
+		if (firstTimeOutput) {
 			hash1 = extractHash(data);
 
 			const summary = extractSummary(data);
@@ -70,7 +74,7 @@ test.only("info-verbosity-off", async done => {
 			// change file
 			appendDataIfFileExists(__dirname, fileToChange, "//junk-comment");
 
-			outputCount++;
+			firstTimeOutput = false;
 		} else {
 			const hash2 = extractHash(data);
 
