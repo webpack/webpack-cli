@@ -85,7 +85,6 @@ test.only("info-verbosity-off", async done => {
 
 	webpackProc.stderr.on("data", error => {
 		// fail test case if there is any error
-		expect(true).toBe(false);
-		done();
+		done(error);
 	});
 });
