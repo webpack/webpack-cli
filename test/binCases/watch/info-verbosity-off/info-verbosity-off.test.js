@@ -3,10 +3,9 @@
 jest.setTimeout(10E6);
 /* eslint-disable node/no-unsupported-features  */
 /* eslint-disable node/no-unsupported-features/es-syntax  */
-
-const { extractSummary, extractHash, appendDataIfFileExists, runAndGetWatchProc } = require("../../../testUtils");
 const fs = require("fs");
 const path = require("path");
+const { extractSummary, extractHash, appendDataIfFileExists, runAndGetWatchProc } = require("../../../testUtils");
 
 const fileToChange = "index.js";
 const copyFile = "index_copy.js";
