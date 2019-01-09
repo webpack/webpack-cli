@@ -22,7 +22,7 @@ module.exports = {
 		modules: ['node_modules']
 	},
 	plugins: [
-		new webpack.optimize.TerserPlugin(),
+		new TerserPlugin(),
 		new webpack.optimize.OccurrenceOrderPlugin()
 	],
 	debug: true
@@ -50,7 +50,7 @@ module.exports = {
 		modules: ['node_modules']
 	},
 	plugins: [
-		new webpack.optimize.TerserPlugin(),
+		new TerserPlugin(),
 		new webpack.optimize.OccurrenceOrderPlugin()
 	],
 	debug: true
@@ -61,15 +61,18 @@ module.exports = {
 exports[`transform should respect recast options 1`] = `
 "
 module.exports = {
-	devtool: 'eval',
-	entry: [
+    devtool: 'eval',
+
+    entry: [
 		'./src/index'
 	],
-	output: {
+
+    output: {
 		path: path.join(__dirname, 'dist'),
 		filename: 'index.js'
 	},
-	module: {
+
+    module: {
 		rules: [{
 			test: /.js$/,
 			use: [{
@@ -78,15 +81,18 @@ module.exports = {
 			include: path.join(__dirname, 'src')
 		}]
 	},
-	resolve: {
+
+    resolve: {
         modules: ['node_modules', path.resolve('/src')],
     },
-	plugins: [new webpack.LoaderOptionsPlugin({
-        debug: true,
-    })],
-	optimization: {
-        minimize: true,
-    }
+
+    plugins: [
+		new TerserPlugin(),
+		new webpack.LoaderOptionsPlugin({
+            debug: true,
+            minimize: true,
+        })
+	],
 };
 "
 `;
@@ -116,7 +122,7 @@ module.exports = {
 		modules: ['node_modules']
 	},
 	plugins: [
-		new webpack.optimize.TerserPlugin(),
+		new TerserPlugin(),
 		new webpack.optimize.OccurrenceOrderPlugin()
 	],
 	debug: true
@@ -127,15 +133,18 @@ module.exports = {
 exports[`transform should transform using all transformations 1`] = `
 "
 module.exports = {
-	devtool: 'eval',
-	entry: [
+    devtool: 'eval',
+
+    entry: [
 		'./src/index'
 	],
-	output: {
+
+    output: {
 		path: path.join(__dirname, 'dist'),
 		filename: 'index.js'
 	},
-	module: {
+
+    module: {
 		rules: [{
 			test: /.js$/,
 			use: [{
@@ -144,15 +153,18 @@ module.exports = {
 			include: path.join(__dirname, 'src')
 		}]
 	},
-	resolve: {
+
+    resolve: {
         modules: ['node_modules', path.resolve('/src')]
     },
-	plugins: [new webpack.LoaderOptionsPlugin({
-        debug: true
-    })],
-	optimization: {
-        minimize: true
-    }
+
+    plugins: [
+		new TerserPlugin(),
+		new webpack.LoaderOptionsPlugin({
+            debug: true,
+            minimize: true
+        })
+	]
 };
 "
 `;

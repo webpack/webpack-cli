@@ -11,9 +11,10 @@ module.exports = {
 `;
 
 exports[`loaderOptionsPlugin transforms correctly using "loaderOptionsPlugin-1" data 1`] = `
-"module.exports = {
+"const TerserPlugin = require(\\"terser-webpack-plugin\\");
+module.exports = {
     plugins: [
-		new webpack.optimize.TerserPlugin(),
+		new TerserPlugin(),
 		new webpack.LoaderOptionsPlugin({
             foo: 'bar',
             debug: true,

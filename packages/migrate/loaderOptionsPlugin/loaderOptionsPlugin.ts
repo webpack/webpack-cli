@@ -38,7 +38,7 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 	}
 
 	// If there is TerserPlugin, set minimize: true
-	if (findPluginsByName(j, ast, ["webpack.optimize.TerserPlugin"]).size()) {
+	if (findPluginsByName(j, ast, ["TerserPlugin"]).size()) {
 		loaderOptions.minimize = true;
 	}
 
