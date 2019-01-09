@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const nodeEnvironment = process.env.NODE_ENV;
 const _ = require("lodash");
+const TerserPlugin = require('terser-webpack-plugin');
 
 const config = {
 	entry: {
@@ -43,7 +44,7 @@ const config = {
 
 switch (nodeEnvironment) {
 	case "production":
-		config.plugins.push(new webpack.optimize.TerserPlugin());
+		config.plugins.push(new TerserPlugin());
 	case "preproduction":
 		config.output.path = __dirname + "/dist";
 		config.plugins.push(new webpack.optimize.DedupePlugin());

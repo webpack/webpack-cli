@@ -1,3 +1,4 @@
+const TerserPlugin = require("terser-webpack-plugin");
 module.exports = {
 	devtool: "eval",
 	entry: ["./src/index"],
@@ -18,6 +19,6 @@ module.exports = {
 		root: path.resolve("/src"),
 		modules: ["node_modules"]
 	},
-	plugins: [new webpack.optimize.TerserPlugin(), new webpack.optimize.OccurrenceOrderPlugin()],
+	plugins: [new TerserPlugin(), new webpack.optimize.OccurrenceOrderPlugin()],
 	debug: true
 };

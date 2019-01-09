@@ -34,9 +34,9 @@ describe("utils", () => {
 	describe("findPluginsByName", () => {
 		it("should find plugins in AST", () => {
 			const ast = j(`
-{ foo: new webpack.optimize.TerserPlugin() }
+{ foo: new TerserPlugin() }
 `);
-			const res = utils.findPluginsByName(j, ast, ["webpack.optimize.TerserPlugin"]);
+			const res = utils.findPluginsByName(j, ast, ["TerserPlugin"]);
 			expect(res.size()).toEqual(1);
 		});
 
@@ -53,9 +53,9 @@ describe("utils", () => {
 
 		it("should not find false positives", () => {
 			const ast = j(`
-{ foo: new TerserPlugin() }
+{ foo: new webpack.optimize.TerserPlugin() }
 `);
-			const res = utils.findPluginsByName(j, ast, ["webpack.optimize.TerserPlugin"]);
+			const res = utils.findPluginsByName(j, ast, ["TerserPlugin"]);
 			expect(res.size()).toEqual(0);
 		});
 	});
