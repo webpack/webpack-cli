@@ -24,3 +24,5 @@ add();
 ```bash
 npx webpack-cli add
 ```
+---
+[Back to Packages](https://github.com/webpack/webpack-cli/tree/master/packages)

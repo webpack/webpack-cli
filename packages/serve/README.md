@@ -24,3 +24,5 @@ serve();
 ```bash
 npx webpack-cli serve
 ```
+---
+[Back to Packages](https://github.com/webpack/webpack-cli/tree/master/packages)

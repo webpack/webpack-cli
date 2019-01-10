@@ -23,3 +23,5 @@ envinfo();
 ```bash
 npx webpack-cli info
 ```
+---
+[Back to Packages](https://github.com/webpack/webpack-cli/tree/master/packages)

@@ -25,3 +25,5 @@ generateLoader();
 ```bash
 npx webpack-cli generate-loader
 ```
+---
+[Back to Packages](https://github.com/webpack/webpack-cli/tree/master/packages)

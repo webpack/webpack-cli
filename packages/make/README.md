@@ -24,3 +24,5 @@ make();
 ```bash
 npx webpack-cli make
 ```
+---
+[Back to Packages](https://github.com/webpack/webpack-cli/tree/master/packages)

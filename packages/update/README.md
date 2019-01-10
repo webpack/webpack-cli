@@ -24,3 +24,5 @@ update();
 ```bash
 npx webpack-cli update
 ```
+---
+[Back to Packages](https://github.com/webpack/webpack-cli/tree/master/packages)

@@ -43,3 +43,5 @@ npx webpack-cli init webpack-scaffold-[name]
 ```bash
 npx webpack-cli init [path]
 ```
+---
+[Back to Packages](https://github.com/webpack/webpack-cli/tree/master/packages)

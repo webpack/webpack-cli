@@ -183,3 +183,6 @@ Creates an Input from Inquirer
 const Confirm = require('@webpack-cli/webpack-scaffold').Confirm;
 Confirm('contextConfirm', 'Is this your context?')
 ```
+
+---
+[Back to Packages](https://github.com/webpack/webpack-cli/tree/master/packages)

@@ -27,3 +27,5 @@ npm i -D webpack-cli @webpack-cli/utils
 const utils = require("@webpack-cli/utils");
 // API yet to be exposed
 ```
+---
+[Back to Packages](https://github.com/webpack/webpack-cli/tree/master/packages)

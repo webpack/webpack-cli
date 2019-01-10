@@ -24,3 +24,5 @@ remove();
 ```bash
 npx webpack-cli remove
 ```
+---
+[Back to Packages](https://github.com/webpack/webpack-cli/tree/master/packages)

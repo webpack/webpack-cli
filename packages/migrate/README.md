@@ -26,3 +26,5 @@ migrate(null, null, inputPath, outputPath);
 ```bash
 npx webpack-cli migrate
 ```
+---
+[Back to Packages](https://github.com/webpack/webpack-cli/tree/master/packages)

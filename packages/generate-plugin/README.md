@@ -24,3 +24,5 @@ generatePlugin();
 ```bash
 npx webpack-cli generate-plugin
 ```
+---
+[Back to Packages](https://github.com/webpack/webpack-cli/tree/master/packages)
