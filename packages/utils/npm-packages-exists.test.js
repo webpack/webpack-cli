@@ -13,7 +13,7 @@ describe("npmPackagesExists", () => {
 	});
 
 	test("throws a TypeError when an npm package name doesn't include the prefix", () => {
-		expect(() => npmPackagesExists(["my-webpack-addon"])).toThrowError(TypeError);
+		expect(() => npmPackagesExists(["my-webpack-scaffold"])).toThrowError(TypeError);
 	});
 
 	test("resolves packages when they are available on npm", done => {

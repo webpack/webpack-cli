@@ -3,7 +3,7 @@ const exists = require("./npm-exists").default;
 
 describe("npm-exists", () => {
 	it("should successfully existence of a published module", () => {
-		exists("webpack-addons-ylvis").then(status => {
+		exists("webpack-scaffold-demo").then(status => {
 			expect(status).toBe(true);
 		});
 	});

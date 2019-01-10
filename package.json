@@ -1,6 +1,6 @@
 {
   "name": "webpack-cli",
-  "version": "3.1.2",
+  "version": "3.2.1",
   "description": "CLI for webpack & friends",
   "license": "MIT",
   "repository": {
@@ -29,13 +29,12 @@
     "build": "tsc",
     "bundlesize": "bundlesize",
     "changelog": "conventional-changelog --config ./build/changelog-generator/index.js --infile CHANGELOG.md --same-file",
-    "clean:all": "rimraf node_modules packages/*/node_modules",
+    "clean:all": "rimraf node_modules package-lock.json packages/*/{node_modules,package-lock.json}",
     "commit": "git-cz",
     "docs": "typedoc",
     "format": "prettier-eslint ./bin/*.js ./test/**/*.js ./packages/**/*.js --write",
     "lint:codeOnly": "eslint \"{bin}/**/!(__testfixtures__)/*.js\" \"{bin}/**.js\"",
     "lint": "eslint \"./bin/*.js\" \"./test/**/*.js\" \"packages/**/!(node_modules)/*.test.js\"",
-    "postinstall": "lerna bootstrap",
     "pretest": "npm run build && npm run lint && npm run tslint",
     "reportCoverage": "nyc report --reporter=json && codecov -f coverage/coverage-final.json --disable=gcov",
     "test": "nyc jest --maxWorkers=4 --reporters=default --reporters=jest-junit",
@@ -43,7 +42,8 @@
     "travis:integration": "npm run build && npm run test && npm run reportCoverage",
     "travis:lint": "lerna bootstrap && npm run build && npm run lint && npm run tslint && npm run bundlesize",
     "tslint": "tslint -c tslint.json \"packages/**/*.ts\"",
-    "watch": "npm run build && tsc -w"
+    "watch": "npm run build && tsc -w",
+    "postinstall": "lightercollective"
   },
   "husky": {
     "hooks": {
@@ -109,10 +109,12 @@
     "chalk": "^2.4.1",
     "cross-spawn": "^6.0.5",
     "enhanced-resolve": "^4.1.0",
+    "findup-sync": "^2.0.0",
     "global-modules": "^1.0.0",
     "global-modules-path": "^2.3.0",
     "import-local": "^2.0.0",
     "interpret": "^1.1.0",
+    "lightercollective": "^0.1.0",
     "loader-utils": "^1.1.0",
     "supports-color": "^5.5.0",
     "v8-compile-cache": "^2.0.2",
@@ -150,11 +152,16 @@
     "rimraf": "^2.6.2",
     "schema-utils": "^1.0.0",
     "ts-jest": "^23.10.4",
+    "ts-node": "^7.0.1",
     "tslint": "^5.11.0",
     "typedoc": "^0.13.0",
     "typedoc-plugin-monorepo": "^0.1.0",
     "typescript": "^3.1.6",
     "webpack": "4.x.x",
     "webpack-dev-server": "^3.1.10"
+  },
+  "collective": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/webpack"
   }
 }
