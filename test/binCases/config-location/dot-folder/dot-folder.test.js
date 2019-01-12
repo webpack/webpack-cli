@@ -2,7 +2,7 @@
 
 const { run } = require("../../../testUtils");
 
-test("not-found", () => {
+test("dot-folder", () => {
 	const { code, stdout, stderr } = run(__dirname, [
 		"--output-filename",
 		"[name].js",
@@ -10,10 +10,9 @@ test("not-found", () => {
 		"[id].chunk.js",
 		"--target",
 		"async-node",
-		"--mode",
-		"production",
 	]);
 	expect(code).toBe(0);
-	expect(stdout).toContain("./src/index.js");
+	expect(stdout).toEqual(expect.anything());
+	expect(stdout).toContain("/index2.js");
 	expect(stderr).toHaveLength(0);
 });

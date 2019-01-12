@@ -72,15 +72,27 @@ module.exports = function(...args) {
 		const defaultConfigFileNames = ["webpack.config", "webpackfile"].join("|");
 		const webpackConfigFileRegExp = `(${defaultConfigFileNames})(${extensions.join("|")})`;
 		const pathToWebpackConfig = findup(webpackConfigFileRegExp);
-
 		if (pathToWebpackConfig) {
 			const resolvedPath = path.resolve(pathToWebpackConfig);
 			const actualConfigFileName = path.basename(resolvedPath);
 			const ext = actualConfigFileName.replace(new RegExp(defaultConfigFileNames), "");
 			configFiles.push({
 				path: resolvedPath,
-				ext,
+				ext
 			});
+		} else {
+			const pathToWebpackConfig = findup(webpackConfigFileRegExp, {
+				cwd: process.cwd() + "/.webpack/"
+			});
+			if (pathToWebpackConfig) {
+				const resolvedPath = path.resolve(pathToWebpackConfig);
+				const actualConfigFileName = path.basename(resolvedPath);
+				const ext = actualConfigFileName.replace(new RegExp(defaultConfigFileNames), "");
+				configFiles.push({
+					path: resolvedPath,
+					ext
+				});
+			}
 		}
 	}
 	if (configFiles.length > 0) {
