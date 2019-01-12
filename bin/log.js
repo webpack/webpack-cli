@@ -27,7 +27,7 @@ const colors = {
 class logger {
 	constructor(title) {
 		this.title;
-		process.stdout.write(`${colors.Bright}${title} - ${colors.FgCyan}webpack-cli ${colors.Reset}`);
+		process.stdout.write(`${colors.Bright}${title} - ${colors.FgCyan}webpack-cli ${colors.Reset}\n`);
 		return;
 	}
 
