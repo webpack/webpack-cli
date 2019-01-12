@@ -24,11 +24,10 @@ const colors = {
 	BgWhite: "\x1b[47m",
 };
 
-class logger {
+class Logger {
 	constructor(title) {
-		this.title;
+		this.title = title;
 		process.stdout.write(`${colors.Bright}${title} - ${colors.FgCyan}webpack-cli ${colors.Reset}\n`);
-		return;
 	}
 
 	log(message) {
@@ -100,4 +99,4 @@ class logger {
 		}
 	}
 }
-module.exports = logger;
+module.exports = Logger;
