@@ -98,5 +98,10 @@ class Logger {
 			process.stdout.write(`${colors.Reset}`);
 		}
 	}
+
+	clrscr() {
+		process.stdout.write("\x1Bc");
+		process.stdout.write(`${colors.Bright}${this.title} - ${colors.FgCyan}webpack-cli ${colors.Reset}\n`);
+	}
 }
 module.exports = Logger;
