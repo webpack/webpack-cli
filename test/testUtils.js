@@ -162,12 +162,12 @@ function extractHash(stdout) {
 	return hashInfo;
 }
 
-/*eslint valid-jsdoc: ["error", { "requireReturn": false }]*/
 /**
  *
  * @param {String} testCase - testCase directory
  * @param {String} file - file relative to testCase
  * @param {String} data - data to append
+ * @returns {undefined}
  * @throws - throw an Error if file does not exist
  */
 function appendDataIfFileExists(testCase, file, data) {
