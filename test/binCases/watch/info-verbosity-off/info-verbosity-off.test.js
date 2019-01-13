@@ -21,8 +21,8 @@ beforeEach(() => {
 
 afterEach(() => {
 	try {
-		// deleting the file as it is modified by the test
 		// subsequent test-case runs won't pass as snapshot is not matched
+		// hence, deleting the file as it is modified by the test
 		fs.unlinkSync(fileToChangePath);
 	} catch (e) {
 		console.warn("could not remove the file:" + fileToChangePath + "\n" + e.message);
@@ -31,9 +31,7 @@ afterEach(() => {
 	}
 });
 
-// It is modifying the index.js
-// Which breaks the test-cases second time
-test.only("info-verbosity-off", async done => {
+test("info-verbosity-off", async done => {
 	var webpackProc = runAndGetWatchProc(__dirname, [
 		"--entry ",
 		"./index.js",
@@ -85,6 +83,6 @@ test.only("info-verbosity-off", async done => {
 
 	webpackProc.stderr.on("data", error => {
 		// fail test case if there is any error
-		done(error);
+		done(error.toString());
 	});
 });
