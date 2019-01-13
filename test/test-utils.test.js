@@ -107,19 +107,20 @@ Child ${config2Name}:
 describe("appendFile functionality", () => {
 	describe("positive test-cases", () => {
 		const junkFile = resolve(__dirname, "junkFile.js");
+		const initialJunkData = "initial junk data";
+		const junkComment = "//junk comment";
 
 		beforeEach(() => {
-			writeFileSync(junkFile, "");
+			writeFileSync(junkFile, initialJunkData);
 		});
 		afterEach(() => {
 			unlinkSync(junkFile);
 		});
 		it("should append data to file if file exists", () => {
-			const expectedData = "//junk comment";
-			appendDataIfFileExists(__dirname, junkFile, expectedData);
+			appendDataIfFileExists(__dirname, junkFile, junkComment);
 			const actualData = readFileSync(junkFile).toString();
 
-			expect(actualData).toBe(expectedData);
+			expect(actualData).toBe(initialJunkData + junkComment);
 		});
 	});
 
