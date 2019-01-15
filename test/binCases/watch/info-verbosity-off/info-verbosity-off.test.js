@@ -48,36 +48,46 @@ test("info-verbosity-off", async done => {
 		"none"
 	]);
 
-	var firstTimeOutput = true;
-	var hash1;
+	// info-verbosity none spits the output in one go.
+	// So we only need to keep a track of when we change the files
+	// 1. Hash and other info
+	// 2. (file changed) Hash and other info
+
+	var chunkNumber = 0;
+	var hash1, hash2;
+	var summary;
 
 	webpackProc.stdout.on("data", data => {
 		data = data.toString();
-
+		chunkNumber++;
 		// We get webpack output after running test
 		// Since we are running the webpack in watch mode, changing file will generate additional output
 		// First time output will be validated fully
 		// Hash of the The subsequent output will be tested against that of first time output
-		if (firstTimeOutput) {
-			hash1 = extractHash(data);
 
-			const summary = extractSummary(data);
+		switch (chunkNumber) {
+			case 1:
+				hash1 = extractHash(data);
+				summary = extractSummary(data);
 
-			expect(summary).toEqual(expect.anything());
-			expect(summary).toContain("");
-			expect(summary).not.toContain("webpack is watching the files…");
-			expect(summary).toMatchSnapshot();
+				expect(summary).not.toContain("webpack is watching the files…");
+				expect(summary).toMatchSnapshot();
 
-			// change file
-			appendDataIfFileExists(__dirname, fileToChange, "//junk-comment");
+				// change file
+				appendDataIfFileExists(__dirname, fileToChange, "//junk-comment");
 
-			firstTimeOutput = false;
-		} else {
-			const hash2 = extractHash(data);
+				break;
+			case 2:
+				hash2 = extractHash(data);
 
-			expect(hash2.hash).not.toBe(hash1.hash);
-			webpackProc.kill();
-			done();
+				expect(hash2.hash).not.toBe(hash1.hash);
+
+				webpackProc.kill();
+				done();
+
+				break;
+			default:
+				break;
 		}
 	});
 
