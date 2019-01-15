@@ -61,8 +61,6 @@ test("single-config", async(done) => {
 		data = data.toString();
 		chunkNumber++;
 
-		console.log(data);
-
 		switch (chunkNumber) {
 			case 1:
 				expect(data).toContain("webpack is watching the files");
