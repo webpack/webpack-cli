@@ -1,6 +1,7 @@
 "use strict";
 
 const path = require("path");
+const fs = require("fs");
 const execa = require("execa");
 const { sync: spawnSync } = execa;
 const { Writable } = require("readable-stream");
@@ -171,14 +172,33 @@ function extractHash(stdout) {
  * @throws - throw an Error if file does not exist
  */
 function appendDataIfFileExists(testCase, file, data) {
-	const { existsSync, appendFileSync } = require("fs");
-
 	const filePath = path.resolve(testCase, file);
-	if (existsSync(filePath)) {
-		appendFileSync(filePath, data);
+	if (fs.existsSync(filePath)) {
+		fs.appendFileSync(filePath, data);
 	} else {
 		throw new Error(`Oops! ${filePath} does not exist!`);
 	}
 }
 
-module.exports = { run, runWatch, runAndGetWatchProc, extractHash, extractSummary, appendDataIfFileExists };
+/**
+ * fs.copyFileSync was added in Added in: v8.5.0
+ * We should refactor the below code once our minimal supported version is v8.5.0
+ * @param {String} testCase - testCase directory
+ * @param {String} file - file relative to testCase which is going to be copied
+ * @returns {String} - absolute file path of new file
+ * @throws - throw an Error if file copy fails
+ */
+function copyFile(testCase, file) {
+	const fileToChangePath = path.resolve(testCase, file);
+	const copyFilePath = path.resolve(testCase, "index_copy.js");
+
+	if (fs.existsSync(fileToChangePath)) {
+		const fileData = fs.readFileSync(fileToChangePath).toString();
+		fs.writeFileSync(copyFilePath, fileData);
+		return copyFilePath;
+	} else {
+		throw new Error(`Oops! ${fileToChangePath} does not exist!`);
+	}
+}
+
+module.exports = { run, runWatch, runAndGetWatchProc, extractHash, extractSummary, appendDataIfFileExists, copyFile };

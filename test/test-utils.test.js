@@ -1,7 +1,7 @@
 "use strict";
 
-const { extractHash, appendDataIfFileExists } = require("./testUtils");
-const { writeFileSync, unlinkSync, readFileSync } = require("fs");
+const { extractHash, appendDataIfFileExists, copyFile } = require("./testUtils");
+const { writeFileSync, unlinkSync, readFileSync, existsSync } = require("fs");
 const { resolve } = require("path");
 
 describe("extractHash functionality", () => {
@@ -106,19 +106,20 @@ Child ${config2Name}:
 
 describe("appendFile functionality", () => {
 	describe("positive test-cases", () => {
-		const junkFile = resolve(__dirname, "junkFile.js");
+		const junkFile = "junkFile.js";
+		const junkFilePath = resolve(__dirname, junkFile);
 		const initialJunkData = "initial junk data";
 		const junkComment = "//junk comment";
 
 		beforeEach(() => {
-			writeFileSync(junkFile, initialJunkData);
+			writeFileSync(junkFilePath, initialJunkData);
 		});
 		afterEach(() => {
-			unlinkSync(junkFile);
+			unlinkSync(junkFilePath);
 		});
 		it("should append data to file if file exists", () => {
 			appendDataIfFileExists(__dirname, junkFile, junkComment);
-			const actualData = readFileSync(junkFile).toString();
+			const actualData = readFileSync(junkFilePath).toString();
 
 			expect(actualData).toBe(initialJunkData + junkComment);
 		});
@@ -127,6 +128,37 @@ describe("appendFile functionality", () => {
 	describe("negative test-cases", () => {
 		it("should throw error if file does not exist", () => {
 			expect(() => appendDataIfFileExists(__dirname, "does-not-exist.js", "junk data")).toThrowError();
+		});
+	});
+});
+
+describe("copyFile functionality", () => {
+	describe("positive test-cases", () => {
+		const originalFile = "junkFile.js";
+		const originalFilePath = resolve(__dirname, originalFile);
+		const originalFileData = "initial junk data";
+		var copyFilePath;
+
+		beforeEach(() => {
+			writeFileSync(originalFilePath, originalFileData);
+		});
+		afterEach(() => {
+			unlinkSync(originalFilePath);
+			if (existsSync(copyFilePath)) {
+				unlinkSync(copyFilePath);
+			}
+		});
+		it("should copy file if file exists", () => {
+			copyFilePath = copyFile(__dirname, originalFile);
+			const actualData = readFileSync(copyFilePath).toString();
+
+			expect(actualData).toBe(originalFileData);
+		});
+	});
+
+	describe("negative test-cases", () => {
+		it("should throw error if file does not exist", () => {
+			expect(() => copyFile(__dirname, "does-not-exist.js")).toThrowError();
 		});
 	});
 });
