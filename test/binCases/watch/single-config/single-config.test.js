@@ -1,24 +1,19 @@
 "use strict";
 
+jest.setTimeout(10E6);
 /* eslint-disable node/no-unsupported-features  */
 /* eslint-disable node/no-unsupported-features/es-syntax  */
-
-jest.setTimeout(10E6);
-
 const fs = require("fs");
 const path = require("path");
-const { extractSummary, extractHash, appendDataIfFileExists, runAndGetWatchProc } = require("../../../testUtils");
+const { extractSummary, extractHash, appendDataIfFileExists, runAndGetWatchProc, copyFile } = require("../../../testUtils");
 
 const fileToChange = "index.js";
-const copyFile = "index_copy.js";
 const fileToChangePath = path.resolve(__dirname, fileToChange);
-const copyFilePath = path.resolve(__dirname, copyFile);
+var copyFilePath;
 
 // create copy of "index.js" => "index_copy.js"
 beforeEach(() => {
-	// fs.copyFileSync was added in Added in: v8.5.0
-	// We should refactor the below code once our minimal supported version is v8.5.0
-	fs.createReadStream(fileToChangePath).pipe(fs.createWriteStream(copyFilePath));
+	copyFilePath = copyFile(__dirname, fileToChange);
 });
 
 afterEach(() => {
