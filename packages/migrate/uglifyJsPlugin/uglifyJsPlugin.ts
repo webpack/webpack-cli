@@ -15,7 +15,8 @@ import { IJSCodeshift, INode } from "../types/NodePath";
  * and adds `optimization.minimize: true` to config
  *
  * If any configuration is passed to UglifyWebpackPlugin
- * plugin instantiation is moved to `optimization.minimizer`.
+ * Replaces UglifyWebpackPlugin with TerserPlugin and
+ * and moves plugin instantiation to `optimization.minimizer`.
  *
  * @param {Object} j - jscodeshift top-level import
  * @param {Node} ast - jscodeshift ast to transform
@@ -63,15 +64,15 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 			* If user is using UglifyJsPlugin directly from webpack
 			* transformation must:
 			* - remove it
-			* - add require for uglify-webpack-plugin
+			* - add require for terser-webpack-plugin
 			* - add to minimizer
 			*/
 				if (pluginVariableAssignment && pluginVariableAssignment.includes("webpack")) {
-					// create require for uglify-webpack-plugin
+					// create require for terser-webpack-plugin
 					const pathRequire: INode = getRequire(
 						j,
-						"UglifyJsPlugin",
-						"uglifyjs-webpack-plugin",
+						"TerserPlugin",
+						"terser-webpack-plugin",
 					);
 					// append to source code.
 					ast
@@ -84,7 +85,7 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 						"init",
 						j.identifier("minimizer"),
 						j.arrayExpression([
-							j.newExpression(j.identifier("UglifyJsPlugin"), [pluginOptions[0]]),
+							j.newExpression(j.identifier("TerserPlugin"), [pluginOptions[0]]),
 						]),
 					);
 				} else {
