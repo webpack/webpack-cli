@@ -78,7 +78,7 @@ exports[`uglifyJsPlugin transforms correctly using "uglifyJsPlugin-3" data 1`] =
 `;
 
 exports[`uglifyJsPlugin transforms correctly using "uglifyJsPlugin-4" data 1`] = `
-"const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+"const TerserPlugin = require('terser-webpack-plugin');
 module.exports = {
     devtool: 'eval',
 
@@ -110,7 +110,7 @@ module.exports = {
     optimization: {
         minimize: true,
 
-        minimizer: [new UglifyJsPlugin({
+        minimizer: [new TerserPlugin({
             sourceMap: true
         })]
     }
