@@ -15,8 +15,8 @@ import { IJSCodeshift, INode } from "../types/NodePath";
  * and adds `optimization.minimize: true` to config
  *
  * If any configuration is passed to UglifyWebpackPlugin
- * Replaces UglifyWebpackPlugin with TerserPlugin and
- * and moves plugin instantiation to `optimization.minimizer`.
+ * UglifyWebpackPlugin is replaced with TerserPlugin
+ * and plugin instantiation is moved to `optimization.minimizer`.
  *
  * @param {Object} j - jscodeshift top-level import
  * @param {Node} ast - jscodeshift ast to transform
