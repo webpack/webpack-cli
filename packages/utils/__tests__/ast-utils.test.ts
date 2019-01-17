@@ -35,28 +35,28 @@ describe("utils", () => {
 	describe("findPluginsByName", () => {
 		it("should find plugins in AST", () => {
 			const ast = j(`
-{ foo: new TerserPlugin() }
+{ foo: new webpack.optimize.UglifyJsPlugin() }
 `);
-			const res = utils.findPluginsByName(j, ast, ["TerserPlugin"]);
+			const res = utils.findPluginsByName(j, ast, ["webpack.optimize.UglifyJsPlugin"]);
 			expect(res.size()).toEqual(1);
 		});
 
 		it("should find all plugins in AST", () => {
 			const ast = j(`
 [
-	new TerserPlugin(),
+	new UglifyJsPlugin(),
 	new TestPlugin()
 ]
 `);
-			const res = utils.findPluginsByName(j, ast, ["TerserPlugin", "TestPlugin"]);
+			const res = utils.findPluginsByName(j, ast, ["UglifyJsPlugin", "TestPlugin"]);
 			expect(res.size()).toEqual(2);
 		});
 
 		it("should not find false positives", () => {
 			const ast = j(`
-{ foo: new webpack.optimize.TerserPlugin() }
+{ foo: new UglifyJsPlugin() }
 `);
-			const res = utils.findPluginsByName(j, ast, ["TerserPlugin"]);
+			const res = utils.findPluginsByName(j, ast, ["webpack.optimize.UglifyJsPlugin"]);
 			expect(res.size()).toEqual(0);
 		});
 	});

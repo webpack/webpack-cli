@@ -43,7 +43,7 @@ export default class InitGenerator extends Generator {
 		this.dependencies = [
 			"webpack",
 			"webpack-cli",
-			"terser-webpack-plugin",
+			"uglifyjs-webpack-plugin",
 			"babel-plugin-syntax-dynamic-import",
 		];
 		this.configuration = {
@@ -430,12 +430,12 @@ export default class InitGenerator extends Generator {
 	public installPlugins() {
 		if (this.isProd) {
 			this.dependencies = this.dependencies.filter(
-				(p: string) => p !== "terser-webpack-plugin",
+				(p: string) => p !== "uglifyjs-webpack-plugin",
 			);
 		} else {
 			this.configuration.config.topScope.push(
-				tooltip.terser(),
-				"const TerserPlugin = require('terser-webpack-plugin');",
+				tooltip.uglify(),
+				"const UglifyJSPlugin = require('uglifyjs-webpack-plugin');",
 				"\n",
 			);
 		}
