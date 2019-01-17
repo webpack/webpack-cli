@@ -25,7 +25,7 @@ module.exports = {
 		modules: ['node_modules']
 	},
 	plugins: [
-		new TerserPlugin(),
+		new webpack.optimize.UglifyJsPlugin(),
 		new webpack.optimize.OccurrenceOrderPlugin()
 	],
 	debug: true

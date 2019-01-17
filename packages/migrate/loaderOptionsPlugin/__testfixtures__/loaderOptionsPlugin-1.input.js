@@ -1,10 +1,9 @@
-const TerserPlugin = require("terser-webpack-plugin");
 module.exports = {
-	debug: true,
-	plugins: [
-		new TerserPlugin(),
-		new webpack.LoaderOptionsPlugin({
-			foo: 'bar'
-		})
-	]
+    debug: true,
+    plugins: [
+        new webpack.optimize.UglifyJsPlugin(),
+        new webpack.LoaderOptionsPlugin({
+            foo: 'bar'
+        })
+    ]
 }

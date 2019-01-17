@@ -37,8 +37,8 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 			});
 	}
 
-	// If there is TerserPlugin, set minimize: true
-	if (findPluginsByName(j, ast, ["TerserPlugin"]).size()) {
+	// If there is UglifyJsPlugin, set minimize: true
+	if (findPluginsByName(j, ast, ["webpack.optimize.UglifyJsPlugin"]).size()) {
 		loaderOptions.minimize = true;
 	}
 

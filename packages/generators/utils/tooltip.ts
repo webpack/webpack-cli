@@ -50,12 +50,12 @@ export default {
  */`;
 	},
 
-	terser: (_?: void): string => {
+	uglify: (_?: void): string => {
 		return `/*
- * We've enabled TerserJSPlugin for you! This minifies your app
+ * We've enabled UglifyJSPlugin for you! This minifies your app
  * in order to load faster and run less javascript.
  *
- * https://github.com/webpack-contrib/terser-webpack-plugin
+ * https://github.com/webpack-contrib/uglifyjs-webpack-plugin
  *
  */`;
 	},

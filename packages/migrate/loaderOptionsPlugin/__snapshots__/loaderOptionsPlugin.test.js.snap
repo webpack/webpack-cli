@@ -11,16 +11,15 @@ module.exports = {
 `;
 
 exports[`loaderOptionsPlugin transforms correctly using "loaderOptionsPlugin-1" data 1`] = `
-"const TerserPlugin = require(\\"terser-webpack-plugin\\");
-module.exports = {
+"module.exports = {
     plugins: [
-		new TerserPlugin(),
-		new webpack.LoaderOptionsPlugin({
+        new webpack.optimize.UglifyJsPlugin(),
+        new webpack.LoaderOptionsPlugin({
             foo: 'bar',
             debug: true,
             minimize: true
         })
-	]
+    ]
 }
 "
 `;
