@@ -1,0 +1,8 @@
+{
+  "name": "@webpack-cli/log",
+  "version": "0.0.1",
+  "description": "custom task based logger",
+  "main": "index.js",
+  "author": "",
+  "license": "MIT"
+}
