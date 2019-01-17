@@ -32,6 +32,7 @@ before_install:
 
 install:
   - travis_wait npm ci
+  - lerna bootstrap
   - npm install -g codecov
   - npm install -g eslint
 
