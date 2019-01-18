@@ -61,7 +61,7 @@ export class Logger {
 
 	public custom(symbol: string, message: string) {
 		if (symbol.length !== 1) {
-			throw new Error("Only single character can be passed to custom");
+			throw new Error("Only single character can be passed as symbol to custom");
 		} else {
 			message = this.build(message);
 			message = ` ${chalk.bold(symbol)} ${message}`;
