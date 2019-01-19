@@ -2,7 +2,7 @@
 
 const { run } = require("../../../testUtils");
 
-test("uglifyjsplugin-empty-args", () => {
+test.skip("uglifyjsplugin-empty-args", () => {
 	const { code, stdout, stderr } = run(__dirname, [
 		"--entry",
 		"./index.js",
