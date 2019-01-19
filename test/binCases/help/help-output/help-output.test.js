@@ -17,5 +17,4 @@ test("help-output", () => {
 	expect(stdout).toContain("Stats options:");
 	expect(stdout).toContain("Options:");
 	expect(stderr).toHaveLength(0);
-	expect(stdout).toMatchSnapshot();
 });
