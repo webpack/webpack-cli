@@ -40,7 +40,7 @@
     "test": "nyc jest --maxWorkers=4 --reporters=default --reporters=jest-junit",
     "test:ci": "nyc jest --maxWorkers=$(nproc) --reporters=default --reporters=jest-junit",
     "travis:integration": "npm run build && npm run test && npm run reportCoverage",
-    "travis:lint": "lerna bootstrap && npm run build && npm run lint && npm run tslint",
+    "travis:lint": "npm run build && npm run lint && npm run tslint",
     "tslint": "tslint -c tslint.json \"packages/**/*.ts\"",
     "watch": "npm run build && tsc -w",
     "postinstall": "lightercollective"
