@@ -72,7 +72,7 @@ export class Logger {
 	private build(message: string): string {
 		const lines = message.split("\n");
 		if (lines.length === 1) {
-			return lines[0];
+			return lines[0] + "\n";
 		}
 		message = lines[0] + "\n";
 
