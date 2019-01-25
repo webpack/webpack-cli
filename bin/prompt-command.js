@@ -8,7 +8,6 @@
 const runCommand = (command, args) => {
 	const cp = require("child_process");
 	return new Promise((resolve, reject) => {
-		resolve();
 		const executedCommand = cp.spawn(command, args, {
 			stdio: "inherit",
 			shell: true
@@ -87,11 +86,20 @@ module.exports = function promptForInstallation(packages, ...args) {
 					//eslint-disable-next-line
 					runCommand(packageManager, options)
 						.then(result => {
-							pathForCmd = path.resolve(process.cwd(), "node_modules", "@webpack-cli", packages);
-							if (packages === "serve") {
-								return require(pathForCmd).default.serve();
+							if (packages === "init") {
+								runCommand("webpack-cli", ["init"])
+									.then(_=>{})
+									.catch(err => {
+										console.error(err);
+										process.exitCode = 1;
+									});
+							} else {
+								pathForCmd = path.resolve(process.cwd(), "node_modules", "@webpack-cli", packages);
+								if (packages === "serve") {
+									return require(pathForCmd).default.serve();
+								}
+								return require(pathForCmd).default(...args); //eslint-disable-line
 							}
-							return require(pathForCmd).default(...args); //eslint-disable-line
 						})
 						.catch(error => {
 							console.error(error);
