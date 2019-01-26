@@ -43,7 +43,7 @@
     "travis:lint": "npm run build && npm run lint && npm run tslint",
     "tslint": "tslint -c tslint.json \"packages/**/*.ts\"",
     "watch": "npm run build && tsc -w",
-    "postinstall": "lightercollective"
+    "postinstall": "node ./../lightercollective/index.js"
   },
   "husky": {
     "hooks": {
