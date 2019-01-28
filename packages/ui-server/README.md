@@ -9,6 +9,7 @@ Express server for `webpack-cli` packages
 	- `remove`
 	- `migrate`
 3. `./routes/index.js` : will contain logic for serving html files
+4. `./utils` : contains utility classes and functions
 
 ## Usage
 ```javascript

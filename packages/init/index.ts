@@ -1,6 +1,9 @@
 import defaultGenerator from "@webpack-cli/generators/init-generator";
 import modifyConfigHelper from "@webpack-cli/utils/modify-config-helper";
+import {ITransformConfig} from "@webpack-cli/utils/modify-config-helper";
 import npmPackagesExists from "@webpack-cli/utils/npm-packages-exists";
+import { spawnChild } from "@webpack-cli/utils/package-manager";
+import runTransform from "@webpack-cli/utils/scaffold";
 
 /**
  *
@@ -20,4 +23,29 @@ export default function initializeInquirer(...args: string[]): Function | void {
 		return modifyConfigHelper("init", defaultGenerator);
 	}
 	return npmPackagesExists(packages);
+}
+
+/**
+ * scaffoldProject function which takes answers and dependendencies as input
+ * and generates required scaffolds
+ * @param dependencies - array of packages needed to be installed
+ * @param config - Config object to be returned from UI
+ */
+
+export function scaffoldProject(dependencies: string[], config: ITransformConfig): {errors: string[]} {
+	const returnObject: {
+		errors: string[],
+	} = {errors: []};
+
+	// Install Dependencies
+	dependencies.forEach((pkg) => {
+		const pkgInstallSpawn = spawnChild(pkg);
+		if (pkgInstallSpawn.stderr) {
+			returnObject.errors.push(pkgInstallSpawn.stderr.toString());
+		}
+	});
+
+	// Generate scaffolds
+	runTransform(config, "init");
+	return returnObject;
 }
