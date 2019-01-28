@@ -487,10 +487,8 @@ For more information, see https://webpack.js.org/api/cli/.`);
 					process.stdin.resume();
 				}
 				compiler.watch(watchOptions, compilerCallback);
-				if (compiler.close) {
-					compiler.close(compilerCallback);
-				}
 				if (outputOptions.infoVerbosity !== "none") console.error("\nwebpack is watching the files…\n");
+				if (compiler.close) compiler.close(compilerCallback);
 			} else {
 				compiler.run(compilerCallback);
 				if (compiler.close) {
