@@ -1,6 +1,6 @@
 "use strict";
 
-const { run } = require("../../../testUtils");
+const { run, extractSummary } = require("../../../testUtils");
 
 test("plugins-precedence", () => {
 	const { code, stdout, stderr } = run(__dirname, [
@@ -18,9 +18,11 @@ test("plugins-precedence", () => {
 		"TEST=\"ok\""
 	]);
 
+	const summary = extractSummary(stdout);
+
 	expect(code).toBe(0);
-	expect(stdout).toEqual(expect.anything());
-	expect(stdout).toContain("ok.js");
+	expect(summary).toEqual(expect.anything());
+	expect(summary).toContain("ok.js");
 	expect(stderr).toHaveLength(0);
-	expect(stdout).toMatchSnapshot();
+	expect(summary).toMatchSnapshot();
 });

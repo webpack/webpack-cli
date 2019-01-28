@@ -1,10 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`multi-config 1`] = `
-"
-webpack is watching the files…
-
-Child
+"Child
       Asset       Size  Chunks             Chunk Names
     main.js  945 bytes       0  [emitted]  main
     Entrypoint main = main.js

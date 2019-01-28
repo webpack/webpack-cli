@@ -1,12 +1,14 @@
 "use strict";
 
-const { run } = require("../../../testUtils");
+const { run, extractSummary } = require("../../../testUtils");
 
 test("profile", () => {
 	const { code, stdout, stderr } = run(__dirname, []);
 
+	const summary = extractSummary(stdout);
+
 	expect(code).toBe(0);
-	expect(stdout).toEqual(expect.anything());
-	expect(stdout).toContain("factory:");
+	expect(summary).toEqual(expect.anything());
+	expect(summary).toContain("factory:");
 	expect(stderr).toHaveLength(0);
 });

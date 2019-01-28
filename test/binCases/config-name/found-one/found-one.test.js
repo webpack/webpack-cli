@@ -1,6 +1,6 @@
 "use strict";
 
-const { run } = require("../../../testUtils");
+const { run, extractSummary } = require("../../../testUtils");
 
 test("found-one", () => {
 	const { code, stdout, stderr } = run(__dirname, [
@@ -15,9 +15,12 @@ test("found-one", () => {
 		"--target",
 		"async-node"
 	]);
+
+	const summary = extractSummary(stdout);
+
 	expect(code).toBe(0);
-	expect(stdout).toEqual(expect.anything());
-	expect(stdout).toContain("./index2.js");
+	expect(summary).toEqual(expect.anything());
+	expect(summary).toContain("./index2.js");
 	expect(stderr).toHaveLength(0);
-	expect(stdout).toMatchSnapshot();
+	expect(summary).toMatchSnapshot();
 });
