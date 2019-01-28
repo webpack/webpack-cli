@@ -79,7 +79,7 @@ module.exports = function(...args) {
 			const ext = actualConfigFileName.replace(new RegExp(defaultConfigFileNames), "");
 			configFiles.push({
 				path: resolvedPath,
-				ext,
+				ext
 			});
 		}
 	}
