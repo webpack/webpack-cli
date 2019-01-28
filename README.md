@@ -11,7 +11,7 @@
 [![npm](https://img.shields.io/npm/v/webpack-cli.svg)](https://www.npmjs.com/package/webpack-cli)
 [![Build Status](https://travis-ci.org/webpack/webpack-cli.svg)](https://travis-ci.org/webpack/webpack-cli)
 [![Build2 Status](https://dev.azure.com/webpack/webpack/_apis/build/status/webpack.webpack-cli)](https://dev.azure.com/webpack/webpack/_build/latest?definitionId=4)
-[![Dependency Status](https://david-dm.org/webpack/webpack-cli.svg)](https://david-dm.org/webpack/webpack-cli)
+[![deps][deps]][deps-url]
 [![Code Climate](https://codeclimate.com/github/webpack/webpack-cli/badges/gpa.svg)](https://codeclimate.com/github/webpack/webpack-cli)
 [![chat on gitter](https://badges.gitter.im/webpack/webpack.svg)](https://gitter.im/webpack/webpack)
 [![Install Size](https://packagephobia.now.sh/badge?p=webpack-cli)](https://packagephobia.now.sh/result?p=webpack-cli)
@@ -70,3 +70,5 @@ You can read more about [Scaffolding](./SCAFFOLDING.md) or check out the example
 
 The webpack family welcomes any contributor, small or big. We are happy to elaborate, guide you through the source code and find issues you might want to work on! To get started have a look at our [documentation on contributing](CONTRIBUTING.md).
 
+[deps]: https://img.shields.io/david/webpack/webpack.svg
+[deps-url]: https://david-dm.org/webpack/webpack-cli
