@@ -491,9 +491,7 @@ For more information, see https://webpack.js.org/api/cli/.`);
 				if (compiler.close) compiler.close(compilerCallback);
 			} else {
 				compiler.run(compilerCallback);
-				if (compiler.close) {
-					compiler.close(compilerCallback);
-				}
+				if (compiler.close) compiler.close(compilerCallback);
 			}
 		}
 
