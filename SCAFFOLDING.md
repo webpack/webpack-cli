@@ -60,11 +60,17 @@ As with a regular webpack configuration, this property behaves the same. Inside 
 ```js
 this.options.env.configuration.dev.webpackOptions = {
 entry: '\'app.js\'',
-output: {....},
-merge: 'myConfig'
+output: {....}
 };
 ```
-If you want to use `webpack-merge`, you can supply `webpackOptions` with the merge property, and the configuration you want to merge it with. 
+
+### `myObj.merge` (optional)
+
+If you want to use `webpack-merge`, you can supply `merge` with the merge property, and the configuration you want to merge it with. 
+
+```js
+this.options.env.configuration.dev.merge = 'myConfig';
+```
 
 ### `myObj.topScope`(optional)
 
