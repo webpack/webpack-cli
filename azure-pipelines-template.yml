@@ -1,7 +1,7 @@
 jobs:
-  - job: linux
+  - job: ${{ parameters.name }}
     pool:
-      vmImage: ubuntu-16.04
+      vmImage: ${{ parameters.vmImage }
     strategy:
       maxParallel: 3
       matrix:
@@ -32,86 +32,11 @@ jobs:
         displayName: 'Publish Test Results'
         inputs:
           testResultsFiles: '**junit*.xml'
-          testRunTitle: TestRun ${{ parameters.name }} $(node_version)
+          testRunTitle: TestRun $ {{ parameters.name }} $(node_version)
       - task: PublishCodeCoverageResults@1
         displayName: 'Publish code coverage results'
         inputs: 
           codeCoverageTool: 'cobertura'
           summaryFileLocation: '**/coverage/cobertura-coverage.xml'
-  - job: macos
-    pool:
-      vmImage: "macOS 10.13"
-    strategy:
-      maxParallel: 3
-      matrix:
-        node-10:
-          node_version: ^10.10.0
-        node-8:
-          node_version: ^8.12.0
-    steps:
-      - task: NodeTool@0
-        displayName: "Install Node.js"
-        inputs:
-          versionSpec: $(node_version)
-      - script: |
-          npm install -g npm@latest
-        displayName: "Install npm"
-      - script: |
-          npm ci
-        displayName: "Install dependencies"
-      - script: |
-          ./node_modules/.bin/lerna bootstrap
-        displayName: "Lerna bootstrap"
-      - script: |
-          npm test
-        displayName: "Run tests"
-      - task: PublishTestResults@2
-        displayName: 'Publish Test Results'
-        inputs:
-          testResultsFiles: '**junit*.xml'
-          testRunTitle: TestRun ${{ parameters.name }} $(node_version)
-      - task: PublishCodeCoverageResults@1
-        displayName: 'Publish code coverage results'
-        inputs: 
-          codeCoverageTool: 'cobertura'
-          summaryFileLocation: '**/coverage/cobertura-coverage.xml'
-  - job: windows
-    pool:
-      vmImage: vs2017-win2016
-    strategy:
-      maxParallel: 3
-      matrix:
-        node-8:
-          node_version: ^8.12.0
-        node-6:
-          node_version: ^6.14.4
-    steps:
-      - task: NodeTool@0
-        displayName: "Install Node.js"
-        inputs:
-          versionSpec: $(node_version)
-      - script: |
-          npm install -g npm@latest
-        displayName: "Install npm"
-      - script: |
-          npm ci
-        displayName: "Install dependencies"
-      - script: |
-          ./node_modules/.bin/lerna.cmd bootstrap
-        displayName: "Lerna bootstrap"
-      - script: |
-          npm test
-        displayName: "Run tests"
-      - task: PublishTestResults@2
-        displayName: 'Publish Test Results'
-        inputs:
-          testResultsFiles: '**junit*.xml'
-          testRunTitle: TestRun ${{ parameters.name }} $(node_version)
-      - task: PublishCodeCoverageResults@1
-        displayName: 'Publish code coverage results'
-        inputs: 
-          codeCoverageTool: 'cobertura'
-          summaryFileLocation: '**coverage/cobertura-coverage.xml'
-
 variables:
-  nproc: 4
+  nproc: 3
