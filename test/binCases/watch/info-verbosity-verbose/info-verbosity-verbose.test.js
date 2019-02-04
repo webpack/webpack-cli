@@ -55,25 +55,14 @@ test("info-verbosity-verbose", async done => {
 	// 6. Compilation  finished
 	// 7. Hash and other info
 	var chunkNumber = 0;
+	var stderrNumber = 0;
 	var hash1, hash2;
 
 	webpackProc.stdout.on("data", data => {
 		data = data.toString();
 		chunkNumber++;
-
 		switch (chunkNumber) {
 			case 1:
-			case 5:
-				expect(data).toContain("Compilation  starting");
-				break;
-			case 2:
-				expect(data).toContain("webpack is watching the files");
-				break;
-			case 3:
-			case 6:
-				expect(data).toContain("Compilation  finished");
-				break;
-			case 4:
 				expect(extractSummary(data)).toMatchSnapshot();
 
 				hash1 = extractHash(data);
@@ -85,7 +74,7 @@ test("info-verbosity-verbose", async done => {
 				appendDataIfFileExists(__dirname, fileToChange, "//junk-comment");
 
 				break;
-			case 7:
+			case 2:
 				hash2 = extractHash(data);
 
 				expect(hash2.hash).not.toBe(hash1.hash);
@@ -100,6 +89,24 @@ test("info-verbosity-verbose", async done => {
 
 	webpackProc.stderr.on("data", error => {
 		// fail test case if there is any error
-		done(error.toString());
+		stderrNumber++;
+
+		switch (stderrNumber) {
+			case 1:
+			case 4:
+				expect(error.toString()).toContain("Compilation  starting");
+				break;
+			case 3:
+			case 5:
+			case 7:
+				expect(error.toString()).toContain("Compilation  finished");
+				break;
+			case 2:
+				expect(error.toString()).toContain("webpack is watching the files");
+				break;
+			default:
+				break;
+		}
+
 	});
 });

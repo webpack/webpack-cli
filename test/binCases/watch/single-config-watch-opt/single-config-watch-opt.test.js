@@ -58,9 +58,6 @@ test("single-config-watch-opt", async done => {
 
 		switch (chunkNumber) {
 			case 1:
-				expect(data).toContain("webpack is watching the files");
-				break;
-			case 2:
 				expect(extractSummary(data)).toMatchSnapshot();
 
 				hash1 = extractHash(data);
@@ -72,7 +69,7 @@ test("single-config-watch-opt", async done => {
 				appendDataIfFileExists(__dirname, fileToChange, "//junk-comment");
 
 				break;
-			case 3:
+			case 2:
 				hash2 = extractHash(data);
 
 				expect(hash2.hash).not.toBe(hash1.hash);
@@ -86,8 +83,7 @@ test("single-config-watch-opt", async done => {
 	});
 
 	webpackProc.stderr.on("data", error => {
-		// fail test case if there is any error
-		done(error.toString());
+		expect(error.toString()).toContain("webpack is watching the files");
 	});
 });
 
