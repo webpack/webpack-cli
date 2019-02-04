@@ -67,7 +67,6 @@ test("info-verbosity-off", async done => {
 				hash1 = extractHash(data);
 				summary = extractSummary(data);
 
-				expect(summary).not.toContain("webpack is watching the files…");
 				expect(summary).toMatchSnapshot();
 
 				// change file
