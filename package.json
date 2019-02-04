@@ -30,7 +30,7 @@
     "build": "tsc",
     "bundlesize": "bundlesize",
     "changelog": "conventional-changelog --config ./build/changelog-generator/index.js --infile CHANGELOG.md --same-file",
-    "clean:all": "rimraf node_modules package-lock.json packages/*/{node_modules,package-lock.json}",
+    "clean:all": "rimraf node_modules packages/*/{node_modules}",
     "commit": "git-cz",
     "docs": "typedoc",
     "format": "prettier-eslint ./bin/*.js ./test/**/*.js ./packages/**/*.js --write",
@@ -44,7 +44,7 @@
     "travis:lint": "npm run build && npm run lint && npm run tslint",
     "tslint": "tslint -c tslint.json \"packages/**/*.ts\"",
     "watch": "npm run build && tsc -w",
-    "postinstall": "./scripts/opencollective.sh"
+    "postinstall": "webpack-cli-donate"
   },
   "husky": {
     "hooks": {
@@ -117,6 +117,7 @@
     "loader-utils": "^1.1.0",
     "supports-color": "^5.5.0",
     "v8-compile-cache": "^2.0.2",
+    "webpack-cli-scripts": "^1.0.2",
     "yargs": "^12.0.4"
   },
   "peerDependencies": {
@@ -143,7 +144,7 @@
     "jest": "^23.6.0",
     "jest-cli": "^23.6.0",
     "jest-junit": "^5.0.0",
-    "lerna": "^3.4.3",
+    "lerna": "^3.10.7",
     "lint-staged": "7.x.x",
     "nyc": "^13.1.0",
     "prettier-eslint-cli": "^4.7.1",
@@ -155,7 +156,7 @@
     "tslint": "^5.11.0",
     "typedoc": "^0.13.0",
     "typedoc-plugin-monorepo": "^0.1.0",
-    "typescript": "^3.1.6",
+    "typescript": "^3.3.1",
     "webpack": "4.x.x",
     "webpack-dev-server": "^3.1.10"
   },
