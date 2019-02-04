@@ -1,7 +1,7 @@
 jobs:
   - job: ${{ parameters.name }}
     pool:
-      vmImage: ${{ parameters.vmImage }
+      vmImage: ${{ parameters.vmImage }}
     strategy:
       maxParallel: 3
       matrix:
@@ -38,5 +38,3 @@ jobs:
         inputs: 
           codeCoverageTool: 'cobertura'
           summaryFileLocation: '**/coverage/cobertura-coverage.xml'
-variables:
-  nproc: 3
