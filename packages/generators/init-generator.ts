@@ -139,7 +139,7 @@ export default class InitGenerator extends Generator {
 			})
 			.then((_: void) => {
 				this.isProd = this.usingDefaults ? true : false;
-				this.configuration.config.configName = this.isProd ? "prod" : "dev";
+				this.configuration.config.configName = this.isProd ? "prod" : "config";
 				if (!this.isProd) {
 					this.configuration.config.webpackOptions.mode = "'development'";
 				}
