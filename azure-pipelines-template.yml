@@ -21,8 +21,10 @@ jobs:
         displayName: "Install npm"
       - script: |
           npm install
-          npm install typescript -g
-          npm run bootstrap
+          npm install typescript --save-dev
+          npm install lerna --save-dev
+          lerna bootstrap
+          npm run build
         displayName: "Lerna bootstrap"
       - script: |
           npm run test
