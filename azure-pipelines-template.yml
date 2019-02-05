@@ -20,7 +20,7 @@ jobs:
           npm install -g npm@latest
         displayName: "Install npm"
       - script: |
-          ./node_modules/.bin/lerna bootstrap
+          lerna bootstrap
         displayName: "Lerna bootstrap"
       - task: Npm@1
         inputs:
