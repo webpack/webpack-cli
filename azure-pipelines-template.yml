@@ -20,6 +20,7 @@ jobs:
           npm install -g npm@latest
         displayName: "Install npm"
       - script: |
+          npm install
           npm run bootstrap
         displayName: "Lerna bootstrap"
       - script: |
