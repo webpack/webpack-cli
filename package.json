@@ -26,7 +26,7 @@
     "scripts"
   ],
   "scripts": {
-    "bootstrap": "npm run clean:all && npm install && lerna bootstrap",
+    "bootstrap": "lerna bootstrap",
     "build": "tsc",
     "bundlesize": "bundlesize",
     "changelog": "conventional-changelog --config ./build/changelog-generator/index.js --infile CHANGELOG.md --same-file",
