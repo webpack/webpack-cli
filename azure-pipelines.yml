@@ -9,10 +9,11 @@ jobs:
     name: Linux
     vmImage: ubuntu-16.04
 
-- template: azure-pipelines-template.yml
-  parameters:
-   name: Windows
-   vmImage: vs2017-win2016
+# TODO: enable when windows symlinks in monorepos work...
+# - template: azure-pipelines-template.yml
+#  parameters:
+#   name: Windows
+#   vmImage: vs2017-win2016
 
 variables:
   nproc: 3
