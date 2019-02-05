@@ -22,7 +22,7 @@ jobs:
         displayName: "Install npm"
       - task: Npm@1
         inputs:
-          command: bootstrap
+          command: run bootstrap
         displayName: "Lerna bootstrap"
       - task: Npm@1
         inputs:
