@@ -16,14 +16,9 @@ jobs:
         displayName: "Install Node.js"
         inputs:
           versionSpec: $(node_version)
-      - task: Npm@1
+      - script: |
+          npm install -g npm@latest
         displayName: "Install npm"
-        inputs:
-          command: install
-       - task: Npm@1
-        displayName: "Run NPM CI"
-        inputs:
-          command: ci
       - script: |
           ./node_modules/.bin/lerna bootstrap
         displayName: "Lerna bootstrap"
