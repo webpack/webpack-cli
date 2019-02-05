@@ -20,10 +20,10 @@ jobs:
           npm install -g npm@latest
           npm ci
         displayName: "Install npm"
-     - task: Npm@1
-       inputs:
-        command: bootstrap
-       displayName: "Lerna bootstrap"
+      - task: Npm@1
+        inputs:
+          command: bootstrap
+        displayName: "Lerna bootstrap"
       - task: Npm@1
         inputs:
           command: test
