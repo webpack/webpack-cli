@@ -1,6 +1,6 @@
 {
   "name": "webpack-cli",
-  "version": "3.2.2",
+  "version": "3.2.3",
   "description": "CLI for webpack & friends",
   "license": "MIT",
   "repository": {
@@ -43,8 +43,7 @@
     "travis:integration": "npm run build && npm run test && npm run reportCoverage",
     "travis:lint": "npm run build && npm run lint && npm run tslint",
     "tslint": "tslint -c tslint.json \"packages/**/*.ts\"",
-    "watch": "npm run build && tsc -w",
-    "postinstall": "webpack-cli-donate"
+    "watch": "npm run build && tsc -w"
   },
   "husky": {
     "hooks": {
@@ -117,7 +116,6 @@
     "loader-utils": "^1.1.0",
     "supports-color": "^5.5.0",
     "v8-compile-cache": "^2.0.2",
-    "webpack-cli-scripts": "^1.0.2",
     "yargs": "^12.0.4"
   },
   "peerDependencies": {
