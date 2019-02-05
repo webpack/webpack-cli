@@ -26,7 +26,7 @@
     "scripts"
   ],
   "scripts": {
-    "bootstrap": "lerna bootstrap",
+    "bootstrap": "npm run clean:all && npm install && lerna bootstrap",
     "build": "tsc",
     "bundlesize": "bundlesize",
     "changelog": "conventional-changelog --config ./build/changelog-generator/index.js --infile CHANGELOG.md --same-file",
@@ -144,7 +144,7 @@
     "jest": "^23.6.0",
     "jest-cli": "^23.6.0",
     "jest-junit": "^5.0.0",
-    "lerna": "^3.4.3",
+    "lerna": "^3.10.7",
     "lint-staged": "7.x.x",
     "nyc": "^13.1.0",
     "prettier-eslint-cli": "^4.7.1",
@@ -156,7 +156,7 @@
     "tslint": "^5.11.0",
     "typedoc": "^0.13.0",
     "typedoc-plugin-monorepo": "^0.1.0",
-    "typescript": "^3.1.6",
+    "typescript": "^3.3.1",
     "webpack": "4.x.x",
     "webpack-dev-server": "^3.1.10"
   },
