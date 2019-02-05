@@ -23,9 +23,8 @@ jobs:
           npm install
           npm run bootstrap
         displayName: "Lerna bootstrap"
-      - task: Npm@1
-        inputs:
-          command: test
+      - script: |
+          npm run test
         displayName: "Run tests"
       - task: PublishTestResults@2
         displayName: 'Publish Test Results'
