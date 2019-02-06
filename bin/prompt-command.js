@@ -59,15 +59,6 @@ module.exports = function promptForInstallation(packages, ...args) {
 			options[0] = "add";
 		}
 
-		if (packages === "init") {
-			if (isYarn) {
-				options.splice(1, 1); // remove '-D'
-				options.splice(0, 0, "global");
-			} else {
-				options[1] = "-g";
-			}
-		}
-
 		const commandToBeRun = `${packageManager} ${options.join(" ")}`;
 
 		const question = `Would you like to install ${packages}? (That will run ${commandToBeRun}) (yes/NO)`;
@@ -83,23 +74,14 @@ module.exports = function promptForInstallation(packages, ...args) {
 				case "y":
 				case "yes":
 				case "1": {
-					//eslint-disable-next-line
+
 					runCommand(packageManager, options)
-						.then(result => {
-							if (packages === "init") {
-								runCommand("webpack-cli", ["init"])
-									.then(_=>{})
-									.catch(err => {
-										console.error(err);
-										process.exitCode = 1;
-									});
-							} else {
-								pathForCmd = path.resolve(process.cwd(), "node_modules", "@webpack-cli", packages);
-								if (packages === "serve") {
-									return require(pathForCmd).default.serve();
-								}
-								return require(pathForCmd).default(...args); //eslint-disable-line
+						.then(_=> {
+							pathForCmd = path.resolve(process.cwd(), "node_modules", "@webpack-cli", packages);
+							if (packages === "serve") {
+								return require(pathForCmd).default.serve();
 							}
+							return require(pathForCmd).default(...args); //eslint-disable-line
 						})
 						.catch(error => {
 							console.error(error);
