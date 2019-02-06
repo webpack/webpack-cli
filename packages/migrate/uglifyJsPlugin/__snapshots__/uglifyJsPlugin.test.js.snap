@@ -10,13 +10,13 @@ exports[`uglifyJsPlugin transforms correctly using "uglifyJsPlugin-0" data 1`] =
 `;
 
 exports[`uglifyJsPlugin transforms correctly using "uglifyJsPlugin-1" data 1`] = `
-"const UglifyJsPlugin  = require('uglifyjs-webpack-plugin');
+"const TerserPlugin = require('terser-webpack-plugin');
 module.exports = {
     devtool: \\"source-map\\",
     optimization: {
         minimize: true,
 
-        minimizer: [new UglifyJsPlugin({
+        minimizer: [new TerserPlugin({
             sourceMap: true,
             compress: {}
         })]
@@ -26,13 +26,13 @@ module.exports = {
 `;
 
 exports[`uglifyJsPlugin transforms correctly using "uglifyJsPlugin-2" data 1`] = `
-"const Uglify  = require('uglifyjs-webpack-plugin');
+"const TerserPlugin = require('terser-webpack-plugin');
 module.exports = {
     devtool: \\"source-map\\",
     optimization: {
         minimize: true,
 
-        minimizer: [new Uglify({
+        minimizer: [new TerserPlugin({
             sourceMap: true,
             compress: {}
         })]

@@ -67,14 +67,17 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 			* - add require for terser-webpack-plugin
 			* - add to minimizer
 			*/
-				if (pluginVariableAssignment && pluginVariableAssignment.includes("webpack")) {
+				if (pluginVariableAssignment) {
+					// remove require for uglify-js-plugin
+					searchForRequirePlugin.remove();
+
 					// create require for terser-webpack-plugin
 					const pathRequire: INode = getRequire(
 						j,
 						"TerserPlugin",
 						"terser-webpack-plugin",
 					);
-					// append to source code.
+					// prepend to source code.
 					ast
 						.find(j.Program)
 						.replaceWith((p: INode): INode =>
