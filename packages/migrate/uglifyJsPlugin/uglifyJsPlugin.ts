@@ -68,7 +68,7 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 			* - add to minimizer
 			*/
 				if (pluginVariableAssignment) {
-					// remove require for uglify-js-plugin
+					// remove require for uglify-webpack-plugin
 					searchForRequirePlugin.remove();
 
 					// create require for terser-webpack-plugin
