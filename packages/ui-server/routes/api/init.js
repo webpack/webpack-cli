@@ -11,6 +11,11 @@ router.get("/", function(req, res, next) {
 	const scaffoldProject = require("../../../init").scaffoldProject;
 	const Questioner = require("../../utils/questioner").default;
 	const entryQuestions = require("./_entry.js");
+
+	const Confirm = require("../../../webpack-scaffold").Confirm;
+	const Input = require("../../../webpack-scaffold").Input;
+	const List = require("../../../webpack-scaffold").List;
+
 	let config = new Config();
 	let questioner = new Questioner();
 
@@ -33,18 +38,19 @@ router.get("/", function(req, res, next) {
 
 	questioner.start({
 		action: "question",
-		question: "Will your application have multiple bundles?"
+		question: Confirm("entryType", "Will your application have multiple bundles?"),
 	}).then((answer) => {
 		return entryQuestions(questioner, answer);
 	}).then((entryOptions) => {
 		if (entryOptions !== "\"\"") {
-			config.setWebpackOption("webpackOptions", {
-				entry: entryOptions,
-			});
+			config.setWebpackOption("entry", entryOptions);
 		}
 		return questioner.question({
 			action: "question",
-			question: "Which folder will Which folder will your generated bundles be in? [default: dist]"
+			question: Input(
+				"outputType",
+				"Which folder will your generated bundles be in? [default: dist]:"
+			),
 		});
 	}).then((data) => {
 		scaffoldProject(dependencies,config.exportConfig());
