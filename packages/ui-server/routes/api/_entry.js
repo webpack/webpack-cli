@@ -33,7 +33,7 @@ function forEachPromise(entries, fn) {
  * @returns {Object} An Object to entry for webpack config
  */
 module.exports = function(questioner, answer) {
-	if (answer === true) {
+	if (answer.entryType === true) {
 		return questioner.question({
 			action: "question",
 			question: InputValidate(

@@ -9,7 +9,7 @@ export class Config {
 	// Data members
 	private configName: string = "";
 	private topScope: string[] = [""];
-	private webpackOptions: IWebpackOptions = {};
+	public webpackOptions: IWebpackOptions = {};
 	private merge: object = {};
 	private configPath: string = process.cwd();
 
