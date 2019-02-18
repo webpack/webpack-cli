@@ -50,7 +50,7 @@ export default {
  */`;
 	},
 
-	uglify: (_?: void): string => {
+	terser: (_?: void): string => {
 		return `/*
  * We've enabled TerserPlugin for you! This minifies your app
  * in order to load faster and run less javascript.

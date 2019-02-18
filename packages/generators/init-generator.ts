@@ -434,7 +434,7 @@ export default class InitGenerator extends Generator {
 			);
 		} else {
 			this.configuration.config.topScope.push(
-				tooltip.uglify(),
+				tooltip.terser(),
 				"const TerserPlugin = require('terser-webpack-plugin');",
 				"\n",
 			);
