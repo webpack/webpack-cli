@@ -1,6 +1,5 @@
-const { resolve } = require("patch");
-
-const rootPath = resolve("/src");
+const path = require("path");
+const rootPath = path.resolve("/src");
 module.exports = [
 	{
 		resolve: {
