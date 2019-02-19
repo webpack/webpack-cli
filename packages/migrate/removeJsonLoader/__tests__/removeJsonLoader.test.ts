@@ -1,22 +1,25 @@
 import defineTest from "@webpack-cli/utils/defineTest";
-import * as path from "path";
+import { join } from "path";
+
+const dirName: string = join(__dirname, "..");
+
 defineTest(
-  path.join(__dirname, ".."),
+  dirName,
   "removeJsonLoader",
   "removeJsonLoader-0",
 );
 defineTest(
-  path.join(__dirname, ".."),
+  dirName,
   "removeJsonLoader",
   "removeJsonLoader-1",
 );
 defineTest(
-  path.join(__dirname, ".."),
+  dirName,
   "removeJsonLoader",
   "removeJsonLoader-2",
 );
 defineTest(
-  path.join(__dirname, ".."),
+  dirName,
   "removeJsonLoader",
   "removeJsonLoader-3",
 );

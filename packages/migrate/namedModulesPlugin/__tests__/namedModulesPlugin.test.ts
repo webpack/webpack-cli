@@ -1,5 +1,8 @@
 import defineTest from "@webpack-cli/utils/defineTest";
 import { join } from "path";
-defineTest(join(__dirname, ".."), "namedModulesPlugin", "namedModulesPlugin-0");
-defineTest(join(__dirname, ".."), "namedModulesPlugin", "namedModulesPlugin-1");
-defineTest(join(__dirname, ".."), "namedModulesPlugin", "namedModulesPlugin-2");
+
+const dirName: string = join(__dirname, "..");
+
+defineTest(dirName, "namedModulesPlugin", "namedModulesPlugin-0");
+defineTest(dirName, "namedModulesPlugin", "namedModulesPlugin-1");
+defineTest(dirName, "namedModulesPlugin", "namedModulesPlugin-2");

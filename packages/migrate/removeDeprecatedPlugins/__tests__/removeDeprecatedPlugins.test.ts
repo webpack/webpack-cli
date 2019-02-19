@@ -1,28 +1,30 @@
 import defineTest from "@webpack-cli/utils/defineTest";
 import { join } from "path";
 
+const dirName: string = join(__dirname, "..");
+
 defineTest(
-  join(__dirname, ".."),
+  dirName,
   "removeDeprecatedPlugins",
   "removeDeprecatedPlugins-0",
 );
 defineTest(
-  join(__dirname, ".."),
+  dirName,
   "removeDeprecatedPlugins",
   "removeDeprecatedPlugins-1",
 );
 defineTest(
-  join(__dirname, ".."),
+  dirName,
   "removeDeprecatedPlugins",
   "removeDeprecatedPlugins-2",
 );
 defineTest(
-  join(__dirname, ".."),
+  dirName,
   "removeDeprecatedPlugins",
   "removeDeprecatedPlugins-3",
 );
 defineTest(
-  join(__dirname, ".."),
+  dirName,
   "removeDeprecatedPlugins",
   "removeDeprecatedPlugins-4",
 );
