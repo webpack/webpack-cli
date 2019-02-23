@@ -4,7 +4,10 @@
  */
 
 const path = require("path");
-const app = require("../../ui-server")(path.join(__dirname, "../../ui-gui/build")); // eslint-disable-line
+const STATIC = path.existsSync(path.join(__dirname, "../../ui-gui/build"))
+	? path.join(__dirname, "../../ui-gui/build")
+	: "../static_fallback";
+const app = require("../../ui-server")(STATIC); // eslint-disable-line
 const debug = require("debug")("ui:server");
 const http = require("http");
 
