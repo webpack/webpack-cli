@@ -28,7 +28,7 @@ afterEach(() => {
 	}
 });
 
-test("multi-config-watch-opt", async done => {
+test.skip("multi-config-watch-opt", async done => {
 	const webpackProc = runAndGetWatchProc(__dirname, [
 		"--entry",
 		"./index.js",
