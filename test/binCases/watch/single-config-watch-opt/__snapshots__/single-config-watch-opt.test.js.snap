@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`info-verbosity-verbose 1`] = `
+exports[`single-config-watch-opt 1`] = `
 "  Asset       Size  Chunks             Chunk Names
-main.js  930 bytes       0  [emitted]  main
-Entrypoint main = main.js
+null.js  930 bytes       0  [emitted]  null
+Entrypoint null = null.js
 [0] ./index.js 0 bytes {0} [built]
 
 WARNING in configuration

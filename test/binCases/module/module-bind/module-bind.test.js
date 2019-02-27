@@ -1,6 +1,6 @@
 "use strict";
 
-const { run } = require("../../../testUtils");
+const { run, extractSummary } = require("../../../testUtils");
 
 test("module-bind", () => {
 	const { code, stdout, stderr } = run(__dirname, [
@@ -21,8 +21,10 @@ test("module-bind", () => {
 	]);
 	expect(code).toBe(0);
 
-	expect(stdout).toEqual(expect.anything());
-	expect(stdout).toContain("pre-loaded pre");
-	expect(stdout).toContain("post-loaded post");
+	const summary = extractSummary(stdout);
+
+	expect(summary).toEqual(expect.anything());
+	expect(summary).toContain("pre-loaded pre");
+	expect(summary).toContain("post-loaded post");
 	expect(stderr).toHaveLength(0);
 });

@@ -1,143 +1,94 @@
- <a name="3.2.1"></a>
-# 3.2.1 (2019-01-07)
-[Full Changelog](https://github.com/webpack/webpack-cli/compare/v0.1.3...v3.2.1)
+ <a name="3.2.2"></a>
+# 3.2.2 (2019-02-05)
+[Full Changelog](https://github.com/webpack/webpack-cli/compare/v0.1.3...v3.2.2)
+
+## New Features
+
+* only display once a week ([b6199e5](https://github.com/webpack/webpack-cli/commit/b6199e5))
+* add util to run-and-get watch proc ([1d2ccd5](https://github.com/webpack/webpack-cli/commit/1d2ccd5))
+* add test-util to append data to file ([e9e1dcb](https://github.com/webpack/webpack-cli/commit/e9e1dcb))
+* log: clean single line logs ([5d2284b](https://github.com/webpack/webpack-cli/commit/5d2284b))
+* log: add gitignore ([7c830b5](https://github.com/webpack/webpack-cli/commit/7c830b5))
+* log: make log package ([df7c224](https://github.com/webpack/webpack-cli/commit/df7c224))
+* log: add clrscr function ([11b3bff](https://github.com/webpack/webpack-cli/commit/11b3bff))
+* log: few changes ([bc32727](https://github.com/webpack/webpack-cli/commit/bc32727))
+* log: add newline for title ([4047213](https://github.com/webpack/webpack-cli/commit/4047213))
+* log: remove unwanted commits ([c088f3e](https://github.com/webpack/webpack-cli/commit/c088f3e))
+* log: task based custom loggers ([2c43a41](https://github.com/webpack/webpack-cli/commit/2c43a41))
 
 ## Chore
 
+* v.3.2.3 ([70138b7](https://github.com/webpack/webpack-cli/commit/70138b7))
+* v.3.2.2 ([24b6387](https://github.com/webpack/webpack-cli/commit/24b6387))
+* update tests ([70bfbd9](https://github.com/webpack/webpack-cli/commit/70bfbd9))
+* one liner ([0f55d5a](https://github.com/webpack/webpack-cli/commit/0f55d5a))
+* one liner after log ([6d8fb67](https://github.com/webpack/webpack-cli/commit/6d8fb67))
+* watch: remove console log ([0952317](https://github.com/webpack/webpack-cli/commit/0952317))
+* v.3.2.1 ([54805ae](https://github.com/webpack/webpack-cli/commit/54805ae))
 * dependency: add `node-ts` as devDependency ([#724](https://github.com/webpack/webpack-cli/pull/724))
 
 ## Docs
 
+* init documentaion ([14d2b47](https://github.com/webpack/webpack-cli/commit/14d2b47))
 * scaffold: Add installation guide for packages/webpack-scaffold ([#727](https://github.com/webpack/webpack-cli/pull/727))
 
 ## Fix
 
+* close compiler, own sh script and output clearing ([6ded275](https://github.com/webpack/webpack-cli/commit/6ded275))
 * bin: extension detection ([#724](https://github.com/webpack/webpack-cli/pull/724))
+* readme: remove old dependency status link ([4df0000](https://github.com/webpack/webpack-cli/commit/4df0000))
+* readme: add fallback badge for dependency status ([0e3753b](https://github.com/webpack/webpack-cli/commit/0e3753b))
+* failing test ([88888bb](https://github.com/webpack/webpack-cli/commit/88888bb))
+* test: fix travis ts build ([22d3acc](https://github.com/webpack/webpack-cli/commit/22d3acc))
 
 ## Tests
 
+* azure pipelines ([c9c3fea](https://github.com/webpack/webpack-cli/commit/c9c3fea))
 * bin: add `webpack.config.ts` related test ([#724](https://github.com/webpack/webpack-cli/pull/724))
-* bin: add `.babelrc` to webpack-babel-config test ([#724](https://github.com/webpack/webpack-cli/pull/724))
+* module: use extractSummary ([7bde073](https://github.com/webpack/webpack-cli/commit/7bde073))
+* watch: use copyFile functionality ([c61fe92](https://github.com/webpack/webpack-cli/commit/c61fe92))
+* add copyFile function in test-utils ([1b21e81](https://github.com/webpack/webpack-cli/commit/1b21e81))
 * bin: add `webpack.config.babel.js` related test ([#724](https://github.com/webpack/webpack-cli/pull/724))
+* config-file: use extractSummary ([7554fe7](https://github.com/webpack/webpack-cli/commit/7554fe7))
+* config-name: use extractSummary ([3e30a57](https://github.com/webpack/webpack-cli/commit/3e30a57))
+* env: use extractSummary ([aa0cf25](https://github.com/webpack/webpack-cli/commit/aa0cf25))
+* fix: fix failing tests ([5669311](https://github.com/webpack/webpack-cli/commit/5669311))
+* help: use extractSummary ([0ba72c4](https://github.com/webpack/webpack-cli/commit/0ba72c4))
+* watch: use switch pattern for verbosity off ([c00386b](https://github.com/webpack/webpack-cli/commit/c00386b))
+* watch: hash assertion for single-config-opt ([55632d6](https://github.com/webpack/webpack-cli/commit/55632d6))
+* watch: hash assertion for single-config ([48f34d1](https://github.com/webpack/webpack-cli/commit/48f34d1))
+* watch: hash assertion for multi-config-watch-opt ([6dd2327](https://github.com/webpack/webpack-cli/commit/6dd2327))
+* watch: hash assertion multi-config ([6b4d339](https://github.com/webpack/webpack-cli/commit/6b4d339))
+* watch: hash assertion info-verbosity-verbose ([42e5ee8](https://github.com/webpack/webpack-cli/commit/42e5ee8))
+* watch: remove test.only for info-verbosity-off ([675d5c0](https://github.com/webpack/webpack-cli/commit/675d5c0))
+* improve appendFile test-case ([18bde78](https://github.com/webpack/webpack-cli/commit/18bde78))
+* remove eslint comment for requireReturn ([be7b259](https://github.com/webpack/webpack-cli/commit/be7b259))
+* watch: test failure using done(error) ([46d2e37](https://github.com/webpack/webpack-cli/commit/46d2e37))
+* watch: use native require first ([20e8579](https://github.com/webpack/webpack-cli/commit/20e8579))
+* watch: use better comments ([b6efe2d](https://github.com/webpack/webpack-cli/commit/b6efe2d))
+* add type to appendDataIfFileExists util ([f853302](https://github.com/webpack/webpack-cli/commit/f853302))
+* make comment clear about fs.copyFileSync ([d1d3d02](https://github.com/webpack/webpack-cli/commit/d1d3d02))
+* use 10E6 instead of 10e6 ([c9c5832](https://github.com/webpack/webpack-cli/commit/c9c5832))
+* bin: add `.babelrc` to webpack-babel-config test ([#724](https://github.com/webpack/webpack-cli/pull/724))
+* bin-cases: expose extractSummary as function ([73714f5](https://github.com/webpack/webpack-cli/commit/73714f5))
+* config-type: use extractSummary ([ed36260](https://github.com/webpack/webpack-cli/commit/ed36260))
+* entry: use extractSummary ([745a369](https://github.com/webpack/webpack-cli/commit/745a369))
+* errors: use extractSummary ([3c8628c](https://github.com/webpack/webpack-cli/commit/3c8628c))
+* fix: fix failing tests ([7cb531b](https://github.com/webpack/webpack-cli/commit/7cb531b))
+* mode: use extractSummary ([3277d41](https://github.com/webpack/webpack-cli/commit/3277d41))
+* output: use extractSummary ([cb60b15](https://github.com/webpack/webpack-cli/commit/cb60b15))
+* plugins: use extractSummary ([02e08dc](https://github.com/webpack/webpack-cli/commit/02e08dc))
+* silent: use extractSummary ([ea89a82](https://github.com/webpack/webpack-cli/commit/ea89a82))
+* stats: use extractSummary ([7f4e504](https://github.com/webpack/webpack-cli/commit/7f4e504))
+* watch: hash assertion for info-verbosity-off ([e0a0d97](https://github.com/webpack/webpack-cli/commit/e0a0d97))
+* watch: use extractSummary ([8357dbc](https://github.com/webpack/webpack-cli/commit/8357dbc))
 
 ## Misc
 
+* Correction of the webpack-merge configuration ([2ed8c60](https://github.com/webpack/webpack-cli/commit/2ed8c60))
 * replace opencollective with light vers ([848bf4b](https://github.com/webpack/webpack-cli/commit/848bf4b))
 
- <a name="3.2.0"></a>
-# 3.2.0 (2019-01-03)
-[Full Changelog](https://github.com/webpack/webpack-cli/compare/v3.1.2...v3.2.0)
-
-## New Features
-
-* bin: find config recursively ([#689](https://github.com/webpack/webpack-cli/pull/689))
-* tests: add extractHash support in test-infra ([#683](https://github.com/webpack/webpack-cli/pull/683))
-* install init as global dep ([2a43d44](https://github.com/webpack/webpack-cli/commit/2a43d44))
-
-## Chore
-
-* make tests pass ([0c3be76](https://github.com/webpack/webpack-cli/commit/0c3be76))
-* better defaults ([0b6bab3](https://github.com/webpack/webpack-cli/commit/0b6bab3))
-* add-on -> scaffold ([78436ff](https://github.com/webpack/webpack-cli/commit/78436ff))
-* simplify clean-all script ([3281372](https://github.com/webpack/webpack-cli/commit/3281372))
-* addon -> scaffold ([b0f4a0f](https://github.com/webpack/webpack-cli/commit/b0f4a0f))
-* update lockfiles ([82c9ea8](https://github.com/webpack/webpack-cli/commit/82c9ea8))
-* update package lock and scripts ([83602d4](https://github.com/webpack/webpack-cli/commit/83602d4))
-* ci: adding tasks for publishing results ([#695](https://github.com/webpack/webpack-cli/pull/695))
-* ci: increase travis wait timer ([#692](https://github.com/webpack/webpack-cli/pull/692))
-* cli: syntax improvements ([a1bd573](https://github.com/webpack/webpack-cli/commit/a1bd573))
-* dependencies: add findup-sync ([#689](https://github.com/webpack/webpack-cli/pull/689))
-* dependencies: pin versions to support node 6 ([#665](https://github.com/webpack/webpack-cli/pull/665))
-* dependencies: pin to webpack 4.x.x ([#658](https://github.com/webpack/webpack-cli/pull/658))
-* dependencies: pin got to version 8 to support node 8 ([107dbdc](https://github.com/webpack/webpack-cli/commit/107dbdc))
-* deps: upgrade dependencies ([e46d507](https://github.com/webpack/webpack-cli/commit/e46d507))
-* greenkeeper: remove greenkeeper scripts, configs ([e74da62](https://github.com/webpack/webpack-cli/commit/e74da62))
-* greenkeeper: add greenkeeper json file ([16123d3](https://github.com/webpack/webpack-cli/commit/16123d3))
-* guides: update contributing guide ([7a0fc72](https://github.com/webpack/webpack-cli/commit/7a0fc72))
-* package: update lockfile package-lock.json ([0649ba9](https://github.com/webpack/webpack-cli/commit/0649ba9))
-* package: update eslint-plugin-node to version 8.0.0 ([8c499a0](https://github.com/webpack/webpack-cli/commit/8c499a0))
-* package: update dependencies ([d03a86c](https://github.com/webpack/webpack-cli/commit/d03a86c))
-* package: update lockfile package-lock.json ([4967016](https://github.com/webpack/webpack-cli/commit/4967016))
-* package: update commitizen to version 3.0.0 ([8bfacea](https://github.com/webpack/webpack-cli/commit/8bfacea))
-* refactor: store config file names in `defaultConfigFiles` ([#689](https://github.com/webpack/webpack-cli/pull/689))
-* refactor: use `const` instead of `var` ([#689](https://github.com/webpack/webpack-cli/pull/689))
-* travis: add wait timer for installation, remove redundant script ([ad02e26](https://github.com/webpack/webpack-cli/commit/ad02e26))
-* fix linting errors ([4cc8760](https://github.com/webpack/webpack-cli/commit/4cc8760))
-* use require on json ([9f47851](https://github.com/webpack/webpack-cli/commit/9f47851))
-* fix global path lookup ([cf450e4](https://github.com/webpack/webpack-cli/commit/cf450e4))
-* add nproc in azure ([#677](https://github.com/webpack/webpack-cli/pull/677))
-* scripts: add postinstall script ([968f8f1](https://github.com/webpack/webpack-cli/commit/968f8f1))
-* travis: remove node 7 ([54c04f0](https://github.com/webpack/webpack-cli/commit/54c04f0))
-* types: update yeoman-generator types ([cefe6b3](https://github.com/webpack/webpack-cli/commit/cefe6b3))
-* revise postinstall script ([4150849](https://github.com/webpack/webpack-cli/commit/4150849))
-* update small fixes ([48646b7](https://github.com/webpack/webpack-cli/commit/48646b7))
-* update dev guide ([d3a3b87](https://github.com/webpack/webpack-cli/commit/d3a3b87))
-* revise long lines ([d4cd76a](https://github.com/webpack/webpack-cli/commit/d4cd76a))
-
-## CLI
-
-* generators: fix entry path value quotes sanity check ([2e36d79](https://github.com/webpack/webpack-cli/commit/2e36d79))
-* fix various of bugs ([1e7ad51](https://github.com/webpack/webpack-cli/commit/1e7ad51))
-* color: document --no-color option ([8f8937e](https://github.com/webpack/webpack-cli/commit/8f8937e))
-* color: fix color option ([ed5b650](https://github.com/webpack/webpack-cli/commit/ed5b650))
-* generators: add support for babel 7 ([a245ddf](https://github.com/webpack/webpack-cli/commit/a245ddf))
-* loaders: update babel-loader presets ([9af6fd5](https://github.com/webpack/webpack-cli/commit/9af6fd5))
-* allow array value for --ouput-library. Fixes #557 ([0fb0daa](https://github.com/webpack/webpack-cli/commit/0fb0daa))
-
-## Docs
-
-* improve the docs ([#722](https://github.com/webpack/webpack-cli/pull/722))
-* add links to source code ([1f86c05](https://github.com/webpack/webpack-cli/commit/1f86c05))
-* add packages README ([#719](https://github.com/webpack/webpack-cli/pull/719))
-* update generators README ([e54b788](https://github.com/webpack/webpack-cli/commit/e54b788))
-* update header ([cd8285c](https://github.com/webpack/webpack-cli/commit/cd8285c))
-* update header ([4f36f8e](https://github.com/webpack/webpack-cli/commit/4f36f8e))
-* add require statements ([dc57d1c](https://github.com/webpack/webpack-cli/commit/dc57d1c))
-* add Index and minor changes ([3920314](https://github.com/webpack/webpack-cli/commit/3920314))
-* correct use of individual package in node env ([#682](https://github.com/webpack/webpack-cli/pull/682))
-* fix: fix typos and improve intro wording ([#687](https://github.com/webpack/webpack-cli/pull/687))
-* migrate: update babel-loader output syntax ([b973133](https://github.com/webpack/webpack-cli/commit/b973133))
-* readme: fix typo ([#631](https://github.com/webpack/webpack-cli/pull/631))
-
-## Fix
-
-* bin: find `webpackfile` and `webpack.config` file with equal chance ([#689](https://github.com/webpack/webpack-cli/pull/689))
-* generators: clean entry file name extension ([a5a8ac7](https://github.com/webpack/webpack-cli/commit/a5a8ac7))
-* upgrade: fix breaking changes for yeoman-generator ([f057ecf](https://github.com/webpack/webpack-cli/commit/f057ecf))
-
-## Tests
-
-* bin: add `webpackfile` related test ([#689](https://github.com/webpack/webpack-cli/pull/689))
-* config: export objects in config-location tests ([#689](https://github.com/webpack/webpack-cli/pull/689))
-* config: remove prod mode from config-location tests ([#689](https://github.com/webpack/webpack-cli/pull/689))
-* config: remove unnecessary assertion ([#689](https://github.com/webpack/webpack-cli/pull/689))
-* config: add negative test-cases to config-location ([#689](https://github.com/webpack/webpack-cli/pull/689))
-* config: add config-location tests ([#689](https://github.com/webpack/webpack-cli/pull/689))
-* migrate: update babel-loader tests ([2c6552d](https://github.com/webpack/webpack-cli/commit/2c6552d))
-* refactor: better test suite for binary tests ([#635](https://github.com/webpack/webpack-cli/pull/635))
-
-## Misc
-
-* See #721 ([9ad8c1d](https://github.com/webpack/webpack-cli/commit/9ad8c1d))
-* reduce hop for creating an issue ([#718](https://github.com/webpack/webpack-cli/pull/718))
-* remove dist completely ([39a45d6](https://github.com/webpack/webpack-cli/commit/39a45d6))
-* not scaffold 'dist' in default ([2a0bf4b](https://github.com/webpack/webpack-cli/commit/2a0bf4b))
-* Revert "chore(deps): pin root dependencies" ([747d71b](https://github.com/webpack/webpack-cli/commit/747d71b))
-* Revert "chore(deps): pin root dependencies for info" ([160d1df](https://github.com/webpack/webpack-cli/commit/160d1df))
-* Revert "chore(deps): pin root dependencies for init" ([82226e2](https://github.com/webpack/webpack-cli/commit/82226e2))
-* Revert "chore(deps): pin root dependencies for generate-loader" ([aa83620](https://github.com/webpack/webpack-cli/commit/aa83620))
-* Revert "chore(deps): pin root dependencies for generate-plugin" ([2cebea0](https://github.com/webpack/webpack-cli/commit/2cebea0))
-* Revert "chore(deps): pin root dependencies for generators" ([be25e4c](https://github.com/webpack/webpack-cli/commit/be25e4c))
-* Revert "chore(deps): pin root dependencies for make" ([8180c17](https://github.com/webpack/webpack-cli/commit/8180c17))
-* Revert "chore(deps): pin root dependencies for migrate" ([698437d](https://github.com/webpack/webpack-cli/commit/698437d))
-* Revert "chore(deps): pin root dependencies for remove" ([822e9de](https://github.com/webpack/webpack-cli/commit/822e9de))
-* Revert "chore(deps): pin root dependencies for serve" ([71a87ba](https://github.com/webpack/webpack-cli/commit/71a87ba))
-* Revert "chore(deps): pin root dependencies for update" ([4687709](https://github.com/webpack/webpack-cli/commit/4687709))
-* Revert "chore(deps): pin root dependencies for utils" ([f774e55](https://github.com/webpack/webpack-cli/commit/f774e55))
-* Better test suite for binary tests ([#635](https://github.com/webpack/webpack-cli/pull/635))
-* utils: refactor npmpackageexists function ([#622](https://github.com/webpack/webpack-cli/pull/622))
-
- <a name="3.1.2"></a>
+<a name="3.1.2"></a>
 # 3.1.2 (2018-09-29)
 [Full Changelog](https://github.com/webpack/webpack-cli/compare/v3.1.1...v3.1.2)
 
