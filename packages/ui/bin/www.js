@@ -4,7 +4,8 @@
  */
 
 const path = require("path");
-const STATIC = path.existsSync(path.join(__dirname, "../../ui-gui/build"))
+const fs = require("fs");
+const STATIC = fs.existsSync(path.join(__dirname, "../../ui-gui/build"))
 	? path.join(__dirname, "../../ui-gui/build")
 	: "../static_fallback";
 const app = require("../../ui-server")(STATIC); // eslint-disable-line
