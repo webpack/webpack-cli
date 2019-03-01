@@ -36,11 +36,11 @@ In case you are suggesting a new feature, we will match your idea with our curre
 
 * Install the dependencies and link them:
 
- ```bash
-npm install
-npm link
-npm link webpack-cli
-```
+  ```bash
+  npm install
+  npm link
+  npm link webpack-cli
+  ```
 
 * Bootstrap all the submodules before building for the first time
 
@@ -50,10 +50,16 @@ npm link webpack-cli
   ```
 
 * Run all the tests with:
-  - `npm run test`
+  
+  ```bash
+  npm run test
+  ```
 
 * To test a single CLI (flag) test case:
-  - `BIN_TEST_CASES_GREP=/myCase jest test/BinTestCases.test.js`
+  
+  ```bash
+  BIN_TEST_CASES_GREP=/myCase jest test/BinTestCases.test.js`
+  ```
 
 * To test a single CLI (other type of) test case:
   - `npx jest path/to/my-test.js` 
@@ -63,18 +69,24 @@ npm link webpack-cli
     - `jest path/to/my-test.js`
 
 * To test linting:
-  - `npm run lint && npm run tslint`
+  ```bash
+  npm run lint && npm run tslint
+  ```
 
 ### Setup with yarn
 * If you don't have yarn yet: 
-  - `npm install -g yarn`
+  
+  ```bash
+  npm install -g yarn
+  ```
+  
 * Install the dependencies and link them
 
-```bash
-yarn
-yarn link
-yarn link webpack-cli
-```
+  ```bash
+  yarn
+  yarn link
+  yarn link webpack-cli
+  ```
 
 * Bootstrap all the submodules before building for the first time
 
@@ -84,16 +96,25 @@ yarn link webpack-cli
   ```
 
 * Run all the tests with:
-  - `yarn test`
+  
+  ```bash
+  yarn test
+  ```
 
 * To test a single CLI (flag) test case:
-    - `BIN_TEST_CASES_GREP=/myCase jest test/BinTestCases.test.js`
+  
+  ```bash
+  BIN_TEST_CASES_GREP=/myCase jest test/BinTestCases.test.js
+  ```
 
 * To test a single CLI (other type of) test case:
     - `yarn jest path/to/my-test.js`
 
 * To test linting:
-    - `yarn lint && yarn tslint`
+
+  ```bash
+  yarn lint && yarn tslint
+  ```
 
 ## Editor Config
 
