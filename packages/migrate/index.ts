@@ -17,7 +17,7 @@ declare var process: {
 	webpackModule: {
 		validate: Function;
 		WebpackOptionsValidationError: {
-			new(errors: string[]): {
+			new: (errors: string[]) => {
 				message: string;
 			};
 		};

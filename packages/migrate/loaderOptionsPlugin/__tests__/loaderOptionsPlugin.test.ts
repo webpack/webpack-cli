@@ -1,22 +1,25 @@
 import defineTest from "@webpack-cli/utils/defineTest";
 import { join } from "path";
+
+const dirName: string = join(__dirname, "..");
+
 defineTest(
-  join(__dirname, ".."),
+  dirName,
   "loaderOptionsPlugin",
   "loaderOptionsPlugin-0",
 );
 defineTest(
-  join(__dirname, ".."),
+  dirName,
   "loaderOptionsPlugin",
   "loaderOptionsPlugin-1",
 );
 defineTest(
-  join(__dirname, ".."),
+  dirName,
   "loaderOptionsPlugin",
   "loaderOptionsPlugin-2",
 );
 defineTest(
-  join(__dirname, ".."),
+  dirName,
   "loaderOptionsPlugin",
   "loaderOptionsPlugin-3",
 );

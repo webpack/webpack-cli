@@ -1,26 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`resolve transforms correctly 1`] = `
-"const path = require(\\"patch\\");
+"const path = require(\\"path\\");
+const rootPath = path.resolve(\\"/src\\");
 module.exports = [
 	{
 		resolve: {
-			modules: [path.resolve(\\"/src\\")]
+			modules: [rootPath]
 		}
 	},
 	{
 		resolve: {
-			modules: [path.resolve(\\"/src\\")]
+			modules: [rootPath]
 		}
 	},
 	{
 		resolve: {
-			modules: [path.resolve(\\"/src\\"), \\"node_modules\\"]
+			modules: [rootPath, \\"node_modules\\"]
 		}
 	},
 	{
 		resolve: {
-            modules: [\\"node_modules\\", path.resolve(\\"/src\\")]
+            modules: [\\"node_modules\\", rootPath]
         }
 	}
 ];

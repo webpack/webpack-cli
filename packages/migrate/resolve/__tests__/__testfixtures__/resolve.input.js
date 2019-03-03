@@ -1,24 +1,25 @@
-const path = require("patch");
+const path = require("path");
+const rootPath = path.resolve("/src");
 module.exports = [
 	{
 		resolve: {
-			root: path.resolve("/src")
+			root: rootPath
 		}
 	},
 	{
 		resolve: {
-			root: [path.resolve("/src")]
+			root: [rootPath]
 		}
 	},
 	{
 		resolve: {
-			root: [path.resolve("/src"), "node_modules"]
+			root: [rootPath, "node_modules"]
 		}
 	},
 	{
 		resolve: {
 			modules: ["node_modules"],
-			root: path.resolve("/src")
+			root: rootPath
 		}
 	}
 ];

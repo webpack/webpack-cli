@@ -313,7 +313,7 @@ const a = { plugs: [] }
 
 			const root = ast.find(j.ObjectExpression);
 
-			utils.findRootNodesByName(j, root, "entry").forEach((p) => {
+			utils.findRootNodesByName(j, root, "entry").forEach((p: INode) => {
 				j(p).replaceWith(utils.addProperty(j, p, "entry", propertyValue, "add"));
 			});
 

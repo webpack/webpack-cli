@@ -1,4 +1,5 @@
 import defineTest from "@webpack-cli/utils/defineTest";
-import * as path from "path";
+import { join } from "path";
 
-defineTest(path.join(__dirname, ".."), "resolve");
+const dirName: string = join(__dirname, "..");
+defineTest(dirName, "resolve");
