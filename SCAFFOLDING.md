@@ -28,8 +28,16 @@ webpack-cli init <your-scaffold>
 #### Running a scaffold locally
 When the scaffold package is on you local file system you should pass its path to `init`:
 
-```js
+```bash
 webpack-cli init path/to/your/scaffold
+```
+
+Or you can create a global module and symlink to the local one:
+
+```bash
+cd path/to/my-scaffold
+npm link
+webpack-cli init my-scaffold
 ```
 
 #### Running a scaffold from npm
