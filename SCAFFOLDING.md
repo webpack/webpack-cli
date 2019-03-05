@@ -56,7 +56,7 @@ Objects are made using strings, while strings are made using double strings. Thi
 ### Optional
 - [myConfig.merge](#`myConfig.merge`-(optional))
 - [myConfig.topScope](#`myConfig.topScope`-(optional))
-- [myObj.configName](#`myObj.configName`-(optional))
+- [myConfig.configName](#`myConfig.configName`-(optional))
 
 ### `opts.env.configuration` (required)
 
@@ -104,7 +104,7 @@ For the scaffolding instance to run, you need to write your configuration to a `
 
 ```js
 writing() {
-	this.config.set('configuration', myObj)
+	this.config.set('configuration', myConfig)
 }
 ```
 
@@ -129,7 +129,7 @@ this.options.env.configuration.dev.topScope = [
 ];
 ```
 
-### `myObj.configName` (optional)
+### `myConfig.configName` (optional)
 
 Used if you want to name your `webpack.config.js` differently:
 
