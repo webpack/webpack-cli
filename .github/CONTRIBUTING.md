@@ -49,7 +49,9 @@ npm link webpack-cli
   - `BIN_TEST_CASES_GREP=/myCase jest test/BinTestCases.test.js`
 
 * To test a single CLI (other type of) test case:
-  - `yarn jest path/to/my-test.js` 
+  - `npx jest path/to/my-test.js` 
+  - You can also install jest globally and run tests without npx.
+    - `npm i -g jest`
 
 * To test linting:
   - `npm run lint && npm run tslint`
