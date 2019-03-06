@@ -52,6 +52,8 @@ npm link webpack-cli
   - `npx jest path/to/my-test.js` 
   - You can also install jest globally and run tests without npx.
     - `npm i -g jest`
+  - If you have jest installed globally.
+    - `jest path/to/my-test.js`
 
 * To test linting:
   - `npm run lint && npm run tslint`
