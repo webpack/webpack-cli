@@ -4,7 +4,7 @@
 	</a>
 </div>
 
-<h1 align="center">Webpack CLI</h1>
+<h1 align="center">webpack CLI</h1>
 
 <p align="center">
   The official CLI of webpack
