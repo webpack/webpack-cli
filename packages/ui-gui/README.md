@@ -4,9 +4,8 @@ GUI for `webpack-cli ui`
 
 #### Package Structure (base: `./`)
 
-1. `./`: Backend will serve from root folder
+1. `./build`: contains bundled resources and frontend serves from this folder.
 2. `./src` : contains source
-3. `./build`: contains bundled resources
 
 ## CLI Commands
 ``` bash
@@ -21,3 +20,4 @@ npm run build
 
 # test the production build locally
 npm run serve
+```
