@@ -3,6 +3,9 @@
 		<img width="200" height="200" src="https://webpack.js.org/assets/icon-square-big.svg">
 	</a>
 </div>
+
+<h1 align="center">Webpack CLI</h1>
+
 <p align="center">
   The official CLI of webpack
 </p>
@@ -15,8 +18,8 @@
 [![Code Climate](https://codeclimate.com/github/webpack/webpack-cli/badges/gpa.svg)](https://codeclimate.com/github/webpack/webpack-cli)
 [![chat on gitter](https://badges.gitter.im/webpack/webpack.svg)](https://gitter.im/webpack/webpack)
 [![Install Size](https://packagephobia.now.sh/badge?p=webpack-cli)](https://packagephobia.now.sh/result?p=webpack-cli)
+[![npm](https://img.shields.io/npm/dw/webpack-cli.svg)](https://www.npmjs.com/package/webpack-cli)
 
-# webpack CLI
 
 * [About](#about)
   - [How to install](#how-to-install)
