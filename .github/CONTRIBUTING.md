@@ -50,9 +50,9 @@ npm link webpack-cli
 
 * To test a single CLI (other type of) test case:
   - `npx jest path/to/my-test.js` 
-  - You can also install jest globally and run tests without npx.
+  - You can also install jest globally and run tests without npx:
     - `npm i -g jest`
-  - If you have jest installed globally.
+  - If you have jest installed globally:
     - `jest path/to/my-test.js`
 
 * To test linting:
