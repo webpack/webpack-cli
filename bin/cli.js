@@ -251,7 +251,7 @@ For more information, see https://webpack.js.org/api/cli/.`);
 		const stdout = argv.silent
 			? {
 				write: () => {}
-			  } // eslint-disable-line
+				} // eslint-disable-line
 			: process.stdout;
 
 		function ifArg(name, fn, init) {
@@ -488,13 +488,18 @@ For more information, see https://webpack.js.org/api/cli/.`);
 				}
 				compiler.watch(watchOptions, compilerCallback);
 				if (outputOptions.infoVerbosity !== "none") console.error("\nwebpack is watching the files…\n");
-				if (compiler.close) compiler.close(compilerCallback);
 			} else {
-				compiler.run(compilerCallback);
-				if (compiler.close) compiler.close(compilerCallback);
+				compiler.run((err, stats) => {
+					if (compiler.close) {
+						compiler.close(err2 => {
+							compilerCallback(err || err2, stats);
+						});
+					} else {
+						compilerCallback(err, stats);
+					}
+				});
 			}
 		}
-
 		processOptions(options);
 	});
 })();

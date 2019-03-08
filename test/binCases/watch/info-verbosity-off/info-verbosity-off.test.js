@@ -28,7 +28,7 @@ afterEach(() => {
 	}
 });
 
-test("info-verbosity-off", async done => {
+test.skip("info-verbosity-off", async done => {
 	var webpackProc = runAndGetWatchProc(__dirname, [
 		"--entry ",
 		"./index.js",
