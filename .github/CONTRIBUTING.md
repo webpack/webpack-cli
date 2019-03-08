@@ -42,6 +42,13 @@ npm link
 npm link webpack-cli
 ```
 
+* Bootstrap all the submodules before building for the first time
+
+  ```bash
+  npm run bootstrap
+  npm run build
+  ```
+
 * Run all the tests with:
   - `npm run test`
 
@@ -68,6 +75,13 @@ yarn
 yarn link
 yarn link webpack-cli
 ```
+
+* Bootstrap all the submodules before building for the first time
+
+  ```bash
+  yarn bootstrap
+  yarn build
+  ```
 
 * Run all the tests with:
   - `yarn test`
