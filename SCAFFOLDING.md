@@ -34,11 +34,20 @@ webpack-cli init path/to/your/scaffold
 
 Or you can create a global module and symlink to the local one:
 
-```bash
-cd path/to/my-scaffold
-npm link
-webpack-cli init my-scaffold
-```
+* Using npm
+
+	```bash
+	cd path/to/my-scaffold
+	npm link
+	webpack-cli init my-scaffold
+	```
+
+* Using yarn
+
+	```bash
+	cd path/to/my-scaffold
+	yarn link
+	webpack-cli init my-scaffold
 
 #### Running a scaffold from npm
 
