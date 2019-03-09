@@ -31,11 +31,11 @@ const npmGlobalRoot = () => {
 	const cp = require("child_process");
 	return new Promise((resolve, reject) => {
 		const command = cp.spawn("npm", ["root", "-g"]);
-		command.on('error', (error) => reject(error));
-		command.stdout.on('data', (data) => resolve(data.toString()));
-		command.stderr.on('data', (data) => reject(data));
-	})
-}
+		command.on("error", (error) => reject(error));
+		command.stdout.on("data", (data) => resolve(data.toString()));
+		command.stderr.on("data", (data) => reject(data));
+	});
+};
 
 module.exports = function promptForInstallation(packages, ...args) {
 	const nameOfPackage = "@webpack-cli/" + packages;
@@ -69,7 +69,7 @@ module.exports = function promptForInstallation(packages, ...args) {
 			options[0] = "add";
 		}
 
-		if (packages == 'init') {
+		if (packages === "init") {
 			if (isYarn) {
 				options.splice(1, 1); // remove '-D'
 				options.splice(0, 0, "global");
@@ -96,10 +96,10 @@ module.exports = function promptForInstallation(packages, ...args) {
 
 					runCommand(packageManager, options)
 						.then(_=> {
-							if (packages == "init") {
+							if (packages === "init") {
 								npmGlobalRoot()
 									.then((root) => {
-										pathtoInit = path.resolve(root.trim(), "@webpack-cli", "init");
+										const pathtoInit = path.resolve(root.trim(), "@webpack-cli", "init");
 										return pathtoInit;
 									})
 									.then((pathForInit) => {
@@ -108,7 +108,7 @@ module.exports = function promptForInstallation(packages, ...args) {
 									.catch((error) => {
 										console.error(error);
 										process.exitCode = 1;
-									})
+									});
 								return;
 							}
 
