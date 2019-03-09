@@ -66,7 +66,7 @@ export default class InitGenerator extends Generator {
 				chalk.blue(" INFO ") +
 				"For more information and a detailed description of each question, have a look at " +
 				chalk.bold.green(
-					"https://github.com/webpack/webpack-cli/blob/master/INIT.md",
+					"https://github.com/webpack/webpack-cli/blob/master/docs/INIT.md",
 				) +
 				"\n",
 		);
