@@ -1,8 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`object 1`] = `
-"          [1mAsset[39m[22m       [1mSize[39m[22m  [1mChunks[39m[22m  [1m[39m[22m           [1m[39m[22m[1mChunk Names[39m[22m
-[1m[32mentry.bundle.js[39m[22m  950 bytes       [1m0[39m[22m  [1m[32m[emitted][39m[22m  main
-Entrypoint [1mmain[39m[22m = [1m[32mentry.bundle.js[39m[22m
-[0] [1m./entry.js[39m[22m 29 bytes {[1m[33m0[39m[22m}[1m[32m [built][39m[22m"
-`;
