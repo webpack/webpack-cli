@@ -32,15 +32,15 @@ In case you are suggesting a new feature, we will match your idea with our curre
 * Fork the **webpack-cli** repo at [https://github.com/webpack/webpack-cli](https://github.com/webpack/webpack-cli).
 * `git clone <your-clone-url> && cd webpack-cli`
 
-### Setup with npm
+### Using npm
 
 * Install the dependencies and link them:
 
- ```bash
-npm install
-npm link
-npm link webpack-cli
-```
+  ```bash
+  npm install
+  npm link
+  npm link webpack-cli
+  ```
 
 * Bootstrap all the submodules before building for the first time
 
@@ -49,32 +49,21 @@ npm link webpack-cli
   npm run build
   ```
 
-* Run all the tests with:
-  - `npm run test`
+### Using yarn
 
-* To test a single CLI (flag) test case:
-  - `BIN_TEST_CASES_GREP=/myCase jest test/BinTestCases.test.js`
-
-* To test a single CLI (other type of) test case:
-  - `npx jest path/to/my-test.js` 
-  - You can also install jest globally and run tests without npx:
-    - `npm i -g jest`
-  - If you have jest installed globally:
-    - `jest path/to/my-test.js`
-
-* To test linting:
-  - `npm run lint && npm run tslint`
-
-### Setup with yarn
 * If you don't have yarn yet: 
-  - `npm install -g yarn`
+  
+  ```bash
+  npm install -g yarn
+  ```
+  
 * Install the dependencies and link them
 
-```bash
-yarn
-yarn link
-yarn link webpack-cli
-```
+  ```bash
+  yarn
+  yarn link
+  yarn link webpack-cli
+  ```
 
 * Bootstrap all the submodules before building for the first time
 
@@ -83,17 +72,62 @@ yarn link webpack-cli
   yarn build
   ```
 
+
+## Testing
+
+### Using npm
+
 * Run all the tests with:
-  - `yarn test`
+  
+  ```bash
+  npm run test
+  ```
 
-* To test a single CLI (flag) test case:
-    - `BIN_TEST_CASES_GREP=/myCase jest test/BinTestCases.test.js`
+* Test a single CLI test case:
+  
+  ```bash
+  npx jest path/to/my-test.js 
+  ```
 
-* To test a single CLI (other type of) test case:
-    - `yarn jest path/to/my-test.js`
+* You can also install jest globally and run tests without npx:
 
-* To test linting:
-    - `yarn lint && yarn tslint`
+  ```bash
+  npm i -g jest
+  jest path/to/my-test.js
+  ```
+
+* You can run the linters:
+
+  ```bash
+  npm run lint && npm run tslint
+  ```
+
+### Using yarn
+
+* Run all the tests with:
+  
+  ```bash
+  yarn test
+  ```
+
+* Test a single CLI test case:
+  
+  ```bash
+  npx jest path/to/my-test.js
+  ```
+   
+* You can also install jest globally and run tests without npx:
+
+  ```bash
+  yarn global add jest
+  jest path/to/my-test.js
+  ```
+
+* You can run the linters:
+
+  ```bash
+  yarn lint && yarn tslint
+  ```
 
 ## Editor Config
 
