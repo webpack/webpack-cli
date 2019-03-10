@@ -32,7 +32,7 @@ In case you are suggesting a new feature, we will match your idea with our curre
 * Fork the **webpack-cli** repo at [https://github.com/webpack/webpack-cli](https://github.com/webpack/webpack-cli).
 * `git clone <your-clone-url> && cd webpack-cli`
 
-### Setup with npm
+### Using npm
 
 * Install the dependencies and link them:
 
@@ -49,31 +49,8 @@ In case you are suggesting a new feature, we will match your idea with our curre
   npm run build
   ```
 
-* Run all the tests with:
-  
-  ```bash
-  npm run test
-  ```
+### Using yarn
 
-* To test a single CLI (flag) test case:
-  
-  ```bash
-  BIN_TEST_CASES_GREP=/myCase jest test/BinTestCases.test.js`
-  ```
-
-* To test a single CLI (other type of) test case:
-  - `npx jest path/to/my-test.js` 
-  - You can also install jest globally and run tests without npx:
-    - `npm i -g jest`
-  - If you have jest installed globally:
-    - `jest path/to/my-test.js`
-
-* To test linting:
-  ```bash
-  npm run lint && npm run tslint
-  ```
-
-### Setup with yarn
 * If you don't have yarn yet: 
   
   ```bash
@@ -95,22 +72,58 @@ In case you are suggesting a new feature, we will match your idea with our curre
   yarn build
   ```
 
+
+## Testing
+
+### Using npm
+
+* Run all the tests with:
+  
+  ```bash
+  npm run test
+  ```
+
+* Test a single CLI test case:
+  
+  ```bash
+  npx jest path/to/my-test.js 
+  ```
+
+* You can also install jest globally and run tests without npx:
+
+  ```bash
+  npm i -g jest
+  jest path/to/my-test.js
+  ```
+
+* You can run the linters:
+
+  ```bash
+  npm run lint && npm run tslint
+  ```
+
+### Using yarn
+
 * Run all the tests with:
   
   ```bash
   yarn test
   ```
 
-* To test a single CLI (flag) test case:
+* Test a single CLI test case:
   
   ```bash
-  BIN_TEST_CASES_GREP=/myCase jest test/BinTestCases.test.js
+  yarn jest path/to/my-test.js
+  ```
+   
+* You can also install jest globally and run tests:
+
+  ```bash
+  yarn global add jest
+  jest path/to/my-test.js
   ```
 
-* To test a single CLI (other type of) test case:
-    - `yarn jest path/to/my-test.js`
-
-* To test linting:
+* You can run the linters:
 
   ```bash
   yarn lint && yarn tslint
