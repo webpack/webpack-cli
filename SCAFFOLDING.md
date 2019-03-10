@@ -19,7 +19,7 @@ webpack-scaffold?](https://github.com/evenstensberg/webpack-scaffold-demo)
 
 ### Running a scaffold
 
-A scaffold can be executed running: 
+A scaffold can be executed using [`webpack-cli init`](./INIT.md): 
 
 ```js
 webpack-cli init <your-scaffold>
@@ -65,15 +65,15 @@ To create a `scaffold`, you must create a [`yeoman-generator`](http://yeoman.io/
 Objects are made using strings, while strings are made using double strings. This means that in order for you to create a string, you have to wrap it inside another string for us to validate it correctly.
 
 ### Required
-- [opts.env.configuration](#`opts.env.configuration`-(required))
-- [opts.env.configuration.myConfig](#`opts.env.configuration.myConfig`-(required))
-- [myConfig.webpackOptions](#`myConfig.webpackOptions`-(required))
-- [writing()](#`writing()`-(required))
+- [opts.env.configuration](#optsenvconfiguration-required)
+- [opts.env.configuration.myConfig](#optsenvconfigurationmyConfig-required)
+- [myConfig.webpackOptions](#myConfigwebpackOptions-required)
+- [writing()](#writing()-required)
   
 ### Optional
-- [myConfig.merge](#`myConfig.merge`-(optional))
-- [myConfig.topScope](#`myConfig.topScope`-(optional))
-- [myConfig.configName](#`myConfig.configName`-(optional))
+- [myConfig.merge](#myConfigmerge-optional)
+- [myConfig.topScope](#myConfigtopScope-optional)
+- [myConfig.configName](#myConfigconfigName-optional)
 
 ### `opts.env.configuration` (required)
 
