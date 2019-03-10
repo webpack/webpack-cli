@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`none 1`] = `
-"  Asset     Size  Chunks             Chunk Names
-main.js  3.6 KiB       0  [emitted]  main
-Entrypoint main = main.js
-[0] ./index.js 26 bytes {0} [built]"
+"  [1mAsset[39m[22m     [1mSize[39m[22m  [1mChunks[39m[22m  [1m[39m[22m           [1m[39m[22m[1mChunk Names[39m[22m
+[1m[32mmain.js[39m[22m  3.6 KiB       [1m0[39m[22m  [1m[32m[emitted][39m[22m  main
+Entrypoint [1mmain[39m[22m = [1m[32mmain.js[39m[22m
+[0] [1m./index.js[39m[22m 26 bytes {[1m[33m0[39m[22m}[1m[32m [built][39m[22m"
 `;

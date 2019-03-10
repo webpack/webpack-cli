@@ -2,13 +2,13 @@
 
 exports[`array 1`] = `
 "Child
-                Asset       Size  Chunks             Chunk Names
-    entry-a.bundle.js  952 bytes       0  [emitted]  main
-    Entrypoint main = entry-a.bundle.js
-    [0] ./entry-a.js 31 bytes {0} [built]
+                [1mAsset[39m[22m       [1mSize[39m[22m  [1mChunks[39m[22m  [1m[39m[22m           [1m[39m[22m[1mChunk Names[39m[22m
+    [1m[32mentry-a.bundle.js[39m[22m  952 bytes       [1m0[39m[22m  [1m[32m[emitted][39m[22m  main
+    Entrypoint [1mmain[39m[22m = [1m[32mentry-a.bundle.js[39m[22m
+    [0] [1m./entry-a.js[39m[22m 31 bytes {[1m[33m0[39m[22m}[1m[32m [built][39m[22m
 Child
-                Asset       Size  Chunks             Chunk Names
-    entry-b.bundle.js  952 bytes       0  [emitted]  main
-    Entrypoint main = entry-b.bundle.js
-    [0] ./entry-b.js 31 bytes {0} [built]"
+                [1mAsset[39m[22m       [1mSize[39m[22m  [1mChunks[39m[22m  [1m[39m[22m           [1m[39m[22m[1mChunk Names[39m[22m
+    [1m[32mentry-b.bundle.js[39m[22m  952 bytes       [1m0[39m[22m  [1m[32m[emitted][39m[22m  main
+    Entrypoint [1mmain[39m[22m = [1m[32mentry-b.bundle.js[39m[22m
+    [0] [1m./entry-b.js[39m[22m 31 bytes {[1m[33m0[39m[22m}[1m[32m [built][39m[22m"
 `;

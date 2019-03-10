@@ -10,7 +10,7 @@ test("help-output", () => {
 	const summary = extractSummary(stdout);
 
 	expect(summary).toEqual(expect.anything());
-	expect(summary).toMatch(/webpack/);
+	expect(summary).toContain("webpack");
 	expect(summary).toContain("Config options:");
 	expect(summary).toContain("Basic options:");
 	expect(summary).toContain("Module options:");

@@ -26,8 +26,8 @@ test("named-entry", () => {
 	expect(summary).toEqual(expect.anything());
 	expect(summary).toContain("foo.js"); // named entry from --entry foo=./a.js
 	expect(summary).toContain("null.js");
-	expect(summary).toMatch(/a\.js.*\{0\}/);
-	expect(summary).toMatch(/index\.js.*\{1\}/);
+	expect(summary).toContain("a.js");
+	expect(summary).toContain("index.js");
 	expect(stderr).toHaveLength(0);
 	expect(summary).toMatchSnapshot();
 });

@@ -3,15 +3,13 @@
 const { run } = require("../../../testUtils");
 
 test("webpack-babel-config", () => {
-	const { code, stdout, stderr } = run(__dirname, [
-		"--output-filename",
-		"[name].js",
-		"--output-chunk-filename",
-		"[id].chunk.js",
+	const { stdout, stderr } = run(__dirname, [
 		"--target",
 		"async-node",
+		"-r",
+		"@std/esm",
+		"@babel/register"
 	]);
-	expect(code).toBe(0);
-	expect(stdout).toContain("./index2.js");
+	expect(stdout).toContain("es6.js");
 	expect(stderr).toHaveLength(0);
 });

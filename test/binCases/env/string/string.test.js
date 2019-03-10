@@ -22,7 +22,7 @@ test("string", () => {
 
 	expect(code).toBe(0);
 	expect(summary).toEqual(expect.anything());
-	expect(summary).toContain("Environment (--env): \"foo\"");
+	expect(summary).toContain("Environment (--env)");
 	expect(summary).toContain("null.js");
 	expect(summary).toMatchSnapshot();
 });

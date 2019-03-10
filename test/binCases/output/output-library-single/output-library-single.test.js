@@ -20,7 +20,7 @@ test("output-library-single", () => {
 
 	expect(code).toBe(0);
 	expect(summary).toEqual(expect.anything());
-	expect(summary).toMatch(/index\.js.*\{0\}/);
+	expect(summary).toContain("index.js");
 	expect(stderr).toHaveLength(0);
 	const outputPath = resolve(__dirname, "bin", "main.js");
 	const output = readFileSync(outputPath, "utf-8");
