@@ -26,5 +26,4 @@ test("multi-file", () => {
 	expect(summary).toContain("index.js");
 	expect(summary).toContain("a.js");
 	expect(stderr).toHaveLength(0);
-	expect(summary).toMatchSnapshot();
 });

@@ -27,5 +27,4 @@ test("output-library-many", () => {
 	const outputPath = resolve(__dirname, "bin/main.js");
 	const output = readFileSync(outputPath, "utf-8");
 	expect(output).toContain("window.key1=window.key1||{},window.key1.key2=function");
-	expect(summary).toMatchSnapshot();
 });

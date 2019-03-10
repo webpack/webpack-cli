@@ -29,5 +29,4 @@ test("complex", () => {
 	expect(summary).toContain("./index.js");
 	expect(summary).toContain("[built]");
 	expect(stderr).toHaveLength(0);
-	expect(summary).toMatchSnapshot();
 });

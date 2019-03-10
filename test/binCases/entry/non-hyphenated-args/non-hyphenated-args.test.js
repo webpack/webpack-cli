@@ -22,5 +22,4 @@ test("non-hyphenated-args", () => {
 	expect(summary).toContain("main.js"); // non-hyphenated arg ./a.js should create chunk "main"
 	expect(summary).toContain("a.js"); // a.js should be in chunk 0
 	expect(stderr).toHaveLength(0);
-	expect(summary).toMatchSnapshot();
 });

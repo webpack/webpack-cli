@@ -29,5 +29,4 @@ test("named-entry", () => {
 	expect(summary).toContain("a.js");
 	expect(summary).toContain("index.js");
 	expect(stderr).toHaveLength(0);
-	expect(summary).toMatchSnapshot();
 });

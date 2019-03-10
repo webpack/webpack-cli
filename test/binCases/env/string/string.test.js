@@ -24,5 +24,4 @@ test("string", () => {
 	expect(summary).toEqual(expect.anything());
 	expect(summary).toContain("Environment (--env)");
 	expect(summary).toContain("null.js");
-	expect(summary).toMatchSnapshot();
 });

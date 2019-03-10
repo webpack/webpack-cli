@@ -16,6 +16,4 @@ test("clean-webpack-options", () => {
 	expect(stderr).toContain("The base directory ");
 
 	expect(stderr.split("\n")).toHaveLength(4);
-	expect(summary).toMatchSnapshot();
-	expect(stderr).toMatchSnapshot();
 });

@@ -25,5 +25,4 @@ test("output-library-single", () => {
 	const outputPath = resolve(__dirname, "bin", "main.js");
 	const output = readFileSync(outputPath, "utf-8");
 	expect(output).toContain("window.key1=function");
-	expect(summary).toMatchSnapshot();
 });

@@ -17,5 +17,4 @@ test("output-argument", () => {
 	expect(summary).toEqual(expect.anything());
 	expect(summary).toContain("bundle.js");
 	expect(summary).toContain("index.js");
-	expect(summary).toMatchSnapshot();
 });

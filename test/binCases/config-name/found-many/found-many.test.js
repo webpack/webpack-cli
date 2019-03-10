@@ -25,5 +25,4 @@ test("found-many", () => {
 	expect(summary).toContain("./index2.js");
 	expect(summary).toContain("./index3.js");
 	expect(stderr).toHaveLength(0);
-	expect(summary).toMatchSnapshot();
 });
