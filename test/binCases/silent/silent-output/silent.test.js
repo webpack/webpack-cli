@@ -10,5 +10,4 @@ test("silent", () => {
 	expect(code).toBe(0);
 	expect(summary).toHaveLength(0);
 	expect(stderr).toHaveLength(0);
-	expect(summary).toMatchSnapshot();
 });

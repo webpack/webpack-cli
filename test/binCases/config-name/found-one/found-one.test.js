@@ -22,5 +22,4 @@ test("found-one", () => {
 	expect(summary).toEqual(expect.anything());
 	expect(summary).toContain("./index2.js");
 	expect(stderr).toHaveLength(0);
-	expect(summary).toMatchSnapshot();
 });

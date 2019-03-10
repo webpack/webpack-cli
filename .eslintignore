@@ -9,3 +9,4 @@ test/**/null.js
 test/**/main.js
 test/**/cliEntry.js
 test/**/foo.js
+test/binCases/config-location/webpack-babel-config/bin/es6.js

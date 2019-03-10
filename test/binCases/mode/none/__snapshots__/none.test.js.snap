@@ -1,8 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`none 1`] = `
-"  Asset     Size  Chunks             Chunk Names
-main.js  3.6 KiB       0  [emitted]  main
-Entrypoint main = main.js
-[0] ./index.js 26 bytes {0} [built]"
-`;

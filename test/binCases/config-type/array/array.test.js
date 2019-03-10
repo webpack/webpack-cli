@@ -21,5 +21,4 @@ test("array", () => {
 	expect(summary).toContain("Child");
 	expect(summary).toContain("entry-b.bundle.js");
 	expect(stderr).toHaveLength(0);
-	expect(summary).toMatchSnapshot();
 });
