@@ -7,7 +7,7 @@ test("webpack-babel-config", () => {
 		"--target",
 		"async-node",
 		"-r",
-		"@std/esm",
+		"esm",
 		"@babel/register"
 	]);
 	expect(stdout).toContain("es6.js");
