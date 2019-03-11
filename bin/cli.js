@@ -473,6 +473,7 @@ For more information, see https://webpack.js.org/api/cli/.`);
 					const statsString = stats.toString(outputOptions);
 					const delimiter = outputOptions.buildDelimiter ? `${outputOptions.buildDelimiter}\n` : "";
 					if (statsString) stdout.write(`${statsString}\n${delimiter}`);
+					require("./opencollective");
 				}
 				if (!options.watch && stats.hasErrors()) {
 					process.exitCode = 2;

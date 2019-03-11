@@ -37,3 +37,6 @@ yarn.lock
 
 # source maps of docs
 docs/**/*.map
+
+# open collective badge
+.lastocprint
