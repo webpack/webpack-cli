@@ -1,4 +1,3 @@
-const child_process = require("child_process");
 const chalk = require("chalk");
 const fs = require("fs");
 const path = require("path");
@@ -13,7 +12,7 @@ function emoji(emoji) {
 }
 
 function print(str = "", color = "dim") {
-	const terminalCols = process.platform === "win32" ? 80 : parseInt(child_process.execSync("tty -s && tput cols").toString());
+	const terminalCols = 80;
 	// eslint-disable-next-line no-control-regex
 	const ansiEscapeSeq = /\u001b\[[0-9]{1,2}m/g;
 	const strLength = str.replace(ansiEscapeSeq, "").length;
