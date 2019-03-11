@@ -35,7 +35,7 @@ function printBadge() {
 
 
 const now = new Date();
-if (now.getDay() == 1 ) {
+if (now.getDay() === 1) {
 	const lastPrintFile = path.resolve(__dirname, "../.lastocprint");
 	fs.readFile(lastPrintFile, "utf8", (err, lastPrint = 0) => {
 		if (err && err.code !== "ENOENT") return;
