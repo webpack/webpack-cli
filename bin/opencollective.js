@@ -13,7 +13,7 @@ function emoji(emoji) {
 }
 
 function print(str = "", color = "dim") {
-	const terminalCols = process.platform === "win32" ? 80 : parseInt(child_process.execSync("tput cols").toString());
+	const terminalCols = process.platform === "win32" ? 80 : parseInt(child_process.execSync("tty -s && tput cols").toString());
 	// eslint-disable-next-line no-control-regex
 	const ansiEscapeSeq = /\u001b\[[0-9]{1,2}m/g;
 	const strLength = str.replace(ansiEscapeSeq, "").length;
