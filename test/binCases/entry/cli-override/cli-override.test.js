@@ -21,5 +21,4 @@ test("cli-override", () => {
 	expect(summary).toContain("cliEntry.js");
 	expect(summary).toContain("index.js");
 	expect(stderr).toHaveLength(0);
-	expect(summary).toMatchSnapshot();
 });

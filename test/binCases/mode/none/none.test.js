@@ -11,7 +11,6 @@ test("none", () => {
 
 	expect(summary).toEqual(expect.anything());
 	expect(summary).toContain("main.js");
-	expect(summary).toMatch(/index\.js.*\{0\}/);
+	expect(summary).toContain("index.js");
 	expect(stderr).toHaveLength(0);
-	expect(summary).toMatchSnapshot();
 });

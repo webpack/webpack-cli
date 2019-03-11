@@ -10,5 +10,4 @@ test("multi-config", () => {
 	expect(code).toBe(0);
 	expect(summary).toEqual(expect.anything());
 	expect(stderr).toHaveLength(0);
-	expect(summary).toMatchSnapshot();
 });

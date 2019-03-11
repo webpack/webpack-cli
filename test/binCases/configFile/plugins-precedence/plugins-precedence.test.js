@@ -24,5 +24,4 @@ test("plugins-precedence", () => {
 	expect(summary).toEqual(expect.anything());
 	expect(summary).toContain("ok.js");
 	expect(stderr).toHaveLength(0);
-	expect(summary).toMatchSnapshot();
 });

@@ -18,5 +18,4 @@ test("function-promise", () => {
 	expect(summary).toEqual(expect.anything());
 	expect(summary).toContain("entry.bundle.js");
 	expect(stderr).toHaveLength(0);
-	expect(summary).toMatchSnapshot();
 });

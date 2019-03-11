@@ -9,5 +9,4 @@ test("display-entrypoints", () => {
 
 	expect(summary).not.toContain("Entrypoint");
 	expect(stderr).toHaveLength(0);
-	expect(summary).toMatchSnapshot();
 });

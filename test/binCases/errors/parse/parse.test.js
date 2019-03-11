@@ -16,5 +16,4 @@ test("info-verbosity", () => {
 	expect(summary).toContain("Module parse failed:");
 
 	expect(stderr).toHaveLength(0);
-	expect(summary).toMatchSnapshot();
 });

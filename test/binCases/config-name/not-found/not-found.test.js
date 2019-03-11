@@ -10,5 +10,4 @@ test("not-found", () => {
 	expect(code).not.toBe(0);
 	expect(summary).toHaveLength(0);
 	expect(stderr).toContain("Configuration with name 'foo' was not found.");
-	expect(summary).toMatchSnapshot();
 });

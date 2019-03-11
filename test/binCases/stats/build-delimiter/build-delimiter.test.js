@@ -17,5 +17,4 @@ test("build-delimiter", () => {
 	expect(code).toBe(0);
 	expect(summary).toContain("success");
 	expect(stderr).toHaveLength(0);
-	expect(summary).toMatchSnapshot();
 });

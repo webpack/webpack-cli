@@ -39,7 +39,3 @@ script:
     - npm run travis:lint
     - npm run test:ci
 
-jobs:
-    include:
-        - stage: commit lint
-          script: commitlint-travis

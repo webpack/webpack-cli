@@ -26,5 +26,4 @@ test.skip("uglifyjsplugin-empty-args", () => {
 	expect(summary).toContain("bytes"); // without uglifyjs it's multiple kBs
 
 	expect(stderr).toHaveLength(0);
-	expect(summary).toMatchSnapshot();
 });

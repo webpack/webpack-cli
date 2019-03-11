@@ -20,5 +20,4 @@ test("custom-preset", () => {
 	expect(stderr).toHaveLength(0);
 	expect(code).toBe(0);
 	expect(summary).toHaveLength(0);
-	expect(summary).toMatchSnapshot();
 });

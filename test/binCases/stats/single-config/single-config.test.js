@@ -20,6 +20,5 @@ test("single-config", async done => {
 	expect(summary).toContain("1 module");
 
 	expect(stderr).toHaveLength(0);
-	expect(summary).toMatchSnapshot();
 	done();
 });
