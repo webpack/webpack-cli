@@ -60,24 +60,24 @@ webpack-cli init webpack-scaffold-yourpackage
 
 ## API
 
-To create a `scaffold`, you must create a [`yeoman-generator`](http://yeoman.io/authoring/). Because of that, you can optionally extend your generator to include methods from the [Yeoman API](http://yeoman.io/learning/). Its worth noting that we support all the properties of a regular webpack configuration. In order for us to do this, there's a thing you need to remember.
+To create a `scaffold`, you must create a [`yeoman-generator`](http://yeoman.io/authoring/). Because of that, you can optionally extend your generator to include methods from the [Yeoman API](http://yeoman.io/learning/). It's worth noting that we support all the properties of a regular webpack configuration. In order for us to do this, there's a thing you need to remember:
 
-Objects are made using strings, while strings are made using double strings. This means that in order for you to create a string, you have to wrap it inside another string for us to validate it correctly.
+> Objects are made using strings, while strings are made using double strings. This means that in order for you to create a string, you have to wrap it inside another string for us to validate it correctly.
 
 ### Required
 - [opts.env.configuration](#optsenvconfiguration-required)
-- [opts.env.configuration.myConfig](#optsenvconfigurationmyConfig-required)
-- [myConfig.webpackOptions](#myConfigwebpackOptions-required)
+- [opts.env.configuration.myObj](#optsenvconfigurationmyObj-required)
+- [myObj.webpackOptions](#myObjwebpackOptions-required)
 - [writing()](#writing()-required)
   
 ### Optional
-- [myConfig.merge](#myConfigmerge-optional)
-- [myConfig.topScope](#myConfigtopScope-optional)
-- [myConfig.configName](#myConfigconfigName-optional)
+- [myObj.merge](#myObjmerge-optional)
+- [myObj.topScope](#myObjtopScope-optional)
+- [myObj.configName](#myObjconfigName-optional)
 
-### `opts.env.configuration` (required)
+### `opts.env.configuration`(required)
 
-Is initialized inside the constructor of your generator in order for the CLI to work.
+This is the entry point your configuration, initialize it inside the constructor of your generator in order for the CLI to work:
 
 ```js
 constructor(args, opts) {
@@ -85,10 +85,9 @@ constructor(args, opts) {
 	opts.env.configuration = {};
 }
 ```
+### `opts.env.configuration.myObj` (required)
 
-### `opts.env.configuration.myConfig` (required)
-
-Every `myConfig` will be transformed into a webpack configuration. You can name those keys as you prefer (e.g. `dev`, `prod`):
+This is your scaffold, you add here the options that the CLI will transform into a Webpack configuration. You can have many different scaffolds named as you prefer, representing different configurations like `dev.config` or `prod.config`:
 
 ```js
 constructor(args, opts) {
@@ -100,56 +99,50 @@ constructor(args, opts) {
 }
 ```
 
-### `myConfig.webpackOptions` (required)
+### `myObj.webpackOptions` (required)
 
-This object behaves as a regular webpack configuration, you declare here  properties you want to scaffold, like `entry`, `output` and `context`:
-
-(Inside a yeoman method)
+This object has the same format as a regular Webpack configuration, so you declare here the properties that you want to scaffold, like `entry`, `output` and `context`. You can intialize this inside a yeoman method:
 
 ```js
-this.options.env.configuration.dev = 
-	webpackOptions: {
-		entry: '\'app.js\'',
-		output: {....}
-	}
+this.options.env.configuration.dev.webpackOptions = {
+	entry: '\'app.js\'',
+	output: {...}
 };
 ```
 
-### `writing()` (required)
+### `myObj.merge` (optional)
+
+If you want to use [`webpack-merge`](https://github.com/survivejs/webpack-merge), you can set the `merge` property of `myObj` to the name of the configuration you want to merge it with: 
+
+```js
+this.options.env.configuration.dev.merge = 'myConfig';
+```
+
+### `myObj.topScope`(optional)
+
+The `topScope` property is where you write all the special code needed by your configuration, like module imports and function/variables definitions:
+
+```js
+this.options.env.configuration.dev.topScope = [
+	'const webpack = require(\'webpack\');',
+	'const path = require(\'path\');'
+];
+```
+
+### `myObj.configName`(optional)
+
+`configName` allows you to customize the name of your configuration file. For example you can name it `webpack.base.js` instead of the default `webpack.config.js`:
+
+```js
+this.options.env.configuration.dev.configName = 'base';
+```
+
+### `writing` (required)
 
 For the scaffolding instance to run, you need to write your configuration to a `.yo-rc.json` file. This could be done using one of the lifecycles in the yeoman generator, such as the `writing` method:
 
 ```js
 writing() {
-	this.config.set('configuration', myConfig)
+	this.config.set('configuration', myObj)
 }
-```
-
-### `myConfig.merge` (optional)
-
-If you want to use `webpack-merge`, you can set the `merge` property with the name of the configuration you want to merge with:
-
-```js
-this.options.env.configuration.dev = {
-	merge: 'anotherConfig'
-};
-```
-
-### `myConfig.topScope` (optional)
-
-The `topScope` property is a way for the to add special behaviours to your scaffold, like functions that could be called inside a configuration, variable initializations and module imports:
-
-```js
-this.options.env.configuration.dev.topScope = [
-	'var webpack = require(\'webpack\');'
-	'var path = require(\'path\');'
-];
-```
-
-### `myConfig.configName` (optional)
-
-Used if you want to name your `webpack.config.js` differently:
-
-```js
-this.options.env.configuration.dev.configName = 'base';
 ```
