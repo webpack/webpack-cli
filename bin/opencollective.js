@@ -1,6 +1,4 @@
 const chalk = require("chalk");
-const fs = require("fs");
-const path = require("path");
 
 // Only show emoji on OSx (Windows shell doesn't like them that much ¯\_(ツ)_/¯ )
 function emoji(emoji) {
@@ -32,16 +30,4 @@ function printBadge() {
 	console.log("\n");
 }
 
-
-const now = new Date();
-const MONDAY = 1;
-if (now.getDay() === MONDAY) {
-	const lastPrintFile = path.resolve(__dirname, "../.lastocprint");
-	fs.readFile(lastPrintFile, "utf8", (err, lastPrint = 0) => {
-		if (err && err.code !== "ENOENT") return;
-		if (now - lastPrint > 6 * 24 * 60 * 60 * 1000) {
-			printBadge();
-			fs.writeFileSync(lastPrintFile, now);
-		}
-	});
-}
+printBadge();

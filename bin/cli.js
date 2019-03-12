@@ -7,7 +7,6 @@
 
 (function() {
 	// wrap in IIFE to be able to use return
-
 	const importLocal = require("import-local");
 	// Prefer the local installation of webpack-cli
 	if (importLocal(__filename)) {
@@ -473,7 +472,19 @@ For more information, see https://webpack.js.org/api/cli/.`);
 					const statsString = stats.toString(outputOptions);
 					const delimiter = outputOptions.buildDelimiter ? `${outputOptions.buildDelimiter}\n` : "";
 					if (statsString) stdout.write(`${statsString}\n${delimiter}`);
-					require("./opencollective");
+
+
+					const now = new Date();
+					const MONDAY = 2;
+					const SIX_DAYS = 518400000;
+					if (now.getDay() === MONDAY) {
+						const statSync = require("fs").statSync;
+						const lastPrint = statSync(__dirname + "/opencollective.js").atime;
+						const lastPrintTS = new Date(lastPrint).getTime();
+						if (now.getTime() - lastPrintTS > SIX_DAYS) {
+							require("./opencollective");
+						}
+					}
 				}
 				if (!options.watch && stats.hasErrors()) {
 					process.exitCode = 2;
