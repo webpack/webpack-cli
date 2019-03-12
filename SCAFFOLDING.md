@@ -26,7 +26,7 @@ webpack-cli init <your-scaffold>
 ```
 
 #### Running a scaffold locally
-When the scaffold package is on you local file system you should pass its path to `init`:
+When the scaffold package is in you local file system you should pass its path to `init`:
 
 ```bash
 webpack-cli init path/to/your/scaffold
@@ -120,7 +120,7 @@ this.options.env.configuration.dev.merge = 'myConfig';
 
 ### `myObj.topScope`(optional)
 
-The `topScope` property is where you write all the special code needed by your configuration, like module imports and function/variables definitions:
+The `topScope` property is where you write all the code needed by your configuration, like module imports and functions/variables definitions:
 
 ```js
 this.options.env.configuration.dev.topScope = [
