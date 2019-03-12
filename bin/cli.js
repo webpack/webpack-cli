@@ -7,6 +7,7 @@
 
 (function() {
 	// wrap in IIFE to be able to use return
+
 	const importLocal = require("import-local");
 	// Prefer the local installation of webpack-cli
 	if (importLocal(__filename)) {
@@ -475,7 +476,7 @@ For more information, see https://webpack.js.org/api/cli/.`);
 
 
 					const now = new Date();
-					const MONDAY = 2;
+					const MONDAY = 1;
 					const SIX_DAYS = 518400000;
 					if (now.getDay() === MONDAY) {
 						const statSync = require("fs").statSync;
