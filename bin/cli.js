@@ -478,12 +478,15 @@ For more information, see https://webpack.js.org/api/cli/.`);
 					const now = new Date();
 					const MONDAY = 1;
 					const SIX_DAYS = 518400000;
+					const openCollectivePath = __dirname + "/opencollective.js";
 					if (now.getDay() === MONDAY) {
-						const statSync = require("fs").statSync;
-						const lastPrint = statSync(__dirname + "/opencollective.js").atime;
+						const { statSync, utimesSync } = require("fs");
+						const lastPrint = statSync(openCollectivePath).atime;
 						const lastPrintTS = new Date(lastPrint).getTime();
 						if (now.getTime() - lastPrintTS > SIX_DAYS) {
-							require("./opencollective");
+							require(openCollectivePath);
+							// On windows we need to update the atime
+							utimesSync(openCollectivePath, now, now);
 						}
 					}
 				}
