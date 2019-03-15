@@ -51,7 +51,7 @@ Or you can create a global module and symlink to the local one:
 
 #### Running a scaffold from npm
 
-If the package is on npm, its name must begin with `webpack-scaffold` and can be used running:
+If the package is in npm, its name must begin with `webpack-scaffold` and can be used running:
 
 ```js
 webpack-cli init webpack-scaffold-yourpackage
