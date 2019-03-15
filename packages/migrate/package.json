@@ -40,5 +40,6 @@
     "test": "jest",
     "build": "tsc",
     "watch": "npm run build && tsc -w"
-  }
+  },
+  "gitHead": "6846f2eb8f0d04acc4453cb20da10263ff00a139"
 }

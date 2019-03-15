@@ -4,5 +4,6 @@
   "description": "custom task based logger",
   "main": "index.js",
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "gitHead": "6846f2eb8f0d04acc4453cb20da10263ff00a139"
 }
