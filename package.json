@@ -64,7 +64,6 @@
   },
   "jest": {
     "testPathIgnorePatterns": [
-      "^.+\\.(ts)?$",
       "/node_modules/"
     ],
     "testEnvironment": "node",
