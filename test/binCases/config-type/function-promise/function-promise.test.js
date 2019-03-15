@@ -1,6 +1,6 @@
 "use strict";
 
-const { run } = require("../../../testUtils");
+const { run, extractSummary } = require("../../../testUtils");
 
 test("function-promise", () => {
 	const { code, stdout, stderr } = run(__dirname, [
@@ -12,9 +12,10 @@ test("function-promise", () => {
 		"production"
 	]);
 
+	const summary = extractSummary(stdout);
+
 	expect(code).toBe(0);
-	expect(stdout).toEqual(expect.anything());
-	expect(stdout).toContain("entry.bundle.js");
+	expect(summary).toEqual(expect.anything());
+	expect(summary).toContain("entry.bundle.js");
 	expect(stderr).toHaveLength(0);
-	expect(stdout).toMatchSnapshot();
 });

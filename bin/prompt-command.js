@@ -8,7 +8,6 @@
 const runCommand = (command, args) => {
 	const cp = require("child_process");
 	return new Promise((resolve, reject) => {
-		resolve();
 		const executedCommand = cp.spawn(command, args, {
 			stdio: "inherit",
 			shell: true
@@ -28,6 +27,16 @@ const runCommand = (command, args) => {
 	});
 };
 
+const npmGlobalRoot = () => {
+	const cp = require("child_process");
+	return new Promise((resolve, reject) => {
+		const command = cp.spawn("npm", ["root", "-g"]);
+		command.on("error", (error) => reject(error));
+		command.stdout.on("data", (data) => resolve(data.toString()));
+		command.stderr.on("data", (data) => reject(data));
+	});
+};
+
 module.exports = function promptForInstallation(packages, ...args) {
 	const nameOfPackage = "@webpack-cli/" + packages;
 	let packageIsInstalled = false;
@@ -35,12 +44,7 @@ module.exports = function promptForInstallation(packages, ...args) {
 	try {
 		const path = require("path");
 		const fs = require("fs");
-		pathForCmd = path.resolve(
-			process.cwd(),
-			"node_modules",
-			"@webpack-cli",
-			packages
-		);
+		pathForCmd = path.resolve(process.cwd(), "node_modules", "@webpack-cli", packages);
 		if (!fs.existsSync(pathForCmd)) {
 			const globalModules = require("global-modules");
 			pathForCmd = globalModules + "/@webpack-cli/" + packages;
@@ -76,7 +80,7 @@ module.exports = function promptForInstallation(packages, ...args) {
 
 		const commandToBeRun = `${packageManager} ${options.join(" ")}`;
 
-		const question = `Would you like to install ${packages}? (That will run ${commandToBeRun}) (yes/NO)`;
+		const question = `Would you like to install ${packages}? (That will run ${commandToBeRun}) (yes/NO) : `;
 
 		console.error(`The command moved into a separate package: ${nameOfPackage}`);
 		const questionInterface = readLine.createInterface({
@@ -89,9 +93,25 @@ module.exports = function promptForInstallation(packages, ...args) {
 				case "y":
 				case "yes":
 				case "1": {
-					//eslint-disable-next-line
+
 					runCommand(packageManager, options)
-						.then(result => {
+						.then(_=> {
+							if (packages === "init") {
+								npmGlobalRoot()
+									.then((root) => {
+										const pathtoInit = path.resolve(root.trim(), "@webpack-cli", "init");
+										return pathtoInit;
+									})
+									.then((pathForInit) => {
+										return require(pathForInit).default(...args);
+									})
+									.catch((error) => {
+										console.error(error);
+										process.exitCode = 1;
+									});
+								return;
+							}
+
 							pathForCmd = path.resolve(process.cwd(), "node_modules", "@webpack-cli", packages);
 							if (packages === "serve") {
 								return require(pathForCmd).default.serve();

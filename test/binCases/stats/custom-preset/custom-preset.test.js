@@ -1,6 +1,6 @@
 "use strict";
 
-const { run } = require("../../../testUtils");
+const { run, extractSummary } = require("../../../testUtils");
 
 test("custom-preset", () => {
 	const { code, stdout, stderr } = run(__dirname, [
@@ -15,8 +15,9 @@ test("custom-preset", () => {
 		"--display"
 	]);
 
+	const summary = extractSummary(stdout);
+
 	expect(stderr).toHaveLength(0);
 	expect(code).toBe(0);
-	expect(stdout).toHaveLength(0);
-	expect(stdout).toMatchSnapshot();
+	expect(summary).toHaveLength(0);
 });

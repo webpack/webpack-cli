@@ -59,7 +59,6 @@ export default class InitGenerator extends Generator {
 		const self: this = this;
 		let regExpForStyles: string;
 		let ExtractUseProps: object[];
-		let outputPath: string = "dist";
 
 		process.stdout.write(
 			"\n" +
@@ -97,6 +96,14 @@ export default class InitGenerator extends Generator {
 				return entryQuestions(self, entryTypeAnswer);
 			})
 			.then((entryOptions: object | string) => {
+				if (typeof entryOptions === "string" && entryOptions.length > 0) {
+					return this.prompt([
+						Input(
+							"outputType",
+							"Which folder will your generated bundles be in? [default: dist]:",
+						),
+					]);
+				}
 				if (entryOptions !== "\"\"") {
 					this.configuration.config.webpackOptions.entry = entryOptions;
 				}
@@ -125,19 +132,17 @@ export default class InitGenerator extends Generator {
 						filename: "'[name].[chunkhash].js'",
 					};
 				}
-				if (outputTypeAnswer.outputType.length) {
-					outputPath = outputTypeAnswer.outputType;
-				}
-				if (!this.usingDefaults) {
-					this.configuration.config.webpackOptions.output.path = `path.resolve(__dirname, '${outputPath}')`;
+				if (!this.usingDefaults && outputTypeAnswer.outputType.length) {
+					this.configuration.config.webpackOptions.output.path =
+						`path.resolve(__dirname, '${outputTypeAnswer.outputType}')`;
 				}
 			})
 			.then((_: void) => {
 				this.isProd = this.usingDefaults ? true : false;
-				this.configuration.config.configName = this.isProd ? "prod" : "dev";
-				this.configuration.config.webpackOptions.mode = this.isProd
-					? "'production'"
-					: "'development'";
+				this.configuration.config.configName = this.isProd ? "prod" : "config";
+				if (!this.isProd) {
+					this.configuration.config.webpackOptions.mode = "'development'";
+				}
 				this.configuration.config.webpackOptions.plugins = this.isProd ? [] : getDefaultPlugins();
 				return this.prompt([
 					Confirm("babelConfirm", "Will you be using ES2015?"),

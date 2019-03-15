@@ -1,6 +1,6 @@
 "use strict";
 
-const { run } = require("../../../testUtils");
+const { run, extractSummary } = require("../../../testUtils");
 
 test("cli-override", () => {
 	const { code, stdout, stderr } = run(__dirname, [
@@ -14,10 +14,11 @@ test("cli-override", () => {
 		"[id].chunk.js"
 	]);
 
+	const summary = extractSummary(stdout);
+
 	expect(code).toBe(0);
-	expect(stdout).toEqual(expect.anything());
-	expect(stdout).toContain("cliEntry.js");
-	expect(stdout).toContain("index.js");
+	expect(summary).toEqual(expect.anything());
+	expect(summary).toContain("cliEntry.js");
+	expect(summary).toContain("index.js");
 	expect(stderr).toHaveLength(0);
-	expect(stdout).toMatchSnapshot();
 });

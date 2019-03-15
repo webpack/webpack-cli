@@ -1,6 +1,6 @@
 "use strict";
 
-const { run } = require("../../../testUtils");
+const { run, extractSummary } = require("../../../testUtils");
 
 test("multi-file", () => {
 	const { stdout, code, stderr } = run(__dirname, [
@@ -18,12 +18,12 @@ test("multi-file", () => {
 		"async-node"
 	]);
 
+	const summary = extractSummary(stdout);
+
 	expect(code).toBe(0);
-	expect(stdout).toEqual(expect.anything());
-	expect(stdout).toContain("null.js");
-	expect(stdout).toMatch(/multi.*index\.js.*a\.js/); // should have multi-file entry
-	expect(stdout).toMatch(/index\.js.*\{0\}/);
-	expect(stdout).toMatch(/a\.js.*\{0\}/);
+	expect(summary).toEqual(expect.anything());
+	expect(summary).toContain("null.js");
+	expect(summary).toContain("index.js");
+	expect(summary).toContain("a.js");
 	expect(stderr).toHaveLength(0);
-	expect(stdout).toMatchSnapshot();
 });

@@ -23,10 +23,6 @@
 		"migrate",
 		"add",
 		"remove",
-		/*
-		"update",
-		"make",
-		*/
 		"serve",
 		"generate-loader",
 		"generate-plugin",
@@ -255,7 +251,7 @@ For more information, see https://webpack.js.org/api/cli/.`);
 		const stdout = argv.silent
 			? {
 				write: () => {}
-			  } // eslint-disable-line
+				} // eslint-disable-line
 			: process.stdout;
 
 		function ifArg(name, fn, init) {
@@ -436,17 +432,17 @@ For more information, see https://webpack.js.org/api/cli/.`);
 				if (argv.w) {
 					compiler.hooks.watchRun.tap("WebpackInfo", compilation => {
 						const compilationName = compilation.name ? compilation.name : "";
-						console.log("\nCompilation " + compilationName + " starting…\n");
+						console.error("\nCompilation " + compilationName + " starting…\n");
 					});
 				} else {
 					compiler.hooks.beforeRun.tap("WebpackInfo", compilation => {
 						const compilationName = compilation.name ? compilation.name : "";
-						console.log("\nCompilation " + compilationName + " starting…\n");
+						console.error("\nCompilation " + compilationName + " starting…\n");
 					});
 				}
 				compiler.hooks.done.tap("WebpackInfo", compilation => {
 					const compilationName = compilation.name ? compilation.name : "";
-					console.log("\nCompilation " + compilationName + " finished\n");
+					console.error("\nCompilation " + compilationName + " finished\n");
 				});
 			}
 
@@ -491,10 +487,19 @@ For more information, see https://webpack.js.org/api/cli/.`);
 					process.stdin.resume();
 				}
 				compiler.watch(watchOptions, compilerCallback);
-				if (outputOptions.infoVerbosity !== "none") console.log("\nwebpack is watching the files…\n");
-			} else compiler.run(compilerCallback);
+				if (outputOptions.infoVerbosity !== "none") console.error("\nwebpack is watching the files…\n");
+			} else {
+				compiler.run((err, stats) => {
+					if (compiler.close) {
+						compiler.close(err2 => {
+							compilerCallback(err || err2, stats);
+						});
+					} else {
+						compilerCallback(err, stats);
+					}
+				});
+			}
 		}
-
 		processOptions(options);
 	});
 })();

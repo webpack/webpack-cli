@@ -1,16 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`info-verbosity-verbose 1`] = `
-"
-Compilation  starting…
-
-
-webpack is watching the files…
-
-
-Compilation  finished
-
-  Asset       Size  Chunks             Chunk Names
+"  Asset       Size  Chunks             Chunk Names
 main.js  930 bytes       0  [emitted]  main
 Entrypoint main = main.js
 [0] ./index.js 0 bytes {0} [built]

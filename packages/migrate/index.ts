@@ -16,11 +16,13 @@ declare var process: {
 	cwd: Function;
 	webpackModule: {
 		validate: Function;
+		/* tslint:disable */
 		WebpackOptionsValidationError: {
 			new: (errors: string[]) => {
 				message: string;
 			};
 		};
+		/* tslint:enable */
 	};
 	stdout: {
 		write: Function;

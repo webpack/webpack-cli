@@ -1,6 +1,6 @@
 "use strict";
 
-const { run } = require("../../../testUtils");
+const { run, extractSummary } = require("../../../testUtils");
 
 test("named-entry", () => {
 	const { stdout, code, stderr } = run(__dirname, [
@@ -20,12 +20,13 @@ test("named-entry", () => {
 		"production"
 	]);
 
+	const summary = extractSummary(stdout);
+
 	expect(code).toBe(0);
-	expect(stdout).toEqual(expect.anything());
-	expect(stdout).toContain("foo.js"); // named entry from --entry foo=./a.js
-	expect(stdout).toContain("null.js");
-	expect(stdout).toMatch(/a\.js.*\{0\}/);
-	expect(stdout).toMatch(/index\.js.*\{1\}/);
+	expect(summary).toEqual(expect.anything());
+	expect(summary).toContain("foo.js"); // named entry from --entry foo=./a.js
+	expect(summary).toContain("null.js");
+	expect(summary).toContain("a.js");
+	expect(summary).toContain("index.js");
 	expect(stderr).toHaveLength(0);
-	expect(stdout).toMatchSnapshot();
 });

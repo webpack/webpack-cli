@@ -1,11 +1,12 @@
 "use strict";
 
-const { run } = require("../../../testUtils");
+const { run, extractSummary } = require("../../../testUtils");
 
 test("display-entrypoints", () => {
 	const { stdout, stderr } = run(__dirname, ["--display-entrypoints", "false"]);
 
-	expect(stdout).not.toContain("Entrypoint");
+	const summary = extractSummary(stdout);
+
+	expect(summary).not.toContain("Entrypoint");
 	expect(stderr).toHaveLength(0);
-	expect(stdout).toMatchSnapshot();
 });

@@ -17,7 +17,7 @@ import uglifyJsPluginTransform from "./uglifyJsPlugin/uglifyJsPlugin";
 interface ITransformsObject {
 	bannerPluginTransform: object;
 	commonsChunkPluginTransform?: object;
-	extractTextPluginTransform: object;
+	extractTextPluginTransform: object; /* tslint:disable */
 	loaderOptionsPluginTransform: object;
 	loadersTransform: object;
 	noEmitOnErrorsPluginTransform: object;

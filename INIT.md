@@ -18,7 +18,7 @@ Follow given steps to locally setup `webpack-cli init` by installing dependencie
     $ npm install --save-dev webpack webpack-cli
     ```
 
-3. Install `@webpack-cli/init` package to add init addon
+3. Install `@webpack-cli/init` package to add init scaffold
 
 	```shell
     $ npm install --save-dev @webpack-cli/init
@@ -32,7 +32,7 @@ Follow following steps to setup `webpack-cli init` globally:
 	$ npm install -g webpack webpack-cli
 	```
 	
-2. Install `@webpack-cli/init` package to add init addon
+2. Install `@webpack-cli/init` package to add init scaffold
 	```shell
 	$ npm install -g @webpack-cli/init
 	```

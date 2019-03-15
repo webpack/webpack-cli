@@ -1,6 +1,6 @@
 "use strict";
 
-const { run } = require("../../../testUtils");
+const { run, extractSummary } = require("../../../testUtils");
 
 const { readFileSync } = require("fs");
 const { resolve } = require("path");
@@ -16,12 +16,13 @@ test("output-library-single", () => {
 		"key1"
 	]);
 
+	const summary = extractSummary(stdout);
+
 	expect(code).toBe(0);
-	expect(stdout).toEqual(expect.anything());
-	expect(stdout).toMatch(/index\.js.*\{0\}/);
+	expect(summary).toEqual(expect.anything());
+	expect(summary).toContain("index.js");
 	expect(stderr).toHaveLength(0);
 	const outputPath = resolve(__dirname, "bin", "main.js");
 	const output = readFileSync(outputPath, "utf-8");
 	expect(output).toContain("window.key1=function");
-	expect(stdout).toMatchSnapshot();
 });
