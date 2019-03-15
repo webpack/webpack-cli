@@ -1,6 +1,6 @@
 # Introduction
 
-Setting up webpack for the first time is hard. Writing advanced configurations to optimize performance is even harder. The `init` feature is designed to support people that want to create their own configuration or initializing other projects people create.
+Setting up Webpack for the first time is hard. Writing advanced configurations to optimize performance is even harder. The `init` feature is designed to support people that want to create their own configuration or initializing other projects people create.
 
 ## Creating a scaffold
 
@@ -60,7 +60,7 @@ webpack-cli init webpack-scaffold-yourpackage
 
 ## API
 
-To create a `scaffold`, you must create a [`yeoman-generator`](http://yeoman.io/authoring/). Because of that, you can optionally extend your generator to include methods from the [Yeoman API](http://yeoman.io/learning/). It's worth noting that we support all the properties of a regular webpack configuration. In order for us to do this, there's a thing you need to remember:
+To create a `scaffold`, you must create a [`yeoman-generator`](http://yeoman.io/authoring/). Because of that, you can optionally extend your generator to include methods from the [Yeoman API](http://yeoman.io/learning/). It's worth noting that we support all the properties of a regular Webpack configuration. In order for us to do this, there's a thing you need to remember:
 
 > Objects are made using strings, while strings are made using double strings. This means that in order for you to create a string, you have to wrap it inside another string for us to validate it correctly.
 
@@ -101,7 +101,7 @@ constructor(args, opts) {
 
 ### `myObj.webpackOptions` (required)
 
-This object has the same format as a regular Webpack configuration, so you declare here the properties that you want to scaffold, like `entry`, `output` and `context`. You can intialize this inside a yeoman method:
+This object has the same format as a regular Webpack configuration, so you declare here the properties that you want to scaffold, like `entry`, `output` and `context`. You can initialize this inside a yeoman method:
 
 ```js
 this.options.env.configuration.dev.webpackOptions = {
