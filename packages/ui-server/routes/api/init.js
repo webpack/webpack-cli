@@ -21,6 +21,8 @@ router.get("/", function(req, res, next) {
 	let config = new Config();
 	let questioner = new Questioner();
 
+	config.setConfigPath(process.env.CWD);
+
 	let dependencies = [
 		"webpack",
 		"webpack-cli",

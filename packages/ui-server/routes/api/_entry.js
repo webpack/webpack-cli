@@ -75,7 +75,7 @@ module.exports = function(questioner, answer) {
 				"Which module will be the first to enter the application? [default: ./src/index]"
 			)
 		}).then((singularEntryAnswer) => {
-			let singularEntry = singularEntryAnswer;
+			let singularEntry = singularEntryAnswer.singularEntry;
 			if (singularEntry.indexOf("\"") >= 0) {
 				singularEntry = singularEntry.replace(/"/g, "'");
 			}
