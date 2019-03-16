@@ -473,6 +473,26 @@ For more information, see https://webpack.js.org/api/cli/.`);
 					const statsString = stats.toString(outputOptions);
 					const delimiter = outputOptions.buildDelimiter ? `${outputOptions.buildDelimiter}\n` : "";
 					if (statsString) stdout.write(`${statsString}\n${delimiter}`);
+
+					/**
+					 * Show a hint to donate to our Opencollective
+					 * once a week, only on Monday
+					 */
+					const openCollectivePath = __dirname + "/opencollective.js";
+					const MONDAY = 1;
+					const SIX_DAYS = 518400000;
+					const now = new Date();
+					if (now.getDay() === MONDAY) {
+						const { statSync, utimesSync } = require("fs");
+						const lastPrint = statSync(openCollectivePath).atime;
+						const lastPrintTS = new Date(lastPrint).getTime();
+						const timeSinceLastPrint = now.getTime() - lastPrintTS;
+						if (timeSinceLastPrint > SIX_DAYS) {
+							require(openCollectivePath);
+							// On windows we need to manually update the atime
+							utimesSync(openCollectivePath, now, now);
+						}
+					}
 				}
 				if (!options.watch && stats.hasErrors()) {
 					process.exitCode = 2;
