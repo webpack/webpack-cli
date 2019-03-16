@@ -40,12 +40,25 @@ const transformsObject: ITransformsObject = {
 	removeDeprecatedPluginsTransform,
 	commonsChunkPluginTransform,
 };
+
+interface ILazyTransformObject {
+	loadersTransform?: (ast: object, source: string) => pLazy<{}>;
+	resolveTransform?: (ast: object, source: string) => pLazy<{}>;
+	removeJsonLoaderTransform?: (ast: object, source: string) => pLazy<{}>;
+	uglifyJsPluginTransform?: (ast: object, source: string) => pLazy<{}>;
+	loaderOptionsPluginTransform?: (ast: object, source: string) => pLazy<{}>;
+	bannerPluginTransform?: (ast: object, source: string) => pLazy<{}>;
+	extractTextPluginTransform?: (ast: object, source: string) => pLazy<{}>;
+	noEmitOnErrorsPluginTransform?: (ast: object, source: string) => pLazy<{}>;
+	removeDeprecatedPluginsTransform?: (ast: object, source: string) => pLazy<{}>;
+	commonsChunkPluginTransform?: (ast: object, source: string) => pLazy<{}>;
+}
 /* tslint:enable object-literal-sort-keys */
 
-export const transformations =
+export const transformations: ILazyTransformObject =
 	Object
 		.keys(transformsObject)
-		.reduce((res: object, key: string): object => {
+		.reduce((res: object, key: string): ILazyTransformObject => {
 			res[key] = (ast: object, source: string) =>
 				transformSingleAST(ast, source, transformsObject[key]);
 			return res;

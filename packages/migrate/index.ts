@@ -18,7 +18,7 @@ declare var process: {
 		validate: Function;
 		/* tslint:disable */
 		WebpackOptionsValidationError: {
-			new(errors: string[]): {
+			new: (errors: string[]) => {
 				message: string;
 			};
 		};

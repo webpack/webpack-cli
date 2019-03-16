@@ -296,7 +296,7 @@ function findAndRemovePluginByName(j: IJSCodeshift, node: INode, pluginName: str
  * @returns {Void}
  */
 
-function createOrUpdatePluginByName(j: IJSCodeshift, rootNodePath: INode, pluginName: string, options: object): void {
+function createOrUpdatePluginByName(j: IJSCodeshift, rootNodePath: INode, pluginName: string, options?: object): void {
 	const pluginInstancePath: INode = findPluginsByName(j, j(rootNodePath), [
 		pluginName,
 	]);

@@ -63,7 +63,6 @@
   },
   "jest": {
     "testPathIgnorePatterns": [
-      "^.+\\.(ts)?$",
       "/node_modules/"
     ],
     "testEnvironment": "node",
@@ -73,9 +72,15 @@
       "html",
       "cobertura"
     ],
-    "moduleNameMapper": {
+    "transform": {
       "^.+\\.(ts)?$": "ts-jest"
-    }
+    },
+    "testRegex": "/__tests__/.*\\.(test.js|test.ts)$",
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "json"
+    ]
   },
   "nyc": {
     "include": [

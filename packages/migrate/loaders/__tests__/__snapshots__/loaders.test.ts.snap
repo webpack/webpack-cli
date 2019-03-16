@@ -1,0 +1,289 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`loaders transforms correctly using "loaders-0" data 1`] = `
+"module.exports = [
+  {
+	module: {
+		rules: [
+		{
+			use: [{
+                loader: 'babel-loader'
+            }],
+			test: /\\\\.js$/,
+		},
+		],
+	},
+  },
+  {
+	module: {
+		rules: [
+		{
+			use: [{
+                loader: 'style-loader'
+            }, {
+                loader: 'css-loader',
+
+                options: {
+                    modules: true,
+                    importLoaders: 1,
+                    string: 'test123'
+                }
+            }],
+			test: /\\\\.css$/,
+		},
+		],
+	},
+  },
+  {
+	module: {
+		rules: [
+		{
+			use: [{
+				loader: 'style-loader',
+			}, {
+				loader: 'css-loader',
+				options: {
+				modules: true,
+				},
+			}],
+			test: /\\\\.css$/,
+		},
+		],
+	},
+  },
+  {
+	module: {
+		rules: [
+		{
+            use: [{
+                loader: 'eslint-loader'
+            }],
+
+            test: /\\\\.js$/,
+            enforce: 'pre'
+        },
+		],
+	},
+  },
+  {
+	module: {
+		rules: [
+		{
+            use: [{
+                loader: 'my-post-loader'
+            }],
+
+            test: /\\\\.js$/,
+            enforce: 'post'
+        },
+		],
+	},
+  },
+  {
+	module: {
+        rules: [{
+			use: [{
+                loader: 'babel-loader'
+            }],
+			test: /\\\\.js$/,
+		}, {
+            use: [{
+                loader: 'eslint-loader'
+            }],
+
+            test: /\\\\.js$/,
+            enforce: 'pre'
+        }]
+    },
+  },
+  {
+	module: {
+        rules: [{
+			use: [{
+                loader: 'babel-loader'
+            }],
+			test: /\\\\.js$/,
+		}, {
+            use: [{
+                loader: 'my-post-loader'
+            }],
+
+            test: /\\\\.js$/,
+            enforce: 'post'
+        }]
+    },
+  },
+];
+"
+`;
+
+exports[`loaders transforms correctly using "loaders-1" data 1`] = `
+"module.exports = {
+  module: {
+	rules: [
+		{
+		use: [{
+          loader: 'style-loader'
+        }, {
+          loader: 'css-loader',
+
+          options: {
+            modules: true,
+            importLoaders: 1,
+            string: 'test123'
+          }
+        }],
+		test: /\\\\.css$/,
+		},
+	],
+  },
+};
+"
+`;
+
+exports[`loaders transforms correctly using "loaders-2" data 1`] = `
+"module.exports = {
+  module: {
+	rules: [
+		{
+		use: [{
+        loader: 'style-loader',
+        }, {
+        loader: 'css-loader',
+        options: {
+            modules: true,
+        },
+        }],
+		test: /\\\\.css$/,
+		},
+	],
+  },
+};
+"
+`;
+
+exports[`loaders transforms correctly using "loaders-3" data 1`] = `
+"module.exports = {
+  module: {
+	rules: [
+		{
+          use: [{
+            loader: 'eslint-loader'
+          }],
+
+          test: /\\\\.js$/,
+          enforce: 'pre'
+        },
+	],
+  },
+};
+"
+`;
+
+exports[`loaders transforms correctly using "loaders-4" data 1`] = `
+"module.exports = {
+  module: {
+	rules: [
+		{
+          use: [{
+            loader: 'my-post-loader'
+          }],
+
+          test: /\\\\.js$/,
+          enforce: 'post'
+        },
+	],
+  },
+};
+"
+`;
+
+exports[`loaders transforms correctly using "loaders-5" data 1`] = `
+"module.exports = {
+  module: {
+    rules: [{
+    use: [{
+      loader: 'babel-loader'
+    }],
+    test: /\\\\.js$/,
+    }, {
+      use: [{
+        loader: 'eslint-loader'
+      }],
+
+      test: /\\\\.js$/,
+      enforce: 'pre'
+    }]
+  },
+};
+"
+`;
+
+exports[`loaders transforms correctly using "loaders-6" data 1`] = `
+"module.exports = {
+  module: {
+    rules: [{
+    use: [{
+      loader: 'babel-loader'
+    }],
+    test: /\\\\.js$/,
+    }, {
+      use: [{
+        loader: 'my-post-loader'
+      }],
+
+      test: /\\\\.js$/,
+      enforce: 'post'
+    }]
+  },
+};
+"
+`;
+
+exports[`loaders transforms correctly using "loaders-7" data 1`] = `
+"module.exports = {
+  module: {
+	rules: [
+		{
+          exclude: /(node_modules)/,
+
+          use: [{
+            loader: 'babel-loader',
+
+            options: {
+                presets: [\\"@babel/preset-env\\"],
+            }
+          }],
+
+          test: /\\\\.js$/
+        },
+	],
+  },
+};
+"
+`;
+
+exports[`loaders transforms correctly using "loaders-8" data 1`] = `
+"module.exports = {
+	module: {
+		rules: [
+			{
+				include: path.join(__dirname, \\"src\\"),
+				use: [{
+                    loader: 'style-loader'
+                }, {
+                    loader: 'css-loader',
+
+                    options: {
+                        modules: true,
+                        importLoaders: 1,
+                        string: 'test123'
+                    }
+                }],
+				test: /\\\\.js$/
+			}
+		]
+	}
+};
+"
+`;
