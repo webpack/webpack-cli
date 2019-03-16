@@ -69,10 +69,10 @@ export function spawnChild(pkg: string): SpawnSyncReturns<Buffer> {
  */
 
 export function getPackageManager(): string {
-	const hasLocalNPM: boolean = fs.existsSync(
+	const hasLocalNPM = fs.existsSync(
 		path.resolve(process.cwd(), "package-lock.json"),
 	);
-	const hasLocalYarn: boolean = fs.existsSync(path.resolve(process.cwd(), "yarn.lock"));
+	const hasLocalYarn = fs.existsSync(path.resolve(process.cwd(), "yarn.lock"));
 	if (hasLocalNPM) {
 		return "npm";
 	} else if (hasLocalYarn) {

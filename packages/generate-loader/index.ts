@@ -10,7 +10,7 @@ import { IYeoman } from "./types/Yeoman";
 
 export default function loaderCreator(): void {
 	const env = yeoman.createEnv();
-	const generatorName: string = "webpack-loader-generator";
+	const generatorName = "webpack-loader-generator";
 
 	env.registerStub(LoaderGenerator, generatorName);
 

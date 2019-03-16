@@ -19,7 +19,7 @@ import { INode } from "./types/NodePath";
  */
 
 function mapOptionsToTransform(config: IConfig): string[] {
-	return Object.keys(config.webpackOptions).filter((k: string) => propTypes.has(k));
+	return Object.keys(config.webpackOptions).filter((k: string): boolean => propTypes.has(k));
 }
 
 /**
@@ -34,15 +34,15 @@ function mapOptionsToTransform(config: IConfig): string[] {
 
 export default function runTransform(transformConfig: ITransformConfig, action: string): void {
 	// webpackOptions.name sent to nameTransform if match
-	const webpackConfig = Object.keys(transformConfig).filter((p: string) => {
+	const webpackConfig = Object.keys(transformConfig).filter((p: string): boolean => {
 		return p !== "configFile" && p !== "configPath";
 	});
-	const initActionNotDefined: boolean = action && action !== "init" ? true : false;
+	const initActionNotDefined = action && action !== "init" ? true : false;
 
 	webpackConfig.forEach((scaffoldPiece: string) => {
 		const config: IConfig = transformConfig[scaffoldPiece];
 
-		const transformations: string[] = mapOptionsToTransform(config);
+		const transformations = mapOptionsToTransform(config);
 
 		if (config.topScope && transformations.indexOf("topScope") === -1) {
 			transformations.push("topScope");

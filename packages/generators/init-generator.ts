@@ -430,7 +430,7 @@ export default class InitGenerator extends Generator {
 	public installPlugins() {
 		if (this.isProd) {
 			this.dependencies = this.dependencies.filter(
-				(p: string) => p !== "terser-webpack-plugin",
+				(p: string): boolean => p !== "terser-webpack-plugin",
 			);
 		} else {
 			this.configuration.config.topScope.push(
@@ -439,7 +439,7 @@ export default class InitGenerator extends Generator {
 				"\n",
 			);
 		}
-		const packager: string = getPackageManager();
+		const packager = getPackageManager();
 		const opts: {
 			dev?: boolean,
 			"save-dev"?: boolean,

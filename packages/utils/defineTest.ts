@@ -56,20 +56,20 @@ function runSingleTransform(
   if (!testFilePrefix) {
 	testFilePrefix = transformName;
   }
-  const fixtureDir: string = path.join(
-	dirName,
-	"__tests__",
-	"__testfixtures__",
+  const fixtureDir = path.join(
+	  dirName,
+	  "__tests__",
+	  "__testfixtures__",
   );
-  const inputPath: string = path.join(fixtureDir, testFilePrefix + ".input.js");
-  const source: string = fs.readFileSync(inputPath, "utf8");
+  const inputPath = path.join(fixtureDir, `${testFilePrefix}.input.js`);
+  const source = fs.readFileSync(inputPath, "utf8");
 
   let module: IModule;
   // Assumes transform and test are on the same level
   if (action) {
-	module = require(path.join(dirName, "recursive-parser" + ".ts"));
+	  module = require(path.join(dirName, "recursive-parser.ts"));
   } else {
-	module = require(path.join(dirName, transformName + ".ts"));
+	  module = require(path.join(dirName, `${transformName}.ts`));
   }
   // Handle ES6 modules using default export for the transform
   const transform = module.default ? module.default : module;
@@ -78,22 +78,22 @@ function runSingleTransform(
   // a fresh copy of jscodeshift on every test run.
   let jscodeshift: IJSCodeshift = require("jscodeshift/dist/core");
   if (module.parser) {
-	jscodeshift = jscodeshift.withParser(module.parser);
+	  jscodeshift = jscodeshift.withParser(module.parser);
   }
   const ast: INode = jscodeshift(source);
   if (initOptions || typeof initOptions === "boolean") {
-	return transform(
-		jscodeshift,
-		ast,
-		initOptions,
-		action,
-		transformName,
-	).toSource({
-		quote: "single",
-	});
+	  return transform(
+		  jscodeshift,
+		  ast,
+		  initOptions,
+		  action,
+		  transformName,
+	  ).toSource({
+		  quote: "single",
+	  });
   }
   return transform(jscodeshift, ast, source, action).toSource({
-	quote: "single",
+	  quote: "single",
   });
 }
 
@@ -122,18 +122,12 @@ export default function defineTest(
   action?: object | string,
 ): void {
   const testName: string = testFilePrefix
-	? `transforms correctly using "${testFilePrefix}" data`
-	: "transforms correctly";
+	  ? `transforms correctly using "${testFilePrefix}" data`
+	  : "transforms correctly";
   describe(transformName, () => {
-	it(testName, () => {
-		const output = runSingleTransform(
-		dirName,
-		transformName,
-		testFilePrefix,
-		transformObject,
-		action,
-		);
-		expect(output).toMatchSnapshot();
-	});
+	  it(testName, () => {
+		  const output = runSingleTransform(dirName, transformName, testFilePrefix, transformObject, action);
+		  expect(output).toMatchSnapshot();
+	  });
   });
 }

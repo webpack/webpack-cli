@@ -8,9 +8,10 @@ import * as validateIdentifier from "./validate-identifier";
  * @param {Array} paths - Array of strings containing the traversal path
  * @returns {Any} Value at given traversal path
  */
+
 function safeTraverse(obj: INode, paths: string[]): any {
 	let val: INode = obj;
-	let idx: number = 0;
+	let idx = 0;
 
 	while (idx < paths.length) {
 		if (!val) {
@@ -28,13 +29,19 @@ function safeTraverse(obj: INode, paths: string[]): any {
  * @param {Node} path - AST node
  * @returns {String|Boolean} type at given path.
  */
+
 function safeTraverseAndGetType(path: INode): string | boolean {
 	const pathValue: INode = safeTraverse(path, ["value", "value"]);
 	return pathValue ? pathValue.type : false;
 }
 
-// Convert nested MemberExpressions to strings like webpack.optimize.DedupePlugin
-function memberExpressionToPathString(path: INode) {
+/**
+ * Convert nested MemberExpressions to strings like webpack.optimize.DedupePlugin
+ * @param {Node} path - AST node
+ * @returns {String} member expression string.
+ */
+
+function memberExpressionToPathString(path: INode): string {
 	if (path && path.object) {
 		return [memberExpressionToPathString(path.object), path.property.name].join(
 			".",
@@ -230,7 +237,7 @@ function addOrUpdateConfigObject(
 
 	if (propertyExists) {
 		rootNode.properties
-			.filter((path: INode) => path.key.name === configProperty)
+			.filter((path: INode): boolean => path.key.name === configProperty)
 			.forEach((path: INode) => {
 				const newProperties = path.value.properties.filter(
 					(p: INode) => p.key.name !== key,
@@ -269,7 +276,7 @@ function findAndRemovePluginByName(j: IJSCodeshift, node: INode, pluginName: str
 	let rootPath: INode;
 
 	findPluginsByName(j, node, [pluginName])
-		.filter((path: INode) => safeTraverse(path, ["parent", "value"]))
+		.filter((path: INode): boolean => safeTraverse(path, ["parent", "value"]))
 		.forEach((path: INode) => {
 			rootPath = safeTraverse(path, ["parent", "parent", "parent", "value"]);
 			const arrayPath: INode = path.parent.value;
@@ -324,7 +331,7 @@ function createOrUpdatePluginByName(j: IJSCodeshift, rootNodePath: INode, plugin
 						// Search for same keys in the existing object
 						const existingProps = j(currentProps)
 							.find(j.Identifier)
-							.filter((p: INode) => opt.key.value === p.value.name);
+							.filter((p: INode): boolean => opt.key.value === p.value.name);
 
 						if (existingProps.size()) {
 							// Replacing values for the same key
