@@ -89,7 +89,7 @@ export default function entry(self: IEntry, answer: {
 			.prompt([
 				InputValidate(
 					"singularEntry",
-					"Which module will be the first to enter the application? [default: ./src/index]",
+					"Which will be your application entry point? (./src/index)",
 				),
 			])
 			.then((singularEntryAnswer: {

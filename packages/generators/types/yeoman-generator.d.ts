@@ -69,7 +69,8 @@ declare module "yeoman-generator" {
 		name: string;
 		message: string | ((answers: Object) => string);
 		choices?: string[] | ((answers: Object) => string);
-		default?: string | number | string[] | number[] | ((answers: Object) => (string | number | string[] | number[]));
+		default?: string | number | boolean | string[] | number[]
+			| ((answers: Object) => (string | number | boolean | string[] | number[]));
 		validate?: ((input: string) => boolean | string);
 		when?: ((answers: Object) => boolean) | boolean;
 		store?: boolean;

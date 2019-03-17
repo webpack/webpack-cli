@@ -87,7 +87,7 @@ export default class InitGenerator extends Generator {
 		);
 
 		return this.prompt([
-			Confirm("entryType", "Will your application have multiple bundles?"),
+			Confirm("entryType", "Will your application have multiple bundles?", false),
 		])
 			.then((entryTypeAnswer: {
 				entryType: boolean;
@@ -100,7 +100,7 @@ export default class InitGenerator extends Generator {
 					return this.prompt([
 						Input(
 							"outputType",
-							"Which folder will your generated bundles be in? [default: dist]:",
+							"In which folder do you want to store your generated bundles? (dist/):",
 						),
 					]);
 				}
@@ -110,7 +110,7 @@ export default class InitGenerator extends Generator {
 				return this.prompt([
 					Input(
 						"outputType",
-						"Which folder will your generated bundles be in? [default: dist]:",
+						"In which folder do you want to store your generated bundles? (dist/):",
 					),
 				]);
 			})
@@ -165,11 +165,11 @@ export default class InitGenerator extends Generator {
 			.then((_: void) => {
 				return this.prompt([
 					List("stylingType", "Will you use one of the below CSS solutions?", [
+						"No",
+						"CSS",
 						"SASS",
 						"LESS",
-						"CSS",
 						"PostCSS",
-						"No",
 					]),
 				]);
 			})
