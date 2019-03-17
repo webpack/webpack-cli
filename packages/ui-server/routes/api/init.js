@@ -7,13 +7,22 @@ const router = express.Router();
 
 router.get("/", function(req, res, next) {
 
+	// Configuration Manager
 	const Config = require("../../../init/config").Config;
+
+	// Scaffolder
 	const scaffoldProject = require("../../../init").scaffoldProject;
+
+	// Questioner
 	const Questioner = require("../../utils/questioner").default;
+
+	// Utilities
 	const entryQuestions = require("./_entry");
 	const getBabelPlugin = require("./_module");
 	const getDefaultPlugins = require("./_plugins");
 	const tooltip = require("./_tooltip");
+
+	// Question types used
 	const Confirm = require("../../../webpack-scaffold").Confirm;
 	const Input = require("../../../webpack-scaffold").Input;
 	const List = require("../../../webpack-scaffold").List;
@@ -94,7 +103,10 @@ router.get("/", function(req, res, next) {
 		config.webpackOptions.plugins = isProd ? [] : getDefaultPlugins();
 
 		return questioner.question([
-			Confirm("babelConfirm", "Will you be using ES2015?"),
+			{
+				action: "question",
+				question: Confirm("babelConfirm", "Will you be using ES2015?"),
+			}
 		]);
 	}).then((babelConfirmAnswer) => {
 		if (babelConfirmAnswer.babelConfirm === true) {
@@ -109,13 +121,16 @@ router.get("/", function(req, res, next) {
 		}
 	}).then((_) => {
 		return questioner.question([
-			List("stylingType", "Will you use one of the below CSS solutions?", [
-				"SASS",
-				"LESS",
-				"CSS",
-				"PostCSS",
-				"No",
-			]),
+			{
+				action: "question",
+				question: List("stylingType", "Will you use one of the below CSS solutions?", [
+					"SASS",
+					"LESS",
+					"CSS",
+					"PostCSS",
+					"No",
+				]),
+			}
 		]);
 	}).then((stylingTypeAnswer) => {
 		switch (stylingTypeAnswer.stylingType) {
@@ -288,11 +303,14 @@ router.get("/", function(req, res, next) {
 	}).then((_) => {
 		if (isProd) {
 			// Ask if the user wants to use extractPlugin
-			return this.prompt([
-				Input(
-					"extractPlugin",
-					"If you want to bundle your CSS files, what will you name the bundle?"
-				),
+			return questioner.question([
+				{
+					action: "question",
+					question: Input(
+						"extractPlugin",
+						"If you want to bundle your CSS files, what will you name the bundle?"
+					),
+				}
 			]);
 		}
 	}).then((extractPluginAnswer) => {
