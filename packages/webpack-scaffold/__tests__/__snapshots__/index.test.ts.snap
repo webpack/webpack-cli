@@ -31,13 +31,13 @@ callback();
 }"
 `;
 
-exports[`utils createRegularFunction should stringify an regular function 1`] = `
+exports[`utils createRegularFunction should stringify a regular function 1`] = `
 "function () {
  return 'app.js'
 }"
 `;
 
-exports[`utils createRequire should stringify an require statement 1`] = `"const webpack = require('webpack');"`;
+exports[`utils createRequire should stringify a require statement 1`] = `"const webpack = require('webpack');"`;
 
 exports[`utils parseValue should parse value 1`] = `
 Collection {
