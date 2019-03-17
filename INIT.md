@@ -3,74 +3,86 @@
 `webpack-cli init` is used to initialize `webpack` projects quickly by scaffolding configuration and installing modules required for the project as per user preferences.
 
 ## Initial Setup
-A. **Local setup**
 
-Follow given steps to locally setup `webpack-cli init` by installing dependencies:
+### a. Local setup
+
+Those are the steps necessary to setup `webpack-cli init` locally:
+
 1. Create `package.json` through npm
 
 	```shell
-	$ npm init
+	npm init
 	```
 
 2. Install `webpack` and `webpack-cli` as devDependencies
 
 	```shell
-    $ npm install --save-dev webpack webpack-cli
+    npm install --save-dev webpack webpack-cli
     ```
 
 3. Install `@webpack-cli/init` package to add init scaffold
 
 	```shell
-    $ npm install --save-dev @webpack-cli/init
+    npm install --save-dev @webpack-cli/init
     ```
 	
-B. **Global Setup**
+### b. Global Setup
 
 Follow following steps to setup `webpack-cli init` globally:
 1. Install `webpack` and `webpack-cli` globally
 	```shell
-	$ npm install -g webpack webpack-cli
+	npm install -g webpack webpack-cli
 	```
 	
 2. Install `@webpack-cli/init` package to add init scaffold
 	```shell
-	$ npm install -g @webpack-cli/init
+	npm install -g @webpack-cli/init
 	```
     
 ## Usage
-A. **For local setup**:
+
+### a. Running locally
+
 ```shell
-$ npx webpack-cli init
+npx webpack-cli init
 ```
 
-B. **For global setup**
+### b. Running globally
+
 ```shell
-$ webpack-cli init
+webpack-cli init
 ```
 
 ### Description of questions asked by generator
 
-1. `Will your application have multiple bundles? (Y/n)`
+1. `Will your application have multiple bundles? (y/N)`
 
-> *Property/key to resolve: [entry](https://webpack.js.org/configuration/entry-context/#entry)*
+> *Property/key resolved: [entry](https://webpack.js.org/configuration/entry-context/#entry)*
 
-What we are meaning here, is if you want to provide your bundle a single or multiple [entry points](https://webpack.js.org/configuration/entry-context/#entry). If you have more than one entry point to your app, answer yes. If you only have one, answer no.
+This is used to determine if your app will have multiple [entry points](https://webpack.js.org/configuration/entry-context/#entry).
+If you want to have multiple entry points, answer yes. If you want to have only one, answer no.
 
-2. `Which folder will your generated bundles be in? [default: dist]`
+2. `Which will be your application entry point? (./src/index)`
 
-> *Property/key to resolve: [output.path](https://webpack.js.org/configuration/output/#output-path)*
+> *Property/key resolved: [entry](https://webpack.js.org/configuration/entry-context/#entry)*
 
-This answers to the [output directory](https://webpack.js.org/configuration/output/#output-path) of your application. The output directory is where servers or your `index.html` will read the generated bundle from.
+This allows webpack to know from which file to start bundling your application. The default answer `./src/index` will tell webpack to look for `index.js` inside a folder named `src`. 
+
+3. `In which folder do you want to store your generated bundles? (dist/)`
+
+> *Property/key resolved: [output.path](https://webpack.js.org/configuration/output/#output-path)*
+
+The output directory is where your bundled application will be. Your `index.html` will read the generated files from this folder, that is usually named `dist`.
 
 4. `Will you be using ES2015? (Y/n)`
 
-> *Property/key to resolve: [module.rules](https://webpack.js.org/configuration/module/#module-rules) (for .js files)*
+> *Property/key resolved: [module.rules](https://webpack.js.org/configuration/module/#module-rules) (for .js files)*
 
-If you answer `Yes` to this question, we will add [`ES2015`](https://babeljs.io/learn-es2015/) to your webpack configuration, which will allow you to use modern JavaScript in your project.
+This enables webpack to parse [`ES2015`](https://babeljs.io/learn-es2015/) code. Answer `Yes` if you to use modern JavaScript in your project. 
 
 5. `Will you use one of the below CSS solutions?`
 
-> *Property/key to resolve: [module.rules](https://webpack.js.org/configuration/module/#module-rules) (for .scss,.less,.css,.postCSS files)*
+> *Property/key resolved: [module.rules](https://webpack.js.org/configuration/module/#module-rules) (for .scss,.less,.css,.postCSS files)*
 
 If you use any sort of style in your project, such as [`.less`](http://lesscss.org/), [`.scss`](http://sass-lang.com/),  [`.css`](https://developer.mozilla.org/en-US/docs/Web/CSS) or [`postCSS`](http://postcss.org/) you will need to declare this here. If you don't use CSS, answer no.
 
