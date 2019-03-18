@@ -162,14 +162,14 @@ export default class AddGenerator extends Generator {
 							this.configuration.config.item = action;
 						});
 					} else {
-						if(action === 'topScope'){
+						if (action === "topScope") {
 							return this.prompt([
-								Input("topScope", "Enter line youwant to add to topScope"),
+								Input("topScope", "Enter line you want to add to topScope"),
 							])
 							.then((topScopeAnswer) => {
 								this.configuration.config.topScope.push(topScopeAnswer.topScope);
 								done();
-							})
+							});
 						}
 					}
 				const temp: string = action;
