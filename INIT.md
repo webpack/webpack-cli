@@ -68,7 +68,7 @@ If you want to have multiple entry points, answer yes. If you want to have only 
 
 This allows webpack to know from which file to start bundling your application. The default answer `./src/index` will tell webpack to look for `index.js` inside a folder named `src`. 
 
-3. `In which folder do you want to store your generated bundles? (dist/)`
+3. `In which folder do you want to store your generated bundles? (./dist/)`
 
 > *Property/key resolved: [output.path](https://webpack.js.org/configuration/output/#output-path)*
 
