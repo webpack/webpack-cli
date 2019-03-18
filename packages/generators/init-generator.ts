@@ -100,7 +100,7 @@ export default class InitGenerator extends Generator {
 					return this.prompt([
 						Input(
 							"outputType",
-							"In which folder do you want to store your generated bundles? (./dist/):",
+							"In which folder do you want to store your generated bundles? (dist):",
 						),
 					]);
 				}
@@ -110,7 +110,7 @@ export default class InitGenerator extends Generator {
 				return this.prompt([
 					Input(
 						"outputType",
-						"In which folder do you want to store your generated bundles? (./dist/):",
+						"In which folder do you want to store your generated bundles? (dist):",
 					),
 				]);
 			})

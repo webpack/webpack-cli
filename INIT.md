@@ -62,13 +62,13 @@ webpack-cli init
 This is used to determine if your app will have multiple [entry points](https://webpack.js.org/configuration/entry-context/#entry).
 If you want to have multiple entry points, answer yes. If you want to have only one, answer no.
 
-2. `Which will be your application entry point? (./src/index)`
+2. `Which will be your application entry point? (src/index)`
 
 > *Property/key resolved: [entry](https://webpack.js.org/configuration/entry-context/#entry)*
 
-This allows webpack to know from which file to start bundling your application. The default answer `./src/index` will tell webpack to look for `index.js` inside a folder named `src`. 
+This allows webpack to know from which file to start bundling your application. The default answer `src/index` will tell webpack to look for `index.js` inside a folder named `src`. 
 
-3. `In which folder do you want to store your generated bundles? (./dist/)`
+3. `In which folder do you want to store your generated bundles? (dist)`
 
 > *Property/key resolved: [output.path](https://webpack.js.org/configuration/output/#output-path)*
 
