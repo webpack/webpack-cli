@@ -164,9 +164,11 @@ export default class AddGenerator extends Generator {
 					} else {
 						if (action === "topScope") {
 							return this.prompt([
-								Input("topScope", "Enter line you want to add to topScope"),
+								Input("topScope", "What do you want to add to topScope?"),
 							])
-							.then((topScopeAnswer) => {
+							.then((topScopeAnswer: {
+								topScope: string
+							}) => {
 								this.configuration.config.topScope.push(topScopeAnswer.topScope);
 								done();
 							});
