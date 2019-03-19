@@ -1,10 +1,13 @@
 # webpack-scaffold
 
-This is the utility suite for creating a webpack `scaffold`. It contains utility functions to assist with inquirer prompting and scaffolding.
+This is the utility suite for creating a webpack `scaffold`, it contains utility functions to help you work with [Inquirer](https://github.com/SBoudrias/Inquirer.js/) prompting and scaffolding.
+
 # Installation
+
 ```bash
 npm i -D webpack-cli @webpack-cli/webpack-scaffold
 ```
+
 # API
 
 1. [parseValue()](#parsevalue)
@@ -15,6 +18,7 @@ npm i -D webpack-cli @webpack-cli/webpack-scaffold
 6. [createExternalFunction()](#createexternalfunction)
 7. [createRequire()](#createrequire)
 8. Inquirer: [List](#list), [RawList](#rawlist), [CheckList](#checklist), [Input](#input), [InputValidate](#inputvalidate), [Confirm](#confirm)
+
 ## parseValue
 
 Param: `String`
@@ -27,11 +31,12 @@ const parseValue = require('@webpack-cli/webpack-scaffold').parseValue;
 this.configuration.myScaffold.webpackOptions.output.sourcePrefix = parseValue('\t')
 // sourcePrefix: '\t'
 ```
+
 ## createArrowFunction
 
 Param: `String`
 
-Generally used when dealing with an entry point as an arrow function.
+Generally used when dealing with an entry point as an arrow function
 
 ```js
 const createArrowFunction = require('@webpack-cli/webpack-scaffold').createArrowFunction;
@@ -44,18 +49,20 @@ this.configuration.myScaffold.webpackOptions.entry = createArrowFunction('app.js
 
 Param: `String`
 
-Used when creating a function that returns a single value.
+Used when creating a function that returns a single value
+
 ```js
 const createRegularFunction = require('@webpack-cli/webpack-scaffold').createRegularFunction;
 
 this.configuration.myScaffold.webpackOptions.entry = createRegularFunction('app.js')
 // entry: function() { return 'app.js' }
 ```
+
 ## createDynamicPromise
 
 Param: `Array` | `String`
 
-Used to create an dynamic entry point.
+Used to create a dynamic entry point
 
 ```js
 const createDynamicPromise = require('@webpack-cli/webpack-scaffold').createDynamicPromise;
@@ -98,7 +105,6 @@ externals: [
     }
     callback();
   }
-
 */
 ```
 
@@ -122,8 +128,10 @@ this.configuration.myScaffold.topScope = [createRequire('webpack')]
 Param: `name<String>, message<String>, choices<Array>`
 
 Creates a List from Inquirer
+
 ```js
 const List = require('@webpack-cli/webpack-scaffold').List;
+
 List('entry', 'what kind of entry do you want?', ['Array', 'Function'])
 ```
 
@@ -132,8 +140,10 @@ List('entry', 'what kind of entry do you want?', ['Array', 'Function'])
 Param: `name<String>, message<String>, choices<Array>`
 
 Creates a RawList from Inquirer
+
 ```js
 const RawList = require('@webpack-cli/webpack-scaffold').RawList;
+
 RawList('entry', 'what kind of entry do you want?', ['Array', 'Function'])
 ```
 
@@ -142,8 +152,10 @@ RawList('entry', 'what kind of entry do you want?', ['Array', 'Function'])
 Param: `name<String>, message<String>, choices<Array>`
 
 Creates a CheckList(`checkbox`) from Inquirer
+
 ```js
 const CheckList = require('@webpack-cli/webpack-scaffold').CheckList;
+
 CheckList('entry', 'what kind of entry do you want?', ['Array', 'Function'])
 ```
 
@@ -152,8 +164,10 @@ CheckList('entry', 'what kind of entry do you want?', ['Array', 'Function'])
 Param: `name<String>, message<String>`
 
 Creates an Input from Inquirer
+
 ```js
 const Input = require('@webpack-cli/webpack-scaffold').Input;
+
 Input('entry', 'what is your entry point?')
 ```
 
@@ -162,8 +176,10 @@ Input('entry', 'what is your entry point?')
 Param: `name<String>, message<String>, validate<Function>`
 
 Creates an Input from Inquirer
+
 ```js
-const Input = require('@webpack-cli/webpack-scaffold').Input;
+const InputValidate = require('@webpack-cli/webpack-scaffold').InputValidate;
+
 const validation = (value) => {
     if(value.length > 4) {
         return true;
@@ -171,15 +187,17 @@ const validation = (value) => {
         return 'Wow, that was short!'
     }
 }
-Input('entry', 'what is your entry point?', validation)
+InputValidate('entry', 'what is your entry point?', validation)
 ```
 
 ### Confirm
 
-Param: `name<String>, message<String>`
+Param: `name<String>, message<String>, default<?Boolean>`
 
 Creates an Input from Inquirer
+
 ```js
 const Confirm = require('@webpack-cli/webpack-scaffold').Confirm;
+
 Confirm('contextConfirm', 'Is this your context?')
 ```
