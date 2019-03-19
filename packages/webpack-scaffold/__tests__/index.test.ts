@@ -8,7 +8,7 @@ describe("utils", () => {
 		});
 	});
 	describe("createRegularFunction", () => {
-		it("should stringify an regular function", () => {
+		it("should stringify a regular function", () => {
 			expect(utils.createRegularFunction("app.js")).toMatchSnapshot();
 		});
 	});
@@ -41,12 +41,12 @@ describe("utils", () => {
 		});
 	});
 	describe("createRequire", () => {
-		it("should stringify an require statement", () => {
+		it("should stringify a require statement", () => {
 			expect(utils.createRequire("webpack")).toMatchSnapshot();
 		});
 	});
 	describe("Inquirer", () => {
-		it("should make an List object", () => {
+		it("should make a List object", () => {
 			expect(utils.List("entry", "does it work?", ["Yes", "Maybe"])).toEqual({
 				choices: ["Yes", "Maybe"],
 				message: "does it work?",
@@ -54,7 +54,7 @@ describe("utils", () => {
 				type: "list",
 			});
 		});
-		it("should make an RawList object", () => {
+		it("should make a RawList object", () => {
 			expect(
 				utils.RawList("output", "does it work?", ["Yes", "Maybe"]),
 			).toEqual({
@@ -64,7 +64,7 @@ describe("utils", () => {
 				type: "rawlist",
 			});
 		});
-		it("should make an CheckList object", () => {
+		it("should make a CheckList object", () => {
 			expect(
 				utils.CheckList("context", "does it work?", ["Yes", "Maybe"]),
 			).toEqual({
@@ -81,8 +81,17 @@ describe("utils", () => {
 				type: "input",
 			});
 		});
-		it("should make an Confirm object", () => {
+		it("should make a Confirm object", () => {
 			expect(utils.Confirm("context", "what is your context?")).toEqual({
+				default: true,
+				message: "what is your context?",
+				name: "context",
+				type: "confirm",
+			});
+		});
+		it("should make a Confirm object with No as default", () => {
+			expect(utils.Confirm("context", "what is your context?", false)).toEqual({
+				default: false,
 				message: "what is your context?",
 				name: "context",
 				type: "confirm",

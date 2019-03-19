@@ -147,7 +147,7 @@ export default class AddGenerator extends Generator {
 			.then((_: void) => {
 				if (action === "entry") {
 					return this.prompt([
-						Confirm("entryType", "Will your application have multiple bundles?"),
+						Confirm("entryType", "Will your application have multiple bundles?", false),
 					])
 						.then((entryTypeAnswer: {
 							entryType: boolean,

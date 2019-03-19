@@ -5,7 +5,8 @@ export interface IInquirerScaffoldObject {
 	name: string;
 	message: string;
 	choices?: ((answers: Object) => string) | string[];
-	default?: string | number | string[] | number[] | ((answers: Object) => (string | number | string[] | number[]));
+	default?: string | number | boolean | string[] | number[]
+		| ((answers: Object) => (string | number | boolean | string[] | number[]));
 	validate?: ((input: string) => boolean | string);
 	when?: ((answers: Object) => boolean) | boolean;
 	store?: boolean;
@@ -110,8 +111,9 @@ export function InputValidate(name: string, message: string, cb?: (input: string
 	};
 }
 
-export function Confirm(name: string, message: string): IInquirerScaffoldObject {
+export function Confirm(name: string, message: string, defaultChoice: boolean = true): IInquirerScaffoldObject {
 	return {
+		default: defaultChoice,
 		message,
 		name,
 		type: "confirm",
