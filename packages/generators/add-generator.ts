@@ -167,7 +167,7 @@ export default class AddGenerator extends Generator {
 								Input("topScope", "What do you want to add to topScope?"),
 							])
 							.then((topScopeAnswer: {
-								topScope: string
+								topScope: string;
 							}) => {
 								this.configuration.config.topScope.push(topScopeAnswer.topScope);
 								done();
