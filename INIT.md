@@ -6,7 +6,7 @@
 
 ### a. Local setup
 
-Those are the steps necessary to setup `webpack-cli init` locally:
+These are the steps necessary to setup `webpack-cli init` locally:
 
 1. Create `package.json` through npm
 
@@ -20,7 +20,7 @@ Those are the steps necessary to setup `webpack-cli init` locally:
     npm install --save-dev webpack webpack-cli
     ```
 
-3. Install `@webpack-cli/init` package to add init scaffold
+3. Install `@webpack-cli/init` package to add the init scaffold
 
 	```shell
     npm install --save-dev @webpack-cli/init
@@ -28,13 +28,16 @@ Those are the steps necessary to setup `webpack-cli init` locally:
 	
 ### b. Global Setup
 
-Follow following steps to setup `webpack-cli init` globally:
+These are the steps necessary to setup `webpack-cli init` globally:
+
 1. Install `webpack` and `webpack-cli` globally
+
 	```shell
 	npm install -g webpack webpack-cli
 	```
 	
-2. Install `@webpack-cli/init` package to add init scaffold
+2. Install `@webpack-cli/init` package to add the init scaffold
+
 	```shell
 	npm install -g @webpack-cli/init
 	```
@@ -66,7 +69,7 @@ If you want to have multiple entry points, answer yes. If you want to have only 
 
 > *Property/key resolved: [entry](https://webpack.js.org/configuration/entry-context/#entry)*
 
-This allows webpack to know from which file to start bundling your application. The default answer `src/index` will tell webpack to look for `index.js` inside a folder named `src`. 
+This tells webpack from which file to start bundling your application. The default answer `src/index` will tell webpack to look for a file called `index` inside a folder named `src`. 
 
 3. `In which folder do you want to store your generated bundles? (dist)`
 
@@ -78,7 +81,7 @@ The output directory is where your bundled application will be. Your `index.html
 
 > *Property/key resolved: [module.rules](https://webpack.js.org/configuration/module/#module-rules) (for .js files)*
 
-This enables webpack to parse [`ES2015`](https://babeljs.io/learn-es2015/) code. Answer `Yes` if you to use modern JavaScript in your project. 
+This enables webpack to parse [`ES2015`](https://babeljs.io/learn-es2015/) code. Answer `Yes` if you want to use modern JavaScript in your project. 
 
 5. `Will you use one of the below CSS solutions?`
 
