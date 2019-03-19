@@ -161,7 +161,19 @@ export default class AddGenerator extends Generator {
 							this.configuration.config.webpackOptions.entry = entryOptions;
 							this.configuration.config.item = action;
 						});
-				}
+					} else {
+						if (action === "topScope") {
+							return this.prompt([
+								Input("topScope", "What do you want to add to topScope?"),
+							])
+							.then((topScopeAnswer: {
+								topScope: string;
+							}) => {
+								this.configuration.config.topScope.push(topScopeAnswer.topScope);
+								done();
+							});
+						}
+					}
 				const temp: string = action;
 				if (action === "resolveLoader") {
 					action = "resolve";

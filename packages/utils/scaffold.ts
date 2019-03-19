@@ -44,7 +44,7 @@ export default function runTransform(transformConfig: ITransformConfig, action: 
 
 		const transformations: string[] = mapOptionsToTransform(config);
 
-		if (config.topScope) {
+		if (config.topScope && transformations.indexOf("topScope") === -1) {
 			transformations.push("topScope");
 		}
 
