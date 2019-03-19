@@ -1,4 +1,4 @@
-const optionsSchema = require("./optionsSchema.json");
+const optionsSchema = require("../config/optionsSchema.json");
 
 const nestedProperties = ["anyOf", "oneOf", "allOf"];
 
@@ -59,6 +59,7 @@ const OUTPUT_GROUP = "Output options:";
 const ADVANCED_GROUP = "Advanced options:";
 const RESOLVE_GROUP = "Resolving options:";
 const OPTIMIZE_GROUP = "Optimizing options:";
+const DISPLAY_GROUP = "Stats options:";
 
 module.exports = function(yargs) {
 	yargs
@@ -346,6 +347,148 @@ module.exports = function(yargs) {
 				type: "boolean",
 				describe: "shortcut for --optimize-minimize --define process.env.NODE_ENV=\"production\"",
 				group: BASIC_GROUP
+			},
+			silent: {
+				type: "boolean",
+				describe: "Prevent output from being displayed in stdout"
+			},
+			json: {
+				type: "boolean",
+				alias: "j",
+				describe: "Prints the result as JSON."
+			},
+			progress: {
+				type: "boolean",
+				describe: "Print compilation progress in percentage",
+				group: BASIC_GROUP
+			},
+			color: {
+				type: "boolean",
+				alias: "colors",
+				default: function supportsColor() {
+					return require("supports-color").stdout;
+				},
+				group: DISPLAY_GROUP,
+				describe: "Force colors on the console"
+			},
+			"no-color": {
+				type: "boolean",
+				alias: "no-colors",
+				group: DISPLAY_GROUP,
+				describe: "Force no colors on the console"
+			},
+			"sort-modules-by": {
+				type: "string",
+				group: DISPLAY_GROUP,
+				describe: "Sorts the modules list by property in module"
+			},
+			"sort-chunks-by": {
+				type: "string",
+				group: DISPLAY_GROUP,
+				describe: "Sorts the chunks list by property in chunk"
+			},
+			"sort-assets-by": {
+				type: "string",
+				group: DISPLAY_GROUP,
+				describe: "Sorts the assets list by property in asset"
+			},
+			"hide-modules": {
+				type: "boolean",
+				group: DISPLAY_GROUP,
+				describe: "Hides info about modules"
+			},
+			"display-exclude": {
+				type: "string",
+				group: DISPLAY_GROUP,
+				describe: "Exclude modules in the output"
+			},
+			"display-modules": {
+				type: "boolean",
+				group: DISPLAY_GROUP,
+				describe: "Display even excluded modules in the output"
+			},
+			"display-max-modules": {
+				type: "number",
+				group: DISPLAY_GROUP,
+				describe: "Sets the maximum number of visible modules in output"
+			},
+			"display-chunks": {
+				type: "boolean",
+				group: DISPLAY_GROUP,
+				describe: "Display chunks in the output"
+			},
+			"display-entrypoints": {
+				type: "boolean",
+				group: DISPLAY_GROUP,
+				describe: "Display entry points in the output"
+			},
+			"display-origins": {
+				type: "boolean",
+				group: DISPLAY_GROUP,
+				describe: "Display origins of chunks in the output"
+			},
+			"display-cached": {
+				type: "boolean",
+				group: DISPLAY_GROUP,
+				describe: "Display also cached modules in the output"
+			},
+			"display-cached-assets": {
+				type: "boolean",
+				group: DISPLAY_GROUP,
+				describe: "Display also cached assets in the output"
+			},
+			"display-reasons": {
+				type: "boolean",
+				group: DISPLAY_GROUP,
+				describe: "Display reasons about module inclusion in the output"
+			},
+			"display-depth": {
+				type: "boolean",
+				group: DISPLAY_GROUP,
+				describe: "Display distance from entry point for each module"
+			},
+			"display-used-exports": {
+				type: "boolean",
+				group: DISPLAY_GROUP,
+				describe: "Display information about used exports in modules (Tree Shaking)"
+			},
+			"display-provided-exports": {
+				type: "boolean",
+				group: DISPLAY_GROUP,
+				describe: "Display information about exports provided from modules"
+			},
+			"display-optimization-bailout": {
+				type: "boolean",
+				group: DISPLAY_GROUP,
+				describe: "Display information about why optimization bailed out for modules"
+			},
+			"display-error-details": {
+				type: "boolean",
+				group: DISPLAY_GROUP,
+				describe: "Display details about errors"
+			},
+			display: {
+				type: "string",
+				choices: ["", "verbose", "detailed", "normal", "minimal", "errors-only", "none"],
+				group: DISPLAY_GROUP,
+				describe: "Select display preset"
+			},
+			verbose: {
+				type: "boolean",
+				group: DISPLAY_GROUP,
+				describe: "Show more details"
+			},
+			"info-verbosity": {
+				type: "string",
+				default: "info",
+				choices: ["none", "info", "verbose"],
+				group: DISPLAY_GROUP,
+				describe: "Controls the output of lifecycle messaging e.g. Started watching files..."
+			},
+			"build-delimiter": {
+				type: "string",
+				group: DISPLAY_GROUP,
+				describe: "Display custom text after build output"
 			}
 		});
 };
