@@ -48,7 +48,7 @@ export default function runTransform(transformConfig: ITransformConfig, action: 
 			transformations.push("topScope");
 		}
 
-		if (config.merge) {
+		if (config.merge && transformations.indexOf("merge") === -1) {
 			transformations.push("merge");
 		}
 
