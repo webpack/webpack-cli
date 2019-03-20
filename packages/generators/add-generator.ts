@@ -1,6 +1,20 @@
+import {
+	replaceAt,
+	traverseAndGetProperties,
+	webpackDevServerSchema,
+	webpackSchema,
+} from "@webpack-cli/utils/generators/add";
+
+import {
+	actionTypeQuestion,
+	entryTypeQuestion,
+	manualOrListInput,
+	mergeFileQuestion,
+	topScopeQuestion,
+} from "@webpack-cli/utils/generators/add/questions";
+
 import npmExists from "@webpack-cli/utils/npm-exists";
 import { getPackageManager } from "@webpack-cli/utils/package-manager";
-import PROP_TYPES from "@webpack-cli/utils/prop-types";
 import {
 	AutoComplete,
 	Confirm,
@@ -18,66 +32,6 @@ import { ISchemaProperties, IWebpackOptions } from "./types";
 import entryQuestions from "./utils/entry";
 import validate from "./utils/validate";
 
-// tslint:disable:no-var-requires
-const webpackDevServerSchema = require("webpack-dev-server/lib/options.json");
-const webpackSchema = require("./utils/optionsSchema.json");
-const PROPS: string[] = Array.from(PROP_TYPES.keys());
-
-/**
- *
- * Replaces the string with a substring at the given index
- * https://gist.github.com/efenacigiray/9367920
- *
- * @param	{String} string - string to be modified
- * @param	{Number} index - index to replace from
- * @param	{String} replace - string to replace starting from index
- *
- * @returns	{String} string - The newly mutated string
- *
- */
-function replaceAt(str: string, index: number, replace: string): string {
-	return str.substring(0, index) + replace + str.substring(index + 1);
-}
-
-/**
- *
- * Checks if the given array has a given property
- *
- * @param	{Array} arr - array to check
- * @param	{String} prop - property to check existence of
- *
- * @returns	{Boolean} hasProp - Boolean indicating if the property
- * is present
- */
-const traverseAndGetProperties = (arr: object[], prop: string): boolean => {
-	let hasProp = false;
-	arr.forEach((p: object): void => {
-		if (p[prop]) {
-			hasProp = true;
-		}
-	});
-	return hasProp;
-};
-
-/**
- *
- * Search config properties
- *
- * @param {Object} answers	Prompt answers object
- * @param {String} input	Input search string
- *
- * @returns {Promise} Returns promise which resolves to filtered props
- *
- */
-const searchProps = (answers: object, input: string): Promise<string[]> => {
-	input = input || "";
-	return Promise.resolve(
-		PROPS.filter((prop: string): boolean =>
-			prop.toLowerCase().includes(input.toLowerCase()),
-		),
-	);
-};
-
 /**
  *
  * Generator for adding properties
@@ -94,7 +48,7 @@ export default class AddGenerator extends Generator {
 			configName?: string,
 			topScope?: string[],
 			item?: string,
-			merge?: object,
+			merge?: IWebpackOptions,
 			webpackOptions?: IWebpackOptions,
 		},
 	};
@@ -116,24 +70,12 @@ export default class AddGenerator extends Generator {
 		const done: (_?: void) => void | boolean = this.async();
 		let action: string;
 		const self: this = this;
-		const manualOrListInput: (promptAction: string) => IInquirerInput = (promptAction: string) =>
-			Input("actionAnswer", `What do you want to add to ${promptAction}?`);
 		let inputPrompt: IInquirerInput;
 
 		// first index indicates if it has a deep prop, 2nd indicates what kind of
 		const isDeepProp: any[] = [false, false];
 
-		return this.prompt([
-			AutoComplete(
-				"actionType",
-				"What property do you want to add to?",
-				{
-					pageSize: 7,
-					source: searchProps,
-					suggestOnly: false,
-				},
-			),
-		])
+		return this.prompt([actionTypeQuestion])
 			.then((actionTypeAnswer: {
 				actionType: string,
 			}) => {
@@ -146,9 +88,7 @@ export default class AddGenerator extends Generator {
 			})
 			.then((_: void) => {
 				if (action === "entry") {
-					return this.prompt([
-						Confirm("entryType", "Will your application have multiple bundles?", false),
-					])
+					return this.prompt([entryTypeQuestion])
 						.then((entryTypeAnswer: {
 							entryType: boolean,
 						}) => {
@@ -163,9 +103,7 @@ export default class AddGenerator extends Generator {
 						});
 					} else {
 						if (action === "topScope") {
-							return this.prompt([
-								Input("topScope", "What do you want to add to topScope?"),
-							])
+							return this.prompt([topScopeQuestion])
 							.then((topScopeAnswer: {
 								topScope: string;
 							}) => {
@@ -174,27 +112,7 @@ export default class AddGenerator extends Generator {
 							});
 						}
 						if (action === "merge") {
-							const validatePath = (path: string) => {
-								const resolvedPath = resolve(process.env.PWD, path);
-								if (existsSync(resolvedPath)) {
-									if (/\.js$/.test(path)) {
-										if (typeof require(resolvedPath) !== "object") {
-											return "Given file doesn't export an Object";
-										}
-										return true;
-									} else {
-										return "Path doesn't corresponds to a javascript file";
-									}
-								}
-								return "Invalid path provided";
-							};
-							return this.prompt([
-								InputValidate(
-									"mergeFile",
-									"What is the location of webpack configuration file with which you want to merge current configuration?",
-									validatePath,
-									),
-							])
+							return this.prompt([mergeFileQuestion])
 							.then((mergeFileAnswer: {
 								mergeFile: string;
 							}) => {
