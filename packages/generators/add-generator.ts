@@ -1,9 +1,3 @@
-import Generator = require("yeoman-generator");
-
-import * as glob from "glob-all";
-import * as autoComplete from "inquirer-autocomplete-prompt";
-import * as path from "path";
-
 import npmExists from "@webpack-cli/utils/npm-exists";
 import { getPackageManager } from "@webpack-cli/utils/package-manager";
 import PROP_TYPES from "@webpack-cli/utils/prop-types";
@@ -11,13 +5,18 @@ import {
 	AutoComplete,
 	Confirm,
 	IInquirerInput,
-	IInquirerList,
 	Input,
+	InputValidate,
 	List,
 } from "@webpack-cli/webpack-scaffold";
-
+import { existsSync } from "fs";
+import * as glob from "glob-all";
+import * as autoComplete from "inquirer-autocomplete-prompt";
+import { resolve } from "path";
+import Generator = require("yeoman-generator");
 import { ISchemaProperties, IWebpackOptions } from "./types";
 import entryQuestions from "./utils/entry";
+import validate from "./utils/validate";
 
 // tslint:disable:no-var-requires
 const webpackDevServerSchema = require("webpack-dev-server/lib/options.json");
@@ -94,7 +93,8 @@ export default class AddGenerator extends Generator {
 		config: {
 			configName?: string,
 			topScope?: string[],
-			item?: string;
+			item?: string,
+			merge?: object,
 			webpackOptions?: IWebpackOptions,
 		},
 	};
@@ -171,6 +171,36 @@ export default class AddGenerator extends Generator {
 							}) => {
 								this.configuration.config.topScope.push(topScopeAnswer.topScope);
 								done();
+							});
+						}
+						if (action === "merge") {
+							const validatePath = (path: string) => {
+								const resolvedPath = resolve(process.env.PWD, path);
+								if (existsSync(resolvedPath)) {
+									if (/\.js$/.test(path)) {
+										if (typeof require(resolvedPath) !== "object") {
+											return "Given file doesn't export an Object";
+										}
+										return true;
+									} else {
+										return "Path doesn't corresponds to a javascript file";
+									}
+								}
+								return "Invalid path provided";
+							};
+							return this.prompt([
+								InputValidate(
+									"mergeFile",
+									"What is the location of webpack configuration file with which you want to merge current configuration?",
+									validatePath,
+									),
+							])
+							.then((mergeFileAnswer: {
+								mergeFile: string;
+							}) => {
+								const resolvedPath = resolve(process.env.PWD, mergeFileAnswer.mergeFile);
+								const mergeConfig = require(resolvedPath);
+								this.configuration.config.merge = mergeConfig;
 							});
 						}
 					}
@@ -367,7 +397,7 @@ export default class AddGenerator extends Generator {
 								pluginsSchemaPath.indexOf("optimize") >= 0
 									? "webpack.optimize"
 									: "webpack";
-							const resolvePluginsPath: string = path.resolve(pluginsSchemaPath);
+							const resolvePluginsPath: string = resolve(pluginsSchemaPath);
 							const pluginSchema: object = resolvePluginsPath
 								? require(resolvePluginsPath)
 								: null;
