@@ -12,8 +12,8 @@ const constant = (value: boolean) => (res: got.Response<string>): boolean | Prom
  */
 
 export default function npmExists(moduleName: string): Promise<any> {
-	const hostname: string = "https://www.npmjs.org";
-	const pkgUrl: string = `${hostname}/package/${moduleName}`;
+	const hostname = "https://www.npmjs.org";
+	const pkgUrl = `${hostname}/package/${moduleName}`;
 	return got(pkgUrl, {
 		method: "HEAD",
 	})

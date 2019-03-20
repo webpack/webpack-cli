@@ -42,11 +42,11 @@ export default function runTransform(webpackProperties: IWebpackProperties, acti
 			.keys(webpackProperties)
 			.filter((p: string): boolean => p !== "configFile" && p !== "configPath");
 
-	const initActionNotDefined: boolean = (action && action !== "init") || false;
+	const initActionNotDefined = (action && action !== "init") || false;
 
 	webpackConfig.forEach((scaffoldPiece: string): Promise<void> => {
 		const config: IConfiguration = webpackProperties[scaffoldPiece];
-		const transformations: string[] = mapOptionsToTransform(config);
+		const transformations = mapOptionsToTransform(config);
 		const ast = j(
 			initActionNotDefined
 				? webpackProperties.configFile
@@ -58,12 +58,12 @@ export default function runTransform(webpackProperties: IWebpackProperties, acti
 			return astTransform(j, ast, config.webpackOptions[f], transformAction, f);
 		})
 			.then((value: string[]): void | PromiseLike <void> => {
-				let configurationName: string = "webpack.config.js";
+				let configurationName = "webpack.config.js";
 				if (config.configName) {
-					configurationName = "webpack." + config.configName + ".js";
+					configurationName = `webpack.${config.configName}.js`;
 				}
 
-				const outputPath: string = initActionNotDefined
+				const outputPath = initActionNotDefined
 					? webpackProperties.configPath
 					: path.join(process.cwd(), configurationName);
 

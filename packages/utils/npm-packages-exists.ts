@@ -4,7 +4,7 @@ import isLocalPath from "./is-local-path";
 import npmExists from "./npm-exists";
 import { resolvePackages } from "./resolve-packages";
 
-const WEBPACK_SCAFFOLD_PREFIX: string = "webpack-scaffold";
+const WEBPACK_SCAFFOLD_PREFIX = "webpack-scaffold";
 
 /**
  *

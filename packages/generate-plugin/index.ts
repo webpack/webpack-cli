@@ -10,7 +10,7 @@ import { IYeoman } from "./types/Yeoman";
 
 export default function pluginCreator(): void {
 	const env = yeoman.createEnv();
-	const generatorName: string = "webpack-plugin-generator";
+	const generatorName = "webpack-plugin-generator";
 
 	env.registerStub(PluginGenerator, generatorName);
 

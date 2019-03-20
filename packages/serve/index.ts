@@ -52,7 +52,7 @@ const getRootPathModule = (dep: string): string => path.resolve(process.cwd(), d
  */
 
 function serve() {
-	const packageJSONPath: string = getRootPathModule("package.json");
+	const packageJSONPath = getRootPathModule("package.json");
 	if (!packageJSONPath) {
 		console.error(
 			"\n",
