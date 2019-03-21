@@ -54,7 +54,16 @@ const getSchemaInfo = (path, property, subProperty) => {
 
 const { GROUPS } = require("../constants");
 
-const { CONFIG_GROUP, BASIC_GROUP, MODULE_GROUP, OUTPUT_GROUP, ADVANCED_GROUP, RESOLVE_GROUP, OPTIMIZE_GROUP, DISPLAY_GROUP } = GROUPS;
+const {
+	CONFIG_GROUP,
+	BASIC_GROUP,
+	MODULE_GROUP,
+	OUTPUT_GROUP,
+	ADVANCED_GROUP,
+	RESOLVE_GROUP,
+	OPTIMIZE_GROUP,
+	DISPLAY_GROUP
+} = GROUPS;
 
 module.exports = function(yargs) {
 	yargs
