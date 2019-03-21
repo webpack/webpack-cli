@@ -1,4 +1,4 @@
-import PROP_TYPES from "@webpack-cli/utils/prop-types";
+import PROP_TYPES from "../../prop-types";
 
 const PROPS: string[] = Array.from(PROP_TYPES.keys());
 
