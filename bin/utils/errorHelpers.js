@@ -4,7 +4,7 @@
 */
 "use strict";
 
-const { webpackOptionsFlag } = require('../constants')
+const { webpackOptionsFlag } = require("../constants");
 
 exports.cutOffByFlag = (stack, flag) => {
 	stack = stack.split("\n");
