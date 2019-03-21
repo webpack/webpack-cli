@@ -18,17 +18,10 @@
 
 	const ErrorHelpers = require("./utils/errorHelpers");
 
-	const NON_COMPILATION_ARGS = [
-		"init",
-		"migrate",
-		"add",
-		"remove",
-		"serve",
-		"generate-loader",
-		"generate-plugin",
-		"info"
-	];
+	const { NON_COMPILATION_ARGS } = require("./constants")
 
+
+	console.log(NON_COMPILATION_ARGS)
 	const NON_COMPILATION_CMD = process.argv.find(arg => {
 		if (arg === "serve") {
 			global.process.argv = global.process.argv.filter(a => a !== "serve");
@@ -131,6 +124,7 @@ For more information, see https://webpack.js.org/api/cli/.`);
 			const statsPresetToOptions = require("webpack").Stats.presetToOptions;
 
 			let outputOptions = options.stats;
+			console.log(outputOptions)
 			if (typeof outputOptions === "boolean" || typeof outputOptions === "string") {
 				outputOptions = statsPresetToOptions(outputOptions);
 			} else if (!outputOptions) {
