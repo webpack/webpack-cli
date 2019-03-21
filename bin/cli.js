@@ -18,10 +18,8 @@
 
 	const ErrorHelpers = require("./utils/errorHelpers");
 
-	const { NON_COMPILATION_ARGS } = require("./constants")
+	const { NON_COMPILATION_ARGS } = require("./constants");
 
-
-	console.log(NON_COMPILATION_ARGS)
 	const NON_COMPILATION_CMD = process.argv.find(arg => {
 		if (arg === "serve") {
 			global.process.argv = global.process.argv.filter(a => a !== "serve");
@@ -44,7 +42,6 @@ Usage: webpack-cli [options]
 For more information, see https://webpack.js.org/api/cli/.`);
 
 	require("./config/config-yargs")(yargs);
-
 
 	// yargs will terminate the process early when the user uses help or version.
 	// This causes large help outputs to be cut short (https://github.com/nodejs/node/wiki/API-changes-between-v0.10-and-v4#process).
@@ -97,7 +94,7 @@ For more information, see https://webpack.js.org/api/cli/.`);
 		const stdout = argv.silent
 			? {
 				write: () => {}
-				} // eslint-disable-line
+			  } // eslint-disable-line
 			: process.stdout;
 
 		function ifArg(name, fn, init) {
@@ -124,7 +121,7 @@ For more information, see https://webpack.js.org/api/cli/.`);
 			const statsPresetToOptions = require("webpack").Stats.presetToOptions;
 
 			let outputOptions = options.stats;
-			console.log(outputOptions)
+			console.log(outputOptions);
 			if (typeof outputOptions === "boolean" || typeof outputOptions === "string") {
 				outputOptions = statsPresetToOptions(outputOptions);
 			} else if (!outputOptions) {
