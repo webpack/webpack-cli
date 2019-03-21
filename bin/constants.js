@@ -28,10 +28,10 @@ const GROUPS = {
 	DISPLAY_GROUP
 };
 
-const webpackOptionsFlag = "WEBPACK_OPTIONS";
+const WEBPACK_OPTIONS_FLAG = "WEBPACK_OPTIONS";
 
 module.exports = {
 	NON_COMPILATION_ARGS,
 	GROUPS,
-	webpackOptionsFlag
+	WEBPACK_OPTIONS_FLAG
 };

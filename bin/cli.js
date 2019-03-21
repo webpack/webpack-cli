@@ -5,6 +5,8 @@
 	Author Tobias Koppers @sokra
 */
 
+const { NON_COMPILATION_ARGS } = require("./constants");
+
 (function() {
 	// wrap in IIFE to be able to use return
 
@@ -17,8 +19,6 @@
 	require("v8-compile-cache");
 
 	const ErrorHelpers = require("./utils/errorHelpers");
-
-	const { NON_COMPILATION_ARGS } = require("./constants");
 
 	const NON_COMPILATION_CMD = process.argv.find(arg => {
 		if (arg === "serve") {
@@ -121,7 +121,6 @@ For more information, see https://webpack.js.org/api/cli/.`);
 			const statsPresetToOptions = require("webpack").Stats.presetToOptions;
 
 			let outputOptions = options.stats;
-			console.log(outputOptions);
 			if (typeof outputOptions === "boolean" || typeof outputOptions === "string") {
 				outputOptions = statsPresetToOptions(outputOptions);
 			} else if (!outputOptions) {
