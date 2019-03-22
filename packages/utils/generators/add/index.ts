@@ -4,7 +4,7 @@ const PROPS: string[] = Array.from(PROP_TYPES.keys());
 
 // tslint:disable:no-var-requires
 export const webpackDevServerSchema = require("webpack-dev-server/lib/options.json");
-export const webpackSchema = require("./utils/optionsSchema.json");
+export const webpackSchema = require("../optionsSchema.json");
 
 /**
  *
