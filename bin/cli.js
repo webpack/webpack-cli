@@ -5,7 +5,7 @@
 	Author Tobias Koppers @sokra
 */
 
-const { NON_COMPILATION_ARGS } = require("./constants");
+const { NON_COMPILATION_ARGS } = require("./utils/constants");
 
 (function() {
 	// wrap in IIFE to be able to use return
