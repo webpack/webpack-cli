@@ -2,7 +2,7 @@ import chalk from "chalk";
 import * as j from "jscodeshift";
 import pEachSeries = require("p-each-series");
 import * as path from "path";
-import pkgDir from "pkg-dir"
+import pkgDir from "pkg-dir";
 
 import { IError } from "../init/types";
 import { IConfig, ITransformConfig } from "./modify-config-helper";
