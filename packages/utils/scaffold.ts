@@ -2,7 +2,9 @@ import chalk from "chalk";
 import * as j from "jscodeshift";
 import pEachSeries = require("p-each-series");
 import * as path from "path";
+import pkgDir from "pkg-dir"
 
+import { IError } from "../init/types";
 import { IConfig, ITransformConfig } from "./modify-config-helper";
 import propTypes from "./prop-types";
 import astTransform from "./recursive-parser";
@@ -74,14 +76,16 @@ export default function runTransform(transformConfig: ITransformConfig, action: 
 					configurationName = "webpack." + config.configName + ".js";
 				}
 
-				const outputPath: string = initActionNotDefined
-					? transformConfig.configPath
-					: path.join(process.cwd(), configurationName);
-				const source: string = ast.toSource({
-					quote: "single",
+				pkgDir(process.cwd()).then((projectRoot) => {
+					const outputPath: string = initActionNotDefined
+						? transformConfig.configPath
+						: path.join(projectRoot || process.cwd(), configurationName);
+					const source: string = ast.toSource({
+						quote: "single",
+					});
+					runPrettier(outputPath, source);
 				});
 
-				runPrettier(outputPath, source);
 			})
 			.catch((err: IError) => {
 				console.error(err.message ? err.message : err);
