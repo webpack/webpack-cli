@@ -4,7 +4,7 @@
 */
 "use strict";
 
-const webpackOptionsFlag = "WEBPACK_OPTIONS";
+const { WEBPACK_OPTIONS_FLAG } = require("./constants");
 
 exports.cutOffByFlag = (stack, flag) => {
 	stack = stack.split("\n");
@@ -12,7 +12,7 @@ exports.cutOffByFlag = (stack, flag) => {
 	return stack.join("\n");
 };
 
-exports.cutOffWebpackOptions = stack => exports.cutOffByFlag(stack, webpackOptionsFlag);
+exports.cutOffWebpackOptions = stack => exports.cutOffByFlag(stack, WEBPACK_OPTIONS_FLAG);
 
 exports.cutOffMultilineMessage = (stack, message) => {
 	stack = stack.split("\n");
