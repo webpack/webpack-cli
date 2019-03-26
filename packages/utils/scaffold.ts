@@ -76,7 +76,7 @@ export default function runTransform(transformConfig: ITransformConfig, action: 
 					configurationName = "webpack." + config.configName + ".js";
 				}
 
-				const projectRoot = findProjectRoot(process.cwd());
+				const projectRoot = findProjectRoot();
 				const outputPath: string = initActionNotDefined
 				? transformConfig.configPath
 				: path.join(projectRoot || process.cwd(), configurationName);
