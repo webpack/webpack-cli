@@ -321,7 +321,7 @@ For more information, see https://webpack.js.org/api/cli/.`);
 					 * Show a hint to donate to our Opencollective
 					 * once a week, only on Monday
 					 */
-					const openCollectivePath = __dirname + "/opencollective.js";
+					const openCollectivePath = __dirname + "/utils/opencollective.js";
 					const MONDAY = 1;
 					const SIX_DAYS = 518400000;
 					const now = new Date();
