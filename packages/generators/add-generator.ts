@@ -116,7 +116,7 @@ export default class AddGenerator extends Generator {
 							.then((mergeFileAnswer: {
 								mergeFile: string;
 							}) => {
-								const resolvedPath = resolve(process.env.PWD, mergeFileAnswer.mergeFile);
+								const resolvedPath = resolve(process.cwd(), mergeFileAnswer.mergeFile);
 								const mergeConfig = require(resolvedPath);
 								this.configuration.config.merge = mergeConfig;
 							});

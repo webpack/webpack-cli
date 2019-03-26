@@ -45,16 +45,15 @@ export const topScopeQuestion = Input(
 const mergeFileQuestionFunction = () => {
  const question = "What is the location of webpack configuration with which you want to merge current configuration?";
  const validator = (path: string) => {
-		const resolvedPath = resolve(process.env.PWD, path);
+		const resolvedPath = resolve(process.cwd(), path);
 		if (existsSync(resolvedPath)) {
 			if (/\.js$/.test(path)) {
 				if (typeof require(resolvedPath) !== "object") {
 					return "Given file doesn't export an Object";
 				}
 				return true;
-			} else {
-				return "Path doesn't corresponds to a javascript file";
 			}
+			return "Path doesn't corresponds to a javascript file";
 		}
 		return "Invalid path provided";
 	};
