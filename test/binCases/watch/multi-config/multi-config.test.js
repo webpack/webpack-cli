@@ -28,7 +28,7 @@ afterEach(() => {
 	}
 });
 
-test.skip("multi-config", async done => {
+test.skip("multi-config", done => {
 	const webpackProc = runAndGetWatchProc(__dirname);
 
 	// info-verbosity is set to info by default
