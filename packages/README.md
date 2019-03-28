@@ -8,6 +8,7 @@ This folder is the collection of those packages.
 1. [add](https://github.com/webpack/webpack-cli/tree/master/packages/add)
 2. [generate-loader](https://github.com/webpack/webpack-cli/tree/master/packages/generate-loader)
 3. [generate-plugin](https://github.com/webpack/webpack-cli/tree/master/packages/generate-plugin)
+3. [generate-plugin](https://github.com/webpack/webpack-cli/tree/master/packages/generate-scaffold)
 4. [generators](https://github.com/webpack/webpack-cli/tree/master/packages/generators)
 5. [info](https://github.com/webpack/webpack-cli/tree/master/packages/info)
 6. [init](https://github.com/webpack/webpack-cli/tree/master/packages/init)
