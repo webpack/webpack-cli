@@ -89,7 +89,7 @@ In case you are suggesting a new feature, we will match your idea with our curre
   npm run test:cli
   ```
 
-* Run package tests:
+* Run tests of all packages:
   
   ```bash
   npm run test:packages
@@ -128,7 +128,7 @@ In case you are suggesting a new feature, we will match your idea with our curre
   yarn test:cli`
   ```
 
-* Run package tests with:
+* Run tests of all packages:
   
   ```bash
   yarn test:packages
