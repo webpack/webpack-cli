@@ -77,22 +77,14 @@ export default function runTransform(webpackProperties: IWebpackProperties, acti
 				console.error(err.message ? err.message : err);
 			});
 	});
+	let successMessage: string = ``;
 
 	if (initActionNotDefined && webpackProperties.config.item) {
-		process.stdout.write(
-			"\n" +
-				chalk.green(
-					`Congratulations! ${
-						webpackProperties.config.item
-					} has been ${action}ed!\n`,
-				),
-		);
+		successMessage = `Congratulations! ${webpackProperties.config.item} has been ${action}ed!`;
+
 	} else {
-		process.stdout.write(
-			"\n" +
-				chalk.green(
-					"Congratulations! Your new webpack configuration file has been created!\n",
-				),
-		);
+		successMessage = "Congratulations! Your new webpack configuration file has been created!";
+
 	}
+	process.stdout.write("\n" + chalk.green(`${successMessage}\n`));
 }
