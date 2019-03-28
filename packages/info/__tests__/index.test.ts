@@ -20,5 +20,5 @@ describe("info", () => {
 		const jsonSchema = ["Binaries", "Browsers", "System", "npmPackages", "npmGlobalPackages"];
 
 		expect(jsonSchema).toEqual(expect.arrayContaining(Object.keys(environment)));
-	}, 10000);
+	}, 15000);
 });
