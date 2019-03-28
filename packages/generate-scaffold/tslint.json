@@ -1,0 +1,14 @@
+{
+	"defaultSeverity": "error",
+	"extends": ["tslint:recommended"],
+	"jsRules": {},
+	"rules": {
+		"indent": [true, "tabs", 4],
+		"ban-types": [false],
+		"no-console": [true, "log"]
+	},
+	"rulesDirectory": [],
+	"linterOptions": {
+		"exclude": ["node_modules/**"]
+	}
+}

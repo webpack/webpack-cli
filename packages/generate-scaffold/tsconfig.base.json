@@ -1,0 +1,12 @@
+{
+	"compilerOptions": {
+		"target": "es6",
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"allowSyntheticDefaultImports": true,
+		"skipLibCheck": true,
+		"allowJs": true
+	},
+	"include": ["./*.ts"],
+	"exclude": ["node_modules/**", "/template/*.js", "/__tests__/*.test.js"]
+}

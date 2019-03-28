@@ -1,0 +1,6 @@
+node_modules/
+coverage
+.editorconfig
+package-loc.json
+LICENSE
+.yo-rc.json
