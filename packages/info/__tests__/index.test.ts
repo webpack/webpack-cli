@@ -1,7 +1,9 @@
+import * as envinfo from "envinfo";
+
 import { information } from "../index";
 
 describe("info", () => {
-	it("should return the information of the enviroment", async () => {
+	it("should return the information structure", async () => {
 		const returnedInformation = information();
 		const expectedInformation = {
 			Binaries: ["Node", "Yarn", "npm"],
@@ -12,5 +14,11 @@ describe("info", () => {
 		};
 
 		expect(returnedInformation).toEqual(expectedInformation);
+	});
+	it("should return the proper information of the environment", async () => {
+		const environment = JSON.parse(await envinfo.run(information(), { json: true } ));
+		const jsonSchema = ["Binaries", "Browsers", "System", "npmPackages", "npmGlobalPackages"];
+
+		expect(jsonSchema).toEqual(expect.arrayContaining(Object.keys(environment)));
 	});
 });
