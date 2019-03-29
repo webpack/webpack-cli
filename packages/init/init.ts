@@ -77,13 +77,10 @@ export default function runTransform(webpackProperties: IWebpackProperties, acti
 				console.error(err.message ? err.message : err);
 			});
 	});
-	let successMessage: string = ``;
 
+	let successMessage: string = `Congratulations! Your new webpack configuration file has been created!`;
 	if (initActionNotDefined && webpackProperties.config.item) {
 		successMessage = `Congratulations! ${webpackProperties.config.item} has been ${action}ed!`;
-
-	} else {
-		successMessage = "Congratulations! Your new webpack configuration file has been created!";
 
 	}
 	process.stdout.write("\n" + chalk.green(`${successMessage}\n`));
