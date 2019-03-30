@@ -1,0 +1,28 @@
+{
+	"name": "webpack-scaffold-<scaffold_name>",
+	"version": "1.6.1",
+	"description": "<description>",
+	"main": "<main>",
+	"scripts": {
+		"lint": "eslint ."
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+<github_repo>"
+	},
+	"author": "<author>",
+	"license": "<license>",
+	"bugs": {
+		"url": "<github_repo>/issues"
+	},
+	"homepage": "<github_repo>#readme",
+	"devDependencies": {
+		"babel-eslint": "^6.1.2",
+		"eslint": "^3.19.0",
+		"eslint-plugin-node": "^4.2.2"
+	},
+	"dependencies": {
+		"@webpack-cli/webpack-scaffold": "^0.1.2",
+		"yeoman-generator": "^3.1.1"
+	}
+}
