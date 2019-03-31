@@ -13,16 +13,13 @@ module.exports = class WebpackGenerator extends Generator {
 				topScope: [
 					"const path = require(\"path\")",
 					"const webpack = require(\"webpack\")",
-
 				],
-
 			}
 		};
 	}
 
 	prompting() {
 		return this.prompt(questions).then(answer => {
-			console.log(answer);
 			this.options.env.configuration.dev.webpackOptions = createDevConfig(answer);
 			this.options.env.configuration.dev.configName = answer.configName;
 

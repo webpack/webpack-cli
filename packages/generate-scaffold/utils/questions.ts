@@ -11,7 +11,8 @@ module.exports = [
 				return "Name cannot be left blank";
 			}
 			// Regular expression for valid npm package name
-			if (!RegExp("^(?:@[a-z0-9-~][a-z0-9-._~]*/)?[a-z0-9-~][a-z0-9-._~]*$").test(name)) {
+			const regexPatternToValidateName = "^(?:@[a-z0-9-~][a-z0-9-._~]*/)?[a-z0-9-~][a-z0-9-._~]*$";
+			if (!RegExp(regexPatternToValidateName).test(name)) {
 				return "Invalid name";
 			}
 			return true;

@@ -66,5 +66,5 @@
 		"run": "npm run build && node index.js"
 	},
 	"repository": "anikethsaha/generator-webpack-scaffold",
-	"license": "Apache-2.0"
+	"license": "MIT"
 }
