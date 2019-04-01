@@ -37,6 +37,15 @@ const npmGlobalRoot = () => {
 	});
 };
 
+const runWhenInstalled = (packages, pathForCmd, ...args) => {
+	const package = require(pathForCmd);
+	const func = package.default;
+	if (typeof func !== 'function') {
+		throw new Error(`@webpack-cli/${packages} failed to export a default function`);
+	}
+	return func(...args);
+}
+
 module.exports = function promptForInstallation(packages, ...args) {
 	const nameOfPackage = "@webpack-cli/" + packages;
 	let packageIsInstalled = false;
@@ -113,10 +122,7 @@ module.exports = function promptForInstallation(packages, ...args) {
 							}
 
 							pathForCmd = path.resolve(process.cwd(), "node_modules", "@webpack-cli", packages);
-							if (packages === "serve") {
-								return require(pathForCmd).default.serve();
-							}
-							return require(pathForCmd).default(...args); //eslint-disable-line
+							return runWhenInstalled(packages, pathForCmd, ...args);
 						})
 						.catch(error => {
 							console.error(error);
@@ -132,6 +138,6 @@ module.exports = function promptForInstallation(packages, ...args) {
 			}
 		});
 	} else {
-		require(pathForCmd).default(...args); // eslint-disable-line
+		return runWhenInstalled(packages, pathForCmd, ...args);
 	}
 };
