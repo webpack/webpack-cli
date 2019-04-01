@@ -78,21 +78,10 @@ export default function runTransform(webpackProperties: IWebpackProperties, acti
 			});
 	});
 
+	let successMessage: string = `Congratulations! Your new webpack configuration file has been created!`;
 	if (initActionNotDefined && webpackProperties.config.item) {
-		process.stdout.write(
-			"\n" +
-				chalk.green(
-					`Congratulations! ${
-						webpackProperties.config.item
-					} has been ${action}ed!\n`,
-				),
-		);
-	} else {
-		process.stdout.write(
-			"\n" +
-				chalk.green(
-					"Congratulations! Your new webpack configuration file has been created!\n",
-				),
-		);
+		successMessage = `Congratulations! ${webpackProperties.config.item} has been ${action}ed!`;
+
 	}
+	process.stdout.write("\n" + chalk.green(`${successMessage}\n`));
 }
