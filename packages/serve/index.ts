@@ -169,10 +169,3 @@ export default function serve(...args: string[]) {
 			});
 	}
 }
-
-export {
-	getRootPathModule,
-	serve,
-	spawnNPMWithArg,
-	spawnYarnWithArg,
-};
