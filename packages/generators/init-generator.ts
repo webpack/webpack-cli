@@ -1,3 +1,8 @@
+/*
+Name 			: init-generators
+Description 	: Generates new webapck configuration as per user requirements.
+*/
+
 import chalk from "chalk";
 import * as logSymbols from "log-symbols";
 import Generator = require("yeoman-generator");
