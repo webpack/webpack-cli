@@ -90,22 +90,16 @@ export default function runTransform(transformConfig: ITransformConfig, action: 
 				console.error(err.message ? err.message : err);
 			});
 	});
-
+	let successMessage : string = `Congratulations! Your new webpack configuration file has been created!\n`
 	if (initActionNotDefined && transformConfig.config.item) {
-		process.stdout.write(
-			"\n" +
-				chalk.green(
-					`Congratulations! ${
-						transformConfig.config.item
-					} has been ${action}ed!\n`,
-				),
-		);
-	} else {
-		process.stdout.write(
-			"\n" +
-				chalk.green(
-					"Congratulations! Your new webpack configuration file has been created!\n",
-				),
-		);
+		successMessage = `Congratulations! ${
+			transformConfig.config.item
+		} has been ${action}ed!\n`
 	}
+	process.stdout.write(
+		"\n" +
+			chalk.green(
+				successMessage
+			)
+	);
 }
