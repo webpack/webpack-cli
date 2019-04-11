@@ -88,21 +88,4 @@ export default function runTransform(transformConfig: ITransformConfig, action: 
 			});
 	});
 
-	if (initActionNotDefined && transformConfig.config.item) {
-		process.stdout.write(
-			"\n" +
-				chalk.green(
-					`Congratulations! ${
-						transformConfig.config.item
-					} has been ${action}ed!\n`,
-				),
-		);
-	} else {
-		process.stdout.write(
-			"\n" +
-				chalk.green(
-					"Congratulations! Your new webpack configuration file has been created!\n",
-				),
-		);
-	}
 }

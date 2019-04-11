@@ -121,7 +121,28 @@ export default function modifyHelperUtil(
 			},
 			configModule,
 		);
-		return runTransform(transformConfig, action);
+
+		runTransform(transformConfig, action);
+		const initActionNotDefined: boolean = action && action !== "init" ? true : false;
+		if (initActionNotDefined && transformConfig.config.item) {
+			process.stdout.write(
+				"\n" +
+					chalk.green(
+						`Congratulations! ${
+							transformConfig.config.item
+						} has been ${action}ed!\n`,
+					),
+			);
+		} else {
+			process.stdout.write(
+				"\n" +
+					chalk.green(
+						"Congratulations! Your new webpack configuration file has been created!\n",
+					),
+			);
+		}
+
+		return;
 	}).catch((err) => {
 		console.error(
 			chalk.red(
