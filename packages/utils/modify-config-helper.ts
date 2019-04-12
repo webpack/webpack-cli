@@ -42,7 +42,9 @@ export default function modifyHelperUtil(
 	action: string,
 	generator: IGenerator,
 	configFile: string = DEFAULT_WEBPACK_CONFIG_FILENAME,
-	packages?: string[])
+	packages?: string[],
+	mode: string = "CLI",
+)
 	: Function {
 
 	let configPath: string | null = null;
@@ -50,27 +52,32 @@ export default function modifyHelperUtil(
 	if (action !== "init") {
 		configPath = path.resolve(process.cwd(), configFile);
 		const webpackConfigExists: boolean = fs.existsSync(configPath);
+		// Check not required for UI
 		if (webpackConfigExists) {
-			process.stdout.write(
-				"\n" +
-					logSymbols.success +
-					chalk.green(" SUCCESS ") +
-					"Found config " +
-					chalk.cyan(configFile + "\n") +
-					"\n",
-			);
+			if (mode === "CLI") {
+				process.stdout.write(
+					"\n" +
+						logSymbols.success +
+						chalk.green(" SUCCESS ") +
+						"Found config " +
+						chalk.cyan(configFile + "\n") +
+						"\n",
+				);
+			}
 		} else {
-			process.stdout.write(
-				"\n" +
-					logSymbols.error +
-					chalk.red(" ERROR ") +
-					chalk.cyan(configFile) +
-					" not found. Please specify a valid path to your webpack config like " +
-					chalk.white("$ ") +
-					chalk.cyan(`webpack-cli ${action} webpack.dev.js`) +
-					"\n",
-			);
-			return;
+			if (mode === "CLI") {
+				process.stdout.write(
+					"\n" +
+						logSymbols.error +
+						chalk.red(" ERROR ") +
+						chalk.cyan(configFile) +
+						" not found. Please specify a valid path to your webpack config like " +
+						chalk.white("$ ") +
+						chalk.cyan(`webpack-cli ${action} webpack.dev.js`) +
+						"\n",
+				);
+				return;
+			}
 		}
 	}
 
@@ -103,16 +110,21 @@ export default function modifyHelperUtil(
 			});
 			configModule = tmpConfig;
 		} catch (err) {
-			console.error(
-				chalk.red("\nCould not find a yeoman configuration file.\n"),
-			);
-			console.error(
-				chalk.red(
-					"\nPlease make sure to use 'this.config.set('configuration', this.configuration);' at the end of the generator.\n",
-				),
-			);
-			Error.stackTraceLimit = 0;
-			process.exitCode = -1;
+			if (mode === "CLI") {
+				console.error(
+					chalk.red("\nCould not find a yeoman configuration file.\n"),
+				);
+				console.error(
+					chalk.red(
+						// tslint:disable-next-line: max-line-length
+						"\nPlease make sure to use 'this.config.set('configuration', this.configuration);' at the end of the generator.\n",
+					),
+				);
+				Error.stackTraceLimit = 0;
+				process.exitCode = -1;
+			} else {
+				return false;
+			}
 		}
 		const transformConfig: ITransformConfig = Object.assign(
 			{
@@ -123,35 +135,40 @@ export default function modifyHelperUtil(
 		);
 
 		runTransform(transformConfig, action);
-		const initActionNotDefined: boolean = action && action !== "init" ? true : false;
-		if (initActionNotDefined && transformConfig.config.item) {
-			process.stdout.write(
-				"\n" +
-					chalk.green(
-						`Congratulations! ${
-							transformConfig.config.item
-						} has been ${action}ed!\n`,
-					),
-			);
-		} else {
-			process.stdout.write(
-				"\n" +
-					chalk.green(
-						"Congratulations! Your new webpack configuration file has been created!\n",
-					),
-			);
+		if (mode === "CLI"){
+			const initActionNotDefined: boolean = action && action !== "init" ? true : false;
+			if (initActionNotDefined && transformConfig.config.item) {
+				process.stdout.write(
+					"\n" +
+						chalk.green(
+							`Congratulations! ${
+								transformConfig.config.item
+							} has been ${action}ed!\n`,
+						),
+				);
+			} else {
+				process.stdout.write(
+					"\n" +
+						chalk.green(
+							"Congratulations! Your new webpack configuration file has been created!\n",
+						),
+				);
+			}
+			return;
 		}
-
-		return;
+		return true;
 	}).catch((err) => {
-		console.error(
-			chalk.red(
-				`
+		if (mode === "CLI") {
+			console.error(
+				chalk.red(
+					`
 Unexpected Error
 please file an issue here https://github.com/webpack/webpack-cli/issues/new?template=Bug_report.md
-				`,
-			),
-		);
-		console.error(err);
+					`,
+				),
+			);
+			console.error(err);
+		}
+		return false;
 	});
 }

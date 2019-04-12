@@ -76,7 +76,8 @@ export default function runTransform(transformConfig: ITransformConfig, action: 
 
 				const outputPath: string = initActionNotDefined
 					? transformConfig.configPath
-					: path.join(process.cwd(), configurationName);
+					: path.join(process.cwd(), configurationName,
+				);
 				const source: string = ast.toSource({
 					quote: "single",
 				});
