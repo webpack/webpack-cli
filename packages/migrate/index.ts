@@ -42,14 +42,14 @@ declare var process: {
  */
 
 export default function migrate(...args: string[]): void | Promise<void> {
-	const filePaths: string[] = args.slice(3);
+	const filePaths = args.slice(3);
 	if (!filePaths.length) {
-		const errMsg: string = "\n ✖ Please specify a path to your webpack config \n ";
+		const errMsg = "\n ✖ Please specify a path to your webpack config \n ";
 		console.error(chalk.red(errMsg));
 		return;
 	}
 
-	const currentConfigPath: string = path.resolve(process.cwd(), filePaths[0]);
+	const currentConfigPath = path.resolve(process.cwd(), filePaths[0]);
 	let outputConfigPath: string;
 
 	if (!filePaths[1]) {
@@ -232,7 +232,7 @@ function runMigration(currentConfigPath: string, outputConfigPath: string): Prom
 				});
 		})
 		.catch((err: object): void => {
-			const errMsg: string = "\n ✖ ︎Migration aborted due to some errors: \n";
+			const errMsg = "\n ✖ ︎Migration aborted due to some errors: \n";
 			console.error(chalk.red(errMsg));
 			console.error(err);
 			process.exitCode = 1;

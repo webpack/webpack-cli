@@ -2,7 +2,9 @@ import chalk from "chalk";
 import * as j from "jscodeshift";
 import pEachSeries = require("p-each-series");
 import * as path from "path";
+import { findProjectRoot } from "./find-root";
 
+import { IError } from "../init/types";
 import { IConfig, ITransformConfig } from "./modify-config-helper";
 import propTypes from "./prop-types";
 import astTransform from "./recursive-parser";
@@ -19,7 +21,7 @@ import { INode } from "./types/NodePath";
  */
 
 function mapOptionsToTransform(config: IConfig): string[] {
-	return Object.keys(config.webpackOptions).filter((k: string) => propTypes.has(k));
+	return Object.keys(config.webpackOptions).filter((k: string): boolean => propTypes.has(k));
 }
 
 /**
@@ -34,15 +36,15 @@ function mapOptionsToTransform(config: IConfig): string[] {
 
 export default function runTransform(transformConfig: ITransformConfig, action: string): void {
 	// webpackOptions.name sent to nameTransform if match
-	const webpackConfig = Object.keys(transformConfig).filter((p: string) => {
+	const webpackConfig = Object.keys(transformConfig).filter((p: string): boolean => {
 		return p !== "configFile" && p !== "configPath";
 	});
-	const initActionNotDefined: boolean = action && action !== "init" ? true : false;
+	const initActionNotDefined = action && action !== "init" ? true : false;
 
 	webpackConfig.forEach((scaffoldPiece: string) => {
 		const config: IConfig = transformConfig[scaffoldPiece];
 
-		const transformations: string[] = mapOptionsToTransform(config);
+		const transformations = mapOptionsToTransform(config);
 
 		if (config.topScope && transformations.indexOf("topScope") === -1) {
 			transformations.push("topScope");
@@ -74,15 +76,17 @@ export default function runTransform(transformConfig: ITransformConfig, action: 
 					configurationName = "webpack." + config.configName + ".js";
 				}
 
+				const projectRoot = findProjectRoot();
 				const outputPath: string = initActionNotDefined
 					? transformConfig.configPath
 					: path.join(process.cwd(), configurationName,
 				);
+  
 				const source: string = ast.toSource({
 					quote: "single",
 				});
-
 				runPrettier(outputPath, source);
+
 			})
 			.catch((err: IError) => {
 				console.error(err.message ? err.message : err);

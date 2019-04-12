@@ -33,8 +33,8 @@ export default class RemoveGenerator extends Generator {
 			},
 		};
 
-		let configPath: string = path.resolve(process.cwd(), "webpack.config.js");
-		const webpackConfigExists: boolean = fs.existsSync(configPath);
+		let configPath = path.resolve(process.cwd(), "webpack.config.js");
+		const webpackConfigExists = fs.existsSync(configPath);
 		if (!webpackConfigExists) {
 			configPath = null;
 			// end the generator stating webpack config not found or to specify the config

@@ -47,12 +47,12 @@ const getRootPathModule = (dep: string): string => path.resolve(process.cwd(), d
  *
  * Prompts for installing the devServer and running it
  *
- * @param {Object} args - args processed from the CLI
+ * @param {String[]} args - args processed from the CLI
  * @returns {Function} invokes the devServer API
  */
 
-function serve() {
-	const packageJSONPath: string = getRootPathModule("package.json");
+export default function serve(...args: string[]) {
+	const packageJSONPath = getRootPathModule("package.json");
 	if (!packageJSONPath) {
 		console.error(
 			"\n",
@@ -169,10 +169,3 @@ function serve() {
 			});
 	}
 }
-
-export = {
-	getRootPathModule,
-	serve,
-	spawnNPMWithArg,
-	spawnYarnWithArg,
-};

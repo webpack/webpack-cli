@@ -11,7 +11,6 @@ import {
 	AutoComplete,
 	Confirm,
 	IInquirerInput,
-	IInquirerList,
 	Input,
 	List,
 } from "@webpack-cli/webpack-scaffold";
@@ -51,7 +50,7 @@ function replaceAt(str: string, index: number, replace: string): string {
  * is present
  */
 const traverseAndGetProperties = (arr: object[], prop: string): boolean => {
-	let hasProp: boolean = false;
+	let hasProp = false;
 	arr.forEach((p: object): void => {
 		if (p[prop]) {
 			hasProp = true;
@@ -174,7 +173,7 @@ export default class AddGenerator extends Generator {
 							});
 						}
 					}
-				const temp: string = action;
+				const temp = action;
 				if (action === "resolveLoader") {
 					action = "resolve";
 				}
@@ -426,11 +425,11 @@ export default class AddGenerator extends Generator {
 							.then((p: string) => {
 								if (p) {
 									this.dependencies.push(answerToAction.actionAnswer);
-									const normalizePluginName: string = answerToAction.actionAnswer.replace(
+									const normalizePluginName = answerToAction.actionAnswer.replace(
 										"-webpack-plugin",
 										"Plugin",
 									);
-									const pluginName: string = replaceAt(
+									const pluginName = replaceAt(
 										normalizePluginName,
 										0,
 										normalizePluginName.charAt(0).toUpperCase(),
@@ -472,7 +471,7 @@ export default class AddGenerator extends Generator {
 							return;
 						}
 						// Either we are adding directly at the property, else we're in a prop.theOne scenario
-						const actionMessage: string =
+						const actionMessage =
 							isDeepProp[1] === "other"
 								? `What do you want the key on ${
 									action
@@ -518,7 +517,7 @@ export default class AddGenerator extends Generator {
 									);
 								} else {
 									// We got the schema prop, we've correctly prompted it, and can add it directly
-									this.configuration.config.item = action + "." + isDeepProp[1];
+									this.configuration.config.item = `${action}.${isDeepProp[1]}`;
 									this.configuration.config.webpackOptions[action] = {
 										[isDeepProp[1]]: deepPropAns.deepProp,
 									};

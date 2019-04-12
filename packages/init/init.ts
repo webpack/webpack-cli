@@ -42,11 +42,11 @@ export default function runTransform(webpackProperties: IWebpackProperties, acti
 			.keys(webpackProperties)
 			.filter((p: string): boolean => p !== "configFile" && p !== "configPath");
 
-	const initActionNotDefined: boolean = (action && action !== "init") || false;
+	const initActionNotDefined = (action && action !== "init") || false;
 
 	webpackConfig.forEach((scaffoldPiece: string): Promise<void> => {
 		const config: IConfiguration = webpackProperties[scaffoldPiece];
-		const transformations: string[] = mapOptionsToTransform(config);
+		const transformations = mapOptionsToTransform(config);
 		const ast = j(
 			initActionNotDefined
 				? webpackProperties.configFile
@@ -58,12 +58,12 @@ export default function runTransform(webpackProperties: IWebpackProperties, acti
 			return astTransform(j, ast, config.webpackOptions[f], transformAction, f);
 		})
 			.then((value: string[]): void | PromiseLike <void> => {
-				let configurationName: string = "webpack.config.js";
+				let configurationName = "webpack.config.js";
 				if (config.configName) {
-					configurationName = "webpack." + config.configName + ".js";
+					configurationName = `webpack.${config.configName}.js`;
 				}
 
-				const outputPath: string = initActionNotDefined
+				const outputPath = initActionNotDefined
 					? webpackProperties.configPath
 					: path.join(process.cwd(), configurationName);
 
@@ -78,21 +78,10 @@ export default function runTransform(webpackProperties: IWebpackProperties, acti
 			});
 	});
 
+	let successMessage: string = `Congratulations! Your new webpack configuration file has been created!`;
 	if (initActionNotDefined && webpackProperties.config.item) {
-		process.stdout.write(
-			"\n" +
-				chalk.green(
-					`Congratulations! ${
-						webpackProperties.config.item
-					} has been ${action}ed!\n`,
-				),
-		);
-	} else {
-		process.stdout.write(
-			"\n" +
-				chalk.green(
-					"Congratulations! Your new webpack configuration file has been created!\n",
-				),
-		);
+		successMessage = `Congratulations! ${webpackProperties.config.item} has been ${action}ed!`;
+
 	}
+	process.stdout.write("\n" + chalk.green(`${successMessage}\n`));
 }

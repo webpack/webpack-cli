@@ -33,13 +33,13 @@ export function createDynamicPromise(arrOrString: string[] | string): string {
 	if (Array.isArray(arrOrString)) {
 		return (
 			"() => new Promise((resolve) => resolve([" +
-			arrOrString.map((func: string) => {
+			arrOrString.map((func: string): string => {
 				return "'" + func + "'";
 			}) +
 			"]))"
 		);
 	} else {
-		return "() => new Promise((resolve) => resolve(" + "'" + arrOrString + "'" + "))";
+		return `() => new Promise((resolve) => resolve('${arrOrString}'))`;
 	}
 }
 

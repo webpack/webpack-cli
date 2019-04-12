@@ -82,7 +82,7 @@ export default function modifyHelperUtil(
 	}
 
 	const env = yeoman.createEnv("webpack", null);
-	const generatorName: string = `webpack-${action}-generator`;
+	const generatorName = `webpack-${action}-generator`;
 
 	if (!generator) {
 		generator = class extends Generator {
@@ -98,12 +98,12 @@ export default function modifyHelperUtil(
 	env.run(generatorName).then((_: void) => {
 		let configModule: object;
 		try {
-			const confPath: string = path.resolve(process.cwd(), ".yo-rc.json");
+			const confPath = path.resolve(process.cwd(), ".yo-rc.json");
 			configModule = require(confPath);
 			// Change structure of the config to be transformed
 			const tmpConfig: object = {};
 			Object.keys(configModule).forEach((prop: string): void => {
-				const configs: string[] = Object.keys(configModule[prop].configuration);
+				const configs = Object.keys(configModule[prop].configuration);
 				configs.forEach((conf: string): void => {
 					tmpConfig[conf] = configModule[prop].configuration[conf];
 				});

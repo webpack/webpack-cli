@@ -83,6 +83,18 @@ In case you are suggesting a new feature, we will match your idea with our curre
   npm run test
   ```
 
+* Run CLI tests with:
+  
+  ```bash
+  npm run test:cli
+  ```
+
+* Run tests of all packages:
+  
+  ```bash
+  npm run test:packages
+  ```
+
 * Test a single CLI test case:
   
   ```bash
@@ -108,6 +120,18 @@ In case you are suggesting a new feature, we will match your idea with our curre
   
   ```bash
   yarn test
+  ```
+
+* Run CLI tests with:
+  
+  ```bash
+  yarn test:cli`
+  ```
+
+* Run tests of all packages:
+  
+  ```bash
+  yarn test:packages
   ```
 
 * Test a single CLI test case:

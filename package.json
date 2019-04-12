@@ -40,6 +40,8 @@
     "pretest": "npm run build && npm run lint && npm run tslint",
     "reportCoverage": "nyc report --reporter=json && codecov -f coverage/coverage-final.json --disable=gcov",
     "test": "nyc jest --maxWorkers=4 --reporters=default --reporters=jest-junit",
+    "test:cli": "nyc jest test/ --maxWorkers=4 --reporters=default --reporters=jest-junit",
+    "test:packages": "nyc jest packages/ --maxWorkers=4 --reporters=default --reporters=jest-junit",
     "test:ci": "nyc jest --maxWorkers=$(nproc) --reporters=default --reporters=jest-junit",
     "travis:integration": "npm run build && npm run test && npm run reportCoverage",
     "travis:lint": "npm run build && npm run lint && npm run tslint",
@@ -76,7 +78,10 @@
     "transform": {
       "^.+\\.(ts)?$": "ts-jest"
     },
-    "testRegex": "/__tests__/.*\\.(test.js|test.ts)$",
+    "testRegex": [
+      "/__tests__/.*\\.(test.js|test.ts)$",
+      "/test/.*\\.(test.js|test.ts)$"
+    ],
     "moduleFileExtensions": [
       "ts",
       "js",

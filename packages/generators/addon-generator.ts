@@ -46,7 +46,7 @@ export default function addonGenerator(
 		}
 
 		public default() {
-			const currentDirName: string = path.basename(this.destinationPath());
+			const currentDirName = path.basename(this.destinationPath());
 			if (currentDirName !== this.props.name) {
 				this.log(`
 				Your project must be inside a folder named ${this.props.name}
