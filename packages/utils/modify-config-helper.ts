@@ -135,7 +135,7 @@ export default function modifyHelperUtil(
 		);
 
 		runTransform(transformConfig, action);
-		if (mode === "CLI"){
+		if (mode === "CLI") {
 			const initActionNotDefined: boolean = action && action !== "init" ? true : false;
 			if (initActionNotDefined && transformConfig.config.item) {
 				process.stdout.write(
