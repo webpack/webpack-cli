@@ -81,7 +81,7 @@ export default function runTransform(transformConfig: ITransformConfig, action: 
 					? transformConfig.configPath
 					: path.join(process.cwd(), configurationName,
 				);
-  
+
 				const source: string = ast.toSource({
 					quote: "single",
 				});
