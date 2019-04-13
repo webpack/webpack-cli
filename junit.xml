@@ -1,199 +1,149 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="197" failures="0" time="28.898">
-  <testsuite name="init" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:21:50" time="1.539" tests="7">
-    <testcase classname="init transforms correctly using &quot;fixture-1&quot; data" name="init transforms correctly using &quot;fixture-1&quot; data" time="0.237">
+<testsuites name="jest tests" tests="197" failures="0" time="32.178">
+  <testsuite name="package-manager" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:44" time="1.299" tests="8">
+    <testcase classname="package-manager should return &apos;yarn&apos; from getPackageManager if it&apos;s installed" name="package-manager should return &apos;yarn&apos; from getPackageManager if it&apos;s installed" time="0.003">
     </testcase>
-    <testcase classname="add transforms correctly using &quot;fixture-2&quot; data" name="add transforms correctly using &quot;fixture-2&quot; data" time="0.03">
+    <testcase classname="package-manager should return &apos;npm&apos; from getPackageManager if yarn is not installed" name="package-manager should return &apos;npm&apos; from getPackageManager if yarn is not installed" time="0">
     </testcase>
-    <testcase classname="remove transforms correctly using &quot;fixture-3&quot; data" name="remove transforms correctly using &quot;fixture-3&quot; data" time="0.045">
+    <testcase classname="package-manager should spawn yarn add from spawnChild" name="package-manager should spawn yarn add from spawnChild" time="0.032">
     </testcase>
-    <testcase classname="remove transforms correctly using &quot;fixture-3&quot; data" name="remove transforms correctly using &quot;fixture-3&quot; data" time="0.042">
+    <testcase classname="package-manager should spawn yarn upgrade from spawnChild" name="package-manager should spawn yarn upgrade from spawnChild" time="0.001">
     </testcase>
-    <testcase classname="remove transforms correctly using &quot;fixture-3&quot; data" name="remove transforms correctly using &quot;fixture-3&quot; data" time="0.027">
+    <testcase classname="package-manager should spawn npm install from spawnChild" name="package-manager should spawn npm install from spawnChild" time="0">
     </testcase>
-    <testcase classname="remove transforms correctly using &quot;fixture-3&quot; data" name="remove transforms correctly using &quot;fixture-3&quot; data" time="0.021">
+    <testcase classname="package-manager should spawn npm update from spawnChild" name="package-manager should spawn npm update from spawnChild" time="0">
     </testcase>
-    <testcase classname="remove transforms correctly using &quot;fixture-3&quot; data" name="remove transforms correctly using &quot;fixture-3&quot; data" time="0.018">
+    <testcase classname="package-manager should return the yarn global dir from getPathToGlobalPackages if yarn is installed" name="package-manager should return the yarn global dir from getPathToGlobalPackages if yarn is installed" time="0.001">
     </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:21:50" time="1.992" tests="1">
-    <testcase classname=" function" name=" function" time="1.407">
+    <testcase classname="package-manager should return the npm global dir from getPathToGlobalPackages if yarn is not installed" name="package-manager should return the npm global dir from getPathToGlobalPackages if yarn is not installed" time="0">
     </testcase>
   </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:21:50" time="2.149" tests="1">
-    <testcase classname=" profile" name=" profile" time="1.56">
+  <testsuite name="undefined" errors="0" failures="0" skipped="1" timestamp="2019-03-15T18:51:44" time="1.68" tests="1">
+    <testcase classname=" info-verbosity-verbose" name=" info-verbosity-verbose" time="0.001">
+      <skipped/>
     </testcase>
   </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:21:52" time="1.787" tests="1">
-    <testcase classname=" found-many" name=" found-many" time="1.613">
+  <testsuite name="extractHash functionality" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:44" time="1.718" tests="9">
+    <testcase classname="extractHash functionality should throw Error if there is empty string" name="extractHash functionality should throw Error if there is empty string" time="0.013">
+    </testcase>
+    <testcase classname="extractHash functionality should throw Error if there is no hash value" name="extractHash functionality should throw Error if there is no hash value" time="0.001">
+    </testcase>
+    <testcase classname="extractHash functionality should throw Error if hash count and config count do not match" name="extractHash functionality should throw Error if hash count and config count do not match" time="0">
+    </testcase>
+    <testcase classname="extractHash functionality should fetch hash if there is only single config" name="extractHash functionality should fetch hash if there is only single config" time="0.001">
+    </testcase>
+    <testcase classname="extractHash functionality should fetch hash if there is more than one config" name="extractHash functionality should fetch hash if there is more than one config" time="0.002">
+    </testcase>
+    <testcase classname="appendFile functionality positive test-cases should append data to file if file exists" name="appendFile functionality positive test-cases should append data to file if file exists" time="0.005">
+    </testcase>
+    <testcase classname="appendFile functionality negative test-cases should throw error if file does not exist" name="appendFile functionality negative test-cases should throw error if file does not exist" time="0">
+    </testcase>
+    <testcase classname="copyFile functionality positive test-cases should copy file if file exists" name="copyFile functionality positive test-cases should copy file if file exists" time="0.008">
+    </testcase>
+    <testcase classname="copyFile functionality negative test-cases should throw error if file does not exist" name="copyFile functionality negative test-cases should throw error if file does not exist" time="0">
     </testcase>
   </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:21:52" time="1.72" tests="1">
-    <testcase classname=" info-verbosity" name=" info-verbosity" time="1.566">
+  <testsuite name="undefined" errors="0" failures="0" skipped="1" timestamp="2019-03-15T18:51:46" time="0.142" tests="1">
+    <testcase classname=" info-verbosity-off" name=" info-verbosity-off" time="0">
+      <skipped/>
     </testcase>
   </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:21:52" time="1.841" tests="1">
-    <testcase classname=" output-library-many" name=" output-library-many" time="1.709">
+  <testsuite name="undefined" errors="0" failures="0" skipped="1" timestamp="2019-03-15T18:51:46" time="0.133" tests="1">
+    <testcase classname=" single-config-watch-opt" name=" single-config-watch-opt" time="0">
+      <skipped/>
     </testcase>
   </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:21:53" time="1.795" tests="1">
-    <testcase classname=" complex" name=" complex" time="1.676">
+  <testsuite name="undefined" errors="0" failures="0" skipped="1" timestamp="2019-03-15T18:51:46" time="0.131" tests="1">
+    <testcase classname=" multi-config-watch-opt" name=" multi-config-watch-opt" time="0">
+      <skipped/>
     </testcase>
   </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:21:54" time="1.948" tests="1">
-    <testcase classname=" multi-config" name=" multi-config" time="1.793">
+  <testsuite name="undefined" errors="0" failures="0" skipped="1" timestamp="2019-03-15T18:51:46" time="0.125" tests="1">
+    <testcase classname=" single-config" name=" single-config" time="0">
+      <skipped/>
     </testcase>
   </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:21:54" time="2.027" tests="1">
-    <testcase classname=" array" name=" array" time="1.839">
+  <testsuite name="utils" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:45" time="0.686" tests="15">
+    <testcase classname="utils createArrowFunction should stringify an arrow function" name="utils createArrowFunction should stringify an arrow function" time="0.002">
+    </testcase>
+    <testcase classname="utils createRegularFunction should stringify an regular function" name="utils createRegularFunction should stringify an regular function" time="0.001">
+    </testcase>
+    <testcase classname="utils createDynamicPromise should stringify an single value" name="utils createDynamicPromise should stringify an single value" time="0">
+    </testcase>
+    <testcase classname="utils createDynamicPromise should stringify an array" name="utils createDynamicPromise should stringify an array" time="0.001">
+    </testcase>
+    <testcase classname="utils createAssetFilterFunction should stringify an assetFilterFunction" name="utils createAssetFilterFunction should stringify an assetFilterFunction" time="0">
+    </testcase>
+    <testcase classname="utils parseValue should parse value" name="utils parseValue should parse value" time="0.006">
+    </testcase>
+    <testcase classname="utils parseValue should parse value with raw value" name="utils parseValue should parse value with raw value" time="0.005">
+    </testcase>
+    <testcase classname="utils createExternalFunction should stringify an ExternalFunction" name="utils createExternalFunction should stringify an ExternalFunction" time="0">
+    </testcase>
+    <testcase classname="utils createRequire should stringify an require statement" name="utils createRequire should stringify an require statement" time="0.001">
+    </testcase>
+    <testcase classname="utils Inquirer should make an List object" name="utils Inquirer should make an List object" time="0">
+    </testcase>
+    <testcase classname="utils Inquirer should make an RawList object" name="utils Inquirer should make an RawList object" time="0">
+    </testcase>
+    <testcase classname="utils Inquirer should make an CheckList object" name="utils Inquirer should make an CheckList object" time="0.001">
+    </testcase>
+    <testcase classname="utils Inquirer should make an Input object" name="utils Inquirer should make an Input object" time="0">
+    </testcase>
+    <testcase classname="utils Inquirer should make an Confirm object" name="utils Inquirer should make an Confirm object" time="0">
+    </testcase>
+    <testcase classname="utils Inquirer should make an Input object with validation" name="utils Inquirer should make an Input object with validation" time="0.001">
     </testcase>
   </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:21:50" time="6.286" tests="1">
-    <testcase classname=" webpack-babel-config" name=" webpack-babel-config" time="5.69">
+  <testsuite name="undefined" errors="0" failures="0" skipped="1" timestamp="2019-03-15T18:51:46" time="0.11" tests="1">
+    <testcase classname=" multi-config" name=" multi-config" time="0">
+      <skipped/>
     </testcase>
   </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:21:55" time="1.814" tests="1">
-    <testcase classname=" string" name=" string" time="1.667">
+  <testsuite name="utils" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:44" time="2.078" tests="29">
+    <testcase classname="utils createProperty should create properties for Boolean" name="utils createProperty should create properties for Boolean" time="0.012">
     </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:21:56" time="1.923" tests="1">
-    <testcase classname=" named-entry" name=" named-entry" time="1.791">
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:21:56" time="1.986" tests="1">
-    <testcase classname=" find-recursively" name=" find-recursively" time="1.813">
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:21:56" time="2.214" tests="1">
-    <testcase classname=" silent" name=" silent" time="2.05">
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:21:57" time="2.331" tests="1">
-    <testcase classname=" plugins-precedence" name=" plugins-precedence" time="2.137">
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:21:58" time="2.416" tests="1">
-    <testcase classname=" single-config" name=" single-config" time="2.208">
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:21:58" time="2.437" tests="1">
-    <testcase classname=" non-hyphenated-args" name=" non-hyphenated-args" time="2.115">
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:21:59" time="2.501" tests="1">
-    <testcase classname=" display-entrypoints" name=" display-entrypoints" time="2.341">
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:01" time="3.201" tests="1">
-    <testcase classname=" output-argument" name=" output-argument" time="2.956">
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:01" time="3.274" tests="1">
-    <testcase classname=" build-delimiter" name=" build-delimiter" time="3.032">
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:02" time="3.181" tests="1">
-    <testcase classname=" cli-override" name=" cli-override" time="2.942">
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:04" time="2.481" tests="1">
-    <testcase classname=" info-verbosity" name=" info-verbosity" time="2.082">
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:04" time="2.289" tests="1">
-    <testcase classname=" none" name=" none" time="2.104">
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:05" time="1.895" tests="1">
-    <testcase classname=" object" name=" object" time="1.762">
-    </testcase>
-  </testsuite>
-  <testsuite name="npmPackagesExists" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:21:58" time="9.919" tests="2">
-    <testcase classname="npmPackagesExists resolves packages when they are available on the local filesystem" name="npmPackagesExists resolves packages when they are available on the local filesystem" time="0.005">
-    </testcase>
-    <testcase classname="npmPackagesExists throws a TypeError when an npm package name doesn&apos;t include the prefix" name="npmPackagesExists throws a TypeError when an npm package name doesn&apos;t include the prefix" time="0.012">
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:06" time="1.865" tests="1">
-    <testcase classname=" promise" name=" promise" time="1.724">
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:07" time="1.828" tests="1">
-    <testcase classname=" output-library-single" name=" output-library-single" time="1.681">
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:07" time="2.021" tests="1">
-    <testcase classname=" multi-file" name=" multi-file" time="1.888">
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:08" time="2.053" tests="1">
-    <testcase classname=" set-implicitly" name=" set-implicitly" time="1.732">
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:08" time="1.992" tests="1">
-    <testcase classname=" module-bind" name=" module-bind" time="1.832">
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:08" time="1.809" tests="1">
-    <testcase classname=" found-one" name=" found-one" time="1.64">
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:09" time="1.896" tests="1">
-    <testcase classname=" find-recursively" name=" find-recursively" time="1.734">
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:10" time="1.794" tests="1">
-    <testcase classname=" none" name=" none" time="1.659">
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:10" time="1.765" tests="1">
-    <testcase classname=" function-promise" name=" function-promise" time="1.647">
-    </testcase>
-  </testsuite>
-  <testsuite name="utils" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:11" time="0.44" tests="29">
-    <testcase classname="utils createProperty should create properties for Boolean" name="utils createProperty should create properties for Boolean" time="0.014">
-    </testcase>
-    <testcase classname="utils createProperty should create properties for Number" name="utils createProperty should create properties for Number" time="0.002">
+    <testcase classname="utils createProperty should create properties for Number" name="utils createProperty should create properties for Number" time="0.001">
     </testcase>
     <testcase classname="utils createProperty should create properties for String" name="utils createProperty should create properties for String" time="0.001">
     </testcase>
-    <testcase classname="utils createProperty should create properties for complex keys" name="utils createProperty should create properties for complex keys" time="0.001">
+    <testcase classname="utils createProperty should create properties for complex keys" name="utils createProperty should create properties for complex keys" time="0">
     </testcase>
-    <testcase classname="utils createProperty should create properties for non-literal keys" name="utils createProperty should create properties for non-literal keys" time="0.002">
+    <testcase classname="utils createProperty should create properties for non-literal keys" name="utils createProperty should create properties for non-literal keys" time="0.001">
     </testcase>
-    <testcase classname="utils findPluginsByName should find plugins in AST" name="utils findPluginsByName should find plugins in AST" time="0.016">
+    <testcase classname="utils findPluginsByName should find plugins in AST" name="utils findPluginsByName should find plugins in AST" time="0.01">
     </testcase>
-    <testcase classname="utils findPluginsByName should find all plugins in AST" name="utils findPluginsByName should find all plugins in AST" time="0.003">
+    <testcase classname="utils findPluginsByName should find all plugins in AST" name="utils findPluginsByName should find all plugins in AST" time="0.001">
     </testcase>
-    <testcase classname="utils findPluginsByName should not find false positives" name="utils findPluginsByName should not find false positives" time="0.003">
+    <testcase classname="utils findPluginsByName should not find false positives" name="utils findPluginsByName should not find false positives" time="0.002">
     </testcase>
-    <testcase classname="utils findPluginsArrayAndRemoveIfEmpty should remove plugins property" name="utils findPluginsArrayAndRemoveIfEmpty should remove plugins property" time="0.011">
+    <testcase classname="utils findPluginsArrayAndRemoveIfEmpty should remove plugins property" name="utils findPluginsArrayAndRemoveIfEmpty should remove plugins property" time="0.006">
     </testcase>
-    <testcase classname="utils findPluginsArrayAndRemoveIfEmpty It should not remove plugins array, given an array with length greater than zero" name="utils findPluginsArrayAndRemoveIfEmpty It should not remove plugins array, given an array with length greater than zero" time="0.005">
+    <testcase classname="utils findPluginsArrayAndRemoveIfEmpty It should not remove plugins array, given an array with length greater than zero" name="utils findPluginsArrayAndRemoveIfEmpty It should not remove plugins array, given an array with length greater than zero" time="0.002">
     </testcase>
-    <testcase classname="utils findRootNodesByName should find plugins: [] nodes" name="utils findRootNodesByName should find plugins: [] nodes" time="0.004">
+    <testcase classname="utils findRootNodesByName should find plugins: [] nodes" name="utils findRootNodesByName should find plugins: [] nodes" time="0.001">
     </testcase>
-    <testcase classname="utils findRootNodesByName should not find plugins: [] nodes" name="utils findRootNodesByName should not find plugins: [] nodes" time="0.004">
+    <testcase classname="utils findRootNodesByName should not find plugins: [] nodes" name="utils findRootNodesByName should not find plugins: [] nodes" time="0.001">
     </testcase>
-    <testcase classname="utils createOrUpdatePluginByName should create a new plugin without arguments" name="utils createOrUpdatePluginByName should create a new plugin without arguments" time="0.008">
+    <testcase classname="utils createOrUpdatePluginByName should create a new plugin without arguments" name="utils createOrUpdatePluginByName should create a new plugin without arguments" time="0.003">
     </testcase>
-    <testcase classname="utils createOrUpdatePluginByName should create a new plugin with arguments" name="utils createOrUpdatePluginByName should create a new plugin with arguments" time="0.006">
+    <testcase classname="utils createOrUpdatePluginByName should create a new plugin with arguments" name="utils createOrUpdatePluginByName should create a new plugin with arguments" time="0.002">
     </testcase>
-    <testcase classname="utils createOrUpdatePluginByName should add an object as an argument" name="utils createOrUpdatePluginByName should add an object as an argument" time="0.004">
+    <testcase classname="utils createOrUpdatePluginByName should add an object as an argument" name="utils createOrUpdatePluginByName should add an object as an argument" time="0.001">
     </testcase>
-    <testcase classname="utils createOrUpdatePluginByName should merge options objects" name="utils createOrUpdatePluginByName should merge options objects" time="0.009">
+    <testcase classname="utils createOrUpdatePluginByName should merge options objects" name="utils createOrUpdatePluginByName should merge options objects" time="0.004">
     </testcase>
-    <testcase classname="utils findVariableToPlugin should find the variable name of a plugin" name="utils findVariableToPlugin should find the variable name of a plugin" time="0.006">
+    <testcase classname="utils findVariableToPlugin should find the variable name of a plugin" name="utils findVariableToPlugin should find the variable name of a plugin" time="0.001">
     </testcase>
     <testcase classname="utils createLiteral should create basic literal" name="utils createLiteral should create basic literal" time="0">
     </testcase>
     <testcase classname="utils createLiteral should create boolean" name="utils createLiteral should create boolean" time="0">
     </testcase>
-    <testcase classname="utils createIdentifierOrLiteral should create basic literal" name="utils createIdentifierOrLiteral should create basic literal" time="0.002">
+    <testcase classname="utils createIdentifierOrLiteral should create basic literal" name="utils createIdentifierOrLiteral should create basic literal" time="0">
     </testcase>
-    <testcase classname="utils createIdentifierOrLiteral should create boolean" name="utils createIdentifierOrLiteral should create boolean" time="0.001">
+    <testcase classname="utils createIdentifierOrLiteral should create boolean" name="utils createIdentifierOrLiteral should create boolean" time="0.004">
     </testcase>
-    <testcase classname="utils findObjWithOneOfKeys should find keys" name="utils findObjWithOneOfKeys should find keys" time="0.005">
+    <testcase classname="utils findObjWithOneOfKeys should find keys" name="utils findObjWithOneOfKeys should find keys" time="0.002">
     </testcase>
     <testcase classname="utils getRequire should create a require statement" name="utils getRequire should create a require statement" time="0.001">
     </testcase>
@@ -205,353 +155,403 @@
     </testcase>
     <testcase classname="utils safeTraverseAndGetType should safe traverse and return false if not found" name="utils safeTraverseAndGetType should safe traverse and return false if not found" time="0">
     </testcase>
-    <testcase classname="utils addProperty add entry property using init" name="utils addProperty add entry property using init" time="0.008">
+    <testcase classname="utils addProperty add entry property using init" name="utils addProperty add entry property using init" time="0.003">
     </testcase>
-    <testcase classname="utils addProperty add entry property using add" name="utils addProperty add entry property using add" time="0.015">
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:10" time="1.761" tests="1">
-    <testcase classname=" not-found" name=" not-found" time="1.623">
+    <testcase classname="utils addProperty add entry property using add" name="utils addProperty add entry property using add" time="0.006">
     </testcase>
   </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:11" time="1.753" tests="1">
-    <testcase classname=" production" name=" production" time="1.625">
-    </testcase>
-  </testsuite>
-  <testsuite name="utils" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:13" time="0.354" tests="16">
-    <testcase classname="utils createArrowFunction should stringify an arrow function" name="utils createArrowFunction should stringify an arrow function" time="0.001">
-    </testcase>
-    <testcase classname="utils createRegularFunction should stringify a regular function" name="utils createRegularFunction should stringify a regular function" time="0.001">
-    </testcase>
-    <testcase classname="utils createDynamicPromise should stringify an single value" name="utils createDynamicPromise should stringify an single value" time="0">
-    </testcase>
-    <testcase classname="utils createDynamicPromise should stringify an array" name="utils createDynamicPromise should stringify an array" time="0.001">
-    </testcase>
-    <testcase classname="utils createAssetFilterFunction should stringify an assetFilterFunction" name="utils createAssetFilterFunction should stringify an assetFilterFunction" time="0.001">
-    </testcase>
-    <testcase classname="utils parseValue should parse value" name="utils parseValue should parse value" time="0.011">
-    </testcase>
-    <testcase classname="utils parseValue should parse value with raw value" name="utils parseValue should parse value with raw value" time="0.007">
-    </testcase>
-    <testcase classname="utils createExternalFunction should stringify an ExternalFunction" name="utils createExternalFunction should stringify an ExternalFunction" time="0.001">
-    </testcase>
-    <testcase classname="utils createRequire should stringify a require statement" name="utils createRequire should stringify a require statement" time="0.001">
-    </testcase>
-    <testcase classname="utils Inquirer should make a List object" name="utils Inquirer should make a List object" time="0.001">
-    </testcase>
-    <testcase classname="utils Inquirer should make a RawList object" name="utils Inquirer should make a RawList object" time="0.001">
-    </testcase>
-    <testcase classname="utils Inquirer should make a CheckList object" name="utils Inquirer should make a CheckList object" time="0.001">
-    </testcase>
-    <testcase classname="utils Inquirer should make an Input object" name="utils Inquirer should make an Input object" time="0.001">
-    </testcase>
-    <testcase classname="utils Inquirer should make a Confirm object" name="utils Inquirer should make a Confirm object" time="0">
-    </testcase>
-    <testcase classname="utils Inquirer should make a Confirm object with No as default" name="utils Inquirer should make a Confirm object with No as default" time="0.001">
-    </testcase>
-    <testcase classname="utils Inquirer should make an Input object with validation" name="utils Inquirer should make an Input object with validation" time="0.007">
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:12" time="1.513" tests="1">
-    <testcase classname=" none" name=" none" time="1.404">
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:12" time="1.68" tests="1">
-    <testcase classname=" set-explicitly" name=" set-explicitly" time="1.564">
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:12" time="1.862" tests="1">
-    <testcase classname=" custom-preset" name=" custom-preset" time="1.754">
-    </testcase>
-  </testsuite>
-  <testsuite name="package-manager" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:14" time="0.273" tests="8">
-    <testcase classname="package-manager should return &apos;yarn&apos; from getPackageManager if it&apos;s installed" name="package-manager should return &apos;yarn&apos; from getPackageManager if it&apos;s installed" time="0.001">
-    </testcase>
-    <testcase classname="package-manager should return &apos;npm&apos; from getPackageManager if yarn is not installed" name="package-manager should return &apos;npm&apos; from getPackageManager if yarn is not installed" time="0">
-    </testcase>
-    <testcase classname="package-manager should spawn yarn add from spawnChild" name="package-manager should spawn yarn add from spawnChild" time="0.005">
-    </testcase>
-    <testcase classname="package-manager should spawn yarn upgrade from spawnChild" name="package-manager should spawn yarn upgrade from spawnChild" time="0.001">
-    </testcase>
-    <testcase classname="package-manager should spawn npm install from spawnChild" name="package-manager should spawn npm install from spawnChild" time="0.001">
-    </testcase>
-    <testcase classname="package-manager should spawn npm update from spawnChild" name="package-manager should spawn npm update from spawnChild" time="0.001">
-    </testcase>
-    <testcase classname="package-manager should return the yarn global dir from getPathToGlobalPackages if yarn is installed" name="package-manager should return the yarn global dir from getPathToGlobalPackages if yarn is installed" time="0.011">
-    </testcase>
-    <testcase classname="package-manager should return the npm global dir from getPathToGlobalPackages if yarn is not installed" name="package-manager should return the npm global dir from getPathToGlobalPackages if yarn is not installed" time="0.001">
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:13" time="1.392" tests="1">
-    <testcase classname=" clean-webpack-options" name=" clean-webpack-options" time="1.227">
-    </testcase>
-  </testsuite>
-  <testsuite name="resolve-packages" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:14" time="0.146" tests="3">
-    <testcase classname="resolve-packages should resolve a location of a published module" name="resolve-packages should resolve a location of a published module" time="0.002">
+  <testsuite name="resolve-packages" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:46" time="0.101" tests="3">
+    <testcase classname="resolve-packages should resolve a location of a published module" name="resolve-packages should resolve a location of a published module" time="0.001">
     </testcase>
     <testcase classname="resolve-packages should be empty if argument is blank" name="resolve-packages should be empty if argument is blank" time="0.001">
     </testcase>
-    <testcase classname="resolve-packages should resolve multiple locations of published modules" name="resolve-packages should resolve multiple locations of published modules" time="0.001">
+    <testcase classname="resolve-packages should resolve multiple locations of published modules" name="resolve-packages should resolve multiple locations of published modules" time="0">
     </testcase>
   </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:14" time="1.314" tests="1">
-    <testcase classname=" invalid-array" name=" invalid-array" time="1.18">
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:14" time="1.286" tests="1">
-    <testcase classname=" invalid-type" name=" invalid-type" time="1.153">
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:14" time="1.348" tests="1">
-    <testcase classname=" not-found" name=" not-found" time="1.246">
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:15" time="0.894" tests="1">
-    <testcase classname=" info-verbosity" name=" info-verbosity" time="0.778">
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:15" time="0.868" tests="1">
-    <testcase classname=" help-output" name=" help-output" time="0.722">
-    </testcase>
-  </testsuite>
-  <testsuite name="loaders" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:15" time="0.499" tests="9">
-    <testcase classname="loaders transforms correctly using &quot;loaders-0&quot; data" name="loaders transforms correctly using &quot;loaders-0&quot; data" time="0.203">
-    </testcase>
-    <testcase classname="loaders transforms correctly using &quot;loaders-1&quot; data" name="loaders transforms correctly using &quot;loaders-1&quot; data" time="0.016">
-    </testcase>
-    <testcase classname="loaders transforms correctly using &quot;loaders-2&quot; data" name="loaders transforms correctly using &quot;loaders-2&quot; data" time="0.016">
-    </testcase>
-    <testcase classname="loaders transforms correctly using &quot;loaders-3&quot; data" name="loaders transforms correctly using &quot;loaders-3&quot; data" time="0.019">
-    </testcase>
-    <testcase classname="loaders transforms correctly using &quot;loaders-4&quot; data" name="loaders transforms correctly using &quot;loaders-4&quot; data" time="0.013">
-    </testcase>
-    <testcase classname="loaders transforms correctly using &quot;loaders-5&quot; data" name="loaders transforms correctly using &quot;loaders-5&quot; data" time="0.025">
-    </testcase>
-    <testcase classname="loaders transforms correctly using &quot;loaders-6&quot; data" name="loaders transforms correctly using &quot;loaders-6&quot; data" time="0.018">
-    </testcase>
-    <testcase classname="loaders transforms correctly using &quot;loaders-7&quot; data" name="loaders transforms correctly using &quot;loaders-7&quot; data" time="0.015">
-    </testcase>
-    <testcase classname="loaders transforms correctly using &quot;loaders-8&quot; data" name="loaders transforms correctly using &quot;loaders-8&quot; data" time="0.015">
-    </testcase>
-  </testsuite>
-  <testsuite name="commonsChunkPlugin" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:16" time="0.46" tests="11">
-    <testcase classname="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-0&quot; data" name="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-0&quot; data" time="0.16">
-    </testcase>
-    <testcase classname="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-1&quot; data" name="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-1&quot; data" time="0.02">
-    </testcase>
-    <testcase classname="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-2&quot; data" name="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-2&quot; data" time="0.013">
-    </testcase>
-    <testcase classname="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-3&quot; data" name="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-3&quot; data" time="0.01">
-    </testcase>
-    <testcase classname="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-4&quot; data" name="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-4&quot; data" time="0.013">
-    </testcase>
-    <testcase classname="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-5&quot; data" name="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-5&quot; data" time="0.014">
-    </testcase>
-    <testcase classname="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-6a&quot; data" name="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-6a&quot; data" time="0.026">
-    </testcase>
-    <testcase classname="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-6b&quot; data" name="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-6b&quot; data" time="0.021">
-    </testcase>
-    <testcase classname="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-6c&quot; data" name="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-6c&quot; data" time="0.015">
-    </testcase>
-    <testcase classname="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-6d&quot; data" name="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-6d&quot; data" time="0.018">
-    </testcase>
-    <testcase classname="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-7&quot; data" name="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-7&quot; data" time="0.008">
-    </testcase>
-  </testsuite>
-  <testsuite name="extractTextPlugin" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:16" time="0.229" tests="1">
-    <testcase classname="extractTextPlugin transforms correctly" name="extractTextPlugin transforms correctly" time="0.126">
-    </testcase>
-  </testsuite>
-  <testsuite name="outputPath" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:16" time="0.237" tests="3">
-    <testcase classname="outputPath transforms correctly using &quot;outputPath-0&quot; data" name="outputPath transforms correctly using &quot;outputPath-0&quot; data" time="0.097">
-    </testcase>
-    <testcase classname="outputPath transforms correctly using &quot;outputPath-1&quot; data" name="outputPath transforms correctly using &quot;outputPath-1&quot; data" time="0.013">
-    </testcase>
-    <testcase classname="outputPath transforms correctly using &quot;outputPath-2&quot; data" name="outputPath transforms correctly using &quot;outputPath-2&quot; data" time="0.012">
-    </testcase>
-  </testsuite>
-  <testsuite name="uglifyJsPlugin" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:16" time="0.292" tests="5">
-    <testcase classname="uglifyJsPlugin transforms correctly using &quot;uglifyJsPlugin-0&quot; data" name="uglifyJsPlugin transforms correctly using &quot;uglifyJsPlugin-0&quot; data" time="0.091">
-    </testcase>
-    <testcase classname="uglifyJsPlugin transforms correctly using &quot;uglifyJsPlugin-1&quot; data" name="uglifyJsPlugin transforms correctly using &quot;uglifyJsPlugin-1&quot; data" time="0.019">
-    </testcase>
-    <testcase classname="uglifyJsPlugin transforms correctly using &quot;uglifyJsPlugin-2&quot; data" name="uglifyJsPlugin transforms correctly using &quot;uglifyJsPlugin-2&quot; data" time="0.014">
-    </testcase>
-    <testcase classname="uglifyJsPlugin transforms correctly using &quot;uglifyJsPlugin-3&quot; data" name="uglifyJsPlugin transforms correctly using &quot;uglifyJsPlugin-3&quot; data" time="0.024">
-    </testcase>
-    <testcase classname="uglifyJsPlugin transforms correctly using &quot;uglifyJsPlugin-4&quot; data" name="uglifyJsPlugin transforms correctly using &quot;uglifyJsPlugin-4&quot; data" time="0.028">
-    </testcase>
-  </testsuite>
-  <testsuite name="transform" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:15" time="1.341" tests="4">
-    <testcase classname="transform should not transform if no transformations defined" name="transform should not transform if no transformations defined" time="0.039">
-    </testcase>
-    <testcase classname="transform should transform using all transformations" name="transform should transform using all transformations" time="0.113">
-    </testcase>
-    <testcase classname="transform should transform only using specified transformations" name="transform should transform only using specified transformations" time="0.047">
-    </testcase>
-    <testcase classname="transform should respect recast options" name="transform should respect recast options" time="0.063">
-    </testcase>
-  </testsuite>
-  <testsuite name="extractHash functionality" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:16" time="0.149" tests="9">
-    <testcase classname="extractHash functionality should throw Error if there is empty string" name="extractHash functionality should throw Error if there is empty string" time="0.003">
-    </testcase>
-    <testcase classname="extractHash functionality should throw Error if there is no hash value" name="extractHash functionality should throw Error if there is no hash value" time="0.001">
-    </testcase>
-    <testcase classname="extractHash functionality should throw Error if hash count and config count do not match" name="extractHash functionality should throw Error if hash count and config count do not match" time="0.002">
-    </testcase>
-    <testcase classname="extractHash functionality should fetch hash if there is only single config" name="extractHash functionality should fetch hash if there is only single config" time="0.002">
-    </testcase>
-    <testcase classname="extractHash functionality should fetch hash if there is more than one config" name="extractHash functionality should fetch hash if there is more than one config" time="0.002">
-    </testcase>
-    <testcase classname="appendFile functionality positive test-cases should append data to file if file exists" name="appendFile functionality positive test-cases should append data to file if file exists" time="0.004">
-    </testcase>
-    <testcase classname="appendFile functionality negative test-cases should throw error if file does not exist" name="appendFile functionality negative test-cases should throw error if file does not exist" time="0.001">
-    </testcase>
-    <testcase classname="copyFile functionality positive test-cases should copy file if file exists" name="copyFile functionality positive test-cases should copy file if file exists" time="0.002">
-    </testcase>
-    <testcase classname="copyFile functionality negative test-cases should throw error if file does not exist" name="copyFile functionality negative test-cases should throw error if file does not exist" time="0.002">
-    </testcase>
-  </testsuite>
-  <testsuite name="resolve" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:16" time="0.213" tests="1">
-    <testcase classname="resolve transforms correctly" name="resolve transforms correctly" time="0.1">
-    </testcase>
-  </testsuite>
-  <testsuite name="removeDeprecatedPlugins" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:16" time="0.285" tests="5">
-    <testcase classname="removeDeprecatedPlugins transforms correctly using &quot;removeDeprecatedPlugins-0&quot; data" name="removeDeprecatedPlugins transforms correctly using &quot;removeDeprecatedPlugins-0&quot; data" time="0.108">
-    </testcase>
-    <testcase classname="removeDeprecatedPlugins transforms correctly using &quot;removeDeprecatedPlugins-1&quot; data" name="removeDeprecatedPlugins transforms correctly using &quot;removeDeprecatedPlugins-1&quot; data" time="0.006">
-    </testcase>
-    <testcase classname="removeDeprecatedPlugins transforms correctly using &quot;removeDeprecatedPlugins-2&quot; data" name="removeDeprecatedPlugins transforms correctly using &quot;removeDeprecatedPlugins-2&quot; data" time="0.008">
-    </testcase>
-    <testcase classname="removeDeprecatedPlugins transforms correctly using &quot;removeDeprecatedPlugins-3&quot; data" name="removeDeprecatedPlugins transforms correctly using &quot;removeDeprecatedPlugins-3&quot; data" time="0.031">
-    </testcase>
-    <testcase classname="removeDeprecatedPlugins transforms correctly using &quot;removeDeprecatedPlugins-4&quot; data" name="removeDeprecatedPlugins transforms correctly using &quot;removeDeprecatedPlugins-4&quot; data" time="0.019">
-    </testcase>
-  </testsuite>
-  <testsuite name="removeJsonLoader" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:16" time="1.023" tests="4">
-    <testcase classname="removeJsonLoader transforms correctly using &quot;removeJsonLoader-0&quot; data" name="removeJsonLoader transforms correctly using &quot;removeJsonLoader-0&quot; data" time="0.265">
-    </testcase>
-    <testcase classname="removeJsonLoader transforms correctly using &quot;removeJsonLoader-1&quot; data" name="removeJsonLoader transforms correctly using &quot;removeJsonLoader-1&quot; data" time="0.013">
-    </testcase>
-    <testcase classname="removeJsonLoader transforms correctly using &quot;removeJsonLoader-2&quot; data" name="removeJsonLoader transforms correctly using &quot;removeJsonLoader-2&quot; data" time="0.008">
-    </testcase>
-    <testcase classname="removeJsonLoader transforms correctly using &quot;removeJsonLoader-3&quot; data" name="removeJsonLoader transforms correctly using &quot;removeJsonLoader-3&quot; data" time="0.008">
-    </testcase>
-  </testsuite>
-  <testsuite name="namedModulesPlugin" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:17" time="0.248" tests="3">
-    <testcase classname="namedModulesPlugin transforms correctly using &quot;namedModulesPlugin-0&quot; data" name="namedModulesPlugin transforms correctly using &quot;namedModulesPlugin-0&quot; data" time="0.107">
-    </testcase>
-    <testcase classname="namedModulesPlugin transforms correctly using &quot;namedModulesPlugin-1&quot; data" name="namedModulesPlugin transforms correctly using &quot;namedModulesPlugin-1&quot; data" time="0.01">
-    </testcase>
-    <testcase classname="namedModulesPlugin transforms correctly using &quot;namedModulesPlugin-2&quot; data" name="namedModulesPlugin transforms correctly using &quot;namedModulesPlugin-2&quot; data" time="0.008">
-    </testcase>
-  </testsuite>
-  <testsuite name="loaderOptionsPlugin" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:16" time="0.459" tests="4">
-    <testcase classname="loaderOptionsPlugin transforms correctly using &quot;loaderOptionsPlugin-0&quot; data" name="loaderOptionsPlugin transforms correctly using &quot;loaderOptionsPlugin-0&quot; data" time="0.247">
-    </testcase>
-    <testcase classname="loaderOptionsPlugin transforms correctly using &quot;loaderOptionsPlugin-1&quot; data" name="loaderOptionsPlugin transforms correctly using &quot;loaderOptionsPlugin-1&quot; data" time="0.043">
-    </testcase>
-    <testcase classname="loaderOptionsPlugin transforms correctly using &quot;loaderOptionsPlugin-2&quot; data" name="loaderOptionsPlugin transforms correctly using &quot;loaderOptionsPlugin-2&quot; data" time="0.009">
-    </testcase>
-    <testcase classname="loaderOptionsPlugin transforms correctly using &quot;loaderOptionsPlugin-3&quot; data" name="loaderOptionsPlugin transforms correctly using &quot;loaderOptionsPlugin-3&quot; data" time="0.015">
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="1" timestamp="2019-04-11T09:22:17" time="0.151" tests="1">
-    <testcase classname=" info-verbosity-verbose" name=" info-verbosity-verbose" time="0">
-      <skipped/>
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="1" timestamp="2019-04-11T09:22:17" time="0.127" tests="1">
-    <testcase classname=" info-verbosity-off" name=" info-verbosity-off" time="0">
-      <skipped/>
-    </testcase>
-  </testsuite>
-  <testsuite name="noEmitOnErrorsPlugin" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:17" time="0.231" tests="3">
-    <testcase classname="noEmitOnErrorsPlugin transforms correctly using &quot;noEmitOnErrorsPlugin-0&quot; data" name="noEmitOnErrorsPlugin transforms correctly using &quot;noEmitOnErrorsPlugin-0&quot; data" time="0.105">
-    </testcase>
-    <testcase classname="noEmitOnErrorsPlugin transforms correctly using &quot;noEmitOnErrorsPlugin-1&quot; data" name="noEmitOnErrorsPlugin transforms correctly using &quot;noEmitOnErrorsPlugin-1&quot; data" time="0.01">
-    </testcase>
-    <testcase classname="noEmitOnErrorsPlugin transforms correctly using &quot;noEmitOnErrorsPlugin-2&quot; data" name="noEmitOnErrorsPlugin transforms correctly using &quot;noEmitOnErrorsPlugin-2&quot; data" time="0.007">
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="1" timestamp="2019-04-11T09:22:17" time="0.14" tests="1">
-    <testcase classname=" multi-config-watch-opt" name=" multi-config-watch-opt" time="0">
-      <skipped/>
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="1" timestamp="2019-04-11T09:22:17" time="0.172" tests="1">
-    <testcase classname=" single-config-watch-opt" name=" single-config-watch-opt" time="0">
-      <skipped/>
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="1" timestamp="2019-04-11T09:22:17" time="0.128" tests="1">
-    <testcase classname=" single-config" name=" single-config" time="0.001">
-      <skipped/>
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="1" timestamp="2019-04-11T09:22:17" time="0.11" tests="1">
-    <testcase classname=" uglifyjsplugin-empty-args" name=" uglifyjsplugin-empty-args" time="0">
-      <skipped/>
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="1" timestamp="2019-04-11T09:22:17" time="0.146" tests="1">
-    <testcase classname=" webpack-ts-config" name=" webpack-ts-config" time="0">
-      <skipped/>
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="1" timestamp="2019-04-11T09:22:17" time="0.248" tests="1">
-    <testcase classname=" multi-config" name=" multi-config" time="0">
-      <skipped/>
-    </testcase>
-  </testsuite>
-  <testsuite name="moduleConcatenationPlugin" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:17" time="0.235" tests="3">
-    <testcase classname="moduleConcatenationPlugin transforms correctly using &quot;moduleConcatenationPlugin-0&quot; data" name="moduleConcatenationPlugin transforms correctly using &quot;moduleConcatenationPlugin-0&quot; data" time="0.094">
-    </testcase>
-    <testcase classname="moduleConcatenationPlugin transforms correctly using &quot;moduleConcatenationPlugin-1&quot; data" name="moduleConcatenationPlugin transforms correctly using &quot;moduleConcatenationPlugin-1&quot; data" time="0.012">
-    </testcase>
-    <testcase classname="moduleConcatenationPlugin transforms correctly using &quot;moduleConcatenationPlugin-2&quot; data" name="moduleConcatenationPlugin transforms correctly using &quot;moduleConcatenationPlugin-2&quot; data" time="0.008">
-    </testcase>
-  </testsuite>
-  <testsuite name="info" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:17" time="0.134" tests="1">
-    <testcase classname="info should return the information of the enviroment" name="info should return the information of the enviroment" time="0.002">
-    </testcase>
-  </testsuite>
-  <testsuite name="bannerPlugin" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:17" time="0.244" tests="3">
-    <testcase classname="bannerPlugin transforms correctly using &quot;bannerPlugin-0&quot; data" name="bannerPlugin transforms correctly using &quot;bannerPlugin-0&quot; data" time="0.101">
-    </testcase>
-    <testcase classname="bannerPlugin transforms correctly using &quot;bannerPlugin-1&quot; data" name="bannerPlugin transforms correctly using &quot;bannerPlugin-1&quot; data" time="0.01">
-    </testcase>
-    <testcase classname="bannerPlugin transforms correctly using &quot;bannerPlugin-2&quot; data" name="bannerPlugin transforms correctly using &quot;bannerPlugin-2&quot; data" time="0.017">
-    </testcase>
-  </testsuite>
-  <testsuite name="is-local-path" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:17" time="0.113" tests="4">
-    <testcase classname="is-local-path returns true for paths beginning in the current directory" name="is-local-path returns true for paths beginning in the current directory" time="0.009">
-    </testcase>
-    <testcase classname="is-local-path returns true for absolute paths" name="is-local-path returns true for absolute paths" time="0.001">
-    </testcase>
-    <testcase classname="is-local-path returns false for npm packages names" name="is-local-path returns false for npm packages names" time="0.001">
-    </testcase>
-    <testcase classname="is-local-path returns false for scoped npm package names" name="is-local-path returns false for scoped npm package names" time="0.001">
-    </testcase>
-  </testsuite>
-  <testsuite name="npm-exists" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:17" time="0.229" tests="2">
-    <testcase classname="npm-exists should successfully existence of a published module" name="npm-exists should successfully existence of a published module" time="0.006">
-    </testcase>
-    <testcase classname="npm-exists should return false for the existence of a fake module" name="npm-exists should return false for the existence of a fake module" time="0">
-    </testcase>
-  </testsuite>
-  <testsuite name="validate-identifier" errors="0" failures="0" skipped="0" timestamp="2019-04-11T09:22:17" time="0.148" tests="6">
+  <testsuite name="validate-identifier" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:46" time="0.097" tests="6">
     <testcase classname="validate-identifier should return true for reserved keyword" name="validate-identifier should return true for reserved keyword" time="0.002">
     </testcase>
     <testcase classname="validate-identifier should return false for unreserved keyword" name="validate-identifier should return false for unreserved keyword" time="0.001">
     </testcase>
-    <testcase classname="validate-identifier should retrun false if literal is not in U+200C zero width non-joiner,	 U+200D zero width joiner, or any symbol with 	 the Unicode derived core property ID_Continue" name="validate-identifier should retrun false if literal is not in U+200C zero width non-joiner,	 U+200D zero width joiner, or any symbol with 	 the Unicode derived core property ID_Continue" time="0.002">
+    <testcase classname="validate-identifier should retrun false if literal is not in U+200C zero width non-joiner, U+200D zero width joiner, or any symbol with the Unicode derived core property ID_Continue" name="validate-identifier should retrun false if literal is not in U+200C zero width non-joiner, U+200D zero width joiner, or any symbol with the Unicode derived core property ID_Continue" time="0">
     </testcase>
-    <testcase classname="validate-identifier should retrun true if literal is in U+200C zero width non-joiner, U+200D zero width joiner,	 or any symbol with the Unicode derived core property ID_Continue" name="validate-identifier should retrun true if literal is in U+200C zero width non-joiner, U+200D zero width joiner,	 or any symbol with the Unicode derived core property ID_Continue" time="0.001">
+    <testcase classname="validate-identifier should retrun true if literal is in U+200C zero width non-joiner, U+200D zero width joiner, or any symbol with the Unicode derived core property ID_Continue" name="validate-identifier should retrun true if literal is in U+200C zero width non-joiner, U+200D zero width joiner, or any symbol with the Unicode derived core property ID_Continue" time="0">
     </testcase>
-    <testcase classname="validate-identifier should return true if literal name starts with 	$, _ or any symbol with the unicode derived core property ID_Start" name="validate-identifier should return true if literal name starts with 	$, _ or any symbol with the unicode derived core property ID_Start" time="0.002">
+    <testcase classname="validate-identifier should return true if literal name starts with $, _ or any symbol with the unicode derived core property ID_Start" name="validate-identifier should return true if literal name starts with $, _ or any symbol with the unicode derived core property ID_Start" time="0">
     </testcase>
-    <testcase classname="validate-identifier should return false if literal name does not starts with 	$, _ or any symbol with the unicode derived core property ID_Start" name="validate-identifier should return false if literal name does not starts with 	$, _ or any symbol with the unicode derived core property ID_Start" time="0.001">
+    <testcase classname="validate-identifier should return false if literal name does not starts with $, _ or any symbol with the unicode derived core property ID_Start" name="validate-identifier should return false if literal name does not starts with $, _ or any symbol with the unicode derived core property ID_Start" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="init" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:46" time="0.359" tests="7">
+    <testcase classname="init transforms correctly using &quot;fixture-1&quot; data" name="init transforms correctly using &quot;fixture-1&quot; data" time="0.123">
+    </testcase>
+    <testcase classname="add transforms correctly using &quot;fixture-2&quot; data" name="add transforms correctly using &quot;fixture-2&quot; data" time="0.012">
+    </testcase>
+    <testcase classname="remove transforms correctly using &quot;fixture-3&quot; data" name="remove transforms correctly using &quot;fixture-3&quot; data" time="0.019">
+    </testcase>
+    <testcase classname="remove transforms correctly using &quot;fixture-3&quot; data" name="remove transforms correctly using &quot;fixture-3&quot; data" time="0.019">
+    </testcase>
+    <testcase classname="remove transforms correctly using &quot;fixture-3&quot; data" name="remove transforms correctly using &quot;fixture-3&quot; data" time="0.012">
+    </testcase>
+    <testcase classname="remove transforms correctly using &quot;fixture-3&quot; data" name="remove transforms correctly using &quot;fixture-3&quot; data" time="0.009">
+    </testcase>
+    <testcase classname="remove transforms correctly using &quot;fixture-3&quot; data" name="remove transforms correctly using &quot;fixture-3&quot; data" time="0.008">
+    </testcase>
+  </testsuite>
+  <testsuite name="commonsChunkPlugin" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:46" time="0.484" tests="11">
+    <testcase classname="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-0&quot; data" name="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-0&quot; data" time="0.255">
+    </testcase>
+    <testcase classname="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-1&quot; data" name="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-1&quot; data" time="0.007">
+    </testcase>
+    <testcase classname="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-2&quot; data" name="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-2&quot; data" time="0.004">
+    </testcase>
+    <testcase classname="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-3&quot; data" name="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-3&quot; data" time="0.004">
+    </testcase>
+    <testcase classname="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-4&quot; data" name="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-4&quot; data" time="0.008">
+    </testcase>
+    <testcase classname="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-5&quot; data" name="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-5&quot; data" time="0.007">
+    </testcase>
+    <testcase classname="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-6a&quot; data" name="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-6a&quot; data" time="0.012">
+    </testcase>
+    <testcase classname="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-6b&quot; data" name="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-6b&quot; data" time="0.009">
+    </testcase>
+    <testcase classname="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-6c&quot; data" name="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-6c&quot; data" time="0.006">
+    </testcase>
+    <testcase classname="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-6d&quot; data" name="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-6d&quot; data" time="0.007">
+    </testcase>
+    <testcase classname="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-7&quot; data" name="commonsChunkPlugin transforms correctly using &quot;commonsChunkPlugin-7&quot; data" time="0.006">
+    </testcase>
+  </testsuite>
+  <testsuite name="transform" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:46" time="1.19" tests="4">
+    <testcase classname="transform should not transform if no transformations defined" name="transform should not transform if no transformations defined" time="0.019">
+    </testcase>
+    <testcase classname="transform should transform using all transformations" name="transform should transform using all transformations" time="0.054">
+    </testcase>
+    <testcase classname="transform should transform only using specified transformations" name="transform should transform only using specified transformations" time="0.011">
+    </testcase>
+    <testcase classname="transform should respect recast options" name="transform should respect recast options" time="0.038">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:46" time="1.149" tests="1">
+    <testcase classname=" help-output" name=" help-output" time="1.004">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:47" time="3.456" tests="1">
+    <testcase classname=" output-library-single" name=" output-library-single" time="3.336">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:47" time="3.598" tests="1">
+    <testcase classname=" named-entry" name=" named-entry" time="3.37">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:46" time="4.193" tests="1">
+    <testcase classname=" complex" name=" complex" time="4.054">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:46" time="4.341" tests="1">
+    <testcase classname=" output-library-many" name=" output-library-many" time="4.126">
+    </testcase>
+  </testsuite>
+  <testsuite name="is-local-path" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:51" time="0.187" tests="4">
+    <testcase classname="is-local-path returns true for paths beginning in the current directory" name="is-local-path returns true for paths beginning in the current directory" time="0.001">
+    </testcase>
+    <testcase classname="is-local-path returns true for absolute paths" name="is-local-path returns true for absolute paths" time="0">
+    </testcase>
+    <testcase classname="is-local-path returns false for npm packages names" name="is-local-path returns false for npm packages names" time="0.001">
+    </testcase>
+    <testcase classname="is-local-path returns false for scoped npm package names" name="is-local-path returns false for scoped npm package names" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:51" time="1.022" tests="1">
+    <testcase classname=" non-hyphenated-args" name=" non-hyphenated-args" time="0.924">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:51" time="1.795" tests="1">
+    <testcase classname=" module-bind" name=" module-bind" time="1.609">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:51" time="1.789" tests="1">
+    <testcase classname=" single-config" name=" single-config" time="1.616">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="1" timestamp="2019-03-15T18:51:52" time="0.126" tests="1">
+    <testcase classname=" uglifyjsplugin-empty-args" name=" uglifyjsplugin-empty-args" time="0">
+      <skipped/>
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:52" time="1.713" tests="1">
+    <testcase classname=" multi-file" name=" multi-file" time="1.576">
+    </testcase>
+  </testsuite>
+  <testsuite name="npmPackagesExists" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:51" time="3.388" tests="2">
+    <testcase classname="npmPackagesExists resolves packages when they are available on the local filesystem" name="npmPackagesExists resolves packages when they are available on the local filesystem" time="0.001">
+    </testcase>
+    <testcase classname="npmPackagesExists throws a TypeError when an npm package name doesn&apos;t include the prefix" name="npmPackagesExists throws a TypeError when an npm package name doesn&apos;t include the prefix" time="0.005">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:52" time="1.767" tests="1">
+    <testcase classname=" found-many" name=" found-many" time="1.646">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:53" time="1.649" tests="1">
+    <testcase classname=" array" name=" array" time="1.551">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:54" time="1.163" tests="1">
+    <testcase classname=" string" name=" string" time="1.02">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:54" time="1.077" tests="1">
+    <testcase classname=" found-one" name=" found-one" time="0.965">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:54" time="1.084" tests="1">
+    <testcase classname=" cli-override" name=" cli-override" time="0.965">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:54" time="1.841" tests="1">
+    <testcase classname=" plugins-precedence" name=" plugins-precedence" time="1.708">
+    </testcase>
+  </testsuite>
+  <testsuite name="loaders" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:55" time="0.264" tests="9">
+    <testcase classname="loaders transforms correctly using &quot;loaders-0&quot; data" name="loaders transforms correctly using &quot;loaders-0&quot; data" time="0.092">
+    </testcase>
+    <testcase classname="loaders transforms correctly using &quot;loaders-1&quot; data" name="loaders transforms correctly using &quot;loaders-1&quot; data" time="0.005">
+    </testcase>
+    <testcase classname="loaders transforms correctly using &quot;loaders-2&quot; data" name="loaders transforms correctly using &quot;loaders-2&quot; data" time="0.006">
+    </testcase>
+    <testcase classname="loaders transforms correctly using &quot;loaders-3&quot; data" name="loaders transforms correctly using &quot;loaders-3&quot; data" time="0.006">
+    </testcase>
+    <testcase classname="loaders transforms correctly using &quot;loaders-4&quot; data" name="loaders transforms correctly using &quot;loaders-4&quot; data" time="0.004">
+    </testcase>
+    <testcase classname="loaders transforms correctly using &quot;loaders-5&quot; data" name="loaders transforms correctly using &quot;loaders-5&quot; data" time="0.008">
+    </testcase>
+    <testcase classname="loaders transforms correctly using &quot;loaders-6&quot; data" name="loaders transforms correctly using &quot;loaders-6&quot; data" time="0.006">
+    </testcase>
+    <testcase classname="loaders transforms correctly using &quot;loaders-7&quot; data" name="loaders transforms correctly using &quot;loaders-7&quot; data" time="0.005">
+    </testcase>
+    <testcase classname="loaders transforms correctly using &quot;loaders-8&quot; data" name="loaders transforms correctly using &quot;loaders-8&quot; data" time="0.007">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="1" timestamp="2019-03-15T18:51:56" time="0.091" tests="1">
+    <testcase classname=" webpack-ts-config" name=" webpack-ts-config" time="0">
+      <skipped/>
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:55" time="0.671" tests="1">
+    <testcase classname=" info-verbosity" name=" info-verbosity" time="0.568">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:55" time="0.873" tests="1">
+    <testcase classname=" clean-webpack-options" name=" clean-webpack-options" time="0.779">
+    </testcase>
+  </testsuite>
+  <testsuite name="removeDeprecatedPlugins" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:56" time="0.353" tests="5">
+    <testcase classname="removeDeprecatedPlugins transforms correctly using &quot;removeDeprecatedPlugins-0&quot; data" name="removeDeprecatedPlugins transforms correctly using &quot;removeDeprecatedPlugins-0&quot; data" time="0.159">
+    </testcase>
+    <testcase classname="removeDeprecatedPlugins transforms correctly using &quot;removeDeprecatedPlugins-1&quot; data" name="removeDeprecatedPlugins transforms correctly using &quot;removeDeprecatedPlugins-1&quot; data" time="0.002">
+    </testcase>
+    <testcase classname="removeDeprecatedPlugins transforms correctly using &quot;removeDeprecatedPlugins-2&quot; data" name="removeDeprecatedPlugins transforms correctly using &quot;removeDeprecatedPlugins-2&quot; data" time="0.003">
+    </testcase>
+    <testcase classname="removeDeprecatedPlugins transforms correctly using &quot;removeDeprecatedPlugins-3&quot; data" name="removeDeprecatedPlugins transforms correctly using &quot;removeDeprecatedPlugins-3&quot; data" time="0.087">
+    </testcase>
+    <testcase classname="removeDeprecatedPlugins transforms correctly using &quot;removeDeprecatedPlugins-4&quot; data" name="removeDeprecatedPlugins transforms correctly using &quot;removeDeprecatedPlugins-4&quot; data" time="0.005">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:55" time="1.83" tests="1">
+    <testcase classname=" info-verbosity" name=" info-verbosity" time="1.711">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:56" time="0.954" tests="1">
+    <testcase classname=" invalid-array" name=" invalid-array" time="0.848">
+    </testcase>
+  </testsuite>
+  <testsuite name="makeLoaderName" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:56" time="1.882" tests="2">
+    <testcase classname="makeLoaderName should kebab-case loader name and append &apos;-loader&apos;" name="makeLoaderName should kebab-case loader name and append &apos;-loader&apos;" time="0.002">
+    </testcase>
+    <testcase classname="makeLoaderName should not modify a properly formatted loader name" name="makeLoaderName should not modify a properly formatted loader name" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:57" time="0.834" tests="1">
+    <testcase classname=" invalid-type" name=" invalid-type" time="0.728">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:56" time="1.781" tests="1">
+    <testcase classname=" set-explicitly" name=" set-explicitly" time="1.668">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:58" time="1.07" tests="1">
+    <testcase classname=" custom-preset" name=" custom-preset" time="0.969">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:58" time="1.135" tests="1">
+    <testcase classname=" output-argument" name=" output-argument" time="1.009">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:57" time="1.935" tests="1">
+    <testcase classname=" find-recursively" name=" find-recursively" time="1.822">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:58" time="1.732" tests="1">
+    <testcase classname=" function-promise" name=" function-promise" time="1.629">
+    </testcase>
+  </testsuite>
+  <testsuite name="npm-exists" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:52:00" time="0.112" tests="2">
+    <testcase classname="npm-exists should successfully existence of a published module" name="npm-exists should successfully existence of a published module" time="0.003">
+    </testcase>
+    <testcase classname="npm-exists should return false for the existence of a fake module" name="npm-exists should return false for the existence of a fake module" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:59" time="1.148" tests="1">
+    <testcase classname=" function" name=" function" time="1.034">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:59" time="1.296" tests="1">
+    <testcase classname=" promise" name=" promise" time="1.173">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:51:59" time="1.263" tests="1">
+    <testcase classname=" object" name=" object" time="1.167">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:52:00" time="1.881" tests="1">
+    <testcase classname=" set-implicitly" name=" set-implicitly" time="1.787">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:52:00" time="1.906" tests="1">
+    <testcase classname=" find-recursively" name=" find-recursively" time="1.795">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:52:01" time="1.177" tests="1">
+    <testcase classname=" none" name=" none" time="1.052">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:52:01" time="1.307" tests="1">
+    <testcase classname=" production" name=" production" time="1.186">
+    </testcase>
+  </testsuite>
+  <testsuite name="uglifyJsPlugin" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:52:02" time="0.217" tests="5">
+    <testcase classname="uglifyJsPlugin transforms correctly using &quot;uglifyJsPlugin-0&quot; data" name="uglifyJsPlugin transforms correctly using &quot;uglifyJsPlugin-0&quot; data" time="0.092">
+    </testcase>
+    <testcase classname="uglifyJsPlugin transforms correctly using &quot;uglifyJsPlugin-1&quot; data" name="uglifyJsPlugin transforms correctly using &quot;uglifyJsPlugin-1&quot; data" time="0.006">
+    </testcase>
+    <testcase classname="uglifyJsPlugin transforms correctly using &quot;uglifyJsPlugin-2&quot; data" name="uglifyJsPlugin transforms correctly using &quot;uglifyJsPlugin-2&quot; data" time="0.006">
+    </testcase>
+    <testcase classname="uglifyJsPlugin transforms correctly using &quot;uglifyJsPlugin-3&quot; data" name="uglifyJsPlugin transforms correctly using &quot;uglifyJsPlugin-3&quot; data" time="0.009">
+    </testcase>
+    <testcase classname="uglifyJsPlugin transforms correctly using &quot;uglifyJsPlugin-4&quot; data" name="uglifyJsPlugin transforms correctly using &quot;uglifyJsPlugin-4&quot; data" time="0.015">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:52:02" time="1.078" tests="1">
+    <testcase classname=" not-found" name=" not-found" time="0.948">
+    </testcase>
+  </testsuite>
+  <testsuite name="loaderOptionsPlugin" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:52:03" time="0.228" tests="4">
+    <testcase classname="loaderOptionsPlugin transforms correctly using &quot;loaderOptionsPlugin-0&quot; data" name="loaderOptionsPlugin transforms correctly using &quot;loaderOptionsPlugin-0&quot; data" time="0.099">
+    </testcase>
+    <testcase classname="loaderOptionsPlugin transforms correctly using &quot;loaderOptionsPlugin-1&quot; data" name="loaderOptionsPlugin transforms correctly using &quot;loaderOptionsPlugin-1&quot; data" time="0.011">
+    </testcase>
+    <testcase classname="loaderOptionsPlugin transforms correctly using &quot;loaderOptionsPlugin-2&quot; data" name="loaderOptionsPlugin transforms correctly using &quot;loaderOptionsPlugin-2&quot; data" time="0.003">
+    </testcase>
+    <testcase classname="loaderOptionsPlugin transforms correctly using &quot;loaderOptionsPlugin-3&quot; data" name="loaderOptionsPlugin transforms correctly using &quot;loaderOptionsPlugin-3&quot; data" time="0.005">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:52:02" time="1.446" tests="1">
+    <testcase classname=" build-delimiter" name=" build-delimiter" time="1.306">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:52:02" time="1.125" tests="1">
+    <testcase classname=" none" name=" none" time="1.038">
+    </testcase>
+  </testsuite>
+  <testsuite name="moduleConcatenationPlugin" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:52:03" time="0.222" tests="3">
+    <testcase classname="moduleConcatenationPlugin transforms correctly using &quot;moduleConcatenationPlugin-0&quot; data" name="moduleConcatenationPlugin transforms correctly using &quot;moduleConcatenationPlugin-0&quot; data" time="0.114">
+    </testcase>
+    <testcase classname="moduleConcatenationPlugin transforms correctly using &quot;moduleConcatenationPlugin-1&quot; data" name="moduleConcatenationPlugin transforms correctly using &quot;moduleConcatenationPlugin-1&quot; data" time="0.005">
+    </testcase>
+    <testcase classname="moduleConcatenationPlugin transforms correctly using &quot;moduleConcatenationPlugin-2&quot; data" name="moduleConcatenationPlugin transforms correctly using &quot;moduleConcatenationPlugin-2&quot; data" time="0.009">
+    </testcase>
+  </testsuite>
+  <testsuite name="removeJsonLoader" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:52:03" time="0.195" tests="4">
+    <testcase classname="removeJsonLoader transforms correctly using &quot;removeJsonLoader-0&quot; data" name="removeJsonLoader transforms correctly using &quot;removeJsonLoader-0&quot; data" time="0.049">
+    </testcase>
+    <testcase classname="removeJsonLoader transforms correctly using &quot;removeJsonLoader-1&quot; data" name="removeJsonLoader transforms correctly using &quot;removeJsonLoader-1&quot; data" time="0.004">
+    </testcase>
+    <testcase classname="removeJsonLoader transforms correctly using &quot;removeJsonLoader-2&quot; data" name="removeJsonLoader transforms correctly using &quot;removeJsonLoader-2&quot; data" time="0.003">
+    </testcase>
+    <testcase classname="removeJsonLoader transforms correctly using &quot;removeJsonLoader-3&quot; data" name="removeJsonLoader transforms correctly using &quot;removeJsonLoader-3&quot; data" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:52:02" time="2.031" tests="1">
+    <testcase classname=" not-found" name=" not-found" time="1.914">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:52:03" time="1.129" tests="1">
+    <testcase classname=" display-entrypoints" name=" display-entrypoints" time="1.032">
+    </testcase>
+  </testsuite>
+  <testsuite name="noEmitOnErrorsPlugin" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:52:05" time="0.181" tests="3">
+    <testcase classname="noEmitOnErrorsPlugin transforms correctly using &quot;noEmitOnErrorsPlugin-0&quot; data" name="noEmitOnErrorsPlugin transforms correctly using &quot;noEmitOnErrorsPlugin-0&quot; data" time="0.066">
+    </testcase>
+    <testcase classname="noEmitOnErrorsPlugin transforms correctly using &quot;noEmitOnErrorsPlugin-1&quot; data" name="noEmitOnErrorsPlugin transforms correctly using &quot;noEmitOnErrorsPlugin-1&quot; data" time="0.005">
+    </testcase>
+    <testcase classname="noEmitOnErrorsPlugin transforms correctly using &quot;noEmitOnErrorsPlugin-2&quot; data" name="noEmitOnErrorsPlugin transforms correctly using &quot;noEmitOnErrorsPlugin-2&quot; data" time="0.003">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:52:04" time="1.201" tests="1">
+    <testcase classname=" multi-config" name=" multi-config" time="1.076">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:52:03" time="1.855" tests="1">
+    <testcase classname=" info-verbosity" name=" info-verbosity" time="1.672">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:52:03" time="1.735" tests="1">
+    <testcase classname=" profile" name=" profile" time="1.644">
+    </testcase>
+  </testsuite>
+  <testsuite name="bannerPlugin" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:52:05" time="0.181" tests="3">
+    <testcase classname="bannerPlugin transforms correctly using &quot;bannerPlugin-0&quot; data" name="bannerPlugin transforms correctly using &quot;bannerPlugin-0&quot; data" time="0.049">
+    </testcase>
+    <testcase classname="bannerPlugin transforms correctly using &quot;bannerPlugin-1&quot; data" name="bannerPlugin transforms correctly using &quot;bannerPlugin-1&quot; data" time="0.003">
+    </testcase>
+    <testcase classname="bannerPlugin transforms correctly using &quot;bannerPlugin-2&quot; data" name="bannerPlugin transforms correctly using &quot;bannerPlugin-2&quot; data" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="namedModulesPlugin" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:52:05" time="0.285" tests="3">
+    <testcase classname="namedModulesPlugin transforms correctly using &quot;namedModulesPlugin-0&quot; data" name="namedModulesPlugin transforms correctly using &quot;namedModulesPlugin-0&quot; data" time="0.171">
+    </testcase>
+    <testcase classname="namedModulesPlugin transforms correctly using &quot;namedModulesPlugin-1&quot; data" name="namedModulesPlugin transforms correctly using &quot;namedModulesPlugin-1&quot; data" time="0.005">
+    </testcase>
+    <testcase classname="namedModulesPlugin transforms correctly using &quot;namedModulesPlugin-2&quot; data" name="namedModulesPlugin transforms correctly using &quot;namedModulesPlugin-2&quot; data" time="0.003">
+    </testcase>
+  </testsuite>
+  <testsuite name="outputPath" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:52:05" time="0.199" tests="3">
+    <testcase classname="outputPath transforms correctly using &quot;outputPath-0&quot; data" name="outputPath transforms correctly using &quot;outputPath-0&quot; data" time="0.095">
+    </testcase>
+    <testcase classname="outputPath transforms correctly using &quot;outputPath-1&quot; data" name="outputPath transforms correctly using &quot;outputPath-1&quot; data" time="0.004">
+    </testcase>
+    <testcase classname="outputPath transforms correctly using &quot;outputPath-2&quot; data" name="outputPath transforms correctly using &quot;outputPath-2&quot; data" time="0.005">
+    </testcase>
+  </testsuite>
+  <testsuite name="extractTextPlugin" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:52:05" time="0.144" tests="1">
+    <testcase classname="extractTextPlugin transforms correctly" name="extractTextPlugin transforms correctly" time="0.058">
+    </testcase>
+  </testsuite>
+  <testsuite name="resolve" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:52:06" time="0.143" tests="1">
+    <testcase classname="resolve transforms correctly" name="resolve transforms correctly" time="0.048">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:52:05" time="1.426" tests="1">
+    <testcase classname=" silent" name=" silent" time="1.299">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:52:05" time="1.134" tests="1">
+    <testcase classname=" none" name=" none" time="1.02">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2019-03-15T18:52:05" time="9.811" tests="1">
+    <testcase classname=" webpack-babel-config" name=" webpack-babel-config" time="9.626">
     </testcase>
   </testsuite>
 </testsuites>
