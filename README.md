@@ -20,6 +20,7 @@
 [![Install Size](https://packagephobia.now.sh/badge?p=webpack-cli)](https://packagephobia.now.sh/result?p=webpack-cli)
 [![npm](https://img.shields.io/npm/dw/webpack-cli.svg)](https://www.npmjs.com/package/webpack-cli)
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/)
+[![GitHub contributors](https://img.shields.io/github/contributors/webpack/webpack-cli.svg)](https://github.com/webpack/webpack-cli/graphs/contributors)
 
 
 * [About](#about)
