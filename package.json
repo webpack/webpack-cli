@@ -161,7 +161,7 @@
     "jest": "^24.3.1",
     "jest-cli": "^24.3.1",
     "jest-junit": "^6.3.0",
-    "lerna": "^3.13.1",
+    "lerna": "^3.13.2",
     "lint-staged": "7.x.x",
     "nyc": "^13.3.0",
     "prettier-eslint-cli": "^4.7.1",
@@ -175,7 +175,7 @@
     "typedoc-plugin-monorepo": "^0.1.0",
     "typescript": "^3.3.1",
     "webpack": "4.x.x",
-    "webpack-dev-server": "^3.1.10"
+    "webpack-dev-server": "^3.3.1"
   },
   "collective": {
     "type": "opencollective",
