@@ -27,6 +27,9 @@ const runCommand = (command, args) => {
 	});
 };
 
+/**
+ * @returns {Promise<void>} promise
+ */
 const npmGlobalRoot = () => {
 	const cp = require("child_process");
 	return new Promise((resolve, reject) => {
@@ -53,7 +56,15 @@ module.exports = function promptForInstallation(packages, ...args) {
 	try {
 		const path = require("path");
 		const fs = require("fs");
-		pathForCmd = path.resolve(process.cwd(), "node_modules", "@webpack-cli", packages);
+		const findup = require("findup-sync");
+
+		// TODO: Use this from utils package once it's fixed.
+		findProjectRoot = () => {
+			const rootFilePath = findup(`package.json`);
+			return path.dirname(rootFilePath) || process.cwd();
+		}
+
+		pathForCmd = path.resolve(findProjectRoot(), "node_modules", "@webpack-cli", packages);
 		if (!fs.existsSync(pathForCmd)) {
 			const globalModules = require("global-modules");
 			pathForCmd = globalModules + "/@webpack-cli/" + packages;

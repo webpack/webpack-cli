@@ -4,6 +4,7 @@ import * as spawn from "cross-spawn";
 import * as inquirer from "inquirer";
 import * as path from "path";
 
+import { findProjectRoot } from "@webpack-cli/utils/find-root";
 import { processPromise } from "@webpack-cli/utils/resolve-packages";
 import { List } from "@webpack-cli/webpack-scaffold";
 
@@ -41,7 +42,7 @@ const spawnYarnWithArg = (cmd: string): SpawnSyncReturns<Buffer> =>
  * @returns {String} string with given path
  */
 
-const getRootPathModule = (dep: string): string => path.resolve(process.cwd(), dep);
+const getRootPathModule = (dep: string): string => path.resolve(findProjectRoot() || process.cwd(), dep);
 
 /**
  *
@@ -88,6 +89,9 @@ export default function serve(...args: string[]) {
 			);
 			process.exit(1);
 		}
+		// Switch the dir to project root before executing webpack-dev-server
+		process.chdir(findProjectRoot());
+		// Run webpack-dev-server from the current directory
 		return require(WDSPath);
 	} else {
 		process.stdout.write(
