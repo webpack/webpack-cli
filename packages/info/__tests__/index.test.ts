@@ -1,15 +1,9 @@
-import { information } from "../index";
+import { informationType } from "../index";
 
 describe("info", () => {
 	it("should return the information of the enviroment", async () => {
-		const returnedInformation = information();
-		const expectedInformation = {
-			Binaries: ["Node", "Yarn", "npm"],
-			Browsers: ["Chrome", "Firefox", "Safari"],
-			System: ["OS", "CPU"],
-			npmGlobalPackages: ["webpack", "webpack-cli"],
-			npmPackages: "*webpack*",
-		};
+		const returnedInformation = informationType("binaries");
+		const expectedInformation = {Binaries: ["Node", "Yarn", "npm"]};
 
 		expect(returnedInformation).toEqual(expectedInformation);
 	});
