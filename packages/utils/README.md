@@ -1,5 +1,7 @@
 # webpack-cli utils (WIP, not yet published)
 
+[![npm](https://img.shields.io/npm/dm/@webpack-cli/utils.svg)](https://www.npmjs.com/package/@webpack-cli/utils)
+
 ## Description
 
 This package contains the utilities used across the webpack-cli repositories.
