@@ -4,6 +4,9 @@ import {argv} from "yargs";
 /**
  * Prints debugging information for webpack issue reporting
  */
+
+const AVAILABLE_FLAGS: string[] = ["binaries", "system", "browsers", "npmGlobalPackages", "npmPackages"];
+
 export function informationType(type: string): object {
 	switch (type) {
 		case "binaries":
@@ -27,9 +30,9 @@ export function informationType(type: string): object {
 export default async function info() {
 
 	Object.keys(argv).forEach(async (flag) => {
-		const flagVal = informationType(flag);
-		if (flagVal) {
-		process.stdout.write(await envinfo.run(flagVal));
+		if (AVAILABLE_FLAGS.includes(flag)) {
+			const flagVal = informationType(flag);
+			process.stdout.write(await envinfo.run(flagVal));
 		}
 	});
 }
