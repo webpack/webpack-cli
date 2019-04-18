@@ -8,7 +8,7 @@ describe("info", () => {
 			Browsers: ["Chrome", "Firefox", "Safari"],
 			System: ["OS", "CPU"],
 			npmGlobalPackages: ["webpack", "webpack-cli"],
-			npmPackages: "*webpack*",
+			npmPackages: "*webpack*"
 		};
 
 		expect(returnedInformation).toEqual(expectedInformation);

@@ -7,7 +7,9 @@ jest.mock("cross-spawn");
 jest.mock("fs");
 
 describe("package-manager", () => {
+	// eslint-disable-next-line
 	const spawn = require("cross-spawn");
+	// eslint-disable-next-line
 	const fs = require("fs");
 
 	const defaultSyncResult = {
@@ -50,7 +52,7 @@ describe("package-manager", () => {
 		fs.existsSync.mockReturnValueOnce(true);
 	}
 
-	spawn.sync.mockReturnValue(defaultSyncResult);
+	jest.spyOn(spawn, "sync").mockReturnValue(defaultSyncResult);
 
 	it("should return 'yarn' from getPackageManager if it's installed", () => {
 		expect(packageManager.getPackageManager()).toEqual("yarn");

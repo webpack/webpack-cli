@@ -1,14 +1,10 @@
 import isEmpty = require("lodash/isEmpty");
 
-import {
-	createOrUpdatePluginByName,
-	findPluginsByName,
-	safeTraverse,
-} from "@webpack-cli/utils/ast-utils";
+import { createOrUpdatePluginByName, findPluginsByName, safeTraverse } from "@webpack-cli/utils/ast-utils";
 
-import { IJSCodeshift, INode } from "../types/NodePath";
+import { JSCodeshift, Node } from "../types/NodePath";
 
-interface ILoaderOptions {
+interface LoaderOptions {
 	debug?: boolean;
 	minimize?: boolean;
 }
@@ -23,18 +19,18 @@ interface ILoaderOptions {
  *
  */
 
-export default function(j: IJSCodeshift, ast: INode): INode {
-	const loaderOptions: ILoaderOptions = {};
+export default function(j: JSCodeshift, ast: Node): Node {
+	const loaderOptions: LoaderOptions = {};
 
 	// If there is debug: true, set debug: true in the plugin
 	if (ast.find(j.Identifier, { name: "debug" }).size()) {
 		loaderOptions.debug = true;
 
-		ast
-			.find(j.Identifier, { name: "debug" })
-			.forEach((p: INode): void => {
+		ast.find(j.Identifier, { name: "debug" }).forEach(
+			(p: Node): void => {
 				p.parent.prune();
-			});
+			}
+		);
 	}
 
 	// If there is UglifyJsPlugin, set minimize: true
@@ -44,18 +40,12 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 
 	return ast
 		.find(j.ArrayExpression)
-		.filter(
-			(path: INode): boolean =>
-				safeTraverse(path, ["parent", "value", "key", "name"]) === "plugins",
-		)
-		.forEach((path: INode): void => {
-			if (!isEmpty(loaderOptions)) {
-				createOrUpdatePluginByName(
-					j,
-					path,
-					"webpack.LoaderOptionsPlugin",
-					loaderOptions,
-				);
+		.filter((path: Node): boolean => safeTraverse(path, ["parent", "value", "key", "name"]) === "plugins")
+		.forEach(
+			(path: Node): void => {
+				if (!isEmpty(loaderOptions)) {
+					createOrUpdatePluginByName(j, path, "webpack.LoaderOptionsPlugin", loaderOptions);
+				}
 			}
-		});
+		);
 }
