@@ -1,5 +1,7 @@
 # webpack-scaffold
 
+[![npm](https://img.shields.io/npm/dm/@webpack-cli/webpack-scaffold.svg)](https://www.npmjs.com/package/@webpack-cli/webpack-scaffold)
+
 This is the utility suite for creating a webpack `scaffold`, it contains utility functions to help you work with [Inquirer](https://github.com/SBoudrias/Inquirer.js/) prompting and scaffolding.
 
 # Installation
@@ -9,15 +11,20 @@ npm i -D webpack-cli @webpack-cli/webpack-scaffold
 ```
 
 # API
-
-1. [parseValue()](#parsevalue)
-2. [createArrowFunction()](#createarrowfunction)
-3. [createRegularFunction()](#createregularfunction)
-4. [createDynamicPromise()](#createdynamicpromise)
-5. [createAssetFilterFunction()](#createassetfilterfunction)
-6. [createExternalFunction()](#createexternalfunction)
-7. [createRequire()](#createrequire)
-8. Inquirer: [List](#list), [RawList](#rawlist), [CheckList](#checklist), [Input](#input), [InputValidate](#inputvalidate), [Confirm](#confirm)
+- [parseValue](#parsevalue)
+- [createArrowFunction](#createarrowfunction)
+- [createRegularFunction](#createregularfunction)
+- [createDynamicPromise](#createdynamicpromise)
+- [createAssetFilterFunction](#createassetfilterfunction)
+- [createExternalFunction](#createexternalfunction)
+- [createRequire](#createrequire)
+- [Inquirer](#inquirer)
+	- [List](#list)
+	- [RawList](#rawlist)
+	- [CheckList](#checklist)
+	- [Input](#input)
+	- [InputValidate](#inputvalidate)
+	- [Confirm](#confirm)
 
 ## parseValue
 
