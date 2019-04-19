@@ -76,16 +76,24 @@ export function CheckList(name: string, message: string, choices: string[]): Gen
 	};
 }
 
-export function Input(name: string, message: string): Generator.Question {
+export function Input(name: string, message: string, defaultChoice?: string): Generator.Question {
 	return {
+		default: defaultChoice,
 		message,
 		name,
 		type: "input"
 	};
 }
 
-export function InputValidate(name: string, message: string, cb?: (input: string) => string | boolean): Generator.Question {
+export function InputValidate(
+		name: string,
+		message: string,
+		cb?: (input: string) => string | boolean,
+		defaultChoice?: string,
+	): Generator.Question {
+
 	return {
+		default: defaultChoice,
 		message,
 		name,
 		type: "input",

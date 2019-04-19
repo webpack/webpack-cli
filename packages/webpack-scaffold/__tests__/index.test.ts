@@ -76,6 +76,15 @@ describe("utils", () => {
 		});
 		it("should make an Input object", () => {
 			expect(utils.Input("plugins", "what is your plugin?")).toEqual({
+				default: undefined,
+				message: "what is your plugin?",
+				name: "plugins",
+				type: "input",
+			});
+		});
+		it("should make an Input object", () => {
+			expect(utils.Input("plugins", "what is your plugin?", "my-plugin")).toEqual({
+				default: "my-plugin",
 				message: "what is your plugin?",
 				name: "plugins",
 				type: "input",
@@ -100,6 +109,11 @@ describe("utils", () => {
 		it("should make an Input object with validation", () => {
 			expect(
 				utils.InputValidate("plugins", "what is your plugin?", () => true),
+			).toMatchSnapshot();
+		});
+		it("should make an Input object with validation and default value", () => {
+			expect(
+				utils.InputValidate("plugins", "what is your plugin?", () => true, "my-plugin"),
 			).toMatchSnapshot();
 		});
 	});

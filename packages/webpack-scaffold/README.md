@@ -11,15 +11,20 @@ npm i -D webpack-cli @webpack-cli/webpack-scaffold
 ```
 
 # API
-
--   [parseValue](#parsevalue)
--   [createArrowFunction](#createarrowfunction)
--   [createRegularFunction](#createregularfunction)
--   [createDynamicPromise](#createdynamicpromise)
--   [createAssetFilterFunction](#createassetfilterfunction)
--   [createExternalFunction](#createexternalfunction)
--   [createRequire](#createrequire)
--   [Inquirer](#inquirer) - [List](#list) - [RawList](#rawlist) - [CheckList](#checklist) - [Input](#input) - [InputValidate](#inputvalidate) - [Confirm](#confirm)
+- [parseValue](#parsevalue)
+- [createArrowFunction](#createarrowfunction)
+- [createRegularFunction](#createregularfunction)
+- [createDynamicPromise](#createdynamicpromise)
+- [createAssetFilterFunction](#createassetfilterfunction)
+- [createExternalFunction](#createexternalfunction)
+- [createRequire](#createrequire)
+- [Inquirer](#inquirer)
+  - [List](#list)
+  - [RawList](#rawlist)
+  - [CheckList](#checklist)
+  - [Input](#input)
+  - [InputValidate](#inputvalidate)
+  - [Confirm](#confirm)
 
 ## parseValue
 
@@ -163,38 +168,38 @@ CheckList("entry", "what kind of entry do you want?", ["Array", "Function"]);
 
 ### Input
 
-Param: `name<String>, message<String>`
+Param: `name<String>, message<String>, [default<String>]`
 
 Creates an Input from Inquirer
 
 ```js
 const Input = require("@webpack-cli/webpack-scaffold").Input;
 
-Input("entry", "what is your entry point?");
+Input('entry', 'what is your entry point?', 'src/index')
 ```
 
 ### InputValidate
 
-Param: `name<String>, message<String>, validate<Function>`
+Param: `name<String>, message<String>, [validate<Function>, default<String>]`
 
 Creates an Input from Inquirer
 
 ```js
-const InputValidate = require("@webpack-cli/webpack-scaffold").InputValidate;
+const InputValidate = require('@webpack-cli/webpack-scaffold').InputValidate;
 
-const validation = value => {
-	if (value.length > 4) {
-		return true;
-	} else {
-		return "Wow, that was short!";
-	}
-};
-InputValidate("entry", "what is your entry point?", validation);
+const validation = (value) => {
+    if(value.length > 4) {
+        return true;
+    } else {
+        return 'Wow, that was short!'
+    }
+}
+InputValidate('entry', 'what is your entry point?', validation, 'src/index')
 ```
 
 ### Confirm
 
-Param: `name<String>, message<String>, default<?Boolean>`
+Param: `name<String>, message<String>, [default<Boolean>]`
 
 Creates an Input from Inquirer
 
