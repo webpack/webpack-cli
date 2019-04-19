@@ -1,6 +1,6 @@
 # webpack-cli init
 
-`webpack-cli init` is used to initialize `webpack` projects quickly by scaffolding configuration and installing modules required for the project as per user preferences.
+`webpack-cli init` is used to initialize `webpack` projects quickly by scaffolding configuration and a runnable project with all the dependencies based on the user preferences.
 
 ## Initial Setup
 
