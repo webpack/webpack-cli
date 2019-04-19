@@ -1,7 +1,9 @@
+
 import chalk from "chalk";
 import * as logSymbols from "log-symbols";
 import * as Generator from "yeoman-generator";
 import * as Inquirer from "inquirer";
+import * as path from "path";
 
 import { getPackageManager } from "@webpack-cli/utils/package-manager";
 import { Confirm, Input, List } from "@webpack-cli/webpack-scaffold";
@@ -9,7 +11,7 @@ import { Confirm, Input, List } from "@webpack-cli/webpack-scaffold";
 import { WebpackOptions } from "./types";
 import entryQuestions from "./utils/entry";
 import getBabelPlugin from "./utils/module";
-import getDefaultPlugins from "./utils/plugins";
+import styleQuestionHandler from "./utils/style";
 import tooltip from "./utils/tooltip";
 
 /**
@@ -35,20 +37,98 @@ export default class InitGenerator extends Generator {
 
 	public constructor(args, opts) {
 		super(args, opts);
-		this.isProd = false;
-		(this.usingDefaults = false),
-			(this.dependencies = [
-				"webpack",
-				"webpack-cli",
-				"terser-webpack-plugin",
-				"babel-plugin-syntax-dynamic-import"
-			]);
+		this.usingDefaults = false,
+		this.isProd = this.usingDefaults ? true : false;
+
+		this.dependencies = [
+			"webpack",
+			"webpack-cli",
+			"babel-plugin-syntax-dynamic-import",
+		];
+		if (this.isProd) {
+			this.dependencies.push("terser-webpack-plugin");
+		} else {
+			this.dependencies.push("webpack-dev-server");
+		}
+
 		this.configuration = {
 			config: {
+				configName: this.isProd ? "prod" : "config",
 				topScope: [],
-				webpackOptions: {}
-			}
+				// tslint:disable: object-literal-sort-keys
+				webpackOptions: {
+					mode: this.isProd ? "'production'" : "'development'",
+					entry: undefined,
+					output: undefined,
+					plugins: [],
+					module: {
+						rules: [],
+					},
+				},
+				// tslint:enable: object-literal-sort-keys
+			},
 		};
+
+		// add splitChunks options for transparency
+		// defaults coming from: https://webpack.js.org/plugins/split-chunks-plugin/#optimization-splitchunks
+		this.configuration.config.topScope.push(
+			"const path = require('path');",
+			"const webpack = require('webpack');",
+			"\n",
+			tooltip.splitChunks(),
+		);
+
+		if (this.isProd) {
+			this.configuration.config.topScope.push(
+				tooltip.terser(),
+				"const TerserPlugin = require('terser-webpack-plugin');",
+				"\n",
+			);
+		}
+
+		this.configuration.config.webpackOptions.plugins.push(
+			"new webpack.ProgressPlugin()",
+		);
+
+		if (this.isProd) {
+			this.configuration.config.webpackOptions.plugins.push(
+				"new TerserPlugin()",
+			);
+		}
+
+		let optimizationObj;
+
+		if (!this.isProd) {
+			optimizationObj = {
+				splitChunks: {
+					chunks: "'all'",
+				},
+			};
+		} else {
+			optimizationObj = {
+				splitChunks: {
+					cacheGroups: {
+						vendors: {
+							priority: -10,
+							test: "/[\\\\/]node_modules[\\\\/]/",
+						},
+					},
+					chunks: "'async'",
+					minChunks: 1,
+					minSize: 30000,
+					// for production name is recommended to be off
+					name: !this.isProd,
+				},
+			};
+		}
+
+		this.configuration.config.webpackOptions.optimization = optimizationObj;
+
+		if (!this.isProd) {
+			this.configuration.config.webpackOptions.devServer = {
+				open: true,
+			};
+		}
 	}
 
 	// eslint-disable-next-line
@@ -59,363 +139,177 @@ export default class InitGenerator extends Generator {
 		let ExtractUseProps: object[];
 
 		process.stdout.write(
-			"\n" +
-				logSymbols.info +
-				chalk.blue(" INFO ") +
-				"For more information and a detailed description of each question, have a look at " +
-				chalk.bold.green("https://github.com/webpack/webpack-cli/blob/master/INIT.md") +
-				"\n"
+			`\n${logSymbols.info}${chalk.blue(" INFO ")} ` +
+			`For more information and a detailed description of each question, have a look at: ` +
+			`${chalk.bold.green("https://github.com/webpack/webpack-cli/blob/master/INIT.md")}\n`,
 		);
 		process.stdout.write(
-			logSymbols.info +
-				chalk.blue(" INFO ") +
-				"Alternatively, run `webpack(-cli) --help` for usage info." +
-				"\n\n"
+			`${logSymbols.info}${chalk.blue(" INFO ")} ` +
+			`Alternatively, run "webpack(-cli) --help" for usage info\n\n`,
 		);
 
-		this.configuration.config.webpackOptions.module = {
-			rules: []
-		};
-		this.configuration.config.topScope.push(
-			"const webpack = require('webpack')",
-			"const path = require('path')",
-			"\n"
-		);
-
-		return this.prompt([Confirm("entryType", "Will your application have multiple bundles?", false)])
-			.then(
-				(entryTypeAnswer: { entryType: boolean }): Promise<void | {}> => {
-					// Ask different questions for entry points
-					return entryQuestions(self, entryTypeAnswer);
-				}
+		return this.prompt([
+				Confirm("multiEntries", "Will your application have multiple bundles?", false),
+			])
+			.then((multiEntriesAnswer: any) =>
+				entryQuestions(self, multiEntriesAnswer.multiEntries),
 			)
-			.then(
-				(entryOptions: object | string): Promise<{}> => {
-					if (typeof entryOptions === "string" && entryOptions.length > 0) {
-						if (entryOptions !== "\"\"" &&  entryOptions !== "\'\'") {
-							this.configuration.config.webpackOptions.entry = entryOptions;
-						}
-					}
-
+			.then((entryOption: object | string) => {
+				if (typeof entryOption === "string" && entryOption.length > 0) {
+					this.configuration.config.webpackOptions.entry = `${entryOption}`;
+				}
+			})
+			.then((_: void) =>
+				this.prompt([
+					Input(
+						"outputDir",
+						"In which folder do you want to store your generated bundles?",
+						"dist",
+					),
+				]),
+			)
+			.then((outputDirAnswer: {
+				outputDir: string;
+			}) => {
+				// As entry is not required anymore and we dont set it to be an empty string or """""
+				// it can be undefined so falsy check is enough (vs entry.length);
+				if (
+					!this.configuration.config.webpackOptions.entry &&
+					!this.usingDefaults
+				) {
+					this.configuration.config.webpackOptions.output = {
+						chunkFilename: "'[name].[chunkhash].js'",
+						filename: "'[name].[chunkhash].js'",
+					};
+				} else if (!this.usingDefaults) {
+					this.configuration.config.webpackOptions.output = {
+						filename: "'[name].[chunkhash].js'",
+					};
+				}
+				if (!this.usingDefaults && outputDirAnswer.outputDir.length) {
+					this.configuration.config.webpackOptions.output.path =
+						`path.resolve(__dirname, '${outputDirAnswer.outputDir}')`;
+				}
+			})
+			.then((_: void) =>
+				this.prompt([
+					Confirm("useBabel", "Will you be using ES2015?"),
+				]),
+			)
+			.then((useBabelAnswer: {
+				useBabel: boolean;
+			}) => {
+				if (useBabelAnswer.useBabel) {
+					this.configuration.config.webpackOptions.module.rules.push(
+						getBabelPlugin(),
+					);
+					this.dependencies.push(
+						"babel-loader",
+						"@babel/core",
+						"@babel/preset-env",
+					);
+				}
+			})
+			.then((_: void) =>
+				this.prompt([
+					List("stylingType", "Will you use one of the below CSS solutions?", [
+						"No",
+						"CSS",
+						"SASS",
+						"LESS",
+						"PostCSS",
+					]),
+				]))
+			.then((stylingTypeAnswer: {
+				stylingType: string;
+			}) =>
+				({ ExtractUseProps, regExpForStyles } = styleQuestionHandler(self, stylingTypeAnswer.stylingType)),
+			)
+			.then((): Promise<Inquirer.Answers> => {
+				if (this.isProd) {
+					// Ask if the user wants to use extractPlugin
 					return this.prompt([
-						Input("outputType", "In which folder do you want to store your generated bundles? (dist):")
+						Input(
+							"useExtractPlugin",
+							"If you want to bundle your CSS files, what will you name the bundle? (press enter to skip)",
+						),
 					]);
 				}
-			)
-			.then(
-				(outputTypeAnswer: { outputType: string }): void => {
-					// As entry is not required anymore and we dont set it to be an empty string or """""
-					// it can be undefined so falsy check is enough (vs entry.length);
-					if (!this.configuration.config.webpackOptions.entry && !this.usingDefaults) {
-						this.configuration.config.webpackOptions.output = {
-							chunkFilename: "'[name].[chunkhash].js'",
-							filename: "'[name].[chunkhash].js'"
-						};
-					} else if (!this.usingDefaults) {
-						this.configuration.config.webpackOptions.output = {
-							filename: "'[name].[chunkhash].js'"
-						};
-					}
-					if (!this.usingDefaults && outputTypeAnswer.outputType.length) {
-						this.configuration.config.webpackOptions.output.path = `path.resolve(__dirname, '${
-							outputTypeAnswer.outputType
-						}')`;
-					}
-				}
-			)
-			.then(
-				(): Promise<Inquirer.Answers> => {
-					this.isProd = this.usingDefaults ? true : false;
-					this.configuration.config.configName = this.isProd ? "prod" : "config";
-					if (!this.isProd) {
-						this.configuration.config.webpackOptions.mode = "'development'";
-					}
-					this.configuration.config.webpackOptions.plugins = this.isProd ? [] : getDefaultPlugins();
-					return this.prompt([Confirm("babelConfirm", "Will you be using ES2015?")]);
-				}
-			)
-			.then(
-				(babelConfirmAnswer: { babelConfirm: boolean }): void => {
-					if (babelConfirmAnswer.babelConfirm) {
-						this.configuration.config.webpackOptions.module.rules.push(getBabelPlugin());
-						this.dependencies.push("babel-loader", "@babel/core", "@babel/preset-env");
-					}
-				}
-			)
-			.then(
-				(): Promise<Inquirer.Answers> => {
-					return this.prompt([
-						List("stylingType", "Will you use one of the below CSS solutions?", [
-							"No",
-							"CSS",
-							"SASS",
-							"LESS",
-							"PostCSS"
-						])
-					]);
-				}
-			)
-			.then(
-				(stylingTypeAnswer: { stylingType: string }): void => {
-					ExtractUseProps = [];
-					switch (stylingTypeAnswer.stylingType) {
-						case "SASS":
-							this.dependencies.push("sass-loader", "node-sass", "style-loader", "css-loader");
-							regExpForStyles = `${new RegExp(/\.(scss|css)$/)}`;
-							if (this.isProd) {
-								ExtractUseProps.push(
-									{
-										loader: "'css-loader'",
-										options: {
-											sourceMap: true
-										}
-									},
-									{
-										loader: "'sass-loader'",
-										options: {
-											sourceMap: true
-										}
-									}
-								);
-							} else {
-								ExtractUseProps.push(
-									{
-										loader: "'style-loader'"
-									},
-									{
-										loader: "'css-loader'"
-									},
-									{
-										loader: "'sass-loader'"
-									}
-								);
-							}
-							break;
-						case "LESS":
-							regExpForStyles = `${new RegExp(/\.(less|css)$/)}`;
-							this.dependencies.push("less-loader", "less", "style-loader", "css-loader");
-							if (this.isProd) {
-								ExtractUseProps.push(
-									{
-										loader: "'css-loader'",
-										options: {
-											sourceMap: true
-										}
-									},
-									{
-										loader: "'less-loader'",
-										options: {
-											sourceMap: true
-										}
-									}
-								);
-							} else {
-								ExtractUseProps.push(
-									{
-										loader: "'css-loader'",
-										options: {
-											sourceMap: true
-										}
-									},
-									{
-										loader: "'less-loader'",
-										options: {
-											sourceMap: true
-										}
-									}
-								);
-							}
-							break;
-						case "PostCSS":
-							this.configuration.config.topScope.push(
-								tooltip.postcss(),
-								"const autoprefixer = require('autoprefixer');",
-								"const precss = require('precss');",
-								"\n"
-							);
-							this.dependencies.push(
-								"style-loader",
-								"css-loader",
-								"postcss-loader",
-								"precss",
-								"autoprefixer"
-							);
-							regExpForStyles = `${new RegExp(/\.css$/)}`;
-							if (this.isProd) {
-								ExtractUseProps.push(
-									{
-										loader: "'css-loader'",
-										options: {
-											importLoaders: 1,
-											sourceMap: true
-										}
-									},
-									{
-										loader: "'postcss-loader'",
-										options: {
-											plugins: `function () {
-											return [
-												precss,
-												autoprefixer
-											];
-										}`
-										}
-									}
-								);
-							} else {
-								ExtractUseProps.push(
-									{
-										loader: "'style-loader'"
-									},
-									{
-										loader: "'css-loader'",
-										options: {
-											importLoaders: 1,
-											sourceMap: true
-										}
-									},
-									{
-										loader: "'postcss-loader'",
-										options: {
-											plugins: `function () {
-											return [
-												precss,
-												autoprefixer
-											];
-										}`
-										}
-									}
-								);
-							}
-							break;
-						case "CSS":
-							this.dependencies.push("style-loader", "css-loader");
-							regExpForStyles = `${new RegExp(/\.css$/)}`;
-							if (this.isProd) {
-								ExtractUseProps.push({
-									loader: "'css-loader'",
-									options: {
-										sourceMap: true
-									}
-								});
-							} else {
-								ExtractUseProps.push(
-									{
-										loader: "'style-loader'",
-										options: {
-											sourceMap: true
-										}
-									},
-									{
-										loader: "'css-loader'"
-									}
-								);
-							}
-							break;
-						default:
-							regExpForStyles = null;
-					}
-				}
-			)
-			.then(
-				(): Promise<Inquirer.Answers> => {
+			})
+			.then((useExtractPluginAnswer: {
+				useExtractPlugin: string;
+			}) => {
+				if (regExpForStyles) {
 					if (this.isProd) {
-						// Ask if the user wants to use extractPlugin
-						return this.prompt([
-							Input(
-								"extractPlugin",
-								"If you want to bundle your CSS files, what will you name the bundle? (press enter to skip)"
-							)
-						]);
-					}
-				}
-			)
-			.then(
-				(extractPluginAnswer: { extractPlugin: string }): void => {
-					if (regExpForStyles) {
-						if (this.isProd) {
-							const cssBundleName: string = extractPluginAnswer.extractPlugin;
-							this.configuration.config.topScope.push(tooltip.cssPlugin());
-							this.dependencies.push("mini-css-extract-plugin");
-
-							if (cssBundleName.length !== 0) {
-								(this.configuration.config.webpackOptions.plugins as string[]).push(
-									// TODO: use [contenthash] after it is supported
-									`new MiniCssExtractPlugin({ filename:'${cssBundleName}.[chunkhash].css' })`
-								);
-							} else {
-								(this.configuration.config.webpackOptions.plugins as string[]).push(
-									"new MiniCssExtractPlugin({ filename:'style.css' })"
-								);
-							}
-
-							ExtractUseProps.unshift({
-								loader: "MiniCssExtractPlugin.loader"
-							});
-
-							const moduleRulesObj = {
-								test: regExpForStyles,
-								use: ExtractUseProps
-							};
-
-							this.configuration.config.webpackOptions.module.rules.push(moduleRulesObj);
-							this.configuration.config.topScope.push(
-								"const MiniCssExtractPlugin = require('mini-css-extract-plugin');",
-								"\n"
+						const cssBundleName: string = useExtractPluginAnswer.useExtractPlugin;
+						this.dependencies.push("mini-css-extract-plugin");
+						this.configuration.config.topScope.push(
+							tooltip.cssPlugin(),
+							"const MiniCssExtractPlugin = require('mini-css-extract-plugin');",
+							"\n",
+						);
+						if (cssBundleName.length !== 0) {
+							this.configuration.config.webpackOptions.plugins.push(
+								// TODO: use [contenthash] after it is supported
+								`new MiniCssExtractPlugin({ filename:'${cssBundleName}.[chunkhash].css' })`,
 							);
 						} else {
-							const moduleRulesObj: {
-								test: string;
-								use: object[];
-							} = {
-								test: regExpForStyles,
-								use: ExtractUseProps
-							};
+							this.configuration.config.webpackOptions.plugins.push(
+								"new MiniCssExtractPlugin({ filename:'style.css' })",
+							);
+						}
 
-							this.configuration.config.webpackOptions.module.rules.push(moduleRulesObj);
-						}
+						ExtractUseProps.unshift({
+							loader: "MiniCssExtractPlugin.loader",
+						});
 					}
-					// add splitChunks options for transparency
-					// defaults coming from: https://webpack.js.org/plugins/split-chunks-plugin/#optimization-splitchunks
-					this.configuration.config.topScope.push(tooltip.splitChunks());
-					this.configuration.config.webpackOptions.optimization = {
-						splitChunks: {
-							cacheGroups: {
-								vendors: {
-									priority: -10,
-									test: "/[\\\\/]node_modules[\\\\/]/"
-								}
-							},
-							chunks: "'async'",
-							minChunks: 1,
-							minSize: 30000,
-							// for production name is recommended to be off
-							name: !this.isProd
-						}
-					};
-					done();
+
+					this.configuration.config.webpackOptions.module.rules.push(
+						{
+							test: regExpForStyles,
+							use: ExtractUseProps,
+						},
+					);
 				}
-			);
+
+				done();
+			});
 	}
-	public installPlugins(): void {
-		if (this.isProd) {
-			this.dependencies = this.dependencies.filter((p: string): boolean => p !== "terser-webpack-plugin");
-		} else {
-			this.configuration.config.topScope.push(
-				tooltip.terser(),
-				"const TerserPlugin = require('terser-webpack-plugin');",
-				"\n"
-			);
-		}
+
+	public installPlugins() {
 		const packager = getPackageManager();
 		const opts: {
-			dev?: boolean;
-			"save-dev"?: boolean;
-		} = packager === "yarn" ? { dev: true } : { "save-dev": true };
+			dev?: boolean,
+			"save-dev"?: boolean,
+		} = packager === "yarn" ?
+			{ dev: true } :
+			{ "save-dev": true };
+
 		this.scheduleInstallTask(packager, this.dependencies, opts);
 	}
 
 	public writing(): void {
 		this.config.set("configuration", this.configuration);
+
+		const packageJsonTemplatePath = "./templates/package.json.js";
+		this.fs.extendJSON(this.destinationPath("package.json"), require(packageJsonTemplatePath)(this.isProd));
+
+		const entry = this.configuration.config.webpackOptions.entry;
+		const generateEntryFile = (entryPath: string, name: string) => {
+			entryPath = entryPath.replace(/'/g, "");
+			this.fs.copyTpl(
+				path.resolve(__dirname, "./templates/index.js"),
+				this.destinationPath(entryPath),
+				{ name },
+			);
+		};
+
+		if ( typeof entry === "string" ) {
+			generateEntryFile(entry, "your main file!");
+		} else if (typeof entry === "object") {
+			Object.keys(entry).forEach((name) =>
+				generateEntryFile(entry[name], `${name} main file!`),
+			);
+		}
 	}
 }
