@@ -81,12 +81,10 @@ declare module "yeoman-generator" {
 		filter?: (name: string) => string;
 	}
 
-	// tslint:disable-next-line
 	class NamedBase extends YeomanGeneratorBase implements INamedBase {
 		public constructor(args: string | string[], options: object);
 	}
 
-	// tslint:disable-next-line
 	class Base extends NamedBase implements IBase {
 		public static extend(protoProps: IQueueProps): YeomanGeneratorBase;
 	}

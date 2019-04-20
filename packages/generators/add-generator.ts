@@ -12,7 +12,6 @@ import { AutoComplete, Confirm, InquirerInput, Input, List } from "@webpack-cli/
 import { SchemaProperties, WebpackOptions } from "./types";
 import entryQuestions from "./utils/entry";
 
-// tslint:disable:no-var-requires
 import webpackDevServerSchema from "webpack-dev-server/lib/options.json";
 import webpackSchema from "./utils/optionsSchema.json";
 const PROPS: string[] = Array.from(PROP_TYPES.keys());

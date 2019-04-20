@@ -9,8 +9,6 @@ import {
 
 import { JSCodeshift, Node } from "../types/NodePath";
 
-
-
 // merge test entry prop and function expression. case 6[x]
 // TODO: set the proper type once moved to @types/jscodeshift
 // eslint-disable-next-line
@@ -47,7 +45,6 @@ const mergeTestPropArrowFunction = (j, chunkKey, testFunc): any => {
 		)
 	);
 };
-
 
 /**
  *
@@ -101,7 +98,6 @@ export default function(j: JSCodeshift, ast: Node): Node {
 								({ value: chunkValue }): void => {
 									if (chunkValue === "runtime") {
 										optimizationProps["runtimeChunk"] = j.objectExpression([
-											// tslint:disable-line
 											createProperty(j, "name", chunkValue)
 										]);
 									} else {
@@ -110,12 +106,8 @@ export default function(j: JSCodeshift, ast: Node): Node {
 										}
 
 										findRootNodesByName(j, ast, "entry").forEach(
-											({
-												value
-											}): void => {
-												const {
-													  properties: entries
-												} = (value as Node).value as Node
+											({ value }): void => {
+												const { properties: entries } = (value as Node).value as Node;
 												chunkCount = entries.length;
 												entries.forEach(
 													({ key: { name: entryName } }): void => {
@@ -133,12 +125,11 @@ export default function(j: JSCodeshift, ast: Node): Node {
 							);
 							break;
 
-						case "name":{
-							const nameKey = ((p.value as Node).value as string)
+						case "name": {
+							const nameKey = (p.value as Node).value as string;
 
 							if (nameKey === "runtime") {
 								optimizationProps["runtimeChunk"] = j.objectExpression([
-									// tslint:disable-line
 									createProperty(j, "name", nameKey)
 								]);
 							} else {
@@ -149,12 +140,8 @@ export default function(j: JSCodeshift, ast: Node): Node {
 								}
 
 								findRootNodesByName(j, ast, "entry").forEach(
-									({
-										value
-									}): void => {
-										const {
-											properties: entries
-										} = (value as Node).value as Node
+									({ value }): void => {
+										const { properties: entries } = (value as Node).value as Node;
 										chunkCount = entries.length;
 										entries.forEach(
 											({ key: { name: entryName } }): void => {
@@ -169,13 +156,14 @@ export default function(j: JSCodeshift, ast: Node): Node {
 							break;
 						}
 
-
 						case "filename":
 							if (chunkKey) {
 								if (!Array.isArray(cacheGroup[chunkKey])) {
 									cacheGroup[chunkKey] = [];
 								}
-								cacheGroup[chunkKey].push(createProperty(j, propKey, (p.value as Node).value as string));
+								cacheGroup[chunkKey].push(
+									createProperty(j, propKey, (p.value as Node).value as string)
+								);
 							}
 							break;
 
@@ -208,13 +196,15 @@ export default function(j: JSCodeshift, ast: Node): Node {
 								}
 
 								// eslint-disable-next-line
-								cacheGroup[chunkKey] = cacheGroup[chunkKey].map((prop): any =>
-									prop.key.name === "test" ? mergeTestPropArrowFunction(j, chunkKey, pathValue) : prop
+								cacheGroup[chunkKey] = cacheGroup[chunkKey].map(
+									(prop): any =>
+										prop.key.name === "test"
+											? mergeTestPropArrowFunction(j, chunkKey, pathValue)
+											: prop
 								);
 							}
 							break;
 						}
-
 					}
 				}
 			);
@@ -243,11 +233,11 @@ export default function(j: JSCodeshift, ast: Node): Node {
 					}
 
 					const chunkPropsContainTest = chunkPropsToAdd.some(
-						(prop):boolean => prop.key.name === "test" && prop.value.type === "Literal"
+						(prop): boolean => prop.key.name === "test" && prop.value.type === "Literal"
 					);
 
 					if (chunkPropsContainTest) {
-						chunkProps = chunkProps.filter((prop):boolean => prop.key.name !== "minChunks");
+						chunkProps = chunkProps.filter((prop): boolean => prop.key.name !== "minChunks");
 					}
 
 					if (chunkPropsToAdd && Array.isArray(chunkPropsToAdd) && chunkPropsToAdd.length > 0) {

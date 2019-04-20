@@ -16,7 +16,7 @@ import uglifyJsPluginTransform from "./uglifyJsPlugin/uglifyJsPlugin";
 interface TransformsObject {
 	bannerPluginTransform: object;
 	commonsChunkPluginTransform?: object;
-	extractTextPluginTransform: object /* tslint:disable */;
+	extractTextPluginTransform: object;
 	loaderOptionsPluginTransform: object;
 	loadersTransform: object;
 	noEmitOnErrorsPluginTransform: object;
@@ -26,7 +26,6 @@ interface TransformsObject {
 	uglifyJsPluginTransform: object;
 }
 
-/* tslint:disable object-literal-sort-keys */
 const transformsObject: TransformsObject = {
 	loadersTransform,
 	resolveTransform,
@@ -52,7 +51,6 @@ interface LazyTransformObject {
 	removeDeprecatedPluginsTransform?: (ast: object, source: string) => pLazy<{}>;
 	commonsChunkPluginTransform?: (ast: object, source: string) => pLazy<{}>;
 }
-/* tslint:enable object-literal-sort-keys */
 
 /**
  *

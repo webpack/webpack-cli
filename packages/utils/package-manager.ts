@@ -46,14 +46,6 @@ const SPAWN_FUNCTIONS: SpawnFunctions = {
 
 /**
  *
- * Spawns a new process that installs the scaffold/dependency
- *
- * @param {String} pkg - The dependency to be installed
- * @returns {Function} spawn - Installs the package
- */
-
-/**
- *
  * Returns the name of package manager to use,
  * preferring yarn over npm if available
  *
@@ -99,7 +91,13 @@ export function getPathToGlobalPackages(): string {
 
 	return require("global-modules");
 }
-
+/**
+ *
+ * Spawns a new process that installs the scaffold/dependency
+ *
+ * @param {String} pkg - The dependency to be installed
+ * @returns {SpawnSyncReturns<Buffer>} spawn - Installs the package
+ */
 export function spawnChild(pkg: string): SpawnSyncReturns<Buffer> {
 	const rootPath: string = getPathToGlobalPackages();
 	const pkgPath: string = path.resolve(rootPath, pkg);
