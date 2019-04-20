@@ -42,25 +42,22 @@ export default function style(self, stylingType) {
 			self.dependencies.push(
 				Loader.CSS,
 			);
-			if (self.isProf) {
+			if (!self.isProd) {
 				self.dependencies.push(
 					Loader.STYLE,
 				);
-			}
-
-			ExtractUseProps.push({
-				loader: `"${Loader.CSS}"`,
-				options: {
-					sourceMap: true,
-				},
-			});
-			if (!self.isProd) {
 				ExtractUseProps.push(
 					{
 						loader: `"${Loader.STYLE}"`,
 					},
 				);
 			}
+			ExtractUseProps.push({
+				loader: `"${Loader.CSS}"`,
+				options: {
+					sourceMap: true,
+				},
+			});
 			break;
 
 		case StylingType.SASS:
@@ -71,12 +68,16 @@ export default function style(self, stylingType) {
 				Loader.SASS,
 				Loader.CSS,
 			);
-			if (self.isProf) {
+			if (!self.isProd) {
 				self.dependencies.push(
 					Loader.STYLE,
 				);
+				ExtractUseProps.push(
+					{
+						loader: `"${Loader.STYLE}"`,
+					},
+				);
 			}
-
 			ExtractUseProps.push(
 				{
 					loader: `"${Loader.CSS}"`,
@@ -91,13 +92,6 @@ export default function style(self, stylingType) {
 					},
 				},
 			);
-			if (!self.isProd) {
-				ExtractUseProps.push(
-					{
-						loader: `"${Loader.STYLE}"`,
-					},
-				);
-			}
 			break;
 
 		case StylingType.LESS:
@@ -108,12 +102,16 @@ export default function style(self, stylingType) {
 				Loader.LESS,
 				Loader.CSS,
 			);
-			if (self.isProf) {
+			if (!self.isProd) {
 				self.dependencies.push(
 					Loader.STYLE,
 				);
+				ExtractUseProps.push(
+					{
+						loader: `"${Loader.STYLE}"`,
+					},
+				);
 			}
-
 			ExtractUseProps.push(
 				{
 					loader: `"${Loader.CSS}"`,
@@ -128,13 +126,6 @@ export default function style(self, stylingType) {
 					},
 				},
 			);
-			if (!self.isProd) {
-				ExtractUseProps.push(
-					{
-						loader: `"${Loader.STYLE}"`,
-					},
-				);
-			}
 			break;
 
 		case StylingType.PostCSS:
@@ -153,12 +144,16 @@ export default function style(self, stylingType) {
 				Loader.CSS,
 				Loader.POSTCSS,
 			);
-			if (self.isProf) {
+			if (!self.isProd) {
 				self.dependencies.push(
 					Loader.STYLE,
 				);
+				ExtractUseProps.push(
+					{
+						loader: `"${Loader.STYLE}"`,
+					},
+				);
 			}
-
 			ExtractUseProps.push(
 				{
 					loader: `"${Loader.CSS}"`,
@@ -179,13 +174,6 @@ export default function style(self, stylingType) {
 					},
 				},
 			);
-			if (!self.isProd) {
-				ExtractUseProps.push(
-					{
-						loader: `"${Loader.STYLE}"`,
-					},
-				);
-			}
 			break;
 	}
 	return { ExtractUseProps, regExpForStyles };
