@@ -111,7 +111,7 @@ In case you are suggesting a new feature, we will match your idea with our curre
 * You can run the linters:
 
   ```bash
-  npm run lint && npm run tslint
+  npm run lint
   ```
 
 ### Using yarn
@@ -150,7 +150,7 @@ In case you are suggesting a new feature, we will match your idea with our curre
 * You can run the linters:
 
   ```bash
-  yarn lint && yarn tslint
+  yarn lint
   ```
 
 ## Editor Config

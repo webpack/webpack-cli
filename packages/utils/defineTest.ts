@@ -1,27 +1,28 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import * as fs from "fs";
 import * as path from "path";
 
-import { IJSCodeshift, INode } from "./types/NodePath";
+import { JSCodeshift, Node } from "./types/NodePath";
 
-interface IModule {
-  (
-	jscodeshift: IJSCodeshift,
-	ast: INode,
-	initOptions: string | boolean | object,
-	action: string,
-	transformName?: string,
-  ): INode;
-  default: transformType;
-  parser: string;
+interface Module {
+	(
+		jscodeshift: JSCodeshift,
+		ast: Node,
+		initOptions: string | boolean | object,
+		action: string,
+		transformName?: string
+	): Node;
+	default: transformType;
+	parser: string;
 }
 
 type transformType = (
-  jscodeshift: IJSCodeshift,
-  ast: INode,
-  initOptions: string | boolean | object,
-  action: object | string,
-  transformName?: string,
-) => INode;
+	jscodeshift: JSCodeshift,
+	ast: Node,
+	initOptions: string | boolean | object,
+	action: object | string,
+	transformName?: string
+) => Node;
 
 /**
  * Utility function to run a jscodeshift script within a unit test.
@@ -48,54 +49,45 @@ type transformType = (
  * @return {Function} Function that fires of the transforms
  */
 function runSingleTransform(
-  dirName: string,
-  transformName: string,
-  testFilePrefix: string,
-  initOptions: object | boolean | string,
-  action: object | string,
+	dirName: string,
+	transformName: string,
+	testFilePrefix: string,
+	initOptions: object | boolean | string,
+	action: object | string
 ): string {
-  if (!testFilePrefix) {
-	testFilePrefix = transformName;
-  }
-  const fixtureDir = path.join(
-	  dirName,
-	  "__tests__",
-	  "__testfixtures__",
-  );
-  const inputPath = path.join(fixtureDir, `${testFilePrefix}.input.js`);
-  const source = fs.readFileSync(inputPath, "utf8");
+	if (!testFilePrefix) {
+		testFilePrefix = transformName;
+	}
+	const fixtureDir = path.join(dirName, "__tests__", "__testfixtures__");
+	const inputPath = path.join(fixtureDir, `${testFilePrefix}.input.js`);
+	const source = fs.readFileSync(inputPath, "utf8");
 
-  let module: IModule;
-  // Assumes transform and test are on the same level
-  if (action) {
-	  module = require(path.join(dirName, "recursive-parser.ts"));
-  } else {
-	  module = require(path.join(dirName, `${transformName}.ts`));
-  }
-  // Handle ES6 modules using default export for the transform
-  const transform = module.default ? module.default : module;
+	let module: Module;
+	// Assumes transform and test are on the same level
+	if (action) {
+		module = require(path.join(dirName, "recursive-parser.ts"));
+	} else {
+		module = require(path.join(dirName, `${transformName}.ts`));
+	}
+	// Handle ES6 modules using default export for the transform
+	const transform = module.default ? module.default : module;
 
-  // Jest resets the module registry after each test, so we need to always get
-  // a fresh copy of jscodeshift on every test run.
-  let jscodeshift: IJSCodeshift = require("jscodeshift/dist/core");
-  if (module.parser) {
-	  jscodeshift = jscodeshift.withParser(module.parser);
-  }
-  const ast: INode = jscodeshift(source);
-  if (initOptions || typeof initOptions === "boolean") {
-	  return transform(
-		  jscodeshift,
-		  ast,
-		  initOptions,
-		  action,
-		  transformName,
-	  ).toSource({
-		  quote: "single",
-	  });
-  }
-  return transform(jscodeshift, ast, source, action).toSource({
-	  quote: "single",
-  });
+	// Jest resets the module registry after each test, so we need to always get
+	// a fresh copy of jscodeshift on every test run.
+	// eslint-disable-next-line
+	let jscodeshift: JSCodeshift = require("jscodeshift/dist/core");
+	if (module.parser) {
+		jscodeshift = jscodeshift.withParser(module.parser);
+	}
+	const ast: Node = jscodeshift(source);
+	if (initOptions || typeof initOptions === "boolean") {
+		return transform(jscodeshift, ast, initOptions, action, transformName).toSource({
+			quote: "single"
+		});
+	}
+	return transform(jscodeshift, ast, source, action).toSource({
+		quote: "single"
+	});
 }
 
 /**
@@ -116,19 +108,19 @@ function runSingleTransform(
  * @return {Void} Jest makes sure to execute the globally defined functions
  */
 export default function defineTest(
-  dirName: string,
-  transformName: string,
-  testFilePrefix?: string,
-  transformObject?: object | string,
-  action?: object | string,
+	dirName: string,
+	transformName: string,
+	testFilePrefix?: string,
+	transformObject?: object | string,
+	action?: object | string
 ): void {
-  const testName: string = testFilePrefix
-	  ? `transforms correctly using "${testFilePrefix}" data`
-	  : "transforms correctly";
-  describe(transformName, () => {
-	  it(testName, () => {
-		  const output = runSingleTransform(dirName, transformName, testFilePrefix, transformObject, action);
-		  expect(output).toMatchSnapshot();
-	  });
-  });
+	const testName: string = testFilePrefix
+		? `transforms correctly using "${testFilePrefix}" data`
+		: "transforms correctly";
+	describe(transformName, () => {
+		it(testName, () => {
+			const output = runSingleTransform(dirName, transformName, testFilePrefix, transformObject, action);
+			expect(output).toMatchSnapshot();
+		});
+	});
 }

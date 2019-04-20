@@ -1,12 +1,14 @@
-interface IModule extends Object {
+interface Module extends Object {
 	include: string[];
 	loader: string;
 	options: {
 		plugins: string[];
-		presets: Array<Array<string | object>>;
+		presets: Preset[][];
 	};
 	test: string;
 }
+
+type Preset = string | object;
 
 /**
  *
@@ -14,23 +16,21 @@ interface IModule extends Object {
  *
  * @returns {Function} A callable function that adds the babel-loader with env preset
  */
-export default function(): IModule {
+export default function(): Module {
 	return {
 		include: ["path.resolve(__dirname, 'src')"],
 		loader: "'babel-loader'",
 		options: {
-			plugins: [
-				"'syntax-dynamic-import'",
-			],
+			plugins: ["'syntax-dynamic-import'"],
 			presets: [
 				[
 					"'@babel/preset-env'",
 					{
-						"'modules'": false,
-					},
-				],
-			],
+						"'modules'": false
+					}
+				]
+			]
 		},
-		test: `${new RegExp(/\.js$/)}`,
+		test: `${new RegExp(/\.js$/)}`
 	};
 }

@@ -4,7 +4,7 @@
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 /// <reference types="node" />
 
-interface IYeoman {
+interface Yeoman {
 	public config: {
 		set: (setProperty: string, setValue: object) => void;
 	};
@@ -12,8 +12,8 @@ interface IYeoman {
 		adapter: {
 			promptModule: {
 				registerPrompt: (promptName: string, promptModule: object) => void;
-			},
-		},
+			};
+		};
 	};
 	public props: {
 		name: string;
@@ -24,16 +24,15 @@ interface IYeoman {
 	public run(target: string, options?: object, done?: Function): IRunEnv;
 	public scheduleInstallTask(packager: string, dependencies: string[], options?: object): void;
 	public on(event: string, listener: Function): this;
-	public async(): (_?: void) => void | boolean;
+	public async(): () => void | boolean;
 	public prompt(opt: IPromptOptions[]): Promise<>;
 	public log(message: string): void;
 	public npmInstall(packages?: string[] | string, options?: object, cb?: Function): Promise<>;
-	public spawnCommand(name: string, args?: string[], options?: Object): void;
+	public spawnCommand(name: string, args?: string[], options?: object): void;
 }
 
 declare module "yeoman-generator" {
-
-	class YeomanGeneratorBase extends IYeoman {
+	class YeomanGeneratorBase implements Yeoman {
 		public config: {
 			set: (setProperty: string, setValue: object) => void;
 		};
@@ -41,8 +40,8 @@ declare module "yeoman-generator" {
 			adapter: {
 				promptModule: {
 					registerPrompt: (promptName: string, promptModule: object) => void;
-				},
-			},
+				};
+			};
 		};
 		public props: {
 			name: string;
@@ -50,39 +49,42 @@ declare module "yeoman-generator" {
 		public composeWith(namespace: string, options?: object, settings?: IComposeSetting): YeomanGeneratorBase;
 		public destinationRoot(rootPath?: string): string;
 		public destinationPath(...path: string[]): string;
-		public run(target: string, options?: object, done?: Function): IRunEnv;
+		public run(target: string, options?: object, done?: Function): RunEnv;
 		public scheduleInstallTask(packager: string, dependencies: string[], options?: object): void;
 		public on(event: string, listener: Function): this;
-		public async(): (_?: void) => void | boolean;
-		public prompt(opt: IPromptOptions[]): Promise<>;
+		public async(): () => void | boolean;
+		public prompt(opt: PromptOptions[]): Promise<>;
 		public log(message: string): void;
 		public npmInstall(packages?: string[] | string, options?: object, cb?: Function): Promise<>;
-		public spawnCommand(name: string, args?: string[], options?: Object): void;
+		public spawnCommand(name: string, args?: string[], options?: object): void;
 	}
 
-	interface IRunEnv extends Object {
+	interface RunEnv extends object {
 		on: (event: string, callbackFn: Function) => void;
 	}
 
-	interface IPromptOptions {
+	interface PromptOptions {
 		type?: string;
 		name: string;
-		message: string | ((answers: Object) => string);
-		choices?: string[] | ((answers: Object) => string);
-		default?: string | number | boolean | string[] | number[]
-			| ((answers: Object) => (string | number | boolean | string[] | number[]));
-		validate?: ((input: string) => boolean | string);
-		when?: ((answers: Object) => boolean) | boolean;
+		message: string | ((answers: object) => string);
+		choices?: string[] | ((answers: object) => string);
+		default?:
+			| string
+			| number
+			| boolean
+			| string[]
+			| number[]
+			| ((answers: object) => string | number | boolean | string[] | number[]);
+		validate?: (input: string) => boolean | string;
+		when?: ((answers: object) => boolean) | boolean;
 		store?: boolean;
 		filter?: (name: string) => string;
 	}
 
-	// tslint:disable-next-line
 	class NamedBase extends YeomanGeneratorBase implements INamedBase {
-		constructor(args: string | string[], options: object);
+		public constructor(args: string | string[], options: object);
 	}
 
-	// tslint:disable-next-line
 	class Base extends NamedBase implements IBase {
 		public static extend(protoProps: IQueueProps): YeomanGeneratorBase;
 	}
