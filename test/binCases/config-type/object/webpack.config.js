@@ -1,8 +1,6 @@
-module.exports = function(env) {
-	return {
-		entry: "./entry",
-		output: {
-			filename: "entry.bundle.js"
-		}
-	};
+module.exports = {
+	entry: "./entry",
+	output: {
+		filename: "entry.bundle.js"
+	}
 };
