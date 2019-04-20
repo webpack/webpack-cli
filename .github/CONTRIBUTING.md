@@ -5,6 +5,36 @@ appreciated and welcomed. If you're planning a new feature or changing
 the API, please create an issue first. This way we can ensure that your precious
 work is not in vain.
 
+Table of Contents
+
+- [Issues](#issues)
+- [Your first Contribution](#your-first-contribution)
+- [Setup](#setup)
+    - [Using npm (setup)](#using-npm-setup)
+    - [Using yarn (setup)](#using-yarn-setup)
+- [Testing](#testing)
+    - [Using npm (testing)](#using-npm-testing)
+    - [Using yarn (testing)](#using-yarn-testing)
+- [Editor Config](#editor-config)
+- [Dependencies](#dependencies)
+- [Branching Model](#branching-model)
+- [Naming a branch](#naming-a-branch)
+    - [Features](#features)
+    - [Fixes](#fixes)
+- [Testing](#testing-1)
+- [Pull Requests](#pull-requests)
+- [Submitting a good Pull Request](#submitting-a-good-pull-request)
+- [Commit message format](#commit-message-format)
+    - [Commit Message Format](#commit-message-format)
+- [Migrating with the CLI](#migrate-with-the-cli)
+    - [How it's being done](#how-its-being-done)
+        - [Structure of a transform](#structure-of-a-transform)
+    - [TODO](#todo)
+- [Contributor License Agreement](#contributor-license-agreement)
+- [Documentation](#documentation)
+
+
+
 ## Issues
 
 Most of the time, when webpack does not work correctly, it might be a configuration issue.
@@ -156,6 +186,11 @@ In case you are suggesting a new feature, we will match your idea with our curre
 ## Editor Config
 
 The [.editorconfig](https://github.com/webpack/webpack-cli/blob/master/.editorconfig) in the root should ensure consistent formatting. Please make sure you've [installed the plugin](http://editorconfig.org/#download) if your text editor needs one.
+
+## Dependencies
+
+This is a multi-package repository and dependencies are managed using [lerna](https://lerna.js.org/)
+>If you are adding or updating any dependency, please commit the updated `package-lock.json` file.
 
 ## Branching Model
 
