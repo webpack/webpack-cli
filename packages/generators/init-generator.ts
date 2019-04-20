@@ -10,6 +10,7 @@ import {
 } from "@webpack-cli/webpack-scaffold";
 
 import { IWebpackOptions } from "./types";
+import checkDefault from "./utils/checkDefaults";
 import entryQuestions from "./utils/entry";
 import getBabelPlugin from "./utils/module";
 import getDefaultPlugins from "./utils/plugins";
@@ -86,16 +87,20 @@ export default class InitGenerator extends Generator {
 			"\n",
 		);
 
+		const initConfig = [];
+
 		return this.prompt([
 			Confirm("entryType", "Will your application have multiple bundles?", false),
 		])
 			.then((entryTypeAnswer: {
 				entryType: boolean;
 			}) => {
+				initConfig.push(entryTypeAnswer);
 				// Ask different questions for entry points
 				return entryQuestions(self, entryTypeAnswer);
 			})
 			.then((entryOptions: object | string) => {
+				initConfig.push({entryOption: entryOptions});
 				if (typeof entryOptions === "string" && entryOptions.length > 0) {
 					return this.prompt([
 						Input(
@@ -117,6 +122,8 @@ export default class InitGenerator extends Generator {
 			.then((outputTypeAnswer: {
 				outputType: string;
 			}) => {
+				initConfig.push(outputTypeAnswer);
+
 				// As entry is not required anymore and we dont set it to be an empty string or """""
 				// it can be undefined so falsy check is enough (vs entry.length);
 				if (
@@ -151,6 +158,7 @@ export default class InitGenerator extends Generator {
 			.then((babelConfirmAnswer: {
 				babelConfirm: boolean;
 			}) => {
+				initConfig.push(babelConfirmAnswer);
 				if (babelConfirmAnswer.babelConfirm) {
 					this.configuration.config.webpackOptions.module.rules.push(
 						getBabelPlugin(),
@@ -176,6 +184,7 @@ export default class InitGenerator extends Generator {
 			.then((stylingTypeAnswer: {
 				stylingType: string;
 			}) => {
+				initConfig.push(stylingTypeAnswer);
 				ExtractUseProps = [];
 				switch (stylingTypeAnswer.stylingType) {
 					case "SASS":
@@ -406,6 +415,11 @@ export default class InitGenerator extends Generator {
 						);
 					}
 				}
+				// Check if the options selected by the user are defaults
+				if (checkDefault(initConfig)) {
+					this.installPlugins();
+					return process.stdout.write(`You're using a default config`);
+				}
 				// add splitChunks options for transparency
 				// defaults coming from: https://webpack.js.org/plugins/split-chunks-plugin/#optimization-splitchunks
 				this.configuration.config.topScope.push(tooltip.splitChunks());
@@ -424,6 +438,7 @@ export default class InitGenerator extends Generator {
 						name: !this.isProd,
 					},
 				};
+
 				done();
 			});
 	}
