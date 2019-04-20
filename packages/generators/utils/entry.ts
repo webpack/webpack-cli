@@ -104,7 +104,7 @@ export default function entry(self: CustomGenerator, multiEntries: boolean): Pro
 							`${entryProp}`,
 							`What is the location of "${entryProp}"?`,
 							validate,
-							`./src/${entryProp}`,
+							`src/${entryProp}`,
 						),
 					]),
 				).then((entryPropAnswer: object): object => {
