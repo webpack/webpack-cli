@@ -1,168 +1,188 @@
 import tooltip from "./tooltip";
 
+export enum StylingType {
+	CSS = "CSS",
+	SASS = "SASS",
+	LESS = "LESS",
+	PostCSS = "PostCSS",
+}
+
+export enum Loader {
+	CSS = "css-loader",
+	SASS = "sass-loader",
+	STYLE = "style-loader",
+	LESS = "less-loader",
+	POSTCSS = "postcss-loader",
+}
+
+export enum StyleRegex {
+	CSS = "/\.css$/",
+	SASS = "/\.(scss|css)$/",
+	LESS = "/\.(less|css)$/",
+	PostCSS = "/\.css$/",
+}
+
+export interface ILoader {
+	loader: string;
+	options?: {
+		importLoaders?: number;
+		sourceMap?: boolean;
+		plugins?: string;
+	};
+}
+
 export default function style(self, stylingType) {
-	const ExtractUseProps = [];
+	const ExtractUseProps: ILoader[] = [];
 	let regExpForStyles = null;
+
 	switch (stylingType) {
-		case "SASS":
+		case StylingType.CSS:
+			regExpForStyles = StyleRegex.CSS;
+
 			self.dependencies.push(
-				"sass-loader",
+				Loader.CSS,
+			);
+			if (self.isProf) {
+				self.dependencies.push(
+					Loader.STYLE,
+				);
+			}
+
+			ExtractUseProps.push({
+				loader: `"${Loader.CSS}"`,
+				options: {
+					sourceMap: true,
+				},
+			});
+			if (!self.isProd) {
+				ExtractUseProps.push(
+					{
+						loader: `"${Loader.STYLE}"`,
+					},
+				);
+			}
+			break;
+
+		case StylingType.SASS:
+			regExpForStyles = StyleRegex.SASS;
+
+			self.dependencies.push(
 				"node-sass",
-				"style-loader",
-				"css-loader",
+				Loader.SASS,
+				Loader.CSS,
 			);
-			regExpForStyles = `${new RegExp(/\.(scss|css)$/)}`;
-			if (self.isProd) {
-				ExtractUseProps.push(
-					{
-						loader: "'css-loader'",
-						options: {
-							sourceMap: true,
-						},
-					},
-					{
-						loader: "'sass-loader'",
-						options: {
-							sourceMap: true,
-						},
-					},
+			if (self.isProf) {
+				self.dependencies.push(
+					Loader.STYLE,
 				);
-			} else {
+			}
+
+			ExtractUseProps.push(
+				{
+					loader: `"${Loader.CSS}"`,
+					options: {
+						sourceMap: true,
+					},
+				},
+				{
+					loader: `"${Loader.SASS}"`,
+					options: {
+						sourceMap: true,
+					},
+				},
+			);
+			if (!self.isProd) {
 				ExtractUseProps.push(
 					{
-						loader: "'style-loader'",
-					},
-					{
-						loader: "'css-loader'",
-					},
-					{
-						loader: "'sass-loader'",
+						loader: `"${Loader.STYLE}"`,
 					},
 				);
 			}
 			break;
-		case "LESS":
-			regExpForStyles = `${new RegExp(/\.(less|css)$/)}`;
+
+		case StylingType.LESS:
+			regExpForStyles = StyleRegex.LESS;
+
 			self.dependencies.push(
-				"less-loader",
 				"less",
-				"style-loader",
-				"css-loader",
+				Loader.LESS,
+				Loader.CSS,
 			);
-			if (self.isProd) {
-				ExtractUseProps.push(
-					{
-						loader: "'css-loader'",
-						options: {
-							sourceMap: true,
-						},
-					},
-					{
-						loader: "'less-loader'",
-						options: {
-							sourceMap: true,
-						},
-					},
+			if (self.isProf) {
+				self.dependencies.push(
+					Loader.STYLE,
 				);
-			} else {
+			}
+
+			ExtractUseProps.push(
+				{
+					loader: `"${Loader.CSS}"`,
+					options: {
+						sourceMap: true,
+					},
+				},
+				{
+					loader: `"${Loader.LESS}"`,
+					options: {
+						sourceMap: true,
+					},
+				},
+			);
+			if (!self.isProd) {
 				ExtractUseProps.push(
 					{
-						loader: "'css-loader'",
-						options: {
-							sourceMap: true,
-						},
-					},
-					{
-						loader: "'less-loader'",
-						options: {
-							sourceMap: true,
-						},
+						loader: `"${Loader.STYLE}"`,
 					},
 				);
 			}
 			break;
-		case "PostCSS":
+
+		case StylingType.PostCSS:
+			regExpForStyles = StyleRegex.PostCSS;
+
 			self.configuration.config.topScope.push(
 				tooltip.postcss(),
 				"const autoprefixer = require('autoprefixer');",
 				"const precss = require('precss');",
 				"\n",
 			);
+
 			self.dependencies.push(
-				"style-loader",
-				"css-loader",
-				"postcss-loader",
 				"precss",
 				"autoprefixer",
+				Loader.CSS,
+				Loader.POSTCSS,
 			);
-			regExpForStyles = `${new RegExp(/\.css$/)}`;
-			if (self.isProd) {
-				ExtractUseProps.push(
-					{
-						loader: "'css-loader'",
-						options: {
-							importLoaders: 1,
-							sourceMap: true,
-						},
-					},
-					{
-						loader: "'postcss-loader'",
-						options: {
-							plugins: `function () {
-                                return [
-                                    precss,
-                                    autoprefixer
-                                ];
-                            }`,
-						},
-					},
-				);
-			} else {
-				ExtractUseProps.push(
-					{
-						loader: "'style-loader'",
-					},
-					{
-						loader: "'css-loader'",
-						options: {
-							importLoaders: 1,
-							sourceMap: true,
-						},
-					},
-					{
-						loader: "'postcss-loader'",
-						options: {
-							plugins: `function () {
-                                return [
-                                    precss,
-                                    autoprefixer
-                                ];
-                            }`,
-						},
-					},
+			if (self.isProf) {
+				self.dependencies.push(
+					Loader.STYLE,
 				);
 			}
-			break;
-		case "CSS":
-			self.dependencies.push("style-loader", "css-loader");
-			regExpForStyles = `${new RegExp(/\.css$/)}`;
-			if (self.isProd) {
-				ExtractUseProps.push({
-					loader: "'css-loader'",
+
+			ExtractUseProps.push(
+				{
+					loader: `"${Loader.CSS}"`,
 					options: {
+						importLoaders: 1,
 						sourceMap: true,
 					},
-				});
-			} else {
+				},
+				{
+					loader: `"${Loader.POSTCSS}"`,
+					options: {
+						plugins: `function () {
+							return [
+								precss,
+								autoprefixer
+							];
+						}`,
+					},
+				},
+			);
+			if (!self.isProd) {
 				ExtractUseProps.push(
 					{
-						loader: "'style-loader'",
-						options: {
-							sourceMap: true,
-						},
-					},
-					{
-						loader: "'css-loader'",
+						loader: `"${Loader.STYLE}"`,
 					},
 				);
 			}

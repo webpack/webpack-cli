@@ -11,7 +11,7 @@ import { Confirm, Input, List } from "@webpack-cli/webpack-scaffold";
 import { WebpackOptions } from "./types";
 import entryQuestions from "./utils/entry";
 import getBabelPlugin from "./utils/module";
-import styleQuestionHandler from "./utils/style";
+import styleQuestionHandler, { ILoader, StylingType } from "./utils/style";
 import tooltip from "./utils/tooltip";
 
 /**
@@ -90,12 +90,6 @@ export default class InitGenerator extends Generator {
 			"new webpack.ProgressPlugin()",
 		);
 
-		if (this.isProd) {
-			this.configuration.config.webpackOptions.plugins.push(
-				"new TerserPlugin()",
-			);
-		}
-
 		let optimizationObj;
 
 		if (!this.isProd) {
@@ -106,6 +100,9 @@ export default class InitGenerator extends Generator {
 			};
 		} else {
 			optimizationObj = {
+				minimizer: [
+					"new TerserPlugin()",
+				],
 				splitChunks: {
 					cacheGroups: {
 						vendors: {
@@ -136,7 +133,7 @@ export default class InitGenerator extends Generator {
 		const done: () => {} = this.async();
 		const self: this = this;
 		let regExpForStyles: string;
-		let ExtractUseProps: object[];
+		let ExtractUseProps: ILoader[];
 
 		process.stdout.write(
 			`\n${logSymbols.info}${chalk.blue(" INFO ")} ` +
@@ -218,10 +215,10 @@ export default class InitGenerator extends Generator {
 				this.prompt([
 					List("stylingType", "Will you use one of the below CSS solutions?", [
 						"No",
-						"CSS",
-						"SASS",
-						"LESS",
-						"PostCSS",
+						StylingType.CSS,
+						StylingType.SASS,
+						StylingType.LESS,
+						StylingType.PostCSS,
 					]),
 				]))
 			.then((stylingTypeAnswer: {
