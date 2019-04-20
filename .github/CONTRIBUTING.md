@@ -259,7 +259,7 @@ The expected result of the above command is to take the mentioned `webpack` conf
 It should be a valid new config and should keep intact all the features from the original config.
 The new config will be as readable as possible (may add some comments).
 
-With [#40](https://github.com/webpack/webpack-cli/pull/40), we have been able to add basic scaffolding and do many of the conversions recommended in the [docs](https://webpack.js.org/guides/migrating/).
+With [#40](https://github.com/webpack/webpack-cli/pull/40), we have been able to add basic scaffolding and do many of the conversions recommended in the [docs](https://webpack.js.org/migrate).
 
 ### How it's being done
 
