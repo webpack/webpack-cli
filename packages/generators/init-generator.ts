@@ -418,7 +418,11 @@ export default class InitGenerator extends Generator {
 				// Check if the options selected by the user are defaults
 				if (checkDefault(initConfig)) {
 					this.installPlugins();
-					return process.stdout.write(`You're using a default config`);
+					return process.stdout.write(
+						`You're using a default config, you can use ${chalk.green(
+							"$ webpack-cli",
+						)} to bundle your code \n`,
+					);
 				}
 				// add splitChunks options for transparency
 				// defaults coming from: https://webpack.js.org/plugins/split-chunks-plugin/#optimization-splitchunks
