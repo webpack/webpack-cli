@@ -1,10 +1,10 @@
 import * as envinfo from "envinfo";
 import * as process from "process";
-import { argv } from "./options"
+import { argv } from "./options";
 
 import { AVAILABLE_COMMANDS, AVAILABLE_FORMATS, IGNORE_FLAGS } from "./commands";
 
-const CONFIG = {}
+const CONFIG = {};
 
 export function informationType(type: string): object {
 	switch (type) {
@@ -26,7 +26,6 @@ export function informationType(type: string): object {
 	}
 }
 
-
 export default async function info() {
 
 	Object.keys(argv).forEach(async (flag) => {
@@ -35,9 +34,12 @@ export default async function info() {
 		} else if (AVAILABLE_COMMANDS.includes(flag)) {
 			const flagVal = informationType(flag);
 			process.stdout.write(await envinfo.run(flagVal, CONFIG) + "\n");
-		}
-		else if (AVAILABLE_FORMATS.includes(flag)) {
-			CONFIG[flag] = true
+		} else if (AVAILABLE_FORMATS.includes(flag)) {
+			CONFIG[flag] = true;
+		} else {
+			// Invalid option
+			return;
+
 		}
 	});
 }
