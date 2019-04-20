@@ -7,7 +7,6 @@ const webpackConfigurationSchema = require("../config/webpackConfigurationSchema
 const validateSchema = require("webpack").validateSchema;
 const WebpackOptionsValidationError = require("webpack").WebpackOptionsValidationError;
 const findup = require("findup-sync");
-// const { webpackConfigPath } = require("@webpack-cli/utils/path-utils");
 
 module.exports = function(...args) {
 	const argv = args[1] || args[0];
@@ -73,7 +72,6 @@ module.exports = function(...args) {
 		const defaultConfigFileNames = ["webpack.config", "webpackfile"].join("|");
 		const webpackConfigFileRegExp = `(${defaultConfigFileNames})(${extensions.join("|")})`;
 		const pathToWebpackConfig = findup(webpackConfigFileRegExp);
-		// const pathToWebpackConfig = webpackConfigPath(extensions);
 
 		if (pathToWebpackConfig) {
 			const resolvedPath = path.resolve(pathToWebpackConfig);
