@@ -7,29 +7,29 @@ work is not in vain.
 
 Table of Contents
 
+
+
 - [Issues](#issues)
 - [Your first Contribution](#your-first-contribution)
 - [Setup](#setup)
-    - [Using npm (setup)](#using-npm-setup)
-    - [Using yarn (setup)](#using-yarn-setup)
-- [Testing](#testing)
-    - [Using npm (testing)](#using-npm-testing)
-    - [Using yarn (testing)](#using-yarn-testing)
+	- [Using npm](#using-npm)
+	- [Using yarn](#using-yarn)
+- [Running Tests](#running-tests)
+	- [Using npm](#using-npm-1)
+	- [Using yarn](#using-yarn-1)
 - [Editor Config](#editor-config)
 - [Dependencies](#dependencies)
 - [Branching Model](#branching-model)
 - [Naming a branch](#naming-a-branch)
-    - [Features](#features)
-    - [Fixes](#fixes)
-- [Testing](#testing-1)
+	- [Features](#features)
+	- [Fixes](#fixes)
+- [Testing](#testing)
 - [Pull Requests](#pull-requests)
 - [Submitting a good Pull Request](#submitting-a-good-pull-request)
-- [Commit message format](#commit-message-format)
-    - [Commit Message Format](#commit-message-format)
-- [Migrating with the CLI](#migrate-with-the-cli)
-    - [How it's being done](#how-its-being-done)
-        - [Structure of a transform](#structure-of-a-transform)
-    - [TODO](#todo)
+- [Commit message](#commit-message)
+	- [Commit Message Format](#commit-message-format)
+- [Migrate with the CLI](#migrate-with-the-cli)
+	- [Further Work](#further-work)
 - [Contributor License Agreement](#contributor-license-agreement)
 - [Documentation](#documentation)
 
@@ -103,7 +103,7 @@ In case you are suggesting a new feature, we will match your idea with our curre
   ```
 
 
-## Testing
+## Running Tests
 
 ### Using npm
 
@@ -243,7 +243,7 @@ In case you've got a small change in most of the cases, your pull request would 
 * Follow the existing coding style
 * Write a [good commit message](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
 
-## Commit message format
+## Commit message
 
 Our commit messages format follows the [angular.js commits format](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#commit-message-format).
 
@@ -282,7 +282,7 @@ to read on GitHub as well as in several git tools.
 For more information about what each part of the template mean, head up to the documentation in the
 [angular repo](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#commit-message-format)
 
-## --migrate with the CLI
+## Migrate with the CLI
 
 This is a new feature in development for the CLI.
 
@@ -338,7 +338,7 @@ defineTest(__dirname, 'transform-name.input2.js');
 `defineTest` is a helper test method which helps us to run tests on all the transforms uniformly.
 It takes the input file given as parameter and uses jest to create a snapshot of the output. This effectively tests the correctness of our transformation.
 
-### TODO
+### Further Work
 
 This is still in a very raw form. We'd like to take this as close to a truly useful tool as possible.
 We will still need to
