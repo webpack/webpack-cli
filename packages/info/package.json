@@ -9,6 +9,7 @@
     "access": "public"
   },
   "dependencies": {
+    "chalk": "^2.4.2",
     "envinfo": "^5.12.1",
     "yargs": "^13.2.2"
   },
