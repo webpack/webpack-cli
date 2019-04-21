@@ -1680,7 +1680,7 @@
         ]
       },
       "serve": {
-        "description": "Options for webpack-serve",
+        "description": "Options for webpack-dev-server",
         "type": "object"
       },
       "stats": {
