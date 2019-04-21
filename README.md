@@ -41,9 +41,13 @@ When you have followed the [Getting Started](https://webpack.js.org/guides/getti
 
 Otherwise `npm install --save-dev webpack-cli` or `yarn add webpack-cli --dev` will install it. 
 
+## Packages
+
+We organize webpack CLI as a multi-package repository using [lerna](https://github.com/lerna/lerna). Every command has a dedicated subfolder in the `packages` Folder. Here's a summary of commands provided by the CLI.
+
 ### Commands
 
-Supporting developers is an important task for webpack CLI. Thus, webpack CLI provides different commands for many common tasks. We organize webpack CLI as a [multi-package repository](https://github.com/lerna/lerna). Every command has a dedicated subfolder in the `packages` Folder. Here's a summary of commands provided by the CLI.
+Supporting developers is an important task for webpack CLI. Thus, webpack CLI provides different commands for many common tasks.
 
 - [`webpack-cli init`](./packages/init/README.md#webpack-cli-init) - Create a new webpack configuration.
 - [`webpack-cli add`](./packages/add/README.md#webpack-cli-add) - Add new properties to a webpack configuration file.
@@ -54,6 +58,15 @@ Supporting developers is an important task for webpack CLI. Thus, webpack CLI pr
 - [`webpack-cli generate-loader`](./packages/generate-loader/README.md#webpack-cli-generate-loader) - Initiate new loader project.
 - [`webpack-cli serve`](./packages/serve/README.md#webpack-cli-serve) - Use webpack with a development server that provides live reloading.
 - [`webpack-cli update`](./packages/update/README.md#webpack-cli-update) - Update properties in a webpack configuration file.
+
+### Utilities
+
+The project also has several utility packages which are used by other commands
+
+- [`utils`](./packages/utils/README.md) - Several utilities used across webpack-cli.
+- [`generators`](./packages/generators/README.md) - Contains all webpack-cli related yeoman generators.
+- [`webpack-scaffold`](./packages/info/README.md#webpack-cli-info) - Utilities to create a webpack scaffold.
+
 
 ## Getting started
 
