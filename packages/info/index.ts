@@ -6,6 +6,13 @@ import { argv } from "./options";
 import { AVAILABLE_COMMANDS, AVAILABLE_FORMATS, IGNORE_FLAGS } from "./commands";
 
 const CONFIG = {};
+const DEFAULT_DETAILS = {
+	Binaries: ["Node", "Yarn", "npm"],
+	Browsers: ["Chrome", "Firefox", "Safari"],
+	System: ["OS", "CPU", "Memory"],
+	npmGlobalPackages: ["webpack", "webpack-cli"],
+	npmPackages: "*webpack*",
+};
 let DETAILS_OBJ = {};
 
 export function informationType(type: string): object {
@@ -19,10 +26,10 @@ export function informationType(type: string): object {
 		case "browsers":
 			return { Browsers: ["Chrome", "Firefox", "Safari"] };
 			break;
-		case "npmGlobalPackages":
+		case "npmg":
 			return { npmGlobalPackages: ["webpack", "webpack-cli"] };
 			break;
-		case "npmPackages":
+		case "npm":
 			return { npmPackages: "*webpack*" };
 			break;
 	}
@@ -45,5 +52,10 @@ export default async function info() {
 
 		}
 	});
-	process.stdout.write(await envinfo.run(DETAILS_OBJ, CONFIG) + "\n");
+
+	process.stdout.write("\n" + await envinfo.run(
+		Object.keys(DETAILS_OBJ).length ?
+			DETAILS_OBJ : DEFAULT_DETAILS,
+		CONFIG) +
+		"\n");
 }

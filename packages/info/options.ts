@@ -1,11 +1,13 @@
 import * as yargs from "yargs";
 export const argv = yargs
 	.option("system", {
+		alias: "sys",
 		demandOption: false,
 		describe: "System information (OS, CPU)",
 		type: "boolean",
 	})
 	.option("binaries", {
+		alias: "bin",
 		demandOption: false,
 		describe: "Installed binaries",
 		type: "boolean",
@@ -16,7 +18,7 @@ export const argv = yargs
 		describe: "Installed web browsers",
 		type: "boolean",
 	})
-	.option("npmGlobalPackages", {
+	.option("npmg", {
 		demandOption: false,
 		describe: "Globally installed NPM packages (webpack & webpack-cli only)",
 		type: "boolean",
