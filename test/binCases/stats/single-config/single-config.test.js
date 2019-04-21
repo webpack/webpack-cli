@@ -6,8 +6,8 @@ jest.setTimeout(10E6);
 
 const { run, extractSummary } = require("../../../testUtils");
 
-test("single-config", async done => {
-	const { code, stdout, stderr } = await run(__dirname);
+test("single-config", done => {
+	const { code, stdout, stderr } = run(__dirname);
 
 	const summary = extractSummary(stdout);
 

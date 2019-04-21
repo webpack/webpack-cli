@@ -7,21 +7,13 @@ import * as path from "path";
 import npmExists from "@webpack-cli/utils/npm-exists";
 import { getPackageManager } from "@webpack-cli/utils/package-manager";
 import PROP_TYPES from "@webpack-cli/utils/prop-types";
-import {
-	AutoComplete,
-	Confirm,
-	IInquirerInput,
-	IInquirerList,
-	Input,
-	List,
-} from "@webpack-cli/webpack-scaffold";
+import { AutoComplete, Confirm, InquirerInput, Input, List } from "@webpack-cli/webpack-scaffold";
 
-import { ISchemaProperties, IWebpackOptions } from "./types";
+import { SchemaProperties, WebpackOptions } from "./types";
 import entryQuestions from "./utils/entry";
 
-// tslint:disable:no-var-requires
-const webpackDevServerSchema = require("webpack-dev-server/lib/options.json");
-const webpackSchema = require("./utils/optionsSchema.json");
+import webpackDevServerSchema from "webpack-dev-server/lib/options.json";
+import webpackSchema from "./utils/optionsSchema.json";
 const PROPS: string[] = Array.from(PROP_TYPES.keys());
 
 /**
@@ -29,7 +21,7 @@ const PROPS: string[] = Array.from(PROP_TYPES.keys());
  * Replaces the string with a substring at the given index
  * https://gist.github.com/efenacigiray/9367920
  *
- * @param	{String} string - string to be modified
+ * @param	{String} str - string to be modified
  * @param	{Number} index - index to replace from
  * @param	{String} replace - string to replace starting from index
  *
@@ -51,12 +43,14 @@ function replaceAt(str: string, index: number, replace: string): string {
  * is present
  */
 const traverseAndGetProperties = (arr: object[], prop: string): boolean => {
-	let hasProp: boolean = false;
-	arr.forEach((p: object): void => {
-		if (p[prop]) {
-			hasProp = true;
+	let hasProp = false;
+	arr.forEach(
+		(p: object): void => {
+			if (p[prop]) {
+				hasProp = true;
+			}
 		}
-	});
+	);
 	return hasProp;
 };
 
@@ -72,11 +66,7 @@ const traverseAndGetProperties = (arr: object[], prop: string): boolean => {
  */
 const searchProps = (answers: object, input: string): Promise<string[]> => {
 	input = input || "";
-	return Promise.resolve(
-		PROPS.filter((prop: string): boolean =>
-			prop.toLowerCase().includes(input.toLowerCase()),
-		),
-	);
+	return Promise.resolve(PROPS.filter((prop: string): boolean => prop.toLowerCase().includes(input.toLowerCase())));
 };
 
 /**
@@ -92,21 +82,21 @@ export default class AddGenerator extends Generator {
 	private dependencies: string[];
 	private configuration: {
 		config: {
-			configName?: string,
-			topScope?: string[],
+			configName?: string;
+			topScope?: string[];
 			item?: string;
-			webpackOptions?: IWebpackOptions,
-		},
+			webpackOptions?: WebpackOptions;
+		};
 	};
 
-	constructor(args, opts) {
+	public constructor(args, opts) {
 		super(args, opts);
 		this.dependencies = [];
 		this.configuration = {
 			config: {
 				topScope: ["const webpack = require('webpack')"],
-				webpackOptions: {},
-			},
+				webpackOptions: {}
+			}
 		};
 		const { registerPrompt } = this.env.adapter.promptModule;
 		registerPrompt("autocomplete", autoComplete);
@@ -115,11 +105,14 @@ export default class AddGenerator extends Generator {
 	public async prompting() {
 		let action: string;
 		const self: this = this;
-		const manualOrListInput: (promptAction: string) => IInquirerInput = (promptAction: string) =>
+		const manualOrListInput: (promptAction: string) => InquirerInput = (promptAction: string): InquirerInput =>
 			Input("actionAnswer", `What do you want to add to ${promptAction}?`);
-		let inputPrompt: IInquirerInput;
+		let inputPrompt: InquirerInput;
 
 		// first index indicates if it has a deep prop, 2nd indicates what kind of
+		// TODO: this must be reviewed. It starts as an array of booleans but after that it get overridden
+		// Bye bye functional programming.
+		// eslint-disable-next-line
 		const isDeepProp: any[] = [false, false];
 
 		const actionTypeAnswer: {
@@ -519,7 +512,7 @@ export default class AddGenerator extends Generator {
 		}
 	}
 
-	public writing() {
+	public writing(): void {
 		this.config.set("configuration", this.configuration);
 	}
 }

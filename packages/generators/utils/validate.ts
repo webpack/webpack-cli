@@ -7,9 +7,7 @@
  * Or a string if the user hasn't written anything
  */
 export default function validate(value: string): string | boolean {
-	const pass: number = value.length;
-
-	if (pass) {
+	if (value.length) {
 		return true;
 	}
 

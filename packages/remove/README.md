@@ -1,5 +1,7 @@
 # webpack-cli remove
 
+[![npm](https://img.shields.io/npm/dm/@webpack-cli/remove.svg)](https://www.npmjs.com/package/@webpack-cli/remove)
+
 ## Description
 
 This package contains the logic to remove  properties of a webpack configuration file. It will run a generator that prompts the user for questions of which property to remove in their webpack configuration file.

@@ -1,6 +1,8 @@
 import * as utils from "@webpack-cli/utils/ast-utils";
 
-import { IJSCodeshift, INode } from "../types/NodePath";
+import { JSCodeshift, Node } from "../types/NodePath";
+
+type TransformCallback = (astNode: Node) => void;
 
 /**
  *
@@ -11,7 +13,7 @@ import { IJSCodeshift, INode } from "../types/NodePath";
  * @returns {Node} ast - jscodeshift ast
  */
 
-export default function(j: IJSCodeshift, ast: INode): INode {
+export default function(j: JSCodeshift, ast: Node): Node {
 	/**
 	 *
 	 * Remove the loader with name `name` from the given NodePath
@@ -21,14 +23,16 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 	 * @returns {void}
 	 */
 
-	function removeLoaderByName(path: INode, name: string): void {
-		const loadersNode: INode = path.value.value;
+	function removeLoaderByName(path: Node, name: string): void {
+		const loadersNode = (path.value as Node).value as Node;
 
 		switch (loadersNode.type) {
 			case j.ArrayExpression.name: {
-				const loaders: string[] = loadersNode.elements.map((p: INode): string => {
-					return utils.safeTraverse(p, ["properties", "0", "value", "value"]);
-				});
+				const loaders: Node[] = loadersNode.elements.map(
+					(p: Node): Node => {
+						return utils.safeTraverse(p, ["properties", "0", "value", "value"]) as Node;
+					}
+				);
 
 				const loaderIndex: number = loaders.indexOf(name);
 				if (loaders.length && loaderIndex > -1) {
@@ -55,19 +59,19 @@ export default function(j: IJSCodeshift, ast: INode): INode {
 		}
 	}
 
-	function removeLoaders(astNode: INode) {
+	function removeLoaders(astNode: Node): void {
 		astNode
 			.find(j.Property, { key: { name: "use" } })
-			.forEach((path: INode): void => removeLoaderByName(path, "json-loader"));
+			.forEach((path: Node): void => removeLoaderByName(path, "json-loader"));
 
 		astNode
 			.find(j.Property, { key: { name: "loader" } })
-			.forEach((path: INode): void => removeLoaderByName(path, "json-loader"));
+			.forEach((path: Node): void => removeLoaderByName(path, "json-loader"));
 	}
 
-	const transforms: Array<(astNode: INode) => void> = [removeLoaders];
+	const transforms: TransformCallback[] = [removeLoaders];
 
-	transforms.forEach((t: (astNode: INode) => void): void => t(ast));
+	transforms.forEach((t: TransformCallback): void => t(ast));
 
 	return ast;
 }

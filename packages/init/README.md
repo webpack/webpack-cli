@@ -1,5 +1,7 @@
 # webpack-cli init
 
+[![npm](https://img.shields.io/npm/dm/@webpack-cli/init.svg)](https://www.npmjs.com/package/@webpack-cli/init)
+
 ## Description
 
 This package contains the logic to create a new webpack configuration.

@@ -1,3 +1,3 @@
-export interface IError {
+export interface Error {
 	message?: string;
 }

@@ -20,6 +20,7 @@
 [![Install Size](https://packagephobia.now.sh/badge?p=webpack-cli)](https://packagephobia.now.sh/result?p=webpack-cli)
 [![npm](https://img.shields.io/npm/dw/webpack-cli.svg)](https://www.npmjs.com/package/webpack-cli)
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/)
+[![GitHub contributors](https://img.shields.io/github/contributors/webpack/webpack-cli.svg)](https://github.com/webpack/webpack-cli/graphs/contributors)
 
 
 * [About](#about)
@@ -68,7 +69,7 @@ You will answer many questions when running the `init` so webpack CLI can provid
 
 With v3 of webpack CLI, we introduced scaffolding as an integral part of the CLI. Our goal is to simplify the creation of webpack configurations for different purposes. Additionally, sharing such solutions with the community is beneficial and with webpack webpack's we want to allow this. We provide `webpack-scaffold` as a utility suite for creating these scaffolds. It contains functions that could be of use for creating an scaffold yourself.
 
-You can read more about [Scaffolding](./SCAFFOLDING.md) or check out the example project [How do I compose a webpack-scaffold?](https://github.com/evenstensberg/webpack-scaffold-demo).
+You can read more about [Scaffolding](https://webpack.js.org/guides/scaffolding), learn [How to compose a webpack-scaffold?](https://webpack.js.org/contribute/writing-a-scaffold) or generate one with [webpack-scaffold-starter](https://github.com/rishabh3112/webpack-scaffold-starter).
 
 ## Contributing and Internal Documentation
 

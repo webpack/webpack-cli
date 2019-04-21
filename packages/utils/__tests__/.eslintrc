@@ -1,0 +1,7 @@
+{
+	"root": true,
+	"extends": ["../.eslintrc"],
+	"rules": {
+		"@typescript-eslint/explicit-function-return-type": ["off"]
+	}
+}

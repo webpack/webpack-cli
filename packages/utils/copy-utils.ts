@@ -1,6 +1,6 @@
 import * as path from "path";
 
-interface IGenerator {
+interface Generator {
 	fs: {
 		copy(from: string, to: string, options?: object): void;
 		copyTpl(from: string, to: string, context: object, templateOptions?: object, copyOptions?: object): void;
@@ -16,18 +16,17 @@ interface IGenerator {
  * @param {string} templateDir Absolute path to template directory
  * @returns {Function} A curried function that takes a file path and copies it
  */
-export const generatorCopy = (
-	generator,
-	templateDir: string,
-): (filePath: string) => void => (filePath: string): void => {
-	const sourceParts: string[] = templateDir.split(path.delimiter);
+export const generatorCopy = (generator, templateDir: string): ((filePath: string) => void) => (
+	filePath: string
+): void => {
+	const sourceParts = templateDir.split(path.delimiter);
 	sourceParts.push.apply(sourceParts, filePath.split("/"));
-	const targetParts: string[] = path.dirname(filePath).split("/");
+	const targetParts = path.dirname(filePath).split("/");
 	targetParts.push(path.basename(filePath, ".tpl"));
 
 	generator.fs.copy(
 		path.join.apply(null, sourceParts),
-		generator.destinationPath(path.join.apply(null, targetParts)),
+		generator.destinationPath(path.join.apply(null, targetParts))
 	);
 };
 
@@ -45,16 +44,16 @@ export const generatorCopy = (
 export const generatorCopyTpl = (
 	generator,
 	templateDir: string,
-	templateData: object,
-): (filePath: string) => void => (filePath: string): void => {
-	const sourceParts: string[] = templateDir.split(path.delimiter);
+	templateData: object
+): ((filePath: string) => void) => (filePath: string): void => {
+	const sourceParts = templateDir.split(path.delimiter);
 	sourceParts.push.apply(sourceParts, filePath.split("/"));
-	const targetParts: string[] = path.dirname(filePath).split("/");
+	const targetParts = path.dirname(filePath).split("/");
 	targetParts.push(path.basename(filePath, ".tpl").slice(1));
 
 	generator.fs.copyTpl(
 		path.join.apply(null, sourceParts),
 		generator.destinationPath(path.join.apply(null, targetParts)),
-		templateData,
+		templateData
 	);
 };

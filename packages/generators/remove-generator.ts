@@ -4,7 +4,7 @@ import Generator = require("yeoman-generator");
 
 import PROP_TYPES from "@webpack-cli/utils/prop-types";
 import { List } from "@webpack-cli/webpack-scaffold";
-import { IWebpackOptions } from "./types";
+import { WebpackOptions } from "./types";
 
 /**
  *
@@ -18,23 +18,23 @@ import { IWebpackOptions } from "./types";
 export default class RemoveGenerator extends Generator {
 	private configuration: {
 		config: {
-			configName?: string,
-			topScope?: string[],
-			webpackOptions?: IWebpackOptions,
-		},
+			configName?: string;
+			topScope?: string[];
+			webpackOptions?: WebpackOptions;
+		};
 	};
-	private webpackOptions: IWebpackOptions | string;
+	private webpackOptions: WebpackOptions | string;
 
-	constructor(args, opts) {
+	public constructor(args, opts) {
 		super(args, opts);
 		this.configuration = {
 			config: {
-				webpackOptions: {},
-			},
+				webpackOptions: {}
+			}
 		};
 
-		let configPath: string = path.resolve(process.cwd(), "webpack.config.js");
-		const webpackConfigExists: boolean = fs.existsSync(configPath);
+		let configPath = path.resolve(process.cwd(), "webpack.config.js");
+		const webpackConfigExists = fs.existsSync(configPath);
 		if (!webpackConfigExists) {
 			configPath = null;
 			// end the generator stating webpack config not found or to specify the config
@@ -49,90 +49,96 @@ export default class RemoveGenerator extends Generator {
 	public getModuleLoadersNames(): string[] {
 		if (typeof this.webpackOptions === "object") {
 			if (this.webpackOptions.module && this.webpackOptions.module.rules) {
-				return this.webpackOptions.module.rules.map((rule: {
-					loader: string;
-				}) => rule ? rule.loader : null);
+				return this.webpackOptions.module.rules.map(
+					(rule: { loader: string }): string | null => (rule ? rule.loader : null)
+				);
 			}
 		}
 	}
 
-	public prompting() {
-		const done: (_?: void) => void | boolean = this.async();
+	public prompting(): Promise<{}> {
+		const done: () => void | boolean = this.async();
 		let propValue: object | string | boolean;
 
-		return this.prompt([
-			List(
-				"propType",
-				"Which property do you want to remove?",
-				Array.from(this.getPropTypes()),
-			),
-		])
-			.then(({ propType }: { propType: string }): Promise<{}> => {
-				if (!PROP_TYPES.has(propType)) {
-					console.error("Invalid webpack config prop");
-					return;
-				}
+		return this.prompt([List("propType", "Which property do you want to remove?", Array.from(this.getPropTypes()))])
+			.then(
+				({ propType }: { propType: string }): Promise<{}> => {
+					if (!PROP_TYPES.has(propType)) {
+						console.error("Invalid webpack config prop");
+						return;
+					}
 
-				propValue = this.webpackOptions[propType];
-				if (typeof propValue === "object") {
-					if (Array.isArray(propValue)) {
-						return this.prompt([
-							List(
-								"keyType",
-								`Which key do you want to remove from ${propType}?`,
-								Array.from(propValue),
-							),
-						]).then(({ keyType }: { keyType: string }): void => {
-							this.configuration.config.webpackOptions[propType] = [ keyType ];
-						});
-					} else {
-						return this.prompt([
-							List(
-								"keyType",
-								`Which key do you want to remove from ${propType}?`,
-								Array.from(Object.keys(propValue)),
-							),
-						])
-							.then(({ keyType }: { keyType: string }): Promise<{}> => {
-								if (propType === "module" && keyType === "rules") {
-									return this.prompt([
-										List(
-											"rule",
-											"Which loader do you want to remove?",
-											Array.from(this.getModuleLoadersNames()),
-										),
-									])
-										.then(({ rule }: { rule: string }): void => {
-											if (typeof this.webpackOptions === "object") {
-												const loaderIndex: number = this.getModuleLoadersNames().indexOf(rule);
-												const loader: object = this.webpackOptions.module.rules[loaderIndex];
-												this.configuration.config.webpackOptions.module = {
-													rules: [ loader ],
-												};
+					propValue = this.webpackOptions[propType];
+					if (typeof propValue === "object") {
+						if (Array.isArray(propValue)) {
+							return this.prompt([
+								List(
+									"keyType",
+									`Which key do you want to remove from ${propType}?`,
+									Array.from(propValue)
+								)
+							]).then(
+								({ keyType }: { keyType: string }): void => {
+									this.configuration.config.webpackOptions[propType] = [keyType];
+								}
+							);
+						} else {
+							return this.prompt([
+								List(
+									"keyType",
+									`Which key do you want to remove from ${propType}?`,
+									Array.from(Object.keys(propValue))
+								)
+							]).then(
+								({ keyType }: { keyType: string }): Promise<{}> => {
+									if (propType === "module" && keyType === "rules") {
+										return this.prompt([
+											List(
+												"rule",
+												"Which loader do you want to remove?",
+												Array.from(this.getModuleLoadersNames())
+											)
+										]).then(
+											({ rule }: { rule: string }): void => {
+												if (typeof this.webpackOptions === "object") {
+													const loaderIndex: number = this.getModuleLoadersNames().indexOf(
+														rule
+													);
+													const loader: object = this.webpackOptions.module.rules[
+														loaderIndex
+													];
+													this.configuration.config.webpackOptions.module = {
+														rules: [loader]
+													};
+												}
 											}
-										});
-								} else {
-									// remove the complete prop object if there is only one key
-									if (Object.keys(this.webpackOptions[propType]).length <= 1) {
-										this.configuration.config.webpackOptions[propType] = null;
+										);
 									} else {
-										this.configuration.config.webpackOptions[propType] = {
-											[keyType]: null,
-										};
+										// remove the complete prop object if there is only one key
+										if (Object.keys(this.webpackOptions[propType]).length <= 1) {
+											this.configuration.config.webpackOptions[propType] = null;
+										} else {
+											this.configuration.config.webpackOptions[propType] = {
+												[keyType]: null
+											};
+										}
 									}
 								}
-							});
+							);
+						}
+					} else {
+						this.configuration.config.webpackOptions[propType] = null;
 					}
-				} else {
-					this.configuration.config.webpackOptions[propType] = null;
 				}
-			})
-			.then((_: void): void => {
-				done();
-			});
+			)
+			.then(
+				(): void => {
+					done();
+				}
+			);
 	}
 
-	public writing() {
+	public writing(): void {
 		this.config.set("configuration", this.configuration);
 	}
 }

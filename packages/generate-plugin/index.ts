@@ -1,8 +1,6 @@
 import PluginGenerator from "@webpack-cli/generators/plugin-generator";
 import * as yeoman from "yeoman-environment";
 
-import { IYeoman } from "./types/Yeoman";
-
 /**
  * Runs a yeoman generator to create a new webpack plugin project
  * @returns {void}
@@ -10,7 +8,7 @@ import { IYeoman } from "./types/Yeoman";
 
 export default function pluginCreator(): void {
 	const env = yeoman.createEnv();
-	const generatorName: string = "webpack-plugin-generator";
+	const generatorName = "webpack-plugin-generator";
 
 	env.registerStub(PluginGenerator, generatorName);
 

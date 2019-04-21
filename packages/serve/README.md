@@ -1,5 +1,7 @@
 # webpack-cli serve
 
+[![npm](https://img.shields.io/npm/dm/@webpack-cli/serve.svg)](https://www.npmjs.com/package/@webpack-cli/serve)
+
 ## Description
 
 This package contains the logic to run webpack-serve without using webpack-serve directly.
@@ -16,7 +18,7 @@ To run the scaffolding instance programmatically, install it as a dependency. Wh
 
 ### Node
 ```js
-const serve = require("@webpack-cli/serve").serve;
+const serve = require("@webpack-cli/serve").default;
 serve();
 ```
 

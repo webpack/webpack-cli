@@ -1,6 +1,6 @@
 import * as utils from "@webpack-cli/utils/ast-utils";
 
-import { IJSCodeshift, INode } from "../types/NodePath";
+import { JSCodeshift, Node } from "../types/NodePath";
 
 /**
  *
@@ -12,24 +12,19 @@ import { IJSCodeshift, INode } from "../types/NodePath";
  * @returns {Node} ast - jscodeshift ast
  */
 
-export default function(j: IJSCodeshift, ast: INode): INode {
-	return utils
-		.findPluginsByName(j, ast, ["webpack.BannerPlugin"])
-		.forEach((path: INode): void => {
-			const args: INode[] = path.value.arguments; // any node
+export default function(j: JSCodeshift, ast: Node): Node {
+	return utils.findPluginsByName(j, ast, ["webpack.BannerPlugin"]).forEach(
+		(path: Node): void => {
+			const args: Node[] = (path.value as Node).arguments; // any node
 			// If the first argument is a literal replace it with object notation
 			// See https://webpack.js.org/guides/migrating/#bannerplugin-breaking-change
 			if (args && args.length > 1 && args[0].type === j.Literal.name) {
 				// and remove the first argument
-				path.value.arguments = [path.value.arguments[1]];
-				utils.createOrUpdatePluginByName(
-					j,
-					path.parent,
-					"webpack.BannerPlugin",
-					{
-						banner: args[0].value,
-					},
-				);
+				(path.value as Node).arguments = [(path.value as Node).arguments[1]];
+				utils.createOrUpdatePluginByName(j, path.parent, "webpack.BannerPlugin", {
+					banner: args[0].value
+				});
 			}
-		});
+		}
+	);
 }

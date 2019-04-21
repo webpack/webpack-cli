@@ -4,15 +4,10 @@ import * as spawn from "cross-spawn";
 import * as fs from "fs";
 import * as path from "path";
 
-interface ISpawnFunctions {
+interface SpawnFunctions {
 	npm: (pkg: string, isNew: boolean) => SpawnSyncReturns<Buffer>;
 	yarn: (pkg: string, isNew: boolean) => SpawnSyncReturns<Buffer>;
 }
-
-const SPAWN_FUNCTIONS: ISpawnFunctions = {
-	npm: spawnNPM,
-	yarn: spawnYarn,
-};
 
 /**
  *
@@ -25,7 +20,7 @@ const SPAWN_FUNCTIONS: ISpawnFunctions = {
 
 function spawnNPM(pkg: string, isNew: boolean): SpawnSyncReturns<Buffer> {
 	return spawn.sync("npm", [isNew ? "install" : "update", "-g", pkg], {
-		stdio: "inherit",
+		stdio: "inherit"
 	});
 }
 
@@ -40,25 +35,14 @@ function spawnNPM(pkg: string, isNew: boolean): SpawnSyncReturns<Buffer> {
 
 function spawnYarn(pkg: string, isNew: boolean): SpawnSyncReturns<Buffer> {
 	return spawn.sync("yarn", ["global", isNew ? "add" : "upgrade", pkg], {
-		stdio: "inherit",
+		stdio: "inherit"
 	});
 }
-/**
- *
- * Spawns a new process that installs the scaffold/dependency
- *
- * @param {String} pkg - The dependency to be installed
- * @returns {Function} spawn - Installs the package
- */
 
-export function spawnChild(pkg: string): SpawnSyncReturns<Buffer> {
-	const rootPath: string = getPathToGlobalPackages();
-	const pkgPath: string = path.resolve(rootPath, pkg);
-	const packageManager: string = getPackageManager();
-	const isNew: boolean = !fs.existsSync(pkgPath);
-
-	return SPAWN_FUNCTIONS[packageManager](pkg, isNew);
-}
+const SPAWN_FUNCTIONS: SpawnFunctions = {
+	npm: spawnNPM,
+	yarn: spawnYarn
+};
 
 /**
  *
@@ -69,10 +53,8 @@ export function spawnChild(pkg: string): SpawnSyncReturns<Buffer> {
  */
 
 export function getPackageManager(): string {
-	const hasLocalNPM: boolean = fs.existsSync(
-		path.resolve(process.cwd(), "package-lock.json"),
-	);
-	const hasLocalYarn: boolean = fs.existsSync(path.resolve(process.cwd(), "yarn.lock"));
+	const hasLocalNPM = fs.existsSync(path.resolve(process.cwd(), "package-lock.json"));
+	const hasLocalYarn = fs.existsSync(path.resolve(process.cwd(), "yarn.lock"));
 	if (hasLocalNPM) {
 		return "npm";
 	} else if (hasLocalYarn) {
@@ -108,4 +90,19 @@ export function getPathToGlobalPackages(): string {
 	}
 
 	return require("global-modules");
+}
+/**
+ *
+ * Spawns a new process that installs the scaffold/dependency
+ *
+ * @param {String} pkg - The dependency to be installed
+ * @returns {SpawnSyncReturns<Buffer>} spawn - Installs the package
+ */
+export function spawnChild(pkg: string): SpawnSyncReturns<Buffer> {
+	const rootPath: string = getPathToGlobalPackages();
+	const pkgPath: string = path.resolve(rootPath, pkg);
+	const packageManager: string = getPackageManager();
+	const isNew: boolean = !fs.existsSync(pkgPath);
+
+	return SPAWN_FUNCTIONS[packageManager](pkg, isNew);
 }

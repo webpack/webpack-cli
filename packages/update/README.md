@@ -1,5 +1,7 @@
 # webpack-cli update
 
+[![npm](https://img.shields.io/npm/dm/@webpack-cli/update.svg)](https://www.npmjs.com/package/@webpack-cli/update)
+
 ## Description
 
 This package contains the logic to update properties in a webpack configuration file. It will run a generator that prompts the user for questions of which property to update in their webpack configuration file.
