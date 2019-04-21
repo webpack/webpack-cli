@@ -112,7 +112,7 @@ export default class AddGenerator extends Generator {
 		registerPrompt("autocomplete", autoComplete);
 	}
 
-	public prompting() {
+	public async prompting() {
 		const done: (_?: void) => void | boolean = this.async();
 		let action: string;
 		const self: this = this;
@@ -123,10 +123,12 @@ export default class AddGenerator extends Generator {
 		// first index indicates if it has a deep prop, 2nd indicates what kind of
 		const isDeepProp: any[] = [false, false];
 
-		return this.prompt([
+		const actionTypeAnswer: {
+			actionType: string,
+		} =  this.prompt([
 			AutoComplete(
 				"actionType",
-				"What property do you want to add to?",
+				"What property do you want to add to?_",
 				{
 					pageSize: 7,
 					source: searchProps,
