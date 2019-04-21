@@ -28,15 +28,6 @@
 * [Getting Started](#getting-started)
 * [webpack CLI Scaffolds](#webpack-cli-scaffolds)
 * [Commands](#commands)
-  - [`webpack-cli init`](./packages/init/README.md#webpack-cli-init)
-  - [`webpack-cli add`](./packages/add/README.md#webpack-cli-add)
-  - [`webpack-cli info`](./packages/info/README.md#webpack-cli-info)
-  - [`webpack-cli migrate`](./packages/migrate/README.md#webpack-cli-migrate)
-  - [`webpack-cli remove`](./packages/remove/README.md#webpack-cli-remove)
-  - [`webpack-cli generate-plugin`](./packages/generate-plugin/README.md#webpack-cli-generate-plugin)
-  - [`webpack-cli generate-loader`](./packages/generate-loader/README.md#webpack-cli-generate-loader)
-  - [`webpack-cli serve`](./packages/serve/README.md#webpack-cli-serve)
-  - [`webpack-cli update`](./packages/update/README.md#webpack-cli-update)
 * [webpack.config.js](https://webpack.js.org/concepts/configuration/)
 * [Contributing and Internal Documentation](#contributing-and-internal-documentation)
 
@@ -73,7 +64,7 @@ npm i webpack-cli @webpack-cli/init
 npx webpack-cli init
 ```
 
-You will be prompted for several questions about what how you want to generate your config file when running the `init` command so webpack CLI can provide the best fitting configuration.  
+You will be prompted for some questions about what how you want to generate your config file when running the `init` command so webpack CLI can provide the best fitting configuration.  
 
 ## webpack CLI Scaffolds
 
