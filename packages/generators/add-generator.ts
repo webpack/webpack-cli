@@ -167,7 +167,7 @@ export default class AddGenerator extends Generator {
 		if (action === "resolveLoader") {
 			action = "resolve";
 		}
-		const webpackSchemaProp: ISchemaProperties = webpackSchema.definitions[action];
+		const webpackSchemaProp: SchemaProperties = webpackSchema.definitions[action];
 		/*
 		* https://github.com/webpack/webpack/blob/next/schemas/WebpackOptions.json
 		* Find the properties directly in the properties prop, or the anyOf prop
@@ -228,7 +228,7 @@ export default class AddGenerator extends Generator {
 			}
 		}
 		// WDS has its own schema, so we gonna need to check that too
-		const webpackDevserverSchemaProp: ISchemaProperties =
+		const webpackDevserverSchemaProp: SchemaProperties =
 			action === "devServer" ? webpackDevServerSchema : null;
 		// Watch has a boolean arg, but we need to append to it manually
 		if (action === "watch") {
@@ -390,12 +390,12 @@ export default class AddGenerator extends Generator {
 						),
 					]);
 
-					this.configuration.config.webpackOptions[action] = {
+					this.configuration.config.webpackOptions[action] = [{
 						[`${constructorPrefix}.${pluginExist}`]: {
 							[pluginsPropAnswer.pluginsPropType]:
 								valForProp.pluginsPropTypeVal,
 						},
-					};
+					}];
 
 					return;
 				} else {
