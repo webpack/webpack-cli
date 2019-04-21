@@ -27,7 +27,7 @@
   - [How to install](#how-to-install)
 * [Getting Started](#getting-started)
 * [webpack CLI Scaffolds](#webpack-cli-scaffolds)
-* Commands
+* [Commands](#commands)
   - [`webpack-cli init`](./packages/init/README.md#webpack-cli-init)
   - [`webpack-cli add`](./packages/add/README.md#webpack-cli-add)
   - [`webpack-cli info`](./packages/info/README.md#webpack-cli-info)
@@ -52,22 +52,32 @@ Otherwise `npm install --save-dev webpack-cli` or `yarn add webpack-cli --dev` w
 
 ### Commands
 
-Supporting developers is an important task for webpack CLI. Thus, webpack CLI provides different commands for many common tasks. We organize webpack CLI as a [multi-package repository](https://github.com/lerna/lerna). Every command has a dedicated subfolder in the `packages` Folder.
+Supporting developers is an important task for webpack CLI. Thus, webpack CLI provides different commands for many common tasks. We organize webpack CLI as a [multi-package repository](https://github.com/lerna/lerna). Every command has a dedicated subfolder in the `packages` Folder. Here's a summary of commands provided by the CLI.
+
+- [`webpack-cli init`](./packages/init/README.md#webpack-cli-init) - Create a new webpack configuration.
+- [`webpack-cli add`](./packages/add/README.md#webpack-cli-add) - Add new properties to a webpack configuration file.
+- [`webpack-cli info`](./packages/info/README.md#webpack-cli-info) - Returns information related to the local environment.
+- [`webpack-cli migrate`](./packages/migrate/README.md#webpack-cli-migrate) - Migrate project from one version to another.
+- [`webpack-cli remove`](./packages/remove/README.md#webpack-cli-remove) - Remove properties from a webpack configuration file.
+- [`webpack-cli generate-plugin`](./packages/generate-plugin/README.md#webpack-cli-generate-plugin) - Initiate new plugin project.
+- [`webpack-cli generate-loader`](./packages/generate-loader/README.md#webpack-cli-generate-loader) - Initiate new loader project.
+- [`webpack-cli serve`](./packages/serve/README.md#webpack-cli-serve) - Use webpack with a development server that provides live reloading.
+- [`webpack-cli update`](./packages/update/README.md#webpack-cli-update) - Update properties in a webpack configuration file.
 
 ## Getting started
 
-When you have followed the [Getting Started](https://webpack.js.org/guides/getting-started/) guide of webpack then webpack CLI is already installed! Otherwise, you would need to install webpack CLI and the packages you want to use. If we want to use the `init` functionality to create a new `webpack.config.js` configuration file:
+When you have followed the [Getting Started](https://webpack.js.org/guides/getting-started/) guide of webpack then webpack CLI is already installed! Otherwise, you would need to install webpack CLI and the packages you want to use. If we want to use the `init` command to create a new `webpack.config.js` configuration file:
 
 ```sh
 npm i webpack-cli @webpack-cli/init
 npx webpack-cli init
 ```
 
-You will answer many questions when running the `init` so webpack CLI can provide the best fitting configuration.  
+You will be prompted for several questions about what how you want to generate your config file when running the `init` command so webpack CLI can provide the best fitting configuration.  
 
 ## webpack CLI Scaffolds
 
-With v3 of webpack CLI, we introduced scaffolding as an integral part of the CLI. Our goal is to simplify the creation of webpack configurations for different purposes. Additionally, sharing such solutions with the community is beneficial and with webpack webpack's we want to allow this. We provide `webpack-scaffold` as a utility suite for creating these scaffolds. It contains functions that could be of use for creating an scaffold yourself.
+With v3 of webpack CLI, we introduced scaffolding as an integral part of the CLI. Our goal is to simplify the creation of webpack configurations for different purposes. Additionally, sharing such solutions with the community is beneficial and with webpack we want to allow this. We provide `webpack-scaffold` as a utility suite for creating these scaffolds. It contains functions that could be of use for creating a scaffold yourself.
 
 You can read more about [Scaffolding](https://webpack.js.org/guides/scaffolding), learn [How to compose a webpack-scaffold?](https://webpack.js.org/contribute/writing-a-scaffold) or generate one with [webpack-scaffold-starter](https://github.com/rishabh3112/webpack-scaffold-starter).
 
