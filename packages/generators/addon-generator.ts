@@ -42,11 +42,6 @@ export default function addonGenerator(
 		public async prompting(): void {
 			const scaffoldObject: InquirerScaffoldObject = await this.prompt(prompts);
 			this.props = scaffoldObject;
-			// return this.prompt(prompts).then(
-			// 	(props: InquirerScaffoldObject): void => {
-			// 		this.props = props;
-			// 	}
-			// );
 		}
 
 		public default(): void {
