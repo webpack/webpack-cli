@@ -180,6 +180,7 @@ In case you are suggesting a new feature, we will match your idea with our curre
     yarn lint
     ```
 
+
 ## Editor Config
 
 The [.editorconfig](https://github.com/webpack/webpack-cli/blob/master/.editorconfig) in the root should ensure consistent formatting. Please make sure you've [installed the plugin](http://editorconfig.org/#download) if your text editor needs one.
