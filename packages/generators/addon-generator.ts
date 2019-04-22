@@ -39,7 +39,7 @@ export default function addonGenerator(
 		public copy: (value: string, index: number, array: string[]) => void;
 		public copyTpl: (value: string, index: number, array: string[]) => void;
 
-		public async prompting(): void {
+		public async prompting() {
 			const scaffoldObject: InquirerScaffoldObject = await this.prompt(prompts);
 			this.props = scaffoldObject;
 		}
