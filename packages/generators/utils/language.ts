@@ -1,4 +1,9 @@
-interface Module extends Object {
+export enum LangType {
+	ES6 = "ES6",
+	Typescript = "Typescript",
+}
+
+interface ModuleRule extends Object {
 	include: string[];
 	loader: string;
 	options: {
@@ -16,7 +21,7 @@ type Preset = string | object;
  *
  * @returns {Function} A callable function that adds the babel-loader with env preset
  */
-export default function(): Module {
+export function getBabelPlugin(): ModuleRule {
 	return {
 		include: ["path.resolve(__dirname, 'src')"],
 		loader: "'babel-loader'",
@@ -33,4 +38,21 @@ export default function(): Module {
 		},
 		test: `${new RegExp(/\.js$/)}`
 	};
+}
+
+export default function language(self, langType) {
+	switch (langType) {
+		case LangType.ES6:
+			self.configuration.config.webpackOptions.module.rules.push(
+				getBabelPlugin(),
+			);
+			self.dependencies.push(
+				"babel-loader",
+				"@babel/core",
+				"@babel/preset-env",
+			);
+			break;
+		case LangType.Typescript:
+			break;
+	}
 }
