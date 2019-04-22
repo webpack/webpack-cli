@@ -12,8 +12,8 @@ import { AutoComplete, Confirm, InquirerInput, Input, List } from "@webpack-cli/
 import { SchemaProperties, WebpackOptions } from "./types";
 import entryQuestions from "./utils/entry";
 
-import webpackDevServerSchema from "webpack-dev-server/lib/options.json";
-import webpackSchema from "./utils/optionsSchema.json";
+import * as webpackDevServerSchema from "webpack-dev-server/lib/options.json";
+import * as webpackSchema from "./utils/optionsSchema.json";
 const PROPS: string[] = Array.from(PROP_TYPES.keys());
 
 /**
@@ -102,7 +102,7 @@ export default class AddGenerator extends Generator {
 		registerPrompt("autocomplete", autoComplete);
 	}
 
-	public async prompting() {
+	public async prompting(): Promise<void> {
 		let action: string;
 		const self: this = this;
 		const manualOrListInput: (promptAction: string) => InquirerInput = (promptAction: string): InquirerInput =>
@@ -181,7 +181,7 @@ export default class AddGenerator extends Generator {
 						(p: {
 							properties?: object,
 							enum?: any[],
-						}) => p.properties || p.enum,
+						}): object|any[] => p.properties || p.enum,
 						)
 					: null;
 		if (Array.isArray(defOrPropDescription)) {
@@ -407,7 +407,7 @@ export default class AddGenerator extends Generator {
 			} else {
 				// If its not in webpack, check npm
 				npmExists(answerToAction.actionAnswer)
-					.then((p: string) => {
+					.then((p: string): void => {
 						if (p) {
 							this.dependencies.push(answerToAction.actionAnswer);
 							const normalizePluginName: string = answerToAction.actionAnswer.replace(
