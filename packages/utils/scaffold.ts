@@ -9,6 +9,7 @@ import { Config, TransformConfig } from "./modify-config-helper";
 import propTypes from "./prop-types";
 import astTransform from "./recursive-parser";
 import runPrettier from "./run-prettier";
+import addScript from "./add-script";
 import { Node } from "./types/NodePath";
 
 /**
@@ -98,6 +99,8 @@ export default function runTransform(transformConfig: TransformConfig, action: s
 				);
 		}
 	);
+	// Add a webpack script to package.json
+	addScript("webpack", "webpack")
 	let successMessage: string = `Congratulations! Your new webpack configuration file has been created!\n`;
 	if (initActionNotDefined && transformConfig.config.item) {
 		successMessage = `Congratulations! ${transformConfig.config.item} has been ${action}ed!\n`;

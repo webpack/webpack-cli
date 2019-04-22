@@ -32,6 +32,7 @@
     "@types/node": "^10.12.9",
     "@types/p-each-series": "^1.0.0",
     "@types/prettier": "^1.15.0",
+    "mrm-core": "^3.3.0",
     "typescript": "^3.1.6"
   },
   "scripts": {
