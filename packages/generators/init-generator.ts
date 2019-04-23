@@ -12,6 +12,7 @@ import entryQuestions from "./utils/entry";
 import langQuestionHandler from "./utils/language";
 import styleQuestionHandler, { Loader, StylingType } from "./utils/style";
 import tooltip from "./utils/tooltip";
+import { type } from "os";
 
 /**
  *
@@ -126,7 +127,7 @@ export default class InitGenerator extends Generator {
 	}
 
 	// eslint-disable-next-line
-	public prompting(): any {
+	public async prompting() {
 		const done: () => {} = this.async();
 		const self: this = this;
 		let regExpForStyles: string;
@@ -142,69 +143,61 @@ export default class InitGenerator extends Generator {
 			`Alternatively, run "webpack(-cli) --help" for usage info\n\n`,
 		);
 
-		return this.prompt([
-				Confirm("multiEntries", "Will your application have multiple bundles?", false),
-			])
-			.then((multiEntriesAnswer: {
-				multiEntries: boolean,
-			}): Promise<{}> =>
-				entryQuestions(self, multiEntriesAnswer.multiEntries),
-			)
-			.then((entryOption: object | string): void => {
-				if (typeof entryOption === "string" && entryOption.length > 0) {
-					this.configuration.config.webpackOptions.entry = `${entryOption}`;
-				} else if (typeof entryOption === "object") {
-					this.configuration.config.webpackOptions.entry = entryOption;
-				}
-			})
-			.then((): Promise<{}> =>
-				this.prompt([
-					Input(
-						"outputDir",
-						"In which folder do you want to store your generated bundles?",
-						"dist",
-					),
+		const { multiEntries }: { multiEntries: boolean } = await this.prompt([
+				Confirm(
+					"multiEntries",
+					"Will your application have multiple bundles?",
+					false
+				),
+			]);
+
+		const entryOption: string | object = await entryQuestions(self, multiEntries);
+			
+		if (typeof entryOption === "string" && entryOption.length > 0) {
+			this.configuration.config.webpackOptions.entry = `${entryOption}`;
+		} else if (typeof entryOption === "object") {
+			this.configuration.config.webpackOptions.entry = entryOption;
+		}
+
+		const { outputDir }: { outputDir: string } = await this.prompt([
+				Input(
+					"outputDir",
+					"In which folder do you want to store your generated bundles?",
+					"dist",
+				),
+			]);
+
+		// As entry is not required anymore and we dont set it to be an empty string or """""
+		// it can be undefined so falsy check is enough (vs entry.length);
+		if (
+			!this.configuration.config.webpackOptions.entry &&
+			!this.usingDefaults
+		) {
+			this.configuration.config.webpackOptions.output = {
+				chunkFilename: "'[name].[chunkhash].js'",
+				filename: "'[name].[chunkhash].js'",
+			};
+		} else if (!this.usingDefaults) {
+			this.configuration.config.webpackOptions.output = {
+				filename: "'[name].[chunkhash].js'",
+			};
+		}
+		if (!this.usingDefaults && outputDir.length) {
+			this.configuration.config.webpackOptions.output.path =
+				`path.resolve(__dirname, '${outputDir}')`;
+		}
+	
+		const { langType }: { langType: string } = await this.prompt([
+				List("langType", "Will you use one of the below JS solutions?", [
+					"ES6",
+					"Typescript",
+					"No",
 				]),
-			)
-			.then((outputDirAnswer: {
-				outputDir: string;
-			}): void => {
-				// As entry is not required anymore and we dont set it to be an empty string or """""
-				// it can be undefined so falsy check is enough (vs entry.length);
-				if (
-					!this.configuration.config.webpackOptions.entry &&
-					!this.usingDefaults
-				) {
-					this.configuration.config.webpackOptions.output = {
-						chunkFilename: "'[name].[chunkhash].js'",
-						filename: "'[name].[chunkhash].js'",
-					};
-				} else if (!this.usingDefaults) {
-					this.configuration.config.webpackOptions.output = {
-						filename: "'[name].[chunkhash].js'",
-					};
-				}
-				if (!this.usingDefaults && outputDirAnswer.outputDir.length) {
-					this.configuration.config.webpackOptions.output.path =
-						`path.resolve(__dirname, '${outputDirAnswer.outputDir}')`;
-				}
-			})
-			.then((): Promise<{}> =>
-				this.prompt([
-					List("langType", "Will you use one of the below JS solutions?", [
-						"ES6",
-						"Typescript",
-						"No",
-					]),
-				]),
-			)
-			.then((langTypeAnswer: {
-				langType: string;
-			}): void => {
-				langQuestionHandler(this, langTypeAnswer.langType);
-			})
-			.then((): Promise<{}> =>
-				this.prompt([
+			]);
+		
+		langQuestionHandler(this, langType);
+
+		const { stylingType }: { stylingType: string } =  await this.prompt([
 					List("stylingType", "Will you use one of the below CSS solutions?", [
 						"No",
 						StylingType.CSS,
@@ -212,61 +205,53 @@ export default class InitGenerator extends Generator {
 						StylingType.LESS,
 						StylingType.PostCSS,
 					]),
-				]))
-			.then((stylingTypeAnswer: {
-				stylingType: string;
-			}): void => {
-				({ ExtractUseProps, regExpForStyles } = styleQuestionHandler(self, stylingTypeAnswer.stylingType));
-			})
-			.then((): Promise<{}> | void => {
-				if (this.isProd) {
-					// Ask if the user wants to use extractPlugin
-					return this.prompt([
-						Input(
-							"useExtractPlugin",
-							"If you want to bundle your CSS files, what will you name the bundle? (press enter to skip)",
-						),
-					]);
-				}
-			})
-			.then((useExtractPluginAnswer: {
-				useExtractPlugin: string;
-			}): void => {
-				if (regExpForStyles) {
-					if (this.isProd) {
-						const cssBundleName: string = useExtractPluginAnswer.useExtractPlugin;
-						this.dependencies.push("mini-css-extract-plugin");
-						this.configuration.config.topScope.push(
-							tooltip.cssPlugin(),
-							"const MiniCssExtractPlugin = require('mini-css-extract-plugin');",
-							"\n",
-						);
-						if (cssBundleName.length !== 0) {
-							(this.configuration.config.webpackOptions.plugins as string[]).push(
-								// TODO: use [contenthash] after it is supported
-								`new MiniCssExtractPlugin({ filename:'${cssBundleName}.[chunkhash].css' })`,
-							);
-						} else {
-							(this.configuration.config.webpackOptions.plugins as string[]).push(
-								"new MiniCssExtractPlugin({ filename:'style.css' })",
-							);
-						}
+				]);
 
-						ExtractUseProps.unshift({
-							loader: "MiniCssExtractPlugin.loader",
-						});
+		({ ExtractUseProps, regExpForStyles } = styleQuestionHandler(self, stylingType));
+
+		if (this.isProd) {
+			// Ask if the user wants to use extractPlugin
+			const { useExtractPlugin }: { useExtractPlugin: string } = await this.prompt([
+				Input(
+					"useExtractPlugin",
+					"If you want to bundle your CSS files, what will you name the bundle? (press enter to skip)",
+				),
+			]);
+			
+			if (regExpForStyles) {
+				if (this.isProd) {
+					const cssBundleName: string = useExtractPlugin;
+					this.dependencies.push("mini-css-extract-plugin");
+					this.configuration.config.topScope.push(
+						tooltip.cssPlugin(),
+						"const MiniCssExtractPlugin = require('mini-css-extract-plugin');",
+						"\n",
+					);
+					if (cssBundleName.length !== 0) {
+						(this.configuration.config.webpackOptions.plugins as string[]).push(
+							// TODO: use [contenthash] after it is supported
+							`new MiniCssExtractPlugin({ filename:'${cssBundleName}.[chunkhash].css' })`,
+						);
+					} else {
+						(this.configuration.config.webpackOptions.plugins as string[]).push(
+							"new MiniCssExtractPlugin({ filename:'style.css' })",
+						);
 					}
 
-					this.configuration.config.webpackOptions.module.rules.push(
-						{
-							test: regExpForStyles,
-							use: ExtractUseProps,
-						},
-					);
+					ExtractUseProps.unshift({
+						loader: "MiniCssExtractPlugin.loader",
+					});
 				}
 
-				done();
-			});
+				this.configuration.config.webpackOptions.module.rules.push(
+					{
+						test: regExpForStyles,
+						use: ExtractUseProps,
+					},
+				);
+			}
+		}
+		done();
 	}
 
 	public installPlugins(): void {
