@@ -7,7 +7,7 @@ export enum StylingType {
 	PostCSS = "PostCSS",
 }
 
-export enum Loader {
+export enum LoaderName {
 	CSS = "css-loader",
 	SASS = "sass-loader",
 	STYLE = "style-loader",
@@ -22,7 +22,7 @@ export enum StyleRegex {
 	PostCSS = "/\.css$/",
 }
 
-export interface ILoader {
+export interface Loader {
 	loader: string;
 	options?: {
 		importLoaders?: number;
@@ -31,29 +31,32 @@ export interface ILoader {
 	};
 }
 
-export default function style(self, stylingType) {
-	const ExtractUseProps: ILoader[] = [];
-	let regExpForStyles = null;
+export default function style(self, stylingType: string): {
+	ExtractUseProps: Loader[],
+	regExpForStyles: StyleRegex, 
+} {
+	const ExtractUseProps: Loader[] = [];
+	let regExpForStyles: StyleRegex = null;
 
 	switch (stylingType) {
 		case StylingType.CSS:
 			regExpForStyles = StyleRegex.CSS;
 
 			self.dependencies.push(
-				Loader.CSS,
+				LoaderName.CSS,
 			);
 			if (!self.isProd) {
 				self.dependencies.push(
-					Loader.STYLE,
+					LoaderName.STYLE,
 				);
 				ExtractUseProps.push(
 					{
-						loader: `"${Loader.STYLE}"`,
+						loader: `"${LoaderName.STYLE}"`,
 					},
 				);
 			}
 			ExtractUseProps.push({
-				loader: `"${Loader.CSS}"`,
+				loader: `"${LoaderName.CSS}"`,
 				options: {
 					sourceMap: true,
 				},
@@ -65,28 +68,28 @@ export default function style(self, stylingType) {
 
 			self.dependencies.push(
 				"node-sass",
-				Loader.SASS,
-				Loader.CSS,
+				LoaderName.SASS,
+				LoaderName.CSS,
 			);
 			if (!self.isProd) {
 				self.dependencies.push(
-					Loader.STYLE,
+					LoaderName.STYLE,
 				);
 				ExtractUseProps.push(
 					{
-						loader: `"${Loader.STYLE}"`,
+						loader: `"${LoaderName.STYLE}"`,
 					},
 				);
 			}
 			ExtractUseProps.push(
 				{
-					loader: `"${Loader.CSS}"`,
+					loader: `"${LoaderName.CSS}"`,
 					options: {
 						sourceMap: true,
 					},
 				},
 				{
-					loader: `"${Loader.SASS}"`,
+					loader: `"${LoaderName.SASS}"`,
 					options: {
 						sourceMap: true,
 					},
@@ -99,28 +102,28 @@ export default function style(self, stylingType) {
 
 			self.dependencies.push(
 				"less",
-				Loader.LESS,
-				Loader.CSS,
+				LoaderName.LESS,
+				LoaderName.CSS,
 			);
 			if (!self.isProd) {
 				self.dependencies.push(
-					Loader.STYLE,
+					LoaderName.STYLE,
 				);
 				ExtractUseProps.push(
 					{
-						loader: `"${Loader.STYLE}"`,
+						loader: `"${LoaderName.STYLE}"`,
 					},
 				);
 			}
 			ExtractUseProps.push(
 				{
-					loader: `"${Loader.CSS}"`,
+					loader: `"${LoaderName.CSS}"`,
 					options: {
 						sourceMap: true,
 					},
 				},
 				{
-					loader: `"${Loader.LESS}"`,
+					loader: `"${LoaderName.LESS}"`,
 					options: {
 						sourceMap: true,
 					},
@@ -141,29 +144,29 @@ export default function style(self, stylingType) {
 			self.dependencies.push(
 				"precss",
 				"autoprefixer",
-				Loader.CSS,
-				Loader.POSTCSS,
+				LoaderName.CSS,
+				LoaderName.POSTCSS,
 			);
 			if (!self.isProd) {
 				self.dependencies.push(
-					Loader.STYLE,
+					LoaderName.STYLE,
 				);
 				ExtractUseProps.push(
 					{
-						loader: `"${Loader.STYLE}"`,
+						loader: `"${LoaderName.STYLE}"`,
 					},
 				);
 			}
 			ExtractUseProps.push(
 				{
-					loader: `"${Loader.CSS}"`,
+					loader: `"${LoaderName.CSS}"`,
 					options: {
 						importLoaders: 1,
 						sourceMap: true,
 					},
 				},
 				{
-					loader: `"${Loader.POSTCSS}"`,
+					loader: `"${LoaderName.POSTCSS}"`,
 					options: {
 						plugins: `function () {
 							return [

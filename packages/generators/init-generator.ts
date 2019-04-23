@@ -1,4 +1,3 @@
-
 import chalk from "chalk";
 import * as logSymbols from "log-symbols";
 import * as Generator from "yeoman-generator";
@@ -11,7 +10,7 @@ import { Confirm, Input, List } from "@webpack-cli/webpack-scaffold";
 import { WebpackOptions } from "./types";
 import entryQuestions from "./utils/entry";
 import langQuestionHandler from "./utils/language";
-import styleQuestionHandler, { ILoader, StylingType } from "./utils/style";
+import styleQuestionHandler, { Loader, StylingType } from "./utils/style";
 import tooltip from "./utils/tooltip";
 
 /**
@@ -55,8 +54,6 @@ export default class InitGenerator extends Generator {
 			config: {
 				configName: this.isProd ? "prod" : "config",
 				topScope: [],
-				// TODO migrate tslint
-				// tslint:disable: object-literal-sort-keys
 				webpackOptions: {
 					mode: this.isProd ? "'production'" : "'development'",
 					entry: undefined,
@@ -66,7 +63,6 @@ export default class InitGenerator extends Generator {
 						rules: [],
 					},
 				},
-				// tslint:enable: object-literal-sort-keys
 			},
 		};
 
@@ -87,7 +83,7 @@ export default class InitGenerator extends Generator {
 			);
 		}
 
-		this.configuration.config.webpackOptions.plugins.push(
+		(this.configuration.config.webpackOptions.plugins as string[]).push(
 			"new webpack.ProgressPlugin()",
 		);
 
@@ -134,7 +130,7 @@ export default class InitGenerator extends Generator {
 		const done: () => {} = this.async();
 		const self: this = this;
 		let regExpForStyles: string;
-		let ExtractUseProps: ILoader[];
+		let ExtractUseProps: Loader[];
 
 		process.stdout.write(
 			`\n${logSymbols.info}${chalk.blue(" INFO ")} ` +
@@ -151,17 +147,17 @@ export default class InitGenerator extends Generator {
 			])
 			.then((multiEntriesAnswer: {
 				multiEntries: boolean,
-			}) =>
+			}): Promise<{}> =>
 				entryQuestions(self, multiEntriesAnswer.multiEntries),
 			)
-			.then((entryOption: object | string) => {
+			.then((entryOption: object | string): void => {
 				if (typeof entryOption === "string" && entryOption.length > 0) {
 					this.configuration.config.webpackOptions.entry = `${entryOption}`;
 				} else if (typeof entryOption === "object") {
 					this.configuration.config.webpackOptions.entry = entryOption;
 				}
 			})
-			.then(() =>
+			.then((): Promise<{}> =>
 				this.prompt([
 					Input(
 						"outputDir",
@@ -172,7 +168,7 @@ export default class InitGenerator extends Generator {
 			)
 			.then((outputDirAnswer: {
 				outputDir: string;
-			}) => {
+			}): void => {
 				// As entry is not required anymore and we dont set it to be an empty string or """""
 				// it can be undefined so falsy check is enough (vs entry.length);
 				if (
@@ -193,7 +189,7 @@ export default class InitGenerator extends Generator {
 						`path.resolve(__dirname, '${outputDirAnswer.outputDir}')`;
 				}
 			})
-			.then(() =>
+			.then((): Promise<{}> =>
 				this.prompt([
 					List("langType", "Will you use one of the below JS solutions?", [
 						"ES6",
@@ -203,11 +199,11 @@ export default class InitGenerator extends Generator {
 				]),
 			)
 			.then((langTypeAnswer: {
-				langType: boolean;
-			}) => {
+				langType: string;
+			}): void => {
 				langQuestionHandler(this, langTypeAnswer.langType);
 			})
-			.then(() =>
+			.then((): Promise<{}> =>
 				this.prompt([
 					List("stylingType", "Will you use one of the below CSS solutions?", [
 						"No",
@@ -219,10 +215,10 @@ export default class InitGenerator extends Generator {
 				]))
 			.then((stylingTypeAnswer: {
 				stylingType: string;
-			}) =>
-				({ ExtractUseProps, regExpForStyles } = styleQuestionHandler(self, stylingTypeAnswer.stylingType)),
-			)
-			.then((): Promise<Inquirer.Answers> => {
+			}): void => {
+				({ ExtractUseProps, regExpForStyles } = styleQuestionHandler(self, stylingTypeAnswer.stylingType));
+			})
+			.then((): Promise<{}> | void => {
 				if (this.isProd) {
 					// Ask if the user wants to use extractPlugin
 					return this.prompt([
@@ -235,7 +231,7 @@ export default class InitGenerator extends Generator {
 			})
 			.then((useExtractPluginAnswer: {
 				useExtractPlugin: string;
-			}) => {
+			}): void => {
 				if (regExpForStyles) {
 					if (this.isProd) {
 						const cssBundleName: string = useExtractPluginAnswer.useExtractPlugin;
@@ -246,12 +242,12 @@ export default class InitGenerator extends Generator {
 							"\n",
 						);
 						if (cssBundleName.length !== 0) {
-							this.configuration.config.webpackOptions.plugins.push(
+							(this.configuration.config.webpackOptions.plugins as string[]).push(
 								// TODO: use [contenthash] after it is supported
 								`new MiniCssExtractPlugin({ filename:'${cssBundleName}.[chunkhash].css' })`,
 							);
 						} else {
-							this.configuration.config.webpackOptions.plugins.push(
+							(this.configuration.config.webpackOptions.plugins as string[]).push(
 								"new MiniCssExtractPlugin({ filename:'style.css' })",
 							);
 						}
@@ -273,7 +269,7 @@ export default class InitGenerator extends Generator {
 			});
 	}
 
-	public installPlugins() {
+	public installPlugins(): void {
 		const packager = getPackageManager();
 		const opts: {
 			dev?: boolean,
@@ -292,7 +288,7 @@ export default class InitGenerator extends Generator {
 		this.fs.extendJSON(this.destinationPath("package.json"), require(packageJsonTemplatePath)(this.isProd));
 
 		const entry = this.configuration.config.webpackOptions.entry;
-		const generateEntryFile = (entryPath: string, name: string) => {
+		const generateEntryFile = (entryPath: string, name: string): void => {
 			entryPath = entryPath.replace(/'/g, "");
 			this.fs.copyTpl(
 				path.resolve(__dirname, "./templates/index.js"),
@@ -304,7 +300,7 @@ export default class InitGenerator extends Generator {
 		if ( typeof entry === "string" ) {
 			generateEntryFile(entry, "your main file!");
 		} else if (typeof entry === "object") {
-			Object.keys(entry).forEach((name) =>
+			Object.keys(entry).forEach((name: string): void =>
 				generateEntryFile(entry[name], `${name} main file!`),
 			);
 		}

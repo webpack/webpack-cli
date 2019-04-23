@@ -70,30 +70,26 @@ export default function runTransform(transformConfig: TransformConfig, action: s
 						return astTransform(j, ast, f, config[f] as any, transformAction);
 					}
 					return astTransform(j, ast, f, config.webpackOptions[f], transformAction);
-				}
-			)
-				.then(
-					(): void | PromiseLike<void> => {
-						let configurationName: string;
-						if (!config.configName) {
-							configurationName = "webpack.config.js";
-						} else {
-							configurationName = "webpack." + config.configName + ".js";
-						}
-
-				const projectRoot = findProjectRoot();
-				const outputPath: string = initActionNotDefined
-				? transformConfig.configPath
-				: path.join(projectRoot || process.cwd(), configurationName);
-				const source: string = ast.toSource({
-					quote: "single",
+				})
+				.then((): void | PromiseLike<void> => {
+					let configurationName: string;
+					if (!config.configName) {
+						configurationName = "webpack.config.js";
+					} else {
+						configurationName = "webpack." + config.configName + ".js";
+					}
+					const projectRoot = findProjectRoot();
+					const outputPath: string = initActionNotDefined
+						? transformConfig.configPath
+						: path.join(projectRoot || process.cwd(), configurationName);
+					const source: string = ast.toSource({
+						quote: "single",
+					});
+					runPrettier(outputPath, source);
+				})
+				.catch((err: Error): void => {
+					console.error(err.message ? err.message : err);
 				});
-				runPrettier(outputPath, source);
-
-			})
-			.catch((err: IError) => {
-				console.error(err.message ? err.message : err);
-			});
 	});
 	let successMessage: string =
 		chalk.green(`Congratulations! Your new webpack configuration file has been created!\n\n`) +

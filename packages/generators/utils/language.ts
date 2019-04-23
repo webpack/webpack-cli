@@ -16,6 +16,20 @@ interface ModuleRule extends Object {
 
 type Preset = string | object;
 
+function updateEntryExt(self, newExt: string): void {
+	const jsEntryOption = self.configuration.config.webpackOptions.entry;
+	const jsExtension = new RegExp("\.js(?!.*\.js)");
+	let tsEntryOption = {};
+	if (typeof jsEntryOption === "string") {
+		tsEntryOption = jsEntryOption.replace(jsExtension, newExt);
+	} else if (typeof jsEntryOption === "object") {
+		Object.keys(jsEntryOption).forEach((entry: string): void => {
+			tsEntryOption[entry] = jsEntryOption[entry].replace(jsExtension, newExt);
+		});
+	}
+	self.configuration.config.webpackOptions.entry = tsEntryOption;
+}
+
 /**
  *
  * Returns an module.rule object that has the babel loader if invoked
@@ -24,8 +38,6 @@ type Preset = string | object;
  */
 export function getBabelLoader(): ModuleRule {
 	return {
-		// TODO migrate tslint
-		// tslint:disable: object-literal-sort-keys
 		test: "/\.js$/",
 		include: ["path.resolve(__dirname, 'src')"],
 		loader: "'babel-loader'",
@@ -40,23 +52,19 @@ export function getBabelLoader(): ModuleRule {
 				]
 			]
 		},
-		// tslint:enable: object-literal-sort-keys
 	};
 }
 
 export function getTypescriptLoader(): ModuleRule {
 	return {
-		// TODO migrate tslint
-		// tslint:disable: object-literal-sort-keys
 		test: "/\.tsx?$/",
 		loader: "'ts-loader'",
 		include: ["path.resolve(__dirname, 'src')"],
 		exclude: ["/node_modules/"],
-		// tslint:enable: object-literal-sort-keys
 	};
 }
 
-export default function language(self, langType) {
+export default function language(self, langType: string): void {
 	switch (langType) {
 		case LangType.ES6:
 			self.dependencies.push(
@@ -81,18 +89,7 @@ export default function language(self, langType) {
 				extensions: [ "'.tsx'", "'.ts'", "'.js'" ],
 			};
 
-			// Update the entry files extensions to .ts
-			const jsEntryOption = self.configuration.config.webpackOptions.entry;
-			const jsExtension = new RegExp("\.js(?!.*\.js)");
-			let tsEntryOption = {};
-			if (typeof jsEntryOption === "string") {
-				tsEntryOption = jsEntryOption.replace(jsExtension, ".ts");
-			} else if (typeof jsEntryOption === "object") {
-				Object.keys(jsEntryOption).forEach((entry) => {
-					tsEntryOption[entry] = jsEntryOption[entry].replace(jsExtension, ".ts");
-				});
-			}
-			self.configuration.config.webpackOptions.entry = tsEntryOption;
+			updateEntryExt(self, ".ts");
 			break;
 	}
 }
