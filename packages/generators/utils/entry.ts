@@ -24,7 +24,7 @@ export default function entry(self: CustomGenerator, multiEntries: boolean): Pro
 			.prompt([
 				InputValidate(
 					"multipleEntries",
-					"Type the names you want for your modules (entry files) separated by comma",
+					"How do you want to name your bundles? (separated by comma)",
 					validate,
 					"pageOne, pageTwo",
 				),
@@ -102,7 +102,7 @@ export default function entry(self: CustomGenerator, multiEntries: boolean): Pro
 					self.prompt([
 						InputValidate(
 							`${entryProp}`,
-							`What is the location of "${entryProp}"?`,
+							`Which will be the entry point of "${entryProp}"?`,
 							validate,
 							`src/${entryProp}`,
 						),

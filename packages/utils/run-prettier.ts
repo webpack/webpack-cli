@@ -19,19 +19,17 @@ export default function runPrettier(outputPath: string, source: string, cb?: Fun
 		try {
 			prettySource = prettier.format(source, {
 				filepath: outputPath,
-				parser: "babylon",
+				parser: "babel",
 				singleQuote: true,
 				tabWidth: 1,
 				useTabs: true,
 			});
 		} catch (err) {
 			process.stdout.write(
-				"\n" +
-					chalk.yellow(
-						`WARNING: Could not apply prettier to ${outputPath}` +
-						" due validation error, but the file has been created\n" +
-						err,
-					),
+				`\n${chalk.yellow(
+					`WARNING: Could not apply prettier to ${outputPath}` +
+					" due validation error, but the file has been created\n",
+				)}`,
 			);
 			prettySource = source;
 			error = err;
