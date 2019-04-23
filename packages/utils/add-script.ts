@@ -9,15 +9,16 @@ import * as fs from "fs";
  * @returns {void}
  */
 
+const PACKAGE_JSON_FILE = "package.json";
+
 export default function addScript(key: string, value: string): void {
   const localDir = process.cwd();
-  // eslint-disable-next-line
-  const packageJSON = require(path.resolve(localDir, "package.json"));
-  if (!packageJSON["scripts"]) {
-    packageJSON["scripts"] = {};
+  const packageJSON = JSON.parse(fs.readFileSync(path.resolve(localDir, PACKAGE_JSON_FILE), "utf8"));
+  if (!packageJSON.scripts) {
+    packageJSON.scripts = {};
   }
-  packageJSON["scripts"][key] = value;
-  fs.writeFile('package.json', JSON.stringify(packageJSON, null, 2), function(err): void {
+  packageJSON.scripts[key] = value;
+  fs.writeFile(PACKAGE_JSON_FILE, JSON.stringify(packageJSON, null, 2), function(err): void {
 		if (err) console.error(err);
   });
 }
