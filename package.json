@@ -54,6 +54,7 @@
     }
   },
   "lint-staged": {
+    "*.md": ["prettier --write", "git add"],
     "{packages,bin}/**/!(__testfixtures__)/**.js": [
       "eslint --fix",
       "git add"
