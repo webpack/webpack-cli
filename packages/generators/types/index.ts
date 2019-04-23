@@ -5,6 +5,11 @@ export interface SchemaProperties {
 	type?: string;
 }
 
+export interface SchemaProperty	{
+		properties?: object,
+		enum?: any[],
+}
+
 interface WebpackResolve {
 	alias?: object;
 	aliasFields?: string[];

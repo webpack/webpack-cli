@@ -9,7 +9,7 @@ import { getPackageManager } from "@webpack-cli/utils/package-manager";
 import PROP_TYPES from "@webpack-cli/utils/prop-types";
 import { AutoComplete, Confirm, InquirerInput, Input, List } from "@webpack-cli/webpack-scaffold";
 
-import { SchemaProperties, WebpackOptions } from "./types";
+import { SchemaProperties, WebpackOptions, SchemaProperty } from "./types";
 import entryQuestions from "./utils/entry";
 
 import * as webpackDevServerSchema from "webpack-dev-server/lib/options.json";
@@ -178,10 +178,7 @@ export default class AddGenerator extends Generator {
 				? webpackSchema.properties[action].properties
 				: webpackSchema.properties[action].anyOf
 					? webpackSchema.properties[action].anyOf.filter(
-						(p: {
-							properties?: object,
-							enum?: any[],
-						}): object|any[] => p.properties || p.enum,
+						(p: SchemaProperty): object|any[] => p.properties || p.enum,
 						)
 					: null;
 		if (Array.isArray(defOrPropDescription)) {
