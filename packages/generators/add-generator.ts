@@ -207,12 +207,9 @@ export default class AddGenerator extends Generator {
 				// Array -> Object -> Merge objects into one for compat in manualOrListInput
 				defOrPropDescription = Object.keys(defOrPropDescription[0].enum)
 					.map((p: string): object => {
-						return Object.assign(
-							{},
-							{
-								[originalPropDesc[p]]: "noop",
-							},
-						);
+						return {
+							[originalPropDesc[p]]: "noop",
+						}
 					})
 					.reduce((result: object, currentObject: object): object => {
 						for (const key in currentObject) {
