@@ -1,11 +1,11 @@
-export interface ISchemaProperties {
+export interface SchemaProperties {
 	additionalProperties?: boolean;
 	definitions?: object;
 	properties?: object;
 	type?: string;
 }
 
-interface IWebpackResolve {
+interface WebpackResolve {
 	alias?: object;
 	aliasFields?: string[];
 	cachePredicate?: Function;
@@ -27,7 +27,7 @@ interface IWebpackResolve {
 
 type IRuleSetCondition = RegExp | string | Function | object;
 
-export interface IWebpackOptions {
+export interface WebpackOptions {
 	amd?: string;
 	bail?: boolean;
 	cache?: boolean | object;
@@ -47,10 +47,12 @@ export interface IWebpackOptions {
 		headers?: object;
 		logLevel?: string;
 		clientLogLevel?: string;
-		overlay?: boolean | {
-			errors?: boolean;
-			warnings?: boolean;
-		};
+		overlay?:
+			| boolean
+			| {
+					errors?: boolean;
+					warnings?: boolean;
+			  };
 		progress?: boolean;
 		key?: string | Buffer;
 		cert?: string | Buffer;
@@ -69,10 +71,12 @@ export interface IWebpackOptions {
 		openPage?: string;
 		compress?: boolean;
 		proxy?: object[] | Function[];
-		historyApiFallback?: boolean | {
-			rewrites?: object[];
-			disableDotRule?: boolean;
-		};
+		historyApiFallback?:
+			| boolean
+			| {
+					rewrites?: object[];
+					disableDotRule?: boolean;
+			  };
 		staticOptions?: object;
 		setup?: Function;
 		before?: Function;
@@ -97,25 +101,7 @@ export interface IWebpackOptions {
 		exprContextRegExp?: boolean | RegExp;
 		exprContextRequest?: string;
 		noParse?: string | string[] | Function | RegExp | RegExp[];
-		rules?: Array<{
-			enforce?: "pre" | "post";
-			exclude?: IRuleSetCondition;
-			include?: IRuleSetCondition;
-			issuer?: IRuleSetCondition;
-			loader?: string | Function | object;
-			loaders?: Function[] | object[];
-			options?: object;
-			parser?: object;
-			sideEffects?: boolean;
-			type?: string;
-			resource?: IRuleSetCondition;
-			resourceQuery?: IRuleSetCondition;
-			compiler?: IRuleSetCondition;
-			rules?: object[];
-			use?: object | object[] | Function;
-			test?: IRuleSetCondition;
-
-		}>;
+		rules?: Rule[];
 		unknownContextCritical?: boolean;
 		unknownContextRecursive?: boolean;
 		unknownContextRegExp?: boolean | RegExp;
@@ -127,15 +113,19 @@ export interface IWebpackOptions {
 		strictExportPresence?: boolean;
 		strictThisContextOnImports?: boolean;
 	};
-	node?: false | true | string | {
-		console?: boolean | string;
-		process?: boolean | string;
-		global?: boolean;
-		__filename?: boolean | string;
-		__dirname?: boolean | string;
-		Buffer?: boolean | string;
-		setImmediate?: boolean | string;
-	};
+	node?:
+		| false
+		| true
+		| string
+		| {
+				console?: boolean | string;
+				process?: boolean | string;
+				global?: boolean;
+				__filename?: boolean | string;
+				__dirname?: boolean | string;
+				Buffer?: boolean | string;
+				setImmediate?: boolean | string;
+		  };
 	output?: {
 		auxiliaryComment?: string | object;
 		chunkFilename?: string;
@@ -199,19 +189,21 @@ export interface IWebpackOptions {
 		};
 	};
 	parallelism?: number;
-	performance?: false | {
-		assetFilter?: Function;
-		hints?: false | string;
-		maxEntrypointSize?: number;
-		maxAssetSize?: number;
-	};
-	plugins?: object[] | Function[] | string[] | string | any;
+	performance?:
+		| false
+		| {
+				assetFilter?: Function;
+				hints?: false | string;
+				maxEntrypointSize?: number;
+				maxAssetSize?: number;
+		  };
+	plugins?: object[] | Function[] | string[] | string;
 	profile?: boolean;
 	recordsInputPath?: string;
 	recordsOutputPath?: string;
 	recordsPath?: string;
-	resolve?: IWebpackResolve;
-	resolveLoader?: IWebpackResolve;
+	resolve?: WebpackResolve;
+	resolveLoader?: WebpackResolve;
 	stats?: string | boolean | object;
 	target?: string | Function;
 	watch?: boolean;
@@ -220,4 +212,23 @@ export interface IWebpackOptions {
 		stdin?: boolean;
 		poll?: boolean | number;
 	};
+}
+
+interface Rule {
+	enforce?: "pre" | "post";
+	exclude?: IRuleSetCondition;
+	include?: IRuleSetCondition;
+	issuer?: IRuleSetCondition;
+	loader?: string | Function | object;
+	loaders?: Function[] | object[];
+	options?: object;
+	parser?: object;
+	sideEffects?: boolean;
+	type?: string;
+	resource?: IRuleSetCondition;
+	resourceQuery?: IRuleSetCondition;
+	compiler?: IRuleSetCondition;
+	rules?: object[];
+	use?: object | object[] | Function;
+	test?: IRuleSetCondition;
 }

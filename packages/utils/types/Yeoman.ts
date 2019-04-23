@@ -1,12 +1,12 @@
-interface IRunEnv extends Object {
+interface RunEnv extends Object {
 	on?: (event: string, callbackFn: Function) => void;
 }
 
-export interface IYeoman extends Object {
-	registerStub?(generator: IGenerator, namespace: string): void;
-	run?(target: string, options?: object, done?: Function): IRunEnv;
+export interface Yeoman extends Object {
+	registerStub?(generator: YeoGenerator, namespace: string): void;
+	run?(target: string, options?: object, done?: Function): RunEnv;
 }
 
-export interface IGenerator extends Object {
+export interface YeoGenerator extends Object {
 	composeWith?: (path: string) => void;
 }

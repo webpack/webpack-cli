@@ -4,7 +4,7 @@
 
 ## Description
 
-This package contains the logic to run webpack-serve without using webpack-serve directly.
+This package contains the logic to run [webpack-dev-server](https://github.com/webpack/webpack-dev-server) to serve your webpack app and provide live reloading.
 
 ## Installation
 
