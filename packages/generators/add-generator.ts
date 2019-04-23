@@ -183,14 +183,14 @@ export default class AddGenerator extends Generator {
 					: null;
 		if (Array.isArray(defOrPropDescription)) {
 			// Todo: Generalize these to go through the array, then merge enum with props if needed
-			const hasPropertiesProp: boolean = traverseAndGetProperties(
+			const hasPropertiesProp = traverseAndGetProperties(
 				defOrPropDescription,
 				"properties",
-			);
+			) as boolean;
 			const hasEnumProp: boolean = traverseAndGetProperties(
 				defOrPropDescription,
 				"enum",
-			);
+			) as boolean;
 			/* as we know he schema only has two arrays that might hold our values,
 				* check them for either having arr.enum or arr.properties
 			*/
