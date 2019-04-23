@@ -1,100 +1,99 @@
-export interface INode extends Object {
+export interface Node extends Object {
 	id?: {
 		name: string;
 	};
-	arguments?: INode[];
-	body?: INode[];
-	elements?: INode[];
+	arguments?: Node[];
+	body?: Node[];
+	elements?: Node[];
 	expression?: {
 		left: {
-			computed: boolean,
-			object: INode,
-			property: INode,
-			type: string,
-		},
-		operator: string,
-		right: INode,
-		type: string,
+			computed: boolean;
+			object: Node;
+			property: Node;
+			type: string;
+		};
+		operator: string;
+		right: Node;
+		type: string;
+		value?: string;
 	};
-	filter?: (p: (p: INode) => boolean) => INode;
-	find?: (objectExpression: object, filterExpression?: object) => INode;
-	forEach?: (p: (p: INode) => void) => INode;
-	get?: (property: string) => INode;
-	remove?: (_?: void) => void;
-	nodes?: (_?: void) => INode[];
-	pop?: (_?: void) => INode;
+	filter?: (p: (p: Node) => boolean) => Node;
+	find?: (objectExpression: object, filterExpression?: object) => Node;
+	forEach?: (p: (p: Node) => void) => Node;
+	get?: (property: string) => Node;
+	remove?: () => void;
+	nodes?: () => Node[];
+	pop?: () => Node;
 	key?: {
 		name: string;
-		value: INode | string;
+		value: Node | string;
 	};
-	node?: INode;
+	node?: Node;
 	name?: string;
 	object?: object;
-	parent?: INode;
-	properties?: INode[];
-	property?: INode;
+	parent?: Node;
+	properties?: Node[];
+	property?: Node;
 	prune?: Function;
-	replaceWith?: (objectExpression: object) => INode;
-	size?: (_?: void) => number;
+	replaceWith?: (objectExpression: object) => Node;
+	size?: () => number;
 	type?: string;
-	value?: INode | string | any;
-	toSource?: (object: {
-		quote?: string,
-	}) => string;
+	value?: Node | string | Node[];
+	toSource?: (
+		object: {
+			quote?: string;
+		}
+	) => string;
 	source?: string;
-	ast?: INode;
-	rules?: IModuleRule[];
-	__paths?: INode[];
+	ast?: Node;
+	rules?: ModuleRule[];
+
+	declarations?: Node[];
+
+	__paths?: Node[];
 }
 
-interface IModuleRule {
+interface ModuleRule {
 	loader?: string;
 }
 
-interface IExpressionObject {
+interface ExpressionObject {
 	name?: string;
 }
 
-export interface IJSCodeshift extends Object {
-	(source?: INode | string): INode;
-	withParser?: (parser: string) => IJSCodeshift;
-	identifier?: (key: string) => INode;
-	literal?: (key: valueType) => INode;
-	memberExpression?: (node1: INode, node2: INode, bool?: boolean) => INode;
-	objectProperty?: (key: INode, property: valueType) => INode;
-	objectExpression?: (properties: INode[]) => INode;
-	newExpression?: (expression: INode, args: INode[]) => INode;
-	callExpression?: (expression: INode, args: INode[]) => INode;
-	variableDeclarator?: (key: INode, args: INode) => INode;
-	variableDeclaration?: (key: string, args: INode[]) => INode;
-	arrayExpression?: (args?: INode[]) => INode;
-	property?: (type: string, key: INode, value: INode) => INode;
-	program?: (nodes: INode[]) => INode;
-	booleanLiteral?: (bool: boolean) => INode;
-	arrowFunctionExpression?: (params: INode[], body: INode, exp: INode) => INode;
-	blockStatement?: (body: INode[]) => INode;
-	ifStatement?: (test: INode, consequent: INode, alternate?: INode) => INode;
-	returnStatement?: (arg: INode) => INode;
-	binaryExpression?: (operator: string, left: INode, right: INode) => INode;
-
-	Property?: IExpressionObject;
-	NewExpression?: IExpressionObject;
-	CallExpression?: IExpressionObject;
-	VariableDeclarator?: IExpressionObject;
-	Identifier?: IExpressionObject;
-	Literal?: IExpressionObject;
-	ArrayExpression?: IExpressionObject;
-	MemberExpression?: IExpressionObject;
-	FunctionExpression?: IExpressionObject;
-	ObjectExpression?: IExpressionObject;
-	BlockStatement?: IExpressionObject;
-	Program?: IExpressionObject;
-	ArrowFunctionExpression?: IExpressionObject;
+export interface JSCodeshift extends Object {
+	(source?: Node | string): Node;
+	withParser?: (parser: string) => JSCodeshift;
+	identifier?: (key: string) => Node;
+	literal?: (key: valueType) => Node;
+	memberExpression?: (node1: Node, node2: Node, bool?: boolean) => Node;
+	objectProperty?: (key: Node, property: valueType) => Node;
+	objectExpression?: (properties: Node[]) => Node;
+	newExpression?: (expression: Node, args: Node[]) => Node;
+	callExpression?: (expression: Node, args: Node[]) => Node;
+	variableDeclarator?: (key: Node, args: Node) => Node;
+	variableDeclaration?: (key: string, args: Node[]) => Node;
+	arrayExpression?: (args?: Node[]) => Node;
+	property?: (type: string, key: Node, value: Node) => Node;
+	program?: (nodes: Node[]) => Node;
+	booleanLiteral?: (bool: boolean) => Node;
+	Property?: ExpressionObject;
+	NewExpression?: ExpressionObject;
+	CallExpression?: ExpressionObject;
+	VariableDeclarator?: ExpressionObject;
+	Identifier?: ExpressionObject;
+	Literal?: ExpressionObject;
+	ArrayExpression?: ExpressionObject;
+	MemberExpression?: ExpressionObject;
+	FunctionExpression?: ExpressionObject;
+	ObjectExpression?: ExpressionObject;
+	BlockStatement?: ExpressionObject;
+	Program?: ExpressionObject;
 	filters?: {
 		VariableDeclarator: {
-			requiresModule: Function,
-		},
+			requiresModule: Function;
+		};
 	};
 }
 
-export type valueType = string | number | boolean | any[] | INode | null;
+export type valueType = string | number | boolean | Node | null;

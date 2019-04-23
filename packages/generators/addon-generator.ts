@@ -3,7 +3,8 @@ import * as path from "path";
 import Generator = require("yeoman-generator");
 
 import * as copyUtils from "@webpack-cli/utils/copy-utils";
-import { IInquirerScaffoldObject } from "@webpack-cli/webpack-scaffold";
+import { InquirerScaffoldObject } from "@webpack-cli/webpack-scaffold";
+import { YeoGenerator } from "../generate-loader/types/Yeoman";
 
 /**
  * Creates a Yeoman Generator that generates a project conforming
@@ -27,58 +28,58 @@ import { IInquirerScaffoldObject } from "@webpack-cli/webpack-scaffold";
  * @returns {Generator} A class extending Generator
  */
 export default function addonGenerator(
-	prompts: IInquirerScaffoldObject[],
+	prompts: InquirerScaffoldObject[],
 	templateDir: string,
 	copyFiles: string[],
 	copyTemplateFiles: string[],
-	templateFn: Function,
-) {
+	templateFn: Function
+): YeoGenerator {
 	return class AddOnGenerator extends Generator {
-		public props: IInquirerScaffoldObject;
-		private copy: (value: string, index: number, array: string[]) => void;
-		private copyTpl: (value: string, index: number, array: string[]) => void;
+		public props: InquirerScaffoldObject;
+		public copy: (value: string, index: number, array: string[]) => void;
+		public copyTpl: (value: string, index: number, array: string[]) => void;
 
 		public prompting(): Promise<{}> {
-			return this.prompt(prompts)
-				.then((props: IInquirerScaffoldObject): void => {
+			return this.prompt(prompts).then(
+				(props: InquirerScaffoldObject): void => {
 					this.props = props;
-				});
+				}
+			);
 		}
 
-		public default() {
+		public default(): void {
 			const currentDirName = path.basename(this.destinationPath());
 			if (currentDirName !== this.props.name) {
 				this.log(`
 				Your project must be inside a folder named ${this.props.name}
 				I will create this folder for you.
 				`);
-				mkdirp(this.props.name, (err: object) => {
-					console.error("Failed to create directory", err);
-				});
+				mkdirp(
+					this.props.name,
+					(err: object): void => {
+						console.error("Failed to create directory", err);
+					}
+				);
 				const pathToProjectDir: string = this.destinationPath(this.props.name);
 				this.destinationRoot(pathToProjectDir);
 			}
 		}
 
-		public writing() {
+		public writing(): void {
 			this.copy = copyUtils.generatorCopy(this, templateDir);
-			this.copyTpl = copyUtils.generatorCopyTpl(
-				this,
-				templateDir,
-				templateFn(this),
-			);
+			this.copyTpl = copyUtils.generatorCopyTpl(this, templateDir, templateFn(this));
 
 			copyFiles.forEach(this.copy);
 			copyTemplateFiles.forEach(this.copyTpl);
 		}
 
-		public install() {
+		public install(): void {
 			this.npmInstall(["webpack-defaults", "bluebird"], {
-				"save-dev": true,
+				"save-dev": true
 			});
 		}
 
-		public end() {
+		public end(): void {
 			this.spawnCommand("npm", ["run", "defaults"]);
 		}
 	};

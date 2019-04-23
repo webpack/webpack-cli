@@ -34,20 +34,20 @@ const npmGlobalRoot = () => {
 	const cp = require("child_process");
 	return new Promise((resolve, reject) => {
 		const command = cp.spawn("npm", ["root", "-g"]);
-		command.on("error", (error) => reject(error));
-		command.stdout.on("data", (data) => resolve(data.toString()));
-		command.stderr.on("data", (data) => reject(data));
+		command.on("error", error => reject(error));
+		command.stdout.on("data", data => resolve(data.toString()));
+		command.stderr.on("data", data => reject(data));
 	});
 };
 
 const runWhenInstalled = (packages, pathForCmd, ...args) => {
-	const package = require(pathForCmd);
-	const func = package.default;
-	if (typeof func !== 'function') {
+	const currentPackage = require(pathForCmd);
+	const func = currentPackage.default;
+	if (typeof func !== "function") {
 		throw new Error(`@webpack-cli/${packages} failed to export a default function`);
 	}
 	return func(...args);
-}
+};
 
 module.exports = function promptForInstallation(packages, ...args) {
 	const nameOfPackage = "@webpack-cli/" + packages;
@@ -113,19 +113,18 @@ module.exports = function promptForInstallation(packages, ...args) {
 				case "y":
 				case "yes":
 				case "1": {
-
 					runCommand(packageManager, options)
-						.then(_=> {
+						.then(_ => {
 							if (packages === "init") {
 								npmGlobalRoot()
-									.then((root) => {
+									.then(root => {
 										const pathtoInit = path.resolve(root.trim(), "@webpack-cli", "init");
 										return pathtoInit;
 									})
-									.then((pathForInit) => {
+									.then(pathForInit => {
 										return require(pathForInit).default(...args);
 									})
-									.catch((error) => {
+									.catch(error => {
 										console.error(error);
 										process.exitCode = 1;
 									});

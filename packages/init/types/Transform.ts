@@ -1,14 +1,14 @@
-export interface IWebpackProperties extends Object {
+export interface WebpackProperties extends Object {
 	configFile: string;
 	configPath: string;
-	webpackOptions: IConfiguration;
+	webpackOptions: Configuration;
 	config: {
 		item: string;
 		configName: string;
 	};
 }
 
-export interface IConfiguration extends Object {
+export interface Configuration extends Object {
 	configName: string;
 	webpackOptions: object;
 	topScope: string[];

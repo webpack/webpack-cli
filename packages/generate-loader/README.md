@@ -1,5 +1,7 @@
 # webpack-cli generate-loader
 
+[![npm](https://img.shields.io/npm/dm/@webpack-cli/generate-loader.svg)](https://www.npmjs.com/package/@webpack-cli/generate-loader)
+
 ## Description
 
 This package contains the logic to initiate new loader projects.

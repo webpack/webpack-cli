@@ -1,5 +1,7 @@
 # webpack-cli migrate
 
+[![npm](https://img.shields.io/npm/dm/@webpack-cli/migrate.svg)](https://www.npmjs.com/package/@webpack-cli/migrate)
+
 ## Description
 
 This package contains the logic to migrate a project from one version to the other.

@@ -2,7 +2,7 @@
 
 import * as j from "jscodeshift/dist/core";
 import * as utils from "../ast-utils";
-import { INode } from "../types/NodePath";
+import { Node } from "../types/NodePath";
 
 describe("utils", () => {
 	describe("createProperty", () => {
@@ -106,7 +106,7 @@ const a = { plugs: [] }
 	describe("createOrUpdatePluginByName", () => {
 		it("should create a new plugin without arguments", () => {
 			const ast = j("{ plugins: [] }");
-			ast.find(j.ArrayExpression).forEach((node: INode) => {
+			ast.find(j.ArrayExpression).forEach((node: Node) => {
 				utils.createOrUpdatePluginByName(j, node, "Plugin");
 			});
 			expect(ast.toSource()).toMatchSnapshot();
@@ -114,9 +114,9 @@ const a = { plugs: [] }
 
 		it("should create a new plugin with arguments", () => {
 			const ast = j("{ plugins: [] }");
-			ast.find(j.ArrayExpression).forEach((node: INode) => {
+			ast.find(j.ArrayExpression).forEach((node: Node) => {
 				utils.createOrUpdatePluginByName(j, node, "Plugin", {
-					foo: "bar",
+					foo: "bar"
 				});
 			});
 			expect(ast.toSource()).toMatchSnapshot();
@@ -124,9 +124,9 @@ const a = { plugs: [] }
 
 		it("should add an object as an argument", () => {
 			const ast = j("[new Plugin()]");
-			ast.find(j.ArrayExpression).forEach((node: INode) => {
+			ast.find(j.ArrayExpression).forEach((node: Node) => {
 				utils.createOrUpdatePluginByName(j, node, "Plugin", {
-					foo: true,
+					foo: true
 				});
 			});
 			expect(ast.toSource()).toMatchSnapshot();
@@ -134,13 +134,13 @@ const a = { plugs: [] }
 
 		it("should merge options objects", () => {
 			const ast = j("[new Plugin({ foo: true })]");
-			ast.find(j.ArrayExpression).forEach((node: INode) => {
+			ast.find(j.ArrayExpression).forEach((node: Node) => {
 				utils.createOrUpdatePluginByName(j, node, "Plugin", {
 					bar: "baz",
-					foo: false,
+					foo: false
 				});
 				utils.createOrUpdatePluginByName(j, node, "Plugin", {
-					"baz-long": true,
+					"baz-long": true
 				});
 			});
 			expect(ast.toSource()).toMatchSnapshot();
@@ -192,8 +192,8 @@ const a = { plugs: [] }
 			expect(
 				ast
 					.find(j.ObjectExpression)
-					.filter((p) => utils.findObjWithOneOfKeys(p, ["a"]))
-					.size(),
+					.filter(p => utils.findObjWithOneOfKeys(p, ["a"]))
+					.size()
 			).toEqual(1);
 		});
 	});
@@ -208,12 +208,12 @@ const a = { plugs: [] }
 	describe("safeTraverse", () => {
 		it("should safe traverse", () => {
 			const testObject = {
-				type: "NodeType",
+				type: "NodeType"
 			};
 			const p = {
 				foo: {
-					bar: testObject,
-				},
+					bar: testObject
+				}
 			};
 			const require = utils.safeTraverse(p, ["foo", "bar"]);
 			expect(require).toEqual(testObject);
@@ -221,14 +221,14 @@ const a = { plugs: [] }
 
 		it("should safe traverse thrice", () => {
 			const type = {
-				type: "NodeType",
+				type: "NodeType"
 			};
 			const p = {
 				parent: {
 					value: {
-						value: type,
-					},
-				},
+						value: type
+					}
+				}
 			};
 			const traversedValue = utils.safeTraverse(p, ["parent", "value", "value"]);
 			expect(traversedValue).toEqual(type);
@@ -241,9 +241,9 @@ const a = { plugs: [] }
 			const p = {
 				value: {
 					value: {
-						type: NODE_TYPE,
-					},
-				},
+						type: NODE_TYPE
+					}
+				}
 			};
 			const typeValue = utils.safeTraverseAndGetType(p);
 			expect(typeValue).toEqual(NODE_TYPE);
@@ -254,9 +254,9 @@ const a = { plugs: [] }
 			const p = {
 				foo: {
 					bar: {
-						type: NODE_TYPE,
-					},
-				},
+						type: NODE_TYPE
+					}
+				}
 			};
 			const typeValue = utils.safeTraverseAndGetType(p);
 			expect(typeValue).toEqual(false);
@@ -273,14 +273,14 @@ const a = { plugs: [] }
 				super: [
 					"yeah",
 					{
-						loader: "'eslint-loader'",
-					},
-				],
+						loader: "'eslint-loader'"
+					}
+				]
 			};
 
 			const root = ast.find(j.ObjectExpression);
 
-			root.forEach((p) => {
+			root.forEach(p => {
 				utils.addProperty(j, p, "entry", propertyValue);
 			});
 
@@ -306,14 +306,14 @@ const a = { plugs: [] }
 				super: [
 					"yeah",
 					{
-						loader: "'eslint-loader'",
-					},
-				],
+						loader: "'eslint-loader'"
+					}
+				]
 			};
 
 			const root = ast.find(j.ObjectExpression);
 
-			utils.findRootNodesByName(j, root, "entry").forEach((p: INode) => {
+			utils.findRootNodesByName(j, root, "entry").forEach((p: Node) => {
 				j(p).replaceWith(utils.addProperty(j, p, "entry", propertyValue, "add"));
 			});
 

@@ -1,5 +1,7 @@
 # webpack-cli generate-plugin
 
+[![npm](https://img.shields.io/npm/dm/@webpack-cli/generate-plugin.svg)](https://www.npmjs.com/package/@webpack-cli/generate-plugin)
+
 ## Description
 
 This package contains the logic to initiate new plugin projects.

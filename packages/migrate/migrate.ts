@@ -11,13 +11,12 @@ import noEmitOnErrorsPluginTransform from "./noEmitOnErrorsPlugin/noEmitOnErrors
 import removeDeprecatedPluginsTransform from "./removeDeprecatedPlugins/removeDeprecatedPlugins";
 import removeJsonLoaderTransform from "./removeJsonLoader/removeJsonLoader";
 import resolveTransform from "./resolve/resolve";
-import { INode } from "./types/NodePath";
 import uglifyJsPluginTransform from "./uglifyJsPlugin/uglifyJsPlugin";
 
-interface ITransformsObject {
+interface TransformsObject {
 	bannerPluginTransform: object;
 	commonsChunkPluginTransform?: object;
-	extractTextPluginTransform: object; /* tslint:disable */
+	extractTextPluginTransform: object;
 	loaderOptionsPluginTransform: object;
 	loadersTransform: object;
 	noEmitOnErrorsPluginTransform: object;
@@ -27,8 +26,7 @@ interface ITransformsObject {
 	uglifyJsPluginTransform: object;
 }
 
-/* tslint:disable object-literal-sort-keys */
-const transformsObject: ITransformsObject = {
+const transformsObject: TransformsObject = {
 	loadersTransform,
 	resolveTransform,
 	removeJsonLoaderTransform,
@@ -38,10 +36,10 @@ const transformsObject: ITransformsObject = {
 	extractTextPluginTransform,
 	noEmitOnErrorsPluginTransform,
 	removeDeprecatedPluginsTransform,
-	commonsChunkPluginTransform,
+	commonsChunkPluginTransform
 };
 
-interface ILazyTransformObject {
+interface LazyTransformObject {
 	loadersTransform?: (ast: object, source: string) => pLazy<{}>;
 	resolveTransform?: (ast: object, source: string) => pLazy<{}>;
 	removeJsonLoaderTransform?: (ast: object, source: string) => pLazy<{}>;
@@ -53,16 +51,6 @@ interface ILazyTransformObject {
 	removeDeprecatedPluginsTransform?: (ast: object, source: string) => pLazy<{}>;
 	commonsChunkPluginTransform?: (ast: object, source: string) => pLazy<{}>;
 }
-/* tslint:enable object-literal-sort-keys */
-
-export const transformations: ILazyTransformObject =
-	Object
-		.keys(transformsObject)
-		.reduce((res: object, key: string): ILazyTransformObject => {
-			res[key] = (ast: object, source: string) =>
-				transformSingleAST(ast, source, transformsObject[key]);
-			return res;
-		}, {});
 
 /**
  *
@@ -78,22 +66,28 @@ export const transformations: ILazyTransformObject =
 export const transformSingleAST = (
 	ast: object,
 	source: string,
-	transformFunction: (jscodeshift: object, ast: object, source: string) => object)
-	: pLazy<{}> => {
-
-	return new pLazy((
-		resolve: (value?: {} | PromiseLike<{}>) => void,
-		reject: (reason?: object) => void,
-	): void => {
-		setTimeout((_?: void): void => {
-			try {
-				resolve(transformFunction(jscodeshift, ast, source));
-			} catch (err) {
-				reject(err);
-			}
-		}, 0);
-	});
+	transformFunction: (jscodeshift: object, ast: object, source: string) => object
+): pLazy<{}> => {
+	return new pLazy(
+		(resolve: (value?: {} | PromiseLike<{}>) => void, reject: (reason?: object) => void): void => {
+			setTimeout((): void => {
+				try {
+					resolve(transformFunction(jscodeshift, ast, source));
+				} catch (err) {
+					reject(err);
+				}
+			}, 0);
+		}
+	);
 };
+
+export const transformations: LazyTransformObject = Object.keys(transformsObject).reduce(
+	(res: object, key: string): LazyTransformObject => {
+		res[key] = (ast: object, source: string): object => transformSingleAST(ast, source, transformsObject[key]);
+		return res;
+	},
+	{}
+);
 
 /**
  *
@@ -111,24 +105,26 @@ export const transformSingleAST = (
 export const transform = (
 	source: string,
 	transforms?: Iterable<Function | PromiseLike<Function>>,
-	options?: object)
-	: Promise<string | void> => {
-
-	const ast: INode = jscodeshift(source);
+	options?: object
+): Promise<string | void> => {
+	const ast = jscodeshift(source);
 	const recastOptions: object = Object.assign(
 		{
-			quote: "single",
+			quote: "single"
 		},
-		options,
+		options
 	);
-	transforms =
-		transforms || Object.keys(transformations).map((k: string): Function => transformations[k]);
+	transforms = transforms || Object.keys(transformations).map((k: string): Function => transformations[k]);
 
-	return pEachSeries(transforms, (f: Function) => f(ast, source))
-		.then((value: Function[]): string | PromiseLike<string> => {
-			return ast.toSource(recastOptions);
-		})
-		.catch((err: object) => {
-			console.error(err);
-		});
+	return pEachSeries(transforms, (f: Function): void => f(ast, source))
+		.then(
+			(): string | PromiseLike<string> => {
+				return ast.toSource(recastOptions);
+			}
+		)
+		.catch(
+			(err: object): void => {
+				console.error(err);
+			}
+		);
 };
