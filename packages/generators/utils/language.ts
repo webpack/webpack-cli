@@ -88,12 +88,11 @@ export default function language(self, langType) {
 			if (typeof jsEntryOption === "string") {
 				tsEntryOption = jsEntryOption.replace(jsExtension, ".ts");
 			} else if (typeof jsEntryOption === "object") {
-				Object.keys(jsEntryOption).map((entry) => {
+				Object.keys(jsEntryOption).forEach((entry) => {
 					tsEntryOption[entry] = jsEntryOption[entry].replace(jsExtension, ".ts");
 				});
 			}
 			self.configuration.config.webpackOptions.entry = tsEntryOption;
-			self.log(jsEntryOption.replace(jsExtension, ".ts"), jsEntryOption);
 			break;
 	}
 }
