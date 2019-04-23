@@ -163,7 +163,8 @@ export default class AddGenerator extends Generator {
 			}
 		}
 
-		const temp: string = action;
+		// Storing action's name that user selected as Schema might have it with other name
+		const originalAction: string = action;
 		if (action === "resolveLoader") {
 			action = "resolve";
 		}
@@ -237,7 +238,7 @@ export default class AddGenerator extends Generator {
 				production: {},
 			};
 		}
-		action = temp;
+		action = originalAction;
 		if (action === "resolveLoader") {
 			defOrPropDescription = Object.assign(defOrPropDescription, {
 				moduleExtensions: {},
