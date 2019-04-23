@@ -1,7 +1,7 @@
 "use strict";
 
+import { isLocalPath } from "@webpack-cli/utils/path-utils";
 import * as path from "path";
-import { isLocalPath } from "../path-utils";
 
 describe("is-local-path", () => {
 	it("returns true for paths beginning in the current directory", () => {
