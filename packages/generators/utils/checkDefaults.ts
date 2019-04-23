@@ -6,18 +6,18 @@
  * @returns {Boolean} - Whether the default condif is used or not
  */
 
-export default function checkDefaults(initConfig: Object[]) {
-  // This is the default prompts selections generated on picking default options.
-  const defaultConfig = {
+export default function checkDefaults(initConfig: Record<string, any>): boolean {
+	// This is the default prompts selections generated on picking default options.
+	const defaultConfig = {
 		babelConfirm: true,
-		entryOption: "\'\'",
+		entryOption: "''",
 		entryType: false,
 		outputType: "",
-		stylingType: "No",
-  };
+		stylingType: "No"
+	};
 
-  return initConfig.every((property) => {
+	return initConfig.every((property: string): boolean => {
 		const propertyName = Object.keys(property)[0];
 		return defaultConfig[propertyName] === property[propertyName];
-  });
+	});
 }
