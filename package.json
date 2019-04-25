@@ -119,6 +119,7 @@
     "chalk": "^2.4.1",
     "cross-spawn": "^6.0.5",
     "enhanced-resolve": "^4.1.0",
+    "express": "^4.16.4",
     "findup-sync": "^2.0.0",
     "global-modules": "^1.0.0",
     "import-local": "^2.0.0",
