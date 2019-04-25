@@ -1,10 +1,12 @@
 # webpack-cli Packages
 
 ## Description
+
 webpack CLI hosts several standalone packages apart from the main package that focuses on the solving respective smaller use cases.
 This folder is the collection of those packages.
 
 ## Packages
+
 1. [add](https://github.com/webpack/webpack-cli/tree/master/packages/add)
 2. [generate-loader](https://github.com/webpack/webpack-cli/tree/master/packages/generate-loader)
 3. [generate-plugin](https://github.com/webpack/webpack-cli/tree/master/packages/generate-plugin)
@@ -20,15 +22,19 @@ This folder is the collection of those packages.
 13. [webpack-scaffold](https://github.com/webpack/webpack-cli/tree/master/packages/webpack-scaffold)
 
 ## Generic Installation
+
 1. Standalone installation of packages
+
 ```shell
 npm install @webpack-cli/<package>
 ```
 
 2. Installation of respective `package` with `webpack-cli` [Recommended]
+
 ```shell
 npm install webpack-cli @webpack-cli/<package>
 ```
 
-----
+---
+
 [Back to webpack-cli](https://github.com/webpack/webpack-cli)
