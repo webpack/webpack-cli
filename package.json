@@ -39,6 +39,7 @@
     "postinstall": "node ./bin/opencollective.js",
     "pretest": "npm run build && npm run lint",
     "reportCoverage": "nyc report --reporter=json && codecov -f coverage/coverage-final.json --disable=gcov",
+    "serve:docs": "node serve-docs.js",
     "test": "nyc jest --maxWorkers=4 --reporters=default --reporters=jest-junit",
     "test:cli": "nyc jest test/ --maxWorkers=4 --reporters=default --reporters=jest-junit",
     "test:packages": "nyc jest packages/ --maxWorkers=4 --reporters=default --reporters=jest-junit",
