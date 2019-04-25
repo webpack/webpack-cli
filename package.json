@@ -36,7 +36,6 @@
     "format": "prettier-eslint ./bin/*.js ./test/**/*.js ./packages/**/*.js --write",
     "lint:codeOnly": "eslint \"{bin}/**/!(__testfixtures__)/*.js\" \"{bin}/**.js\"",
     "lint": "eslint \"./bin/*.js\" \"./test/**/*.js\" \"packages/**/!(node_modules)/*.ts\"",
-    "postinstall": "node ./bin/opencollective.js",
     "pretest": "npm run build && npm run lint",
     "reportCoverage": "nyc report --reporter=json && codecov -f coverage/coverage-final.json --disable=gcov",
     "test": "nyc jest --maxWorkers=4 --reporters=default --reporters=jest-junit",
