@@ -9,16 +9,16 @@
     "access": "public"
   },
   "dependencies": {
-    "@webpack-cli/generators": "^0.1.5",
-    "@webpack-cli/utils": "^0.1.5",
-    "chalk": "^2.4.1",
-    "jscodeshift": "^0.5.1",
-    "p-each-series": "^1.0.0"
+    "@webpack-cli/generators": "0.1.5",
+    "@webpack-cli/utils": "0.1.5",
+    "chalk": "2.4.1",
+    "jscodeshift": "0.5.1",
+    "p-each-series": "1.0.0"
   },
   "devDependencies": {
-    "@types/node": "^10.12.9",
-    "@types/p-each-series": "^1.0.0",
-    "typescript": "^3.1.6"
+    "@types/node": "10.12.9",
+    "@types/p-each-series": "1.0.0",
+    "typescript": "3.1.6"
   },
   "scripts": {
     "build": "tsc",

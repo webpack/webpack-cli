@@ -10,11 +10,11 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "jscodeshift": "^0.5.1"
+    "jscodeshift": "0.5.1"
   },
   "devDependencies": {
-    "@types/yeoman-generator": "^3.1.2",
-    "typescript": "^3.1.6"
+    "@types/yeoman-generator": "3.1.2",
+    "typescript": "3.1.6"
   },
   "scripts": {
     "test": "jest --detectOpenHandles",

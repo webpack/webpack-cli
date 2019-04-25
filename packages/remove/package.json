@@ -11,11 +11,11 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@webpack-cli/generators": "^0.1.5",
-    "@webpack-cli/utils": "^0.1.5"
+    "@webpack-cli/generators": "0.1.5",
+    "@webpack-cli/utils": "0.1.5"
   },
   "devDependencies": {
-    "typescript": "^3.1.6"
+    "typescript": "3.1.6"
   },
   "scripts": {
     "build": "tsc",

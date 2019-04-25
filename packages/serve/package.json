@@ -11,17 +11,17 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@webpack-cli/utils": "^0.1.5",
-    "@webpack-cli/webpack-scaffold": "^0.1.5",
-    "chalk": "^2.4.1",
-    "cross-spawn": "^6.0.5",
-    "inquirer": "^6.2.0"
+    "@webpack-cli/utils": "0.1.5",
+    "@webpack-cli/webpack-scaffold": "0.1.5",
+    "chalk": "2.4.1",
+    "cross-spawn": "6.0.5",
+    "inquirer": "6.2.0"
   },
   "devDependencies": {
-    "@types/cross-spawn": "^6.0.0",
+    "@types/cross-spawn": "6.0.0",
     "@types/inquirer": "0.0.43",
-    "@types/node": "^10.12.9",
-    "typescript": "^3.1.6"
+    "@types/node": "10.12.9",
+    "typescript": "3.1.6"
   },
   "scripts": {
     "build": "tsc",

@@ -14,12 +14,12 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@webpack-cli/generators": "^0.1.5",
-    "yeoman-environment": "^2.3.4"
+    "@webpack-cli/generators": "0.1.5",
+    "yeoman-environment": "2.3.4"
   },
   "devDependencies": {
-    "@types/node": "^10.12.9",
-    "typescript": "^3.1.6"
+    "@types/node": "10.12.9",
+    "typescript": "3.1.6"
   },
   "scripts": {
     "build": "tsc",
