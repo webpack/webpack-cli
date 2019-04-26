@@ -16,30 +16,53 @@ interface ModuleRule extends Object {
 
 type Preset = string | object;
 
+const replaceExt = (path: string, ext: string): string =>
+	path.substr(0, path.lastIndexOf(".")) + `${ext}'`;
+
 function updateEntryExt(self, newExt: string): void {
 	const jsEntryOption = self.configuration.config.webpackOptions.entry;
-	const jsExtension = new RegExp("\.js(?!.*\.js)");
 	let tsEntryOption = {};
 	if (typeof jsEntryOption === "string") {
-		tsEntryOption = jsEntryOption.replace(jsExtension, newExt);
+		tsEntryOption = replaceExt(jsEntryOption, newExt);
 	} else if (typeof jsEntryOption === "object") {
 		Object.keys(jsEntryOption).forEach((entry: string): void => {
-			tsEntryOption[entry] = jsEntryOption[entry].replace(jsExtension, newExt);
+			tsEntryOption[entry] = replaceExt(jsEntryOption[entry], newExt);
 		});
 	}
 	self.configuration.config.webpackOptions.entry = tsEntryOption;
 }
 
+const getFolder = (path: string): string =>
+	path.replace("'./", "").split("/").slice(0, -1).join("/");
+
+function getEntryFolders(self): string[] {
+	const entryOption = self.configuration.config.webpackOptions.entry;
+	let entryFolders = {};
+	if (typeof entryOption === "string") {
+		const folder = getFolder(entryOption);
+		if (folder.length > 0) entryFolders[folder] = true;
+	} else if (typeof entryOption === "object") {
+		Object.keys(entryOption).forEach((entry: string): void => {
+			const folder = getFolder(entryOption[entry]);
+			if (folder.length > 0) entryFolders[folder] = true;
+		});
+	}
+	return Object.keys(entryFolders);
+}
+
 /**
  *
- * Returns an module.rule object that has the babel loader if invoked
- *
- * @returns {Function} A callable function that adds the babel-loader with env preset
+ * Returns an module.rule object for the babel loader
+ * @param {string[]} includeFolders An array of folders to include
+ * @returns {ModuleRule} A configuration containing the babel-loader with env preset
  */
-export function getBabelLoader(): ModuleRule {
+export function getBabelLoader(includeFolders: string[]): ModuleRule {
+	const include = includeFolders.map((folder: string) =>
+		`path.resolve(__dirname, '${folder}')`
+	);
 	return {
 		test: "/\.js$/",
-		include: ["path.resolve(__dirname, 'src')"],
+		include,
 		loader: "'babel-loader'",
 		options: {
 			plugins: ["'syntax-dynamic-import'"],
@@ -55,16 +78,26 @@ export function getBabelLoader(): ModuleRule {
 	};
 }
 
-export function getTypescriptLoader(): ModuleRule {
+/**
+ *
+ * Returns an module.rule object for the typescript loader
+ * @param {string[]} includeFolders An array of folders to include
+ * @returns {ModuleRule} A configuration containing the ts-loader
+ */
+export function getTypescriptLoader(includeFolders: string[]): ModuleRule {
+	const include = includeFolders.map((folder: string) =>
+		`path.resolve(__dirname, '${folder}')`
+	);
 	return {
 		test: "/\.tsx?$/",
 		loader: "'ts-loader'",
-		include: ["path.resolve(__dirname, 'src')"],
+		include,
 		exclude: ["/node_modules/"],
 	};
 }
 
 export default function language(self, langType: string): void {
+	const entryFolders = getEntryFolders(self);
 	switch (langType) {
 		case LangType.ES6:
 			self.dependencies.push(
@@ -73,7 +106,7 @@ export default function language(self, langType: string): void {
 				"@babel/preset-env",
 			);
 			self.configuration.config.webpackOptions.module.rules.push(
-				getBabelLoader(),
+				getBabelLoader(entryFolders),
 			);
 			break;
 
@@ -83,7 +116,7 @@ export default function language(self, langType: string): void {
 				"ts-loader",
 			);
 			self.configuration.config.webpackOptions.module.rules.push(
-				getTypescriptLoader(),
+				getTypescriptLoader(entryFolders),
 			);
 			self.configuration.config.webpackOptions.resolve = {
 				extensions: [ "'.tsx'", "'.ts'", "'.js'" ],

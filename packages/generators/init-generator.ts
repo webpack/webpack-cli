@@ -12,7 +12,6 @@ import entryQuestions from "./utils/entry";
 import langQuestionHandler from "./utils/language";
 import styleQuestionHandler, { Loader, StylingType } from "./utils/style";
 import tooltip from "./utils/tooltip";
-import { type } from "os";
 
 /**
  *
@@ -126,7 +125,6 @@ export default class InitGenerator extends Generator {
 		}
 	}
 
-	// eslint-disable-next-line
 	public async prompting() {
 		const done: () => {} = this.async();
 		const self: this = this;
