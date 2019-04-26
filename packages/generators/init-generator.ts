@@ -9,7 +9,7 @@ import { Confirm, Input, List } from "@webpack-cli/webpack-scaffold";
 
 import { WebpackOptions } from "./types";
 import entryQuestions from "./utils/entry";
-import langQuestionHandler from "./utils/language";
+import langQuestionHandler, { LangType } from "./utils/language";
 import styleQuestionHandler, { Loader, StylingType } from "./utils/style";
 import tooltip from "./utils/tooltip";
 
@@ -33,6 +33,7 @@ export default class InitGenerator extends Generator {
 			webpackOptions?: WebpackOptions;
 		};
 	};
+	private langType: string;
 
 	public constructor(args, opts) {
 		super(args, opts);
@@ -187,13 +188,14 @@ export default class InitGenerator extends Generator {
 	
 		const { langType }: { langType: string } = await this.prompt([
 				List("langType", "Will you use one of the below JS solutions?", [
-					"ES6",
-					"Typescript",
+					LangType.ES6,
+					LangType.Typescript,
 					"No",
 				]),
 			]);
 		
 		langQuestionHandler(this, langType);
+		this.langType = langType;
 
 		const { stylingType }: { stylingType: string } =  await this.prompt([
 					List("stylingType", "Will you use one of the below CSS solutions?", [
@@ -270,7 +272,6 @@ export default class InitGenerator extends Generator {
 		const packageJsonTemplatePath = "./templates/package.json.js";
 		this.fs.extendJSON(this.destinationPath("package.json"), require(packageJsonTemplatePath)(this.isProd));
 
-		const entry = this.configuration.config.webpackOptions.entry;
 		const generateEntryFile = (entryPath: string, name: string): void => {
 			entryPath = entryPath.replace(/'/g, "");
 			this.fs.copyTpl(
@@ -280,12 +281,19 @@ export default class InitGenerator extends Generator {
 			);
 		};
 
+		// Generate entry file/files
+		const entry = this.configuration.config.webpackOptions.entry;
 		if ( typeof entry === "string" ) {
 			generateEntryFile(entry, "your main file!");
 		} else if (typeof entry === "object") {
 			Object.keys(entry).forEach((name: string): void =>
 				generateEntryFile(entry[name], `${name} main file!`),
 			);
+		}
+
+		if (this.langType === LangType.Typescript) {
+			const tsConfigTemplatePath = "./templates/tsconfig.json.js";
+			this.fs.extendJSON(this.destinationPath("tsconfig.json"), require(tsConfigTemplatePath));
 		}
 	}
 }
