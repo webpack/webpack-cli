@@ -291,6 +291,13 @@ export default class InitGenerator extends Generator {
 			);
 		}
 
+		// Generate README
+		this.fs.copyTpl(
+			path.resolve(__dirname, "./templates/README.md"),
+			this.destinationPath("README.md")
+		);
+
+		// Genrate tsconfig
 		if (this.langType === LangType.Typescript) {
 			const tsConfigTemplatePath = "./templates/tsconfig.json.js";
 			this.fs.extendJSON(this.destinationPath("tsconfig.json"), require(tsConfigTemplatePath));
