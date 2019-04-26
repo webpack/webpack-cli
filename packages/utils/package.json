@@ -19,7 +19,7 @@
     "jscodeshift": "^0.5.1",
     "log-symbols": "^2.2.0",
     "p-each-series": "^1.0.0",
-    "prettier": "^1.15.2",
+    "prettier": "^1.17.0",
     "yeoman-environment": "^2.3.4",
     "yeoman-generator": "^3.1.1"
   },
