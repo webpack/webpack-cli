@@ -71,7 +71,12 @@ For more information, see https://webpack.js.org/api/cli/.`);
 			options = require("./utils/convert-argv")(argv);
 		} catch (err) {
 			if (err.name !== "ValidationError") {
-				throw err;
+				console.error("\n\u001b[1m\u001b[31mWebpack not found, please install webpack");
+				console.error(
+					"\u001b[1m\u001b[31mAlternatively, run 'webpack(-cli) --help' for usage info.\u001b[39m\u001b[22m\n"
+				);
+				process.exitCode = 1;
+				return;
 			}
 
 			const stack = ErrorHelpers.cleanUpWebpackOptions(err.stack, err.message);
@@ -93,7 +98,7 @@ For more information, see https://webpack.js.org/api/cli/.`);
 		 */
 		const stdout = argv.silent
 			? {
-				write: () => {}
+					write: () => {}
 			  } // eslint-disable-line
 			: process.stdout;
 
