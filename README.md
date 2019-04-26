@@ -23,12 +23,14 @@
 [![GitHub contributors](https://img.shields.io/github/contributors/webpack/webpack-cli.svg)](https://github.com/webpack/webpack-cli/graphs/contributors)
 
 - [About](#about)
-  - [How to install](#how-to-install)
-- [Getting Started](#getting-started)
+	- [How to install](#how-to-install)
+- [Packages](#packages)
+	- [Commands](#commands)
+	- [Utilities](#utilities)
+- [Getting started](#getting-started)
 - [webpack CLI Scaffolds](#webpack-cli-scaffolds)
-- [Commands](#commands)
-- [webpack.config.js](https://webpack.js.org/concepts/configuration/)
 - [Contributing and Internal Documentation](#contributing-and-internal-documentation)
+- [Open Collective](#open-collective)
 
 ## About
 
@@ -89,3 +91,9 @@ The webpack family welcomes any contributor, small or big. We are happy to elabo
 
 [deps]: https://img.shields.io/david/webpack/webpack.svg
 [deps-url]: https://david-dm.org/webpack/webpack-cli
+
+## Open Collective
+
+If you like **webpack** Please consider donating to our [Open Collective](https://opencollective.com/webpack) to help us maintain it.
+
+We show this message in the terminal once in a while, if you want you can disable it by setting the environment variable `DISABLE_OPENCOLLECTIVE=true` or `CI=true`.
