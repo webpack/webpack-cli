@@ -131,7 +131,6 @@ export default function modifyHelperUtil(
 				);
 				console.error(
 					chalk.red(
-						// tslint:disable-next-line: max-line-length
 						"\nPlease make sure to use 'this.config.set('configuration', this.configuration);' at the end of the generator.\n",
 					),
 				);
