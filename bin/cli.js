@@ -71,11 +71,18 @@ For more information, see https://webpack.js.org/api/cli/.`);
 			options = require("./utils/convert-argv")(argv);
 		} catch (err) {
 			// When webpack is not installed and no args passed to the CLI
-			if (err.code === "MODULE_NOT_FOUND" && err.message === "Cannot find module 'webpack-sources'") {
-				console.error(
-					"\n\u001b[31mwebpack not found, please install webpack using\n\t\u001b[33mnpm install --save-dev webpack\n"
-				);
+			if (err.code === "MODULE_NOT_FOUND") {
+				let errorMessage =
+					"\n\u001b[31mwebpack not found, please install webpack using\n\t\u001b[33mnpm install --save-dev webpack\n";
 
+				if (process.env.npm_execpath !== undefined) {
+					if (process.env.npm_execpath.indexOf("yarn") !== -1) {
+						errorMessage =
+							"\n\u001b[31mwebpack not found, please install webpack using\n\t\u001b[33myarn add webpack --dev\n";
+					}
+				}
+
+				console.error(errorMessage);
 				return;
 			}
 
