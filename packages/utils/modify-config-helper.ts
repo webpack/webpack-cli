@@ -141,7 +141,7 @@ export default function modifyHelperUtil(
 				return false;
 			}
 		}
-		const transformConfig: ITransformConfig = Object.assign(
+		const transformConfig: TransformConfig = Object.assign(
 			{
 				configFile: !configPath ? null : fs.readFileSync(configPath, "utf8"),
 				configPath,

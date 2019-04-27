@@ -92,7 +92,7 @@ export default function runTransform(transformConfig: TransformConfig, action: s
 				runPrettier(outputPath, source);
 
 			})
-			.catch((err: IError) => {
+			.catch((err: Error) => {
 				console.error(err.message ? err.message : err);
 			});
 	});
