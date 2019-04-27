@@ -94,6 +94,6 @@ The webpack family welcomes any contributor, small or big. We are happy to elabo
 
 ## Open Collective
 
-If you like **webpack** Please consider donating to our [Open Collective](https://opencollective.com/webpack) to help us maintain it.
+If you like **webpack** Please consider donating to our [Open Collective](https://opencollective.com/webpack) to help us to maintain it.
 
-We show this message in the terminal once in a while, if you want you can disable it by setting the environment variable `DISABLE_OPENCOLLECTIVE=true` or `CI=true`.
+We show this message in the terminal once a week, if you want you can disable it by setting the environment variable `DISABLE_OPENCOLLECTIVE=true` or `CI=true`.
