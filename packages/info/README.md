@@ -1,5 +1,7 @@
 # webpack-cli info
 
+[![npm](https://img.shields.io/npm/dm/@webpack-cli/info.svg)](https://www.npmjs.com/package/@webpack-cli/info)
+
 ## Description
 
 This pacakge returns a set of information related to the local enviroment.

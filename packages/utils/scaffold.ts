@@ -4,12 +4,12 @@ import pEachSeries = require("p-each-series");
 import * as path from "path";
 import { findProjectRoot } from "./find-root";
 
-import { IError } from "../init/types";
-import { IConfig, ITransformConfig } from "./modify-config-helper";
+import { Error } from "../init/types";
+import { Config, TransformConfig } from "./modify-config-helper";
 import propTypes from "./prop-types";
 import astTransform from "./recursive-parser";
 import runPrettier from "./run-prettier";
-import { INode } from "./types/NodePath";
+import { Node } from "./types/NodePath";
 
 /**
  *
@@ -20,7 +20,7 @@ import { INode } from "./types/NodePath";
  * @returns {Array} - An array with keys on which transformations need to be run
  */
 
-function mapOptionsToTransform(config: IConfig): string[] {
+function mapOptionsToTransform(config: Config): string[] {
 	return Object.keys(config.webpackOptions).filter((k: string): boolean => propTypes.has(k));
 }
 
@@ -34,53 +34,57 @@ function mapOptionsToTransform(config: IConfig): string[] {
  * and writes the file
  */
 
-export default function runTransform(transformConfig: ITransformConfig, action: string): void {
+export default function runTransform(transformConfig: TransformConfig, action: string): void {
 	// webpackOptions.name sent to nameTransform if match
-	const webpackConfig = Object.keys(transformConfig).filter((p: string): boolean => {
-		return p !== "configFile" && p !== "configPath";
-	});
+	const webpackConfig = Object.keys(transformConfig).filter(
+		(p: string): boolean => {
+			return p !== "configFile" && p !== "configPath";
+		}
+	);
 	const initActionNotDefined = action && action !== "init" ? true : false;
 
-	webpackConfig.forEach((scaffoldPiece: string) => {
-		const config: IConfig = transformConfig[scaffoldPiece];
+	webpackConfig.forEach(
+		(scaffoldPiece: string): Promise<void> => {
+			const config: Config = transformConfig[scaffoldPiece];
 
-		const transformations = mapOptionsToTransform(config);
+			const transformations = mapOptionsToTransform(config);
 
-		if (config.topScope && transformations.indexOf("topScope") === -1) {
-			transformations.push("topScope");
-		}
-
-		if (config.merge) {
-			transformations.push("merge");
-		}
-
-		const ast: INode = j(
-			initActionNotDefined
-				? transformConfig.configFile
-				: "module.exports = {}",
-		);
-
-		const transformAction: string = action || null;
-
-		return pEachSeries(transformations, (f: string): boolean | INode => {
-			if (f === "merge" || f === "topScope") {
-				return astTransform(j, ast, f, config[f], transformAction);
+			if (config.topScope && transformations.indexOf("topScope") === -1) {
+				transformations.push("topScope");
 			}
-			return astTransform(j, ast, f, config.webpackOptions[f], transformAction);
-		})
-			.then((value: string[]): void | PromiseLike <void> => {
-				let configurationName: string;
-				if (!config.configName) {
-					configurationName = "webpack.config.js";
-				} else {
-					configurationName = "webpack." + config.configName + ".js";
+
+			if (config.merge) {
+				transformations.push("merge");
+			}
+
+			const ast: Node = j(initActionNotDefined ? transformConfig.configFile : "module.exports = {}");
+
+			const transformAction: string = action || null;
+
+			return pEachSeries(
+				transformations,
+				(f: string): boolean | Node => {
+					if (f === "merge" || f === "topScope") {
+						// TODO: typing here is difficult to understand
+						// eslint-disable-next-line @typescript-eslint/no-explicit-any
+						return astTransform(j, ast, f, config[f] as any, transformAction);
+					}
+					return astTransform(j, ast, f, config.webpackOptions[f], transformAction);
 				}
+			)
+				.then(
+					(): void | PromiseLike<void> => {
+						let configurationName: string;
+						if (!config.configName) {
+							configurationName = "webpack.config.js";
+						} else {
+							configurationName = "webpack." + config.configName + ".js";
+						}
 
 				const projectRoot = findProjectRoot();
 				const outputPath: string = initActionNotDefined
 					? transformConfig.configPath
-					: path.join(process.cwd(), configurationName,
-				);
+					: path.join(projectRoot || process.cwd(), configurationName);
 
 				const source: string = ast.toSource({
 					quote: "single",

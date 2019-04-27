@@ -6,9 +6,9 @@ import * as yeoman from "yeoman-environment";
 import Generator = require("yeoman-generator");
 
 import runTransform from "./scaffold";
-import { IGenerator, IYeoman } from "./types/Yeoman";
+import { YeoGenerator } from "./types/Yeoman";
 
-export interface IConfig extends Object {
+export interface Config extends Object {
 	item?: {
 		name: string;
 	};
@@ -18,10 +18,10 @@ export interface IConfig extends Object {
 	webpackOptions: object;
 }
 
-export interface ITransformConfig extends Object {
+export interface TransformConfig extends Object {
 	configPath?: string;
 	configFile?: string;
-	config?: IConfig;
+	config?: Config;
 }
 
 const DEFAULT_WEBPACK_CONFIG_FILENAME = "webpack.config.js";
@@ -40,7 +40,7 @@ const DEFAULT_WEBPACK_CONFIG_FILENAME = "webpack.config.js";
 
 export default function modifyHelperUtil(
 	action: string,
-	generator: IGenerator,
+	generator: YeoGenerator,
 	configFile: string = DEFAULT_WEBPACK_CONFIG_FILENAME,
 	packages?: string[],
 	mode: string = "CLI",
@@ -86,12 +86,27 @@ export default function modifyHelperUtil(
 
 	if (!generator) {
 		generator = class extends Generator {
-			public initializing() {
-				packages.forEach((pkgPath: string) => {
-					return (this as IGenerator).composeWith(require.resolve(pkgPath));
-				});
+			public initializing(): void {
+				packages.forEach(
+					(pkgPath: string): void => {
+						return (this as YeoGenerator).composeWith(require.resolve(pkgPath));
+					}
+				);
 			}
 		};
+	}
+
+	if (mode !== "CLI") {
+		/**
+		 * TODO: overide generator's prompt method
+		 * 		 with that of socket's method
+		 * For example:
+		 * 	generator = class extends generator {
+				public prompt(): any {
+					
+				}
+			}
+		 */
 	}
 	env.registerStub(generator, generatorName);
 
