@@ -1,6 +1,20 @@
 import * as utils from "@webpack-cli/utils/ast-utils";
 
-import { IJSCodeshift, INode } from "../types/NodePath";
+import { JSCodeshift, Node } from "../types/NodePath";
+
+
+function replaceWithPath(
+  j: JSCodeshift,
+  p: Node,
+  pathVarName: string,
+): Node {
+  const convertedPath: Node = j.callExpression(
+	j.memberExpression(j.identifier(pathVarName), j.identifier("join"), false),
+	[j.identifier("__dirname"), p.value as Node],
+  );
+
+  return convertedPath;
+}
 
 /**
  *
@@ -10,18 +24,17 @@ import { IJSCodeshift, INode } from "../types/NodePath";
  * @param {Node} ast - jscodeshift ast to transform
  * @returns {Node} ast - jscodeshift ast
  */
-
-export default function(j: IJSCodeshift, ast: INode): INode | void {
-  const literalOutputPath: INode = ast
+export default function(j: JSCodeshift, ast: Node): Node | void {
+  const literalOutputPath: Node = ast
 	.find(j.ObjectExpression)
 	.filter(
-		(p: INode): boolean =>
+		(p: Node): boolean =>
 		utils.safeTraverse(p, ["parentPath", "value", "key", "name"]) ===
 		"output",
 	)
 	.find(j.Property)
 	.filter(
-		(p: INode): boolean =>
+		(p: Node): boolean =>
 		utils.safeTraverse(p, ["value", "key", "name"]) === "path" &&
 		utils.safeTraverse(p, ["value", "value", "type"]) === "Literal",
 	);
@@ -29,18 +42,20 @@ export default function(j: IJSCodeshift, ast: INode): INode | void {
   if (literalOutputPath) {
 	let pathVarName = "path";
 	let isPathPresent = false;
-	const pathDeclaration: INode = ast
+	const pathDeclaration: Node = ast
 		.find(j.VariableDeclarator)
 		.filter(
-		(p: INode): boolean =>
+		(p: Node): boolean =>
 			utils.safeTraverse(p, ["value", "init", "callee", "name"]) ===
 			"require",
 		)
 		.filter(
-		(p: INode): boolean =>
+		(p: Node): boolean =>
 			utils.safeTraverse(p, ["value", "init", "arguments"]) &&
-			p.value.init.arguments.reduce(
-			(isPresent: boolean, a: INode): boolean => {
+			// TODO: to fix when we have proper typing (@types/jscodeshift)
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			(p.value as any).init.arguments.reduce(
+			(isPresent: boolean, a: Node): boolean => {
 				return (a.type === "Literal" && a.value === "path") || isPresent;
 			},
 			false,
@@ -50,23 +65,23 @@ export default function(j: IJSCodeshift, ast: INode): INode | void {
 	if (pathDeclaration) {
 		isPathPresent = true;
 		pathDeclaration.forEach(
-		(p: INode): void => {
-			pathVarName = utils.safeTraverse(p, ["value", "id", "name"]);
+		(p: Node): void => {
+			pathVarName = utils.safeTraverse(p, ["value", "id", "name"]) as string;
 		},
 		);
 	}
 	const finalPathName = pathVarName;
 	literalOutputPath
 		.find(j.Literal)
-		.replaceWith((p: INode): INode => replaceWithPath(j, p, finalPathName));
+		.replaceWith((p: Node): Node => replaceWithPath(j, p, finalPathName));
 
 	if (!isPathPresent) {
-		const pathRequire: INode = utils.getRequire(j, "path", "path");
+		const pathRequire: Node = utils.getRequire(j, "path", "path");
 		return ast
 		.find(j.Program)
 		.replaceWith(
-			(p: INode): INode =>
-			j.program([].concat(pathRequire).concat(p.value.body)),
+			(p: Node): Node =>
+			j.program([].concat(pathRequire).concat((p.value as Node).body)),
 		);
 	}
   }
@@ -74,15 +89,3 @@ export default function(j: IJSCodeshift, ast: INode): INode | void {
   return ast;
 }
 
-function replaceWithPath(
-  j: IJSCodeshift,
-  p: INode,
-  pathVarName: string,
-): INode {
-  const convertedPath: INode = j.callExpression(
-	j.memberExpression(j.identifier(pathVarName), j.identifier("join"), false),
-	[j.identifier("__dirname"), p.value],
-  );
-
-  return convertedPath;
-}

@@ -1,5 +1,7 @@
 # webpack-cli generators
 
+[![npm](https://img.shields.io/npm/dm/@webpack-cli/generators.svg)](https://www.npmjs.com/package/@webpack-cli/generators)
+
 ## Description
 
 This package contains all webpack-cli related yeoman generators. 

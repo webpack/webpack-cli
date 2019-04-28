@@ -1,6 +1,6 @@
 import * as utils from "@webpack-cli/utils/ast-utils";
 
-import { IJSCodeshift, INode } from "../types/NodePath";
+import { JSCodeshift, Node } from "../types/NodePath";
 
 /**
  *
@@ -12,12 +12,12 @@ import { IJSCodeshift, INode } from "../types/NodePath";
  * @returns {Boolean} isPluginInvocation - whether `node` is the invocation of the plugin denoted by `pluginName`
  */
 
-function findInvocation(j: IJSCodeshift, path: INode, pluginName: string): boolean {
-	let found: boolean = false;
+function findInvocation(j: JSCodeshift, path: Node, pluginName: string): boolean {
+	let found = false;
 	found =
 		j(path)
 			.find(j.MemberExpression)
-			.filter((p: INode): boolean => p.get("object").value.name === pluginName)
+			.filter((p: Node): boolean => (p.get("object").value as Node).name === pluginName)
 			.size() > 0;
 	return found;
 }
@@ -31,30 +31,28 @@ function findInvocation(j: IJSCodeshift, path: INode, pluginName: string): boole
  * @returns {Node} ast - jscodeshift ast
  */
 
-export default function(j: IJSCodeshift, ast: INode): void | INode {
-	const changeArguments = (path: INode): INode => {
-		const args: INode[] = path.value.arguments;
+export default function(j: JSCodeshift, ast: Node): void | Node {
+	const changeArguments = (path: Node): Node => {
+		const args: Node[] = (path.value as Node).arguments;
 
-		const literalArgs: INode[] = args.filter((p: INode): boolean => utils.isType(p, "Literal"));
+		const literalArgs: Node[] = args.filter((p: Node): boolean => utils.isType(p, "Literal"));
 		if (literalArgs && literalArgs.length > 1) {
 			const newArgs: object = j.objectExpression(
-				literalArgs.map((p: INode, index: number): INode =>
-					utils.createProperty(j, index === 0 ? "fallback" : "use", p.value),
-				),
+				literalArgs.map(
+					(p: Node, index: number): Node => utils.createProperty(j, index === 0 ? "fallback" : "use", p.value as Node)
+				)
 			);
-			path.value.arguments = [newArgs];
+			(path.value as Node).arguments = [newArgs];
 		}
 		return path;
 	};
-	const name: string = utils.findVariableToPlugin(
-		j,
-		ast,
-		"extract-text-webpack-plugin",
-	);
-	if (!name) { return ast; }
+	const name: string = utils.findVariableToPlugin(j, ast, "extract-text-webpack-plugin");
+	if (!name) {
+		return ast;
+	}
 
 	return ast
 		.find(j.CallExpression)
-		.filter((p: INode): boolean => findInvocation(j, p, name))
+		.filter((p: Node): boolean => findInvocation(j, p, name))
 		.forEach(changeArguments);
 }

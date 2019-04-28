@@ -19,25 +19,21 @@ export function informationType(type: string): object {
 	switch (type) {
 		case "system":
 			return { System: ["OS", "CPU", "Memory"] };
-			break;
 		case "binaries":
 			return { Binaries: ["Node", "Yarn", "npm"] };
-			break;
 		case "browsers":
 			return { Browsers: ["Chrome", "Firefox", "Safari"] };
-			break;
 		case "npmg":
 			return { npmGlobalPackages: ["webpack", "webpack-cli"] };
-			break;
 		case "npm":
 			return { npmPackages: "*webpack*" };
-			break;
+
 	}
 }
 
-export default async function info() {
+export default async function info(): Promise<void> {
 
-	Object.keys(argv).forEach(async (flag) => {
+	Object.keys(argv).forEach(async (flag): Promise<void> => {
 		if (IGNORE_FLAGS.includes(flag)) {
 			return;
 		} else if (AVAILABLE_COMMANDS.includes(flag)) {
