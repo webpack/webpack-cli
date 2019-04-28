@@ -3,10 +3,9 @@ import * as fs from "fs";
 import * as logSymbols from "log-symbols";
 import * as path from "path";
 import * as yeoman from "yeoman-environment";
-import Generator = require("yeoman-generator");
+import Generator from "yeoman-generator";
 
 import runTransform from "./scaffold";
-import { YeoGenerator } from "./types/Yeoman";
 
 export interface Config extends Object {
 	item?: {
@@ -40,7 +39,8 @@ const DEFAULT_WEBPACK_CONFIG_FILENAME = "webpack.config.js";
 
 export default function modifyHelperUtil(
 	action: string,
-	generator: YeoGenerator,
+	// TODO find better type for generator
+	generator: Function,
 	configFile: string = DEFAULT_WEBPACK_CONFIG_FILENAME,
 	packages?: string[]
 ): Function {
@@ -80,8 +80,8 @@ export default function modifyHelperUtil(
 		generator = class extends Generator {
 			public initializing(): void {
 				packages.forEach(
-					(pkgPath: string): void => {
-						return (this as YeoGenerator).composeWith(require.resolve(pkgPath));
+					(pkgPath: string): Generator => {
+						return this.composeWith(require.resolve(pkgPath), {});
 					}
 				);
 			}

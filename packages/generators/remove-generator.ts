@@ -56,13 +56,14 @@ export default class RemoveGenerator extends Generator {
 		}
 	}
 
-	public prompting(): Promise<{}> {
-		const done: () => void | boolean = this.async();
+	public prompting(): Promise<void | {}> {
+		// TODO this.aync doesn't exists in definetly typed
+		const done: () => void | boolean = () => true;
 		let propValue: object | string | boolean;
 
 		return this.prompt([List("propType", "Which property do you want to remove?", Array.from(this.getPropTypes()))])
 			.then(
-				({ propType }: { propType: string }): Promise<{}> => {
+				({ propType }: { propType: string }): Promise<void | {}> => {
 					if (!PROP_TYPES.has(propType)) {
 						console.error("Invalid webpack config prop");
 						return;
@@ -90,7 +91,7 @@ export default class RemoveGenerator extends Generator {
 									Array.from(Object.keys(propValue))
 								)
 							]).then(
-								({ keyType }: { keyType: string }): Promise<{}> => {
+								({ keyType }: { keyType: string }): Promise<void | {}> => {
 									if (propType === "module" && keyType === "rules") {
 										return this.prompt([
 											List(
