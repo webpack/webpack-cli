@@ -22,7 +22,7 @@ jobs:
           npm install -g npm@latest
         displayName: "Install npm"
       - script: |
-          npm install
+          npm ci
           npm run bootstrap
         displayName: "Lerna bootstrap"
       - script: |
