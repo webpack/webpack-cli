@@ -7,31 +7,31 @@ work is not in vain.
 
 Table of Contents
 
--   [Issues](#issues)
--   [Your first Contribution](#your-first-contribution)
--   [Setup](#setup)
-    -   [Using npm](#using-npm)
-    -   [Using yarn](#using-yarn)
--   [Running Tests](#running-tests)
-    -   [Using npm](#using-npm-1)
-    -   [Using yarn](#using-yarn-1)
--   [Editor Config](#editor-config)
--   [Dependencies](#dependencies)
--   [Branching Model](#branching-model)
--   [Naming a branch](#naming-a-branch)
-    -   [Features](#features)
-    -   [Fixes](#fixes)
--   [Testing](#testing)
--   [Pull Requests](#pull-requests)
--   [Submitting a good Pull Request](#submitting-a-good-pull-request)
--   [Commit message](#commit-message)
-    -   [Commit Message Format](#commit-message-format)
--   [Migrate with the CLI](#migrate-with-the-cli)
-    -   [How it's being done](#how-its-being-done)
-        -   [Structure of a transform](#structure-of-a-transform)
-    -   [Further Work](#further-work)
--   [Contributor License Agreement](#contributor-license-agreement)
--   [Documentation](#documentation)
+- [Issues](#issues)
+- [Your first Contribution](#your-first-contribution)
+- [Setup](#setup)
+  - [Using npm](#using-npm)
+  - [Using yarn](#using-yarn)
+- [Running Tests](#running-tests)
+  - [Using npm](#using-npm-1)
+  - [Using yarn](#using-yarn-1)
+- [Editor Config](#editor-config)
+- [Dependencies](#dependencies)
+- [Branching Model](#branching-model)
+- [Naming a branch](#naming-a-branch)
+  - [Features](#features)
+  - [Fixes](#fixes)
+- [Testing](#testing)
+- [Pull Requests](#pull-requests)
+- [Submitting a good Pull Request](#submitting-a-good-pull-request)
+- [Commit message](#commit-message)
+  - [Commit Message Format](#commit-message-format)
+- [Migrate with the CLI](#migrate-with-the-cli)
+  - [How it's being done](#how-its-being-done)
+    - [Structure of a transform](#structure-of-a-transform)
+  - [Further Work](#further-work)
+- [Contributor License Agreement](#contributor-license-agreement)
+- [Documentation](#documentation)
 
 ## Issues
 
@@ -55,130 +55,130 @@ In case you are suggesting a new feature, we will match your idea with our curre
 
 ## Setup
 
--   Install [Node.js](https://nodejs.org/) if you don't have it already.
-    _Note: Node 6 or greater would be better for "best results"._
--   Fork the **webpack-cli** repo at [https://github.com/webpack/webpack-cli](https://github.com/webpack/webpack-cli).
--   `git clone <your-clone-url> && cd webpack-cli`
+- Install [Node.js](https://nodejs.org/) if you don't have it already.
+  _Note: Node 6 or greater would be better for "best results"._
+- Fork the **webpack-cli** repo at [https://github.com/webpack/webpack-cli](https://github.com/webpack/webpack-cli).
+- `git clone <your-clone-url> && cd webpack-cli`
 
 ### Using npm
 
--   Install the dependencies and link them:
+- Install the dependencies and link them:
 
-    ```bash
-    npm install
-    npm link
-    npm link webpack-cli
-    ```
+  ```bash
+  npm install
+  npm link
+  npm link webpack-cli
+  ```
 
--   Bootstrap all the submodules before building for the first time
+- Bootstrap all the submodules before building for the first time
 
-    ```bash
-    npm run bootstrap
-    npm run build
-    ```
+  ```bash
+  npm run bootstrap
+  npm run build
+  ```
 
 ### Using yarn
 
--   If you don't have yarn yet:
+- If you don't have yarn yet:
 
-    ```bash
-    npm install -g yarn
-    ```
+  ```bash
+  npm install -g yarn
+  ```
 
--   Install the dependencies and link them
+- Install the dependencies and link them
 
-    ```bash
-    yarn
-    yarn link
-    yarn link webpack-cli
-    ```
+  ```bash
+  yarn
+  yarn link
+  yarn link webpack-cli
+  ```
 
--   Bootstrap all the submodules before building for the first time
+- Bootstrap all the submodules before building for the first time
 
-    ```bash
-    yarn bootstrap
-    yarn build
-    ```
+  ```bash
+  yarn bootstrap
+  yarn build
+  ```
 
 ## Running Tests
 
 ### Using npm
 
--   Run all the tests with:
+- Run all the tests with:
 
-    ```bash
-    npm run test
-    ```
+  ```bash
+  npm run test
+  ```
 
--   Run CLI tests with:
+- Run CLI tests with:
 
-    ```bash
-    npm run test:cli
-    ```
+  ```bash
+  npm run test:cli
+  ```
 
--   Run tests of all packages:
+- Run tests of all packages:
 
-    ```bash
-    npm run test:packages
-    ```
+  ```bash
+  npm run test:packages
+  ```
 
--   Test a single CLI test case:
+- Test a single CLI test case:
 
-    ```bash
-    npx jest path/to/my-test.js
-    ```
+  ```bash
+  npx jest path/to/my-test.js
+  ```
 
--   You can also install jest globally and run tests without npx:
+- You can also install jest globally and run tests without npx:
 
-    ```bash
-    npm i -g jest
-    jest path/to/my-test.js
-    ```
+  ```bash
+  npm i -g jest
+  jest path/to/my-test.js
+  ```
 
--   You can run the linters:
+- You can run the linters:
 
-    ```bash
-    npm run lint
-    ```
+  ```bash
+  npm run lint
+  ```
 
 ### Using yarn
 
--   Run all the tests with:
+- Run all the tests with:
 
-    ```bash
-    yarn test
-    ```
+  ```bash
+  yarn test
+  ```
 
--   Run CLI tests with:
+- Run CLI tests with:
 
-    ```bash
-    yarn test:cli`
-    ```
+  ```bash
+  yarn test:cli`
+  ```
 
--   Run tests of all packages:
+- Run tests of all packages:
 
-    ```bash
-    yarn test:packages
-    ```
+  ```bash
+  yarn test:packages
+  ```
 
--   Test a single CLI test case:
+- Test a single CLI test case:
 
-    ```bash
-    yarn jest path/to/my-test.js
-    ```
+  ```bash
+  yarn jest path/to/my-test.js
+  ```
 
--   You can also install jest globally and run tests:
+- You can also install jest globally and run tests:
 
-    ```bash
-    yarn global add jest
-    jest path/to/my-test.js
-    ```
+  ```bash
+  yarn global add jest
+  jest path/to/my-test.js
+  ```
 
--   You can run the linters:
+- You can run the linters:
 
-    ```bash
-    yarn lint
-    ```
+  ```bash
+  yarn lint
+  ```
 
 ## Editor Config
 
@@ -198,15 +198,15 @@ We base our branching model on [git flow](http://nvie.com/posts/a-successful-git
 
 Making a branch in your fork for your contribution is helpful in the following ways:
 
--   It allows you to submit more than one contribution in a single PR.
--   It allows us to identify what your contribution is about from the branch name.
+- It allows you to submit more than one contribution in a single PR.
+- It allows us to identify what your contribution is about from the branch name.
 
 You will want to checkout the `master` branch locally before creating your new branch.
 
 There are two types of branches:
 
--   Feature
--   Bugfix
+- Feature
+- Bugfix
 
 ### Features
 
@@ -237,9 +237,9 @@ In case you've got a small change in most of the cases, your pull request would 
 
 ## Submitting a good Pull Request
 
--   Write tests
--   Follow the existing coding style
--   Write a [good commit message](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
+- Write tests
+- Follow the existing coding style
+- Write a [good commit message](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
 
 ## Commit message
 
@@ -265,15 +265,15 @@ format that includes a **type** and a **subject**:
 
 This is the list of _type_ of commits that we accept:
 
--   ast
--   break
--   chore
--   cli
--   docs
--   feat
--   fix
--   misc
--   tests
+- ast
+- break
+- chore
+- cli
+- docs
+- feat
+- fix
+- misc
+- tests
 
 The **header** is mandatory.
 
@@ -344,8 +344,8 @@ It takes the input file given as parameter and uses jest to create a snapshot of
 This is still in a very raw form. We'd like to take this as close to a truly useful tool as possible.
 We will still need to
 
--   Support all kinds of webpack configuration(made using merge tools)
--   Test these transforms against real-world configurations.
+- Support all kinds of webpack configuration(made using merge tools)
+- Test these transforms against real-world configurations.
 
 ## Contributor License Agreement
 

@@ -22,13 +22,13 @@
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/)
 [![GitHub contributors](https://img.shields.io/github/contributors/webpack/webpack-cli.svg)](https://github.com/webpack/webpack-cli/graphs/contributors)
 
--   [About](#about)
-    -   [How to install](#how-to-install)
--   [Getting Started](#getting-started)
--   [webpack CLI Scaffolds](#webpack-cli-scaffolds)
--   [Commands](#commands)
--   [webpack.config.js](https://webpack.js.org/concepts/configuration/)
--   [Contributing and Internal Documentation](#contributing-and-internal-documentation)
+- [About](#about)
+  - [How to install](#how-to-install)
+- [Getting Started](#getting-started)
+- [webpack CLI Scaffolds](#webpack-cli-scaffolds)
+- [Commands](#commands)
+- [webpack.config.js](https://webpack.js.org/concepts/configuration/)
+- [Contributing and Internal Documentation](#contributing-and-internal-documentation)
 
 ## About
 
@@ -48,23 +48,23 @@ We organize webpack CLI as a multi-package repository using [lerna](https://gith
 
 Supporting developers is an important task for webpack CLI. Thus, webpack CLI provides different commands for many common tasks.
 
--   [`webpack-cli init`](./packages/init/README.md#webpack-cli-init) - Create a new webpack configuration.
--   [`webpack-cli add`](./packages/add/README.md#webpack-cli-add) - Add new properties to a webpack configuration file.
--   [`webpack-cli info`](./packages/info/README.md#webpack-cli-info) - Returns information related to the local environment.
--   [`webpack-cli migrate`](./packages/migrate/README.md#webpack-cli-migrate) - Migrate project from one version to another.
--   [`webpack-cli remove`](./packages/remove/README.md#webpack-cli-remove) - Remove properties from a webpack configuration file.
--   [`webpack-cli generate-plugin`](./packages/generate-plugin/README.md#webpack-cli-generate-plugin) - Initiate new plugin project.
--   [`webpack-cli generate-loader`](./packages/generate-loader/README.md#webpack-cli-generate-loader) - Initiate new loader project.
--   [`webpack-cli serve`](./packages/serve/README.md#webpack-cli-serve) - Use webpack with a development server that provides live reloading.
--   [`webpack-cli update`](./packages/update/README.md#webpack-cli-update) - Update properties in a webpack configuration file.
+- [`webpack-cli init`](./packages/init/README.md#webpack-cli-init) - Create a new webpack configuration.
+- [`webpack-cli add`](./packages/add/README.md#webpack-cli-add) - Add new properties to a webpack configuration file.
+- [`webpack-cli info`](./packages/info/README.md#webpack-cli-info) - Returns information related to the local environment.
+- [`webpack-cli migrate`](./packages/migrate/README.md#webpack-cli-migrate) - Migrate project from one version to another.
+- [`webpack-cli remove`](./packages/remove/README.md#webpack-cli-remove) - Remove properties from a webpack configuration file.
+- [`webpack-cli generate-plugin`](./packages/generate-plugin/README.md#webpack-cli-generate-plugin) - Initiate new plugin project.
+- [`webpack-cli generate-loader`](./packages/generate-loader/README.md#webpack-cli-generate-loader) - Initiate new loader project.
+- [`webpack-cli serve`](./packages/serve/README.md#webpack-cli-serve) - Use webpack with a development server that provides live reloading.
+- [`webpack-cli update`](./packages/update/README.md#webpack-cli-update) - Update properties in a webpack configuration file.
 
 ### Utilities
 
 The project also has several utility packages which are used by other commands
 
--   [`utils`](./packages/utils/README.md) - Several utilities used across webpack-cli.
--   [`generators`](./packages/generators/README.md) - Contains all webpack-cli related yeoman generators.
--   [`webpack-scaffold`](./packages/info/README.md#webpack-cli-info) - Utilities to create a webpack scaffold.
+- [`utils`](./packages/utils/README.md) - Several utilities used across webpack-cli.
+- [`generators`](./packages/generators/README.md) - Contains all webpack-cli related yeoman generators.
+- [`webpack-scaffold`](./packages/info/README.md#webpack-cli-info) - Utilities to create a webpack scaffold.
 
 ## Getting started
 
