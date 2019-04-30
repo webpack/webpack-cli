@@ -31,6 +31,7 @@ export default class InitGenerator extends Generator {
 			configName?: string;
 			topScope?: string[];
 			webpackOptions?: WebpackOptions;
+			initConfig?: object[];
 		};
 	};
 
@@ -47,7 +48,9 @@ export default class InitGenerator extends Generator {
 		this.configuration = {
 			config: {
 				topScope: [],
-				webpackOptions: {}
+				webpackOptions: {
+				},
+				initConfig: []
 			}
 		};
 	}
@@ -88,6 +91,7 @@ export default class InitGenerator extends Generator {
 		return this.prompt([Confirm("entryType", "Will your application have multiple bundles?", false)])
 			.then(
 				(entryTypeAnswer: { entryType: boolean }): Promise<{}> => {
+					this.configuration.config.initConfig.push(entryTypeAnswer);
 					initConfig.push(entryTypeAnswer);
 					// Ask different questions for entry points
 					return entryQuestions(self, entryTypeAnswer);
@@ -96,6 +100,8 @@ export default class InitGenerator extends Generator {
 			.then(
 				(entryOptions: object | string): Promise<{}> => {
 					initConfig.push({entryOption: entryOptions});
+					this.configuration.config.initConfig.push({ entryOption: entryOptions });
+
 					if (typeof entryOptions === "string" && entryOptions.length > 0) {
 						return this.prompt([
 							Input("outputType", "In which folder do you want to store your generated bundles? (dist):")
@@ -112,6 +118,7 @@ export default class InitGenerator extends Generator {
 			.then(
 				(outputTypeAnswer: { outputType: string }): void => {
 					initConfig.push(outputTypeAnswer);
+					this.configuration.config.initConfig.push(outputTypeAnswer);					
 					// As entry is not required anymore and we dont set it to be an empty string or """""
 					// it can be undefined so falsy check is enough (vs entry.length);
 					if (!this.configuration.config.webpackOptions.entry && !this.usingDefaults) {
@@ -144,6 +151,7 @@ export default class InitGenerator extends Generator {
 			)
 			.then(
 				(babelConfirmAnswer: { babelConfirm: boolean }): void => {
+					this.configuration.config.initConfig.push(babelConfirmAnswer);
 					initConfig.push(babelConfirmAnswer);
 					if (babelConfirmAnswer.babelConfirm) {
 						this.configuration.config.webpackOptions.module.rules.push(getBabelPlugin());
@@ -167,6 +175,7 @@ export default class InitGenerator extends Generator {
 			.then(
 				(stylingTypeAnswer: { stylingType: string }): void => {
 					initConfig.push(stylingTypeAnswer);
+					this.configuration.config.initConfig.push(stylingTypeAnswer);
 					ExtractUseProps = [];
 					switch (stylingTypeAnswer.stylingType) {
 						case "SASS":
@@ -386,8 +395,8 @@ export default class InitGenerator extends Generator {
 						}
 					}
 
-					// Check if the options selected by the user are defaults
-				if (checkDefault(initConfig)) {
+				// Check if the options selected by the user are defaults
+				if (checkDefault(this.configuration.config.initConfig)) {
 					process.stdout.write(
 						`You're using a default config, you can use ${chalk.green(
 							"$ webpack-cli",
