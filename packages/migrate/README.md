@@ -17,6 +17,7 @@ npm i -D webpack-cli @webpack-cli/migrate
 To run the package programmatically, install it as a dependency. When using the package programmatically, one does not have to install webpack-cli.
 
 ### Node
+
 ```js
 const migrate = require("@webpack-cli/migrate").default;
 
@@ -25,6 +26,7 @@ migrate(null, null, inputPath, outputPath);
 ```
 
 ### CLI (via `webpack-cli`)
+
 ```bash
 npx webpack-cli migrate
 ```

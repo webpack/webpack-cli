@@ -4,7 +4,7 @@
 
 ## Description
 
-This pacakge returns a set of information related to the local enviroment.
+This package returns a set of information related to the local environment.
 
 ## Installation
 
@@ -22,6 +22,7 @@ envinfo();
 ```
 
 ### CLI (via `webpack-cli`)
+
 ```bash
 npx webpack-cli info
 ```
