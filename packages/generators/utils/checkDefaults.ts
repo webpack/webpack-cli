@@ -1,3 +1,5 @@
+import { defaultConfig } from "./constants";
+
 /**
  *
  * Utility function to check if the user config is same as default.
@@ -7,15 +9,6 @@
  */
 
 export default function checkDefaults(initConfig: Record<string, any>): boolean {
-	// This is the default prompts selections generated on picking default options.
-	const defaultConfig = {
-		babelConfirm: true,
-		entryOption: "''",
-		entryType: false,
-		outputType: "",
-		stylingType: "No"
-	};
-
 	return initConfig.every((property: string): boolean => {
 		const propertyName = Object.keys(property)[0];
 		return defaultConfig[propertyName] === property[propertyName];
