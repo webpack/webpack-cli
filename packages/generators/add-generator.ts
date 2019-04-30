@@ -98,14 +98,14 @@ export default class AddGenerator extends Generator {
 				webpackOptions: {}
 			}
 		};
-		// TODO adapter doesn't exists
-		// const { registerPrompt } = this.env.adapter.promptModule;
-		// registerPrompt("autocomplete", autoComplete);
+		// TODO wait for https://github.com/DefinitelyTyped/DefinitelyTyped/pull/35115
+		const { registerPrompt } = this.env.adapter.promptModule;
+		registerPrompt("autocomplete", autoComplete);
 	}
 
 	public prompting(): Promise<void | {}> {
-		// TODO this.aync doesn't exists in definetly typed
-		const done: () => void | boolean = () => true;
+		// TODO wait for https://github.com/DefinitelyTyped/DefinitelyTyped/pull/35115
+		const done: () => {} = this.async();
 		let action: string;
 		const self: this = this;
 		const manualOrListInput: (promptAction: string) => Generator.Question = (promptAction: string): Generator.Question =>

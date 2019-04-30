@@ -3,14 +3,12 @@ import * as path from "path";
 import Generator from "yeoman-generator";
 
 import * as copyUtils from "@webpack-cli/utils/copy-utils";
-interface AddOnGeneratorI extends Generator {
-	props: Generator.Question;
-}
+
 /**
  * Creates a Yeoman Generator that generates a project conforming
  * to webpack-defaults.
  *
- * @param {any[]} prompts An array of Yeoman prompt objects
+ * @param {Generator.Questions} prompts An array of Yeoman prompt objects
  *
  * @param {string} templateDir Absolute path to template directory
  *
@@ -27,14 +25,13 @@ interface AddOnGeneratorI extends Generator {
  *
  * @returns {Generator} A class extending Generator
  */
-export default function addonGenerator(
+const addonGenerator = (
 	prompts: Generator.Questions,
 	templateDir: string,
 	copyFiles: string[],
 	copyTemplateFiles: string[],
 	templateFn: Function
-): Function { // TODO find better type
-	return class AddonGenerator extends Generator {
+): typeof Generator => class AddonGenerator extends Generator {
 		public props: Generator.Question;
 		public copy: (value: string, index: number, array: string[]) => void;
 		public copyTpl: (value: string, index: number, array: string[]) => void;
@@ -83,4 +80,5 @@ export default function addonGenerator(
 			this.spawnCommand("npm", ["run", "defaults"]);
 		}
 	};
-}
+
+export default addonGenerator;

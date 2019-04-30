@@ -57,8 +57,8 @@ export default class RemoveGenerator extends Generator {
 	}
 
 	public prompting(): Promise<void | {}> {
-		// TODO this.aync doesn't exists in definetly typed
-		const done: () => void | boolean = () => true;
+		// TODO wait for https://github.com/DefinitelyTyped/DefinitelyTyped/pull/35115
+		const done: () => {} = this.async();
 		let propValue: object | string | boolean;
 
 		return this.prompt([List("propType", "Which property do you want to remove?", Array.from(this.getPropTypes()))])

@@ -53,8 +53,8 @@ export default class InitGenerator extends Generator {
 
 	// eslint-disable-next-line
 	public prompting(): any {
-		// TODO this.aync doesn't exists in definetly typed
-		const done: () => void = () => true;
+		// TODO wait for https://github.com/DefinitelyTyped/DefinitelyTyped/pull/35115
+		const done: () => {} = this.async();
 		const self: this = this;
 		let regExpForStyles: string;
 		let ExtractUseProps: object[];

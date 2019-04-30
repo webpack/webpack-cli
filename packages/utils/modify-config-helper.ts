@@ -39,11 +39,10 @@ const DEFAULT_WEBPACK_CONFIG_FILENAME = "webpack.config.js";
 
 export default function modifyHelperUtil(
 	action: string,
-	// TODO find better type for generator
-	generator: Function,
+	generator: typeof Generator,
 	configFile: string = DEFAULT_WEBPACK_CONFIG_FILENAME,
 	packages?: string[]
-): Function {
+): typeof Generator {
 	let configPath: string | null = null;
 
 	if (action !== "init") {
