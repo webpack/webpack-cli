@@ -57,7 +57,6 @@ export default class RemoveGenerator extends Generator {
 	}
 
 	public prompting(): Promise<void | {}> {
-		// TODO wait for https://github.com/DefinitelyTyped/DefinitelyTyped/pull/35115
 		const done: () => {} = this.async();
 		let propValue: object | string | boolean;
 

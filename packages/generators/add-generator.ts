@@ -98,13 +98,11 @@ export default class AddGenerator extends Generator {
 				webpackOptions: {}
 			}
 		};
-		// TODO wait for https://github.com/DefinitelyTyped/DefinitelyTyped/pull/35115
 		const { registerPrompt } = this.env.adapter.promptModule;
 		registerPrompt("autocomplete", autoComplete);
 	}
 
 	public prompting(): Promise<void | {}> {
-		// TODO wait for https://github.com/DefinitelyTyped/DefinitelyTyped/pull/35115
 		const done: () => {} = this.async();
 		let action: string;
 		const self: this = this;
