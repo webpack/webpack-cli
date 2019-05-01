@@ -1,4 +1,4 @@
-import Generator = require("yeoman-generator");
+import * as Generator from "yeoman-generator";
 
 import * as glob from "glob-all";
 import * as autoComplete from "inquirer-autocomplete-prompt";

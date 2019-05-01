@@ -1,3 +1,3 @@
-import Generator = require("yeoman-generator");
+import * as Generator from "yeoman-generator";
 
 export default class UpdateGenerator extends Generator {}

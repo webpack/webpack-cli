@@ -1,6 +1,6 @@
 import * as mkdirp from "mkdirp";
 import * as path from "path";
-import Generator from "yeoman-generator";
+import * as Generator from "yeoman-generator";
 
 import * as copyUtils from "@webpack-cli/utils/copy-utils";
 

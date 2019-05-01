@@ -1,4 +1,4 @@
-import Generator from "yeoman-generator";
+import * as Generator from "yeoman-generator";
 import { InputValidate } from "@webpack-cli/webpack-scaffold";
 
 import validate from "./validate";

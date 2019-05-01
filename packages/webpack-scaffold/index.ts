@@ -1,5 +1,5 @@
 import * as jscodeshift from "jscodeshift";
-import Generator from "yeoman-generator";
+import * as Generator from "yeoman-generator";
 
 export function createArrowFunction(value: string): string {
 	return `() => '${value}'`;

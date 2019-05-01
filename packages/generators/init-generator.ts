@@ -1,7 +1,7 @@
 import chalk from "chalk";
 import * as logSymbols from "log-symbols";
-import Generator = require("yeoman-generator");
-import Inquirer = require("inquirer");
+import * as Generator from "yeoman-generator";
+import * as Inquirer from "inquirer";
 
 import { getPackageManager } from "@webpack-cli/utils/package-manager";
 import { Confirm, Input, List } from "@webpack-cli/webpack-scaffold";

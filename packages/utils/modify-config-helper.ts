@@ -3,7 +3,8 @@ import * as fs from "fs";
 import * as logSymbols from "log-symbols";
 import * as path from "path";
 import * as yeoman from "yeoman-environment";
-import Generator from "yeoman-generator";
+import * as Generator from "yeoman-generator";
+
 
 import runTransform from "./scaffold";
 
