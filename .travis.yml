@@ -10,13 +10,6 @@ cache:
     directories:
         - ~/.npm
 matrix:
-    include:
-        - os: linux
-          node_js: "stable"
-          env: JOB_PART=lint
-        - os: linux
-          node_js: "stable"
-          env: JOB_PART=integration
         - os: linux
           node_js: "10"
           env: JOB_PART=integration
