@@ -17,12 +17,14 @@ npm i -D webpack-cli @webpack-cli/update
 To run the scaffolding instance programmatically, install it as a dependency. When using the package programmatically, one does not have to install webpack-cli.
 
 ### Node
+
 ```js
 const update = require("@webpack-cli/update").default;
 update();
 ```
 
 ### CLI (via `webpack-cli`)
+
 ```bash
 npx webpack-cli update
 ```

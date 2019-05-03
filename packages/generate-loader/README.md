@@ -24,6 +24,7 @@ generateLoader();
 ```
 
 ### CLI (via `webpack-cli`)
+
 ```bash
 npx webpack-cli generate-loader
 ```
