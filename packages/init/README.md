@@ -44,7 +44,7 @@ npx webpack-cli init
 npx webpack-cli init webpack-scaffold-[name]
 ```
 
-2. Using path to local directory
+2. Using path to a local directory
 
 ```bash
 npx webpack-cli init [path]

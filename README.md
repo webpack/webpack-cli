@@ -1,7 +1,7 @@
 <div align="center">
-	<a href="https://github.com/webpack/webpack-cli">
-		<img width="200" height="200" src="https://webpack.js.org/assets/icon-square-big.svg">
-	</a>
+    <a href="https://github.com/webpack/webpack-cli">
+        <img width="200" height="200" src="https://webpack.js.org/assets/icon-square-big.svg">
+    </a>
 </div>
 
 <h1 align="center">webpack CLI</h1>
@@ -22,13 +22,13 @@
 [![lerna][lerna]][lerna-url]
 [![GitHub contributors][contributors]][contributors-url]
 
--   [About](#about)
-    -   [How to install](#how-to-install)
--   [Getting Started](#getting-started)
--   [webpack CLI Scaffolds](#webpack-cli-scaffolds)
--   [Commands](#commands)
--   [webpack.config.js](https://webpack.js.org/concepts/configuration/)
--   [Contributing and Internal Documentation](#contributing-and-internal-documentation)
+- [About](#about)
+  - [How to install](#how-to-install)
+- [Getting Started](#getting-started)
+- [webpack CLI Scaffolds](#webpack-cli-scaffolds)
+- [Commands](#commands)
+- [webpack.config.js](https://webpack.js.org/concepts/configuration/)
+- [Contributing and Internal Documentation](#contributing-and-internal-documentation)
 
 ## About
 
@@ -48,23 +48,29 @@ We organize webpack CLI as a multi-package repository using [lerna](https://gith
 
 Supporting developers is an important task for webpack CLI. Thus, webpack CLI provides different commands for many common tasks.
 
--   [`webpack-cli init`](./packages/init/README.md#webpack-cli-init) - Create a new webpack configuration.
--   [`webpack-cli add`](./packages/add/README.md#webpack-cli-add) - Add new properties to a webpack configuration file.
--   [`webpack-cli info`](./packages/info/README.md#webpack-cli-info) - Returns information related to the local environment.
--   [`webpack-cli migrate`](./packages/migrate/README.md#webpack-cli-migrate) - Migrate project from one version to another.
--   [`webpack-cli remove`](./packages/remove/README.md#webpack-cli-remove) - Remove properties from a webpack configuration file.
--   [`webpack-cli generate-plugin`](./packages/generate-plugin/README.md#webpack-cli-generate-plugin) - Initiate new plugin project.
--   [`webpack-cli generate-loader`](./packages/generate-loader/README.md#webpack-cli-generate-loader) - Initiate new loader project.
--   [`webpack-cli serve`](./packages/serve/README.md#webpack-cli-serve) - Use webpack with a development server that provides live reloading.
--   [`webpack-cli update`](./packages/update/README.md#webpack-cli-update) - Update properties in a webpack configuration file.
+- [`webpack-cli init`](./packages/init/README.md#webpack-cli-init) - Create a new webpack configuration.
+- [`webpack-cli add`](./packages/add/README.md#webpack-cli-add) - Add new properties to a webpack configuration file.
+- [`webpack-cli info`](./packages/info/README.md#webpack-cli-info) - Returns information related to the local environment.
+- [`webpack-cli migrate`](./packages/migrate/README.md#webpack-cli-migrate) - Migrate project from one version to another.
+- [`webpack-cli remove`](./packages/remove/README.md#webpack-cli-remove) - Remove properties from a webpack configuration file.
+- [`webpack-cli generate-plugin`](./packages/generate-plugin/README.md#webpack-cli-generate-plugin) - Initiate new plugin project.
+- [`webpack-cli generate-loader`](./packages/generate-loader/README.md#webpack-cli-generate-loader) - Initiate new loader project.
+- [`webpack-cli serve`](./packages/serve/README.md#webpack-cli-serve) - Use webpack with a development server that provides live reloading.
+- [`webpack-cli update`](./packages/update/README.md#webpack-cli-update) - Update properties in a webpack configuration file.
 
 ### Utilities
 
 The project also has several utility packages which are used by other commands
 
--   [`utils`](./packages/utils/README.md) - Several utilities used across webpack-cli.
--   [`generators`](./packages/generators/README.md) - Contains all webpack-cli related yeoman generators.
--   [`webpack-scaffold`](./packages/info/README.md#webpack-cli-info) - Utilities to create a webpack scaffold.
+<<<<<<< HEAD
+
+- [`utils`](./packages/utils/README.md) - Several utilities used across webpack-cli.
+- [`generators`](./packages/generators/README.md) - Contains all webpack-cli related yeoman generators.
+- # [`webpack-scaffold`](./packages/info/README.md#webpack-cli-info) - Utilities to create a webpack scaffold.
+- [`utils`](./packages/utils/README.md) - Several utilities used across webpack-cli.
+- [`generators`](./packages/generators/README.md) - Contains all webpack-cli related yeoman generators.
+- [`webpack-scaffold`](./packages/info/README.md#webpack-cli-info) - Utilities to create a webpack scaffold.
+  > > > > > > > d16404afee273887e8a91228185126015232aff9
 
 ## Getting started
 
@@ -79,7 +85,7 @@ You will be prompted for some questions about what how you want to generate your
 
 ## webpack CLI Scaffolds
 
-With v3 of webpack CLI, we introduced scaffolding as an integral part of the CLI. Our goal is to simplify the creation of webpack configurations for different purposes. Additionally, sharing such solutions with the community is beneficial and with webpack we want to allow this. We provide `webpack-scaffold` as a utility suite for creating these scaffolds. It contains functions that could be of use for creating a scaffold yourself.
+With v3 of webpack CLI, we introduced scaffolding as an integral part of the CLI. Our goal is to simplify the creation of webpack configurations for different purposes. Additionally, sharing such solutions with the community is beneficial and with webpack, we want to allow this. We provide `webpack-scaffold` as a utility suite for creating these scaffolds. It contains functions that could be of use for creating a scaffold yourself.
 
 You can read more about [Scaffolding](https://webpack.js.org/guides/scaffolding), learn [How to compose a webpack-scaffold?](https://webpack.js.org/contribute/writing-a-scaffold) or generate one with [webpack-scaffold-starter](https://github.com/rishabh3112/webpack-scaffold-starter).
 
@@ -94,17 +100,16 @@ The webpack family welcomes any contributor, small or big. We are happy to elabo
 [chat]: https://badges.gitter.im/webpack/webpack.svg
 [chat-url]: https://gitter.im/webpack/webpack
 [contributors]: https://img.shields.io/github/contributors/webpack/webpack-cli.svg
-[contributors-url]:https://github.com/webpack/webpack-cli/graphs/contributors
+[contributors-url]: https://github.com/webpack/webpack-cli/graphs/contributors
 [deps]: https://img.shields.io/david/webpack/webpack.svg
 [deps-url]: https://david-dm.org/webpack/webpack-cli
 [downloads]: https://img.shields.io/npm/dw/webpack-cli.svg
 [downloads-url]: https://www.npmjs.com/package/webpack-cli
 [lerna]: https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg
-
-[lerna-url]:http://www.lernajs.io/
+[lerna-url]: http://www.lernajs.io/
 [npm]: https://img.shields.io/npm/v/webpack-cli.svg
 [npm-url]: https://www.npmjs.com/package/webpack-cli
 [maintainability]: https://codeclimate.com/github/webpack/webpack-cli/badges/gpa.svg
 [maintainability-url]: https://codeclimate.com/github/webpack/webpack-cli
 [size]: https://packagephobia.now.sh/badge?p=webpack-cli
-[size-url]:https://packagephobia.now.sh/result?p=webpack-cli
+[size-url]: https://packagephobia.now.sh/result?p=webpack-cli

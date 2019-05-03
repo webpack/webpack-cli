@@ -1,6 +1,7 @@
 import chalk from "chalk";
 import * as logSymbols from "log-symbols";
-import Generator = require("yeoman-generator");
+import * as Generator from "yeoman-generator";
+import * as Inquirer from "inquirer";
 
 import { getPackageManager } from "@webpack-cli/utils/package-manager";
 import { Confirm, Input, List } from "@webpack-cli/webpack-scaffold";
@@ -52,7 +53,7 @@ export default class InitGenerator extends Generator {
 
 	// eslint-disable-next-line
 	public prompting(): any {
-		const done: () => void | boolean = this.async();
+		const done: () => {} = this.async();
 		const self: this = this;
 		let regExpForStyles: string;
 		let ExtractUseProps: object[];
@@ -83,7 +84,7 @@ export default class InitGenerator extends Generator {
 
 		return this.prompt([Confirm("entryType", "Will your application have multiple bundles?", false)])
 			.then(
-				(entryTypeAnswer: { entryType: boolean }): Promise<{}> => {
+				(entryTypeAnswer: { entryType: boolean }): Promise<void | {}> => {
 					// Ask different questions for entry points
 					return entryQuestions(self, entryTypeAnswer);
 				}
@@ -125,7 +126,7 @@ export default class InitGenerator extends Generator {
 				}
 			)
 			.then(
-				(): void => {
+				(): Promise<Inquirer.Answers> => {
 					this.isProd = this.usingDefaults ? true : false;
 					this.configuration.config.configName = this.isProd ? "prod" : "config";
 					if (!this.isProd) {
@@ -144,7 +145,7 @@ export default class InitGenerator extends Generator {
 				}
 			)
 			.then(
-				(): void => {
+				(): Promise<Inquirer.Answers> => {
 					return this.prompt([
 						List("stylingType", "Will you use one of the below CSS solutions?", [
 							"No",
@@ -319,7 +320,7 @@ export default class InitGenerator extends Generator {
 				}
 			)
 			.then(
-				(): void => {
+				(): Promise<Inquirer.Answers> => {
 					if (this.isProd) {
 						// Ask if the user wants to use extractPlugin
 						return this.prompt([
