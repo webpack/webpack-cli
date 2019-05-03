@@ -62,15 +62,9 @@ Supporting developers is an important task for webpack CLI. Thus, webpack CLI pr
 
 The project also has several utility packages which are used by other commands
 
-<<<<<<< HEAD
-
-- [`utils`](./packages/utils/README.md) - Several utilities used across webpack-cli.
-- [`generators`](./packages/generators/README.md) - Contains all webpack-cli related yeoman generators.
-- # [`webpack-scaffold`](./packages/info/README.md#webpack-cli-info) - Utilities to create a webpack scaffold.
 - [`utils`](./packages/utils/README.md) - Several utilities used across webpack-cli.
 - [`generators`](./packages/generators/README.md) - Contains all webpack-cli related yeoman generators.
 - [`webpack-scaffold`](./packages/info/README.md#webpack-cli-info) - Utilities to create a webpack scaffold.
-  > > > > > > > d16404afee273887e8a91228185126015232aff9
 
 ## Getting started
 
