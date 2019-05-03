@@ -19,9 +19,9 @@ interface CustomGenerator extends Generator {
 export default function entry(
 	self: CustomGenerator,
 	multiEntries: boolean,
-): Promise<object | string> {
+): Promise<void | {}> {
 	let entryIdentifiers: string[];
-	let result: Promise<{}>;
+	let result: Promise<void | {}>;
 	if (multiEntries) {
 		result = self
 			.prompt([

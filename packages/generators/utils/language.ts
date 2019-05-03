@@ -57,7 +57,7 @@ function getEntryFolders(self): string[] {
  * @returns {ModuleRule} A configuration containing the babel-loader with env preset
  */
 export function getBabelLoader(includeFolders: string[]): ModuleRule {
-	const include = includeFolders.map((folder: string) =>
+	const include = includeFolders.map((folder: string): string =>
 		`path.resolve(__dirname, '${folder}')`
 	);
 	return {
@@ -85,7 +85,7 @@ export function getBabelLoader(includeFolders: string[]): ModuleRule {
  * @returns {ModuleRule} A configuration containing the ts-loader
  */
 export function getTypescriptLoader(includeFolders: string[]): ModuleRule {
-	const include = includeFolders.map((folder: string) =>
+	const include = includeFolders.map((folder: string): string =>
 		`path.resolve(__dirname, '${folder}')`
 	);
 	return {

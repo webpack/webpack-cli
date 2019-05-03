@@ -1,7 +1,6 @@
 import chalk from "chalk";
 import * as logSymbols from "log-symbols";
 import * as Generator from "yeoman-generator";
-import * as Inquirer from "inquirer";
 import * as path from "path";
 
 import { getPackageManager } from "@webpack-cli/utils/package-manager";
@@ -142,7 +141,7 @@ export default class InitGenerator extends Generator {
 			`Alternatively, run "webpack(-cli) --help" for usage info\n\n`,
 		);
 
-		const { multiEntries }: { multiEntries: boolean } = await this.prompt([
+		const { multiEntries } = await this.prompt([
 				Confirm(
 					"multiEntries",
 					"Will your application have multiple bundles?",
@@ -150,7 +149,8 @@ export default class InitGenerator extends Generator {
 				),
 			]);
 
-		const entryOption: string | object = await entryQuestions(self, multiEntries);
+		// TODO string | object
+		const entryOption: void | {} = await entryQuestions(self, multiEntries);
 			
 		if (typeof entryOption === "string" && entryOption.length > 0) {
 			this.configuration.config.webpackOptions.entry = `${entryOption}`;
@@ -158,7 +158,7 @@ export default class InitGenerator extends Generator {
 			this.configuration.config.webpackOptions.entry = entryOption;
 		}
 
-		const { outputDir }: { outputDir: string } = await this.prompt([
+		const { outputDir } = await this.prompt([
 				Input(
 					"outputDir",
 					"In which folder do you want to store your generated bundles?",
@@ -186,7 +186,7 @@ export default class InitGenerator extends Generator {
 				`path.resolve(__dirname, '${outputDir}')`;
 		}
 	
-		const { langType }: { langType: string } = await this.prompt([
+		const { langType } = await this.prompt([
 				List("langType", "Will you use one of the below JS solutions?", [
 					LangType.ES6,
 					LangType.Typescript,
@@ -197,7 +197,7 @@ export default class InitGenerator extends Generator {
 		langQuestionHandler(this, langType);
 		this.langType = langType;
 
-		const { stylingType }: { stylingType: string } =  await this.prompt([
+		const { stylingType } =  await this.prompt([
 					List("stylingType", "Will you use one of the below CSS solutions?", [
 						"No",
 						StylingType.CSS,
@@ -211,7 +211,7 @@ export default class InitGenerator extends Generator {
 
 		if (this.isProd) {
 			// Ask if the user wants to use extractPlugin
-			const { useExtractPlugin }: { useExtractPlugin: string } = await this.prompt([
+			const { useExtractPlugin } = await this.prompt([
 				Input(
 					"useExtractPlugin",
 					"If you want to bundle your CSS files, what will you name the bundle? (press enter to skip)",
@@ -294,7 +294,8 @@ export default class InitGenerator extends Generator {
 		// Generate README
 		this.fs.copyTpl(
 			path.resolve(__dirname, "./templates/README.md"),
-			this.destinationPath("README.md")
+			this.destinationPath("README.md"),
+			{}
 		);
 
 		// Genrate tsconfig
