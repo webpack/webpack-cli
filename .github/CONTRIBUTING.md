@@ -56,7 +56,7 @@ In case you are suggesting a new feature, we will match your idea with our curre
 ## Setup
 
 - Install [Node.js](https://nodejs.org/) if you don't have it already.
-    _Note: Node 6 or greater would be better for "best results"._
+  _Note: Node 6 or greater would be better for "best results"._
 - Fork the **webpack-cli** repo at [https://github.com/webpack/webpack-cli](https://github.com/webpack/webpack-cli).
 - `git clone <your-clone-url> && cd webpack-cli`
 
@@ -64,41 +64,41 @@ In case you are suggesting a new feature, we will match your idea with our curre
 
 - Install the dependencies and link them:
 
-    ```bash
-    npm install
-    npm link
-    npm link webpack-cli
-    ```
+  ```bash
+  npm install
+  npm link
+  npm link webpack-cli
+  ```
 
 - Bootstrap all the submodules before building for the first time
 
-    ```bash
-    npm run bootstrap
-    npm run build
-    ```
+  ```bash
+  npm run bootstrap
+  npm run build
+  ```
 
 ### Using yarn
 
 - If you don't have yarn yet:
 
-    ```bash
-    npm install -g yarn
-    ```
+  ```bash
+  npm install -g yarn
+  ```
 
 - Install the dependencies and link them
 
-    ```bash
-    yarn
-    yarn link
-    yarn link webpack-cli
-    ```
+  ```bash
+  yarn
+  yarn link
+  yarn link webpack-cli
+  ```
 
 - Bootstrap all the submodules before building for the first time
 
-    ```bash
-    yarn bootstrap
-    yarn build
-    ```
+  ```bash
+  yarn bootstrap
+  yarn build
+  ```
 
 ## Running Tests
 
@@ -106,80 +106,79 @@ In case you are suggesting a new feature, we will match your idea with our curre
 
 - Run all the tests with:
 
-    ```bash
-    npm run test
-    ```
+  ```bash
+  npm run test
+  ```
 
 - Run CLI tests with:
 
-    ```bash
-    npm run test:cli
-    ```
+  ```bash
+  npm run test:cli
+  ```
 
 - Run tests of all packages:
 
-    ```bash
-    npm run test:packages
-    ```
+  ```bash
+  npm run test:packages
+  ```
 
 - Test a single CLI test case:
 
-    ```bash
-    npx jest path/to/my-test.js
-    ```
+  ```bash
+  npx jest path/to/my-test.js
+  ```
 
 - You can also install jest globally and run tests without npx:
 
-    ```bash
-    npm i -g jest
-    jest path/to/my-test.js
-    ```
+  ```bash
+  npm i -g jest
+  jest path/to/my-test.js
+  ```
 
 - You can run the linters:
 
-    ```bash
-    npm run lint
-    ```
+  ```bash
+  npm run lint
+  ```
 
 ### Using yarn
 
 - Run all the tests with:
 
-    ```bash
-    yarn test
-    ```
+  ```bash
+  yarn test
+  ```
 
 - Run CLI tests with:
 
-    ```bash
-    yarn test:cli`
-    ```
+  ```bash
+  yarn test:cli`
+  ```
 
 - Run tests of all packages:
 
-    ```bash
-    yarn test:packages
-    ```
+  ```bash
+  yarn test:packages
+  ```
 
 - Test a single CLI test case:
 
-    ```bash
-    yarn jest path/to/my-test.js
-    ```
+  ```bash
+  yarn jest path/to/my-test.js
+  ```
 
 - You can also install jest globally and run tests:
 
-    ```bash
-    yarn global add jest
-    jest path/to/my-test.js
-    ```
+  ```bash
+  yarn global add jest
+  jest path/to/my-test.js
+  ```
 
 - You can run the linters:
 
-    ```bash
-    yarn lint
-    ```
-
+  ```bash
+  yarn lint
+  ```
 
 ## Editor Config
 
@@ -258,6 +257,7 @@ format that includes a **type** and a **subject**:
 ```md
 <type>: <subject>
 <BLANK LINE>
+
 <body>
 <BLANK LINE>
 <footer>
@@ -330,10 +330,10 @@ Each test will refer to an input webpack config snippet.
 Conventionally we write them in `\_\_testfixtures\_\_`.
 
 ```js
-const defineTest = require('../defineTest');
+const defineTest = require("../defineTest");
 
-defineTest(__dirname, 'transform-name.input1.js');
-defineTest(__dirname, 'transform-name.input2.js');
+defineTest(__dirname, "transform-name.input1.js");
+defineTest(__dirname, "transform-name.input2.js");
 ```
 
 `defineTest` is a helper test method which helps us to run tests on all the transforms uniformly.

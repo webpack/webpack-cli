@@ -1,8 +1,9 @@
+import * as Generator from "yeoman-generator";
 import { InputValidate } from "@webpack-cli/webpack-scaffold";
 
 import validate from "./validate";
 
-interface Entry extends Yeoman {
+interface CustomGenerator extends Generator {
 	usingDefaults?: boolean;
 }
 
@@ -16,13 +17,13 @@ interface Entry extends Yeoman {
  */
 
 export default function entry(
-	self: Entry,
+	self: CustomGenerator,
 	answer: {
 		entryType: boolean;
 	}
-): Promise<{}> {
+): Promise<void | {}> {
 	let entryIdentifiers: string[];
-	let result: Promise<{}>;
+	let result: Promise<void | {}>;
 	if (answer.entryType) {
 		result = self
 			.prompt([
@@ -39,7 +40,7 @@ export default function entry(
 
 					function forEachPromise(
 						entries: string[],
-						fn: (entryProp: string) => Promise<{} | void>
+						fn: (entryProp: string) => Promise<void | {}>
 					): Promise<void | {}> {
 						return entries.reduce((promise: Promise<{}>, prop: string): Promise<void | {}> => {
 							const trimmedProp: string = prop.trim();
@@ -71,7 +72,7 @@ export default function entry(
 					}
 					return forEachPromise(
 						entryIdentifiers,
-						(entryProp: string): Promise<{} | void> =>
+						(entryProp: string): Promise<void | {}> =>
 							self.prompt([
 								InputValidate(
 									`${entryProp}`,
