@@ -48,13 +48,14 @@ export default function modifyHelperUtil(
 	: Function {
 
 	let configPath: string | null = null;
+	const usingCLI: boolean = mode === "CLI";
 
 	if (action !== "init") {
 		configPath = path.resolve(process.cwd(), configFile);
 		const webpackConfigExists: boolean = fs.existsSync(configPath);
 		// Check not required for UI
 		if (webpackConfigExists) {
-			if (mode === "CLI") {
+			if (usingCLI) {
 				process.stdout.write(
 					"\n" +
 						logSymbols.success +
@@ -65,7 +66,7 @@ export default function modifyHelperUtil(
 				);
 			}
 		} else {
-			if (mode === "CLI") {
+			if (usingCLI) {
 				process.stdout.write(
 					"\n" +
 						logSymbols.error +
@@ -96,7 +97,7 @@ export default function modifyHelperUtil(
 		};
 	}
 
-	if (mode !== "CLI") {
+	if (!usingCLI) {
 		/**
 		 * TODO: overide generator's prompt method
 		 * 		 with that of socket's method
@@ -110,7 +111,7 @@ export default function modifyHelperUtil(
 	}
 	env.registerStub(generator, generatorName);
 
-	env.run(generatorName).then((_: void) => {
+	env.run(generatorName).then(() => {
 		let configModule: object;
 		try {
 			const confPath = path.resolve(process.cwd(), ".yo-rc.json");
@@ -125,7 +126,7 @@ export default function modifyHelperUtil(
 			});
 			configModule = tmpConfig;
 		} catch (err) {
-			if (mode === "CLI") {
+			if (usingCLI) {
 				console.error(
 					chalk.red("\nCould not find a yeoman configuration file.\n"),
 				);
@@ -149,7 +150,7 @@ export default function modifyHelperUtil(
 		);
 
 		runTransform(transformConfig, action);
-		if (mode === "CLI") {
+		if (usingCLI) {
 			const initActionNotDefined: boolean = action && action !== "init" ? true : false;
 			if (initActionNotDefined && transformConfig.config.item) {
 				process.stdout.write(
@@ -172,7 +173,7 @@ export default function modifyHelperUtil(
 		}
 		return true;
 	}).catch((err) => {
-		if (mode === "CLI") {
+		if (usingCLI) {
 			console.error(
 				chalk.red(
 					`
