@@ -1,6 +1,6 @@
 # webpack-cli info
 
-[![npm](https://img.shields.io/npm/dm/@webpack-cli/info.svg)](https://www.npmjs.com/package/@webpack-cli/info)
+[![NPM Downloads][downloads]][downloads-url]
 
 ## Description
 
@@ -26,3 +26,6 @@ envinfo();
 ```bash
 npx webpack-cli info
 ```
+
+[downloads]: https://img.shields.io/npm/dm/@webpack-cli/info.svg
+[downloads-url]: https://www.npmjs.com/package/@webpack-cli/info

@@ -1,6 +1,6 @@
 # webpack-cli serve
 
-[![npm](https://img.shields.io/npm/dm/@webpack-cli/serve.svg)](https://www.npmjs.com/package/@webpack-cli/serve)
+[![NPM Downloads][downloads]][downloads-url]
 
 ## Description
 
@@ -28,3 +28,6 @@ serve();
 ```bash
 npx webpack-cli serve
 ```
+
+[downloads]: https://img.shields.io/npm/dm/@webpack-cli/serve.svg
+[downloads-url]: https://www.npmjs.com/package/@webpack-cli/serve

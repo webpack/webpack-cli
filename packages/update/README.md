@@ -1,6 +1,6 @@
 # webpack-cli update
 
-[![npm](https://img.shields.io/npm/dm/@webpack-cli/update.svg)](https://www.npmjs.com/package/@webpack-cli/update)
+[![NPM Downloads][downloads]][downloads-url]
 
 ## Description
 
@@ -28,3 +28,6 @@ update();
 ```bash
 npx webpack-cli update
 ```
+
+[downloads]: https://img.shields.io/npm/dm/@webpack-cli/update.svg
+[downloads-url]: https://www.npmjs.com/package/@webpack-cli/update

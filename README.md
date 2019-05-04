@@ -11,16 +11,16 @@
 </p>
 <br>
 
-[![npm](https://img.shields.io/npm/v/webpack-cli.svg)](https://www.npmjs.com/package/webpack-cli)
-[![Build Status](https://travis-ci.org/webpack/webpack-cli.svg)](https://travis-ci.org/webpack/webpack-cli)
-[![Build2 Status](https://dev.azure.com/webpack/webpack/_apis/build/status/webpack.webpack-cli)](https://dev.azure.com/webpack/webpack/_build/latest?definitionId=4)
+[![npm][npm]][npm-url]
+[![Build Status][build-status]][build-status-url]
+[![Build2 Status][build-status-azure]][build-status-azure-url]
 [![deps][deps]][deps-url]
-[![Code Climate](https://codeclimate.com/github/webpack/webpack-cli/badges/gpa.svg)](https://codeclimate.com/github/webpack/webpack-cli)
-[![chat on gitter](https://badges.gitter.im/webpack/webpack.svg)](https://gitter.im/webpack/webpack)
-[![Install Size](https://packagephobia.now.sh/badge?p=webpack-cli)](https://packagephobia.now.sh/result?p=webpack-cli)
-[![npm](https://img.shields.io/npm/dw/webpack-cli.svg)](https://www.npmjs.com/package/webpack-cli)
-[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/)
-[![GitHub contributors](https://img.shields.io/github/contributors/webpack/webpack-cli.svg)](https://github.com/webpack/webpack-cli/graphs/contributors)
+[![Code Climate][maintainability]][maintainability-url]
+[![chat on gitter][chat]][chat-url]
+[![Install Size][size]][size-url]
+[![Downloads][downloads]][downloads-url]
+[![lerna][lerna]][lerna-url]
+[![GitHub contributors][contributors]][contributors-url]
 
 - [About](#about)
 	- [How to install](#how-to-install)
@@ -89,11 +89,29 @@ You can read more about [Scaffolding](https://webpack.js.org/guides/scaffolding)
 
 The webpack family welcomes any contributor, small or big. We are happy to elaborate, guide you through the source code and find issues you might want to work on! To get started have a look at our [documentation on contributing](./.github/CONTRIBUTING.md).
 
-[deps]: https://img.shields.io/david/webpack/webpack.svg
-[deps-url]: https://david-dm.org/webpack/webpack-cli
-
 ## Open Collective
 
 If you like **webpack**, please consider donating to our [Open Collective](https://opencollective.com/webpack) to help us maintain it.
 
 We show this message in the terminal once a week, if you want you can disable it by setting the environment variable `DISABLE_OPENCOLLECTIVE=true` or `CI=true`.
+
+[build-status]: https://travis-ci.org/webpack/webpack-cli.svg
+[build-status-url]: https://travis-ci.org/webpack/webpack-cli
+[build-status-azure]: https://dev.azure.com/webpack/webpack/_apis/build/status/webpack.webpack-cli
+[build-status-azure-url]: https://dev.azure.com/webpack/webpack/_build/latest?definitionId=4
+[chat]: https://badges.gitter.im/webpack/webpack.svg
+[chat-url]: https://gitter.im/webpack/webpack
+[contributors]: https://img.shields.io/github/contributors/webpack/webpack-cli.svg
+[contributors-url]: https://github.com/webpack/webpack-cli/graphs/contributors
+[deps]: https://img.shields.io/david/webpack/webpack.svg
+[deps-url]: https://david-dm.org/webpack/webpack-cli
+[downloads]: https://img.shields.io/npm/dw/webpack-cli.svg
+[downloads-url]: https://www.npmjs.com/package/webpack-cli
+[lerna]: https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg
+[lerna-url]: http://www.lernajs.io/
+[npm]: https://img.shields.io/npm/v/webpack-cli.svg
+[npm-url]: https://www.npmjs.com/package/webpack-cli
+[maintainability]: https://codeclimate.com/github/webpack/webpack-cli/badges/gpa.svg
+[maintainability-url]: https://codeclimate.com/github/webpack/webpack-cli
+[size]: https://packagephobia.now.sh/badge?p=webpack-cli
+[size-url]: https://packagephobia.now.sh/result?p=webpack-cli
