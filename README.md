@@ -23,12 +23,14 @@
 [![GitHub contributors][contributors]][contributors-url]
 
 - [About](#about)
-  - [How to install](#how-to-install)
-- [Getting Started](#getting-started)
+	- [How to install](#how-to-install)
+- [Packages](#packages)
+	- [Commands](#commands)
+	- [Utilities](#utilities)
+- [Getting started](#getting-started)
 - [webpack CLI Scaffolds](#webpack-cli-scaffolds)
-- [Commands](#commands)
-- [webpack.config.js](https://webpack.js.org/concepts/configuration/)
 - [Contributing and Internal Documentation](#contributing-and-internal-documentation)
+- [Open Collective](#open-collective)
 
 ## About
 
@@ -86,6 +88,12 @@ You can read more about [Scaffolding](https://webpack.js.org/guides/scaffolding)
 ## Contributing and Internal Documentation
 
 The webpack family welcomes any contributor, small or big. We are happy to elaborate, guide you through the source code and find issues you might want to work on! To get started have a look at our [documentation on contributing](./.github/CONTRIBUTING.md).
+
+## Open Collective
+
+If you like **webpack**, please consider donating to our [Open Collective](https://opencollective.com/webpack) to help us maintain it.
+
+We show this message in the terminal once a week, if you want you can disable it by setting the environment variable `DISABLE_OPENCOLLECTIVE=true` or `CI=true`.
 
 [build-status]: https://travis-ci.org/webpack/webpack-cli.svg
 [build-status-url]: https://travis-ci.org/webpack/webpack-cli
