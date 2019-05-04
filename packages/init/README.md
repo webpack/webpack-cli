@@ -1,6 +1,6 @@
 # webpack-cli init
 
-[![npm](https://img.shields.io/npm/dm/@webpack-cli/init.svg)](https://www.npmjs.com/package/@webpack-cli/init)
+[![NPM Downloads][downloads]][downloads-url]
 
 ## Description
 
@@ -49,3 +49,6 @@ npx webpack-cli init webpack-scaffold-[name]
 ```bash
 npx webpack-cli init [path]
 ```
+
+[downloads]: https://img.shields.io/npm/dm/@webpack-cli/init.svg
+[downloads-url]: https://www.npmjs.com/package/@webpack-cli/init

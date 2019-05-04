@@ -1,6 +1,6 @@
 # webpack-cli generate-plugin
 
-[![npm](https://img.shields.io/npm/dm/@webpack-cli/generate-plugin.svg)](https://www.npmjs.com/package/@webpack-cli/generate-plugin)
+[![NPM Downloads][downloads]][downloads-url]
 
 ## Description
 
@@ -28,3 +28,6 @@ generatePlugin();
 ```bash
 npx webpack-cli generate-plugin
 ```
+
+[downloads]: https://img.shields.io/npm/dm/@webpack-cli/generate-plugin.svg
+[downloads-url]: https://www.npmjs.com/package/@webpack-cli/generate-plugin

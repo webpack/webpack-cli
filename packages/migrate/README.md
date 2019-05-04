@@ -1,6 +1,6 @@
 # webpack-cli migrate
 
-[![npm](https://img.shields.io/npm/dm/@webpack-cli/migrate.svg)](https://www.npmjs.com/package/@webpack-cli/migrate)
+[![npm][downloads]][downloads-url]
 
 ## Description
 
@@ -30,3 +30,6 @@ migrate(null, null, inputPath, outputPath);
 ```bash
 npx webpack-cli migrate
 ```
+
+[downloads]: https://img.shields.io/npm/dm/@webpack-cli/migrate.svg
+[downloads-url]: https://www.npmjs.com/package/@webpack-cli/migrate

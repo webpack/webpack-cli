@@ -1,6 +1,6 @@
 # webpack-cli remove
 
-[![npm](https://img.shields.io/npm/dm/@webpack-cli/remove.svg)](https://www.npmjs.com/package/@webpack-cli/remove)
+[![NPM Downloads][downloads]][downloads-url]
 
 ## Description
 
@@ -28,3 +28,6 @@ remove();
 ```bash
 npx webpack-cli remove
 ```
+
+[downloads]: https://img.shields.io/npm/dm/@webpack-cli/remove.svg
+[downloads-url]: https://www.npmjs.com/package/@webpack-cli/remove
