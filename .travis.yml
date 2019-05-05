@@ -13,11 +13,8 @@ cache:
 matrix:
     include:
         - os: linux
-          node_js: "stable"
+          node_js: "12"
           env: JOB_PART=lint
-        - os: linux
-          node_js: "stable"
-          env: JOB_PART=integration
         - os: linux
           node_js: "12"
           env: JOB_PART=integration
