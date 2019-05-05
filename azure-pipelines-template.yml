@@ -14,11 +14,13 @@ jobs:
         node-6:
           node_version: ^6.14.4
     steps:
-      - task: Npm@1
+      - task: NodeTool@0
+        displayName: "Install Node.js"
         inputs:
-          command: custom
-          customCommand: i -g npm@latest
-        displayName: "Install latest NPM"
+          versionSpec: $(node_version)
+      - script: |
+          npm install -g npm@latest
+        displayName: "Install npm"
       - script: |
           node -v
           npm -v
@@ -31,12 +33,12 @@ jobs:
           npm run test
         displayName: "Run tests"
       - task: PublishTestResults@2
+        displayName: "Publish Test Results"
         inputs:
           testResultsFiles: "**junit*.xml"
           testRunTitle: TestRun $ {{ parameters.name }} $(node_version)
-        displayName: "Publish Test Results"
       - task: PublishCodeCoverageResults@1
+        displayName: "Publish code coverage results"
         inputs: 
           codeCoverageTool: "cobertura"
           summaryFileLocation: "**/coverage/cobertura-coverage.xml"
-        displayName: "Publish code coverage results"
