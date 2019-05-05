@@ -27,7 +27,7 @@ jobs:
         displayName: "Print version"
       - script: |
           npm ci
-          npm run bootstrap
+          npm run bootstrap:ci
         displayName: "Lerna bootstrap"
       - script: |
           npm run test
