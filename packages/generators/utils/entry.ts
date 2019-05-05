@@ -18,12 +18,10 @@ interface CustomGenerator extends Generator {
 
 export default function entry(
 	self: CustomGenerator,
-	answer: {
-		entryType: boolean;
-	}
-): Promise<void | {}> {
+	answer: Generator.Answers
+): Promise<string|object> {
 	let entryIdentifiers: string[];
-	let result: Promise<void | {}>;
+	let result: Promise<string|object>;
 	if (answer.entryType) {
 		result = self
 			.prompt([
@@ -34,7 +32,7 @@ export default function entry(
 				)
 			])
 			.then(
-				(multipleEntriesAnswer: { multipleEntries: string }): Promise<void | {}> => {
+				(multipleEntriesAnswer: { multipleEntries: string }): Promise<string|object> => {
 					const webpackEntryPoint: object = {};
 					entryIdentifiers = multipleEntriesAnswer.multipleEntries.split(",");
 

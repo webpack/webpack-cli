@@ -115,9 +115,7 @@ export default class AddGenerator extends Generator {
 		// eslint-disable-next-line
 		const isDeepProp: any[] = [false, false];
 
-		const actionTypeAnswer: {
-			actionType: string,
-		} =  await this.prompt([
+		const actionTypeAnswer: Generator.Answers =  await this.prompt([
 			AutoComplete(
 				"actionType",
 				"What property do you want to add to?",
@@ -137,9 +135,7 @@ export default class AddGenerator extends Generator {
 		action = actionTypeAnswer.actionType;
 
 		if (action === "entry") {
-			const entryTypeAnswer: {
-				entryType: boolean,
-			} = await this.prompt([
+			const entryTypeAnswer: Generator.Answers = await this.prompt([
 				Confirm("entryType", "Will your application have multiple bundles?", false),
 			]);
 
@@ -152,9 +148,7 @@ export default class AddGenerator extends Generator {
 		} else {
 			if (action === "topScope") {
 
-				const topScopeAnswer: {
-					topScope: string,
-				} = await this.prompt([
+				const topScopeAnswer: Generator.Answers = await this.prompt([
 					Input("topScope", "What do you want to add to topScope?"),
 				]);
 
