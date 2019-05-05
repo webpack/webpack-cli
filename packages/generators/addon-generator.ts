@@ -1,16 +1,14 @@
 import * as mkdirp from "mkdirp";
 import * as path from "path";
-import Generator = require("yeoman-generator");
+import * as Generator from "yeoman-generator";
 
 import * as copyUtils from "@webpack-cli/utils/copy-utils";
-import { InquirerScaffoldObject } from "@webpack-cli/webpack-scaffold";
-import { YeoGenerator } from "../generate-loader/types/Yeoman";
 
 /**
  * Creates a Yeoman Generator that generates a project conforming
  * to webpack-defaults.
  *
- * @param {any[]} prompts An array of Yeoman prompt objects
+ * @param {Generator.Questions} prompts An array of Yeoman prompt objects
  *
  * @param {string} templateDir Absolute path to template directory
  *
@@ -27,21 +25,23 @@ import { YeoGenerator } from "../generate-loader/types/Yeoman";
  *
  * @returns {Generator} A class extending Generator
  */
-export default function addonGenerator(
-	prompts: InquirerScaffoldObject[],
+const addonGenerator = (
+	prompts: Generator.Questions,
 	templateDir: string,
 	copyFiles: string[],
 	copyTemplateFiles: string[],
 	templateFn: Function
-): YeoGenerator {
-	return class AddOnGenerator extends Generator {
-		public props: InquirerScaffoldObject;
+): typeof Generator => class AddonGenerator extends Generator {
+		public props: Generator.Question;
 		public copy: (value: string, index: number, array: string[]) => void;
 		public copyTpl: (value: string, index: number, array: string[]) => void;
 
-		public async prompting(): Promise<void> {
-			const scaffoldObject: InquirerScaffoldObject = await this.prompt(prompts);
-			this.props = scaffoldObject;
+		public prompting(): Promise<void | {}> {
+			return this.prompt(prompts).then(
+				(props: Generator.Question): void => {
+					this.props = props;
+				}
+			);
 		}
 
 		public default(): void {
@@ -80,4 +80,5 @@ export default function addonGenerator(
 			this.spawnCommand("npm", ["run", "defaults"]);
 		}
 	};
-}
+
+export default addonGenerator;

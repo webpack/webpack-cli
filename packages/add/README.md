@@ -1,6 +1,6 @@
 # webpack-cli add
 
-[![npm](https://img.shields.io/npm/dm/@webpack-cli/add.svg)](https://www.npmjs.com/package/@webpack-cli/add)
+[![NPM downloads][downloads]][downloads-url]
 
 ## Description
 
@@ -34,3 +34,6 @@ add();
 ```bash
 npx webpack-cli add
 ```
+
+[downloads]: https://img.shields.io/npm/dm/@webpack-cli/add.svg
+[downloads-url]: https://www.npmjs.com/package/@webpack-cli/add

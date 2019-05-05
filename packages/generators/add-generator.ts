@@ -1,4 +1,4 @@
-import Generator = require("yeoman-generator");
+import * as Generator from "yeoman-generator";
 
 import * as glob from "glob-all";
 import * as autoComplete from "inquirer-autocomplete-prompt";
@@ -7,7 +7,7 @@ import * as path from "path";
 import npmExists from "@webpack-cli/utils/npm-exists";
 import { getPackageManager } from "@webpack-cli/utils/package-manager";
 import PROP_TYPES from "@webpack-cli/utils/prop-types";
-import { AutoComplete, Confirm, InquirerInput, Input, List } from "@webpack-cli/webpack-scaffold";
+import { AutoComplete, Confirm, Input, List } from "@webpack-cli/webpack-scaffold";
 
 import { SchemaProperties, WebpackOptions, SchemaProperty } from "./types";
 import entryQuestions from "./utils/entry";
@@ -105,9 +105,9 @@ export default class AddGenerator extends Generator {
 	public async prompting(): Promise<void> {
 		let action: string;
 		const self: this = this;
-		const manualOrListInput: (promptAction: string) => InquirerInput = (promptAction: string): InquirerInput =>
+		const manualOrListInput: (promptAction: string) => Generator.Question = (promptAction: string): Generator.Question =>
 			Input("actionAnswer", `What do you want to add to ${promptAction}?`);
-		let inputPrompt: InquirerInput;
+		let inputPrompt: Generator.Question;
 
 		// first index indicates if it has a deep prop, 2nd indicates what kind of
 		// TODO: this must be reviewed. It starts as an array of booleans but after that it get overridden

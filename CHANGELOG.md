@@ -1,3 +1,105 @@
+ <a name="3.3.2"></a>
+# 3.3.2 (2019-05-04)
+[Full Changelog](https://github.com/webpack/webpack-cli/compare/v0.1.5...v3.3.2)
+
+## New Features
+
+* opencollective prompt: add option to disable it + doc ([d4643ae](https://github.com/webpack/webpack-cli/commit/d4643ae))
+* terser: clean old files ([89e6b74](https://github.com/webpack/webpack-cli/commit/89e6b74))
+* terser: remove leftover files ([27d5b4d](https://github.com/webpack/webpack-cli/commit/27d5b4d))
+* terser: replace after merging master ([c404655](https://github.com/webpack/webpack-cli/commit/c404655))
+* replace Uglify with Terser in generators ([2b8651b](https://github.com/webpack/webpack-cli/commit/2b8651b))
+* use terserPlugin in loaderOptionsPlugin ([14f5337](https://github.com/webpack/webpack-cli/commit/14f5337))
+* use terserJsPlugin for transformations during migrate ([33c6185](https://github.com/webpack/webpack-cli/commit/33c6185))
+* replace uglifyJsPlugin with terserPlugin in migrate ([d467f3b](https://github.com/webpack/webpack-cli/commit/d467f3b))
+* opencollective prompt: work on windows setting atime by code ([3af73a8](https://github.com/webpack/webpack-cli/commit/3af73a8))
+* opencollective prompt: fix typo ([c2351b1](https://github.com/webpack/webpack-cli/commit/c2351b1))
+* opencollective prompt: remove .lastocprint file from fs ([b96ad56](https://github.com/webpack/webpack-cli/commit/b96ad56))
+* opencollective prompt: extract weekday to variable ([790d27a](https://github.com/webpack/webpack-cli/commit/790d27a))
+* opencollective prompt: set terminal cols to 80 ([badc32d](https://github.com/webpack/webpack-cli/commit/badc32d))
+* opencollective prompt: fix azure ci ([ea0039a](https://github.com/webpack/webpack-cli/commit/ea0039a))
+* opencollective prompt: lint ([ea906d8](https://github.com/webpack/webpack-cli/commit/ea906d8))
+* opencollective prompt: clear package.json modifications ([f080733](https://github.com/webpack/webpack-cli/commit/f080733))
+* opencollective prompt: add prompt in postinstall script ([dd9d528](https://github.com/webpack/webpack-cli/commit/dd9d528))
+
+## Ast
+
+* change tooltip property from uglify to terser ([ea9e4b8](https://github.com/webpack/webpack-cli/commit/ea9e4b8))
+* replace requires and inits for uglify with terser ([3011a6c](https://github.com/webpack/webpack-cli/commit/3011a6c))
+* replace UglifyJsPlugin with TerserPlugin ([21da35f](https://github.com/webpack/webpack-cli/commit/21da35f))
+
+## Chore
+
+* cli: move constants to a separate file ([#798](https://github.com/webpack/webpack-cli/pull/798))
+* deps: fix security vulnerabilities ([#857](https://github.com/webpack/webpack-cli/pull/857))
+* deps: upgrade lerna to fix vulnerabilities & update webpack-dev-server ([#823](https://github.com/webpack/webpack-cli/pull/823))
+* docs: minor fixes in the docs ([#874](https://github.com/webpack/webpack-cli/pull/874))
+* docs: removes scaffolding docs from the root ([8c1db03](https://github.com/webpack/webpack-cli/commit/8c1db03))
+* junit: reverting the junit.xml ([80fd4fa](https://github.com/webpack/webpack-cli/commit/80fd4fa))
+* travis: removed stable ([#871](https://github.com/webpack/webpack-cli/pull/871))
+* types: move to @types/yeoman-generator ([#869](https://github.com/webpack/webpack-cli/pull/869))
+* addon generator to async/await ([#849](https://github.com/webpack/webpack-cli/pull/849))
+* v.3.1.1 ([d3f8e20](https://github.com/webpack/webpack-cli/commit/d3f8e20))
+* tests: updated test regex, some helper scripts ([#809](https://github.com/webpack/webpack-cli/pull/809))
+* types: add type information ([#791](https://github.com/webpack/webpack-cli/pull/791))
+* replace instances of uglify with terser ([f9cb8ce](https://github.com/webpack/webpack-cli/commit/f9cb8ce))
+* use actual package name in comment about removing uglify ([b1cf4cc](https://github.com/webpack/webpack-cli/commit/b1cf4cc))
+* align file in the same way as other terserPlugin test fixtures ([b6c6484](https://github.com/webpack/webpack-cli/commit/b6c6484))
+* remove gitHash from package.json ([2af08be](https://github.com/webpack/webpack-cli/commit/2af08be))
+
+## Docs
+
+* code of conduct ([#873](https://github.com/webpack/webpack-cli/pull/873))
+* contribute: adds table of contents and info about dependencies. ([#842](https://github.com/webpack/webpack-cli/pull/842))
+* contributing: fixes dead  link ([#835](https://github.com/webpack/webpack-cli/pull/835))
+* opencollective prompt: improve code clarity ([55992a4](https://github.com/webpack/webpack-cli/commit/55992a4))
+* packages: adds downloads/month shield ([6a0375a](https://github.com/webpack/webpack-cli/commit/6a0375a))
+* readme: fix typos, add summary of all commands ([#845](https://github.com/webpack/webpack-cli/pull/845))
+* readme: adds contributors shield ([958d064](https://github.com/webpack/webpack-cli/commit/958d064))
+* README: phrase change ([3a11a16](https://github.com/webpack/webpack-cli/commit/3a11a16))
+* README: add link to webpack-scaffold-starter ([e35a194](https://github.com/webpack/webpack-cli/commit/e35a194))
+* README: update scaffolding links ([74179b5](https://github.com/webpack/webpack-cli/commit/74179b5))
+* serve: link to webpack-dev-server ([cb68b1b](https://github.com/webpack/webpack-cli/commit/cb68b1b))
+* serve: update docs to use webpack-dev-server ([f7451d4](https://github.com/webpack/webpack-cli/commit/f7451d4))
+* replace tooltip link to terser plugin ([4254730](https://github.com/webpack/webpack-cli/commit/4254730))
+* replace Uglify with Terser in comments ([799577d](https://github.com/webpack/webpack-cli/commit/799577d))
+* replace UglifyJsPlugin with TerserPlugin in migrate docs ([326f783](https://github.com/webpack/webpack-cli/commit/326f783))
+
+## Enh
+
+* webpack-scaffold: improve prompt and doc ([#794](https://github.com/webpack/webpack-cli/pull/794))
+
+## Fix
+
+* add: add types ([d4ce6f2](https://github.com/webpack/webpack-cli/commit/d4ce6f2))
+* add: fix runTransform ([dbc3e9e](https://github.com/webpack/webpack-cli/commit/dbc3e9e))
+* add: lint code ([163b309](https://github.com/webpack/webpack-cli/commit/163b309))
+* add: add handling for topScope ([1162cf5](https://github.com/webpack/webpack-cli/commit/1162cf5))
+* bin, serve: force default package export, add serve default ([#815](https://github.com/webpack/webpack-cli/pull/815))
+* init: refactored the init.ts success message ([#810](https://github.com/webpack/webpack-cli/pull/810))
+* opencollective prompt: fix grammar ([246db42](https://github.com/webpack/webpack-cli/commit/246db42))
+* opencollective-prompt: check write permissions ([5284b7e](https://github.com/webpack/webpack-cli/commit/5284b7e))
+* scaffold: config file is always generated at the project root ([#801](https://github.com/webpack/webpack-cli/pull/801))
+* utils: refactors utils ([7fe3543](https://github.com/webpack/webpack-cli/commit/7fe3543))
+* clear up comment about default function purpose ([e48507d](https://github.com/webpack/webpack-cli/commit/e48507d))
+* remove unused files ([ec242ab](https://github.com/webpack/webpack-cli/commit/ec242ab))
+* reset files ([9863445](https://github.com/webpack/webpack-cli/commit/9863445))
+* replace lookups for TerserPlugin in webpack.optimise ([ef23fec](https://github.com/webpack/webpack-cli/commit/ef23fec))
+
+## Tests
+
+* update snapshots ([ce9fbc8](https://github.com/webpack/webpack-cli/commit/ce9fbc8))
+* replace uglify with terser in ast-utils tests ([73f493f](https://github.com/webpack/webpack-cli/commit/73f493f))
+* migration: typescript ([#613](https://github.com/webpack/webpack-cli/pull/613))
+
+## Misc
+
+* chore(docs): Refactors links for badges ([#859](https://github.com/webpack/webpack-cli/pull/859))
+* opencollective-prompt: improve grammar ([e17a26d](https://github.com/webpack/webpack-cli/commit/e17a26d))
+* Remove tslint in favour of eslint ([#834](https://github.com/webpack/webpack-cli/pull/834))
+* cli: refactor functions into utils and config dirs, merge yargs options ([#781](https://github.com/webpack/webpack-cli/pull/781))
+* utils: refactors scaffold ([0b28fb3](https://github.com/webpack/webpack-cli/commit/0b28fb3))
+
  <a name="3.3.1"></a>
 # 3.3.1 (2019-04-21)
 [Full Changelog](https://github.com/webpack/webpack-cli/compare/v0.1.5...v3.3.1)
