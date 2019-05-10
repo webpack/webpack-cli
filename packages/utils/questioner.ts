@@ -1,5 +1,5 @@
 import * as net from "net";
-
+import * as Generator from 'yeoman-generator'
 export default class Questioner {
 
 	public port: number;
@@ -8,11 +8,11 @@ export default class Questioner {
 	private client: net.Socket;
 	private server: net.Server;
 
-	constructor() {
+	public constructor() {
 		this.hasStarted = false;
 	}
 
-	public question(ques: object|Array<object>): Promise<object|void> {
+	public question(ques: Generator.Question): Promise<object|void> {
 
 		return new Promise((resolve, reject) => {
 			if (!this.hasStarted) {
