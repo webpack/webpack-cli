@@ -7,6 +7,7 @@ import * as Generator from "yeoman-generator";
 
 
 import runTransform from "./scaffold";
+import Questioner from "./questioner";
 
 export interface Config extends Object {
 	item?: {
@@ -98,16 +99,8 @@ export default function modifyHelperUtil(
 	}
 
 	if (!usingCLI) {
-		/**
-		 * TODO: overide generator's prompt method
-		 * 		 with that of socket's method
-		 * For example:
-		 * 	generator = class extends generator {
-				public prompt(): any {
-					
-				}
-			}
-		 */
+		const questioner = new Questioner();
+		generator.prototype.prompt = questioner.question;
 	}
 	env.registerStub(generator, generatorName);
 
