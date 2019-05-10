@@ -1,5 +1,6 @@
 import * as net from "net";
-import * as Generator from 'yeoman-generator'
+import * as Generator from 'yeoman-generator';
+import {Answers} from 'inquirer';
 export default class Questioner {
 
 	public port: number;
@@ -12,7 +13,7 @@ export default class Questioner {
 		this.hasStarted = false;
 	}
 
-	public question(ques: Generator.Question): Promise<object|void> {
+	public question(ques: Generator.Question): Promise<Answers> {
 
 		return new Promise((resolve, reject) => {
 			if (!this.hasStarted) {
