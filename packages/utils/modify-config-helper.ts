@@ -58,13 +58,14 @@ export default function modifyHelperUtil(
 					chalk.cyan(configFile + "\n") +
 					"\n"
 			);
+
 		} else {
 			process.stdout.write(
 				"\n" +
 					logSymbols.error +
 					chalk.red(" ERROR ") +
 					chalk.cyan(configFile) +
-					" not found. Please specify a valid path to your webpack config like " +
+					" not found. Please specify a valid path to your webpack config like \n " +
 					chalk.white("$ ") +
 					chalk.cyan(`webpack-cli ${action} webpack.dev.js`) +
 					"\n"
@@ -89,8 +90,9 @@ export default function modifyHelperUtil(
 	}
 	env.registerStub(generator, generatorName);
 
-	env.run(generatorName)
-		.then(
+	env.run(generatorName,{
+		configFile
+	}).then(
 			(): void => {
 				let configModule: object;
 				try {
