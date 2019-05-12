@@ -32,7 +32,7 @@ export default class RemoveGenerator extends Generator {
 				webpackOptions: {}
 			}
 		};
-		const {configFile} = opts
+		const {configFile} = opts;
 		let configPath = path.resolve(process.cwd(), configFile);
 		const webpackConfigExists = fs.existsSync(configPath);
 
