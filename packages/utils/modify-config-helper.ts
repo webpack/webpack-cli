@@ -58,7 +58,6 @@ export default function modifyHelperUtil(
 					chalk.cyan(configFile + "\n") +
 					"\n"
 			);
-
 		} else {
 			process.stdout.write(
 				"\n" +
@@ -88,9 +87,9 @@ export default function modifyHelperUtil(
 			}
 		};
 	}
+	
 	env.registerStub(generator, generatorName);
-
-	env.run(generatorName,{
+	env.run(generatorName, {
 		configFile
 	}).then(
 			(): void => {
