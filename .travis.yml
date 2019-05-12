@@ -6,7 +6,6 @@ node_js:
     - "12"
     - "10"
     - "8"
-    - "6"
 cache:
     directories:
         - ~/.npm
@@ -23,9 +22,6 @@ matrix:
           env: JOB_PART=integration
         - os: linux
           node_js: "8"
-          env: JOB_PART=integration
-        - os: linux
-          node_js: "6"
           env: JOB_PART=integration
 
 before_install:
