@@ -32,15 +32,9 @@ export default class RemoveGenerator extends Generator {
 				webpackOptions: {}
 			}
 		};
-		const {configFile} = opts;
+		const { configFile } = opts;
 		let configPath = path.resolve(process.cwd(), configFile);
 		const webpackConfigExists = fs.existsSync(configPath);
-
-		if (!webpackConfigExists) {
-			configPath = null;
-			// end the generator stating webpack config not found or to specify the config
-		}
-
 		this.webpackOptions = require(configPath);
 	}
 
