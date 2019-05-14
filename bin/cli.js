@@ -75,11 +75,9 @@ For more information, see https://webpack.js.org/api/cli/.`);
 				let errorMessage =
 					"\n\u001b[31mwebpack not found, please install webpack using\n\t\u001b[33mnpm install --save-dev webpack\n";
 
-				if (process.env.npm_execpath !== undefined) {
-					if (process.env.npm_execpath.indexOf("yarn") !== -1) {
-						errorMessage =
-							"\n\u001b[31mwebpack not found, please install webpack using\n\t\u001b[33myarn add webpack --dev\n";
-					}
+				if (process.env.npm_execpath !== undefined && process.env.npm_execpath.includes("yarn")) {
+					errorMessage =
+						"\n\u001b[31mwebpack not found, please install webpack using\n\t\u001b[33myarn add webpack --dev\n";
 				}
 
 				console.error(errorMessage);
@@ -109,7 +107,7 @@ For more information, see https://webpack.js.org/api/cli/.`);
 		 */
 		const stdout = argv.silent
 			? {
-				write: () => {}
+					write: () => {}
 			  } // eslint-disable-line
 			: process.stdout;
 
@@ -342,19 +340,14 @@ For more information, see https://webpack.js.org/api/cli/.`);
 					const SIX_DAYS = 518400000;
 					const now = new Date();
 					if (now.getDay() === MONDAY) {
-						const {
-							access,
-							constants,
-							statSync,
-							utimesSync,
-						} = require("fs");
+						const { access, constants, statSync, utimesSync } = require("fs");
 						const lastPrint = statSync(openCollectivePath).atime;
 						const lastPrintTS = new Date(lastPrint).getTime();
 						const timeSinceLastPrint = now.getTime() - lastPrintTS;
 						if (timeSinceLastPrint > SIX_DAYS) {
 							require(openCollectivePath);
 							// On windows we need to manually update the atime
-							access(openCollectivePath, constants.W_OK, (e) => {
+							access(openCollectivePath, constants.W_OK, e => {
 								if (!e) utimesSync(openCollectivePath, now, now);
 							});
 						}
