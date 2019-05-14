@@ -107,7 +107,7 @@ For more information, see https://webpack.js.org/api/cli/.`);
 		 */
 		const stdout = argv.silent
 			? {
-					write: () => {}
+				write: () => {}
 			  } // eslint-disable-line
 			: process.stdout;
 
