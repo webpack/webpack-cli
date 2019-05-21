@@ -91,13 +91,11 @@ export default class InitGenerator extends Generator {
 			.then(
 				(entryOptions: object | string): Promise<{}> => {
 					if (typeof entryOptions === "string" && entryOptions.length > 0) {
-						return this.prompt([
-							Input("outputType", "In which folder do you want to store your generated bundles? (dist):")
-						]);
+						if (entryOptions !== "\"\"" &&  entryOptions !== "\'\'") {
+							this.configuration.config.webpackOptions.entry = entryOptions;
+						}
 					}
-					if (entryOptions !== '""') {
-						this.configuration.config.webpackOptions.entry = entryOptions;
-					}
+
 					return this.prompt([
 						Input("outputType", "In which folder do you want to store your generated bundles? (dist):")
 					]);
