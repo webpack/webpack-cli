@@ -144,7 +144,7 @@
     "@typescript-eslint/parser": "^1.6.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-jest": "^24.3.0",
-    "bundlesize": "^0.17.0",
+    "bundlesize": "^0.17.2",
     "codecov": "^3.1.0",
     "commitizen": "^3.0.7",
     "commitlint-config-cz": "^0.10.1",
