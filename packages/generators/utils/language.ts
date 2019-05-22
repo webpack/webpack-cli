@@ -1,20 +1,9 @@
+import { Rule } from "../types";
+
 export enum LangType {
 	ES6 = "ES6",
 	Typescript = "Typescript",
 }
-
-interface ModuleRule extends Object {
-	include?: string[];
-	exclude?: string[];
-	loader: string;
-	options?: {
-		plugins: string[];
-		presets: Preset[][];
-	};
-	test: string;
-}
-
-type Preset = string | object;
 
 const replaceExt = (path: string, ext: string): string =>
 	path.substr(0, path.lastIndexOf(".")) + `${ext}'`;
@@ -54,14 +43,14 @@ function getEntryFolders(self): string[] {
  *
  * Returns an module.rule object for the babel loader
  * @param {string[]} includeFolders An array of folders to include
- * @returns {ModuleRule} A configuration containing the babel-loader with env preset
+ * @returns {Rule} A configuration containing the babel-loader with env preset
  */
-export function getBabelLoader(includeFolders: string[]): ModuleRule {
+export function getBabelLoader(includeFolders: string[]): Rule {
 	const include = includeFolders.map((folder: string): string =>
 		`path.resolve(__dirname, '${folder}')`
 	);
 	return {
-		test: "/\.js$/",
+		test: "/\.(js|jsx)$/",
 		include,
 		loader: "'babel-loader'",
 		options: {
@@ -82,14 +71,14 @@ export function getBabelLoader(includeFolders: string[]): ModuleRule {
  *
  * Returns an module.rule object for the typescript loader
  * @param {string[]} includeFolders An array of folders to include
- * @returns {ModuleRule} A configuration containing the ts-loader
+ * @returns {Rule} A configuration containing the ts-loader
  */
-export function getTypescriptLoader(includeFolders: string[]): ModuleRule {
+export function getTypescriptLoader(includeFolders: string[]): Rule {
 	const include = includeFolders.map((folder: string): string =>
 		`path.resolve(__dirname, '${folder}')`
 	);
 	return {
-		test: "/\.tsx?$/",
+		test: "/\.(ts|tsx)?$/",
 		loader: "'ts-loader'",
 		include,
 		exclude: ["/node_modules/"],
