@@ -5,11 +5,21 @@ import * as autoComplete from "inquirer-autocomplete-prompt";
 import * as path from "path";
 
 import npmExists from "@webpack-cli/utils/npm-exists";
-import { getPackageManager } from "@webpack-cli/utils/package-manager";
+import {
+	getPackageManager
+} from "@webpack-cli/utils/package-manager";
 import PROP_TYPES from "@webpack-cli/utils/prop-types";
-import { AutoComplete, Confirm, Input, List } from "@webpack-cli/webpack-scaffold";
+import {
+	AutoComplete,
+	Confirm,
+	Input,
+	List
+} from "@webpack-cli/webpack-scaffold";
 
-import { SchemaProperties, WebpackOptions } from "./types";
+import {
+	SchemaProperties,
+	WebpackOptions
+} from "./types";
 import entryQuestions from "./utils/entry";
 
 import webpackDevServerSchema from "webpack-dev-server/lib/options.json";
@@ -64,7 +74,7 @@ const traverseAndGetProperties = (arr: object[], prop: string): boolean => {
  * @returns {Promise} Returns promise which resolves to filtered props
  *
  */
-const searchProps = (answers: object, input: string): Promise<string[]> => {
+const searchProps = (answers: object, input: string): Promise < string[] > => {
 	input = input || "";
 	return Promise.resolve(PROPS.filter((prop: string): boolean => prop.toLowerCase().includes(input.toLowerCase())));
 };
@@ -82,10 +92,10 @@ export default class AddGenerator extends Generator {
 	private dependencies: string[];
 	private configuration: {
 		config: {
-			configName?: string;
-			topScope?: string[];
-			item?: string;
-			webpackOptions?: WebpackOptions;
+			configName ? : string;
+			topScope ? : string[];
+			item ? : string;
+			webpackOptions ? : WebpackOptions;
 		};
 	};
 
@@ -98,11 +108,13 @@ export default class AddGenerator extends Generator {
 				webpackOptions: {}
 			}
 		};
-		const { registerPrompt } = this.env.adapter.promptModule;
+		const {
+			registerPrompt
+		} = this.env.adapter.promptModule;
 		registerPrompt("autocomplete", autoComplete);
 	}
 
-	public prompting(): Promise<void | {}> {
+	public prompting(): Promise < void | {} > {
 		const done: () => {} = this.async();
 		let action: string;
 		const self: this = this;
@@ -117,14 +129,16 @@ export default class AddGenerator extends Generator {
 		const isDeepProp: any[] = [false, false];
 
 		return this.prompt([
-			AutoComplete("actionType", "What property do you want to add to?", {
-				pageSize: 7,
-				source: searchProps,
-				suggestOnly: false
-			})
-		])
+				AutoComplete("actionType", "What property do you want to add to?", {
+					pageSize: 7,
+					source: searchProps,
+					suggestOnly: false
+				})
+			])
 			.then(
-				(actionTypeAnswer: { actionType: string }): void => {
+				(actionTypeAnswer: {
+					actionType: string
+				}): void => {
 					// Set initial prop, like devtool
 					this.configuration.config.webpackOptions[actionTypeAnswer.actionType] = null;
 					// update the action variable, we're using it later
@@ -132,19 +146,23 @@ export default class AddGenerator extends Generator {
 				}
 			)
 			.then(
-				(): Promise<void | {}> => {
+				(): Promise < void | {} > => {
 					if (action === "entry") {
 						return this.prompt([
-							Confirm("entryType", "Will your application have multiple bundles?", false)
-						])
+								Confirm("entryType", "Will your application have multiple bundles?", false)
+							])
 							.then(
-								(entryTypeAnswer: { entryType: boolean }): Promise<void | {}> => {
+								(entryTypeAnswer: {
+									entryType: boolean
+								}): Promise < void | {} > => {
 									// Ask different questions for entry points
 									return entryQuestions(self, entryTypeAnswer);
 								}
 							)
 							.then(
-								(entryOptions: { entryType: boolean }): void => {
+								(entryOptions: {
+									entryType: boolean
+								}): void => {
 									this.configuration.config.webpackOptions.entry = entryOptions;
 									this.configuration.config.item = action;
 								}
@@ -152,7 +170,9 @@ export default class AddGenerator extends Generator {
 					} else {
 						if (action === "topScope") {
 							return this.prompt([Input("topScope", "What do you want to add to topScope?")]).then(
-								(topScopeAnswer: { topScope: string }): void => {
+								(topScopeAnswer: {
+									topScope: string
+								}): void => {
 									this.configuration.config.topScope.push(topScopeAnswer.topScope);
 									done();
 								}
@@ -168,15 +188,17 @@ export default class AddGenerator extends Generator {
 					 * https://github.com/webpack/webpack/blob/next/schemas/WebpackOptions.json
 					 * Find the properties directly in the properties prop, or the anyOf prop
 					 */
-					let defOrPropDescription: object = webpackSchemaProp
-						? webpackSchemaProp.properties
-						: webpackSchema.properties[action].properties
-						? webpackSchema.properties[action].properties
-						: webpackSchema.properties[action].anyOf
-						? webpackSchema.properties[action].anyOf.filter(
-								(p: { properties?: object; enum?: string[] }): boolean => !!p.properties || !!p.enum
-						  )
-						: null;
+					let defOrPropDescription: object = webpackSchemaProp ?
+						webpackSchemaProp.properties :
+						webpackSchema.properties[action].properties ?
+						webpackSchema.properties[action].properties :
+						webpackSchema.properties[action].anyOf ?
+						webpackSchema.properties[action].anyOf.filter(
+							(p: {
+								properties ? : object;enum ? : string[]
+							}): boolean => !!p.properties || !!p.enum
+						) :
+						null;
 					if (Array.isArray(defOrPropDescription)) {
 						// Todo: Generalize these to go through the array, then merge enum with props if needed
 						const hasPropertiesProp: boolean = traverseAndGetProperties(defOrPropDescription, "properties");
@@ -197,12 +219,9 @@ export default class AddGenerator extends Generator {
 							defOrPropDescription = Object.keys(defOrPropDescription[0].enum)
 								.map(
 									(p: string): object => {
-										return Object.assign(
-											{},
-											{
-												[originalPropDesc[p]]: "noop"
-											}
-										);
+										return Object.assign({}, {
+											[originalPropDesc[p]]: "noop"
+										});
 									}
 								)
 								.reduce((result: object, currentObject: object): object => {
@@ -273,8 +292,7 @@ export default class AddGenerator extends Generator {
 						} else if (webpackDevserverSchemaProp) {
 							// Append the custom property option
 							webpackDevserverSchemaProp.properties = Object.assign(
-								webpackDevserverSchemaProp.properties,
-								{
+								webpackDevserverSchemaProp.properties, {
 									other: {}
 								}
 							);
@@ -296,7 +314,9 @@ export default class AddGenerator extends Generator {
 				}
 			)
 			.then(
-				(answerToAction: { actionAnswer: string }): Promise<void | {}> => {
+				(answerToAction: {
+					actionAnswer: string
+				}): Promise < void | {} > => {
 					if (!answerToAction) {
 						done();
 						return;
@@ -310,10 +330,10 @@ export default class AddGenerator extends Generator {
 							.sync(["node_modules/webpack/lib/*Plugin.js", "node_modules/webpack/lib/**/*Plugin.js"])
 							.map(
 								(p: string): string =>
-									p
-										.split("/")
-										.pop()
-										.replace(".js", "")
+								p
+								.split("/")
+								.pop()
+								.replace(".js", "")
 							)
 							.find((p: string): boolean => p.toLowerCase().indexOf(answerToAction.actionAnswer) >= 0);
 
@@ -326,12 +346,12 @@ export default class AddGenerator extends Generator {
 								])
 								.find(
 									(p: string): boolean =>
-										p
-											.split("/")
-											.pop()
-											.replace(".json", "")
-											.toLowerCase()
-											.indexOf(answerToAction.actionAnswer) >= 0
+									p
+									.split("/")
+									.pop()
+									.replace(".json", "")
+									.toLowerCase()
+									.indexOf(answerToAction.actionAnswer) >= 0
 								);
 							if (pluginsSchemaPath) {
 								const constructorPrefix: string =
@@ -364,7 +384,9 @@ export default class AddGenerator extends Generator {
 										pluginsSchemaProps
 									)
 								]).then(
-									(pluginsPropAnswer: { pluginsPropType: string }): Promise<void | {}> => {
+									(pluginsPropAnswer: {
+										pluginsPropType: string
+									}): Promise < void | {} > => {
 										return this.prompt([
 											Input(
 												"pluginsPropTypeVal",
@@ -373,11 +395,12 @@ export default class AddGenerator extends Generator {
 												} have?`
 											)
 										]).then(
-											(valForProp: { pluginsPropTypeVal: string }): void => {
+											(valForProp: {
+												pluginsPropTypeVal: string
+											}): void => {
 												this.configuration.config.webpackOptions[action] = {
 													[`${constructorPrefix}.${pluginExist}`]: {
-														[pluginsPropAnswer.pluginsPropType]:
-															valForProp.pluginsPropTypeVal
+														[pluginsPropAnswer.pluginsPropType]: valForProp.pluginsPropTypeVal
 													}
 												};
 												done();
@@ -395,15 +418,11 @@ export default class AddGenerator extends Generator {
 								(p: boolean): void => {
 									if (p) {
 										this.dependencies.push(answerToAction.actionAnswer);
-										const normalizePluginName = answerToAction.actionAnswer.replace(
-											"-webpack-plugin",
-											"Plugin"
-										);
-										const pluginName = replaceAt(
-											normalizePluginName,
-											0,
-											normalizePluginName.charAt(0).toUpperCase()
-										);
+										let myPluginNameArray = answerToAction.actionAnswer.split("-")
+										for (let i = 0; i < myPluginNameArray.length; i++) {
+											myPluginNameArray[i] = replaceAt(myPluginNameArray[i], 0, myPluginNameArray[i].charAt(0).toUpperCase());
+										}
+										const pluginName = myPluginNameArray.join("")
 										this.configuration.config.topScope.push(
 											`const ${pluginName} = require("${answerToAction.actionAnswer}")`
 										);
@@ -438,21 +457,26 @@ export default class AddGenerator extends Generator {
 							}
 							// Either we are adding directly at the property, else we're in a prop.theOne scenario
 							const actionMessage =
-								isDeepProp[1] === "other"
-									? `What do you want the key on ${action} to be? (press enter if you want it directly as a value on the property)`
-									: `What do you want the value of ${isDeepProp[1]} to be?`;
+								isDeepProp[1] === "other" ?
+								`What do you want the key on ${action} to be? (press enter if you want it directly as a value on the property)` :
+								`What do you want the value of ${isDeepProp[1]} to be?`;
 
 							this.prompt([Input("deepProp", actionMessage)]).then(
-								(deepPropAns: { deepProp: string }): void => {
+								(deepPropAns: {
+									deepProp: string
+								}): void => {
 									// The other option needs to be validated of either being empty or not
 									if (isDeepProp[1] === "other") {
-										const othersDeepPropKey: string = deepPropAns.deepProp
-											? `What do you want the value of ${deepPropAns.deepProp} to be?` // eslint-disable-line
-											: `What do you want to be the value of ${action} to be?`;
+										const othersDeepPropKey: string = deepPropAns.deepProp ?
+											`What do you want the value of ${deepPropAns.deepProp} to be?` // eslint-disable-line
+											:
+											`What do you want to be the value of ${action} to be?`;
 										// Push the answer to the array we have created, so we can use it later
 										isDeepProp.push(deepPropAns.deepProp);
 										this.prompt([Input("innerProp", othersDeepPropKey)]).then(
-											(innerPropAns: { innerProp }): void => {
+											(innerPropAns: {
+												innerProp
+											}): void => {
 												// Check length, if it has none, add the prop directly on the given action
 												if (isDeepProp[2].length === 0) {
 													this.configuration.config.item = action;
