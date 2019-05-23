@@ -5,34 +5,38 @@ jobs:
     strategy:
       maxParallel: 3
       matrix:
+        node-12:
+          node_version: ^12.0.0
         node-10:
           node_version: ^10.10.0
         node-8:
           node_version: ^8.12.0
-        node-6:
-          node_version: ^6.14.4
     steps:
       - task: NodeTool@0
-        displayName: "Install Node.js"
         inputs:
           versionSpec: $(node_version)
+        displayName: "Install Node.js"
       - script: |
           npm install -g npm@latest
         displayName: "Install npm"
       - script: |
-          npm install
+          node -v
+          npm -v
+        displayName: "Print version"
+      - script: |
+          npm ci
           npm run bootstrap
         displayName: "Lerna bootstrap"
       - script: |
           npm run test
         displayName: "Run tests"
       - task: PublishTestResults@2
-        displayName: 'Publish Test Results'
         inputs:
-          testResultsFiles: '**junit*.xml'
+          testResultsFiles: "**junit*.xml"
           testRunTitle: TestRun $ {{ parameters.name }} $(node_version)
+        displayName: "Publish Test Results"
       - task: PublishCodeCoverageResults@1
-        displayName: 'Publish code coverage results'
         inputs: 
-          codeCoverageTool: 'cobertura'
-          summaryFileLocation: '**/coverage/cobertura-coverage.xml'
+          codeCoverageTool: "cobertura"
+          summaryFileLocation: "**/coverage/cobertura-coverage.xml"
+        displayName: "Publish code coverage results"
