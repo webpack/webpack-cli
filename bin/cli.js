@@ -5,7 +5,9 @@
 	Author Tobias Koppers @sokra
 */
 
+const updateNotifier = require("update-notifier");
 const { NON_COMPILATION_ARGS } = require("./utils/constants");
+const pkg = require("../package");
 
 (function() {
 	// wrap in IIFE to be able to use return
@@ -17,6 +19,15 @@ const { NON_COMPILATION_ARGS } = require("./utils/constants");
 	}
 
 	require("v8-compile-cache");
+
+	const notifier = updateNotifier({
+		pkg,
+		updateCheckInterval: 1000 * 60 * 60 * 24 * 7 // 1 week
+	});
+
+	if (notifier.update) {
+		console.log(`Update available: ${notifier.update.latest}`);
+	}
 
 	const ErrorHelpers = require("./utils/errorHelpers");
 
