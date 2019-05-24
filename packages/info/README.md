@@ -1,10 +1,10 @@
 # webpack-cli info
 
-[![npm](https://img.shields.io/npm/dm/@webpack-cli/info.svg)](https://www.npmjs.com/package/@webpack-cli/info)
+[![NPM Downloads][downloads]][downloads-url]
 
 ## Description
 
-This pacakge returns a set of information related to the local enviroment.
+This package returns a set of information related to the local environment.
 
 ## Installation
 
@@ -22,6 +22,10 @@ envinfo();
 ```
 
 ### CLI (via `webpack-cli`)
+
 ```bash
 npx webpack-cli info
 ```
+
+[downloads]: https://img.shields.io/npm/dm/@webpack-cli/info.svg
+[downloads-url]: https://www.npmjs.com/package/@webpack-cli/info

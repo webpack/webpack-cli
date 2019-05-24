@@ -1,13 +1,5 @@
 import * as path from "path";
 
-interface Generator {
-	fs: {
-		copy(from: string, to: string, options?: object): void;
-		copyTpl(from: string, to: string, context: object, templateOptions?: object, copyOptions?: object): void;
-	};
-	destinationPath: (path: string) => string;
-}
-
 /**
  * Takes in a file path in the `./templates` directory. Copies that
  * file to the destination, with the `.tpl` extension stripped.
