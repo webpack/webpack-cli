@@ -395,15 +395,11 @@ export default class AddGenerator extends Generator {
 								(p: boolean): void => {
 									if (p) {
 										this.dependencies.push(answerToAction.actionAnswer);
-										const normalizePluginName = answerToAction.actionAnswer.replace(
-											"-webpack-plugin",
-											"Plugin"
-										);
-										const pluginName = replaceAt(
-											normalizePluginName,
-											0,
-											normalizePluginName.charAt(0).toUpperCase()
-										);
+										let myPluginNameArray = answerToAction.actionAnswer.split("-")
+										for (let i = 0; i < myPluginNameArray.length; i++) {
+											myPluginNameArray[i] = replaceAt(myPluginNameArray[i], 0, myPluginNameArray[i].charAt(0).toUpperCase());
+										}
+										const pluginName = myPluginNameArray.join("")
 										this.configuration.config.topScope.push(
 											`const ${pluginName} = require("${answerToAction.actionAnswer}")`
 										);
