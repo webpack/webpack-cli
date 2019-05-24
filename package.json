@@ -54,6 +54,10 @@
     }
   },
   "lint-staged": {
+    "*.md": [
+      "prettier --parser markdown --write",
+      "git add"
+    ],
     "{packages,bin}/**/!(__testfixtures__)/**.js": [
       "eslint --fix",
       "git add"
@@ -124,6 +128,7 @@
     "import-local": "^2.0.0",
     "interpret": "^1.1.0",
     "loader-utils": "^1.1.0",
+    "prettier": "^1.17.0",
     "supports-color": "^5.5.0",
     "v8-compile-cache": "^2.0.2",
     "yargs": "^12.0.5"
