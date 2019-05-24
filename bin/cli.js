@@ -349,7 +349,8 @@ For more information, see https://webpack.js.org/api/cli/.`);
 				}
 			}
 			if (firstOptions.watch || options.watch) {
-				const watchOptions = firstOptions.watchOptions || firstOptions.watch || options.watch || {};
+				const watchOptions =
+					firstOptions.watchOptions || options.watchOptions || firstOptions.watch || options.watch || {};
 				if (watchOptions.stdin) {
 					process.stdin.on("end", function(_) {
 						process.exit(); // eslint-disable-line
