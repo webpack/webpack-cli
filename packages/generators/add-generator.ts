@@ -11,26 +11,11 @@ import { AutoComplete, Confirm, Input, List } from "@webpack-cli/webpack-scaffol
 
 import { SchemaProperties, WebpackOptions } from "./types";
 import entryQuestions from "./utils/entry";
-
+import { generatePluginName } from "./utils/plugins";
 import webpackDevServerSchema from "webpack-dev-server/lib/options.json";
 import webpackSchema from "./utils/optionsSchema.json";
 const PROPS: string[] = Array.from(PROP_TYPES.keys());
 
-/**
- *
- * Replaces the string with a substring at the given index
- * https://gist.github.com/efenacigiray/9367920
- *
- * @param	{String} str - string to be modified
- * @param	{Number} index - index to replace from
- * @param	{String} replace - string to replace starting from index
- *
- * @returns	{String} string - The newly mutated string
- *
- */
-function replaceAt(str: string, index: number, replace: string): string {
-	return str.substring(0, index) + replace + str.substring(index + 1);
-}
 
 /**
  *
@@ -395,11 +380,7 @@ export default class AddGenerator extends Generator {
 								(p: boolean): void => {
 									if (p) {
 										this.dependencies.push(answerToAction.actionAnswer);
-										let myPluginNameArray = answerToAction.actionAnswer.split("-")
-										for (let i = 0; i < myPluginNameArray.length; i++) {
-											myPluginNameArray[i] = replaceAt(myPluginNameArray[i], 0, myPluginNameArray[i].charAt(0).toUpperCase());
-										}
-										const pluginName = myPluginNameArray.join("")
+										const pluginName = generatePluginName(answerToAction.actionAnswer)
 										this.configuration.config.topScope.push(
 											`const ${pluginName} = require("${answerToAction.actionAnswer}")`
 										);
