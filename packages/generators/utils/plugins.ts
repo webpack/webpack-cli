@@ -43,8 +43,11 @@ export const replaceAt = (str: string, index: number, replace: string) : string 
 export const generatePluginName = (rawPluginName: string): string => {
 	let myPluginNameArray : string[];
 	myPluginNameArray = rawPluginName.split("-");
-	for (let i = 0; i < myPluginNameArray.length; i++) {
-		myPluginNameArray[i] = replaceAt(myPluginNameArray[i], 0, myPluginNameArray[i].charAt(0).toUpperCase());
+	if( myPluginNameArray.length <= 1 ){}
+	else{
+		for (let i = 0; i < myPluginNameArray.length; i++) {
+			myPluginNameArray[i] = replaceAt(myPluginNameArray[i], 0, myPluginNameArray[i].charAt(0).toUpperCase());
+		}
 	}
 	return myPluginNameArray.join("")
 }

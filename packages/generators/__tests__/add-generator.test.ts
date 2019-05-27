@@ -8,7 +8,7 @@ describe("generatePluginName", () => {
 
 	it("should return webpack Standard Plugin Name for Name : webpack.DefinePlugin", () => {
 		const pluginName = generatePluginName("webpack.DefinePlugin");
-		expect(pluginName).toEqual("Webpack.DefinePlugin");
+		expect(pluginName).toEqual("webpack.DefinePlugin");
 	});
 });
 
