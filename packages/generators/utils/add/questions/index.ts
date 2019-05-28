@@ -13,8 +13,8 @@ import { Question } from "inquirer";
 
 /**
  * Returns Inquirer question for given action
- * @param {string} action
- * @returns {Question}
+ * @param {string} action action for which question has to be prompted
+ * @returns {Question} Question for given action
  */
 export const manualOrListInput: (action: string) => Question = (action: string) => {
 	const actionQuestion = `What do you want to add to ${action}?`;
