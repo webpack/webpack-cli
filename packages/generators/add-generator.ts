@@ -22,8 +22,9 @@ import { Input, List } from "@webpack-cli/webpack-scaffold";
 
 import { SchemaProperties, WebpackOptions } from "./types";
 import entryQuestions from "./utils/entry";
-import { AutoComplete } from "@webpack-cli/webpack-scaffold";
-import { resolve } from "path";
+import * as AutoComplete from "inquirer-autocomplete-prompt";
+import path, { resolve } from "path";
+import glob from 'glob'
 
 /**
  *
@@ -41,6 +42,12 @@ export default class AddGenerator extends Generator {
 			configName?: string;
 			topScope?: string[];
 			item?: string;
+			merge?: {
+				configName?: string;
+				topScope?: string[];
+				item?: string; 
+				webpackOptions?: WebpackOptions;
+			};
 			webpackOptions?: WebpackOptions;
 		};
 	};
