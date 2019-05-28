@@ -30,4 +30,9 @@ function printBadge() {
 	console.log("\n");
 }
 
-printBadge();
+function isTrue(value) {
+	return !!value && value !== "0" && value !== "false";
+}
+const envDisable = isTrue(process.env.DISABLE_OPENCOLLECTIVE) || isTrue(process.env.CI);
+
+if (!envDisable) printBadge();

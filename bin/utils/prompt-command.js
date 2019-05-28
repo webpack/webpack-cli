@@ -31,10 +31,19 @@ const npmGlobalRoot = () => {
 	const cp = require("child_process");
 	return new Promise((resolve, reject) => {
 		const command = cp.spawn("npm", ["root", "-g"]);
-		command.on("error", (error) => reject(error));
-		command.stdout.on("data", (data) => resolve(data.toString()));
-		command.stderr.on("data", (data) => reject(data));
+		command.on("error", error => reject(error));
+		command.stdout.on("data", data => resolve(data.toString()));
+		command.stderr.on("data", data => reject(data));
 	});
+};
+
+const runWhenInstalled = (packages, pathForCmd, ...args) => {
+	const currentPackage = require(pathForCmd);
+	const func = currentPackage.default;
+	if (typeof func !== "function") {
+		throw new Error(`@webpack-cli/${packages} failed to export a default function`);
+	}
+	return func(...args);
 };
 
 module.exports = function promptForInstallation(packages, ...args) {
@@ -93,19 +102,18 @@ module.exports = function promptForInstallation(packages, ...args) {
 				case "y":
 				case "yes":
 				case "1": {
-
 					runCommand(packageManager, options)
-						.then(_=> {
+						.then(_ => {
 							if (packages === "init") {
 								npmGlobalRoot()
-									.then((root) => {
+									.then(root => {
 										const pathtoInit = path.resolve(root.trim(), "@webpack-cli", "init");
 										return pathtoInit;
 									})
-									.then((pathForInit) => {
+									.then(pathForInit => {
 										return require(pathForInit).default(...args);
 									})
-									.catch((error) => {
+									.catch(error => {
 										console.error(error);
 										process.exitCode = 1;
 									});
@@ -113,10 +121,7 @@ module.exports = function promptForInstallation(packages, ...args) {
 							}
 
 							pathForCmd = path.resolve(process.cwd(), "node_modules", "@webpack-cli", packages);
-							if (packages === "serve") {
-								return require(pathForCmd).default.serve();
-							}
-							return require(pathForCmd).default(...args); //eslint-disable-line
+							return runWhenInstalled(packages, pathForCmd, ...args);
 						})
 						.catch(error => {
 							console.error(error);
@@ -132,6 +137,6 @@ module.exports = function promptForInstallation(packages, ...args) {
 			}
 		});
 	} else {
-		require(pathForCmd).default(...args); // eslint-disable-line
+		return runWhenInstalled(packages, pathForCmd, ...args);
 	}
 };

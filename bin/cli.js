@@ -5,6 +5,8 @@
 	Author Tobias Koppers @sokra
 */
 
+const { NON_COMPILATION_ARGS } = require("./utils/constants");
+
 (function() {
 	// wrap in IIFE to be able to use return
 
@@ -17,17 +19,6 @@
 	require("v8-compile-cache");
 
 	const ErrorHelpers = require("./utils/errorHelpers");
-
-	const NON_COMPILATION_ARGS = [
-		"init",
-		"migrate",
-		"add",
-		"remove",
-		"serve",
-		"generate-loader",
-		"generate-plugin",
-		"info"
-	];
 
 	const NON_COMPILATION_CMD = process.argv.find(arg => {
 		if (arg === "serve") {
@@ -51,7 +42,6 @@ Usage: webpack-cli [options]
 For more information, see https://webpack.js.org/api/cli/.`);
 
 	require("./config/config-yargs")(yargs);
-
 
 	// yargs will terminate the process early when the user uses help or version.
 	// This causes large help outputs to be cut short (https://github.com/nodejs/node/wiki/API-changes-between-v0.10-and-v4#process).
@@ -104,7 +94,7 @@ For more information, see https://webpack.js.org/api/cli/.`);
 		const stdout = argv.silent
 			? {
 				write: () => {}
-				} // eslint-disable-line
+			  } // eslint-disable-line
 			: process.stdout;
 
 		function ifArg(name, fn, init) {
@@ -336,14 +326,21 @@ For more information, see https://webpack.js.org/api/cli/.`);
 					const SIX_DAYS = 518400000;
 					const now = new Date();
 					if (now.getDay() === MONDAY) {
-						const { statSync, utimesSync } = require("fs");
+						const {
+							access,
+							constants,
+							statSync,
+							utimesSync,
+						} = require("fs");
 						const lastPrint = statSync(openCollectivePath).atime;
 						const lastPrintTS = new Date(lastPrint).getTime();
 						const timeSinceLastPrint = now.getTime() - lastPrintTS;
 						if (timeSinceLastPrint > SIX_DAYS) {
 							require(openCollectivePath);
 							// On windows we need to manually update the atime
-							utimesSync(openCollectivePath, now, now);
+							access(openCollectivePath, constants.W_OK, (e) => {
+								if (!e) utimesSync(openCollectivePath, now, now);
+							});
 						}
 					}
 				}
@@ -352,7 +349,8 @@ For more information, see https://webpack.js.org/api/cli/.`);
 				}
 			}
 			if (firstOptions.watch || options.watch) {
-				const watchOptions = firstOptions.watchOptions || firstOptions.watch || options.watch || {};
+				const watchOptions =
+					firstOptions.watchOptions || options.watchOptions || firstOptions.watch || options.watch || {};
 				if (watchOptions.stdin) {
 					process.stdin.on("end", function(_) {
 						process.exit(); // eslint-disable-line

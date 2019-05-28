@@ -7,7 +7,7 @@ function mockPromise(value) {
 	const mockedPromise = {
 		then(callback) {
 			return mockPromise(callback(value));
-		},
+		}
 	};
 
 	return isValueAPromise ? value : mockedPromise;
@@ -18,14 +18,14 @@ function spawnChild(pkg) {
 
 function getLoc(option) {
 	const packageModule = [];
-	option.filter((pkg) => {
-		mockPromise(spawnChild(pkg)).then((_) => {
+	option.filter(pkg => {
+		mockPromise(spawnChild(pkg)).then(() => {
 			try {
 				const loc = path.join("..", "..", "node_modules", pkg);
 				packageModule.push(loc);
 			} catch (err) {
 				throw new Error(
-					"Package wasn't validated correctly.." + "Submit an issue for " + pkg + " if this persists",
+					"Package wasn't validated correctly.." + "Submit an issue for " + pkg + " if this persists"
 				);
 			}
 		});
@@ -60,7 +60,7 @@ describe("resolve-packages", () => {
 		moduleLoc = getLoc(["webpack-scaffold-ylvis", "webpack-scaffold-noop"]);
 		expect(moduleLoc).toEqual([
 			path.normalize("../../node_modules/webpack-scaffold-ylvis"),
-			path.normalize("../../node_modules/webpack-scaffold-noop"),
+			path.normalize("../../node_modules/webpack-scaffold-noop")
 		]);
 	});
 });

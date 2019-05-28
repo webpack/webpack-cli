@@ -1,9 +1,6 @@
-import {
-	addOrUpdateConfigObject,
-	findAndRemovePluginByName,
-} from "@webpack-cli/utils/ast-utils";
+import { addOrUpdateConfigObject, findAndRemovePluginByName } from "@webpack-cli/utils/ast-utils";
 
-import { IJSCodeshift, INode } from "../types/NodePath";
+import { JSCodeshift, Node } from "../types/NodePath";
 
 /**
  *
@@ -14,19 +11,13 @@ import { IJSCodeshift, INode } from "../types/NodePath";
  * @param {Node} ast - jscodeshift ast to transform
  * @returns {Node} ast - jscodeshift ast
  */
-export default function(j: IJSCodeshift, ast: INode): INode {
+export default function(j: JSCodeshift, ast: Node): Node {
 	// Remove old plugin
-	const root: INode = findAndRemovePluginByName(j, ast, "webpack.NamedModulesPlugin");
+	const root: Node = findAndRemovePluginByName(j, ast, "webpack.NamedModulesPlugin");
 
 	// Add new optimizations option
 	if (root) {
-		addOrUpdateConfigObject(
-			j,
-			root,
-			"optimizations",
-			"namedModules",
-			j.booleanLiteral(true),
-		);
+		addOrUpdateConfigObject(j, root, "optimizations", "namedModules", j.booleanLiteral(true));
 	}
 
 	return ast;

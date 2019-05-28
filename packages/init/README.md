@@ -1,5 +1,7 @@
 # webpack-cli init
 
+[![NPM Downloads][downloads]][downloads-url]
+
 ## Description
 
 This package contains the logic to create a new webpack configuration.
@@ -22,24 +24,31 @@ const init = require("@webpack-cli/init").default;
 // this will run the default init instance
 init();
 
- // we're slicing node.process, ...myPacakges is a webpack-scaffold name/path
+// we're slicing node.process, ...myPacakges is a webpack-scaffold name/path
 init([null, null, ...myPacakges]);
 ```
 
 ### CLI (via `webpack-cli`)
+
 **Via defaults**
 
 ```bash
 npx webpack-cli init
 ```
+
 **Via custom scaffold**
+
 1. Using package on `npm`
 
 ```bash
 npx webpack-cli init webpack-scaffold-[name]
 ```
-2. Using path to local directory
+
+2. Using path to a local directory
 
 ```bash
 npx webpack-cli init [path]
 ```
+
+[downloads]: https://img.shields.io/npm/dm/@webpack-cli/init.svg
+[downloads-url]: https://www.npmjs.com/package/@webpack-cli/init

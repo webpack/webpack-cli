@@ -1,5 +1,7 @@
 # webpack-cli add
 
+[![NPM downloads][downloads]][downloads-url]
+
 ## Description
 
 This package contains the logic to add new properties in a webpack configuration file. It will run a generator that prompts the user for questions of which property to add to their webpack configuration file.
@@ -32,3 +34,6 @@ add();
 ```bash
 npx webpack-cli add
 ```
+
+[downloads]: https://img.shields.io/npm/dm/@webpack-cli/add.svg
+[downloads-url]: https://www.npmjs.com/package/@webpack-cli/add

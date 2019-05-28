@@ -1,5 +1,18 @@
 const optionsSchema = require("../config/optionsSchema.json");
 
+const { GROUPS } = require("../utils/constants");
+
+const {
+	CONFIG_GROUP,
+	BASIC_GROUP,
+	MODULE_GROUP,
+	OUTPUT_GROUP,
+	ADVANCED_GROUP,
+	RESOLVE_GROUP,
+	OPTIMIZE_GROUP,
+	DISPLAY_GROUP
+} = GROUPS;
+
 const nestedProperties = ["anyOf", "oneOf", "allOf"];
 
 const resolveSchema = schema => {
@@ -51,15 +64,6 @@ const getSchemaInfo = (path, property, subProperty) => {
 	}
 	return findPropertyInSchema(current, property, subProperty);
 };
-
-const CONFIG_GROUP = "Config options:";
-const BASIC_GROUP = "Basic options:";
-const MODULE_GROUP = "Module options:";
-const OUTPUT_GROUP = "Output options:";
-const ADVANCED_GROUP = "Advanced options:";
-const RESOLVE_GROUP = "Resolving options:";
-const OPTIMIZE_GROUP = "Optimizing options:";
-const DISPLAY_GROUP = "Stats options:";
 
 module.exports = function(yargs) {
 	yargs

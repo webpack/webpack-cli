@@ -6,6 +6,6 @@
  * that consists of terser-webpack-plugin
  */
 
-export default function(_?: void): string[] {
+export default function(): string[] {
 	return ["new TerserPlugin()"];
 }

@@ -28,7 +28,7 @@ afterEach(() => {
 	}
 });
 
-test.skip("single-config", async(done) => {
+test.skip("single-config", done => {
 	const webpackProc = runAndGetWatchProc(__dirname, [
 		"--entry",
 		"./index.js",

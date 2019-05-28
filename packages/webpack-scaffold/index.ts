@@ -1,25 +1,5 @@
 import * as jscodeshift from "jscodeshift";
-
-export interface IInquirerScaffoldObject {
-	type?: string;
-	name: string;
-	message: string;
-	choices?: ((answers: Object) => string) | string[];
-	default?: string | number | boolean | string[] | number[]
-		| ((answers: Object) => (string | number | boolean | string[] | number[]));
-	validate?: ((input: string) => boolean | string);
-	when?: ((answers: Object) => boolean) | boolean;
-	store?: boolean;
-	filter?: (name: string) => string;
-}
-
-export interface IInquirerList extends IInquirerScaffoldObject {
-	choices?: string[];
-}
-
-export interface IInquirerInput extends IInquirerScaffoldObject {
-	validate?: (input: string) => string | boolean;
-}
+import * as Generator from "yeoman-generator";
 
 export function createArrowFunction(value: string): string {
 	return `() => '${value}'`;
@@ -33,9 +13,11 @@ export function createDynamicPromise(arrOrString: string[] | string): string {
 	if (Array.isArray(arrOrString)) {
 		return (
 			"() => new Promise((resolve) => resolve([" +
-			arrOrString.map((func: string): string => {
-				return "'" + func + "'";
-			}) +
+			arrOrString.map(
+				(func: string): string => {
+					return "'" + func + "'";
+				}
+			) +
 			"]))"
 		);
 	} else {
@@ -67,63 +49,68 @@ export function createRequire(val: string): string {
 	return `const ${val} = require('${val}');`;
 }
 
-export function List(name: string, message: string, choices: string[]): IInquirerList {
+export function List(name: string, message: string, choices: string[]): Generator.Question {
 	return {
 		choices,
 		message,
 		name,
-		type: "list",
+		type: "list"
 	};
 }
 
-export function RawList(name: string, message: string, choices: string[]): IInquirerList {
+export function RawList(name: string, message: string, choices: string[]): Generator.Question {
 	return {
 		choices,
 		message,
 		name,
-		type: "rawlist",
+		type: "rawlist"
 	};
 }
 
-export function CheckList(name: string, message: string, choices: string[]): IInquirerList {
+export function CheckList(name: string, message: string, choices: string[]): Generator.Question {
 	return {
 		choices,
 		message,
 		name,
-		type: "checkbox",
+		type: "checkbox"
 	};
 }
 
-export function Input(name: string, message: string): IInquirerInput {
+export function Input(name: string, message: string): Generator.Question {
+	return {
+		message,
+		name,
+		type: "input"
+	};
+}
+
+export function InputValidate(name: string, message: string, cb?: (input: string) => string | boolean): Generator.Question {
 	return {
 		message,
 		name,
 		type: "input",
+		validate: cb
 	};
 }
 
-export function InputValidate(name: string, message: string, cb?: (input: string) => string | boolean): IInquirerInput {
-	return {
-		message,
-		name,
-		type: "input",
-		validate: cb,
-	};
-}
-
-export function Confirm(name: string, message: string, defaultChoice: boolean = true): IInquirerScaffoldObject {
+export function Confirm(name: string, message: string, defaultChoice: boolean = true): Generator.Question {
 	return {
 		default: defaultChoice,
 		message,
 		name,
-		type: "confirm",
+		type: "confirm"
 	};
 }
 
-export function AutoComplete(name: string, message: string, options: object = {}) {
-	return Object.assign({
-		message,
-		name,
-		type: "autocomplete",
-	}, options);
+// TODO: to understand this type
+// eslint-disable-next-line
+export function AutoComplete(name: string, message: string, options: object = {}): any {
+	return Object.assign(
+		{
+			message,
+			name,
+			type: "autocomplete"
+		},
+		options
+	);
 }

@@ -1,6 +1,4 @@
-"use strict";
-
-const { makeLoaderName } = require("./loader-generator");
+import { makeLoaderName } from "../loader-generator";
 
 describe("makeLoaderName", () => {
 	it("should kebab-case loader name and append '-loader'", () => {

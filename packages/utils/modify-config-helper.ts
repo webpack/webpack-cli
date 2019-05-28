@@ -3,12 +3,12 @@ import * as fs from "fs";
 import * as logSymbols from "log-symbols";
 import * as path from "path";
 import * as yeoman from "yeoman-environment";
-import Generator = require("yeoman-generator");
+import * as Generator from "yeoman-generator";
+
 
 import runTransform from "./scaffold";
-import { IGenerator, IYeoman } from "./types/Yeoman";
 
-export interface IConfig extends Object {
+export interface Config extends Object {
 	item?: {
 		name: string;
 	};
@@ -18,10 +18,10 @@ export interface IConfig extends Object {
 	webpackOptions: object;
 }
 
-export interface ITransformConfig extends Object {
+export interface TransformConfig extends Object {
 	configPath?: string;
 	configFile?: string;
-	config?: IConfig;
+	config?: Config;
 }
 
 const DEFAULT_WEBPACK_CONFIG_FILENAME = "webpack.config.js";
@@ -40,11 +40,10 @@ const DEFAULT_WEBPACK_CONFIG_FILENAME = "webpack.config.js";
 
 export default function modifyHelperUtil(
 	action: string,
-	generator: IGenerator,
+	generator: typeof Generator,
 	configFile: string = DEFAULT_WEBPACK_CONFIG_FILENAME,
-	packages?: string[])
-	: Function {
-
+	packages?: string[]
+): typeof Generator {
 	let configPath: string | null = null;
 
 	if (action !== "init") {
@@ -57,7 +56,7 @@ export default function modifyHelperUtil(
 					chalk.green(" SUCCESS ") +
 					"Found config " +
 					chalk.cyan(configFile + "\n") +
-					"\n",
+					"\n"
 			);
 		} else {
 			process.stdout.write(
@@ -65,10 +64,10 @@ export default function modifyHelperUtil(
 					logSymbols.error +
 					chalk.red(" ERROR ") +
 					chalk.cyan(configFile) +
-					" not found. Please specify a valid path to your webpack config like " +
+					" not found. Please specify a valid path to your webpack config like \n " +
 					chalk.white("$ ") +
 					chalk.cyan(`webpack-cli ${action} webpack.dev.js`) +
-					"\n",
+					"\n"
 			);
 			return;
 		}
@@ -79,58 +78,69 @@ export default function modifyHelperUtil(
 
 	if (!generator) {
 		generator = class extends Generator {
-			public initializing() {
-				packages.forEach((pkgPath: string) => {
-					return (this as IGenerator).composeWith(require.resolve(pkgPath));
-				});
+			public initializing(): void {
+				packages.forEach(
+					(pkgPath: string): Generator => {
+						return this.composeWith(require.resolve(pkgPath), {});
+					}
+				);
 			}
 		};
 	}
+	
 	env.registerStub(generator, generatorName);
-
-	env.run(generatorName).then((_: void) => {
-		let configModule: object;
-		try {
-			const confPath = path.resolve(process.cwd(), ".yo-rc.json");
-			configModule = require(confPath);
-			// Change structure of the config to be transformed
-			const tmpConfig: object = {};
-			Object.keys(configModule).forEach((prop: string): void => {
-				const configs = Object.keys(configModule[prop].configuration);
-				configs.forEach((conf: string): void => {
-					tmpConfig[conf] = configModule[prop].configuration[conf];
-				});
-			});
-			configModule = tmpConfig;
-		} catch (err) {
-			console.error(
-				chalk.red("\nCould not find a yeoman configuration file.\n"),
-			);
-			console.error(
-				chalk.red(
-					"\nPlease make sure to use 'this.config.set('configuration', this.configuration);' at the end of the generator.\n",
-				),
-			);
-			Error.stackTraceLimit = 0;
-			process.exitCode = -1;
-		}
-		const transformConfig: ITransformConfig = Object.assign(
-			{
-				configFile: !configPath ? null : fs.readFileSync(configPath, "utf8"),
-				configPath,
-			},
-			configModule,
-		);
-		return runTransform(transformConfig, action);
-	}).catch((err) => {
-		console.error(
-			chalk.red(
-				`
+	env.run(generatorName, {
+		configFile
+	}).then(
+			(): void => {
+				let configModule: object;
+				try {
+					const confPath = path.resolve(process.cwd(), ".yo-rc.json");
+					configModule = require(confPath);
+					// Change structure of the config to be transformed
+					const tmpConfig: object = {};
+					Object.keys(configModule).forEach(
+						(prop: string): void => {
+							const configs = Object.keys(configModule[prop].configuration);
+							configs.forEach(
+								(conf: string): void => {
+									tmpConfig[conf] = configModule[prop].configuration[conf];
+								}
+							);
+						}
+					);
+					configModule = tmpConfig;
+				} catch (err) {
+					console.error(chalk.red("\nCould not find a yeoman configuration file.\n"));
+					console.error(
+						chalk.red(
+							"\nPlease make sure to use 'this.config.set('configuration', this.configuration);' at the end of the generator.\n"
+						)
+					);
+					Error.stackTraceLimit = 0;
+					process.exitCode = -1;
+				}
+				const transformConfig: TransformConfig = Object.assign(
+					{
+						configFile: !configPath ? null : fs.readFileSync(configPath, "utf8"),
+						configPath
+					},
+					configModule
+				);
+				return runTransform(transformConfig, action);
+			}
+		)
+		.catch(
+			(err): void => {
+				console.error(
+					chalk.red(
+						`
 Unexpected Error
 please file an issue here https://github.com/webpack/webpack-cli/issues/new?template=Bug_report.md
-				`,
-			),
+				`
+					)
+				);
+				console.error(err);
+			}
 		);
-		console.error(err);
-	});
 }

@@ -1,5 +1,7 @@
 # webpack-cli generate-loader
 
+[![NPM Downloads][downloads]][downloads-url]
+
 ## Description
 
 This package contains the logic to initiate new loader projects.
@@ -22,6 +24,10 @@ generateLoader();
 ```
 
 ### CLI (via `webpack-cli`)
+
 ```bash
 npx webpack-cli generate-loader
 ```
+
+[downloads]: https://img.shields.io/npm/dm/@webpack-cli/generate-loader.svg
+[downloads-url]: https://www.npmjs.com/package/@webpack-cli/generate-loader
