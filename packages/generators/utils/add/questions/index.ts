@@ -1,7 +1,6 @@
 import {
 	AutoComplete,
 	Confirm,
-	InquirerInput,
 	Input,
 	InputValidate,
 } from "@webpack-cli/webpack-scaffold";

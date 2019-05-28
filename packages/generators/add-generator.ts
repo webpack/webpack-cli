@@ -24,7 +24,7 @@ import { SchemaProperties, WebpackOptions } from "./types";
 import entryQuestions from "./utils/entry";
 import * as AutoComplete from "inquirer-autocomplete-prompt";
 import path, { resolve } from "path";
-import glob from 'glob'
+import glob from 'glob-all'
 
 /**
  *
