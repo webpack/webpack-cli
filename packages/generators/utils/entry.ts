@@ -27,7 +27,7 @@ export default function entry(
 			.prompt([
 				InputValidate(
 					"multipleEntries",
-					"How do you want to name your bundles? (separated by comma)",
+					"What do you want to name your bundles? (separated by comma)",
 					validate,
 					"pageOne, pageTwo"
 				)
