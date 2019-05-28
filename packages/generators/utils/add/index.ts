@@ -3,7 +3,9 @@ import PROP_TYPES from "@webpack-cli/utils/prop-types";
 export const PROPS: string[] = Array.from(PROP_TYPES.keys());
 
 // tslint:disable:no-var-requires
+// eslint-disable-next-line
 export const webpackDevServerSchema = require("webpack-dev-server/lib/options.json");
+// eslint-disable-next-line
 export const webpackSchema = require("../optionsSchema.json");
 
 /**
@@ -11,7 +13,7 @@ export const webpackSchema = require("../optionsSchema.json");
  * Replaces the string with a substring at the given index
  * https://gist.github.com/efenacigiray/9367920
  *
- * @param	{String} string - string to be modified
+ * @param	{String} str - string to be modified
  * @param	{Number} index - index to replace from
  * @param	{String} replace - string to replace starting from index
  *
@@ -33,7 +35,7 @@ export function replaceAt(str: string, index: number, replace: string): string {
  * is present
  */
 export const traverseAndGetProperties = (arr: object[], prop: string): boolean => {
-	let hasProp: boolean = false;
+	let hasProp = false;
 	arr.forEach((p: object): void => {
 		if (p[prop]) {
 			hasProp = true;
