@@ -1,6 +1,6 @@
-import PROP_TYPES from "../../prop-types";
+import PROP_TYPES from "@webpack-cli/utils/prop-types";
 
-const PROPS: string[] = Array.from(PROP_TYPES.keys());
+export const PROPS: string[] = Array.from(PROP_TYPES.keys());
 
 // tslint:disable:no-var-requires
 export const webpackDevServerSchema = require("webpack-dev-server/lib/options.json");
