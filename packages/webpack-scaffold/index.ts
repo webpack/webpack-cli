@@ -92,13 +92,14 @@ export function InputValidate(
 		defaultChoice?: string,
 	): Generator.Question {
 
-	return {
-		default: defaultChoice,
+	const input: Generator.Question = {
 		message,
 		name,
 		type: "input",
 		validate: cb
 	};
+	if (defaultChoice !== undefined) input.default = defaultChoice;
+	return input;
 }
 
 export function Confirm(name: string, message: string, defaultChoice: boolean = true): Generator.Question {

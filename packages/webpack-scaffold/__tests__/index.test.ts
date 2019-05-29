@@ -76,7 +76,6 @@ describe("utils", () => {
 		});
 		it("should make an Input object", () => {
 			expect(utils.Input("plugins", "what is your plugin?")).toEqual({
-				default: undefined,
 				message: "what is your plugin?",
 				name: "plugins",
 				type: "input",

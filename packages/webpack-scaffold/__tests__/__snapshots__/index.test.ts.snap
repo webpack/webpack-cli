@@ -2,7 +2,6 @@
 
 exports[`utils Inquirer should make an Input object with validation 1`] = `
 Object {
-  "default": undefined,
   "message": "what is your plugin?",
   "name": "plugins",
   "type": "input",
