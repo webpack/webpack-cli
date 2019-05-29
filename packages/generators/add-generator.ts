@@ -42,12 +42,7 @@ export default class AddGenerator extends Generator {
 			configName?: string;
 			topScope?: string[];
 			item?: string;
-			merge?: {
-				configName?: string;
-				topScope?: string[];
-				item?: string; 
-				webpackOptions?: WebpackOptions;
-			};
+			merge?: string|string[];
 			webpackOptions?: WebpackOptions;
 		};
 	};
@@ -112,19 +107,14 @@ export default class AddGenerator extends Generator {
 							);
 						}
 						if (action === "merge") {
-							return this.prompt([mergeFileQuestion])
+							return this.prompt(mergeFileQuestion)
 							.then((mergeFileAnswer: {
-								mergeFile: string;
+								mergeFile: string,
+								mergeConfigName: string
 							}) => {
 								const resolvedPath = resolve(process.cwd(), mergeFileAnswer.mergeFile);
 								// eslint-disable-next-line
-								const mergeConfig = require(resolvedPath);
-								(this.configuration.config.merge as {
-										configName?: string;
-										topScope?: string[];
-										item?: string;
-										webpackOptions?: WebpackOptions;
-								}) = mergeConfig;
+								this.configuration.config["merge"] = [mergeFileAnswer.mergeConfigName, resolvedPath];
 							});
 						}
 					}
