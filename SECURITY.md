@@ -8,7 +8,7 @@ webpack CLI is currently supporting webpack v4 and webpack v5. Security fixes ar
 
 | webpack version | webpack-cli version           | Supported          |
 | --------------- | ----------------------------- | ------------------ |
-| > 4.20.0        | ^3.1.2                        | :white_check_mark: |
+| >= 4.20.x        | ^3.1.2                        | :white_check_mark: |
 | 4.20.x          | ^3.1.2                        | :white_check_mark: |
 | 5.x.0           | ^3.1.2                        | :white_check_mark: |
 | 5.0.x           | ^3.1.2                        | :white_check_mark: |
