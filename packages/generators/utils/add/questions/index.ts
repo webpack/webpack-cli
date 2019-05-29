@@ -42,9 +42,9 @@ export const topScopeQuestion = Input(
 	"What do you want to add to topScope?",
 );
 
-const mergeFileQuestionFunction = () => {
- const question = "What is the location of webpack configuration with which you want to merge current configuration?";
- const validator = (path: string) => {
+const mergeFileQuestionsFunction = () => {
+ const mergePathQuestion = "What is the location of webpack configuration with which you want to merge current configuration?";
+ const mergePathValidator = (path: string) => {
 		const resolvedPath = resolve(process.cwd(), path);
 		if (existsSync(resolvedPath)) {
 			if (/\.js$/.test(path)) {
@@ -57,6 +57,10 @@ const mergeFileQuestionFunction = () => {
 		}
 		return "Invalid path provided";
 	};
- return InputValidate("mergeFile", question, validator);
+ const mergeConfigNameQuestion = "What is the name by which you want to denote above configuration?";
+ return [
+	InputValidate("mergeFile", mergeFileQuestion, mergePathValidator),
+	Input("mergeConfigName", mergeConfigNameQuestion)
+]
 };
-export const mergeFileQuestion = mergeFileQuestionFunction();
+export const mergeFileQuestion = mergeFileQuestionsFunction();

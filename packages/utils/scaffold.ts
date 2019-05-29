@@ -11,6 +11,28 @@ import astTransform from "./recursive-parser";
 import runPrettier from "./run-prettier";
 import { Node } from "./types/NodePath";
 
+
+
+function mergeHandler(config: Config, transformations: string[]): [Config, string[]]{
+	if(transformations.indexOf("topScope") === -1)
+	{
+		config["topScope"] = [
+			`const merge = require('webpack-merge')`,
+			`const ${config.merge[0]} = require(${config.merge[1]})`
+		];
+	} else {
+		config.topScope.push(
+			`const merge = require('webpack-merge')`,
+			`const ${config.merge[0]} = require(${config.merge[1]})`
+		)
+	}
+
+	config.merge = config.merge[0];
+	transformations.push("merge", "topScope");
+	return [config, transformations]
+}
+
+
 /**
  *
  * Maps back transforms that needs to be run using the configuration
@@ -45,17 +67,17 @@ export default function runTransform(transformConfig: TransformConfig, action: s
 
 	webpackConfig.forEach(
 		(scaffoldPiece: string): Promise<void> => {
-			const config: Config = transformConfig[scaffoldPiece];
+			let config: Config = transformConfig[scaffoldPiece];
 
-			const transformations = mapOptionsToTransform(config);
+			let transformations = mapOptionsToTransform(config);
 
 			if (config.topScope && transformations.indexOf("topScope") === -1) {
 				transformations.push("topScope");
 			}
 
-		if (config.merge && transformations.indexOf("merge") === -1) {
-			transformations.push("merge");
-		}
+			if (config.merge && transformations.indexOf("merge") === -1) {
+				[config, transformations] = mergeHandler(config, transformations);
+			}
 
 			const ast: Node = j(initActionNotDefined ? transformConfig.configFile : "module.exports = {}");
 
