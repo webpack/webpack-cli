@@ -192,7 +192,7 @@ const validation = value => {
 	if (value.length > 4) {
 		return true;
 	} else {
-		return "The entry point must be longer than 4, try again";
+		return "Your answer must be longer than 4, try again";
 	}
 };
 InputValidate("entry", "what is your entry point?", validation, "src/index");

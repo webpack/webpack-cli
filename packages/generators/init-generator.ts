@@ -6,10 +6,11 @@ import * as path from "path";
 import { getPackageManager } from "@webpack-cli/utils/package-manager";
 import { Confirm, Input, List } from "@webpack-cli/webpack-scaffold";
 
+import { getDefaultOptimization } from "./utils/webpackConfig";
 import { WebpackOptions } from "./types";
 import entryQuestions from "./utils/entry";
-import langQuestionHandler, { LangType } from "./utils/language";
-import styleQuestionHandler, { Loader, StylingType } from "./utils/style";
+import langQuestionHandler, { LangType } from "./utils/languageSupport";
+import styleQuestionHandler, { Loader, StylingType } from "./utils/styleSupport";
 import tooltip from "./utils/tooltip";
 
 /**
@@ -87,36 +88,8 @@ export default class InitGenerator extends Generator {
 			"new webpack.ProgressPlugin()",
 		);
 
-		let optimizationObj;
-
-		if (!this.isProd) {
-			optimizationObj = {
-				splitChunks: {
-					chunks: "'all'",
-				},
-			};
-		} else {
-			optimizationObj = {
-				minimizer: [
-					"new TerserPlugin()",
-				],
-				splitChunks: {
-					cacheGroups: {
-						vendors: {
-							priority: -10,
-							test: "/[\\\\/]node_modules[\\\\/]/",
-						},
-					},
-					chunks: "'async'",
-					minChunks: 1,
-					minSize: 30000,
-					// for production name is recommended to be off
-					name: !this.isProd,
-				},
-			};
-		}
-
-		this.configuration.config.webpackOptions.optimization = optimizationObj;
+		let optimizationConfig = getDefaultOptimization(this.isProd);
+		this.configuration.config.webpackOptions.optimization = optimizationConfig;
 
 		if (!this.isProd) {
 			this.configuration.config.webpackOptions.devServer = {
