@@ -59,7 +59,7 @@ const mergeFileQuestionsFunction = () => {
 	};
  const mergeConfigNameQuestion = "What is the name by which you want to denote above configuration?";
  return [
-	InputValidate("mergeFile", mergeFileQuestion, mergePathValidator),
+	InputValidate("mergeFile", mergePathQuestion, mergePathValidator),
 	Input("mergeConfigName", mergeConfigNameQuestion)
 ]
 };
