@@ -14,12 +14,13 @@ import { Node } from "./types/NodePath";
 
 
 function mergeHandler(config: Config, transformations: string[]): [Config, string[]]{
-	if(transformations.indexOf("topScope") === -1)
+	if(!config["topScope"])
 	{
 		config["topScope"] = [
 			`const merge = require('webpack-merge')`,
 			`const ${config.merge[0]} = require(${config.merge[1]})`
 		];
+		transformations.push("topScope");
 	} else {
 		config.topScope.push(
 			`const merge = require('webpack-merge')`,
@@ -29,7 +30,7 @@ function mergeHandler(config: Config, transformations: string[]): [Config, strin
 
 	config.merge = config.merge[0];
 	transformations.push("merge", "topScope");
-	return [config, transformations]
+	return [config, transformations];
 }
 
 
