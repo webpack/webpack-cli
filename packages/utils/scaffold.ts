@@ -46,9 +46,9 @@ export default function runTransform(transformConfig: TransformConfig, action: s
 
 	webpackConfig.forEach(
 		(scaffoldPiece: string): Promise<void> => {
-			let config: Config = transformConfig[scaffoldPiece];
+			const config: Config = transformConfig[scaffoldPiece];
 
-			let transformations = mapOptionsToTransform(config);
+			const transformations = mapOptionsToTransform(config);
 
 			if (config.topScope && transformations.indexOf("topScope") === -1) {
 				transformations.push("topScope");
