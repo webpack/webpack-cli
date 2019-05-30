@@ -16,7 +16,6 @@ import * as webpackDevServerSchema from "webpack-dev-server/lib/options.json";
 import * as webpackSchema from "./utils/optionsSchema.json";
 const PROPS: string[] = Array.from(PROP_TYPES.keys());
 
-
 /**
  *
  * Checks if the given array has a given property
@@ -91,8 +90,9 @@ export default class AddGenerator extends Generator {
 		const done: () => {} = this.async();
 		let action: string;
 		const self: this = this;
-		const manualOrListInput: (promptAction: string) => Generator.Question = (promptAction: string): Generator.Question =>
-			Input("actionAnswer", `What do you want to add to ${promptAction}?`);
+		const manualOrListInput: (promptAction: string) => Generator.Question = (
+			promptAction: string
+		): Generator.Question => Input("actionAnswer", `What do you want to add to ${promptAction}?`);
 		let inputPrompt: Generator.Question;
 
 		// first index indicates if it has a deep prop, 2nd indicates what kind of
@@ -380,7 +380,7 @@ export default class AddGenerator extends Generator {
 								(p: boolean): void => {
 									if (p) {
 										this.dependencies.push(answerToAction.actionAnswer);
-										const pluginName = generatePluginName(answerToAction.actionAnswer)
+										const pluginName = generatePluginName(answerToAction.actionAnswer);
 										this.configuration.config.topScope.push(
 											`const ${pluginName} = require("${answerToAction.actionAnswer}")`
 										);

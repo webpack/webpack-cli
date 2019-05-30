@@ -570,7 +570,7 @@ function removeProperty(j: JSCodeshift, ast: Node, key: string, value: valueType
  * @returns ast - jscodeshift API
  */
 
- // eslint-disable-next-line @typescript-eslint/no-unused-vars
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function parseTopScope(j: JSCodeshift, ast: Node, value: string[], action: string): boolean | Node {
 	function createTopScopeProperty(p: Node): boolean {
 		value.forEach(

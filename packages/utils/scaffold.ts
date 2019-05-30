@@ -70,35 +70,39 @@ export default function runTransform(transformConfig: TransformConfig, action: s
 						return astTransform(j, ast, f, config[f] as any, transformAction);
 					}
 					return astTransform(j, ast, f, config.webpackOptions[f], transformAction);
-				})
-				.then((): void | PromiseLike<void> => {
-					let configurationName: string;
-					if (!config.configName) {
-						configurationName = "webpack.config.js";
-					} else {
-						configurationName = "webpack." + config.configName + ".js";
+				}
+			)
+				.then(
+					(): void | PromiseLike<void> => {
+						let configurationName: string;
+						if (!config.configName) {
+							configurationName = "webpack.config.js";
+						} else {
+							configurationName = "webpack." + config.configName + ".js";
+						}
+						const projectRoot = findProjectRoot();
+						const outputPath: string = initActionNotDefined
+							? transformConfig.configPath
+							: path.join(projectRoot || process.cwd(), configurationName);
+						const source: string = ast.toSource({
+							quote: "single"
+						});
+						runPrettier(outputPath, source);
 					}
-					const projectRoot = findProjectRoot();
-					const outputPath: string = initActionNotDefined
-						? transformConfig.configPath
-						: path.join(projectRoot || process.cwd(), configurationName);
-					const source: string = ast.toSource({
-						quote: "single",
-					});
-					runPrettier(outputPath, source);
-				})
-				.catch((err: Error): void => {
-					console.error(err.message ? err.message : err);
-				});
-	});
+				)
+				.catch(
+					(err: Error): void => {
+						console.error(err.message ? err.message : err);
+					}
+				);
+		}
+	);
 	let successMessage: string =
 		chalk.green(`Congratulations! Your new webpack configuration file has been created!\n\n`) +
 		`You can now run ${chalk.green("npm run start")} to run your project!\n\n`;
 
 	if (initActionNotDefined && transformConfig.config.item) {
-		successMessage = chalk.green(`Congratulations! ${
-			transformConfig.config.item
-		} has been ${action}ed!\n`);
+		successMessage = chalk.green(`Congratulations! ${transformConfig.config.item} has been ${action}ed!\n`);
 	}
 	process.stdout.write(`\n${successMessage}`);
 }

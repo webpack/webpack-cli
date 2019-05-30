@@ -16,10 +16,7 @@ interface CustomGenerator extends Generator {
  * @returns	{Object} An Object that holds the answers given by the user, later used to scaffold
  */
 
-export default function entry(
-	self: CustomGenerator,
-	multiEntries: boolean,
-): Promise<void | {}> {
+export default function entry(self: CustomGenerator, multiEntries: boolean): Promise<void | {}> {
 	let entryIdentifiers: string[];
 	let result: Promise<void | {}>;
 	if (multiEntries) {
@@ -78,49 +75,43 @@ export default function entry(
 									`${entryProp}`,
 									`What is the location of "${entryProp}"?`,
 									validate,
-									`src/${entryProp}`,
-								),
-						]))
-						.then(
-							(entryPropAnswer: object): object => {
-								Object.keys(entryPropAnswer).forEach(
-									(val: string): void => {
-										if (
-											entryPropAnswer[val].charAt(0) !== "(" &&
-											entryPropAnswer[val].charAt(0) !== "[" &&
-											!entryPropAnswer[val].includes("function") &&
-											!entryPropAnswer[val].includes("path") &&
-											!entryPropAnswer[val].includes("process")
-										) {
-											entryPropAnswer[val] = `\'./${entryPropAnswer[val].replace(/"|'/g, "").concat(".js")}\'`;
-										}
-										webpackEntryPoint[val] = entryPropAnswer[val];
+									`src/${entryProp}`
+								)
+							])
+					).then(
+						(entryPropAnswer: object): object => {
+							Object.keys(entryPropAnswer).forEach(
+								(val: string): void => {
+									if (
+										entryPropAnswer[val].charAt(0) !== "(" &&
+										entryPropAnswer[val].charAt(0) !== "[" &&
+										!entryPropAnswer[val].includes("function") &&
+										!entryPropAnswer[val].includes("path") &&
+										!entryPropAnswer[val].includes("process")
+									) {
+										entryPropAnswer[val] = `\'./${entryPropAnswer[val]
+											.replace(/"|'/g, "")
+											.concat(".js")}\'`;
 									}
-								);
-								return webpackEntryPoint;
-							}
-						);
+									webpackEntryPoint[val] = entryPropAnswer[val];
+								}
+							);
+							return webpackEntryPoint;
+						}
+					);
 				}
 			);
 	} else {
-		result = self
-			.prompt([
-				Input(
-					"singularEntry",
-					"Which will be your application entry point?",
-					"src/index",
-				)
-			])
-			.then(
-				(singularEntryAnswer: { singularEntry: string }): string => {
-					let { singularEntry } = singularEntryAnswer;
-					singularEntry = `\'./${singularEntry.replace(/"|'/g, "").concat(".js")}\'`;
-					if (singularEntry.length <= 0) {
-						self.usingDefaults = true;
-					}
-					return singularEntry;
+		result = self.prompt([Input("singularEntry", "Which will be your application entry point?", "src/index")]).then(
+			(singularEntryAnswer: { singularEntry: string }): string => {
+				let { singularEntry } = singularEntryAnswer;
+				singularEntry = `\'./${singularEntry.replace(/"|'/g, "").concat(".js")}\'`;
+				if (singularEntry.length <= 0) {
+					self.usingDefaults = true;
 				}
-			);
+				return singularEntry;
+			}
+		);
 	}
 	return result;
 }

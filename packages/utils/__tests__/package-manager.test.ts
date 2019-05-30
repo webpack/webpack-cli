@@ -19,15 +19,15 @@ describe("package-manager", () => {
 		signal: null,
 		status: 1,
 		stderr: null,
-		stdout: null,
+		stdout: null
 	};
 
 	function mockSpawnErrorOnce() {
 		spawn.sync.mockReturnValueOnce(
 			Object.assign({}, defaultSyncResult, {
 				error: new Error(),
-				status: null,
-			}),
+				status: null
+			})
 		);
 	}
 
@@ -103,8 +103,8 @@ describe("package-manager", () => {
 		// Mock stdout of `yarn global dir`
 		spawn.sync.mockReturnValueOnce({
 			stdout: {
-				toString: () => `${yarnDir}\n`,
-			},
+				toString: () => `${yarnDir}\n`
+			}
 		});
 		const globalPath = packageManager.getPathToGlobalPackages();
 		const expected = path.join(yarnDir, "node_modules");

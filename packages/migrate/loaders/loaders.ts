@@ -55,7 +55,7 @@ export default function(j: JSCodeshift, ast: Node): Node {
 	 */
 
 	const createArrayExpressionFromArray = (path: Node): Node => {
-		const value: Node = (path.value as Node);
+		const value: Node = path.value as Node;
 		// Find paths with `loaders` keys in the given Object
 		const paths: Node[] = value.properties.filter((prop: Node): boolean => prop.key.name.startsWith("loader"));
 		// For each pair of key and value
@@ -73,7 +73,9 @@ export default function(j: JSCodeshift, ast: Node): Node {
 								// If items of the array are Strings
 								if (arrElement.type === j.Literal.name) {
 									// Replace with `{ loader: LOADER }` Object
-									return j.objectExpression([utils.createProperty(j, "loader", (arrElement.value as Node))]);
+									return j.objectExpression([
+										utils.createProperty(j, "loader", arrElement.value as Node)
+									]);
 								}
 								// otherwise keep the existing element
 								return arrElement;
@@ -108,7 +110,8 @@ export default function(j: JSCodeshift, ast: Node): Node {
 	const createLoaderWithQuery = (p: Node): Node => {
 		const properties: Node[] = (p.value as Node).properties;
 		const loaderValue: string = properties.reduce(
-			(val: string, prop: Node): string => (prop.key.name === "loader" ? (prop.value as Node).value as string: val),
+			(val: string, prop: Node): string =>
+				prop.key.name === "loader" ? ((prop.value as Node).value as string) : val,
 			""
 		);
 		const loader: string = loaderValue.split("?")[0];
@@ -137,7 +140,8 @@ export default function(j: JSCodeshift, ast: Node): Node {
 	const findLoaderWithQueryString = (p: Node): boolean => {
 		return (p.value as Node).properties.reduce((predicate: boolean, prop: Node): boolean => {
 			return (
-				(utils.safeTraverse(prop, ["value", "value", "indexOf"]) && ((prop.value as Node).value as string).indexOf("?") > -1) ||
+				(utils.safeTraverse(prop, ["value", "value", "indexOf"]) &&
+					((prop.value as Node).value as string).indexOf("?") > -1) ||
 				predicate
 			);
 		}, false);
@@ -192,7 +196,9 @@ export default function(j: JSCodeshift, ast: Node): Node {
 			}
 		);
 		if (loaders) {
-			(p.value as Node).properties = (p.value as Node).properties.filter((prop: Node): boolean => prop.key.name === "loaders");
+			(p.value as Node).properties = (p.value as Node).properties.filter(
+				(prop: Node): boolean => prop.key.name === "loaders"
+			);
 		}
 		return p;
 	};
@@ -306,7 +312,7 @@ export default function(j: JSCodeshift, ast: Node): Node {
 							utils.safeTraverse(prop, ["value", "value"]) &&
 							!((prop.value as Node).value as string).endsWith("-loader")
 						) {
-							prop.value = j.literal((prop.value as Node).value as string + "-loader");
+							prop.value = j.literal(((prop.value as Node).value as string) + "-loader");
 						}
 					}
 				);
@@ -333,7 +339,9 @@ export default function(j: JSCodeshift, ast: Node): Node {
 		);
 
 		if (options) {
-			(p.value as Node).properties = (p.value as Node).properties.filter((prop: Node): boolean => prop.key.name !== "options");
+			(p.value as Node).properties = (p.value as Node).properties.filter(
+				(prop: Node): boolean => prop.key.name !== "options"
+			);
 
 			(p.value as Node).properties.forEach(
 				(prop: Node): void => {
