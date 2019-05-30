@@ -1,4 +1,4 @@
-import Generator = require("yeoman-generator");
+import * as Generator from "yeoman-generator";
 
 import * as glob from "glob-all";
 import * as autoComplete from "inquirer-autocomplete-prompt";
@@ -7,7 +7,7 @@ import * as path from "path";
 import npmExists from "@webpack-cli/utils/npm-exists";
 import { getPackageManager } from "@webpack-cli/utils/package-manager";
 import PROP_TYPES from "@webpack-cli/utils/prop-types";
-import { AutoComplete, Confirm, InquirerInput, Input, List } from "@webpack-cli/webpack-scaffold";
+import { AutoComplete, Confirm, Input, List } from "@webpack-cli/webpack-scaffold";
 
 import { SchemaProperties, WebpackOptions } from "./types";
 import entryQuestions from "./utils/entry";
@@ -102,13 +102,13 @@ export default class AddGenerator extends Generator {
 		registerPrompt("autocomplete", autoComplete);
 	}
 
-	public prompting(): void {
-		const done: () => void | boolean = this.async();
+	public prompting(): Promise<void | {}> {
+		const done: () => {} = this.async();
 		let action: string;
 		const self: this = this;
-		const manualOrListInput: (promptAction: string) => InquirerInput = (promptAction: string): InquirerInput =>
+		const manualOrListInput: (promptAction: string) => Generator.Question = (promptAction: string): Generator.Question =>
 			Input("actionAnswer", `What do you want to add to ${promptAction}?`);
-		let inputPrompt: InquirerInput;
+		let inputPrompt: Generator.Question;
 
 		// first index indicates if it has a deep prop, 2nd indicates what kind of
 		// TODO: this must be reviewed. It starts as an array of booleans but after that it get overridden
@@ -132,13 +132,13 @@ export default class AddGenerator extends Generator {
 				}
 			)
 			.then(
-				(): void => {
+				(): Promise<void | {}> => {
 					if (action === "entry") {
 						return this.prompt([
 							Confirm("entryType", "Will your application have multiple bundles?", false)
 						])
 							.then(
-								(entryTypeAnswer: { entryType: boolean }): Promise<{}> => {
+								(entryTypeAnswer: { entryType: boolean }): Promise<void | {}> => {
 									// Ask different questions for entry points
 									return entryQuestions(self, entryTypeAnswer);
 								}
@@ -296,7 +296,7 @@ export default class AddGenerator extends Generator {
 				}
 			)
 			.then(
-				(answerToAction: { actionAnswer: string }): void => {
+				(answerToAction: { actionAnswer: string }): Promise<void | {}> => {
 					if (!answerToAction) {
 						done();
 						return;
@@ -364,7 +364,7 @@ export default class AddGenerator extends Generator {
 										pluginsSchemaProps
 									)
 								]).then(
-									(pluginsPropAnswer: { pluginsPropType: string }): Promise<{}> => {
+									(pluginsPropAnswer: { pluginsPropType: string }): Promise<void | {}> => {
 										return this.prompt([
 											Input(
 												"pluginsPropTypeVal",

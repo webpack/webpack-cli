@@ -1,6 +1,6 @@
 {
   "name": "webpack-cli",
-  "version": "3.3.1",
+  "version": "3.3.2",
   "description": "CLI for webpack & friends",
   "license": "MIT",
   "repository": {
@@ -54,6 +54,10 @@
     }
   },
   "lint-staged": {
+    "*.md": [
+      "prettier --parser markdown --write",
+      "git add"
+    ],
     "{packages,bin}/**/!(__testfixtures__)/**.js": [
       "eslint --fix",
       "git add"
@@ -124,6 +128,7 @@
     "import-local": "^2.0.0",
     "interpret": "^1.1.0",
     "loader-utils": "^1.1.0",
+    "prettier": "^1.17.0",
     "supports-color": "^5.5.0",
     "v8-compile-cache": "^2.0.2",
     "yargs": "^12.0.5"
@@ -144,7 +149,7 @@
     "@typescript-eslint/parser": "^1.6.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-jest": "^24.3.0",
-    "bundlesize": "^0.17.0",
+    "bundlesize": "^0.17.2",
     "codecov": "^3.1.0",
     "commitizen": "^3.0.7",
     "commitlint-config-cz": "^0.10.1",
@@ -159,16 +164,16 @@
     "jest": "^24.3.1",
     "jest-cli": "^24.3.1",
     "jest-junit": "^6.3.0",
-    "lerna": "^3.13.2",
+    "lerna": "^3.13.4",
     "lint-staged": "7.x.x",
-    "nyc": "^13.3.0",
+    "nyc": "^14.1.0",
     "prettier-eslint-cli": "^4.7.1",
     "readable-stream": "^3.0.6",
     "rimraf": "^2.6.2",
     "schema-utils": "^1.0.0",
     "ts-jest": "^23.10.5",
     "ts-node": "^7.0.1",
-    "typedoc": "^0.13.0",
+    "typedoc": "^0.14.2",
     "typedoc-plugin-monorepo": "^0.1.0",
     "typescript": "^3.3.1",
     "webpack": "4.x.x",

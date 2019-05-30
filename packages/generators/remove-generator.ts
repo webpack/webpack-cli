@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
-import Generator = require("yeoman-generator");
+import * as Generator from "yeoman-generator";
 
 import PROP_TYPES from "@webpack-cli/utils/prop-types";
 import { List } from "@webpack-cli/webpack-scaffold";
@@ -32,13 +32,9 @@ export default class RemoveGenerator extends Generator {
 				webpackOptions: {}
 			}
 		};
-
-		let configPath = path.resolve(process.cwd(), "webpack.config.js");
+		const { configFile } = opts;
+		let configPath = path.resolve(process.cwd(), configFile);
 		const webpackConfigExists = fs.existsSync(configPath);
-		if (!webpackConfigExists) {
-			configPath = null;
-			// end the generator stating webpack config not found or to specify the config
-		}
 		this.webpackOptions = require(configPath);
 	}
 
@@ -56,13 +52,13 @@ export default class RemoveGenerator extends Generator {
 		}
 	}
 
-	public prompting(): Promise<{}> {
-		const done: () => void | boolean = this.async();
+	public prompting(): Promise<void | {}> {
+		const done: () => {} = this.async();
 		let propValue: object | string | boolean;
 
 		return this.prompt([List("propType", "Which property do you want to remove?", Array.from(this.getPropTypes()))])
 			.then(
-				({ propType }: { propType: string }): Promise<{}> => {
+				({ propType }: { propType: string }): Promise<void | {}> => {
 					if (!PROP_TYPES.has(propType)) {
 						console.error("Invalid webpack config prop");
 						return;
@@ -90,7 +86,7 @@ export default class RemoveGenerator extends Generator {
 									Array.from(Object.keys(propValue))
 								)
 							]).then(
-								({ keyType }: { keyType: string }): Promise<{}> => {
+								({ keyType }: { keyType: string }): Promise<void | {}> => {
 									if (propType === "module" && keyType === "rules") {
 										return this.prompt([
 											List(
