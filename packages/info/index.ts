@@ -49,9 +49,9 @@ export default async function info(): Promise<void> {
 		}
 	});
 
-	process.stdout.write("\n" + await envinfo.run(
+	let output = await envinfo.run(
 		Object.keys(DETAILS_OBJ).length ?
 			DETAILS_OBJ : DEFAULT_DETAILS,
-		CONFIG) +
-		"\n");
+		CONFIG);
+	process.stdout.write(`\n${output}\n`);
 }
