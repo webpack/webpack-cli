@@ -18,26 +18,13 @@ export function isLocalPath(str: string): boolean {
 }
 
 /**
- * Get absolute path of a webpack config in a project.
- *
- * @param {String[]} str - array of extensions to look for.
- * @returns {String} Absolute path of the config.
- */
-
-export function webpackConfigPath(extensions: string[]): string {
-	const defaultConfigFileNames = ["webpack.config", "webpackfile"].join("|");
-	const webpackConfigFileRegExp = `(${defaultConfigFileNames})(${extensions.join("|")})`;
-	return findup(webpackConfigFileRegExp);
-}
-
-/**
  * Find the root directory path of a project.
  *
  * @returns {String} Absolute path of the project root.
  */
 
 export function findProjectRoot(): string {
-	const rootFilePath = findup(`package.json`);
+	const rootFilePath = findup("package.json");
 	const projectRoot = path.dirname(rootFilePath);
 	return projectRoot;
 }
