@@ -1,5 +1,4 @@
-module.exports = (isProd) => {
-
+module.exports = isProd => {
 	let scripts = {
 		build: "webpack"
 	};
@@ -10,6 +9,6 @@ module.exports = (isProd) => {
 	return {
 		version: "1.0.0",
 		description: "My webpack project",
-		scripts,
+		scripts
 	};
 };

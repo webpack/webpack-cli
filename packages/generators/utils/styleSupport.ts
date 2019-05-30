@@ -4,7 +4,7 @@ export enum StylingType {
 	CSS = "CSS",
 	SASS = "SASS",
 	LESS = "LESS",
-	PostCSS = "PostCSS",
+	PostCSS = "PostCSS"
 }
 
 export enum LoaderName {
@@ -12,14 +12,14 @@ export enum LoaderName {
 	SASS = "sass-loader",
 	STYLE = "style-loader",
 	LESS = "less-loader",
-	POSTCSS = "postcss-loader",
+	POSTCSS = "postcss-loader"
 }
 
 export enum StyleRegex {
-	CSS = "/\.css$/",
-	SASS = "/\.(scss|css)$/",
-	LESS = "/\.(less|css)$/",
-	PostCSS = "/\.css$/",
+	CSS = "/.css$/",
+	SASS = "/.(scss|css)$/",
+	LESS = "/.(less|css)$/",
+	PostCSS = "/.css$/"
 }
 
 export interface Loader {
@@ -31,9 +31,12 @@ export interface Loader {
 	};
 }
 
-export default function style(self, stylingType: string): {
-	ExtractUseProps: Loader[],
-	regExpForStyles: StyleRegex, 
+export default function style(
+	self,
+	stylingType: string
+): {
+	ExtractUseProps: Loader[];
+	regExpForStyles: StyleRegex;
 } {
 	const ExtractUseProps: Loader[] = [];
 	let regExpForStyles: StyleRegex = null;
@@ -42,92 +45,70 @@ export default function style(self, stylingType: string): {
 		case StylingType.CSS:
 			regExpForStyles = StyleRegex.CSS;
 
-			self.dependencies.push(
-				LoaderName.CSS,
-			);
+			self.dependencies.push(LoaderName.CSS);
 			if (!self.isProd) {
-				self.dependencies.push(
-					LoaderName.STYLE,
-				);
-				ExtractUseProps.push(
-					{
-						loader: `"${LoaderName.STYLE}"`,
-					},
-				);
+				self.dependencies.push(LoaderName.STYLE);
+				ExtractUseProps.push({
+					loader: `"${LoaderName.STYLE}"`
+				});
 			}
 			ExtractUseProps.push({
 				loader: `"${LoaderName.CSS}"`,
 				options: {
-					sourceMap: true,
-				},
+					sourceMap: true
+				}
 			});
 			break;
 
 		case StylingType.SASS:
 			regExpForStyles = StyleRegex.SASS;
 
-			self.dependencies.push(
-				"node-sass",
-				LoaderName.SASS,
-				LoaderName.CSS,
-			);
+			self.dependencies.push("node-sass", LoaderName.SASS, LoaderName.CSS);
 			if (!self.isProd) {
-				self.dependencies.push(
-					LoaderName.STYLE,
-				);
-				ExtractUseProps.push(
-					{
-						loader: `"${LoaderName.STYLE}"`,
-					},
-				);
+				self.dependencies.push(LoaderName.STYLE);
+				ExtractUseProps.push({
+					loader: `"${LoaderName.STYLE}"`
+				});
 			}
 			ExtractUseProps.push(
 				{
 					loader: `"${LoaderName.CSS}"`,
 					options: {
-						sourceMap: true,
-					},
+						sourceMap: true
+					}
 				},
 				{
 					loader: `"${LoaderName.SASS}"`,
 					options: {
-						sourceMap: true,
-					},
-				},
+						sourceMap: true
+					}
+				}
 			);
 			break;
 
 		case StylingType.LESS:
 			regExpForStyles = StyleRegex.LESS;
 
-			self.dependencies.push(
-				"less",
-				LoaderName.LESS,
-				LoaderName.CSS,
-			);
+			self.dependencies.push("less", LoaderName.LESS, LoaderName.CSS);
 			if (!self.isProd) {
-				self.dependencies.push(
-					LoaderName.STYLE,
-				);
-				ExtractUseProps.push(
-					{
-						loader: `"${LoaderName.STYLE}"`,
-					},
-				);
+				self.dependencies.push(LoaderName.STYLE);
+				ExtractUseProps.push({
+					loader: `"${LoaderName.STYLE}"`
+				});
 			}
 			ExtractUseProps.push(
 				{
 					loader: `"${LoaderName.CSS}"`,
 					options: {
-						sourceMap: true,
-					},
+						sourceMap: true
+					}
 				},
 				{
 					loader: `"${LoaderName.LESS}"`,
 					options: {
-						sourceMap: true,
-					},
-				},
+						sourceMap: true
+					}
+				}
 			);
 			break;
 
@@ -138,32 +119,23 @@ export default function style(self, stylingType: string): {
 				tooltip.postcss(),
 				"const autoprefixer = require('autoprefixer');",
 				"const precss = require('precss');",
-				"\n",
+				"\n"
 			);
 
-			self.dependencies.push(
-				"precss",
-				"autoprefixer",
-				LoaderName.CSS,
-				LoaderName.POSTCSS,
-			);
+			self.dependencies.push("precss", "autoprefixer", LoaderName.CSS, LoaderName.POSTCSS);
 			if (!self.isProd) {
-				self.dependencies.push(
-					LoaderName.STYLE,
-				);
-				ExtractUseProps.push(
-					{
-						loader: `"${LoaderName.STYLE}"`,
-					},
-				);
+				self.dependencies.push(LoaderName.STYLE);
+				ExtractUseProps.push({
+					loader: `"${LoaderName.STYLE}"`
+				});
 			}
 			ExtractUseProps.push(
 				{
 					loader: `"${LoaderName.CSS}"`,
 					options: {
 						importLoaders: 1,
-						sourceMap: true,
-					},
+						sourceMap: true
+					}
 				},
 				{
 					loader: `"${LoaderName.POSTCSS}"`,
@@ -173,9 +145,9 @@ export default function style(self, stylingType: string): {
 								precss,
 								autoprefixer
 							];
-						}`,
-					},
-				},
+						}`
+					}
+				}
 			);
 			break;
 	}

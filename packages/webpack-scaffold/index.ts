@@ -86,11 +86,11 @@ export function Input(name: string, message: string, defaultChoice?: string): Ge
 }
 
 export function InputValidate(
-		name: string,
-		message: string,
-		cb?: (input: string) => string | boolean,
-		defaultChoice?: string,
-	): Generator.Question {
+	name: string,
+	message: string,
+	cb?: (input: string) => string | boolean,
+	defaultChoice?: string
+): Generator.Question {
 	const input: Generator.Question = {
 		message,
 		name,

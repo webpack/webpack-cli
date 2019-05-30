@@ -35,8 +35,8 @@ const LoaderGenerator = addonGenerator(
 			message: "Loader name",
 			name: "name",
 			type: "input",
-			validate: (str: string): boolean => str.length > 0,
-		},
+			validate: (str: string): boolean => str.length > 0
+		}
 	],
 	path.resolve(__dirname, "..", "generate-loader"),
 	[
@@ -48,10 +48,10 @@ const LoaderGenerator = addonGenerator(
 		"examples/simple/webpack.config.js.tpl",
 		"examples/simple/src/index.js.tpl",
 		"examples/simple/src/lazy-module.js.tpl",
-		"examples/simple/src/static-esm-module.js.tpl",
+		"examples/simple/src/static-esm-module.js.tpl"
 	],
 	["src/_index.js.tpl"],
-	(gen): object => ({ name: gen.props.name }),
+	(gen): object => ({ name: gen.props.name })
 );
 
 export default LoaderGenerator;

@@ -1,7 +1,7 @@
 import chalk from "chalk";
 
-import isLocalPath from "./is-local-path";
 import npmExists from "./npm-exists";
+import { isLocalPath } from "./path-utils";
 import { resolvePackages } from "./resolve-packages";
 
 const WEBPACK_SCAFFOLD_PREFIX = "webpack-scaffold";

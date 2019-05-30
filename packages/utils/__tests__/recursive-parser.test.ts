@@ -15,11 +15,11 @@ defineTest(join(__dirname, ".."), "init", "fixture-1", "entry", {
 			include: ["customObj", "'Stringy'"],
 			loader: "'eslint-loader'",
 			options: {
-				formatter: "'someOption'",
+				formatter: "'someOption'"
 			},
-			test: new RegExp(/\.(js|vue)$/),
-		},
-	],
+			test: new RegExp(/\.(js|vue)$/)
+		}
+	]
 });
 
 defineTest(join(__dirname, ".."), "add", "fixture-2", "entry", {
@@ -35,31 +35,31 @@ defineTest(join(__dirname, ".."), "add", "fixture-2", "entry", {
 			include: ["asd", "'Stringy'"],
 			loader: "'pia-loader'",
 			options: {
-				formatter: "'nao'",
+				formatter: "'nao'"
 			},
-			test: new RegExp(/\.(wasm|c)$/),
-		},
-	],
+			test: new RegExp(/\.(wasm|c)$/)
+		}
+	]
 });
 
 defineTest(join(__dirname, ".."), "remove", "fixture-3", "resolve", {
-	alias: null,
+	alias: null
 });
 
 defineTest(join(__dirname, ".."), "remove", "fixture-3", "plugins", ["plugin2"]);
 
 defineTest(join(__dirname, ".."), "remove", "fixture-3", "module", {
-	noParse: null,
+	noParse: null
 });
 
 defineTest(join(__dirname, ".."), "remove", "fixture-3", "entry", {
-	a: null,
+	a: null
 });
 
 defineTest(join(__dirname, ".."), "remove", "fixture-3", "module", {
 	rules: [
 		{
-			loader: "eslint-loader",
-		},
-	],
+			loader: "eslint-loader"
+		}
+	]
 });
