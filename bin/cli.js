@@ -83,7 +83,6 @@ For more information, see https://webpack.js.org/api/cli/.`);
 				console.error(errorMessage);
 				Error.stackTraceLimit = 1;
 				process.exitCode = 1;
-				return;
 			}
 
 			if (err.name !== "ValidationError") {
