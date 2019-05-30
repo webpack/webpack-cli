@@ -227,7 +227,7 @@ export default class InitGenerator extends Generator {
 		}
 		if(!this.isProd) {
 			this.dependencies.push("html-webpack-plugin");
-			const htmlWebpackDependency: string = "html-webpack-plugin";
+			const htmlWebpackDependency = "html-webpack-plugin";
 			const htmlwebpackPlugin = generatePluginName(htmlWebpackDependency);
 			(this.configuration.config.topScope as string[]).push(
 				`const ${htmlwebpackPlugin} = require('${htmlWebpackDependency}')`,
