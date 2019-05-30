@@ -26,11 +26,13 @@
     "webpack": "4.x.x"
   },
   "devDependencies": {
+    "@types/inquirer": "^6.0.1",
     "@types/lodash": "^4.14.118",
     "@types/log-symbols": "^2.0.0",
     "@types/mkdirp": "^0.5.2",
     "@types/node": "^10.12.9",
     "@types/webpack-dev-server": "^3.1.1",
+    "@types/yeoman-generator": "^3.1.2",
     "typescript": "^3.1.6"
   },
   "scripts": {

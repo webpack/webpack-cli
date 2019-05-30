@@ -38,8 +38,8 @@ const npmGlobalRoot = () => {
 };
 
 const runWhenInstalled = (packages, pathForCmd, ...args) => {
-	const package = require(pathForCmd);
-	const func = package.default;
+	const currentPackage = require(pathForCmd);
+	const func = currentPackage.default;
 	if (typeof func !== "function") {
 		throw new Error(`@webpack-cli/${packages} failed to export a default function`);
 	}

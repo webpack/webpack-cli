@@ -1,4 +1,4 @@
-interface IError {
-	stack?: object;
-	message?: string;
+interface Error {
+	stack?: string;
+	message: string;
 }

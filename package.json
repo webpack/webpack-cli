@@ -1,6 +1,6 @@
 {
   "name": "webpack-cli",
-  "version": "3.3.0",
+  "version": "3.3.2",
   "description": "CLI for webpack & friends",
   "license": "MIT",
   "repository": {
@@ -33,18 +33,18 @@
     "clean:all": "rimraf node_modules packages/*/{node_modules}",
     "commit": "git-cz",
     "docs": "typedoc",
-    "format": "prettier-eslint ./bin/*.js ./bin/**/*.js ./test/**/*.js ./packages/**/*.js ./packages/**/**/*.js --write",
-    "lint": "eslint \"./bin/*.js\" \"./test/**/*.js\" \"packages/**/!(node_modules)/*.test.js\"",
+    "format": "prettier-eslint ./bin/*.js ./test/**/*.js ./packages/**/*.js --write",
+    "lint:codeOnly": "eslint \"{bin}/**/!(__testfixtures__)/*.js\" \"{bin}/**.js\"",
+    "lint": "eslint \"./bin/*.js\" \"./test/**/*.js\" \"packages/**/!(node_modules)/*.ts\"",
     "postinstall": "node ./bin/opencollective.js",
-    "pretest": "npm run build && npm run lint && npm run tslint",
+    "pretest": "npm run build && npm run lint",
     "reportCoverage": "nyc report --reporter=json && codecov -f coverage/coverage-final.json --disable=gcov",
     "test": "nyc jest --maxWorkers=4 --reporters=default --reporters=jest-junit",
     "test:cli": "nyc jest test/ --maxWorkers=4 --reporters=default --reporters=jest-junit",
     "test:packages": "nyc jest packages/ --maxWorkers=4 --reporters=default --reporters=jest-junit",
     "test:ci": "nyc jest --maxWorkers=$(nproc) --reporters=default --reporters=jest-junit",
     "travis:integration": "npm run build && npm run test && npm run reportCoverage",
-    "travis:lint": "npm run build && npm run lint && npm run tslint",
-    "tslint": "tslint -c tslint.json \"packages/**/*.ts\"",
+    "travis:lint": "npm run build && npm run lint",
     "watch": "npm run build && tsc -w"
   },
   "husky": {
@@ -54,12 +54,12 @@
     }
   },
   "lint-staged": {
-    "{packages,bin}/**/!(__testfixtures__)/**.js": [
-      "eslint --fix",
+    "*.md": [
+      "prettier --parser markdown --write",
       "git add"
     ],
-    "{packages,bin}/**/!(__testfixtures__)/**.ts": [
-      "tslint --fix",
+    "{packages,bin}/**/!(__testfixtures__)/**.js": [
+      "eslint --fix",
       "git add"
     ]
   },
@@ -128,6 +128,7 @@
     "import-local": "^2.0.0",
     "interpret": "^1.1.0",
     "loader-utils": "^1.1.0",
+    "prettier": "^1.17.0",
     "supports-color": "^5.5.0",
     "v8-compile-cache": "^2.0.2",
     "yargs": "^12.0.5"
@@ -144,15 +145,18 @@
     "@commitlint/travis-cli": "^7.2.1",
     "@types/jest": "^23.3.14",
     "@types/node": "^10.12.9",
+    "@typescript-eslint/eslint-plugin": "^1.6.0",
+    "@typescript-eslint/parser": "^1.6.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-jest": "^24.3.0",
-    "bundlesize": "^0.17.0",
+    "bundlesize": "^0.17.2",
     "codecov": "^3.1.0",
     "commitizen": "^3.0.7",
     "commitlint-config-cz": "^0.10.1",
     "conventional-changelog-cli": "^2.0.11",
     "cz-customizable": "^5.3.0",
     "eslint": "^5.9.0",
+    "eslint-config-prettier": "^4.1.0",
     "eslint-plugin-node": "^8.0.0",
     "esm": "^3.2.14",
     "execa": "^1.0.0",
@@ -160,17 +164,16 @@
     "jest": "^24.3.1",
     "jest-cli": "^24.3.1",
     "jest-junit": "^6.3.0",
-    "lerna": "^3.13.2",
+    "lerna": "^3.13.4",
     "lint-staged": "7.x.x",
-    "nyc": "^13.3.0",
+    "nyc": "^14.1.0",
     "prettier-eslint-cli": "^4.7.1",
     "readable-stream": "^3.0.6",
     "rimraf": "^2.6.2",
     "schema-utils": "^1.0.0",
     "ts-jest": "^23.10.5",
     "ts-node": "^7.0.1",
-    "tslint": "^5.11.0",
-    "typedoc": "^0.13.0",
+    "typedoc": "^0.14.2",
     "typedoc-plugin-monorepo": "^0.1.0",
     "typescript": "^3.3.1",
     "webpack": "4.x.x",
