@@ -125,7 +125,7 @@ export default class AddGenerator extends Generator {
 							.then(
 								(entryTypeAnswer: { entryType: boolean }): Promise<void | {}> => {
 									// Ask different questions for entry points
-									return entryQuestions(self, entryTypeAnswer);
+									return entryQuestions(self, entryTypeAnswer.entryType);
 								}
 							)
 							.then(
