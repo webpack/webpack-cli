@@ -12,20 +12,23 @@ npm i -D webpack-cli @webpack-cli/webpack-scaffold
 
 # API
 
--   [parseValue](#parsevalue)
--   [createArrowFunction](#createarrowfunction)
--   [createRegularFunction](#createregularfunction)
--   [createDynamicPromise](#createdynamicpromise)
--   [createAssetFilterFunction](#createassetfilterfunction)
--   [createExternalFunction](#createexternalfunction)
--   [createRequire](#createrequire)
--   [Inquirer](#inquirer)
-    -   [List](#list)
-    -   [RawList](#rawlist)
-    -   [CheckList](#checklist)
-    -   [Input](#input)
-    -   [InputValidate](#inputvalidate)
-    -   [Confirm](#confirm)
+-   [webpack-scaffold](#webpack-scaffold)
+-   [Installation](#installation)
+-   [API](#api)
+    -   [parseValue](#parsevalue)
+    -   [createArrowFunction](#createarrowfunction)
+    -   [createRegularFunction](#createregularfunction)
+    -   [createDynamicPromise](#createdynamicpromise)
+    -   [createAssetFilterFunction](#createassetfilterfunction)
+    -   [createExternalFunction](#createexternalfunction)
+    -   [createRequire](#createrequire)
+    -   [Inquirer](#inquirer)
+        -   [List](#list)
+        -   [RawList](#rawlist)
+        -   [CheckList](#checklist)
+        -   [Input](#input)
+        -   [InputValidate](#inputvalidate)
+        -   [Confirm](#confirm)
 
 ## parseValue
 
@@ -192,7 +195,7 @@ const validation = value => {
 	if (value.length > 4) {
 		return true;
 	} else {
-		return "Your answer must be longer than 4, try again";
+		return "Your answer must be longer than 4 characters, try again";
 	}
 };
 InputValidate("entry", "what is your entry point?", validation, "src/index");
