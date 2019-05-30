@@ -4,15 +4,15 @@ export function getDefaultOptimization(isProd: boolean): WebpackOptions["optimiz
     let optimizationOptions;
     if (isProd) {
         optimizationOptions = {
+            minimizer: [
+                "new TerserPlugin()",
+            ],
             splitChunks: {
                 chunks: "'all'",
             },
         };
     } else {
         optimizationOptions = {
-            minimizer: [
-                "new TerserPlugin()",
-            ],
             splitChunks: {
                 cacheGroups: {
                     vendors: {

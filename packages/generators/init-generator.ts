@@ -12,6 +12,7 @@ import entryQuestions from "./utils/entry";
 import langQuestionHandler, { LangType } from "./utils/languageSupport";
 import styleQuestionHandler, { Loader, StylingType } from "./utils/styleSupport";
 import tooltip from "./utils/tooltip";
+import { generatePluginName } from "./utils/plugins";
 
 /**
  *
@@ -223,6 +224,19 @@ export default class InitGenerator extends Generator {
 					},
 				);
 			}
+		}
+		if(!this.isProd) {
+			this.dependencies.push("html-webpack-plugin");
+			const htmlWebpackDependency: string = "html-webpack-plugin";
+			const htmlwebpackPlugin: string = generatePluginName(htmlWebpackDependency);
+			(this.configuration.config.topScope as string[]).push(
+				`const ${htmlwebpackPlugin} = require('${htmlWebpackDependency}')`,
+				"\n",
+				tooltip.html(),
+			);
+			(this.configuration.config.webpackOptions.plugins as string[]).push(
+				`new ${htmlwebpackPlugin}()`,
+			);
 		}
 		done();
 	}
