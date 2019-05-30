@@ -31,13 +31,13 @@ export const actionTypeQuestion = AutoComplete(
 	},
 );
 
-export const entryTypeQuestion = Confirm(
+export const entryTypeQuestion: Question = Confirm(
 	"entryType",
 	"Will your application have multiple bundles?",
 	false,
 );
 
-export const topScopeQuestion = Input(
+export const topScopeQuestion: Question = Input(
 	"topScope",
 	"What do you want to add to topScope?",
 );
@@ -48,9 +48,6 @@ const mergeFileQuestionsFunction = () => {
 		const resolvedPath = resolve(process.cwd(), path);
 		if (existsSync(resolvedPath)) {
 			if (/\.js$/.test(path)) {
-				if (typeof require(resolvedPath) !== "object") {
-					return "Given file doesn't export an Object";
-				}
 				return true;
 			}
 			return "Path doesn't corresponds to a javascript file";
@@ -63,4 +60,4 @@ const mergeFileQuestionsFunction = () => {
 	Input("mergeConfigName", mergeConfigNameQuestion)
 ]
 };
-export const mergeFileQuestion = mergeFileQuestionsFunction();
+export const mergeFileQuestion: Question[] = mergeFileQuestionsFunction();

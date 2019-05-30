@@ -12,28 +12,6 @@ import runPrettier from "./run-prettier";
 import { Node } from "./types/NodePath";
 
 
-
-function mergeHandler(config: Config, transformations: string[]): [Config, string[]]{
-	if(!config["topScope"])
-	{
-		config["topScope"] = [
-			`const merge = require('webpack-merge')`,
-			`const ${config.merge[0]} = require(${config.merge[1]})`
-		];
-		transformations.push("topScope");
-	} else {
-		config.topScope.push(
-			`const merge = require('webpack-merge')`,
-			`const ${config.merge[0]} = require(${config.merge[1]})`
-		)
-	}
-
-	config.merge = config.merge[0];
-	transformations.push("merge", "topScope");
-	return [config, transformations];
-}
-
-
 /**
  *
  * Maps back transforms that needs to be run using the configuration
@@ -77,7 +55,14 @@ export default function runTransform(transformConfig: TransformConfig, action: s
 			}
 
 			if (config.merge && transformations.indexOf("merge") === -1) {
-				[config, transformations] = mergeHandler(config, transformations);
+				transformations.push("merge");
+			}
+
+			if (config.merge) {
+				config.topScope.push(
+					`const merge = require('webpack-merge')`,
+					`const ${config.merge[0]} = require('${config.merge[1]}')`
+				)
 			}
 
 			const ast: Node = j(initActionNotDefined ? transformConfig.configFile : "module.exports = {}");

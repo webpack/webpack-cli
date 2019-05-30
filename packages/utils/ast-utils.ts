@@ -605,7 +605,7 @@ function parseTopScope(j: JSCodeshift, ast: Node, value: string[], action: strin
  */
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function parseMerge(j: JSCodeshift, ast: Node, value: string, action: string): boolean | Node {
+function parseMerge(j: JSCodeshift, ast: Node, value: string[], action: string): boolean | Node {
 	function createMergeProperty(p: Node): boolean {
 		// FIXME Use j.callExp()
 		const exportsDecl: Node[] = (p.value as Node).body.map(
@@ -626,7 +626,7 @@ function parseMerge(j: JSCodeshift, ast: Node, value: string, action: string): b
 				type: "MemberExpression"
 			},
 			operator: "=",
-			right: j.callExpression(j.identifier("merge"), [j.identifier(value), exportsDecl.pop()]),
+			right: j.callExpression(j.identifier("merge"), [j.identifier(value[0]), exportsDecl.pop()]),
 			type: "AssignmentExpression"
 		};
 		(p.value as Node).body[bodyLength - 1] = newVal;

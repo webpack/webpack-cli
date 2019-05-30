@@ -96,4 +96,4 @@ export interface JSCodeshift extends Object {
 	};
 }
 
-export type valueType = string | number | boolean | Node | null;
+export type valueType = string[] | string | number | boolean | Node | null;
