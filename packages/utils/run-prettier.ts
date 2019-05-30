@@ -19,7 +19,7 @@ export default function runPrettier(outputPath: string, source: string, cb?: Fun
 		try {
 			prettySource = prettier.format(source, {
 				filepath: outputPath,
-				parser: "babel",
+				parser: "babylon",
 				singleQuote: true,
 				tabWidth: 1,
 				useTabs: true,
