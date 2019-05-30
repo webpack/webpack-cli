@@ -23,7 +23,6 @@ export function getDefaultOptimization(isProd: boolean): WebpackOptions["optimiz
                 chunks: "'async'",
                 minChunks: 1,
                 minSize: 30000,
-                // for production name is recommended to be off
                 name: !this.isProd,
             },
         };
