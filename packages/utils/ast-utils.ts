@@ -3,7 +3,7 @@ import * as validateIdentifier from "./validate-identifier";
 
 
 function isImportPresent (j: JSCodeshift, ast: Node, path: string): boolean {
-	let isPresent: boolean = false;
+	let isPresent = false;
 	ast.find(j.CallExpression).forEach(callExp => {
 		if ((callExp.value as Node).callee.name === 'require' && (callExp.value as Node).arguments[0].value === path) {
 			isPresent = true;
