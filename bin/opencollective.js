@@ -26,7 +26,11 @@ function printBadge() {
 	print(`Please consider donating to our ${chalk.bold.blue("Open Collective")}`);
 	print("to help us maintain this package.");
 	console.log("\n\n");
-	print(`${emoji("👉")} ${chalk.bold.yellow(" Donate:")} ${chalk.reset.underline.yellow("https://opencollective.com/webpack/donate")}`);
+	print(
+		`${emoji("👉")} ${chalk.bold.yellow(" Donate:")} ${chalk.reset.underline.yellow(
+			"https://opencollective.com/webpack/donate"
+		)}`
+	);
 	console.log("\n");
 }
 

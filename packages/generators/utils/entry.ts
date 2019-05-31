@@ -1,5 +1,5 @@
 import * as Generator from "yeoman-generator";
-import { InputValidate } from "@webpack-cli/webpack-scaffold";
+import { Input, InputValidate } from "@webpack-cli/webpack-scaffold";
 
 import validate from "./validate";
 
@@ -16,19 +16,17 @@ interface CustomGenerator extends Generator {
  * @returns	{Object} An Object that holds the answers given by the user, later used to scaffold
  */
 
-export default function entry(
-	self: CustomGenerator,
-	answer: Generator.Answers
-): Promise<string|object> {
+export default function entry(self: CustomGenerator, multiEntries: boolean): Promise<string|object> {
 	let entryIdentifiers: string[];
 	let result: Promise<string|object>;
-	if (answer.entryType) {
+	if (multiEntries) {
 		result = self
 			.prompt([
 				InputValidate(
 					"multipleEntries",
-					"Type the names you want for your modules (entry files), separated by comma [example: app,vendor]",
-					validate
+					"What do you want to name your bundles? (separated by comma)",
+					validate,
+					"pageOne, pageTwo"
 				)
 			])
 			.then(
@@ -55,7 +53,7 @@ export default function entry(
 													!n[val].includes("path") &&
 													!n[val].includes("process")
 												) {
-													n[val] = `\'${n[val].replace(/"|'/g, "").concat(".js")}\'`;
+													n[val] = `\'./${n[val].replace(/"|'/g, "").concat(".js")}\'`;
 												}
 												webpackEntryPoint[val] = n[val];
 											}
@@ -68,14 +66,16 @@ export default function entry(
 							);
 						}, Promise.resolve());
 					}
+
 					return forEachPromise(
 						entryIdentifiers,
 						(entryProp: string): Promise<void | {}> =>
 							self.prompt([
 								InputValidate(
 									`${entryProp}`,
-									`What is the location of "${entryProp}"? [example: ./src/${entryProp}]`,
-									validate
+									`What is the location of "${entryProp}"?`,
+									validate,
+									`src/${entryProp}`
 								)
 							])
 					).then(
@@ -89,7 +89,9 @@ export default function entry(
 										!entryPropAnswer[val].includes("path") &&
 										!entryPropAnswer[val].includes("process")
 									) {
-										entryPropAnswer[val] = `\'${entryPropAnswer[val].replace(/"|'/g, "")}\'`;
+										entryPropAnswer[val] = `\'./${entryPropAnswer[val]
+											.replace(/"|'/g, "")
+											.concat(".js")}\'`;
 									}
 									webpackEntryPoint[val] = entryPropAnswer[val];
 								}
@@ -100,18 +102,16 @@ export default function entry(
 				}
 			);
 	} else {
-		result = self
-			.prompt([InputValidate("singularEntry", "Which will be your application entry point? (src/index)")])
-			.then(
-				(singularEntryAnswer: { singularEntry: string }): string => {
-					let { singularEntry } = singularEntryAnswer;
-					singularEntry = `\'${singularEntry.replace(/"|'/g, "")}\'`;
-					if (singularEntry.length <= 0) {
-						self.usingDefaults = true;
-					}
-					return singularEntry;
+		result = self.prompt([Input("singularEntry", "Which will be your application entry point?", "src/index")]).then(
+			(singularEntryAnswer: { singularEntry: string }): string => {
+				let { singularEntry } = singularEntryAnswer;
+				singularEntry = `\'./${singularEntry.replace(/"|'/g, "").concat(".js")}\'`;
+				if (singularEntry.length <= 0) {
+					self.usingDefaults = true;
 				}
-			);
+				return singularEntry;
+			}
+		);
 	}
 	return result;
 }

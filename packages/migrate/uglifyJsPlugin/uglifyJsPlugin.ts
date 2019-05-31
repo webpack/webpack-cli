@@ -81,7 +81,11 @@ export default function(j: JSCodeshift, ast: Node): Node {
 						j.arrayExpression([j.newExpression(j.identifier("TerserPlugin"), [pluginOptions[0]])])
 					);
 				} else {
-					expressionContent = j.property("init", j.identifier("minimizer"), j.arrayExpression([node.value as Node]));
+					expressionContent = j.property(
+						"init",
+						j.identifier("minimizer"),
+						j.arrayExpression([node.value as Node])
+					);
 				}
 			} else {
 				searchForRequirePlugin.forEach((n: Node): void => j(n).remove());

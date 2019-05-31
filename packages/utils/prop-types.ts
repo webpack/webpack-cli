@@ -34,7 +34,7 @@ const PROP_TYPES: Set<string> = new Set([
 	"target",
 	"topScope",
 	"watch",
-	"watchOptions",
+	"watchOptions"
 ]);
 
 export default PROP_TYPES;

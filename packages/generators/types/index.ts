@@ -219,7 +219,7 @@ export interface WebpackOptions {
 	};
 }
 
-interface Rule {
+export interface Rule {
 	enforce?: "pre" | "post";
 	exclude?: IRuleSetCondition;
 	include?: IRuleSetCondition;

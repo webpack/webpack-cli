@@ -33,9 +33,10 @@
     "clean:all": "rimraf node_modules packages/*/{node_modules}",
     "commit": "git-cz",
     "docs": "typedoc",
-    "format": "prettier-eslint ./bin/*.js ./test/**/*.js ./packages/**/*.js --write",
-    "lint:codeOnly": "eslint \"{bin}/**/!(__testfixtures__)/*.js\" \"{bin}/**.js\"",
-    "lint": "eslint \"./bin/*.js\" \"./test/**/*.js\" \"packages/**/!(node_modules)/*.ts\"",
+    "format": "npm run format:js && npm run format:ts",
+    "format:ts": "prettier-eslint ./bin/*.js ./bin/**/*.js ./test/**/*.js ./packages/**/**/*.js ./packages/**/*.js --write",
+    "format:js": "prettier-eslint ./packages/**/**/*.ts ./packages/**/*.ts ./packages/**/**/**/*.ts --write",
+    "lint": "eslint \"./bin/*.js\" \"./bin/**/*.js\" \"./test/**/*.js\" \"packages/**/!(node_modules)/*.ts\"  \"packages/**/!(node_modules)/**/*.ts\"",
     "postinstall": "node ./bin/opencollective.js",
     "pretest": "npm run build && npm run lint",
     "reportCoverage": "nyc report --reporter=json && codecov -f coverage/coverage-final.json --disable=gcov",
@@ -54,6 +55,10 @@
     }
   },
   "lint-staged": {
+    "*.md": [
+      "prettier --parser markdown --write",
+      "git add"
+    ],
     "{packages,bin}/**/!(__testfixtures__)/**.js": [
       "eslint --fix",
       "git add"
@@ -124,6 +129,7 @@
     "import-local": "^2.0.0",
     "interpret": "^1.1.0",
     "loader-utils": "^1.1.0",
+    "prettier": "^1.17.0",
     "supports-color": "^5.5.0",
     "v8-compile-cache": "^2.0.2",
     "yargs": "^12.0.5"
@@ -140,11 +146,11 @@
     "@commitlint/travis-cli": "^7.2.1",
     "@types/jest": "^23.3.14",
     "@types/node": "^10.12.9",
-    "@typescript-eslint/eslint-plugin": "^1.6.0",
-    "@typescript-eslint/parser": "^1.6.0",
+    "@typescript-eslint/eslint-plugin": "^1.9.0",
+    "@typescript-eslint/parser": "^1.9.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-jest": "^24.3.0",
-    "bundlesize": "^0.17.0",
+    "bundlesize": "^0.17.2",
     "codecov": "^3.1.0",
     "commitizen": "^3.0.7",
     "commitlint-config-cz": "^0.10.1",

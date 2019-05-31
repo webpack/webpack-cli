@@ -326,19 +326,14 @@ For more information, see https://webpack.js.org/api/cli/.`);
 					const SIX_DAYS = 518400000;
 					const now = new Date();
 					if (now.getDay() === MONDAY) {
-						const {
-							access,
-							constants,
-							statSync,
-							utimesSync,
-						} = require("fs");
+						const { access, constants, statSync, utimesSync } = require("fs");
 						const lastPrint = statSync(openCollectivePath).atime;
 						const lastPrintTS = new Date(lastPrint).getTime();
 						const timeSinceLastPrint = now.getTime() - lastPrintTS;
 						if (timeSinceLastPrint > SIX_DAYS) {
 							require(openCollectivePath);
 							// On windows we need to manually update the atime
-							access(openCollectivePath, constants.W_OK, (e) => {
+							access(openCollectivePath, constants.W_OK, e => {
 								if (!e) utimesSync(openCollectivePath, now, now);
 							});
 						}
@@ -349,7 +344,8 @@ For more information, see https://webpack.js.org/api/cli/.`);
 				}
 			}
 			if (firstOptions.watch || options.watch) {
-				const watchOptions = firstOptions.watchOptions || firstOptions.watch || options.watch || {};
+				const watchOptions =
+					firstOptions.watchOptions || options.watchOptions || firstOptions.watch || options.watch || {};
 				if (watchOptions.stdin) {
 					process.stdin.on("end", function(_) {
 						process.exit(); // eslint-disable-line
