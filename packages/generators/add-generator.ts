@@ -115,7 +115,7 @@ export default class AddGenerator extends Generator {
 							}) => {
 								const resolvedPath = resolve(process.cwd(), mergeFileAnswer.mergeFile);
 								// eslint-disable-next-line
-								this.configuration.config["merge"] = [mergeFileAnswer.mergeConfigName, resolvedPath];
+								this.configuration.config[action] = [mergeFileAnswer.mergeConfigName, resolvedPath];
 								done();
 							});
 						}
