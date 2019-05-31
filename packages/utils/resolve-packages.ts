@@ -1,10 +1,10 @@
 import chalk from "chalk";
 import * as path from "path";
 
-import isLocalPath from "./is-local-path";
 import modifyConfigHelper from "./modify-config-helper";
 import { getPathToGlobalPackages } from "./package-manager";
 import { spawnChild } from "./package-manager";
+import { isLocalPath } from "./path-utils";
 
 interface ChildProcess {
 	status: number;

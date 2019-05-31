@@ -31,7 +31,8 @@ const addonGenerator = (
 	copyFiles: string[],
 	copyTemplateFiles: string[],
 	templateFn: Function
-): typeof Generator => class AddonGenerator extends Generator {
+): typeof Generator =>
+	class AddonGenerator extends Generator {
 		public props: Generator.Question;
 		public copy: (value: string, index: number, array: string[]) => void;
 		public copyTpl: (value: string, index: number, array: string[]) => void;

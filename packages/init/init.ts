@@ -81,7 +81,7 @@ export default function runTransform(webpackProperties: WebpackProperties, actio
 		}
 	);
 
-	let successMessage: string = `Congratulations! Your new webpack configuration file has been created!`;
+	let successMessage = `Congratulations! Your new webpack configuration file has been created!`;
 	if (initActionNotDefined && webpackProperties.config.item) {
 		successMessage = `Congratulations! ${webpackProperties.config.item} has been ${action}ed!`;
 	}

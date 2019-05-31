@@ -17,9 +17,7 @@ describe("utils", () => {
 			expect(utils.createDynamicPromise("app.js")).toMatchSnapshot();
 		});
 		it("should stringify an array", () => {
-			expect(
-				utils.createDynamicPromise(["app.js", "index.js"]),
-			).toMatchSnapshot();
+			expect(utils.createDynamicPromise(["app.js", "index.js"])).toMatchSnapshot();
 		});
 	});
 	describe("createAssetFilterFunction", () => {
@@ -51,34 +49,38 @@ describe("utils", () => {
 				choices: ["Yes", "Maybe"],
 				message: "does it work?",
 				name: "entry",
-				type: "list",
+				type: "list"
 			});
 		});
 		it("should make a RawList object", () => {
-			expect(
-				utils.RawList("output", "does it work?", ["Yes", "Maybe"]),
-			).toEqual({
+			expect(utils.RawList("output", "does it work?", ["Yes", "Maybe"])).toEqual({
 				choices: ["Yes", "Maybe"],
 				message: "does it work?",
 				name: "output",
-				type: "rawlist",
+				type: "rawlist"
 			});
 		});
 		it("should make a CheckList object", () => {
-			expect(
-				utils.CheckList("context", "does it work?", ["Yes", "Maybe"]),
-			).toEqual({
+			expect(utils.CheckList("context", "does it work?", ["Yes", "Maybe"])).toEqual({
 				choices: ["Yes", "Maybe"],
 				message: "does it work?",
 				name: "context",
-				type: "checkbox",
+				type: "checkbox"
 			});
 		});
 		it("should make an Input object", () => {
 			expect(utils.Input("plugins", "what is your plugin?")).toEqual({
 				message: "what is your plugin?",
 				name: "plugins",
-				type: "input",
+				type: "input"
+			});
+		});
+		it("should make an Input object", () => {
+			expect(utils.Input("plugins", "what is your plugin?", "my-plugin")).toEqual({
+				default: "my-plugin",
+				message: "what is your plugin?",
+				name: "plugins",
+				type: "input"
 			});
 		});
 		it("should make a Confirm object", () => {
@@ -86,7 +88,7 @@ describe("utils", () => {
 				default: true,
 				message: "what is your context?",
 				name: "context",
-				type: "confirm",
+				type: "confirm"
 			});
 		});
 		it("should make a Confirm object with No as default", () => {
@@ -94,13 +96,14 @@ describe("utils", () => {
 				default: false,
 				message: "what is your context?",
 				name: "context",
-				type: "confirm",
+				type: "confirm"
 			});
 		});
 		it("should make an Input object with validation", () => {
-			expect(
-				utils.InputValidate("plugins", "what is your plugin?", () => true),
-			).toMatchSnapshot();
+			expect(utils.InputValidate("plugins", "what is your plugin?", () => true)).toMatchSnapshot();
+		});
+		it("should make an Input object with validation and default value", () => {
+			expect(utils.InputValidate("plugins", "what is your plugin?", () => true, "my-plugin")).toMatchSnapshot();
 		});
 	});
 });

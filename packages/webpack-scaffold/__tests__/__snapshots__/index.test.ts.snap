@@ -9,6 +9,16 @@ Object {
 }
 `;
 
+exports[`utils Inquirer should make an Input object with validation and default value 1`] = `
+Object {
+  "default": "my-plugin",
+  "message": "what is your plugin?",
+  "name": "plugins",
+  "type": "input",
+  "validate": [Function],
+}
+`;
+
 exports[`utils createArrowFunction should stringify an arrow function 1`] = `"() => 'app.js'"`;
 
 exports[`utils createAssetFilterFunction should stringify an assetFilterFunction 1`] = `

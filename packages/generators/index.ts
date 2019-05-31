@@ -13,5 +13,5 @@ export {
 	loaderGenerator,
 	pluginGenerator,
 	removeGenerator,
-	updateGenerator,
+	updateGenerator
 };

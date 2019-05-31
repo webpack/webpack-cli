@@ -11,26 +11,10 @@ import { AutoComplete, Confirm, Input, List } from "@webpack-cli/webpack-scaffol
 
 import { SchemaProperties, WebpackOptions } from "./types";
 import entryQuestions from "./utils/entry";
-
-import webpackDevServerSchema from "webpack-dev-server/lib/options.json";
-import webpackSchema from "./utils/optionsSchema.json";
+import { generatePluginName } from "./utils/plugins";
+import * as webpackDevServerSchema from "webpack-dev-server/lib/options.json";
+import * as webpackSchema from "./utils/optionsSchema.json";
 const PROPS: string[] = Array.from(PROP_TYPES.keys());
-
-/**
- *
- * Replaces the string with a substring at the given index
- * https://gist.github.com/efenacigiray/9367920
- *
- * @param	{String} str - string to be modified
- * @param	{Number} index - index to replace from
- * @param	{String} replace - string to replace starting from index
- *
- * @returns	{String} string - The newly mutated string
- *
- */
-function replaceAt(str: string, index: number, replace: string): string {
-	return str.substring(0, index) + replace + str.substring(index + 1);
-}
 
 /**
  *
@@ -106,8 +90,9 @@ export default class AddGenerator extends Generator {
 		const done: () => {} = this.async();
 		let action: string;
 		const self: this = this;
-		const manualOrListInput: (promptAction: string) => Generator.Question = (promptAction: string): Generator.Question =>
-			Input("actionAnswer", `What do you want to add to ${promptAction}?`);
+		const manualOrListInput: (promptAction: string) => Generator.Question = (
+			promptAction: string
+		): Generator.Question => Input("actionAnswer", `What do you want to add to ${promptAction}?`);
 		let inputPrompt: Generator.Question;
 
 		// first index indicates if it has a deep prop, 2nd indicates what kind of
@@ -140,7 +125,7 @@ export default class AddGenerator extends Generator {
 							.then(
 								(entryTypeAnswer: { entryType: boolean }): Promise<void | {}> => {
 									// Ask different questions for entry points
-									return entryQuestions(self, entryTypeAnswer);
+									return entryQuestions(self, entryTypeAnswer.entryType);
 								}
 							)
 							.then(
@@ -395,15 +380,7 @@ export default class AddGenerator extends Generator {
 								(p: boolean): void => {
 									if (p) {
 										this.dependencies.push(answerToAction.actionAnswer);
-										const normalizePluginName = answerToAction.actionAnswer.replace(
-											"-webpack-plugin",
-											"Plugin"
-										);
-										const pluginName = replaceAt(
-											normalizePluginName,
-											0,
-											normalizePluginName.charAt(0).toUpperCase()
-										);
+										const pluginName = generatePluginName(answerToAction.actionAnswer);
 										this.configuration.config.topScope.push(
 											`const ${pluginName} = require("${answerToAction.actionAnswer}")`
 										);
