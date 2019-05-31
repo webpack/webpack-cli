@@ -70,7 +70,6 @@ For more information, see https://webpack.js.org/api/cli/.`);
 		try {
 			options = require("./utils/convert-argv")(argv);
 		} catch (err) {
-			// When webpack is not installed and no args passed to the CLI
 			if (err.code === "MODULE_NOT_FOUND") {
 				let errorMessage =
 					"\n\u001b[31mwebpack not found, \u001b[33mplease install webpack using\n\t\u001b[32mnpm install --save-dev webpack\n";
