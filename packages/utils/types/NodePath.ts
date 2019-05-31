@@ -2,6 +2,7 @@ export interface Node extends Object {
 	id?: {
 		name: string;
 	};
+	callee?: Node;
 	arguments?: Node[];
 	body?: Node[];
 	elements?: Node[];

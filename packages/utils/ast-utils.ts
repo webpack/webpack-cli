@@ -1,6 +1,17 @@
 import { JSCodeshift, Node, valueType } from "./types/NodePath";
 import * as validateIdentifier from "./validate-identifier";
 
+
+function isImportPresent (j: JSCodeshift, ast: Node, path: string): boolean {
+	let isPresent: boolean = false;
+	ast.find(j.CallExpression).forEach(callExp => {
+		if ((callExp.value as Node).callee.name === 'require' && (callExp.value as Node).arguments[0].value === path) {
+			isPresent = true;
+		}
+	})
+	return isPresent;
+}
+
 /**
  *
  * Traverse safely over a path object for array for paths
@@ -629,31 +640,23 @@ function parseMerge(j: JSCodeshift, ast: Node, value: string[], action: string):
 			right: j.callExpression(j.identifier("merge"), [j.identifier(configIdentifier), exportsDecl.pop()]),
 			type: "AssignmentExpression"
 		};
+		
 		(p.value as Node).body[bodyLength - 1] = newVal;
 		return false; // TODO: debug later
 	}
 
-	function addMergeImports(ast: Node, mergeImports: string[]) {
-		ast.find(j.Program).filter((program: Node): boolean => {
-			mergeImports.forEach(
-				(imp: string): void => {
-					if ((program.value as Node).body.indexOf(imp) === -1){
-						(program.value as Node).body.splice(-1, 0, imp);
-					}
-				}
-			)
-			return false;
-		});
-		return ast;
+	function addMergeImports(configIdentifier: string, configPath: string) {
+		ast.find(j.Program).forEach(p => {
+			if (!isImportPresent(j, ast, 'webpack-merge')) {
+				(p.value as Node).body.splice(-1, 0, `const merge = require('webpack-merge')`);
+			}
+			(p.value as Node).body.splice(-1, 0, `const ${configIdentifier} = require('${configPath}')`);
+		})
 	}
 
 	if (value) {
 		const [configIdentifier, configPath] = value;
-		const mergeImports = [
-			`const ${configIdentifier} = require('${configPath}')`,
-			`const merge = require('webpack-merge')`
-		];
-		ast.replaceWith(addMergeImports(ast, mergeImports));
+		addMergeImports(configIdentifier, configPath);
 		return ast.find(j.Program).filter((p: Node): boolean => createMergeProperty(p, configIdentifier));
 	} else {
 		return ast;
