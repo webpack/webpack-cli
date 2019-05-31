@@ -653,7 +653,7 @@ function parseMerge(j: JSCodeshift, ast: Node, value: string[], action: string):
 			`const ${configIdentifier} = require('${configPath}')`,
 			`const merge = require('webpack-merge')`
 		];
-		ast = addMergeImports(ast, mergeImports);
+		ast.replaceWith(addMergeImports(ast, mergeImports));
 		return ast.find(j.Program).filter((p: Node): boolean => createMergeProperty(p, configIdentifier));
 	} else {
 		return ast;
