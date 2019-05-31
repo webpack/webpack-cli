@@ -110,9 +110,9 @@ module.exports = function(...args) {
 					argv.configRegister.forEach(dep => {
 						require(dep);
 					});
-					return require(configPath);
+					return require(path.resolve(process.cwd(), configPath));
 				} else {
-					return require(configPath);
+					return require(path.resolve(process.cwd(), configPath));
 				}
 			})();
 			options = prepareOptions(options, argv);
