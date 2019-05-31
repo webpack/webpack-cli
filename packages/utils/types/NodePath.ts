@@ -39,11 +39,7 @@ export interface Node extends Object {
 	size?: () => number;
 	type?: string;
 	value?: Node | string | Node[];
-	toSource?: (
-		object: {
-			quote?: string;
-		}
-	) => string;
+	toSource?: (object: { quote?: string }) => string;
 	source?: string;
 	ast?: Node;
 	rules?: ModuleRule[];

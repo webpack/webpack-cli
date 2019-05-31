@@ -25,6 +25,7 @@ import entryQuestions from "./utils/entry";
 import * as AutoComplete from "inquirer-autocomplete-prompt";
 import path, { resolve } from "path";
 import glob from 'glob-all'
+import { generatePluginName } from "./utils/plugins";
 
 /**
  *
@@ -88,7 +89,7 @@ export default class AddGenerator extends Generator {
 							.then(
 								(entryTypeAnswer: { entryType: boolean }): Promise<void | {}> => {
 									// Ask different questions for entry points
-									return entryQuestions(self, entryTypeAnswer);
+									return entryQuestions(self, entryTypeAnswer.entryType);
 								}
 							)
 							.then(
@@ -355,15 +356,7 @@ export default class AddGenerator extends Generator {
 								(p: boolean): void => {
 									if (p) {
 										this.dependencies.push(answerToAction.actionAnswer);
-										const normalizePluginName = answerToAction.actionAnswer.replace(
-											"-webpack-plugin",
-											"Plugin"
-										);
-										const pluginName = replaceAt(
-											normalizePluginName,
-											0,
-											normalizePluginName.charAt(0).toUpperCase()
-										);
+										const pluginName = generatePluginName(answerToAction.actionAnswer);
 										this.configuration.config.topScope.push(
 											`const ${pluginName} = require("${answerToAction.actionAnswer}")`
 										);
