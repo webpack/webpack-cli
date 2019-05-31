@@ -58,13 +58,6 @@ export default function runTransform(transformConfig: TransformConfig, action: s
 				transformations.push("merge");
 			}
 
-			if (config.merge) {
-				config.topScope.push(
-					`const merge = require('webpack-merge')`,
-					`const ${config.merge[0]} = require('${config.merge[1]}')`
-				)
-			}
-
 			const ast: Node = j(initActionNotDefined ? transformConfig.configFile : "module.exports = {}");
 
 			const transformAction: string = action || null;

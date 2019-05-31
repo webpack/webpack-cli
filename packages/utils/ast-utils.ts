@@ -606,7 +606,7 @@ function parseTopScope(j: JSCodeshift, ast: Node, value: string[], action: strin
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function parseMerge(j: JSCodeshift, ast: Node, value: string[], action: string): boolean | Node {
-	function createMergeProperty(p: Node): boolean {
+	function createMergeProperty(p: Node, configIdentifier: string): boolean {
 		// FIXME Use j.callExp()
 		const exportsDecl: Node[] = (p.value as Node).body.map(
 			(n: Node): Node => {
@@ -626,14 +626,35 @@ function parseMerge(j: JSCodeshift, ast: Node, value: string[], action: string):
 				type: "MemberExpression"
 			},
 			operator: "=",
-			right: j.callExpression(j.identifier("merge"), [j.identifier(value[0]), exportsDecl.pop()]),
+			right: j.callExpression(j.identifier("merge"), [j.identifier(configIdentifier), exportsDecl.pop()]),
 			type: "AssignmentExpression"
 		};
 		(p.value as Node).body[bodyLength - 1] = newVal;
 		return false; // TODO: debug later
 	}
+
+	function addMergeImports(ast: Node, mergeImports: string[]) {
+		ast.find(j.Program).filter((program: Node): boolean => {
+			mergeImports.forEach(
+				(imp: string): void => {
+					if ((program.value as Node).body.indexOf(imp) === -1){
+						(program.value as Node).body.splice(-1, 0, imp);
+					}
+				}
+			)
+			return false;
+		});
+		return ast;
+	}
+
 	if (value) {
-		return ast.find(j.Program).filter((p: Node): boolean => createMergeProperty(p));
+		const [configIdentifier, configPath] = value;
+		const mergeImports = [
+			`const ${configIdentifier} = require('${configPath}')`,
+			`const merge = require('webpack-merge')`
+		];
+		ast = addMergeImports(ast, mergeImports);
+		return ast.find(j.Program).filter((p: Node): boolean => createMergeProperty(p, configIdentifier));
 	} else {
 		return ast;
 	}
