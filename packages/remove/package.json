@@ -15,6 +15,8 @@
     "@webpack-cli/utils": "^0.1.5"
   },
   "devDependencies": {
+    "@types/jest": "^24.0.13",
+    "ts-jest": "^24.0.2",
     "typescript": "^3.1.6"
   },
   "scripts": {

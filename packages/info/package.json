@@ -12,7 +12,9 @@
     "envinfo": "^5.12.1"
   },
   "devDependencies": {
+    "@types/jest": "^24.0.13",
     "@types/node": "^10.5.1",
+    "ts-jest": "^24.0.2",
     "typescript": "^3.1.6"
   },
   "scripts": {

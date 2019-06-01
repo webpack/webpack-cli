@@ -20,7 +20,9 @@
   "devDependencies": {
     "@types/cross-spawn": "^6.0.0",
     "@types/inquirer": "0.0.43",
+    "@types/jest": "^24.0.13",
     "@types/node": "^10.12.9",
+    "ts-jest": "^24.0.2",
     "typescript": "^3.1.6"
   },
   "scripts": {

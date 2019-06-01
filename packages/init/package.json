@@ -16,8 +16,10 @@
     "p-each-series": "^1.0.0"
   },
   "devDependencies": {
+    "@types/jest": "^24.0.13",
     "@types/node": "^10.12.9",
     "@types/p-each-series": "^1.0.0",
+    "ts-jest": "^24.0.2",
     "typescript": "^3.1.6"
   },
   "scripts": {

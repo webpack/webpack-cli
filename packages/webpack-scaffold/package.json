@@ -13,7 +13,9 @@
     "jscodeshift": "^0.5.1"
   },
   "devDependencies": {
+    "@types/jest": "^24.0.13",
     "@types/yeoman-generator": "^3.1.2",
+    "ts-jest": "^24.0.2",
     "typescript": "^3.1.6"
   },
   "scripts": {
