@@ -72,16 +72,17 @@ For more information, see https://webpack.js.org/api/cli/.`);
 		} catch (err) {
 			if (err.code === "MODULE_NOT_FOUND") {
 				let errorMessage =
-					"\n\u001b[31mwebpack not found, \u001b[33mplease install webpack using\n\t\u001b[32mnpm install --save-dev webpack\n";
+					"\n\u001b[31mwebpack not installed, consider installing it using \n\u001b[32mnpm install --save-dev webpack\n";
 
 				if (process.env.npm_execpath !== undefined && process.env.npm_execpath.includes("yarn")) {
 					errorMessage =
-						"\n\u001b[31mwebpack not found, \u001b[33mplease install webpack using\n\t\u001b[32myarn add webpack --dev\n";
+						"\n\u001b[31mwebpack not installed, consider installing it using \n\u001b[32myarn add webpack --dev\n";
 				}
 
 				console.error(errorMessage);
 				Error.stackTraceLimit = 1;
 				process.exitCode = 1;
+				return;
 			}
 
 			if (err.name !== "ValidationError") {
@@ -107,7 +108,7 @@ For more information, see https://webpack.js.org/api/cli/.`);
 		 */
 		const stdout = argv.silent
 			? {
-				write: () => {}
+					write: () => {}
 			  } // eslint-disable-line
 			: process.stdout;
 
