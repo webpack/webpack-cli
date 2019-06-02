@@ -34,20 +34,22 @@ export default async function info(CustomArgv: object): Promise<void> {
 	const CUSTOM_AGRUMENTS: boolean = typeof CustomArgv === "object";
 	const args = CUSTOM_AGRUMENTS ? CustomArgv : argv;
 
-	Object.keys(args).forEach(flag => {
-		if (IGNORE_FLAGS.includes(flag)) {
-			return;
-		} else if (AVAILABLE_COMMANDS.includes(flag)) {
-			const flagVal = informationType(flag);
-			DETAILS_OBJ = { ...DETAILS_OBJ, ...flagVal };
-		} else if (AVAILABLE_FORMATS.includes(flag)) {
-			CONFIG[flag] = true;
-		} else {
-			// Invalid option
-			process.stdout.write("\n" + chalk.bgRed(flag) + chalk.red(" is an invalid option" + "\n"));
-			return;
+	Object.keys(args).forEach(
+		(flag): void => {
+			if (IGNORE_FLAGS.includes(flag)) {
+				return;
+			} else if (AVAILABLE_COMMANDS.includes(flag)) {
+				const flagVal = informationType(flag);
+				DETAILS_OBJ = { ...DETAILS_OBJ, ...flagVal };
+			} else if (AVAILABLE_FORMATS.includes(flag)) {
+				CONFIG[flag] = true;
+			} else {
+				// Invalid option
+				process.stdout.write("\n" + chalk.bgRed(flag) + chalk.red(" is an invalid option" + "\n"));
+				return;
+			}
 		}
-	});
+	);
 
 	const OUTPUT = await envinfo.run(Object.keys(DETAILS_OBJ).length ? DETAILS_OBJ : DEFAULT_DETAILS, CONFIG);
 	!CUSTOM_AGRUMENTS ? process.stdout.write(OUTPUT) : null;
