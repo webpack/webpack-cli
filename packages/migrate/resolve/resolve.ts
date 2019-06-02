@@ -21,7 +21,9 @@ export default function transformer(j: JSCodeshift, ast: Node): Node {
 	};
 
 	const isModulePresent = (p: Node): Node | false => {
-		const modules: Node[] = (p.node.value as Node).properties.filter((prop: Node): boolean => prop.key.name === "modules");
+		const modules: Node[] = (p.node.value as Node).properties.filter(
+			(prop: Node): boolean => prop.key.name === "modules"
+		);
 
 		return modules.length > 0 && modules[0];
 	};
@@ -68,7 +70,8 @@ export default function transformer(j: JSCodeshift, ast: Node): Node {
 			(p: Node): boolean => {
 				return (
 					p.node.key.name === "resolve" &&
-					(p.node.value as Node).properties.filter((prop: Node): boolean => prop.key.name === "root").length === 1
+					(p.node.value as Node).properties.filter((prop: Node): boolean => prop.key.name === "root")
+						.length === 1
 				);
 			}
 		)

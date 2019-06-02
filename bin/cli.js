@@ -70,6 +70,21 @@ For more information, see https://webpack.js.org/api/cli/.`);
 		try {
 			options = require("./utils/convert-argv")(argv);
 		} catch (err) {
+			if (err.code === "MODULE_NOT_FOUND") {
+				let errorMessage =
+					"\n\u001b[31mwebpack not installed, consider installing it using \n\u001b[32mnpm install --save-dev webpack\n";
+
+				if (process.env.npm_execpath !== undefined && process.env.npm_execpath.includes("yarn")) {
+					errorMessage =
+						"\n\u001b[31mwebpack not installed, consider installing it using \n\u001b[32myarn add webpack --dev\n";
+				}
+
+				console.error(errorMessage);
+				Error.stackTraceLimit = 1;
+				process.exitCode = 1;
+				return;
+			}
+
 			if (err.name !== "ValidationError") {
 				throw err;
 			}
@@ -326,19 +341,14 @@ For more information, see https://webpack.js.org/api/cli/.`);
 					const SIX_DAYS = 518400000;
 					const now = new Date();
 					if (now.getDay() === MONDAY) {
-						const {
-							access,
-							constants,
-							statSync,
-							utimesSync,
-						} = require("fs");
+						const { access, constants, statSync, utimesSync } = require("fs");
 						const lastPrint = statSync(openCollectivePath).atime;
 						const lastPrintTS = new Date(lastPrint).getTime();
 						const timeSinceLastPrint = now.getTime() - lastPrintTS;
 						if (timeSinceLastPrint > SIX_DAYS) {
 							require(openCollectivePath);
 							// On windows we need to manually update the atime
-							access(openCollectivePath, constants.W_OK, (e) => {
+							access(openCollectivePath, constants.W_OK, e => {
 								if (!e) utimesSync(openCollectivePath, now, now);
 							});
 						}

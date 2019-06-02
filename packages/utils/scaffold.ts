@@ -2,7 +2,7 @@ import chalk from "chalk";
 import * as j from "jscodeshift";
 import pEachSeries = require("p-each-series");
 import * as path from "path";
-import { findProjectRoot } from "./find-root";
+import { findProjectRoot } from "./path-utils";
 
 import { Error } from "../init/types";
 import { Config, TransformConfig } from "./modify-config-helper";
@@ -80,7 +80,6 @@ export default function runTransform(transformConfig: TransformConfig, action: s
 						} else {
 							configurationName = "webpack." + config.configName + ".js";
 						}
-
 						const projectRoot = findProjectRoot();
 						const outputPath: string = initActionNotDefined
 							? transformConfig.configPath
@@ -98,9 +97,12 @@ export default function runTransform(transformConfig: TransformConfig, action: s
 				);
 		}
 	);
-	let successMessage: string = `Congratulations! Your new webpack configuration file has been created!\n`;
+	let successMessage: string =
+		chalk.green(`Congratulations! Your new webpack configuration file has been created!\n\n`) +
+		`You can now run ${chalk.green("npm run start")} to run your project!\n\n`;
+
 	if (initActionNotDefined && transformConfig.config.item) {
-		successMessage = `Congratulations! ${transformConfig.config.item} has been ${action}ed!\n`;
+		successMessage = chalk.green(`Congratulations! ${transformConfig.config.item} has been ${action}ed!\n`);
 	}
-	process.stdout.write("\n" + chalk.green(successMessage));
+	process.stdout.write(`\n${successMessage}`);
 }
