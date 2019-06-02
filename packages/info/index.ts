@@ -11,7 +11,7 @@ const DEFAULT_DETAILS = {
 	Browsers: ["Chrome", "Firefox", "Safari"],
 	System: ["OS", "CPU", "Memory"],
 	npmGlobalPackages: ["webpack", "webpack-cli"],
-	npmPackages: "*webpack*",
+	npmPackages: "*webpack*"
 };
 let DETAILS_OBJ = {};
 
@@ -27,13 +27,14 @@ export function informationType(type: string): object {
 			return { npmGlobalPackages: ["webpack", "webpack-cli"] };
 		case "npm":
 			return { npmPackages: "*webpack*" };
-
 	}
 }
 
-export default async function info(): Promise<void> {
+export default async function info(CustomArgv: object): Promise<void> {
+	const CUSTOM_AGRUMENTS: boolean = typeof CustomArgv === "object";
+	const args = CUSTOM_AGRUMENTS ? CustomArgv : argv;
 
-	Object.keys(argv).forEach(async (flag): Promise<void> => {
+	Object.keys(args).forEach(flag => {
 		if (IGNORE_FLAGS.includes(flag)) {
 			return;
 		} else if (AVAILABLE_COMMANDS.includes(flag)) {
@@ -43,15 +44,13 @@ export default async function info(): Promise<void> {
 			CONFIG[flag] = true;
 		} else {
 			// Invalid option
-			process.stdout.write("\n" + chalk.bgRed(flag) + chalk.red(" is an invalid option"));
+			process.stdout.write("\n" + chalk.bgRed(flag) + chalk.red(" is an invalid option" + "\n"));
 			return;
-
 		}
 	});
 
-	let output = await envinfo.run(
-		Object.keys(DETAILS_OBJ).length ?
-			DETAILS_OBJ : DEFAULT_DETAILS,
-		CONFIG);
-	process.stdout.write(`\n${output}\n`);
+	const OUTPUT = await envinfo.run(Object.keys(DETAILS_OBJ).length ? DETAILS_OBJ : DEFAULT_DETAILS, CONFIG);
+	!CUSTOM_AGRUMENTS ? process.stdout.write(OUTPUT) : null;
+
+	return OUTPUT;
 }
