@@ -5,7 +5,7 @@ import * as path from "path";
 import { findProjectRoot } from "./path-utils";
 
 import { Error } from "../init/types";
-import { Config, TransformConfig } from "./modify-config-helper";
+import { Config, TransformConfig } from "./types/Config";
 import propTypes from "./prop-types";
 import astTransform from "./recursive-parser";
 import runPrettier from "./run-prettier";
