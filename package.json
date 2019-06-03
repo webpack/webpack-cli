@@ -122,7 +122,7 @@
   },
   "dependencies": {
     "chalk": "2.4.1",
-    "cross-spawn": "6.0.5",
+    "cross-spawn": "^6.0.5",
     "enhanced-resolve": "4.1.0",
     "findup-sync": "2.0.0",
     "global-modules": "1.0.0",
