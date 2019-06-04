@@ -31,23 +31,23 @@ interface ConfigType {
 };
 
 const npmConfig: ConfigType = {
-	installCmd: 'install',
-	dependency: '--save',
-	devDependency: '--save-dev',
-	optionalDependency: '--save-optional'
+	installCmd: "install",
+	dependency: "--save",
+	devDependency: "--save-dev",
+	optionalDependency: "--save-optional"
 };
 
 const yarnConfig: ConfigType = {
-	installCmd: 'add',
-	dependency: ' ',
-	devDependency: '--save',
-	optionalDependency: '--optinal'
+	installCmd: "add",
+	dependency: " ",
+	devDependency: "--save",
+	optionalDependency: "--optional"
 };
 
 const spawnWithArg = (pm: string, cmd: string): SpawnSyncReturns<Buffer> => {
-	const pmConfig: ConfigType = pm === 'npm' ? npmConfig : yarnConfig;
-	const options: string[] = [pmConfig['installCmd'], "webpack-dev-server", pmConfig[cmd]];
-	spawn.sync(pm, options);
+	const pmConfig: ConfigType = pm === "npm" ? npmConfig : yarnConfig;
+	const options: string[] = [pmConfig.installCmd, "webpack-dev-server", pmConfig[cmd]];
+	return spawn.sync(pm, options, {stdio: "inherit"});
 };
 
 /**
