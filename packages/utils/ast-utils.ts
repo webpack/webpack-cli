@@ -7,7 +7,7 @@ function isImportPresent (j: JSCodeshift, ast: Node, path: string): boolean {
 		throw new Error(`path parameter should be string, recieved ${typeof path}`);
 	}
 	let isPresent = false;
-	ast.find(j.CallExpression).forEach(callExp => {
+	ast.find(j.CallExpression).forEach((callExp: Node): void => {
 		if ((callExp.value as Node).callee.name === 'require' && (callExp.value as Node).arguments[0].value === path) {
 			isPresent = true;
 		}
@@ -648,11 +648,11 @@ function parseMerge(j: JSCodeshift, ast: Node, value: string[], action: string):
 		return false; // TODO: debug later
 	}
 
-	function addMergeImports(configIdentifier: string, configPath: string) {
+	function addMergeImports(configIdentifier: string, configPath: string): void {
 		if (typeof configIdentifier !== "string" || typeof configPath !== "string") {
-			throw new Error(`Both parameters should be string. Recieved ${configIdentifier}, ${configPath}`)
+			throw new Error(`Both parameters should be string. recieved ${typeof configIdentifier}, ${typeof configPath}`)
 		}
-		ast.find(j.Program).forEach(p => {
+		ast.find(j.Program).forEach((p: Node): void => {
 			if (!isImportPresent(j, ast, 'webpack-merge')) {
 				(p.value as Node).body.splice(-1, 0, `const merge = require('webpack-merge')`);
 			}

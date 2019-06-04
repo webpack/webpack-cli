@@ -16,7 +16,7 @@ import { Question } from "inquirer";
  * @param {string} action action for which question has to be prompted
  * @returns {Question} Question for given action
  */
-export const manualOrListInput: (action: string) => Question = (action: string) => {
+export const manualOrListInput = (action: string): Question => {
 	const actionQuestion = `What do you want to add to ${action}?`;
 	return Input("actionAnswer", actionQuestion);
 };
@@ -42,9 +42,9 @@ export const topScopeQuestion: Question = Input(
 	"What do you want to add to topScope?",
 );
 
-const mergeFileQuestionsFunction = () => {
+const mergeFileQuestionsFunction = (): Question[] => {
  const mergePathQuestion = "What is the location of webpack configuration with which you want to merge current configuration?";
- const mergePathValidator = (path: string) => {
+ const mergePathValidator = (path: string): boolean|string => {
 		const resolvedPath = resolve(process.cwd(), path);
 		if (existsSync(resolvedPath)) {
 			if (/\.js$/.test(path)) {

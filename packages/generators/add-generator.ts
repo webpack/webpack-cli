@@ -9,7 +9,6 @@ import {
 } from "./utils/add/questions";
 
 import {
-	replaceAt,
 	traverseAndGetProperties,
 	webpackDevServerSchema,
 	webpackSchema
@@ -112,7 +111,7 @@ export default class AddGenerator extends Generator {
 							.then((mergeFileAnswer: {
 								mergeFile: string,
 								mergeConfigName: string
-							}) => {
+							}):void => {
 								const resolvedPath = resolve(process.cwd(), mergeFileAnswer.mergeFile);
 								// eslint-disable-next-line
 								this.configuration.config[action] = [mergeFileAnswer.mergeConfigName, resolvedPath];
