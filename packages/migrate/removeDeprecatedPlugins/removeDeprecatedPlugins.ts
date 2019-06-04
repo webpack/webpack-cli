@@ -38,7 +38,7 @@ export default function(j: JSCodeshift, ast: Node): Node {
 					j(path).remove();
 				}
 			} else {
-				console.error(`
+				process.stderr.write(`
 ${chalk.red("Please remove deprecated plugins manually. ")}
 See ${chalk.underline("https://webpack.js.org/guides/migrating/")} for more information.`);
 			}
