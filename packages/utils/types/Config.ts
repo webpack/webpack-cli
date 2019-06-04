@@ -4,7 +4,7 @@ export interface Config extends Object {
 	};
 	topScope?: string[];
 	configName?: string;
-	merge: object;
+	merge: string | string[];
 	webpackOptions: object;
 }
 
