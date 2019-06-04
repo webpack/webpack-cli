@@ -15,11 +15,6 @@ import { List } from "@webpack-cli/webpack-scaffold";
  * @returns {Void}
  */
 
-const spawnNPMWithArg = (cmd: string): SpawnSyncReturns<Buffer> =>
-	spawn.sync("npm", ["install", "webpack-dev-server", cmd], {
-		stdio: "inherit"
-	});
-
 /**
  *
  * Installs WDS using Yarn with add etc
@@ -28,10 +23,32 @@ const spawnNPMWithArg = (cmd: string): SpawnSyncReturns<Buffer> =>
  * @returns {Void}
  */
 
-const spawnYarnWithArg = (cmd: string): SpawnSyncReturns<Buffer> =>
-	spawn.sync("yarn", ["add", "webpack-dev-server", cmd], {
-		stdio: "inherit"
-	});
+interface ConfigType {
+	installCmd: string,
+	dependency: string,
+	devDependency: string,
+	optionalDependency: string
+};
+
+const npmConfig: ConfigType = {
+	installCmd: "install",
+	dependency: "--save",
+	devDependency: "--save-dev",
+	optionalDependency: "--save-optional"
+};
+
+const yarnConfig: ConfigType = {
+	installCmd: "add",
+	dependency: " ",
+	devDependency: "--save",
+	optionalDependency: "--optional"
+};
+
+const spawnWithArg = (pm: string, cmd: string): SpawnSyncReturns<Buffer> => {
+	const pmConfig: ConfigType = pm === "npm" ? npmConfig : yarnConfig;
+	const options: string[] = [pmConfig.installCmd, "webpack-dev-server", pmConfig[cmd]];
+	return spawn.sync(pm, options, {stdio: "inherit"});
+};
 
 /**
  *
@@ -117,29 +134,10 @@ export default function serve(): Promise<void | Function> {
 								(depTypeAns: { confirmDepType: string }): Promise<void | Function> => {
 									const packager: string = getRootPathModule("package-lock.json") ? "npm" : "yarn";
 									let spawnAction: () => SpawnSyncReturns<Buffer>;
-									if (depTypeAns.confirmDepType === "devDependency") {
-										if (packager === "yarn") {
-											spawnAction = (): SpawnSyncReturns<Buffer> => spawnYarnWithArg("--dev");
-										} else {
-											spawnAction = (): SpawnSyncReturns<Buffer> => spawnNPMWithArg("--save-dev");
-										}
-									}
-									if (depTypeAns.confirmDepType === "dependency") {
-										if (packager === "yarn") {
-											spawnAction = (): SpawnSyncReturns<Buffer> => spawnYarnWithArg(" ");
-										} else {
-											spawnAction = (): SpawnSyncReturns<Buffer> => spawnNPMWithArg("--save");
-										}
-									}
-									if (depTypeAns.confirmDepType === "optionalDependency") {
-										if (packager === "yarn") {
-											spawnAction = (): SpawnSyncReturns<Buffer> =>
-												spawnYarnWithArg("--optional");
-										} else {
-											spawnAction = (): SpawnSyncReturns<Buffer> =>
-												spawnNPMWithArg("--save-optional");
-										}
-									}
+
+									spawnAction = (): SpawnSyncReturns<Buffer> =>
+										spawnWithArg(packager, depTypeAns.confirmDepType);
+
 									return processPromise(spawnAction()).then(
 										(): Promise<void | Function> => {
 											// Recursion doesn't work well with require call being cached
