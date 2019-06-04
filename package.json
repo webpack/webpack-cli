@@ -19,7 +19,8 @@
     "cli",
     "scaffolding",
     "module",
-    "bundler"
+    "bundler",
+    "web"
   ],
   "files": [
     "bin",
@@ -166,7 +167,7 @@
     "jest": "^24.3.1",
     "jest-cli": "^24.3.1",
     "jest-junit": "^6.3.0",
-    "lerna": "^3.13.4",
+    "lerna": "^3.14.1",
     "lint-staged": "7.x.x",
     "nyc": "^14.1.0",
     "prettier-eslint-cli": "^4.7.1",
