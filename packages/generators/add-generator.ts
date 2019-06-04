@@ -291,12 +291,13 @@ export default class AddGenerator extends Generator {
 					 * find the names of each natively plugin and check if it matches
 					 */
 					if (action === "plugins") {
-						let answeredPluginName = answerToAction.actionAnswer
+						let answeredPluginName = answerToAction.actionAnswer;
 						let isPrefixPresent = /webpack./.test(answeredPluginName);
-						if( isPrefixPresent ){
-							answeredPluginName = answeredPluginName.replace("webpack.","").trim()
-						}else{
-							answeredPluginName = answeredPluginName.trim()
+
+						if (isPrefixPresent) {
+							answeredPluginName = answeredPluginName.replace("webpack.", "").trim();
+						} else {
+							answeredPluginName = answeredPluginName.trim();
 						}
 						const pluginExist: string = glob
 							.sync(["node_modules/webpack/lib/*Plugin.js", "node_modules/webpack/lib/**/*Plugin.js"])
