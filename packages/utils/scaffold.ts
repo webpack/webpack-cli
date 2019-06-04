@@ -4,7 +4,7 @@ import pEachSeries = require("p-each-series");
 import * as path from "path";
 import { findProjectRoot } from "./path-utils";
 
-import { Error } from "../init/types";
+import { Error } from "./types";
 import { Config, TransformConfig } from "./modify-config-helper";
 import propTypes from "./prop-types";
 import astTransform from "./recursive-parser";
