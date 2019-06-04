@@ -3,6 +3,9 @@ import * as validateIdentifier from "./validate-identifier";
 
 
 function isImportPresent (j: JSCodeshift, ast: Node, path: string): boolean {
+	if (typeof path !== "string") {
+		throw new Error(`path parameter should be string, recieved ${typeof path}`);
+	}
 	let isPresent = false;
 	ast.find(j.CallExpression).forEach(callExp => {
 		if ((callExp.value as Node).callee.name === 'require' && (callExp.value as Node).arguments[0].value === path) {
@@ -646,11 +649,17 @@ function parseMerge(j: JSCodeshift, ast: Node, value: string[], action: string):
 	}
 
 	function addMergeImports(configIdentifier: string, configPath: string) {
+		if (typeof configIdentifier !== "string" || typeof configPath !== "string") {
+			throw new Error(`Both parameters should be string. Recieved ${configIdentifier}, ${configPath}`)
+		}
 		ast.find(j.Program).forEach(p => {
 			if (!isImportPresent(j, ast, 'webpack-merge')) {
 				(p.value as Node).body.splice(-1, 0, `const merge = require('webpack-merge')`);
 			}
-			(p.value as Node).body.splice(-1, 0, `const ${configIdentifier} = require('${configPath}')`);
+
+			if (!isImportPresent(j, ast, configPath)) {
+				(p.value as Node).body.splice(-1, 0, `const ${configIdentifier} = require('${configPath}')`);
+			}
 		})
 	}
 

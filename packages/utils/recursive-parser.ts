@@ -15,7 +15,7 @@ export default function recursiveTransform(
 		console.error("Error in parsing top scope, Array required");
 		return false;
 	} else if (key === "merge") {
-		if (Array.isArray(value) && typeof value[0] === "string" && typeof value[1] === "string") {
+		if (Array.isArray(value)) {
 			return utils.parseMerge(j, ast, value, action);
 		}
 	}
