@@ -291,6 +291,14 @@ export default class AddGenerator extends Generator {
 					 * find the names of each natively plugin and check if it matches
 					 */
 					if (action === "plugins") {
+						let answeredPluginName = answerToAction.actionAnswer;
+						let isPrefixPresent = /webpack./.test(answeredPluginName);
+
+						if (isPrefixPresent) {
+							answeredPluginName = answeredPluginName.replace("webpack.", "").trim();
+						} else {
+							answeredPluginName = answeredPluginName.trim();
+						}
 						const pluginExist: string = glob
 							.sync(["node_modules/webpack/lib/*Plugin.js", "node_modules/webpack/lib/**/*Plugin.js"])
 							.map(
@@ -300,7 +308,7 @@ export default class AddGenerator extends Generator {
 										.pop()
 										.replace(".js", "")
 							)
-							.find((p: string): boolean => p.toLowerCase().indexOf(answerToAction.actionAnswer) >= 0);
+							.find((p: string): boolean => p.toLowerCase().indexOf(answeredPluginName) >= 0);
 
 						if (pluginExist) {
 							this.configuration.config.item = pluginExist;
@@ -315,8 +323,7 @@ export default class AddGenerator extends Generator {
 											.split("/")
 											.pop()
 											.replace(".json", "")
-											.toLowerCase()
-											.indexOf(answerToAction.actionAnswer) >= 0
+											.indexOf(answeredPluginName) >= 0
 								);
 							if (pluginsSchemaPath) {
 								const constructorPrefix: string =
