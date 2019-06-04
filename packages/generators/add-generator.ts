@@ -308,7 +308,7 @@ export default class AddGenerator extends Generator {
 										.pop()
 										.replace(".js", "")
 							)
-							.find((p: string): boolean => p.indexOf(answeredPluginName) >= 0);
+							.find((p: string): boolean => p.toLowerCase().indexOf(answeredPluginName) >= 0);
 
 						if (pluginExist) {
 							this.configuration.config.item = pluginExist;
