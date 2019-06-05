@@ -5,18 +5,18 @@ function isImportPresent(j: JSCodeshift, ast: Node, path: string): boolean {
 	if (typeof path !== "string") {
 		throw new Error(`path parameter should be string, recieved ${typeof path}`);
 	}
-	let isPresent = false;
+	let importExists = false;
 	ast.find(j.CallExpression).forEach(
 		(callExp: Node): void => {
 			if (
 				(callExp.value as Node).callee.name === "require" &&
 				(callExp.value as Node).arguments[0].value === path
 			) {
-				isPresent = true;
+				importExists = true;
 			}
 		}
 	);
-	return isPresent;
+	return importExists;
 }
 
 /**
