@@ -585,7 +585,11 @@ function parseTopScope(j: JSCodeshift, ast: Node, value: string[], action: strin
 		);
 		return false; // TODO: debug later
 	}
-	return value ? ast.find(j.Program).filter((p: Node): boolean => createTopScopeProperty(p)) : ast;
+	if (value) {
+		return ast.find(j.Program).filter((p: Node): boolean => createTopScopeProperty(p));
+	} else {
+		return ast;
+	}
 }
 
 /**
@@ -628,7 +632,11 @@ function parseMerge(j: JSCodeshift, ast: Node, value: string, action: string): b
 		(p.value as Node).body[bodyLength - 1] = newVal;
 		return false; // TODO: debug later
 	}
-	return value ? ast.find(j.Program).filter((p: Node): boolean => createMergeProperty(p)) : ast;
+	if (value) {
+		return ast.find(j.Program).filter((p: Node): boolean => createMergeProperty(p));
+	} else {
+		return ast;
+	}
 }
 
 export {
