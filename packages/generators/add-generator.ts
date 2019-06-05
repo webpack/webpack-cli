@@ -11,8 +11,8 @@ import { AutoComplete, Confirm, Input, List } from "@webpack-cli/webpack-scaffol
 
 import { SchemaProperties, WebpackOptions } from "./types";
 import { entryQuestions, generatePluginName } from "./utils";
-import * as webpackDevServerSchema from "webpack-dev-server/lib/options.json";
-import * as webpackSchema from "./utils/optionsSchema.json";
+import webpackDevServerSchema from "webpack-dev-server/lib/options.json";
+import webpackSchema from "./utils/optionsSchema.json";
 
 const PROPS: string[] = Array.from(PROP_TYPES.keys());
 
