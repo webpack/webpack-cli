@@ -182,7 +182,7 @@ function createLiteral(j: JSCodeshift, val: valueType): Node {
 			literalVal = true;
 		}
 		// 'false' => false
-		if (val === "false") {
+		else if (val === "false") {
 			literalVal = false;
 		}
 		// '1' => 1
