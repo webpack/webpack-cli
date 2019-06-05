@@ -131,7 +131,6 @@
 		"unionfs": "^4.2.0",
 		"update-notifier": "2.5.0",
 		"v8-compile-cache": "2.0.2",
-		"webpack": "file:../webpack",
 		"webpack-log": "1.2.0",
 		"webpack-merge": "4.2.1"
 	},
@@ -181,6 +180,7 @@
 		"typedoc": "0.13.0",
 		"typedoc-plugin-monorepo": "0.1.0",
 		"typescript": "3.1.6",
+		"webpack": "^4.33.0",
 		"webpack-dev-server": "3.4.1"
 	},
 	"collective": {
