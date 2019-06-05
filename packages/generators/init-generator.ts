@@ -142,11 +142,18 @@ export default class InitGenerator extends Generator {
 		}
 
 		const { langType } = await this.prompt([
+			// At this point of time we don't know that it will be adding a plugin
+			// And `this.configuration.config` would only have changes corressponding to previous question
+			// So we can't point user what this question will be doing
 			List("langType", "Will you use one of the below JS solutions?", [LangType.ES6, LangType.Typescript, "No"])
+			// Suggestion is to give a more technical description with this kind of question call instead of above
+			// List("langType", "Will you use one of the below JS solutions?", [LangType.ES6, LangType.Typescript, "No"], "would add loader for selected language")
+			// that way questionnaire will not be a black box for those who know how webpack works
 		]);
 
 		langQuestionHandler(this, langType);
 		this.langType = langType;
+		// Here we know what this question does but question has already asked thus our motive failed
 
 		const { stylingType } = await this.prompt([
 			List("stylingType", "Will you use one of the below CSS solutions?", [
