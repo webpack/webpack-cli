@@ -92,7 +92,7 @@ export default class InitGenerator extends Generator {
 		}
 	}
 
-	public async prompting() {
+	public async prompting(): Promise<void | {}> {
 		const done: () => {} = this.async();
 		const self: this = this;
 		let regExpForStyles: string;
