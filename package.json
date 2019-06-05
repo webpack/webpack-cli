@@ -66,11 +66,11 @@
     ],
     "*.ts": [
       "npm run format:ts",
-      "got add"
+      "git add"
     ],
     "*.js": [
       "npm run format:js",
-      "got add"
+      "git add"
     ]
   },
   "jest": {
