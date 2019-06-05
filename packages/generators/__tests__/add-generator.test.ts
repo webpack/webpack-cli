@@ -1,4 +1,4 @@
-import { generatePluginName } from "../utils/plugins";
+import { generatePluginName } from "../utils";
 
 describe("generatePluginName", () => {
 	it("should return webpack Standard Plugin Name for Name : extract-text-webpack-plugin", () => {
