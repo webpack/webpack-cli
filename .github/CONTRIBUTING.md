@@ -122,7 +122,7 @@ In case you are suggesting a new feature, we will match your idea with our curre
     npm run test:packages
     ```
 
--   Test a single CLI test case (must run from the root of the poject):
+-   Test a single CLI test case (must run from root of the poject):
 
     ```bash
     npx jest path/to/my-test.js
@@ -161,7 +161,7 @@ In case you are suggesting a new feature, we will match your idea with our curre
     yarn test:packages
     ```
 
--   Test a single CLI test case (must run from the root of the poject):
+-   Test a single CLI test case (must run from root of the poject):
 
     ```bash
     yarn jest path/to/my-test.js
