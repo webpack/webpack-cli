@@ -655,7 +655,7 @@ function parseMerge(j: JSCodeshift, ast: Node, value: string[], action: string):
 	function addMergeImports(configIdentifier: string, configPath: string): void {
 		if (typeof configIdentifier !== "string" || typeof configPath !== "string") {
 			throw new Error(
-				`Both parameters should be string. recieved ${typeof configIdentifier}, ${typeof configPath}`
+				`Both parameters should be strings. recieved ${typeof configIdentifier}, ${typeof configPath}`
 			);
 		}
 		ast.find(j.Program).forEach(

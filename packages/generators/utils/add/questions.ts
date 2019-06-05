@@ -33,7 +33,7 @@ const mergeFileQuestionsFunction = (): Question[] => {
 			if (/\.js$/.test(path)) {
 				return true;
 			}
-			return "Path doesn't corresponds to a javascript file";
+			return "Path doesn't correspond to a javascript file";
 		}
 		return "Invalid path provided";
 	};
