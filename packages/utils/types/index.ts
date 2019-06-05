@@ -1,6 +1,6 @@
 import { Error } from './Error';
 import { Config, TransformConfig } from './Config';
-import { Node, JSCodeshift } from "./NodePath";
+import { Node, JSCodeshift, valueType } from "./NodePath";
 
 export {
   Error,
@@ -8,4 +8,5 @@ export {
   Node,
   TransformConfig,
   JSCodeshift,
+  valueType
 }
