@@ -3,7 +3,7 @@ import npmExists from "@webpack-cli/utils/npm-exists";
 import { getPackageManager } from "@webpack-cli/utils/package-manager";
 import { Input, List } from "@webpack-cli/webpack-scaffold";
 // eslint-disable-next-line
-export const webpackDevServerSchema = require("webpack-dev-server/lib/options.json");
+import webpackDevServerSchema from "webpack-dev-server/lib/options.json";
 import * as AutoComplete from "inquirer-autocomplete-prompt";
 import path, { resolve } from "path";
 import glob from "glob-all";
@@ -20,7 +20,7 @@ import { SchemaProperties, WebpackOptions } from "./types";
 import entryQuestions from "./utils/entry";
 import { generatePluginName } from "./utils/plugins";
 // eslint-disable-next-line
-export const webpackSchema = require("../optionsSchema.json");
+import webpackSchema from "../optionsSchema.json";
 
 /**
  *
