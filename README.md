@@ -63,7 +63,7 @@ The project also has several utility packages which are used by other commands
 
 -   [`utils`](./packages/utils/README.md) - Several utilities used across webpack-cli.
 -   [`generators`](./packages/generators/README.md) - Contains all webpack-cli related yeoman generators.
--   [`webpack-scaffold`](./packages/info/README.md#webpack-cli-info) - Utilities to create a webpack scaffold.
+-   [`webpack-scaffold`](./packages/webpack-scaffold/README.md) - Utilities to create a webpack scaffold.
 
 ## Getting started
 

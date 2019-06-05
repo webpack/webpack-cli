@@ -5,15 +5,10 @@ import {
 	entryTypeQuestion,
 	manualOrListInput,
 	mergeFileQuestion,
-	topScopeQuestion,
+	topScopeQuestion
 } from "./utils/add/questions";
 
-import {
-	traverseAndGetProperties,
-	webpackDevServerSchema,
-	webpackSchema
-} from './utils/add'
-
+import { traverseAndGetProperties, webpackDevServerSchema, webpackSchema } from "./utils/add";
 
 import npmExists from "@webpack-cli/utils/npm-exists";
 import { getPackageManager } from "@webpack-cli/utils/package-manager";
@@ -23,7 +18,7 @@ import { SchemaProperties, WebpackOptions } from "./types";
 import entryQuestions from "./utils/entry";
 import * as AutoComplete from "inquirer-autocomplete-prompt";
 import path, { resolve } from "path";
-import glob from 'glob-all'
+import glob from "glob-all";
 import { generatePluginName } from "./utils/plugins";
 
 /**
@@ -42,7 +37,7 @@ export default class AddGenerator extends Generator {
 			configName?: string;
 			topScope?: string[];
 			item?: string;
-			merge?: string|string[];
+			merge?: string | string[];
 			webpackOptions?: WebpackOptions;
 		};
 	};
@@ -107,16 +102,14 @@ export default class AddGenerator extends Generator {
 							);
 						}
 						if (action === "merge") {
-							return this.prompt(mergeFileQuestion)
-							.then((mergeFileAnswer: {
-								mergeFile: string,
-								mergeConfigName: string
-							}):void => {
-								const resolvedPath = resolve(process.cwd(), mergeFileAnswer.mergeFile);
-								// eslint-disable-next-line
-								this.configuration.config[action] = [mergeFileAnswer.mergeConfigName, resolvedPath];
-								done();
-							});
+							return this.prompt(mergeFileQuestion).then(
+								(mergeFileAnswer: { mergeFile: string; mergeConfigName: string }): void => {
+									const resolvedPath = resolve(process.cwd(), mergeFileAnswer.mergeFile);
+									// eslint-disable-next-line
+									this.configuration.config[action] = [mergeFileAnswer.mergeConfigName, resolvedPath];
+									done();
+								}
+							);
 						}
 					}
 					const temp = action;
@@ -266,6 +259,14 @@ export default class AddGenerator extends Generator {
 					 * find the names of each natively plugin and check if it matches
 					 */
 					if (action === "plugins") {
+						let answeredPluginName = answerToAction.actionAnswer;
+						let isPrefixPresent = /webpack./.test(answeredPluginName);
+
+						if (isPrefixPresent) {
+							answeredPluginName = answeredPluginName.replace("webpack.", "").trim();
+						} else {
+							answeredPluginName = answeredPluginName.trim();
+						}
 						const pluginExist: string = glob
 							.sync(["node_modules/webpack/lib/*Plugin.js", "node_modules/webpack/lib/**/*Plugin.js"])
 							.map(
@@ -275,7 +276,11 @@ export default class AddGenerator extends Generator {
 										.pop()
 										.replace(".js", "")
 							)
-							.find((p: string): boolean => p.toLowerCase().indexOf(answerToAction.actionAnswer) >= 0);
+							.find(
+								(p: string): boolean =>
+									p.toLowerCase().indexOf(answeredPluginName) >= 0 ||
+									p.indexOf(answeredPluginName) >= 0
+							);
 
 						if (pluginExist) {
 							this.configuration.config.item = pluginExist;
@@ -290,8 +295,7 @@ export default class AddGenerator extends Generator {
 											.split("/")
 											.pop()
 											.replace(".json", "")
-											.toLowerCase()
-											.indexOf(answerToAction.actionAnswer) >= 0
+											.indexOf(pluginExist) >= 0
 								);
 							if (pluginsSchemaPath) {
 								const constructorPrefix: string =
@@ -384,7 +388,9 @@ export default class AddGenerator extends Generator {
 								(action === "devtool" || action === "watch" || action === "mode")
 							) {
 								this.configuration.config.item = action;
-								(this.configuration.config.webpackOptions[action] as string) = answerToAction.actionAnswer;
+								(this.configuration.config.webpackOptions[
+									action
+								] as string) = answerToAction.actionAnswer;
 								done();
 								return;
 							}

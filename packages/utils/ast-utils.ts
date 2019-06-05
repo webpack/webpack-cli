@@ -1,17 +1,21 @@
 import { JSCodeshift, Node, valueType } from "./types/NodePath";
 import * as validateIdentifier from "./validate-identifier";
 
-
-function isImportPresent (j: JSCodeshift, ast: Node, path: string): boolean {
+function isImportPresent(j: JSCodeshift, ast: Node, path: string): boolean {
 	if (typeof path !== "string") {
 		throw new Error(`path parameter should be string, recieved ${typeof path}`);
 	}
 	let isPresent = false;
-	ast.find(j.CallExpression).forEach((callExp: Node): void => {
-		if ((callExp.value as Node).callee.name === 'require' && (callExp.value as Node).arguments[0].value === path) {
-			isPresent = true;
+	ast.find(j.CallExpression).forEach(
+		(callExp: Node): void => {
+			if (
+				(callExp.value as Node).callee.name === "require" &&
+				(callExp.value as Node).arguments[0].value === path
+			) {
+				isPresent = true;
+			}
 		}
-	})
+	);
 	return isPresent;
 }
 
@@ -196,7 +200,7 @@ function createLiteral(j: JSCodeshift, val: valueType): Node {
 			literalVal = true;
 		}
 		// 'false' => false
-		if (val === "false") {
+		else if (val === "false") {
 			literalVal = false;
 		}
 		// '1' => 1
@@ -643,24 +647,28 @@ function parseMerge(j: JSCodeshift, ast: Node, value: string[], action: string):
 			right: j.callExpression(j.identifier("merge"), [j.identifier(configIdentifier), exportsDecl.pop()]),
 			type: "AssignmentExpression"
 		};
-		
+
 		(p.value as Node).body[bodyLength - 1] = newVal;
 		return false; // TODO: debug later
 	}
 
 	function addMergeImports(configIdentifier: string, configPath: string): void {
 		if (typeof configIdentifier !== "string" || typeof configPath !== "string") {
-			throw new Error(`Both parameters should be string. recieved ${typeof configIdentifier}, ${typeof configPath}`)
+			throw new Error(
+				`Both parameters should be string. recieved ${typeof configIdentifier}, ${typeof configPath}`
+			);
 		}
-		ast.find(j.Program).forEach((p: Node): void => {
-			if (!isImportPresent(j, ast, 'webpack-merge')) {
-				(p.value as Node).body.splice(-1, 0, `const merge = require('webpack-merge')`);
-			}
+		ast.find(j.Program).forEach(
+			(p: Node): void => {
+				if (!isImportPresent(j, ast, "webpack-merge")) {
+					(p.value as Node).body.splice(-1, 0, `const merge = require('webpack-merge')`);
+				}
 
-			if (!isImportPresent(j, ast, configPath)) {
-				(p.value as Node).body.splice(-1, 0, `const ${configIdentifier} = require('${configPath}')`);
+				if (!isImportPresent(j, ast, configPath)) {
+					(p.value as Node).body.splice(-1, 0, `const ${configIdentifier} = require('${configPath}')`);
+				}
 			}
-		})
+		);
 	}
 
 	if (value) {
