@@ -2,12 +2,6 @@ import PROP_TYPES from "@webpack-cli/utils/prop-types";
 
 export const PROPS: string[] = Array.from(PROP_TYPES.keys());
 
-// tslint:disable:no-var-requires
-// eslint-disable-next-line
-export const webpackDevServerSchema = require("webpack-dev-server/lib/options.json");
-// eslint-disable-next-line
-export const webpackSchema = require("../optionsSchema.json");
-
 /**
  *
  * Replaces the string with a substring at the given index
@@ -36,11 +30,13 @@ export function replaceAt(str: string, index: number, replace: string): string {
  */
 export const traverseAndGetProperties = (arr: object[], prop: string): boolean => {
 	let hasProp = false;
-	arr.forEach((p: object): void => {
-		if (p[prop]) {
-			hasProp = true;
+	arr.forEach(
+		(p: object): void => {
+			if (p[prop]) {
+				hasProp = true;
+			}
 		}
-	});
+	);
 	return hasProp;
 };
 
@@ -56,9 +52,5 @@ export const traverseAndGetProperties = (arr: object[], prop: string): boolean =
  */
 export const searchProps = (answers: object, input: string): Promise<string[]> => {
 	input = input || "";
-	return Promise.resolve(
-		PROPS.filter((prop: string): boolean =>
-			prop.toLowerCase().includes(input.toLowerCase()),
-		),
-	);
+	return Promise.resolve(PROPS.filter((prop: string): boolean => prop.toLowerCase().includes(input.toLowerCase())));
 };

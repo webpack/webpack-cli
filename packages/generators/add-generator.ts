@@ -1,4 +1,12 @@
 import * as Generator from "yeoman-generator";
+import npmExists from "@webpack-cli/utils/npm-exists";
+import { getPackageManager } from "@webpack-cli/utils/package-manager";
+import { Input, List } from "@webpack-cli/webpack-scaffold";
+// eslint-disable-next-line
+export const webpackDevServerSchema = require("webpack-dev-server/lib/options.json");
+import * as AutoComplete from "inquirer-autocomplete-prompt";
+import path, { resolve } from "path";
+import glob from "glob-all";
 
 import {
 	actionTypeQuestion,
@@ -7,19 +15,12 @@ import {
 	mergeFileQuestion,
 	topScopeQuestion
 } from "./utils/add/questions";
-
-import { traverseAndGetProperties, webpackDevServerSchema, webpackSchema } from "./utils/add";
-
-import npmExists from "@webpack-cli/utils/npm-exists";
-import { getPackageManager } from "@webpack-cli/utils/package-manager";
-import { Input, List } from "@webpack-cli/webpack-scaffold";
-
+import { traverseAndGetProperties } from "./utils/add";
 import { SchemaProperties, WebpackOptions } from "./types";
 import entryQuestions from "./utils/entry";
-import * as AutoComplete from "inquirer-autocomplete-prompt";
-import path, { resolve } from "path";
-import glob from "glob-all";
 import { generatePluginName } from "./utils/plugins";
+// eslint-disable-next-line
+export const webpackSchema = require("../optionsSchema.json");
 
 /**
  *
@@ -105,7 +106,6 @@ export default class AddGenerator extends Generator {
 							return this.prompt(mergeFileQuestion).then(
 								(mergeFileAnswer: { mergeFile: string; mergeConfigName: string }): void => {
 									const resolvedPath = resolve(process.cwd(), mergeFileAnswer.mergeFile);
-									// eslint-disable-next-line
 									this.configuration.config[action] = [mergeFileAnswer.mergeConfigName, resolvedPath];
 									done();
 								}
