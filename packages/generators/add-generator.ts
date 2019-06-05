@@ -10,10 +10,10 @@ import PROP_TYPES from "@webpack-cli/utils/prop-types";
 import { AutoComplete, Confirm, Input, List } from "@webpack-cli/webpack-scaffold";
 
 import { SchemaProperties, WebpackOptions } from "./types";
-import entryQuestions from "./utils/entry";
-import { generatePluginName } from "./utils/plugins";
+import { entryQuestions, generatePluginName } from "./utils";
 import * as webpackDevServerSchema from "webpack-dev-server/lib/options.json";
 import * as webpackSchema from "./utils/optionsSchema.json";
+
 const PROPS: string[] = Array.from(PROP_TYPES.keys());
 
 /**
