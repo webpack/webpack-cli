@@ -53,7 +53,7 @@ export default function runTransform(transformConfig: TransformConfig, action: s
 				transformations.push("topScope");
 			}
 
-			if (config.merge) {
+			if (config.merge && transformations.indexOf("merge") === -1) {
 				transformations.push("merge");
 			}
 

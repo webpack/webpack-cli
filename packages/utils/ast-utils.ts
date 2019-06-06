@@ -1,6 +1,24 @@
 import { JSCodeshift, Node, valueType } from "./types/NodePath";
 import * as validateIdentifier from "./validate-identifier";
 
+function isImportPresent(j: JSCodeshift, ast: Node, path: string): boolean {
+	if (typeof path !== "string") {
+		throw new Error(`path parameter should be string, recieved ${typeof path}`);
+	}
+	let importExists = false;
+	ast.find(j.CallExpression).forEach(
+		(callExp: Node): void => {
+			if (
+				(callExp.value as Node).callee.name === "require" &&
+				(callExp.value as Node).arguments[0].value === path
+			) {
+				importExists = true;
+			}
+		}
+	);
+	return importExists;
+}
+
 /**
  *
  * Traverse safely over a path object for array for paths
@@ -605,8 +623,8 @@ function parseTopScope(j: JSCodeshift, ast: Node, value: string[], action: strin
  */
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function parseMerge(j: JSCodeshift, ast: Node, value: string, action: string): boolean | Node {
-	function createMergeProperty(p: Node): boolean {
+function parseMerge(j: JSCodeshift, ast: Node, value: string[], action: string): boolean | Node {
+	function createMergeProperty(p: Node, configIdentifier: string): boolean {
 		// FIXME Use j.callExp()
 		const exportsDecl: Node[] = (p.value as Node).body.map(
 			(n: Node): Node => {
@@ -626,14 +644,37 @@ function parseMerge(j: JSCodeshift, ast: Node, value: string, action: string): b
 				type: "MemberExpression"
 			},
 			operator: "=",
-			right: j.callExpression(j.identifier("merge"), [j.identifier(value), exportsDecl.pop()]),
+			right: j.callExpression(j.identifier("merge"), [j.identifier(configIdentifier), exportsDecl.pop()]),
 			type: "AssignmentExpression"
 		};
+
 		(p.value as Node).body[bodyLength - 1] = newVal;
 		return false; // TODO: debug later
 	}
+
+	function addMergeImports(configIdentifier: string, configPath: string): void {
+		if (typeof configIdentifier !== "string" || typeof configPath !== "string") {
+			throw new Error(
+				`Both parameters should be strings. recieved ${typeof configIdentifier}, ${typeof configPath}`
+			);
+		}
+		ast.find(j.Program).forEach(
+			(p: Node): void => {
+				if (!isImportPresent(j, ast, "webpack-merge")) {
+					(p.value as Node).body.splice(-1, 0, `const merge = require('webpack-merge')`);
+				}
+
+				if (!isImportPresent(j, ast, configPath)) {
+					(p.value as Node).body.splice(-1, 0, `const ${configIdentifier} = require('${configPath}')`);
+				}
+			}
+		);
+	}
+
 	if (value) {
-		return ast.find(j.Program).filter((p: Node): boolean => createMergeProperty(p));
+		const [configIdentifier, configPath] = value;
+		addMergeImports(configIdentifier, configPath);
+		return ast.find(j.Program).filter((p: Node): boolean => createMergeProperty(p, configIdentifier));
 	} else {
 		return ast;
 	}
