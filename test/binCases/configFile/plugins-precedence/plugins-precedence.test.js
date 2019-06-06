@@ -15,7 +15,8 @@ test("plugins-precedence", () => {
 		"--target",
 		"async-node",
 		"--define",
-		"TEST=\"ok\""
+		// eslint-disable-next-line quotes
+		'TEST="ok"'
 	]);
 
 	const summary = extractSummary(stdout);

@@ -8,7 +8,6 @@ module.exports = {
 	},
 	parserOptions: { ecmaVersion: 2017, sourceType: "module" },
 	rules: {
-		"prettier/prettier": "error",
 		"no-useless-escape": "off",
 		"quote-props": ["error", "as-needed"],
 		"no-dupe-keys": "error",
