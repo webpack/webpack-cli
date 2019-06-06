@@ -5,17 +5,26 @@ import { argv } from "./options";
 
 import { AVAILABLE_COMMANDS, AVAILABLE_FORMATS, IGNORE_FLAGS } from "./commands";
 
+interface Information {
+	Binaries?: string[];
+	Browsers?: string[];
+	System?: string[];
+	npmGlobalPackages?: string[];
+	npmPackages?: string | string[];
+}
+
 const CONFIG = {};
-const DEFAULT_DETAILS = {
+const DEFAULT_DETAILS: Information = {
 	Binaries: ["Node", "Yarn", "npm"],
 	Browsers: ["Chrome", "Firefox", "Safari"],
 	System: ["OS", "CPU", "Memory"],
 	npmGlobalPackages: ["webpack", "webpack-cli"],
 	npmPackages: "*webpack*"
 };
+
 let DETAILS_OBJ = {};
 
-export function informationType(type: string): object {
+export function informationType(type: string): Information {
 	switch (type) {
 		case "system":
 			return { System: ["OS", "CPU", "Memory"] };
@@ -29,7 +38,6 @@ export function informationType(type: string): object {
 			return { npmPackages: "*webpack*" };
 	}
 }
-
 export default async function info(CustomArgv: object): Promise<void> {
 	const CUSTOM_AGRUMENTS: boolean = typeof CustomArgv === "object";
 	const args = CUSTOM_AGRUMENTS ? CustomArgv : argv;
@@ -52,7 +60,7 @@ export default async function info(CustomArgv: object): Promise<void> {
 	);
 
 	const OUTPUT = await envinfo.run(Object.keys(DETAILS_OBJ).length ? DETAILS_OBJ : DEFAULT_DETAILS, CONFIG);
-	!CUSTOM_AGRUMENTS ? process.stdout.write(OUTPUT) : null;
+	!CUSTOM_AGRUMENTS ? process.stdout.write(OUTPUT + "\n") : null;
 
 	return OUTPUT;
 }

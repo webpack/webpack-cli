@@ -1,4 +1,3 @@
-import * as fs from "fs";
 import * as path from "path";
 import * as Generator from "yeoman-generator";
 
@@ -34,7 +33,6 @@ export default class RemoveGenerator extends Generator {
 		};
 		const { configFile } = opts;
 		let configPath = path.resolve(process.cwd(), configFile);
-		const webpackConfigExists = fs.existsSync(configPath);
 		this.webpackOptions = require(configPath);
 	}
 
