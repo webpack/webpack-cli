@@ -10,10 +10,10 @@ import PROP_TYPES from "@webpack-cli/utils/prop-types";
 import { AutoComplete, Confirm, Input, List } from "@webpack-cli/webpack-scaffold";
 
 import { SchemaProperties, WebpackOptions } from "./types";
-import entryQuestions from "./utils/entry";
-import { generatePluginName } from "./utils/plugins";
+import { entryQuestions, generatePluginName } from "./utils";
 import * as webpackDevServerSchema from "webpack-dev-server/lib/options.json";
 import * as webpackSchema from "./utils/optionsSchema.json";
+
 const PROPS: string[] = Array.from(PROP_TYPES.keys());
 
 /**
@@ -308,7 +308,11 @@ export default class AddGenerator extends Generator {
 										.pop()
 										.replace(".js", "")
 							)
-							.find((p: string): boolean => p.toLowerCase().indexOf(answeredPluginName) >= 0);
+							.find(
+								(p: string): boolean =>
+									p.toLowerCase().indexOf(answeredPluginName) >= 0 ||
+									p.indexOf(answeredPluginName) >= 0
+							);
 
 						if (pluginExist) {
 							this.configuration.config.item = pluginExist;
@@ -323,7 +327,7 @@ export default class AddGenerator extends Generator {
 											.split("/")
 											.pop()
 											.replace(".json", "")
-											.indexOf(answeredPluginName) >= 0
+											.indexOf(pluginExist) >= 0
 								);
 							if (pluginsSchemaPath) {
 								const constructorPrefix: string =

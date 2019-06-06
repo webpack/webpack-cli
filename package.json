@@ -35,8 +35,8 @@
     "commit": "git-cz",
     "docs": "typedoc",
     "format": "npm run format:js && npm run format:ts",
-    "format:ts": "prettier-eslint ./bin/*.js ./bin/**/*.js ./test/**/*.js ./packages/**/**/*.js ./packages/**/*.js --write",
-    "format:js": "prettier-eslint ./packages/**/**/*.ts ./packages/**/*.ts ./packages/**/**/**/*.ts --write",
+    "format:js": "prettier-eslint ./bin/*.js ./bin/**/*.js ./test/**/*.js ./packages/**/**/*.js ./packages/**/*.js --write",
+    "format:ts": "prettier-eslint ./packages/**/**/*.ts ./packages/**/*.ts ./packages/**/**/**/*.ts --write",
     "lint": "eslint \"./bin/*.js\" \"./bin/**/*.js\" \"./test/**/*.js\" \"packages/**/!(node_modules)/*.ts\"  \"packages/**/!(node_modules)/**/*.ts\"",
     "postinstall": "node ./bin/opencollective.js",
     "pretest": "npm run build && npm run lint",
@@ -62,6 +62,14 @@
     ],
     "{packages,bin}/**/!(__testfixtures__)/**.js": [
       "eslint --fix",
+      "git add"
+    ],
+    "*.ts": [
+      "npm run format:ts",
+      "git add"
+    ],
+    "*.js": [
+      "npm run format:js",
       "git add"
     ]
   },

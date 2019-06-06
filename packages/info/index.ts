@@ -5,9 +5,16 @@ import * as process from "process";
  * Prints debugging information for webpack issue reporting
  */
 
-// TODO: define proper interface
+interface Information {
+	Binaries: string[];
+	Browsers: string[];
+	System: string[];
+	npmGlobalPackages: string[];
+	npmPackages: string | string[];
+}
+
 // eslint-disable-next-line
-export function information(): any {
+export function information(): Information {
 	return {
 		Binaries: ["Node", "Yarn", "npm"],
 		Browsers: ["Chrome", "Firefox", "Safari"],
