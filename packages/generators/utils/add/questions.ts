@@ -1,8 +1,10 @@
-import { AutoComplete, Confirm, Input, InputValidate } from "@webpack-cli/webpack-scaffold";
 import { existsSync } from "fs";
 import { resolve } from "path";
-import { searchProps } from "./index";
 import { Question } from "inquirer";
+
+import { AutoComplete, Confirm, Input, InputValidate } from "@webpack-cli/webpack-scaffold";
+
+import { searchProps } from "./index";
 
 /**
  * Returns Inquirer question for given action
