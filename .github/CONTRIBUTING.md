@@ -56,13 +56,14 @@ In case you are suggesting a new feature, we will match your idea with our curre
 -   Fork the **webpack-cli** repo at [https://github.com/webpack/webpack-cli](https://github.com/webpack/webpack-cli).
 -   `git clone <your-clone-url> && cd webpack-cli`
 
--   If you don't have yarn yet:
-
+-   If you decide to use [yarn](https://yarnpkg.com/lang/en/):
     ```bash
     npm install -g yarn
     ```
 
-*   Install the dependencies and link them:
+> Using yarn is not a requirement, [npm](https://www.npmjs.com/) is included in node.
+
+-   Install the dependencies and link them:
 
     ```bash
     #npm
@@ -76,7 +77,7 @@ In case you are suggesting a new feature, we will match your idea with our curre
     yarn link webpack-cli
     ```
 
-*   Bootstrap all the submodules before building for the first time
+-   Bootstrap all the submodules before building for the first time
 
     ```bash
     #npm
