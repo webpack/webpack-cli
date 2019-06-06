@@ -1,5 +1,6 @@
 module.exports = {
 	extends: ["eslint:recommended"],
+	plugins: ["prettier"],
 	env: {
 		node: true,
 		es6: true,
@@ -7,6 +8,7 @@ module.exports = {
 	},
 	parserOptions: { ecmaVersion: 2017, sourceType: "module" },
 	rules: {
+		"prettier/prettier": "error",
 		"no-useless-escape": "off",
 		"quote-props": ["error", "as-needed"],
 		"no-dupe-keys": "error",
@@ -14,7 +16,7 @@ module.exports = {
 		"no-undef": "error",
 		"no-extra-semi": "error",
 		semi: "error",
-		"no-template-curly-in-string": "error",
+		"no-tempate-curly-in-string": "error",
 		"no-caller": "error",
 		yoda: "error",
 		eqeqeq: "error",
