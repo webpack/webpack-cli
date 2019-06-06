@@ -69,7 +69,7 @@ In case you are suggesting a new feature, we will match your idea with our curre
     npm install
     npm link
     npm link webpack-cli
-
+    ---------------------------
     #yarn
     yarn
     yarn link
@@ -82,7 +82,7 @@ In case you are suggesting a new feature, we will match your idea with our curre
     #npm
     npm run bootstrap
     npm run build
-
+    ---------------------------
     #yarn
     yarn bootstrap
     yarn build
@@ -97,7 +97,7 @@ In case you are suggesting a new feature, we will match your idea with our curre
     ```bash
     #npm
     npm run test
-
+    ---------------------------
     #yarn
     yarn test
     ```
@@ -107,7 +107,7 @@ In case you are suggesting a new feature, we will match your idea with our curre
     ```bash
     #npm
     npm run test:cli
-
+    ---------------------------
     #yarn
     yarn test:cli`
     ```
@@ -117,7 +117,7 @@ In case you are suggesting a new feature, we will match your idea with our curre
     ```bash
     #npm
     npm run test:packages
-
+    ---------------------------
     #yarn
     yarn test:packages
     ```
@@ -129,7 +129,7 @@ In case you are suggesting a new feature, we will match your idea with our curre
     ```bash
     #npm
     npx jest path/to/my-test.js
-
+    ---------------------------
     #yarn
     yarn jest path/to/my-test.js
     ```
@@ -140,7 +140,7 @@ In case you are suggesting a new feature, we will match your idea with our curre
     #npm
     npm i -g jest
     jest path/to/my-test.js
-
+    ---------------------------
     #yarn
     yarn global add jest
     jest path/to/my-test.js
@@ -151,7 +151,7 @@ In case you are suggesting a new feature, we will match your idea with our curre
     ```bash
     #npm
     npm run lint
-
+    ---------------------------
     #yarn
     yarn lint
     ```
