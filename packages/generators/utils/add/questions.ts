@@ -1,7 +1,6 @@
 import { existsSync } from "fs";
 import { resolve } from "path";
 import { Question } from "inquirer";
-
 import { AutoComplete, Confirm, Input, InputValidate } from "@webpack-cli/webpack-scaffold";
 
 import { searchProps } from "./index";
