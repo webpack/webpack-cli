@@ -349,7 +349,7 @@ module.exports = function(yargs) {
 			},
 			p: {
 				type: "boolean",
-				describe: "shortcut for --optimize-minimize --define process.env.NODE_ENV=\"production\"",
+				describe: 'shortcut for --optimize-minimize --define process.env.NODE_ENV="production"',
 				group: BASIC_GROUP
 			},
 			silent: {
