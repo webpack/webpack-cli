@@ -10,11 +10,7 @@ Table of Contents
 -   [Issues](#issues)
 -   [Your first Contribution](#your-first-contribution)
 -   [Setup](#setup)
-    -   [Using npm](#using-npm)
-    -   [Using yarn](#using-yarn)
 -   [Running Tests](#running-tests)
-    -   [Using npm](#using-npm-1)
-    -   [Using yarn](#using-yarn-1)
 -   [Editor Config](#editor-config)
 -   [Dependencies](#dependencies)
 -   [Branching Model](#branching-model)
@@ -60,42 +56,34 @@ In case you are suggesting a new feature, we will match your idea with our curre
 -   Fork the **webpack-cli** repo at [https://github.com/webpack/webpack-cli](https://github.com/webpack/webpack-cli).
 -   `git clone <your-clone-url> && cd webpack-cli`
 
-### Using npm
-
--   Install the dependencies and link them:
-
-    ```bash
-    npm install
-    npm link
-    npm link webpack-cli
-    ```
-
--   Bootstrap all the submodules before building for the first time
-
-    ```bash
-    npm run bootstrap
-    npm run build
-    ```
-
-### Using yarn
-
 -   If you don't have yarn yet:
 
     ```bash
     npm install -g yarn
     ```
 
--   Install the dependencies and link them
+*   Install the dependencies and link them:
 
     ```bash
+    #npm
+    npm install
+    npm link
+    npm link webpack-cli
+
+    #yarn
     yarn
     yarn link
     yarn link webpack-cli
     ```
 
--   Bootstrap all the submodules before building for the first time
+*   Bootstrap all the submodules before building for the first time
 
     ```bash
+    #npm
+    npm run bootstrap
+    npm run build
+
+    #yarn
     yarn bootstrap
     yarn build
     ```
@@ -107,69 +95,53 @@ In case you are suggesting a new feature, we will match your idea with our curre
 -   Run all the tests with:
 
     ```bash
+    #npm
     npm run test
-    ```
 
--   Run CLI tests with:
-
-    ```bash
-    npm run test:cli
-    ```
-
--   Run tests of all packages:
-
-    ```bash
-    npm run test:packages
-    ```
-
--   Test a single CLI test case (must run from root of the poject):
-
-    ```bash
-    npx jest path/to/my-test.js
-    ```
-
--   You can also install jest globally and run tests without npx:
-
-    ```bash
-    npm i -g jest
-    jest path/to/my-test.js
-    ```
-
--   You can run the linters:
-
-    ```bash
-    npm run lint
-    ```
-
-### Using yarn
-
--   Run all the tests with:
-
-    ```bash
+    #yarn
     yarn test
     ```
 
 -   Run CLI tests with:
 
     ```bash
+    #npm
+    npm run test:cli
+
+    #yarn
     yarn test:cli`
     ```
 
 -   Run tests of all packages:
 
     ```bash
+    #npm
+    npm run test:packages
+
+    #yarn
     yarn test:packages
     ```
 
--   Test a single CLI test case (must run from root of the poject):
+-   Test a single CLI test case:
+
+    > Must run from root of the poject
 
     ```bash
+    #npm
+    npx jest path/to/my-test.js
+
+    #yarn
     yarn jest path/to/my-test.js
     ```
 
--   You can also install jest globally and run tests:
+-   You can also install jest globally and run tests without npx:
 
     ```bash
+    #npm
+    npm i -g jest
+    jest path/to/my-test.js
+
+    #yarn
     yarn global add jest
     jest path/to/my-test.js
     ```
@@ -177,6 +149,10 @@ In case you are suggesting a new feature, we will match your idea with our curre
 -   You can run the linters:
 
     ```bash
+    #npm
+    npm run lint
+
+    #yarn
     yarn lint
     ```
 
