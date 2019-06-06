@@ -4,45 +4,43 @@ export const argv = yargs
 		alias: "sys",
 		demandOption: false,
 		describe: "System information (OS, CPU)",
-		type: "boolean",
+		type: "boolean"
 	})
 	.option("binaries", {
 		alias: "bin",
 		demandOption: false,
 		describe: "Installed binaries",
-		type: "boolean",
+		type: "boolean"
 	})
 
 	.option("browsers", {
 		demandOption: false,
 		describe: "Installed web browsers",
-		type: "boolean",
+		type: "boolean"
 	})
 	.option("npmg", {
 		demandOption: false,
 		describe: "Globally installed NPM packages (webpack & webpack-cli only)",
-		type: "boolean",
+		type: "boolean"
 	})
 	.option("npmPackages", {
 		demandOption: false,
 		describe: "Info about webpack installed in the project",
-		type: "boolean",
+		type: "boolean"
 	})
 	.option("json", {
 		demandOption: false,
 		describe: "To get the output as JSON",
-		type: "boolean",
+		type: "boolean"
 	})
 	.option("json", {
 		demandOption: false,
 		describe: "To get the output as JSON",
-		type: "boolean",
+		type: "boolean"
 	})
 	.option("markdown", {
 		demandOption: false,
 		describe: "To get the output as markdown",
-		type: "boolean",
+		type: "boolean"
 	})
-	.group(["json", "markdown"], `Output format`)
-	.argv
-	;
+	.group(["json", "markdown"], `Output format`).argv;
