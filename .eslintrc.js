@@ -16,7 +16,7 @@ module.exports = {
 		"no-undef": "error",
 		"no-extra-semi": "error",
 		semi: "error",
-		"no-tempate-curly-in-string": "error",
+		"no-template-curly-in-string": "error",
 		"no-caller": "error",
 		yoda: "error",
 		eqeqeq: "error",
