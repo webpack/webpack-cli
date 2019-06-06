@@ -9,7 +9,7 @@ test("set-implicitly", () => {
 		"--output-chunk-filename",
 		"[id].chunk.js",
 		"--target",
-		"async-node",
+		"async-node"
 	]);
 	expect(code).toBe(0);
 	expect(stdout).toEqual(expect.anything());
