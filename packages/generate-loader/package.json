@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/generate-loader",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "A scaffold for generating a loader",
   "main": "index.js",
   "directories": {
@@ -14,7 +14,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@webpack-cli/generators": "^0.1.5",
+    "@webpack-cli/generators": "^0.1.6",
     "yeoman-environment": "^2.3.4"
   },
   "devDependencies": {
