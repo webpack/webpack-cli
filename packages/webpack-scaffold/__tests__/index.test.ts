@@ -1,7 +1,7 @@
 "use strict";
 import * as utils from "../index";
 
-describe("utils", () => {
+describe.skip("utils", () => {
 	describe("createArrowFunction", () => {
 		it("should stringify an arrow function", () => {
 			expect(utils.createArrowFunction("app.js")).toMatchSnapshot();

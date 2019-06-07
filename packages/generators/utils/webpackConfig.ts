@@ -1,8 +1,8 @@
 import { WebpackOptions } from "../types";
 
-export function getDefaultOptimization(isProd: boolean): WebpackOptions["optimization"] {
+export function getDefaultOptimization(usingDefaults: boolean): WebpackOptions["optimization"] {
 	let optimizationOptions;
-	if (isProd) {
+	if (usingDefaults) {
 		optimizationOptions = {
 			minimizer: ["new TerserPlugin()"],
 			splitChunks: {
