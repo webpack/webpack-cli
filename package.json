@@ -47,7 +47,8 @@
     "test:ci": "nyc jest --maxWorkers=$(nproc) --reporters=default --reporters=jest-junit",
     "travis:integration": "npm run build && npm run test && npm run reportCoverage",
     "travis:lint": "npm run build && npm run lint",
-    "watch": "npm run build && tsc -w"
+    "watch": "npm run build && tsc -w",
+    "publish:monorepo": "lerna publish -m \"chore: monorepo version update\""
   },
   "husky": {
     "hooks": {
