@@ -4,13 +4,6 @@ export function getDefaultOptimization(usingDefaults: boolean): WebpackOptions["
 	let optimizationOptions;
 	if (usingDefaults) {
 		optimizationOptions = {
-			minimizer: ["new TerserPlugin()"],
-			splitChunks: {
-				chunks: "'all'"
-			}
-		};
-	} else {
-		optimizationOptions = {
 			splitChunks: {
 				cacheGroups: {
 					vendors: {
@@ -22,6 +15,13 @@ export function getDefaultOptimization(usingDefaults: boolean): WebpackOptions["
 				minChunks: 1,
 				minSize: 30000,
 				name: !this.isProd
+			}
+		};
+	} else {
+		optimizationOptions = {
+			minimizer: ["new TerserPlugin()"],
+			splitChunks: {
+				chunks: "'all'"
 			}
 		};
 	}

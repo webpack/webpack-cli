@@ -76,20 +76,6 @@ export default class InitGenerator extends Generator {
 			tooltip.splitChunks()
 		);
 
-		if (!this.usingDefaults) {
-			this.dependencies.push("terser-webpack-plugin");
-			this.configuration.config.topScope.push(
-				tooltip.terser(),
-				"const TerserPlugin = require('terser-webpack-plugin');",
-				"\n"
-			);
-		} else {
-			this.dependencies.push("webpack-dev-server");
-			this.configuration.config.webpackOptions.devServer = {
-				open: true
-			};
-		}
-
 		(this.configuration.config.webpackOptions.plugins as string[]).push("new webpack.ProgressPlugin()");
 	}
 
@@ -151,7 +137,8 @@ export default class InitGenerator extends Generator {
 			};
 		} else {
 			this.configuration.config.webpackOptions.output = {
-				filename: "'bundle.js'"
+				filename: "'bundle.js'",
+				path: `path.resolve(__dirname, '${outputDir}')`
 			};
 		}
 
@@ -231,8 +218,21 @@ export default class InitGenerator extends Generator {
 			(this.configuration.config.webpackOptions.plugins as string[]).push(`new ${htmlwebpackPlugin}()`);
 		}
 
-		let optimizationConfig = getDefaultOptimization(!this.usingDefaults);
-		this.configuration.config.webpackOptions.optimization = optimizationConfig;
+		if (!this.usingDefaults) {
+			this.dependencies.push("webpack-dev-server");
+			this.configuration.config.webpackOptions.devServer = {
+				open: true
+			};
+		} else {
+			this.dependencies.push("terser-webpack-plugin");
+			this.configuration.config.topScope.push(
+				tooltip.terser(),
+				"const TerserPlugin = require('terser-webpack-plugin');",
+				"\n"
+			);
+		}
+		this.configuration.config.webpackOptions.optimization = getDefaultOptimization(this.usingDefaults);
+		this.configuration.config.webpackOptions.mode = this.usingDefaults ? "'development'" : "'production'";
 
 		done();
 	}
