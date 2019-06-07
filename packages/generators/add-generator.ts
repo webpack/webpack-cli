@@ -1,73 +1,25 @@
-import Generator = require("yeoman-generator");
-
-import * as glob from "glob-all";
-import * as autoComplete from "inquirer-autocomplete-prompt";
-import * as path from "path";
+import path, { resolve } from "path";
+import glob from "glob-all";
+import * as AutoComplete from "inquirer-autocomplete-prompt";
+import * as Generator from "yeoman-generator";
 
 import npmExists from "@webpack-cli/utils/npm-exists";
 import { getPackageManager } from "@webpack-cli/utils/package-manager";
-import PROP_TYPES from "@webpack-cli/utils/prop-types";
-import { AutoComplete, Confirm, InquirerInput, Input, List } from "@webpack-cli/webpack-scaffold";
+import { Input, List } from "@webpack-cli/webpack-scaffold";
+import webpackDevServerSchema from "webpack-dev-server/lib/options.json";
 
+import {
+	actionTypeQuestion,
+	entryTypeQuestion,
+	manualOrListInput,
+	mergeFileQuestion,
+	topScopeQuestion
+} from "./utils/add/questions";
+import { traverseAndGetProperties } from "./utils/add";
 import { SchemaProperties, WebpackOptions } from "./types";
 import entryQuestions from "./utils/entry";
-
-import webpackDevServerSchema from "webpack-dev-server/lib/options.json";
-import webpackSchema from "./utils/optionsSchema.json";
-const PROPS: string[] = Array.from(PROP_TYPES.keys());
-
-/**
- *
- * Replaces the string with a substring at the given index
- * https://gist.github.com/efenacigiray/9367920
- *
- * @param	{String} str - string to be modified
- * @param	{Number} index - index to replace from
- * @param	{String} replace - string to replace starting from index
- *
- * @returns	{String} string - The newly mutated string
- *
- */
-function replaceAt(str: string, index: number, replace: string): string {
-	return str.substring(0, index) + replace + str.substring(index + 1);
-}
-
-/**
- *
- * Checks if the given array has a given property
- *
- * @param	{Array} arr - array to check
- * @param	{String} prop - property to check existence of
- *
- * @returns	{Boolean} hasProp - Boolean indicating if the property
- * is present
- */
-const traverseAndGetProperties = (arr: object[], prop: string): boolean => {
-	let hasProp = false;
-	arr.forEach(
-		(p: object): void => {
-			if (p[prop]) {
-				hasProp = true;
-			}
-		}
-	);
-	return hasProp;
-};
-
-/**
- *
- * Search config properties
- *
- * @param {Object} answers	Prompt answers object
- * @param {String} input	Input search string
- *
- * @returns {Promise} Returns promise which resolves to filtered props
- *
- */
-const searchProps = (answers: object, input: string): Promise<string[]> => {
-	input = input || "";
-	return Promise.resolve(PROPS.filter((prop: string): boolean => prop.toLowerCase().includes(input.toLowerCase())));
-};
+import { generatePluginName } from "./utils/plugins";
+import webpackSchema from "../optionsSchema.json";
 
 /**
  *
@@ -85,6 +37,7 @@ export default class AddGenerator extends Generator {
 			configName?: string;
 			topScope?: string[];
 			item?: string;
+			merge?: string | string[];
 			webpackOptions?: WebpackOptions;
 		};
 	};
@@ -99,16 +52,14 @@ export default class AddGenerator extends Generator {
 			}
 		};
 		const { registerPrompt } = this.env.adapter.promptModule;
-		registerPrompt("autocomplete", autoComplete);
+		registerPrompt("autocomplete", AutoComplete);
 	}
 
-	public prompting(): void {
-		const done: () => void | boolean = this.async();
+	public prompting(): Promise<void | {}> {
+		const done: () => {} = this.async();
 		let action: string;
 		const self: this = this;
-		const manualOrListInput: (promptAction: string) => InquirerInput = (promptAction: string): InquirerInput =>
-			Input("actionAnswer", `What do you want to add to ${promptAction}?`);
-		let inputPrompt: InquirerInput;
+		let inputPrompt: Generator.Question;
 
 		// first index indicates if it has a deep prop, 2nd indicates what kind of
 		// TODO: this must be reviewed. It starts as an array of booleans but after that it get overridden
@@ -116,44 +67,39 @@ export default class AddGenerator extends Generator {
 		// eslint-disable-next-line
 		const isDeepProp: any[] = [false, false];
 
-		return this.prompt([
-			AutoComplete("actionType", "What property do you want to add to?", {
-				pageSize: 7,
-				source: searchProps,
-				suggestOnly: false
+		return this.prompt(actionTypeQuestion)
+			.then((actionTypeAnswer: { actionType: string }): void => {
+				// Set initial prop, like devtool
+				this.configuration.config.webpackOptions[actionTypeAnswer.actionType] = null;
+				// update the action variable, we're using it later
+				action = actionTypeAnswer.actionType;
 			})
-		])
 			.then(
-				(actionTypeAnswer: { actionType: string }): void => {
-					// Set initial prop, like devtool
-					this.configuration.config.webpackOptions[actionTypeAnswer.actionType] = null;
-					// update the action variable, we're using it later
-					action = actionTypeAnswer.actionType;
-				}
-			)
-			.then(
-				(): void => {
+				(): Promise<void | {}> => {
 					if (action === "entry") {
-						return this.prompt([
-							Confirm("entryType", "Will your application have multiple bundles?", false)
-						])
+						return this.prompt(entryTypeQuestion)
 							.then(
-								(entryTypeAnswer: { entryType: boolean }): Promise<{}> => {
+								(entryTypeAnswer: { entryType: boolean }): Promise<void | {}> => {
 									// Ask different questions for entry points
-									return entryQuestions(self, entryTypeAnswer);
+									return entryQuestions(self, entryTypeAnswer.entryType);
 								}
 							)
-							.then(
-								(entryOptions: { entryType: boolean }): void => {
-									this.configuration.config.webpackOptions.entry = entryOptions;
-									this.configuration.config.item = action;
-								}
-							);
+							.then((entryOptions: { entryType: boolean }): void => {
+								this.configuration.config.webpackOptions.entry = entryOptions;
+								this.configuration.config.item = action;
+							});
 					} else {
 						if (action === "topScope") {
-							return this.prompt([Input("topScope", "What do you want to add to topScope?")]).then(
-								(topScopeAnswer: { topScope: string }): void => {
-									this.configuration.config.topScope.push(topScopeAnswer.topScope);
+							return this.prompt(topScopeQuestion).then((topScopeAnswer: { topScope: string }): void => {
+								this.configuration.config.topScope.push(topScopeAnswer.topScope);
+								done();
+							});
+						}
+						if (action === "merge") {
+							return this.prompt(mergeFileQuestion).then(
+								(mergeFileAnswer: { mergeFile: string; mergeConfigName: string }): void => {
+									const resolvedPath = resolve(process.cwd(), mergeFileAnswer.mergeFile);
+									this.configuration.config[action] = [mergeFileAnswer.mergeConfigName, resolvedPath];
 									done();
 								}
 							);
@@ -195,16 +141,14 @@ export default class AddGenerator extends Generator {
 							const originalPropDesc: object = defOrPropDescription[0].enum;
 							// Array -> Object -> Merge objects into one for compat in manualOrListInput
 							defOrPropDescription = Object.keys(defOrPropDescription[0].enum)
-								.map(
-									(p: string): object => {
-										return Object.assign(
-											{},
-											{
-												[originalPropDesc[p]]: "noop"
-											}
-										);
-									}
-								)
+								.map((p: string): object => {
+									return Object.assign(
+										{},
+										{
+											[originalPropDesc[p]]: "noop"
+										}
+									);
+								})
 								.reduce((result: object, currentObject: object): object => {
 									for (const key in currentObject) {
 										if (currentObject.hasOwnProperty(key)) {
@@ -296,7 +240,7 @@ export default class AddGenerator extends Generator {
 				}
 			)
 			.then(
-				(answerToAction: { actionAnswer: string }): void => {
+				(answerToAction: { actionAnswer: string }): Promise<void | {}> => {
 					if (!answerToAction) {
 						done();
 						return;
@@ -306,16 +250,27 @@ export default class AddGenerator extends Generator {
 					 * find the names of each natively plugin and check if it matches
 					 */
 					if (action === "plugins") {
+						let answeredPluginName = answerToAction.actionAnswer;
+						let isPrefixPresent = /webpack./.test(answeredPluginName);
+
+						if (isPrefixPresent) {
+							answeredPluginName = answeredPluginName.replace("webpack.", "").trim();
+						} else {
+							answeredPluginName = answeredPluginName.trim();
+						}
 						const pluginExist: string = glob
 							.sync(["node_modules/webpack/lib/*Plugin.js", "node_modules/webpack/lib/**/*Plugin.js"])
-							.map(
-								(p: string): string =>
-									p
-										.split("/")
-										.pop()
-										.replace(".js", "")
+							.map((p: string): string =>
+								p
+									.split("/")
+									.pop()
+									.replace(".js", "")
 							)
-							.find((p: string): boolean => p.toLowerCase().indexOf(answerToAction.actionAnswer) >= 0);
+							.find(
+								(p: string): boolean =>
+									p.toLowerCase().indexOf(answeredPluginName) >= 0 ||
+									p.indexOf(answeredPluginName) >= 0
+							);
 
 						if (pluginExist) {
 							this.configuration.config.item = pluginExist;
@@ -330,8 +285,7 @@ export default class AddGenerator extends Generator {
 											.split("/")
 											.pop()
 											.replace(".json", "")
-											.toLowerCase()
-											.indexOf(answerToAction.actionAnswer) >= 0
+											.indexOf(pluginExist) >= 0
 								);
 							if (pluginsSchemaPath) {
 								const constructorPrefix: string =
@@ -342,19 +296,13 @@ export default class AddGenerator extends Generator {
 								if (pluginSchema) {
 									Object.keys(pluginSchema)
 										.filter((p: string): boolean => Array.isArray(pluginSchema[p]))
-										.forEach(
-											(p: string): void => {
-												Object.keys(pluginSchema[p]).forEach(
-													(n: string): void => {
-														if (pluginSchema[p][n].properties) {
-															pluginsSchemaProps = Object.keys(
-																pluginSchema[p][n].properties
-															);
-														}
-													}
-												);
-											}
-										);
+										.forEach((p: string): void => {
+											Object.keys(pluginSchema[p]).forEach((n: string): void => {
+												if (pluginSchema[p][n].properties) {
+													pluginsSchemaProps = Object.keys(pluginSchema[p][n].properties);
+												}
+											});
+										});
 								}
 
 								return this.prompt([
@@ -364,25 +312,20 @@ export default class AddGenerator extends Generator {
 										pluginsSchemaProps
 									)
 								]).then(
-									(pluginsPropAnswer: { pluginsPropType: string }): Promise<{}> => {
+									(pluginsPropAnswer: { pluginsPropType: string }): Promise<void | {}> => {
 										return this.prompt([
 											Input(
 												"pluginsPropTypeVal",
-												`What value should ${pluginExist}.${
-													pluginsPropAnswer.pluginsPropType
-												} have?`
+												`What value should ${pluginExist}.${pluginsPropAnswer.pluginsPropType} have?`
 											)
-										]).then(
-											(valForProp: { pluginsPropTypeVal: string }): void => {
-												this.configuration.config.webpackOptions[action] = {
-													[`${constructorPrefix}.${pluginExist}`]: {
-														[pluginsPropAnswer.pluginsPropType]:
-															valForProp.pluginsPropTypeVal
-													}
-												};
-												done();
-											}
-										);
+										]).then((valForProp: { pluginsPropTypeVal: string }): void => {
+											this.configuration.config.webpackOptions[action] = {
+												[`${constructorPrefix}.${pluginExist}`]: {
+													[pluginsPropAnswer.pluginsPropType]: valForProp.pluginsPropTypeVal
+												}
+											};
+											done();
+										});
 									}
 								);
 							} else {
@@ -391,37 +334,27 @@ export default class AddGenerator extends Generator {
 							}
 						} else {
 							// If its not in webpack, check npm
-							npmExists(answerToAction.actionAnswer).then(
-								(p: boolean): void => {
-									if (p) {
-										this.dependencies.push(answerToAction.actionAnswer);
-										const normalizePluginName = answerToAction.actionAnswer.replace(
-											"-webpack-plugin",
-											"Plugin"
-										);
-										const pluginName = replaceAt(
-											normalizePluginName,
-											0,
-											normalizePluginName.charAt(0).toUpperCase()
-										);
-										this.configuration.config.topScope.push(
-											`const ${pluginName} = require("${answerToAction.actionAnswer}")`
-										);
-										this.configuration.config.webpackOptions[action] = `new ${pluginName}`;
-										this.configuration.config.item = answerToAction.actionAnswer;
-										done();
-										this.scheduleInstallTask(getPackageManager(), this.dependencies, {
-											"save-dev": true
-										});
-									} else {
-										console.error(
-											answerToAction.actionAnswer,
-											"doesn't exist on NPM or is built in webpack, please check for any misspellings."
-										);
-										process.exit(0);
-									}
+							npmExists(answerToAction.actionAnswer).then((p: boolean): void => {
+								if (p) {
+									this.dependencies.push(answerToAction.actionAnswer);
+									const pluginName = generatePluginName(answerToAction.actionAnswer);
+									this.configuration.config.topScope.push(
+										`const ${pluginName} = require("${answerToAction.actionAnswer}")`
+									);
+									this.configuration.config.webpackOptions[action] = `new ${pluginName}`;
+									this.configuration.config.item = answerToAction.actionAnswer;
+									done();
+									this.scheduleInstallTask(getPackageManager(), this.dependencies, {
+										"save-dev": true
+									});
+								} else {
+									console.error(
+										answerToAction.actionAnswer,
+										"doesn't exist on NPM or is built in webpack, please check for any misspellings."
+									);
+									process.exit(0);
 								}
-							);
+							});
 						}
 					} else {
 						// If we're in the scenario with a deep-property
@@ -432,7 +365,9 @@ export default class AddGenerator extends Generator {
 								(action === "devtool" || action === "watch" || action === "mode")
 							) {
 								this.configuration.config.item = action;
-								this.configuration.config.webpackOptions[action] = answerToAction.actionAnswer;
+								(this.configuration.config.webpackOptions[
+									action
+								] as string) = answerToAction.actionAnswer;
 								done();
 								return;
 							}

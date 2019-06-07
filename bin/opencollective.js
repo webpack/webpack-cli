@@ -26,8 +26,17 @@ function printBadge() {
 	print(`Please consider donating to our ${chalk.bold.blue("Open Collective")}`);
 	print("to help us maintain this package.");
 	console.log("\n\n");
-	print(`${emoji("👉")} ${chalk.bold.yellow(" Donate:")} ${chalk.reset.underline.yellow("https://opencollective.com/webpack/donate")}`);
+	print(
+		`${emoji("👉")} ${chalk.bold.yellow(" Donate:")} ${chalk.reset.underline.yellow(
+			"https://opencollective.com/webpack/donate"
+		)}`
+	);
 	console.log("\n");
 }
 
-printBadge();
+function isTrue(value) {
+	return !!value && value !== "0" && value !== "false";
+}
+const envDisable = isTrue(process.env.DISABLE_OPENCOLLECTIVE) || isTrue(process.env.CI);
+
+if (!envDisable) printBadge();

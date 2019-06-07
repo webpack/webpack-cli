@@ -70,6 +70,21 @@ For more information, see https://webpack.js.org/api/cli/.`);
 		try {
 			options = require("./utils/convert-argv")(argv);
 		} catch (err) {
+			if (err.code === "MODULE_NOT_FOUND") {
+				let errorMessage =
+					"\n\u001b[31mwebpack not installed, consider installing it using \n\u001b[32mnpm install --save-dev webpack\n";
+
+				if (process.env.npm_execpath !== undefined && process.env.npm_execpath.includes("yarn")) {
+					errorMessage =
+						"\n\u001b[31mwebpack not installed, consider installing it using \n\u001b[32myarn add webpack --dev\n";
+				}
+
+				console.error(errorMessage);
+				Error.stackTraceLimit = 1;
+				process.exitCode = 1;
+				return;
+			}
+
 			if (err.name !== "ValidationError") {
 				throw err;
 			}
@@ -91,11 +106,7 @@ For more information, see https://webpack.js.org/api/cli/.`);
 		 * When --silent flag is present, an object with a no-op write method is
 		 * used in place of process.stout
 		 */
-		const stdout = argv.silent
-			? {
-				write: () => {}
-			  } // eslint-disable-line
-			: process.stdout;
+		const stdout = argv.silent ? { write: () => {} } : process.stdout;
 
 		function ifArg(name, fn, init) {
 			if (Array.isArray(argv[name])) {
@@ -112,7 +123,8 @@ For more information, see https://webpack.js.org/api/cli/.`);
 			if (typeof options.then === "function") {
 				options.then(processOptions).catch(function(err) {
 					console.error(err.stack || err);
-					process.exit(1); // eslint-disable-line
+					// eslint-disable-next-line no-process-exit
+					process.exit(1);
 				});
 				return;
 			}
@@ -326,14 +338,19 @@ For more information, see https://webpack.js.org/api/cli/.`);
 					const SIX_DAYS = 518400000;
 					const now = new Date();
 					if (now.getDay() === MONDAY) {
-						const { statSync, utimesSync } = require("fs");
-						const lastPrint = statSync(openCollectivePath).atime;
+						const { access, constants, statSync, utimesSync } = require("fs");
+						const stat = statSync(openCollectivePath);
+						const lastPrint = stat.atime;
+						const fileOwnerId = stat.uid;
 						const lastPrintTS = new Date(lastPrint).getTime();
 						const timeSinceLastPrint = now.getTime() - lastPrintTS;
 						if (timeSinceLastPrint > SIX_DAYS) {
 							require(openCollectivePath);
 							// On windows we need to manually update the atime
-							utimesSync(openCollectivePath, now, now);
+							// Updating utime requires process owner is as same as file owner
+							access(openCollectivePath, constants.W_OK, e => {
+								if (!e && fileOwnerId === process.getuid()) utimesSync(openCollectivePath, now, now);
+							});
 						}
 					}
 				}
@@ -342,7 +359,8 @@ For more information, see https://webpack.js.org/api/cli/.`);
 				}
 			}
 			if (firstOptions.watch || options.watch) {
-				const watchOptions = firstOptions.watchOptions || firstOptions.watch || options.watch || {};
+				const watchOptions =
+					firstOptions.watchOptions || options.watchOptions || firstOptions.watch || options.watch || {};
 				if (watchOptions.stdin) {
 					process.stdin.on("end", function(_) {
 						process.exit(); // eslint-disable-line

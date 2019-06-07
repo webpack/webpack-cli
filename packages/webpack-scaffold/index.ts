@@ -1,30 +1,5 @@
 import * as jscodeshift from "jscodeshift";
-
-export interface InquirerScaffoldObject {
-	type?: string;
-	name: string;
-	message: string;
-	choices?: ((answers: Record<string, string>) => string) | string[];
-	default?:
-		| string
-		| number
-		| boolean
-		| string[]
-		| number[]
-		| ((answers: Record<string, string>) => string | number | boolean | string[] | number[]);
-	validate?: (input: string) => boolean | string;
-	when?: ((answers: Record<string, string>) => boolean) | boolean;
-	store?: boolean;
-	filter?: (name: string) => string;
-}
-
-export interface InquirerList extends InquirerScaffoldObject {
-	choices?: string[];
-}
-
-export interface InquirerInput extends InquirerScaffoldObject {
-	validate?: (input: string) => string | boolean;
-}
+import * as Generator from "yeoman-generator";
 
 export function createArrowFunction(value: string): string {
 	return `() => '${value}'`;
@@ -38,11 +13,9 @@ export function createDynamicPromise(arrOrString: string[] | string): string {
 	if (Array.isArray(arrOrString)) {
 		return (
 			"() => new Promise((resolve) => resolve([" +
-			arrOrString.map(
-				(func: string): string => {
-					return "'" + func + "'";
-				}
-			) +
+			arrOrString.map((func: string): string => {
+				return "'" + func + "'";
+			}) +
 			"]))"
 		);
 	} else {
@@ -74,7 +47,7 @@ export function createRequire(val: string): string {
 	return `const ${val} = require('${val}');`;
 }
 
-export function List(name: string, message: string, choices: string[]): InquirerList {
+export function List(name: string, message: string, choices: string[]): Generator.Question {
 	return {
 		choices,
 		message,
@@ -83,7 +56,7 @@ export function List(name: string, message: string, choices: string[]): Inquirer
 	};
 }
 
-export function RawList(name: string, message: string, choices: string[]): InquirerList {
+export function RawList(name: string, message: string, choices: string[]): Generator.Question {
 	return {
 		choices,
 		message,
@@ -92,7 +65,7 @@ export function RawList(name: string, message: string, choices: string[]): Inqui
 	};
 }
 
-export function CheckList(name: string, message: string, choices: string[]): InquirerList {
+export function CheckList(name: string, message: string, choices: string[]): Generator.Question {
 	return {
 		choices,
 		message,
@@ -101,24 +74,32 @@ export function CheckList(name: string, message: string, choices: string[]): Inq
 	};
 }
 
-export function Input(name: string, message: string): InquirerInput {
+export function Input(name: string, message: string, defaultChoice?: string): Generator.Question {
 	return {
+		default: defaultChoice,
 		message,
 		name,
 		type: "input"
 	};
 }
 
-export function InputValidate(name: string, message: string, cb?: (input: string) => string | boolean): InquirerInput {
-	return {
+export function InputValidate(
+	name: string,
+	message: string,
+	cb?: (input: string) => string | boolean,
+	defaultChoice?: string
+): Generator.Question {
+	const input: Generator.Question = {
 		message,
 		name,
 		type: "input",
 		validate: cb
 	};
+	if (defaultChoice) input.default = defaultChoice;
+	return input;
 }
 
-export function Confirm(name: string, message: string, defaultChoice: boolean = true): InquirerScaffoldObject {
+export function Confirm(name: string, message: string, defaultChoice: boolean = true): Generator.Question {
 	return {
 		default: defaultChoice,
 		message,

@@ -2,10 +2,10 @@ import chalk from "chalk";
 import * as j from "jscodeshift";
 import pEachSeries = require("p-each-series");
 import * as path from "path";
-import { findProjectRoot } from "./find-root";
+import { findProjectRoot } from "./path-utils";
 
-import { Error } from "../init/types";
-import { Config, TransformConfig } from "./modify-config-helper";
+import { Error } from "./types";
+import { Config, TransformConfig } from "./types";
 import propTypes from "./prop-types";
 import astTransform from "./recursive-parser";
 import runPrettier from "./run-prettier";
@@ -36,11 +36,9 @@ function mapOptionsToTransform(config: Config): string[] {
 
 export default function runTransform(transformConfig: TransformConfig, action: string): void {
 	// webpackOptions.name sent to nameTransform if match
-	const webpackConfig = Object.keys(transformConfig).filter(
-		(p: string): boolean => {
-			return p !== "configFile" && p !== "configPath";
-		}
-	);
+	const webpackConfig = Object.keys(transformConfig).filter((p: string): boolean => {
+		return p !== "configFile" && p !== "configPath";
+	});
 	const initActionNotDefined = action && action !== "init" ? true : false;
 
 	webpackConfig.forEach(
@@ -53,7 +51,7 @@ export default function runTransform(transformConfig: TransformConfig, action: s
 				transformations.push("topScope");
 			}
 
-			if (config.merge) {
+			if (config.merge && transformations.indexOf("merge") === -1) {
 				transformations.push("merge");
 			}
 
@@ -61,46 +59,41 @@ export default function runTransform(transformConfig: TransformConfig, action: s
 
 			const transformAction: string = action || null;
 
-			return pEachSeries(
-				transformations,
-				(f: string): boolean | Node => {
-					if (f === "merge" || f === "topScope") {
-						// TODO: typing here is difficult to understand
-						// eslint-disable-next-line @typescript-eslint/no-explicit-any
-						return astTransform(j, ast, f, config[f] as any, transformAction);
-					}
-					return astTransform(j, ast, f, config.webpackOptions[f], transformAction);
+			return pEachSeries(transformations, (f: string): boolean | Node => {
+				if (f === "merge" || f === "topScope") {
+					// TODO: typing here is difficult to understand
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
+					return astTransform(j, ast, f, config[f] as any, transformAction);
 				}
-			)
-				.then(
-					(): void | PromiseLike<void> => {
-						let configurationName: string;
-						if (!config.configName) {
-							configurationName = "webpack.config.js";
-						} else {
-							configurationName = "webpack." + config.configName + ".js";
-						}
-
-						const projectRoot = findProjectRoot();
-						const outputPath: string = initActionNotDefined
-							? transformConfig.configPath
-							: path.join(projectRoot || process.cwd(), configurationName);
-						const source: string = ast.toSource({
-							quote: "single"
-						});
-						runPrettier(outputPath, source);
+				return astTransform(j, ast, f, config.webpackOptions[f], transformAction);
+			})
+				.then((): void | PromiseLike<void> => {
+					let configurationName: string;
+					if (!config.configName) {
+						configurationName = "webpack.config.js";
+					} else {
+						configurationName = "webpack." + config.configName + ".js";
 					}
-				)
-				.catch(
-					(err: Error): void => {
-						console.error(err.message ? err.message : err);
-					}
-				);
+					const projectRoot = findProjectRoot();
+					const outputPath: string = initActionNotDefined
+						? transformConfig.configPath
+						: path.join(projectRoot || process.cwd(), configurationName);
+					const source: string = ast.toSource({
+						quote: "single"
+					});
+					runPrettier(outputPath, source);
+				})
+				.catch((err: Error): void => {
+					console.error(err.message ? err.message : err);
+				});
 		}
 	);
-	let successMessage: string = `Congratulations! Your new webpack configuration file has been created!\n`;
+	let successMessage: string =
+		chalk.green(`Congratulations! Your new webpack configuration file has been created!\n\n`) +
+		`You can now run ${chalk.green("npm run start")} to run your project!\n\n`;
+
 	if (initActionNotDefined && transformConfig.config.item) {
-		successMessage = `Congratulations! ${transformConfig.config.item} has been ${action}ed!\n`;
+		successMessage = chalk.green(`Congratulations! ${transformConfig.config.item} has been ${action}ed!\n`);
 	}
-	process.stdout.write("\n" + chalk.green(successMessage));
+	process.stdout.write(`\n${successMessage}`);
 }

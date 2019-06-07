@@ -7,7 +7,7 @@ import propTypes from "@webpack-cli/utils/prop-types";
 import astTransform from "@webpack-cli/utils/recursive-parser";
 import runPrettier from "@webpack-cli/utils/run-prettier";
 
-import { Node } from "@webpack-cli/utils/types/NodePath";
+import { Node } from "@webpack-cli/utils/types";
 import { Error } from "./types";
 import { Configuration, WebpackProperties } from "./types/Transform";
 
@@ -49,39 +49,32 @@ export default function runTransform(webpackProperties: WebpackProperties, actio
 			const ast = j(initActionNotDefined ? webpackProperties.configFile : "module.exports = {}");
 			const transformAction: string | null = action || null;
 
-			return pEachSeries(
-				transformations,
-				(f: string): boolean | Node => {
-					return astTransform(j, ast, config.webpackOptions[f], transformAction, f);
-				}
-			)
-				.then(
-					(): void | PromiseLike<void> => {
-						let configurationName = "webpack.config.js";
-						if (config.configName) {
-							configurationName = `webpack.${config.configName}.js`;
-						}
-
-						const outputPath = initActionNotDefined
-							? webpackProperties.configPath
-							: path.join(process.cwd(), configurationName);
-
-						const source: string = ast.toSource({
-							quote: "single"
-						});
-
-						runPrettier(outputPath, source);
+			return pEachSeries(transformations, (f: string): boolean | Node => {
+				return astTransform(j, ast, config.webpackOptions[f], transformAction, f);
+			})
+				.then((): void | PromiseLike<void> => {
+					let configurationName = "webpack.config.js";
+					if (config.configName) {
+						configurationName = `webpack.${config.configName}.js`;
 					}
-				)
-				.catch(
-					(err: Error): void => {
-						console.error(err.message ? err.message : err);
-					}
-				);
+
+					const outputPath = initActionNotDefined
+						? webpackProperties.configPath
+						: path.join(process.cwd(), configurationName);
+
+					const source: string = ast.toSource({
+						quote: "single"
+					});
+
+					runPrettier(outputPath, source);
+				})
+				.catch((err: Error): void => {
+					console.error(err.message ? err.message : err);
+				});
 		}
 	);
 
-	let successMessage: string = `Congratulations! Your new webpack configuration file has been created!`;
+	let successMessage = `Congratulations! Your new webpack configuration file has been created!`;
 	if (initActionNotDefined && webpackProperties.config.item) {
 		successMessage = `Congratulations! ${webpackProperties.config.item} has been ${action}ed!`;
 	}

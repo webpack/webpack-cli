@@ -102,7 +102,7 @@ export function spawnChild(pkg: string): SpawnSyncReturns<Buffer> {
 	const rootPath: string = getPathToGlobalPackages();
 	const pkgPath: string = path.resolve(rootPath, pkg);
 	const packageManager: string = getPackageManager();
-	const isNew: boolean = !fs.existsSync(pkgPath);
+	const isNew = !fs.existsSync(pkgPath);
 
 	return SPAWN_FUNCTIONS[packageManager](pkg, isNew);
 }

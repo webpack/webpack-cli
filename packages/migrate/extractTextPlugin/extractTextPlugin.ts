@@ -39,7 +39,8 @@ export default function(j: JSCodeshift, ast: Node): void | Node {
 		if (literalArgs && literalArgs.length > 1) {
 			const newArgs: object = j.objectExpression(
 				literalArgs.map(
-					(p: Node, index: number): Node => utils.createProperty(j, index === 0 ? "fallback" : "use", p.value as Node)
+					(p: Node, index: number): Node =>
+						utils.createProperty(j, index === 0 ? "fallback" : "use", p.value as Node)
 				)
 			);
 			(path.value as Node).arguments = [newArgs];
