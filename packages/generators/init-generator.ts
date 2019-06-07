@@ -37,8 +37,7 @@ export default class InitGenerator extends Generator {
 			configName?: string;
 			topScope?: string[];
 			webpackOptions?: WebpackOptions;
-		},
-		answers?: object[];
+		};
 	};
 	private langType: string;
 
