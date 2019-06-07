@@ -7,7 +7,7 @@ import propTypes from "@webpack-cli/utils/prop-types";
 import astTransform from "@webpack-cli/utils/recursive-parser";
 import runPrettier from "@webpack-cli/utils/run-prettier";
 
-import { Node } from "@webpack-cli/utils/types/NodePath";
+import { Node } from "@webpack-cli/utils/types";
 import { Error } from "./types";
 import { Configuration, WebpackProperties } from "./types/Transform";
 

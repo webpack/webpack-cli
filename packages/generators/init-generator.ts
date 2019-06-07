@@ -6,13 +6,18 @@ import * as path from "path";
 import { getPackageManager } from "@webpack-cli/utils/package-manager";
 import { Confirm, Input, List } from "@webpack-cli/webpack-scaffold";
 
-import { getDefaultOptimization } from "./utils/webpackConfig";
+import {
+	getDefaultOptimization,
+	LangType,
+	langQuestionHandler,
+	tooltip,
+	generatePluginName,
+	Loader,
+	StylingType,
+	styleQuestionHandler,
+	entryQuestions
+} from "./utils";
 import { WebpackOptions } from "./types";
-import entryQuestions from "./utils/entry";
-import langQuestionHandler, { LangType } from "./utils/languageSupport";
-import styleQuestionHandler, { Loader, StylingType } from "./utils/styleSupport";
-import tooltip from "./utils/tooltip";
-import { generatePluginName } from "./utils/plugins";
 
 /**
  *
@@ -92,7 +97,7 @@ export default class InitGenerator extends Generator {
 		}
 	}
 
-	public async prompting() {
+	public async prompting(): Promise<void | {}> {
 		const done: () => {} = this.async();
 		const self: this = this;
 		let regExpForStyles: string;

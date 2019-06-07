@@ -5,7 +5,7 @@ import * as path from "path";
 import { findProjectRoot } from "./path-utils";
 
 import { Error } from "./types";
-import { Config, TransformConfig } from "./types/Config";
+import { Config, TransformConfig } from "./types";
 import propTypes from "./prop-types";
 import astTransform from "./recursive-parser";
 import runPrettier from "./run-prettier";
@@ -53,7 +53,7 @@ export default function runTransform(transformConfig: TransformConfig, action: s
 				transformations.push("topScope");
 			}
 
-			if (config.merge) {
+			if (config.merge && transformations.indexOf("merge") === -1) {
 				transformations.push("merge");
 			}
 

@@ -8,6 +8,22 @@ import * as Generator from "yeoman-generator";
 import { TransformConfig } from "./types/Config";
 import runTransform from "./scaffold";
 
+export interface Config extends Object {
+	item?: {
+		name: string;
+	};
+	topScope?: string[];
+	configName?: string;
+	merge: string | string[];
+	webpackOptions: object;
+}
+
+export interface TransformConfig extends Object {
+	configPath?: string;
+	configFile?: string;
+	config?: Config;
+}
+
 const DEFAULT_WEBPACK_CONFIG_FILENAME = "webpack.config.js";
 
 /**
@@ -33,28 +49,26 @@ export default function modifyHelperUtil(
 	if (action !== "init") {
 		configPath = path.resolve(process.cwd(), configFile);
 		const webpackConfigExists: boolean = fs.existsSync(configPath);
+		let outputMessage =
+			"\n" +
+			logSymbols.error +
+			chalk.red(" ERROR ") +
+			chalk.cyan(configFile) +
+			" not found. Please specify a valid path to your webpack config like \n " +
+			chalk.white("$ ") +
+			chalk.cyan(`webpack-cli ${action} webpack.dev.js`) +
+			"\n";
 		if (webpackConfigExists) {
-			process.stdout.write(
+			outputMessage =
 				"\n" +
-					logSymbols.success +
-					chalk.green(" SUCCESS ") +
-					"Found config " +
-					chalk.cyan(configFile + "\n") +
-					"\n"
-			);
-		} else {
-			process.stdout.write(
-				"\n" +
-					logSymbols.error +
-					chalk.red(" ERROR ") +
-					chalk.cyan(configFile) +
-					" not found. Please specify a valid path to your webpack config like \n " +
-					chalk.white("$ ") +
-					chalk.cyan(`webpack-cli ${action} webpack.dev.js`) +
-					"\n"
-			);
-			return;
+				logSymbols.success +
+				chalk.green(" SUCCESS ") +
+				"Found config " +
+				chalk.cyan(configFile + "\n") +
+				"\n";
 		}
+		process.stdout.write(outputMessage);
+		return;
 	}
 
 	const env = yeoman.createEnv("webpack", null);

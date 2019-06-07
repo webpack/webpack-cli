@@ -24,11 +24,11 @@ import { List } from "@webpack-cli/webpack-scaffold";
  */
 
 interface ConfigType {
-	installCmd: string,
-	dependency: string,
-	devDependency: string,
-	optionalDependency: string
-};
+	installCmd: string;
+	dependency: string;
+	devDependency: string;
+	optionalDependency: string;
+}
 
 const npmConfig: ConfigType = {
 	installCmd: "install",
@@ -47,7 +47,7 @@ const yarnConfig: ConfigType = {
 const spawnWithArg = (pm: string, cmd: string): SpawnSyncReturns<Buffer> => {
 	const pmConfig: ConfigType = pm === "npm" ? npmConfig : yarnConfig;
 	const options: string[] = [pmConfig.installCmd, "webpack-dev-server", pmConfig[cmd]];
-	return spawn.sync(pm, options, {stdio: "inherit"});
+	return spawn.sync(pm, options, { stdio: "inherit" });
 };
 
 /**
