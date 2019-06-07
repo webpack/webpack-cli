@@ -1,7 +1,14 @@
 "use strict";
 import * as utils from "../index";
 
-describe.skip("utils", () => {
+describe("utils", () => {
+	beforeEach(() => {
+		this.mockSelf = {
+			prompt: arg => {
+				return arg[0];
+			}
+		};
+	});
 	describe("createArrowFunction", () => {
 		it("should stringify an arrow function", () => {
 			expect(utils.createArrowFunction("app.js")).toMatchSnapshot();
@@ -44,12 +51,9 @@ describe.skip("utils", () => {
 		});
 	});
 	describe("Inquirer", () => {
-		it("should make a List object", () => {
-			expect(utils.List("entry", "does it work?", ["Yes", "Maybe"])).toEqual({
-				choices: ["Yes", "Maybe"],
-				message: "does it work?",
-				name: "entry",
-				type: "list"
+		it("should make default value for a List", () => {
+			expect(utils.List(this.mockSelf, "entry", "does it work?", ["Yes", "Maybe"], "Yes", true)).toEqual({
+				entry: "Yes"
 			});
 		});
 		it("should make a RawList object", () => {
@@ -68,42 +72,39 @@ describe.skip("utils", () => {
 				type: "checkbox"
 			});
 		});
-		it("should make an Input object", () => {
-			expect(utils.Input("plugins", "what is your plugin?")).toEqual({
-				message: "what is your plugin?",
+		it("should emulate a prompt for list input", () => {
+			expect(utils.Input(this.mockSelf, "plugins", "what is your plugin?", "openJSF", false)).toEqual({
+				type: "input",
 				name: "plugins",
-				type: "input"
+				message: "what is your plugin?",
+				default: "openJSF"
 			});
 		});
-		it("should make an Input object", () => {
-			expect(utils.Input("plugins", "what is your plugin?", "my-plugin")).toEqual({
-				default: "my-plugin",
-				message: "what is your plugin?",
-				name: "plugins",
-				type: "input"
+		it("should return a default Input object value", () => {
+			expect(utils.Input(this.mockSelf, "plugins", "what is your plugin?", "my-plugin", true)).toEqual({
+				plugins: "my-plugin"
 			});
 		});
-		it("should make a Confirm object", () => {
-			expect(utils.Confirm("context", "what is your context?")).toEqual({
+		it("should emulate a prompt for confirm", () => {
+			expect(utils.Confirm(this.mockSelf, "context", "what is your context?", true, false)).toEqual({
+				name: "context",
 				default: true,
 				message: "what is your context?",
-				name: "context",
 				type: "confirm"
 			});
 		});
-		it("should make a Confirm object with No as default", () => {
-			expect(utils.Confirm("context", "what is your context?", false)).toEqual({
-				default: false,
-				message: "what is your context?",
-				name: "context",
-				type: "confirm"
+		it("should make a Confirm object with yes as default", () => {
+			expect(utils.Confirm(this.mockSelf, "context", "what is your context?", true, true)).toEqual({
+				context: true
 			});
 		});
 		it("should make an Input object with validation", () => {
-			expect(utils.InputValidate("plugins", "what is your plugin?", () => true)).toMatchSnapshot();
+			expect(utils.InputValidate(this.mockSelf, "plugins", "what is your plugin?", () => true)).toMatchSnapshot();
 		});
 		it("should make an Input object with validation and default value", () => {
-			expect(utils.InputValidate("plugins", "what is your plugin?", () => true, "my-plugin")).toMatchSnapshot();
+			expect(
+				utils.InputValidate(this.mockSelf, "plugins", "what is your plugin?", () => true, "my-plugin")
+			).toMatchSnapshot();
 		});
 	});
 });
