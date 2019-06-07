@@ -44,18 +44,20 @@ export default function entry(self: CustomGenerator, multiEntries: boolean): Pro
 							return promise.then(
 								(n: object): Promise<void | {}> => {
 									if (n) {
-										Object.keys(n).forEach((val: string): void => {
-											if (
-												n[val].charAt(0) !== "(" &&
-												n[val].charAt(0) !== "[" &&
-												!n[val].includes("function") &&
-												!n[val].includes("path") &&
-												!n[val].includes("process")
-											) {
-												n[val] = `\'./${n[val].replace(/"|'/g, "").concat(".js")}\'`;
+										Object.keys(n).forEach(
+											(val: string): void => {
+												if (
+													n[val].charAt(0) !== "(" &&
+													n[val].charAt(0) !== "[" &&
+													!n[val].includes("function") &&
+													!n[val].includes("path") &&
+													!n[val].includes("process")
+												) {
+													n[val] = `\'./${n[val].replace(/"|'/g, "").concat(".js")}\'`;
+												}
+												webpackEntryPoint[val] = n[val];
 											}
-											webpackEntryPoint[val] = n[val];
-										});
+										);
 									} else {
 										n = {};
 									}
@@ -76,36 +78,40 @@ export default function entry(self: CustomGenerator, multiEntries: boolean): Pro
 									`src/${entryProp}`
 								)
 							])
-					).then((entryPropAnswer: object): object => {
-						Object.keys(entryPropAnswer).forEach((val: string): void => {
-							if (
-								entryPropAnswer[val].charAt(0) !== "(" &&
-								entryPropAnswer[val].charAt(0) !== "[" &&
-								!entryPropAnswer[val].includes("function") &&
-								!entryPropAnswer[val].includes("path") &&
-								!entryPropAnswer[val].includes("process")
-							) {
-								entryPropAnswer[val] = `\'./${entryPropAnswer[val]
-									.replace(/"|'/g, "")
-									.concat(".js")}\'`;
-							}
-							webpackEntryPoint[val] = entryPropAnswer[val];
-						});
-						return webpackEntryPoint;
-					});
+					).then(
+						(entryPropAnswer: object): object => {
+							Object.keys(entryPropAnswer).forEach(
+								(val: string): void => {
+									if (
+										entryPropAnswer[val].charAt(0) !== "(" &&
+										entryPropAnswer[val].charAt(0) !== "[" &&
+										!entryPropAnswer[val].includes("function") &&
+										!entryPropAnswer[val].includes("path") &&
+										!entryPropAnswer[val].includes("process")
+									) {
+										entryPropAnswer[val] = `\'./${entryPropAnswer[val]
+											.replace(/"|'/g, "")
+											.concat(".js")}\'`;
+									}
+									webpackEntryPoint[val] = entryPropAnswer[val];
+								}
+							);
+							return webpackEntryPoint;
+						}
+					);
 				}
 			);
 	} else {
-		result = self
-			.prompt([Input("singularEntry", "Which will be your application entry point?", "src/index")])
-			.then((singularEntryAnswer: { singularEntry: string }): string => {
+		result = self.prompt([Input("singularEntry", "Which will be your application entry point?", "src/index")]).then(
+			(singularEntryAnswer: { singularEntry: string }): string => {
 				let { singularEntry } = singularEntryAnswer;
 				singularEntry = `\'./${singularEntry.replace(/"|'/g, "").concat(".js")}\'`;
 				if (singularEntry.length <= 0) {
 					self.usingDefaults = true;
 				}
 				return singularEntry;
-			});
+			}
+		);
 	}
 	return result;
 }

@@ -38,9 +38,11 @@ const addonGenerator = (
 		public copyTpl: (value: string, index: number, array: string[]) => void;
 
 		public prompting(): Promise<void | {}> {
-			return this.prompt(prompts).then((props: Generator.Question): void => {
-				this.props = props;
-			});
+			return this.prompt(prompts).then(
+				(props: Generator.Question): void => {
+					this.props = props;
+				}
+			);
 		}
 
 		public default(): void {
@@ -50,9 +52,12 @@ const addonGenerator = (
 				Your project must be inside a folder named ${this.props.name}
 				I will create this folder for you.
 				`);
-				mkdirp(this.props.name, (err: object): void => {
-					console.error("Failed to create directory", err);
-				});
+				mkdirp(
+					this.props.name,
+					(err: object): void => {
+						console.error("Failed to create directory", err);
+					}
+				);
 				const pathToProjectDir: string = this.destinationPath(this.props.name);
 				this.destinationRoot(pathToProjectDir);
 			}

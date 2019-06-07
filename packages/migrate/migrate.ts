@@ -68,15 +68,17 @@ export const transformSingleAST = (
 	source: string,
 	transformFunction: (jscodeshift: object, ast: object, source: string) => object
 ): pLazy<{}> => {
-	return new pLazy((resolve: (value?: {} | PromiseLike<{}>) => void, reject: (reason?: object) => void): void => {
-		setTimeout((): void => {
-			try {
-				resolve(transformFunction(jscodeshift, ast, source));
-			} catch (err) {
-				reject(err);
-			}
-		}, 0);
-	});
+	return new pLazy(
+		(resolve: (value?: {} | PromiseLike<{}>) => void, reject: (reason?: object) => void): void => {
+			setTimeout((): void => {
+				try {
+					resolve(transformFunction(jscodeshift, ast, source));
+				} catch (err) {
+					reject(err);
+				}
+			}, 0);
+		}
+	);
 };
 
 export const transformations: LazyTransformObject = Object.keys(transformsObject).reduce(
@@ -115,10 +117,14 @@ export const transform = (
 	transforms = transforms || Object.keys(transformations).map((k: string): Function => transformations[k]);
 
 	return pEachSeries(transforms, (f: Function): void => f(ast, source))
-		.then((): string | PromiseLike<string> => {
-			return ast.toSource(recastOptions);
-		})
-		.catch((err: object): void => {
-			console.error(err);
-		});
+		.then(
+			(): string | PromiseLike<string> => {
+				return ast.toSource(recastOptions);
+			}
+		)
+		.catch(
+			(err: object): void => {
+				console.error(err);
+			}
+		);
 };

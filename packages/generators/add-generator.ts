@@ -68,12 +68,14 @@ export default class AddGenerator extends Generator {
 		const isDeepProp: any[] = [false, false];
 
 		return this.prompt(actionTypeQuestion)
-			.then((actionTypeAnswer: { actionType: string }): void => {
-				// Set initial prop, like devtool
-				this.configuration.config.webpackOptions[actionTypeAnswer.actionType] = null;
-				// update the action variable, we're using it later
-				action = actionTypeAnswer.actionType;
-			})
+			.then(
+				(actionTypeAnswer: { actionType: string }): void => {
+					// Set initial prop, like devtool
+					this.configuration.config.webpackOptions[actionTypeAnswer.actionType] = null;
+					// update the action variable, we're using it later
+					action = actionTypeAnswer.actionType;
+				}
+			)
 			.then(
 				(): Promise<void | {}> => {
 					if (action === "entry") {
@@ -84,16 +86,20 @@ export default class AddGenerator extends Generator {
 									return entryQuestions(self, entryTypeAnswer.entryType);
 								}
 							)
-							.then((entryOptions: { entryType: boolean }): void => {
-								this.configuration.config.webpackOptions.entry = entryOptions;
-								this.configuration.config.item = action;
-							});
+							.then(
+								(entryOptions: { entryType: boolean }): void => {
+									this.configuration.config.webpackOptions.entry = entryOptions;
+									this.configuration.config.item = action;
+								}
+							);
 					} else {
 						if (action === "topScope") {
-							return this.prompt(topScopeQuestion).then((topScopeAnswer: { topScope: string }): void => {
-								this.configuration.config.topScope.push(topScopeAnswer.topScope);
-								done();
-							});
+							return this.prompt(topScopeQuestion).then(
+								(topScopeAnswer: { topScope: string }): void => {
+									this.configuration.config.topScope.push(topScopeAnswer.topScope);
+									done();
+								}
+							);
 						}
 						if (action === "merge") {
 							return this.prompt(mergeFileQuestion).then(
@@ -141,14 +147,16 @@ export default class AddGenerator extends Generator {
 							const originalPropDesc: object = defOrPropDescription[0].enum;
 							// Array -> Object -> Merge objects into one for compat in manualOrListInput
 							defOrPropDescription = Object.keys(defOrPropDescription[0].enum)
-								.map((p: string): object => {
-									return Object.assign(
-										{},
-										{
-											[originalPropDesc[p]]: "noop"
-										}
-									);
-								})
+								.map(
+									(p: string): object => {
+										return Object.assign(
+											{},
+											{
+												[originalPropDesc[p]]: "noop"
+											}
+										);
+									}
+								)
 								.reduce((result: object, currentObject: object): object => {
 									for (const key in currentObject) {
 										if (currentObject.hasOwnProperty(key)) {
@@ -260,11 +268,12 @@ export default class AddGenerator extends Generator {
 						}
 						const pluginExist: string = glob
 							.sync(["node_modules/webpack/lib/*Plugin.js", "node_modules/webpack/lib/**/*Plugin.js"])
-							.map((p: string): string =>
-								p
-									.split("/")
-									.pop()
-									.replace(".js", "")
+							.map(
+								(p: string): string =>
+									p
+										.split("/")
+										.pop()
+										.replace(".js", "")
 							)
 							.find(
 								(p: string): boolean =>
@@ -296,13 +305,19 @@ export default class AddGenerator extends Generator {
 								if (pluginSchema) {
 									Object.keys(pluginSchema)
 										.filter((p: string): boolean => Array.isArray(pluginSchema[p]))
-										.forEach((p: string): void => {
-											Object.keys(pluginSchema[p]).forEach((n: string): void => {
-												if (pluginSchema[p][n].properties) {
-													pluginsSchemaProps = Object.keys(pluginSchema[p][n].properties);
-												}
-											});
-										});
+										.forEach(
+											(p: string): void => {
+												Object.keys(pluginSchema[p]).forEach(
+													(n: string): void => {
+														if (pluginSchema[p][n].properties) {
+															pluginsSchemaProps = Object.keys(
+																pluginSchema[p][n].properties
+															);
+														}
+													}
+												);
+											}
+										);
 								}
 
 								return this.prompt([
@@ -316,16 +331,21 @@ export default class AddGenerator extends Generator {
 										return this.prompt([
 											Input(
 												"pluginsPropTypeVal",
-												`What value should ${pluginExist}.${pluginsPropAnswer.pluginsPropType} have?`
+												`What value should ${pluginExist}.${
+													pluginsPropAnswer.pluginsPropType
+												} have?`
 											)
-										]).then((valForProp: { pluginsPropTypeVal: string }): void => {
-											this.configuration.config.webpackOptions[action] = {
-												[`${constructorPrefix}.${pluginExist}`]: {
-													[pluginsPropAnswer.pluginsPropType]: valForProp.pluginsPropTypeVal
-												}
-											};
-											done();
-										});
+										]).then(
+											(valForProp: { pluginsPropTypeVal: string }): void => {
+												this.configuration.config.webpackOptions[action] = {
+													[`${constructorPrefix}.${pluginExist}`]: {
+														[pluginsPropAnswer.pluginsPropType]:
+															valForProp.pluginsPropTypeVal
+													}
+												};
+												done();
+											}
+										);
 									}
 								);
 							} else {
@@ -334,27 +354,29 @@ export default class AddGenerator extends Generator {
 							}
 						} else {
 							// If its not in webpack, check npm
-							npmExists(answerToAction.actionAnswer).then((p: boolean): void => {
-								if (p) {
-									this.dependencies.push(answerToAction.actionAnswer);
-									const pluginName = generatePluginName(answerToAction.actionAnswer);
-									this.configuration.config.topScope.push(
-										`const ${pluginName} = require("${answerToAction.actionAnswer}")`
-									);
-									this.configuration.config.webpackOptions[action] = `new ${pluginName}`;
-									this.configuration.config.item = answerToAction.actionAnswer;
-									done();
-									this.scheduleInstallTask(getPackageManager(), this.dependencies, {
-										"save-dev": true
-									});
-								} else {
-									console.error(
-										answerToAction.actionAnswer,
-										"doesn't exist on NPM or is built in webpack, please check for any misspellings."
-									);
-									process.exit(0);
+							npmExists(answerToAction.actionAnswer).then(
+								(p: boolean): void => {
+									if (p) {
+										this.dependencies.push(answerToAction.actionAnswer);
+										const pluginName = generatePluginName(answerToAction.actionAnswer);
+										this.configuration.config.topScope.push(
+											`const ${pluginName} = require("${answerToAction.actionAnswer}")`
+										);
+										this.configuration.config.webpackOptions[action] = `new ${pluginName}`;
+										this.configuration.config.item = answerToAction.actionAnswer;
+										done();
+										this.scheduleInstallTask(getPackageManager(), this.dependencies, {
+											"save-dev": true
+										});
+									} else {
+										console.error(
+											answerToAction.actionAnswer,
+											"doesn't exist on NPM or is built in webpack, please check for any misspellings."
+										);
+										process.exit(0);
+									}
 								}
-							});
+							);
 						}
 					} else {
 						// If we're in the scenario with a deep-property

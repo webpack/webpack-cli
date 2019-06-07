@@ -36,9 +36,11 @@ function mapOptionsToTransform(config: Config): string[] {
 
 export default function runTransform(transformConfig: TransformConfig, action: string): void {
 	// webpackOptions.name sent to nameTransform if match
-	const webpackConfig = Object.keys(transformConfig).filter((p: string): boolean => {
-		return p !== "configFile" && p !== "configPath";
-	});
+	const webpackConfig = Object.keys(transformConfig).filter(
+		(p: string): boolean => {
+			return p !== "configFile" && p !== "configPath";
+		}
+	);
 	const initActionNotDefined = action && action !== "init" ? true : false;
 
 	webpackConfig.forEach(
@@ -59,33 +61,40 @@ export default function runTransform(transformConfig: TransformConfig, action: s
 
 			const transformAction: string = action || null;
 
-			return pEachSeries(transformations, (f: string): boolean | Node => {
-				if (f === "merge" || f === "topScope") {
-					// TODO: typing here is difficult to understand
-					// eslint-disable-next-line @typescript-eslint/no-explicit-any
-					return astTransform(j, ast, f, config[f] as any, transformAction);
-				}
-				return astTransform(j, ast, f, config.webpackOptions[f], transformAction);
-			})
-				.then((): void | PromiseLike<void> => {
-					let configurationName: string;
-					if (!config.configName) {
-						configurationName = "webpack.config.js";
-					} else {
-						configurationName = "webpack." + config.configName + ".js";
+			return pEachSeries(
+				transformations,
+				(f: string): boolean | Node => {
+					if (f === "merge" || f === "topScope") {
+						// TODO: typing here is difficult to understand
+						// eslint-disable-next-line @typescript-eslint/no-explicit-any
+						return astTransform(j, ast, f, config[f] as any, transformAction);
 					}
-					const projectRoot = findProjectRoot();
-					const outputPath: string = initActionNotDefined
-						? transformConfig.configPath
-						: path.join(projectRoot || process.cwd(), configurationName);
-					const source: string = ast.toSource({
-						quote: "single"
-					});
-					runPrettier(outputPath, source);
-				})
-				.catch((err: Error): void => {
-					console.error(err.message ? err.message : err);
-				});
+					return astTransform(j, ast, f, config.webpackOptions[f], transformAction);
+				}
+			)
+				.then(
+					(): void | PromiseLike<void> => {
+						let configurationName: string;
+						if (!config.configName) {
+							configurationName = "webpack.config.js";
+						} else {
+							configurationName = "webpack." + config.configName + ".js";
+						}
+						const projectRoot = findProjectRoot();
+						const outputPath: string = initActionNotDefined
+							? transformConfig.configPath
+							: path.join(projectRoot || process.cwd(), configurationName);
+						const source: string = ast.toSource({
+							quote: "single"
+						});
+						runPrettier(outputPath, source);
+					}
+				)
+				.catch(
+					(err: Error): void => {
+						console.error(err.message ? err.message : err);
+					}
+				);
 		}
 	);
 	let successMessage: string =

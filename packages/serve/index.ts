@@ -153,10 +153,12 @@ export default function serve(): Promise<void | Function> {
 					}
 				}
 			)
-			.catch((err: object): void => {
-				console.error(chalk.red("✖ Serve aborted due to some errors"));
-				console.error(err);
-				process.exitCode = 1;
-			});
+			.catch(
+				(err: object): void => {
+					console.error(chalk.red("✖ Serve aborted due to some errors"));
+					console.error(err);
+					process.exitCode = 1;
+				}
+			);
 	}
 }
