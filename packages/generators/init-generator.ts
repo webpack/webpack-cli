@@ -200,6 +200,7 @@ export default class InitGenerator extends Generator {
 			}
 		}
 		if (this.usingDefaults) {
+			// Html webpack Plugin
 			this.dependencies.push("html-webpack-plugin");
 			const htmlWebpackDependency = "html-webpack-plugin";
 			const htmlwebpackPlugin = generatePluginName(htmlWebpackDependency);
@@ -211,12 +212,15 @@ export default class InitGenerator extends Generator {
 			(this.configuration.config.webpackOptions.plugins as string[]).push(`new ${htmlwebpackPlugin}({
 					template: 'index.html'
 				})`);
+
+			// webpack Dev Server
 			this.dependencies.push("webpack-dev-server");
 			this.configuration.config.webpackOptions.devServer = {
 				open: true
 			};
 		}
 
+		// TerserPlugin
 		this.dependencies.push("terser-webpack-plugin");
 		this.configuration.config.topScope.push(
 			tooltip.terser(),
@@ -224,9 +228,18 @@ export default class InitGenerator extends Generator {
 			"\n"
 		);
 
+		// PWA + offline support
+		this.configuration.config.topScope.push("const workboxPlugin = require('workbox-webpack-plugin');", "\n");
+		this.dependencies.push("workbox-webpack-plugin");
+		(this.configuration.config.webpackOptions.plugins as string[]).push(`new workboxPlugin.GenerateSW({
+			swDest: 'sw.js',
+			clientsClaim: true,
+			skipWaiting: true,
+		})`);
+
+		// Chunksplitting
 		this.configuration.config.webpackOptions.optimization = getDefaultOptimization(this.usingDefaults);
 		this.configuration.config.webpackOptions.mode = this.usingDefaults ? "'production'" : "'development'";
-
 		done();
 	}
 
