@@ -106,11 +106,7 @@ For more information, see https://webpack.js.org/api/cli/.`);
 		 * When --silent flag is present, an object with a no-op write method is
 		 * used in place of process.stout
 		 */
-		const stdout = argv.silent
-			? {
-				write: () => {}
-			  } // eslint-disable-line
-			: process.stdout;
+		const stdout = argv.silent ? { write: () => {} } : process.stdout;
 
 		function ifArg(name, fn, init) {
 			if (Array.isArray(argv[name])) {
@@ -127,7 +123,8 @@ For more information, see https://webpack.js.org/api/cli/.`);
 			if (typeof options.then === "function") {
 				options.then(processOptions).catch(function(err) {
 					console.error(err.stack || err);
-					process.exit(1); // eslint-disable-line
+					// eslint-disable-next-line no-process-exit
+					process.exit(1);
 				});
 				return;
 			}
