@@ -117,14 +117,14 @@
 								<li class="tsd-kind-interface tsd-parent-kind-class"><a href="../interfaces/_generators_add_generator_.addgenerator.installoptions.html" class="tsd-kind-icon">Install<wbr>Options</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-class"><a href="../interfaces/_generators_add_generator_.addgenerator.memfseditor.html" class="tsd-kind-icon">Mem<wbr>FsEditor</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-class"><a href="../interfaces/_generators_add_generator_.addgenerator.optionconfig.html" class="tsd-kind-icon">Option<wbr>Config</a></li>
-								<li class="tsd-kind-interface tsd-parent-kind-class tsd-has-type-parameter"><a href="../interfaces/_generators_add_generator_.addgenerator.question.html" class="tsd-kind-icon">Question</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Type aliases</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-type-alias tsd-parent-kind-class tsd-is-static"><a href="_generators_add_generator_.addgenerator.html#answers" class="tsd-kind-icon">Answers</a></li>
-								<li class="tsd-kind-type-alias tsd-parent-kind-class tsd-is-static"><a href="_generators_add_generator_.addgenerator.html#questions" class="tsd-kind-icon">Questions</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-class tsd-has-type-parameter tsd-is-static"><a href="_generators_add_generator_.addgenerator.html#question" class="tsd-kind-icon">Question</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-class tsd-has-type-parameter tsd-is-static"><a href="_generators_add_generator_.addgenerator.html#questions" class="tsd-kind-icon">Questions</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -179,7 +179,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_generators_add_generator_.addgenerator.html#optionshelp" class="tsd-kind-icon">options<wbr>Help</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_generators_add_generator_.addgenerator.html#prependlistener" class="tsd-kind-icon">prepend<wbr>Listener</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_generators_add_generator_.addgenerator.html#prependoncelistener" class="tsd-kind-icon">prepend<wbr>Once<wbr>Listener</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_generators_add_generator_.addgenerator.html#prompt" class="tsd-kind-icon">prompt</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="_generators_add_generator_.addgenerator.html#prompt" class="tsd-kind-icon">prompt</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_generators_add_generator_.addgenerator.html#prompting" class="tsd-kind-icon">prompting</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_generators_add_generator_.addgenerator.html#rawlisteners" class="tsd-kind-icon">raw<wbr>Listeners</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_generators_add_generator_.addgenerator.html#registertransformstream" class="tsd-kind-icon">register<wbr>Transform<wbr>Stream</a></li>
@@ -211,17 +211,27 @@
 					<div class="tsd-signature tsd-kind-icon">Answers<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Answers</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:27</li>
+							<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:26</li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-class tsd-is-static">
-					<a name="questions" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> Questions</h3>
-					<div class="tsd-signature tsd-kind-icon">Questions<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Question</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Question</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Question</span><span class="tsd-signature-symbol">&gt;</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-class tsd-has-type-parameter tsd-is-static">
+					<a name="question" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> Question</h3>
+					<div class="tsd-signature tsd-kind-icon">Question<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Question</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:26</li>
+							<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:20</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-class tsd-has-type-parameter tsd-is-static">
+					<a name="questions" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> Questions</h3>
+					<div class="tsd-signature tsd-kind-icon">Questions<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Question</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">Question</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Question</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:28</li>
 						</ul>
 					</aside>
 				</section>
@@ -239,7 +249,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides Generator.__constructor</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/webpack/webpack-cli/blob/4b08819/packages/generators/add-generator.ts#L43">generators/add-generator.ts:43</a></li>
+									<li>Defined in <a href="https://github.com/webpack/webpack-cli/blob/69f7683/packages/generators/add-generator.ts#L43">generators/add-generator.ts:43</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -265,7 +275,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from Generator.appname</p>
 						<ul>
-							<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:99</li>
+							<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:104</li>
 						</ul>
 					</aside>
 				</section>
@@ -276,7 +286,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from Generator.args</p>
 						<ul>
-							<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:96</li>
+							<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:101</li>
 						</ul>
 					</aside>
 				</section>
@@ -287,7 +297,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from Generator.config</p>
 						<ul>
-							<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:100</li>
+							<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:105</li>
 						</ul>
 					</aside>
 				</section>
@@ -297,7 +307,7 @@
 					<div class="tsd-signature tsd-kind-icon">configuration<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/webpack/webpack-cli/blob/4b08819/packages/generators/add-generator.ts#L35">generators/add-generator.ts:35</a></li>
+							<li>Defined in <a href="https://github.com/webpack/webpack-cli/blob/69f7683/packages/generators/add-generator.ts#L35">generators/add-generator.ts:35</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -332,7 +342,7 @@
 					<div class="tsd-signature tsd-kind-icon">dependencies<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/webpack/webpack-cli/blob/4b08819/packages/generators/add-generator.ts#L34">generators/add-generator.ts:34</a></li>
+							<li>Defined in <a href="https://github.com/webpack/webpack-cli/blob/69f7683/packages/generators/add-generator.ts#L34">generators/add-generator.ts:34</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -343,7 +353,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from Generator.description</p>
 						<ul>
-							<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:98</li>
+							<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:103</li>
 						</ul>
 					</aside>
 				</section>
@@ -354,7 +364,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from Generator.env</p>
 						<ul>
-							<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:90</li>
+							<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:95</li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -377,7 +387,7 @@
 									<li class="tsd-description">
 										<aside class="tsd-sources">
 											<ul>
-												<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:91</li>
+												<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:96</li>
 											</ul>
 										</aside>
 										<h4 class="tsd-parameters-title">Parameters</h4>
@@ -399,7 +409,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from Generator.fs</p>
 						<ul>
-							<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:101</li>
+							<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:106</li>
 						</ul>
 					</aside>
 				</section>
@@ -410,7 +420,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from Generator.options</p>
 						<ul>
-							<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:102</li>
+							<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:107</li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -429,7 +439,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from Generator.resolved</p>
 						<ul>
-							<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:97</li>
+							<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:102</li>
 						</ul>
 					</aside>
 				</section>
@@ -440,7 +450,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from Generator.user</p>
 						<ul>
-							<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:195</li>
+							<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:200</li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -458,7 +468,7 @@
 											<li class="tsd-description">
 												<aside class="tsd-sources">
 													<ul>
-														<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:202</li>
+														<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:207</li>
 													</ul>
 												</aside>
 												<div class="tsd-comment tsd-typography">
@@ -480,7 +490,7 @@
 											<li class="tsd-description">
 												<aside class="tsd-sources">
 													<ul>
-														<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:208</li>
+														<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:213</li>
 													</ul>
 												</aside>
 												<div class="tsd-comment tsd-typography">
@@ -507,7 +517,7 @@
 											<li class="tsd-description">
 												<aside class="tsd-sources">
 													<ul>
-														<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:216</li>
+														<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:221</li>
 													</ul>
 												</aside>
 												<div class="tsd-comment tsd-typography">
@@ -596,7 +606,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Generator.argument</p>
 								<ul>
-									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:105</li>
+									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:110</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -623,7 +633,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Generator.argumentsHelp</p>
 								<ul>
-									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:120</li>
+									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:125</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -641,7 +651,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Generator.async</p>
 								<ul>
-									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:121</li>
+									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:126</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">function</span></h4>
@@ -671,7 +681,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Generator.bowerInstall</p>
 								<ul>
-									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:141</li>
+									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:146</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -716,7 +726,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Generator.composeWith</p>
 								<ul>
-									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:106</li>
+									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:111</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -759,7 +769,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Generator.desc</p>
 								<ul>
-									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:122</li>
+									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:127</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -783,7 +793,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Generator.destinationPath</p>
 								<ul>
-									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:107</li>
+									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:112</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -807,7 +817,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Generator.destinationRoot</p>
 								<ul>
-									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:108</li>
+									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:113</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -831,7 +841,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Generator.determineAppname</p>
 								<ul>
-									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:109</li>
+									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:114</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -915,7 +925,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Generator.help</p>
 								<ul>
-									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:123</li>
+									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:128</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -933,7 +943,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Generator.installDependencies</p>
 								<ul>
-									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:159</li>
+									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:164</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1027,7 +1037,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Generator.log</p>
 								<ul>
-									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:103</li>
+									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:108</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1054,7 +1064,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Generator.npmInstall</p>
 								<ul>
-									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:169</li>
+									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:174</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1237,7 +1247,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Generator.option</p>
 								<ul>
-									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:110</li>
+									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:115</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1264,7 +1274,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Generator.optionsHelp</p>
 								<ul>
-									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:124</li>
+									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:129</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -1363,27 +1373,33 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited">
 					<a name="prompt" class="tsd-anchor"></a>
 					<h3>prompt</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">prompt<span class="tsd-signature-symbol">(</span>questions<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Generator.Questions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Generator.Answers</span><span class="tsd-signature-symbol">&gt;</span></li>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">prompt&lt;A&gt;<span class="tsd-signature-symbol">(</span>questions<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Generator.Questions</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Inherited from Generator.prompt</p>
 								<ul>
-									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:111</li>
+									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:116</li>
 								</ul>
 							</aside>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>A<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Generator.Answers</span></h4>
+								</li>
+							</ul>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>questions: <span class="tsd-signature-type">Generator.Questions</span></h5>
+									<h5>questions: <span class="tsd-signature-type">Generator.Questions</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Generator.Answers</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -1397,7 +1413,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/webpack/webpack-cli/blob/4b08819/packages/generators/add-generator.ts#L58">generators/add-generator.ts:58</a></li>
+									<li>Defined in <a href="https://github.com/webpack/webpack-cli/blob/69f7683/packages/generators/add-generator.ts#L58">generators/add-generator.ts:58</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">__type</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -1440,7 +1456,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Generator.registerTransformStream</p>
 								<ul>
-									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:112</li>
+									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:117</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1535,7 +1551,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Generator.rootGeneratorName</p>
 								<ul>
-									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:113</li>
+									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:118</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -1553,7 +1569,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Generator.rootGeneratorVersion</p>
 								<ul>
-									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:114</li>
+									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:119</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -1571,7 +1587,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Generator.run</p>
 								<ul>
-									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:115</li>
+									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:120</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1595,7 +1611,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Generator.scheduleInstallTask</p>
 								<ul>
-									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:182</li>
+									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:187</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1673,7 +1689,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Generator.sourceRoot</p>
 								<ul>
-									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:116</li>
+									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:121</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1697,7 +1713,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Generator.spawnCommand</p>
 								<ul>
-									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:128</li>
+									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:133</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1727,7 +1743,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Generator.spawnCommandSync</p>
 								<ul>
-									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:129</li>
+									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:134</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1757,7 +1773,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Generator.templatePath</p>
 								<ul>
-									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:117</li>
+									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:122</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1781,7 +1797,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Generator.usage</p>
 								<ul>
-									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:125</li>
+									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:130</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -1798,7 +1814,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/webpack/webpack-cli/blob/4b08819/packages/generators/add-generator.ts#L449">generators/add-generator.ts:449</a></li>
+									<li>Defined in <a href="https://github.com/webpack/webpack-cli/blob/69f7683/packages/generators/add-generator.ts#L427">generators/add-generator.ts:427</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1816,7 +1832,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Generator.yarnInstall</p>
 								<ul>
-									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:192</li>
+									<li>Defined in add/node_modules/@webpack-cli/generators/node_modules/@types/yeoman-generator/index.d.ts:197</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1922,13 +1938,13 @@
 									<li class=" tsd-kind-interface tsd-parent-kind-class">
 										<a href="../interfaces/_generators_add_generator_.addgenerator.optionconfig.html" class="tsd-kind-icon">Option<wbr>Config</a>
 									</li>
-									<li class=" tsd-kind-interface tsd-parent-kind-class tsd-has-type-parameter">
-										<a href="../interfaces/_generators_add_generator_.addgenerator.question.html" class="tsd-kind-icon">Question</a>
-									</li>
 									<li class=" tsd-kind-type-alias tsd-parent-kind-class tsd-is-static">
 										<a href="_generators_add_generator_.addgenerator.html#answers" class="tsd-kind-icon">Answers</a>
 									</li>
-									<li class=" tsd-kind-type-alias tsd-parent-kind-class tsd-is-static">
+									<li class=" tsd-kind-type-alias tsd-parent-kind-class tsd-has-type-parameter tsd-is-static">
+										<a href="_generators_add_generator_.addgenerator.html#question" class="tsd-kind-icon">Question</a>
+									</li>
+									<li class=" tsd-kind-type-alias tsd-parent-kind-class tsd-has-type-parameter tsd-is-static">
 										<a href="_generators_add_generator_.addgenerator.html#questions" class="tsd-kind-icon">Questions</a>
 									</li>
 									<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
@@ -2048,7 +2064,7 @@
 									<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
 										<a href="_generators_add_generator_.addgenerator.html#prependoncelistener" class="tsd-kind-icon">prepend<wbr>Once<wbr>Listener</a>
 									</li>
-									<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+									<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited">
 										<a href="_generators_add_generator_.addgenerator.html#prompt" class="tsd-kind-icon">prompt</a>
 									</li>
 									<li class=" tsd-kind-method tsd-parent-kind-class">
