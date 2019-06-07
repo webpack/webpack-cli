@@ -70,13 +70,25 @@
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
+						<section class="tsd-index-section tsd-is-not-exported">
+							<h3>Interfaces</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported"><a href="../interfaces/_serve_index_.configtype.html" class="tsd-kind-icon">Config<wbr>Type</a></li>
+							</ul>
+						</section>
 						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported"><a href="_serve_index_.html#getrootpathmodule" class="tsd-kind-icon">get<wbr>Root<wbr>Path<wbr>Module</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_serve_index_.html#serve" class="tsd-kind-icon">serve</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported"><a href="_serve_index_.html#spawnnpmwitharg" class="tsd-kind-icon">spawnNPMWith<wbr>Arg</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported"><a href="_serve_index_.html#spawnyarnwitharg" class="tsd-kind-icon">spawn<wbr>Yarn<wbr>With<wbr>Arg</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported"><a href="_serve_index_.html#spawnwitharg" class="tsd-kind-icon">spawn<wbr>With<wbr>Arg</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-not-exported">
+							<h3>Object literals</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-object-literal tsd-parent-kind-external-module tsd-is-not-exported"><a href="_serve_index_.html#npmconfig" class="tsd-kind-icon">npm<wbr>Config</a></li>
+								<li class="tsd-kind-object-literal tsd-parent-kind-external-module tsd-is-not-exported"><a href="_serve_index_.html#yarnconfig" class="tsd-kind-icon">yarn<wbr>Config</a></li>
 							</ul>
 						</section>
 					</div>
@@ -94,7 +106,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/pranshuchittora/webpack-cli/blob/65c08e25/packages/serve/index.ts#L44">serve/index.ts:44</a></li>
+									<li>Defined in <a href="https://github.com/webpack/webpack-cli/blob/4b08819/packages/serve/index.ts#L61">serve/index.ts:61</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -128,7 +140,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/pranshuchittora/webpack-cli/blob/65c08e25/packages/serve/index.ts#L54">serve/index.ts:54</a></li>
+									<li>Defined in <a href="https://github.com/webpack/webpack-cli/blob/4b08819/packages/serve/index.ts#L71">serve/index.ts:71</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -142,70 +154,133 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-					<a name="spawnnpmwitharg" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> spawnNPMWith<wbr>Arg</h3>
+					<a name="spawnwitharg" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> spawn<wbr>With<wbr>Arg</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">spawnNPMWith<wbr>Arg<span class="tsd-signature-symbol">(</span>cmd<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">SpawnSyncReturns</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Buffer</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">spawn<wbr>With<wbr>Arg<span class="tsd-signature-symbol">(</span>pm<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, cmd<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">SpawnSyncReturns</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Buffer</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/pranshuchittora/webpack-cli/blob/65c08e25/packages/serve/index.ts#L18">serve/index.ts:18</a></li>
+									<li>Defined in <a href="https://github.com/webpack/webpack-cli/blob/4b08819/packages/serve/index.ts#L47">serve/index.ts:47</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Installs WDS using NPM with --save --dev etc</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
+									<h5>pm: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
 									<h5>cmd: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>arg to spawn with</p>
-										</div>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">SpawnSyncReturns</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Buffer</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-					<a name="spawnyarnwitharg" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> spawn<wbr>Yarn<wbr>With<wbr>Arg</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">spawn<wbr>Yarn<wbr>With<wbr>Arg<span class="tsd-signature-symbol">(</span>cmd<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">SpawnSyncReturns</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Buffer</span><span class="tsd-signature-symbol">&gt;</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/pranshuchittora/webpack-cli/blob/65c08e25/packages/serve/index.ts#L31">serve/index.ts:31</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Installs WDS using Yarn with add etc</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>cmd: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>arg to spawn with</p>
-										</div>
-									</div>
-								</li>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
+				<h2>Object literals</h2>
+				<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-parent-kind-external-module tsd-is-not-exported">
+					<a name="npmconfig" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> npm<wbr>Config</h3>
+					<div class="tsd-signature tsd-kind-icon">npm<wbr>Config<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/webpack/webpack-cli/blob/4b08819/packages/serve/index.ts#L33">serve/index.ts:33</a></li>
+						</ul>
+					</aside>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
+						<a name="npmconfig.dependency" class="tsd-anchor"></a>
+						<h3>dependency</h3>
+						<div class="tsd-signature tsd-kind-icon">dependency<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;--save&quot;</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/webpack/webpack-cli/blob/4b08819/packages/serve/index.ts#L35">serve/index.ts:35</a></li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">SpawnSyncReturns</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Buffer</span><span class="tsd-signature-symbol">&gt;</span></h4>
-						</li>
-					</ul>
+						</aside>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
+						<a name="npmconfig.devdependency" class="tsd-anchor"></a>
+						<h3>dev<wbr>Dependency</h3>
+						<div class="tsd-signature tsd-kind-icon">dev<wbr>Dependency<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;--save-dev&quot;</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/webpack/webpack-cli/blob/4b08819/packages/serve/index.ts#L36">serve/index.ts:36</a></li>
+							</ul>
+						</aside>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
+						<a name="npmconfig.installcmd" class="tsd-anchor"></a>
+						<h3>install<wbr>Cmd</h3>
+						<div class="tsd-signature tsd-kind-icon">install<wbr>Cmd<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;install&quot;</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/webpack/webpack-cli/blob/4b08819/packages/serve/index.ts#L34">serve/index.ts:34</a></li>
+							</ul>
+						</aside>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
+						<a name="npmconfig.optionaldependency" class="tsd-anchor"></a>
+						<h3>optional<wbr>Dependency</h3>
+						<div class="tsd-signature tsd-kind-icon">optional<wbr>Dependency<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;--save-optional&quot;</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/webpack/webpack-cli/blob/4b08819/packages/serve/index.ts#L37">serve/index.ts:37</a></li>
+							</ul>
+						</aside>
+					</section>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-parent-kind-external-module tsd-is-not-exported">
+					<a name="yarnconfig" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> yarn<wbr>Config</h3>
+					<div class="tsd-signature tsd-kind-icon">yarn<wbr>Config<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/webpack/webpack-cli/blob/4b08819/packages/serve/index.ts#L40">serve/index.ts:40</a></li>
+						</ul>
+					</aside>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
+						<a name="yarnconfig.dependency-1" class="tsd-anchor"></a>
+						<h3>dependency</h3>
+						<div class="tsd-signature tsd-kind-icon">dependency<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot; &quot;</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/webpack/webpack-cli/blob/4b08819/packages/serve/index.ts#L42">serve/index.ts:42</a></li>
+							</ul>
+						</aside>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
+						<a name="yarnconfig.devdependency-1" class="tsd-anchor"></a>
+						<h3>dev<wbr>Dependency</h3>
+						<div class="tsd-signature tsd-kind-icon">dev<wbr>Dependency<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;--save&quot;</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/webpack/webpack-cli/blob/4b08819/packages/serve/index.ts#L43">serve/index.ts:43</a></li>
+							</ul>
+						</aside>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
+						<a name="yarnconfig.installcmd-1" class="tsd-anchor"></a>
+						<h3>install<wbr>Cmd</h3>
+						<div class="tsd-signature tsd-kind-icon">install<wbr>Cmd<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;add&quot;</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/webpack/webpack-cli/blob/4b08819/packages/serve/index.ts#L41">serve/index.ts:41</a></li>
+							</ul>
+						</aside>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
+						<a name="yarnconfig.optionaldependency-1" class="tsd-anchor"></a>
+						<h3>optional<wbr>Dependency</h3>
+						<div class="tsd-signature tsd-kind-icon">optional<wbr>Dependency<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;--optional&quot;</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/webpack/webpack-cli/blob/4b08819/packages/serve/index.ts#L44">serve/index.ts:44</a></li>
+							</ul>
+						</aside>
+					</section>
 				</section>
 			</section>
 		</div>
@@ -227,6 +302,9 @@
 					<li class="current tsd-kind-external-module">
 						<a href="_serve_index_.html" class="tsd-kind-icon">"serve/index"</a>
 						<ul>
+							<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported">
+								<a href="../interfaces/_serve_index_.configtype.html" class="tsd-kind-icon">Config<wbr>Type</a>
+							</li>
 							<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
 								<a href="_serve_index_.html#getrootpathmodule" class="tsd-kind-icon">get<wbr>Root<wbr>Path<wbr>Module</a>
 							</li>
@@ -234,10 +312,13 @@
 								<a href="_serve_index_.html#serve" class="tsd-kind-icon">serve</a>
 							</li>
 							<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-								<a href="_serve_index_.html#spawnnpmwitharg" class="tsd-kind-icon">spawnNPMWith<wbr>Arg</a>
+								<a href="_serve_index_.html#spawnwitharg" class="tsd-kind-icon">spawn<wbr>With<wbr>Arg</a>
 							</li>
-							<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-								<a href="_serve_index_.html#spawnyarnwitharg" class="tsd-kind-icon">spawn<wbr>Yarn<wbr>With<wbr>Arg</a>
+							<li class=" tsd-kind-object-literal tsd-parent-kind-external-module tsd-is-not-exported">
+								<a href="_serve_index_.html#npmconfig" class="tsd-kind-icon">npm<wbr>Config</a>
+							</li>
+							<li class=" tsd-kind-object-literal tsd-parent-kind-external-module tsd-is-not-exported">
+								<a href="_serve_index_.html#yarnconfig" class="tsd-kind-icon">yarn<wbr>Config</a>
 							</li>
 						</ul>
 					</li>

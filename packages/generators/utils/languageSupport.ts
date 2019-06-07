@@ -13,11 +13,9 @@ function updateEntryExt(self, newExt: string): void {
 	if (typeof jsEntryOption === "string") {
 		tsEntryOption = replaceExt(jsEntryOption, newExt);
 	} else if (typeof jsEntryOption === "object") {
-		Object.keys(jsEntryOption).forEach(
-			(entry: string): void => {
-				tsEntryOption[entry] = replaceExt(jsEntryOption[entry], newExt);
-			}
-		);
+		Object.keys(jsEntryOption).forEach((entry: string): void => {
+			tsEntryOption[entry] = replaceExt(jsEntryOption[entry], newExt);
+		});
 	}
 	self.configuration.config.webpackOptions.entry = tsEntryOption;
 }
@@ -36,12 +34,10 @@ function getEntryFolders(self): string[] {
 		const folder = getFolder(entryOption);
 		if (folder.length > 0) entryFolders[folder] = true;
 	} else if (typeof entryOption === "object") {
-		Object.keys(entryOption).forEach(
-			(entry: string): void => {
-				const folder = getFolder(entryOption[entry]);
-				if (folder.length > 0) entryFolders[folder] = true;
-			}
-		);
+		Object.keys(entryOption).forEach((entry: string): void => {
+			const folder = getFolder(entryOption[entry]);
+			if (folder.length > 0) entryFolders[folder] = true;
+		});
 	}
 	return Object.keys(entryFolders);
 }

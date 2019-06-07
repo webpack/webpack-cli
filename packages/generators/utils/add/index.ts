@@ -30,13 +30,11 @@ export function replaceAt(str: string, index: number, replace: string): string {
  */
 export const traverseAndGetProperties = (arr: object[], prop: string): boolean => {
 	let hasProp = false;
-	arr.forEach(
-		(p: object): void => {
-			if (p[prop]) {
-				hasProp = true;
-			}
+	arr.forEach((p: object): void => {
+		if (p[prop]) {
+			hasProp = true;
 		}
-	);
+	});
 	return hasProp;
 };
 

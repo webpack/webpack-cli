@@ -48,11 +48,9 @@ export default function(j: JSCodeshift, ast: Node): Node | void {
 
 		if (pathDeclaration) {
 			isPathPresent = true;
-			pathDeclaration.forEach(
-				(p: Node): void => {
-					pathVarName = utils.safeTraverse(p, ["value", "id", "name"]) as string;
-				}
-			);
+			pathDeclaration.forEach((p: Node): void => {
+				pathVarName = utils.safeTraverse(p, ["value", "id", "name"]) as string;
+			});
 		}
 		const finalPathName = pathVarName;
 		literalOutputPath.find(j.Literal).replaceWith((p: Node): Node => replaceWithPath(j, p, finalPathName));
