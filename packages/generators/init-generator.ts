@@ -18,7 +18,6 @@ import {
 	entryQuestions
 } from "./utils";
 import { WebpackOptions } from "./types";
-import checkDefaults from "./utils/check-defaults";
 
 /**
  *
