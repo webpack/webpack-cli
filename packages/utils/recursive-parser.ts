@@ -24,34 +24,28 @@ export default function recursiveTransform(
 	// get module.exports prop
 	const root = ast
 		.find(j.ObjectExpression)
-		.filter(
-			(p: Node): boolean => {
-				return (
-					utils.safeTraverse(p, ["parentPath", "value", "left", "object", "name"]) === "module" &&
-					utils.safeTraverse(p, ["parentPath", "value", "left", "property", "name"]) === "exports"
-				);
-			}
-		)
+		.filter((p: Node): boolean => {
+			return (
+				utils.safeTraverse(p, ["parentPath", "value", "left", "object", "name"]) === "module" &&
+				utils.safeTraverse(p, ["parentPath", "value", "left", "property", "name"]) === "exports"
+			);
+		})
 		.filter((p: Node): boolean => !!(p.value as Node).properties);
 
 	if (node.size() !== 0) {
 		if (action === "add") {
-			return utils.findRootNodesByName(j, root, key).forEach(
-				(p: Node): void => {
-					j(p).replaceWith(utils.addProperty(j, p, key, value, action));
-				}
-			);
+			return utils.findRootNodesByName(j, root, key).forEach((p: Node): void => {
+				j(p).replaceWith(utils.addProperty(j, p, key, value, action));
+			});
 		} else if (action === "remove") {
 			return utils.removeProperty(j, root, key, value);
 		}
 	} else {
-		return root.forEach(
-			(p: Node): void => {
-				if (value) {
-					// init, add new property
-					utils.addProperty(j, p, key, value, null);
-				}
+		return root.forEach((p: Node): void => {
+			if (value) {
+				// init, add new property
+				utils.addProperty(j, p, key, value, null);
 			}
-		);
+		});
 	}
 }
