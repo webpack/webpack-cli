@@ -12,7 +12,7 @@
     "@webpack-cli/generators": "^0.1.5",
     "@webpack-cli/utils": "^0.1.5",
     "chalk": "^2.4.1",
-    "jscodeshift": "^0.5.1",
+    "jscodeshift": "^0.6.4",
     "p-each-series": "^1.0.0"
   },
   "devDependencies": {
