@@ -170,6 +170,7 @@
     "eslint": "^5.16.0",
     "eslint-config-prettier": "^4.3.0",
     "eslint-plugin-node": "^8.0.0",
+    "eslint-plugin-prettier": "^3.1.0",
     "esm": "^3.2.25",
     "execa": "^1.0.0",
     "husky": "^1.1.4",
