@@ -66,14 +66,11 @@ export default function transformer(j: JSCodeshift, ast: Node): Node {
 
 	return ast
 		.find(j.Property)
-		.filter(
-			(p: Node): boolean => {
-				return (
-					p.node.key.name === "resolve" &&
-					(p.node.value as Node).properties.filter((prop: Node): boolean => prop.key.name === "root")
-						.length === 1
-				);
-			}
-		)
+		.filter((p: Node): boolean => {
+			return (
+				p.node.key.name === "resolve" &&
+				(p.node.value as Node).properties.filter((prop: Node): boolean => prop.key.name === "root").length === 1
+			);
+		})
 		.forEach(createModuleArray);
 }

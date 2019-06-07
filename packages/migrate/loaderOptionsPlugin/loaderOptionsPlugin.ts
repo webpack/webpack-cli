@@ -26,11 +26,9 @@ export default function(j: JSCodeshift, ast: Node): Node {
 	if (ast.find(j.Identifier, { name: "debug" }).size()) {
 		loaderOptions.debug = true;
 
-		ast.find(j.Identifier, { name: "debug" }).forEach(
-			(p: Node): void => {
-				p.parent.prune();
-			}
-		);
+		ast.find(j.Identifier, { name: "debug" }).forEach((p: Node): void => {
+			p.parent.prune();
+		});
 	}
 
 	// If there is UglifyJsPlugin, set minimize: true
@@ -41,11 +39,9 @@ export default function(j: JSCodeshift, ast: Node): Node {
 	return ast
 		.find(j.ArrayExpression)
 		.filter((path: Node): boolean => safeTraverse(path, ["parent", "value", "key", "name"]) === "plugins")
-		.forEach(
-			(path: Node): void => {
-				if (!isEmpty(loaderOptions)) {
-					createOrUpdatePluginByName(j, path, "webpack.LoaderOptionsPlugin", loaderOptions);
-				}
+		.forEach((path: Node): void => {
+			if (!isEmpty(loaderOptions)) {
+				createOrUpdatePluginByName(j, path, "webpack.LoaderOptionsPlugin", loaderOptions);
 			}
-		);
+		});
 }
