@@ -10,7 +10,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "jscodeshift": "^0.5.1"
+    "jscodeshift": "^0.6.4"
   },
   "devDependencies": {
     "@types/yeoman-generator": "^3.1.2",
