@@ -234,7 +234,7 @@ export default class InitGenerator extends Generator {
 		(this.configuration.config.webpackOptions.plugins as string[]).push(`new workboxPlugin.GenerateSW({
 			swDest: 'sw.js',
 			clientsClaim: true,
-			skipWaiting: true,
+			skipWaiting: false,
 		})`);
 
 		// Chunksplitting
