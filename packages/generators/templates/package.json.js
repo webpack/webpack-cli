@@ -1,8 +1,8 @@
-module.exports = isProd => {
+module.exports = usingDefaults => {
 	let scripts = {
 		build: "webpack"
 	};
-	if (!isProd) {
+	if (usingDefaults) {
 		scripts.start = "webpack-dev-server";
 	}
 

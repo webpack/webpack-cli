@@ -91,11 +91,11 @@ export default function runTransform(transformConfig: TransformConfig, action: s
 		}
 	);
 
-	const runCommand = getPackageManager() === "yarn" ? "yarn start" : "npm run start";
+	const runCommand = getPackageManager() === "yarn" ? "yarn build" : "npm run build";
 
 	let successMessage: string =
 		chalk.green(`Congratulations! Your new webpack configuration file has been created!\n\n`) +
-		`You can now run ${chalk.green(runCommand)} to run your project!\n\n`;
+		`You can now run ${chalk.green(runCommand)} to bundle your application!\n\n`;
 
 	if (initActionNotDefined && transformConfig.config.item) {
 		successMessage = chalk.green(`Congratulations! ${transformConfig.config.item} has been ${action}ed!\n`);

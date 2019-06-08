@@ -45,7 +45,7 @@ export default class InitGenerator extends Generator {
 	public constructor(args, opts) {
 		super(args, opts);
 
-		this.usingDefaults = false;
+		this.usingDefaults = true;
 		this.autoGenerateConfig = opts.autoSetDefaults ? true : false;
 
 		this.dependencies = ["webpack", "webpack-cli", "babel-plugin-syntax-dynamic-import"];
@@ -122,7 +122,7 @@ export default class InitGenerator extends Generator {
 			self,
 			"outputDir",
 			"In which folder do you want to store your generated bundles?",
-			"dist",
+			"'dist'",
 			this.autoGenerateConfig
 		);
 
@@ -131,13 +131,7 @@ export default class InitGenerator extends Generator {
 		if (!this.usingDefaults) {
 			this.configuration.config.webpackOptions.output = {
 				chunkFilename: "'[name].[chunkhash].js'",
-				filename: "'[name].[chunkhash].js'",
-				path: `path.resolve(__dirname, '${outputDir}')`
-			};
-		} else {
-			this.configuration.config.webpackOptions.output = {
-				filename: "'bundle.js'",
-				path: `path.resolve(__dirname, '${outputDir}')`
+				filename: "'[name].[chunkhash].js'"
 			};
 		}
 
@@ -164,13 +158,13 @@ export default class InitGenerator extends Generator {
 
 		({ ExtractUseProps, regExpForStyles } = styleQuestionHandler(self, stylingType));
 
-		if (this.isProd) {
+		if (this.usingDefaults) {
 			// Ask if the user wants to use extractPlugin
 			const { useExtractPlugin } = await Input(
 				self,
 				"useExtractPlugin",
 				"If you want to bundle your CSS files, what will you name the bundle? (press enter to skip)",
-				"null",
+				"'main.css'",
 				this.autoGenerateConfig
 			);
 
@@ -205,7 +199,8 @@ export default class InitGenerator extends Generator {
 				});
 			}
 		}
-		if (!this.isProd) {
+		if (this.usingDefaults) {
+			// Html webpack Plugin
 			this.dependencies.push("html-webpack-plugin");
 			const htmlWebpackDependency = "html-webpack-plugin";
 			const htmlwebpackPlugin = generatePluginName(htmlWebpackDependency);
@@ -214,25 +209,37 @@ export default class InitGenerator extends Generator {
 				"\n",
 				tooltip.html()
 			);
-			(this.configuration.config.webpackOptions.plugins as string[]).push(`new ${htmlwebpackPlugin}()`);
-		}
+			(this.configuration.config.webpackOptions.plugins as string[]).push(`new ${htmlwebpackPlugin}({
+					template: 'index.html'
+				})`);
 
-		if (!this.usingDefaults) {
+			// webpack Dev Server
 			this.dependencies.push("webpack-dev-server");
 			this.configuration.config.webpackOptions.devServer = {
 				open: true
 			};
-		} else {
-			this.dependencies.push("terser-webpack-plugin");
-			this.configuration.config.topScope.push(
-				tooltip.terser(),
-				"const TerserPlugin = require('terser-webpack-plugin');",
-				"\n"
-			);
 		}
-		this.configuration.config.webpackOptions.optimization = getDefaultOptimization(this.usingDefaults);
-		this.configuration.config.webpackOptions.mode = this.usingDefaults ? "'development'" : "'production'";
 
+		// TerserPlugin
+		this.dependencies.push("terser-webpack-plugin");
+		this.configuration.config.topScope.push(
+			tooltip.terser(),
+			"const TerserPlugin = require('terser-webpack-plugin');",
+			"\n"
+		);
+
+		// PWA + offline support
+		this.configuration.config.topScope.push("const workboxPlugin = require('workbox-webpack-plugin');", "\n");
+		this.dependencies.push("workbox-webpack-plugin");
+		(this.configuration.config.webpackOptions.plugins as string[]).push(`new workboxPlugin.GenerateSW({
+			swDest: 'sw.js',
+			clientsClaim: true,
+			skipWaiting: false,
+		})`);
+
+		// Chunksplitting
+		this.configuration.config.webpackOptions.optimization = getDefaultOptimization(this.usingDefaults);
+		this.configuration.config.webpackOptions.mode = this.usingDefaults ? "'production'" : "'development'";
 		done();
 	}
 
@@ -250,7 +257,7 @@ export default class InitGenerator extends Generator {
 		this.config.set("configuration", this.configuration);
 
 		const packageJsonTemplatePath = "./templates/package.json.js";
-		this.fs.extendJSON(this.destinationPath("package.json"), require(packageJsonTemplatePath)(this.isProd));
+		this.fs.extendJSON(this.destinationPath("package.json"), require(packageJsonTemplatePath)(this.usingDefaults));
 
 		const generateEntryFile = (entryPath: string, name: string): void => {
 			entryPath = entryPath.replace(/'/g, "");
@@ -258,7 +265,7 @@ export default class InitGenerator extends Generator {
 		};
 
 		// Generate entry file/files
-		const entry = this.configuration.config.webpackOptions.entry;
+		const entry = this.configuration.config.webpackOptions.entry || "./src/index.js";
 		if (typeof entry === "string") {
 			generateEntryFile(entry, "your main file!");
 		} else if (typeof entry === "object") {
@@ -267,6 +274,15 @@ export default class InitGenerator extends Generator {
 
 		// Generate README
 		this.fs.copyTpl(path.resolve(__dirname, "./templates/README.md"), this.destinationPath("README.md"), {});
+
+		// Generate HTML template file
+		if (this.usingDefaults) {
+			this.fs.copyTpl(
+				path.resolve(__dirname, "./templates/template.html"),
+				this.destinationPath("index.html"),
+				{}
+			);
+		}
 
 		// Genrate tsconfig
 		if (this.langType === LangType.Typescript) {
