@@ -1,16 +1,10 @@
 import { WebpackOptions } from "../types";
 
-export function getDefaultOptimization(isProd: boolean): WebpackOptions["optimization"] {
+export function getDefaultOptimization(usingDefaults: boolean): WebpackOptions["optimization"] {
 	let optimizationOptions;
-	if (isProd) {
+	if (!usingDefaults) {
 		optimizationOptions = {
 			minimizer: ["new TerserPlugin()"],
-			splitChunks: {
-				chunks: "'all'"
-			}
-		};
-	} else {
-		optimizationOptions = {
 			splitChunks: {
 				cacheGroups: {
 					vendors: {
@@ -21,7 +15,14 @@ export function getDefaultOptimization(isProd: boolean): WebpackOptions["optimiz
 				chunks: "'async'",
 				minChunks: 1,
 				minSize: 30000,
-				name: !this.isProd
+				name: !usingDefaults
+			}
+		};
+	} else {
+		optimizationOptions = {
+			minimizer: ["new TerserPlugin()"],
+			splitChunks: {
+				chunks: "'all'"
 			}
 		};
 	}

@@ -1,6 +1,5 @@
 import chalk from "chalk";
 import * as fs from "fs";
-import * as logSymbols from "log-symbols";
 import * as path from "path";
 import * as yeoman from "yeoman-environment";
 import * as Generator from "yeoman-generator";
@@ -42,37 +41,13 @@ export default function modifyHelperUtil(
 	action: string,
 	generator: typeof Generator,
 	configFile: string = DEFAULT_WEBPACK_CONFIG_FILENAME,
-	packages?: string[]
-): typeof Generator {
+	packages?: string[],
+	autoSetDefaults: boolean = false
+): any {
 	let configPath: string | null = null;
 
-	if (action !== "init") {
-		configPath = path.resolve(process.cwd(), configFile);
-		const webpackConfigExists: boolean = fs.existsSync(configPath);
-		let outputMessage =
-			"\n" +
-			logSymbols.error +
-			chalk.red(" ERROR ") +
-			chalk.cyan(configFile) +
-			" not found. Please specify a valid path to your webpack config like \n " +
-			chalk.white("$ ") +
-			chalk.cyan(`webpack-cli ${action} webpack.dev.js`) +
-			"\n";
-		if (webpackConfigExists) {
-			outputMessage =
-				"\n" +
-				logSymbols.success +
-				chalk.green(" SUCCESS ") +
-				"Found config " +
-				chalk.cyan(configFile + "\n") +
-				"\n";
-		}
-		process.stdout.write(outputMessage);
-		return;
-	}
-
 	const env = yeoman.createEnv("webpack", null);
-	const generatorName = `webpack-${action}-generator`;
+	const generatorName = "webpack-init-generator";
 
 	if (!generator) {
 		generator = class extends Generator {
@@ -88,7 +63,8 @@ export default function modifyHelperUtil(
 
 	env.registerStub(generator, generatorName);
 	env.run(generatorName, {
-		configFile
+		configFile,
+		autoSetDefaults
 	})
 		.then(
 			(): void => {
