@@ -35,6 +35,10 @@ init([null, null, ...myPacakges]);
 ```bash
 npx webpack-cli init
 ```
+**To Generate Default Configs**
+```bash
+npx webpack-cli init --auto
+```
 
 **Via custom scaffold**
 
