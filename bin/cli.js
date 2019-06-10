@@ -71,15 +71,23 @@ For more information, see https://webpack.js.org/api/cli/.`);
 			options = require("./utils/convert-argv")(argv);
 		} catch (err) {
 			if (err.code === "MODULE_NOT_FOUND") {
-				let errorMessage =
-					"\n\u001b[31mwebpack not installed, consider installing it using \n\u001b[32mnpm install --save-dev webpack\n";
+				const moduleName = err.message.split("'")[1];
+				let instructions = "";
+				let errorMessage = "";
 
-				if (process.env.npm_execpath !== undefined && process.env.npm_execpath.includes("yarn")) {
-					errorMessage =
-						"\n\u001b[31mwebpack not installed, consider installing it using \n\u001b[32myarn add webpack --dev\n";
+				if (moduleName === "webpack") {
+					errorMessage = `\n\u001b[31m${moduleName} not installed`;
+					instructions = `Consider installing it using " npm install --save-dev ${moduleName} "\n`;
+
+					if (process.env.npm_execpath !== undefined && process.env.npm_execpath.includes("yarn")) {
+						instructions = `Consider installing it using " yarn add ${moduleName} --dev "\n`;
+					}
+				} else {
+					errorMessage = `\n\u001b[31mModule ${moduleName} is not found but is imported in configuration`;
+					instructions = `If ${moduleName} is a package, install it using a package manager\n`;
 				}
 
-				console.error(errorMessage);
+				console.error(`${errorMessage}\n\n\u001b[32mTIP: ${instructions}`);
 				Error.stackTraceLimit = 1;
 				process.exitCode = 1;
 				return;
