@@ -1,5 +1,8 @@
 import * as jscodeshift from "jscodeshift";
 import * as Generator from "yeoman-generator";
+import {
+	IWebpackScaffoldPrompt
+} from "./types"
 
 export function createArrowFunction(value: string): string {
 	return `() => '${value}'`;
@@ -87,12 +90,12 @@ export function CheckList(name: string, message: string, choices: string[]): Gen
 }
 
 export function Input(
-	self: any,
+	self: IWebpackScaffoldPrompt,
 	name: string,
 	message: string,
 	defaultChoice?: string,
 	skip: boolean = false
-): object | any {
+): object | object[] {
 	if (skip) return { [name]: defaultChoice };
 	return self.prompt([
 		{
@@ -105,13 +108,13 @@ export function Input(
 }
 
 export function InputValidate(
-	self: any,
+	self: IWebpackScaffoldPrompt,
 	name: string,
 	message: string,
 	cb?: (input: string) => string | boolean,
 	defaultChoice?: string,
 	skip?: boolean
-): object | any {
+): object | object[] {
 	if (skip) return { [name]: defaultChoice };
 	const input: Generator.Question = {
 		message,
@@ -124,12 +127,12 @@ export function InputValidate(
 }
 
 export function Confirm(
-	self: any,
+	self: IWebpackScaffoldPrompt,
 	name: string,
 	message: string,
 	defaultChoice: boolean = true,
 	skip: boolean = false
-): object | any {
+): object | object[] {
 	if (skip) return { [name]: defaultChoice };
 
 	return self.prompt([

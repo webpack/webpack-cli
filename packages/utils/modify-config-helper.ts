@@ -43,7 +43,7 @@ export default function modifyHelperUtil(
 	configFile: string = DEFAULT_WEBPACK_CONFIG_FILENAME,
 	packages?: string[],
 	autoSetDefaults: boolean = false
-): any {
+): void {
 	let configPath: string | null = null;
 
 	const env = yeoman.createEnv("webpack", null);
