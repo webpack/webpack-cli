@@ -50,7 +50,7 @@ module.exports = function promptForInstallation(packages, ...args) {
 	const nameOfPackage = "@webpack-cli/" + packages;
 	let packageIsInstalled = true;
 	let pathForCmd = "../../packages/init";
-	/* 	try {
+	try {
 		const path = require("path");
 		const fs = require("fs");
 		pathForCmd = path.resolve(process.cwd(), "node_modules", "@webpack-cli", packages);
@@ -64,7 +64,7 @@ module.exports = function promptForInstallation(packages, ...args) {
 		packageIsInstalled = true;
 	} catch (err) {
 		packageIsInstalled = false;
-	} */
+	}
 	if (!packageIsInstalled) {
 		const path = require("path");
 		const fs = require("fs");
