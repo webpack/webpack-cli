@@ -4,6 +4,8 @@ import * as process from "process";
 import { argv } from "./options";
 
 import { AVAILABLE_COMMANDS, AVAILABLE_FORMATS, IGNORE_FLAGS } from "./commands";
+import { configReader, fetchConfig } from "./configParser";
+import { renderTable } from "./renderTable";
 
 interface Information {
 	Binaries?: string[];
@@ -61,6 +63,8 @@ export default async function info(CustomArgv: object): Promise<void> {
 
 	const OUTPUT = await envinfo.run(Object.keys(DETAILS_OBJ).length ? DETAILS_OBJ : DEFAULT_DETAILS, CONFIG);
 	!CUSTOM_AGRUMENTS ? process.stdout.write(OUTPUT + "\n") : null;
+	// Temp
 
+	renderTable(configReader(fetchConfig()));
 	return OUTPUT;
 }
