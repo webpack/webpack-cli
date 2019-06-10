@@ -1,6 +1,6 @@
 {
   "name": "webpack-cli",
-  "version": "3.3.2",
+  "version": "3.3.3",
   "description": "CLI for webpack & friends",
   "license": "MIT",
   "repository": {
@@ -29,7 +29,6 @@
   "scripts": {
     "bootstrap": "npm run clean:all && npm install && lerna bootstrap",
     "build": "tsc",
-    "bundlesize": "bundlesize",
     "changelog": "conventional-changelog --config ./build/changelog-generator/index.js --infile CHANGELOG.md --same-file",
     "clean:all": "rimraf node_modules packages/*/{node_modules}",
     "commit": "git-cz",
@@ -47,7 +46,8 @@
     "test:ci": "nyc jest --maxWorkers=$(nproc) --reporters=default --reporters=jest-junit",
     "travis:integration": "npm run build && npm run test && npm run reportCoverage",
     "travis:lint": "npm run build && npm run lint",
-    "watch": "npm run build && tsc -w"
+    "watch": "npm run build && tsc -w",
+    "publish:monorepo": "npm run format && npm run test && lerna publish -m \"chore: monorepo version update\""
   },
   "husky": {
     "hooks": {
@@ -107,20 +107,6 @@
     ],
     "all": true
   },
-  "bundlesize": [
-    {
-      "path": "./packages/migrate/**.js",
-      "maxSize": "1 kB"
-    },
-    {
-      "path": "./packages/init/**/**.js",
-      "maxSize": "1.6 kB"
-    },
-    {
-      "path": "./packages/utils/**.js",
-      "maxSize": "5.32 kB"
-    }
-  ],
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-customizable"
@@ -151,7 +137,7 @@
     "@babel/register": "^7.0.0",
     "@commitlint/cli": "^7.2.1",
     "@commitlint/config-lerna-scopes": "^7.2.1",
-    "@commitlint/prompt-cli": "^7.5.0",
+    "@commitlint/prompt-cli": "^8.0.0",
     "@commitlint/travis-cli": "^7.2.1",
     "@strictsoftware/typedoc-plugin-monorepo": "^0.2.1",
     "@types/jest": "^23.3.14",
@@ -160,15 +146,15 @@
     "@typescript-eslint/parser": "^1.9.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-jest": "^24.3.0",
-    "bundlesize": "^0.17.2",
     "codecov": "^3.1.0",
     "commitizen": "^3.0.7",
     "commitlint-config-cz": "^0.10.1",
     "conventional-changelog-cli": "^2.0.11",
     "cz-customizable": "^5.3.0",
     "eslint": "^5.9.0",
-    "eslint-config-prettier": "^4.1.0",
+    "eslint-config-prettier": "^4.3.0",
     "eslint-plugin-node": "^8.0.0",
+    "eslint-plugin-prettier": "^3.1.0",
     "esm": "^3.2.14",
     "execa": "^1.0.0",
     "husky": "^1.1.4",

@@ -22,26 +22,24 @@ export default function(j: JSCodeshift, ast: Node): Node {
 		"webpack.optimize.DedupePlugin"
 	];
 
-	return utils.findPluginsByName(j, ast, deprecatedPlugingsList).forEach(
-		(path: Node): void => {
-			// For now we only support the case where plugins are defined in an Array
-			const arrayPath = utils.safeTraverse(path, ["parent", "value"]) as Node;
+	return utils.findPluginsByName(j, ast, deprecatedPlugingsList).forEach((path: Node): void => {
+		// For now we only support the case where plugins are defined in an Array
+		const arrayPath = utils.safeTraverse(path, ["parent", "value"]) as Node;
 
-			if (arrayPath && utils.isType(arrayPath, "ArrayExpression")) {
-				// Check how many plugins are defined and
-				// if there is only last plugin left remove `plugins: []` node
-				//
-				const arrayElementsPath = utils.safeTraverse(arrayPath, ["elements"]) as Node[];
-				if (arrayElementsPath && arrayElementsPath.length === 1) {
-					j(path.parent.parent).remove();
-				} else {
-					j(path).remove();
-				}
+		if (arrayPath && utils.isType(arrayPath, "ArrayExpression")) {
+			// Check how many plugins are defined and
+			// if there is only last plugin left remove `plugins: []` node
+			//
+			const arrayElementsPath = utils.safeTraverse(arrayPath, ["elements"]) as Node[];
+			if (arrayElementsPath && arrayElementsPath.length === 1) {
+				j(path.parent.parent).remove();
 			} else {
-				process.stderr.write(`
+				j(path).remove();
+			}
+		} else {
+			process.stderr.write(`
 ${chalk.red("Please remove deprecated plugins manually. ")}
 See ${chalk.underline("https://webpack.js.org/guides/migrating/")} for more information.`);
-			}
 		}
-	);
+	});
 }

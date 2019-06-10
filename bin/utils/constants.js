@@ -1,13 +1,4 @@
-const NON_COMPILATION_ARGS = [
-	"init",
-	"migrate",
-	"add",
-	"remove",
-	"serve",
-	"generate-loader",
-	"generate-plugin",
-	"info"
-];
+const NON_COMPILATION_ARGS = ["init", "migrate", "serve", "generate-loader", "generate-plugin", "info"];
 
 const CONFIG_GROUP = "Config options:";
 const BASIC_GROUP = "Basic options:";

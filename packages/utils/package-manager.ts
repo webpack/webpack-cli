@@ -62,7 +62,7 @@ export function getPackageManager(): string {
 	} else if (spawn.sync("yarn", [" --version"], { stdio: "ignore" }).error) {
 		return "npm";
 	} else {
-		return "yarn";
+		return "npm";
 	}
 }
 

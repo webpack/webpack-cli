@@ -5,7 +5,6 @@ import * as inquirer from "inquirer";
 import * as path from "path";
 
 import { processPromise } from "@webpack-cli/utils/resolve-packages";
-import { List } from "@webpack-cli/webpack-scaffold";
 
 /**
  *
@@ -123,13 +122,16 @@ export default function serve(): Promise<void | Function> {
 				(answer: { confirmDevserver: boolean }): Promise<void | Function> => {
 					if (answer.confirmDevserver) {
 						return inquirer
-							.prompt(
-								List(
-									"confirmDepType",
-									"What kind of dependency do you want it to be under? (default: devDependency)",
-									["devDependency", "optionalDependency", "dependency"]
-								)
-							)
+							.prompt([
+								{
+									choices: ["devDependency", "optionalDependency", "dependency"],
+									message:
+										"What kind of dependency do you want it to be under? (default: devDependency)",
+									name: "confirmDepType",
+									type: "list",
+									default: "devDependency"
+								}
+							])
 							.then(
 								(depTypeAns: { confirmDepType: string }): Promise<void | Function> => {
 									const packager: string = getRootPathModule("package-lock.json") ? "npm" : "yarn";
@@ -153,12 +155,10 @@ export default function serve(): Promise<void | Function> {
 					}
 				}
 			)
-			.catch(
-				(err: object): void => {
-					console.error(chalk.red("✖ Serve aborted due to some errors"));
-					console.error(err);
-					process.exitCode = 1;
-				}
-			);
+			.catch((err: object): void => {
+				console.error(chalk.red("✖ Serve aborted due to some errors"));
+				console.error(err);
+				process.exitCode = 1;
+			});
 	}
 }

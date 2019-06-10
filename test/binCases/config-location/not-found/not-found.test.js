@@ -11,7 +11,7 @@ test("not-found", () => {
 		"--target",
 		"async-node",
 		"--mode",
-		"production",
+		"production"
 	]);
 	expect(code).toBe(0);
 	expect(stdout).toContain("./src/index.js");

@@ -19,15 +19,13 @@ interface ChildProcess {
  */
 
 export function processPromise(child: ChildProcess): Promise<void> {
-	return new Promise(
-		(resolve: () => void, reject: () => void): void => {
-			if (child.status !== 0) {
-				reject();
-			} else {
-				resolve();
-			}
+	return new Promise((resolve: () => void, reject: () => void): void => {
+		if (child.status !== 0) {
+			reject();
+		} else {
+			resolve();
 		}
-	);
+	});
 }
 
 /**
@@ -50,52 +48,46 @@ export function resolvePackages(pkg: string[]): Function | void {
 		}
 	}
 
-	pkg.forEach(
-		(scaffold: string): void => {
-			// Resolve paths to modules on local filesystem
-			if (isLocalPath(scaffold)) {
-				let absolutePath: string = scaffold;
+	pkg.forEach((scaffold: string): void => {
+		// Resolve paths to modules on local filesystem
+		if (isLocalPath(scaffold)) {
+			let absolutePath: string = scaffold;
 
+			try {
+				absolutePath = path.resolve(process.cwd(), scaffold);
+				require.resolve(absolutePath);
+				packageLocations.push(absolutePath);
+			} catch (err) {
+				console.error(`Cannot find a generator at ${absolutePath}.`);
+				console.error("\nReason:\n");
+				console.error(chalk.bold.red(err));
+				process.exitCode = 1;
+			}
+
+			invokeGeneratorIfReady();
+			return;
+		}
+
+		// Resolve modules on npm registry
+		processPromise(spawnChild(scaffold))
+			.then((): void => {
 				try {
-					absolutePath = path.resolve(process.cwd(), scaffold);
-					require.resolve(absolutePath);
-					packageLocations.push(absolutePath);
+					const globalPath: string = getPathToGlobalPackages();
+					packageLocations.push(path.resolve(globalPath, scaffold));
 				} catch (err) {
-					console.error(`Cannot find a generator at ${absolutePath}.`);
-					console.error("\nReason:\n");
+					console.error("Package wasn't validated correctly..");
+					console.error("Submit an issue for", pkg, "if this persists");
+					console.error("\nReason: \n");
 					console.error(chalk.bold.red(err));
 					process.exitCode = 1;
 				}
-
-				invokeGeneratorIfReady();
-				return;
-			}
-
-			// Resolve modules on npm registry
-			processPromise(spawnChild(scaffold))
-				.then(
-					(): void => {
-						try {
-							const globalPath: string = getPathToGlobalPackages();
-							packageLocations.push(path.resolve(globalPath, scaffold));
-						} catch (err) {
-							console.error("Package wasn't validated correctly..");
-							console.error("Submit an issue for", pkg, "if this persists");
-							console.error("\nReason: \n");
-							console.error(chalk.bold.red(err));
-							process.exitCode = 1;
-						}
-					}
-				)
-				.catch(
-					(err: string): void => {
-						console.error("Package couldn't be installed, aborting..");
-						console.error("\nReason: \n");
-						console.error(chalk.bold.red(err));
-						process.exitCode = 1;
-					}
-				)
-				.then(invokeGeneratorIfReady);
-		}
-	);
+			})
+			.catch((err: string): void => {
+				console.error("Package couldn't be installed, aborting..");
+				console.error("\nReason: \n");
+				console.error(chalk.bold.red(err));
+				process.exitCode = 1;
+			})
+			.then(invokeGeneratorIfReady);
+	});
 }

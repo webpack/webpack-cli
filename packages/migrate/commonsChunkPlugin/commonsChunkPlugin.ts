@@ -74,187 +74,162 @@ export default function(j: JSCodeshift, ast: Node): Node {
 	let cacheGroups: Node[] = [];
 
 	// iterate each CommonsChunkPlugin instance
-	CommonsChunkPlugin.forEach(
-		(path: Node): void => {
-			const CCPProps: Node[] = (path.value as Node).arguments[0].properties;
+	CommonsChunkPlugin.forEach((path: Node): void => {
+		const CCPProps: Node[] = (path.value as Node).arguments[0].properties;
 
-			// reset chunks from old props
-			cacheGroup = {};
-			cacheGroups = [];
+		// reset chunks from old props
+		cacheGroup = {};
+		cacheGroups = [];
 
-			commonCacheGroupsProps = [createProperty(j, "chunks", "initial"), createProperty(j, "enforce", true)];
+		commonCacheGroupsProps = [createProperty(j, "chunks", "initial"), createProperty(j, "enforce", true)];
 
-			let chunkKey: string;
-			let chunkCount = 0;
+		let chunkKey: string;
+		let chunkCount = 0;
 
-			// iterate CCP props and map SCP props
-			CCPProps.forEach(
-				(p: Node): void => {
-					const propKey: string = p.key.name;
+		// iterate CCP props and map SCP props
+		CCPProps.forEach((p: Node): void => {
+			const propKey: string = p.key.name;
 
-					switch (propKey) {
-						case "names":
-							(p.value as Node).elements.forEach(
-								({ value: chunkValue }): void => {
-									if (chunkValue === "runtime") {
-										optimizationProps["runtimeChunk"] = j.objectExpression([
-											createProperty(j, "name", chunkValue)
-										]);
-									} else {
-										if (!Array.isArray(cacheGroup[chunkValue as string])) {
-											cacheGroup[chunkValue as string] = [];
-										}
-
-										findRootNodesByName(j, ast, "entry").forEach(
-											({ value }): void => {
-												const { properties: entries } = (value as Node).value as Node;
-												chunkCount = entries.length;
-												entries.forEach(
-													({ key: { name: entryName } }): void => {
-														if (entryName === chunkValue) {
-															cacheGroup[chunkValue as string].push(
-																createProperty(j, "test", entryName)
-															);
-														}
-													}
-												);
-											}
-										);
-									}
-								}
-							);
-							break;
-
-						case "name": {
-							const nameKey = (p.value as Node).value as string;
-
-							if (nameKey === "runtime") {
-								optimizationProps["runtimeChunk"] = j.objectExpression([
-									createProperty(j, "name", nameKey)
-								]);
-							} else {
-								chunkKey = nameKey;
-
-								if (!Array.isArray(cacheGroup[nameKey])) {
-									cacheGroup[nameKey] = [];
-								}
-
-								findRootNodesByName(j, ast, "entry").forEach(
-									({ value }): void => {
-										const { properties: entries } = (value as Node).value as Node;
-										chunkCount = entries.length;
-										entries.forEach(
-											({ key: { name: entryName } }): void => {
-												if (entryName === nameKey) {
-													cacheGroup[nameKey].push(createProperty(j, "test", entryName));
-												}
-											}
-										);
-									}
-								);
+			switch (propKey) {
+				case "names":
+					(p.value as Node).elements.forEach(({ value: chunkValue }): void => {
+						if (chunkValue === "runtime") {
+							optimizationProps["runtimeChunk"] = j.objectExpression([
+								createProperty(j, "name", chunkValue)
+							]);
+						} else {
+							if (!Array.isArray(cacheGroup[chunkValue as string])) {
+								cacheGroup[chunkValue as string] = [];
 							}
-							break;
+
+							findRootNodesByName(j, ast, "entry").forEach(({ value }): void => {
+								const { properties: entries } = (value as Node).value as Node;
+								chunkCount = entries.length;
+								entries.forEach(({ key: { name: entryName } }): void => {
+									if (entryName === chunkValue) {
+										cacheGroup[chunkValue as string].push(createProperty(j, "test", entryName));
+									}
+								});
+							});
+						}
+					});
+					break;
+
+				case "name": {
+					const nameKey = (p.value as Node).value as string;
+
+					if (nameKey === "runtime") {
+						optimizationProps["runtimeChunk"] = j.objectExpression([createProperty(j, "name", nameKey)]);
+					} else {
+						chunkKey = nameKey;
+
+						if (!Array.isArray(cacheGroup[nameKey])) {
+							cacheGroup[nameKey] = [];
 						}
 
-						case "filename":
-							if (chunkKey) {
-								if (!Array.isArray(cacheGroup[chunkKey])) {
-									cacheGroup[chunkKey] = [];
+						findRootNodesByName(j, ast, "entry").forEach(({ value }): void => {
+							const { properties: entries } = (value as Node).value as Node;
+							chunkCount = entries.length;
+							entries.forEach(({ key: { name: entryName } }): void => {
+								if (entryName === nameKey) {
+									cacheGroup[nameKey].push(createProperty(j, "test", entryName));
 								}
-								cacheGroup[chunkKey].push(
-									createProperty(j, propKey, (p.value as Node).value as string)
-								);
-							}
-							break;
-
-						case "async":
-							if (!Array.isArray(cacheGroup[chunkKey])) {
-								cacheGroup[chunkKey] = [];
-							}
-							cacheGroup[chunkKey].push(createProperty(j, "chunks", "async"));
-							break;
-
-						case "minSize":
-							if (!Array.isArray(cacheGroup[chunkKey])) {
-								cacheGroup[chunkKey] = [];
-							}
-							cacheGroup[chunkKey].push(
-								j.property("init", createIdentifierOrLiteral(j, propKey), p.value as Node)
-							);
-							break;
-
-						case "minChunks": {
-							const { value: pathValue }: Node = p;
-
-							// minChunk is a function
-							if (
-								(pathValue as Node).type === "ArrowFunctionExpression" ||
-								(pathValue as Node).type === "FunctionExpression"
-							) {
-								if (!Array.isArray(cacheGroup[chunkKey])) {
-									cacheGroup[chunkKey] = [];
-								}
-
-								// eslint-disable-next-line
-								cacheGroup[chunkKey] = cacheGroup[chunkKey].map(
-									(prop): string | void =>
-										prop.key.name === "test"
-											? mergeTestPropArrowFunction(j, chunkKey, pathValue)
-											: prop
-								);
-							}
-							break;
-						}
+							});
+						});
 					}
+					break;
 				}
-			);
 
-			Object.keys(cacheGroup).forEach(
-				(chunkName: string): void => {
-					let chunkProps: Node[] = [createProperty(j, "name", chunkName)];
+				case "filename":
+					if (chunkKey) {
+						if (!Array.isArray(cacheGroup[chunkKey])) {
+							cacheGroup[chunkKey] = [];
+						}
+						cacheGroup[chunkKey].push(createProperty(j, propKey, (p.value as Node).value as string));
+					}
+					break;
 
-					const chunkPropsToAdd = cacheGroup[chunkName];
-					const chunkPropsKeys = chunkPropsToAdd.map((prop): string => prop.key.name);
+				case "async":
+					if (!Array.isArray(cacheGroup[chunkKey])) {
+						cacheGroup[chunkKey] = [];
+					}
+					cacheGroup[chunkKey].push(createProperty(j, "chunks", "async"));
+					break;
 
-					commonCacheGroupsProps = commonCacheGroupsProps.filter(
-						(commonProp): boolean => !chunkPropsKeys.includes(commonProp.key.name)
+				case "minSize":
+					if (!Array.isArray(cacheGroup[chunkKey])) {
+						cacheGroup[chunkKey] = [];
+					}
+					cacheGroup[chunkKey].push(
+						j.property("init", createIdentifierOrLiteral(j, propKey), p.value as Node)
 					);
+					break;
 
-					chunkProps.push(...commonCacheGroupsProps);
+				case "minChunks": {
+					const { value: pathValue }: Node = p;
 
-					if (chunkCount > 1) {
-						chunkProps.push(
-							j.property(
-								"init",
-								createIdentifierOrLiteral(j, "minChunks"),
-								createIdentifierOrLiteral(j, chunkCount)
-							)
+					// minChunk is a function
+					if (
+						(pathValue as Node).type === "ArrowFunctionExpression" ||
+						(pathValue as Node).type === "FunctionExpression"
+					) {
+						if (!Array.isArray(cacheGroup[chunkKey])) {
+							cacheGroup[chunkKey] = [];
+						}
+
+						// eslint-disable-next-line
+						cacheGroup[chunkKey] = cacheGroup[chunkKey].map((prop): string | void =>
+							prop.key.name === "test" ? mergeTestPropArrowFunction(j, chunkKey, pathValue) : prop
 						);
 					}
-
-					const chunkPropsContainTest = chunkPropsToAdd.some(
-						(prop): boolean => prop.key.name === "test" && prop.value.type === "Literal"
-					);
-
-					if (chunkPropsContainTest) {
-						chunkProps = chunkProps.filter((prop): boolean => prop.key.name !== "minChunks");
-					}
-
-					if (chunkPropsToAdd && Array.isArray(chunkPropsToAdd) && chunkPropsToAdd.length > 0) {
-						chunkProps.push(...chunkPropsToAdd);
-					}
-
-					cacheGroups.push(
-						j.property("init", createIdentifierOrLiteral(j, chunkName), j.objectExpression([...chunkProps]))
-					);
+					break;
 				}
+			}
+		});
+
+		Object.keys(cacheGroup).forEach((chunkName: string): void => {
+			let chunkProps: Node[] = [createProperty(j, "name", chunkName)];
+
+			const chunkPropsToAdd = cacheGroup[chunkName];
+			const chunkPropsKeys = chunkPropsToAdd.map((prop): string => prop.key.name);
+
+			commonCacheGroupsProps = commonCacheGroupsProps.filter(
+				(commonProp): boolean => !chunkPropsKeys.includes(commonProp.key.name)
 			);
 
-			if (cacheGroups.length > 0) {
-				cacheGroupsProps.push(...cacheGroups);
+			chunkProps.push(...commonCacheGroupsProps);
+
+			if (chunkCount > 1) {
+				chunkProps.push(
+					j.property(
+						"init",
+						createIdentifierOrLiteral(j, "minChunks"),
+						createIdentifierOrLiteral(j, chunkCount)
+					)
+				);
 			}
+
+			const chunkPropsContainTest = chunkPropsToAdd.some(
+				(prop): boolean => prop.key.name === "test" && prop.value.type === "Literal"
+			);
+
+			if (chunkPropsContainTest) {
+				chunkProps = chunkProps.filter((prop): boolean => prop.key.name !== "minChunks");
+			}
+
+			if (chunkPropsToAdd && Array.isArray(chunkPropsToAdd) && chunkPropsToAdd.length > 0) {
+				chunkProps.push(...chunkPropsToAdd);
+			}
+
+			cacheGroups.push(
+				j.property("init", createIdentifierOrLiteral(j, chunkName), j.objectExpression([...chunkProps]))
+			);
+		});
+
+		if (cacheGroups.length > 0) {
+			cacheGroupsProps.push(...cacheGroups);
 		}
-	);
+	});
 
 	// Remove old plugin
 	const root: Node = findAndRemovePluginByName(j, ast, "webpack.optimize.CommonsChunkPlugin");
@@ -271,11 +246,9 @@ export default function(j: JSCodeshift, ast: Node): Node {
 	if (root) {
 		addOrUpdateConfigObject(j, root, "optimizations", "splitChunks", j.objectExpression([...rootProps]));
 
-		Object.keys(optimizationProps).forEach(
-			(key: string): void => {
-				addOrUpdateConfigObject(j, root, "optimizations", key, optimizationProps[key]);
-			}
-		);
+		Object.keys(optimizationProps).forEach((key: string): void => {
+			addOrUpdateConfigObject(j, root, "optimizations", key, optimizationProps[key]);
+		});
 	}
 
 	return ast;

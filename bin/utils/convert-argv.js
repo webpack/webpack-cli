@@ -24,7 +24,8 @@ module.exports = function(...args) {
 	}
 	if (argv.p) {
 		argv["optimize-minimize"] = true;
-		argv["define"] = [].concat(argv["define"] || []).concat("process.env.NODE_ENV=\"production\"");
+		// eslint-disable-next-line quotes
+		argv["define"] = [].concat(argv["define"] || []).concat('process.env.NODE_ENV="production"');
 		if (!argv.mode) {
 			argv.mode = "production";
 		}
