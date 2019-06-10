@@ -57,7 +57,7 @@ export function List(
 	choices: string[],
 	defaultChoice?: string,
 	skip: boolean = false
-): object | any {
+): Generator.Answers | Object {
 	if (skip) return { [name]: defaultChoice };
 
 	return self.prompt([
@@ -95,7 +95,7 @@ export function Input(
 	message: string,
 	defaultChoice?: string,
 	skip: boolean = false
-): object | object[] {
+): Generator.Answers | Object{
 	if (skip) return { [name]: defaultChoice };
 	return self.prompt([
 		{
@@ -114,7 +114,7 @@ export function InputValidate(
 	cb?: (input: string) => string | boolean,
 	defaultChoice?: string,
 	skip?: boolean
-): object | object[] {
+): Generator.Answers | Object{
 	if (skip) return { [name]: defaultChoice };
 	const input: Generator.Question = {
 		message,
@@ -132,7 +132,7 @@ export function Confirm(
 	message: string,
 	defaultChoice: boolean = true,
 	skip: boolean = false
-): object | object[] {
+): Generator.Answers | Object {
 	if (skip) return { [name]: defaultChoice };
 
 	return self.prompt([
@@ -147,7 +147,7 @@ export function Confirm(
 
 // TODO: to understand this type
 // eslint-disable-next-line
-export function AutoComplete(name: string, message: string, options: object = {}): any {
+export function AutoComplete(name: string, message: string, options: object = {}): Object {
 	return Object.assign(
 		{
 			message,
