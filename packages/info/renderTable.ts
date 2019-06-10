@@ -1,10 +1,11 @@
+import { getNameFromPath } from "./configParser";
 import chalk from "chalk";
-export function renderTable(data) {
-	var Table = require("cli-table3");
+export function renderTable(data, fileName) {
+	const Table = require("cli-table3");
 
 	// instantiate
-	var table = new Table({
-		head: ["Name", "webpack.config.js"]
+	let table = new Table({
+		head: ["Config", fileName]
 	});
 
 	// table is an Array, so you can `push`, `unshift`, `splice` and friends
