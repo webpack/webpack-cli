@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@webpack-cli/utils": "0.2.2",
-    "@webpack-cli/webpack-scaffold": "0.1.5",
+    "@webpack-cli/webpack-scaffold": "0.1.8",
     "chalk": "2.4.2",
     "glob-all": "3.1.0",
     "inquirer-autocomplete-prompt": "1.0.1",
