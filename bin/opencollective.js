@@ -22,7 +22,7 @@ function print(str = "", color = "dim") {
 
 function printBadge() {
 	console.log("\n");
-	print(`${chalk.bold("Thanks for using")} ${chalk.bold.blue("Webpack!")}`);
+	print(`${chalk.bold("Thanks for using")} ${chalk.bold.blue("webpack!")}`);
 	print(`Please consider donating to our ${chalk.bold.blue("Open Collective")}`);
 	print("to help us maintain this package.");
 	console.log("\n\n");
