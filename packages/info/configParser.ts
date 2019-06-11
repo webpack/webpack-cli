@@ -14,8 +14,8 @@ export function resolveFilePath(relativeFilePath: string) {
 
 export function fetchConfig(configPath: string) {
 	let config = null;
-	config = require(configPath);
 	try {
+		config = require(configPath);
 	} catch (e) {
 		process.stdout.write(chalk.red(`Error:`, e.code) + "\n");
 	}
