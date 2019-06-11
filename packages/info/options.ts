@@ -9,7 +9,7 @@ export const argv = yargs
 	.option("binaries", {
 		alias: "b",
 		demandOption: false,
-		describe: "Installed binaries",
+		describe: "Installed binaries (Node, yarn, npm)",
 		type: "boolean"
 	})
 
@@ -18,14 +18,15 @@ export const argv = yargs
 		describe: "Installed web browsers",
 		type: "boolean"
 	})
-	.option("npmPackages", {
-		demandOption: false,
-		describe: "Info about webpack installed in the project",
-		type: "boolean"
-	})
+
 	.option("npmg", {
 		demandOption: false,
 		describe: "Globally installed NPM packages (webpack & webpack-cli only)",
+		type: "boolean"
+	})
+	.option("npmPackages", {
+		demandOption: false,
+		describe: "Info about packages related to webpack installed in the project",
 		type: "boolean"
 	})
 	.option("output-json", {

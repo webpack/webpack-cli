@@ -10,4 +10,4 @@ export const AVAILABLE_COMMANDS: string[] = [
 	"s"
 ];
 export const AVAILABLE_FORMATS: string[] = ["output-json", "output-markdown"];
-export const IGNORE_FLAGS: string[] = ["_", "$0", "outputMarkdown", "outputJson"];
+export const IGNORE_FLAGS: string[] = ["_", "$0", "outputMarkdown", "outputJson", "npm-packages"];

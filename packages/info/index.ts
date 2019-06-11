@@ -41,7 +41,7 @@ export function informationType(type: string): Information {
 			return { Browsers: ["Chrome", "Firefox", "Safari"] };
 		case "npmg":
 			return { npmGlobalPackages: ["webpack", "webpack-cli"] };
-		case "npm":
+		case "npmPackages":
 			return { npmPackages: "*webpack*" };
 	}
 }
