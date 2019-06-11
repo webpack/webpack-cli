@@ -48,8 +48,8 @@ const runWhenInstalled = (packages, pathForCmd, ...args) => {
 
 module.exports = function promptForInstallation(packages, ...args) {
 	const nameOfPackage = "@webpack-cli/" + packages;
-	let packageIsInstalled = true;
-	let pathForCmd = "../../packages/init";
+	let packageIsInstalled = false;
+	let pathForCmd;
 	try {
 		const path = require("path");
 		const fs = require("fs");
