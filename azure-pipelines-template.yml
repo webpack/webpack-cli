@@ -24,7 +24,7 @@ jobs:
           npm -v
         displayName: "Print version"
       - script: |
-          npm install
+          npm ci
           npm run bootstrap
         displayName: "Lerna bootstrap"
       - script: |
