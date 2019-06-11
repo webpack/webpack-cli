@@ -78,8 +78,9 @@ For more information, see https://webpack.js.org/api/cli/.`);
 				if (moduleName === "webpack") {
 					errorMessage = `\n${moduleName} not installed`;
 					instructions = `Install webpack to start bundling: \u001b[32m\n  $ npm install --save-dev ${moduleName}\n`;
-
-					if (process.env.npm_execpath !== undefined && process.env.npm_execpath.includes("yarn")) {
+					const path = require("path");
+					const fs = require("fs");
+					if (fs.existsSync(path.resolve(process.cwd(), "yarn.lock"))) {
 						instructions = `Install webpack to start bundling: \u001b[32m\n $ yarn add ${moduleName} --dev\n`;
 					}
 					Error.stackTraceLimit = 1;
