@@ -49,35 +49,28 @@ export default function runTransform(webpackProperties: WebpackProperties, actio
 			const ast = j(initActionNotDefined ? webpackProperties.configFile : "module.exports = {}");
 			const transformAction: string | null = action || null;
 
-			return pEachSeries(
-				transformations,
-				(f: string): boolean | Node => {
-					return astTransform(j, ast, config.webpackOptions[f], transformAction, f);
-				}
-			)
-				.then(
-					(): void | PromiseLike<void> => {
-						let configurationName = "webpack.config.js";
-						if (config.configName) {
-							configurationName = `webpack.${config.configName}.js`;
-						}
-
-						const outputPath = initActionNotDefined
-							? webpackProperties.configPath
-							: path.join(process.cwd(), configurationName);
-
-						const source: string = ast.toSource({
-							quote: "single"
-						});
-
-						runPrettier(outputPath, source);
+			return pEachSeries(transformations, (f: string): boolean | Node => {
+				return astTransform(j, ast, config.webpackOptions[f], transformAction, f);
+			})
+				.then((): void | PromiseLike<void> => {
+					let configurationName = "webpack.config.js";
+					if (config.configName) {
+						configurationName = `webpack.${config.configName}.js`;
 					}
-				)
-				.catch(
-					(err: Error): void => {
-						console.error(err.message ? err.message : err);
-					}
-				);
+
+					const outputPath = initActionNotDefined
+						? webpackProperties.configPath
+						: path.join(process.cwd(), configurationName);
+
+					const source: string = ast.toSource({
+						quote: "single"
+					});
+
+					runPrettier(outputPath, source);
+				})
+				.catch((err: Error): void => {
+					console.error(err.message ? err.message : err);
+				});
 		}
 	);
 
