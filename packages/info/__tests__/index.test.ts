@@ -38,7 +38,7 @@ describe("infoNpmGlobal", () => {
 
 describe("infoNpm", () => {
 	it("should return the information of the NPM packages (webpack)", async () => {
-		const returnedInformation = informationType("npm");
+		const returnedInformation = informationType("npmPackages");
 		const expectedInformation = { npmPackages: "*webpack*" };
 
 		expect(returnedInformation).toEqual(expectedInformation);
