@@ -4,10 +4,10 @@ export const AVAILABLE_COMMANDS: string[] = [
 	"browsers",
 	"npmGlobalPackages",
 	"npmPackages",
-	"bin",
-	"sys",
 	"npmg",
-	"npm"
+	"npm",
+	"b",
+	"s"
 ];
 export const AVAILABLE_FORMATS: string[] = ["output-json", "output-markdown"];
 export const IGNORE_FLAGS: string[] = ["_", "$0", "outputMarkdown", "outputJson"];

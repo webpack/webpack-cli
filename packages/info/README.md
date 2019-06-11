@@ -29,15 +29,15 @@ yarn add @webpack-cli/info -D
 
 #### Options
 
-| Flag                   | Description                                                    | Type        |
-| ---------------------- | -------------------------------------------------------------- | ----------- |
-| `--help`               | Show help                                                      | [ boolean ] |
-| `--version`            | Show version number                                            | [ boolean ] |
-| `--system` , `--sys`   | System information ( OS, CPU )                                 | [ boolean ] |
-| `--binaries` , `--bin` | Installed binaries                                             | [ boolean ] |
-| `--browsers`           | Installed web browsers                                         | [ boolean ] |
-| `--npmg`               | Globally installed NPM packages ( webpack & webpack-cli only ) | [ boolean ] |
-| `--npmPackages`        | Info about webpack installed in the project                    | [ boolean ] |
+| Flag                | Description                                                    | Type        |
+| ------------------- | -------------------------------------------------------------- | ----------- |
+| `--help`            | Show help                                                      | [ boolean ] |
+| `--version`         | Show version number                                            | [ boolean ] |
+| `--system` , `-s`   | System information ( OS, CPU )                                 | [ boolean ] |
+| `--binaries` , `-b` | Installed binaries                                             | [ boolean ] |
+| `--browsers`        | Installed web browsers                                         | [ boolean ] |
+| `--npmg`            | Globally installed NPM packages ( webpack & webpack-cli only ) | [ boolean ] |
+| `--npmPackages`     | Info about webpack installed in the project                    | [ boolean ] |
 
 ### Node
 
