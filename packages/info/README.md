@@ -45,7 +45,7 @@ yarn add @webpack-cli/info -D
 const info = require("@webpack-cli/info").default;
 
 async function wrapperFunc() {
-	let envinfo = await info({
+	await info({
 		/* Custom Config */
 	});
 }
