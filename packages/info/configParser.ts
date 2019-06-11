@@ -7,12 +7,12 @@ export function getNameFromPath(fullPath: string): string {
 	return filename;
 }
 
-export function resolveFilePath(relativeFilePath: string) {
+export function resolveFilePath(relativeFilePath: string): string {
 	const configPath = path.resolve(process.cwd() + "/" + relativeFilePath);
 	return configPath;
 }
 
-export function fetchConfig(configPath: string) {
+export function fetchConfig(configPath: string): object {
 	let config = null;
 	try {
 		config = require(configPath);
@@ -22,13 +22,13 @@ export function fetchConfig(configPath: string) {
 	return config;
 }
 
-export function configReader(config) {
+export function configReader(config): string[] {
 	let filteredArray = [];
 
 	let options = {
 		noColor: true
 	};
-	Object.keys(config).map(key => {
+	Object.keys(config).map((key): void => {
 		let rowArray = [key];
 		rowArray.push(prettyjson.render(config[key], options));
 		filteredArray = [...filteredArray, rowArray];
