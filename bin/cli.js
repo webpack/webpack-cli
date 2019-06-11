@@ -76,21 +76,17 @@ For more information, see https://webpack.js.org/api/cli/.`);
 				let errorMessage = "";
 
 				if (moduleName === "webpack") {
-					errorMessage = `\n\u001b[31m${moduleName} not installed`;
-					instructions = `Consider installing it using " npm install --save-dev ${moduleName} "\n`;
+					errorMessage = `\n${moduleName} not installed`;
+					instructions = `Install webpack to start bundling: \u001b[32m\n  $ npm install --save-dev ${moduleName}\n`;
 
 					if (process.env.npm_execpath !== undefined && process.env.npm_execpath.includes("yarn")) {
-						instructions = `Consider installing it using " yarn add ${moduleName} --dev "\n`;
+						instructions = `Install webpack to start bundling: \u001b[32m\n $ yarn add ${moduleName} --dev\n`;
 					}
-				} else {
-					errorMessage = `\n\u001b[31mModule ${moduleName} is not found but is imported in configuration`;
-					instructions = `If ${moduleName} is a package, install it using a package manager\n`;
+					Error.stackTraceLimit = 1;
+					console.error(`${errorMessage}\n\n${instructions}`);
+					process.exitCode = 1;
+					return;
 				}
-
-				console.error(`${errorMessage}\n\n\u001b[32mTIP: ${instructions}`);
-				Error.stackTraceLimit = 1;
-				process.exitCode = 1;
-				return;
 			}
 
 			if (err.name !== "ValidationError") {
