@@ -22,8 +22,11 @@
 [![lerna][lerna]][lerna-url]
 [![GitHub contributors][contributors]][contributors-url]
 
--   [About](#about) - [How to install](#how-to-install)
--   [Packages](#packages) - [Commands](#commands) - [Utilities](#utilities)
+-   [About](#about)
+    -   [How to install](#how-to-install)
+-   [Packages](#packages)
+    -   [Commands](#commands)
+    -   [Utilities](#utilities)
 -   [Getting started](#getting-started)
 -   [webpack CLI Scaffolds](#webpack-cli-scaffolds)
 -   [Contributing and Internal Documentation](#contributing-and-internal-documentation)
