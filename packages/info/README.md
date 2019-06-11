@@ -32,7 +32,7 @@ yarn add @webpack-cli/info -D
 | Flag                | Description                                                    | Type        |
 | ------------------- | -------------------------------------------------------------- | ----------- |
 | `--help`            | Show help                                                      | [ boolean ] |
-| `--version`         | Show version number                                            | [ boolean ] |
+| `--version`         | Show version number of `webpack-cli`                           | [ boolean ] |
 | `--system` , `-s`   | System information ( OS, CPU )                                 | [ boolean ] |
 | `--binaries` , `-b` | Installed binaries                                             | [ boolean ] |
 | `--browsers`        | Installed web browsers                                         | [ boolean ] |
