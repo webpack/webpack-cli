@@ -62,7 +62,14 @@ export default async function info(CustomArgv: object): Promise<void> {
 				const flagVal = informationType(flag);
 				DETAILS_OBJ = { ...DETAILS_OBJ, ...flagVal };
 			} else if (AVAILABLE_FORMATS.includes(flag)) {
-				CONFIG[flag] = true;
+				switch (flag) {
+					case "output-json":
+						CONFIG["json"] = true;
+						break;
+					case "output-markdown":
+						CONFIG["markdown"] = true;
+						break;
+				}
 			} else {
 				// Invalid option
 				process.stdout.write("\n" + chalk.bgRed(flag) + chalk.red(" is an invalid option" + "\n"));

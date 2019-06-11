@@ -9,5 +9,5 @@ export const AVAILABLE_COMMANDS: string[] = [
 	"npmg",
 	"npm"
 ];
-export const AVAILABLE_FORMATS: string[] = ["json", "markdown"];
-export const IGNORE_FLAGS: string[] = ["_", "$0"];
+export const AVAILABLE_FORMATS: string[] = ["output-json", "output-markdown"];
+export const IGNORE_FLAGS: string[] = ["_", "$0", "outputMarkdown", "outputJson"];
