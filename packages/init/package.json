@@ -13,10 +13,10 @@
     "@webpack-cli/utils": "0.2.2",
     "chalk": "2.4.2",
     "jscodeshift": "0.6.4",
-    "p-each-series": "^1.0.0"
+    "p-each-series": "1.0.0"
   },
   "devDependencies": {
-    "@types/node": "^10.12.9",
+    "@types/node": "10.12.9",
     "@types/p-each-series": "1.0.1",
     "typescript": "3.5.1"
   },

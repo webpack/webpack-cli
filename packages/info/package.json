@@ -9,10 +9,10 @@
     "access": "public"
   },
   "dependencies": {
-    "envinfo": "^5.12.1"
+    "envinfo": "5.12.1"
   },
   "devDependencies": {
-    "@types/node": "^10.12.9",
+    "@types/node": "10.12.9",
     "typescript": "3.5.1"
   },
   "scripts": {

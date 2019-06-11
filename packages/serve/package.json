@@ -20,7 +20,7 @@
   "devDependencies": {
     "@types/cross-spawn": "6.0.0",
     "@types/inquirer": "0.0.43",
-    "@types/node": "^10.12.9",
+    "@types/node": "10.12.9",
     "typescript": "3.5.1"
   },
   "scripts": {
