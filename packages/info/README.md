@@ -42,7 +42,7 @@ yarn add @webpack-cli/info -D
 ### Node
 
 ```js
-const info = require("webpack-cli/packages/info").default;
+const info = require("@webpack-cli/info").default;
 
 async function wrapperFunc() {
 	let envinfo = await info({
