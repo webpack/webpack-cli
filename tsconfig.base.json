@@ -1,11 +1,12 @@
 {
 	"compilerOptions": {
-		"target": "es6",
+		"allowSyntheticDefaultImports": true,
 		"module": "commonjs",
 		"moduleResolution": "node",
-		"allowSyntheticDefaultImports": true,
 		"skipLibCheck": true,
-		"resolveJsonModule": true,
+		"target": "es6",
+    "lib": ["es6", "es2017"],
+    "resolveJsonModule": true
 	},
 	"include": ["packages/**/*.ts"],
 	"exclude": [
