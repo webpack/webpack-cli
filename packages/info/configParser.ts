@@ -17,7 +17,7 @@ export function fetchConfig(configPath: string): object {
 	try {
 		config = require(configPath);
 	} catch (e) {
-		process.stdout.write(chalk.red(`Error:`, e.code) + "\n");
+		process.stdout.write(chalk.red(`Error:`, e.code) + `\n`);
 	}
 	return config;
 }
