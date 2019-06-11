@@ -38,4 +38,4 @@ export const argv = yargs
 		describe: "To get the output as markdown",
 		type: "boolean"
 	})
-	.group(["json", "markdown"], `Output format`).argv;
+	.group(["output-json", "output-markdown"], `Output format`).argv;
