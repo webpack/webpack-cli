@@ -49,11 +49,12 @@ export default async function info(CustomArgv: object): Promise<void> {
 	const CUSTOM_AGRUMENTS: boolean = typeof CustomArgv === "object";
 	const args: ArgvI = CUSTOM_AGRUMENTS ? CustomArgv : argv;
 
-	if (args._[1]) {
+	if (argv._[1]) {
 		const fullConfigPath = resolveFilePath(args._[1]);
 		const fileName = getNameFromPath(fullConfigPath);
 		const config = fetchConfig(fullConfigPath);
-		if (config !== null) renderTable(configReader(config), fileName);
+		const parsedConfig = configReader(config);
+		if (config !== null) renderTable(parsedConfig, fileName);
 	} else {
 		Object.keys(args).forEach((flag): void => {
 			if (IGNORE_FLAGS.includes(flag)) {
@@ -63,10 +64,10 @@ export default async function info(CustomArgv: object): Promise<void> {
 				DETAILS_OBJ = { ...DETAILS_OBJ, ...flagVal };
 			} else if (AVAILABLE_FORMATS.includes(flag)) {
 				switch (flag) {
-					case "output-json":
+					case "output_json":
 						CONFIG["json"] = true;
 						break;
-					case "output-markdown":
+					case "output_markdown":
 						CONFIG["markdown"] = true;
 						break;
 				}
@@ -76,8 +77,9 @@ export default async function info(CustomArgv: object): Promise<void> {
 				return;
 			}
 		});
+
 		const OUTPUT = await envinfo.run(Object.keys(DETAILS_OBJ).length ? DETAILS_OBJ : DEFAULT_DETAILS, CONFIG);
-		!CUSTOM_AGRUMENTS ? process.stdout.write(OUTPUT + "\n") : null;
+		process.argv.length >= 3 ? process.stdout.write(OUTPUT + "\n") : null;
 		return OUTPUT;
 	}
 	process.exit(0);

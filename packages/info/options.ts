@@ -29,12 +29,12 @@ export const argv = yargs
 		describe: "Info about packages related to webpack installed in the project",
 		type: "boolean"
 	})
-	.option("output-json", {
+	.option("output_json", {
 		demandOption: false,
 		describe: "To get the output as JSON",
 		type: "boolean"
 	})
-	.option("output-markdown", {
+	.option("output_markdown", {
 		demandOption: false,
 		describe: "To get the output as markdown",
 		type: "boolean"
