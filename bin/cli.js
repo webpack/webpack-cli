@@ -80,7 +80,10 @@ For more information, see https://webpack.js.org/api/cli/.`);
 					instructions = `Install webpack to start bundling: \u001b[32m\n  $ npm install --save-dev ${moduleName}\n`;
 					const path = require("path");
 					const fs = require("fs");
-					if (fs.existsSync(path.resolve(process.cwd(), "yarn.lock"))) {
+					const isYarn =
+						fs.existsSync(path.resolve(process.cwd(), "yarn.lock")) ||
+						(process.env.npm_execpath !== undefined && process.env.npm_execpath.includes("yarn"));
+					if (isYarn) {
 						instructions = `Install webpack to start bundling: \u001b[32m\n $ yarn add ${moduleName} --dev\n`;
 					}
 					Error.stackTraceLimit = 1;
