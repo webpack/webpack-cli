@@ -60,7 +60,7 @@ export default async function info(CustomArgv: object): Promise<string[]> {
 		if (args.config) return parsedConfig;
 		else process.stdout.write(stringifiedTable + "\n");
 	} else {
-		Object.keys(args).forEach((flag): void => {
+		Object.keys(args).forEach((flag: string) => {
 			if (IGNORE_FLAGS.includes(flag)) {
 				return;
 			} else if (AVAILABLE_COMMANDS.includes(flag)) {
