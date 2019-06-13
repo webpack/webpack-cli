@@ -52,7 +52,25 @@ async function wrapperFunc() {
 wrapperFunc();
 ```
 
-**Custom Config** => Custom arguments are key pair boolean values.
+#### Custom config
+
+> Config has higher precedence than system flags
+
+```json
+{
+    // Config relative path
+    "config": [string]
+
+    // System info
+    "binaries": [boolean],
+    "system": [boolean],
+    "browsers": [boolean],
+    "npmg": [boolean],
+    "npmPackages": [boolean],
+}
+```
+
+The function returns `string` for `system` info, and returns an array of strings (`string[]`) for `config`
 
 ### CLI (via `webpack-cli`)
 
