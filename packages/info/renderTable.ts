@@ -1,6 +1,6 @@
 import * as Table from "cli-table3";
 
-export function renderTable(data, fileName): void {
+export function renderTable(data, fileName): string {
 	// instantiate
 	let table = new Table({
 		head: ["Config", fileName]
@@ -11,6 +11,5 @@ export function renderTable(data, fileName): void {
 		table.push(elm);
 	});
 
-	console.log(table.toString());
-	return;
+	return table.toString();
 }

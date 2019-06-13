@@ -18,6 +18,7 @@ interface ArgvI {
 	_?: string[];
 	bin?: boolean;
 	binaries?: boolean;
+	config?: string;
 }
 
 const CONFIG = {};
@@ -45,16 +46,19 @@ export function informationType(type: string): Information {
 			return { npmPackages: "*webpack*" };
 	}
 }
-export default async function info(CustomArgv: object): Promise<void> {
+export default async function info(CustomArgv: object): Promise<string[]> {
 	const CUSTOM_AGRUMENTS: boolean = typeof CustomArgv === "object";
 	const args: ArgvI = CUSTOM_AGRUMENTS ? CustomArgv : argv;
-
-	if (argv._[1]) {
-		const fullConfigPath = resolveFilePath(args._[1]);
+	const configRelativePath = argv._[1] ? argv._[1] : args.config;
+	if (configRelativePath) {
+		const fullConfigPath = resolveFilePath(configRelativePath);
 		const fileName = getNameFromPath(fullConfigPath);
 		const config = fetchConfig(fullConfigPath);
 		const parsedConfig = configReader(config);
-		if (config !== null) renderTable(parsedConfig, fileName);
+
+		const stringifiedTable = renderTable(parsedConfig, fileName);
+		if (args.config) return parsedConfig;
+		else process.stdout.write(stringifiedTable + "\n");
 	} else {
 		Object.keys(args).forEach((flag): void => {
 			if (IGNORE_FLAGS.includes(flag)) {
@@ -79,7 +83,7 @@ export default async function info(CustomArgv: object): Promise<void> {
 		});
 
 		const OUTPUT = await envinfo.run(Object.keys(DETAILS_OBJ).length ? DETAILS_OBJ : DEFAULT_DETAILS, CONFIG);
-		process.argv.length >= 3 ? process.stdout.write(OUTPUT + "\n") : null;
+		!CUSTOM_AGRUMENTS ? process.stdout.write(OUTPUT + "\n") : null;
 		return OUTPUT;
 	}
 	process.exit(0);
