@@ -64,10 +64,10 @@ export default async function info(CustomArgv: object): Promise<void> {
 				DETAILS_OBJ = { ...DETAILS_OBJ, ...flagVal };
 			} else if (AVAILABLE_FORMATS.includes(flag)) {
 				switch (flag) {
-					case "output_json":
+					case "output-json":
 						CONFIG["json"] = true;
 						break;
-					case "output_markdown":
+					case "output-markdown":
 						CONFIG["markdown"] = true;
 						break;
 				}
