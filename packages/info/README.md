@@ -14,6 +14,10 @@ npm i -D @webpack-cli/info
 
 #yarn
 yarn add @webpack-cli/info -D
+
+#npx
+npx webpack info [options]
+
 ```
 
 ## Usage
@@ -22,10 +26,10 @@ yarn add @webpack-cli/info -D
 
 #### Output format
 
-| Flag                | Description                   | Type        |     |     |
-| ------------------- | ----------------------------- | ----------- | --- | --- |
-| `--output-json`     | To get the output as JSON     | [ boolean ] |     |     |
-| `--output-markdown` | To get the output as markdown | [ boolean ] |     |     |
+| Flag                | Description                   | Type        |
+| ------------------- | ----------------------------- | ----------- |
+| `--output-json`     | To get the output as JSON     | [ boolean ] |
+| `--output-markdown` | To get the output as markdown | [ boolean ] |
 
 #### Options
 
@@ -57,11 +61,13 @@ wrapperFunc();
 > Config has higher precedence than system flags
 
 ```json
+// Config's relative path
 {
-    // Config relative path
-    "config": [string]
 
+    "config": [string]
+}
     // System info
+{
     "binaries": [boolean],
     "system": [boolean],
     "browsers": [boolean],
