@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-git checkout feat/no-prompt
+git checkout master
 cd $PWD/scripts
 mkdir tmp
 cd tmp
