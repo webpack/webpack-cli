@@ -36,7 +36,7 @@ jobs:
           testRunTitle: TestRun $ {{ parameters.name }} $(node_version)
         displayName: "Publish Test Results"
       - task: PublishCodeCoverageResults@1
-        inputs: 
+        inputs:
           codeCoverageTool: "cobertura"
           summaryFileLocation: "**/coverage/cobertura-coverage.xml"
         displayName: "Publish code coverage results"
