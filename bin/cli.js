@@ -4,7 +4,8 @@
 	MIT License http://www.opensource.org/licenses/mit-license.php
 	Author Tobias Koppers @sokra
 */
-
+const path = require("path");
+const fs = require("fs");
 const { NON_COMPILATION_ARGS } = require("./utils/constants");
 
 (function() {
@@ -78,8 +79,6 @@ For more information, see https://webpack.js.org/api/cli/.`);
 				if (moduleName === "webpack") {
 					errorMessage = `\n${moduleName} not installed`;
 					instructions = `Install webpack to start bundling: \u001b[32m\n  $ npm install --save-dev ${moduleName}\n`;
-					const path = require("path");
-					const fs = require("fs");
 					const isYarn =
 						fs.existsSync(path.resolve(process.cwd(), "yarn.lock")) ||
 						(process.env.npm_execpath !== undefined && process.env.npm_execpath.includes("yarn"));
