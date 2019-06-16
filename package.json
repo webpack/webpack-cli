@@ -116,6 +116,10 @@
 		}
 	},
 	"dependencies": {
+		"@babel/core": "^7.4.5",
+		"@babel/preset-react": "^7.0.0",
+		"babel-loader": "^8.0.6",
+		"babel-plugin-syntax-dynamic-import": "^6.18.0",
 		"chalk": "2.4.2",
 		"cli-table": "0.3.1",
 		"command-line-args": "5.1.1",
@@ -138,7 +142,7 @@
 		"webpack": "4.x.x"
 	},
 	"devDependencies": {
-		"@babel/preset-env": "^7.3.4",
+		"@babel/preset-env": "^7.4.5",
 		"@babel/register": "^7.0.0",
 		"@commitlint/cli": "7.2.1",
 		"@commitlint/config-lerna-scopes": "7.6.0",
