@@ -118,7 +118,7 @@ export default class InitGenerator extends Generator {
 			this.configuration.config.webpackOptions.entry = entryOption;
 		}
 
-		let { outputDir } = Input(
+		let { outputDir } = await Input(
 			self,
 			"outputDir",
 			"In which folder do you want to store your generated bundles?",
