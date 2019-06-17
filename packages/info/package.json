@@ -9,16 +9,16 @@
 		"access": "public"
 	},
 	"dependencies": {
-		"@types/yargs": "^13.0.0",
-		"chalk": "^2.4.2",
-		"cli-table3": "^0.5.1",
-		"envinfo": "^5.12.1",
-		"prettyjson": "^1.2.1",
-		"yargs": "^13.2.2"
+		"@types/yargs": "13.0.0",
+		"chalk": "2.4.2",
+		"cli-table3": "0.5.1",
+		"envinfo": "5.12.1",
+		"prettyjson": "1.2.1",
+		"yargs": "13.2.2"
 	},
 	"devDependencies": {
-		"@types/node": "^10.5.1",
-		"typescript": "^3.1.6"
+		"@types/node": "10.12.9",
+		"typescript": "3.5.1"
 	},
 	"scripts": {
 		"build": "tsc",
