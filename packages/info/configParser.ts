@@ -17,21 +17,42 @@ export function fetchConfig(configPath: string): object {
 	try {
 		config = require(configPath);
 	} catch (e) {
-		process.stdout.write(chalk.red(`Error:`, e.code) + `\n`);
+		process.stdout.write(chalk.red(`Error:`, e.code) + `\n` + e);
 	}
 	return config;
 }
 
+const CONFIG_SCHEMA = {
+	plugins: "Array"
+};
 export function configReader(config): string[] {
 	let filteredArray = [];
 
 	let options = {
 		noColor: true
 	};
-	Object.keys(config).map((key): void => {
-		let rowArray = [key];
-		rowArray.push(prettyjson.render(config[key], options));
-		filteredArray = [...filteredArray, rowArray];
-	});
+	Object.keys(config).map(
+		(key): void => {
+			if (CONFIG_SCHEMA[key]) {
+				modifyConfig(config, key);
+			}
+			let rowArray = [key];
+			rowArray.push(prettyjson.render(config[key], options));
+			filteredArray = [...filteredArray, rowArray];
+		}
+	);
+
 	return filteredArray;
+}
+
+function modifyConfig(config, key) {
+	switch (CONFIG_SCHEMA[key]) {
+		case "Array":
+			config[key].forEach((element, idx) => {
+				config[key][idx] = {
+					name: chalk.greenBright(element.constructor.name),
+					...element
+				};
+			});
+	}
 }
