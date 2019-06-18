@@ -16,9 +16,8 @@
 [![lerna][lerna]][lerna-url]
 [![chat on gitter][chat]][chat-url]
 
-|                 |                                                                |
-| --------------- | -------------------------------------------------------------- |
 | Package version | [![npm][npm]][npm-url]                                         |
+| --------------- | -------------------------------------------------------------- |
 | Travis          | [![Build Status][build-status]][build-status-url]              |
 | Azure           | [![Build2 Status][build-status-azure]][build-status-azure-url] |
 | Size            | [![Install Size][size]][size-url]                              |
