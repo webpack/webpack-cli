@@ -11,10 +11,7 @@
 </p>
 <br>
 
-[![deps][deps]][deps-url]
-[![Code Climate][maintainability]][maintainability-url]  
-[![lerna][lerna]][lerna-url]
-[![chat on gitter][chat]][chat-url]
+[![deps][deps]][deps-url] [![Code Climate][maintainability]][maintainability-url] [![lerna][lerna]][lerna-url] [![chat on gitter][chat]][chat-url]
 
 | Package version | [![npm][npm]][npm-url]                                         |
 | --------------- | -------------------------------------------------------------- |
