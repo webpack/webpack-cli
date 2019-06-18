@@ -11,16 +11,19 @@
 </p>
 <br>
 
-[![npm][npm]][npm-url]
-[![Build Status][build-status]][build-status-url]
-[![Build2 Status][build-status-azure]][build-status-azure-url]
 [![deps][deps]][deps-url]
-[![Code Climate][maintainability]][maintainability-url]
-[![chat on gitter][chat]][chat-url]
-[![Install Size][size]][size-url]
-[![Downloads][downloads]][downloads-url]
+[![Code Climate][maintainability]][maintainability-url]  
 [![lerna][lerna]][lerna-url]
-[![GitHub contributors][contributors]][contributors-url]
+[![chat on gitter][chat]][chat-url]
+
+|                 |                                                                |
+| --------------- | -------------------------------------------------------------- |
+| Package version | [![npm][npm]][npm-url]                                         |
+| Travis          | [![Build Status][build-status]][build-status-url]              |
+| Azure           | [![Build2 Status][build-status-azure]][build-status-azure-url] |
+| Size            | [![Install Size][size]][size-url]                              |
+| Downloads       | [![Downloads][downloads]][downloads-url]                       |
+| Contributors    | [![GitHub contributors][contributors]][contributors-url]       |
 
 -   [About](#about)
     -   [How to install](#how-to-install)
