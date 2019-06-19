@@ -345,7 +345,6 @@ For more information, see https://webpack.js.org/api/cli/.`);
 						const { access, constants, statSync, utimesSync } = require("fs");
 						const stat = statSync(openCollectivePath);
 						const lastPrint = stat.atime;
-						const fileOwnerId = stat.uid;
 						const lastPrintTS = new Date(lastPrint).getTime();
 						const timeSinceLastPrint = now.getTime() - lastPrintTS;
 						if (timeSinceLastPrint > SIX_DAYS) {
@@ -353,7 +352,7 @@ For more information, see https://webpack.js.org/api/cli/.`);
 							// On windows we need to manually update the atime
 							// Updating utime requires process owner is as same as file owner
 							access(openCollectivePath, constants.W_OK, e => {
-								if (!e && fileOwnerId === process.getuid()) utimesSync(openCollectivePath, now, now);
+								if (!e) utimesSync(openCollectivePath, now, now);
 							});
 						}
 					}
