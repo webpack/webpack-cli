@@ -352,7 +352,13 @@ For more information, see https://webpack.js.org/api/cli/.`);
 							// On windows we need to manually update the atime
 							// Updating utime requires process owner is as same as file owner
 							access(openCollectivePath, constants.W_OK, e => {
-								if (!e) utimesSync(openCollectivePath, now, now);
+								if (process.platform === "darwin" || process.platform === "linux") {
+									const fileOwnerId = stat.uid;
+									if (!e && fileOwnerId === process.getuid())
+										utimesSync(openCollectivePath, now, now);
+								} else {
+									if (!e) utimesSync(openCollectivePath, now, now);
+								}
 							});
 						}
 					}
