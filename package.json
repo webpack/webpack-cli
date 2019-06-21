@@ -124,7 +124,6 @@
     "import-local": "2.0.0",
     "interpret": "1.2.0",
     "loader-utils": "1.2.3",
-    "prettier": "1.18.2",
     "supports-color": "5.5.0",
     "v8-compile-cache": "2.0.3",
     "yargs": "12.0.5"
@@ -164,6 +163,7 @@
     "lerna": "3.15.0",
     "lint-staged": "7.3.0",
     "nyc": "14.1.1",
+    "prettier": "1.18.2",
     "prettier-eslint-cli": "4.7.1",
     "readable-stream": "3.4.0",
     "rimraf": "2.6.3",
