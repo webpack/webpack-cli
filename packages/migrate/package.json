@@ -9,32 +9,32 @@
   "publishConfig": {
     "access": "public"
   },
-  "devDependencies": {
-    "@types/chalk": "2.2.0",
-    "@types/diff": "3.5.1",
-    "@types/inquirer": "0.0.43",
-    "@types/listr": "0.14.0",
-    "@types/lodash": "4.14.134",
-    "@types/node": "10.12.9",
-    "@types/p-each-series": "1.0.1",
-    "@types/p-lazy": "1.0.0",
-    "jest": "24.8.0",
-    "typescript": "3.5.1",
-    "webpack": "4.x.x"
+  "dependencies": {
+    "@webpack-cli/utils": "0.2.2",
+    "chalk": "2.4.2",
+    "diff": "4.0.1",
+    "inquirer": "6.4.1",
+    "jscodeshift": "0.6.4",
+    "listr": "0.14.3",
+    "lodash": "4.17.11",
+    "p-each-series": "2.1.0",
+    "p-lazy": "3.0.0"
   },
   "peerDependencies": {
     "webpack": "4.x.x"
   },
-  "dependencies": {
-    "@webpack-cli/utils": "0.2.2",
-    "chalk": "2.4.2",
-    "diff": "3.5.0",
-    "inquirer": "6.3.1",
-    "jscodeshift": "0.6.4",
-    "listr": "0.14.3",
-    "lodash": "4.17.11",
-    "p-each-series": "1.0.0",
-    "p-lazy": "1.0.0"
+  "devDependencies": {
+    "@types/chalk": "2.2.0",
+    "@types/diff": "4.0.2",
+    "@types/inquirer": "6.0.3",
+    "@types/listr": "0.14.0",
+    "@types/lodash": "4.14.134",
+    "@types/node": "12.0.8",
+    "@types/p-each-series": "1.0.1",
+    "@types/p-lazy": "2.0.0",
+    "jest": "24.8.0",
+    "typescript": "3.5.2",
+    "webpack": "4.x.x"
   },
   "scripts": {
     "test": "jest",
