@@ -135,6 +135,7 @@
 		"unionfs": "^4.2.0",
 		"update-notifier": "2.5.0",
 		"v8-compile-cache": "2.0.2",
+		"webpack-bundle-analyzer": "^3.3.2",
 		"webpack-log": "1.2.0",
 		"webpack-merge": "4.2.1"
 	},
