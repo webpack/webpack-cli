@@ -173,9 +173,5 @@
     "typescript": "3.5.2",
     "webpack": "4.x.x",
     "webpack-dev-server": "3.7.2"
-  },
-  "collective": {
-    "type": "opencollective",
-    "url": "https://opencollective.com/webpack"
   }
 }
