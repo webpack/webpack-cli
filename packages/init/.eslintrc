@@ -1,7 +1,6 @@
 {
 	"root": true,
 	"extends": [
-		"../../.eslintrc.js",
 		"plugin:@typescript-eslint/recommended",
 		"prettier",
 		"prettier/@typescript-eslint"
