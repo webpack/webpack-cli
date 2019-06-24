@@ -3,8 +3,8 @@ module.exports = {
 		"eslint:recommended",
 		"plugin:prettier/recommended",
 		"plugin:@typescript-eslint/recommended",
-    	"prettier",
-    	"prettier/@typescript-eslint"
+		"prettier",
+		"prettier/@typescript-eslint"
 	],
 	plugins: ["prettier"],
 	env: {
