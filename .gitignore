@@ -38,3 +38,6 @@ yarn.lock
 # source maps of docs
 docs/**/*.map
 junit.xml
+
+#typescript source maps
+packages/**/*.map

@@ -90,8 +90,6 @@ The webpack family welcomes any contributor, small or big. We are happy to elabo
 
 If you like **webpack**, please consider donating to our [Open Collective](https://opencollective.com/webpack) to help us maintain it.
 
-We show this message in the terminal once a week, if you want you can disable it by setting the environment variable `DISABLE_OPENCOLLECTIVE=true` or `CI=true`.
-
 [build-status]: https://travis-ci.org/webpack/webpack-cli.svg
 [build-status-url]: https://travis-ci.org/webpack/webpack-cli
 [build-status-azure]: https://dev.azure.com/webpack/webpack/_apis/build/status/webpack.webpack-cli
