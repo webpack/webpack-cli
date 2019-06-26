@@ -48,7 +48,6 @@ const pmConfig: PackageManagerConfig = {
 const spawnWithArg = (pm: string, cmd: string): SpawnSyncReturns<Buffer> => {
 	const [installCmd, ...flags] = pmConfig[pm][cmd];
 	const options: string[] = [installCmd, "webpack-dev-server", ...flags];
-
 	return spawn.sync(pm, options, { stdio: "inherit" });
 };
 
