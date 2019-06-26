@@ -22,30 +22,33 @@ import { processPromise } from "@webpack-cli/utils/resolve-packages";
  * @returns {Void}
  */
 
-interface ConfigType {
-	installCmd: string;
-	dependency: string;
-	devDependency: string;
-	optionalDependency: string;
+interface Commands {
+	dependency: string[];
+	devDependency: string[];
+	optionalDependency: string[];
 }
 
-const npmConfig: ConfigType = {
-	installCmd: "install",
-	dependency: "--save",
-	devDependency: "--save-dev",
-	optionalDependency: "--save-optional"
-};
+interface PackageManagerConfig {
+	[key: string]: Commands;
+}
 
-const yarnConfig: ConfigType = {
-	installCmd: "add",
-	dependency: " ",
-	devDependency: "--save",
-	optionalDependency: "--optional"
+const pmConfig: PackageManagerConfig = {
+	npm: {
+		dependency: ["install", "--save"],
+		devDependency: ["install", "--save-dev"],
+		optionalDependency: ["install", "--save-optional"]
+	},
+	yarn: {
+		dependency: ["add"],
+		devDependency: ["add", "-D"],
+		optionalDependency: ["add", "--optional"]
+	}
 };
 
 const spawnWithArg = (pm: string, cmd: string): SpawnSyncReturns<Buffer> => {
-	const pmConfig: ConfigType = pm === "npm" ? npmConfig : yarnConfig;
-	const options: string[] = [pmConfig.installCmd, "webpack-dev-server", pmConfig[cmd]];
+	const [installCmd, ...flags] = pmConfig[pm][cmd];
+	const options: string[] = [installCmd, "webpack-dev-server", ...flags];
+
 	return spawn.sync(pm, options, { stdio: "inherit" });
 };
 
