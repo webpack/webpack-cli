@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "description": "My webpack project",
   "scripts": {
-    "build": "node ../cli.js"
+   "build": "node ../cli.js --interactive"
   },
   "dependencies": {
     "react": "^16.8.6",
