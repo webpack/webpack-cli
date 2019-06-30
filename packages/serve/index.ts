@@ -31,7 +31,7 @@ const pmConfig: PackageManagerConfig = {
 
 /**
  *
- * Installs WDS using the respective package manager with add etc
+ * Installs WDS using the respective package manager with corresponding commands
  *
  * @param {String} pm - package manager to be used
  * @param {String} cmd - arg to spawn with
