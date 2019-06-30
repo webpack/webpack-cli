@@ -6,22 +6,6 @@ import * as path from "path";
 
 import { processPromise } from "@webpack-cli/utils/resolve-packages";
 
-/**
- *
- * Installs WDS using NPM with --save --dev etc
- *
- * @param {Object} cmd - arg to spawn with
- * @returns {Void}
- */
-
-/**
- *
- * Installs WDS using Yarn with add etc
- *
- * @param {Object} cmd - arg to spawn with
- * @returns {Void}
- */
-
 interface Commands {
 	dependency: string[];
 	devDependency: string[];
@@ -45,16 +29,24 @@ const pmConfig: PackageManagerConfig = {
 	}
 };
 
+/**
+ *
+ * Installs WDS using the respective package manager with add etc
+ *
+ * @param {String} pm - package manager to be used
+ * @param {String} cmd - arg to spawn with
+ * @returns {Function} spawn - installs WDS
+ *
+ * The dependency installation commands for the
+ * respective package manager is available as
+ * nested objects within pmConfig
+ *
+ * We gonna extract the root installation command
+ * and rest of the flags from pmConfig object
+ * by means of array destructuring
+ */
+
 const spawnWithArg = (pm: string, cmd: string): SpawnSyncReturns<Buffer> => {
-	/*
-	 * The dependency installation commands for the
-	 * respective package manager is available as
-	 * nested objects within pmConfig
-	 *
-	 * We gonna extract the root installation command
-	 * and rest of the flags from pmConfig object
-	 * by means of array destructuring
-	 */
 	const [installCmd, ...flags] = pmConfig[pm][cmd];
 	const options: string[] = [installCmd, "webpack-dev-server", ...flags];
 	return spawn.sync(pm, options, { stdio: "inherit" });
