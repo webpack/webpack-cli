@@ -139,8 +139,8 @@ export default class InitGenerator extends Generator {
 			self,
 			"langType",
 			"Will you use one of the below JS solutions?",
-			[LangType.ES6, LangType.Typescript, "No"],
-			LangType.ES6,
+			["No", LangType.ES6, LangType.Typescript],
+			"No",
 			this.autoGenerateConfig
 		);
 
