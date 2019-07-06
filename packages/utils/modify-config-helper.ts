@@ -69,8 +69,8 @@ export default function modifyHelperUtil(
 		.then((): void => {
 			let configModule: object;
 			try {
-				const confPath = path.resolve(process.cwd(), ".yo-rc.json");
-				configModule = require(confPath);
+				configPath = path.resolve(process.cwd(), ".yo-rc.json");
+				configModule = require(configPath);
 				// Change structure of the config to be transformed
 				const tmpConfig: object = {};
 				Object.keys(configModule).forEach((prop: string): void => {
