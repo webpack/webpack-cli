@@ -25,7 +25,7 @@ const init = require("@webpack-cli/init").default;
 init();
 
 // we're slicing node.process, ...myPacakges is a webpack-scaffold name/path
-init(null, null, ...myPacakges);
+init(null, null, null, ...myPacakges);
 
 // for auto flag to use the default configs
 init(null, null, null, "--auto")
