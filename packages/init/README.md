@@ -36,6 +36,11 @@ init([null, null, ...myPacakges]);
 npx webpack-cli init
 ```
 
+**To generate default configs**
+```bash
+npx webpack-cli init --auto
+```
+
 **Via custom scaffold**
 
 1. Using package on `npm`

@@ -2,6 +2,8 @@ import defaultGenerator from "@webpack-cli/generators/init-generator";
 import modifyConfigHelper from "@webpack-cli/utils/modify-config-helper";
 import npmPackagesExists from "@webpack-cli/utils/npm-packages-exists";
 
+const AUTO_PREFIX = "--auto";
+
 /**
  *
  * First function to be called after running the init flag. This is a check,
@@ -14,9 +16,10 @@ import npmPackagesExists from "@webpack-cli/utils/npm-packages-exists";
  */
 
 export default function initializeInquirer(...args: string[]): Function | void {
-	const packages: string[] = args.slice(3);
-	if (packages.length === 0) {
-		return modifyConfigHelper("init", defaultGenerator);
+	const packages = args.slice(3);
+	const includesDefaultPrefix = packages.includes(AUTO_PREFIX);
+	if (packages.length === 0 || includesDefaultPrefix) {
+		return modifyConfigHelper("init", defaultGenerator, null, null, includesDefaultPrefix);
 	}
 	return npmPackagesExists(packages);
 }

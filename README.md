@@ -22,15 +22,15 @@
 [![lerna][lerna]][lerna-url]
 [![GitHub contributors][contributors]][contributors-url]
 
-- [About](#about)
-	- [How to install](#how-to-install)
-- [Packages](#packages)
-	- [Commands](#commands)
-	- [Utilities](#utilities)
-- [Getting started](#getting-started)
-- [webpack CLI Scaffolds](#webpack-cli-scaffolds)
-- [Contributing and Internal Documentation](#contributing-and-internal-documentation)
-- [Open Collective](#open-collective)
+-   [About](#about)
+    -   [How to install](#how-to-install)
+-   [Packages](#packages)
+    -   [Commands](#commands)
+    -   [Utilities](#utilities)
+-   [Getting started](#getting-started)
+-   [webpack CLI Scaffolds](#webpack-cli-scaffolds)
+-   [Contributing and Internal Documentation](#contributing-and-internal-documentation)
+-   [Open Collective](#open-collective)
 
 ## About
 
@@ -50,23 +50,20 @@ We organize webpack CLI as a multi-package repository using [lerna](https://gith
 
 Supporting developers is an important task for webpack CLI. Thus, webpack CLI provides different commands for many common tasks.
 
-- [`webpack-cli init`](./packages/init/README.md#webpack-cli-init) - Create a new webpack configuration.
-- [`webpack-cli add`](./packages/add/README.md#webpack-cli-add) - Add new properties to a webpack configuration file.
-- [`webpack-cli info`](./packages/info/README.md#webpack-cli-info) - Returns information related to the local environment.
-- [`webpack-cli migrate`](./packages/migrate/README.md#webpack-cli-migrate) - Migrate project from one version to another.
-- [`webpack-cli remove`](./packages/remove/README.md#webpack-cli-remove) - Remove properties from a webpack configuration file.
-- [`webpack-cli generate-plugin`](./packages/generate-plugin/README.md#webpack-cli-generate-plugin) - Initiate new plugin project.
-- [`webpack-cli generate-loader`](./packages/generate-loader/README.md#webpack-cli-generate-loader) - Initiate new loader project.
-- [`webpack-cli serve`](./packages/serve/README.md#webpack-cli-serve) - Use webpack with a development server that provides live reloading.
-- [`webpack-cli update`](./packages/update/README.md#webpack-cli-update) - Update properties in a webpack configuration file.
+-   [`webpack-cli init`](./packages/init/README.md#webpack-cli-init) - Create a new webpack configuration.
+-   [`webpack-cli info`](./packages/info/README.md#webpack-cli-info) - Returns information related to the local environment.
+-   [`webpack-cli migrate`](./packages/migrate/README.md#webpack-cli-migrate) - Migrate project from one version to another.
+-   [`webpack-cli generate-plugin`](./packages/generate-plugin/README.md#webpack-cli-generate-plugin) - Initiate new plugin project.
+-   [`webpack-cli generate-loader`](./packages/generate-loader/README.md#webpack-cli-generate-loader) - Initiate new loader project.
+-   [`webpack-cli serve`](./packages/serve/README.md#webpack-cli-serve) - Use webpack with a development server that provides live reloading.
 
 ### Utilities
 
 The project also has several utility packages which are used by other commands
 
-- [`utils`](./packages/utils/README.md) - Several utilities used across webpack-cli.
-- [`generators`](./packages/generators/README.md) - Contains all webpack-cli related yeoman generators.
-- [`webpack-scaffold`](./packages/info/README.md#webpack-cli-info) - Utilities to create a webpack scaffold.
+-   [`utils`](./packages/utils/README.md) - Several utilities used across webpack-cli.
+-   [`generators`](./packages/generators/README.md) - Contains all webpack-cli related yeoman generators.
+-   [`webpack-scaffold`](./packages/webpack-scaffold/README.md) - Utilities to create a webpack scaffold.
 
 ## Getting started
 
@@ -92,8 +89,6 @@ The webpack family welcomes any contributor, small or big. We are happy to elabo
 ## Open Collective
 
 If you like **webpack**, please consider donating to our [Open Collective](https://opencollective.com/webpack) to help us maintain it.
-
-We show this message in the terminal once a week, if you want you can disable it by setting the environment variable `DISABLE_OPENCOLLECTIVE=true` or `CI=true`.
 
 [build-status]: https://travis-ci.org/webpack/webpack-cli.svg
 [build-status-url]: https://travis-ci.org/webpack/webpack-cli

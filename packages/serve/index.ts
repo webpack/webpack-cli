@@ -5,33 +5,52 @@ import * as inquirer from "inquirer";
 import * as path from "path";
 
 import { processPromise } from "@webpack-cli/utils/resolve-packages";
-import { List } from "@webpack-cli/webpack-scaffold";
+
+interface Commands {
+	dependency: string[];
+	devDependency: string[];
+	optionalDependency: string[];
+}
+
+interface PackageManagerConfig {
+	[key: string]: Commands;
+}
+
+const pmConfig: PackageManagerConfig = {
+	npm: {
+		dependency: ["install", "--save"],
+		devDependency: ["install", "--save-dev"],
+		optionalDependency: ["install", "--save-optional"]
+	},
+	yarn: {
+		dependency: ["add"],
+		devDependency: ["add", "-D"],
+		optionalDependency: ["add", "--optional"]
+	}
+};
 
 /**
  *
- * Installs WDS using NPM with --save --dev etc
+ * Installs WDS using the respective package manager with corresponding commands
  *
- * @param {Object} cmd - arg to spawn with
- * @returns {Void}
+ * @param {String} pm - package manager to be used
+ * @param {String} cmd - arg to spawn with
+ * @returns {Function} spawn - installs WDS
+ *
+ * The dependency installation commands for the
+ * respective package manager is available as
+ * nested objects within pmConfig
+ *
+ * We gonna extract the root installation command
+ * and rest of the flags from pmConfig object
+ * by means of array destructuring
  */
 
-const spawnNPMWithArg = (cmd: string): SpawnSyncReturns<Buffer> =>
-	spawn.sync("npm", ["install", "webpack-dev-server", cmd], {
-		stdio: "inherit"
-	});
-
-/**
- *
- * Installs WDS using Yarn with add etc
- *
- * @param {Object} cmd - arg to spawn with
- * @returns {Void}
- */
-
-const spawnYarnWithArg = (cmd: string): SpawnSyncReturns<Buffer> =>
-	spawn.sync("yarn", ["add", "webpack-dev-server", cmd], {
-		stdio: "inherit"
-	});
+const spawnWithArg = (pm: string, cmd: string): SpawnSyncReturns<Buffer> => {
+	const [installCmd, ...flags] = pmConfig[pm][cmd];
+	const options: string[] = [installCmd, "webpack-dev-server", ...flags];
+	return spawn.sync(pm, options, { stdio: "inherit" });
+};
 
 /**
  *
@@ -106,40 +125,24 @@ export default function serve(): Promise<void | Function> {
 				(answer: { confirmDevserver: boolean }): Promise<void | Function> => {
 					if (answer.confirmDevserver) {
 						return inquirer
-							.prompt(
-								List(
-									"confirmDepType",
-									"What kind of dependency do you want it to be under? (default: devDependency)",
-									["devDependency", "optionalDependency", "dependency"]
-								)
-							)
+							.prompt([
+								{
+									choices: ["devDependency", "optionalDependency", "dependency"],
+									message:
+										"What kind of dependency do you want it to be under? (default: devDependency)",
+									name: "confirmDepType",
+									type: "list",
+									default: "devDependency"
+								}
+							])
 							.then(
 								(depTypeAns: { confirmDepType: string }): Promise<void | Function> => {
 									const packager: string = getRootPathModule("package-lock.json") ? "npm" : "yarn";
 									let spawnAction: () => SpawnSyncReturns<Buffer>;
-									if (depTypeAns.confirmDepType === "devDependency") {
-										if (packager === "yarn") {
-											spawnAction = (): SpawnSyncReturns<Buffer> => spawnYarnWithArg("--dev");
-										} else {
-											spawnAction = (): SpawnSyncReturns<Buffer> => spawnNPMWithArg("--save-dev");
-										}
-									}
-									if (depTypeAns.confirmDepType === "dependency") {
-										if (packager === "yarn") {
-											spawnAction = (): SpawnSyncReturns<Buffer> => spawnYarnWithArg(" ");
-										} else {
-											spawnAction = (): SpawnSyncReturns<Buffer> => spawnNPMWithArg("--save");
-										}
-									}
-									if (depTypeAns.confirmDepType === "optionalDependency") {
-										if (packager === "yarn") {
-											spawnAction = (): SpawnSyncReturns<Buffer> =>
-												spawnYarnWithArg("--optional");
-										} else {
-											spawnAction = (): SpawnSyncReturns<Buffer> =>
-												spawnNPMWithArg("--save-optional");
-										}
-									}
+
+									spawnAction = (): SpawnSyncReturns<Buffer> =>
+										spawnWithArg(packager, depTypeAns.confirmDepType);
+
 									return processPromise(spawnAction()).then(
 										(): Promise<void | Function> => {
 											// Recursion doesn't work well with require call being cached
@@ -155,12 +158,10 @@ export default function serve(): Promise<void | Function> {
 					}
 				}
 			)
-			.catch(
-				(err: object): void => {
-					console.error(chalk.red("✖ Serve aborted due to some errors"));
-					console.error(err);
-					process.exitCode = 1;
-				}
-			);
+			.catch((err: object): void => {
+				console.error(chalk.red("✖ Serve aborted due to some errors"));
+				console.error(err);
+				process.exitCode = 1;
+			});
 	}
 }

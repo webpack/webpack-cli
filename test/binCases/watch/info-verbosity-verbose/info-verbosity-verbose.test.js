@@ -1,11 +1,17 @@
 "use strict";
 
-jest.setTimeout(10E6);
+jest.setTimeout(10e6);
 /* eslint-disable node/no-unsupported-features  */
 /* eslint-disable node/no-unsupported-features/es-syntax  */
 const fs = require("fs");
 const path = require("path");
-const { extractSummary, extractHash, appendDataIfFileExists, runAndGetWatchProc, copyFile } = require("../../../testUtils");
+const {
+	extractSummary,
+	extractHash,
+	appendDataIfFileExists,
+	runAndGetWatchProc,
+	copyFile
+} = require("../../../testUtils");
 
 const fileToChange = "index.js";
 const fileToChangePath = path.resolve(__dirname, fileToChange);
@@ -107,6 +113,5 @@ test.skip("info-verbosity-verbose", done => {
 			default:
 				break;
 		}
-
 	});
 });

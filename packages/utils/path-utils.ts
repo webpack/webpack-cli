@@ -1,3 +1,4 @@
+import * as findup from "findup-sync";
 import * as fs from "fs";
 import * as path from "path";
 
@@ -12,6 +13,18 @@ import * as path from "path";
  * @returns {Boolean} whether the string could be a path to a local file or directory
  */
 
-export default function(str: string): boolean {
+export function isLocalPath(str: string): boolean {
 	return path.isAbsolute(str) || /^\./.test(str) || fs.existsSync(str);
+}
+
+/**
+ * Find the root directory path of a project.
+ *
+ * @returns {String} Absolute path of the project root.
+ */
+
+export function findProjectRoot(): string {
+	const rootFilePath = findup("package.json");
+	const projectRoot = path.dirname(rootFilePath);
+	return projectRoot;
 }

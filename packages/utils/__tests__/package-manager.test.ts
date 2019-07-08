@@ -1,6 +1,5 @@
 "use strict";
 
-import * as path from "path";
 import * as packageManager from "../package-manager";
 
 jest.mock("cross-spawn");
@@ -19,15 +18,15 @@ describe("package-manager", () => {
 		signal: null,
 		status: 1,
 		stderr: null,
-		stdout: null,
+		stdout: null
 	};
 
 	function mockSpawnErrorOnce() {
 		spawn.sync.mockReturnValueOnce(
 			Object.assign({}, defaultSyncResult, {
 				error: new Error(),
-				status: null,
-			}),
+				status: null
+			})
 		);
 	}
 
@@ -54,20 +53,16 @@ describe("package-manager", () => {
 
 	jest.spyOn(spawn, "sync").mockReturnValue(defaultSyncResult);
 
-	it("should return 'yarn' from getPackageManager if it's installed", () => {
-		expect(packageManager.getPackageManager()).toEqual("yarn");
-	});
-
-	it("should return 'npm' from getPackageManager if yarn is not installed", () => {
+	it("should return 'npm' from getPackageManager", () => {
 		mockSpawnErrorOnce();
 		expect(packageManager.getPackageManager()).toEqual("npm");
 	});
 
-	it("should spawn yarn add from spawnChild", () => {
+	it("should spawn npm from spawnChild", () => {
 		const packageName = "some-pkg";
 
 		packageManager.spawnChild(packageName);
-		expect(spawn.sync).toHaveBeenLastCalledWith("yarn", ["global", "add", packageName], { stdio: "inherit" });
+		expect(spawn.sync).toHaveBeenLastCalledWith("npm", ["install", "-g", packageName], { stdio: "inherit" });
 	});
 
 	it("should spawn yarn upgrade from spawnChild", () => {
@@ -94,21 +89,6 @@ describe("package-manager", () => {
 
 		packageManager.spawnChild(packageName);
 		expect(spawn.sync).toHaveBeenLastCalledWith("npm", ["update", "-g", packageName], { stdio: "inherit" });
-	});
-
-	it("should return the yarn global dir from getPathToGlobalPackages if yarn is installed", () => {
-		const yarnDir = "/Users/test/.config/yarn/global";
-		// Mock confirmation that yarn is installed
-		spawn.sync.mockReturnValueOnce(defaultSyncResult);
-		// Mock stdout of `yarn global dir`
-		spawn.sync.mockReturnValueOnce({
-			stdout: {
-				toString: () => `${yarnDir}\n`,
-			},
-		});
-		const globalPath = packageManager.getPathToGlobalPackages();
-		const expected = path.join(yarnDir, "node_modules");
-		expect(globalPath).toBe(expected);
 	});
 
 	it("should return the npm global dir from getPathToGlobalPackages if yarn is not installed", () => {

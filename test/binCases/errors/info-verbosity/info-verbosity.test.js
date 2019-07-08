@@ -17,6 +17,7 @@ test("info-verbosity", () => {
 	]);
 
 	expect(stderr).toContain("Invalid values:");
-	expect(stderr).toContain("Argument: info-verbosity, Given: \"false\", Choices: \"none\", \"info\", \"verbose\"");
+	// eslint-disable-next-line quotes
+	expect(stderr).toContain('Argument: info-verbosity, Given: "false", Choices: "none", "info", "verbose"');
 	// snapshot not needed
 });

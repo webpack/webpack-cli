@@ -13,11 +13,9 @@ export function createDynamicPromise(arrOrString: string[] | string): string {
 	if (Array.isArray(arrOrString)) {
 		return (
 			"() => new Promise((resolve) => resolve([" +
-			arrOrString.map(
-				(func: string): string => {
-					return "'" + func + "'";
-				}
-			) +
+			arrOrString.map((func: string): string => {
+				return "'" + func + "'";
+			}) +
 			"]))"
 		);
 	} else {
@@ -49,13 +47,25 @@ export function createRequire(val: string): string {
 	return `const ${val} = require('${val}');`;
 }
 
-export function List(name: string, message: string, choices: string[]): Generator.Question {
-	return {
-		choices,
-		message,
-		name,
-		type: "list"
-	};
+export function List(
+	self: any,
+	name: string,
+	message: string,
+	choices: string[],
+	defaultChoice?: string,
+	skip: boolean = false
+): object | any {
+	if (skip) return { [name]: defaultChoice };
+
+	return self.prompt([
+		{
+			choices,
+			message,
+			name,
+			type: "list",
+			default: defaultChoice
+		}
+	]);
 }
 
 export function RawList(name: string, message: string, choices: string[]): Generator.Question {
@@ -76,30 +86,60 @@ export function CheckList(name: string, message: string, choices: string[]): Gen
 	};
 }
 
-export function Input(name: string, message: string): Generator.Question {
-	return {
-		message,
-		name,
-		type: "input"
-	};
+export function Input(
+	self: any,
+	name: string,
+	message: string,
+	defaultChoice?: string,
+	skip: boolean = false
+): object | any {
+	if (skip) return { [name]: defaultChoice };
+	return self.prompt([
+		{
+			default: defaultChoice,
+			message,
+			name,
+			type: "input"
+		}
+	]);
 }
 
-export function InputValidate(name: string, message: string, cb?: (input: string) => string | boolean): Generator.Question {
-	return {
+export function InputValidate(
+	self: any,
+	name: string,
+	message: string,
+	cb?: (input: string) => string | boolean,
+	defaultChoice?: string,
+	skip?: boolean
+): object | any {
+	if (skip) return { [name]: defaultChoice };
+	const input: Generator.Question = {
 		message,
 		name,
 		type: "input",
 		validate: cb
 	};
+	if (defaultChoice) input.default = defaultChoice;
+	return self.prompt([input]);
 }
 
-export function Confirm(name: string, message: string, defaultChoice: boolean = true): Generator.Question {
-	return {
-		default: defaultChoice,
-		message,
-		name,
-		type: "confirm"
-	};
+export function Confirm(
+	self: any,
+	name: string,
+	message: string,
+	defaultChoice: boolean = true,
+	skip: boolean = false
+): object | any {
+	if (skip) return { [name]: defaultChoice };
+
+	return self.prompt([
+		{
+			default: defaultChoice,
+			message,
+			name,
+			type: "confirm"
+		}
+	]);
 }
 
 // TODO: to understand this type

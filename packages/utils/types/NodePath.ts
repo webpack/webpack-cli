@@ -2,6 +2,7 @@ export interface Node extends Object {
 	id?: {
 		name: string;
 	};
+	callee?: Node;
 	arguments?: Node[];
 	body?: Node[];
 	elements?: Node[];
@@ -39,11 +40,7 @@ export interface Node extends Object {
 	size?: () => number;
 	type?: string;
 	value?: Node | string | Node[];
-	toSource?: (
-		object: {
-			quote?: string;
-		}
-	) => string;
+	toSource?: (object: { quote?: string }) => string;
 	source?: string;
 	ast?: Node;
 	rules?: ModuleRule[];
@@ -96,4 +93,4 @@ export interface JSCodeshift extends Object {
 	};
 }
 
-export type valueType = string | number | boolean | Node | null;
+export type valueType = string[] | string | number | boolean | Node | null;

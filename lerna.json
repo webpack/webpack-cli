@@ -1,8 +1,7 @@
 {
-	"lerna": "3.4.0",
-	"packages": ["packages/*"],
-	"version": "0.1.5",
-	"bootstrap": {
-		"npmClientArgs": ["--no-package-lock"]
-	}
+  "lerna": "3.4.0",
+  "packages": [
+    "packages/*"
+  ],
+  "version": "independent"
 }

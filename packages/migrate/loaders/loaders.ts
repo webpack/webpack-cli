@@ -55,45 +55,45 @@ export default function(j: JSCodeshift, ast: Node): Node {
 	 */
 
 	const createArrayExpressionFromArray = (path: Node): Node => {
-		const value: Node = (path.value as Node);
+		const value: Node = path.value as Node;
 		// Find paths with `loaders` keys in the given Object
 		const paths: Node[] = value.properties.filter((prop: Node): boolean => prop.key.name.startsWith("loader"));
 		// For each pair of key and value
-		paths.forEach(
-			(pair: Node): void => {
-				// Replace 'loaders' Identifier with 'use'
-				pair.key.name = "use";
-				// If the value is an Array
-				if ((pair.value as Node).type === j.ArrayExpression.name) {
-					// replace its elements
-					const pairValue = pair.value as Node;
-					pair.value = j.arrayExpression(
-						pairValue.elements.map(
-							(arrElement: Node): Node => {
-								// If items of the array are Strings
-								if (arrElement.type === j.Literal.name) {
-									// Replace with `{ loader: LOADER }` Object
-									return j.objectExpression([utils.createProperty(j, "loader", (arrElement.value as Node))]);
-								}
-								// otherwise keep the existing element
-								return arrElement;
+		paths.forEach((pair: Node): void => {
+			// Replace 'loaders' Identifier with 'use'
+			pair.key.name = "use";
+			// If the value is an Array
+			if ((pair.value as Node).type === j.ArrayExpression.name) {
+				// replace its elements
+				const pairValue = pair.value as Node;
+				pair.value = j.arrayExpression(
+					pairValue.elements.map(
+						(arrElement: Node): Node => {
+							// If items of the array are Strings
+							if (arrElement.type === j.Literal.name) {
+								// Replace with `{ loader: LOADER }` Object
+								return j.objectExpression([
+									utils.createProperty(j, "loader", arrElement.value as Node)
+								]);
 							}
-						)
-					);
-					// 	If the value is String of loaders like 'style!css'
-				} else if ((pair.value as Node).type === j.Literal.name) {
-					// Replace it with Array expression of loaders
-					const literalValue = pair.value as Node;
-					pair.value = j.arrayExpression(
-						(literalValue.value as string).split("!").map(
-							(loader: string): Node => {
-								return j.objectExpression([utils.createProperty(j, "loader", loader)]);
-							}
-						)
-					);
-				}
+							// otherwise keep the existing element
+							return arrElement;
+						}
+					)
+				);
+				// 	If the value is String of loaders like 'style!css'
+			} else if ((pair.value as Node).type === j.Literal.name) {
+				// Replace it with Array expression of loaders
+				const literalValue = pair.value as Node;
+				pair.value = j.arrayExpression(
+					(literalValue.value as string).split("!").map(
+						(loader: string): Node => {
+							return j.objectExpression([utils.createProperty(j, "loader", loader)]);
+						}
+					)
+				);
 			}
-		);
+		});
 		return path;
 	};
 
@@ -108,7 +108,8 @@ export default function(j: JSCodeshift, ast: Node): Node {
 	const createLoaderWithQuery = (p: Node): Node => {
 		const properties: Node[] = (p.value as Node).properties;
 		const loaderValue: string = properties.reduce(
-			(val: string, prop: Node): string => (prop.key.name === "loader" ? (prop.value as Node).value as string: val),
+			(val: string, prop: Node): string =>
+				prop.key.name === "loader" ? ((prop.value as Node).value as string) : val,
 			""
 		);
 		const loader: string = loaderValue.split("?")[0];
@@ -137,7 +138,8 @@ export default function(j: JSCodeshift, ast: Node): Node {
 	const findLoaderWithQueryString = (p: Node): boolean => {
 		return (p.value as Node).properties.reduce((predicate: boolean, prop: Node): boolean => {
 			return (
-				(utils.safeTraverse(prop, ["value", "value", "indexOf"]) && ((prop.value as Node).value as string).indexOf("?") > -1) ||
+				(utils.safeTraverse(prop, ["value", "value", "indexOf"]) &&
+					((prop.value as Node).value as string).indexOf("?") > -1) ||
 				predicate
 			);
 		}, false);
@@ -165,34 +167,30 @@ export default function(j: JSCodeshift, ast: Node): Node {
 
 	const fitIntoLoaders = (p: Node): Node => {
 		let loaders: Node = null;
-		(p.value as Node).properties.map(
-			(prop: Node): void => {
-				const keyName = prop.key.name;
-				if (keyName === "loaders") {
-					loaders = prop.value as Node;
-				}
+		(p.value as Node).properties.map((prop: Node): void => {
+			const keyName = prop.key.name;
+			if (keyName === "loaders") {
+				loaders = prop.value as Node;
 			}
-		);
-		(p.value as Node).properties.map(
-			(prop: Node): void => {
-				const keyName = prop.key.name;
-				if (keyName !== "loaders") {
-					const enforceVal: string = keyName === "preLoaders" ? "pre" : "post";
-					(prop.value as Node).elements.map(
-						(elem: Node): void => {
-							elem.properties.push(utils.createProperty(j, "enforce", enforceVal));
-							if (loaders && loaders.type === "ArrayExpression") {
-								loaders.elements.push(elem);
-							} else {
-								prop.key.name = "loaders";
-							}
-						}
-					);
-				}
+		});
+		(p.value as Node).properties.map((prop: Node): void => {
+			const keyName = prop.key.name;
+			if (keyName !== "loaders") {
+				const enforceVal: string = keyName === "preLoaders" ? "pre" : "post";
+				(prop.value as Node).elements.map((elem: Node): void => {
+					elem.properties.push(utils.createProperty(j, "enforce", enforceVal));
+					if (loaders && loaders.type === "ArrayExpression") {
+						loaders.elements.push(elem);
+					} else {
+						prop.key.name = "loaders";
+					}
+				});
 			}
-		);
+		});
 		if (loaders) {
-			(p.value as Node).properties = (p.value as Node).properties.filter((prop: Node): boolean => prop.key.name === "loaders");
+			(p.value as Node).properties = (p.value as Node).properties.filter(
+				(prop: Node): boolean => prop.key.name === "loaders"
+			);
 		}
 		return p;
 	};
@@ -297,21 +295,17 @@ export default function(j: JSCodeshift, ast: Node): Node {
 	 */
 
 	const addLoaderSuffix = (): Node =>
-		ast.find(j.ObjectExpression).forEach(
-			(path: Node): void => {
-				(path.value as Node).properties.forEach(
-					(prop: Node): void => {
-						if (
-							prop.key.name === "loader" &&
-							utils.safeTraverse(prop, ["value", "value"]) &&
-							!((prop.value as Node).value as string).endsWith("-loader")
-						) {
-							prop.value = j.literal((prop.value as Node).value as string + "-loader");
-						}
-					}
-				);
-			}
-		);
+		ast.find(j.ObjectExpression).forEach((path: Node): void => {
+			(path.value as Node).properties.forEach((prop: Node): void => {
+				if (
+					prop.key.name === "loader" &&
+					utils.safeTraverse(prop, ["value", "value"]) &&
+					!((prop.value as Node).value as string).endsWith("-loader")
+				) {
+					prop.value = j.literal(((prop.value as Node).value as string) + "-loader");
+				}
+			});
+		});
 
 	/**
 	 *
@@ -323,26 +317,24 @@ export default function(j: JSCodeshift, ast: Node): Node {
 
 	const fitOptionsToUse = (p: Node): Node => {
 		let options: Node = null;
-		(p.value as Node).properties.forEach(
-			(prop: Node): void => {
-				const keyName: string = prop.key.name;
-				if (keyName === "options") {
-					options = prop;
-				}
+		(p.value as Node).properties.forEach((prop: Node): void => {
+			const keyName: string = prop.key.name;
+			if (keyName === "options") {
+				options = prop;
 			}
-		);
+		});
 
 		if (options) {
-			(p.value as Node).properties = (p.value as Node).properties.filter((prop: Node): boolean => prop.key.name !== "options");
-
-			(p.value as Node).properties.forEach(
-				(prop: Node): void => {
-					const keyName = prop.key.name;
-					if (keyName === "use") {
-						(prop.value as Node).elements[0].properties.push(options);
-					}
-				}
+			(p.value as Node).properties = (p.value as Node).properties.filter(
+				(prop: Node): boolean => prop.key.name !== "options"
 			);
+
+			(p.value as Node).properties.forEach((prop: Node): void => {
+				const keyName = prop.key.name;
+				if (keyName === "use") {
+					(prop.value as Node).elements[0].properties.push(options);
+				}
+			});
 		}
 
 		return p;
