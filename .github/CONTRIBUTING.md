@@ -169,7 +169,7 @@ This is a multi-package repository and dependencies are managed using [lerna](ht
 
 ## Branching Model
 
-We base our branching model on [git flow](http://nvie.com/posts/a-successful-git-branching-model/). Instead of working with a `develop` base branch, we use the `master` branch. We do it to ease the workflow a bit. However, we find that adding prefixes to the branches is useful.
+We base our branching model on [git flow](http://nvie.com/posts/a-successful-git-branching-model/). Instead of working with a `develop` base branch, we use the `next` branch. We do it to ease the workflow a bit. However, we find that adding prefixes to the branches is useful.
 
 ## Naming a branch
 
