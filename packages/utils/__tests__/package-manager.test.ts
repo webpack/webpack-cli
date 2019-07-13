@@ -64,7 +64,8 @@ describe("package-manager", () => {
 		packageManager.spawnChild(packageName);
 		expect(spawn.sync).toHaveBeenLastCalledWith("npm", ["install", "-g", packageName], { stdio: "inherit" });
 	});
-
+	
+	/*
 	it("should spawn yarn upgrade from spawnChild", () => {
 		const packageName = "some-pkg";
 
@@ -72,7 +73,7 @@ describe("package-manager", () => {
 
 		packageManager.spawnChild(packageName);
 		expect(spawn.sync).toHaveBeenLastCalledWith("yarn", ["global", "upgrade", packageName], { stdio: "inherit" });
-	});
+	}); */
 
 	it("should spawn npm install from spawnChild", () => {
 		const packageName = "some-pkg";
