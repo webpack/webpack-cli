@@ -14,7 +14,7 @@ import * as path from "path";
  */
 
 export function isLocalPath(str: string): boolean {
-	return path.isAbsolute(str) || /^\./.test(str) || fs.existsSync(str);
+	return fs.existsSync(str) || (path.isAbsolute(str) && fs.existsSync(str));
 }
 
 /**
