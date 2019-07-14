@@ -128,5 +128,11 @@
   "peerDependencies": {
     "webpack": "4.x.x"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@commitlint/config-lerna-scopes": "^8.0.0",
+    "commitlint": "^8.0.0",
+    "commitlint-config-cz": "^0.12.0",
+    "husky": "^3.0.0",
+    "lint-staged": "^9.2.0"
+  }
 }
