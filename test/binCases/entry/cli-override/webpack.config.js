@@ -1,7 +1,7 @@
-const path = require("path");
+const path = require('path');
 
 module.exports = {
-	entry: {
-		configEntry: path.resolve(__dirname, "./index")
-	}
+    entry: {
+        configEntry: path.resolve(__dirname, './index'),
+    },
 };

@@ -1,1 +1,1 @@
-module.exports = "webpack-ts-config";
+module.exports = 'webpack-ts-config';

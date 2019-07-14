@@ -12,7 +12,7 @@
   },
   "main": "cli.js",
   "engines": {
-    "node": ">=6.11.5"
+    "node": ">=8.0.0"
   },
   "keywords": [
     "webpack",
@@ -33,10 +33,8 @@
     "clean:all": "rimraf node_modules packages/*/{node_modules}",
     "commit": "git-cz",
     "docs": "typedoc",
-    "format": "npm run format:js && npm run format:ts",
-    "format:js": "prettier-eslint ./cli.js ./lib/*.js ./lib/**/*.js ./test/**/*.js ./packages/**/**/*.js ./packages/**/*.js --write",
-    "format:ts": "prettier-eslint ./packages/**/**/*.ts ./packages/**/*.ts ./packages/**/**/**/*.ts --write",
-    "lint": "eslint ./cli.js \"./lib/*.js\" \"./lib/**/*.js\" \"./test/**/*.js\" \"packages/**/!(node_modules)/*.ts\"  \"packages/**/!(node_modules)/**/*.ts\"",
+    "format": "eslint --fix . --ext .js,.ts",
+    "lint": "eslint . --ext .js,.ts",
     "pretest": "npm run build && npm run lint",
     "reportCoverage": "nyc report --reporter=json && codecov -f coverage/coverage-final.json --disable=gcov",
     "test": "nyc jest --maxWorkers=4 --reporters=default --reporters=jest-junit",
@@ -64,11 +62,11 @@
       "git add"
     ],
     "*.ts": [
-      "npm run format:ts",
+      "npm run format",
       "git add"
     ],
     "*.js": [
-      "npm run format:js",
+      "npm run format",
       "git add"
     ]
   },
@@ -129,10 +127,27 @@
     "webpack": "4.x.x"
   },
   "devDependencies": {
+    "@commitlint/cli": "^8.0.0",
     "@commitlint/config-lerna-scopes": "^8.0.0",
+    "@types/jest": "^24.0.15",
+    "@typescript-eslint/eslint-plugin": "^1.12.0",
+    "@typescript-eslint/parser": "^1.12.0",
     "commitlint": "^8.0.0",
     "commitlint-config-cz": "^0.12.0",
+    "eslint": "^5.16.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-prettier": "^3.1.0",
     "husky": "^3.0.0",
-    "lint-staged": "^9.2.0"
+    "jest": "^24.8.0",
+    "jest-cli": "^24.8.0",
+    "jest-junit": "^6.4.0",
+    "lerna": "^3.15.0",
+    "lint-staged": "^9.2.0",
+    "nyc": "^14.1.1",
+    "prettier": "1.18.2",
+    "ts-jest": "^24.0.2",
+    "typedoc": "^0.14.2",
+    "typescript": "^3.5.3"
   }
 }

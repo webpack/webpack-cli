@@ -1,7 +1,7 @@
 module.exports = function(env) {
-	return {
-		stats: {
-			env: true
-		}
-	};
+    return {
+        stats: {
+            env: true,
+        },
+    };
 };

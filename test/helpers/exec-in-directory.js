@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 const dir = process.argv[2];
 const bin = process.argv[3];

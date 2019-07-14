@@ -1,11 +1,11 @@
-var path = require("path");
+var path = require('path');
 
 module.exports = [
-	{
-		entry: path.resolve(__dirname, "./index"),
-		watch: true
-	},
-	{
-		entry: path.resolve(__dirname, "./index2")
-	}
+    {
+        entry: path.resolve(__dirname, './index'),
+        watch: true,
+    },
+    {
+        entry: path.resolve(__dirname, './index2'),
+    },
 ];

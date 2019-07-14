@@ -1,1 +1,1 @@
-module.exports = "webpack-babel-config";
+module.exports = 'webpack-babel-config';

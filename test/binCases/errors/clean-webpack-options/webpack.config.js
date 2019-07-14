@@ -1,4 +1,4 @@
 module.exports = {
-	context: [__dirname],
-	entry: "./index"
+    context: [__dirname],
+    entry: './index',
 };

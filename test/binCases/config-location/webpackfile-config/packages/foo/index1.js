@@ -1,1 +1,1 @@
-module.exports = "webpackfile";
+module.exports = 'webpackfile';

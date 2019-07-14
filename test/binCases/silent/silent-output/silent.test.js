@@ -1,13 +1,13 @@
-"use strict";
+'use strict';
 
-const { run, extractSummary } = require("../../../testUtils");
+const { run, extractSummary } = require('../../../testUtils');
 
-test("silent", () => {
-	const { code, stdout, stderr } = run(__dirname, ["--silent"]);
+test('silent', () => {
+    const { code, stdout, stderr } = run(__dirname, ['--silent']);
 
-	const summary = extractSummary(stdout);
+    const summary = extractSummary(stdout);
 
-	expect(code).toBe(0);
-	expect(summary).toHaveLength(0);
-	expect(stderr).toHaveLength(0);
+    expect(code).toBe(0);
+    expect(summary).toHaveLength(0);
+    expect(stderr).toHaveLength(0);
 });

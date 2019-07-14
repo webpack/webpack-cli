@@ -1,1 +1,1 @@
-module.exports = "set-explicitly";
+module.exports = 'set-explicitly';

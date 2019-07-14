@@ -1,1 +1,1 @@
-module.exports = "find-recursively";
+module.exports = 'find-recursively';

@@ -1,1 +1,1 @@
-module.exports = "entry-b.js";
+module.exports = 'entry-b.js';

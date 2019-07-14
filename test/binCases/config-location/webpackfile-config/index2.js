@@ -1,1 +1,1 @@
-module.exports = "webpack.config";
+module.exports = 'webpack.config';

@@ -1,30 +1,34 @@
 module.exports = {
-	extends: ["eslint:recommended", "plugin:prettier/recommended"],
-	plugins: ["prettier"],
+	extends: ["eslint:recommended", 'plugin:@typescript-eslint/recommended', "plugin:prettier/recommended"],
 	env: {
 		node: true,
 		es6: true,
 		jest: true
 	},
+	parser:  '@typescript-eslint/parser',
+	root: true,
+	plugins: ["node"],
 	parserOptions: { ecmaVersion: 2017, sourceType: "module" },
 	rules: {
 		"no-useless-escape": "off",
 		"quote-props": ["error", "as-needed"],
 		"no-dupe-keys": "error",
-		quotes: ["error", "double"],
 		"no-undef": "error",
 		"no-extra-semi": "error",
-		semi: "error",
+		"quotes": ["error", "single"],
+		"prettier/prettier": ["error", { "singleQuote": true }],
+		"quotemark": [
+			true,
+			"single"
+		],
+		"semi": "error",
 		"no-template-curly-in-string": "error",
 		"no-caller": "error",
-		yoda: "error",
-		eqeqeq: "error",
 		"global-require": "off",
 		"brace-style": "error",
 		"key-spacing": "error",
 		"space-in-parens": ["error", "never"],
 		"space-infix-ops": "error",
-		indent: ["error", "tab", { SwitchCase: 1 }],
 		"no-extra-bind": "warn",
 		"no-empty": "off",
 		"no-multiple-empty-lines": "error",
@@ -39,6 +43,7 @@ module.exports = {
 		"space-before-blocks": "error",
 		"object-curly-spacing": ["error", "always"],
 		"object-curly-newline": ["error", { consistent: true }],
+		"@typescript-eslint/no-var-requires": "off",
 		"keyword-spacing": [
 			"error",
 			{
