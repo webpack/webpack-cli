@@ -2,7 +2,7 @@ import chalk from "chalk";
 import * as j from "jscodeshift";
 import pEachSeries = require("p-each-series");
 import * as path from "path";
-import { getPackageManager } from ".//package-manager";
+import { getPackageManager } from "./package-manager";
 
 import { findProjectRoot } from "./path-utils";
 
