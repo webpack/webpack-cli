@@ -11,14 +11,8 @@ test("help-output", () => {
 
 	expect(summary).toEqual(expect.anything());
 	expect(summary).toContain("webpack");
-	expect(summary).toContain("Config options:");
-	expect(summary).toContain("Basic options:");
-	expect(summary).toContain("Module options:");
-	expect(summary).toContain("Output options:");
-	expect(summary).toContain("Advanced options:");
-	expect(summary).toContain("Resolving options:");
-	expect(summary).toContain("Optimizing options:");
-	expect(summary).toContain("Stats options:");
-	expect(summary).toContain("Options:");
-	expect(stderr).toHaveLength(0);
+	expect(summary).toContain("Usage:");
+	expect(summary).toContain("Example:");
+	expect(summary).toContain("Available Commands");
+	expect(summary).toContain("Options");
 });
