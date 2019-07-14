@@ -1,7 +1,7 @@
 {
   "name": "webpack-cli",
-	"version": "4.0.0-alpha-5",
-	"description": "CLI for webpack & friends",
+  "version": "4.0.0-alpha-5",
+  "description": "CLI for webpack & friends",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -10,7 +10,7 @@
   "bin": {
     "webpack-cli": "cli.js"
   },
-	"main": "cli.js",
+  "main": "cli.js",
   "engines": {
     "node": ">=6.11.5"
   },
@@ -25,7 +25,7 @@
   "files": [
     "lib",
     "cli.js"
-	],
+  ],
   "scripts": {
     "bootstrap": "npm run clean:all && npm install && lerna bootstrap",
     "build": "tsc",
@@ -116,10 +116,17 @@
     }
   },
   "dependencies": {
+    "cli-table": "^0.3.1",
+    "command-line-args": "^5.1.1",
+    "import-local": "^3.0.1",
+    "update-notifier": "^3.0.1",
+    "v8-compile-cache": "^2.0.3",
+    "webpack": "^4.35.3",
+    "webpack-log": "^2.0.0",
+    "webpack-merge": "^4.2.1"
   },
   "peerDependencies": {
     "webpack": "4.x.x"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }
