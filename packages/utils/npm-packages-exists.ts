@@ -1,9 +1,10 @@
+import { resolve } from 'path';
+import { existsSync } from 'fs';
 import chalk from "chalk";
-
 import npmExists from "./npm-exists";
 import { isLocalPath } from "./path-utils";
 import { resolvePackages } from "./resolve-packages";
-
+import { getPathToGlobalPackages } from "./package-manager";
 const WEBPACK_SCAFFOLD_PREFIX = "webpack-scaffold";
 
 /**
@@ -31,7 +32,12 @@ export default function npmPackagesExists(pkg: string[]): void {
 			resolvePackagesIfReady();
 			return;
 		}
-
+		if (existsSync(resolve(getPathToGlobalPackages(), scaffold))) {
+			// If scaffold is already installed or is a linked package
+			acceptedPackages.push(scaffold);
+			resolvePackagesIfReady();
+			return;
+		}
 		// The scaffold is on npm; validate name and existence
 		if (
 			scaffold.length <= WEBPACK_SCAFFOLD_PREFIX.length ||
