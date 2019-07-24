@@ -1,6 +1,6 @@
 {
   "name": "webpack-cli",
-  "version": "3.3.5",
+  "version": "3.3.6",
   "description": "CLI for webpack & friends",
   "license": "MIT",
   "repository": {
@@ -31,8 +31,6 @@
     "build": "tsc",
     "changelog": "conventional-changelog --config ./build/changelog-generator/index.js --infile CHANGELOG.md --same-file",
     "clean:all": "rimraf node_modules packages/*/{node_modules}",
-    "commit": "git-cz",
-    "docs": "typedoc",
     "format": "npm run format:js && npm run format:ts",
     "format:js": "prettier-eslint ./bin/*.js ./bin/**/*.js ./test/**/*.js ./packages/**/**/*.js ./packages/**/*.js --write",
     "format:ts": "prettier-eslint ./packages/**/**/*.ts ./packages/**/*.ts ./packages/**/**/**/*.ts --write",
@@ -135,7 +133,6 @@
     "@babel/register": "7.4.4",
     "@commitlint/cli": "8.0.0",
     "@commitlint/config-lerna-scopes": "8.0.0",
-    "@commitlint/prompt-cli": "8.0.0",
     "@commitlint/travis-cli": "8.0.0",
     "@strictsoftware/typedoc-plugin-monorepo": "0.2.1",
     "@types/jest": "24.0.15",
@@ -169,7 +166,6 @@
     "schema-utils": "1.0.0",
     "ts-jest": "24.0.2",
     "ts-node": "8.3.0",
-    "typedoc": "0.14.2",
     "typescript": "3.5.2",
     "webpack": "4.x.x",
     "webpack-dev-server": "3.7.2"

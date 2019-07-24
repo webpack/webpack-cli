@@ -7,19 +7,15 @@ This folder is the collection of those packages.
 
 ## Packages
 
-1. [add](https://github.com/webpack/webpack-cli/tree/master/packages/add)
-2. [generate-loader](https://github.com/webpack/webpack-cli/tree/master/packages/generate-loader)
-3. [generate-plugin](https://github.com/webpack/webpack-cli/tree/master/packages/generate-plugin)
-4. [generators](https://github.com/webpack/webpack-cli/tree/master/packages/generators)
-5. [info](https://github.com/webpack/webpack-cli/tree/master/packages/info)
-6. [init](https://github.com/webpack/webpack-cli/tree/master/packages/init)
-7. [make](https://github.com/webpack/webpack-cli/tree/master/packages/make)
-8. [migrate](https://github.com/webpack/webpack-cli/tree/master/packages/migrate)
-9. [remove](https://github.com/webpack/webpack-cli/tree/master/packages/remove)
-10. [serve](https://github.com/webpack/webpack-cli/tree/master/packages/serve)
-11. [update](https://github.com/webpack/webpack-cli/tree/master/packages/update)
-12. [utils](https://github.com/webpack/webpack-cli/tree/master/packages/utils)
-13. [webpack-scaffold](https://github.com/webpack/webpack-cli/tree/master/packages/webpack-scaffold)
+1. [generate-loader](https://github.com/webpack/webpack-cli/tree/master/packages/generate-loader)
+2. [generate-plugin](https://github.com/webpack/webpack-cli/tree/master/packages/generate-plugin)
+3. [generators](https://github.com/webpack/webpack-cli/tree/master/packages/generators)
+4. [info](https://github.com/webpack/webpack-cli/tree/master/packages/info)
+5. [init](https://github.com/webpack/webpack-cli/tree/master/packages/init)
+6. [migrate](https://github.com/webpack/webpack-cli/tree/master/packages/migrate)
+7. [serve](https://github.com/webpack/webpack-cli/tree/master/packages/serve)
+8. [utils](https://github.com/webpack/webpack-cli/tree/master/packages/utils)
+9. [webpack-scaffold](https://github.com/webpack/webpack-cli/tree/master/packages/webpack-scaffold)
 
 ## Generic Installation
 

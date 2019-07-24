@@ -1,3 +1,27 @@
+<a name="3.3.6"></a>
+
+# 3.3.6 (2019-07-14)
+
+[Full Changelog](https://github.com/webpack/webpack-cli/compare/v3.3.5...v3.3.6)
+
+## Chore
+
+-   serve: refactor code to be more concise ([d2e3e80](https://github.com/webpack/webpack-cli/commit/d2e3e80))
+-   utils: fixes typo in scaffold ([bd5c1ce](https://github.com/webpack/webpack-cli/commit/bd5c1ce))
+-   fix sec vuln ([110fa5e](https://github.com/webpack/webpack-cli/commit/110fa5e))
+-   prevent weird behaviour of pre-commit hook ([#973](https://github.com/webpack/webpack-cli/pull/973))
+-   include comments ([941da90](https://github.com/webpack/webpack-cli/commit/941da90))
+
+## Docs
+
+-   remove deprecated packages description ([#979](https://github.com/webpack/webpack-cli/pull/979))
+
+## Fix
+
+-   minor refactor ([a30a027](https://github.com/webpack/webpack-cli/commit/a30a027))
+-   update comments ([7553ae7](https://github.com/webpack/webpack-cli/commit/7553ae7))
+-   minor fix ([0d9aa9a](https://github.com/webpack/webpack-cli/commit/0d9aa9a))
+
 <a name="3.3.5"></a>
 
 # 3.3.5 (2019-06-23)
