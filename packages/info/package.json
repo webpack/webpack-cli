@@ -1,22 +1,27 @@
 {
-  "name": "@webpack-cli/info",
-  "version": "0.1.6",
-  "description": "Outputs env info for the ease of debug",
-  "main": "index.js",
-  "author": "",
-  "license": "MIT",
-  "publishConfig": {
-    "access": "public"
-  },
-  "dependencies": {
-    "envinfo": "7.3.1"
-  },
-  "devDependencies": {
-    "@types/node": "12.0.8",
-    "typescript": "3.5.2"
-  },
-  "scripts": {
-    "build": "tsc",
-    "watch": "npm run build && tsc -w"
-  }
+	"name": "@webpack-cli/info",
+	"version": "0.1.6",
+	"description": "Outputs info about system and webpack config",
+	"main": "index.js",
+	"author": "",
+	"license": "MIT",
+	"publishConfig": {
+		"access": "public"
+	},
+	"dependencies": {
+		"@types/yargs": "13.0.0",
+		"chalk": "2.4.2",
+		"cli-table3": "0.5.1",
+		"envinfo": "7.3.1",
+		"prettyjson": "1.2.1",
+		"yargs": "13.2.2"
+	},
+	"devDependencies": {
+		"@types/node": "12.0.8",
+		"typescript": "3.5.2"
+	},
+	"scripts": {
+		"build": "tsc",
+		"watch": "npm run build && tsc -w"
+	}
 }
