@@ -3,6 +3,8 @@ import { SpawnSyncReturns } from "child_process";
 import * as spawn from "cross-spawn";
 import * as inquirer from "inquirer";
 import * as path from "path";
+import * as cmdArgs from "command-line-args";
+import { core } from "./flags"
 
 import { processPromise } from "@webpack-cli/utils/resolve-packages";
 
@@ -70,7 +72,11 @@ const getRootPathModule = (dep: string): string => path.resolve(process.cwd(), d
  * @returns {Function} invokes the devServer API
  */
 
-export default function serve(): Promise<void | Function> {
+export default function serve(args): Promise<void | Function> {
+    const finalArgs = cmdArgs(core, { argv: args, stopAtFirstUnknown: false });
+	delete finalArgs._all.config;
+    return require('./startDevServer')({}, finalArgs._all);
+
 	const packageJSONPath = getRootPathModule("package.json");
 	if (!packageJSONPath) {
 		console.error("\n", chalk.red("✖ Could not find your package.json file"), "\n");
@@ -146,7 +152,7 @@ export default function serve(): Promise<void | Function> {
 										(): Promise<void | Function> => {
 											// Recursion doesn't work well with require call being cached
 											delete require.cache[require.resolve(packageJSONPath)];
-											return serve();
+											return serve(args);
 										}
 									);
 								}
