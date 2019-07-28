@@ -63,7 +63,7 @@ function runAndGetWatchProc(testCase, args = []) {
     const cwd = path.resolve(testCase);
 
     const outputPath = path.resolve(testCase, 'bin');
-    const argsWithOutput = args.concat('--output-path', outputPath);
+    const argsWithOutput = args.concat('--output', outputPath);
 
     const webpackProc = execa(WEBPACK_PATH, argsWithOutput, {
         cwd,
