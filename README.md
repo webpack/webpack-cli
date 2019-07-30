@@ -21,6 +21,7 @@
 [![Downloads][downloads]][downloads-url]
 [![lerna][lerna]][lerna-url]
 [![GitHub contributors][contributors]][contributors-url]
+[![Issue resolution][issue-resolution]][issue-resolution-url]
 
 -   [About](#about)
     -   [How to install](#how-to-install)
@@ -102,6 +103,8 @@ If you like **webpack**, please consider donating to our [Open Collective](https
 [deps-url]: https://david-dm.org/webpack/webpack-cli
 [downloads]: https://img.shields.io/npm/dw/webpack-cli.svg
 [downloads-url]: https://www.npmjs.com/package/webpack-cli
+[issue-resolution]: https://isitmaintained.com/badge/resolution/webpack/webpack-cli.svg
+[issue-resolution-url]: https://github.com/webpack/webpack-cli/issues
 [lerna]: https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg
 [lerna-url]: http://www.lernajs.io/
 [npm]: https://img.shields.io/npm/v/webpack-cli.svg
