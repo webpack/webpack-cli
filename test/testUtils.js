@@ -19,13 +19,12 @@ function run(testCase, args = []) {
     const cwd = path.resolve(testCase);
 
     const outputPath = path.resolve(testCase, 'bin');
-    const argsWithOutput = args.concat('--output-path', outputPath);
+    const argsWithOutput = args.concat('--output', outputPath);
 
     const result = spawnSync(WEBPACK_PATH, argsWithOutput, {
         cwd,
         reject: false,
     });
-
     return result;
 }
 
@@ -33,7 +32,7 @@ function runWatch(testCase, args = []) {
     const cwd = path.resolve(testCase);
 
     const outputPath = path.resolve(testCase, 'bin');
-    const argsWithOutput = args.concat('--output-path', outputPath);
+    const argsWithOutput = args.concat('--output', outputPath);
 
     return new Promise(resolve => {
         const watchPromise = execa(WEBPACK_PATH, argsWithOutput, {
@@ -64,7 +63,7 @@ function runAndGetWatchProc(testCase, args = []) {
     const cwd = path.resolve(testCase);
 
     const outputPath = path.resolve(testCase, 'bin');
-    const argsWithOutput = args.concat('--output-path', outputPath);
+    const argsWithOutput = args.concat('--output', outputPath);
 
     const webpackProc = execa(WEBPACK_PATH, argsWithOutput, {
         cwd,

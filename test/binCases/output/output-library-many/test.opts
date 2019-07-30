@@ -1,4 +1,0 @@
-./index.js
---target async-node
---output-library-target window
---output-library key1 --output-library key2
