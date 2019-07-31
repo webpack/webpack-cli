@@ -4,7 +4,9 @@ import * as spawn from "cross-spawn";
 import * as inquirer from "inquirer";
 import * as path from "path";
 import * as cmdArgs from "command-line-args";
-import { core } from "./flags"
+import { core } from "./flags";
+import * as WebpackCLI from "../../lib/webpack-cli";
+import { core as coreWebpack } from "../../lib/utils/cli-flags";
 
 import { processPromise } from "@webpack-cli/utils/resolve-packages";
 
@@ -73,9 +75,16 @@ const getRootPathModule = (dep: string): string => path.resolve(process.cwd(), d
  */
 
 export default function serve(args): Promise<void | Function> {
-    const finalArgs = cmdArgs(core, { argv: args, stopAtFirstUnknown: false });
-	delete finalArgs._all.config;
-    return require('./startDevServer')({}, finalArgs._all);
+	const cli = new WebpackCLI();
+	// partial parsing usage: https://github.com/75lb/command-line-args/wiki/Partial-parsing
+	const webpackArgs = cmdArgs(coreWebpack, { argv: args, partial: true });
+    const finalArgs = cmdArgs(core, { argv: webpackArgs._unknown || [], stopAtFirstUnknown: false });
+    return new Promise((resolve, reject) => {
+		cli.getCompiler(webpackArgs, coreWebpack).then((compiler) => {
+			require('./startDevServer')(compiler, finalArgs._all || {});
+			resolve();
+		});
+	});
 
 	const packageJSONPath = getRootPathModule("package.json");
 	if (!packageJSONPath) {

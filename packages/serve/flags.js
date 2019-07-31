@@ -9,13 +9,6 @@ const BASIC_GROUP = 'Basic options:';
 module.exports = {
     core: [
         {
-            name: 'config',
-            type: String,
-            defaultValue: 'weback.config.js',
-            group: CONFIG_GROUP,
-            description: 'config',
-        },
-        {
             name: 'inline',
             type: Boolean,
             defaultValue: true,

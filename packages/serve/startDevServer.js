@@ -1,34 +1,20 @@
 const fs = require('fs');
 const net = require('net');
 
-const webpack = require('webpack');
 const Server = require('webpack-dev-server/lib/Server');
 const colors = require('webpack-dev-server/lib/utils/colors');
 const createLogger = require('webpack-dev-server/lib/utils/createLogger');
 const findPort = require('webpack-dev-server/lib/utils/findPort');
 
-function startDevServer(config, options) {
+function startDevServer(compiler, options) {
     const log = createLogger(options);
-
-    let compiler;
-
-    try {
-        compiler = webpack(config);
-    } catch (err) {
-        if (err instanceof webpack.WebpackOptionsValidationError) {
-            log.error(colors.error(options.stats.colors, err.message));
-            // eslint-disable-next-line no-process-exit
-            process.exit(1);
-        }
-
-        throw err;
-    }
 
     try {
         server = new Server(compiler, options, log);
     } catch (err) {
         if (err.name === 'ValidationError') {
-            log.error(colors.error(options.stats.colors, err.message));
+            console.log(err.message);
+            // log.error(colors.error(options.stats.colors, err.message));
             // eslint-disable-next-line no-process-exit
             process.exit(1);
         }
