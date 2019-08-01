@@ -79,8 +79,8 @@ export default function serve(args): Promise<void | Function> {
 	// partial parsing usage: https://github.com/75lb/command-line-args/wiki/Partial-parsing
 	const webpackArgs = cmdArgs(coreWebpack, { argv: args, partial: true });
     const finalArgs = cmdArgs(core, { argv: webpackArgs._unknown || [], stopAtFirstUnknown: false });
-    return new Promise((resolve, reject) => {
-		cli.getCompiler(webpackArgs, coreWebpack).then((compiler) => {
+    return new Promise((resolve): void => {
+		cli.getCompiler(webpackArgs, coreWebpack).then((compiler): void => {
 			require('./startDevServer')(compiler, finalArgs._all || {});
 			resolve();
 		});
