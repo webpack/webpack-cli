@@ -12,7 +12,9 @@ import * as Server from "webpack-dev-server/lib/Server";
  */
 export default function startDevServer(compiler, options, onListening): void {
     const server = new Server(compiler, options);
-    server.listen(options.port, options.host, (err): void => {
+    // Once the dev server has better socket handling within the API listen method,
+    // this will work better
+    server.listen(options.socket || options.port, options.host, (err): void => {
         if (err) {
             throw err;
         }
