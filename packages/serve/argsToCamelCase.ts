@@ -19,7 +19,7 @@ function dashesToCamelCase(str): string {
  * @returns {Object} - the same args object as passed in, with new keys
  */
 export default function argsToCamelCase(args): object {
-    Object.keys(args).forEach((key) => {
+    Object.keys(args).forEach((key): void => {
         const newKey = dashesToCamelCase(key);
         if (key !== newKey) {
             const arg = args[key];
