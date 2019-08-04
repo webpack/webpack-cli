@@ -146,6 +146,7 @@
     "jest": "^24.8.0",
     "jest-cli": "^24.8.0",
     "jest-junit": "^6.4.0",
+    "jest-serializer-ansi": "^1.0.3",
     "lerna": "^3.15.0",
     "lint-staged": "^9.2.0",
     "nyc": "^14.1.1",
