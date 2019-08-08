@@ -115,7 +115,7 @@
   },
   "dependencies": {
     "ansi-escapes": "^4.2.0",
-    "cli-table": "^0.3.1",
+    "cli-table3": "^0.5.1",
     "command-line-args": "^5.1.1",
     "command-line-usage": "^6.0.2",
     "import-local": "^3.0.2",
