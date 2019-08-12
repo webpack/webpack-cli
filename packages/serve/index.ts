@@ -41,7 +41,7 @@ const pmConfig: PackageManagerConfig = {
  * respective package manager is available as
  * nested objects within pmConfig
  *
- * We gonna extract the root installation command
+ * We're gonna extract the root installation command
  * and rest of the flags from pmConfig object
  * by means of array destructuring
  */

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`help-no-args 1`] = `
+exports[`mixed 1`] = `
 "
           ⬡                     webpack                     ⬡
 
@@ -45,7 +45,5 @@ Options
   -p, --prod                Run production build                                
   --version                 Get current version                                 
 
-
-                  Made with ♥️  by the webpack team 
-"
+                  Made with ♥️  by the webpack team "
 `;
