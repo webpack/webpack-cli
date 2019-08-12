@@ -24,7 +24,7 @@ const notifier = updateNotifier({
 });
 
 if (notifier.update) {
-    console.log(`Update available: ${notifier.update.latest}`);
+    process.cliLogger.info(`Update available: ${notifier.update.latest}`);
 }
 
 const semver = require('semver');
