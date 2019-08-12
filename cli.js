@@ -18,7 +18,14 @@ process.cliLogger = require('webpack-log')({
 const updateNotifier = require('update-notifier');
 const packageJson = require('./package.json');
 
-updateNotifier({ pkg: packageJson }).notify();
+const notifier = updateNotifier({
+    pkg,
+    updateCheckInterval: 1000 * 60 * 60 * 24 * 7, // 1 week
+});
+
+if (notifier.update) {
+    console.log(`Update available: ${notifier.update.latest}`);
+}
 
 const semver = require('semver');
 
