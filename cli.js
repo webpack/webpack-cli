@@ -20,7 +20,7 @@ const packageJson = require('./package.json');
 
 const notifier = updateNotifier({
     pkg: packageJson,
-    updateCheckInterval: 1000 * 60 * 60 * 24 * 7, // 1 week
+    updateCheckInterval: 1000 * 60 * 60 * 24 * 30, // 1 month
 });
 
 if (notifier.update) {
