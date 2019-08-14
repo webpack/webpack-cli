@@ -128,7 +128,7 @@ module.exports = function(...args) {
 	}
 
 	if (!configFileLoaded) {
-		return processConfiguredOptions(null);
+		return processConfiguredOptions();
 	} else if (options.length === 1) {
 		return processConfiguredOptions(options[0]);
 	} else {
