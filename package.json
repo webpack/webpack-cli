@@ -131,7 +131,7 @@
   "devDependencies": {
     "@babel/preset-env": "7.4.5",
     "@babel/register": "7.4.4",
-    "@commitlint/cli": "^8.1.0",
+    "@commitlint/cli": "8.1.0",
     "@commitlint/config-lerna-scopes": "8.0.0",
     "@commitlint/travis-cli": "8.0.0",
     "@strictsoftware/typedoc-plugin-monorepo": "0.2.1",
