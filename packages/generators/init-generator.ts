@@ -109,7 +109,7 @@ export default class InitGenerator extends Generator {
 			if (entryOption.length === 0) {
 				this.usingDefaults = true;
 			} else if (entryOption.length > 0) {
-				this.usingDefaults = entryOption && entryOption === "'./src/index.js'" ? true : false;
+				this.usingDefaults = entryOption && entryOption === "'./src/index.js'";
 				if (!this.usingDefaults) {
 					this.configuration.config.webpackOptions.entry = `${entryOption}`;
 				}
