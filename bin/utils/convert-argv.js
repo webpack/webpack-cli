@@ -128,7 +128,7 @@ module.exports = function(...args) {
 	}
 
 	if (!configFileLoaded) {
-		return processConfiguredOptions({});
+		return processConfiguredOptions(null);
 	} else if (options.length === 1) {
 		return processConfiguredOptions(options[0]);
 	} else {
@@ -136,20 +136,24 @@ module.exports = function(...args) {
 	}
 
 	function processConfiguredOptions(options) {
-		const webpackConfigurationValidationErrors = validateSchema(webpackConfigurationSchema, options);
-		if (webpackConfigurationValidationErrors.length) {
-			const error = new WebpackOptionsValidationError(webpackConfigurationValidationErrors);
-			console.error(error.message, `\nReceived: ${typeof options} : ${JSON.stringify(options, null, 2)}`);
-			process.exit(-1); // eslint-disable-line
+		if (options) {
+			const webpackConfigurationValidationErrors = validateSchema(webpackConfigurationSchema, options);
+			if (webpackConfigurationValidationErrors.length) {
+				const error = new WebpackOptionsValidationError(webpackConfigurationValidationErrors);
+				console.error(error.message, `\nReceived: ${typeof options} : ${JSON.stringify(options, null, 2)}`);
+				process.exit(-1); // eslint-disable-line
+			}
+		} else {
+			options = {};
 		}
 
 		// process Promise
-		if (typeof options.then === "function") {
+		if (options && typeof options.then === "function") {
 			return options.then(processConfiguredOptions);
 		}
 
 		// process ES6 default
-		if (typeof options === "object" && typeof options.default === "object") {
+		if (options && typeof options === "object" && typeof options.default === "object") {
 			return processConfiguredOptions(options.default);
 		}
 

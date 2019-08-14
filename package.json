@@ -131,7 +131,7 @@
   "devDependencies": {
     "@babel/preset-env": "7.4.5",
     "@babel/register": "7.4.4",
-    "@commitlint/cli": "8.0.0",
+    "@commitlint/cli": "^8.1.0",
     "@commitlint/config-lerna-scopes": "8.0.0",
     "@commitlint/travis-cli": "8.0.0",
     "@strictsoftware/typedoc-plugin-monorepo": "0.2.1",
@@ -142,7 +142,7 @@
     "babel-preset-env": "1.7.0",
     "babel-preset-jest": "24.6.0",
     "codecov": "3.5.0",
-    "commitizen": "3.1.1",
+    "commitizen": "^4.0.3",
     "commitlint-config-cz": "0.12.0",
     "conventional-changelog-cli": "2.0.21",
     "cz-customizable": "6.2.0",
