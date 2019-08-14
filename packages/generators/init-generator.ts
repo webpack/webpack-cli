@@ -126,7 +126,7 @@ export default class InitGenerator extends Generator {
 			this.autoGenerateConfig
 		);
 
-		this.usingDefaults = !outputDir || outputDir === "'dist'" ? true : false;
+		this.usingDefaults = !outputDir || outputDir === "'dist'";
 
 		if (!this.usingDefaults) {
 			this.configuration.config.webpackOptions.output = {
