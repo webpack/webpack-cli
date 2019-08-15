@@ -108,10 +108,10 @@ If you like **webpack**, please consider donating to our [Open Collective](https
 [issue-resolution-url]: https://github.com/webpack/webpack-cli/issues
 [lerna]: https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg
 [lerna-url]: http://www.lernajs.io/
-[npm]: https://img.shields.io/npm/v/webpack-cli.svg
-[npm-url]: https://www.npmjs.com/package/webpack-cli
 [maintainability]: https://codeclimate.com/github/webpack/webpack-cli/badges/gpa.svg
 [maintainability-url]: https://codeclimate.com/github/webpack/webpack-cli
+[npm]: https://img.shields.io/npm/v/webpack-cli.svg
+[npm-url]: https://www.npmjs.com/package/webpack-cli
 [pr-welcome]: https://img.shields.io/badge/PRs%20-welcome-brightgreen.svg
 [pr-welcome-url]: https://github.com/webpack/webpack-cli/blob/next/.github/CONTRIBUTING.md
 [size]: https://packagephobia.now.sh/badge?p=webpack-cli
