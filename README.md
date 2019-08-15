@@ -22,6 +22,7 @@
 [![lerna][lerna]][lerna-url]
 [![GitHub contributors][contributors]][contributors-url]
 [![Issue resolution][issue-resolution]][issue-resolution-url]
+[![PR's welcome][pr-welcome]][pr-welcome-url]
 
 -   [About](#about)
     -   [How to install](#how-to-install)
@@ -113,3 +114,5 @@ If you like **webpack**, please consider donating to our [Open Collective](https
 [maintainability-url]: https://codeclimate.com/github/webpack/webpack-cli
 [size]: https://packagephobia.now.sh/badge?p=webpack-cli
 [size-url]: https://packagephobia.now.sh/result?p=webpack-cli
+[pr-welcome]: https://img.shields.io/badge/PRs%20-welcome-brightgreen.svg
+[pr-welcome-url]: http://makeapullrequest.com/
