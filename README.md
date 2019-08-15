@@ -58,7 +58,7 @@ Supporting developers is an important task for webpack CLI. Thus, webpack CLI pr
 -   [`webpack-cli generate-loader`](./packages/generate-loader/README.md#webpack-cli-generate-loader) - Initiate new loader project.
 -   [`webpack-cli serve`](./packages/serve/README.md#webpack-cli-serve) - Use webpack with a development server that provides live reloading.
 
-> Deprecated commands as of v3.3.3
+> Deprecated commands since v3.3.3
 
 -   `webpack-cli add` - Add new properties to a webpack configuration file.
 -   `webpack-cli remove` - Remove properties from a webpack configuration file.
