@@ -1,3 +1,71 @@
+<a name="3.3.5"></a>
+
+# 3.3.5 (2019-06-23)
+
+[Full Changelog](https://github.com/webpack/webpack-cli/compare/v3.3.4...v3.3.5)
+
+## Chore
+
+-   remove donation section ([76b75ac](https://github.com/webpack/webpack-cli/commit/76b75ac))
+-   update pkg lock ([8913928](https://github.com/webpack/webpack-cli/commit/8913928))
+-   deps: update major versions ([#969](https://github.com/webpack/webpack-cli/pull/969))
+-   packages: lock dependencies versions ([#958](https://github.com/webpack/webpack-cli/pull/958))
+-   scripts: clean opencollective ([cd54ba5](https://github.com/webpack/webpack-cli/commit/cd54ba5))
+-   scripts: clean postinstall ([0c1f6b6](https://github.com/webpack/webpack-cli/commit/0c1f6b6))
+-   ts: enables source map in the ts ([#961](https://github.com/webpack/webpack-cli/pull/961))
+-   added await in order to resolve the pending promise ([#948](https://github.com/webpack/webpack-cli/pull/948))
+
+## CLI
+
+-   remove donation prompt ([a37477d](https://github.com/webpack/webpack-cli/commit/a37477d))
+
+## Fix
+
+-   deps: move prettier from dependencies to devDependencies ([#968](https://github.com/webpack/webpack-cli/pull/968))
+-   change "usr strict" to "use strict" ([670efc7](https://github.com/webpack/webpack-cli/commit/670efc7))
+-   update deps ([69f364e](https://github.com/webpack/webpack-cli/commit/69f364e))
+
+<a name="3.3.4"></a>
+
+# 3.3.4 (2019-06-11)
+
+[Full Changelog](https://github.com/webpack/webpack-cli/compare/3.3.3...3.3.4)
+
+## New Features
+
+-   add workbox + offline support ([589253e](https://github.com/webpack/webpack-cli/commit/589253e))
+-   better defaults ([77bf564](https://github.com/webpack/webpack-cli/commit/77bf564))
+
+## Chore
+
+-   fix prompt ([478340d](https://github.com/webpack/webpack-cli/commit/478340d))
+-   improved err msg ([23eddcb](https://github.com/webpack/webpack-cli/commit/23eddcb))
+-   removed the commented statement ([bf0efa5](https://github.com/webpack/webpack-cli/commit/bf0efa5))
+-   remove unused dep ([7dd8ff2](https://github.com/webpack/webpack-cli/commit/7dd8ff2))
+-   fix sec vuln ([545ef3a](https://github.com/webpack/webpack-cli/commit/545ef3a))
+-   fix sec vuln ([4760125](https://github.com/webpack/webpack-cli/commit/4760125))
+-   readd docs ([830eaf3](https://github.com/webpack/webpack-cli/commit/830eaf3))
+-   reset prompting for cmd ([a16f8dc](https://github.com/webpack/webpack-cli/commit/a16f8dc))
+-   remove unused file ([a0a06b3](https://github.com/webpack/webpack-cli/commit/a0a06b3))
+
+## Docs
+
+-   added auto flag in docs for init command ([dede7d8](https://github.com/webpack/webpack-cli/commit/dede7d8))
+
+## Fix
+
+-   module not found error ([a2062f2](https://github.com/webpack/webpack-cli/commit/a2062f2))
+-   remove unused pkgs and refactor init generator ([7608d4b](https://github.com/webpack/webpack-cli/commit/7608d4b))
+
+## Tests
+
+-   fix failing ones ([d154d0e](https://github.com/webpack/webpack-cli/commit/d154d0e))
+
+## Misc
+
+-   finetune 0cjs ([bd2cd86](https://github.com/webpack/webpack-cli/commit/bd2cd86))
+-   improve cjs ([60ecc02](https://github.com/webpack/webpack-cli/commit/60ecc02))
+
 <a name="3.3.3"></a>
 
 # 3.3.3 (2019-06-07)

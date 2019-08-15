@@ -6,46 +6,49 @@ import * as path from "path";
 
 import { processPromise } from "@webpack-cli/utils/resolve-packages";
 
-/**
- *
- * Installs WDS using NPM with --save --dev etc
- *
- * @param {Object} cmd - arg to spawn with
- * @returns {Void}
- */
-
-/**
- *
- * Installs WDS using Yarn with add etc
- *
- * @param {Object} cmd - arg to spawn with
- * @returns {Void}
- */
-
-interface ConfigType {
-	installCmd: string;
-	dependency: string;
-	devDependency: string;
-	optionalDependency: string;
+interface Commands {
+	dependency: string[];
+	devDependency: string[];
+	optionalDependency: string[];
 }
 
-const npmConfig: ConfigType = {
-	installCmd: "install",
-	dependency: "--save",
-	devDependency: "--save-dev",
-	optionalDependency: "--save-optional"
+interface PackageManagerConfig {
+	[key: string]: Commands;
+}
+
+const pmConfig: PackageManagerConfig = {
+	npm: {
+		dependency: ["install", "--save"],
+		devDependency: ["install", "--save-dev"],
+		optionalDependency: ["install", "--save-optional"]
+	},
+	yarn: {
+		dependency: ["add"],
+		devDependency: ["add", "-D"],
+		optionalDependency: ["add", "--optional"]
+	}
 };
 
-const yarnConfig: ConfigType = {
-	installCmd: "add",
-	dependency: " ",
-	devDependency: "--save",
-	optionalDependency: "--optional"
-};
+/**
+ *
+ * Installs WDS using the respective package manager with corresponding commands
+ *
+ * @param {String} pm - package manager to be used
+ * @param {String} cmd - arg to spawn with
+ * @returns {Function} spawn - installs WDS
+ *
+ * The dependency installation commands for the
+ * respective package manager is available as
+ * nested objects within pmConfig
+ *
+ * We're gonna extract the root installation command
+ * and rest of the flags from pmConfig object
+ * by means of array destructuring
+ */
 
 const spawnWithArg = (pm: string, cmd: string): SpawnSyncReturns<Buffer> => {
-	const pmConfig: ConfigType = pm === "npm" ? npmConfig : yarnConfig;
-	const options: string[] = [pmConfig.installCmd, "webpack-dev-server", pmConfig[cmd]];
+	const [installCmd, ...flags] = pmConfig[pm][cmd];
+	const options: string[] = [installCmd, "webpack-dev-server", ...flags];
 	return spawn.sync(pm, options, { stdio: "inherit" });
 };
 

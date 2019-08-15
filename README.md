@@ -21,6 +21,7 @@
 [![Downloads][downloads]][downloads-url]
 [![lerna][lerna]][lerna-url]
 [![GitHub contributors][contributors]][contributors-url]
+[![Issue resolution][issue-resolution]][issue-resolution-url]
 
 -   [About](#about)
     -   [How to install](#how-to-install)
@@ -96,8 +97,6 @@ The webpack family welcomes any contributor, small or big. We are happy to elabo
 
 If you like **webpack**, please consider donating to our [Open Collective](https://opencollective.com/webpack) to help us maintain it.
 
-We show this message in the terminal once a week, if you want you can disable it by setting the environment variable `DISABLE_OPENCOLLECTIVE=true` or `CI=true`.
-
 [build-status]: https://travis-ci.org/webpack/webpack-cli.svg
 [build-status-url]: https://travis-ci.org/webpack/webpack-cli
 [build-status-azure]: https://dev.azure.com/webpack/webpack/_apis/build/status/webpack.webpack-cli
@@ -110,6 +109,8 @@ We show this message in the terminal once a week, if you want you can disable it
 [deps-url]: https://david-dm.org/webpack/webpack-cli
 [downloads]: https://img.shields.io/npm/dw/webpack-cli.svg
 [downloads-url]: https://www.npmjs.com/package/webpack-cli
+[issue-resolution]: https://isitmaintained.com/badge/resolution/webpack/webpack-cli.svg
+[issue-resolution-url]: https://github.com/webpack/webpack-cli/issues
 [lerna]: https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg
 [lerna-url]: http://www.lernajs.io/
 [npm]: https://img.shields.io/npm/v/webpack-cli.svg

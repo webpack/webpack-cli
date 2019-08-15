@@ -109,7 +109,7 @@ export default class InitGenerator extends Generator {
 			if (entryOption.length === 0) {
 				this.usingDefaults = true;
 			} else if (entryOption.length > 0) {
-				this.usingDefaults = entryOption && entryOption === "'./src/index.js'" ? true : false;
+				this.usingDefaults = entryOption && entryOption === "'./src/index.js'";
 				if (!this.usingDefaults) {
 					this.configuration.config.webpackOptions.entry = `${entryOption}`;
 				}
@@ -118,7 +118,7 @@ export default class InitGenerator extends Generator {
 			this.configuration.config.webpackOptions.entry = entryOption;
 		}
 
-		let { outputDir } = Input(
+		let { outputDir } = await Input(
 			self,
 			"outputDir",
 			"In which folder do you want to store your generated bundles?",
@@ -126,7 +126,7 @@ export default class InitGenerator extends Generator {
 			this.autoGenerateConfig
 		);
 
-		this.usingDefaults = !outputDir || outputDir === "'dist'" ? true : false;
+		this.usingDefaults = !outputDir || outputDir === "'dist'";
 
 		if (!this.usingDefaults) {
 			this.configuration.config.webpackOptions.output = {

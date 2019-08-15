@@ -95,9 +95,9 @@ function runMigration(currentConfigPath: string, outputConfigPath: string): Prom
 		.run()
 		.then((ctx: Node): void | Promise<void> => {
 			const result: string = ctx.ast.toSource(recastOptions);
-			const diffOutput: diff.IDiffResult[] = diff.diffLines(ctx.source, result);
+			const diffOutput: diff.Change[] = diff.diffLines(ctx.source, result);
 
-			diffOutput.forEach((diffLine: diff.IDiffResult): void => {
+			diffOutput.forEach((diffLine: diff.Change): void => {
 				if (diffLine.added) {
 					process.stdout.write(chalk.green(`+ ${diffLine.value}`));
 				} else if (diffLine.removed) {
