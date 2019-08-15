@@ -115,4 +115,4 @@ If you like **webpack**, please consider donating to our [Open Collective](https
 [size]: https://packagephobia.now.sh/badge?p=webpack-cli
 [size-url]: https://packagephobia.now.sh/result?p=webpack-cli
 [pr-welcome]: https://img.shields.io/badge/PRs%20-welcome-brightgreen.svg
-[pr-welcome-url]: http://makeapullrequest.com/
+[pr-welcome-url]: https://github.com/webpack/webpack-cli/blob/next/.github/CONTRIBUTING.md
