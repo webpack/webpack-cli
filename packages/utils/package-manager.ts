@@ -4,46 +4,6 @@ import * as spawn from "cross-spawn";
 import * as fs from "fs";
 import * as path from "path";
 
-interface SpawnFunctions {
-	npm: (pkg: string, isNew: boolean) => SpawnSyncReturns<Buffer>;
-	yarn: (pkg: string, isNew: boolean) => SpawnSyncReturns<Buffer>;
-}
-
-/**
- *
- * Spawns a new process using npm
- *
- * @param {String} pkg - The dependency to be installed
- * @param {Boolean} isNew - indicates if it needs to be updated or installed
- * @returns {Function} spawn - Installs the package
- */
-
-function spawnNPM(pkg: string, isNew: boolean): SpawnSyncReturns<Buffer> {
-	return spawn.sync("npm", [isNew ? "install" : "update", "-g", pkg], {
-		stdio: "inherit"
-	});
-}
-
-/**
- *
- * Spawns a new process using yarn
- *
- * @param {String} pkg - The dependency to be installed
- * @param {Boolean} isNew - indicates if it needs to be updated or installed
- * @returns {Function} spawn - Installs the package
- */
-
-function spawnYarn(pkg: string, isNew: boolean): SpawnSyncReturns<Buffer> {
-	return spawn.sync("yarn", ["global", isNew ? "add" : "upgrade", pkg], {
-		stdio: "inherit"
-	});
-}
-
-const SPAWN_FUNCTIONS: SpawnFunctions = {
-	npm: spawnNPM,
-	yarn: spawnYarn
-};
-
 /**
  *
  * Returns the name of package manager to use,
@@ -64,6 +24,30 @@ export function getPackageManager(): string {
 	} else {
 		return "npm";
 	}
+}
+
+/**
+ *
+ * Spawns a new process using the respective package manager
+ *
+ * @param {String} pkg - The dependency to be installed
+ * @param {Boolean} isNew - indicates if it needs to be updated or installed
+ * @returns {Function} spawn - Installs the package
+ */
+
+function spawnWithArg(pkg: string, isNew: boolean): SpawnSyncReturns<Buffer> {
+	const packageManager: string = getPackageManager();
+	let options: string[] = [];
+
+	if (packageManager === "npm") {
+		options = [isNew ? "install" : "update", "-g", pkg];
+	} else {
+		options = ["global", isNew ? "add" : "upgrade", pkg];
+	}
+
+	return spawn.sync(packageManager, options, {
+		stdio: "inherit"
+	});
 }
 
 /**
@@ -101,8 +85,7 @@ export function getPathToGlobalPackages(): string {
 export function spawnChild(pkg: string): SpawnSyncReturns<Buffer> {
 	const rootPath: string = getPathToGlobalPackages();
 	const pkgPath: string = path.resolve(rootPath, pkg);
-	const packageManager: string = getPackageManager();
 	const isNew = !fs.existsSync(pkgPath);
 
-	return SPAWN_FUNCTIONS[packageManager](pkg, isNew);
+	return spawnWithArg(pkg, isNew);
 }
