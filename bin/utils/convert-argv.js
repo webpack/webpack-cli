@@ -148,12 +148,12 @@ module.exports = function(...args) {
 		}
 
 		// process Promise
-		if (options && typeof options.then === "function") {
+		if (typeof options.then === "function") {
 			return options.then(processConfiguredOptions);
 		}
 
 		// process ES6 default
-		if (options && typeof options === "object" && typeof options.default === "object") {
+		if (typeof options === "object" && typeof options.default === "object") {
 			return processConfiguredOptions(options.default);
 		}
 
