@@ -6,7 +6,7 @@ const execa = require('execa');
 const { sync: spawnSync } = execa;
 const { Writable } = require('readable-stream');
 
-const WEBPACK_PATH = path.resolve(__dirname, '../cli.js');
+const WEBPACK_PATH = path.resolve(__dirname, '../../cli.js');
 
 /**
  * Description

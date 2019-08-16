@@ -35,14 +35,6 @@ describe("package-manager", () => {
 		mockSpawnErrorOnce();
 	}
 
-	function mockUpdateYarnOnce() {
-		fs.existsSync.mockReturnValueOnce(false);
-		fs.existsSync.mockReturnValueOnce(true);
-		fs.existsSync.mockReturnValueOnce(false);
-		fs.existsSync.mockReturnValueOnce(true);
-		fs.existsSync.mockReturnValueOnce(true);
-	}
-
 	function mockUpdateNPMOnce() {
 		fs.existsSync.mockReturnValueOnce(true);
 		fs.existsSync.mockReturnValueOnce(false);
