@@ -77,13 +77,23 @@ function extractSummary(stdout) {
     if (stdout === '') {
         return '';
     }
-    return stdout
+    const metaData = ['Output Directory', 'Built', 'Version', 'Compile Time'];
+
+    const summaryArray = stdout
         .split('\n')
-        .filter(line => !line.includes('Hash'))
-        .filter(line => !line.includes('Version'))
-        .filter(line => !line.includes('Time'))
-        .filter(line => !line.includes('Built at'))
-        .join('\n');
+        .filter(line => metaData.find(category => ~line.indexOf(category)))
+        .filter(line => line)
+        .map(line => line.trim())
+        .map(line => {
+            const categoryTouple = line.split(':');
+            const categoryIdentifier = categoryTouple.shift();
+            const categoryValue = categoryTouple.pop();
+            return {
+                [categoryIdentifier]: categoryValue,
+            };
+        });
+    const summaryObject = summaryArray.reduce((acc, curr) => ({ ...curr, ...acc }));
+    return summaryObject;
 }
 
 /**
