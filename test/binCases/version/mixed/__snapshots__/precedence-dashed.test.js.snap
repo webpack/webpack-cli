@@ -1,8 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`precedence-dashed 1`] = `
-"
-webpack-cli 4.0.0-alpha-5
-webpack 4.35.3
-"
-`;

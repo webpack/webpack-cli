@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`mixed 1`] = `
+exports[`single help flag creates a readable snapshot 1`] = `
 "
           ⬡                     webpack                     ⬡
 

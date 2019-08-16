@@ -1,6 +1,6 @@
 'use strict';
 
-const { extractHash, appendDataIfFileExists, copyFile } = require('./testUtils');
+const { extractHash, appendDataIfFileExists, copyFile } = require('./test-utils');
 const { writeFileSync, unlinkSync, readFileSync, existsSync } = require('fs');
 const { resolve } = require('path');
 
