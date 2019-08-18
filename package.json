@@ -119,6 +119,7 @@
     "command-line-args": "^5.1.1",
     "command-line-usage": "^6.0.2",
     "import-local": "^3.0.2",
+    "js-config-webpack-plugin": "^1.4.0",
     "terser-webpack-plugin": "^1.4.1",
     "update-notifier": "^3.0.1",
     "v8-compile-cache": "^2.1.0",
@@ -130,6 +131,7 @@
     "webpack": "4.x.x"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.5.5",
     "@commitlint/cli": "^8.1.0",
     "@commitlint/config-lerna-scopes": "^8.1.0",
     "@types/jest": "^24.0.17",
