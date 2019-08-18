@@ -1,3 +1,20 @@
+<a name="3.3.7"></a>
+
+# 3.3.7 (2019-08-18)
+
+[Full Changelog](https://github.com/webpack/webpack-cli/compare/v3.3.6...v3.3.7)
+
+## Chore
+
+-   resolve differently ([45b9127](https://github.com/webpack/webpack-cli/commit/45b9127))
+-   update lockfile & pass nil ([43fc033](https://github.com/webpack/webpack-cli/commit/43fc033))
+-   lock deps ([97d5c75](https://github.com/webpack/webpack-cli/commit/97d5c75))
+-   lock deps ([635bfa3](https://github.com/webpack/webpack-cli/commit/635bfa3))
+
+## Fix
+
+-   resolve opts when no-config ([fb31cc4](https://github.com/webpack/webpack-cli/commit/fb31cc4))
+
 <a name="3.3.6"></a>
 
 # 3.3.6 (2019-07-14)
