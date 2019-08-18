@@ -1,17 +1,20 @@
 'use strict';
 
-const { access, constants } = require('fs');
+const { stat } = require('fs');
+const { resolve } = require('path');
+
 const { run, extractSummary } = require('../utils/test-utils');
 
 describe('single entry flag', () => {
     it('compile but throw missing entry module error', done => {
         const { stdout, stderr } = run(__dirname);
         const summary = extractSummary(stdout);
-        const outputDir = 'entry/dist';
+        const outputDir = 'entry/bin';
         expect(summary['Output Directory']).toContain(outputDir);
         expect(stderr).toContain('Entry module not found');
-        access('./dist', constants.F_OK, err => {
-            expect(err).not.toBeDefined();
+        stat(resolve(__dirname, './bin'), (err, stats) => {
+            expect(err).toBe(null);
+            expect(stats.isDirectory()).toBe(true);
             done();
         });
     });
