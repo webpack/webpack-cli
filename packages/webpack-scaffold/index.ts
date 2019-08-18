@@ -53,7 +53,7 @@ export function List(
 	message: string,
 	choices: string[],
 	defaultChoice?: string,
-	skip: boolean = false
+	skip = false
 ): object | any {
 	if (skip) return { [name]: defaultChoice };
 
@@ -91,7 +91,7 @@ export function Input(
 	name: string,
 	message: string,
 	defaultChoice?: string,
-	skip: boolean = false
+	skip = false
 ): object | any {
 	if (skip) return { [name]: defaultChoice };
 	return self.prompt([
@@ -127,8 +127,8 @@ export function Confirm(
 	self: any,
 	name: string,
 	message: string,
-	defaultChoice: boolean = true,
-	skip: boolean = false
+	defaultChoice = true,
+	skip = false
 ): object | any {
 	if (skip) return { [name]: defaultChoice };
 

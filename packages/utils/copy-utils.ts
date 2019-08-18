@@ -12,12 +12,12 @@ export const generatorCopy = (generator, templateDir: string): ((filePath: strin
 	filePath: string
 ): void => {
 	const sourceParts = templateDir.split(path.delimiter);
-	sourceParts.push.apply(sourceParts, filePath.split("/"));
+	sourceParts.push(...filePath.split("/"));
 	const targetParts = path.dirname(filePath).split("/");
 	targetParts.push(path.basename(filePath, ".tpl"));
 
 	generator.fs.copy(
-		path.join.apply(null, sourceParts),
+		path.join(...sourceParts),
 		generator.destinationPath(path.join.apply(null, targetParts))
 	);
 };
@@ -39,12 +39,12 @@ export const generatorCopyTpl = (
 	templateData: object
 ): ((filePath: string) => void) => (filePath: string): void => {
 	const sourceParts = templateDir.split(path.delimiter);
-	sourceParts.push.apply(sourceParts, filePath.split("/"));
+	sourceParts.push(...filePath.split("/"));
 	const targetParts = path.dirname(filePath).split("/");
 	targetParts.push(path.basename(filePath, ".tpl").slice(1));
 
 	generator.fs.copyTpl(
-		path.join.apply(null, sourceParts),
+		path.join(...sourceParts),
 		generator.destinationPath(path.join.apply(null, targetParts)),
 		templateData
 	);
