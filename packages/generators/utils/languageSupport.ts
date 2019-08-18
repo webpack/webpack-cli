@@ -29,7 +29,7 @@ const getFolder = (path: string): string =>
 
 function getEntryFolders(self): string[] {
 	const entryOption = self.configuration.config.webpackOptions.entry;
-	let entryFolders = {};
+	const entryFolders = {};
 	if (typeof entryOption === "string") {
 		const folder = getFolder(entryOption);
 		if (folder.length > 0) entryFolders[folder] = true;

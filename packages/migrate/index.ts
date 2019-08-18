@@ -13,7 +13,7 @@ import { transformations } from "./migrate";
 import { Node } from "./types/NodePath";
 import jscodeshift from "jscodeshift";
 
-declare var process: {
+declare let process: {
 	cwd: Function;
 	webpackModule: {
 		validate: Function;
@@ -132,7 +132,7 @@ function runMigration(currentConfigPath: string, outputConfigPath: string): Prom
 						}
 					}
 				)
-				.then((answer: { confirmValidation: boolean }): void => {
+				.then(async(answer: { confirmValidation: boolean }): Promise<void> => {
 					if (!answer) {
 						return;
 					}
@@ -144,7 +144,8 @@ function runMigration(currentConfigPath: string, outputConfigPath: string): Prom
 					});
 
 					if (answer.confirmValidation) {
-						const webpackOptionsValidationErrors: string[] = validate(require(outputConfigPath));
+						const outputPath = await import(outputConfigPath);
+						const webpackOptionsValidationErrors: string[] = validate(outputPath);
 
 						if (webpackOptionsValidationErrors.length) {
 							console.error(chalk.red("\n✖ Your configuration validation wasn't successful \n"));

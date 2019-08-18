@@ -2,6 +2,8 @@
 
 import * as packageManager from "../package-manager";
 
+import * as globalModules from "global-modules";
+
 jest.mock("cross-spawn");
 jest.mock("fs");
 
@@ -77,6 +79,6 @@ describe("package-manager", () => {
 	it("should return the npm global dir from getPathToGlobalPackages if yarn is not installed", () => {
 		mockSpawnErrorOnce();
 		const globalPath = packageManager.getPathToGlobalPackages();
-		expect(globalPath).toBe(require("global-modules"));
+		expect(globalPath).toBe(globalModules);
 	});
 });

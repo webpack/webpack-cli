@@ -12,7 +12,6 @@ import {
 	langQuestionHandler,
 	tooltip,
 	generatePluginName,
-	Loader,
 	StylingType,
 	styleQuestionHandler,
 	entryQuestions
@@ -81,8 +80,6 @@ export default class InitGenerator extends Generator {
 	public async prompting(): Promise<void | {}> {
 		const done: () => {} = this.async();
 		const self: this = this;
-		let regExpForStyles: string;
-		let ExtractUseProps: Loader[];
 
 		process.stdout.write(
 			`\n${logSymbols.info}${chalk.blue(" INFO ")} ` +
@@ -118,7 +115,7 @@ export default class InitGenerator extends Generator {
 			this.configuration.config.webpackOptions.entry = entryOption;
 		}
 
-		let { outputDir } = await Input(
+		const { outputDir } = await Input(
 			self,
 			"outputDir",
 			"In which folder do you want to store your generated bundles?",
@@ -156,7 +153,7 @@ export default class InitGenerator extends Generator {
 			this.autoGenerateConfig
 		);
 
-		({ ExtractUseProps, regExpForStyles } = styleQuestionHandler(self, stylingType));
+		const { ExtractUseProps, regExpForStyles } = styleQuestionHandler(self, stylingType);
 
 		if (this.usingDefaults) {
 			// Ask if the user wants to use extractPlugin

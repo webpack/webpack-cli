@@ -137,7 +137,7 @@ describe('copyFile functionality', () => {
         const originalFile = 'junkFile.js';
         const originalFilePath = resolve(__dirname, originalFile);
         const originalFileData = 'initial junk data';
-        var copyFilePath;
+        let copyFilePath;
 
         beforeEach(() => {
             writeFileSync(originalFilePath, originalFileData);
