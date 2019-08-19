@@ -24,8 +24,8 @@ coverage
 
 # Test Compilation
 test/js/*
-test/binCases/**/bin/
-test/binCases/**/**/bin/
+test/**/bin/
+test/**/**/bin/
 # lerna log
 lerna-debug.log
 

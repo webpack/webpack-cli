@@ -5,6 +5,7 @@
  *  Based on: https://github.com/GoogleChrome/lighthouse/blob/master/build/changelog-generator/
  */
 'use strict';
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 const readFileSync = require('fs').readFileSync;
 const resolve = require('path').resolve;
 const mainTemplate = readFileSync(resolve(__dirname, 'templates/template.hbs')).toString();

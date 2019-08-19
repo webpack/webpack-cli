@@ -1,6 +1,8 @@
 import * as jscodeshift from "jscodeshift";
 import * as Generator from "yeoman-generator";
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 export function createArrowFunction(value: string): string {
 	return `() => '${value}'`;
 }
