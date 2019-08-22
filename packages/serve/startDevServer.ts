@@ -11,10 +11,25 @@ import * as Server from "webpack-dev-server/lib/Server";
  * @returns {Void} 
  */
 export default function startDevServer(compiler, options, onListening): void {
+    const firstWpOpt = compiler.compilers
+        ? compiler.compilers[0].options
+        : compiler.options;
+    const devServerOptions = firstWpOpt.devServer || {};
+
+    const host = options.host || devServerOptions.host || 'localhost';
+    const port = options.port || devServerOptions.port || 8080;
+    // socket should not have a default value, because it should only be used if the
+    // user explicitly provides it
+    const socket = options.socket || devServerOptions.socket;
+
+    options.host = host;
+    options.port = port;
+    if (socket) {
+        options.socket = socket;
+    }
+
     const server = new Server(compiler, options);
-    // Once the dev server has better socket handling within the API listen method,
-    // this will work better
-    server.listen(options.socket || options.port, options.host, (err): void => {
+    server.listen(socket || port, host, (err): void => {
         if (err) {
             throw err;
         }

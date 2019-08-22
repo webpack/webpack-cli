@@ -182,7 +182,6 @@ module.exports = {
             name: 'port',
             type: Number,
             describe: 'The port',
-            defaultValue: 8080,
             group: CONNECTION_GROUP,
         },
         {
@@ -206,7 +205,6 @@ module.exports = {
         {
             name: 'host',
             type: String,
-            defaultValue: 'localhost',
             describe: 'The hostname/ip address the server will bind to',
             group: CONNECTION_GROUP,
         },
