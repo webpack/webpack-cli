@@ -34,7 +34,7 @@ describe('version flag with multiple arguments', () => {
         expect(stderr).toHaveLength(0);
     });
 
-    it('outputs version with multiple dashed args and has precidence', () => {
+    it('outputs version with multiple dashed args and has precedence', () => {
         const { stdout, stderr } = run(__dirname, ['--target', 'browser', '--version']);
         expect(stdout).toContain(pkgJSON.version);
         expect(stderr).toHaveLength(0);
