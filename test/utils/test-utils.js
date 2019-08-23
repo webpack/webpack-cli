@@ -80,7 +80,7 @@ function extractSummary(stdout) {
 
     const summaryArray = stdout
         .split('\n')
-        .filter(line => metaData.find(category => ~line.indexOf(category)))
+        .filter(line => metaData.find(category => line.includes(category)))
         .filter(line => line)
         .map(line => line.trim())
         .map(line => {
