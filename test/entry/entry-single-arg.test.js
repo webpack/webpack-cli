@@ -10,7 +10,12 @@ describe('single entry flag', () => {
         const { stdout, stderr } = run(__dirname);
         const summary = extractSummary(stdout);
         const outputDir = 'entry/bin';
-        expect(summary['Output Directory']).toContain(outputDir);
+        const outDirectoryFromCompiler = summary['Output Directory'];
+        const outDirToMatch = outDirectoryFromCompiler
+            .split('\\')
+            .slice(outDirectoryFromCompiler.split('\\').length - 2, outDirectoryFromCompiler.split('\\').length)
+            .join('/');
+        expect(outDirToMatch).toContain(outputDir);
         expect(stderr).toContain('Entry module not found');
         stat(resolve(__dirname, './bin'), (err, stats) => {
             expect(err).toBe(null);
