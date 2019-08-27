@@ -1,7 +1,7 @@
 import * as Table from "cli-table3";
 import chalk from "chalk";
 export function renderTable(data, fileName): string {
-	let table = new Table({
+	const table = new Table({
 		head: [chalk.blueBright("Config"), chalk.blueBright(fileName)]
 	});
 

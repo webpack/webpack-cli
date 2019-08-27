@@ -41,14 +41,14 @@ function modifyConfig(config, key) {
 export function configReader(config): string[] {
     let filteredArray = [];
 
-    let options = {
+    const options = {
         noColor: true,
     };
     Object.keys(config).map((key): void => {
         if (CONFIG_SCHEMA[key]) {
             modifyConfig(config, key);
         }
-        let rowArray = [key];
+        const rowArray = [key];
         rowArray.push(prettyjson.render(config[key], options));
         filteredArray = [...filteredArray, rowArray];
     });
