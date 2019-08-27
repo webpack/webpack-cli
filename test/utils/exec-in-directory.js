@@ -1,7 +1,6 @@
 'use strict';
 
-const dir = process.argv[2];
-const bin = process.argv[3];
+const [, , dir, bin] = process.argv;
 process.argv.splice(1, 2);
 process.chdir(dir);
 

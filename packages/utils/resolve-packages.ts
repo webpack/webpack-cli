@@ -42,9 +42,9 @@ export function resolvePackages(pkg: string[]): Function | void {
 
 	const packageLocations: string[] = [];
 
-	function invokeGeneratorIfReady(): Function {
+	function invokeGeneratorIfReady(): void {
 		if (packageLocations.length === pkg.length) {
-			return modifyConfigHelper("init", null, null, packageLocations);
+			modifyConfigHelper("init", null, null, packageLocations);
 		}
 	}
 

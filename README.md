@@ -22,6 +22,9 @@
 [![lerna][lerna]][lerna-url]
 [![GitHub contributors][contributors]][contributors-url]
 [![Issue resolution][issue-resolution]][issue-resolution-url]
+[![PR's welcome][pr-welcome]][pr-welcome-url]
+
+## Table of Contents
 
 -   [About](#about)
     -   [How to install](#how-to-install)
@@ -57,6 +60,12 @@ Supporting developers is an important task for webpack CLI. Thus, webpack CLI pr
 -   [`webpack-cli generate-plugin`](./packages/generate-plugin/README.md#webpack-cli-generate-plugin) - Initiate new plugin project.
 -   [`webpack-cli generate-loader`](./packages/generate-loader/README.md#webpack-cli-generate-loader) - Initiate new loader project.
 -   [`webpack-cli serve`](./packages/serve/README.md#webpack-cli-serve) - Use webpack with a development server that provides live reloading.
+
+> Removed commands since v3.3.3
+
+-   `webpack-cli add` - Add new properties to a webpack configuration file.
+-   `webpack-cli remove` - Remove properties from a webpack configuration file.
+-   `webpack-cli update` - Update properties in a webpack configuration file.
 
 ### Utilities
 
@@ -107,9 +116,11 @@ If you like **webpack**, please consider donating to our [Open Collective](https
 [issue-resolution-url]: https://github.com/webpack/webpack-cli/issues
 [lerna]: https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg
 [lerna-url]: http://www.lernajs.io/
-[npm]: https://img.shields.io/npm/v/webpack-cli.svg
-[npm-url]: https://www.npmjs.com/package/webpack-cli
 [maintainability]: https://codeclimate.com/github/webpack/webpack-cli/badges/gpa.svg
 [maintainability-url]: https://codeclimate.com/github/webpack/webpack-cli
+[npm]: https://img.shields.io/npm/v/webpack-cli.svg
+[npm-url]: https://www.npmjs.com/package/webpack-cli
+[pr-welcome]: https://img.shields.io/badge/PRs%20-welcome-brightgreen.svg
+[pr-welcome-url]: https://github.com/webpack/webpack-cli/blob/next/.github/CONTRIBUTING.md
 [size]: https://packagephobia.now.sh/badge?p=webpack-cli
 [size-url]: https://packagephobia.now.sh/result?p=webpack-cli

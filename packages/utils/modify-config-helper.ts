@@ -37,8 +37,8 @@ const DEFAULT_WEBPACK_CONFIG_FILENAME = 'webpack.config.js';
  * @returns {Function} runTransform - Returns a transformation instance
  */
 
-export default function modifyHelperUtil(action: string, generator: typeof Generator, configFile: string = DEFAULT_WEBPACK_CONFIG_FILENAME, packages?: string[], autoSetDefaults: boolean = false): any {
-    let configPath: string | null = null;
+export default function modifyHelperUtil(action: string, generator: typeof Generator, configFile: string = DEFAULT_WEBPACK_CONFIG_FILENAME, packages?: string[], autoSetDefaults = false): void {
+    const configPath: string | null = null;
 
     const env = yeoman.createEnv('webpack', null);
     const generatorName = 'webpack-init-generator';

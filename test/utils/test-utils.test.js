@@ -1,6 +1,6 @@
 'use strict';
 
-const { extractHash, appendDataIfFileExists, copyFile } = require('./testUtils');
+const { extractHash, appendDataIfFileExists, copyFile } = require('./test-utils');
 const { writeFileSync, unlinkSync, readFileSync, existsSync } = require('fs');
 const { resolve } = require('path');
 
@@ -137,7 +137,7 @@ describe('copyFile functionality', () => {
         const originalFile = 'junkFile.js';
         const originalFilePath = resolve(__dirname, originalFile);
         const originalFileData = 'initial junk data';
-        var copyFilePath;
+        let copyFilePath;
 
         beforeEach(() => {
             writeFileSync(originalFilePath, originalFileData);

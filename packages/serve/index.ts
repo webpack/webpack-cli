@@ -138,9 +138,8 @@ export default function serve(): Promise<void | Function> {
 							.then(
 								(depTypeAns: { confirmDepType: string }): Promise<void | Function> => {
 									const packager: string = getRootPathModule("package-lock.json") ? "npm" : "yarn";
-									let spawnAction: () => SpawnSyncReturns<Buffer>;
 
-									spawnAction = (): SpawnSyncReturns<Buffer> =>
+									const spawnAction = (): SpawnSyncReturns<Buffer> =>
 										spawnWithArg(packager, depTypeAns.confirmDepType);
 
 									return processPromise(spawnAction()).then(
