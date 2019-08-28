@@ -3,9 +3,8 @@ const fs = require("fs");
 fs.existsSync = fs.existsSync || path.existsSync;
 const interpret = require("interpret");
 const prepareOptions = require("./prepareOptions");
-const webpackConfigurationSchema = require("../config/webpackConfigurationSchema.json");
-const validateSchema = require("webpack").validateSchema;
 const findup = require("findup-sync");
+const validateOptions = require("./validate-options");
 
 module.exports = function(...args) {
 	const argv = args[1] || args[0];
@@ -136,21 +135,7 @@ module.exports = function(...args) {
 
 	function processConfiguredOptions(options) {
 		if (options) {
-			let error;
-			try {
-				const errors = validateSchema(webpackConfigurationSchema, options);
-				if (errors && errors.length > 0) {
-					const { WebpackOptionsValidationError } = require("webpack");
-					error = new WebpackOptionsValidationError(errors);
-				}
-			} catch (err) {
-				error = err;
-			}
-
-			if (error) {
-				console.error(error.message);
-				process.exit(-1);
-			}
+			validateOptions(options);
 		} else {
 			options = {};
 		}
