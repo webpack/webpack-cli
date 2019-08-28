@@ -1,7 +1,7 @@
 {
   "name": "@webpack-cli/info",
   "version": "0.1.6",
-  "description": "Outputs env info for the ease of debug",
+  "description": "Outputs info about system and webpack config",
   "main": "index.js",
   "author": "",
   "license": "MIT",
@@ -9,7 +9,12 @@
     "access": "public"
   },
   "dependencies": {
-    "envinfo": "7.3.1"
+    "@types/yargs": "13.0.0",
+    "chalk": "2.4.2",
+    "cli-table3": "0.5.1",
+    "envinfo": "7.3.1",
+    "prettyjson": "1.2.1",
+    "yargs": "13.2.2"
   },
   "devDependencies": {
     "@types/node": "12.7.2",
