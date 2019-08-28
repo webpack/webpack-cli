@@ -15,6 +15,7 @@ module.exports = function validateOptions(options) {
 
 	if (error) {
 		console.error(error.message);
+		// eslint-disable-next-line no-process-exit
 		process.exit(-1);
 	}
 };
