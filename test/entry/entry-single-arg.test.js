@@ -14,7 +14,7 @@ describe('single entry flag', () => {
         const outDirToMatch = outDirectoryFromCompiler.slice(outDirectoryFromCompiler.length - 2, outDirectoryFromCompiler.length).join('/');
         expect(outDirToMatch).toContain(outputDir);
         expect(stderr).toContain('Entry module not found');
-        stat(resolve(__dirname, './bin'), (err, stats) => {
+        stat(resolve(__dirname, 'bin'), (err, stats) => {
             expect(err).toBe(null);
             expect(stats.isDirectory()).toBe(true);
             done();
