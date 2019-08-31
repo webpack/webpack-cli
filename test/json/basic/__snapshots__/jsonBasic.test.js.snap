@@ -1,0 +1,179 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`json flag should match the snapshot of --json command 1`] = `
+Object {
+  "assets": Array [
+    Object {
+      "chunkNames": Array [
+        "main",
+      ],
+      "chunks": Array [
+        0,
+      ],
+      "emitted": true,
+      "name": "bundle.js",
+      "size": 1012,
+    },
+  ],
+  "assetsByChunkName": Object {
+    "main": "bundle.js",
+  },
+  "children": Array [],
+  "chunks": Array [
+    Object {
+      "children": Array [],
+      "childrenByOrder": Object {},
+      "entry": true,
+      "files": Array [
+        "bundle.js",
+      ],
+      "filteredModules": 0,
+      "hash": "f2d16008f25ff6f92f22",
+      "id": 0,
+      "initial": true,
+      "modules": Array [
+        Object {
+          "assets": Array [],
+          "built": true,
+          "cacheable": true,
+          "chunks": Array [
+            0,
+          ],
+          "depth": 0,
+          "errors": 0,
+          "failed": false,
+          "id": 0,
+          "identifier": "H:\\\\webpack-contribution\\\\webpack-cli\\\\node_modules\\\\thread-loader\\\\dist\\\\cjs.js!H:\\\\webpack-contribution\\\\webpack-cli\\\\node_modules\\\\babel-loader\\\\lib\\\\index.js??ref--4-1!H:\\\\webpack-contribution\\\\webpack-cli\\\\test\\\\json\\\\basic\\\\index.js",
+          "index": 0,
+          "index2": 0,
+          "issuer": null,
+          "issuerId": null,
+          "issuerName": null,
+          "issuerPath": null,
+          "name": "./index.js",
+          "optimizationBailout": Array [
+            "ModuleConcatenation bailout: Module is not an ECMAScript module",
+          ],
+          "optional": false,
+          "prefetched": false,
+          "providedExports": null,
+          "reasons": Array [
+            Object {
+              "loc": "main",
+              "module": null,
+              "moduleId": null,
+              "moduleIdentifier": null,
+              "moduleName": null,
+              "type": "single entry",
+              "userRequest": "H:\\\\webpack-contribution\\\\webpack-cli\\\\test\\\\json\\\\basic",
+            },
+          ],
+          "size": 23,
+          "source": "module.exports='index';",
+          "usedExports": true,
+          "warnings": 0,
+        },
+      ],
+      "names": Array [
+        "main",
+      ],
+      "origins": Array [
+        Object {
+          "loc": "main",
+          "module": "",
+          "moduleIdentifier": "",
+          "moduleName": "",
+          "reasons": Array [],
+          "request": "H:\\\\webpack-contribution\\\\webpack-cli\\\\test\\\\json\\\\basic",
+        },
+      ],
+      "parents": Array [],
+      "rendered": true,
+      "siblings": Array [],
+      "size": 23,
+    },
+  ],
+  "entrypoints": Object {
+    "main": Object {
+      "assets": Array [
+        "bundle.js",
+      ],
+      "childAssets": Object {},
+      "children": Object {},
+      "chunks": Array [
+        0,
+      ],
+    },
+  },
+  "errors": Array [],
+  "filteredAssets": 0,
+  "filteredModules": 0,
+  "hash": "632b1f923a22a333ddb4",
+  "logging": Object {
+    "webpack.buildChunkGraph.visitModules": Object {
+      "debug": false,
+      "entries": Array [],
+      "filteredEntries": 2,
+    },
+  },
+  "modules": Array [
+    Object {
+      "assets": Array [],
+      "built": true,
+      "cacheable": true,
+      "chunks": Array [
+        0,
+      ],
+      "depth": 0,
+      "errors": 0,
+      "failed": false,
+      "id": 0,
+      "identifier": "H:\\\\webpack-contribution\\\\webpack-cli\\\\node_modules\\\\thread-loader\\\\dist\\\\cjs.js!H:\\\\webpack-contribution\\\\webpack-cli\\\\node_modules\\\\babel-loader\\\\lib\\\\index.js??ref--4-1!H:\\\\webpack-contribution\\\\webpack-cli\\\\test\\\\json\\\\basic\\\\index.js",
+      "index": 0,
+      "index2": 0,
+      "issuer": null,
+      "issuerId": null,
+      "issuerName": null,
+      "issuerPath": null,
+      "name": "./index.js",
+      "optimizationBailout": Array [
+        "ModuleConcatenation bailout: Module is not an ECMAScript module",
+      ],
+      "optional": false,
+      "prefetched": false,
+      "providedExports": null,
+      "reasons": Array [
+        Object {
+          "loc": "main",
+          "module": null,
+          "moduleId": null,
+          "moduleIdentifier": null,
+          "moduleName": null,
+          "type": "single entry",
+          "userRequest": "H:\\\\webpack-contribution\\\\webpack-cli\\\\test\\\\json\\\\basic",
+        },
+      ],
+      "size": 23,
+      "source": "module.exports='index';",
+      "usedExports": true,
+      "warnings": 0,
+    },
+  ],
+  "namedChunkGroups": Object {
+    "main": Object {
+      "assets": Array [
+        "bundle.js",
+      ],
+      "childAssets": Object {},
+      "children": Object {},
+      "chunks": Array [
+        0,
+      ],
+    },
+  },
+  "outputPath": "H:\\\\webpack-contribution\\\\webpack-cli\\\\test\\\\json\\\\basic\\\\bin",
+  "publicPath": "",
+  "version": "4.39.2",
+  "warnings": Array [],
+}
+`;
