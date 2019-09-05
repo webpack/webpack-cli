@@ -1,3 +1,23 @@
+<a name="3.3.8"></a>
+
+# 3.3.8 (2019-09-05)
+
+[Full Changelog](https://github.com/webpack/webpack-cli/compare/v3.3.7...v3.3.8)
+
+## Chore
+
+-   remove lint err ([4275fd5](https://github.com/webpack/webpack-cli/commit/4275fd5))
+-   abstract validation ([065e87e](https://github.com/webpack/webpack-cli/commit/065e87e))
+-   vuln patch ([55b770c](https://github.com/webpack/webpack-cli/commit/55b770c))
+
+## Fix
+
+-   support both webpack versions ([d28f9f5](https://github.com/webpack/webpack-cli/commit/d28f9f5))
+
+## Tests
+
+-   add schema tests ([70bf934](https://github.com/webpack/webpack-cli/commit/70bf934))
+
 <a name="3.3.7"></a>
 
 # 3.3.7 (2019-08-18)
