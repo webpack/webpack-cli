@@ -3,10 +3,8 @@ const fs = require("fs");
 fs.existsSync = fs.existsSync || path.existsSync;
 const interpret = require("interpret");
 const prepareOptions = require("./prepareOptions");
-const webpackConfigurationSchema = require("../config/webpackConfigurationSchema.json");
-const validateSchema = require("webpack").validateSchema;
-const WebpackOptionsValidationError = require("webpack").WebpackOptionsValidationError;
 const findup = require("findup-sync");
+const validateOptions = require("./validate-options");
 
 module.exports = function(...args) {
 	const argv = args[1] || args[0];
@@ -137,12 +135,7 @@ module.exports = function(...args) {
 
 	function processConfiguredOptions(options) {
 		if (options) {
-			const webpackConfigurationValidationErrors = validateSchema(webpackConfigurationSchema, options);
-			if (webpackConfigurationValidationErrors.length) {
-				const error = new WebpackOptionsValidationError(webpackConfigurationValidationErrors);
-				console.error(error.message, `\nReceived: ${typeof options} : ${JSON.stringify(options, null, 2)}`);
-				process.exit(-1); // eslint-disable-line
-			}
+			validateOptions(options);
 		} else {
 			options = {};
 		}
