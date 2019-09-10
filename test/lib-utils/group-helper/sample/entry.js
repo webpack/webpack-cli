@@ -1,1 +1,1 @@
-module.exports = 'sample/entry'
+module.exports = 'sample/entry';
