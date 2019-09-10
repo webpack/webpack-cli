@@ -1,16 +1,16 @@
-const { parse, sep } = require('path')
-const GroupHelper = require('../group-helper');
+const { parse, sep } = require('path');
+const GroupHelper = require('../../../lib/utils/group-helper');
 
 describe('group-helper tests', () => {
     describe('resolveFilePath', () => {
         it('should return correct path : sample/entry.js', done => {
             const GroupHelperOptions = [
-                { entry: 'lib/utils/test/sample/entry.js' },
+                { entry: 'test/lib-utils/group-helper/sample/entry.js' },
                 { progress: 'bar' },
                 { sourcemap: 'eval' },
                 { dev: false },
                 { prod: true }
-            ]
+            ];
             const GroupHelperObj = new GroupHelper(GroupHelperOptions);
             const entryPath = GroupHelperObj.resolveFilePath(GroupHelperOptions[0].entry)
             const { dir, base } = parse(entryPath);
@@ -22,7 +22,7 @@ describe('group-helper tests', () => {
         it('should return correct path : sample/entry', done => {
 
             const GroupHelperOptions = [
-                { entry: 'lib/utils/test/sample/entry' },
+                { entry: 'test/lib-utils/group-helper/sample/entry' },
                 { progress: 'bar' },
                 { sourcemap: 'eval' },
                 { dev: false },
@@ -39,7 +39,7 @@ describe('group-helper tests', () => {
         it('should return correct path : sample', done => {
 
             const GroupHelperOptions = [
-                { entry: 'lib/utils/test/sample' },
+                { entry: 'test/lib-utils/group-helper/sample' },
                 { progress: 'bar' },
                 { sourcemap: 'eval' },
                 { dev: false },
@@ -56,7 +56,7 @@ describe('group-helper tests', () => {
         it('should return correct path : sample/index.js', done => {
 
             const GroupHelperOptions = [
-                { entry: 'lib/utils/test/sample/index.js' },
+                { entry: 'test/lib-utils/group-helper/sample/index.js' },
                 { progress: 'bar' },
                 { sourcemap: 'eval' },
                 { dev: false },
@@ -73,7 +73,7 @@ describe('group-helper tests', () => {
         it('should return correct path : sample/index', done => {
 
             const GroupHelperOptions = [
-                { entry: 'lib/utils/test/sample/index' },
+                { entry: 'test/lib-utils/group-helper/sample/index' },
                 { progress: 'bar' },
                 { sourcemap: 'eval' },
                 { dev: false },
