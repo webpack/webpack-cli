@@ -1,7 +1,7 @@
 'use strict';
 
 const { stat } = require('fs');
-const { resolve } = require('path');
+const { resolve, sep } = require('path');
 
 const { run, extractSummary } = require('../utils/test-utils');
 
@@ -10,9 +10,11 @@ describe('single entry flag', () => {
         const { stdout, stderr } = run(__dirname);
         const summary = extractSummary(stdout);
         const outputDir = 'entry/bin';
-        expect(summary['Output Directory']).toContain(outputDir);
+        const outDirectoryFromCompiler = summary['Output Directory'].split(sep);
+        const outDirToMatch = outDirectoryFromCompiler.slice(outDirectoryFromCompiler.length - 2, outDirectoryFromCompiler.length).join('/');
+        expect(outDirToMatch).toContain(outputDir);
         expect(stderr).toContain('Entry module not found');
-        stat(resolve(__dirname, './bin'), (err, stats) => {
+        stat(resolve(__dirname, 'bin'), (err, stats) => {
             expect(err).toBe(null);
             expect(stats.isDirectory()).toBe(true);
             done();
