@@ -74,35 +74,6 @@ module.exports = {
             type: String,
             describe: 'Open default browser with the specified page',
         },
-        // instead of this option, we should consider retrieving the 'color' option
-        // from the compiler (since webpack CLI already has 'color' option)
-        // also, we should reconsider how to use supports-color with command-line-args
-        // {
-        //     name: 'colors',
-        //     type: Boolean,
-        //     // alias: 'color',
-        //     defaultValue: function supportsColor() {
-        //         // Use `require('supports-color').stdout` for supports-color >= 5.0.0.
-        //         // See https://github.com/webpack/webpack-dev-server/pull/1555.
-        //         return require('supports-color').stdout;
-        //     },
-        //     group: DISPLAY_GROUP,
-        //     describe: 'Enables/Disables colors on the console',
-        // },
-        // we need to rethink this option, since it is CLI only at the moment
-        // {
-        //     name: 'info',
-        //     type: Boolean,
-        //     group: DISPLAY_GROUP,
-        //     defaultValue: true,
-        //     describe: 'Info',
-        // },
-        {
-            name: 'quiet',
-            type: Boolean,
-            group: DISPLAY_GROUP,
-            describe: 'Quiet',
-        },
         {
             name: 'client-log-level',
             type: String,
