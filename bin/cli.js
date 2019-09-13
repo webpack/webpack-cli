@@ -314,7 +314,8 @@ For more information, see https://webpack.js.org/api/cli/.`);
 					lastHash = null;
 					console.error(err.stack || err);
 					if (err.details) console.error(err.details);
-					process.exit(1); // eslint-disable-line
+					process.exitCode = 1;
+					return;
 				}
 				if (outputOptions.json) {
 					stdout.write(JSON.stringify(stats.toJson(outputOptions), null, 2) + "\n");
