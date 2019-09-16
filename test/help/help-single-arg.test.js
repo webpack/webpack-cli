@@ -9,6 +9,8 @@ describe('single help flag', () => {
         const { stdout, stderr } = run(__dirname, ['--help', '--color=false']);
         const usage = 'webpack [...options] | <command>';
         const example = 'webpack help --flag | <command>';
+        chalk.enabled = true;
+        chalk.level = 3;
         const orange = chalk.keyword('orange');
         expect(stdout).not.toContain(orange(usage));
         expect(stdout).not.toContain(orange(example));
