@@ -1,3 +1,13 @@
+<a name="3.3.9"></a>
+
+# 3.3.9 (2019-09-17)
+
+[Full Changelog](https://github.com/webpack/webpack-cli/compare/v3.3.8...v3.3.9)
+
+## Fix
+
+-   use process.exitCode instead of process.exit in compilerCallback ([ee001bd](https://github.com/webpack/webpack-cli/commit/ee001bd))
+
 <a name="3.3.8"></a>
 
 # 3.3.8 (2019-09-05)
