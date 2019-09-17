@@ -51,7 +51,7 @@ const addonGenerator = (
 				I will create this folder for you.
 				`);
 				mkdirp(this.props.name, (err: object): void => {
-					console.error("Failed to create directory", err);
+                    if (err) console.error("Failed to create directory", err);
 				});
 				const pathToProjectDir: string = this.destinationPath(this.props.name);
 				this.destinationRoot(pathToProjectDir);

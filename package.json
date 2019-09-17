@@ -40,7 +40,7 @@
     "test": "nyc jest --maxWorkers=4 --reporters=default --reporters=jest-junit",
     "test:cli": "nyc jest test/ --maxWorkers=4 --reporters=default --reporters=jest-junit",
     "test:packages": "nyc jest packages/ --maxWorkers=4 --reporters=default --reporters=jest-junit",
-    "test:ci": "nyc jest --maxWorkers=$(nproc) --reporters=default --reporters=jest-junit",
+    "test:ci": "nyc jest --maxWorkers=$(nproc) --reporters=default --reporters=jest-junit --colors",
     "travis:integration": "npm run build && npm run test && npm run reportCoverage",
     "travis:lint": "npm run build && npm run lint",
     "watch": "npm run build && tsc -w",

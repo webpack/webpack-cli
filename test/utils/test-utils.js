@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 'use strict';
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 const path = require('path');
@@ -82,7 +83,7 @@ function extractSummary(stdout) {
 
     const summaryArray = stdout
         .split('\n')
-        .filter(line => metaData.find(category => ~line.indexOf(category)))
+        .filter(line => metaData.find(category => line.includes(category)))
         .filter(line => line)
         .map(line => line.trim())
         .map(line => {

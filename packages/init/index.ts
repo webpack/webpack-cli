@@ -12,7 +12,7 @@ const AUTO_PREFIX = "--auto";
  * @param	{String[]}		args - array of arguments such as
  * packages included when running the init command
  * @returns	{Function}	creator/npmPackagesExists - returns an installation of the package,
- * followed up with a yeoman instance of that if there's packages. If not, it creates a defaultGenerator
+ * followed up with a yeoman instance if there are packages. If not, it creates a defaultGenerator
  */
 
 export default function initializeInquirer(...args: string[]): Function | void {

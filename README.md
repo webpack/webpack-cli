@@ -24,6 +24,8 @@
 [![Issue resolution][issue-resolution]][issue-resolution-url]
 [![PR's welcome][pr-welcome]][pr-welcome-url]
 
+## Table of Contents
+
 -   [About](#about)
     -   [How to install](#how-to-install)
 -   [Packages](#packages)
