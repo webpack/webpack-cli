@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 'use strict';
-
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 const path = require('path');
 const fs = require('fs');
 const execa = require('execa');
@@ -8,7 +8,7 @@ const { sync: spawnSync } = execa;
 const { Writable } = require('readable-stream');
 
 const WEBPACK_PATH = path.resolve(__dirname, '../../cli.js');
-
+const ENABLE_LOG_COMPILATION = process.env.ENABLE_PIPE || false;
 /**
  * Description
  *
@@ -24,7 +24,9 @@ function run(testCase, args = []) {
     const result = spawnSync(WEBPACK_PATH, argsWithOutput, {
         cwd,
         reject: false,
+        stdio: ENABLE_LOG_COMPILATION ? 'inherit' : 'pipe',
     });
+
     return result;
 }
 

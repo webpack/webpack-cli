@@ -3,8 +3,8 @@ const { stat } = require('fs');
 const { resolve, sep } = require('path');
 const { run, extractSummary } = require('../../utils/test-utils');
 
-describe('config flag test : Basic config file', () => {
-    it(' Output Directory as basic/bin, create a file name bundle.js inside bin', done => {
+describe('basic config file', () => {
+    it('Has Output Directory as basic/bin, creates a file name bundle.js', done => {
         const { stdout } = run(__dirname, ['-c', resolve(__dirname, 'webpack.config.js')]);
         const summary = extractSummary(stdout);
         const outputDir = 'basic/bin';
