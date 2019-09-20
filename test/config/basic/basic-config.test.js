@@ -4,14 +4,16 @@ const { resolve, sep } = require('path');
 const { run, extractSummary } = require('../../utils/test-utils');
 
 describe('basic config file', () => {
-    it('Has Output Directory as basic/bin, creates a file name bundle.js', done => {
-        const { stdout } = run(__dirname, ['-c', resolve(__dirname, 'webpack.config.js')]);
+    it.skip('is able to understand and parse a very basic configuration file', done => {
+        const { stdout, stderr } = run(__dirname, ['-c', resolve(__dirname, 'webpack.config.js')]);
+        expect(stderr).toBe(undefined);
+        expect(stdout).not.toBe(undefined);
         const summary = extractSummary(stdout);
-        const outputDir = 'basic/bin';
+        const outputDir = 'basic/binary';
         const outDirectoryFromCompiler = summary['Output Directory'].split(sep);
         const outDirToMatch = outDirectoryFromCompiler.slice(outDirectoryFromCompiler.length - 2, outDirectoryFromCompiler.length).join('/');
         expect(outDirToMatch).toContain(outputDir);
-        stat(resolve(__dirname, './bin/bundle.js'), (err, stats) => {
+        stat(resolve(__dirname, './binary/a.bundle.js'), (err, stats) => {
             expect(err).toBe(null);
             expect(stats.isFile()).toBe(true);
             done();
