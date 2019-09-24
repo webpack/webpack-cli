@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 'use strict';
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
 const path = require('path');
 const fs = require('fs');
 const execa = require('execa');
@@ -26,7 +25,6 @@ function run(testCase, args = []) {
         reject: false,
         stdio: ENABLE_LOG_COMPILATION ? 'inherit' : 'pipe',
     });
-
     return result;
 }
 
