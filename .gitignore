@@ -26,7 +26,8 @@ coverage
 test/js/*
 test/**/bin/
 test/**/**/bin/
-test/config/basic/binary/**
+test/**/**/**/bin/
+test/config/**/binary/**
 # lerna log
 lerna-debug.log
 

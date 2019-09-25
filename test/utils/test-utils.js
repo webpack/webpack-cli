@@ -13,13 +13,14 @@ const ENABLE_LOG_COMPILATION = process.env.ENABLE_PIPE || false;
  *
  * @param {*} testCase The path to folder that contains the webpack.config.js
  * @param {*} args Array of arguments to pass to webpack
+ * @param {*} setOutput Boolean that decides if a default output path will be set or not
  * @returns {Object} The webpack output
  */
-function run(testCase, args = []) {
+function run(testCase, args = [], setOutput = true) {
     const cwd = path.resolve(testCase);
 
     const outputPath = path.resolve(testCase, 'bin');
-    const argsWithOutput = args.concat('--output', outputPath);
+    const argsWithOutput = setOutput ? args.concat('--output', outputPath) : args;
     const result = spawnSync(WEBPACK_PATH, argsWithOutput, {
         cwd,
         reject: false,
