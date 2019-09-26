@@ -1,7 +1,7 @@
 import * as cmdArgs from "command-line-args";
 import * as WebpackCLI from "../../lib/webpack-cli";
 import * as startDevServer from "./startDevServer";
-import * as argsToCamelCase from "./argsToCamelCase";
+import * as argsToCamelCase from "./args-to-camel-case";
 import { devServer } from "../../lib/utils/dev-server-flags";
 import { core } from "../../lib/utils/cli-flags";
 
