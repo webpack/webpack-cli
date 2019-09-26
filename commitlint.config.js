@@ -12,7 +12,7 @@ module.exports = {
         'subject-empty': [0, 'never'],
         'subject-full-stop': [2, 'never', '.'],
         'type-case': [2, 'always', 'lowerCase'],
-        // turn it on once CLI will be inside its own package, so the scope will be the name of the pacakged
+        // turn it on once CLI will be inside its own package, so the scope will be the name of the packaged
         // part of the @commitlint/config-lerna-scopes
         'scope-enum': [0, 'never'],
         'type-empty': [2, 'never'],
