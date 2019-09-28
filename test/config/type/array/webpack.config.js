@@ -1,17 +1,22 @@
 module.exports = [
     {
-        entry: './a',
         output: {
-            path: __dirname + '/binary',
-            filename: 'coconut.js',
+            filename: './dist-amd.js',
+            libraryTarget: 'amd',
         },
+        name: 'amd',
+        entry: './a.js',
+        mode: 'production',
+        devtool: 'eval-module',
     },
     {
         output: {
-            chunkFilename: 'chunk_norris.js',
+            filename: './dist-commonjs.js',
+            libraryTarget: 'commonjs',
         },
-        optimization: {
-            runtimeChunk: true,
-        },
+        name: 'commonjs',
+        entry: './a.js',
+        mode: 'production',
+        target: 'node',
     },
 ];

@@ -28,6 +28,9 @@ test/**/bin/
 test/**/**/bin/
 test/**/**/**/bin/
 test/config/**/binary/**
+test/**/dist
+test/**/**/dist
+test/**/**/**/dist
 # lerna log
 lerna-debug.log
 

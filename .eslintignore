@@ -11,6 +11,9 @@ test/**/cliEntry.js
 test/**/foo.js
 test/**/**/**/bin/
 test/**/**/**/binary/
+test/**/dist/
+test/**/**/dist/
+test/**/**/**/dist/
 test/binCases/config-location/webpack-babel-config/bin/es6.js
 packages/**/*.js
 packages/utils/validate-identifier.ts
@@ -18,3 +21,4 @@ packages/utils/validate-identifier.ts
 # TODO removeme
 
 lib
+testy
