@@ -14,7 +14,8 @@
     "@webpack-cli/utils": "0.2.2",
     "chalk": "2.4.2",
     "cross-spawn": "6.0.5",
-    "inquirer": "6.5.1"
+    "inquirer": "6.5.1",
+    "webpack-dev-server": "^3.0.0-alpha6"
   },
   "devDependencies": {
     "@types/cross-spawn": "6.0.0",
