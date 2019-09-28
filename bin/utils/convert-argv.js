@@ -104,14 +104,29 @@ module.exports = function(...args) {
 
 		const requireConfig = function requireConfig(configPath) {
 			let options = (function WEBPACK_OPTIONS() {
+				const resolvedPath = path.resolve(process.cwd(), configPath);
 				if (argv.configRegister && argv.configRegister.length) {
 					module.paths.unshift(path.resolve(process.cwd(), "node_modules"), process.cwd());
 					argv.configRegister.forEach(dep => {
 						require(dep);
 					});
-					return require(path.resolve(process.cwd(), configPath));
+					return require(resolvedPath);
 				} else {
-					return require(path.resolve(process.cwd(), configPath));
+					try {
+						return require(resolvedPath);
+					} catch (err) {
+						if (err.stack.indexOf("ERR_REQUIRE_ESM") >= 0) {
+							if (process.execArgv.indexOf("--experimental-modules") < 0) {
+								// TODO: remove in October
+								console.error(
+									'\u001b[1m\u001b[31m You need to supply the --experimental-modules flag in order  to run webpack with node v12\u001b[39m\u001b[22m'
+								);
+								process.exit(0);
+							}
+							return import(resolvedPath);
+						}
+						return require(resolvedPath);
+					}
 				}
 			})();
 			options = prepareOptions(options, argv);
