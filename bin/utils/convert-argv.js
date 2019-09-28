@@ -116,7 +116,7 @@ module.exports = function(...args) {
 						return require(resolvedPath);
 					} catch (err) {
 						if (err.stack.indexOf("ERR_REQUIRE_ESM") >= 0) {
-							if (process.execArgv.indexOf("--experimental-modules") < 0) {
+							if (!process.execArgv.includes("--experimental-modules")) {
 								// TODO: remove in October
 								console.error(
 									'\u001b[1m\u001b[31m You need to supply the --experimental-modules flag in order to run webpack with node v12\u001b[39m\u001b[22m'
