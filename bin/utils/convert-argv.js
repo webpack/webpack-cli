@@ -119,7 +119,7 @@ module.exports = function(...args) {
 							if (process.execArgv.indexOf("--experimental-modules") < 0) {
 								// TODO: remove in October
 								console.error(
-									'\u001b[1m\u001b[31m You need to supply the --experimental-modules flag in order  to run webpack with node v12\u001b[39m\u001b[22m'
+									'\u001b[1m\u001b[31m You need to supply the --experimental-modules flag in order to run webpack with node v12\u001b[39m\u001b[22m'
 								);
 								process.exit(0);
 							}
