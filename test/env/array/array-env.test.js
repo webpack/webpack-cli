@@ -19,7 +19,7 @@ describe('env array', () => {
         expect(prodScript.stdout).toBe('environment is production');
     });
 
-    it('is able compile sucessfully with prod flag', () => {
+    it('is able to compile sucessfully with prod flag', () => {
         run(__dirname, ['--prod']);
         const devFile = path.join(__dirname, './bin/dev.js');
         const prodFile = path.join(__dirname, './bin/prod.js');
