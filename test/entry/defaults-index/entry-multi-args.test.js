@@ -13,7 +13,7 @@ describe('single entry flag index present', () => {
 
         expect(summary['Output Directory']).toContain(outputDir);
         // eslint-disable-next-line
-        expect(stderr).not.toContain('Entry module not found: Error: Can\'t resolve \'./index.js\'');
+        expect(stderr).not.toContain('Entry module not found');
         stat(resolve(__dirname, './bin/bundle.js'), (err, stats) => {
             expect(err).toBe(null);
             expect(stats.isFile()).toBe(true);
@@ -29,7 +29,7 @@ describe('single entry flag index present', () => {
 
         expect(summary['Output Directory']).toContain(outputDir);
         // eslint-disable-next-line
-        expect(stderr).not.toContain('Entry module not found: Error: Can\'t resolve \'./index.js\'');
+        expect(stderr).not.toContain('Entry module not found');
         stat(resolve(__dirname, './bin/main.js'), (err, stats) => {
             expect(err).toBe(null);
             expect(stats.isFile()).toBe(true);
