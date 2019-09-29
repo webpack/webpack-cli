@@ -13,4 +13,10 @@ describe('env object', () => {
         const bundledScript = spawnSync('node', [executable]);
         expect(bundledScript.stdout).toBe('environment is development');
     });
+    it('is able compile sucessfully with dev flag', () => {
+        run(__dirname, ['--dev']);
+        const executable = path.join(__dirname, './bin/bundle.js');
+        const bundledScript = spawnSync('node', [executable]);
+        expect(bundledScript.stdout).toBe('environment is development');
+    });
 });
