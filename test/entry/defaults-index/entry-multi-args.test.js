@@ -23,7 +23,7 @@ describe('single entry flag index present', () => {
 
     it('finds default index file, compiles and overrides with flags successfully', done => {
         const { stdout, stderr } = run(__dirname, ['--output', 'bin/main.js']);
-        expect(stderr).toContain('duplicate flags found, defaulting to last set value');
+        expect(stderr).toContain('Duplicate flags found, defaulting to last set value');
         const summary = extractSummary(stdout);
         const outputDir = 'entry/defaults-index/bin';
 
