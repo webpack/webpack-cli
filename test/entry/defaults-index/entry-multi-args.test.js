@@ -12,7 +12,6 @@ describe('single entry flag index present', () => {
         const outputDir = 'entry/defaults-index/bin';
 
         expect(summary['Output Directory']).toContain(outputDir);
-        // eslint-disable-next-line
         expect(stderr).not.toContain('Entry module not found');
         stat(resolve(__dirname, './bin/bundle.js'), (err, stats) => {
             expect(err).toBe(null);
@@ -28,7 +27,6 @@ describe('single entry flag index present', () => {
         const outputDir = 'entry/defaults-index/bin';
 
         expect(summary['Output Directory']).toContain(outputDir);
-        // eslint-disable-next-line
         expect(stderr).not.toContain('Entry module not found');
         stat(resolve(__dirname, './bin/main.js'), (err, stats) => {
             expect(err).toBe(null);
