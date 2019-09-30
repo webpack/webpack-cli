@@ -27,7 +27,7 @@ test/js/*
 test/**/bin/
 test/**/**/bin/
 test/**/**/**/bin/
-test/config/**/binary/**
+test/**/**/binary/**
 test/**/dist
 test/**/**/dist
 test/**/**/**/dist
