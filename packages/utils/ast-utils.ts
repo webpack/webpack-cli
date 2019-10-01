@@ -394,7 +394,7 @@ function isType(path: Node, type: string): boolean {
 function findObjWithOneOfKeys(p: Node, keyNames: string[]): boolean {
 	return (p.value as Node).properties.reduce((predicate: boolean, prop: Node): boolean => {
 		const name: string = prop.key.name;
-		return keyNames.indexOf(name) > -1 || predicate;
+		return keyNames.includes(name) || predicate;
 	}, false);
 }
 
