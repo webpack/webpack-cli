@@ -49,11 +49,11 @@ export default function runTransform(transformConfig: TransformConfig, action: s
 
 			const transformations = mapOptionsToTransform(config);
 
-			if (config.topScope && transformations.indexOf("topScope") === -1) {
+			if (config.topScope && !transformations.includes("topScope")) {
 				transformations.push("topScope");
 			}
 
-			if (config.merge && transformations.indexOf("merge") === -1) {
+			if (config.merge && !transformations.includes("merge")) {
 				transformations.push("merge");
 			}
 
