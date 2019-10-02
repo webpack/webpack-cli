@@ -16,7 +16,7 @@ const AUTO_PREFIX = "--auto";
  */
 
 export default function initializeInquirer(...args: string[]): Function | void {
-	const packages = args.slice(3);
+	const packages = args;
 	const includesDefaultPrefix = packages.includes(AUTO_PREFIX);
 	if (packages.length === 0 || includesDefaultPrefix) {
 		return modifyConfigHelper("init", defaultGenerator, null, null, includesDefaultPrefix);
