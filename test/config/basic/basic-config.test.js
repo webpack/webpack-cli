@@ -4,9 +4,9 @@ const { resolve, sep } = require('path');
 const { run, extractSummary } = require('../../utils/test-utils');
 
 describe('basic config file', () => {
-    it.skip('is able to understand and parse a very basic configuration file', done => {
-        const { stdout, stderr } = run(__dirname, ['-c', resolve(__dirname, 'webpack.config.js')]);
-        expect(stderr).toBe(undefined);
+    it('is able to understand and parse a very basic configuration file', done => {
+        const { stdout, stderr } = run(__dirname, ['-c', resolve(__dirname, 'webpack.config.js'), '--output', './binary/a.bundle.js']);
+        expect(stderr).toContain('Duplicate flags found, defaulting to last set value');
         expect(stdout).not.toBe(undefined);
         const summary = extractSummary(stdout);
         const outputDir = 'basic/binary';

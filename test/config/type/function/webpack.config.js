@@ -3,8 +3,8 @@ module.exports = () => {
     return {
         entry: './a',
         output: {
-            path: __dirname + '/bin',
-            filename: 'bundle.js',
+            path: __dirname + '/binary',
+            filename: 'functor.js',
         },
     };
 };
