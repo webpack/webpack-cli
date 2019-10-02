@@ -11,7 +11,7 @@ import runPrettier from "@webpack-cli/utils/run-prettier";
 
 import { transformations } from "./migrate";
 import { Node } from "./types/NodePath";
-import jscodeshift from "jscodeshift";
+import * as jscodeshift from "jscodeshift";
 
 declare let process: {
 	cwd: Function;
