@@ -29,23 +29,23 @@ function run(testCase, args = [], setOutput = true) {
     return result;
 }
 
-function runWatch(testCase, args = []) {
+function runWatch(testCase, args = [], setOutput = true) {
     const cwd = path.resolve(testCase);
 
     const outputPath = path.resolve(testCase, 'bin');
-    const argsWithOutput = args.concat('--output', outputPath);
+    const argsWithOutput = setOutput ? args.concat('--output', outputPath) : args;
 
     return new Promise(resolve => {
         const watchPromise = execa(WEBPACK_PATH, argsWithOutput, {
             cwd,
             reject: false,
+            stdio: ENABLE_LOG_COMPILATION ? 'inherit' : 'pipe',
         });
 
         watchPromise.stdout.pipe(
             new Writable({
                 write(chunk, encoding, callback) {
                     const output = chunk.toString('utf8');
-
                     if (output.includes('Time')) {
                         watchPromise.kill();
                     }
@@ -60,15 +60,16 @@ function runWatch(testCase, args = []) {
     });
 }
 
-function runAndGetWatchProc(testCase, args = []) {
+function runAndGetWatchProc(testCase, args = [], setOutput = true) {
     const cwd = path.resolve(testCase);
 
     const outputPath = path.resolve(testCase, 'bin');
-    const argsWithOutput = args.concat('--output', outputPath);
+    const argsWithOutput = setOutput ? args.concat('--output', outputPath) : args;
 
     const webpackProc = execa(WEBPACK_PATH, argsWithOutput, {
         cwd,
         reject: false,
+        stdio: ENABLE_LOG_COMPILATION ? 'inherit' : 'pipe',
     });
 
     return webpackProc;
@@ -98,82 +99,6 @@ function extractSummary(stdout) {
 }
 
 /**
- * @typedef {Object} Config
- * @property {string} name - name of config
- * @property {string} hash - hash of config
- *
- * @typedef {Object} HashInfo
- * @property {string} hash - global hash value
- * @property {Array.<Config>} config
- */
-
-/**
- * Description
- *
- * @param {string} stdout stdout of generic webpack output
- * @returns {HashInfo} - an object containing hash-info
- * @throws Will throw an error if {@link stdout}
- * 		- is empty
- * 		- does not contain Hash
- *      - does not contain Hash
- * 		- if multiple configs then, count(hash) !== count(Child) + 1 (+1 is for global hash)
- *
- */
-function extractHash(stdout) {
-    if (stdout === '') {
-        throw new Error('stdout is empty');
-    }
-
-    let hashArray = stdout.match(/Hash.*/gm);
-
-    // If logs are full of errors and we don't find hash
-    if (!hashArray) {
-        throw new Error(
-            `could not find hash in the stdout
-			OUTPUT: ${stdout}`,
-        );
-    }
-
-    hashArray = hashArray.map(hashLine => hashLine.replace(/Hash:(.*)/, '$1').trim());
-
-    const hashInfo = {
-        hash: hashArray[0],
-        config: [],
-    };
-
-    // Multiple config were found
-    if (hashArray.length > 1) {
-        let childArray = stdout.match(/Child.*/gm);
-
-        if (!childArray) {
-            throw new Error(
-                `could not find config in the stdout
-				OUTPUT: ${stdout}`,
-            );
-        }
-
-        childArray = childArray.map(childLine => childLine.replace(/Child(.*):/, '$1').trim());
-
-        // We don't need global hash anymore
-        // so we'll remove it to maintain 1:1 parity between config and hash
-        hashArray.shift();
-        if (hashArray.length !== childArray.length) {
-            throw new Error(`The stdout is corrupted. Hash count and config count do not match.
-			OUTPUT: ${stdout}`);
-        }
-        const configCount = childArray.length;
-        for (let configIdx = 0; configIdx < configCount; configIdx++) {
-            hashInfo['config'].push({
-                name: childArray[configIdx],
-                hash: hashArray[configIdx],
-            });
-        }
-    }
-
-    return hashInfo;
-}
-
-/**
  *
  * @param {String} testCase - testCase directory
  * @param {String} file - file relative to testCase
@@ -200,7 +125,9 @@ function appendDataIfFileExists(testCase, file, data) {
  */
 function copyFile(testCase, file) {
     const fileToChangePath = path.resolve(testCase, file);
-    const copyFilePath = path.resolve(testCase, 'index_copy.js');
+    const fileMetaData = path.parse(file);
+    const fileCopyName = fileMetaData.name.concat('_copy').concat(fileMetaData.ext);
+    const copyFilePath = path.resolve(testCase, fileCopyName);
 
     if (fs.existsSync(fileToChangePath)) {
         const fileData = fs.readFileSync(fileToChangePath).toString();
@@ -211,4 +138,4 @@ function copyFile(testCase, file) {
     }
 }
 
-module.exports = { run, runWatch, runAndGetWatchProc, extractHash, extractSummary, appendDataIfFileExists, copyFile };
+module.exports = { run, runWatch, runAndGetWatchProc, extractSummary, appendDataIfFileExists, copyFile };
