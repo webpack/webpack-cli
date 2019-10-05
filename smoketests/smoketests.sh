@@ -4,7 +4,7 @@ shopt -s extglob
 
 cd smoketests
 
-sh ./watch.sh $@
+./watch.sh $@
 
 
 cd ../
