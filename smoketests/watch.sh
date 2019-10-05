@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # usage sh ./smoketests/watch.sh <n_runs>
 
