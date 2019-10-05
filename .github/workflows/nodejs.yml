@@ -30,6 +30,6 @@ jobs:
     - name: smoketest
       run: |
         npm run build --if-present
-        npm run smoketest
+        npm run smoketest -- 20
       env:
         CI: true
