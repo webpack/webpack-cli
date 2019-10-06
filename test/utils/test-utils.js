@@ -5,7 +5,6 @@ const fs = require('fs');
 const execa = require('execa');
 const { sync: spawnSync } = execa;
 const { Writable } = require('readable-stream');
-
 const WEBPACK_PATH = path.resolve(__dirname, '../../cli.js');
 const ENABLE_LOG_COMPILATION = process.env.ENABLE_PIPE || false;
 /**
@@ -116,6 +115,48 @@ function appendDataIfFileExists(testCase, file, data) {
 }
 
 /**
+ *
+ * @param {String} testCase - testCase directory
+ * @param {String} file - file relative to testCase
+ * @param {String} data - data to append
+ * @param {String} cbFile - second file to write to
+ * @param {String} cbData - second data to write
+ * @returns {undefined}
+ * @throws - throw an Error if file does not exist
+ */
+function appendDataToMultipleIfFilesExists(testCase, file, data, cbFile, cbData) {
+    const filePath = path.resolve(testCase, file);
+    fs.access(filePath, fs.F_OK, async accessErr => {
+        if (accessErr) throw new Error(`Oops! ${accessErr} does not exist!`);
+        await fs.appendFile(filePath, data, 'utf8', () => {
+            const cbFilePath = path.resolve(testCase, cbFile);
+            fs.appendFile(cbFilePath, cbData, () => {});
+        });
+    });
+}
+
+/**
+ * fs.copyFileSync was added in Added in: v8.5.0
+ * We should refactor the below code once our minimal supported version is v8.5.0
+ * @param {String} testCase - testCase directory
+ * @param {String} file - file relative to testCase which is going to be copied
+ * @returns {String} - absolute file path of new file
+ * @throws - throw an Error if file copy fails
+ */
+async function copyFileAsync(testCase, file) {
+    const fileToChangePath = path.resolve(testCase, file);
+    const fileMetaData = path.parse(file);
+    const fileCopyName = fileMetaData.name.concat('_copy').concat(fileMetaData.ext);
+    const copyFilePath = path.resolve(testCase, fileCopyName);
+    await fs.access(fileToChangePath, fs.F_OK, async accessErr => {
+        if (accessErr) throw new Error(`Oops! ${fileToChangePath} does not exist!`);
+    });
+    const data = fs.readFileSync(fileToChangePath);
+    fs.writeFileSync(copyFilePath, data);
+    return copyFilePath;
+}
+
+/**
  * fs.copyFileSync was added in Added in: v8.5.0
  * We should refactor the below code once our minimal supported version is v8.5.0
  * @param {String} testCase - testCase directory
@@ -128,7 +169,6 @@ function copyFile(testCase, file) {
     const fileMetaData = path.parse(file);
     const fileCopyName = fileMetaData.name.concat('_copy').concat(fileMetaData.ext);
     const copyFilePath = path.resolve(testCase, fileCopyName);
-
     if (fs.existsSync(fileToChangePath)) {
         const fileData = fs.readFileSync(fileToChangePath).toString();
         fs.writeFileSync(copyFilePath, fileData);
@@ -138,4 +178,4 @@ function copyFile(testCase, file) {
     }
 }
 
-module.exports = { run, runWatch, runAndGetWatchProc, extractSummary, appendDataIfFileExists, copyFile };
+module.exports = { run, runWatch, runAndGetWatchProc, extractSummary, appendDataIfFileExists, copyFile, copyFileAsync, appendDataToMultipleIfFilesExists };
