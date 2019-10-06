@@ -38,6 +38,7 @@ export default class InitGenerator extends Generator {
 			topScope?: string[];
 			webpackOptions?: WebpackOptions;
 		};
+		usingDefaults?: boolean;
 	};
 	private langType: string;
 
@@ -83,12 +84,12 @@ export default class InitGenerator extends Generator {
 
 		process.stdout.write(
 			`\n${logSymbols.info}${chalk.blue(" INFO ")} ` +
-				`For more information and a detailed description of each question, have a look at: ` +
-				`${chalk.bold.green("https://github.com/webpack/webpack-cli/blob/master/INIT.md")}\n`
+			`For more information and a detailed description of each question, have a look at: ` +
+			`${chalk.bold.green("https://github.com/webpack/webpack-cli/blob/master/INIT.md")}\n`
 		);
 		process.stdout.write(
 			`${logSymbols.info}${chalk.blue(" INFO ")} ` +
-				`Alternatively, run "webpack(-cli) --help" for usage info\n\n`
+			`Alternatively, run "webpack(-cli) --help" for usage info\n\n`
 		);
 
 		const { multiEntries } = await Confirm(
@@ -136,14 +137,16 @@ export default class InitGenerator extends Generator {
 			self,
 			"langType",
 			"Will you use one of the below JS solutions?",
-			[LangType.ES6, LangType.Typescript, "No"],
-			LangType.ES6,
+			["No", LangType.ES6, LangType.Typescript],
+			"No",
 			this.autoGenerateConfig
 		);
 
 		langQuestionHandler(this, langType);
 		this.langType = langType;
-
+		if (this.langType !== "No") {
+			this.usingDefaults = false;
+		}
 		const { stylingType } = await List(
 			self,
 			"stylingType",
@@ -153,9 +156,13 @@ export default class InitGenerator extends Generator {
 			this.autoGenerateConfig
 		);
 
+		if (this.langType === "No" && stylingType === "No") {
+			this.usingDefaults = true;
+		}
+
 		const { ExtractUseProps, regExpForStyles } = styleQuestionHandler(self, stylingType);
 
-		if (this.usingDefaults) {
+		if (!this.usingDefaults) {
 			// Ask if the user wants to use extractPlugin
 			const { useExtractPlugin } = await Input(
 				self,
@@ -251,8 +258,16 @@ export default class InitGenerator extends Generator {
 	}
 
 	public writing(): void {
+		this.configuration.usingDefaults = this.usingDefaults;
 		this.config.set("configuration", this.configuration);
 
+		if (this.langType === "ES6") {
+			this.fs.copyTpl(
+				path.resolve(__dirname, "./templates/.babelrc"),
+				this.destinationPath(".babelrc"),
+				{}
+			);
+		}
 		const packageJsonTemplatePath = "./templates/package.json.js";
 		this.fs.extendJSON(this.destinationPath("package.json"), require(packageJsonTemplatePath)(this.usingDefaults));
 

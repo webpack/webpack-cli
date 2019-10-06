@@ -53,18 +53,7 @@ export function getBabelLoader(includeFolders: string[]): Rule {
 	return {
 		test: "/.(js|jsx)$/",
 		include,
-		loader: "'babel-loader'",
-		options: {
-			plugins: ["'syntax-dynamic-import'"],
-			presets: [
-				[
-					"'@babel/preset-env'",
-					{
-						"'modules'": false
-					}
-				]
-			]
-		}
+		loader: "'babel-loader'"
 	};
 }
 
