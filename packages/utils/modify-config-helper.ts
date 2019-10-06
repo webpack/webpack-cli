@@ -103,7 +103,7 @@ export default function modifyHelperUtil(action: string, generator: typeof Gener
                 },
                 configModule,
             );
-            if (configModule.usingDefaults) {
+            if (configModule.usingDefaults && configModule.usingDefaults === true) {
                 const runCommand = getPackageManager() === "yarn" ? "yarn build" : "npm run build";
 
                 const successMessage =
