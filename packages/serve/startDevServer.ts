@@ -6,11 +6,10 @@ import * as Server from "webpack-dev-server/lib/Server";
  *
  * @param {Object} compiler - a webpack compiler
  * @param {Object} options - devServer options
- * @param {Function} onListening - optional callback for when the server starts listening
  * 
  * @returns {Void} 
  */
-export default function startDevServer(compiler, options, onListening): void {
+export default function startDevServer(compiler, options): void {
     const firstWpOpt = compiler.compilers
         ? compiler.compilers[0].options
         : compiler.options;
@@ -32,9 +31,6 @@ export default function startDevServer(compiler, options, onListening): void {
     server.listen(socket || port, host, (err): void => {
         if (err) {
             throw err;
-        }
-        if (typeof onListening === 'function') {
-            onListening();
         }
     });
 }
