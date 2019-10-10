@@ -12,23 +12,20 @@ npm i -D webpack-cli @webpack-cli/webpack-scaffold
 
 # API
 
--   [webpack-scaffold](#webpack-scaffold)
--   [Installation](#installation)
--   [API](#api)
-    -   [parseValue](#parsevalue)
-    -   [createArrowFunction](#createarrowfunction)
-    -   [createRegularFunction](#createregularfunction)
-    -   [createDynamicPromise](#createdynamicpromise)
-    -   [createAssetFilterFunction](#createassetfilterfunction)
-    -   [createExternalFunction](#createexternalfunction)
-    -   [createRequire](#createrequire)
-    -   [Inquirer](#inquirer)
-        -   [List](#list)
-        -   [RawList](#rawlist)
-        -   [CheckList](#checklist)
-        -   [Input](#input)
-        -   [InputValidate](#inputvalidate)
-        -   [Confirm](#confirm)
+-   [parseValue](#parsevalue)
+-   [createArrowFunction](#createarrowfunction)
+-   [createRegularFunction](#createregularfunction)
+-   [createDynamicPromise](#createdynamicpromise)
+-   [createAssetFilterFunction](#createassetfilterfunction)
+-   [createExternalFunction](#createexternalfunction)
+-   [createRequire](#createrequire)
+-   [Inquirer](#inquirer)
+    -   [List](#list)
+    -   [RawList](#rawlist)
+    -   [CheckList](#checklist)
+    -   [Input](#input)
+    -   [InputValidate](#inputvalidate)
+    -   [Confirm](#confirm)
 
 ## parseValue
 
