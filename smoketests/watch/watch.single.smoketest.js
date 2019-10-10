@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 'use strict';
 
 const assert = require('assert');
@@ -15,7 +16,10 @@ const testEntryFiles = [
     },
 ];
 
-// Make a copy of each file
+/**
+ * Make a copy of each file
+ * @returns {void}
+ */
 async function setup() {
     await testEntryFiles.forEach(async file => {
         // eslint-disable-next-line
@@ -23,7 +27,10 @@ async function setup() {
     });
 }
 
-// Remove symlinks, restore file
+/**
+ * Remove symlinks, restore file
+ * @returns {void}
+ */
 async function teardown() {
     await testEntryFiles.forEach(async file => {
         try {
