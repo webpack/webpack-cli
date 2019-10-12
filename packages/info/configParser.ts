@@ -26,7 +26,7 @@ const CONFIG_SCHEMA = {
     plugins: 'Array',
 };
 
-function modifyConfig(config, key) {
+function modifyConfig(config, key): void {
     switch (CONFIG_SCHEMA[key]) {
         case 'Array':
             config[key].forEach((element, idx) => {
