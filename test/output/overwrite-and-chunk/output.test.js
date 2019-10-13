@@ -37,8 +37,8 @@ describe('Overwrite-and-chunk Output flag ', () => {
     });
     // Overwriting the chunk output from config file to single bundle file using --output flag
     it('should throw error as multiple entry to a single chunk: single.bundle.js', done => {
-        const { stderr } = run(__dirname, ['-c', resolve(__dirname, 'webpack.single.config.js'), '--output', './bin/single.bundle.js']);
-        expect(stderr).toContain('webpack: Conflict: Multiple chunks emit assets to the same filename single.bundle.js (chunks 0 and 1)');
+        const { stderr } = run(__dirname, ['-c', resolve(__dirname, 'webpack.single.config.js'), '--output', './bin/single.bundle.js'], false);
+        expect(stderr.includes('webpack: Conflict: Multiple chunks emit assets to the same filename single.bundle.js (chunks 0 and 1)')).toBe(true);
         done();
     });
 });
