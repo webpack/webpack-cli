@@ -1,7 +1,7 @@
 'use strict';
 const { stat } = require('fs');
-const { resolve, sep } = require('path');
-const { run, extractSummary } = require('../../utils/test-utils');
+const { resolve } = require('path');
+const { run, extractSummary, outDirExtractor } = require('../../utils/test-utils');
 
 describe('basic config file', () => {
     it('is able to understand and parse a very basic configuration file', done => {
@@ -10,8 +10,7 @@ describe('basic config file', () => {
         expect(stdout).not.toBe(undefined);
         const summary = extractSummary(stdout);
         const outputDir = 'basic/binary';
-        const outDirectoryFromCompiler = summary['Output Directory'].split(sep);
-        const outDirToMatch = outDirectoryFromCompiler.slice(outDirectoryFromCompiler.length - 2, outDirectoryFromCompiler.length).join('/');
+        const outDirToMatch = outDirExtractor(summary['Output Directory'], 2);
         expect(outDirToMatch).toContain(outputDir);
         stat(resolve(__dirname, './binary/a.bundle.js'), (err, stats) => {
             expect(err).toBe(null);

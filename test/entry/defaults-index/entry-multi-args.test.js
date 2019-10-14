@@ -1,17 +1,16 @@
 'use strict';
 
 const { stat } = require('fs');
-const { resolve, sep } = require('path');
+const { resolve } = require('path');
 
-const { run, extractSummary } = require('../../utils/test-utils');
+const { run, extractSummary, outDirExtractor } = require('../../utils/test-utils');
 
 describe('single entry flag index present', () => {
     it('finds default index file and compiles successfully', done => {
         const { stdout, stderr } = run(__dirname);
         const summary = extractSummary(stdout);
         const outputDir = 'entry/defaults-index/bin';
-        const outDirectoryFromCompiler = summary['Output Directory'].split(sep);
-        const outDirToMatch = outDirectoryFromCompiler.slice(outDirectoryFromCompiler.length - 3, outDirectoryFromCompiler.length).join('/');
+        const outDirToMatch = outDirExtractor(summary['Output Directory'], 3);
         expect(outDirToMatch).toContain(outputDir);
         expect(stderr).not.toContain('Entry module not found');
         stat(resolve(__dirname, './bin/bundle.js'), (err, stats) => {
@@ -26,8 +25,7 @@ describe('single entry flag index present', () => {
         expect(stderr).toContain('Duplicate flags found, defaulting to last set value');
         const summary = extractSummary(stdout);
         const outputDir = 'entry/defaults-index/bin';
-        const outDirectoryFromCompiler = summary['Output Directory'].split(sep);
-        const outDirToMatch = outDirectoryFromCompiler.slice(outDirectoryFromCompiler.length - 3, outDirectoryFromCompiler.length).join('/');
+        const outDirToMatch = outDirExtractor(summary['Output Directory'], 3);
         expect(outDirToMatch).toContain(outputDir);
         expect(stderr).not.toContain('Entry module not found');
         stat(resolve(__dirname, './bin/main.js'), (err, stats) => {

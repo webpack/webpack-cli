@@ -211,4 +211,18 @@ function copyFile(testCase, file) {
     }
 }
 
-module.exports = { run, runWatch, runAndGetWatchProc, extractHash, extractSummary, appendDataIfFileExists, copyFile };
+/**
+ * It splits the arr passed as an argument using node.js's seperator for supporting cross-windows
+ * matching for the paths, and slice the elements from the idx passed and
+ * joins them to create a string which can be matched against the output directory
+ * @param {Array} arr - the array element, in this case the outputDir array from summary
+ * @param {Number} idx - index from the end to start slicing
+ * @returns {string} - output directory to test against
+ */
+function outDirExtractor(arr, idx) {
+    const { sep } = path;
+    const outDirectoryFromCompiler = arr.split(sep);
+    return outDirectoryFromCompiler.slice(outDirectoryFromCompiler.length - idx, outDirectoryFromCompiler.length).join('/');
+}
+
+module.exports = { run, runWatch, runAndGetWatchProc, extractHash, extractSummary, appendDataIfFileExists, copyFile, outDirExtractor };
