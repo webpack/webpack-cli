@@ -12,7 +12,7 @@ import { core } from "../../lib/utils/cli-flags";
  * @param {String[]} args - args processed from the CLI
  * @returns {Function} invokes the devServer API
  */
-export default function serve(args): Promise<void | Function> {
+export default function serve(args): void {
 	const cli = new WebpackCLI();
 	// partial parsing usage: https://github.com/75lb/command-line-args/wiki/Partial-parsing
 
@@ -27,9 +27,7 @@ export default function serve(args): Promise<void | Function> {
 	if (webpackArgs && webpackArgs._all && typeof webpackArgs._all.hot !== 'undefined') {
 		finalArgs['hot'] = webpackArgs._all.hot;
 	}
-    return new Promise((resolve): void => {
-		cli.getCompiler(webpackArgs, core).then((compiler): void => {
-			startDevServer.default(compiler, finalArgs, resolve);
-		});
+	cli.getCompiler(webpackArgs, core).then((compiler): void => {
+		startDevServer.default(compiler, finalArgs);
 	});
 }

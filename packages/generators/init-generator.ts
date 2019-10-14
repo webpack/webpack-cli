@@ -38,6 +38,7 @@ export default class InitGenerator extends Generator {
 			topScope?: string[];
 			webpackOptions?: WebpackOptions;
 		};
+		usingDefaults?: boolean;
 	};
 	private langType: string;
 
@@ -83,12 +84,12 @@ export default class InitGenerator extends Generator {
 
 		process.stdout.write(
 			`\n${logSymbols.info}${chalk.blue(" INFO ")} ` +
-				`For more information and a detailed description of each question, have a look at: ` +
-				`${chalk.bold.green("https://github.com/webpack/webpack-cli/blob/master/INIT.md")}\n`
+			`For more information and a detailed description of each question, have a look at: ` +
+			`${chalk.bold.green("https://github.com/webpack/webpack-cli/blob/master/INIT.md")}\n`
 		);
 		process.stdout.write(
 			`${logSymbols.info}${chalk.blue(" INFO ")} ` +
-				`Alternatively, run "webpack(-cli) --help" for usage info\n\n`
+			`Alternatively, run "webpack(-cli) --help" for usage info\n\n`
 		);
 
 		const { multiEntries } = await Confirm(
@@ -136,14 +137,16 @@ export default class InitGenerator extends Generator {
 			self,
 			"langType",
 			"Will you use one of the below JS solutions?",
-			[LangType.ES6, LangType.Typescript, "No"],
-			LangType.ES6,
+			["No", LangType.ES6, LangType.Typescript],
+			"No",
 			this.autoGenerateConfig
 		);
 
 		langQuestionHandler(this, langType);
 		this.langType = langType;
-
+		if (this.langType !== "No") {
+			this.usingDefaults = false;
+		}
 		const { stylingType } = await List(
 			self,
 			"stylingType",
@@ -152,49 +155,49 @@ export default class InitGenerator extends Generator {
 			"No",
 			this.autoGenerateConfig
 		);
-
+		if (this.langType === "No") {
+			this.usingDefaults = true;
+		}
 		const { ExtractUseProps, regExpForStyles } = styleQuestionHandler(self, stylingType);
+		if (stylingType !== "No") {
+			this.usingDefaults = false;
+		}
+		// Ask if the user wants to use extractPlugin
+		const { useExtractPlugin } = await Input(
+			self,
+			"useExtractPlugin",
+			"If you want to bundle your CSS files, what will you name the bundle? (press enter to skip)",
+			"main",
+			this.autoGenerateConfig
+		);
 
-		if (this.usingDefaults) {
-			// Ask if the user wants to use extractPlugin
-			const { useExtractPlugin } = await Input(
-				self,
-				"useExtractPlugin",
-				"If you want to bundle your CSS files, what will you name the bundle? (press enter to skip)",
-				"'main.css'",
-				this.autoGenerateConfig
+		if (regExpForStyles) {
+			const cssBundleName: string = useExtractPlugin;
+			this.dependencies.push("mini-css-extract-plugin");
+			this.configuration.config.topScope.push(
+				tooltip.cssPlugin(),
+				"const MiniCssExtractPlugin = require('mini-css-extract-plugin');",
+				"\n"
 			);
-
-			if (regExpForStyles) {
-				if (this.isProd) {
-					const cssBundleName: string = useExtractPlugin;
-					this.dependencies.push("mini-css-extract-plugin");
-					this.configuration.config.topScope.push(
-						tooltip.cssPlugin(),
-						"const MiniCssExtractPlugin = require('mini-css-extract-plugin');",
-						"\n"
-					);
-					if (cssBundleName.length !== 0) {
-						(this.configuration.config.webpackOptions.plugins as string[]).push(
-							// TODO: use [contenthash] after it is supported
-							`new MiniCssExtractPlugin({ filename:'${cssBundleName}.[chunkhash].css' })`
-						);
-					} else {
-						(this.configuration.config.webpackOptions.plugins as string[]).push(
-							"new MiniCssExtractPlugin({ filename:'style.css' })"
-						);
-					}
-
-					ExtractUseProps.unshift({
-						loader: "MiniCssExtractPlugin.loader"
-					});
-				}
-
-				this.configuration.config.webpackOptions.module.rules.push({
-					test: regExpForStyles,
-					use: ExtractUseProps
-				});
+			if (cssBundleName.length !== 0) {
+				(this.configuration.config.webpackOptions.plugins as string[]).push(
+					// TODO: use [contenthash] after it is supported
+					`new MiniCssExtractPlugin({ filename:'${cssBundleName}.[chunkhash].css' })`
+				);
+			} else {
+				(this.configuration.config.webpackOptions.plugins as string[]).push(
+					"new MiniCssExtractPlugin({ filename:'style.css' })"
+				);
 			}
+
+			ExtractUseProps.unshift({
+				loader: "MiniCssExtractPlugin.loader"
+			});
+
+			this.configuration.config.webpackOptions.module.rules.push({
+				test: regExpForStyles,
+				use: ExtractUseProps
+			});
 		}
 		if (this.usingDefaults) {
 			// Html webpack Plugin
@@ -251,8 +254,16 @@ export default class InitGenerator extends Generator {
 	}
 
 	public writing(): void {
+		this.configuration.usingDefaults = this.usingDefaults;
 		this.config.set("configuration", this.configuration);
 
+		if (this.langType === "ES6") {
+			this.fs.copyTpl(
+				path.resolve(__dirname, "./templates/.babelrc"),
+				this.destinationPath(".babelrc"),
+				{}
+			);
+		}
 		const packageJsonTemplatePath = "./templates/package.json.js";
 		this.fs.extendJSON(this.destinationPath("package.json"), require(packageJsonTemplatePath)(this.usingDefaults));
 

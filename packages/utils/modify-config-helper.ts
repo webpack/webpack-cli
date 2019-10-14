@@ -6,6 +6,7 @@ import * as Generator from 'yeoman-generator';
 
 import { TransformConfig } from './types/Config';
 import runTransform from './scaffold';
+import { getPackageManager } from './package-manager';
 
 export interface Config extends Object {
     item?: {
@@ -21,6 +22,15 @@ export interface TransformConfig extends Object {
     configPath?: string;
     configFile?: string;
     config?: Config;
+}
+
+export interface WebpackScaffoldObject extends Object {
+    config: {
+        configName?: string;
+        topScope?: string[];
+        webpackOptions?: object;
+    };
+    usingDefaults?: boolean;
 }
 
 const DEFAULT_WEBPACK_CONFIG_FILENAME = 'webpack.config.js';
@@ -61,20 +71,17 @@ export default function modifyHelperUtil(action: string, generator: typeof Gener
         autoSetDefaults,
     })
         .then((): void => {
-            let configModule: object;
+            let configModule: WebpackScaffoldObject;
             try {
                 const confPath = path.resolve(process.cwd(), '.yo-rc.json');
                 configModule = require(confPath);
-                const packageName: string = require(path.resolve(process.cwd(), 'package.json')).name;
-
                 // Change structure of the config to be transformed
-                const tmpConfig: object = {};
+                const tmpConfig: WebpackScaffoldObject = {
+                    config: {}
+                };
                 Object.keys(configModule)
-                    .filter((config: string): boolean => {
-                        if (packageName) {
-                            return config === packageName;
-                        }
-                        return config === '*';
+                    .filter(config => {
+                        return configModule[config];
                     })
                     .forEach((prop: string): void => {
                         const configs = Object.keys(configModule[prop].configuration);
@@ -96,6 +103,14 @@ export default function modifyHelperUtil(action: string, generator: typeof Gener
                 },
                 configModule,
             );
+            if (configModule.usingDefaults && configModule.usingDefaults === true) {
+                const runCommand = getPackageManager() === "yarn" ? "yarn build" : "npm run build";
+
+                const successMessage =
+                    `\nYou can now run ${chalk.green(runCommand)} to bundle your application!\n\n`;
+                process.stdout.write(`\n${successMessage}`);
+                return;
+            }
             return runTransform(transformConfig, 'init');
         })
         .catch((err): void => {
