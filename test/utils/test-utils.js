@@ -126,9 +126,9 @@ function appendDataIfFileExists(testCase, file, data) {
  */
 function appendDataToMultipleIfFilesExists(testCase, file, data, cbFile, cbData) {
     const filePath = path.resolve(testCase, file);
-    fs.access(filePath, fs.F_OK, async accessErr => {
+    fs.access(filePath, fs.F_OK, accessErr => {
         if (accessErr) throw new Error(`Oops! ${accessErr} does not exist!`);
-        await fs.appendFile(filePath, data, 'utf8', () => {
+        fs.appendFile(filePath, data, 'utf8', () => {
             const cbFilePath = path.resolve(testCase, cbFile);
             fs.appendFile(cbFilePath, cbData, () => {});
         });
@@ -148,7 +148,7 @@ async function copyFileAsync(testCase, file) {
     const fileMetaData = path.parse(file);
     const fileCopyName = fileMetaData.name.concat('_copy').concat(fileMetaData.ext);
     const copyFilePath = path.resolve(testCase, fileCopyName);
-    await fs.access(fileToChangePath, fs.F_OK, async accessErr => {
+    fs.access(fileToChangePath, fs.F_OK, accessErr => {
         if (accessErr) throw new Error(`Oops! ${fileToChangePath} does not exist!`);
     });
     const data = fs.readFileSync(fileToChangePath);
