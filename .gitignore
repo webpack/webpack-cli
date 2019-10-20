@@ -11,6 +11,7 @@
 
 # Node dependencies
 node_modules
+!test/config/**/node_modules
 
 # npm-debug log
 npm-debug.*
