@@ -434,6 +434,10 @@ module.exports = function(...args) {
 			addPlugin(options, new HotModuleReplacementPlugin());
 		});
 
+		ifBooleanArg("no-cache", function() {
+			options.cache = false;
+		});
+
 		ifBooleanArg("debug", function() {
 			const LoaderOptionsPlugin = require("webpack").LoaderOptionsPlugin;
 			addPlugin(
