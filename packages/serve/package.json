@@ -14,14 +14,14 @@
     "@webpack-cli/utils": "0.2.2",
     "chalk": "2.4.2",
     "cross-spawn": "6.0.5",
-    "inquirer": "6.5.1"
+    "inquirer": "6.5.1",
+    "webpack-dev-server": "^3.9.0"
   },
   "devDependencies": {
     "@types/cross-spawn": "6.0.0",
     "@types/inquirer": "6.5.0",
     "@types/node": "12.7.2",
-    "typescript": "3.5.3",
-    "webpack-dev-server": "^3.8.2"
+    "typescript": "3.5.3"
   },
   "peerDependencies": {
     "webpack-dev-server": ">=4.0.0"
