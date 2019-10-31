@@ -117,6 +117,11 @@ module.exports = function(yargs) {
 				group: BASIC_GROUP,
 				requiresArg: true
 			},
+			"no-cache": {
+				type: "boolean",
+				describe: "Disables cached builds",
+				group: BASIC_GROUP
+			},
 			"module-bind": {
 				type: "string",
 				describe: "Bind an extension to a loader",
