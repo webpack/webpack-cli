@@ -1,3 +1,18 @@
+<a name="3.3.10"></a>
+
+# 3.3.10 (2019-10-31)
+
+[Full Changelog](https://github.com/webpack/webpack-cli/compare/v3.3.9...v3.3.10)
+
+## New Features
+
+-   add new flag and patch sec dep ([#1102](https://github.com/webpack/webpack-cli/pull/1102))
+
+## Chore
+
+-   remove un-synced tests ([08a7650](https://github.com/webpack/webpack-cli/commit/08a7650))
+-   sec patch ([6ad6099](https://github.com/webpack/webpack-cli/commit/6ad6099))
+
 <a name="3.3.9"></a>
 
 # 3.3.9 (2019-09-17)
