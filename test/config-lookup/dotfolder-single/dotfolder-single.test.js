@@ -5,14 +5,14 @@ const { resolve } = require('path');
 
 const { run, extractSummary } = require('../../utils/test-utils');
 
-describe('config lookup test : dotfolder', () => {
+describe('dotfolder single config lookup', () => {
     it('should find a webpack configuration in a dotfolder', done => {
         const { stdout, stderr } = run(__dirname, [], false);
         expect(stderr).not.toBeUndefined();
         expect(stdout).not.toBeUndefined();
 
         const summary = extractSummary(stdout);
-        const outputDir = 'config-lookup/dotfiles/dist';
+        const outputDir = 'config-lookup/dotfolder-single/dist';
 
         expect(summary['Output Directory']).toContain(outputDir);
         expect(stderr).not.toContain('Entry module not found');
