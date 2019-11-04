@@ -2,6 +2,7 @@
 'use strict';
 
 require('v8-compile-cache');
+const logger = require('./lib/utils/logger');
 
 const importLocal = require('import-local');
 
@@ -14,8 +15,14 @@ process.title = 'webpack';
 const updateNotifier = require('update-notifier');
 const packageJson = require('./package.json');
 
-updateNotifier({ pkg: packageJson }).notify();
+const notifier = updateNotifier({
+    pkg: packageJson,
+    updateCheckInterval: 1000 * 60 * 60 * 24 * 30, // 1 month
+});
 
+if (notifier.update) {
+    logger.info(`Update available: ${notifier.update.latest}`);
+}
 const semver = require('semver');
 
 const version = packageJson.engines.node;
