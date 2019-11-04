@@ -23,14 +23,6 @@
     "@types/node": "12.7.2",
     "typescript": "3.5.3"
   },
-  "peerDependencies": {
-    "webpack-dev-server": ">=4.0.0"
-  },
-  "peerDependenciesMeta": {
-    "webpack-dev-server": {
-      "optional": true
-    }
-  },
   "scripts": {
     "build": "tsc",
     "watch": "npm run build && tsc -w"
