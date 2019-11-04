@@ -13,17 +13,8 @@ if (importLocal(__filename)) {
 }
 process.title = 'webpack';
 
-const updateNotifier = require('update-notifier');
 const packageJson = require('./package.json');
 
-const notifier = updateNotifier({
-    pkg: packageJson,
-    updateCheckInterval: 1000 * 60 * 60 * 24 * 30, // 1 month
-});
-
-if (notifier.update) {
-    logger.info(`Update available: ${notifier.update.latest}`);
-}
 const semver = require('semver');
 
 const version = packageJson.engines.node;
