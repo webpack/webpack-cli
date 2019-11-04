@@ -1,0 +1,13 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "noEmit": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "skipLibCheck": true
+  },
+  "include": ["../cli.js", "./"],
+  "exclude": ["node_modules/**", "packages/*/node_modules/**"]
+}

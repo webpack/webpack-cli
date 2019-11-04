@@ -8,6 +8,7 @@ const importLocal = require('import-local');
 
 // Prefer the local installation of webpack-cli
 if (importLocal(__filename)) {
+    // @ts-ignore
     return;
 }
 process.title = 'webpack';
