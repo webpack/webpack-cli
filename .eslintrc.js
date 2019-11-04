@@ -7,7 +7,7 @@ module.exports = {
     },
     parser: '@typescript-eslint/parser',
     root: true,
-    plugins: ['node'],
+    plugins: ['node', 'prettier'],
     parserOptions: { ecmaVersion: 2017, sourceType: 'module' },
     rules: {
         'no-useless-escape': 'off',
