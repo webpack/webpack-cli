@@ -35,8 +35,28 @@ describe('output flag named bundles', () => {
 
     it('should throw error on same bundle name for multiple entries', done => {
         const { stderr } = run(__dirname, ['-c', resolve(__dirname, 'webpack.single.config.js')], false);
-        const errMsg = ' Conflict: Multiple chunks emit assets to the same filename bundle.js (chunks 0 and 1)';
+        const errMsg = 'Multiple chunks emit assets to the same filename bundle.js (chunks 0 and 1)';
         expect(stderr).toContain(errMsg);
+        done();
+    });
+
+    it('should not throw error on same bundle name for multiple entries with defaults', done => {
+        const { stdout, stderr } = run(__dirname, ['-c', resolve(__dirname, 'webpack.defaults.config.js'), '--defaults'], false);
+        const summary = extractSummary(stdout);
+        const outputDir = 'named-bundles/dist';
+
+        expect(stderr).toBe('');
+
+        expect(summary['Output Directory']).toContain(outputDir);
+
+        stat(resolve(__dirname, './dist/b.bundle.js'), (err, stats) => {
+            expect(err).toBe(null);
+            expect(stats.isFile()).toBe(true);
+        });
+        stat(resolve(__dirname, './dist/c.bundle.js'), (err, stats) => {
+            expect(err).toBe(null);
+            expect(stats.isFile()).toBe(true);
+        });
         done();
     });
 

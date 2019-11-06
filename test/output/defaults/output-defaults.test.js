@@ -19,7 +19,7 @@ describe('output flag defaults', () => {
     });
     it('set default output directory on empty flag', done => {
         const { stdout, stderr } = run(__dirname, ['--entry', './a.js', '--output'], false);
-        expect(stderr).toBe('');
+        expect(stderr).toContain('option has not been set, webpack will fallback to');
         const summary = extractSummary(stdout);
 
         const outputDir = 'defaults/dist';
