@@ -1,188 +1,164 @@
 {
-	"name": "webpack-cli",
-	"version": "4.0.0-alpha-4",
-	"description": "CLI for webpack & friends",
-	"license": "MIT",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/webpack/webpack-cli.git"
-	},
-	"bin": {
-		"webpack-cli": "cli.js"
-	},
-	"main": "cli.js",
-	"engines": {
-		"node": ">=6.11.5"
-	},
-	"keywords": [
-		"webpack",
-		"cli",
-		"scaffolding",
-		"module",
-		"bundler"
-	],
-	"files": [
-		"lib"
-	],
-	"scripts": {
-		"bootstrap": "npm run clean:all && npm install && lerna bootstrap",
-		"build": "tsc",
-		"bundlesize": "bundlesize",
-		"changelog": "conventional-changelog --config ./build/changelog-generator/index.js --infile CHANGELOG.md --same-file",
-		"commit": "git-cz",
-		"docs": "typedoc",
-		"prepare": "lerna bootstrap",
-		"pretest": "npm run build && npm run lint && npm run tslint",
-		"clean:all": "rimraf node_modules package-lock.json packages/*/node_modules packages/*/package-lock.json",
-		"format": "prettier-eslint ./lib/**/*.js ./cli.js ./lib/*.js ./test/**/*.js ./packages/**/*.js --write",
-		"lint:codeOnly": "eslint \"{lib}/**/!(__testfixtures__)/*.js\" \"{lib}/**.js\"",
-		"lint": "eslint \"./lib/**/*.js\" \"./cli.js\" \"./lib/*.js\" \"./test/**/*.js\" \"{packages}/**/!(node_modules)/*.test.js\" && npm run tslint",
-		"precommit": "lint-staged",
-		"reportCoverage": "nyc report --reporter=json && codecov -f coverage/coverage-final.json --disable=gcov",
-		"test": "nyc jest --maxWorkers=4 --reporters=default --reporters=jest-junit",
-		"test:cli": "nyc jest test/ --maxWorkers=4 --reporters=default --reporters=jest-junit",
-		"test:packages": "nyc jest packages/ --maxWorkers=4 --reporters=default --reporters=jest-junit",
-		"test:ci": "nyc jest --maxWorkers=$(nproc) --reporters=default --reporters=jest-junit",
-		"travis:integration": "npm run build && npm run test && npm run reportCoverage",
-		"travis:lint": "npm run build && npm run lint",
-		"watch": "npm run build && tsc -w"
-	},
-	"husky": {
-		"hooks": {
-			"pre-commit": "lint-staged",
-			"commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-		}
-	},
-	"lint-staged": {
-		"{packages,lib}/**/!(__testfixtures__)/**.js": [
-			"eslint --fix",
-			"git add"
-		]
-	},
-	"jest": {
-		"testPathIgnorePatterns": [
-			"/node_modules/"
-		],
-		"testEnvironment": "node",
-		"collectCoverage": true,
-		"coverageReporters": [
-			"json",
-			"html",
-			"cobertura"
-		],
-		"transform": {
-			"^.+\\.(ts)?$": "ts-jest"
-		},
-		"testRegex": [
-			"/__tests__/.*\\.(test.js|test.ts)$",
-			"/test/.*\\.(test.js|test.ts)$"
-		],
-		"moduleFileExtensions": [
-			"ts",
-			"js",
-			"json"
-		]
-	},
-	"nyc": {
-		"include": [
-			"lib/**.js",
-			"packages/**/*.js"
-		],
-		"reporter": [
-			"lcov"
-		],
-		"all": true
-	},
-	"bundlesize": [
-		{
-			"path": "./packages/migrate/**.js",
-			"maxSize": "1 kB"
-		},
-		{
-			"path": "./packages/init/**/**.js",
-			"maxSize": "1.6 kB"
-		},
-		{
-			"path": "./packages/utils/**.js",
-			"maxSize": "5.32 kB"
-		}
-	],
-	"config": {
-		"commitizen": {
-			"path": "./node_modules/cz-customizable"
-		},
-		"cz-customizable": {
-			"config": "./.cz-config.js"
-		}
-	},
-	"dependencies": {
-		"chalk": "2.4.2",
-		"cli-table": "0.3.1",
-		"command-line-args": "5.1.1",
-		"command-line-usage": "5.0.5",
-		"cross-spawn": "6.0.5",
-		"inquirer": "6.3.1",
-		"interpret": "1.1.0",
-		"lightercollective": "0.3.0",
-		"loader-utils": "1.2.3",
-		"semver": "5.5.1",
-		"supports-color": "5.5.0",
-		"update-notifier": "2.5.0",
-		"v8-compile-cache": "2.0.2",
-		"webpack-log": "1.2.0",
-		"webpack-merge": "4.2.1"
-	},
-	"peerDependencies": {
-		"webpack": "4.x.x"
-	},
-	"devDependencies": {
-		"@babel/preset-env": "^7.3.4",
-		"@babel/register": "^7.0.0",
-		"@commitlint/cli": "7.2.1",
-		"@commitlint/config-lerna-scopes": "7.6.0",
-		"@commitlint/prompt-cli": "7.6.1",
-		"@commitlint/travis-cli": "7.6.1",
-		"@types/jest": "24.0.13",
-		"@types/node": "10.12.10",
-		"@typescript-eslint/eslint-plugin": "^1.6.0",
-		"@typescript-eslint/parser": "^1.6.0",
-		"bundlesize": "0.17.2",
-		"codecov": "3.5.0",
-		"commitizen": "3.1.1",
-		"commitlint-config-cz": "0.10.1",
-		"conventional-changelog-cli": "2.0.21",
-		"css-loader": "2.0.2",
-		"cz-customizable": "5.3.0",
-		"eslint": "^5.9.0",
-		"eslint-config-prettier": "^4.1.0",
-		"eslint-plugin-node": "^8.0.0",
-		"execa": "1.0.0",
-		"hard-source-webpack-plugin": "0.13.1",
-		"husky": "1.2.0",
-		"import-local": "2.0.0",
-		"jest": "23.6.0",
-		"jest-cli": "23.6.0",
-		"jest-junit": "6.4.0",
-		"jsdoc": "3.5.5",
-		"lerna": "3.14.1",
-		"lint-staged": "7.x.x",
-		"nyc": "13.1.0",
-		"optimize-css-assets-webpack-plugin": "5.0.1",
-		"prettier-eslint-cli": "4.7.1",
-		"readable-stream": "3.3.0",
-		"rimraf": "2.6.2",
-		"schema-utils": "1.0.0",
-		"style-loader": "0.23.1",
-		"terser-webpack-plugin": "1.2.0",
-		"ts-jest": "23.10.5",
-		"typedoc": "0.13.0",
-		"typedoc-plugin-monorepo": "0.1.0",
-		"typescript": "3.1.6",
-		"webpack": "4.x.x",
-		"webpack-dev-server": "3.4.1"
-	},
-	"collective": {
-		"type": "opencollective",
-		"url": "https://opencollective.com/webpack"
-	}
+  "name": "webpack-cli",
+  "version": "4.0.0-alpha-5",
+  "description": "CLI for webpack & friends",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/webpack/webpack-cli.git"
+  },
+  "bin": {
+    "webpack-cli": "cli.js"
+  },
+  "main": "cli.js",
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "keywords": [
+    "webpack",
+    "cli",
+    "scaffolding",
+    "module",
+    "bundler",
+    "web"
+  ],
+  "files": [
+    "lib",
+    "cli.js"
+  ],
+  "scripts": {
+    "bootstrap": "npm run clean:all && npm install && lerna bootstrap",
+    "build": "tsc",
+    "changelog": "conventional-changelog --config ./build/changelog-generator/index.js --infile CHANGELOG.md --same-file",
+    "clean:all": "rimraf node_modules packages/*/{node_modules}",
+    "commit": "git-cz",
+    "docs": "typedoc",
+    "format": "eslint --fix . --ext .js,.ts",
+    "lint": "eslint . --ext .js,.ts",
+    "pretest": "npm run build && npm run lint",
+    "reportCoverage": "nyc report --reporter=json && codecov -f coverage/coverage-final.json --disable=gcov",
+    "smoketest": "./smoketests/smoketests.sh",
+    "test": "nyc jest --maxWorkers=4 --reporters=default --reporters=jest-junit",
+    "test:cli": "nyc jest test/ --maxWorkers=4 --reporters=default --reporters=jest-junit",
+    "test:packages": "nyc jest packages/ --maxWorkers=4 --reporters=default --reporters=jest-junit",
+    "test:ci": "nyc jest --maxWorkers=$(nproc) --reporters=default --reporters=jest-junit --colors",
+    "travis:integration": "npm run build && npm run test && npm run reportCoverage",
+    "travis:lint": "npm run build && npm run lint",
+    "watch": "npm run build && tsc -w",
+    "publish:monorepo": "npm run format && npm run test && lerna publish -m \"chore: monorepo version update\""
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "*.md": [
+      "prettier --parser markdown --write",
+      "git add"
+    ],
+    "{packages,lib}/**/!(__testfixtures__)/**.js": [
+      "eslint --fix",
+      "git add"
+    ],
+    "*.ts": [
+      "npm run format",
+      "git add"
+    ],
+    "*.js": [
+      "npm run format",
+      "git add"
+    ]
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "testEnvironment": "node",
+    "collectCoverage": true,
+    "coverageReporters": [
+      "json",
+      "html",
+      "cobertura"
+    ],
+    "transform": {
+      "^.+\\.(ts)?$": "ts-jest"
+    },
+    "testRegex": [
+      "/__tests__/.*\\.(test.js|test.ts)$",
+      "/test/.*\\.(test.js|test.ts)$"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "json"
+    ]
+  },
+  "nyc": {
+    "include": [
+      "./cli.js",
+      "lib/**.js",
+      "packages/**/*.js"
+    ],
+    "reporter": [
+      "lcov"
+    ],
+    "all": true
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-customizable"
+    },
+    "cz-customizable": {
+      "config": "./.cz-config.js"
+    }
+  },
+  "dependencies": {
+    "@webpack-cli/init": "^0.2.2",
+    "ansi-escapes": "^4.2.1",
+    "cli-table3": "^0.5.1",
+    "command-line-args": "^5.1.1",
+    "command-line-usage": "^6.1.0",
+    "import-local": "^3.0.2",
+    "interpret": "^2.0.0",
+    "js-config-webpack-plugin": "^1.4.0",
+    "terser-webpack-plugin": "^2.2.1",
+    "update-notifier": "^3.0.1",
+    "v8-compile-cache": "^2.1.0",
+    "webpack": "^4.41.0",
+    "webpack-log": "^3.0.1",
+    "webpack-merge": "^4.2.2"
+  },
+  "peerDependencies": {
+    "webpack": "4.x.x"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.7.1",
+    "@commitlint/cli": "^8.2.0",
+    "@commitlint/config-lerna-scopes": "^8.2.0",
+    "@types/jest": "^24.0.22",
+    "@typescript-eslint/eslint-plugin": "^2.6.1",
+    "@typescript-eslint/parser": "^2.6.1",
+    "commitlint": "^8.2.0",
+    "commitlint-config-cz": "^0.12.1",
+    "cz-customizable": "^6.2.0",
+    "eslint": "^6.6.0",
+    "eslint-config-prettier": "^6.5.0",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "execa": "^3.2.0",
+    "husky": "^3.0.9",
+    "jest": "^24.9.0",
+    "jest-cli": "^24.9.0",
+    "jest-junit": "^9.0.0",
+    "jest-serializer-ansi": "^1.0.3",
+    "lerna": "^3.18.3",
+    "lint-staged": "^9.4.2",
+    "nyc": "^14.1.1",
+    "prettier": "1.18.2",
+    "ts-jest": "^24.1.0",
+    "typedoc": "^0.15.0",
+    "typescript": "^3.7.2"
+  }
 }
