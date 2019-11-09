@@ -19,7 +19,7 @@ describe('global flag', () => {
 
     it('is able inject one variable to global scope', () => {
         const { stderr } = run(__dirname, ['--global', 'myVar', './global1.js']);
-        expect(stderr).toContain('option has not been set, webpack will fallback to');
+        expect(stderr).toBe('');
         const executable = path.join(__dirname, './bin/bundle.js');
         const bundledScript = spawnSync('node', [executable]);
         expect(bundledScript.stdout).toEqual('myVar ./global1.js');
@@ -27,7 +27,7 @@ describe('global flag', () => {
 
     it('is able inject multiple variables to global scope', () => {
         const { stderr } = run(__dirname, ['--global', 'myVar', './global1.js', '--global', 'myVar2', './global2.js']);
-        expect(stderr).toContain('option has not been set, webpack will fallback to');
+        expect(stderr).toBe('');
         const executable = path.join(__dirname, './bin/bundle.js');
         const bundledScript = spawnSync('node', [executable]);
         expect(bundledScript.stdout).toEqual('myVar ./global1.js\nmyVar ./global2.js');
@@ -35,7 +35,7 @@ describe('global flag', () => {
 
     it('understands = syntax', () => {
         const { stderr } = run(__dirname, ['--global', 'myVar', './global1.js', '--global', 'myVar2=./global2.js']);
-        expect(stderr).toContain('option has not been set, webpack will fallback to');
+        expect(stderr).toBe('');
         const executable = path.join(__dirname, './bin/bundle.js');
         const bundledScript = spawnSync('node', [executable]);
         expect(bundledScript.stdout).toEqual('myVar ./global1.js\nmyVar ./global2.js');

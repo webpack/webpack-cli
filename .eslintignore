@@ -19,5 +19,6 @@ test/binCases/config-location/webpack-babel-config/bin/es6.js
 packages/**/*.js
 packages/utils/validate-identifier.ts
 
+# TODO removeme
 
-lib/utils/interactive.js
+lib
