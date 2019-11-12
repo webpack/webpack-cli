@@ -28,7 +28,7 @@ function run(testCase, args = [], setOutput = true) {
     return result;
 }
 
-function runWatch(testCase, args = [], setOutput = true) {
+function runWatch(testCase, args = [], setOutput = true, outputKillStr = 'Time') {
     const cwd = path.resolve(testCase);
 
     const outputPath = path.resolve(testCase, 'bin');
@@ -45,7 +45,7 @@ function runWatch(testCase, args = [], setOutput = true) {
             new Writable({
                 write(chunk, encoding, callback) {
                     const output = chunk.toString('utf8');
-                    if (output.includes('Time')) {
+                    if (output.includes(outputKillStr)) {
                         watchPromise.kill();
                     }
 

@@ -15,7 +15,7 @@
     "chalk": "2.4.2",
     "cross-spawn": "6.0.5",
     "inquirer": "6.5.1",
-    "webpack-dev-server": "^3.8.1"
+    "webpack-dev-server": "^3.9.0"
   },
   "devDependencies": {
     "@types/cross-spawn": "6.0.0",
@@ -24,11 +24,11 @@
     "typescript": "3.5.3"
   },
   "peerDependencies": {
-    "webpack-dev-server": ">=4.0.0"
+    "webpack-dev-server": ">=3.0.0"
   },
   "peerDependenciesMeta": {
     "webpack-dev-server": {
-      "optional": true
+      "optional": false
     }
   },
   "scripts": {
