@@ -24,7 +24,8 @@
   ],
   "files": [
     "lib",
-    "cli.js"
+    "cli.js",
+    "packages/serve/**/*.js"
   ],
   "scripts": {
     "bootstrap": "npm run clean:all && npm install && lerna bootstrap",
@@ -45,7 +46,7 @@
     "travis:integration": "npm run build && npm run test && npm run reportCoverage",
     "travis:lint": "npm run build && npm run lint",
     "watch": "npm run build && tsc -w",
-    "publish:monorepo": "npm run format && npm run test && lerna publish -m \"chore: monorepo version update\""
+    "publish:monorepo": "npm run format && npm run test && npm run build && lerna publish -m \"chore: monorepo version update\""
   },
   "husky": {
     "hooks": {
@@ -116,6 +117,7 @@
   },
   "dependencies": {
     "@webpack-cli/init": "^0.2.2",
+    "@webpack-cli/serve": "file:packages/serve",
     "ansi-escapes": "^4.2.1",
     "cli-table3": "^0.5.1",
     "command-line-args": "^5.1.1",
