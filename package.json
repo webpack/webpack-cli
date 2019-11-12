@@ -124,16 +124,15 @@
     "command-line-usage": "^6.1.0",
     "import-local": "^3.0.2",
     "interpret": "^2.0.0",
-    "js-config-webpack-plugin": "^1.4.0",
     "terser-webpack-plugin": "^2.2.1",
     "update-notifier": "^3.0.1",
     "v8-compile-cache": "^2.1.0",
-    "webpack": "^4.41.0",
+    "webpack": "^5.0.0-beta.3",
     "webpack-log": "^3.0.1",
     "webpack-merge": "^4.2.2"
   },
   "peerDependencies": {
-    "webpack": "4.x.x"
+    "webpack": "5.x.x"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.7.1",
