@@ -13,6 +13,7 @@ import { core } from "../../lib/utils/cli-flags";
  * @returns {Function} invokes the devServer API
  */
 export default function serve(args): void {
+	process.argv = process.argv.filter(arg => arg !== 'serve');
 	const cli = new WebpackCLI();
 	// partial parsing usage: https://github.com/75lb/command-line-args/wiki/Partial-parsing
 
