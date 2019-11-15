@@ -24,8 +24,7 @@
   ],
   "files": [
     "lib",
-    "cli.js",
-    "packages/serve/**/*.js"
+    "cli.js"
   ],
   "scripts": {
     "bootstrap": "npm run clean:all && npm install && lerna bootstrap",
@@ -117,7 +116,6 @@
   },
   "dependencies": {
     "@webpack-cli/init": "^0.2.2",
-    "@webpack-cli/serve": "file:packages/serve",
     "ansi-escapes": "^4.2.1",
     "cli-table3": "^0.5.1",
     "command-line-args": "^5.1.1",
