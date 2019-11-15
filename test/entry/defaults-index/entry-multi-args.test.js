@@ -12,7 +12,7 @@ describe('single entry flag index present', () => {
         const outputDir = 'entry/defaults-index/bin';
 
         expect(summary['Output Directory']).toContain(outputDir);
-        expect(stderr).not.toContain('Entry module not found');
+        expect(stderr).not.toContain('Module not found');
         stat(resolve(__dirname, './bin/bundle.js'), (err, stats) => {
             expect(err).toBe(null);
             expect(stats.isFile()).toBe(true);
@@ -27,7 +27,7 @@ describe('single entry flag index present', () => {
         const outputDir = 'entry/defaults-index/bin';
 
         expect(summary['Output Directory']).toContain(outputDir);
-        expect(stderr).not.toContain('Entry module not found');
+        expect(stderr).not.toContain('Module not found');
         stat(resolve(__dirname, './bin/main.js'), (err, stats) => {
             expect(err).toBe(null);
             expect(stats.isFile()).toBe(true);

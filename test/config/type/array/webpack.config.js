@@ -7,7 +7,7 @@ module.exports = [
         name: 'amd',
         entry: './a.js',
         mode: 'production',
-        devtool: 'eval-module',
+        devtool: 'eval-cheap-module-source-map',
     },
     {
         output: {

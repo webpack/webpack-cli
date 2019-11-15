@@ -6,7 +6,7 @@ module.exports = [
             filename: './prod.js',
         },
         mode: 'production',
-        devtool: 'eval-module',
+        devtool: 'eval-cheap-module-source-map',
         target: 'node',
         plugins: [
             new webpack.DefinePlugin({
