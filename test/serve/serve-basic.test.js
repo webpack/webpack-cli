@@ -1,4 +1,4 @@
-/* eslint-disable space-before-function-paren */
+/* eslint-disable space-before-function-paren, @typescript-eslint/explicit-function-return-type*/
 'use strict';
 
 const path = require('path');
