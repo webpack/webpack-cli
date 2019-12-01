@@ -67,12 +67,12 @@ In case you are suggesting a new feature, we will match your idea with our curre
 
     ```bash
     #npm
-    npm install
+    npm run setup
     npm link
     npm link webpack-cli
     ---------------------------
     #yarn
-    yarn
+    yarn run setup
     yarn link
     yarn link webpack-cli
     ```
