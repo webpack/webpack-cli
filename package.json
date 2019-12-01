@@ -28,6 +28,7 @@
   ],
   "scripts": {
     "bootstrap": "npm run clean:all && npm install && lerna bootstrap",
+    "setup": "npm install && lerna bootstrap",
     "build": "tsc",
     "changelog": "conventional-changelog --config ./build/changelog-generator/index.js --infile CHANGELOG.md --same-file",
     "clean:all": "rimraf node_modules packages/*/{node_modules}",
