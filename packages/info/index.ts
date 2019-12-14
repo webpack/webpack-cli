@@ -1,10 +1,9 @@
 import chalk from 'chalk';
 import * as envinfo from 'envinfo';
 import * as process from 'process';
-import { argv } from './options';
-
 import { AVAILABLE_COMMANDS, AVAILABLE_FORMATS, IGNORE_FLAGS } from './commands';
-import { configReader, fetchConfig, resolveFilePath, getNameFromPath } from './configParser';
+import { configReader, fetchConfig, getNameFromPath, resolveFilePath } from './configParser';
+import { argv } from './options';
 import { renderTable } from './renderTable';
 
 interface Information {
@@ -47,10 +46,9 @@ export function informationType(type: string): Information {
     }
 }
 export default async function info(CustomArgv: object): Promise<string[]> {
-    const CUSTOM_AGRUMENTS: boolean = Object.entries(CustomArgv).length !== 0 && CustomArgv.constructor === Object;
+    const CUSTOM_AGRUMENTS: boolean = CustomArgv && Object.entries(CustomArgv).length !== 0 && CustomArgv.constructor === Object;
     const args: ArgvI = CUSTOM_AGRUMENTS ? CustomArgv : argv;
     const configRelativePath = argv._[1] ? argv._[1] : args.config;
-    console.log(configRelativePath)
     if (configRelativePath) {
         const fullConfigPath = resolveFilePath(configRelativePath);
         const fileName = getNameFromPath(fullConfigPath);
