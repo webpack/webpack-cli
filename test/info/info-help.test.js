@@ -2,6 +2,9 @@
 
 const chalk = require('chalk');
 const { run } = require('../utils/test-utils');
+const { commands } = require('../../lib/utils/cli-flags');
+
+const infoFlags = commands.find(c => c.name === 'info').flags;
 
 const usageText = 'webpack info [options] [output-format]';
 const descriptionText = 'Outputs information about your system and dependencies';
@@ -28,6 +31,12 @@ describe('should print help for info command', () => {
         const orange = chalk.keyword('orange');
         expect(stdout).toContain(orange(usageText));
         expect(stdout).toContain(descriptionText);
+        expect(stderr).toHaveLength(0);
+    });
+
+    it('should output all cli flags', () => {
+        const { stdout, stderr } = run(__dirname, ['info', 'help']);
+        infoFlags.forEach(flag => expect(stdout).toContain(`--${flag.name}`));
         expect(stderr).toHaveLength(0);
     });
 });
