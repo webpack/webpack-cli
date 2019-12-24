@@ -1,4 +1,4 @@
-# webpack-cli init
+# webpack-cli create
 
 [![NPM Downloads][downloads]][downloads-url]
 
@@ -19,7 +19,7 @@ To run the package programmatically, install it as a dependency. When using the 
 ### Node
 
 ```js
-const init = require("@webpack-cli/init").default;
+const init = require('@webpack-cli/init').default;
 
 // this will run the default init instance
 init();
@@ -33,12 +33,13 @@ init([null, null, ...myPacakges]);
 **Via defaults**
 
 ```bash
-npx webpack-cli init
+npx webpack-cli create
 ```
 
 **To generate default configs**
+
 ```bash
-npx webpack-cli init --auto
+npx webpack-cli create --auto
 ```
 
 **Via custom scaffold**
@@ -46,13 +47,13 @@ npx webpack-cli init --auto
 1. Using package on `npm`
 
 ```bash
-npx webpack-cli init webpack-scaffold-[name]
+npx webpack-cli create webpack-scaffold-[name]
 ```
 
 2. Using path to a local directory
 
 ```bash
-npx webpack-cli init [path]
+npx webpack-cli create [path]
 ```
 
 [downloads]: https://img.shields.io/npm/dm/@webpack-cli/init.svg

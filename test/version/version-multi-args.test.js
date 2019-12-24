@@ -11,7 +11,7 @@ describe('version flag with multiple arguments', () => {
     });
 
     it('outputs version with multiple commands', () => {
-        const { stdout, stderr } = run(__dirname, ['version', 'init']);
+        const { stdout, stderr } = run(__dirname, ['version', 'create']);
         expect(stdout).toContain(pkgJSON.version);
         expect(stderr).toHaveLength(0);
     });
