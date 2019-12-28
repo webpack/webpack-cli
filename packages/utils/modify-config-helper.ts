@@ -64,6 +64,12 @@ export default function modifyHelperUtil(action: string, generator: typeof Gener
         };
     }
 
+    // check if the current directory already contains a package.json file
+    if (fs.existsSync('package.json')) {
+        console.error(`${chalk.bold.red('Error: ')}You already have a ${chalk.blue('package.json')} file in this directory.`);
+        process.exit(0);
+    }
+
     env.registerStub(generator, generatorName);
     env.run(generatorName, {
         configFile,
@@ -76,7 +82,7 @@ export default function modifyHelperUtil(action: string, generator: typeof Gener
                 configModule = require(confPath);
                 // Change structure of the config to be transformed
                 const tmpConfig: WebpackScaffoldObject = {
-                    config: {}
+                    config: {},
                 };
                 Object.keys(configModule)
                     .filter(config => {
@@ -103,10 +109,9 @@ export default function modifyHelperUtil(action: string, generator: typeof Gener
                 configModule,
             );
             if (configModule.usingDefaults && configModule.usingDefaults === true) {
-                const runCommand = getPackageManager() === "yarn" ? "yarn build" : "npm run build";
+                const runCommand = getPackageManager() === 'yarn' ? 'yarn build' : 'npm run build';
 
-                const successMessage =
-                    `\nYou can now run ${chalk.green(runCommand)} to bundle your application!\n\n`;
+                const successMessage = `\nYou can now run ${chalk.green(runCommand)} to bundle your application!\n\n`;
                 process.stdout.write(`\n${successMessage}`);
                 return;
             }
