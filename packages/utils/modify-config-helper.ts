@@ -66,7 +66,7 @@ export default function modifyHelperUtil(action: string, generator: typeof Gener
 
     // check if the current directory already contains a package.json file
     if (fs.existsSync('package.json')) {
-        console.error(`${chalk.bold.red('Error: ')}You already have a ${chalk.blue('package.json')} file in this directory.`);
+        console.error(`${chalk.bold.red('Error: ')}You already have a ${chalk.blue('package.json')} file in this directory. Scaffolds can not be created on top of existing projects.`);
         process.exit(0);
     }
 
