@@ -67,15 +67,6 @@ describe("package-manager", () => {
 		expect(spawn.sync).toHaveBeenLastCalledWith("npm", ["install", "-g", packageName], { stdio: "inherit" });
 	});
 
-	it("should spawn npm update from spawnChild", () => {
-		const packageName = "some-pkg";
-
-		mockUpdateNPMOnce();
-
-		packageManager.spawnChild(packageName);
-		expect(spawn.sync).toHaveBeenLastCalledWith("npm", ["update", "-g", packageName], { stdio: "inherit" });
-	});
-
 	it("should return the npm global dir from getPathToGlobalPackages if yarn is not installed", () => {
 		mockSpawnErrorOnce();
 		const globalPath = packageManager.getPathToGlobalPackages();
