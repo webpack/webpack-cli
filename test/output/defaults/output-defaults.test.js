@@ -25,7 +25,7 @@ describe('output flag defaults', () => {
         const outputDir = 'defaults/dist';
 
         expect(summary['Output Directory']).toContain(outputDir);
-        stat(resolve(__dirname, './dist/bundle.js'), (err, stats) => {
+        stat(resolve(__dirname, './dist/main.js'), (err, stats) => {
             expect(err).toBe(null);
             expect(stats.isFile()).toBe(true);
             done();
