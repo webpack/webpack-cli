@@ -13,7 +13,7 @@ describe('single entry flag index present', () => {
 
         expect(summary['Output Directory']).toContain(outputDir);
         expect(stderr).not.toContain('Module not found');
-        stat(resolve(__dirname, './bin/bundle.js'), (err, stats) => {
+        stat(resolve(__dirname, './bin/main.js'), (err, stats) => {
             expect(err).toBe(null);
             expect(stats.isFile()).toBe(true);
             done();
