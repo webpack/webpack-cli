@@ -9,6 +9,6 @@ module.exports = () => {
                     filename: 'promise.js',
                 },
             });
-        }, 5000);
+        }, 500);
     });
 };

@@ -16,7 +16,7 @@ describe('dotfolder single config lookup', () => {
 
         expect(summary['Output Directory']).toContain(outputDir);
         expect(stderr).not.toContain('Module not found');
-        stat(resolve(__dirname, './dist/bundle.js'), (err, stats) => {
+        stat(resolve(__dirname, './dist/main.js'), (err, stats) => {
             expect(err).toBe(null);
             expect(stats.isFile()).toBe(true);
             done();
