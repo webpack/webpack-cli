@@ -121,7 +121,7 @@
     "command-line-usage": "^6.1.0",
     "import-local": "^3.0.2",
     "interpret": "^2.0.0",
-    "terser-webpack-plugin": "^2.2.1",
+    "terser-webpack-plugin": "^2.3.2",
     "update-notifier": "^3.0.1",
     "v8-compile-cache": "^2.1.0",
     "webpack-log": "^3.0.1",
