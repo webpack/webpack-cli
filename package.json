@@ -115,7 +115,6 @@
     }
   },
   "dependencies": {
-    "@webpack-cli/init": "^0.2.2",
     "ansi-escapes": "^4.2.1",
     "cli-table3": "^0.5.1",
     "command-line-args": "^5.1.1",
@@ -125,7 +124,6 @@
     "terser-webpack-plugin": "^2.2.1",
     "update-notifier": "^3.0.1",
     "v8-compile-cache": "^2.1.0",
-    "webpack": "^5.0.0-beta.3",
     "webpack-log": "^3.0.1",
     "webpack-merge": "^4.2.2"
   },
@@ -158,6 +156,7 @@
     "prettier": "1.18.2",
     "ts-jest": "^24.1.0",
     "typedoc": "^0.15.0",
-    "typescript": "^3.7.2"
+    "typescript": "^3.7.2",
+    "webpack": "next"
   }
 }
