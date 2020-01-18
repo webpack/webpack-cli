@@ -34,4 +34,13 @@ describe('basic info usage', () => {
         expect(stdout).toContain('## System:');
         expect(stderr).toHaveLength(0);
     });
+
+    it('gets only specific info', async () => {
+        const { stdout, stderr } = await runInfo(['--output-markdown', '--browsers', '--npmg']);
+        // system info is not specified as a flag
+        expect(stdout).not.toContain('## System:');
+        expect(stdout).toContain('## Browsers:');
+        expect(stdout).toContain('## npmGlobalPackages:');
+        expect(stderr).toHaveLength(0);
+    });
 });
