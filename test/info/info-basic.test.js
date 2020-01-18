@@ -29,18 +29,6 @@ describe('basic info usage', () => {
         expect(parse).not.toThrow();
     });
 
-    it('gets info as json', async () => {
-        const { stdout, stderr } = await runInfo(['--output-json']);
-        expect(stdout).toContain('"System":');
-        expect(stderr).toHaveLength(0);
-
-        const parse = () => {
-            JSON.parse(stdout);
-        };
-
-        expect(parse).not.toThrow();
-    });
-
     it('gets info as markdown', async () => {
         const { stdout, stderr } = await runInfo(['--output-markdown']);
         expect(stdout).toContain('## System:');
