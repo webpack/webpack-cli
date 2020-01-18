@@ -32,15 +32,15 @@ const DEFAULT_DETAILS: Information = {
 export function informationType(type: string): Information {
     switch (type) {
         case 'system':
-            return { System: ['OS', 'CPU', 'Memory'] };
+            return { System: DEFAULT_DETAILS.System };
         case 'binaries':
-            return { Binaries: ['Node', 'Yarn', 'npm'] };
+            return { Binaries: DEFAULT_DETAILS.Binaries };
         case 'browsers':
-            return { Browsers: ['Chrome', 'Firefox', 'Safari'] };
+            return { Browsers: DEFAULT_DETAILS.Browsers };
         case 'npmg':
-            return { npmGlobalPackages: ['webpack', 'webpack-cli'] };
+            return { npmGlobalPackages: DEFAULT_DETAILS.npmGlobalPackages };
         case 'npmPackages':
-            return { npmPackages: '*webpack*' };
+            return { npmPackages: DEFAULT_DETAILS.npmPackages };
     }
 }
 export default async function info(customArgv: object): Promise<string[]> {
