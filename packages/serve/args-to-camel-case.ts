@@ -7,7 +7,7 @@
  * @returns {String} - new camel case string
  */
 function dashesToCamelCase(str): string {
-    return str.replace(/-([a-z])/g, (g): string => g[1].toUpperCase());
+    return str.replace(/-([a-z0-9])/g, (g): string => g[1].toUpperCase());
 }
 
 /**
