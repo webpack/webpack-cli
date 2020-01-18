@@ -4,6 +4,8 @@
 const path = require('path');
 const { runWatch } = require('../utils/test-utils');
 
+jest.setTimeout(20000);
+
 const runInfo = args => {
     return runWatch(path.resolve(__dirname, './shim'), ['info'].concat(args), false, 'main');
 };
