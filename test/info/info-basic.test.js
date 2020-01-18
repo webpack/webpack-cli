@@ -2,10 +2,10 @@
 'use strict';
 
 const path = require('path');
-const { runWatch } = require('../utils/test-utils');
+const { run } = require('../utils/test-utils');
 
 const runInfo = args => {
-    return runWatch(path.resolve(__dirname, './shim'), ['info'].concat(args), false, 'main');
+    return run(path.resolve(__dirname, './shim'), ['info'].concat(args), false);
 };
 
 describe('basic info usage', () => {
