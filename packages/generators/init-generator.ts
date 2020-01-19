@@ -120,16 +120,15 @@ export default class InitGenerator extends Generator {
 			self,
 			"outputDir",
 			"In which folder do you want to store your generated bundles?",
-			"'dist'",
+			"dist",
 			this.autoGenerateConfig
 		);
 
-		this.usingDefaults = !outputDir || outputDir === "'dist'";
-
+		this.usingDefaults = !outputDir || outputDir === "dist";
+		
 		if (!this.usingDefaults) {
 			this.configuration.config.webpackOptions.output = {
-				chunkFilename: "'[name].[chunkhash].js'",
-				filename: "'[name].[chunkhash].js'"
+				path: `path.resolve(__dirname, '${outputDir}')`,
 			};
 		}
 
