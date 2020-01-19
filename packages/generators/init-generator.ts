@@ -123,10 +123,11 @@ export default class InitGenerator extends Generator {
 			"dist",
 			this.autoGenerateConfig
 		);
-
-		this.usingDefaults = !outputDir || outputDir === "dist";
 		
-		if (!this.usingDefaults) {
+		const defaultOutputDir = !outputDir || outputDir === "dist";
+		
+		if (!defaultOutputDir) {
+			this.usingDefaults = false;
 			this.configuration.config.webpackOptions.output = {
 				path: `path.resolve(__dirname, '${outputDir}')`,
 			};
@@ -154,8 +155,8 @@ export default class InitGenerator extends Generator {
 			"No",
 			this.autoGenerateConfig
 		);
-		if (this.langType === "No") {
-			this.usingDefaults = true;
+		if (this.langType !== "No") {
+			this.usingDefaults = false;
 		}
 		const { ExtractUseProps, regExpForStyles } = styleQuestionHandler(self, stylingType);
 		if (stylingType !== "No") {
