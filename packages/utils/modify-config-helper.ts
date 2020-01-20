@@ -67,8 +67,8 @@ export default function modifyHelperUtil(action: string, generator: typeof Gener
     // Presently only one package can be scaffolded in a directory.
     // TODO - Remove this once we support multiple scaffolds in the same directory.
     if (fs.existsSync('package.json')) {
-        console.error(`${chalk.bold.red('Error: ')}You already have a ${chalk.blue('package.json')} file in this directory. Scaffolds can not be created on top of existing projects.`);
-        process.exit(0);
+        console.error(`${chalk.bold.red('Error: ')}You already have a ${chalk.blue('package.json')} file in this directory. Scaffolds cannot be created on top of existing projects.`);
+        process.exit(1);
     }
 
     env.registerStub(generator, generatorName);
