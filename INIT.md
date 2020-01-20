@@ -1,12 +1,12 @@
-# webpack-cli init
+# webpack-cli create
 
-`webpack-cli init` is used to initialize `webpack` projects quickly by scaffolding configuration and creating a runnable project with all the dependencies based on the user preferences.
+`webpack-cli create` is used to initialize `webpack` projects quickly by scaffolding configuration and creating a runnable project with all the dependencies based on the user preferences.
 
 ## Initial Setup
 
 ### a. Local setup
 
-These are the steps necessary to setup `webpack-cli init` locally:
+These are the steps necessary to setup `webpack-cli create` locally:
 
 1. Create `package.json` through npm
 
@@ -28,7 +28,7 @@ These are the steps necessary to setup `webpack-cli init` locally:
 
 ### b. Global Setup
 
-These are the steps necessary to setup `webpack-cli init` globally:
+These are the steps necessary to setup `webpack-cli create` globally:
 
 1. Install `webpack` and `webpack-cli` globally
 
@@ -36,7 +36,7 @@ These are the steps necessary to setup `webpack-cli init` globally:
     npm install -g webpack webpack-cli
     ```
 
-2. Install `@webpack-cli/init` package to add the init scaffold
+2. Install `@webpack-cli/init` package to add the create scaffold
 
     ```shell
     npm install -g @webpack-cli/init
@@ -47,13 +47,13 @@ These are the steps necessary to setup `webpack-cli init` globally:
 ### a. Running locally
 
 ```shell
-npx webpack-cli init
+npx webpack-cli create
 ```
 
 ### b. Running globally
 
 ```shell
-webpack-cli init
+webpack-cli create
 ```
 
 ### Description of questions asked by generator

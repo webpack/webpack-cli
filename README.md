@@ -54,7 +54,7 @@ We organize webpack CLI as a multi-package repository using [lerna](https://gith
 
 Supporting developers is an important task for webpack CLI. Thus, webpack CLI provides different commands for many common tasks.
 
--   [`webpack-cli init`](./packages/init/README.md#webpack-cli-init) - Create a new webpack configuration.
+-   [`webpack-cli create`](./packages/init/README.md#webpack-cli-create) - Create a new webpack configuration.
 -   [`webpack-cli info`](./packages/info/README.md#webpack-cli-info) - Returns information related to the local environment.
 -   [`webpack-cli migrate`](./packages/migrate/README.md#webpack-cli-migrate) - Migrate project from one version to another.
 -   [`webpack-cli generate-plugin`](./packages/generate-plugin/README.md#webpack-cli-generate-plugin) - Initiate new plugin project.
@@ -77,14 +77,14 @@ The project also has several utility packages which are used by other commands
 
 ## Getting started
 
-When you have followed the [Getting Started](https://webpack.js.org/guides/getting-started/) guide of webpack then webpack CLI is already installed! Otherwise, you would need to install webpack CLI and the packages you want to use. If we want to use the `init` command to create a new `webpack.config.js` configuration file:
+When you have followed the [Getting Started](https://webpack.js.org/guides/getting-started/) guide of webpack then webpack CLI is already installed! Otherwise, you would need to install webpack CLI and the packages you want to use. If we want to use the `create` command to create a new `webpack.config.js` configuration file:
 
 ```sh
 npm i webpack-cli @webpack-cli/init
-npx webpack-cli init
+npx webpack-cli create
 ```
 
-You will be prompted for some questions about what how you want to generate your config file when running the `init` command so webpack CLI can provide the best fitting configuration.
+You will be prompted for some questions about what how you want to generate your config file when running the `create` command so webpack CLI can provide the best fitting configuration.
 
 ## webpack CLI Scaffolds
 
