@@ -1,13 +1,22 @@
-import chalk from 'chalk';
-import * as logSymbols from 'log-symbols';
-import * as Generator from 'yeoman-generator';
-import * as path from 'path';
+import chalk from "chalk";
+import * as logSymbols from "log-symbols";
+import * as Generator from "yeoman-generator";
+import * as path from "path";
 
-import { getPackageManager } from '@webpack-cli/utils/package-manager';
-import { Confirm, Input, List } from '@webpack-cli/webpack-scaffold';
+import { getPackageManager } from "@webpack-cli/utils/package-manager";
+import { Confirm, Input, List } from "@webpack-cli/webpack-scaffold";
 
-import { getDefaultOptimization, LangType, langQuestionHandler, tooltip, generatePluginName, StylingType, styleQuestionHandler, entryQuestions } from './utils';
-import { WebpackOptions } from './types';
+import {
+	getDefaultOptimization,
+	LangType,
+	langQuestionHandler,
+	tooltip,
+	generatePluginName,
+	StylingType,
+	styleQuestionHandler,
+	entryQuestions
+} from "./utils";
+import { WebpackOptions } from "./types";
 
 /**
  *
@@ -204,78 +213,90 @@ export default class InitGenerator extends Generator {
 					template: 'index.html'
 				})`);
 
-            // webpack Dev Server
-            this.dependencies.push('webpack-dev-server');
-            this.configuration.config.webpackOptions.devServer = {
-                open: true,
-            };
-        }
+			// webpack Dev Server
+			this.dependencies.push("webpack-dev-server");
+			this.configuration.config.webpackOptions.devServer = {
+				open: true
+			};
+		}
 
-        // TerserPlugin
-        this.dependencies.push('terser-webpack-plugin');
-        this.configuration.config.topScope.push(tooltip.terser(), "const TerserPlugin = require('terser-webpack-plugin');", '\n');
+		// TerserPlugin
+		this.dependencies.push("terser-webpack-plugin");
+		this.configuration.config.topScope.push(
+			tooltip.terser(),
+			"const TerserPlugin = require('terser-webpack-plugin');",
+			"\n"
+		);
 
-        // PWA + offline support
-        this.configuration.config.topScope.push("const workboxPlugin = require('workbox-webpack-plugin');", '\n');
-        this.dependencies.push('workbox-webpack-plugin');
-        (this.configuration.config.webpackOptions.plugins as string[]).push(`new workboxPlugin.GenerateSW({
+		// PWA + offline support
+		this.configuration.config.topScope.push("const workboxPlugin = require('workbox-webpack-plugin');", "\n");
+		this.dependencies.push("workbox-webpack-plugin");
+		(this.configuration.config.webpackOptions.plugins as string[]).push(`new workboxPlugin.GenerateSW({
 			swDest: 'sw.js',
 			clientsClaim: true,
 			skipWaiting: false,
 		})`);
 
-        // Chunksplitting
-        this.configuration.config.webpackOptions.optimization = getDefaultOptimization(this.usingDefaults);
-        this.configuration.config.webpackOptions.mode = this.usingDefaults ? "'production'" : "'development'";
-        done();
-    }
+		// Chunksplitting
+		this.configuration.config.webpackOptions.optimization = getDefaultOptimization(this.usingDefaults);
+		this.configuration.config.webpackOptions.mode = this.usingDefaults ? "'production'" : "'development'";
+		done();
+	}
 
-    public installPlugins(): void {
-        const packager = getPackageManager();
-        const opts: {
-            dev?: boolean;
-            'save-dev'?: boolean;
-        } = packager === 'yarn' ? { dev: true } : { 'save-dev': true };
+	public installPlugins(): void {
+		const packager = getPackageManager();
+		const opts: {
+			dev?: boolean;
+			"save-dev"?: boolean;
+		} = packager === "yarn" ? { dev: true } : { "save-dev": true };
 
-        this.scheduleInstallTask(packager, this.dependencies, opts);
-    }
+		this.scheduleInstallTask(packager, this.dependencies, opts);
+	}
 
-    public writing(): void {
-        this.configuration.usingDefaults = this.usingDefaults;
-        this.config.set('configuration', this.configuration);
+	public writing(): void {
+		this.configuration.usingDefaults = this.usingDefaults;
+		this.config.set("configuration", this.configuration);
 
-        if (this.langType === 'ES6') {
-            this.fs.copyTpl(path.resolve(__dirname, './templates/.babelrc'), this.destinationPath('.babelrc'), {});
-        }
-        const packageJsonTemplatePath = './templates/package.json.js';
-        this.fs.extendJSON(this.destinationPath('package.json'), require(packageJsonTemplatePath)(this.usingDefaults));
+		if (this.langType === "ES6") {
+			this.fs.copyTpl(
+				path.resolve(__dirname, "./templates/.babelrc"),
+				this.destinationPath(".babelrc"),
+				{}
+			);
+		}
+		const packageJsonTemplatePath = "./templates/package.json.js";
+		this.fs.extendJSON(this.destinationPath("package.json"), require(packageJsonTemplatePath)(this.usingDefaults));
 
-        const generateEntryFile = (entryPath: string, name: string): void => {
-            entryPath = entryPath.replace(/'/g, '');
-            this.fs.copyTpl(path.resolve(__dirname, './templates/index.js'), this.destinationPath(entryPath), { name });
-        };
+		const generateEntryFile = (entryPath: string, name: string): void => {
+			entryPath = entryPath.replace(/'/g, "");
+			this.fs.copyTpl(path.resolve(__dirname, "./templates/index.js"), this.destinationPath(entryPath), { name });
+		};
 
-        // Generate entry file/files
-        const entry = this.configuration.config.webpackOptions.entry || './src/index.js';
-        if (typeof entry === 'string') {
-            generateEntryFile(entry, 'your main file!');
-        } else if (typeof entry === 'object') {
-            Object.keys(entry).forEach((name: string): void => generateEntryFile(entry[name], `${name} main file!`));
-        }
+		// Generate entry file/files
+		const entry = this.configuration.config.webpackOptions.entry || "./src/index.js";
+		if (typeof entry === "string") {
+			generateEntryFile(entry, "your main file!");
+		} else if (typeof entry === "object") {
+			Object.keys(entry).forEach((name: string): void => generateEntryFile(entry[name], `${name} main file!`));
+		}
 
-        // Generate README
-        this.fs.copyTpl(path.resolve(__dirname, './templates/README.md'), this.destinationPath('README.md'), {});
+		// Generate README
+		this.fs.copyTpl(path.resolve(__dirname, "./templates/README.md"), this.destinationPath("README.md"), {});
 
-        // Generate HTML template file, copy default service worker
-        if (this.usingDefaults) {
-            this.fs.copyTpl(path.resolve(__dirname, './templates/template.html'), this.destinationPath('index.html'), {});
+        // Generate HTML template file, copy the default service worker
+		if (this.usingDefaults) {
+			this.fs.copyTpl(
+				path.resolve(__dirname, "./templates/template.html"),
+				this.destinationPath("index.html"),
+				{}
+            );
             this.fs.copyTpl(path.resolve(__dirname, './templates/sw.js'), this.destinationPath('sw.js'), {});
-        }
+		}
 
-        // Genrate tsconfig
-        if (this.langType === LangType.Typescript) {
-            const tsConfigTemplatePath = './templates/tsconfig.json.js';
-            this.fs.extendJSON(this.destinationPath('tsconfig.json'), require(tsConfigTemplatePath));
-        }
-    }
+		// Generate tsconfig
+		if (this.langType === LangType.Typescript) {
+			const tsConfigTemplatePath = "./templates/tsconfig.json.js";
+			this.fs.extendJSON(this.destinationPath("tsconfig.json"), require(tsConfigTemplatePath));
+		}
+	}
 }
