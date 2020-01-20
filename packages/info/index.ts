@@ -21,7 +21,6 @@ interface ArgvI {
     config?: string;
 }
 
-const CONFIG = {};
 const DEFAULT_DETAILS: Information = {
     Binaries: ['Node', 'Yarn', 'npm'],
     Browsers: ['Chrome', 'Firefox', 'Safari'],
@@ -30,27 +29,27 @@ const DEFAULT_DETAILS: Information = {
     npmPackages: '*webpack*',
 };
 
-let DETAILS_OBJ = {};
-
 export function informationType(type: string): Information {
     switch (type) {
         case 'system':
-            return { System: ['OS', 'CPU', 'Memory'] };
+            return { System: DEFAULT_DETAILS.System };
         case 'binaries':
-            return { Binaries: ['Node', 'Yarn', 'npm'] };
+            return { Binaries: DEFAULT_DETAILS.Binaries };
         case 'browsers':
-            return { Browsers: ['Chrome', 'Firefox', 'Safari'] };
+            return { Browsers: DEFAULT_DETAILS.Browsers };
         case 'npmg':
-            return { npmGlobalPackages: ['webpack', 'webpack-cli'] };
+            return { npmGlobalPackages: DEFAULT_DETAILS.npmGlobalPackages };
         case 'npmPackages':
-            return { npmPackages: '*webpack*' };
+            return { npmPackages: DEFAULT_DETAILS.npmPackages };
     }
 }
-export default async function info(CustomArgv: object): Promise<string[]> {
-    const CUSTOM_AGRUMENTS: boolean = Object.entries(CustomArgv).length !== 0 && CustomArgv.constructor === Object;
-    const args: ArgvI = CUSTOM_AGRUMENTS ? CustomArgv : argv;
+export default async function info(customArgv: object): Promise<string[]> {
+    let detailsObj = {};
+    const envinfoConfig = {};
+    const customArgs: boolean = customArgv && typeof customArgv === 'object' &&
+        Object.entries(customArgv).length !== 0 && customArgv.constructor === Object;
+    const args: ArgvI = customArgs ? customArgv : argv;
     const configRelativePath = argv._[1] ? argv._[1] : args.config;
-    console.log(configRelativePath)
     if (configRelativePath) {
         const fullConfigPath = resolveFilePath(configRelativePath);
         const fileName = getNameFromPath(fullConfigPath);
@@ -66,14 +65,14 @@ export default async function info(CustomArgv: object): Promise<string[]> {
                 return;
             } else if (AVAILABLE_COMMANDS.includes(flag)) {
                 const flagVal = informationType(flag);
-                DETAILS_OBJ = { ...DETAILS_OBJ, ...flagVal };
+                detailsObj = { ...detailsObj, ...flagVal };
             } else if (AVAILABLE_FORMATS.includes(flag)) {
                 switch (flag) {
                     case 'output-json':
-                        CONFIG['json'] = true;
+                        envinfoConfig['json'] = true;
                         break;
                     case 'output-markdown':
-                        CONFIG['markdown'] = true;
+                        envinfoConfig['markdown'] = true;
                         break;
                 }
             } else {
@@ -83,9 +82,9 @@ export default async function info(CustomArgv: object): Promise<string[]> {
             }
         });
 
-        const OUTPUT = await envinfo.run(Object.keys(DETAILS_OBJ).length ? DETAILS_OBJ : DEFAULT_DETAILS, CONFIG);
-        !CUSTOM_AGRUMENTS ? process.stdout.write(OUTPUT + '\n') : null;
-        return OUTPUT;
+        const output = await envinfo.run(Object.keys(detailsObj).length ? detailsObj : DEFAULT_DETAILS, envinfoConfig);
+        !customArgs ? process.stdout.write(output + '\n') : null;
+        return output;
     }
     process.exit(0);
 }

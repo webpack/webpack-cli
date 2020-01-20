@@ -11,7 +11,7 @@
 
 # Node dependencies
 node_modules
-!test/serve/shim/**/node_modules
+!test/**/**/**/node_modules
 
 # npm-debug log
 npm-debug.*
