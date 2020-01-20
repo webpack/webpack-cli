@@ -9,7 +9,7 @@ describe('json flag', () => {
         const jsonstdout = JSON.parse(stdout);
         expect(jsonstdout.outputPath).toBe(join(__dirname, 'bin'));
         expect(jsonstdout.assetsByChunkName.main[0]).toBe('main.js');
-        expect(jsonstdout.chunks[0].modules[0].reasons[0].userRequest).toBe(join(__dirname, 'index.js'));
+        expect(jsonstdout.chunks[0].modules[0].reasons[1].userRequest).toBe(join(__dirname, 'index.js'));
         expect(jsonstdout.chunks[0].names[0]).toBe('main');
         stat(resolve(__dirname, 'bin/main.js'), (err, stats) => {
             expect(err).toBe(null);

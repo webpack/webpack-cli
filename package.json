@@ -121,7 +121,7 @@
     "command-line-usage": "^6.1.0",
     "import-local": "^3.0.2",
     "interpret": "^2.0.0",
-    "terser-webpack-plugin": "^2.2.1",
+    "terser-webpack-plugin": "^2.3.2",
     "update-notifier": "^3.0.1",
     "v8-compile-cache": "^2.1.0",
     "webpack-log": "^3.0.1",
@@ -157,6 +157,6 @@
     "ts-jest": "^24.1.0",
     "typedoc": "^0.15.0",
     "typescript": "^3.7.2",
-    "webpack": "next"
+    "webpack": "^5.0.0-beta.12"
   }
 }
