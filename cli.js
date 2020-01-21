@@ -5,15 +5,13 @@
 require('v8-compile-cache');
 
 const importLocal = require('import-local');
+const logger = require('./lib/utils/logger');
 
 // Prefer the local installation of webpack-cli
 if (importLocal(__filename)) {
     return;
 }
 process.title = 'webpack';
-process.cliLogger = require('webpack-log')({
-    name: 'webpack',
-});
 
 const updateNotifier = require('update-notifier');
 const packageJson = require('./package.json');
@@ -24,7 +22,7 @@ const notifier = updateNotifier({
 });
 
 if (notifier.update) {
-    process.cliLogger.info(`Update available: ${notifier.update.latest}`);
+    logger.info(`Update available: ${notifier.update.latest}`);
 }
 
 const semver = require('semver');
@@ -33,7 +31,7 @@ const version = packageJson.engines.node;
 
 if (!semver.satisfies(process.version, version)) {
     const rawVersion = version.replace(/[^\d\.]*/, '');
-    process.cliLogger.error('webpack CLI requires at least Node v' + rawVersion + '. ' + 'You have ' + process.version + '.\n' + 'See https://webpack.js.org/ ' + 'for migration help and similar.');
+    logger.error('webpack CLI requires at least Node v' + rawVersion + '. ' + 'You have ' + process.version + '.\n' + 'See https://webpack.js.org/ ' + 'for migration help and similar.');
     process.exit(1);
 }
 
