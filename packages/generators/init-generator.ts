@@ -123,9 +123,9 @@ export default class InitGenerator extends Generator {
 			"dist",
 			this.autoGenerateConfig
 		);
-		
+
 		const defaultOutputDir = !outputDir || outputDir === "dist";
-		
+
 		if (!defaultOutputDir) {
 			this.usingDefaults = false;
 			this.configuration.config.webpackOptions.output = {
@@ -283,16 +283,17 @@ export default class InitGenerator extends Generator {
 		// Generate README
 		this.fs.copyTpl(path.resolve(__dirname, "./templates/README.md"), this.destinationPath("README.md"), {});
 
-		// Generate HTML template file
+        // Generate HTML template file, copy the default service worker
 		if (this.usingDefaults) {
 			this.fs.copyTpl(
 				path.resolve(__dirname, "./templates/template.html"),
 				this.destinationPath("index.html"),
 				{}
-			);
+            );
+            this.fs.copyTpl(path.resolve(__dirname, './templates/sw.js'), this.destinationPath('sw.js'), {});
 		}
 
-		// Genrate tsconfig
+		// Generate tsconfig
 		if (this.langType === LangType.Typescript) {
 			const tsConfigTemplatePath = "./templates/tsconfig.json.js";
 			this.fs.extendJSON(this.destinationPath("tsconfig.json"), require(tsConfigTemplatePath));
