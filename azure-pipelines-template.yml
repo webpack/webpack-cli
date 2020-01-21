@@ -3,7 +3,7 @@ jobs:
     pool:
       vmImage: ${{ parameters.vmImage }}
     strategy:
-      maxParallel: 3
+      maxParallel: 2
       matrix:
         node-12:
           node_version: ^12.0.0
