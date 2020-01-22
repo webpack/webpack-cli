@@ -4,7 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const execa = require('execa');
 const { sync: spawnSync } = execa;
-const { Writable } = require('readable-stream');
+const { Writable } = require('stream');
 const WEBPACK_PATH = path.resolve(__dirname, '../../cli.js');
 const ENABLE_LOG_COMPILATION = process.env.ENABLE_PIPE || false;
 /**
@@ -130,7 +130,7 @@ function appendDataToMultipleIfFilesExists(testCase, file, data, cbFile, cbData)
         if (accessErr) throw new Error(`Oops! ${accessErr} does not exist!`);
         fs.appendFile(filePath, data, 'utf8', () => {
             const cbFilePath = path.resolve(testCase, cbFile);
-            fs.appendFile(cbFilePath, cbData, () => {});
+            fs.appendFile(cbFilePath, cbData);
         });
     });
 }

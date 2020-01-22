@@ -1,23 +1,23 @@
 module.exports = {
-    extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended'],
+    extends: ['eslint:recommended', 'plugin:node/recommended', 'plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended'],
     env: {
         node: true,
         es6: true,
         jest: true,
     },
-    parser: '@typescript-eslint/parser',
     root: true,
-    plugins: ['node'],
-    parserOptions: { ecmaVersion: 2017, sourceType: 'module' },
+    plugins: ['node', 'prettier'],
+    parserOptions: { ecmaVersion: 2020, sourceType: 'module' },
+
     rules: {
         'no-useless-escape': 'off',
         'quote-props': ['error', 'as-needed'],
         'no-dupe-keys': 'error',
         'no-undef': 'error',
         'no-extra-semi': 'error',
-        'quotes': ['error', 'single'],
-		'prettier/prettier': ['error', { singleQuote: true }],
-        'semi': 'error',
+        quotes: ['error', 'single'],
+        'prettier/prettier': ['error', { singleQuote: true }],
+        semi: 'error',
         'no-template-curly-in-string': 'error',
         'no-caller': 'error',
         'global-require': 'off',
@@ -60,5 +60,5 @@ module.exports = {
         'valid-jsdoc': 'error',
         'eol-last': ['error', 'always'],
         'newline-per-chained-call': 'off',
-    },
+    }
 };
