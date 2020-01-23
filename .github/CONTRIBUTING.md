@@ -262,10 +262,8 @@ For more information about what each part of the template mean, head up to the d
 
 ## Migrate with the CLI
 
-This is a new feature in development for the CLI.
-
 ```sh
-webpack --migrate <your-config-name>
+webpack migrate
 ```
 
 The expected result of the above command is to take the mentioned `webpack` configuration and create a new configuration file which is compatible with webpack 2.
