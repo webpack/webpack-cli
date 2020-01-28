@@ -185,8 +185,8 @@ For more information, see https://webpack.js.org/api/cli/.`);
 			});
 
 			if (!outputOptions.json) {
-				if (outputOptions.cached === undefined) outputOptions.cached = false;
-				if (outputOptions.cachedAssets === undefined) outputOptions.cachedAssets = false;
+				if (typeof outputOptions.cached === "undefined") outputOptions.cached = false;
+				if (typeof outputOptions.cachedAssets === "undefined") outputOptions.cachedAssets = false;
 
 				ifArg("display-chunks", function(bool) {
 					if (bool) {
@@ -240,8 +240,7 @@ For more information, see https://webpack.js.org/api/cli/.`);
 					if (bool) outputOptions.cachedAssets = true;
 				});
 
-				if (outputOptions.exclude === undefined)
-					outputOptions.exclude = ["node_modules", "bower_components", "components"];
+				if (!outputOptions.exclude) outputOptions.exclude = ["node_modules", "bower_components", "components"];
 
 				if (argv["display-modules"]) {
 					outputOptions.maxModules = Infinity;
