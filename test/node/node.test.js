@@ -5,8 +5,7 @@ const { run, extractSummary } = require('../utils/test-utils');
 
 describe('node flags', () => {
     it('is able to options flags to node js', done => {
-        const { stdout, stderr } = run(__dirname, ['--node-args', `--require=${resolve(__dirname, 'bootstrap.js')}`, '--node-args', `-r ${resolve(__dirname, 'bootstrap2.js')}`, '--output', './bin/[name].bundle.js'], false);
-        expect(stderr).toBe('');
+        const { stdout } = run(__dirname, ['--node-args', `--require=${resolve(__dirname, 'bootstrap.js')}`, '--node-args', `-r ${resolve(__dirname, 'bootstrap2.js')}`, '--output', './bin/[name].bundle.js'], false);
         expect(stdout).toContain('---from bootstrap.js---');
         expect(stdout).toContain('---from bootstrap2.js---');
         const summary = extractSummary(stdout);
