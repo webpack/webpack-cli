@@ -2,9 +2,34 @@
 const { stat } = require('fs');
 const { resolve, sep } = require('path');
 const { run, extractSummary } = require('../utils/test-utils');
+const parseArgs = require('../../lib/utils/parse-args');
 
 describe('node flags', () => {
-    it('is able to options flags to node js', done => {
+    it('parseArgs helper must work correctly', () => {
+        [
+            {
+                rawArgs: ['--foo', '--bar', '--baz=quux'],
+                expectedCliArgs: ['--foo', '--bar', '--baz=quux'],
+                expectedNodeArgs: [],
+            },
+            {
+                rawArgs: ['--foo', '--bar', '--baz=quux', '--node-args', '--name1=value1', '--node-args', '--name2 value2'],
+                expectedCliArgs: ['--foo', '--bar', '--baz=quux'],
+                expectedNodeArgs: ['--name1=value1', '--name2', 'value2'],
+            },
+            {
+                rawArgs: ['--node-args', '--name1=value1', '--node-args', '--name2 value2', '--node-args', '-n=v', '--node-args', '-k v'],
+                expectedCliArgs: [],
+                expectedNodeArgs: ['--name1=value1', '--name2', 'value2', '-n=v', '-k', 'v'],
+            },
+        ].map(({ rawArgs, expectedNodeArgs, expectedCliArgs }) => {
+            const { nodeArgs, cliArgs } = parseArgs(rawArgs);
+            expect(nodeArgs).toEqual(expectedNodeArgs);
+            expect(cliArgs).toEqual(expectedCliArgs);
+        });
+    });
+
+    it('is able to pass the options flags to node js', done => {
         const { stdout } = run(__dirname, ['--node-args', `--require=${resolve(__dirname, 'bootstrap.js')}`, '--node-args', `-r ${resolve(__dirname, 'bootstrap2.js')}`, '--output', './bin/[name].bundle.js'], false);
         expect(stdout).toContain('---from bootstrap.js---');
         expect(stdout).toContain('---from bootstrap2.js---');
