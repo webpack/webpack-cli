@@ -18,9 +18,9 @@ describe('node flags', () => {
                 expectedNodeArgs: ['--name1=value1', '--name2', 'value2'],
             },
             {
-                rawArgs: ['--node-args', '--name1=value1', '--node-args', '--name2 value2', '--node-args', '-n=v', '--node-args', '-k v'],
+                rawArgs: ['--node-args', '--name1=value1', '--node-args', '--name2="value2"', '--node-args', '--name3 value3', '--node-args', '-k v'],
                 expectedCliArgs: [],
-                expectedNodeArgs: ['--name1=value1', '--name2', 'value2', '-n=v', '-k', 'v'],
+                expectedNodeArgs: ['--name1=value1', '--name2="value2"', '--name3', 'value3', '-k', 'v'],
             },
         ].map(({ rawArgs, expectedNodeArgs, expectedCliArgs }) => {
             const { nodeArgs, cliArgs } = parseArgs(rawArgs);
