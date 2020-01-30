@@ -5,7 +5,7 @@ const fs = require('fs');
 const execa = require('execa');
 const { sync: spawnSync } = execa;
 const { Writable } = require('readable-stream');
-const WEBPACK_PATH = path.resolve(__dirname, '../../cli.js');
+const WEBPACK_PATH = path.resolve(__dirname, '../../bin/cli.js');
 const ENABLE_LOG_COMPILATION = process.env.ENABLE_PIPE || false;
 /**
  * Description
@@ -130,6 +130,7 @@ function appendDataToMultipleIfFilesExists(testCase, file, data, cbFile, cbData)
         if (accessErr) throw new Error(`Oops! ${accessErr} does not exist!`);
         fs.appendFile(filePath, data, 'utf8', () => {
             const cbFilePath = path.resolve(testCase, cbFile);
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
             fs.appendFile(cbFilePath, cbData, () => {});
         });
     });

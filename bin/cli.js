@@ -5,7 +5,8 @@
 require('v8-compile-cache');
 
 const importLocal = require('import-local');
-const logger = require('./lib/utils/logger');
+// eslint-disable-next-line node/no-unpublished-require
+const logger = require('../lib/utils/logger');
 
 // Prefer the local installation of webpack-cli
 if (importLocal(__filename)) {
@@ -14,7 +15,7 @@ if (importLocal(__filename)) {
 process.title = 'webpack';
 
 const updateNotifier = require('update-notifier');
-const packageJson = require('./package.json');
+const packageJson = require('../package.json');
 
 const notifier = updateNotifier({
     pkg: packageJson,
@@ -35,4 +36,5 @@ if (!semver.satisfies(process.version, version)) {
     process.exit(1);
 }
 
-require('./lib/bootstrap');
+// eslint-disable-next-line node/no-unpublished-require
+require('../lib/bootstrap');
