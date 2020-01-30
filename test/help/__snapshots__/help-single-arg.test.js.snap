@@ -44,6 +44,7 @@ Options
   -d, --dev                Run development build                            
   -p, --prod               Run production build                             
   --version                Get current version                              
+  --node-args string[]     NodeJS flags                                     
 
                   Made with ♥️  by the webpack team "
 `;

@@ -1,0 +1,47 @@
+'use strict';
+const { stat } = require('fs');
+const { resolve, sep } = require('path');
+const { run, extractSummary } = require('../utils/test-utils');
+const parseArgs = require('../../lib/utils/parse-args');
+
+describe('node flags', () => {
+    it('parseArgs helper must work correctly', () => {
+        [
+            {
+                rawArgs: ['--foo', '--bar', '--baz=quux'],
+                expectedCliArgs: ['--foo', '--bar', '--baz=quux'],
+                expectedNodeArgs: [],
+            },
+            {
+                rawArgs: ['--foo', '--bar', '--baz=quux', '--node-args', '--name1=value1', '--node-args', '--name2 value2'],
+                expectedCliArgs: ['--foo', '--bar', '--baz=quux'],
+                expectedNodeArgs: ['--name1=value1', '--name2', 'value2'],
+            },
+            {
+                rawArgs: ['--node-args', '--name1=value1', '--node-args', '--name2="value2"', '--node-args', '--name3 value3', '--node-args', '-k v'],
+                expectedCliArgs: [],
+                expectedNodeArgs: ['--name1=value1', '--name2="value2"', '--name3', 'value3', '-k', 'v'],
+            },
+        ].map(({ rawArgs, expectedNodeArgs, expectedCliArgs }) => {
+            const { nodeArgs, cliArgs } = parseArgs(rawArgs);
+            expect(nodeArgs).toEqual(expectedNodeArgs);
+            expect(cliArgs).toEqual(expectedCliArgs);
+        });
+    });
+
+    it('is able to pass the options flags to node js', done => {
+        const { stdout } = run(__dirname, ['--node-args', `--require=${resolve(__dirname, 'bootstrap.js')}`, '--node-args', `-r ${resolve(__dirname, 'bootstrap2.js')}`, '--output', './bin/[name].bundle.js'], false);
+        expect(stdout).toContain('---from bootstrap.js---');
+        expect(stdout).toContain('---from bootstrap2.js---');
+        const summary = extractSummary(stdout);
+        const outputDir = 'node/bin';
+        const outDirectoryFromCompiler = summary['Output Directory'].split(sep);
+        const outDirToMatch = outDirectoryFromCompiler.slice(outDirectoryFromCompiler.length - 2, outDirectoryFromCompiler.length).join('/');
+        expect(outDirToMatch).toContain(outputDir);
+        stat(resolve(__dirname, './bin/main.bundle.js'), (err, stats) => {
+            expect(err).toBe(null);
+            expect(stats.isFile()).toBe(true);
+            done();
+        });
+    });
+});

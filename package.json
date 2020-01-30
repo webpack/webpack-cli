@@ -12,7 +12,7 @@
   },
   "main": "cli.js",
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=10.13.0"
   },
   "keywords": [
     "webpack",
@@ -119,6 +119,7 @@
     "cli-table3": "^0.5.1",
     "command-line-args": "^5.1.1",
     "command-line-usage": "^6.1.0",
+    "execa": "^3.2.0",
     "import-local": "^3.0.2",
     "interpret": "^2.0.0",
     "terser-webpack-plugin": "^2.3.2",
@@ -144,7 +145,6 @@
     "eslint-config-prettier": "^6.5.0",
     "eslint-plugin-node": "^10.0.0",
     "eslint-plugin-prettier": "^3.1.1",
-    "execa": "^3.2.0",
     "husky": "^3.0.9",
     "jest": "^24.9.0",
     "jest-cli": "^24.9.0",
