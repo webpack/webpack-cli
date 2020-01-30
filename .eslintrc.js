@@ -1,5 +1,5 @@
 module.exports = {
-    extends: ['eslint:recommended', 'plugin:node/recommended', 'plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended'],
+    extends: ['eslint:recommended', 'plugin:node/recommended', 'plugin:prettier/recommended'],
     env: {
         node: true,
         es6: true,
@@ -35,8 +35,6 @@ module.exports = {
         'no-unused-vars': ['error', { args: 'none' }],
         'no-unsafe-negation': 'error',
         'no-loop-func': 'warn',
-        'space-before-function-paren': ['error', 'never'],
-        'space-before-blocks': 'error',
         'object-curly-spacing': ['error', 'always'],
         'object-curly-newline': ['error', { consistent: true }],
         '@typescript-eslint/no-var-requires': 'off',

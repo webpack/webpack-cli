@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
 'use strict';
 
 const assert = require('assert');
