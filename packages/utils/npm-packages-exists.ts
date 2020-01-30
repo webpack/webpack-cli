@@ -13,7 +13,7 @@ const WEBPACK_SCAFFOLD_PREFIX = "webpack-scaffold";
  * on npm and throws an error if it is not.
  *
  * @param {String[]} pkg - Array of packages to check existence of
- * @returns {Array} resolvePackages - Returns an process to install the packages
+ * @returns {Array} resolvePackages - Returns a process to install the packages
  */
 
 export default function npmPackagesExists(pkg: string[]): void {
