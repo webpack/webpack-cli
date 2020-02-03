@@ -44,6 +44,7 @@
     "test:ci": "npm run test:cli && npm run test:packages",
     "travis:integration": "npm run build && npm run test && npm run reportCoverage",
     "travis:lint": "npm run build && npm run lint",
+    "test:watch": "jest test/ packages/ --watch",
     "watch": "npm run build && tsc -w",
     "publish:monorepo": "npm run format && npm run test && npm run build && lerna publish -m \"chore: monorepo version update\""
   },

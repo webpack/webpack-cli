@@ -10,7 +10,7 @@ const logger = require('../lib/utils/logger');
 
 // Prefer the local installation of webpack-cli
 if (importLocal(__filename)) {
-    return;
+    // return;
 }
 process.title = 'webpack';
 
