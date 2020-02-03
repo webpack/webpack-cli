@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
 'use strict';
 const path = require('path');
 const fs = require('fs');
@@ -130,7 +129,6 @@ function appendDataToMultipleIfFilesExists(testCase, file, data, cbFile, cbData)
         if (accessErr) throw new Error(`Oops! ${accessErr} does not exist!`);
         fs.appendFile(filePath, data, 'utf8', () => {
             const cbFilePath = path.resolve(testCase, cbFile);
-            // eslint-disable-next-line @typescript-eslint/no-empty-function
             fs.appendFile(cbFilePath, cbData, () => {});
         });
     });
