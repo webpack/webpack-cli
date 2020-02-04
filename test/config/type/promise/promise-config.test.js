@@ -9,7 +9,9 @@ describe('promise configuration', () => {
         const summary = extractSummary(stdout);
         const outputDir = 'type/promise/binary';
         const outDirectoryFromCompiler = summary['Output Directory'].split(sep);
-        const outDirToMatch = outDirectoryFromCompiler.slice(outDirectoryFromCompiler.length - 3, outDirectoryFromCompiler.length).join('/');
+        const outDirToMatch = outDirectoryFromCompiler
+            .slice(outDirectoryFromCompiler.length - 3, outDirectoryFromCompiler.length)
+            .join('/');
         expect(outDirToMatch).toContain(outputDir);
         stat(resolve(__dirname, './binary/promise.js'), (err, stats) => {
             expect(err).toBe(null);

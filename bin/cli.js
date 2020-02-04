@@ -36,7 +36,16 @@ const version = packageJson.engines.node;
 
 if (!semver.satisfies(process.version, version)) {
     const rawVersion = version.replace(/[^\d\.]*/, '');
-    logger.error('webpack CLI requires at least Node v' + rawVersion + '. ' + 'You have ' + process.version + '.\n' + 'See https://webpack.js.org/ ' + 'for migration help and similar.');
+    logger.error(
+        'webpack CLI requires at least Node v' +
+            rawVersion +
+            '. ' +
+            'You have ' +
+            process.version +
+            '.\n' +
+            'See https://webpack.js.org/ ' +
+            'for migration help and similar.',
+    );
     process.exit(1);
 }
 
