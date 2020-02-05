@@ -4,17 +4,22 @@
 
 require('v8-compile-cache');
 
+const execa = require('execa');
 const importLocal = require('import-local');
-const logger = require('./lib/utils/logger');
+// eslint-disable-next-line node/no-unpublished-require
+const logger = require('../lib/utils/logger');
+
+// eslint-disable-next-line node/no-unpublished-require
+const parseArgs = require('../lib/utils/parse-args');
 
 // Prefer the local installation of webpack-cli
 if (importLocal(__filename)) {
-    return;
+    // return;
 }
 process.title = 'webpack';
 
 const updateNotifier = require('update-notifier');
-const packageJson = require('./package.json');
+const packageJson = require('../package.json');
 
 const notifier = updateNotifier({
     pkg: packageJson,
@@ -35,4 +40,11 @@ if (!semver.satisfies(process.version, version)) {
     process.exit(1);
 }
 
-require('./lib/bootstrap');
+const [, , ...rawArgs] = process.argv;
+const { cliArgs, nodeArgs } = parseArgs(rawArgs);
+// eslint-disable-next-line node/no-unpublished-require
+const bootstrapPath = require.resolve('../lib/bootstrap');
+
+execa('node', [...nodeArgs, bootstrapPath, ...cliArgs], { stdio: 'inherit' }).catch(e => {
+    process.exit(e.exitCode);
+});

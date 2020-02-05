@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
 'use strict';
 const path = require('path');
 const fs = require('fs');
 const execa = require('execa');
 const { sync: spawnSync } = execa;
 const { Writable } = require('readable-stream');
-const WEBPACK_PATH = path.resolve(__dirname, '../../cli.js');
+const WEBPACK_PATH = path.resolve(__dirname, '../../bin/cli.js');
 const ENABLE_LOG_COMPILATION = process.env.ENABLE_PIPE || false;
 /**
  * Description

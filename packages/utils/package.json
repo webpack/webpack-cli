@@ -15,7 +15,6 @@
     "findup-sync": "4.0.0",
     "global-modules": "2.0.0",
     "got": "9.6.0",
-    "jest": "24.9.0",
     "jscodeshift": "0.6.4",
     "log-symbols": "3.0.0",
     "p-each-series": "2.1.0",
@@ -33,7 +32,8 @@
     "@types/p-each-series": "1.0.1",
     "@types/prettier": "1.18.2",
     "@types/yeoman-generator": "3.1.4",
-    "typescript": "3.5.3"
+    "typescript": "3.5.3",
+    "jest": "24.9.0"
   },
   "scripts": {
     "build": "tsc",

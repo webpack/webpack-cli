@@ -8,11 +8,11 @@
     "url": "https://github.com/webpack/webpack-cli.git"
   },
   "bin": {
-    "webpack-cli": "cli.js"
+    "webpack-cli": "./bin/cli.js"
   },
-  "main": "cli.js",
+  "main": "bin/cli.js",
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=10.13.0"
   },
   "keywords": [
     "webpack",
@@ -24,7 +24,7 @@
   ],
   "files": [
     "lib",
-    "cli.js"
+    "bin/cli.js"
   ],
   "scripts": {
     "bootstrap": "npm run clean:all && npm install && lerna bootstrap",
@@ -39,11 +39,12 @@
     "reportCoverage": "nyc report --reporter=json && codecov -f coverage/coverage-final.json --disable=gcov",
     "smoketest": "./smoketests/smoketests.sh",
     "test": "nyc jest --maxWorkers=4 --reporters=default --reporters=jest-junit",
-    "test:cli": "jest test/ --maxWorkers=4 --reporters=default --reporters=jest-junit",
+    "test:cli": "nyc jest test/ --maxWorkers=4 --reporters=default --reporters=jest-junit",
     "test:packages": "nyc jest packages/ --maxWorkers=4 --reporters=default --reporters=jest-junit",
-    "test:ci": "nyc jest --maxWorkers=$(nproc) --reporters=default --reporters=jest-junit --colors",
+    "test:ci": "npm run test:cli && npm run test:packages",
     "travis:integration": "npm run build && npm run test && npm run reportCoverage",
     "travis:lint": "npm run build && npm run lint",
+    "test:watch": "jest test/ packages/ --watch",
     "watch": "npm run build && tsc -w",
     "publish:monorepo": "npm run format && npm run test && npm run build && lerna publish -m \"chore: monorepo version update\""
   },
@@ -119,13 +120,16 @@
     "cli-table3": "^0.5.1",
     "command-line-args": "^5.1.1",
     "command-line-usage": "^6.1.0",
+    "execa": "^3.2.0",
     "import-local": "^3.0.2",
     "interpret": "^2.0.0",
     "terser-webpack-plugin": "^2.3.2",
     "update-notifier": "^3.0.1",
     "v8-compile-cache": "^2.1.0",
     "webpack-log": "^3.0.1",
-    "webpack-merge": "^4.2.2"
+    "webpack-merge": "^4.2.2",
+    "chalk": "^3.0.0",
+    "semver": "^7.1.1"
   },
   "peerDependencies": {
     "webpack": "5.x.x"
@@ -135,20 +139,20 @@
     "@commitlint/cli": "^8.2.0",
     "@commitlint/config-lerna-scopes": "^8.2.0",
     "@types/jest": "^24.0.22",
-    "@typescript-eslint/eslint-plugin": "^2.6.1",
-    "@typescript-eslint/parser": "^2.6.1",
+    "@typescript-eslint/eslint-plugin": "^2.17.0",
+    "@typescript-eslint/parser": "^2.17.0",
     "commitlint": "^8.2.0",
     "commitlint-config-cz": "^0.12.1",
     "cz-customizable": "^6.2.0",
-    "eslint": "^6.6.0",
-    "eslint-config-prettier": "^6.5.0",
-    "eslint-plugin-node": "^10.0.0",
-    "eslint-plugin-prettier": "^3.1.1",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-prettier": "^3.1.2",
     "execa": "^3.2.0",
     "husky": "^3.0.9",
-    "jest": "^24.9.0",
-    "jest-cli": "^24.9.0",
-    "jest-junit": "^9.0.0",
+    "jest": "^25.1.0",
+    "jest-cli": "^25.1.0",
+    "jest-junit": "^10.0.0",
     "jest-serializer-ansi": "^1.0.3",
     "lerna": "^3.18.3",
     "lint-staged": "^9.4.2",
@@ -158,6 +162,7 @@
     "typedoc": "^0.15.0",
     "typescript": "^3.7.2",
     "webpack": "^5.0.0-beta.12",
-    "yeoman-test": "^2.1.0"
+    "yeoman-test": "^2.1.0",
+    "readable-stream": "^3.5.0"
   }
 }

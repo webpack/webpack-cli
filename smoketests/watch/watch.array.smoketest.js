@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
 'use strict';
 
 const assert = require('assert');
@@ -62,7 +61,6 @@ async function teardown() {
             if (process.uptime() > 5) {
                 assert.strictEqual(true, false, 'Test for child compilation hang, exiting');
                 process.exit(-1);
-                return;
             }
             appendDataIfFileExists(__dirname, testEntryFiles[0].name, '//junk-comment');
             appendDataIfFileExists(__dirname, testEntryFiles[1].name, '//junk2-comment');
