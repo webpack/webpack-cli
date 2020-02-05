@@ -9,6 +9,7 @@ module.exports = usingDefaults => {
 	return {
 		version: "1.0.0",
 		description: "My webpack project",
+		name: "my-webpack-project",
 		scripts
 	};
 };
