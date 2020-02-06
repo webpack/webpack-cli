@@ -64,13 +64,6 @@ export default function modifyHelperUtil(action: string, generator: typeof Gener
         };
     }
 
-    // Presently only one package can be scaffolded in a directory.
-    // TODO - Remove this once we support multiple scaffolds in the same directory.
-    if (fs.existsSync('package.json')) {
-        console.error(`${chalk.bold.red('Error: ')}You already have a ${chalk.blue('package.json')} file in this directory. Scaffolds cannot be created on top of existing projects.`);
-        process.exit(1);
-    }
-
     env.registerStub(generator, generatorName);
     env.run(generatorName, {
         configFile,
@@ -81,6 +74,13 @@ export default function modifyHelperUtil(action: string, generator: typeof Gener
             try {
                 const confPath = path.resolve(process.cwd(), '.yo-rc.json');
                 configModule = require(confPath);
+            } catch (err) {
+                console.error(chalk.red('\nCould not find a yeoman configuration file (.yo-rc.json).\n'));
+                console.error(chalk.red("\nPlease make sure to use 'this.config.set('configuration', this.configuration);' at the end of the generator.\n"));
+                Error.stackTraceLimit = 0;
+                process.exitCode = -1;
+            }
+            try {
                 // Change structure of the config to be transformed
                 const tmpConfig: WebpackScaffoldObject = {
                     config: {},
@@ -90,6 +90,9 @@ export default function modifyHelperUtil(action: string, generator: typeof Gener
                         return configModule[config];
                     })
                     .forEach((prop: string): void => {
+                        if (!configModule[prop].configuration) {
+                            return;
+                        }
                         const configs = Object.keys(configModule[prop].configuration);
                         configs.forEach((conf: string): void => {
                             tmpConfig[conf] = configModule[prop].configuration[conf];
@@ -97,11 +100,13 @@ export default function modifyHelperUtil(action: string, generator: typeof Gener
                     });
                 configModule = tmpConfig;
             } catch (err) {
-                console.error(chalk.red('\nCould not find a yeoman configuration file.\n'));
-                console.error(chalk.red("\nPlease make sure to use 'this.config.set('configuration', this.configuration);' at the end of the generator.\n"));
+                console.error(err);
+                console.error(err.stack);
+                console.error(chalk.red('\nYour yeoman configuration file (.yo-rc.json) was incorrectly formatted. Deleting it may fix the problem.\n'));
                 Error.stackTraceLimit = 0;
                 process.exitCode = -1;
             }
+
             const transformConfig: TransformConfig = Object.assign(
                 {
                     configFile: !configPath ? null : fs.readFileSync(configPath, 'utf8'),
