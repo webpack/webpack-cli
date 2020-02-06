@@ -12,7 +12,9 @@ describe('dotfolder array config lookup', () => {
         const summary = extractSummary(stdout);
         const outputDir = 'config-lookup/dotfolder-array/dist';
         const outDirectoryFromCompiler = summary['Output Directory'].split(sep);
-        const outDirToMatch = outDirectoryFromCompiler.slice(outDirectoryFromCompiler.length - 3, outDirectoryFromCompiler.length).join('/');
+        const outDirToMatch = outDirectoryFromCompiler
+            .slice(outDirectoryFromCompiler.length - 3, outDirectoryFromCompiler.length)
+            .join('/');
         expect(outDirToMatch).toContain(outputDir);
         stat(resolve(__dirname, './dist/dist-commonjs.js'), (err, stats) => {
             expect(err).toBe(null);

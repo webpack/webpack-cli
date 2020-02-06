@@ -177,4 +177,13 @@ function copyFile(testCase, file) {
     }
 }
 
-module.exports = { run, runWatch, runAndGetWatchProc, extractSummary, appendDataIfFileExists, copyFile, copyFileAsync, appendDataToMultipleIfFilesExists };
+module.exports = {
+    run,
+    runWatch,
+    runAndGetWatchProc,
+    extractSummary,
+    appendDataIfFileExists,
+    copyFile,
+    copyFileAsync,
+    appendDataToMultipleIfFilesExists,
+};

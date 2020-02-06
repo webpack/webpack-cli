@@ -17,7 +17,11 @@ describe('output flag named bundles', () => {
     });
 
     it('should create multiple bundles with an overriding flag', done => {
-        const { stdout } = run(__dirname, ['-c', resolve(__dirname, 'webpack.single.config.js'), '--output', './bin/[name].bundle.js'], false);
+        const { stdout } = run(
+            __dirname,
+            ['-c', resolve(__dirname, 'webpack.single.config.js'), '--output', './bin/[name].bundle.js'],
+            false,
+        );
         const summary = extractSummary(stdout);
         const outputDir = 'named-bundles/bin';
         expect(summary['Output Directory']).toContain(outputDir);
