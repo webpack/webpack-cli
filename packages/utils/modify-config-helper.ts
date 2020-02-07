@@ -64,13 +64,34 @@ export default function modifyHelperUtil(action: string, generator: typeof Gener
         };
     }
 
+    // this is the default name that the yeoman generator uses when writing
+    // to .yo-rc.json
+    // see: https://github.com/yeoman/generator/blob/v4.5.0/lib/index.js#L773
+    let packageName = '*';
+    try {
+        const packagePath = path.resolve(process.cwd(), 'package.json');
+        if (fs.existsSync(packagePath)) {
+            const packageData = require(packagePath);
+            if (packageData && packageData.name) {
+                packageName = packageData.name;
+            }
+        }
+    } catch (err) {
+        console.error(chalk.red('\nYour package.json was incorrectly formatted.\n'));
+        Error.stackTraceLimit = 0;
+        process.exitCode = -1;
+    }
+
     env.registerStub(generator, generatorName);
     env.run(generatorName, {
         configFile,
         autoSetDefaults,
     })
         .then((): void => {
-            let configModule: WebpackScaffoldObject;
+            let configModule: object;
+            let finalConfig: WebpackScaffoldObject = {
+                config: {},
+            };
             try {
                 const confPath = path.resolve(process.cwd(), '.yo-rc.json');
                 configModule = require(confPath);
@@ -81,24 +102,14 @@ export default function modifyHelperUtil(action: string, generator: typeof Gener
                 process.exitCode = -1;
             }
             try {
-                // Change structure of the config to be transformed
-                const tmpConfig: WebpackScaffoldObject = {
-                    config: {},
-                };
-                Object.keys(configModule)
-                    .filter(config => {
-                        return configModule[config];
-                    })
-                    .forEach((prop: string): void => {
-                        if (!configModule[prop].configuration) {
-                            return;
-                        }
-                        const configs = Object.keys(configModule[prop].configuration);
-                        configs.forEach((conf: string): void => {
-                            tmpConfig[conf] = configModule[prop].configuration[conf];
-                        });
-                    });
-                configModule = tmpConfig;
+                // the configuration stored in .yo-rc.json should already be in the correct
+                // WebpackScaffoldObject format
+                // it is labeled with the name property from the user's package.json, meaning
+                // we should simply access that value, rather than iterating through all
+                // the configs that are stored in .yo-rc.json
+                if (configModule[packageName] && configModule[packageName].configuration) {
+                    finalConfig = configModule[packageName].configuration;
+                }
             } catch (err) {
                 console.error(err);
                 console.error(err.stack);
@@ -112,9 +123,9 @@ export default function modifyHelperUtil(action: string, generator: typeof Gener
                     configFile: !configPath ? null : fs.readFileSync(configPath, 'utf8'),
                     configPath,
                 },
-                configModule,
+                finalConfig,
             );
-            if (configModule.usingDefaults && configModule.usingDefaults === true) {
+            if (finalConfig.usingDefaults && finalConfig.usingDefaults === true) {
                 const runCommand = getPackageManager() === 'yarn' ? 'yarn build' : 'npm run build';
 
                 const successMessage = `\nYou can now run ${chalk.green(runCommand)} to bundle your application!\n\n`;
