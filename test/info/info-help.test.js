@@ -28,6 +28,13 @@ describe('should print help for info command', () => {
         expect(stdout).toContain(descriptionText);
         expect(stderr).toHaveLength(0);
     });
+    it('should output help even if other flags are supplied with help', () => {
+        const { stdout, stderr } = runInfo(['info', '--help', '--system']);
+        expect(stdout).toContain(usageText);
+        expect(stdout).toContain(descriptionText);
+        expect(stdout).not.toContain('System:');
+        expect(stderr).toHaveLength(0);
+    });
 
     it('should respect the --color=false flag', () => {
         const { stdout, stderr } = runInfo(['info', 'help', '--color=false']);
