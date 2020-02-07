@@ -18,7 +18,16 @@ describe('node flags', () => {
                 expectedNodeArgs: ['--name1=value1', '--name2', 'value2'],
             },
             {
-                rawArgs: ['--node-args', '--name1=value1', '--node-args', '--name2="value2"', '--node-args', '--name3 value3', '--node-args', '-k v'],
+                rawArgs: [
+                    '--node-args',
+                    '--name1=value1',
+                    '--node-args',
+                    '--name2="value2"',
+                    '--node-args',
+                    '--name3 value3',
+                    '--node-args',
+                    '-k v',
+                ],
                 expectedCliArgs: [],
                 expectedNodeArgs: ['--name1=value1', '--name2="value2"', '--name3', 'value3', '-k', 'v'],
             },
@@ -30,13 +39,26 @@ describe('node flags', () => {
     });
 
     it('is able to pass the options flags to node js', done => {
-        const { stdout } = run(__dirname, ['--node-args', `--require=${resolve(__dirname, 'bootstrap.js')}`, '--node-args', `-r ${resolve(__dirname, 'bootstrap2.js')}`, '--output', './bin/[name].bundle.js'], false);
+        const { stdout } = run(
+            __dirname,
+            [
+                '--node-args',
+                `--require=${resolve(__dirname, 'bootstrap.js')}`,
+                '--node-args',
+                `-r ${resolve(__dirname, 'bootstrap2.js')}`,
+                '--output',
+                './bin/[name].bundle.js',
+            ],
+            false,
+        );
         expect(stdout).toContain('---from bootstrap.js---');
         expect(stdout).toContain('---from bootstrap2.js---');
         const summary = extractSummary(stdout);
         const outputDir = 'node/bin';
         const outDirectoryFromCompiler = summary['Output Directory'].split(sep);
-        const outDirToMatch = outDirectoryFromCompiler.slice(outDirectoryFromCompiler.length - 2, outDirectoryFromCompiler.length).join('/');
+        const outDirToMatch = outDirectoryFromCompiler
+            .slice(outDirectoryFromCompiler.length - 2, outDirectoryFromCompiler.length)
+            .join('/');
         expect(outDirToMatch).toContain(outputDir);
         stat(resolve(__dirname, './bin/main.bundle.js'), (err, stats) => {
             expect(err).toBe(null);
@@ -48,5 +70,17 @@ describe('node flags', () => {
     it('throws an error on supplying unknown flags', () => {
         const { stderr } = run(__dirname, ['--node-args', '--unknown']);
         expect(stderr).toContain('node: bad option:');
+    });
+
+    it('throws an error if no values were supplied with --max-old-space-size', () => {
+        const { stderr, stdout } = run(__dirname, ['--node-args', '--max-old-space-size']);
+        expect(stderr).toBeTruthy();
+        expect(stdout).toBeFalsy();
+    });
+
+    it('throws an error if an illegal value was supplied with --max-old-space-size', () => {
+        const { stderr, stdout } = run(__dirname, ['--node-args', '--max-old-space-size=1024a']);
+        expect(stderr).toBeTruthy();
+        expect(stdout).toBeFalsy();
     });
 });
