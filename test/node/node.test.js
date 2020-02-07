@@ -73,12 +73,14 @@ describe('node flags', () => {
     });
 
     it('throws an error if no values were supplied with --max-old-space-size', () => {
-        const { stderr } = run(__dirname, ['--node-args', '--max-old-space-size']);
-        expect(stderr).toContain('Error: missing value for flag --max-old-space-size of type size_t');
+        const { stderr, stdout } = run(__dirname, ['--node-args', '--max-old-space-size']);
+        expect(stderr).toBeTruthy();
+        expect(stdout).toBeFalsy();
     });
 
     it('throws an error if an illegal value was supplied with --max-old-space-size', () => {
-        const { stderr } = run(__dirname, ['--node-args', '--max-old-space-size=1024a']);
-        expect(stderr).toContain('Error: illegal value for flag --max-old-space-size=1024a of type size_t');
+        const { stderr, stdout } = run(__dirname, ['--node-args', '--max-old-space-size=1024a']);
+        expect(stderr).toBeTruthy();
+        expect(stdout).toBeFalsy();
     });
 });
