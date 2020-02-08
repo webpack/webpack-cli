@@ -41,6 +41,7 @@ Options
   -s, --sourcemap string   Determine source maps to use                     
   --prefetch string        Prefetch this request                            
   -j, --json               Prints result as JSON                            
+  --standard               Prints standard output                           
   -d, --dev                Run development build                            
   -p, --prod               Run production build                             
   --version                Get current version                              
