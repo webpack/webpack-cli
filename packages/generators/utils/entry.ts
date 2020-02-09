@@ -35,8 +35,8 @@ export default async function entry(
 					if (n) {
 						Object.keys(n).forEach((val: string): void => {
 							if (
-								n[val].charAt(0) !== "(" &&
-								n[val].charAt(0) !== "[" &&
+								!n[val].startsWith("(") &&
+								!n[val].startsWith("[") &&
 								!n[val].includes("function") &&
 								!n[val].includes("path") &&
 								!n[val].includes("process")
