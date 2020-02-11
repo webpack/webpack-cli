@@ -1,7 +1,12 @@
 {
-  "lerna": "3.4.0",
-  "packages": [
-    "packages/*"
-  ],
-  "version": "independent"
+  "lerna": "3.20.2",
+  "packages": ["packages/*"],
+  "version": "independent",
+  "command": {
+    "version": {
+      "message": "chore(release): publish",
+      "conventionalCommits": true,
+      "yes": true
+    }
+  }
 }
