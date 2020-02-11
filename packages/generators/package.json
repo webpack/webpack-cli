@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/generators",
-  "version": "1.0.0-alpha.0",
+  "version": "1.0.1-alpha.0",
   "description": "Webpack-CLI generators",
   "main": "index.js",
   "keywords": [],
@@ -10,8 +10,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@webpack-cli/utils": "^1.0.0-alpha.0",
-    "@webpack-cli/webpack-scaffold": "^1.0.0-alpha.0",
+    "@webpack-cli/utils": "^1.0.1-alpha.0",
+    "@webpack-cli/webpack-scaffold": "^1.0.1-alpha.0",
     "chalk": "2.4.2",
     "glob-all": "3.1.0",
     "inquirer-autocomplete-prompt": "1.0.1",
