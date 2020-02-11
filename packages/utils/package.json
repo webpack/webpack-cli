@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/utils",
-  "version": "0.2.3",
+  "version": "1.0.0-alpha.0",
   "description": "webpack-cli utility files",
   "main": "index.js",
   "types": "index.d.ts",
@@ -32,8 +32,8 @@
     "@types/p-each-series": "1.0.1",
     "@types/prettier": "1.18.2",
     "@types/yeoman-generator": "3.1.4",
-    "typescript": "3.5.3",
-    "jest": "24.9.0"
+    "jest": "24.9.0",
+    "typescript": "3.5.3"
   },
   "scripts": {
     "build": "tsc",

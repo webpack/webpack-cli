@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/migrate",
-  "version": "0.1.9",
+  "version": "1.0.0-alpha.0",
   "description": "Migrate command for webpack-cli",
   "main": "index.js",
   "types": "index.d.ts",
@@ -10,7 +10,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@webpack-cli/utils": "^0.2.3",
+    "@webpack-cli/utils": "^1.0.0-alpha.0",
     "chalk": "2.4.2",
     "diff": "4.0.1",
     "inquirer": "6.5.1",
