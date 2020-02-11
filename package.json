@@ -1,6 +1,6 @@
 {
   "name": "webpack-cli",
-  "version": "4.0.0-beta.1",
+  "version": "4.0.0-beta.2",
   "description": "CLI for webpack & friends",
   "license": "MIT",
   "repository": {
@@ -29,7 +29,6 @@
   "scripts": {
     "bootstrap": "npm run clean:all && npm install && lerna bootstrap",
     "build": "tsc",
-    "changelog": "conventional-changelog --config ./build/changelog-generator/index.js --infile CHANGELOG.md --same-file",
     "clean:all": "rimraf node_modules packages/*/{node_modules}",
     "commit": "git-cz",
     "docs": "typedoc",
@@ -70,6 +69,44 @@
     "*.js": [
       "npm run format",
       "git add"
+    ]
+  },
+  "standard-version": {
+    "types": [
+      {
+        "type": "feat",
+        "section": "Features"
+      },
+      {
+        "type": "fix",
+        "section": "Bug Fixes"
+      },
+      {
+        "type": "chore",
+        "section": "Chores",
+        "hidden": false
+      },
+      {
+        "type": "docs",
+        "section": "Documentation",
+        "hidden": false
+      },
+      {
+        "type": "style",
+        "hidden": true
+      },
+      {
+        "type": "refactor",
+        "hidden": true
+      },
+      {
+        "type": "perf",
+        "hidden": true
+      },
+      {
+        "type": "test",
+        "hidden": true
+      }
     ]
   },
   "jest": {
@@ -121,11 +158,13 @@
     "cli-table3": "^0.5.1",
     "command-line-args": "^5.1.1",
     "command-line-usage": "^6.1.0",
+    "conventional-changelog": "^3.1.18",
     "execa": "^3.2.0",
     "import-local": "^3.0.2",
     "inquirer": "^7.0.4",
     "interpret": "^2.0.0",
     "semver": "^7.1.1",
+    "standard-version": "^7.1.0",
     "terser-webpack-plugin": "^2.3.2",
     "update-notifier": "^3.0.1",
     "v8-compile-cache": "^2.1.0",
@@ -155,7 +194,7 @@
     "jest-cli": "^25.1.0",
     "jest-junit": "^10.0.0",
     "jest-serializer-ansi": "^1.0.3",
-    "lerna": "^3.18.3",
+    "lerna": "^3.20.2",
     "lint-staged": "^9.4.2",
     "nyc": "^14.1.1",
     "prettier": "1.18.2",
