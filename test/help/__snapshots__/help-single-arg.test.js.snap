@@ -16,7 +16,7 @@ exports[`single help flag creates a readable snapshot 1`] = `
 
 Available Commands
 
-  create    Initialize a new webpack configuration                 
+  init      Initialize a new webpack configuration                 
   migrate   Migrate a configuration to a new version               
   loader    Scaffold a loader repository                           
   plugin    Scaffold a plugin repository                           
