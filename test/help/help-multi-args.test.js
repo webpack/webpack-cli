@@ -17,7 +17,7 @@ describe('help flag with multiple arguments', () => {
     });
 
     it('outputs info with multiple commands and with precedence', () => {
-        const { stdout, stderr } = run(__dirname, ['create', 'help']);
+        const { stdout, stderr } = run(__dirname, ['init', 'help']);
         expect(stdout).toContain(createDescription);
         expect(stderr).toHaveLength(0);
     });

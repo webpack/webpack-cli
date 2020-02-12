@@ -10,16 +10,16 @@ describe('commands help', () => {
         expect(stderr).toHaveLength(0);
     });
     it('shows command help with valid command', () => {
-        const { stdout, stderr } = run(__dirname, ['--help', 'create'], false);
+        const { stdout, stderr } = run(__dirname, ['--help', 'init'], false);
         expect(stdout).not.toContain(helpHeader);
-        expect(stdout).toContain('webpack create | create <scaffold>');
+        expect(stdout).toContain('webpack init | init <scaffold>');
         expect(stderr).toHaveLength(0);
     });
 
     it('gives precedence to earlier command in case of multiple commands', () => {
-        const { stdout, stderr } = run(__dirname, ['--help', 'create', 'info'], false);
+        const { stdout, stderr } = run(__dirname, ['--help', 'init', 'info'], false);
         expect(stdout).not.toContain(helpHeader);
-        expect(stdout).toContain('webpack create | create <scaffold>');
+        expect(stdout).toContain('webpack init | init <scaffold>');
         expect(stderr).toHaveLength(0);
     });
 });
