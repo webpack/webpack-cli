@@ -53,11 +53,11 @@ describe('output flag named bundles', () => {
 
         expect(summary['Output Directory']).toContain(outputDir);
 
-        stat(resolve(__dirname, './dist/b.bundle.js'), (err, stats) => {
+        stat(resolve(__dirname, './dist/b.main.js'), (err, stats) => {
             expect(err).toBe(null);
             expect(stats.isFile()).toBe(true);
         });
-        stat(resolve(__dirname, './dist/c.bundle.js'), (err, stats) => {
+        stat(resolve(__dirname, './dist/c.main.js'), (err, stats) => {
             expect(err).toBe(null);
             expect(stats.isFile()).toBe(true);
         });
