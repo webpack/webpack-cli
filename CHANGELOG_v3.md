@@ -1,3 +1,89 @@
+<a name="3.3.10"></a>
+
+# 3.3.10 (2019-10-31)
+
+[Full Changelog](https://github.com/webpack/webpack-cli/compare/v3.3.9...v3.3.10)
+
+## New Features
+
+-   add new flag and patch sec dep ([#1102](https://github.com/webpack/webpack-cli/pull/1102))
+
+## Chore
+
+-   remove un-synced tests ([08a7650](https://github.com/webpack/webpack-cli/commit/08a7650))
+-   sec patch ([6ad6099](https://github.com/webpack/webpack-cli/commit/6ad6099))
+
+<a name="3.3.9"></a>
+
+# 3.3.9 (2019-09-17)
+
+[Full Changelog](https://github.com/webpack/webpack-cli/compare/v3.3.8...v3.3.9)
+
+## Fix
+
+-   use process.exitCode instead of process.exit in compilerCallback ([ee001bd](https://github.com/webpack/webpack-cli/commit/ee001bd))
+
+<a name="3.3.8"></a>
+
+# 3.3.8 (2019-09-05)
+
+[Full Changelog](https://github.com/webpack/webpack-cli/compare/v3.3.7...v3.3.8)
+
+## Chore
+
+-   remove lint err ([4275fd5](https://github.com/webpack/webpack-cli/commit/4275fd5))
+-   abstract validation ([065e87e](https://github.com/webpack/webpack-cli/commit/065e87e))
+-   vuln patch ([55b770c](https://github.com/webpack/webpack-cli/commit/55b770c))
+
+## Fix
+
+-   support both webpack versions ([d28f9f5](https://github.com/webpack/webpack-cli/commit/d28f9f5))
+
+## Tests
+
+-   add schema tests ([70bf934](https://github.com/webpack/webpack-cli/commit/70bf934))
+
+<a name="3.3.7"></a>
+
+# 3.3.7 (2019-08-18)
+
+[Full Changelog](https://github.com/webpack/webpack-cli/compare/v3.3.6...v3.3.7)
+
+## Chore
+
+-   resolve differently ([45b9127](https://github.com/webpack/webpack-cli/commit/45b9127))
+-   update lockfile & pass nil ([43fc033](https://github.com/webpack/webpack-cli/commit/43fc033))
+-   lock deps ([97d5c75](https://github.com/webpack/webpack-cli/commit/97d5c75))
+-   lock deps ([635bfa3](https://github.com/webpack/webpack-cli/commit/635bfa3))
+
+## Fix
+
+-   resolve opts when no-config ([fb31cc4](https://github.com/webpack/webpack-cli/commit/fb31cc4))
+
+<a name="3.3.6"></a>
+
+# 3.3.6 (2019-07-14)
+
+[Full Changelog](https://github.com/webpack/webpack-cli/compare/v3.3.5...v3.3.6)
+
+## Chore
+
+-   serve: refactor code to be more concise ([d2e3e80](https://github.com/webpack/webpack-cli/commit/d2e3e80))
+-   utils: fixes typo in scaffold ([bd5c1ce](https://github.com/webpack/webpack-cli/commit/bd5c1ce))
+-   fix sec vuln ([110fa5e](https://github.com/webpack/webpack-cli/commit/110fa5e))
+-   prevent weird behaviour of pre-commit hook ([#973](https://github.com/webpack/webpack-cli/pull/973))
+-   include comments ([941da90](https://github.com/webpack/webpack-cli/commit/941da90))
+
+## Docs
+
+-   remove deprecated packages description ([#979](https://github.com/webpack/webpack-cli/pull/979))
+
+## Fix
+
+-   minor refactor ([a30a027](https://github.com/webpack/webpack-cli/commit/a30a027))
+-   update comments ([7553ae7](https://github.com/webpack/webpack-cli/commit/7553ae7))
+-   minor fix ([0d9aa9a](https://github.com/webpack/webpack-cli/commit/0d9aa9a))
+
 <a name="3.3.5"></a>
 
 # 3.3.5 (2019-06-23)
