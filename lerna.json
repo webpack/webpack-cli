@@ -4,8 +4,9 @@
   "version": "independent",
   "command": {
     "version": {
-      "message": "chore(release): publish",
+      "message": "chore(release): publish %s",
       "conventionalCommits": true,
+      "allowBranch": ["master", "next/"],
       "yes": true
     }
   }
