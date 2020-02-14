@@ -4,6 +4,7 @@ const GroupHelper = require('./utils/GroupHelper');
 const { Compiler } = require('./utils/Compiler');
 const { groups, core } = require('./utils/cli-flags');
 const webpackMerge = require('webpack-merge');
+const commandArgs = require('command-line-args');
 
 const defaultCommands = {
     init: 'init',
@@ -78,6 +79,13 @@ class WebpackCLI extends GroupHelper {
             options.devtool = outputOptions.devtool;
         }
         return options;
+    }
+
+    /**
+     * It exposes "command-line-args" function
+     */
+    commandLineArgs(...args) {
+        return commandArgs(...args);
     }
 
 
