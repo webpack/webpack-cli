@@ -43,10 +43,7 @@
     "webpack-log": "^3.0.1",
     "webpack-merge": "^4.2.2"
   },
-  "devDependencies": {
-    "webpack": "^5.0.0-beta.13"
-  },
   "peerDependencies": {
-    "webpack": "^5.0.0-beta.13"
+    "webpack": "^5.0.0-beta.12"
   }
 }
