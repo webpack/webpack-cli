@@ -1,7 +1,7 @@
 'use strict';
 
 const { run } = require('../utils/test-utils');
-const pkgJSON = require('../../../../package.json');
+const pkgJSON = require('../../package.json');
 
 describe('single version flag', () => {
     it('outputs versions with command syntax', () => {

@@ -1,6 +1,6 @@
 'use strict';
 
-const argsToCamelCase = require('../../../serve/args-to-camel-case');
+const argsToCamelCase = require('../../packages/serve/args-to-camel-case');
 
 describe('args-to-camel-case helper', () => {
     it('converts arguments with multiple dashes to camel case', () => {

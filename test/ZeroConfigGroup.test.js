@@ -1,4 +1,4 @@
-const ZeroConfigGroup = require('../lib/groups/ZeroConfigGroup');
+const ZeroConfigGroup = require('../packages/cli/lib/groups/ZeroConfigGroup');
 
 describe('GroupHelper', function() {
     it('should  load the dev zero config', () => {

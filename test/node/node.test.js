@@ -2,7 +2,7 @@
 const { stat } = require('fs');
 const { resolve, sep } = require('path');
 const { run, extractSummary } = require('../utils/test-utils');
-const parseArgs = require('../../lib/utils/parse-args');
+const parseArgs = require('../../packages/cli/lib/utils/parse-args');
 
 describe('node flags', () => {
     it('parseArgs helper must work correctly', () => {

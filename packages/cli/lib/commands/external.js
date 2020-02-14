@@ -25,7 +25,6 @@ class ExternalCommand {
     static checkIfPackageExists(extName) {
         try {
             const path = require('path');
-            console.log('process', process.cwd());
             const pathForCmd = path.resolve(process.cwd(), 'node_modules', packagePrefix, extName);
             require.resolve(pathForCmd);
             return pathForCmd;

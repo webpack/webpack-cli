@@ -36,14 +36,14 @@
     "lint": "eslint . --ext .js,.ts",
     "pretest": "npm run build && npm run lint",
     "reportCoverage": "nyc report --reporter=json && codecov -f coverage/coverage-final.json --disable=gcov",
-    "smoketest": "packages/cli/smoketests/smoketests.sh",
+    "smoketest": "smoketests/smoketests.sh",
     "test": "nyc jest --maxWorkers=4 --reporters=default --reporters=jest-junit",
-    "test:cli": "nyc jest packages/cli/test/ --maxWorkers=4 --reporters=default --reporters=jest-junit",
+    "test:cli": "nyc jest test/ --maxWorkers=4 --reporters=default --reporters=jest-junit",
     "test:packages": "nyc jest packages/ --maxWorkers=4 --reporters=default --reporters=jest-junit",
     "test:ci": "npm run test:cli && npm run test:packages",
     "travis:integration": "npm run build && npm run test && npm run reportCoverage",
     "travis:lint": "npm run build && npm run lint",
-    "test:watch": "jest packages/cli/test/ packages/ --watch",
+    "test:watch": "jest test/ packages/ --watch",
     "watch": "npm run build && tsc -w",
     "publish:monorepo": "npm run format && npm run test && npm run build && lerna publish -m \"chore: monorepo version update\""
   },
@@ -184,7 +184,8 @@
     "typedoc": "^0.15.0",
     "typescript": "^3.7.2",
     "webpack": "^4.41.6",
-    "yeoman-assert": "^3.1.1",
-    "yeoman-test": "^2.1.0"
+    "yeoman-test": "^2.1.0",
+    "readable-stream": "^3.5.0",
+    "chalk": "^3.0.0"
   }
 }
