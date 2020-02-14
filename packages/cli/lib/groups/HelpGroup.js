@@ -40,7 +40,7 @@ class HelpGroup {
     }
 
     outputVersion() {
-        const pkgJSON = require('../../package.json');
+        const pkgJSON = require('../../../../package.json');
         const webpack = require('webpack');
         process.stdout.write(`\nwebpack-cli ${pkgJSON.version}`);
         process.stdout.write(`\nwebpack ${webpack.version}\n`);

@@ -1,5 +1,5 @@
 {
-  "name": "webpack-cli",
+  "name": "webpack-cli-monorepo",
   "version": "4.0.0-beta.3",
   "description": "CLI for webpack & friends",
   "license": "MIT",
@@ -36,14 +36,14 @@
     "lint": "eslint . --ext .js,.ts",
     "pretest": "npm run build && npm run lint",
     "reportCoverage": "nyc report --reporter=json && codecov -f coverage/coverage-final.json --disable=gcov",
-    "smoketest": "./smoketests/smoketests.sh",
+    "smoketest": "packages/cli/smoketests/smoketests.sh",
     "test": "nyc jest --maxWorkers=4 --reporters=default --reporters=jest-junit",
-    "test:cli": "nyc jest test/ --maxWorkers=4 --reporters=default --reporters=jest-junit",
+    "test:cli": "nyc jest packages/cli/test/ --maxWorkers=4 --reporters=default --reporters=jest-junit",
     "test:packages": "nyc jest packages/ --maxWorkers=4 --reporters=default --reporters=jest-junit",
     "test:ci": "npm run test:cli && npm run test:packages",
     "travis:integration": "npm run build && npm run test && npm run reportCoverage",
     "travis:lint": "npm run build && npm run lint",
-    "test:watch": "jest test/ packages/ --watch",
+    "test:watch": "jest packages/cli/test/ packages/ --watch",
     "watch": "npm run build && tsc -w",
     "publish:monorepo": "npm run format && npm run test && npm run build && lerna publish -m \"chore: monorepo version update\""
   },
@@ -152,25 +152,6 @@
       "config": "./.cz-config.js"
     }
   },
-  "dependencies": {
-    "ansi-escapes": "^4.2.1",
-    "chalk": "^3.0.0",
-    "cli-table3": "^0.5.1",
-    "command-line-args": "^5.1.1",
-    "command-line-usage": "^6.1.0",
-    "conventional-changelog": "^3.1.18",
-    "execa": "^3.2.0",
-    "import-local": "^3.0.2",
-    "inquirer": "^7.0.4",
-    "interpret": "^2.0.0",
-    "semver": "^7.1.1",
-    "standard-version": "^7.1.0",
-    "terser-webpack-plugin": "^2.3.2",
-    "update-notifier": "^3.0.1",
-    "v8-compile-cache": "^2.1.0",
-    "webpack-log": "^3.0.1",
-    "webpack-merge": "^4.2.2"
-  },
   "peerDependencies": {
     "webpack": "5.x.x"
   },
@@ -202,7 +183,7 @@
     "ts-jest": "^24.1.0",
     "typedoc": "^0.15.0",
     "typescript": "^3.7.2",
-    "webpack": "^5.0.0-beta.12",
+    "webpack": "^4.41.6",
     "yeoman-assert": "^3.1.1",
     "yeoman-test": "^2.1.0"
   }

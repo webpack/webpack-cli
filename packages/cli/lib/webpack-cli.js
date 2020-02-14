@@ -2,7 +2,7 @@ const { resolve, parse } = require('path');
 const { existsSync } = require('fs');
 const GroupHelper = require('./utils/GroupHelper');
 const { Compiler } = require('./utils/Compiler');
-const { groups } = require('./utils/cli-flags');
+const { groups, core } = require('./utils/cli-flags');
 const webpackMerge = require('webpack-merge');
 
 const defaultCommands = {
@@ -50,7 +50,6 @@ class WebpackCLI extends GroupHelper {
             this.groupMap.set(groupName, [{ [opt.name]: val }]);
         }
     }
-
     checkDefaults(options, outputOptions) {
         if (Array.isArray(options)) {
             return options.map(opt => this.checkDefaults(opt, outputOptions));
@@ -81,6 +80,10 @@ class WebpackCLI extends GroupHelper {
         return options;
     }
 
+
+    getCoreFlags() {
+        return core;
+    }
     /**
      * Based on the parsed keys, the function will import and create
      * a group that handles respective values
