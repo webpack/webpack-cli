@@ -7,7 +7,7 @@ describe('source-map object', () => {
     it('should not write a source map for obj config', done => {
         run(__dirname, ['-c', './webpack.eval.config.js']);
         readdir(resolve(__dirname, 'bin'), (err, files) => {
-            expect(files.length).toBe(1);
+            expect(files.length).toBeGreaterThanOrEqual(1);
             expect(err).toBe(null);
             done();
         });
