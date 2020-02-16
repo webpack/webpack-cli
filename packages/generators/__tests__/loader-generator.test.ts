@@ -1,7 +1,7 @@
-import { makeLoaderName } from '../loader-generator';
 import { join } from 'path';
 import { run } from 'yeoman-test';
 const assert = require('yeoman-assert');
+import { makeLoaderName } from '../loader-generator';
 
 describe('loader generator', () => {
     it('generates a default loader', async () => {
