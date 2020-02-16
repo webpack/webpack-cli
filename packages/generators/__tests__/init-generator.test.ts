@@ -2,7 +2,7 @@ import { join } from 'path';
 import { run } from 'yeoman-test';
 
 // fixme: unstable
-describe.skip('init generator', () => {
+describe('init generator', () => {
     it('generates a webpack project config', async () => {
         const outputDir = await run(join(__dirname, '../init-generator')).withPrompts({
             multiEntries: false,
@@ -17,5 +17,5 @@ describe.skip('init generator', () => {
         const config = (Object.entries(output)[0][1] as any).configuration.config.webpackOptions;
         expect(config.entry).toEqual("'./src/index2.js'");
         expect(config.output.path).toEqual("path.resolve(__dirname, 'dist2')");
-    });
+    }, 10000);
 });
