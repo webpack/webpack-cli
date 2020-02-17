@@ -58,6 +58,7 @@ Collection {
       "parentPath": null,
       "value": Node {
         "end": 4,
+        "errors": Array [],
         "loc": SourceLocation {
           "end": Object {
             "column": 4,
@@ -244,6 +245,7 @@ Collection {
       "parentPath": null,
       "value": Node {
         "end": 5,
+        "errors": Array [],
         "loc": SourceLocation {
           "end": Object {
             "column": 5,

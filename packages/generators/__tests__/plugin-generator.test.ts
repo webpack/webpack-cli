@@ -1,6 +1,7 @@
 import { join } from 'path';
 import { run } from 'yeoman-test';
-const assert = require('yeoman-assert');
+import assert from 'yeoman-assert';
+
 import { generatePluginName } from '../utils';
 
 describe('plugin generator', () => {

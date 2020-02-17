@@ -31,7 +31,7 @@
     "./packages/*"
   ],
   "scripts": {
-    "bootstrap": "yarn clean:all && npm install && lerna bootstrap",
+    "bootstrap": "lerna bootstrap",
     "build": "tsc",
     "clean:all": "rimraf node_modules packages/*/{node_modules}",
     "commit": "git-cz",
