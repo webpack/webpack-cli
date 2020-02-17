@@ -2,10 +2,13 @@
   "lerna": "3.20.2",
   "packages": ["packages/*"],
   "version": "independent",
+  "npmClient": "yarn",
+  "useWorkspaces": true,
   "command": {
     "version": {
-      "message": "chore(release): publish",
+      "message": "chore(release): publish %s",
       "conventionalCommits": true,
+      "allowBranch": ["master", "next/"],
       "yes": true
     }
   }

@@ -1,10 +1,11 @@
 'use strict';
 
 const path = require('path');
+// eslint-disable-next-line node/no-unpublished-require
 const { run } = require('../utils/test-utils');
 
 const runInfo = args => {
-    return run(path.resolve(__dirname, './shim'), ['info'].concat(args), false);
+    return run(path.resolve(__dirname), ['info'].concat(args), false);
 };
 
 describe('info with multiple flags', () => {

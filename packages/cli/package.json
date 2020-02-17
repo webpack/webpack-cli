@@ -1,0 +1,52 @@
+{
+	"name": "webpack-cli",
+	"version": "4.0.0-beta.3",
+	"description": "CLI for webpack & friends",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/webpack/webpack-cli.git"
+	},
+	"bin": {
+		"webpack-cli": "./bin/cli.js"
+	},
+	"main": "./lib/webpack-cli.js",
+	"engines": {
+		"node": ">=10.13.0"
+	},
+	"keywords": [
+		"webpack",
+		"cli",
+		"scaffolding",
+		"module",
+		"bundler",
+		"web"
+	],
+	"files": [
+		"lib",
+		"bin/cli.js"
+	],
+	"dependencies": {
+		"ansi-escapes": "^4.2.1",
+		"chalk": "^3.0.0",
+		"cli-table3": "^0.5.1",
+		"command-line-args": "^5.1.1",
+		"command-line-usage": "^6.1.0",
+		"execa": "^3.2.0",
+		"import-local": "^3.0.2",
+		"inquirer": "^7.0.4",
+		"interpret": "^2.0.0",
+		"semver": "^7.1.1",
+		"terser-webpack-plugin": "^2.3.2",
+		"update-notifier": "^3.0.1",
+		"v8-compile-cache": "^2.1.0",
+		"webpack-log": "^3.0.1",
+		"webpack-merge": "^4.2.2"
+	},
+	"peerDependencies": {
+		"webpack": "^5.0.0-beta.12"
+	},
+  "devDependencies": {
+    "@webpack-cli/info": "1.0.1-alpha.0"
+  }
+}

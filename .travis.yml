@@ -5,9 +5,7 @@ language: node_js
 node_js:
     - "12"
     - "10"
-cache:
-    directories:
-        - ~/.npm
+
 matrix:
     include:
         - os: linux
@@ -21,14 +19,14 @@ matrix:
           env: JOB_PART=integration
 
 before_install:
-    - "[[ $(node -v) =~ ^v9.*$ ]] || npm install -g npm@latest" # skipped when using node 9
+    - npm install -g yarn@latest
 
 install:
-    - travis_wait npm ci
+    - travis_wait yarn
     - lerna bootstrap
-    - npm install -g codecov
-    - npm install -g eslint
+    - yarn global add codecov
+    - yarn global add eslint
 script:
-    - npm run travis:lint
-    - npm run test:ci
+    - yarn travis:lint
+    - yarn test:ci
 

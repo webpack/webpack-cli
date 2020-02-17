@@ -56,35 +56,23 @@ In case you are suggesting a new feature, we will match your idea with our curre
 -   Fork the **webpack-cli** repo at [https://github.com/webpack/webpack-cli](https://github.com/webpack/webpack-cli).
 -   `git clone <your-clone-url> && cd webpack-cli`
 
--   If you decide to use [yarn](https://yarnpkg.com/lang/en/):
+-   We use [yarn](https://yarnpkg.com/lang/en/) workspaces, please install it:
     ```bash
     npm install -g yarn
     ```
 
 > Using yarn is not a requirement, [npm](https://www.npmjs.com/) is included in node.
 
--   Install the dependencies and link them:
+-   Install the dependencies:
 
     ```bash
-    #npm
-    npm install
-    npm link
-    npm link webpack-cli
-    ---------------------------
-    #yarn
-    yarn
-    yarn link
-    yarn link webpack-cli
+    yarn install
     ```
 
 -   Bootstrap all the submodules before building for the first time
 
     ```bash
     #npm
-    npm run bootstrap
-    npm run build
-    ---------------------------
-    #yarn
     yarn bootstrap
     yarn build
     ```
@@ -96,30 +84,18 @@ In case you are suggesting a new feature, we will match your idea with our curre
 -   Run all the tests with:
 
     ```bash
-    #npm
-    npm run test
-    ---------------------------
-    #yarn
     yarn test
     ```
 
 -   Run CLI tests with:
 
     ```bash
-    #npm
-    npm run test:cli
-    ---------------------------
-    #yarn
     yarn test:cli`
     ```
 
 -   Run tests of all packages:
 
     ```bash
-    #npm
-    npm run test:packages
-    ---------------------------
-    #yarn
     yarn test:packages
     ```
 
@@ -128,21 +104,12 @@ In case you are suggesting a new feature, we will match your idea with our curre
     > Must run from root of the poject
 
     ```bash
-    #npm
-    npx jest path/to/my-test.js
-    ---------------------------
-    #yarn
     yarn jest path/to/my-test.js
     ```
 
 -   You can also install jest globally and run tests without npx:
 
     ```bash
-    #npm
-    npm i -g jest
-    jest path/to/my-test.js
-    ---------------------------
-    #yarn
     yarn global add jest
     jest path/to/my-test.js
     ```
@@ -150,10 +117,6 @@ In case you are suggesting a new feature, we will match your idea with our curre
 -   You can run the linters:
 
     ```bash
-    #npm
-    npm run lint
-    ---------------------------
-    #yarn
     yarn lint
     ```
 
@@ -305,10 +268,10 @@ Each test will refer to an input webpack config snippet.
 Conventionally we write them in `\_\_testfixtures\_\_`.
 
 ```js
-const defineTest = require("../defineTest");
+const defineTest = require('../defineTest');
 
-defineTest(__dirname, "transform-name.input1.js");
-defineTest(__dirname, "transform-name.input2.js");
+defineTest(__dirname, 'transform-name.input1.js');
+defineTest(__dirname, 'transform-name.input2.js');
 ```
 
 `defineTest` is a helper test method which helps us to run tests on all the transforms uniformly.

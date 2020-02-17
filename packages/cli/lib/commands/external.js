@@ -1,13 +1,13 @@
 const { prompt } = require('inquirer');
 const chalk = require('chalk');
 const logger = require('../utils/logger');
+const execa = require('execa');
 
 const packagePrefix = '@webpack-cli';
 
 class ExternalCommand {
     static async runCommand(command, args = []) {
-        const cp = require('child_process');
-        const executedCommand = await cp.spawn(command, args, {
+        const executedCommand = await execa(command, args, {
             stdio: 'inherit',
             shell: true,
         });
@@ -22,12 +22,15 @@ class ExternalCommand {
         });
     }
 
+    /**
+     *
+     * @param extName
+     * @returns {boolean}
+     */
     static checkIfPackageExists(extName) {
         try {
-            const path = require('path');
-            const pathForCmd = path.resolve(process.cwd(), 'node_modules', packagePrefix, extName);
-            require.resolve(pathForCmd);
-            return pathForCmd;
+            require(`${packagePrefix}/${extName}`);
+            return true;
         } catch (err) {
             return false;
         }
@@ -65,7 +68,7 @@ class ExternalCommand {
         if (!pkgLoc) {
             pkgLoc = await ExternalCommand.promptInstallation(scopeName, name);
         }
-        return pkgLoc ? require(pkgLoc).default(...args) : null;
+        return pkgLoc ? require(scopeName).default(...args) : null;
     }
 }
 

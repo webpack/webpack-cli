@@ -15,18 +15,18 @@ jobs:
           versionSpec: $(node_version)
         displayName: "Install Node.js"
       - script: |
-          npm install -g npm@latest
+          npm install -g yarn
         displayName: "Install npm"
       - script: |
           node -v
-          npm -v
+          yarn -v
         displayName: "Print version"
       - script: |
-          npm ci
-          npm run bootstrap
+          yarn
+          yarn bootstrap
         displayName: "Lerna bootstrap"
       - script: |
-          npm run test
+          yarn test:ci
         displayName: "Run tests"
       - task: PublishTestResults@2
         inputs:

@@ -1,15 +1,10 @@
 #!/usr/bin/env node
 
 'use strict';
-
 require('v8-compile-cache');
-
 const execa = require('execa');
 const importLocal = require('import-local');
-// eslint-disable-next-line node/no-unpublished-require
 const logger = require('../lib/utils/logger');
-
-// eslint-disable-next-line node/no-unpublished-require
 const parseArgs = require('../lib/utils/parse-args');
 
 // Prefer the local installation of webpack-cli
@@ -43,7 +38,6 @@ if (!semver.satisfies(process.version, version)) {
 
 const [, , ...rawArgs] = process.argv;
 const { cliArgs, nodeArgs } = parseArgs(rawArgs);
-// eslint-disable-next-line node/no-unpublished-require
 const bootstrapPath = require.resolve('../lib/bootstrap');
 
 execa('node', [...nodeArgs, bootstrapPath, ...cliArgs], { stdio: 'inherit' }).catch(e => {
