@@ -32,14 +32,14 @@ jobs:
         yarn bootstrap
     - name: Run test for webpack version ${{ matrix.webpack-version }}
       run: |
-        yarn --save webpack@${{ matrix.webpack-version }}
+        yarn add webpack@${{ matrix.webpack-version }}
         yarn build
         yarn test:ci
       env:
         CI: true
     - name: smoketest
       run: |
-        yarn build --if-present
+        yarn build
         yarn smoketest
       env:
         CI: true
