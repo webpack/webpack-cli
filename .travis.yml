@@ -7,7 +7,7 @@ node_js:
     - "10"
 cache:
     directories:
-        - ~/.npm
+        - ~/.yarn
 matrix:
     include:
         - os: linux
@@ -21,7 +21,7 @@ matrix:
           env: JOB_PART=integration
 
 before_install:
-    - "[[ $(node -v) =~ ^v9.*$ ]] || npm install -g npm@latest" # skipped when using node 9
+    - "[[ $(node -v) =~ ^v9.*$ ]] || npm install -g yarn@latest" # skipped when using node 9
 
 install:
     - travis_wait yarn
