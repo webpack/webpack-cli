@@ -46,7 +46,13 @@ const DEFAULT_WEBPACK_CONFIG_FILENAME = 'webpack.config.js';
  * @returns {Function} runTransform - Returns a transformation instance
  */
 
-export default function modifyHelperUtil(action: string, generator: typeof Generator, configFile: string = DEFAULT_WEBPACK_CONFIG_FILENAME, packages?: string[], autoSetDefaults = false): void {
+export default function modifyHelperUtil(
+    action: string,
+    generator: typeof Generator,
+    configFile: string = DEFAULT_WEBPACK_CONFIG_FILENAME,
+    packages?: string[],
+    autoSetDefaults = false,
+): void {
     const configPath: string | null = null;
 
     const env = yeoman.createEnv('webpack', null);
@@ -97,7 +103,11 @@ export default function modifyHelperUtil(action: string, generator: typeof Gener
                 configModule = require(confPath);
             } catch (err) {
                 console.error(chalk.red('\nCould not find a yeoman configuration file (.yo-rc.json).\n'));
-                console.error(chalk.red("\nPlease make sure to use 'this.config.set('configuration', this.configuration);' at the end of the generator.\n"));
+                console.error(
+                    chalk.red(
+                        "\nPlease make sure to use 'this.config.set('configuration', this.configuration);' at the end of the generator.\n",
+                    ),
+                );
                 Error.stackTraceLimit = 0;
                 process.exitCode = -1;
             }
@@ -113,7 +123,11 @@ export default function modifyHelperUtil(action: string, generator: typeof Gener
             } catch (err) {
                 console.error(err);
                 console.error(err.stack);
-                console.error(chalk.red('\nYour yeoman configuration file (.yo-rc.json) was incorrectly formatted. Deleting it may fix the problem.\n'));
+                console.error(
+                    chalk.red(
+                        '\nYour yeoman configuration file (.yo-rc.json) was incorrectly formatted. Deleting it may fix the problem.\n',
+                    ),
+                );
                 Error.stackTraceLimit = 0;
                 process.exitCode = -1;
             }
@@ -130,8 +144,8 @@ export default function modifyHelperUtil(action: string, generator: typeof Gener
 
                 const successMessage = `\nYou can now run ${chalk.green(runCommand)} to bundle your application!\n\n`;
                 process.stdout.write(`\n${successMessage}`);
-                return;
             }
+            // scaffold webpack config file from using .yo-rc.json
             return runTransform(transformConfig, 'init');
         })
         .catch((err): void => {
