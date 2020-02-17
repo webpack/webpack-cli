@@ -31,25 +31,25 @@
     "./packages/*"
   ],
   "scripts": {
-    "bootstrap": "npm run clean:all && npm install && lerna bootstrap",
+    "bootstrap": "yarn clean:all && npm install && lerna bootstrap",
     "build": "tsc",
     "clean:all": "rimraf node_modules packages/*/{node_modules}",
     "commit": "git-cz",
     "docs": "typedoc",
     "format": "eslint --fix . --ext .js,.ts",
     "lint": "eslint . --ext .js,.ts",
-    "pretest": "npm run build && npm run lint",
+    "pretest": "yarn build && yarn lint",
     "reportCoverage": "nyc report --reporter=json && codecov -f coverage/coverage-final.json --disable=gcov",
     "smoketest": "smoketests/smoketests.sh",
     "test": "nyc jest --maxWorkers=4 --reporters=default --reporters=jest-junit",
     "test:cli": "nyc jest test/ --maxWorkers=4 --reporters=default --reporters=jest-junit",
     "test:packages": "nyc jest packages/ --maxWorkers=4 --reporters=default --reporters=jest-junit",
-    "test:ci": "npm run test:cli && npm run test:packages",
-    "travis:integration": "npm run build && npm run test && npm run reportCoverage",
-    "travis:lint": "npm run build && npm run lint",
+    "test:ci": "yarn test:cli && yarn test:packages",
+    "travis:integration": "yarn build && yarn test && yarn reportCoverage",
+    "travis:lint": "yarn build && yarn lint",
     "test:watch": "jest test/ packages/ --watch",
-    "watch": "npm run build && tsc -w",
-    "publish:monorepo": "npm run format && npm run test && npm run build && lerna publish -m \"chore: monorepo version update\""
+    "watch": "yarn build && tsc -w",
+    "publish:monorepo": "yarn format && yarn test && yarn build && lerna publish -m \"chore: monorepo version update\""
   },
   "husky": {
     "hooks": {
@@ -67,11 +67,11 @@
       "git add"
     ],
     "*.ts": [
-      "npm run format",
+      "yarn format",
       "git add"
     ],
     "*.js": [
-      "npm run format",
+      "yarn format",
       "git add"
     ]
   },

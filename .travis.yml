@@ -24,11 +24,11 @@ before_install:
     - "[[ $(node -v) =~ ^v9.*$ ]] || npm install -g npm@latest" # skipped when using node 9
 
 install:
-    - travis_wait npm ci
+    - travis_wait yarn
     - lerna bootstrap
-    - npm install -g codecov
-    - npm install -g eslint
+    - yarn global add codecov
+    - yarn global add eslint
 script:
-    - npm run travis:lint
-    - npm run test:ci
+    - yarn travis:lint
+    - yarn test:ci
 
