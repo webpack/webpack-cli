@@ -5,7 +5,7 @@ import assert from 'yeoman-assert';
 import { makeLoaderName } from '../loader-generator';
 
 describe('loader generator', () => {
-    it('generates a default loader', async () => {
+    it.skip('generates a default loader', async () => {
         const outputDir = await run(join(__dirname, '../loader-generator'));
         const loaderDir = `${outputDir}/my-loader`;
         const srcFiles = ['cjs.js', 'index.js'];
