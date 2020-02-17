@@ -5,6 +5,8 @@ import * as inquirer from "inquirer";
 import * as Listr from "listr";
 import pLazy = require("p-lazy");
 import * as path from "path";
+// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// @ts-ignore
 import { validate, WebpackOptionsValidationError } from "webpack";
 
 import runPrettier from "@webpack-cli/utils/run-prettier";
