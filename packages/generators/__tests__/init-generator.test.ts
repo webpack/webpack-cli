@@ -13,7 +13,7 @@ describe('init generator', () => {
             useExtractPlugin: 'main',
         });
 
-        // Check that all the project files are generator with the correct name
+        // Check that all the project files are generated with the correct name
         const filePaths = ['package.json', 'README.md', 'src/index2.js'];
         assert.file([...filePaths.map(file => join(outputDir, file))]);
 
