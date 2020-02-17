@@ -3,6 +3,7 @@
   "version": "4.0.0-beta.3",
   "description": "CLI for webpack & friends",
   "license": "MIT",
+  "private": true,
   "repository": {
     "type": "git",
     "url": "https://github.com/webpack/webpack-cli.git"
@@ -25,6 +26,9 @@
   "files": [
     "lib",
     "bin/cli.js"
+  ],
+  "workspaces": [
+    "./packages/*"
   ],
   "scripts": {
     "bootstrap": "npm run clean:all && npm install && lerna bootstrap",
@@ -107,30 +111,6 @@
         "type": "test",
         "hidden": true
       }
-    ]
-  },
-  "jest": {
-    "testPathIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "testEnvironment": "node",
-    "collectCoverage": true,
-    "coverageReporters": [
-      "json",
-      "html",
-      "cobertura"
-    ],
-    "transform": {
-      "^.+\\.(ts)?$": "ts-jest"
-    },
-    "testRegex": [
-      "/__tests__/.*\\.(test.js|test.ts)$",
-      "/test/.*\\.(test.js|test.ts)$"
-    ],
-    "moduleFileExtensions": [
-      "ts",
-      "js",
-      "json"
     ]
   },
   "nyc": {

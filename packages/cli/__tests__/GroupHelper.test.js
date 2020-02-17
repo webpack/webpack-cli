@@ -1,4 +1,4 @@
-const GroupHelper = require('../packages/cli/lib/utils/GroupHelper');
+const GroupHelper = require('../lib/utils/GroupHelper');
 
 describe('GroupHelper', function() {
     it('should return undefined', () => {

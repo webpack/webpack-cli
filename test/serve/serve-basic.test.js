@@ -8,7 +8,7 @@ jest.setTimeout(20000);
 
 const runServe = args => {
     return runWatch({
-        testCase: path.resolve(__dirname, './shim'),
+        testCase: path.resolve(__dirname),
         args: ['serve'].concat(args),
         setOutput: false,
         outputKillStr: 'main',

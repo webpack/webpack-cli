@@ -1,6 +1,5 @@
 const WebpackCLI = require('./webpack-cli');
 const { core, commands } = require('./utils/cli-flags');
-const cmdArgs = require('command-line-args');
 const logger = require('./utils/logger');
 
 require('./utils/process-log');
@@ -61,7 +60,7 @@ async function runCLI(cli, commandIsUsed) {
         return await cli.runCommand(commandIsUsed, ...args);
     } else {
         try {
-            args = cmdArgs(core, { stopAtFirstUnknown: false, partial: true });
+            args = cli.commandLineArgs(core, { stopAtFirstUnknown: false, partial: true });
             if (args._unknown) {
                 resolveNegatedArgs(args);
                 args._unknown
@@ -98,7 +97,7 @@ async function runCLI(cli, commandIsUsed) {
                 const newArgKeys = Object.keys(argsMap).filter(arg => !keysToDelete.includes(argsMap[arg].pos));
                 // eslint-disable-next-line require-atomic-updates
                 process.argv = newArgKeys;
-                args = cmdArgs(core, { stopAtFirstUnknown: false, partial: true });
+                args = cli.commandLineArgs(core, { stopAtFirstUnknown: false, partial: true });
 
                 await cli.run(args, core);
                 process.stdout.write('\n');

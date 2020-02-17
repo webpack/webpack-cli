@@ -38,7 +38,6 @@ if (!semver.satisfies(process.version, version)) {
 
 const [, , ...rawArgs] = process.argv;
 const { cliArgs, nodeArgs } = parseArgs(rawArgs);
-// eslint-disable-next-line node/no-unpublished-require
 const bootstrapPath = require.resolve('../lib/bootstrap');
 
 execa('node', [...nodeArgs, bootstrapPath, ...cliArgs], { stdio: 'inherit' }).catch(e => {

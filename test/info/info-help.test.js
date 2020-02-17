@@ -6,7 +6,7 @@ const { run } = require('../utils/test-utils');
 const { commands } = require('../../packages/cli/lib/utils/cli-flags');
 
 const runInfo = args => {
-    return run(path.resolve(__dirname, './shim'), args, false);
+    return run(path.resolve(__dirname), args, false);
 };
 
 const infoFlags = commands.find(c => c.name === 'info').flags;
