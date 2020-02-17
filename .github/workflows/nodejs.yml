@@ -32,7 +32,7 @@ jobs:
         yarn bootstrap
     - name: Run test for webpack version ${{ matrix.webpack-version }}
       run: |
-        yarn add webpack@${{ matrix.webpack-version }}
+        yarn add -W webpack@${{ matrix.webpack-version }}
         yarn build
         yarn test:ci
       env:
