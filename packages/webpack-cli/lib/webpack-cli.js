@@ -88,7 +88,6 @@ class WebpackCLI extends GroupHelper {
         return commandArgs(...args);
     }
 
-
     getCoreFlags() {
         return core;
     }

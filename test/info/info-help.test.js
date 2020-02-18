@@ -3,7 +3,7 @@
 const chalk = require('chalk');
 const path = require('path');
 const { run } = require('../utils/test-utils');
-const { commands } = require('../../packages/cli/lib/utils/cli-flags');
+const { commands } = require('../../packages/webpack-cli/lib/utils/cli-flags');
 
 const runInfo = args => {
     return run(path.resolve(__dirname), args, false);
