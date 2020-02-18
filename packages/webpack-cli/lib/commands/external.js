@@ -1,4 +1,4 @@
-const { prompt } = require('inquirer');
+const { prompt } = require('enquirer');
 const chalk = require('chalk');
 const logger = require('../utils/logger');
 const execa = require('execa');
@@ -50,8 +50,7 @@ class ExternalCommand {
                 type: 'confirm',
                 name: 'installConfirm',
                 message: question,
-                default: 'Y',
-                choices: ['Yes', 'No', 'Y', 'N', 'y', 'n'],
+                initial: 'Y'
             },
         ]);
         if (installConfirm) {

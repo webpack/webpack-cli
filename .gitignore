@@ -38,9 +38,6 @@ lerna-debug.log
 # Yeoman file
 .yo-rc.json
 
-# Yarn lock file
-yarn.lock
-
 # source maps of docs
 docs/**/*.map
 junit.xml
