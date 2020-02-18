@@ -1,5 +1,7 @@
 const webpack = require('webpack');
 const logger = require('./logger');
+const readline = require('readline');
+const { cyanBright, greenBright } = require('chalk');
 const { CompilerOutput } = require('./CompilerOutput');
 
 class Compiler {
@@ -15,17 +17,24 @@ class Compiler {
 
         compilation.hooks.beforeRun.tap('webpackProgress', () => {
             if (outputOptions.progress) {
-                let tmpMsg;
-                const defaultProgressPluginHandler = (percent, msg) => {
+                process.stdout.write("\n");
+                const defaultProgressPluginHandler = async (percent, msg) => {
                     percent = Math.floor(percent * 100);
-                    if (percent === 100) {
-                        msg = 'Compilation completed';
+                    process.stdout.clearLine();
+                    process.stdout.cursorTo(0);
+                    if (percent !== undefined) {
+                        process.stdout.write(' (')
+                        for(let i = 0; i <= 100; i+=10) {
+                            if (i <= percent) {
+                                process.stdout.write(greenBright("#"));
+                            } else {
+                                process.stdout.write("#");
+                            }
+                        }
+                        process.stdout.write(`) ${percent}% : `)
+                        process.stdout.write(`${cyanBright(msg)}`);
+                        if (percent === 100) process.stdout.write(`${cyanBright("Complilation completed\n")}`);
                     }
-
-                    if (msg && tmpMsg != msg) {
-                        logger.info(percent + '% ' + msg);
-                    }
-                    tmpMsg = msg;
                 };
                 if (!progressPluginExists) {
                     new ProgressPlugin(defaultProgressPluginHandler).apply(compilation);
