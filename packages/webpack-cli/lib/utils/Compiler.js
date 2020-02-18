@@ -18,7 +18,7 @@ class Compiler {
         compilation.hooks.beforeRun.tap('webpackProgress', () => {
             if (outputOptions.progress) {
                 process.stdout.write("\n");
-                const defaultProgressPluginHandler = async (percent, msg) => {
+                const defaultProgressPluginHandler = (percent, msg) => {
                     percent = Math.floor(percent * 100);
                     process.stdout.clearLine();
                     process.stdout.cursorTo(0);
