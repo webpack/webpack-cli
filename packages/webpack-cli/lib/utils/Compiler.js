@@ -16,23 +16,25 @@ class Compiler {
 
         compilation.hooks.beforeRun.tap('webpackProgress', () => {
             if (outputOptions.progress) {
-                process.stdout.write("\n");
+                process.stdout.write('\n');
                 const defaultProgressPluginHandler = (percent, msg) => {
                     percent = Math.floor(percent * 100);
                     process.stdout.clearLine();
                     process.stdout.cursorTo(0);
                     if (percent !== undefined) {
-                        process.stdout.write(' (')
-                        for(let i = 0; i <= 100; i+=10) {
+                        process.stdout.write(' (');
+                        for (let i = 0; i <= 100; i += 10) {
                             if (i <= percent) {
-                                process.stdout.write(greenBright("#"));
+                                process.stdout.write(greenBright('#'));
                             } else {
-                                process.stdout.write("#");
+                                process.stdout.write('#');
                             }
                         }
-                        process.stdout.write(`) ${percent}% : `)
+                        process.stdout.write(`) ${percent}% : `);
                         process.stdout.write(`${cyanBright(msg)}`);
-                        if (percent === 100) process.stdout.write(`${cyanBright("Complilation completed\n")}`);
+                        if (percent === 100) {
+                            process.stdout.write(`${cyanBright('Complilation completed\n')}`);
+                        }
                     }
                 };
                 if (!progressPluginExists) {
