@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const logger = require('./logger');
-const readline = require('readline');
 const { cyanBright, greenBright } = require('chalk');
 const { CompilerOutput } = require('./CompilerOutput');
 
