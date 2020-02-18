@@ -34,7 +34,7 @@
     "command-line-usage": "^6.1.0",
     "execa": "^3.2.0",
     "import-local": "^3.0.2",
-    "inquirer": "^7.0.4",
+    "enquirer": "^2.3.4",
     "interpret": "^2.0.0",
     "v8-compile-cache": "^2.1.0",
     "webpack-log": "^3.0.1",
