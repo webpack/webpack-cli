@@ -23,21 +23,18 @@
     "bundler",
     "web"
   ],
-  "files": [
-    "lib",
-    "bin/cli.js"
-  ],
   "workspaces": [
     "./packages/*"
   ],
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "build": "tsc",
+    "build": "node ./scripts/buildTs.js",
     "clean:all": "rimraf node_modules packages/*/{node_modules}",
     "commit": "git-cz",
     "docs": "typedoc",
     "format": "eslint --fix . --ext .js,.ts",
     "lint": "eslint . --ext .js,.ts",
+    "lint:fix": "eslint . --ext .js,.ts --fix",
     "pretest": "yarn build && yarn lint",
     "reportCoverage": "nyc report --reporter=json && codecov -f coverage/coverage-final.json --disable=gcov",
     "smoketest": "smoketests/smoketests.sh",

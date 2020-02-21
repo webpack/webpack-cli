@@ -9,11 +9,12 @@
 		"resolveJsonModule": true,
 		"sourceMap": true
 	},
-	"include": ["packages/**/*.ts"],
+
 	"exclude": [
 		"node_modules/**",
 		"packages/*/node_modules/**",
 		"packages/**/__tests__/*.test.ts",
-		"packages/**/__testfixtures__/*.ts"
+		"packages/**/__testfixtures__/*.ts",
+    "test"
 	]
 }

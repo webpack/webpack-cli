@@ -3,6 +3,7 @@
 const assert = require('assert');
 const { unlinkSync, renameSync } = require('fs');
 const { resolve } = require('path');
+// eslint-disable-next-line node/no-unpublished-require
 const { appendDataIfFileExists, runAndGetWatchProc, copyFileAsync } = require('../../test/utils/test-utils');
 
 console.log('\n============================ SINGLE COMPILATION ============================\n');

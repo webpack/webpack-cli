@@ -16,8 +16,9 @@ test/**/**/dist/
 test/**/**/**/dist/
 test/**/**/index.js
 test/binCases/config-location/webpack-babel-config/bin/es6.js
-packages/**/*.js
+packages/**/lib
 packages/utils/validate-identifier.ts
 
 
 lib/utils/interactive.js
+test/typescript/webpack.config.ts
