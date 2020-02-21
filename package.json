@@ -28,7 +28,7 @@
   ],
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "build": "node ./scripts/buildTs.js",
+    "build": "node scripts/buildPackages.js",
     "clean:all": "rimraf node_modules packages/*/{node_modules}",
     "commit": "git-cz",
     "docs": "typedoc",
