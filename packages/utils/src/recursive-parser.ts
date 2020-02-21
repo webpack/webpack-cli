@@ -1,7 +1,7 @@
 import * as utils from "./ast-utils";
 import { JSCodeshift, Node, valueType } from "./types/NodePath";
 
-export default function recursiveTransform(
+export function recursiveTransform(
 	j: JSCodeshift,
 	ast: Node,
 	key: string,

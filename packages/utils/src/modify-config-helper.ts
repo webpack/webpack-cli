@@ -3,9 +3,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as yeoman from 'yeoman-environment';
 import * as Generator from 'yeoman-generator';
-
-import runTransform from './scaffold';
-import { getPackageManager } from './package-manager';
+import { runTransform } from './scaffold';
+import { getPackageManager } from '@webpack-cli/package-utils';
 
 export interface Config extends Object {
     item?: {
@@ -46,7 +45,7 @@ const DEFAULT_WEBPACK_CONFIG_FILENAME = 'webpack.config.js';
  * @returns {Function} runTransform - Returns a transformation instance
  */
 
-export default function modifyHelperUtil(
+export function modifyHelperUtil(
     action: string,
     generator: typeof Generator,
     configFile: string = DEFAULT_WEBPACK_CONFIG_FILENAME,

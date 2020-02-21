@@ -2,8 +2,8 @@
   "name": "@webpack-cli/utils",
   "version": "1.0.1-alpha.0",
   "description": "webpack-cli utility files",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "publishConfig": {
     "access": "public"
   },
@@ -20,7 +20,8 @@
     "p-each-series": "2.1.0",
     "prettier": "1.18.2",
     "yeoman-environment": "2.7.0",
-    "yeoman-generator": "4.5.0"
+    "yeoman-generator": "4.5.0",
+    "@webpack-cli/package-utils": "^1.0.0"
   },
   "devDependencies": {
     "@types/chalk": "2.2.0",
@@ -39,5 +40,8 @@
     "build": "tsc",
     "test": "jest --detectOpenHandles",
     "watch": "npm run build && tsc -w"
-  }
+  },
+  "files": [
+    "lib"
+  ]
 }

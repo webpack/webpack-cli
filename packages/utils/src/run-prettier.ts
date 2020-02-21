@@ -12,7 +12,7 @@ import * as prettier from "prettier";
  * @returns {Void} Writes a file at given location and prints messages accordingly
  */
 
-export default function runPrettier(outputPath: string, source: string, cb?: Function): void {
+export function runPrettier(outputPath: string, source: string, cb?: Function): void {
 	function validateConfig(): void | Function {
 		let prettySource: string;
 		let error: object;

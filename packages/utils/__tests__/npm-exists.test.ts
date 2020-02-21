@@ -1,5 +1,5 @@
 "use strict";
-import exists from "../npm-exists";
+import exists from "../src/npm-exists";
 
 describe("npm-exists", () => {
 	it("should successfully existence of a published module", () => {

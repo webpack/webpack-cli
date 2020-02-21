@@ -1,8 +1,8 @@
 "use strict";
 
 import * as j from "jscodeshift/dist/core";
-import * as utils from "../ast-utils";
-import { Node } from "../types/NodePath";
+import * as utils from "../src/ast-utils";
+import { Node } from "../src/types/NodePath";
 
 describe("utils", () => {
 	describe("createProperty", () => {

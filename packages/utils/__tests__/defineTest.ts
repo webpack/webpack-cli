@@ -2,7 +2,7 @@
 import * as fs from "fs";
 import * as path from "path";
 
-import { JSCodeshift, Node } from "./types/NodePath";
+import { JSCodeshift, Node } from "../src/types/NodePath";
 
 interface Module {
 	(

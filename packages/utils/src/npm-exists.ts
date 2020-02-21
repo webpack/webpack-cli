@@ -15,7 +15,7 @@ const constant = (value: boolean) => (res: got.Response<string>): boolean | Prom
 
 // TODO: figure out the correct type here
 // eslint-disable-next-line
-export default function npmExists(moduleName: string): Promise<any> {
+export function npmExists(moduleName: string): Promise<any> {
 	const hostname = "https://www.npmjs.org";
 	const pkgUrl = `${hostname}/package/${moduleName}`;
 	return got(pkgUrl, {

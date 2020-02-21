@@ -5,7 +5,7 @@
  * @returns {Set} A new set with accepted webpack properties
  */
 
-const PROP_TYPES: Set<string> = new Set([
+export const PROP_TYPES: Set<string> = new Set([
 	"amd",
 	"bail",
 	"cache",
@@ -37,4 +37,3 @@ const PROP_TYPES: Set<string> = new Set([
 	"watchOptions"
 ]);
 
-export default PROP_TYPES;

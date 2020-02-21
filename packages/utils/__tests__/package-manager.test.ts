@@ -1,6 +1,6 @@
 "use strict";
 
-import * as packageManager from "../package-manager";
+import * as packageManager from "../src/package-manager";
 
 import * as globalModules from "global-modules";
 

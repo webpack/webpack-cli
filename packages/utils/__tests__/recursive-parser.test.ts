@@ -1,7 +1,7 @@
 "use strict";
 
 import { join } from "path";
-import defineTest from "../defineTest";
+import defineTest from "./defineTest";
 
 defineTest(join(__dirname, ".."), "init", "fixture-1", "entry", {
 	foo: "Promise.resolve()",
