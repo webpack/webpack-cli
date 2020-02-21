@@ -2,7 +2,7 @@ import { join } from 'path';
 import { run } from 'yeoman-test';
 import assert from 'yeoman-assert';
 
-import { generatePluginName } from '../utils';
+import { generatePluginName } from '../src/utils';
 
 describe('plugin generator', () => {
     it.skip('generates a default plugin', async () => {

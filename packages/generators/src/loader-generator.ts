@@ -2,6 +2,7 @@ import * as _ from "lodash";
 import * as path from "path";
 
 import addonGenerator from "./addon-generator";
+import * as Generator from 'yeoman-generator';
 
 /**
  * Formats a string into webpack loader format
@@ -27,7 +28,7 @@ export function makeLoaderName(name: string): string {
  * @extends {Generator}
  */
 
-const LoaderGenerator = addonGenerator(
+const LoaderGenerator: Generator = addonGenerator(
 	[
 		{
 			default: "my-loader",

@@ -2,8 +2,7 @@ import chalk from "chalk";
 import * as logSymbols from "log-symbols";
 import * as Generator from "yeoman-generator";
 import * as path from "path";
-
-import { getPackageManager } from "@webpack-cli/utils/package-manager";
+import { getPackageManager } from "@webpack-cli/package-utils";
 import { Confirm, Input, List } from "@webpack-cli/webpack-scaffold";
 
 import {

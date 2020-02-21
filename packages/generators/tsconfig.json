@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig.packages.json",
   "compilerOptions": {
-    "allowJs": true
-  }
+    "outDir": "./lib"
+  },
+  "include": ["./src"]
 }
