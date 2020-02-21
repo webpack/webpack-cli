@@ -1,4 +1,4 @@
-import PluginGenerator from "@webpack-cli/generators/plugin-generator";
+import { pluginGenerator } from "@webpack-cli/generators";
 import * as yeoman from "yeoman-environment";
 
 /**
@@ -10,7 +10,7 @@ export default function pluginCreator(): void {
 	const env = yeoman.createEnv();
 	const generatorName = "webpack-plugin-generator";
 
-	env.registerStub(PluginGenerator, generatorName);
+	env.registerStub(pluginGenerator, generatorName);
 
 	env.run(generatorName);
 }
