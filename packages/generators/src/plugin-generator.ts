@@ -11,7 +11,7 @@ import * as Generator from 'yeoman-generator';
  * @class PluginGenerator
  * @extends {Generator}
  */
-const PluginGenerator: Generator = addonGenerator(
+const PluginGenerator = addonGenerator(
 	[
 		{
 			default: "my-webpack-plugin",

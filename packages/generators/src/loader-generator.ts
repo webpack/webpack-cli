@@ -28,7 +28,7 @@ export function makeLoaderName(name: string): string {
  * @extends {Generator}
  */
 
-const LoaderGenerator: Generator = addonGenerator(
+const LoaderGenerator = addonGenerator(
 	[
 		{
 			default: "my-loader",
