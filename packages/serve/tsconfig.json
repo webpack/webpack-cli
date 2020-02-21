@@ -1,7 +1,9 @@
 {
   "extends": "../../tsconfig.packages.json",
   "compilerOptions": {
-    "outDir": "./lib"
+    "outDir": "./lib",
+    "rootDir": "./src",
+    "composite": true
   },
   "include": ["./src"],
   "references": [{ "path": "../utils" }]
