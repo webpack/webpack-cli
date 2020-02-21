@@ -86,7 +86,7 @@ this.configuration.myScaffold.webpackOptions.entry = createDynamicPromise(["app.
 
 Param: `String`
 
-Used to create an [assetFilterFunction](https://webpack.js.org/configuration/performance/#performance-assetfilter)
+Used to create a [assetFilterFunction](https://webpack.js.org/configuration/performance/#performance-assetfilter)
 
 ```js
 const createAssetFilterFunction = require("@webpack-cli/webpack-scaffold").createAssetFilterFunction;
