@@ -40,5 +40,8 @@
     "test": "jest",
     "build": "tsc",
     "watch": "npm run build && tsc -w"
-  }
+  },
+  "files": [
+    "lib"
+  ]
 }

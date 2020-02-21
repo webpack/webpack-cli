@@ -1,7 +1,6 @@
 import * as jscodeshift from "jscodeshift";
 import pEachSeries = require("p-each-series");
 import pLazy = require("p-lazy");
-
 import bannerPluginTransform from "./bannerPlugin/bannerPlugin";
 import commonsChunkPluginTransform from "./commonsChunkPlugin/commonsChunkPlugin";
 import extractTextPluginTransform from "./extractTextPlugin/extractTextPlugin";

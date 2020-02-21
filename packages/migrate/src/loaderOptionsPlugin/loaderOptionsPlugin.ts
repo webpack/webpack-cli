@@ -1,6 +1,6 @@
 import isEmpty = require("lodash/isEmpty");
 
-import { createOrUpdatePluginByName, findPluginsByName, safeTraverse } from "@webpack-cli/utils/ast-utils";
+import { createOrUpdatePluginByName, findPluginsByName, safeTraverse } from "@webpack-cli/utils";
 
 import { JSCodeshift, Node } from "../types/NodePath";
 

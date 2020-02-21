@@ -1,4 +1,4 @@
-import { addOrUpdateConfigObject, findAndRemovePluginByName } from "@webpack-cli/utils/ast-utils";
+import { addOrUpdateConfigObject, findAndRemovePluginByName } from "@webpack-cli/utils";
 
 import { JSCodeshift, Node } from "../types/NodePath";
 
@@ -13,11 +13,11 @@ import { JSCodeshift, Node } from "../types/NodePath";
  */
 export default function(j: JSCodeshift, ast: Node): Node {
 	// Remove old plugin
-	const root: Node = findAndRemovePluginByName(j, ast, "webpack.optimize.ModuleConcatenationPlugin");
+	const root: Node = findAndRemovePluginByName(j, ast, "webpack.NamedModulesPlugin");
 
 	// Add new optimizations option
 	if (root) {
-		addOrUpdateConfigObject(j, root, "optimizations", "concatenateModules", j.booleanLiteral(true));
+		addOrUpdateConfigObject(j, root, "optimizations", "namedModules", j.booleanLiteral(true));
 	}
 
 	return ast;

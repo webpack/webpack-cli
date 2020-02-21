@@ -8,9 +8,7 @@ import * as path from "path";
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 import { validate, WebpackOptionsValidationError } from "webpack";
-
-import runPrettier from "@webpack-cli/utils/run-prettier";
-
+import { runPrettier } from "@webpack-cli/utils";
 import { transformations } from "./migrate";
 import { Node } from "./types/NodePath";
 import * as jscodeshift from "jscodeshift";

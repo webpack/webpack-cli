@@ -1,4 +1,4 @@
-import defineTest from "@webpack-cli/utils/defineTest";
+import defineTest from "../../../utils/__tests__/defineTest";
 import { join } from "path";
 
 const dirName: string = join(__dirname, "..");

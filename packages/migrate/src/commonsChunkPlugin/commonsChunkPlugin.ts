@@ -5,7 +5,7 @@ import {
 	findAndRemovePluginByName,
 	findPluginsByName,
 	findRootNodesByName
-} from "@webpack-cli/utils/ast-utils";
+} from "@webpack-cli/utils";
 
 import { JSCodeshift, Node } from "../types/NodePath";
 

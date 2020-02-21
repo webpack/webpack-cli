@@ -1,4 +1,4 @@
-import * as utils from "@webpack-cli/utils/ast-utils";
+import { createProperty, findVariableToPlugin, isType } from '@webpack-cli/utils';
 
 import { JSCodeshift, Node } from "../types/NodePath";
 
@@ -35,19 +35,19 @@ export default function(j: JSCodeshift, ast: Node): void | Node {
 	const changeArguments = (path: Node): Node => {
 		const args: Node[] = (path.value as Node).arguments;
 
-		const literalArgs: Node[] = args.filter((p: Node): boolean => utils.isType(p, "Literal"));
+		const literalArgs: Node[] = args.filter((p: Node): boolean => isType(p, "Literal"));
 		if (literalArgs && literalArgs.length > 1) {
 			const newArgs: object = j.objectExpression(
 				literalArgs.map(
 					(p: Node, index: number): Node =>
-						utils.createProperty(j, index === 0 ? "fallback" : "use", p.value as Node)
+						createProperty(j, index === 0 ? "fallback" : "use", p.value as Node)
 				)
 			);
 			(path.value as Node).arguments = [newArgs];
 		}
 		return path;
 	};
-	const name: string = utils.findVariableToPlugin(j, ast, "extract-text-webpack-plugin");
+	const name: string = findVariableToPlugin(j, ast, "extract-text-webpack-plugin");
 	if (!name) {
 		return ast;
 	}

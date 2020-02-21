@@ -1,4 +1,4 @@
-import { addOrUpdateConfigObject, findAndRemovePluginByName } from "@webpack-cli/utils/ast-utils";
+import { addOrUpdateConfigObject, findAndRemovePluginByName } from "@webpack-cli/utils";
 import { JSCodeshift, Node } from "../types/NodePath";
 
 /**

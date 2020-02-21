@@ -1,6 +1,6 @@
 import chalk from "chalk";
 
-import * as utils from "@webpack-cli/utils/ast-utils";
+import { findPluginsByName, isType, safeTraverse } from '@webpack-cli/utils';
 
 import { JSCodeshift, Node } from "../types/NodePath";
 
@@ -22,15 +22,15 @@ export default function(j: JSCodeshift, ast: Node): Node {
 		"webpack.optimize.DedupePlugin"
 	];
 
-	return utils.findPluginsByName(j, ast, deprecatedPlugingsList).forEach((path: Node): void => {
+	return findPluginsByName(j, ast, deprecatedPlugingsList).forEach((path: Node): void => {
 		// For now we only support the case where plugins are defined in an Array
-		const arrayPath = utils.safeTraverse(path, ["parent", "value"]) as Node;
+		const arrayPath = safeTraverse(path, ["parent", "value"]) as Node;
 
-		if (arrayPath && utils.isType(arrayPath, "ArrayExpression")) {
+		if (arrayPath && isType(arrayPath, "ArrayExpression")) {
 			// Check how many plugins are defined and
 			// if there is only last plugin left remove `plugins: []` node
 			//
-			const arrayElementsPath = utils.safeTraverse(arrayPath, ["elements"]) as Node[];
+			const arrayElementsPath = safeTraverse(arrayPath, ["elements"]) as Node[];
 			if (arrayElementsPath && arrayElementsPath.length === 1) {
 				j(path.parent.parent).remove();
 			} else {

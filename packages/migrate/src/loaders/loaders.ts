@@ -1,4 +1,4 @@
-import * as utils from "@webpack-cli/utils/ast-utils";
+import { createLiteral, createProperty, findObjWithOneOfKeys, safeTraverse } from '@webpack-cli/utils';
 
 import { JSCodeshift, Node } from "../types/NodePath";
 
@@ -73,7 +73,7 @@ export default function(j: JSCodeshift, ast: Node): Node {
 							if (arrElement.type === j.Literal.name) {
 								// Replace with `{ loader: LOADER }` Object
 								return j.objectExpression([
-									utils.createProperty(j, "loader", arrElement.value as Node)
+									createProperty(j, "loader", arrElement.value as Node)
 								]);
 							}
 							// otherwise keep the existing element
@@ -88,7 +88,7 @@ export default function(j: JSCodeshift, ast: Node): Node {
 				pair.value = j.arrayExpression(
 					(literalValue.value as string).split("!").map(
 						(loader: string): Node => {
-							return j.objectExpression([utils.createProperty(j, "loader", loader)]);
+							return j.objectExpression([createProperty(j, "loader", loader)]);
 						}
 					)
 				);
@@ -119,10 +119,10 @@ export default function(j: JSCodeshift, ast: Node): Node {
 				const param: string[] = option.split("=");
 				const key: string = param[0];
 				const val: string | boolean = param[1] || true; // No value in query string means it is truthy value
-				return j.objectProperty(j.identifier(key), utils.createLiteral(j, val));
+				return j.objectProperty(j.identifier(key), createLiteral(j, val));
 			}
 		);
-		const loaderProp: Node = utils.createProperty(j, "loader", loader);
+		const loaderProp: Node = createProperty(j, "loader", loader);
 		const queryProp: Node = j.property("init", j.identifier("options"), j.objectExpression(options));
 		return j.objectExpression([loaderProp, queryProp]);
 	};
@@ -138,7 +138,7 @@ export default function(j: JSCodeshift, ast: Node): Node {
 	const findLoaderWithQueryString = (p: Node): boolean => {
 		return (p.value as Node).properties.reduce((predicate: boolean, prop: Node): boolean => {
 			return (
-				(utils.safeTraverse(prop, ["value", "value", "indexOf"]) &&
+				(safeTraverse(prop, ["value", "value", "indexOf"]) &&
 					((prop.value as Node).value as string).indexOf("?") > -1) ||
 				predicate
 			);
@@ -156,7 +156,7 @@ export default function(j: JSCodeshift, ast: Node): Node {
 
 	const checkForLoader = (path: Node): boolean =>
 		(path.value as Node).name === "loaders" &&
-		utils.safeTraverse(path, ["parent", "parent", "parent", "node", "key", "name"]) === "module";
+		safeTraverse(path, ["parent", "parent", "parent", "node", "key", "name"]) === "module";
 
 	/**
 	 * Puts pre- or postLoader into `loaders` object and adds the appropriate `enforce` property
@@ -178,7 +178,7 @@ export default function(j: JSCodeshift, ast: Node): Node {
 			if (keyName !== "loaders") {
 				const enforceVal: string = keyName === "preLoaders" ? "pre" : "post";
 				(prop.value as Node).elements.map((elem: Node): void => {
-					elem.properties.push(utils.createProperty(j, "enforce", enforceVal));
+					elem.properties.push(createProperty(j, "enforce", enforceVal));
 					if (loaders && loaders.type === "ArrayExpression") {
 						loaders.elements.push(elem);
 					} else {
@@ -204,7 +204,7 @@ export default function(j: JSCodeshift, ast: Node): Node {
 	const prepostLoaders = (): Node =>
 		ast
 			.find(j.ObjectExpression)
-			.filter((p: Node): boolean => utils.findObjWithOneOfKeys(p, ["preLoaders", "postLoaders"]))
+			.filter((p: Node): boolean => findObjWithOneOfKeys(p, ["preLoaders", "postLoaders"]))
 			.forEach(fitIntoLoaders);
 
 	/**
@@ -228,10 +228,10 @@ export default function(j: JSCodeshift, ast: Node): Node {
 	const loadersToArrayExpression = (): Node | void =>
 		ast
 			.find(j.ObjectExpression)
-			.filter((path: Node): boolean => utils.findObjWithOneOfKeys(path, ["loader", "loaders"]))
+			.filter((path: Node): boolean => findObjWithOneOfKeys(path, ["loader", "loaders"]))
 			.filter(
 				(path: Node): boolean =>
-					utils.safeTraverse(path, ["parent", "parent", "node", "key", "name"]) === "rules"
+					safeTraverse(path, ["parent", "parent", "node", "key", "name"]) === "rules"
 			)
 			.forEach(createArrayExpressionFromArray);
 
@@ -260,7 +260,7 @@ export default function(j: JSCodeshift, ast: Node): Node {
 	const loaderWithQueryParam = (): Node =>
 		ast
 			.find(j.ObjectExpression)
-			.filter((p: Node): boolean => utils.findObjWithOneOfKeys(p, ["loader"]))
+			.filter((p: Node): boolean => findObjWithOneOfKeys(p, ["loader"]))
 			.filter(findLoaderWithQueryString)
 			.replaceWith(createLoaderWithQuery);
 
@@ -299,7 +299,7 @@ export default function(j: JSCodeshift, ast: Node): Node {
 			(path.value as Node).properties.forEach((prop: Node): void => {
 				if (
 					prop.key.name === "loader" &&
-					utils.safeTraverse(prop, ["value", "value"]) &&
+					safeTraverse(prop, ["value", "value"]) &&
 					!((prop.value as Node).value as string).endsWith("-loader")
 				) {
 					prop.value = j.literal(((prop.value as Node).value as string) + "-loader");
@@ -349,7 +349,7 @@ export default function(j: JSCodeshift, ast: Node): Node {
 	const moveOptionsToUse = (): Node =>
 		ast
 			.find(j.ObjectExpression)
-			.filter((p: Node): boolean => utils.findObjWithOneOfKeys(p, ["use"]))
+			.filter((p: Node): boolean => findObjWithOneOfKeys(p, ["use"]))
 			.forEach(fitOptionsToUse);
 
 	const transforms = [
