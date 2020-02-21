@@ -53,7 +53,7 @@ Otherwise `npm install --save-dev webpack-cli` or `yarn add webpack-cli --dev` w
 
 ## Supported arguments and commands
 
-Get to know what are the available commands and arguments [here](./packages/cli/README.md).
+Get to know what are the available commands and arguments [here](./packages/webpack-cli/README.md).
 
 ## Packages
 
