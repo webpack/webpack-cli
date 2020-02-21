@@ -2,7 +2,8 @@
   "name": "@webpack-cli/generate-loader",
   "version": "1.0.1-alpha.0",
   "description": "A scaffold for generating a loader",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "directories": {
     "example": "examples",
     "test": "test"
@@ -24,5 +25,10 @@
   "scripts": {
     "build": "tsc",
     "watch": "npm run build && tsc -w"
-  }
+  },
+  "files": [
+    "lib",
+    "templates",
+    "examples"
+  ]
 }
