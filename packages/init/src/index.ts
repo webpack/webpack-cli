@@ -1,6 +1,5 @@
-import defaultGenerator from '@webpack-cli/generators/init-generator';
-import modifyConfigHelper from '@webpack-cli/utils/modify-config-helper';
-import npmPackagesExists from '@webpack-cli/utils/npm-packages-exists';
+import {  initGenerator } from '@webpack-cli/generators';
+import { modifyHelperUtil, npmPackagesExists } from '@webpack-cli/utils';
 
 const AUTO_PREFIX = '--auto';
 
@@ -19,7 +18,7 @@ export default function initializeInquirer(...args: string[]): Function | void {
     const packages = args;
     const includesDefaultPrefix = packages.includes(AUTO_PREFIX);
     if (packages.length === 0 || includesDefaultPrefix) {
-        return modifyConfigHelper('init', defaultGenerator, null, null, includesDefaultPrefix);
+        return modifyHelperUtil('init', initGenerator, null, null, includesDefaultPrefix);
     }
     return npmPackagesExists(packages);
 }
