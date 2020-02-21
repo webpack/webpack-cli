@@ -6,13 +6,11 @@ function logErrorAndExit(error) {
 }
 
 process.on('uncaughtException', error => {
-    console.log(logger);
     logger.error(`Uncaught exception: ${error}`);
     logErrorAndExit(error);
 });
 
 process.on('unhandledRejection', error => {
-    console.log(logger);
     logger.error(`Promise rejection: ${error}`);
     logErrorAndExit(error);
 });
