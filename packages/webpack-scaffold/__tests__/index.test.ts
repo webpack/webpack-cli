@@ -1,5 +1,5 @@
 "use strict";
-import * as utils from "../index";
+import * as utils from "../src";
 
 describe("utils", () => {
 	beforeEach(() => {
