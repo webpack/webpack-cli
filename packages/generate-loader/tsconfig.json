@@ -3,5 +3,8 @@
   "compilerOptions": {
     "outDir": "./lib"
   },
-  "include": ["./src"]
+  "include": ["./src"],
+  "references": [
+    {"path": "../generators"}
+  ]
 }
