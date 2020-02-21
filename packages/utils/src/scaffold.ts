@@ -1,7 +1,7 @@
-import chalk from 'chalk';
-import * as j from 'jscodeshift';
+import  chalk = require('chalk');
+import j from 'jscodeshift';
 import pEachSeries = require('p-each-series');
-import * as path from 'path';
+import path from 'path';
 import { getPackageManager } from '@webpack-cli/package-utils';
 import { findProjectRoot } from './path-utils';
 import { Error } from './types';

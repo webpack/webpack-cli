@@ -1,4 +1,4 @@
-import * as Server from "webpack-dev-server/lib/Server";
+import Server from "webpack-dev-server/lib/Server";
 
 /**
  *
@@ -6,8 +6,8 @@ import * as Server from "webpack-dev-server/lib/Server";
  *
  * @param {Object} compiler - a webpack compiler
  * @param {Object} options - devServer options
- * 
- * @returns {Void} 
+ *
+ * @returns {Void}
  */
 export default function startDevServer(compiler, options): void {
     const firstWpOpt = compiler.compilers

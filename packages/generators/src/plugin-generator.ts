@@ -1,7 +1,6 @@
-import * as _ from "lodash";
-import * as path from "path";
+import _ from "lodash";
+import path from "path";
 import addonGenerator from "./addon-generator";
-import * as Generator from 'yeoman-generator';
 
 /**
  * A yeoman generator class for creating a webpack

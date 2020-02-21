@@ -1,6 +1,6 @@
-import * as findup from "findup-sync";
-import * as fs from "fs";
-import * as path from "path";
+import findup from "findup-sync";
+import fs from "fs";
+import path from "path";
 
 /**
  * Attempts to detect whether the string is a local path regardless of its

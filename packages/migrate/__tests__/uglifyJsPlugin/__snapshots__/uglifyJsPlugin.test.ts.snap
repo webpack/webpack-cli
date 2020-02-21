@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`uglifyJsPlugin transforms correctly using "uglifyJsPlugin-0" data 1`] = `
+exports[`uglifyJsPluginu uglifyJsPlugin transforms correctly using "uglifyJsPlugin-0" data 1`] = `
 "module.exports = {
     optimization: {
         minimize: true
@@ -9,7 +9,7 @@ exports[`uglifyJsPlugin transforms correctly using "uglifyJsPlugin-0" data 1`] =
 "
 `;
 
-exports[`uglifyJsPlugin transforms correctly using "uglifyJsPlugin-1" data 1`] = `
+exports[`uglifyJsPluginu uglifyJsPlugin transforms correctly using "uglifyJsPlugin-1" data 1`] = `
 "const TerserPlugin = require('terser-webpack-plugin');
 module.exports = {
     devtool: \\"source-map\\",
@@ -25,7 +25,7 @@ module.exports = {
 "
 `;
 
-exports[`uglifyJsPlugin transforms correctly using "uglifyJsPlugin-2" data 1`] = `
+exports[`uglifyJsPluginu uglifyJsPlugin transforms correctly using "uglifyJsPlugin-2" data 1`] = `
 "const TerserPlugin = require('terser-webpack-plugin');
 module.exports = {
     devtool: \\"source-map\\",
@@ -41,7 +41,7 @@ module.exports = {
 "
 `;
 
-exports[`uglifyJsPlugin transforms correctly using "uglifyJsPlugin-3" data 1`] = `
+exports[`uglifyJsPluginu uglifyJsPlugin transforms correctly using "uglifyJsPlugin-3" data 1`] = `
 "module.exports = {
     devtool: 'eval',
 
@@ -77,7 +77,7 @@ exports[`uglifyJsPlugin transforms correctly using "uglifyJsPlugin-3" data 1`] =
 "
 `;
 
-exports[`uglifyJsPlugin transforms correctly using "uglifyJsPlugin-4" data 1`] = `
+exports[`uglifyJsPluginu uglifyJsPlugin transforms correctly using "uglifyJsPlugin-4" data 1`] = `
 "const TerserPlugin = require('terser-webpack-plugin');
 module.exports = {
     devtool: 'eval',

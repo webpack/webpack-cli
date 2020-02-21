@@ -1,5 +1,5 @@
-import * as jscodeshift from "jscodeshift";
-import * as Generator from "yeoman-generator";
+import jscodeshift from "jscodeshift";
+import Generator from "yeoman-generator";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 

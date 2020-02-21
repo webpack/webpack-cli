@@ -1,4 +1,4 @@
-import * as path from "path";
+import path from "path";
 
 /**
  * Takes in a file path in the `./templates` directory. Copies that

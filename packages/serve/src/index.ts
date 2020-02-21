@@ -1,7 +1,7 @@
 import { devServer } from "webpack-dev-server/bin/cli-flags";
-import * as WebpackCLI from "webpack-cli";
-import * as startDevServer from "./startDevServer";
-import * as argsToCamelCase from "./args-to-camel-case";
+import WebpackCLI from "webpack-cli";
+import startDevServer from "./startDevServer";
+import argsToCamelCase from "./args-to-camel-case";
 
 /**
  *
@@ -21,12 +21,12 @@ export default function serve(...args): void {
 	// see: https://github.com/75lb/command-line-args/blob/master/doc/option-definition.md#optiondefaultoption--boolean
 	const devServerArgs = cli.commandLineArgs(devServer, { argv: args, partial: true });
 	const webpackArgs = cli.commandLineArgs(core, { argv: devServerArgs._unknown || [], stopAtFirstUnknown: false });
-	const finalArgs = argsToCamelCase.default(devServerArgs._all || {});
+	const finalArgs = argsToCamelCase(devServerArgs._all || {});
 	// pass along the 'hot' argument to the dev server if it exists
 	if (webpackArgs && webpackArgs._all && typeof webpackArgs._all.hot !== 'undefined') {
 		finalArgs['hot'] = webpackArgs._all.hot;
 	}
 	cli.getCompiler(webpackArgs, core).then((compiler): void => {
-		startDevServer.default(compiler, finalArgs);
+		startDevServer(compiler, finalArgs);
 	});
 }

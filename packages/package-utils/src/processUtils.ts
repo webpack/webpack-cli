@@ -1,7 +1,7 @@
 import execa, { ExecaSyncReturnValue, sync } from 'execa';
 import { getPackageManager, getPathToGlobalPackages } from './packageUtils';
-import * as path from 'path';
-import * as fs from 'fs';
+import path from 'path';
+import fs from 'fs';
 
 /**
  *

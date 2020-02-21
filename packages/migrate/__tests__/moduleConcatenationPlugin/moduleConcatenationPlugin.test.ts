@@ -1,8 +1,12 @@
-import defineTest from "@webpack-cli/utils/defineTest";
-import { join } from "path";
+import defineTest from '../../../utils/__tests__/defineTest';
+import { join } from 'path';
 
-const dirName: string = join(__dirname, "..");
+const dirName: string = join(__dirname);
 
-defineTest(dirName, "moduleConcatenationPlugin", "moduleConcatenationPlugin-0");
-defineTest(dirName, "moduleConcatenationPlugin", "moduleConcatenationPlugin-1");
-defineTest(dirName, "moduleConcatenationPlugin", "moduleConcatenationPlugin-2");
+describe('moduleConcatenationPlugin', function() {
+    {
+        defineTest(dirName, 'moduleConcatenationPlugin', 'moduleConcatenationPlugin-0');
+        defineTest(dirName, 'moduleConcatenationPlugin', 'moduleConcatenationPlugin-1');
+        defineTest(dirName, 'moduleConcatenationPlugin', 'moduleConcatenationPlugin-2');
+    }
+});

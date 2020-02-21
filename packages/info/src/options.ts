@@ -1,4 +1,4 @@
-import * as yargs from "yargs";
+import yargs from "yargs";
 export const argv = yargs
 	.option("system", {
 		alias: "s",

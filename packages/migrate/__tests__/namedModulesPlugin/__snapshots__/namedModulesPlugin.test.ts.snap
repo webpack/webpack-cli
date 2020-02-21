@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`namedModulesPlugin transforms correctly using "namedModulesPlugin-0" data 1`] = `
+exports[`namedModulesPlugin namedModulesPlugin transforms correctly using "namedModulesPlugin-0" data 1`] = `
 "module.export = {
     optimizations: {
         namedModules: true
@@ -9,7 +9,7 @@ exports[`namedModulesPlugin transforms correctly using "namedModulesPlugin-0" da
 "
 `;
 
-exports[`namedModulesPlugin transforms correctly using "namedModulesPlugin-1" data 1`] = `
+exports[`namedModulesPlugin namedModulesPlugin transforms correctly using "namedModulesPlugin-1" data 1`] = `
 "module.export = {
 	optimizations: {
         splitChunks: false,
@@ -20,7 +20,7 @@ exports[`namedModulesPlugin transforms correctly using "namedModulesPlugin-1" da
 "
 `;
 
-exports[`namedModulesPlugin transforms correctly using "namedModulesPlugin-2" data 1`] = `
+exports[`namedModulesPlugin namedModulesPlugin transforms correctly using "namedModulesPlugin-2" data 1`] = `
 "module.export = {
 	optimizations: {
         namedModules: true

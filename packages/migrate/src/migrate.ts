@@ -1,4 +1,4 @@
-import * as jscodeshift from "jscodeshift";
+import jscodeshift from "jscodeshift";
 import pEachSeries = require("p-each-series");
 import pLazy = require("p-lazy");
 import bannerPluginTransform from "./bannerPlugin/bannerPlugin";

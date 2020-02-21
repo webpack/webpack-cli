@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`extractTextPlugin transforms correctly 1`] = `
+exports[`extractTextPlugin extractTextPlugin transforms correctly 1`] = `
 "const ExtractTextPlugin = require(\\"extract-text-webpack-plugin\\");
 
 module.exports = {

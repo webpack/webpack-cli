@@ -1,4 +1,4 @@
-import npmPackagesExists from "../src/npm-packages-exists";
+import { npmPackagesExists } from '../src/npm-packages-exists';
 import { resolvePackages } from "../src/resolve-packages";
 
 jest.mock("../npm-exists");

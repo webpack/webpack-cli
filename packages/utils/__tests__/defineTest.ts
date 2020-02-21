@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import * as fs from "fs";
-import * as path from "path";
+import fs from "fs";
+import path from "path";
 
 import { JSCodeshift, Node } from "../src/types/NodePath";
 
@@ -58,7 +58,7 @@ function runSingleTransform(
 	if (!testFilePrefix) {
 		testFilePrefix = transformName;
 	}
-	const fixtureDir = path.join(dirName, "__tests__", "__testfixtures__");
+	const fixtureDir = path.join(dirName, "__testfixtures__");
 	const inputPath = path.join(fixtureDir, `${testFilePrefix}.input.js`);
 	const source = fs.readFileSync(inputPath, "utf8");
 
@@ -67,7 +67,7 @@ function runSingleTransform(
 	if (action) {
 		module = require(path.join(dirName, "recursive-parser.ts"));
 	} else {
-		module = require(path.join(dirName, `${transformName}.ts`));
+		module = require(path.join(dirName, "../../src", transformName, `${transformName}.ts`));
 	}
 	// Handle ES6 modules using default export for the transform
 	const transform = module.default ? module.default : module;

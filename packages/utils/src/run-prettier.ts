@@ -1,6 +1,6 @@
 import chalk from "chalk";
-import * as fs from "fs";
-import * as prettier from "prettier";
+import fs from "fs";
+import prettier from "prettier";
 
 /**
  *

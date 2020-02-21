@@ -1,8 +1,8 @@
-import chalk from 'chalk';
-import * as fs from 'fs';
-import * as path from 'path';
-import * as yeoman from 'yeoman-environment';
-import * as Generator from 'yeoman-generator';
+import  chalk = require('chalk');
+import fs from 'fs';
+import path from 'path';
+import yeoman from 'yeoman-environment';
+import Generator from 'yeoman-generator';
 import { runTransform } from './scaffold';
 import { getPackageManager } from '@webpack-cli/package-utils';
 

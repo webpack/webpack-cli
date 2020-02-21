@@ -1,7 +1,7 @@
 import chalk from "chalk";
-import * as logSymbols from "log-symbols";
-import * as Generator from "yeoman-generator";
-import * as path from "path";
+import logSymbols from "log-symbols";
+import Generator from "yeoman-generator";
+import path from "path";
 import { getPackageManager } from "@webpack-cli/package-utils";
 import { Confirm, Input, List } from "@webpack-cli/webpack-scaffold";
 
@@ -258,17 +258,17 @@ export default class InitGenerator extends Generator {
 
 		if (this.langType === "ES6") {
 			this.fs.copyTpl(
-				path.resolve(__dirname, "./templates/.babelrc"),
+				path.resolve(__dirname, "../templates/.babelrc"),
 				this.destinationPath(".babelrc"),
 				{}
 			);
 		}
-		const packageJsonTemplatePath = "./templates/package.json.js";
+		const packageJsonTemplatePath = "../templates/package.json.js";
 		this.fs.extendJSON(this.destinationPath("package.json"), require(packageJsonTemplatePath)(this.usingDefaults));
 
 		const generateEntryFile = (entryPath: string, name: string): void => {
 			entryPath = entryPath.replace(/'/g, "");
-			this.fs.copyTpl(path.resolve(__dirname, "./templates/index.js"), this.destinationPath(entryPath), { name });
+			this.fs.copyTpl(path.resolve(__dirname, "../templates/index.js"), this.destinationPath(entryPath), { name });
 		};
 
 		// Generate entry file/files
@@ -280,12 +280,12 @@ export default class InitGenerator extends Generator {
 		}
 
 		// Generate README
-		this.fs.copyTpl(path.resolve(__dirname, "./templates/README.md"), this.destinationPath("README.md"), {});
+		this.fs.copyTpl(path.resolve(__dirname, "../templates/README.md"), this.destinationPath("README.md"), {});
 
         // Generate HTML template file, copy the default service worker
 		if (this.usingDefaults) {
 			this.fs.copyTpl(
-				path.resolve(__dirname, "./templates/template.html"),
+				path.resolve(__dirname, "../templates/template.html"),
 				this.destinationPath("index.html"),
 				{}
             );
@@ -294,7 +294,7 @@ export default class InitGenerator extends Generator {
 
 		// Generate tsconfig
 		if (this.langType === LangType.Typescript) {
-			const tsConfigTemplatePath = "./templates/tsconfig.json.js";
+			const tsConfigTemplatePath = "../templates/tsconfig.json.js";
 			this.fs.extendJSON(this.destinationPath("tsconfig.json"), require(tsConfigTemplatePath));
 		}
 	}

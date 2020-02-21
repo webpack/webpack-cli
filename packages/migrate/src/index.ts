@@ -1,17 +1,17 @@
 import chalk from "chalk";
-import * as diff from "diff";
-import * as fs from "fs";
-import * as inquirer from "inquirer";
-import * as Listr from "listr";
+import diff from "diff";
+import fs from "fs";
+import inquirer from "inquirer";
+import Listr from "listr";
 import pLazy = require("p-lazy");
-import * as path from "path";
+import path from "path";
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 import { validate, WebpackOptionsValidationError } from "webpack";
 import { runPrettier } from "@webpack-cli/utils";
 import { transformations } from "./migrate";
 import { Node } from "./types/NodePath";
-import * as jscodeshift from "jscodeshift";
+import jscodeshift from "jscodeshift";
 
 declare let process: {
 	cwd: Function;

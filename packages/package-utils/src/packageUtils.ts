@@ -1,8 +1,8 @@
-import * as fs from 'fs';
-import * as path from 'path';
+import fs from 'fs';
+import path from 'path';
 import { sync } from 'execa';
-import * as spawn from 'cross-spawn';
-import chalk from 'chalk';
+import spawn from 'cross-spawn';
+import  chalk = require('chalk');
 import { prompt } from 'enquirer';
 import { runCommand } from './processUtils';
 
@@ -18,11 +18,15 @@ type PackageName = 'npm' | 'yarn';
 
 export function getPackageManager(): PackageName {
     const hasLocalYarn = fs.existsSync(path.resolve(process.cwd(), 'yarn.lock'));
-    if (hasLocalYarn) {
-        return 'yarn';
-    } else if (sync('yarn', [' --version'], { stdio: 'ignore' }).stderr) {
-        return 'yarn';
-    } else {
+    try {
+        if (hasLocalYarn) {
+            return 'yarn';
+        } else if (sync('yarn', [' --version'], { stdio: 'ignore' }).stderr) {
+            return 'yarn';
+        } else {
+            return 'npm';
+        }
+    } catch (e) {
         return 'npm';
     }
 }
@@ -53,7 +57,7 @@ export function getPathToGlobalPackages(): string {
     return require('global-modules');
 }
 
-export function packageExists(packageName): boolean {
+export function packageExists(packageName: string): boolean {
     try {
         require(packageName);
         return true;
@@ -74,7 +78,7 @@ export async function promptInstallation(packageName: string, preMessage?: Funct
 
     const commandToBeRun = `${packageManager} ${options.join(' ')}`;
     if (preMessage) {
-        preMessage()
+        preMessage();
     }
     const question = `Would you like to install ${packageName}? (That will run ${chalk.green(commandToBeRun)})`;
     const { installConfirm } = await prompt([

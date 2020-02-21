@@ -24,11 +24,11 @@ class ExternalCommand {
     }
 
     static async run(name, ...args) {
-        let pkgLoc = packageExists(name);
         const scopeName = packagePrefix + '/' + name;
+        let pkgLoc = packageExists(scopeName);
         if (!pkgLoc) {
-            pkgLoc = await promptInstallation(`${scopeName + '/' + name}`, () => {
-                logger.error(`The command moved into a separate package: ${chalk.keyword('orange')(packageName)}\n`);
+            pkgLoc = await promptInstallation(`${scopeName}`, () => {
+                logger.error(`The command moved into a separate package: ${chalk.keyword('orange')(scopeName)}\n`);
             });
         }
         return pkgLoc ? require(scopeName).default(...args) : null;

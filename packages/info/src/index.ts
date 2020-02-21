@@ -1,6 +1,6 @@
-import chalk from 'chalk';
-import * as envinfo from 'envinfo';
-import * as process from 'process';
+import  chalk = require('chalk');
+import envinfo from 'envinfo';
+import process from 'process';
 import { argv } from './options';
 
 import { AVAILABLE_COMMANDS, AVAILABLE_FORMATS, IGNORE_FLAGS } from './commands';

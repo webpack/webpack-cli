@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`noEmitOnErrorsPlugin transforms correctly using "noEmitOnErrorsPlugin-0" data 1`] = `
+exports[`noEmitOnErrorsPlugin noEmitOnErrorsPlugin transforms correctly using "noEmitOnErrorsPlugin-0" data 1`] = `
 "module.exports = {
     optimizations: {
         noEmitOnErrors: true
@@ -9,7 +9,7 @@ exports[`noEmitOnErrorsPlugin transforms correctly using "noEmitOnErrorsPlugin-0
 "
 `;
 
-exports[`noEmitOnErrorsPlugin transforms correctly using "noEmitOnErrorsPlugin-1" data 1`] = `
+exports[`noEmitOnErrorsPlugin noEmitOnErrorsPlugin transforms correctly using "noEmitOnErrorsPlugin-1" data 1`] = `
 "module.exports = {
 	optimizations: {
         splitChunks: false,
@@ -20,7 +20,7 @@ exports[`noEmitOnErrorsPlugin transforms correctly using "noEmitOnErrorsPlugin-1
 "
 `;
 
-exports[`noEmitOnErrorsPlugin transforms correctly using "noEmitOnErrorsPlugin-2" data 1`] = `
+exports[`noEmitOnErrorsPlugin noEmitOnErrorsPlugin transforms correctly using "noEmitOnErrorsPlugin-2" data 1`] = `
 "module.exports = {
 	optimizations: {
         noEmitOnErrors: true

@@ -1,4 +1,4 @@
-import * as Table from "cli-table3";
+import Table from "cli-table3";
 import chalk from "chalk";
 export function renderTable(data, fileName): string {
 	const table = new Table({

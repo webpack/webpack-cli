@@ -10,7 +10,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "chalk": "2.4.2",
+    "chalk": "3.0.0",
     "cross-spawn": "6.0.5",
     "findup-sync": "4.0.0",
     "global-modules": "2.0.0",
@@ -24,7 +24,6 @@
     "@webpack-cli/package-utils": "^1.0.0"
   },
   "devDependencies": {
-    "@types/chalk": "2.2.0",
     "@types/cross-spawn": "6.0.0",
     "@types/got": "9.6.7",
     "@types/jest": "24.0.17",

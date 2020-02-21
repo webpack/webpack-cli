@@ -14,7 +14,7 @@
     "@webpack-cli/utils": "^1.0.1-alpha.0",
     "@webpack-cli/webpack-scaffold": "^1.0.1-alpha.0",
     "@webpack-cli/package-utils": "^1.0.0",
-    "chalk": "2.4.2",
+    "chalk": "3.0.0",
     "glob-all": "3.1.0",
     "inquirer-autocomplete-prompt": "1.0.1",
     "lodash": "4.17.15",

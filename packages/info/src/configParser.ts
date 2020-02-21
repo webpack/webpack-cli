@@ -1,6 +1,6 @@
-import * as path from 'path';
-import chalk from 'chalk';
-import * as prettyjson from 'prettyjson';
+import path from 'path';
+import  chalk = require('chalk');
+import prettyjson from 'prettyjson';
 
 export function getNameFromPath(fullPath: string): string {
     const filename = fullPath.replace(/^.*[\\\/]/, '');

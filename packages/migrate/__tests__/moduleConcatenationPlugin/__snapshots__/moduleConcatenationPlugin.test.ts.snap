@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`moduleConcatenationPlugin transforms correctly using "moduleConcatenationPlugin-0" data 1`] = `
+exports[`moduleConcatenationPlugin moduleConcatenationPlugin transforms correctly using "moduleConcatenationPlugin-0" data 1`] = `
 "module.exports = {
     optimizations: {
         concatenateModules: true
@@ -9,7 +9,7 @@ exports[`moduleConcatenationPlugin transforms correctly using "moduleConcatenati
 "
 `;
 
-exports[`moduleConcatenationPlugin transforms correctly using "moduleConcatenationPlugin-1" data 1`] = `
+exports[`moduleConcatenationPlugin moduleConcatenationPlugin transforms correctly using "moduleConcatenationPlugin-1" data 1`] = `
 "module.exports = {
 	optimizations: {
         splitChunks: false,
@@ -20,7 +20,7 @@ exports[`moduleConcatenationPlugin transforms correctly using "moduleConcatenati
 "
 `;
 
-exports[`moduleConcatenationPlugin transforms correctly using "moduleConcatenationPlugin-2" data 1`] = `
+exports[`moduleConcatenationPlugin moduleConcatenationPlugin transforms correctly using "moduleConcatenationPlugin-2" data 1`] = `
 "module.exports = {
 	optimizations: {
         concatenateModules: true

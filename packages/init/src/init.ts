@@ -1,7 +1,7 @@
-import chalk from 'chalk';
-import * as j from 'jscodeshift';
+import  chalk = require('chalk');
+import j from 'jscodeshift';
 import pEachSeries = require('p-each-series');
-import * as path from 'path';
+import path from 'path';
 import { PROP_TYPES, runPrettier, recursiveTransform } from '@webpack-cli/utils';
 import { Node } from './types/NodePath';
 import { Error } from './types';

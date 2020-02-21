@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`loaders transforms correctly using "loaders-0" data 1`] = `
+exports[`loaders loaders transforms correctly using "loaders-0" data 1`] = `
 "module.exports = [
   {
 	module: {
@@ -117,7 +117,7 @@ exports[`loaders transforms correctly using "loaders-0" data 1`] = `
 "
 `;
 
-exports[`loaders transforms correctly using "loaders-1" data 1`] = `
+exports[`loaders loaders transforms correctly using "loaders-1" data 1`] = `
 "module.exports = {
   module: {
 	rules: [
@@ -141,7 +141,7 @@ exports[`loaders transforms correctly using "loaders-1" data 1`] = `
 "
 `;
 
-exports[`loaders transforms correctly using "loaders-2" data 1`] = `
+exports[`loaders loaders transforms correctly using "loaders-2" data 1`] = `
 "module.exports = {
   module: {
 	rules: [
@@ -162,7 +162,7 @@ exports[`loaders transforms correctly using "loaders-2" data 1`] = `
 "
 `;
 
-exports[`loaders transforms correctly using "loaders-3" data 1`] = `
+exports[`loaders loaders transforms correctly using "loaders-3" data 1`] = `
 "module.exports = {
   module: {
 	rules: [
@@ -180,7 +180,7 @@ exports[`loaders transforms correctly using "loaders-3" data 1`] = `
 "
 `;
 
-exports[`loaders transforms correctly using "loaders-4" data 1`] = `
+exports[`loaders loaders transforms correctly using "loaders-4" data 1`] = `
 "module.exports = {
   module: {
 	rules: [
@@ -198,7 +198,7 @@ exports[`loaders transforms correctly using "loaders-4" data 1`] = `
 "
 `;
 
-exports[`loaders transforms correctly using "loaders-5" data 1`] = `
+exports[`loaders loaders transforms correctly using "loaders-5" data 1`] = `
 "module.exports = {
   module: {
     rules: [{
@@ -219,7 +219,7 @@ exports[`loaders transforms correctly using "loaders-5" data 1`] = `
 "
 `;
 
-exports[`loaders transforms correctly using "loaders-6" data 1`] = `
+exports[`loaders loaders transforms correctly using "loaders-6" data 1`] = `
 "module.exports = {
   module: {
     rules: [{
@@ -240,7 +240,7 @@ exports[`loaders transforms correctly using "loaders-6" data 1`] = `
 "
 `;
 
-exports[`loaders transforms correctly using "loaders-7" data 1`] = `
+exports[`loaders loaders transforms correctly using "loaders-7" data 1`] = `
 "module.exports = {
   module: {
 	rules: [
@@ -263,7 +263,7 @@ exports[`loaders transforms correctly using "loaders-7" data 1`] = `
 "
 `;
 
-exports[`loaders transforms correctly using "loaders-8" data 1`] = `
+exports[`loaders loaders transforms correctly using "loaders-8" data 1`] = `
 "module.exports = {
 	module: {
 		rules: [

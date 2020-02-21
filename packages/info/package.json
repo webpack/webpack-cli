@@ -2,7 +2,8 @@
   "name": "@webpack-cli/info",
   "version": "1.0.1-alpha.0",
   "description": "Outputs info about system and webpack config",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "type": "lib/index.d.ts",
   "author": "",
   "license": "MIT",
   "publishConfig": {
@@ -10,7 +11,7 @@
   },
   "dependencies": {
     "@types/yargs": "13.0.0",
-    "chalk": "2.4.2",
+    "chalk": "3.0.0",
     "cli-table3": "0.5.1",
     "envinfo": "7.3.1",
     "prettyjson": "1.2.1",

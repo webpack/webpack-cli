@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`loaderOptionsPlugin transforms correctly using "loaderOptionsPlugin-0" data 1`] = `
+exports[`loaderOptionsPlugin loaderOptionsPlugin transforms correctly using "loaderOptionsPlugin-0" data 1`] = `
 "// Do not create LoaderOptionsPlugin is not necessary
 module.exports = {
     plugins: [
@@ -10,7 +10,7 @@ module.exports = {
 "
 `;
 
-exports[`loaderOptionsPlugin transforms correctly using "loaderOptionsPlugin-1" data 1`] = `
+exports[`loaderOptionsPlugin loaderOptionsPlugin transforms correctly using "loaderOptionsPlugin-1" data 1`] = `
 "module.exports = {
     plugins: [
         new webpack.optimize.UglifyJsPlugin(),
@@ -24,7 +24,7 @@ exports[`loaderOptionsPlugin transforms correctly using "loaderOptionsPlugin-1" 
 "
 `;
 
-exports[`loaderOptionsPlugin transforms correctly using "loaderOptionsPlugin-2" data 1`] = `
+exports[`loaderOptionsPlugin loaderOptionsPlugin transforms correctly using "loaderOptionsPlugin-2" data 1`] = `
 "// Don't modify LoaderOptionsPlugin
 module.exports = {
     plugins: [
@@ -37,7 +37,7 @@ module.exports = {
 "
 `;
 
-exports[`loaderOptionsPlugin transforms correctly using "loaderOptionsPlugin-3" data 1`] = `
+exports[`loaderOptionsPlugin loaderOptionsPlugin transforms correctly using "loaderOptionsPlugin-3" data 1`] = `
 "// Don't modify LoaderOptionsPlugin
 
 const ExtractTextPlugin = require('extract-text-webpack-plugin');

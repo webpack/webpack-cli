@@ -1,4 +1,4 @@
-import * as got from "got";
+import got from "got";
 
 // TODO: to understand the type
 // eslint-disable-next-line

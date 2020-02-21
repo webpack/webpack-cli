@@ -1,6 +1,6 @@
 "use strict";
 
-import * as path from "path";
+import path from "path";
 
 function mockPromise(value) {
 	const isValueAPromise = (value || {}).then;

@@ -62,7 +62,6 @@ class ConfigGroup extends GroupHelper {
     }
 
     requireConfig(configModule) {
-        console.log(configModule);
         const extension = Object.keys(fileTypes).find(t => configModule.ext.endsWith(t));
 
         if (extension) {
