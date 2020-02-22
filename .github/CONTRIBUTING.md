@@ -79,7 +79,7 @@ In case you are suggesting a new feature, we will match your idea with our curre
 
 ## Running Tests
 
-### Using npm
+### Using yarn
 
 -   Run all the tests with:
 
@@ -128,7 +128,7 @@ The [.editorconfig](https://github.com/webpack/webpack-cli/blob/master/.editorco
 
 This is a multi-package repository and dependencies are managed using [lerna](https://lerna.js.org/)
 
-> If you are adding or updating any dependency, please commit the updated `package-lock.json` file.
+> If you are adding or updating any dependency, please commit the updated `yarn.lock` file.
 
 ## Branching Model
 
