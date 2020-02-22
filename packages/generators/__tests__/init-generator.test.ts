@@ -1,6 +1,6 @@
 import { join } from 'path';
 import { run } from 'yeoman-test';
-const assert = require('yeoman-assert');
+import * as assert from 'yeoman-assert';
 
 describe('init generator', () => {
     it('generates a webpack project config', async () => {
@@ -15,7 +15,7 @@ describe('init generator', () => {
 
         // Check that all the project files are generated with the correct name
         const filePaths = ['package.json', 'README.md', 'src/index2.js'];
-        assert.file([...filePaths.map(file => join(outputDir, file))]);
+        assert.file(filePaths.map(file => join(outputDir, file)));
 
         // Check generated file contents
         assert.fileContent(`${outputDir}/package.json`, '"name": "my-webpack-project"');
