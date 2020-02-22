@@ -3,16 +3,18 @@
 import j from 'jscodeshift/dist/core';
 import {
     addProperty,
-    createIdentifierOrLiteral, createLiteral,
+    createIdentifierOrLiteral,
+    createLiteral,
     createOrUpdatePluginByName,
     createProperty,
-    findObjWithOneOfKeys, findPluginsArrayAndRemoveIfEmpty,
+    findObjWithOneOfKeys,
+    findPluginsArrayAndRemoveIfEmpty,
     findPluginsByName,
-    findRootNodesByName, findVariableToPlugin,
+    findRootNodesByName,
+    findVariableToPlugin,
     getRequire,
     safeTraverse,
     safeTraverseAndGetType,
-
 } from '../src/ast-utils';
 import { Node } from '../src/types/NodePath';
 

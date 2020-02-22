@@ -43,3 +43,5 @@ export function recursiveTransform(j: JSCodeshift, ast: Node, key: string, value
         });
     }
 }
+
+export default recursiveTransform;
