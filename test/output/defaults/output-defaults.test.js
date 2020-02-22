@@ -36,7 +36,7 @@ describe('output flag defaults', () => {
         const summary = extractSummary(stdout);
         console.log(stdout, stderr);
         const outputDir = 'defaults/dist';
-        // When not using --defaults it should not print warnings about config fallback
+        // When using --defaults it should not print warnings about config fallback
         expect(stderr).toBeFalsy();
         expect(summary['Output Directory']).toContain(outputDir);
         stat(resolve(__dirname, './dist/main.js'), (err, stats) => {
