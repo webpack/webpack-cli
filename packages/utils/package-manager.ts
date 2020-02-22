@@ -13,17 +13,12 @@ import * as path from "path";
  */
 
 export function getPackageManager(): string {
-	const hasLocalNPM = fs.existsSync(path.resolve(process.cwd(), "package-lock.json"));
 	const hasLocalYarn = fs.existsSync(path.resolve(process.cwd(), "yarn.lock"));
-	if (hasLocalNPM) {
-		return "npm";
-	} else if (hasLocalYarn) {
-		return "yarn";
-	} else if (spawn.sync("yarn", [" --version"], { stdio: "ignore" }).error) {
-		return "npm";
-	} else {
-		return "npm";
+	let defPackageManager = "npm";
+	if(hasLocalYarn){
+	  defPackageManager = "yarn"
 	}
+	  return defPackageManager;
 }
 
 /**
