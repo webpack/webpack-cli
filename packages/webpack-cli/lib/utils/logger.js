@@ -1,5 +1,3 @@
-const logger = require('webpack-log')({
-    name: 'webpack',
-});
+const { logger } = require('@webpack-cli/logger');
 
 module.exports = logger;

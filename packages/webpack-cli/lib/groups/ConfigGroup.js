@@ -1,8 +1,11 @@
 const { existsSync } = require('fs');
 const { resolve, sep, dirname, parse } = require('path');
 const { extensions } = require('interpret');
-
+const { logger } = require('@webpack-cli/logger');
+const { packageExists, promptInstallation } = require('@webpack-cli/package-utils');
 const GroupHelper = require('../utils/GroupHelper');
+const chalk = require('chalk');
+const rechoir = require('rechoir');
 
 const DEFAULT_CONFIG_LOC = [
     '.webpack/webpack.config',
@@ -11,6 +14,12 @@ const DEFAULT_CONFIG_LOC = [
     '.webpack/webpackfile',
     'webpack.config',
 ];
+
+const fileTypes = {
+    '.babel.js': ['@babel/register', 'babel-register', 'babel-core/register', 'babel/register'],
+    '.babel.ts': ['@babel/register'],
+    '.ts': ['ts-node/register', 'tsconfig-paths/register'],
+};
 
 const getDefaultConfigFiles = () => {
     return DEFAULT_CONFIG_LOC.map(filename => {
@@ -44,35 +53,30 @@ class ConfigGroup extends GroupHelper {
         super(options);
     }
 
-    requireModule(path, cb) {
-        const result = cb(path);
-        if (result && result.__esModule && result.default) {
-            return {
-                content: result.default,
-                path: path,
-            };
+    requireLoader(extension, path) {
+        try {
+            rechoir.prepare(extensions, path, process.cwd());
+        } catch (e) {
+            throw e;
         }
-        return {
-            path: path,
-            content: result,
-        };
     }
 
     requireConfig(configModule) {
-        if (!configModule.module) {
-            return this.requireModule(configModule.path, require);
-        } else if (Array.isArray(configModule.module)) {
-            configModule.module.forEach(mod => {
-                const moduleRequire = require(mod.module);
-                return this.requireModule(configModule.path, moduleRequire);
-            });
-        } else if (typeof configModule.module === 'string') {
-            const moduleRequire = require(configModule.module);
-            return this.requireModule(configModule.path, moduleRequire);
-        } else {
-            const moduleRequire = require(configModule.module.module)(module);
-            return this.requireModule(configModule.path, moduleRequire);
+        const extension = Object.keys(fileTypes).find(t => configModule.ext.endsWith(t));
+
+        if (extension) {
+            this.requireLoader(extension, configModule.path);
         }
+
+        let config = require(configModule.path);
+        if (config.default) {
+            config = config.default;
+        }
+
+        return {
+            content: config,
+            path: configModule.path,
+        };
     }
 
     finalize(moduleObj) {

@@ -1,4 +1,4 @@
-import { informationType } from "../index";
+import { informationType } from "../src";
 
 describe("infoSystem", () => {
 	it("should return the information of the system", async () => {

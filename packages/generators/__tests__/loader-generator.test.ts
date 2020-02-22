@@ -2,7 +2,7 @@ import { join } from 'path';
 import { run } from 'yeoman-test';
 import assert from 'yeoman-assert';
 
-import { makeLoaderName } from '../loader-generator';
+import { makeLoaderName } from '../src/loader-generator';
 
 describe('loader generator', () => {
     it.skip('generates a default loader', async () => {

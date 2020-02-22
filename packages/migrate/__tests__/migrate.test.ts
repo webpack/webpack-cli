@@ -1,4 +1,4 @@
-import { transform, transformations } from "../migrate";
+import { transform, transformations } from "../src/migrate";
 
 const input = `
 module.exports = {

@@ -1,5 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 module.exports = usingDefaults => {
-	let scripts = {
+	const scripts = {
 		build: "webpack"
 	};
 	if (usingDefaults) {

@@ -1,6 +1,10 @@
 {
   "extends": "../../tsconfig.packages.json",
   "compilerOptions": {
-    "allowJs": true
-  }
+    "outDir": "./lib",
+    "rootDir": "./src",
+    "composite": true
+  },
+  "include": ["./src"],
+  "references": [{ "path": "../utils" }, { "path": "../webpack-scaffold" }, { "path": "../package-utils" }]
 }
