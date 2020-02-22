@@ -1,4 +1,5 @@
 const GroupHelper = require('../utils/GroupHelper');
+const { logger } = require('@webpack-cli/logger');
 
 const PRODUCTION = 'production';
 const DEVELOPMENT = 'development';
@@ -17,12 +18,25 @@ class ZeroConfigGroup extends GroupHelper {
     getEnvFromOptionsAndMode() {
         if (process.env.NODE_ENV && (process.env.NODE_ENV === PRODUCTION || process.env.NODE_ENV === DEVELOPMENT)) {
             return process.env.NODE_ENV;
-        } else if (this.args.prod) {
+        } else {
+            if (this.args.mode && (this.args.dev || this.args.prod)) {
+                logger.warn(
+                    `You provided both mode and ${
+                        this.args.prod ? '--prod' : '--dev'
+                    } arguments. You should provide just one. "mode" will be used`,
+                );
+                return this.args.mode;
+            }
+            if (this.args.mode) {
+                return this.args.mode;
+            }
+            if (this.args.prod) {
+                return PRODUCTION;
+            } else if (this.args.dev) {
+                return DEVELOPMENT;
+            }
             return PRODUCTION;
-        } else if (this.args.dev) {
-            return DEVELOPMENT;
         }
-        return PRODUCTION;
     }
 
     resolveZeroConfig() {

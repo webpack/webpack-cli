@@ -47,3 +47,4 @@ junit.xml
 
 #typescript source maps
 packages/**/*.map
+*.tsbuildinfo
