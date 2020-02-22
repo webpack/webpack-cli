@@ -1,6 +1,6 @@
-import { join } from 'path';
-import { run } from 'yeoman-test';
 import * as assert from 'yeoman-assert';
+import { run } from 'yeoman-test';
+import { join } from 'path';
 
 describe('init generator', () => {
     it('generates a webpack project config', async () => {
