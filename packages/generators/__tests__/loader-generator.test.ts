@@ -6,8 +6,11 @@ import { makeLoaderName } from '../src/loader-generator';
 
 describe('loader generator', () => {
     it('generates a default loader', async () => {
-        const outputDir = await run(join(__dirname, '../loader-generator'));
-        const loaderDir = join(outputDir, 'my-loader');
+        const loaderName = 'my-test-loader';
+        const outputDir = await run(join(__dirname, '../loader-generator')).withPrompts({
+            name: loaderName,
+        });
+        const loaderDir = join(outputDir, loaderName);
         const srcFiles = ['cjs.js', 'index.js'];
         const testFiles = ['functional.test.js', 'test-utils.js', 'unit.test.js', 'fixtures/simple-file.js'];
         const exampleFiles = ['webpack.config.js', 'src/index.js', 'src/lazy-module.js', 'src/static-esm-module.js'];
@@ -26,6 +29,7 @@ describe('loader generator', () => {
         assert.fileContent([
             [join(loaderDir, 'examples/simple/webpack.config.js'), /resolveLoader: {/],
             [join(loaderDir, 'src/index.js'), /export default function loader\(source\) {/],
+            [join(loaderDir, 'package.json'), new RegExp(loaderName)],
         ]);
 
         // higher timeout so travis has enough time to execute
