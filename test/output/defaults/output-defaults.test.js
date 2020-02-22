@@ -31,4 +31,18 @@ describe('output flag defaults', () => {
             done();
         });
     });
+    it('should not throw when --defaults flag is passed', done => {
+        const { stdout, stderr } = run(__dirname, ['--defaults'], false);
+        const summary = extractSummary(stdout);
+        console.log(stdout, stderr);
+        const outputDir = 'defaults/dist';
+        // When not using --defaults it should not print warnings about config fallback
+        expect(stderr).toBeFalsy();
+        expect(summary['Output Directory']).toContain(outputDir);
+        stat(resolve(__dirname, './dist/main.js'), (err, stats) => {
+            expect(err).toBe(null);
+            expect(stats.isFile()).toBe(true);
+            done();
+        });
+    });
 });
