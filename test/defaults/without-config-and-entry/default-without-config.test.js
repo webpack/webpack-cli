@@ -7,7 +7,6 @@ describe('output flag defaults without config', () => {
     it('should throw if the entry file is not present', done => {
         const { stdout, stderr } = run(__dirname, ['--defaults'], false);
         const summary = extractSummary(stdout);
-        console.log(stdout, stderr);
         const outputDir = 'without-config-and-entry/dist';
         // eslint-disable-next-line quotes
         expect(stderr).toContain("Module not found: Error: Can't resolve './index.js' in");

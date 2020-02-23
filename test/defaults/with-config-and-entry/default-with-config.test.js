@@ -7,7 +7,6 @@ describe('output flag defaults with config', () => {
     it('should use default entry if config entry file is not present', done => {
         const { stdout, stderr } = run(__dirname, ['--defaults'], false);
         const summary = extractSummary(stdout);
-        console.log(stdout, stderr);
         // Should use the output dir specified in the config
         const outputDir = 'with-config-and-entry/binary';
         // eslint-disable-next-line quotes
