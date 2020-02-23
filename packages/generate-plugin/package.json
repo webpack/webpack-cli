@@ -2,7 +2,7 @@
   "name": "@webpack-cli/generate-plugin",
   "version": "1.0.1-alpha.0",
   "description": "A scaffold for generating a plugin",
-  "main": "index.js",
+  "main": "src/index.js",
   "directories": {
     "example": "examples",
     "test": "test"
@@ -24,5 +24,10 @@
   "scripts": {
     "build": "tsc",
     "watch": "npm run build && tsc -w"
-  }
+  },
+  "files": [
+    "lib",
+    "templates",
+    "examples"
+  ]
 }

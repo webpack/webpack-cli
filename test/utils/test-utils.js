@@ -177,6 +177,12 @@ function copyFile(testCase, file) {
     }
 }
 
+async function runInstall(cwd) {
+    await execa('yarn', {
+        cwd,
+    });
+}
+
 module.exports = {
     run,
     runWatch,
@@ -186,4 +192,5 @@ module.exports = {
     copyFile,
     copyFileAsync,
     appendDataToMultipleIfFilesExists,
+    runInstall,
 };

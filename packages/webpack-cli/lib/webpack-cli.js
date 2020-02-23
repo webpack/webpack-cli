@@ -283,7 +283,7 @@ class WebpackCLI extends GroupHelper {
 
     async runCommand(command, ...args) {
         // TODO: rename and depreciate init
-        return await require('./commands/external').run(defaultCommands[command.name], ...args);
+        return await require('./commands/ExternalCommand').run(defaultCommands[command.name], ...args);
     }
 
     runHelp(args) {
