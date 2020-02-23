@@ -284,6 +284,15 @@ module.exports = {
             link: 'https://webpack.js.org/concepts/#mode',
         },
         {
+            name: 'mode',
+            usage: '--mode <development | production>',
+            type: String,
+            group: ZERO_CONFIG_GROUP,
+            description: 'Defines the mode to pass to webpack',
+            link: 'https://webpack.js.org/concepts/#mode',
+            acceptedValues: ["development", "production"]
+        },
+        {
             name: 'version',
             usage: '--version',
             type: Boolean,

@@ -54,6 +54,7 @@ Options
   --standard               Prints standard output
   -d, --dev                Run development build
   -p, --prod               Run production build
+  --mode string            Defines the mode to pass to webpack
   --version                Get current version
   --node-args string[]     NodeJS flags
 ```
