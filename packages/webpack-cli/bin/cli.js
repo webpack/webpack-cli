@@ -6,6 +6,7 @@ const execa = require('execa');
 const importLocal = require('import-local');
 const logger = require('../lib/utils/logger');
 const parseArgs = require('../lib/utils/parse-args');
+const runner = require('../lib/runner');
 
 // Prefer the local installation of webpack-cli
 if (importLocal(__filename)) {
@@ -17,6 +18,4 @@ const [, , ...rawArgs] = process.argv;
 const { cliArgs, nodeArgs } = parseArgs(rawArgs);
 const bootstrapPath = require.resolve('../lib/bootstrap');
 
-execa('node', [...nodeArgs, bootstrapPath, ...cliArgs], { stdio: 'inherit' }).catch(e => {
-    process.exit(e.exitCode);
-});
+runner(nodeArgs, cliArgs);
