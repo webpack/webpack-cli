@@ -57,24 +57,23 @@ const addonGenerator = (
             }
         }
 
-        public writing(): void {
-            this.copy = generatorCopy(this, templateDir);
+		public writing(): void {
+			const packageJsonTemplatePath = "../templates/addon-package.json.js";
+			this.fs.extendJSON(this.destinationPath("package.json"), require(packageJsonTemplatePath)(this.props.name));
+
+			this.copy = generatorCopy(this, templateDir);
             this.copyTpl = generatorCopyTpl(this, templateDir, templateFn(this));
 
             copyFiles.forEach(this.copy);
             copyTemplateFiles.forEach(this.copyTpl);
-        }
+		}
 
-        public install(): void {
+		public install(): void {
             this.npmInstall(['webpack-defaults', 'bluebird'], {
                 'save-dev': true,
             });
         }
-
-        public end(): void {
-            this.spawnCommand('npm', ['run', 'defaults']);
-        }
-    };
+	};
 };
 
 export default addonGenerator;

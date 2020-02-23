@@ -37,7 +37,7 @@ const LoaderGenerator = addonGenerator(
 			validate: (str: string): boolean => str.length > 0
 		}
 	],
-	path.resolve(__dirname, "..", "generate-loader"),
+	path.resolve(__dirname, "../../generate-loader/templates"),
 	[
 		"src/cjs.js.tpl",
 		"test/test-utils.js.tpl",

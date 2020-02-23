@@ -1,31 +1,35 @@
 import { join } from 'path';
 import { run } from 'yeoman-test';
-import assert from 'yeoman-assert';
+import * as assert from 'yeoman-assert';
 
 import { makeLoaderName } from '../src/loader-generator';
 
 describe('loader generator', () => {
-    it.skip('generates a default loader', async () => {
-        const outputDir = await run(join(__dirname, '../loader-generator'));
-        const loaderDir = `${outputDir}/my-loader`;
+    it('generates a default loader', async () => {
+        const loaderName = 'my-test-loader';
+        const outputDir = await run(join(__dirname, '../src/loader-generator')).withPrompts({
+            name: loaderName,
+        });
+        const loaderDir = join(outputDir, loaderName);
         const srcFiles = ['cjs.js', 'index.js'];
         const testFiles = ['functional.test.js', 'test-utils.js', 'unit.test.js', 'fixtures/simple-file.js'];
         const exampleFiles = ['webpack.config.js', 'src/index.js', 'src/lazy-module.js', 'src/static-esm-module.js'];
 
         // Check that files in all folders are scaffolded. Checking them separately so we know which directory has the problem
         // assert for src files
-        assert.file([...srcFiles.map(file => `${loaderDir}/src/${file}`)]);
+        assert.file(srcFiles.map(file => join(loaderDir, 'src', file)));
 
         // assert for test files
-        assert.file([...testFiles.map(file => `${loaderDir}/test/${file}`)]);
+        assert.file(testFiles.map(file => join(loaderDir, 'test', file)));
 
         // assert for example files
-        assert.file([...exampleFiles.map(file => `${loaderDir}/examples/simple/${file}`)]);
+        assert.file(exampleFiles.map(file => join(loaderDir, 'examples/simple', file)));
 
         // Check the contents of the webpack config and loader file
         assert.fileContent([
-            [`${loaderDir}/examples/simple/webpack.config.js`, /resolveLoader: {/],
-            [`${loaderDir}/src/index.js`, /export default function loader(source) {/],
+            [join(loaderDir, 'examples/simple/webpack.config.js'), /resolveLoader: {/],
+            [join(loaderDir, 'src/index.js'), /export default function loader\(source\) {/],
+            [join(loaderDir, 'package.json'), new RegExp(loaderName)],
         ]);
 
         // higher timeout so travis has enough time to execute
