@@ -1,31 +1,31 @@
 const { MultiSelect, Input} = require('enquirer');
 const runner = require('../runner');
 const logger = require('./logger');
-const allArgs = require('./cli-flags');
+const cliArgs = require('./cli-flags').core;
 
-logger.info(`Initiating webpack-cli executer \n`);
-
-const cliArgs = [];
-const nodeArgs = [];
 async function prompter() {
+    const args = [];
+
     const typePrompt = new MultiSelect({
         name: 'type',
-        message: 'Which flags do you want to use ?',
-        choices: allArgs.core.reduce((prev, curr) => {
+        message: 'Which flags do you want to use?',
+        choices: cliArgs.reduce((prev, curr) => {
             return [...prev, `--${curr.name}`];
         }, [])
     });
 
     const selections = await typePrompt.run();
-    const questions = selections.map(selection => {
-        const options = allArgs.core.find(flag => {
+
+    const boolArgs = [];
+    const questions = [];
+    selections.forEach(selection => {
+        const options = cliArgs.find(flag => {
             return flag.name === selection.slice(2);
         });
 
-        if (options.type == Boolean) {
-            return {
-                run: () => Promise.resolve([selection])
-            };
+        if (options.type === Boolean) {
+            boolArgs.push(selection);
+            return;
         }
 
         const valuePrompt = new Input({
@@ -34,20 +34,24 @@ async function prompter() {
             initial: options.defaultValue,
             result: (value) => [selection, value]
         });
-        return valuePrompt;
+        questions.push(valuePrompt);
     });
+
+    // Create promise chain to force synchronous prompt of question
     await questions.reduce((prev, curr) => {
-        return prev.then(() => curr.run().then((args) => {
-            cliArgs.push(...args);
+        return prev.then(() => curr.run().then((flagArgs) => {
+            args.push(...flagArgs);
         }));
-    }, Promise.resolve(null))
+    }, Promise.resolve(null));
+
+    return [...args, ...boolArgs];
 }
 
 async function run() {
-    await prompter();
+    const args = await prompter();
     process.stdout.write('\n');
     logger.info(`Executing CLI\n`);
-    runner([], cliArgs);
+    runner([], args);
 }
 
 run();
