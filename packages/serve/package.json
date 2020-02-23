@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/serve",
-  "version": "1.0.1-alpha.0",
+  "version": "1.0.1-alpha.1",
   "description": "",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -14,12 +14,12 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@webpack-cli/utils": "^1.0.1-alpha.0",
+    "@webpack-cli/utils": "^1.0.1-alpha.1",
     "chalk": "3.0.0",
     "cross-spawn": "6.0.5",
     "inquirer": "6.5.1",
-    "webpack-dev-server": "^3.9.0",
-    "webpack-cli": "^4.0.0-beta.3"
+    "webpack-cli": "^4.0.0-beta.4",
+    "webpack-dev-server": "^3.9.0"
   },
   "devDependencies": {
     "@types/cross-spawn": "6.0.0",

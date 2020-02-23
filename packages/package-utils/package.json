@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/package-utils",
-  "version": "1.0.0",
+  "version": "1.0.1-alpha.0",
   "description": "A module to help managing packages and modules inside webpack CLI",
   "keywords": [
     "webpack",
@@ -36,10 +36,10 @@
     "url": "https://github.com/ematipico/webpack-cli/issues"
   },
   "dependencies": {
-    "execa": "^4.0.0",
+    "@webpack-cli/logger": "^1.0.1-alpha.0",
     "chalk": "^3.0.0",
     "enquirer": "^2.3.4",
-    "@webpack-cli/logger": "1.0.0"
+    "execa": "^4.0.0"
   },
   "devDependencies": {
     "typescript": "^3.8.2"

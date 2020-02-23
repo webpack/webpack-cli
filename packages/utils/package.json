@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/utils",
-  "version": "1.0.1-alpha.0",
+  "version": "1.0.1-alpha.1",
   "description": "webpack-cli utility files",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -10,6 +10,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@webpack-cli/package-utils": "^1.0.1-alpha.0",
     "chalk": "3.0.0",
     "cross-spawn": "6.0.5",
     "findup-sync": "4.0.0",
@@ -20,8 +21,7 @@
     "p-each-series": "2.1.0",
     "prettier": "1.18.2",
     "yeoman-environment": "2.7.0",
-    "yeoman-generator": "4.5.0",
-    "@webpack-cli/package-utils": "^1.0.0"
+    "yeoman-generator": "4.5.0"
   },
   "devDependencies": {
     "@types/cross-spawn": "6.0.0",

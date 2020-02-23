@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/generators",
-  "version": "1.0.1-alpha.0",
+  "version": "1.0.1-alpha.1",
   "description": "Webpack-CLI generators",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -11,9 +11,9 @@
     "access": "public"
   },
   "dependencies": {
-    "@webpack-cli/utils": "^1.0.1-alpha.0",
-    "@webpack-cli/webpack-scaffold": "^1.0.1-alpha.0",
-    "@webpack-cli/package-utils": "^1.0.0",
+    "@webpack-cli/package-utils": "^1.0.1-alpha.0",
+    "@webpack-cli/utils": "^1.0.1-alpha.1",
+    "@webpack-cli/webpack-scaffold": "^1.0.1-alpha.1",
     "chalk": "3.0.0",
     "glob-all": "3.1.0",
     "inquirer-autocomplete-prompt": "1.0.1",
@@ -23,7 +23,6 @@
     "webpack": "4.x.x",
     "webpack-dev-server": "3.8.0",
     "yeoman-generator": "4.5.0"
-
   },
   "peerDependencies": {
     "webpack": "4.x.x"

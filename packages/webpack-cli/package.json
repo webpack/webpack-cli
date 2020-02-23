@@ -1,6 +1,6 @@
 {
   "name": "webpack-cli",
-  "version": "4.0.0-beta.3",
+  "version": "4.0.0-beta.4",
   "description": "CLI for webpack & friends",
   "license": "MIT",
   "repository": {
@@ -27,26 +27,26 @@
     "bin/cli.js"
   ],
   "dependencies": {
+    "@webpack-cli/logger": "^1.0.1-alpha.0",
+    "@webpack-cli/package-utils": "^1.0.1-alpha.0",
     "ansi-escapes": "^4.2.1",
     "chalk": "^3.0.0",
     "cli-table3": "^0.5.1",
     "command-line-args": "^5.1.1",
     "command-line-usage": "^6.1.0",
+    "enquirer": "^2.3.4",
     "execa": "^3.2.0",
     "import-local": "^3.0.2",
-    "enquirer": "^2.3.4",
     "interpret": "^2.0.0",
+    "rechoir": "^0.7.0",
     "v8-compile-cache": "^2.1.0",
     "webpack-log": "^3.0.1",
-    "webpack-merge": "^4.2.2",
-    "@webpack-cli/package-utils": "1.0.0",
-    "@webpack-cli/logger": "1.0.0",
-    "rechoir": "^0.7.0"
+    "webpack-merge": "^4.2.2"
   },
   "peerDependencies": {
     "webpack": "^5.0.0-beta.12"
   },
   "devDependencies": {
-    "@webpack-cli/info": "1.0.1-alpha.0"
+    "@webpack-cli/info": "^1.0.1-alpha.1"
   }
 }
