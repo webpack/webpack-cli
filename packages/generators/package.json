@@ -35,12 +35,12 @@
     "@types/mkdirp": "0.5.2",
     "@types/node": "12.7.2",
     "@types/webpack-dev-server": "3.1.7",
+    "@types/yeoman-assert": "^3.1.1",
     "@types/yeoman-generator": "3.1.4",
     "@types/yeoman-test": "2.0.3",
-    "@types/yeoman-assert": "^3.1.1",
     "typescript": "3.5.3",
-    "yeoman-test": "2.1.0",
-    "yeoman-assert": "^3.1.1"
+    "yeoman-assert": "^3.1.1",
+    "yeoman-test": "2.1.0"
   },
   "scripts": {
     "build": "tsc",
