@@ -38,11 +38,10 @@ async function prompter() {
     });
 
     // Create promise chain to force synchronous prompt of question
-    await questions.reduce((prev, curr) => {
-        return prev.then(() => curr.run().then((flagArgs) => {
-            args.push(...flagArgs);
-        }));
-    }, Promise.resolve(null));
+    for await (question of questions) {
+        const flagArgs = await question.run();
+        args.push(...flagArgs);
+    }
 
     return [...args, ...boolArgs];
 }
