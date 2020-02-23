@@ -21,7 +21,7 @@ const PluginGenerator = addonGenerator(
 			validate: (str: string): boolean => str.length > 0
 		}
 	],
-	path.resolve(__dirname, "..", "generate-plugin"),
+	path.resolve(__dirname, "../../generate-plugin/templates"),
 	[
 		"src/cjs.js.tpl",
 		"test/test-utils.js.tpl",
