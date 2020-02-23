@@ -35,7 +35,6 @@ describe('output flag defaults', () => {
     it('should not throw when --defaults flag is passed', done => {
         const { stdout, stderr } = run(__dirname, ['--defaults'], false);
         const summary = extractSummary(stdout);
-        console.log(stdout, stderr);
         const outputDir = 'defaults/dist';
         // When using --defaults it should not print warnings about config fallback
         expect(stderr).toBeFalsy();
