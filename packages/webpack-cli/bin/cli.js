@@ -2,7 +2,6 @@
 
 'use strict';
 require('v8-compile-cache');
-const execa = require('execa');
 const importLocal = require('import-local');
 const logger = require('../lib/utils/logger');
 const parseArgs = require('../lib/utils/parse-args');
@@ -16,6 +15,5 @@ process.title = 'webpack';
 
 const [, , ...rawArgs] = process.argv;
 const { cliArgs, nodeArgs } = parseArgs(rawArgs);
-const bootstrapPath = require.resolve('../lib/bootstrap');
 
 runner(nodeArgs, cliArgs);
