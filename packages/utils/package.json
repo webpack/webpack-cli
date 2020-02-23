@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/utils",
-  "version": "1.0.1-alpha.2",
+  "version": "1.0.1-alpha.3",
   "description": "webpack-cli utility files",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -10,7 +10,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@webpack-cli/package-utils": "^1.0.1-alpha.1",
+    "@webpack-cli/package-utils": "^1.0.1-alpha.2",
     "chalk": "3.0.0",
     "cross-spawn": "6.0.5",
     "findup-sync": "4.0.0",
