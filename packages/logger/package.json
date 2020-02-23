@@ -8,7 +8,7 @@
     "logger"
   ],
   "author": "emanuele <my.burning@gmail.com>",
-  "homepage": "https://github.com/ematipico/webpack-cli#readme",
+  "homepage": "https://github.com/webpack/webpack-cli#readme",
   "license": "MIT",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -23,16 +23,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ematipico/webpack-cli.git"
+    "url": "git+https://github.com/webpack/webpack-cli.git"
   },
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "bugs": {
-    "url": "https://github.com/ematipico/webpack-cli/issues"
+    "url": "https://github.com/webpack/webpack-cli/issues"
   },
   "peerDependencies": {
     "webpack": "^4.41.6"
   },
-  "gitHead": "0d05c30c52a9a67a65301f3b40f6fba22333bff4"
+  "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9"
 }
