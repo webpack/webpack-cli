@@ -1,4 +1,4 @@
-const { MultiSelect, Input} = require('enquirer');
+const { MultiSelect, Input } = require('enquirer');
 const runner = require('../runner');
 const logger = require('./logger');
 const cliArgs = require('./cli-flags').core;
@@ -10,8 +10,11 @@ async function prompter() {
         name: 'type',
         message: 'Which flags do you want to use?',
         choices: cliArgs.reduce((prev, curr) => {
-            return [...prev, `--${curr.name}`];
-        }, [])
+            return [...prev, `--${curr.name}: ${curr.description}`];
+        }, []),
+        result: (value) => {
+            return value.map((flag) => flag.split(":")[0]);
+        }
     });
 
     const selections = await typePrompt.run();
@@ -53,4 +56,4 @@ async function run() {
     runner([], args);
 }
 
-run();
+module.exports = run;
