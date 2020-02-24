@@ -1,6 +1,7 @@
 const WebpackCLI = require('./webpack-cli');
 const { core, commands } = require('./utils/cli-flags');
 const logger = require('./utils/logger');
+const cliExecuter = require('./utils/cli-executer');
 
 require('./utils/process-log');
 
@@ -68,7 +69,8 @@ async function runCLI(cli, commandIsUsed) {
                     .forEach(unknown => {
                         logger.warn('Unknown argument:', unknown);
                     });
-                return cli.runHelp(process.argv);
+                    cliExecuter();
+                    return;
             }
             const result = await cli.run(args, core);
             if (!result) {
