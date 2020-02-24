@@ -130,7 +130,7 @@
     }
   },
   "peerDependencies": {
-    "webpack": "5.x.x"
+    "webpack": "4.x.x || 5.x.x"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",

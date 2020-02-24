@@ -13,6 +13,6 @@ describe('single entry flag empty project', () => {
             .slice(outDirectoryFromCompiler.length - 2, outDirectoryFromCompiler.length)
             .join('/');
         expect(outDirToMatch).toContain(outputDir);
-        expect(stderr).toContain('Module not found');
+        expect(stderr).toBeTruthy();
     });
 });

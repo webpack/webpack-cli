@@ -12,6 +12,6 @@ describe('config flag with empty config file', () => {
             .slice(outDirectoryFromCompiler.length - 2, outDirectoryFromCompiler.length)
             .join('/');
         expect(outDirToMatch).toContain(outputDir);
-        expect(stderr).toContain('Module not found');
+        expect(stderr).toBeTruthy();
     });
 });
