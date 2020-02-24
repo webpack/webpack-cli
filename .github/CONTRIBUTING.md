@@ -37,7 +37,9 @@ If you are still having difficulty after looking over your configuration careful
 a question to [StackOverflow with the webpack-cli tag](http://stackoverflow.com/tags/webpack-cli). Please ensure that your questions
 that include your `webpack.config.js` and relevant files. This way you help others to help you.
 
-**If you have discovered a bug or have a feature suggestion, feel free to create an issue on Github.**
+**If you have discovered a bug or have a feature suggestion, feel free to create an [issue](https://github.com/webpack/webpack-cli/issues) on Github.**
+
+> In case you're filing a bug, make sure you add steps to reproduce it. Especially if that bug is some weird/rare one.
 
 ## Your first Contribution
 
@@ -72,7 +74,7 @@ In case you are suggesting a new feature, we will match your idea with our curre
 -   Bootstrap all the submodules before building for the first time
 
     ```bash
-    #npm
+    #yarn
     yarn bootstrap
     yarn build
     ```
@@ -180,12 +182,15 @@ In case you've got a small change in most of the cases, your pull request would 
 -   Write tests
 -   Follow the existing coding style
 -   Write a [good commit message](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
+-   Make sure your PR has an issue and if it doesn't, please create one. This would help discussion with the community, and polishing ideas in case of a new feature.
+-   Make sure your PR's description contains GitHub's special keyword references that automatically close the related issue when the PR is merged. ([More info](https://github.com/blog/1506-closing-issues-via-pull-requests))
+-   When you have lot of commits in your PR, it's good practice to squash all your commits in one single commit. ([Learn how to squash here](https://davidwalsh.name/squash-commits-git))
 
 ## Commit message
 
 Our commit messages format follows the [angular.js commits format](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#commit-message-format).
 
-You can use `npm run commit` script to have an interactive way of making commits that follow our guidelines.
+You can use `yarn commit` script to have an interactive way of making commits that follow our guidelines.
 
 We don't use the scope. The template of a commit would look like this:
 
@@ -296,3 +301,11 @@ Run `git config user.email` to see your Git email, and verify it with [your GitH
 webpack is feature rich and documentation is a time sink. We
 greatly appreciate any time spent fixing typos or clarifying sections in the
 documentation.
+
+## Join the development
+
+-   Before you join development, please set up the project on your local machine, run it and go through the application completely. Use any command you can find and see what it does. Explore.
+
+    > Don't worry ... Nothing will happen to the project or to you due to the exploring. Only thing that will happen is, you'll be more familiar with what is where and might even get some cool ideas on how to improve various aspects of the project.
+
+-   If you would like to work on an issue, drop in a comment at the issue. If it is already assigned to someone, but there is no sign of any work being done, please feel free to drop in a comment so that the issue can be assigned to you if the previous assignee has dropped it entirely.
