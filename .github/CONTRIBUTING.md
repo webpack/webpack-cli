@@ -188,7 +188,7 @@ In case you've got a small change in most of the cases, your pull request would 
 
 ## Commit message
 
-Our commit messages format follows the [angular.js commits format](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#commit-message-format).
+Our commit messages format follows the [angular.js commits format](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#commits).
 
 You can use `yarn commit` script to have an interactive way of making commits that follow our guidelines.
 
@@ -226,7 +226,7 @@ Any line of the commit message cannot be longer 100 characters. This allows the 
 to read on GitHub as well as in several git tools.
 
 For more information about what each part of the template mean, head up to the documentation in the
-[angular repo](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#commit-message-format)
+[angular repo](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#commits)
 
 ## Migrate with the CLI
 
