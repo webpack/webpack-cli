@@ -1,4 +1,5 @@
-// eslint-disable-next-line node/no-unpublished-require
+/* eslint-disable   node/no-missing-require */
+/* eslint-disable   node/no-unpublished-require */
 const { run, runInstall } = require('../utils/test-utils');
 const { stat } = require('fs');
 const { resolve } = require('path');
@@ -13,5 +14,5 @@ describe('webpack cli', () => {
             expect(err).toBe(null);
             expect(stats.isFile()).toBe(true);
         });
-    });
+    }, 30000);
 });
