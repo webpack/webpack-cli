@@ -81,12 +81,6 @@ class Compiler {
             this.output.generateRawOutput(stats);
         } else {
             const statsObj = stats.toJson(outputOptions);
-            if (statsObj.children && statsObj.children.length) {
-                statsObj.children.forEach(child => {
-                    this.output.generateFancyOutput(child, statsErrors, processingMessageBuffer);
-                });
-                return;
-            }
             this.output.generateFancyOutput(statsObj, statsErrors, processingMessageBuffer);
         }
         process.stdout.write('\n');
