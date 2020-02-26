@@ -1,8 +1,8 @@
 import fs from 'fs';
 import path from 'path';
-import { sync } from 'execa';
+import execa from 'execa';
 import spawn from 'cross-spawn';
-import  chalk = require('chalk');
+import chalk = require('chalk');
 import { prompt } from 'enquirer';
 import { runCommand } from './processUtils';
 
@@ -17,18 +17,12 @@ import { runCommand } from './processUtils';
 type PackageName = 'npm' | 'yarn';
 
 export function getPackageManager(): PackageName {
-    const hasLocalYarn = fs.existsSync(path.resolve(process.cwd(), 'yarn.lock'));
     try {
-        if (hasLocalYarn) {
-            return 'yarn';
-        } else if (sync('yarn', [' --version'], { stdio: 'ignore' }).stderr) {
-            return 'yarn';
-        } else {
-            return 'npm';
-        }
+        execa.sync('yarn', ['-v']);
     } catch (e) {
         return 'npm';
     }
+    return 'yarn';
 }
 
 /**
