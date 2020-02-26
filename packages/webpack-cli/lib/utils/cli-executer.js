@@ -56,7 +56,7 @@ async function run() {
       logger.info(`Executing CLI\n`);
       runner([], args);	
     } catch (err) {
-      logger.error('Interrupted')
+      logger.error('Action Interrupted, use `webpack-cli help` to see possible options.')
     }
 }
 
