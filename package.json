@@ -150,6 +150,7 @@
     "jest": "^25.1.0",
     "jest-junit": "^10.0.0",
     "jest-serializer-ansi": "^1.0.3",
+    "jest-watch-typeahead": "^0.4.2",
     "lerna": "^3.20.2",
     "lint-staged": "^9.4.2",
     "nyc": "^14.1.1",

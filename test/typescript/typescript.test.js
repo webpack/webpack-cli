@@ -4,6 +4,8 @@ const { run, runInstall } = require('../utils/test-utils');
 const { stat } = require('fs');
 const { resolve } = require('path');
 
+jest.setTimeout(1000 * 60 * 5);
+
 describe('webpack cli', () => {
     it(
         'should support typescript file',
