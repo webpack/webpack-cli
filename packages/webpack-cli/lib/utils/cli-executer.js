@@ -50,10 +50,14 @@ async function prompter() {
 }
 
 async function run() {
-    const args = await prompter();
-    process.stdout.write('\n');
-    logger.info(`Executing CLI\n`);
-    runner([], args);
+    try {
+      const args = await prompter();
+      process.stdout.write('\n');
+      logger.info(`Executing CLI\n`);
+      runner([], args);	
+    } catch (err) {
+      logger.error('Interrupted')
+    }
 }
 
 module.exports = run;
