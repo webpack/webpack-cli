@@ -9,8 +9,7 @@ describe('entry point', () => {
         'should support SCSS files',
         async () => {
             await runInstall(__dirname);
-            const { stdout, stderr } = run(__dirname);
-            console.log(stderr);
+            const { stdout } = run(__dirname);
             expect(stdout).toBeTruthy();
             expect(stdout).toContain('home.scss');
             expect(stdout).toContain('home.js');
