@@ -4,7 +4,7 @@ const { resolve } = require('path');
 const { run, extractSummary } = require('../../utils/test-utils');
 
 describe('output flag defaults with config', () => {
-    it('should use default entry if config entry file is not present', done => {
+    it.skip('should use default entry if config entry file is not present', done => {
         const { stdout, stderr } = run(__dirname, ['--defaults'], false);
         const summary = extractSummary(stdout);
         // Should use the output dir specified in the config
