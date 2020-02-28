@@ -91,7 +91,7 @@ When you have followed the [Getting Started](https://webpack.js.org/guides/getti
 
 ```sh
 npm i webpack-cli @webpack-cli/init
-npx webpack-cli create
+npx webpack-cli init
 ```
 
 You will be prompted for some questions about what how you want to generate your config file when running the `init` command so webpack CLI can provide the best fitting configuration.
