@@ -1,4 +1,5 @@
 const { MultiSelect, Input } = require('enquirer');
+const chalk = require('chalk');
 const runner = require('../runner');
 const logger = require('./logger');
 const cliArgs = require('./cli-flags').core;
@@ -50,10 +51,14 @@ async function prompter() {
 }
 
 async function run() {
-    const args = await prompter();
-    process.stdout.write('\n');
-    logger.info(`Executing CLI\n`);
-    runner([], args);
+    try {
+      const args = await prompter();
+      process.stdout.write('\n');
+      logger.info(`Executing CLI\n`);
+      runner([], args);	
+    } catch (err) {
+      logger.error(`Action Interrupted, use ${chalk.cyan(`webpack-cli help`)} to see possible options.`)
+    }
 }
 
 module.exports = run;
