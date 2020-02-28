@@ -1,7 +1,7 @@
 'use strict';
 const { stat } = require('fs');
 const { resolve } = require('path');
-const { run, extractSummary } = require('../../utils/test-utils');
+const { run, extractSummary } = require('../utils/test-utils');
 
 describe('output flag defaults', () => {
     it('should create default file for a given directory', done => {
@@ -19,6 +19,7 @@ describe('output flag defaults', () => {
     });
     it('set default output directory on empty flag', done => {
         const { stdout, stderr } = run(__dirname, ['--entry', './a.js', '--output'], false);
+        // Should print a warning about config fallback since we did not supply --defaults
         expect(stderr).toContain('option has not been set, webpack will fallback to');
         const summary = extractSummary(stdout);
 
@@ -34,7 +35,6 @@ describe('output flag defaults', () => {
     it('should not throw when --defaults flag is passed', done => {
         const { stdout, stderr } = run(__dirname, ['--defaults'], false);
         const summary = extractSummary(stdout);
-        console.log(stdout, stderr);
         const outputDir = 'defaults/dist';
         // When using --defaults it should not print warnings about config fallback
         expect(stderr).toBeFalsy();
