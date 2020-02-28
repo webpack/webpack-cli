@@ -32,38 +32,40 @@ class CompilerOutput {
                 const asset = assets.find(asset => {
                     return asset.name === assetName;
                 });
-                const entrypointChunks = entrypoint.chunks.map(id => {
-                    return chunks.find(chunk => chunk.id === id);
-                });
+                if (asset) {
+                    const entrypointChunks = entrypoint.chunks.map(id => {
+                        return chunks.find(chunk => chunk.id === id);
+                    });
 
-                const chunksOutput = this._createChunksOutput(entrypointChunks);
-                const kbSize = `${(asset.size / 1000).toFixed(2)} kb`;
-                const hasBeenCompiled = asset.comparedForEmit;
-                const bundleTbl = new Table({
-                    chars: {
-                        top: '',
-                        'top-mid': '',
-                        'top-left': '',
-                        'top-right': '',
-                        bottom: '',
-                        'bottom-mid': '',
-                        'bottom-left': '',
-                        'bottom-right': '',
-                        left: '',
-                        'left-mid': '',
-                        mid: '',
-                        'mid-mid': '',
-                        right: '',
-                        'right-mid': '',
-                    },
-                    style: { compact: true },
-                });
-                bundleTbl.push({ 'Bundle Name': asset.name });
-                bundleTbl.push({ 'Compared For Emit': hasBeenCompiled });
-                bundleTbl.push({ 'Bundle size': kbSize });
-                const bundleOutput = bundleTbl.toString() + `\n\nModules:\n${chunksOutput}`;
-                assetsTble.push([entrypoint.name, bundleOutput]);
-                compilationTableEmpty = false;
+                    const chunksOutput = this._createChunksOutput(entrypointChunks);
+                    const kbSize = `${(asset.size / 1000).toFixed(2)} kb`;
+                    const hasBeenCompiled = asset.comparedForEmit;
+                    const bundleTbl = new Table({
+                        chars: {
+                            top: '',
+                            'top-mid': '',
+                            'top-left': '',
+                            'top-right': '',
+                            bottom: '',
+                            'bottom-mid': '',
+                            'bottom-left': '',
+                            'bottom-right': '',
+                            left: '',
+                            'left-mid': '',
+                            mid: '',
+                            'mid-mid': '',
+                            right: '',
+                            'right-mid': '',
+                        },
+                        style: { compact: true },
+                    });
+                    bundleTbl.push({ 'Bundle Name': asset.name });
+                    bundleTbl.push({ 'Compared For Emit': hasBeenCompiled });
+                    bundleTbl.push({ 'Bundle size': kbSize });
+                    const bundleOutput = bundleTbl.toString() + `\n\nModules:\n${chunksOutput}`;
+                    assetsTble.push([entrypoint.name, bundleOutput]);
+                    compilationTableEmpty = false;
+                }
             });
         });
 

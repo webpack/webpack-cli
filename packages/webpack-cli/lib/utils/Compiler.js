@@ -6,6 +6,7 @@ const { CompilerOutput } = require('./CompilerOutput');
 class Compiler {
     constructor() {
         this.output = new CompilerOutput();
+        this.compilerOptions = {};
     }
     setUpHookForCompilation(compilation, outputOptions, options) {
         const { ProgressPlugin } = webpack;
@@ -81,7 +82,7 @@ class Compiler {
             this.output.generateRawOutput(stats);
         } else {
             const statsObj = stats.toJson(outputOptions);
-            if (statsObj.children && statsObj.children.length) {
+            if (statsObj.children && Array.isArray(statsObj.children) && this.compilerOptions && Array.isArray(this.compilerOptions)) {
                 statsObj.children.forEach(child => {
                     this.output.generateFancyOutput(child, statsErrors, processingMessageBuffer);
                 });
@@ -146,6 +147,7 @@ class Compiler {
     async createCompiler(options) {
         try {
             this.compiler = await webpack(options);
+            this.compilerOptions = options;
         } catch (err) {
             process.stdout.write('\n');
             logger.error(`${err.name}: ${err.message}`);
