@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0-beta.7](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.0.0-beta.6...webpack-cli@4.0.0-beta.7) (2020-02-29)
+
+### Bug Fixes
+
+-   **webpack-cli:** fixed support for SCSS entry points ([#1271](https://github.com/webpack/webpack-cli/issues/1271)) ([321bbe5](https://github.com/webpack/webpack-cli/commit/321bbe5d5da9b3c7781ce751133432952998aaa5))
+-   **webpack-cli:** handle promise rejection happening with cli-executor ([#1269](https://github.com/webpack/webpack-cli/issues/1269)) ([afe97f6](https://github.com/webpack/webpack-cli/commit/afe97f69eac2540db94897c39c5bb467cf137e3c))
+
+### Features
+
+-   **webpack-cli:** create a cli executer ([#1255](https://github.com/webpack/webpack-cli/issues/1255)) ([c74574b](https://github.com/webpack/webpack-cli/commit/c74574b8015362def7463c3de9adff0e839735a3))
+
 # [4.0.0-beta.6](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.0.0-beta.5...webpack-cli@4.0.0-beta.6) (2020-02-23)
 
 **Note:** Version bump only for package webpack-cli

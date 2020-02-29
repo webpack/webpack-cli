@@ -1,6 +1,6 @@
 {
   "name": "webpack-cli",
-  "version": "4.0.0-beta.6",
+  "version": "4.0.0-beta.7",
   "description": "CLI for webpack & friends",
   "license": "MIT",
   "repository": {
@@ -27,8 +27,8 @@
     "bin/cli.js"
   ],
   "dependencies": {
-    "@webpack-cli/logger": "^1.0.1-alpha.2",
-    "@webpack-cli/package-utils": "^1.0.1-alpha.2",
+    "@webpack-cli/logger": "^1.0.1-alpha.3",
+    "@webpack-cli/package-utils": "^1.0.1-alpha.3",
     "ansi-escapes": "^4.2.1",
     "chalk": "^3.0.0",
     "cli-table3": "^0.5.1",
