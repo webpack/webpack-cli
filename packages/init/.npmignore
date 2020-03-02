@@ -1,3 +1,9 @@
 types
 tsconfig.json
 *.ts
+**/__mocks__/**
+**/__tests__/**
+.eslintrc
+src
+tsconfig.json
+tsconfig.tsbuildinfo

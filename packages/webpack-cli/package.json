@@ -22,10 +22,6 @@
     "bundler",
     "web"
   ],
-  "files": [
-    "lib",
-    "bin/cli.js"
-  ],
   "dependencies": {
     "@webpack-cli/logger": "^1.0.1-alpha.3",
     "@webpack-cli/package-utils": "^1.0.1-alpha.3",

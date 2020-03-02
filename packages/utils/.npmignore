@@ -3,4 +3,9 @@ __testfixtures__
 types
 *.test.*
 defineTest.*
-*.ts
+**/__mocks__/**
+**/__tests__/**
+.eslintrc
+src
+tsconfig.json
+tsconfig.tsbuildinfo
