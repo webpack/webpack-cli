@@ -1,6 +1,6 @@
 {
   "name": "webpack-cli",
-  "version": "4.0.0-beta.7",
+  "version": "4.0.0-beta.8",
   "description": "CLI for webpack & friends",
   "license": "MIT",
   "repository": {
@@ -23,8 +23,8 @@
     "web"
   ],
   "dependencies": {
-    "@webpack-cli/logger": "^1.0.1-alpha.3",
-    "@webpack-cli/package-utils": "^1.0.1-alpha.3",
+    "@webpack-cli/logger": "^1.0.1-alpha.4",
+    "@webpack-cli/package-utils": "^1.0.1-alpha.4",
     "ansi-escapes": "^4.2.1",
     "chalk": "^3.0.0",
     "cli-table3": "^0.5.1",
@@ -43,7 +43,7 @@
     "webpack": "4.x.x || 5.x.x"
   },
   "devDependencies": {
-    "@webpack-cli/info": "^1.0.1-alpha.3"
+    "@webpack-cli/info": "^1.0.1-alpha.4"
   },
   "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9"
 }

@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/generators",
-  "version": "1.0.1-alpha.4",
+  "version": "1.0.1-alpha.5",
   "description": "Webpack-CLI generators",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -11,9 +11,9 @@
     "access": "public"
   },
   "dependencies": {
-    "@webpack-cli/package-utils": "^1.0.1-alpha.3",
-    "@webpack-cli/utils": "^1.0.1-alpha.4",
-    "@webpack-cli/webpack-scaffold": "^1.0.1-alpha.3",
+    "@webpack-cli/package-utils": "^1.0.1-alpha.4",
+    "@webpack-cli/utils": "^1.0.1-alpha.5",
+    "@webpack-cli/webpack-scaffold": "^1.0.1-alpha.4",
     "chalk": "3.0.0",
     "glob-all": "3.1.0",
     "inquirer-autocomplete-prompt": "1.0.1",

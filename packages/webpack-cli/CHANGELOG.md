@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0-beta.8](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.0.0-beta.7...webpack-cli@4.0.0-beta.8) (2020-03-02)
+
+**Note:** Version bump only for package webpack-cli
+
 # [4.0.0-beta.7](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.0.0-beta.6...webpack-cli@4.0.0-beta.7) (2020-02-29)
 
 ### Bug Fixes
