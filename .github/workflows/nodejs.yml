@@ -34,6 +34,7 @@ jobs:
       run: |
         yarn add -W webpack@${{ matrix.webpack-version }}
         yarn build
+        yarn prepsuite
         yarn test:ci
       env:
         CI: true

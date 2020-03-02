@@ -1,4 +1,8 @@
 **/*.ts
 *.ts
 *.test.*
+**/__mocks__/**
+**/__tests__/**
+src
 tsconfig.json
+tsconfig.tsbuildinfo

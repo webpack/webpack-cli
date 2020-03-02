@@ -39,7 +39,7 @@
     "test:cli": "nyc jest test/ --maxWorkers=4 --reporters=default --reporters=jest-junit",
     "test:packages": "nyc jest packages/ --maxWorkers=4 --reporters=default --reporters=jest-junit",
     "test:ci": "yarn test:cli && yarn test:packages",
-    "travis:integration": "yarn build && yarn test && yarn reportCoverage",
+    "travis:integration": "yarn build && yarn prepsuite && yarn test && yarn reportCoverage",
     "travis:lint": "yarn build && yarn lint",
     "test:watch": "jest test/ packages/ --watch",
     "watch": "yarn build && tsc -w",
@@ -160,7 +160,7 @@
     "ts-jest": "^25.2.1",
     "typedoc": "^0.15.0",
     "typescript": "^3.7.2",
-    "webpack": "^5.0.0-beta.12",
+    "webpack": "^4.42.0",
     "yeoman-test": "^2.1.0"
   }
 }

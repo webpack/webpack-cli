@@ -1,5 +1,9 @@
 test/fixtures
 types
 templates/test
-*.ts
 tsconfig.json
+**/__mocks__/**
+**/__tests__/**
+src
+tsconfig.json
+tsconfig.tsbuildinfo

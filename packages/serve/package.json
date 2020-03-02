@@ -8,9 +8,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "files": [
-    "lib"
-  ],
   "author": "",
   "license": "MIT",
   "dependencies": {
