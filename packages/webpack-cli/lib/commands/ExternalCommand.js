@@ -32,7 +32,7 @@ class ExternalCommand {
                 logger.error(`The command moved into a separate package: ${chalk.keyword('orange')(scopeName)}\n`);
               });
             } catch (err) {
-              logger.error('Action Interrupted')
+              logger.error(`Action Interrupted, use ${chalk.cyan(`webpack-cli help`)} to see possible commands.`)
             }
         }
         return pkgLoc ? require(scopeName).default(...args) : null;
