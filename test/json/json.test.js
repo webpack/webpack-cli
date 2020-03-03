@@ -4,7 +4,7 @@ const { run } = require('../utils/test-utils');
 const webpack = require('webpack');
 
 describe('json flag', () => {
-    it('should match the snapshot of --json command', async () => {
+    it.skip('should match the snapshot of --json command', async () => {
         const { stdout } = run(__dirname, [__dirname, '--json']);
         const jsonstdout = JSON.parse(stdout);
         const compiler = await webpack({
