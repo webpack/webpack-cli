@@ -36,7 +36,7 @@ Available Commands
 Options
 
   --entry string           The entry point of your application.
-  -c, --config string       Provide path to a webpack configuration file
+  -c, --config string      Provide path to a webpack configuration file
   -m, --merge string       Merge a configuration file using webpack-merge
   --progress               Print compilation progress during build
   --silent                 Disable any output that webpack makes
@@ -55,6 +55,7 @@ Options
   -d, --dev                Run development build
   -p, --prod               Run production build
   --mode string            Defines the mode to pass to webpack
+  --no-mode                Sets mode="none" which disables any default behavior
   --version                Get current version
   --node-args string[]     NodeJS flags
 ```

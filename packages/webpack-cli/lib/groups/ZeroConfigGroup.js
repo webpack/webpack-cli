@@ -3,6 +3,7 @@ const { logger } = require('@webpack-cli/logger');
 
 const PRODUCTION = 'production';
 const DEVELOPMENT = 'development';
+const NONE = 'none';
 /**
  * ZeroConfigGroup creates a zero configuration based on the environment
  */
@@ -19,13 +20,22 @@ class ZeroConfigGroup extends GroupHelper {
         if (process.env.NODE_ENV && (process.env.NODE_ENV === PRODUCTION || process.env.NODE_ENV === DEVELOPMENT)) {
             return process.env.NODE_ENV;
         } else {
-            if (this.args.mode && (this.args.dev || this.args.prod)) {
+            if ((this.args.mode || this.args.noMode) && (this.args.dev || this.args.prod)) {
                 logger.warn(
-                    `You provided both mode and ${
+                    `You provided both ${this.args.mode ? 'mode' : 'no-mode'} and ${
                         this.args.prod ? '--prod' : '--dev'
-                    } arguments. You should provide just one. "mode" will be used`,
+                    } arguments. You should provide just one. "${this.args.mode ? 'mode' : 'no-mode'}" will be used`,
                 );
-                return this.args.mode;
+                if (this.args.mode){
+                    return this.args.mode ;
+                } else {
+                    return NONE ;
+                }
+            }
+            if (this.args.noMode && this.args.mode) {
+                logger.warn(
+                    'You Provided both mode and no-mode arguments. You Should Provide just one. "mode" will be used.'
+                )
             }
             if (this.args.mode) {
                 return this.args.mode;
@@ -34,6 +44,8 @@ class ZeroConfigGroup extends GroupHelper {
                 return PRODUCTION;
             } else if (this.args.dev) {
                 return DEVELOPMENT;
+            } else if (this.args.noMode) {
+                return NONE;
             }
             return PRODUCTION;
         }
