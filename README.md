@@ -18,6 +18,7 @@
 
 [![npm][npm]][npm-url]
 [![Build Status][build-status]][build-status-url]
+[![Node CI][node-ci]][node-ci-url]
 [![Build2 Status][build-status-azure]][build-status-azure-url]
 [![deps][deps]][deps-url]
 [![Code Climate][maintainability]][maintainability-url]
