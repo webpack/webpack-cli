@@ -20,7 +20,7 @@
 [![Build Status][build-status]][build-status-url]
 [![Build2 Status][build-status-azure]][build-status-azure-url]
 [![deps][deps]][deps-url]
-[![Code Climate][maintainability]][maintainability-url]
+[![Codacy][code-quality]][code-quality-url]
 [![chat on gitter][chat]][chat-url]
 [![Install Size][size]][size-url]
 [![Downloads][downloads]][downloads-url]
@@ -126,8 +126,8 @@ If you like **webpack**, please consider donating to our [Open Collective](https
 [issue-resolution-url]: https://github.com/webpack/webpack-cli/issues
 [lerna]: https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg
 [lerna-url]: http://www.lernajs.io/
-[maintainability]: https://codeclimate.com/github/webpack/webpack-cli/badges/gpa.svg
-[maintainability-url]: https://codeclimate.com/github/webpack/webpack-cli
+[code-quality]: https://api.codacy.com/project/badge/Grade/0d51cf60fc734d3699fd6eff6054e483
+[code-quality-url]: https://www.codacy.com/app/ev1stensberg/webpack-cli?utm_source=github.com&utm_medium=referral&utm_content=ev1stensberg/webpack-cli&utm_campaign=Badge_Grade
 [npm]: https://img.shields.io/npm/v/webpack-cli.svg
 [npm-url]: https://www.npmjs.com/package/webpack-cli
 [pr-welcome]: https://img.shields.io/badge/PRs%20-welcome-brightgreen.svg
