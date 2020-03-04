@@ -44,15 +44,29 @@ describe('CLI Executer', () => {
         cliExecuter = require('../lib/utils/cli-executer');
     });
 
-    it('runs enquirer options', async () => {
+    it('runs enquirer options then runs webpack', async () => {
         await cliExecuter();
-        expect(runner.mock.calls).toMatchSnapshot();
+
+        // ensure that the webpack runner is called
+        expect(runner.mock.calls.length).toEqual(1);
+        expect(runner.mock.calls[0]).toEqual([[], ['--config', 'test1', '--entry', 'test2', '--progress']]);
+
+        // check that webpack options are actually being displayed that
+        // the user can select from
         expect(multiCalls).toEqual(1);
-        expect(multiChoices).toMatchSnapshot();
+        expect(multiChoices instanceof Array).toBeTruthy();
+        expect(multiChoices.length > 0).toBeTruthy();
+        expect(multiChoices[0]).toMatch(/\-\-entry/);
+
+        // ensure flag names are parsed out correctly
         expect(typeof multiMapper).toEqual('function');
         expect(multiMapper(['--test1: test flag', '--test2: test flag 2'])).toEqual(['--test1', '--test2']);
 
+        // check that the user is then prompted to set values to
+        // some flags
         expect(inputCalls).toEqual(2);
-        expect(inputConstructorObjs).toMatchSnapshot();
+        expect(inputConstructorObjs.length).toEqual(2);
+        expect(inputConstructorObjs[0].message).toEqual('Enter value of the --config flag');
+        expect(inputConstructorObjs[1].message).toEqual('Enter value of the --entry flag');
     });
 });
