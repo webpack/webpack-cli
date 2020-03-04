@@ -15,6 +15,7 @@ class BasicGroup extends GroupHelper {
                 }
                 return result;
             }, []);
+        this._excuted = false;
     }
     resolveFlags() {
         const { args } = this;
@@ -33,12 +34,21 @@ class BasicGroup extends GroupHelper {
                 outputOptions.devtool = args[arg];
             }
             if (arg === 'entry') {
-                options[arg] = this.resolveFilePath(args[arg], 'index.js');
+                // first excute, get the default entry to void defaultEntry override config entry
+                if (this._excuted === false) {
+                    if (args[arg] === null)
+                        options[arg] = this.resolveFilePath(args[arg], 'index.js');
+                } else if (this._excuted === true) {
+                    options[arg] = undefined;
+                    if (args[arg] !== null)
+                        options[arg] = this.resolveFilePath(args[arg], 'index.js');
+                }
             }
         });
         if (outputOptions['dev']) {
             outputOptions['prod'] = undefined;
         }
+        this._excuted = true;
     }
 
     run() {
