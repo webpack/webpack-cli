@@ -28,6 +28,7 @@
 [![GitHub contributors][contributors]][contributors-url]
 [![Issue resolution][issue-resolution]][issue-resolution-url]
 [![PR's welcome][pr-welcome]][pr-welcome-url]
+[![Node CI][node-ci]][node-ci-url]
 
 ## Table of Contents
 
@@ -134,3 +135,5 @@ If you like **webpack**, please consider donating to our [Open Collective](https
 [pr-welcome-url]: https://github.com/webpack/webpack-cli/blob/next/.github/CONTRIBUTING.md
 [size]: https://packagephobia.now.sh/badge?p=webpack-cli
 [size-url]: https://packagephobia.now.sh/result?p=webpack-cli
+[node-ci]: https://github.com/webpack/webpack-cli/workflows/Node%20CI/badge.svg
+[node-ci-url]: https://github.com/webpack/webpack-cli/workflows/Node%20CI/badge.svg?branch=next
