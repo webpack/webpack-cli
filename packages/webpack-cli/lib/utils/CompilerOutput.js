@@ -110,8 +110,8 @@ class CompilerOutput {
         return statsObj;
     }
 
-    generateRawOutput(stats) {
-        process.stdout.write(stats.toString());
+    generateRawOutput(stats, options) {
+        process.stdout.write(stats.toString(options.stats));
     }
 
     generateJsonOutput() {}

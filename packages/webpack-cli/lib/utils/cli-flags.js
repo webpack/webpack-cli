@@ -1,4 +1,6 @@
 const { logger } = require('@webpack-cli/logger');
+const StatsGroup = require('../groups/StatsGroup');
+
 const HELP_GROUP = 'help';
 const CONFIG_GROUP = 'config';
 const BASIC_GROUP = 'basic';
@@ -243,7 +245,7 @@ module.exports = {
         },
         {
             name: 'prefetch',
-            usage: '--prefetch <request>',
+            usage: 'webpack --prefetch <request>',
             type: String,
             group: ADVANCED_GROUP,
             description: 'Prefetch this request',
@@ -251,17 +253,17 @@ module.exports = {
         },
         {
             name: 'json',
-            usage: '--json',
+            usage: 'webpack --json',
             type: Boolean,
             alias: 'j',
             description: 'Prints result as JSON',
             group: DISPLAY_GROUP,
         },
         {
-            name: 'standard',
-            usage: '--standard',
+            name: 'pretty',
+            usage: 'webpack --pretty',
             type: Boolean,
-            description: 'Prints standard output',
+            description: 'Prints a fancy output',
             group: DISPLAY_GROUP,
         },
         {
@@ -321,6 +323,27 @@ module.exports = {
             multiple: true,
             group: BASIC_GROUP,
             description: 'NodeJS flags',
+        },
+        {
+            name: 'stats',
+            usage: 'webpack --stats verbose',
+            type: value => {
+                if (StatsGroup.validOptions().includes(value)) {
+                    return value;
+                }
+                logger.warn('No value recognised for "stats" option');
+                return 'normal';
+            },
+            group: DISPLAY_GROUP,
+            description: 'It instructs webpack on how to treat the stats',
+            link: 'https://webpack.js.org/configuration/stats/#stats',
+        },
+        {
+            name: 'verbose',
+            usage: 'webpack --verbose',
+            type: Boolean,
+            group: DISPLAY_GROUP,
+            description: 'It tells to webpack to output all the information',
         },
         /* 		{
 			name: "analyze",

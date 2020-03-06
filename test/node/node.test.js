@@ -1,7 +1,7 @@
 'use strict';
 const { stat } = require('fs');
-const { resolve, sep } = require('path');
-const { run, extractSummary } = require('../utils/test-utils');
+const { resolve } = require('path');
+const { run } = require('../utils/test-utils');
 const parseArgs = require('../../packages/webpack-cli/lib/utils/parse-args');
 
 describe('node flags', () => {
@@ -53,13 +53,6 @@ describe('node flags', () => {
         );
         expect(stdout).toContain('---from bootstrap.js---');
         expect(stdout).toContain('---from bootstrap2.js---');
-        const summary = extractSummary(stdout);
-        const outputDir = 'node/bin';
-        const outDirectoryFromCompiler = summary['Output Directory'].split(sep);
-        const outDirToMatch = outDirectoryFromCompiler
-            .slice(outDirectoryFromCompiler.length - 2, outDirectoryFromCompiler.length)
-            .join('/');
-        expect(outDirToMatch).toContain(outputDir);
         stat(resolve(__dirname, './bin/main.bundle.js'), (err, stats) => {
             expect(err).toBe(null);
             expect(stats.isFile()).toBe(true);

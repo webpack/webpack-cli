@@ -50,6 +50,7 @@ Options
   -h, --hot                Enables Hot Module Replacement
   -s, --sourcemap string   Determine source maps to use
   --prefetch string        Prefetch this request
+  --pretty                 Prints a fancy output
   -j, --json               Prints result as JSON
   --standard               Prints standard output
   -d, --dev                Run development build
@@ -58,6 +59,8 @@ Options
   --no-mode                Sets mode="none" which disables any default behavior
   --version                Get current version
   --node-args string[]     NodeJS flags
+  --stats type             It instructs webpack on how to treat the stats
+  --verbose                It tells to webpack to output all the information
 ```
 
 ## Defaults
