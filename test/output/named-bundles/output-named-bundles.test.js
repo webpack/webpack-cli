@@ -27,13 +27,6 @@ describe('output flag named bundles', () => {
         done();
     });
 
-    it('should throw error on same bundle name for multiple entries', done => {
-        const { stderr } = run(__dirname, ['-c', resolve(__dirname, 'webpack.single.config.js')], false);
-        const errMsg = 'Multiple chunks emit assets to the same filename bundle.js';
-        expect(stderr).toContain(errMsg);
-        done();
-    });
-
     it('should not throw error on same bundle name for multiple entries with defaults', done => {
         const { stderr } = run(__dirname, ['-c', resolve(__dirname, 'webpack.defaults.config.js'), '--defaults'], false);
 
