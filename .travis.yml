@@ -26,6 +26,7 @@ install:
     - lerna bootstrap
     - yarn global add codecov
     - yarn global add eslint
+    - yarn prepsuite
 script:
     - yarn travis:lint
     - yarn test:ci
