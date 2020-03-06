@@ -3,11 +3,11 @@ const { stat } = require('fs');
 const { resolve } = require('path');
 const { run, extractSummary } = require('../../../utils/test-utils');
 
-describe('single entry with entry in config', () => {
-    it('should use config entry if config entry existed', done => {
-        const { stdout } = run(__dirname, ['-c', '../1.js', '../index.js'], false);
+describe('config entry and command entry all exists', () => {
+    it('should use command entry if config command existed', done => {
+        const { stdout } = run(__dirname, ['-c', '../1.js', './index.js'], false);
         const summary = extractSummary(stdout);
-        const outputDir = 'entry-without-config/binary';
+        const outputDir = 'entry-with-command/binary';
         expect(summary['Output Directory']).toContain(outputDir);
 
         expect(stdout).toContain('./index.js');

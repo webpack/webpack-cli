@@ -3,7 +3,7 @@ const { stat } = require('fs');
 const { resolve } = require('path');
 const { run, extractSummary } = require('../../../utils/test-utils');
 
-describe('single entry with entry in config', () => {
+describe('default entry and config entry all exists', () => {
     it('should use config entry if config entry existed', done => {
         const { stdout } = run(__dirname, ['-c', '../1.js'], false);
         const summary = extractSummary(stdout);
