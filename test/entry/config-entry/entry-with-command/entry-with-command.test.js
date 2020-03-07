@@ -3,7 +3,7 @@ const { stat } = require('fs');
 const { resolve } = require('path');
 const { run, extractSummary } = require('../../../utils/test-utils');
 
-describe('config entry and command entry all exists', () => {
+describe('config entry and command entry all exist', () => {
     it('should use command entry if config command existed', done => {
         const { stdout } = run(__dirname, ['-c', '../1.js', './index.js'], false);
         const summary = extractSummary(stdout);
