@@ -264,7 +264,6 @@ class WebpackCLI extends GroupHelper {
         await Promise.resolve()
             .then(() => this._handleGroupHelper(this.zeroConfigGroup))
             .then(() => this._handleDefaultEntry())
-            .then(() => this._handleGroupHelper(this.basicGroup))
             .then(() => this._handleGroupHelper(this.configGroup))
             .then(() => this._handleGroupHelper(this.outputGroup))
             .then(() => this._handleGroupHelper(this.basicGroup))
