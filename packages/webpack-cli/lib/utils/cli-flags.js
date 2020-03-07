@@ -1,3 +1,4 @@
+const { logger } = require('@webpack-cli/logger');
 const HELP_GROUP = 'help';
 const CONFIG_GROUP = 'config';
 const BASIC_GROUP = 'basic';
@@ -285,11 +286,17 @@ module.exports = {
         {
             name: 'mode',
             usage: '--mode <development | production>',
-            type: String,
+            type: (value) => {
+                if (value === 'development' || value === 'production' || value === 'none') {
+                    return value ;
+                } else {
+                    logger.warn('You provided an invalid value for "mode" option.');
+                    return 'production' ;
+                }
+            },
             group: ZERO_CONFIG_GROUP,
             description: 'Defines the mode to pass to webpack',
-            link: 'https://webpack.js.org/concepts/#mode',
-            acceptedValues: ["development", "production"]
+            link: 'https://webpack.js.org/concepts/#mode'
         },
         {
             name: 'no-mode',
