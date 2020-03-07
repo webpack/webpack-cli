@@ -15,10 +15,10 @@ class BasicGroup extends GroupHelper {
                 }
                 return result;
             }, []);
-        this._excuted = false;
     }
     resolveFlags() {
         const { args } = this;
+        if (!args) return
         const { outputOptions, options } = this.opts;
         Object.keys(args).forEach(arg => {
             if (this.WEBPACK_OPTION_FLAGS.includes(arg)) {
@@ -34,21 +34,12 @@ class BasicGroup extends GroupHelper {
                 outputOptions.devtool = args[arg];
             }
             if (arg === 'entry') {
-                // first excute, get the default entry to void defaultEntry override config entry
-                if (this._excuted === false) {
-                    if (args[arg] === null)
-                        options[arg] = this.resolveFilePath(args[arg], 'index.js');
-                } else if (this._excuted === true) {
-                    options[arg] = undefined;
-                    if (args[arg] !== null)
-                        options[arg] = this.resolveFilePath(args[arg], 'index.js');
-                }
+                options[arg] = this.resolveFilePath(args[arg], 'index.js');
             }
         });
         if (outputOptions['dev']) {
             outputOptions['prod'] = undefined;
         }
-        this._excuted = true;
     }
 
     run() {

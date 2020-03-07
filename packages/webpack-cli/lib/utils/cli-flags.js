@@ -124,7 +124,6 @@ module.exports = {
             name: 'entry',
             usage: '--entry <path to entry file> e.g. ./src/main.js',
             type: String,
-            defaultValue: null,
             defaultOption: true,
             group: BASIC_GROUP,
             description: 'The entry point of your application.',
