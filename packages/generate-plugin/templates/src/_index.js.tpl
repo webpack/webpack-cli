@@ -5,8 +5,8 @@
 
 class <%= name %> {
   apply(compiler) {
-    compiler.hooks.done.tap('Hello World Plugin', (
-      stats /* stats is passed as argument when done hook is tapped.  */
+    compiler.hooks.done.tap('<%= name %>', (
+      stats /* stats is passed as an argument when done hook is tapped.  */
     ) => {
       console.log('Hello World!');
     });
