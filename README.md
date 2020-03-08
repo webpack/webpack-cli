@@ -107,6 +107,209 @@ You can read more about [Scaffolding](https://webpack.js.org/guides/scaffolding)
 
 The webpack family welcomes any contributor, small or big. We are happy to elaborate, guide you through the source code and find issues you might want to work on! To get started have a look at our [documentation on contributing](./.github/CONTRIBUTING.md).
 
+### Folder Structure
+
+```
+├───.github
+│   ├───ISSUE_TEMPLATE
+│   └───workflows
+├───docs
+│   ├───assets
+│   │   ├───css
+│   │   ├───images
+│   │   └───js
+│   ├───classes
+│   ├───enums
+│   ├───interfaces
+│   └───modules
+├───packages
+│   ├───generate-loader
+│   │   ├───examples
+│   │   │   └───simple
+│   │   │       └───src
+│   │   ├───lib
+│   │   ├───src
+│   │   ├───templates
+│   │   │   ├───examples
+│   │   │   │   └───simple
+│   │   │   │       └───src
+│   │   │   ├───src
+│   │   │   └───test
+│   │   │       └───fixtures
+│   │   └───test
+│   │       └───fixtures
+│   ├───generate-plugin
+│   │   ├───examples
+│   │   │   └───simple
+│   │   │       └───src
+│   │   ├───lib
+│   │   ├───src
+│   │   ├───templates
+│   │   │   ├───examples
+│   │   │   │   └───simple
+│   │   │   │       └───src
+│   │   │   ├───src
+│   │   │   └───test
+│   │   │       └───fixtures
+│   │   └───test
+│   │       └───fixtures
+│   ├───generators
+│   │   ├───src
+│   │   │   ├───types
+│   │   │   └───utils
+│   │   ├───templates
+│   │   └───__tests__
+│   ├───info
+│   │   ├───src
+│   │   └───__tests__
+│   ├───init
+│   │   └───src
+│   │       └───types
+│   ├───logger
+│   │   └───src
+│   ├───migrate
+│   │   ├───src
+│   │   │   ├───bannerPlugin
+│   │   │   ├───commonsChunkPlugin
+│   │   │   ├───extractTextPlugin
+│   │   │   ├───loaderOptionsPlugin
+│   │   │   ├───loaders
+│   │   │   ├───moduleConcatenationPlugin
+│   │   │   ├───namedModulesPlugin
+│   │   │   ├───noEmitOnErrorsPlugin
+│   │   │   ├───outputPath
+│   │   │   ├───removeDeprecatedPlugins
+│   │   │   ├───removeJsonLoader
+│   │   │   ├───resolve
+│   │   │   ├───types
+│   │   │   └───uglifyJsPlugin
+│   │   ├───__testfixtures__
+│   │   └───__tests__
+│   │       ├───bannerPlugin
+│   │       │   ├───__snapshots__
+│   │       │   └───__testfixtures__
+│   │       ├───commonsChunkPlugin
+│   │       │   ├───__snapshots__
+│   │       │   └───__testfixtures__
+│   │       ├───extractTextPlugin
+│   │       │   ├───__snapshots__
+│   │       │   └───__testfixtures__
+│   │       ├───loaderOptionsPlugin
+│   │       │   ├───__snapshots__
+│   │       │   └───__testfixtures__
+│   │       ├───loaders
+│   │       │   ├───__snapshots__
+│   │       │   └───__testfixtures__
+│   │       ├───moduleConcatenationPlugin
+│   │       │   ├───__snapshots__
+│   │       │   └───__testfixtures__
+│   │       ├───namedModulesPlugin
+│   │       │   ├───__snapshots__
+│   │       │   └───__testfixtures__
+│   │       ├───noEmitOnErrorsPlugin
+│   │       │   ├───__snapshots__
+│   │       │   └───__testfixtures__
+│   │       ├───outputPath
+│   │       │   ├───__snapshots__
+│   │       │   └───__testfixtures__
+│   │       ├───removeDeprecatedPlugins
+│   │       │   ├───__snapshots__
+│   │       │   └───__testfixtures__
+│   │       ├───removeJsonLoader
+│   │       │   ├───__snapshots__
+│   │       │   └───__testfixtures__
+│   │       ├───resolve
+│   │       │   ├───__snapshots__
+│   │       │   └───__testfixtures__
+│   │       ├───uglifyJsPlugin
+│   │       │   ├───__snapshots__
+│   │       │   └───__testfixtures__
+│   │       └───__snapshots__
+│   ├───package-utils
+│   │   ├───src
+│   │   └───__tests__
+│   ├───serve
+│   │   ├───src
+│   │   └───__tests__
+│   ├───utils
+│   │   ├───src
+│   │   │   └───types
+│   │   └───__tests__
+│   │       ├───recursive-parser
+│   │       │   ├───__snapshots__
+│   │       │   └───__testfixtures__
+│   │       └───__snapshots__
+│   ├───webpack-cli
+│   │   ├───bin
+│   │   ├───lib
+│   │   │   ├───commands
+│   │   │   ├───groups
+│   │   │   └───utils
+│   │   └───__tests__
+│   └───webpack-scaffold
+│       ├───src
+│       └───__tests__
+│           └───__snapshots__
+├───scripts
+├───smoketests
+│   └───watch
+└───test
+    ├───config
+    │   ├───basic
+    │   ├───empty
+    │   └───type
+    │       ├───array
+    │       ├───function
+    │       └───promise
+    ├───config-lookup
+    │   ├───dotfolder-array
+    │   │   └───.webpack
+    │   └───dotfolder-single
+    │       └───.webpack
+    ├───defaults
+    │   ├───with-config-and-entry
+    │   └───without-config-and-entry
+    ├───entry
+    │   ├───defaults-empty
+    │   ├───defaults-index
+    │   └───scss
+    ├───env
+    │   ├───array
+    │   ├───object
+    │   └───prod
+    ├───global
+    ├───help
+    ├───info
+    ├───json
+    ├───merge
+    │   ├───config
+    │   └───defaults
+    ├───mode
+    │   ├───dev
+    │   │   └───src
+    │   └───prod
+    │       └───src
+    ├───no-mode
+    │   └───src
+    ├───node
+    ├───output
+    │   ├───named-bundles
+    │   └───pretty
+    │       └───src
+    ├───serve
+    ├───source-map
+    │   ├───array
+    │   └───object
+    ├───standard
+    │   └───src
+    ├───target
+    │   └───node
+    ├───typescript
+    ├───unknown
+    ├───utils
+    └───version
+```
+
 ## Open Collective
 
 If you like **webpack**, please consider donating to our [Open Collective](https://opencollective.com/webpack) to help us maintain it.
