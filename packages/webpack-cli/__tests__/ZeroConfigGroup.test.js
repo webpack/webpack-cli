@@ -42,4 +42,15 @@ describe('GroupHelper', function() {
         const result = group.run();
         expect(result.options.mode).toEqual('development');
     });
+
+    it('should handle the mode option [none]', () => {
+        const group = new ZeroConfigGroup([
+            {
+                mode: 'none',
+            },
+        ]);
+
+        const result = group.run();
+        expect(result.options.mode).toEqual('none');
+    });
 });
