@@ -1,10 +1,7 @@
 const { existsSync } = require('fs');
 const { resolve, sep, dirname, parse } = require('path');
 const { extensions } = require('interpret');
-const { logger } = require('@webpack-cli/logger');
-const { packageExists, promptInstallation } = require('@webpack-cli/package-utils');
 const GroupHelper = require('../utils/GroupHelper');
-const chalk = require('chalk');
 const rechoir = require('rechoir');
 
 const DEFAULT_CONFIG_LOC = [
