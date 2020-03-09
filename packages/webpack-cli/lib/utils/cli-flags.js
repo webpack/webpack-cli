@@ -343,7 +343,7 @@ module.exports = {
             usage: 'webpack --verbose',
             type: Boolean,
             group: DISPLAY_GROUP,
-            description: 'It tells to webpack to output all the information',
+            description: 'It tells webpack to output all the information',
         },
         /* 		{
 			name: "analyze",
