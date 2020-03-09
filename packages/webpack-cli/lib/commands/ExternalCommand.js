@@ -27,9 +27,13 @@ class ExternalCommand {
         const scopeName = packagePrefix + '/' + name;
         let pkgLoc = packageExists(scopeName);
         if (!pkgLoc) {
-            pkgLoc = await promptInstallation(`${scopeName}`, () => {
+            try {
+            	pkgLoc = await promptInstallation(`${scopeName}`, () => {
                 logger.error(`The command moved into a separate package: ${chalk.keyword('orange')(scopeName)}\n`);
-            });
+              });
+            } catch (err) {
+              logger.error(`Action Interrupted, use ${chalk.cyan(`webpack-cli help`)} to see possible commands.`)
+            }
         }
         return pkgLoc ? require(scopeName).default(...args) : null;
     }
