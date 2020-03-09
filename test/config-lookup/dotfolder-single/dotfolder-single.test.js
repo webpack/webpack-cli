@@ -3,7 +3,7 @@
 const { stat } = require('fs');
 const { resolve } = require('path');
 
-const { run, extractSummary } = require('../../utils/test-utils');
+const { run } = require('../../utils/test-utils');
 
 describe('dotfolder single config lookup', () => {
     it('should find a webpack configuration in a dotfolder', done => {
@@ -11,11 +11,7 @@ describe('dotfolder single config lookup', () => {
         expect(stderr).not.toBeUndefined();
         expect(stdout).not.toBeUndefined();
 
-        const summary = extractSummary(stdout);
-        const outputDir = 'config-lookup/dotfolder-single/dist';
-
-        expect(summary['Output Directory']).toContain(outputDir);
-        expect(stderr).not.toContain('Module not found');
+        expect(stdout).not.toContain('Module not found');
         stat(resolve(__dirname, './dist/main.js'), (err, stats) => {
             expect(err).toBe(null);
             expect(stats.isFile()).toBe(true);

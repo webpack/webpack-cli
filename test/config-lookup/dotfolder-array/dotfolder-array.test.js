@@ -1,7 +1,7 @@
 'use strict';
 const { stat } = require('fs');
-const { resolve, sep } = require('path');
-const { run, extractSummary } = require('../../utils/test-utils');
+const { resolve } = require('path');
+const { run } = require('../../utils/test-utils');
 
 describe('dotfolder array config lookup', () => {
     it('should find a webpack array configuration in a dotfolder', done => {
@@ -9,13 +9,6 @@ describe('dotfolder array config lookup', () => {
         expect(stderr).not.toBeUndefined();
         expect(stdout).not.toBeUndefined();
 
-        const summary = extractSummary(stdout);
-        const outputDir = 'config-lookup/dotfolder-array/dist';
-        const outDirectoryFromCompiler = summary['Output Directory'].split(sep);
-        const outDirToMatch = outDirectoryFromCompiler
-            .slice(outDirectoryFromCompiler.length - 3, outDirectoryFromCompiler.length)
-            .join('/');
-        expect(outDirToMatch).toContain(outputDir);
         stat(resolve(__dirname, './dist/dist-commonjs.js'), (err, stats) => {
             expect(err).toBe(null);
             expect(stats.isFile()).toBe(true);

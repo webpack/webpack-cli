@@ -18,24 +18,24 @@ describe('global flag', () => {
     });
 
     it('is able to inject one variable to global scope', () => {
-        const { stderr } = run(__dirname, ['--global', 'myVar', './global1.js']);
-        expect(stderr).toContain('option has not been set, webpack will fallback to');
+        const { stdout } = run(__dirname, ['--global', 'myVar', './global1.js']);
+        expect(stdout).toContain('option has not been set, webpack will fallback to');
         const executable = path.join(__dirname, './bin/main.js');
         const bundledScript = spawnSync('node', [executable]);
         expect(bundledScript.stdout).toEqual('myVar ./global1.js');
     });
 
     it('is able to inject multiple variables to global scope', () => {
-        const { stderr } = run(__dirname, ['--global', 'myVar', './global1.js', '--global', 'myVar2', './global2.js']);
-        expect(stderr).toContain('option has not been set, webpack will fallback to');
+        const { stdout } = run(__dirname, ['--global', 'myVar', './global1.js', '--global', 'myVar2', './global2.js']);
+        expect(stdout).toContain('option has not been set, webpack will fallback to');
         const executable = path.join(__dirname, './bin/main.js');
         const bundledScript = spawnSync('node', [executable]);
         expect(bundledScript.stdout).toEqual('myVar ./global1.js\nmyVar ./global2.js');
     });
 
     it('understands = syntax', () => {
-        const { stderr } = run(__dirname, ['--global', 'myVar', './global1.js', '--global', 'myVar2=./global2.js']);
-        expect(stderr).toContain('option has not been set, webpack will fallback to');
+        const { stdout } = run(__dirname, ['--global', 'myVar', './global1.js', '--global', 'myVar2=./global2.js']);
+        expect(stdout).toContain('option has not been set, webpack will fallback to');
         const executable = path.join(__dirname, './bin/main.js');
         const bundledScript = spawnSync('node', [executable]);
         expect(bundledScript.stdout).toEqual('myVar ./global1.js\nmyVar ./global2.js');
