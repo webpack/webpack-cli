@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable */ // Disable typescript check
 jest.mock('webpack-cli/lib/runner');
 jest.mock('enquirer');
 
@@ -26,7 +25,7 @@ describe('@webpack-cli/run', () => {
                 multiMapper = obj.result;
             }
 
-            run(): string[] {
+            run() {
                 return ['--config', '--entry', '--progress'];
             }
         };
@@ -37,7 +36,7 @@ describe('@webpack-cli/run', () => {
                 inputConstructorObjs.push(obj);
             }
 
-            run(): string {
+            run(obj) {
                 inputRunCount++;
                 return this.mapper(`test${inputRunCount}`);
             }
