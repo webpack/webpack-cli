@@ -1,11 +1,16 @@
 # `@webpack-cli/run`
+Programmatically execute CLI interactively using prompts
 
-> TODO: description
+## Installation
+
+```bash
+yarn install webpack-cli @webpack-cli/run
+```
+`webpack-cli` is a peer dependency
 
 ## Usage
 
-```
-const run = require('@webpack-cli/run');
-
-// TODO: DEMONSTRATE API
+```js
+const cliExecuter = require('@webpack-cli/run');
+cliExecuter();
 ```
