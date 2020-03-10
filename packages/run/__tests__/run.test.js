@@ -4,7 +4,7 @@ jest.mock('enquirer');
 const runner = require('webpack-cli/lib/runner');
 runner.mockImplementation(() => {});
 
-describe('CLI Executer', () => {
+describe('@webpack-cli/run', () => {
     let cliExecuter = null;
     let multiCalls = 0;
     let multiChoices = null;
@@ -41,7 +41,7 @@ describe('CLI Executer', () => {
             }
         };
 
-        cliExecuter = require('..');
+        cliExecuter = require('..').default;
     });
 
     it('runs enquirer options then runs webpack', async () => {
