@@ -78,9 +78,7 @@ class Compiler {
     }
 
     generateOutput(outputOptions, stats, statsErrors, processingMessageBuffer) {
-        if (outputOptions.standard) {
-            this.output.generateRawOutput(stats);
-        } else {
+        if (outputOptions.pretty) {
             const statsObj = stats.toJson(outputOptions);
             if (statsObj.children && Array.isArray(statsObj.children) && this.compilerOptions && Array.isArray(this.compilerOptions)) {
                 statsObj.children.forEach(child => {
@@ -89,6 +87,8 @@ class Compiler {
                 return;
             }
             this.output.generateFancyOutput(statsObj, statsErrors, processingMessageBuffer);
+        } else {
+            this.output.generateRawOutput(stats, this.compilerOptions);
         }
         process.stdout.write('\n');
         if (outputOptions.watch) {

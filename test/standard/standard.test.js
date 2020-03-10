@@ -1,8 +1,8 @@
 const { run } = require('../utils/test-utils');
 
-describe('standard flag', () => {
+describe('standard output', () => {
     it('should print standard output', () => {
-        const { stdout, stderr } = run(__dirname, ['--standard']);
+        const { stdout, stderr } = run(__dirname);
         expect(stdout).toBeTruthy();
         expect(stdout).toContain('Hash');
         expect(stdout).toContain('Version');

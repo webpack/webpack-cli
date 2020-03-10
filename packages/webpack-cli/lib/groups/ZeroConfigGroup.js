@@ -56,8 +56,10 @@ class ZeroConfigGroup extends GroupHelper {
         let defaultConfig;
         if (defaultConfigType === PRODUCTION) {
             defaultConfig = require('../utils/production-config')();
-        } else {
+        } else if (defaultConfigType === DEVELOPMENT) {
             defaultConfig = require('../utils/development-config')();
+        } else {
+            defaultConfig = require('../utils/none-config')();
         }
 
         const isEntryObject = defaultConfig.entry && defaultConfig.entry instanceof Object;
