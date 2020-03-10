@@ -51,7 +51,7 @@ function getEntryFolders(self): string[] {
 export function getBabelLoader(includeFolders: string[]): Rule {
 	const include = includeFolders.map((folder: string): string => `path.resolve(__dirname, '${folder}')`);
 	return {
-		test: "/.(js|jsx)$/",
+		test: "/\\.(js|jsx)$/",
 		include,
 		loader: "'babel-loader'"
 	};
@@ -66,7 +66,7 @@ export function getBabelLoader(includeFolders: string[]): Rule {
 export function getTypescriptLoader(includeFolders: string[]): Rule {
 	const include = includeFolders.map((folder: string): string => `path.resolve(__dirname, '${folder}')`);
 	return {
-		test: "/.(ts|tsx)?$/",
+		test: "/\\.(ts|tsx)$/",
 		loader: "'ts-loader'",
 		include,
 		exclude: ["/node_modules/"]
