@@ -1,7 +1,7 @@
 const WebpackCLI = require('./webpack-cli');
 const { core, commands } = require('./utils/cli-flags');
 const logger = require('./utils/logger');
-const cliExecuter = require('./utils/cli-executer');
+const cliExecuter = require('@webpack-cli/run').default;
 
 require('./utils/process-log');
 

@@ -1,0 +1,39 @@
+{
+  "name": "@webpack-cli/run",
+  "version": "1.0.0",
+  "description": "Execute CLI interactivly using prompts",
+  "keywords": [
+    "webpack-cli"
+  ],
+  "author": "rishabh3112 <rishabh31121999@gmail.com>",
+  "homepage": "https://github.com/webpack/webpack-cli.git",
+  "license": "MIT",
+  "main": "lib/run.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.yarnpkg.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webpack/webpack-cli.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/webpack/webpack-cli/issues"
+  },
+  "dependencies": {
+    "chalk": "^3.0.0",
+    "enquirer": "^2.3.4"
+  },
+  "peerDependencies": {
+    "webpack-cli": "^3.3.11"
+  }
+}
