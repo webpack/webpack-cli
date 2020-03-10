@@ -79,8 +79,10 @@ function crawl(spacing, dir, level) {
                     break;
                 case 'package-utils':
                     description = '## To manage packages and modules';
+                    break;
                 case 'webpack-scaffold':
                     description = '## It contains utility functions to help you work with Inquirer prompting and scaffolding';
+                    break;
                 case 'smoketests':
                     description = '## It contains minimal set of tests run on each build';
                     break;
