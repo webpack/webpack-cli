@@ -1,5 +1,6 @@
 {
     "root": true,
+    "ignorePatterns": ["*.tests.js"],
     "extends": [
         "plugin:@typescript-eslint/recommended",
         "prettier",

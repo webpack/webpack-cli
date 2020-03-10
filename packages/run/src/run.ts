@@ -1,10 +1,12 @@
-const { MultiSelect, Input } = require('enquirer');
 import runner from 'webpack-cli/lib/runner';
 import logger from 'webpack-cli/lib/utils/logger';
 import { core as cliArgs } from 'webpack-cli/lib/utils/cli-flags';
 import chalk from 'chalk';
 
-async function prompter() {
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { MultiSelect, Input } = require('enquirer');
+
+async function prompter(): Promise<string[]> {
     const args = [];
     const typePrompt = new MultiSelect({
         name: 'type',
@@ -12,11 +14,11 @@ async function prompter() {
         choices: cliArgs.reduce((prev, curr) => {
             return [...prev, `--${curr.name}: ${curr.description}`];
         }, []),
-        result: value => {
+        result: (value: string[] ): string[] => {
             return value.map(flag => flag.split(':')[0]);
         },
     });
-    const selections = await typePrompt.run();
+    const selections: string[] = await typePrompt.run();
     const boolArgs = [];
     const questions = [];
 
@@ -34,13 +36,13 @@ async function prompter() {
             name: 'value',
             message: `Enter value of the ${selection} flag`,
             initial: options.defaultValue,
-            result: value => [selection, value],
+            result: (value: string): string[] => [selection, value],
         });
         questions.push(valuePrompt);
     });
 
     // Create promise chain to force synchronous prompt of question
-    for await (let question of questions) {
+    for await (const question of questions) {
         const flagArgs = await question.run();
         args.push(...flagArgs);
     }
@@ -48,7 +50,7 @@ async function prompter() {
     return [...args, ...boolArgs];
 }
 
-export default async function run() {
+export default async function run(): Promise<void> {
     try {
         const args = await prompter();
         process.stdout.write('\n');
