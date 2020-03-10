@@ -1,6 +1,6 @@
 /**
  *
- * Converts dash-seperated strings to camel case
+ * Converts dash-separated strings to camel case
  *
  * @param {String} str - the string to convert
  * 
