@@ -27,7 +27,7 @@
     "build": "node scripts/buildPackages.js",
     "prepsuite": "node scripts/prepareSuite.js",
     "clean:all": "rimraf node_modules packages/*/{node_modules}",
-    "commit": "git-cz",
+    "commit": "node scripts/createProjectFolderStructure.js &&  git add folder-structure.md && git-cz",
     "docs": "typedoc",
     "format": "eslint --fix . --ext .js,.ts",
     "lint": "eslint . --ext .js,.ts",
