@@ -5,7 +5,6 @@ import { argv } from './options';
 
 import { AVAILABLE_COMMANDS, AVAILABLE_FORMATS, IGNORE_FLAGS } from './commands';
 import { configReader, fetchConfig, resolveFilePath, getNameFromPath } from './configParser';
-import { renderTable } from './renderTable';
 
 interface Information {
     Binaries?: string[];
@@ -56,9 +55,6 @@ export default async function info(customArgv: object): Promise<string[]> {
         const config = fetchConfig(fullConfigPath);
         const parsedConfig = configReader(config);
 
-        const stringifiedTable = renderTable(parsedConfig, fileName);
-        if (args.config) return parsedConfig;
-        else process.stdout.write(stringifiedTable + '\n');
     } else {
         Object.keys(args).forEach((flag: string) => {
             if (IGNORE_FLAGS.includes(flag)) {
