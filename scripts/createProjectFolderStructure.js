@@ -40,15 +40,8 @@ function crawl(spacing, dir, level) {
     var files = fs.readdirSync(dir);
     for (var x in files) {
         //ignored folders
-        const blacklist = {
-            '.git': true,
-            '.nyc_output': true,
-            coverage: true,
-            node_modules: true,
-            bin: true,
-            lib: true,
-        };
-        if (!blacklist[files[x]]) {
+        const blacklist = ['.git', '.nyc_output', 'coverage', 'node_modules', 'bin', 'lib'];
+        if (!blacklist.includes(files[x])) {
             switch (files[x]) {
                 case '.github':
                     description = '## Contains files required by Github for proper workflow';
@@ -91,7 +84,7 @@ function crawl(spacing, dir, level) {
             }
 
             var next = path.join(dir, files[x]);
-            if (fs.lstatSync(next).isDirectory() === true) {
+            if (fs.lstatSync(next).isDirectory()) {
                 crawl(spacing + '│' + '   ', next, level + 1);
             }
         }
