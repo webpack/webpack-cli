@@ -89,13 +89,13 @@ async function runCLI(cli, commandIsUsed) {
                         value: process.argv[idx],
                         pos: idx,
                     };
-                    // Swap idx of overriden value
+                    // Swap idx of overridden value
                     if (oldMapValue) {
                         argsMap[arg].pos = oldMapValue.pos;
                         keysToDelete.push(idx + 1);
                     }
                 });
-                // Filter out the value for the overriden key
+                // Filter out the value for the overridden key
                 const newArgKeys = Object.keys(argsMap).filter(arg => !keysToDelete.includes(argsMap[arg].pos));
                 // eslint-disable-next-line require-atomic-updates
                 process.argv = newArgKeys;
