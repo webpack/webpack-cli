@@ -247,12 +247,10 @@ class WebpackCLI extends GroupHelper {
      * @returns {void}
      */
     _handleForcedDefaults() {
-        console.log(this.outputConfiguration)
         if (this.outputConfiguration.defaults) {
             const wrappedConfig = require('./utils/zero-config')(this.compilerConfiguration, this.outputConfiguration);
             this.compilerConfiguration = this.checkDefaults(wrappedConfig.options, this.outputConfiguration);
         }
-        console.log(this.compilerConfiguration)
     }
 
     /**
