@@ -246,11 +246,13 @@ class WebpackCLI extends GroupHelper {
      * @private\
      * @returns {void}
      */
-    _handForcedDefaults() {
+    _handleForcedDefaults() {
+        console.log(this.outputConfiguration)
         if (this.outputConfiguration.defaults) {
             const wrappedConfig = require('./utils/zero-config')(this.compilerConfiguration, this.outputConfiguration);
             this.compilerConfiguration = this.checkDefaults(wrappedConfig.options, this.outputConfiguration);
         }
+        console.log(this.compilerConfiguration)
     }
 
     /**
@@ -270,7 +272,7 @@ class WebpackCLI extends GroupHelper {
             .then(() => this._handleGroupHelper(this.advancedGroup))
             .then(() => this._handleGroupHelper(this.statsGroup))
             .then(() => this._handleGroupHelper(this.helpGroup))
-            .then(() => this._handForcedDefaults());
+            .then(() => this._handleForcedDefaults());
     }
 
     async processArgs(args, cliOptions) {

@@ -18,7 +18,7 @@ function getConfigurations(options, outputOptions) {
     const { mode } = options;
     const defaultConfigType = getEnvFromOptionsAndMode(mode, outputOptions);
     const defaultConfig = require(`./${defaultConfigType}-config`)(options, outputOptions);
-    const newConfig = merge(defaultConfig, options);
+    const newConfig = merge(options, defaultConfig);
     newConfig.mode = defaultConfigType;
 
     const isEntryObject = newConfig.entry && newConfig.entry instanceof Object;
