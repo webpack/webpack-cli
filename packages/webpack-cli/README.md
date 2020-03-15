@@ -47,6 +47,7 @@ Options
   -g, --global string[]    Declares and exposes a global variable
   -t, --target string      Sets the build target
   -w, --watch              Watch for files changes
+  --output-reporter        Enables repoter plugin
   -h, --hot                Enables Hot Module Replacement
   -s, --sourcemap string   Determine source maps to use
   --prefetch string        Prefetch this request

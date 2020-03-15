@@ -224,6 +224,13 @@ module.exports = {
             link: 'https://webpack.js.org/configuration/watch/',
         },
         {
+            name: 'output-reporter',
+            usage: '--output-reporter',
+            type: Boolean,
+            group: ADVANCED_GROUP,
+            description: 'Enables reporter plugin',
+        },
+        {
             name: 'hot',
             usage: '--hot',
             alias: 'h',

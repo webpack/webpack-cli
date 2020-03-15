@@ -57,6 +57,15 @@ class AdvancedGroup extends GroupHelper {
                 options.plugins = [hotModuleVal];
             }
         }
+        if (args.outputReporter) {
+            const { ReporterPlugin } = require('webpack');
+            const reporterVal = new ReporterPlugin();
+            if (options && options.plugins) {
+                options.plugins.unshift(reporterVal);
+            } else {
+                options.plugins = [reporterVal];
+            }
+        }
         if (args.prefetch) {
             const { PrefetchPlugin } = require('webpack');
             const prefetchVal = new PrefetchPlugin(null, args.prefetch);
@@ -133,6 +142,7 @@ class AdvancedGroup extends GroupHelper {
     }
     run() {
         this.resolveOptions();
+        console.log(this.opts);
         return this.opts;
     }
 }
