@@ -35,6 +35,9 @@ class StatsGroup extends GroupHelper {
         }
 
         if (this.args.silent) {
+            if (this.args.stats) {
+                logger.warn('"--stats"  will be ignored since you have supplied "--silent" flag');
+            }
             this.opts.outputOptions.silent = true;
         }
 >>>>>>> fix: enable passing silent flag to the compiler

@@ -111,9 +111,7 @@ module.exports = async function(config, outputOptions, processingMessageBuffer) 
     outputOptions.interactive = false;
 
     const webpackCompilation = await webpack({ options: config, outputOptions, processingMessageBuffer });
-    /* if(errors) {
-	Hngggg
-} */
+
     state.push(webpackCompilation);
     setupInteractive();
 
