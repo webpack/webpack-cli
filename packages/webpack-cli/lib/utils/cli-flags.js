@@ -177,7 +177,7 @@ module.exports = {
             usage: '--defaults',
             type: Boolean,
             group: BASIC_GROUP,
-            description: 'Allow webpack to set defaults aggresively',
+            description: 'Allow webpack to set defaults aggressively',
             link: 'https://github.com/webpack-contrib/webpack-defaults',
         },
         {
@@ -323,7 +323,7 @@ module.exports = {
                 if (StatsGroup.validOptions().includes(value)) {
                     return value;
                 }
-                logger.warn('No value recognised for "stats" option');
+                logger.warn('No value recognized for "stats" option');
                 return 'normal';
             },
             group: DISPLAY_GROUP,

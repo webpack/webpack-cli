@@ -34,7 +34,7 @@ class Compiler {
                         process.stdout.write(`) ${percent}% : `);
                         process.stdout.write(`${cyanBright(msg)}`);
                         if (percent === 100) {
-                            process.stdout.write(`${cyanBright('Complilation completed\n')}`);
+                            process.stdout.write(`${cyanBright('Compilation completed\n')}`);
                         }
                     }
                 };
@@ -56,7 +56,7 @@ class Compiler {
 
         if (outputOptions.infoVerbosity === 'verbose') {
             const resolveCompilationName = compilation => {
-                return compilation.name ? compilation.name : '';
+                return compilation.name || '';
             };
             if (outputOptions.watch) {
                 compilation.hooks.watchRun.tap('WebpackInfo', compilation => {
