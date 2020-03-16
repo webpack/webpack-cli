@@ -31,11 +31,12 @@ describe('single help flag', () => {
     });
 
     it('creates a readable snapshot', () => {
-        const { stderr } = run(__dirname, ['--help'], false);
+        const { stdout, stderr } = run(__dirname, ['--help'], false);
 
         const serializer = require('jest-serializer-ansi');
         expect.addSnapshotSerializer(serializer);
 
+        expect(stdout).toMatchSnapshot();
         expect(stderr).toHaveLength(0);
     });
 });
