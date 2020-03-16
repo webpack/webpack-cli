@@ -259,13 +259,6 @@ module.exports = {
             group: DISPLAY_GROUP,
         },
         {
-            name: 'pretty',
-            usage: 'webpack --pretty',
-            type: Boolean,
-            description: 'Prints a fancy output',
-            group: DISPLAY_GROUP,
-        },
-        {
             name: 'dev',
             usage: '--dev',
             alias: 'd',

@@ -50,7 +50,6 @@ Options
   -h, --hot                Enables Hot Module Replacement
   -s, --sourcemap string   Determine source maps to use
   --prefetch string        Prefetch this request
-  --pretty                 Prints a fancy output
   -j, --json               Prints result as JSON
   --standard               Prints standard output
   -d, --dev                Run development build
