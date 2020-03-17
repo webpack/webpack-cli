@@ -28,6 +28,7 @@ Table of Contents
     -   [Further Work](#further-work)
 -   [Contributor License Agreement](#contributor-license-agreement)
 -   [Documentation](#documentation)
+-   [Join The Development](#join-the-development)
 
 ## Issues
 
