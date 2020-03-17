@@ -26,7 +26,7 @@
   "devDependencies": {
     "@types/cross-spawn": "6.0.0",
     "@types/got": "9.6.7",
-    "@types/jest": "24.0.17",
+    "@types/jest": "25.1.4",
     "@types/log-symbols": "3.0.0",
     "@types/node": "12.7.2",
     "@types/p-each-series": "1.0.1",
