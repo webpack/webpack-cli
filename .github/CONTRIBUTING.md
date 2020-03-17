@@ -104,7 +104,7 @@ In case you are suggesting a new feature, we will match your idea with our curre
 
 -   Test a single CLI test case:
 
-    > Must run from root of the poject
+    > Must run from root of the project
 
     ```bash
     yarn jest path/to/my-test.js
