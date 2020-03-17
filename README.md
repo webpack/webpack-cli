@@ -34,6 +34,7 @@
 
 -   [About](#about)
     -   [How to install](#how-to-install)
+-   [Supported arguments and commands](#supported-arguments-and-commands)
 -   [Packages](#packages)
     -   [Commands](#commands)
     -   [Utilities](#utilities)
