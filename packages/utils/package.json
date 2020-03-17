@@ -30,7 +30,7 @@
     "@types/log-symbols": "3.0.0",
     "@types/node": "12.7.2",
     "@types/p-each-series": "1.0.1",
-    "@types/prettier": "1.18.2",
+    "@types/prettier": "1.19.0",
     "@types/yeoman-generator": "3.1.4",
     "jest": "24.9.0",
     "typescript": "3.5.3"
