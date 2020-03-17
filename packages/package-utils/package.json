@@ -42,7 +42,7 @@
     "execa": "^4.0.0"
   },
   "devDependencies": {
-    "typescript": "^3.8.2"
+    "typescript": "^3.8.3"
   },
   "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9"
 }
