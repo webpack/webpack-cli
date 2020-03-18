@@ -40,7 +40,7 @@ describe('no-mode flag', () => {
 
     it('should load a production config when --mode=production & --no-mode are passed', (done) => {
         const { stderr, stdout } = run(__dirname, ['--mode', 'production', '--no-mode']);
-        expect(stderr).toContain('"mode" will be used');
+        expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
 
         stat(resolve(__dirname, './bin/main.js'), (err, stats) => {
@@ -52,7 +52,7 @@ describe('no-mode flag', () => {
 
     it('should load a development config when --mode=development and --no-mode are passed', (done) => {
         const { stderr, stdout } = run(__dirname, ['--mode', 'development', '--no-mode']);
-        expect(stderr).toContain('"mode" will be used');
+        expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
 
         stat(resolve(__dirname, './bin/main.js'), (err, stats) => {
