@@ -69,19 +69,15 @@ export function spawnChild(pkg: string): SpawnSyncReturns<Buffer> {
  */
 
 export function getPackageManager(): string {
-	const hasLocalNPM: boolean = fs.existsSync(
-		path.resolve(process.cwd(), "package-lock.json"),
-	);
-	const hasLocalYarn: boolean = fs.existsSync(path.resolve(process.cwd(), "yarn.lock"));
-	if (hasLocalNPM) {
-		return "npm";
-	} else if (hasLocalYarn) {
-		return "yarn";
-	} else if (spawn.sync("yarn", [" --version"], { stdio: "ignore" }).error) {
-		return "npm";
-	} else {
-		return "yarn";
+	const hasLocalYarn = fs.existsSync(path.resolve(process.cwd(), "yarn.lock"));
+
+	if (hasLocalYarn) {
+		return "yarn"
+	} else if (spawn.sync("yarn", [" --version"], { stdio: "ignore" })) {
+		return "yarn"
 	}
+
+	return "npm"
 }
 
 /**
