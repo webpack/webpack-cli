@@ -5,7 +5,7 @@ const { Compiler } = require('./utils/Compiler');
 const { groups, core } = require('./utils/cli-flags');
 const webpackMerge = require('webpack-merge');
 const commandArgs = require('command-line-args');
-
+const { toKebabCase } = require('./utils/helpers');
 const defaultCommands = {
     init: 'init',
     loader: 'generate-loader',
@@ -37,7 +37,7 @@ class WebpackCLI extends GroupHelper {
     }
     setMappedGroups(args, inlineOptions) {
         Object.keys(args).forEach(key => {
-            this.setGroupMap(this._toKebabCase(key), args[key], inlineOptions);
+            this.setGroupMap(toKebabCase(key), args[key], inlineOptions);
         });
     }
     setGroupMap(key, val, inlineOptions) {
@@ -92,13 +92,6 @@ class WebpackCLI extends GroupHelper {
         return core;
     }
 
-    /**
-     * Convert camelcase to kebabcase
-     * @param {string} string
-     */
-    _toKebabCase(string) {
-        return string.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
-    }
 
     /**
      * Based on the parsed keys, the function will import and create
