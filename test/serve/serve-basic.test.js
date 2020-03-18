@@ -30,6 +30,12 @@ describe('basic serve usage', () => {
         expect(stderr).toHaveLength(0);
     });
 
+    it('uses no-hot flag', async () => {
+        const { stdout, stderr } = await runServe(['--no-hot']);
+        expect(stdout).toContain('main.js');
+        expect(stderr).toHaveLength(0);
+    });
+
     it('uses hot flag and progress flag', async () => {
         const { stdout, stderr } = await runServe(['--hot', '--progress']);
         expect(stdout).toContain('main.js');

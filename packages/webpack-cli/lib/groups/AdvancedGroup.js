@@ -57,6 +57,12 @@ class AdvancedGroup extends GroupHelper {
                 options.plugins = [hotModuleVal];
             }
         }
+        if (args.noHot && args.hot) {
+            logger.warn('You provided both --hot and --no-hot. You should provide just one, "--hot" will be used')
+        }
+        if (args.noHot){
+            args.hot = false;
+        }
         if (args.prefetch) {
             const { PrefetchPlugin } = require('webpack');
             const prefetchVal = new PrefetchPlugin(null, args.prefetch);
