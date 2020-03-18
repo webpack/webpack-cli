@@ -11,6 +11,7 @@ Table of Contents
 -   [Your first Contribution](#your-first-contribution)
 -   [Setup](#setup)
 -   [Running Tests](#running-tests)
+    -   [Using yarn](#using-yarn)
 -   [Editor Config](#editor-config)
 -   [Dependencies](#dependencies)
 -   [Branching Model](#branching-model)
@@ -28,6 +29,7 @@ Table of Contents
     -   [Further Work](#further-work)
 -   [Contributor License Agreement](#contributor-license-agreement)
 -   [Documentation](#documentation)
+-   [Join the development](#join-the-development)
 
 ## Issues
 
@@ -251,14 +253,14 @@ We convert the existing webpack config to [AST](https://developer.mozilla.org/en
 The directory structure of a transform looks as follows -
 
 ```sh
-|
-|--__snapshots__
-|--__testfixtures__
-|  |
-|  |--transform-name.input.js
-|
-|--transform-name.js
-|--transform-name.test.js
+│
+├──__snapshots__
+├──__testfixtures__
+│  │
+│  └───transform-name.input.js
+│
+├──transform-name.js
+├──transform-name.test.js
 ```
 
 `transform-name.js`
