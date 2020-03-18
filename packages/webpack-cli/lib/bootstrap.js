@@ -2,7 +2,7 @@ const WebpackCLI = require('./webpack-cli');
 const { core, commands } = require('./utils/cli-flags');
 const logger = require('./utils/logger');
 const cliExecuter = require('./utils/cli-executer');
-
+const argParser = require('./utils/arg-parser');
 require('./utils/process-log');
 
 process.title = 'webpack-cli';
@@ -21,7 +21,7 @@ const isCommandUsed = commands =>
     });
 
 const resolveNegatedArgs = args => {
-    args._unknown.forEach((arg, idx) => {
+    args.forEach((arg, idx) => {
         if (arg.includes('--') || arg.includes('--no')) {
             const argPair = arg.split('=');
             const optName = arg.includes('--no') ? argPair[0].slice(5) : argPair[0].slice(2);
@@ -36,24 +36,14 @@ const resolveNegatedArgs = args => {
             if (cliFlag) {
                 args[cliFlag.group][optName] = argValue;
                 args._all[optName] = argValue;
-                args._unknown[idx] = null;
+                args.args[idx] = null;
             }
         }
     });
 };
 
 async function runCLI(cli, commandIsUsed) {
-    let args;
-    const helpFlagExists = isFlagPresent(process.argv, 'help');
-    const versionFlagExists = isFlagPresent(process.argv, 'version');
-
-    if (helpFlagExists) {
-        cli.runHelp(process.argv);
-        return;
-    } else if (versionFlagExists) {
-        cli.runVersion();
-        return;
-    }
+    const parsedArgs = argParser('webpack', core, process.argv, cli.runHelp, cli.runVersion);
 
     if (commandIsUsed) {
         commandIsUsed.defaultOption = true;
@@ -61,10 +51,9 @@ async function runCLI(cli, commandIsUsed) {
         return await cli.runCommand(commandIsUsed, ...args);
     } else {
         try {
-            args = cli.commandLineArgs(core, { stopAtFirstUnknown: false, partial: true });
-            if (args._unknown) {
-                resolveNegatedArgs(args);
-                args._unknown
+            if (parsedArgs.args.length > 0) {
+                resolveNegatedArgs(parsedArgs.args);
+                parsedArgs.args
                     .filter(e => e)
                     .forEach(unknown => {
                         logger.warn('Unknown argument:', unknown);
@@ -72,7 +61,7 @@ async function runCLI(cli, commandIsUsed) {
                     cliExecuter();
                     return;
             }
-            const result = await cli.run(args, core);
+            const result = await cli.run(parsedArgs.opts(), core);
             if (!result) {
                 return;
             }
