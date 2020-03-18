@@ -36,12 +36,12 @@ class WebpackCLI extends GroupHelper {
         this.outputConfiguration = {};
     }
     setMappedGroups(args, inlineOptions) {
-        const { _all } = args;
-        Object.keys(_all).forEach((key) => {
-            this.setGroupMap(key, _all[key], inlineOptions);
+        Object.keys(args).forEach((key) => {
+            this.setGroupMap(this._toKebabCase(key), args[key], inlineOptions);
         });
     }
     setGroupMap(key, val, inlineOptions) {
+        if (val === undefined) return;
         const opt = inlineOptions.find((opt) => opt.name === key);
         const groupName = opt.group;
         if (this.groupMap.has(groupName)) {
@@ -89,6 +89,15 @@ class WebpackCLI extends GroupHelper {
     getCoreFlags() {
         return core;
     }
+
+    /**
+     * Convert camelcase to kebabcase
+     * @param {string} string
+     */
+    _toKebabCase(string) {
+        return string.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
+    }
+
     /**
      * Based on the parsed keys, the function will import and create
      * a group that handles respective values
