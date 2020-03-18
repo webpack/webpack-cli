@@ -3,7 +3,7 @@ const { run } = require('../utils/test-utils');
 const { stat } = require('fs');
 const { resolve } = require('path');
 describe('no-mode flag', () => {
-    it('should load a development config when --no-mode is passed', done => {
+    it('should load a none config when --no-mode is passed', done => {
         const { stderr, stdout } = run(__dirname, ['--no-mode']);
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
@@ -14,7 +14,7 @@ describe('no-mode flag', () => {
         });
     });
 
-    it('should load a development config when --no-mode and --dev are passed', done => {
+    it('should load a none config when --no-mode and --dev are passed', done => {
         const { stderr, stdout } = run(__dirname, ['--no-mode', '--dev']);
         expect(stderr).toContain('"no-mode" will be used');
         expect(stdout).toBeTruthy();
@@ -26,7 +26,7 @@ describe('no-mode flag', () => {
         });
     });
 
-    it('should load a development config when --no-mode and --prod are passed', done => {
+    it('should load a none config when --no-mode and --prod are passed', done => {
         const { stderr, stdout } = run(__dirname, ['--no-mode', '--prod']);
         expect(stderr).toContain('"no-mode" will be used');
         expect(stdout).toBeTruthy();
