@@ -198,15 +198,6 @@ module.exports = {
             link: 'https://webpack.js.org/plugins/',
         },
         {
-            name: 'global',
-            usage: '--global myVar ./global.js',
-            alias: 'g',
-            type: String,
-            multiple: true,
-            group: ADVANCED_GROUP,
-            description: 'Declares and exposes a global variable',
-        },
-        {
             name: 'target',
             alias: 't',
             type: String,
