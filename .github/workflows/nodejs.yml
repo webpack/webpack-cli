@@ -1,4 +1,4 @@
-name: Webpack CLI
+name: webpack-cli
 
 on:
   push:
@@ -12,7 +12,7 @@ on:
 
 jobs:
   lint:
-    name: Lint on Node v${{ matrix.node }} and ${{ matrix.os }}
+    name: Lint - ${{ matrix.os }} - Node v${{ matrix.node }}
 
     runs-on: ${{ matrix.os }}
 
@@ -37,7 +37,7 @@ jobs:
         run: yarn lint
 
   build:
-    name: ${{ matrix.os }} - tests using Node v${{ matrix.node-version }} and Webpack ${{ matrix.webpack-version }}
+    name: Tests - ${{ matrix.os }} - Node v${{ matrix.node-version }}, Webpack ${{ matrix.webpack-version }}
 
     runs-on: ${{ matrix.os }}
 
