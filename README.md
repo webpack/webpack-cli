@@ -89,7 +89,7 @@ The project also has several utility packages which are used by other commands
 
 ## Getting started
 
-When you have followed the [Getting Started](https://webpack.js.org/guides/getting-started/) guide of webpack then webpack CLI is already installed! Otherwise, you would need to install webpack CLI and the packages you want to use. If we want to use the `init` command to create a new `webpack.config.js` configuration file:
+When you have followed the [Getting Started](https://webpack.js.org/guides/getting-started/) guide of webpack then webpack CLI is already installed! Otherwise, you would need to install webpack CLI and the packages you want to use. If you want to use the `init` command to create a new `webpack.config.js` configuration file:
 
 ```sh
 npm i webpack-cli @webpack-cli/init
