@@ -1,4 +1,4 @@
-name: Node CI
+name: Webpack CLI
 
 on:
   push:
@@ -37,7 +37,7 @@ jobs:
         run: yarn lint
 
   build:
-    name: Test on Node v${{ matrix.node-version }} and ${{ matrix.os }}
+    name: ${{ matrix.os }} - tests using Node v${{ matrix.node-version }} and Webpack ${{ matrix.webpack-version }}
 
     runs-on: ${{ matrix.os }}
 
