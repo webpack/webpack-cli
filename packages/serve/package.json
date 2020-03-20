@@ -20,7 +20,8 @@
     "@types/cross-spawn": "6.0.0",
     "@types/inquirer": "6.5.0",
     "@types/node": "12.7.2",
-    "typescript": "3.5.3"
+    "typescript": "3.5.3",
+    "webpack-dev-server": "3.10.3"
   },
   "peerDependencies": {
     "webpack-cli": "4.x.x",
