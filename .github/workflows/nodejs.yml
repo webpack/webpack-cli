@@ -37,7 +37,7 @@ jobs:
         run: yarn lint
 
   build:
-    name: Test on Node v${{ matrix.node }} and ${{ matrix.os }}
+    name: Test on Node v${{ matrix.node-version }} and ${{ matrix.os }}
 
     runs-on: ${{ matrix.os }}
 
