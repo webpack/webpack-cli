@@ -28,7 +28,7 @@ describe('plugin generator', () => {
         // Check the contents of the webpack config and loader file
         assert.fileContent([
             [join(pluginDir, 'examples/simple/webpack.config.js'), /new MyTestPlugin\(\)/],
-            [join(pluginDir, 'src/index.js'), /MyTestPlugin\.prototype\.apply = function\(compiler\) {/],
+            [join(pluginDir, 'src/index.js'), /compiler\.hooks\.done\.tap/],
             [join(pluginDir, 'package.json'), new RegExp(pluginName)],
         ]);
 
