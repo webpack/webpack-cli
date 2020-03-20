@@ -1,7 +1,7 @@
 # Contributing
 
 From opening a bug report to creating a pull request: every contribution is
-appreciated and welcomed. If you're planning a new feature or changing
+appreciated and welcomed. If you're planning to implement a new feature or changing
 the API, please create an issue first. This way we can ensure that your precious
 work is not in vain.
 
@@ -82,8 +82,6 @@ In case you are suggesting a new feature, we will match your idea with our curre
 
 ## Running Tests
 
-### Using yarn
-
 -   Run all the tests with:
 
     ```bash
@@ -104,7 +102,7 @@ In case you are suggesting a new feature, we will match your idea with our curre
 
 -   Test a single CLI test case:
 
-    > Must run from root of the poject
+    > Must run from root of the project
 
     ```bash
     yarn jest path/to/my-test.js
@@ -183,7 +181,7 @@ In case you've got a small change in most of the cases, your pull request would 
 -   Write tests
 -   Follow the existing coding style
 -   Write a [good commit message](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
--   Make sure your PR has an issue and if it doesn't, please create one. This would help discussion with the community, and polishing ideas in case of a new feature.
+-   For a major bugfix/feature make sure your PR has an issue and if it doesn't, please create one. This would help discussion with the community, and polishing ideas in case of a new feature.
 -   Make sure your PR's description contains GitHub's special keyword references that automatically close the related issue when the PR is merged. ([More info](https://github.com/blog/1506-closing-issues-via-pull-requests))
 -   When you have lot of commits in your PR, it's good practice to squash all your commits in one single commit. ([Learn how to squash here](https://davidwalsh.name/squash-commits-git))
 
@@ -253,13 +251,13 @@ The directory structure of a transform looks as follows -
 
 ```sh
 |
-|--__snapshots__
-|--__testfixtures__
+|──__snapshots__
+|──__testfixtures__
 |  |
-|  |--transform-name.input.js
+|  |──transform-name.input.js
 |
-|--transform-name.js
-|--transform-name.test.js
+|──transform-name.js
+|──transform-name.test.js
 ```
 
 `transform-name.js`
