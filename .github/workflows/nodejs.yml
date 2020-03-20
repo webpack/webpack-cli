@@ -11,6 +11,31 @@ on:
     - next
 
 jobs:
+  lint:
+    name: Lint on Node v${{ matrix.node }} and ${{ matrix.os }}
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        node: [12]
+        os: [ubuntu-latest]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Using Node v${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install dependencies
+        run: |
+          yarn
+          yarn bootstrap
+
+      - name: Lint
+        run: yarn lint
+
   build:
 
     runs-on: ${{ matrix.os }}
@@ -22,17 +47,18 @@ jobs:
         webpack-version: [next, latest]
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
+
     - name: Using Node v${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+
     - name: Install dependencies
       run: |
         yarn
         yarn bootstrap
-    - name: Linting
-      run: yarn lint
+
     - name: Run tests for webpack version ${{ matrix.webpack-version }}
       run: |
         yarn add -W webpack@${{ matrix.webpack-version }}
@@ -41,6 +67,7 @@ jobs:
         yarn test:ci
       env:
         CI: true
+
     - name: Smoke Tests
       run: |
         yarn build
