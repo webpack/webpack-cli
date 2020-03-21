@@ -27,20 +27,12 @@ class StatsGroup extends GroupHelper {
                 this.opts.options.stats = this.args.stats;
             }
         }
-<<<<<<< HEAD
-=======
-
-        if (this.args.pretty) {
-            this.opts.outputOptions.pretty = true;
-        }
-
         if (this.args.silent) {
             if (this.args.stats) {
                 logger.warn('"--stats"  will be ignored since you have supplied "--silent" flag');
             }
             this.opts.outputOptions.silent = true;
         }
->>>>>>> fix: enable passing silent flag to the compiler
     }
 
     run() {
