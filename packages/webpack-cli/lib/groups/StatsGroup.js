@@ -1,5 +1,5 @@
 const GroupHelper = require('../utils/GroupHelper');
-const { logger } = require('../utils/logger');
+const logger = require('../utils/logger');
 /**
  * StatsGroup gathers information about the stats options
  */
