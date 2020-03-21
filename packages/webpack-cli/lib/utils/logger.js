@@ -1,3 +1,5 @@
-const { logger } = require('@webpack-cli/logger');
+import logging from 'webpack/lib/logging/runtime';
+
+const logger = logging.getLogger('webpack-cli');
 
 module.exports = logger;
