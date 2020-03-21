@@ -27,7 +27,10 @@ class OutputGroup extends GroupHelper {
         const { args } = this;
         if (args) {
             const { output } = args;
-            if (!output) {
+            // TODO: Remove comment before merge
+            // We need to show warning when empty output flag is supplied
+            // which is set to boolean true by commander
+            if (!output || output === true) {
                 return;
             }
             const outputInfo = path.parse(output);
