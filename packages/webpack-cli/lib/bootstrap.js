@@ -98,9 +98,8 @@ async function runCLI(cli, commandIsUsed) {
                 const newArgKeys = Object.keys(argsMap).filter(arg => !keysToDelete.includes(argsMap[arg].pos));
                 // eslint-disable-next-line require-atomic-updates
                 process.argv = newArgKeys;
-                args = cli.commandLineArgs(core, { stopAtFirstUnknown: false, partial: true });
-
-                await cli.run(args, core);
+                args = argParser("", core, process.argv).opts;
+                await cli.run(args.opts(), core);
                 process.stdout.write('\n');
                 logger.warn('Duplicate flags found, defaulting to last set value');
             } else {

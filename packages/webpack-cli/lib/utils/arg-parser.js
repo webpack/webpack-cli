@@ -7,22 +7,26 @@ const commander = require("commander");
  * @param {object[]} options Array of objects with details about flags
  * @param {string[]} args process.argv or it's subset
  */
-function argParser(name, options, args, helpFunction, versionFunction) {
+function argParser(name = "", options, args, helpFunction, versionFunction) {
     const parser = new commander.Command();
     // Set parser name
     parser.name(name);
 
-    // Use customized version output
-    parser.on('option:version', () => {
-        versionFunction(args);
-        process.exit(0);
-    });
+    // Use customized version output if available
+    if (versionFunction) {
+        parser.on('option:version', () => {
+            versionFunction(args);
+            process.exit(0);
+        });
+    }
 
-    // Use customised help output
-    parser.on('option:help', () => {
-        helpFunction(args);
-        process.exit(0);
-    });
+    // Use customised help output is avaliable
+    if (helpFunction) {
+        parser.on('option:help', () => {
+            helpFunction(args);
+            process.exit(0);
+        });
+    }
 
     // Allow execution if unknown arguments are present
     parser.allowUnknownOption(true);
