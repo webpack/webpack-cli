@@ -13,7 +13,7 @@
     "@webpack-cli/utils": "^1.0.1-alpha.5",
     "chalk": "3.0.0",
     "diff": "4.0.1",
-    "inquirer": "6.5.1",
+    "enquirer": "^2.3.4",
     "jscodeshift": "0.6.4",
     "listr": "0.14.3",
     "lodash": "4.17.15",
@@ -25,7 +25,6 @@
   },
   "devDependencies": {
     "@types/diff": "4.0.2",
-    "@types/inquirer": "6.5.0",
     "@types/listr": "0.14.2",
     "@types/lodash": "^4.14.137",
     "@types/node": "12.7.2",

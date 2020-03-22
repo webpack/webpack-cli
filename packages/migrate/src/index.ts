@@ -1,7 +1,7 @@
 import chalk from "chalk";
 import diff from "diff";
 import fs from "fs";
-import inquirer from "inquirer";
+import { prompt } from "enquirer";
 import Listr from "listr";
 import pLazy = require("p-lazy");
 import path from "path";
@@ -105,10 +105,9 @@ function runMigration(currentConfigPath: string, outputConfigPath: string): Prom
 				}
 			});
 
-			return inquirer
-				.prompt([
+			return prompt([
 					{
-						default: "Y",
+						initial: "Y",
 						message: "Are you sure these changes are fine?",
 						name: "confirmMigration",
 						type: "confirm"
@@ -117,9 +116,9 @@ function runMigration(currentConfigPath: string, outputConfigPath: string): Prom
 				.then(
 					(answers: { confirmMigration: boolean }): Promise<{}> => {
 						if (answers.confirmMigration) {
-							return inquirer.prompt([
+							return prompt([
 								{
-									default: "Y",
+									initial: "Y",
 									message:
 										"Do you want to validate your configuration? " +
 										"(If you're using webpack merge, validation isn't useful)",
@@ -192,10 +191,9 @@ export default function migrate(...args: string[]): void | Promise<void> {
 	let outputConfigPath: string;
 
 	if (!filePaths[1]) {
-		return inquirer
-			.prompt([
+		return prompt([
 				{
-					default: "Y",
+					initial: "Y",
 					message:
 						"Migration output path not specified. " +
 						"Do you want to use your existing webpack " +
