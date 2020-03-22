@@ -18,17 +18,16 @@ class BasicGroup extends GroupHelper {
     }
     resolveFlags() {
         const { args } = this;
-        if (!args) return
+        if (!args) return;
         const { outputOptions, options } = this.opts;
         Object.keys(args).forEach(arg => {
             if (this.WEBPACK_OPTION_FLAGS.includes(arg)) {
                 outputOptions[arg] = args[arg];
             }
-            // TODO: to add once webpack bundle analyzer is installed, which is not at the moment
-            // if (arg == 'analyze') {
-            // const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-            // this.opts.options.plugins = [new BundleAnalyzerPlugin()];
-            // }
+            if (arg == 'analyze') {
+                const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+                this.opts.options.plugins = [new BundleAnalyzerPlugin()];
+            }
             if (arg === 'sourcemap') {
                 options.devtool = args[arg] || 'eval';
                 outputOptions.devtool = args[arg];
