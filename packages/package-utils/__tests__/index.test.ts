@@ -7,13 +7,13 @@ import ExternalCommand from '../../webpack-cli/lib/commands/ExternalCommand';
 
 describe('@webpack-cli/package-utils', () => {
     it('should check existence of package', () => {
-    	(packageExists as any).mockImplementation(() => true);
+    	(packageExists as jest.Mock).mockImplementation(() => true);
         const exists = packageExists('@webpack-cli/info');
         expect(exists).toBeTruthy();
     });
 
     it('should not throw if the user interrupts', async () => {
-    	(promptInstallation as any).mockImplementation(() => { throw new Error() });
+    	(promptInstallation as jest.Mock).mockImplementation(() => { throw new Error() });
         await expect(ExternalCommand.run('info')).resolves.not.toThrow();
     });
 });
