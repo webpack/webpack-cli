@@ -4,7 +4,6 @@ import process from 'process';
 import { argv } from './options';
 
 import { AVAILABLE_COMMANDS, AVAILABLE_FORMATS, IGNORE_FLAGS } from './commands';
-import { configReader, fetchConfig, resolveFilePath, getNameFromPath } from './configParser';
 
 interface Information {
     Binaries?: string[];
@@ -13,6 +12,7 @@ interface Information {
     npmGlobalPackages?: string[];
     npmPackages?: string | string[];
 }
+
 interface ArgvI {
     _?: string[];
     bin?: boolean;
@@ -42,6 +42,7 @@ export function informationType(type: string): Information {
             return { npmPackages: DEFAULT_DETAILS.npmPackages };
     }
 }
+
 export default async function info(customArgv: object): Promise<string[]> {
     let detailsObj = {};
     const envinfoConfig = {};
@@ -49,13 +50,8 @@ export default async function info(customArgv: object): Promise<string[]> {
         Object.entries(customArgv).length !== 0 && customArgv.constructor === Object;
     const args: ArgvI = customArgs ? customArgv : argv;
     const configRelativePath = argv._[1] ? argv._[1] : args.config;
-    if (configRelativePath) {
-        const fullConfigPath = resolveFilePath(configRelativePath);
-        const fileName = getNameFromPath(fullConfigPath);
-        const config = fetchConfig(fullConfigPath);
-        const parsedConfig = configReader(config);
 
-    } else {
+    if (!configRelativePath) {
         Object.keys(args).forEach((flag: string) => {
             if (IGNORE_FLAGS.includes(flag)) {
                 return;
