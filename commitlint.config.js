@@ -16,6 +16,6 @@ module.exports = {
         // part of the @commitlint/config-lerna-scopes
         'scope-enum': [0, 'never'],
         'type-empty': [2, 'never'],
-        'type-enum': [2, 'always', ['ast', 'break', 'chore', 'cli', 'docs', 'feat', 'fix', 'misc', 'tests', 'break']],
+        'type-enum': [2, 'always', ['ast', 'break', 'chore', 'cli', 'docs', 'feat', 'fix', 'misc', 'tests']],
     },
 };
