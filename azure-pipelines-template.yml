@@ -13,28 +13,28 @@ jobs:
       - task: NodeTool@0
         inputs:
           versionSpec: $(node_version)
-        displayName: "Install Node.js"
+        displayName: 'Install Node.js'
       - script: |
           npm install -g yarn
-        displayName: "Install npm"
+        displayName: 'Install npm'
       - script: |
           node -v
           yarn -v
-        displayName: "Print version"
+        displayName: 'Print version'
       - script: |
           yarn
           yarn bootstrap
-        displayName: "Lerna bootstrap"
+        displayName: 'Lerna bootstrap'
       - script: |
           yarn test:ci
-        displayName: "Run tests"
+        displayName: 'Run tests'
       - task: PublishTestResults@2
         inputs:
-          testResultsFiles: "**junit*.xml"
+          testResultsFiles: '**junit*.xml'
           testRunTitle: TestRun $ {{ parameters.name }} $(node_version)
-        displayName: "Publish Test Results"
+        displayName: 'Publish Test Results'
       - task: PublishCodeCoverageResults@1
         inputs:
-          codeCoverageTool: "cobertura"
-          summaryFileLocation: "**/coverage/cobertura-coverage.xml"
-        displayName: "Publish code coverage results"
+          codeCoverageTool: 'cobertura'
+          summaryFileLocation: '**/coverage/cobertura-coverage.xml'
+        displayName: 'Publish code coverage results'

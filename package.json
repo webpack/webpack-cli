@@ -29,8 +29,8 @@
     "clean:all": "rimraf node_modules packages/*/{node_modules}",
     "commit": "git-cz",
     "docs": "typedoc",
-    "format": "eslint --fix . --ext .js,.ts",
-    "lint": "eslint . --ext .js,.ts",
+    "format": "prettier --write ./*{.md,.yml,.json,.js,.ts}",
+    "lint": "eslint . --ext .js,.ts,.json",
     "lint:fix": "eslint . --ext .js,.ts --fix",
     "pretest": "yarn build && yarn lint && yarn prepsuite",
     "reportCoverage": "nyc report --reporter=json && codecov -f coverage/coverage-final.json --disable=gcov",
@@ -52,8 +52,8 @@
     }
   },
   "lint-staged": {
-    "*.md": [
-      "prettier --parser markdown --write",
+    "*{.md,.json,.yml}": [
+      "yarn format",
       "git add"
     ],
     "{packages,lib}/**/!(__testfixtures__)/**.js": [
@@ -61,11 +61,11 @@
       "git add"
     ],
     "*.ts": [
-      "yarn format",
+      "yarn lint:fix",
       "git add"
     ],
     "*.js": [
-      "yarn format",
+      "yarn lint:fix",
       "git add"
     ]
   },
