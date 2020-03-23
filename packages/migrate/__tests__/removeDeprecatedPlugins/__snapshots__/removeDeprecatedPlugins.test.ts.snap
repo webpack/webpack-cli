@@ -12,7 +12,7 @@ exports[`remove deprecated plugin removeDeprecatedPlugins transforms correctly u
 
 exports[`remove deprecated plugin removeDeprecatedPlugins transforms correctly using "removeDeprecatedPlugins-2" data 1`] = `
 "module.exports = {
-	plugins: [new webpack.optimize.UglifyJsPlugin()]
+    plugins: [new webpack.optimize.UglifyJsPlugin()],
 };
 "
 `;
@@ -21,22 +21,22 @@ exports[`remove deprecated plugin removeDeprecatedPlugins transforms correctly u
 "// This should throw
 
 module.exports = config => {
-	config.plugins.push(new webpack.optimize.UglifyJsPlugin());
-	config.plugins.push(new webpack.optimize.DedupePlugin());
-	config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
-	return config;
+    config.plugins.push(new webpack.optimize.UglifyJsPlugin());
+    config.plugins.push(new webpack.optimize.DedupePlugin());
+    config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
+    return config;
 };
 "
 `;
 
 exports[`remove deprecated plugin removeDeprecatedPlugins transforms correctly using "removeDeprecatedPlugins-4" data 1`] = `
 "// This should throw
-const webpack = require(\\"webpack\\");
+const webpack = require('webpack');
 
 const inst = new webpack.optimize.OccurrenceOrderPlugin();
 module.exports = config => {
-	config.plugins = [inst];
-	return config;
+    config.plugins = [inst];
+    return config;
 };
 "
 `;

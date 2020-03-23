@@ -2,31 +2,27 @@
 
 exports[`banner plugin bannerPlugin transforms correctly using "bannerPlugin-0" data 1`] = `
 "module.exports = {
-    plugins: [
-        new webpack.BannerPlugin({
-            raw: true,
-            entryOnly: true,
-            banner: 'Banner'
-        })
-    ]
-}
+    plugins: [new webpack.BannerPlugin({
+        raw: true,
+        entryOnly: true,
+        banner: 'Banner'
+    })],
+};
 "
 `;
 
 exports[`banner plugin bannerPlugin transforms correctly using "bannerPlugin-1" data 1`] = `
 "// Should do nothing if there is no banner plugin
 module.exports = {
-    plugins: []
-}
+    plugins: [],
+};
 "
 `;
 
 exports[`banner plugin bannerPlugin transforms correctly using "bannerPlugin-2" data 1`] = `
 "// Only transform if it uses the old format
 module.exports = {
-    plugins: [
-        new webpack.BannerPlugin({})
-    ]
-}
+    plugins: [new webpack.BannerPlugin({})],
+};
 "
 `;

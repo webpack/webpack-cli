@@ -5,27 +5,27 @@ exports[`namedModulesPlugin namedModulesPlugin transforms correctly using "named
     optimizations: {
         namedModules: true
     }
-}
+};
 "
 `;
 
 exports[`namedModulesPlugin namedModulesPlugin transforms correctly using "namedModulesPlugin-1" data 1`] = `
 "module.export = {
-	optimizations: {
+    optimizations: {
         splitChunks: false,
         namedModules: true
     },
-    plugins: [new Foo()]
-}
+    plugins: [new Foo()],
+};
 "
 `;
 
 exports[`namedModulesPlugin namedModulesPlugin transforms correctly using "namedModulesPlugin-2" data 1`] = `
 "module.export = {
-	optimizations: {
+    optimizations: {
         namedModules: true
     },
-    plugins: [new Foo()]
-}
+    plugins: [new Foo()],
+};
 "
 `;

@@ -11,21 +11,21 @@ exports[`noEmitOnErrorsPlugin noEmitOnErrorsPlugin transforms correctly using "n
 
 exports[`noEmitOnErrorsPlugin noEmitOnErrorsPlugin transforms correctly using "noEmitOnErrorsPlugin-1" data 1`] = `
 "module.exports = {
-	optimizations: {
+    optimizations: {
         splitChunks: false,
         noEmitOnErrors: true
     },
-	plugins: [new Foo()]
+    plugins: [new Foo()],
 };
 "
 `;
 
 exports[`noEmitOnErrorsPlugin noEmitOnErrorsPlugin transforms correctly using "noEmitOnErrorsPlugin-2" data 1`] = `
 "module.exports = {
-	optimizations: {
+    optimizations: {
         noEmitOnErrors: true
     },
-	plugins: [new Foo()]
+    plugins: [new Foo()],
 };
 "
 `;

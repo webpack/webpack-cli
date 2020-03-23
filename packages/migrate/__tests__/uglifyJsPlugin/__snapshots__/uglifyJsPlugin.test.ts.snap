@@ -4,68 +4,67 @@ exports[`uglifyJsPluginu uglifyJsPlugin transforms correctly using "uglifyJsPlug
 "module.exports = {
     optimization: {
         minimize: true
-    }
-}
+    },
+};
 "
 `;
 
 exports[`uglifyJsPluginu uglifyJsPlugin transforms correctly using "uglifyJsPlugin-1" data 1`] = `
 "const TerserPlugin = require('terser-webpack-plugin');
 module.exports = {
-    devtool: \\"source-map\\",
+    devtool: 'source-map',
     optimization: {
         minimize: true,
 
         minimizer: [new TerserPlugin({
             sourceMap: true,
-            compress: {}
+            compress: {},
         })]
-    }
-}
+    },
+};
 "
 `;
 
 exports[`uglifyJsPluginu uglifyJsPlugin transforms correctly using "uglifyJsPlugin-2" data 1`] = `
 "const TerserPlugin = require('terser-webpack-plugin');
 module.exports = {
-    devtool: \\"source-map\\",
+    devtool: 'source-map',
     optimization: {
         minimize: true,
 
         minimizer: [new TerserPlugin({
             sourceMap: true,
-            compress: {}
+            compress: {},
         })]
-    }
-}
+    },
+};
 "
 `;
 
 exports[`uglifyJsPluginu uglifyJsPlugin transforms correctly using "uglifyJsPlugin-3" data 1`] = `
 "module.exports = {
     devtool: 'eval',
-
-    entry: [
-		'./src/index'
-	],
+    entry: ['./src/index'],
 
     output: {
-		path: path.join(__dirname, 'dist'),
-		filename: 'index.js'
-	},
+        path: path.join(__dirname, 'dist'),
+        filename: 'index.js',
+    },
 
     module: {
-		loaders: [{
-			test: /.js$/,
-			loaders: ['babel'],
-			include: path.join(__dirname, 'src')
-		}]
-	},
+        loaders: [
+            {
+                test: /.js$/,
+                loaders: ['babel'],
+                include: path.join(__dirname, 'src'),
+            },
+        ],
+    },
 
     resolve: {
-		root: path.resolve('/src'),
-		modules: ['node_modules']
-	},
+        root: path.resolve('/src'),
+        modules: ['node_modules'],
+    },
 
     plugins: [new webpack.optimize.OccurrenceOrderPlugin()],
     debug: true,
@@ -81,28 +80,27 @@ exports[`uglifyJsPluginu uglifyJsPlugin transforms correctly using "uglifyJsPlug
 "const TerserPlugin = require('terser-webpack-plugin');
 module.exports = {
     devtool: 'eval',
-
-    entry: [
-		'./src/index'
-	],
+    entry: ['./src/index'],
 
     output: {
-		path: path.join(__dirname, 'dist'),
-		filename: 'index.js'
-	},
+        path: path.join(__dirname, 'dist'),
+        filename: 'index.js',
+    },
 
     module: {
-		loaders: [{
-			test: /.js$/,
-			loaders: ['babel'],
-			include: path.join(__dirname, 'src')
-		}]
-	},
+        loaders: [
+            {
+                test: /.js$/,
+                loaders: ['babel'],
+                include: path.join(__dirname, 'src'),
+            },
+        ],
+    },
 
     resolve: {
-		root: path.resolve('/src'),
-		modules: ['node_modules']
-	},
+        root: path.resolve('/src'),
+        modules: ['node_modules'],
+    },
 
     plugins: [new webpack.optimize.OccurrenceOrderPlugin()],
     debug: true,
@@ -111,7 +109,7 @@ module.exports = {
         minimize: true,
 
         minimizer: [new TerserPlugin({
-            sourceMap: true
+            sourceMap: true,
         })]
     }
 };

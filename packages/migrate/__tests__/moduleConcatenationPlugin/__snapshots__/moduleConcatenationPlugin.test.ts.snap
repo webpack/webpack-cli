@@ -11,21 +11,21 @@ exports[`moduleConcatenationPlugin moduleConcatenationPlugin transforms correctl
 
 exports[`moduleConcatenationPlugin moduleConcatenationPlugin transforms correctly using "moduleConcatenationPlugin-1" data 1`] = `
 "module.exports = {
-	optimizations: {
+    optimizations: {
         splitChunks: false,
         concatenateModules: true
     },
-	plugins: [new Foo()]
+    plugins: [new Foo()],
 };
 "
 `;
 
 exports[`moduleConcatenationPlugin moduleConcatenationPlugin transforms correctly using "moduleConcatenationPlugin-2" data 1`] = `
 "module.exports = {
-	optimizations: {
+    optimizations: {
         concatenateModules: true
     },
-	plugins: [new Foo()]
+    plugins: [new Foo()],
 };
 "
 `;

@@ -20,7 +20,7 @@ describe('init generator', () => {
         // Check generated file contents
         assert.fileContent(join(outputDir, 'package.json'), '"name": "my-webpack-project"');
         assert.fileContent(join(outputDir, 'README.md'), 'Welcome to your new awesome project!');
-        assert.fileContent(join(outputDir, 'src', 'index2.js'), 'console.log("Hello World from your main file!");');
+        assert.fileContent(join(outputDir, 'src', 'index2.js'), "console.log('Hello World from your main file!');");
 
         const output = require(join(outputDir, '.yo-rc.json'));
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
