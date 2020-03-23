@@ -1,3 +1,3 @@
 module.exports = {
-	plugins: [new webpack.optimize.DedupePlugin()]
+    plugins: [new webpack.optimize.DedupePlugin()],
 };

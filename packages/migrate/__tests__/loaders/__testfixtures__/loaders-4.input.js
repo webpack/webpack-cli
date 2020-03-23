@@ -1,10 +1,10 @@
 module.exports = {
-  module: {
-	postLoaders: [
-		{
-		loader: "my-post",
-		test: /\.js$/,
-		},
-	],
-  },
+    module: {
+        postLoaders: [
+            {
+                loader: 'my-post',
+                test: /\.js$/,
+            },
+        ],
+    },
 };

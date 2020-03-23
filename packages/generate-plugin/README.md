@@ -19,7 +19,7 @@ To run the package programmatically, install it as a dependency. When using the 
 ### Node
 
 ```js
-const generatePlugin = require("@webpack-cli/generate-plugin").default;
+const generatePlugin = require('@webpack-cli/generate-plugin').default;
 generatePlugin();
 ```
 

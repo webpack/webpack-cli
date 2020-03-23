@@ -1,6 +1,6 @@
 module.exports = {
-	optimizations: {
-		concatenateModules: false
-	},
-	plugins: [new Foo(), new webpack.optimize.ModuleConcatenationPlugin()]
+    optimizations: {
+        concatenateModules: false,
+    },
+    plugins: [new Foo(), new webpack.optimize.ModuleConcatenationPlugin()],
 };

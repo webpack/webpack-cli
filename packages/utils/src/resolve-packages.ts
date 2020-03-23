@@ -1,4 +1,4 @@
-import  chalk = require('chalk');
+import chalk = require('chalk');
 import path from 'path';
 import { modifyHelperUtil } from './modify-config-helper';
 import { getPathToGlobalPackages, spawnChild } from '@webpack-cli/package-utils';

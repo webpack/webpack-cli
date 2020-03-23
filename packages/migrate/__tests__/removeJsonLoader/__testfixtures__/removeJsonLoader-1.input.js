@@ -1,17 +1,17 @@
 module.exports = {
-	module: {
-		rules: [
-			{
-				test: /\.yml/,
-				use: [
-					{
-						loader: "json-loader"
-					},
-					{
-						loader: "yml-loader"
-					}
-				]
-			}
-		]
-	}
+    module: {
+        rules: [
+            {
+                test: /\.yml/,
+                use: [
+                    {
+                        loader: 'json-loader',
+                    },
+                    {
+                        loader: 'yml-loader',
+                    },
+                ],
+            },
+        ],
+    },
 };

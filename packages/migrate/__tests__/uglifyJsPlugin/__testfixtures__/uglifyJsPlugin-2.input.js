@@ -1,10 +1,10 @@
-const Uglify  = require('uglifyjs-webpack-plugin');
+const Uglify = require('uglifyjs-webpack-plugin');
 module.exports = {
-    devtool: "source-map",
+    devtool: 'source-map',
     plugins: [
         new Uglify({
             sourceMap: true,
-            compress: {}
-        })
-    ]
-}
+            compress: {},
+        }),
+    ],
+};

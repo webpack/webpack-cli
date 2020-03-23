@@ -13,9 +13,9 @@ async function prompter() {
         choices: cliArgs.reduce((prev, curr) => {
             return [...prev, `--${curr.name}: ${curr.description}`];
         }, []),
-        result: (value) => {
-            return value.map((flag) => flag.split(":")[0]);
-        }
+        result: value => {
+            return value.map(flag => flag.split(':')[0]);
+        },
     });
 
     const selections = await typePrompt.run();
@@ -36,7 +36,7 @@ async function prompter() {
             name: 'value',
             message: `Enter value of the ${selection} flag`,
             initial: options.defaultValue,
-            result: (value) => [selection, value]
+            result: value => [selection, value],
         });
         questions.push(valuePrompt);
     });
@@ -52,12 +52,12 @@ async function prompter() {
 
 async function run() {
     try {
-      const args = await prompter();
-      process.stdout.write('\n');
-      logger.info(`Executing CLI\n`);
-      runner([], args);	
+        const args = await prompter();
+        process.stdout.write('\n');
+        logger.info(`Executing CLI\n`);
+        runner([], args);
     } catch (err) {
-      logger.error(`Action Interrupted, use ${chalk.cyan(`webpack-cli help`)} to see possible options.`)
+        logger.error(`Action Interrupted, use ${chalk.cyan(`webpack-cli help`)} to see possible options.`);
     }
 }
 

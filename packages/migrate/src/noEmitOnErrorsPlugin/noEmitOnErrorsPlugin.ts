@@ -1,5 +1,5 @@
-import { addOrUpdateConfigObject, findAndRemovePluginByName } from "@webpack-cli/utils";
-import { JSCodeshift, Node } from "../types/NodePath";
+import { addOrUpdateConfigObject, findAndRemovePluginByName } from '@webpack-cli/utils';
+import { JSCodeshift, Node } from '../types/NodePath';
 
 /**
  *
@@ -11,13 +11,13 @@ import { JSCodeshift, Node } from "../types/NodePath";
  * @returns {Node} ast - jscodeshift ast
  */
 export default function(j: JSCodeshift, ast: Node): Node {
-	// Remove old plugin
-	const root: Node = findAndRemovePluginByName(j, ast, "webpack.NoEmitOnErrorsPlugin");
+    // Remove old plugin
+    const root: Node = findAndRemovePluginByName(j, ast, 'webpack.NoEmitOnErrorsPlugin');
 
-	// Add new optimizations option
-	if (root) {
-		addOrUpdateConfigObject(j, root, "optimizations", "noEmitOnErrors", j.booleanLiteral(true));
-	}
+    // Add new optimizations option
+    if (root) {
+        addOrUpdateConfigObject(j, root, 'optimizations', 'noEmitOnErrors', j.booleanLiteral(true));
+    }
 
-	return ast;
+    return ast;
 }

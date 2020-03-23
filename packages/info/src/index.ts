@@ -1,4 +1,4 @@
-import  chalk = require('chalk');
+import chalk = require('chalk');
 import envinfo from 'envinfo';
 import process from 'process';
 import { argv } from './options';
@@ -46,8 +46,8 @@ export function informationType(type: string): Information {
 export default async function info(customArgv: object): Promise<string[]> {
     let detailsObj = {};
     const envinfoConfig = {};
-    const customArgs: boolean = customArgv && typeof customArgv === 'object' &&
-        Object.entries(customArgv).length !== 0 && customArgv.constructor === Object;
+    const customArgs: boolean =
+        customArgv && typeof customArgv === 'object' && Object.entries(customArgv).length !== 0 && customArgv.constructor === Object;
     const args: ArgvI = customArgs ? customArgv : argv;
     const configRelativePath = argv._[1] ? argv._[1] : args.config;
 

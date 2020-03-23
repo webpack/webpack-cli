@@ -9,7 +9,9 @@ import {
     createExternalFunction,
     createRequire,
     List,
-    RawList, InputValidate, Input,
+    RawList,
+    InputValidate,
+    Input,
 } from '../src';
 
 describe('utils', () => {

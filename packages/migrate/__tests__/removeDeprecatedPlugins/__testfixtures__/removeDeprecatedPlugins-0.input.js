@@ -1,3 +1,3 @@
 module.exports = {
-	plugins: [new webpack.optimize.OccurrenceOrderPlugin()]
+    plugins: [new webpack.optimize.OccurrenceOrderPlugin()],
 };

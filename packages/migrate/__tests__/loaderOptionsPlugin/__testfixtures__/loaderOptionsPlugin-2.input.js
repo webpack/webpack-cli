@@ -3,7 +3,7 @@ module.exports = {
     plugins: [
         new SomePlugin(),
         new webpack.LoaderOptionsPlugin({
-            foo: 'bar'
-        })
-    ]
-}
+            foo: 'bar',
+        }),
+    ],
+};

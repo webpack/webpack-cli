@@ -1,3 +1,3 @@
 module.exports = {
-	plugins: [new webpack.NoEmitOnErrorsPlugin()]
+    plugins: [new webpack.NoEmitOnErrorsPlugin()],
 };

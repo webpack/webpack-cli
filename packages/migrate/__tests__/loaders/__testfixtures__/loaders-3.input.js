@@ -1,10 +1,10 @@
 module.exports = {
-  module: {
-	preLoaders: [
-		{
-		loader: "eslint",
-		test: /\.js$/,
-		},
-	],
-  },
+    module: {
+        preLoaders: [
+            {
+                loader: 'eslint',
+                test: /\.js$/,
+            },
+        ],
+    },
 };

@@ -3,7 +3,7 @@ module.exports = {
     plugins: [
         new webpack.optimize.UglifyJsPlugin(),
         new webpack.LoaderOptionsPlugin({
-            foo: 'bar'
-        })
-    ]
-}
+            foo: 'bar',
+        }),
+    ],
+};

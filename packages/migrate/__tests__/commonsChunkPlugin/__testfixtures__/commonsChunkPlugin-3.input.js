@@ -1,8 +1,8 @@
 module.exports = {
-	plugins: [
-		new webpack.optimize.CommonsChunkPlugin({
-			name: "commons",
-			filename: "commons.js",
-		})
-	]
-}
+    plugins: [
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'commons',
+            filename: 'commons.js',
+        }),
+    ],
+};

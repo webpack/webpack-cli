@@ -3,16 +3,15 @@ name: Node CI
 on:
   push:
     branches:
-    - master
-    - next
+      - master
+      - next
   pull_request:
     branches:
-    - master
-    - next
+      - master
+      - next
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -21,26 +20,26 @@ jobs:
         webpack-version: [next, latest]
 
     steps:
-    - uses: actions/checkout@v1
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: yarn install, bootstrap
-      run: |
-        yarn
-        yarn bootstrap
-    - name: Run test for webpack version ${{ matrix.webpack-version }}
-      run: |
-        yarn add -W webpack@${{ matrix.webpack-version }}
-        yarn build
-        yarn prepsuite
-        yarn test:ci
-      env:
-        CI: true
-    - name: smoketest
-      run: |
-        yarn build
-        yarn smoketest
-      env:
-        CI: true
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: yarn install, bootstrap
+        run: |
+          yarn
+          yarn bootstrap
+      - name: Run test for webpack version ${{ matrix.webpack-version }}
+        run: |
+          yarn add -W webpack@${{ matrix.webpack-version }}
+          yarn build
+          yarn prepsuite
+          yarn test:ci
+        env:
+          CI: true
+      - name: smoketest
+        run: |
+          yarn build
+          yarn smoketest
+        env:
+          CI: true

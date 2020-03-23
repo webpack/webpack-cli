@@ -6,7 +6,5 @@
     "composite": true
   },
   "include": ["./src"],
-  "references": [
-    {"path": "../generators"}
-  ]
+  "references": [{ "path": "../generators" }]
 }

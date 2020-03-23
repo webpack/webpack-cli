@@ -1,9 +1,6 @@
 module.export = {
-	optimizations: {
-		splitChunks: false
-	},
-    plugins: [
-        new Foo(),
-        new webpack.NamedModulesPlugin()
-    ]
-}
+    optimizations: {
+        splitChunks: false,
+    },
+    plugins: [new Foo(), new webpack.NamedModulesPlugin()],
+};

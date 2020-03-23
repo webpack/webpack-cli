@@ -1,5 +1,5 @@
 module.exports = {
-	output: {
-		path: "dist"
-	}
+    output: {
+        path: 'dist',
+    },
 };

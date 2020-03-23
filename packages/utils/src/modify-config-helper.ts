@@ -1,4 +1,4 @@
-import  chalk = require('chalk');
+import chalk = require('chalk');
 import fs from 'fs';
 import path from 'path';
 import yeoman from 'yeoman-environment';

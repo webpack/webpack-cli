@@ -1,5 +1,3 @@
 module.export = {
-    plugins: [
-        new webpack.NamedModulesPlugin()
-    ]
-}
+    plugins: [new webpack.NamedModulesPlugin()],
+};

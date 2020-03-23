@@ -1,4 +1,4 @@
-import  chalk = require('chalk');
+import chalk = require('chalk');
 import j from 'jscodeshift';
 import pEachSeries = require('p-each-series');
 import path from 'path';

@@ -1,6 +1,6 @@
 import { resolve } from 'path';
 import { existsSync } from 'fs';
-import  chalk = require('chalk');
+import chalk = require('chalk');
 import { npmExists } from './npm-exists';
 import { isLocalPath } from './path-utils';
 import { resolvePackages } from './resolve-packages';
