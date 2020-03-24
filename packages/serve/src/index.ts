@@ -15,18 +15,25 @@ export default function serve(...args): void {
     const core = cli.getCoreFlags();
     // partial parsing usage: https://github.com/75lb/command-line-args/wiki/Partial-parsing
 
-    // since the webpack flags have the 'entry' option set as it's default option,
-    // we need to parse the dev server args first. Otherwise, the webpack parsing could snatch
-    // one of the dev server's options and set it to this 'entry' option.
-    // see: https://github.com/75lb/command-line-args/blob/master/doc/option-definition.md#optiondefaultoption--boolean
-    const devServerArgs = cli.commandLineArgs(devServer, { argv: args, partial: true });
-    const webpackArgs = cli.commandLineArgs(core, { argv: devServerArgs._unknown || [], stopAtFirstUnknown: false });
-    const finalArgs = argsToCamelCase(devServerArgs._all || {});
-    // pass along the 'hot' argument to the dev server if it exists
-    if (webpackArgs && webpackArgs._all && typeof webpackArgs._all.hot !== 'undefined') {
-        finalArgs['hot'] = webpackArgs._all.hot;
+	// since the webpack flags have the 'entry' option set as it's default option,
+	// we need to parse the dev server args first. Otherwise, the webpack parsing could snatch
+	// one of the dev server's options and set it to this 'entry' option.
+	// see: https://github.com/75lb/command-line-args/blob/master/doc/option-definition.md#optiondefaultoption--boolean
+	const devServerArgs = cli.argParser("", devServer, args);
+	const webpackArgs = cli.argParser("", core, devServerArgs.args);
+	const finalArgs = argsToCamelCase(devServerArgs.opts() || {});
+	// pass along the 'hot' argument to the dev server if it exists
+	if (webpackArgs && webpackArgs.opts() && typeof webpackArgs.opts().hot !== 'undefined') {
+		finalArgs['hot'] = webpackArgs.opts().hot;
     }
-    cli.getCompiler(webpackArgs, core).then((compiler): void => {
-        startDevServer(compiler, finalArgs);
+
+    Object.keys(finalArgs).forEach(arg => {
+        if (finalArgs[arg] === undefined) {
+            delete finalArgs[arg];
+        }
     });
+
+	cli.getCompiler(webpackArgs.opts(), core).then((compiler): void => {
+		startDevServer(compiler, finalArgs);
+	});
 }
