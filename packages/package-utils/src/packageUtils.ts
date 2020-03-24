@@ -18,17 +18,23 @@ type PackageName = 'npm' | 'yarn';
 
 export function getPackageManager(): PackageName {
     const hasLocalYarn = fs.existsSync(path.resolve(process.cwd(), 'yarn.lock'));
-    try {
-        if (hasLocalYarn) {
-            return 'yarn';
-        } else if (sync('yarn', [' --version'], { stdio: 'ignore' }).stderr) {
-            return 'yarn';
-        } else {
-            return 'npm';
-        }
-    } catch (e) {
+    const hasLocalNpm = fs.existsSync(path.resolve(process.cwd(), 'package-lock.json'));
+
+    if (hasLocalYarn) {
+        return 'yarn';
+    } else if (hasLocalNpm) {
         return 'npm';
     }
+
+    try {
+        // if the sync function below fails because yarn is not installed,
+        // an error will be thrown
+        if (sync('yarn', ['--version']).stdout) {
+            return 'yarn';
+        }
+    } catch (e) {}
+
+    return 'npm';
 }
 
 /**
