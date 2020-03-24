@@ -2386,20 +2386,6 @@
   resolved "https://registry.yarnpkg.com/@types/normalize-package-data/-/normalize-package-data-2.4.0.tgz#e486d0d97396d79beedd0a6e33f4534ff6b4973e"
   integrity sha512-f5j5b/Gf71L+dbqxIpQ4Z2WlmI/mPJ0fOkGGmFgtb6sAu97EPczzbS3/tJKxmcYDj55OX6ssqwDAWOHIYDRDGA==
 
-"@types/p-each-series@1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@types/p-each-series/-/p-each-series-1.0.1.tgz#85bd106066c2e0d93bbbaa0eb878b779282ac59f"
-  integrity sha512-hP7iCpCztwndhQObzA6vVE+x52KIC+WDXzN4YXw7P/bRKYY14kra8w/LJ/QFiOUtsJj+0GWuXnoMYWLjwb/CTA==
-  dependencies:
-    p-each-series "*"
-
-"@types/p-lazy@2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@types/p-lazy/-/p-lazy-2.0.0.tgz#fcacfbc186a97fc84b651a26785b67ede93c810d"
-  integrity sha512-Y1Vi7jDEGVlYNPP49X2TfiWKfB8FMba1G/zuE9D63Jk24MdVgdU01fiLTN8qxPRhYFAj05J5lFwhhRpcwDCFGA==
-  dependencies:
-    p-lazy "*"
-
 "@types/parse-json@^4.0.0":
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@types/parse-json/-/parse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"
