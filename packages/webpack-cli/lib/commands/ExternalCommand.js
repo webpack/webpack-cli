@@ -1,4 +1,3 @@
-const { prompt } = require('enquirer');
 const chalk = require('chalk');
 const logger = require('../utils/logger');
 const execa = require('execa');
