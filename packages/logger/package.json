@@ -29,7 +29,7 @@
     "url": "https://github.com/webpack/webpack-cli/issues"
   },
   "peerDependencies": {
-    "webpack": "^4.41.6"
+    "webpack": "^4.42.0"
   },
   "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9"
 }
