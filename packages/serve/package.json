@@ -10,27 +10,14 @@
   },
   "author": "",
   "license": "MIT",
-  "dependencies": {
-    "@webpack-cli/utils": "^1.0.1-alpha.5",
-    "chalk": "3.0.0",
-    "cross-spawn": "6.0.5",
-    "inquirer": "6.5.1",
-    "webpack-cli": "^4.0.0-beta.8",
-    "webpack-dev-server": "^3.9.0"
-  },
   "devDependencies": {
-    "@types/cross-spawn": "6.0.0",
-    "@types/inquirer": "6.5.0",
     "@types/node": "12.7.2",
-    "typescript": "3.5.3"
+    "typescript": "3.5.3",
+    "webpack-dev-server": "3.10.3"
   },
   "peerDependencies": {
-    "webpack-dev-server": ">=3.0.0"
-  },
-  "peerDependenciesMeta": {
-    "webpack-dev-server": {
-      "optional": false
-    }
+    "webpack-cli": "4.x.x",
+    "webpack-dev-server": "3.x.x || 4.x.x"
   },
   "scripts": {
     "build": "tsc",
