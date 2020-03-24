@@ -16,7 +16,6 @@ import path from 'path';
 import execa from 'execa';
 import spawn from 'cross-spawn';
 import { prompt } from 'enquirer';
-import globalModules from 'global-modules';
 import { getPackageManager, packageExists } from '../lib/packageUtils';
 import { runCommand } from '../lib/processUtils';
 
@@ -102,7 +101,7 @@ describe('packageUtils', () => {
             packageUtils.getPackageManager.mockReturnValue('yarn');
             (spawn.sync as jest.Mock).mockReturnValue({
                 stdout: {
-                    toString: () => {
+                    toString: (): string => {
                         return 'test-yarn';
                     },
                 },
