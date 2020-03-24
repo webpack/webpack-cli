@@ -5,6 +5,8 @@ const { Compiler } = require('./utils/Compiler');
 const { groups, core } = require('./utils/cli-flags');
 const webpackMerge = require('webpack-merge');
 const { toKebabCase } = require('./utils/helpers');
+const argParser = require('./utils/arg-parser');
+
 const defaultCommands = {
     init: 'init',
     loader: 'generate-loader',
@@ -79,6 +81,15 @@ class WebpackCLI extends GroupHelper {
         }
         return options;
     }
+
+    /**
+     * Expose commander argParser
+     * @param  {...any} args args for argParser
+     */
+    argParser(...args) {
+        return argParser(...args);
+    }
+
 
     getCoreFlags() {
         return core;
