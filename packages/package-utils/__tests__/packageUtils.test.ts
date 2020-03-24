@@ -34,6 +34,9 @@ describe('packageUtils', () => {
 
             // package-lock.json is ignored by .gitignore, so we simply
             // write a lockfile here for testing
+            if (!fs.existsSync(testNpmLockPath)){
+                fs.mkdirSync(testNpmLockPath);
+            }
             fs.writeFileSync(path.resolve(testNpmLockPath, 'package-lock.json'), '');
             fs.writeFileSync(path.resolve(testBothPath, 'package-lock.json'), '');
         });
