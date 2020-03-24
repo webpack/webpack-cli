@@ -46,8 +46,7 @@ export function getPackageManager(): PackageName {
  * @returns {String} path - Path to global node_modules folder
  */
 export function getPathToGlobalPackages(): string {
-    const manager: string = getPackageManager();
-
+    const manager: string = exports.getPackageManager();
     if (manager === 'yarn') {
         try {
             const yarnDir = spawn
@@ -79,7 +78,7 @@ export function packageExists(packageName: string): boolean {
  */
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export async function promptInstallation(packageName: string, preMessage?: Function) {
-    const packageManager = getPackageManager();
+    const packageManager = exports.getPackageManager();
     const options = [packageManager === 'yarn' ? 'add' : 'install', '-D', packageName];
 
     const commandToBeRun = `${packageManager} ${options.join(' ')}`;
@@ -97,7 +96,7 @@ export async function promptInstallation(packageName: string, preMessage?: Funct
     ]);
     if (installConfirm) {
         await runCommand(commandToBeRun);
-        return packageExists(packageName);
+        return exports.packageExists(packageName);
     }
     // eslint-disable-next-line require-atomic-updates
     process.exitCode = -1;
