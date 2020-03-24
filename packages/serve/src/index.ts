@@ -33,6 +33,10 @@ export default function serve(...args): void {
         }
     });
 
+    if (webpackArgs.args.length > 0) {
+        process.stderr.write(`Unknown argument: ${webpackArgs.args} flag`);
+    }
+
 	cli.getCompiler(webpackArgs.opts(), core).then((compiler): void => {
 		startDevServer(compiler, finalArgs);
 	});
