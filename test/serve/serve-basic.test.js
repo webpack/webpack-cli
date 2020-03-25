@@ -4,7 +4,7 @@
 const path = require('path');
 const { runWatch } = require('../utils/test-utils');
 
-jest.setTimeout(20000);
+jest.setTimeout(30000);
 
 const runServe = args => {
     return runWatch({
@@ -18,6 +18,8 @@ const runServe = args => {
 describe('basic serve usage', () => {
     it('compiles without flags', async () => {
         const { stdout, stderr } = await runServe([]);
+        console.log(stdout);
+        console.log(stderr);
         expect(stdout).toContain('main.js');
         expect(stdout).not.toContain('hot/dev-server.js');
         expect(stderr).toHaveLength(0);
@@ -25,6 +27,8 @@ describe('basic serve usage', () => {
 
     it('uses hot flag to alter bundle', async () => {
         const { stdout, stderr } = await runServe(['--hot']);
+        console.log(stdout);
+        console.log(stderr);
         expect(stdout).toContain('main.js');
         expect(stdout).toContain('hot/dev-server.js');
         expect(stderr).toHaveLength(0);
@@ -32,6 +36,8 @@ describe('basic serve usage', () => {
 
     it('uses hot flag and progress flag', async () => {
         const { stdout, stderr } = await runServe(['--hot', '--progress']);
+        console.log(stdout);
+        console.log(stderr);
         expect(stdout).toContain('main.js');
         expect(stdout).toContain('hot/dev-server.js');
         // progress flag makes use of stderr
@@ -40,6 +46,8 @@ describe('basic serve usage', () => {
 
     it('throws error on unknown flag', async () => {
         const { stdout, stderr } = await runServe(['--unknown-flag']);
+        console.log(stdout);
+        console.log(stderr);
         expect(stdout).toHaveLength(0);
         expect(stderr).toContain('Unknown option: --unknown-flag');
     });
