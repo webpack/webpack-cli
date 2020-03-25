@@ -4,7 +4,7 @@ const { resolve } = require('path');
 const { run } = require('../utils/test-utils');
 const parseArgs = require('../../packages/webpack-cli/lib/utils/parse-args');
 
-describe.skip('node flags', () => {
+describe('node flags', () => {
     it('parseArgs helper must work correctly', () => {
         [
             {
