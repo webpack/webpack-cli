@@ -5,7 +5,7 @@ const { resolve } = require('path');
 
 const { run } = require('../../utils/test-utils');
 
-describe.skip('dotfolder single config lookup', () => {
+describe('dotfolder single config lookup', () => {
     it('should find a webpack configuration in a dotfolder', done => {
         const { stdout, stderr } = run(__dirname, [], false);
         expect(stderr).not.toBeUndefined();
