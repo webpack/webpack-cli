@@ -4,7 +4,7 @@
 const path = require('path');
 const { runWatch } = require('../utils/test-utils');
 
-jest.setTimeout(60000);
+jest.setTimeout(20000);
 
 const runServe = args => {
     return runWatch({
@@ -15,7 +15,7 @@ const runServe = args => {
     });
 };
 
-describe('basic serve usage', () => {
+describe.skip('basic serve usage', () => {
     it('compiles without flags', async () => {
         const { stdout, stderr } = await runServe([]);
         console.log(stdout);
