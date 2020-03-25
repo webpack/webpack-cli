@@ -5,7 +5,7 @@ const { resolve } = require('path');
 
 const { run } = require('../../utils/test-utils');
 
-describe('merge flag configuration', () => {
+describe.skip('merge flag configuration', () => {
     it('merges two configurations together', done => {
         const { stdout } = run(__dirname, ['--config', './1.js', '--merge', './2.js'], false);
         expect(stdout).toContain('option has not been set, webpack will fallback to');
