@@ -16,10 +16,6 @@
     "prettyjson": "1.2.1",
     "yargs": "15.3.1"
   },
-  "devDependencies": {
-    "@types/node": "13.9.1",
-    "typescript": "3.8.3"
-  },
   "scripts": {
     "build": "tsc",
     "watch": "npm run build && tsc -w"

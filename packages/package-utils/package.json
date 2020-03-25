@@ -37,11 +37,13 @@
   },
   "dependencies": {
     "chalk": "^3.0.0",
+    "cross-spawn": "7.0.1",
     "enquirer": "^2.3.4",
-    "execa": "^4.0.0"
+    "execa": "^4.0.0",
+    "global-modules": "2.0.0"
   },
   "devDependencies": {
-    "typescript": "^3.8.3"
+    "@types/cross-spawn": "6.0.1"
   },
   "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9"
 }
