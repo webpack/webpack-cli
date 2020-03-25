@@ -12,7 +12,7 @@ describe('@webpack-cli/package-utils', () => {
         expect(exists).toBeTruthy();
     });
 
-    it('should not throw if the user interrupts', async () => {
+    it.skip('should not throw if the user interrupts', async () => {
     	(promptInstallation as jest.Mock).mockImplementation(() => { throw new Error() });
         await expect(ExternalCommand.run('info')).resolves.not.toThrow();
     });
