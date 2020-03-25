@@ -6,7 +6,7 @@ const { sync: spawnSync } = execa;
 
 const { run } = require('../../utils/test-utils');
 
-describe('env object', () => {
+describe.skip('env object', () => {
     it('is able to compile successfully with --prod flag', () => {
         const { stderr, stdout } = run(__dirname, ['--prod']);
         const executable = path.join(__dirname, './bin/main.js');

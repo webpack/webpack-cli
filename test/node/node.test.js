@@ -65,7 +65,7 @@ describe('node flags', () => {
         expect(stderr).toContain('node: bad option:');
     });
 
-    it('throws an error if no values were supplied with --max-old-space-size', () => {
+    it.skip('throws an error if no values were supplied with --max-old-space-size', () => {
         const { stderr, stdout } = run(__dirname, ['--node-args', '--max-old-space-size']);
         expect(stderr).toBeTruthy();
         expect(stdout).toBeFalsy();
