@@ -2,7 +2,7 @@ import got from "got";
 
 // TODO: to understand the type
 // eslint-disable-next-line
-const constant = (value: boolean) => (res: got.Response<string>): boolean | PromiseLike<boolean> => value;
+const constant = (value: boolean) => (res): boolean | PromiseLike<boolean> => value;
 
 /**
  *
