@@ -10,7 +10,7 @@ const devFile = path.join(__dirname, './bin/dev.js');
 const prodFile = path.join(__dirname, './bin/prod.js');
 
 describe('env array', () => {
-    it.skip('is able to set two different environments for an array configuration', () => {
+    it('is able to set two different environments for an array configuration', () => {
         run(__dirname);
 
         const devScript = spawnSync('node', [devFile]);
