@@ -69,9 +69,7 @@ jobs:
       env:
         CI: true
 
-    - name: Smoke Tests
-      run: |
-        yarn build
-        yarn smoketest
-      env:
-        CI: true
+#    - name: Smoke Tests
+#      run: yarn smoketest
+#      env:
+#        CI: true
