@@ -155,7 +155,7 @@
     "lerna": "^3.20.2",
     "lint-staged": "^10.0.8",
     "nyc": "^14.1.0",
-    "prettier": "1.19.1",
+    "prettier": "2.0.2",
     "readable-stream": "^3.6.0",
     "ts-jest": "^25.2.1",
     "typedoc": "^0.17.0",
