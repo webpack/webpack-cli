@@ -6,12 +6,13 @@ const { sync: spawnSync } = execa;
 const { Writable } = require('readable-stream');
 const WEBPACK_PATH = path.resolve(__dirname, '../../packages/webpack-cli/bin/cli.js');
 const ENABLE_LOG_COMPILATION = process.env.ENABLE_PIPE || false;
+
 /**
- * Description
+ * Run the webpack CLI for a test case.
  *
- * @param {*} testCase The path to folder that contains the webpack.config.js
- * @param {*} args Array of arguments to pass to webpack
- * @param {*} setOutput Boolean that decides if a default output path will be set or not
+ * @param {String} testCase The path to folder that contains the webpack.config.js
+ * @param {Array} args Array of arguments to pass to webpack
+ * @param {Boolean} setOutput Boolean that decides if a default output path will be set or not
  * @returns {Object} The webpack output
  */
 function run(testCase, args = [], setOutput = true) {
@@ -24,6 +25,7 @@ function run(testCase, args = [], setOutput = true) {
         reject: false,
         stdio: ENABLE_LOG_COMPILATION ? 'inherit' : 'pipe',
     });
+
     return result;
 }
 
