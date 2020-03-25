@@ -65,8 +65,7 @@ jobs:
         yarn add -W webpack@${{ matrix.webpack-version }}
         yarn build
         yarn prepsuite
-        node_modules/.bin/jest test/node
-#        yarn test:ci
+        yarn test:ci
       env:
         CI: true
 
