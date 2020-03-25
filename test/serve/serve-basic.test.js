@@ -15,9 +15,11 @@ const runServe = args => {
     });
 };
 
-describe.skip('basic serve usage', () => {
+describe('basic serve usage', () => {
     it('compiles without flags', async () => {
         const { stdout, stderr } = await runServe([]);
+        console.log(stdout);
+        console.log(stderr);
         expect(stdout).toContain('main.js');
         expect(stdout).not.toContain('hot/dev-server.js');
         expect(stderr).toHaveLength(0);
