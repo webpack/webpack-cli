@@ -11,6 +11,7 @@ Table of Contents
 -   [Your first Contribution](#your-first-contribution)
 -   [Setup](#setup)
 -   [Running Tests](#running-tests)
+    -   [Using yarn](#using-yarn)
 -   [Editor Config](#editor-config)
 -   [Dependencies](#dependencies)
 -   [Branching Model](#branching-model)
@@ -75,12 +76,13 @@ In case you are suggesting a new feature, we will match your idea with our curre
 -   Bootstrap all the submodules before building for the first time
 
     ```bash
-    #yarn
     yarn bootstrap
     yarn build
     ```
 
 ## Running Tests
+
+### Using yarn
 
 -   Run all the tests with:
 
@@ -91,7 +93,7 @@ In case you are suggesting a new feature, we will match your idea with our curre
 -   Run CLI tests with:
 
     ```bash
-    yarn test:cli`
+    yarn test:cli
     ```
 
 -   Run tests of all packages:
@@ -250,14 +252,14 @@ We convert the existing webpack config to [AST](https://developer.mozilla.org/en
 The directory structure of a transform looks as follows -
 
 ```sh
-|
-|──__snapshots__
-|──__testfixtures__
-|  |
-|  |──transform-name.input.js
-|
-|──transform-name.js
-|──transform-name.test.js
+│
+├──__snapshots__
+├──__testfixtures__
+│  │
+│  └───transform-name.input.js
+│
+├──transform-name.js
+├──transform-name.test.js
 ```
 
 `transform-name.js`
