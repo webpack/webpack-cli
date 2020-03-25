@@ -16,7 +16,7 @@ describe('commands help', () => {
         expect(stderr).toHaveLength(0);
     });
 
-    it('gives precedence to earlier command in case of multiple commands', () => {
+    it.skip('gives precedence to earlier command in case of multiple commands', () => {
         const { stdout, stderr } = run(__dirname, ['--help', 'init', 'info'], false);
         expect(stdout).not.toContain(helpHeader);
         expect(stdout).toContain('webpack init | init <scaffold>');

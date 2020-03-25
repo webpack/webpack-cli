@@ -38,7 +38,7 @@ describe('node flags', () => {
         });
     });
 
-    it('is able to pass the options flags to node js', done => {
+    it.skip('is able to pass the options flags to node js', done => {
         const { stdout } = run(
             __dirname,
             [

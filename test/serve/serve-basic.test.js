@@ -4,7 +4,7 @@
 const path = require('path');
 const { runWatch } = require('../utils/test-utils');
 
-jest.setTimeout(20000);
+jest.setTimeout(30000);
 
 const runServe = args => {
     return runWatch({
