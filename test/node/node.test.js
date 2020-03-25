@@ -38,7 +38,7 @@ describe('node flags', () => {
         });
     });
 
-    it.skip('is able to pass the options flags to node js', done => {
+    it('is able to pass the options flags to node js', done => {
         const { stdout } = run(
             __dirname,
             [
@@ -60,18 +60,18 @@ describe('node flags', () => {
         });
     });
 
-    it.skip('throws an error on supplying unknown flags', () => {
+    it('throws an error on supplying unknown flags', () => {
         const { stderr } = run(__dirname, ['--node-args', '--unknown']);
         expect(stderr).toContain('node: bad option:');
     });
 
-    it.skip('throws an error if no values were supplied with --max-old-space-size', () => {
+    it('throws an error if no values were supplied with --max-old-space-size', () => {
         const { stderr, stdout } = run(__dirname, ['--node-args', '--max-old-space-size']);
         expect(stderr).toBeTruthy();
         expect(stdout).toBeFalsy();
     });
 
-    it.skip('throws an error if an illegal value was supplied with --max-old-space-size', () => {
+    it('throws an error if an illegal value was supplied with --max-old-space-size', () => {
         const { stderr, stdout } = run(__dirname, ['--node-args', '--max-old-space-size=1024a']);
         expect(stderr).toBeTruthy();
         expect(stdout).toBeFalsy();
