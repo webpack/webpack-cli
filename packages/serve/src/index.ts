@@ -32,7 +32,7 @@ export default function serve(): void {
     });
 
     if (webpackArgs.args.length > 0) {
-        process.stderr.write(`Unknown argument: ${webpackArgs.args}`);
+        process.stderr.write(`Unknown option: ${webpackArgs.args}`);
         return;
     }
 
