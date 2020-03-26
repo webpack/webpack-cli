@@ -47,9 +47,11 @@ function runWatch({ testCase, args = [], setOutput = true, outputKillStr = 'Time
                 write(chunk, encoding, callback) {
                     const output = chunk.toString('utf8');
 
+                    console.log(outputKillStr);
+                    console.log(output.includes(outputKillStr));
+
                     if (output.includes(outputKillStr)) {
                         console.log('Should be killed');
-                        console.log(output);
 
                         watchPromise.kill();
                     }
