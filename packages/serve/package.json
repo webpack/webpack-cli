@@ -23,5 +23,8 @@
     "build": "tsc",
     "watch": "npm run build && tsc -w"
   },
-  "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9"
+  "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9",
+  "dependencies": {
+    "semver": "^7.1.3"
+  }
 }

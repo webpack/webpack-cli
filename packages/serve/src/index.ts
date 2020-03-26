@@ -1,3 +1,4 @@
+import semver from "semver";
 import { devServer } from "webpack-dev-server/bin/cli-flags";
 import WebpackCLI from "webpack-cli";
 import startDevServer from "./startDevServer";
@@ -11,6 +12,15 @@ import argsToCamelCase from "./args-to-camel-case";
  * @returns {Function} invokes the devServer API
  */
 export default function serve(...args): void {
+	// eslint-disable-next-line @typescript-eslint/no-var-requires
+	const devServerPackage = require('webpack-dev-server/package.json');
+
+	if (semver.lt(devServerPackage.version, '4.0.0')) {
+		// this calls the dev server CLI
+		require('webpack-dev-server/bin/webpack-dev-server');
+		return;
+	}
+
 	const cli = new WebpackCLI();
 	const core = cli.getCoreFlags();
 	// partial parsing usage: https://github.com/75lb/command-line-args/wiki/Partial-parsing
