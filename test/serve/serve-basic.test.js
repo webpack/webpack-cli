@@ -5,7 +5,7 @@ const path = require('path');
 const getPort = require('get-port');
 const { runWatch } = require('../utils/test-utils');
 
-jest.setTimeout(60000);
+jest.setTimeout(120000);
 
 const runServe = args => {
     return runWatch({
@@ -23,7 +23,7 @@ describe('basic serve usage', () => {
         port = await getPort();
     });
 
-    it.only('compiles without flags', async () => {
+    it('compiles without flags', async () => {
         const { stdout, stderr } = await runServe(['--port', port]);
         expect(stdout).toContain('main.js');
         expect(stdout).not.toContain('hot/dev-server.js');
