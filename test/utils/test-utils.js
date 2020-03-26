@@ -48,6 +48,7 @@ function runWatch({ testCase, args = [], setOutput = true, outputKillStr = 'Time
                     const output = chunk.toString('utf8');
 
                     console.log(outputKillStr);
+                    console.log(output);
                     console.log(output.includes(outputKillStr));
 
                     if (output.includes(outputKillStr)) {
