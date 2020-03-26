@@ -2,6 +2,7 @@
 const path = require('path');
 const fs = require('fs');
 const execa = require('execa');
+const kill = require('tree-kill');
 const { sync: spawnSync } = execa;
 const { Writable } = require('readable-stream');
 const WEBPACK_PATH = path.resolve(__dirname, '../../packages/webpack-cli/bin/cli.js');
@@ -42,19 +43,19 @@ function runWatch({ testCase, args = [], setOutput = true, outputKillStr = 'Time
             stdio: ENABLE_LOG_COMPILATION ? 'inherit' : 'pipe',
         });
 
+        console.log(watchPromise);
+        console.log(watchPromise.pid);
+
         watchPromise.stdout.pipe(
             new Writable({
                 write(chunk, encoding, callback) {
                     const output = chunk.toString('utf8');
 
-                    console.log(outputKillStr);
-                    console.log(output);
-                    console.log(output.includes(outputKillStr));
-
                     if (output.includes(outputKillStr)) {
                         console.log('Should be killed');
 
                         watchPromise.kill();
+                        kill(watchPromise.pid);
                     }
 
                     callback();

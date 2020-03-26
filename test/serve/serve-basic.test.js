@@ -1,10 +1,8 @@
 'use strict';
 
 const path = require('path');
-// eslint-disable-next-line node/no-extraneous-require
 const getPort = require('get-port');
 const { runWatch } = require('../utils/test-utils');
-
 // jest.setTimeout(360000);
 
 const runServe = args => {

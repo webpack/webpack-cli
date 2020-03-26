@@ -40,7 +40,6 @@
     "cross-spawn": "7.0.1",
     "enquirer": "^2.3.4",
     "execa": "^4.0.0",
-    "get-port": "^5.1.1",
     "global-modules": "2.0.0"
   },
   "devDependencies": {
