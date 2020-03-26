@@ -18,7 +18,7 @@ describe('basic info usage', () => {
     });
 
     it('gets info as json', async () => {
-        const { stdout, stderr } = await runInfo(['--output-json']);
+        const { stdout, stderr } = await runInfo(['--output="json"']);
         expect(stdout).toContain('"System":');
         expect(stderr).toHaveLength(0);
 
@@ -30,16 +30,8 @@ describe('basic info usage', () => {
     });
 
     it('gets info as markdown', async () => {
-        const { stdout, stderr } = await runInfo(['--output-markdown']);
+        const { stdout, stderr } = await runInfo(['--output="markdown"']);
         expect(stdout).toContain('## System:');
-        expect(stderr).toHaveLength(0);
-    });
-
-    it('gets only specific info', async () => {
-        const { stdout, stderr } = await runInfo(['--output-markdown', '--binaries']);
-        // system info is not specified as a flag
-        expect(stdout).not.toContain('## System:');
-        expect(stdout).toContain('## Binaries:');
         expect(stderr).toHaveLength(0);
     });
 });
