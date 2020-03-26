@@ -43,7 +43,7 @@ const resolveNegatedArgs = args => {
 };
 
 async function runCLI(cli, commandIsUsed) {
-    const parsedArgs = argParser('webpack', core, process.argv, cli.runHelp, cli.runVersion);
+    const parsedArgs = argParser(core, process.argv, process.title, cli.runHelp, cli.runVersion);
 
     if (parsedArgs.args.includes('help')) {
         cli.runHelp(process.argv);
