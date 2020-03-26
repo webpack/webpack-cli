@@ -54,7 +54,7 @@ function runWatch({ testCase, args = [], setOutput = true, outputKillStr = 'Time
                     if (output.includes(outputKillStr)) {
                         console.log('Should be killed');
 
-                        watchPromise.kill();
+                        watchPromise.kill('SIGKILL');
                     }
 
                     callback();
@@ -62,6 +62,8 @@ function runWatch({ testCase, args = [], setOutput = true, outputKillStr = 'Time
             }),
         );
         watchPromise.then(result => {
+            console.log('RESOLVED');
+
             resolve(result);
         });
     });
