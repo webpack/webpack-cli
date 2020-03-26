@@ -42,10 +42,14 @@ function runWatch({ testCase, args = [], setOutput = true, outputKillStr = 'Time
             stdio: ENABLE_LOG_COMPILATION ? 'inherit' : 'pipe',
         });
 
+        console.log(argsWithOutput);
+        console.log(watchPromise);
+
         watchPromise.stdout.pipe(
             new Writable({
                 write(chunk, encoding, callback) {
                     const output = chunk.toString('utf8');
+
                     if (output.includes(outputKillStr)) {
                         watchPromise.kill();
                     }
