@@ -28,11 +28,6 @@
     "@types/inquirer": "6.5.0",
     "@types/listr": "0.14.2",
     "@types/lodash": "^4.14.149",
-    "@types/node": "13.9.1",
-    "@types/p-each-series": "1.0.1",
-    "@types/p-lazy": "2.0.0",
-    "jest": "25.1.0",
-    "typescript": "3.8.3",
     "webpack": "4.x.x"
   },
   "scripts": {

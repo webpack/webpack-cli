@@ -16,11 +16,6 @@
     "jscodeshift": "0.7.0",
     "p-each-series": "2.1.0"
   },
-  "devDependencies": {
-    "@types/node": "13.9.1",
-    "@types/p-each-series": "1.0.1",
-    "typescript": "3.8.3"
-  },
   "scripts": {
     "build": "tsc",
     "watch": "npm run build && tsc -w"

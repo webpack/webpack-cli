@@ -58,5 +58,5 @@ module.exports = {
         'valid-jsdoc': 'error',
         'eol-last': ['error', 'always'],
         'newline-per-chained-call': 'off',
-    }
+    },
 };
