@@ -50,8 +50,9 @@ function runWatch({ testCase, args = [], setOutput = true, outputKillStr = 'Time
                     if (output.includes(outputKillStr)) {
                         console.log('Should be killed');
 
-                        watchPromise.kill();
-                        watchPromise.cancel();
+                        const killed = watchPromise.kill();
+
+                        console.log(killed);
                     }
 
                     callback();
