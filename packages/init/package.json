@@ -2,7 +2,8 @@
   "name": "@webpack-cli/init",
   "version": "1.0.1-alpha.5",
   "description": "init command for webpack-cli",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "author": "",
   "license": "MIT",
   "publishConfig": {
@@ -12,13 +13,8 @@
     "@webpack-cli/generators": "^1.0.1-alpha.5",
     "@webpack-cli/utils": "^1.0.1-alpha.5",
     "chalk": "3.0.0",
-    "jscodeshift": "0.6.4",
+    "jscodeshift": "0.7.0",
     "p-each-series": "2.1.0"
-  },
-  "devDependencies": {
-    "@types/node": "12.7.2",
-    "@types/p-each-series": "1.0.1",
-    "typescript": "3.5.3"
   },
   "scripts": {
     "build": "tsc",

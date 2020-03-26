@@ -13,7 +13,7 @@ describe('env object', () => {
         const bundledScript = spawnSync('node', [executable]);
         expect(bundledScript.stdout).toBe('environment is development');
     });
-    it('is able to compile sucessfully with dev flag', () => {
+    it('is able to compile successfully with dev flag', () => {
         run(__dirname, ['--dev']);
         const executable = path.join(__dirname, './bin/main.js');
         const bundledScript = spawnSync('node', [executable]);

@@ -1,7 +1,7 @@
 # Contributing
 
 From opening a bug report to creating a pull request: every contribution is
-appreciated and welcomed. If you're planning a new feature or changing
+appreciated and welcomed. If you're planning to implement a new feature or changing
 the API, please create an issue first. This way we can ensure that your precious
 work is not in vain.
 
@@ -11,6 +11,7 @@ Table of Contents
 -   [Your first Contribution](#your-first-contribution)
 -   [Setup](#setup)
 -   [Running Tests](#running-tests)
+    -   [Using yarn](#using-yarn)
 -   [Editor Config](#editor-config)
 -   [Dependencies](#dependencies)
 -   [Branching Model](#branching-model)
@@ -28,6 +29,7 @@ Table of Contents
     -   [Further Work](#further-work)
 -   [Contributor License Agreement](#contributor-license-agreement)
 -   [Documentation](#documentation)
+-   [Join The Development](#join-the-development)
 
 ## Issues
 
@@ -74,7 +76,6 @@ In case you are suggesting a new feature, we will match your idea with our curre
 -   Bootstrap all the submodules before building for the first time
 
     ```bash
-    #yarn
     yarn bootstrap
     yarn build
     ```
@@ -92,7 +93,7 @@ In case you are suggesting a new feature, we will match your idea with our curre
 -   Run CLI tests with:
 
     ```bash
-    yarn test:cli`
+    yarn test:cli
     ```
 
 -   Run tests of all packages:
@@ -103,7 +104,7 @@ In case you are suggesting a new feature, we will match your idea with our curre
 
 -   Test a single CLI test case:
 
-    > Must run from root of the poject
+    > Must run from root of the project
 
     ```bash
     yarn jest path/to/my-test.js
@@ -179,10 +180,10 @@ In case you've got a small change in most of the cases, your pull request would 
 
 ## Submitting a good Pull Request
 
--   Write tests
--   Follow the existing coding style
+-   Write tests.
+-   Follow the existing coding style.
 -   Write a [good commit message](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
--   Make sure your PR has an issue and if it doesn't, please create one. This would help discussion with the community, and polishing ideas in case of a new feature.
+-   For a major bugfix/feature make sure your PR has an issue and if it doesn't, please create one. This would help discussion with the community, and polishing ideas in case of a new feature.
 -   Make sure your PR's description contains GitHub's special keyword references that automatically close the related issue when the PR is merged. ([More info](https://github.com/blog/1506-closing-issues-via-pull-requests))
 -   When you have lot of commits in your PR, it's good practice to squash all your commits in one single commit. ([Learn how to squash here](https://davidwalsh.name/squash-commits-git))
 
@@ -210,15 +211,15 @@ format that includes a **type** and a **subject**:
 
 This is the list of _type_ of commits that we accept:
 
--   ast
--   break
--   chore
--   cli
--   docs
--   feat
--   fix
--   misc
--   tests
+-   **ast** : Init, migrate, etc.
+-   **break** : Changes that break the behaviour of the cli.
+-   **chore** : Updating deps, docs, linting, etc.
+-   **cli** : Changes related to core CLI things.
+-   **docs** : Documentation only changes.
+-   **feat** : A new feature.
+-   **fix** : A bug fix, typos, etc.
+-   **misc** : Other formats like tweaks and such.
+-   **tests** : Adding missing or correcting existing tests.
 
 The **header** is mandatory.
 
@@ -251,19 +252,19 @@ We convert the existing webpack config to [AST](https://developer.mozilla.org/en
 The directory structure of a transform looks as follows -
 
 ```sh
-|
-|--__snapshots__
-|--__testfixtures__
-|  |
-|  |--transform-name.input.js
-|
-|--transform-name.js
-|--transform-name.test.js
+│
+├──__snapshots__
+├──__testfixtures__
+│  │
+│  └───transform-name.input.js
+│
+├──transform-name.js
+├──transform-name.test.js
 ```
 
 `transform-name.js`
 
-This file contains the actual transformation codemod. It applies specific transformation and parsing logic to accomplish its job
+This file contains the actual transformation codemod. It applies specific transformation and parsing logic to accomplish its job.
 There are utilities available under `/lib/utils.js` which can help you with this.
 
 `transform-name.test.js`

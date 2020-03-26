@@ -1,4 +1,4 @@
-const { logger } = require('@webpack-cli/logger');
+const logger = require('../utils/logger');
 const StatsGroup = require('../groups/StatsGroup');
 
 const HELP_GROUP = 'help';
@@ -127,7 +127,6 @@ module.exports = {
             name: 'entry',
             usage: '--entry <path to entry file> e.g. ./src/main.js',
             type: String,
-            defaultValue: null,
             defaultOption: true,
             group: BASIC_GROUP,
             description: 'The entry point of your application.',
@@ -257,13 +256,6 @@ module.exports = {
             type: Boolean,
             alias: 'j',
             description: 'Prints result as JSON',
-            group: DISPLAY_GROUP,
-        },
-        {
-            name: 'pretty',
-            usage: 'webpack --pretty',
-            type: Boolean,
-            description: 'Prints a fancy output',
             group: DISPLAY_GROUP,
         },
         {

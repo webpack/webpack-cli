@@ -227,6 +227,21 @@ class WebpackCLI extends GroupHelper {
     }
 
     /**
+     * Get the defaultEntry for merge with config rightly
+     * @private
+     * @returns {void}
+     */
+    _handleDefaultEntry() {
+        if (!this.basicGroup) {
+            const BasicGroup = require('./groups/BasicGroup');
+            this.basicGroup = new BasicGroup();
+        }
+        const defaultEntry = this.basicGroup.resolveFilePath(null, 'index.js');
+        const options = { entry: defaultEntry };
+        this._mergeOptionsToConfiguration(options);
+    }
+
+    /**
      * Responsible for applying defaults, if necessary
      * @private\
      * @returns {void}
@@ -248,6 +263,7 @@ class WebpackCLI extends GroupHelper {
     async runOptionGroups() {
         await Promise.resolve()
             .then(() => this._handleGroupHelper(this.zeroConfigGroup))
+            .then(() => this._handleDefaultEntry())
             .then(() => this._handleGroupHelper(this.configGroup))
             .then(() => this._handleGroupHelper(this.outputGroup))
             .then(() => this._handleGroupHelper(this.basicGroup))

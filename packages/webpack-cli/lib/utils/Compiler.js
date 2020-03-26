@@ -77,19 +77,8 @@ class Compiler {
         return process.stdout.isTTY && process.platform === 'darwin';
     }
 
-    generateOutput(outputOptions, stats, statsErrors, processingMessageBuffer) {
-        if (outputOptions.pretty) {
-            const statsObj = stats.toJson(outputOptions);
-            if (statsObj.children && Array.isArray(statsObj.children) && this.compilerOptions && Array.isArray(this.compilerOptions)) {
-                statsObj.children.forEach(child => {
-                    this.output.generateFancyOutput(child, statsErrors, processingMessageBuffer);
-                });
-                return;
-            }
-            this.output.generateFancyOutput(statsObj, statsErrors, processingMessageBuffer);
-        } else {
-            this.output.generateRawOutput(stats, this.compilerOptions);
-        }
+    generateOutput(outputOptions, stats) {
+        this.output.generateRawOutput(stats, this.compilerOptions);
         process.stdout.write('\n');
         if (outputOptions.watch) {
             logger.info('watching files for updates...');

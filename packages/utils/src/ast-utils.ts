@@ -3,7 +3,7 @@ import { isIdentifierStart, isIdentifierChar, isKeyword } from './validate-ident
 
 function isImportPresent(j: JSCodeshift, ast: Node, path: string): boolean {
     if (typeof path !== 'string') {
-        throw new Error(`path parameter should be string, recieved ${typeof path}`);
+        throw new Error(`path parameter should be string, received ${typeof path}`);
     }
     let importExists = false;
     ast.find(j.CallExpression).forEach((callExp: Node): void => {
@@ -599,7 +599,7 @@ function parseMerge(j: JSCodeshift, ast: Node, value: string[], action: string):
 
     function addMergeImports(configIdentifier: string, configPath: string): void {
         if (typeof configIdentifier !== 'string' || typeof configPath !== 'string') {
-            throw new Error(`Both parameters should be strings. recieved ${typeof configIdentifier}, ${typeof configPath}`);
+            throw new Error(`Both parameters should be strings. received ${typeof configIdentifier}, ${typeof configPath}`);
         }
         ast.find(j.Program).forEach((p: Node): void => {
             if (!isImportPresent(j, ast, 'webpack-merge')) {
