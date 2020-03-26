@@ -23,7 +23,7 @@ describe('basic serve usage', () => {
         port = await getPort();
     });
 
-    it('compiles without flags', async () => {
+    it.only('compiles without flags', async () => {
         const { stdout, stderr } = await runServe(['--port', port]);
         expect(stdout).toContain('main.js');
         expect(stdout).not.toContain('hot/dev-server.js');
