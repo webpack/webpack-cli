@@ -10,21 +10,17 @@ import argsToCamelCase from "./args-to-camel-case";
  * @param {String[]} args - args processed from the CLI
  * @returns {Function} invokes the devServer API
  */
-export default function serve(...args): void {
+export default function serve(): void {
 	const cli = new WebpackCLI();
 	const core = cli.getCoreFlags();
 
-    // partial parsing usage: https://github.com/75lb/command-line-args/wiki/Partial-parsing
-
-	// since the webpack flags have the 'entry' option set as it's default option,
-	// we need to parse the dev server args first. Otherwise, the webpack parsing could snatch
-	// one of the dev server's options and set it to this 'entry' option.
-	// see: https://github.com/75lb/command-line-args/blob/master/doc/option-definition.md#optiondefaultoption--boolean
-	const devServerArgs = cli.argParser(devServer, args);
-	const webpackArgs = cli.argParser(core, args, process.title, cli.runHelp, cli.runVersion);
-
+    const filteredArgs = process.argv.filter(arg => (arg != "serve"));
+    const devServerArgs = cli.argParser(devServer, filteredArgs);
+	const webpackArgs = cli.argParser(core, filteredArgs, process.title, cli.runHelp, cli.runVersion);
     const finalArgs = argsToCamelCase(devServerArgs.opts() || {});
-	// pass along the 'hot' argument to the dev server if it exists
+
+
+    // pass along the 'hot' argument to the dev server if it exists
 	if (webpackArgs && webpackArgs.opts() && webpackArgs.opts().hot !== undefined) {
         finalArgs['hot'] = webpackArgs.opts().hot;
     }
