@@ -144,7 +144,6 @@
     "lint-staged": "^10.0.8",
     "prettier": "1.19.1",
     "readable-stream": "^3.6.0",
-    "tree-kill": "^1.2.2",
     "ts-jest": "^25.2.1",
     "typedoc": "^0.17.0",
     "typescript": "^3.8.3",
