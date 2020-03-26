@@ -36,7 +36,7 @@ function runWatch({ testCase, args = [], setOutput = true, outputKillStr = 'Time
     const outputPath = path.resolve(testCase, 'bin');
     const argsWithOutput = setOutput ? args.concat('--output', outputPath) : args;
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
         const watchPromise = execa(WEBPACK_PATH, argsWithOutput, {
             cwd,
             reject: false,
@@ -62,11 +62,17 @@ function runWatch({ testCase, args = [], setOutput = true, outputKillStr = 'Time
                 },
             }),
         );
-        watchPromise.then(result => {
-            console.log('RESOLVED');
+        watchPromise
+            .then(result => {
+                console.log('RESOLVED');
 
-            resolve(result);
-        });
+                resolve(result);
+            })
+            .catch(error => {
+                console.log(resolve);
+
+                reject(error);
+            });
     });
 }
 
