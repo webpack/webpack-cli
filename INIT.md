@@ -15,7 +15,7 @@
 
 ## Initial Setup
 
-### a. Local setup
+### a. Local Setup
 
 These are the steps necessary to set up `webpack-cli init` locally:
 
