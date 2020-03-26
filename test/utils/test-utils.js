@@ -54,7 +54,7 @@ function runWatch({ testCase, args = [], setOutput = true, outputKillStr = 'Time
                     if (output.includes(outputKillStr)) {
                         console.log('Should be killed');
 
-                        watchPromise.kill('SIGKILL');
+                        watchPromise.kill('SIGTERM', { forceKillAfterTimeout: 1 });
                     }
 
                     callback();
