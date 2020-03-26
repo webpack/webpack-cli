@@ -1,7 +1,7 @@
-import { devServer } from 'webpack-dev-server/bin/cli-flags';
-import WebpackCLI from 'webpack-cli';
-import startDevServer from './startDevServer';
-import argsToCamelCase from './args-to-camel-case';
+import { devServer } from "webpack-dev-server/bin/cli-flags";
+import WebpackCLI from "webpack-cli";
+import startDevServer from "./startDevServer";
+import argsToCamelCase from "./args-to-camel-case";
 
 /**
  *
@@ -11,20 +11,22 @@ import argsToCamelCase from './args-to-camel-case';
  * @returns {Function} invokes the devServer API
  */
 export default function serve(...args): void {
-    const cli = new WebpackCLI();
-    const core = cli.getCoreFlags();
+	const cli = new WebpackCLI();
+	const core = cli.getCoreFlags();
+
     // partial parsing usage: https://github.com/75lb/command-line-args/wiki/Partial-parsing
 
 	// since the webpack flags have the 'entry' option set as it's default option,
 	// we need to parse the dev server args first. Otherwise, the webpack parsing could snatch
 	// one of the dev server's options and set it to this 'entry' option.
 	// see: https://github.com/75lb/command-line-args/blob/master/doc/option-definition.md#optiondefaultoption--boolean
-	const devServerArgs = cli.argParser("", devServer, args);
-	const webpackArgs = cli.argParser("", core, devServerArgs.args);
-	const finalArgs = argsToCamelCase(devServerArgs.opts() || {});
+	const devServerArgs = cli.argParser(devServer, args);
+	const webpackArgs = cli.argParser(core, args, process.title, cli.runHelp, cli.runVersion);
+
+    const finalArgs = argsToCamelCase(devServerArgs.opts() || {});
 	// pass along the 'hot' argument to the dev server if it exists
-	if (webpackArgs && webpackArgs.opts() && typeof webpackArgs.opts().hot !== 'undefined') {
-		finalArgs['hot'] = webpackArgs.opts().hot;
+	if (webpackArgs && webpackArgs.opts() && webpackArgs.opts().hot !== undefined) {
+        finalArgs['hot'] = webpackArgs.opts().hot;
     }
 
     Object.keys(finalArgs).forEach(arg => {
@@ -34,7 +36,8 @@ export default function serve(...args): void {
     });
 
     if (webpackArgs.args.length > 0) {
-        process.stderr.write(`Unknown argument: ${webpackArgs.args} flag`);
+        process.stderr.write(`Unknown argument: ${webpackArgs.args}`);
+        return;
     }
 
 	cli.getCompiler(webpackArgs.opts(), core).then((compiler): void => {

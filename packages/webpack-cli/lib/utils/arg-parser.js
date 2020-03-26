@@ -7,7 +7,7 @@ const commander = require("commander");
  * @param {object[]} options Array of objects with details about flags
  * @param {string[]} args process.argv or it's subset
  */
-function argParser(name = "", options, args, helpFunction, versionFunction) {
+function argParser(options, args, name = "", helpFunction = undefined, versionFunction = undefined) {
     const parser = new commander.Command();
     // Set parser name
     parser.name(name);
