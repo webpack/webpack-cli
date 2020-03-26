@@ -48,11 +48,7 @@ function runWatch({ testCase, args = [], setOutput = true, outputKillStr = 'Time
                     const output = chunk.toString('utf8');
 
                     if (output.includes(outputKillStr)) {
-                        console.log('Should be killed');
-
-                        const killed = watchPromise.kill();
-
-                        console.log(killed);
+                        watchPromise.kill();
                     }
 
                     callback();
@@ -61,8 +57,6 @@ function runWatch({ testCase, args = [], setOutput = true, outputKillStr = 'Time
         );
         watchPromise
             .then(result => {
-                console.log('RESOLVED');
-
                 resolve(result);
             })
             .catch(error => {
