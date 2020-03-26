@@ -5,7 +5,7 @@ const path = require('path');
 const getPort = require('get-port');
 const { runWatch } = require('../utils/test-utils');
 
-jest.setTimeout(360000);
+// jest.setTimeout(360000);
 
 const runServe = args => {
     return runWatch({
