@@ -50,6 +50,8 @@ function runWatch({ testCase, args = [], setOutput = true, outputKillStr = 'Time
                 write(chunk, encoding, callback) {
                     const output = chunk.toString('utf8');
 
+                    console.log(output);
+
                     if (output.includes(outputKillStr)) {
                         watchPromise.kill();
                     }
