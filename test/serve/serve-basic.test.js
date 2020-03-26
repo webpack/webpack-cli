@@ -25,10 +25,11 @@ describe('basic serve usage', () => {
     const isWindows = process.platform === 'win32';
 
     if (isWindows) {
+        // TODO fix me on windows
         it('compiles without flags', () => {
             expect(true).toBe(true);
 
-            console.wanr('TODO: fix `serve` test on windows');
+            console.warn('TODO: fix `serve` test on windows');
         });
     } else {
         it('compiles without flags', async () => {
