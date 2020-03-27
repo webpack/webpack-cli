@@ -1,6 +1,5 @@
 import chalk from 'chalk';
 import envinfo from 'envinfo';
-import process from 'process';
 import options from './options';
 import WebpackCLI from 'webpack-cli';
 
@@ -21,18 +20,19 @@ const DEFAULT_DETAILS: Information = {
     npmPackages: '*webpack*',
 };
 
-export default async function info(args: object): Promise<string[]> {
-    console.log(args);
+export default async function info(...args): Promise<string[]> {
     const cli = new WebpackCLI();
-    const infoArgs = cli.commandLineArgs(options, {argv: [], stopAtFirstUnknown: false});
+    const infoArgs = cli.commandLineArgs(options, {argv: args, stopAtFirstUnknown: false});
     const envinfoConfig = {};
 
-    if (!infoArgs._unknown || infoArgs._unknown.length > 0) {
-        process.stderr.write(`Unknown option: ${chalk.red(infoArgs._unknown[0])}\n`);
+    if (infoArgs._unknown && infoArgs._unknown.length > 0) {
+        process.stderr.write(`Unknown option: ${chalk.red(infoArgs._unknown)}\n`);
     }
 
     if (infoArgs.output) {
-        switch (infoArgs.output) {
+        // Remove quotes if exist
+        const output = infoArgs.output.replace(/['"]+/g, "");
+        switch (output) {
             case "markdown":
                 envinfoConfig["markdown"] = true;
                 break;
@@ -46,5 +46,5 @@ export default async function info(args: object): Promise<string[]> {
 
     const output = await envinfo.run(DEFAULT_DETAILS, envinfoConfig);
     process.stdout.write(output + '\n');
-    process.exit(0);
+    return output;
 }
