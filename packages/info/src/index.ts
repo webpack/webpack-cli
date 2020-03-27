@@ -14,7 +14,18 @@ interface Information {
 
 const DEFAULT_DETAILS: Information = {
     Binaries: ['Node', 'Yarn', 'npm'],
-    Browsers: ['Chrome', 'Firefox', 'Safari'],
+    Browsers: [
+        'Brave Browser',
+        'Chrome',
+        'Chrome Canary',
+        'Edge',
+        'Firefox',
+        'Firefox Developer Edition',
+        'Firefox Nightly',
+        'Internet Explorer',
+        'Safari',
+        'Safari Technology Preview',
+    ],
     System: ['OS', 'CPU', 'Memory'],
     npmGlobalPackages: ['webpack', 'webpack-cli'],
     npmPackages: '*webpack*',
