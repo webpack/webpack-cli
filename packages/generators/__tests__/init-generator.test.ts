@@ -4,7 +4,7 @@ import { join } from 'path';
 
 describe('init generator', () => {
     it('generates a webpack project config', async () => {
-        const outputDir = await run(join(__dirname, '../src/init-generator')).withPrompts({
+        const outputDir = await run(join(__dirname, '../src/init-generator.ts')).withPrompts({
             multiEntries: false,
             singularEntry: 'src/index2',
             outputDir: 'dist2',

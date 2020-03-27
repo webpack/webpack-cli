@@ -7,7 +7,7 @@ import { generatePluginName } from '../src/utils';
 describe('plugin generator', () => {
     it('generates a default plugin', async () => {
         const pluginName = 'my-test-plugin';
-        const outputDir = await run(join(__dirname, '../src/plugin-generator')).withPrompts({
+        const outputDir = await run(join(__dirname, '../src/plugin-generator.ts')).withPrompts({
             name: pluginName,
         });
         const pluginDir = join(outputDir, pluginName);
