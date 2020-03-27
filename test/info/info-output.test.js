@@ -14,6 +14,9 @@ describe('basic info usage', () => {
         // stdout should include many details which will be
         // unique for each computer
         expect(stdout).toContain('System:');
+        expect(stdout).toContain('Node');
+        expect(stdout).toContain('npm');
+        expect(stdout).toContain('Yarn');
         expect(stderr).toHaveLength(0);
     });
 
@@ -23,7 +26,11 @@ describe('basic info usage', () => {
         expect(stderr).toHaveLength(0);
 
         const parse = () => {
-            JSON.parse(stdout);
+            const output = JSON.parse(stdout);
+            expect(output['System']).toBeTruthy();
+            expect(output['Binaries']).toBeTruthy();
+            expect(output['System']['OS']).toBeTruthy();
+            expect(output['System']['CPU']).toBeTruthy();
         };
 
         expect(parse).not.toThrow();
