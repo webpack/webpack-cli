@@ -78,7 +78,6 @@ export default class InitGenerator extends Generator {
 	}
 
 	public async prompting(): Promise<void | {}> {
-		const done: () => {} = this.async();
 		const self: this = this;
 
 		process.stdout.write(
@@ -239,7 +238,6 @@ export default class InitGenerator extends Generator {
 		// Chunksplitting
 		this.configuration.config.webpackOptions.optimization = getDefaultOptimization(this.usingDefaults);
 		this.configuration.config.webpackOptions.mode = this.usingDefaults ? "'production'" : "'development'";
-		done();
 	}
 
 	public installPlugins(): void {
@@ -289,7 +287,7 @@ export default class InitGenerator extends Generator {
 				this.destinationPath("index.html"),
 				{}
             );
-            this.fs.copyTpl(path.resolve(__dirname, './templates/sw.js'), this.destinationPath('sw.js'), {});
+            this.fs.copyTpl(path.resolve(__dirname, '../templates/sw.js'), this.destinationPath('sw.js'), {});
 		}
 
 		// Generate tsconfig
