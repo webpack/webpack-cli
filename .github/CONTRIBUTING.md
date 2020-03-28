@@ -73,11 +73,21 @@ In case you are suggesting a new feature, we will match your idea with our curre
     yarn install
     ```
 
--   Bootstrap all the submodules before building for the first time
+-   Bootstrap all the submodules before building for the first time.
 
     ```bash
     yarn bootstrap
     yarn build
+    ```
+
+-   Create a symlink of package. [Learn More](https://classic.yarnpkg.com/en/docs/cli/link/)
+
+    ```bash
+    yarn link
+
+    //now go to the location you want to test the package.
+
+    yarn link webpack-cli
     ```
 
 ## Running Tests
