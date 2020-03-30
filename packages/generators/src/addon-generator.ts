@@ -50,19 +50,20 @@ const addonGenerator = (
 				Your project must be inside a folder named ${this.props.name}
 				I will create this folder for you.
                 `);
+                const pathToProjectDir: string = this.destinationPath(this.props.name);
                 try {
-                    mkdirp.sync(this.props.name);
+                    mkdirp.sync(pathToProjectDir);
                 } catch (err) {
                     console.error('Failed to create directory', err);
                 }
-                const pathToProjectDir: string = this.destinationPath(this.props.name);
                 this.destinationRoot(pathToProjectDir);
             }
         }
 
 		public writing(): void {
 			const packageJsonTemplatePath = "../templates/addon-package.json.js";
-			this.fs.extendJSON(this.destinationPath("package.json"), require(packageJsonTemplatePath)(this.props.name));
+            this.fs.extendJSON(this.destinationPath("package.json"), require(packageJsonTemplatePath)(this.props.name));
+            console.log('hit');
 
 			this.copy = generatorCopy(this, templateDir);
             this.copyTpl = generatorCopyTpl(this, templateDir, templateFn(this));

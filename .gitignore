@@ -48,3 +48,6 @@ junit.xml
 #typescript source maps
 packages/**/*.map
 *.tsbuildinfo
+
+# temporary test files
+test-assets/
