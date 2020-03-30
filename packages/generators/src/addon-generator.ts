@@ -63,7 +63,6 @@ const addonGenerator = (
 		public writing(): void {
 			const packageJsonTemplatePath = "../templates/addon-package.json.js";
             this.fs.extendJSON(this.destinationPath("package.json"), require(packageJsonTemplatePath)(this.props.name));
-            console.log('hit');
 
 			this.copy = generatorCopy(this, templateDir);
             this.copyTpl = generatorCopyTpl(this, templateDir, templateFn(this));
