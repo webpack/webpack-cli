@@ -158,6 +158,7 @@
     "nyc": "^14.1.0",
     "prettier": "1.19.1",
     "readable-stream": "^3.6.0",
+    "rimraf": "^3.0.2",
     "ts-jest": "^25.2.1",
     "typedoc": "^0.17.0",
     "typescript": "^3.8.3",
