@@ -1,4 +1,4 @@
-const { logger } = require('@webpack-cli/logger');
+const logger = require('../utils/logger');
 const StatsGroup = require('../groups/StatsGroup');
 
 const HELP_GROUP = 'help';

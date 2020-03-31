@@ -1,11 +1,11 @@
 const GroupHelper = require('../utils/GroupHelper');
-const { logger } = require('@webpack-cli/logger');
+const logger = require('../utils/logger');
 /**
  * StatsGroup gathers information about the stats options
  */
 class StatsGroup extends GroupHelper {
     static validOptions() {
-        return ['minimal', 'none', 'normal', 'verbose', 'errors-warnings', 'errors-only'];
+        return ['none', 'errors-only', 'minimal', 'normal', 'detailed', 'verbose', 'errors-warnings'];
     }
 
     constructor(options) {

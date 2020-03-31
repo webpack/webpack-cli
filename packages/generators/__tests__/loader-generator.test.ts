@@ -7,7 +7,7 @@ import { makeLoaderName } from '../src/loader-generator';
 describe('loader generator', () => {
     it('generates a default loader', async () => {
         const loaderName = 'my-test-loader';
-        const outputDir = await run(join(__dirname, '../src/loader-generator')).withPrompts({
+        const outputDir = await run(join(__dirname, '../src/loader-generator.ts')).withPrompts({
             name: loaderName,
         });
         const loaderDir = join(outputDir, loaderName);

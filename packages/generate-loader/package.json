@@ -16,11 +16,7 @@
   "license": "MIT",
   "dependencies": {
     "@webpack-cli/generators": "^1.0.1-alpha.5",
-    "yeoman-environment": "2.4.0"
-  },
-  "devDependencies": {
-    "@types/node": "12.7.2",
-    "typescript": "3.5.3"
+    "yeoman-environment": "2.8.1"
   },
   "scripts": {
     "build": "tsc",
