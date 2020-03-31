@@ -110,7 +110,7 @@ The webpack family welcomes any contributor, small or big. We are happy to elabo
 
 If you like **webpack**, please consider donating to our [Open Collective](https://opencollective.com/webpack) to help us maintain it.
 
-[build-status]: https://github.com/webpack/webpack-cli/workflows/webpack-cli/badge.svg
+[build-status]: https://github.com/webpack/webpack-cli/workflows/webpack-cli/badge.svg?branch=next
 [build-status-url]: https://github.com/webpack/webpack-cli/actions
 [chat]: https://badges.gitter.im/webpack/webpack.svg
 [chat-url]: https://gitter.im/webpack/webpack

@@ -60,14 +60,14 @@ jobs:
           yarn
           yarn bootstrap
 
-#      - name: Run tests for webpack version ${{ matrix.webpack-version }}
-#        run: |
-#          yarn add -W webpack@${{ matrix.webpack-version }}
-#          yarn build
-#          yarn prepsuite
-#          yarn test:ci
-#        env:
-#          CI: true
+      - name: Run tests for webpack version ${{ matrix.webpack-version }}
+        run: |
+          yarn add -W webpack@${{ matrix.webpack-version }}
+          yarn build
+          yarn prepsuite
+          yarn test:ci
+        env:
+          CI: true
 
       - name: Smoke Tests
         run: yarn smoketest
