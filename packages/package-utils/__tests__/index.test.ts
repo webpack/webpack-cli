@@ -1,6 +1,6 @@
 'use strict';
 
-jest.mock('@webpack-cli/package-utils')
+jest.mock('@webpack-cli/package-utils');
 
 import { packageExists, promptInstallation } from '@webpack-cli/package-utils';
 import ExternalCommand from '../../webpack-cli/lib/commands/ExternalCommand';

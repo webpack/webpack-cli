@@ -49,7 +49,7 @@ const addonGenerator = (
 				Your project must be inside a folder named ${this.props.name}
 				I will create this folder for you.
 				`);
-                mkdirp(this.props.name, (err: object): void => {
+                mkdirp(this.props.name).catch((err: object): void => {
                     if (err) console.error('Failed to create directory', err);
                 });
                 const pathToProjectDir: string = this.destinationPath(this.props.name);

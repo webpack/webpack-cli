@@ -2,8 +2,8 @@
   "name": "@webpack-cli/serve",
   "version": "1.0.1-alpha.5",
   "description": "",
-  "main": "./lib/index.js",
-  "types": "./lib/index.d.ts",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "keywords": [],
   "publishConfig": {
     "access": "public"
@@ -11,8 +11,6 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "12.7.2",
-    "typescript": "3.5.3",
     "webpack-dev-server": "3.10.3"
   },
   "peerDependencies": {
