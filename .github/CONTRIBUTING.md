@@ -95,7 +95,7 @@ In case you are suggesting a new feature, we will match your idea with our curre
     > Must run from root of the project
 
     ```bash
-    yarn jest test/path/to/my-test.js
+    yarn jest path/to/my-test.js
     ```
 
 -   You can run the linters:

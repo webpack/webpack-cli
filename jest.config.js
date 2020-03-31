@@ -1,8 +1,5 @@
 module.exports = {
-    collectCoverageFrom: [
-        //    'packages/*/src/**/*.{js,ts}',
-        'packages/webpack-cli/lib/**/*.{js,ts}',
-    ],
+    collectCoverageFrom: ['packages/*/src/**/*.{js,ts}', 'packages/webpack-cli/lib/**/*.{js,ts}'],
     testEnvironment: 'node',
     transform: {
         '^.+\\.(ts)?$': 'ts-jest',
