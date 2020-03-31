@@ -14,7 +14,6 @@ describe('@webpack-cli/package-utils', () => {
 
     it('should not throw if the user interrupts', async () => {
     	(promptInstallation as jest.Mock).mockImplementation(() => { throw new Error() });
-
         await expect(ExternalCommand.run('info')).resolves.not.toThrow();
     });
 });
