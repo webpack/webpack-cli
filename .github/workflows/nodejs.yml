@@ -3,12 +3,12 @@ name: webpack-cli
 on:
   push:
     branches:
-    - master
-    - next
+      - master
+      - next
   pull_request:
     branches:
-    - master
-    - next
+      - master
+      - next
 
 jobs:
   lint:
@@ -48,28 +48,28 @@ jobs:
         webpack-version: [next, latest]
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Using Node v${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
+      - name: Using Node v${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
 
-    - name: Install dependencies
-      run: |
-        yarn
-        yarn bootstrap
+      - name: Install dependencies
+        run: |
+          yarn
+          yarn bootstrap
 
-    - name: Run tests for webpack version ${{ matrix.webpack-version }}
-      run: |
-        yarn add -W webpack@${{ matrix.webpack-version }}
-        yarn build
-        yarn prepsuite
-        yarn test:ci
-      env:
-        CI: true
+#      - name: Run tests for webpack version ${{ matrix.webpack-version }}
+#        run: |
+#          yarn add -W webpack@${{ matrix.webpack-version }}
+#          yarn build
+#          yarn prepsuite
+#          yarn test:ci
+#        env:
+#          CI: true
 
-#    - name: Smoke Tests
-#      run: yarn smoketest
-#      env:
-#        CI: true
+      - name: Smoke Tests
+        run: yarn smoketest
+        env:
+          CI: true

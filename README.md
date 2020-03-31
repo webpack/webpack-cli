@@ -11,14 +11,13 @@
 </p>
 <br>
 
-> ## This is the documentation of the beta version ( being maintained on branch next ).
+> ## This is the documentation of the beta version (being maintained on branch next).
 >
 > We are working on reducing the number of arguments passed to the CLI,
 > please leave your feedback [here](https://github.com/webpack/webpack-cli/issues/1222)
 
 [![npm][npm]][npm-url]
 [![Build Status][build-status]][build-status-url]
-[![Build2 Status][build-status-azure]][build-status-azure-url]
 [![deps][deps]][deps-url]
 [![Code Climate][maintainability]][maintainability-url]
 [![chat on gitter][chat]][chat-url]
@@ -28,7 +27,6 @@
 [![GitHub contributors][contributors]][contributors-url]
 [![Issue resolution][issue-resolution]][issue-resolution-url]
 [![PR's welcome][pr-welcome]][pr-welcome-url]
-[![Node CI][node-ci]][node-ci-url]
 
 ## Table of Contents
 
@@ -112,10 +110,8 @@ The webpack family welcomes any contributor, small or big. We are happy to elabo
 
 If you like **webpack**, please consider donating to our [Open Collective](https://opencollective.com/webpack) to help us maintain it.
 
-[build-status]: https://travis-ci.org/webpack/webpack-cli.svg
-[build-status-url]: https://travis-ci.org/webpack/webpack-cli
-[build-status-azure]: https://dev.azure.com/webpack/webpack/_apis/build/status/webpack.webpack-cli
-[build-status-azure-url]: https://dev.azure.com/webpack/webpack/_build/latest?definitionId=4
+[build-status]: https://github.com/webpack/webpack-cli/workflows/webpack-cli/badge.svg
+[build-status-url]: https://github.com/webpack/webpack-cli/actions
 [chat]: https://badges.gitter.im/webpack/webpack.svg
 [chat-url]: https://gitter.im/webpack/webpack
 [contributors]: https://img.shields.io/github/contributors/webpack/webpack-cli.svg
@@ -136,5 +132,3 @@ If you like **webpack**, please consider donating to our [Open Collective](https
 [pr-welcome-url]: https://github.com/webpack/webpack-cli/blob/next/.github/CONTRIBUTING.md
 [size]: https://packagephobia.now.sh/badge?p=webpack-cli
 [size-url]: https://packagephobia.now.sh/result?p=webpack-cli
-[node-ci]: https://github.com/webpack/webpack-cli/workflows/Node%20CI/badge.svg
-[node-ci-url]: https://github.com/webpack/webpack-cli/workflows/Node%20CI/badge.svg?branch=next
