@@ -149,7 +149,7 @@
     "execa": "^4.0.0",
     "git-cz": "^4.3.1",
     "husky": "^4.2.3",
-    "jest": "^25.1.0",
+    "jest": "^25.2.3",
     "jest-junit": "^10.0.0",
     "jest-serializer-ansi": "^1.0.3",
     "jest-watch-typeahead": "^0.4.2",
