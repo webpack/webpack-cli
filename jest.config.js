@@ -1,5 +1,6 @@
 module.exports = {
     collectCoverageFrom: ['packages/*/src/**/*.{js,ts}', 'packages/webpack-cli/lib/**/*.{js,ts}'],
+    coverageReporters: ['json'],
     testEnvironment: 'node',
     transform: {
         '^.+\\.(ts)?$': 'ts-jest',

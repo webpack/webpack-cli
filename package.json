@@ -33,13 +33,25 @@
     "lint": "eslint . --ext .js,.ts",
     "lint:fix": "eslint . --ext .js,.ts --fix",
     "test:only": "jest",
-    "test:coverage": "yarn test:only --coverage",
+    "test:coverage": "nyc --clean jest --coverage",
     "test:watch": "yarn test:only --watch",
     "test:smoke": "smoketests/smoketests.sh",
     "pretest": "yarn build && yarn lint && yarn prepsuite",
     "test": "yarn test:coverage",
     "watch": "yarn build && tsc -w",
     "publish:monorepo": "yarn format && yarn test && yarn build && lerna publish -m \"chore: monorepo version update\""
+  },
+  "nyc": {
+    "include": [
+      "packages/*/src/**/*.{js,ts}",
+      "packages/webpack-cli/lib/**/*.{js,ts}"
+    ],
+    "reporter": [
+      "lcov",
+      "text"
+    ],
+    "tempDirectory": "./coverage",
+    "all": true
   },
   "husky": {
     "hooks": {
@@ -136,11 +148,11 @@
     "git-cz": "^4.3.1",
     "husky": "^4.2.3",
     "jest": "^25.2.3",
-    "jest-junit": "^10.0.0",
     "jest-serializer-ansi": "^1.0.3",
     "jest-watch-typeahead": "^0.4.2",
     "lerna": "^3.20.2",
     "lint-staged": "^10.0.8",
+    "nyc": "^15.0.0",
     "prettier": "1.19.1",
     "readable-stream": "^3.6.0",
     "ts-jest": "^25.2.1",

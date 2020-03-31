@@ -71,6 +71,7 @@ jobs:
 
       - uses: codecov/codecov-action@v1
         with:
+          file: ./coverage/coverage-final.json
           fail_ci_if_error: true
 
       - name: Smoke Tests
