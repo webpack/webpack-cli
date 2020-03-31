@@ -33,14 +33,11 @@
     "lint": "eslint . --ext .js,.ts",
     "lint:fix": "eslint . --ext .js,.ts --fix",
     "pretest": "yarn build && yarn lint && yarn prepsuite",
-    "reportCoverage": "nyc report --reporter=json && codecov -f coverage/coverage-final.json --disable=gcov",
     "smoketest": "smoketests/smoketests.sh",
-    "test": "nyc jest --maxWorkers=4 --reporters=default --reporters=jest-junit",
-    "test:cli": "nyc jest test/ --maxWorkers=4 --reporters=default --reporters=jest-junit",
-    "test:packages": "nyc jest packages/ --maxWorkers=4 --reporters=default --reporters=jest-junit",
+    "test": "jest --reporters=default --reporters=jest-junit",
+    "test:cli": "jest test/ --reporters=default --reporters=jest-junit --forceExit",
+    "test:packages": "jest packages/ --reporters=default --reporters=jest-junit --forceExit",
     "test:ci": "yarn test:cli && yarn test:packages",
-    "travis:integration": "yarn build && yarn prepsuite && yarn test && yarn reportCoverage",
-    "travis:lint": "yarn build && yarn lint",
     "test:watch": "jest test/ packages/ --watch",
     "watch": "yarn build && tsc -w",
     "publish:monorepo": "yarn format && yarn test && yarn build && lerna publish -m \"chore: monorepo version update\""
@@ -107,17 +104,6 @@
       }
     ]
   },
-  "nyc": {
-    "include": [
-      "./cli.js",
-      "lib/**.js",
-      "packages/**/*.js"
-    ],
-    "reporter": [
-      "lcov"
-    ],
-    "all": true
-  },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-customizable"
@@ -147,6 +133,7 @@
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-prettier": "^3.1.2",
     "execa": "^4.0.0",
+    "get-port": "^5.1.1",
     "git-cz": "^4.3.1",
     "husky": "^4.2.3",
     "jest": "^25.2.3",
@@ -155,7 +142,6 @@
     "jest-watch-typeahead": "^0.4.2",
     "lerna": "^3.20.2",
     "lint-staged": "^10.0.8",
-    "nyc": "^14.1.0",
     "prettier": "1.19.1",
     "readable-stream": "^3.6.0",
     "rimraf": "^3.0.2",

@@ -108,7 +108,7 @@ describe('packageUtils', () => {
             });
             // after the yarn global dir is found, the node_modules directory
             // is added on to the path
-            expect(packageUtils.getPathToGlobalPackages()).toEqual('test-yarn/node_modules');
+            expect(packageUtils.getPathToGlobalPackages()).toEqual(`test-yarn${path.sep}node_modules`);
         });
     });
 
@@ -145,9 +145,7 @@ describe('packageUtils', () => {
             expect(preMessage.mock.calls.length).toEqual(1);
             expect((prompt as jest.Mock).mock.calls.length).toEqual(1);
             expect((runCommand as jest.Mock).mock.calls.length).toEqual(1);
-            expect((prompt as jest.Mock).mock.calls[0][0][0].message).toMatch(
-                /Would you like to install test\-package\?/
-            );
+            expect((prompt as jest.Mock).mock.calls[0][0][0].message).toMatch(/Would you like to install test\-package\?/);
             // install the package using npm
             expect((runCommand as jest.Mock).mock.calls[0][0]).toEqual('npm install -D test-package');
         });
@@ -162,9 +160,7 @@ describe('packageUtils', () => {
             expect(promptResult).toBeTruthy();
             expect((prompt as jest.Mock).mock.calls.length).toEqual(1);
             expect((runCommand as jest.Mock).mock.calls.length).toEqual(1);
-            expect((prompt as jest.Mock).mock.calls[0][0][0].message).toMatch(
-                /Would you like to install test\-package\?/
-            );
+            expect((prompt as jest.Mock).mock.calls[0][0][0].message).toMatch(/Would you like to install test\-package\?/);
             // install the package using yarn
             expect((runCommand as jest.Mock).mock.calls[0][0]).toEqual('yarn add -D test-package');
         });
@@ -180,9 +176,7 @@ describe('packageUtils', () => {
             expect((prompt as jest.Mock).mock.calls.length).toEqual(1);
             // runCommand should not be called, because the installation is not confirmed
             expect((runCommand as jest.Mock).mock.calls.length).toEqual(0);
-            expect((prompt as jest.Mock).mock.calls[0][0][0].message).toMatch(
-                /Would you like to install test\-package\?/
-            );
+            expect((prompt as jest.Mock).mock.calls[0][0][0].message).toMatch(/Would you like to install test\-package\?/);
             expect(process.exitCode).toEqual(-1);
         });
     });
