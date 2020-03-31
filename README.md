@@ -18,15 +18,9 @@
 
 [![npm][npm]][npm-url]
 [![Build Status][build-status]][build-status-url]
-[![deps][deps]][deps-url]
-[![Code Climate][maintainability]][maintainability-url]
-[![chat on gitter][chat]][chat-url]
+[![Dependencies][deps]][deps-url]
 [![Install Size][size]][size-url]
-[![Downloads][downloads]][downloads-url]
-[![lerna][lerna]][lerna-url]
-[![GitHub contributors][contributors]][contributors-url]
-[![Issue resolution][issue-resolution]][issue-resolution-url]
-[![PR's welcome][pr-welcome]][pr-welcome-url]
+[![Chat on gitter][chat]][chat-url]
 
 ## Table of Contents
 
@@ -110,25 +104,13 @@ The webpack family welcomes any contributor, small or big. We are happy to elabo
 
 If you like **webpack**, please consider donating to our [Open Collective](https://opencollective.com/webpack) to help us maintain it.
 
-[build-status]: https://github.com/webpack/webpack-cli/workflows/webpack-cli/badge.svg?branch=next
-[build-status-url]: https://github.com/webpack/webpack-cli/actions
-[chat]: https://badges.gitter.im/webpack/webpack.svg
-[chat-url]: https://gitter.im/webpack/webpack
-[contributors]: https://img.shields.io/github/contributors/webpack/webpack-cli.svg
-[contributors-url]: https://github.com/webpack/webpack-cli/graphs/contributors
-[deps]: https://img.shields.io/david/webpack/webpack.svg
-[deps-url]: https://david-dm.org/webpack/webpack-cli
-[downloads]: https://img.shields.io/npm/dw/webpack-cli.svg
-[downloads-url]: https://www.npmjs.com/package/webpack-cli
-[issue-resolution]: https://isitmaintained.com/badge/resolution/webpack/webpack-cli.svg
-[issue-resolution-url]: https://github.com/webpack/webpack-cli/issues
-[lerna]: https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg
-[lerna-url]: http://www.lernajs.io/
-[maintainability]: https://codeclimate.com/github/webpack/webpack-cli/badges/gpa.svg
-[maintainability-url]: https://codeclimate.com/github/webpack/webpack-cli
 [npm]: https://img.shields.io/npm/v/webpack-cli.svg
 [npm-url]: https://www.npmjs.com/package/webpack-cli
-[pr-welcome]: https://img.shields.io/badge/PRs%20-welcome-brightgreen.svg
-[pr-welcome-url]: https://github.com/webpack/webpack-cli/blob/next/.github/CONTRIBUTING.md
+[build-status]: https://github.com/webpack/webpack-cli/workflows/webpack-cli/badge.svg?branch=next
+[build-status-url]: https://github.com/webpack/webpack-cli/actions
+[deps]: https://img.shields.io/david/webpack/webpack.svg
+[deps-url]: https://david-dm.org/webpack/webpack-cli
 [size]: https://packagephobia.now.sh/badge?p=webpack-cli
 [size-url]: https://packagephobia.now.sh/result?p=webpack-cli
+[chat]: https://badges.gitter.im/webpack/webpack.svg
+[chat-url]: https://gitter.im/webpack/webpack
