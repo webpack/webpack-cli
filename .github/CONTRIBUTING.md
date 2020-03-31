@@ -56,7 +56,7 @@ In case you are suggesting a new feature, we will match your idea with our curre
 ## Setup
 
 -   Install [Node.js](https://nodejs.org/) if you don't have it already.
-    _Note: Node 6 or greater would be better for "best results"._
+    _Note: Node 10.13 or greater would be better for "best results"._
 -   Fork the **webpack-cli** repo at [https://github.com/webpack/webpack-cli](https://github.com/webpack/webpack-cli).
 -   `git clone <your-clone-url> && cd webpack-cli`
 
@@ -90,31 +90,12 @@ In case you are suggesting a new feature, we will match your idea with our curre
     yarn test
     ```
 
--   Run CLI tests with:
-
-    ```bash
-    yarn test:cli
-    ```
-
--   Run tests of all packages:
-
-    ```bash
-    yarn test:packages
-    ```
-
 -   Test a single CLI test case:
 
     > Must run from root of the project
 
     ```bash
-    yarn jest path/to/my-test.js
-    ```
-
--   You can also install jest globally and run tests without npx:
-
-    ```bash
-    yarn global add jest
-    jest path/to/my-test.js
+    yarn jest test/path/to/my-test.js
     ```
 
 -   You can run the linters:

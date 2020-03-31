@@ -1,6 +1,7 @@
 # IDE folders
 .idea
 .vscode
+*.iml
 
 # Vim swap files
 .s[a-z][a-z]

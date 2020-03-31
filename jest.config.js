@@ -1,9 +1,9 @@
 module.exports = {
-    testPathIgnorePatterns: ['<rootDir>/node_modules/'],
-    // transformIgnorePatterns: ['<rootDir>.*(node_modules)(?!.*webpack-cli.*).*$'],
+    collectCoverageFrom: [
+        //    'packages/*/src/**/*.{js,ts}',
+        'packages/webpack-cli/lib/**/*.{js,ts}',
+    ],
     testEnvironment: 'node',
-    collectCoverage: true,
-    coverageReporters: ['json', 'html', 'cobertura'],
     transform: {
         '^.+\\.(ts)?$': 'ts-jest',
     },

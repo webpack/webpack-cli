@@ -65,13 +65,17 @@ jobs:
           yarn add -W webpack@${{ matrix.webpack-version }}
           yarn build
           yarn prepsuite
-          yarn test:ci
+          yarn test:coverage -- --ci
         env:
           CI: true
+
+      - uses: codecov/codecov-action@v1
+        with:
+          fail_ci_if_error: true
 
       - name: Smoke Tests
         # TODO fix for windows
         if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
-        run: yarn smoketest
+        run: yarn test:smoke
         env:
           CI: true
