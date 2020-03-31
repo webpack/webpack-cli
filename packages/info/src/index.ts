@@ -55,7 +55,11 @@ export default async function info(...args): Promise<string[]> {
         }
     }
 
-    const output = await envinfo.run(DEFAULT_DETAILS, envinfoConfig);
-    process.stdout.write(output + '\n');
-    return output;
+    let output = await envinfo.run(DEFAULT_DETAILS, envinfoConfig);
+    output = output.replace(/npmPackages/g, "Packages");
+    output = output.replace(/npmGlobalPackages/g, "Global Packages");
+
+    const finalOutput = output;
+    process.stdout.write(finalOutput + '\n');
+    return finalOutput;
 }
