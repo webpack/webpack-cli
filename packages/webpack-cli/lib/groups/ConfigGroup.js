@@ -105,7 +105,7 @@ class ConfigGroup extends GroupHelper {
             const parentContext = dirname(currentPath)
                 .split(sep)
                 .slice(0, -1)
-                .join('/');
+                .join(sep);
             if (Array.isArray(configOptions)) {
                 configOptions.forEach(config => {
                     config.context = config.context || parentContext;
