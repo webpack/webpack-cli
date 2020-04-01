@@ -1,6 +1,7 @@
 import mkdirp from 'mkdirp';
 import path from 'path';
 import Generator from 'yeoman-generator';
+import { getPackageManager } from "@webpack-cli/package-utils";
 import { generatorCopy, generatorCopyTpl } from '@webpack-cli/utils';
 
 /**
@@ -48,18 +49,20 @@ const addonGenerator = (
                 this.log(`
 				Your project must be inside a folder named ${this.props.name}
 				I will create this folder for you.
-				`);
-                mkdirp(this.props.name, (err: object): void => {
-                    if (err) console.error('Failed to create directory', err);
-                });
+                `);
                 const pathToProjectDir: string = this.destinationPath(this.props.name);
+                try {
+                    mkdirp.sync(pathToProjectDir);
+                } catch (err) {
+                    console.error('Failed to create directory', err);
+                }
                 this.destinationRoot(pathToProjectDir);
             }
         }
 
 		public writing(): void {
 			const packageJsonTemplatePath = "../templates/addon-package.json.js";
-			this.fs.extendJSON(this.destinationPath("package.json"), require(packageJsonTemplatePath)(this.props.name));
+            this.fs.extendJSON(this.destinationPath("package.json"), require(packageJsonTemplatePath)(this.props.name));
 
 			this.copy = generatorCopy(this, templateDir);
             this.copyTpl = generatorCopyTpl(this, templateDir, templateFn(this));
@@ -69,9 +72,13 @@ const addonGenerator = (
 		}
 
 		public install(): void {
-            this.npmInstall(['webpack-defaults', 'bluebird'], {
-                'save-dev': true,
-            });
+            const packager = getPackageManager();
+            const opts: {
+                dev?: boolean;
+                "save-dev"?: boolean;
+            } = packager === "yarn" ? { dev: true } : { "save-dev": true };
+
+		    this.scheduleInstallTask(packager, ['webpack-defaults', 'bluebird'], opts);
         }
 	};
 };

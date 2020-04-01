@@ -8,7 +8,7 @@ export enum LangType {
 const replaceExt = (path: string, ext: string): string => path.substr(0, path.lastIndexOf(".")) + `${ext}'`;
 
 function updateEntryExt(self, newExt: string): void {
-	const jsEntryOption = self.configuration.config.webpackOptions.entry;
+	const jsEntryOption = self.entryOption;
 	let tsEntryOption = {};
 	if (typeof jsEntryOption === "string") {
 		tsEntryOption = replaceExt(jsEntryOption, newExt);
@@ -28,7 +28,7 @@ const getFolder = (path: string): string =>
 		.join("/");
 
 function getEntryFolders(self): string[] {
-	const entryOption = self.configuration.config.webpackOptions.entry;
+	const entryOption = self.entryOption;
 	const entryFolders = {};
 	if (typeof entryOption === "string") {
 		const folder = getFolder(entryOption);

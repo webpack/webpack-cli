@@ -11,7 +11,7 @@ const runInfo = args => {
 
 const infoFlags = commands.find(c => c.name === 'info').flags;
 
-const usageText = 'webpack info [options] [output-format]';
+const usageText = 'webpack info [options]';
 const descriptionText = 'Outputs information about your system and dependencies';
 
 describe('should print help for info command', () => {
@@ -26,13 +26,6 @@ describe('should print help for info command', () => {
         const { stdout, stderr } = runInfo(['--help', 'info']);
         expect(stdout).toContain(usageText);
         expect(stdout).toContain(descriptionText);
-        expect(stderr).toHaveLength(0);
-    });
-    it('should output help even if other flags are supplied with help', () => {
-        const { stdout, stderr } = runInfo(['info', '--help', '--system']);
-        expect(stdout).toContain(usageText);
-        expect(stdout).toContain(descriptionText);
-        expect(stdout).not.toContain('System:');
         expect(stderr).toHaveLength(0);
     });
 
