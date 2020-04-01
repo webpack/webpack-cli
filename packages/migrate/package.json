@@ -31,7 +31,7 @@
     "webpack": "4.x.x"
   },
   "scripts": {
-    "test": "jest",
+    "clean": "del-cli lib \"*.tsbuildinfo\"",
     "build": "tsc",
     "watch": "npm run build && tsc -w"
   },

@@ -30,7 +30,9 @@
     "url": "git+https://github.com/webpack/webpack-cli.git"
   },
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "clean": "del-cli lib \"*.tsbuildinfo\"",
+    "build": "tsc",
+    "watch": "npm run build && tsc -w"
   },
   "bugs": {
     "url": "https://github.com/webpack/webpack-cli/issues"

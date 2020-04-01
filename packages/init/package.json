@@ -17,6 +17,7 @@
     "p-each-series": "2.1.0"
   },
   "scripts": {
+    "clean": "del-cli lib \"*.tsbuildinfo\"",
     "build": "tsc",
     "watch": "npm run build && tsc -w"
   },

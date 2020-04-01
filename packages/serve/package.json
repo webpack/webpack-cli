@@ -18,6 +18,7 @@
     "webpack-dev-server": "3.x.x || 4.x.x"
   },
   "scripts": {
+    "clean": "del-cli lib \"*.tsbuildinfo\"",
     "build": "tsc",
     "watch": "npm run build && tsc -w"
   },

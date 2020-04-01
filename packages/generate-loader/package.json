@@ -19,6 +19,7 @@
     "yeoman-environment": "2.8.1"
   },
   "scripts": {
+    "clean": "del-cli \"lib/**/!(*.tpl)\" \"*.tsbuildinfo\"",
     "build": "tsc",
     "watch": "npm run build && tsc -w"
   },

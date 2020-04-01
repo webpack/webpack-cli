@@ -15,6 +15,7 @@
     "prettyjson": "1.2.1"
   },
   "scripts": {
+    "clean": "del-cli lib \"*.tsbuildinfo\"",
     "build": "tsc",
     "watch": "npm run build && tsc -w"
   },

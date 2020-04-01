@@ -17,7 +17,7 @@
     "@types/yeoman-generator": "3.1.4"
   },
   "scripts": {
-    "test": "jest --detectOpenHandles",
+    "clean": "del-cli lib \"*.tsbuildinfo\"",
     "build": "tsc",
     "watch": "npm run build && tsc -w"
   },

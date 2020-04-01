@@ -33,6 +33,7 @@
     "yeoman-test": "2.3.0"
   },
   "scripts": {
+    "clean": "del-cli lib \"*.tsbuildinfo\"",
     "build": "tsc",
     "watch": "npm run build && tsc -w"
   },
