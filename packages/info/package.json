@@ -4,7 +4,6 @@
   "description": "Outputs info about system and webpack config",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
-  "author": "",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
@@ -13,11 +12,6 @@
     "chalk": "3.0.0",
     "envinfo": "7.5.0",
     "prettyjson": "1.2.1"
-  },
-  "scripts": {
-    "clean": "del-cli lib \"*.tsbuildinfo\"",
-    "build": "tsc",
-    "watch": "npm run build && tsc -w"
   },
   "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9",
   "peerDependencies": {

@@ -24,9 +24,10 @@
   ],
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "clean": "lerna run clean",
+    "clean": "del-cli \"*.tsbuildinfo\" \"packages/**/*.tsbuildinfo\" \"packages/!(webpack-cli)/lib/!(*.tpl)\"",
     "prebuild": "yarn clean",
-    "build": "lerna run build",
+    "build": "tsc --build",
+    "watch": "tsc --build --watch",
     "prepsuite": "node scripts/prepareSuite.js",
     "commit": "git-cz",
     "docs": "typedoc",
@@ -34,13 +35,12 @@
     "lint": "eslint . --ext .js,.ts",
     "lint:fix": "eslint . --ext .js,.ts --fix",
     "pretest": "yarn build && yarn lint && yarn prepsuite",
-    "smoketest": "smoketests/smoketests.sh",
     "test": "jest --reporters=default --reporters=jest-junit",
     "test:cli": "jest test/ --reporters=default --reporters=jest-junit --forceExit",
     "test:packages": "jest packages/ --reporters=default --reporters=jest-junit --forceExit",
     "test:ci": "yarn test:cli && yarn test:packages",
     "test:watch": "jest test/ packages/ --watch",
-    "watch": "yarn build && tsc -w",
+    "test:smoke": "smoketests/smoketests.sh",
     "publish:monorepo": "yarn format && yarn test && yarn build && lerna publish -m \"chore: monorepo version update\""
   },
   "husky": {

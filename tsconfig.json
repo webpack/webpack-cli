@@ -1,28 +1,35 @@
 {
+  "exclude": ["node_modules", "dist", "lib", "__tests__", "**/*.test*", "**/*.spec*"],
+  "files": [],
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "declaration": true,
-    "composite": true,
-    "module": "commonjs",
-    "moduleResolution": "node",
     "skipLibCheck": true,
     "target": "es2017",
+    "module": "commonjs",
     "lib": ["es6", "es2017"],
+    "rootDir": ".",
+    "outDir": "lib",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
-    "esModuleInterop": true
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "paths": {
+      "@webpack-cli/*": ["packages/*/src"]
+    },
+    "composite": true,
+    "declaration": true
   },
-  // test
   "references": [
-    { "path": "./packages/generate-loader" },
-    { "path": "./packages/generate-plugin" },
-    { "path": "./packages/generators" },
-    { "path": "./packages/info" },
-    { "path": "./packages/init" },
-    { "path": "./packages/package-utils" },
-    { "path": "./packages/migrate" },
-    { "path": "./packages/serve" },
-    { "path": "./packages/utils" },
-    { "path": "./packages/webpack-cli" },
-    { "path": "./packages/webpack-scaffold" }
+    { "path": "packages/generate-loader" },
+    { "path": "packages/generate-plugin" },
+    { "path": "packages/generators" },
+    { "path": "packages/info" },
+    { "path": "packages/init" },
+    { "path": "packages/migrate" },
+    { "path": "packages/package-utils" },
+    { "path": "packages/serve" },
+    { "path": "packages/utils" },
+    // { "path": "packages/webpack-cli" },
+    { "path": "packages/webpack-scaffold" }
   ]
 }

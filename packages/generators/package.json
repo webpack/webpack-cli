@@ -5,7 +5,6 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "keywords": [],
-  "author": "",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
@@ -31,11 +30,6 @@
     "@types/yeoman-test": "2.0.3",
     "yeoman-assert": "^3.1.1",
     "yeoman-test": "2.3.0"
-  },
-  "scripts": {
-    "clean": "del-cli lib \"*.tsbuildinfo\"",
-    "build": "tsc",
-    "watch": "npm run build && tsc -w"
   },
   "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9"
 }
