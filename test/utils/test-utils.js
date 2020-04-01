@@ -35,7 +35,7 @@ function runWatch({ testCase, args = [], setOutput = true, outputKillStr = 'Time
     const outputPath = path.resolve(testCase, 'bin');
     const argsWithOutput = setOutput ? args.concat('--output', outputPath) : args;
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
         const watchPromise = execa(WEBPACK_PATH, argsWithOutput, {
             cwd,
             reject: false,
@@ -46,6 +46,7 @@ function runWatch({ testCase, args = [], setOutput = true, outputKillStr = 'Time
             new Writable({
                 write(chunk, encoding, callback) {
                     const output = chunk.toString('utf8');
+
                     if (output.includes(outputKillStr)) {
                         watchPromise.kill();
                     }
@@ -54,9 +55,13 @@ function runWatch({ testCase, args = [], setOutput = true, outputKillStr = 'Time
                 },
             }),
         );
-        watchPromise.then(result => {
-            resolve(result);
-        });
+        watchPromise
+            .then(result => {
+                resolve(result);
+            })
+            .catch(error => {
+                reject(error);
+            });
     });
 }
 
