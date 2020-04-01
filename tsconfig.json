@@ -1,5 +1,5 @@
 {
-  "exclude": ["node_modules", "dist", "lib", "__tests__", "**/*.test*", "**/*.spec*"],
+  "exclude": ["node_modules", "lib", "__tests__"],
   "files": [],
   "compilerOptions": {
     "skipLibCheck": true,
