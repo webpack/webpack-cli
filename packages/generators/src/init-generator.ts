@@ -40,6 +40,7 @@ export default class InitGenerator extends Generator {
 		usingDefaults?: boolean;
 	};
 	private langType: string;
+	private entryOption: void | {};
 
 	public constructor(args, opts) {
 		super(args, opts);
@@ -65,6 +66,8 @@ export default class InitGenerator extends Generator {
 			}
 		};
 
+		this.entryOption = "./src/index.js";
+
 		// add splitChunks options for transparency
 		// defaults coming from: https://webpack.js.org/plugins/split-chunks-plugin/#optimization-splitchunks
 		this.configuration.config.topScope.push(
@@ -78,8 +81,9 @@ export default class InitGenerator extends Generator {
 	}
 
 	public async prompting(): Promise<void | {}> {
-		const done: () => {} = this.async();
 		const self: this = this;
+
+		this.usingDefaults = true;
 
 		process.stdout.write(
 			`\n${logSymbols.info}${chalk.blue(" INFO ")} ` +
@@ -103,17 +107,18 @@ export default class InitGenerator extends Generator {
 		const entryOption: void | {} = await entryQuestions(self, multiEntries, this.autoGenerateConfig);
 
 		if (typeof entryOption === "string") {
-			if (entryOption.length === 0) {
-				this.usingDefaults = true;
-			} else if (entryOption.length > 0) {
-				this.usingDefaults = entryOption && entryOption === "'./src/index.js'";
-				if (!this.usingDefaults) {
-					this.configuration.config.webpackOptions.entry = `${entryOption}`;
-				}
+			// single entry
+			if (entryOption.length > 0 && entryOption !== "'./src/index.js'") {
+				this.usingDefaults = false;
+				this.configuration.config.webpackOptions.entry = entryOption;
 			}
 		} else if (typeof entryOption === "object") {
+			// multiple entries
+			this.usingDefaults = false;
 			this.configuration.config.webpackOptions.entry = entryOption;
 		}
+
+		this.entryOption = entryOption;
 
 		const { outputDir } = await Input(
 			self,
@@ -146,6 +151,7 @@ export default class InitGenerator extends Generator {
 		if (this.langType !== "No") {
 			this.usingDefaults = false;
 		}
+
 		const { stylingType } = await List(
 			self,
 			"stylingType",
@@ -154,45 +160,51 @@ export default class InitGenerator extends Generator {
 			"No",
 			this.autoGenerateConfig
 		);
-		if (this.langType !== "No") {
-			this.usingDefaults = false;
-		}
 		const { ExtractUseProps, regExpForStyles } = styleQuestionHandler(self, stylingType);
 		if (stylingType !== "No") {
 			this.usingDefaults = false;
 		}
-		// Ask if the user wants to use extractPlugin
-		const { useExtractPlugin } = await Input(
-			self,
-			"useExtractPlugin",
-			"If you want to bundle your CSS files, what will you name the bundle? (press enter to skip)",
-			"main",
-			this.autoGenerateConfig
-		);
 
 		if (regExpForStyles) {
-			const cssBundleName: string = useExtractPlugin;
-			this.dependencies.push("mini-css-extract-plugin");
-			this.configuration.config.topScope.push(
-				tooltip.cssPlugin(),
-				"const MiniCssExtractPlugin = require('mini-css-extract-plugin');",
-				"\n"
+			// Ask if the user wants to use extractPlugin
+			const { useExtractPlugin } = await Confirm(
+				self,
+				"useExtractPlugin",
+				"Will you bundle your CSS files with MiniCssExtractPlugin?",
+				false,
+				this.autoGenerateConfig
 			);
-			if (cssBundleName.length !== 0) {
-				(this.configuration.config.webpackOptions.plugins as string[]).push(
-					// TODO: use [contenthash] after it is supported
-					`new MiniCssExtractPlugin({ filename:'${cssBundleName}.[chunkhash].css' })`
+			if (useExtractPlugin) {
+				const { cssBundleName } = await Input(
+					self,
+					"cssBundleName",
+					"What will you name the CSS bundle?",
+					"main",
+					this.autoGenerateConfig
 				);
-			} else {
-				(this.configuration.config.webpackOptions.plugins as string[]).push(
-					"new MiniCssExtractPlugin({ filename:'style.css' })"
+				this.dependencies.push("mini-css-extract-plugin");
+				this.configuration.config.topScope.push(
+					tooltip.cssPlugin(),
+					"const MiniCssExtractPlugin = require('mini-css-extract-plugin');",
+					"\n"
 				);
+				if (cssBundleName.length !== 0) {
+					(this.configuration.config.webpackOptions.plugins as string[]).push(
+						// TODO: use [contenthash] after it is supported
+						`new MiniCssExtractPlugin({ filename:'${cssBundleName}.[chunkhash].css' })`
+					);
+				} else {
+					(this.configuration.config.webpackOptions.plugins as string[]).push(
+						"new MiniCssExtractPlugin({ filename:'style.css' })"
+					);
+				}
+	
+				ExtractUseProps.unshift({
+					loader: "MiniCssExtractPlugin.loader"
+				});
 			}
 
-			ExtractUseProps.unshift({
-				loader: "MiniCssExtractPlugin.loader"
-			});
-
+			// load CSS assets, with or without mini-css-extract-plugin
 			this.configuration.config.webpackOptions.module.rules.push({
 				test: regExpForStyles,
 				use: ExtractUseProps
@@ -217,6 +229,15 @@ export default class InitGenerator extends Generator {
 			this.configuration.config.webpackOptions.devServer = {
 				open: true
 			};
+
+			// PWA + offline support
+			this.configuration.config.topScope.push("const workboxPlugin = require('workbox-webpack-plugin');", "\n");
+			this.dependencies.push("workbox-webpack-plugin");
+			(this.configuration.config.webpackOptions.plugins as string[]).push(`new workboxPlugin.GenerateSW({
+				swDest: 'sw.js',
+				clientsClaim: true,
+				skipWaiting: false,
+			})`);
 		}
 
 		// TerserPlugin
@@ -227,19 +248,9 @@ export default class InitGenerator extends Generator {
 			"\n"
 		);
 
-		// PWA + offline support
-		this.configuration.config.topScope.push("const workboxPlugin = require('workbox-webpack-plugin');", "\n");
-		this.dependencies.push("workbox-webpack-plugin");
-		(this.configuration.config.webpackOptions.plugins as string[]).push(`new workboxPlugin.GenerateSW({
-			swDest: 'sw.js',
-			clientsClaim: true,
-			skipWaiting: false,
-		})`);
-
 		// Chunksplitting
 		this.configuration.config.webpackOptions.optimization = getDefaultOptimization(this.usingDefaults);
 		this.configuration.config.webpackOptions.mode = this.usingDefaults ? "'production'" : "'development'";
-		done();
 	}
 
 	public installPlugins(): void {
@@ -256,13 +267,6 @@ export default class InitGenerator extends Generator {
 		this.configuration.usingDefaults = this.usingDefaults;
 		this.config.set("configuration", this.configuration);
 
-		if (this.langType === "ES6") {
-			this.fs.copyTpl(
-				path.resolve(__dirname, "../templates/.babelrc"),
-				this.destinationPath(".babelrc"),
-				{}
-			);
-		}
 		const packageJsonTemplatePath = "../templates/package.json.js";
 		this.fs.extendJSON(this.destinationPath("package.json"), require(packageJsonTemplatePath)(this.usingDefaults));
 
@@ -292,8 +296,14 @@ export default class InitGenerator extends Generator {
             this.fs.copyTpl(path.resolve(__dirname, '../templates/sw.js'), this.destinationPath('sw.js'), {});
 		}
 
-		// Generate tsconfig
-		if (this.langType === LangType.Typescript) {
+		if (this.langType === LangType.ES6) {
+			this.fs.copyTpl(
+				path.resolve(__dirname, "../templates/.babelrc"),
+				this.destinationPath(".babelrc"),
+				{}
+			);
+		} else if (this.langType === LangType.Typescript) {
+			// Generate tsconfig
 			const tsConfigTemplatePath = "../templates/tsconfig.json.js";
 			this.fs.extendJSON(this.destinationPath("tsconfig.json"), require(tsConfigTemplatePath));
 		}
