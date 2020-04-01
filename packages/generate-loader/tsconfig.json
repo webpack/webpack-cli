@@ -1,12 +1,9 @@
 {
-  "extends": "../../tsconfig.packages.json",
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "./lib",
-    "rootDir": "./src",
-    "composite": true
+    "rootDir": "./src"
   },
   "include": ["./src"],
-  "references": [
-    {"path": "../generators"}
-  ]
+  "references": [{ "path": "../generators" }]
 }

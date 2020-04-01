@@ -7,7 +7,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "author": "",
   "license": "MIT",
   "dependencies": {
     "@webpack-cli/package-utils": "^1.0.1-alpha.4",
@@ -24,11 +23,6 @@
     "@types/got": "9.6.9",
     "@types/prettier": "1.19.0",
     "@types/yeoman-generator": "3.1.4"
-  },
-  "scripts": {
-    "build": "tsc",
-    "test": "jest --detectOpenHandles",
-    "watch": "npm run build && tsc -w"
   },
   "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9"
 }

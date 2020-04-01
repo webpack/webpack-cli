@@ -8,7 +8,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "author": "",
   "license": "MIT",
   "devDependencies": {
     "webpack-dev-server": "3.10.3"
@@ -16,10 +15,6 @@
   "peerDependencies": {
     "webpack-cli": "4.x.x",
     "webpack-dev-server": "3.x.x || 4.x.x"
-  },
-  "scripts": {
-    "build": "tsc",
-    "watch": "npm run build && tsc -w"
   },
   "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9"
 }

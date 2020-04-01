@@ -29,9 +29,6 @@
     "type": "git",
     "url": "git+https://github.com/webpack/webpack-cli.git"
   },
-  "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
-  },
   "bugs": {
     "url": "https://github.com/webpack/webpack-cli/issues"
   },
