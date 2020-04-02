@@ -68,7 +68,7 @@ webpack-cli init
 
 ### Description of questions asked by the generator
 
-1. `Will your application has multiple bundles? (y/N)`
+1. `Will your application have multiple bundles? (y/N)`
 
 > _Property/key resolved: [entry](https://webpack.js.org/configuration/entry-context/#entry)_
 
