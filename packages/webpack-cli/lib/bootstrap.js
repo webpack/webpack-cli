@@ -5,6 +5,8 @@ const cliExecuter = require('./utils/cli-executer');
 const argParser = require('./utils/arg-parser');
 require('./utils/process-log');
 
+// console.log(require('webpack').cli.getArguments());
+
 process.title = 'webpack-cli';
 
 // const isFlagPresent = (args, flag) => args.find((arg) => [flag, `--${flag}`].includes(arg));
