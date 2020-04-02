@@ -9,6 +9,7 @@ module.exports = {
         jest: true,
     },
     rules: {
+        quotes: ['error', 'single', { avoidEscape: true, allowTemplateLiterals: false }],
         'no-process-exit': 'off',
         'no-template-curly-in-string': 'error',
         'no-caller': 'error',
@@ -32,13 +33,6 @@ module.exports = {
             plugins: ['@typescript-eslint'],
             rules: {
                 'node/no-unsupported-features/es-syntax': 'off',
-            },
-        },
-        {
-            files: ['**/*.js'],
-            rules: {
-                quotes: ['error', 'single'],
-                'valid-jsdoc': 'error',
             },
         },
     ],
