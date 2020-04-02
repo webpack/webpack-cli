@@ -30,7 +30,6 @@
     "watch": "tsc --build --watch",
     "prepsuite": "node scripts/prepareSuite.js",
     "commit": "git-cz",
-    "docs": "typedoc",
     "format": "eslint --fix . --ext .js,.ts",
     "lint": "eslint . --ext .js,.ts",
     "lint:fix": "eslint . --ext .js,.ts --fix",
@@ -148,7 +147,6 @@
     "readable-stream": "^3.6.0",
     "rimraf": "^3.0.2",
     "ts-jest": "^25.2.1",
-    "typedoc": "^0.17.0",
     "typescript": "^3.8.3",
     "webpack": "^4.42.0",
     "yeoman-test": "^2.3.0"
