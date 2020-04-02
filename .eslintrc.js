@@ -1,19 +1,18 @@
 module.exports = {
-    extends: ['eslint:recommended', 'plugin:node/recommended', 'plugin:prettier/recommended'],
+    extends: ['eslint:recommended', 'plugin:node/recommended', 'plugin:prettier/recommended', 'prettier'],
     env: {
         node: true,
         es6: true,
         jest: true,
     },
     root: true,
-    plugins: ['node', 'prettier'],
+    plugins: ['node'],
     parserOptions: { ecmaVersion: 2018, sourceType: 'module' },
     rules: {
         'no-useless-escape': 'off',
         'no-dupe-keys': 'error',
         'no-undef': 'error',
         quotes: ['error', 'single'],
-        'prettier/prettier': ['error'],
         'no-template-curly-in-string': 'error',
         'no-caller': 'error',
         'global-require': 'off',
