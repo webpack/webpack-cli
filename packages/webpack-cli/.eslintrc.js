@@ -1,4 +1,4 @@
 module.exports = {
     root: false,
-    parserOptions: { ecmaVersion: 2020, sourceType: 'script' },
+    parserOptions: { ecmaVersion: 2018, sourceType: 'script' },
 };

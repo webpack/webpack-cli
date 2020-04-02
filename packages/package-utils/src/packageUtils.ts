@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { sync } from 'execa';
 import spawn from 'cross-spawn';
-import  chalk = require('chalk');
+import chalk = require('chalk');
 import { prompt } from 'enquirer';
 import { runCommand } from './processUtils';
 

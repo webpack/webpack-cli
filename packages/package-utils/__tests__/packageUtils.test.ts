@@ -33,7 +33,7 @@ describe('packageUtils', () => {
 
             // package-lock.json is ignored by .gitignore, so we simply
             // write a lockfile here for testing
-            if (!fs.existsSync(testNpmLockPath)){
+            if (!fs.existsSync(testNpmLockPath)) {
                 fs.mkdirSync(testNpmLockPath);
             }
             fs.writeFileSync(path.resolve(testNpmLockPath, 'package-lock.json'), '');
@@ -67,7 +67,7 @@ describe('packageUtils', () => {
             // it is installed
             (execa.sync as jest.Mock).mockImplementation(() => {
                 return {
-                    stdout: '1.0.0'
+                    stdout: '1.0.0',
                 };
             });
             cwdSpy.mockReturnValue(path.resolve(__dirname));

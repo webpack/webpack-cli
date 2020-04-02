@@ -1,54 +1,54 @@
-import jscodeshift from "jscodeshift";
-import pEachSeries = require("p-each-series");
-import pLazy = require("p-lazy");
-import bannerPluginTransform from "./bannerPlugin/bannerPlugin";
-import commonsChunkPluginTransform from "./commonsChunkPlugin/commonsChunkPlugin";
-import extractTextPluginTransform from "./extractTextPlugin/extractTextPlugin";
-import loaderOptionsPluginTransform from "./loaderOptionsPlugin/loaderOptionsPlugin";
-import loadersTransform from "./loaders/loaders";
-import noEmitOnErrorsPluginTransform from "./noEmitOnErrorsPlugin/noEmitOnErrorsPlugin";
-import removeDeprecatedPluginsTransform from "./removeDeprecatedPlugins/removeDeprecatedPlugins";
-import removeJsonLoaderTransform from "./removeJsonLoader/removeJsonLoader";
-import resolveTransform from "./resolve/resolve";
-import uglifyJsPluginTransform from "./uglifyJsPlugin/uglifyJsPlugin";
+import jscodeshift from 'jscodeshift';
+import pEachSeries = require('p-each-series');
+import pLazy = require('p-lazy');
+import bannerPluginTransform from './bannerPlugin/bannerPlugin';
+import commonsChunkPluginTransform from './commonsChunkPlugin/commonsChunkPlugin';
+import extractTextPluginTransform from './extractTextPlugin/extractTextPlugin';
+import loaderOptionsPluginTransform from './loaderOptionsPlugin/loaderOptionsPlugin';
+import loadersTransform from './loaders/loaders';
+import noEmitOnErrorsPluginTransform from './noEmitOnErrorsPlugin/noEmitOnErrorsPlugin';
+import removeDeprecatedPluginsTransform from './removeDeprecatedPlugins/removeDeprecatedPlugins';
+import removeJsonLoaderTransform from './removeJsonLoader/removeJsonLoader';
+import resolveTransform from './resolve/resolve';
+import uglifyJsPluginTransform from './uglifyJsPlugin/uglifyJsPlugin';
 
 interface TransformsObject {
-	bannerPluginTransform: object;
-	commonsChunkPluginTransform?: object;
-	extractTextPluginTransform: object;
-	loaderOptionsPluginTransform: object;
-	loadersTransform: object;
-	noEmitOnErrorsPluginTransform: object;
-	removeDeprecatedPluginsTransform: object;
-	removeJsonLoaderTransform: object;
-	resolveTransform: object;
-	uglifyJsPluginTransform: object;
+    bannerPluginTransform: object;
+    commonsChunkPluginTransform?: object;
+    extractTextPluginTransform: object;
+    loaderOptionsPluginTransform: object;
+    loadersTransform: object;
+    noEmitOnErrorsPluginTransform: object;
+    removeDeprecatedPluginsTransform: object;
+    removeJsonLoaderTransform: object;
+    resolveTransform: object;
+    uglifyJsPluginTransform: object;
 }
 
 const transformsObject: TransformsObject = {
-	loadersTransform,
-	resolveTransform,
-	removeJsonLoaderTransform,
-	uglifyJsPluginTransform,
-	loaderOptionsPluginTransform,
-	bannerPluginTransform,
-	extractTextPluginTransform,
-	noEmitOnErrorsPluginTransform,
-	removeDeprecatedPluginsTransform,
-	commonsChunkPluginTransform
+    loadersTransform,
+    resolveTransform,
+    removeJsonLoaderTransform,
+    uglifyJsPluginTransform,
+    loaderOptionsPluginTransform,
+    bannerPluginTransform,
+    extractTextPluginTransform,
+    noEmitOnErrorsPluginTransform,
+    removeDeprecatedPluginsTransform,
+    commonsChunkPluginTransform,
 };
 
 interface LazyTransformObject {
-	loadersTransform?: (ast: object, source: string) => pLazy<{}>;
-	resolveTransform?: (ast: object, source: string) => pLazy<{}>;
-	removeJsonLoaderTransform?: (ast: object, source: string) => pLazy<{}>;
-	uglifyJsPluginTransform?: (ast: object, source: string) => pLazy<{}>;
-	loaderOptionsPluginTransform?: (ast: object, source: string) => pLazy<{}>;
-	bannerPluginTransform?: (ast: object, source: string) => pLazy<{}>;
-	extractTextPluginTransform?: (ast: object, source: string) => pLazy<{}>;
-	noEmitOnErrorsPluginTransform?: (ast: object, source: string) => pLazy<{}>;
-	removeDeprecatedPluginsTransform?: (ast: object, source: string) => pLazy<{}>;
-	commonsChunkPluginTransform?: (ast: object, source: string) => pLazy<{}>;
+    loadersTransform?: (ast: object, source: string) => pLazy<{}>;
+    resolveTransform?: (ast: object, source: string) => pLazy<{}>;
+    removeJsonLoaderTransform?: (ast: object, source: string) => pLazy<{}>;
+    uglifyJsPluginTransform?: (ast: object, source: string) => pLazy<{}>;
+    loaderOptionsPluginTransform?: (ast: object, source: string) => pLazy<{}>;
+    bannerPluginTransform?: (ast: object, source: string) => pLazy<{}>;
+    extractTextPluginTransform?: (ast: object, source: string) => pLazy<{}>;
+    noEmitOnErrorsPluginTransform?: (ast: object, source: string) => pLazy<{}>;
+    removeDeprecatedPluginsTransform?: (ast: object, source: string) => pLazy<{}>;
+    commonsChunkPluginTransform?: (ast: object, source: string) => pLazy<{}>;
 }
 
 /**
@@ -63,27 +63,27 @@ interface LazyTransformObject {
  */
 
 export const transformSingleAST = (
-	ast: object,
-	source: string,
-	transformFunction: (jscodeshift: object, ast: object, source: string) => object
+    ast: object,
+    source: string,
+    transformFunction: (jscodeshift: object, ast: object, source: string) => object,
 ): pLazy<{}> => {
-	return new pLazy((resolve: (value?: {} | PromiseLike<{}>) => void, reject: (reason?: object) => void): void => {
-		setTimeout((): void => {
-			try {
-				resolve(transformFunction(jscodeshift, ast, source));
-			} catch (err) {
-				reject(err);
-			}
-		}, 0);
-	});
+    return new pLazy((resolve: (value?: {} | PromiseLike<{}>) => void, reject: (reason?: object) => void): void => {
+        setTimeout((): void => {
+            try {
+                resolve(transformFunction(jscodeshift, ast, source));
+            } catch (err) {
+                reject(err);
+            }
+        }, 0);
+    });
 };
 
 export const transformations: LazyTransformObject = Object.keys(transformsObject).reduce(
-	(res: object, key: string): LazyTransformObject => {
-		res[key] = (ast: object, source: string): object => transformSingleAST(ast, source, transformsObject[key]);
-		return res;
-	},
-	{}
+    (res: object, key: string): LazyTransformObject => {
+        res[key] = (ast: object, source: string): object => transformSingleAST(ast, source, transformsObject[key]);
+        return res;
+    },
+    {},
 );
 
 /**
@@ -100,24 +100,24 @@ export const transformations: LazyTransformObject = Object.keys(transformsObject
  */
 
 export const transform = (
-	source: string,
-	transforms?: Iterable<Function | PromiseLike<Function>>,
-	options?: object
+    source: string,
+    transforms?: Iterable<Function | PromiseLike<Function>>,
+    options?: object,
 ): Promise<string | void> => {
-	const ast = jscodeshift(source);
-	const recastOptions: object = Object.assign(
-		{
-			quote: "single"
-		},
-		options
-	);
-	transforms = transforms || Object.keys(transformations).map((k: string): Function => transformations[k]);
+    const ast = jscodeshift(source);
+    const recastOptions: object = Object.assign(
+        {
+            quote: 'single',
+        },
+        options,
+    );
+    transforms = transforms || Object.keys(transformations).map((k: string): Function => transformations[k]);
 
-	return pEachSeries(transforms, (f: Function): void => f(ast, source))
-		.then((): string | PromiseLike<string> => {
-			return ast.toSource(recastOptions);
-		})
-		.catch((err: object): void => {
-			console.error(err);
-		});
+    return pEachSeries(transforms, (f: Function): void => f(ast, source))
+        .then((): string | PromiseLike<string> => {
+            return ast.toSource(recastOptions);
+        })
+        .catch((err: object): void => {
+            console.error(err);
+        });
 };

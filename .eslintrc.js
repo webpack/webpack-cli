@@ -7,7 +7,7 @@ module.exports = {
     },
     root: true,
     plugins: ['node', 'prettier'],
-    parserOptions: { ecmaVersion: 2020, sourceType: 'module' },
+    parserOptions: { ecmaVersion: 2018, sourceType: 'module' },
     rules: {
         'no-useless-escape': 'off',
         'no-dupe-keys': 'error',

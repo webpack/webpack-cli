@@ -1,13 +1,10 @@
 {
-	"root": true,
-	"extends": [
-		"plugin:@typescript-eslint/recommended",
-		"prettier",
-		"prettier/@typescript-eslint"
-	],
-	"parser": "@typescript-eslint/parser",
-	"plugins": ["@typescript-eslint"],
-	"rules": {
-		"@typescript-eslint/no-var-requires": "off",
-	}
+    "root": true,
+    "extends": ["plugin:@typescript-eslint/recommended", "prettier", "prettier/@typescript-eslint"],
+    "parser": "@typescript-eslint/parser",
+    "plugins": ["@typescript-eslint", "prettier"],
+    "rules": {
+        "prettier/prettier": "error",
+        "@typescript-eslint/no-var-requires": "off"
+    }
 }
