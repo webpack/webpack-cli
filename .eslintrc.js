@@ -1,7 +1,7 @@
 module.exports = {
     root: true,
     extends: ['eslint:recommended', 'plugin:node/recommended', 'plugin:prettier/recommended', 'prettier'],
-    parserOptions: { ecmaVersion: 2018, sourceType: 'module' },
+    parserOptions: { ecmaVersion: 2018, sourceType: 'script' },
     plugins: ['node'],
     env: {
         node: true,
@@ -9,7 +9,11 @@ module.exports = {
         jest: true,
     },
     rules: {
+        'no-process-exit': 'off',
         'no-template-curly-in-string': 'error',
+        'no-caller': 'error',
+        'no-extra-bind': 'error',
+        'no-loop-func': 'error',
     },
     overrides: [
         {
@@ -25,7 +29,7 @@ module.exports = {
                 'prettier/@typescript-eslint',
             ],
             parser: '@typescript-eslint/parser',
-            plugins: ['@typescript-eslint', 'prettier'],
+            plugins: ['@typescript-eslint'],
             rules: {
                 'node/no-unsupported-features/es-syntax': 'off',
             },
@@ -34,10 +38,6 @@ module.exports = {
             files: ['**/*.js'],
             rules: {
                 quotes: ['error', 'single'],
-                'no-process-exit': 'off',
-                'no-caller': 'error',
-                'no-extra-bind': 'error',
-                'no-loop-func': 'error',
                 'valid-jsdoc': 'error',
             },
         },
