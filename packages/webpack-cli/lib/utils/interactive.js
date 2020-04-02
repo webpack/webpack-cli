@@ -49,7 +49,7 @@ const writeFilterConsole = () => {
         }
         console.clear();
         const orangeline = chalk.keyword('orange');
-        data.forEach((chunk, idx) => {
+        data.forEach(chunk => {
             Object.keys(chunk).forEach(mod => {
                 console.log(chalk.bold.cyan(mod));
                 chunk[mod].forEach(sub => {

@@ -62,6 +62,7 @@ const addonGenerator = (
 
         public writing(): void {
             const packageJsonTemplatePath = '../templates/addon-package.json.js';
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
             this.fs.extendJSON(this.destinationPath('package.json'), require(packageJsonTemplatePath)(this.props.name));
 
             this.copy = generatorCopy(this, templateDir);

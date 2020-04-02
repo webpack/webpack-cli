@@ -1,31 +1,45 @@
 module.exports = {
+    root: true,
     extends: ['eslint:recommended', 'plugin:node/recommended', 'plugin:prettier/recommended', 'prettier'],
+    parserOptions: { ecmaVersion: 2018, sourceType: 'module' },
+    plugins: ['node'],
     env: {
         node: true,
         es6: true,
         jest: true,
     },
-    root: true,
-    plugins: ['node'],
-    parserOptions: { ecmaVersion: 2018, sourceType: 'module' },
     rules: {
-        'no-useless-escape': 'off',
-        'no-dupe-keys': 'error',
-        'no-undef': 'error',
-        quotes: ['error', 'single'],
         'no-template-curly-in-string': 'error',
-        'no-caller': 'error',
-        'global-require': 'off',
-        'no-extra-bind': 'warn',
-        'no-empty': 'off',
-        'no-process-exit': 'off',
-        'no-use-before-define': 'off',
-        'no-unused-vars': ['error', { args: 'none' }],
-        'no-unsafe-negation': 'error',
-        'no-loop-func': 'warn',
-        '@typescript-eslint/no-var-requires': 'off',
-        '@typescript-eslint/ban-ts-ignore': 'off',
-        'no-console': 'off',
-        'valid-jsdoc': 'error',
     },
+    overrides: [
+        {
+            files: ['**/*.ts'],
+            settings: {
+                node: {
+                    tryExtensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
+                },
+            },
+            extends: [
+                'plugin:@typescript-eslint/eslint-recommended',
+                'plugin:@typescript-eslint/recommended',
+                'prettier/@typescript-eslint',
+            ],
+            parser: '@typescript-eslint/parser',
+            plugins: ['@typescript-eslint', 'prettier'],
+            rules: {
+                'node/no-unsupported-features/es-syntax': 'off',
+            },
+        },
+        {
+            files: ['**/*.js'],
+            rules: {
+                quotes: ['error', 'single'],
+                'no-process-exit': 'off',
+                'no-caller': 'error',
+                'no-extra-bind': 'error',
+                'no-loop-func': 'error',
+                'valid-jsdoc': 'error',
+            },
+        },
+    ],
 };

@@ -110,5 +110,7 @@ async function teardown() {
             await teardown();
             process.exit(0);
         });
-    } catch (e) {}
+    } catch (e) {
+        // Nothing
+    }
 })();

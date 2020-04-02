@@ -32,7 +32,9 @@ export function getPackageManager(): PackageName {
         if (sync('yarn', ['--version']).stdout) {
             return 'yarn';
         }
-    } catch (e) {}
+    } catch (e) {
+        // Nothing
+    }
 
     return 'npm';
 }

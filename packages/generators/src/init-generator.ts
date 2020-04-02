@@ -81,6 +81,7 @@ export default class InitGenerator extends Generator {
     }
 
     public async prompting(): Promise<void | {}> {
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
         const self: this = this;
 
         this.usingDefaults = true;
@@ -261,6 +262,7 @@ export default class InitGenerator extends Generator {
         this.config.set('configuration', this.configuration);
 
         const packageJsonTemplatePath = '../templates/package.json.js';
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
         this.fs.extendJSON(this.destinationPath('package.json'), require(packageJsonTemplatePath)(this.usingDefaults));
 
         const generateEntryFile = (entryPath: string, name: string): void => {
@@ -290,6 +292,7 @@ export default class InitGenerator extends Generator {
         } else if (this.langType === LangType.Typescript) {
             // Generate tsconfig
             const tsConfigTemplatePath = '../templates/tsconfig.json.js';
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
             this.fs.extendJSON(this.destinationPath('tsconfig.json'), require(tsConfigTemplatePath));
         }
     }

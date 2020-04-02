@@ -24,6 +24,7 @@ describe('init generator', () => {
         assert.fileContent(join(outputDir, 'src', 'index.js'), 'console.log("Hello World from your main file!");');
         assert.fileContent(join(outputDir, 'sw.js'), "self.addEventListener('install'");
 
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
         const output = require(join(outputDir, '.yo-rc.json'));
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const config = (Object.entries(output)[0][1] as any).configuration.config.webpackOptions;
@@ -54,6 +55,7 @@ describe('init generator', () => {
         // Check generated file contents
         assert.fileContent(join(outputDir, 'src', 'index2.js'), 'console.log("Hello World from your main file!");');
 
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
         const output = require(join(outputDir, '.yo-rc.json'));
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const config = (Object.entries(output)[0][1] as any).configuration.config.webpackOptions;
@@ -77,6 +79,7 @@ describe('init generator', () => {
         const filePaths = ['package.json', 'README.md', 'src/index.js'];
         assert.file(filePaths.map(file => join(outputDir, file)));
 
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
         const output = require(join(outputDir, '.yo-rc.json'));
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const config = (Object.entries(output)[0][1] as any).configuration.config.webpackOptions;
@@ -101,6 +104,7 @@ describe('init generator', () => {
         const filePaths = ['package.json', 'README.md', 'src/index.js'];
         assert.file(filePaths.map(file => join(outputDir, file)));
 
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
         const output = require(join(outputDir, '.yo-rc.json'));
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const config = (Object.entries(output)[0][1] as any).configuration.config.webpackOptions;
@@ -130,6 +134,7 @@ describe('init generator', () => {
         assert.fileContent(join(outputDir, 'dir1', 'test1.js'), 'console.log("Hello World from test1 main file!");');
         assert.fileContent(join(outputDir, 'dir2', 'test2.js'), 'console.log("Hello World from test2 main file!");');
 
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
         const output = require(join(outputDir, '.yo-rc.json'));
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const config = (Object.entries(output)[0][1] as any).configuration.config.webpackOptions;

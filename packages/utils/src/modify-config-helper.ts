@@ -76,6 +76,7 @@ export function modifyHelperUtil(
     try {
         const packagePath = path.resolve(process.cwd(), 'package.json');
         if (fs.existsSync(packagePath)) {
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
             const packageData = require(packagePath);
             if (packageData && packageData.name) {
                 packageName = packageData.name;
