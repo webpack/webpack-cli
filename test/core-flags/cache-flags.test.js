@@ -1,0 +1,100 @@
+'use strict';
+
+const { run } = require('../utils/test-utils');
+const { resolve } = require('path');
+
+describe('cahche related flags from core', () => {
+    it('should be successful with --cache ', () => {
+        const { stderr, stdout } = run(__dirname, ['--cache']);
+
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain(`type: 'memory'`);
+    });
+
+    it('should be successful with --no-cache ', () => {
+        const { stderr, stdout } = run(__dirname, ['--no-cache']);
+
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('cache: false');
+    });
+
+    it('should set cache.type', () => {
+        const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem']);
+
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain(`type: 'filesystem'`);
+    });
+
+    it('should set cache.cacheDirectory with --cache-cache-directory', () => {
+        const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '--cache-cache-directory', '/test-cache-path']);
+        const path = resolve('/test-cache-path');
+
+        expect(stderr).toBeFalsy();
+        if (process.platform === 'win32') {
+            // for windows
+            expect(stdout).toContain('test-cache-path');
+        } else {
+            expect(stdout).toContain(`cacheDirectory: '${path}'`);
+        }
+    });
+
+    it('should set cache.cacheLocation with --cache-cache-locations', () => {
+        const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '--cache-cache-location', '/test-locate-cache']);
+        const path = resolve('/test-locate-cache');
+
+        expect(stderr).toBeFalsy();
+        if (process.platform === 'win32') {
+            // for windows
+            expect(stdout).toContain('test-locate-cache');
+        } else {
+            expect(stdout).toContain(`cacheLocation: '${path}'`);
+        }
+    });
+
+    it('should set cache.hashAlgorithm with --cache-hash-algorithm', () => {
+        const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '--cache-hash-algorithm', 'sha256']);
+
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain(`hashAlgorithm: 'sha256'`);
+    });
+
+    it('should set cache.managedPaths with --cache-managed-paths', () => {
+        const { stderr, stdout } = run(__dirname, ['--cache-type', 'memory', '--cache-managed-paths', '/test-manage-path']);
+
+        expect(stderr).toBeFalsy();
+        if (process.platform === 'win32') {
+            // for windows
+            expect(stdout).toContain('test-manage-path');
+        } else {
+            expect(stdout).toContain(`managedPaths: [ '/test-manage-path' ]`);
+        }
+    });
+
+    it('should reset cache.managedPaths with --cache-managed-paths-reset', () => {
+        const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '--cache-managed-paths-reset']);
+
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain(`managedPaths: []`);
+    });
+
+    it('should set cache.name with --cache-name', () => {
+        const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '--cache-name', 'cli-test']);
+
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain(`name: 'cli-test'`);
+    });
+
+    it('should set cache.store with --cache-store', () => {
+        const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '--cache-store', 'pack']);
+
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain(`store: 'pack'`);
+    });
+
+    it('should set cache.version with --cache-version', () => {
+        const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '--cache-version', '1.1.3']);
+
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain(`version: '1.1.3'`);
+    });
+});

@@ -10,6 +10,7 @@ class WebpackCLI extends GroupHelper {
         super();
         this.groupMap = new Map();
         this.groups = [];
+        this.args = {};
         this.processingMessageBuffer = [];
         this.compilation = new Compiler();
         this.defaultEntry = 'index';
@@ -40,6 +41,26 @@ class WebpackCLI extends GroupHelper {
         } else {
             this.groupMap.set(groupName, [{ [opt.name]: val }]);
         }
+    }
+
+    /**
+     * Responsible for handling flags coming from webpack/webpack
+     * @private\
+     * @returns {void}
+     */
+    _handleCoreFlags() {
+        if (!this.groupMap.has('core')) {
+            return;
+        }
+        const coreFlags = this.groupMap.get('core');
+
+        // convert all the flags from map to single object
+        const coreConfig = coreFlags.reduce((allFlag, curFlag) => ({ ...allFlag, ...curFlag }), {});
+
+        const coreCliHelper = require('webpack').cli;
+        const coreCliArgs = coreCliHelper.getArguments();
+        // Merge the core flag config with the compilerConfiguration
+        coreCliHelper.processArguments(coreCliArgs, this.compilerConfiguration, coreConfig);
     }
 
     /**
@@ -222,6 +243,7 @@ class WebpackCLI extends GroupHelper {
             .then(() => this._handleDefaultEntry())
             .then(() => this._handleGroupHelper(this.configGroup))
             .then(() => this._handleGroupHelper(this.outputGroup))
+            .then(() => this._handleCoreFlags())
             .then(() => this._handleGroupHelper(this.basicGroup))
             .then(() => this._handleGroupHelper(this.advancedGroup))
             .then(() => this._handleGroupHelper(this.statsGroup))
