@@ -90,11 +90,6 @@ const interactiveConfig = [
     },
 ];
 
-const backMenuOption = {
-    key: 'b',
-    description: 'Go back to main menu',
-};
-
 const EXIT_KEY = 'q';
 const ANALYZE_KEY = 'a';
 const FILTER_KEY = 'm';
@@ -164,7 +159,7 @@ module.exports = async function(config, outputOptions, processingMessageBuffer) 
                 stdin.setEncoding('utf-8');
                 setupInteractive();
                 break;
-            case ENTER_KEY:
+            case ENTER_KEY: {
                 console.clear();
                 console.log('Running webpack');
                 if (state.length) {
@@ -175,6 +170,7 @@ module.exports = async function(config, outputOptions, processingMessageBuffer) 
                 informActions();
                 isSub = true;
                 return;
+            }
             default:
                 break;
         }

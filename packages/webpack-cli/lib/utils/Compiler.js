@@ -175,7 +175,7 @@ class Compiler {
             const watchOptions = outputOptions.watchOptions || {};
             if (watchOptions.stdin) {
                 process.stdin.on('end', function() {
-                    process.exit(); // eslint-disable-line
+                    process.exit();
                 });
                 process.stdin.resume();
             }
