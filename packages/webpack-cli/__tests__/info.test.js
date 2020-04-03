@@ -7,7 +7,24 @@ describe('Info', () => {
             cwd: path.resolve(__dirname),
             reject: false,
         });
-        expect(stdout).toBeTruthy();
+        expect(stdout).toContain('System');
+        expect(stdout).toContain('Binaries');
+        expect(stdout).toContain('OS');
+        expect(stderr).toBeFalsy();
+    });
+
+    it('should work with flags', () => {
+        const { stdout, stderr } = spawnSync(path.resolve(__dirname, '../bin/cli.js'), ['info', '--output=json'], {
+            cwd: path.resolve(__dirname),
+            reject: false,
+        });
+        console.log(stdout);
+        const testJSON = () => {
+            const output = JSON.parse(stdout);
+            expect(output['System']).toBeTruthy();
+            expect(output['System']['OS']).toBeTruthy();
+        };
+        expect(testJSON).not.toThrow();
         expect(stderr).toBeFalsy();
     });
 });
