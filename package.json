@@ -98,7 +98,7 @@
     "@types/jest": "^25.1.4",
     "@types/node": "13.9.8",
     "@typescript-eslint/eslint-plugin": "^2.24.0",
-    "@typescript-eslint/parser": "^2.24.0",
+    "@typescript-eslint/parser": "^2.26.0",
     "chalk": "^3.0.0",
     "commitlint": "^8.3.5",
     "commitlint-config-cz": "^0.13.0",
@@ -121,7 +121,7 @@
     "prettier": "1.19.1",
     "readable-stream": "^3.6.0",
     "rimraf": "^3.0.2",
-    "ts-jest": "^25.2.1",
+    "ts-jest": "^25.3.0",
     "typescript": "^3.8.3",
     "webpack": "^4.42.0",
     "yeoman-test": "^2.3.0"
