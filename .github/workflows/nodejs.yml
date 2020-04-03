@@ -42,10 +42,7 @@ jobs:
         run: yarn build
 
       - name: Lint
-        run: |
-          node patch-eslint.js
-          ls -l node_modules/@webpack-cli/generators/
-          yarn lint
+        run: yarn lint
 
   build:
     name: Tests - ${{ matrix.os }} - Node v${{ matrix.node-version }}, Webpack ${{ matrix.webpack-version }}
