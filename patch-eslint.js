@@ -100,8 +100,13 @@ const resolve = require("resolve")
  */
 function getFilePath(isModule, id, options) {
     try {
-        return resolve.sync(id, options)
+        console.log(id);
+        console.log(options);
+        console.log('File path: ' + resolve.sync(id, options))
+        return resolve.sync(id, options);
     } catch (_err) {
+        console.log(_err);
+
         if (isModule) {
             return null
         }
@@ -160,6 +165,7 @@ module.exports = class ImportTarget {
         console.log(name);
         console.log(options);
         this.filePath = getFilePath(isModule, name, options)
+        console.log(this.filePath);
 
         /**
          * The module name of this import target.
