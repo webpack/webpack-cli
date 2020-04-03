@@ -5,7 +5,5 @@
     "rootDir": "./src"
   },
   "include": ["./src"],
-  "references": [
-    {"path": "../package-utils"}
-  ]
+  "references": [{ "path": "../package-utils" }]
 }

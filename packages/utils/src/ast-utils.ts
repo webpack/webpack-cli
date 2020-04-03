@@ -305,9 +305,7 @@ function createOrUpdatePluginByName(j: JSCodeshift, rootNodePath: Node, pluginNa
                 if (args.length) {
                     // Plugin is called with object as arguments
                     // we will merge those objects
-                    const currentProps: Node = j(path)
-                        .find(j.ObjectExpression)
-                        .get('properties');
+                    const currentProps: Node = j(path).find(j.ObjectExpression).get('properties');
 
                     optionsProps.forEach((opt: Node): void => {
                         // Search for same keys in the existing object

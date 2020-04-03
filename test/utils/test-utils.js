@@ -56,10 +56,10 @@ function runWatch({ testCase, args = [], setOutput = true, outputKillStr = 'Time
             }),
         );
         watchPromise
-            .then(result => {
+            .then((result) => {
                 resolve(result);
             })
-            .catch(error => {
+            .catch((error) => {
                 reject(error);
             });
     });
@@ -88,10 +88,10 @@ function extractSummary(stdout) {
 
     const summaryArray = stdout
         .split('\n')
-        .filter(line => metaData.find(category => line.includes(category)))
-        .filter(line => line)
-        .map(line => line.trim())
-        .map(line => {
+        .filter((line) => metaData.find((category) => line.includes(category)))
+        .filter((line) => line)
+        .map((line) => line.trim())
+        .map((line) => {
             const categoryTouple = line.split(':');
             const categoryIdentifier = categoryTouple.shift();
             const categoryValue = categoryTouple.pop();
@@ -132,7 +132,7 @@ function appendDataIfFileExists(testCase, file, data) {
  */
 function appendDataToMultipleIfFilesExists(testCase, file, data, cbFile, cbData) {
     const filePath = path.resolve(testCase, file);
-    fs.access(filePath, fs.F_OK, accessErr => {
+    fs.access(filePath, fs.F_OK, (accessErr) => {
         if (accessErr) throw new Error(`Oops! ${accessErr} does not exist!`);
         fs.appendFile(filePath, data, 'utf8', () => {
             const cbFilePath = path.resolve(testCase, cbFile);
@@ -154,7 +154,7 @@ async function copyFileAsync(testCase, file) {
     const fileMetaData = path.parse(file);
     const fileCopyName = fileMetaData.name.concat('_copy').concat(fileMetaData.ext);
     const copyFilePath = path.resolve(testCase, fileCopyName);
-    fs.access(fileToChangePath, fs.F_OK, accessErr => {
+    fs.access(fileToChangePath, fs.F_OK, (accessErr) => {
         if (accessErr) throw new Error(`Oops! ${fileToChangePath} does not exist!`);
     });
     const data = fs.readFileSync(fileToChangePath);

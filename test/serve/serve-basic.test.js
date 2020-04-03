@@ -4,7 +4,7 @@ const path = require('path');
 const getPort = require('get-port');
 const { runWatch } = require('../utils/test-utils');
 
-const runServe = args => {
+const runServe = (args) => {
     return runWatch({
         testCase: path.resolve(__dirname),
         args: ['serve'].concat(args),

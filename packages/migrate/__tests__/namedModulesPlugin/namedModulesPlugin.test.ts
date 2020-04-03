@@ -3,7 +3,7 @@ import { join } from 'path';
 
 const dirName: string = join(__dirname);
 
-describe('namedModulesPlugin', function() {
+describe('namedModulesPlugin', function () {
     {
         defineTest(dirName, 'namedModulesPlugin', 'namedModulesPlugin-0');
         defineTest(dirName, 'namedModulesPlugin', 'namedModulesPlugin-1');

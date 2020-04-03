@@ -14,7 +14,7 @@ describe('init generator', () => {
 
         // Check that all the project files are generated with the correct name
         const filePaths = ['package.json', 'README.md', 'src/index.js', 'sw.js'];
-        assert.file(filePaths.map(file => join(outputDir, file)));
+        assert.file(filePaths.map((file) => join(outputDir, file)));
 
         // Check generated file contents
         assert.fileContent(join(outputDir, 'package.json'), '"name": "my-webpack-project"');
@@ -45,7 +45,7 @@ describe('init generator', () => {
 
         // Check that all the project files are generated with the correct name
         const filePaths = ['package.json', 'README.md', 'src/index2.js'];
-        assert.file(filePaths.map(file => join(outputDir, file)));
+        assert.file(filePaths.map((file) => join(outputDir, file)));
 
         // this file is only added if the default options are used
         assert.noFile(join(outputDir, 'sw.js'));
@@ -75,7 +75,7 @@ describe('init generator', () => {
 
         // Check that all the project files are generated with the correct name
         const filePaths = ['package.json', 'README.md', 'src/index.js'];
-        assert.file(filePaths.map(file => join(outputDir, file)));
+        assert.file(filePaths.map((file) => join(outputDir, file)));
 
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         const output = require(join(outputDir, '.yo-rc.json'));
@@ -100,7 +100,7 @@ describe('init generator', () => {
 
         // Check that all the project files are generated with the correct name
         const filePaths = ['package.json', 'README.md', 'src/index.js'];
-        assert.file(filePaths.map(file => join(outputDir, file)));
+        assert.file(filePaths.map((file) => join(outputDir, file)));
 
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         const output = require(join(outputDir, '.yo-rc.json'));
@@ -126,7 +126,7 @@ describe('init generator', () => {
 
         // Check that all the project files are generated with the correct name
         const filePaths = ['package.json', 'README.md', 'dir1/test1.js', 'dir2/test2.js'];
-        assert.file(filePaths.map(file => join(outputDir, file)));
+        assert.file(filePaths.map((file) => join(outputDir, file)));
 
         // Check generated file contents
         assert.fileContent(join(outputDir, 'dir1', 'test1.js'), "console.log('Hello World from test1 main file!');");
@@ -153,7 +153,7 @@ describe('init generator', () => {
 
         // Check that all the project files are generated with the correct name
         const filePaths = ['package.json', 'README.md', 'src/index.js', '.babelrc'];
-        assert.file(filePaths.map(file => join(outputDir, file)));
+        assert.file(filePaths.map((file) => join(outputDir, file)));
     });
 
     it('generates a webpack config that uses Typescript', async () => {
@@ -167,6 +167,6 @@ describe('init generator', () => {
 
         // Check that all the project files are generated with the correct name
         const filePaths = ['package.json', 'README.md', 'src/index.ts', 'tsconfig.json'];
-        assert.file(filePaths.map(file => join(outputDir, file)));
+        assert.file(filePaths.map((file) => join(outputDir, file)));
     });
 });

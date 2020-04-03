@@ -30,32 +30,32 @@ module.exports = {
 `;
 
 describe('transform', () => {
-    it('should not transform if no transformations defined', done => {
-        transform(input, []).then(output => {
+    it('should not transform if no transformations defined', (done) => {
+        transform(input, []).then((output) => {
             expect(output).toMatchSnapshot(input);
             done();
         });
     });
 
-    it('should transform using all transformations', done => {
-        transform(input).then(output => {
+    it('should transform using all transformations', (done) => {
+        transform(input).then((output) => {
             expect(output).toMatchSnapshot();
             done();
         });
     });
 
-    it('should transform only using specified transformations', done => {
-        transform(input, [transformations.loadersTransform]).then(output => {
+    it('should transform only using specified transformations', (done) => {
+        transform(input, [transformations.loadersTransform]).then((output) => {
             expect(output).toMatchSnapshot();
             done();
         });
     });
 
-    it('should respect recast options', done => {
+    it('should respect recast options', (done) => {
         transform(input, undefined, {
             quote: 'double',
             trailingComma: true,
-        }).then(output => {
+        }).then((output) => {
             expect(output).toMatchSnapshot();
             done();
         });

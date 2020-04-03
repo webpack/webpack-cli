@@ -13,8 +13,8 @@ async function prompter() {
         choices: cliArgs.reduce((prev, curr) => {
             return [...prev, `--${curr.name}: ${curr.description}`];
         }, []),
-        result: value => {
-            return value.map(flag => flag.split(':')[0]);
+        result: (value) => {
+            return value.map((flag) => flag.split(':')[0]);
         },
     });
 
@@ -22,8 +22,8 @@ async function prompter() {
 
     const boolArgs = [];
     const questions = [];
-    selections.forEach(selection => {
-        const options = cliArgs.find(flag => {
+    selections.forEach((selection) => {
+        const options = cliArgs.find((flag) => {
             return flag.name === selection.slice(2);
         });
 
@@ -36,7 +36,7 @@ async function prompter() {
             name: 'value',
             message: `Enter value of the ${selection} flag`,
             initial: options.defaultValue,
-            result: value => [selection, value],
+            result: (value) => [selection, value],
         });
         questions.push(valuePrompt);
     });

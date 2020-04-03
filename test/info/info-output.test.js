@@ -4,7 +4,7 @@
 const path = require('path');
 const { run } = require('../utils/test-utils');
 
-const runInfo = args => {
+const runInfo = (args) => {
     return run(path.resolve(__dirname), ['info'].concat(args), false);
 };
 

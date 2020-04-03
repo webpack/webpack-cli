@@ -1,6 +1,6 @@
 const GroupHelper = require('../lib/utils/GroupHelper');
 
-describe('GroupHelper', function() {
+describe('GroupHelper', function () {
     it('should return undefined', () => {
         const helper = new GroupHelper();
 

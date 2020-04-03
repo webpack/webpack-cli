@@ -2,7 +2,7 @@ import defineTest from '../../../utils/__tests__/defineTest';
 import { join } from 'path';
 const dirName: string = join(__dirname);
 
-describe('commons chunk plugin', function() {
+describe('commons chunk plugin', function () {
     {
         defineTest(dirName, 'commonsChunkPlugin', 'commonsChunkPlugin-0');
         defineTest(dirName, 'commonsChunkPlugin', 'commonsChunkPlugin-1');

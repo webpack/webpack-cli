@@ -19,7 +19,7 @@ interface LoaderOptions {
  *
  */
 
-export default function(j: JSCodeshift, ast: Node): Node {
+export default function (j: JSCodeshift, ast: Node): Node {
     const loaderOptions: LoaderOptions = {};
 
     // If there is debug: true, set debug: true in the plugin

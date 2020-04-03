@@ -13,7 +13,7 @@ import { JSCodeshift, Node } from '../types/NodePath';
  * @returns {Node} ast - jscodeshift ast
  */
 
-export default function(j: JSCodeshift, ast: Node): Node {
+export default function (j: JSCodeshift, ast: Node): Node {
     /**
      * Creates an Array expression out of loaders string
      *

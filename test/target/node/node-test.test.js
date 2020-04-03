@@ -4,7 +4,7 @@ const { resolve } = require('path');
 const { run } = require('../../utils/test-utils');
 
 describe('Node target', () => {
-    it('should emit the correct code', done => {
+    it('should emit the correct code', (done) => {
         const { stderr } = run(__dirname, [__dirname, '-c', './webpack.config.js']);
         expect(stderr).toBeFalsy();
         stat(resolve(__dirname, 'bin/main.js'), (err, stats) => {

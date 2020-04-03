@@ -1,6 +1,5 @@
 __testfixtures__
 coverage
-docs
 node_modules
 packages/generate-loader/lib
 packages/generate-plugin/lib
