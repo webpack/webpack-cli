@@ -43,7 +43,7 @@ jobs:
 
       - name: Lint
         run: |
-          node patch-eslint.js
+          ls -l
           yarn lint
 
   build:
