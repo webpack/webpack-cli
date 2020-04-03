@@ -230,7 +230,7 @@ module.exports = {
         },
         {
             name: 'mode',
-            usage: '--mode <development | production>',
+            usage: '--mode <development | production | none>',
             type: (value) => {
                 if (value === 'development' || value === 'production' || value === 'none') {
                     return value ;

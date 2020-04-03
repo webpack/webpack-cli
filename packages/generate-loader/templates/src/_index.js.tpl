@@ -1,6 +1,6 @@
 /**
  * See the webpack docs for more information about loaders:
- * https://github.com/webpack/docs/wiki/how-to-write-a-loader
+ * https://webpack.js.org/contribute/writing-a-loader
  */
 
 export default function loader(source) {
