@@ -1,5 +1,3 @@
-const path = require('path');
-
 module.exports = {
     root: true,
     extends: ['eslint:recommended', 'plugin:node/recommended', 'plugin:prettier/recommended', 'prettier'],
@@ -20,13 +18,12 @@ module.exports = {
     },
     overrides: [
         {
-            files: ['**/*.ts'],
             settings: {
                 node: {
                     tryExtensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
-                    resolvePaths: [path.resolve(__dirname, './packages')]
                 },
             },
+            files: ['**/*.ts'],
             extends: [
                 'plugin:@typescript-eslint/eslint-recommended',
                 'plugin:@typescript-eslint/recommended',

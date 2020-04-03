@@ -34,7 +34,7 @@ jobs:
           yarn bootstrap
 
       - name: Lint
-        run: yarn lint
+        run: yarn lint -- --debug
 
   build:
     name: Tests - ${{ matrix.os }} - Node v${{ matrix.node-version }}, Webpack ${{ matrix.webpack-version }}
