@@ -44,6 +44,7 @@ jobs:
       - name: Lint
         run: |
           node patch-eslint.js
+          ls -l node_modules/@webpack-cli/generators/
           yarn lint
 
   build:

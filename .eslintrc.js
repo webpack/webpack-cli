@@ -10,11 +10,6 @@ module.exports = {
         es6: true,
         jest: true,
     },
-    settings: {
-        node: {
-            resolvePaths: [path.resolve('./packages')],
-        },
-    },
     rules: {
         quotes: ['error', 'single', { avoidEscape: true, allowTemplateLiterals: false }],
         'no-process-exit': 'off',
