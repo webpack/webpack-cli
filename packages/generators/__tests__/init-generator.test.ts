@@ -2,8 +2,6 @@ import * as assert from 'yeoman-assert';
 import { run } from 'yeoman-test';
 import { join } from 'path';
 
-jest.setTimeout(10000);
-
 describe('init generator', () => {
     it('generates a webpack config with default options', async () => {
         const outputDir = await run(join(__dirname, '../src/init-generator.ts')).withPrompts({
