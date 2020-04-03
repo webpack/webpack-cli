@@ -32,7 +32,6 @@ jobs:
         run: |
           yarn
           yarn bootstrap
-          ls -l node_modules/@webpack-cli/
 
       - name: Lint
         run: yarn lint
