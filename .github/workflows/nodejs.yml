@@ -18,8 +18,9 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x]
         os: [ubuntu-latest]
+        node-version: [12.x]
+        webpack-version: [latest]
 
     steps:
       - uses: actions/checkout@v2
@@ -28,13 +29,20 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+
       - name: Install dependencies
         run: |
           yarn
           yarn bootstrap
 
+      - name: Install webpack ${{ matrix.webpack-version }}
+        run: yarn add -W webpack@${{ matrix.webpack-version }}
+
+      - name: Build
+        run: yarn bootstrap
+
       - name: Lint
-        run: yarn lint -- --debug
+        run: yarn lint
 
   build:
     name: Tests - ${{ matrix.os }} - Node v${{ matrix.node-version }}, Webpack ${{ matrix.webpack-version }}
@@ -60,10 +68,14 @@ jobs:
           yarn
           yarn bootstrap
 
+      - name: Install webpack ${{ matrix.webpack-version }}
+        run: yarn add -W webpack@${{ matrix.webpack-version }}
+
+      - name: Build
+        run: yarn build
+
       - name: Run tests for webpack version ${{ matrix.webpack-version }}
         run: |
-          yarn add -W webpack@${{ matrix.webpack-version }}
-          yarn build
           yarn prepsuite
           yarn test:ci
         env:
