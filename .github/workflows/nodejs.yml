@@ -18,7 +18,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12]
+        node-version: [12.x]
         os: [ubuntu-latest]
 
     steps:
@@ -32,6 +32,7 @@ jobs:
         run: |
           yarn
           yarn bootstrap
+          ls -l node_modules/@webpack-cli/
 
       - name: Lint
         run: yarn lint
