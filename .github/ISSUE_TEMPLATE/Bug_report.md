@@ -12,6 +12,7 @@ about: "Template for \U0001F98E's you encounter with webpack-cli"
 <!-- This is where you elaborate on the current behavior of the cli, how it behaves normally differing from the previous version/build you did. -->
 
 **To Reproduce**
+
 Steps to reproduce the behavior:
 
 1. Go to '...'
