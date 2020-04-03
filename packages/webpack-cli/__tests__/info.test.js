@@ -3,7 +3,7 @@ const path = require('path');
 
 describe('Info', () => {
     it('should run with cli', () => {
-        const { stdout, stderr } = spawnSync(path.resolve(__dirname, '../bin/cli.js'), [], {
+        const { stdout, stderr } = spawnSync(path.resolve(__dirname, '../bin/cli.js'), ['info'], {
             cwd: path.resolve(__dirname),
             reject: false,
         });
