@@ -42,7 +42,9 @@ jobs:
         run: yarn bootstrap
 
       - name: Lint
-        run: yarn lint
+        run: |
+          node patch-eslint.js
+          yarn lint
 
   build:
     name: Tests - ${{ matrix.os }} - Node v${{ matrix.node-version }}, Webpack ${{ matrix.webpack-version }}
