@@ -603,7 +603,7 @@ function parseMerge(j: JSCodeshift, ast: Node, value: string[], action: string):
         }
         ast.find(j.Program).forEach((p: Node): void => {
             if (!isImportPresent(j, ast, 'webpack-merge')) {
-                (p.value as Node).body.splice(-1, 0, `const merge = require('webpack-merge')`);
+                (p.value as Node).body.splice(-1, 0, "const merge = require('webpack-merge')");
             }
 
             if (!isImportPresent(j, ast, configPath)) {

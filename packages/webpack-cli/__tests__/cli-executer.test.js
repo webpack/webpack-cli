@@ -35,7 +35,7 @@ describe('CLI Executer', () => {
                 inputConstructorObjs.push(obj);
             }
 
-            run(obj) {
+            run() {
                 inputRunCount++;
                 return this.mapper(`test${inputRunCount}`);
             }
@@ -56,7 +56,7 @@ describe('CLI Executer', () => {
         expect(multiCalls).toEqual(1);
         expect(multiChoices instanceof Array).toBeTruthy();
         expect(multiChoices.length > 0).toBeTruthy();
-        expect(multiChoices[0]).toMatch(/\-\-entry/);
+        expect(multiChoices[0]).toMatch(/--entry/);
 
         // ensure flag names are parsed out correctly
         expect(typeof multiMapper).toEqual('function');

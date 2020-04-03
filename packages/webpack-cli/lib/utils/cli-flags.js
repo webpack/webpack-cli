@@ -61,7 +61,7 @@ module.exports = {
                     type: String,
                     group: OUTPUT_GROUP,
                     description: 'To get the output in specified format ( accept json or markdown )',
-                }
+                },
             ],
         },
         {
@@ -231,17 +231,17 @@ module.exports = {
         {
             name: 'mode',
             usage: '--mode <development | production | none>',
-            type: (value) => {
+            type: value => {
                 if (value === 'development' || value === 'production' || value === 'none') {
-                    return value ;
+                    return value;
                 } else {
                     logger.warn('You provided an invalid value for "mode" option.');
-                    return 'production' ;
+                    return 'production';
                 }
             },
             group: ZERO_CONFIG_GROUP,
             description: 'Defines the mode to pass to webpack',
-            link: 'https://webpack.js.org/concepts/#mode'
+            link: 'https://webpack.js.org/concepts/#mode',
         },
         {
             name: 'no-mode',

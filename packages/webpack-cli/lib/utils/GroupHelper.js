@@ -25,7 +25,7 @@ class GroupHelper {
         if (!arr) {
             return;
         }
-        return arr.reduce((result, currentItem, index) => {
+        return arr.reduce((result, currentItem) => {
             const key = Object.keys(currentItem)[0];
             result[this.hyphenToUpperCase(key)] = currentItem[key];
             return result;

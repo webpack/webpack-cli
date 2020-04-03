@@ -81,9 +81,7 @@ class WebpackCLI extends GroupHelper {
         return options;
     }
 
-    /**
-     * It exposes "command-line-args" function
-     */
+    // It exposes "command-line-args" function
     commandLineArgs(...args) {
         return commandArgs(...args);
     }

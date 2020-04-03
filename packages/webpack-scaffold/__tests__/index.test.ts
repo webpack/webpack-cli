@@ -9,12 +9,15 @@ import {
     createExternalFunction,
     createRequire,
     List,
-    RawList, InputValidate, Input,
+    RawList,
+    InputValidate,
+    Input,
 } from '../src';
 
 describe('utils', () => {
     beforeEach(() => {
         this.mockSelf = {
+            // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
             prompt: arg => {
                 return arg[0];
             },

@@ -1,6 +1,6 @@
-import findup from "findup-sync";
-import fs from "fs";
-import path from "path";
+import findup from 'findup-sync';
+import fs from 'fs';
+import path from 'path';
 
 /**
  * Attempts to detect whether the string is a local path regardless of its
@@ -14,7 +14,7 @@ import path from "path";
  */
 
 export function isLocalPath(str: string): boolean {
-	return path.isAbsolute(str) || /^\./.test(str) || fs.existsSync(str);
+    return path.isAbsolute(str) || /^\./.test(str) || fs.existsSync(str);
 }
 
 /**
@@ -24,7 +24,7 @@ export function isLocalPath(str: string): boolean {
  */
 
 export function findProjectRoot(): string {
-	const rootFilePath = findup("package.json");
-	const projectRoot = path.dirname(rootFilePath);
-	return projectRoot;
+    const rootFilePath = findup('package.json');
+    const projectRoot = path.dirname(rootFilePath);
+    return projectRoot;
 }

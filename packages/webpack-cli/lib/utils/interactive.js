@@ -49,7 +49,7 @@ const writeFilterConsole = () => {
         }
         console.clear();
         const orangeline = chalk.keyword('orange');
-        data.forEach((chunk, idx) => {
+        data.forEach(chunk => {
             Object.keys(chunk).forEach(mod => {
                 console.log(chalk.bold.cyan(mod));
                 chunk[mod].forEach(sub => {
@@ -89,11 +89,6 @@ const interactiveConfig = [
         onShowMore: [],
     },
 ];
-
-const backMenuOption = {
-    key: 'b',
-    description: 'Go back to main menu',
-};
 
 const EXIT_KEY = 'q';
 const ANALYZE_KEY = 'a';
@@ -164,7 +159,7 @@ module.exports = async function(config, outputOptions, processingMessageBuffer) 
                 stdin.setEncoding('utf-8');
                 setupInteractive();
                 break;
-            case ENTER_KEY:
+            case ENTER_KEY: {
                 console.clear();
                 console.log('Running webpack');
                 if (state.length) {
@@ -175,6 +170,7 @@ module.exports = async function(config, outputOptions, processingMessageBuffer) 
                 informActions();
                 isSub = true;
                 return;
+            }
             default:
                 break;
         }

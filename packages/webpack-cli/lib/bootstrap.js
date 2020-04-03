@@ -69,8 +69,8 @@ async function runCLI(cli, commandIsUsed) {
                     .forEach(unknown => {
                         logger.warn('Unknown argument:', unknown);
                     });
-                    cliExecuter();
-                    return;
+                cliExecuter();
+                return;
             }
             const result = await cli.run(args, core);
             if (!result) {

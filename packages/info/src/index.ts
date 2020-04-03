@@ -3,7 +3,6 @@ import envinfo from 'envinfo';
 import options from './options';
 import WebpackCLI from 'webpack-cli';
 
-
 interface Information {
     Binaries?: string[];
     Browsers?: string[];
@@ -33,7 +32,7 @@ const DEFAULT_DETAILS: Information = {
 
 export default async function info(...args): Promise<string[]> {
     const cli = new WebpackCLI();
-    const infoArgs = cli.commandLineArgs(options, {argv: args, stopAtFirstUnknown: false});
+    const infoArgs = cli.commandLineArgs(options, { argv: args, stopAtFirstUnknown: false });
     const envinfoConfig = {};
 
     if (infoArgs._unknown && infoArgs._unknown.length > 0) {
@@ -42,13 +41,13 @@ export default async function info(...args): Promise<string[]> {
 
     if (infoArgs.output) {
         // Remove quotes if exist
-        const output = infoArgs.output.replace(/['"]+/g, "");
+        const output = infoArgs.output.replace(/['"]+/g, '');
         switch (output) {
-            case "markdown":
-                envinfoConfig["markdown"] = true;
+            case 'markdown':
+                envinfoConfig['markdown'] = true;
                 break;
-            case "json":
-                envinfoConfig["json"] = true;
+            case 'json':
+                envinfoConfig['json'] = true;
                 break;
             default:
                 process.stderr.write(`${chalk.red(infoArgs.output)} is not a valid value for output\n`);
@@ -56,8 +55,8 @@ export default async function info(...args): Promise<string[]> {
     }
 
     let output = await envinfo.run(DEFAULT_DETAILS, envinfoConfig);
-    output = output.replace(/npmPackages/g, "Packages");
-    output = output.replace(/npmGlobalPackages/g, "Global Packages");
+    output = output.replace(/npmPackages/g, 'Packages');
+    output = output.replace(/npmGlobalPackages/g, 'Global Packages');
 
     const finalOutput = output;
     process.stdout.write(finalOutput + '\n');

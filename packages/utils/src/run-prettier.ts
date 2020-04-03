@@ -1,6 +1,6 @@
-import chalk from "chalk";
-import fs from "fs";
-import prettier from "prettier";
+import chalk from 'chalk';
+import fs from 'fs';
+import prettier from 'prettier';
 
 /**
  *
@@ -13,31 +13,30 @@ import prettier from "prettier";
  */
 
 export function runPrettier(outputPath: string, source: string, cb?: Function): void {
-	function validateConfig(): void | Function {
-		let prettySource: string;
-		let error: object;
-		try {
-			prettySource = prettier.format(source, {
-				filepath: outputPath,
-				parser: "babel",
-				singleQuote: true,
-				tabWidth: 1,
-				useTabs: true
-			});
-		} catch (err) {
-			process.stdout.write(
-				`\n${chalk.yellow(
-					`WARNING: Could not apply prettier to ${outputPath}` +
-						" due validation error, but the file has been created\n"
-				)}`
-			);
-			prettySource = source;
-			error = err;
-		}
-		if (cb) {
-			return cb(error);
-		}
-		return fs.writeFileSync(outputPath, prettySource, "utf8");
-	}
-	return fs.writeFile(outputPath, source, "utf8", validateConfig);
+    function validateConfig(): void | Function {
+        let prettySource: string;
+        let error: object;
+        try {
+            prettySource = prettier.format(source, {
+                filepath: outputPath,
+                parser: 'babel',
+                singleQuote: true,
+                tabWidth: 1,
+                useTabs: true,
+            });
+        } catch (err) {
+            process.stdout.write(
+                `\n${chalk.yellow(
+                    `WARNING: Could not apply prettier to ${outputPath}` + ' due validation error, but the file has been created\n',
+                )}`,
+            );
+            prettySource = source;
+            error = err;
+        }
+        if (cb) {
+            return cb(error);
+        }
+        return fs.writeFileSync(outputPath, prettySource, 'utf8');
+    }
+    return fs.writeFile(outputPath, source, 'utf8', validateConfig);
 }

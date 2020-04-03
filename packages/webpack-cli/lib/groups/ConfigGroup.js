@@ -51,11 +51,7 @@ class ConfigGroup extends GroupHelper {
     }
 
     requireLoader(extension, path) {
-        try {
-            rechoir.prepare(extensions, path, process.cwd());
-        } catch (e) {
-            throw e;
-        }
+        rechoir.prepare(extensions, path, process.cwd());
     }
 
     requireConfig(configModule) {
