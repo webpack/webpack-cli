@@ -8,11 +8,6 @@ module.exports = {
         es6: true,
         jest: true,
     },
-    settings: {
-        node: {
-            tryExtensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
-        },
-    },
     rules: {
         quotes: ['error', 'single', { avoidEscape: true, allowTemplateLiterals: false }],
         'no-process-exit': 'off',
@@ -23,6 +18,11 @@ module.exports = {
     },
     overrides: [
         {
+            settings: {
+                node: {
+                    tryExtensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
+                },
+            },
             files: ['**/*.ts'],
             extends: [
                 'plugin:@typescript-eslint/eslint-recommended',
