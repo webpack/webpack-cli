@@ -12,13 +12,13 @@ on:
 
 jobs:
   lint:
-    name: Lint - ${{ matrix.os }} - Node v${{ matrix.node }}
+    name: Lint - ${{ matrix.os }} - Node v${{ matrix.node-version }}
 
     runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
-        node: [12]
+        node-version: [12]
         os: [ubuntu-latest]
 
     steps:
