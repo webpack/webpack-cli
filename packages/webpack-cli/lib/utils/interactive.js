@@ -4,17 +4,17 @@ const ansiEscapes = require('ansi-escapes');
 const readline = require('readline');
 
 let isSub = false;
-const generateSingleOption = option => {
+const generateSingleOption = (option) => {
     const { key, description } = option;
     const optionString = chalk.gray('> Press') + ` ${chalk.bold.white(key)} ` + chalk.gray(`${description}\n`);
     return optionString;
 };
-const generateConfigDescription = config => {
+const generateConfigDescription = (config) => {
     let configDescString = '\n';
     const headerString = chalk.bold.white('Interactive Usage');
     configDescString += headerString;
     configDescString += '\n';
-    Object.keys(config).forEach(option => {
+    Object.keys(config).forEach((option) => {
         configDescString += generateSingleOption(config[option]);
     });
     configDescString += '\n';
@@ -49,10 +49,10 @@ const writeFilterConsole = () => {
         }
         console.clear();
         const orangeline = chalk.keyword('orange');
-        data.forEach(chunk => {
-            Object.keys(chunk).forEach(mod => {
+        data.forEach((chunk) => {
+            Object.keys(chunk).forEach((mod) => {
                 console.log(chalk.bold.cyan(mod));
-                chunk[mod].forEach(sub => {
+                chunk[mod].forEach((sub) => {
                     console.log('> ', orangeline(sub.path));
                 });
             });
@@ -97,7 +97,7 @@ const ENTER_KEY = '\n';
 const B_KEY = 'b';
 const C_KEY = 'c';
 
-module.exports = async function(config, outputOptions, processingMessageBuffer) {
+module.exports = async function (config, outputOptions, processingMessageBuffer) {
     const stdin = process.stdin;
     stdin.setEncoding('utf-8');
     stdin.setRawMode(true);
@@ -112,7 +112,7 @@ module.exports = async function(config, outputOptions, processingMessageBuffer) 
     state.push(webpackCompilation);
     setupInteractive();
 
-    const isExitCtrl = key => key.ctrl && key.name === 'c';
+    const isExitCtrl = (key) => key.ctrl && key.name === 'c';
 
     stdin.on('keypress', (str, key) => {
         stdin.setRawMode(true);
@@ -135,7 +135,7 @@ module.exports = async function(config, outputOptions, processingMessageBuffer) 
         }
     });
 
-    stdin.on('data', async function(data) {
+    stdin.on('data', async function (data) {
         if (isSub === true) {
             console.log(data, 'yo');
             return;

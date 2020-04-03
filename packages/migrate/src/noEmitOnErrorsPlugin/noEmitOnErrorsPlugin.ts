@@ -10,7 +10,7 @@ import { JSCodeshift, Node } from '../types/NodePath';
  * @param {Node} ast - jscodeshift ast to transform
  * @returns {Node} ast - jscodeshift ast
  */
-export default function(j: JSCodeshift, ast: Node): Node {
+export default function (j: JSCodeshift, ast: Node): Node {
     // Remove old plugin
     const root: Node = findAndRemovePluginByName(j, ast, 'webpack.NoEmitOnErrorsPlugin');
 

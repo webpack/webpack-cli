@@ -31,7 +31,7 @@ function findInvocation(j: JSCodeshift, path: Node, pluginName: string): boolean
  * @returns {Node} ast - jscodeshift ast
  */
 
-export default function(j: JSCodeshift, ast: Node): void | Node {
+export default function (j: JSCodeshift, ast: Node): void | Node {
     const changeArguments = (path: Node): Node => {
         const args: Node[] = (path.value as Node).arguments;
 

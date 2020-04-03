@@ -5,12 +5,12 @@ function logErrorAndExit(error) {
     process.exit(1);
 }
 
-process.on('uncaughtException', error => {
+process.on('uncaughtException', (error) => {
     logger.error(`Uncaught exception: ${error}`);
     logErrorAndExit(error);
 });
 
-process.on('unhandledRejection', error => {
+process.on('unhandledRejection', (error) => {
     logger.error(`Promise rejection: ${error}`);
     logErrorAndExit(error);
 });

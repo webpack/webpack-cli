@@ -4,7 +4,7 @@
  * @param {string[]} rawArgs raw cli args
  * @returns {{cliArgs: string[], nodeArgs: string[]}} cli and nodejs args
  */
-module.exports = rawArgs => {
+module.exports = (rawArgs) => {
     const cliArgs = [];
     const nodeArgs = [];
     let isNodeArg = false;

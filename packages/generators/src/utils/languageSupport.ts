@@ -20,12 +20,7 @@ function updateEntryExt(self, newExt: string): void {
     self.configuration.config.webpackOptions.entry = tsEntryOption;
 }
 
-const getFolder = (path: string): string =>
-    path
-        .replace("'./", '')
-        .split('/')
-        .slice(0, -1)
-        .join('/');
+const getFolder = (path: string): string => path.replace("'./", '').split('/').slice(0, -1).join('/');
 
 function getEntryFolders(self): string[] {
     const entryOption = self.entryOption;

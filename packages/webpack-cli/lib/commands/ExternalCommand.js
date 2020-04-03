@@ -12,7 +12,7 @@ class ExternalCommand {
             shell: true,
         });
         return new Promise((resolve, reject) => {
-            executedCommand.on('error', error => {
+            executedCommand.on('error', (error) => {
                 reject(error);
             });
 

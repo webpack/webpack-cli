@@ -33,7 +33,7 @@
     "lint:prettier": "prettier --list-different . \"!**/*.{js,ts}\" ",
     "lint:eslint": "eslint --cache --ext .js --ext .ts .",
     "lint": "yarn lint:eslint && yarn lint:prettier",
-    "fix": "yarn lint:eslint -- --fix && yarn lint:prettier -- --write",
+    "fix": "yarn lint:eslint --fix && yarn lint:prettier --write",
     "pretest": "yarn build && yarn lint && yarn prepsuite",
     "test": "jest --reporters=default --reporters=jest-junit",
     "test:cli": "jest test/ --reporters=default --reporters=jest-junit --forceExit",

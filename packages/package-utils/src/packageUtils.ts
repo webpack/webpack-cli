@@ -51,10 +51,7 @@ export function getPathToGlobalPackages(): string {
     const manager: string = exports.getPackageManager();
     if (manager === 'yarn') {
         try {
-            const yarnDir = spawn
-                .sync('yarn', ['global', 'dir'])
-                .stdout.toString()
-                .trim();
+            const yarnDir = spawn.sync('yarn', ['global', 'dir']).stdout.toString().trim();
             return path.join(yarnDir, 'node_modules');
         } catch (e) {
             // Default to the global npm path below

@@ -3,7 +3,7 @@ import { join } from 'path';
 
 const dirName: string = join(__dirname);
 
-describe('resolve', function() {
+describe('resolve', function () {
     {
         defineTest(dirName, 'resolve');
     }

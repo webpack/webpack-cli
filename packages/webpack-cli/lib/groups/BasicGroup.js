@@ -5,7 +5,7 @@ class BasicGroup extends GroupHelper {
     constructor(options) {
         super(options);
         this.WEBPACK_OPTION_FLAGS = core
-            .filter(coreFlag => {
+            .filter((coreFlag) => {
                 return coreFlag.group === groups.BASIC_GROUP;
             })
             .reduce((result, flagObject) => {
@@ -20,7 +20,7 @@ class BasicGroup extends GroupHelper {
         const { args } = this;
         if (!args) return;
         const { outputOptions, options } = this.opts;
-        Object.keys(args).forEach(arg => {
+        Object.keys(args).forEach((arg) => {
             if (this.WEBPACK_OPTION_FLAGS.includes(arg)) {
                 outputOptions[arg] = args[arg];
             }

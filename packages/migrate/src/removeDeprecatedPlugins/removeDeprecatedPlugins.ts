@@ -14,7 +14,7 @@ import { JSCodeshift, Node } from '../types/NodePath';
  * @returns {Node} ast - jscodeshift ast
  */
 
-export default function(j: JSCodeshift, ast: Node): Node {
+export default function (j: JSCodeshift, ast: Node): Node {
     // List of deprecated plugins to remove
     // each item refers to webpack.optimize.[NAME] construct
     const deprecatedPlugingsList: string[] = ['webpack.optimize.OccurrenceOrderPlugin', 'webpack.optimize.DedupePlugin'];

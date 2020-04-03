@@ -23,7 +23,7 @@ function spawnChild(pkg) {
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function getLoc(option) {
     const packageModule = [];
-    option.filter(pkg => {
+    option.filter((pkg) => {
         mockPromise(spawnChild(pkg)).then(() => {
             try {
                 const loc = path.join('..', '..', 'node_modules', pkg);

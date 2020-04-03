@@ -17,7 +17,7 @@ import { JSCodeshift, Node } from '../types/NodePath';
  * @returns {Node} ast - jscodeshift ast
  */
 
-export default function(j: JSCodeshift, ast: Node): Node {
+export default function (j: JSCodeshift, ast: Node): Node {
     let pluginVariableAssignment: string = null;
 
     const searchForRequirePlugin: Node = ast

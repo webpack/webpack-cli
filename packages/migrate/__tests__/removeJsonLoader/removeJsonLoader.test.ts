@@ -3,7 +3,7 @@ import { join } from 'path';
 
 const dirName: string = join(__dirname);
 
-describe('removeJsonLoader', function() {
+describe('removeJsonLoader', function () {
     {
         defineTest(dirName, 'removeJsonLoader', 'removeJsonLoader-0');
         defineTest(dirName, 'removeJsonLoader', 'removeJsonLoader-1');

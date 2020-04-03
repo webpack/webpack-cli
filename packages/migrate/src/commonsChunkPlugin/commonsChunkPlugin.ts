@@ -55,7 +55,7 @@ const mergeTestPropArrowFunction = (j, chunkKey, testFunc): any => {
  * @param {Node} ast - jscodeshift ast to transform
  * @returns {Node} ast - jscodeshift ast
  */
-export default function(j: JSCodeshift, ast: Node): Node {
+export default function (j: JSCodeshift, ast: Node): Node {
     const splitChunksProps: Node[] = [];
     const cacheGroupsProps: Node[] = [];
     const optimizationProps: object = {};

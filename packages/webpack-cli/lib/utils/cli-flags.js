@@ -231,7 +231,7 @@ module.exports = {
         {
             name: 'mode',
             usage: '--mode <development | production | none>',
-            type: value => {
+            type: (value) => {
                 if (value === 'development' || value === 'production' || value === 'none') {
                     return value;
                 } else {
@@ -269,7 +269,7 @@ module.exports = {
         {
             name: 'stats',
             usage: 'webpack --stats verbose',
-            type: value => {
+            type: (value) => {
                 if (StatsGroup.validOptions().includes(value)) {
                     return value;
                 }
