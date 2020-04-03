@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
     root: true,
     extends: ['eslint:recommended', 'plugin:node/recommended', 'plugin:prettier/recommended', 'prettier'],
@@ -7,6 +9,11 @@ module.exports = {
         node: true,
         es6: true,
         jest: true,
+    },
+    settings: {
+        node: {
+            resolvePaths: [path.resolve('./packages')],
+        },
     },
     rules: {
         quotes: ['error', 'single', { avoidEscape: true, allowTemplateLiterals: false }],
