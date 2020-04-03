@@ -18,7 +18,7 @@ describe('Info', () => {
             cwd: path.resolve(__dirname),
             reject: false,
         });
-        console.log(stdout);
+
         const testJSON = () => {
             const output = JSON.parse(stdout);
             expect(output['System']).toBeTruthy();
