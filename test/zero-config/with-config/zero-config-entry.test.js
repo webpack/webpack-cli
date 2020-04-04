@@ -9,7 +9,7 @@ describe('Zero Config', () => {
         // default entry should be used
         expect(stdout).toContain('./index.js');
         // should pick up the output path from config
-        expect(stdout).toContain('Entrypoint main = test-output\n./index.js');
+        expect(stdout).toContain('Entrypoint main = test-output');
         expect(stderr).toBeFalsy();
     });
 });
