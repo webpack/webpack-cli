@@ -254,6 +254,7 @@ module.exports = {
         {
             name: 'version',
             usage: '--version',
+            alias: 'v',
             type: Boolean,
             group: BASIC_GROUP,
             description: 'Get current version',
