@@ -3,7 +3,7 @@ import { join } from 'path';
 
 const dirName: string = join(__dirname);
 
-describe('noEmitOnErrorsPlugin', function() {
+describe('noEmitOnErrorsPlugin', function () {
     {
         defineTest(dirName, 'noEmitOnErrorsPlugin', 'noEmitOnErrorsPlugin-0');
         defineTest(dirName, 'noEmitOnErrorsPlugin', 'noEmitOnErrorsPlugin-1');

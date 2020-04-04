@@ -1,4 +1,4 @@
-import path from "path";
+import path from 'path';
 
 /**
  * Takes in a file path in the `./templates` directory. Copies that
@@ -8,18 +8,13 @@ import path from "path";
  * @param {string} templateDir Absolute path to template directory
  * @returns {Function} A curried function that takes a file path and copies it
  */
-export const generatorCopy = (generator, templateDir: string): ((filePath: string) => void) => (
-	filePath: string
-): void => {
-	const sourceParts = templateDir.split(path.delimiter);
-	sourceParts.push(...filePath.split("/"));
-	const targetParts = path.dirname(filePath).split("/");
-	targetParts.push(path.basename(filePath, ".tpl"));
+export const generatorCopy = (generator, templateDir: string): ((filePath: string) => void) => (filePath: string): void => {
+    const sourceParts = templateDir.split(path.delimiter);
+    sourceParts.push(...filePath.split('/'));
+    const targetParts = path.dirname(filePath).split('/');
+    targetParts.push(path.basename(filePath, '.tpl'));
 
-	generator.fs.copy(
-		path.join(...sourceParts),
-		generator.destinationPath(path.join.apply(null, targetParts))
-	);
+    generator.fs.copy(path.join(...sourceParts), generator.destinationPath(path.join.apply(null, targetParts)));
 };
 
 /**
@@ -33,19 +28,13 @@ export const generatorCopy = (generator, templateDir: string): ((filePath: strin
  * the template files.
  * @returns {Function} A curried function that takes a file path and copies it
  */
-export const generatorCopyTpl = (
-	generator,
-	templateDir: string,
-	templateData: object
-): ((filePath: string) => void) => (filePath: string): void => {
-	const sourceParts = templateDir.split(path.delimiter);
-	sourceParts.push(...filePath.split("/"));
-	const targetParts = path.dirname(filePath).split("/");
-	targetParts.push(path.basename(filePath, ".tpl").slice(1));
+export const generatorCopyTpl = (generator, templateDir: string, templateData: object): ((filePath: string) => void) => (
+    filePath: string,
+): void => {
+    const sourceParts = templateDir.split(path.delimiter);
+    sourceParts.push(...filePath.split('/'));
+    const targetParts = path.dirname(filePath).split('/');
+    targetParts.push(path.basename(filePath, '.tpl').slice(1));
 
-	generator.fs.copyTpl(
-		path.join(...sourceParts),
-		generator.destinationPath(path.join.apply(null, targetParts)),
-		templateData
-	);
+    generator.fs.copyTpl(path.join(...sourceParts), generator.destinationPath(path.join.apply(null, targetParts)), templateData);
 };

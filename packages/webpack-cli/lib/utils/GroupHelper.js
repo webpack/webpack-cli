@@ -16,7 +16,7 @@ class GroupHelper {
         if (!name) {
             return name;
         }
-        return name.replace(/-([a-z])/g, function(g) {
+        return name.replace(/-([a-z])/g, function (g) {
             return g[1].toUpperCase();
         });
     }
@@ -25,7 +25,7 @@ class GroupHelper {
         if (!arr) {
             return;
         }
-        return arr.reduce((result, currentItem, index) => {
+        return arr.reduce((result, currentItem) => {
             const key = Object.keys(currentItem)[0];
             result[this.hyphenToUpperCase(key)] = currentItem[key];
             return result;
@@ -72,7 +72,7 @@ class GroupHelper {
 
     resolveFilePath(filename = '', defaultValue) {
         if (filename && Array.isArray(filename)) {
-            return filename.map(fp => this.resolveFilePath(fp, defaultValue)).filter(e => e);
+            return filename.map((fp) => this.resolveFilePath(fp, defaultValue)).filter((e) => e);
         }
         if (filename && !filename.includes('.js')) {
             filename = filename + '.js';
@@ -89,7 +89,7 @@ class GroupHelper {
             if (filename) {
                 LOOKUP_PATHS.unshift(filename);
             }
-            LOOKUP_PATHS.forEach(p => {
+            LOOKUP_PATHS.forEach((p) => {
                 const lookUpPath = join(process.cwd(), ...p.split('/'));
                 if (existsSync(lookUpPath) && !configPath) {
                     configPath = lookUpPath;

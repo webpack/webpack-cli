@@ -12,14 +12,15 @@ on:
 
 jobs:
   lint:
-    name: Lint - ${{ matrix.os }} - Node v${{ matrix.node }}
+    name: Lint - ${{ matrix.os }} - Node v${{ matrix.node-version }}
 
     runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
-        node: [12]
         os: [ubuntu-latest]
+        node-version: [12.x]
+        webpack-version: [latest]
 
     steps:
       - uses: actions/checkout@v2
@@ -28,10 +29,17 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+
       - name: Install dependencies
         run: |
           yarn
           yarn bootstrap
+
+      - name: Install webpack ${{ matrix.webpack-version }}
+        run: yarn add -W webpack@${{ matrix.webpack-version }}
+
+      - name: Build
+        run: yarn build
 
       - name: Lint
         run: yarn lint
@@ -60,10 +68,14 @@ jobs:
           yarn
           yarn bootstrap
 
+      - name: Install webpack ${{ matrix.webpack-version }}
+        run: yarn add -W webpack@${{ matrix.webpack-version }}
+
+      - name: Build
+        run: yarn build
+
       - name: Run tests for webpack version ${{ matrix.webpack-version }}
         run: |
-          yarn add -W webpack@${{ matrix.webpack-version }}
-          yarn build
           yarn prepsuite
           yarn test:ci
         env:

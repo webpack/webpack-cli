@@ -1,7 +1,7 @@
 'use strict';
 
 const { run } = require('../utils/test-utils');
-const pkgJSON = require('../../package.json');
+const pkgJSON = require('../../packages/webpack-cli/package.json');
 
 describe('version flag with multiple arguments', () => {
     it('outputs version with mixed syntax', () => {

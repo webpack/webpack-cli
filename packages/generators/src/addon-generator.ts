@@ -1,7 +1,7 @@
 import mkdirp from 'mkdirp';
 import path from 'path';
 import Generator from 'yeoman-generator';
-import { getPackageManager } from "@webpack-cli/package-utils";
+import { getPackageManager } from '@webpack-cli/package-utils';
 import { generatorCopy, generatorCopyTpl } from '@webpack-cli/utils';
 
 /**
@@ -60,27 +60,28 @@ const addonGenerator = (
             }
         }
 
-		public writing(): void {
-			const packageJsonTemplatePath = "../templates/addon-package.json.js";
-            this.fs.extendJSON(this.destinationPath("package.json"), require(packageJsonTemplatePath)(this.props.name));
+        public writing(): void {
+            const packageJsonTemplatePath = '../templates/addon-package.json.js';
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
+            this.fs.extendJSON(this.destinationPath('package.json'), require(packageJsonTemplatePath)(this.props.name));
 
-			this.copy = generatorCopy(this, templateDir);
+            this.copy = generatorCopy(this, templateDir);
             this.copyTpl = generatorCopyTpl(this, templateDir, templateFn(this));
 
             copyFiles.forEach(this.copy);
             copyTemplateFiles.forEach(this.copyTpl);
-		}
+        }
 
-		public install(): void {
+        public install(): void {
             const packager = getPackageManager();
             const opts: {
                 dev?: boolean;
-                "save-dev"?: boolean;
-            } = packager === "yarn" ? { dev: true } : { "save-dev": true };
+                'save-dev'?: boolean;
+            } = packager === 'yarn' ? { dev: true } : { 'save-dev': true };
 
-		    this.scheduleInstallTask(packager, ['webpack-defaults', 'bluebird'], opts);
+            this.scheduleInstallTask(packager, ['webpack-defaults', 'bluebird'], opts);
         }
-	};
+    };
 };
 
 export default addonGenerator;

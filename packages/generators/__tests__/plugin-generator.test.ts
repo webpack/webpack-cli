@@ -17,13 +17,13 @@ describe('plugin generator', () => {
 
         // Check that files in all folders are scaffolded. Checking them separately so we know which directory has the problem
         // assert for src files
-        assert.file(srcFiles.map(file => join(pluginDir, 'src', file)));
+        assert.file(srcFiles.map((file) => join(pluginDir, 'src', file)));
 
         // assert for test files
-        assert.file(testFiles.map(file => join(pluginDir, 'test', file)));
+        assert.file(testFiles.map((file) => join(pluginDir, 'test', file)));
 
         // assert for example files
-        assert.file(exampleFiles.map(file => join(pluginDir, 'examples/simple', file)));
+        assert.file(exampleFiles.map((file) => join(pluginDir, 'examples/simple', file)));
 
         // Check the contents of the webpack config and loader file
         assert.fileContent([

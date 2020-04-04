@@ -1,5 +1,5 @@
 module.exports = () => {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
         setTimeout(() => {
             resolve({
                 entry: './a',

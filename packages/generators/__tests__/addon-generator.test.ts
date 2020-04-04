@@ -6,7 +6,7 @@ import fs from 'fs';
 import path from 'path';
 import mkdirp from 'mkdirp';
 import rimraf from 'rimraf';
-import { getPackageManager } from "@webpack-cli/package-utils";
+import { getPackageManager } from '@webpack-cli/package-utils';
 import addonGenerator from '../src/addon-generator';
 
 describe('addon generator', () => {
@@ -59,14 +59,14 @@ describe('addon generator', () => {
 
     it('schedules install using yarn', () => {
         packageMock.mockReturnValue('yarn');
-        
+
         gen.install();
         expect(installMock.mock.calls.length).toEqual(1);
         expect(installMock.mock.calls[0]).toEqual([
             'yarn',
             ['webpack-defaults', 'bluebird'],
             {
-                'dev': true,
+                dev: true,
             },
         ]);
     });
@@ -76,7 +76,7 @@ describe('addon generator', () => {
         gen.default();
         expect(fs.existsSync(genPath)).toBeTruthy();
         expect(fs.existsSync(doubleGenPath)).toBeFalsy();
-        
+
         // this needs to happen before the next test so that the
         // working directory is changed before we create the new
         // generator above

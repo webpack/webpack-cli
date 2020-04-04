@@ -30,10 +30,10 @@
     "watch": "tsc --build --watch",
     "prepsuite": "node scripts/prepareSuite.js",
     "commit": "git-cz",
-    "docs": "typedoc",
-    "format": "eslint --fix . --ext .js,.ts",
-    "lint": "eslint . --ext .js,.ts",
-    "lint:fix": "eslint . --ext .js,.ts --fix",
+    "lint:prettier": "prettier --list-different . \"!**/*.{js,ts}\" ",
+    "lint:eslint": "eslint --cache --ext .js --ext .ts .",
+    "lint": "yarn lint:eslint && yarn lint:prettier",
+    "fix": "yarn lint:eslint --fix && yarn lint:prettier --write",
     "pretest": "yarn build && yarn lint && yarn prepsuite",
     "test": "jest --reporters=default --reporters=jest-junit",
     "test:cli": "jest test/ --reporters=default --reporters=jest-junit --forceExit",
@@ -42,30 +42,6 @@
     "test:watch": "jest test/ packages/ --watch",
     "test:smoke": "smoketests/smoketests.sh",
     "publish:monorepo": "yarn format && yarn test && yarn build && lerna publish -m \"chore: monorepo version update\""
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
-  "lint-staged": {
-    "*.md": [
-      "prettier --parser markdown --write",
-      "git add"
-    ],
-    "{packages,lib}/**/!(__testfixtures__)/**.js": [
-      "eslint --fix",
-      "git add"
-    ],
-    "*.ts": [
-      "yarn format",
-      "git add"
-    ],
-    "*.js": [
-      "yarn format",
-      "git add"
-    ]
   },
   "standard-version": {
     "types": [
@@ -124,7 +100,7 @@
     "@types/jest": "^25.1.4",
     "@types/node": "13.9.8",
     "@typescript-eslint/eslint-plugin": "^2.24.0",
-    "@typescript-eslint/parser": "^2.24.0",
+    "@typescript-eslint/parser": "^2.26.0",
     "chalk": "^3.0.0",
     "commitlint": "^8.3.5",
     "commitlint-config-cz": "^0.13.0",
@@ -144,11 +120,10 @@
     "jest-watch-typeahead": "^0.4.2",
     "lerna": "^3.20.2",
     "lint-staged": "^10.0.8",
-    "prettier": "1.19.1",
+    "prettier": "^2.0.2",
     "readable-stream": "^3.6.0",
     "rimraf": "^3.0.2",
-    "ts-jest": "^25.2.1",
-    "typedoc": "^0.17.0",
+    "ts-jest": "^25.3.0",
     "typescript": "^3.8.3",
     "webpack": "^4.42.0",
     "yeoman-test": "^2.3.0"

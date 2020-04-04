@@ -21,21 +21,21 @@ describe('entry', () => {
         InputMock.mockReturnValue({
             singularEntry: 'path/to/index',
         });
-        expect(await entry(null, false, null)).toEqual('\'./path/to/index.js\'');
+        expect(await entry(null, false, null)).toEqual("'./path/to/index.js'");
     });
 
     it('handles single entry path with js extension', async () => {
         InputMock.mockReturnValue({
             singularEntry: 'path/to/index.js',
         });
-        expect(await entry(null, false, null)).toEqual('\'./path/to/index.js\'');
+        expect(await entry(null, false, null)).toEqual("'./path/to/index.js'");
     });
 
     it('handles single entry relative path', async () => {
         InputMock.mockReturnValue({
             singularEntry: './path/to/index',
         });
-        expect(await entry(null, false, null)).toEqual('\'./path/to/index.js\'');
+        expect(await entry(null, false, null)).toEqual("'./path/to/index.js'");
     });
 
     it('handles multiple entry paths', async () => {
@@ -57,8 +57,8 @@ describe('entry', () => {
             }
         });
         expect(await entry(null, true, null)).toEqual({
-            test1: '\'./src/test1.js\'',
-            test2: '\'./src/test2.js\'',
+            test1: "'./src/test1.js'",
+            test2: "'./src/test2.js'",
         });
     });
 
@@ -81,8 +81,8 @@ describe('entry', () => {
             }
         });
         expect(await entry(null, true, null)).toEqual({
-            test1: '\'./path/to/test1.js\'',
-            test2: '\'./src/test2.js\'',
+            test1: "'./path/to/test1.js'",
+            test2: "'./src/test2.js'",
         });
     });
 });

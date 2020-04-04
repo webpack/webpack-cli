@@ -1,0 +1,6 @@
+coverage
+node_modules
+test/**/dist/
+test/**/bin/
+test/**/binary/
+test/**/index.js

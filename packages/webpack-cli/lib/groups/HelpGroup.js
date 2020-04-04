@@ -6,7 +6,7 @@ class HelpGroup {
         if (subject) {
             const info = isCommand ? require('../utils/cli-flags').commands : require('../utils/cli-flags').core;
             // Contains object with details about given subject
-            const options = info.find(commandOrFlag => {
+            const options = info.find((commandOrFlag) => {
                 if (isCommand) {
                     return commandOrFlag.name == subject || commandOrFlag.alias == subject;
                 }
@@ -14,7 +14,7 @@ class HelpGroup {
             });
 
             const { bold, underline } = chalk.white;
-            const header = head => bold(underline(head));
+            const header = (head) => bold(underline(head));
             const usage = chalk.keyword('orange')('webpack ' + options.usage);
             const description = options.description;
             const link = options.link;
@@ -40,7 +40,7 @@ class HelpGroup {
     }
 
     outputVersion() {
-        const pkgJSON = require('../../../../package.json');
+        const pkgJSON = require('../../package.json');
         const webpack = require('webpack');
         process.stdout.write(`\nwebpack-cli ${pkgJSON.version}`);
         process.stdout.write(`\nwebpack ${webpack.version}\n`);
@@ -48,7 +48,7 @@ class HelpGroup {
 
     run() {
         const { underline, bold } = chalk.white;
-        const o = s => chalk.keyword('orange')(s);
+        const o = (s) => chalk.keyword('orange')(s);
         const options = require('../utils/cli-flags');
         const title = bold('⬡                     ') + underline('webpack') + bold('                     ⬡');
         const desc = 'The build tool for modern web applications';
@@ -70,7 +70,7 @@ class HelpGroup {
             },
             {
                 header: 'Available Commands',
-                content: options.commands.map(e => {
+                content: options.commands.map((e) => {
                     return { name: e.name, summary: e.description };
                 }),
             },
