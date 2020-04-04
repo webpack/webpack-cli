@@ -7,7 +7,7 @@ describe('Zero Config', () => {
         // Should find the entry file, thus not throw the below warning
         expect(stdout).not.toContain("Module not found: Error: Can't resolve './src'");
         // default entry should be used
-        expect(stdout).toContain('./index.js 22 bytes [built]');
+        expect(stdout).toContain('./index.js');
         // should pick up the output path from config
         expect(stdout).toContain('Entrypoint main = test-output\n./index.js');
         expect(stderr).toBeFalsy();
