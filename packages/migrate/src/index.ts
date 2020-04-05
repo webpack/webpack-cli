@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import diff from 'diff';
+import { Change, diffLines } from 'diff';
 import fs from 'fs';
 import inquirer from 'inquirer';
 import Listr from 'listr';
@@ -90,9 +90,9 @@ function runMigration(currentConfigPath: string, outputConfigPath: string): Prom
         .run()
         .then((ctx: Node): void | Promise<void> => {
             const result: string = ctx.ast.toSource(recastOptions);
-            const diffOutput: diff.Change[] = diff.diffLines(ctx.source, result);
+            const diffOutput: Change[] = diffLines(ctx.source, result);
 
-            diffOutput.forEach((diffLine: diff.Change): void => {
+            diffOutput.forEach((diffLine: Change): void => {
                 if (diffLine.added) {
                     process.stdout.write(chalk.green(`+ ${diffLine.value}`));
                 } else if (diffLine.removed) {
