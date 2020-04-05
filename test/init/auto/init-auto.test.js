@@ -22,7 +22,8 @@ describe('init auto flag', () => {
 
         // Test regressively files are scaffolded
         const files = ['./sw.js', './package.json', './yarn.lock', './src/index.js'];
-        files.forEach(function(file) {
+        // eslint-disable-next-line prettier/prettier
+        files.forEach((file) => {
             expect(fs.existsSync(join(__dirname, file))).toBeTruthy();
         });
     });
