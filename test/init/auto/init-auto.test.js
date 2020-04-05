@@ -22,7 +22,7 @@ describe('init auto flag', () => {
 
         // Test regressively files are scaffolded
         const files = ['./sw.js', './package.json', './yarn.lock', './src/index.js'];
-        files.forEach(file => {
+        files.forEach(function(file) {
             expect(fs.existsSync(join(__dirname, file))).toBeTruthy();
         });
     });
