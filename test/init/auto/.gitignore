@@ -1,0 +1,4 @@
+# ignore the test files
+*
+!init-auto.test.js
+!.gitignore
