@@ -1,4 +1,4 @@
-# ignore the test files
+# ignore the scaffolded files
 *
 !init-auto.test.js
 !.gitignore
