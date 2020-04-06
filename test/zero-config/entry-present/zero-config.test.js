@@ -1,3 +1,5 @@
+const fs = require('fs');
+const path = require('path');
 const { run } = require('../../utils/test-utils');
 
 describe('Zero Config tests', () => {
@@ -7,6 +9,8 @@ describe('Zero Config tests', () => {
         expect(stdout).toContain('./src/index.js');
         // Should output at the default output dir and filename
         expect(stdout).toContain('Entrypoint main = main.js');
+        // check that the output file exists
+        expect(fs.existsSync(path.join(__dirname, '/dist/main.js'))).toBeTruthy();
         expect(stderr).toBeFalsy();
     });
 });
