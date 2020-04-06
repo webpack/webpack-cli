@@ -1,10 +1,11 @@
 const chalk = require('chalk');
+const { core, commands } = require('../utils/cli-flags');
 const commandLineUsage = require('command-line-usage');
 
 class HelpGroup {
     outputHelp(isCommand = true, subject) {
         if (subject) {
-            const info = isCommand ? require('../utils/cli-flags').commands : require('../utils/cli-flags').core;
+            const info = isCommand ? commands : core;
             // Contains object with details about given subject
             const options = info.find((commandOrFlag) => {
                 if (isCommand) {
@@ -39,7 +40,24 @@ class HelpGroup {
         process.stdout.write('\n                  Made with ♥️  by the webpack team \n');
     }
 
-    outputVersion() {
+    outputVersion(args) {
+        const [, , ...rawArgs] = args;
+        for (const value of rawArgs) {
+            if (!value.includes('-') && value !== 'version') {
+                try {
+                    if (commands.filter((cmd) => cmd.name === value)) {
+                        const { name, version } = require(`@webpack-cli/${value}/package.json`);
+                        process.stdout.write(`\n${name} ${version}`);
+                    } else {
+                        const { name, version } = require(`${value}/package.json`);
+                        process.stdout.write(`\n${name} ${version}`);
+                    }
+                } catch (e) {
+                    console.error(chalk.red('\nError: External package not found.'));
+                    process.exitCode = -1;
+                }
+            }
+        }
         const pkgJSON = require('../../package.json');
         const webpack = require('webpack');
         process.stdout.write(`\nwebpack-cli ${pkgJSON.version}`);
