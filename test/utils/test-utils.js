@@ -67,7 +67,7 @@ function runWatch({ testCase, args = [], setOutput = true, outputKillStr = 'Time
     });
 }
 
-function runAndGetWatchProc(testCase, args = [], setOutput = true) {
+function runAndGetWatchProc(testCase, args = [], setOutput = true, input = '') {
     const cwd = path.resolve(testCase);
 
     const outputPath = path.resolve(testCase, 'bin');
@@ -75,6 +75,7 @@ function runAndGetWatchProc(testCase, args = [], setOutput = true) {
 
     const webpackProc = execa(WEBPACK_PATH, argsWithOutput, {
         cwd,
+        input,
         reject: false,
         stdio: ENABLE_LOG_COMPILATION ? 'inherit' : 'pipe',
     });
