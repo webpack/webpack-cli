@@ -41,5 +41,4 @@ npm install webpack-cli @webpack-cli/<package>
 
 ---
 
-[Back to webpack-cli](./..)
-//https://github.com/webpack/webpack-cli/tree/master/packages/webpack-scaffold
+[Back to webpack-cli](https://github.com/webpack/webpack-cli)
