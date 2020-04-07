@@ -3,7 +3,7 @@ import { isIdentifierStart, isIdentifierChar, isKeyword } from './validate-ident
 
 function isImportPresent(j: JSCodeshift, ast: Node, path: string): boolean {
     if (typeof path !== 'string') {
-        throw new Error(`path parameter should be string, recieved ${typeof path}`);
+        throw new Error(`path parameter should be string, received ${typeof path}`);
     }
     let importExists = false;
     ast.find(j.CallExpression).forEach((callExp: Node): void => {
@@ -305,9 +305,7 @@ function createOrUpdatePluginByName(j: JSCodeshift, rootNodePath: Node, pluginNa
                 if (args.length) {
                     // Plugin is called with object as arguments
                     // we will merge those objects
-                    const currentProps: Node = j(path)
-                        .find(j.ObjectExpression)
-                        .get('properties');
+                    const currentProps: Node = j(path).find(j.ObjectExpression).get('properties');
 
                     optionsProps.forEach((opt: Node): void => {
                         // Search for same keys in the existing object
@@ -599,11 +597,11 @@ function parseMerge(j: JSCodeshift, ast: Node, value: string[], action: string):
 
     function addMergeImports(configIdentifier: string, configPath: string): void {
         if (typeof configIdentifier !== 'string' || typeof configPath !== 'string') {
-            throw new Error(`Both parameters should be strings. recieved ${typeof configIdentifier}, ${typeof configPath}`);
+            throw new Error(`Both parameters should be strings. received ${typeof configIdentifier}, ${typeof configPath}`);
         }
         ast.find(j.Program).forEach((p: Node): void => {
             if (!isImportPresent(j, ast, 'webpack-merge')) {
-                (p.value as Node).body.splice(-1, 0, `const merge = require('webpack-merge')`);
+                (p.value as Node).body.splice(-1, 0, "const merge = require('webpack-merge')");
             }
 
             if (!isImportPresent(j, ast, configPath)) {

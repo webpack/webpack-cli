@@ -7,20 +7,20 @@ require('./utils/process-log');
 
 process.title = 'webpack-cli';
 
-const isFlagPresent = (args, flag) => args.find(arg => [flag, `--${flag}`].includes(arg));
+const isFlagPresent = (args, flag) => args.find((arg) => [flag, `--${flag}`].includes(arg));
 const isArgCommandName = (arg, cmd) => arg === cmd.name || arg === cmd.alias;
-const removeCmdFromArgs = (args, cmd) => args.filter(arg => !isArgCommandName(arg, cmd));
+const removeCmdFromArgs = (args, cmd) => args.filter((arg) => !isArgCommandName(arg, cmd));
 const normalizeFlags = (args, cmd) => {
     const slicedArgs = args.slice(2);
     return removeCmdFromArgs(slicedArgs, cmd);
 };
 
-const isCommandUsed = commands =>
-    commands.find(cmd => {
+const isCommandUsed = (commands) =>
+    commands.find((cmd) => {
         return process.argv.includes(cmd.name) || process.argv.includes(cmd.alias);
     });
 
-const resolveNegatedArgs = args => {
+const resolveNegatedArgs = (args) => {
     args._unknown.forEach((arg, idx) => {
         if (arg.includes('--') || arg.includes('--no')) {
             const argPair = arg.split('=');
@@ -32,7 +32,7 @@ const resolveNegatedArgs = args => {
             } else if (argValue === 'true') {
                 argValue = true;
             }
-            const cliFlag = core.find(opt => opt.name === optName);
+            const cliFlag = core.find((opt) => opt.name === optName);
             if (cliFlag) {
                 args[cliFlag.group][optName] = argValue;
                 args._all[optName] = argValue;
@@ -45,7 +45,7 @@ const resolveNegatedArgs = args => {
 async function runCLI(cli, commandIsUsed) {
     let args;
     const helpFlagExists = isFlagPresent(process.argv, 'help');
-    const versionFlagExists = isFlagPresent(process.argv, 'version');
+    const versionFlagExists = isFlagPresent(process.argv, 'version') || isFlagPresent(process.argv, '-v');
 
     if (helpFlagExists) {
         cli.runHelp(process.argv);
@@ -65,12 +65,12 @@ async function runCLI(cli, commandIsUsed) {
             if (args._unknown) {
                 resolveNegatedArgs(args);
                 args._unknown
-                    .filter(e => e)
-                    .forEach(unknown => {
+                    .filter((e) => e)
+                    .forEach((unknown) => {
                         logger.warn('Unknown argument:', unknown);
                     });
-                    cliExecuter();
-                    return;
+                cliExecuter();
+                return;
             }
             const result = await cli.run(args, core);
             if (!result) {
@@ -89,14 +89,14 @@ async function runCLI(cli, commandIsUsed) {
                         value: process.argv[idx],
                         pos: idx,
                     };
-                    // Swap idx of overriden value
+                    // Swap idx of overridden value
                     if (oldMapValue) {
                         argsMap[arg].pos = oldMapValue.pos;
                         keysToDelete.push(idx + 1);
                     }
                 });
-                // Filter out the value for the overriden key
-                const newArgKeys = Object.keys(argsMap).filter(arg => !keysToDelete.includes(argsMap[arg].pos));
+                // Filter out the value for the overridden key
+                const newArgKeys = Object.keys(argsMap).filter((arg) => !keysToDelete.includes(argsMap[arg].pos));
                 // eslint-disable-next-line require-atomic-updates
                 process.argv = newArgKeys;
                 args = cli.commandLineArgs(core, { stopAtFirstUnknown: false, partial: true });

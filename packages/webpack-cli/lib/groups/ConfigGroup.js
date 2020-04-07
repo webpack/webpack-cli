@@ -19,8 +19,8 @@ const fileTypes = {
 };
 
 const getDefaultConfigFiles = () => {
-    return DEFAULT_CONFIG_LOC.map(filename => {
-        return Object.keys(extensions).map(ext => {
+    return DEFAULT_CONFIG_LOC.map((filename) => {
+        return Object.keys(extensions).map((ext) => {
             return {
                 path: resolve(filename + ext),
                 ext: ext,
@@ -30,19 +30,19 @@ const getDefaultConfigFiles = () => {
     }).reduce((a, i) => a.concat(i), []);
 };
 
-const getConfigInfoFromFileName = filename => {
+const getConfigInfoFromFileName = (filename) => {
     const fileMetaData = parse(filename);
     return Object.keys(extensions)
-        .filter(ext => ext.includes(fileMetaData.ext))
-        .filter(ext => fileMetaData.base.substr(fileMetaData.base.length - ext.length) === ext)
-        .map(ext => {
+        .filter((ext) => ext.includes(fileMetaData.ext))
+        .filter((ext) => fileMetaData.base.substr(fileMetaData.base.length - ext.length) === ext)
+        .map((ext) => {
             return {
                 path: resolve(filename),
                 ext: ext,
                 module: extensions[ext],
             };
         })
-        .filter(e => existsSync(e.path));
+        .filter((e) => existsSync(e.path));
 };
 
 class ConfigGroup extends GroupHelper {
@@ -51,15 +51,11 @@ class ConfigGroup extends GroupHelper {
     }
 
     requireLoader(extension, path) {
-        try {
-            rechoir.prepare(extensions, path, process.cwd());
-        } catch (e) {
-            throw e;
-        }
+        rechoir.prepare(extensions, path, process.cwd());
     }
 
     requireConfig(configModule) {
-        const extension = Object.keys(fileTypes).find(t => configModule.ext.endsWith(t));
+        const extension = Object.keys(fileTypes).find((t) => configModule.ext.endsWith(t));
 
         if (extension) {
             this.requireLoader(extension, configModule.path);
@@ -102,12 +98,9 @@ class ConfigGroup extends GroupHelper {
 
         if (configOptions && configPath.includes('.webpack')) {
             const currentPath = configPath;
-            const parentContext = dirname(currentPath)
-                .split(sep)
-                .slice(0, -1)
-                .join('/');
+            const parentContext = dirname(currentPath).split(sep).slice(0, -1).join(sep);
             if (Array.isArray(configOptions)) {
-                configOptions.forEach(config => {
+                configOptions.forEach((config) => {
                     config.context = config.context || parentContext;
                 });
             } else {
@@ -138,15 +131,15 @@ class ConfigGroup extends GroupHelper {
         }
 
         const defaultConfigFiles = getDefaultConfigFiles();
-        const tmpConfigFiles = defaultConfigFiles.filter(file => {
+        const tmpConfigFiles = defaultConfigFiles.filter((file) => {
             return existsSync(file.path);
         });
 
         const configFiles = tmpConfigFiles.map(this.requireConfig.bind(this));
         if (configFiles.length) {
-            const defaultConfig = configFiles.find(p => p.path.includes(mode));
+            const defaultConfig = configFiles.find((p) => p.path.includes(mode));
             if (defaultConfig) {
-                const envConfig = defaultConfig.map(c => c.content);
+                const envConfig = defaultConfig.map((c) => c.content);
                 this.opts = this.finalize(envConfig);
                 return;
             }
@@ -158,7 +151,7 @@ class ConfigGroup extends GroupHelper {
 
     resolveConfigMerging() {
         // eslint-disable-next-line no-prototype-builtins
-        if (Object.keys(this.args).some(arg => arg === 'merge')) {
+        if (Object.keys(this.args).some((arg) => arg === 'merge')) {
             const { merge } = this.args;
 
             const newConfigPath = this.resolveFilePath(merge, 'webpack.base.js');

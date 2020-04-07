@@ -7,19 +7,13 @@
   "publishConfig": {
     "access": "public"
   },
-  "author": "",
   "license": "MIT",
   "dependencies": {
-    "jscodeshift": "0.6.4"
+    "jscodeshift": "0.7.0",
+    "yeoman-generator": "4.7.2"
   },
   "devDependencies": {
-    "@types/yeoman-generator": "3.1.4",
-    "typescript": "3.5.3"
-  },
-  "scripts": {
-    "test": "jest --detectOpenHandles",
-    "build": "tsc",
-    "watch": "npm run build && tsc -w"
+    "@types/yeoman-generator": "3.1.4"
   },
   "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9"
 }

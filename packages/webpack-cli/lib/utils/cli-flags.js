@@ -1,4 +1,4 @@
-const { logger } = require('@webpack-cli/logger');
+const logger = require('../utils/logger');
 const StatsGroup = require('../groups/StatsGroup');
 
 const HELP_GROUP = 'help';
@@ -53,64 +53,14 @@ module.exports = {
             name: 'info',
             scope: 'external',
             type: String,
-            usage: 'info [options] [output-format]',
+            usage: 'info [options]',
             description: 'Outputs information about your system and dependencies',
             flags: [
                 {
-                    name: 'output-json',
-                    type: Boolean,
+                    name: 'output',
+                    type: String,
                     group: OUTPUT_GROUP,
-                    description: 'To get the output as JSON',
-                },
-                {
-                    name: 'output-markdown',
-                    type: Boolean,
-                    group: OUTPUT_GROUP,
-                    description: 'To get the output as markdown',
-                },
-                {
-                    name: 'help',
-                    type: Boolean,
-                    group: BASIC_GROUP,
-                    description: 'Shows help',
-                },
-                {
-                    name: 'version',
-                    type: Boolean,
-                    group: BASIC_GROUP,
-                    description: 'Show version number of webpack-cli',
-                },
-                {
-                    name: 'system',
-                    alias: 's',
-                    type: Boolean,
-                    group: BASIC_GROUP,
-                    description: 'System information ( OS, CPU )',
-                },
-                {
-                    name: 'binaries',
-                    alias: 'b',
-                    type: Boolean,
-                    group: BASIC_GROUP,
-                    description: 'Installed binaries (Node, yarn, npm)',
-                },
-                {
-                    name: 'browsers',
-                    type: Boolean,
-                    group: BASIC_GROUP,
-                    description: 'Installed web browsers',
-                },
-                {
-                    name: 'npmg',
-                    type: Boolean,
-                    group: BASIC_GROUP,
-                    description: 'Globally installed NPM packages ( webpack & webpack-cli only )',
-                },
-                {
-                    name: 'npmPackages',
-                    type: Boolean,
-                    group: BASIC_GROUP,
-                    description: 'Info about packages related to webpack installed in the project',
+                    description: 'To get the output in specified format ( accept json or markdown )',
                 },
             ],
         },
@@ -127,7 +77,6 @@ module.exports = {
             name: 'entry',
             usage: '--entry <path to entry file> e.g. ./src/main.js',
             type: String,
-            defaultValue: null,
             defaultOption: true,
             group: BASIC_GROUP,
             description: 'The entry point of your application.',
@@ -260,13 +209,6 @@ module.exports = {
             group: DISPLAY_GROUP,
         },
         {
-            name: 'pretty',
-            usage: 'webpack --pretty',
-            type: Boolean,
-            description: 'Prints a fancy output',
-            group: DISPLAY_GROUP,
-        },
-        {
             name: 'dev',
             usage: '--dev',
             alias: 'd',
@@ -288,18 +230,18 @@ module.exports = {
         },
         {
             name: 'mode',
-            usage: '--mode <development | production>',
+            usage: '--mode <development | production | none>',
             type: (value) => {
                 if (value === 'development' || value === 'production' || value === 'none') {
-                    return value ;
+                    return value;
                 } else {
                     logger.warn('You provided an invalid value for "mode" option.');
-                    return 'production' ;
+                    return 'production';
                 }
             },
             group: ZERO_CONFIG_GROUP,
             description: 'Defines the mode to pass to webpack',
-            link: 'https://webpack.js.org/concepts/#mode'
+            link: 'https://webpack.js.org/concepts/#mode',
         },
         {
             name: 'no-mode',
@@ -312,6 +254,7 @@ module.exports = {
         {
             name: 'version',
             usage: '--version',
+            alias: 'v',
             type: Boolean,
             group: BASIC_GROUP,
             description: 'Get current version',
@@ -327,7 +270,7 @@ module.exports = {
         {
             name: 'stats',
             usage: 'webpack --stats verbose',
-            type: value => {
+            type: (value) => {
                 if (StatsGroup.validOptions().includes(value)) {
                     return value;
                 }

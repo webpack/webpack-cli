@@ -8,7 +8,7 @@ const runner = require('../lib/runner');
 
 // Prefer the local installation of webpack-cli
 if (importLocal(__filename)) {
-    // return;
+    return;
 }
 process.title = 'webpack';
 

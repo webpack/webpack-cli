@@ -38,7 +38,7 @@ describe('node flags', () => {
         });
     });
 
-    it('is able to pass the options flags to node js', done => {
+    it('is able to pass the options flags to node js', (done) => {
         const { stdout } = run(
             __dirname,
             [
@@ -62,7 +62,7 @@ describe('node flags', () => {
 
     it('throws an error on supplying unknown flags', () => {
         const { stderr } = run(__dirname, ['--node-args', '--unknown']);
-        expect(stderr).toContain('node: bad option:');
+        expect(stderr).toContain('bad option');
     });
 
     it('throws an error if no values were supplied with --max-old-space-size', () => {

@@ -3,7 +3,7 @@ import { join } from 'path';
 
 const dirName: string = join(__dirname);
 
-describe('uglifyJsPluginu', function() {
+describe('uglifyJsPluginu', function () {
     {
         defineTest(dirName, 'uglifyJsPlugin', 'uglifyJsPlugin-0');
         defineTest(dirName, 'uglifyJsPlugin', 'uglifyJsPlugin-1');

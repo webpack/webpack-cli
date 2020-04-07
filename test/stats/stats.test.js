@@ -3,8 +3,6 @@
 const { run } = require('../utils/test-utils');
 
 describe('stats flag', () => {
-    // {
-    //     StatsGroup.validOptions().map(option => {
     it('should accept stats "none"', () => {
         const { stderr, stdout } = run(__dirname, ['--stats', 'none']);
         expect(stderr).toBeFalsy();
@@ -37,6 +35,12 @@ describe('stats flag', () => {
 
     it('should accept stats "minimal"', () => {
         const { stderr, stdout } = run(__dirname, ['--stats', 'minimal']);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toBeTruthy();
+    });
+
+    it('should accept stats "detailed"', () => {
+        const { stderr, stdout } = run(__dirname, ['--stats', 'detailed']);
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
     });

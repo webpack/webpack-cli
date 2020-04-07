@@ -13,7 +13,7 @@ type TransformCallback = (astNode: Node) => void;
  * @returns {Node} ast - jscodeshift ast
  */
 
-export default function(j: JSCodeshift, ast: Node): Node {
+export default function (j: JSCodeshift, ast: Node): Node {
     /**
      *
      * Remove the loader with name `name` from the given NodePath

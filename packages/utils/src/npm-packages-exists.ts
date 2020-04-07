@@ -1,6 +1,6 @@
 import { resolve } from 'path';
 import { existsSync } from 'fs';
-import  chalk = require('chalk');
+import chalk = require('chalk');
 import { npmExists } from './npm-exists';
 import { isLocalPath } from './path-utils';
 import { resolvePackages } from './resolve-packages';
@@ -60,6 +60,7 @@ export function npmPackagesExists(pkg: string[]): void {
             })
             .catch((err: Error): void => {
                 console.error(err.stack || err);
+                // eslint-disable-next-line no-process-exit
                 process.exit(0);
             })
             .then(resolvePackagesIfReady);

@@ -1,7 +1,7 @@
 'use strict';
 
 const { run } = require('../utils/test-utils');
-const pkgJSON = require('../../package.json');
+const pkgJSON = require('../../packages/webpack-cli/package.json');
 
 describe('version flag with multiple arguments', () => {
     it('outputs version with mixed syntax', () => {
@@ -11,7 +11,7 @@ describe('version flag with multiple arguments', () => {
     });
 
     it('outputs version with multiple commands', () => {
-        const { stdout, stderr } = run(__dirname, ['version', 'create']);
+        const { stdout, stderr } = run(__dirname, ['version', 'init']);
         expect(stdout).toContain(pkgJSON.version);
         expect(stderr).toHaveLength(0);
     });

@@ -1,5 +1,5 @@
 const GroupHelper = require('../utils/GroupHelper');
-const { logger } = require('@webpack-cli/logger');
+const logger = require('../utils/logger');
 
 const PRODUCTION = 'production';
 const DEVELOPMENT = 'development';
@@ -26,16 +26,14 @@ class ZeroConfigGroup extends GroupHelper {
                         this.args.prod ? '--prod' : '--dev'
                     } arguments. You should provide just one. "${this.args.mode ? 'mode' : 'no-mode'}" will be used`,
                 );
-                if (this.args.mode){
-                    return this.args.mode ;
+                if (this.args.mode) {
+                    return this.args.mode;
                 } else {
-                    return NONE ;
+                    return NONE;
                 }
             }
             if (this.args.noMode && this.args.mode) {
-                logger.warn(
-                    'You Provided both mode and no-mode arguments. You Should Provide just one. "mode" will be used.'
-                )
+                logger.warn('You Provided both mode and no-mode arguments. You Should Provide just one. "mode" will be used.');
             }
             if (this.args.mode) {
                 return this.args.mode;

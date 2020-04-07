@@ -1,6 +1,6 @@
 import { createProperty, findVariableToPlugin, isType } from '@webpack-cli/utils';
 
-import { JSCodeshift, Node } from "../types/NodePath";
+import { JSCodeshift, Node } from '../types/NodePath';
 
 /**
  *
@@ -13,13 +13,13 @@ import { JSCodeshift, Node } from "../types/NodePath";
  */
 
 function findInvocation(j: JSCodeshift, path: Node, pluginName: string): boolean {
-	let found = false;
-	found =
-		j(path)
-			.find(j.MemberExpression)
-			.filter((p: Node): boolean => (p.get("object").value as Node).name === pluginName)
-			.size() > 0;
-	return found;
+    let found = false;
+    found =
+        j(path)
+            .find(j.MemberExpression)
+            .filter((p: Node): boolean => (p.get('object').value as Node).name === pluginName)
+            .size() > 0;
+    return found;
 }
 
 /**
@@ -31,29 +31,26 @@ function findInvocation(j: JSCodeshift, path: Node, pluginName: string): boolean
  * @returns {Node} ast - jscodeshift ast
  */
 
-export default function(j: JSCodeshift, ast: Node): void | Node {
-	const changeArguments = (path: Node): Node => {
-		const args: Node[] = (path.value as Node).arguments;
+export default function (j: JSCodeshift, ast: Node): void | Node {
+    const changeArguments = (path: Node): Node => {
+        const args: Node[] = (path.value as Node).arguments;
 
-		const literalArgs: Node[] = args.filter((p: Node): boolean => isType(p, "Literal"));
-		if (literalArgs && literalArgs.length > 1) {
-			const newArgs: object = j.objectExpression(
-				literalArgs.map(
-					(p: Node, index: number): Node =>
-						createProperty(j, index === 0 ? "fallback" : "use", p.value as Node)
-				)
-			);
-			(path.value as Node).arguments = [newArgs];
-		}
-		return path;
-	};
-	const name: string = findVariableToPlugin(j, ast, "extract-text-webpack-plugin");
-	if (!name) {
-		return ast;
-	}
+        const literalArgs: Node[] = args.filter((p: Node): boolean => isType(p, 'Literal'));
+        if (literalArgs && literalArgs.length > 1) {
+            const newArgs: object = j.objectExpression(
+                literalArgs.map((p: Node, index: number): Node => createProperty(j, index === 0 ? 'fallback' : 'use', p.value as Node)),
+            );
+            (path.value as Node).arguments = [newArgs];
+        }
+        return path;
+    };
+    const name: string = findVariableToPlugin(j, ast, 'extract-text-webpack-plugin');
+    if (!name) {
+        return ast;
+    }
 
-	return ast
-		.find(j.CallExpression)
-		.filter((p: Node): boolean => findInvocation(j, p, name))
-		.forEach(changeArguments);
+    return ast
+        .find(j.CallExpression)
+        .filter((p: Node): boolean => findInvocation(j, p, name))
+        .forEach(changeArguments);
 }

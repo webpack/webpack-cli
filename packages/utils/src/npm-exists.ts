@@ -1,8 +1,8 @@
-import got from "got";
+import got from 'got';
 
 // TODO: to understand the type
 // eslint-disable-next-line
-const constant = (value: boolean) => (res: got.Response<string>): boolean | PromiseLike<boolean> => value;
+const constant = (value: boolean) => (res): boolean | PromiseLike<boolean> => value;
 
 /**
  *
@@ -16,11 +16,11 @@ const constant = (value: boolean) => (res: got.Response<string>): boolean | Prom
 // TODO: figure out the correct type here
 // eslint-disable-next-line
 export function npmExists(moduleName: string): Promise<any> {
-	const hostname = "https://www.npmjs.org";
-	const pkgUrl = `${hostname}/package/${moduleName}`;
-	return got(pkgUrl, {
-		method: "HEAD"
-	})
-		.then(constant(true))
-		.catch(constant(false));
+    const hostname = 'https://www.npmjs.org';
+    const pkgUrl = `${hostname}/package/${moduleName}`;
+    return got(pkgUrl, {
+        method: 'HEAD',
+    })
+        .then(constant(true))
+        .catch(constant(false));
 }

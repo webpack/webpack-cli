@@ -19,7 +19,7 @@ To run the package programmatically, install it as a dependency. When using the 
 ### Node
 
 ```js
-const migrate = require("@webpack-cli/migrate").default;
+const migrate = require('@webpack-cli/migrate').default;
 
 // add null to mock process.env
 migrate(null, null, inputPath, outputPath);
