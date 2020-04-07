@@ -204,4 +204,4 @@ We can see the following changes after migration:
 
 ---
 
-**Note: This command does NOT handle updating dependencies in _package.json_, it is only a migration tool for the config file itself.Users are expected to manage dependencies themselves.**
+**Note: This command does NOT handle updating dependencies in _package.json_, it is only a migration tool for the config file itself. Users are expected to manage dependencies themselves.**
