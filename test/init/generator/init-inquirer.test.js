@@ -45,7 +45,7 @@ const ENTER = '\x0D';
 describe('init', () => {
     it('should scaffold when given answers', async () => {
         const stdout = await run('N', ENTER, ENTER, ENTER, ENTER, ENTER, ENTER, ENTER);
-        console.log(stdout);
+
         expect(stdout).toBeTruthy();
         expect(stdout).toContain(firstPrompt);
 
