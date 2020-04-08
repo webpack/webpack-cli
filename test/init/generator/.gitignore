@@ -1,0 +1,4 @@
+# ignore the scaffolded files
+*
+!init-inquirer.test.js
+!.gitignore
