@@ -1,4 +1,0 @@
-# ignore the scaffolded files
-*
-!init-auto.test.js
-!.gitignore

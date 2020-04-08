@@ -54,3 +54,7 @@ packages/**/*.map
 
 # temporary test files
 test-assets/
+
+# ignore scaffolded files due to tests of init
+test/init/*
+!test/init/**/*.test.js
