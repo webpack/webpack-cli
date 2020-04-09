@@ -41,13 +41,13 @@ class HelpGroup {
     }
 
     outputVersion(externalPkg) {
-        const commandsUsed = (commands) => {
+        const commandsUsed = () => {
             return process.argv.filter((val) => commands.find(({ name }) => name === val));
         };
 
-        if (externalPkg && commandsUsed(commands).length === 1) {
+        if (externalPkg && commandsUsed().length === 1) {
             try {
-                if (commands.filter((cmd) => cmd.name === externalPkg.name)) {
+                if (commandsUsed().includes(externalPkg.name)) {
                     const { name, version } = require(`@webpack-cli/${externalPkg.name}/package.json`);
                     process.stdout.write(`\n${name} ${version}`);
                 } else {
@@ -60,8 +60,9 @@ class HelpGroup {
             }
         }
 
-        if (commandsUsed(commands).length > 1) {
-            throw new Error('You provided multiple commands. Please use only one command at a time.');
+        if (commandsUsed().length > 1) {
+            console.error(chalk.red('\nYou provided multiple commands. Please use only one command at a time.\n'));
+            process.exit();
         }
 
         const pkgJSON = require('../../package.json');

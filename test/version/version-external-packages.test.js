@@ -38,6 +38,6 @@ describe('version flag with external packages', () => {
 
     it(' should throw error for multiple commands', () => {
         const { stderr } = run(__dirname, ['init', 'migrate', '--version']);
-        expect(stderr).toContain('Error: You provided multiple commands. Please use only one command at a time.');
+        expect(stderr).toContain('You provided multiple commands.');
     });
 });
