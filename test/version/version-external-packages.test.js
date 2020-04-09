@@ -36,19 +36,8 @@ describe('version flag with external packages', () => {
         expect(stderr).toHaveLength(0);
     });
 
-    it(' should output version of every external packages passed ', () => {
-        const { stdout, stderr } = run(__dirname, ['init', 'info', 'migrate', 'serve', '--version']);
-        expect(stdout).toContain(initPkgJSON.version);
-        expect(stdout).toContain(infoPkgJSON.version);
-        expect(stdout).toContain(migratePkgJSON.version);
-        expect(stdout).toContain(servePkgJSON.version);
-        expect(stdout).toContain(cliPkgJSON.version);
-        expect(stderr).toHaveLength(0);
-    });
-
-    it(' should throw error for invalid external package ', () => {
-        const { stdout, stderr } = run(__dirname, ['invalid', '--version']);
-        expect(stdout).toContain(cliPkgJSON.version);
-        expect(stderr).toContain('Error: External package not found.');
+    it(' should throw error for multiple commands', () => {
+        const { stderr } = run(__dirname, ['init', 'migrate', '--version']);
+        expect(stderr).toContain('Error: You provided multiple commands. Please use only one command at a time.');
     });
 });

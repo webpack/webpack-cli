@@ -40,24 +40,30 @@ class HelpGroup {
         process.stdout.write('\n                  Made with ♥️  by the webpack team \n');
     }
 
-    outputVersion(args) {
-        const [, , ...rawArgs] = args;
-        for (const value of rawArgs) {
-            if (!value.includes('-') && value !== 'version') {
-                try {
-                    if (commands.filter((cmd) => cmd.name === value)) {
-                        const { name, version } = require(`@webpack-cli/${value}/package.json`);
-                        process.stdout.write(`\n${name} ${version}`);
-                    } else {
-                        const { name, version } = require(`${value}/package.json`);
-                        process.stdout.write(`\n${name} ${version}`);
-                    }
-                } catch (e) {
-                    console.error(chalk.red('\nError: External package not found.'));
-                    process.exitCode = -1;
+    outputVersion(externalPkg) {
+        const commandsUsed = (commands) => {
+            return process.argv.filter((val) => commands.find(({ name }) => name === val));
+        };
+
+        if (externalPkg && commandsUsed(commands).length === 1) {
+            try {
+                if (commands.filter((cmd) => cmd.name === externalPkg.name)) {
+                    const { name, version } = require(`@webpack-cli/${externalPkg.name}/package.json`);
+                    process.stdout.write(`\n${name} ${version}`);
+                } else {
+                    const { name, version } = require(`${externalPkg.name}/package.json`);
+                    process.stdout.write(`\n${name} ${version}`);
                 }
+            } catch (e) {
+                console.error(chalk.red('\nError: External package not found.'));
+                process.exitCode = -1;
             }
         }
+
+        if (commandsUsed(commands).length > 1) {
+            throw new Error('You provided multiple commands. Please use only one command at a time.');
+        }
+
         const pkgJSON = require('../../package.json');
         const webpack = require('webpack');
         process.stdout.write(`\nwebpack-cli ${pkgJSON.version}`);

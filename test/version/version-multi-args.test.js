@@ -7,7 +7,7 @@ describe('version flag with multiple arguments', () => {
     it('outputs version with mixed syntax', () => {
         const { stdout, stderr } = run(__dirname, ['--version', '--target', 'browser']);
         expect(stdout).toContain(pkgJSON.version);
-        expect(stderr).toContain('External package not found.');
+        expect(stderr).toHaveLength(0);
     });
 
     it('does not output version with help command', () => {
@@ -31,6 +31,6 @@ describe('version flag with multiple arguments', () => {
     it('outputs version with multiple dashed args and has precedence', () => {
         const { stdout, stderr } = run(__dirname, ['--target', 'browser', '--version']);
         expect(stdout).toContain(pkgJSON.version);
-        expect(stderr).toContain('External package not found.');
+        expect(stderr).toHaveLength(0);
     });
 });
