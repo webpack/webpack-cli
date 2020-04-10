@@ -1,3 +1,5 @@
+import Generator from 'yeoman-generator';
+
 export interface SchemaProperties {
     additionalProperties?: boolean;
     definitions?: object;
@@ -231,4 +233,16 @@ export interface Rule {
     rules?: object[];
     use?: object | object[] | Function;
     test?: IRuleSetCondition;
+}
+
+export class CustomGenerator extends Generator {
+    public entryOption: string | object;
+    public configuration: {
+        config: {
+            configName?: string;
+            topScope?: string[];
+            webpackOptions?: WebpackOptions;
+        };
+        usingDefaults?: boolean;
+    };
 }
