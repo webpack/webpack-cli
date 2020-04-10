@@ -93,7 +93,6 @@ export default class InitGenerator extends CustomGenerator {
             this.autoGenerateConfig,
         );
 
-        // TODO string | object
         const entryOption: string | object = await entryQuestions(self, multiEntries, this.autoGenerateConfig);
 
         if (typeof entryOption === 'string') {
