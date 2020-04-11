@@ -29,7 +29,6 @@ import { CustomGenerator } from './types';
 export default class InitGenerator extends CustomGenerator {
     public usingDefaults: boolean;
     public autoGenerateConfig: boolean;
-    public entryOption: string | object;
     private isProd: boolean;
     private dependencies: string[];
     private langType: string;
