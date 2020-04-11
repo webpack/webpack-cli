@@ -1,28 +1,21 @@
 /* eslint-disable node/no-unpublished-require */
 'use strict';
 
-const { sync: spawnSync } = require('execa');
-const path = require('path');
 const firstPrompt = 'Will your application have multiple bundles?';
 const fs = require('fs');
 const { join } = require('path');
+const { run } = require('../../../../../test/utils/test-utils');
 
 describe('init auto flag', () => {
     it('should prompt with w/o auto flag', () => {
-        const { stdout, stderr } = spawnSync(path.resolve(__dirname, '../../bin/cli.js'), ['init'], {
-            cwd: path.resolve(__dirname),
-            reject: false,
-        });
+        const { stdout, stderr } = run(__dirname, ['init'], false);
         expect(stdout).toBeTruthy();
         expect(stderr).toBeFalsy();
         expect(stdout).toContain(firstPrompt);
     });
 
     it('should scaffold and not prompt with auto flag', () => {
-        const { stdout } = spawnSync(path.resolve(__dirname, '../bin/cli.js'), ['init', '--auto'], {
-            cwd: path.resolve(__dirname),
-            reject: false,
-        });
+        const { stdout } = run(__dirname, ['init', '--auto'], false);
         // Test no prompts are present
         expect(stdout).toBeTruthy();
         expect(stdout).not.toContain(firstPrompt);

@@ -4,6 +4,8 @@ const fs = require('fs');
 const execa = require('execa');
 const { sync: spawnSync } = execa;
 const { Writable } = require('readable-stream');
+const concat = require('concat-stream');
+
 const WEBPACK_PATH = path.resolve(__dirname, '../../packages/webpack-cli/bin/cli.js');
 const ENABLE_LOG_COMPILATION = process.env.ENABLE_PIPE || false;
 
@@ -79,6 +81,35 @@ function runAndGetWatchProc(testCase, args = [], setOutput = true) {
 
     return webpackProc;
 }
+
+const runInitWithAnswers = async (location, answers) => {
+    const runner = runAndGetWatchProc(location, ['init'], false);
+    runner.stdin.setDefaultEncoding('utf-8');
+
+    // Simulate answers buy sending the answers after waiting for 1s
+    const simulateAnswers = answers.reduce((prevAnswer, answer) => {
+        return prevAnswer.then(() => {
+            return new Promise((resolvePromise) => {
+                setTimeout(() => {
+                    runner.stdin.write(answer);
+                    resolvePromise();
+                }, 1000);
+            });
+        });
+    }, Promise.resolve());
+
+    await simulateAnswers.then(() => {
+        runner.stdin.end();
+    });
+
+    return new Promise((resolve) => {
+        runner.stdout.pipe(
+            concat((result) => {
+                resolve(result.toString());
+            }),
+        );
+    });
+};
 
 function extractSummary(stdout) {
     if (stdout === '') {
@@ -195,6 +226,7 @@ module.exports = {
     runWatch,
     runAndGetWatchProc,
     extractSummary,
+    runInitWithAnswers,
     appendDataIfFileExists,
     copyFile,
     copyFileAsync,

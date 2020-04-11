@@ -1,16 +1,12 @@
 /* eslint-disable node/no-unpublished-require */
 'use strict';
 
-const { sync: spawnSync } = require('execa');
-const path = require('path');
 const firstPrompt = 'Will your application have multiple bundles?';
+const { run } = require('../../../../../test/utils/test-utils');
 
 describe('init with core flags', () => {
     it('should output help with --help flag', () => {
-        const { stdout, stderr } = spawnSync(path.resolve(__dirname, '../../bin/cli.js'), ['init', '--help'], {
-            cwd: path.resolve(__dirname),
-            reject: false,
-        });
+        const { stdout, stderr } = run(__dirname, ['init', '--help'], false);
         expect(stdout).toBeTruthy();
         expect(stderr).toBeFalsy();
         expect(stdout).not.toContain(firstPrompt);
