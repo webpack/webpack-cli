@@ -15,7 +15,7 @@ import {
     styleQuestionHandler,
     entryQuestions,
 } from './utils';
-import { WebpackOptions } from './types';
+import { CustomGenerator } from './types';
 
 /**
  *
@@ -26,21 +26,10 @@ import { WebpackOptions } from './types';
  * @returns {Void} After execution, transforms are triggered
  *
  */
-export default class InitGenerator extends Generator {
+export default class InitGenerator extends CustomGenerator {
     public usingDefaults: boolean;
     public autoGenerateConfig: boolean;
-    private isProd: boolean;
-    private dependencies: string[];
-    private configuration: {
-        config: {
-            configName?: string;
-            topScope?: string[];
-            webpackOptions?: WebpackOptions;
-        };
-        usingDefaults?: boolean;
-    };
     private langType: string;
-    private entryOption: void | {};
 
     public constructor(args, opts) {
         super(args, opts);
@@ -101,8 +90,7 @@ export default class InitGenerator extends Generator {
             this.autoGenerateConfig,
         );
 
-        // TODO string | object
-        const entryOption: void | {} = await entryQuestions(self, multiEntries, this.autoGenerateConfig);
+        const entryOption: string | object = await entryQuestions(self, multiEntries, this.autoGenerateConfig);
 
         if (typeof entryOption === 'string') {
             // single entry
