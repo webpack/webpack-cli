@@ -1,4 +1,5 @@
 import tooltip from './tooltip';
+import { CustomGenerator } from '../types';
 
 export enum StylingType {
     CSS = 'CSS',
@@ -32,7 +33,7 @@ export interface Loader {
 }
 
 export default function style(
-    self,
+    self: CustomGenerator,
     stylingType: string,
 ): {
     ExtractUseProps: Loader[];

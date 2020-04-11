@@ -245,4 +245,6 @@ export class CustomGenerator extends Generator {
         };
         usingDefaults?: boolean;
     };
+    public isProd: boolean;
+    public dependencies: string[];
 }
