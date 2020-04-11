@@ -1,26 +1,20 @@
 const GroupHelper = require('../utils/GroupHelper');
 const { core, groups } = require('../utils/cli-flags');
 
-class BasicGroup extends GroupHelper {
+class CoreGroup {
     constructor(options) {
-        super(options);
-        this.WEBPACK_OPTION_FLAGS = core
-            .filter((coreFlag) => {
-                return coreFlag.group === groups.BASIC_GROUP;
-            })
-            .reduce((result, flagObject) => {
-                result.push(flagObject.name);
-                if (flagObject.alias) {
-                    result.push(flagObject.alias);
-                }
-                return result;
-            }, []);
+        this.opts = {
+            outputOptions: {},
+            options: {},
+            processingMessageBuffer: [],
+        };
     }
     resolveFlags() {
+        console.log(this);
         const { args } = this;
         if (!args) return;
         const { outputOptions, options } = this.opts;
-        Object.keys(args).forEach((arg) => {
+        Object.keys(args).forEach(arg => {
             if (this.WEBPACK_OPTION_FLAGS.includes(arg)) {
                 outputOptions[arg] = args[arg];
             }
