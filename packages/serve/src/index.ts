@@ -13,9 +13,13 @@ import argsToCamelCase from './args-to-camel-case';
  * @returns {Function} invokes the devServer API
  */
 export default function serve(...args): void {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const devServerPackage = require('webpack-dev-server/package.json');
-    const deprecatedDevServerVersion = semver.lt(devServerPackage.version, '4.0.0');
+    let deprecatedDevServerVersion = false;
+    try {
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        const devServerPackage = require('webpack-dev-server/package.json');
+        deprecatedDevServerVersion = semver.lt(devServerPackage.version, '4.0.0');
+        // eslint-disable-next-line no-empty
+    } catch (e) {}
 
     const cli = new WebpackCLI();
     const core = cli.getCoreFlags();
