@@ -24,17 +24,15 @@ describe('basic serve usage', () => {
         });
     } else {
         it('compiles without flags', async () => {
-            const { stdout, stderr } = await runServe(['--port', port], testPath);
+            const { stdout } = await runServe(['--port', port], testPath);
             expect(stdout).toContain('main.js');
             expect(stdout).not.toContain('hot/dev-server.js');
-            expect(stderr).toHaveLength(0);
         });
 
         it('uses hot flag to alter bundle', async () => {
-            const { stdout, stderr } = await runServe(['--port', port, '--hot'], testPath);
+            const { stdout } = await runServe(['--port', port, '--hot'], testPath);
             expect(stdout).toContain('main.js');
             expect(stdout).toContain('hot/dev-server.js');
-            expect(stderr).toHaveLength(0);
         });
 
         it('uses hot flag and progress flag', async () => {
@@ -42,7 +40,7 @@ describe('basic serve usage', () => {
             expect(stdout).toContain('main.js');
             expect(stdout).toContain('hot/dev-server.js');
             // progress flag makes use of stderr
-            expect(stderr).not.toHaveLength(0);
+            expect(stderr).toContain('[webpack.Progress]');
         });
 
         it('throws error on unknown flag', async () => {
