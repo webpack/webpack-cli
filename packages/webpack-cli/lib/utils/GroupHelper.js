@@ -22,14 +22,18 @@ class GroupHelper {
     }
 
     arrayToObject(arr) {
-        if (!arr) {
-            return;
+        if (Array.isArray(arr)) {
+            if (!arr) {
+                return;
+            }
+            return arr.reduce((result, currentItem) => {
+                const key = Object.keys(currentItem)[0];
+                result[this.hyphenToUpperCase(key)] = currentItem[key];
+                return result;
+            }, {});
+        } else {
+            return arr;
         }
-        return arr.reduce((result, currentItem) => {
-            const key = Object.keys(currentItem)[0];
-            result[this.hyphenToUpperCase(key)] = currentItem[key];
-            return result;
-        }, {});
     }
 
     // TODO: to re implement
