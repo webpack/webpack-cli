@@ -9,7 +9,7 @@ import Server from 'webpack-dev-server/lib/Server';
  *
  * @returns {Void}
  */
-export default function startDevServer(compiler, options): void {
+export default function startDevServer(compiler, options): any {
     const firstWpOpt = compiler.compilers ? compiler.compilers[0].options : compiler.options;
     const devServerOptions = firstWpOpt.devServer || {};
 
@@ -31,4 +31,5 @@ export default function startDevServer(compiler, options): void {
             throw err;
         }
     });
+    return server;
 }

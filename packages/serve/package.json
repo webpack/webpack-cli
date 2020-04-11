@@ -16,5 +16,9 @@
     "webpack-cli": "4.x.x",
     "webpack-dev-server": "3.x.x || 4.x.x"
   },
-  "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9"
+  "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9",
+  "dependencies": {
+    "chalk": "^4.0.0",
+    "semver": "^7.2.2"
+  }
 }

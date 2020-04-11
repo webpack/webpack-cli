@@ -1,3 +1,5 @@
+import semver from 'semver';
+import chalk from 'chalk';
 import { devServer } from 'webpack-dev-server/bin/cli-flags';
 import WebpackCLI from 'webpack-cli';
 import startDevServer from './startDevServer';
@@ -11,6 +13,10 @@ import argsToCamelCase from './args-to-camel-case';
  * @returns {Function} invokes the devServer API
  */
 export default function serve(...args): void {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const devServerPackage = require('webpack-dev-server/package.json');
+    const deprecatedDevServerVersion = semver.lt(devServerPackage.version, '4.0.0');
+
     const cli = new WebpackCLI();
     const core = cli.getCoreFlags();
     // partial parsing usage: https://github.com/75lb/command-line-args/wiki/Partial-parsing
@@ -27,6 +33,23 @@ export default function serve(...args): void {
         finalArgs['hot'] = webpackArgs._all.hot;
     }
     cli.getCompiler(webpackArgs, core).then((compiler): void => {
-        startDevServer(compiler, finalArgs);
+        const server = startDevServer(compiler, finalArgs);
+
+        if (deprecatedDevServerVersion) {
+            const warning = chalk.yellow.bold(
+                'Using webpack-dev-server v3 with ' +
+                    `${chalk.green('webpack-cli serve')} is deprecated and will lead to ` +
+                    'unexpected behavior. Please upgrade to webpack-dev-server v4.',
+            );
+            server.log.warn(warning);
+
+            // send a warning after the compilation to ensure that the message
+            // reaches the user
+            compiler.hooks.done.tap('serve', () => {
+                process.nextTick(() => {
+                    server.log.warn(warning);
+                });
+            });
+        }
     });
 }
