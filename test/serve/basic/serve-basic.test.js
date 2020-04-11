@@ -2,16 +2,9 @@
 
 const path = require('path');
 const getPort = require('get-port');
-const { runWatch } = require('../utils/test-utils');
+const { runServe } = require('../../utils/test-utils');
 
-const runServe = (args) => {
-    return runWatch({
-        testCase: path.resolve(__dirname),
-        args: ['serve'].concat(args),
-        setOutput: false,
-        outputKillStr: 'main',
-    });
-};
+const testPath = path.resolve(__dirname);
 
 describe('basic serve usage', () => {
     let port;
@@ -31,21 +24,21 @@ describe('basic serve usage', () => {
         });
     } else {
         it('compiles without flags', async () => {
-            const { stdout, stderr } = await runServe(['--port', port]);
+            const { stdout, stderr } = await runServe(['--port', port], testPath);
             expect(stdout).toContain('main.js');
             expect(stdout).not.toContain('hot/dev-server.js');
             expect(stderr).toHaveLength(0);
         });
 
         it('uses hot flag to alter bundle', async () => {
-            const { stdout, stderr } = await runServe(['--port', port, '--hot']);
+            const { stdout, stderr } = await runServe(['--port', port, '--hot'], testPath);
             expect(stdout).toContain('main.js');
             expect(stdout).toContain('hot/dev-server.js');
             expect(stderr).toHaveLength(0);
         });
 
         it('uses hot flag and progress flag', async () => {
-            const { stdout, stderr } = await runServe(['--port', port, '--hot', '--progress']);
+            const { stdout, stderr } = await runServe(['--port', port, '--hot', '--progress'], testPath);
             expect(stdout).toContain('main.js');
             expect(stdout).toContain('hot/dev-server.js');
             // progress flag makes use of stderr
@@ -53,7 +46,7 @@ describe('basic serve usage', () => {
         });
 
         it('throws error on unknown flag', async () => {
-            const { stdout, stderr } = await runServe(['--port', port, '--unknown-flag']);
+            const { stdout, stderr } = await runServe(['--port', port, '--unknown-flag'], testPath);
             expect(stdout).toHaveLength(0);
             expect(stderr).toContain('Unknown option: --unknown-flag');
         });
