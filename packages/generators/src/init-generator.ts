@@ -21,7 +21,7 @@ import { CustomGenerator } from './types';
  * Generator for initializing a webpack config
  *
  * @class 	InitGenerator
- * @extends Generator
+ * @extends CustomGenerator
  * @returns {Void} After execution, transforms are triggered
  *
  */
