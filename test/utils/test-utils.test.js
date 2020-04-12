@@ -67,10 +67,10 @@ describe('Runs webpack CLI for a test case correctly', () => {
     it('Run function works correctly', () => {
         const { command, stdout, stderr } = run(__dirname);
         // Executes the correct command
-        expect(command).toContain('/webpack-cli/bin/cli.js');
+        expect(command).toContain('/cli.js');
         // Should use apply a default output dir
         expect(command).toContain('--output');
-        expect(command).toContain('/webpack-cli/test/utils/bin');
+        expect(command).toContain('/bin');
         expect(stdout).toBeTruthy();
         expect(stderr).toBeFalsy();
     });
