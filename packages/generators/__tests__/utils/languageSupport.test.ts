@@ -1,7 +1,7 @@
 import language, { LangType, getBabelLoader, getTypescriptLoader } from '../../lib/utils/languageSupport';
 
 describe('languageSupport', () => {
-    const getMockGenerator: any = () => {
+    const getMockGenerator = (): any => {
         return {
             entryOption: "'./path/to/index.js'",
             dependencies: [],
