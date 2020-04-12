@@ -1,16 +1,19 @@
 import { replaceAt, generatePluginName } from '../../lib/utils/plugins';
 
-describe('plugins', () => {
-    it('generates plugin name', () => {
-        expect(generatePluginName('my-plugin-name')).toEqual('MyPluginName');
+describe('generate plugin name', () => {
+    it('should return webpack Standard Plugin Name for Name : extract-text-webpack-plugin', () => {
+        const pluginName = generatePluginName('extract-text-webpack-plugin');
+        expect(pluginName).toEqual('ExtractTextWebpackPlugin');
     });
 
-    it('generates plugin name with numbers', () => {
-        expect(generatePluginName('my-plugin-name-1')).toEqual('MyPluginName1');
+    it('should return webpack Standard Plugin Name for Name : webpack.DefinePlugin', () => {
+        const pluginName = generatePluginName('webpack.DefinePlugin');
+        expect(pluginName).toEqual('webpack.DefinePlugin');
     });
 
-    it('generates capitalized plugin name without hyphens provided', () => {
-        expect(generatePluginName('plugin')).toEqual('Plugin');
+    it('should return webpack Standard Plugin Name for Name : my-plugin-name-1', () => {
+        const pluginName = generatePluginName('my-plugin-name-1');
+        expect(pluginName).toEqual('MyPluginName1');
     });
 
     it('replaceAt capitalizes first letter', () => {
