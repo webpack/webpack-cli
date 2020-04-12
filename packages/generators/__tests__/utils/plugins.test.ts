@@ -9,6 +9,10 @@ describe('plugins', () => {
         expect(generatePluginName('my-plugin-name-1')).toEqual('MyPluginName1');
     });
 
+    it('generates capitalized plugin name without hyphens provided', () => {
+        expect(generatePluginName('plugin')).toEqual('Plugin');
+    });
+
     it('replaceAt capitalizes first letter', () => {
         expect(replaceAt('mystring', 0, 'M')).toEqual('Mystring');
     });

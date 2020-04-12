@@ -40,7 +40,7 @@ export const replaceAt = (str: string, index: number, replace: string): string =
 export const generatePluginName = (rawPluginName: string): string => {
     const myPluginNameArray = rawPluginName.split('-');
     const pluginArrLength: number = myPluginNameArray.length;
-    for (let i = 0; i < pluginArrLength && pluginArrLength > 1; i++) {
+    for (let i = 0; i < pluginArrLength; i++) {
         myPluginNameArray[i] = replaceAt(myPluginNameArray[i], 0, myPluginNameArray[i].charAt(0).toUpperCase());
     }
     return myPluginNameArray.join('');
