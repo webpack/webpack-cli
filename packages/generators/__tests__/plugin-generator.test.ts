@@ -2,8 +2,6 @@ import { join } from 'path';
 import { run } from 'yeoman-test';
 import * as assert from 'yeoman-assert';
 
-import { generatePluginName } from '../src/utils';
-
 describe('plugin generator', () => {
     it('generates a default plugin', async () => {
         const pluginName = 'my-test-plugin';
@@ -34,16 +32,4 @@ describe('plugin generator', () => {
 
         // higher timeout so travis has enough time to execute
     }, 10000);
-});
-
-describe('generate plugin name', () => {
-    it('should return webpack Standard Plugin Name for Name : extract-text-webpack-plugin', () => {
-        const pluginName = generatePluginName('extract-text-webpack-plugin');
-        expect(pluginName).toEqual('ExtractTextWebpackPlugin');
-    });
-
-    it('should return webpack Standard Plugin Name for Name : webpack.DefinePlugin', () => {
-        const pluginName = generatePluginName('webpack.DefinePlugin');
-        expect(pluginName).toEqual('webpack.DefinePlugin');
-    });
 });
