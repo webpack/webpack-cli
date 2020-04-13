@@ -24,34 +24,31 @@ describe('serve with devServer in config', () => {
         });
     } else {
         it('Should pick up the host and port from config', async () => {
-            const { stdout, stderr } = await runServe([], testPath);
+            const { stdout } = await runServe([], testPath);
             // Should output the correct bundle file
             expect(stdout).toContain('main.js');
             expect(stdout).not.toContain('hot/dev-server.js');
             // Runs at correct host and port
             expect(stdout).toContain('http://0.0.0.0:1234');
-            expect(stderr).toBeFalsy();
         });
 
         it('Port flag should override the config port', async () => {
-            const { stdout, stderr } = await runServe(['--port', port], testPath);
+            const { stdout } = await runServe(['--port', port], testPath);
             // Should output the correct bundle file
             expect(stdout).toContain('main.js');
             expect(stdout).not.toContain('hot/dev-server.js');
             // Runs at correct host and port
             expect(stdout).toContain(`http://0.0.0.0:${port}`);
-            expect(stderr).toBeFalsy();
         });
 
         it('Passing hot flag works alongside other server config', async () => {
-            const { stdout, stderr } = await runServe(['--port', port, '--hot'], testPath);
+            const { stdout } = await runServe(['--port', port, '--hot'], testPath);
             // Should output the correct bundle file
             expect(stdout).toContain('main.js');
             // HMR is being used
             expect(stdout).toContain('hot/dev-server.js');
             // Runs at correct host and port
             expect(stdout).toContain(`http://0.0.0.0:${port}`);
-            expect(stderr).toBeFalsy();
         });
     }
 });
