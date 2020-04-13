@@ -101,16 +101,12 @@ describe('run function', () => {
 describe('runAndGetWatchProc function', () => {
     it('should spawn the process with correct metdata', () => {
         const webpackProc = runAndGetWatchProc(__dirname);
-        const { spawnfile, spawnargs } = webpackProc;
-
-        // spawnfile path should be correct
-        expect(spawnfile).toContain('cli.js');
-
+        const { spawnargs } = webpackProc;
         // check that the correct arguments are passed
         const [spawnFilePath, outputFlag, outputPath] = spawnargs;
         expect(outputFlag).toEqual('--output');
         expect(outputPath).toContain('bin');
-        expect(spawnFilePath).toEqual(spawnfile);
+        expect(spawnFilePath).toContain('cli.js');
     });
 
     it('should output correct data', async () => {
