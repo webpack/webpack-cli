@@ -8,6 +8,8 @@ const firstPrompt = 'Will your application have multiple bundles?';
 
 const ENTER = '\x0D';
 
+jest.setTimeout(200000);
+
 describe('init', () => {
     it('should scaffold when given answers', async () => {
         const stdout = await runInitWithAnswers(__dirname, ['N', ENTER, ENTER, ENTER, ENTER, ENTER, ENTER, ENTER]);
