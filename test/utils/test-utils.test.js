@@ -1,6 +1,6 @@
 'use strict';
 
-const { appendDataIfFileExists, copyFile, run } = require('./test-utils');
+const { appendDataIfFileExists, copyFile, run, runAndGetWatchProc } = require('./test-utils');
 const { writeFileSync, unlinkSync, readFileSync, existsSync } = require('fs');
 const { resolve } = require('path');
 
@@ -63,8 +63,8 @@ describe('copyFile', () => {
     });
 });
 
-describe('Runs webpack CLI for a test case correctly', () => {
-    it('Run function works correctly', () => {
+describe('run function', () => {
+    it('should work correctly by default', () => {
         const { command, stdout, stderr } = run(__dirname);
         // Executes the correct command
         expect(command).toContain('cli.js');
@@ -75,7 +75,7 @@ describe('Runs webpack CLI for a test case correctly', () => {
         expect(stderr).toBeFalsy();
     });
 
-    it('Run function executes cli with passed commands and params', () => {
+    it('executes cli with passed commands and params', () => {
         const { stdout, stderr, command } = run(__dirname, ['info', '--output', 'markdown'], false);
         // execution command contains info command
         expect(command).toContain('info');
@@ -89,8 +89,53 @@ describe('Runs webpack CLI for a test case correctly', () => {
         expect(stderr).toBeFalsy();
     });
 
-    it('Run function uses default output when output param is false', () => {
+    it('uses default output when output param is false', () => {
         const { stdout, stderr, command } = run(__dirname, [], false);
+        // execution command contains info command
+        expect(command).not.toContain('--output');
+        expect(stdout).toBeTruthy();
+        expect(stderr).toBeFalsy();
+    });
+});
+
+describe('runAndGetWatchProc function', () => {
+    it('should spawn the process with correct metdata', () => {
+        const webpackProc = runAndGetWatchProc(__dirname);
+        const { spawnfile, spawnargs } = webpackProc;
+
+        // spawnfile path should be correct
+        expect(spawnfile).toContain('cli.js');
+
+        // check that the correct arguments are passed
+        const [spawnFilePath, outputFlag, outputPath] = spawnargs;
+        expect(outputFlag).toEqual('--output');
+        expect(outputPath).toContain('bin');
+        expect(spawnFilePath).toEqual(spawnfile);
+    });
+
+    it('should output correct data', async () => {
+        const { stdout, stderr } = await runAndGetWatchProc(__dirname);
+        expect(stdout).toContain('main.js');
+        expect(stdout).toContain('index.js');
+        expect(stderr).toBeFalsy();
+    });
+
+    it('executes cli with passed commands and params', async () => {
+        const { stdout, stderr, command } = await runAndGetWatchProc(__dirname, ['info', '--output', 'markdown'], false);
+        // execution command contains info command
+        expect(command).toContain('info');
+        expect(command).toContain('--output markdown');
+
+        // Contains info command output
+        expect(stdout).toContain('System:');
+        expect(stdout).toContain('Node');
+        expect(stdout).toContain('npm');
+        expect(stdout).toContain('Yarn');
+        expect(stderr).toBeFalsy();
+    });
+
+    it('uses default output when output param is false', async () => {
+        const { stdout, stderr, command } = await runAndGetWatchProc(__dirname, [], false);
         // execution command contains info command
         expect(command).not.toContain('--output');
         expect(stdout).toBeTruthy();
