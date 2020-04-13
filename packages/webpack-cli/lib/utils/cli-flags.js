@@ -77,9 +77,10 @@ module.exports = {
             name: 'entry',
             usage: '--entry <path to entry file> e.g. ./src/main.js',
             type: String,
+            multiple: true,
             defaultOption: true,
             group: BASIC_GROUP,
-            description: 'The entry point of your application.',
+            description: 'The entry point(s) of your application.',
             link: 'https://webpack.js.org/concepts/#entry',
         },
         {
