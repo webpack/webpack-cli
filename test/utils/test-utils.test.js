@@ -102,6 +102,7 @@ describe('runAndGetWatchProc function', () => {
     it('should spawn the process with correct metdata', () => {
         const webpackProc = runAndGetWatchProc(__dirname);
         const { spawnargs } = webpackProc;
+        console.log(webpackProc);
         // check that the correct arguments are passed
         const [spawnFilePath, outputFlag, outputPath] = spawnargs;
         expect(outputFlag).toEqual('--output');
