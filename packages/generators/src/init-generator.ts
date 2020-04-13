@@ -1,6 +1,5 @@
 import chalk from 'chalk';
 import logSymbols from 'log-symbols';
-import Generator from 'yeoman-generator';
 import path from 'path';
 import { getPackageManager } from '@webpack-cli/package-utils';
 import { Confirm, Input, List } from '@webpack-cli/webpack-scaffold';
@@ -22,7 +21,7 @@ import { CustomGenerator } from './types';
  * Generator for initializing a webpack config
  *
  * @class 	InitGenerator
- * @extends Generator
+ * @extends CustomGenerator
  * @returns {Void} After execution, transforms are triggered
  *
  */
