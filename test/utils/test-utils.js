@@ -93,7 +93,7 @@ const runInitWithAnswers = async (location, answers) => {
                 setTimeout(() => {
                     runner.stdin.write(answer);
                     resolvePromise();
-                }, 1000);
+                }, 2000);
             });
         });
     }, Promise.resolve());

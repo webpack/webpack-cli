@@ -14,7 +14,7 @@ describe('init auto flag', () => {
         expect(stdout).toContain(firstPrompt);
     });
 
-    it('should scaffold and not prompt with auto flag', () => {
+    it.skip('should scaffold and not prompt with auto flag', () => {
         const { stdout } = run(__dirname, ['init', '--auto'], false);
         // Test no prompts are present
         expect(stdout).toBeTruthy();
