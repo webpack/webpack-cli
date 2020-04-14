@@ -11,29 +11,5 @@ describe('json flag', () => {
         };
         // check the JSON is valid.
         expect(parseJson).not.toThrow();
-
-        const jsonOutput = parseJson();
-
-        // JSON return the correct keys
-        expect(Object.keys(jsonOutput)).toEqual([
-            'errors',
-            'warnings',
-            'version',
-            'hash',
-            'time',
-            'builtAt',
-            'publicPath',
-            'outputPath',
-            'assetsByChunkName',
-            'assets',
-            'filteredAssets',
-            'entrypoints',
-            'namedChunkGroups',
-            'chunks',
-            'modules',
-            'filteredModules',
-            'logging',
-            'children',
-        ]);
     });
 });
