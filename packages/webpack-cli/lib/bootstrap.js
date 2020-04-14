@@ -51,7 +51,7 @@ async function runCLI(cli, commandIsUsed) {
         cli.runHelp(process.argv);
         return;
     } else if (versionFlagExists) {
-        cli.runVersion();
+        cli.runVersion(commandIsUsed);
         return;
     }
 
