@@ -289,7 +289,7 @@ For more information, see https://webpack.js.org/api/cli/.`);
 			}
 			if (outputOptions.infoVerbosity === "verbose") {
 				if (compiler.compilers) {
-					compiler.compilers.forEach((comp) => {
+					compiler.compilers.forEach(comp => {
 						setUpHookForCompilation(comp, argv);
 					});
 				} else {
