@@ -21,14 +21,10 @@ describe('init auto flag', () => {
         expect(stdout).toBeTruthy();
         expect(stdout).not.toContain(firstPrompt);
 
-        console.log(stdout);
-        console.log(fs.readdirSync(__dirname));
-
         // Test regressively files are scaffolded
         const files = ['./sw.js', './package.json', './yarn.lock', './src/index.js'];
         // eslint-disable-next-line prettier/prettier
         files.forEach((file) => {
-            console.log(file); // Debug comment
             expect(fs.existsSync(join(__dirname, file))).toBeTruthy();
         });
     });
