@@ -3,7 +3,7 @@
 const { run, extractSummary } = require("../../../testUtils");
 
 test("non-hyphenated-args", () => {
-	const { stdout, exitCode, stderr } = run(__dirname, [
+	const { stdout, code, stderr } = run(__dirname, [
 		"./a.js",
 		"--config",
 		"./webpack.config.js",
@@ -17,7 +17,7 @@ test("non-hyphenated-args", () => {
 
 	const summary = extractSummary(stdout);
 
-	expect(exitCode).toBe(0);
+	expect(code).toBe(0);
 	expect(summary).toEqual(expect.anything());
 	expect(summary).toContain("main.js"); // non-hyphenated arg ./a.js should create chunk "main"
 	expect(summary).toContain("a.js"); // a.js should be in chunk 0

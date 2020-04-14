@@ -3,7 +3,7 @@
 const { run, extractSummary } = require("../../../testUtils");
 
 test("named-entry", () => {
-	const { stdout, exitCode, stderr } = run(__dirname, [
+	const { stdout, code, stderr } = run(__dirname, [
 		"--entry",
 		"foo=./a.js",
 		"--entry",
@@ -22,7 +22,7 @@ test("named-entry", () => {
 
 	const summary = extractSummary(stdout);
 
-	expect(exitCode).toBe(0);
+	expect(code).toBe(0);
 	expect(summary).toEqual(expect.anything());
 	expect(summary).toContain("foo.js"); // named entry from --entry foo=./a.js
 	expect(summary).toContain("null.js");

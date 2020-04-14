@@ -3,7 +3,7 @@
 const { run, extractSummary } = require("../../../testUtils");
 
 test("multiple-config", () => {
-	const { stdout, exitCode, stderr } = run(__dirname, [
+	const { stdout, code, stderr } = run(__dirname, [
 		"--config",
 		"./webpack.config.js",
 		"--output-file-name",
@@ -14,9 +14,9 @@ test("multiple-config", () => {
 
 	const summary = extractSummary(stdout);
 
-	expect(exitCode).toEqual(0);
-	expect(exitCode).toBeDefined();
-	expect(exitCode).not.toBeNull();
+	expect(code).toBe(0);
+	expect(code).toBeDefined();
+	expect(code).not.toBeNull();
 	expect(summary).toEqual(expect.anything());
 	expect(summary).toContain("a.js"); // named entry from --entry foo=./a.js
 	expect(summary).toContain("index.js");
