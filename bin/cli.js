@@ -288,20 +288,33 @@ For more information, see https://webpack.js.org/api/cli/.`);
 				}).apply(compiler);
 			}
 			if (outputOptions.infoVerbosity === "verbose") {
-				if (argv.w) {
-					compiler.hooks.watchRun.tap("WebpackInfo", compilation => {
-						const compilationName = compilation.name ? compilation.name : "";
-						console.error("\nCompilation " + compilationName + " starting…\n");
+				if (compiler.compilers) {
+					compiler.compilers.forEach((comp) => {
+						setUpHookForCompilation(comp, argv);
 					});
 				} else {
-					compiler.hooks.beforeRun.tap("WebpackInfo", compilation => {
+					setUpHookForCompilation(compiler, argv);
+				}
+			}
+			function setUpHookForCompilation(compiler, args) {
+				if (args.w) {
+					compiler.hooks.watchRun.tapAsync("webpackInfo", (compilation, callback) => {
 						const compilationName = compilation.name ? compilation.name : "";
 						console.error("\nCompilation " + compilationName + " starting…\n");
+						callback();
+					});
+				} else {
+					compiler.hooks.beforeRun.tapAsync("webpackInfo", (compilation, callback) => {
+						const compilationName = compilation.name ? compilation.name : "";
+						console.error("\nCompilation " + compilationName + " starting…\n");
+						callback();
 					});
 				}
-				compiler.hooks.done.tap("WebpackInfo", compilation => {
+				compiler.hooks.done.tapAsync("webpackInfo", (stats, callback) => {
+					const compilation = stats.compilation;
 					const compilationName = compilation.name ? compilation.name : "";
 					console.error("\nCompilation " + compilationName + " finished\n");
+					callback();
 				});
 			}
 
