@@ -288,13 +288,9 @@ For more information, see https://webpack.js.org/api/cli/.`);
 				}).apply(compiler);
 			}
 			if (outputOptions.infoVerbosity === "verbose") {
-				if (compiler.compilers) {
-					compiler.compilers.forEach(comp => {
-						setUpHookForCompilation(comp, argv);
-					});
-				} else {
-					setUpHookForCompilation(compiler, argv);
-				}
+				const compilers = compiler.compilers ? compiler.compilers : [compiler];
+
+				compilers.map(compiler => setUpHookForCompilation(compiler, argv));
 			}
 			function setUpHookForCompilation(compiler, args) {
 				if (args.w) {
