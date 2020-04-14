@@ -6,6 +6,7 @@ const fs = require('fs');
 const { join } = require('path');
 const { run } = require('../../../../../test/utils/test-utils');
 
+jest.setTimeout(200000);
 describe('init auto flag', () => {
     it('should prompt with w/o auto flag', () => {
         const { stdout, stderr } = run(__dirname, ['init'], false);
@@ -14,11 +15,14 @@ describe('init auto flag', () => {
         expect(stdout).toContain(firstPrompt);
     });
 
-    it.skip('should scaffold and not prompt with auto flag', () => {
+    it('should scaffold and not prompt with auto flag', () => {
         const { stdout } = run(__dirname, ['init', '--auto'], false);
         // Test no prompts are present
         expect(stdout).toBeTruthy();
         expect(stdout).not.toContain(firstPrompt);
+
+        console.log(stdout);
+        console.log(fs.readdirSync(__dirname));
 
         // Test regressively files are scaffolded
         const files = ['./sw.js', './package.json', './yarn.lock', './src/index.js'];
