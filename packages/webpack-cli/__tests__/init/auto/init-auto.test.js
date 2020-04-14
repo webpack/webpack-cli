@@ -24,6 +24,7 @@ describe('init auto flag', () => {
         const files = ['./sw.js', './package.json', './yarn.lock', './src/index.js'];
         // eslint-disable-next-line prettier/prettier
         files.forEach((file) => {
+            console.log(file); // Debug comment
             expect(fs.existsSync(join(__dirname, file))).toBeTruthy();
         });
     });
