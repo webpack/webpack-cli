@@ -3,7 +3,7 @@
 const { run, extractSummary } = require("../../../testUtils");
 
 test("cli-override", () => {
-	const { code, stdout, stderr } = run(__dirname, [
+	const { exitCode, stdout, stderr } = run(__dirname, [
 		"--entry",
 		"cliEntry=./index.js",
 		"--config",
@@ -16,7 +16,7 @@ test("cli-override", () => {
 
 	const summary = extractSummary(stdout);
 
-	expect(code).toBe(0);
+	expect(exitCode).toBe(0);
 	expect(summary).toEqual(expect.anything());
 	expect(summary).toContain("cliEntry.js");
 	expect(summary).toContain("index.js");

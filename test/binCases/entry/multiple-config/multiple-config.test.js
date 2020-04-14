@@ -2,31 +2,23 @@
 
 const { run, extractSummary } = require("../../../testUtils");
 
-test("named-entry", () => {
+test("multiple-config", () => {
 	const { stdout, exitCode, stderr } = run(__dirname, [
-		"--entry",
-		"foo=./a.js",
-		"--entry",
-		"./index.js",
 		"--config",
 		"./webpack.config.js",
-		"--output-filename",
+		"--output-file-name",
 		"[name].js",
-		"--output-chunk-filename",
-		"[id].chunk.js",
-		"--target",
-		"async-node",
 		"--mode",
 		"production"
 	]);
 
 	const summary = extractSummary(stdout);
 
-	expect(exitCode).toBe(0);
+	expect(exitCode).toEqual(0);
+	expect(exitCode).toBeDefined();
+	expect(exitCode).not.toBeNull();
 	expect(summary).toEqual(expect.anything());
-	expect(summary).toContain("foo.js"); // named entry from --entry foo=./a.js
-	expect(summary).toContain("null.js");
-	expect(summary).toContain("a.js");
+	expect(summary).toContain("a.js"); // named entry from --entry foo=./a.js
 	expect(summary).toContain("index.js");
 	expect(stderr).toHaveLength(0);
 });

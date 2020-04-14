@@ -25,7 +25,6 @@ function run(testCase, args = []) {
 		cwd,
 		reject: false
 	});
-
 	return result;
 }
 
