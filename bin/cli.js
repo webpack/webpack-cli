@@ -298,23 +298,20 @@ For more information, see https://webpack.js.org/api/cli/.`);
 			}
 			function setUpHookForCompilation(compiler, args) {
 				if (args.w) {
-					compiler.hooks.watchRun.tapAsync("webpackInfo", (compilation, callback) => {
+					compiler.hooks.watchRun.tap("webpackInfo", compilation => {
 						const compilationName = compilation.name ? compilation.name : "";
 						console.error("\nCompilation " + compilationName + " starting…\n");
-						callback();
 					});
 				} else {
-					compiler.hooks.beforeRun.tapAsync("webpackInfo", (compilation, callback) => {
+					compiler.hooks.beforeRun.tap("webpackInfo", compilation => {
 						const compilationName = compilation.name ? compilation.name : "";
 						console.error("\nCompilation " + compilationName + " starting…\n");
-						callback();
 					});
 				}
-				compiler.hooks.done.tapAsync("webpackInfo", (stats, callback) => {
+				compiler.hooks.done.tap("webpackInfo", stats => {
 					const compilation = stats.compilation;
 					const compilationName = compilation.name ? compilation.name : "";
 					console.error("\nCompilation " + compilationName + " finished\n");
-					callback();
 				});
 			}
 
