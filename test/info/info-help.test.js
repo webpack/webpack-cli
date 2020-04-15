@@ -29,12 +29,12 @@ describe('should print help for info command', () => {
         expect(stderr).toHaveLength(0);
     });
 
-    it('should respect the --color=false flag', () => {
-        const { stdout, stderr } = runInfo(['info', 'help', '--color=false']);
+    it('should respect the color default true ', () => {
+        const { stdout, stderr } = runInfo(['info', 'help']);
         chalk.enabled = true;
         chalk.level = 3;
         const orange = chalk.keyword('orange');
-        expect(stdout).not.toContain(orange(usageText));
+        expect(stdout).toContain(orange(usageText));
         expect(stdout).toContain(descriptionText);
         expect(stderr).toHaveLength(0);
     });

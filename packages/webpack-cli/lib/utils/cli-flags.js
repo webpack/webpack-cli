@@ -272,7 +272,7 @@ module.exports = {
             name: 'stats',
             usage: '--stats verbose',
             type: (value) => {
-                if (StatsGroup.validOptions().includes(value)) {
+                if (StatsGroup.validOptions().validArrayString.includes(value)) {
                     return value;
                 }
                 logger.warn('No value recognised for "stats" option');

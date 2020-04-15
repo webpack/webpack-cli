@@ -5,7 +5,9 @@ const logger = require('../utils/logger');
  */
 class StatsGroup extends GroupHelper {
     static validOptions() {
-        return ['none', 'errors-only', 'minimal', 'normal', 'detailed', 'verbose', 'errors-warnings'];
+        let validArrayString = ['none', 'errors-only', 'minimal', 'normal', 'detailed', 'verbose', 'errors-warnings'];
+        let validArrayObject = [{ verbose: true }, { verbose: true, stats: 'verbose' }];
+        return { validArrayString, validArrayObject };
     }
 
     constructor(options) {
@@ -15,14 +17,10 @@ class StatsGroup extends GroupHelper {
     resolveOptions() {
         if (this.args.verbose && this.args.stats) {
             logger.warn('Conflict between "verbose" and "stats" options. Using verbose.');
-            this.opts.option.stats = {
-                verbose: true,
-            };
+            this.opts.options.stats = 'verbose';
         } else {
             if (this.args.verbose) {
-                this.opts.option.stats = {
-                    verbose: true,
-                };
+                this.opts.options.stats = 'verbose';
             } else {
                 this.opts.options.stats = this.args.stats;
             }
