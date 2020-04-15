@@ -1,20 +1,21 @@
 import language, { LangType, getBabelLoader, getTypescriptLoader } from '../../lib/utils/languageSupport';
+import { CustomGenerator } from '../../lib/types';
 
 describe('languageSupport', () => {
-    const getMockGenerator = (): any => {
-        return {
-            entryOption: "'./path/to/index.js'",
-            dependencies: [],
-            configuration: {
-                config: {
-                    webpackOptions: {
-                        module: {
-                            rules: [],
-                        },
+    const getMockGenerator = (): CustomGenerator => {
+        const gen = new CustomGenerator(null, null);
+        gen.entryOption = "'./path/to/index.js'";
+        gen.dependencies = [];
+        gen.configuration = {
+            config: {
+                webpackOptions: {
+                    module: {
+                        rules: [],
                     },
                 },
             },
         };
+        return gen;
     };
 
     it('getBabelLoader', () => {
