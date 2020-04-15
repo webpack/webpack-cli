@@ -221,9 +221,19 @@ async function runInstall(cwd) {
     });
 }
 
+const runServe = (args, testPath) => {
+    return runWatch({
+        testCase: testPath,
+        args: ['serve'].concat(args),
+        setOutput: false,
+        outputKillStr: 'main',
+    });
+};
+
 module.exports = {
     run,
     runWatch,
+    runServe,
     runAndGetWatchProc,
     extractSummary,
     runInitWithAnswers,

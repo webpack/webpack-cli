@@ -312,9 +312,9 @@ class WebpackCLI extends GroupHelper {
         return new HelpGroup().outputHelp(isCommand, subject);
     }
 
-    runVersion() {
+    runVersion(externalPkg) {
         const HelpGroup = require('./groups/HelpGroup');
-        return new HelpGroup().outputVersion();
+        return new HelpGroup().outputVersion(externalPkg);
     }
 }
 

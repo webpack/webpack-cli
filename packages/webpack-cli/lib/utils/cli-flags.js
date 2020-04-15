@@ -158,6 +158,7 @@ module.exports = {
         },
         {
             name: 'target',
+            usage: '--target',
             alias: 't',
             type: String,
             group: ADVANCED_GROUP,
@@ -194,7 +195,7 @@ module.exports = {
         },
         {
             name: 'prefetch',
-            usage: 'webpack --prefetch <request>',
+            usage: '--prefetch <request>',
             type: String,
             group: ADVANCED_GROUP,
             description: 'Prefetch this request',
@@ -202,7 +203,7 @@ module.exports = {
         },
         {
             name: 'json',
-            usage: 'webpack --json',
+            usage: '--json',
             type: Boolean,
             alias: 'j',
             description: 'Prints result as JSON',
@@ -253,7 +254,8 @@ module.exports = {
         },
         {
             name: 'version',
-            usage: '--version',
+            usage: '--version | --version <external-package>',
+            alias: 'v',
             type: Boolean,
             group: BASIC_GROUP,
             description: 'Get current version',
@@ -268,7 +270,7 @@ module.exports = {
         },
         {
             name: 'stats',
-            usage: 'webpack --stats verbose',
+            usage: '--stats verbose',
             type: (value) => {
                 if (StatsGroup.validOptions().includes(value)) {
                     return value;
@@ -282,7 +284,7 @@ module.exports = {
         },
         {
             name: 'verbose',
-            usage: 'webpack --verbose',
+            usage: '--verbose',
             type: Boolean,
             group: DISPLAY_GROUP,
             description: 'It tells webpack to output all the information',

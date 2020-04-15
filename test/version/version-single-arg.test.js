@@ -15,4 +15,10 @@ describe('single version flag', () => {
         expect(stdout).toContain(pkgJSON.version);
         expect(stderr).toHaveLength(0);
     });
+
+    it('outputs versions with alias syntax', () => {
+        const { stdout, stderr } = run(__dirname, ['-v']);
+        expect(stdout).toContain(pkgJSON.version);
+        expect(stderr).toHaveLength(0);
+    });
 });
