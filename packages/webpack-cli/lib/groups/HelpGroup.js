@@ -19,12 +19,11 @@ class HelpGroup {
             const usage = chalk.keyword('orange')('webpack ' + options.usage);
             const description = options.description;
             const link = options.link;
-
             process.stdout.write(`${header('Usage')}: ${usage}\n`);
-            process.stdout.write(`${header('Description')}: ${description}\n`);
+            process.stdout.write(`\n${header('Description')}: ${description}\n`);
 
             if (link) {
-                process.stdout.write(`${header('Documentation')}: ${link}\n`);
+                process.stdout.write(`\n${header('Documentation')}: ${link}\n`);
             }
 
             if (options.flags) {
@@ -96,12 +95,16 @@ class HelpGroup {
             {
                 header: 'Available Commands',
                 content: options.commands.map((e) => {
-                    return { name: e.name, summary: e.description };
+                    return { name: e.name, summary: e.shortDesc ? e.shortDesc : e.description };
                 }),
             },
             {
                 header: 'Options',
-                optionList: options.core,
+                optionList: options.core.map((e) => {
+                    const description = e.shortDesc ? e.shortDesc : e.description;
+                    e.description = description;
+                    return e;
+                }),
             },
         ]);
         return {
