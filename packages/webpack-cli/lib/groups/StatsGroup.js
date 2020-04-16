@@ -27,6 +27,9 @@ class StatsGroup extends GroupHelper {
                 this.opts.options.stats = this.args.stats;
             }
         }
+        if (this.args.json) {
+            this.opts.outputOptions.json = true;
+        }
     }
 
     run() {

@@ -45,13 +45,13 @@ const resolveNegatedArgs = (args) => {
 async function runCLI(cli, commandIsUsed) {
     let args;
     const helpFlagExists = isFlagPresent(process.argv, 'help');
-    const versionFlagExists = isFlagPresent(process.argv, 'version');
+    const versionFlagExists = isFlagPresent(process.argv, 'version') || isFlagPresent(process.argv, '-v');
 
     if (helpFlagExists) {
         cli.runHelp(process.argv);
         return;
     } else if (versionFlagExists) {
-        cli.runVersion();
+        cli.runVersion(commandIsUsed);
         return;
     }
 
