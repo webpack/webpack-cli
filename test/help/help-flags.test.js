@@ -2,6 +2,7 @@
 
 const { run } = require('../utils/test-utils');
 const helpHeader = 'The build tool for modern web applications';
+const footer = 'Made with ♥️  by the webpack team';
 
 describe('commands help', () => {
     it('shows default help with invalid flag', () => {
@@ -20,6 +21,12 @@ describe('commands help', () => {
         const { stdout, stderr } = run(__dirname, ['--help', '--entry', '--merge'], false);
         expect(stdout).not.toContain(helpHeader);
         expect(stdout).toContain('webpack --entry <path to entry file> e.g. ./src/main.js');
+        expect(stderr).toHaveLength(0);
+    });
+    it('shows accepted value if available for a flag', () => {
+        const { stdout, stderr } = run(__dirname, ['--help', '--stats'], false);
+        expect(stdout).toContain(footer);
+        expect(stdout).toContain('Accepted Value: none | errors-only | minimal | normal | detailed | verbose | errors-warnings');
         expect(stderr).toHaveLength(0);
     });
 });

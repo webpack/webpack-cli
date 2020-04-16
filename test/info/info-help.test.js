@@ -29,8 +29,8 @@ describe('should print help for info command', () => {
         expect(stderr).toHaveLength(0);
     });
 
-    it('should be default colored as commands', () => {
-        const { stdout, stderr } = runInfo(['info', 'help']);
+    it('should respect the --color=false flag', () => {
+        const { stdout, stderr } = runInfo(['info', 'help', '--color=false']);
         chalk.enabled = true;
         chalk.level = 3;
         const orange = chalk.keyword('orange');
