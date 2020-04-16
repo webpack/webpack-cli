@@ -86,7 +86,7 @@ const runInitWithAnswers = async (location, answers) => {
     const runner = runAndGetWatchProc(location, ['init'], false);
     runner.stdin.setDefaultEncoding('utf-8');
 
-    // Simulate answers buy sending the answers after waiting for 1s
+    // Simulate answers by sending the answers after waiting for 1s
     const simulateAnswers = answers.reduce((prevAnswer, answer) => {
         return prevAnswer.then(() => {
             return new Promise((resolvePromise) => {
