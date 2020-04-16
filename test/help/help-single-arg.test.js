@@ -5,8 +5,8 @@ const { run } = require('../utils/test-utils');
 const helpHeader = 'The build tool for modern web applications';
 
 describe('single help flag', () => {
-    it('respects color default as true', () => {
-        const { stdout, stderr } = run(__dirname, ['--help'], false);
+    it('respects --color flag as false', () => {
+        const { stdout, stderr } = run(__dirname, ['--help', '--color=false'], false);
         const usage = 'webpack [...options] | <command>';
         const example = 'webpack help --flag | <command>';
         chalk.enabled = true;
