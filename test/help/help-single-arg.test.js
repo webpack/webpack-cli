@@ -12,8 +12,8 @@ describe('single help flag', () => {
         chalk.enabled = true;
         chalk.level = 3;
         const orange = chalk.keyword('orange');
-        expect(stdout).toContain(orange(usage));
-        expect(stdout).toContain(orange(example));
+        expect(stdout).not.toContain(orange(usage));
+        expect(stdout).not.toContain(orange(example));
         expect(stdout).toContain(usage);
         expect(stdout).toContain(example);
         expect(stderr).toHaveLength(0);

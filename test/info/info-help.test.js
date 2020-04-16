@@ -34,7 +34,7 @@ describe('should print help for info command', () => {
         chalk.enabled = true;
         chalk.level = 3;
         const orange = chalk.keyword('orange');
-        expect(stdout).toContain(orange(usageText));
+        expect(stdout).not.toContain(orange(usageText));
         expect(stdout).toContain(descriptionText);
         expect(stderr).toHaveLength(0);
     });
