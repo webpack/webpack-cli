@@ -81,12 +81,16 @@ function runAndGetWatchProc(testCase, args = [], setOutput = true) {
 
     return webpackProc;
 }
-
+/**
+ * runInitWithAnswers
+ * @param {string} location location of current working directory
+ * @param {string[]} answers answers to be passed to stdout for inquirer question
+ */
 const runInitWithAnswers = async (location, answers) => {
     const runner = runAndGetWatchProc(location, ['init'], false);
     runner.stdin.setDefaultEncoding('utf-8');
 
-    // Simulate answers by sending the answers after waiting for 1s
+    // Simulate answers by sending the answers after waiting for 2s
     const simulateAnswers = answers.reduce((prevAnswer, answer) => {
         return prevAnswer.then(() => {
             return new Promise((resolvePromise) => {
