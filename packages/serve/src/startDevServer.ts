@@ -25,7 +25,7 @@ export default function startDevServer(compiler, options): void {
     }
 
     // Compose config from the CLI and devServer object from webpack config
-    const serverConfig = { ...devServerOptions, ...options };
+    const serverConfig = { ...options, ...devServerOptions };
 
     const { host, port } = serverConfig;
 
