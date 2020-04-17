@@ -254,7 +254,7 @@ module.exports = {
         },
         {
             name: 'version',
-            usage: '--version',
+            usage: '--version | --version <external-package>',
             alias: 'v',
             type: Boolean,
             group: BASIC_GROUP,
