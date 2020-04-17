@@ -49,7 +49,7 @@ describe('styleSupport', () => {
     it('generates production LESS configuration', () => {
         const gen = getMockGenerator();
         gen.isProd = true;
-        const { ExtractUseProps, regExpForStyles } = style(gen, StylingType.LESS);
+        const { ExtractUseProps } = style(gen, StylingType.LESS);
         expect(gen.dependencies).toEqual(['less', 'less-loader', 'css-loader']);
         expect(ExtractUseProps.length).toEqual(2);
     });
