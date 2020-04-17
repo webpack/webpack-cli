@@ -34,15 +34,16 @@ describe('styleSupport', () => {
     it('generates SASS configuration', () => {
         const gen = getMockGenerator();
         const { ExtractUseProps, regExpForStyles } = style(gen, StylingType.SASS);
-        expect(gen.dependencies).toEqual(['node-sass', 'sass-loader', 'css-loader', 'style-loader']);
         expect(regExpForStyles).toEqual('/.(scss|css)$/');
+        expect(gen.dependencies).toEqual(['node-sass', 'sass-loader', 'css-loader', 'style-loader']);
         expect(ExtractUseProps.length).toEqual(3);
     });
 
     it('generates production SASS configuration', () => {
         const gen = getMockGenerator();
         gen.isProd = true;
-        const { ExtractUseProps } = style(gen, StylingType.SASS);
+        const { ExtractUseProps, regExpForStyles } = style(gen, StylingType.SASS);
+        expect(regExpForStyles).toEqual('/.(scss|css)$/');
         expect(gen.dependencies).toEqual(['node-sass', 'sass-loader', 'css-loader']);
         expect(ExtractUseProps.length).toEqual(2);
     });
@@ -58,7 +59,8 @@ describe('styleSupport', () => {
     it('generates production LESS configuration', () => {
         const gen = getMockGenerator();
         gen.isProd = true;
-        const { ExtractUseProps } = style(gen, StylingType.LESS);
+        const { ExtractUseProps, regExpForStyles } = style(gen, StylingType.LESS);
+        expect(regExpForStyles).toEqual('/.(less|css)$/');
         expect(gen.dependencies).toEqual(['less', 'less-loader', 'css-loader']);
         expect(ExtractUseProps.length).toEqual(2);
     });
@@ -76,8 +78,9 @@ describe('styleSupport', () => {
     it('generates production PostCSS configuration', () => {
         const gen = getMockGenerator();
         gen.isProd = true;
-        const { ExtractUseProps } = style(gen, StylingType.PostCSS);
+        const { ExtractUseProps, regExpForStyles } = style(gen, StylingType.PostCSS);
         expect(gen.dependencies).toEqual(['precss', 'autoprefixer', 'css-loader', 'postcss-loader']);
+        expect(regExpForStyles).toEqual('/.css$/');
         expect(ExtractUseProps.length).toEqual(2);
     });
 });
