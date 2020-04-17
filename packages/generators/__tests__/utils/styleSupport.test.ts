@@ -22,6 +22,15 @@ describe('styleSupport', () => {
         expect(ExtractUseProps.length).toEqual(2);
     });
 
+    it('generates production CSS configuration', () => {
+        const gen = getMockGenerator();
+        gen.isProd = true;
+        const { ExtractUseProps, regExpForStyles } = style(gen, StylingType.CSS);
+        expect(gen.dependencies).toEqual(['css-loader']);
+        expect(regExpForStyles).toEqual('/.css$/');
+        expect(ExtractUseProps.length).toEqual(1);
+    });
+
     it('generates SASS configuration', () => {
         const gen = getMockGenerator();
         const { ExtractUseProps, regExpForStyles } = style(gen, StylingType.SASS);
