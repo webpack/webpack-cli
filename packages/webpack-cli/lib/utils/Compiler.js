@@ -8,7 +8,7 @@ class Compiler {
         this.output = new CompilerOutput();
         this.compilerOptions = {};
     }
-    setUpHookForCompilation(compilation, outputOptions, options) {
+    setUpHookForCompilation(compilation, outputOptions, options, idx) {
         const { ProgressPlugin } = webpack;
         let progressPluginExists;
         if (options.plugins) {
@@ -34,7 +34,7 @@ class Compiler {
                         process.stdout.write(`) ${percent}% : `);
                         process.stdout.write(`${cyanBright(msg)}`);
                         if (percent === 100) {
-                            process.stdout.write(`${cyanBright('Complilation completed\n')}`);
+                            process.stdout.write(`\n${cyanBright('Compilation completed\n')}`);
                         }
                     }
                 };
@@ -53,10 +53,9 @@ class Compiler {
                 }
             }
         });
-
-        if (outputOptions.infoVerbosity === 'verbose') {
+        if (outputOptions.stats === 'verbose') {
             const resolveCompilationName = (compilation) => {
-                return compilation.name ? compilation.name : '';
+                return compilation.name ? compilation.name : `${idx + 1}`;
             };
             if (outputOptions.watch) {
                 compilation.hooks.watchRun.tap('WebpackInfo', (compilation) => {
@@ -78,7 +77,7 @@ class Compiler {
     }
 
     generateOutput(outputOptions, stats) {
-        this.output.generateRawOutput(stats, this.compilerOptions);
+        this.output.generateRawOutput(stats, outputOptions);
         process.stdout.write('\n');
         if (outputOptions.watch) {
             logger.info('watching files for updates...');
@@ -165,7 +164,7 @@ class Compiler {
 
         if (this.compiler.compilers) {
             this.compiler.compilers.forEach((comp, idx) => {
-                this.setUpHookForCompilation(comp, outputOptions, options[idx]);
+                this.setUpHookForCompilation(comp, outputOptions, options[idx], idx);
             });
         } else {
             this.setUpHookForCompilation(this.compiler, outputOptions, options);

@@ -6,7 +6,7 @@ describe('StatsGroup', function () {
             it(`should handle ${option} option`, () => {
                 const statsGroup = new StatsGroup([{ stats: `${option}` }]);
                 const result = statsGroup.run();
-                expect(result.options.stats).toEqual(option);
+                expect(result.outputOptions.stats).toEqual(option);
             });
         });
         StatsGroup.validOptions().validArrayObject.map((option) => {
@@ -14,7 +14,7 @@ describe('StatsGroup', function () {
             it(`should handle verbose true with stats ${stats} option`, () => {
                 const statsGroup = new StatsGroup(option);
                 const result = statsGroup.run();
-                expect(result.options.stats).toEqual('verbose');
+                expect(result.outputOptions.stats).toEqual('verbose');
             });
         });
     }
