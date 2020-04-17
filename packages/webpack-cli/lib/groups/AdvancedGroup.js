@@ -1,5 +1,4 @@
 const GroupHelper = require('../utils/GroupHelper');
-const logger = require('../utils/logger');
 
 class AdvancedGroup extends GroupHelper {
     constructor(options) {

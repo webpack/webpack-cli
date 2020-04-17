@@ -1,4 +1,4 @@
-const commander = require("commander");
+const commander = require('commander');
 
 /**
  *  Creates Argument parser corresponding to the supplied options
@@ -7,7 +7,7 @@ const commander = require("commander");
  * @param {object[]} options Array of objects with details about flags
  * @param {string[]} args process.argv or it's subset
  */
-function argParser(options, args, name = "", helpFunction = undefined, versionFunction = undefined) {
+function argParser(options, args, name = '', helpFunction = undefined, versionFunction = undefined) {
     const parser = new commander.Command();
     // Set parser name
     parser.name(name);

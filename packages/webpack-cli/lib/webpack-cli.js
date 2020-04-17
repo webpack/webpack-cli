@@ -90,11 +90,9 @@ class WebpackCLI extends GroupHelper {
         return argParser(...args);
     }
 
-
     getCoreFlags() {
         return core;
     }
-
 
     /**
      * Based on the parsed keys, the function will import and create

@@ -1,7 +1,7 @@
-import { devServer } from "webpack-dev-server/bin/cli-flags";
-import WebpackCLI from "webpack-cli";
-import startDevServer from "./startDevServer";
-import argsToCamelCase from "./args-to-camel-case";
+import { devServer } from 'webpack-dev-server/bin/cli-flags';
+import WebpackCLI from 'webpack-cli';
+import startDevServer from './startDevServer';
+import argsToCamelCase from './args-to-camel-case';
 
 /**
  *
@@ -11,21 +11,20 @@ import argsToCamelCase from "./args-to-camel-case";
  * @returns {Function} invokes the devServer API
  */
 export default function serve(): void {
-	const cli = new WebpackCLI();
-	const core = cli.getCoreFlags();
+    const cli = new WebpackCLI();
+    const core = cli.getCoreFlags();
 
-    const filteredArgs = process.argv.filter(arg => (arg != "serve"));
+    const filteredArgs = process.argv.filter((arg) => arg != 'serve');
     const devServerArgs = cli.argParser(devServer, filteredArgs);
-	const webpackArgs = cli.argParser(core, filteredArgs, process.title, cli.runHelp, cli.runVersion);
+    const webpackArgs = cli.argParser(core, filteredArgs, process.title, cli.runHelp, cli.runVersion);
     const finalArgs = argsToCamelCase(devServerArgs.opts() || {});
 
-
     // pass along the 'hot' argument to the dev server if it exists
-	if (webpackArgs && webpackArgs.opts() && webpackArgs.opts().hot !== undefined) {
+    if (webpackArgs && webpackArgs.opts() && webpackArgs.opts().hot !== undefined) {
         finalArgs['hot'] = webpackArgs.opts().hot;
     }
 
-    Object.keys(finalArgs).forEach(arg => {
+    Object.keys(finalArgs).forEach((arg) => {
         if (finalArgs[arg] === undefined) {
             delete finalArgs[arg];
         }
@@ -36,7 +35,7 @@ export default function serve(): void {
         return;
     }
 
-	cli.getCompiler(webpackArgs.opts(), core).then((compiler): void => {
-		startDevServer(compiler, finalArgs);
-	});
+    cli.getCompiler(webpackArgs.opts(), core).then((compiler): void => {
+        startDevServer(compiler, finalArgs);
+    });
 }

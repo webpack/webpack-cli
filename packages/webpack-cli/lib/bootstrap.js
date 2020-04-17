@@ -7,7 +7,7 @@ require('./utils/process-log');
 
 process.title = 'webpack-cli';
 
-const isFlagPresent = (args, flag) => args.find((arg) => [flag, `--${flag}`].includes(arg));
+// const isFlagPresent = (args, flag) => args.find((arg) => [flag, `--${flag}`].includes(arg));
 const isArgCommandName = (arg, cmd) => arg === cmd.name || arg === cmd.alias;
 const removeCmdFromArgs = (args, cmd) => args.filter((arg) => !isArgCommandName(arg, cmd));
 const normalizeFlags = (args, cmd) => {
@@ -43,6 +43,7 @@ const resolveNegatedArgs = (args) => {
 };
 
 async function runCLI(cli, commandIsUsed) {
+    let args;
     const parsedArgs = argParser(core, process.argv, process.title, cli.runHelp, cli.runVersion);
 
     if (parsedArgs.args.includes('help')) {
@@ -98,7 +99,7 @@ async function runCLI(cli, commandIsUsed) {
                 const newArgKeys = Object.keys(argsMap).filter((arg) => !keysToDelete.includes(argsMap[arg].pos));
                 // eslint-disable-next-line require-atomic-updates
                 process.argv = newArgKeys;
-                args = argParser("", core, process.argv);
+                args = argParser('', core, process.argv);
                 await cli.run(args.opts(), core);
                 process.stdout.write('\n');
                 logger.warn('Duplicate flags found, defaulting to last set value');

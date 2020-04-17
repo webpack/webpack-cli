@@ -20,7 +20,7 @@ class ZeroConfigGroup extends GroupHelper {
         if (process.env.NODE_ENV && (process.env.NODE_ENV === PRODUCTION || process.env.NODE_ENV === DEVELOPMENT)) {
             return process.env.NODE_ENV;
         } else {
-            if ((this.args.mode !== undefined ) && (this.args.dev || this.args.prod)) {
+            if (this.args.mode !== undefined && (this.args.dev || this.args.prod)) {
                 logger.warn(
                     `You provided both ${this.args.mode ? 'mode' : 'no-mode'} and ${
                         this.args.prod ? '--prod' : '--dev'
