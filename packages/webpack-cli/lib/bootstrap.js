@@ -49,13 +49,31 @@ async function runCLI(cli, commandIsUsed) {
     };
     const parsedArgs = argParser(core, process.argv, false, process.title, cli.runHelp, runVersion);
 
+    if (parsedArgs.args.includes('help')) {
+        cli.runHelp(process.argv);
+        process.exit(0);
+    }
+
+    if (parsedArgs.args.includes('version')) {
+        runVersion();
+        process.exit(0);
+    }
+
     if (commandIsUsed) {
         commandIsUsed.defaultOption = true;
         args = normalizeFlags(process.argv, commandIsUsed);
         return await cli.runCommand(commandIsUsed, ...args);
     } else {
         try {
-            if (parsedArgs.args.length > 1) {
+            // handle the default webpack entry CLI argument, where instead
+            // of doing 'webpack-cli --entry ./index.js' you can simply do
+            // 'webpack-cli ./index.js'
+            // if the unknown arg starts with a '-', it will be considered
+            // an unknown flag rather than an entry
+            let entry;
+            if (parsedArgs.args.length === 1 && !parsedArgs.args[0].startsWith('-')) {
+                entry = parsedArgs.args[0];
+            } else if (parsedArgs.args.length > 0) {
                 resolveNegatedArgs(parsedArgs.args);
                 parsedArgs.args
                     .filter((e) => e)
@@ -66,11 +84,8 @@ async function runCLI(cli, commandIsUsed) {
                 return;
             }
             const parsedArgsOpts = parsedArgs.opts();
-            // handle the default webpack entry CLI argument, where instead
-            // of doing 'webpack-cli --entry ./index.js' you can simply do
-            // 'webpack-cli ./index.js'
-            if (parsedArgs.args.length === 1) {
-                parsedArgsOpts.entry = parsedArgs.args[0];
+            if (entry) {
+                parsedArgsOpts.entry = entry;
             }
             const result = await cli.run(parsedArgsOpts, core);
             if (!result) {
