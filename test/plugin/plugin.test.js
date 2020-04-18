@@ -1,12 +1,9 @@
-/* eslint-disable node/no-unpublished-require */
-'use strict';
-
-const firstPrompt = '? Plugin name';
 const { existsSync } = require('fs');
 const { join } = require('path');
 const { run, runPromptWithAnswers } = require('../utils/test-utils');
 
 const ENTER = '\x0D';
+const firstPrompt = '? Plugin name';
 const pluginName = 'test-plugin';
 
 // Since scaffolding is time consuming
@@ -30,7 +27,7 @@ describe('plugin command', () => {
 
         // Test regressively files are scaffolded
         const files = ['package.json', 'yarn.lock', 'examples', 'src', 'test', 'src/index.js', 'examples/simple/webpack.config.js'];
-        // eslint-disable-next-line prettier/prettier
+
         files.forEach((file) => {
             expect(existsSync(join(__dirname, pluginName, file))).toBeTruthy();
         });

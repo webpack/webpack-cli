@@ -1,7 +1,6 @@
 /* eslint-disable node/no-unpublished-require */
 'use strict';
 
-const firstPrompt = '? Loader name (my-loader)';
 const { existsSync } = require('fs');
 const { join } = require('path');
 const rimraf = require('rimraf');
@@ -10,6 +9,7 @@ const { run, runPromptWithAnswers } = require('../utils/test-utils');
 const ENTER = '\x0D';
 const loaderName = 'test-loader';
 const loaderPath = join(__dirname, loaderName);
+const firstPrompt = '? Loader name (my-loader)';
 
 // Since scaffolding is time consuming
 jest.setTimeout(200000);
@@ -40,8 +40,9 @@ describe('loader command', () => {
 
         // Test regressively files are scaffolded
         const files = ['package.json', 'yarn.lock', 'examples', 'src', 'test', 'src/index.js', 'examples/simple/webpack.config.js'];
-        // eslint-disable-next-line prettier/prettier
+
         files.forEach((file) => {
+            console.log(file);
             expect(existsSync(join(__dirname, loaderName, file))).toBeTruthy();
         });
     });
