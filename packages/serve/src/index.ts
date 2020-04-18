@@ -18,7 +18,7 @@ export default function serve(): void {
     const parsedDevServerArgs = cli.argParser(devServer, filteredArgs);
     const devServerArgs = parsedDevServerArgs.opts();
     const webpackArgs = cli.argParser(core, filteredArgs, false, process.title, cli.runHelp, cli.runVersion);
-    const finalArgs = argsToCamelCase(devServerArgs.opts() || {});
+    const finalArgs = argsToCamelCase(devServerArgs || {});
 
     // pass along the 'hot' argument to the dev server if it exists
     if (webpackArgs && webpackArgs.opts() && webpackArgs.opts().hot !== undefined) {
