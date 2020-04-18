@@ -86,7 +86,7 @@ function runAndGetWatchProc(testCase, args = [], setOutput = true) {
  * @param {string} location location of current working directory
  * @param {string[]} answers answers to be passed to stdout for inquirer question
  */
-const runPromptWithAnswers = async (location, answers, args) => {
+const runPromptWithAnswers = async (location, args, answers) => {
     const runner = runAndGetWatchProc(location, args, false);
     runner.stdin.setDefaultEncoding('utf-8');
 

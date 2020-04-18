@@ -12,7 +12,7 @@ jest.setTimeout(200000);
 
 describe('init', () => {
     it('should scaffold when given answers', async () => {
-        const stdout = await runPromptWithAnswers(__dirname, ['N', ENTER, ENTER, ENTER, ENTER, ENTER, ENTER, ENTER], ['init']);
+        const stdout = await runPromptWithAnswers(__dirname, ['init'], ['N', ENTER, ENTER, ENTER, ENTER, ENTER, ENTER, ENTER]);
 
         expect(stdout).toBeTruthy();
         expect(stdout).toContain(firstPrompt);
