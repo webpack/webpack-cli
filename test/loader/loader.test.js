@@ -4,15 +4,25 @@
 const firstPrompt = '? Loader name (my-loader)';
 const { existsSync } = require('fs');
 const { join } = require('path');
+const rimraf = require('rimraf');
 const { run, runPromptWithAnswers } = require('../utils/test-utils');
 
 const ENTER = '\x0D';
 const loaderName = 'test-loader';
+const loaderPath = join(__dirname, loaderName);
 
 // Since scaffolding is time consuming
 jest.setTimeout(200000);
 
 describe('loader command', () => {
+    afterAll(() => {
+        rimraf.sync(loaderPath);
+    });
+
+    afterAll(() => {
+        rimraf.sync(loaderPath);
+    });
+
     it('Should ask the loader name when invoked', () => {
         const { stdout, stderr } = run(__dirname, ['loader'], false);
         expect(stdout).toBeTruthy();
