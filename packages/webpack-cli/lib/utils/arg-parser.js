@@ -36,7 +36,7 @@ function argParser(options, args, argsOnly = false, name = '', helpFunction = un
     // Register options on the parser
     options.reduce((parserInstance, option) => {
         const flags = option.alias ? `-${option.alias}, --${option.name}` : `--${option.name}`;
-        const flagsWithType = option.type !== Boolean ? flags + ' <type>' : flags;
+        const flagsWithType = option.type !== Boolean ? flags + ' <value>' : flags;
         parserInstance.option(flagsWithType, option.description, option.defaultValue);
         return parserInstance;
     }, parser);
