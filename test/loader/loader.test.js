@@ -1,7 +1,7 @@
 /* eslint-disable node/no-unpublished-require */
 'use strict';
 
-const { existsSync, readdirSync } = require('fs');
+const { existsSync } = require('fs');
 const { join } = require('path');
 const rimraf = require('rimraf');
 const { run, runPromptWithAnswers } = require('../utils/test-utils');
@@ -41,11 +41,8 @@ describe('loader command', (done) => {
 
         // Test regressively files are scaffolded
         const files = ['package.json', 'yarn.lock', 'examples', 'src', 'test', 'src/index.js', 'examples/simple/webpack.config.js'];
-        readdirSync(join(__dirname, loaderName)).forEach((file) => {
-            console.log(file);
-        });
+
         files.forEach((file) => {
-            console.log(file);
             expect(existsSync(join(__dirname, loaderName, file))).toBeTruthy();
         });
     });
