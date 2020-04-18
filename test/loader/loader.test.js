@@ -1,7 +1,7 @@
 /* eslint-disable node/no-unpublished-require */
 'use strict';
 
-const { existsSync } = require('fs');
+const { existsSync, readdirSync } = require('fs');
 const { join } = require('path');
 const rimraf = require('rimraf');
 const { run, runPromptWithAnswers } = require('../utils/test-utils');
@@ -12,7 +12,7 @@ const loaderPath = join(__dirname, loaderName);
 const firstPrompt = '? Loader name (my-loader)';
 
 // Since scaffolding is time consuming
-jest.setTimeout(300000);
+jest.setTimeout(200000);
 
 describe('loader command', () => {
     beforeAll(() => {
@@ -23,11 +23,13 @@ describe('loader command', () => {
         rimraf.sync(loaderPath);
     });
 
+describe('loader command', (done) => {
     it('Should ask the loader name when invoked', () => {
         const { stdout, stderr } = run(__dirname, ['loader'], false);
         expect(stdout).toBeTruthy();
         expect(stderr).toBeFalsy();
         expect(stdout).toContain(firstPrompt);
+        done();
     });
 
     it('should scaffold loader template with a given name', async () => {
@@ -40,7 +42,9 @@ describe('loader command', () => {
 
         // Test regressively files are scaffolded
         const files = ['package.json', 'yarn.lock', 'examples', 'src', 'test', 'src/index.js', 'examples/simple/webpack.config.js'];
-
+        readdirSync(join(__dirname, loaderName)).forEach((file) => {
+            console.log(file);
+        });
         files.forEach((file) => {
             console.log(file);
             expect(existsSync(join(__dirname, loaderName, file))).toBeTruthy();
