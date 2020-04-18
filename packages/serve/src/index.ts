@@ -17,12 +17,13 @@ export default function serve(): void {
     const filteredArgs = process.argv.filter((arg) => arg != 'serve');
     const parsedDevServerArgs = cli.argParser(devServer, filteredArgs);
     const devServerArgs = parsedDevServerArgs.opts();
-    const webpackArgs = cli.argParser(core, filteredArgs, false, process.title, cli.runHelp, cli.runVersion);
+    const parsedWebpackArgs = cli.argParser(core, parsedDevServerArgs.args, true, process.title, cli.runHelp, cli.runVersion);
+    const webpackArgs = parsedWebpackArgs.opts();
     const finalArgs = argsToCamelCase(devServerArgs || {});
 
     // pass along the 'hot' argument to the dev server if it exists
-    if (webpackArgs && webpackArgs.opts() && webpackArgs.opts().hot !== undefined) {
-        finalArgs['hot'] = webpackArgs.opts().hot;
+    if (webpackArgs && webpackArgs.hot !== undefined) {
+        finalArgs['hot'] = webpackArgs.hot;
     }
 
     Object.keys(finalArgs).forEach((arg) => {
@@ -31,12 +32,12 @@ export default function serve(): void {
         }
     });
 
-    if (webpackArgs.args.length > 0) {
-        process.stderr.write(`Unknown option: ${webpackArgs.args}`);
+    if (parsedWebpackArgs.args.length > 0) {
+        process.stderr.write(`Unknown option: ${parsedWebpackArgs.args}\n`);
         return;
     }
 
-    cli.getCompiler(webpackArgs.opts(), core).then((compiler): void => {
+    cli.getCompiler(webpackArgs, core).then((compiler): void => {
         startDevServer(compiler, finalArgs);
     });
 }
