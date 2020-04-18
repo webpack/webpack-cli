@@ -47,3 +47,7 @@ junit.xml
 
 #typescript source maps
 packages/**/*.map
+
+# ignore scaffolded files due to tests of init
+__tests__/init/*
+!__tests__/init/**/*.test.js
