@@ -3,7 +3,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { runInitWithAnswers } = require('../../../../../test/utils/test-utils');
+const { runPromptWithAnswers } = require('../../../../../test/utils/test-utils');
 const firstPrompt = 'Will your application have multiple bundles?';
 
 const ENTER = '\x0D';
@@ -12,7 +12,7 @@ jest.setTimeout(200000);
 
 describe('init', () => {
     it('should scaffold when given answers', async () => {
-        const stdout = await runInitWithAnswers(__dirname, ['N', ENTER, ENTER, ENTER, ENTER, ENTER, ENTER, ENTER]);
+        const stdout = await runPromptWithAnswers(__dirname, ['N', ENTER, ENTER, ENTER, ENTER, ENTER, ENTER, ENTER], ['init']);
 
         expect(stdout).toBeTruthy();
         expect(stdout).toContain(firstPrompt);

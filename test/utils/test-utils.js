@@ -86,8 +86,8 @@ function runAndGetWatchProc(testCase, args = [], setOutput = true) {
  * @param {string} location location of current working directory
  * @param {string[]} answers answers to be passed to stdout for inquirer question
  */
-const runInitWithAnswers = async (location, answers) => {
-    const runner = runAndGetWatchProc(location, ['init'], false);
+const runPromptWithAnswers = async (location, answers, args) => {
+    const runner = runAndGetWatchProc(location, args, false);
     runner.stdin.setDefaultEncoding('utf-8');
 
     // Simulate answers by sending the answers after waiting for 2s
@@ -240,7 +240,7 @@ module.exports = {
     runServe,
     runAndGetWatchProc,
     extractSummary,
-    runInitWithAnswers,
+    runPromptWithAnswers,
     appendDataIfFileExists,
     copyFile,
     copyFileAsync,
