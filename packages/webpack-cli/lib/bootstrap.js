@@ -44,17 +44,10 @@ const resolveNegatedArgs = (args) => {
 
 async function runCLI(cli, commandIsUsed) {
     let args;
-    const parsedArgs = argParser(core, process.argv, false, process.title, cli.runHelp, cli.runVersion);
-
-    if (parsedArgs.args.includes('help')) {
-        cli.runHelp(process.argv);
-        process.exit(0);
-    }
-
-    if (parsedArgs.args.includes('version')) {
-        cli.runVersion();
-        process.exit(0);
-    }
+    const runVersion = () => {
+        cli.runVersion(commandIsUsed);
+    };
+    const parsedArgs = argParser(core, process.argv, false, process.title, cli.runHelp, runVersion);
 
     if (commandIsUsed) {
         commandIsUsed.defaultOption = true;

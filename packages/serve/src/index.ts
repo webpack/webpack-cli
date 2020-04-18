@@ -17,7 +17,7 @@ export default function serve(): void {
     const filteredArgs = process.argv.filter((arg) => arg != 'serve');
     const parsedDevServerArgs = cli.argParser(devServer, filteredArgs);
     const devServerArgs = parsedDevServerArgs.opts();
-    const parsedWebpackArgs = cli.argParser(core, parsedDevServerArgs.args, true, process.title, cli.runHelp, cli.runVersion);
+    const parsedWebpackArgs = cli.argParser(core, parsedDevServerArgs.args, true, process.title);
     const webpackArgs = parsedWebpackArgs.opts();
     const finalArgs = argsToCamelCase(devServerArgs || {});
 

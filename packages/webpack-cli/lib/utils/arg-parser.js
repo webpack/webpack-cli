@@ -17,7 +17,7 @@ function argParser(options, args, argsOnly = false, name = '', helpFunction = un
     // Use customized version output if available
     if (versionFunction) {
         parser.on('option:version', () => {
-            versionFunction(args);
+            versionFunction();
             process.exit(0);
         });
     }
