@@ -24,7 +24,7 @@
   ],
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "clean": "del-cli \"*.tsbuildinfo\" \"packages/**/*.tsbuildinfo\" \"packages/!(webpack-cli)/lib/!(*.tpl)\"",
+    "clean": "del-cli \"*.tsbuildinfo\" \"packages/**/*.tsbuildinfo\" \"packages/!(webpack-cli)/lib/!(*.tpl)\" \"**/.yo-rc.json\"",
     "prebuild": "yarn clean",
     "build": "tsc --build",
     "watch": "tsc --build --watch",
