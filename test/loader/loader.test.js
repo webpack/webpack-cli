@@ -12,7 +12,7 @@ const loaderPath = join(__dirname, loaderName);
 const firstPrompt = '? Loader name (my-loader)';
 
 // Since scaffolding is time consuming
-jest.setTimeout(200000);
+jest.setTimeout(300000);
 
 describe('loader command', () => {
     beforeAll(() => {
