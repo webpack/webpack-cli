@@ -32,7 +32,7 @@ describe('plugin command', () => {
         const files = ['package.json', 'yarn.lock', 'examples', 'src', 'test', 'src/index.js', 'examples/simple/webpack.config.js'];
         // eslint-disable-next-line prettier/prettier
         files.forEach((file) => {
-            expect(existsSync(join(__dirname, `${pluginName}/${file}`))).toBeTruthy();
+            expect(existsSync(join(__dirname, pluginName, file))).toBeTruthy();
         });
     });
 });
