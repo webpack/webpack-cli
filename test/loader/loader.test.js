@@ -29,7 +29,6 @@ describe('loader command', (done) => {
         expect(stdout).toBeTruthy();
         expect(stderr).toBeFalsy();
         expect(stdout).toContain(firstPrompt);
-        done();
     });
 
     it('should scaffold loader template with a given name', async () => {
