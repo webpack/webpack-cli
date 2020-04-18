@@ -29,6 +29,7 @@ describe('plugin command', () => {
         const files = ['package.json', 'yarn.lock', 'examples', 'src', 'test', 'src/index.js', 'examples/simple/webpack.config.js'];
 
         files.forEach((file) => {
+            console.log(file);
             expect(existsSync(join(__dirname, pluginName, file))).toBeTruthy();
         });
     });
