@@ -62,7 +62,7 @@ async function runCLI(cli, commandIsUsed) {
         return await cli.runCommand(commandIsUsed, ...args);
     } else {
         try {
-            if (parsedArgs.args.length > 0) {
+            if (parsedArgs.args.length > 1) {
                 resolveNegatedArgs(parsedArgs.args);
                 parsedArgs.args
                     .filter((e) => e)
@@ -73,6 +73,12 @@ async function runCLI(cli, commandIsUsed) {
                 return;
             }
             const parsedArgsOpts = parsedArgs.opts();
+            // handle the default webpack entry CLI argument, where instead
+            // of doing 'webpack-cli --entry ./index.js' you can simply do
+            // 'webpack-cli ./index.js'
+            if (parsedArgs.args.length === 1) {
+                parsedArgsOpts.entry = parsedArgs.args[0];
+            }
             const result = await cli.run(parsedArgsOpts, core);
             if (!result) {
                 return;
