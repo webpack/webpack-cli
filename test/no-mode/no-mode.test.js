@@ -38,10 +38,11 @@ describe('no-mode flag', () => {
         });
     });
 
-    it('should load a production config when --mode=production & --no-mode are passed', (done) => {
+    it('should load a none config when --mode=production is passed before --no-mode', (done) => {
         const { stderr, stdout } = run(__dirname, ['--mode', 'production', '--no-mode']);
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
+        expect(stdout).not.toContain('main.js.map');
 
         stat(resolve(__dirname, './bin/main.js'), (err, stats) => {
             expect(err).toBe(null);
@@ -50,10 +51,11 @@ describe('no-mode flag', () => {
         });
     });
 
-    it('should load a development config when --mode=development and --no-mode are passed', (done) => {
-        const { stderr, stdout } = run(__dirname, ['--mode', 'development', '--no-mode']);
+    it('should load a none config when --mode=production is passed after --no-mode', (done) => {
+        const { stderr, stdout } = run(__dirname, ['--no-mode', '--mode', 'production']);
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
+        expect(stdout).toContain('main.js.map');
 
         stat(resolve(__dirname, './bin/main.js'), (err, stats) => {
             expect(err).toBe(null);

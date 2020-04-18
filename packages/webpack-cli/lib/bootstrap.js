@@ -72,7 +72,8 @@ async function runCLI(cli, commandIsUsed) {
                 cliExecuter();
                 return;
             }
-            const result = await cli.run(parsedArgs.opts(), core);
+            const parsedArgsOpts = parsedArgs.opts();
+            const result = await cli.run(parsedArgsOpts, core);
             if (!result) {
                 return;
             }
