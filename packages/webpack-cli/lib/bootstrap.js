@@ -44,7 +44,7 @@ const resolveNegatedArgs = (args) => {
 
 async function runCLI(cli, commandIsUsed) {
     let args;
-    const parsedArgs = argParser(core, process.argv, process.title, cli.runHelp, cli.runVersion);
+    const parsedArgs = argParser(core, process.argv, false, process.title, cli.runHelp, cli.runVersion);
 
     if (parsedArgs.args.includes('help')) {
         cli.runHelp(process.argv);

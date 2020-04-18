@@ -6,8 +6,10 @@ const commander = require('commander');
  *
  * @param {object[]} options Array of objects with details about flags
  * @param {string[]} args process.argv or it's subset
+ * @param {boolean} argsOnly false if all of process.argv has been provided, true if
+ * args is only a subset of process.argv that removes the first couple elements
  */
-function argParser(options, args, name = '', helpFunction = undefined, versionFunction = undefined) {
+function argParser(options, args, argsOnly = false, name = '', helpFunction = undefined, versionFunction = undefined) {
     const parser = new commander.Command();
     // Set parser name
     parser.name(name);
@@ -34,12 +36,19 @@ function argParser(options, args, name = '', helpFunction = undefined, versionFu
     // Register options on the parser
     options.reduce((parserInstance, option) => {
         const flags = option.alias ? `-${option.alias}, --${option.name}` : `--${option.name}`;
-        const flagsWithType = option.type !== Boolean ? flags + ' [type]' : flags;
+        const flagsWithType = option.type !== Boolean ? flags + ' <type>' : flags;
         parserInstance.option(flagsWithType, option.description, option.defaultValue);
         return parserInstance;
     }, parser);
 
-    return parser.parse(args);
+    // if we are parsing a subset of process.argv that includes
+    // only the arguments themselves (e.g. ['--option', 'value'])
+    // then we need from: 'user' passed into commander parse
+    // otherwise we are parsing a full process.argv
+    // (e.g. ['node', '/path/to/...', '--option', 'value'])
+    const parseOptions = argsOnly ? { from: 'user' } : {};
+
+    return parser.parse(args, parseOptions);
 }
 
 module.exports = argParser;
