@@ -21,7 +21,7 @@ describe('loader command', () => {
     });
 
     it('should scaffold loader template with a given name', async () => {
-        const stdout = await runPromptWithAnswers(__dirname, [loaderName, ENTER], ['loader']);
+        const stdout = await runPromptWithAnswers(__dirname, ['loader'], [loaderName, ENTER]);
 
         expect(stdout).toContain(firstPrompt);
 
