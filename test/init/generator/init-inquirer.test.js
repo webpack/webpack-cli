@@ -1,18 +1,29 @@
-/* eslint-disable node/no-unpublished-require */
 'use strict';
 
 const fs = require('fs');
 const path = require('path');
-const { runPromptWithAnswers } = require('../../../../../test/utils/test-utils');
+const mkdirp = require('mkdirp');
+const rimraf = require('rimraf');
+const { runPromptWithAnswers } = require('../../utils/test-utils');
 const firstPrompt = 'Will your application have multiple bundles?';
 
 const ENTER = '\x0D';
+const genPath = path.join(__dirname, 'test-assets');
 
 jest.setTimeout(200000);
 
 describe('init', () => {
+    beforeAll(() => {
+        rimraf.sync(genPath);
+        mkdirp.sync(genPath);
+    });
+
+    afterAll(() => {
+        rimraf.sync(genPath);
+    });
+
     it('should scaffold when given answers', async () => {
-        const stdout = await runPromptWithAnswers(__dirname, ['init'], ['N', ENTER, ENTER, ENTER, ENTER, ENTER, ENTER, ENTER]);
+        const stdout = await runPromptWithAnswers(genPath, ['init'], ['N', ENTER, ENTER, ENTER, ENTER, ENTER, ENTER, ENTER]);
 
         expect(stdout).toBeTruthy();
         expect(stdout).toContain(firstPrompt);
@@ -21,7 +32,7 @@ describe('init', () => {
         const files = ['./sw.js', './package.json', './yarn.lock', './src/index.js'];
         // eslint-disable-next-line prettier/prettier
         files.forEach((file) => {
-            expect(fs.existsSync(path.join(__dirname, file))).toBeTruthy();
+            expect(fs.existsSync(path.join(genPath, file))).toBeTruthy();
         });
     });
 });

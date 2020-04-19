@@ -1,22 +1,34 @@
-/* eslint-disable node/no-unpublished-require */
 'use strict';
 
-const firstPrompt = 'Will your application have multiple bundles?';
 const fs = require('fs');
+const mkdirp = require('mkdirp');
+const rimraf = require('rimraf');
 const { join } = require('path');
-const { run } = require('../../../../../test/utils/test-utils');
+const { run } = require('../..//utils/test-utils');
+
+const firstPrompt = 'Will your application have multiple bundles?';
+const genPath = join(__dirname, 'test-assets');
 
 jest.setTimeout(200000);
 describe('init auto flag', () => {
+    beforeAll(() => {
+        rimraf.sync(genPath);
+        mkdirp.sync(genPath);
+    });
+
+    afterAll(() => {
+        rimraf.sync(genPath);
+    });
+
     it('should prompt with w/o auto flag', () => {
-        const { stdout, stderr } = run(__dirname, ['init'], false);
+        const { stdout, stderr } = run(genPath, ['init'], false);
         expect(stdout).toBeTruthy();
         expect(stderr).toBeFalsy();
         expect(stdout).toContain(firstPrompt);
     });
 
     it('should scaffold and not prompt with auto flag', () => {
-        const { stdout } = run(__dirname, ['init', '--auto'], false);
+        const { stdout } = run(genPath, ['init', '--auto'], false);
         // Test no prompts are present
         expect(stdout).toBeTruthy();
         expect(stdout).not.toContain(firstPrompt);
@@ -25,7 +37,7 @@ describe('init auto flag', () => {
         const files = ['./sw.js', './package.json', './yarn.lock', './src/index.js'];
         // eslint-disable-next-line prettier/prettier
         files.forEach((file) => {
-            expect(fs.existsSync(join(__dirname, file))).toBeTruthy();
+            expect(fs.existsSync(join(genPath, file))).toBeTruthy();
         });
     });
 });
