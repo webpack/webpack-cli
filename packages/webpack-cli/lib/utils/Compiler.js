@@ -2,6 +2,8 @@ const webpack = require('webpack');
 const logger = require('./logger');
 const { cyanBright, greenBright } = require('chalk');
 const { CompilerOutput } = require('./CompilerOutput');
+const os = require('os');
+const readline = require('readline');
 
 class Compiler {
     constructor() {
@@ -20,8 +22,8 @@ class Compiler {
                 process.stdout.write('\n');
                 const defaultProgressPluginHandler = (percent, msg) => {
                     percent = Math.floor(percent * 100);
-                    process.stdout.clearLine();
-                    process.stdout.cursorTo(0);
+                    process.stdout.write(os.EOL);
+                    readline.cursorTo(process.stdout, 0);
                     if (percent !== undefined) {
                         process.stdout.write(' (');
                         for (let i = 0; i <= 100; i += 10) {
@@ -54,7 +56,7 @@ class Compiler {
             }
         });
 
-        if (outputOptions.infoVerbosity === 'verbose') {
+        if (outputOptions.stats === 'verbose') {
             const resolveCompilationName = (compilation) => {
                 return compilation.name ? compilation.name : '';
             };
@@ -78,7 +80,7 @@ class Compiler {
     }
 
     generateOutput(outputOptions, stats) {
-        this.output.generateRawOutput(stats, this.compilerOptions);
+        this.output.generateRawOutput(stats, outputOptions);
         process.stdout.write('\n');
         if (outputOptions.watch) {
             logger.info('watching files for updates...');

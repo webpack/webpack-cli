@@ -15,16 +15,12 @@ class StatsGroup extends GroupHelper {
     resolveOptions() {
         if (this.args.verbose && this.args.stats) {
             logger.warn('Conflict between "verbose" and "stats" options. Using verbose.');
-            this.opts.option.stats = {
-                verbose: true,
-            };
+            this.opts.outputOptions.stats = 'verbose';
         } else {
             if (this.args.verbose) {
-                this.opts.option.stats = {
-                    verbose: true,
-                };
+                this.opts.outputOptions.stats = 'verbose';
             } else {
-                this.opts.options.stats = this.args.stats;
+                this.opts.outputOptions.stats = this.args.stats;
             }
         }
         if (this.args.json) {

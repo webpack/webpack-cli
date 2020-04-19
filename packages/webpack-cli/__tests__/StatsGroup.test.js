@@ -11,7 +11,7 @@ describe('StatsGroup', function () {
                 ]);
 
                 const result = statsGroup.run();
-                expect(result.options.stats).toEqual(option);
+                expect(result.outputOptions.stats).toEqual(option);
             });
         });
     }
