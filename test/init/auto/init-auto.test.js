@@ -3,7 +3,7 @@
 const fs = require('fs');
 const rimraf = require('rimraf');
 const { join } = require('path');
-const { run } = require('../..//utils/test-utils');
+const { run } = require('../../utils/test-utils');
 
 const firstPrompt = 'Will your application have multiple bundles?';
 const genPath = join(__dirname, 'test-assets');
