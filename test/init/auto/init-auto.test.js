@@ -1,7 +1,6 @@
 'use strict';
 
 const fs = require('fs');
-const mkdirp = require('mkdirp');
 const rimraf = require('rimraf');
 const { join } = require('path');
 const { run } = require('../..//utils/test-utils');
@@ -13,7 +12,7 @@ jest.setTimeout(200000);
 describe('init auto flag', () => {
     beforeAll(() => {
         rimraf.sync(genPath);
-        mkdirp.sync(genPath);
+        fs.mkdirSync(genPath);
     });
 
     afterAll(() => {

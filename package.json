@@ -121,7 +121,6 @@
     "jest-watch-typeahead": "^0.4.2",
     "lerna": "^3.20.2",
     "lint-staged": "^10.0.8",
-    "mkdirp": "^1.0.4",
     "prettier": "^2.0.2",
     "readable-stream": "^3.6.0",
     "rimraf": "^3.0.2",

@@ -2,7 +2,6 @@
 
 const fs = require('fs');
 const path = require('path');
-const mkdirp = require('mkdirp');
 const rimraf = require('rimraf');
 const { runPromptWithAnswers } = require('../../utils/test-utils');
 const firstPrompt = 'Will your application have multiple bundles?';
@@ -15,7 +14,7 @@ jest.setTimeout(200000);
 describe('init', () => {
     beforeAll(() => {
         rimraf.sync(genPath);
-        mkdirp.sync(genPath);
+        fs.mkdirSync(genPath);
     });
 
     afterAll(() => {
