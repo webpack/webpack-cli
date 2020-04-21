@@ -23,7 +23,6 @@ describe('loader command', () => {
         rimraf.sync(loaderPath);
     });
 
-describe('loader command', (done) => {
     it('Should ask the loader name when invoked', () => {
         const { stdout, stderr } = run(__dirname, ['loader'], false);
         expect(stdout).toBeTruthy();

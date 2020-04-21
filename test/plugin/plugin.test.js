@@ -1,15 +1,25 @@
 const { existsSync } = require('fs');
 const { join } = require('path');
+const rimraf = require('rimraf');
 const { run, runPromptWithAnswers } = require('../utils/test-utils');
 
 const ENTER = '\x0D';
 const firstPrompt = '? Plugin name';
 const pluginName = 'test-plugin';
+const pluginPath = join(__dirname, pluginName);
 
 // Since scaffolding is time consuming
 jest.setTimeout(200000);
 
 describe('plugin command', () => {
+    beforeAll(() => {
+        rimraf.sync(pluginPath);
+    });
+
+    afterAll(() => {
+        rimraf.sync(pluginPath);
+    });
+
     it('Should ask the plugin name when invoked', () => {
         const { stdout, stderr } = run(__dirname, ['plugin'], false);
         expect(stdout).toBeTruthy();
