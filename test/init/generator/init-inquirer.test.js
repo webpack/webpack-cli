@@ -26,10 +26,7 @@ describe('init', () => {
 
         expect(stdout).toBeTruthy();
         expect(stdout).toContain(firstPrompt);
-        // console.log({ stdout });
-        // fs.readdirSync(genPath).forEach((file) => {
-        //     console.log(file);
-        // });
+
         // Test regressively files are scaffolded
         const files = ['./sw.js', './package.json', './src/index.js', './yarn.lock'];
         // eslint-disable-next-line prettier/prettier
