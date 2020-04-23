@@ -75,7 +75,6 @@ function runAndGetWatchProc(testCase, args = [], setOutput = true, input = '', f
 
     const options = {
         cwd,
-        input,
         reject: false,
         stdio: ENABLE_LOG_COMPILATION && !forcePipe ? 'inherit' : 'pipe',
     };

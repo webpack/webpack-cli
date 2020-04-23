@@ -133,15 +133,11 @@ function runMigration(currentConfigPath: string, outputConfigPath: string): Prom
                             return;
                         }
 
-                        runPrettier(outputConfigPath, result, (err: object): void => {
-                            if (err) {
-                                throw err;
-                            }
-                        });
+                        runPrettier(outputConfigPath, result);
 
                         if (answer.confirmValidation) {
-                            const outputPath = await import(outputConfigPath);
-                            const webpackOptionsValidationErrors: string[] = validate(outputPath);
+                            const outputConfig = (await import(outputConfigPath)).default;
+                            const webpackOptionsValidationErrors: string[] = validate(outputConfig);
 
                             if (webpackOptionsValidationErrors.length) {
                                 console.error(chalk.red("\n✖ Your configuration validation wasn't successful \n"));
