@@ -1,4 +1,5 @@
 const commander = require('commander');
+const logger = require('./logger');
 
 /**
  *  Creates Argument parser corresponding to the supplied options
@@ -38,6 +39,10 @@ function argParser(options, args, argsOnly = false, name = '', helpFunction = un
         const flags = option.alias ? `-${option.alias}, --${option.name}` : `--${option.name}`;
         const flagsWithType = option.type !== Boolean ? flags + ' <value>' : flags;
         parserInstance.option(flagsWithType, option.description, option.defaultValue);
+        if (option.type === Boolean) {
+            const negatedFlag = `--no-${option.name}`;
+            parserInstance.option(negatedFlag, `negates ${option.name}`);
+        }
         return parserInstance;
     }, parser);
 
@@ -48,7 +53,38 @@ function argParser(options, args, argsOnly = false, name = '', helpFunction = un
     // (e.g. ['node', '/path/to/...', '--option', 'value'])
     const parseOptions = argsOnly ? { from: 'user' } : {};
 
-    return parser.parse(args, parseOptions);
+    const result = parser.parse(args, parseOptions);
+    const opts = result.opts();
+
+    const unknownArgs = result.args;
+
+    args.forEach((arg) => {
+        const flagName = arg.slice(5);
+        const option = options.find((opt) => opt.name === flagName);
+        const flag = `--${flagName}`;
+        const flagUsed = args.includes(flag) && !unknownArgs.includes(flag);
+        let alias = '';
+        let aliasUsed = false;
+        if (option && option.alias) {
+            alias = `-${option.alias}`;
+            aliasUsed = args.includes(alias) && !unknownArgs.includes(alias);
+        }
+
+        // this is a negated flag that is not an unknown flag, but the flag
+        // it is negating was also provided
+        if (arg.startsWith('--no-') && (flagUsed || aliasUsed) && !unknownArgs.includes(arg)) {
+            logger.warn(
+                `You provided both ${
+                    flagUsed ? flag : alias
+                } and ${arg}. We will use only the last of these flags that you provided in your CLI arguments`,
+            );
+        }
+    });
+
+    return {
+        unknownArgs,
+        opts,
+    };
 }
 
 module.exports = argParser;

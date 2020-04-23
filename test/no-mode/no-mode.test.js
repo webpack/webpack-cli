@@ -40,7 +40,9 @@ describe('no-mode flag', () => {
 
     it('should load a none config when --mode=production is passed before --no-mode', (done) => {
         const { stderr, stdout } = run(__dirname, ['--mode', 'production', '--no-mode']);
-        expect(stderr).toBeFalsy();
+        expect(stderr).toContain(
+            'You provided both --mode and --no-mode. We will use only the last of these flags that you provided in your CLI arguments',
+        );
         expect(stdout).toBeTruthy();
         expect(stdout).not.toContain('main.js.map');
 
@@ -53,7 +55,9 @@ describe('no-mode flag', () => {
 
     it('should load a none config when --mode=production is passed after --no-mode', (done) => {
         const { stderr, stdout } = run(__dirname, ['--no-mode', '--mode', 'production']);
-        expect(stderr).toBeFalsy();
+        expect(stderr).toContain(
+            'You provided both --mode and --no-mode. We will use only the last of these flags that you provided in your CLI arguments',
+        );
         expect(stdout).toBeTruthy();
         expect(stdout).toContain('main.js.map');
 

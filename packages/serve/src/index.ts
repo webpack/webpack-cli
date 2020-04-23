@@ -1,5 +1,6 @@
 import { devServer } from 'webpack-dev-server/bin/cli-flags';
 import WebpackCLI from 'webpack-cli';
+import logger from 'webpack-cli/lib/utils/logger';
 import startDevServer from './startDevServer';
 import argsToCamelCase from './args-to-camel-case';
 
@@ -16,9 +17,9 @@ export default function serve(): void {
 
     const filteredArgs = process.argv.filter((arg) => arg != 'serve');
     const parsedDevServerArgs = cli.argParser(devServer, filteredArgs);
-    const devServerArgs = parsedDevServerArgs.opts();
-    const parsedWebpackArgs = cli.argParser(core, parsedDevServerArgs.args, true, process.title);
-    const webpackArgs = parsedWebpackArgs.opts();
+    const devServerArgs = parsedDevServerArgs.opts;
+    const parsedWebpackArgs = cli.argParser(core, parsedDevServerArgs.unknownArgs, true, process.title);
+    const webpackArgs = parsedWebpackArgs.opts;
     const finalArgs = argsToCamelCase(devServerArgs || {});
 
     // pass along the 'hot' argument to the dev server if it exists
@@ -32,8 +33,12 @@ export default function serve(): void {
         }
     });
 
-    if (parsedWebpackArgs.args.length > 0) {
-        process.stderr.write(`Unknown option: ${parsedWebpackArgs.args}\n`);
+    if (parsedWebpackArgs.unknownArgs.length > 0) {
+        parsedWebpackArgs.unknownArgs
+            .filter((e) => e)
+            .forEach((unknown) => {
+                logger.warn('Unknown argument:', unknown);
+            });
         return;
     }
 
