@@ -1,59 +1,59 @@
 'use strict';
-const { statSync } = require('fs');
-const { join, resolve } = require('path');
-const rimraf = require('rimraf');
+const { stat } = require('fs');
+const { resolve } = require('path');
 const { run } = require('../../utils/test-utils');
 
 describe('output flag named bundles', () => {
-    const clean = () => {
-        rimraf.sync(join(__dirname, 'bin'));
-        rimraf.sync(join(__dirname, 'dist'));
-        rimraf.sync(join(__dirname, 'binary'));
-    };
-
-    beforeEach(clean);
-
-    afterAll(clean);
-
-    it('should output file given as flag instead of in configuration', () => {
-        const { stderr } = run(__dirname, ['-c', resolve(__dirname, 'webpack.config.js'), '--output', './binary/a.bundle.js'], false);
-        expect(stderr).toBeFalsy();
-
-        const stats = statSync(resolve(__dirname, './binary/a.bundle.js'));
-        expect(stats.isFile()).toBe(true);
+    it('should output file given as flag instead of in configuration', (done) => {
+        run(__dirname, ['-c', resolve(__dirname, 'webpack.config.js'), '--output', './binary/a.bundle.js'], false);
+        stat(resolve(__dirname, './binary/a.bundle.js'), (err, stats) => {
+            expect(err).toBe(null);
+            expect(stats.isFile()).toBe(true);
+            done();
+        });
     });
 
-    it('should create multiple bundles with an overriding flag', () => {
-        const { stderr } = run(
-            __dirname,
-            ['-c', resolve(__dirname, 'webpack.single.config.js'), '--output', './bin/[name].bundle.js'],
-            false,
-        );
-        expect(stderr).toBeFalsy();
+    it('should create multiple bundles with an overriding flag', (done) => {
+        run(__dirname, ['-c', resolve(__dirname, 'webpack.single.config.js'), '--output', './bin/[name].bundle.js'], false);
 
-        let stats = statSync(resolve(__dirname, './bin/b.bundle.js'));
-        expect(stats.isFile()).toBe(true);
-        stats = statSync(resolve(__dirname, './bin/c.bundle.js'));
-        expect(stats.isFile()).toBe(true);
+        stat(resolve(__dirname, './bin/b.bundle.js'), (err, stats) => {
+            expect(err).toBe(null);
+            expect(stats.isFile()).toBe(true);
+        });
+        stat(resolve(__dirname, './bin/c.bundle.js'), (err, stats) => {
+            expect(err).toBe(null);
+            expect(stats.isFile()).toBe(true);
+        });
+        done();
     });
 
-    it('should not throw error on same bundle name for multiple entries with defaults', () => {
+    it('should not throw error on same bundle name for multiple entries with defaults', (done) => {
         const { stderr } = run(__dirname, ['-c', resolve(__dirname, 'webpack.defaults.config.js'), '--defaults'], false);
-        expect(stderr).toBeFalsy();
 
-        let stats = statSync(resolve(__dirname, './dist/b.main.js'));
-        expect(stats.isFile()).toBe(true);
-        stats = statSync(resolve(__dirname, './dist/c.main.js'));
-        expect(stats.isFile()).toBe(true);
+        expect(stderr).toBe('');
+
+        stat(resolve(__dirname, './dist/b.main.js'), (err, stats) => {
+            expect(err).toBe(null);
+            expect(stats.isFile()).toBe(true);
+        });
+        stat(resolve(__dirname, './dist/c.main.js'), (err, stats) => {
+            expect(err).toBe(null);
+            expect(stats.isFile()).toBe(true);
+        });
+        done();
     });
 
-    it('should successfully compile multiple entries', () => {
-        const { stderr } = run(__dirname, ['-c', resolve(__dirname, 'webpack.multiple.config.js')], false);
-        expect(stderr).toBeFalsy();
+    it('should successfully compile multiple entries', (done) => {
+        run(__dirname, ['-c', resolve(__dirname, 'webpack.multiple.config.js')], false);
 
-        let stats = statSync(resolve(__dirname, './bin/b.bundle.js'));
-        expect(stats.isFile()).toBe(true);
-        stats = statSync(resolve(__dirname, './bin/c.bundle.js'));
-        expect(stats.isFile()).toBe(true);
+        stat(resolve(__dirname, './bin/b.bundle.js'), (err, stats) => {
+            expect(err).toBe(null);
+            expect(stats.isFile()).toBe(true);
+        });
+        stat(resolve(__dirname, './bin/c.bundle.js'), (err, stats) => {
+            expect(err).toBe(null);
+            expect(stats.isFile()).toBe(true);
+        });
+        done();
     });
 });
