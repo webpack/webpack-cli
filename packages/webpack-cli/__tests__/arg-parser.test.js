@@ -30,6 +30,14 @@ const basicOptions = [
         description: 'string flag',
         defaultValue: 'default-value',
     },
+    {
+        name: 'custom-type-flag',
+        usage: '--custom-type-flag <value>',
+        type: (val) => {
+            return val.split(',');
+        },
+        description: 'custom type flag',
+    },
 ];
 
 const helpAndVersionOptions = basicOptions.slice(0);
@@ -153,6 +161,16 @@ describe('arg-parser', () => {
         expect(res.unknownArgs).toEqual(['--unknown-arg', 'no-leading-dashes']);
         expect(res.opts).toEqual({
             boolFlag: true,
+            stringFlagWithDefault: 'default-value',
+        });
+        expect(warnMock.mock.calls.length).toEqual(0);
+    });
+
+    it('handles custom type args', () => {
+        const res = argParser(basicOptions, ['--custom-type-flag', 'val1,val2,val3'], true);
+        expect(res.unknownArgs.length).toEqual(0);
+        expect(res.opts).toEqual({
+            customTypeFlag: ['val1', 'val2', 'val3'],
             stringFlagWithDefault: 'default-value',
         });
         expect(warnMock.mock.calls.length).toEqual(0);

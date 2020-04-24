@@ -40,7 +40,7 @@ function argParser(options, args, argsOnly = false, name = '', helpFunction = un
         const flagsWithType = option.type !== Boolean ? flags + ' <value>' : flags;
         if (option.type !== Boolean && option.type !== String) {
             // in this case the type is a parsing function
-            parserInstance.option(flagsWithType, option.description, option.defaultValue, option.type);
+            parserInstance.option(flagsWithType, option.description, option.type, option.defaultValue);
         } else {
             parserInstance.option(flagsWithType, option.description, option.defaultValue);
             if (option.type === Boolean) {
