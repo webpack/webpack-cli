@@ -23,7 +23,7 @@ function argParser(options, args, argsOnly = false, name = '', helpFunction = un
         });
     }
 
-    // Use customised help output is avaliable
+    // Use customized help output if available
     if (helpFunction) {
         parser.on('option:help', () => {
             helpFunction(args);
