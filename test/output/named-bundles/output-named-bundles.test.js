@@ -56,26 +56,4 @@ describe('output flag named bundles', () => {
         stats = statSync(resolve(__dirname, './bin/c.bundle.js'));
         expect(stats.isFile()).toBe(true);
     });
-
-    it('should output file in bin directory using default webpack config with warning for empty output value', () => {
-        const { stderr } = run(__dirname, ['--output='], false);
-        expect(stderr).toContain(
-            "You provided an empty output value. Falling back to the output value of your webpack config file, or './dist/' if none was provided",
-        );
-
-        const stats = statSync(resolve(__dirname, './bin/bundle.js'));
-        expect(stats.isFile()).toBe(true);
-    });
-
-    it('should output file in dist directory using default value with warning for empty output value', () => {
-        const { stderr } = run(__dirname, ['-c', resolve(__dirname, 'webpack.defaults.config.js'), '--defaults', '--output='], false);
-        expect(stderr).toContain(
-            "You provided an empty output value. Falling back to the output value of your webpack config file, or './dist/' if none was provided",
-        );
-
-        let stats = statSync(resolve(__dirname, './dist/b.main.js'));
-        expect(stats.isFile()).toBe(true);
-        stats = statSync(resolve(__dirname, './dist/c.main.js'));
-        expect(stats.isFile()).toBe(true);
-    });
 });
