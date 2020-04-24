@@ -81,6 +81,12 @@ function argParser(options, args, argsOnly = false, name = '', helpFunction = un
         }
     });
 
+    Object.keys(opts).forEach((key) => {
+        if (opts[key] === undefined) {
+            delete opts[key];
+        }
+    });
+
     return {
         unknownArgs,
         opts,
