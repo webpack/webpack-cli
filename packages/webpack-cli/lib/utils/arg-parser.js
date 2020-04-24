@@ -41,6 +41,7 @@ function argParser(options, args, argsOnly = false, name = '', helpFunction = un
         if (option.type === Boolean || option.type === String) {
             parserInstance.option(flagsWithType, option.description, option.defaultValue);
             if (option.type === Boolean) {
+                // commander requires explicitly adding the negated version of boolean flags
                 const negatedFlag = `--no-${option.name}`;
                 parserInstance.option(negatedFlag, `negates ${option.name}`);
             }
