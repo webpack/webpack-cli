@@ -1,6 +1,3 @@
-const logger = require('../utils/logger');
-const StatsGroup = require('../groups/StatsGroup');
-
 const HELP_GROUP = 'help';
 const CONFIG_GROUP = 'config';
 const BASIC_GROUP = 'basic';
@@ -255,13 +252,7 @@ module.exports = {
         {
             name: 'stats',
             usage: '--stats verbose',
-            type: (value) => {
-                if (StatsGroup.validOptions().includes(value)) {
-                    return value;
-                }
-                logger.warn('No value recognised for "stats" option');
-                return 'normal';
-            },
+            type: String,
             defaultValue: 'normal',
             group: DISPLAY_GROUP,
             description: 'It instructs webpack on how to treat the stats',
