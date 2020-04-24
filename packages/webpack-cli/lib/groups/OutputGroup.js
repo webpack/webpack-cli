@@ -1,5 +1,6 @@
 const path = require('path');
 const GroupHelper = require('../utils/GroupHelper');
+const logger = require('../utils/logger');
 
 class OutputGroup extends GroupHelper {
     constructor(options) {
@@ -27,10 +28,11 @@ class OutputGroup extends GroupHelper {
         const { args } = this;
         if (args) {
             const { output } = args;
-            // TODO: Remove comment before merge
-            // We need to show warning when empty output flag is supplied
-            // which is set to boolean true by commander
-            if (!output || output === true) {
+
+            if (!output) {
+                logger.warn(
+                    "You provided an empty output value. Falling back to the output value of your webpack config file, or './dist/' if none was provided",
+                );
                 return;
             }
             const outputInfo = path.parse(output);
