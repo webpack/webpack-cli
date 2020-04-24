@@ -194,7 +194,7 @@ export default function migrate(...args: string[]): void | Promise<void> {
             ])
             .then((ans: { confirmPath: boolean }): void | Promise<void> => {
                 if (!ans.confirmPath) {
-                    console.error(chalk.red('✖ ︎Migration aborted due no output path'));
+                    console.error(chalk.red('✖ ︎Migration aborted due to no output path'));
                     return;
                 }
                 outputConfigPath = path.resolve(process.cwd(), filePaths[0]);
