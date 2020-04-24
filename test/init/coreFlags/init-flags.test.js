@@ -1,8 +1,7 @@
-/* eslint-disable node/no-unpublished-require */
 'use strict';
 
 const firstPrompt = 'Will your application have multiple bundles?';
-const { run } = require('../../../../../test/utils/test-utils');
+const { run } = require('../../utils/test-utils');
 
 describe('init with core flags', () => {
     it('should output help with --help flag', () => {
