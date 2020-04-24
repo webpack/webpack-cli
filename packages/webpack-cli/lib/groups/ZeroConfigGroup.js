@@ -37,7 +37,7 @@ class ZeroConfigGroup extends GroupHelper {
 
             if (this.args.mode) {
                 if (this.args.mode !== PRODUCTION && this.args.mode !== DEVELOPMENT && this.args.mode !== NONE) {
-                    logger.warn('You provided an invalid value for "mode" option.');
+                    logger.warn('You provided an invalid value for "mode" option. Using "production" by default');
                     return PRODUCTION;
                 }
                 return this.args.mode;
