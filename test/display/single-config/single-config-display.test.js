@@ -1,7 +1,7 @@
 'use strict';
 
 const { run } = require('../../utils/test-utils');
-const PROGRESS_TEXT = 'building';
+const PROGRESS_TEXT = 'Compilation completed';
 const STATS_VERBOSE_TEXT = 'LOG from webpack.buildChunkGraph';
 
 describe('single config display test', () => {

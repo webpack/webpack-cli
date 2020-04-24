@@ -1,7 +1,7 @@
 'use strict';
 
 const { run } = require('../../utils/test-utils');
-const PROGRESS_TEXT = 'building';
+const PROGRESS_TEXT = 'Compilation completed';
 
 describe('multi config display output', () => {
     it('should display profiling information', () => {

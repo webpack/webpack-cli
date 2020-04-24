@@ -18,7 +18,7 @@ class Compiler {
         }
 
         compilation.hooks.beforeRun.tap('webpackProgress', () => {
-            if (outputOptions.progress) {
+            if (outputOptions.progress || progressPluginExists) {
                 process.stdout.write('\n');
                 const defaultProgressPluginHandler = (percent, msg) => {
                     percent = Math.floor(percent * 100);
@@ -36,7 +36,7 @@ class Compiler {
                         process.stdout.write(`) ${percent}% : `);
                         process.stdout.write(`${cyanBright(msg)}`);
                         if (percent === 100) {
-                            process.stdout.write(`${cyanBright('Complilation completed\n')}`);
+                            process.stdout.write(`${cyanBright('Compilation completed\n')}`);
                         }
                     }
                 };
