@@ -16,4 +16,17 @@ module.exports = {
     optimization: {
         minimize: true
     },
+
+    module: {
+        loaders: [
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                loader: 'babel',
+                query: {
+                    presets: ['@babel/preset-env'],
+                },
+            },
+        ],
+    },
 };

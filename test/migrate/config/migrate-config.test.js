@@ -38,15 +38,37 @@ describe('migrate command', () => {
 
     it('should prompt for config validation when an output path is provided', async () => {
         const { stdout } = await runAndGetWatchProc(__dirname, ['migrate', 'webpack.config.js', outputFile], false, 'y');
+        // should show the diff of the config file
+        expect(stdout).toContain('rules: [');
         expect(stdout).toContain('? Do you want to validate your configuration?');
     });
 
     it('should generate an updated config file when an output path is provided', async () => {
         const { stdout, stderr } = await runPromptWithAnswers(__dirname, ['migrate', 'webpack.config.js', outputFile], [ENTER, ENTER]);
         expect(stdout).toContain('? Do you want to validate your configuration?');
+        // should show the diff of the config file
+        expect(stdout).toContain('rules: [');
         expect(stderr).toBeFalsy();
 
         expect(fs.existsSync(outputFilePath)).toBeTruthy();
+        // the output file should be a valid config file
+        const config = require(outputFilePath);
+        expect(config.module.rules).toEqual([
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+
+                use: [
+                    {
+                        loader: 'babel-loader',
+
+                        options: {
+                            presets: ['@babel/preset-env'],
+                        },
+                    },
+                ],
+            },
+        ]);
     });
 
     it('should generate an updated config file and warn of an invalid webpack config', async () => {
