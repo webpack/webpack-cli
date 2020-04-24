@@ -262,6 +262,7 @@ module.exports = {
                 logger.warn('No value recognised for "stats" option');
                 return 'normal';
             },
+            defaultValue: 'normal',
             group: DISPLAY_GROUP,
             description: 'It instructs webpack on how to treat the stats',
             link: 'https://webpack.js.org/configuration/stats/#stats',

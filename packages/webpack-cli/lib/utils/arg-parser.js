@@ -38,10 +38,15 @@ function argParser(options, args, argsOnly = false, name = '', helpFunction = un
     options.reduce((parserInstance, option) => {
         const flags = option.alias ? `-${option.alias}, --${option.name}` : `--${option.name}`;
         const flagsWithType = option.type !== Boolean ? flags + ' <value>' : flags;
-        parserInstance.option(flagsWithType, option.description, option.defaultValue);
-        if (option.type === Boolean) {
-            const negatedFlag = `--no-${option.name}`;
-            parserInstance.option(negatedFlag, `negates ${option.name}`);
+        if (option.type !== Boolean && option.type !== String) {
+            // in this case the type is a parsing function
+            parserInstance.option(flagsWithType, option.description, option.defaultValue, option.type);
+        } else {
+            parserInstance.option(flagsWithType, option.description, option.defaultValue);
+            if (option.type === Boolean) {
+                const negatedFlag = `--no-${option.name}`;
+                parserInstance.option(negatedFlag, `negates ${option.name}`);
+            }
         }
         return parserInstance;
     }, parser);
