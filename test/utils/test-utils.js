@@ -91,7 +91,9 @@ function runAndGetWatchProc(testCase, args = [], setOutput = true, input = '', f
 /**
  * runInitWithAnswers
  * @param {string} location location of current working directory
+ * @param {string[]} args CLI args to pass in
  * @param {string[]} answers answers to be passed to stdout for inquirer question
+ * @param {boolean} waitForOutput whether to wait for stdout before writing the next answer
  */
 const runPromptWithAnswers = (location, args, answers, waitForOutput = false) => {
     const runner = runAndGetWatchProc(location, args, false, '', true);
