@@ -23,17 +23,14 @@ class GroupHelper {
 
     arrayToObject(arr) {
         if (Array.isArray(arr)) {
-            if (!arr) {
-                return;
-            }
             return arr.reduce((result, currentItem) => {
                 const key = Object.keys(currentItem)[0];
                 result[this.hyphenToUpperCase(key)] = currentItem[key];
                 return result;
             }, {});
-        } else {
-            return arr;
         }
+        if (!arr) return;
+        return arr;
     }
 
     // TODO: to re implement
