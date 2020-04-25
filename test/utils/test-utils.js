@@ -93,38 +93,69 @@ function runAndGetWatchProc(testCase, args = [], setOutput = true, input = '', f
  * @param {string} location location of current working directory
  * @param {string[]} answers answers to be passed to stdout for inquirer question
  */
-const runPromptWithAnswers = (location, args, answers) => {
+const runPromptWithAnswers = (location, args, answers, waitForOutput = false) => {
     const runner = runAndGetWatchProc(location, args, false, '', true);
     runner.stdin.setDefaultEncoding('utf-8');
 
-    // Simulate answers by sending the answers after waiting for 2s
-    const simulateAnswers = answers.reduce((prevAnswer, answer) => {
-        return prevAnswer.then(() => {
-            return new Promise((resolvePromise) => {
-                setTimeout(() => {
-                    runner.stdin.write(answer);
-                    resolvePromise();
-                }, 2000);
-            });
-        });
-    }, Promise.resolve());
+    const delay = 2000;
+    let outputTimeout;
+    if (waitForOutput) {
+        let currentAnswer = 0;
+        const writeAnswer = () => {
+            if (currentAnswer < answers.length) {
+                runner.stdin.write(answers[currentAnswer]);
+                currentAnswer++;
+            }
+        };
 
-    simulateAnswers.then(() => {
-        runner.stdin.end();
-    });
+        runner.stdout.pipe(
+            new Writable({
+                write(chunk, encoding, callback) {
+                    const output = chunk.toString('utf8');
+                    if (output) {
+                        if (outputTimeout) {
+                            clearTimeout(outputTimeout);
+                        }
+                        outputTimeout = setTimeout(writeAnswer, delay);
+                    }
+
+                    callback();
+                },
+            }),
+        );
+    } else {
+        // Simulate answers by sending the answers after waiting for 2s
+        answers.reduce((prevAnswer, answer) => {
+            return prevAnswer.then(() => {
+                return new Promise((resolvePromise) => {
+                    setTimeout(() => {
+                        runner.stdin.write(answer);
+                        resolvePromise();
+                    }, delay);
+                });
+            });
+        }, Promise.resolve());
+    }
 
     return new Promise((resolve) => {
         const obj = {};
         let stdoutDone = false;
         let stderrDone = false;
+        const complete = () => {
+            if (outputTimeout) {
+                clearTimeout(outputTimeout);
+            }
+            if (stdoutDone && stderrDone) {
+                runner.kill('SIGKILL');
+                resolve(obj);
+            }
+        };
+
         runner.stdout.pipe(
             concat((result) => {
                 stdoutDone = true;
                 obj.stdout = result.toString();
-                if (stderrDone) {
-                    runner.kill('SIGKILL');
-                    resolve(obj);
-                }
+                complete();
             }),
         );
 
@@ -132,10 +163,7 @@ const runPromptWithAnswers = (location, args, answers) => {
             concat((result) => {
                 stderrDone = true;
                 obj.stderr = result.toString();
-                if (stdoutDone) {
-                    runner.kill('SIGKILL');
-                    resolve(obj);
-                }
+                complete();
             }),
         );
     });
