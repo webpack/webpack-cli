@@ -58,15 +58,15 @@ class Compiler {
                 return compilation.name ? compilation.name : `${idx + 1}`;
             };
             if (outputOptions.watch) {
-                compilation.hooks.watchRun.tap('WebpackInfo', (compilation) => {
+                compilation.hooks.watchRun.tap('WebpackCLI', (compilation) => {
                     logger.info(`Compilation ${resolveCompilationName(compilation)} starting…`);
                 });
             } else {
-                compilation.hooks.beforeRun.tap('WebpackInfo', (compilation) => {
+                compilation.hooks.beforeRun.tap('WebpackCLI', (compilation) => {
                     logger.info(`Compilation ${resolveCompilationName(compilation)} starting…`);
                 });
             }
-            compilation.hooks.done.tap('WebpackInfo', (compilation) => {
+            compilation.hooks.done.tap('WebpackCLI', (compilation) => {
                 logger.info(`Compilation ${resolveCompilationName(compilation)} finished`);
             });
         }

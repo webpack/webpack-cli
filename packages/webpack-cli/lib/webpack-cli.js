@@ -4,7 +4,8 @@ const GroupHelper = require('./utils/GroupHelper');
 const { Compiler } = require('./utils/Compiler');
 const { groups, core } = require('./utils/cli-flags');
 const webpackMerge = require('webpack-merge');
-const commandArgs = require('command-line-args');
+const { toKebabCase } = require('./utils/helpers');
+const argParser = require('./utils/arg-parser');
 
 const defaultCommands = {
     init: 'init',
@@ -36,12 +37,12 @@ class WebpackCLI extends GroupHelper {
         this.outputConfiguration = {};
     }
     setMappedGroups(args, inlineOptions) {
-        const { _all } = args;
-        Object.keys(_all).forEach((key) => {
-            this.setGroupMap(key, _all[key], inlineOptions);
+        Object.keys(args).forEach((key) => {
+            this.setGroupMap(toKebabCase(key), args[key], inlineOptions);
         });
     }
     setGroupMap(key, val, inlineOptions) {
+        if (val === undefined) return;
         const opt = inlineOptions.find((opt) => opt.name === key);
         const groupName = opt.group;
         if (this.groupMap.has(groupName)) {
@@ -81,14 +82,18 @@ class WebpackCLI extends GroupHelper {
         return options;
     }
 
-    // It exposes "command-line-args" function
-    commandLineArgs(...args) {
-        return commandArgs(...args);
+    /**
+     * Expose commander argParser
+     * @param  {...any} args args for argParser
+     */
+    argParser(...args) {
+        return argParser(...args);
     }
 
     getCoreFlags() {
         return core;
     }
+
     /**
      * Based on the parsed keys, the function will import and create
      * a group that handles respective values

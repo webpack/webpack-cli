@@ -4,6 +4,8 @@ const fs = require('fs');
 const execa = require('execa');
 const { sync: spawnSync } = execa;
 const { Writable } = require('readable-stream');
+const concat = require('concat-stream');
+
 const WEBPACK_PATH = path.resolve(__dirname, '../../packages/webpack-cli/bin/cli.js');
 const ENABLE_LOG_COMPILATION = process.env.ENABLE_PIPE || false;
 
@@ -65,20 +67,79 @@ function runWatch({ testCase, args = [], setOutput = true, outputKillStr = 'Time
     });
 }
 
-function runAndGetWatchProc(testCase, args = [], setOutput = true) {
+function runAndGetWatchProc(testCase, args = [], setOutput = true, input = '', forcePipe = false) {
     const cwd = path.resolve(testCase);
 
     const outputPath = path.resolve(testCase, 'bin');
     const argsWithOutput = setOutput ? args.concat('--output', outputPath) : args;
 
-    const webpackProc = execa(WEBPACK_PATH, argsWithOutput, {
+    const options = {
         cwd,
         reject: false,
-        stdio: ENABLE_LOG_COMPILATION ? 'inherit' : 'pipe',
-    });
+        stdio: ENABLE_LOG_COMPILATION && !forcePipe ? 'inherit' : 'pipe',
+    };
+
+    // some tests don't work if the input option is an empty string
+    if (input) {
+        options.input = input;
+    }
+
+    const webpackProc = execa(WEBPACK_PATH, argsWithOutput, options);
 
     return webpackProc;
 }
+/**
+ * runInitWithAnswers
+ * @param {string} location location of current working directory
+ * @param {string[]} answers answers to be passed to stdout for inquirer question
+ */
+const runPromptWithAnswers = (location, args, answers) => {
+    const runner = runAndGetWatchProc(location, args, false, '', true);
+    runner.stdin.setDefaultEncoding('utf-8');
+
+    // Simulate answers by sending the answers after waiting for 2s
+    const simulateAnswers = answers.reduce((prevAnswer, answer) => {
+        return prevAnswer.then(() => {
+            return new Promise((resolvePromise) => {
+                setTimeout(() => {
+                    runner.stdin.write(answer);
+                    resolvePromise();
+                }, 2000);
+            });
+        });
+    }, Promise.resolve());
+
+    simulateAnswers.then(() => {
+        runner.stdin.end();
+    });
+
+    return new Promise((resolve) => {
+        const obj = {};
+        let stdoutDone = false;
+        let stderrDone = false;
+        runner.stdout.pipe(
+            concat((result) => {
+                stdoutDone = true;
+                obj.stdout = result.toString();
+                if (stderrDone) {
+                    runner.kill('SIGKILL');
+                    resolve(obj);
+                }
+            }),
+        );
+
+        runner.stderr.pipe(
+            concat((result) => {
+                stderrDone = true;
+                obj.stderr = result.toString();
+                if (stdoutDone) {
+                    runner.kill('SIGKILL');
+                    resolve(obj);
+                }
+            }),
+        );
+    });
+};
 
 function extractSummary(stdout) {
     if (stdout === '') {
@@ -205,6 +266,7 @@ module.exports = {
     runServe,
     runAndGetWatchProc,
     extractSummary,
+    runPromptWithAnswers,
     appendDataIfFileExists,
     copyFile,
     copyFileAsync,

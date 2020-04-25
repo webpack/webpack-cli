@@ -1,6 +1,3 @@
-const logger = require('../utils/logger');
-const StatsGroup = require('../groups/StatsGroup');
-
 const HELP_GROUP = 'help';
 const CONFIG_GROUP = 'config';
 const BASIC_GROUP = 'basic';
@@ -148,15 +145,6 @@ module.exports = {
             link: 'https://webpack.js.org/plugins/',
         },
         {
-            name: 'global',
-            usage: '--global myVar ./global.js',
-            alias: 'g',
-            type: String,
-            multiple: true,
-            group: ADVANCED_GROUP,
-            description: 'Declares and exposes a global variable',
-        },
-        {
             name: 'target',
             usage: '--target',
             alias: 't',
@@ -232,14 +220,7 @@ module.exports = {
         {
             name: 'mode',
             usage: '--mode <development | production | none>',
-            type: (value) => {
-                if (value === 'development' || value === 'production' || value === 'none') {
-                    return value;
-                } else {
-                    logger.warn('You provided an invalid value for "mode" option.');
-                    return 'production';
-                }
-            },
+            type: String,
             group: ZERO_CONFIG_GROUP,
             description: 'Defines the mode to pass to webpack',
             link: 'https://webpack.js.org/concepts/#mode',
