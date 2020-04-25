@@ -118,6 +118,8 @@ const runPromptWithAnswers = (location, args, answers, waitForOutput = false) =>
                         if (outputTimeout) {
                             clearTimeout(outputTimeout);
                         }
+                        // we must receive new stdout, then have 2 seconds
+                        // without any stdout before writing the next answer
                         outputTimeout = setTimeout(writeAnswer, delay);
                     }
 
