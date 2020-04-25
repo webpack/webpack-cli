@@ -252,13 +252,8 @@ module.exports = {
         {
             name: 'stats',
             usage: '--stats verbose',
-            type: (value) => {
-                if (StatsGroup.validOptions().validArrayString.includes(value)) {
-                    return value;
-                }
-                logger.warn('No value recognised for "stats" option');
-                return 'normal';
-            },
+            type: String,
+            defaultValue: 'normal',
             group: DISPLAY_GROUP,
             description: 'It instructs webpack on how to treat the stats',
             link: 'https://webpack.js.org/configuration/stats/#stats',
