@@ -41,7 +41,7 @@ function runWatch({ testCase, args = [], setOutput = true, outputKillStr = 'Time
         const watchPromise = execa(WEBPACK_PATH, argsWithOutput, {
             cwd,
             reject: false,
-            stdio: ENABLE_LOG_COMPILATION ? 'inherit' : 'pipe',
+            stdio: 'pipe',
         });
 
         watchPromise.stdout.pipe(
@@ -95,7 +95,7 @@ function runAndGetWatchProc(testCase, args = [], setOutput = true, input = '', f
  * @param {string[]} answers answers to be passed to stdout for inquirer question
  * @param {boolean} waitForOutput whether to wait for stdout before writing the next answer
  */
-const runPromptWithAnswers = (location, args, answers, waitForOutput = false) => {
+const runPromptWithAnswers = (location, args, answers, waitForOutput = true) => {
     const runner = runAndGetWatchProc(location, args, false, '', true);
     runner.stdin.setDefaultEncoding('utf-8');
 
@@ -128,7 +128,7 @@ const runPromptWithAnswers = (location, args, answers, waitForOutput = false) =>
             }),
         );
     } else {
-        // Simulate answers by sending the answers after waiting for 2s
+        // Simulate answers by sending the answers every 2s
         answers.reduce((prevAnswer, answer) => {
             return prevAnswer.then(() => {
                 return new Promise((resolvePromise) => {
