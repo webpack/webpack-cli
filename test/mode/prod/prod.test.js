@@ -27,7 +27,7 @@ describe('mode flags', () => {
 
     it('should load a production config when --mode=abcd is passed', (done) => {
         const { stderr, stdout } = run(__dirname, ['--mode', 'abcd']);
-        expect(stderr).toContain('invalid value for "mode"');
+        expect(stderr).toContain('invalid value for "mode" option. Using "production" by default');
         expect(stdout).toBeTruthy();
         stat(resolve(__dirname, './bin/main.js'), (err, stats) => {
             expect(err).toBe(null);

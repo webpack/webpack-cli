@@ -67,17 +67,24 @@ function runWatch({ testCase, args = [], setOutput = true, outputKillStr = 'Time
     });
 }
 
-function runAndGetWatchProc(testCase, args = [], setOutput = true) {
+function runAndGetWatchProc(testCase, args = [], setOutput = true, input = '', forcePipe = false) {
     const cwd = path.resolve(testCase);
 
     const outputPath = path.resolve(testCase, 'bin');
     const argsWithOutput = setOutput ? args.concat('--output', outputPath) : args;
 
-    const webpackProc = execa(WEBPACK_PATH, argsWithOutput, {
+    const options = {
         cwd,
         reject: false,
-        stdio: ENABLE_LOG_COMPILATION ? 'inherit' : 'pipe',
-    });
+        stdio: ENABLE_LOG_COMPILATION && !forcePipe ? 'inherit' : 'pipe',
+    };
+
+    // some tests don't work if the input option is an empty string
+    if (input) {
+        options.input = input;
+    }
+
+    const webpackProc = execa(WEBPACK_PATH, argsWithOutput, options);
 
     return webpackProc;
 }
@@ -86,8 +93,8 @@ function runAndGetWatchProc(testCase, args = [], setOutput = true) {
  * @param {string} location location of current working directory
  * @param {string[]} answers answers to be passed to stdout for inquirer question
  */
-const runPromptWithAnswers = async (location, args, answers) => {
-    const runner = runAndGetWatchProc(location, args, false);
+const runPromptWithAnswers = (location, args, answers) => {
+    const runner = runAndGetWatchProc(location, args, false, '', true);
     runner.stdin.setDefaultEncoding('utf-8');
 
     // Simulate answers by sending the answers after waiting for 2s
@@ -102,14 +109,33 @@ const runPromptWithAnswers = async (location, args, answers) => {
         });
     }, Promise.resolve());
 
-    await simulateAnswers.then(() => {
+    simulateAnswers.then(() => {
         runner.stdin.end();
     });
 
     return new Promise((resolve) => {
+        const obj = {};
+        let stdoutDone = false;
+        let stderrDone = false;
         runner.stdout.pipe(
             concat((result) => {
-                resolve(result.toString());
+                stdoutDone = true;
+                obj.stdout = result.toString();
+                if (stderrDone) {
+                    runner.kill('SIGKILL');
+                    resolve(obj);
+                }
+            }),
+        );
+
+        runner.stderr.pipe(
+            concat((result) => {
+                stderrDone = true;
+                obj.stderr = result.toString();
+                if (stdoutDone) {
+                    runner.kill('SIGKILL');
+                    resolve(obj);
+                }
             }),
         );
     });
