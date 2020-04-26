@@ -23,7 +23,7 @@ const isCommandUsed = (commands) =>
 async function runCLI(cli, commandIsUsed) {
     let args;
     const runVersion = () => {
-        cli.runVersion(commandIsUsed);
+        cli.runVersion(process.argv, commandIsUsed);
     };
     const parsedArgs = argParser(core, process.argv, false, process.title, cli.runHelp, runVersion);
 
