@@ -42,7 +42,7 @@ describe('loader command', () => {
         const files = ['package.json', 'yarn.lock', 'examples', 'src', 'test', 'src/index.js', 'examples/simple/webpack.config.js'];
 
         files.forEach((file) => {
-            expect(existsSync(join(__dirname, loaderName, file))).toBeTruthy();
+            expect(existsSync(join(__dirname, `${loaderName}/${file}`))).toBeTruthy();
         });
     });
 });
