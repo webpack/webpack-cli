@@ -28,7 +28,7 @@ describe('plugin command', () => {
     });
 
     it('should scaffold plugin template with a given name', async () => {
-        const stdout = await runPromptWithAnswers(__dirname, ['plugin'], [pluginName, ENTER]);
+        const { stdout } = await runPromptWithAnswers(__dirname, ['plugin'], [`${pluginName}${ENTER}`]);
 
         expect(stdout).toContain(firstPrompt);
 
