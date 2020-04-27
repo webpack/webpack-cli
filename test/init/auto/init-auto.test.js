@@ -31,9 +31,9 @@ describe('init auto flag', () => {
         // Test no prompts are present
         expect(stdout).toBeTruthy();
         expect(stdout).not.toContain(firstPrompt);
-        fs.readdirSync(genPath).forEach((file) => console.log(file));
+
         // Test regressively files are scaffolded
-        const files = ['./sw.js', './package.json', './src/index.js', './yarn.lock'];
+        const files = ['./sw.js', './package.json', './yarn.lock', './src/index.js'];
         // eslint-disable-next-line prettier/prettier
         files.forEach((file) => {
             expect(fs.existsSync(join(genPath, file))).toBeTruthy();

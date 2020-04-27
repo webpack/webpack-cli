@@ -6,10 +6,10 @@ const { join } = require('path');
 const rimraf = require('rimraf');
 const { run, runPromptWithAnswers } = require('../utils/test-utils');
 
+const firstPrompt = '? Loader name (my-loader)';
 const ENTER = '\x0D';
 const loaderName = 'test-loader';
 const loaderPath = join(__dirname, loaderName);
-const firstPrompt = '? Loader name (my-loader)';
 
 // Since scaffolding is time consuming
 jest.setTimeout(200000);
@@ -39,7 +39,7 @@ describe('loader command', () => {
         expect(existsSync(join(__dirname, loaderName))).toBeTruthy();
 
         // Test regressively files are scaffolded
-        const files = ['package.json', 'examples', 'src', 'test', 'src/index.js', 'examples/simple/webpack.config.js', './yarn.lock'];
+        const files = ['package.json', 'yarn.lock', 'examples', 'src', 'test', 'src/index.js', 'examples/simple/webpack.config.js'];
 
         files.forEach((file) => {
             expect(existsSync(join(__dirname, loaderName, file))).toBeTruthy();

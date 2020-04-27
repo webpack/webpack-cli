@@ -28,7 +28,7 @@ describe('init', () => {
         expect(stdout).toContain(firstPrompt);
 
         // Test regressively files are scaffolded
-        const files = ['./sw.js', './package.json', './src/index.js', './yarn.lock'];
+        const files = ['./sw.js', './package.json', './yarn.lock', './src/index.js'];
         // eslint-disable-next-line prettier/prettier
         files.forEach((file) => {
             expect(fs.existsSync(path.join(genPath, file))).toBeTruthy();
