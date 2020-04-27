@@ -11,7 +11,7 @@ const outputPath = path.join(__dirname, outputDir);
 const outputFile = `${outputDir}/updated-webpack.config.js`;
 const outputFilePath = path.join(__dirname, outputFile);
 
-jest.setTimeout(200000);
+jest.setTimeout(20000);
 
 describe('migrate command', () => {
     beforeEach(() => {

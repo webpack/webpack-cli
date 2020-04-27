@@ -8,7 +8,7 @@ const { run } = require('../../utils/test-utils');
 const firstPrompt = 'Will your application have multiple bundles?';
 const genPath = join(__dirname, 'test-assets');
 
-jest.setTimeout(200000);
+jest.setTimeout(20000);
 describe('init auto flag', () => {
     beforeAll(() => {
         rimraf.sync(genPath);
