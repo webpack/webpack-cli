@@ -226,14 +226,6 @@ module.exports = {
             link: 'https://webpack.js.org/concepts/#mode',
         },
         {
-            name: 'no-mode',
-            usage: '--no-mode',
-            type: Boolean,
-            group: ZERO_CONFIG_GROUP,
-            description: 'Sets mode="none" which disables any default behavior',
-            link: 'https://webpack.js.org/concepts/#mode',
-        },
-        {
             name: 'version',
             usage: '--version | --version <external-package>',
             alias: 'v',
