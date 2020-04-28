@@ -9,10 +9,9 @@ beforeAll(() => {
 
 describe('findProjectRoot function', () => {
     it('works correctly', () => {
-        /* when no directory is passed, it takes the current profess working directory as starting point
+        /* when no directory is passed, it takes the current process working directory as starting point
          which contains package.json thus it should be the project root */
         const projectRoot = findProjectRoot();
-        console.log(process.cwd());
         expect(projectRoot).toEqual(process.cwd());
     });
 
