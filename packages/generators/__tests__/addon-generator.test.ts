@@ -22,9 +22,6 @@ describe('addon generator', () => {
     beforeAll(() => {
         rimraf.sync(testAssetsPath);
         mkdirp.sync(genPath);
-        // set the working directory to here so that the addon directory is
-        // generated in ./test-assets/test-addon
-        process.chdir(genPath);
         packageMock = getPackageManager as jest.Mock;
     });
 
