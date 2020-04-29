@@ -15,7 +15,7 @@ describe('mode flags', () => {
         });
     });
 
-    it('should load a production config when --mode=productuon is passed', (done) => {
+    it('should load a production config when --mode=production is passed', (done) => {
         const { stderr, stdout } = run(__dirname, ['--mode', 'production']);
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
