@@ -286,7 +286,8 @@ class WebpackCLI extends GroupHelper {
 
     async run(args, cliOptions) {
         await this.processArgs(args, cliOptions);
-        await this.compilation.createCompiler(this.compilerConfiguration);
+        const webpackOptions = this.compilation.removeProgressPluginFromConfig(this.compilerConfiguration);
+        await this.compilation.createCompiler(webpackOptions);
         const webpack = await this.compilation.webpackInstance({
             options: this.compilerConfiguration,
             outputOptions: this.outputConfiguration,

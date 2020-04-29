@@ -3,7 +3,6 @@ const logger = require('./logger');
 const { cyanBright, greenBright } = require('chalk');
 const { CompilerOutput } = require('./CompilerOutput');
 const os = require('os');
-const readline = require('readline');
 
 class Compiler {
     constructor() {
@@ -14,16 +13,16 @@ class Compiler {
         const { ProgressPlugin } = webpack;
         let progressPluginExists;
         if (options.plugins) {
-            progressPluginExists = options.plugins.find((e) => e instanceof ProgressPlugin);
+            // It's a temporary fix
+            progressPluginExists = options.plugins.find((e) => Object.getPrototypeOf(e).constructor.name === 'ProgressPlugin');
         }
 
-        compilation.hooks.beforeRun.tap('webpackProgress', () => {
+        compilation.hooks.beforeRun.tap('webpackProgress', (compiler) => {
             if (outputOptions.progress || progressPluginExists) {
                 process.stdout.write('\n');
                 const defaultProgressPluginHandler = (percent, msg) => {
                     percent = Math.floor(percent * 100);
                     process.stdout.write(os.EOL);
-                    readline.cursorTo(process.stdout, 0);
                     if (percent !== undefined) {
                         process.stdout.write(' (');
                         for (let i = 0; i <= 100; i += 10) {
@@ -41,16 +40,15 @@ class Compiler {
                     }
                 };
                 if (!progressPluginExists) {
-                    new ProgressPlugin(defaultProgressPluginHandler).apply(compilation);
+                    new ProgressPlugin(defaultProgressPluginHandler).apply(compiler);
                 } else {
                     if (!progressPluginExists.handler) {
-                        options.plugins = options.plugins.filter((e) => e !== progressPluginExists);
                         Object.keys(progressPluginExists).map((opt) => {
                             ProgressPlugin.defaultOptions[opt] = progressPluginExists[opt];
                         });
-                        new ProgressPlugin(defaultProgressPluginHandler).apply(compilation);
+                        new ProgressPlugin(defaultProgressPluginHandler).apply(compiler);
                     } else {
-                        progressPluginExists.apply(compilation);
+                        progressPluginExists.apply(compiler);
                     }
                 }
             }
@@ -154,17 +152,16 @@ class Compiler {
     async webpackInstance(opts) {
         const { outputOptions, processingMessageBuffer, options } = opts;
         const lastHash = null;
-
-        const { ProgressPlugin } = webpack;
-        if (options.plugins) {
-            options.plugins = options.plugins.filter((e) => e instanceof ProgressPlugin);
-        }
+        // later, It has been taken care of.
+        // const { ProgressPlugin } = webpack;
+        // if (options.plugins) {
+        //     options.plugins = options.plugins.filter((e) => e instanceof ProgressPlugin);
+        // }
 
         if (outputOptions.interactive) {
             const interactive = require('./interactive');
             return interactive(options, outputOptions, processingMessageBuffer);
         }
-
         if (this.compiler.compilers) {
             this.compiler.compilers.forEach((comp, idx) => {
                 this.setUpHookForCompilation(comp, outputOptions, options[idx]);
@@ -185,6 +182,16 @@ class Compiler {
         } else {
             return await this.invokeCompilerInstance(lastHash, options, outputOptions, processingMessageBuffer);
         }
+    }
+    removeProgressPluginFromConfig(opt) {
+        let entryOptions = opt.slice();
+        return entryOptions.map((e) => {
+            const c = Object.assign({}, e);
+            if (c.plugins) {
+                c.plugins = c.plugins.filter((e) => Object.getPrototypeOf(e).constructor.name !== 'ProgressPlugin'); // It's a temporary fix.
+            }
+            return c;
+        });
     }
 }
 
