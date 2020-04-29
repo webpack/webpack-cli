@@ -48,7 +48,7 @@ describe('basic serve usage', () => {
         it('throws error on unknown flag', async () => {
             const { stdout, stderr } = await runServe(['--port', port, '--unknown-flag'], testPath);
             expect(stdout).toHaveLength(0);
-            expect(stderr).toContain('Unknown option: --unknown-flag');
+            expect(stderr).toContain('Unknown argument: --unknown-flag');
         });
     }
 });
