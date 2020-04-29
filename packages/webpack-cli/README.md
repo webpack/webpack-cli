@@ -55,7 +55,6 @@ Options
   -d, --dev                Run development build
   -p, --prod               Run production build
   --mode string            Defines the mode to pass to webpack
-  --no-mode                Sets mode="none" which disables any default behavior
   -v, --version            Get current version
   --node-args string[]     NodeJS flags
   --stats type             It instructs webpack on how to treat the stats
