@@ -1,6 +1,3 @@
-const logger = require('../utils/logger');
-const StatsGroup = require('../groups/StatsGroup');
-
 const HELP_GROUP = 'help';
 const CONFIG_GROUP = 'config';
 const BASIC_GROUP = 'basic';
@@ -148,16 +145,8 @@ module.exports = {
             link: 'https://webpack.js.org/plugins/',
         },
         {
-            name: 'global',
-            usage: '--global myVar ./global.js',
-            alias: 'g',
-            type: String,
-            multiple: true,
-            group: ADVANCED_GROUP,
-            description: 'Declares and exposes a global variable',
-        },
-        {
             name: 'target',
+            usage: '--target',
             alias: 't',
             type: String,
             group: ADVANCED_GROUP,
@@ -194,7 +183,7 @@ module.exports = {
         },
         {
             name: 'prefetch',
-            usage: 'webpack --prefetch <request>',
+            usage: '--prefetch <request>',
             type: String,
             group: ADVANCED_GROUP,
             description: 'Prefetch this request',
@@ -202,7 +191,7 @@ module.exports = {
         },
         {
             name: 'json',
-            usage: 'webpack --json',
+            usage: '--json',
             type: Boolean,
             alias: 'j',
             description: 'Prints result as JSON',
@@ -231,14 +220,7 @@ module.exports = {
         {
             name: 'mode',
             usage: '--mode <development | production | none>',
-            type: (value) => {
-                if (value === 'development' || value === 'production' || value === 'none') {
-                    return value;
-                } else {
-                    logger.warn('You provided an invalid value for "mode" option.');
-                    return 'production';
-                }
-            },
+            type: String,
             group: ZERO_CONFIG_GROUP,
             description: 'Defines the mode to pass to webpack',
             link: 'https://webpack.js.org/concepts/#mode',
@@ -253,7 +235,8 @@ module.exports = {
         },
         {
             name: 'version',
-            usage: '--version',
+            usage: '--version | --version <external-package>',
+            alias: 'v',
             type: Boolean,
             group: BASIC_GROUP,
             description: 'Get current version',
@@ -268,21 +251,16 @@ module.exports = {
         },
         {
             name: 'stats',
-            usage: 'webpack --stats verbose',
-            type: (value) => {
-                if (StatsGroup.validOptions().includes(value)) {
-                    return value;
-                }
-                logger.warn('No value recognised for "stats" option');
-                return 'normal';
-            },
+            usage: '--stats verbose',
+            type: String,
+            defaultValue: 'normal',
             group: DISPLAY_GROUP,
             description: 'It instructs webpack on how to treat the stats',
             link: 'https://webpack.js.org/configuration/stats/#stats',
         },
         {
             name: 'verbose',
-            usage: 'webpack --verbose',
+            usage: '--verbose',
             type: Boolean,
             group: DISPLAY_GROUP,
             description: 'It tells webpack to output all the information',

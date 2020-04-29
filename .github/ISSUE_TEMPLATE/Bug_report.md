@@ -32,4 +32,4 @@ Steps to reproduce the behavior:
 
 **Additional context**
 
-<!-- Add any other context about the problem here like linking to an similar issue you might think is the cause. -->
+<!-- Add any other context about the problem here like linking to a similar issue you might think is the cause. -->

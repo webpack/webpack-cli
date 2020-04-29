@@ -1,4 +1,4 @@
-import { Rule } from '../types';
+import { Rule, CustomGenerator } from '../types';
 
 export enum LangType {
     ES6 = 'ES6',
@@ -7,7 +7,7 @@ export enum LangType {
 
 const replaceExt = (path: string, ext: string): string => path.substr(0, path.lastIndexOf('.')) + `${ext}'`;
 
-function updateEntryExt(self, newExt: string): void {
+function updateEntryExt(self: CustomGenerator, newExt: string): void {
     const jsEntryOption = self.entryOption;
     let tsEntryOption = {};
     if (typeof jsEntryOption === 'string') {
@@ -22,7 +22,7 @@ function updateEntryExt(self, newExt: string): void {
 
 const getFolder = (path: string): string => path.replace("'./", '').split('/').slice(0, -1).join('/');
 
-function getEntryFolders(self): string[] {
+function getEntryFolders(self: CustomGenerator): string[] {
     const entryOption = self.entryOption;
     const entryFolders = {};
     if (typeof entryOption === 'string') {
@@ -68,7 +68,7 @@ export function getTypescriptLoader(includeFolders: string[]): Rule {
     };
 }
 
-export default function language(self, langType: string): void {
+export default function language(self: CustomGenerator, langType: string): void {
     const entryFolders = getEntryFolders(self);
     switch (langType) {
         case LangType.ES6:

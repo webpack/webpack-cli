@@ -1,6 +1,5 @@
 import chalk from 'chalk';
 import logSymbols from 'log-symbols';
-import Generator from 'yeoman-generator';
 import path from 'path';
 import { getPackageManager } from '@webpack-cli/package-utils';
 import { Confirm, Input, List } from '@webpack-cli/webpack-scaffold';
@@ -15,32 +14,21 @@ import {
     styleQuestionHandler,
     entryQuestions,
 } from './utils';
-import { WebpackOptions } from './types';
+import { CustomGenerator } from './types';
 
 /**
  *
  * Generator for initializing a webpack config
  *
  * @class 	InitGenerator
- * @extends Generator
+ * @extends CustomGenerator
  * @returns {Void} After execution, transforms are triggered
  *
  */
-export default class InitGenerator extends Generator {
+export default class InitGenerator extends CustomGenerator {
     public usingDefaults: boolean;
     public autoGenerateConfig: boolean;
-    private isProd: boolean;
-    private dependencies: string[];
-    private configuration: {
-        config: {
-            configName?: string;
-            topScope?: string[];
-            webpackOptions?: WebpackOptions;
-        };
-        usingDefaults?: boolean;
-    };
     private langType: string;
-    private entryOption: void | {};
 
     public constructor(args, opts) {
         super(args, opts);
@@ -101,8 +89,7 @@ export default class InitGenerator extends Generator {
             this.autoGenerateConfig,
         );
 
-        // TODO string | object
-        const entryOption: void | {} = await entryQuestions(self, multiEntries, this.autoGenerateConfig);
+        const entryOption: string | object = await entryQuestions(self, multiEntries, this.autoGenerateConfig);
 
         if (typeof entryOption === 'string') {
             // single entry

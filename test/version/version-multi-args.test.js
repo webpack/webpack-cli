@@ -10,12 +10,6 @@ describe('version flag with multiple arguments', () => {
         expect(stderr).toHaveLength(0);
     });
 
-    it('outputs version with multiple commands', () => {
-        const { stdout, stderr } = run(__dirname, ['version', 'create']);
-        expect(stdout).toContain(pkgJSON.version);
-        expect(stderr).toHaveLength(0);
-    });
-
     it('does not output version with help command', () => {
         const { stdout, stderr } = run(__dirname, ['version', 'help']);
         expect(stdout).not.toContain(pkgJSON.version);

@@ -32,7 +32,7 @@ const DEFAULT_DETAILS: Information = {
 
 export default async function info(...args): Promise<string[]> {
     const cli = new WebpackCLI();
-    const infoArgs = cli.commandLineArgs(options, { argv: args, stopAtFirstUnknown: false });
+    const infoArgs = cli.argParser(options, args, true).opts;
     const envinfoConfig = {};
 
     if (infoArgs._unknown && infoArgs._unknown.length > 0) {

@@ -1,6 +1,9 @@
 import jscodeshift from 'jscodeshift';
 import Generator from 'yeoman-generator';
 
+type CustomGeneratorStringPrompt = { [x: string]: string } | Promise<{ [x: string]: string }>;
+type CustomGeneratorBoolPrompt = { [x: string]: boolean } | Promise<{ [x: string]: boolean }>;
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 export function createArrowFunction(value: string): string {
@@ -49,7 +52,14 @@ export function createRequire(val: string): string {
     return `const ${val} = require('${val}');`;
 }
 
-export function List(self: any, name: string, message: string, choices: string[], defaultChoice?: string, skip = false): object | any {
+export function List(
+    self: Generator,
+    name: string,
+    message: string,
+    choices: string[],
+    defaultChoice?: string,
+    skip = false,
+): CustomGeneratorStringPrompt {
     if (skip) return { [name]: defaultChoice };
 
     return self.prompt([
@@ -81,7 +91,7 @@ export function CheckList(name: string, message: string, choices: string[]): Gen
     };
 }
 
-export function Input(self: any, name: string, message: string, defaultChoice?: string, skip = false): object | any {
+export function Input(self: Generator, name: string, message: string, defaultChoice?: string, skip = false): CustomGeneratorStringPrompt {
     if (skip) return { [name]: defaultChoice };
     return self.prompt([
         {
@@ -94,12 +104,12 @@ export function Input(self: any, name: string, message: string, defaultChoice?: 
 }
 
 export function InputValidate(
-    self: any,
+    self: Generator,
     name: string,
     message: string,
     cb?: (input: string) => string | boolean,
     defaultChoice?: string,
-    skip?: boolean,
+    skip = false,
 ): object | any {
     if (skip) return { [name]: defaultChoice };
     const input: Generator.Question = {
@@ -112,7 +122,7 @@ export function InputValidate(
     return self.prompt([input]);
 }
 
-export function Confirm(self: any, name: string, message: string, defaultChoice = true, skip = false): object | any {
+export function Confirm(self: Generator, name: string, message: string, defaultChoice = true, skip = false): CustomGeneratorBoolPrompt {
     if (skip) return { [name]: defaultChoice };
 
     return self.prompt([
