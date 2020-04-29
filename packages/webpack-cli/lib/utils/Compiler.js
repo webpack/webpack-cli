@@ -184,14 +184,19 @@ class Compiler {
         }
     }
     removeProgressPluginFromConfig(opt) {
-        let entryOptions = opt.slice();
-        return entryOptions.map((e) => {
-            const c = Object.assign({}, e);
+        function removePlugin(plugin) {
+            const c = Object.assign({}, plugin);
             if (c.plugins) {
                 c.plugins = c.plugins.filter((e) => Object.getPrototypeOf(e).constructor.name !== 'ProgressPlugin'); // It's a temporary fix.
             }
             return c;
-        });
+        }
+        if (Array.isArray(opt)) {
+            let entryOptions = opt.slice();
+            return entryOptions.map((e) => removePlugin(e));
+        } else {
+            return removePlugin(opt);
+        }
     }
 }
 
