@@ -63,4 +63,11 @@ Options
 
 ## Defaults
 
-TODO: explain defaults
+<!-- TODO: explain defaults -->
+
+| Flags           | Default Value  | Accepted Value                                                                                             |
+| --------------- | -------------- | ---------------------------------------------------------------------------------------------------------- |
+| `--mode`        | **production** | `development`, `production`                                                                                |
+| `--stats`       | **normal**     | `none`, `errors-only`, `minimal`, `normal`, `detailed`, `verbose`, `errors-warnings`                       |
+| `-t`,`--target` | **web**        | `node`, `async-node`, `electron-main`, `electron-renderer`, `electron-preload`, `node-webkit`, `webworker` |
+| `--plugin`      | none           | list of plugins [available](https://webpack.js.org/plugins/)                                               |
