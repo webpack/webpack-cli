@@ -307,19 +307,21 @@ class WebpackCLI extends GroupHelper {
 
     runHelp(args) {
         const HelpGroup = require('./groups/HelpGroup');
-        const commandNames = require('./utils/commands').names;
-        const flagNames = require('./utils/core-flags').names;
-        const allNames = [...commandNames, ...flagNames];
+        const { commands, allNames, hasUnknownArgs } = require('./utils/unknown-args');
         const subject = allNames.filter((name) => {
             return args.includes(name);
         })[0];
-        const isCommand = commandNames.includes(subject);
-        return new HelpGroup().outputHelp(isCommand, subject);
+        const invalidArgs = hasUnknownArgs(args.slice(2), ...allNames);
+        const isCommand = commands.includes(subject);
+        return new HelpGroup().outputHelp(isCommand, subject, invalidArgs);
     }
 
-    runVersion(externalPkg) {
+    runVersion(args, externalPkg) {
         const HelpGroup = require('./groups/HelpGroup');
-        return new HelpGroup().outputVersion(externalPkg);
+        const { commands, allNames, hasUnknownArgs } = require('./utils/unknown-args');
+        const commandsUsed = args.filter((val) => commands.includes(val));
+        const invalidArgs = hasUnknownArgs(args.slice(2), ...allNames);
+        return new HelpGroup().outputVersion(externalPkg, commandsUsed, invalidArgs);
     }
 }
 
