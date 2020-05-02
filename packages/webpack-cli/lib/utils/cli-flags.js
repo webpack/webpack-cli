@@ -1,3 +1,5 @@
+const StatsGroup = require('../groups/StatsGroup');
+
 const HELP_GROUP = 'help';
 const CONFIG_GROUP = 'config';
 const BASIC_GROUP = 'basic';
