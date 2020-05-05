@@ -5,7 +5,7 @@ import inquirer from 'inquirer';
 import Listr from 'listr';
 import pLazy = require('p-lazy');
 import path from 'path';
-import { validateSchema, WebpackOptionsValidationError } from 'webpack';
+import { validate, WebpackOptionsValidationError } from 'webpack';
 import { runPrettier } from '@webpack-cli/utils';
 import { transformations } from './migrate';
 import { Node } from './types/NodePath';
@@ -136,8 +136,7 @@ function runMigration(currentConfigPath: string, outputConfigPath: string): Prom
                         if (answer.confirmValidation) {
                             const outputConfig = (await import(outputConfigPath)).default;
                             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                            const webpackOptionsValidationErrors: any = validateSchema(outputConfig);
-                            console.log({ webpackOptionsValidationErrors }, WebpackOptionsValidationError.toString());
+                            const webpackOptionsValidationErrors: any = validate(outputConfig);
                             if (webpackOptionsValidationErrors.length) {
                                 console.error(chalk.red("\n✖ Your configuration validation wasn't successful \n"));
                                 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
