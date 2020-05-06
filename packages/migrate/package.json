@@ -20,7 +20,7 @@
     "p-lazy": "3.0.0"
   },
   "peerDependencies": {
-    "webpack": "4.x.x"
+    "webpack": "4.x.x || 5.x.x"
   },
   "devDependencies": {
     "@types/diff": "4.0.2",
