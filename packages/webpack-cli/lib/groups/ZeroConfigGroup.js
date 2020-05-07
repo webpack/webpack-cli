@@ -20,19 +20,12 @@ class ZeroConfigGroup extends GroupHelper {
         if (process.env.NODE_ENV && (process.env.NODE_ENV === PRODUCTION || process.env.NODE_ENV === DEVELOPMENT)) {
             return process.env.NODE_ENV;
         } else {
-            // commander sets mode to false if --no-mode is specified
-            const noMode = this.args.mode === false;
-            if ((this.args.mode || noMode) && (this.args.dev || this.args.prod)) {
+            if (this.args.mode && (this.args.dev || this.args.prod)) {
                 logger.warn(
-                    `You provided both ${this.args.mode ? 'mode' : 'no-mode'} and ${
+                    `You provided both 'mode' and ${
                         this.args.prod ? '--prod' : '--dev'
-                    } arguments. You should provide just one. "${this.args.mode ? 'mode' : 'no-mode'}" will be used`,
+                    } arguments. You should provide just one. "mode" will be used`,
                 );
-                if (this.args.mode) {
-                    return this.args.mode;
-                } else {
-                    return NONE;
-                }
             }
 
             if (this.args.mode) {
@@ -46,8 +39,6 @@ class ZeroConfigGroup extends GroupHelper {
                 return PRODUCTION;
             } else if (this.args.dev) {
                 return DEVELOPMENT;
-            } else if (noMode) {
-                return NONE;
             }
             return PRODUCTION;
         }
