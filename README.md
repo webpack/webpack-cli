@@ -98,7 +98,7 @@ You can read more about [Scaffolding](https://webpack.js.org/guides/scaffolding)
 
 ## Contributing and Internal Documentation
 
-The webpack family welcomes any contributor, small or big. We are happy to elaborate, guide you through the source code and find issues you might want to work on! To get started have a look at our [documentation on contributing](./.github/CONTRIBUTING.md).
+The webpack family welcomes any contributor, small or big. We are happy to elaborate, guide you through the source code and find issues you might want to work on!.To get started take a look at our [documentation on contributing](./.github/CONTRIBUTING.md).
 
 ## Open Collective
 
