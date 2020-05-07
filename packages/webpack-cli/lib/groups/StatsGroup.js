@@ -5,8 +5,8 @@ const logger = require('../utils/logger');
  */
 class StatsGroup extends GroupHelper {
     static validOptions() {
-        let validArrayString = ['none', 'errors-only', 'minimal', 'normal', 'detailed', 'verbose', 'errors-warnings'];
-        let validArrayObject = validArrayString.map((e) => {
+        const validArrayString = ['none', 'errors-only', 'minimal', 'normal', 'detailed', 'verbose', 'errors-warnings'];
+        const validArrayObject = validArrayString.map((e) => {
             return { verbose: true, stats: `${e}` };
         });
         validArrayObject.push({ verbose: true });
