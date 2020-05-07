@@ -4,11 +4,16 @@ const { run } = require('../utils/test-utils');
 const helpHeader = 'The build tool for modern web applications';
 
 describe('commands help', () => {
-    it('shows default help with invalid flag', () => {
-        const { stdout, stderr } = run(__dirname, ['--help', '--my-flag'], false);
-        expect(stdout).toContain(helpHeader);
-        expect(stderr).toHaveLength(0);
+    it('throws error for invalid flag with --help flag', () => {
+        const { stderr } = run(__dirname, ['--help', '--my-flag'], false);
+        expect(stderr).toContain(`You provided an invalid option '--my-flag'`);
     });
+
+    it('throws error for invalid flag with help command', () => {
+        const { stderr } = run(__dirname, ['help', '--my-flag'], false);
+        expect(stderr).toContain(`You provided an invalid option '--my-flag'`);
+    });
+
     it('shows flag help with valid flag', () => {
         const { stdout, stderr } = run(__dirname, ['--help', '--merge'], false);
         expect(stdout).not.toContain(helpHeader);
