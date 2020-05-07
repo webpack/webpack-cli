@@ -36,7 +36,7 @@ describe('plugin command', () => {
         expect(existsSync(join(__dirname, pluginName))).toBeTruthy();
 
         // Test regressively files are scaffolded
-        const files = ['package.json', 'examples', 'src', 'test', 'src/index.js', 'examples/simple/webpack.config.js'];
+        const files = ['package.json', 'examples', 'src', 'test', 'src/index.js', 'examples/simple/webpack.config.js', 'node_modules'];
 
         files.forEach((file) => {
             expect(existsSync(join(__dirname, `${pluginName}/${file}`))).toBeTruthy();
