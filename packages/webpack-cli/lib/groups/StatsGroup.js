@@ -24,6 +24,9 @@ class StatsGroup extends GroupHelper {
         } else {
             if (this.args.verbose) {
                 this.opts.outputOptions.stats = 'verbose';
+            } else if (!StatsGroup.validOptions().validArrayString.includes(this.args.stats)) {
+                logger.warn(`'${this.args.stats}' is invalid value for stats. Using 'normal' option for stats`);
+                this.opts.options.stats = 'normal';
             } else {
                 this.opts.outputOptions.stats = this.args.stats;
             }
