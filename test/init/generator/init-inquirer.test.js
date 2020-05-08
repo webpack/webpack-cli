@@ -26,6 +26,7 @@ describe('init', () => {
 
         expect(stdout).toBeTruthy();
         expect(stdout).toContain(firstPrompt);
+        expect(stdout).toContain('Saved lockfile.');
 
         // Test regressively files are scaffolded
         const files = ['sw.js', 'package.json', 'src/index.js', 'node_modules'];

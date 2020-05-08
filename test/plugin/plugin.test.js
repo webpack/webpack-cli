@@ -31,10 +31,11 @@ describe('plugin command', () => {
         const { stdout } = await runPromptWithAnswers(__dirname, ['plugin'], [`${pluginName}${ENTER}`]);
 
         expect(stdout).toContain(firstPrompt);
+        expect(stdout).toContain('Saved lockfile.');
 
         // check if the output directory exists with the appropriate plugin name
         expect(existsSync(join(__dirname, pluginName))).toBeTruthy();
-
+        console.log(stdout);
         // Test regressively files are scaffolded
         const files = ['package.json', 'examples', 'src', 'test', 'src/index.js', 'examples/simple/webpack.config.js', 'node_modules'];
 
