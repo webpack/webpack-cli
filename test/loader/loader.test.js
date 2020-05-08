@@ -34,7 +34,6 @@ describe('loader command', () => {
         const { stdout } = await runPromptWithAnswers(__dirname, ['loader'], [`${loaderName}${ENTER}`]);
 
         expect(stdout).toContain(firstPrompt);
-        expect(stdout).toContain('Saved lockfile.');
 
         // check if the output directory exists with the appropriate loader name
         expect(existsSync(join(__dirname, loaderName))).toBeTruthy();
