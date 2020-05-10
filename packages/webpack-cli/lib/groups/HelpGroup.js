@@ -1,6 +1,6 @@
 const chalk = require('chalk');
 const { core, commands } = require('../utils/cli-flags');
-const commandLineUsage = require('command-line-usage');
+const customHelpUsage = require('../utils/help-usage');
 
 class HelpGroup {
     outputHelp(isCommand = true, subject, invalidArgs) {
@@ -28,10 +28,12 @@ class HelpGroup {
             }
 
             if (options.flags) {
-                const flags = commandLineUsage({
-                    header: 'Options',
-                    optionList: options.flags,
-                });
+                const flags = customHelpUsage([
+                    {
+                        header: 'Options',
+                        optionList: options.flags,
+                    },
+                ]);
                 process.stdout.write(flags);
             }
         } else if (invalidArgs.length > 0) {
@@ -95,7 +97,7 @@ class HelpGroup {
 		${usage}\n
 		${examples}\n
 `;
-        const sections = commandLineUsage([
+        const sections = customHelpUsage([
             {
                 content: hh,
                 raw: true,
