@@ -4,6 +4,7 @@ const fs = require('fs');
 const rimraf = require('rimraf');
 const { join } = require('path');
 const { run } = require('../../utils/test-utils');
+const path = require('path');
 
 const firstPrompt = 'Will your application have multiple bundles?';
 const genPath = join(__dirname, 'test-assets');
@@ -38,5 +39,15 @@ describe('init auto flag', () => {
         files.forEach((file) => {
             expect(fs.existsSync(join(genPath, file))).toBeTruthy();
         });
+
+        // Check package json is correctly configured
+        const pkgJsonTests = () => {
+            const pkgJson = require(path.join(genPath, './package.json'));
+            expect(pkgJson).toBeTruthy();
+            expect(pkgJson['devDependencies']).toBeTruthy();
+            expect(pkgJson['devDependencies']['webpack']).toBeTruthy();
+            expect(pkgJson['scripts']['build'] == 'webpack').toBeTruthy();
+        };
+        expect(pkgJsonTests).not.toThrow();
     });
 });
