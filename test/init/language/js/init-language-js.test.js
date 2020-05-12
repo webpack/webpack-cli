@@ -22,7 +22,7 @@ describe('init with SCSS', () => {
         rimraf.sync(genPath);
     });
 
-    it('should use babel', async () => {
+    it('should use typescript', async () => {
         const { stdout } = await runPromptWithAnswers(
             genPath,
             ['init'],
@@ -39,5 +39,17 @@ describe('init with SCSS', () => {
         files.forEach((file) => {
             expect(fs.existsSync(path.join(genPath, file))).toBeTruthy();
         });
+
+        // Check package json is correctly configured
+        const pkgJsonTests = () => {
+            const pkgJson = require(path.join(genPath, './package.json'));
+            expect(pkgJson).toBeTruthy();
+            expect(pkgJson['devDependencies']).toBeTruthy();
+            expect(pkgJson['devDependencies']['webpack']).toBeTruthy();
+            expect(pkgJson['devDependencies']['typescript']).toBeTruthy();
+            expect(pkgJson['devDependencies']['ts-loader']).toBeTruthy();
+            expect(pkgJson['scripts']['build'] == 'webpack').toBeTruthy();
+        };
+        expect(pkgJsonTests).not.toThrow();
     });
 });
