@@ -12,7 +12,7 @@ const genPath = path.join(__dirname, 'test-assets');
 
 jest.setTimeout(400000);
 
-describe('init with SCSS', () => {
+describe('init with Typescript', () => {
     beforeAll(() => {
         rimraf.sync(genPath);
         fs.mkdirSync(genPath);
