@@ -19,21 +19,21 @@ describe('init with SCSS', () => {
     });
 
     afterAll(() => {
-        rimraf.sync(genPath);
+        // rimraf.sync(genPath);
     });
 
-    it('should use SCSS', async () => {
+    it('should use babel', async () => {
         const { stdout } = await runPromptWithAnswers(
             genPath,
             ['init'],
-            [`N${ENTER}`, ENTER, ENTER, ENTER, `${DOWN}${DOWN}${ENTER}`, `Y${ENTER}`, `apple${ENTER}`],
+            [`N${ENTER}`, ENTER, ENTER, `${DOWN}${DOWN}${ENTER}`, ENTER, ENTER],
         );
 
         expect(stdout).toBeTruthy();
         expect(stdout).toContain(firstPrompt);
 
         // Test regressively files are scaffolded
-        const files = ['./package.json', 'yarn.lock', '.yo-rc.json', 'src/index.js'];
+        const files = ['./package.json', 'yarn.lock', '.yo-rc.json', 'tsconfig.json', 'src/index.ts'];
 
         // eslint-disable-next-line prettier/prettier
         files.forEach((file) => {
