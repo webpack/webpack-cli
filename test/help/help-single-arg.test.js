@@ -18,6 +18,7 @@ describe('single help flag', () => {
         expect(stdout).toContain(example);
         expect(stderr).toHaveLength(0);
     });
+
     it('outputs help info with command syntax', () => {
         const { stdout, stderr } = run(__dirname, ['help'], false);
         expect(stdout).toContain(helpHeader);
