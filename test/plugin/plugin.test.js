@@ -9,7 +9,7 @@ const pluginName = 'test-plugin';
 const pluginPath = join(__dirname, pluginName);
 
 // Since scaffolding is time consuming
-jest.setTimeout(200000);
+jest.setTimeout(20000);
 
 describe('plugin command', () => {
     beforeAll(() => {
