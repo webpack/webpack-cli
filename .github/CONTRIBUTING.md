@@ -220,6 +220,7 @@ This is the list of _type_ of commits that we accept:
 -   **fix** : A bug fix, typos, etc.
 -   **misc** : Other formats like tweaks and such.
 -   **tests** : Adding missing or correcting existing tests.
+-   **refactor** : A code change that neither fixes a bug nor adds a feature.
 
 The **header** is mandatory.
 
