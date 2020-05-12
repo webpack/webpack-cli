@@ -22,7 +22,7 @@ describe('entry flag', () => {
         });
     });
 
-    it('should resolve path src/a.js to ./src/a.js', (done) => {
+    it('should resolve the path to src/a.js as ./src/a.js', (done) => {
         const { stderr, stdout } = run(__dirname, ['--entry', 'src/a.js']);
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
