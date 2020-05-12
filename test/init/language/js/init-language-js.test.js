@@ -19,7 +19,7 @@ describe('init with SCSS', () => {
     });
 
     afterAll(() => {
-        // rimraf.sync(genPath);
+        rimraf.sync(genPath);
     });
 
     it('should use babel', async () => {

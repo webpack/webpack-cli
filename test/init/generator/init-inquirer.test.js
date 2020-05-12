@@ -33,5 +33,15 @@ describe('init', () => {
         files.forEach((file) => {
             expect(fs.existsSync(path.join(genPath, file))).toBeTruthy();
         });
+
+        // Check package json is correctly configured
+        const pkgJsonTests = () => {
+            const pkgJson = require(path.join(genPath, './package.json'));
+            expect(pkgJson).toBeTruthy();
+            expect(pkgJson['devDependencies']).toBeTruthy();
+            expect(pkgJson['devDependencies']['webpack']).toBeTruthy();
+            expect(pkgJson['scripts']['build'] == 'webpack').toBeTruthy();
+        };
+        expect(pkgJsonTests).not.toThrow();
     });
 });
