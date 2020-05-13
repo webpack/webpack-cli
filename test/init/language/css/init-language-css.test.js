@@ -34,11 +34,9 @@ describe('init with SCSS', () => {
 
         // Test regressively files are scaffolded
         const files = ['./package.json', './yarn.lock', './.yo-rc.json', './src/index.js'];
-        console.log(fs.readdirSync(genPath));
 
         // eslint-disable-next-line prettier/prettier
         files.forEach((file) => {
-            console.log(file);
             expect(fs.existsSync(path.resolve(genPath, file))).toBeTruthy();
         });
 
