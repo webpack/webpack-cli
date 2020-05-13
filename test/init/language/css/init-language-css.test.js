@@ -42,7 +42,7 @@ describe('init with SCSS', () => {
             expect(fs.existsSync(path.resolve(genPath, file))).toBeTruthy();
         });
 
-        // Check package json is correctly configured
+        // Check if package.json is correctly configured
         const pkgJsonTests = () => {
             const pkgJson = require(path.join(genPath, './package.json'));
             expect(pkgJson).toBeTruthy();
