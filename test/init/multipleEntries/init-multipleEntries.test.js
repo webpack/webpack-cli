@@ -9,7 +9,7 @@ const firstPrompt = 'Will your application have multiple bundles?';
 const ENTER = '\x0D';
 const genPath = path.join(__dirname, 'test-assets');
 
-jest.setTimeout(200000);
+jest.setTimeout(50000);
 
 describe('init with multiple entries', () => {
     beforeAll(() => {
