@@ -1,18 +1,18 @@
 /* eslint-disable node/no-unpublished-require */
 'use strict';
 
-const firstPrompt = '? Loader name (my-loader)';
 const { existsSync } = require('fs');
 const { join } = require('path');
 const rimraf = require('rimraf');
 const { run, runPromptWithAnswers } = require('../utils/test-utils');
 
+const firstPrompt = '? Loader name (my-loader)';
 const ENTER = '\x0D';
 const loaderName = 'test-loader';
 const loaderPath = join(__dirname, loaderName);
 
 // Since scaffolding is time consuming
-jest.setTimeout(200000);
+jest.setTimeout(20000);
 
 describe('loader command', () => {
     beforeAll(() => {
@@ -38,9 +38,9 @@ describe('loader command', () => {
         // check if the output directory exists with the appropriate loader name
         expect(existsSync(join(__dirname, loaderName))).toBeTruthy();
 
-        // Test regressively files are scaffolded
-        const files = ['package.json', 'yarn.lock', 'examples', 'src', 'test', 'src/index.js', 'examples/simple/webpack.config.js'];
-        // eslint-disable-next-line prettier/prettier
+        // All test files are scaffolded
+        const files = ['package.json', 'examples', 'src', 'test', 'src/index.js', 'examples/simple/webpack.config.js'];
+
         files.forEach((file) => {
             expect(existsSync(join(__dirname, `${loaderName}/${file}`))).toBeTruthy();
         });

@@ -89,7 +89,7 @@ function runAndGetWatchProc(testCase, args = [], setOutput = true, input = '', f
     return webpackProc;
 }
 /**
- * runInitWithAnswers
+ * runPromptWithAnswers
  * @param {string} location location of current working directory
  * @param {string[]} args CLI args to pass in
  * @param {string[]} answers answers to be passed to stdout for inquirer question
