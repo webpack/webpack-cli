@@ -23,6 +23,14 @@ describe('output flag named bundles', () => {
         expect(stats.isFile()).toBe(true);
     });
 
+    it('should resolve the path to binary/a.bundle.js as ./binary/a.bundle.js', () => {
+        const { stderr } = run(__dirname, ['-c', resolve(__dirname, 'webpack.config.js'), '--output', 'binary/a.bundle.js'], false);
+        expect(stderr).toBeFalsy();
+
+        const stats = statSync(resolve(__dirname, './binary/a.bundle.js'));
+        expect(stats.isFile()).toBe(true);
+    });
+
     it('should create multiple bundles with an overriding flag', () => {
         const { stderr } = run(
             __dirname,
