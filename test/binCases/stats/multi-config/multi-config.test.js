@@ -19,13 +19,12 @@ test("multiple-config with --info-verbosity=verbose", () => {
 		"verbose"
 	]);
 	const summary = extractSummary(stdout);
-	const expectedString = ["Compilation", "starting", "finished", "[webpack-cli]"];
 
-	expectedString.forEach(str => {
-		expect(summary).toContain(str);
-	});
 	expect(code).toBe(0);
 	expect(code).toBeDefined();
+	expect(summary).toContain('[webpack-cli]');
+	expect(summary).toContain('Compilation starting...');
+	expect(summary).toContain('Compilation finished');
 	expect(code).not.toBeNull();
 	expect(stderr).toHaveLength(0);
 });
