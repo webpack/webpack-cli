@@ -14,7 +14,7 @@ test("multi-config", () => {
 test("multiple-config with --info-verbosity=verbose", () => {
 	const { code, stdout, stderr } = run(__dirname, [
 		"--config",
-		"webpack.config.verbose.js",
+		"./webpack.config.verbose.js",
 		"--info-verbosity",
 		"verbose",
 		"--mode",
@@ -24,11 +24,9 @@ test("multiple-config with --info-verbosity=verbose", () => {
 	expect(code).toBe(0);
 	expect(code).not.toBeNull();
 	expect(code).toBeDefined();
-	expect(summary).toContain("[webpack-cli]");
-	expect(summary).toContain("Compilation");
-	expect(summary).toContain("starting");
-	expect(summary).toContain("finished");
+	expect(stderr).toContain("Compilation  starting...");
 	expect(summary).toContain("index.js");
 	expect(summary).toContain("index2.js");
-	expect(stderr).toHaveLength(0);
+	expect(stderr).toBeDefined();
+	expect(stderr).not.toBeNull();
 });

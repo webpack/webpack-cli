@@ -293,22 +293,21 @@ For more information, see https://webpack.js.org/api/cli/.`);
 				compilers.map(compiler => setUpHookForCompilation(compiler, argv));
 			}
 			function setUpHookForCompilation(compiler, args) {
-				const logger = require("webpack/lib/logging/runtime").getLogger("webpack-cli");
 				if (args.w) {
 					compiler.hooks.watchRun.tap("WebpackCLI", compilation => {
 						const compilationName = compilation.name ? compilation.name : "";
-						logger.info("Compilation " + compilationName + " starting…\n");
+						console.error("Compilation " + compilationName + " starting...\n");
 					});
 				} else {
 					compiler.hooks.beforeRun.tap("WebpackCLI", compilation => {
 						const compilationName = compilation.name ? compilation.name : "";
-						logger.info("Compilation " + compilationName + " starting…\n");
+						console.error("Compilation " + compilationName + " starting...\n");
 					});
 				}
 				compiler.hooks.done.tap("WebpackCLI", stats => {
 					const compilation = stats.compilation;
 					const compilationName = compilation.name ? compilation.name : "";
-					logger.info("Compilation " + compilationName + " finished\n");
+					console.error("Compilation " + compilationName + " finished\n");
 				});
 			}
 
