@@ -10,7 +10,7 @@ const ENTER = '\x0D';
 const DOWN = '\x1B\x5B\x42';
 const genPath = path.join(__dirname, 'test-assets');
 
-jest.setTimeout(400000);
+jest.setTimeout(200000);
 
 describe('init with SCSS', () => {
     beforeAll(() => {
