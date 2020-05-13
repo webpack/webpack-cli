@@ -12,7 +12,7 @@ import { JSCodeshift, Node } from '../types/NodePath';
  * @returns {Node} ast - jscodeshift ast
  */
 
-export default function(j: JSCodeshift, ast: Node): Node {
+export default function (j: JSCodeshift, ast: Node): Node {
     return findPluginsByName(j, ast, ['webpack.BannerPlugin']).forEach((path: Node): void => {
         const args: Node[] = (path.value as Node).arguments; // any node
         // If the first argument is a literal replace it with object notation

@@ -4,7 +4,6 @@
   "description": "init command for webpack-cli",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
-  "author": "",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
@@ -15,10 +14,6 @@
     "chalk": "3.0.0",
     "jscodeshift": "0.7.0",
     "p-each-series": "2.1.0"
-  },
-  "scripts": {
-    "build": "tsc",
-    "watch": "npm run build && tsc -w"
   },
   "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9"
 }

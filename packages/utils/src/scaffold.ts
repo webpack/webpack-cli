@@ -1,4 +1,4 @@
-import  chalk = require('chalk');
+import chalk = require('chalk');
 import j from 'jscodeshift';
 import pEachSeries = require('p-each-series');
 import path from 'path';
@@ -92,7 +92,7 @@ export function runTransform(transformConfig: TransformConfig, action: string): 
     const runCommand = getPackageManager() === 'yarn' ? 'yarn build' : 'npm run build';
 
     let successMessage: string =
-        chalk.green(`Congratulations! Your new webpack configuration file has been created!\n\n`) +
+        chalk.green('Congratulations! Your new webpack configuration file has been created!\n\n') +
         `You can now run ${chalk.green(runCommand)} to bundle your application!\n\n`;
 
     if (initActionNotDefined && transformConfig.config.item) {

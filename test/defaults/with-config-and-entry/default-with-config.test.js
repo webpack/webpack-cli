@@ -4,7 +4,7 @@ const { resolve } = require('path');
 const { run } = require('../../utils/test-utils');
 
 describe('output flag defaults with config', () => {
-    it.skip('should use default entry if config entry file is not present', done => {
+    it.skip('should use default entry if config entry file is not present', (done) => {
         const { stdout, stderr } = run(__dirname, ['--defaults'], false);
         // Should use the output dir specified in the config
         expect(stdout).toContain('./index.js');

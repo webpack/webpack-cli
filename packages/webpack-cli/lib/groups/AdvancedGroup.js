@@ -1,5 +1,4 @@
 const GroupHelper = require('../utils/GroupHelper');
-const logger = require('../utils/logger');
 
 class AdvancedGroup extends GroupHelper {
     constructor(options) {
@@ -76,59 +75,6 @@ class AdvancedGroup extends GroupHelper {
         }
         if (args.target) {
             options.target = args.target;
-        }
-
-        if (args.global) {
-            const globalArrLen = args.global.length;
-            if (!globalArrLen) {
-                logger.warn('Argument to global flag is none');
-                return;
-            }
-            if (globalArrLen === 1) {
-                logger.warn('Argument to global flag expected a key/value pair');
-                return;
-            }
-
-            const providePluginObject = {};
-            args.global.forEach((arg, idx) => {
-                const isKey = idx % 2 === 0;
-                const isConcatArg = arg.includes('=');
-                if (isKey && isConcatArg) {
-                    const splitIdx = arg.indexOf('=');
-                    const argVal = arg.substr(splitIdx + 1);
-                    const argKey = arg.substr(0, splitIdx);
-                    if (!argVal.length) {
-                        logger.warn(`Found unmatching value for global flag key '${argKey}'`);
-                        return;
-                    }
-                    // eslint-disable-next-line no-prototype-builtins
-                    if (providePluginObject.hasOwnProperty(argKey)) {
-                        logger.warn(`Overriding key '${argKey}' for global flag`);
-                    }
-                    providePluginObject[argKey] = argVal;
-                    return;
-                }
-                if (isKey) {
-                    const nextArg = args.global[idx + 1];
-                    // eslint-disable-next-line no-prototype-builtins
-                    if (providePluginObject.hasOwnProperty(arg)) {
-                        logger.warn(`Overriding key '${arg}' for global flag`);
-                    }
-                    if (!nextArg) {
-                        logger.warn(`Found unmatching value for global flag key '${arg}'`);
-                        return;
-                    }
-                    providePluginObject[arg] = nextArg;
-                }
-            });
-
-            const { ProvidePlugin } = require('webpack');
-            const globalVal = new ProvidePlugin(providePluginObject);
-            if (options && options.plugins) {
-                options.plugins.unshift(globalVal);
-            } else {
-                options.plugins = [globalVal];
-            }
         }
     }
     run() {

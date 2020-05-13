@@ -15,9 +15,9 @@ class CompilerOutput {
      */
     _createChunksOutput(chunks) {
         return chunks
-            .map(chunk => {
+            .map((chunk) => {
                 const moduleString = chunk.modules
-                    .map(module => {
+                    .map((module) => {
                         return `${module.name} [size: ${module.size} bytes]`;
                     })
                     .join('\n');

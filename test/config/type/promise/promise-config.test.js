@@ -4,7 +4,7 @@ const { resolve, sep } = require('path');
 const { run, extractSummary } = require('../../../utils/test-utils');
 
 describe('promise configuration', () => {
-    it.skip('is able to understand a configuration file as a promise', done => {
+    it.skip('is able to understand a configuration file as a promise', (done) => {
         const { stdout } = run(__dirname, ['-c', resolve(__dirname, 'webpack.config.js')], false);
         const summary = extractSummary(stdout);
         const outputDir = 'type/promise/binary';

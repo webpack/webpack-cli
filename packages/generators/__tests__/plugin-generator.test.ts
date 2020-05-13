@@ -2,12 +2,10 @@ import { join } from 'path';
 import { run } from 'yeoman-test';
 import * as assert from 'yeoman-assert';
 
-import { generatePluginName } from '../src/utils';
-
 describe('plugin generator', () => {
     it('generates a default plugin', async () => {
         const pluginName = 'my-test-plugin';
-        const outputDir = await run(join(__dirname, '../src/plugin-generator')).withPrompts({
+        const outputDir = await run(join(__dirname, '../src/plugin-generator.ts')).withPrompts({
             name: pluginName,
         });
         const pluginDir = join(outputDir, pluginName);
@@ -17,13 +15,13 @@ describe('plugin generator', () => {
 
         // Check that files in all folders are scaffolded. Checking them separately so we know which directory has the problem
         // assert for src files
-        assert.file(srcFiles.map(file => join(pluginDir, 'src', file)));
+        assert.file(srcFiles.map((file) => join(pluginDir, 'src', file)));
 
         // assert for test files
-        assert.file(testFiles.map(file => join(pluginDir, 'test', file)));
+        assert.file(testFiles.map((file) => join(pluginDir, 'test', file)));
 
         // assert for example files
-        assert.file(exampleFiles.map(file => join(pluginDir, 'examples/simple', file)));
+        assert.file(exampleFiles.map((file) => join(pluginDir, 'examples/simple', file)));
 
         // Check the contents of the webpack config and loader file
         assert.fileContent([
@@ -34,16 +32,4 @@ describe('plugin generator', () => {
 
         // higher timeout so travis has enough time to execute
     }, 10000);
-});
-
-describe('generate plugin name', () => {
-    it('should return webpack Standard Plugin Name for Name : extract-text-webpack-plugin', () => {
-        const pluginName = generatePluginName('extract-text-webpack-plugin');
-        expect(pluginName).toEqual('ExtractTextWebpackPlugin');
-    });
-
-    it('should return webpack Standard Plugin Name for Name : webpack.DefinePlugin', () => {
-        const pluginName = generatePluginName('webpack.DefinePlugin');
-        expect(pluginName).toEqual('webpack.DefinePlugin');
-    });
 });

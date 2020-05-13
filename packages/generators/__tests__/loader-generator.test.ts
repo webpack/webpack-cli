@@ -7,7 +7,7 @@ import { makeLoaderName } from '../src/loader-generator';
 describe('loader generator', () => {
     it('generates a default loader', async () => {
         const loaderName = 'my-test-loader';
-        const outputDir = await run(join(__dirname, '../src/loader-generator')).withPrompts({
+        const outputDir = await run(join(__dirname, '../src/loader-generator.ts')).withPrompts({
             name: loaderName,
         });
         const loaderDir = join(outputDir, loaderName);
@@ -17,13 +17,13 @@ describe('loader generator', () => {
 
         // Check that files in all folders are scaffolded. Checking them separately so we know which directory has the problem
         // assert for src files
-        assert.file(srcFiles.map(file => join(loaderDir, 'src', file)));
+        assert.file(srcFiles.map((file) => join(loaderDir, 'src', file)));
 
         // assert for test files
-        assert.file(testFiles.map(file => join(loaderDir, 'test', file)));
+        assert.file(testFiles.map((file) => join(loaderDir, 'test', file)));
 
         // assert for example files
-        assert.file(exampleFiles.map(file => join(loaderDir, 'examples/simple', file)));
+        assert.file(exampleFiles.map((file) => join(loaderDir, 'examples/simple', file)));
 
         // Check the contents of the webpack config and loader file
         assert.fileContent([

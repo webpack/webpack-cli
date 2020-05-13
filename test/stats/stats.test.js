@@ -3,8 +3,6 @@
 const { run } = require('../utils/test-utils');
 
 describe('stats flag', () => {
-    // {
-    //     StatsGroup.validOptions().map(option => {
     it('should accept stats "none"', () => {
         const { stderr, stdout } = run(__dirname, ['--stats', 'none']);
         expect(stderr).toBeFalsy();
@@ -50,7 +48,7 @@ describe('stats flag', () => {
     it('should warn when an unknown flag stats value is passed', () => {
         const { stderr, stdout } = run(__dirname, ['--stats', 'foo']);
         expect(stderr).toBeTruthy();
-        expect(stderr).toContain('No value recognised for "stats" option');
+        expect(stderr).toContain('invalid value for stats');
         expect(stdout).toBeTruthy();
     });
 });

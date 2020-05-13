@@ -3,7 +3,7 @@ import { join } from 'path';
 
 const dirName: string = join(__dirname);
 
-describe('extractTextPlugin', function() {
+describe('extractTextPlugin', function () {
     {
         defineTest(dirName, 'extractTextPlugin');
     }

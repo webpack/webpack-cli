@@ -26,10 +26,9 @@ npx webpack info [options]
 
 #### Output format
 
-| Flag                | Description                   | Type        |
-| ------------------- | ----------------------------- | ----------- |
-| `--output-json`     | To get the output as JSON     | [ boolean ] |
-| `--output-markdown` | To get the output as markdown | [ boolean ] |
+| Flag                           | Description                           | Type       |
+| ------------------------------ | ------------------------------------- | ---------- |
+| `--output < json | markdown >` | To get the output in specified format | [ string ] |
 
 _Not supported for config_
 

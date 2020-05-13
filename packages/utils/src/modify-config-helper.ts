@@ -1,4 +1,4 @@
-import  chalk = require('chalk');
+import chalk = require('chalk');
 import fs from 'fs';
 import path from 'path';
 import yeoman from 'yeoman-environment';
@@ -76,6 +76,7 @@ export function modifyHelperUtil(
     try {
         const packagePath = path.resolve(process.cwd(), 'package.json');
         if (fs.existsSync(packagePath)) {
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
             const packageData = require(packagePath);
             if (packageData && packageData.name) {
                 packageName = packageData.name;

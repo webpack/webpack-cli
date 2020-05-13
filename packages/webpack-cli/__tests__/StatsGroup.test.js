@@ -1,8 +1,8 @@
 const StatsGroup = require('../lib/groups/StatsGroup');
 
-describe('StatsGroup', function() {
+describe('StatsGroup', function () {
     {
-        StatsGroup.validOptions().map(option => {
+        StatsGroup.validOptions().map((option) => {
             it(`should handle ${option} option`, () => {
                 const statsGroup = new StatsGroup([
                     {

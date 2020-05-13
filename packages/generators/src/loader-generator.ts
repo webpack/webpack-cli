@@ -1,6 +1,6 @@
-import _ from "lodash";
-import path from "path";
-import addonGenerator from "./addon-generator";
+import _ from 'lodash';
+import path from 'path';
+import addonGenerator from './addon-generator';
 
 /**
  * Formats a string into webpack loader format
@@ -10,11 +10,11 @@ import addonGenerator from "./addon-generator";
  * @returns {string} The formatted string
  */
 export function makeLoaderName(name: string): string {
-	name = _.kebabCase(name);
-	if (!/loader$/.test(name)) {
-		name += "-loader";
-	}
-	return name;
+    name = _.kebabCase(name);
+    if (!/loader$/.test(name)) {
+        name += '-loader';
+    }
+    return name;
 }
 
 /**
@@ -27,30 +27,30 @@ export function makeLoaderName(name: string): string {
  */
 
 const LoaderGenerator = addonGenerator(
-	[
-		{
-			default: "my-loader",
-			filter: makeLoaderName,
-			message: "Loader name",
-			name: "name",
-			type: "input",
-			validate: (str: string): boolean => str.length > 0
-		}
-	],
-	path.resolve(__dirname, "../../generate-loader/templates"),
-	[
-		"src/cjs.js.tpl",
-		"test/test-utils.js.tpl",
-		"test/unit.test.js.tpl",
-		"test/functional.test.js.tpl",
-		"test/fixtures/simple-file.js.tpl",
-		"examples/simple/webpack.config.js.tpl",
-		"examples/simple/src/index.js.tpl",
-		"examples/simple/src/lazy-module.js.tpl",
-		"examples/simple/src/static-esm-module.js.tpl"
-	],
-	["src/_index.js.tpl"],
-	(gen): object => ({ name: gen.props.name })
+    [
+        {
+            default: 'my-loader',
+            filter: makeLoaderName,
+            message: 'Loader name',
+            name: 'name',
+            type: 'input',
+            validate: (str: string): boolean => str.length > 0,
+        },
+    ],
+    path.resolve(__dirname, '../../generate-loader/templates'),
+    [
+        'src/cjs.js.tpl',
+        'test/test-utils.js.tpl',
+        'test/unit.test.js.tpl',
+        'test/functional.test.js.tpl',
+        'test/fixtures/simple-file.js.tpl',
+        'examples/simple/webpack.config.js.tpl',
+        'examples/simple/src/index.js.tpl',
+        'examples/simple/src/lazy-module.js.tpl',
+        'examples/simple/src/static-esm-module.js.tpl',
+    ],
+    ['src/_index.js.tpl'],
+    (gen): object => ({ name: gen.props.name }),
 );
 
 export default LoaderGenerator;

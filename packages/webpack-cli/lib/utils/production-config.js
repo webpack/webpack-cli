@@ -1,5 +1,4 @@
 const { join, resolve } = require('path');
-const TerserPlugin = require('terser-webpack-plugin');
 
 const defaultOutputPath = resolve(join(process.cwd(), 'dist'));
 
@@ -10,12 +9,5 @@ module.exports = () => ({
     output: {
         path: defaultOutputPath,
         filename: 'main.js',
-    },
-    optimization: {
-        minimizer: [
-            new TerserPlugin({
-                sourceMap: true,
-            }),
-        ],
     },
 });

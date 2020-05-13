@@ -7,13 +7,13 @@
   "publishConfig": {
     "access": "public"
   },
-  "author": "",
   "license": "MIT",
   "dependencies": {
     "@webpack-cli/package-utils": "^1.0.1-alpha.4",
+    "execa": "^4.0.0",
     "chalk": "3.0.0",
     "findup-sync": "4.0.0",
-    "got": "10.6.0",
+    "got": "10.7.0",
     "jscodeshift": "0.7.0",
     "p-each-series": "2.1.0",
     "prettier": "1.19.1",
@@ -23,13 +23,7 @@
   "devDependencies": {
     "@types/got": "9.6.9",
     "@types/prettier": "1.19.0",
-    "@types/yeoman-generator": "3.1.4",
-    "jest": "25.1.0"
-  },
-  "scripts": {
-    "build": "tsc",
-    "test": "jest --detectOpenHandles",
-    "watch": "npm run build && tsc -w"
+    "@types/yeoman-generator": "3.1.4"
   },
   "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9"
 }

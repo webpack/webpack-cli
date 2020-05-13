@@ -12,7 +12,7 @@ class Compiler {
         const { ProgressPlugin } = webpack;
         let progressPluginExists;
         if (options.plugins) {
-            progressPluginExists = options.plugins.find(e => e instanceof ProgressPlugin);
+            progressPluginExists = options.plugins.find((e) => e instanceof ProgressPlugin);
         }
 
         compilation.hooks.beforeRun.tap('webpackProgress', () => {
@@ -42,8 +42,8 @@ class Compiler {
                     new ProgressPlugin(defaultProgressPluginHandler).apply(compilation);
                 } else {
                     if (!progressPluginExists.handler) {
-                        options.plugins = options.plugins.filter(e => e !== progressPluginExists);
-                        Object.keys(progressPluginExists).map(opt => {
+                        options.plugins = options.plugins.filter((e) => e !== progressPluginExists);
+                        Object.keys(progressPluginExists).map((opt) => {
                             ProgressPlugin.defaultOptions[opt] = progressPluginExists[opt];
                         });
                         new ProgressPlugin(defaultProgressPluginHandler).apply(compilation);
@@ -55,19 +55,19 @@ class Compiler {
         });
 
         if (outputOptions.infoVerbosity === 'verbose') {
-            const resolveCompilationName = compilation => {
+            const resolveCompilationName = (compilation) => {
                 return compilation.name ? compilation.name : '';
             };
             if (outputOptions.watch) {
-                compilation.hooks.watchRun.tap('WebpackInfo', compilation => {
+                compilation.hooks.watchRun.tap('WebpackCLI', (compilation) => {
                     logger.info(`Compilation ${resolveCompilationName(compilation)} starting…`);
                 });
             } else {
-                compilation.hooks.beforeRun.tap('WebpackInfo', compilation => {
+                compilation.hooks.beforeRun.tap('WebpackCLI', (compilation) => {
                     logger.info(`Compilation ${resolveCompilationName(compilation)} starting…`);
                 });
             }
-            compilation.hooks.done.tap('WebpackInfo', compilation => {
+            compilation.hooks.done.tap('WebpackCLI', (compilation) => {
                 logger.info(`Compilation ${resolveCompilationName(compilation)} finished`);
             });
         }
@@ -103,7 +103,7 @@ class Compiler {
             lastHash = stats.hash;
             if (stats.compilation && stats.compilation.errors.length !== 0) {
                 const errors = stats.compilation.errors;
-                errors.forEach(statErr => {
+                errors.forEach((statErr) => {
                     const errLoc = statErr.module ? statErr.module.resource : null;
                     statsErrors.push({ name: statErr.message, loc: errLoc });
                 });
@@ -119,7 +119,7 @@ class Compiler {
 
     async invokeCompilerInstance(lastHash, options, outputOptions, processingMessageBuffer) {
         // eslint-disable-next-line  no-async-promise-executor
-        return new Promise(async resolve => {
+        return new Promise(async (resolve) => {
             await this.compiler.run((err, stats) => {
                 const content = this.compilerCallback(err, stats, lastHash, options, outputOptions, processingMessageBuffer);
                 resolve(content);
@@ -155,7 +155,7 @@ class Compiler {
 
         const { ProgressPlugin } = webpack;
         if (options.plugins) {
-            options.plugins = options.plugins.filter(e => e instanceof ProgressPlugin);
+            options.plugins = options.plugins.filter((e) => e instanceof ProgressPlugin);
         }
 
         if (outputOptions.interactive) {
@@ -174,8 +174,8 @@ class Compiler {
         if (outputOptions.watch) {
             const watchOptions = outputOptions.watchOptions || {};
             if (watchOptions.stdin) {
-                process.stdin.on('end', function() {
-                    process.exit(); // eslint-disable-line
+                process.stdin.on('end', function () {
+                    process.exit();
                 });
                 process.stdin.resume();
             }

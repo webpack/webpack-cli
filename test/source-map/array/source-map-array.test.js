@@ -4,7 +4,7 @@ const { resolve } = require('path');
 const { run } = require('../../utils/test-utils');
 
 describe('source-map object', () => {
-    it('should treat source-map settings right', done => {
+    it('should treat source-map settings right', (done) => {
         const { stderr } = run(__dirname, [], false);
         expect(stderr).toBe('');
         readdir(resolve(__dirname, 'dist'), (err, files) => {
@@ -13,7 +13,7 @@ describe('source-map object', () => {
             done();
         });
     });
-    it('should override entire array on flag', done => {
+    it('should override entire array on flag', (done) => {
         const { stderr } = run(__dirname, ['--sourcemap', 'source-map', '--output', './binary'], false);
         expect(stderr).toBe('');
         readdir(resolve(__dirname, 'binary'), (err, files) => {

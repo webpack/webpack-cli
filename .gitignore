@@ -45,6 +45,12 @@ package-lock.json
 docs/**/*.map
 junit.xml
 
-#typescript source maps
+# typescript source maps
 packages/**/*.map
 *.tsbuildinfo
+
+# cache
+.eslintcache
+
+# temporary test files
+test-assets/

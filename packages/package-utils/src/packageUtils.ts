@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { sync } from 'execa';
 import spawn from 'cross-spawn';
-import  chalk = require('chalk');
+import chalk = require('chalk');
 import { prompt } from 'enquirer';
 import { runCommand } from './processUtils';
 
@@ -32,7 +32,9 @@ export function getPackageManager(): PackageName {
         if (sync('yarn', ['--version']).stdout) {
             return 'yarn';
         }
-    } catch (e) {}
+    } catch (e) {
+        // Nothing
+    }
 
     return 'npm';
 }
@@ -49,10 +51,7 @@ export function getPathToGlobalPackages(): string {
     const manager: string = exports.getPackageManager();
     if (manager === 'yarn') {
         try {
-            const yarnDir = spawn
-                .sync('yarn', ['global', 'dir'])
-                .stdout.toString()
-                .trim();
+            const yarnDir = spawn.sync('yarn', ['global', 'dir']).stdout.toString().trim();
             return path.join(yarnDir, 'node_modules');
         } catch (e) {
             // Default to the global npm path below

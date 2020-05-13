@@ -21,7 +21,7 @@ const testEntryFiles = [
  * @returns {void}
  */
 async function setup() {
-    await testEntryFiles.forEach(async file => {
+    await testEntryFiles.forEach(async (file) => {
         // eslint-disable-next-line
         file.cpFP = await copyFileAsync(__dirname, file.name);
     });
@@ -32,7 +32,7 @@ async function setup() {
  * @returns {void}
  */
 async function teardown() {
-    await testEntryFiles.forEach(async file => {
+    await testEntryFiles.forEach(async (file) => {
         try {
             unlinkSync(file.fp);
         } catch (e) {
@@ -62,7 +62,7 @@ async function teardown() {
         }, 1000);
 
         // Array based configuration with child compilation
-        webpackProc.stdout.on('data', data => {
+        webpackProc.stdout.on('data', (data) => {
             data = data.toString();
             console.log(data);
 
@@ -87,5 +87,7 @@ async function teardown() {
             await teardown();
             process.exit(0);
         });
-    } catch (e) {}
+    } catch (e) {
+        // Nothing
+    }
 })();

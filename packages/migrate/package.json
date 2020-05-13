@@ -4,7 +4,6 @@
   "description": "Migrate command for webpack-cli",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
-  "author": "",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
@@ -21,7 +20,7 @@
     "p-lazy": "3.0.0"
   },
   "peerDependencies": {
-    "webpack": "4.x.x"
+    "webpack": "4.x.x || 5.x.x"
   },
   "devDependencies": {
     "@types/diff": "4.0.2",
@@ -29,11 +28,6 @@
     "@types/listr": "0.14.2",
     "@types/lodash": "^4.14.149",
     "webpack": "4.x.x"
-  },
-  "scripts": {
-    "test": "jest",
-    "build": "tsc",
-    "watch": "npm run build && tsc -w"
   },
   "files": [
     "lib"

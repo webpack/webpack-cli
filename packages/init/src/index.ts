@@ -1,4 +1,4 @@
-import {  initGenerator } from '@webpack-cli/generators';
+import { initGenerator } from '@webpack-cli/generators';
 import { modifyHelperUtil, npmPackagesExists } from '@webpack-cli/utils';
 
 const AUTO_PREFIX = '--auto';

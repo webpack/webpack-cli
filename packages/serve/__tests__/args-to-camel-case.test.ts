@@ -1,6 +1,6 @@
 'use strict';
 
-import argsToCamelCase from '../src/args-to-camel-case'
+import argsToCamelCase from '../src/args-to-camel-case';
 
 describe('args-to-camel-case helper', () => {
     it('converts arguments with multiple dashes to camel case', () => {

@@ -7,9 +7,9 @@
  * Or a string if the user hasn't written anything
  */
 export default function validate(value: string): string | boolean {
-	if (value.length) {
-		return true;
-	}
+    if (value.length) {
+        return true;
+    }
 
-	return "Please specify an answer!";
+    return 'Please specify an answer!';
 }

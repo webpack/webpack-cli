@@ -12,15 +12,10 @@
     "access": "public"
   },
   "keywords": [],
-  "author": "",
   "license": "MIT",
   "dependencies": {
     "@webpack-cli/generators": "^1.0.1-alpha.5",
     "yeoman-environment": "2.8.1"
-  },
-  "scripts": {
-    "build": "tsc",
-    "watch": "npm run build && tsc -w"
   },
   "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9"
 }

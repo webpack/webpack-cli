@@ -33,7 +33,7 @@ function getConfigurations(options, outputOptions) {
 module.exports = function setDefaultConfigBasedOnEnvironment(options, outputOptions) {
     let newOptions;
     if (Array.isArray(options)) {
-        newOptions = options.map(arrayOptions => getConfigurations(arrayOptions, outputOptions));
+        newOptions = options.map((arrayOptions) => getConfigurations(arrayOptions, outputOptions));
         return {
             options: newOptions,
         };
