@@ -22,9 +22,9 @@ test("multiple-config with --info-verbosity=verbose", () => {
 
 	expect(code).toBe(0);
 	expect(code).toBeDefined();
-	expect(summary).toContain('[webpack-cli]');
-	expect(summary).toContain('Compilation starting...');
-	expect(summary).toContain('Compilation finished');
+	expect(summary).toContain("[webpack-cli]");
+	expect(summary).toContain("Compilation starting...");
+	expect(summary).toContain("Compilation finished");
 	expect(code).not.toBeNull();
 	expect(stderr).toHaveLength(0);
 });
