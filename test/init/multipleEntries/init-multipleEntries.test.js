@@ -1,13 +1,13 @@
 'use strict';
 
 const fs = require('fs');
-const path = require('path');
+const { join, resolve } = require('path');
 const rimraf = require('rimraf');
 const { runPromptWithAnswers } = require('../../utils/test-utils');
 const firstPrompt = 'Will your application have multiple bundles?';
 
 const ENTER = '\x0D';
-const genPath = path.join(__dirname, 'test-assets');
+const genPath = join(__dirname, 'test-assets');
 
 jest.setTimeout(60000);
 
@@ -35,7 +35,7 @@ describe('init with multiple entries', () => {
         const files = ['./package.json', './src/a.js', './src/b.js', './yarn.lock', './.yo-rc.json'];
         // eslint-disable-next-line prettier/prettier
         files.forEach((file) => {
-            expect(fs.existsSync(path.resolve(genPath, file))).toBeTruthy();
+            expect(fs.existsSync(resolve(genPath, file))).toBeTruthy();
         });
     });
 });

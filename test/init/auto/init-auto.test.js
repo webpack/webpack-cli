@@ -34,7 +34,7 @@ describe('init auto flag', () => {
         expect(stdout).not.toContain(firstPrompt);
 
         // Test regressively files are scaffolded
-        const files = ['sw.js', 'package.json', 'src/index.js'];
+        const files = ['./sw.js', './package.json', './yarn.lock', './src/index.js'];
         // eslint-disable-next-line prettier/prettier
         files.forEach((file) => {
             expect(fs.existsSync(resolve(genPath, file))).toBeTruthy();
