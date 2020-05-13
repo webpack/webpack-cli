@@ -124,7 +124,7 @@ module.exports = {
             usage: '--defaults',
             type: Boolean,
             group: BASIC_GROUP,
-            description: 'Allow webpack to set defaults aggresively',
+            description: 'Allow webpack to set defaults aggressively',
             link: 'https://github.com/webpack-contrib/webpack-defaults',
         },
         {
