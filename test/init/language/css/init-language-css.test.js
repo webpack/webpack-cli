@@ -33,7 +33,7 @@ describe('init with SCSS', () => {
         expect(stdout).toContain(firstPrompt);
 
         // Test regressively files are scaffolded
-        const files = ['./package.json', './yarn.lock', './.yo-rc.json', './src/index.js'];
+        const files = ['./package.json', './.yo-rc.json', './src/index.js'];
 
         // eslint-disable-next-line prettier/prettier
         files.forEach((file) => {
