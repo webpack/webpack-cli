@@ -10,7 +10,7 @@ const ENTER = '\x0D';
 const DOWN = '\x1B\x5B\x42';
 const genPath = path.join(__dirname, 'test-assets');
 
-jest.setTimeout(50000);
+jest.setTimeout(60000);
 
 describe('init with Typescript', () => {
     beforeAll(() => {

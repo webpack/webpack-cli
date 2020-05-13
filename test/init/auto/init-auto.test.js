@@ -9,7 +9,7 @@ const path = require('path');
 const firstPrompt = 'Will your application have multiple bundles?';
 const genPath = join(__dirname, 'test-assets');
 
-jest.setTimeout(50000);
+jest.setTimeout(60000);
 describe('init auto flag', () => {
     beforeAll(() => {
         rimraf.sync(genPath);

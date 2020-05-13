@@ -10,7 +10,7 @@ const ENTER = '\x0D';
 const DOWN = '\x1B\x5B\x42';
 const genPath = path.join(__dirname, 'test-assets');
 
-jest.setTimeout(50000);
+jest.setTimeout(60000);
 
 describe('init with SCSS', () => {
     beforeAll(() => {
@@ -42,7 +42,7 @@ describe('init with SCSS', () => {
 
         // Check if package.json is correctly configured
         const pkgJsonTests = () => {
-            console.log(fs.readFileSync(path.join(genPath, './package.json')));
+            console.log(fs.readFileSync(path.join(genPath, './package.json'), 'utf8'));
             const pkgJson = require(path.join(genPath, './package.json'));
             expect(pkgJson).toBeTruthy();
             expect(pkgJson['devDependencies']).toBeTruthy();
