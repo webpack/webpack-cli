@@ -46,7 +46,7 @@ describe('output flag named bundles', () => {
     });
 
     it('should not throw error on same bundle name for multiple entries with defaults', () => {
-        const { stderr } = run(__dirname, ['-c', resolve(__dirname, 'webpack.defaults.config.js'), '--defaults'], false);
+        const { stderr } = run(__dirname, ['-c', resolve(__dirname, 'webpack.defaults.config.js')], false);
         expect(stderr).toBeFalsy();
 
         let stats = statSync(resolve(__dirname, './dist/b.main.js'));
@@ -76,7 +76,7 @@ describe('output flag named bundles', () => {
     });
 
     it('should output file in dist directory using default value with warning for empty output value', () => {
-        const { stderr } = run(__dirname, ['-c', resolve(__dirname, 'webpack.defaults.config.js'), '--defaults', '--output='], false);
+        const { stderr } = run(__dirname, ['-c', resolve(__dirname, 'webpack.defaults.config.js'), '--output='], false);
         expect(stderr).toContain(
             "You provided an empty output value. Falling back to the output value of your webpack config file, or './dist/' if none was provided",
         );
