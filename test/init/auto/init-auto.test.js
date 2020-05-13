@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const rimraf = require('rimraf');
-const { join } = require('path');
+const { join, resolve } = require('path');
 const { run } = require('../../utils/test-utils');
 const path = require('path');
 
@@ -37,7 +37,7 @@ describe('init auto flag', () => {
         const files = ['./sw.js', './package.json', './yarn.lock', './src/index.js'];
         // eslint-disable-next-line prettier/prettier
         files.forEach((file) => {
-            expect(fs.existsSync(join(genPath, file))).toBeTruthy();
+            expect(fs.existsSync(resolve(genPath, file))).toBeTruthy();
         });
 
         // Check package json is correctly configured
