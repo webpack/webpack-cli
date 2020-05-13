@@ -6,7 +6,7 @@ test("multiple-config", () => {
 	const { stdout, code, stderr } = run(__dirname, [
 		"--config",
 		"./webpack.config.js",
-		"--output-file-name",
+		"--output-filename",
 		"[name].js",
 		"--mode",
 		"production"
