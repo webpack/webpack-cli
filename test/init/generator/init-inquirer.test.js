@@ -9,7 +9,7 @@ const firstPrompt = 'Will your application have multiple bundles?';
 const ENTER = '\x0D';
 const genPath = join(__dirname, 'test-assets');
 
-jest.setTimeout(70000);
+jest.setTimeout(100000);
 
 describe('init', () => {
     beforeAll(() => {
@@ -22,7 +22,7 @@ describe('init', () => {
     });
 
     it('should scaffold when given answers', async () => {
-        const { stdout } = await runPromptWithAnswers(genPath, ['init'], [`N${ENTER}`, ENTER, ENTER, ENTER, ENTER, ENTER]);
+        const { stdout } = await runPromptWithAnswers(genPath, ['init'], [`N${ENTER}`, ENTER, ENTER, ENTER, ENTER]);
 
         expect(stdout).toBeTruthy();
         expect(stdout).toContain(firstPrompt);

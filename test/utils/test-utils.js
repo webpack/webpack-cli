@@ -95,7 +95,7 @@ function runAndGetWatchProc(testCase, args = [], setOutput = true, input = '', f
  * @param {string[]} answers answers to be passed to stdout for inquirer question
  * @param {boolean} waitForOutput whether to wait for stdout before writing the next answer
  */
-const runPromptWithAnswers = async (location, args, answers, waitForOutput = true) => {
+const runPromptWithAnswers = (location, args, answers, waitForOutput = true) => {
     const runner = runAndGetWatchProc(location, args, false, '', true);
     runner.stdin.setDefaultEncoding('utf-8');
 
@@ -129,7 +129,7 @@ const runPromptWithAnswers = async (location, args, answers, waitForOutput = tru
         );
     } else {
         // Simulate answers by sending the answers every 2s
-        await answers.reduce((prevAnswer, answer) => {
+        answers.reduce((prevAnswer, answer) => {
             return prevAnswer.then(() => {
                 return new Promise((resolvePromise) => {
                     setTimeout(() => {
@@ -141,7 +141,7 @@ const runPromptWithAnswers = async (location, args, answers, waitForOutput = tru
         }, Promise.resolve());
     }
 
-    return await new Promise((resolve) => {
+    return new Promise((resolve) => {
         const obj = {};
         let stdoutDone = false;
         let stderrDone = false;
