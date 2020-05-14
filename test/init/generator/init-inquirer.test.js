@@ -22,22 +22,16 @@ describe('init', () => {
     });
 
     it('should scaffold when given answers', async () => {
-        const { stdout } = await runPromptWithAnswers(genPath, ['init'], [`N${ENTER}`, ENTER, ENTER, ENTER, ENTER]);
+        const { stdout } = await runPromptWithAnswers(genPath, ['init'], [`N${ENTER}`, ENTER, ENTER, ENTER, ENTER, ENTER]);
 
         expect(stdout).toBeTruthy();
         expect(stdout).toContain(firstPrompt);
 
         // Test regressively files are scaffolded
         const files = ['./sw.js', './package.json', './yarn.lock', './src/index.js'];
-        console.log(fs.readdirSync(genPath));
-
-        if (fs.existsSync(resolve(genPath, './yarn-error.log'))) {
-            console.log(fs.readFileSync(resolve(genPath, './yarn-error.log'), 'utf8'));
-        }
 
         // eslint-disable-next-line prettier/prettier
         files.forEach((file) => {
-            console.log(file);
             expect(fs.existsSync(resolve(genPath, file))).toBeTruthy();
         });
 
