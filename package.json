@@ -123,7 +123,7 @@
     "loader-utils": "1.2.3",
     "supports-color": "6.1.0",
     "v8-compile-cache": "2.0.3",
-    "yargs": "13.2.4"
+    "yargs": "13.3.2"
   },
   "peerDependencies": {
     "webpack": "4.x.x"
