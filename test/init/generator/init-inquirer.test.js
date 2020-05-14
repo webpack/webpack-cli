@@ -9,7 +9,7 @@ const firstPrompt = 'Will your application have multiple bundles?';
 const ENTER = '\x0D';
 const genPath = join(__dirname, 'test-assets');
 
-jest.setTimeout(60000);
+jest.setTimeout(70000);
 
 describe('init', () => {
     beforeAll(() => {
@@ -30,6 +30,10 @@ describe('init', () => {
         // Test regressively files are scaffolded
         const files = ['./sw.js', './package.json', './yarn.lock', './src/index.js'];
         console.log(fs.readdirSync(genPath));
+
+        if (fs.existsSync(resolve(genPath, './yarn-error.log'))) {
+            console.log(fs.readFileSync(resolve(genPath, './yarn-error.log'), 'utf8'));
+        }
 
         // eslint-disable-next-line prettier/prettier
         files.forEach((file) => {
