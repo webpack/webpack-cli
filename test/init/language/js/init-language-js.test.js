@@ -35,8 +35,10 @@ describe('init with Typescript', () => {
         // Test regressively files are scaffolded
         const files = ['./package.json', './yarn.lock', './.yo-rc.json', './tsconfig.json', './src/index.ts'];
 
+        console.log(fs.readdirSync(genPath));
         // eslint-disable-next-line prettier/prettier
         files.forEach((file) => {
+            console.log(file);
             expect(fs.existsSync(resolve(genPath, file))).toBeTruthy();
         });
 

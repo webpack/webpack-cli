@@ -33,8 +33,11 @@ describe('init with multiple entries', () => {
 
         // Test regressively files are scaffolded
         const files = ['./package.json', './src/a.js', './src/b.js', './yarn.lock', './.yo-rc.json'];
+        console.log(fs.readdirSync(genPath));
+
         // eslint-disable-next-line prettier/prettier
         files.forEach((file) => {
+            console.log(file);
             expect(fs.existsSync(resolve(genPath, file))).toBeTruthy();
         });
     });
