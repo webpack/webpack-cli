@@ -51,7 +51,6 @@ Options
   -s, --sourcemap string   Determine source maps to use
   --prefetch string        Prefetch this request
   -j, --json               Prints result as JSON
-  --standard               Prints standard output
   -d, --dev                Run development build
   -p, --prod               Run production build
   --mode string            Defines the mode to pass to webpack
