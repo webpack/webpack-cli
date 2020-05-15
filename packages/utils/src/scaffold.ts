@@ -21,6 +21,7 @@ import { Node } from './types/NodePath';
  */
 
 function mapOptionsToTransform(config: Config): string[] {
+    if (!config.webpackOptions) return config.webpackOptions;
     return Object.keys(config.webpackOptions).filter((k: string): boolean => PROP_TYPES.has(k));
 }
 
