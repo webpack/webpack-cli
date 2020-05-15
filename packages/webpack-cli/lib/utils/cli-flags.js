@@ -120,14 +120,6 @@ module.exports = {
             description: 'Outputs list of supported flags',
         },
         {
-            name: 'defaults',
-            usage: '--defaults',
-            type: Boolean,
-            group: BASIC_GROUP,
-            description: 'Allow webpack to set defaults aggresively',
-            link: 'https://github.com/webpack-contrib/webpack-defaults',
-        },
-        {
             name: 'output',
             usage: '--output <path to output directory> e.g. ./dist/',
             alias: 'o',
