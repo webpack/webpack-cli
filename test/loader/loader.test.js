@@ -39,7 +39,7 @@ describe('loader command', () => {
         expect(existsSync(join(__dirname, loaderName))).toBeTruthy();
 
         // All test files are scaffolded
-        const files = ['package.json', 'yarn.lock', 'examples', 'src', 'test', 'src/index.js', 'examples/simple/webpack.config.js'];
+        const files = ['package.json', 'node_modules', 'examples', 'src', 'test', 'src/index.js', 'examples/simple/webpack.config.js'];
 
         files.forEach((file) => {
             expect(existsSync(join(__dirname, `${loaderName}/${file}`))).toBeTruthy();
