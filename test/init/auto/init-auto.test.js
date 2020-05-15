@@ -36,10 +36,8 @@ describe('init auto flag', () => {
         // Test regressively files are scaffolded
         const files = ['./sw.js', './package.json', './yarn.lock', './src/index.js'];
 
-        console.log(fs.readdirSync(genPath));
         // eslint-disable-next-line prettier/prettier
         files.forEach((file) => {
-            console.log(file);
             expect(fs.existsSync(resolve(genPath, file))).toBeTruthy();
         });
 

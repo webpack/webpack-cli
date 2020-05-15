@@ -23,22 +23,21 @@ describe('init with Typescript', () => {
     });
 
     it('should use typescript', async () => {
-        const { stdout } = await runPromptWithAnswers(
+        const { stdout, stderr } = await runPromptWithAnswers(
             genPath,
             ['init'],
             [`N${ENTER}`, ENTER, ENTER, `${DOWN}${DOWN}${ENTER}`, ENTER, ENTER],
         );
 
+        console.log(stderr);
         expect(stdout).toBeTruthy();
         expect(stdout).toContain(firstPrompt);
 
         // Test regressively files are scaffolded
         const files = ['./package.json', './yarn.lock', './.yo-rc.json', './tsconfig.json', './src/index.ts'];
 
-        console.log(fs.readdirSync(genPath));
         // eslint-disable-next-line prettier/prettier
         files.forEach((file) => {
-            console.log(file);
             expect(fs.existsSync(resolve(genPath, file))).toBeTruthy();
         });
 

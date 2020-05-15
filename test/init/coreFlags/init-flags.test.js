@@ -12,7 +12,7 @@ describe('init with core flags', () => {
         expect(stdout).toContain('Initialize a new webpack configuration');
     });
     it('should throw error with invalid scaffolder package', () => {
-        const { stdout, stderr } = run(__dirname, ['init', '--help'], false);
+        const { stdout, stderr } = run(__dirname, ['init', 'webpack-rocks'], false);
         console.log({ stdout, stderr });
         expect(stderr).toBeTruthy();
     });
