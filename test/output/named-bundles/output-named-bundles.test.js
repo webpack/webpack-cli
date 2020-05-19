@@ -45,16 +45,6 @@ describe('output flag named bundles', () => {
         expect(stats.isFile()).toBe(true);
     });
 
-    it('should not throw error on same bundle name for multiple entries with defaults', () => {
-        const { stderr } = run(__dirname, ['-c', resolve(__dirname, 'webpack.defaults.config.js'), '--defaults'], false);
-        expect(stderr).toBeFalsy();
-
-        let stats = statSync(resolve(__dirname, './dist/b.main.js'));
-        expect(stats.isFile()).toBe(true);
-        stats = statSync(resolve(__dirname, './dist/c.main.js'));
-        expect(stats.isFile()).toBe(true);
-    });
-
     it('should successfully compile multiple entries', () => {
         const { stderr } = run(__dirname, ['-c', resolve(__dirname, 'webpack.multiple.config.js')], false);
         expect(stderr).toBeFalsy();
@@ -72,18 +62,6 @@ describe('output flag named bundles', () => {
         );
 
         const stats = statSync(resolve(__dirname, './bin/bundle.js'));
-        expect(stats.isFile()).toBe(true);
-    });
-
-    it('should output file in dist directory using default value with warning for empty output value', () => {
-        const { stderr } = run(__dirname, ['-c', resolve(__dirname, 'webpack.defaults.config.js'), '--defaults', '--output='], false);
-        expect(stderr).toContain(
-            "You provided an empty output value. Falling back to the output value of your webpack config file, or './dist/' if none was provided",
-        );
-
-        let stats = statSync(resolve(__dirname, './dist/b.main.js'));
-        expect(stats.isFile()).toBe(true);
-        stats = statSync(resolve(__dirname, './dist/c.main.js'));
         expect(stats.isFile()).toBe(true);
     });
 });
