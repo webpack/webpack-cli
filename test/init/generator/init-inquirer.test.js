@@ -28,7 +28,7 @@ describe('init', () => {
         expect(stdout).toContain(firstPrompt);
 
         // Test regressively files are scaffolded
-        const files = ['./sw.js', './package.json', './yarn.lock', './src/index.js'];
+        const files = ['./sw.js', './package.json', './src/index.js'];
 
         // eslint-disable-next-line prettier/prettier
         files.forEach((file) => {

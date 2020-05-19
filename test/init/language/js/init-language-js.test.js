@@ -34,7 +34,7 @@ describe('init with Typescript', () => {
         expect(stdout).toContain(firstPrompt);
 
         // Test regressively files are scaffolded
-        const files = ['./package.json', './yarn.lock', './.yo-rc.json', './tsconfig.json', './src/index.ts'];
+        const files = ['./package.json', './.yo-rc.json', './tsconfig.json', './src/index.ts'];
 
         // eslint-disable-next-line prettier/prettier
         files.forEach((file) => {
