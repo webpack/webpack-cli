@@ -35,8 +35,8 @@ describe('plugin command', () => {
         // check if the output directory exists with the appropriate plugin name
         expect(existsSync(join(__dirname, pluginName))).toBeTruthy();
 
-        // Skip test in case yarn error log is generated
-        if (existsSync(resolve(pluginPath, './yarn-error.log'))) {
+        // Skip test in case installation fails
+        if (!existsSync(resolve(pluginPath, './yarn.lock'))) {
             return;
         }
 

@@ -35,8 +35,8 @@ describe('loader command', () => {
 
         expect(stdout).toContain(firstPrompt);
 
-        // Skip test in case yarn error log is generated
-        if (existsSync(resolve(loaderPath, './yarn-error.log'))) {
+        // Skip test in case installation fails
+        if (!existsSync(resolve(loaderPath, './yarn.lock'))) {
             return;
         }
 
