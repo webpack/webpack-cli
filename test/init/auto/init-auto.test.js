@@ -28,12 +28,10 @@ describe('init auto flag', () => {
     });
 
     it('should scaffold and not prompt with auto flag', () => {
-        const { stdout, stderr } = run(genPath, ['init', '--auto'], false);
+        const { stdout } = run(genPath, ['init', '--auto'], false);
         // Test no prompts are present
         expect(stdout).toBeTruthy();
         expect(stdout).not.toContain(firstPrompt);
-        console.log(stderr);
-        console.log(fs.readdirSync(genPath));
 
         // Skip test in case installation fails
         if (!fs.existsSync(resolve(genPath, './yarn.lock'))) {
