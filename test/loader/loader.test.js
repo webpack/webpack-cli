@@ -12,7 +12,7 @@ const loaderName = 'test-loader';
 const loaderPath = join(__dirname, loaderName);
 
 // Since scaffolding is time consuming
-jest.setTimeout(20000);
+jest.setTimeout(60000);
 
 describe('loader command', () => {
     beforeAll(() => {
