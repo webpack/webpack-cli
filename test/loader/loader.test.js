@@ -2,7 +2,7 @@
 'use strict';
 
 const { existsSync } = require('fs');
-const { join } = require('path');
+const { join, resolve } = require('path');
 const rimraf = require('rimraf');
 const { run, runPromptWithAnswers } = require('../utils/test-utils');
 
@@ -34,6 +34,11 @@ describe('loader command', () => {
         const { stdout } = await runPromptWithAnswers(__dirname, ['loader'], [`${loaderName}${ENTER}`]);
 
         expect(stdout).toContain(firstPrompt);
+
+        // Skip test in case yarn error log is generated
+        if (existsSync(resolve(loaderPath, './yarn-error.log'))) {
+            return;
+        }
 
         // check if the output directory exists with the appropriate loader name
         expect(existsSync(join(__dirname, loaderName))).toBeTruthy();

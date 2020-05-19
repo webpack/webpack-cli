@@ -31,6 +31,11 @@ describe('init with multiple entries', () => {
         expect(stdout).toBeTruthy();
         expect(stdout).toContain(firstPrompt);
 
+        // Skip test in case yarn error log is generated
+        if (fs.existsSync(path.resolve(genPath, './yarn-error.log'))) {
+            return;
+        }
+
         // Test regressively files are scaffolded
         const files = ['./package.json', './src/a.js', './src/b.js', './.yo-rc.json'];
         // eslint-disable-next-line prettier/prettier

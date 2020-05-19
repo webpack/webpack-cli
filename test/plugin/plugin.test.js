@@ -1,5 +1,5 @@
 const { existsSync } = require('fs');
-const { join } = require('path');
+const { join, resolve } = require('path');
 const rimraf = require('rimraf');
 const { run, runPromptWithAnswers } = require('../utils/test-utils');
 
@@ -34,6 +34,11 @@ describe('plugin command', () => {
 
         // check if the output directory exists with the appropriate plugin name
         expect(existsSync(join(__dirname, pluginName))).toBeTruthy();
+
+        // Skip test in case yarn error log is generated
+        if (existsSync(resolve(pluginPath, './yarn-error.log'))) {
+            return;
+        }
 
         // Test regressively files are scaffolded
         const files = ['package.json', 'examples', 'src', 'test', 'src/index.js', 'examples/simple/webpack.config.js'];
