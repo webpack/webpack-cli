@@ -32,9 +32,10 @@ class Compiler {
                             }
                         }
                         process.stdout.write(`) ${percent}% : `);
-                        process.stdout.write(`${cyanBright(msg)}`);
-                        if (percent === 100) {
-                            process.stdout.write(`${cyanBright('Complilation completed\n')}`);
+                        if (percent !== 100) {
+                            process.stdout.write(`${cyanBright(msg)}\n`);
+                        } else {
+                            process.stdout.write(`${cyanBright('Complilation completed')}\n`);
                         }
                     }
                 };
