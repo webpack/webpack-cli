@@ -53,24 +53,6 @@ class Compiler {
                 }
             }
         });
-
-        if (outputOptions.infoVerbosity === 'verbose') {
-            const resolveCompilationName = (compilation) => {
-                return compilation.name ? compilation.name : '';
-            };
-            if (outputOptions.watch) {
-                compilation.hooks.watchRun.tap('WebpackCLI', (compilation) => {
-                    logger.info(`Compilation ${resolveCompilationName(compilation)} starting…`);
-                });
-            } else {
-                compilation.hooks.beforeRun.tap('WebpackCLI', (compilation) => {
-                    logger.info(`Compilation ${resolveCompilationName(compilation)} starting…`);
-                });
-            }
-            compilation.hooks.done.tap('WebpackCLI', (compilation) => {
-                logger.info(`Compilation ${resolveCompilationName(compilation)} finished`);
-            });
-        }
     }
 
     showEmojiConditionally() {
