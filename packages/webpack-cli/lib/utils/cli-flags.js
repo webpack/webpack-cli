@@ -237,7 +237,6 @@ module.exports = {
             name: 'stats',
             usage: '--stats <value>',
             type: String,
-            defaultValue: 'normal',
             group: DISPLAY_GROUP,
             description: 'It instructs webpack on how to treat the stats e.g. verbose',
             link: 'https://webpack.js.org/configuration/stats/#stats',
