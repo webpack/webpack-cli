@@ -8,7 +8,6 @@ module.exports = () => {
         output: {
             path: path.join(dirname, 'dist'),
             filename: '[name].js',
-            ecmaVersion: 5,
         },
         optimization: {
             minimizer: [
