@@ -1,7 +1,8 @@
 'use strict';
-const { run } = require('../../utils/test-utils');
 const { stat, readFile } = require('fs');
 const { resolve } = require('path');
+// eslint-disable-next-line node/no-unpublished-require
+const { run } = require('../../utils/test-utils');
 
 describe('mode flags with config', () => {
     it('should run in production mode when --mode=production is passed', (done) => {
@@ -21,7 +22,7 @@ describe('mode flags with config', () => {
         });
 
         // Should not generate source maps when not specified
-        stat(resolve(__dirname, './bin/main.js.map'), (err, stats) => {
+        stat(resolve(__dirname, './bin/main.js.map'), (err) => {
             expect(err).toBeTruthy();
         });
 
@@ -50,7 +51,7 @@ describe('mode flags with config', () => {
         });
 
         // Should not generate source maps when not specified
-        stat(resolve(__dirname, './bin/main.js.map'), (err, stats) => {
+        stat(resolve(__dirname, './bin/main.js.map'), (err) => {
             expect(err).toBeTruthy();
         });
 
@@ -80,7 +81,7 @@ describe('mode flags with config', () => {
         });
 
         // Should not generate source maps when not specified
-        stat(resolve(__dirname, './bin/main.js.map'), (err, stats) => {
+        stat(resolve(__dirname, './bin/main.js.map'), (err) => {
             expect(err).toBeTruthy();
         });
 
