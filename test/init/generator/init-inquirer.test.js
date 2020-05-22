@@ -27,7 +27,7 @@ describe('init', () => {
         expect(stdout).toBeTruthy();
         expect(stdout).toContain(firstPrompt);
 
-        // Skip test in case yarn error log is generated
+        // Skip test in case installation fails
         if (!fs.existsSync(resolve(genPath, './yarn.lock'))) {
             return;
         }
