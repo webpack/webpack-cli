@@ -58,7 +58,6 @@ describe('mode flags with config', () => {
         // Correct mode should be propagated to the compiler
         readFile(resolve(__dirname, './bin/main.js'), 'utf-8', (err, data) => {
             expect(err).toBe(null);
-            expect(data).toContain('The "eval" devtool has been used');
             expect(data).toContain('development mode');
             done();
         });
