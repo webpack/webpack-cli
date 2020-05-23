@@ -16,7 +16,7 @@ class ZeroConfigGroup extends GroupHelper {
      * It determines the mode to pass to webpack compiler
      * @returns {string} The mode
      */
-    getEnvFromOptionsAndMode() {
+    resolveMode() {
         if (process.env.NODE_ENV && (process.env.NODE_ENV === PRODUCTION || process.env.NODE_ENV === DEVELOPMENT)) {
             return process.env.NODE_ENV;
         } else {
@@ -44,28 +44,8 @@ class ZeroConfigGroup extends GroupHelper {
         }
     }
 
-    resolveZeroConfig() {
-        const defaultConfigType = this.getEnvFromOptionsAndMode();
-        let defaultConfig;
-        if (defaultConfigType === PRODUCTION) {
-            defaultConfig = require('../utils/production-config')();
-        } else if (defaultConfigType === DEVELOPMENT) {
-            defaultConfig = require('../utils/development-config')();
-        } else {
-            defaultConfig = require('../utils/none-config')();
-        }
-
-        const isEntryObject = defaultConfig.entry && defaultConfig.entry instanceof Object;
-        const isOutputDefined = defaultConfig.output && defaultConfig.output.filename;
-        const isConflictingOutput = isEntryObject && isOutputDefined && defaultConfig.output.filename === 'main.js';
-        if (isConflictingOutput) {
-            defaultConfig.output.filename = '[name].main.js';
-        }
-        this.opts.options = defaultConfig;
-    }
-
     run() {
-        this.resolveZeroConfig();
+        this.opts.options.mode = this.resolveMode();
         return this.opts;
     }
 }
