@@ -33,21 +33,19 @@ function extractFolder(folderToRead, folders = []) {
     return folders;
 }
 
-{
-    Promise.all(
-        collectTestingFoldersWithPackage().map(async (folder) => {
-            return execa('yarn', {
+(async () => {
+    try {
+        const folders = collectTestingFoldersWithPackage();
+        for (const folder of folders) {
+            await execa('yarn', {
                 cwd: folder,
                 stdio: 'inherit',
             });
-        }),
-    )
-        .then(() => {
-            console.log(chalk.inverse.green(' Successfully prepared the test suite '));
-        })
-        .catch((e) => {
-            console.error(chalk.inverse.red(' Unable to prepare the test suite '));
-            console.error(e.stack);
-            process.exitCode = 1;
-        });
-}
+        }
+        console.log(chalk.inverse.green(' Successfully prepared the test suite '));
+    } catch (e) {
+        console.error(chalk.inverse.red(' Unable to prepare the test suite '));
+        console.error(e.stack);
+        process.exitCode = 1;
+    }
+})();
