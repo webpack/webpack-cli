@@ -4,7 +4,7 @@ const { resolve } = require('path');
 // eslint-disable-next-line node/no-unpublished-require
 const { run } = require('../../utils/test-utils');
 
-describe.skip('mode flags with config', () => {
+describe('mode flags with config', () => {
     it('should run in production mode when --mode=production is passed', (done) => {
         const { stderr, stdout } = run(__dirname, ['--mode', 'production', '--config', './webpack.config.js']);
         expect(stderr).toBeFalsy();
