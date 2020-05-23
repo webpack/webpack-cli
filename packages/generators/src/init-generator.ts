@@ -36,7 +36,7 @@ export default class InitGenerator extends CustomGenerator {
         this.usingDefaults = true;
         this.autoGenerateConfig = opts.autoSetDefaults ? true : false;
 
-        this.dependencies = ['webpack@next', 'webpack-cli', 'babel-plugin-syntax-dynamic-import'];
+        this.dependencies = ['webpack', 'webpack-cli', 'babel-plugin-syntax-dynamic-import'];
 
         this.configuration = {
             config: {
