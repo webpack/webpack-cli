@@ -11,6 +11,8 @@ const outputPath = path.join(__dirname, outputDir);
 const outputFile = `${outputDir}/updated-webpack.config.js`;
 const outputFilePath = path.join(__dirname, outputFile);
 
+jest.setTimeout(60000);
+
 describe('migrate command', () => {
     beforeEach(() => {
         rimraf.sync(outputPath);

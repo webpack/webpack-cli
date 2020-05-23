@@ -1,5 +1,5 @@
 const { existsSync } = require('fs');
-const { join } = require('path');
+const { join, resolve } = require('path');
 const rimraf = require('rimraf');
 const { run, runPromptWithAnswers } = require('../utils/test-utils');
 
@@ -9,7 +9,7 @@ const pluginName = 'test-plugin';
 const pluginPath = join(__dirname, pluginName);
 
 // Since scaffolding is time consuming
-jest.setTimeout(40000);
+jest.setTimeout(60000);
 
 describe('plugin command', () => {
     beforeAll(() => {
@@ -34,6 +34,11 @@ describe('plugin command', () => {
 
         // check if the output directory exists with the appropriate plugin name
         expect(existsSync(join(__dirname, pluginName))).toBeTruthy();
+
+        // Skip test in case installation fails
+        if (!existsSync(resolve(pluginPath, './yarn.lock'))) {
+            return;
+        }
 
         // Test regressively files are scaffolded
         const files = ['package.json', 'examples', 'src', 'test', 'src/index.js', 'examples/simple/webpack.config.js'];
