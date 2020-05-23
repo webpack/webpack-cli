@@ -38,7 +38,7 @@ describe('init with SCSS', () => {
         }
 
         // Test regressively files are scaffolded
-        const files = ['./package.json', './.yo-rc.json', './src/index.js'];
+        const files = ['./package.json', './.yo-rc.json', './src/index.js', 'webpack.config.js'];
 
         // eslint-disable-next-line prettier/prettier
         files.forEach((file) => {
