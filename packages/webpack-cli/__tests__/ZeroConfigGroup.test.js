@@ -1,7 +1,7 @@
 const ZeroConfigGroup = require('../lib/groups/ZeroConfigGroup');
 
-describe('GroupHelper', function () {
-    it('should  load the dev zero config', () => {
+describe('ZeroConfigGroup', function () {
+    it('should load the dev zero config', () => {
         const group = new ZeroConfigGroup([
             {
                 dev: true,
@@ -27,8 +27,9 @@ describe('GroupHelper', function () {
                 mode: 'production',
             },
         ]);
-
         const result = group.run();
+        // ensure no other properties are added
+        expect(result.options).toMatchObject({ mode: 'production' });
         expect(result.options.mode).toEqual('production');
     });
 
@@ -40,6 +41,8 @@ describe('GroupHelper', function () {
         ]);
 
         const result = group.run();
+        // ensure no other properties are added
+        expect(result.options).toMatchObject({ mode: 'development' });
         expect(result.options.mode).toEqual('development');
     });
 
@@ -51,6 +54,8 @@ describe('GroupHelper', function () {
         ]);
 
         const result = group.run();
+        // ensure no other properties are added
+        expect(result.options).toMatchObject({ mode: 'none' });
         expect(result.options.mode).toEqual('none');
     });
 });
