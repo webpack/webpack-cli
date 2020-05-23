@@ -129,14 +129,6 @@ module.exports = {
             link: 'https://webpack.js.org/concepts/#output',
         },
         {
-            name: 'plugin',
-            usage: '--plugin <pluginName>',
-            group: ADVANCED_GROUP,
-            type: String,
-            description: 'Load a given plugin e.g. HtmlWebpackPlugin',
-            link: 'https://webpack.js.org/plugins/',
-        },
-        {
             name: 'target',
             usage: '--target <value>',
             alias: 't',
