@@ -214,7 +214,7 @@ module.exports = {
             usage: '--version | --version <external-package>',
             alias: 'v',
             type: Boolean,
-            group: BASIC_GROUP,
+            group: HELP_GROUP,
             description: 'Get current version',
         },
         {
