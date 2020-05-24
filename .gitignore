@@ -2,6 +2,9 @@
 .idea
 .vscode
 
+# IDE files
+*.code-workspace
+
 # Vim swap files
 .s[a-z][a-z]
 .*.s[a-z][a-z]
