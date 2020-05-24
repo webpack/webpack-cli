@@ -23,11 +23,7 @@ describe('init with Typescript', () => {
     });
 
     it('should use typescript', async () => {
-        const { stdout } = await runPromptWithAnswers(
-            genPath,
-            ['init'],
-            [`N${ENTER}`, ENTER, ENTER, `${DOWN}${DOWN}${ENTER}`, ENTER, ENTER],
-        );
+        const { stdout } = await runPromptWithAnswers(genPath, ['init'], [`N${ENTER}`, ENTER, ENTER, `${DOWN}${DOWN}${ENTER}`, ENTER]);
 
         expect(stdout).toBeTruthy();
         expect(stdout).toContain(firstPrompt);
@@ -38,7 +34,7 @@ describe('init with Typescript', () => {
         }
 
         // Test regressively files are scaffolded
-        const files = ['./package.json', './.yo-rc.json', './tsconfig.json', './src/index.ts'];
+        const files = ['./package.json', './.yo-rc.json', './tsconfig.json', './src/index.ts', 'webpack.config.js'];
 
         // eslint-disable-next-line prettier/prettier
         files.forEach((file) => {
