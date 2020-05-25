@@ -34,7 +34,7 @@ class Compiler {
                         process.stdout.write(`) ${percent}% : `);
                         process.stdout.write(`${cyanBright(msg)}`);
                         if (percent === 100) {
-                            process.stdout.write(`${cyanBright('Complilation completed\n')}`);
+                            process.stdout.write(`${cyanBright('Compilation completed\n')}`);
                         }
                     }
                 };
