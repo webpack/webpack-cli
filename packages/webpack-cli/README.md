@@ -53,7 +53,7 @@ Options
   --mode string            Defines the mode to pass to webpack
   -v, --version            Get current version
   --node-args string[]     NodeJS flags
-  --stats type             It instructs webpack on how to treat the stats
+  --stats string           It instructs webpack on how to treat the stats
   --verbose                It tells webpack to output all the information
 ```
 
