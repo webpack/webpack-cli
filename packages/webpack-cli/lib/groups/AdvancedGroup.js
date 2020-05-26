@@ -25,8 +25,7 @@ class AdvancedGroup extends GroupHelper {
             if (options && options.plugins) {
                 options.plugins.unshift(prefetchVal);
             } else {
-                // Currently the Plugin function is not functional  -> https://github.com/webpack/webpack-cli/pull/1140#discussion_r376761359
-                // options.plugins = [prefetchVal];
+                options.plugins = [prefetchVal];
             }
         }
         if (args.target) {
