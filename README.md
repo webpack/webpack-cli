@@ -43,7 +43,7 @@ webpack CLI provides a flexible set of commands for developers to increase speed
 
 When you have followed the [Getting Started](https://webpack.js.org/guides/getting-started/) guide of webpack then webpack CLI is already installed!
 
-Otherwise `npm install --save-dev webpack-cli` or `yarn add webpack-cli --dev` will install it.
+Otherwise `npm install --save-dev webpack-cli@beta` or `yarn add webpack-cli --dev` will install it.
 
 ## Supported arguments and commands
 
@@ -58,12 +58,12 @@ We organize webpack CLI as a multi-package repository using [lerna](https://gith
 Supporting developers is an important task for webpack CLI.
 Thus, webpack CLI provides different commands for many common tasks.
 
--   [`webpack-cli init`](./packages/init/README.md#webpack-cli-init) - Create a new webpack configuration.
--   [`webpack-cli info`](./packages/info/README.md#webpack-cli-info) - Returns information related to the local environment.
--   [`webpack-cli migrate`](./packages/migrate/README.md#webpack-cli-migrate) - Migrate project from one version to another.
--   [`webpack-cli generate-plugin`](./packages/generate-plugin/README.md#webpack-cli-generate-plugin) - Initiate new plugin project.
--   [`webpack-cli generate-loader`](./packages/generate-loader/README.md#webpack-cli-generate-loader) - Initiate new loader project.
--   [`webpack-cli serve`](./packages/serve/README.md#webpack-cli-serve) - Use webpack with a development server that provides live reloading.
+-   [`npx webpack-cli init`](./packages/init/README.md#webpack-cli-init) - Create a new webpack configuration.
+-   [`npx webpack-cli info`](./packages/info/README.md#webpack-cli-info) - Returns information related to the local environment.
+-   [`npx webpack-cli migrate`](./packages/migrate/README.md#webpack-cli-migrate) - Migrate project from one version to another.
+-   [`npx webpack-cli generate-plugin`](./packages/generate-plugin/README.md#webpack-cli-generate-plugin) - Initiate new plugin project.
+-   [`npx webpack-cli generate-loader`](./packages/generate-loader/README.md#webpack-cli-generate-loader) - Initiate new loader project.
+-   [`npx webpack-cli serve`](./packages/serve/README.md#webpack-cli-serve) - Use webpack with a development server that provides live reloading.
 
 > Removed commands since v3.3.3
 
