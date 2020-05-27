@@ -22,7 +22,7 @@ describe('init', () => {
     });
 
     it('should scaffold when given answers', async () => {
-        const { stdout } = await runPromptWithAnswers(genPath, ['init'], [`N${ENTER}`, ENTER, ENTER, ENTER, ENTER, ENTER]);
+        const { stdout } = await runPromptWithAnswers(genPath, ['init', '--force'], [`N${ENTER}`, ENTER, ENTER, ENTER, ENTER, ENTER]);
 
         expect(stdout).toBeTruthy();
         expect(stdout).toContain(firstPrompt);
@@ -33,7 +33,7 @@ describe('init', () => {
         }
 
         // Test regressively files are scaffolded
-        const files = ['./sw.js', './package.json', './src/index.js'];
+        const files = ['./sw.js', './package.json', './src/index.js', './webpack.config.js'];
 
         // eslint-disable-next-line prettier/prettier
         files.forEach((file) => {
