@@ -156,6 +156,14 @@ module.exports = {
             link: 'https://webpack.js.org/concepts/hot-module-replacement/',
         },
         {
+            name: 'no-hot',
+            usage: '--no-hot',
+            type: Boolean,
+            group: ADVANCED_GROUP,
+            description: 'Disables Hot Module Replacement',
+            link: 'https://webpack.js.org/concepts/hot-module-replacement/',
+        },
+        {
             name: 'sourcemap',
             usage: '--sourcemap <sourcemap | eval>',
             type: String,
