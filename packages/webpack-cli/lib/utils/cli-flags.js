@@ -245,7 +245,7 @@ module.exports = {
             usage: '--env',
             type: String,
             group: CONFIG_GROUP,
-            description: 'It tells webpack to output all the information',
+            description: 'Environment passed to the configuration when it is a function',
         },
         /* 		{
 			name: "analyze",
