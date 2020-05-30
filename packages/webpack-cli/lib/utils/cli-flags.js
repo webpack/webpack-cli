@@ -240,6 +240,13 @@ module.exports = {
             group: DISPLAY_GROUP,
             description: 'It tells webpack to output all the information',
         },
+        {
+            name: 'env',
+            usage: '--env',
+            type: String,
+            group: CONFIG_GROUP,
+            description: 'It tells webpack to output all the information',
+        },
         /* 		{
 			name: "analyze",
 			type: Boolean,

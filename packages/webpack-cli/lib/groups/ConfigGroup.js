@@ -83,10 +83,9 @@ class ConfigGroup extends GroupHelper {
         }
         const configPath = moduleObj.path;
         const configOptions = moduleObj.content;
-        if (configOptions.length > 0) {
-            newOptionsObject['options'] = configOptions;
-        } else if (typeof configOptions === 'function') {
-            const newOptions = configOptions();
+        if (typeof configOptions === 'function') {
+            // when config is a function, pass the env from args to the config function
+            const newOptions = configOptions(this.args.env);
             newOptionsObject['options'] = newOptions;
         } else {
             if (Array.isArray(configOptions) && !configOptions.length) {
