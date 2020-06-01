@@ -35,6 +35,7 @@ describe('StatsGroup', function () {
         ]);
 
         const result = group.run();
+        expect(result.options.stats).toBeFalsy();
         expect(result.outputOptions.json).toBeTruthy();
     });
 });
