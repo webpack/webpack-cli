@@ -51,6 +51,7 @@ export function modifyHelperUtil(
     configFile: string = DEFAULT_WEBPACK_CONFIG_FILENAME,
     packages?: string[],
     autoSetDefaults = false,
+    generateConfig = false,
 ): void {
     const configPath: string | null = null;
 
@@ -145,8 +146,9 @@ export function modifyHelperUtil(
                 const successMessage = `\nYou can now run ${chalk.green(runCommand)} to bundle your application!\n\n`;
                 process.stdout.write(`\n${successMessage}`);
             }
+
             // scaffold webpack config file from using .yo-rc.json
-            return runTransform(transformConfig, 'init');
+            return runTransform(transformConfig, 'init', generateConfig);
         })
         .catch((err): void => {
             console.error(
