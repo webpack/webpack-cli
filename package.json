@@ -1,6 +1,6 @@
 {
   "name": "webpack-cli",
-  "version": "3.3.11",
+  "version": "3.3.12",
   "description": "CLI for webpack & friends",
   "license": "MIT",
   "repository": {
@@ -115,15 +115,15 @@
   "dependencies": {
     "chalk": "^2.4.2",
     "cross-spawn": "^6.0.5",
-    "enhanced-resolve": "^4.1.0",
+    "enhanced-resolve": "^4.1.1",
     "findup-sync": "^3.0.0",
     "global-modules": "^2.0.0",
     "import-local": "^2.0.0",
-    "interpret": "^1.2.0",
+    "interpret": "^1.4.0",
     "loader-utils": "^1.4.0",
     "supports-color": "^6.1.0",
-    "v8-compile-cache": "^2.0.3",
-    "yargs": "^13.2.4"
+    "v8-compile-cache": "^2.1.1",
+    "yargs": "^13.3.2"
   },
   "peerDependencies": {
     "webpack": "4.x.x"
