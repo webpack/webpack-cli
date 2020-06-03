@@ -54,7 +54,7 @@ describe('serve with devServer in config', () => {
             expect(stderr).toBeFalsy();
         });
 
-        it('Passing no-hot flag works alongside other server config', async () => {
+        it('works fine when no-hot flag is passed alongside other server config', async () => {
             const { stdout, stderr } = await runServe(['--port', port, '--no-hot'], testPath);
             // Should output the correct bundle file
             expect(stdout).toContain('main.js');
