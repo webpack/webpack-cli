@@ -3,7 +3,7 @@ const { run } = require('../utils/test-utils');
 const { stat, readFile } = require('fs');
 const { resolve } = require('path');
 describe('no-hot flag', () => {
-    it('shoul,d be successful when --no-hot is passed', (done) => {
+    it('should be successful when --no-hot is passed', (done) => {
         const { stderr, stdout } = run(__dirname, ['--no-hot']);
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
