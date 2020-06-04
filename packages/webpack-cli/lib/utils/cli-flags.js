@@ -1,6 +1,8 @@
 const packageExists = require('./package-exists');
 const cli = packageExists('webpack') ? require('webpack').cli : undefined;
 
+const devServerFlags = packageExists('webpack-dev-server') ? require('webpack-dev-server/bin/cli-flags').devServer : undefined; // eslint-disable-line
+
 const commands = [
     {
         packageName: '@webpack-cli/init',
@@ -82,6 +84,11 @@ const commands = [
         type: String,
         usage: 'serve [options]',
         description: 'Run the webpack Dev Server',
+        flags:
+            devServerFlags &&
+            devServerFlags.reduce((cliArgs, { name, type, describe }) => {
+                return [...cliArgs, { name, type, description: describe }];
+            }, []),
     },
 ];
 
