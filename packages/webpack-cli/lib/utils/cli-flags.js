@@ -273,12 +273,12 @@ module.exports = {
 			group: BASIC_GROUP,
 			description: "analyze build for performance improvements"
 		}, */
-        /* 		{
-			name: "interactive",
-			type: Boolean,
-			alias: "i",
-			description: "Use webpack interactively",
-			group: BASIC_GROUP
-		} */
+        {
+            name: 'interactive',
+            type: Boolean,
+            alias: 'i',
+            description: 'Use webpack interactively',
+            group: BASIC_GROUP,
+        },
     ],
 };

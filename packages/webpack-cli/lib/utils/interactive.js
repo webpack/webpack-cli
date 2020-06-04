@@ -1,5 +1,5 @@
 const chalk = require('chalk');
-const webpack = require('./Compiler');
+const { Compiler } = require('./Compiler');
 const ansiEscapes = require('ansi-escapes');
 const readline = require('readline');
 
@@ -105,10 +105,7 @@ module.exports = async function (config, outputOptions, processingMessageBuffer)
 
     outputOptions.interactive = false;
 
-    const webpackCompilation = await webpack({ options: config, outputOptions, processingMessageBuffer });
-    /* if(errors) {
-	Hngggg
-} */
+    const webpackCompilation = await new Compiler().createCompiler({ options: config, outputOptions, processingMessageBuffer });
     state.push(webpackCompilation);
     setupInteractive();
 
@@ -165,7 +162,6 @@ module.exports = async function (config, outputOptions, processingMessageBuffer)
                 if (state.length) {
                     state.pop();
                 }
-                const webpackCompilation = await webpack({ options: config, outputOptions, processingMessageBuffer });
                 state.push(webpackCompilation);
                 informActions();
                 isSub = true;
