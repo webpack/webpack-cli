@@ -4,6 +4,8 @@ const fs = require('fs');
 const genPath = path.join(__dirname, 'test-assets');
 const firstPrompt = 'Will your application have multiple bundles?';
 
+jest.setTimeout(60000);
+
 describe('init', () => {
     it('should work with cli', () => {
         const { stdout, stderr } = spawnSync(path.resolve(__dirname, '../bin/cli.js'), ['init'], {
