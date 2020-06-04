@@ -1,12 +1,24 @@
+/* eslint-disable node/no-extraneous-require */
 const { sync: spawnSync } = require('execa');
 const path = require('path');
 const fs = require('fs');
-const genPath = path.join(__dirname, 'test-assets');
+const rimraf = require('rimraf');
+
+const genPath = path.resolve(__dirname, './test-assets');
 const firstPrompt = 'Will your application have multiple bundles?';
 
 jest.setTimeout(60000);
 
 describe('init', () => {
+    beforeAll(() => {
+        rimraf.sync(genPath);
+        fs.mkdirSync(genPath);
+    });
+
+    afterAll(() => {
+        rimraf.sync(genPath);
+    });
+
     it('should work with cli', () => {
         const { stdout, stderr } = spawnSync(path.resolve(__dirname, '../bin/cli.js'), ['init'], {
             cwd: genPath,
