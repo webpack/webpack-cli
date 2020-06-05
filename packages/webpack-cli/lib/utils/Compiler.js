@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const logger = require('./logger');
 const { cyanBright, greenBright } = require('chalk');
 const { CompilerOutput } = require('./CompilerOutput');
+const readline = require('readline');
 
 class Compiler {
     constructor() {
@@ -20,8 +21,8 @@ class Compiler {
                 process.stdout.write('\n');
                 const defaultProgressPluginHandler = (percent, msg) => {
                     percent = Math.floor(percent * 100);
-                    process.stdout.clearLine();
-                    process.stdout.cursorTo(0);
+                    readline.clearLine(process.stdout, 0);
+                    readline.cursorTo(process.stdout, 0, null);
                     if (percent !== undefined) {
                         process.stdout.write(' (');
                         for (let i = 0; i <= 100; i += 10) {
