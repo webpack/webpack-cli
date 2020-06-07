@@ -5819,9 +5819,9 @@ gh-got@^5.0.0:
     is-plain-obj "^1.1.0"
 
 git-cz@^4.3.1:
-  version "4.6.1"
-  resolved "https://registry.yarnpkg.com/git-cz/-/git-cz-4.6.1.tgz#d64deaf297cd554eabd562497d95b037a276c9d4"
-  integrity sha512-wMnSmzqUX37oOQKJE4N1SzpCV+PJmCZ9TbDcp5kkCk91CNhwgS/lHL3c0iM4mZOzORSvEVgrFY2bj2klOmh7KQ==
+  version "4.6.2"
+  resolved "https://registry.yarnpkg.com/git-cz/-/git-cz-4.6.2.tgz#ae3d02d88c2032e6ba3af6467dc08ae0cc4305bc"
+  integrity sha512-SDLLWmMmAkG33bqAMp5idrr9gbpduyaJ7JjRzC34HPpQ7UGRgG13C5hqc0S7bOTISQu0j8vD3CrK7cyCU99iFA==
 
 git-raw-commits@2.0.0:
   version "2.0.0"
@@ -11712,9 +11712,9 @@ uuid@^3.0.1, uuid@^3.3.2, uuid@^3.3.3:
   integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
 
 v8-compile-cache@^2.0.3, v8-compile-cache@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/v8-compile-cache/-/v8-compile-cache-2.1.0.tgz#e14de37b31a6d194f5690d67efc4e7f6fc6ab30e"
-  integrity sha512-usZBT3PW+LOjM25wbqIlZwPeJV+3OSz3M1k1Ws8snlW39dZyYL9lOGC5FgPVHfk0jKmjiDV8Z0mIbVQPiwFs7g==
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/v8-compile-cache/-/v8-compile-cache-2.1.1.tgz#54bc3cdd43317bca91e35dcaf305b1a7237de745"
+  integrity sha512-8OQ9CL+VWyt3JStj7HX7/ciTL2V3Rl1Wf5OL+SNTm0yK1KvtReVulksyeRnCANHHuUxHlQig+JJDlUhBt1NQDQ==
 
 v8-to-istanbul@^4.0.1:
   version "4.1.2"
