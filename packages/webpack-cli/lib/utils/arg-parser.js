@@ -39,7 +39,7 @@ function argParser(options, args, argsOnly = false, name = '', helpFunction = un
         const flags = option.alias ? `-${option.alias}, --${option.name}` : `--${option.name}`;
         const flagsWithType = option.type !== Boolean ? flags + ' <value>' : flags;
         if (option.type === Boolean || option.type === String) {
-            if (option.multiple) {
+            if (!option.multiple) {
                 parserInstance.option(flagsWithType, option.description, option.defaultValue);
             } else {
                 const multiArg = (value, previous = []) => previous.concat([value]);
