@@ -6,7 +6,7 @@ const { resolve } = require('path');
 
 describe(' multiple entries', () => {
     it('should allow multiple entry files', (done) => {
-        const { stderr, stdout } = run(__dirname, ['./src/a.js', './src/b.js', './src/c.js']);
+        const { stderr, stdout } = run(__dirname, ['./src/a.js', './src/b.js']);
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
 
@@ -19,7 +19,6 @@ describe(' multiple entries', () => {
             expect(err).toBe(null);
             expect(data).toContain('Hello from a.js');
             expect(data).toContain('Hello from b.js');
-            expect(data).toContain('Hello from c.js');
             done();
         });
     });
