@@ -72,12 +72,12 @@ module.exports = {
     core: [
         {
             name: 'entry',
-            usage: '--entry <path to entry file>',
+            usage: '--entry <path to entry file> | --entry <path> --entry <path>',
             type: String,
             multiple: true,
             defaultOption: true,
             group: BASIC_GROUP,
-            description: 'The entry point of your application e.g. ./src/main.js',
+            description: 'The entry point(s) of your application e.g. ./src/main.js',
             link: 'https://webpack.js.org/concepts/#entry',
         },
         {
