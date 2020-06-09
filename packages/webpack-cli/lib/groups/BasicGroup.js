@@ -44,6 +44,7 @@ class BasicGroup extends GroupHelper {
 
     run() {
         this.resolveFlags();
+        console.log(this);
         return this.opts;
     }
 }
