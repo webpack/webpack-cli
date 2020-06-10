@@ -2,6 +2,7 @@
 const { run } = require('../utils/test-utils');
 const { stat } = require('fs');
 const { resolve } = require('path');
+
 describe('--hot flag', () => {
     it('should be successful when --hot is passed', (done) => {
         const { stderr, stdout } = run(__dirname, ['--hot']);
