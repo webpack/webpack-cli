@@ -108,7 +108,10 @@ class HelpGroup {
             },
             {
                 header: 'Options',
-                optionList: options.core,
+                optionList: options.core.map((e) => {
+                    if (e.type.length > 1) e.type = e.type[0];
+                    return e;
+                }),
             },
         ]);
         return {
