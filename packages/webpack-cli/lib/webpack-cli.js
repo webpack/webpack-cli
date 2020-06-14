@@ -221,11 +221,22 @@ class WebpackCLI extends GroupHelper {
      * @returns {void}
      */
     _handleCoreFlags() {
-        console.log(this, 'config');
-        const coreCliHelper = require('webpack').cli;
-        const coreCliArgs = coreCliHelper.getArguments();
-        const webpackConfig = coreCliHelper.processArguments(coreCliArgs, this.compilerConfiguration, this.args.core);
-        console.log(this.compilerConfiguration, webpackConfig, 'asda');
+        if (this.groupMap.has('core')) {
+            const coreFlags = this.groupMap.get('core');
+
+            // convert all the flags from map to single object
+            const coreConfig = coreFlags.reduce((allFlag, curFlag) => (allFlag = { ...allFlag, ...curFlag }), {});
+
+            // for some reason these flags are always appended now, remove this later
+            delete coreConfig['module-no-parse'];
+            delete coreConfig['module-no-parse-reset'];
+            delete coreConfig['optimization-no-emit-on-errors'];
+
+            const coreCliHelper = require('webpack').cli;
+            const coreCliArgs = coreCliHelper.getArguments();
+            // Merge the core flag config with the compilerConfiguration
+            coreCliHelper.processArguments(coreCliArgs, this.compilerConfiguration, coreConfig);
+        }
     }
 
     /**
@@ -262,13 +273,7 @@ class WebpackCLI extends GroupHelper {
     }
 
     async run(args, cliOptions) {
-        // console.log('in run', { args });
-        this.args = args;
-        // const webCli = require('webpack').cli;
         await this.processArgs(args, cliOptions);
-        console.log(this.compilerConfiguration, 'comp config');
-        // const config = { ...this.compilerConfiguration };
-        // const webpackConfig = webCli.processArguments(webCli.getArguments(), config, args._all);
         await this.compilation.createCompiler(this.compilerConfiguration);
         const webpack = await this.compilation.webpackInstance({
             options: this.compilerConfiguration,

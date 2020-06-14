@@ -4,7 +4,6 @@ const logger = require('./utils/logger');
 const cliExecuter = require('./utils/cli-executer');
 const argParser = require('./utils/arg-parser');
 require('./utils/process-log');
-// console.log(require('webpack').cli.getArguments());
 process.title = 'webpack-cli';
 
 // const isFlagPresent = (args, flag) => args.find((arg) => [flag, `--${flag}`].includes(arg));
@@ -26,7 +25,6 @@ async function runCLI(cli, commandIsUsed) {
         cli.runVersion(process.argv, commandIsUsed);
     };
     const parsedArgs = argParser(core, process.argv, false, process.title, cli.runHelp, runVersion);
-
     if (parsedArgs.unknownArgs.includes('help')) {
         cli.runHelp(process.argv);
         process.exit(0);
@@ -57,7 +55,7 @@ async function runCLI(cli, commandIsUsed) {
                     .forEach((unknown) => {
                         logger.warn('Unknown argument:', unknown);
                     });
-                // cliExecuter();
+                cliExecuter();
                 return;
             }
             const parsedArgsOpts = parsedArgs.opts;
