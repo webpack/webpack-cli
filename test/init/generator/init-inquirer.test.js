@@ -9,8 +9,6 @@ const firstPrompt = 'Will your application have multiple bundles?';
 const ENTER = '\x0D';
 const genPath = join(__dirname, 'test-assets');
 
-jest.setTimeout(100000);
-
 describe('init', () => {
     beforeAll(() => {
         rimraf.sync(genPath);
