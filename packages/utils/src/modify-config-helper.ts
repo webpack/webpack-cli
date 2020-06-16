@@ -133,13 +133,13 @@ export function modifyHelperUtil(
                 process.exitCode = -1;
             }
 
-            const transformConfig: TransformConfig = Object.assign(
+            const transformConfig = Object.assign(
                 {
                     configFile: !configPath ? null : fs.readFileSync(configPath, 'utf8'),
                     configPath,
                 },
                 finalConfig,
-            );
+            ) as TransformConfig;
             if (finalConfig.usingDefaults && finalConfig.usingDefaults === true) {
                 const runCommand = getPackageManager() === 'yarn' ? 'yarn build' : 'npm run build';
 
