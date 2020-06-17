@@ -4,8 +4,10 @@ const { extensions } = require('interpret');
 const GroupHelper = require('../utils/GroupHelper');
 const rechoir = require('rechoir');
 
+// Order defines the priority, in increasing order
 const DEFAULT_CONFIG_LOC = [
     '.webpack/webpack.config',
+    '.webpack/webpack.config.none',
     '.webpack/webpack.config.dev',
     '.webpack/webpack.config.prod',
     '.webpack/webpackfile',
