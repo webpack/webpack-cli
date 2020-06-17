@@ -49,14 +49,21 @@ async function runCLI(cli, commandIsUsed) {
             // if the unknown arg starts with a '-', it will be considered
             // an unknown flag rather than an entry
             let entry;
-            if (parsedArgs.unknownArgs.length === 1 && !parsedArgs.unknownArgs[0].startsWith('-')) {
-                entry = parsedArgs.unknownArgs[0];
-            } else if (parsedArgs.unknownArgs.length > 0) {
-                parsedArgs.unknownArgs
-                    .filter((e) => e)
-                    .forEach((unknown) => {
-                        logger.warn('Unknown argument:', unknown);
+            if (parsedArgs.unknownArgs.length > 0 && !parsedArgs.unknownArgs[0].startsWith('-')) {
+                if (parsedArgs.unknownArgs.length === 1) {
+                    entry = parsedArgs.unknownArgs[0];
+                } else {
+                    entry = [];
+                    parsedArgs.unknownArgs.forEach((unknown) => {
+                        if (!unknown.startsWith('-')) {
+                            entry.push(unknown);
+                        }
                     });
+                }
+            } else if (parsedArgs.unknownArgs.length > 0) {
+                parsedArgs.unknownArgs.forEach((unknown) => {
+                    logger.warn('Unknown argument:', unknown);
+                });
                 cliExecuter();
                 return;
             }
