@@ -51,6 +51,13 @@ const basicOptions = [
         },
         description: 'custom type flag',
     },
+    {
+        name: 'multi-flag',
+        usage: '--multi-flag <value>',
+        type: String,
+        multiple: true,
+        description: 'multi flag',
+    },
 ];
 
 const helpAndVersionOptions = basicOptions.slice(0);
@@ -163,6 +170,16 @@ describe('arg-parser', () => {
         expect(warnMock.mock.calls.length).toEqual(0);
     });
 
+    it('handles multiple same args', () => {
+        const res = argParser(basicOptions, ['--multi-flag', 'a.js', '--multi-flag', 'b.js'], true);
+        expect(res.unknownArgs.length).toEqual(0);
+        expect(res.opts).toEqual({
+            multiFlag: ['a.js', 'b.js'],
+            stringFlagWithDefault: 'default-value',
+        });
+        expect(warnMock.mock.calls.length).toEqual(0);
+    });
+
     it('handles additional node args from argv', () => {
         const res = argParser(basicOptions, ['node', 'index.js', '--bool-flag', '--string-flag', 'val'], false);
         expect(res.unknownArgs.length).toEqual(0);
@@ -210,7 +227,7 @@ describe('arg-parser', () => {
     it('parses webpack args', () => {
         const res = argParser(core, ['--entry', 'test.js', '--hot', '-o', './dist/'], true);
         expect(res.unknownArgs.length).toEqual(0);
-        expect(res.opts.entry).toEqual('test.js');
+        expect(res.opts.entry).toEqual(['test.js']);
         expect(res.opts.hot).toBeTruthy();
         expect(res.opts.output).toEqual('./dist/');
         expect(warnMock.mock.calls.length).toEqual(0);
