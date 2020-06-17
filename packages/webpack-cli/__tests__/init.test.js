@@ -1,14 +1,13 @@
-'use strict';
-
+/* eslint-disable node/no-extraneous-require */
+const { sync: spawnSync } = require('execa');
+const path = require('path');
 const fs = require('fs');
 const rimraf = require('rimraf');
-const { join, resolve } = require('path');
-const { run } = require('../../utils/test-utils');
 
+const genPath = path.resolve(__dirname, './test-assets');
 const firstPrompt = 'Will your application have multiple bundles?';
-const genPath = join(__dirname, 'test-assets');
 
-describe('init auto flag', () => {
+describe('init', () => {
     beforeAll(() => {
         rimraf.sync(genPath);
         fs.mkdirSync(genPath);
@@ -18,21 +17,26 @@ describe('init auto flag', () => {
         rimraf.sync(genPath);
     });
 
-    it('should prompt with w/o auto flag', () => {
-        const { stdout, stderr } = run(genPath, ['init'], false);
+    it('should work with cli', () => {
+        const { stdout, stderr } = spawnSync(path.resolve(__dirname, '../bin/cli.js'), ['init'], {
+            cwd: genPath,
+            reject: false,
+        });
         expect(stdout).toBeTruthy();
         expect(stderr).toBeFalsy();
         expect(stdout).toContain(firstPrompt);
     });
-
-    it('should scaffold and not prompt with auto flag', () => {
-        const { stdout } = run(genPath, ['init', '--auto'], false);
+    it('should run with cli when auto is supplied', () => {
+        const { stdout } = spawnSync(path.resolve(__dirname, '../bin/cli.js'), ['init', '--auto'], {
+            cwd: genPath,
+            reject: false,
+        });
         // Test no prompts are present
         expect(stdout).toBeTruthy();
         expect(stdout).not.toContain(firstPrompt);
 
         // Skip test in case installation fails
-        if (!fs.existsSync(resolve(genPath, './yarn.lock'))) {
+        if (!fs.existsSync(path.resolve(genPath, './yarn.lock'))) {
             return;
         }
 
@@ -41,12 +45,12 @@ describe('init auto flag', () => {
 
         // eslint-disable-next-line prettier/prettier
         files.forEach((file) => {
-            expect(fs.existsSync(resolve(genPath, file))).toBeTruthy();
+            expect(fs.existsSync(path.resolve(genPath, file))).toBeTruthy();
         });
 
         // Check package json is correctly configured
         const pkgJsonTests = () => {
-            const pkgJson = require(join(genPath, './package.json'));
+            const pkgJson = require(path.join(genPath, './package.json'));
             expect(pkgJson).toBeTruthy();
             expect(pkgJson['devDependencies']).toBeTruthy();
             expect(pkgJson['devDependencies']['webpack']).toBeTruthy();

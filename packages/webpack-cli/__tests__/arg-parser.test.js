@@ -18,6 +18,19 @@ const basicOptions = [
         description: 'boolean flag',
     },
     {
+        name: 'specific-bool',
+        alias: 's',
+        usage: '--specific-bool',
+        type: Boolean,
+        description: 'boolean flag',
+    },
+    {
+        name: 'no-specific-bool',
+        usage: '--no-specific-bool',
+        type: Boolean,
+        description: 'boolean flag',
+    },
+    {
         name: 'string-flag',
         usage: '--string-flag <value>',
         type: String,
@@ -37,6 +50,13 @@ const basicOptions = [
             return val.split(',');
         },
         description: 'custom type flag',
+    },
+    {
+        name: 'multi-flag',
+        usage: '--multi-flag <value>',
+        type: String,
+        multiple: true,
+        description: 'multi flag',
     },
 ];
 
@@ -82,14 +102,9 @@ describe('arg-parser', () => {
         expect(warnMock.mock.calls.length).toEqual(0);
     });
 
-    it('parses negated boolean flags', () => {
+    it('should not parse negated boolean flags which are not specified', () => {
         const res = argParser(basicOptions, ['--no-bool-flag'], true);
-        expect(res.unknownArgs.length).toEqual(0);
-        expect(res.opts).toEqual({
-            boolFlag: false,
-            stringFlagWithDefault: 'default-value',
-        });
-        expect(warnMock.mock.calls.length).toEqual(0);
+        expect(res.unknownArgs.includes('--no-bool-flag')).toBeTruthy();
     });
 
     it('parses boolean flag alias', () => {
@@ -102,37 +117,47 @@ describe('arg-parser', () => {
         expect(warnMock.mock.calls.length).toEqual(0);
     });
 
-    it('warns on usage of both flag and same negated flag, setting it to false', () => {
-        const res = argParser(basicOptions, ['--bool-flag', '--no-bool-flag'], true);
+    it('parses specified negated boolean flag', () => {
+        const res = argParser(basicOptions, ['--no-specific-bool'], true);
         expect(res.unknownArgs.length).toEqual(0);
         expect(res.opts).toEqual({
-            boolFlag: false,
+            specificBool: false,
+            stringFlagWithDefault: 'default-value',
+        });
+        expect(warnMock.mock.calls.length).toEqual(0);
+    });
+
+    it('warns on usage of both flag and same negated flag, setting it to false', () => {
+        const res = argParser(basicOptions, ['--specific-bool', '--no-specific-bool'], true);
+        expect(res.unknownArgs.length).toEqual(0);
+        expect(res.opts).toEqual({
+            specificBool: false,
             stringFlagWithDefault: 'default-value',
         });
         expect(warnMock.mock.calls.length).toEqual(1);
-        expect(warnMock.mock.calls[0][0]).toContain('You provided both --bool-flag and --no-bool-flag');
+        expect(warnMock.mock.calls[0][0]).toContain('You provided both --specific-bool and --no-specific-bool');
     });
 
     it('warns on usage of both flag and same negated flag, setting it to true', () => {
-        const res = argParser(basicOptions, ['--no-bool-flag', '--bool-flag'], true);
+        const res = argParser(basicOptions, ['--no-specific-bool', '--specific-bool'], true);
         expect(res.unknownArgs.length).toEqual(0);
         expect(res.opts).toEqual({
-            boolFlag: true,
+            specificBool: true,
             stringFlagWithDefault: 'default-value',
         });
         expect(warnMock.mock.calls.length).toEqual(1);
-        expect(warnMock.mock.calls[0][0]).toContain('You provided both --bool-flag and --no-bool-flag');
+        expect(warnMock.mock.calls[0][0]).toContain('You provided both --specific-bool and --no-specific-bool');
     });
 
     it('warns on usage of both flag alias and same negated flag, setting it to true', () => {
-        const res = argParser(basicOptions, ['--no-bool-flag', '-b'], true);
+        const res = argParser(basicOptions, ['--no-specific-bool', '-s'], true);
         expect(res.unknownArgs.length).toEqual(0);
         expect(res.opts).toEqual({
-            boolFlag: true,
+            specificBool: true,
             stringFlagWithDefault: 'default-value',
         });
         expect(warnMock.mock.calls.length).toEqual(1);
-        expect(warnMock.mock.calls[0][0]).toContain('You provided both -b and --no-bool-flag');
+        expect(warnMock.mock.calls[0][0]).toContain('You provided both -s and --no-specific-bool');
     });
 
     it('parses string flag using equals sign', () => {
@@ -140,6 +165,16 @@ describe('arg-parser', () => {
         expect(res.unknownArgs.length).toEqual(0);
         expect(res.opts).toEqual({
             stringFlag: 'val',
+            stringFlagWithDefault: 'default-value',
+        });
+        expect(warnMock.mock.calls.length).toEqual(0);
+    });
+
+    it('handles multiple same args', () => {
+        const res = argParser(basicOptions, ['--multi-flag', 'a.js', '--multi-flag', 'b.js'], true);
+        expect(res.unknownArgs.length).toEqual(0);
+        expect(res.opts).toEqual({
+            multiFlag: ['a.js', 'b.js'],
             stringFlagWithDefault: 'default-value',
         });
         expect(warnMock.mock.calls.length).toEqual(0);
@@ -190,12 +225,11 @@ describe('arg-parser', () => {
     });
 
     it('parses webpack args', () => {
-        const res = argParser(core, ['--entry', 'test.js', '--hot', '-o', './dist/', '--no-watch'], true);
+        const res = argParser(core, ['--entry', 'test.js', '--hot', '-o', './dist/'], true);
         expect(res.unknownArgs.length).toEqual(0);
-        expect(res.opts.entry).toEqual('test.js');
+        expect(res.opts.entry).toEqual(['test.js']);
         expect(res.opts.hot).toBeTruthy();
         expect(res.opts.output).toEqual('./dist/');
-        expect(res.opts.watch).toBeFalsy();
         expect(warnMock.mock.calls.length).toEqual(0);
     });
 });

@@ -125,7 +125,7 @@
     "readable-stream": "^3.6.0",
     "rimraf": "^3.0.2",
     "ts-jest": "^25.3.0",
-    "typescript": "^3.8.3",
+    "typescript": "^3.9.5",
     "webpack": "^4.42.0",
     "yeoman-test": "^2.3.0"
   }

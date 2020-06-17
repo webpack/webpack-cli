@@ -72,11 +72,12 @@ module.exports = {
     core: [
         {
             name: 'entry',
-            usage: '--entry <path to entry file>',
+            usage: '--entry <path to entry file> | --entry <path> --entry <path>',
             type: String,
+            multiple: true,
             defaultOption: true,
             group: BASIC_GROUP,
-            description: 'The entry point of your application e.g. ./src/main.js',
+            description: 'The entry point(s) of your application e.g. ./src/main.js',
             link: 'https://webpack.js.org/concepts/#entry',
         },
         {
@@ -153,6 +154,14 @@ module.exports = {
             type: Boolean,
             group: ADVANCED_GROUP,
             description: 'Enables Hot Module Replacement',
+            link: 'https://webpack.js.org/concepts/hot-module-replacement/',
+        },
+        {
+            name: 'no-hot',
+            usage: '--no-hot',
+            type: Boolean,
+            group: ADVANCED_GROUP,
+            description: 'Disables Hot Module Replacement',
             link: 'https://webpack.js.org/concepts/hot-module-replacement/',
         },
         {
@@ -239,6 +248,13 @@ module.exports = {
             type: Boolean,
             group: DISPLAY_GROUP,
             description: 'It tells webpack to output all the information',
+        },
+        {
+            name: 'env',
+            usage: '--env',
+            type: String,
+            group: CONFIG_GROUP,
+            description: 'Environment passed to the configuration when it is a function',
         },
         /* 		{
 			name: "analyze",
