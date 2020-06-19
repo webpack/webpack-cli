@@ -1,7 +1,9 @@
+/* eslint-disable node/no-extraneous-require */
 'use strict';
 
 const path = require('path');
 const getPort = require('get-port');
+const ip = require('internal-ip');
 const { runServe } = require('../../utils/test-utils');
 
 const testPath = path.resolve(__dirname);
@@ -62,6 +64,13 @@ describe('serve with devServer in config', () => {
             expect(stdout).not.toContain('hot/dev-server.js');
             // Runs at correct host and port
             expect(stdout).toContain(`http://0.0.0.0:${port}`);
+            expect(stderr).toBeFalsy();
+        });
+
+        it('uses local IP address when --useLocalIp is supplied to serve', async () => {
+            const { stdout, stderr } = await runServe(['--useLocalIp'], testPath);
+            expect(stdout).toContain('main.js');
+            expect(stdout).toContain(`http://${ip.v4.sync() || 'localhost'}:1234`);
             expect(stderr).toBeFalsy();
         });
     }
