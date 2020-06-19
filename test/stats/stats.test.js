@@ -45,10 +45,17 @@ describe('stats flag', () => {
         expect(stdout).toBeTruthy();
     });
 
+    it('should warn when --verbose & --stats are passed together', () => {
+        const { stderr, stdout } = run(__dirname, ['--verbose', '--stats', 'normal']);
+        expect(stderr).toBeTruthy();
+        expect(stderr).toContain('Conflict between "verbose" and "stats" options');
+        expect(stdout).toBeTruthy();
+    });
+
     it('should warn when an unknown flag stats value is passed', () => {
         const { stderr, stdout } = run(__dirname, ['--stats', 'foo']);
         expect(stderr).toBeTruthy();
-        expect(stderr).toContain('No value recognised for "stats" option');
+        expect(stderr).toContain('invalid value for stats');
         expect(stdout).toBeTruthy();
     });
 });

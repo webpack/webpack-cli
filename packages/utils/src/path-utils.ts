@@ -19,12 +19,12 @@ export function isLocalPath(str: string): boolean {
 
 /**
  * Find the root directory path of a project.
- *
+ * @param {String} cwd - Any custom starting point to walk through directories
  * @returns {String} Absolute path of the project root.
  */
 
-export function findProjectRoot(): string {
-    const rootFilePath = findup('package.json');
+export function findProjectRoot(cwd = process.cwd()): string {
+    const rootFilePath = findup('package.json', { cwd });
     const projectRoot = path.dirname(rootFilePath);
     return projectRoot;
 }

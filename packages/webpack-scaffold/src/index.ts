@@ -109,7 +109,7 @@ export function InputValidate(
     message: string,
     cb?: (input: string) => string | boolean,
     defaultChoice?: string,
-    skip?: boolean,
+    skip = false,
 ): object | any {
     if (skip) return { [name]: defaultChoice };
     const input: Generator.Question = {

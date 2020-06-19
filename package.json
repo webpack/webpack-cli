@@ -24,7 +24,7 @@
   ],
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "clean": "del-cli \"*.tsbuildinfo\" \"packages/**/*.tsbuildinfo\" \"packages/!(webpack-cli)/lib/!(*.tpl)\"",
+    "clean": "del-cli \"*.tsbuildinfo\" \"packages/**/*.tsbuildinfo\" \"packages/!(webpack-cli)/lib/!(*.tpl)\" \"**/.yo-rc.json\"",
     "prebuild": "yarn clean",
     "build": "tsc --build",
     "watch": "tsc --build --watch",
@@ -104,6 +104,7 @@
     "chalk": "^3.0.0",
     "commitlint": "^8.3.5",
     "commitlint-config-cz": "^0.13.0",
+    "concat-stream": "^2.0.0",
     "cz-customizable": "^6.2.0",
     "del-cli": "^3.0.0",
     "eslint": "^6.8.0",
@@ -124,7 +125,7 @@
     "readable-stream": "^3.6.0",
     "rimraf": "^3.0.2",
     "ts-jest": "^25.3.0",
-    "typescript": "^3.8.3",
+    "typescript": "^3.9.5",
     "webpack": "^4.42.0",
     "yeoman-test": "^2.3.0"
   }

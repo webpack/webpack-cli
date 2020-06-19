@@ -25,10 +25,11 @@
   "dependencies": {
     "@webpack-cli/package-utils": "^1.0.1-alpha.4",
     "@webpack-cli/info": "^1.0.1-alpha.4",
+    "@webpack-cli/init": "^1.0.1-alpha.5",
     "ansi-escapes": "^4.3.1",
     "chalk": "^3.0.0",
-    "command-line-args": "^5.1.1",
     "command-line-usage": "^6.1.0",
+    "commander": "^5.0.0",
     "enquirer": "^2.3.4",
     "execa": "^4.0.0",
     "import-local": "^3.0.2",

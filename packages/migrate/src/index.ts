@@ -1,12 +1,10 @@
 import chalk from 'chalk';
-import diff from 'diff';
+import { Change, diffLines } from 'diff';
 import fs from 'fs';
 import inquirer from 'inquirer';
 import Listr from 'listr';
 import pLazy = require('p-lazy');
 import path from 'path';
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-// @ts-ignore
 import { validate, WebpackOptionsValidationError } from 'webpack';
 import { runPrettier } from '@webpack-cli/utils';
 import { transformations } from './migrate';
@@ -90,9 +88,9 @@ function runMigration(currentConfigPath: string, outputConfigPath: string): Prom
         .run()
         .then((ctx: Node): void | Promise<void> => {
             const result: string = ctx.ast.toSource(recastOptions);
-            const diffOutput: diff.Change[] = diff.diffLines(ctx.source, result);
+            const diffOutput: Change[] = diffLines(ctx.source, result);
 
-            diffOutput.forEach((diffLine: diff.Change): void => {
+            diffOutput.forEach((diffLine: Change): void => {
                 if (diffLine.added) {
                     process.stdout.write(chalk.green(`+ ${diffLine.value}`));
                 } else if (diffLine.removed) {
@@ -133,19 +131,17 @@ function runMigration(currentConfigPath: string, outputConfigPath: string): Prom
                             return;
                         }
 
-                        runPrettier(outputConfigPath, result, (err: object): void => {
-                            if (err) {
-                                throw err;
-                            }
-                        });
+                        runPrettier(outputConfigPath, result);
 
                         if (answer.confirmValidation) {
-                            const outputPath = await import(outputConfigPath);
-                            const webpackOptionsValidationErrors: string[] = validate(outputPath);
-
+                            const outputConfig = (await import(outputConfigPath)).default;
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            const webpackOptionsValidationErrors: any = validate(outputConfig);
                             if (webpackOptionsValidationErrors.length) {
                                 console.error(chalk.red("\n✖ Your configuration validation wasn't successful \n"));
-                                console.error(new WebpackOptionsValidationError(webpackOptionsValidationErrors).message);
+                                // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+                                // @ts-ignore
+                                console.error(new WebpackOptionsValidationError(webpackOptionsValidationErrors));
                             }
                         }
 
@@ -198,7 +194,7 @@ export default function migrate(...args: string[]): void | Promise<void> {
             ])
             .then((ans: { confirmPath: boolean }): void | Promise<void> => {
                 if (!ans.confirmPath) {
-                    console.error(chalk.red('✖ ︎Migration aborted due no output path'));
+                    console.error(chalk.red('✖ ︎Migration aborted due to no output path'));
                     return;
                 }
                 outputConfigPath = path.resolve(process.cwd(), filePaths[0]);

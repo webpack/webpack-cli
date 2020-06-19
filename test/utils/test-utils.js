@@ -4,6 +4,8 @@ const fs = require('fs');
 const execa = require('execa');
 const { sync: spawnSync } = execa;
 const { Writable } = require('readable-stream');
+const concat = require('concat-stream');
+
 const WEBPACK_PATH = path.resolve(__dirname, '../../packages/webpack-cli/bin/cli.js');
 const ENABLE_LOG_COMPILATION = process.env.ENABLE_PIPE || false;
 
@@ -39,7 +41,7 @@ function runWatch({ testCase, args = [], setOutput = true, outputKillStr = 'Time
         const watchPromise = execa(WEBPACK_PATH, argsWithOutput, {
             cwd,
             reject: false,
-            stdio: ENABLE_LOG_COMPILATION ? 'inherit' : 'pipe',
+            stdio: 'pipe',
         });
 
         watchPromise.stdout.pipe(
@@ -65,20 +67,111 @@ function runWatch({ testCase, args = [], setOutput = true, outputKillStr = 'Time
     });
 }
 
-function runAndGetWatchProc(testCase, args = [], setOutput = true) {
+function runAndGetWatchProc(testCase, args = [], setOutput = true, input = '', forcePipe = false) {
     const cwd = path.resolve(testCase);
 
     const outputPath = path.resolve(testCase, 'bin');
     const argsWithOutput = setOutput ? args.concat('--output', outputPath) : args;
 
-    const webpackProc = execa(WEBPACK_PATH, argsWithOutput, {
+    const options = {
         cwd,
         reject: false,
-        stdio: ENABLE_LOG_COMPILATION ? 'inherit' : 'pipe',
-    });
+        stdio: ENABLE_LOG_COMPILATION && !forcePipe ? 'inherit' : 'pipe',
+    };
+
+    // some tests don't work if the input option is an empty string
+    if (input) {
+        options.input = input;
+    }
+
+    const webpackProc = execa(WEBPACK_PATH, argsWithOutput, options);
 
     return webpackProc;
 }
+/**
+ * runPromptWithAnswers
+ * @param {string} location location of current working directory
+ * @param {string[]} args CLI args to pass in
+ * @param {string[]} answers answers to be passed to stdout for inquirer question
+ * @param {boolean} waitForOutput whether to wait for stdout before writing the next answer
+ */
+const runPromptWithAnswers = (location, args, answers, waitForOutput = true) => {
+    const runner = runAndGetWatchProc(location, args, false, '', true);
+    runner.stdin.setDefaultEncoding('utf-8');
+
+    const delay = 2000;
+    let outputTimeout;
+    if (waitForOutput) {
+        let currentAnswer = 0;
+        const writeAnswer = () => {
+            if (currentAnswer < answers.length) {
+                runner.stdin.write(answers[currentAnswer]);
+                currentAnswer++;
+            }
+        };
+
+        runner.stdout.pipe(
+            new Writable({
+                write(chunk, encoding, callback) {
+                    const output = chunk.toString('utf8');
+                    if (output) {
+                        if (outputTimeout) {
+                            clearTimeout(outputTimeout);
+                        }
+                        // we must receive new stdout, then have 2 seconds
+                        // without any stdout before writing the next answer
+                        outputTimeout = setTimeout(writeAnswer, delay);
+                    }
+
+                    callback();
+                },
+            }),
+        );
+    } else {
+        // Simulate answers by sending the answers every 2s
+        answers.reduce((prevAnswer, answer) => {
+            return prevAnswer.then(() => {
+                return new Promise((resolvePromise) => {
+                    setTimeout(() => {
+                        runner.stdin.write(answer);
+                        resolvePromise();
+                    }, delay);
+                });
+            });
+        }, Promise.resolve());
+    }
+
+    return new Promise((resolve) => {
+        const obj = {};
+        let stdoutDone = false;
+        let stderrDone = false;
+        const complete = () => {
+            if (outputTimeout) {
+                clearTimeout(outputTimeout);
+            }
+            if (stdoutDone && stderrDone) {
+                runner.kill('SIGKILL');
+                resolve(obj);
+            }
+        };
+
+        runner.stdout.pipe(
+            concat((result) => {
+                stdoutDone = true;
+                obj.stdout = result.toString();
+                complete();
+            }),
+        );
+
+        runner.stderr.pipe(
+            concat((result) => {
+                stderrDone = true;
+                obj.stderr = result.toString();
+                complete();
+            }),
+        );
+    });
+};
 
 function extractSummary(stdout) {
     if (stdout === '') {
@@ -205,6 +298,7 @@ module.exports = {
     runServe,
     runAndGetWatchProc,
     extractSummary,
+    runPromptWithAnswers,
     appendDataIfFileExists,
     copyFile,
     copyFileAsync,

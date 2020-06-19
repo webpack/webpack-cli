@@ -68,7 +68,7 @@ export function getTypescriptLoader(includeFolders: string[]): Rule {
     };
 }
 
-export default function language(self, langType: string): void {
+export default function language(self: CustomGenerator, langType: string): void {
     const entryFolders = getEntryFolders(self);
     switch (langType) {
         case LangType.ES6:

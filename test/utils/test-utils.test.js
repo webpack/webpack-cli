@@ -131,4 +131,9 @@ describe('runAndGetWatchProc function', () => {
         expect(stdout).toBeTruthy();
         expect(stderr).toBeFalsy();
     });
+
+    it('writes to stdin', async () => {
+        const { stdout } = await runAndGetWatchProc(__dirname, ['init'], false, 'n');
+        expect(stdout).toContain('Which will be your application entry point?');
+    });
 });

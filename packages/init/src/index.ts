@@ -2,7 +2,7 @@ import { initGenerator } from '@webpack-cli/generators';
 import { modifyHelperUtil, npmPackagesExists } from '@webpack-cli/utils';
 
 const AUTO_PREFIX = '--auto';
-
+const CONFIG_PREFIX = '--force';
 /**
  *
  * First function to be called after running the init flag. This is a check,
@@ -17,8 +17,9 @@ const AUTO_PREFIX = '--auto';
 export default function initializeInquirer(...args: string[]): Function | void {
     const packages = args;
     const includesDefaultPrefix = packages.includes(AUTO_PREFIX);
-    if (packages.length === 0 || includesDefaultPrefix) {
-        return modifyHelperUtil('init', initGenerator, null, null, includesDefaultPrefix);
+    const generateConfig = packages.includes(CONFIG_PREFIX);
+    if (packages.length === 0 || includesDefaultPrefix || generateConfig) {
+        return modifyHelperUtil('init', initGenerator, null, null, includesDefaultPrefix, generateConfig);
     }
     return npmPackagesExists(packages);
 }

@@ -1,10 +1,9 @@
-const { resolve, parse } = require('path');
-const { existsSync } = require('fs');
 const GroupHelper = require('./utils/GroupHelper');
 const { Compiler } = require('./utils/Compiler');
 const { groups, core } = require('./utils/cli-flags');
 const webpackMerge = require('webpack-merge');
-const commandArgs = require('command-line-args');
+const { toKebabCase } = require('./utils/helpers');
+const argParser = require('./utils/arg-parser');
 
 const defaultCommands = {
     init: 'init',
@@ -36,12 +35,12 @@ class WebpackCLI extends GroupHelper {
         this.outputConfiguration = {};
     }
     setMappedGroups(args, inlineOptions) {
-        const { _all } = args;
-        Object.keys(_all).forEach((key) => {
-            this.setGroupMap(key, _all[key], inlineOptions);
+        Object.keys(args).forEach((key) => {
+            this.setGroupMap(toKebabCase(key), args[key], inlineOptions);
         });
     }
     setGroupMap(key, val, inlineOptions) {
+        if (val === undefined) return;
         const opt = inlineOptions.find((opt) => opt.name === key);
         const groupName = opt.group;
         if (this.groupMap.has(groupName)) {
@@ -51,44 +50,19 @@ class WebpackCLI extends GroupHelper {
             this.groupMap.set(groupName, [{ [opt.name]: val }]);
         }
     }
-    checkDefaults(options, outputOptions) {
-        if (Array.isArray(options)) {
-            return options.map((opt) => this.checkDefaults(opt, outputOptions));
-        }
-        if (options.entry && this.possibleFileNames.includes(options.entry)) {
-            const absFilename = parse(options.entry);
-            let tmpFileName = options.entry;
-            if (absFilename.ext !== '.js') {
-                tmpFileName += '.js';
-            }
-            const normalizedEntry = resolve(tmpFileName);
-            if (!existsSync(normalizedEntry)) {
-                const parsedPath = parse(normalizedEntry);
-                const possibleEntries = this.possibleFileNames
-                    .map((f) => {
-                        return resolve(parsedPath.dir, f);
-                    })
-                    .filter((e) => existsSync(e));
 
-                if (possibleEntries.length) {
-                    options.entry = possibleEntries[0];
-                }
-            }
-        }
-        if (outputOptions.devtool) {
-            options.devtool = outputOptions.devtool;
-        }
-        return options;
-    }
-
-    // It exposes "command-line-args" function
-    commandLineArgs(...args) {
-        return commandArgs(...args);
+    /**
+     * Expose commander argParser
+     * @param  {...any} args args for argParser
+     */
+    argParser(...args) {
+        return argParser(...args);
     }
 
     getCoreFlags() {
         return core;
     }
+
     /**
      * Based on the parsed keys, the function will import and create
      * a group that handles respective values
@@ -240,18 +214,6 @@ class WebpackCLI extends GroupHelper {
     }
 
     /**
-     * Responsible for applying defaults, if necessary
-     * @private\
-     * @returns {void}
-     */
-    _handForcedDefaults() {
-        if (this.outputConfiguration.defaults) {
-            const wrappedConfig = require('./utils/zero-config')(this.compilerConfiguration, this.outputConfiguration);
-            this.compilerConfiguration = this.checkDefaults(wrappedConfig.options, this.outputConfiguration);
-        }
-    }
-
-    /**
      * It runs in a fancy order all the expected groups.
      * Zero config and configuration goes first.
      *
@@ -267,8 +229,7 @@ class WebpackCLI extends GroupHelper {
             .then(() => this._handleGroupHelper(this.basicGroup))
             .then(() => this._handleGroupHelper(this.advancedGroup))
             .then(() => this._handleGroupHelper(this.statsGroup))
-            .then(() => this._handleGroupHelper(this.helpGroup))
-            .then(() => this._handForcedDefaults());
+            .then(() => this._handleGroupHelper(this.helpGroup));
     }
 
     async processArgs(args, cliOptions) {
@@ -302,19 +263,21 @@ class WebpackCLI extends GroupHelper {
 
     runHelp(args) {
         const HelpGroup = require('./groups/HelpGroup');
-        const commandNames = require('./utils/commands').names;
-        const flagNames = require('./utils/core-flags').names;
-        const allNames = [...commandNames, ...flagNames];
+        const { commands, allNames, hasUnknownArgs } = require('./utils/unknown-args');
         const subject = allNames.filter((name) => {
             return args.includes(name);
         })[0];
-        const isCommand = commandNames.includes(subject);
-        return new HelpGroup().outputHelp(isCommand, subject);
+        const invalidArgs = hasUnknownArgs(args.slice(2), ...allNames);
+        const isCommand = commands.includes(subject);
+        return new HelpGroup().outputHelp(isCommand, subject, invalidArgs);
     }
 
-    runVersion(externalPkg) {
+    runVersion(args, externalPkg) {
         const HelpGroup = require('./groups/HelpGroup');
-        return new HelpGroup().outputVersion(externalPkg);
+        const { commands, allNames, hasUnknownArgs } = require('./utils/unknown-args');
+        const commandsUsed = args.filter((val) => commands.includes(val));
+        const invalidArgs = hasUnknownArgs(args.slice(2), ...allNames);
+        return new HelpGroup().outputVersion(externalPkg, commandsUsed, invalidArgs);
     }
 }
 

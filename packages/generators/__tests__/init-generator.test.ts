@@ -154,6 +154,18 @@ describe('init generator', () => {
         // Check that all the project files are generated with the correct name
         const filePaths = ['package.json', 'README.md', 'src/index.js', '.babelrc'];
         assert.file(filePaths.map((file) => join(outputDir, file)));
+
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        const output = require(join(outputDir, '.yo-rc.json'));
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const config = (Object.entries(output)[0][1] as any).configuration.config.webpackOptions;
+        expect(config.module.rules).toEqual([
+            {
+                test: '/\\.(js|jsx)$/',
+                include: ["path.resolve(__dirname, 'src')"],
+                loader: "'babel-loader'",
+            },
+        ]);
     });
 
     it('generates a webpack config that uses Typescript', async () => {
@@ -168,5 +180,18 @@ describe('init generator', () => {
         // Check that all the project files are generated with the correct name
         const filePaths = ['package.json', 'README.md', 'src/index.ts', 'tsconfig.json'];
         assert.file(filePaths.map((file) => join(outputDir, file)));
+
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        const output = require(join(outputDir, '.yo-rc.json'));
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const config = (Object.entries(output)[0][1] as any).configuration.config.webpackOptions;
+        expect(config.module.rules).toEqual([
+            {
+                test: '/\\.(ts|tsx)$/',
+                include: ["path.resolve(__dirname, 'src')"],
+                loader: "'ts-loader'",
+                exclude: ['/node_modules/'],
+            },
+        ]);
     });
 });

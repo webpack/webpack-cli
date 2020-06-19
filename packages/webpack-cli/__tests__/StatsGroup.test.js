@@ -15,4 +15,27 @@ describe('StatsGroup', function () {
             });
         });
     }
+
+    it('should handle verbose', () => {
+        const group = new StatsGroup([
+            {
+                verbose: true,
+            },
+        ]);
+
+        const result = group.run();
+        expect(result.options.stats).toEqual('verbose');
+    });
+
+    it('should handle json', () => {
+        const group = new StatsGroup([
+            {
+                json: true,
+            },
+        ]);
+
+        const result = group.run();
+        expect(result.options.stats).toBeFalsy();
+        expect(result.outputOptions.json).toBeTruthy();
+    });
 });

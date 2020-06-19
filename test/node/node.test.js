@@ -2,10 +2,10 @@
 const { stat } = require('fs');
 const { resolve } = require('path');
 const { run } = require('../utils/test-utils');
-const parseArgs = require('../../packages/webpack-cli/lib/utils/parse-args');
+const parseNodeArgs = require('../../packages/webpack-cli/lib/utils/parse-node-args');
 
 describe('node flags', () => {
-    it('parseArgs helper must work correctly', () => {
+    it('parseNodeArgs helper must work correctly', () => {
         [
             {
                 rawArgs: ['--foo', '--bar', '--baz=quux'],
@@ -32,7 +32,7 @@ describe('node flags', () => {
                 expectedNodeArgs: ['--name1=value1', '--name2="value2"', '--name3', 'value3', '-k', 'v'],
             },
         ].map(({ rawArgs, expectedNodeArgs, expectedCliArgs }) => {
-            const { nodeArgs, cliArgs } = parseArgs(rawArgs);
+            const { nodeArgs, cliArgs } = parseNodeArgs(rawArgs);
             expect(nodeArgs).toEqual(expectedNodeArgs);
             expect(cliArgs).toEqual(expectedCliArgs);
         });
@@ -67,13 +67,13 @@ describe('node flags', () => {
 
     it('throws an error if no values were supplied with --max-old-space-size', () => {
         const { stderr, stdout } = run(__dirname, ['--node-args', '--max-old-space-size']);
-        expect(stderr).toBeTruthy();
+        expect(stderr).toContain('missing value for flag --max-old-space-size');
         expect(stdout).toBeFalsy();
     });
 
     it('throws an error if an illegal value was supplied with --max-old-space-size', () => {
         const { stderr, stdout } = run(__dirname, ['--node-args', '--max-old-space-size=1024a']);
-        expect(stderr).toBeTruthy();
+        expect(stderr).toContain('illegal value for flag --max-old-space-size');
         expect(stdout).toBeFalsy();
     });
 });

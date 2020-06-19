@@ -37,6 +37,13 @@ describe('basic serve usage', () => {
             expect(stderr).toHaveLength(0);
         });
 
+        it('uses no-hot flag', async () => {
+            const { stdout, stderr } = await runServe(['--port', port, '--no-hot'], testPath);
+            expect(stdout).toContain('main.js');
+            expect(stdout).not.toContain('hot/dev-server.js');
+            expect(stderr).toHaveLength(0);
+        });
+
         it('uses hot flag and progress flag', async () => {
             const { stdout, stderr } = await runServe(['--port', port, '--hot', '--progress'], testPath);
             expect(stdout).toContain('main.js');
@@ -48,7 +55,7 @@ describe('basic serve usage', () => {
         it('throws error on unknown flag', async () => {
             const { stdout, stderr } = await runServe(['--port', port, '--unknown-flag'], testPath);
             expect(stdout).toHaveLength(0);
-            expect(stderr).toContain('Unknown option: --unknown-flag');
+            expect(stderr).toContain('Unknown argument: --unknown-flag');
         });
     }
 });
