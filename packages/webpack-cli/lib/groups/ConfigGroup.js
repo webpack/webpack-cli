@@ -92,7 +92,6 @@ class ConfigGroup extends GroupHelper {
         if (!moduleObj) {
             return newOptionsObject;
         }
-        console.log({ moduleObj });
         const configPath = moduleObj.path;
         const configOptions = moduleObj.content;
         if (typeof configOptions === 'function') {
@@ -105,7 +104,6 @@ class ConfigGroup extends GroupHelper {
                 return newOptionsObject;
             }
             newOptionsObject['options'] = configOptions;
-            console.log({ configOptions, newOptionsObject });
         }
 
         if (configOptions && configPath.includes('.webpack')) {
@@ -150,7 +148,6 @@ class ConfigGroup extends GroupHelper {
         const configFiles = tmpConfigFiles.map(this.requireConfig.bind(this));
         if (configFiles.length) {
             const defaultConfig = configFiles.find((p) => p.path.includes(mode) || p.path.includes(modeAlias[mode]));
-            console.log({ defaultConfig, configFiles, mode });
             if (defaultConfig) {
                 this.opts = this.finalize(defaultConfig);
                 return;
@@ -188,7 +185,6 @@ class ConfigGroup extends GroupHelper {
     run() {
         this.resolveConfigFiles();
         this.resolveConfigMerging();
-        console.log(this.opts);
         return this.opts;
     }
 }
