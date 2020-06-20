@@ -9,10 +9,19 @@ const DEFAULT_CONFIG_LOC = [
     '.webpack/webpack.config',
     '.webpack/webpack.config.none',
     '.webpack/webpack.config.dev',
+    '.webpack/webpack.config.development',
     '.webpack/webpack.config.prod',
+    '.webpack/webpack.config.production',
     '.webpack/webpackfile',
+    'webpack.config.development',
     'webpack.config',
+    'webpack.config.production',
 ];
+
+const modeAlias = {
+    production: 'prod',
+    development: 'dev',
+};
 
 const fileTypes = {
     '.babel.js': ['@babel/register', 'babel-register', 'babel-core/register', 'babel/register'],
@@ -83,6 +92,7 @@ class ConfigGroup extends GroupHelper {
         if (!moduleObj) {
             return newOptionsObject;
         }
+        console.log({ moduleObj });
         const configPath = moduleObj.path;
         const configOptions = moduleObj.content;
         if (typeof configOptions === 'function') {
@@ -95,6 +105,7 @@ class ConfigGroup extends GroupHelper {
                 return newOptionsObject;
             }
             newOptionsObject['options'] = configOptions;
+            console.log({ configOptions, newOptionsObject });
         }
 
         if (configOptions && configPath.includes('.webpack')) {
@@ -138,10 +149,10 @@ class ConfigGroup extends GroupHelper {
 
         const configFiles = tmpConfigFiles.map(this.requireConfig.bind(this));
         if (configFiles.length) {
-            const defaultConfig = configFiles.find((p) => p.path.includes(mode));
+            const defaultConfig = configFiles.find((p) => p.path.includes(mode) || p.path.includes(modeAlias[mode]));
+            console.log({ defaultConfig, configFiles, mode });
             if (defaultConfig) {
-                const envConfig = defaultConfig.map((c) => c.content);
-                this.opts = this.finalize(envConfig);
+                this.opts = this.finalize(defaultConfig);
                 return;
             }
             const foundConfig = configFiles.pop();
@@ -177,6 +188,7 @@ class ConfigGroup extends GroupHelper {
     run() {
         this.resolveConfigFiles();
         this.resolveConfigMerging();
+        console.log(this.opts);
         return this.opts;
     }
 }

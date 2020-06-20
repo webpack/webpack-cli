@@ -31,7 +31,7 @@ class WebpackCLI extends GroupHelper {
             `./src/${this.defaultEntry}.js`,
             `src/${this.defaultEntry}.js`,
         ];
-        this.compilerConfiguration = undefined;
+        this.compilerConfiguration = {};
         this.outputConfiguration = {};
     }
     setMappedGroups(args, inlineOptions) {
@@ -71,6 +71,11 @@ class WebpackCLI extends GroupHelper {
      */
     resolveGroups() {
         let mode;
+        // determine the passed mode for ConfigGroup
+        if (this.groupMap.has(groups.ZERO_CONFIG_GROUP)) {
+            const modePresent = this.groupMap.get(groups.ZERO_CONFIG_GROUP).find((t) => !!t.mode);
+            if (modePresent) mode = modePresent.mode;
+        }
         for (const [key, value] of this.groupMap.entries()) {
             switch (key) {
                 case groups.ZERO_CONFIG_GROUP: {
