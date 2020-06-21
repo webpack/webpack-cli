@@ -12,10 +12,8 @@ describe('Prefetch Flag', () => {
         const { stdout, stderr } = run(__dirname, ['--prefetch', './src/p.js'], false);
         // Should be able to find the entry file
         expect(stdout).toContain('./src/index.js');
-        // Should contain the prefetched file
-        console.log({ stdout });
-        // expect(stdout).toContain('./src/p.js');
-        expect(stdout).toContain('[prefetched]');
+        // Should invoke the PrefetchPlugin with correct params
+        expect(stdout).toContain(`PrefetchPlugin { context: null, request: './src/p.js' }`);
         // check that the output file exists
         expect(fs.existsSync(join(__dirname, '/dist/main.js'))).toBeTruthy();
         expect(stderr).toBeFalsy();
@@ -24,8 +22,7 @@ describe('Prefetch Flag', () => {
     it('Should err when the prefetched file is absent', () => {
         const { stdout, stderr } = run(__dirname, ['--prefetch', './src/somefile.js'], false);
         // Should contain the error message
-        expect(stdout).toContain('ERROR in Entry module not found:');
-        expect(stdout).not.toContain('[prefetched]');
+        expect(stdout).toContain(`Error: Can't resolve './src/somefile.js'`);
         // check that the output file does not exist since prefetched file is not found
         expect(fs.existsSync(join(__dirname, '/dist/main.js'))).toBeFalsy();
         expect(stderr).toBeFalsy();
