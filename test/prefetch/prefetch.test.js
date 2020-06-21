@@ -29,4 +29,11 @@ describe('Prefetch Flag', () => {
         expect(fs.existsSync(join(__dirname, '/dist/main.js'))).toBeFalsy();
         expect(stderr).toBeFalsy();
     });
+
+    it('Should err when flag value is not supplied', () => {
+        const { stdout, stderr } = run(__dirname, ['--prefetch'], false);
+        // Should contain the error message
+        expect(stderr).toContain(`error: option '--prefetch <value>' argument missing`);
+        expect(stdout).toBeFalsy();
+    });
 });
