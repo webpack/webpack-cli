@@ -165,6 +165,14 @@ module.exports = {
             link: 'https://webpack.js.org/concepts/hot-module-replacement/',
         },
         {
+            name: 'stdin',
+            usage: '--stdin',
+            type: Boolean,
+            group: ADVANCED_GROUP,
+            description: 'This option instructs the server to close when stdin ends',
+            link: 'https://webpack.js.org/configuration/dev-server/#devserverstdin---cli-only',
+        },
+        {
             name: 'sourcemap',
             usage: '--sourcemap <sourcemap | eval>',
             type: String,

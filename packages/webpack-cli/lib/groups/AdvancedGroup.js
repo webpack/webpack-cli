@@ -19,6 +19,7 @@ class AdvancedGroup extends GroupHelper {
                 options.plugins = [hotModuleVal];
             }
         }
+
         if (args.prefetch) {
             const { PrefetchPlugin } = require('webpack');
             const prefetchVal = new PrefetchPlugin(null, args.prefetch);
@@ -28,8 +29,16 @@ class AdvancedGroup extends GroupHelper {
                 options.plugins = [prefetchVal];
             }
         }
+
         if (args.target) {
             options.target = args.target;
+        }
+
+        if (args.stdin) {
+            process.stdin.on('end', () => {
+                process.exit(0);
+            });
+            process.stdin.resume();
         }
     }
     run() {

@@ -47,6 +47,7 @@ Options
   -w, --watch              Watch for files changes
   -h, --hot                Enables Hot Module Replacement
   --no-hot                 Disables Hot Module Replacement
+  --stdin                  This option closes the server when stdin ends
   -s, --sourcemap string   Determine source maps to use
   --prefetch string        Prefetch this request
   -j, --json               Prints result as JSON
