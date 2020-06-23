@@ -102,8 +102,8 @@ class HelpGroup {
             },
             {
                 header: 'Available Commands',
-                content: options.commands.map((e) => {
-                    return { name: e.name, summary: e.description };
+                content: options.commands.map((cmd) => {
+                    return { name: `${cmd.name} | ${cmd.alias}`, summary: cmd.description };
                 }),
             },
             {

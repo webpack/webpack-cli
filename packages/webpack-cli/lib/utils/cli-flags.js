@@ -26,6 +26,7 @@ module.exports = {
         },
         {
             name: 'migrate',
+            alias: 'm',
             type: String,
             usage: 'migrate',
             description: 'Migrate a configuration to a new version',
@@ -49,6 +50,7 @@ module.exports = {
         {
             name: 'info',
             scope: 'external',
+            alias: 'i',
             type: String,
             usage: 'info [options]',
             description: 'Outputs information about your system and dependencies',
@@ -63,6 +65,7 @@ module.exports = {
         },
         {
             name: 'serve',
+            alias: 's',
             scope: 'external',
             type: String,
             usage: 'serve',
