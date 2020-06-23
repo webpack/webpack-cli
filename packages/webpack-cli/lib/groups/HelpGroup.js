@@ -103,7 +103,7 @@ class HelpGroup {
             {
                 header: 'Available Commands',
                 content: options.commands.map((cmd) => {
-                    return { name: cmd.alias ? `${cmd.name} | ${cmd.alias}` : cmd.name, summary: cmd.description };
+                    return { name: `${cmd.name} | ${cmd.alias}`, summary: cmd.description };
                 }),
             },
             {
