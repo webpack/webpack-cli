@@ -21,7 +21,7 @@ module.exports = {
             name: 'init',
             alias: 'c',
             type: String,
-            usage: 'init | init <scaffold>',
+            usage: 'init [scaffold]',
             description: 'Initialize a new webpack configuration',
         },
         {
