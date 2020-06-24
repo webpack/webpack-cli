@@ -11,7 +11,7 @@ const runInfo = (args) => {
 
 const infoFlags = commands.find((c) => c.name === 'info').flags;
 
-const usageText = 'webpack info [options]';
+const usageText = 'webpack i | info [options]';
 const descriptionText = 'Outputs information about your system and dependencies';
 
 describe('should print help for info command', () => {
