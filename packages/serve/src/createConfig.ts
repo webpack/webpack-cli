@@ -13,13 +13,15 @@ export default function createConfig(args): any {
         options.client = {
             logging: options.clientLogging,
         };
+        // clientLogging is not a valid devServer option
         delete options.clientLogging;
     }
 
     if (options.hotOnly) {
         options.hot = 'only';
+        // hotOnly is not a valid devServer option
         delete options.hotOnly;
     }
 
-    return args;
+    return options;
 }
