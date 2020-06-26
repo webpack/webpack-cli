@@ -37,7 +37,7 @@ function argParser(options, args, argsOnly = false, name = '', helpFunction = un
     // Register options on the parser
     options.reduce((parserInstance, option) => {
         const flags = option.alias ? `-${option.alias}, --${option.name}` : `--${option.name}`;
-        const flagsWithType = option.type !== Boolean ? flags + ' <value>' : flags;
+        let flagsWithType = option.type !== Boolean ? flags + ' <value>' : flags;
         if (option.type === Boolean || option.type === String) {
             if (!option.multiple) {
                 parserInstance.option(flagsWithType, option.description, option.defaultValue);
@@ -47,7 +47,12 @@ function argParser(options, args, argsOnly = false, name = '', helpFunction = un
             }
         } else {
             // in this case the type is a parsing function
-            parserInstance.option(flagsWithType, option.description, option.type, option.defaultValue);
+            if (option.type.length > 1) {
+                flagsWithType = flags + ' [value]';
+                parserInstance.option(flagsWithType, option.description, option.type[0], option.defaultValue);
+            } else {
+                parserInstance.option(flagsWithType, option.description, option.type, option.defaultValue);
+            }
         }
 
         return parserInstance;
