@@ -6,11 +6,13 @@ describe('stats flag with config', () => {
     it('should compile without stats flag', () => {
         const { stderr, stdout } = run(__dirname, []);
         expect(stderr).toBeFalsy();
-        expect(stdout).toBeFalsy();
+        expect(stdout).toBeTruthy();
+        expect(stdout).toContain(`stats: 'normal'`);
     });
     it('should compile with stats flag', () => {
         const { stderr, stdout } = run(__dirname, ['--stats', 'errors-warnings']);
         expect(stderr).toBeFalsy();
         expect(stdout).toBeFalsy();
+        expect(stdout).toContain(`stats: 'errors-warnings'`);
     });
 });
