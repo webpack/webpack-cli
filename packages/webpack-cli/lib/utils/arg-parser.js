@@ -45,6 +45,8 @@ function argParser(options, args, argsOnly = false, name = '', helpFunction = un
                 const multiArg = (value, previous = []) => previous.concat([value]);
                 parserInstance.option(flagsWithType, option.description, multiArg, option.defaultValue);
             }
+        } else if (option.type === Number) {
+            parserInstance.option(flagsWithType, option.description, Number, option.defaultValue);
         } else {
             // in this case the type is a parsing function
             if (option.type.length > 1) {
