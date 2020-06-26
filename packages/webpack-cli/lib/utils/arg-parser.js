@@ -41,6 +41,8 @@ function argParser(options, args, argsOnly = false, name = '', helpFunction = un
         }, parser);
         commandNames = commands.map((cmd) => cmd.name);
         commandAliases = commands.map((cmd) => cmd.alias);
+
+        parser.on('command:*', () => {});
     }
 
     // Use customized version output if available

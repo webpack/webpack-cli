@@ -40,7 +40,6 @@ async function runCLI(cli, commandIsUsed) {
         // if the unknown arg starts with a '-', it will be considered
         // an unknown flag rather than an entry
         let entry;
-        console.log(parsedArgs.unknownArgs);
         if (parsedArgs.unknownArgs.length > 0 && !parsedArgs.unknownArgs[0].startsWith('-')) {
             if (parsedArgs.unknownArgs.length === 1) {
                 entry = parsedArgs.unknownArgs[0];
