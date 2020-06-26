@@ -44,6 +44,12 @@ const basicOptions = [
         defaultValue: 'default-value',
     },
     {
+        name: 'multi-type',
+        usage: '--multi-type | --multi-type <value>',
+        type: [String, Boolean],
+        description: 'flag with multiple types',
+    },
+    {
         name: 'custom-type-flag',
         usage: '--custom-type-flag <value>',
         type: (val) => {
@@ -122,6 +128,26 @@ describe('arg-parser', () => {
         expect(res.unknownArgs.length).toEqual(0);
         expect(res.opts).toEqual({
             specificBool: false,
+            stringFlagWithDefault: 'default-value',
+        });
+        expect(warnMock.mock.calls.length).toEqual(0);
+    });
+
+    it('parses multi type flag as Boolean', () => {
+        const res = argParser(basicOptions, ['--multi-type'], true);
+        expect(res.unknownArgs.length).toEqual(0);
+        expect(res.opts).toEqual({
+            multiType: true,
+            stringFlagWithDefault: 'default-value',
+        });
+        expect(warnMock.mock.calls.length).toEqual(0);
+    });
+
+    it('parses multi type flag as String', () => {
+        const res = argParser(basicOptions, ['--multi-type', 'value'], true);
+        expect(res.unknownArgs.length).toEqual(0);
+        expect(res.opts).toEqual({
+            multiType: 'value',
             stringFlagWithDefault: 'default-value',
         });
         expect(warnMock.mock.calls.length).toEqual(0);
@@ -225,11 +251,12 @@ describe('arg-parser', () => {
     });
 
     it('parses webpack args', () => {
-        const res = argParser(core, ['--entry', 'test.js', '--hot', '-o', './dist/'], true);
+        const res = argParser(core, ['--entry', 'test.js', '--hot', '-o', './dist/', '--stats'], true);
         expect(res.unknownArgs.length).toEqual(0);
         expect(res.opts.entry).toEqual(['test.js']);
         expect(res.opts.hot).toBeTruthy();
         expect(res.opts.output).toEqual('./dist/');
+        expect(res.opts.stats).toEqual(true);
         expect(warnMock.mock.calls.length).toEqual(0);
     });
 });
