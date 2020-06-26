@@ -1,6 +1,15 @@
 const commander = require('commander');
 const logger = require('./logger');
 
+const defaultCommands = {
+    init: 'init',
+    loader: 'generate-loader',
+    plugin: 'generate-plugin',
+    info: 'info',
+    migrate: 'migrate',
+    serve: 'serve',
+};
+
 /**
  *  Creates Argument parser corresponding to the supplied options
  *  parse the args and return the result
@@ -10,10 +19,29 @@ const logger = require('./logger');
  * @param {boolean} argsOnly false if all of process.argv has been provided, true if
  * args is only a subset of process.argv that removes the first couple elements
  */
-function argParser(options, args, argsOnly = false, name = '', helpFunction = undefined, versionFunction = undefined) {
+function argParser(options, args, argsOnly = false, name = '', helpFunction = undefined, versionFunction = undefined, commands) {
     const parser = new commander.Command();
     // Set parser name
     parser.name(name);
+
+    let commandNames = [];
+    let commandAliases = [];
+
+    if (commands) {
+        commands.reduce((parserInstance, cmd) => {
+            parser
+                .command(cmd.name)
+                .alias(cmd.alias)
+                .description(cmd.description)
+                .usage(cmd.usage)
+                .action(async () => {
+                    return await require('../commands/ExternalCommand').run(defaultCommands[cmd.name]);
+                });
+            return parser;
+        }, parser);
+        commandNames = commands.map((cmd) => cmd.name);
+        commandAliases = commands.map((cmd) => cmd.alias);
+    }
 
     // Use customized version output if available
     if (versionFunction) {
@@ -70,7 +98,7 @@ function argParser(options, args, argsOnly = false, name = '', helpFunction = un
     const result = parser.parse(args, parseOptions);
     const opts = result.opts();
 
-    const unknownArgs = result.args;
+    const unknownArgs = commands ? result.args.filter((arg) => !commandNames.includes(arg) && !commandAliases.includes(arg)) : result.args;
 
     args.forEach((arg) => {
         const flagName = arg.slice(5);

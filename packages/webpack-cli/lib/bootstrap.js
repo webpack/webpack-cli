@@ -7,14 +7,6 @@ require('./utils/process-log');
 
 process.title = 'webpack-cli';
 
-// const isFlagPresent = (args, flag) => args.find((arg) => [flag, `--${flag}`].includes(arg));
-const isArgCommandName = (arg, cmd) => arg === cmd.name || arg === cmd.alias;
-const removeCmdFromArgs = (args, cmd) => args.filter((arg) => !isArgCommandName(arg, cmd));
-const normalizeFlags = (args, cmd) => {
-    const slicedArgs = args.slice(2);
-    return removeCmdFromArgs(slicedArgs, cmd);
-};
-
 const isCommandUsed = (commands) =>
     commands.find((cmd) => {
         return process.argv.includes(cmd.name) || process.argv.includes(cmd.alias);
@@ -25,7 +17,7 @@ async function runCLI(cli, commandIsUsed) {
     const runVersion = () => {
         cli.runVersion(process.argv, commandIsUsed);
     };
-    const parsedArgs = argParser(core, process.argv, false, process.title, cli.runHelp, runVersion);
+    const parsedArgs = argParser(core, process.argv, false, process.title, cli.runHelp, runVersion, commands);
 
     if (parsedArgs.unknownArgs.includes('help')) {
         cli.runHelp(process.argv);
@@ -38,74 +30,73 @@ async function runCLI(cli, commandIsUsed) {
     }
 
     if (commandIsUsed) {
-        commandIsUsed.defaultOption = true;
-        args = normalizeFlags(process.argv, commandIsUsed);
-        return await cli.runCommand(commandIsUsed, ...args);
-    } else {
-        try {
-            // handle the default webpack entry CLI argument, where instead
-            // of doing 'webpack-cli --entry ./index.js' you can simply do
-            // 'webpack-cli ./index.js'
-            // if the unknown arg starts with a '-', it will be considered
-            // an unknown flag rather than an entry
-            let entry;
-            if (parsedArgs.unknownArgs.length > 0 && !parsedArgs.unknownArgs[0].startsWith('-')) {
-                if (parsedArgs.unknownArgs.length === 1) {
-                    entry = parsedArgs.unknownArgs[0];
-                } else {
-                    entry = [];
-                    parsedArgs.unknownArgs.forEach((unknown) => {
-                        if (!unknown.startsWith('-')) {
-                            entry.push(unknown);
-                        }
-                    });
-                }
-            } else if (parsedArgs.unknownArgs.length > 0) {
+        return;
+    }
+
+    try {
+        // handle the default webpack entry CLI argument, where instead
+        // of doing 'webpack-cli --entry ./index.js' you can simply do
+        // 'webpack-cli ./index.js'
+        // if the unknown arg starts with a '-', it will be considered
+        // an unknown flag rather than an entry
+        let entry;
+        console.log(parsedArgs.unknownArgs);
+        if (parsedArgs.unknownArgs.length > 0 && !parsedArgs.unknownArgs[0].startsWith('-')) {
+            if (parsedArgs.unknownArgs.length === 1) {
+                entry = parsedArgs.unknownArgs[0];
+            } else {
+                entry = [];
                 parsedArgs.unknownArgs.forEach((unknown) => {
-                    logger.warn('Unknown argument:', unknown);
-                });
-                cliExecuter();
-                return;
-            }
-            const parsedArgsOpts = parsedArgs.opts;
-            if (entry) {
-                parsedArgsOpts.entry = entry;
-            }
-            const result = await cli.run(parsedArgsOpts, core);
-            if (!result) {
-                return;
-            }
-        } catch (err) {
-            if (err.name === 'UNKNOWN_VALUE') {
-                logger.error(`Parse Error (unknown argument): ${err.value}`);
-                return;
-            } else if (err.name === 'ALREADY_SET') {
-                const argsMap = {};
-                const keysToDelete = [];
-                process.argv.forEach((arg, idx) => {
-                    const oldMapValue = argsMap[arg];
-                    argsMap[arg] = {
-                        value: process.argv[idx],
-                        pos: idx,
-                    };
-                    // Swap idx of overridden value
-                    if (oldMapValue) {
-                        argsMap[arg].pos = oldMapValue.pos;
-                        keysToDelete.push(idx + 1);
+                    if (!unknown.startsWith('-')) {
+                        entry.push(unknown);
                     }
                 });
-                // Filter out the value for the overridden key
-                const newArgKeys = Object.keys(argsMap).filter((arg) => !keysToDelete.includes(argsMap[arg].pos));
-                // eslint-disable-next-line require-atomic-updates
-                process.argv = newArgKeys;
-                args = argParser('', core, process.argv);
-                await cli.run(args.opts, core);
-                process.stdout.write('\n');
-                logger.warn('Duplicate flags found, defaulting to last set value');
-            } else {
-                logger.error(err);
-                return;
             }
+        } else if (parsedArgs.unknownArgs.length > 0) {
+            parsedArgs.unknownArgs.forEach((unknown) => {
+                logger.warn('Unknown argument:', unknown);
+            });
+            cliExecuter();
+            return;
+        }
+        const parsedArgsOpts = parsedArgs.opts;
+        if (entry) {
+            parsedArgsOpts.entry = entry;
+        }
+        const result = await cli.run(parsedArgsOpts, core);
+        if (!result) {
+            return;
+        }
+    } catch (err) {
+        if (err.name === 'UNKNOWN_VALUE') {
+            logger.error(`Parse Error (unknown argument): ${err.value}`);
+            return;
+        } else if (err.name === 'ALREADY_SET') {
+            const argsMap = {};
+            const keysToDelete = [];
+            process.argv.forEach((arg, idx) => {
+                const oldMapValue = argsMap[arg];
+                argsMap[arg] = {
+                    value: process.argv[idx],
+                    pos: idx,
+                };
+                // Swap idx of overridden value
+                if (oldMapValue) {
+                    argsMap[arg].pos = oldMapValue.pos;
+                    keysToDelete.push(idx + 1);
+                }
+            });
+            // Filter out the value for the overridden key
+            const newArgKeys = Object.keys(argsMap).filter((arg) => !keysToDelete.includes(argsMap[arg].pos));
+            // eslint-disable-next-line require-atomic-updates
+            process.argv = newArgKeys;
+            args = argParser('', core, process.argv);
+            await cli.run(args.opts, core);
+            process.stdout.write('\n');
+            logger.warn('Duplicate flags found, defaulting to last set value');
+        } else {
+            logger.error(err);
+            return;
         }
     }
 }
