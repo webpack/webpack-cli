@@ -13,8 +13,10 @@ const DEFAULT_CONFIG_LOC = [
     '.webpack/webpack.config.prod',
     '.webpack/webpack.config.production',
     '.webpack/webpackfile',
-    'webpack.config.development',
     'webpack.config',
+    'webpack.config.dev',
+    'webpack.config.development',
+    'webpack.config.prod',
     'webpack.config.production',
 ];
 
