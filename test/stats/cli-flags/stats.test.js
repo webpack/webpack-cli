@@ -1,7 +1,7 @@
+/* eslint-disable node/no-extraneous-require */
+/* eslint-disable node/no-unpublished-require */
 'use strict';
-// eslint-disable-next-line node/no-unpublished-require
-const { run } = require('../utils/test-utils');
-// eslint-disable-next-line node/no-extraneous-require
+const { run } = require('../../utils/test-utils');
 const { version } = require('webpack');
 
 const presets = ['normal', 'detailed', 'errors-only', 'errors-warnings', 'minimal', 'verbose', 'none'];
