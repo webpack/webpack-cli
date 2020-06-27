@@ -5,7 +5,7 @@ const logger = require('../utils/logger');
  */
 class StatsGroup extends GroupHelper {
     static validOptions() {
-        return ['none', 'errors-only', 'minimal', 'normal', 'detailed', 'verbose', 'errors-warnings', true];
+        return ['none', 'errors-only', 'minimal', 'normal', 'detailed', 'verbose', 'errors-warnings', true, false];
     }
 
     constructor(options) {

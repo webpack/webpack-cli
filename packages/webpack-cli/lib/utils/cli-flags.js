@@ -246,6 +246,14 @@ module.exports = {
             link: 'https://webpack.js.org/configuration/stats/#stats',
         },
         {
+            name: 'no-stats',
+            usage: '--no-stats',
+            type: Boolean,
+            group: DISPLAY_GROUP,
+            description: 'Disables stats output',
+            link: 'https://webpack.js.org/configuration/stats/#stats',
+        },
+        {
             name: 'verbose',
             usage: '--verbose',
             type: Boolean,
