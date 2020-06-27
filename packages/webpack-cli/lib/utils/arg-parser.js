@@ -70,10 +70,10 @@ function argParser(options, args, argsOnly = false, name = '', helpFunction = un
         let flagsWithType = option.type !== Boolean ? flags + ' <value>' : flags;
         if (option.type === Boolean || option.type === String) {
             if (!option.multiple) {
-                parserInstance.option(flagsWithType, option.description, option.defaultValue);
+                parserInstance.option(flagsWithType, option.description, option.defaultValue).action(() => {});
             } else {
                 const multiArg = (value, previous = []) => previous.concat([value]);
-                parserInstance.option(flagsWithType, option.description, multiArg, option.defaultValue);
+                parserInstance.option(flagsWithType, option.description, multiArg, option.defaultValue).action(() => {});
             }
         } else if (option.type === Number) {
             parserInstance.option(flagsWithType, option.description, Number, option.defaultValue);
@@ -81,9 +81,9 @@ function argParser(options, args, argsOnly = false, name = '', helpFunction = un
             // in this case the type is a parsing function
             if (option.type.length > 1) {
                 flagsWithType = flags + ' [value]';
-                parserInstance.option(flagsWithType, option.description, option.type[0], option.defaultValue);
+                parserInstance.option(flagsWithType, option.description, option.type[0], option.defaultValue).action(() => {});
             } else {
-                parserInstance.option(flagsWithType, option.description, option.type, option.defaultValue);
+                parserInstance.option(flagsWithType, option.description, option.type, option.defaultValue).action(() => {});
             }
         }
 
