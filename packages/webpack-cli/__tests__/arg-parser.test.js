@@ -31,6 +31,12 @@ const basicOptions = [
         description: 'boolean flag',
     },
     {
+        name: 'num-flag',
+        usage: '--num-flag <value>',
+        type: Number,
+        description: 'number flag',
+    },
+    {
         name: 'string-flag',
         usage: '--string-flag <value>',
         type: String,
@@ -98,11 +104,32 @@ describe('arg-parser', () => {
     });
 
     it('parses basic flags', () => {
-        const res = argParser(basicOptions, ['--bool-flag', '--string-flag', 'val'], true);
+        const res = argParser(basicOptions, ['--bool-flag', '--string-flag', 'val', '--num-flag', '100'], true);
         expect(res.unknownArgs.length).toEqual(0);
         expect(res.opts).toEqual({
             boolFlag: true,
+            numFlag: 100,
             stringFlag: 'val',
+            stringFlagWithDefault: 'default-value',
+        });
+        expect(warnMock.mock.calls.length).toEqual(0);
+    });
+
+    it('parses number flags', () => {
+        const res = argParser(basicOptions, ['--num-flag', '100'], true);
+        expect(res.unknownArgs.length).toEqual(0);
+        expect(res.opts).toEqual({
+            numFlag: 100,
+            stringFlagWithDefault: 'default-value',
+        });
+        expect(warnMock.mock.calls.length).toEqual(0);
+    });
+
+    it('parses number flags with = sign', () => {
+        const res = argParser(basicOptions, ['--num-flag=10'], true);
+        expect(res.unknownArgs.length).toEqual(0);
+        expect(res.opts).toEqual({
+            numFlag: 10,
             stringFlagWithDefault: 'default-value',
         });
         expect(warnMock.mock.calls.length).toEqual(0);
