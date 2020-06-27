@@ -5,7 +5,7 @@ const { run } = require('../../utils/test-utils');
 const { version } = require('webpack');
 
 describe('stats flag', () => {
-    it(`should use stats detailed as defined in webpack config`, () => {
+    it(`should use stats 'detailed' as defined in webpack config`, () => {
         const { stderr, stdout } = run(__dirname, []);
 
         expect(stderr).toBeFalsy();
@@ -16,7 +16,7 @@ describe('stats flag', () => {
         }
     });
 
-    it(`should use --no-stats and override value config`, () => {
+    it(`should use --no-stats and override value in config`, () => {
         const { stderr, stdout } = run(__dirname, ['--no-stats']);
 
         expect(stderr).toBeFalsy();
