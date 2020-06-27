@@ -39,9 +39,9 @@ export default async function info(...args): Promise<string[]> {
         process.stderr.write(`Unknown option: ${chalk.red(infoArgs._unknown)}\n`);
     }
 
-    if (infoArgs.output) {
+    if (infoArgs.outputFormat) {
         // Remove quotes if exist
-        const output = infoArgs.output.replace(/['"]+/g, '');
+        const output = infoArgs.outputFormat.replace(/['"]+/g, '');
         switch (output) {
             case 'markdown':
                 envinfoConfig['markdown'] = true;
@@ -50,7 +50,7 @@ export default async function info(...args): Promise<string[]> {
                 envinfoConfig['json'] = true;
                 break;
             default:
-                process.stderr.write(`${chalk.red(infoArgs.output)} is not a valid value for output\n`);
+                process.stderr.write(`${chalk.red(infoArgs.outputFormat)} is not a valid value for output\n`);
         }
     }
 

@@ -34,14 +34,43 @@ function argParser(options, args, argsOnly = false, name = '', helpFunction = un
                 .alias(cmd.alias)
                 .description(cmd.description)
                 .usage(cmd.usage)
+                .allowUnknownOption(true)
                 .action(async () => {
-                    return await require('../commands/ExternalCommand').run(defaultCommands[cmd.name]);
+                    return await require('../commands/ExternalCommand').run(
+                        defaultCommands[cmd.name],
+                        ...args.slice(args.indexOf(cmd.name) + 1 || args.indexOf(cmd.alias) + 1),
+                    );
                 });
+            // if (cmd.flags) {
+            //     cmd.flags.forEach((subCmdFlag) => {
+            //         parser.commands.forEach((parsedArgs) => {
+            //             const cliFlag = subCmdFlag.type === Boolean ? subCmdFlag.name : `--${subCmdFlag.name} <value>`
+            //             const option = {
+            //                 flags: cliFlag,
+            //                 // required: true,
+            //                 // optional: false,
+            //                 // mandatory: false,
+            //                 // negate: false,
+            //                 // short: subCmdFlag.alias,
+            //                 // long: subCmdFlag.name,
+            //                 description: subCmdFlag.description,
+            //                 defaultValue: subCmdFlag.defaultValue,
+            //             };
+            //             if (parsedArgs._name === cmd.name) {
+            //                 parsedArgs.options.push(option);
+            //                 parsedArgs._actionHandler = ((option) => require('../commands/ExternalCommand').run(defaultCommands[cmd.name], option));
+            //                 console.log(parsedArgs)
+            //                 return;
+            //             }
+            //         });
+            //     });
+            // }
             return parser;
         }, parser);
         commandNames = commands.map((cmd) => cmd.name);
         commandAliases = commands.map((cmd) => cmd.alias);
 
+        // Prevent default behavior
         parser.on('command:*', () => {});
     }
 
@@ -70,6 +99,7 @@ function argParser(options, args, argsOnly = false, name = '', helpFunction = un
         let flagsWithType = option.type !== Boolean ? flags + ' <value>' : flags;
         if (option.type === Boolean || option.type === String) {
             if (!option.multiple) {
+                // Prevent default behavior for standalone options
                 parserInstance.option(flagsWithType, option.description, option.defaultValue).action(() => {});
             } else {
                 const multiArg = (value, previous = []) => previous.concat([value]);

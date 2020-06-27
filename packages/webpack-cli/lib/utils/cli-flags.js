@@ -56,7 +56,7 @@ module.exports = {
             description: 'Outputs information about your system and dependencies',
             flags: [
                 {
-                    name: 'output',
+                    name: 'output-format',
                     type: String,
                     group: OUTPUT_GROUP,
                     description: 'To get the output in specified format ( accept json or markdown )',
