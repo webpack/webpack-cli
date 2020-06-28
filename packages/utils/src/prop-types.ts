@@ -1,4 +1,3 @@
-// eslint-disable-next-line node/no-extraneous-import
 import { config } from 'webpack';
 const configKeys = Object.keys(config.getNormalizedWebpackOptions({}));
 
