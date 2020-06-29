@@ -6,6 +6,11 @@ const rechoir = require('rechoir');
 
 // Order defines the priority, in increasing order
 const DEFAULT_CONFIG_LOC = [
+    'webpack.config',
+    'webpack.config.dev',
+    'webpack.config.development',
+    'webpack.config.prod',
+    'webpack.config.production',
     '.webpack/webpack.config',
     '.webpack/webpack.config.none',
     '.webpack/webpack.config.dev',
@@ -13,11 +18,6 @@ const DEFAULT_CONFIG_LOC = [
     '.webpack/webpack.config.prod',
     '.webpack/webpack.config.production',
     '.webpack/webpackfile',
-    'webpack.config',
-    'webpack.config.dev',
-    'webpack.config.development',
-    'webpack.config.prod',
-    'webpack.config.production',
 ];
 
 const modeAlias = {

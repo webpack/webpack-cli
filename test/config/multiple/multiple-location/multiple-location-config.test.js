@@ -14,7 +14,7 @@ describe('multiple dev config files with webpack.config.js', () => {
         const { stdout, stderr } = run(__dirname, [], false);
         expect(stderr).toBeFalsy();
         expect(stdout).not.toBe(undefined);
-        stat(resolve(__dirname, './binary/development.bundle.js'), (err, stats) => {
+        stat(resolve(__dirname, './binary/dev.folder.js'), (err, stats) => {
             expect(err).toBe(null);
             expect(stats.isFile()).toBe(true);
             done();
