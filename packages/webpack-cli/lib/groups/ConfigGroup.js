@@ -5,6 +5,7 @@ const GroupHelper = require('../utils/GroupHelper');
 const rechoir = require('rechoir');
 
 // Order defines the priority, in increasing order
+// example - config file lookup will be in order of .webpack/webpack.config.development.js -> webpack.config.development.js -> webpack.config.js
 const DEFAULT_CONFIG_LOC = [
     'webpack.config',
     'webpack.config.dev',
