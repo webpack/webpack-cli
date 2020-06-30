@@ -1,9 +1,15 @@
 'use strict';
 const { stat } = require('fs');
-const { resolve } = require('path');
-const { run } = require('../../utils/test-utils');
+const { resolve, join } = require('path');
+const { run } = require('../../../utils/test-utils');
+const rimraf = require('rimraf');
+
+const outputPath = join(__dirname, 'binary');
 
 describe('multiple config files', () => {
+    afterEach(() => rimraf.sync(outputPath));
+    beforeAll(() => rimraf.sync(outputPath));
+
     it('Uses prod config from dot folder if present', (done) => {
         const { stdout, stderr } = run(__dirname, [], false);
         expect(stderr).toBeFalsy();

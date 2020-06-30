@@ -4,13 +4,27 @@ const { extensions } = require('interpret');
 const GroupHelper = require('../utils/GroupHelper');
 const rechoir = require('rechoir');
 
+// Order defines the priority, in increasing order
+// example - config file lookup will be in order of .webpack/webpack.config.development.js -> webpack.config.development.js -> webpack.config.js
 const DEFAULT_CONFIG_LOC = [
-    '.webpack/webpack.config',
-    '.webpack/webpack.config.dev',
-    '.webpack/webpack.config.prod',
-    '.webpack/webpackfile',
     'webpack.config',
+    'webpack.config.dev',
+    'webpack.config.development',
+    'webpack.config.prod',
+    'webpack.config.production',
+    '.webpack/webpack.config',
+    '.webpack/webpack.config.none',
+    '.webpack/webpack.config.dev',
+    '.webpack/webpack.config.development',
+    '.webpack/webpack.config.prod',
+    '.webpack/webpack.config.production',
+    '.webpack/webpackfile',
 ];
+
+const modeAlias = {
+    production: 'prod',
+    development: 'dev',
+};
 
 const fileTypes = {
     '.babel.js': ['@babel/register', 'babel-register', 'babel-core/register', 'babel/register'],
@@ -136,10 +150,9 @@ class ConfigGroup extends GroupHelper {
 
         const configFiles = tmpConfigFiles.map(this.requireConfig.bind(this));
         if (configFiles.length) {
-            const defaultConfig = configFiles.find((p) => p.path.includes(mode));
+            const defaultConfig = configFiles.find((p) => p.path.includes(mode) || p.path.includes(modeAlias[mode]));
             if (defaultConfig) {
-                const envConfig = defaultConfig.map((c) => c.content);
-                this.opts = this.finalize(envConfig);
+                this.opts = this.finalize(defaultConfig);
                 return;
             }
             const foundConfig = configFiles.pop();
