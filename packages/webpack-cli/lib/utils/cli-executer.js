@@ -37,6 +37,7 @@ async function prompter() {
             message: `Enter value of the ${selection} flag`,
             initial: options.defaultValue,
             result: (value) => [selection, value],
+            validate: (value) => Boolean(value),
         });
         questions.push(valuePrompt);
     });

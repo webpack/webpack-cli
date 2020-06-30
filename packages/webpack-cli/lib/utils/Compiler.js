@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const logger = require('./logger');
 const { cyanBright, greenBright } = require('chalk');
 const { CompilerOutput } = require('./CompilerOutput');
+const readline = require('readline');
 
 class Compiler {
     constructor() {
@@ -20,8 +21,8 @@ class Compiler {
                 process.stdout.write('\n');
                 const defaultProgressPluginHandler = (percent, msg) => {
                     percent = Math.floor(percent * 100);
-                    process.stdout.clearLine();
-                    process.stdout.cursorTo(0);
+                    readline.clearLine(process.stdout, 0);
+                    readline.cursorTo(process.stdout, 0, null);
                     if (percent !== undefined) {
                         process.stdout.write(' (');
                         for (let i = 0; i <= 100; i += 10) {
@@ -34,7 +35,7 @@ class Compiler {
                         process.stdout.write(`) ${percent}% : `);
                         process.stdout.write(`${cyanBright(msg)}`);
                         if (percent === 100) {
-                            process.stdout.write(`${cyanBright('Complilation completed\n')}`);
+                            process.stdout.write(`${cyanBright('Compilation completed\n')}`);
                         }
                     }
                 };
@@ -53,24 +54,6 @@ class Compiler {
                 }
             }
         });
-
-        if (outputOptions.infoVerbosity === 'verbose') {
-            const resolveCompilationName = (compilation) => {
-                return compilation.name ? compilation.name : '';
-            };
-            if (outputOptions.watch) {
-                compilation.hooks.watchRun.tap('WebpackCLI', (compilation) => {
-                    logger.info(`Compilation ${resolveCompilationName(compilation)} starting…`);
-                });
-            } else {
-                compilation.hooks.beforeRun.tap('WebpackCLI', (compilation) => {
-                    logger.info(`Compilation ${resolveCompilationName(compilation)} starting…`);
-                });
-            }
-            compilation.hooks.done.tap('WebpackCLI', (compilation) => {
-                logger.info(`Compilation ${resolveCompilationName(compilation)} finished`);
-            });
-        }
     }
 
     showEmojiConditionally() {

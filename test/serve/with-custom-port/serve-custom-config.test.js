@@ -53,5 +53,16 @@ describe('serve with devServer in config', () => {
             expect(stdout).toContain(`http://0.0.0.0:${port}`);
             expect(stderr).toBeFalsy();
         });
+
+        it('works fine when no-hot flag is passed alongside other server config', async () => {
+            const { stdout, stderr } = await runServe(['--port', port, '--no-hot'], testPath);
+            // Should output the correct bundle file
+            expect(stdout).toContain('main.js');
+            // HMR is not being used
+            expect(stdout).not.toContain('hot/dev-server.js');
+            // Runs at correct host and port
+            expect(stdout).toContain(`http://0.0.0.0:${port}`);
+            expect(stderr).toBeFalsy();
+        });
     }
 });

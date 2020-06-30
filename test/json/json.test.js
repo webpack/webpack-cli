@@ -12,4 +12,15 @@ describe('json flag', () => {
         // check the JSON is valid.
         expect(parseJson).not.toThrow();
     });
+
+    it('should return valid json with -j alias', () => {
+        const { stdout } = run(__dirname, ['-j']);
+
+        // helper function to check if JSON is valid
+        const parseJson = () => {
+            return JSON.parse(stdout);
+        };
+        // check the JSON is valid.
+        expect(parseJson).not.toThrow();
+    });
 });

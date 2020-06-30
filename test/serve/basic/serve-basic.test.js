@@ -23,6 +23,13 @@ describe('basic serve usage', () => {
             console.warn('TODO: fix `serve` test on windows');
         });
     } else {
+        it('should not invoke info subcommand', async () => {
+            const { stdout, stderr } = await runServe(['--client-log-level', 'info'], testPath);
+            expect(stdout).toContain('main.js');
+            expect(stdout).not.toContain('hot/dev-server.js');
+            expect(stderr).toHaveLength(0);
+        });
+
         it('compiles without flags', async () => {
             const { stdout, stderr } = await runServe(['--port', port], testPath);
             expect(stdout).toContain('main.js');
@@ -34,6 +41,13 @@ describe('basic serve usage', () => {
             const { stdout, stderr } = await runServe(['--port', port, '--hot'], testPath);
             expect(stdout).toContain('main.js');
             expect(stdout).toContain('hot/dev-server.js');
+            expect(stderr).toHaveLength(0);
+        });
+
+        it('uses no-hot flag', async () => {
+            const { stdout, stderr } = await runServe(['--port', port, '--no-hot'], testPath);
+            expect(stdout).toContain('main.js');
+            expect(stdout).not.toContain('hot/dev-server.js');
             expect(stderr).toHaveLength(0);
         });
 

@@ -11,4 +11,10 @@ describe('init with core flags', () => {
         expect(stdout).not.toContain(firstPrompt);
         expect(stdout).toContain('Initialize a new webpack configuration');
     });
+    it('should throw error with invalid scaffolder package', () => {
+        const { stdout, stderr } = run(__dirname, ['init', 'webpack-rocks'], false);
+        expect(stdout).toBeFalsy();
+        expect(stderr).toBeTruthy();
+        expect(stderr).toContain("[webpack-cli] Promise rejection: TypeError: webpack-rocks isn't a valid name");
+    });
 });
