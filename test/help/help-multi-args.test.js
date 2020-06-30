@@ -19,7 +19,7 @@ describe('help cmd with multiple arguments', () => {
     it('should output help for --version by taking precedence', () => {
         const { stdout, stderr } = run(__dirname, ['--help', '--version'], false);
         expect(stdout).not.toContain(helpHeader);
-        expect(stdout).toContain('webpack --version');
+        expect(stdout).toContain('webpack -v, --version');
         expect(stderr).toHaveLength(0);
     });
 });

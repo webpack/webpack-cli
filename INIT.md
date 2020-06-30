@@ -2,11 +2,21 @@
 
 `webpack-cli init` is used to initialize `webpack` projects quickly by scaffolding configuration and creating a runnable project with all the dependencies based on the user preferences.
 
+## Table of Contents
+
+-   [Initial Setup](#initial-setup)
+    -   [Local Setup](#local-setup)
+    -   [Global Setup](#global-setup)
+-   [Usage](#usage)
+    -   [Running Globally](#running-globally)
+    -   [Running Locally](#running-locally)
+    -   [Description of questions asked by generator](#description-of-questions-asked-by-generator)
+
 ## Initial Setup
 
-### a. Local setup
+### a. Local Setup
 
-These are the steps necessary to setup `webpack-cli init` locally:
+These are the steps necessary to set up `webpack-cli init` locally:
 
 1. Create `package.json` through npm
 
@@ -28,7 +38,7 @@ These are the steps necessary to setup `webpack-cli init` locally:
 
 ### b. Global Setup
 
-These are the steps necessary to setup `webpack-cli init` globally:
+These are the steps necessary to set up `webpack-cli init` globally:
 
 1. Install `webpack` and `webpack-cli` globally
 
@@ -44,19 +54,19 @@ These are the steps necessary to setup `webpack-cli init` globally:
 
 ## Usage
 
-### a. Running locally
+### a. Running Locally
 
 ```shell
 npx webpack-cli init
 ```
 
-### b. Running globally
+### b. Running Globally
 
 ```shell
 webpack-cli init
 ```
 
-### Description of questions asked by generator
+### Description of questions asked by the generator
 
 1. `Will your application have multiple bundles? (y/N)`
 

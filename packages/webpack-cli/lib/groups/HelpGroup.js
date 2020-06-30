@@ -16,7 +16,8 @@ class HelpGroup {
 
             const { bold, underline } = chalk.white;
             const header = (head) => bold(underline(head));
-            const usage = chalk.keyword('orange')('webpack ' + options.usage);
+            const flagAlias = options.alias ? (isCommand ? ` ${options.alias} |` : ` -${options.alias},`) : '';
+            const usage = chalk.keyword('orange')(`webpack${flagAlias} ${options.usage}`);
             const description = options.description;
             const link = options.link;
 
@@ -102,13 +103,16 @@ class HelpGroup {
             },
             {
                 header: 'Available Commands',
-                content: options.commands.map((e) => {
-                    return { name: e.name, summary: e.description };
+                content: options.commands.map((cmd) => {
+                    return { name: `${cmd.name} | ${cmd.alias}`, summary: cmd.description };
                 }),
             },
             {
                 header: 'Options',
-                optionList: options.core,
+                optionList: options.core.map((e) => {
+                    if (e.type.length > 1) e.type = e.type[0];
+                    return e;
+                }),
             },
         ]);
         return {

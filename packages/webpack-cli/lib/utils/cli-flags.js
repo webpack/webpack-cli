@@ -21,11 +21,12 @@ module.exports = {
             name: 'init',
             alias: 'c',
             type: String,
-            usage: 'init | init <scaffold>',
+            usage: 'init [scaffold]',
             description: 'Initialize a new webpack configuration',
         },
         {
             name: 'migrate',
+            alias: 'm',
             type: String,
             usage: 'migrate',
             description: 'Migrate a configuration to a new version',
@@ -49,6 +50,7 @@ module.exports = {
         {
             name: 'info',
             scope: 'external',
+            alias: 'i',
             type: String,
             usage: 'info [options]',
             description: 'Outputs information about your system and dependencies',
@@ -63,6 +65,7 @@ module.exports = {
         },
         {
             name: 'serve',
+            alias: 's',
             scope: 'external',
             type: String,
             usage: 'serve',
@@ -72,11 +75,12 @@ module.exports = {
     core: [
         {
             name: 'entry',
-            usage: '--entry <path to entry file>',
+            usage: '--entry <path to entry file> | --entry <path> --entry <path>',
             type: String,
+            multiple: true,
             defaultOption: true,
             group: BASIC_GROUP,
-            description: 'The entry point of your application e.g. ./src/main.js',
+            description: 'The entry point(s) of your application e.g. ./src/main.js',
             link: 'https://webpack.js.org/concepts/#entry',
         },
         {
@@ -236,9 +240,17 @@ module.exports = {
         {
             name: 'stats',
             usage: '--stats <value>',
-            type: String,
+            type: [String, Boolean],
             group: DISPLAY_GROUP,
             description: 'It instructs webpack on how to treat the stats e.g. verbose',
+            link: 'https://webpack.js.org/configuration/stats/#stats',
+        },
+        {
+            name: 'no-stats',
+            usage: '--no-stats',
+            type: Boolean,
+            group: DISPLAY_GROUP,
+            description: 'Disables stats output',
             link: 'https://webpack.js.org/configuration/stats/#stats',
         },
         {

@@ -4,9 +4,9 @@ const { run } = require('../../utils/test-utils');
 const { stat, readFile } = require('fs');
 const { resolve } = require('path');
 
-describe('entry flag', () => {
-    it('should load ./src/a.js as entry', (done) => {
-        const { stderr, stdout } = run(__dirname, ['--entry', './src/a.js']);
+describe(' multiple entries', () => {
+    it('should allow multiple entry files', (done) => {
+        const { stderr, stdout } = run(__dirname, ['./src/a.js', './src/b.js']);
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
 
@@ -18,12 +18,13 @@ describe('entry flag', () => {
         readFile(resolve(__dirname, './bin/main.js'), 'utf-8', (err, data) => {
             expect(err).toBe(null);
             expect(data).toContain('Hello from a.js');
+            expect(data).toContain('Hello from b.js');
             done();
         });
     });
 
-    it('should resolve the path to src/a.js as ./src/a.js', (done) => {
-        const { stderr, stdout } = run(__dirname, ['--entry', 'src/a.js']);
+    it('should allow multiple entry flags', (done) => {
+        const { stderr, stdout } = run(__dirname, ['--entry', 'src/a.js', '--entry', 'src/b.js']);
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
 
@@ -35,13 +36,8 @@ describe('entry flag', () => {
         readFile(resolve(__dirname, './bin/main.js'), 'utf-8', (err, data) => {
             expect(err).toBe(null);
             expect(data).toContain('Hello from a.js');
+            expect(data).toContain('Hello from b.js');
             done();
         });
-    });
-
-    it('should throw error for invalid entry file', () => {
-        const { stderr, stdout } = run(__dirname, ['--entry', './src/test.js']);
-        expect(stderr).toBeTruthy();
-        expect(stdout).toContain('Error: you provided an invalid entry point.');
     });
 });

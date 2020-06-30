@@ -31,6 +31,12 @@ const basicOptions = [
         description: 'boolean flag',
     },
     {
+        name: 'num-flag',
+        usage: '--num-flag <value>',
+        type: Number,
+        description: 'number flag',
+    },
+    {
         name: 'string-flag',
         usage: '--string-flag <value>',
         type: String,
@@ -44,12 +50,25 @@ const basicOptions = [
         defaultValue: 'default-value',
     },
     {
+        name: 'multi-type',
+        usage: '--multi-type | --multi-type <value>',
+        type: [String, Boolean],
+        description: 'flag with multiple types',
+    },
+    {
         name: 'custom-type-flag',
         usage: '--custom-type-flag <value>',
         type: (val) => {
             return val.split(',');
         },
         description: 'custom type flag',
+    },
+    {
+        name: 'multi-flag',
+        usage: '--multi-flag <value>',
+        type: String,
+        multiple: true,
+        description: 'multi flag',
     },
 ];
 
@@ -85,11 +104,32 @@ describe('arg-parser', () => {
     });
 
     it('parses basic flags', () => {
-        const res = argParser(basicOptions, ['--bool-flag', '--string-flag', 'val'], true);
+        const res = argParser(basicOptions, ['--bool-flag', '--string-flag', 'val', '--num-flag', '100'], true);
         expect(res.unknownArgs.length).toEqual(0);
         expect(res.opts).toEqual({
             boolFlag: true,
+            numFlag: 100,
             stringFlag: 'val',
+            stringFlagWithDefault: 'default-value',
+        });
+        expect(warnMock.mock.calls.length).toEqual(0);
+    });
+
+    it('parses number flags', () => {
+        const res = argParser(basicOptions, ['--num-flag', '100'], true);
+        expect(res.unknownArgs.length).toEqual(0);
+        expect(res.opts).toEqual({
+            numFlag: 100,
+            stringFlagWithDefault: 'default-value',
+        });
+        expect(warnMock.mock.calls.length).toEqual(0);
+    });
+
+    it('parses number flags with = sign', () => {
+        const res = argParser(basicOptions, ['--num-flag=10'], true);
+        expect(res.unknownArgs.length).toEqual(0);
+        expect(res.opts).toEqual({
+            numFlag: 10,
             stringFlagWithDefault: 'default-value',
         });
         expect(warnMock.mock.calls.length).toEqual(0);
@@ -115,6 +155,26 @@ describe('arg-parser', () => {
         expect(res.unknownArgs.length).toEqual(0);
         expect(res.opts).toEqual({
             specificBool: false,
+            stringFlagWithDefault: 'default-value',
+        });
+        expect(warnMock.mock.calls.length).toEqual(0);
+    });
+
+    it('parses multi type flag as Boolean', () => {
+        const res = argParser(basicOptions, ['--multi-type'], true);
+        expect(res.unknownArgs.length).toEqual(0);
+        expect(res.opts).toEqual({
+            multiType: true,
+            stringFlagWithDefault: 'default-value',
+        });
+        expect(warnMock.mock.calls.length).toEqual(0);
+    });
+
+    it('parses multi type flag as String', () => {
+        const res = argParser(basicOptions, ['--multi-type', 'value'], true);
+        expect(res.unknownArgs.length).toEqual(0);
+        expect(res.opts).toEqual({
+            multiType: 'value',
             stringFlagWithDefault: 'default-value',
         });
         expect(warnMock.mock.calls.length).toEqual(0);
@@ -158,6 +218,16 @@ describe('arg-parser', () => {
         expect(res.unknownArgs.length).toEqual(0);
         expect(res.opts).toEqual({
             stringFlag: 'val',
+            stringFlagWithDefault: 'default-value',
+        });
+        expect(warnMock.mock.calls.length).toEqual(0);
+    });
+
+    it('handles multiple same args', () => {
+        const res = argParser(basicOptions, ['--multi-flag', 'a.js', '--multi-flag', 'b.js'], true);
+        expect(res.unknownArgs.length).toEqual(0);
+        expect(res.opts).toEqual({
+            multiFlag: ['a.js', 'b.js'],
             stringFlagWithDefault: 'default-value',
         });
         expect(warnMock.mock.calls.length).toEqual(0);
@@ -208,11 +278,12 @@ describe('arg-parser', () => {
     });
 
     it('parses webpack args', () => {
-        const res = argParser(core, ['--entry', 'test.js', '--hot', '-o', './dist/'], true);
+        const res = argParser(core, ['--entry', 'test.js', '--hot', '-o', './dist/', '--stats'], true);
         expect(res.unknownArgs.length).toEqual(0);
-        expect(res.opts.entry).toEqual('test.js');
+        expect(res.opts.entry).toEqual(['test.js']);
         expect(res.opts.hot).toBeTruthy();
         expect(res.opts.output).toEqual('./dist/');
+        expect(res.opts.stats).toEqual(true);
         expect(warnMock.mock.calls.length).toEqual(0);
     });
 });

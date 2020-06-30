@@ -35,7 +35,7 @@ Available Commands
 
 Options
 
-  --entry string           The entry point of your application.
+  --entry string[]         The entry point(s) of your application.
   -c, --config string      Provide path to a webpack configuration file
   -m, --merge string       Merge a configuration file using webpack-merge
   --progress               Print compilation progress during build
@@ -56,6 +56,7 @@ Options
   -v, --version            Get current version
   --node-args string[]     NodeJS flags
   --stats string           It instructs webpack on how to treat the stats
+  --no-stats               Disables stats output
   --verbose                It tells webpack to output all the information
 ```
 

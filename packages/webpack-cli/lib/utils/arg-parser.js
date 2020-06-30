@@ -1,6 +1,15 @@
 const commander = require('commander');
 const logger = require('./logger');
 
+const defaultCommands = {
+    init: 'init',
+    loader: 'generate-loader',
+    plugin: 'generate-plugin',
+    info: 'info',
+    migrate: 'migrate',
+    serve: 'serve',
+};
+
 /**
  *  Creates Argument parser corresponding to the supplied options
  *  parse the args and return the result
@@ -10,10 +19,29 @@ const logger = require('./logger');
  * @param {boolean} argsOnly false if all of process.argv has been provided, true if
  * args is only a subset of process.argv that removes the first couple elements
  */
-function argParser(options, args, argsOnly = false, name = '', helpFunction = undefined, versionFunction = undefined) {
+function argParser(options, args, argsOnly = false, name = '', helpFunction = undefined, versionFunction = undefined, commands) {
     const parser = new commander.Command();
     // Set parser name
     parser.name(name);
+
+    if (commands) {
+        commands.reduce((parserInstance, cmd) => {
+            parser
+                .command(cmd.name)
+                .alias(cmd.alias)
+                .description(cmd.description)
+                .usage(cmd.usage)
+                .allowUnknownOption(true)
+                .action(async () => {
+                    const cliArgs = args.slice(args.indexOf(cmd.name) + 1 || args.indexOf(cmd.alias) + 1);
+                    return await require('../commands/ExternalCommand').run(defaultCommands[cmd.name], ...cliArgs);
+                });
+            return parser;
+        }, parser);
+
+        // Prevent default behavior
+        parser.on('command:*', () => {});
+    }
 
     // Use customized version output if available
     if (versionFunction) {
@@ -37,12 +65,25 @@ function argParser(options, args, argsOnly = false, name = '', helpFunction = un
     // Register options on the parser
     options.reduce((parserInstance, option) => {
         const flags = option.alias ? `-${option.alias}, --${option.name}` : `--${option.name}`;
-        const flagsWithType = option.type !== Boolean ? flags + ' <value>' : flags;
+        let flagsWithType = option.type !== Boolean ? flags + ' <value>' : flags;
         if (option.type === Boolean || option.type === String) {
-            parserInstance.option(flagsWithType, option.description, option.defaultValue);
+            if (!option.multiple) {
+                // Prevent default behavior for standalone options
+                parserInstance.option(flagsWithType, option.description, option.defaultValue).action(() => {});
+            } else {
+                const multiArg = (value, previous = []) => previous.concat([value]);
+                parserInstance.option(flagsWithType, option.description, multiArg, option.defaultValue).action(() => {});
+            }
+        } else if (option.type === Number) {
+            parserInstance.option(flagsWithType, option.description, Number, option.defaultValue);
         } else {
             // in this case the type is a parsing function
-            parserInstance.option(flagsWithType, option.description, option.type, option.defaultValue);
+            if (option.type.length > 1) {
+                flagsWithType = flags + ' [value]';
+                parserInstance.option(flagsWithType, option.description, option.type[0], option.defaultValue).action(() => {});
+            } else {
+                parserInstance.option(flagsWithType, option.description, option.type, option.defaultValue).action(() => {});
+            }
         }
 
         return parserInstance;
