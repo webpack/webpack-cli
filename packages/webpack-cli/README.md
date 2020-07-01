@@ -56,6 +56,7 @@ Options
   -v, --version            Get current version
   --node-args string[]     NodeJS flags
   --stats string           It instructs webpack on how to treat the stats
+  --no-stats               Disables stats output
   --verbose                It tells webpack to output all the information
 ```
 

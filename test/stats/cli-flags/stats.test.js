@@ -23,7 +23,7 @@ describe('stats flag', () => {
         const { stderr, stdout } = run(__dirname, ['--stats']);
         expect(stderr).toBeFalsy();
         if (version.startsWith('5')) {
-            expect(stdout).toContain(`stats: {}`);
+            expect(stdout).toContain(`stats: { preset: 'normal' }`);
         } else {
             expect(stdout).toContain('stats: true');
         }

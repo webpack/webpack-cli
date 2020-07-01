@@ -5,15 +5,6 @@ const webpackMerge = require('webpack-merge');
 const { toKebabCase } = require('./utils/helpers');
 const argParser = require('./utils/arg-parser');
 
-const defaultCommands = {
-    init: 'init',
-    loader: 'generate-loader',
-    plugin: 'generate-plugin',
-    info: 'info',
-    migrate: 'migrate',
-    serve: 'serve',
-};
-
 class WebpackCLI extends GroupHelper {
     constructor() {
         super();
@@ -31,7 +22,7 @@ class WebpackCLI extends GroupHelper {
             `./src/${this.defaultEntry}.js`,
             `src/${this.defaultEntry}.js`,
         ];
-        this.compilerConfiguration = undefined;
+        this.compilerConfiguration = {};
         this.outputConfiguration = {};
     }
     setMappedGroups(args, inlineOptions) {
@@ -71,6 +62,11 @@ class WebpackCLI extends GroupHelper {
      */
     resolveGroups() {
         let mode;
+        // determine the passed mode for ConfigGroup
+        if (this.groupMap.has(groups.ZERO_CONFIG_GROUP)) {
+            const modePresent = this.groupMap.get(groups.ZERO_CONFIG_GROUP).find((t) => !!t.mode);
+            if (modePresent) mode = modePresent.mode;
+        }
         for (const [key, value] of this.groupMap.entries()) {
             switch (key) {
                 case groups.ZERO_CONFIG_GROUP: {
@@ -254,11 +250,6 @@ class WebpackCLI extends GroupHelper {
             processingMessageBuffer: this.processingMessageBuffer,
         });
         return webpack;
-    }
-
-    async runCommand(command, ...args) {
-        // TODO: rename and depreciate init
-        return await require('./commands/ExternalCommand').run(defaultCommands[command.name], ...args);
     }
 
     runHelp(args) {

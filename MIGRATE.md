@@ -7,6 +7,17 @@ The `webpack-cli migrate` feature eases the transition from:
 
 `webpack-cli migrate` also allows users to switch to the new version of webpack without having to do it extensively.
 
+## Table of Contents
+
+-   [Installation](#installation)
+    -   [Local Setup](#local-setup)
+    -   [Global Setup](#global-setup)
+-   [Usage](#usage)
+    -   [Local Setup](#local-setup)
+    -   [Global Setup](#global-setup)
+    -   [Usage Example](#usage-example)
+-   [Changes reflected after migration](#changes-reflected-after-migration)
+
 ## Installation
 
 > Requires installation of `webpack` and `webpack-cli`
