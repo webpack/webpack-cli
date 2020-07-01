@@ -1,6 +1,42 @@
-// eslint-disable-next-line node/no-extraneous-import
+import { isWebpack5 } from './isWebpack5';
 import { config } from 'webpack';
-const configKeys = Object.keys(config.getNormalizedWebpackOptions({}));
+
+let configKeys;
+if (isWebpack5()) {
+    configKeys = Object.keys(config.getNormalizedWebpackOptions({}));
+} else {
+    configKeys = [
+        'amd',
+        'bail',
+        'cache',
+        'context',
+        'devServer',
+        'devtool',
+        'entry',
+        'externals',
+        'merge',
+        'mode',
+        'module',
+        'node',
+        'optimization',
+        'output',
+        'parallelism',
+        'performance',
+        'plugins',
+        'profile',
+        'recordsInputPath',
+        'recordsOutputPath',
+        'recordsPath',
+        'resolve',
+        'resolveLoader',
+        'splitChunks',
+        'stats',
+        'target',
+        'topScope',
+        'watch',
+        'watchOptions',
+    ];
+}
 
 /**
  *
