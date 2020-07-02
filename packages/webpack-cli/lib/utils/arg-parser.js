@@ -1,14 +1,7 @@
 const commander = require('commander');
 const logger = require('./logger');
 
-const defaultCommands = {
-    init: 'init',
-    loader: 'generate-loader',
-    plugin: 'generate-plugin',
-    info: 'info',
-    migrate: 'migrate',
-    serve: 'serve',
-};
+const { defaultCommands } = require('./commands');
 
 /**
  *  Creates Argument parser corresponding to the supplied options

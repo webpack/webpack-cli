@@ -5,6 +5,8 @@ const initPkgJSON = require('../../packages/init/package.json');
 const servePkgJSON = require('../../packages/serve/package.json');
 const migratePkgJSON = require('../../packages/migrate/package.json');
 const infoPkgJSON = require('../../packages/info/package.json');
+const pluginPkgJSON = require('../../packages/generate-plugin/package.json');
+const loaderPkgJSON = require('../../packages/generate-loader/package.json');
 const cliPkgJSON = require('../../packages/webpack-cli/package.json');
 
 describe('version flag with external packages', () => {
@@ -32,6 +34,20 @@ describe('version flag with external packages', () => {
     it('outputs version with migrate', () => {
         const { stdout, stderr } = run(__dirname, ['migrate', '--version'], false);
         expect(stdout).toContain(migratePkgJSON.version);
+        expect(stdout).toContain(cliPkgJSON.version);
+        expect(stderr).toHaveLength(0);
+    });
+
+    it('outputs version with plugin', () => {
+        const { stdout, stderr } = run(__dirname, ['plugin', '--version'], false);
+        expect(stdout).toContain(pluginPkgJSON.version);
+        expect(stdout).toContain(cliPkgJSON.version);
+        expect(stderr).toHaveLength(0);
+    });
+
+    it('outputs version with loader', () => {
+        const { stdout, stderr } = run(__dirname, ['loader', '--version'], false);
+        expect(stdout).toContain(loaderPkgJSON.version);
         expect(stdout).toContain(cliPkgJSON.version);
         expect(stderr).toHaveLength(0);
     });
