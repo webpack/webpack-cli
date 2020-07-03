@@ -17,6 +17,13 @@ describe('version flag with external packages', () => {
         expect(stderr).toHaveLength(0);
     });
 
+    it('outputs version with the alias c for init', () => {
+        const { stdout, stderr } = run(__dirname, ['c', '--version'], false);
+        expect(stdout).toContain(initPkgJSON.version);
+        expect(stdout).toContain(cliPkgJSON.version);
+        expect(stderr).toHaveLength(0);
+    });
+
     it('outputs version with info', () => {
         const { stdout, stderr } = run(__dirname, ['info', '--version'], false);
         expect(stdout).toContain(infoPkgJSON.version);

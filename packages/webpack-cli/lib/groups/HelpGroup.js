@@ -49,7 +49,7 @@ class HelpGroup {
     outputVersion(externalPkg, commandsUsed, invalidArgs) {
         if (externalPkg && commandsUsed.length === 1 && invalidArgs.length === 0) {
             try {
-                if (commandsUsed.includes(externalPkg.name)) {
+                if ([externalPkg.alias, externalPkg.name].some((pkg) => commandsUsed.includes(pkg))) {
                     const { name, version } = require(`@webpack-cli/${defaultCommands[externalPkg.name]}/package.json`);
                     process.stdout.write(`\n${name} ${version}`);
                 } else {
