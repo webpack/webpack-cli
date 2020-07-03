@@ -95,17 +95,12 @@ class ConfigGroup extends GroupHelper {
         if (!moduleObj) {
             return newOptionsObject;
         }
-        console.log(moduleObj);
         const configPath = moduleObj.path;
         const configOptions = moduleObj.content;
         if (typeof configOptions === 'function') {
             // when config is a function, pass the env from args to the config function
             const newOptions = configOptions(this.args.env);
             // When config function returns a promise, resolve it, if not it's resolved by default
-            // Promise.resolve(newOptions).then((configData) => {
-            //     newOptionsObject['options'] = configData;
-            // });
-            console.log(await Promise.resolve(newOptions), 'asdasd');
             newOptionsObject['options'] = await Promise.resolve(newOptions);
         } else {
             if (Array.isArray(configOptions) && !configOptions.length) {
