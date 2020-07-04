@@ -11,4 +11,5 @@ module.exports = {
     moduleFileExtensions: ['ts', 'js', 'json'],
     watchPlugins: ['jest-watch-typeahead/filename', 'jest-watch-typeahead/testname'],
     setupFilesAfterEnv: ['<rootDir>/setupTest.js'],
+    globalTeardown: '<rootDir>/scripts/cleanupTest.js',
 };
