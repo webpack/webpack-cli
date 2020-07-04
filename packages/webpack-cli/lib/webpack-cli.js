@@ -185,9 +185,9 @@ class WebpackCLI extends GroupHelper {
      * @private
      * @returns {void}
      */
-    _handleGroupHelper(groupHelper) {
+    async _handleGroupHelper(groupHelper) {
         if (groupHelper) {
-            const result = groupHelper.run();
+            const result = await groupHelper.run();
             this._mergeOptionsToConfiguration(result.options, groupHelper.strategy);
             this._mergeOptionsToOutputConfiguration(result.outputOptions);
             this._mergeProcessingMessageBuffer(result.processingMessageBuffer);
