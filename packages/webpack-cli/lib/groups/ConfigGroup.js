@@ -86,7 +86,7 @@ class ConfigGroup extends GroupHelper {
         };
     }
 
-    finalize(moduleObj) {
+    async finalize(moduleObj) {
         const newOptionsObject = {
             outputOptions: {},
             options: {},
@@ -100,7 +100,8 @@ class ConfigGroup extends GroupHelper {
         if (typeof configOptions === 'function') {
             // when config is a function, pass the env from args to the config function
             const newOptions = configOptions(this.args.env);
-            newOptionsObject['options'] = newOptions;
+            // When config function returns a promise, resolve it, if not it's resolved by default
+            newOptionsObject['options'] = await Promise.resolve(newOptions);
         } else {
             if (Array.isArray(configOptions) && !configOptions.length) {
                 newOptionsObject['options'] = {};
@@ -124,7 +125,7 @@ class ConfigGroup extends GroupHelper {
         return newOptionsObject;
     }
 
-    resolveConfigFiles() {
+    async resolveConfigFiles() {
         const { config, mode } = this.args;
 
         if (config) {
@@ -139,7 +140,7 @@ class ConfigGroup extends GroupHelper {
             }
             const foundConfig = configFiles[0];
             const resolvedConfig = this.requireConfig(foundConfig);
-            this.opts = this.finalize(resolvedConfig);
+            this.opts = await this.finalize(resolvedConfig);
             return;
         }
 
@@ -152,16 +153,16 @@ class ConfigGroup extends GroupHelper {
         if (configFiles.length) {
             const defaultConfig = configFiles.find((p) => p.path.includes(mode) || p.path.includes(modeAlias[mode]));
             if (defaultConfig) {
-                this.opts = this.finalize(defaultConfig);
+                this.opts = await this.finalize(defaultConfig);
                 return;
             }
             const foundConfig = configFiles.pop();
-            this.opts = this.finalize(foundConfig);
+            this.opts = await this.finalize(foundConfig);
             return;
         }
     }
 
-    resolveConfigMerging() {
+    async resolveConfigMerging() {
         // eslint-disable-next-line no-prototype-builtins
         if (Object.keys(this.args).some((arg) => arg === 'merge')) {
             const { merge } = this.args;
@@ -178,16 +179,16 @@ class ConfigGroup extends GroupHelper {
                 }
                 const foundConfig = configFiles[0];
                 const resolvedConfig = this.requireConfig(foundConfig);
-                const newConfigurationsObject = this.finalize(resolvedConfig);
+                const newConfigurationsObject = await this.finalize(resolvedConfig);
                 const webpackMerge = require('webpack-merge');
                 this.opts['options'] = webpackMerge(this.opts['options'], newConfigurationsObject.options);
             }
         }
     }
 
-    run() {
-        this.resolveConfigFiles();
-        this.resolveConfigMerging();
+    async run() {
+        await this.resolveConfigFiles();
+        await this.resolveConfigMerging();
         return this.opts;
     }
 }
