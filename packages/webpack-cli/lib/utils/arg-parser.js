@@ -63,6 +63,12 @@ function argParser(options, args, argsOnly = false, name = '', helpFunction = un
             if (!option.multiple) {
                 // Prevent default behavior for standalone options
                 parserInstance.option(flagsWithType, option.description, option.defaultValue).action(() => {});
+
+                if (option.negative) {
+                    // commander requires explicitly adding the negated version of boolean flags
+                    const negatedFlag = `--no-${option.name}`;
+                    parserInstance.option(negatedFlag, `negates ${option.name}`).action(() => {});
+                }
             } else {
                 const multiArg = (value, previous = []) => previous.concat([value]);
                 parserInstance.option(flagsWithType, option.description, multiArg, option.defaultValue).action(() => {});
@@ -74,6 +80,11 @@ function argParser(options, args, argsOnly = false, name = '', helpFunction = un
             if (option.type.length > 1) {
                 flagsWithType = flags + ' [value]';
                 parserInstance.option(flagsWithType, option.description, option.type[0], option.defaultValue).action(() => {});
+                if (option.negative) {
+                    // commander requires explicitly adding the negated version of boolean flags
+                    const negatedFlag = `--no-${option.name}`;
+                    parserInstance.option(negatedFlag, `negates ${option.name}`).action(() => {});
+                }
             } else {
                 parserInstance.option(flagsWithType, option.description, option.type, option.defaultValue).action(() => {});
             }

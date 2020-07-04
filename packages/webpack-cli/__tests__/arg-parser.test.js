@@ -18,23 +18,18 @@ const basicOptions = [
         description: 'boolean flag',
     },
     {
-        name: 'specific-bool',
-        alias: 's',
-        usage: '--specific-bool',
-        type: Boolean,
-        description: 'boolean flag',
-    },
-    {
-        name: 'no-specific-bool',
-        usage: '--no-specific-bool',
-        type: Boolean,
-        description: 'boolean flag',
-    },
-    {
         name: 'num-flag',
         usage: '--num-flag <value>',
         type: Number,
         description: 'number flag',
+    },
+    {
+        name: 'neg-flag',
+        alias: 'n',
+        usage: '--neg-flag',
+        type: Boolean,
+        negative: true,
+        description: 'boolean flag',
     },
     {
         name: 'string-flag',
@@ -150,16 +145,6 @@ describe('arg-parser', () => {
         expect(warnMock.mock.calls.length).toEqual(0);
     });
 
-    it('parses specified negated boolean flag', () => {
-        const res = argParser(basicOptions, ['--no-specific-bool'], true);
-        expect(res.unknownArgs.length).toEqual(0);
-        expect(res.opts).toEqual({
-            specificBool: false,
-            stringFlagWithDefault: 'default-value',
-        });
-        expect(warnMock.mock.calls.length).toEqual(0);
-    });
-
     it('parses multi type flag as Boolean', () => {
         const res = argParser(basicOptions, ['--multi-type'], true);
         expect(res.unknownArgs.length).toEqual(0);
@@ -180,37 +165,15 @@ describe('arg-parser', () => {
         expect(warnMock.mock.calls.length).toEqual(0);
     });
 
-    it('warns on usage of both flag and same negated flag, setting it to false', () => {
-        const res = argParser(basicOptions, ['--specific-bool', '--no-specific-bool'], true);
-        expect(res.unknownArgs.length).toEqual(0);
-        expect(res.opts).toEqual({
-            specificBool: false,
-            stringFlagWithDefault: 'default-value',
-        });
-        expect(warnMock.mock.calls.length).toEqual(1);
-        expect(warnMock.mock.calls[0][0]).toContain('You provided both --specific-bool and --no-specific-bool');
-    });
-
-    it('warns on usage of both flag and same negated flag, setting it to true', () => {
-        const res = argParser(basicOptions, ['--no-specific-bool', '--specific-bool'], true);
-        expect(res.unknownArgs.length).toEqual(0);
-        expect(res.opts).toEqual({
-            specificBool: true,
-            stringFlagWithDefault: 'default-value',
-        });
-        expect(warnMock.mock.calls.length).toEqual(1);
-        expect(warnMock.mock.calls[0][0]).toContain('You provided both --specific-bool and --no-specific-bool');
-    });
-
     it('warns on usage of both flag alias and same negated flag, setting it to true', () => {
-        const res = argParser(basicOptions, ['--no-specific-bool', '-s'], true);
+        const res = argParser(basicOptions, ['--no-neg-flag', '-n'], true);
         expect(res.unknownArgs.length).toEqual(0);
         expect(res.opts).toEqual({
-            specificBool: true,
+            negFlag: true,
             stringFlagWithDefault: 'default-value',
         });
         expect(warnMock.mock.calls.length).toEqual(1);
-        expect(warnMock.mock.calls[0][0]).toContain('You provided both -s and --no-specific-bool');
+        expect(warnMock.mock.calls[0][0]).toContain('You provided both -n and --no-neg-flag');
     });
 
     it('parses string flag using equals sign', () => {
@@ -285,5 +248,47 @@ describe('arg-parser', () => {
         expect(res.opts.output).toEqual('./dist/');
         expect(res.opts.stats).toEqual(true);
         expect(warnMock.mock.calls.length).toEqual(0);
+    });
+
+    it('parses --neg-flag', () => {
+        const res = argParser(basicOptions, ['--neg-flag'], true);
+        expect(res.unknownArgs.length).toEqual(0);
+        expect(res.opts).toEqual({
+            negFlag: true,
+            stringFlagWithDefault: 'default-value',
+        });
+        expect(warnMock.mock.calls.length).toEqual(0);
+    });
+
+    it('parses --no-neg-flag', () => {
+        const res = argParser(basicOptions, ['--no-neg-flag'], true);
+        expect(res.unknownArgs.length).toEqual(0);
+        expect(res.opts).toEqual({
+            negFlag: false,
+            stringFlagWithDefault: 'default-value',
+        });
+        expect(warnMock.mock.calls.length).toEqual(0);
+    });
+
+    it('warns on usage of both --neg and --no-neg flag, setting it to false', () => {
+        const res = argParser(basicOptions, ['--neg-flag', '--no-neg-flag'], true);
+        expect(res.unknownArgs.length).toEqual(0);
+        expect(res.opts).toEqual({
+            negFlag: false,
+            stringFlagWithDefault: 'default-value',
+        });
+        expect(warnMock.mock.calls.length).toEqual(1);
+        expect(warnMock.mock.calls[0][0]).toContain('You provided both --neg-flag and --no-neg-flag');
+    });
+
+    it('warns on usage of both flag and same negated flag, setting it to true', () => {
+        const res = argParser(basicOptions, ['--no-neg-flag', '--neg-flag'], true);
+        expect(res.unknownArgs.length).toEqual(0);
+        expect(res.opts).toEqual({
+            negFlag: true,
+            stringFlagWithDefault: 'default-value',
+        });
+        expect(warnMock.mock.calls.length).toEqual(1);
+        expect(warnMock.mock.calls[0][0]).toContain('You provided both --neg-flag and --no-neg-flag');
     });
 });
