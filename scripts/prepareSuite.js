@@ -2,7 +2,7 @@
 const execa = require('execa');
 // eslint-disable-next-line node/no-unpublished-require
 const chalk = require('chalk');
-const { collectTestFolders } = require('./utils');
+const collectTestFolders = require('./utils');
 
 const PACKAGE = 'package.json';
 

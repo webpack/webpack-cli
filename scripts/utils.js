@@ -25,7 +25,4 @@ function extractFolder(folderToRead, folders = [], folderStrategy) {
     return folders;
 }
 
-module.exports = {
-    collectTestFolders,
-    extractFolder,
-};
+module.exports = collectTestFolders;
