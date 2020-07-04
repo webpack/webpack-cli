@@ -14,7 +14,8 @@
 
 # Node dependencies
 node_modules
-!test/**/**/**/node_modules
+test/**/node_modules
+test/**/yarn.lock
 
 # npm-debug log
 npm-debug.*
