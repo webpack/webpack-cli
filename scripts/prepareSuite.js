@@ -1,41 +1,18 @@
-'use strict';
-
-const fs = require('fs');
-const path = require('path');
 // eslint-disable-next-line node/no-unpublished-require
 const execa = require('execa');
 // eslint-disable-next-line node/no-unpublished-require
 const chalk = require('chalk');
+const { collectTestFolders } = require('./utils');
 
-const BASE_DIR = 'test/';
 const PACKAGE = 'package.json';
 
-function collectTestingFoldersWithPackage() {
-    const testFolder = path.resolve(path.join(process.cwd(), BASE_DIR));
-
-    return extractFolder(testFolder);
-}
-
-function extractFolder(folderToRead, folders = []) {
-    const files = fs.readdirSync(folderToRead);
-
-    files.forEach((file) => {
-        const filePath = path.resolve(path.join(folderToRead, file));
-        const stats = fs.statSync(filePath);
-        if (stats.isFile() && file === PACKAGE) {
-            folders.push(folderToRead);
-        }
-        if (stats.isDirectory() && file !== 'node_modules') {
-            extractFolder(filePath, folders);
-        }
-    });
-
-    return folders;
-}
+const getFoldersWithPackage = (stats, file) => {
+    return stats.isFile() && file === PACKAGE;
+};
 
 (async () => {
     try {
-        const folders = collectTestingFoldersWithPackage();
+        const folders = collectTestFolders(getFoldersWithPackage);
         for (const folder of folders) {
             await execa('yarn', {
                 cwd: folder,
