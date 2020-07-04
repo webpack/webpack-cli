@@ -1,8 +1,13 @@
 const fs = require('fs');
 const { join } = require('path');
 const { run } = require('../utils/test-utils');
+const rimraf = require('rimraf');
 
 describe('Prefetch Flag', () => {
+    afterEach(() => {
+        rimraf.sync(join(__dirname, 'dist'));
+    });
+
     it('Should load the prefetched file', () => {
         const { stdout, stderr } = run(__dirname, ['--prefetch', './src/p.js'], false);
         // Should be able to find the entry file
