@@ -173,29 +173,6 @@ const runPromptWithAnswers = (location, args, answers, waitForOutput = true) => 
     });
 };
 
-function extractSummary(stdout) {
-    if (stdout === '') {
-        return '';
-    }
-    const metaData = ['Output Directory', 'Built', 'Version', 'Compile Time'];
-
-    const summaryArray = stdout
-        .split('\n')
-        .filter((line) => metaData.find((category) => line.includes(category)))
-        .filter((line) => line)
-        .map((line) => line.trim())
-        .map((line) => {
-            const categoryTouple = line.split(':');
-            const categoryIdentifier = categoryTouple.shift();
-            const categoryValue = categoryTouple.pop();
-            return {
-                [categoryIdentifier]: categoryValue,
-            };
-        });
-    const summaryObject = summaryArray.reduce((acc, curr) => ({ ...curr, ...acc }));
-    return summaryObject;
-}
-
 /**
  *
  * @param {String} testCase - testCase directory
@@ -211,27 +188,6 @@ function appendDataIfFileExists(testCase, file, data) {
     } else {
         throw new Error(`Oops! ${filePath} does not exist!`);
     }
-}
-
-/**
- *
- * @param {String} testCase - testCase directory
- * @param {String} file - file relative to testCase
- * @param {String} data - data to append
- * @param {String} cbFile - second file to write to
- * @param {String} cbData - second data to write
- * @returns {undefined}
- * @throws - throw an Error if file does not exist
- */
-function appendDataToMultipleIfFilesExists(testCase, file, data, cbFile, cbData) {
-    const filePath = path.resolve(testCase, file);
-    fs.access(filePath, fs.F_OK, (accessErr) => {
-        if (accessErr) throw new Error(`Oops! ${accessErr} does not exist!`);
-        fs.appendFile(filePath, data, 'utf8', () => {
-            const cbFilePath = path.resolve(testCase, cbFile);
-            fs.appendFile(cbFilePath, cbData, () => {});
-        });
-    });
 }
 
 /**
@@ -297,11 +253,9 @@ module.exports = {
     runWatch,
     runServe,
     runAndGetWatchProc,
-    extractSummary,
     runPromptWithAnswers,
     appendDataIfFileExists,
     copyFile,
     copyFileAsync,
-    appendDataToMultipleIfFilesExists,
     runInstall,
 };
