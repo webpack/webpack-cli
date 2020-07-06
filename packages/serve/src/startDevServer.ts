@@ -15,16 +15,27 @@ export default function startDevServer(compiler, args): void {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const Server = require('webpack-dev-server/lib/Server');
     const cliOptions = createConfig(args);
-    const devServerOptions = getDevServerOptions(compiler);
-    const options = mergeOptions(cliOptions, devServerOptions);
+    const devServerOptions = getDevServerOptions(compiler, args);
 
-    options.host = options.host || 'localhost';
-    options.port = options.port || 8080;
+    const usedPorts = [];
+    devServerOptions.forEach((devServerOpts): void => {
+        const options = mergeOptions(cliOptions, devServerOpts);
 
-    const server = new Server(compiler, options);
-    server.listen(options.port, options.host, (err): void => {
-        if (err) {
-            throw err;
+        options.host = options.host || 'localhost';
+        options.port = options.port || 8080;
+
+        if (usedPorts.find(options.port)) {
+            throw new Error(
+                'Unique ports must be specified for each devServer option in your webpack configuration. Alternatively, run only 1 devServer config using the --name flag to specify your desired config.',
+            );
         }
+        usedPorts.push(options.port);
+
+        const server = new Server(compiler, options);
+        server.listen(options.port, options.host, (err): void => {
+            if (err) {
+                throw err;
+            }
+        });
     });
 }

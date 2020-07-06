@@ -1,24 +1,46 @@
+import logger from 'webpack-cli/lib/utils/logger';
+
 /**
  *
  * Get the devServer option from the user's compiler options
  *
  * @param {Object} compiler - webpack compiler
+ * @param {Object} args - devServer args
  *
  * @returns {Object}
  */
-export default function getDevServerOptions(compiler): any {
-    let devServerOptions;
-    if (compiler.compilers) {
-        // devServer options could be found in any of the compilers,
-        // so simply find the first instance and use it, if there is one
-        const comp = compiler.compilers.find((comp) => comp.options.devServer);
-        if (comp) {
-            devServerOptions = comp.options.devServer;
+export default function getDevServerOptions(compiler, args): any {
+    const defaultOpts = {};
+    const devServerOptions = [];
+    const compilers = compiler.compilers || [compiler];
+    if (args.name) {
+        let comp = compilers.find((comp) => comp.name === args.name);
+        // name could be an index to a compiler
+        if (!comp && /^[0-9]$/.test(args.name)) {
+            const index = +args.name;
+            comp = compilers[index];
+        }
+
+        if (comp && comp.options.devServer) {
+            devServerOptions.push(comp.options.devServer);
+        } else if (!comp) {
+            // no compiler found
+            logger.warn(`webpack config not found with name: ${comp.name}. Using default devServer config`);
+        } else {
+            // no devServer config found for compiler
+            logger.warn('devServer config not found in specified webpack config. Using default devServer config');
         }
     } else {
-        devServerOptions = compiler.options.devServer;
+        compilers.forEach((comp) => {
+            if (comp.options.devServer) {
+                devServerOptions.push(comp.options.devServer);
+            }
+        });
     }
-    devServerOptions = devServerOptions || {};
+
+    if (devServerOptions.length === 0) {
+        devServerOptions.push(defaultOpts);
+    }
 
     return devServerOptions;
 }
