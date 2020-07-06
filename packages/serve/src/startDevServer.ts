@@ -22,7 +22,7 @@ export default function startDevServer(compiler, args): void {
     options.port = options.port || 8080;
 
     const server = new Server(compiler, options);
-    server.listen(options.socket || options.port, options.host, (err): void => {
+    server.listen(options.port, options.host, (err): void => {
         if (err) {
             throw err;
         }
