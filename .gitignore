@@ -14,7 +14,11 @@
 
 # Node dependencies
 node_modules
-!test/**/**/**/node_modules
+test/**/node_modules
+
+# Lock files
+test/**/yarn.lock
+test/**/package-json.lock
 
 # npm-debug log
 npm-debug.*
@@ -26,7 +30,6 @@ yarn-error.log
 coverage
 .nyc_output
 
-# Test Compilation
 # lerna log
 lerna-debug.log
 
