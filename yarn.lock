@@ -4388,9 +4388,9 @@ cyclist@^1.0.1:
   integrity sha1-WW6WmP0MgOEgOMK4LW6xs1tiJNk=
 
 cz-customizable@^6.2.0:
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/cz-customizable/-/cz-customizable-6.2.0.tgz#4591bef5eae9fcef44bf024259723979404cdee0"
-  integrity sha512-6fBA8pbwApTY20Q5aDkWgJcg5wCmbwlcnccUFyBQypN8AoRJ0Vt4pLehai0/P2Xr29t2UDYoNGOUDhi4eoR0JQ==
+  version "6.2.1"
+  resolved "https://registry.yarnpkg.com/cz-customizable/-/cz-customizable-6.2.1.tgz#bc26caa007f1f47cba2fb1aab8e4f03c5e6b47e8"
+  integrity sha512-m4umHq83H7QsPrX8f0/Dx+EcAB88GsLDTHGPFnpf9YEBbco4s84n73ysdeZz2D8XHlHefMDT3lUd9eYCCGARlA==
   dependencies:
     editor "1.0.0"
     find-config "^1.0.0"
