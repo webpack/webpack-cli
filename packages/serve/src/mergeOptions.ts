@@ -1,12 +1,15 @@
+import { devServerOptionsType } from './types';
+
 /**
  *
  * Merges CLI options and devServer options from config file
  *
- * @param {Object} cliOptions - devServer args
+ * @param {Object} cliOptions - devServer CLI args
+ * @param {Object} devServerOptions - devServer config options
  *
  * @returns {Object} merged options object
  */
-export default function mergeOptions(cliOptions, devServerOptions): any {
+export default function mergeOptions(cliOptions: devServerOptionsType, devServerOptions: devServerOptionsType): devServerOptionsType {
     // CLI options should take precedence over devServer options,
     // and CLI options should have no default values included
     const options = { ...devServerOptions, ...cliOptions };

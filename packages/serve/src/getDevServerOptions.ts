@@ -1,4 +1,5 @@
 import logger from 'webpack-cli/lib/utils/logger';
+import { devServerOptionsType } from './types';
 
 /**
  *
@@ -9,7 +10,7 @@ import logger from 'webpack-cli/lib/utils/logger';
  *
  * @returns {Object}
  */
-export default function getDevServerOptions(compiler, args): any {
+export default function getDevServerOptions(compiler, args): devServerOptionsType[] {
     const defaultOpts = {};
     const devServerOptions = [];
     const compilers = compiler.compilers || [compiler];
