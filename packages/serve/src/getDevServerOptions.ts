@@ -14,12 +14,7 @@ export default function getDevServerOptions(compiler, args): any {
     const devServerOptions = [];
     const compilers = compiler.compilers || [compiler];
     if (args.name) {
-        let comp = compilers.find((comp) => comp.name === args.name);
-        // name could be an index to a compiler
-        if (!comp && /^[0-9]$/.test(args.name)) {
-            const index = +args.name;
-            comp = compilers[index];
-        }
+        const comp = compilers.find((comp) => comp.name === args.name);
 
         if (comp && comp.options.devServer) {
             devServerOptions.push(comp.options.devServer);
