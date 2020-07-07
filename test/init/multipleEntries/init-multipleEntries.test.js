@@ -15,10 +15,6 @@ describe('init with multiple entries', () => {
         fs.mkdirSync(genPath);
     });
 
-    afterAll(() => {
-        rimraf.sync(genPath);
-    });
-
     it('should scaffold with multiple entries', async () => {
         const { stdout } = await runPromptWithAnswers(
             genPath,

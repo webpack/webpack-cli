@@ -14,10 +14,6 @@ describe('init auto flag', () => {
         fs.mkdirSync(genPath);
     });
 
-    afterAll(() => {
-        rimraf.sync(genPath);
-    });
-
     it('should prompt with w/o auto flag', () => {
         const { stdout, stderr } = run(genPath, ['init'], false);
         expect(stdout).toBeTruthy();

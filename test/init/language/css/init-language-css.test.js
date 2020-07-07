@@ -16,10 +16,6 @@ describe('init with SCSS', () => {
         fs.mkdirSync(genPath);
     });
 
-    afterAll(() => {
-        rimraf.sync(genPath);
-    });
-
     it('should use SCSS', async () => {
         const { stdout } = await runPromptWithAnswers(
             genPath,

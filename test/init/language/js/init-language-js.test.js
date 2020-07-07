@@ -16,10 +16,6 @@ describe('init with Typescript', () => {
         fs.mkdirSync(genPath);
     });
 
-    afterAll(() => {
-        rimraf.sync(genPath);
-    });
-
     it('should use typescript', async () => {
         const { stdout } = await runPromptWithAnswers(genPath, ['init'], [`N${ENTER}`, ENTER, ENTER, `${DOWN}${DOWN}${ENTER}`, ENTER]);
 
