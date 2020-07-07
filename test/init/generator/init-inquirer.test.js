@@ -15,10 +15,6 @@ describe('init', () => {
         fs.mkdirSync(genPath);
     });
 
-    afterAll(() => {
-        rimraf.sync(genPath);
-    });
-
     it('should scaffold when given answers', async () => {
         const { stdout } = await runPromptWithAnswers(genPath, ['init'], [`N${ENTER}`, ENTER, ENTER, ENTER, ENTER, ENTER]);
 
