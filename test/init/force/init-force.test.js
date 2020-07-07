@@ -15,10 +15,6 @@ describe('init force flag', () => {
         fs.mkdirSync(genPath);
     });
 
-    afterAll(() => {
-        rimraf.sync(genPath);
-    });
-
     it('should scaffold webpack config', async () => {
         const { stdout } = await runPromptWithAnswers(genPath, ['init', '--force'], [`N${ENTER}`, ENTER, ENTER, ENTER, ENTER, ENTER]);
 

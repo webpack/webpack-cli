@@ -16,10 +16,6 @@ describe('plugin command', () => {
         rimraf.sync(pluginPath);
     });
 
-    afterAll(() => {
-        rimraf.sync(pluginPath);
-    });
-
     it('Should ask the plugin name when invoked', () => {
         const { stdout, stderr } = run(__dirname, ['plugin'], false);
         expect(stdout).toBeTruthy();

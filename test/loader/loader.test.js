@@ -20,10 +20,6 @@ describe('loader command', () => {
         rimraf.sync(loaderPath);
     });
 
-    afterAll(() => {
-        rimraf.sync(loaderPath);
-    });
-
     it('Should ask the loader name when invoked', () => {
         const { stdout, stderr } = run(__dirname, ['loader'], false);
         expect(stdout).toBeTruthy();

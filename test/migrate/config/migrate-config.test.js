@@ -19,10 +19,6 @@ describe('migrate command', () => {
         fs.mkdirSync(outputPath);
     });
 
-    afterAll(() => {
-        rimraf.sync(outputPath);
-    });
-
     it('should warn if the source config file is not specified', () => {
         const { stderr } = run(__dirname, ['migrate'], false);
         expect(stderr).toContain('Please specify a path to your webpack config');
