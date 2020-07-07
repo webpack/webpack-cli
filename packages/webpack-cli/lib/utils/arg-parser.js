@@ -78,6 +78,11 @@ function argParser(options, args, argsOnly = false, name = '', helpFunction = un
                 parserInstance.option(flagsWithType, option.description, option.type, option.defaultValue).action(() => {});
             }
         }
+        if (option.negative) {
+            // commander requires explicitly adding the negated version of boolean flags
+            const negatedFlag = `--no-${option.name}`;
+            parserInstance.option(negatedFlag, `negates ${option.name}`).action(() => {});
+        }
 
         return parserInstance;
     }, parser);
