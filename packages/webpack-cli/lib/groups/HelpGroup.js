@@ -84,7 +84,11 @@ class HelpGroup {
         const { underline, bold } = chalk.white;
         const o = (s) => chalk.keyword('orange')(s);
         const options = require('../utils/cli-flags');
-        const negatedFlags = options.core.filter((flag) => flag.negative === true);
+        const negatedFlags = options.core
+            .filter((flag) => flag.negative)
+            .reduce((allFlags, flag) => {
+                return [...allFlags, { name: `no-${flag.name}`, description: `Negates ${flag.name}`, type: Boolean }];
+            }, []);
         const title = bold('⬡                     ') + underline('webpack') + bold('                     ⬡');
         const desc = 'The build tool for modern web applications';
         const websitelink = '         ' + underline('https://webpack.js.org');
@@ -118,13 +122,7 @@ class HelpGroup {
             },
             {
                 header: 'Negated Flags',
-                optionList: negatedFlags.map((e) => {
-                    e.description = `Negates ${e.name}`;
-                    e.name = `no-${e.name}`;
-                    e.alias = null;
-                    e.type = Boolean;
-                    return e;
-                }),
+                optionList: negatedFlags.map((e) => e),
             },
         ]);
         return {
