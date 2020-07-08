@@ -1,8 +1,9 @@
 const { existsSync } = require('fs');
-const { resolve, sep, dirname, parse } = require('path');
+const { resolve, sep, dirname, parse, basename, join } = require('path');
 const { extensions } = require('interpret');
 const GroupHelper = require('../utils/GroupHelper');
 const rechoir = require('rechoir');
+const logger = require('../utils/logger');
 
 // Order defines the priority, in increasing order
 // example - config file lookup will be in order of .webpack/webpack.config.development.js -> webpack.config.development.js -> webpack.config.js
@@ -166,23 +167,36 @@ class ConfigGroup extends GroupHelper {
         // eslint-disable-next-line no-prototype-builtins
         if (Object.keys(this.args).some((arg) => arg === 'merge')) {
             const { merge } = this.args;
+            const baseConfig = 'webpack.base.js';
 
-            const newConfigPath = this.resolveFilePath(merge, 'webpack.base.js');
-            if (newConfigPath) {
-                const configFiles = getConfigInfoFromFileName(newConfigPath);
-                if (!configFiles.length) {
-                    this.opts.processingMessageBuffer.push({
-                        lvl: 'warn',
-                        msg: 'Could not find file to merge configuration with...',
-                    });
-                    return;
-                }
-                const foundConfig = configFiles[0];
-                const resolvedConfig = this.requireConfig(foundConfig);
-                const newConfigurationsObject = await this.finalize(resolvedConfig);
-                const webpackMerge = require('webpack-merge');
-                this.opts['options'] = webpackMerge(this.opts['options'], newConfigurationsObject.options);
+            // Try to resolve the given merge config else fallback to `webpack.base.js`
+            const newConfigPath = this.resolveFilePath(merge, baseConfig);
+
+            if (!newConfigPath) {
+                return logger.warn("The supplied merge config doesn't exist.");
             }
+
+            // Get the resolved config path and check if it's a fallback case
+            const resolvedFileName = basename(newConfigPath);
+            const baseConfigPath = join(process.cwd(), baseConfig);
+
+            // When we resolve webpack.config.js as a fallback merge config, warn the user about it
+            if (baseConfigPath === newConfigPath && resolvedFileName !== merge)
+                logger.warn("The supplied merge config doesn't exist. Falling back to webpack.base.js as default merge config.");
+
+            const configFiles = getConfigInfoFromFileName(newConfigPath);
+            if (!configFiles.length) {
+                this.opts.processingMessageBuffer.push({
+                    lvl: 'warn',
+                    msg: 'Could not find file to merge configuration with...',
+                });
+                return;
+            }
+            const foundConfig = configFiles[0];
+            const resolvedConfig = this.requireConfig(foundConfig);
+            const newConfigurationsObject = await this.finalize(resolvedConfig);
+            const webpackMerge = require('webpack-merge');
+            this.opts['options'] = webpackMerge(this.opts['options'], newConfigurationsObject.options);
         }
     }
 
