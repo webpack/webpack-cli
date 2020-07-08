@@ -1,4 +1,6 @@
 const GroupHelper = require('../utils/GroupHelper');
+const logger = require('../utils/logger');
+const { yellow } = require('chalk');
 
 class AdvancedGroup extends GroupHelper {
     constructor(options) {
@@ -29,7 +31,22 @@ class AdvancedGroup extends GroupHelper {
             }
         }
         if (args.target) {
-            options.target = args.target;
+            const validTargets = [
+                'web',
+                'webworker',
+                'node',
+                'async-node',
+                'node-webkit',
+                'electron-main',
+                'electron-renderer',
+                'electron-preload',
+            ];
+            if (validTargets.includes(args.target)) {
+                options.target = args.target;
+            } else {
+                logger.warn(yellow(`"${args.target}" is an invalid value for "target" option. Using "web" by default.`));
+                options.target = 'web';
+            }
         }
     }
     run() {
