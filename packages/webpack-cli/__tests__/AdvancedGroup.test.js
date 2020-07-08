@@ -39,4 +39,15 @@ describe('AdvancedGroup', function () {
             });
         });
     }
+
+    it('should use default target value if an invalid value is provided', () => {
+        const group = new AdvancedGroup([
+            {
+                target: 'invalid',
+            },
+        ]);
+
+        const result = group.run();
+        expect(result.options.target).toEqual('web');
+    });
 });

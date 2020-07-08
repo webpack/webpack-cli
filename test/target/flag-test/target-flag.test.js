@@ -32,8 +32,10 @@ describe('--target flag', () => {
         });
     });
 
-    it(`should throw error with invalid value for --target`, () => {
-        const { stderr } = run(__dirname, ['--target', 'invalid']);
-        expect(stderr).toContain('Invalid configuration object');
+    it(`should warn with invalid value for --target and use "web" as default`, () => {
+        const { stderr, stdout } = run(__dirname, ['--target', 'invalid']);
+
+        expect(stderr).toContain('[webpack-cli] "invalid" is an invalid value for "target" option. Using "web" by default.');
+        expect(stdout).toContain(`target: 'web'`);
     });
 });
