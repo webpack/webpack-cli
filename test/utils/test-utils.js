@@ -248,6 +248,10 @@ const runServe = (args, testPath) => {
     });
 };
 
+const runInfo = (args, testPath) => {
+    return run(testPath, ['info'].concat(args), false);
+};
+
 module.exports = {
     run,
     runWatch,
@@ -258,4 +262,5 @@ module.exports = {
     copyFile,
     copyFileAsync,
     runInstall,
+    runInfo,
 };
