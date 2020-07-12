@@ -1,5 +1,5 @@
 const { existsSync } = require('fs');
-const { resolve, sep, dirname, parse, basename, join } = require('path');
+const { resolve, sep, dirname, parse } = require('path');
 const { extensions } = require('interpret');
 const GroupHelper = require('../utils/GroupHelper');
 const rechoir = require('rechoir');
@@ -91,6 +91,7 @@ class ConfigGroup extends GroupHelper {
         const newOptionsObject = {
             outputOptions: {},
             options: {},
+            processingMessageBuffer: [],
         };
 
         if (!moduleObj) {
@@ -167,22 +168,13 @@ class ConfigGroup extends GroupHelper {
         // eslint-disable-next-line no-prototype-builtins
         if (Object.keys(this.args).some((arg) => arg === 'merge')) {
             const { merge } = this.args;
-            const baseConfig = 'webpack.base.js';
 
             // Try to resolve the given merge config else fallback to `webpack.base.js`
-            const newConfigPath = this.resolveFilePath(merge, baseConfig);
+            const newConfigPath = this.resolveFilePath(merge);
 
             if (!newConfigPath) {
                 return logger.warn("The supplied merge config doesn't exist.");
             }
-
-            // Get the resolved config path and check if it's a fallback case
-            const resolvedFileName = basename(newConfigPath);
-            const baseConfigPath = join(process.cwd(), baseConfig);
-
-            // When we resolve webpack.config.js as a fallback merge config, warn the user about it
-            if (baseConfigPath === newConfigPath && resolvedFileName !== merge)
-                logger.warn("The supplied merge config doesn't exist. Falling back to webpack.base.js as default merge config.");
 
             const configFiles = getConfigInfoFromFileName(newConfigPath);
             if (!configFiles.length) {
@@ -202,6 +194,7 @@ class ConfigGroup extends GroupHelper {
 
     async run() {
         await this.resolveConfigFiles();
+        console.log(this.opts);
         await this.resolveConfigMerging();
         return this.opts;
     }
