@@ -194,7 +194,6 @@ class ConfigGroup extends GroupHelper {
 
     async run() {
         await this.resolveConfigFiles();
-        console.log(this.opts);
         await this.resolveConfigMerging();
         return this.opts;
     }
