@@ -170,7 +170,7 @@ class ConfigGroup extends GroupHelper {
         if (Object.keys(this.args).some((arg) => arg === 'merge')) {
             const { merge } = this.args;
 
-            // Try to resolve the given merge config else fallback to `webpack.base.js`
+            // try resolving merge config
             const newConfigPath = this.resolveFilePath(merge);
 
             if (!newConfigPath) {
@@ -179,13 +179,6 @@ class ConfigGroup extends GroupHelper {
             }
 
             const configFiles = getConfigInfoFromFileName(newConfigPath);
-            if (!configFiles.length) {
-                this.opts.processingMessageBuffer.push({
-                    lvl: 'warn',
-                    msg: 'Could not find file to merge configuration with...',
-                });
-                return;
-            }
             const foundConfig = configFiles[0];
             const resolvedConfig = this.requireConfig(foundConfig);
             const newConfigurationsObject = await this.finalize(resolvedConfig);
