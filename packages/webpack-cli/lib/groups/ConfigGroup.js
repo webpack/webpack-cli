@@ -1,6 +1,7 @@
 const { existsSync } = require('fs');
 const { resolve, sep, dirname, parse } = require('path');
 const { extensions } = require('interpret');
+const webpackMerge = require('webpack-merge');
 const GroupHelper = require('../utils/GroupHelper');
 const rechoir = require('rechoir');
 const logger = require('../utils/logger');
@@ -173,7 +174,8 @@ class ConfigGroup extends GroupHelper {
             const newConfigPath = this.resolveFilePath(merge);
 
             if (!newConfigPath) {
-                return logger.warn("The supplied merge config doesn't exist.");
+                logger.error("The supplied merge config doesn't exist.");
+                process.exit(1);
             }
 
             const configFiles = getConfigInfoFromFileName(newConfigPath);
@@ -187,7 +189,6 @@ class ConfigGroup extends GroupHelper {
             const foundConfig = configFiles[0];
             const resolvedConfig = this.requireConfig(foundConfig);
             const newConfigurationsObject = await this.finalize(resolvedConfig);
-            const webpackMerge = require('webpack-merge');
             this.opts['options'] = webpackMerge(this.opts['options'], newConfigurationsObject.options);
         }
     }
