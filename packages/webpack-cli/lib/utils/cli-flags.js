@@ -35,7 +35,7 @@ let flagsFromCore =
 // duplicate flags
 const duplicateFlags = ['entry', 'mode', 'stats', 'watch', 'target'];
 // broken flags
-const brokenFlags = ['module-no-parse', 'module-no-parse-reset', 'optimization-no-emit-on-errors', 'watch-options-poll'];
+const brokenFlags = ['module-no-parse', 'module-no-parse-reset', 'optimization-no-emit-on-errors'];
 // regExp Flags
 const regExpFlags = ['module-expr-context-reg-exp', 'module-unknown-context-reg-exp', 'module-wrapped-context-reg-exp'];
 // inFeasibleFlags https://github.com/webpack/webpack-cli/pull/1630#issuecomment-646992322
