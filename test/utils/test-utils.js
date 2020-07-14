@@ -251,7 +251,7 @@ const runServe = (args, testPath) => {
 const runInfo = (args, testPath) => {
     return run(testPath, ['info'].concat(args), false);
 };
-    
+
 const hyphenToUpperCase = (name) => {
     if (!name) {
         return name;
