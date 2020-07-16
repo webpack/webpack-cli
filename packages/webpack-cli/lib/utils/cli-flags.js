@@ -38,13 +38,9 @@ const duplicateFlags = ['entry', 'mode', 'stats', 'watch', 'target'];
 const brokenFlags = ['module-no-parse', 'module-no-parse-reset', 'optimization-no-emit-on-errors'];
 // regExp Flags
 const regExpFlags = ['module-expr-context-reg-exp', 'module-unknown-context-reg-exp', 'module-wrapped-context-reg-exp'];
-// inFeasibleFlags https://github.com/webpack/webpack-cli/pull/1630#issuecomment-646992322
-const inFeasibleFlags = flagsFromCore.filter(({ name }) => {
-    return name.includes('module-rules-') || name.includes('alias-') || name.startsWith('output-library');
-});
 // filter all duplicate, broken and regExp flags
 const flagsToFilter = [...duplicateFlags, ...brokenFlags, ...regExpFlags];
-flagsFromCore = flagsFromCore.filter((flag) => !flagsToFilter.includes(flag.name) && !inFeasibleFlags.includes(flag));
+flagsFromCore = flagsFromCore.filter((flag) => !flagsToFilter.includes(flag.name));
 
 module.exports = {
     groups: {

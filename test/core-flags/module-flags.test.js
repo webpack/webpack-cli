@@ -11,7 +11,9 @@ describe('module config related flag', () => {
         const property = flag.name.split('module-')[1];
         const propName = hyphenToUpperCase(property);
 
-        if (flag.type === Boolean) {
+        //TODO: improve webpackCLITestPlugin for testing of nested options
+        // i.e, module-rules-* flags, right now it logs rules: [Object] only.
+        if (flag.type === Boolean && !flag.name.includes('rules-')) {
             it(`should config --${flag.name} correctly`, () => {
                 const { stderr, stdout } = run(__dirname, [`--${flag.name}`]);
                 expect(stderr).toBeFalsy();
@@ -35,7 +37,7 @@ describe('module config related flag', () => {
             });
         }
 
-        if (flag.type === String) {
+        if (flag.type === String && !flag.name.includes('rules-')) {
             it(`should config --${flag.name} correctly`, () => {
                 const { stderr, stdout } = run(__dirname, [`--${flag.name}`, 'value']);
                 expect(stderr).toBeFalsy();

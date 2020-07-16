@@ -14,7 +14,7 @@ describe('resolve config related flag', () => {
         }
         const propName = hyphenToUpperCase(property);
 
-        if (flag.type === Boolean) {
+        if (flag.type === Boolean && !flag.name.includes('alias-')) {
             it(`should config --${flag.name} correctly`, () => {
                 const { stderr, stdout } = run(__dirname, [`--${flag.name}`]);
 
@@ -28,7 +28,7 @@ describe('resolve config related flag', () => {
             });
         }
 
-        if (flag.type === String) {
+        if (flag.type === String && !flag.name.includes('alias-')) {
             it(`should config --${flag.name} correctly`, () => {
                 const { stderr, stdout } = run(__dirname, [`--${flag.name}`, 'browser']);
                 expect(stderr).toBeFalsy();
