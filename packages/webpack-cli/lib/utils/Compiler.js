@@ -1,6 +1,6 @@
 const webpack = require('webpack');
 const logger = require('./logger');
-const { cyanBright, greenBright } = require('chalk');
+const { cyan, cyanBright, greenBright } = require('chalk');
 const { CompilerOutput } = require('./CompilerOutput');
 const readline = require('readline');
 
@@ -64,7 +64,7 @@ class Compiler {
         this.output.generateRawOutput(stats, this.compilerOptions);
         process.stdout.write('\n');
         if (outputOptions.watch) {
-            logger.info('watching files for updates...');
+            logger.info(`${cyan('watching files for updates...')}`);
         }
     }
 

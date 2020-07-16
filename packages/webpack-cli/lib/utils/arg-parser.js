@@ -1,4 +1,5 @@
 const commander = require('commander');
+const { yellow } = require('chalk');
 const logger = require('./logger');
 
 const { defaultCommands } = require('./commands');
@@ -115,9 +116,11 @@ function argParser(options, args, argsOnly = false, name = '', helpFunction = un
         // it is negating was also provided
         if (arg.startsWith('--no-') && (flagUsed || aliasUsed) && !unknownArgs.includes(arg)) {
             logger.warn(
-                `You provided both ${
-                    flagUsed ? flag : alias
-                } and ${arg}. We will use only the last of these flags that you provided in your CLI arguments`,
+                yellow(
+                    `You provided both ${
+                        flagUsed ? flag : alias
+                    } and ${arg}. We will use only the last of these flags that you provided in your CLI arguments`,
+                ),
             );
         }
     });

@@ -1,3 +1,4 @@
+const { red, yellow } = require('chalk');
 const WebpackCLI = require('./webpack-cli');
 const { core, commands } = require('./utils/cli-flags');
 const logger = require('./utils/logger');
@@ -53,7 +54,7 @@ async function runCLI(cli, commandIsUsed) {
             }
         } else if (parsedArgs.unknownArgs.length > 0) {
             parsedArgs.unknownArgs.forEach((unknown) => {
-                logger.warn('Unknown argument:', unknown);
+                logger.warn(yellow('Unknown argument:', unknown));
             });
             cliExecuter();
             return;
@@ -68,7 +69,7 @@ async function runCLI(cli, commandIsUsed) {
         }
     } catch (err) {
         if (err.name === 'UNKNOWN_VALUE') {
-            logger.error(`Parse Error (unknown argument): ${err.value}`);
+            logger.error(red(`Parse Error (unknown argument): ${err.value}`));
             return;
         } else if (err.name === 'ALREADY_SET') {
             const argsMap = {};
@@ -92,9 +93,9 @@ async function runCLI(cli, commandIsUsed) {
             args = argParser('', core, process.argv);
             await cli.run(args.opts, core);
             process.stdout.write('\n');
-            logger.warn('Duplicate flags found, defaulting to last set value');
+            logger.warn(yellow('Duplicate flags found, defaulting to last set value'));
         } else {
-            logger.error(err);
+            logger.error(red(err));
             return;
         }
     }
