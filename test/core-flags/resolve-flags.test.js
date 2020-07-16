@@ -5,7 +5,7 @@ const { flagsFromCore } = require('../../packages/webpack-cli/lib/utils/cli-flag
 
 const resolveFlags = flagsFromCore.filter(({ name }) => name.startsWith('resolve'));
 
-describe('resolve config related flag', () => {
+describe('resolve config related flags', () => {
     resolveFlags.forEach((flag) => {
         // extract property name from flag name
         let property = flag.name.split('resolve-')[1];

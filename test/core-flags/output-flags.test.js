@@ -3,9 +3,9 @@
 const { run, hyphenToUpperCase } = require('../utils/test-utils');
 const { flagsFromCore } = require('../../packages/webpack-cli/lib/utils/cli-flags');
 
-const outputFlags = flagsFromCore.filter(({ name }) => name.startsWith('output-'));
+const outputFlags = flagsFromCore.filter(({ name }) => name.startsWith('output-') && !name.includes('output-library'));
 
-describe('module config related flag', () => {
+describe('output config related flag', () => {
     outputFlags.forEach((flag) => {
         // extract property name from flag name
         const property = flag.name.split('output-')[1];
