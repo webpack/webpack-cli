@@ -14,7 +14,7 @@
     "@webpack-cli/utils": "^1.0.1-alpha.5",
     "@webpack-cli/webpack-scaffold": "^1.0.1-alpha.4",
     "chalk": "3.0.0",
-    "lodash": "4.17.15",
+    "lodash": "4.17.19",
     "log-symbols": "3.0.0",
     "mkdirp": "1.0.3",
     "yeoman-generator": "4.7.2"
