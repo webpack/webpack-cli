@@ -6,8 +6,8 @@ const { run } = require('../utils/test-utils');
 describe('output flag defaults', () => {
     it('should create default file for a given directory', (done) => {
         const { stdout } = run(__dirname, ['--entry', './a.js', '--output', './binary'], false);
-        // Should print a warning about config fallback
-        expect(stdout).toContain('option has not been set, webpack will fallback to');
+        // Should not print warning about config fallback, as we have production as default
+        expect(stdout).not.toContain('option has not been set, webpack will fallback to');
         stat(resolve(__dirname, './binary/main.js'), (err, stats) => {
             expect(err).toBe(null);
             expect(stats.isFile()).toBe(true);
