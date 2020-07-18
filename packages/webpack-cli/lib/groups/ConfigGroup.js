@@ -1,6 +1,6 @@
 const { existsSync } = require('fs');
 const { resolve, sep, dirname, parse } = require('path');
-const { extensions } = require('interpret');
+const { extensions, jsVariants } = require('interpret');
 const GroupHelper = require('../utils/GroupHelper');
 const rechoir = require('rechoir');
 
@@ -24,12 +24,6 @@ const DEFAULT_CONFIG_LOC = [
 const modeAlias = {
     production: 'prod',
     development: 'dev',
-};
-
-const fileTypes = {
-    '.babel.js': ['@babel/register', 'babel-register', 'babel-core/register', 'babel/register'],
-    '.babel.ts': ['@babel/register'],
-    '.ts': ['ts-node/register', 'tsconfig-paths/register'],
 };
 
 const getDefaultConfigFiles = () => {
@@ -69,7 +63,7 @@ class ConfigGroup extends GroupHelper {
     }
 
     requireConfig(configModule) {
-        const extension = Object.keys(fileTypes).find((t) => configModule.ext.endsWith(t));
+        const extension = Object.keys(jsVariants).find((t) => configModule.ext.endsWith(t));
 
         if (extension) {
             this.requireLoader(extension, configModule.path);
