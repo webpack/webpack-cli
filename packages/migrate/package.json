@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@webpack-cli/utils": "^1.0.1-alpha.5",
-    "chalk": "3.0.0",
+    "colorette": "^1.2.1",
     "diff": "4.0.2",
     "inquirer": "7.1.0",
     "jscodeshift": "0.7.0",

@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+import { yellow } from 'colorette';
 import fs from 'fs';
 import prettier from 'prettier';
 
@@ -23,9 +23,7 @@ export function runPrettier(outputPath: string, source: string): void {
         });
     } catch (err) {
         process.stdout.write(
-            `\n${chalk.yellow(
-                `WARNING: Could not apply prettier to ${outputPath}` + ' due validation error, but the file has been created\n',
-            )}`,
+            `\n${yellow(`WARNING: Could not apply prettier to ${outputPath}` + ' due validation error, but the file has been created\n')}`,
         );
         prettySource = source;
     }
