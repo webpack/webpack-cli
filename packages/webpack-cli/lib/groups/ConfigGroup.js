@@ -4,7 +4,7 @@ const { extensions } = require('interpret');
 const webpackMerge = require('webpack-merge');
 const GroupHelper = require('../utils/GroupHelper');
 const rechoir = require('rechoir');
-const logger = require('../utils/logger');
+const MergeError = require('../utils/errors/MergeError');
 
 // Order defines the priority, in increasing order
 // example - config file lookup will be in order of .webpack/webpack.config.development.js -> webpack.config.development.js -> webpack.config.js
@@ -174,8 +174,7 @@ class ConfigGroup extends GroupHelper {
             const newConfigPath = this.resolveFilePath(merge);
 
             if (!newConfigPath) {
-                logger.error("The supplied merge config doesn't exist.");
-                process.exit(1);
+                throw new MergeError("The supplied merge config doesn't exist.");
             }
 
             const configFiles = getConfigInfoFromFileName(newConfigPath);
