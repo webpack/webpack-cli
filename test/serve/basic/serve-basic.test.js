@@ -1,10 +1,14 @@
 'use strict';
 
+const chalk = require('chalk');
 const path = require('path');
 const getPort = require('get-port');
 const { runServe } = require('../../utils/test-utils');
 
 const testPath = path.resolve(__dirname);
+
+const usageText = 'webpack s | serve';
+const descriptionText = 'Run the webpack Dev Server';
 
 describe('basic serve usage', () => {
     let port;
@@ -23,6 +27,16 @@ describe('basic serve usage', () => {
             console.warn('TODO: fix `serve` test on windows');
         });
     } else {
+        it('should respect the --color=false flag', async () => {
+            const { stdout, stderr } = await runServe(['help', '--color=false'], __dirname);
+            chalk.enabled = true;
+            chalk.level = 3;
+            const orange = chalk.keyword('orange');
+            expect(stdout).not.toContain(orange(usageText));
+            expect(stdout).toContain(descriptionText);
+            expect(stderr).toHaveLength(0);
+        });
+
         it('should not invoke info subcommand', async () => {
             const { stdout, stderr } = await runServe(['--client-log-level', 'info'], testPath);
             expect(stdout).toContain('main.js');
