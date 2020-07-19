@@ -1,16 +1,11 @@
 /* eslint-disable space-before-function-paren */
 'use strict';
 
-const path = require('path');
-const { run } = require('../utils/test-utils');
-
-const runInfo = (args) => {
-    return run(path.resolve(__dirname), ['info'].concat(args), false);
-};
+const { runInfo } = require('../utils/test-utils');
 
 describe('basic info usage', () => {
-    it('gets info without flags', async () => {
-        const { stdout, stderr } = await runInfo([]);
+    it('gets info without flags', () => {
+        const { stdout, stderr } = runInfo([], __dirname);
         // stdout should include many details which will be
         // unique for each computer
         expect(stdout).toContain('System:');
@@ -20,8 +15,8 @@ describe('basic info usage', () => {
         expect(stderr).toHaveLength(0);
     });
 
-    it('gets info as json', async () => {
-        const { stdout, stderr } = await runInfo(['--output="json"']);
+    it('gets info as json', () => {
+        const { stdout, stderr } = runInfo(['--output="json"'], __dirname);
         expect(stdout).toContain('"System":');
         expect(stderr).toHaveLength(0);
 
@@ -36,8 +31,8 @@ describe('basic info usage', () => {
         expect(parse).not.toThrow();
     });
 
-    it('gets info as markdown', async () => {
-        const { stdout, stderr } = await runInfo(['--output="markdown"']);
+    it('gets info as markdown', () => {
+        const { stdout, stderr } = runInfo(['--output="markdown"'], __dirname);
         expect(stdout).toContain('## System:');
         expect(stderr).toHaveLength(0);
     });
