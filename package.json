@@ -126,7 +126,7 @@
     "rimraf": "^3.0.2",
     "ts-jest": "^25.3.0",
     "typescript": "^3.9.5",
-    "webpack": "^5.0.0-beta.20",
+    "webpack": "^4.43.0",
     "yeoman-test": "^2.3.0"
   }
 }
