@@ -3,7 +3,7 @@
 const { run, hyphenToUpperCase } = require('../utils/test-utils');
 const { flagsFromCore } = require('../../packages/webpack-cli/lib/utils/cli-flags');
 
-const outputFlags = flagsFromCore.filter(({ name }) => name.startsWith('output-') && !name.includes('output-library'));
+const outputFlags = flagsFromCore.filter(({ name }) => name.startsWith('output-'));
 
 describe('output config related flag', () => {
     outputFlags.forEach((flag) => {
@@ -11,7 +11,7 @@ describe('output config related flag', () => {
         const property = flag.name.split('output-')[1];
         const propName = hyphenToUpperCase(property);
 
-        if (flag.type === Boolean) {
+        if (flag.type === Boolean && !flag.name.includes('output-library')) {
             it(`should config --${flag.name} correctly`, () => {
                 let { stderr, stdout } = run(__dirname, [`--${flag.name}`]);
 
@@ -52,7 +52,7 @@ describe('output config related flag', () => {
             });
         }
 
-        if (flag.type === String) {
+        if (flag.type === String && !flag.name.includes('output-library')) {
             it(`should config --${flag.name} correctly`, () => {
                 let { stderr, stdout } = run(__dirname, [`--${flag.name}`, 'test']);
 
@@ -88,6 +88,36 @@ describe('output config related flag', () => {
                     expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: 'test'`);
                 }
+            });
+        }
+
+        if (flag.name.includes('output-library')) {
+            it(`should config name, type and export  correctly`, () => {
+                const { stderr, stdout } = run(__dirname, [
+                    '--output-library-name',
+                    'myLibrary',
+                    '--output-library-type',
+                    'var',
+                    '--output-library-export',
+                    'myExport',
+                    '--output-library-auxiliary-comment',
+                    'comment',
+                    '--output-library-umd-named-define',
+                ]);
+
+                expect(stderr).toBeFalsy();
+                expect(stdout).toContain('myLibrary');
+                expect(stdout).toContain(`type: 'var'`);
+                expect(stdout).toContain('export: [Array]');
+                expect(stdout).toContain(`auxiliaryComment: 'comment'`);
+                expect(stdout).toContain('umdNamedDefine: true');
+            });
+
+            it('should be succesful with --output-library-reset correctly', () => {
+                const { stderr, stdout } = run(__dirname, ['--output-library-reset']);
+
+                expect(stderr).toBeFalsy();
+                expect(stdout).toContain('name: []');
             });
         }
     });
