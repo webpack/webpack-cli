@@ -13,7 +13,7 @@ describe('module config related flag', () => {
 
         //TODO: improve webpackCLITestPlugin for testing of nested options
         // i.e, module-rules-* flags, right now it logs rules: [Object] only.
-        if (flag.type === Boolean && !flag.name.includes('rules-')) {
+        if (flag.type === Boolean && !flag.name.includes('rules-') && !flag.name.includes('module-no-parse')) {
             it(`should config --${flag.name} correctly`, () => {
                 const { stderr, stdout } = run(__dirname, [`--${flag.name}`]);
                 expect(stderr).toBeFalsy();
@@ -41,7 +41,11 @@ describe('module config related flag', () => {
             it(`should config --${flag.name} correctly`, () => {
                 const { stderr, stdout } = run(__dirname, [`--${flag.name}`, 'value']);
                 expect(stderr).toBeFalsy();
-                expect(stdout).toContain(`${propName}: 'value'`);
+                if (flag.name === 'module-no-parse') {
+                    expect(stdout).toContain('value');
+                } else {
+                    expect(stdout).toContain(`${propName}: 'value'`);
+                }
             });
         }
     });
