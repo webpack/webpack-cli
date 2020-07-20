@@ -29,7 +29,7 @@
     "ansi-escapes": "^4.3.1",
     "chalk": "^3.0.0",
     "command-line-usage": "^6.1.0",
-    "commander": "^5.0.0",
+    "commander": "^6.0.0",
     "enquirer": "^2.3.4",
     "execa": "^4.0.0",
     "import-local": "^3.0.2",
