@@ -39,10 +39,13 @@ describe('module config related flag', () => {
 
         if (flag.type === String && !flag.name.includes('rules-')) {
             it(`should config --${flag.name} correctly`, () => {
-                const { stderr, stdout } = run(__dirname, [`--${flag.name}`, 'value']);
+                let { stderr, stdout } = run(__dirname, [`--${flag.name}`, 'value']);
                 expect(stderr).toBeFalsy();
                 if (flag.name === 'module-no-parse') {
                     expect(stdout).toContain('value');
+                } else if (flag.name.includes('reg-exp')) {
+                    stdout = run(__dirname, [`--${flag.name}`, '/ab?c*/']).stdout;
+                    expect(stdout).toContain(`${propName}: /ab?c*/`);
                 } else {
                     expect(stdout).toContain(`${propName}: 'value'`);
                 }

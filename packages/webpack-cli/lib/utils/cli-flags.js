@@ -34,11 +34,8 @@ let flagsFromCore =
 
 // duplicate flags
 const duplicateFlags = ['entry', 'mode', 'stats', 'watch', 'target'];
-// regExp Flags
-const regExpFlags = ['module-expr-context-reg-exp', 'module-unknown-context-reg-exp', 'module-wrapped-context-reg-exp'];
-// filter all duplicate, broken and regExp flags
-const flagsToFilter = [...duplicateFlags, ...regExpFlags];
-flagsFromCore = flagsFromCore.filter((flag) => !flagsToFilter.includes(flag.name));
+
+flagsFromCore = flagsFromCore.filter((flag) => !duplicateFlags.includes(flag.name));
 
 module.exports = {
     groups: {
