@@ -15,7 +15,7 @@
     "inquirer": "7.1.0",
     "jscodeshift": "0.7.0",
     "listr": "0.14.3",
-    "lodash": "4.17.15",
+    "lodash": "4.17.19",
     "p-each-series": "2.1.0",
     "p-lazy": "3.0.0"
   },
