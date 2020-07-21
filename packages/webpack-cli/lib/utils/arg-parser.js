@@ -16,6 +16,7 @@ function argParser(options, args, argsOnly = false, name = '', helpFunction = un
     const parser = new commander.Command();
     // Set parser name
     parser.name(name);
+    parser.storeOptionsAsProperties(false);
 
     if (commands) {
         commands.reduce((parserInstance, cmd) => {
