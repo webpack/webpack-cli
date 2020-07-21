@@ -50,8 +50,6 @@ Options
   -s, --sourcemap string   Determine source maps to use
   --prefetch string        Prefetch this request
   -j, --json               Prints result as JSON
-  -d, --dev                Run development build
-  -p, --prod               Run production build
   --mode string            Defines the mode to pass to webpack
   -v, --version            Get current version
   --node-args string[]     NodeJS flags
