@@ -110,13 +110,6 @@ module.exports = {
             description: 'Print compilation progress during build',
         },
         {
-            name: 'silent',
-            usage: '--silent',
-            type: Boolean,
-            group: DISPLAY_GROUP,
-            description: 'Disable any output that webpack makes',
-        },
-        {
             name: 'help',
             usage: '--help',
             type: Boolean,
