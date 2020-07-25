@@ -1,8 +1,9 @@
 import { initGenerator } from '@webpack-cli/generators';
 import { modifyHelperUtil, npmPackagesExists } from '@webpack-cli/utils';
+import options from './options';
+import WebpackCLI from 'webpack-cli';
+import logger from 'webpack-cli/lib/utils/logger';
 
-const AUTO_PREFIX = '--auto';
-const CONFIG_PREFIX = '--force';
 /**
  *
  * First function to be called after running the init flag. This is a check,
@@ -15,11 +16,20 @@ const CONFIG_PREFIX = '--force';
  */
 
 export default function initializeInquirer(...args: string[]): Function | void {
-    const packages = args;
-    const includesDefaultPrefix = packages.includes(AUTO_PREFIX);
-    const generateConfig = packages.includes(CONFIG_PREFIX);
-    if (packages.length === 0 || includesDefaultPrefix || generateConfig) {
+    const cli = new WebpackCLI();
+    const { opts, unknownArgs } = cli.argParser(options, args, true);
+    const { auto: includesDefaultPrefix, force: generateConfig } = opts;
+
+    // Filter out cli-flags from unknownArgs
+    const unknownFlags = unknownArgs.filter((arg) => arg.startsWith('--'));
+
+    if (unknownFlags.length > 0) {
+        logger.warn(`Unknown ${unknownFlags.length === 1 ? 'argument' : 'arguments'}: ${unknownFlags}`);
+        return;
+    }
+
+    if (args.length === 0 || includesDefaultPrefix || generateConfig) {
         return modifyHelperUtil('init', initGenerator, null, null, includesDefaultPrefix, generateConfig);
     }
-    return npmPackagesExists(packages);
+    return npmPackagesExists(args);
 }

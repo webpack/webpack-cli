@@ -15,5 +15,8 @@
     "jscodeshift": "0.7.0",
     "p-each-series": "2.1.0"
   },
-  "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9"
+  "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9",
+  "peerDependencies": {
+    "webpack-cli": "4.x.x"
+  }
 }
