@@ -3,7 +3,6 @@ coverage
 lib
 .travis.yml
 .eslintrc*
-.fitcommitjsrc.json
 .vscode
 .editorconfig
 .eslintignore
