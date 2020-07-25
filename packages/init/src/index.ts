@@ -24,8 +24,8 @@ export default function initializeInquirer(...args: string[]): Function | void {
     const unknownFlags = unknownArgs.filter((arg) => arg.startsWith('--'));
 
     if (unknownFlags.length > 0) {
-        logger.warn(`Unknown ${unknownFlags.length === 1 ? 'argument' : 'arguments'}: ${unknownFlags}`);
-        return;
+        logger.error(`Unknown ${unknownFlags.length === 1 ? 'argument' : 'arguments'}: ${unknownFlags}`);
+        process.exit(2);
     }
 
     if (args.length === 0 || includesDefaultPrefix || generateConfig) {
