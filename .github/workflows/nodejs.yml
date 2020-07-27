@@ -77,7 +77,7 @@ jobs:
       - name: Run tests for webpack version ${{ matrix.webpack-version }}
         run: |
           yarn prepsuite
-          NO_COLOR= yarn test:ci
+          yarn test:ci
         env:
           CI: true
 
