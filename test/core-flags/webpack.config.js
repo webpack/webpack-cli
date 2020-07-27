@@ -4,5 +4,5 @@ module.exports = {
     entry: './main.js',
     mode: 'development',
     name: 'compiler',
-    plugins: [new WebpackCLITestPlugin(['module'])],
+    plugins: [new WebpackCLITestPlugin(['module', 'resolve', 'resolveLoader'])],
 };

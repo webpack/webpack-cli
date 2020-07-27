@@ -14,8 +14,6 @@ describe('module config related flag', () => {
         }
         const propName = hyphenToUpperCase(property);
 
-        //TODO: improve webpackCLITestPlugin for testing of nested options
-        // i.e, module-rules-* flags, right now it logs rules: [Object] only.
         if (flag.type === Boolean && !flag.name.includes('module-no-parse')) {
             it(`should config --${flag.name} correctly`, () => {
                 const { stderr, stdout } = run(__dirname, [`--${flag.name}`]);
