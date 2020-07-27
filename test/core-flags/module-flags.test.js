@@ -63,6 +63,16 @@ describe('module config related flag', () => {
                     } else if (propName === 'enforce') {
                         stdout = run(__dirname, [`--${flag.name}`, 'pre', '--module-rules-use-loader', 'myLoader']).stdout;
                         expect(stdout).toContain(`${propName}: 'pre'`);
+                    } else if (flag.name === 'module-rules-options') {
+                        stdout = run(__dirname, [
+                            `--module-rules-test`,
+                            '/.js$/',
+                            '--module-rules-loader',
+                            'myLoader',
+                            '--module-rules-options',
+                            'presets',
+                        ]).stdout;
+                        expect(stdout).toContain('presets');
                     } else {
                         stdout = run(__dirname, [`--${flag.name}`, '/rules-value']).stdout;
                         expect(stdout).toContain('rules-value');
