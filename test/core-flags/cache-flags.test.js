@@ -1,7 +1,6 @@
 'use strict';
 
 const { run } = require('../utils/test-utils');
-const { resolve } = require('path');
 
 describe('cahche related flags from core', () => {
     it('should be successful with --cache ', () => {
@@ -27,28 +26,16 @@ describe('cahche related flags from core', () => {
 
     it('should set cache.cacheDirectory with --cache-cache-directory', () => {
         const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '--cache-cache-directory', '/test-cache-path']);
-        const path = resolve('/test-cache-path');
 
         expect(stderr).toBeFalsy();
-        if (process.platform === 'win32') {
-            // for windows
-            expect(stdout).toContain('test-cache-path');
-        } else {
-            expect(stdout).toContain(`cacheDirectory: '${path}'`);
-        }
+        expect(stdout).toContain('test-cache-path');
     });
 
     it('should set cache.cacheLocation with --cache-cache-locations', () => {
         const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '--cache-cache-location', '/test-locate-cache']);
-        const path = resolve('/test-locate-cache');
 
         expect(stderr).toBeFalsy();
-        if (process.platform === 'win32') {
-            // for windows
-            expect(stdout).toContain('test-locate-cache');
-        } else {
-            expect(stdout).toContain(`cacheLocation: '${path}'`);
-        }
+        expect(stdout).toContain('test-locate-cache');
     });
 
     it('should set cache.hashAlgorithm with --cache-hash-algorithm', () => {
@@ -62,12 +49,7 @@ describe('cahche related flags from core', () => {
         const { stderr, stdout } = run(__dirname, ['--cache-type', 'memory', '--cache-managed-paths', '/test-manage-path']);
 
         expect(stderr).toBeFalsy();
-        if (process.platform === 'win32') {
-            // for windows
-            expect(stdout).toContain('test-manage-path');
-        } else {
-            expect(stdout).toContain(`managedPaths: [ '/test-manage-path' ]`);
-        }
+        expect(stdout).toContain('test-manage-path');
     });
 
     it('should reset cache.managedPaths with --cache-managed-paths-reset', () => {

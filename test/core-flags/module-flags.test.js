@@ -2,8 +2,8 @@
 
 const { run, hyphenToUpperCase } = require('../utils/test-utils');
 const { flagsFromCore } = require('../../packages/webpack-cli/lib/utils/cli-flags');
-
-const moduleFlags = flagsFromCore.filter(({ name }) => name.startsWith('module-'));
+//--module-rules-options will be exluded for cli.
+const moduleFlags = flagsFromCore.filter(({ name }) => name.startsWith('module-') && name !== 'module-rules-options');
 
 describe('module config related flag', () => {
     moduleFlags.forEach((flag) => {
@@ -61,16 +61,6 @@ describe('module config related flag', () => {
                     } else if (propName === 'enforce') {
                         stdout = run(__dirname, [`--${flag.name}`, 'pre', '--module-rules-use-loader', 'myLoader']).stdout;
                         expect(stdout).toContain(`${propName}: 'pre'`);
-                    } else if (flag.name === 'module-rules-options') {
-                        stdout = run(__dirname, [
-                            `--module-rules-test`,
-                            '/.js$/',
-                            '--module-rules-loader',
-                            'myLoader',
-                            '--module-rules-options',
-                            'presets',
-                        ]).stdout;
-                        expect(stdout).toContain('presets');
                     } else {
                         stdout = run(__dirname, [`--${flag.name}`, '/rules-value']).stdout;
                         expect(stdout).toContain('rules-value');
