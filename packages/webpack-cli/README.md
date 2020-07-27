@@ -205,6 +205,15 @@ yarn add webpack-cli --dev
                                                               cache group.
   --optimization-split-chunks-chunks string                   Select chunks for determining shared modules (defaults to "async", "initial"
                                                               and "all" requires adding these chunks to the HTML).
+
+  --optimization-split-chunks-enforce-size-threshold string                         Size of the javascript part of the chunk.
+  --optimization-split-chunks-fallback-cache-group-automatic-name-delimiter string  Sets the name delimiter for created chunks
+  --optimization-split-chunks-fallback-cache-group-max-async-size number            Size of the javascript part of the chunk
+  --optimization-split-chunks-fallback-cache-group-max-initial-size number          Size of the javascript part of the chunk.
+  --optimization-split-chunks-fallback-cache-group-max-size number                  Size of the javascript part of the chunk.
+  --optimization-split-chunks-fallback-cache-group-min-size number                  Size of the javascript part of the chunk.
+
+  --optimization-split-chunks-automatic-name-delimiter string Sets the name delimiter for created chunks
   --optimization-split-chunks-filename string                 Sets the template for the filename for created chunks.
   --optimization-split-chunks-hide-path-info                  Prevents exposing path info when creating names for parts splitted by
                                                               maxSize.
