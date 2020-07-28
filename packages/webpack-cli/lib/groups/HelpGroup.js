@@ -1,6 +1,7 @@
 const { red, yellow, cyan, bold, underline } = require('colorette');
 const { core, commands } = require('../utils/cli-flags');
 const { defaultCommands } = require('../utils/commands');
+const logger = require('../utils/logger');
 const commandLineUsage = require('command-line-usage');
 
 class HelpGroup {
@@ -21,11 +22,11 @@ class HelpGroup {
             const description = options.description;
             const link = options.link;
 
-            process.stdout.write(`${header('Usage')}: ${usage}\n`);
-            process.stdout.write(`${header('Description')}: ${description}\n`);
+            logger.info(`${header('Usage')}: ${usage}\n`);
+            logger.info(`${header('Description')}: ${description}\n`);
 
             if (link) {
-                process.stdout.write(`${header('Documentation')}: ${link}\n`);
+                logger.info(`${header('Documentation')}: ${link}\n`);
             }
 
             if (options.flags) {
@@ -80,7 +81,6 @@ class HelpGroup {
     }
 
     run() {
-        const o = (s) => yellow(s);
         const options = require('../utils/cli-flags');
         const negatedFlags = options.core
             .filter((flag) => flag.negative)
@@ -91,8 +91,8 @@ class HelpGroup {
         const desc = 'The build tool for modern web applications';
         const websitelink = '         ' + underline('https://webpack.js.org');
 
-        const usage = bold('Usage') + ': ' + '`' + o('webpack [...options] | <command>') + '`';
-        const examples = bold('Example') + ': ' + '`' + o('webpack help --flag | <command>') + '`';
+        const usage = bold('Usage') + ': ' + '`' + yellow('webpack [...options] | <command>') + '`';
+        const examples = bold('Example') + ': ' + '`' + yellow('webpack help --flag | <command>') + '`';
 
         const hh = `          ${title}\n
 		${websitelink}\n
