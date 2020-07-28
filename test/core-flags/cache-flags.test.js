@@ -2,7 +2,7 @@
 
 const { run } = require('../utils/test-utils');
 
-describe('cahche related flags from core', () => {
+describe('cache related flags from core', () => {
     it('should be successful with --cache ', () => {
         const { stderr, stdout } = run(__dirname, ['--cache']);
 
