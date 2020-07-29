@@ -99,7 +99,6 @@ function argParser(options, args, argsOnly = false, name = '', helpFunction = un
     const opts = result.opts();
 
     const unknownArgs = result.args;
-
     args.forEach((arg) => {
         const flagName = arg.slice(5);
         const option = options.find((opt) => opt.name === flagName);

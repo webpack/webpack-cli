@@ -8,7 +8,7 @@ describe('version flag with multiple arguments', () => {
         const { stdout, stderr } = run(__dirname, ['version', 'help'], false);
         expect(stdout).not.toContain(pkgJSON.version);
 
-        const uniqueIdentifier = 'Made with ♥️  by the webpack team';
+        const uniqueIdentifier = '⬡                     webpack                     ⬡';
         expect(stdout).toContain(uniqueIdentifier);
         expect(stderr).toHaveLength(0);
     });
@@ -17,7 +17,7 @@ describe('version flag with multiple arguments', () => {
         const { stdout, stderr } = run(__dirname, ['version', '--help'], false);
         expect(stdout).not.toContain(pkgJSON.version);
 
-        const uniqueIdentifier = 'Made with ♥️  by the webpack team';
+        const uniqueIdentifier = '⬡                     webpack                     ⬡';
         expect(stdout).toContain(uniqueIdentifier);
         expect(stderr).toHaveLength(0);
     });

@@ -4,7 +4,6 @@ const logger = require('./utils/logger');
 const cliExecuter = require('./utils/cli-executer');
 const argParser = require('./utils/arg-parser');
 require('./utils/process-log');
-
 process.title = 'webpack-cli';
 
 const isCommandUsed = (commands) =>
