@@ -273,5 +273,5 @@ module.exports = {
 			group: BASIC_GROUP
 		} */
     ],
-    flagsFromCore: [...flagsFromCore],
+    flagsFromCore: ...flagsFromCore,
 };
