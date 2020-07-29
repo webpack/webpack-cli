@@ -21,3 +21,6 @@ npm i -D webpack-cli @webpack-cli/serve
 ```bash
 npx webpack-cli serve
 ```
+
+[downloads]: https://img.shields.io/npm/dm/@webpack-cli/serve.svg
+[downloads-url]: https://www.npmjs.com/package/@webpack-cli/serve
