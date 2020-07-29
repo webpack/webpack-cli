@@ -27,15 +27,15 @@ class Compiler {
                         process.stdout.write(' (');
                         for (let i = 0; i <= 100; i += 10) {
                             if (i <= percent) {
-                                process.stdout.write(greenBright('#'));
+                                logger.info(greenBright('#'));
                             } else {
-                                process.stdout.write('#');
+                                logger.info('#');
                             }
                         }
-                        process.stdout.write(`) ${percent}% : `);
-                        process.stdout.write(`${cyanBright(msg)}`);
+                        logger.info(`) ${percent}% : `);
+                        logger.info(`${cyanBright(msg)}`);
                         if (percent === 100) {
-                            process.stdout.write(`${cyanBright('Compilation completed\n')}`);
+                            logger.info(`${cyanBright('Compilation completed\n')}`);
                         }
                     }
                 };
