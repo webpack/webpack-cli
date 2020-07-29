@@ -2,7 +2,7 @@
 
 const { run, hyphenToUpperCase } = require('../utils/test-utils');
 const { flagsFromCore } = require('../../packages/webpack-cli/lib/utils/cli-flags');
-//--module-rules-options will be exluded for cli.
+//--module-rules-options will be excluded for cli.
 const moduleFlags = flagsFromCore.filter(({ name }) => name.startsWith('module-') && name !== 'module-rules-options');
 
 describe('module config related flag', () => {
