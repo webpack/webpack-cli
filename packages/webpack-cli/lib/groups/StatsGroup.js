@@ -32,6 +32,7 @@ class StatsGroup extends GroupHelper {
     }
 
     run() {
+        console.log(this.args);
         this.resolveOptions();
         return this.opts;
     }

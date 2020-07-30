@@ -6,5 +6,5 @@ module.exports = {
     flags: [...flagNames],
     allNames: [...commandNames, ...flagNames],
     hasUnknownArgs: (args, ...names) =>
-        args.filter((e) => !names.includes(e) && !e.includes('--color') && e !== 'version' && e !== '-v' && !e.includes('help')),
+        args.filter((e) => !names.includes(e) && !e.includes('color') && e !== 'version' && e !== '-v' && !e.includes('help')),
 };

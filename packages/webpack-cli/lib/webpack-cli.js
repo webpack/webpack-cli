@@ -1,3 +1,4 @@
+const { options } = require('colorette');
 const GroupHelper = require('./utils/GroupHelper');
 const { Compiler } = require('./utils/Compiler');
 const { groups, core } = require('./utils/cli-flags');
@@ -282,6 +283,7 @@ class WebpackCLI extends GroupHelper {
         })[0];
         const invalidArgs = hasUnknownArgs(args.slice(2), ...allNames);
         const isCommand = commands.includes(subject);
+        options.enabled = !args.includes('--no-color');
         return new HelpGroup().outputHelp(isCommand, subject, invalidArgs);
     }
 
@@ -290,6 +292,7 @@ class WebpackCLI extends GroupHelper {
         const { commands, allNames, hasUnknownArgs } = require('./utils/unknown-args');
         const commandsUsed = args.filter((val) => commands.includes(val));
         const invalidArgs = hasUnknownArgs(args.slice(2), ...allNames);
+        options.enabled = !args.includes('--no-color');
         return new HelpGroup().outputVersion(externalPkg, commandsUsed, invalidArgs);
     }
 }
