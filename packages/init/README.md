@@ -42,6 +42,12 @@ npx webpack-cli init
 npx webpack-cli init --auto
 ```
 
+**To force config generation**
+
+```bash
+npx webpack-cli init --force
+```
+
 **Via custom scaffold**
 
 1. Using package on `npm`
