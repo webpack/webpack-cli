@@ -245,6 +245,15 @@ module.exports = {
             description: 'NodeJS flags',
         },
         {
+            name: 'stats',
+            usage: '--stats <value>',
+            type: [String, Boolean],
+            group: DISPLAY_GROUP,
+            negative: true,
+            description: 'It instructs webpack on how to treat the stats e.g. verbose',
+            link: 'https://webpack.js.org/configuration/stats/#stats',
+        },
+        {
             name: 'env',
             usage: '--env',
             type: String,
