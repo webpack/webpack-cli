@@ -1,4 +1,4 @@
-const chalk = require('chalk');
+const { gray, bold, white, cyan, yellow } = require('colorette');
 const webpack = require('./Compiler');
 const ansiEscapes = require('ansi-escapes');
 const readline = require('readline');
@@ -6,12 +6,12 @@ const readline = require('readline');
 let isSub = false;
 const generateSingleOption = (option) => {
     const { key, description } = option;
-    const optionString = chalk.gray('> Press') + ` ${chalk.bold.white(key)} ` + chalk.gray(`${description}\n`);
+    const optionString = gray('> Press') + ` ${bold(white(key))} ` + gray(`${description}\n`);
     return optionString;
 };
 const generateConfigDescription = (config) => {
     let configDescString = '\n';
-    const headerString = chalk.bold.white('Interactive Usage');
+    const headerString = bold(white('Interactive Usage'));
     configDescString += headerString;
     configDescString += '\n';
     Object.keys(config).forEach((option) => {
@@ -48,12 +48,11 @@ const writeFilterConsole = () => {
             data.push({ [name]: chunksArr });
         }
         console.clear();
-        const orangeline = chalk.keyword('orange');
         data.forEach((chunk) => {
             Object.keys(chunk).forEach((mod) => {
-                console.log(chalk.bold.cyan(mod));
+                console.log(bold(cyan(mod)));
                 chunk[mod].forEach((sub) => {
-                    console.log('> ', orangeline(sub.path));
+                    console.log('> ', yellow(sub.path));
                 });
             });
         });

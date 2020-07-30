@@ -125,6 +125,15 @@ module.exports = {
             link: 'https://webpack.js.org/configuration/',
         },
         {
+            name: 'color',
+            usage: '--color',
+            type: Boolean,
+            group: DISPLAY_GROUP,
+            negative: true,
+            defaultValue: true,
+            description: 'Enable/Disable colors on console',
+        },
+        {
             name: 'merge',
             usage: '--merge <path to configuration to be merged>',
             alias: 'm',

@@ -1,4 +1,4 @@
-const chalk = require('chalk');
+const { red, yellow, cyan, bold, underline } = require('colorette');
 const { core, commands } = require('../utils/cli-flags');
 const { defaultCommands } = require('../utils/commands');
 const commandLineUsage = require('command-line-usage');
@@ -15,10 +15,9 @@ class HelpGroup {
                 return commandOrFlag.name === subject.slice(2) || commandOrFlag.alias === subject.slice(1);
             });
 
-            const { bold, underline } = chalk.white;
             const header = (head) => bold(underline(head));
             const flagAlias = options.alias ? (isCommand ? ` ${options.alias} |` : ` -${options.alias},`) : '';
-            const usage = chalk.keyword('orange')(`webpack${flagAlias} ${options.usage}`);
+            const usage = yellow(`webpack${flagAlias} ${options.usage}`);
             const description = options.description;
             const link = options.link;
 
@@ -38,7 +37,7 @@ class HelpGroup {
             }
         } else if (invalidArgs.length > 0) {
             const argType = invalidArgs[0].startsWith('-') ? 'option' : 'command';
-            console.warn(chalk.yellow(`\nYou provided an invalid ${argType} '${invalidArgs[0]}'.`));
+            console.warn(yellow(`\nYou provided an invalid ${argType} '${invalidArgs[0]}'.`));
             process.stdout.write(this.run().outputOptions.help);
         } else {
             process.stdout.write(this.run().outputOptions.help);
@@ -57,20 +56,20 @@ class HelpGroup {
                     process.stdout.write(`\n${name} ${version}`);
                 }
             } catch (e) {
-                console.error(chalk.red('\nError: External package not found.'));
+                console.error(red('\nError: External package not found.'));
                 process.exitCode = -1;
             }
         }
 
         if (commandsUsed.length > 1) {
-            console.error(chalk.red('\nYou provided multiple commands. Please use only one command at a time.\n'));
+            console.error(red('\nYou provided multiple commands. Please use only one command at a time.\n'));
             process.exit();
         }
 
         if (invalidArgs.length > 0) {
             const argType = invalidArgs[0].startsWith('-') ? 'option' : 'command';
-            console.error(chalk.red(`\nError: Invalid ${argType} '${invalidArgs[0]}'.`));
-            console.info(chalk.cyan('Run webpack --help to see available commands and arguments.\n'));
+            console.error(red(`\nError: Invalid ${argType} '${invalidArgs[0]}'.`));
+            console.info(cyan('Run webpack --help to see available commands and arguments.\n'));
             process.exit(-2);
         }
 
@@ -81,8 +80,7 @@ class HelpGroup {
     }
 
     run() {
-        const { underline, bold } = chalk.white;
-        const o = (s) => chalk.keyword('orange')(s);
+        const o = (s) => yellow(s);
         const options = require('../utils/cli-flags');
         const negatedFlags = options.core
             .filter((flag) => flag.negative)

@@ -1,4 +1,4 @@
-import chalk = require('chalk');
+import { red, bold } from 'colorette';
 import path from 'path';
 import { modifyHelperUtil } from './modify-config-helper';
 import { getPathToGlobalPackages, spawnChild } from '@webpack-cli/package-utils';
@@ -59,7 +59,7 @@ export function resolvePackages(pkg: string[]): Function | void {
             } catch (err) {
                 console.error(`Cannot find a generator at ${absolutePath}.`);
                 console.error('\nReason:\n');
-                console.error(chalk.bold.red(err));
+                console.error(bold(red(err)));
                 process.exitCode = 1;
             }
 
@@ -77,14 +77,14 @@ export function resolvePackages(pkg: string[]): Function | void {
                     console.error("Package wasn't validated correctly..");
                     console.error('Submit an issue for', pkg, 'if this persists');
                     console.error('\nReason: \n');
-                    console.error(chalk.bold.red(err));
+                    console.error(bold(red(err)));
                     process.exitCode = 1;
                 }
             })
             .catch((err: string): void => {
                 console.error("Package couldn't be installed, aborting..");
                 console.error('\nReason: \n');
-                console.error(chalk.bold.red(err));
+                console.error(bold(red(err)));
                 process.exitCode = 1;
             })
             .then(invokeGeneratorIfReady);
