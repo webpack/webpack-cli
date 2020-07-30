@@ -217,7 +217,7 @@ module.exports = {
             type: Boolean,
             alias: 'j',
             description: 'Prints result as JSON',
-            group: BASIC_GROUP,
+            group: DISPLAY_GROUP,
         },
         {
             name: 'mode',
