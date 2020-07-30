@@ -128,7 +128,7 @@ module.exports = {
             name: 'color',
             usage: '--color',
             type: Boolean,
-            group: HELP_GROUP,
+            group: DISPLAY_GROUP,
             negative: true,
             defaultValue: true,
             description: 'Enable/Disable colors on console',
