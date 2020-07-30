@@ -32,7 +32,7 @@ describe('stats flag', () => {
     it('should warn when an unknown flag stats value is passed', () => {
         const { stderr, stdout } = run(__dirname, ['--stats', 'foo']);
         expect(stderr).toBeTruthy();
-        expect(stderr).toContain('invalid value for stats');
+        expect(stderr).toContain('WebpackOptionsValidationError');
         expect(stdout).toBeTruthy();
     });
 });
