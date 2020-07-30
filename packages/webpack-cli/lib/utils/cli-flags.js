@@ -217,7 +217,7 @@ module.exports = {
             type: Boolean,
             alias: 'j',
             description: 'Prints result as JSON',
-            group: DISPLAY_GROUP,
+            group: BASIC_GROUP,
         },
         {
             name: 'mode',
@@ -243,22 +243,6 @@ module.exports = {
             multiple: true,
             group: BASIC_GROUP,
             description: 'NodeJS flags',
-        },
-        {
-            name: 'stats',
-            usage: '--stats <value>',
-            type: [String, Boolean],
-            group: DISPLAY_GROUP,
-            negative: true,
-            description: 'It instructs webpack on how to treat the stats e.g. verbose',
-            link: 'https://webpack.js.org/configuration/stats/#stats',
-        },
-        {
-            name: 'verbose',
-            usage: '--verbose',
-            type: Boolean,
-            group: DISPLAY_GROUP,
-            description: 'It tells webpack to output all the information',
         },
         {
             name: 'env',

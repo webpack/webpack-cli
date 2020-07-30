@@ -13,20 +13,14 @@ class StatsGroup extends GroupHelper {
     }
 
     resolveOptions() {
-        if (this.args.verbose && this.args.stats) {
-            logger.warn('Conflict between "verbose" and "stats" options. Using verbose.');
-            this.opts.options.stats = 'verbose';
+        const { stats, json } = this.args;
+        if (stats && !StatsGroup.validOptions().includes(stats)) {
+            logger.warn(`'${stats}' is invalid value for stats. Using 'normal' option for stats`);
+            this.opts.options.stats = 'normal';
         } else {
-            if (this.args.verbose) {
-                this.opts.options.stats = 'verbose';
-            } else if (this.args.stats && !StatsGroup.validOptions().includes(this.args.stats)) {
-                logger.warn(`'${this.args.stats}' is invalid value for stats. Using 'normal' option for stats`);
-                this.opts.options.stats = 'normal';
-            } else {
-                this.opts.options.stats = this.args.stats;
-            }
+            this.opts.options.stats = stats;
         }
-        if (this.args.json) {
+        if (json) {
             this.opts.outputOptions.json = true;
         }
     }
