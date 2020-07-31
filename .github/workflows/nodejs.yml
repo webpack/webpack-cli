@@ -9,6 +9,7 @@ on:
     branches:
       - master
       - next
+  workflow_dispatch:
 
 jobs:
   lint:
