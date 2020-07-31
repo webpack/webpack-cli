@@ -1,6 +1,6 @@
 'use strict';
 
-const chalk = require('chalk');
+const { yellow, options } = require('colorette');
 const path = require('path');
 const getPort = require('get-port');
 const { runServe } = require('../../utils/test-utils');
@@ -27,12 +27,10 @@ describe('basic serve usage', () => {
             console.warn('TODO: fix `serve` test on windows');
         });
     } else {
-        it('should respect the --color=false flag', async () => {
-            const { stdout, stderr } = await runServe(['help', '--color=false'], __dirname);
-            chalk.enabled = true;
-            chalk.level = 3;
-            const orange = chalk.keyword('orange');
-            expect(stdout).not.toContain(orange(usageText));
+        it('should respect the --no-color flag', async () => {
+            const { stdout, stderr } = await runServe(['--help', '--no-color'], __dirname);
+            options.enabled = true;
+            expect(stdout).not.toContain(yellow(usageText));
             expect(stdout).toContain(descriptionText);
             expect(stderr).toHaveLength(0);
         });
