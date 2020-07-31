@@ -23,7 +23,7 @@ describe('function configuration', () => {
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
         // check that the verbose env is respected
-        expect(stdout).toContain('LOG from webpack.buildChunkGraph.visitModules');
+        expect(stdout).toContain('LOG from webpack');
         // check if the values from DefinePlugin make it to the compiled code
         readFile(resolve(__dirname, './bin/dev.js'), 'utf-8', (err, data) => {
             expect(err).toBe(null);

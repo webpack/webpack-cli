@@ -1,7 +1,6 @@
 const { DefinePlugin } = require('webpack');
 
 module.exports = (env) => {
-    console.log({ env });
     if (env.isProd) {
         return {
             entry: './a.js',
