@@ -18,4 +18,12 @@ describe('function configuration', () => {
         // Should generate the appropriate files
         expect(existsSync(resolve(__dirname, './bin/dev.js'))).toBeTruthy();
     });
+    it('is able to understand multiple env flags', () => {
+        const { stderr, stdout } = run(__dirname, ['--env', 'isDev', '--env', 'verboseStats']);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toBeTruthy();
+        expect(stdout).toContain('LOG from webpack.buildChunkGraph.visitModules');
+        // Should generate the appropriate files
+        expect(existsSync(resolve(__dirname, './bin/dev.js'))).toBeTruthy();
+    });
 });

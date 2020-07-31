@@ -10,6 +10,7 @@ module.exports = (env) => {
     return {
         entry: './a.js',
         mode: 'development',
+        stats: env.verboseStats ? 'verbose' : 'normal',
         output: {
             filename: 'dev.js',
         },
