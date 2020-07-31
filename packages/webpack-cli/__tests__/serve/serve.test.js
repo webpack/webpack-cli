@@ -3,7 +3,7 @@ const path = require('path');
 
 describe('Serve', () => {
     it('should run with cli', () => {
-        const { stdout, stderr } = spawnSync(path.resolve(__dirname, '../bin/cli.js'), ['serve'], {
+        const { stdout, stderr } = spawnSync(path.resolve(__dirname, '../../bin/cli.js'), ['serve'], {
             cwd: path.resolve(__dirname),
             reject: false,
         });
@@ -13,7 +13,7 @@ describe('Serve', () => {
     });
 
     it('should work with flags', () => {
-        const { stdout, stderr } = spawnSync(path.resolve(__dirname, '../bin/cli.js'), ['serve', '--hot'], {
+        const { stdout, stderr } = spawnSync(path.resolve(__dirname, '../../bin/cli.js'), ['serve', '--hot'], {
             cwd: path.resolve(__dirname),
             reject: false,
         });
