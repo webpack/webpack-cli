@@ -9,7 +9,7 @@ class StatsGroup extends GroupHelper {
 
     resolveOptions() {
         const { stats, json } = this.args;
-        if (typeof stats !== undefined) {
+        if (stats !== undefined) {
             this.opts.options.stats = stats;
         }
         if (json) {
