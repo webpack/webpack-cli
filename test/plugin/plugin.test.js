@@ -24,7 +24,7 @@ describe('plugin command', () => {
     });
 
     it('should scaffold plugin template with a given name', async () => {
-        const { stdout } = await runPromptWithAnswers(__dirname, ['plugin'], [`${pluginName}${ENTER}`]);
+        let { stdout } = await runPromptWithAnswers(__dirname, ['plugin'], [`${pluginName}${ENTER}`]);
 
         expect(stdout).toContain(firstPrompt);
 
@@ -42,5 +42,9 @@ describe('plugin command', () => {
         files.forEach((file) => {
             expect(existsSync(join(__dirname, `${pluginName}/${file}`))).toBeTruthy();
         });
+
+        //check if the the generated plugin works successfully
+        stdout = run(__dirname, ['--config', './examples/simple/webpack.config.js'], false).stdout;
+        expect(stdout).toContain('Hello World!');
     });
 });
