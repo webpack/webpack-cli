@@ -10,6 +10,9 @@ on:
       - master
       - next
   workflow_dispatch:
+    inputs:
+      tags:
+        description: 'Test description'
 
 jobs:
   lint:
