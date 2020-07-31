@@ -1,5 +1,5 @@
 'use strict';
-const { stat } = require('fs');
+const { existsSync } = require('fs');
 const { resolve } = require('path');
 const { run } = require('../../../utils/test-utils');
 
@@ -9,19 +9,13 @@ describe('function configuration', () => {
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
         // Should generate the appropriate files
-        stat(resolve(__dirname, './bin/prod.js'), (err, stats) => {
-            expect(err).toBe(null);
-            expect(stats.isFile()).toBe(true);
-        });
+        expect(existsSync(resolve(__dirname, './bin/prod.js'))).toBeTruthy();
     });
     it('is able to understand a configuration file as a function', () => {
         const { stderr, stdout } = run(__dirname, ['--env', 'isDev']);
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
         // Should generate the appropriate files
-        stat(resolve(__dirname, './bin/dev.js'), (err, stats) => {
-            expect(err).toBe(null);
-            expect(stats.isFile()).toBe(true);
-        });
+        expect(existsSync(resolve(__dirname, './bin/dev.js'))).toBeTruthy();
     });
 });

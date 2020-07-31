@@ -1,5 +1,5 @@
 module.exports = (env) => {
-    if (env === 'isProd') {
+    if (env.isProd) {
         return {
             entry: './a.js',
             output: {
