@@ -44,7 +44,7 @@ describe('plugin command', () => {
         });
 
         //check if the the generated plugin works successfully
-        stdout = run(__dirname, ['--config', './examples/simple/webpack.config.js'], false).stdout;
+        stdout = run(__dirname, ['--config', './test-plugin/examples/simple/webpack.config.js'], false).stdout;
         expect(stdout).toContain('Hello World!');
     });
 });
