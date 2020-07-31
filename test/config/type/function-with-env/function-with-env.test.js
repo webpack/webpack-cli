@@ -1,5 +1,5 @@
 'use strict';
-const { existsSync } = require('fs');
+const { existsSync, readFile } = require('fs');
 const { resolve } = require('path');
 const { run } = require('../../../utils/test-utils');
 
@@ -18,12 +18,17 @@ describe('function configuration', () => {
         // Should generate the appropriate files
         expect(existsSync(resolve(__dirname, './bin/dev.js'))).toBeTruthy();
     });
-    it('is able to understand multiple env flags', () => {
-        const { stderr, stdout } = run(__dirname, ['--env', 'isDev', '--env', 'verboseStats']);
+    it('is able to understand multiple env flags', (done) => {
+        const { stderr, stdout } = run(__dirname, ['--env', 'isDev', '--env', 'verboseStats', '--env', 'envMessage']);
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
+        // check that the verbose env is respected
         expect(stdout).toContain('LOG from webpack.buildChunkGraph.visitModules');
-        // Should generate the appropriate files
-        expect(existsSync(resolve(__dirname, './bin/dev.js'))).toBeTruthy();
+        // check if the values from DefinePlugin make it to the compiled code
+        readFile(resolve(__dirname, './bin/dev.js'), 'utf-8', (err, data) => {
+            expect(err).toBe(null);
+            expect(data).toContain('env message present');
+            done();
+        });
     });
 });
