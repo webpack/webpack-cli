@@ -196,6 +196,16 @@ describe('arg-parser', () => {
         expect(warnMock.mock.calls.length).toEqual(0);
     });
 
+    it('handles multiple args with space separated values i.e, --multi-flag a.js b.js', () => {
+        const res = argParser(basicOptions, ['--multi-flag', 'a.js', 'b.js'], true);
+        expect(res.unknownArgs.length).toEqual(0);
+        expect(res.opts).toEqual({
+            multiFlag: ['a.js', 'b.js'],
+            stringFlagWithDefault: 'default-value',
+        });
+        expect(warnMock.mock.calls.length).toEqual(0);
+    });
+
     it('handles additional node args from argv', () => {
         const res = argParser(basicOptions, ['node', 'index.js', '--bool-flag', '--string-flag', 'val'], false);
         expect(res.unknownArgs.length).toEqual(0);
