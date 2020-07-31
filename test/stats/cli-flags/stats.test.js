@@ -29,17 +29,11 @@ describe('stats flag', () => {
         }
     });
 
-    it('should warn when --verbose & --stats are passed together', () => {
-        const { stderr, stdout } = run(__dirname, ['--verbose', '--stats', 'normal']);
-        expect(stderr).toBeTruthy();
-        expect(stderr).toContain('Conflict between "verbose" and "stats" options');
-        expect(stdout).toBeTruthy();
-    });
-
     it('should warn when an unknown flag stats value is passed', () => {
         const { stderr, stdout } = run(__dirname, ['--stats', 'foo']);
         expect(stderr).toBeTruthy();
-        expect(stderr).toContain('invalid value for stats');
+        expect(stderr).toContain('* configuration.stats should be one of these:');
+        expect(stderr).toContain('"none" | "errors-only" | "minimal" | "normal" | "detailed" | "verbose" | "errors-warnings"');
         expect(stdout).toBeTruthy();
     });
 });

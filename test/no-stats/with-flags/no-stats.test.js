@@ -37,15 +37,4 @@ describe('stats flag', () => {
             expect(stdout).toContain(`stats: 'verbose'`);
         }
     });
-
-    it('should use --verbose over --no-stats', () => {
-        const { stderr, stdout } = run(__dirname, ['--no-stats', '--verbose']);
-
-        expect(stderr).toBeFalsy();
-        if (version.startsWith('5')) {
-            expect(stdout).toContain(`stats: { preset: 'verbose' }`);
-        } else {
-            expect(stdout).toContain(`stats: 'verbose'`);
-        }
-    });
 });

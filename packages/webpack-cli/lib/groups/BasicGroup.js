@@ -41,9 +41,6 @@ class BasicGroup extends GroupHelper {
                 }
             }
         });
-        if (outputOptions['dev']) {
-            outputOptions['prod'] = undefined;
-        }
     }
 
     run() {

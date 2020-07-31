@@ -254,13 +254,6 @@ module.exports = {
             link: 'https://webpack.js.org/configuration/stats/#stats',
         },
         {
-            name: 'verbose',
-            usage: '--verbose',
-            type: Boolean,
-            group: DISPLAY_GROUP,
-            description: 'It tells webpack to output all the information',
-        },
-        {
             name: 'env',
             usage: '--env',
             type: String,
