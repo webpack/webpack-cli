@@ -28,7 +28,7 @@ describe('loader command', () => {
     });
 
     it('should scaffold loader template with a given name', async () => {
-        const { stdout } = await runPromptWithAnswers(__dirname, ['loader'], [`${loaderName}${ENTER}`]);
+        let { stdout } = await runPromptWithAnswers(__dirname, ['loader'], [`${loaderName}${ENTER}`]);
 
         expect(stdout).toContain(firstPrompt);
 
@@ -46,5 +46,10 @@ describe('loader command', () => {
         files.forEach((file) => {
             expect(existsSync(join(__dirname, `${loaderName}/${file}`))).toBeTruthy();
         });
+
+        //check if the the generated plugin works successfully
+        const path = resolve(__dirname, './test-loader/examples/simple/');
+        stdout = run(path, [], false).stdout;
+        expect(stdout).toContain('test-loader');
     });
 });
