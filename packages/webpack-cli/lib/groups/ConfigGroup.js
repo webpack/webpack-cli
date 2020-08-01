@@ -83,6 +83,7 @@ class ConfigGroup extends GroupHelper {
     }
 
     async finalize(moduleObj) {
+        const { argv } = this.args;
         const newOptionsObject = {
             outputOptions: {},
             options: {},
@@ -103,7 +104,7 @@ class ConfigGroup extends GroupHelper {
                     return envObject;
                 }, {});
             }
-            const newOptions = configOptions(formattedEnv);
+            const newOptions = configOptions(formattedEnv, argv);
             // When config function returns a promise, resolve it, if not it's resolved by default
             newOptionsObject['options'] = await Promise.resolve(newOptions);
         } else {
@@ -131,7 +132,6 @@ class ConfigGroup extends GroupHelper {
 
     async resolveConfigFiles() {
         const { config, mode } = this.args;
-
         if (config) {
             const configPath = resolve(process.cwd(), config);
             const configFiles = getConfigInfoFromFileName(configPath);
