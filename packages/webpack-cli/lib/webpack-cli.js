@@ -82,7 +82,7 @@ class WebpackCLI extends GroupHelper {
      *
      * @returns {void}
      */
-    resolveGroups() {
+    resolveGroups(parsedArgs) {
         let mode;
         // determine the passed mode for ConfigGroup
         if (this.groupMap.has(groups.ZERO_CONFIG_GROUP)) {
@@ -108,7 +108,7 @@ class WebpackCLI extends GroupHelper {
                 }
                 case groups.CONFIG_GROUP: {
                     const ConfigGroup = require('./groups/ConfigGroup');
-                    this.configGroup = new ConfigGroup([...value, { mode }]);
+                    this.configGroup = new ConfigGroup([...value, { mode }, { argv: parsedArgs }]);
                     break;
                 }
                 case groups.DISPLAY_GROUP: {
@@ -253,7 +253,7 @@ class WebpackCLI extends GroupHelper {
 
     async processArgs(args, cliOptions) {
         this.setMappedGroups(args, cliOptions);
-        this.resolveGroups();
+        this.resolveGroups(args);
         const groupResult = await this.runOptionGroups();
         return groupResult;
     }
