@@ -195,7 +195,7 @@ module.exports = {
         },
         {
             name: 'devtool',
-            usage: '--devtool <source-map | eval>',
+            usage: '--devtool <value>',
             type: String,
             alias: 's',
             defaultValue: undefined,
