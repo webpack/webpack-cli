@@ -28,7 +28,7 @@ describe('loader generator', () => {
         // Check the contents of the webpack config and loader file
         assert.fileContent([
             [join(loaderDir, 'examples/simple/webpack.config.js'), /resolveLoader: {/],
-            [join(loaderDir, 'src/index.js'), /export default function loader\(source\) {/],
+            [join(loaderDir, 'src/index.js'), /module.exports = function loader\(source\) {/],
             [join(loaderDir, 'package.json'), new RegExp(loaderName)],
         ]);
 
