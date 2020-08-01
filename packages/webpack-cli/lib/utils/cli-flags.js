@@ -257,6 +257,7 @@ module.exports = {
             name: 'env',
             usage: '--env',
             type: String,
+            multiple: true,
             group: CONFIG_GROUP,
             description: 'Environment passed to the configuration when it is a function',
         },

@@ -1,5 +1,7 @@
+const { DefinePlugin } = require('webpack');
+
 module.exports = (env) => {
-    if (env === 'isProd') {
+    if (env.isProd) {
         return {
             entry: './a.js',
             output: {
@@ -10,6 +12,8 @@ module.exports = (env) => {
     return {
         entry: './a.js',
         mode: 'development',
+        stats: env.verboseStats ? 'verbose' : 'normal',
+        plugins: [new DefinePlugin({ envMessage: env.envMessage ? JSON.stringify('env message present') : false })],
         output: {
             filename: 'dev.js',
         },
