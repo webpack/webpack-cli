@@ -1,4 +1,5 @@
 module.exports = (env, argv) => {
+    console.log({ argv });
     const { mode } = argv;
     return {
         entry: './a.js',

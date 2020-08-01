@@ -5,10 +5,11 @@ const { run } = require('../../../utils/test-utils');
 
 describe('function configuration', () => {
     it('is able to understand a configuration file as a function', () => {
-        const { stderr, stdout } = run(__dirname, ['--mode', 'development']);
+        const { stderr, stdout } = run(__dirname, ['--mode', 'development'], false);
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
+        expect(stdout).toContain("argv: { config: null, color: true, mode: 'development' }");
         // Should generate the appropriate files
-        expect(existsSync(resolve(__dirname, './bin/dev.js'))).toBeTruthy();
+        expect(existsSync(resolve(__dirname, './dist/dev.js'))).toBeTruthy();
     });
 });
