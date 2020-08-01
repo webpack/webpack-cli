@@ -30,9 +30,8 @@ class BasicGroup extends GroupHelper {
             // const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
             // this.opts.options.plugins = [new BundleAnalyzerPlugin()];
             // }
-            if (arg === 'sourcemap') {
-                options.devtool = args[arg] || 'eval';
-                outputOptions.devtool = args[arg];
+            if (arg === 'devtool') {
+                options.devtool = args[arg];
             }
             if (arg === 'entry') {
                 options[arg] = this.resolveFilePath(args[arg], 'index.js');
