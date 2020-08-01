@@ -49,7 +49,7 @@ yarn add webpack-cli --dev
   -w, --watch              Watch for files changes
   -h, --hot                Enables Hot Module Replacement
   --no-hot                 Disables Hot Module Replacement
-  -s, --sourcemap string   Determine source maps to use
+  -d, --devtool string     Controls if and how source maps are generated.
   --prefetch string        Prefetch this request
   -j, --json               Prints result as JSON
   --mode string            Defines the mode to pass to webpack

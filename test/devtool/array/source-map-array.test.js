@@ -14,7 +14,7 @@ describe('source-map object', () => {
         });
     });
     it('should override entire array on flag', (done) => {
-        const { stderr } = run(__dirname, ['--sourcemap', 'source-map', '--output', './binary'], false);
+        const { stderr } = run(__dirname, ['--devtool', 'source-map', '--output', './binary'], false);
         expect(stderr).toBe('');
         readdir(resolve(__dirname, 'binary'), (err, files) => {
             expect(err).toBe(null);

@@ -33,7 +33,7 @@ let flagsFromCore =
         : [];
 
 // duplicate flags
-const duplicateFlags = ['entry', 'mode', 'stats', 'watch', 'target'];
+const duplicateFlags = ['entry', 'mode', 'stats', 'watch', 'target', 'devtool'];
 
 flagsFromCore = flagsFromCore.filter((flag) => !duplicateFlags.includes(flag.name));
 
@@ -194,10 +194,10 @@ module.exports = {
             link: 'https://webpack.js.org/concepts/hot-module-replacement/',
         },
         {
-            name: 'sourcemap',
-            usage: '--sourcemap <sourcemap | eval>',
+            name: 'devtool',
+            usage: '--devtool <value>',
             type: String,
-            alias: 's',
+            alias: 'd',
             defaultValue: undefined,
             group: BASIC_GROUP,
             description: 'Determine source maps to use',
