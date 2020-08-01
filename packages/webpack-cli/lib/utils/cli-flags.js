@@ -197,7 +197,7 @@ module.exports = {
             name: 'devtool',
             usage: '--devtool <value>',
             type: String,
-            alias: 's',
+            alias: 'd',
             defaultValue: undefined,
             group: BASIC_GROUP,
             description: 'Determine source maps to use',
