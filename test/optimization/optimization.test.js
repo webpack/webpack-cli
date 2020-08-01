@@ -4,7 +4,7 @@ const { version } = require('webpack');
 const { run } = require('../utils/test-utils');
 
 describe('optimization option in config', () => {
-    it('Should work with mangaleExport disabled', () => {
+    it('should work with mangleExports disabled', () => {
         const { stdout, stderr } = run(__dirname, [], false);
         // Should throw when webpack is less than 5
         if (!version.startsWith('5')) {
