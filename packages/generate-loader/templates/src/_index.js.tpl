@@ -3,9 +3,9 @@
  * https://webpack.js.org/contribute/writing-a-loader
  */
 
-export default function loader(source) {
+module.exports = function loader(source) {
 	const { loaders, resource, request, version, webpack } = this;
-
+	console.log('<%= name %>');
 	const newSource = `
 	/**
 	 * <%= name %>

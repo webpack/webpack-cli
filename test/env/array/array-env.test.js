@@ -19,14 +19,4 @@ describe('env array', () => {
         expect(devScript.stdout).toBe('environment is development');
         expect(prodScript.stdout).toBe('environment is production');
     });
-
-    it('is able to compile successfully with prod flag', () => {
-        run(__dirname, ['--prod']);
-
-        const devScript = spawnSync('node', [devFile]);
-        const prodScript = spawnSync('node', [prodFile]);
-
-        expect(devScript.stderr).toBe('');
-        expect(prodScript.stderr).toBe('');
-    });
 });

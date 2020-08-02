@@ -1,10 +1,10 @@
+const { options } = require('colorette');
 const WebpackCLI = require('./webpack-cli');
 const { core, commands } = require('./utils/cli-flags');
 const logger = require('./utils/logger');
 const cliExecuter = require('./utils/cli-executer');
 const argParser = require('./utils/arg-parser');
 require('./utils/process-log');
-
 process.title = 'webpack-cli';
 
 const isCommandUsed = (commands) =>
@@ -59,9 +59,13 @@ async function runCLI(cli, commandIsUsed) {
             return;
         }
         const parsedArgsOpts = parsedArgs.opts;
+        // Enable/Disable color on console
+        options.enabled = parsedArgsOpts.color ? true : false;
+
         if (entry) {
             parsedArgsOpts.entry = entry;
         }
+
         const result = await cli.run(parsedArgsOpts, core);
         if (!result) {
             return;

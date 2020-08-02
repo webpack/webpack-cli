@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { sync } from 'execa';
 import spawn from 'cross-spawn';
-import chalk = require('chalk');
+import { green } from 'colorette';
 import { prompt } from 'enquirer';
 import { runCommand } from './processUtils';
 
@@ -84,7 +84,7 @@ export async function promptInstallation(packageName: string, preMessage?: Funct
     if (preMessage) {
         preMessage();
     }
-    const question = `Would you like to install ${packageName}? (That will run ${chalk.green(commandToBeRun)})`;
+    const question = `Would you like to install ${packageName}? (That will run ${green(commandToBeRun)})`;
     const { installConfirm } = await prompt([
         {
             type: 'confirm',

@@ -3,7 +3,7 @@ const rimraf = require('rimraf');
 const { join } = require('path');
 const collectTestFolders = require('./utils');
 
-const outputDirectories = ['bin', 'binary', 'dist', 'test-assets', 'test-plugin', 'test-loader'];
+const outputDirectories = ['bin', 'binary', 'dist', 'test', 'test-assets', 'test-plugin', 'test-loader'];
 
 function folderStrategy(stats, file) {
     return stats.isDirectory() && outputDirectories.includes(file);

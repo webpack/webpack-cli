@@ -9,7 +9,7 @@
     "access": "public"
   },
   "dependencies": {
-    "chalk": "3.0.0",
+    "colorette": "^1.2.1",
     "envinfo": "7.5.0",
     "prettyjson": "1.2.1"
   },

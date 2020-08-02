@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+import { green, red } from 'colorette';
 import { Change, diffLines } from 'diff';
 import fs from 'fs';
 import inquirer from 'inquirer';
@@ -92,9 +92,9 @@ function runMigration(currentConfigPath: string, outputConfigPath: string): Prom
 
             diffOutput.forEach((diffLine: Change): void => {
                 if (diffLine.added) {
-                    process.stdout.write(chalk.green(`+ ${diffLine.value}`));
+                    process.stdout.write(green(`+ ${diffLine.value}`));
                 } else if (diffLine.removed) {
-                    process.stdout.write(chalk.red(`- ${diffLine.value}`));
+                    process.stdout.write(red(`- ${diffLine.value}`));
                 }
             });
 
@@ -121,7 +121,7 @@ function runMigration(currentConfigPath: string, outputConfigPath: string): Prom
                                 },
                             ]);
                         } else {
-                            console.error(chalk.red('✖ Migration aborted'));
+                            console.error(red('✖ Migration aborted'));
                         }
                     },
                 )
@@ -138,23 +138,23 @@ function runMigration(currentConfigPath: string, outputConfigPath: string): Prom
                             // eslint-disable-next-line @typescript-eslint/no-explicit-any
                             const webpackOptionsValidationErrors: any = validate(outputConfig);
                             if (webpackOptionsValidationErrors.length) {
-                                console.error(chalk.red("\n✖ Your configuration validation wasn't successful \n"));
+                                console.error(red("\n✖ Your configuration validation wasn't successful \n"));
                                 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
                                 // @ts-ignore
                                 console.error(new WebpackOptionsValidationError(webpackOptionsValidationErrors));
                             }
                         }
 
-                        console.info(chalk.green(`\n✔︎ New webpack config file is at ${outputConfigPath}.`));
-                        console.info(chalk.green('✔︎ Heads up! Updating to the latest version could contain breaking changes.'));
+                        console.info(green(`\n✔︎ New webpack config file is at ${outputConfigPath}.`));
+                        console.info(green('✔︎ Heads up! Updating to the latest version could contain breaking changes.'));
 
-                        console.info(chalk.green('✔︎ Plugin and loader dependencies may need to be updated.'));
+                        console.info(green('✔︎ Plugin and loader dependencies may need to be updated.'));
                     },
                 );
         })
         .catch((err: object): void => {
             const errMsg = '\n ✖ ︎Migration aborted due to some errors: \n';
-            console.error(chalk.red(errMsg));
+            console.error(red(errMsg));
             console.error(err);
             process.exitCode = 1;
         });
@@ -175,7 +175,7 @@ export default function migrate(...args: string[]): void | Promise<void> {
     const filePaths = args;
     if (!filePaths.length) {
         const errMsg = '\n ✖ Please specify a path to your webpack config \n ';
-        console.error(chalk.red(errMsg));
+        console.error(red(errMsg));
         return;
     }
 
@@ -194,7 +194,7 @@ export default function migrate(...args: string[]): void | Promise<void> {
             ])
             .then((ans: { confirmPath: boolean }): void | Promise<void> => {
                 if (!ans.confirmPath) {
-                    console.error(chalk.red('✖ ︎Migration aborted due to no output path'));
+                    console.error(red('✖ ︎Migration aborted due to no output path'));
                     return;
                 }
                 outputConfigPath = path.resolve(process.cwd(), filePaths[0]);

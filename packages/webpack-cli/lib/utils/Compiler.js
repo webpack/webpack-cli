@@ -1,6 +1,6 @@
 const webpack = require('webpack');
 const logger = require('./logger');
-const { cyanBright, greenBright } = require('chalk');
+const { cyanBright, greenBright } = require('colorette');
 const { CompilerOutput } = require('./CompilerOutput');
 const readline = require('readline');
 
@@ -80,7 +80,7 @@ class Compiler {
             logger.error(err.stack || err);
             process.exit(1); // eslint-disable-line
         }
-        if (outputOptions.json && !outputOptions.silent) {
+        if (outputOptions.json) {
             process.stdout.write(JSON.stringify(stats.toJson(outputOptions), null, 2) + '\n');
         } else if (stats.hash !== lastHash) {
             lastHash = stats.hash;
@@ -91,9 +91,7 @@ class Compiler {
                     statsErrors.push({ name: statErr.message, loc: errLoc });
                 });
             }
-            if (!outputOptions.silent) {
-                return this.generateOutput(outputOptions, stats, statsErrors, processingMessageBuffer);
-            }
+            return this.generateOutput(outputOptions, stats, statsErrors, processingMessageBuffer);
         }
         if (!outputOptions.watch && stats.hasErrors()) {
             process.exitCode = 2;
