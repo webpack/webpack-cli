@@ -23,10 +23,10 @@
     "web"
   ],
   "dependencies": {
-    "@webpack-cli/package-utils": "^1.0.1-alpha.4",
     "@webpack-cli/info": "^1.0.1-alpha.4",
     "@webpack-cli/init": "^1.0.1-alpha.5",
     "@webpack-cli/serve": "^1.0.1-alpha.5",
+    "@webpack-cli/package-utils": "^1.0.1-alpha.4",
     "ansi-escapes": "^4.3.1",
     "colorette": "^1.2.1",
     "command-line-usage": "^6.1.0",
@@ -34,7 +34,7 @@
     "enquirer": "^2.3.4",
     "execa": "^4.0.0",
     "import-local": "^3.0.2",
-    "interpret": "^2.0.0",
+    "interpret": "^2.2.0",
     "rechoir": "^0.7.0",
     "v8-compile-cache": "^2.1.0",
     "webpack-merge": "^4.2.2"
