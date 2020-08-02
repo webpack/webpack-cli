@@ -47,7 +47,8 @@ class GroupHelper {
         const configPathExists = predefinedConfigPath ? existsSync(predefinedConfigPath) : undefined;
 
         if (!configPathExists) {
-            const LOOKUP_PATHS = [`${filename}`, `src/${filename}`, defaultValue, `src/${defaultValue}`];
+            const LOOKUP_PATHS = [`${filename}`, `src/${filename}`, ...(defaultValue ? [defaultValue, `src/${defaultValue}`] : [])];
+
             if (filename) {
                 LOOKUP_PATHS.unshift(filename);
             }

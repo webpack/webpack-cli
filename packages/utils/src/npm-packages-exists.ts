@@ -1,6 +1,6 @@
 import { resolve } from 'path';
 import { existsSync } from 'fs';
-import chalk = require('chalk');
+import { red, bold } from 'colorette';
 import { npmExists } from './npm-exists';
 import { isLocalPath } from './path-utils';
 import { resolvePackages } from './resolve-packages';
@@ -44,8 +44,8 @@ export function npmPackagesExists(pkg: string[]): void {
             scaffold.slice(0, WEBPACK_SCAFFOLD_PREFIX.length) !== WEBPACK_SCAFFOLD_PREFIX
         ) {
             throw new TypeError(
-                chalk.bold(`${scaffold} isn't a valid name.\n`) +
-                    chalk.red(`\nIt should be prefixed with '${WEBPACK_SCAFFOLD_PREFIX}', but have different suffix.\n`),
+                bold(`${scaffold} isn't a valid name.\n`) +
+                    red(`\nIt should be prefixed with '${WEBPACK_SCAFFOLD_PREFIX}', but have different suffix.\n`),
             );
         }
 

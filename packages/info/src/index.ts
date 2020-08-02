@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+import { red } from 'colorette';
 import envinfo from 'envinfo';
 import options from './options';
 import WebpackCLI from 'webpack-cli';
@@ -39,7 +39,7 @@ export default async function info(...args): Promise<string[]> {
     if (parsedArgs.unknownArgs.some((arg) => ['help', 'version', 'color'].includes(arg))) return;
 
     if (parsedArgs.unknownArgs.length > 0) {
-        process.stderr.write(`Unknown argument: ${chalk.red(parsedArgs.unknownArgs)}\n`);
+        process.stderr.write(`Unknown argument: ${red(parsedArgs.unknownArgs)}\n`);
     }
 
     if (infoArgs.output) {
@@ -53,7 +53,7 @@ export default async function info(...args): Promise<string[]> {
                 envinfoConfig['json'] = true;
                 break;
             default:
-                process.stderr.write(`${chalk.red(infoArgs.output)} is not a valid value for output\n`);
+                process.stderr.write(`${red(infoArgs.output)} is not a valid value for output\n`);
         }
     }
 

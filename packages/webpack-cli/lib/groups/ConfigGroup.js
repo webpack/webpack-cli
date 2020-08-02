@@ -1,8 +1,10 @@
 const { existsSync } = require('fs');
 const { resolve, sep, dirname, parse } = require('path');
-const { extensions } = require('interpret');
+const webpackMerge = require('webpack-merge');
+const { extensions, jsVariants } = require('interpret');
 const GroupHelper = require('../utils/GroupHelper');
 const rechoir = require('rechoir');
+const MergeError = require('../utils/errors/MergeError');
 
 // Order defines the priority, in increasing order
 // example - config file lookup will be in order of .webpack/webpack.config.development.js -> webpack.config.development.js -> webpack.config.js
@@ -24,12 +26,6 @@ const DEFAULT_CONFIG_LOC = [
 const modeAlias = {
     production: 'prod',
     development: 'dev',
-};
-
-const fileTypes = {
-    '.babel.js': ['@babel/register', 'babel-register', 'babel-core/register', 'babel/register'],
-    '.babel.ts': ['@babel/register'],
-    '.ts': ['ts-node/register', 'tsconfig-paths/register'],
 };
 
 const getDefaultConfigFiles = () => {
@@ -69,7 +65,7 @@ class ConfigGroup extends GroupHelper {
     }
 
     requireConfig(configModule) {
-        const extension = Object.keys(fileTypes).find((t) => configModule.ext.endsWith(t));
+        const extension = Object.keys(jsVariants).find((t) => configModule.ext.endsWith(t));
 
         if (extension) {
             this.requireLoader(extension, configModule.path);
@@ -87,9 +83,11 @@ class ConfigGroup extends GroupHelper {
     }
 
     async finalize(moduleObj) {
+        const { argv } = this.args;
         const newOptionsObject = {
             outputOptions: {},
             options: {},
+            processingMessageBuffer: [],
         };
 
         if (!moduleObj) {
@@ -99,7 +97,14 @@ class ConfigGroup extends GroupHelper {
         const configOptions = moduleObj.content;
         if (typeof configOptions === 'function') {
             // when config is a function, pass the env from args to the config function
-            const newOptions = configOptions(this.args.env);
+            let formattedEnv;
+            if (Array.isArray(this.args.env)) {
+                formattedEnv = this.args.env.reduce((envObject, envOption) => {
+                    envObject[envOption] = true;
+                    return envObject;
+                }, {});
+            }
+            const newOptions = configOptions(formattedEnv, argv);
             // When config function returns a promise, resolve it, if not it's resolved by default
             newOptionsObject['options'] = await Promise.resolve(newOptions);
         } else {
@@ -127,7 +132,6 @@ class ConfigGroup extends GroupHelper {
 
     async resolveConfigFiles() {
         const { config, mode } = this.args;
-
         if (config) {
             const configPath = resolve(process.cwd(), config);
             const configFiles = getConfigInfoFromFileName(configPath);
@@ -167,22 +171,18 @@ class ConfigGroup extends GroupHelper {
         if (Object.keys(this.args).some((arg) => arg === 'merge')) {
             const { merge } = this.args;
 
-            const newConfigPath = this.resolveFilePath(merge, 'webpack.base.js');
-            if (newConfigPath) {
-                const configFiles = getConfigInfoFromFileName(newConfigPath);
-                if (!configFiles.length) {
-                    this.opts.processingMessageBuffer.push({
-                        lvl: 'warn',
-                        msg: 'Could not find file to merge configuration with...',
-                    });
-                    return;
-                }
-                const foundConfig = configFiles[0];
-                const resolvedConfig = this.requireConfig(foundConfig);
-                const newConfigurationsObject = await this.finalize(resolvedConfig);
-                const webpackMerge = require('webpack-merge');
-                this.opts['options'] = webpackMerge(this.opts['options'], newConfigurationsObject.options);
+            // try resolving merge config
+            const newConfigPath = this.resolveFilePath(merge);
+
+            if (!newConfigPath) {
+                throw new MergeError("The supplied merge config doesn't exist.");
             }
+
+            const configFiles = getConfigInfoFromFileName(newConfigPath);
+            const foundConfig = configFiles[0];
+            const resolvedConfig = this.requireConfig(foundConfig);
+            const newConfigurationsObject = await this.finalize(resolvedConfig);
+            this.opts['options'] = webpackMerge(this.opts['options'], newConfigurationsObject.options);
         }
     }
 

@@ -61,9 +61,8 @@ In case you are suggesting a new feature, we will match your idea with our curre
 -   `git clone <your-clone-url> && cd webpack-cli`
 
 -   We use [yarn](https://yarnpkg.com/lang/en/) workspaces, please install it:
-    ```bash
-    npm install -g yarn
-    ```
+
+    Read the [Installation Guide](https://yarnpkg.com/en/docs/install) on their official website for detailed instructions on how to install Yarn.
 
 > Using yarn is not a requirement, [npm](https://www.npmjs.com/) is included in node.
 

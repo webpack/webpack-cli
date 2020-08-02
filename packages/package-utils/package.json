@@ -33,7 +33,7 @@
     "url": "https://github.com/webpack/webpack-cli/issues"
   },
   "dependencies": {
-    "chalk": "^3.0.0",
+    "colorette": "^1.2.1",
     "cross-spawn": "7.0.1",
     "enquirer": "^2.3.4",
     "execa": "^4.0.0",

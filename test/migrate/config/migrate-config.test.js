@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const rimraf = require('rimraf');
+const { red } = require('colorette');
 const { run, runAndGetWatchProc, runPromptWithAnswers } = require('../../utils/test-utils');
 
 const ENTER = '\x0D';
@@ -31,7 +32,7 @@ describe('migrate command', () => {
 
     it('should throw an error if the user refused to overwrite the source file and no output path is provided', async () => {
         const { stderr } = await runAndGetWatchProc(__dirname, ['migrate', 'webpack.config.js'], false, 'n');
-        expect(stderr).toBe('✖ ︎Migration aborted due to no output path');
+        expect(stderr).toBe(red('✖ ︎Migration aborted due to no output path'));
     });
 
     it('should prompt for config validation when an output path is provided', async () => {
