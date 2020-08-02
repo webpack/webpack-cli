@@ -1,6 +1,6 @@
 /* eslint-disable   node/no-missing-require */
 /* eslint-disable   node/no-unpublished-require */
-const { run, runInstall } = require('../../utils/test-utilsils');
+const { run, runInstall } = require('../../utils/test-utils');
 const { stat } = require('fs');
 const { resolve } = require('path');
 
