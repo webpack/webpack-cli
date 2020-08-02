@@ -15,6 +15,10 @@
   "peerDependencies": {
     "webpack-cli": "4.x.x"
   },
-  "peerDependenciesMeta": { "webpack-dev-server": { "optional": true } },
+  "peerDependenciesMeta": {
+    "webpack-dev-server": {
+      "optional": true
+    }
+  },
   "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9"
 }
