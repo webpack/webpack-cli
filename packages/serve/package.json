@@ -13,8 +13,8 @@
     "webpack-dev-server": "3.10.3"
   },
   "peerDependencies": {
-    "webpack-cli": "4.x.x",
-    "webpack-dev-server": "3.x.x || 4.x.x"
+    "webpack-cli": "4.x.x"
   },
+  "peerDependenciesMeta": { "webpack-dev-server": { "optional": true } },
   "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9"
 }
