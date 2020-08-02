@@ -49,7 +49,7 @@ describe('loader command', () => {
 
         //check if the the generated plugin works successfully
         const path = resolve(__dirname, './test-loader/examples/simple/');
-        stdout = run(path, [], false).stdout;
+        ({ stdout } = run(path, [], false));
         expect(stdout).toContain('test-loader');
     });
 });
