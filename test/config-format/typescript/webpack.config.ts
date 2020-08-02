@@ -1,3 +1,4 @@
+/* eslint-disable node/no-unsupported-features/es-syntax */
 /** eslint-disable **/
 import * as path from 'path';
 

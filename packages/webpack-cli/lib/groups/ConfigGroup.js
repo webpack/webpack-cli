@@ -42,6 +42,16 @@ const getDefaultConfigFiles = () => {
 
 const getConfigInfoFromFileName = (filename) => {
     const fileMetaData = parse(filename);
+    // .cjs is not available on interpret side, handle it manually for now
+    if (filename.endsWith('.cjs')) {
+        return [
+            {
+                path: resolve(filename),
+                ext: '.cjs',
+                module: null,
+            },
+        ];
+    }
     return Object.keys(extensions)
         .filter((ext) => ext.includes(fileMetaData.ext))
         .filter((ext) => fileMetaData.base.substr(fileMetaData.base.length - ext.length) === ext)
