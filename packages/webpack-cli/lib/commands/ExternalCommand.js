@@ -34,13 +34,14 @@ class ExternalCommand {
                 logger.error(`Action Interrupted, use ${chalk.cyan('webpack-cli help')} to see possible commands.`);
             }
         }
-        // Check dev server availability before running serve 
+        // Check dev server availability before running serve
         if (name === 'serve') {
-            try { 
-                require.resolve('webpack-dev-server') ;
+            try {
+                // eslint-disable-next-line node/no-extraneous-require
+                require.resolve('webpack-dev-server');
             } catch (error) {
                 throw new Error(`You need to install 'webpack-dev-server' for running 'webpack serve'.\n${error}`);
-            }              
+            }
         }
         return pkgLoc ? require(scopeName).default(...args) : null;
     }
