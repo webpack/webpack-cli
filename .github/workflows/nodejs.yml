@@ -75,6 +75,10 @@ jobs:
       - name: Install webpack ${{ matrix.webpack-version }}
         run: yarn add -W webpack@${{ matrix.webpack-version }}
 
+      - name: Install latest terser-webpack-plugin for webpack 5
+        if: ${{ matrix.webpack-version == 'next' }}
+        run: yarn add -W terser-webpack-plugin --dev
+
       - name: Build
         run: yarn build
 
