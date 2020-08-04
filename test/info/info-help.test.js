@@ -17,7 +17,7 @@ describe('should print help for info command', () => {
         expect(stderr).toHaveLength(0);
     });
 
-    it('should respect the --color=false flag', () => {
+    it('should respect the --no-color flag', () => {
         const { stdout, stderr } = runInfo(['help', '--no-color'], __dirname);
         options.enabled = true;
         expect(stdout).not.toContain(yellow(usageText));
