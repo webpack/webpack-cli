@@ -5,7 +5,7 @@ const { run } = require('../utils/test-utils');
 const helpHeader = 'The build tool for modern web applications';
 
 describe('single help flag', () => {
-    it('respects --color flag as false', () => {
+    it('respects --no-color flag', () => {
         const { stdout, stderr } = run(__dirname, ['--help', '--no-color'], false);
         const usage = 'webpack [...options] | <command>';
         const example = 'webpack help --flag | <command>';
