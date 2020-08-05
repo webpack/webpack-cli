@@ -15,8 +15,6 @@ export default function serve(...args: string[]): void {
     const core = cli.getCoreFlags();
 
     const parsedDevServerArgs = cli.argParser(devServer, args, true);
-    if (parsedDevServerArgs.unknownArgs.some((arg) => ['help', 'version'].includes(arg))) return;
-
     const devServerArgs = parsedDevServerArgs.opts;
     const parsedWebpackArgs = cli.argParser(core, parsedDevServerArgs.unknownArgs, true, process.title);
     const webpackArgs = parsedWebpackArgs.opts;
@@ -30,9 +28,9 @@ export default function serve(...args: string[]): void {
         parsedWebpackArgs.unknownArgs
             .filter((e) => e)
             .forEach((unknown) => {
-                logger.warn('Unknown argument:', unknown);
+                logger.error('Unknown argument:', unknown);
             });
-        return;
+        process.exit(2);
     }
 
     cli.getCompiler(webpackArgs, core).then((compiler): void => {
