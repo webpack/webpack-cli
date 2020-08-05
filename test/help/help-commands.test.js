@@ -4,6 +4,11 @@ const { run } = require('../utils/test-utils');
 const helpHeader = 'The build tool for modern web applications';
 
 describe('commands help', () => {
+    it('recognizes subcommands', () => {
+        const { stderr } = run(__dirname, ['help', 'serve'], false);
+        expect(stderr).not.toContain('Unknown argument: help');
+    });
+
     it('throws error for invalid command with --help flag', () => {
         const { stderr } = run(__dirname, ['--help', 'myCommand'], false);
         expect(stderr).toContain(`You provided an invalid command 'myCommand'`);
