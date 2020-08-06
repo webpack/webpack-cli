@@ -36,10 +36,9 @@ export default async function info(...args): Promise<string[]> {
     const infoArgs = parsedArgs.opts;
     const envinfoConfig = {};
 
-    if (parsedArgs.unknownArgs.some((arg) => ['help', 'version', 'color'].includes(arg))) return;
-
     if (parsedArgs.unknownArgs.length > 0) {
         process.stderr.write(`Unknown argument: ${red(parsedArgs.unknownArgs)}\n`);
+        process.exit(2);
     }
 
     if (infoArgs.output) {
