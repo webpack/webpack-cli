@@ -46,6 +46,12 @@ describe('optimization config related flag', () => {
                 if (flag.name === 'optimization-split-chunks-chunks') {
                     stdout = run(__dirname, [`--${flag.name}`, 'initial']).stdout;
                     expect(stdout).toContain(`chunks: 'initial'`);
+                } else if (flag.name === 'optimization-mangle-exports') {
+                    stdout = run(__dirname, ['--optimization-mangle-exports', 'size']).stdout;
+                    expect(stdout).toContain(`mangleExports: 'size'`);
+                } else if (flag.name === 'optimization-used-exports') {
+                    stdout = run(__dirname, ['--optimization-used-exports', 'global']).stdout;
+                    expect(stdout).toContain(`usedExports: 'global'`);
                 } else {
                     expect(stdout).toContain(`${propName}: 'named'`);
                 }

@@ -4440,14 +4440,14 @@ cyclist@^1.0.1:
   integrity sha1-WW6WmP0MgOEgOMK4LW6xs1tiJNk=
 
 cz-customizable@^6.2.0:
-  version "6.2.1"
-  resolved "https://registry.yarnpkg.com/cz-customizable/-/cz-customizable-6.2.1.tgz#bc26caa007f1f47cba2fb1aab8e4f03c5e6b47e8"
-  integrity sha512-m4umHq83H7QsPrX8f0/Dx+EcAB88GsLDTHGPFnpf9YEBbco4s84n73ysdeZz2D8XHlHefMDT3lUd9eYCCGARlA==
+  version "6.3.0"
+  resolved "https://registry.yarnpkg.com/cz-customizable/-/cz-customizable-6.3.0.tgz#1b24e5b84e1fccaa18ad837612b233b8c51d7882"
+  integrity sha512-MWGmWa45v4Ds3NJNNwQc3GCFdjtH3k4ypDWoWkwultMVLf7aOHR9VaXGYGZHLOQS4sMfbkBSjNUYoXCSmLuRSA==
   dependencies:
     editor "1.0.0"
     find-config "^1.0.0"
     inquirer "^6.3.1"
-    lodash "^4.17.11"
+    lodash "^4.17.19"
     temp "^0.9.0"
     word-wrap "^1.2.3"
 
