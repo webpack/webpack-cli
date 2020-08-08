@@ -7,6 +7,8 @@ const argParser = require('./utils/arg-parser');
 require('./utils/process-log');
 process.title = 'webpack-cli';
 
+console.log(process);
+
 const isCommandUsed = (commands) =>
     commands.find((cmd) => {
         return process.argv.includes(cmd.name) || process.argv.includes(cmd.alias);
