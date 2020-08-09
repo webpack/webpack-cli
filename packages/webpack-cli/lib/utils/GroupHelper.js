@@ -12,6 +12,102 @@ class GroupHelper {
         this.strategy = undefined;
     }
 
+    ifArg(name, fn, init, finalize) {
+        const isArray = Array.isArray(argv[name]);
+        const isSet = typeof argv[name] !== "undefined" && argv[name] !== null;
+        if (!isArray && !isSet) return;
+
+        init && init();
+        if (isArray) argv[name].forEach(fn);
+        else if (isSet) fn(argv[name], -1);
+        finalize && finalize();
+    }
+
+    ifArgPair(name, fn, init, finalize) {
+        ifArg(
+            name,
+            function (content, idx) {
+                const i = content.indexOf("=");
+                if (i < 0) {
+                    return fn(null, content, idx);
+                } else {
+                    return fn(content.substr(0, i), content.substr(i + 1), idx);
+                }
+            },
+            init,
+            finalize
+        );
+    }
+
+    ifBooleanArg(name, fn) {
+        ifArg(name, function (bool) {
+            if (bool) {
+                fn();
+            }
+        });
+    }
+
+    mapArgToBoolean(name, optionName) {
+        ifArg(name, function (bool) {
+            if (bool === true) options[optionName || name] = true;
+            else if (bool === false) options[optionName || name] = false;
+        });
+    }
+
+    loadPlugin(name) {
+        const loadUtils = require("loader-utils");
+        let args;
+        try {
+            const p = name && name.indexOf("?");
+            if (p > -1) {
+                args = loadUtils.parseQuery(name.substring(p));
+                name = name.substring(0, p);
+            }
+        } catch (e) {
+            console.log("Invalid plugin arguments " + name + " (" + e + ").");
+            process.exit(-1); // eslint-disable-line
+        }
+
+        let path;
+        try {
+            const resolve = require("enhanced-resolve");
+            path = resolve.sync(process.cwd(), name);
+        } catch (e) {
+            console.log("Cannot resolve plugin " + name + ".");
+            process.exit(-1); // eslint-disable-line
+        }
+        let Plugin;
+        try {
+            Plugin = require(path);
+        } catch (e) {
+            console.log("Cannot load plugin " + name + ". (" + path + ")");
+            throw e;
+        }
+        try {
+            return new Plugin(args);
+        } catch (e) {
+            console.log("Cannot instantiate plugin " + name + ". (" + path + ")");
+            throw e;
+        }
+    }
+
+    ensureObject(parent, name, force) {
+        if (force || typeof parent[name] !== "object" || parent[name] === null) {
+            parent[name] = {};
+        }
+    }
+
+    ensureArray(parent, name) {
+        if (!Array.isArray(parent[name])) {
+            parent[name] = [];
+        }
+    }
+
+    addPlugin(options, plugin) {
+        ensureArray(options, "plugins");
+        options.plugins.unshift(plugin);
+    }
+
     hyphenToUpperCase(name) {
         if (!name) {
             return name;
