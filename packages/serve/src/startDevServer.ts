@@ -1,4 +1,10 @@
-import Server from 'webpack-dev-server/lib/Server';
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let Server: any;
+try {
+    Server = require('webpack-dev-server/lib/Server');
+} catch (err) {
+    throw new Error(`You need to install 'webpack-dev-server' for running 'webpack serve'.\n${err}`);
+}
 
 /**
  *
