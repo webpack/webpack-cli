@@ -33,9 +33,9 @@ export default function serve(...args: string[]): void {
         parsedWebpackArgs.unknownArgs
             .filter((e) => e)
             .forEach((unknown) => {
-                logger.warn('Unknown argument:', unknown);
+                logger.error('Unknown argument:', unknown);
             });
-        return;
+        process.exit(2);
     }
 
     cli.getCompiler(webpackArgs, core).then((compiler): void => {
