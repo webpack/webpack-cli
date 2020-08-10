@@ -4,8 +4,7 @@
 require('v8-compile-cache');
 const importLocal = require('import-local');
 const parseNodeArgs = require('../lib/utils/parse-node-args');
-const runner = require('../lib/runner');
-const { performance } = require('perf_hooks');
+const runCLI = require('../lib/bootstrap');
 
 // Prefer the local installation of webpack-cli
 if (importLocal(__filename)) {
@@ -14,13 +13,9 @@ if (importLocal(__filename)) {
 process.title = 'webpack';
 
 const [, , ...rawArgs] = process.argv;
+
+// figure out how to inject node args at runtime
+// eslint-disable-next-line no-unused-vars
 const { cliArgs, nodeArgs } = parseNodeArgs(rawArgs);
 
-const x = performance.now();
-process.execArgv.push(...nodeArgs);
-console.log({ nodeArgs });
-// runner(nodeArgs, cliArgs);
-require('../lib/bootstrap');
-console.log(process);
-
-console.log(performance.now() - x, 'time takes');
+runCLI(cliArgs);
