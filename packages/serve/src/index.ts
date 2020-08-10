@@ -2,13 +2,6 @@ import WebpackCLI from 'webpack-cli';
 import logger from 'webpack-cli/lib/utils/logger';
 import startDevServer from './startDevServer';
 
-let devServerFlags: object[];
-try {
-    devServerFlags = require('webpack-dev-server/bin/cli-flags').devServer;
-} catch (err) {
-    throw new Error(`You need to install 'webpack-dev-server' for running 'webpack serve'.\n${err}`);
-}
-
 /**
  *
  * Creates a webpack compiler and runs the devServer
@@ -17,6 +10,12 @@ try {
  * @returns {Function} invokes the devServer API
  */
 export default function serve(...args: string[]): void {
+    let devServerFlags: object[];
+    try {
+        devServerFlags = require('webpack-dev-server/bin/cli-flags').devServer;
+    } catch (err) {
+        throw new Error(`You need to install 'webpack-dev-server' for running 'webpack serve'.\n${err}`);
+    }
     const cli = new WebpackCLI();
     const core = cli.getCoreFlags();
 
