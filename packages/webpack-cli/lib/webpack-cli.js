@@ -281,7 +281,7 @@ class WebpackCLI extends GroupHelper {
         const subject = allNames.filter((name) => {
             return args.includes(name);
         })[0];
-        const invalidArgs = hasUnknownArgs(args.slice(2), ...allNames);
+        const invalidArgs = hasUnknownArgs(args, ...allNames);
         const isCommand = commands.includes(subject);
         options.enabled = !args.includes('--no-color');
         return new HelpGroup().outputHelp(isCommand, subject, invalidArgs);
@@ -291,7 +291,7 @@ class WebpackCLI extends GroupHelper {
         const HelpGroup = require('./groups/HelpGroup');
         const { commands, allNames, hasUnknownArgs } = require('./utils/unknown-args');
         const commandsUsed = args.filter((val) => commands.includes(val));
-        const invalidArgs = hasUnknownArgs(args.slice(2), ...allNames);
+        const invalidArgs = hasUnknownArgs(args, ...allNames);
         options.enabled = !args.includes('--no-color');
         return new HelpGroup().outputVersion(externalPkg, commandsUsed, invalidArgs);
     }
