@@ -60,7 +60,7 @@ async function runCLI(cliArgs) {
             parsedArgs.unknownArgs.forEach((unknown) => {
                 logger.warn('Unknown argument:', unknown);
             });
-            cliExecuter();
+            await cliExecuter();
             return;
         }
         const parsedArgsOpts = parsedArgs.opts;
