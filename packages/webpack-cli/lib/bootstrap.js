@@ -53,7 +53,7 @@ async function runCLI(cli, commandIsUsed) {
             }
         } else if (parsedArgs.unknownArgs.length > 0) {
             parsedArgs.unknownArgs.forEach((unknown) => {
-                logger.warn('Unknown argument:', unknown);
+                logger.warn(`Unknown argument: ${unknown}`);
             });
             cliExecuter();
             return;
