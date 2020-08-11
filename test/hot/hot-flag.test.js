@@ -2,6 +2,7 @@
 const { run } = require('../utils/test-utils');
 const { stat } = require('fs');
 const { resolve } = require('path');
+const { options } = require('colorette');
 
 describe('--hot flag', () => {
     it('should be successful when --hot is passed', (done) => {
@@ -18,6 +19,7 @@ describe('--hot flag', () => {
 
     it('should warn when --hot and --no-hot both are passed', (done) => {
         const { stderr, stdout } = run(__dirname, ['--no-hot', '--hot']);
+        options.enabled = false;
         expect(stderr).toContain(
             '[webpack-cli] You provided both --hot and --no-hot. We will use only the last of these flags that you provided in your CLI arguments',
         );
