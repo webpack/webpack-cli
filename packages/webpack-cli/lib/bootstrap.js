@@ -22,7 +22,7 @@ async function runCLI(cliArgs) {
     const runVersion = () => {
         cli.runVersion(cliArgs, commandIsUsed);
     };
-    const parsedArgs = argParser(core, cliArgs, false, process.title, cli.runHelp, runVersion, commands);
+    const parsedArgs = argParser(core, cliArgs, true, process.title, cli.runHelp, runVersion, commands);
 
     if (parsedArgs.unknownArgs.includes('help')) {
         cli.runHelp(cliArgs);
