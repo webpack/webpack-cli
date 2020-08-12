@@ -28,7 +28,7 @@ export default function serve(...args: string[]): void {
         parsedWebpackArgs.unknownArgs
             .filter((e) => e)
             .forEach((unknown) => {
-                logger.error('Unknown argument:', unknown);
+                logger.error(`Unknown argument: ${unknown}`);
             });
         process.exit(2);
     }
