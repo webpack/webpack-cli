@@ -22,11 +22,11 @@ class HelpGroup {
             const description = options.description;
             const link = options.link;
 
-            logger.log(`${header('Usage')}: ${usage}`);
-            logger.log(`${header('Description')}: ${description}`);
+            logger.help(`${header('Usage')}: ${usage}`);
+            logger.help(`${header('Description')}: ${description}`);
 
             if (link) {
-                logger.log(`${header('Documentation')}: ${link}`);
+                logger.help(`${header('Documentation')}: ${link}`);
             }
 
             if (options.flags) {
@@ -34,16 +34,16 @@ class HelpGroup {
                     header: 'Options',
                     optionList: options.flags,
                 });
-                logger.log(flags);
+                logger.help(flags);
             }
         } else if (invalidArgs.length > 0) {
             const argType = invalidArgs[0].startsWith('-') ? 'option' : 'command';
-            logger.warn(`\nYou provided an invalid ${argType} '${invalidArgs[0]}'.`);
-            logger.log(this.run().outputOptions.help);
+            logger.warn(`You provided an invalid ${argType} '${invalidArgs[0]}'.`);
+            logger.help(this.run().outputOptions.help);
         } else {
-            logger.log(this.run().outputOptions.help);
+            logger.help(this.run().outputOptions.help);
         }
-        logger.log('\n                  Made with ♥️  by the webpack team');
+        logger.help('\n                  Made with ♥️  by the webpack team');
     }
 
     outputVersion(externalPkg, commandsUsed, invalidArgs) {
@@ -51,33 +51,33 @@ class HelpGroup {
             try {
                 if ([externalPkg.alias, externalPkg.name].some((pkg) => commandsUsed.includes(pkg))) {
                     const { name, version } = require(`@webpack-cli/${defaultCommands[externalPkg.name]}/package.json`);
-                    logger.log(`\n${name} ${version}`);
+                    logger.help(`\n${name} ${version}`);
                 } else {
                     const { name, version } = require(`${externalPkg.name}/package.json`);
-                    logger.log(`\n${name} ${version}`);
+                    logger.help(`\n${name} ${version}`);
                 }
             } catch (e) {
-                logger.error('\nError: External package not found.');
+                logger.error('Error: External package not found.');
                 process.exitCode = 1;
             }
         }
 
         if (commandsUsed.length > 1) {
-            logger.error('\nYou provided multiple commands. Please use only one command at a time.\n');
+            logger.error('You provided multiple commands. Please use only one command at a time.\n');
             process.exit(1);
         }
 
         if (invalidArgs.length > 0) {
             const argType = invalidArgs[0].startsWith('-') ? 'option' : 'command';
-            logger.error(red(`\nError: Invalid ${argType} '${invalidArgs[0]}'.`));
+            logger.error(red(`Error: Invalid ${argType} '${invalidArgs[0]}'.`));
             logger.info(cyan('Run webpack --help to see available commands and arguments.\n'));
             process.exit(2);
         }
 
         const pkgJSON = require('../../package.json');
         const webpack = require('webpack');
-        logger.log(`\nwebpack-cli ${pkgJSON.version}`);
-        logger.log(`\nwebpack ${webpack.version}\n`);
+        logger.help(`\nwebpack-cli ${pkgJSON.version}`);
+        logger.help(`\nwebpack ${webpack.version}\n`);
     }
 
     run() {
