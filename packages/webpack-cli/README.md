@@ -54,7 +54,6 @@ yarn add webpack-cli --dev
   -j, --json               Prints result as JSON
   --mode string            Defines the mode to pass to webpack
   -v, --version            Get current version
-  --node-args string[]     NodeJS flags
   --stats string           It instructs webpack on how to treat the stats
   --no-stats               Disables stats output
 ```

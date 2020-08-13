@@ -237,14 +237,6 @@ module.exports = {
             description: 'Get current version',
         },
         {
-            name: 'node-args',
-            usage: '--node-args "--max-old-space-size=1024"',
-            type: String,
-            multiple: true,
-            group: BASIC_GROUP,
-            description: 'NodeJS flags',
-        },
-        {
             name: 'stats',
             usage: '--stats <value>',
             type: [String, Boolean],
