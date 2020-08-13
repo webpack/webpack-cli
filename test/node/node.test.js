@@ -3,6 +3,9 @@ const { stat } = require('fs');
 const { resolve } = require('path');
 const { run } = require('../utils/test-utils');
 
+// TODO - We pass node args to `nodeOptions` in execa,
+// passing via NODE_OPTIONS=<args> in env in execa
+// throws different error from what we manually see
 describe('node flags', () => {
     it('is able to pass the options flags to node js', async (done) => {
         const { stdout, stderr } = await run(__dirname, ['--output', './bin/[name].bundle.js'], false, [
