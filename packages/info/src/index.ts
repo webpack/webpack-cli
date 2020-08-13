@@ -1,5 +1,5 @@
-import { red } from 'colorette';
 import envinfo from 'envinfo';
+import logger from 'webpack-cli/lib/utils/logger';
 import options from './options';
 import WebpackCLI from 'webpack-cli';
 
@@ -37,7 +37,7 @@ export default async function info(...args): Promise<string[]> {
     const envinfoConfig = {};
 
     if (parsedArgs.unknownArgs.length > 0) {
-        process.stderr.write(`Unknown argument: ${red(parsedArgs.unknownArgs)}\n`);
+        logger.error(`Unknown argument: ${parsedArgs.unknownArgs}`);
         process.exit(2);
     }
 
@@ -52,7 +52,7 @@ export default async function info(...args): Promise<string[]> {
                 envinfoConfig['json'] = true;
                 break;
             default:
-                process.stderr.write(`${red(infoArgs.output)} is not a valid value for output\n`);
+                logger.error(`${infoArgs.output} is not a valid value for output\n`);
         }
     }
 
