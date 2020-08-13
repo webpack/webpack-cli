@@ -2,7 +2,7 @@
 const path = require('path');
 const fs = require('fs');
 const execa = require('execa');
-const { sync: spawnSync } = execa;
+const { sync: spawnSync, node: execaNode } = execa;
 const { Writable } = require('readable-stream');
 const concat = require('concat-stream');
 
@@ -15,16 +15,18 @@ const ENABLE_LOG_COMPILATION = process.env.ENABLE_PIPE || false;
  * @param {String} testCase The path to folder that contains the webpack.config.js
  * @param {Array} args Array of arguments to pass to webpack
  * @param {Boolean} setOutput Boolean that decides if a default output path will be set or not
- * @returns {Object} The webpack output
+ * @returns {Object} The webpack output or Promise when nodeOptions are present
  */
-function run(testCase, args = [], setOutput = true) {
+function run(testCase, args = [], setOutput = true, nodeArgs = []) {
     const cwd = path.resolve(testCase);
 
     const outputPath = path.resolve(testCase, 'bin');
+    const processExecutor = nodeArgs.length ? execaNode : spawnSync;
     const argsWithOutput = setOutput ? args.concat('--output', outputPath) : args;
-    const result = spawnSync(WEBPACK_PATH, argsWithOutput, {
+    const result = processExecutor(WEBPACK_PATH, argsWithOutput, {
         cwd,
         reject: false,
+        nodeOptions: nodeArgs,
         stdio: ENABLE_LOG_COMPILATION ? 'inherit' : 'pipe',
     });
 
