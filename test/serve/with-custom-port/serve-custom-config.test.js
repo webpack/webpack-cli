@@ -17,6 +17,9 @@ describe('serve with devServer in config', () => {
 
     // TODO fix me on windows
     if (isWindows) {
+        it('TODO: Fix on windows', () => {
+            expect(true).toBe(true);
+        });
         return;
     }
 
