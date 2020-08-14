@@ -26,23 +26,18 @@ npx webpack info [options]
 
 #### Output format
 
-| Flag                           | Description                           | Type       |
-| ------------------------------ | ------------------------------------- | ---------- |
-| `--output < json | markdown >` | To get the output in specified format | [ string ] |
+| Flag                            | Description                           | Type       |
+| ------------------------------- | ------------------------------------- | ---------- |
+| `--output < json or markdown >` | To get the output in specified format | [ string ] |
 
 _Not supported for config_
 
 #### Options
 
-| Flag                | Description                                                     | Type        |
-| ------------------- | --------------------------------------------------------------- | ----------- |
-| `--help`            | Show help                                                       | [ boolean ] |
-| `--version`         | Show version number of `webpack-cli`                            | [ boolean ] |
-| `--system` , `-s`   | System information ( OS, CPU )                                  | [ boolean ] |
-| `--binaries` , `-b` | Installed binaries (Node, yarn, npm)                            | [ boolean ] |
-| `--browsers`        | Installed web browsers                                          | [ boolean ] |
-| `--npmg`            | Globally installed NPM packages ( webpack & webpack-cli only )  | [ boolean ] |
-| `--npmPackages`     | Info about packages related to webpack installed in the project | [ boolean ] |
+| Flag        | Description                                | Type        |
+| ----------- | ------------------------------------------ | ----------- |
+| `--help`    | Show help                                  | [ boolean ] |
+| `--version` | Show version number of `@webpack-cli/info` | [ boolean ] |
 
 ### Node
 
