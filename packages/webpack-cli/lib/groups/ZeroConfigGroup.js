@@ -21,7 +21,6 @@ class ZeroConfigGroup extends GroupHelper {
             if (this.args.mode) {
                 return this.args.mode;
             }
-            return PRODUCTION;
         }
     }
 
