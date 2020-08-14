@@ -38,12 +38,4 @@ describe('ZeroConfigGroup', function () {
         expect(result.options).toMatchObject({ mode: 'none' });
         expect(result.options.mode).toEqual('none');
     });
-
-    it('should set mode=production by default', () => {
-        const group = new ZeroConfigGroup([{}]);
-
-        const result = group.run();
-        // ensure no other properties are added
-        expect(result.options).toMatchObject({ mode: 'production' });
-    });
 });
