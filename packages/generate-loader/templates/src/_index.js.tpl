@@ -5,7 +5,7 @@
 
 module.exports = function loader(source) {
 	const { loaders, resource, request, version, webpack } = this;
-	console.log('<%= name %>');
+
 	const newSource = `
 	/**
 	 * <%= name %>
