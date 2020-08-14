@@ -61,20 +61,9 @@ describe('mode flags', () => {
         });
     });
 
-    it('should show warning and load a production config when --mode=abcd is passed', (done) => {
-        const { stderr, stdout } = run(__dirname, ['--mode', 'abcd']);
-        expect(stderr).toContain('invalid value for "mode" option. Using "production" by default');
-        expect(stdout).toContain(`mode: 'production'`);
-
-        stat(resolve(__dirname, './bin/main.js'), (err, stats) => {
-            expect(err).toBe(null);
-            expect(stats.isFile()).toBe(true);
-            done();
-        });
-        readFile(resolve(__dirname, './bin/main.js'), 'utf-8', (err, data) => {
-            expect(err).toBe(null);
-            expect(data).toContain('production test');
-            done();
-        });
+    it('should throw error when --mode=abcd is passed', () => {
+        const { stderr } = run(__dirname, ['--mode', 'abcd']);
+        expect(stderr).toContain('configuration.mode should be one of these');
+        expect(stderr).toContain(`"development" | "production" | "none"`);
     });
 });
