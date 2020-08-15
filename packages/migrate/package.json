@@ -20,6 +20,7 @@
     "p-lazy": "3.0.0"
   },
   "peerDependencies": {
+    "webpack-cli": "4.x.x",
     "webpack": "4.x.x || 5.x.x"
   },
   "devDependencies": {

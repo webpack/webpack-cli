@@ -2,6 +2,7 @@ import { green, red } from 'colorette';
 import { Change, diffLines } from 'diff';
 import fs from 'fs';
 import inquirer from 'inquirer';
+import logger from 'webpack-cli/lib/utils/logger';
 import Listr from 'listr';
 import pLazy = require('p-lazy');
 import path from 'path';
@@ -92,9 +93,9 @@ function runMigration(currentConfigPath: string, outputConfigPath: string): Prom
 
             diffOutput.forEach((diffLine: Change): void => {
                 if (diffLine.added) {
-                    process.stdout.write(green(`+ ${diffLine.value}`));
+                    console.log(green(`+ ${diffLine.value}`));
                 } else if (diffLine.removed) {
-                    process.stdout.write(red(`- ${diffLine.value}`));
+                    console.log(red(`- ${diffLine.value}`));
                 }
             });
 
@@ -121,7 +122,7 @@ function runMigration(currentConfigPath: string, outputConfigPath: string): Prom
                                 },
                             ]);
                         } else {
-                            console.error(red('✖ Migration aborted'));
+                            logger.error('✖ Migration aborted');
                         }
                     },
                 )
@@ -138,24 +139,24 @@ function runMigration(currentConfigPath: string, outputConfigPath: string): Prom
                             // eslint-disable-next-line @typescript-eslint/no-explicit-any
                             const webpackOptionsValidationErrors: any = validate(outputConfig);
                             if (webpackOptionsValidationErrors.length) {
-                                console.error(red("\n✖ Your configuration validation wasn't successful \n"));
+                                logger.error("\n✖ Your configuration validation wasn't successful \n");
                                 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
                                 // @ts-ignore
-                                console.error(new WebpackOptionsValidationError(webpackOptionsValidationErrors));
+                                logger.error(new WebpackOptionsValidationError(webpackOptionsValidationErrors));
                             }
                         }
 
-                        console.info(green(`\n✔︎ New webpack config file is at ${outputConfigPath}.`));
-                        console.info(green('✔︎ Heads up! Updating to the latest version could contain breaking changes.'));
+                        logger.success(`\n✔︎ New webpack config file is at ${outputConfigPath}.`);
+                        logger.success('✔︎ Heads up! Updating to the latest version could contain breaking changes.');
 
-                        console.info(green('✔︎ Plugin and loader dependencies may need to be updated.'));
+                        logger.success('✔︎ Plugin and loader dependencies may need to be updated.');
                     },
                 );
         })
         .catch((err: object): void => {
             const errMsg = '\n ✖ ︎Migration aborted due to some errors: \n';
-            console.error(red(errMsg));
-            console.error(err);
+            logger.error(errMsg);
+            logger.error(err);
             process.exitCode = 1;
         });
 }
@@ -175,7 +176,7 @@ export default function migrate(...args: string[]): void | Promise<void> {
     const filePaths = args;
     if (!filePaths.length) {
         const errMsg = '\n ✖ Please specify a path to your webpack config \n ';
-        console.error(red(errMsg));
+        logger.error(errMsg);
         return;
     }
 
@@ -194,7 +195,7 @@ export default function migrate(...args: string[]): void | Promise<void> {
             ])
             .then((ans: { confirmPath: boolean }): void | Promise<void> => {
                 if (!ans.confirmPath) {
-                    console.error(red('✖ ︎Migration aborted due to no output path'));
+                    logger.error('✖ ︎Migration aborted due to no output path');
                     return;
                 }
                 outputConfigPath = path.resolve(process.cwd(), filePaths[0]);

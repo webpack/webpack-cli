@@ -1,5 +1,5 @@
 const GroupHelper = require('../utils/GroupHelper');
-const { red } = require('colorette');
+const logger = require('../utils/logger');
 const { core, groups } = require('../utils/cli-flags');
 
 class BasicGroup extends GroupHelper {
@@ -39,7 +39,7 @@ class BasicGroup extends GroupHelper {
             if (arg === 'entry') {
                 options[arg] = this.resolveFilePath(args[arg], 'index.js');
                 if (options[arg].length === 0) {
-                    process.stdout.write(red('\nError: you provided an invalid entry point.\n'));
+                    logger.error('\nError: you provided an invalid entry point.\n');
                 }
             }
         });
