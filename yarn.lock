@@ -1045,9 +1045,9 @@
     yargs "^15.1.0"
 
 "@commitlint/config-lerna-scopes@^9.1.1":
-  version "9.1.1"
-  resolved "https://registry.yarnpkg.com/@commitlint/config-lerna-scopes/-/config-lerna-scopes-9.1.1.tgz#9598023dfff3bc268768476093b02e4293bcf1de"
-  integrity sha512-UZgbpRhnjE4W/RKkV7x822MvHY4iKH44M542GdgO5NJdojg95BpKV3AcGcV+gtxVeUpPW+pzrjMLh1eIfmUyhA==
+  version "9.1.2"
+  resolved "https://registry.yarnpkg.com/@commitlint/config-lerna-scopes/-/config-lerna-scopes-9.1.2.tgz#ff4d5248692573e6d1c8b8b499f0c660ab987235"
+  integrity sha512-pETpJUoXQZ65uZ9TLz1hOACoicV0dradr5vDgBAoZ48ZkYszQ38jSE4flTQeOFmYCqL91nUxFT0jKpxLMobpEQ==
   dependencies:
     import-from "3.0.0"
     resolve-pkg "2.0.0"
