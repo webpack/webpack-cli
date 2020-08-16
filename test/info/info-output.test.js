@@ -36,4 +36,10 @@ describe('basic info usage', () => {
         expect(stdout).toContain('## System:');
         expect(stderr).toHaveLength(0);
     });
+
+    it('shows a warning if an invalid value is supplied', () => {
+        const { stdout, stderr } = runInfo(['--output="unknown"'], __dirname);
+        expect(stderr).toContain(`[webpack-cli] "unknown" is not a valid value for output\n`);
+        expect(stdout).toBeTruthy();
+    });
 });
