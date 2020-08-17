@@ -39,7 +39,7 @@ class BasicGroup extends GroupHelper {
             if (arg === 'entry') {
                 options[arg] = this.resolveFilePath(args[arg], 'index.js');
                 if (options[arg].length === 0) {
-                    logger.error('\nError: you provided an invalid entry point.\n');
+                    logger.error('Error: you provided an invalid entry point.');
                 }
             }
         });
