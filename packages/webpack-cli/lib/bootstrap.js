@@ -7,20 +7,25 @@ const argParser = require('./utils/arg-parser');
 require('./utils/process-log');
 process.title = 'webpack-cli';
 
-const isCommandUsed = (commands) =>
+// Create a new instance of the CLI object
+const cli = new WebpackCLI();
+
+const isCommandUsed = (args) =>
     commands.find((cmd) => {
-        return process.argv.includes(cmd.name) || process.argv.includes(cmd.alias);
+        return args.includes(cmd.name) || args.includes(cmd.alias);
     });
 
-async function runCLI(cli, commandIsUsed) {
+async function runCLI(cliArgs) {
     let args;
+
+    const commandIsUsed = isCommandUsed(cliArgs);
     const runVersion = () => {
-        cli.runVersion(process.argv, commandIsUsed);
+        cli.runVersion(cliArgs, commandIsUsed);
     };
-    const parsedArgs = argParser(core, process.argv, false, process.title, cli.runHelp, runVersion, commands);
+    const parsedArgs = argParser(core, cliArgs, true, process.title, cli.runHelp, runVersion, commands);
 
     if (parsedArgs.unknownArgs.includes('help')) {
-        cli.runHelp(process.argv);
+        cli.runHelp(cliArgs);
         process.exit(0);
     }
 
@@ -55,7 +60,7 @@ async function runCLI(cli, commandIsUsed) {
             parsedArgs.unknownArgs.forEach((unknown) => {
                 logger.warn(`Unknown argument: ${unknown}`);
             });
-            cliExecuter();
+            await cliExecuter();
             return;
         }
         const parsedArgsOpts = parsedArgs.opts;
@@ -77,10 +82,10 @@ async function runCLI(cli, commandIsUsed) {
         } else if (err.name === 'ALREADY_SET') {
             const argsMap = {};
             const keysToDelete = [];
-            process.argv.forEach((arg, idx) => {
+            cliArgs.forEach((arg, idx) => {
                 const oldMapValue = argsMap[arg];
                 argsMap[arg] = {
-                    value: process.argv[idx],
+                    value: cliArgs[idx],
                     pos: idx,
                 };
                 // Swap idx of overridden value
@@ -92,8 +97,8 @@ async function runCLI(cli, commandIsUsed) {
             // Filter out the value for the overridden key
             const newArgKeys = Object.keys(argsMap).filter((arg) => !keysToDelete.includes(argsMap[arg].pos));
             // eslint-disable-next-line require-atomic-updates
-            process.argv = newArgKeys;
-            args = argParser('', core, process.argv);
+            cliArgs = newArgKeys;
+            args = argParser('', core, cliArgs);
             await cli.run(args.opts, core);
             process.stdout.write('\n');
             logger.warn('Duplicate flags found, defaulting to last set value');
@@ -104,6 +109,4 @@ async function runCLI(cli, commandIsUsed) {
     }
 }
 
-const commandIsUsed = isCommandUsed(commands);
-const cli = new WebpackCLI();
-runCLI(cli, commandIsUsed);
+module.exports = runCLI;

@@ -47,7 +47,7 @@ describe('CLI Executer', () => {
     it('runs enquirer options then runs webpack', async () => {
         await cliExecuter();
 
-        // ensure that the webpack runner is called
+        // ensure that the webpack runCLI is called
         expect(runner.mock.calls.length).toEqual(1);
         expect(runner.mock.calls[0]).toEqual([[], ['--config', 'test1', '--entry', 'test2', '--progress']]);
 
