@@ -1,5 +1,3 @@
-import Server from 'webpack-dev-server/lib/Server';
-
 /**
  *
  * Starts the devServer
@@ -10,6 +8,8 @@ import Server from 'webpack-dev-server/lib/Server';
  * @returns {Void}
  */
 export default function startDevServer(compiler, options): void {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const Server = require('webpack-dev-server/lib/Server');
     const firstWpOpt = compiler.compilers ? compiler.compilers[0].options : compiler.options;
     const devServerOptions = firstWpOpt.devServer || {};
 
