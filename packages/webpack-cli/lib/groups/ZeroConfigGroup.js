@@ -1,9 +1,7 @@
 const GroupHelper = require('../utils/GroupHelper');
-const logger = require('../utils/logger');
 
 const PRODUCTION = 'production';
 const DEVELOPMENT = 'development';
-const NONE = 'none';
 /**
  * ZeroConfigGroup creates a zero configuration based on the environment
  */
@@ -21,13 +19,8 @@ class ZeroConfigGroup extends GroupHelper {
             return process.env.NODE_ENV;
         } else {
             if (this.args.mode) {
-                if (this.args.mode !== PRODUCTION && this.args.mode !== DEVELOPMENT && this.args.mode !== NONE) {
-                    logger.warn('You provided an invalid value for "mode" option. Using "production" by default');
-                    return PRODUCTION;
-                }
                 return this.args.mode;
             }
-            return PRODUCTION;
         }
     }
 
