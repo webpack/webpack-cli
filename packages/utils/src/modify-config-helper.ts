@@ -86,7 +86,7 @@ export function modifyHelperUtil(
     } catch (err) {
         console.error(red('\nYour package.json was incorrectly formatted.\n'));
         Error.stackTraceLimit = 0;
-        process.exitCode = -1;
+        process.exitCode = 2;
     }
 
     env.registerStub(generator, generatorName);
@@ -108,7 +108,7 @@ export function modifyHelperUtil(
                     red("\nPlease make sure to use 'this.config.set('configuration', this.configuration);' at the end of the generator.\n"),
                 );
                 Error.stackTraceLimit = 0;
-                process.exitCode = -1;
+                process.exitCode = 2;
             }
             try {
                 // the configuration stored in .yo-rc.json should already be in the correct
@@ -126,7 +126,7 @@ export function modifyHelperUtil(
                     red('\nYour yeoman configuration file (.yo-rc.json) was incorrectly formatted. Deleting it may fix the problem.\n'),
                 );
                 Error.stackTraceLimit = 0;
-                process.exitCode = -1;
+                process.exitCode = 2;
             }
 
             const transformConfig = Object.assign(

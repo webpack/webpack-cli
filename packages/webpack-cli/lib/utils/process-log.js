@@ -2,7 +2,7 @@ const logger = require('./logger');
 
 function logErrorAndExit(error) {
     if (error && error.stack) logger.error(error.stack);
-    process.exit(1);
+    process.exit(error.exitCode);
 }
 
 process.on('uncaughtException', (error) => {
