@@ -261,6 +261,13 @@ module.exports = {
             group: CONFIG_GROUP,
             description: 'Environment passed to the configuration when it is a function',
         },
+        {
+            name: 'name',
+            usage: '--name',
+            type: String,
+            group: BASIC_GROUP,
+            description: 'Name of the configuration. Used when loading multiple configurations.',
+        },
         ...flagsFromCore,
         /* 		{
 			name: "analyze",
