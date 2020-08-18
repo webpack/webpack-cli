@@ -124,7 +124,7 @@ class ConfigGroup extends GroupHelper {
             const namedOptions = configOptions.filter((opt) => this.args.configName.includes(opt.name));
             if (namedOptions.length === 0) {
                 logger.error(`Configuration with name "${this.args.configName}" was not found.`);
-                process.exit(1);
+                process.exit(2);
             } else {
                 newOptionsObject['options'] = namedOptions;
             }
