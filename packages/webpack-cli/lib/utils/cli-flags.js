@@ -125,6 +125,14 @@ module.exports = {
             link: 'https://webpack.js.org/configuration/',
         },
         {
+            name: 'config-name',
+            usage: '--config-name <name of config>',
+            type: String,
+            multiple: true,
+            group: CONFIG_GROUP,
+            description: 'Name of the configuration to use',
+        },
+        {
             name: 'color',
             usage: '--color',
             type: Boolean,
