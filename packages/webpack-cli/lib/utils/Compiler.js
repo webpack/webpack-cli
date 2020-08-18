@@ -80,7 +80,7 @@ class Compiler {
             logger.error(err.stack || err);
             process.exit(1); // eslint-disable-line
         }
-        if (!outputOptions.watch && stats.hasErrors()) {
+        if (!outputOptions.watch && (stats.hasErrors() || stats.hasWarnings())) {
             process.exitCode = 1;
         }
         if (outputOptions.json) {
