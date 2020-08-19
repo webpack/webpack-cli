@@ -2,6 +2,8 @@ import { yellow } from 'colorette';
 import fs from 'fs';
 import prettier from 'prettier';
 
+import logger from 'webpack-cli/lib/utils/logger';
+
 /**
  *
  * Runs prettier and later prints the output configuration
@@ -22,9 +24,7 @@ export function runPrettier(outputPath: string, source: string): void {
             useTabs: true,
         });
     } catch (err) {
-        process.stdout.write(
-            `\n${yellow(`WARNING: Could not apply prettier to ${outputPath}` + ' due validation error, but the file has been created\n')}`,
-        );
+        logger.warn(`WARNING: Could not apply prettier to ${outputPath} due to validation error, but the file has been created\n`);
         prettySource = source;
     }
 
