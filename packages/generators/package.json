@@ -10,7 +10,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@webpack-cli/package-utils": "^1.0.1-alpha.4",
     "@webpack-cli/utils": "^1.0.1-alpha.5",
     "@webpack-cli/webpack-scaffold": "^1.0.1-alpha.4",
     "lodash": "4.17.19",
