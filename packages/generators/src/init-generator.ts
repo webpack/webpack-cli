@@ -1,5 +1,4 @@
 import { blue, green, bold } from 'colorette';
-import logger from 'webpack-cli/lib/utils/logger';
 import logSymbols from 'log-symbols';
 import path from 'path';
 import { getPackageManager } from '@webpack-cli/package-utils';
@@ -75,12 +74,12 @@ export default class InitGenerator extends CustomGenerator {
 
         this.usingDefaults = true;
 
-        logger.rawLog(
+        console.log(
             `\n${logSymbols.info}${blue(' INFO ')} ` +
                 'For more information and a detailed description of each question, have a look at: ' +
                 `${bold(green('https://github.com/webpack/webpack-cli/blob/master/INIT.md'))}\n`,
         );
-        logger.rawLog(`${logSymbols.info}${blue(' INFO ')} ` + 'Alternatively, run "webpack(-cli) --help" for usage info\n\n');
+        console.log(`${logSymbols.info}${blue(' INFO ')} ` + 'Alternatively, run "webpack(-cli) --help" for usage info\n\n');
 
         const { multiEntries } = await Confirm(
             self,

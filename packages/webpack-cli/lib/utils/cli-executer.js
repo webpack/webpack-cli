@@ -54,7 +54,7 @@ async function prompter() {
 async function run() {
     try {
         const args = await prompter();
-        logger.rawLog('\n');
+        console.log('\n');
         logger.info('Executing CLI\n');
         await runCLI(args);
     } catch (err) {

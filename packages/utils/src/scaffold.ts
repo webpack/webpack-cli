@@ -1,5 +1,4 @@
 import { green } from 'colorette';
-import logger from 'webpack-cli/lib/utils/logger';
 import j from 'jscodeshift';
 import pEachSeries = require('p-each-series');
 import path from 'path';
@@ -103,5 +102,5 @@ export function runTransform(transformConfig: TransformConfig, action: string, g
     if (initActionNotDefined && transformConfig.config.item) {
         successMessage = green(`Congratulations! ${transformConfig.config.item} has been ${action}ed!\n`);
     }
-    logger.rawLog(`\n${successMessage}`);
+    console.log(`\n${successMessage}`);
 }
