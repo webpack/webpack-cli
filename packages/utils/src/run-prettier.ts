@@ -1,7 +1,5 @@
-import { yellow } from 'colorette';
 import fs from 'fs';
 import prettier from 'prettier';
-
 import logger from 'webpack-cli/lib/utils/logger';
 
 /**
