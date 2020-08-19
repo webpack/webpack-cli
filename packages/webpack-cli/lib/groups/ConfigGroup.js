@@ -1,5 +1,5 @@
 const { existsSync } = require('fs');
-const { resolve, sep, dirname, parse } = require('path');
+const { resolve, sep, dirname, extname } = require('path');
 const webpackMerge = require('webpack-merge');
 const { extensions, jsVariants } = require('interpret');
 const GroupHelper = require('../utils/GroupHelper');
@@ -42,7 +42,7 @@ const getDefaultConfigFiles = () => {
 };
 
 const getConfigInfoFromFileName = (filename) => {
-    const { ext } = parse(filename);
+    const ext = extname(filename);
     // since we support only one config for now
     const allFiles = [filename];
     // return all the file metadata
