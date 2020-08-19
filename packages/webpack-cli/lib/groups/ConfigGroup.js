@@ -4,7 +4,7 @@ const webpackMerge = require('webpack-merge');
 const { extensions, jsVariants } = require('interpret');
 const GroupHelper = require('../utils/GroupHelper');
 const rechoir = require('rechoir');
-const MergeError = require('../utils/errors/MergeError');
+const ConfigError = require('../utils/errors/ConfigError');
 const logger = require('../utils/logger');
 
 // Order defines the priority, in increasing order
@@ -157,11 +157,7 @@ class ConfigGroup extends GroupHelper {
             const configPath = resolve(process.cwd(), config);
             const configFiles = getConfigInfoFromFileName(configPath);
             if (!configFiles.length) {
-                this.opts.processingMessageBuffer.push({
-                    lvl: 'warn',
-                    msg: `Configuration ${config} not found in ${configPath}`,
-                });
-                return;
+                throw new ConfigError(`The specified config file doesn't exist in ${configPath}`);
             }
             const foundConfig = configFiles[0];
             const resolvedConfig = this.requireConfig(foundConfig);
@@ -196,7 +192,7 @@ class ConfigGroup extends GroupHelper {
             const newConfigPath = this.resolveFilePath(merge);
 
             if (!newConfigPath) {
-                throw new MergeError("The supplied merge config doesn't exist.");
+                throw new ConfigError("The supplied merge config doesn't exist.", 'MergeError');
             }
 
             const configFiles = getConfigInfoFromFileName(newConfigPath);
