@@ -1,6 +1,7 @@
 import { blue, green, bold } from 'colorette';
 import logSymbols from 'log-symbols';
 import path from 'path';
+// eslint-disable-next-line node/no-extraneous-import
 import { getPackageManager } from '@webpack-cli/package-utils';
 import { Confirm, Input, List } from '@webpack-cli/webpack-scaffold';
 

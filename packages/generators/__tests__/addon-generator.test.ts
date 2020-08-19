@@ -6,6 +6,7 @@ import fs from 'fs';
 import path from 'path';
 import mkdirp from 'mkdirp';
 import rimraf from 'rimraf';
+// eslint-disable-next-line node/no-extraneous-import
 import { getPackageManager } from '@webpack-cli/package-utils';
 import addonGenerator from '../src/addon-generator';
 
