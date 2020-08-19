@@ -1,5 +1,6 @@
-import { red, green } from 'colorette';
+import { green } from 'colorette';
 import fs from 'fs';
+import logger from 'webpack-cli/lib/utils/logger';
 import path from 'path';
 import yeoman from 'yeoman-environment';
 import Generator from 'yeoman-generator';
@@ -84,7 +85,8 @@ export function modifyHelperUtil(
             }
         }
     } catch (err) {
-        console.error(red('\nYour package.json was incorrectly formatted.\n'));
+        console.log('\n');
+        logger.error('Your package.json was incorrectly formatted.\n');
         Error.stackTraceLimit = 0;
         process.exitCode = 2;
     }
@@ -103,9 +105,10 @@ export function modifyHelperUtil(
                 const confPath = path.resolve(process.cwd(), '.yo-rc.json');
                 configModule = require(confPath);
             } catch (err) {
-                console.error(red('\nCould not find a yeoman configuration file (.yo-rc.json).\n'));
-                console.error(
-                    red("\nPlease make sure to use 'this.config.set('configuration', this.configuration);' at the end of the generator.\n"),
+                console.log('\n');
+                logger.error('Could not find a yeoman configuration file (.yo-rc.json).\n\n');
+                logger.error(
+                    "Please make sure to use 'this.config.set('configuration', this.configuration);' at the end of the generator.\n",
                 );
                 Error.stackTraceLimit = 0;
                 process.exitCode = 2;
@@ -120,11 +123,10 @@ export function modifyHelperUtil(
                     finalConfig = configModule[packageName].configuration;
                 }
             } catch (err) {
-                console.error(err);
-                console.error(err.stack);
-                console.error(
-                    red('\nYour yeoman configuration file (.yo-rc.json) was incorrectly formatted. Deleting it may fix the problem.\n'),
-                );
+                logger.error(err);
+                logger.error(err.stack);
+                console.log('\n');
+                logger.error('Your yeoman configuration file (.yo-rc.json) was incorrectly formatted. Deleting it may fix the problem.\n');
                 Error.stackTraceLimit = 0;
                 process.exitCode = 2;
             }
@@ -139,22 +141,21 @@ export function modifyHelperUtil(
             if (finalConfig.usingDefaults && finalConfig.usingDefaults === true) {
                 const runCommand = getPackageManager() === 'yarn' ? 'yarn build' : 'npm run build';
 
-                const successMessage = `\nYou can now run ${green(runCommand)} to bundle your application!\n\n`;
-                console.log(`\n${successMessage}`);
+                const successMessage = `You can now run ${green(runCommand)} to bundle your application!\n\n`;
+                console.log('\n');
+                logger.log(successMessage);
             }
 
             // scaffold webpack config file from using .yo-rc.json
             return runTransform(transformConfig, 'init', generateConfig);
         })
         .catch((err): void => {
-            console.error(
-                red(
-                    `
+            logger.error(
+                `
 Unexpected Error
 please file an issue here https://github.com/webpack/webpack-cli/issues/new?template=Bug_report.md
 				`,
-                ),
             );
-            console.error(err);
+            logger.error(err);
         });
 }

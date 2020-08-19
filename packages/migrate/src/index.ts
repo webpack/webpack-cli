@@ -202,7 +202,7 @@ export default function migrate(...args: string[]): void | Promise<void> {
                 return runMigration(currentConfigPath, outputConfigPath);
             })
             .catch((err: object): void => {
-                console.error(err);
+                logger.error(err);
             });
     }
     outputConfigPath = path.resolve(process.cwd(), filePaths[1]);

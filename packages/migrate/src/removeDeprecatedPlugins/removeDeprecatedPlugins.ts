@@ -1,5 +1,7 @@
 import { red, underline } from 'colorette';
 
+import logger from 'webpack-cli/lib/utils/logger';
+
 import { findPluginsByName, isType, safeTraverse } from '@webpack-cli/utils';
 
 import { JSCodeshift, Node } from '../types/NodePath';
@@ -34,7 +36,7 @@ export default function (j: JSCodeshift, ast: Node): Node {
                 j(path).remove();
             }
         } else {
-            console.log(`
+            logger.log(`
 ${red('Please remove deprecated plugins manually. ')}
 See ${underline('https://webpack.js.org/guides/migrating/')} for more information.`);
         }

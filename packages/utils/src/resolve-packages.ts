@@ -1,4 +1,5 @@
-import { red, bold } from 'colorette';
+import { bold } from 'colorette';
+import logger from 'webpack-cli/lib/utils/logger';
 import path from 'path';
 import { modifyHelperUtil } from './modify-config-helper';
 import { getPathToGlobalPackages, spawnChild } from '@webpack-cli/package-utils';
@@ -57,9 +58,9 @@ export function resolvePackages(pkg: string[]): Function | void {
                 require.resolve(absolutePath);
                 packageLocations.push(absolutePath);
             } catch (err) {
-                console.error(`Cannot find a generator at ${absolutePath}.`);
-                console.error('\nReason:\n');
-                console.error(bold(red(err)));
+                logger.error(`Cannot find a generator at ${absolutePath}.\n`);
+                logger.error('Reason:\n');
+                logger.error(bold(err));
                 process.exitCode = 1;
             }
 
@@ -74,17 +75,17 @@ export function resolvePackages(pkg: string[]): Function | void {
                     const globalPath: string = getPathToGlobalPackages();
                     packageLocations.push(path.resolve(globalPath, scaffold));
                 } catch (err) {
-                    console.error("Package wasn't validated correctly..");
-                    console.error('Submit an issue for', pkg, 'if this persists');
-                    console.error('\nReason: \n');
-                    console.error(bold(red(err)));
+                    logger.error("Package wasn't validated correctly..");
+                    logger.error('Submit an issue for', pkg, 'if this persists\n');
+                    logger.error('Reason: \n');
+                    logger.error(bold(err));
                     process.exitCode = 1;
                 }
             })
             .catch((err: string): void => {
-                console.error("Package couldn't be installed, aborting..");
-                console.error('\nReason: \n');
-                console.error(bold(red(err)));
+                logger.error("Package couldn't be installed, aborting..\n");
+                logger.error('Reason: \n');
+                logger.error(bold(err));
                 process.exitCode = 1;
             })
             .then(invokeGeneratorIfReady);

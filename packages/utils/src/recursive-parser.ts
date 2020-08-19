@@ -1,12 +1,14 @@
 import { parseTopScope, findRootNodesByName, addProperty, removeProperty, parseMerge, safeTraverse } from './ast-utils';
 import { JSCodeshift, Node, valueType } from './types/NodePath';
 
+import logger from 'webpack-cli/lib/utils/logger';
+
 export function recursiveTransform(j: JSCodeshift, ast: Node, key: string, value: valueType, action: string): boolean | Node {
     if (key === 'topScope') {
         if (Array.isArray(value)) {
             return parseTopScope(j, ast, value, action);
         }
-        console.error('Error in parsing top scope, Array required');
+        logger.error('Error in parsing top scope, Array required');
         return false;
     } else if (key === 'merge') {
         if (Array.isArray(value)) {
