@@ -41,6 +41,6 @@ describe('entry flag', () => {
 
     it('should throw error for invalid entry file', () => {
         const { stderr } = run(__dirname, ['--entry', './src/test.js']);
-        expect(stderr).toBeTruthy();
+        expect(stderr).toContain('Error: you provided an invalid entry point.');
     });
 });
