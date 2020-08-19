@@ -98,7 +98,6 @@ class ConfigGroup extends GroupHelper {
         const newOptionsObject = {
             outputOptions: {},
             options: {},
-            processingMessageBuffer: [],
         };
 
         if (!moduleObj) {

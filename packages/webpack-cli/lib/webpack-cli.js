@@ -12,7 +12,6 @@ class WebpackCLI extends GroupHelper {
         this.groupMap = new Map();
         this.groups = [];
         this.args = {};
-        this.processingMessageBuffer = [];
         this.compilation = new Compiler();
         this.defaultEntry = 'index';
         this.possibleFileNames = [
@@ -187,19 +186,6 @@ class WebpackCLI extends GroupHelper {
     }
 
     /**
-     * Responsible for updating the buffer
-     *
-     * @param {string[]} messageBuffer The current buffer message
-     * @private
-     * @returns {void}
-     */
-    _mergeProcessingMessageBuffer(messageBuffer) {
-        if (messageBuffer) {
-            this.processingMessageBuffer = this.processingMessageBuffer.concat(...messageBuffer);
-        }
-    }
-
-    /**
      * It receives a group helper, it runs and it merges its result inside
      * the file result that will be passed to the compiler
      *
@@ -212,7 +198,6 @@ class WebpackCLI extends GroupHelper {
             const result = await groupHelper.run();
             this._mergeOptionsToConfiguration(result.options, groupHelper.strategy);
             this._mergeOptionsToOutputConfiguration(result.outputOptions);
-            this._mergeProcessingMessageBuffer(result.processingMessageBuffer);
         }
     }
 
@@ -270,7 +255,6 @@ class WebpackCLI extends GroupHelper {
         const webpack = await this.compilation.webpackInstance({
             options: this.compilerConfiguration,
             outputOptions: this.outputConfiguration,
-            processingMessageBuffer: this.processingMessageBuffer,
         });
         return webpack;
     }
