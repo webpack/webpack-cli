@@ -5,6 +5,7 @@ const { extensions, jsVariants } = require('interpret');
 const GroupHelper = require('../utils/GroupHelper');
 const rechoir = require('rechoir');
 const MergeError = require('../utils/errors/MergeError');
+const logger = require('../utils/logger');
 
 // Order defines the priority, in increasing order
 // example - config file lookup will be in order of .webpack/webpack.config.development.js -> webpack.config.development.js -> webpack.config.js
@@ -117,6 +118,16 @@ class ConfigGroup extends GroupHelper {
             const newOptions = configOptions(formattedEnv, argv);
             // When config function returns a promise, resolve it, if not it's resolved by default
             newOptionsObject['options'] = await Promise.resolve(newOptions);
+        } else if (Array.isArray(configOptions) && this.args.configName) {
+            // In case of exporting multiple configurations, If you pass a name to --config-name flag,
+            // webpack will only build that specific configuration.
+            const namedOptions = configOptions.filter((opt) => this.args.configName.includes(opt.name));
+            if (namedOptions.length === 0) {
+                logger.error(`Configuration with name "${this.args.configName}" was not found.`);
+                process.exit(2);
+            } else {
+                newOptionsObject['options'] = namedOptions;
+            }
         } else {
             if (Array.isArray(configOptions) && !configOptions.length) {
                 newOptionsObject['options'] = {};
