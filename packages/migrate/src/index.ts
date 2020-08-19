@@ -93,9 +93,9 @@ function runMigration(currentConfigPath: string, outputConfigPath: string): Prom
 
             diffOutput.forEach((diffLine: Change): void => {
                 if (diffLine.added) {
-                    console.log(green(`+ ${diffLine.value}`));
+                    logger.rawLog(green(`+ ${diffLine.value}`));
                 } else if (diffLine.removed) {
-                    console.log(red(`- ${diffLine.value}`));
+                    logger.rawLog(red(`- ${diffLine.value}`));
                 }
             });
 

@@ -1,5 +1,6 @@
 import { red, green } from 'colorette';
 import fs from 'fs';
+import logger from 'webpack-cli/lib/utils/logger';
 import path from 'path';
 import yeoman from 'yeoman-environment';
 import Generator from 'yeoman-generator';
@@ -140,7 +141,7 @@ export function modifyHelperUtil(
                 const runCommand = getPackageManager() === 'yarn' ? 'yarn build' : 'npm run build';
 
                 const successMessage = `\nYou can now run ${green(runCommand)} to bundle your application!\n\n`;
-                process.stdout.write(`\n${successMessage}`);
+                logger.rawLog(`\n${successMessage}`);
             }
 
             // scaffold webpack config file from using .yo-rc.json

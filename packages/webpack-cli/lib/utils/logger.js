@@ -6,5 +6,5 @@ module.exports = {
     info: (val) => console.info(`[webpack-cli] ${cyan(val)}`),
     success: (val) => console.log(`[webpack-cli] ${green(val)}`),
     log: (val) => console.log(`[webpack-cli] ${val}`),
-    help: (val) => console.log(val),
+    rawLog: (val) => console.log(val),
 };
