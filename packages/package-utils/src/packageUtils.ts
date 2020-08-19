@@ -98,5 +98,5 @@ export async function promptInstallation(packageName: string, preMessage?: Funct
         return exports.packageExists(packageName);
     }
     // eslint-disable-next-line require-atomic-updates
-    process.exitCode = -1;
+    process.exitCode = 2;
 }

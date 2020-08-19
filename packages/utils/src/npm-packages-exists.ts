@@ -61,7 +61,7 @@ export function npmPackagesExists(pkg: string[]): void {
             .catch((err: Error): void => {
                 console.error(err.stack || err);
                 // eslint-disable-next-line no-process-exit
-                process.exit(0);
+                process.exit(2);
             })
             .then(resolvePackagesIfReady);
     });
