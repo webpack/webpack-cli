@@ -80,6 +80,9 @@ class Compiler {
             logger.error(err.stack || err);
             process.exit(1); // eslint-disable-line
         }
+        if (!outputOptions.watch && (stats.hasErrors() || stats.hasWarnings())) {
+            process.exitCode = 1;
+        }
         if (outputOptions.json) {
             process.stdout.write(JSON.stringify(stats.toJson(outputOptions), null, 2) + '\n');
         } else if (stats.hash !== lastHash) {
@@ -92,9 +95,6 @@ class Compiler {
                 });
             }
             return this.generateOutput(outputOptions, stats, statsErrors);
-        }
-        if (!outputOptions.watch && stats.hasErrors()) {
-            process.exitCode = 2;
         }
     }
 
