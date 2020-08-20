@@ -33,7 +33,7 @@ let flagsFromCore =
         : [];
 
 // duplicate flags
-const duplicateFlags = ['entry', 'mode', 'stats', 'watch', 'target', 'devtool'];
+const duplicateFlags = ['entry', 'mode', 'stats', 'watch', 'target', 'devtool', 'name'];
 
 flagsFromCore = flagsFromCore.filter((flag) => !duplicateFlags.includes(flag.name));
 
