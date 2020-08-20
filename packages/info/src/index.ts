@@ -61,6 +61,6 @@ export default async function info(...args): Promise<string[]> {
     output = output.replace(/npmGlobalPackages/g, 'Global Packages');
 
     const finalOutput = output;
-    console.log(finalOutput + '\n');
+    logger.raw(finalOutput + '\n');
     return finalOutput;
 }

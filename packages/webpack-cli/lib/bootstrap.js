@@ -100,7 +100,7 @@ async function runCLI(cliArgs) {
             cliArgs = newArgKeys;
             args = argParser('', core, cliArgs);
             await cli.run(args.opts, core);
-            console.log('\n');
+            logger.raw('\n');
             logger.warn('Duplicate flags found, defaulting to last set value');
         } else {
             logger.error(err);
