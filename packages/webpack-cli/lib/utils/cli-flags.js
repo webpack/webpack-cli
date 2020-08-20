@@ -232,6 +232,14 @@ const core = [
         group: BASIC_GROUP,
         description: 'Name of the configuration. Used when loading multiple configurations.',
     },
+    {
+        name: 'config-name',
+        usage: '--config-name <name of config>',
+        type: String,
+        multiple: true,
+        group: CONFIG_GROUP,
+        description: 'Name of the configuration to use',
+    },
     /* 		{
         name: "analyze",
         type: Boolean,
