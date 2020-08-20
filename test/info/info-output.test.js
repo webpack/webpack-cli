@@ -1,6 +1,8 @@
 /* eslint-disable space-before-function-paren */
 'use strict';
 
+const { red } = require('colorette');
+
 const { runInfo } = require('../utils/test-utils');
 
 describe('basic info usage', () => {
@@ -35,5 +37,11 @@ describe('basic info usage', () => {
         const { stdout, stderr } = runInfo(['--output="markdown"'], __dirname);
         expect(stdout).toContain('## System:');
         expect(stderr).toHaveLength(0);
+    });
+
+    it('shows a warning if an invalid value is supplied', () => {
+        const { stdout, stderr } = runInfo(['--output="unknown"'], __dirname);
+        expect(stderr).toContain(`[webpack-cli] ${red(`"unknown" is not a valid value for output\n`)}`);
+        expect(stdout).toBeTruthy();
     });
 });
