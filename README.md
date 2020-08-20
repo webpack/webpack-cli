@@ -108,5 +108,5 @@ If you like **webpack**, please consider donating to our [Open Collective](https
 [npm-url]: https://www.npmjs.com/package/webpack-cli
 [maintainability]: https://codeclimate.com/github/webpack/webpack-cli/badges/gpa.svg
 [maintainability-url]: https://codeclimate.com/github/webpack/webpack-cli
-[size]: https://packagephobia.now.sh/badge?p=webpack-cli
-[size-url]: https://packagephobia.now.sh/result?p=webpack-cli
+[size]: https://packagephobia.com/badge?p=webpack-cli
+[size-url]: https://packagephobia.com/result?p=webpack-cli
