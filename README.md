@@ -119,7 +119,7 @@ If you like **webpack**, please consider donating to our [Open Collective](https
 [build-status-url]: https://github.com/webpack/webpack-cli/actions
 [deps]: https://img.shields.io/david/webpack/webpack.svg
 [deps-url]: https://david-dm.org/webpack/webpack-cli
-[size]: https://packagephobia.now.sh/badge?p=webpack-cli
-[size-url]: https://packagephobia.now.sh/result?p=webpack-cli
+[size]: https://packagephobia.com/badge?p=webpack-cli
+[size-url]: https://packagephobia.com/result?p=webpack-cli
 [chat]: https://badges.gitter.im/webpack/webpack.svg
 [chat-url]: https://gitter.im/webpack/webpack
