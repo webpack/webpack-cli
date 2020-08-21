@@ -33,6 +33,9 @@ class BasicGroup extends GroupHelper {
             if (arg === 'devtool') {
                 options.devtool = args[arg];
             }
+            if (arg === 'name') {
+                options.name = args[arg];
+            }
             if (arg === 'entry') {
                 options[arg] = this.resolveFilePath(args[arg], 'index.js');
                 if (options[arg].length === 0) {
