@@ -143,15 +143,28 @@ class ConfigGroup extends GroupHelper {
 
     async resolveConfigFiles() {
         const { config, mode } = this.args;
-        if (config) {
-            const configPath = resolve(process.cwd(), config);
-            const configFiles = getConfigInfoFromFileName(configPath);
-            if (!configFiles.length) {
-                throw new ConfigError(`The specified config file doesn't exist in ${configPath}`);
+        if (config.length) {
+            const resolvedOptions = [];
+            const configPromises = [];
+            config.forEach(async (webpackConfig) => {
+                const configPath = resolve(process.cwd(), webpackConfig);
+                const configFiles = getConfigInfoFromFileName(configPath);
+                if (!configFiles.length) {
+                    throw new ConfigError(`The specified config file doesn't exist in ${configPath}`);
+                }
+                const foundConfig = configFiles[0];
+                const resolvedConfig = this.requireConfig(foundConfig);
+                const finalOptions = this.finalize(resolvedConfig);
+                configPromises.push(finalOptions);
+            });
+            for await (const aconfig of configPromises) {
+                if (Array.isArray(aconfig.options)) {
+                    resolvedOptions.push(...aconfig.options);
+                } else {
+                    resolvedOptions.push(aconfig.options);
+                }
             }
-            const foundConfig = configFiles[0];
-            const resolvedConfig = this.requireConfig(foundConfig);
-            this.opts = await this.finalize(resolvedConfig);
+            this.opts = { outputOptions: {}, options: resolvedOptions.length ? resolvedOptions : {} };
             return;
         }
 
