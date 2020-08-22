@@ -143,7 +143,7 @@ class ConfigGroup extends GroupHelper {
 
     async resolveConfigFiles() {
         const { config, mode } = this.args;
-        if (config.length) {
+        if (config.length > 0) {
             const resolvedOptions = [];
             const finalizedConfigs = config.map(async (webpackConfig) => {
                 const configPath = resolve(process.cwd(), webpackConfig);
