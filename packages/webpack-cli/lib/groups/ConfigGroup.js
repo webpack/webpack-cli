@@ -145,8 +145,7 @@ class ConfigGroup extends GroupHelper {
         const { config, mode } = this.args;
         if (config.length) {
             const resolvedOptions = [];
-            const configPromises = [];
-            config.forEach(async (webpackConfig) => {
+            const finalizedConfigs = config.map(async (webpackConfig) => {
                 const configPath = resolve(process.cwd(), webpackConfig);
                 const configFiles = getConfigInfoFromFileName(configPath);
                 if (!configFiles.length) {
@@ -154,20 +153,24 @@ class ConfigGroup extends GroupHelper {
                 }
                 const foundConfig = configFiles[0];
                 const resolvedConfig = this.requireConfig(foundConfig);
-                const finalOptions = this.finalize(resolvedConfig);
-                configPromises.push(finalOptions);
+                return this.finalize(resolvedConfig);
             });
-            for await (const aconfig of configPromises) {
-                if (Array.isArray(aconfig.options)) {
-                    resolvedOptions.push(...aconfig.options);
+            // resolve all the configs
+            for await (const resolvedOption of finalizedConfigs) {
+                if (Array.isArray(resolvedOption.options)) {
+                    resolvedOptions.push(...resolvedOption.options);
                 } else {
-                    resolvedOptions.push(aconfig.options);
+                    resolvedOptions.push(resolvedOption.options);
                 }
             }
-            this.opts = { outputOptions: {}, options: resolvedOptions.length > 1 ? resolvedOptions : resolvedOptions[0] || {} };
+            // When the resolved configs are more then 1, then pass them as Array [{...}, {...}] else pass the first config object {...}
+            const finalOptions = resolvedOptions.length > 1 ? resolvedOptions : resolvedOptions[0] || {};
+
+            this.opts['options'] = finalOptions;
             return;
         }
 
+        // When no config is supplied, lookup for default configs
         const defaultConfigFiles = getDefaultConfigFiles();
         const tmpConfigFiles = defaultConfigFiles.filter((file) => {
             return existsSync(file.path);
