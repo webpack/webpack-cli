@@ -164,7 +164,7 @@ class ConfigGroup extends GroupHelper {
                     resolvedOptions.push(aconfig.options);
                 }
             }
-            this.opts = { outputOptions: {}, options: resolvedOptions.length ? resolvedOptions : {} };
+            this.opts = { outputOptions: {}, options: resolvedOptions.length > 1 ? resolvedOptions : resolvedOptions[0] || {} };
             return;
         }
 
@@ -188,9 +188,8 @@ class ConfigGroup extends GroupHelper {
 
     async resolveConfigMerging() {
         // eslint-disable-next-line no-prototype-builtins
-        if (Object.keys(this.args).some((arg) => arg === 'merge')) {
-            const { merge } = this.args;
-
+        const { merge } = this.args;
+        if (merge) {
             // try resolving merge config
             const newConfigPath = this.resolveFilePath(merge);
 
@@ -202,7 +201,17 @@ class ConfigGroup extends GroupHelper {
             const foundConfig = configFiles[0];
             const resolvedConfig = this.requireConfig(foundConfig);
             const newConfigurationsObject = await this.finalize(resolvedConfig);
-            this.opts['options'] = webpackMerge(this.opts['options'], newConfigurationsObject.options);
+            let resolvedOptions = this.opts['options'];
+            let mergedOptions;
+            if (Array.isArray(resolvedOptions)) {
+                mergedOptions = [];
+                resolvedOptions.forEach((resolvedOption) => {
+                    mergedOptions.push(webpackMerge(resolvedOption, newConfigurationsObject.options));
+                });
+            } else {
+                mergedOptions = webpackMerge(resolvedOptions, newConfigurationsObject.options);
+            }
+            this.opts['options'] = mergedOptions;
         }
     }
 
