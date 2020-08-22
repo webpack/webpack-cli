@@ -33,6 +33,7 @@ const basicOptions = [
     },
     {
         name: 'string-flag',
+        alias: 's',
         usage: '--string-flag <value>',
         type: String,
         description: 'string flag',
@@ -140,6 +141,16 @@ describe('arg-parser', () => {
         expect(res.unknownArgs.length).toEqual(0);
         expect(res.opts).toEqual({
             boolFlag: true,
+            stringFlagWithDefault: 'default-value',
+        });
+        expect(warnMock.mock.calls.length).toEqual(0);
+    });
+
+    it('parses string flag alias', () => {
+        const res = argParser(basicOptions, ['-s', 'string-value'], true);
+        expect(res.unknownArgs.length).toEqual(0);
+        expect(res.opts).toEqual({
+            stringFlag: 'string-value',
             stringFlagWithDefault: 'default-value',
         });
         expect(warnMock.mock.calls.length).toEqual(0);
