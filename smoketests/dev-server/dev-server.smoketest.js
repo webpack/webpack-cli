@@ -11,7 +11,7 @@ const assert = require('assert');
     const argsWithOutput = ['serve'].concat('--output', outputPath);
     const WEBPACK_PATH = path.resolve(__dirname, '../../packages/webpack-cli/bin/cli.js');
 
-    const ls = spawn(WEBPACK_PATH, argsWithOutput);
+    const ls = spawn(WEBPACK_PATH, argsWithOutput, { cwd: path.resolve(process.cwd(), './dev-server') });
 
     ls.stdout.on('data', (data) => {
         console.log(`stdout: ${data}`);
@@ -33,8 +33,8 @@ const assert = require('assert');
         process.exit(1);
     });
 
-    process.on('unhandledRejection', () => {
-        console.error('Promise Error in dev-server, exiting...');
+    process.on('unhandledRejection', (err) => {
+        console.error('Promise Error in dev-server, exiting...', err);
         process.exit(1);
         // Application specific logging, throwing an error, or other logic here
     });

@@ -27,7 +27,10 @@ module.exports = {
     path: path.resolve(__dirname, './dist'),
     filename: 'index_bundle.js'
   },
-  plugins: [new HtmlWebpackPlugin()]
+  plugins: [new HtmlWebpackPlugin()],
+  devServer: {
+      port: 3000
+  }
 };
 EOL
 
@@ -51,6 +54,7 @@ for i in "${test_folders[@]}"; do
     for j in `seq 1 $iterations`; do
         echo "============================ ITERATION: $j/$iterations  ====================================="
         ls ./dev-server/*.smoketest.js | xargs -I{} echo "Running:" {} | tee /dev/tty | cut -d':' -f 2 | xargs -I{} node {}
+        sudo lsof -i :3000 | awk '{print $2}' | grep -v "PID" | xargs -I{} kill {} -9
         if [ "$?" != "0" ]; then
             teardown
         fi
