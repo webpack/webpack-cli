@@ -10,6 +10,9 @@ import startDevServer from './startDevServer';
  * @returns {Function} invokes the devServer API
  */
 export default function serve(...args: string[]): void {
+    // var err = new Error();
+    // console.log(err.stack);
+
     let devServerFlags: object[];
     try {
         devServerFlags = require('webpack-dev-server/bin/cli-flags').devServer;

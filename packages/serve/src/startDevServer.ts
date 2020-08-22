@@ -7,15 +7,15 @@ import mergeOptions from './mergeOptions';
  * Starts the devServer
  *
  * @param {Object} compiler - a webpack compiler
- * @param {Object} args - devServer args
+ * @param {Object} devServerArgs - devServer args
  *
  * @returns {Void}
  */
-export default function startDevServer(compiler, args): void {
+export default function startDevServer(compiler, devServerArgs): void {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const Server = require('webpack-dev-server/lib/Server');
-    const cliOptions = createConfig(args);
-    const devServerOptions = getDevServerOptions(compiler, args);
+    const cliOptions = createConfig(devServerArgs);
+    const devServerOptions = getDevServerOptions(compiler);
 
     const usedPorts: number[] = [];
     devServerOptions.forEach((devServerOpts): void => {
@@ -28,7 +28,7 @@ export default function startDevServer(compiler, args): void {
 
         if (usedPorts.find((port) => portNum === port)) {
             throw new Error(
-                'Unique ports must be specified for each devServer option in your webpack configuration. Alternatively, run only 1 devServer config using the --name flag to specify your desired config.',
+                'Unique ports must be specified for each devServer option in your webpack configuration. Alternatively, run only 1 devServer config using the --config-name flag to specify your desired config.',
             );
         }
         usedPorts.push(portNum);

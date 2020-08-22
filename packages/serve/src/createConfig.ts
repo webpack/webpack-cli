@@ -25,10 +25,5 @@ export default function createConfig(args): devServerOptionsType {
         delete options.hotOnly;
     }
 
-    // name is a valid CLI flag, but not a devServer option
-    if (options.name) {
-        delete options.name;
-    }
-
     return options;
 }
