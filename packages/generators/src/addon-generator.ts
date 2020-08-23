@@ -1,7 +1,6 @@
 import mkdirp from 'mkdirp';
 import path from 'path';
 import Generator from 'yeoman-generator';
-// eslint-disable-next-line node/no-extraneous-import
 import { getPackageManager } from '@webpack-cli/package-utils';
 import { generatorCopy, generatorCopyTpl } from '@webpack-cli/utils';
 
