@@ -1,8 +1,8 @@
-jest.mock('../lib/runner');
+jest.mock('../lib/bootstrap');
 jest.mock('enquirer');
 
-const runner = require('../lib/runner');
-runner.mockImplementation(() => {});
+const runCLI = require('../lib/bootstrap');
+runCLI.mockImplementation(() => {});
 
 describe('CLI Executer', () => {
     let cliExecuter = null;
@@ -48,8 +48,8 @@ describe('CLI Executer', () => {
         await cliExecuter();
 
         // ensure that the webpack runCLI is called
-        expect(runner.mock.calls.length).toEqual(1);
-        expect(runner.mock.calls[0]).toEqual([[], ['--config', 'test1', '--entry', 'test2', '--progress']]);
+        expect(runCLI.mock.calls.length).toEqual(1);
+        expect(runCLI.mock.calls[0][0]).toEqual(['--config', 'test1', '--entry', 'test2', '--progress']);
 
         // check that webpack options are actually being displayed that
         // the user can select from

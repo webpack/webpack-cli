@@ -68,7 +68,7 @@ class Compiler {
         }
     }
 
-    compilerCallback(err, stats, lastHash, options, outputOptions, processingMessageBuffer) {
+    compilerCallback(err, stats, lastHash, options, outputOptions) {
         const statsErrors = [];
 
         if (!outputOptions.watch || err) {
@@ -79,6 +79,9 @@ class Compiler {
             lastHash = null;
             logger.error(err.stack || err);
             process.exit(1); // eslint-disable-line
+        }
+        if (!outputOptions.watch && (stats.hasErrors() || stats.hasWarnings())) {
+            process.exitCode = 1;
         }
         if (outputOptions.json) {
             process.stdout.write(JSON.stringify(stats.toJson(outputOptions), null, 2) + '\n');
@@ -91,26 +94,23 @@ class Compiler {
                     statsErrors.push({ name: statErr.message, loc: errLoc });
                 });
             }
-            return this.generateOutput(outputOptions, stats, statsErrors, processingMessageBuffer);
-        }
-        if (!outputOptions.watch && stats.hasErrors()) {
-            process.exitCode = 2;
+            return this.generateOutput(outputOptions, stats, statsErrors);
         }
     }
 
-    async invokeCompilerInstance(lastHash, options, outputOptions, processingMessageBuffer) {
+    async invokeCompilerInstance(lastHash, options, outputOptions) {
         // eslint-disable-next-line  no-async-promise-executor
         return new Promise(async (resolve) => {
             await this.compiler.run((err, stats) => {
-                const content = this.compilerCallback(err, stats, lastHash, options, outputOptions, processingMessageBuffer);
+                const content = this.compilerCallback(err, stats, lastHash, options, outputOptions);
                 resolve(content);
             });
         });
     }
 
-    async invokeWatchInstance(lastHash, options, outputOptions, watchOptions, processingMessageBuffer) {
+    async invokeWatchInstance(lastHash, options, outputOptions, watchOptions) {
         return this.compiler.watch(watchOptions, (err, stats) => {
-            return this.compilerCallback(err, stats, lastHash, options, outputOptions, processingMessageBuffer);
+            return this.compilerCallback(err, stats, lastHash, options, outputOptions);
         });
     }
 
@@ -131,7 +131,7 @@ class Compiler {
     }
 
     async webpackInstance(opts) {
-        const { outputOptions, processingMessageBuffer, options } = opts;
+        const { outputOptions, options } = opts;
         const lastHash = null;
 
         const { ProgressPlugin } = webpack;
@@ -141,7 +141,7 @@ class Compiler {
 
         if (outputOptions.interactive) {
             const interactive = require('./interactive');
-            return interactive(options, outputOptions, processingMessageBuffer);
+            return interactive(options, outputOptions);
         }
 
         if (this.compiler.compilers) {
@@ -160,9 +160,9 @@ class Compiler {
                 });
                 process.stdin.resume();
             }
-            await this.invokeWatchInstance(lastHash, options, outputOptions, watchOptions, processingMessageBuffer);
+            await this.invokeWatchInstance(lastHash, options, outputOptions, watchOptions);
         } else {
-            return await this.invokeCompilerInstance(lastHash, options, outputOptions, processingMessageBuffer);
+            return await this.invokeCompilerInstance(lastHash, options, outputOptions);
         }
     }
 }

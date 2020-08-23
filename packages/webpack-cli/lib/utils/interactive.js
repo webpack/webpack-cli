@@ -96,7 +96,7 @@ const ENTER_KEY = '\n';
 const B_KEY = 'b';
 const C_KEY = 'c';
 
-module.exports = async function (config, outputOptions, processingMessageBuffer) {
+module.exports = async function (config, outputOptions) {
     const stdin = process.stdin;
     stdin.setEncoding('utf-8');
     stdin.setRawMode(true);
@@ -104,7 +104,7 @@ module.exports = async function (config, outputOptions, processingMessageBuffer)
 
     outputOptions.interactive = false;
 
-    const webpackCompilation = await webpack({ options: config, outputOptions, processingMessageBuffer });
+    const webpackCompilation = await webpack({ options: config, outputOptions });
     /* if(errors) {
 	Hngggg
 } */
@@ -164,7 +164,7 @@ module.exports = async function (config, outputOptions, processingMessageBuffer)
                 if (state.length) {
                     state.pop();
                 }
-                const webpackCompilation = await webpack({ options: config, outputOptions, processingMessageBuffer });
+                const webpackCompilation = await webpack({ options: config, outputOptions });
                 state.push(webpackCompilation);
                 informActions();
                 isSub = true;

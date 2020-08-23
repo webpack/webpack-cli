@@ -177,7 +177,7 @@ describe('packageUtils', () => {
             // runCommand should not be called, because the installation is not confirmed
             expect((runCommand as jest.Mock).mock.calls.length).toEqual(0);
             expect((prompt as jest.Mock).mock.calls[0][0][0].message).toMatch(/Would you like to install test-package\?/);
-            expect(process.exitCode).toEqual(-1);
+            expect(process.exitCode).toEqual(2);
         });
     });
 });

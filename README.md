@@ -32,6 +32,7 @@
     -   [Utilities](#utilities)
 -   [Getting started](#getting-started)
 -   [webpack CLI Scaffolds](#webpack-cli-scaffolds)
+-   [Exit codes and their meanings](#exit-codes-and-their-meanings)
 -   [Contributing and Internal Documentation](#contributing-and-internal-documentation)
 -   [Open Collective](#open-collective)
 
@@ -96,6 +97,14 @@ With v3 of webpack CLI, we introduced scaffolding as an integral part of the CLI
 
 You can read more about [Scaffolding](https://webpack.js.org/guides/scaffolding), learn [How to compose a webpack-scaffold?](https://webpack.js.org/contribute/writing-a-scaffold) or generate one with [webpack-scaffold-starter](https://github.com/rishabh3112/webpack-scaffold-starter).
 
+## Exit codes and their meanings
+
+| Exit Code | Description                                        |
+| --------- | -------------------------------------------------- |
+| `0`       | Success                                            |
+| `1`       | Warnings/Errors from webpack                       |
+| `2`       | Configuration/options problem or an internal error |
+
 ## Contributing and Internal Documentation
 
 The webpack family welcomes any contributor, small or big. We are happy to elaborate, guide you through the source code and find issues you might want to work on! To get started have a look at our [documentation on contributing](./.github/CONTRIBUTING.md).
@@ -110,7 +119,7 @@ If you like **webpack**, please consider donating to our [Open Collective](https
 [build-status-url]: https://github.com/webpack/webpack-cli/actions
 [deps]: https://img.shields.io/david/webpack/webpack.svg
 [deps-url]: https://david-dm.org/webpack/webpack-cli
-[size]: https://packagephobia.now.sh/badge?p=webpack-cli
-[size-url]: https://packagephobia.now.sh/result?p=webpack-cli
+[size]: https://packagephobia.com/badge?p=webpack-cli
+[size-url]: https://packagephobia.com/result?p=webpack-cli
 [chat]: https://badges.gitter.im/webpack/webpack.svg
 [chat-url]: https://gitter.im/webpack/webpack

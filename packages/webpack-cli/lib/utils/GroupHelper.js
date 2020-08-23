@@ -7,7 +7,6 @@ class GroupHelper {
         this.opts = {
             outputOptions: {},
             options: {},
-            processingMessageBuffer: [],
         };
         this.strategy = undefined;
     }
