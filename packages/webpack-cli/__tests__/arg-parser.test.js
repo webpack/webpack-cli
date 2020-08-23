@@ -47,9 +47,33 @@ const basicOptions = [
     },
     {
         name: 'multi-type',
+        alias: 'm',
         usage: '--multi-type | --multi-type <value>',
         type: [String, Boolean],
+        negative: true,
         description: 'flag with multiple types',
+    },
+    {
+        name: 'multi-type-different-order',
+        usage: '--multi-type-different-order | --multi-type-different-order <value>',
+        // duplicates and a different ordering should be handled correctly
+        type: [Boolean, String, Boolean],
+        description: 'flag with multiple types in different order',
+    },
+    {
+        name: 'multi-type-empty',
+        usage: '--multi-type-empty',
+        // should default to Boolean type
+        type: [],
+        description: 'flag with empty multi type array',
+    },
+    {
+        name: 'multi-type-number',
+        usage: '--multi-type-number',
+        // should use only Number type (the first in the array),
+        // because Number and Boolean together are not supported
+        type: [Number, Boolean],
+        description: 'flag with number multi type',
     },
     {
         name: 'custom-type-flag',
@@ -171,6 +195,66 @@ describe('arg-parser', () => {
         expect(res.unknownArgs.length).toEqual(0);
         expect(res.opts).toEqual({
             multiType: 'value',
+            stringFlagWithDefault: 'default-value',
+        });
+        expect(warnMock.mock.calls.length).toEqual(0);
+    });
+
+    it('parses multi type flag alias as Boolean', () => {
+        const res = argParser(basicOptions, ['-m'], true);
+        expect(res.unknownArgs.length).toEqual(0);
+        expect(res.opts).toEqual({
+            multiType: true,
+            stringFlagWithDefault: 'default-value',
+        });
+        expect(warnMock.mock.calls.length).toEqual(0);
+    });
+
+    it('parses multi type flag alias as String', () => {
+        const res = argParser(basicOptions, ['-m', 'value'], true);
+        expect(res.unknownArgs.length).toEqual(0);
+        expect(res.opts).toEqual({
+            multiType: 'value',
+            stringFlagWithDefault: 'default-value',
+        });
+        expect(warnMock.mock.calls.length).toEqual(0);
+    });
+
+    it('parses negated multi type flag as Boolean', () => {
+        const res = argParser(basicOptions, ['--no-multi-type'], true);
+        expect(res.unknownArgs.length).toEqual(0);
+        expect(res.opts).toEqual({
+            multiType: false,
+            stringFlagWithDefault: 'default-value',
+        });
+        expect(warnMock.mock.calls.length).toEqual(0);
+    });
+
+    it('parses multi type flag with different ordering as Boolean', () => {
+        const res = argParser(basicOptions, ['--multi-type-different-order'], true);
+        expect(res.unknownArgs.length).toEqual(0);
+        expect(res.opts).toEqual({
+            multiTypeDifferentOrder: true,
+            stringFlagWithDefault: 'default-value',
+        });
+        expect(warnMock.mock.calls.length).toEqual(0);
+    });
+
+    it('parses multi type flag as String', () => {
+        const res = argParser(basicOptions, ['--multi-type-different-order', 'value'], true);
+        expect(res.unknownArgs.length).toEqual(0);
+        expect(res.opts).toEqual({
+            multiTypeDifferentOrder: 'value',
+            stringFlagWithDefault: 'default-value',
+        });
+        expect(warnMock.mock.calls.length).toEqual(0);
+    });
+
+    it('parses empty multi type flag array as Boolean', () => {
+        const res = argParser(basicOptions, ['--multi-type-empty'], true);
+        expect(res.unknownArgs.length).toEqual(0);
+        expect(res.opts).toEqual({
+            multiTypeEmpty: true,
             stringFlagWithDefault: 'default-value',
         });
         expect(warnMock.mock.calls.length).toEqual(0);
