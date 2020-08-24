@@ -1,9 +1,11 @@
 'use strict';
 
-import webpack from 'webpack';
 import getDevServerOptions from '../src/getDevServerOptions';
 
 describe('getDevServerOptions', () => {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const webpack = require('webpack');
+
     it('gets dev server options from single compiler', () => {
         const compiler = webpack({
             devServer: {
