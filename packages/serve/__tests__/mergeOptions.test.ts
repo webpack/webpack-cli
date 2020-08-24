@@ -8,10 +8,25 @@ describe('mergeOptions', () => {
             client: {
                 logging: 'verbose',
             },
-            // hot: true,
-            // openPage: 'main',
+            hot: true,
+            bonjour: true,
         };
-        const devServerOptions = {};
-        expect(mergeOptions(cliOptions, devServerOptions)).toEqual({});
+        const devServerOptions = {
+            client: {
+                host: 'localhost',
+                logging: 'none',
+            },
+            hot: false,
+            liveReload: false,
+        };
+        expect(mergeOptions(cliOptions, devServerOptions)).toEqual({
+            client: {
+                host: 'localhost',
+                logging: 'verbose',
+            },
+            hot: true,
+            bonjour: true,
+            liveReload: false,
+        });
     });
 });
