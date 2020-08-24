@@ -78,7 +78,7 @@ describe('migrate command', () => {
     it('should generate an updated config file and warn of an invalid webpack config', async () => {
         const { stdout, stderr } = await runPromptWithAnswers(__dirname, ['migrate', 'bad-webpack.config.js', outputFile], [ENTER, ENTER]);
         expect(stdout).toContain('? Do you want to validate your configuration?');
-        expect(stderr).toContain("configuration.output has an unknown property 'badOption'");
+        expect(stderr).toContain("Your configuration validation wasn't successful");
 
         expect(fs.existsSync(outputFilePath)).toBeTruthy();
     });
