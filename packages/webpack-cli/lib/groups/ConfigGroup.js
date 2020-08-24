@@ -146,7 +146,7 @@ class ConfigGroup extends GroupHelper {
         if (config.length > 0) {
             const resolvedOptions = [];
             const finalizedConfigs = config.map(async (webpackConfig) => {
-                const configPath = resolve(process.cwd(), webpackConfig);
+                const configPath = resolve(webpackConfig);
                 const configFiles = getConfigInfoFromFileName(configPath);
                 if (!configFiles.length) {
                     throw new ConfigError(`The specified config file doesn't exist in ${configPath}`);
@@ -163,7 +163,7 @@ class ConfigGroup extends GroupHelper {
                     resolvedOptions.push(resolvedOption.options);
                 }
             }
-            // When the resolved configs are more then 1, then pass them as Array [{...}, {...}] else pass the first config object {...}
+            // When the resolved configs are more than 1, then pass them as Array [{...}, {...}] else pass the first config object {...}
             const finalOptions = resolvedOptions.length > 1 ? resolvedOptions : resolvedOptions[0] || {};
 
             this.opts['options'] = finalOptions;
