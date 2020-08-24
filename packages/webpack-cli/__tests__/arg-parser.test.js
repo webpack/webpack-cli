@@ -4,7 +4,8 @@ jest.mock('../lib/utils/logger', () => {
         warn: warnMock,
     };
 });
-jest.spyOn(process, 'exit').mockImplementation(() => {});
+const processExitSpy = jest.spyOn(process, 'exit').mockImplementation(() => {});
+const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
 const argParser = require('../lib/utils/arg-parser');
 const { core } = require('../lib/utils/cli-flags');
@@ -112,6 +113,8 @@ helpAndVersionOptions.push(
 describe('arg-parser', () => {
     beforeEach(() => {
         warnMock.mockClear();
+        processExitSpy.mockClear();
+        consoleErrorSpy.mockClear();
     });
 
     it('parses no flags', () => {
@@ -240,7 +243,7 @@ describe('arg-parser', () => {
         expect(warnMock.mock.calls.length).toEqual(0);
     });
 
-    it('parses multi type flag as String', () => {
+    it('parses multi type flag with different ordering as String', () => {
         const res = argParser(basicOptions, ['--multi-type-different-order', 'value'], true);
         expect(res.unknownArgs.length).toEqual(0);
         expect(res.opts).toEqual({
@@ -258,6 +261,31 @@ describe('arg-parser', () => {
             stringFlagWithDefault: 'default-value',
         });
         expect(warnMock.mock.calls.length).toEqual(0);
+    });
+
+    it('parses multi type flag (Number, Boolean) as Number', () => {
+        const res = argParser(basicOptions, ['--multi-type-number', '1.1'], true);
+        expect(res.unknownArgs.length).toEqual(0);
+        expect(res.opts).toEqual({
+            multiTypeNumber: 1.1,
+            stringFlagWithDefault: 'default-value',
+        });
+        expect(warnMock.mock.calls.length).toEqual(0);
+    });
+
+    it('parsing multi type flag (Number, Boolean) as Boolean fails', () => {
+        // this should fail because a multi type of Number and Boolean is
+        // not supported
+        argParser(basicOptions, ['--multi-type-number'], true);
+        expect(warnMock.mock.calls.length).toEqual(0);
+
+        // by default, commander handles the error with a process.exit(1)
+        // along with an error message
+        expect(processExitSpy.mock.calls.length).toEqual(1);
+        expect(processExitSpy.mock.calls[0]).toEqual([1]);
+
+        expect(consoleErrorSpy.mock.calls.length).toEqual(1);
+        expect(consoleErrorSpy.mock.calls[0][0]).toContain("option '--multi-type-number <value>' argument missing");
     });
 
     it('warns on usage of both flag alias and same negated flag, setting it to true', () => {
@@ -385,5 +413,14 @@ describe('arg-parser', () => {
         });
         expect(warnMock.mock.calls.length).toEqual(1);
         expect(warnMock.mock.calls[0][0]).toContain('You provided both --neg-flag and --no-neg-flag');
+    });
+
+    it('handles unknown flag', () => {
+        const res = argParser(basicOptions, ['--unknown-flag'], true);
+        expect(res.unknownArgs).toEqual(['--unknown-flag']);
+        expect(res.opts).toEqual({
+            stringFlagWithDefault: 'default-value',
+        });
+        expect(warnMock.mock.calls.length).toEqual(0);
     });
 });
