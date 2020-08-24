@@ -85,7 +85,7 @@ export function modifyHelperUtil(
             }
         }
     } catch (err) {
-        logger.raw('\n');
+        logger.raw();
         logger.error('Your package.json was incorrectly formatted.\n');
         Error.stackTraceLimit = 0;
         process.exitCode = 2;
@@ -105,7 +105,7 @@ export function modifyHelperUtil(
                 const confPath = path.resolve(process.cwd(), '.yo-rc.json');
                 configModule = require(confPath);
             } catch (err) {
-                logger.raw('\n');
+                logger.raw();
                 logger.error('Could not find a yeoman configuration file (.yo-rc.json).\n\n');
                 logger.error(
                     "Please make sure to use 'this.config.set('configuration', this.configuration);' at the end of the generator.\n",
@@ -125,7 +125,7 @@ export function modifyHelperUtil(
             } catch (err) {
                 logger.error(err);
                 logger.error(err.stack);
-                logger.raw('\n');
+                logger.raw();
                 logger.error('Your yeoman configuration file (.yo-rc.json) was incorrectly formatted. Deleting it may fix the problem.\n');
                 Error.stackTraceLimit = 0;
                 process.exitCode = 2;
@@ -142,7 +142,7 @@ export function modifyHelperUtil(
                 const runCommand = getPackageManager() === 'yarn' ? 'yarn build' : 'npm run build';
 
                 const successMessage = `You can now run ${green(runCommand)} to bundle your application!\n\n`;
-                logger.raw('\n');
+                logger.raw();
                 logger.log(successMessage);
             }
 

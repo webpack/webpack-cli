@@ -58,13 +58,13 @@ class HelpGroup {
                 }
             } catch (e) {
                 logger.error('Error: External package not found.');
-                process.exitCode = 1;
+                process.exit(2);
             }
         }
 
         if (commandsUsed.length > 1) {
             logger.error('You provided multiple commands. Please use only one command at a time.\n');
-            process.exit(1);
+            process.exit(2);
         }
 
         if (invalidArgs.length > 0) {

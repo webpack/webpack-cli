@@ -103,6 +103,6 @@ export function runTransform(transformConfig: TransformConfig, action: string, g
     if (initActionNotDefined && transformConfig.config.item) {
         successMessage = green(`Congratulations! ${transformConfig.config.item} has been ${action}ed!\n`);
     }
-    logger.raw('\n');
+    logger.raw();
     logger.log(successMessage);
 }
