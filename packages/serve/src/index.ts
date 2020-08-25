@@ -10,17 +10,10 @@ import parseArgs from './parseArgs';
  * @returns {Function} invokes the devServer API
  */
 export default function serve(...args: string[]): void {
-    let devServerFlags: object[];
-    try {
-        devServerFlags = require('webpack-dev-server/bin/cli-flags').devServer;
-    } catch (err) {
-        throw new Error(`You need to install 'webpack-dev-server' for running 'webpack serve'.\n${err}`);
-    }
-
     const cli = new WebpackCLI();
     const core = cli.getCoreFlags();
 
-    const { webpackArgs, devServerArgs } = parseArgs(cli, devServerFlags, args);
+    const { webpackArgs, devServerArgs } = parseArgs(cli, args);
 
     cli.getCompiler(webpackArgs, core).then((compiler): void => {
         startDevServer(compiler, devServerArgs);

@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`parseArgs handles hot arg 1`] = `
+Object {
+  "devServerArgs": Object {
+    "hot": true,
+  },
+  "webpackArgs": Object {
+    "color": true,
+    "config": null,
+    "hot": true,
+    "mode": "production",
+  },
+}
+`;
+
+exports[`parseArgs handles unknown args 1`] = `
+Array [
+  Array [
+    "Unknown argument: --unknown-arg",
+  ],
+  Array [
+    "Unknown argument: --unknown-arg-2",
+  ],
+]
+`;
+
+exports[`parseArgs parses webpack and dev server args 1`] = `
+Object {
+  "devServerArgs": Object {
+    "bonjour": true,
+    "port": 8080,
+  },
+  "webpackArgs": Object {
+    "color": true,
+    "config": null,
+    "mode": "production",
+    "target": "node",
+  },
+}
+`;
