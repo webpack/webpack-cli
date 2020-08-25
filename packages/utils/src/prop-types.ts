@@ -1,9 +1,8 @@
 import { isWebpack5 } from './isWebpack5';
-import { config } from 'webpack';
 
 let configKeys;
 if (isWebpack5()) {
-    configKeys = Object.keys(config.getNormalizedWebpackOptions({}));
+    configKeys = Object.keys(require('webpack').config.getNormalizedWebpackOptions({}));
 } else {
     configKeys = [
         'amd',

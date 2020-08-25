@@ -1,10 +1,11 @@
 const { existsSync } = require('fs');
-const { resolve, sep, dirname, parse } = require('path');
+const { resolve, sep, dirname, extname } = require('path');
 const webpackMerge = require('webpack-merge');
 const { extensions, jsVariants } = require('interpret');
 const GroupHelper = require('../utils/GroupHelper');
 const rechoir = require('rechoir');
-const MergeError = require('../utils/errors/MergeError');
+const ConfigError = require('../utils/errors/ConfigError');
+const logger = require('../utils/logger');
 
 // Order defines the priority, in increasing order
 // example - config file lookup will be in order of .webpack/webpack.config.development.js -> webpack.config.development.js -> webpack.config.js
@@ -41,25 +42,16 @@ const getDefaultConfigFiles = () => {
 };
 
 const getConfigInfoFromFileName = (filename) => {
-    const fileMetaData = parse(filename);
-    // .cjs is not available on interpret side, handle it manually for now
-    if (filename.endsWith('.cjs')) {
-        return [
-            {
-                path: resolve(filename),
-                ext: '.cjs',
-                module: null,
-            },
-        ];
-    }
-    return Object.keys(extensions)
-        .filter((ext) => ext.includes(fileMetaData.ext))
-        .filter((ext) => fileMetaData.base.substr(fileMetaData.base.length - ext.length) === ext)
-        .map((ext) => {
+    const ext = extname(filename);
+    // since we support only one config for now
+    const allFiles = [filename];
+    // return all the file metadata
+    return allFiles
+        .map((file) => {
             return {
-                path: resolve(filename),
+                path: resolve(file),
                 ext: ext,
-                module: extensions[ext],
+                module: extensions[ext] || null,
             };
         })
         .filter((e) => existsSync(e.path));
@@ -97,7 +89,6 @@ class ConfigGroup extends GroupHelper {
         const newOptionsObject = {
             outputOptions: {},
             options: {},
-            processingMessageBuffer: [],
         };
 
         if (!moduleObj) {
@@ -117,6 +108,16 @@ class ConfigGroup extends GroupHelper {
             const newOptions = configOptions(formattedEnv, argv);
             // When config function returns a promise, resolve it, if not it's resolved by default
             newOptionsObject['options'] = await Promise.resolve(newOptions);
+        } else if (Array.isArray(configOptions) && this.args.configName) {
+            // In case of exporting multiple configurations, If you pass a name to --config-name flag,
+            // webpack will only build that specific configuration.
+            const namedOptions = configOptions.filter((opt) => this.args.configName.includes(opt.name));
+            if (namedOptions.length === 0) {
+                logger.error(`Configuration with name "${this.args.configName}" was not found.`);
+                process.exit(2);
+            } else {
+                newOptionsObject['options'] = namedOptions;
+            }
         } else {
             if (Array.isArray(configOptions) && !configOptions.length) {
                 newOptionsObject['options'] = {};
@@ -146,11 +147,7 @@ class ConfigGroup extends GroupHelper {
             const configPath = resolve(process.cwd(), config);
             const configFiles = getConfigInfoFromFileName(configPath);
             if (!configFiles.length) {
-                this.opts.processingMessageBuffer.push({
-                    lvl: 'warn',
-                    msg: `Configuration ${config} not found in ${configPath}`,
-                });
-                return;
+                throw new ConfigError(`The specified config file doesn't exist in ${configPath}`);
             }
             const foundConfig = configFiles[0];
             const resolvedConfig = this.requireConfig(foundConfig);
@@ -185,7 +182,7 @@ class ConfigGroup extends GroupHelper {
             const newConfigPath = this.resolveFilePath(merge);
 
             if (!newConfigPath) {
-                throw new MergeError("The supplied merge config doesn't exist.");
+                throw new ConfigError("The supplied merge config doesn't exist.", 'MergeError');
             }
 
             const configFiles = getConfigInfoFromFileName(newConfigPath);
