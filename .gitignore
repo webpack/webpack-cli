@@ -52,3 +52,8 @@ packages/**/*.map
 
 # temporary test files
 test-assets/
+
+smoketests/watch/bin
+smoketests/watch/index_copy.js
+smoketests/watch/prod_copy.js
+smoketests/watch/dev_copy.js

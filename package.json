@@ -40,7 +40,7 @@
     "test:packages": "jest packages/ --reporters=default --reporters=jest-junit --forceExit",
     "test:ci": "yarn test:cli && yarn test:packages",
     "test:watch": "jest test/ packages/ --watch",
-    "test:smoke": "smoketests/smoketests.sh",
+    "test:smoke": "node smoketests/smoketests.js",
     "publish:monorepo": "yarn format && yarn test && yarn build && lerna publish -m \"chore: monorepo version update\""
   },
   "standard-version": {

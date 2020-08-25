@@ -11,7 +11,9 @@ const assert = require('assert');
     const argsWithOutput = ['serve'].concat('--output', outputPath);
     const WEBPACK_PATH = path.resolve(__dirname, '../../packages/webpack-cli/bin/cli.js');
 
-    const devServerProcess = spawn(WEBPACK_PATH, argsWithOutput, { cwd: path.resolve(process.cwd(), './dev-server') });
+    const devServerProcess = spawn(WEBPACK_PATH, argsWithOutput, {
+        cwd: process.cwd() + '/dev-server',
+    });
 
     devServerProcess.stdout.on('data', (data) => {
         console.log(`stdout: ${data}`);
@@ -23,12 +25,16 @@ const assert = require('assert');
             const title = await page.title();
             assert(title, 'Webpack App');
             await browser.close();
-            devServerProcess.kill();
-            process.exit(0);
+            devServerProcess.kill('SIGINT');
         })();
     });
 
     devServerProcess.stderr.on('data', (data) => {
+        // eslint-disable-next-line
+        if(~data.indexOf('DEP_WEBPACK_MAIN_TEMPLATE_GET_ASSET_PATH')) {
+            console.log(data.toString()); // kept for logging
+            return;
+        }
         console.error(`stderr: ${data}`);
         process.exit(1);
     });

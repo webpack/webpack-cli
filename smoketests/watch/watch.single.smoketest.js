@@ -52,11 +52,15 @@ async function teardown() {
         const webpackProc = runAndGetWatchProc(__dirname, ['--watch']);
         const dataBuffer = [];
 
-        setInterval(() => {
+        const id = setInterval(() => {
             // Close process if time is over 5s
             if (process.uptime() > 5) {
                 assert.strictEqual(true, false, 'Test for child compilation hang, exiting');
-                process.exit(-1);
+                webpackProc.kill('SIGINT');
+            } else if (dataBuffer.length > 1) {
+                webpackProc.kill('SIGINT');
+                clearInterval(id);
+                return;
             }
             appendDataIfFileExists(__dirname, testEntryFiles[0].name, '//junk-comment');
         }, 1000);
@@ -64,17 +68,9 @@ async function teardown() {
         // Array based configuration with child compilation
         webpackProc.stdout.on('data', (data) => {
             data = data.toString();
-            console.log(data);
-
-            if (data.includes('Built')) {
-                let formattedData = data;
-                if (data.includes('\u001b')) {
-                    formattedData = data.slice(data.indexOf('Built'), data.indexOf('\u001b'));
-                }
-                dataBuffer.push(formattedData);
-            }
+            dataBuffer.push(data);
             // Close process if buffer is full enough
-            if (dataBuffer.length > 3) {
+            if (dataBuffer.length > 1) {
                 webpackProc.kill('SIGINT');
                 return;
             }
@@ -85,7 +81,7 @@ async function teardown() {
         webpackProc.stderr.on('close', async () => {
             assert.strictEqual(dataBuffer.length >= 1, true, 'expected single configuration to re-compile');
             await teardown();
-            process.exit(0);
+            webpackProc.kill('SIGINT');
         });
     } catch (e) {
         // Nothing

@@ -1,0 +1,1 @@
+module.exports = 'jank'; //junk2-comment//junk2-comment//junk2-comment//junk2-comment//junk2-comment//junk2-comment//junk2-comment//junk2-comment//junk2-comment//junk2-comment//junk2-comment//junk2-comment//junk2-comment//junk2-comment//junk2-comment//junk2-comment//junk2-comment//junk2-comment//junk2-comment//junk2-comment//junk2-comment

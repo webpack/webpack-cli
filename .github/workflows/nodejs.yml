@@ -86,8 +86,6 @@ jobs:
           CI: true
 
       - name: Smoke Tests
-        # TODO fix for windows
-        if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
         run: yarn test:smoke
         env:
           CI: true
