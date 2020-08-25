@@ -9,7 +9,7 @@ import mergeOptions from './mergeOptions';
  * @param {Object} compiler - a webpack compiler
  * @param {Object} devServerArgs - devServer args
  *
- * @returns {Object[]} servers - array of resulting servers
+ * @returns {Object[]} array of resulting servers
  */
 export default function startDevServer(compiler, devServerArgs): object[] {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
