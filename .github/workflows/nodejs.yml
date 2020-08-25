@@ -91,3 +91,12 @@ jobs:
         run: yarn test:smoke
         env:
           CI: true
+
+  commitlint:
+    name: Lint Commit Messages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: wagoid/commitlint-github-action@v2
