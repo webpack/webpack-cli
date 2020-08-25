@@ -3,7 +3,7 @@
 import getDevServerOptions from '../src/getDevServerOptions';
 
 describe('getDevServerOptions', () => {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    // eslint-disable-next-line @typescript-eslint/no-var-requires, node/no-extraneous-require
     const webpack = require('webpack');
 
     it('gets dev server options from single compiler', () => {
