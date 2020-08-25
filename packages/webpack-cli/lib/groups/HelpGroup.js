@@ -63,21 +63,21 @@ class HelpGroup {
         }
 
         if (commandsUsed.length > 1) {
-            logger.error('You provided multiple commands. Please use only one command at a time.\n');
+            logger.error('You provided multiple commands. Please use only one command at a time.');
             process.exit(2);
         }
 
         if (invalidArgs.length > 0) {
             const argType = invalidArgs[0].startsWith('-') ? 'option' : 'command';
             logger.error(red(`Error: Invalid ${argType} '${invalidArgs[0]}'.`));
-            logger.info(cyan('Run webpack --help to see available commands and arguments.\n'));
+            logger.info(cyan('Run webpack --help to see available commands and arguments.'));
             process.exit(2);
         }
 
         const pkgJSON = require('../../package.json');
         const webpack = require('webpack');
         logger.raw(`\nwebpack-cli ${pkgJSON.version}`);
-        logger.raw(`\nwebpack ${webpack.version}\n`);
+        logger.raw(`\nwebpack ${webpack.version}`);
     }
 
     run() {

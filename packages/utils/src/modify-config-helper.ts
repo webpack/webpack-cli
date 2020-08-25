@@ -86,7 +86,7 @@ export function modifyHelperUtil(
         }
     } catch (err) {
         logger.raw();
-        logger.error('Your package.json was incorrectly formatted.\n');
+        logger.error('Your package.json was incorrectly formatted.');
         Error.stackTraceLimit = 0;
         process.exitCode = 2;
     }
@@ -106,9 +106,10 @@ export function modifyHelperUtil(
                 configModule = require(confPath);
             } catch (err) {
                 logger.raw();
-                logger.error('Could not find a yeoman configuration file (.yo-rc.json).\n\n');
+                logger.error('Could not find a yeoman configuration file (.yo-rc.json).');
+                logger.raw();
                 logger.error(
-                    "Please make sure to use 'this.config.set('configuration', this.configuration);' at the end of the generator.\n",
+                    "Please make sure to use 'this.config.set('configuration', this.configuration);' at the end of the generator.",
                 );
                 Error.stackTraceLimit = 0;
                 process.exitCode = 2;
@@ -126,7 +127,7 @@ export function modifyHelperUtil(
                 logger.error(err);
                 logger.error(err.stack);
                 logger.raw();
-                logger.error('Your yeoman configuration file (.yo-rc.json) was incorrectly formatted. Deleting it may fix the problem.\n');
+                logger.error('Your yeoman configuration file (.yo-rc.json) was incorrectly formatted. Deleting it may fix the problem.');
                 Error.stackTraceLimit = 0;
                 process.exitCode = 2;
             }
@@ -141,7 +142,7 @@ export function modifyHelperUtil(
             if (finalConfig.usingDefaults && finalConfig.usingDefaults === true) {
                 const runCommand = getPackageManager() === 'yarn' ? 'yarn build' : 'npm run build';
 
-                const successMessage = `You can now run ${green(runCommand)} to bundle your application!\n\n`;
+                const successMessage = `You can now run ${green(runCommand)} to bundle your application!\n`;
                 logger.raw();
                 logger.log(successMessage);
             }

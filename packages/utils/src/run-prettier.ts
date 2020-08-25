@@ -22,7 +22,7 @@ export function runPrettier(outputPath: string, source: string): void {
             useTabs: true,
         });
     } catch (err) {
-        logger.warn(`WARNING: Could not apply prettier to ${outputPath} due to validation error, but the file has been created\n`);
+        logger.warn(`WARNING: Could not apply prettier to ${outputPath} due to validation error, but the file has been created`);
         prettySource = source;
     }
 

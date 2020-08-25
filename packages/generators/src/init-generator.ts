@@ -78,9 +78,10 @@ export default class InitGenerator extends CustomGenerator {
         logger.log(
             `\n${logSymbols.info}${blue(' INFO ')} ` +
                 'For more information and a detailed description of each question, have a look at: ' +
-                `${bold(green('https://github.com/webpack/webpack-cli/blob/master/INIT.md'))}\n`,
+                `${bold(green('https://github.com/webpack/webpack-cli/blob/master/INIT.md'))}`,
         );
-        logger.log(`${logSymbols.info}${blue(' INFO ')} ` + 'Alternatively, run "webpack(-cli) --help" for usage info\n\n');
+        logger.log(`${logSymbols.info}${blue(' INFO ')} ` + 'Alternatively, run "webpack(-cli) --help" for usage info');
+        logger.raw();
 
         const { multiEntries } = await Confirm(
             self,
