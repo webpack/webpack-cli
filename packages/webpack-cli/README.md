@@ -37,7 +37,7 @@ yarn add webpack-cli --dev
 
 ```
   --entry string[]         The entry point(s) of your application.
-  -c, --config string      Provide path to a webpack configuration file
+  -c, --config string[]    Provide path to webpack configuration file(s)
   --config-name string[]   Name of the configuration to use
   -m, --merge string       Merge a configuration file using webpack-merge
   --progress               Print compilation progress during build

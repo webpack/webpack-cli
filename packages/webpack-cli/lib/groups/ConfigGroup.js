@@ -143,18 +143,34 @@ class ConfigGroup extends GroupHelper {
 
     async resolveConfigFiles() {
         const { config, mode } = this.args;
-        if (config) {
-            const configPath = resolve(process.cwd(), config);
-            const configFiles = getConfigInfoFromFileName(configPath);
-            if (!configFiles.length) {
-                throw new ConfigError(`The specified config file doesn't exist in ${configPath}`);
+        if (config.length > 0) {
+            const resolvedOptions = [];
+            const finalizedConfigs = config.map(async (webpackConfig) => {
+                const configPath = resolve(webpackConfig);
+                const configFiles = getConfigInfoFromFileName(configPath);
+                if (!configFiles.length) {
+                    throw new ConfigError(`The specified config file doesn't exist in ${configPath}`);
+                }
+                const foundConfig = configFiles[0];
+                const resolvedConfig = this.requireConfig(foundConfig);
+                return this.finalize(resolvedConfig);
+            });
+            // resolve all the configs
+            for await (const resolvedOption of finalizedConfigs) {
+                if (Array.isArray(resolvedOption.options)) {
+                    resolvedOptions.push(...resolvedOption.options);
+                } else {
+                    resolvedOptions.push(resolvedOption.options);
+                }
             }
-            const foundConfig = configFiles[0];
-            const resolvedConfig = this.requireConfig(foundConfig);
-            this.opts = await this.finalize(resolvedConfig);
+            // When the resolved configs are more than 1, then pass them as Array [{...}, {...}] else pass the first config object {...}
+            const finalOptions = resolvedOptions.length > 1 ? resolvedOptions : resolvedOptions[0] || {};
+
+            this.opts['options'] = finalOptions;
             return;
         }
 
+        // When no config is supplied, lookup for default configs
         const defaultConfigFiles = getDefaultConfigFiles();
         const tmpConfigFiles = defaultConfigFiles.filter((file) => {
             return existsSync(file.path);
@@ -175,9 +191,8 @@ class ConfigGroup extends GroupHelper {
 
     async resolveConfigMerging() {
         // eslint-disable-next-line no-prototype-builtins
-        if (Object.keys(this.args).some((arg) => arg === 'merge')) {
-            const { merge } = this.args;
-
+        const { merge } = this.args;
+        if (merge) {
             // try resolving merge config
             const newConfigPath = this.resolveFilePath(merge);
 
@@ -189,7 +204,17 @@ class ConfigGroup extends GroupHelper {
             const foundConfig = configFiles[0];
             const resolvedConfig = this.requireConfig(foundConfig);
             const newConfigurationsObject = await this.finalize(resolvedConfig);
-            this.opts['options'] = webpackMerge(this.opts['options'], newConfigurationsObject.options);
+            let resolvedOptions = this.opts['options'];
+            let mergedOptions;
+            if (Array.isArray(resolvedOptions)) {
+                mergedOptions = [];
+                resolvedOptions.forEach((resolvedOption) => {
+                    mergedOptions.push(webpackMerge(resolvedOption, newConfigurationsObject.options));
+                });
+            } else {
+                mergedOptions = webpackMerge(resolvedOptions, newConfigurationsObject.options);
+            }
+            this.opts['options'] = mergedOptions;
         }
     }
 
