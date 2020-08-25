@@ -9,13 +9,15 @@ import mergeOptions from './mergeOptions';
  * @param {Object} compiler - a webpack compiler
  * @param {Object} devServerArgs - devServer args
  *
- * @returns {Void}
+ * @returns {Object[]} servers - array of resulting servers
  */
-export default function startDevServer(compiler, devServerArgs): void {
+export default function startDevServer(compiler, devServerArgs): object[] {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const Server = require('webpack-dev-server/lib/Server');
     const cliOptions = createConfig(devServerArgs);
     const devServerOptions = getDevServerOptions(compiler);
+
+    const servers = [];
 
     const usedPorts: number[] = [];
     devServerOptions.forEach((devServerOpts): void => {
@@ -39,5 +41,9 @@ export default function startDevServer(compiler, devServerArgs): void {
                 throw err;
             }
         });
+
+        servers.push(server);
     });
+
+    return servers;
 }
