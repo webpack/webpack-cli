@@ -21,6 +21,7 @@ describe('parseArgs', () => {
 
     beforeEach(() => {
         errorMock.mockClear();
+        processExitSpy.mockClear();
     });
 
     it('parses webpack and dev server args', () => {
