@@ -190,30 +190,20 @@ class ConfigGroup extends GroupHelper {
     }
 
     async resolveConfigMerging() {
-        // eslint-disable-next-line no-prototype-builtins
         const { merge } = this.args;
         if (merge) {
-            // try resolving merge config
-            const newConfigPath = this.resolveFilePath(merge);
+            // Get the current configuration options
+            const { options: configOptions } = this.opts;
 
-            if (!newConfigPath) {
-                throw new ConfigError("The supplied merge config doesn't exist.", 'MergeError');
+            // we can only merge when there are multiple configurations
+            // either by passing multiple configs by flags or passing a
+            // single config exporting an array
+            if (!Array.isArray(configOptions)) {
+                throw new ConfigError('No multiple configurations to be merged.', 'MergeError');
             }
 
-            const configFiles = getConfigInfoFromFileName(newConfigPath);
-            const foundConfig = configFiles[0];
-            const resolvedConfig = this.requireConfig(foundConfig);
-            const newConfigurationsObject = await this.finalize(resolvedConfig);
-            let resolvedOptions = this.opts['options'];
-            let mergedOptions;
-            if (Array.isArray(resolvedOptions)) {
-                mergedOptions = [];
-                resolvedOptions.forEach((resolvedOption) => {
-                    mergedOptions.push(webpackMerge(resolvedOption, newConfigurationsObject.options));
-                });
-            } else {
-                mergedOptions = webpackMerge(resolvedOptions, newConfigurationsObject.options);
-            }
+            // We return a single config object which is passed to the compiler
+            const mergedOptions = configOptions.reduce((currentConfig, mergedConfig) => webpackMerge(currentConfig, mergedConfig), {});
             this.opts['options'] = mergedOptions;
         }
     }
