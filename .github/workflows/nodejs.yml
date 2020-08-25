@@ -91,3 +91,7 @@ jobs:
         run: yarn test:smoke
         env:
           CI: true
+
+  commitlint:
+    name: Commit Linter
+    uses: wagoid/commitlint-github-action@v2.0.2
