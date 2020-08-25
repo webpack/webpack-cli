@@ -1,5 +1,7 @@
 'use strict';
 
+// TODO: update snapshots once we update to webpack-dev-server@4
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const errorMock: any = jest.fn();
 jest.mock('webpack-cli/lib/utils/logger', () => {

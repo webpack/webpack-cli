@@ -3,7 +3,11 @@
 exports[`parseArgs handles hot arg 1`] = `
 Object {
   "devServerArgs": Object {
+    "clientLogLevel": "info",
     "hot": true,
+    "inline": true,
+    "liveReload": true,
+    "serveIndex": true,
   },
   "webpackArgs": Object {
     "color": true,
@@ -29,7 +33,11 @@ exports[`parseArgs parses webpack and dev server args 1`] = `
 Object {
   "devServerArgs": Object {
     "bonjour": true,
+    "clientLogLevel": "info",
+    "inline": true,
+    "liveReload": true,
     "port": 8080,
+    "serveIndex": true,
   },
   "webpackArgs": Object {
     "color": true,
