@@ -114,6 +114,7 @@ describe('startDevServer', () => {
         const compiler = webpack(config);
 
         const servers = startDevServer(compiler, {
+            // this progress CLI flag should override progress: false above
             progress: true,
         });
 
