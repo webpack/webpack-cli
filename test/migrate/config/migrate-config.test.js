@@ -1,9 +1,9 @@
 'use strict';
 
+const { red } = require('colorette');
 const fs = require('fs');
 const path = require('path');
 const rimraf = require('rimraf');
-const { red } = require('colorette');
 const { run, runAndGetWatchProc, runPromptWithAnswers } = require('../../utils/test-utils');
 
 const ENTER = '\x0D';

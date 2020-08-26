@@ -54,8 +54,7 @@ async function prompter() {
 async function run() {
     try {
         const args = await prompter();
-        logger.raw();
-        logger.info('Executing CLI\n');
+        logger.info('\nExecuting CLI\n');
         await runCLI(args);
     } catch (err) {
         logger.error(`Action Interrupted, use ${cyan('webpack-cli help')} to see possible options.`);

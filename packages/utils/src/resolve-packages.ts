@@ -58,8 +58,8 @@ export function resolvePackages(pkg: string[]): Function | void {
                 require.resolve(absolutePath);
                 packageLocations.push(absolutePath);
             } catch (err) {
-                logger.error(`Cannot find a generator at ${absolutePath}.`);
-                logger.error('Reason:');
+                logger.error(`Cannot find a generator at ${absolutePath}.\n`);
+                logger.error('Reason:\n');
                 logger.error(bold(err));
                 process.exitCode = 1;
             }
@@ -76,15 +76,15 @@ export function resolvePackages(pkg: string[]): Function | void {
                     packageLocations.push(path.resolve(globalPath, scaffold));
                 } catch (err) {
                     logger.error("Package wasn't validated correctly...");
-                    logger.error('Submit an issue for', pkg, 'if this persists');
-                    logger.error('Reason:');
+                    logger.error(`Submit an issue for ${pkg} if this persists\n`);
+                    logger.error('Reason:\n');
                     logger.error(bold(err));
                     process.exitCode = 1;
                 }
             })
             .catch((err: string): void => {
-                logger.error("Package couldn't be installed, aborting...");
-                logger.error('Reason:');
+                logger.error("Package couldn't be installed, aborting...\n");
+                logger.error('Reason:\n');
                 logger.error(bold(err));
                 process.exitCode = 1;
             })

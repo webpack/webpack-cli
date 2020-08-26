@@ -89,7 +89,7 @@ export function runTransform(transformConfig: TransformConfig, action: string, g
                     runPrettier(outputPath, source);
                 })
                 .catch((err: Error): void => {
-                    logger.error(err.message ? err.message : err);
+                    logger.error(err);
                 });
         },
     );
@@ -103,6 +103,5 @@ export function runTransform(transformConfig: TransformConfig, action: string, g
     if (initActionNotDefined && transformConfig.config.item) {
         successMessage = green(`Congratulations! ${transformConfig.config.item} has been ${action}ed!\n`);
     }
-    logger.raw();
-    logger.log(successMessage);
+    logger.log(`\n${successMessage}`);
 }
