@@ -19,6 +19,7 @@ describe('mergeOptions', () => {
             hot: false,
             liveReload: false,
         };
+        // CLI should take priority
         expect(mergeOptions(cliOptions, devServerOptions)).toEqual({
             client: {
                 host: 'localhost',
