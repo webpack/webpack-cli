@@ -108,11 +108,11 @@ const core = [
     },
     {
         name: 'merge',
-        usage: '--merge <path to configuration to be merged>',
+        usage: '--merge',
         alias: 'm',
-        type: String,
+        type: Boolean,
         group: CONFIG_GROUP,
-        description: 'Merge a configuration file using webpack-merge e.g. ./webpack.config.js',
+        description: 'Merge two or more configurations using webpack-merge e.g. -c ./webpack.config.js -c ./webpack.test.config.js --merge',
         link: 'https://github.com/survivejs/webpack-merge',
     },
     {
