@@ -13,7 +13,7 @@ describe('merge flag configuration', () => {
         // Since the process will exit, nothing on stdout
         expect(stdout).toBeFalsy();
         // Confirm that the user is notified
-        expect(stderr).toContain(`MergeError: The supplied merge config doesn't exist.`);
+        expect(stderr).toContain(`MergeError: Atleast two configurations are required for merge.`);
         // Default config would be used
         expect(fs.existsSync(join(__dirname, './dist/merged.js'))).toBeFalsy();
         // Since the process will exit so no compilation will be done
