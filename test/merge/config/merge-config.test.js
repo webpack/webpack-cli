@@ -20,4 +20,10 @@ describe('merge flag configuration', () => {
         expect(stderr).toBeFalsy();
         expect(exitCode).toBe(0);
     });
+    it('fails when there are less than 2 configurations to merge', () => {
+        const { stdout, stderr, exitCode } = run(__dirname, ['--config', './1.js', '-m'], false);
+        expect(stderr).toContain(`MergeError: Atleast two configurations are required for merge.`);
+        expect(stdout).toBeFalsy();
+        expect(exitCode).toBe(2);
+    });
 });

@@ -112,7 +112,7 @@ const core = [
         alias: 'm',
         type: Boolean,
         group: CONFIG_GROUP,
-        description: 'Merge one or more configurations using webpack-merge e.g. -c ./webpack.config.js -c ./webpack.test.config.js --merge',
+        description: 'Merge two or more configurations using webpack-merge e.g. -c ./webpack.config.js -c ./webpack.test.config.js --merge',
         link: 'https://github.com/survivejs/webpack-merge',
     },
     {

@@ -199,7 +199,7 @@ class ConfigGroup extends GroupHelper {
             // either by passing multiple configs by flags or passing a
             // single config exporting an array
             if (!Array.isArray(configOptions)) {
-                throw new ConfigError('No multiple configurations to be merged.', 'MergeError');
+                throw new ConfigError('Atleast two configurations are required for merge.', 'MergeError');
             }
 
             // We return a single config object which is passed to the compiler
