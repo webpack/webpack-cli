@@ -11,7 +11,7 @@ Object {
   },
   "webpackArgs": Object {
     "color": true,
-    "config": null,
+    "config": Array [],
     "hot": true,
     "mode": "production",
   },
@@ -41,7 +41,7 @@ Object {
   },
   "webpackArgs": Object {
     "color": true,
-    "config": null,
+    "config": Array [],
     "mode": "production",
     "target": "node",
   },
