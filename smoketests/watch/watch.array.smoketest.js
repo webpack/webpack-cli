@@ -1,5 +1,3 @@
-'use strict';
-
 const assert = require('assert');
 const { unlinkSync, renameSync } = require('fs');
 const { resolve } = require('path');

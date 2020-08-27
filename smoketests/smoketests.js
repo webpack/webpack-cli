@@ -31,7 +31,7 @@ async function runSmokeTests() {
     for(let k_iters = 0; k_iters < n_iterations; k_iters++) {
         (async function (k_iters) {
             for (let testPath of testFiles) {
-                console.log(`\n============================ ${testPath} - ${k_iters + 1} / 100 ============================\n`);
+                console.log(`\n============================ ${testPath} - ${k_iters + 1} / ${n_iterations} ============================\n`);
                 const testProc = spawn(testPath);
                 testProc.stdout.on('data', (data) => {
                     console.log(data.toString());

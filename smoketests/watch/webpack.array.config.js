@@ -3,7 +3,7 @@ const { join } = require('path');
 
 module.exports = [
     {
-        entry: './dev.js',
+        entry: './index.js',
         output: {
             path: join(__dirname, 'binary2'),
             filename: './prod.js',
@@ -18,7 +18,7 @@ module.exports = [
         ],
     },
     {
-        entry: './prod.js',
+        entry: './index2.js',
         output: {
             path: join(__dirname, 'binary'),
             filename: './dev.js',
