@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { spawn } = require('child_process');
 
-const n_iterations = 100;
+const n_iterations = process.argv.length > 2 ? process.argv[2] : 100;
 
 // eslint-disable-next-line
 const fsPromises = fs.promises;
