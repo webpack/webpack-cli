@@ -9,10 +9,9 @@ const assert = require('assert');
 
     const outputPath = path.resolve(__dirname, 'bin');
     const argsWithOutput = ['serve'].concat('--output', outputPath);
-    const WEBPACK_PATH = path.resolve(__dirname, '../../packages/webpack-cli/bin/cli.js');
-
+    const WEBPACK_PATH = path.resolve(process.cwd(), 'packages', 'webpack-cli', 'bin', 'cli.js');
     const devServerProcess = spawn(WEBPACK_PATH, argsWithOutput, {
-        cwd: process.cwd() + '/dev-server',
+        cwd: path.resolve(process.cwd(), 'smoketests', 'dev-server'),
     });
 
     devServerProcess.stdout.on('data', (data) => {
