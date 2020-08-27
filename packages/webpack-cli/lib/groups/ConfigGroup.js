@@ -31,7 +31,7 @@ const modeAlias = {
 
 const getDefaultConfigFiles = () => {
     return DEFAULT_CONFIG_LOC.map((filename) => {
-        // Since .cjs is not available on interpret side add it manually to default config
+        // Since .cjs is not available on interpret side add it manually to default config extension list
         return [...Object.keys(extensions), '.cjs'].map((ext) => {
             return {
                 path: resolve(filename + ext),

@@ -1,1 +1,1 @@
-console.log("Naruto")
+console.log("Jotaro Kujo")
