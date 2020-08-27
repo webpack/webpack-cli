@@ -52,7 +52,7 @@ Get to know what are the available commands and arguments [here](./packages/webp
 
 ## Packages
 
-We organize webpack CLI as a multi-package repository using [lerna](https://github.com/lerna/lerna). Every command has a dedicated subfolder in the `packages` Folder. Here's a summary of commands provided by the CLI.
+We have organized webpack CLI as a multi-package repository using [lerna](https://github.com/lerna/lerna). Every command has a dedicated subfolder in the `packages` Folder. Here's a summary of commands provided by the CLI.
 
 ### Commands
 
@@ -74,7 +74,7 @@ Thus, webpack CLI provides different commands for many common tasks.
 
 ### Utilities
 
-The project also has several utility packages which are used by other commands
+The project also have several utility packages which are used by other commands
 
 -   [`utils`](./packages/utils/README.md) - Several utilities used across webpack-cli.
 -   [`generators`](./packages/generators/README.md) - Contains all webpack-cli related yeoman generators.
@@ -89,11 +89,11 @@ npm i webpack-cli @webpack-cli/init
 npx webpack-cli init
 ```
 
-You will be prompted for some questions about what how you want to generate your config file when running the `init` command so webpack CLI can provide the best fitting configuration.
+You will be prompted for some questions about, how you want to generate your config file when running the `init` command so webpack CLI can provide the best fitting configuration.
 
 ## webpack CLI Scaffolds
 
-With v3 of webpack CLI, we introduced scaffolding as an integral part of the CLI. Our goal is to simplify the creation of webpack configurations for different purposes. Additionally, sharing such solutions with the community is beneficial and with webpack, we want to allow this. We provide `webpack-scaffold` as a utility suite for creating these scaffolds. It contains functions that could be of use for creating a scaffold yourself.
+With v3 of webpack CLI, we have introduced scaffolding as an integral part of the CLI. Our goal is to simplify the creation of webpack configurations for different purposes. Additionally, sharing such solutions with the community is beneficial and with webpack, we want to allow this. We provide `webpack-scaffold` as a utility suite for creating these scaffolds. It contains functions that could be of use for creating a scaffold yourself.
 
 You can read more about [Scaffolding](https://webpack.js.org/guides/scaffolding), learn [How to compose a webpack-scaffold?](https://webpack.js.org/contribute/writing-a-scaffold) or generate one with [webpack-scaffold-starter](https://github.com/rishabh3112/webpack-scaffold-starter).
 
