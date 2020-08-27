@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`startDevServer should set default port and host if not provided 1`] = `
+Object {
+  "host": "localhost",
+  "port": 8080,
+}
+`;
+
+exports[`startDevServer should set default port and host if not provided 2`] = `
+Array [
+  8080,
+  "localhost",
+  [Function],
+]
+`;
+
+exports[`startDevServer should start dev server correctly for multi compiler with 1 devServer config 1`] = `
+Object {
+  "bonjour": true,
+  "host": "my.host",
+  "hot": true,
+  "port": 9000,
+  "progress": true,
+}
+`;
+
+exports[`startDevServer should start dev server correctly for multi compiler with 1 devServer config 2`] = `
+Array [
+  9000,
+  "my.host",
+  [Function],
+]
+`;
+
+exports[`startDevServer should start dev server correctly for single compiler 1`] = `
+Object {
+  "bonjour": true,
+  "host": "my.host",
+  "hot": true,
+  "port": 9000,
+  "progress": true,
+}
+`;
+
+exports[`startDevServer should start dev server correctly for single compiler 2`] = `
+Array [
+  9000,
+  "my.host",
+  [Function],
+]
+`;
+
+exports[`startDevServer should start dev servers correctly for multi compiler with 2 devServer configs 1`] = `
+Object {
+  "host": "localhost",
+  "port": 9000,
+  "progress": true,
+}
+`;
+
+exports[`startDevServer should start dev servers correctly for multi compiler with 2 devServer configs 2`] = `
+Object {
+  "host": "localhost",
+  "port": 9001,
+  "progress": true,
+}
+`;
+
+exports[`startDevServer should start dev servers correctly for multi compiler with 2 devServer configs 3`] = `
+Array [
+  9000,
+  "localhost",
+  [Function],
+]
+`;
+
+exports[`startDevServer should start dev servers correctly for multi compiler with 2 devServer configs 4`] = `
+Array [
+  9001,
+  "localhost",
+  [Function],
+]
+`;

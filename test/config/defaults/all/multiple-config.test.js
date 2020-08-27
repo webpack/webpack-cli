@@ -3,7 +3,7 @@ const { stat } = require('fs');
 const { resolve } = require('path');
 const { run } = require('../../../utils/test-utils');
 
-describe('multiple config files', () => {
+describe('Default configuration files: ', () => {
     it('Uses prod config from dot folder if present', (done) => {
         const { stdout, stderr } = run(__dirname, [], false);
         expect(stderr).toBeFalsy();

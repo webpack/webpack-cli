@@ -58,27 +58,61 @@ function argParser(options, args, argsOnly = false, name = '', helpFunction = un
 
     // Register options on the parser
     options.reduce((parserInstance, option) => {
-        const flags = option.alias ? `-${option.alias}, --${option.name}` : `--${option.name}`;
-        let flagsWithType = option.type !== Boolean ? flags + ' <value>' : flags;
-        if (option.type === Boolean || option.type === String) {
-            if (!option.multiple) {
-                // Prevent default behavior for standalone options
-                parserInstance.option(flagsWithType, option.description, option.defaultValue).action(() => {});
+        let optionType = option.type;
+        let isStringOrBool = false;
+        if (Array.isArray(optionType)) {
+            // filter out duplicate types
+            optionType = optionType.filter((type, index) => {
+                return optionType.indexOf(type) === index;
+            });
+
+            // the only multi type currently supported is String and Boolean,
+            // if there is a case where a different multi type is needed it
+            // must be added here
+            if (optionType.length === 0) {
+                // if no type is provided in the array fall back to Boolean
+                optionType = Boolean;
+            } else if (optionType.length === 1 || optionType.length > 2) {
+                // treat arrays with 1 or > 2 args as a single type
+                optionType = optionType[0];
             } else {
+                // only String and Boolean multi type is supported
+                if (optionType.includes(Boolean) && optionType.includes(String)) {
+                    isStringOrBool = true;
+                } else {
+                    optionType = optionType[0];
+                }
+            }
+        }
+
+        const flags = option.alias ? `-${option.alias}, --${option.name}` : `--${option.name}`;
+        let flagsWithType = flags;
+        if (isStringOrBool) {
+            // commander recognizes [value] as an optional placeholder,
+            // making this flag work either as a string or a boolean
+            flagsWithType = `${flags} [value]`;
+        } else if (optionType !== Boolean) {
+            // <value> is a required placeholder for any non-Boolean types
+            flagsWithType = `${flags} <value>`;
+        }
+
+        if (isStringOrBool || optionType === Boolean || optionType === String) {
+            if (option.multiple) {
+                // a multiple argument parsing function
                 const multiArg = (value, previous = []) => previous.concat([value]);
                 parserInstance.option(flagsWithType, option.description, multiArg, option.defaultValue).action(() => {});
+            } else {
+                // Prevent default behavior for standalone options
+                parserInstance.option(flagsWithType, option.description, option.defaultValue).action(() => {});
             }
-        } else if (option.type === Number) {
+        } else if (optionType === Number) {
+            // this will parse the flag as a number
             parserInstance.option(flagsWithType, option.description, Number, option.defaultValue);
         } else {
             // in this case the type is a parsing function
-            if (option.type.length > 1) {
-                flagsWithType = flags + ' [value]';
-                parserInstance.option(flagsWithType, option.description, option.type[0], option.defaultValue).action(() => {});
-            } else {
-                parserInstance.option(flagsWithType, option.description, option.type, option.defaultValue).action(() => {});
-            }
+            parserInstance.option(flagsWithType, option.description, optionType, option.defaultValue).action(() => {});
         }
+
         if (option.negative) {
             // commander requires explicitly adding the negated version of boolean flags
             const negatedFlag = `--no-${option.name}`;

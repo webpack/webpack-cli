@@ -8,7 +8,7 @@ describe('function configuration', () => {
         const { stderr, stdout } = run(__dirname, ['--mode', 'development'], false);
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
-        expect(stdout).toContain("argv: { config: null, color: true, mode: 'development' }");
+        expect(stdout).toContain("argv: { config: [], color: true, mode: 'development' }");
         // Should generate the appropriate files
         expect(existsSync(resolve(__dirname, './dist/dev.js'))).toBeTruthy();
     });
