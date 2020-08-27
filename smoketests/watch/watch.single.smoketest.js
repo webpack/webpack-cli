@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const assert = require('assert');
 const { unlinkSync, renameSync } = require('fs');
 const { resolve } = require('path');

@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const path = require('path');
 const { spawn } = require('child_process');
 // eslint-disable-next-line node/no-unpublished-require
