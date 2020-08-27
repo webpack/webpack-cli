@@ -1,5 +1,2 @@
-export * from './packageUtils'
-export * from './processUtils'
-
-
-
+export * from './packageUtils';
+export * from './processUtils';

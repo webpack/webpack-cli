@@ -188,13 +188,14 @@ Creates an Input from Inquirer
 ```js
 const InputValidate = require('@webpack-cli/webpack-scaffold').InputValidate;
 
-const validation = value => {
+const validation = (value) => {
     if (value.length > 4) {
         return true;
     } else {
         return 'Your answer must be longer than 4 characters, try again';
     }
 };
+
 InputValidate('entry', 'what is your entry point?', validation, 'src/index');
 ```
 

@@ -1,5 +1,5 @@
-import { loaderGenerator } from "@webpack-cli/generators";
-import yeoman from "yeoman-environment";
+import { loaderGenerator } from '@webpack-cli/generators';
+import yeoman from 'yeoman-environment';
 
 /**
  * Runs a yeoman generator to create a new webpack loader project
@@ -7,10 +7,10 @@ import yeoman from "yeoman-environment";
  */
 
 export default function loaderCreator(): void {
-	const env = yeoman.createEnv();
-	const generatorName = "webpack-loader-generator";
+    const env = yeoman.createEnv();
+    const generatorName = 'webpack-loader-generator';
 
-	env.registerStub(loaderGenerator, generatorName);
+    env.registerStub(loaderGenerator, generatorName);
 
-	env.run(generatorName);
+    env.run(generatorName);
 }

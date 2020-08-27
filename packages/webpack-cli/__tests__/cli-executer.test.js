@@ -1,8 +1,8 @@
-jest.mock('../lib/runner');
+jest.mock('../lib/bootstrap');
 jest.mock('enquirer');
 
-const runner = require('../lib/runner');
-runner.mockImplementation(() => {});
+const runCLI = require('../lib/bootstrap');
+runCLI.mockImplementation(() => {});
 
 describe('CLI Executer', () => {
     let cliExecuter = null;
@@ -35,7 +35,7 @@ describe('CLI Executer', () => {
                 inputConstructorObjs.push(obj);
             }
 
-            run(obj) {
+            run() {
                 inputRunCount++;
                 return this.mapper(`test${inputRunCount}`);
             }
@@ -47,16 +47,16 @@ describe('CLI Executer', () => {
     it('runs enquirer options then runs webpack', async () => {
         await cliExecuter();
 
-        // ensure that the webpack runner is called
-        expect(runner.mock.calls.length).toEqual(1);
-        expect(runner.mock.calls[0]).toEqual([[], ['--config', 'test1', '--entry', 'test2', '--progress']]);
+        // ensure that the webpack runCLI is called
+        expect(runCLI.mock.calls.length).toEqual(1);
+        expect(runCLI.mock.calls[0][0]).toEqual(['--config', 'test1', '--entry', 'test2', '--progress']);
 
         // check that webpack options are actually being displayed that
         // the user can select from
         expect(multiCalls).toEqual(1);
         expect(multiChoices instanceof Array).toBeTruthy();
         expect(multiChoices.length > 0).toBeTruthy();
-        expect(multiChoices[0]).toMatch(/\-\-entry/);
+        expect(multiChoices[0]).toMatch(/--entry/);
 
         // ensure flag names are parsed out correctly
         expect(typeof multiMapper).toEqual('function');

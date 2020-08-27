@@ -26,7 +26,7 @@ const testEntryFiles = [
  * @returns {void}
  */
 async function setup() {
-    await testEntryFiles.forEach(async file => {
+    await testEntryFiles.forEach(async (file) => {
         // eslint-disable-next-line
         file.cpFP = await copyFileAsync(__dirname, file.name);
     });
@@ -37,7 +37,7 @@ async function setup() {
  * @returns {void}
  */
 async function teardown() {
-    testEntryFiles.forEach(file => {
+    testEntryFiles.forEach((file) => {
         try {
             unlinkSync(file.fp);
         } catch (e) {
@@ -68,7 +68,7 @@ async function teardown() {
         }, 10e3);
 
         // Array based configuration with child compilation
-        webpackProc.stdout.on('data', data => {
+        webpackProc.stdout.on('data', (data) => {
             data = data.toString();
             console.log(data);
 
@@ -92,11 +92,11 @@ async function teardown() {
             assert.strictEqual(dataBuffer.length > 3, true, 'expected buffer for array configuration to be more than 3');
             const nCompilationBufferOne = [];
             const nCompilationBufferTwo = [];
-            dataBuffer.forEach(chunk => {
+            dataBuffer.forEach((chunk) => {
                 const outputDirStr = chunk.indexOf('Output Directory');
                 const outputDirChunk = chunk.slice(outputDirStr).trim('\n');
 
-                const isInArr = nCompilationBufferOne.find(s => s === outputDirChunk);
+                const isInArr = nCompilationBufferOne.find((s) => s === outputDirChunk);
                 if (isInArr || !nCompilationBufferOne.length) {
                     nCompilationBufferOne.push(outputDirChunk);
                     return;
@@ -110,5 +110,7 @@ async function teardown() {
             await teardown();
             process.exit(0);
         });
-    } catch (e) {}
+    } catch (e) {
+        // Nothing
+    }
 })();

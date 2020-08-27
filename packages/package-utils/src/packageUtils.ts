@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { sync } from 'execa';
 import spawn from 'cross-spawn';
-import  chalk = require('chalk');
+import { green } from 'colorette';
 import { prompt } from 'enquirer';
 import { runCommand } from './processUtils';
 
@@ -18,17 +18,25 @@ type PackageName = 'npm' | 'yarn';
 
 export function getPackageManager(): PackageName {
     const hasLocalYarn = fs.existsSync(path.resolve(process.cwd(), 'yarn.lock'));
-    try {
-        if (hasLocalYarn) {
-            return 'yarn';
-        } else if (sync('yarn', [' --version'], { stdio: 'ignore' }).stderr) {
-            return 'yarn';
-        } else {
-            return 'npm';
-        }
-    } catch (e) {
+    const hasLocalNpm = fs.existsSync(path.resolve(process.cwd(), 'package-lock.json'));
+
+    if (hasLocalYarn) {
+        return 'yarn';
+    } else if (hasLocalNpm) {
         return 'npm';
     }
+
+    try {
+        // if the sync function below fails because yarn is not installed,
+        // an error will be thrown
+        if (sync('yarn', ['--version']).stdout) {
+            return 'yarn';
+        }
+    } catch (e) {
+        // Nothing
+    }
+
+    return 'npm';
 }
 
 /**
@@ -40,14 +48,10 @@ export function getPackageManager(): PackageName {
  * @returns {String} path - Path to global node_modules folder
  */
 export function getPathToGlobalPackages(): string {
-    const manager: string = getPackageManager();
-
+    const manager: string = exports.getPackageManager();
     if (manager === 'yarn') {
         try {
-            const yarnDir = spawn
-                .sync('yarn', ['global', 'dir'])
-                .stdout.toString()
-                .trim();
+            const yarnDir = spawn.sync('yarn', ['global', 'dir']).stdout.toString().trim();
             return path.join(yarnDir, 'node_modules');
         } catch (e) {
             // Default to the global npm path below
@@ -73,14 +77,14 @@ export function packageExists(packageName: string): boolean {
  */
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export async function promptInstallation(packageName: string, preMessage?: Function) {
-    const packageManager = getPackageManager();
+    const packageManager = exports.getPackageManager();
     const options = [packageManager === 'yarn' ? 'add' : 'install', '-D', packageName];
 
     const commandToBeRun = `${packageManager} ${options.join(' ')}`;
     if (preMessage) {
         preMessage();
     }
-    const question = `Would you like to install ${packageName}? (That will run ${chalk.green(commandToBeRun)})`;
+    const question = `Would you like to install ${packageName}? (That will run ${green(commandToBeRun)})`;
     const { installConfirm } = await prompt([
         {
             type: 'confirm',
@@ -91,8 +95,8 @@ export async function promptInstallation(packageName: string, preMessage?: Funct
     ]);
     if (installConfirm) {
         await runCommand(commandToBeRun);
-        return packageExists(packageName);
+        return exports.packageExists(packageName);
     }
     // eslint-disable-next-line require-atomic-updates
-    process.exitCode = -1;
+    process.exitCode = 2;
 }

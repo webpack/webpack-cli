@@ -2,9 +2,11 @@
 
 import path from 'path';
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function mockPromise(value) {
     const isValueAPromise = (value || {}).then;
     const mockedPromise = {
+        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         then(callback) {
             return mockPromise(callback(value));
         },
@@ -12,13 +14,16 @@ function mockPromise(value) {
 
     return isValueAPromise ? value : mockedPromise;
 }
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function spawnChild(pkg) {
     return pkg;
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function getLoc(option) {
     const packageModule = [];
-    option.filter(pkg => {
+    option.filter((pkg) => {
         mockPromise(spawnChild(pkg)).then(() => {
             try {
                 const loc = path.join('..', '..', 'node_modules', pkg);

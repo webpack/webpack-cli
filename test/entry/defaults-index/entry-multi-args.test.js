@@ -6,7 +6,7 @@ const { resolve } = require('path');
 const { run } = require('../../utils/test-utils');
 
 describe('single entry flag index present', () => {
-    it('finds default index file and compiles successfully', done => {
+    it('finds default index file and compiles successfully', (done) => {
         const { stderr } = run(__dirname);
 
         expect(stderr).not.toContain('Module not found');
@@ -17,9 +17,9 @@ describe('single entry flag index present', () => {
         });
     });
 
-    it('finds default index file, compiles and overrides with flags successfully', done => {
+    it('finds default index file, compiles and overrides with flags successfully', (done) => {
         const { stderr } = run(__dirname, ['--output', 'bin/main.js']);
-        expect(stderr).toContain('Duplicate flags found, defaulting to last set value');
+        expect(stderr).toBeFalsy();
 
         stat(resolve(__dirname, './bin/main.js'), (err, stats) => {
             expect(err).toBe(null);

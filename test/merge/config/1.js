@@ -1,3 +1,6 @@
 module.exports = {
-    entry: './some_entry.js',
+    entry: './old_entry.js',
+    output: {
+        filename: 'badfile.js',
+    },
 };

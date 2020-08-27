@@ -9,13 +9,16 @@ import {
     createExternalFunction,
     createRequire,
     List,
-    RawList, InputValidate, Input,
+    RawList,
+    InputValidate,
+    Input,
 } from '../src';
 
 describe('utils', () => {
     beforeEach(() => {
         this.mockSelf = {
-            prompt: arg => {
+            // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+            prompt: (arg) => {
                 return arg[0];
             },
         };
@@ -62,6 +65,16 @@ describe('utils', () => {
         });
     });
     describe('Inquirer', () => {
+        it('should emulate a prompt for List', () => {
+            expect(List(this.mockSelf, 'entry', 'does it work?', ['Yes', 'Maybe'], 'Yes')).toEqual({
+                choices: ['Yes', 'Maybe'],
+                type: 'list',
+                name: 'entry',
+                message: 'does it work?',
+                default: 'Yes',
+            });
+        });
+
         it('should make default value for a List', () => {
             expect(List(this.mockSelf, 'entry', 'does it work?', ['Yes', 'Maybe'], 'Yes', true)).toEqual({
                 entry: 'Yes',
@@ -84,7 +97,7 @@ describe('utils', () => {
             });
         });
         it('should emulate a prompt for list input', () => {
-            expect(Input(this.mockSelf, 'plugins', 'what is your plugin?', 'openJSF', false)).toEqual({
+            expect(Input(this.mockSelf, 'plugins', 'what is your plugin?', 'openJSF')).toEqual({
                 type: 'input',
                 name: 'plugins',
                 message: 'what is your plugin?',
@@ -97,7 +110,7 @@ describe('utils', () => {
             });
         });
         it('should emulate a prompt for confirm', () => {
-            expect(Confirm(this.mockSelf, 'context', 'what is your context?', true, false)).toEqual({
+            expect(Confirm(this.mockSelf, 'context', 'what is your context?')).toEqual({
                 name: 'context',
                 default: true,
                 message: 'what is your context?',
@@ -114,6 +127,11 @@ describe('utils', () => {
         });
         it('should make an Input object with validation and default value', () => {
             expect(InputValidate(this.mockSelf, 'plugins', 'what is your plugin?', () => true, 'my-plugin')).toMatchSnapshot();
+        });
+        it('should return a default Input object with validation and default value', () => {
+            expect(InputValidate(this.mockSelf, 'plugins', 'what is your plugin?', () => true, 'my-plugin', true)).toEqual({
+                plugins: 'my-plugin',
+            });
         });
     });
 });

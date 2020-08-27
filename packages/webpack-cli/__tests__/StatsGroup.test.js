@@ -1,18 +1,15 @@
 const StatsGroup = require('../lib/groups/StatsGroup');
 
-describe('StatsGroup', function() {
-    {
-        StatsGroup.validOptions().map(option => {
-            it(`should handle ${option} option`, () => {
-                const statsGroup = new StatsGroup([
-                    {
-                        stats: option,
-                    },
-                ]);
+describe('StatsGroup', function () {
+    it('should handle json', () => {
+        const group = new StatsGroup([
+            {
+                json: true,
+            },
+        ]);
 
-                const result = statsGroup.run();
-                expect(result.options.stats).toEqual(option);
-            });
-        });
-    }
+        const result = group.run();
+        expect(result.options.stats).toBeFalsy();
+        expect(result.outputOptions.json).toBeTruthy();
+    });
 });

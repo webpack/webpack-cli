@@ -3,9 +3,8 @@
 import { join } from 'path';
 import defineTest from '../defineTest';
 
-describe('recursive parser' ,() => {
+describe('recursive parser', () => {
     {
-
         defineTest(join(__dirname), 'init', 'fixture-1', 'entry', {
             foo: 'Promise.resolve()',
             man: '() => duper',
@@ -67,4 +66,4 @@ describe('recursive parser' ,() => {
             ],
         });
     }
-})
+});

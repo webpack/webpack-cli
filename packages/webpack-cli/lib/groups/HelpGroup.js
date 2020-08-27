@@ -1,29 +1,32 @@
-const chalk = require('chalk');
+const { red, yellow, cyan, bold, underline } = require('colorette');
+const { core, commands } = require('../utils/cli-flags');
+const { defaultCommands } = require('../utils/commands');
+const logger = require('../utils/logger');
 const commandLineUsage = require('command-line-usage');
 
 class HelpGroup {
-    outputHelp(isCommand = true, subject) {
-        if (subject) {
-            const info = isCommand ? require('../utils/cli-flags').commands : require('../utils/cli-flags').core;
+    outputHelp(isCommand = true, subject, invalidArgs) {
+        if (subject && invalidArgs.length === 0) {
+            const info = isCommand ? commands : core;
             // Contains object with details about given subject
-            const options = info.find(commandOrFlag => {
+            const options = info.find((commandOrFlag) => {
                 if (isCommand) {
                     return commandOrFlag.name == subject || commandOrFlag.alias == subject;
                 }
                 return commandOrFlag.name === subject.slice(2) || commandOrFlag.alias === subject.slice(1);
             });
 
-            const { bold, underline } = chalk.white;
-            const header = head => bold(underline(head));
-            const usage = chalk.keyword('orange')('webpack ' + options.usage);
+            const header = (head) => bold(underline(head));
+            const flagAlias = options.alias ? (isCommand ? ` ${options.alias} |` : ` -${options.alias},`) : '';
+            const usage = yellow(`webpack${flagAlias} ${options.usage}`);
             const description = options.description;
             const link = options.link;
 
-            process.stdout.write(`${header('Usage')}: ${usage}\n`);
-            process.stdout.write(`${header('Description')}: ${description}\n`);
+            logger.help(`${header('Usage')}: ${usage}`);
+            logger.help(`${header('Description')}: ${description}`);
 
             if (link) {
-                process.stdout.write(`${header('Documentation')}: ${link}\n`);
+                logger.help(`${header('Documentation')}: ${link}`);
             }
 
             if (options.flags) {
@@ -31,25 +34,60 @@ class HelpGroup {
                     header: 'Options',
                     optionList: options.flags,
                 });
-                process.stdout.write(flags);
+                logger.help(flags);
             }
+        } else if (invalidArgs.length > 0) {
+            const argType = invalidArgs[0].startsWith('-') ? 'option' : 'command';
+            logger.warn(`You provided an invalid ${argType} '${invalidArgs[0]}'.`);
+            logger.help(this.run().outputOptions.help);
         } else {
-            process.stdout.write(this.run().outputOptions.help);
+            logger.help(this.run().outputOptions.help);
         }
-        process.stdout.write('\n                  Made with ♥️  by the webpack team \n');
+        logger.help('\n                  Made with ♥️  by the webpack team');
     }
 
-    outputVersion() {
-        const pkgJSON = require('../../../../package.json');
+    outputVersion(externalPkg, commandsUsed, invalidArgs) {
+        if (externalPkg && commandsUsed.length === 1 && invalidArgs.length === 0) {
+            try {
+                if ([externalPkg.alias, externalPkg.name].some((pkg) => commandsUsed.includes(pkg))) {
+                    const { name, version } = require(`@webpack-cli/${defaultCommands[externalPkg.name]}/package.json`);
+                    logger.help(`\n${name} ${version}`);
+                } else {
+                    const { name, version } = require(`${externalPkg.name}/package.json`);
+                    logger.help(`\n${name} ${version}`);
+                }
+            } catch (e) {
+                logger.error('Error: External package not found.');
+                process.exit(2);
+            }
+        }
+
+        if (commandsUsed.length > 1) {
+            logger.error('You provided multiple commands. Please use only one command at a time.\n');
+            process.exit(2);
+        }
+
+        if (invalidArgs.length > 0) {
+            const argType = invalidArgs[0].startsWith('-') ? 'option' : 'command';
+            logger.error(red(`Error: Invalid ${argType} '${invalidArgs[0]}'.`));
+            logger.info(cyan('Run webpack --help to see available commands and arguments.\n'));
+            process.exit(2);
+        }
+
+        const pkgJSON = require('../../package.json');
         const webpack = require('webpack');
-        process.stdout.write(`\nwebpack-cli ${pkgJSON.version}`);
-        process.stdout.write(`\nwebpack ${webpack.version}\n`);
+        logger.help(`\nwebpack-cli ${pkgJSON.version}`);
+        logger.help(`\nwebpack ${webpack.version}\n`);
     }
 
     run() {
-        const { underline, bold } = chalk.white;
-        const o = s => chalk.keyword('orange')(s);
+        const o = (s) => yellow(s);
         const options = require('../utils/cli-flags');
+        const negatedFlags = options.core
+            .filter((flag) => flag.negative)
+            .reduce((allFlags, flag) => {
+                return [...allFlags, { name: `no-${flag.name}`, description: `Negates ${flag.name}`, type: Boolean }];
+            }, []);
         const title = bold('⬡                     ') + underline('webpack') + bold('                     ⬡');
         const desc = 'The build tool for modern web applications';
         const websitelink = '         ' + underline('https://webpack.js.org');
@@ -70,13 +108,18 @@ class HelpGroup {
             },
             {
                 header: 'Available Commands',
-                content: options.commands.map(e => {
-                    return { name: e.name, summary: e.description };
+                content: options.commands.map((cmd) => {
+                    return { name: `${cmd.name} | ${cmd.alias}`, summary: cmd.description };
                 }),
             },
             {
                 header: 'Options',
-                optionList: options.core,
+                optionList: options.core
+                    .map((e) => {
+                        if (e.type.length > 1) e.type = e.type[0];
+                        return e;
+                    })
+                    .concat(negatedFlags),
             },
         ]);
         return {

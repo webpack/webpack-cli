@@ -6,7 +6,7 @@ const { resolve } = require('path');
 const { run } = require('../../utils/test-utils');
 
 describe('dotfolder single config lookup', () => {
-    it('should find a webpack configuration in a dotfolder', done => {
+    it('should find a webpack configuration in a dotfolder', (done) => {
         const { stdout, stderr } = run(__dirname, [], false);
         expect(stderr).not.toBeUndefined();
         expect(stdout).not.toBeUndefined();

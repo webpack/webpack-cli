@@ -1,4 +1,4 @@
 export interface Error {
-	stack?: string;
-	message: string;
+    stack?: string;
+    message: string;
 }

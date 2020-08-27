@@ -67,22 +67,20 @@ Collection {
           },
           "indent": 0,
           "lines": Lines {
+            "cachedSourceMap": null,
+            "cachedTabWidth": undefined,
+            "infos": Array [
+              Object {
+                "indent": 4,
+                "line": "	",
+                "locked": false,
+                "sliceEnd": 1,
+                "sliceStart": 1,
+              },
+            ],
             "length": 1,
+            "mappings": Array [],
             "name": null,
-            Symbol(recastLinesSecret): Object {
-              "cachedSourceMap": null,
-              "infos": Array [
-                Object {
-                  "indent": 4,
-                  "line": "	",
-                  "locked": false,
-                  "sliceEnd": 1,
-                  "sliceStart": 1,
-                },
-              ],
-              "mappings": Array [],
-              "name": null,
-            },
           },
           "start": Object {
             "column": 0,
@@ -133,22 +131,20 @@ Collection {
             },
             "indent": 4,
             "lines": Lines {
+              "cachedSourceMap": null,
+              "cachedTabWidth": undefined,
+              "infos": Array [
+                Object {
+                  "indent": 4,
+                  "line": "	",
+                  "locked": false,
+                  "sliceEnd": 1,
+                  "sliceStart": 1,
+                },
+              ],
               "length": 1,
+              "mappings": Array [],
               "name": null,
-              Symbol(recastLinesSecret): Object {
-                "cachedSourceMap": null,
-                "infos": Array [
-                  Object {
-                    "indent": 4,
-                    "line": "	",
-                    "locked": false,
-                    "sliceEnd": 1,
-                    "sliceStart": 1,
-                  },
-                ],
-                "mappings": Array [],
-                "name": null,
-              },
             },
             "start": Object {
               "column": 4,
@@ -254,22 +250,20 @@ Collection {
           },
           "indent": 0,
           "lines": Lines {
+            "cachedSourceMap": null,
+            "cachedTabWidth": undefined,
+            "infos": Array [
+              Object {
+                "indent": 0,
+                "line": "hello",
+                "locked": false,
+                "sliceEnd": 5,
+                "sliceStart": 0,
+              },
+            ],
             "length": 1,
+            "mappings": Array [],
             "name": null,
-            Symbol(recastLinesSecret): Object {
-              "cachedSourceMap": null,
-              "infos": Array [
-                Object {
-                  "indent": 0,
-                  "line": "hello",
-                  "locked": false,
-                  "sliceEnd": 5,
-                  "sliceStart": 0,
-                },
-              ],
-              "mappings": Array [],
-              "name": null,
-            },
           },
           "start": Object {
             "column": 0,
@@ -352,22 +346,20 @@ Collection {
                   "identifierName": "hello",
                   "indent": 0,
                   "lines": Lines {
+                    "cachedSourceMap": null,
+                    "cachedTabWidth": undefined,
+                    "infos": Array [
+                      Object {
+                        "indent": 0,
+                        "line": "hello",
+                        "locked": false,
+                        "sliceEnd": 5,
+                        "sliceStart": 0,
+                      },
+                    ],
                     "length": 1,
+                    "mappings": Array [],
                     "name": null,
-                    Symbol(recastLinesSecret): Object {
-                      "cachedSourceMap": null,
-                      "infos": Array [
-                        Object {
-                          "indent": 0,
-                          "line": "hello",
-                          "locked": false,
-                          "sliceEnd": 5,
-                          "sliceStart": 0,
-                        },
-                      ],
-                      "mappings": Array [],
-                      "name": null,
-                    },
                   },
                   "start": Position {
                     "column": 0,
@@ -447,22 +439,20 @@ Collection {
                 },
                 "indent": 0,
                 "lines": Lines {
+                  "cachedSourceMap": null,
+                  "cachedTabWidth": undefined,
+                  "infos": Array [
+                    Object {
+                      "indent": 0,
+                      "line": "hello",
+                      "locked": false,
+                      "sliceEnd": 5,
+                      "sliceStart": 0,
+                    },
+                  ],
                   "length": 1,
+                  "mappings": Array [],
                   "name": null,
-                  Symbol(recastLinesSecret): Object {
-                    "cachedSourceMap": null,
-                    "infos": Array [
-                      Object {
-                        "indent": 0,
-                        "line": "hello",
-                        "locked": false,
-                        "sliceEnd": 5,
-                        "sliceStart": 0,
-                      },
-                    ],
-                    "mappings": Array [],
-                    "name": null,
-                  },
                 },
                 "start": Position {
                   "column": 0,
@@ -544,22 +534,20 @@ Collection {
             },
             "indent": 0,
             "lines": Lines {
+              "cachedSourceMap": null,
+              "cachedTabWidth": undefined,
+              "infos": Array [
+                Object {
+                  "indent": 0,
+                  "line": "hello",
+                  "locked": false,
+                  "sliceEnd": 5,
+                  "sliceStart": 0,
+                },
+              ],
               "length": 1,
+              "mappings": Array [],
               "name": null,
-              Symbol(recastLinesSecret): Object {
-                "cachedSourceMap": null,
-                "infos": Array [
-                  Object {
-                    "indent": 0,
-                    "line": "hello",
-                    "locked": false,
-                    "sliceEnd": 5,
-                    "sliceStart": 0,
-                  },
-                ],
-                "mappings": Array [],
-                "name": null,
-              },
             },
             "start": Object {
               "column": 0,

@@ -305,9 +305,7 @@ function createOrUpdatePluginByName(j: JSCodeshift, rootNodePath: Node, pluginNa
                 if (args.length) {
                     // Plugin is called with object as arguments
                     // we will merge those objects
-                    const currentProps: Node = j(path)
-                        .find(j.ObjectExpression)
-                        .get('properties');
+                    const currentProps: Node = j(path).find(j.ObjectExpression).get('properties');
 
                     optionsProps.forEach((opt: Node): void => {
                         // Search for same keys in the existing object
@@ -603,7 +601,7 @@ function parseMerge(j: JSCodeshift, ast: Node, value: string[], action: string):
         }
         ast.find(j.Program).forEach((p: Node): void => {
             if (!isImportPresent(j, ast, 'webpack-merge')) {
-                (p.value as Node).body.splice(-1, 0, `const merge = require('webpack-merge')`);
+                (p.value as Node).body.splice(-1, 0, "const merge = require('webpack-merge')");
             }
 
             if (!isImportPresent(j, ast, configPath)) {

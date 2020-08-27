@@ -1,8 +1,8 @@
 const { MultiSelect, Input } = require('enquirer');
-const chalk = require('chalk');
-const runner = require('../runner');
+const { cyan } = require('colorette');
 const logger = require('./logger');
 const cliArgs = require('./cli-flags').core;
+const runCLI = require('../bootstrap');
 
 async function prompter() {
     const args = [];
@@ -14,16 +14,16 @@ async function prompter() {
             return [...prev, `--${curr.name}: ${curr.description}`];
         }, []),
         result: (value) => {
-            return value.map((flag) => flag.split(":")[0]);
-        }
+            return value.map((flag) => flag.split(':')[0]);
+        },
     });
 
     const selections = await typePrompt.run();
 
     const boolArgs = [];
     const questions = [];
-    selections.forEach(selection => {
-        const options = cliArgs.find(flag => {
+    selections.forEach((selection) => {
+        const options = cliArgs.find((flag) => {
             return flag.name === selection.slice(2);
         });
 
@@ -36,13 +36,14 @@ async function prompter() {
             name: 'value',
             message: `Enter value of the ${selection} flag`,
             initial: options.defaultValue,
-            result: (value) => [selection, value]
+            result: (value) => [selection, value],
+            validate: (value) => Boolean(value),
         });
         questions.push(valuePrompt);
     });
 
     // Create promise chain to force synchronous prompt of question
-    for await (question of questions) {
+    for await (const question of questions) {
         const flagArgs = await question.run();
         args.push(...flagArgs);
     }
@@ -52,12 +53,12 @@ async function prompter() {
 
 async function run() {
     try {
-      const args = await prompter();
-      process.stdout.write('\n');
-      logger.info(`Executing CLI\n`);
-      runner([], args);	
+        const args = await prompter();
+        process.stdout.write('\n');
+        logger.info('Executing CLI\n');
+        await runCLI(args);
     } catch (err) {
-      logger.error(`Action Interrupted, use ${chalk.cyan(`webpack-cli help`)} to see possible options.`)
+        logger.error(`Action Interrupted, use ${cyan('webpack-cli help')} to see possible options.`);
     }
 }
 

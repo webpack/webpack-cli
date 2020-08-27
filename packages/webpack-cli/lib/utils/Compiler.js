@@ -1,7 +1,8 @@
 const webpack = require('webpack');
 const logger = require('./logger');
-const { cyanBright, greenBright } = require('chalk');
+const { cyanBright, greenBright } = require('colorette');
 const { CompilerOutput } = require('./CompilerOutput');
+const readline = require('readline');
 
 class Compiler {
     constructor() {
@@ -12,7 +13,7 @@ class Compiler {
         const { ProgressPlugin } = webpack;
         let progressPluginExists;
         if (options.plugins) {
-            progressPluginExists = options.plugins.find(e => e instanceof ProgressPlugin);
+            progressPluginExists = options.plugins.find((e) => e instanceof ProgressPlugin);
         }
 
         compilation.hooks.beforeRun.tap('webpackProgress', () => {
@@ -20,8 +21,8 @@ class Compiler {
                 process.stdout.write('\n');
                 const defaultProgressPluginHandler = (percent, msg) => {
                     percent = Math.floor(percent * 100);
-                    process.stdout.clearLine();
-                    process.stdout.cursorTo(0);
+                    readline.clearLine(process.stdout, 0);
+                    readline.cursorTo(process.stdout, 0, null);
                     if (percent !== undefined) {
                         process.stdout.write(' (');
                         for (let i = 0; i <= 100; i += 10) {
@@ -34,7 +35,7 @@ class Compiler {
                         process.stdout.write(`) ${percent}% : `);
                         process.stdout.write(`${cyanBright(msg)}`);
                         if (percent === 100) {
-                            process.stdout.write(`${cyanBright('Complilation completed\n')}`);
+                            process.stdout.write(`${cyanBright('Compilation completed\n')}`);
                         }
                     }
                 };
@@ -42,8 +43,8 @@ class Compiler {
                     new ProgressPlugin(defaultProgressPluginHandler).apply(compilation);
                 } else {
                     if (!progressPluginExists.handler) {
-                        options.plugins = options.plugins.filter(e => e !== progressPluginExists);
-                        Object.keys(progressPluginExists).map(opt => {
+                        options.plugins = options.plugins.filter((e) => e !== progressPluginExists);
+                        Object.keys(progressPluginExists).map((opt) => {
                             ProgressPlugin.defaultOptions[opt] = progressPluginExists[opt];
                         });
                         new ProgressPlugin(defaultProgressPluginHandler).apply(compilation);
@@ -53,24 +54,6 @@ class Compiler {
                 }
             }
         });
-
-        if (outputOptions.infoVerbosity === 'verbose') {
-            const resolveCompilationName = compilation => {
-                return compilation.name ? compilation.name : '';
-            };
-            if (outputOptions.watch) {
-                compilation.hooks.watchRun.tap('WebpackInfo', compilation => {
-                    logger.info(`Compilation ${resolveCompilationName(compilation)} starting…`);
-                });
-            } else {
-                compilation.hooks.beforeRun.tap('WebpackInfo', compilation => {
-                    logger.info(`Compilation ${resolveCompilationName(compilation)} starting…`);
-                });
-            }
-            compilation.hooks.done.tap('WebpackInfo', compilation => {
-                logger.info(`Compilation ${resolveCompilationName(compilation)} finished`);
-            });
-        }
     }
 
     showEmojiConditionally() {
@@ -85,7 +68,7 @@ class Compiler {
         }
     }
 
-    compilerCallback(err, stats, lastHash, options, outputOptions, processingMessageBuffer) {
+    compilerCallback(err, stats, lastHash, options, outputOptions) {
         const statsErrors = [];
 
         if (!outputOptions.watch || err) {
@@ -97,39 +80,37 @@ class Compiler {
             logger.error(err.stack || err);
             process.exit(1); // eslint-disable-line
         }
-        if (outputOptions.json && !outputOptions.silent) {
+        if (!outputOptions.watch && (stats.hasErrors() || stats.hasWarnings())) {
+            process.exitCode = 1;
+        }
+        if (outputOptions.json) {
             process.stdout.write(JSON.stringify(stats.toJson(outputOptions), null, 2) + '\n');
         } else if (stats.hash !== lastHash) {
             lastHash = stats.hash;
             if (stats.compilation && stats.compilation.errors.length !== 0) {
                 const errors = stats.compilation.errors;
-                errors.forEach(statErr => {
+                errors.forEach((statErr) => {
                     const errLoc = statErr.module ? statErr.module.resource : null;
                     statsErrors.push({ name: statErr.message, loc: errLoc });
                 });
             }
-            if (!outputOptions.silent) {
-                return this.generateOutput(outputOptions, stats, statsErrors, processingMessageBuffer);
-            }
-        }
-        if (!outputOptions.watch && stats.hasErrors()) {
-            process.exitCode = 2;
+            return this.generateOutput(outputOptions, stats, statsErrors);
         }
     }
 
-    async invokeCompilerInstance(lastHash, options, outputOptions, processingMessageBuffer) {
+    async invokeCompilerInstance(lastHash, options, outputOptions) {
         // eslint-disable-next-line  no-async-promise-executor
-        return new Promise(async resolve => {
+        return new Promise(async (resolve) => {
             await this.compiler.run((err, stats) => {
-                const content = this.compilerCallback(err, stats, lastHash, options, outputOptions, processingMessageBuffer);
+                const content = this.compilerCallback(err, stats, lastHash, options, outputOptions);
                 resolve(content);
             });
         });
     }
 
-    async invokeWatchInstance(lastHash, options, outputOptions, watchOptions, processingMessageBuffer) {
+    async invokeWatchInstance(lastHash, options, outputOptions, watchOptions) {
         return this.compiler.watch(watchOptions, (err, stats) => {
-            return this.compilerCallback(err, stats, lastHash, options, outputOptions, processingMessageBuffer);
+            return this.compilerCallback(err, stats, lastHash, options, outputOptions);
         });
     }
 
@@ -150,17 +131,17 @@ class Compiler {
     }
 
     async webpackInstance(opts) {
-        const { outputOptions, processingMessageBuffer, options } = opts;
+        const { outputOptions, options } = opts;
         const lastHash = null;
 
         const { ProgressPlugin } = webpack;
         if (options.plugins) {
-            options.plugins = options.plugins.filter(e => e instanceof ProgressPlugin);
+            options.plugins = options.plugins.filter((e) => e instanceof ProgressPlugin);
         }
 
         if (outputOptions.interactive) {
             const interactive = require('./interactive');
-            return interactive(options, outputOptions, processingMessageBuffer);
+            return interactive(options, outputOptions);
         }
 
         if (this.compiler.compilers) {
@@ -174,14 +155,14 @@ class Compiler {
         if (outputOptions.watch) {
             const watchOptions = outputOptions.watchOptions || {};
             if (watchOptions.stdin) {
-                process.stdin.on('end', function() {
-                    process.exit(); // eslint-disable-line
+                process.stdin.on('end', function () {
+                    process.exit();
                 });
                 process.stdin.resume();
             }
-            await this.invokeWatchInstance(lastHash, options, outputOptions, watchOptions, processingMessageBuffer);
+            await this.invokeWatchInstance(lastHash, options, outputOptions, watchOptions);
         } else {
-            return await this.invokeCompilerInstance(lastHash, options, outputOptions, processingMessageBuffer);
+            return await this.invokeCompilerInstance(lastHash, options, outputOptions);
         }
     }
 }

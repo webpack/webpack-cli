@@ -1,53 +1,28 @@
-'use strict';
-
-const fs = require('fs');
-const path = require('path');
 // eslint-disable-next-line node/no-unpublished-require
 const execa = require('execa');
 // eslint-disable-next-line node/no-unpublished-require
-const chalk = require('chalk');
+const { red, green } = require('colorette');
+const collectTestFolders = require('./utils');
 
-const BASE_DIR = 'test/';
 const PACKAGE = 'package.json';
 
-function collectTestingFoldersWithPackage() {
-    const testFolder = path.resolve(path.join(process.cwd(), BASE_DIR));
+const getFoldersWithPackage = (stats, file) => {
+    return stats.isFile() && file === PACKAGE;
+};
 
-    return extractFolder(testFolder);
-}
-
-function extractFolder(folderToRead, folders = []) {
-    const files = fs.readdirSync(folderToRead);
-
-    files.forEach(file => {
-        const filePath = path.resolve(path.join(folderToRead, file));
-        const stats = fs.statSync(filePath);
-        if (stats.isFile() && file === PACKAGE) {
-            folders.push(folderToRead);
-        }
-        if (stats.isDirectory() && file !== 'node_modules') {
-            extractFolder(filePath, folders);
-        }
-    });
-
-    return folders;
-}
-
-{
-    Promise.all(
-        collectTestingFoldersWithPackage().map(async folder => {
-            return execa('yarn', {
+(async () => {
+    try {
+        const folders = collectTestFolders(getFoldersWithPackage);
+        for (const folder of folders) {
+            await execa('yarn', {
                 cwd: folder,
                 stdio: 'inherit',
             });
-        }),
-    )
-        .then(() => {
-            console.log(chalk.inverse.green(' Successfully prepared the test suite '));
-        })
-        .catch(e => {
-            console.error(chalk.inverse.red(' Unable to prepare the test suite '));
-            console.error(e.stack);
-            process.exitCode = 1;
-        });
-}
+        }
+        console.log(green(' Successfully prepared the test suite '));
+    } catch (e) {
+        console.error(red(' Unable to prepare the test suite '));
+        console.error(e.stack);
+        process.exitCode = 1;
+    }
+})();

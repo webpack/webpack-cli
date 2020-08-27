@@ -1,4 +1,4 @@
-import  chalk = require('chalk');
+import { green } from 'colorette';
 import j from 'jscodeshift';
 import pEachSeries = require('p-each-series');
 import path from 'path';
@@ -21,6 +21,7 @@ import { Node } from './types/NodePath';
  */
 
 function mapOptionsToTransform(config: Config): string[] {
+    if (!config.webpackOptions) return [];
     return Object.keys(config.webpackOptions).filter((k: string): boolean => PROP_TYPES.has(k));
 }
 
@@ -34,10 +35,13 @@ function mapOptionsToTransform(config: Config): string[] {
  * and writes the file
  */
 
-export function runTransform(transformConfig: TransformConfig, action: string): void {
+export function runTransform(transformConfig: TransformConfig, action: string, generateConfig: boolean): void {
     // webpackOptions.name sent to nameTransform if match
     const webpackConfig = Object.keys(transformConfig).filter((p: string): boolean => {
-        return p !== 'configFile' && p !== 'configPath' && p !== 'usingDefaults';
+        if (p == 'usingDefaults') {
+            return generateConfig;
+        }
+        return p !== 'configFile' && p !== 'configPath';
     });
     const initActionNotDefined = action && action !== 'init' ? true : false;
 
@@ -92,11 +96,11 @@ export function runTransform(transformConfig: TransformConfig, action: string): 
     const runCommand = getPackageManager() === 'yarn' ? 'yarn build' : 'npm run build';
 
     let successMessage: string =
-        chalk.green(`Congratulations! Your new webpack configuration file has been created!\n\n`) +
-        `You can now run ${chalk.green(runCommand)} to bundle your application!\n\n`;
+        green('Congratulations! Your new webpack configuration file has been created!\n\n') +
+        `You can now run ${green(runCommand)} to bundle your application!\n\n`;
 
     if (initActionNotDefined && transformConfig.config.item) {
-        successMessage = chalk.green(`Congratulations! ${transformConfig.config.item} has been ${action}ed!\n`);
+        successMessage = green(`Congratulations! ${transformConfig.config.item} has been ${action}ed!\n`);
     }
     process.stdout.write(`\n${successMessage}`);
 }

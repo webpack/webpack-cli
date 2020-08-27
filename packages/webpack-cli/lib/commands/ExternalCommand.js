@@ -1,5 +1,4 @@
-const { prompt } = require('enquirer');
-const chalk = require('chalk');
+const { yellow, cyan } = require('colorette');
 const logger = require('../utils/logger');
 const execa = require('execa');
 const { packageExists, promptInstallation } = require('@webpack-cli/package-utils');
@@ -13,7 +12,7 @@ class ExternalCommand {
             shell: true,
         });
         return new Promise((resolve, reject) => {
-            executedCommand.on('error', error => {
+            executedCommand.on('error', (error) => {
                 reject(error);
             });
 
@@ -28,11 +27,11 @@ class ExternalCommand {
         let pkgLoc = packageExists(scopeName);
         if (!pkgLoc) {
             try {
-            	pkgLoc = await promptInstallation(`${scopeName}`, () => {
-                logger.error(`The command moved into a separate package: ${chalk.keyword('orange')(scopeName)}\n`);
-              });
+                pkgLoc = await promptInstallation(`${scopeName}`, () => {
+                    logger.error(`The command moved into a separate package: ${yellow(scopeName)}\n`);
+                });
             } catch (err) {
-              logger.error(`Action Interrupted, use ${chalk.cyan(`webpack-cli help`)} to see possible commands.`)
+                logger.error(`Action Interrupted, use ${cyan('webpack-cli help')} to see possible commands.`);
             }
         }
         return pkgLoc ? require(scopeName).default(...args) : null;

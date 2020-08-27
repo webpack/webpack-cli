@@ -206,7 +206,7 @@ const a = { plugs: [] }
             expect(
                 ast
                     .find(j.ObjectExpression)
-                    .filter(p => findObjWithOneOfKeys(p, ['a']))
+                    .filter((p) => findObjWithOneOfKeys(p, ['a']))
                     .size(),
             ).toEqual(1);
         });
@@ -294,7 +294,7 @@ const a = { plugs: [] }
 
             const root = ast.find(j.ObjectExpression);
 
-            root.forEach(p => {
+            root.forEach((p) => {
                 addProperty(j, p, 'entry', propertyValue);
             });
 

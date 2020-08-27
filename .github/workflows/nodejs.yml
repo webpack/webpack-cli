@@ -1,46 +1,93 @@
-name: Node CI
+name: webpack-cli
 
 on:
   push:
     branches:
-    - master
-    - next
+      - master
+      - next
   pull_request:
     branches:
-    - master
-    - next
+      - master
+      - next
+  workflow_dispatch:
+    inputs:
+      tags:
+        description: 'Test description'
 
 jobs:
-  build:
+  lint:
+    name: Lint - ${{ matrix.os }} - Node v${{ matrix.node-version }}
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x]
+        os: [ubuntu-latest]
+        node-version: [12.x]
+        webpack-version: [latest]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Using Node v${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: |
+          yarn
+          yarn bootstrap
+
+      - name: Install webpack ${{ matrix.webpack-version }}
+        run: yarn add -W webpack@${{ matrix.webpack-version }}
+
+      - name: Build
+        run: yarn build
+
+      - name: Lint
+        run: yarn lint
+
+  build:
+    name: Tests - ${{ matrix.os }} - Node v${{ matrix.node-version }}, Webpack ${{ matrix.webpack-version }}
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: [10.x, 12.x, 13.x]
         webpack-version: [next, latest]
 
     steps:
-    - uses: actions/checkout@v1
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: yarn install, bootstrap
-      run: |
-        yarn
-        yarn bootstrap
-    - name: Run test for webpack version ${{ matrix.webpack-version }}
-      run: |
-        yarn add -W webpack@${{ matrix.webpack-version }}
-        yarn build
-        yarn prepsuite
-        yarn test:ci
-      env:
-        CI: true
-    - name: smoketest
-      run: |
-        yarn build
-        yarn smoketest
-      env:
-        CI: true
+      - uses: actions/checkout@v2
+
+      - name: Using Node v${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: |
+          yarn
+          yarn bootstrap
+
+      - name: Install webpack ${{ matrix.webpack-version }}
+        run: yarn add -W webpack@${{ matrix.webpack-version }}
+
+      - name: Build
+        run: yarn build
+
+      - name: Run tests for webpack version ${{ matrix.webpack-version }}
+        run: |
+          yarn prepsuite
+          yarn test:ci
+        env:
+          CI: true
+
+      - name: Smoke Tests
+        # TODO fix for windows
+        if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
+        run: yarn test:smoke
+        env:
+          CI: true

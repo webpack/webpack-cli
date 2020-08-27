@@ -19,7 +19,7 @@ function replaceWithPath(j: JSCodeshift, p: Node, pathVarName: string): Node {
  * @param {Node} ast - jscodeshift ast to transform
  * @returns {Node} ast - jscodeshift ast
  */
-export default function(j: JSCodeshift, ast: Node): Node | void {
+export default function (j: JSCodeshift, ast: Node): Node | void {
     const literalOutputPath: Node = ast
         .find(j.ObjectExpression)
         .filter((p: Node): boolean => safeTraverse(p, ['parentPath', 'value', 'key', 'name']) === 'output')

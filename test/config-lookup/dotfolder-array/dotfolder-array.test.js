@@ -4,7 +4,7 @@ const { resolve } = require('path');
 const { run } = require('../../utils/test-utils');
 
 describe('dotfolder array config lookup', () => {
-    it('should find a webpack array configuration in a dotfolder', done => {
+    it('should find a webpack array configuration in a dotfolder', (done) => {
         const { stdout, stderr } = run(__dirname, [], false);
         expect(stderr).not.toBeUndefined();
         expect(stdout).not.toBeUndefined();

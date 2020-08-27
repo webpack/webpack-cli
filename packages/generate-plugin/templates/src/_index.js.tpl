@@ -1,16 +1,16 @@
 /**
  * See the webpack docs for more information about plugins:
- * https://github.com/webpack/docs/wiki/how-to-write-a-plugin
+ * https://webpack.js.org/contribute/writing-a-plugin/#basic-plugin-architecture
  */
 
-function <%= name %>(options) {
-	// Setup the plugin instance with options...
+class <%= name %> {
+  apply(compiler) {
+    compiler.hooks.done.tap('<%= name %>', (
+      stats /* stats is passed as an argument when done hook is tapped.  */
+    ) => {
+      console.log('Hello World!');
+    });
+  }
 }
-
-<%= name %>.prototype.apply = function(compiler) {
-	compiler.plugin('done', function() {
-		console.log('Hello World!');
-	});
-};
 
 module.exports = <%= name %>;

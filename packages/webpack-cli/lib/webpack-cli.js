@@ -1,26 +1,17 @@
-const { resolve, parse } = require('path');
-const { existsSync } = require('fs');
+const { options } = require('colorette');
 const GroupHelper = require('./utils/GroupHelper');
 const { Compiler } = require('./utils/Compiler');
 const { groups, core } = require('./utils/cli-flags');
 const webpackMerge = require('webpack-merge');
-const commandArgs = require('command-line-args');
-
-const defaultCommands = {
-    init: 'init',
-    loader: 'generate-loader',
-    plugin: 'generate-plugin',
-    info: 'info',
-    migrate: 'migrate',
-    serve: 'serve',
-};
+const { toKebabCase } = require('./utils/helpers');
+const argParser = require('./utils/arg-parser');
 
 class WebpackCLI extends GroupHelper {
     constructor() {
         super();
         this.groupMap = new Map();
         this.groups = [];
-        this.processingMessageBuffer = [];
+        this.args = {};
         this.compilation = new Compiler();
         this.defaultEntry = 'index';
         this.possibleFileNames = [
@@ -32,17 +23,17 @@ class WebpackCLI extends GroupHelper {
             `./src/${this.defaultEntry}.js`,
             `src/${this.defaultEntry}.js`,
         ];
-        this.compilerConfiguration = undefined;
+        this.compilerConfiguration = {};
         this.outputConfiguration = {};
     }
     setMappedGroups(args, inlineOptions) {
-        const { _all } = args;
-        Object.keys(_all).forEach(key => {
-            this.setGroupMap(key, _all[key], inlineOptions);
+        Object.keys(args).forEach((key) => {
+            this.setGroupMap(toKebabCase(key), args[key], inlineOptions);
         });
     }
     setGroupMap(key, val, inlineOptions) {
-        const opt = inlineOptions.find(opt => opt.name === key);
+        if (val === undefined) return;
+        const opt = inlineOptions.find((opt) => opt.name === key);
         const groupName = opt.group;
         if (this.groupMap.has(groupName)) {
             const pushToMap = this.groupMap.get(groupName);
@@ -51,54 +42,52 @@ class WebpackCLI extends GroupHelper {
             this.groupMap.set(groupName, [{ [opt.name]: val }]);
         }
     }
-    checkDefaults(options, outputOptions) {
-        if (Array.isArray(options)) {
-            return options.map(opt => this.checkDefaults(opt, outputOptions));
-        }
-        if (options.entry && this.possibleFileNames.includes(options.entry)) {
-            const absFilename = parse(options.entry);
-            let tmpFileName = options.entry;
-            if (absFilename.ext !== '.js') {
-                tmpFileName += '.js';
-            }
-            const normalizedEntry = resolve(tmpFileName);
-            if (!existsSync(normalizedEntry)) {
-                const parsedPath = parse(normalizedEntry);
-                const possibleEntries = this.possibleFileNames
-                    .map(f => {
-                        return resolve(parsedPath.dir, f);
-                    })
-                    .filter(e => existsSync(e));
 
-                if (possibleEntries.length) {
-                    options.entry = possibleEntries[0];
-                }
-            }
+    /**
+     * Responsible for handling flags coming from webpack/webpack
+     * @private\
+     * @returns {void}
+     */
+    _handleCoreFlags() {
+        if (!this.groupMap.has('core')) {
+            return;
         }
-        if (outputOptions.devtool) {
-            options.devtool = outputOptions.devtool;
-        }
-        return options;
+        const coreFlags = this.groupMap.get('core');
+
+        // convert all the flags from map to single object
+        const coreConfig = coreFlags.reduce((allFlag, curFlag) => ({ ...allFlag, ...curFlag }), {});
+
+        const coreCliHelper = require('webpack').cli;
+        const coreCliArgs = coreCliHelper.getArguments();
+        // Merge the core flag config with the compilerConfiguration
+        coreCliHelper.processArguments(coreCliArgs, this.compilerConfiguration, coreConfig);
     }
 
     /**
-     * It exposes "command-line-args" function
+     * Expose commander argParser
+     * @param  {...any} args args for argParser
      */
-    commandLineArgs(...args) {
-        return commandArgs(...args);
+    argParser(...args) {
+        return argParser(...args);
     }
 
     getCoreFlags() {
         return core;
     }
+
     /**
      * Based on the parsed keys, the function will import and create
      * a group that handles respective values
      *
      * @returns {void}
      */
-    resolveGroups() {
+    resolveGroups(parsedArgs) {
         let mode;
+        // determine the passed mode for ConfigGroup
+        if (this.groupMap.has(groups.ZERO_CONFIG_GROUP)) {
+            const modePresent = this.groupMap.get(groups.ZERO_CONFIG_GROUP).find((t) => !!t.mode);
+            if (modePresent) mode = modePresent.mode;
+        }
         for (const [key, value] of this.groupMap.entries()) {
             switch (key) {
                 case groups.ZERO_CONFIG_GROUP: {
@@ -118,7 +107,7 @@ class WebpackCLI extends GroupHelper {
                 }
                 case groups.CONFIG_GROUP: {
                     const ConfigGroup = require('./groups/ConfigGroup');
-                    this.configGroup = new ConfigGroup([...value, { mode }]);
+                    this.configGroup = new ConfigGroup([...value, { mode }, { argv: parsedArgs }]);
                     break;
                 }
                 case groups.DISPLAY_GROUP: {
@@ -155,7 +144,7 @@ class WebpackCLI extends GroupHelper {
          * configuration where each element is individually merged
          */
         if (Array.isArray(options)) {
-            this.compilerConfiguration = options.map(configuration => {
+            this.compilerConfiguration = options.map((configuration) => {
                 if (strategy) {
                     return webpackMerge.strategy(strategy)(this.compilerConfiguration, configuration);
                 }
@@ -167,7 +156,7 @@ class WebpackCLI extends GroupHelper {
              * we merge the options
              */
             if (Array.isArray(this.compilerConfiguration)) {
-                this.compilerConfiguration = this.compilerConfiguration.map(thisConfiguration => {
+                this.compilerConfiguration = this.compilerConfiguration.map((thisConfiguration) => {
                     if (strategy) {
                         return webpackMerge.strategy(strategy)(thisConfiguration, options);
                     }
@@ -197,19 +186,6 @@ class WebpackCLI extends GroupHelper {
     }
 
     /**
-     * Responsible for updating the buffer
-     *
-     * @param {string[]} messageBuffer The current buffer message
-     * @private
-     * @returns {void}
-     */
-    _mergeProcessingMessageBuffer(messageBuffer) {
-        if (messageBuffer) {
-            this.processingMessageBuffer = this.processingMessageBuffer.concat(...messageBuffer);
-        }
-    }
-
-    /**
      * It receives a group helper, it runs and it merges its result inside
      * the file result that will be passed to the compiler
      *
@@ -217,12 +193,11 @@ class WebpackCLI extends GroupHelper {
      * @private
      * @returns {void}
      */
-    _handleGroupHelper(groupHelper) {
+    async _handleGroupHelper(groupHelper) {
         if (groupHelper) {
-            const result = groupHelper.run();
+            const result = await groupHelper.run();
             this._mergeOptionsToConfiguration(result.options, groupHelper.strategy);
             this._mergeOptionsToOutputConfiguration(result.outputOptions);
-            this._mergeProcessingMessageBuffer(result.processingMessageBuffer);
         }
     }
 
@@ -242,18 +217,6 @@ class WebpackCLI extends GroupHelper {
     }
 
     /**
-     * Responsible for applying defaults, if necessary
-     * @private\
-     * @returns {void}
-     */
-    _handForcedDefaults() {
-        if (this.outputConfiguration.defaults) {
-            const wrappedConfig = require('./utils/zero-config')(this.compilerConfiguration, this.outputConfiguration);
-            this.compilerConfiguration = this.checkDefaults(wrappedConfig.options, this.outputConfiguration);
-        }
-    }
-
-    /**
      * It runs in a fancy order all the expected groups.
      * Zero config and configuration goes first.
      *
@@ -266,16 +229,16 @@ class WebpackCLI extends GroupHelper {
             .then(() => this._handleDefaultEntry())
             .then(() => this._handleGroupHelper(this.configGroup))
             .then(() => this._handleGroupHelper(this.outputGroup))
+            .then(() => this._handleCoreFlags())
             .then(() => this._handleGroupHelper(this.basicGroup))
             .then(() => this._handleGroupHelper(this.advancedGroup))
             .then(() => this._handleGroupHelper(this.statsGroup))
-            .then(() => this._handleGroupHelper(this.helpGroup))
-            .then(() => this._handForcedDefaults());
+            .then(() => this._handleGroupHelper(this.helpGroup));
     }
 
     async processArgs(args, cliOptions) {
         this.setMappedGroups(args, cliOptions);
-        this.resolveGroups();
+        this.resolveGroups(args);
         const groupResult = await this.runOptionGroups();
         return groupResult;
     }
@@ -292,31 +255,29 @@ class WebpackCLI extends GroupHelper {
         const webpack = await this.compilation.webpackInstance({
             options: this.compilerConfiguration,
             outputOptions: this.outputConfiguration,
-            processingMessageBuffer: this.processingMessageBuffer,
         });
         return webpack;
     }
 
-    async runCommand(command, ...args) {
-        // TODO: rename and depreciate init
-        return await require('./commands/ExternalCommand').run(defaultCommands[command.name], ...args);
-    }
-
     runHelp(args) {
         const HelpGroup = require('./groups/HelpGroup');
-        const commandNames = require('./utils/commands').names;
-        const flagNames = require('./utils/core-flags').names;
-        const allNames = [...commandNames, ...flagNames];
-        const subject = allNames.filter(name => {
+        const { commands, allNames, hasUnknownArgs } = require('./utils/unknown-args');
+        const subject = allNames.filter((name) => {
             return args.includes(name);
         })[0];
-        const isCommand = commandNames.includes(subject);
-        return new HelpGroup().outputHelp(isCommand, subject);
+        const invalidArgs = hasUnknownArgs(args, ...allNames);
+        const isCommand = commands.includes(subject);
+        options.enabled = !args.includes('--no-color');
+        return new HelpGroup().outputHelp(isCommand, subject, invalidArgs);
     }
 
-    runVersion() {
+    runVersion(args, externalPkg) {
         const HelpGroup = require('./groups/HelpGroup');
-        return new HelpGroup().outputVersion();
+        const { commands, allNames, hasUnknownArgs } = require('./utils/unknown-args');
+        const commandsUsed = args.filter((val) => commands.includes(val));
+        const invalidArgs = hasUnknownArgs(args, ...allNames);
+        options.enabled = !args.includes('--no-color');
+        return new HelpGroup().outputVersion(externalPkg, commandsUsed, invalidArgs);
     }
 }
 

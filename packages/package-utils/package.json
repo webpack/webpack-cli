@@ -29,20 +29,19 @@
     "type": "git",
     "url": "git+https://github.com/webpack/webpack-cli.git"
   },
-  "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
-  },
   "bugs": {
     "url": "https://github.com/webpack/webpack-cli/issues"
   },
   "dependencies": {
-    "@webpack-cli/logger": "^1.0.1-alpha.4",
-    "chalk": "^3.0.0",
+    "colorette": "^1.2.1",
+    "cross-spawn": "7.0.1",
     "enquirer": "^2.3.4",
-    "execa": "^4.0.0"
+    "execa": "^4.0.0",
+    "global-modules": "2.0.0"
   },
   "devDependencies": {
-    "typescript": "^3.8.2"
+    "@webpack-cli/package-utils": "^1.0.1-alpha.4",
+    "@types/cross-spawn": "6.0.1"
   },
   "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9"
 }

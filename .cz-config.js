@@ -18,7 +18,7 @@ module.exports = {
     scopes: [],
     // sort type values in asc
     types: [
-        { value: 'ast', name: 'ast:		create, migrate, add, etc' },
+        { value: 'ast', name: 'ast:		init, migrate, add, etc' },
         { value: 'break', name: 'break:	Changes that break the behaviour of the cli' },
         { value: 'chore', name: 'chore:	Updating deps, docs, linting, etc' },
         { value: 'cli', name: 'cli:		Core CLI things' },
@@ -27,5 +27,6 @@ module.exports = {
         { value: 'fix', name: 'fix:		Bugs, typos, etc' },
         { value: 'misc', name: 'misc:		Other formats like tweaks and such' },
         { value: 'tests', name: 'tests:	Tests, jest, etc' },
+        { value: 'refactor', name: 'refactor:	A code change that neither fixes a bug nor adds a feature' },
     ],
 };

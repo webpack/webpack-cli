@@ -24,50 +24,24 @@
   ],
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "build": "node scripts/buildPackages.js",
+    "clean": "del-cli \"*.tsbuildinfo\" \"packages/**/*.tsbuildinfo\" \"packages/!(webpack-cli)/lib/!(*.tpl)\" \"**/.yo-rc.json\"",
+    "prebuild": "yarn clean",
+    "build": "tsc --build",
+    "watch": "tsc --build --watch",
     "prepsuite": "node scripts/prepareSuite.js",
-    "clean:all": "rimraf node_modules packages/*/{node_modules}",
     "commit": "git-cz",
-    "docs": "typedoc",
-    "format": "eslint --fix . --ext .js,.ts",
-    "lint": "eslint . --ext .js,.ts",
-    "lint:fix": "eslint . --ext .js,.ts --fix",
+    "lint:prettier": "prettier --list-different . \"!**/*.{js,ts}\" ",
+    "lint:eslint": "eslint --cache --ext .js --ext .ts .",
+    "lint": "yarn lint:eslint && yarn lint:prettier",
+    "fix": "yarn lint:eslint --fix && yarn lint:prettier --write",
     "pretest": "yarn build && yarn lint && yarn prepsuite",
-    "reportCoverage": "nyc report --reporter=json && codecov -f coverage/coverage-final.json --disable=gcov",
-    "smoketest": "smoketests/smoketests.sh",
-    "test": "nyc jest --maxWorkers=4 --reporters=default --reporters=jest-junit",
-    "test:cli": "nyc jest test/ --maxWorkers=4 --reporters=default --reporters=jest-junit",
-    "test:packages": "nyc jest packages/ --maxWorkers=4 --reporters=default --reporters=jest-junit",
+    "test": "jest --reporters=default --reporters=jest-junit",
+    "test:cli": "jest test/ --reporters=default --reporters=jest-junit --forceExit",
+    "test:packages": "jest packages/ --reporters=default --reporters=jest-junit --forceExit",
     "test:ci": "yarn test:cli && yarn test:packages",
-    "travis:integration": "yarn build && yarn prepsuite && yarn test && yarn reportCoverage",
-    "travis:lint": "yarn build && yarn lint",
     "test:watch": "jest test/ packages/ --watch",
-    "watch": "yarn build && tsc -w",
+    "test:smoke": "smoketests/smoketests.sh",
     "publish:monorepo": "yarn format && yarn test && yarn build && lerna publish -m \"chore: monorepo version update\""
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
-  "lint-staged": {
-    "*.md": [
-      "prettier --parser markdown --write",
-      "git add"
-    ],
-    "{packages,lib}/**/!(__testfixtures__)/**.js": [
-      "eslint --fix",
-      "git add"
-    ],
-    "*.ts": [
-      "yarn format",
-      "git add"
-    ],
-    "*.js": [
-      "yarn format",
-      "git add"
-    ]
   },
   "standard-version": {
     "types": [
@@ -107,17 +81,6 @@
       }
     ]
   },
-  "nyc": {
-    "include": [
-      "./cli.js",
-      "lib/**.js",
-      "packages/**/*.js"
-    ],
-    "reporter": [
-      "lcov"
-    ],
-    "all": true
-  },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-customizable"
@@ -130,37 +93,40 @@
     "webpack": "4.x.x || 5.x.x"
   },
   "devDependencies": {
-    "@babel/core": "^7.8.4",
-    "@babel/preset-env": "^7.8.4",
-    "@commitlint/cli": "^8.2.0",
-    "@commitlint/config-lerna-scopes": "^8.2.0",
-    "@types/jest": "^24.0.22",
-    "@typescript-eslint/eslint-plugin": "^2.17.0",
-    "@typescript-eslint/parser": "^2.17.0",
-    "chalk": "^3.0.0",
-    "commitlint": "^8.2.0",
-    "commitlint-config-cz": "^0.12.1",
-    "cz-customizable": "^6.2.0",
+    "@babel/core": "^7.11.1",
+    "@babel/preset-env": "^7.11.0",
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-lerna-scopes": "^9.1.1",
+    "@types/jest": "^25.1.4",
+    "@types/node": "13.9.8",
+    "@typescript-eslint/eslint-plugin": "^2.34.0",
+    "@typescript-eslint/parser": "^2.34.0",
+    "colorette": "^1.2.1",
+    "commitlint": "^9.1.2",
+    "commitlint-config-cz": "^0.13.1",
+    "concat-stream": "^2.0.0",
+    "cz-customizable": "^6.3.0",
+    "del-cli": "^3.0.1",
     "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.9.0",
-    "eslint-plugin-node": "^11.0.0",
-    "eslint-plugin-prettier": "^3.1.2",
-    "execa": "^3.2.0",
-    "git-cz": "^4.3.1",
-    "husky": "^3.0.9",
-    "jest": "^25.1.0",
-    "jest-junit": "^10.0.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "execa": "^4.0.3",
+    "get-port": "^5.1.1",
+    "git-cz": "^4.7.0",
+    "husky": "^4.2.5",
+    "jest": "^25.2.3",
+    "jest-junit": "^11.1.0",
     "jest-serializer-ansi": "^1.0.3",
-    "jest-watch-typeahead": "^0.4.2",
-    "lerna": "^3.20.2",
-    "lint-staged": "^9.4.2",
-    "nyc": "^14.1.1",
-    "prettier": "1.18.2",
-    "readable-stream": "^3.5.0",
-    "ts-jest": "^25.2.1",
-    "typedoc": "^0.15.0",
-    "typescript": "^3.7.2",
-    "webpack": "^4.42.0",
-    "yeoman-test": "^2.1.0"
+    "jest-watch-typeahead": "^0.5.0",
+    "lerna": "^3.22.1",
+    "lint-staged": "^10.2.11",
+    "prettier": "^2.0.5",
+    "readable-stream": "^3.6.0",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^25.5.1",
+    "typescript": "^3.9.7",
+    "webpack": "^4.44.1",
+    "yeoman-test": "^2.7.0"
   }
 }

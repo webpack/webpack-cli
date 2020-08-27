@@ -3,26 +3,18 @@
   "version": "1.0.1-alpha.4",
   "description": "Outputs info about system and webpack config",
   "main": "lib/index.js",
-  "type": "lib/index.d.ts",
-  "author": "",
+  "types": "lib/index.d.ts",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
-    "@types/yargs": "13.0.0",
-    "chalk": "3.0.0",
-    "envinfo": "7.3.1",
-    "prettyjson": "1.2.1",
-    "yargs": "13.2.2"
+    "colorette": "^1.2.1",
+    "envinfo": "7.5.0",
+    "prettyjson": "1.2.1"
   },
-  "devDependencies": {
-    "@types/node": "12.7.2",
-    "typescript": "3.5.3"
-  },
-  "scripts": {
-    "build": "tsc",
-    "watch": "npm run build && tsc -w"
-  },
-  "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9"
+  "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9",
+  "peerDependencies": {
+    "webpack-cli": "4.x.x"
+  }
 }
