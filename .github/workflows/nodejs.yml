@@ -101,4 +101,5 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - uses: wagoid/commitlint-github-action@v1
+      - uses: wagoid/commitlint-github-action@v2
+      - extends: 'conventional-changelog-lint-config-cz'
