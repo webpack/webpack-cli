@@ -95,11 +95,15 @@ jobs:
   commitlint:
     name: Lint Commit Messages
     runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      - run: npm install
+      - name: conventional-changelog-lint-config-cz
+        # $GITHUB_WORKSPACE is the path to your repository
+        run: echo "::set-env name=NODE_PATH::$GITHUB_WORKSPACE/node_modules"
       - uses: wagoid/commitlint-github-action@v2
-    extends: 'conventional-changelog-lint-config-cz'
