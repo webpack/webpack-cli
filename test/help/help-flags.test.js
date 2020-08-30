@@ -17,7 +17,7 @@ describe('commands help', () => {
     it('shows flag help with valid flag', () => {
         const { stdout, stderr } = run(__dirname, ['--help', '--merge'], false);
         expect(stdout).not.toContain(helpHeader);
-        expect(stdout).toContain('webpack -m, --merge <path to configuration to be merged>');
+        expect(stdout).toContain('webpack -m, --merge');
         expect(stderr).toHaveLength(0);
     });
 
