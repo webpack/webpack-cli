@@ -102,4 +102,4 @@ jobs:
         with:
           fetch-depth: 0
       - uses: wagoid/commitlint-github-action@v2
-      - extends: 'conventional-changelog-lint-config-cz'
+    extends: 'conventional-changelog-lint-config-cz'
