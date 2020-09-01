@@ -32,7 +32,10 @@ describe('output config related flag', () => {
             it(`should config --no-${flag.name} correctly`, () => {
                 const { stderr, stdout } = run(__dirname, [`--no-${flag.name}`]);
 
-                if (flag.name.includes('-reset')) {
+                if (flag.name === 'output-enabled-chunk-loading-types-reset') {
+                    expect(stderr).toBeFalsy();
+                    expect(stdout).toContain(`enabledChunkLoadingTypes: [ 'jsonp' ]`);
+                } else if (flag.name.includes('-reset')) {
                     const option = propName.split('Reset')[0];
                     expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${option}: []`);
@@ -61,6 +64,22 @@ describe('output config related flag', () => {
 
                     expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: 'anonymous'`);
+                } else if (flag.name === 'output-chunk-format') {
+                    stdout = run(__dirname, [`--${flag.name}`, 'commonjs']).stdout;
+
+                    expect(stdout).toContain(`${propName}: 'commonjs'`);
+                } else if (flag.name === 'output-enabled-library-types') {
+                    stdout = run(__dirname, [`--${flag.name}`, 'global']).stdout;
+
+                    expect(stdout).toContain(`${propName}: [ 'global' ]`);
+                } else if (flag.name === 'output-chunk-loading') {
+                    stdout = run(__dirname, [`--${flag.name}`, 'jsonp']).stdout;
+
+                    expect(stdout).toContain(`${propName}: 'jsonp'`);
+                } else if (flag.name === 'output-enabled-chunk-loading-types') {
+                    stdout = run(__dirname, [`--${flag.name}`, 'async-node']).stdout;
+
+                    expect(stdout).toContain(`${propName}: [ 'async-node' ]`);
                 } else if (flag.name === 'output-enabled-library-type') {
                     stdout = run(__dirname, [`--${flag.name}`, 'amd']).stdout;
 
