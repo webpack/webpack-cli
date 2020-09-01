@@ -1,8 +1,6 @@
 const webpack = require('webpack');
 const logger = require('./logger');
-const { cyanBright, greenBright } = require('colorette');
 const { CompilerOutput } = require('./CompilerOutput');
-const readline = require('readline');
 
 class Compiler {
     constructor() {
@@ -18,36 +16,15 @@ class Compiler {
 
         compilation.hooks.beforeRun.tap('webpackProgress', () => {
             if (outputOptions.progress) {
-                process.stdout.write('\n');
-                const defaultProgressPluginHandler = (percent, msg) => {
-                    percent = Math.floor(percent * 100);
-                    readline.clearLine(process.stdout, 0);
-                    readline.cursorTo(process.stdout, 0, null);
-                    if (percent !== undefined) {
-                        process.stdout.write(' (');
-                        for (let i = 0; i <= 100; i += 10) {
-                            if (i <= percent) {
-                                process.stdout.write(greenBright('#'));
-                            } else {
-                                process.stdout.write('#');
-                            }
-                        }
-                        process.stdout.write(`) ${percent}% : `);
-                        process.stdout.write(`${cyanBright(msg)}`);
-                        if (percent === 100) {
-                            process.stdout.write(`${cyanBright('Compilation completed\n')}`);
-                        }
-                    }
-                };
                 if (!progressPluginExists) {
-                    new ProgressPlugin(defaultProgressPluginHandler).apply(compilation);
+                    new ProgressPlugin().apply(compilation);
                 } else {
                     if (!progressPluginExists.handler) {
                         options.plugins = options.plugins.filter((e) => e !== progressPluginExists);
                         Object.keys(progressPluginExists).map((opt) => {
                             ProgressPlugin.defaultOptions[opt] = progressPluginExists[opt];
                         });
-                        new ProgressPlugin(defaultProgressPluginHandler).apply(compilation);
+                        new ProgressPlugin().apply(compilation);
                     } else {
                         progressPluginExists.apply(compilation);
                     }

@@ -70,9 +70,6 @@ yarn add webpack-cli --dev
   --cache-immutable-paths-reset                               Clear all items provided in configuration. List of paths that are managed by
                                                               a package manager and contain a version or hash in its path so all files are
                                                               immutable.
-  --cache-managed-paths string[]                              A path to a managed directory (usually a node_modules directory).
-  --cache-managed-paths-reset                                 Clear all items provided in configuration. List of paths that are managed by
-                                                              a package manager and can be trusted to not be modified otherwise.
   --cache-type string                                         In memory caching. Filesystem caching.
   --cache-cache-directory string                              Base directory for the cache (defaults to node_modules/.cache/webpack).
   --cache-cache-location string                               Locations for the cache (defaults to cacheDirectory / name).
@@ -522,7 +519,6 @@ yarn add webpack-cli --dev
   --no-bail                                                   Negates bail
   --no-cache                                                  Negates cache
   --no-cache-immutable-paths-reset                            Negates cache-immutable-paths-reset
-  --no-cache-managed-paths-reset                              Negates cache-managed-paths-reset
   --no-dependencies-reset                                     Negates dependencies-reset
   --no-entry-reset                                            Negates entry-reset
   --no-experiments-asset                                      Negates experiments-asset
