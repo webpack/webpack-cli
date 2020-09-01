@@ -9,9 +9,16 @@ function collectTestFolders(strategy) {
     return extractFolder(testFolder, [], strategy);
 }
 
-function extractFolder(folderToRead, folders = [], folderStrategy) {
-    const files = fs.readdirSync(folderToRead);
-    files.forEach((file) => {
+async function extractFolder(folderToRead, folders = [], folderStrategy) {
+    let files;
+
+    try {
+        files = await fs.readdir(folderToRead);
+    } catch (err) {
+        console.log(err);
+    }
+
+    files.forEach(file => {
         const filePath = path.resolve(path.join(folderToRead, file));
         const stats = fs.statSync(filePath);
         if (folderStrategy(stats, file)) {
