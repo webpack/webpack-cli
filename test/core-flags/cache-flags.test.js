@@ -45,20 +45,6 @@ describe('cache related flags from core', () => {
         expect(stdout).toContain(`hashAlgorithm: 'sha256'`);
     });
 
-    it('should set cache.managedPaths with --cache-managed-paths', () => {
-        const { stderr, stdout } = run(__dirname, ['--cache-type', 'memory', '--cache-managed-paths', '/test-manage-path']);
-
-        expect(stderr).toBeFalsy();
-        expect(stdout).toContain('test-manage-path');
-    });
-
-    it('should reset cache.managedPaths with --cache-managed-paths-reset', () => {
-        const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '--cache-managed-paths-reset']);
-
-        expect(stderr).toBeFalsy();
-        expect(stdout).toContain(`managedPaths: []`);
-    });
-
     it('should set cache.name with --cache-name', () => {
         const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '--cache-name', 'cli-test']);
 
