@@ -1,3 +1,4 @@
+import logger from 'webpack-cli/lib/utils/logger';
 import mkdirp from 'mkdirp';
 import path from 'path';
 import Generator from 'yeoman-generator';
@@ -54,7 +55,7 @@ const addonGenerator = (
                 try {
                     mkdirp.sync(pathToProjectDir);
                 } catch (err) {
-                    console.error('Failed to create directory', err);
+                    logger.error('Failed to create directory', err);
                 }
                 this.destinationRoot(pathToProjectDir);
             }
