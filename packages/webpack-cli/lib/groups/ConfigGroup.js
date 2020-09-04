@@ -160,7 +160,7 @@ class ConfigGroup extends GroupHelper {
                     throw new ConfigError(`The specified config file doesn't exist in ${configPath}`);
                 }
                 const foundConfig = configFiles[0];
-                const resolvedConfig = await this.requireConfig(foundConfig);
+                const resolvedConfig = this.requireConfig(foundConfig);
                 return this.finalize(resolvedConfig);
             });
             // resolve all the configs
