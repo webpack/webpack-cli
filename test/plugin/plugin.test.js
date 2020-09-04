@@ -11,7 +11,7 @@ const pluginPath = join(__dirname, pluginName);
 // Since scaffolding is time consuming
 jest.setTimeout(60000);
 
-describe('plugin command', () => {
+describe.skip('plugin command', () => {
     beforeAll(() => {
         rimraf.sync(pluginPath);
     });
