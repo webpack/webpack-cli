@@ -67,14 +67,21 @@ class ConfigGroup extends GroupHelper {
         rechoir.prepare(extensions, path, process.cwd());
     }
 
-    requireConfig(configModule) {
+    async requireConfig(configModule) {
         const extension = Object.keys(jsVariants).find((t) => configModule.ext.endsWith(t));
+        let config;
 
         if (extension) {
             this.requireLoader(extension, configModule.path);
         }
 
-        let config = require(configModule.path);
+        if (extension == '.mjs') {
+            const ESMRequire = require('esm')(module);
+            config = ESMRequire(configModule.path);
+        } else {
+            config = require(configModule.path);
+        }
+
         if (config.default) {
             config = config.default;
         }
@@ -146,16 +153,17 @@ class ConfigGroup extends GroupHelper {
         const { config, mode } = this.args;
         if (config.length > 0) {
             const resolvedOptions = [];
-            const finalizedConfigs = config.map(async (webpackConfig) => {
+            const finalizedConfigs = [];
+            for await (const webpackConfig of config) {
                 const configPath = resolve(webpackConfig);
                 const configFiles = getConfigInfoFromFileName(configPath);
                 if (!configFiles.length) {
                     throw new ConfigError(`The specified config file doesn't exist in ${configPath}`);
                 }
                 const foundConfig = configFiles[0];
-                const resolvedConfig = this.requireConfig(foundConfig);
-                return this.finalize(resolvedConfig);
-            });
+                const resolvedConfig = await this.requireConfig(foundConfig);
+                finalizedConfigs.push(this.finalize(resolvedConfig));
+            }
             // resolve all the configs
             for await (const resolvedOption of finalizedConfigs) {
                 if (Array.isArray(resolvedOption.options)) {
@@ -177,7 +185,12 @@ class ConfigGroup extends GroupHelper {
             return existsSync(file.path);
         });
 
-        const configFiles = tmpConfigFiles.map(this.requireConfig.bind(this));
+        const configFiles = [];
+        for await (const tmpConfigFile of tmpConfigFiles) {
+            const configFile = this.requireConfig(tmpConfigFile);
+            configFiles.push(configFile);
+        }
+
         if (configFiles.length) {
             const defaultConfig = configFiles.find((p) => p.path.includes(mode) || p.path.includes(modeAlias[mode]));
             if (defaultConfig) {
