@@ -67,7 +67,7 @@ class ConfigGroup extends GroupHelper {
         rechoir.prepare(extensions, path, process.cwd());
     }
 
-    async requireConfig(configModule) {
+    requireConfig(configModule) {
         const extension = Object.keys(jsVariants).find((t) => configModule.ext.endsWith(t));
         let config;
 
@@ -153,8 +153,7 @@ class ConfigGroup extends GroupHelper {
         const { config, mode } = this.args;
         if (config.length > 0) {
             const resolvedOptions = [];
-            const finalizedConfigs = [];
-            for await (const webpackConfig of config) {
+            const finalizedConfigs = config.map(async (webpackConfig) => {
                 const configPath = resolve(webpackConfig);
                 const configFiles = getConfigInfoFromFileName(configPath);
                 if (!configFiles.length) {
@@ -162,8 +161,8 @@ class ConfigGroup extends GroupHelper {
                 }
                 const foundConfig = configFiles[0];
                 const resolvedConfig = await this.requireConfig(foundConfig);
-                finalizedConfigs.push(this.finalize(resolvedConfig));
-            }
+                return this.finalize(resolvedConfig);
+            });
             // resolve all the configs
             for await (const resolvedOption of finalizedConfigs) {
                 if (Array.isArray(resolvedOption.options)) {
@@ -185,11 +184,7 @@ class ConfigGroup extends GroupHelper {
             return existsSync(file.path);
         });
 
-        const configFiles = [];
-        for await (const tmpConfigFile of tmpConfigFiles) {
-            const configFile = this.requireConfig(tmpConfigFile);
-            configFiles.push(configFile);
-        }
+        const configFiles = tmpConfigFiles.map(this.requireConfig.bind(this));
 
         if (configFiles.length) {
             const defaultConfig = configFiles.find((p) => p.path.includes(mode) || p.path.includes(modeAlias[mode]));
