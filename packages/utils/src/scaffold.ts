@@ -1,5 +1,6 @@
 import { green } from 'colorette';
 import j from 'jscodeshift';
+import logger from 'webpack-cli/lib/utils/logger';
 import pEachSeries = require('p-each-series');
 import path from 'path';
 import { getPackageManager } from '@webpack-cli/package-utils';
@@ -88,7 +89,7 @@ export function runTransform(transformConfig: TransformConfig, action: string, g
                     runPrettier(outputPath, source);
                 })
                 .catch((err: Error): void => {
-                    console.error(err.message ? err.message : err);
+                    logger.error(err);
                 });
         },
     );
@@ -102,5 +103,5 @@ export function runTransform(transformConfig: TransformConfig, action: string, g
     if (initActionNotDefined && transformConfig.config.item) {
         successMessage = green(`Congratulations! ${transformConfig.config.item} has been ${action}ed!\n`);
     }
-    process.stdout.write(`\n${successMessage}`);
+    logger.log(`\n${successMessage}`);
 }
