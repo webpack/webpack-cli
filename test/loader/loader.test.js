@@ -4,6 +4,7 @@
 const { existsSync } = require('fs');
 const { join, resolve } = require('path');
 const rimraf = require('rimraf');
+const stripAnsi = require('strip-ansi');
 const { run, runPromptWithAnswers } = require('../utils/test-utils');
 
 const firstPrompt = '? Loader name (my-loader)';
@@ -24,13 +25,13 @@ describe('loader command', () => {
         const { stdout, stderr } = run(__dirname, ['loader'], false);
         expect(stdout).toBeTruthy();
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(firstPrompt);
+        expect(stripAnsi(stdout)).toContain(firstPrompt);
     });
 
     it('should scaffold loader template with a given name', async () => {
         let { stdout } = await runPromptWithAnswers(__dirname, ['loader'], [`${loaderName}${ENTER}`]);
 
-        expect(stdout).toContain(firstPrompt);
+        expect(stripAnsi(stdout)).toContain(firstPrompt);
 
         // Skip test in case installation fails
         if (!existsSync(resolve(loaderPath, './yarn.lock'))) {

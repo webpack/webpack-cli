@@ -124,6 +124,7 @@
     "prettier": "^2.0.5",
     "readable-stream": "^3.6.0",
     "rimraf": "^3.0.2",
+    "strip-ansi": "^6.0.0",
     "ts-jest": "^25.5.1",
     "typescript": "^3.9.7",
     "webpack": "^4.44.1",

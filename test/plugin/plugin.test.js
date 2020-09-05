@@ -1,8 +1,8 @@
 const { existsSync } = require('fs');
 const { join, resolve } = require('path');
 const rimraf = require('rimraf');
+const stripAnsi = require('strip-ansi');
 const { run, runPromptWithAnswers } = require('../utils/test-utils');
-
 const ENTER = '\x0D';
 const firstPrompt = '? Plugin name';
 const pluginName = 'test-plugin';
@@ -20,13 +20,13 @@ describe('plugin command', () => {
         const { stdout, stderr } = run(__dirname, ['plugin'], false);
         expect(stdout).toBeTruthy();
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(firstPrompt);
+        expect(stripAnsi(stdout)).toContain(firstPrompt);
     });
 
     it('should scaffold plugin template with a given name', async () => {
         let { stdout } = await runPromptWithAnswers(__dirname, ['plugin'], [`${pluginName}${ENTER}`]);
 
-        expect(stdout).toContain(firstPrompt);
+        expect(stripAnsi(stdout)).toContain(firstPrompt);
 
         // check if the output directory exists with the appropriate plugin name
         expect(existsSync(join(__dirname, pluginName))).toBeTruthy();
