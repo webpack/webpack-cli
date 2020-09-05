@@ -4,6 +4,7 @@ const { red } = require('colorette');
 const fs = require('fs');
 const path = require('path');
 const rimraf = require('rimraf');
+const stripAnsi = require('strip-ansi');
 const { run, runAndGetWatchProc, runPromptWithAnswers } = require('../../utils/test-utils');
 
 const ENTER = '\x0D';
@@ -14,7 +15,7 @@ const outputFilePath = path.join(__dirname, outputFile);
 
 jest.setTimeout(60000);
 
-describe.skip('migrate command', () => {
+describe('migrate command', () => {
     beforeEach(() => {
         rimraf.sync(outputPath);
         fs.mkdirSync(outputPath);
@@ -27,7 +28,7 @@ describe.skip('migrate command', () => {
 
     it('should prompt accordingly if an output path is not specified', () => {
         const { stdout } = run(__dirname, ['migrate', 'webpack.config.js'], false);
-        expect(stdout).toContain('? Migration output path not specified');
+        expect(stripAnsi(stdout)).toContain('? Migration output path not specified');
     });
 
     it('should throw an error if the user refused to overwrite the source file and no output path is provided', async () => {
@@ -39,7 +40,7 @@ describe.skip('migrate command', () => {
         const { stdout } = await runAndGetWatchProc(__dirname, ['migrate', 'webpack.config.js', outputFile], false, 'y');
         // should show the diff of the config file
         expect(stdout).toContain('rules: [');
-        expect(stdout).toContain('? Do you want to validate your configuration?');
+        expect(stripAnsi(stdout)).toContain('? Do you want to validate your configuration?');
     });
 
     it('should generate an updated config file when an output path is provided', async () => {
@@ -49,7 +50,7 @@ describe.skip('migrate command', () => {
             [ENTER, ENTER],
             true,
         );
-        expect(stdout).toContain('? Do you want to validate your configuration?');
+        expect(stripAnsi(stdout)).toContain('? Do you want to validate your configuration?');
         // should show the diff of the config file
         expect(stdout).toContain('rules: [');
         expect(stderr).toBeFalsy();
@@ -77,7 +78,7 @@ describe.skip('migrate command', () => {
 
     it('should generate an updated config file and warn of an invalid webpack config', async () => {
         const { stdout, stderr } = await runPromptWithAnswers(__dirname, ['migrate', 'bad-webpack.config.js', outputFile], [ENTER, ENTER]);
-        expect(stdout).toContain('? Do you want to validate your configuration?');
+        expect(stripAnsi(stdout)).toContain('? Do you want to validate your configuration?');
         expect(stderr).toContain("configuration.output has an unknown property 'badOption'");
 
         expect(fs.existsSync(outputFilePath)).toBeTruthy();
