@@ -1,9 +1,4 @@
-// import { dirname, resolve } from 'path';
-// import { fileURLToPath } from 'url';
-
-// const __dirname = dirname(fileURLToPath(import.meta.url));
-
-const config = {
+export default {
     mode: 'production',
     entry: './main.js',
     output: {
@@ -11,5 +6,3 @@ const config = {
         filename: 'foo.bundle.js',
     },
 };
-
-export default config;
