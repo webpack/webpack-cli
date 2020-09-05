@@ -16,7 +16,7 @@ const loaderPath = join(__dirname, loaderName);
 
 jest.setTimeout(60000);
 
-describe.only('loader command', () => {
+describe('loader command', () => {
     beforeAll(() => {
         rimraf.sync(loaderPath);
     });
