@@ -435,6 +435,21 @@ yarn add webpack-cli --dev
   --resolve-loader-use-sync-file-system-calls                 Use synchronous filesystem calls for the resolver.
   --stats-all                                                 Fallback value for stats options when an option is not defined (has
                                                               precedence over local webpack defaults).
+  --snapshot-build-dependencies-hash                          Use hashes of the content of the files/directories to determine invalidation.
+  --snapshot-build-dependencies-timestamp                     Use timestamps of the files/directories to determine invalidation.
+  --snapshot-immutable-paths string[]                         A path to a immutable directory (usually a package manager cache directory).
+  --snapshot-immutable-paths-reset                            Clear all items provided in configuration. List of paths that are managed by
+                                                              a package manager and contain a version or hash in its path so all files are
+                                                              immutable.
+  --snapshot-managed-paths string[]                           A path to a managed directory (usually a node_modules directory).
+  --snapshot-managed-paths-reset                              Clear all items provided in configuration. List of paths that are managed by
+                                                              a package manager and can be trusted to not be modified otherwise.
+  --snapshot-module-hash                                      Use hashes of the content of the files/directories to determine invalidation.
+  --snapshot-module-timestamp                                 Use timestamps of the files/directories to determine invalidation.
+  --snapshot-resolve-hash                                     Use hashes of the content of the files/directories to determine invalidation.
+  --snapshot-resolve-timestamp                                Use timestamps of the files/directories to determine invalidation.
+  --snapshot-resolve-build-dependencies-hash                  Use hashes of the content of the files/directories to determine invalidation.
+  --snapshot-resolve-build-dependencies-timestamp             Use timestamps of the files/directories to determine invalidation.
   --stats-assets                                              Add assets information.
   --stats-assets-sort string                                  Sort the assets by that field.
   --stats-built-at                                            Add built at time information.
@@ -614,6 +629,16 @@ yarn add webpack-cli --dev
   --no-resolve-loader-symlinks                                Negates resolve-loader-symlinks
   --no-resolve-loader-unsafe-cache                            Negates resolve-loader-unsafe-cache
   --no-resolve-loader-use-sync-file-system-calls              Negates resolve-loader-use-sync-file-system-calls
+  --no-snapshot-build-dependencies-hash                       Negates snapshot-build-dependencies-hash
+  --no-snapshot-build-dependencies-timestamp                  Negates snapshot-build-dependencies-timestamp
+  --no-snapshot-immutable-paths-reset                         Negates snapshot-immutable-paths-reset
+  --no-snapshot-managed-paths-reset                           Negates snapshot-managed-paths-reset
+  --no-snapshot-module-hash                                   Negates snapshot-module-hash
+  --no-snapshot-module-timestamp                              Negates snapshot-module-timestamp
+  --no-snapshot-resolve-hash                                  Negates snapshot-resolve-hash
+  --no-snapshot-resolve-timestamp                             Negates snapshot-resolve-timestamp
+  --no-snapshot-resolve-build-dependencies-hash               Negates snapshot-resolve-build-dependencies-hash
+  --no-snapshot-resolve-build-dependencies-timestamp          Negates snapshot-resolve-build-dependencies-timestamp
   --no-stats-all                                              Negates stats-all
   --no-stats-assets                                           Negates stats-assets
   --no-stats-built-at                                         Negates stats-built-at
