@@ -9,7 +9,6 @@ describe('snapshot config related flags', () => {
     snapshotFlags.forEach((flag) => {
         // extract property name from flag name
         let property = flag.name.split('snapshot-')[1];
-
         const propName = hyphenToUpperCase(property);
 
         if (flag.type === Boolean) {
