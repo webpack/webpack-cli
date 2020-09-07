@@ -24,8 +24,8 @@ const init = require('@webpack-cli/init').default;
 // this will run the default init instance
 init();
 
-// we're slicing node.process, ...myPacakges is a webpack-scaffold name/path
-init([null, null, ...myPacakges]);
+// we're slicing node.process, ...myPackages is a webpack-scaffold name/path
+init([null, null, ...myPackages]);
 ```
 
 ### CLI (via `webpack-cli`)
