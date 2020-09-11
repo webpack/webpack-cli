@@ -14,6 +14,7 @@ describe('--interactive flag', () => {
             done();
         });
     });
+
     it('should work with --watch', (done) => {
         const proc = runAndGetWatchProc(__dirname, ['-c', './webpack.watch.js', '--watch', '--interactive'], false, '', true);
         let semaphore = 2;
@@ -31,9 +32,30 @@ describe('--interactive flag', () => {
                 return;
             }
             if (semaphore === 0) {
-                expect(data).toMatchSnapshot();
                 expect(data).toContain('main.js');
                 proc.kill();
+                writeFileSync(resolve(__dirname, 'index.js'), `console.log('I am Iron Man');`);
+                done();
+                return;
+            }
+        });
+    });
+
+    it('should not output in interactive with --watch only', (done) => {
+        const proc = runAndGetWatchProc(__dirname, ['-c', './webpack.watch.js', '--watch'], false, '', true);
+        let semaphore = 1;
+        const clear = '\x1B[2J\x1B[3J\x1B[H';
+        proc.stdout.on('data', (chunk) => {
+            const data = chunk.toString();
+            if (data.includes('watching files for updates')) {
+                writeFileSync(resolve(__dirname, 'index.js'), `console.log('I am Batman');`);
+                semaphore--;
+                return;
+            }
+            if (semaphore === 0) {
+                expect(data).not.toBe(clear);
+                proc.kill();
+                writeFileSync(resolve(__dirname, 'index.js'), `console.log('I am Iron Man');`);
                 done();
                 return;
             }
