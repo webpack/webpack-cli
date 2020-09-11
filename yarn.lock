@@ -3953,6 +3953,11 @@ clean-stack@^2.0.0:
   resolved "https://registry.yarnpkg.com/clean-stack/-/clean-stack-2.2.0.tgz#ee8472dbb129e727b31e8a10a427dee9dfe4008b"
   integrity sha512-4diC9HaTE+KRAMWhDhrGOECgWZxoevMc5TlkObMqNSsVU62PYzXZ/SMTjzyGAFF1YusgxGcSWTEXBhp0CPwQ1A==
 
+clean-terminal-webpack-plugin@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/clean-terminal-webpack-plugin/-/clean-terminal-webpack-plugin-3.0.0.tgz#e042ebcf05b0bf90f7d7923ea1dc5685c819228f"
+  integrity sha512-wcgkQZmwEWYYjHblXc0+UGFDtx37S+1qgUQl4EOhhinzSHbZpixWBiasQ91RoCMf5lAm67j1XOt9z+HN+sWkWA==
+
 cli-cursor@^2.0.0, cli-cursor@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/cli-cursor/-/cli-cursor-2.1.0.tgz#b35dac376479facc3e94747d41d0d0f5238ffcb5"
