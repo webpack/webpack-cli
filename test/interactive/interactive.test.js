@@ -3,6 +3,8 @@ const { run, runAndGetWatchProc } = require('../utils/test-utils');
 const { stat, writeFileSync } = require('fs');
 const { resolve } = require('path');
 
+const wordsInStats = ['Hash', 'Version', 'Time', 'Built at:', 'main.js'];
+
 describe('--interactive flag', () => {
     it('should add InteractiveModePlugin to config', (done) => {
         const { stderr, stdout } = run(__dirname, ['--interactive']);
@@ -32,9 +34,10 @@ describe('--interactive flag', () => {
                 return;
             }
             if (semaphore === 0) {
-                expect(data).toContain('main.js');
+                for (const word of wordsInStats) {
+                    expect(data).toContain(word);
+                }
                 proc.kill();
-                writeFileSync(resolve(__dirname, 'index.js'), `console.log('I am Iron Man');`);
                 done();
                 return;
             }
@@ -44,7 +47,6 @@ describe('--interactive flag', () => {
     it('should not output in interactive with --watch only', (done) => {
         const proc = runAndGetWatchProc(__dirname, ['-c', './webpack.watch.js', '--watch'], false, '', true);
         let semaphore = 1;
-        const clear = '\x1B[2J\x1B[3J\x1B[H';
         proc.stdout.on('data', (chunk) => {
             const data = chunk.toString();
             if (data.includes('watching files for updates')) {
@@ -53,9 +55,10 @@ describe('--interactive flag', () => {
                 return;
             }
             if (semaphore === 0) {
-                expect(data).not.toBe(clear);
+                for (const word of wordsInStats) {
+                    expect(data).toContain(word);
+                }
                 proc.kill();
-                writeFileSync(resolve(__dirname, 'index.js'), `console.log('I am Iron Man');`);
                 done();
                 return;
             }
