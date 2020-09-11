@@ -1,7 +1,14 @@
 const GroupHelper = require('../utils/GroupHelper');
 const logger = require('../utils/logger');
 const { core, groups } = require('../utils/cli-flags');
-const CleanTerminalPlugin = require('clean-terminal-webpack-plugin');
+
+class InteractiveModePlugin {
+    apply(compiler) {
+        compiler.hooks.afterCompile.tap('InteractiveModePlugin', () => {
+            process.stdout.write('\x1B[2J\x1B[3J\x1B[H');
+        });
+    }
+}
 
 class BasicGroup extends GroupHelper {
     constructor(options) {
@@ -45,9 +52,9 @@ class BasicGroup extends GroupHelper {
             }
             if (arg === 'interactive') {
                 if (options.plugins) {
-                    options.plugins.push(new CleanTerminalPlugin());
+                    options.plugins.push(new InteractiveModePlugin());
                 } else {
-                    options.plugins = [new CleanTerminalPlugin()];
+                    options.plugins = [new InteractiveModePlugin()];
                 }
             }
         });
