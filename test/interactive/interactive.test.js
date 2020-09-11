@@ -31,6 +31,7 @@ describe('--interactive flag', () => {
                 return;
             }
             if (semaphore === 0) {
+                expect(data).toMatchSnapshot();
                 expect(data).toContain('main.js');
                 proc.kill();
                 done();

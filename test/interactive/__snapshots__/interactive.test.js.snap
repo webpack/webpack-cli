@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`--interactive flag should work with --watch 1`] = `
+"Hash: e0f9eecf6c179bc310c7
+Version: webpack 4.44.1
+Time: 21ms
+Built at: 09/11/2020 17:29:59
+  Asset      Size  Chunks  Chunk Names
+main.js  3.77 KiB    main  main
+Entrypoint main = main.js
+[./index.js] 27 bytes {main} [built]"
+`;
