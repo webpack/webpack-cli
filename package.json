@@ -35,7 +35,7 @@
     "format:js": "prettier-eslint ./bin/*.js ./bin/**/*.js ./test/**/*.js ./packages/**/**/*.js ./packages/**/*.js --write",
     "format:ts": "prettier-eslint ./packages/**/**/*.ts ./packages/**/*.ts ./packages/**/**/**/*.ts --write",
     "lint": "eslint \"./bin/*.js\" \"./bin/**/*.js\" \"./test/**/*.js\" \"packages/**/!(node_modules)/*.ts\"  \"packages/**/!(node_modules)/**/*.ts\"",
-    "pretest": "npm run build && npm run lint",
+    "pretest": "npm run lint",
     "reportCoverage": "nyc report --reporter=json && codecov -f coverage/coverage-final.json --disable=gcov",
     "test": "nyc jest --maxWorkers=4 --reporters=default --reporters=jest-junit",
     "test:cli": "nyc jest test/ --maxWorkers=4 --reporters=default --reporters=jest-junit",
@@ -72,7 +72,8 @@
   },
   "jest": {
     "testPathIgnorePatterns": [
-      "/node_modules/"
+      "/node_modules/",
+      "/packages/"
     ],
     "testEnvironment": "node",
     "collectCoverage": true,
@@ -96,8 +97,7 @@
   },
   "nyc": {
     "include": [
-      "bin/**.js",
-      "packages/**/*.js"
+      "bin/**.js"
     ],
     "reporter": [
       "lcov"
@@ -131,10 +131,10 @@
   "devDependencies": {
     "@babel/preset-env": "^7.8.3",
     "@babel/register": "7.8.3",
-    "@commitlint/cli": "8.1.0",
+    "@commitlint/cli": "^11.0.0",
     "@commitlint/config-lerna-scopes": "8.0.0",
-    "@commitlint/travis-cli": "8.0.0",
-    "@strictsoftware/typedoc-plugin-monorepo": "0.2.1",
+    "@commitlint/travis-cli": "^11.0.0",
+    "@strictsoftware/typedoc-plugin-monorepo": "^0.3.1",
     "@types/jest": "24.9.1",
     "@types/node": "12.0.8",
     "@typescript-eslint/eslint-plugin": "1.10.2",
@@ -142,8 +142,8 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-jest": "24.9.0",
     "codecov": "3.5.0",
-    "commitizen": "4.0.3",
-    "commitlint": "^8.1.0",
+    "commitizen": "^4.2.1",
+    "commitlint": "^11.0.0",
     "commitlint-config-cz": "0.12.0",
     "conventional-changelog-cli": "2.0.21",
     "cz-customizable": "6.2.0",
@@ -157,7 +157,7 @@
     "jest": "24.9.0",
     "jest-cli": "24.9.0",
     "jest-junit": "6.4.0",
-    "lerna": "3.15.0",
+    "lerna": "^3.22.1",
     "lint-staged": "8.2.1",
     "nyc": "14.1.1",
     "prettier": "1.18.2",
@@ -165,10 +165,10 @@
     "readable-stream": "3.4.0",
     "rimraf": "2.6.3",
     "schema-utils": "1.0.0",
-    "ts-jest": "24.0.2",
+    "ts-jest": "^26.3.0",
     "ts-node": "8.3.0",
     "typescript": "3.5.2",
     "webpack": "4.x.x",
-    "webpack-dev-server": "3.7.2"
+    "webpack-dev-server": "^3.11.0"
   }
 }
