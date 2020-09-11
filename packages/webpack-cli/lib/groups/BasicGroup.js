@@ -1,6 +1,7 @@
 const GroupHelper = require('../utils/GroupHelper');
 const logger = require('../utils/logger');
 const { core, groups } = require('../utils/cli-flags');
+const CleanTerminalPlugin = require('clean-terminal-webpack-plugin');
 
 class BasicGroup extends GroupHelper {
     constructor(options) {
@@ -40,6 +41,13 @@ class BasicGroup extends GroupHelper {
                 options[arg] = this.resolveFilePath(args[arg], 'index.js');
                 if (options[arg].length === 0) {
                     logger.error('\nError: you provided an invalid entry point.');
+                }
+            }
+            if (arg === 'interactive') {
+                if (options.plugins) {
+                    options.plugins.push(new CleanTerminalPlugin());
+                } else {
+                    options.plugins = [new CleanTerminalPlugin()];
                 }
             }
         });

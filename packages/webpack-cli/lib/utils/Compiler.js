@@ -116,11 +116,6 @@ class Compiler {
             options.plugins = options.plugins.filter((e) => e instanceof ProgressPlugin);
         }
 
-        if (outputOptions.interactive) {
-            const interactive = require('./interactive');
-            return interactive(options, outputOptions);
-        }
-
         if (this.compiler.compilers) {
             this.compiler.compilers.forEach((comp, idx) => {
                 this.setUpHookForCompilation(comp, outputOptions, options[idx]);
