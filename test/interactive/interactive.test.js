@@ -2,8 +2,10 @@
 const { run, runAndGetWatchProc } = require('../utils/test-utils');
 const { stat, writeFileSync } = require('fs');
 const { resolve } = require('path');
+const { version } = require('webpack');
 
-const wordsInStats = ['Hash', 'Version', 'Time', 'Built at:', 'main.js'];
+const wordsInStatsv4 = ['Hash', 'Version', 'Time', 'Built at:', 'main.js'];
+const wordsInStatsv5 = ['asset', 'index.js', 'compiled successfully'];
 
 describe('--interactive flag', () => {
     it('should add InteractiveModePlugin to config', (done) => {
@@ -34,8 +36,14 @@ describe('--interactive flag', () => {
                 return;
             }
             if (semaphore === 0) {
-                for (const word of wordsInStats) {
-                    expect(data).toContain(word);
+                if (version.startsWith('5')) {
+                    for (const word of wordsInStatsv5) {
+                        expect(data).toContain(word);
+                    }
+                } else {
+                    for (const word of wordsInStatsv4) {
+                        expect(data).toContain(word);
+                    }
                 }
                 proc.kill();
                 done();
@@ -55,8 +63,14 @@ describe('--interactive flag', () => {
                 return;
             }
             if (semaphore === 0) {
-                for (const word of wordsInStats) {
-                    expect(data).toContain(word);
+                if (version.startsWith('5')) {
+                    for (const word of wordsInStatsv5) {
+                        expect(data).toContain(word);
+                    }
+                } else {
+                    for (const word of wordsInStatsv4) {
+                        expect(data).toContain(word);
+                    }
                 }
                 proc.kill();
                 done();
