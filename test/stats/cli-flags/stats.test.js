@@ -30,10 +30,8 @@ describe('stats flag', () => {
     });
 
     it('should warn when an unknown flag stats value is passed', () => {
-        const { stderr, stdout } = run(__dirname, ['--stats', 'foo']);
+        const { stderr } = run(__dirname, ['--stats', 'foo']);
         expect(stderr).toBeTruthy();
         expect(stderr).toContain('* configuration.stats should be one of these:');
-        expect(stderr).toContain('"none" | "errors-only" | "minimal" | "normal" | "detailed" | "verbose" | "errors-warnings"');
-        expect(stdout).toBeTruthy();
     });
 });
