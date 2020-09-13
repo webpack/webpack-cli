@@ -5,9 +5,11 @@ const execa = require('execa');
 const { sync: spawnSync, node: execaNode } = execa;
 const { Writable } = require('readable-stream');
 const concat = require('concat-stream');
+const { version } = require('webpack');
 
 const WEBPACK_PATH = path.resolve(__dirname, '../../packages/webpack-cli/bin/cli.js');
 const ENABLE_LOG_COMPILATION = process.env.ENABLE_PIPE || false;
+const isWebpack5 = version.startsWith('5');
 
 /**
  * Run the webpack CLI for a test case.
@@ -275,4 +277,5 @@ module.exports = {
     runInstall,
     runInfo,
     hyphenToUpperCase,
+    isWebpack5,
 };
