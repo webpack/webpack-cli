@@ -59,6 +59,9 @@ describe('stats config related flag', () => {
                     expect(stdout).toContain(`stats: { ${propName}: 'log' }`);
                 } else if (flag.name === 'stats-context') {
                     expect(stdout).toContain('log');
+                } else if (flag.name === 'stats-entrypoints') {
+                    stdout = run(__dirname, [`--${flag.name}`, 'auto']).stdout;
+                    expect(stdout).toContain(`stats: { ${propName}: 'auto' }`);
                 } else {
                     expect(stdout).toContain(`stats: { ${propName}: [ 'log' ] }`);
                 }
