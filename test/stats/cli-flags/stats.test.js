@@ -37,7 +37,7 @@ describe('stats flag', () => {
                 `"none" | "summary" | "errors-only" | "errors-warnings" | "minimal" | "normal" | "detailed" | "verbose"`,
             );
         } else {
-            expect(stderr).toContain(`"none" | "errors-only" | "errors-warnings" | "minimal" | "normal" | "detailed" | "verbose"`);
+            expect(stderr).toContain('"none" | "errors-only" | "minimal" | "normal" | "detailed" | "verbose" | "errors-warnings"');
         }
         expect(stdout).toBeTruthy();
     });
