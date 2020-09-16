@@ -1,11 +1,12 @@
 const readline = require('readline');
+const logger = require('./logger');
 
 class InteractiveModePlugin {
     constructor() {
         this.name = 'InteractiveModePlugin';
         this.keys = {
             quit: 'q',
-            recompile: '\n',
+            recompile: 'r',
             pause: 'p',
         };
         this.handlers = {
@@ -20,6 +21,9 @@ class InteractiveModePlugin {
         const stdin = process.stdin;
         stdin.setEncoding('utf-8');
         readline.emitKeypressEvents(stdin);
+        if (process.stdout.isTTY) {
+            stdin.setRawMode(true);
+        }
 
         // Configure keypress event for actions
         const actions = Object.keys(this.keys);
@@ -62,11 +66,19 @@ class InteractiveModePlugin {
     // eslint-disable-next-line no-unused-vars
     recompileHandler(compiler) {
         // TODO: implement it
+        const totalRows = process.stdout.rows;
+        readline.cursorTo(process.stdout, 0, totalRows - 2);
+        logger.info('recompling is not supported');
+        process.stdout.write('> ');
     }
 
     // eslint-disable-next-line no-unused-vars
     pauseHandler(compiler) {
         // TODO: implement it
+        const totalRows = process.stdout.rows;
+        readline.cursorTo(process.stdout, 0, totalRows - 2);
+        logger.info('pausing is not supported       ');
+        process.stdout.write('> ');
     }
 }
 module.exports = { InteractiveModePlugin };
