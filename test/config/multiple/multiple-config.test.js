@@ -9,8 +9,8 @@ describe('Multiple config flag: ', () => {
         // Should contain the correct exit code
         expect(exitCode).toEqual(0);
         // Should spawn multiple compilers
-        expect(stdout).toContain('Child amd:');
-        expect(stdout).toContain('Child commonjs:');
+        expect(stdout).toContain('amd:');
+        expect(stdout).toContain('commonjs:');
 
         expect(stderr).toBeFalsy();
 

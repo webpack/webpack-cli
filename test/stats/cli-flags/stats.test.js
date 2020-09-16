@@ -1,8 +1,7 @@
 /* eslint-disable node/no-extraneous-require */
 /* eslint-disable node/no-unpublished-require */
 'use strict';
-const { run } = require('../../utils/test-utils');
-const { version } = require('webpack');
+const { run, isWebpack5 } = require('../../utils/test-utils');
 
 const presets = ['normal', 'detailed', 'errors-only', 'errors-warnings', 'minimal', 'verbose', 'none'];
 
@@ -11,7 +10,7 @@ describe('stats flag', () => {
         it(`should accept --stats "${preset}"`, () => {
             const { stderr, stdout } = run(__dirname, ['--stats', `${preset}`]);
             expect(stderr).toBeFalsy();
-            if (version.startsWith('5')) {
+            if (isWebpack5) {
                 expect(stdout).toContain(`stats: { preset: '${preset}' }`);
             } else {
                 expect(stdout).toContain(`stats: '${preset}'`);
@@ -22,7 +21,7 @@ describe('stats flag', () => {
     it('should accept stats as boolean', () => {
         const { stderr, stdout } = run(__dirname, ['--stats']);
         expect(stderr).toBeFalsy();
-        if (version.startsWith('5')) {
+        if (isWebpack5) {
             expect(stdout).toContain(`stats: { preset: 'normal' }`);
         } else {
             expect(stdout).toContain('stats: true');
@@ -33,7 +32,13 @@ describe('stats flag', () => {
         const { stderr, stdout } = run(__dirname, ['--stats', 'foo']);
         expect(stderr).toBeTruthy();
         expect(stderr).toContain('* configuration.stats should be one of these:');
-        expect(stderr).toContain('"none" | "errors-only" | "minimal" | "normal" | "detailed" | "verbose" | "errors-warnings"');
+        if (isWebpack5) {
+            expect(stderr).toContain(
+                `"none" | "summary" | "errors-only" | "errors-warnings" | "minimal" | "normal" | "detailed" | "verbose"`,
+            );
+        } else {
+            expect(stderr).toContain('"none" | "errors-only" | "minimal" | "normal" | "detailed" | "verbose" | "errors-warnings"');
+        }
         expect(stdout).toBeTruthy();
     });
 });
