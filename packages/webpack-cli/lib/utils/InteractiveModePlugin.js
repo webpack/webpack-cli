@@ -49,5 +49,10 @@ class InteractiveModePlugin {
     quitHandler(compiler) {
         process.exit(0);
     }
+
+    // eslint-disable-next-line no-unused-vars
+    recompileHandler(compiler) {
+        // TODO: implement it
+    }
 }
 module.exports = { InteractiveModePlugin };
