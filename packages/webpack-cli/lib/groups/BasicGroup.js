@@ -1,14 +1,7 @@
 const GroupHelper = require('../utils/GroupHelper');
 const logger = require('../utils/logger');
 const { core, groups } = require('../utils/cli-flags');
-
-class InteractiveModePlugin {
-    apply(compiler) {
-        compiler.hooks.afterCompile.tap('InteractiveModePlugin', () => {
-            process.stdout.write('\x1B[2J\x1B[3J\x1B[H');
-        });
-    }
-}
+const { InteractiveModePlugin } = require('../utils/InteractiveModePlugin');
 
 class BasicGroup extends GroupHelper {
     constructor(options) {
