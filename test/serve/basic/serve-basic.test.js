@@ -66,7 +66,7 @@ describe('basic serve usage', () => {
     it('uses hot flag and progress flag', async () => {
         const { stdout, stderr } = await runServe(['--port', port, '--hot', '--progress'], testPath);
         expect(stdout).toContain('main.js');
-        expect(stdout).toContain('hot/dev-server.js');
+        expect(stdout).toContain('HotModuleReplacementPlugin');
         // progress flag makes use of stderr
         expect(stderr).not.toHaveLength(0);
     });
