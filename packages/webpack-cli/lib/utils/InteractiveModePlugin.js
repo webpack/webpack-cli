@@ -49,12 +49,10 @@ class InteractiveModePlugin {
             process.stdout.write('\x1B[2J\x1B[3J\x1B[H');
         });
 
-        compiler.hooks.done.tap(this.name, () => {
-            setTimeout(() => {
-                const totalRows = process.stdout.rows;
-                readline.cursorTo(process.stdout, 0, totalRows - 1);
-                process.stdout.write('> ');
-            }, 100);
+        compiler.hooks.afterDone.tap(this.name, () => {
+            const totalRows = process.stdout.rows;
+            readline.cursorTo(process.stdout, 0, totalRows - 1);
+            process.stdout.write('> ');
         });
     }
 
