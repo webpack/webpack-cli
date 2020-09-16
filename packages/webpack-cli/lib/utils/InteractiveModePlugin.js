@@ -44,8 +44,8 @@ class InteractiveModePlugin {
             this.handlers[action](compiler);
         });
 
-        // Clear output afterCompile
-        compiler.hooks.afterCompile.tap(this.name, () => {
+        // Clear output on watch invalidate
+        compiler.hooks.invalid.tap(this.name, () => {
             process.stdout.write('\x1B[2J\x1B[3J\x1B[H');
         });
 
