@@ -14,7 +14,7 @@ describe('resolve config related flags', () => {
         }
         const propName = hyphenToUpperCase(property);
 
-        if (flag.type === Boolean && !flag.name.includes('alias-')) {
+        if (flag.type === Boolean && !flag.name.includes('alias-') && !flag.name.includes('fallback-')) {
             it(`should config --${flag.name} correctly`, () => {
                 const { stderr, stdout } = run(__dirname, [`--${flag.name}`]);
 
@@ -28,7 +28,7 @@ describe('resolve config related flags', () => {
             });
         }
 
-        if (flag.type === String && !flag.name.includes('alias-')) {
+        if (flag.type === String && !flag.name.includes('alias-') && !flag.name.includes('fallback-')) {
             it(`should config --${flag.name} correctly`, () => {
                 const { stderr, stdout } = run(__dirname, [`--${flag.name}`, 'browser']);
                 expect(stderr).toBeFalsy();
@@ -40,7 +40,7 @@ describe('resolve config related flags', () => {
             });
         }
 
-        if (flag.name.includes('alias-')) {
+        if (flag.name.includes('alias-') || flag.name.includes('fallback-')) {
             it(`should config --${flag.name} correctly`, () => {
                 const { stderr, stdout } = run(__dirname, [
                     `--resolve-alias-alias`,
@@ -55,25 +55,40 @@ describe('resolve config related flags', () => {
                     'loaderName',
                     '--resolve-loader-alias-fields',
                     'loader-field',
+                    '--resolve-fallback-alias',
+                    'fall-alias',
+                    '--resolve-fallback-name',
+                    'fall-name',
+                    '--resolve-loader-fallback-alias',
+                    'loader-fall-alias',
+                    '--resolve-loader-fallback-name',
+                    'loader-fall-name',
                 ]);
                 expect(stderr).toBeFalsy();
                 expect(stdout).toContain(`alias: [ { alias: 'alias', name: 'name' } ]`);
                 expect(stdout).toContain(`aliasFields: [ 'aliasField' ]`);
                 expect(stdout).toContain(`alias: [ { alias: 'loaderAlias', name: 'loaderName' } ]`);
                 expect(stdout).toContain(`aliasFields: [ 'loader-field' ]`);
+                expect(stdout).toContain('fall-name');
+                expect(stdout).toContain('fall-alias');
+                expect(stdout).toContain('loader-fall-name');
+                expect(stdout).toContain('loader-fall-alias');
             });
 
             if (flag.name.includes('reset')) {
                 it(`should config --${flag.name} alias-reset flags correctly`, () => {
                     const { stderr, stdout } = run(__dirname, [
-                        `--resolve-alias-reset`,
+                        '--resolve-alias-reset',
+                        '--resolve-fallback-reset',
                         '--resolve-alias-fields-reset',
                         '--resolve-loader-alias-reset',
                         '--resolve-loader-alias-fields-reset',
+                        '--resolve-loader-fallback-reset',
                     ]);
                     expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`alias: []`);
                     expect(stdout).toContain(`aliasFields: []`);
+                    expect(stdout).toContain(`fallback: []`);
                 });
             }
         }
