@@ -1,6 +1,6 @@
 {
   "name": "webpack-cli-monorepo",
-  "version": "4.0.0-beta.3",
+  "version": "4.0.0-beta.4",
   "description": "CLI for webpack & friends",
   "license": "MIT",
   "private": true,
@@ -30,6 +30,7 @@
     "watch": "tsc --build --watch",
     "prepsuite": "node scripts/prepareSuite.js",
     "commit": "git-cz",
+    "changelog": "conventional-changelog --config ./build/changelog-generator/index.js --infile CHANGELOG.md --same-file",
     "lint:prettier": "prettier --list-different . \"!**/*.{js,ts}\" ",
     "lint:eslint": "eslint --cache --ext .js --ext .ts .",
     "lint": "yarn lint:eslint && yarn lint:prettier",
