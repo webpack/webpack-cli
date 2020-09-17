@@ -144,7 +144,7 @@ const core = [
         alias: 't',
         type: String,
         group: ADVANCED_GROUP,
-        multiple: typeof cli !== 'undefined' ? true : false,
+        multiple: typeof cli !== 'undefined',
         description: 'Sets the build target e.g. node',
         link: 'https://webpack.js.org/configuration/target/#target',
     },
