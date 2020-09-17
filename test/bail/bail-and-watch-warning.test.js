@@ -3,8 +3,15 @@
 const { run } = require('../utils/test-utils');
 
 describe('bail and watch warning', () => {
-    it('should log warning if bail and watch both options are true', () => {
-        const { stderr, stdout } = run(__dirname, ['-c', 'webpack.config.js']);
+    it('should log warning in case of single compiler', () => {
+        const { stderr, stdout } = run(__dirname, ['-c', 'single-webpack.config.js']);
+
+        expect(stderr).toContain(`You are using "bail" with "watch". "bail" will still exit webpack when the first error is found.`);
+        expect(stdout).toBeTruthy();
+    });
+
+    it('should log warning in case of multiple compilers', () => {
+        const { stderr, stdout } = run(__dirname, ['-c', 'multi-webpack.config.js']);
 
         expect(stderr).toContain(`You are using "bail" with "watch". "bail" will still exit webpack when the first error is found.`);
         expect(stdout).toBeTruthy();

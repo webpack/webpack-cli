@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const logger = require('./logger');
+const bailAndWatchWarning = require('./warnings/bailAndWatchWarning');
 const { CompilerOutput } = require('./CompilerOutput');
 
 class Compiler {
@@ -117,16 +118,13 @@ class Compiler {
             return interactive(options, outputOptions);
         }
 
-        //warn the user if bail and watch both are used together
-        if (this.compiler.options.bail && outputOptions.watch) {
-            logger.warn('You are using "bail" with "watch". "bail" will still exit webpack when the first error is found.');
-        }
-
         if (this.compiler.compilers) {
             this.compiler.compilers.forEach((comp, idx) => {
+                bailAndWatchWarning(comp); //warn the user if bail and watch both are used together
                 this.setUpHookForCompilation(comp, outputOptions, options[idx]);
             });
         } else {
+            bailAndWatchWarning(this.compiler);
             this.setUpHookForCompilation(this.compiler, outputOptions, options);
         }
 

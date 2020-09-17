@@ -1,5 +1,5 @@
 module.exports = {
-    entry: './main.js',
+    entry: './src/first.js',
     mode: 'development',
     bail: true,
     watch: true,
