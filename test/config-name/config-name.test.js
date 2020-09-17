@@ -8,9 +8,9 @@ describe('--config-name flag', () => {
     it('should select only the config whose name is passed with --config-name', (done) => {
         const { stderr, stdout } = run(__dirname, ['--config-name', 'first'], false);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain('Child first');
-        expect(stdout).not.toContain('Child second');
-        expect(stdout).not.toContain('Child third');
+        expect(stdout).toContain('first');
+        expect(stdout).not.toContain('second');
+        expect(stdout).not.toContain('third');
 
         stat(resolve(__dirname, './dist/dist-first.js'), (err, stats) => {
             expect(err).toBe(null);
@@ -22,9 +22,9 @@ describe('--config-name flag', () => {
     it('should work with multiple values for --config-name', (done) => {
         const { stderr, stdout } = run(__dirname, ['--config-name', 'first', '--config-name', 'third'], false);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain('Child first');
-        expect(stdout).not.toContain('Child second');
-        expect(stdout).toContain('Child third');
+        expect(stdout).toContain('first');
+        expect(stdout).not.toContain('second');
+        expect(stdout).toContain('third');
 
         stat(resolve(__dirname, './dist/dist-first.js'), (err, stats) => {
             expect(err).toBe(null);

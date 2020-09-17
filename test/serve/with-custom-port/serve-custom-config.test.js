@@ -27,7 +27,7 @@ describe('serve with devServer in config', () => {
         const { stdout, stderr } = await runServe([], testPath);
         // Should output the correct bundle file
         expect(stdout).toContain('main.js');
-        expect(stdout).not.toContain('hot/dev-server.js');
+        expect(stdout).not.toContain('HotModuleReplacementPlugin');
         // Runs at correct host and port
         expect(stdout).toContain('http://0.0.0.0:1234');
         expect(stderr).toBeFalsy();
@@ -37,7 +37,7 @@ describe('serve with devServer in config', () => {
         const { stdout, stderr } = await runServe(['--port', port], testPath);
         // Should output the correct bundle file
         expect(stdout).toContain('main.js');
-        expect(stdout).not.toContain('hot/dev-server.js');
+        expect(stdout).not.toContain('HotModuleReplacementPlugin');
         // Runs at correct host and port
         expect(stdout).toContain(`http://0.0.0.0:${port}`);
         expect(stderr).toBeFalsy();
@@ -48,7 +48,7 @@ describe('serve with devServer in config', () => {
         // Should output the correct bundle file
         expect(stdout).toContain('main.js');
         // HMR is being used
-        expect(stdout).toContain('hot/dev-server.js');
+        expect(stdout).toContain('HotModuleReplacementPlugin');
         // Runs at correct host and port
         expect(stdout).toContain(`http://0.0.0.0:${port}`);
         expect(stderr).toBeFalsy();
@@ -59,7 +59,7 @@ describe('serve with devServer in config', () => {
         // Should output the correct bundle file
         expect(stdout).toContain('main.js');
         // HMR is not being used
-        expect(stdout).not.toContain('hot/dev-server.js');
+        expect(stdout).not.toContain('HotModuleReplacementPlugin');
         // Runs at correct host and port
         expect(stdout).toContain(`http://0.0.0.0:${port}`);
         expect(stderr).toBeFalsy();
