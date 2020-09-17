@@ -57,6 +57,7 @@ describe('module config related flag', () => {
                     if (propName === 'use' || propName === 'type') {
                         expect(stdout).toContain(`${propName}: 'javascript/auto'`);
                     } else if (property.includes('use-')) {
+                        stdout = run(__dirname, [`--${flag.name}`, 'test-value']).stdout;
                         expect(stdout).toContain(`use: [Object]`);
                     } else if (propName === 'enforce') {
                         stdout = run(__dirname, [`--${flag.name}`, 'pre', '--module-rules-use-loader', 'myLoader']).stdout;
