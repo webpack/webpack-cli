@@ -128,6 +128,7 @@
     "ts-jest": "^25.5.1",
     "typescript": "^3.9.7",
     "webpack": "^4.44.1",
-    "yeoman-test": "^2.7.0"
+    "yeoman-test": "^2.7.0",
+    "conventional-changelog-cli": "^2.1.0"
   }
 }
