@@ -117,6 +117,11 @@ class HelpGroup {
                 optionList: options.core
                     .map((e) => {
                         if (e.type.length > 1) e.type = e.type[0];
+                        // Here we replace special characters with chalk's escape
+                        // syntax (`\$&`) to avoid chalk trying to re-process our input.
+                        // This is needed because chalk supports a form of `{var}`
+                        // interpolation.
+                        e.description = e.description.replace(/[{}\\]/g, '\\$&');
                         return e;
                     })
                     .concat(negatedFlags),

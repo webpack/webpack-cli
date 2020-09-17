@@ -1,7 +1,7 @@
 'use strict';
 const { stat } = require('fs');
 const { resolve } = require('path');
-const { run } = require('../../utils/test-utils');
+const { run, isWebpack5 } = require('../../utils/test-utils');
 
 const targetValues = ['web', 'webworker', 'node', 'async-node', 'node-webkit', 'electron-main', 'electron-renderer', 'electron-preload'];
 
@@ -34,6 +34,10 @@ describe('--target flag', () => {
 
     it(`should throw error with invalid value for --target`, () => {
         const { stderr } = run(__dirname, ['--target', 'invalid']);
-        expect(stderr).toContain('Invalid configuration object');
+        if (isWebpack5) {
+            expect(stderr).toContain(`Error: Unknown target 'invalid'`);
+        } else {
+            expect(stderr).toContain('Invalid configuration object');
+        }
     });
 });

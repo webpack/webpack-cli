@@ -33,10 +33,6 @@ class Compiler {
         });
     }
 
-    showEmojiConditionally() {
-        return process.stdout.isTTY && process.platform === 'darwin';
-    }
-
     generateOutput(outputOptions, stats) {
         this.output.generateRawOutput(stats, this.compilerOptions);
         process.stdout.write('\n');
