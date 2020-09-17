@@ -6,31 +6,15 @@ const { run, isWebpack5 } = require('../../utils/test-utils');
 const targetValues = ['web', 'webworker', 'node', 'async-node', 'node-webkit', 'electron-main', 'electron-renderer', 'electron-preload'];
 
 describe('--target flag', () => {
-<<<<<<< HEAD
     targetValues.forEach((val) => {
         it(`should accept ${val} with --target flag`, (done) => {
             const { stdout, stderr } = run(__dirname, ['--target', `${val}`]);
             expect(stderr).toBeFalsy();
-            expect(stdout).toContain(`target: '${val}'`);
-=======
-    if (version.startsWith('5')) {
-        it('should allow multiple targets', () => {
-            const { stderr, stdout } = run(__dirname, ['--target', 'node', '--target', 'async-node']);
-            expect(stderr).toBeFalsy();
-            expect(stdout).toContain(`target: [ 'node', 'async-node' ]`);
-        });
-
-        it('should throw error for invalid targets', () => {
-            const { stderr } = run(__dirname, ['--target', 'invalid']);
-            expect(stderr).toContain(`Error: Unknown target 'invalid'`);
-        });
-    } else {
-        targetValues.forEach((val) => {
-            it(`should accept ${val} with --target flag`, (done) => {
-                const { stdout, stderr } = run(__dirname, ['--target', `${val}`]);
-                expect(stderr).toBeFalsy();
+            if (isWebpack5) {
+                expect(stdout).toContain(`target: [ '${val}' ]`);
+            } else {
                 expect(stdout).toContain(`target: '${val}'`);
->>>>>>> tests: target
+            }
 
             stat(resolve(__dirname, 'bin/main.js'), (err, stats) => {
                 expect(err).toBe(null);
@@ -42,7 +26,11 @@ describe('--target flag', () => {
         it(`should accept ${val} with -t alias`, (done) => {
             const { stdout, stderr } = run(__dirname, ['-t', `${val}`]);
             expect(stderr).toBeFalsy();
-            expect(stdout).toContain(`target: '${val}'`);
+            if (isWebpack5) {
+                expect(stdout).toContain(`target: [ '${val}' ]`);
+            } else {
+                expect(stdout).toContain(`target: '${val}'`);
+            }
 
             stat(resolve(__dirname, 'bin/main.js'), (err, stats) => {
                 expect(err).toBe(null);
@@ -60,4 +48,12 @@ describe('--target flag', () => {
             expect(stderr).toContain('Invalid configuration object');
         }
     });
+
+    if (isWebpack5) {
+        it('should allow multiple targets', () => {
+            const { stderr, stdout } = run(__dirname, ['--target', 'node', '--target', 'async-node']);
+            expect(stderr).toBeFalsy();
+            expect(stdout).toContain(`target: [ 'node', 'async-node' ]`);
+        });
+    }
 });
