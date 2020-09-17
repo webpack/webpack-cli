@@ -117,6 +117,11 @@ class Compiler {
             return interactive(options, outputOptions);
         }
 
+        //warn the user if bail and watch both are used together
+        if (this.compiler.options.bail && outputOptions.watch) {
+            logger.warn('You are using "bail" with "watch". "bail" will still exit webpack when the first error is found.');
+        }
+
         if (this.compiler.compilers) {
             this.compiler.compilers.forEach((comp, idx) => {
                 this.setUpHookForCompilation(comp, outputOptions, options[idx]);
