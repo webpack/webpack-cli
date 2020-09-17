@@ -42,8 +42,7 @@ Object {
   "webpackArgs": Object {
     "color": true,
     "config": Array [],
-    "mode": "production",
-    "target": "node",
+    "mode": "development",
   },
 }
 `;
