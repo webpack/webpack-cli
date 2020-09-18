@@ -5,6 +5,10 @@ const { run, isWebpack5 } = require('../../utils/test-utils');
 
 const presets = ['normal', 'detailed', 'errors-only', 'errors-warnings', 'minimal', 'verbose', 'none'];
 
+if (isWebpack5) {
+    presets.push('summary');
+}
+
 describe('stats flag', () => {
     for (const preset of presets) {
         it(`should accept --stats "${preset}"`, () => {
