@@ -30,6 +30,7 @@
     "watch": "tsc --build --watch",
     "prepsuite": "node scripts/prepareSuite.js",
     "commit": "git-cz",
+    "changelog": "conventional-changelog --config ./build/changelog-generator/index.js --infile CHANGELOG.md --same-file",
     "lint:prettier": "prettier --list-different . \"!**/*.{js,ts}\" ",
     "lint:eslint": "eslint --cache --ext .js --ext .ts .",
     "lint": "yarn lint:eslint && yarn lint:prettier",
@@ -128,6 +129,7 @@
     "ts-jest": "^25.5.1",
     "typescript": "^3.9.7",
     "webpack": "^4.44.1",
-    "yeoman-test": "^2.7.0"
+    "yeoman-test": "^2.7.0",
+    "conventional-changelog-cli": "^2.1.0"
   }
 }
