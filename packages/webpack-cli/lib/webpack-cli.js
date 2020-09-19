@@ -67,6 +67,7 @@ class WebpackCLI extends GroupHelper {
     /**
      * Responsible for resolving config
      * @private\
+     * @param {Object} processed args
      * @returns {void}
      */
     async _handleConfig(parsedArgs) {
