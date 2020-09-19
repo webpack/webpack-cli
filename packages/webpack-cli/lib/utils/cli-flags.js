@@ -90,6 +90,7 @@ const core = [
         usage: '--config <path to webpack configuration file>',
         alias: 'c',
         type: String,
+        defaultValue: true,
         group: CONFIG_GROUP,
         multiple: true,
         description: 'Provide path to a webpack configuration file e.g. ./webpack.config.js',
