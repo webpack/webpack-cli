@@ -1,8 +1,8 @@
-<a name="4.0.0-beta.4"></a>
+<a name="4.0.0-beta.9"></a>
 
-# 4.0.0-beta.4 (2020-09-19)
+# 4.0.0-beta.9 (2020-09-19)
 
-[Full Changelog](https://github.com/webpack/webpack-cli/compare/v4.0.0-beta.2...v4.0.0-beta.4)
+[Full Changelog](https://github.com/webpack/webpack-cli/compare/v4.0.0-beta.2...v4.0.0-beta.9)
 
 ## New Features
 
@@ -42,38 +42,6 @@
 -   webpack-cli: added mode argument ([#1253](https://github.com/webpack/webpack-cli/pull/1253))
 -   webpack-cli: add progress bar for progress flag ([#1238](https://github.com/webpack/webpack-cli/pull/1238))
 -   webpack-cli: add --no-hot flag ([#1591](https://github.com/webpack/webpack-cli/pull/1591))
-
-## Docs
-
--   describe commit types ([#1364](https://github.com/webpack/webpack-cli/pull/1364))
--   cli: changed README to notify the beta version ([#1223](https://github.com/webpack/webpack-cli/pull/1223))
--   fix jsdoc comment for run util function ([#1377](https://github.com/webpack/webpack-cli/pull/1377))
--   add info regarding force flag ([#1707](https://github.com/webpack/webpack-cli/pull/1707))
--   fix yarn installation guide ([#1692](https://github.com/webpack/webpack-cli/pull/1692))
--   add --env type ([#1687](https://github.com/webpack/webpack-cli/pull/1687))
--   improving init and migrate ([#1379](https://github.com/webpack/webpack-cli/pull/1379))
--   correct stats type ([#1577](https://github.com/webpack/webpack-cli/pull/1577))
--   remove --global instance ([#1561](https://github.com/webpack/webpack-cli/pull/1561))
--   fix supported arguments & commands link in README ([#1244](https://github.com/webpack/webpack-cli/pull/1244))
--   fix loading doc link in loader-generator ([#1410](https://github.com/webpack/webpack-cli/pull/1410))
--   remove typedoc, auto-generated docs ([#1406](https://github.com/webpack/webpack-cli/pull/1406))
--   improving packages Readme ([#1357](https://github.com/webpack/webpack-cli/pull/1357))
--   improve badges ([#1390](https://github.com/webpack/webpack-cli/pull/1390))
--   enhance CONTRIBUTING.md ([#1262](https://github.com/webpack/webpack-cli/pull/1262))
--   show download stats for serve ([#1705](https://github.com/webpack/webpack-cli/pull/1705))
--   improving contributing.md ([#1350](https://github.com/webpack/webpack-cli/pull/1350))
--   general corrections and improvements ([#1354](https://github.com/webpack/webpack-cli/pull/1354))
--   fix links to angular commit guidelines ([#1266](https://github.com/webpack/webpack-cli/pull/1266))
--   use a consistent format ([#1338](https://github.com/webpack/webpack-cli/pull/1338))
--   reflect branch next ([#1294](https://github.com/webpack/webpack-cli/pull/1294))
--   add core-team link to CODE_OF_CONDUCT.md ([#1329](https://github.com/webpack/webpack-cli/pull/1329))
--   minor typographical fix ([#1791](https://github.com/webpack/webpack-cli/pull/1791))
--   contributing: update table of contents ([#1332](https://github.com/webpack/webpack-cli/pull/1332))
--   info: remove old flags ([#1745](https://github.com/webpack/webpack-cli/pull/1745))
--   info: update --output flag ([#1496](https://github.com/webpack/webpack-cli/pull/1496))
--   init: ✏️ fix init command in README ([#1273](https://github.com/webpack/webpack-cli/pull/1273))
--   readme: update table of contents ([#1341](https://github.com/webpack/webpack-cli/pull/1341))
--   README: Node CI badge added ([#1292](https://github.com/webpack/webpack-cli/pull/1292))
 
 ## Fix
 
