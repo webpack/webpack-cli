@@ -5,6 +5,7 @@ const { run, isWebpack5 } = require('../../../utils/test-utils');
 describe('Zero Config', () => {
     it('runs when config is present but not supplied via flag', () => {
         const { stdout, stderr, exitCode } = run(__dirname, [], false);
+        console.log({ stdout, stderr, exitCode });
         // default entry should be used
         expect(stdout).toContain('./index.js');
         // should pick up the output path from config
