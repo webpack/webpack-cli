@@ -16,4 +16,11 @@ describe('bail and watch warning', () => {
         expect(stderr).toContain(`You are using "bail" with "watch". "bail" will still exit webpack when the first error is found.`);
         expect(stdout).toBeTruthy();
     });
+
+    it('should log not log warning if both are not true', () => {
+        const { stderr, stdout } = run(__dirname, ['-c', 'third-webpack.config.js']);
+
+        expect(stderr).not.toContain(`You are using "bail" with "watch". "bail" will still exit webpack when the first error is found.`);
+        expect(stdout).toBeTruthy();
+    });
 });
