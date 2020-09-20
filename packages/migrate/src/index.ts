@@ -178,7 +178,7 @@ export default async function migrate(...args: string[]): Promise<void> {
         return;
     }
 
-    const currentConfigPath = path.resolve(process.cwd(), filePaths[0]);
+    const currentConfigPath = path.resolve(filePaths[0]);
     let outputConfigPath: string;
 
     if (!filePaths[1]) {
@@ -195,13 +195,13 @@ export default async function migrate(...args: string[]): Promise<void> {
                 logger.error('✖ ︎Migration aborted due to no output path');
                 return;
             }
-            outputConfigPath = path.resolve(process.cwd(), filePaths[0]);
+            outputConfigPath = path.resolve(filePaths[0]);
             return runMigration(currentConfigPath, outputConfigPath);
         } catch (err) {
             logger.error(err);
             return;
         }
     }
-    outputConfigPath = path.resolve(process.cwd(), filePaths[1]);
+    outputConfigPath = path.resolve(filePaths[1]);
     return runMigration(currentConfigPath, outputConfigPath);
 }
