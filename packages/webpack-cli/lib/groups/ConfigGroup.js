@@ -34,7 +34,7 @@ let opts = {
     options: {},
 };
 
-// Return a list of default configs in various forrmats
+// Return a list of default configs in various formats
 const getDefaultConfigFiles = () => {
     return DEFAULT_CONFIG_LOC.map((filename) => {
         // Since .cjs is not available on interpret side add it manually to default config extension list
