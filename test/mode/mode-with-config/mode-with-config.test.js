@@ -91,4 +91,11 @@ describe('mode flags with config', () => {
             done();
         });
     });
+
+    it('should use mode from config over flags', () => {
+        const { stdout, stderr, exitCode } = run(__dirname, ['--mode', 'production', '-c', 'webpack.config2.js']);
+        expect(stderr).toBeFalsy();
+        expect(exitCode).toEqual(0);
+        expect(stdout).toContain(`mode: 'development'`);
+    });
 });
