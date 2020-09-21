@@ -1,5 +1,6 @@
 const { options } = require('colorette');
 const GroupHelper = require('./utils/GroupHelper');
+const handleConfigResolution = require('./groups/ConfigGroup');
 const { Compiler } = require('./utils/Compiler');
 const { groups, core } = require('./utils/cli-flags');
 const webpackMerge = require('webpack-merge');
@@ -64,6 +65,21 @@ class WebpackCLI extends GroupHelper {
     }
 
     /**
+     * Responsible for resolving config
+     * @private\
+     * @param {Object} processed args
+     * @returns {void}
+     */
+    async _handleConfig(parsedArgs) {
+        const { mode } = parsedArgs;
+        // get config group values from the map
+        const value = this.groupMap.get(groups.CONFIG_GROUP) || [];
+        const resolvedConfig = await handleConfigResolution([...value, { mode }, { argv: parsedArgs }]);
+        this._mergeOptionsToConfiguration(resolvedConfig.options);
+        this._mergeOptionsToOutputConfiguration(resolvedConfig.outputOptions);
+    }
+
+    /**
      * Expose commander argParser
      * @param  {...any} args args for argParser
      */
@@ -81,13 +97,7 @@ class WebpackCLI extends GroupHelper {
      *
      * @returns {void}
      */
-    resolveGroups(parsedArgs) {
-        let mode;
-        // determine the passed mode for ConfigGroup
-        if (this.groupMap.has(groups.ZERO_CONFIG_GROUP)) {
-            const modePresent = this.groupMap.get(groups.ZERO_CONFIG_GROUP).find((t) => !!t.mode);
-            if (modePresent) mode = modePresent.mode;
-        }
+    resolveGroups() {
         for (const [key, value] of this.groupMap.entries()) {
             switch (key) {
                 case groups.ZERO_CONFIG_GROUP: {
@@ -103,11 +113,6 @@ class WebpackCLI extends GroupHelper {
                 case groups.ADVANCED_GROUP: {
                     const AdvancedGroup = require('./groups/AdvancedGroup');
                     this.advancedGroup = new AdvancedGroup(value);
-                    break;
-                }
-                case groups.CONFIG_GROUP: {
-                    const ConfigGroup = require('./groups/ConfigGroup');
-                    this.configGroup = new ConfigGroup([...value, { mode }, { argv: parsedArgs }]);
                     break;
                 }
                 case groups.DISPLAY_GROUP: {
@@ -223,11 +228,11 @@ class WebpackCLI extends GroupHelper {
      * The next groups will override existing parameters
      * @returns {Promise<void>} A Promise
      */
-    async runOptionGroups() {
+    async runOptionGroups(parsedArgs) {
         await Promise.resolve()
             .then(() => this._handleGroupHelper(this.zeroConfigGroup))
             .then(() => this._handleDefaultEntry())
-            .then(() => this._handleGroupHelper(this.configGroup))
+            .then(() => this._handleConfig(parsedArgs))
             .then(() => this._handleGroupHelper(this.outputGroup))
             .then(() => this._handleCoreFlags())
             .then(() => this._handleGroupHelper(this.basicGroup))
@@ -239,7 +244,7 @@ class WebpackCLI extends GroupHelper {
     async processArgs(args, cliOptions) {
         this.setMappedGroups(args, cliOptions);
         this.resolveGroups(args);
-        const groupResult = await this.runOptionGroups();
+        const groupResult = await this.runOptionGroups(args);
         return groupResult;
     }
 
