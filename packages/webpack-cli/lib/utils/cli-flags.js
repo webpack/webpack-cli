@@ -195,8 +195,6 @@ const core = [
         name: 'mode',
         usage: '--mode <development | production | none>',
         type: String,
-        group: ZERO_CONFIG_GROUP,
-        defaultValue: 'production',
         description: 'Defines the mode to pass to webpack',
         link: 'https://webpack.js.org/concepts/#mode',
     },

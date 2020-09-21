@@ -29,4 +29,14 @@ describe('resolveMode', function () {
         expect(result.options).toMatchObject({ mode: 'none' });
         expect(result.options.mode).toEqual('none');
     });
+
+    it('should prefer supplied move over NODE_ENV', () => {
+        process.env.NODE_ENV = 'production';
+        const result = resolveMode({
+            mode: 'development',
+        });
+
+        // ensure no other properties are added
+        expect(result.options).toMatchObject({ mode: 'development' });
+    });
 });

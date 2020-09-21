@@ -6,15 +6,16 @@ const resolveMode = (args) => {
         env: { NODE_ENV },
     } = process;
     const { mode } = args;
+
     let finalMode;
     /**
      * It determines the mode to pass to webpack compiler
      * @returns {string} The mode
      */
-    if (NODE_ENV && (NODE_ENV === PRODUCTION || NODE_ENV === DEVELOPMENT)) {
+    if (!mode && NODE_ENV && (NODE_ENV === PRODUCTION || NODE_ENV === DEVELOPMENT)) {
         finalMode = NODE_ENV;
-    } else if (mode) {
-        finalMode = mode;
+    } else {
+        finalMode = mode || PRODUCTION;
     }
 
     return {
