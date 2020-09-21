@@ -6,6 +6,7 @@ const GroupHelper = require('../utils/GroupHelper');
 const rechoir = require('rechoir');
 const ConfigError = require('../utils/errors/ConfigError');
 const logger = require('../utils/logger');
+const { pathToFileURL } = require('url');
 
 // Order defines the priority, in increasing order
 // example - config file lookup will be in order of .webpack/webpack.config.development.js -> webpack.config.development.js -> webpack.config.js
@@ -67,7 +68,7 @@ class ConfigGroup extends GroupHelper {
         rechoir.prepare(extensions, path, process.cwd());
     }
 
-    requireConfig(configModule) {
+    async requireConfig(configModule) {
         const extension = Object.keys(jsVariants).find((t) => configModule.ext.endsWith(t));
         let config;
 
@@ -76,8 +77,14 @@ class ConfigGroup extends GroupHelper {
         }
 
         if (extension == '.mjs') {
-            const ESMRequire = require('esm')(module);
-            config = ESMRequire(configModule.path);
+            try {
+                const url = pathToFileURL(configModule.path);
+                const ESMImport = new Function('url', 'return import(url)');
+                config = await ESMImport(url);
+            } catch (err) {
+                logger.warn('Cannot import ESM configuration');
+                throw err;
+            }
         } else {
             config = require(configModule.path);
         }
@@ -160,7 +167,7 @@ class ConfigGroup extends GroupHelper {
                     throw new ConfigError(`The specified config file doesn't exist in ${configPath}`);
                 }
                 const foundConfig = configFiles[0];
-                const resolvedConfig = this.requireConfig(foundConfig);
+                const resolvedConfig = await this.requireConfig(foundConfig);
                 return this.finalize(resolvedConfig);
             });
             // resolve all the configs
@@ -184,7 +191,10 @@ class ConfigGroup extends GroupHelper {
             return existsSync(file.path);
         });
 
-        const configFiles = tmpConfigFiles.map(this.requireConfig.bind(this));
+        const configFiles = [];
+        for await (const tmpConfigFile of tmpConfigFiles) {
+            configFiles.push(await this.requireConfig(tmpConfigFile));
+        }
 
         if (configFiles.length) {
             const defaultConfig = configFiles.find((p) => p.path.includes(mode) || p.path.includes(modeAlias[mode]));

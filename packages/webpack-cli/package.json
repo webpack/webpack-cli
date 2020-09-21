@@ -32,7 +32,6 @@
     "command-line-usage": "^6.1.0",
     "commander": "^6.0.0",
     "enquirer": "^2.3.4",
-    "esm": "^3.2.25",
     "execa": "^4.0.0",
     "import-local": "^3.0.2",
     "interpret": "^2.2.0",
