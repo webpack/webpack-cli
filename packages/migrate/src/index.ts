@@ -171,38 +171,37 @@ function runMigration(currentConfigPath: string, outputConfigPath: string): Prom
  * function.
  */
 
-export default function migrate(...args: string[]): void | Promise<void> {
+export default async function migrate(...args: string[]): Promise<void> {
     const filePaths = args;
     if (!filePaths.length) {
         logger.error('\n ✖ Please specify a path to your webpack config\n');
         return;
     }
 
-    const currentConfigPath = path.resolve(process.cwd(), filePaths[0]);
+    const currentConfigPath = path.resolve(filePaths[0]);
     let outputConfigPath: string;
 
     if (!filePaths[1]) {
-        return inquirer
-            .prompt([
+        try {
+            const { confirmPath } = await inquirer.prompt([
                 {
                     default: 'Y',
-                    message: 'Migration output path not specified. ' + 'Do you want to use your existing webpack ' + 'configuration?',
+                    message: 'Migration output path not specified. Do you want to use your existing webpack configuration?',
                     name: 'confirmPath',
                     type: 'confirm',
                 },
-            ])
-            .then((ans: { confirmPath: boolean }): void | Promise<void> => {
-                if (!ans.confirmPath) {
-                    logger.error('✖ ︎Migration aborted due to no output path');
-                    return;
-                }
-                outputConfigPath = path.resolve(process.cwd(), filePaths[0]);
-                return runMigration(currentConfigPath, outputConfigPath);
-            })
-            .catch((err: object): void => {
-                logger.error(err);
-            });
+            ]);
+            if (!confirmPath) {
+                logger.error('✖ ︎Migration aborted due to no output path');
+                return;
+            }
+            outputConfigPath = path.resolve(filePaths[0]);
+            return runMigration(currentConfigPath, outputConfigPath);
+        } catch (err) {
+            logger.error(err);
+            return;
+        }
     }
-    outputConfigPath = path.resolve(process.cwd(), filePaths[1]);
+    outputConfigPath = path.resolve(filePaths[1]);
     return runMigration(currentConfigPath, outputConfigPath);
 }
