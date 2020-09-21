@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const logger = require('./logger');
+const bailAndWatchWarning = require('./warnings/bailAndWatchWarning');
 const { CompilerOutput } = require('./CompilerOutput');
 
 class Compiler {
@@ -119,9 +120,11 @@ class Compiler {
 
         if (this.compiler.compilers) {
             this.compiler.compilers.forEach((comp, idx) => {
+                bailAndWatchWarning(comp); //warn the user if bail and watch both are used together
                 this.setUpHookForCompilation(comp, outputOptions, options[idx]);
             });
         } else {
+            bailAndWatchWarning(this.compiler);
             this.setUpHookForCompilation(this.compiler, outputOptions, options);
         }
 
