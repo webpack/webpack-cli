@@ -43,5 +43,16 @@
     "@webpack-cli/package-utils": "^1.0.1-alpha.4",
     "@types/cross-spawn": "6.0.1"
   },
+  "peerDependenciesMeta": {
+    "@webpack-cli/info": {
+      "optional": true
+    },
+    "@webpack-cli/init": {
+      "optional": true
+    },
+    "@webpack-cli/serve": {
+      "optional": true
+    }
+  },
   "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9"
 }
