@@ -1,4 +1,4 @@
-const { red, yellow, cyan, bold, underline } = require('colorette');
+const { yellow, bold, underline } = require('colorette');
 const { core, commands } = require('../utils/cli-flags');
 const { defaultCommands } = require('../utils/commands');
 const logger = require('../utils/logger');
@@ -69,8 +69,8 @@ class HelpGroup {
 
         if (invalidArgs.length > 0) {
             const argType = invalidArgs[0].startsWith('-') ? 'option' : 'command';
-            logger.error(red(`Error: Invalid ${argType} '${invalidArgs[0]}'.`));
-            logger.info(cyan('Run webpack --help to see available commands and arguments.\n'));
+            logger.error(`Error: Invalid ${argType} '${invalidArgs[0]}'.`);
+            logger.info('Run webpack --help to see available commands and arguments.\n');
             process.exit(2);
         }
 
@@ -117,6 +117,11 @@ class HelpGroup {
                 optionList: options.core
                     .map((e) => {
                         if (e.type.length > 1) e.type = e.type[0];
+                        // Here we replace special characters with chalk's escape
+                        // syntax (`\$&`) to avoid chalk trying to re-process our input.
+                        // This is needed because chalk supports a form of `{var}`
+                        // interpolation.
+                        e.description = e.description.replace(/[{}\\]/g, '\\$&');
                         return e;
                     })
                     .concat(negatedFlags),

@@ -27,7 +27,7 @@ describe('parseArgs', () => {
     });
 
     it('parses webpack and dev server args', () => {
-        const args = parseArgs(cli, ['--bonjour', '--target=node', '--port', '8080']);
+        const args = parseArgs(cli, ['--bonjour', '--mode=development', '--port', '8080']);
         expect(args).toMatchSnapshot();
         expect(errorMock.mock.calls.length).toEqual(0);
         expect(processExitSpy.mock.calls.length).toEqual(0);

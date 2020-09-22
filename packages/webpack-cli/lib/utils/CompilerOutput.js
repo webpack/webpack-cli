@@ -27,10 +27,6 @@ class CompilerOutput {
             .slice(0, 15)
             .join('\n');
     }
-
-    _showEmojiConditionally() {
-        return process.stdout.isTTY && process.platform === 'darwin';
-    }
 }
 
 module.exports = { CompilerOutput };
