@@ -9,7 +9,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@webpack-cli/package-utils": "^1.0.1-alpha.4",
+    "@webpack-cli/package-utils": "^1.0.1-rc.0",
     "execa": "^4.0.0",
     "colorette": "^1.2.1",
     "findup-sync": "4.0.0",
