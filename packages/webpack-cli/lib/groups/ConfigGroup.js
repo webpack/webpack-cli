@@ -75,7 +75,7 @@ const requireConfig = async (configModule) => {
     const extension = Object.keys(jsVariants).find((t) => configModule.ext.endsWith(t));
     let config;
 
-    if (extension == 'mjs') {
+    if (extension == '.mjs') {
         try {
             const url = pathToFileURL(configModule.path);
             const ESMImport = new Function('url', 'return import(url)');
