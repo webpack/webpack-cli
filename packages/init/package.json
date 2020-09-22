@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/init",
-  "version": "1.0.1-alpha.5",
+  "version": "1.0.1-rc.0",
   "description": "init command for webpack-cli",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
