@@ -8,11 +8,13 @@ class InteractiveModePlugin {
             quit: 'q',
             recompile: 'r',
             pause: 'p',
+            stop: 's',
         };
         this.handlers = {
             quit: this.quitHandler,
             recompile: this.recompileHandler,
             pause: this.pauseHandler,
+            stop: this.stopHandler,
         };
     }
 
@@ -76,6 +78,15 @@ class InteractiveModePlugin {
         const totalRows = process.stdout.rows;
         readline.cursorTo(process.stdout, 0, totalRows - 2);
         logger.info('pausing is not supported       ');
+        process.stdout.write('> ');
+    }
+
+    // eslint-disable-next-line no-unused-vars
+    stopHandler(compiler) {
+        //TODO: implement it
+        const totalRows = process.stdout.rows;
+        readline.cursorTo(process.stdout, 0, totalRows - 2);
+        logger.info('stoping is not supported');
         process.stdout.write('> ');
     }
 }
