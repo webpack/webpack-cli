@@ -1,5 +1,6 @@
 import spawn from 'cross-spawn';
 import path from 'path';
+import { getPackageManager } from './get-package-manager';
 
 /**
  *
@@ -10,7 +11,7 @@ import path from 'path';
  * @returns {String} path - Path to global node_modules folder
  */
 export function getPathToGlobalPackages(): string {
-    const manager: string = exports.getPackageManager();
+    const manager: string = getPackageManager();
     if (manager === 'yarn') {
         try {
             const yarnDir = spawn.sync('yarn', ['global', 'dir']).stdout.toString().trim();
