@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/package-utils",
-  "version": "1.0.1-alpha.4",
+  "version": "1.0.1-rc.0",
   "description": "A module to help managing packages and modules inside webpack CLI",
   "keywords": [
     "webpack",
@@ -40,7 +40,7 @@
     "global-modules": "2.0.0"
   },
   "devDependencies": {
-    "@webpack-cli/package-utils": "^1.0.1-alpha.4",
+    "@webpack-cli/package-utils": "^1.0.1-rc.0",
     "@types/cross-spawn": "6.0.1"
   },
   "peerDependenciesMeta": {
