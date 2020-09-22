@@ -13,3 +13,4 @@ export * from './global-packages-path';
 export * from './get-package-manager';
 export * from './package-exists';
 export * from './run-command';
+export * from './prompt-installation';

@@ -1,6 +1,8 @@
 import { prompt } from 'enquirer';
 import { green } from 'colorette';
 import { runCommand } from './run-command';
+import { getPackageManager } from './get-package-manager';
+import { packageExists } from './package-exists';
 
 /**
  *
@@ -9,7 +11,7 @@ import { runCommand } from './run-command';
  */
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export async function promptInstallation(packageName: string, preMessage?: Function) {
-    const packageManager = exports.getPackageManager();
+    const packageManager = getPackageManager();
     const options = [packageManager === 'yarn' ? 'add' : 'install', '-D', packageName];
 
     const commandToBeRun = `${packageManager} ${options.join(' ')}`;
@@ -27,7 +29,7 @@ export async function promptInstallation(packageName: string, preMessage?: Funct
     ]);
     if (installConfirm) {
         await runCommand(commandToBeRun);
-        return exports.packageExists(packageName);
+        return packageExists(packageName);
     }
     // eslint-disable-next-line require-atomic-updates
     process.exitCode = 2;
