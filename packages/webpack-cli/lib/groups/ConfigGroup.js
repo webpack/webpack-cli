@@ -3,7 +3,6 @@ const { resolve, sep, dirname, extname } = require('path');
 const webpackMerge = require('webpack-merge');
 const { extensions, jsVariants } = require('interpret');
 const rechoir = require('rechoir');
-const { arrayToObject } = require('../utils/arg-utils');
 const ConfigError = require('../utils/errors/ConfigError');
 const logger = require('../utils/logger');
 
@@ -141,7 +140,7 @@ const resolveConfigFiles = async (args) => {
 // Given config data, determines the type of config and
 // returns final config
 const finalize = async (moduleObj, args) => {
-    const { argv, env, configName } = args;
+    const { env, configName } = args;
     const newOptionsObject = {
         outputOptions: {},
         options: {},
@@ -161,7 +160,7 @@ const finalize = async (moduleObj, args) => {
                 return envObject;
             }, {});
         }
-        const newOptions = configOptions(formattedEnv, argv);
+        const newOptions = configOptions(formattedEnv, args);
         // When config function returns a promise, resolve it, if not it's resolved by default
         newOptionsObject['options'] = await Promise.resolve(newOptions);
     } else if (Array.isArray(configOptions) && configName) {
@@ -217,9 +216,8 @@ const resolveConfigMerging = async (args) => {
 };
 
 const handleConfigResolution = async (args) => {
-    const parsedArgs = arrayToObject(args);
-    await resolveConfigFiles(parsedArgs);
-    await resolveConfigMerging(parsedArgs);
+    await resolveConfigFiles(args);
+    await resolveConfigMerging(args);
     return opts;
 };
 
