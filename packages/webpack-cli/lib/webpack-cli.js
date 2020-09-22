@@ -71,10 +71,7 @@ class WebpackCLI extends GroupHelper {
      * @returns {void}
      */
     async _handleConfig(parsedArgs) {
-        const { mode } = parsedArgs;
-        // get config group values from the map
-        const value = this.groupMap.get(groups.CONFIG_GROUP) || [];
-        const resolvedConfig = await handleConfigResolution([...value, { mode }, { argv: parsedArgs }]);
+        const resolvedConfig = await handleConfigResolution(parsedArgs);
         this._mergeOptionsToConfiguration(resolvedConfig.options);
         this._mergeOptionsToOutputConfiguration(resolvedConfig.outputOptions);
     }
