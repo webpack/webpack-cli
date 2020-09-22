@@ -1,7 +1,8 @@
-import execa, { ExecaSyncReturnValue, sync } from 'execa';
-import { getPackageManager, getPathToGlobalPackages } from './packageUtils';
 import path from 'path';
 import fs from 'fs';
+import { ExecaSyncReturnValue, sync } from 'execa';
+import { getPathToGlobalPackages } from './global-packages-path';
+import { getPackageManager } from './get-package-manager';
 
 /**
  *
@@ -38,15 +39,4 @@ export function spawnChild(pkg: string): ExecaSyncReturnValue {
     const isNew = !fs.existsSync(pkgPath);
 
     return spawnWithArg(pkg, isNew);
-}
-
-export async function runCommand(command, args = []): Promise<void> {
-    try {
-        await execa(command, args, {
-            stdio: 'inherit',
-            shell: true,
-        });
-    } catch (e) {
-        throw new Error(e);
-    }
 }
