@@ -6,6 +6,7 @@ const rechoir = require('rechoir');
 const { arrayToObject } = require('../utils/arg-utils');
 const ConfigError = require('../utils/errors/ConfigError');
 const logger = require('../utils/logger');
+const { pathToFileURL } = require('url');
 
 // Order defines the priority, in increasing order
 // example - config file lookup will be in order of .webpack/webpack.config.development.js -> webpack.config.development.js -> webpack.config.js
@@ -70,14 +71,26 @@ const requireLoader = (extension, path) => {
 };
 
 // Reads a config file given the config metadata
-const requireConfig = (configModule) => {
+const requireConfig = async (configModule) => {
     const extension = Object.keys(jsVariants).find((t) => configModule.ext.endsWith(t));
+    let config;
 
-    if (extension) {
-        requireLoader(extension, configModule.path);
+    if (extension == 'mjs') {
+        try {
+            const url = pathToFileURL(configModule.path);
+            const ESMImport = new Function('url', 'return import(url)');
+            config = await ESMImport(url);
+        } catch (err) {
+            logger.warn('Cannot import ESM configuration');
+            throw err;
+        }
+    } else {
+        if (extension) {
+            requireLoader(extension, configModule.path);
+        }
+        config = require(configModule.path);
     }
 
-    let config = require(configModule.path);
     if (config.default) {
         config = config.default;
     }
