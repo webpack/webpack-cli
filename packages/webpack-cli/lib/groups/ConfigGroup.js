@@ -114,7 +114,7 @@ const resolveConfigFiles = async (args) => {
                 throw new ConfigError(`The specified config file doesn't exist in ${configPath}`);
             }
             const foundConfig = configFiles[0];
-            const resolvedConfig = requireConfig(foundConfig);
+            const resolvedConfig = await requireConfig(foundConfig);
             return finalize(resolvedConfig, args);
         });
         // resolve all the configs
@@ -138,7 +138,11 @@ const resolveConfigFiles = async (args) => {
         return existsSync(file.path);
     });
 
-    const configFiles = tmpConfigFiles.map(requireConfig);
+    const configFiles = [];
+    for await (const tmpConfigFile of tmpConfigFiles) {
+        configFiles.push(await requireConfig(tmpConfigFile));
+    }
+
     if (configFiles.length) {
         const defaultConfig = configFiles.find((p) => p.path.includes(mode) || p.path.includes(modeAlias[mode]));
         if (defaultConfig) {
