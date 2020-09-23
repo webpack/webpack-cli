@@ -1,6 +1,7 @@
 const { options } = require('colorette');
 const GroupHelper = require('./utils/GroupHelper');
 const handleConfigResolution = require('./groups/ConfigGroup');
+const resolveMode = require('./groups/resolveMode');
 const { Compiler } = require('./utils/Compiler');
 const { groups, core } = require('./utils/cli-flags');
 const webpackMerge = require('webpack-merge');
@@ -76,6 +77,12 @@ class WebpackCLI extends GroupHelper {
         this._mergeOptionsToOutputConfiguration(resolvedConfig.outputOptions);
     }
 
+    async _baseResolver(cb, parsedArgs) {
+        const resolvedConfig = cb(parsedArgs);
+        this._mergeOptionsToConfiguration(resolvedConfig.options);
+        this._mergeOptionsToOutputConfiguration(resolvedConfig.outputOptions);
+    }
+
     /**
      * Expose commander argParser
      * @param  {...any} args args for argParser
@@ -97,11 +104,6 @@ class WebpackCLI extends GroupHelper {
     resolveGroups() {
         for (const [key, value] of this.groupMap.entries()) {
             switch (key) {
-                case groups.ZERO_CONFIG_GROUP: {
-                    const ZeroConfigGroup = require('./groups/ZeroConfigGroup');
-                    this.zeroConfigGroup = new ZeroConfigGroup(value);
-                    break;
-                }
                 case groups.BASIC_GROUP: {
                     const BasicGroup = require('./groups/BasicGroup');
                     this.basicGroup = new BasicGroup(value);
@@ -227,7 +229,7 @@ class WebpackCLI extends GroupHelper {
      */
     async runOptionGroups(parsedArgs) {
         await Promise.resolve()
-            .then(() => this._handleGroupHelper(this.zeroConfigGroup))
+            .then(() => this._baseResolver(resolveMode, parsedArgs))
             .then(() => this._handleDefaultEntry())
             .then(() => this._handleConfig(parsedArgs))
             .then(() => this._handleGroupHelper(this.outputGroup))

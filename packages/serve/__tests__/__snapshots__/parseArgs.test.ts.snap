@@ -12,7 +12,6 @@ Object {
   "webpackArgs": Object {
     "color": true,
     "hot": true,
-    "mode": "production",
   },
 }
 `;

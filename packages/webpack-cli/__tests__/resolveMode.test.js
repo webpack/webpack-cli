@@ -1,41 +1,42 @@
-const ZeroConfigGroup = require('../lib/groups/ZeroConfigGroup');
+const resolveMode = require('../lib/groups/resolveMode');
 
-describe('ZeroConfigGroup', function () {
+describe('resolveMode', function () {
     it('should handle the mode option [production]', () => {
-        const group = new ZeroConfigGroup([
-            {
-                mode: 'production',
-            },
-        ]);
-        const result = group.run();
+        const result = resolveMode({
+            mode: 'production',
+        });
         // ensure no other properties are added
         expect(result.options).toMatchObject({ mode: 'production' });
         expect(result.options.mode).toEqual('production');
     });
 
     it('should handle the mode option [development]', () => {
-        const group = new ZeroConfigGroup([
-            {
-                mode: 'development',
-            },
-        ]);
+        const result = resolveMode({
+            mode: 'development',
+        });
 
-        const result = group.run();
         // ensure no other properties are added
         expect(result.options).toMatchObject({ mode: 'development' });
         expect(result.options.mode).toEqual('development');
     });
 
     it('should handle the mode option [none]', () => {
-        const group = new ZeroConfigGroup([
-            {
-                mode: 'none',
-            },
-        ]);
+        const result = resolveMode({
+            mode: 'none',
+        });
 
-        const result = group.run();
         // ensure no other properties are added
         expect(result.options).toMatchObject({ mode: 'none' });
         expect(result.options.mode).toEqual('none');
+    });
+
+    it('should prefer supplied move over NODE_ENV', () => {
+        process.env.NODE_ENV = 'production';
+        const result = resolveMode({
+            mode: 'development',
+        });
+
+        // ensure no other properties are added
+        expect(result.options).toMatchObject({ mode: 'development' });
     });
 });
