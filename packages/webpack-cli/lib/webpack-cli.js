@@ -77,8 +77,8 @@ class WebpackCLI extends GroupHelper {
         this._mergeOptionsToOutputConfiguration(resolvedConfig.outputOptions);
     }
 
-    async _baseResolver(cb, parsedArgs) {
-        const resolvedConfig = cb(parsedArgs);
+    async _baseResolver(cb, parsedArgs, configOptions) {
+        const resolvedConfig = cb(parsedArgs, configOptions);
         this._mergeOptionsToConfiguration(resolvedConfig.options);
         this._mergeOptionsToOutputConfiguration(resolvedConfig.outputOptions);
     }
@@ -229,9 +229,9 @@ class WebpackCLI extends GroupHelper {
      */
     async runOptionGroups(parsedArgs) {
         await Promise.resolve()
-            .then(() => this._baseResolver(resolveMode, parsedArgs))
             .then(() => this._handleDefaultEntry())
             .then(() => this._handleConfig(parsedArgs))
+            .then(() => this._baseResolver(resolveMode, parsedArgs, this.compilerConfiguration))
             .then(() => this._handleGroupHelper(this.outputGroup))
             .then(() => this._handleCoreFlags())
             .then(() => this._handleGroupHelper(this.basicGroup))

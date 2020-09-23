@@ -92,8 +92,24 @@ describe('mode flags with config', () => {
         });
     });
 
-    it('should use mode from config over flags', () => {
+    it('should use mode flag over config', () => {
         const { stdout, stderr, exitCode } = run(__dirname, ['--mode', 'production', '-c', 'webpack.config2.js']);
+        expect(stderr).toBeFalsy();
+        expect(exitCode).toEqual(0);
+        expect(stdout).toContain(`mode: 'production'`);
+    });
+
+    it('should use mode from flag over NODE_ENV', () => {
+        const { stdout, stderr, exitCode } = run(__dirname, ['--mode', 'none', '-c', 'webpack.config3.js'], false, [], {
+            NODE_ENV: 'production',
+        });
+        expect(stderr).toBeFalsy();
+        expect(exitCode).toEqual(0);
+        expect(stdout).toContain(`mode: 'none'`);
+    });
+
+    it('should use mode from config over NODE_ENV', () => {
+        const { stdout, stderr, exitCode } = run(__dirname, ['-c', 'webpack.config2.js']);
         expect(stderr).toBeFalsy();
         expect(exitCode).toEqual(0);
         expect(stdout).toContain(`mode: 'development'`);
