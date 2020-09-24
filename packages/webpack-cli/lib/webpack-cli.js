@@ -77,8 +77,8 @@ class WebpackCLI extends GroupHelper {
         this._mergeOptionsToOutputConfiguration(resolvedConfig.outputOptions);
     }
 
-    async _baseResolver(cb, parsedArgs) {
-        const resolvedConfig = cb(parsedArgs);
+    async _baseResolver(cb, parsedArgs, configOptions) {
+        const resolvedConfig = cb(parsedArgs, configOptions);
         this._mergeOptionsToConfiguration(resolvedConfig.options);
         this._mergeOptionsToOutputConfiguration(resolvedConfig.outputOptions);
     }
@@ -143,6 +143,21 @@ class WebpackCLI extends GroupHelper {
      * @returns {void}
      */
     _mergeOptionsToConfiguration(options, strategy) {
+        /**
+         * options where they differ per config use this method to apply relevant option to relevant config
+         * eg mode flag applies per config
+         */
+        if (Array.isArray(options) && Array.isArray(this.compilerConfiguration)) {
+            this.compilerConfiguration = options.map((option, index) => {
+                const compilerConfig = this.compilerConfiguration[index];
+                if (strategy) {
+                    return webpackMerge.strategy(strategy)(compilerConfig, option);
+                }
+                return webpackMerge(compilerConfig, option);
+            });
+            return;
+        }
+
         /**
          * options is an array (multiple configuration) so we create a new
          * configuration where each element is individually merged
@@ -229,9 +244,9 @@ class WebpackCLI extends GroupHelper {
      */
     async runOptionGroups(parsedArgs) {
         await Promise.resolve()
-            .then(() => this._baseResolver(resolveMode, parsedArgs))
             .then(() => this._handleDefaultEntry())
             .then(() => this._handleConfig(parsedArgs))
+            .then(() => this._baseResolver(resolveMode, parsedArgs, this.compilerConfiguration))
             .then(() => this._handleGroupHelper(this.outputGroup))
             .then(() => this._handleCoreFlags())
             .then(() => this._handleGroupHelper(this.basicGroup))
