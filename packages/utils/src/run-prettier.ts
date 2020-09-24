@@ -1,5 +1,4 @@
 import fs from 'fs';
-import prettier from 'prettier';
 import logger from 'webpack-cli/lib/utils/logger';
 
 /**
@@ -13,6 +12,13 @@ import logger from 'webpack-cli/lib/utils/logger';
 
 export function runPrettier(outputPath: string, source: string): void {
     let prettySource: string = source;
+    let prettier;
+    try {
+        // eslint-disable-next-line node/no-extraneous-require
+        prettier = require('prettier');
+    } catch (err) {
+        throw new Error(`You need to install 'prettier' to scaffold'.\n${err}`);
+    }
     try {
         prettySource = prettier.format(source, {
             filepath: outputPath,
