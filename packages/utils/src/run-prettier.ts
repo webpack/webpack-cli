@@ -12,13 +12,15 @@ import logger from 'webpack-cli/lib/utils/logger';
 
 export function runPrettier(outputPath: string, source: string): void {
     let prettySource: string = source;
+
     let prettier;
     try {
         // eslint-disable-next-line node/no-extraneous-require
         prettier = require('prettier');
     } catch (err) {
-        throw new Error(`You need to install 'prettier' to scaffold'.\n${err}`);
+        return fs.writeFileSync(outputPath, source, 'utf8');
     }
+
     try {
         prettySource = prettier.format(source, {
             filepath: outputPath,
@@ -31,6 +33,5 @@ export function runPrettier(outputPath: string, source: string): void {
         logger.warn(`\nWARNING: Could not apply prettier to ${outputPath} due to validation error, but the file has been created`);
         prettySource = source;
     }
-
     return fs.writeFileSync(outputPath, prettySource, 'utf8');
 }
