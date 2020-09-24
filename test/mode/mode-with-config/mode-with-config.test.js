@@ -100,7 +100,7 @@ describe('mode flags with config', () => {
     });
 
     it('should use mode from flag over NODE_ENV', () => {
-        const { stdout, stderr, exitCode } = run(__dirname, ['--mode', 'none', '-c', 'webpack.config3.js'], false, [], {
+        const { stdout, stderr, exitCode } = run(__dirname, ['--mode', 'none', '-c', 'webpack.config2.js'], false, [], {
             NODE_ENV: 'production',
         });
         expect(stderr).toBeFalsy();
@@ -113,5 +113,32 @@ describe('mode flags with config', () => {
         expect(stderr).toBeFalsy();
         expect(exitCode).toEqual(0);
         expect(stdout).toContain(`mode: 'development'`);
+    });
+
+    it('should use mode from config when multiple config are supplied', () => {
+        const { stdout, stderr } = run(__dirname, ['-c', 'webpack.config3.js', '-c', 'webpack.config2.js']);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain(`mode: 'development'`);
+        expect(stdout.match(new RegExp("mode: 'development'", 'g')).length).toEqual(1);
+    });
+
+    it('mode flag should apply to all configs', () => {
+        const { stdout, stderr, exitCode } = run(__dirname, ['--mode', 'none', '-c', './webpack.config3.js', '-c', './webpack.config2.js']);
+        expect(stderr).toBeFalsy();
+        expect(exitCode).toEqual(0);
+        expect(stdout).toContain(`mode: 'none'`);
+        expect(stdout.match(new RegExp("mode: 'none'", 'g')).length).toEqual(2);
+    });
+
+    it('only config where mode is absent pick up from NODE_ENV', () => {
+        const { stdout, stderr, exitCode } = run(__dirname, ['-c', './webpack.config3.js', '-c', './webpack.config2.js'], false, [], {
+            NODE_ENV: 'production',
+        });
+        expect(stderr).toBeFalsy();
+        expect(exitCode).toEqual(0);
+        expect(stdout).toContain(`mode: 'production'`);
+        expect(stdout).toContain(`mode: 'development'`);
+        expect(stdout.match(new RegExp("mode: 'production'", 'g')).length).toEqual(1);
+        expect(stdout.match(new RegExp("mode: 'development'", 'g')).length).toEqual(1);
     });
 });

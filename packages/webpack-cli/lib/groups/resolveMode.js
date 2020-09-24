@@ -8,15 +8,17 @@ Mode priority:
     - Mode form NODE_ENV
 */
 
-const resolveMode = (args, configOptions) => {
+/**
+ *
+ * @param {string} mode - mode flag value
+ * @param {Object} configObject - contains relevant loaded config
+ */
+const assignMode = (mode, configObject) => {
     const {
         env: { NODE_ENV },
     } = process;
-    const { mode } = args;
-    const { mode: configMode } = configOptions;
-
+    const { mode: configMode } = configObject;
     let finalMode;
-
     if (mode) {
         finalMode = mode;
     } else if (configMode) {
@@ -26,10 +28,22 @@ const resolveMode = (args, configOptions) => {
     } else {
         finalMode = PRODUCTION;
     }
+    return { mode: finalMode };
+};
 
-    return {
-        options: { mode: finalMode },
-    };
+/**
+ *
+ * @param {Object} args - parsedArgs from the CLI
+ * @param {Object | Array} configOptions - Contains loaded config or array of configs
+ */
+const resolveMode = (args, configOptions) => {
+    const { mode } = args;
+    let resolvedMode;
+    if (Array.isArray(configOptions)) {
+        resolvedMode = configOptions.map((configObject) => assignMode(mode, configObject));
+    } else resolvedMode = assignMode(mode, configOptions);
+
+    return { options: resolvedMode };
 };
 
 module.exports = resolveMode;

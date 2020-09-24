@@ -144,6 +144,21 @@ class WebpackCLI extends GroupHelper {
      */
     _mergeOptionsToConfiguration(options, strategy) {
         /**
+         * options where they differ per config use this method to apply relevant option to relevant config
+         * eg mode flag applies per config
+         */
+        if (Array.isArray(options) && Array.isArray(this.compilerConfiguration)) {
+            this.compilerConfiguration = options.map((option, index) => {
+                const compilerConfig = this.compilerConfiguration[index];
+                if (strategy) {
+                    return webpackMerge.strategy(strategy)(compilerConfig, option);
+                }
+                return webpackMerge(compilerConfig, option);
+            });
+            return;
+        }
+
+        /**
          * options is an array (multiple configuration) so we create a new
          * configuration where each element is individually merged
          */
