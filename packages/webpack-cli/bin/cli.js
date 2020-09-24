@@ -18,7 +18,7 @@ if (packageExists('webpack')) {
     runCLI(rawArgs);
 } else {
     promptInstallation('webpack', () => {
-        console.error(`Looks like ${yellow('webpack')} is not installed.`);
+        console.error(`It looks like ${yellow('webpack')} is not installed.`);
     });
     return;
 }
