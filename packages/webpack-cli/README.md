@@ -350,6 +350,10 @@ yarn add webpack-cli --dev
   --resolve-extensions string[]                               Extension added to the request when trying to find the file.
   --resolve-extensions-reset                                  Clear all items provided in configuration. Extensions added to the request
                                                               when trying to find the file.
+  --resolve-fallback-alias string[]                           Ignore request (replace with empty module). New request.
+  --resolve-fallback-name string[]                            Request to be redirected.
+  --resolve-fallback-only-module                              Redirect only exact matching request.
+  --resolve-fallback-reset                                    Clear all items provided in configuration. Redirect module requests.
   --resolve-fully-specified                                   Treats the request specified by the user as fully specified, meaning no
                                                               extensions are added and the mainFiles in directories are not resolved (This
                                                               doesn't affect requests from mainFields, aliasFields or aliases).
