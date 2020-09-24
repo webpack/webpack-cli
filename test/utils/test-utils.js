@@ -5,9 +5,11 @@ const execa = require('execa');
 const { sync: spawnSync, node: execaNode } = execa;
 const { Writable } = require('readable-stream');
 const concat = require('concat-stream');
+const { version } = require('webpack');
 
 const WEBPACK_PATH = path.resolve(__dirname, '../../packages/webpack-cli/bin/cli.js');
 const ENABLE_LOG_COMPILATION = process.env.ENABLE_PIPE || false;
+const isWebpack5 = version.startsWith('5');
 
 /**
  * Run the webpack CLI for a test case.
@@ -17,7 +19,7 @@ const ENABLE_LOG_COMPILATION = process.env.ENABLE_PIPE || false;
  * @param {Boolean} setOutput Boolean that decides if a default output path will be set or not
  * @returns {Object} The webpack output or Promise when nodeOptions are present
  */
-function run(testCase, args = [], setOutput = true, nodeArgs = []) {
+function run(testCase, args = [], setOutput = true, nodeArgs = [], env) {
     const cwd = path.resolve(testCase);
 
     const outputPath = path.resolve(testCase, 'bin');
@@ -27,6 +29,7 @@ function run(testCase, args = [], setOutput = true, nodeArgs = []) {
         cwd,
         reject: false,
         nodeOptions: nodeArgs,
+        env,
         stdio: ENABLE_LOG_COMPILATION ? 'inherit' : 'pipe',
     });
 
@@ -275,4 +278,5 @@ module.exports = {
     runInstall,
     runInfo,
     hyphenToUpperCase,
+    isWebpack5,
 };

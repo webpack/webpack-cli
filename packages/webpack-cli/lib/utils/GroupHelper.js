@@ -1,34 +1,15 @@
 const { resolve, join } = require('path');
 const { existsSync } = require('fs');
+const { arrayToObject } = require('../utils/arg-utils');
 
 class GroupHelper {
     constructor(options) {
-        this.args = this.arrayToObject(options);
+        this.args = arrayToObject(options);
         this.opts = {
             outputOptions: {},
             options: {},
         };
         this.strategy = undefined;
-    }
-
-    hyphenToUpperCase(name) {
-        if (!name) {
-            return name;
-        }
-        return name.replace(/-([a-z])/g, function (g) {
-            return g[1].toUpperCase();
-        });
-    }
-
-    arrayToObject(arr) {
-        if (!arr) {
-            return;
-        }
-        return arr.reduce((result, currentItem) => {
-            const key = Object.keys(currentItem)[0];
-            result[this.hyphenToUpperCase(key)] = currentItem[key];
-            return result;
-        }, {});
     }
 
     resolveFilePath(filename = '', defaultValue) {

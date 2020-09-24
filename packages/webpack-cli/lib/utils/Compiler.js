@@ -1,8 +1,7 @@
 const webpack = require('webpack');
 const logger = require('./logger');
-const { cyanBright, greenBright } = require('colorette');
+const bailAndWatchWarning = require('./warnings/bailAndWatchWarning');
 const { CompilerOutput } = require('./CompilerOutput');
-const readline = require('readline');
 
 class Compiler {
     constructor() {
@@ -18,46 +17,21 @@ class Compiler {
 
         compilation.hooks.beforeRun.tap('webpackProgress', () => {
             if (outputOptions.progress) {
-                process.stdout.write('\n');
-                const defaultProgressPluginHandler = (percent, msg) => {
-                    percent = Math.floor(percent * 100);
-                    readline.clearLine(process.stdout, 0);
-                    readline.cursorTo(process.stdout, 0, null);
-                    if (percent !== undefined) {
-                        process.stdout.write(' (');
-                        for (let i = 0; i <= 100; i += 10) {
-                            if (i <= percent) {
-                                process.stdout.write(greenBright('#'));
-                            } else {
-                                process.stdout.write('#');
-                            }
-                        }
-                        process.stdout.write(`) ${percent}% : `);
-                        process.stdout.write(`${cyanBright(msg)}`);
-                        if (percent === 100) {
-                            process.stdout.write(`${cyanBright('Compilation completed\n')}`);
-                        }
-                    }
-                };
                 if (!progressPluginExists) {
-                    new ProgressPlugin(defaultProgressPluginHandler).apply(compilation);
+                    new ProgressPlugin().apply(compilation);
                 } else {
                     if (!progressPluginExists.handler) {
                         options.plugins = options.plugins.filter((e) => e !== progressPluginExists);
                         Object.keys(progressPluginExists).map((opt) => {
                             ProgressPlugin.defaultOptions[opt] = progressPluginExists[opt];
                         });
-                        new ProgressPlugin(defaultProgressPluginHandler).apply(compilation);
+                        new ProgressPlugin().apply(compilation);
                     } else {
                         progressPluginExists.apply(compilation);
                     }
                 }
             }
         });
-    }
-
-    showEmojiConditionally() {
-        return process.stdout.isTTY && process.platform === 'darwin';
     }
 
     generateOutput(outputOptions, stats) {
@@ -146,9 +120,11 @@ class Compiler {
 
         if (this.compiler.compilers) {
             this.compiler.compilers.forEach((comp, idx) => {
+                bailAndWatchWarning(comp); //warn the user if bail and watch both are used together
                 this.setUpHookForCompilation(comp, outputOptions, options[idx]);
             });
         } else {
+            bailAndWatchWarning(this.compiler);
             this.setUpHookForCompilation(this.compiler, outputOptions, options);
         }
 

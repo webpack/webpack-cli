@@ -8,7 +8,10 @@ const outputFlags = flagsFromCore.filter(({ name }) => name.startsWith('output-'
 describe('output config related flag', () => {
     outputFlags.forEach((flag) => {
         // extract property name from flag name
-        const property = flag.name.split('output-')[1];
+        let property = flag.name.split('output-')[1];
+        if (property.includes('environment-')) {
+            property = property.split('environment-')[1];
+        }
         const propName = hyphenToUpperCase(property);
 
         if (flag.type === Boolean && !flag.name.includes('output-library')) {
@@ -32,7 +35,14 @@ describe('output config related flag', () => {
             it(`should config --no-${flag.name} correctly`, () => {
                 const { stderr, stdout } = run(__dirname, [`--no-${flag.name}`]);
 
-                if (flag.name.includes('-reset')) {
+                if (flag.name.includes('loading-types-reset')) {
+                    expect(stderr).toBeFalsy();
+                    if (flag.name === 'output-enabled-wasm-loading-types-reset') {
+                        expect(stdout).toContain(`enabledWasmLoadingTypes: [ 'fetch' ]`);
+                    } else {
+                        expect(stdout).toContain(`enabledChunkLoadingTypes: [ 'jsonp', 'import-scripts' ]`);
+                    }
+                } else if (flag.name.includes('-reset')) {
                     const option = propName.split('Reset')[0];
                     expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${option}: []`);
@@ -61,6 +71,22 @@ describe('output config related flag', () => {
 
                     expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: 'anonymous'`);
+                } else if (flag.name === 'output-chunk-format') {
+                    stdout = run(__dirname, [`--${flag.name}`, 'commonjs']).stdout;
+
+                    expect(stdout).toContain(`${propName}: 'commonjs'`);
+                } else if (flag.name === 'output-enabled-library-types') {
+                    stdout = run(__dirname, [`--${flag.name}`, 'global']).stdout;
+
+                    expect(stdout).toContain(`${propName}: [ 'global' ]`);
+                } else if (flag.name === 'output-chunk-loading') {
+                    stdout = run(__dirname, [`--${flag.name}`, 'jsonp']).stdout;
+
+                    expect(stdout).toContain(`${propName}: 'jsonp'`);
+                } else if (flag.name === 'output-enabled-chunk-loading-types' || flag.name === 'output-enabled-wasm-loading-types') {
+                    stdout = run(__dirname, [`--${flag.name}`, 'async-node']).stdout;
+
+                    expect(stdout).toContain(`${propName}: [ 'async-node' ]`);
                 } else if (flag.name === 'output-enabled-library-type') {
                     stdout = run(__dirname, [`--${flag.name}`, 'amd']).stdout;
 
@@ -84,6 +110,18 @@ describe('output config related flag', () => {
                     expect(stdout).toContain(`${propName}: [ 'var' ]`);
                 } else if (flag.name === 'output-path') {
                     expect(stdout).toContain('test');
+                } else if (flag.name === 'output-worker-chunk-loading') {
+                    stdout = run(__dirname, [`--${flag.name}`, 'async-node']).stdout;
+                    expect(stdout).toContain(`${propName}: 'async-node'`);
+                } else if (flag.name === 'output-worker-chunk-loading') {
+                    stdout = run(__dirname, [`--${flag.name}`, 'async-node']).stdout;
+                    expect(stdout).toContain(`${propName}: 'async-node'`);
+                } else if (flag.name === 'output-chunk-format') {
+                    stdout = run(__dirname, [`--${flag.name}`, 'commonjs']).stdout;
+                    expect(stdout).toContain(`${propName}: 'commonjs'`);
+                } else if (flag.name.includes('wasm')) {
+                    stdout = run(__dirname, [`--${flag.name}`, 'async-node']).stdout;
+                    expect(stdout).toContain(`${propName}: 'async-node'`);
                 } else {
                     expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: 'test'`);

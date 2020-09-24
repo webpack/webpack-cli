@@ -53,3 +53,5 @@ packages/**/*.map
 # temporary test files
 test-assets/
 ./lib/
+
+lib/test/loader/error-test/src/index.d.ts

@@ -1,4 +1,4 @@
-const { red, yellow, cyan, bold, underline } = require('colorette');
+const { yellow, bold, underline } = require('colorette');
 const { core, commands } = require('../utils/cli-flags');
 const { defaultCommands } = require('../utils/commands');
 const logger = require('../utils/logger');
@@ -22,11 +22,11 @@ class HelpGroup {
             const description = options.description;
             const link = options.link;
 
-            logger.help(`${header('Usage')}: ${usage}`);
-            logger.help(`${header('Description')}: ${description}`);
+            logger.raw(`${header('Usage')}: ${usage}`);
+            logger.raw(`${header('Description')}: ${description}`);
 
             if (link) {
-                logger.help(`${header('Documentation')}: ${link}`);
+                logger.raw(`${header('Documentation')}: ${link}`);
             }
 
             if (options.flags) {
@@ -34,16 +34,16 @@ class HelpGroup {
                     header: 'Options',
                     optionList: options.flags,
                 });
-                logger.help(flags);
+                logger.raw(flags);
             }
         } else if (invalidArgs.length > 0) {
             const argType = invalidArgs[0].startsWith('-') ? 'option' : 'command';
             logger.warn(`You provided an invalid ${argType} '${invalidArgs[0]}'.`);
-            logger.help(this.run().outputOptions.help);
+            logger.raw(this.run().outputOptions.help);
         } else {
-            logger.help(this.run().outputOptions.help);
+            logger.raw(this.run().outputOptions.help);
         }
-        logger.help('\n                  Made with ♥️  by the webpack team');
+        logger.raw('\n                  Made with ♥️  by the webpack team');
     }
 
     outputVersion(externalPkg, commandsUsed, invalidArgs) {
@@ -51,10 +51,10 @@ class HelpGroup {
             try {
                 if ([externalPkg.alias, externalPkg.name].some((pkg) => commandsUsed.includes(pkg))) {
                     const { name, version } = require(`@webpack-cli/${defaultCommands[externalPkg.name]}/package.json`);
-                    logger.help(`\n${name} ${version}`);
+                    logger.raw(`\n${name} ${version}`);
                 } else {
                     const { name, version } = require(`${externalPkg.name}/package.json`);
-                    logger.help(`\n${name} ${version}`);
+                    logger.raw(`\n${name} ${version}`);
                 }
             } catch (e) {
                 logger.error('Error: External package not found.');
@@ -69,15 +69,15 @@ class HelpGroup {
 
         if (invalidArgs.length > 0) {
             const argType = invalidArgs[0].startsWith('-') ? 'option' : 'command';
-            logger.error(red(`Error: Invalid ${argType} '${invalidArgs[0]}'.`));
-            logger.info(cyan('Run webpack --help to see available commands and arguments.\n'));
+            logger.error(`Error: Invalid ${argType} '${invalidArgs[0]}'.`);
+            logger.info('Run webpack --help to see available commands and arguments.\n');
             process.exit(2);
         }
 
         const pkgJSON = require('../../package.json');
         const webpack = require('webpack');
-        logger.help(`\nwebpack-cli ${pkgJSON.version}`);
-        logger.help(`\nwebpack ${webpack.version}\n`);
+        logger.raw(`\nwebpack-cli ${pkgJSON.version}`);
+        logger.raw(`\nwebpack ${webpack.version}\n`);
     }
 
     run() {
@@ -117,6 +117,11 @@ class HelpGroup {
                 optionList: options.core
                     .map((e) => {
                         if (e.type.length > 1) e.type = e.type[0];
+                        // Here we replace special characters with chalk's escape
+                        // syntax (`\$&`) to avoid chalk trying to re-process our input.
+                        // This is needed because chalk supports a form of `{var}`
+                        // interpolation.
+                        e.description = e.description.replace(/[{}\\]/g, '\\$&');
                         return e;
                     })
                     .concat(negatedFlags),
