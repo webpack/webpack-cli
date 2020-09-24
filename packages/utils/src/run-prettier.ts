@@ -18,6 +18,7 @@ export function runPrettier(outputPath: string, source: string): void {
         // eslint-disable-next-line node/no-extraneous-require
         prettier = require('prettier');
     } catch (err) {
+        logger.warn('File may not be properly formatted, use prettier to format it correctly.');
         return fs.writeFileSync(outputPath, source, 'utf8');
     }
 
