@@ -1,21 +1,15 @@
 const { cli } = require('webpack');
 
 const HELP_GROUP = 'help';
-const CONFIG_GROUP = 'config';
 const BASIC_GROUP = 'basic';
 const OUTPUT_GROUP = 'output';
 const ADVANCED_GROUP = 'advanced';
-const DISPLAY_GROUP = 'stats';
-const ZERO_CONFIG_GROUP = 'zero-config';
 
 const groups = {
     HELP_GROUP,
-    CONFIG_GROUP,
     BASIC_GROUP,
     OUTPUT_GROUP,
     ADVANCED_GROUP,
-    DISPLAY_GROUP,
-    ZERO_CONFIG_GROUP,
 };
 
 const commands = [
@@ -90,7 +84,6 @@ const core = [
         usage: '--config <path to webpack configuration file>',
         alias: 'c',
         type: String,
-        group: CONFIG_GROUP,
         multiple: true,
         description: 'Provide path to a webpack configuration file e.g. ./webpack.config.js',
         link: 'https://webpack.js.org/configuration/',
@@ -99,7 +92,6 @@ const core = [
         name: 'color',
         usage: '--color',
         type: Boolean,
-        group: DISPLAY_GROUP,
         negative: true,
         defaultValue: true,
         description: 'Enable/Disable colors on console',
@@ -109,7 +101,6 @@ const core = [
         usage: '--merge',
         alias: 'm',
         type: Boolean,
-        group: CONFIG_GROUP,
         description: 'Merge two or more configurations using webpack-merge e.g. -c ./webpack.config.js -c ./webpack.test.config.js --merge',
         link: 'https://github.com/survivejs/webpack-merge',
     },
@@ -189,7 +180,6 @@ const core = [
         type: Boolean,
         alias: 'j',
         description: 'Prints result as JSON',
-        group: DISPLAY_GROUP,
     },
     {
         name: 'mode',
@@ -210,7 +200,6 @@ const core = [
         name: 'stats',
         usage: '--stats <value>',
         type: [String, Boolean],
-        group: DISPLAY_GROUP,
         negative: true,
         description: 'It instructs webpack on how to treat the stats e.g. verbose',
         link: 'https://webpack.js.org/configuration/stats/#stats',
@@ -220,7 +209,6 @@ const core = [
         usage: '--env',
         type: String,
         multiple: true,
-        group: CONFIG_GROUP,
         description: 'Environment passed to the configuration when it is a function',
     },
     {
@@ -235,7 +223,6 @@ const core = [
         usage: '--config-name <name of config>',
         type: String,
         multiple: true,
-        group: CONFIG_GROUP,
         description: 'Name of the configuration to use',
     },
     /* 		{
