@@ -13,7 +13,6 @@
     "@webpack-cli/package-utils": "^1.0.1-rc.0",
     "@webpack-cli/utils": "^1.0.1-rc.0",
     "@webpack-cli/webpack-scaffold": "^1.0.1-rc.0",
-    "lodash": "4.17.19",
     "colorette": "^1.2.1",
     "log-symbols": "3.0.0",
     "mkdirp": "1.0.3",
@@ -23,7 +22,6 @@
     "webpack-cli": "3.x.x || 4.x.x"
   },
   "devDependencies": {
-    "@types/lodash": "4.14.149",
     "@types/mkdirp": "1.0.0",
     "@types/yeoman-assert": "^3.1.1",
     "@types/yeoman-generator": "3.1.4",
