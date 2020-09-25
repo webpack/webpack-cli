@@ -1,7 +1,6 @@
-import _ from 'lodash';
 import path from 'path';
 import addonGenerator from './addon-generator';
-
+import { toKebabCase } from './utils/helpers';
 /**
  * Formats a string into webpack loader format
  * (eg: 'style-loader', 'raw-loader')
@@ -10,7 +9,7 @@ import addonGenerator from './addon-generator';
  * @returns {string} The formatted string
  */
 export function makeLoaderName(name: string): string {
-    name = _.kebabCase(name);
+    name = toKebabCase(name);
     if (!/loader$/.test(name)) {
         name += '-loader';
     }
