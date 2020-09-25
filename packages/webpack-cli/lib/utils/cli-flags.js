@@ -1,4 +1,5 @@
 const { packageExists } = require('@webpack-cli/package-utils');
+const cli = packageExists('webpack') ? require('webpack').cli : undefined
 
 const HELP_GROUP = 'help';
 const CONFIG_GROUP = 'config';
@@ -6,11 +7,6 @@ const BASIC_GROUP = 'basic';
 const OUTPUT_GROUP = 'output';
 const ADVANCED_GROUP = 'advanced';
 const ZERO_CONFIG_GROUP = 'zero-config';
-
-let cli = undefined;
-if (packageExists('webpack')) {
-    cli = require('webpack').cli;
-}
 
 const groups = {
     HELP_GROUP,
