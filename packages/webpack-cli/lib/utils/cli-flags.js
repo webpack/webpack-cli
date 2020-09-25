@@ -1,4 +1,5 @@
-const { cli } = require('webpack');
+const { packageExists } = require('@webpack-cli/package-utils');
+const cli = packageExists('webpack') ? require('webpack').cli : undefined;
 
 const HELP_GROUP = 'help';
 const BASIC_GROUP = 'basic';
