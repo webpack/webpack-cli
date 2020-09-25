@@ -2,6 +2,7 @@ const { options } = require('colorette');
 const GroupHelper = require('./utils/GroupHelper');
 const handleConfigResolution = require('./groups/ConfigGroup');
 const resolveMode = require('./groups/resolveMode');
+const resolveStats = require('./groups/resolveStats');
 const { Compiler } = require('./utils/Compiler');
 const { groups, core } = require('./utils/cli-flags');
 const webpackMerge = require('webpack-merge');
@@ -77,8 +78,8 @@ class WebpackCLI extends GroupHelper {
         this._mergeOptionsToOutputConfiguration(resolvedConfig.outputOptions);
     }
 
-    async _baseResolver(cb, parsedArgs) {
-        const resolvedConfig = cb(parsedArgs);
+    async _baseResolver(cb, parsedArgs, configOptions) {
+        const resolvedConfig = cb(parsedArgs, configOptions);
         this._mergeOptionsToConfiguration(resolvedConfig.options);
         this._mergeOptionsToOutputConfiguration(resolvedConfig.outputOptions);
     }
@@ -114,11 +115,6 @@ class WebpackCLI extends GroupHelper {
                     this.advancedGroup = new AdvancedGroup(value);
                     break;
                 }
-                case groups.DISPLAY_GROUP: {
-                    const StatsGroup = require('./groups/StatsGroup');
-                    this.statsGroup = new StatsGroup(value);
-                    break;
-                }
                 case groups.HELP_GROUP: {
                     const HelpGroup = require('./groups/HelpGroup');
                     this.helpGroup = new HelpGroup();
@@ -143,6 +139,21 @@ class WebpackCLI extends GroupHelper {
      * @returns {void}
      */
     _mergeOptionsToConfiguration(options, strategy) {
+        /**
+         * options where they differ per config use this method to apply relevant option to relevant config
+         * eg mode flag applies per config
+         */
+        if (Array.isArray(options) && Array.isArray(this.compilerConfiguration)) {
+            this.compilerConfiguration = options.map((option, index) => {
+                const compilerConfig = this.compilerConfiguration[index];
+                if (strategy) {
+                    return webpackMerge.strategy(strategy)(compilerConfig, option);
+                }
+                return webpackMerge(compilerConfig, option);
+            });
+            return;
+        }
+
         /**
          * options is an array (multiple configuration) so we create a new
          * configuration where each element is individually merged
@@ -229,14 +240,14 @@ class WebpackCLI extends GroupHelper {
      */
     async runOptionGroups(parsedArgs) {
         await Promise.resolve()
-            .then(() => this._baseResolver(resolveMode, parsedArgs))
             .then(() => this._handleDefaultEntry())
             .then(() => this._handleConfig(parsedArgs))
+            .then(() => this._baseResolver(resolveMode, parsedArgs, this.compilerConfiguration))
             .then(() => this._handleGroupHelper(this.outputGroup))
             .then(() => this._handleCoreFlags())
             .then(() => this._handleGroupHelper(this.basicGroup))
             .then(() => this._handleGroupHelper(this.advancedGroup))
-            .then(() => this._handleGroupHelper(this.statsGroup))
+            .then(() => this._baseResolver(resolveStats, parsedArgs))
             .then(() => this._handleGroupHelper(this.helpGroup));
     }
 

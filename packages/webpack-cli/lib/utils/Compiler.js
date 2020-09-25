@@ -1,4 +1,5 @@
-const webpack = require('webpack');
+const { packageExists } = require('@webpack-cli/package-utils');
+const webpack = packageExists('webpack') ? require('webpack') : undefined;
 const logger = require('./logger');
 const bailAndWatchWarning = require('./warnings/bailAndWatchWarning');
 const { CompilerOutput } = require('./CompilerOutput');
