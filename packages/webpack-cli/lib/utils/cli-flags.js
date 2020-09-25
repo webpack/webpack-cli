@@ -174,9 +174,9 @@ const core = [
     {
         name: 'json',
         usage: '--json',
-        type: Boolean,
+        type: [String, Boolean],
         alias: 'j',
-        description: 'Prints result as JSON',
+        description: 'Prints result as JSON or store it in a file',
     },
     {
         name: 'mode',

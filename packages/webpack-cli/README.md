@@ -53,7 +53,7 @@ yarn add webpack-cli --dev
   --no-hot                 Disables Hot Module Replacement
   -d, --devtool string     Controls if and how source maps are generated.
   --prefetch string        Prefetch this request
-  -j, --json               Prints result as JSON
+  -j, --json string        Prints result as JSON or store it in a file
   --mode string            Defines the mode to pass to webpack
   -v, --version            Get current version
   --stats string           It instructs webpack on how to treat the stats
