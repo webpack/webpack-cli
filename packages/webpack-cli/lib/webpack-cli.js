@@ -2,6 +2,7 @@ const { options } = require('colorette');
 const GroupHelper = require('./utils/GroupHelper');
 const handleConfigResolution = require('./groups/ConfigGroup');
 const resolveMode = require('./groups/resolveMode');
+const resolveStats = require('./groups/resolveStats');
 const { Compiler } = require('./utils/Compiler');
 const { groups, core } = require('./utils/cli-flags');
 const webpackMerge = require('webpack-merge');
@@ -112,11 +113,6 @@ class WebpackCLI extends GroupHelper {
                 case groups.ADVANCED_GROUP: {
                     const AdvancedGroup = require('./groups/AdvancedGroup');
                     this.advancedGroup = new AdvancedGroup(value);
-                    break;
-                }
-                case groups.DISPLAY_GROUP: {
-                    const StatsGroup = require('./groups/StatsGroup');
-                    this.statsGroup = new StatsGroup(value);
                     break;
                 }
                 case groups.HELP_GROUP: {
@@ -251,7 +247,7 @@ class WebpackCLI extends GroupHelper {
             .then(() => this._handleCoreFlags())
             .then(() => this._handleGroupHelper(this.basicGroup))
             .then(() => this._handleGroupHelper(this.advancedGroup))
-            .then(() => this._handleGroupHelper(this.statsGroup))
+            .then(() => this._baseResolver(resolveStats, parsedArgs))
             .then(() => this._handleGroupHelper(this.helpGroup));
     }
 

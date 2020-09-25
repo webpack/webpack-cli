@@ -5,7 +5,6 @@ const CONFIG_GROUP = 'config';
 const BASIC_GROUP = 'basic';
 const OUTPUT_GROUP = 'output';
 const ADVANCED_GROUP = 'advanced';
-const DISPLAY_GROUP = 'stats';
 const ZERO_CONFIG_GROUP = 'zero-config';
 
 const groups = {
@@ -14,7 +13,6 @@ const groups = {
     BASIC_GROUP,
     OUTPUT_GROUP,
     ADVANCED_GROUP,
-    DISPLAY_GROUP,
     ZERO_CONFIG_GROUP,
 };
 
@@ -99,7 +97,6 @@ const core = [
         name: 'color',
         usage: '--color',
         type: Boolean,
-        group: DISPLAY_GROUP,
         negative: true,
         defaultValue: true,
         description: 'Enable/Disable colors on console',
@@ -189,7 +186,6 @@ const core = [
         type: Boolean,
         alias: 'j',
         description: 'Prints result as JSON',
-        group: DISPLAY_GROUP,
     },
     {
         name: 'mode',
@@ -210,7 +206,6 @@ const core = [
         name: 'stats',
         usage: '--stats <value>',
         type: [String, Boolean],
-        group: DISPLAY_GROUP,
         negative: true,
         description: 'It instructs webpack on how to treat the stats e.g. verbose',
         link: 'https://webpack.js.org/configuration/stats/#stats',
