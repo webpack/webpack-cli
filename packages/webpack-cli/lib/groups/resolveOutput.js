@@ -12,7 +12,7 @@ const resolveOutput = (args) => {
     };
     if (output) {
         const { dir, base, ext } = path.parse(output);
-        finalOptions.options.output.path = path.resolve(dir);
+        finalOptions.options.output.path = ext.length === 0 ? path.resolve(dir, base) : path.resolve(dir);
         if (ext.length > 0) finalOptions.options.output.filename = base;
     }
     return finalOptions;
