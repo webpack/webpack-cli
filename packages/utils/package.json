@@ -12,12 +12,12 @@
     "@webpack-cli/package-utils": "^1.0.1-rc.0",
     "execa": "^4.0.0",
     "colorette": "^1.2.1",
-    "findup-sync": "4.0.0",
-    "got": "10.7.0",
-    "jscodeshift": "0.7.0",
-    "p-each-series": "2.1.0",
-    "yeoman-environment": "2.8.1",
-    "yeoman-generator": "4.7.2"
+    "findup-sync": "^4.0.0",
+    "got": "^10.7.0",
+    "jscodeshift": "^0.7.0",
+    "p-each-series": "^2.1.0",
+    "yeoman-environment": "^2.8.1",
+    "yeoman-generator": "^4.7.2"
   },
   "peerDependenciesMeta": {
     "prettier": {
