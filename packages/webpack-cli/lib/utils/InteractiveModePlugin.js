@@ -13,6 +13,8 @@ const spawnCommand = (msg, status) => {
     process.stdout.write('\n');
 
     readline.cursorTo(process.stdout, 0, totalRows - 2);
+
+    // for current status
     if (status) {
         process.stdout.write(`${green('➜')} `);
     } else {
@@ -87,8 +89,13 @@ class InteractiveModePlugin {
         }
     }
 
-    // eslint-disable-next-line no-unused-vars
     quitHandler(compiler) {
+        if (version.startsWith(5)) {
+            compiler.watching.close(() => {
+                process.exit();
+            });
+            return;
+        }
         process.exit(0);
     }
 
