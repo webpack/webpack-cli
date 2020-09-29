@@ -3,6 +3,11 @@ const logger = require('./logger');
 const { version } = require('webpack');
 const { red, green } = require('colorette');
 
+/**
+ * Displays command space at bottom of screen
+ * @param {string} msg message to print with command
+ * @param {Compiler.watching} status current watching object
+ */
 const spawnCommand = (msg, status) => {
     const lines = 3;
     const totalRows = process.stdout.rows;
@@ -22,6 +27,9 @@ const spawnCommand = (msg, status) => {
     }
 };
 
+/**
+ * Clear the whole terminal
+ */
 const clrscr = () => {
     process.stdout.write('\x1B[2J\x1B[3J\x1B[H');
 };
