@@ -1,8 +1,9 @@
 const readline = require('readline');
 const logger = require('./logger');
 const { version } = require('webpack');
+const { red, green } = require('colorette');
 
-const spawnCommand = (msg) => {
+const spawnCommand = (msg, status) => {
     const lines = 3;
     const totalRows = process.stdout.rows;
     readline.cursorTo(process.stdout, 0, totalRows - lines);
@@ -12,7 +13,15 @@ const spawnCommand = (msg) => {
     process.stdout.write('\n');
 
     readline.cursorTo(process.stdout, 0, totalRows - 2);
-    process.stdout.write('➜ ');
+    if (status) {
+        process.stdout.write(`${green('➜')} `);
+    } else {
+        process.stdout.write(`${red('➜')} `);
+    }
+};
+
+const clrscr = () => {
+    process.stdout.write('\x1B[2J\x1B[3J\x1B[H');
 };
 
 class InteractiveModePlugin {
@@ -60,21 +69,23 @@ class InteractiveModePlugin {
         });
 
         // Clear for first run as well
-        process.stdout.write('\x1B[2J\x1B[3J\x1B[H');
+        clrscr();
 
         // Clear output on watch invalidate
         compiler.hooks.invalid.tap(this.name, () => {
-            process.stdout.write('\x1B[2J\x1B[3J\x1B[H');
+            clrscr();
         });
 
         if (version.startsWith('5')) {
             compiler.hooks.afterDone.tap(this.name, () => {
-                spawnCommand('compilation completed');
+                setTimeout(() => {
+                    spawnCommand('compilation completed', compiler.watching);
+                }, 1);
             });
         } else {
             compiler.hooks.done.tap(this.name, () => {
                 setTimeout(() => {
-                    spawnCommand('compilation completed');
+                    spawnCommand('compilation completed', compiler.watching);
                 }, 1);
             });
         }
@@ -88,41 +99,44 @@ class InteractiveModePlugin {
     // eslint-disable-next-line no-unused-vars
     recompileHandler(compiler) {
         // TODO: implement it
-        spawnCommand('recompilation not supported');
+        spawnCommand('recompilation not supported', compiler.watching);
     }
 
     // eslint-disable-next-line no-unused-vars
     pauseHandler(compiler) {
         // TODO: implement it
-        spawnCommand('pausing not supported');
+        spawnCommand('pausing not supported', compiler.watching);
     }
 
     startHandler(compiler) {
-        if (compiler.watching) {
-            spawnCommand('already running');
+        if (!version.startsWith('5')) {
+            spawnCommand('starting not supported', compiler.watching);
             return;
         }
-        if (version.startsWith('5')) {
-            compiler.watch({}, () => {
-                spawnCommand('started watching');
-            });
-        } else {
-            spawnCommand('starting not supported');
+
+        if (compiler.watching) {
+            spawnCommand('already running', compiler.watching);
+            return;
         }
+
+        clrscr();
+        compiler.watch({}, () => {});
     }
 
     stopHandler(compiler) {
-        if (!compiler.watching) {
-            spawnCommand('already stoped');
+        if (!version.startsWith('5')) {
+            spawnCommand('stoping not supported', compiler.watching);
             return;
         }
-        if (version.startsWith('5')) {
-            compiler.watching.close(() => {
-                spawnCommand('stoped watching');
-            });
-        } else {
-            spawnCommand('stoping not supported');
+
+        if (!compiler.watching) {
+            spawnCommand('already stoped', compiler.watching);
+            return;
         }
+
+        compiler.watching.close(() => {
+            spawnCommand('stoped watching', compiler.watching);
+        });
     }
 }
 module.exports = { InteractiveModePlugin };

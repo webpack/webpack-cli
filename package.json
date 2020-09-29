@@ -130,7 +130,7 @@
     "strip-ansi": "^6.0.0",
     "ts-jest": "^25.5.1",
     "typescript": "^3.9.7",
-    "webpack": "^4.44.1",
+    "webpack": "^5.0.0-rc.1",
     "yeoman-test": "^2.7.0"
   }
 }
