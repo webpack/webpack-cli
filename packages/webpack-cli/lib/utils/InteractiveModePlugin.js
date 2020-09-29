@@ -9,7 +9,7 @@ const spawnCommand = (msg) => {
     readline.clearScreenDown(process.stdout);
 
     logger.log(msg);
-    process.stdout.write('\nq: quit, s: stop, r: recompile, p: pause');
+    process.stdout.write('\n');
 
     readline.cursorTo(process.stdout, 0, totalRows - 2);
     process.stdout.write('➜ ');
@@ -23,12 +23,14 @@ class InteractiveModePlugin {
             recompile: 'r',
             pause: 'p',
             stop: 's',
+            start: 'w',
         };
         this.handlers = {
             quit: this.quitHandler,
             recompile: this.recompileHandler,
             pause: this.pauseHandler,
             stop: this.stopHandler,
+            start: this.startHandler,
         };
     }
 
@@ -95,10 +97,32 @@ class InteractiveModePlugin {
         spawnCommand('pausing not supported');
     }
 
-    // eslint-disable-next-line no-unused-vars
+    startHandler(compiler) {
+        if (compiler.watching) {
+            spawnCommand('already running');
+            return;
+        }
+        if (version.startsWith('5')) {
+            compiler.watch({}, () => {
+                spawnCommand('started watching');
+            });
+        } else {
+            spawnCommand('starting not supported');
+        }
+    }
+
     stopHandler(compiler) {
-        //TODO: implement it
-        spawnCommand('stop not supported');
+        if (!compiler.watching) {
+            spawnCommand('already stoped');
+            return;
+        }
+        if (version.startsWith('5')) {
+            compiler.watching.close(() => {
+                spawnCommand('stoped watching');
+            });
+        } else {
+            spawnCommand('stoping not supported');
+        }
     }
 }
 module.exports = { InteractiveModePlugin };
