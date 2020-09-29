@@ -29,15 +29,11 @@ class InteractiveModePlugin {
         this.name = 'InteractiveModePlugin';
         this.keys = {
             quit: 'q',
-            recompile: 'r',
-            pause: 'p',
             stop: 's',
             start: 'w',
         };
         this.handlers = {
             quit: this.quitHandler,
-            recompile: this.recompileHandler,
-            pause: this.pauseHandler,
             stop: this.stopHandler,
             start: this.startHandler,
         };
@@ -94,18 +90,6 @@ class InteractiveModePlugin {
     // eslint-disable-next-line no-unused-vars
     quitHandler(compiler) {
         process.exit(0);
-    }
-
-    // eslint-disable-next-line no-unused-vars
-    recompileHandler(compiler) {
-        // TODO: implement it
-        spawnCommand('recompilation not supported', compiler.watching);
-    }
-
-    // eslint-disable-next-line no-unused-vars
-    pauseHandler(compiler) {
-        // TODO: implement it
-        spawnCommand('pausing not supported', compiler.watching);
     }
 
     startHandler(compiler) {
