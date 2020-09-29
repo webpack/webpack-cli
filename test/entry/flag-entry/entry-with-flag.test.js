@@ -40,7 +40,9 @@ describe('entry flag', () => {
     });
 
     it('should throw error for invalid entry file', () => {
-        const { stderr } = run(__dirname, ['--entry', './src/test.js']);
-        expect(stderr).toContain('Error: you provided an invalid entry point.');
+        const { stdout, stderr, exitCode } = run(__dirname, ['--entry', './src/test.js']);
+        expect(stdout).toContain("Module not found: Error: Can't resolve");
+        expect(exitCode).toEqual(1);
+        expect(stderr).toBeFalsy();
     });
 });

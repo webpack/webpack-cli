@@ -1,4 +1,5 @@
 const path = require('path');
+const { existsSync } = require('fs');
 const { options } = require('colorette');
 const webpackMerge = require('webpack-merge');
 const GroupHelper = require('./utils/GroupHelper');
@@ -19,16 +20,6 @@ class WebpackCLI extends GroupHelper {
         this.groupMap = new Map();
         this.args = {};
         this.compilation = new Compiler();
-        this.defaultEntry = 'index';
-        this.possibleFileNames = [
-            `./${this.defaultEntry}`,
-            `./${this.defaultEntry}.js`,
-            `${this.defaultEntry}.js`,
-            this.defaultEntry,
-            `./src/${this.defaultEntry}`,
-            `./src/${this.defaultEntry}.js`,
-            `src/${this.defaultEntry}.js`,
-        ];
         this.compilerConfiguration = {};
         this.outputConfiguration = {};
     }
@@ -214,7 +205,14 @@ class WebpackCLI extends GroupHelper {
      * @returns {void}
      */
     _handleDefaultEntry() {
-        const options = { entry: path.resolve('index.js') };
+        let defaultEntry;
+        const rootIndexPath = path.resolve('index.js');
+        if (existsSync(rootIndexPath)) {
+            defaultEntry = './index.js';
+        } else {
+            defaultEntry = './src/index.js';
+        }
+        const options = { entry: defaultEntry };
         this._mergeOptionsToConfiguration(options);
     }
 
