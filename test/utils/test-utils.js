@@ -19,7 +19,7 @@ const isWebpack5 = version.startsWith('5');
  * @param {Boolean} setOutput Boolean that decides if a default output path will be set or not
  * @returns {Object} The webpack output or Promise when nodeOptions are present
  */
-function run(testCase, args = [], setOutput = true, nodeArgs = []) {
+function run(testCase, args = [], setOutput = true, nodeArgs = [], env) {
     const cwd = path.resolve(testCase);
 
     const outputPath = path.resolve(testCase, 'bin');
@@ -29,6 +29,7 @@ function run(testCase, args = [], setOutput = true, nodeArgs = []) {
         cwd,
         reject: false,
         nodeOptions: nodeArgs,
+        env,
         stdio: ENABLE_LOG_COMPILATION ? 'inherit' : 'pipe',
     });
 

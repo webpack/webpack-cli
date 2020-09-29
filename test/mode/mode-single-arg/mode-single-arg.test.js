@@ -26,6 +26,12 @@ describe('mode flags', () => {
         expect(stdout).toContain(`mode: 'none'`);
     });
 
+    it('should pick mode form NODE_ENV', () => {
+        const { stderr, stdout } = run(__dirname, [], false, [], { NODE_ENV: 'development' });
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain(`mode: 'development'`);
+    });
+
     it('should throw error when --mode=abcd is passed', () => {
         const { stderr } = run(__dirname, ['--mode', 'abcd']);
         expect(stderr).toContain('configuration.mode should be one of these');
