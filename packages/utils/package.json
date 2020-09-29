@@ -26,7 +26,7 @@
   },
   "peerDependencies": {
     "webpack": "4.x.x || 5.x.x",
-    "webpack-cli": "4.x.x || 5.x.x"
+    "webpack-cli": "4.x.x"
   },
   "devDependencies": {
     "@types/got": "9.6.9",
