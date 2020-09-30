@@ -98,7 +98,7 @@ class InteractiveModePlugin {
     }
 
     quitHandler(compiler) {
-        if (version.startsWith(5)) {
+        if (version.startsWith(5) && compiler.watching !== undefined) {
             compiler.watching.close(() => {
                 process.exit();
             });
@@ -119,7 +119,16 @@ class InteractiveModePlugin {
         }
 
         clrscr();
-        compiler.watch({}, () => {});
+        let watchOptions = compiler.options.watchOptions;
+        if (watchOptions === undefined) {
+            watchOptions = {};
+        }
+        compiler.watch(watchOptions, (err) => {
+            if (err) {
+                logger.error(err);
+                return;
+            }
+        });
     }
 
     stopHandler(compiler) {
