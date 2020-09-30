@@ -12,7 +12,11 @@ describe('optimization config related flag', () => {
         if (flag.name.includes('split-chunks')) {
             property = flag.name.split('optimization-split-chunks-')[1];
         }
-        const propName = hyphenToUpperCase(property);
+
+        let propName = hyphenToUpperCase(property);
+        if (flag.name.includes('-reset')) {
+            propName = propName.split('Reset')[0];
+        }
 
         if (flag.type === Boolean) {
             it(`should config --${flag.name} correctly`, () => {
@@ -21,20 +25,24 @@ describe('optimization config related flag', () => {
                 if (flag.name === 'optimization-split-chunks') {
                     expect(stdout).toContain(`chunks: 'async'`);
                     expect(stdout).toContain(`minChunks: 1`);
+                } else if (flag.name.includes('reset')) {
+                    expect(stdout).toContain(`${propName}: []`);
                 } else {
                     expect(stdout).toContain(`${propName}: true`);
                 }
             });
 
-            it(`should config --no-${flag.name} correctly`, () => {
-                const { stderr, stdout } = run(__dirname, [`--no-${flag.name}`]);
-                expect(stderr).toBeFalsy();
-                if (flag.name === 'optimization-split-chunks') {
-                    expect(stdout).toContain('splitChunks: false');
-                } else {
-                    expect(stdout).toContain(`${propName}: false`);
-                }
-            });
+            if (!flag.name.includes('reset')) {
+                it(`should config --no-${flag.name} correctly`, () => {
+                    const { stderr, stdout } = run(__dirname, [`--no-${flag.name}`]);
+                    expect(stderr).toBeFalsy();
+                    if (flag.name === 'optimization-split-chunks') {
+                        expect(stdout).toContain('splitChunks: false');
+                    } else {
+                        expect(stdout).toContain(`${propName}: false`);
+                    }
+                });
+            }
         }
 
         // ignoring optimization-runtime-* and split-chunks-fallback-* flags because WebpackClITestPlugin logs [Object]
@@ -52,6 +60,8 @@ describe('optimization config related flag', () => {
                 } else if (flag.name === 'optimization-used-exports') {
                     stdout = run(__dirname, ['--optimization-used-exports', 'global']).stdout;
                     expect(stdout).toContain(`usedExports: 'global'`);
+                } else if (flag.name === 'optimization-split-chunks-default-size-types') {
+                    expect(stdout).toContain(`defaultSizeTypes: [Array]`);
                 } else {
                     expect(stdout).toContain(`${propName}: 'named'`);
                 }
