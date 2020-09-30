@@ -3,17 +3,18 @@ const GroupHelper = require('./utils/GroupHelper');
 const handleConfigResolution = require('./groups/ConfigGroup');
 const resolveMode = require('./groups/resolveMode');
 const resolveStats = require('./groups/resolveStats');
+const resolveOutput = require('./groups/resolveOutput');
 const { Compiler } = require('./utils/Compiler');
 const { groups, core } = require('./utils/cli-flags');
 const webpackMerge = require('webpack-merge');
 const { toKebabCase } = require('./utils/helpers');
 const argParser = require('./utils/arg-parser');
+const { outputStrategy } = require('./utils/merge-strategies');
 
 class WebpackCLI extends GroupHelper {
     constructor() {
         super();
         this.groupMap = new Map();
-        this.groups = [];
         this.args = {};
         this.compilation = new Compiler();
         this.defaultEntry = 'index';
@@ -118,12 +119,6 @@ class WebpackCLI extends GroupHelper {
                 case groups.HELP_GROUP: {
                     const HelpGroup = require('./groups/HelpGroup');
                     this.helpGroup = new HelpGroup();
-                    break;
-                }
-                case groups.OUTPUT_GROUP: {
-                    const OutputGroup = require('./groups/OutputGroup');
-                    this.outputGroup = new OutputGroup(value);
-                    this.groups.push(this.outputGroup);
                     break;
                 }
             }
@@ -243,7 +238,7 @@ class WebpackCLI extends GroupHelper {
             .then(() => this._handleDefaultEntry())
             .then(() => this._handleConfig(parsedArgs))
             .then(() => this._baseResolver(resolveMode, parsedArgs, this.compilerConfiguration))
-            .then(() => this._handleGroupHelper(this.outputGroup))
+            .then(() => this._baseResolver(resolveOutput, parsedArgs, {}, outputStrategy))
             .then(() => this._handleCoreFlags())
             .then(() => this._handleGroupHelper(this.basicGroup))
             .then(() => this._handleGroupHelper(this.advancedGroup))

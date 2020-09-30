@@ -45,12 +45,9 @@ describe('output flag named bundles', () => {
     });
 
     it('should output file in bin directory using default webpack config with warning for empty output value', () => {
-        const { stderr } = run(__dirname, ['--output='], false);
-        expect(stderr).toContain(
-            "You provided an empty output value. Falling back to the output value of your webpack config file, or './dist/' if none was provided",
-        );
-
-        const stats = statSync(resolve(__dirname, './bin/bundle.js'));
-        expect(stats.isFile()).toBe(true);
+        const { stdout, stderr, exitCode } = run(__dirname, ['--output'], false);
+        expect(stderr).toEqual("error: option '-o, --output <value>' argument missing");
+        expect(exitCode).toEqual(1);
+        expect(stdout).toBeFalsy();
     });
 });
