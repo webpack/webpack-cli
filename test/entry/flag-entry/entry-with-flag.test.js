@@ -39,6 +39,23 @@ describe('entry flag', () => {
         });
     });
 
+    it('should resolve the path to src/index.cjs', (done) => {
+        const { stderr, stdout } = run(__dirname, ['--entry', './src/index.cjs']);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toBeTruthy();
+
+        stat(resolve(__dirname, './bin/main.js'), (err, stats) => {
+            expect(err).toBe(null);
+            expect(stats.isFile()).toBe(true);
+            done();
+        });
+        readFile(resolve(__dirname, './bin/main.js'), 'utf-8', (err, data) => {
+            expect(err).toBe(null);
+            expect(data).toContain('Kazuya Miyuki');
+            done();
+        });
+    });
+
     it('should throw error for invalid entry file', () => {
         const { stdout, stderr, exitCode } = run(__dirname, ['--entry', './src/test.js']);
         expect(stdout).toContain("Module not found: Error: Can't resolve");
