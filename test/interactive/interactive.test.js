@@ -45,6 +45,7 @@ describe('--interactive flag', () => {
                         expect(data).toContain(word);
                     }
                 }
+                semaphore--;
                 proc.kill();
                 done();
                 return;
@@ -72,6 +73,7 @@ describe('--interactive flag', () => {
                         expect(data).toContain(word);
                     }
                 }
+                semaphore--;
                 proc.kill();
                 done();
                 return;
