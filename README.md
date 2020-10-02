@@ -13,7 +13,7 @@
 
 > ## This is the documentation of the beta version (being maintained on branch next).
 >
-> We are working on reducing the number of arguments passed to the CLI,
+> Release Candidate of webpack-cli v4 is now available on npm,
 > please leave your feedback [here](https://github.com/webpack/webpack-cli/issues/1222)
 
 [![npm][npm]][npm-url]
