@@ -204,6 +204,9 @@ yarn add webpack-cli --dev
                                                               cache group.
   --optimization-split-chunks-chunks string                   Select chunks for determining shared modules (defaults to "async", "initial"
                                                               and "all" requires adding these chunks to the HTML).
+  --optimization-split-chunks-default-size-types string       Size type, like 'javascript', 'webassembly'.
+  --optimization-split-chunks-default-size-types-reset        Clear all items provided in configuration. Sets the size types which are used when a
+                                                              number is used for sizes.
 
   --optimization-split-chunks-enforce-size-threshold string                         Size of the javascript part of the chunk.
   --optimization-split-chunks-fallback-cache-group-automatic-name-delimiter string  Sets the name delimiter for created chunks
