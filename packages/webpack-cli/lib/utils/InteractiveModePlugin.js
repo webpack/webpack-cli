@@ -6,7 +6,7 @@ const { red, green } = require('colorette');
 /**
  * Displays command space at bottom of screen
  * @param {string} msg message to print with command
- * @param {Compiler.watching} status current watching object
+ * @param {boolean} status currently watching or not
  */
 const spawnCommand = (msg, status) => {
     const lines = 3;
@@ -21,9 +21,9 @@ const spawnCommand = (msg, status) => {
 
     // for current status
     if (status) {
-        process.stdout.write(`${green('➜')} `);
+        process.stdout.write(`${green('⬤')}  `);
     } else {
-        process.stdout.write(`${red('➜')} `);
+        process.stdout.write(`${red('⬤')}  `);
     }
 };
 
@@ -78,20 +78,20 @@ class InteractiveModePlugin {
         clrscr();
 
         // Clear output on watch invalidate
-        compiler.hooks.invalid.tap(this.name, () => {
+        compiler.hooks.beforeCompile.tap(this.name, () => {
             clrscr();
         });
 
         if (version.startsWith('5')) {
             compiler.hooks.afterDone.tap(this.name, () => {
                 setTimeout(() => {
-                    spawnCommand('compilation completed', compiler.watching);
+                    spawnCommand('compilation completed', true);
                 }, 1);
             });
         } else {
             compiler.hooks.done.tap(this.name, () => {
                 setTimeout(() => {
-                    spawnCommand('compilation completed', compiler.watching);
+                    spawnCommand('compilation completed', true);
                 }, 1);
             });
         }
@@ -109,42 +109,32 @@ class InteractiveModePlugin {
 
     startHandler(compiler) {
         if (!version.startsWith('5')) {
-            spawnCommand('starting not supported', compiler.watching);
+            spawnCommand('starting not supported', true);
             return;
         }
 
-        if (compiler.watching) {
-            spawnCommand('already running', compiler.watching);
+        if (!compiler.watching.suspended) {
+            spawnCommand('already watching', true);
             return;
         }
 
         clrscr();
-        let watchOptions = compiler.options.watchOptions;
-        if (watchOptions === undefined) {
-            watchOptions = {};
-        }
-        compiler.watch(watchOptions, (err) => {
-            if (err) {
-                logger.error(err);
-                return;
-            }
-        });
+        compiler.watching.resume();
     }
 
     stopHandler(compiler) {
         if (!version.startsWith('5')) {
-            spawnCommand('stoping not supported', compiler.watching);
+            spawnCommand('stoping not supported', true);
             return;
         }
 
-        if (!compiler.watching) {
-            spawnCommand('already stoped', compiler.watching);
+        if (compiler.watching.suspended) {
+            spawnCommand('already stoped', false);
             return;
         }
 
-        compiler.watching.close(() => {
-            spawnCommand('stoped watching', compiler.watching);
-        });
+        compiler.watching.suspend();
+        spawnCommand('stoped watching', false);
     }
 }
 module.exports = { InteractiveModePlugin };
