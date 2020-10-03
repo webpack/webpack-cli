@@ -60,7 +60,7 @@ class WebpackCLI extends GroupHelper {
     }
 
     async _baseResolver(cb, parsedArgs, strategy) {
-        const resolvedConfig = cb(parsedArgs, this.compilerConfiguration);
+        const resolvedConfig = await cb(parsedArgs, this.compilerConfiguration);
         this._mergeOptionsToConfiguration(resolvedConfig.options, strategy);
         this._mergeOptionsToOutputConfiguration(resolvedConfig.outputOptions);
     }
