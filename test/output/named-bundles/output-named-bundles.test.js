@@ -42,7 +42,7 @@ describe('output flag named bundles', () => {
 
     it('should output file in bin directory using default webpack config with warning for empty output value', () => {
         const { stdout, stderr, exitCode } = run(__dirname, ['--output-path'], false);
-        expect(stderr).toEqual("error: option '-o, --output <value>' argument missing");
+        expect(stderr).toEqual("error: option '-o, --output-path <value>' argument missing");
         expect(exitCode).toEqual(1);
         expect(stdout).toBeFalsy();
     });
