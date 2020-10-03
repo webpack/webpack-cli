@@ -52,32 +52,4 @@ describe('--interactive flag', () => {
             }
         });
     });
-
-    it('should not output in interactive with --watch only', (done) => {
-        const proc = runAndGetWatchProc(__dirname, ['-c', './webpack.watch.js', '--watch'], false, '', true);
-        let semaphore = 1;
-        proc.stdout.on('data', (chunk) => {
-            const data = chunk.toString();
-            if (data.includes('watching files for updates')) {
-                writeFileSync(resolve(__dirname, 'index.js'), `console.log('I am Batman');`);
-                semaphore--;
-                return;
-            }
-            if (semaphore === 0) {
-                if (version.startsWith('5')) {
-                    for (const word of wordsInStatsv5) {
-                        expect(data).toContain(word);
-                    }
-                } else {
-                    for (const word of wordsInStatsv4) {
-                        expect(data).toContain(word);
-                    }
-                }
-                semaphore--;
-                proc.kill();
-                done();
-                return;
-            }
-        });
-    });
 });
