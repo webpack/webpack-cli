@@ -8,7 +8,7 @@ const { run } = require('../utils/test-utils');
 // throws different error from what we manually see
 describe('node flags', () => {
     it('is able to pass the options flags to node js', async (done) => {
-        const { stdout, stderr } = await run(__dirname, ['--output', './bin/[name].bundle.js'], false, [
+        const { stdout, stderr } = await run(__dirname, ['--output-path', './bin'], false, [
             `--require=${resolve(__dirname, 'bootstrap.js')}`,
             `--require=${resolve(__dirname, 'bootstrap2.js')}`,
         ]);

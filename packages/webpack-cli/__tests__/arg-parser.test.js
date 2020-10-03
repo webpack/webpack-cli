@@ -368,7 +368,7 @@ describe('arg-parser', () => {
         expect(res.unknownArgs.length).toEqual(0);
         expect(res.opts.entry).toEqual(['test.js']);
         expect(res.opts.hot).toBeTruthy();
-        expect(res.opts.output).toEqual('./dist/');
+        expect(res.opts.outputPath).toEqual('./dist/');
         expect(res.opts.stats).toEqual(true);
         expect(warnMock.mock.calls.length).toEqual(0);
     });

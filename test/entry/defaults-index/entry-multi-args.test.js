@@ -18,7 +18,7 @@ describe('single entry flag index present', () => {
     });
 
     it('finds default index file, compiles and overrides with flags successfully', (done) => {
-        const { stderr } = run(__dirname, ['--output', 'bin/main.js']);
+        const { stderr } = run(__dirname, ['--output-path', 'bin']);
         expect(stderr).toBeFalsy();
 
         stat(resolve(__dirname, './bin/main.js'), (err, stats) => {
