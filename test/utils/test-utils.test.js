@@ -1,7 +1,7 @@
 'use strict';
 
-const { appendDataIfFileExists, copyFile, run, runAndGetWatchProc } = require('./test-utils');
-const { writeFileSync, unlinkSync, readFileSync, existsSync } = require('fs');
+const { appendDataIfFileExists, run, runAndGetWatchProc } = require('./test-utils');
+const { writeFileSync, unlinkSync, readFileSync } = require('fs');
 const { resolve } = require('path');
 
 describe('appendFile', () => {
@@ -28,37 +28,6 @@ describe('appendFile', () => {
     describe('negative test-cases', () => {
         it('should throw error if file does not exist', () => {
             expect(() => appendDataIfFileExists(__dirname, 'does-not-exist.js', 'junk data')).toThrowError();
-        });
-    });
-});
-
-describe('copyFile', () => {
-    describe('positive test-cases', () => {
-        const originalFile = 'junkFile.js';
-        const originalFilePath = resolve(__dirname, originalFile);
-        const originalFileData = 'initial junk data';
-        let copyFilePath;
-
-        beforeEach(() => {
-            writeFileSync(originalFilePath, originalFileData);
-        });
-        afterEach(() => {
-            unlinkSync(originalFilePath);
-            if (existsSync(copyFilePath)) {
-                unlinkSync(copyFilePath);
-            }
-        });
-        it('should copy file if file exists', () => {
-            copyFilePath = copyFile(__dirname, originalFile);
-            const actualData = readFileSync(copyFilePath).toString();
-
-            expect(actualData).toBe(originalFileData);
-        });
-    });
-
-    describe('negative test-cases', () => {
-        it('should throw error if file does not exist', () => {
-            expect(() => copyFile(__dirname, 'does-not-exist.js')).toThrowError();
         });
     });
 });
