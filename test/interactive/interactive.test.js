@@ -25,7 +25,7 @@ describe('--interactive flag', () => {
         const clear = '\x1B[2J\x1B[3J\x1B[H';
         proc.stdout.on('data', (chunk) => {
             const data = chunk.toString();
-            if (data.includes('➜')) {
+            if (data.includes('⬤')) {
                 writeFileSync(resolve(__dirname, 'index.js'), `console.log('I am Batman');`);
                 semaphore--;
                 return;
