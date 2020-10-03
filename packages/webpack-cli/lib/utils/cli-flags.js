@@ -217,12 +217,14 @@ const core = [
         multiple: true,
         description: 'Name of the configuration to use',
     },
-    /* 		{
-        name: "analyze",
+    {
+        name: 'analyze',
+        usage: '--analyze',
         type: Boolean,
-        group: BASIC_GROUP,
-        description: "analyze build for performance improvements"
-    }, */
+        multiple: false,
+        group: ADVANCED_GROUP,
+        description: 'It invokes webpack-bundle-analyzer plugin to get bundle information',
+    },
     /* 		{
         name: "interactive",
         type: Boolean,

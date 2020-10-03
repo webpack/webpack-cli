@@ -23,9 +23,9 @@
     "web"
   ],
   "dependencies": {
-    "@webpack-cli/package-utils": "^1.0.1-rc.0",
     "@webpack-cli/info": "^1.0.1-rc.0",
     "@webpack-cli/init": "^1.0.1-rc.0",
+    "@webpack-cli/package-utils": "^1.0.1-rc.0",
     "@webpack-cli/serve": "^1.0.1-rc.0",
     "ansi-escapes": "^4.3.1",
     "colorette": "^1.2.1",
@@ -41,6 +41,11 @@
   },
   "peerDependencies": {
     "webpack": "4.x.x || 5.x.x"
+  },
+  "peerDependenciesMeta": {
+    "webpack-bundle-analyzer": {
+      "optional": true
+    }
   },
   "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9"
 }
