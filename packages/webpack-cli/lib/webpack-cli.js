@@ -18,7 +18,6 @@ class WebpackCLI extends GroupHelper {
     constructor() {
         super();
         this.groupMap = new Map();
-        this.args = {};
         this.compilation = new Compiler();
         this.compilerConfiguration = {};
         this.outputConfiguration = {};
@@ -60,21 +59,9 @@ class WebpackCLI extends GroupHelper {
         coreCliHelper.processArguments(coreCliArgs, this.compilerConfiguration, coreConfig);
     }
 
-    /**
-     * Responsible for resolving config
-     * @private\
-     * @param {Object} processed args
-     * @returns {void}
-     */
-    async _handleConfig(parsedArgs) {
-        const resolvedConfig = await handleConfigResolution(parsedArgs);
-        this._mergeOptionsToConfiguration(resolvedConfig.options);
-        this._mergeOptionsToOutputConfiguration(resolvedConfig.outputOptions);
-    }
-
-    async _baseResolver(cb, parsedArgs, configOptions) {
-        const resolvedConfig = cb(parsedArgs, configOptions);
-        this._mergeOptionsToConfiguration(resolvedConfig.options);
+    async _baseResolver(cb, parsedArgs, strategy) {
+        const resolvedConfig = cb(parsedArgs, this.compilerConfiguration);
+        this._mergeOptionsToConfiguration(resolvedConfig.options, strategy);
         this._mergeOptionsToOutputConfiguration(resolvedConfig.outputOptions);
     }
 
@@ -226,9 +213,9 @@ class WebpackCLI extends GroupHelper {
     async runOptionGroups(parsedArgs) {
         await Promise.resolve()
             .then(() => this._handleDefaultEntry())
-            .then(() => this._handleConfig(parsedArgs))
-            .then(() => this._baseResolver(resolveMode, parsedArgs, this.compilerConfiguration))
-            .then(() => this._baseResolver(resolveOutput, parsedArgs, {}, outputStrategy))
+            .then(() => this._baseResolver(handleConfigResolution, parsedArgs))
+            .then(() => this._baseResolver(resolveMode, parsedArgs))
+            .then(() => this._baseResolver(resolveOutput, parsedArgs, outputStrategy))
             .then(() => this._handleCoreFlags())
             .then(() => this._baseResolver(basicResolver, parsedArgs))
             .then(() => this._handleGroupHelper(this.advancedGroup))
