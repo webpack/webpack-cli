@@ -19,7 +19,7 @@ const isWebpack5 = version.startsWith('5');
  * @param {Boolean} setOutput Boolean that decides if a default output path will be set or not
  * @returns {Object} The webpack output or Promise when nodeOptions are present
  */
-function run(testCase, args = [], setOutput = true, nodeArgs = [], env) {
+const run = (testCase, args = [], setOutput = true, nodeArgs = [], env) => {
     const cwd = path.resolve(testCase);
 
     const outputPath = path.resolve(testCase, 'bin');
@@ -34,9 +34,9 @@ function run(testCase, args = [], setOutput = true, nodeArgs = [], env) {
     });
 
     return result;
-}
+};
 
-function runWatch({ testCase, args = [], setOutput = true, outputKillStr = 'Time' }) {
+const runWatch = ({ testCase, args = [], setOutput = true, outputKillStr = 'Time' }) => {
     const cwd = path.resolve(testCase);
 
     const outputPath = path.resolve(testCase, 'bin');
@@ -70,9 +70,9 @@ function runWatch({ testCase, args = [], setOutput = true, outputKillStr = 'Time
                 reject(error);
             });
     });
-}
+};
 
-function runAndGetWatchProc(testCase, args = [], setOutput = true, input = '', forcePipe = false) {
+const runAndGetWatchProc = (testCase, args = [], setOutput = true, input = '', forcePipe = false) => {
     const cwd = path.resolve(testCase);
 
     const outputPath = path.resolve(testCase, 'bin');
@@ -92,7 +92,7 @@ function runAndGetWatchProc(testCase, args = [], setOutput = true, input = '', f
     const webpackProc = execa(WEBPACK_PATH, argsWithOutput, options);
 
     return webpackProc;
-}
+};
 /**
  * runPromptWithAnswers
  * @param {string} location location of current working directory
@@ -186,14 +186,14 @@ const runPromptWithAnswers = (location, args, answers, waitForOutput = true) => 
  * @returns {undefined}
  * @throws - throw an Error if file does not exist
  */
-function appendDataIfFileExists(testCase, file, data) {
+const appendDataIfFileExists = (testCase, file, data) => {
     const filePath = path.resolve(testCase, file);
     if (fs.existsSync(filePath)) {
         fs.appendFileSync(filePath, data);
     } else {
         throw new Error(`Oops! ${filePath} does not exist!`);
     }
-}
+};
 
 /**
  * fs.copyFileSync was added in Added in: v8.5.0
@@ -203,7 +203,7 @@ function appendDataIfFileExists(testCase, file, data) {
  * @returns {String} - absolute file path of new file
  * @throws - throw an Error if file copy fails
  */
-async function copyFileAsync(testCase, file) {
+const copyFileAsync = async (testCase, file) => {
     const fileToChangePath = path.resolve(testCase, file);
     const fileMetaData = path.parse(file);
     const fileCopyName = fileMetaData.name.concat('_copy').concat(fileMetaData.ext);
@@ -214,35 +214,13 @@ async function copyFileAsync(testCase, file) {
     const data = fs.readFileSync(fileToChangePath);
     fs.writeFileSync(copyFilePath, data);
     return copyFilePath;
-}
+};
 
-/**
- * fs.copyFileSync was added in Added in: v8.5.0
- * We should refactor the below code once our minimal supported version is v8.5.0
- * @param {String} testCase - testCase directory
- * @param {String} file - file relative to testCase which is going to be copied
- * @returns {String} - absolute file path of new file
- * @throws - throw an Error if file copy fails
- */
-function copyFile(testCase, file) {
-    const fileToChangePath = path.resolve(testCase, file);
-    const fileMetaData = path.parse(file);
-    const fileCopyName = fileMetaData.name.concat('_copy').concat(fileMetaData.ext);
-    const copyFilePath = path.resolve(testCase, fileCopyName);
-    if (fs.existsSync(fileToChangePath)) {
-        const fileData = fs.readFileSync(fileToChangePath).toString();
-        fs.writeFileSync(copyFilePath, fileData);
-        return copyFilePath;
-    } else {
-        throw new Error(`Oops! ${fileToChangePath} does not exist!`);
-    }
-}
-
-async function runInstall(cwd) {
+const runInstall = async (cwd) => {
     await execa('yarn', {
         cwd,
     });
-}
+};
 
 const runServe = (args, testPath) => {
     return runWatch({
@@ -273,7 +251,6 @@ module.exports = {
     runAndGetWatchProc,
     runPromptWithAnswers,
     appendDataIfFileExists,
-    copyFile,
     copyFileAsync,
     runInstall,
     runInfo,
