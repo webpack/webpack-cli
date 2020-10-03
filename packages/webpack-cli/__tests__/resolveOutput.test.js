@@ -1,10 +1,11 @@
+const { resolve } = require('path');
 const resolveOutput = require('../lib/groups/resolveOutput');
 
 describe('OutputGroup', function () {
     it('should handle the output option', () => {
         const result = resolveOutput({
-            output: './bundle.js',
+            outputPath: './bundle',
         });
-        expect(result.options.output.filename).toEqual('bundle.js');
+        expect(result.options.output.path).toEqual(resolve('bundle'));
     });
 });
