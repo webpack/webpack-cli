@@ -1,18 +1,18 @@
-const path = require('path');
-const { existsSync } = require('fs');
-const { options } = require('colorette');
 const webpackMerge = require('webpack-merge');
+const { options } = require('colorette');
 const GroupHelper = require('./utils/GroupHelper');
+const { Compiler } = require('./utils/Compiler');
+const { groups, core } = require('./utils/cli-flags');
+const argParser = require('./utils/arg-parser');
+const { outputStrategy } = require('./utils/merge-strategies');
+const { toKebabCase } = require('./utils/helpers');
+
+// CLI arg resolvers
 const handleConfigResolution = require('./groups/ConfigGroup');
 const resolveMode = require('./groups/resolveMode');
 const resolveStats = require('./groups/resolveStats');
 const resolveOutput = require('./groups/resolveOutput');
-const { Compiler } = require('./utils/Compiler');
-const { groups, core } = require('./utils/cli-flags');
 const basicResolver = require('./groups/basicResolver');
-const { toKebabCase } = require('./utils/helpers');
-const argParser = require('./utils/arg-parser');
-const { outputStrategy } = require('./utils/merge-strategies');
 
 class WebpackCLI extends GroupHelper {
     constructor() {
@@ -187,23 +187,6 @@ class WebpackCLI extends GroupHelper {
     }
 
     /**
-     * Get the defaultEntry for merge with config rightly
-     * @private
-     * @returns {void}
-     */
-    _handleDefaultEntry() {
-        let defaultEntry;
-        const rootIndexPath = path.resolve('index.js');
-        if (existsSync(rootIndexPath)) {
-            defaultEntry = './index.js';
-        } else {
-            defaultEntry = './src/index.js';
-        }
-        const options = { entry: defaultEntry };
-        this._mergeOptionsToConfiguration(options);
-    }
-
-    /**
      * It runs in a fancy order all the expected groups.
      * Zero config and configuration goes first.
      *
@@ -212,7 +195,6 @@ class WebpackCLI extends GroupHelper {
      */
     async runOptionGroups(parsedArgs) {
         await Promise.resolve()
-            .then(() => this._handleDefaultEntry())
             .then(() => this._baseResolver(handleConfigResolution, parsedArgs))
             .then(() => this._baseResolver(resolveMode, parsedArgs))
             .then(() => this._baseResolver(resolveOutput, parsedArgs, outputStrategy))

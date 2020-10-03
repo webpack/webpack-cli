@@ -6,7 +6,7 @@ describe('Default Config:', () => {
     it('Should be able to pick cjs config by default', () => {
         const { stdout, stderr, exitCode } = run(__dirname, [], false);
         // default entry should be used
-        expect(stdout).toContain('./index.js');
+        expect(stdout).toContain('./src/index.js');
         // should pick up the output path from config
         expect(stdout).toContain('test-output');
         if (!isWebpack5) {
