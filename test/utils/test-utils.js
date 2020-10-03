@@ -24,7 +24,7 @@ function run(testCase, args = [], setOutput = true, nodeArgs = [], env) {
 
     const outputPath = path.resolve(testCase, 'bin');
     const processExecutor = nodeArgs.length ? execaNode : spawnSync;
-    const argsWithOutput = setOutput ? args.concat('--output', outputPath) : args;
+    const argsWithOutput = setOutput ? args.concat('--output-path', outputPath) : args;
     const result = processExecutor(WEBPACK_PATH, argsWithOutput, {
         cwd,
         reject: false,
@@ -40,7 +40,7 @@ function runWatch({ testCase, args = [], setOutput = true, outputKillStr = 'Time
     const cwd = path.resolve(testCase);
 
     const outputPath = path.resolve(testCase, 'bin');
-    const argsWithOutput = setOutput ? args.concat('--output', outputPath) : args;
+    const argsWithOutput = setOutput ? args.concat('--output-path', outputPath) : args;
 
     return new Promise((resolve, reject) => {
         const watchPromise = execa(WEBPACK_PATH, argsWithOutput, {
@@ -76,7 +76,7 @@ function runAndGetWatchProc(testCase, args = [], setOutput = true, input = '', f
     const cwd = path.resolve(testCase);
 
     const outputPath = path.resolve(testCase, 'bin');
-    const argsWithOutput = setOutput ? args.concat('--output', outputPath) : args;
+    const argsWithOutput = setOutput ? args.concat('--output-path', outputPath) : args;
 
     const options = {
         cwd,
