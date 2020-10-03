@@ -195,7 +195,6 @@ class WebpackCLI extends GroupHelper {
      */
     async runOptionGroups(parsedArgs) {
         await Promise.resolve()
-            .then(() => this._handleDefaultEntry())
             .then(() => this._baseResolver(handleConfigResolution, parsedArgs))
             .then(() => this._baseResolver(resolveMode, parsedArgs))
             .then(() => this._baseResolver(resolveOutput, parsedArgs, outputStrategy))
