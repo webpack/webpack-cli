@@ -13,6 +13,7 @@ const resolveMode = require('./groups/resolveMode');
 const resolveStats = require('./groups/resolveStats');
 const resolveOutput = require('./groups/resolveOutput');
 const basicResolver = require('./groups/basicResolver');
+const resolveAdvanced = require('./groups/resolveAdvanced');
 
 class WebpackCLI extends GroupHelper {
     constructor() {
@@ -84,13 +85,8 @@ class WebpackCLI extends GroupHelper {
      * @returns {void}
      */
     resolveGroups() {
-        for (const [key, value] of this.groupMap.entries()) {
+        for (const [key] of this.groupMap.entries()) {
             switch (key) {
-                case groups.ADVANCED_GROUP: {
-                    const AdvancedGroup = require('./groups/AdvancedGroup');
-                    this.advancedGroup = new AdvancedGroup(value);
-                    break;
-                }
                 case groups.HELP_GROUP: {
                     const HelpGroup = require('./groups/HelpGroup');
                     this.helpGroup = new HelpGroup();
@@ -200,7 +196,7 @@ class WebpackCLI extends GroupHelper {
             .then(() => this._baseResolver(resolveOutput, parsedArgs, outputStrategy))
             .then(() => this._handleCoreFlags())
             .then(() => this._baseResolver(basicResolver, parsedArgs))
-            .then(() => this._handleGroupHelper(this.advancedGroup))
+            .then(() => this._baseResolver(resolveAdvanced, parsedArgs))
             .then(() => this._baseResolver(resolveStats, parsedArgs))
             .then(() => this._handleGroupHelper(this.helpGroup));
     }
