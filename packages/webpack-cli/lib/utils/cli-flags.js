@@ -222,7 +222,6 @@ const core = [
         usage: '--analyze',
         type: Boolean,
         multiple: false,
-        group: ADVANCED_GROUP,
         description: 'It invokes webpack-bundle-analyzer plugin to get bundle information',
     },
     /* 		{
