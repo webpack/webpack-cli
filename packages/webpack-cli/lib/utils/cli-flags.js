@@ -47,13 +47,6 @@ const commands = [
         type: String,
         usage: 'info [options]',
         description: 'Outputs information about your system and dependencies',
-        flags: [
-            {
-                name: 'output',
-                type: String,
-                description: 'To get the output in specified format ( accept json or markdown )',
-            },
-        ],
     },
     {
         name: 'serve',
