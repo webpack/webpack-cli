@@ -6,7 +6,7 @@ describe('Zero Config', () => {
     it('runs when config is present but not supplied via flag', () => {
         const { stdout, stderr, exitCode } = run(__dirname, [], false);
         // default entry should be used
-        expect(stdout).toContain('./index.js');
+        expect(stdout).toContain('./src/index.js');
         // should pick up the output path from config
         expect(stdout).toContain('test-output');
         if (!isWebpack5) {
