@@ -138,7 +138,7 @@ function runMigration(currentConfigPath: string, outputConfigPath: string): Prom
                             const outputConfig = (await import(outputConfigPath)).default;
                             // eslint-disable-next-line @typescript-eslint/no-explicit-any
                             const webpackOptionsValidationErrors: any = validate(outputConfig);
-                            if (webpackOptionsValidationErrors.length) {
+                            if (webpackOptionsValidationErrors && webpackOptionsValidationErrors.length) {
                                 logger.error("\n✖ Your configuration validation wasn't successful\n");
                                 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
                                 // @ts-ignore
