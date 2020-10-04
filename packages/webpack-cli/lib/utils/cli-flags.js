@@ -3,12 +3,10 @@ const cli = packageExists('webpack') ? require('webpack').cli : undefined;
 
 const HELP_GROUP = 'help';
 const BASIC_GROUP = 'basic';
-const ADVANCED_GROUP = 'advanced';
 
 const groups = {
     HELP_GROUP,
     BASIC_GROUP,
-    ADVANCED_GROUP,
 };
 
 const commands = [
@@ -129,7 +127,6 @@ const core = [
         usage: '--target <value>',
         alias: 't',
         type: String,
-        group: ADVANCED_GROUP,
         multiple: cli !== undefined,
         description: 'Sets the build target e.g. node',
         link: 'https://webpack.js.org/configuration/target/#target',
@@ -149,7 +146,6 @@ const core = [
         alias: 'h',
         type: Boolean,
         negative: true,
-        group: ADVANCED_GROUP,
         description: 'Enables Hot Module Replacement',
         link: 'https://webpack.js.org/concepts/hot-module-replacement/',
     },
@@ -167,7 +163,6 @@ const core = [
         name: 'prefetch',
         usage: '--prefetch <request>',
         type: String,
-        group: ADVANCED_GROUP,
         description: 'Prefetch this request',
         link: 'https://webpack.js.org/plugins/prefetch-plugin/',
     },
