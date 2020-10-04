@@ -25,14 +25,14 @@ describe('cache related flags from core', () => {
     });
 
     it('should set cache.cacheDirectory with --cache-cache-directory', () => {
-        const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '--cache-cache-directory', '/test-cache-path']);
+        const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '--cache-cache-directory', './test-cache-path']);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('test-cache-path');
     });
 
     it('should set cache.cacheLocation with --cache-cache-locations', () => {
-        const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '--cache-cache-location', '/test-locate-cache']);
+        const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '--cache-cache-location', './test-locate-cache']);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('test-locate-cache');
