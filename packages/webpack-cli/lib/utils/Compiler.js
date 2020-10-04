@@ -3,11 +3,9 @@ const webpack = packageExists('webpack') ? require('webpack') : undefined;
 const logger = require('./logger');
 const { writeFileSync } = require('fs');
 const bailAndWatchWarning = require('./warnings/bailAndWatchWarning');
-const { CompilerOutput } = require('./CompilerOutput');
 
 class Compiler {
     constructor() {
-        this.output = new CompilerOutput();
         this.compilerOptions = {};
     }
     setUpHookForCompilation(compilation, outputOptions, options) {
@@ -37,7 +35,7 @@ class Compiler {
     }
 
     generateOutput(outputOptions, stats) {
-        this.output.generateRawOutput(stats, this.compilerOptions);
+        process.stdout.write(stats.toString(this.compilerOptions.stats));
         process.stdout.write('\n');
         if (outputOptions.watch) {
             logger.info('watching files for updates...');
