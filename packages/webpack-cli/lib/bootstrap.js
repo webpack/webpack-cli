@@ -16,14 +16,15 @@ async function runCLI(cliArgs) {
     let args;
 
     const commandIsUsed = isCommandUsed(cliArgs);
-    options.enabled = !cliArgs.includes('--no-color');
     const parsedArgs = argParser(core, cliArgs, true, process.title, cli.runHelp);
     if (parsedArgs.unknownArgs.includes('help') || parsedArgs.opts.help) {
+        options.enabled = !cliArgs.includes('--no-color');
         cli.runHelp(cliArgs);
         process.exit(0);
     }
 
     if (parsedArgs.unknownArgs.includes('version') || parsedArgs.opts.version) {
+        options.enabled = !cliArgs.includes('--no-color');
         versionRunner(cliArgs, commandIsUsed);
         process.exit(0);
     }
