@@ -2,6 +2,7 @@ const { options } = require('colorette');
 const WebpackCLI = require('./webpack-cli');
 const { core } = require('./utils/cli-flags');
 const versionRunner = require('./groups/runVersion');
+const helpRunner = require('./groups/runHelp');
 const logger = require('./utils/logger');
 const { isCommandUsed } = require('./utils/arg-utils');
 const cliExecuter = require('./utils/cli-executer');
@@ -16,10 +17,10 @@ async function runCLI(cliArgs) {
     let args;
 
     const commandIsUsed = isCommandUsed(cliArgs);
-    const parsedArgs = argParser(core, cliArgs, true, process.title, cli.runHelp);
+    const parsedArgs = argParser(core, cliArgs, true, process.title);
     if (parsedArgs.unknownArgs.includes('help') || parsedArgs.opts.help) {
         options.enabled = !cliArgs.includes('--no-color');
-        cli.runHelp(cliArgs);
+        helpRunner(cliArgs);
         process.exit(0);
     }
 

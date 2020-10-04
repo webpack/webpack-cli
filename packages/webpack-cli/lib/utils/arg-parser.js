@@ -1,6 +1,7 @@
 const commander = require('commander');
 const logger = require('./logger');
 const { commands } = require('./cli-flags');
+const runHelp = require('../groups/runHelp');
 const { defaultCommands } = require('./commands');
 
 /**
@@ -12,7 +13,7 @@ const { defaultCommands } = require('./commands');
  * @param {boolean} argsOnly false if all of process.argv has been provided, true if
  * args is only a subset of process.argv that removes the first couple elements
  */
-function argParser(options, args, argsOnly = false, name = '', helpFunction) {
+function argParser(options, args, argsOnly = false, name = '') {
     const parser = new commander.Command();
     // Set parser name
     parser.name(name);
@@ -36,12 +37,10 @@ function argParser(options, args, argsOnly = false, name = '', helpFunction) {
     parser.on('command:*', () => {});
 
     // Use customized help output if available
-    if (helpFunction) {
-        parser.on('option:help', () => {
-            helpFunction(args);
-            process.exit(0);
-        });
-    }
+    parser.on('option:help', () => {
+        runHelp(args);
+        process.exit(0);
+    });
 
     // Allow execution if unknown arguments are present
     parser.allowUnknownOption(true);
