@@ -1,24 +1,23 @@
-const path = require('path');
-const { existsSync } = require('fs');
-const { options } = require('colorette');
 const webpackMerge = require('webpack-merge');
+const { options } = require('colorette');
 const GroupHelper = require('./utils/GroupHelper');
+const { Compiler } = require('./utils/Compiler');
+const { groups, core } = require('./utils/cli-flags');
+const argParser = require('./utils/arg-parser');
+const { outputStrategy } = require('./utils/merge-strategies');
+const { toKebabCase } = require('./utils/helpers');
+
+// CLI arg resolvers
 const handleConfigResolution = require('./groups/ConfigGroup');
 const resolveMode = require('./groups/resolveMode');
 const resolveStats = require('./groups/resolveStats');
 const resolveOutput = require('./groups/resolveOutput');
-const { Compiler } = require('./utils/Compiler');
-const { groups, core } = require('./utils/cli-flags');
 const basicResolver = require('./groups/basicResolver');
-const { toKebabCase } = require('./utils/helpers');
-const argParser = require('./utils/arg-parser');
-const { outputStrategy } = require('./utils/merge-strategies');
 
 class WebpackCLI extends GroupHelper {
     constructor() {
         super();
         this.groupMap = new Map();
-        this.args = {};
         this.compilation = new Compiler();
         this.compilerConfiguration = {};
         this.outputConfiguration = {};
@@ -60,21 +59,9 @@ class WebpackCLI extends GroupHelper {
         coreCliHelper.processArguments(coreCliArgs, this.compilerConfiguration, coreConfig);
     }
 
-    /**
-     * Responsible for resolving config
-     * @private\
-     * @param {Object} processed args
-     * @returns {void}
-     */
-    async _handleConfig(parsedArgs) {
-        const resolvedConfig = await handleConfigResolution(parsedArgs);
-        this._mergeOptionsToConfiguration(resolvedConfig.options);
-        this._mergeOptionsToOutputConfiguration(resolvedConfig.outputOptions);
-    }
-
-    async _baseResolver(cb, parsedArgs, configOptions) {
-        const resolvedConfig = cb(parsedArgs, configOptions);
-        this._mergeOptionsToConfiguration(resolvedConfig.options);
+    async _baseResolver(cb, parsedArgs, strategy) {
+        const resolvedConfig = await cb(parsedArgs, this.compilerConfiguration);
+        this._mergeOptionsToConfiguration(resolvedConfig.options, strategy);
         this._mergeOptionsToOutputConfiguration(resolvedConfig.outputOptions);
     }
 
@@ -200,23 +187,6 @@ class WebpackCLI extends GroupHelper {
     }
 
     /**
-     * Get the defaultEntry for merge with config rightly
-     * @private
-     * @returns {void}
-     */
-    _handleDefaultEntry() {
-        let defaultEntry;
-        const rootIndexPath = path.resolve('index.js');
-        if (existsSync(rootIndexPath)) {
-            defaultEntry = './index.js';
-        } else {
-            defaultEntry = './src/index.js';
-        }
-        const options = { entry: defaultEntry };
-        this._mergeOptionsToConfiguration(options);
-    }
-
-    /**
      * It runs in a fancy order all the expected groups.
      * Zero config and configuration goes first.
      *
@@ -225,10 +195,9 @@ class WebpackCLI extends GroupHelper {
      */
     async runOptionGroups(parsedArgs) {
         await Promise.resolve()
-            .then(() => this._handleDefaultEntry())
-            .then(() => this._handleConfig(parsedArgs))
-            .then(() => this._baseResolver(resolveMode, parsedArgs, this.compilerConfiguration))
-            .then(() => this._baseResolver(resolveOutput, parsedArgs, {}, outputStrategy))
+            .then(() => this._baseResolver(handleConfigResolution, parsedArgs))
+            .then(() => this._baseResolver(resolveMode, parsedArgs))
+            .then(() => this._baseResolver(resolveOutput, parsedArgs, outputStrategy))
             .then(() => this._handleCoreFlags())
             .then(() => this._baseResolver(basicResolver, parsedArgs))
             .then(() => this._handleGroupHelper(this.advancedGroup))

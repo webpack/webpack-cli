@@ -1,7 +1,7 @@
 'use strict';
 
-const { appendDataIfFileExists, copyFile, run, runAndGetWatchProc } = require('./test-utils');
-const { writeFileSync, unlinkSync, readFileSync, existsSync } = require('fs');
+const { appendDataIfFileExists, run, runAndGetWatchProc } = require('./test-utils');
+const { writeFileSync, unlinkSync, readFileSync } = require('fs');
 const { resolve } = require('path');
 
 describe('appendFile', () => {
@@ -32,44 +32,13 @@ describe('appendFile', () => {
     });
 });
 
-describe('copyFile', () => {
-    describe('positive test-cases', () => {
-        const originalFile = 'junkFile.js';
-        const originalFilePath = resolve(__dirname, originalFile);
-        const originalFileData = 'initial junk data';
-        let copyFilePath;
-
-        beforeEach(() => {
-            writeFileSync(originalFilePath, originalFileData);
-        });
-        afterEach(() => {
-            unlinkSync(originalFilePath);
-            if (existsSync(copyFilePath)) {
-                unlinkSync(copyFilePath);
-            }
-        });
-        it('should copy file if file exists', () => {
-            copyFilePath = copyFile(__dirname, originalFile);
-            const actualData = readFileSync(copyFilePath).toString();
-
-            expect(actualData).toBe(originalFileData);
-        });
-    });
-
-    describe('negative test-cases', () => {
-        it('should throw error if file does not exist', () => {
-            expect(() => copyFile(__dirname, 'does-not-exist.js')).toThrowError();
-        });
-    });
-});
-
 describe('run function', () => {
     it('should work correctly by default', () => {
         const { command, stdout, stderr } = run(__dirname);
         // Executes the correct command
         expect(command).toContain('cli.js');
         // Should use apply a default output dir
-        expect(command).toContain('--output');
+        expect(command).toContain('--output-path');
         expect(command).toContain('bin');
         expect(stdout).toBeTruthy();
         expect(stderr).toBeFalsy();
@@ -92,7 +61,7 @@ describe('run function', () => {
     it('uses default output when output param is false', () => {
         const { stdout, stderr, command } = run(__dirname, [], false);
         // execution command contains info command
-        expect(command).not.toContain('--output');
+        expect(command).not.toContain('--output-path');
         expect(stdout).toBeTruthy();
         expect(stderr).toBeFalsy();
     });
@@ -104,7 +73,7 @@ describe('runAndGetWatchProc function', () => {
         // Executes the correct command
         expect(command).toContain('cli.js');
         // Should use apply a default output dir
-        expect(command).toContain('--output');
+        expect(command).toContain('--output-path');
         expect(command).toContain('bin');
         expect(stdout).toBeTruthy();
         expect(stderr).toBeFalsy();
@@ -127,7 +96,7 @@ describe('runAndGetWatchProc function', () => {
     it('uses default output when output param is false', async () => {
         const { stdout, stderr, command } = await runAndGetWatchProc(__dirname, [], false);
         // execution command contains info command
-        expect(command).not.toContain('--output');
+        expect(command).not.toContain('--output-path');
         expect(stdout).toBeTruthy();
         expect(stderr).toBeFalsy();
     });

@@ -14,7 +14,7 @@ const resolveStats = (args) => {
         finalOptions.options.stats = stats;
     }
     if (json) {
-        finalOptions.outputOptions.json = true;
+        finalOptions.outputOptions.json = json;
     }
     return finalOptions;
 };

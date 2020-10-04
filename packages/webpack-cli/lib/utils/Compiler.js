@@ -1,6 +1,7 @@
 const { packageExists } = require('@webpack-cli/package-utils');
 const webpack = packageExists('webpack') ? require('webpack') : undefined;
 const logger = require('./logger');
+const { writeFileSync } = require('fs');
 const bailAndWatchWarning = require('./warnings/bailAndWatchWarning');
 const { CompilerOutput } = require('./CompilerOutput');
 
@@ -58,7 +59,7 @@ class Compiler {
         if (!outputOptions.watch && (stats.hasErrors() || stats.hasWarnings())) {
             process.exitCode = 1;
         }
-        if (outputOptions.json) {
+        if (outputOptions.json === true) {
             process.stdout.write(JSON.stringify(stats.toJson(outputOptions), null, 2) + '\n');
         } else if (stats.hash !== lastHash) {
             lastHash = stats.hash;
@@ -68,6 +69,15 @@ class Compiler {
                     const errLoc = statErr.module ? statErr.module.resource : null;
                     statsErrors.push({ name: statErr.message, loc: errLoc });
                 });
+            }
+            const JSONStats = JSON.stringify(stats.toJson(outputOptions), null, 2);
+            if (typeof outputOptions.json === 'string') {
+                try {
+                    writeFileSync(outputOptions.json, JSONStats);
+                    logger.info(`stats are successfully stored as json to ${outputOptions.json}`);
+                } catch (err) {
+                    logger.error(err);
+                }
             }
             return this.generateOutput(outputOptions, stats, statsErrors);
         }

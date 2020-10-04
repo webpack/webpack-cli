@@ -24,7 +24,7 @@ describe('source-map object', () => {
     });
 
     it('should override config with source-map', (done) => {
-        run(__dirname, ['-c', './webpack.eval.config.js', '--devtool', 'source-map', '-o', './binary/dist-amd.js'], false);
+        run(__dirname, ['-c', './webpack.eval.config.js', '--devtool', 'source-map', '-o', './binary'], false);
         stat(resolve(__dirname, 'binary/dist-amd.js.map'), (err, stats) => {
             expect(err).toBe(null);
             expect(stats.isFile()).toBe(true);
