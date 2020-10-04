@@ -42,5 +42,16 @@
   "peerDependencies": {
     "webpack": "4.x.x || 5.x.x"
   },
+  "peerDependenciesMeta": {
+    "@webpack-cli/generate-loader": {
+      "optional": true
+    },
+    "@webpack-cli/generate-plugin": {
+      "optional": true
+    },
+    "@webpack-cli/migrate": {
+      "optional": true
+    }
+  },
   "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9"
 }
