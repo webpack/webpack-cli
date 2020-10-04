@@ -10,10 +10,7 @@
   },
   "dependencies": {
     "@webpack-cli/generators": "^1.0.1-rc.0",
-    "@webpack-cli/utils": "^1.0.1-rc.0",
-    "colorette": "^1.2.1",
-    "jscodeshift": "0.7.0",
-    "p-each-series": "2.1.0"
+    "@webpack-cli/utils": "^1.0.1-rc.0"
   },
   "peerDependencies": {
     "webpack": "4.x.x || 5.x.x",
