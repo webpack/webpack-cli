@@ -34,14 +34,14 @@
   },
   "dependencies": {
     "colorette": "^1.2.1",
-    "cross-spawn": "7.0.1",
+    "cross-spawn": "^7.0.1",
     "enquirer": "^2.3.4",
     "execa": "^4.0.0",
-    "global-modules": "2.0.0"
+    "global-modules": "^2.0.0"
   },
   "devDependencies": {
     "@webpack-cli/package-utils": "^1.0.1-rc.0",
-    "@types/cross-spawn": "6.0.1"
+    "@types/cross-spawn": "^6.0.1"
   },
   "peerDependenciesMeta": {
     "webpack": {
