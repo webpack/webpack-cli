@@ -3,7 +3,7 @@
 jest.mock('@webpack-cli/package-utils');
 
 import { packageExists, promptInstallation } from '@webpack-cli/package-utils';
-import ExternalCommand from '../../webpack-cli/lib/commands/ExternalCommand';
+import { run } from '../../webpack-cli/lib/commands/resolveCommand';
 
 describe('@webpack-cli/package-utils', () => {
     it('should check existence of package', () => {
@@ -16,6 +16,6 @@ describe('@webpack-cli/package-utils', () => {
         (promptInstallation as jest.Mock).mockImplementation(() => {
             throw new Error();
         });
-        await expect(ExternalCommand.run('info')).resolves.not.toThrow();
+        await expect(run('info')).resolves.not.toThrow();
     });
 });
