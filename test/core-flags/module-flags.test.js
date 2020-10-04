@@ -28,18 +28,17 @@ describe('module config related flag', () => {
                 }
             });
 
-            it(`should config --no-${flag.name} correctly`, () => {
-                const { stderr, stdout } = run(__dirname, [`--no-${flag.name}`]);
-                expect(stderr).toBeFalsy();
-                if (flag.name.includes('-reset')) {
-                    const option = propName.split('Reset')[0];
-                    expect(stdout).toContain(`${option}: []`);
-                } else if (flag.name.includes('rules-')) {
-                    expect(stdout).toContain('sideEffects: false');
-                } else {
-                    expect(stdout).toContain(`${propName}: false`);
-                }
-            });
+            if (!flag.name.endsWith('-reset')) {
+                it(`should config --no-${flag.name} correctly`, () => {
+                    const { stderr, stdout } = run(__dirname, [`--no-${flag.name}`]);
+                    expect(stderr).toBeFalsy();
+                    if (flag.name.includes('rules-')) {
+                        expect(stdout).toContain('sideEffects: false');
+                    } else {
+                        expect(stdout).toContain(`${propName}: false`);
+                    }
+                });
+            }
         }
 
         if (flag.type === String) {

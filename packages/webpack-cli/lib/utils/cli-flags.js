@@ -245,7 +245,7 @@ let flagsFromCore =
                   meta.usage = `--${flag} <value>`;
               } else {
                   meta.type = Boolean;
-                  meta.negative = true;
+                  meta.negative = !flag.endsWith('-reset');
                   meta.usage = `--${flag}`;
               }
               return {
