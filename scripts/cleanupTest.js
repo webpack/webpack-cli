@@ -12,7 +12,7 @@ const outputDirectories = [
     'test-plugin',
     'test-loader',
     'test-cache-path',
-    'test-locate-path',
+    'test-locate-cache',
     'stats.json',
 ];
 

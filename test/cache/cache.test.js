@@ -2,7 +2,7 @@
 
 const { run, isWebpack5 } = require('../utils/test-utils');
 
-describe('bail and watch warning', () => {
+describe('cache related tests', () => {
     it('should log warning in case of single compiler', () => {
         let { stderr, stdout } = run(__dirname, ['-c', 'webpack.config.js'], false);
         // run 2nd compilation
