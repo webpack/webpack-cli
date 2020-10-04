@@ -87,8 +87,10 @@ class Compiler {
         // eslint-disable-next-line  no-async-promise-executor
         return new Promise(async (resolve) => {
             await this.compiler.run((err, stats) => {
-                const content = this.compilerCallback(err, stats, lastHash, options, outputOptions);
-                resolve(content);
+                this.compiler.close(() => {
+                    const content = this.compilerCallback(err, stats, lastHash, options, outputOptions);
+                    resolve(content);
+                });
             });
         });
     }
