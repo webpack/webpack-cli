@@ -17,6 +17,13 @@ describe('advanced options', function () {
         expect(result.options.plugins[0].constructor.name).toEqual('PrefetchPlugin');
     });
 
+    it('should load the webpack-bundle-analyzer plugin', () => {
+        const result = resolveAdvanced({
+            analyze: true,
+        });
+        expect(result.options.plugins[0].constructor.name).toEqual('BundleAnalyzerPlugin');
+    });
+
     {
         targetValues.map((option) => {
             it(`should handle ${option} option`, () => {
