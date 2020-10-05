@@ -1,6 +1,6 @@
 import envinfo from 'envinfo';
 import logger from 'webpack-cli/lib/utils/logger';
-import options from './options';
+import { commands } from 'webpack-cli/lib/utils/cli-flags';
 import WebpackCLI from 'webpack-cli';
 
 interface Information {
@@ -32,7 +32,8 @@ const DEFAULT_DETAILS: Information = {
 
 export default async function info(...args): Promise<string[]> {
     const cli = new WebpackCLI();
-    const parsedArgs = cli.argParser(options, args, true);
+    const { flags: infoFlags } = commands.find((cmd) => cmd.name === 'info');
+    const parsedArgs = cli.argParser(infoFlags, args, true);
     const infoArgs = parsedArgs.opts;
     const envinfoConfig = {};
 
