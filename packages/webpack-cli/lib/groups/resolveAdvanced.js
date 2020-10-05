@@ -1,12 +1,12 @@
-const { packageExists } = require('@webpack-cli/package-utils');
+const { packageExists, promptInstallation } = require('@webpack-cli/package-utils');
 const { yellow } = require('colorette');
-const { error } = require('../utils/logger');
+const { error, info } = require('../utils/logger');
 
 /**
  * Resolve advanced flags
  * @param {args} args - Parsed args passed to CLI
  */
-const resolveAdvanced = (args) => {
+const resolveAdvanced = async (args) => {
     const { target, prefetch, hot, analyze } = args;
 
     const finalOptions = {
@@ -43,8 +43,14 @@ const resolveAdvanced = (args) => {
                 finalOptions.options.plugins = [bundleAnalyzerVal];
             }
         } else {
-            error(`It looks like ${yellow('webpack-bundle-analyzer')} is not installed.`);
-            process.exitCode = 2;
+            await promptInstallation('webpack-bundle-analyzer', () => {
+                error(`It looks like ${yellow('webpack-bundle-analyzer')} is not installed.`);
+            })
+                .then(() => info(`${yellow('webpack-bundle-analyzer')} was installed sucessfully.`))
+                .catch(() => {
+                    error(`Action Interrupted, Please try once again or install ${yellow('webpack-bundle-analyzer')} manually.`);
+                    process.exit(2);
+                });
         }
     }
     if (target) {
