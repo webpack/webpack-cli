@@ -1,6 +1,5 @@
 const { yellow, bold, underline } = require('colorette');
 const { core, commands } = require('../utils/cli-flags');
-const { defaultCommands } = require('../utils/commands');
 const logger = require('../utils/logger');
 const commandLineUsage = require('command-line-usage');
 
@@ -44,40 +43,6 @@ class HelpGroup {
             logger.raw(this.run().outputOptions.help);
         }
         logger.raw('\n                  Made with ♥️  by the webpack team');
-    }
-
-    outputVersion(externalPkg, commandsUsed, invalidArgs) {
-        if (externalPkg && commandsUsed.length === 1 && invalidArgs.length === 0) {
-            try {
-                if ([externalPkg.alias, externalPkg.name].some((pkg) => commandsUsed.includes(pkg))) {
-                    const { name, version } = require(`@webpack-cli/${defaultCommands[externalPkg.name]}/package.json`);
-                    logger.raw(`\n${name} ${version}`);
-                } else {
-                    const { name, version } = require(`${externalPkg.name}/package.json`);
-                    logger.raw(`\n${name} ${version}`);
-                }
-            } catch (e) {
-                logger.error('Error: External package not found.');
-                process.exit(2);
-            }
-        }
-
-        if (commandsUsed.length > 1) {
-            logger.error('You provided multiple commands. Please use only one command at a time.\n');
-            process.exit(2);
-        }
-
-        if (invalidArgs.length > 0) {
-            const argType = invalidArgs[0].startsWith('-') ? 'option' : 'command';
-            logger.error(`Error: Invalid ${argType} '${invalidArgs[0]}'.`);
-            logger.info('Run webpack --help to see available commands and arguments.\n');
-            process.exit(2);
-        }
-
-        const pkgJSON = require('../../package.json');
-        const webpack = require('webpack');
-        logger.raw(`\nwebpack-cli ${pkgJSON.version}`);
-        logger.raw(`\nwebpack ${webpack.version}\n`);
     }
 
     run() {
