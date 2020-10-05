@@ -35,8 +35,7 @@ class Compiler {
     }
 
     generateOutput(outputOptions, stats) {
-        process.stdout.write(stats.toString(this.compilerOptions.stats));
-        process.stdout.write('\n');
+        logger.raw(`${stats.toString(this.compilerOptions.stats)}\n`);
         if (outputOptions.watch) {
             logger.info('watching files for updates...');
         }
