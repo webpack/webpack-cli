@@ -27,4 +27,7 @@ module.exports = {
             'my-loader': require.resolve('./my-loader'),
         },
     },
+    performance: {
+        hints: 'warning',
+    },
 };

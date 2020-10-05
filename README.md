@@ -102,7 +102,7 @@ You can read more about [Scaffolding](https://webpack.js.org/guides/scaffolding)
 | Exit Code | Description                                        |
 | --------- | -------------------------------------------------- |
 | `0`       | Success                                            |
-| `1`       | Warnings/Errors from webpack                       |
+| `1`       | Errors from webpack                                |
 | `2`       | Configuration/options problem or an internal error |
 
 ## Contributing and Internal Documentation
