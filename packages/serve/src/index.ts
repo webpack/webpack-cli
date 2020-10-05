@@ -15,7 +15,12 @@ export default function serve(...args: string[]): void {
 
     const { webpackArgs, devServerArgs } = parseArgs(cli, args);
 
-    cli.getCompiler(webpackArgs, core).then((compiler): void => {
-        startDevServer(compiler, devServerArgs);
-    });
+    cli.getCompiler(webpackArgs, core)
+        .then((compiler): void => {
+            startDevServer(compiler, devServerArgs);
+        })
+        .catch((err: object): void => {
+            console.error(err);
+            throw new Error();
+        });
 }
