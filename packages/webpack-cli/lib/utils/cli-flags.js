@@ -56,7 +56,7 @@ const commands = [
             {
                 name: 'version',
                 type: Boolean,
-                description: 'Print version information if info package',
+                description: 'Print version information of info package',
             },
         ],
     },
