@@ -357,12 +357,6 @@ describe('arg-parser', () => {
         expect(helpCb.mock.calls[0][0]).toEqual(['--help']);
     });
 
-    it('calls version callback on --version', () => {
-        const versionCb = jest.fn();
-        argParser(helpAndVersionOptions, ['--version'], true, '', () => {}, versionCb);
-        expect(versionCb.mock.calls.length).toEqual(1);
-    });
-
     it('parses webpack args', () => {
         const res = argParser(core, ['--entry', 'test.js', '--hot', '-o', './dist/', '--stats'], true);
         expect(res.unknownArgs.length).toEqual(0);

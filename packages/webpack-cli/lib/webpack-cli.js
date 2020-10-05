@@ -235,15 +235,6 @@ class WebpackCLI extends GroupHelper {
         options.enabled = !args.includes('--no-color');
         return new HelpGroup().outputHelp(isCommand, subject, invalidArgs);
     }
-
-    runVersion(args, externalPkg) {
-        const HelpGroup = require('./groups/HelpGroup');
-        const { commands, allNames, hasUnknownArgs } = require('./utils/unknown-args');
-        const commandsUsed = args.filter((val) => commands.includes(val));
-        const invalidArgs = hasUnknownArgs(args, ...allNames);
-        options.enabled = !args.includes('--no-color');
-        return new HelpGroup().outputVersion(externalPkg, commandsUsed, invalidArgs);
-    }
 }
 
 module.exports = WebpackCLI;
