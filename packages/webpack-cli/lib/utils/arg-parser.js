@@ -1,6 +1,6 @@
 const commander = require('commander');
 const logger = require('./logger');
-const { commands } = require('./cli-flags');
+
 const { defaultCommands } = require('./commands');
 
 /**
@@ -12,28 +12,38 @@ const { defaultCommands } = require('./commands');
  * @param {boolean} argsOnly false if all of process.argv has been provided, true if
  * args is only a subset of process.argv that removes the first couple elements
  */
-function argParser(options, args, argsOnly = false, name = '', helpFunction) {
+function argParser(options, args, argsOnly = false, name = '', helpFunction = undefined, versionFunction = undefined, commands) {
     const parser = new commander.Command();
     // Set parser name
     parser.name(name);
     parser.storeOptionsAsProperties(false);
 
-    commands.reduce((parserInstance, cmd) => {
-        parser
-            .command(cmd.name)
-            .alias(cmd.alias)
-            .description(cmd.description)
-            .usage(cmd.usage)
-            .allowUnknownOption(true)
-            .action(async () => {
-                const cliArgs = args.slice(args.indexOf(cmd.name) + 1 || args.indexOf(cmd.alias) + 1);
-                return await require('../commands/ExternalCommand').run(defaultCommands[cmd.name], ...cliArgs);
-            });
-        return parser;
-    }, parser);
+    if (commands) {
+        commands.reduce((parserInstance, cmd) => {
+            parser
+                .command(cmd.name)
+                .alias(cmd.alias)
+                .description(cmd.description)
+                .usage(cmd.usage)
+                .allowUnknownOption(true)
+                .action(async () => {
+                    const cliArgs = args.slice(args.indexOf(cmd.name) + 1 || args.indexOf(cmd.alias) + 1);
+                    return await require('../commands/ExternalCommand').run(defaultCommands[cmd.name], ...cliArgs);
+                });
+            return parser;
+        }, parser);
 
-    // Prevent default behavior
-    parser.on('command:*', () => {});
+        // Prevent default behavior
+        parser.on('command:*', () => {});
+    }
+
+    // Use customized version output if available
+    if (versionFunction) {
+        parser.on('option:version', () => {
+            versionFunction();
+            process.exit(0);
+        });
+    }
 
     // Use customized help output if available
     if (helpFunction) {

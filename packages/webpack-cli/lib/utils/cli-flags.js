@@ -53,11 +53,6 @@ const commands = [
                 type: String,
                 description: 'To get the output in specified format ( accept json or markdown )',
             },
-            {
-                name: 'version',
-                type: Boolean,
-                description: 'Print version information of info package',
-            },
         ],
     },
     {

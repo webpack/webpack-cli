@@ -3,9 +3,11 @@ const webpack = packageExists('webpack') ? require('webpack') : undefined;
 const logger = require('./logger');
 const { writeFileSync } = require('fs');
 const bailAndWatchWarning = require('./warnings/bailAndWatchWarning');
+const { CompilerOutput } = require('./CompilerOutput');
 
 class Compiler {
     constructor() {
+        this.output = new CompilerOutput();
         this.compilerOptions = {};
     }
     setUpHookForCompilation(compilation, outputOptions, options) {
@@ -35,7 +37,8 @@ class Compiler {
     }
 
     generateOutput(outputOptions, stats) {
-        logger.raw(`${stats.toString(this.compilerOptions.stats)}\n`);
+        this.output.generateRawOutput(stats, this.compilerOptions);
+        process.stdout.write('\n');
         if (outputOptions.watch) {
             logger.info('watching files for updates...');
         }
@@ -84,15 +87,8 @@ class Compiler {
         // eslint-disable-next-line  no-async-promise-executor
         return new Promise(async (resolve) => {
             await this.compiler.run((err, stats) => {
-                if (this.compiler.close) {
-                    this.compiler.close(() => {
-                        const content = this.compilerCallback(err, stats, lastHash, options, outputOptions);
-                        resolve(content);
-                    });
-                } else {
-                    const content = this.compilerCallback(err, stats, lastHash, options, outputOptions);
-                    resolve(content);
-                }
+                const content = this.compilerCallback(err, stats, lastHash, options, outputOptions);
+                resolve(content);
             });
         });
     }

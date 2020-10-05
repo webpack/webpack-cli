@@ -1,5 +1,3 @@
-const { commands } = require('./cli-flags');
-
 function hyphenToUpperCase(name) {
     if (!name) {
         return name;
@@ -20,12 +18,6 @@ function arrayToObject(arr) {
     }, {});
 }
 
-const isCommandUsed = (args) =>
-    commands.find((cmd) => {
-        return args.includes(cmd.name) || args.includes(cmd.alias);
-    });
-
 module.exports = {
     arrayToObject,
-    isCommandUsed,
 };
