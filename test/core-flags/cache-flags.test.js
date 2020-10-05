@@ -1,6 +1,8 @@
 'use strict';
 
 const { run } = require('../utils/test-utils');
+const { existsSync } = require('fs');
+const { resolve } = require('path');
 
 describe('cache related flags from core', () => {
     it('should be successful with --cache ', () => {
@@ -25,17 +27,19 @@ describe('cache related flags from core', () => {
     });
 
     it('should set cache.cacheDirectory with --cache-cache-directory', () => {
-        const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '--cache-cache-directory', '/test-cache-path']);
+        const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '--cache-cache-directory', './test-cache-path']);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('test-cache-path');
+        expect(existsSync(resolve(__dirname, './test-cache-path'))).toBeTruthy();
     });
 
     it('should set cache.cacheLocation with --cache-cache-locations', () => {
-        const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '--cache-cache-location', '/test-locate-cache']);
+        const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '--cache-cache-location', './test-locate-cache']);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('test-locate-cache');
+        expect(existsSync(resolve(__dirname, './test-locate-cache'))).toBeTruthy();
     });
 
     it('should set cache.hashAlgorithm with --cache-hash-algorithm', () => {
