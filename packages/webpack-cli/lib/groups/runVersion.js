@@ -9,7 +9,7 @@ const outputVersion = (args) => {
 
     // The command with which version is invoked
     const commandUsed = isCommandUsed(args);
-    const invalidArgs = hasUnknownArgs(args, ...allNames);
+    const invalidArgs = hasUnknownArgs(args, allNames);
     if (commandsUsed && commandsUsed.length === 1 && invalidArgs.length === 0) {
         try {
             if ([commandUsed.alias, commandUsed.name].some((pkg) => commandsUsed.includes(pkg))) {
