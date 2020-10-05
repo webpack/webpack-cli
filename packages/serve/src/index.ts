@@ -21,5 +21,6 @@ export default function serve(...args: string[]): void {
         })
         .catch((err: object): void => {
             console.error(err);
+            throw new Error();
         });
 }
