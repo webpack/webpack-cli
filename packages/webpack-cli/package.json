@@ -43,6 +43,15 @@
     "webpack": "4.x.x || 5.x.x"
   },
   "peerDependenciesMeta": {
+    "@webpack-cli/generate-loader": {
+      "optional": true
+    },
+    "@webpack-cli/generate-plugin": {
+      "optional": true
+    },
+    "@webpack-cli/migrate": {
+      "optional": true
+    },
     "webpack-bundle-analyzer": {
       "optional": true
     }
