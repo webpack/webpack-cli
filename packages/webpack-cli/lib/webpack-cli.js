@@ -1,5 +1,4 @@
 const webpackMerge = require('webpack-merge');
-const { options } = require('colorette');
 const GroupHelper = require('./utils/GroupHelper');
 const { Compiler } = require('./utils/Compiler');
 const { groups, core } = require('./utils/cli-flags');
@@ -88,7 +87,7 @@ class WebpackCLI extends GroupHelper {
         for (const [key] of this.groupMap.entries()) {
             switch (key) {
                 case groups.HELP_GROUP: {
-                    const HelpGroup = require('./groups/HelpGroup');
+                    const HelpGroup = require('./groups/runHelp');
                     this.helpGroup = new HelpGroup();
                     break;
                 }
@@ -222,18 +221,6 @@ class WebpackCLI extends GroupHelper {
             outputOptions: this.outputConfiguration,
         });
         return webpack;
-    }
-
-    runHelp(args) {
-        const HelpGroup = require('./groups/HelpGroup');
-        const { commands, allNames, hasUnknownArgs } = require('./utils/unknown-args');
-        const subject = allNames.filter((name) => {
-            return args.includes(name);
-        })[0];
-        const invalidArgs = hasUnknownArgs(args, ...allNames);
-        const isCommand = commands.includes(subject);
-        options.enabled = !args.includes('--no-color');
-        return new HelpGroup().outputHelp(isCommand, subject, invalidArgs);
     }
 }
 

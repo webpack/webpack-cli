@@ -1,9 +1,14 @@
 const warnMock = jest.fn();
+const rawMock = jest.fn();
 jest.mock('../lib/utils/logger', () => {
     return {
         warn: warnMock,
+        raw: rawMock,
     };
 });
+
+const helpMock = jest.fn();
+jest.mock('../lib/groups/runHelp', () => helpMock);
 const processExitSpy = jest.spyOn(process, 'exit').mockImplementation(() => {});
 const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
@@ -351,10 +356,9 @@ describe('arg-parser', () => {
     });
 
     it('calls help callback on --help', () => {
-        const helpCb = jest.fn();
-        argParser(helpAndVersionOptions, ['--help'], true, '', helpCb);
-        expect(helpCb.mock.calls.length).toEqual(1);
-        expect(helpCb.mock.calls[0][0]).toEqual(['--help']);
+        argParser(helpAndVersionOptions, ['--help'], true, '');
+        expect(helpMock.mock.calls.length).toEqual(1);
+        expect(helpMock.mock.calls[0][0]).toEqual(['--help']);
     });
 
     it('parses webpack args', () => {
