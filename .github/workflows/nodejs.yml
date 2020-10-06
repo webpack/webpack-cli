@@ -68,16 +68,16 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Restore lerna cache
-        id: cache
+        id: cache-${{ matrix.webpack-version }}
         uses: actions/cache@v2
         with:
           path: |
             node_modules
             */*/node_modules
-          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-${{ matrix.webpack-version }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
+        if: steps.cache-${{ matrix.webpack-version }}.outputs.cache-hit != 'true'
         run: |
           yarn
           yarn bootstrap
