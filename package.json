@@ -41,7 +41,7 @@
     "test:ci": "yarn test:cli && yarn test:packages",
     "test:watch": "jest test/ packages/ --watch",
     "test:smoke": "smoketests/smoketests.sh",
-    "publish:monorepo": "yarn build && lerna publish --canary --preid rc --dist-tag next"
+    "publish:monorepo": "yarn build && lerna version && lerna publish --canary --preid rc --dist-tag next"
   },
   "config": {
     "commitizen": {

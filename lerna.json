@@ -5,7 +5,7 @@
   "npmClient": "yarn",
   "useWorkspaces": true,
   "command": {
-    "publish": {
+    "version": {
       "message": "chore(release): publish new version",
       "conventionalCommits": true,
       "allowBranch": ["master", "next"]
