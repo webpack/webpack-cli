@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.1-rc.1](https://github.com/webpack/webpack-cli/compare/@webpack-cli/webpack-scaffold@1.0.1-alpha.4...@webpack-cli/webpack-scaffold@1.0.1-rc.1) (2020-10-06)
+
+**Note:** Version bump only for package @webpack-cli/webpack-scaffold
+
 ## [1.0.1-alpha.4](https://github.com/ematipico/webpack-cli/compare/@webpack-cli/webpack-scaffold@1.0.1-alpha.3...@webpack-cli/webpack-scaffold@1.0.1-alpha.4) (2020-03-02)
 
 **Note:** Version bump only for package @webpack-cli/webpack-scaffold
