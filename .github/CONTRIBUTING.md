@@ -303,6 +303,12 @@ webpack is feature rich and documentation is a time sink. We
 greatly appreciate any time spent fixing typos or clarifying sections in the
 documentation.
 
+## Releasing
+
+Run `yarn publish:monorepo` to build all packages and bump versions, this will then get published on npm.
+
+> NOTE: Packages which are internally consumed need to be manually bumped in each package.json file which uses the package.
+
 ## Join the development
 
 -   Before you join development, please set up the project on your local machine, run it and go through the application completely. Use any command you can find and see what it does. Explore.
