@@ -36,6 +36,7 @@ yarn add webpack-cli --dev
 ### webpack 4
 
 ```
+  --analyze                     It invokes webpack-bundle-analyzer plugin to get bundle information
   --entry string[]              The entry point(s) of your application.
   -c, --config string[]         Provide path to webpack configuration file(s)
   --config-name string[]        Name of the configuration to use
