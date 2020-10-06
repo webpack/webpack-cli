@@ -43,4 +43,10 @@ describe('--config-name flag', () => {
         expect(stderr).toContain('Configuration with name "test" was not found.');
         expect(stdout).toBeFalsy();
     });
+
+    it('should log error if multiple configurations are not found', () => {
+        const { stderr, stdout } = run(__dirname, ['--config-name', 'test', '-c', 'single-config.js'], false);
+        expect(stderr).toContain('Multiple configurations not found. Please use "--config-name" with multiple configurations');
+        expect(stdout).toBeFalsy();
+    });
 });
