@@ -28,13 +28,12 @@
     "prebuild": "yarn clean",
     "build": "tsc --build",
     "watch": "tsc --build --watch",
-    "prepsuite": "node scripts/prepareSuite.js",
     "commit": "git-cz",
-    "changelog": "lerna-changelog",
     "lint:prettier": "prettier --list-different . \"!**/*.{js,ts}\" ",
     "lint:eslint": "eslint --cache --ext .js --ext .ts .",
     "lint": "yarn lint:eslint && yarn lint:prettier",
     "fix": "yarn lint:eslint --fix && yarn lint:prettier --write",
+    "prepsuite": "node scripts/prepareSuite.js",
     "pretest": "yarn build && yarn lint && yarn prepsuite",
     "test": "jest --reporters=default --reporters=jest-junit",
     "test:cli": "jest test/ --reporters=default --reporters=jest-junit --forceExit",
@@ -42,7 +41,7 @@
     "test:ci": "yarn test:cli && yarn test:packages",
     "test:watch": "jest test/ packages/ --watch",
     "test:smoke": "smoketests/smoketests.sh",
-    "publish:monorepo": "yarn format && yarn test && yarn build && lerna publish -m \"chore: monorepo version update\""
+    "publish:monorepo": "yarn build && yarn lerna-changelog && lerna publish -m \"chore: monorepo version update\" --canary --preid rc --dist-tag next"
   },
   "standard-version": {
     "types": [
