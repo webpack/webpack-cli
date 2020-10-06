@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.1-rc.2](https://github.com/webpack/webpack-cli/compare/@webpack-cli/migrate@1.0.1-alpha.5...@webpack-cli/migrate@1.0.1-rc.2) (2020-10-06)
+
+### Bug Fixes
+
+-   **packages:** make packages have correct main paths to index ([#1366](https://github.com/webpack/webpack-cli/issues/1366)) ([5dd7bd6](https://github.com/webpack/webpack-cli/commit/5dd7bd62046568481996e48328b15a335557f8ae))
+-   regression with migrate command ([7ebcbb8](https://github.com/webpack/webpack-cli/commit/7ebcbb8030b9111df797abdd67e504178b18aeac))
+
 ## [1.0.1-rc.1](https://github.com/webpack/webpack-cli/compare/@webpack-cli/migrate@1.0.1-alpha.5...@webpack-cli/migrate@1.0.1-rc.1) (2020-10-06)
 
 ### Bug Fixes

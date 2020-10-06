@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0-rc.1](https://github.com/webpack/webpack-cli/compare/@webpack-cli/init@1.0.1-alpha.5...@webpack-cli/init@1.1.0-rc.1) (2020-10-06)
+
+### Bug Fixes
+
+-   **packages:** make packages have correct main paths to index ([#1366](https://github.com/webpack/webpack-cli/issues/1366)) ([5dd7bd6](https://github.com/webpack/webpack-cli/commit/5dd7bd62046568481996e48328b15a335557f8ae))
+-   add necessary peerDependencies ([#1825](https://github.com/webpack/webpack-cli/issues/1825)) ([0f13ab5](https://github.com/webpack/webpack-cli/commit/0f13ab5ddd9e28e5e7095721d086a58aebaf98a5))
+
+### Features
+
+-   add flag to force config ([f61e7e0](https://github.com/webpack/webpack-cli/commit/f61e7e0d1b03284d7333c4f0f38294460209a25d))
+
 # [1.1.0-rc.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/init@1.0.1-alpha.5...@webpack-cli/init@1.1.0-rc.0) (2020-10-06)
 
 ### Bug Fixes

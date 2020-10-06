@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.1-rc.2](https://github.com/webpack/webpack-cli/compare/@webpack-cli/generators@1.0.1-alpha.5...@webpack-cli/generators@1.0.1-rc.2) (2020-10-06)
+
+### Bug Fixes
+
+-   **generators:** fix and refactor entry util, add tests ([#1392](https://github.com/webpack/webpack-cli/issues/1392)) ([219c633](https://github.com/webpack/webpack-cli/commit/219c633e284518fe9c638d26a49d79394f0b6d68))
+-   **generators:** fix generators init loader's test regex ([#1309](https://github.com/webpack/webpack-cli/issues/1309)) ([62e0314](https://github.com/webpack/webpack-cli/commit/62e03143ba3b8752665a5ff6ff134daadbe9c2bc))
+-   **generators:** fix small issues with generators ([#1385](https://github.com/webpack/webpack-cli/issues/1385)) ([f62c60d](https://github.com/webpack/webpack-cli/commit/f62c60d0a52fd6294ead8e0ee9310d017fe21807))
+-   add necessary peerDependencies ([#1825](https://github.com/webpack/webpack-cli/issues/1825)) ([0f13ab5](https://github.com/webpack/webpack-cli/commit/0f13ab5ddd9e28e5e7095721d086a58aebaf98a5))
+-   generated loader template ([#1720](https://github.com/webpack/webpack-cli/issues/1720)) ([a380a78](https://github.com/webpack/webpack-cli/commit/a380a785c296208af7017f547cd34cf72517f9da))
+
 ## [1.0.1-rc.1](https://github.com/webpack/webpack-cli/compare/@webpack-cli/generators@1.0.1-alpha.5...@webpack-cli/generators@1.0.1-rc.1) (2020-10-06)
 
 ### Bug Fixes

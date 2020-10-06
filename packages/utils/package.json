@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/utils",
-  "version": "1.1.0-rc.0",
+  "version": "1.1.0-rc.1",
   "description": "webpack-cli utility files",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -9,7 +9,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@webpack-cli/package-utils": "^1.0.1-rc.1",
+    "@webpack-cli/package-utils": "^1.0.1-rc.2",
     "colorette": "^1.2.1",
     "execa": "^4.0.0",
     "findup-sync": "^4.0.0",
