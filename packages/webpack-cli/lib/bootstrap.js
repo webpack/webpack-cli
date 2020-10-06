@@ -1,7 +1,9 @@
 const { options } = require('colorette');
 const WebpackCLI = require('./webpack-cli');
-const { core, commands } = require('./utils/cli-flags');
+const { core } = require('./utils/cli-flags');
+const versionRunner = require('./groups/runVersion');
 const logger = require('./utils/logger');
+const { isCommandUsed } = require('./utils/arg-utils');
 const cliExecuter = require('./utils/cli-executer');
 const argParser = require('./utils/arg-parser');
 require('./utils/process-log');
@@ -10,27 +12,20 @@ process.title = 'webpack-cli';
 // Create a new instance of the CLI object
 const cli = new WebpackCLI();
 
-const isCommandUsed = (args) =>
-    commands.find((cmd) => {
-        return args.includes(cmd.name) || args.includes(cmd.alias);
-    });
-
 async function runCLI(cliArgs) {
     let args;
 
     const commandIsUsed = isCommandUsed(cliArgs);
-    const runVersion = () => {
-        cli.runVersion(cliArgs, commandIsUsed);
-    };
-    const parsedArgs = argParser(core, cliArgs, true, process.title, cli.runHelp, runVersion, commands);
-
-    if (parsedArgs.unknownArgs.includes('help')) {
+    const parsedArgs = argParser(core, cliArgs, true, process.title, cli.runHelp);
+    if (parsedArgs.unknownArgs.includes('help') || parsedArgs.opts.help) {
+        options.enabled = !cliArgs.includes('--no-color');
         cli.runHelp(cliArgs);
         process.exit(0);
     }
 
-    if (parsedArgs.unknownArgs.includes('version')) {
-        runVersion();
+    if (parsedArgs.unknownArgs.includes('version') || parsedArgs.opts.version) {
+        options.enabled = !cliArgs.includes('--no-color');
+        versionRunner(cliArgs, commandIsUsed);
         process.exit(0);
     }
 

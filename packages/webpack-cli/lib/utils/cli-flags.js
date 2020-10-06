@@ -53,6 +53,11 @@ const commands = [
                 type: String,
                 description: 'To get the output in specified format ( accept json or markdown )',
             },
+            {
+                name: 'version',
+                type: Boolean,
+                description: 'Print version information of info package',
+            },
         ],
     },
     {
@@ -245,7 +250,7 @@ let flagsFromCore =
                   meta.usage = `--${flag} <value>`;
               } else {
                   meta.type = Boolean;
-                  meta.negative = true;
+                  meta.negative = !flag.endsWith('-reset');
                   meta.usage = `--${flag}`;
               }
               return {

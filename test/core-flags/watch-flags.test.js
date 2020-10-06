@@ -23,16 +23,14 @@ describe('watch config related flag', () => {
                 }
             });
 
-            it(`should config --no-${flag.name} correctly`, () => {
-                const { stderr, stdout } = run(__dirname, [`--no-${flag.name}`]);
+            if (!flag.name.endsWith('-reset')) {
+                it(`should config --no-${flag.name} correctly`, () => {
+                    const { stderr, stdout } = run(__dirname, [`--no-${flag.name}`]);
 
-                expect(stderr).toBeFalsy();
-                if (flag.name.includes('reset')) {
-                    expect(stdout).toContain('watch: false');
-                } else {
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`watchOptions: { ${propName}: false }`);
-                }
-            });
+                });
+            }
         }
 
         if (flag.type === Number) {
