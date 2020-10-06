@@ -23,9 +23,9 @@
     "web"
   ],
   "dependencies": {
-    "@webpack-cli/package-utils": "^1.0.1-rc.0",
     "@webpack-cli/info": "^1.0.1-rc.0",
     "@webpack-cli/init": "^1.0.1-rc.0",
+    "@webpack-cli/package-utils": "^1.0.1-rc.0",
     "@webpack-cli/serve": "^1.0.1-rc.0",
     "ansi-escapes": "^4.3.1",
     "colorette": "^1.2.1",
@@ -50,6 +50,9 @@
       "optional": true
     },
     "@webpack-cli/migrate": {
+      "optional": true
+    },
+    "webpack-bundle-analyzer": {
       "optional": true
     }
   },

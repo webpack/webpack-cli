@@ -53,6 +53,11 @@ const commands = [
                 type: String,
                 description: 'To get the output in specified format ( accept json or markdown )',
             },
+            {
+                name: 'version',
+                type: Boolean,
+                description: 'Print version information of info package',
+            },
         ],
     },
     {
@@ -217,12 +222,13 @@ const core = [
         multiple: true,
         description: 'Name of the configuration to use',
     },
-    /* 		{
-        name: "analyze",
+    {
+        name: 'analyze',
+        usage: '--analyze',
         type: Boolean,
-        group: BASIC_GROUP,
-        description: "analyze build for performance improvements"
-    }, */
+        multiple: false,
+        description: 'It invokes webpack-bundle-analyzer plugin to get bundle information',
+    },
     /* 		{
         name: "interactive",
         type: Boolean,
@@ -245,7 +251,7 @@ let flagsFromCore =
                   meta.usage = `--${flag} <value>`;
               } else {
                   meta.type = Boolean;
-                  meta.negative = true;
+                  meta.negative = !flag.endsWith('-reset');
                   meta.usage = `--${flag}`;
               }
               return {

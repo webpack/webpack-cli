@@ -39,8 +39,6 @@ lerna-debug.log
 # package-lock file
 package-lock.json
 
-# source maps of docs
-docs/**/*.map
 junit.xml
 
 # typescript source maps
@@ -50,8 +48,3 @@ packages/**/*.map
 # cache
 .eslintcache
 
-# temporary test files
-test-assets/
-./lib/
-
-lib/test/loader/error-test/src/index.d.ts

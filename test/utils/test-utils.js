@@ -244,6 +244,8 @@ const hyphenToUpperCase = (name) => {
     });
 };
 
+const isWindows = process.platform === 'win32';
+
 module.exports = {
     run,
     runWatch,
@@ -256,4 +258,5 @@ module.exports = {
     runInfo,
     hyphenToUpperCase,
     isWebpack5,
+    isWindows,
 };

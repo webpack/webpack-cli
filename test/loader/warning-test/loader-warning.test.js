@@ -8,6 +8,6 @@ describe('loader warning test', () => {
 
         expect(stdout).toContain('[1 warning]');
         expect(stdout).toContain('This is a warning');
-        expect(exitCode).not.toEqual(0);
+        expect(exitCode).toEqual(0);
     });
 });
