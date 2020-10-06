@@ -41,45 +41,7 @@
     "test:ci": "yarn test:cli && yarn test:packages",
     "test:watch": "jest test/ packages/ --watch",
     "test:smoke": "smoketests/smoketests.sh",
-    "publish:monorepo": "yarn build && yarn lerna-changelog && lerna publish -m \"chore: monorepo version update\" --canary --preid rc --dist-tag next"
-  },
-  "standard-version": {
-    "types": [
-      {
-        "type": "feat",
-        "section": "Features"
-      },
-      {
-        "type": "fix",
-        "section": "Bug Fixes"
-      },
-      {
-        "type": "chore",
-        "section": "Chores",
-        "hidden": false
-      },
-      {
-        "type": "docs",
-        "section": "Documentation",
-        "hidden": false
-      },
-      {
-        "type": "style",
-        "hidden": true
-      },
-      {
-        "type": "refactor",
-        "hidden": true
-      },
-      {
-        "type": "perf",
-        "hidden": true
-      },
-      {
-        "type": "test",
-        "hidden": true
-      }
-    ]
+    "publish:monorepo": "yarn build && lerna version --preid rc && lerna publish from-git --canary --preid rc --dist-tag next"
   },
   "config": {
     "commitizen": {
@@ -95,17 +57,16 @@
   "devDependencies": {
     "@babel/core": "^7.11.1",
     "@babel/preset-env": "^7.11.0",
-    "@commitlint/cli": "^8.3.5",
-    "@commitlint/config-lerna-scopes": "^9.1.1",
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-lerna-scopes": "^11.0.0",
     "@types/jest": "^25.1.4",
     "@types/node": "13.9.8",
     "@typescript-eslint/eslint-plugin": "^2.34.0",
     "@typescript-eslint/parser": "^2.34.0",
     "colorette": "^1.2.1",
-    "commitlint": "^9.1.2",
-    "commitlint-config-cz": "^0.13.1",
+    "commitlint": "^11.0.0",
+    "commitlint-config-cz": "^0.13.2",
     "concat-stream": "^2.0.0",
-    "conventional-changelog-cli": "^2.1.0",
     "cz-customizable": "^6.3.0",
     "del-cli": "^3.0.1",
     "eslint": "^6.8.0",
@@ -121,7 +82,6 @@
     "jest-serializer-ansi": "^1.0.3",
     "jest-watch-typeahead": "^0.5.0",
     "lerna": "^3.22.1",
-    "lerna-changelog": "^1.0.1",
     "lint-staged": "^10.2.11",
     "prettier": "^2.0.5",
     "readable-stream": "^3.6.0",
