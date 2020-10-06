@@ -1,6 +1,7 @@
 # IDE folders
 .idea
 .vscode
+*.iml
 
 # IDE files
 *.code-workspace
