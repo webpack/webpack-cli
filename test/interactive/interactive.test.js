@@ -25,6 +25,9 @@ describe('--interactive flag', () => {
         const clear = '\x1B[2J\x1B[3J\x1B[H';
         proc.stdout.on('data', (chunk) => {
             const data = chunk.toString();
+            if (semaphore >= 0) {
+                console.log(`${semaphore}: ${data}`);
+            }
             if (data.includes('\u2B24')) {
                 writeFileSync(resolve(__dirname, './src/index.js'), `console.log('I am Batman');`);
                 semaphore--;
@@ -58,6 +61,9 @@ describe('--interactive flag', () => {
         let semaphore = 1;
         proc.stdout.on('data', (chunk) => {
             const data = chunk.toString();
+            if (semaphore >= 0) {
+                console.log(`${semaphore}: ${data}`);
+            }
             if (data.includes('watching files for updates')) {
                 writeFileSync(resolve(__dirname, './src/index.js'), `console.log('I am Batman');`);
                 semaphore--;
