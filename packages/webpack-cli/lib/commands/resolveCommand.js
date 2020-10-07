@@ -19,4 +19,4 @@ const run = async (name, ...args) => {
     return pkgLoc ? require(scopeName).default(...args) : null;
 };
 
-module.exports = { run };
+module.exports = run;
