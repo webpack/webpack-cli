@@ -25,7 +25,7 @@
   "devDependencies": {
     "@types/mkdirp": "^1.0.0",
     "@types/yeoman-assert": "^3.1.1",
-    "@types/yeoman-generator": "^3.1.4",
+    "@types/yeoman-generator": "^4.11.2",
     "@types/yeoman-test": "^2.0.3",
     "rimraf": "^3.0.2",
     "yeoman-assert": "^3.1.1",
