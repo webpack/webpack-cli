@@ -7,7 +7,7 @@ jest.mock('webpack-dev-server/lib/Server');
 describe('startDevServer', () => {
     // eslint-disable-next-line @typescript-eslint/no-var-requires, node/no-extraneous-require
     const webpack = require('webpack');
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    // eslint-disable-next-line @typescript-eslint/no-var-requires, node/no-extraneous-require
     const DevServer = require('webpack-dev-server/lib/Server');
 
     beforeEach(() => {

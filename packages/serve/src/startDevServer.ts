@@ -12,7 +12,7 @@ import mergeOptions from './mergeOptions';
  * @returns {Object[]} array of resulting servers
  */
 export default function startDevServer(compiler, devServerArgs): object[] {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    // eslint-disable-next-line @typescript-eslint/no-var-requires, node/no-extraneous-require
     const Server = require('webpack-dev-server/lib/Server');
     const cliOptions = createConfig(devServerArgs);
     const devServerOptions = getDevServerOptions(compiler);

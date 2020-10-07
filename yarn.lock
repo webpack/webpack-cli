@@ -2494,7 +2494,7 @@
     chalk "^4.1.0"
     rxjs ">=6.4.0"
 
-"@types/yeoman-generator@*":
+"@types/yeoman-generator@*", "@types/yeoman-generator@^4.11.2":
   version "4.11.2"
   resolved "https://registry.yarnpkg.com/@types/yeoman-generator/-/yeoman-generator-4.11.2.tgz#c46b294a46fc8b3a5c46dff8a8712eaad02a7665"
   integrity sha512-9QYsdVTLlUHg+aiDT1uqWf63oQXedCT4ty5L4KC4nd8gsp1Ef9UdXxpcc4yBU9ciRf4DqE1pViqxc6LTSosdsg==
@@ -2504,14 +2504,6 @@
     "@types/inquirer" "*"
     "@types/mem-fs-editor" "*"
     "@types/yeoman-environment" "*"
-    rxjs ">=6.4.0"
-
-"@types/yeoman-generator@3.1.4", "@types/yeoman-generator@^3.1.4":
-  version "3.1.4"
-  resolved "https://registry.yarnpkg.com/@types/yeoman-generator/-/yeoman-generator-3.1.4.tgz#21d6599515d41447eb84e2bc45033f1a640bbaf2"
-  integrity sha512-5oG9Qlk119qSHQpSClGonDIs4djxZSPurtg6faHItjeg8cffhkKs4twVYE+Wa0crAKJZDOwSd/Vmc6BSqJtgMA==
-  dependencies:
-    "@types/inquirer" "*"
     rxjs ">=6.4.0"
 
 "@types/yeoman-test@^2.0.3":
