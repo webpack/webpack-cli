@@ -1,6 +1,6 @@
 'use strict';
 
-const { appendDataIfFileExists, run, runAndGetWatchProc } = require('./test-utils');
+const { appendDataIfFileExists, run, runAndGetWatchProc, hyphenToUpperCase } = require('./test-utils');
 const { writeFileSync, unlinkSync, readFileSync } = require('fs');
 const { resolve } = require('path');
 
@@ -104,5 +104,12 @@ describe('runAndGetWatchProc function', () => {
     it('writes to stdin', async () => {
         const { stdout } = await runAndGetWatchProc(__dirname, ['init'], false, 'n');
         expect(stdout).toContain('Which will be your application entry point?');
+    });
+});
+
+describe('hyphenToUpperCase function', () => {
+    it('changes value from hypen to upperCase', () => {
+        const result = hyphenToUpperCase('test-value');
+        expect(result).toEqual('testValue');
     });
 });
