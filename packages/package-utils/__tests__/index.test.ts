@@ -2,7 +2,7 @@
 
 jest.mock('@webpack-cli/package-utils');
 
-import { packageExists, promptInstallation } from '@webpack-cli/package-utils';
+import { packageExists, promptInstallation } from '../src/packageUtils';
 import { run } from '../../webpack-cli/lib/commands/resolveCommand';
 
 describe('@webpack-cli/package-utils', () => {
