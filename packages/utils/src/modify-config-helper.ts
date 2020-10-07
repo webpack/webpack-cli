@@ -148,7 +148,6 @@ export function modifyHelperUtil(
                 return runTransform(transformConfig, 'init', generateConfig);
             } catch (err) {
                 logger.error(err);
-                logger.error(`${err.stack}`);
                 process.exitCode = 2;
             }
         },
