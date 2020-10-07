@@ -1,6 +1,6 @@
 'use strict';
 
-const { runWatch, isWindows, runAndGetWatchProc } = require('../utils/test-utils');
+const { runAndGetWatchProc } = require('../utils/test-utils');
 const { writeFileSync } = require('fs');
 const { resolve } = require('path');
 const { version } = require('webpack');
@@ -9,22 +9,6 @@ const wordsInStatsv4 = ['Hash', 'Version', 'Time', 'Built at:', 'main.js'];
 const wordsInStatsv5 = ['asset', 'index.js', 'compiled successfully'];
 
 describe('--watch flag', () => {
-    it('should watch for file changes', async () => {
-        if (isWindows) {
-            // TODO: Fix on windows
-            expect(true).toBe(true);
-            return;
-        }
-        const { stdout } = await runWatch({
-            testCase: __dirname,
-            args: ['--watch'],
-            setOutput: false,
-            outputKillStr: 'main',
-        });
-
-        expect(stdout).toContain('watching files for updates...');
-    });
-
     it('should recompile upon file change', (done) => {
         const proc = runAndGetWatchProc(__dirname, ['--watch'], false, '', true);
         let semaphore = 1;
