@@ -71,7 +71,7 @@ class Compiler {
             if (typeof outputOptions.json === 'string') {
                 try {
                     writeFileSync(outputOptions.json, JSONStats);
-                    logger.info(`stats are successfully stored as json to ${outputOptions.json}`);
+                    logger.success(`stats are successfully stored as json to ${outputOptions.json}`);
                 } catch (err) {
                     logger.error(err);
                 }
