@@ -1,24 +1,8 @@
 const { yellow, cyan } = require('colorette');
 const logger = require('../utils/logger');
-const execa = require('execa');
 const { packageExists, promptInstallation } = require('@webpack-cli/package-utils');
 
 const packagePrefix = '@webpack-cli';
-const runCommand = async (command, args = []) => {
-    const executedCommand = await execa(command, args, {
-        stdio: 'inherit',
-        shell: true,
-    });
-    return new Promise((resolve, reject) => {
-        executedCommand.on('error', (error) => {
-            reject(error);
-        });
-
-        executedCommand.on('exit', () => {
-            resolve();
-        });
-    });
-};
 
 const run = async (name, ...args) => {
     const scopeName = packagePrefix + '/' + name;
@@ -35,4 +19,4 @@ const run = async (name, ...args) => {
     return pkgLoc ? require(scopeName).default(...args) : null;
 };
 
-module.exports = { run, runCommand };
+module.exports = run;
