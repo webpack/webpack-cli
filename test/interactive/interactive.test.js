@@ -28,7 +28,7 @@ describe('--interactive flag', () => {
             if (semaphore >= 0) {
                 console.log(`${semaphore}: ${data}`);
             }
-            if (data.includes('\u2B24')) {
+            if (semaphore === 2 && data.includes('\u2B24')) {
                 writeFileSync(resolve(__dirname, './src/index.js'), `console.log('I am Batman');`);
                 semaphore--;
                 return;
@@ -64,7 +64,7 @@ describe('--interactive flag', () => {
             if (semaphore >= 0) {
                 console.log(`${semaphore}: ${data}`);
             }
-            if (data.includes('watching files for updates')) {
+            if (semaphore === 1 && data.includes('watching files for updates')) {
                 writeFileSync(resolve(__dirname, './src/index.js'), `console.log('I am Batman');`);
                 semaphore--;
                 return;
