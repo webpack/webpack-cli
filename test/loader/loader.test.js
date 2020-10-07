@@ -12,10 +12,6 @@ const ENTER = '\x0D';
 const loaderName = 'test-loader';
 const loaderPath = join(__dirname, loaderName);
 
-// Since scaffolding is time consuming
-
-jest.setTimeout(60000);
-
 describe('loader command', () => {
     beforeAll(() => {
         rimraf.sync(loaderPath);
