@@ -1,6 +1,6 @@
 const { packageExists, promptInstallation } = require('@webpack-cli/package-utils');
 const { yellow } = require('colorette');
-const { error, info } = require('../utils/logger');
+const { error, success } = require('../utils/logger');
 
 /**
  * Resolve advanced flags
@@ -46,7 +46,7 @@ const resolveAdvanced = async (args) => {
             await promptInstallation('webpack-bundle-analyzer', () => {
                 error(`It looks like ${yellow('webpack-bundle-analyzer')} is not installed.`);
             })
-                .then(() => info(`${yellow('webpack-bundle-analyzer')} was installed sucessfully.`))
+                .then(() => success(`${yellow('webpack-bundle-analyzer')} was installed sucessfully.`))
                 .catch(() => {
                     error(`Action Interrupted, Please try once again or install ${yellow('webpack-bundle-analyzer')} manually.`);
                     process.exit(2);

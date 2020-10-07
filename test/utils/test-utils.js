@@ -6,6 +6,7 @@ const { sync: spawnSync, node: execaNode } = execa;
 const { Writable } = require('readable-stream');
 const concat = require('concat-stream');
 const { version } = require('webpack');
+const { hyphenToUpperCase } = require('../../packages/webpack-cli/lib/utils/arg-utils');
 
 const WEBPACK_PATH = path.resolve(__dirname, '../../packages/webpack-cli/bin/cli.js');
 const ENABLE_LOG_COMPILATION = process.env.ENABLE_PIPE || false;
@@ -233,15 +234,6 @@ const runServe = (args, testPath) => {
 
 const runInfo = (args, testPath) => {
     return run(testPath, ['info'].concat(args), false);
-};
-
-const hyphenToUpperCase = (name) => {
-    if (!name) {
-        return name;
-    }
-    return name.replace(/-([a-z])/g, function (g) {
-        return g[1].toUpperCase();
-    });
 };
 
 const isWindows = process.platform === 'win32';

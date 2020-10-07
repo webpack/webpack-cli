@@ -48,7 +48,7 @@ const DEFAULT_WEBPACK_CONFIG_FILENAME = 'webpack.config.js';
 
 export function modifyHelperUtil(
     action: string,
-    generator: typeof Generator,
+    generator: Generator.GeneratorConstructor,
     configFile: string = DEFAULT_WEBPACK_CONFIG_FILENAME,
     packages?: string[],
     autoSetDefaults = false,
@@ -91,11 +91,13 @@ export function modifyHelperUtil(
     }
 
     env.registerStub(generator, generatorName);
-    env.run(generatorName, {
-        configFile,
-        autoSetDefaults,
-    })
-        .then((): void => {
+    env.run(
+        generatorName,
+        {
+            configFile,
+            autoSetDefaults,
+        },
+        () => {
             let configModule: object;
             let finalConfig: WebpackScaffoldObject = {
                 config: {},
@@ -128,29 +130,26 @@ export function modifyHelperUtil(
                 process.exitCode = 2;
             }
 
-            const transformConfig = Object.assign(
-                {
-                    configFile: !configPath ? null : fs.readFileSync(configPath, 'utf8'),
-                    configPath,
-                },
-                finalConfig,
-            ) as TransformConfig;
-            if (finalConfig.usingDefaults && finalConfig.usingDefaults === true) {
-                const runCommand = getPackageManager() === 'yarn' ? 'yarn build' : 'npm run build';
+            try {
+                const transformConfig = Object.assign(
+                    {
+                        configFile: !configPath ? null : fs.readFileSync(configPath, 'utf8'),
+                        configPath,
+                    },
+                    finalConfig,
+                ) as TransformConfig;
+                if (finalConfig.usingDefaults && finalConfig.usingDefaults === true) {
+                    const runCommand = getPackageManager() === 'yarn' ? 'yarn build' : 'npm run build';
 
-                logger.log(`\nYou can now run ${green(runCommand)} to bundle your application!\n`);
+                    logger.log(`\nYou can now run ${green(runCommand)} to bundle your application!\n`);
+                }
+
+                // scaffold webpack config file from using .yo-rc.json
+                return runTransform(transformConfig, 'init', generateConfig);
+            } catch (err) {
+                logger.error(err);
+                process.exitCode = 2;
             }
-
-            // scaffold webpack config file from using .yo-rc.json
-            return runTransform(transformConfig, 'init', generateConfig);
-        })
-        .catch((err): void => {
-            logger.error(
-                `
-Unexpected Error
-please file an issue here https://github.com/webpack/webpack-cli/issues/new?template=Bug_report.md
-				`,
-            );
-            logger.error(err);
-        });
+        },
+    );
 }

@@ -59,6 +59,7 @@
     "@babel/preset-env": "^7.11.0",
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-lerna-scopes": "^11.0.0",
+    "@types/cross-spawn": "^6.0.1",
     "@types/jest": "^25.1.4",
     "@types/node": "13.9.8",
     "@typescript-eslint/eslint-plugin": "^2.34.0",
@@ -91,6 +92,7 @@
     "typescript": "^3.9.7",
     "webpack": "^4.44.2",
     "webpack-bundle-analyzer": "^3.9.0",
+    "webpack-dev-server": "3.10.3",
     "yeoman-test": "^2.7.0"
   }
 }

@@ -1,8 +1,13 @@
 'use strict';
 
-jest.mock('@webpack-cli/package-utils');
+jest.mock('../lib/packageUtils', () => {
+    return {
+        packageExists: jest.fn(),
+        promptInstallation: jest.fn(),
+    };
+});
 
-import { packageExists, promptInstallation } from '@webpack-cli/package-utils';
+import { packageExists, promptInstallation } from '../lib/packageUtils';
 import { run } from '../../webpack-cli/lib/commands/resolveCommand';
 
 describe('@webpack-cli/package-utils', () => {
