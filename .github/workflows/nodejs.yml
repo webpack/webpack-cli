@@ -83,7 +83,7 @@ jobs:
           yarn bootstrap
 
       - name: Install webpack ${{ matrix.webpack-version }}
-        if: steps.cache-${{ matrix.webpack-version }}.outputs.cache-hit != 'true'
+        if: steps.cache.outputs.cache-hit != 'true'
         run: yarn add -W webpack@${{ matrix.webpack-version }}
 
       - name: Build
