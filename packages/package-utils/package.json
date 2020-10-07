@@ -39,10 +39,6 @@
     "execa": "^4.0.0",
     "global-modules": "^2.0.0"
   },
-  "devDependencies": {
-    "@types/cross-spawn": "^6.0.1",
-    "@webpack-cli/package-utils": "^1.0.1-rc.1"
-  },
   "peerDependenciesMeta": {
     "webpack": {
       "optional": true
