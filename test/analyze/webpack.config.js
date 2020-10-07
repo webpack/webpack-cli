@@ -2,6 +2,6 @@ const WebpackCLITestPlugin = require('../utils/webpack-cli-test-plugin');
 
 module.exports = {
     mode: 'development',
-    entry: './main.js',
+    entry: './src/main.js',
     plugins: [new WebpackCLITestPlugin(['plugins'], false)],
 };
