@@ -9,14 +9,12 @@ const wordsInStatsv4 = ['Hash', 'Version', 'Time', 'Built at:', 'main.js'];
 const wordsInStatsv5 = ['asset', 'index.js', 'compiled successfully'];
 
 describe('--watch flag', () => {
-    if (isWindows) {
-        it('TODO: Fix on windows', () => {
-            expect(true).toBe(true);
-        });
-        return;
-    }
-
     it('should watch for file changes', async () => {
+        if (isWindows) {
+            // TODO: Fix on windows
+            expect(true).toBe(true);
+            return;
+        }
         const { stdout } = await runWatch({
             testCase: __dirname,
             args: ['--watch'],
