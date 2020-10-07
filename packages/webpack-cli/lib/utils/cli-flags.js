@@ -227,14 +227,14 @@ const core = [
         usage: '--analyze',
         type: Boolean,
         group: BASIC_GROUP,
-        description: 'analyze build for performance improvements',
+        description: 'It invokes webpack-bundle-analyzer plugin to get bundle information',
     },
     {
         name: 'interactive',
         type: Boolean,
         group: BASIC_GROUP,
         multiple: false,
-        description: 'It invokes webpack-bundle-analyzer plugin to get bundle information',
+        description: 'enables interactive mode',
     },
 ];
 
