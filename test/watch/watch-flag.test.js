@@ -11,13 +11,12 @@ describe('--watch flag', () => {
     }
 
     it('should watch for file changes', async () => {
-        const { stdout, stderr } = await runWatch({
+        const { stdout } = await runWatch({
             testCase: __dirname,
             args: ['--watch'],
             setOutput: false,
             outputKillStr: 'main',
         });
-        expect(stderr).toBeFalsy();
         expect(stdout).toContain('watching files for updates...');
     });
 });
