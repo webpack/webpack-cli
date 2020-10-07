@@ -3,11 +3,9 @@ const webpack = packageExists('webpack') ? require('webpack') : undefined;
 const logger = require('./logger');
 const { writeFileSync } = require('fs');
 const bailAndWatchWarning = require('./warnings/bailAndWatchWarning');
-const { CompilerOutput } = require('./CompilerOutput');
 
 class Compiler {
     constructor() {
-        this.output = new CompilerOutput();
         this.compilerOptions = {};
     }
     setUpHookForCompilation(compilation, outputOptions, options) {
@@ -37,8 +35,7 @@ class Compiler {
     }
 
     generateOutput(outputOptions, stats) {
-        this.output.generateRawOutput(stats, this.compilerOptions);
-        process.stdout.write('\n');
+        logger.raw(`${stats.toString(this.compilerOptions.stats)}\n`);
         if (outputOptions.watch) {
             logger.info('watching files for updates...');
         }
@@ -56,7 +53,7 @@ class Compiler {
             logger.error(err.stack || err);
             process.exit(1); // eslint-disable-line
         }
-        if (!outputOptions.watch && (stats.hasErrors() || stats.hasWarnings())) {
+        if (!outputOptions.watch && stats.hasErrors()) {
             process.exitCode = 1;
         }
         if (outputOptions.json === true) {
@@ -87,8 +84,15 @@ class Compiler {
         // eslint-disable-next-line  no-async-promise-executor
         return new Promise(async (resolve) => {
             await this.compiler.run((err, stats) => {
-                const content = this.compilerCallback(err, stats, lastHash, options, outputOptions);
-                resolve(content);
+                if (this.compiler.close) {
+                    this.compiler.close(() => {
+                        const content = this.compilerCallback(err, stats, lastHash, options, outputOptions);
+                        resolve(content);
+                    });
+                } else {
+                    const content = this.compilerCallback(err, stats, lastHash, options, outputOptions);
+                    resolve(content);
+                }
             });
         });
     }

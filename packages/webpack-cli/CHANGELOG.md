@@ -3,6 +3,109 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0-rc.1](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.0.0-beta.8...webpack-cli@4.0.0-rc.1) (2020-10-06)
+
+### Bug Fixes
+
+-   cache issue ([#1862](https://github.com/webpack/webpack-cli/issues/1862)) ([305c188](https://github.com/webpack/webpack-cli/commit/305c18816ca6c4275c2755ae6b48d90a8cc85bd1))
+-   check webpack installation before running cli ([#1827](https://github.com/webpack/webpack-cli/issues/1827)) ([be509fa](https://github.com/webpack/webpack-cli/commit/be509fac9a03e202e062229484bb10af7876968f))
+-   defer setting default entry to core ([#1856](https://github.com/webpack/webpack-cli/issues/1856)) ([5da1f81](https://github.com/webpack/webpack-cli/commit/5da1f81ed101b024249c5cd4e043ec1397338782))
+-   log error if --config-name is used without multiple configs ([#1874](https://github.com/webpack/webpack-cli/issues/1874)) ([f653409](https://github.com/webpack/webpack-cli/commit/f653409e3468849970dab354f84c5213da01122d))
+-   mode behaviour ([#1824](https://github.com/webpack/webpack-cli/issues/1824)) ([9e9c70b](https://github.com/webpack/webpack-cli/commit/9e9c70bc1f30d90cebd91341e865abb46f9c269e))
+-   only set output path on passing flag ([#1855](https://github.com/webpack/webpack-cli/issues/1855)) ([2f36b9d](https://github.com/webpack/webpack-cli/commit/2f36b9d858faedaf3a6adca10a529d9837c0dd24))
+-   show warning if bail and watch are used together ([#1804](https://github.com/webpack/webpack-cli/issues/1804)) ([6140b24](https://github.com/webpack/webpack-cli/commit/6140b24d08990aa807070f105d46a92e18855c9e))
+-   warning should not result in non-zero exit code ([#1872](https://github.com/webpack/webpack-cli/issues/1872)) ([ae9539d](https://github.com/webpack/webpack-cli/commit/ae9539d20eab2172118f61f7a9ba7e26541e16a2))
+
+### Features
+
+-   add --analyze flag ([#1853](https://github.com/webpack/webpack-cli/issues/1853)) ([e6d210a](https://github.com/webpack/webpack-cli/commit/e6d210a66b899023b1f39bb33cce7a9b83a5b803))
+-   allow users to store stats as json to a file ([#1835](https://github.com/webpack/webpack-cli/issues/1835)) ([3907517](https://github.com/webpack/webpack-cli/commit/3907517b6afff46ddab51e32ada0357fc9763117))
+
+# 4.0.0-beta.9 (2020-09-19)
+
+### Bug Fixes
+
+-   **serve:** merge CLI and devServer options correctly ([#1649](https://github.com/webpack/webpack-cli/issues/1649)) ([2cdf5ce](https://github.com/webpack/webpack-cli/commit/2cdf5ce159f63ac65b33f4aca4c82fa1e959fef5))
+-   **utils:** respect package-lock.json ([#1375](https://github.com/webpack/webpack-cli/issues/1375)) ([ce8ec5a](https://github.com/webpack/webpack-cli/commit/ce8ec5a9f56ab5c1ce30742dced56dcbea237600))
+-   **webpack-cli:** add configuration for mode option none ([#1303](https://github.com/webpack/webpack-cli/issues/1303)) ([a6930ac](https://github.com/webpack/webpack-cli/commit/a6930ac7aeea39d4b23480b1dfc05baff7b73460))
+-   **webpack-cli:** add value none in mode usage ([#1411](https://github.com/webpack/webpack-cli/issues/1411)) ([66ac5b2](https://github.com/webpack/webpack-cli/commit/66ac5b239cfad99b84754c512e5982dc0902e9dd))
+-   **webpack-cli:** correct cli-flags usage ([#1441](https://github.com/webpack/webpack-cli/issues/1441)) ([fb3660d](https://github.com/webpack/webpack-cli/commit/fb3660dd5cab8c596607110de14cacd98f255e34))
+-   **webpack-cli:** handle promise rejection with package installation ([#1284](https://github.com/webpack/webpack-cli/issues/1284)) ([eb1112e](https://github.com/webpack/webpack-cli/commit/eb1112edf05b0a1bc83dced0e83987e4f459174c))
+-   **webpack-cli:** prefer import local ([#1345](https://github.com/webpack/webpack-cli/issues/1345)) ([1af3bef](https://github.com/webpack/webpack-cli/commit/1af3befa6e680d8ee8e58dff8162ebb343755997))
+-   **webpack-cli:** prefetch flag implementation ([#1583](https://github.com/webpack/webpack-cli/issues/1583)) ([d5d7682](https://github.com/webpack/webpack-cli/commit/d5d76828e29acf209ae665a91c61d849fd616d9e))
+-   **webpack-cli:** remove invalid stats warning with json flag ([#1587](https://github.com/webpack/webpack-cli/issues/1587)) ([1fe4674](https://github.com/webpack/webpack-cli/commit/1fe4674b7bcca06fed9c55b34c9ee141703567f6))
+-   🐛 do not apply own defaults while setting mode ([#1565](https://github.com/webpack/webpack-cli/issues/1565)) ([4ca25bc](https://github.com/webpack/webpack-cli/commit/4ca25bc01d8ea51fdcb5aea15fd13aefd6a1aa71))
+-   allow unknown files to use default require as fallback ([#1747](https://github.com/webpack/webpack-cli/issues/1747)) ([b071623](https://github.com/webpack/webpack-cli/commit/b071623ae67a9f9528b02e07376044d851ad378a))
+-   **webpack-cli:** verbose flag functionality ([#1549](https://github.com/webpack/webpack-cli/issues/1549)) ([e15d9cd](https://github.com/webpack/webpack-cli/commit/e15d9cdc42627b87c9e666509f008826e0032358))
+-   ci for webpack@beta.30 ([#1801](https://github.com/webpack/webpack-cli/issues/1801)) ([cb38d63](https://github.com/webpack/webpack-cli/commit/cb38d6311f59679a0680344e0eecf39803ebc5a1))
+-   compatibility with webpack@next ([#1779](https://github.com/webpack/webpack-cli/issues/1779)) ([fc8c18d](https://github.com/webpack/webpack-cli/commit/fc8c18dcdae28b4d5b0b65d02b0a2b916b40bae4))
+-   consistent webpack plugin name ([#1480](https://github.com/webpack/webpack-cli/issues/1480)) ([145c552](https://github.com/webpack/webpack-cli/commit/145c552d1ace3303607fe4d204106fe9437e24a0))
+-   json flag, enable tests ([#1460](https://github.com/webpack/webpack-cli/issues/1460)) ([d268e13](https://github.com/webpack/webpack-cli/commit/d268e13aeca3321be6dfad29612645fde954a5db))
+-   prevent info from running unnecessarily ([#1650](https://github.com/webpack/webpack-cli/issues/1650)) ([ddee5ad](https://github.com/webpack/webpack-cli/commit/ddee5ad01eee0a261881348e4de013cfa5942e55))
+-   promise support in config ([#1666](https://github.com/webpack/webpack-cli/issues/1666)) ([7489e63](https://github.com/webpack/webpack-cli/commit/7489e639d13e8b89690a50595eb48214e9cdb1d9))
+-   rename sourcemap flag to devtool ([#1723](https://github.com/webpack/webpack-cli/issues/1723)) ([8623343](https://github.com/webpack/webpack-cli/commit/8623343c4a375be35860735c507e44548295d4e5))
+-   set mode=production by default ([#1688](https://github.com/webpack/webpack-cli/issues/1688)) ([8360df7](https://github.com/webpack/webpack-cli/commit/8360df76474bf7923ae201b895e0ae98266d6893))
+-   show version information for plugin and loader ([#1661](https://github.com/webpack/webpack-cli/issues/1661)) ([1ad71e4](https://github.com/webpack/webpack-cli/commit/1ad71e4aa838e4b4655e12bddca64e1c0ef2044e))
+-   **webpack-cli:** to void defaultEntry override the webpack config entry ([#1289](https://github.com/webpack/webpack-cli/issues/1289)) ([99ff047](https://github.com/webpack/webpack-cli/commit/99ff04779cad1a90d8ac47345db5f8540c6ddc23)), closes [#1288](https://github.com/webpack/webpack-cli/issues/1288) [#1288](https://github.com/webpack/webpack-cli/issues/1288) [#1288](https://github.com/webpack/webpack-cli/issues/1288)
+-   supply argv to config with functions ([#1721](https://github.com/webpack/webpack-cli/issues/1721)) ([2f05940](https://github.com/webpack/webpack-cli/commit/2f0594084a2d676dfe0675e54e967099c201f30c))
+-   throw err when supplied config is absent ([#1760](https://github.com/webpack/webpack-cli/issues/1760)) ([86dfe51](https://github.com/webpack/webpack-cli/commit/86dfe514a5b5de38f631a02e5211d10f32c536b9))
+-   throw error for invalid args ([#1462](https://github.com/webpack/webpack-cli/issues/1462)) ([25b3e04](https://github.com/webpack/webpack-cli/commit/25b3e04637db64b7f584e9badf9f8e59de978b7f))
+-   typo in Compiler.js ([#1580](https://github.com/webpack/webpack-cli/issues/1580)) ([e1ccad4](https://github.com/webpack/webpack-cli/commit/e1ccad453cefb9e6a115bb87ae472843e14fb8aa))
+-   use appropriate exit codes ([#1755](https://github.com/webpack/webpack-cli/issues/1755)) ([83f73b0](https://github.com/webpack/webpack-cli/commit/83f73b056e224301b871bee5e9b7254e64e84e95))
+-   use compiler.apply for Progress Plugin ([#1772](https://github.com/webpack/webpack-cli/issues/1772)) ([e8f2f20](https://github.com/webpack/webpack-cli/commit/e8f2f207159ad74cfa0f3a4bc9f97bf12a9b9836))
+-   use fileTypes from interpret ([#1690](https://github.com/webpack/webpack-cli/issues/1690)) ([d8f028e](https://github.com/webpack/webpack-cli/commit/d8f028edc98f28c354bfd48f7069bb52244d35da))
+-   warn about merge config resolution cases ([#1674](https://github.com/webpack/webpack-cli/issues/1674)) ([bb5c7b0](https://github.com/webpack/webpack-cli/commit/bb5c7b0ed4005d523572e69c6bc924fdb5cf7306))
+
+### Code Refactoring
+
+-   remove plugin flag ([#1571](https://github.com/webpack/webpack-cli/issues/1571)) ([e4a6b7b](https://github.com/webpack/webpack-cli/commit/e4a6b7bf94776832afb948389b4ec7bf63f9911d))
+-   💡 remove defaults flag ([#1543](https://github.com/webpack/webpack-cli/issues/1543)) ([a905590](https://github.com/webpack/webpack-cli/commit/a9055902ea27c3b3ea66c334e6a8aa2f1848b6be))
+
+### Features
+
+-   **webpack-cli:** --version for external packages ([#1421](https://github.com/webpack/webpack-cli/issues/1421)) ([756a8ff](https://github.com/webpack/webpack-cli/commit/756a8ff9640f3d65b49c14fe782dac9f2936d7d5))
+-   **webpack-cli:** add --no-hot flag ([#1591](https://github.com/webpack/webpack-cli/issues/1591)) ([31fcaf3](https://github.com/webpack/webpack-cli/commit/31fcaf3ed64794a449a23588a37440d32d7e6baa))
+-   **webpack-cli:** add --no-stats flag ([#1654](https://github.com/webpack/webpack-cli/issues/1654)) ([597eff7](https://github.com/webpack/webpack-cli/commit/597eff731830f62adce82661612e5fdcdad7b4cd))
+-   **webpack-cli:** add alias for version ([#1405](https://github.com/webpack/webpack-cli/issues/1405)) ([6b9461e](https://github.com/webpack/webpack-cli/commit/6b9461ecf6148933ec643ae9b8315fd2b2b0dccb))
+-   **webpack-cli:** add mode argument validation ([#1290](https://github.com/webpack/webpack-cli/issues/1290)) ([e273303](https://github.com/webpack/webpack-cli/commit/e2733038b11715c5f93399a3d3d72b6755781d26))
+-   allow multiple types for --stats ([ca2d593](https://github.com/webpack/webpack-cli/commit/ca2d593badfb8b5884d42d2e36a7ba6fa5a540df))
+-   **webpack-cli:** add no-mode flag ([#1276](https://github.com/webpack/webpack-cli/issues/1276)) ([a069d73](https://github.com/webpack/webpack-cli/commit/a069d73fe420151f97a39cc50bc3865b981595e1))
+-   🎸 add support for env flag ([#1598](https://github.com/webpack/webpack-cli/issues/1598)) ([7249153](https://github.com/webpack/webpack-cli/commit/72491539bb06986d28bd55a1b112760435cade9d))
+-   add --config-name flag ([#1753](https://github.com/webpack/webpack-cli/issues/1753)) ([d3ed19a](https://github.com/webpack/webpack-cli/commit/d3ed19a96811b98caa0ea0de0f8d7e76fe06879d))
+-   add aliases to all available commands ([#1644](https://github.com/webpack/webpack-cli/issues/1644)) ([9352027](https://github.com/webpack/webpack-cli/commit/93520270f4bfdbf1b70ed3f02e8fe34fae51e246))
+-   add init to webpack-cli ([#1609](https://github.com/webpack/webpack-cli/issues/1609)) ([5f4f3ea](https://github.com/webpack/webpack-cli/commit/5f4f3ea44a8e71ffb964a31948264623a6a75e2b))
+-   add name flag ([#1757](https://github.com/webpack/webpack-cli/issues/1757)) ([ad0779f](https://github.com/webpack/webpack-cli/commit/ad0779fc53776cbd9048d033d54b7a8e9de43e8a))
+-   add stats detailed option ([#1359](https://github.com/webpack/webpack-cli/issues/1359)) ([3e649e9](https://github.com/webpack/webpack-cli/commit/3e649e9796fd6756aed1b30aae9be63518db4dc5))
+-   **webpack-cli:** allow multiple entry files ([#1619](https://github.com/webpack/webpack-cli/issues/1619)) ([ac2e52c](https://github.com/webpack/webpack-cli/commit/ac2e52c2ef8aa74aa795476be94ce7c968b8d1c5))
+-   add support for .cjs config ([#1727](https://github.com/webpack/webpack-cli/issues/1727)) ([55ab016](https://github.com/webpack/webpack-cli/commit/55ab016c0a8ff1be1ccf8d36673e4391918647ba))
+-   add support for merging multiple configurations ([#1768](https://github.com/webpack/webpack-cli/issues/1768)) ([b1e7024](https://github.com/webpack/webpack-cli/commit/b1e70244a625098633d09b04d7f772cfe18272ec))
+-   add support for none config in dotfolder ([#1637](https://github.com/webpack/webpack-cli/issues/1637)) ([28526a6](https://github.com/webpack/webpack-cli/commit/28526a6b9a45e9b577a243782f14ef5a279739aa))
+-   add support to spawn multiple compilers with different configs ([#1765](https://github.com/webpack/webpack-cli/issues/1765)) ([c63ab29](https://github.com/webpack/webpack-cli/commit/c63ab29e896c0d0fa3df0d26215172651e7edee8))
+-   allow multiple targets ([#1799](https://github.com/webpack/webpack-cli/issues/1799)) ([1724ddb](https://github.com/webpack/webpack-cli/commit/1724ddb9067d5c5ba2654d4e5473ee9de5610825))
+-   allow only specified negated flags ([#1613](https://github.com/webpack/webpack-cli/issues/1613)) ([885e0a2](https://github.com/webpack/webpack-cli/commit/885e0a222fca9622908c9314fd802c771b9f2b91))
+-   allow using cjs as default config ([#1775](https://github.com/webpack/webpack-cli/issues/1775)) ([aaaa07b](https://github.com/webpack/webpack-cli/commit/aaaa07bd510cdd3d0b30cb69eb622d8798bd15eb))
+-   parse Number flags ([#1652](https://github.com/webpack/webpack-cli/issues/1652)) ([b319c3a](https://github.com/webpack/webpack-cli/commit/b319c3ac209582546f30a248a94c10eede6da50e))
+-   **webpack-cli:** allow negative property for cli-flags ([#1668](https://github.com/webpack/webpack-cli/issues/1668)) ([e7b46c2](https://github.com/webpack/webpack-cli/commit/e7b46c24514d77fcdd67067cded3154aaa98e48a))
+-   **webpack-cli:** import flags from webpack core ([#1630](https://github.com/webpack/webpack-cli/issues/1630)) ([f478cc9](https://github.com/webpack/webpack-cli/commit/f478cc9810a17e828d96a5c9439992ecac86fc26))
+-   **webpack-cli:** webpack stats ([#1299](https://github.com/webpack/webpack-cli/issues/1299)) ([0cbb270](https://github.com/webpack/webpack-cli/commit/0cbb2702a1e581150bb8e38dc9f361331179c406))
+-   serve integration ([#1712](https://github.com/webpack/webpack-cli/issues/1712)) ([d3e2936](https://github.com/webpack/webpack-cli/commit/d3e29368c40ee47e4f7a07c41281714645e20ea7))
+-   show up cli flag aliases with webpack help <arg> ([#1647](https://github.com/webpack/webpack-cli/issues/1647)) ([d087c61](https://github.com/webpack/webpack-cli/commit/d087c61a8a64359a8f520b4c3916948cb846a55c))
+-   support command aliases with webpack-cli version ([#1664](https://github.com/webpack/webpack-cli/issues/1664)) ([a637801](https://github.com/webpack/webpack-cli/commit/a6378015ef1c51a7eb3eb85858f8109dd8c2a50a))
+-   support multiple env params ([#1715](https://github.com/webpack/webpack-cli/issues/1715)) ([d315443](https://github.com/webpack/webpack-cli/commit/d3154431e559f736d8beaf6ca98b12a59b80e9bd))
+-   validate user input ([#1610](https://github.com/webpack/webpack-cli/issues/1610)) ([3842a49](https://github.com/webpack/webpack-cli/commit/3842a49a64b65865720e75f8967daf56528abc8d))
+
+### Performance Improvements
+
+-   do not spawn new process for running webpack ([#1741](https://github.com/webpack/webpack-cli/issues/1741)) ([e06392a](https://github.com/webpack/webpack-cli/commit/e06392ae531d111dab9603c785001338740f42ab))
+
+### BREAKING CHANGES
+
+-   🧨 removed --plugin without any replacement
+
+Co-authored-by: Anshuman Verma <anshu.av97@gmail.com>
+
+-   the `defaults` options was removed without replacement
+
 # [4.0.0-beta.8](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.0.0-beta.7...webpack-cli@4.0.0-beta.8) (2020-03-02)
 
 **Note:** Version bump only for package webpack-cli

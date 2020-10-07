@@ -163,21 +163,27 @@ const finalize = async (moduleObj, args) => {
         const newOptions = configOptions(formattedEnv, args);
         // When config function returns a promise, resolve it, if not it's resolved by default
         newOptionsObject['options'] = await Promise.resolve(newOptions);
-    } else if (Array.isArray(configOptions) && configName) {
-        // In case of exporting multiple configurations, If you pass a name to --config-name flag,
-        // webpack will only build that specific configuration.
-        const namedOptions = configOptions.filter((opt) => configName.includes(opt.name));
-        if (namedOptions.length === 0) {
-            logger.error(`Configuration with name "${configName}" was not found.`);
-            process.exit(2);
+    } else if (configName) {
+        if (Array.isArray(configOptions) && configOptions.length > 1) {
+            // In case of exporting multiple configurations, If you pass a name to --config-name flag,
+            // webpack will only build that specific configuration.
+            const namedOptions = configOptions.filter((opt) => configName.includes(opt.name));
+            if (namedOptions.length === 0) {
+                logger.error(`Configuration with name "${configName}" was not found.`);
+                process.exit(2);
+            } else {
+                newOptionsObject['options'] = namedOptions;
+            }
         } else {
-            newOptionsObject['options'] = namedOptions;
+            logger.error('Multiple configurations not found. Please use "--config-name" with multiple configurations.');
+            process.exit(2);
         }
     } else {
         if (Array.isArray(configOptions) && !configOptions.length) {
             newOptionsObject['options'] = {};
             return newOptionsObject;
         }
+
         newOptionsObject['options'] = configOptions;
     }
 

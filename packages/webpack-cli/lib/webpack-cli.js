@@ -1,5 +1,4 @@
 const webpackMerge = require('webpack-merge');
-const { options } = require('colorette');
 const GroupHelper = require('./utils/GroupHelper');
 const { Compiler } = require('./utils/Compiler');
 const { groups, core } = require('./utils/cli-flags');
@@ -13,6 +12,7 @@ const resolveMode = require('./groups/resolveMode');
 const resolveStats = require('./groups/resolveStats');
 const resolveOutput = require('./groups/resolveOutput');
 const basicResolver = require('./groups/basicResolver');
+const resolveAdvanced = require('./groups/resolveAdvanced');
 
 class WebpackCLI extends GroupHelper {
     constructor() {
@@ -84,15 +84,10 @@ class WebpackCLI extends GroupHelper {
      * @returns {void}
      */
     resolveGroups() {
-        for (const [key, value] of this.groupMap.entries()) {
+        for (const [key] of this.groupMap.entries()) {
             switch (key) {
-                case groups.ADVANCED_GROUP: {
-                    const AdvancedGroup = require('./groups/AdvancedGroup');
-                    this.advancedGroup = new AdvancedGroup(value);
-                    break;
-                }
                 case groups.HELP_GROUP: {
-                    const HelpGroup = require('./groups/HelpGroup');
+                    const HelpGroup = require('./groups/runHelp');
                     this.helpGroup = new HelpGroup();
                     break;
                 }
@@ -200,7 +195,7 @@ class WebpackCLI extends GroupHelper {
             .then(() => this._baseResolver(resolveOutput, parsedArgs, outputStrategy))
             .then(() => this._handleCoreFlags())
             .then(() => this._baseResolver(basicResolver, parsedArgs))
-            .then(() => this._handleGroupHelper(this.advancedGroup))
+            .then(() => this._baseResolver(resolveAdvanced, parsedArgs))
             .then(() => this._baseResolver(resolveStats, parsedArgs))
             .then(() => this._handleGroupHelper(this.helpGroup));
     }
@@ -226,27 +221,6 @@ class WebpackCLI extends GroupHelper {
             outputOptions: this.outputConfiguration,
         });
         return webpack;
-    }
-
-    runHelp(args) {
-        const HelpGroup = require('./groups/HelpGroup');
-        const { commands, allNames, hasUnknownArgs } = require('./utils/unknown-args');
-        const subject = allNames.filter((name) => {
-            return args.includes(name);
-        })[0];
-        const invalidArgs = hasUnknownArgs(args, ...allNames);
-        const isCommand = commands.includes(subject);
-        options.enabled = !args.includes('--no-color');
-        return new HelpGroup().outputHelp(isCommand, subject, invalidArgs);
-    }
-
-    runVersion(args, externalPkg) {
-        const HelpGroup = require('./groups/HelpGroup');
-        const { commands, allNames, hasUnknownArgs } = require('./utils/unknown-args');
-        const commandsUsed = args.filter((val) => commands.includes(val));
-        const invalidArgs = hasUnknownArgs(args, ...allNames);
-        options.enabled = !args.includes('--no-color');
-        return new HelpGroup().outputVersion(externalPkg, commandsUsed, invalidArgs);
     }
 }
 

@@ -32,25 +32,14 @@ describe('output config related flag', () => {
                 }
             });
 
-            it(`should config --no-${flag.name} correctly`, () => {
-                const { stderr, stdout } = run(__dirname, [`--no-${flag.name}`]);
+            if (!flag.name.endsWith('-reset')) {
+                it(`should config --no-${flag.name} correctly`, () => {
+                    const { stderr, stdout } = run(__dirname, [`--no-${flag.name}`]);
 
-                if (flag.name.includes('loading-types-reset')) {
-                    expect(stderr).toBeFalsy();
-                    if (flag.name === 'output-enabled-wasm-loading-types-reset') {
-                        expect(stdout).toContain(`enabledWasmLoadingTypes: [ 'fetch' ]`);
-                    } else {
-                        expect(stdout).toContain(`enabledChunkLoadingTypes: [ 'jsonp', 'import-scripts' ]`);
-                    }
-                } else if (flag.name.includes('-reset')) {
-                    const option = propName.split('Reset')[0];
-                    expect(stderr).toBeFalsy();
-                    expect(stdout).toContain(`${option}: []`);
-                } else {
                     expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: false`);
-                }
-            });
+                });
+            }
         }
 
         if (flag.type === Number) {

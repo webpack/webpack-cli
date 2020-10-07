@@ -1,6 +1,7 @@
 # IDE folders
 .idea
 .vscode
+*.iml
 
 # IDE files
 *.code-workspace
@@ -39,8 +40,6 @@ lerna-debug.log
 # package-lock file
 package-lock.json
 
-# source maps of docs
-docs/**/*.map
 junit.xml
 
 # typescript source maps
@@ -50,8 +49,17 @@ packages/**/*.map
 # cache
 .eslintcache
 
-# temporary test files
-test-assets/
-./lib/
+# build files
+packages/**/lib
+packages/**/yarn.lock
+!packages/webpack-cli/lib
 
-lib/test/loader/error-test/src/index.d.ts
+# test output files
+test/js/*
+test/**/bin/
+test/**/**/bin/
+test/**/**/**/bin/
+test/**/**/binary/**
+test/**/dist
+test/**/**/dist
+test/**/**/**/dist

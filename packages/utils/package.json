@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/utils",
-  "version": "1.0.1-rc.0",
+  "version": "1.0.1-rc.1",
   "description": "webpack-cli utility files",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -9,15 +9,15 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@webpack-cli/package-utils": "^1.0.1-rc.0",
-    "execa": "^4.0.0",
+    "@webpack-cli/package-utils": "^1.0.1-rc.1",
     "colorette": "^1.2.1",
-    "findup-sync": "4.0.0",
-    "got": "10.7.0",
-    "jscodeshift": "0.7.0",
-    "p-each-series": "2.1.0",
-    "yeoman-environment": "2.8.1",
-    "yeoman-generator": "4.7.2"
+    "execa": "^4.0.0",
+    "findup-sync": "^4.0.0",
+    "got": "^10.7.0",
+    "jscodeshift": "^0.7.0",
+    "p-each-series": "^2.1.0",
+    "yeoman-environment": "^2.8.1",
+    "yeoman-generator": "^4.7.2"
   },
   "peerDependenciesMeta": {
     "prettier": {
