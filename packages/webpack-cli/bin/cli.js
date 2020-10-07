@@ -5,7 +5,7 @@ require('v8-compile-cache');
 const importLocal = require('import-local');
 const runCLI = require('../lib/bootstrap');
 const { yellow } = require('colorette');
-const { error, info } = require('../lib/utils/logger');
+const { error, success } = require('../lib/utils/logger');
 const { packageExists, promptInstallation } = require('@webpack-cli/package-utils');
 
 // Prefer the local installation of webpack-cli
@@ -21,7 +21,7 @@ if (packageExists('webpack')) {
     promptInstallation('webpack', () => {
         error(`It looks like ${yellow('webpack')} is not installed.`);
     })
-        .then(() => info(`${yellow('webpack')} was installed sucessfully.`))
+        .then(() => success(`${yellow('webpack')} was installed sucessfully.`))
         .catch(() => {
             process.exitCode = 2;
             error(`Action Interrupted, Please try once again or install ${yellow('webpack')} manually.`);

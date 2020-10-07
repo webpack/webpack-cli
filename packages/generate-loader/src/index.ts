@@ -1,5 +1,6 @@
 import { loaderGenerator } from '@webpack-cli/generators';
 import yeoman from 'yeoman-environment';
+import logger from 'webpack-cli/lib/utils/logger';
 
 /**
  * Runs a yeoman generator to create a new webpack loader project
@@ -12,5 +13,7 @@ export default function loaderCreator(): void {
 
     env.registerStub(loaderGenerator, generatorName);
 
-    env.run(generatorName);
+    env.run(generatorName, () => {
+        logger.success('Loader template has been successfully scaffolded.');
+    });
 }
