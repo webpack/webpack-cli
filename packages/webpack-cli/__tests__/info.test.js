@@ -1,3 +1,4 @@
+//eslint-disable-next-line node/no-extraneous-require
 const { sync: spawnSync } = require('execa');
 const path = require('path');
 

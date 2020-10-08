@@ -1,3 +1,5 @@
+/*** TODO: implement interactive functionality
+
 const { gray, bold, white, cyan, yellow } = require('colorette');
 const webpack = require('./Compiler');
 const ansiEscapes = require('ansi-escapes');
@@ -107,7 +109,7 @@ module.exports = async function (config, outputOptions) {
     const webpackCompilation = await webpack({ options: config, outputOptions });
     /* if(errors) {
 	Hngggg
-} */
+} 
     state.push(webpackCompilation);
     setupInteractive();
 
@@ -175,3 +177,4 @@ module.exports = async function (config, outputOptions) {
         }
     });
 };
+*/
