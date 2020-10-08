@@ -116,7 +116,7 @@ class Compiler {
             if (err instanceof ValidationError) {
                 logger.error(`\n ${err.message}`);
             } else {
-                logger.error(`\n ${err.name}: ${err.message}`);
+                logger.error(`\n ${err}`);
             }
             process.exit(1);
         }
