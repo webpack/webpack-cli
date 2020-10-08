@@ -118,3 +118,10 @@ jobs:
         # $GITHUB_WORKSPACE is the path to your repository
         run: echo "::set-env name=NODE_PATH::$GITHUB_WORKSPACE/node_modules"
       - uses: wagoid/commitlint-github-action@v2
+
+  coverage:
+    name: Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: codecov/codecov-action@v1
