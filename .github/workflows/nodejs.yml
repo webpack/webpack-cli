@@ -119,13 +119,40 @@ jobs:
         run: echo "::set-env name=NODE_PATH::$GITHUB_WORKSPACE/node_modules"
       - uses: wagoid/commitlint-github-action@v2
 
-  coverage:
-    runs-on: ubuntu-latest
+  lint:
+    name: Coverage - ${{ matrix.os }} - Node v${{ matrix.node-version }}
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node-version: [12.x]
+        webpack-version: [latest]
+
     steps:
       - uses: actions/checkout@v2
+
+      - name: Using Node v${{ matrix.node-version }}
+        uses: actions/setup-node@v1
         with:
-          fetch-depth: 0
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: |
+          yarn
+          yarn bootstrap
+
+      - name: Install webpack ${{ matrix.webpack-version }}
+        run: yarn add -W webpack@${{ matrix.webpack-version }}
+
+      - name: Build
+        run: yarn build
+      
       - name: Generate Coverage
-      - run: yarn test:coverage
-      - name: Upload coverage
-      - uses: codecov/codecov-action@v1
+        run: |
+          yarn prepsuite
+          yarn test:coverage
+      
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
