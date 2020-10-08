@@ -120,8 +120,12 @@ jobs:
       - uses: wagoid/commitlint-github-action@v2
 
   coverage:
-    name: Coverage
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Generate Coverage
+      - run: yarn test:coverage
+      - name: Upload coverage
       - uses: codecov/codecov-action@v1
