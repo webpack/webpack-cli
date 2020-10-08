@@ -111,13 +111,12 @@ class Compiler {
             // https://github.com/webpack/webpack/blob/master/lib/index.js#L267
             // https://github.com/webpack/webpack/blob/v4.44.2/lib/webpack.js#L90
             const ValidationError = webpack.ValidationError ? webpack.ValidationError : webpack.WebpackOptionsValidationError;
-            process.stdout.write('\n');
             // In case of schema errors print and exit process
             // For webpack@4 and webpack@5
             if (err instanceof ValidationError) {
-                logger.error(err.message);
+                logger.error(`\n ${err.message}`);
             } else {
-                logger.error(`${err.name}: ${err.message}`);
+                logger.error(`\n ${err.name}: ${err.message}`);
             }
             process.exit(1);
         }
