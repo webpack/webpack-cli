@@ -113,6 +113,7 @@ class Compiler {
             const ValidationError = webpack.ValidationError ? webpack.ValidationError : webpack.WebpackOptionsValidationError;
             // In case of schema errors print and exit process
             // For webpack@4 and webpack@5
+            console.log({ err, ValidationError });
             if (err instanceof ValidationError) {
                 logger.error(`\n${err.message}`);
             } else {
