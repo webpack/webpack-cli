@@ -43,6 +43,6 @@ describe('stats flag', () => {
         } else {
             expect(stderr).toContain('"none" | "errors-only" | "minimal" | "normal" | "detailed" | "verbose" | "errors-warnings"');
         }
-        expect(stdout).toBeTruthy();
+        expect(stdout).toBeFalsy();
     });
 });

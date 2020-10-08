@@ -108,9 +108,17 @@ class Compiler {
             this.compiler = await webpack(options);
             this.compilerOptions = options;
         } catch (err) {
-            // In case of schema errors print and exit process
+            // https://github.com/webpack/webpack/blob/master/lib/index.js#L267
+            // https://github.com/webpack/webpack/blob/v4.44.2/lib/webpack.js#L90
+            const ValidationError = webpack.ValidationError ? webpack.ValidationError : webpack.WebpackOptionsValidationError;
             process.stdout.write('\n');
-            logger.error(err.message);
+            // In case of schema errors print and exit process
+            // For webpack@4 and webpack@5
+            if (err instanceof ValidationError) {
+                logger.error(err.message);
+            } else {
+                logger.error(`${err.name}: ${err.message}`);
+            }
             process.exit(1);
         }
     }
