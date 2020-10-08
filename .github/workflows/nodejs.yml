@@ -148,11 +148,11 @@ jobs:
 
       - name: Build
         run: yarn build
-      
+
       - name: Generate Coverage
         run: |
           yarn prepsuite
           yarn test:coverage
-      
+
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
