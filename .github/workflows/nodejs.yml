@@ -119,7 +119,7 @@ jobs:
         run: echo "::set-env name=NODE_PATH::$GITHUB_WORKSPACE/node_modules"
       - uses: wagoid/commitlint-github-action@v2
 
-  lint:
+  coverage:
     name: Coverage - ${{ matrix.os }} - Node v${{ matrix.node-version }}
 
     runs-on: ${{ matrix.os }}
