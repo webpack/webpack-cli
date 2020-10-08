@@ -8,6 +8,9 @@
     "access": "public"
   },
   "license": "MIT",
+  "files": [
+    "lib"
+  ],
   "dependencies": {
     "@webpack-cli/package-utils": "^1.0.1-rc.1",
     "colorette": "^1.2.1",

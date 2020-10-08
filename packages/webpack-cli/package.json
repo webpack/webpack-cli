@@ -22,6 +22,9 @@
     "bundler",
     "web"
   ],
+  "files": [
+    "lib"
+  ],
   "dependencies": {
     "@webpack-cli/info": "^1.0.1-rc.1",
     "@webpack-cli/init": "^1.0.1-rc.1",

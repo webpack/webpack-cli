@@ -9,6 +9,10 @@
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "lib",
+    "templates"
+  ],
   "dependencies": {
     "@webpack-cli/package-utils": "^1.0.1-rc.1",
     "@webpack-cli/utils": "^1.0.1-rc.1",

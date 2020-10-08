@@ -8,6 +8,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "lib"
+  ],
   "dependencies": {
     "@webpack-cli/generators": "^1.0.1-rc.1",
     "@webpack-cli/utils": "^1.0.1-rc.1"

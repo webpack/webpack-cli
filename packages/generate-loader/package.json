@@ -13,6 +13,10 @@
   },
   "keywords": [],
   "license": "MIT",
+  "files": [
+    "lib",
+    "templates"
+  ],
   "dependencies": {
     "@webpack-cli/generators": "^1.0.1-rc.1",
     "yeoman-environment": "^2.10.3"
