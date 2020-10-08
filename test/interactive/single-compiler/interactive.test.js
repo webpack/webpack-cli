@@ -1,33 +1,19 @@
 'use strict';
-const { run, runAndGetWatchProc } = require('../utils/test-utils');
-const { stat, writeFileSync } = require('fs');
+const { runAndGetWatchProc } = require('../../utils/test-utils');
+const { writeFileSync } = require('fs');
 const { resolve } = require('path');
 const { version } = require('webpack');
 
 const wordsInStatsv4 = ['Hash', 'Version', 'Time', 'Built at:', 'main.js'];
 const wordsInStatsv5 = ['asset', 'index.js', 'compiled successfully'];
 
-describe('--interactive flag', () => {
-    it('should add InteractiveModePlugin to config', (done) => {
-        const { stderr, stdout } = run(__dirname, ['--interactive']);
-        expect(stderr).toBeFalsy();
-        expect(stdout).toContain('InteractiveModePlugin');
-        stat(resolve(__dirname, './bin/main.js'), (err, stats) => {
-            expect(err).toBe(null);
-            expect(stats.isFile()).toBe(true);
-            done();
-        });
-    });
-
-    it('should work with --watch', (done) => {
-        const proc = runAndGetWatchProc(__dirname, ['-c', './webpack.watch.js', '--watch', '--interactive'], false, '', true);
+describe('--interactive flag with single compiler', () => {
+    it('should output in interactive with --watch and --interactive', (done) => {
+        const proc = runAndGetWatchProc(__dirname, ['--watch', '--interactive'], false, '', true);
         let semaphore = 2;
         const clear = '\x1B[2J\x1B[3J\x1B[H';
         proc.stdout.on('data', (chunk) => {
             const data = chunk.toString();
-            if (semaphore >= 0) {
-                console.log(`${semaphore}: ${data}`);
-            }
             if (semaphore === 2 && data.includes('\u2B24')) {
                 writeFileSync(resolve(__dirname, './src/index.js'), `console.log('I am Batman');`);
                 semaphore--;
@@ -56,14 +42,11 @@ describe('--interactive flag', () => {
         });
     });
 
-    it('should not output in interactive with --watch only', (done) => {
-        const proc = runAndGetWatchProc(__dirname, ['-c', './webpack.watch.js', '--watch'], false, '', true);
+    it('should output in standard with --watch only', (done) => {
+        const proc = runAndGetWatchProc(__dirname, ['--watch'], false, '', true);
         let semaphore = 1;
         proc.stdout.on('data', (chunk) => {
             const data = chunk.toString();
-            if (semaphore >= 0) {
-                console.log(`${semaphore}: ${data}`);
-            }
             if (semaphore === 1 && data.includes('watching files for updates')) {
                 writeFileSync(resolve(__dirname, './src/index.js'), `console.log('I am Batman');`);
                 semaphore--;
