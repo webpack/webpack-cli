@@ -231,8 +231,10 @@ const core = [
     },
     {
         name: 'interactive',
+        usage: '--interactive',
         type: Boolean,
         alias: 'i',
+        multiple: false,
         description: 'Use webpack interactive mode',
         group: BASIC_GROUP,
     },
