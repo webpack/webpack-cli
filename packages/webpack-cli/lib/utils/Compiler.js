@@ -108,10 +108,11 @@ class Compiler {
             this.compiler = await webpack(options);
             this.compilerOptions = options;
         } catch (err) {
+            // In case of schema errors print and exit process
             process.stdout.write('\n');
             logger.error(`${err.name}: ${err.message}`);
             process.stdout.write('\n');
-            return;
+            process.exit(1);
         }
     }
 
