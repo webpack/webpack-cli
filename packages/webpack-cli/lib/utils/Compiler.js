@@ -114,9 +114,9 @@ class Compiler {
             // In case of schema errors print and exit process
             // For webpack@4 and webpack@5
             if (err instanceof ValidationError) {
-                logger.error(`\n ${err.message}`);
+                logger.error(`\n${err.message}`);
             } else {
-                logger.error(`\n ${err}`);
+                logger.error(`\n${err}`);
             }
             process.exit(1);
         }
