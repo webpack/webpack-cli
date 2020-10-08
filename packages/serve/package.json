@@ -9,6 +9,9 @@
     "access": "public"
   },
   "license": "MIT",
+  "files": [
+    "lib"
+  ],
   "peerDependencies": {
     "webpack-cli": "4.x.x"
   },
