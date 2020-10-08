@@ -39,6 +39,7 @@
     "test:cli": "jest test/ --reporters=default --reporters=jest-junit --forceExit",
     "test:packages": "jest packages/ --reporters=default --reporters=jest-junit --forceExit",
     "test:ci": "yarn test:cli && yarn test:packages",
+    "test:coverage": "jest --coverage",
     "test:watch": "jest test/ packages/ --watch",
     "test:smoke": "smoketests/smoketests.sh",
     "publish:monorepo": "yarn build && lerna version prerelease --preid rc && lerna publish from-git --canary --preid rc --dist-tag next"
