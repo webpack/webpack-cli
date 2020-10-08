@@ -3,7 +3,8 @@ const { run } = require('../utils/test-utils');
 
 describe('invalid schema', () => {
     it('should log webpack error and exit process on invalid config', () => {
-        const { stderr, exitCode } = run(__dirname, ['--config', './webpack.config.mock.js']);
+        const { stderr, stdout, exitCode } = run(__dirname, ['--config', './webpack.config.mock.js']);
+        console.log({ stderr, stdout, exitCode });
         expect(stderr).toContain('Invalid configuration object');
         expect(exitCode).toEqual(1);
     });
