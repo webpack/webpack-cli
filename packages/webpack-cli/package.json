@@ -23,6 +23,7 @@
     "web"
   ],
   "files": [
+    "bin",
     "lib"
   ],
   "dependencies": {
