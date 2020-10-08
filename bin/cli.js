@@ -50,8 +50,8 @@ For more information, see https://webpack.js.org/api/cli/.`);
 		Error.stackTraceLimit = 30;
 
 		// arguments validation failed
-		if (err && output) {
-			console.error(output);
+		if (err) {
+			console.error(err.message);
 			process.exitCode = 1;
 			return;
 		}
