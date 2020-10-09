@@ -1,8 +1,8 @@
-import { prompt } from 'enquirer';
-import { green } from 'colorette';
-import { runCommand } from './run-command';
-import { getPackageManager } from './get-package-manager';
-import { packageExists } from './package-exists';
+const { prompt } = require('enquirer');
+const { green } = require('colorette');
+const { runCommand } = require('./run-command');
+const { getPackageManager } = require('./get-package-manager');
+const { packageExists } = require('./package-exists');
 
 /**
  *
@@ -10,7 +10,7 @@ import { packageExists } from './package-exists';
  * @param preMessage Message to show before the question
  */
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export async function promptInstallation(packageName: string, preMessage?: Function) {
+async function promptInstallation(packageName, preMessage) {
     const packageManager = getPackageManager();
     const options = [packageManager === 'yarn' ? 'add' : 'install', '-D', packageName];
 
@@ -34,3 +34,7 @@ export async function promptInstallation(packageName: string, preMessage?: Funct
     // eslint-disable-next-line require-atomic-updates
     process.exitCode = 2;
 }
+
+module.exports = {
+    promptInstallation,
+};

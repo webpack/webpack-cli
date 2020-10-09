@@ -3,7 +3,7 @@ import j from 'jscodeshift';
 import logger from 'webpack-cli/lib/utils/logger';
 import pEachSeries = require('p-each-series');
 import path from 'path';
-import { getPackageManager } from './get-package-manager';
+import { getPackageManager } from 'webpack-cli/lib/utils/get-package-manager';
 import { findProjectRoot } from './path-utils';
 import { Error } from './types';
 import { Config, TransformConfig } from './types';

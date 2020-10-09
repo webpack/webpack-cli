@@ -1,6 +1,6 @@
-import execa from 'execa';
+const execa = require('execa');
 
-export async function runCommand(command, args = []): Promise<void> {
+async function runCommand(command, args = []) {
     try {
         await execa(command, args, {
             stdio: 'inherit',
@@ -10,3 +10,7 @@ export async function runCommand(command, args = []): Promise<void> {
         throw new Error(e);
     }
 }
+
+module.exports = {
+    runCommand,
+};

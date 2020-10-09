@@ -6,7 +6,7 @@ import fs from 'fs';
 import path from 'path';
 import mkdirp from 'mkdirp';
 import rimraf from 'rimraf';
-import { getPackageManager } from '@webpack-cli/utils';
+import { getPackageManager } from 'webpack-cli/lib/utils/get-package-manager';
 import addonGenerator from '../src/addon-generator';
 
 // TODO: enable after jest release

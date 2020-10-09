@@ -5,7 +5,7 @@ import path from 'path';
 import yeoman from 'yeoman-environment';
 import Generator from 'yeoman-generator';
 import { runTransform } from './scaffold';
-import { getPackageManager } from './get-package-manager';
+import { getPackageManager } from 'webpack-cli/lib/utils/get-package-manager';
 
 export interface Config extends Object {
     item?: {

@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import { ExecaSyncReturnValue, sync } from 'execa';
 import { getPathToGlobalPackages } from './global-packages-path';
-import { getPackageManager } from './get-package-manager';
+import { getPackageManager } from 'webpack-cli/lib/utils/get-package-manager';
 
 /**
  *

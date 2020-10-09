@@ -1,6 +1,6 @@
-import fs from 'fs';
-import path from 'path';
-import { sync } from 'execa';
+const fs = require('fs');
+const path = require('path');
+const { sync } = require('execa');
 
 /**
  *
@@ -9,10 +9,7 @@ import { sync } from 'execa';
  *
  * @returns {String} - The package manager name
  */
-
-type PackageName = 'npm' | 'yarn';
-
-export function getPackageManager(): PackageName {
+function getPackageManager() {
     const hasLocalYarn = fs.existsSync(path.resolve(process.cwd(), 'yarn.lock'));
     const hasLocalNpm = fs.existsSync(path.resolve(process.cwd(), 'package-lock.json'));
 
@@ -34,3 +31,7 @@ export function getPackageManager(): PackageName {
 
     return 'npm';
 }
+
+module.exports = {
+    getPackageManager,
+};

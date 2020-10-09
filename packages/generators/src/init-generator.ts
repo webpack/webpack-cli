@@ -2,7 +2,7 @@ import { blue, green, bold } from 'colorette';
 import logger from 'webpack-cli/lib/utils/logger';
 import logSymbols from 'log-symbols';
 import path from 'path';
-import { getPackageManager } from '@webpack-cli/utils';
+import { getPackageManager } from 'webpack-cli/lib/utils/get-package-manager';
 import { Confirm, Input, List } from '@webpack-cli/webpack-scaffold';
 
 import {

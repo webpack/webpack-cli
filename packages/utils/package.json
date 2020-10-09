@@ -12,7 +12,6 @@
     "lib"
   ],
   "dependencies": {
-    "@webpack-cli/package-utils": "^1.0.1-rc.1",
     "colorette": "^1.2.1",
     "cross-spawn": "^7.0.3",
     "enquirer": "^2.3.6",

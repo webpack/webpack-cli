@@ -1,4 +1,4 @@
-export function packageExists(packageName: string): boolean {
+function packageExists(packageName) {
     try {
         require(packageName);
         return true;
@@ -6,3 +6,7 @@ export function packageExists(packageName: string): boolean {
         return false;
     }
 }
+
+module.exports = {
+    packageExists,
+};
