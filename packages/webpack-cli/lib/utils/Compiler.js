@@ -140,7 +140,7 @@ class Compiler {
             const interactive = require('./interactive');
             return interactive(options, outputOptions);
         }
-
+        console.log(this.compiler);
         if (this.compiler && this.compiler.compilers) {
             this.compiler.compilers.forEach((comp, idx) => {
                 bailAndWatchWarning(comp); //warn the user if bail and watch both are used together

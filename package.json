@@ -36,7 +36,7 @@
     "prepsuite": "node scripts/prepareSuite.js",
     "pretest": "yarn build && yarn lint && yarn prepsuite",
     "test": "jest --reporters=default --reporters=jest-junit",
-    "test:cli": "jest test/ --reporters=default --reporters=jest-junit --forceExit",
+    "test:cli": "jest test/invalid-schema --reporters=default --reporters=jest-junit --forceExit",
     "test:packages": "jest packages/ --reporters=default --reporters=jest-junit --forceExit",
     "test:ci": "yarn test:cli && yarn test:packages",
     "test:watch": "jest test/ packages/ --watch",
