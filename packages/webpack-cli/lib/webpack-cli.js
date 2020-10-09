@@ -196,10 +196,10 @@ class WebpackCLI extends GroupHelper {
             .then(() => this._baseResolver(handleConfigResolution, parsedArgs))
             .then(() => this._baseResolver(resolveMode, parsedArgs))
             .then(() => this._baseResolver(resolveOutput, parsedArgs, outputStrategy))
+            .then(() => this._handleCoreFlags(parsedArgs))
             .then(() => this._baseResolver(basicResolver, parsedArgs))
             .then(() => this._baseResolver(resolveAdvanced, parsedArgs))
             .then(() => this._baseResolver(resolveStats, parsedArgs))
-            .then(() => this._handleCoreFlags(parsedArgs))
             .then(() => this._handleGroupHelper(this.helpGroup));
     }
 
