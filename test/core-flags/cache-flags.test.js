@@ -95,6 +95,24 @@ describe('cache related flags from core', () => {
         expect(newRun.exitCode).toEqual(0);
     });
 
+    it('should assign cache build dependencies with multiple configs', () => {
+        const { stderr, stdout, exitCode } = run(__dirname, ['-c', './webpack.cache.config.js', '-c', './webpack.config.js']);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('buildDependencies');
+        expect(stdout).toContain("config: [ './webpack.cache.config.js', './webpack.config.js' ]");
+        expect(stdout).toContain("type: 'filesystem'");
+        expect(exitCode).toEqual(0);
+    });
+
+    it('should assign cache build dependencies with merged configs', () => {
+        const { stderr, stdout, exitCode } = run(__dirname, ['-c', './webpack.cache.config.js', '-c', './webpack.config.js', '--merge']);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('buildDependencies');
+        expect(stdout).toContain("config: [ './webpack.cache.config.js', './webpack.config.js' ]");
+        expect(stdout).toContain("type: 'filesystem'");
+        expect(exitCode).toEqual(0);
+    });
+
     it('should invalidate cache when config changes', () => {
         // Creating a temporary webpack config
         writeFileSync(resolve(__dirname, './webpack.test.config.js'), 'module.exports = {mode: "development"}');

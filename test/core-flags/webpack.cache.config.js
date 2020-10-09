@@ -7,6 +7,6 @@ module.exports = {
         type: 'filesystem',
         name: 'config-cache',
     },
-    name: 'compiler',
+    name: 'compiler-cache',
     plugins: [new WebpackCLITestPlugin(['cache'])],
 };

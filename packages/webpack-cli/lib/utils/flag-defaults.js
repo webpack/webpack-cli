@@ -1,19 +1,22 @@
-const assignFlagDefaults = (compilerConfig, parsedArgs) => {
-    const finalConfig = { ...compilerConfig };
+const cacheDefaults = (finalConfig, parsedArgs) => {
     // eslint-disable-next-line no-prototype-builtins
     const hasCache = finalConfig.hasOwnProperty('cache');
+    let cacheConfig = {};
     if (hasCache && parsedArgs.config) {
         if (finalConfig.cache && finalConfig.cache.type === 'filesystem') {
-            finalConfig.cache = {
-                ...finalConfig.cache,
-                buildDependencies: {
-                    config: parsedArgs.config,
-                },
+            cacheConfig.buildDependencies = {
+                config: parsedArgs.config,
             };
         }
-        return { cache: finalConfig.cache };
+        return { cache: cacheConfig };
     }
-    return {};
+    return cacheConfig;
+};
+
+const assignFlagDefaults = (compilerConfig, parsedArgs) => {
+    if (Array.isArray(compilerConfig)) {
+        return compilerConfig.map((config) => cacheDefaults(config, parsedArgs));
+    } else return cacheDefaults(compilerConfig, parsedArgs);
 };
 
 module.exports = assignFlagDefaults;
