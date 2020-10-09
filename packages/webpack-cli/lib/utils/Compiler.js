@@ -110,15 +110,14 @@ class Compiler {
         } catch (err) {
             // https://github.com/webpack/webpack/blob/master/lib/index.js#L267
             // https://github.com/webpack/webpack/blob/v4.44.2/lib/webpack.js#L90
-            // const ValidationError = webpack.ValidationError ? webpack.ValidationError : webpack.WebpackOptionsValidationError;
+            const ValidationError = webpack.ValidationError ? webpack.ValidationError : webpack.WebpackOptionsValidationError;
             // In case of schema errors print and exit process
             // For webpack@4 and webpack@5
-            // console.log({ err, ValidationError });
-            // if (err instanceof ValidationError) {
-            logger.error(`\n${err.message}`);
-            // } else {
-            // logger.error(`\n${err}`);
-            // }
+            if (err instanceof ValidationError) {
+                logger.error(`\n${err.message}`);
+            } else {
+                logger.error(`\n${err}`);
+            }
             process.exit(1);
         }
     }
@@ -140,8 +139,7 @@ class Compiler {
             const interactive = require('./interactive');
             return interactive(options, outputOptions);
         }
-        console.log(this.compiler);
-        if (this.compiler && this.compiler.compilers) {
+        if (this.compiler.compilers) {
             this.compiler.compilers.forEach((comp, idx) => {
                 bailAndWatchWarning(comp); //warn the user if bail and watch both are used together
                 this.setUpHookForCompilation(comp, outputOptions, options[idx]);
