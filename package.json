@@ -39,7 +39,7 @@
     "test:cli": "jest test/ --reporters=default --reporters=jest-junit --forceExit",
     "test:packages": "jest packages/ --reporters=default --reporters=jest-junit --forceExit",
     "test:ci": "yarn test:cli && yarn test:packages",
-    "test:coverage": "jest --coverage",
+    "test:coverage": "nyc jest --coverage",
     "test:watch": "jest test/ packages/ --watch",
     "test:smoke": "smoketests/smoketests.sh",
     "publish:monorepo": "yarn build && lerna version prerelease --preid rc && lerna publish from-git --canary --preid rc --dist-tag next"
@@ -85,6 +85,7 @@
     "jest-watch-typeahead": "^0.5.0",
     "lerna": "^3.22.1",
     "lint-staged": "^10.2.11",
+    "nyc": "^15.1.0",
     "prettier": "^2.0.5",
     "readable-stream": "^3.6.0",
     "rimraf": "^3.0.2",
