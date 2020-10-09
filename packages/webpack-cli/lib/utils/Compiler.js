@@ -141,7 +141,7 @@ class Compiler {
             return interactive(options, outputOptions);
         }
 
-        if (this.compiler.compilers) {
+        if (this.compiler && this.compiler.compilers) {
             this.compiler.compilers.forEach((comp, idx) => {
                 bailAndWatchWarning(comp); //warn the user if bail and watch both are used together
                 this.setUpHookForCompilation(comp, outputOptions, options[idx]);
