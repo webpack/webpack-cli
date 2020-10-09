@@ -215,7 +215,12 @@ class WebpackCLI extends GroupHelper {
 
     async run(args, cliOptions) {
         await this.processArgs(args, cliOptions);
-        await this.compilation.createCompiler(this.compilerConfiguration);
+        try {
+            await this.compilation.createCompiler(this.compilerConfiguration);
+        } catch (err) {
+            console.log({ err });
+            process.exit(1);
+        }
         const webpack = await this.compilation.webpackInstance({
             options: this.compilerConfiguration,
             outputOptions: this.outputConfiguration,
