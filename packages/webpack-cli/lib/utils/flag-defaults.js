@@ -11,8 +11,9 @@ const assignFlagDefaults = (compilerConfig, parsedArgs) => {
                 },
             };
         }
+        return { cache: finalConfig.cache };
     }
-    return finalConfig;
+    return {};
 };
 
 module.exports = assignFlagDefaults;
