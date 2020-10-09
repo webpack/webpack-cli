@@ -1,13 +1,12 @@
 'use strict';
 
 const { run } = require('../utils/test-utils');
-const { existsSync } = require('fs');
+const { existsSync, writeFileSync, unlinkSync } = require('fs');
 const { resolve } = require('path');
 
 describe('cache related flags from core', () => {
     it('should be successful with --cache ', () => {
         const { stderr, stdout } = run(__dirname, ['--cache']);
-
         expect(stderr).toBeFalsy();
         expect(stdout).toContain(`type: 'memory'`);
     });
@@ -68,5 +67,38 @@ describe('cache related flags from core', () => {
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain(`version: '1.1.3'`);
+    });
+
+    it('should assign cache build dependencies correctly when cache type is filesystem', () => {
+        const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.config.js']);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('buildDependencies: { config: [Array]');
+        expect(stdout).not.toContain('[cached] 1 module');
+        // Run again to check for cache
+        const newRun = run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.config.js']);
+        expect(newRun.stdout).toContain('[cached] 1 module');
+        expect(newRun.stderr).toBeFalsy();
+        expect(newRun.exitCode).toEqual(0);
+    });
+
+    it('should invalidate cache when config changes', () => {
+        // Creating a temporary webpack config
+        writeFileSync(resolve(__dirname, './webpack.test.config.js'), 'module.exports = {mode: "none"}');
+        const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.test.config.js']);
+        expect(stderr).toBeFalsy();
+        // modules should not be cached on first run
+        expect(stdout).not.toContain('[cached] 1 module');
+
+        // Running again should use the cache
+        const newRun = run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.test.config.js']);
+        expect(newRun.stdout).toContain('[cached] 1 module');
+
+        // Change config to invalidate cache
+        writeFileSync(resolve(__dirname, './webpack.test.config.js'), 'module.exports = {mode: "production"}');
+
+        const newRun2 = run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.test.config.js']);
+        unlinkSync(resolve(__dirname, './webpack.test.config.js'));
+        expect(newRun2).not.toContain('[cached] 1 module');
+        expect(newRun2.exitCode).toEqual(0);
     });
 });
