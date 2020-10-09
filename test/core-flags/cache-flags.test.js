@@ -72,7 +72,8 @@ describe('cache related flags from core', () => {
     it('should assign cache build dependencies correctly when cache type is filesystem', () => {
         const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.config.js']);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain('buildDependencies: { config: [Array]');
+        expect(stdout).toContain('buildDependencies');
+        expect(stdout).toContain("config: [ './webpack.config.js' ]");
         expect(stdout).not.toContain('[cached] 1 module');
         // Run again to check for cache
         const newRun = run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.config.js']);
@@ -84,7 +85,8 @@ describe('cache related flags from core', () => {
     it('should assign cache build dependencies correctly when cache type is filesystem in config', () => {
         const { stderr, stdout } = run(__dirname, ['-c', './webpack.cache.config.js']);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain('buildDependencies: { config: [Array]');
+        expect(stdout).toContain('buildDependencies');
+        expect(stdout).toContain("config: [ './webpack.cache.config.js' ]");
         expect(stdout).toContain("type: 'filesystem'");
         // Run again to check for cache
         const newRun = run(__dirname, ['-c', './webpack.cache.config.js']);
@@ -95,7 +97,7 @@ describe('cache related flags from core', () => {
 
     it('should invalidate cache when config changes', () => {
         // Creating a temporary webpack config
-        writeFileSync(resolve(__dirname, './webpack.test.config.js'), 'module.exports = {mode: "none"}');
+        writeFileSync(resolve(__dirname, './webpack.test.config.js'), 'module.exports = {mode: "development"}');
         const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.test.config.js']);
         expect(stderr).toBeFalsy();
         // modules should not be cached on first run

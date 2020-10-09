@@ -5,7 +5,8 @@ module.exports = {
     mode: 'development',
     cache: {
         type: 'filesystem',
+        name: 'config-cache',
     },
     name: 'compiler',
-    plugins: [new WebpackCLITestPlugin(['module', 'entry', 'resolve', 'resolveLoader'])],
+    plugins: [new WebpackCLITestPlugin(['cache'])],
 };
