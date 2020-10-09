@@ -46,20 +46,19 @@ class WebpackCLI extends GroupHelper {
      * @returns {void}
      */
     _handleCoreFlags(parsedArgs) {
-        if (!this.groupMap.has('core')) {
-            return;
-        }
-        const coreFlags = this.groupMap.get('core');
+        if (this.groupMap.has('core')) {
+            const coreFlags = this.groupMap.get('core');
 
-        // convert all the flags from map to single object
-        const coreConfig = coreFlags.reduce((allFlag, curFlag) => ({ ...allFlag, ...curFlag }), {});
-        const coreCliHelper = require('webpack').cli;
-        const coreCliArgs = coreCliHelper.getArguments();
-        // Merge the core flag config with the compilerConfiguration
-        coreCliHelper.processArguments(coreCliArgs, this.compilerConfiguration, coreConfig);
-        // Assign some defaults to core flags
-        const configWithAppliedDefaults = assignFlagDefaults(this.compilerConfiguration, parsedArgs);
-        this._mergeOptionsToConfiguration(configWithAppliedDefaults);
+            // convert all the flags from map to single object
+            const coreConfig = coreFlags.reduce((allFlag, curFlag) => ({ ...allFlag, ...curFlag }), {});
+            const coreCliHelper = require('webpack').cli;
+            const coreCliArgs = coreCliHelper.getArguments();
+            // Merge the core flag config with the compilerConfiguration
+            coreCliHelper.processArguments(coreCliArgs, this.compilerConfiguration, coreConfig);
+            // Assign some defaults to core flags
+        }
+        const configWithDefaults = assignFlagDefaults(this.compilerConfiguration, parsedArgs);
+        this._mergeOptionsToConfiguration(configWithDefaults);
     }
 
     async _baseResolver(cb, parsedArgs, strategy) {

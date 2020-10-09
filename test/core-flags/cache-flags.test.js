@@ -81,6 +81,18 @@ describe('cache related flags from core', () => {
         expect(newRun.exitCode).toEqual(0);
     });
 
+    it('should assign cache build dependencies correctly when cache type is filesystem in config', () => {
+        const { stderr, stdout } = run(__dirname, ['-c', './webpack.cache.config.js']);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('buildDependencies: { config: [Array]');
+        expect(stdout).not.toContain('[cached] 1 module');
+        // Run again to check for cache
+        const newRun = run(__dirname, ['-c', './webpack.cache.config.js']);
+        expect(newRun.stdout).toContain('[cached] 1 module');
+        expect(newRun.stderr).toBeFalsy();
+        expect(newRun.exitCode).toEqual(0);
+    });
+
     it('should invalidate cache when config changes', () => {
         // Creating a temporary webpack config
         writeFileSync(resolve(__dirname, './webpack.test.config.js'), 'module.exports = {mode: "none"}');
