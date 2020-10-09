@@ -85,7 +85,7 @@ describe('cache related flags from core', () => {
         const { stderr, stdout } = run(__dirname, ['-c', './webpack.cache.config.js']);
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('buildDependencies: { config: [Array]');
-        expect(stdout).not.toContain('[cached] 1 module');
+        expect(stdout).toContain("type: 'filesystem'");
         // Run again to check for cache
         const newRun = run(__dirname, ['-c', './webpack.cache.config.js']);
         expect(newRun.stdout).toContain('[cached] 1 module');
