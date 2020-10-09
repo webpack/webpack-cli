@@ -47,8 +47,8 @@ jobs:
 
       - name: Lint
         run: yarn lint
-
-  build:
+  # TODO: Uncomment and setup coverage for each test
+  # build:
     name: Tests - ${{ matrix.os }} - Node v${{ matrix.node-version }}, Webpack ${{ matrix.webpack-version }}
 
     runs-on: ${{ matrix.os }}
