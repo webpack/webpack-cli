@@ -1,9 +1,16 @@
 const fs = require('fs');
 const path = require('path');
-const execa = require('execa');
+
+const syncMock = jest.fn(() => {
+    return {
+        stdout: '1.0.0',
+    };
+});
+jest.setMock('execa', {
+    sync: syncMock,
+});
 const { getPackageManager } = require('../get-package-manager');
 
-jest.mock('execa');
 jest.mock('cross-spawn');
 const globalModulesNpmValue = 'test-npm';
 jest.setMock('global-modules', globalModulesNpmValue);
@@ -20,9 +27,6 @@ describe('packageUtils', () => {
         const cwdSpy = jest.spyOn(process, 'cwd');
 
         beforeAll(() => {
-            // mock sync
-            execa.sync = jest.fn();
-
             // package-lock.json is ignored by .gitignore, so we simply
             // write a lockfile here for testing
             if (!fs.existsSync(testNpmLockPath)) {
@@ -33,48 +37,42 @@ describe('packageUtils', () => {
         });
 
         beforeEach(() => {
-            execa.sync.mockClear();
+            syncMock.mockClear();
         });
 
         it('should find yarn.lock', () => {
             cwdSpy.mockReturnValue(testYarnLockPath);
             expect(getPackageManager()).toEqual('yarn');
-            expect(execa.sync.mock.calls.length).toEqual(0);
+            expect(syncMock.mock.calls.length).toEqual(0);
         });
 
         it('should find package-lock.json', () => {
             cwdSpy.mockReturnValue(testNpmLockPath);
             expect(getPackageManager()).toEqual('npm');
-            expect(execa.sync.mock.calls.length).toEqual(0);
+            expect(syncMock.mock.calls.length).toEqual(0);
         });
 
         it('should prioritize yarn with many lock files', () => {
             cwdSpy.mockReturnValue(testBothPath);
             expect(getPackageManager()).toEqual('yarn');
-            expect(execa.sync.mock.calls.length).toEqual(0);
+            expect(syncMock.mock.calls.length).toEqual(0);
         });
 
-        // TODO - revisit
-        it.skip('should use yarn if yarn command works', () => {
+        it('should use yarn if yarn command works', () => {
             // yarn should output a version number to stdout if
             // it is installed
-            execa.sync.mockImplementation(() => {
-                return {
-                    stdout: '1.0.0',
-                };
-            });
             cwdSpy.mockReturnValue(path.resolve(__dirname));
             expect(getPackageManager()).toEqual('yarn');
-            expect(execa.sync.mock.calls.length).toEqual(1);
+            expect(syncMock.mock.calls.length).toEqual(1);
         });
 
-        it.skip('should use npm if yarn command fails', () => {
-            execa.sync.mockImplementation(() => {
+        it('should use npm if yarn command fails', () => {
+            syncMock.mockImplementation(() => {
                 throw new Error();
             });
             cwdSpy.mockReturnValue(path.resolve(__dirname));
             expect(getPackageManager()).toEqual('npm');
-            expect(execa.sync.mock.calls.length).toEqual(1);
+            expect(syncMock.mock.calls.length).toEqual(1);
         });
     });
 });
