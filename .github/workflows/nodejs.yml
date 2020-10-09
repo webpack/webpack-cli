@@ -47,61 +47,62 @@ jobs:
 
       - name: Lint
         run: yarn lint
-  # TODO: Uncomment and setup coverage for each test
-  # build:
-  #   name: Tests - ${{ matrix.os }} - Node v${{ matrix.node-version }}, Webpack ${{ matrix.webpack-version }}
 
-  #   runs-on: ${{ matrix.os }}
+  build:
+    name: Tests and Coverage - ${{ matrix.os }} - Node v${{ matrix.node-version }}, Webpack ${{ matrix.webpack-version }}
 
-  #   strategy:
-  #     matrix:
-  #       os: [ubuntu-latest, windows-latest, macos-latest]
-  #       node-version: [10.x, 12.x, 14.x]
-  #       webpack-version: [next, latest]
+    runs-on: ${{ matrix.os }}
 
-  #   steps:
-  #     - uses: actions/checkout@v2
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: [10.x, 12.x, 14.x]
+        webpack-version: [next, latest]
 
-  #     - name: Using Node v${{ matrix.node-version }}
-  #       uses: actions/setup-node@v1
-  #       with:
-  #         node-version: ${{ matrix.node-version }}
+    steps:
+      - uses: actions/checkout@v2
 
-  #     - name: Restore lerna cache
-  #       id: cache
-  #       uses: actions/cache@v2
-  #       with:
-  #         path: |
-  #           node_modules
-  #           */*/node_modules
-  #         key: ${{ runner.os }}-${{ matrix.webpack-version }}-${{ hashFiles('**/yarn.lock') }}
+      - name: Using Node v${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
 
-  #     - name: Install dependencies
-  #       if: steps.cache.outputs.cache-hit != 'true'
-  #       run: |
-  #         yarn
-  #         yarn bootstrap
+      - name: Restore lerna cache
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+          key: ${{ runner.os }}-${{ matrix.webpack-version }}-${{ hashFiles('**/yarn.lock') }}
 
-  #     - name: Install webpack ${{ matrix.webpack-version }}
-  #       if: steps.cache.outputs.cache-hit != 'true'
-  #       run: yarn add -W webpack@${{ matrix.webpack-version }}
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          yarn
+          yarn bootstrap
 
-  #     - name: Build
-  #       run: yarn build
+      - name: Install webpack ${{ matrix.webpack-version }}
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: yarn add -W webpack@${{ matrix.webpack-version }}
 
-  #     - name: Run tests for webpack version ${{ matrix.webpack-version }}
-  #       run: |
-  #         yarn prepsuite
-  #         yarn test:ci
-  #       env:
-  #         CI: true
+      - name: Build
+        run: yarn build
 
-  #     - name: Smoke Tests
-  #       # TODO fix for windows
-  #       if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
-  #       run: yarn test:smoke
-  #       env:
-  #         CI: true
+      - name: Test and Generate Coverage
+        run: |
+          yarn prepsuite
+          yarn test:coverage
+
+      - name: Smoke Tests
+        # TODO fix for windows
+        if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
+        run: yarn test:smoke
+        env:
+          CI: true
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
 
   commitlint:
     name: Lint Commit Messages
@@ -118,41 +119,3 @@ jobs:
         # $GITHUB_WORKSPACE is the path to your repository
         run: echo "::set-env name=NODE_PATH::$GITHUB_WORKSPACE/node_modules"
       - uses: wagoid/commitlint-github-action@v2
-
-  coverage:
-    name: Coverage - ${{ matrix.os }} - Node v${{ matrix.node-version }}
-
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        node-version: [12.x]
-        webpack-version: [latest]
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Using Node v${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Install dependencies
-        run: |
-          yarn
-          yarn bootstrap
-
-      - name: Install webpack ${{ matrix.webpack-version }}
-        run: yarn add -W webpack@${{ matrix.webpack-version }}
-
-      - name: Build
-        run: yarn build
-
-      - name: Generate Coverage
-        run: |
-          yarn prepsuite
-          yarn test:coverage
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
