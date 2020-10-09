@@ -10,9 +10,6 @@ jest.setMock('global-modules', globalModulesNpmValue);
 jest.setMock('enquirer', {
     prompt: jest.fn(),
 });
-jest.setMock('../lib/processUtils', {
-    runCommand: jest.fn(),
-});
 
 describe('packageUtils', () => {
     describe('getPackageManager', () => {

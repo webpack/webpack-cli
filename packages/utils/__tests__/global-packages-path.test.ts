@@ -1,27 +1,22 @@
 'use strict';
-
+import { getPathToGlobalPackages } from '../lib/global-packages-path';
 jest.mock('execa');
 jest.mock('cross-spawn');
 const globalModulesNpmValue = 'test-npm';
 jest.setMock('global-modules', globalModulesNpmValue);
+const getPackageManagerMock = jest.fn();
 
 import path from 'path';
 import spawn from 'cross-spawn';
 
 describe('getPathToGlobalPackages', () => {
-    let packageUtils;
-    beforeAll(() => {
-        packageUtils = require('../lib/');
-        packageUtils.getPackageManager = jest.fn();
-    });
-
     it('uses global-modules if package manager is npm', () => {
-        packageUtils.getPackageManager.mockReturnValue('npm');
-        expect(packageUtils.getPathToGlobalPackages()).toEqual(globalModulesNpmValue);
+        getPackageManagerMock.mockReturnValue('npm');
+        expect(getPathToGlobalPackages()).toEqual(globalModulesNpmValue);
     });
 
     it('executes a command to find yarn global dir if package manager is yarn', () => {
-        packageUtils.getPackageManager.mockReturnValue('yarn');
+        getPackageManagerMock.mockReturnValue('yarn');
         (spawn.sync as jest.Mock).mockReturnValue({
             stdout: {
                 toString: (): string => {
@@ -31,6 +26,6 @@ describe('getPathToGlobalPackages', () => {
         });
         // after the yarn global dir is found, the node_modules directory
         // is added on to the path
-        expect(packageUtils.getPathToGlobalPackages()).toEqual(`test-yarn${path.sep}node_modules`);
+        expect(getPathToGlobalPackages()).toEqual(`test-yarn${path.sep}node_modules`);
     });
 });
