@@ -14,8 +14,11 @@
   "dependencies": {
     "@webpack-cli/package-utils": "^1.0.1-rc.1",
     "colorette": "^1.2.1",
+    "cross-spawn": "^7.0.3",
+    "enquirer": "^2.3.6",
     "execa": "^4.0.0",
     "findup-sync": "^4.0.0",
+    "global-modules": "^2.0.0",
     "got": "^10.7.0",
     "jscodeshift": "^0.7.0",
     "p-each-series": "^2.1.0",

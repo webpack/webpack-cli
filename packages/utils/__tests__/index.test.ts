@@ -1,7 +1,7 @@
 'use strict';
 
 import { packageExists, promptInstallation, runCommand } from '../';
-import ExternalCommand from '../../webpack-cli/lib/commands/ExternalCommand';
+import ExternalCommand from '../../webpack-cli/lib/commands/resolveCommand';
 
 describe('@webpack-cli/utils', () => {
     it('should check existence of package', () => {
