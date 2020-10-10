@@ -10,7 +10,6 @@
     "outDir": "lib",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "sourceMap": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "baseUrl": ".",
@@ -30,7 +29,6 @@
     { "path": "packages/package-utils" },
     { "path": "packages/serve" },
     { "path": "packages/utils" },
-    // { "path": "packages/webpack-cli" },
     { "path": "packages/webpack-scaffold" }
   ]
 }
