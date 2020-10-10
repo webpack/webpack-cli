@@ -25,12 +25,12 @@ yarn add webpack-cli --dev
 ### Available Commands
 
 ```
-  init      Initialize a new webpack configuration
-  migrate   Migrate a configuration to a new version
-  loader    Scaffold a loader repository
-  plugin    Scaffold a plugin repository
-  info      Outputs information about your system and dependencies
-  serve     Run the webpack Dev Server
+  init | c      Initialize a new webpack configuration
+  migrate | m   Migrate a configuration to a new version
+  loader | l    Scaffold a loader repository
+  plugin | p    Scaffold a plugin repository
+  info | i      Outputs information about your system and dependencies
+  serve | s     Run the webpack Dev Server
 ```
 
 ### webpack 4
