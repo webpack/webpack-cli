@@ -139,7 +139,7 @@ class Compiler {
             } else {
                 logger.error(`\n${err}`);
             }
-            process.exit(1);
+            process.exit(2);
         }
     }
 
