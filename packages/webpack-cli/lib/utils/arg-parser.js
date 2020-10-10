@@ -13,7 +13,7 @@ const { defaultCommands } = require('./commands');
  * @param {boolean} argsOnly false if all of process.argv has been provided, true if
  * args is only a subset of process.argv that removes the first couple elements
  */
-function argParser(options, args, argsOnly = false, name = '') {
+const argParser = (options, args, argsOnly = false, name = '') => {
     const parser = new commander.Command();
     // Set parser name
     parser.name(name);
@@ -155,6 +155,6 @@ function argParser(options, args, argsOnly = false, name = '') {
         unknownArgs,
         opts,
     };
-}
+};
 
 module.exports = argParser;

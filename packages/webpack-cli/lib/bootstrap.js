@@ -13,11 +13,9 @@ process.title = 'webpack-cli';
 // Create a new instance of the CLI object
 const cli = new WebpackCLI();
 
-function parseArgs(args) {
-    return argParser(core, args, true, process.title);
-}
+const parseArgs = (args) => argParser(core, args, true, process.title);
 
-async function runCLI(cliArgs) {
+const runCLI = async (cliArgs) => {
     let args;
 
     const commandIsUsed = isCommandUsed(cliArgs);
@@ -108,6 +106,6 @@ async function runCLI(cliArgs) {
             return;
         }
     }
-}
+};
 
 module.exports = runCLI;

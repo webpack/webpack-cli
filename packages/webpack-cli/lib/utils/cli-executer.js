@@ -3,7 +3,7 @@ const { cyan } = require('colorette');
 const logger = require('./logger');
 const cliArgs = require('./cli-flags').core;
 
-async function prompter() {
+const prompter = async () => {
     const args = [];
 
     const typePrompt = new MultiSelect({
@@ -48,9 +48,9 @@ async function prompter() {
     }
 
     return [...args, ...boolArgs];
-}
+};
 
-async function run() {
+const run = async () => {
     try {
         const args = await prompter();
         logger.info('\nExecuting CLI\n');
@@ -59,6 +59,6 @@ async function run() {
         logger.error(`${err} Action Interrupted, use ${cyan('webpack-cli help')} to see possible options.`);
         process.exit(1);
     }
-}
+};
 
 module.exports = run;
