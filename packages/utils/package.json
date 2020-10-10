@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/utils",
-  "version": "1.0.1-rc.1",
+  "version": "1.0.1",
   "description": "webpack-cli utility files",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
