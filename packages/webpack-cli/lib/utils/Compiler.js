@@ -72,7 +72,7 @@ class Compiler {
         if (err) {
             lastHash = null;
             logger.error(err.stack || err);
-            process.exit(1); // eslint-disable-line
+            process.exit(1);
         }
         if (!outputOptions.watch && stats.hasErrors()) {
             process.exitCode = 1;

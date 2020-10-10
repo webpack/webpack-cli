@@ -170,7 +170,6 @@ export default function (j: JSCodeshift, ast: Node): Node {
                             cacheGroup[chunkKey] = [];
                         }
 
-                        // eslint-disable-next-line
                         cacheGroup[chunkKey] = cacheGroup[chunkKey].map((prop): string | void =>
                             prop.key.name === 'test' ? mergeTestPropArrowFunction(j, chunkKey, pathValue) : prop,
                         );

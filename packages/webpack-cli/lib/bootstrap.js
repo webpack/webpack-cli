@@ -96,7 +96,7 @@ const runCLI = async (cliArgs) => {
             });
             // Filter out the value for the overridden key
             const newArgKeys = Object.keys(argsMap).filter((arg) => !keysToDelete.includes(argsMap[arg].pos));
-            // eslint-disable-next-line require-atomic-updates
+
             cliArgs = newArgKeys;
             args = argParser('', core, cliArgs);
             await cli.run(args.opts, core);
