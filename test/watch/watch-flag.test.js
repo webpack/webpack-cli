@@ -42,6 +42,7 @@ describe('--watch flag', () => {
         let semaphore = 0;
         proc.stdout.on('data', (chunk) => {
             const data = chunk.toString();
+            console.log({ data, semaphore });
             if (semaphore === 0) {
                 expect(data).toContain('Compilation  starting');
             }
