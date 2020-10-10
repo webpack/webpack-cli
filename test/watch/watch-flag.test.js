@@ -42,14 +42,10 @@ describe('--watch flag', () => {
         let semaphore = 0;
         proc.stdout.on('data', (chunk) => {
             const data = chunk.toString();
-            console.log({ data, semaphore });
-            if (semaphore === 0) {
-                expect(data).toContain('Compilation  starting');
+            if (data.includes('Compilation  starting') || data.includes('Compilation  finished')) {
+                semaphore++;
             }
-            if (semaphore === 1) {
-                expect(data).toContain('Compilation  finished');
-            }
-            if (semaphore === 2) {
+            if (semaphore === 2 && data.includes('index.js')) {
                 if (version.startsWith('5')) {
                     for (const word of wordsInStatsv5) {
                         expect(data).toContain(word);
@@ -59,14 +55,10 @@ describe('--watch flag', () => {
                         expect(data).toContain(word);
                     }
                 }
-            }
-            if (semaphore === 3) {
-                expect(data).toContain('watching files for updates');
                 proc.kill();
                 done();
                 return;
             }
-            semaphore++;
         });
     });
 });
