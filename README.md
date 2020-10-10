@@ -11,11 +11,6 @@
 </p>
 <br>
 
-> ## This is the documentation of the beta version (being maintained on branch next).
->
-> Release Candidate of webpack-cli v4 is now available on npm,
-> please leave your feedback [here](https://github.com/webpack/webpack-cli/issues/1222)
-
 [![npm][npm]][npm-url]
 [![Build Status][build-status]][build-status-url]
 [![Dependencies][deps]][deps-url]
@@ -115,7 +110,7 @@ If you like **webpack**, please consider donating to our [Open Collective](https
 
 [npm]: https://img.shields.io/npm/v/webpack-cli.svg
 [npm-url]: https://www.npmjs.com/package/webpack-cli
-[build-status]: https://github.com/webpack/webpack-cli/workflows/webpack-cli/badge.svg?branch=next
+[build-status]: https://github.com/webpack/webpack-cli/workflows/webpack-cli/badge.svg?branch=master
 [build-status-url]: https://github.com/webpack/webpack-cli/actions
 [deps]: https://img.shields.io/david/webpack/webpack.svg
 [deps-url]: https://david-dm.org/webpack/webpack-cli
