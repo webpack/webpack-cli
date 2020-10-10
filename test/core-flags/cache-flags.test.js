@@ -70,6 +70,7 @@ describe('cache related flags from core', () => {
     });
 
     it('should assign cache build dependencies correctly when cache type is filesystem', () => {
+        // TODO: Fix on windows
         if (isWindows) return;
         const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.config.js']);
         expect(stderr).toBeFalsy();
@@ -84,6 +85,7 @@ describe('cache related flags from core', () => {
     });
 
     it('should assign cache build dependencies correctly when cache type is filesystem in config', () => {
+        // TODO: Fix on windows
         if (isWindows) return;
         const { stderr, stdout } = run(__dirname, ['-c', './webpack.cache.config.js']);
         expect(stderr).toBeFalsy();
@@ -98,6 +100,7 @@ describe('cache related flags from core', () => {
     });
 
     it('should assign cache build dependencies with multiple configs', () => {
+        // TODO: Fix on windows
         if (isWindows) return;
         const { stderr, stdout, exitCode } = run(__dirname, ['-c', './webpack.cache.config.js', '-c', './webpack.config.js']);
         expect(stderr).toBeFalsy();

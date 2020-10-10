@@ -16,7 +16,8 @@ const cacheDefaults = (finalConfig, parsedArgs) => {
 const assignFlagDefaults = (compilerConfig, parsedArgs) => {
     if (Array.isArray(compilerConfig)) {
         return compilerConfig.map((config) => cacheDefaults(config, parsedArgs));
-    } else return cacheDefaults(compilerConfig, parsedArgs);
+    }
+    return cacheDefaults(compilerConfig, parsedArgs);
 };
 
 module.exports = assignFlagDefaults;
