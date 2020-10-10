@@ -56,8 +56,8 @@ const run = async () => {
         logger.info('\nExecuting CLI\n');
         return args;
     } catch (err) {
-        logger.error(`${err} Action Interrupted, use ${cyan('webpack-cli help')} to see possible options.`);
-        process.exit(1);
+        logger.error(`Action Interrupted, use ${cyan('webpack-cli help')} to see possible options.`);
+        process.exit(2);
     }
 };
 

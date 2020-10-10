@@ -41,7 +41,8 @@ describe('CLI Executer', () => {
     });
 
     it('runs enquirer options then runs webpack', async () => {
-        await cliExecuter();
+        const args = await cliExecuter();
+        expect(args.length).toBe(5);
 
         // check that webpack options are actually being displayed that
         // the user can select from
