@@ -1,23 +1,18 @@
 'use strict';
-const { run, isWindows } = require('../utils/test-utils');
+const { run } = require('../utils/test-utils');
 
 describe('invalid schema', () => {
-    it('should log webpack error and exit process on invalid config', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--config', './webpack.config.mock.js']);
-        console.log({ stderr, stdout, exitCode });
-        expect(stderr).toContain('Invalid configuration object');
-        // TODO - Fix exitcode check on windows
-        if (!isWindows) {
-            expect(exitCode).toEqual(1);
-        }
+    it.only('should log webpack error and exit process on invalid config', () => {
+        const result = run(__dirname, ['--config', './webpack.config.mock.js']);
+        console.log(result);
+        expect(result.stderr).toContain('Invalid configuration object');
+        expect(result.exitCode).toEqual(1);
     });
 
     it('should log webpack error and exit process on invalid flag', () => {
         const { stderr, exitCode } = run(__dirname, ['--mode', 'Yukihira']);
+        console.log({ stderr, exitCode });
         expect(stderr).toContain('Invalid configuration object');
-        // TODO - Fix exitcode check on windows
-        if (!isWindows) {
-            expect(exitCode).toEqual(1);
-        }
+        expect(exitCode).toEqual(1);
     });
 });
