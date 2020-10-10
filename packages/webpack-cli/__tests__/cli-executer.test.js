@@ -1,8 +1,4 @@
-jest.mock('../lib/bootstrap');
 jest.mock('enquirer');
-
-const runCLI = require('../lib/bootstrap');
-runCLI.mockImplementation(() => {});
 
 describe('CLI Executer', () => {
     let cliExecuter = null;
@@ -45,11 +41,8 @@ describe('CLI Executer', () => {
     });
 
     it('runs enquirer options then runs webpack', async () => {
-        await cliExecuter();
-
-        // ensure that the webpack runCLI is called
-        expect(runCLI.mock.calls.length).toEqual(1);
-        expect(runCLI.mock.calls[0][0]).toEqual(['--config', 'test1', '--entry', 'test2', '--progress']);
+        const args = await cliExecuter();
+        expect(args.length).toBe(5);
 
         // check that webpack options are actually being displayed that
         // the user can select from

@@ -13,11 +13,13 @@ process.title = 'webpack-cli';
 // Create a new instance of the CLI object
 const cli = new WebpackCLI();
 
-async function runCLI(cliArgs) {
+const parseArgs = (args) => argParser(core, args, true, process.title);
+
+const runCLI = async (cliArgs) => {
     let args;
 
     const commandIsUsed = isCommandUsed(cliArgs);
-    const parsedArgs = argParser(core, cliArgs, true, process.title);
+    const parsedArgs = parseArgs(cliArgs);
     if (parsedArgs.unknownArgs.includes('help') || parsedArgs.opts.help) {
         options.enabled = !cliArgs.includes('--no-color');
         helpRunner(cliArgs);
@@ -56,7 +58,9 @@ async function runCLI(cliArgs) {
             parsedArgs.unknownArgs.forEach((unknown) => {
                 logger.warn(`Unknown argument: ${unknown}`);
             });
-            await cliExecuter();
+            const args = await cliExecuter();
+            const { opts } = parseArgs(args);
+            await cli.run(opts, core);
             return;
         }
         const parsedArgsOpts = parsedArgs.opts;
@@ -102,6 +106,6 @@ async function runCLI(cliArgs) {
             return;
         }
     }
-}
+};
 
 module.exports = runCLI;
