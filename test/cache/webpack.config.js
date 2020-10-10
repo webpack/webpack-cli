@@ -3,6 +3,7 @@ const path = require('path');
 module.exports = {
     cache: {
         type: 'filesystem',
+        name: 'cache-config-tests',
         buildDependencies: {
             config: [__filename],
         },

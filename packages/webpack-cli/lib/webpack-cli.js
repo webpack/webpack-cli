@@ -5,6 +5,7 @@ const { groups, core } = require('./utils/cli-flags');
 const argParser = require('./utils/arg-parser');
 const { outputStrategy } = require('./utils/merge-strategies');
 const { toKebabCase } = require('./utils/helpers');
+const assignFlagDefaults = require('./utils/flag-defaults');
 
 // CLI arg resolvers
 const handleConfigResolution = require('./groups/ConfigGroup');
@@ -44,19 +45,20 @@ class WebpackCLI extends GroupHelper {
      * @private\
      * @returns {void}
      */
-    _handleCoreFlags() {
-        if (!this.groupMap.has('core')) {
-            return;
+    _handleCoreFlags(parsedArgs) {
+        if (this.groupMap.has('core')) {
+            const coreFlags = this.groupMap.get('core');
+
+            // convert all the flags from map to single object
+            const coreConfig = coreFlags.reduce((allFlag, curFlag) => ({ ...allFlag, ...curFlag }), {});
+            const coreCliHelper = require('webpack').cli;
+            const coreCliArgs = coreCliHelper.getArguments();
+            // Merge the core flag config with the compilerConfiguration
+            coreCliHelper.processArguments(coreCliArgs, this.compilerConfiguration, coreConfig);
+            // Assign some defaults to core flags
         }
-        const coreFlags = this.groupMap.get('core');
-
-        // convert all the flags from map to single object
-        const coreConfig = coreFlags.reduce((allFlag, curFlag) => ({ ...allFlag, ...curFlag }), {});
-
-        const coreCliHelper = require('webpack').cli;
-        const coreCliArgs = coreCliHelper.getArguments();
-        // Merge the core flag config with the compilerConfiguration
-        coreCliHelper.processArguments(coreCliArgs, this.compilerConfiguration, coreConfig);
+        const configWithDefaults = assignFlagDefaults(this.compilerConfiguration, parsedArgs);
+        this._mergeOptionsToConfiguration(configWithDefaults);
     }
 
     async _baseResolver(cb, parsedArgs, strategy) {
@@ -193,7 +195,7 @@ class WebpackCLI extends GroupHelper {
             .then(() => this._baseResolver(handleConfigResolution, parsedArgs))
             .then(() => this._baseResolver(resolveMode, parsedArgs))
             .then(() => this._baseResolver(resolveOutput, parsedArgs, outputStrategy))
-            .then(() => this._handleCoreFlags())
+            .then(() => this._handleCoreFlags(parsedArgs))
             .then(() => this._baseResolver(basicResolver, parsedArgs))
             .then(() => this._baseResolver(resolveAdvanced, parsedArgs))
             .then(() => this._baseResolver(resolveStats, parsedArgs))
