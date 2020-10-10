@@ -1,9 +1,10 @@
 const webpackMerge = require('webpack-merge');
 const { Compiler } = require('./utils/Compiler');
-const { core } = require('./utils/cli-flags');
+const { core, coreFlagMap } = require('./utils/cli-flags');
 const argParser = require('./utils/arg-parser');
 const { outputStrategy } = require('./utils/merge-strategies');
 const assignFlagDefaults = require('./utils/flag-defaults');
+const { toKebabCase } = require('./utils/helpers');
 
 // CLI arg resolvers
 const handleConfigResolution = require('./groups/ConfigGroup');
@@ -26,17 +27,19 @@ class WebpackCLI {
      * @returns {void}
      */
     _handleCoreFlags(parsedArgs) {
-        if (this.groupMap.has('core')) {
-            const coreFlags = this.groupMap.get('core');
-
-            // convert all the flags from map to single object
-            const coreConfig = coreFlags.reduce((allFlag, curFlag) => ({ ...allFlag, ...curFlag }), {});
-            const coreCliHelper = require('webpack').cli;
-            const coreCliArgs = coreCliHelper.getArguments();
-            // Merge the core flag config with the compilerConfiguration
-            coreCliHelper.processArguments(coreCliArgs, this.compilerConfiguration, coreConfig);
-            // Assign some defaults to core flags
-        }
+        const coreConfig = Object.keys(parsedArgs)
+            .filter((arg) => {
+                return coreFlagMap.has(toKebabCase(arg));
+            })
+            .reduce((acc, cur) => {
+                acc[toKebabCase(cur)] = parsedArgs[cur];
+                return acc;
+            }, {});
+        const coreCliHelper = require('webpack').cli;
+        const coreCliArgs = coreCliHelper.getArguments();
+        // Merge the core flag config with the compilerConfiguration
+        coreCliHelper.processArguments(coreCliArgs, this.compilerConfiguration, coreConfig);
+        // Assign some defaults to core flags
         const configWithDefaults = assignFlagDefaults(this.compilerConfiguration, parsedArgs);
         this._mergeOptionsToConfiguration(configWithDefaults);
     }
