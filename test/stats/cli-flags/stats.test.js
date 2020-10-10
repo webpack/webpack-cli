@@ -1,7 +1,8 @@
 /* eslint-disable node/no-extraneous-require */
 /* eslint-disable node/no-unpublished-require */
 'use strict';
-const { run, isWebpack5, isWindows } = require('../../utils/test-utils');
+
+const { run, isWebpack5 } = require('../../utils/test-utils');
 
 const presets = ['normal', 'detailed', 'errors-only', 'errors-warnings', 'minimal', 'verbose', 'none'];
 
@@ -43,9 +44,7 @@ describe('stats flag', () => {
         } else {
             expect(stderr).toContain('"none" | "errors-only" | "minimal" | "normal" | "detailed" | "verbose" | "errors-warnings"');
         }
-        // TODO - Fix exitcode check on windows
-        if (!isWindows) {
-            expect(exitCode).toEqual(1);
-        }
+
+        expect(exitCode).toEqual(2);
     });
 });
