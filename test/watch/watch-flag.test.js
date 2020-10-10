@@ -45,7 +45,7 @@ describe('--watch flag', () => {
             if (data.includes('Compilation  starting') || data.includes('Compilation  finished')) {
                 semaphore++;
             }
-            if (semaphore === 2 && data.includes('index.js')) {
+            if (data.includes('index.js')) {
                 if (isWebpack5) {
                     for (const word of wordsInStatsv5) {
                         expect(data).toContain(word);
