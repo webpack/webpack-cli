@@ -1,6 +1,5 @@
 {
   "name": "webpack-cli-monorepo",
-  "version": "4.0.0-beta.9",
   "description": "CLI for webpack & friends",
   "license": "MIT",
   "private": true,
@@ -41,7 +40,7 @@
     "test:ci": "yarn test:cli && yarn test:packages",
     "test:watch": "jest test/ packages/ --watch",
     "test:smoke": "smoketests/smoketests.sh",
-    "publish:monorepo": "yarn build && lerna version prerelease --preid rc && lerna publish from-git --canary --preid rc --dist-tag next"
+    "publish:monorepo": "yarn build && lerna version && lerna publish from-git"
   },
   "config": {
     "commitizen": {
