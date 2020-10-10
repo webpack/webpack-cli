@@ -129,10 +129,17 @@ class Compiler {
             this.compiler = await webpack(options);
             this.compilerOptions = options;
         } catch (err) {
-            process.stdout.write('\n');
-            logger.error(`${err.name}: ${err.message}`);
-            process.stdout.write('\n');
-            return;
+            // https://github.com/webpack/webpack/blob/master/lib/index.js#L267
+            // https://github.com/webpack/webpack/blob/v4.44.2/lib/webpack.js#L90
+            const ValidationError = webpack.ValidationError ? webpack.ValidationError : webpack.WebpackOptionsValidationError;
+            // In case of schema errors print and exit process
+            // For webpack@4 and webpack@5
+            if (err instanceof ValidationError) {
+                logger.error(`\n${err.message}`);
+            } else {
+                logger.error(`\n${err}`);
+            }
+            process.exit(1);
         }
     }
 
@@ -153,7 +160,6 @@ class Compiler {
             const interactive = require('./interactive');
             return interactive(options, outputOptions);
         }
-
         if (this.compiler.compilers) {
             this.compiler.compilers.forEach((comp, idx) => {
                 bailAndWatchWarning(comp); //warn the user if bail and watch both are used together

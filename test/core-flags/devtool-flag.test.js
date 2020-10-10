@@ -13,6 +13,6 @@ describe('--devtool flag', () => {
     it('should throw error for invalid config', () => {
         const { stderr } = run(__dirname, ['--devtool', 'invalid']);
 
-        expect(stderr).toContain('ValidationError: Invalid configuration object');
+        expect(stderr).toContain('Invalid configuration object');
     });
 });
