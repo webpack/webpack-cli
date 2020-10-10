@@ -1,9 +1,8 @@
 'use strict';
 
-const { runAndGetWatchProc } = require('../utils/test-utils');
+const { runAndGetWatchProc, isWebpack5 } = require('../utils/test-utils');
 const { writeFileSync } = require('fs');
 const { resolve } = require('path');
-const { version } = require('webpack');
 
 const wordsInStatsv4 = ['Hash', 'Version', 'Time', 'Built at:', 'main.js'];
 const wordsInStatsv5 = ['asset', 'index.js', 'compiled successfully'];
@@ -20,7 +19,7 @@ describe('--watch flag', () => {
                 return;
             }
             if (semaphore === 0 && data.includes('index.js')) {
-                if (version.startsWith('5')) {
+                if (isWebpack5) {
                     for (const word of wordsInStatsv5) {
                         expect(data).toContain(word);
                     }
@@ -46,7 +45,7 @@ describe('--watch flag', () => {
                 semaphore++;
             }
             if (semaphore === 2 && data.includes('index.js')) {
-                if (version.startsWith('5')) {
+                if (isWebpack5) {
                     for (const word of wordsInStatsv5) {
                         expect(data).toContain(word);
                     }
