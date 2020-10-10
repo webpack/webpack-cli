@@ -4,6 +4,27 @@ const logger = require('./logger');
 const { writeFileSync } = require('fs');
 const bailAndWatchWarning = require('./warnings/bailAndWatchWarning');
 
+const assignWatchHooks = (compiler) => {
+    compiler.hooks.watchRun.tap('watchInfo', (compilation) => {
+        const compilationName = compilation.name || '';
+        logger.raw(`\nCompilation ${compilationName} starting…\n`);
+    });
+    compiler.hooks.done.tap('watchInfo', (compilation) => {
+        const compilationName = compilation.name || '';
+        logger.raw(`\nCompilation ${compilationName} finished\n`);
+    });
+};
+
+const watchInfo = (compiler) => {
+    if (compiler.compilers) {
+        compiler.compilers.map((comp) => {
+            assignWatchHooks(comp);
+        });
+    } else {
+        assignWatchHooks(compiler);
+    }
+};
+
 class Compiler {
     constructor() {
         this.compilerOptions = {};
@@ -151,6 +172,7 @@ class Compiler {
                 });
                 process.stdin.resume();
             }
+            watchInfo(this.compiler);
             await this.invokeWatchInstance(lastHash, options, outputOptions, watchOptions);
         } else {
             return await this.invokeCompilerInstance(lastHash, options, outputOptions);
