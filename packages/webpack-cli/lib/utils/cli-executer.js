@@ -2,7 +2,6 @@ const { MultiSelect, Input } = require('enquirer');
 const { cyan } = require('colorette');
 const logger = require('./logger');
 const cliArgs = require('./cli-flags').core;
-const runCLI = require('../bootstrap');
 
 async function prompter() {
     const args = [];
@@ -55,9 +54,10 @@ async function run() {
     try {
         const args = await prompter();
         logger.info('\nExecuting CLI\n');
-        await runCLI(args);
+        return args;
     } catch (err) {
-        logger.error(`Action Interrupted, use ${cyan('webpack-cli help')} to see possible options.`);
+        logger.error(`${err} Action Interrupted, use ${cyan('webpack-cli help')} to see possible options.`);
+        process.exit(1);
     }
 }
 
