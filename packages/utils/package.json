@@ -1,43 +1,52 @@
 {
   "name": "@webpack-cli/utils",
-  "version": "0.2.2",
+  "version": "1.0.1-rc.1",
   "description": "webpack-cli utility files",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "publishConfig": {
     "access": "public"
   },
-  "author": "",
   "license": "MIT",
+  "files": [
+    "lib"
+  ],
   "dependencies": {
-    "chalk": "2.4.2",
-    "cross-spawn": "6.0.5",
-    "findup-sync": "3.0.0",
-    "global-modules": "1.0.0",
-    "got": "9.6.0",
-    "jest": "24.8.0",
-    "jscodeshift": "0.6.4",
-    "log-symbols": "3.0.0",
-    "p-each-series": "2.1.0",
-    "prettier": "1.18.2",
-    "yeoman-environment": "2.3.4",
-    "yeoman-generator": "4.0.1"
+    "colorette": "^1.2.1",
+    "cross-spawn": "^7.0.3",
+    "enquirer": "^2.3.6",
+    "execa": "^4.0.0",
+    "findup-sync": "^4.0.0",
+    "global-modules": "^2.0.0",
+    "got": "^10.7.0",
+    "jscodeshift": "^0.7.0",
+    "p-each-series": "^2.1.0",
+    "yeoman-environment": "^2.8.1",
+    "yeoman-generator": "^4.7.2"
+  },
+  "peerDependencies": {
+    "webpack": "4.x.x || 5.x.x",
+    "webpack-cli": "4.x.x"
   },
   "devDependencies": {
-    "@types/chalk": "2.2.0",
-    "@types/cross-spawn": "6.0.0",
-    "@types/got": "9.6.0",
-    "@types/jest": "23.3.9",
-    "@types/log-symbols": "3.0.0",
-    "@types/node": "12.0.8",
-    "@types/p-each-series": "1.0.1",
-    "@types/prettier": "1.16.4",
-    "@types/yeoman-generator": "3.1.3",
-    "typescript": "3.5.2"
+    "@types/cross-spawn": "^6.0.2",
+    "@types/got": "9.6.9",
+    "@types/prettier": "1.19.0",
+    "@types/yeoman-generator": "^4.11.2"
   },
-  "scripts": {
-    "build": "tsc",
-    "test": "jest --detectOpenHandles",
-    "watch": "npm run build && tsc -w"
-  }
+  "peerDependenciesMeta": {
+    "@webpack-cli/info": {
+      "optional": true
+    },
+    "@webpack-cli/init": {
+      "optional": true
+    },
+    "@webpack-cli/serve": {
+      "optional": true
+    },
+    "prettier": {
+      "optional": true
+    }
+  },
+  "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9"
 }

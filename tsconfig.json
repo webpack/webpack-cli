@@ -1,6 +1,34 @@
 {
-	"extends": "./tsconfig.base.json",
-	"compilerOptions": {
-		"allowJs": true
-	}
+  "exclude": ["node_modules", "lib", "__tests__"],
+  "files": [],
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "target": "es2017",
+    "module": "commonjs",
+    "lib": ["es6", "es2017"],
+    "rootDir": ".",
+    "outDir": "lib",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "paths": {
+      "@webpack-cli/*": ["packages/*/src"]
+    },
+    "composite": true,
+    "declaration": true
+  },
+  "references": [
+    { "path": "packages/generate-loader" },
+    { "path": "packages/generate-plugin" },
+    { "path": "packages/generators" },
+    { "path": "packages/info" },
+    { "path": "packages/init" },
+    { "path": "packages/migrate" },
+    { "path": "packages/serve" },
+    { "path": "packages/utils" },
+    // { "path": "packages/webpack-cli" },
+    { "path": "packages/webpack-scaffold" }
+  ]
 }

@@ -1,4 +1,0 @@
-**/*.ts
-*.ts
-*.test.*
-tsconfig.json

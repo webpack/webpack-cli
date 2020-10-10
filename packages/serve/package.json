@@ -1,29 +1,24 @@
 {
   "name": "@webpack-cli/serve",
-  "version": "0.1.8",
+  "version": "1.0.1-rc.1",
   "description": "",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "keywords": [],
   "publishConfig": {
     "access": "public"
   },
-  "author": "",
   "license": "MIT",
-  "dependencies": {
-    "@webpack-cli/utils": "0.2.2",
-    "chalk": "2.4.2",
-    "cross-spawn": "6.0.5",
-    "inquirer": "6.4.1"
+  "files": [
+    "lib"
+  ],
+  "peerDependencies": {
+    "webpack-cli": "4.x.x"
   },
-  "devDependencies": {
-    "@types/cross-spawn": "6.0.0",
-    "@types/inquirer": "6.0.3",
-    "@types/node": "12.0.8",
-    "typescript": "3.5.2"
+  "peerDependenciesMeta": {
+    "webpack-dev-server": {
+      "optional": true
+    }
   },
-  "scripts": {
-    "build": "tsc",
-    "watch": "npm run build && tsc -w"
-  }
+  "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9"
 }

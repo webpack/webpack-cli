@@ -1,14 +1,16 @@
-module.exports = usingDefaults => {
-	let scripts = {
-		build: "webpack"
-	};
-	if (usingDefaults) {
-		scripts.start = "webpack-dev-server";
-	}
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+module.exports = (usingDefaults) => {
+    const scripts = {
+        build: 'webpack',
+    };
+    if (usingDefaults) {
+        scripts.start = 'webpack-dev-server';
+    }
 
-	return {
-		version: "1.0.0",
-		description: "My webpack project",
-		scripts
-	};
+    return {
+        version: '1.0.0',
+        description: 'My webpack project',
+        name: 'my-webpack-project',
+        scripts,
+    };
 };

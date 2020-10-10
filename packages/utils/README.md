@@ -27,7 +27,7 @@ npm i -D webpack-cli @webpack-cli/utils
 ### Node
 
 ```js
-const utils = require("@webpack-cli/utils");
+const utils = require('@webpack-cli/utils');
 // API yet to be exposed
 ```
 

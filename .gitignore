@@ -1,6 +1,10 @@
 # IDE folders
 .idea
 .vscode
+*.iml
+
+# IDE files
+*.code-workspace
 
 # Vim swap files
 .s[a-z][a-z]
@@ -11,6 +15,11 @@
 
 # Node dependencies
 node_modules
+test/**/node_modules
+
+# Lock files
+test/**/yarn.lock
+test/**/package-json.lock
 
 # npm-debug log
 npm-debug.*
@@ -22,22 +31,37 @@ yarn-error.log
 coverage
 .nyc_output
 
-# Test Compilation
-test/js/*
-test/binCases/**/bin/
-test/binCases/**/**/bin/
 # lerna log
 lerna-debug.log
 
 # Yeoman file
 .yo-rc.json
 
-# Yarn lock file
-yarn.lock
+# package-lock file
+package-lock.json
 
-# source maps of docs
-docs/**/*.map
 junit.xml
 
-#typescript source maps
+# typescript source maps
 packages/**/*.map
+*.tsbuildinfo
+
+# cache
+.eslintcache
+
+# build files
+packages/**/lib
+packages/**/yarn.lock
+!packages/webpack-cli/lib/utils/__tests__/**/yarn.lock
+!packages/webpack-cli/lib/utils/__tests__/**/package-lock.json
+!packages/webpack-cli/lib
+
+# test output files
+test/js/*
+test/**/bin/
+test/**/**/bin/
+test/**/**/**/bin/
+test/**/**/binary/**
+test/**/dist
+test/**/**/dist
+test/**/**/**/dist

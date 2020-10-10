@@ -1,7 +1,7 @@
 # Contributing
 
 From opening a bug report to creating a pull request: every contribution is
-appreciated and welcomed. If you're planning a new feature or changing
+appreciated and welcomed. If you're planning to implement a new feature or changing
 the API, please create an issue first. This way we can ensure that your precious
 work is not in vain.
 
@@ -11,6 +11,7 @@ Table of Contents
 -   [Your first Contribution](#your-first-contribution)
 -   [Setup](#setup)
 -   [Running Tests](#running-tests)
+    -   [Using yarn](#using-yarn)
 -   [Editor Config](#editor-config)
 -   [Dependencies](#dependencies)
 -   [Branching Model](#branching-model)
@@ -28,6 +29,8 @@ Table of Contents
     -   [Further Work](#further-work)
 -   [Contributor License Agreement](#contributor-license-agreement)
 -   [Documentation](#documentation)
+-   [Releasing](#releasing)
+-   [Join The Development](#join-the-development)
 
 ## Issues
 
@@ -37,7 +40,9 @@ If you are still having difficulty after looking over your configuration careful
 a question to [StackOverflow with the webpack-cli tag](http://stackoverflow.com/tags/webpack-cli). Please ensure that your questions
 that include your `webpack.config.js` and relevant files. This way you help others to help you.
 
-**If you have discovered a bug or have a feature suggestion, feel free to create an issue on Github.**
+**If you have discovered a bug or have a feature suggestion, feel free to create an [issue](https://github.com/webpack/webpack-cli/issues) on Github.**
+
+> In case you're filing a bug, make sure you add steps to reproduce it. Especially if that bug is some weird/rare one.
 
 ## Your first Contribution
 
@@ -56,93 +61,58 @@ In case you are suggesting a new feature, we will match your idea with our curre
 -   Fork the **webpack-cli** repo at [https://github.com/webpack/webpack-cli](https://github.com/webpack/webpack-cli).
 -   `git clone <your-clone-url> && cd webpack-cli`
 
--   If you decide to use [yarn](https://yarnpkg.com/lang/en/):
-    ```bash
-    npm install -g yarn
-    ```
+-   We use [yarn](https://yarnpkg.com/lang/en/) workspaces, please install it:
+
+    Read the [Installation Guide](https://yarnpkg.com/en/docs/install) on their official website for detailed instructions on how to install Yarn.
 
 > Using yarn is not a requirement, [npm](https://www.npmjs.com/) is included in node.
 
--   Install the dependencies and link them:
+-   Install the dependencies:
 
     ```bash
-    #npm
-    npm install
-    npm link
-    npm link webpack-cli
-    ---------------------------
-    #yarn
-    yarn
-    yarn link
-    yarn link webpack-cli
+    yarn install
     ```
 
 -   Bootstrap all the submodules before building for the first time
 
     ```bash
-    #npm
-    npm run bootstrap
-    npm run build
-    ---------------------------
-    #yarn
     yarn bootstrap
     yarn build
     ```
 
 ## Running Tests
 
-### Using npm
+### Using yarn
 
 -   Run all the tests with:
 
     ```bash
-    #npm
-    npm run test
-    ---------------------------
-    #yarn
     yarn test
     ```
 
 -   Run CLI tests with:
 
     ```bash
-    #npm
-    npm run test:cli
-    ---------------------------
-    #yarn
-    yarn test:cli`
+    yarn test:cli
     ```
 
 -   Run tests of all packages:
 
     ```bash
-    #npm
-    npm run test:packages
-    ---------------------------
-    #yarn
     yarn test:packages
     ```
 
 -   Test a single CLI test case:
 
-    > Must run from root of the poject
+    > Must run from root of the project
 
     ```bash
-    #npm
-    npx jest path/to/my-test.js
-    ---------------------------
-    #yarn
     yarn jest path/to/my-test.js
     ```
 
 -   You can also install jest globally and run tests without npx:
 
     ```bash
-    #npm
-    npm i -g jest
-    jest path/to/my-test.js
-    ---------------------------
-    #yarn
     yarn global add jest
     jest path/to/my-test.js
     ```
@@ -150,10 +120,6 @@ In case you are suggesting a new feature, we will match your idea with our curre
 -   You can run the linters:
 
     ```bash
-    #npm
-    npm run lint
-    ---------------------------
-    #yarn
     yarn lint
     ```
 
@@ -165,7 +131,7 @@ The [.editorconfig](https://github.com/webpack/webpack-cli/blob/master/.editorco
 
 This is a multi-package repository and dependencies are managed using [lerna](https://lerna.js.org/)
 
-> If you are adding or updating any dependency, please commit the updated `package-lock.json` file.
+> If you are adding or updating any dependency, please commit the updated `yarn.lock` file.
 
 ## Branching Model
 
@@ -214,15 +180,18 @@ In case you've got a small change in most of the cases, your pull request would 
 
 ## Submitting a good Pull Request
 
--   Write tests
--   Follow the existing coding style
+-   Write tests.
+-   Follow the existing coding style.
 -   Write a [good commit message](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
+-   For a major bugfix/feature make sure your PR has an issue and if it doesn't, please create one. This would help discussion with the community, and polishing ideas in case of a new feature.
+-   Make sure your PR's description contains GitHub's special keyword references that automatically close the related issue when the PR is merged. ([More info](https://github.com/blog/1506-closing-issues-via-pull-requests))
+-   When you have lot of commits in your PR, it's good practice to squash all your commits in one single commit. ([Learn how to squash here](https://davidwalsh.name/squash-commits-git))
 
 ## Commit message
 
-Our commit messages format follows the [angular.js commits format](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#commit-message-format).
+Our commit messages format follows the [angular.js commits format](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#commits).
 
-You can use `npm run commit` script to have an interactive way of making commits that follow our guidelines.
+You can use `yarn commit` script to have an interactive way of making commits that follow our guidelines.
 
 We don't use the scope. The template of a commit would look like this:
 
@@ -242,15 +211,16 @@ format that includes a **type** and a **subject**:
 
 This is the list of _type_ of commits that we accept:
 
--   ast
--   break
--   chore
--   cli
--   docs
--   feat
--   fix
--   misc
--   tests
+-   **ast** : Init, migrate, etc.
+-   **break** : Changes that break the behaviour of the cli.
+-   **chore** : Updating deps, docs, linting, etc.
+-   **cli** : Changes related to core CLI things.
+-   **docs** : Documentation only changes.
+-   **feat** : A new feature.
+-   **fix** : A bug fix, typos, etc.
+-   **misc** : Other formats like tweaks and such.
+-   **tests** : Adding missing or correcting existing tests.
+-   **refactor** : A code change that neither fixes a bug nor adds a feature.
 
 The **header** is mandatory.
 
@@ -258,14 +228,12 @@ Any line of the commit message cannot be longer 100 characters. This allows the 
 to read on GitHub as well as in several git tools.
 
 For more information about what each part of the template mean, head up to the documentation in the
-[angular repo](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#commit-message-format)
+[angular repo](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#commits)
 
 ## Migrate with the CLI
 
-This is a new feature in development for the CLI.
-
 ```sh
-webpack --migrate <your-config-name>
+webpack migrate
 ```
 
 The expected result of the above command is to take the mentioned `webpack` configuration and create a new configuration file which is compatible with webpack 2.
@@ -285,19 +253,19 @@ We convert the existing webpack config to [AST](https://developer.mozilla.org/en
 The directory structure of a transform looks as follows -
 
 ```sh
-|
-|--__snapshots__
-|--__testfixtures__
-|  |
-|  |--transform-name.input.js
-|
-|--transform-name.js
-|--transform-name.test.js
+│
+├──__snapshots__
+├──__testfixtures__
+│  │
+│  └───transform-name.input.js
+│
+├──transform-name.js
+├──transform-name.test.js
 ```
 
 `transform-name.js`
 
-This file contains the actual transformation codemod. It applies specific transformation and parsing logic to accomplish its job
+This file contains the actual transformation codemod. It applies specific transformation and parsing logic to accomplish its job.
 There are utilities available under `/lib/utils.js` which can help you with this.
 
 `transform-name.test.js`
@@ -307,10 +275,10 @@ Each test will refer to an input webpack config snippet.
 Conventionally we write them in `\_\_testfixtures\_\_`.
 
 ```js
-const defineTest = require("../defineTest");
+const defineTest = require('../defineTest');
 
-defineTest(__dirname, "transform-name.input1.js");
-defineTest(__dirname, "transform-name.input2.js");
+defineTest(__dirname, 'transform-name.input1.js');
+defineTest(__dirname, 'transform-name.input2.js');
 ```
 
 `defineTest` is a helper test method which helps us to run tests on all the transforms uniformly.
@@ -335,3 +303,15 @@ Run `git config user.email` to see your Git email, and verify it with [your GitH
 webpack is feature rich and documentation is a time sink. We
 greatly appreciate any time spent fixing typos or clarifying sections in the
 documentation.
+
+## Releasing
+
+Run `yarn publish:monorepo` to build all packages and bump versions, this will then get published on npm.
+
+## Join the development
+
+-   Before you join development, please set up the project on your local machine, run it and go through the application completely. Use any command you can find and see what it does. Explore.
+
+    > Don't worry ... Nothing will happen to the project or to you due to the exploring. Only thing that will happen is, you'll be more familiar with what is where and might even get some cool ideas on how to improve various aspects of the project.
+
+-   If you would like to work on an issue, drop in a comment at the issue. If it is already assigned to someone, but there is no sign of any work being done, please feel free to drop in a comment so that the issue can be assigned to you if the previous assignee has dropped it entirely.

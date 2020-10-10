@@ -1,22 +1,23 @@
 {
   "name": "@webpack-cli/info",
-  "version": "0.1.6",
-  "description": "Outputs env info for the ease of debug",
-  "main": "index.js",
-  "author": "",
+  "version": "1.0.1-rc.1",
+  "description": "Outputs info about system and webpack config",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "lib"
+  ],
   "dependencies": {
-    "envinfo": "7.3.1"
+    "colorette": "^1.2.1",
+    "envinfo": "^7.5.0",
+    "prettyjson": "^1.2.1"
   },
-  "devDependencies": {
-    "@types/node": "12.0.8",
-    "typescript": "3.5.2"
-  },
-  "scripts": {
-    "build": "tsc",
-    "watch": "npm run build && tsc -w"
+  "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9",
+  "peerDependencies": {
+    "webpack-cli": "4.x.x"
   }
 }

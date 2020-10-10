@@ -19,13 +19,13 @@ To run the package programmatically, install it as a dependency. When using the 
 ### Node
 
 ```js
-const init = require("@webpack-cli/init").default;
+const init = require('@webpack-cli/init').default;
 
 // this will run the default init instance
 init();
 
-// we're slicing node.process, ...myPacakges is a webpack-scaffold name/path
-init([null, null, ...myPacakges]);
+// we're slicing node.process, ...myPackages is a webpack-scaffold name/path
+init([null, null, ...myPackages]);
 ```
 
 ### CLI (via `webpack-cli`)
@@ -37,8 +37,15 @@ npx webpack-cli init
 ```
 
 **To generate default configs**
+
 ```bash
 npx webpack-cli init --auto
+```
+
+**To force config generation**
+
+```bash
+npx webpack-cli init --force
 ```
 
 **Via custom scaffold**

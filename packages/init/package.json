@@ -1,27 +1,23 @@
 {
   "name": "@webpack-cli/init",
-  "version": "0.2.2",
+  "version": "1.0.1-rc.1",
   "description": "init command for webpack-cli",
-  "main": "index.js",
-  "author": "",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "lib"
+  ],
   "dependencies": {
-    "@webpack-cli/generators": "0.1.8",
-    "@webpack-cli/utils": "0.2.2",
-    "chalk": "2.4.2",
-    "jscodeshift": "0.6.4",
-    "p-each-series": "2.1.0"
+    "@webpack-cli/generators": "^1.0.1-rc.1",
+    "@webpack-cli/utils": "^1.0.1-rc.1"
   },
-  "devDependencies": {
-    "@types/node": "12.0.8",
-    "@types/p-each-series": "1.0.1",
-    "typescript": "3.5.2"
+  "peerDependencies": {
+    "webpack": "4.x.x || 5.x.x",
+    "webpack-cli": "4.x.x"
   },
-  "scripts": {
-    "build": "tsc",
-    "watch": "npm run build && tsc -w"
-  }
+  "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9"
 }

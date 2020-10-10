@@ -13,19 +13,20 @@
 'use strict';
 
 module.exports = {
-	allowBreakingChanges: ["ast"],
-	allowCustomScopes: true,
-	scopes: [],
-	// sort type values in asc
-	types: [
-		{ value: "ast", name: "ast:		init, migrate, add, etc" },
-		{ value: "break", name: "break:	Changes that break the behaviour of the cli" },
-		{ value: "chore", name: "chore:	Updating deps, docs, linting, etc" },
-		{ value: "cli", name: "cli:		Core CLI things" },
-		{ value: "docs", name: "docs:		Documentation" },
-		{ value: "feat", name: "feat:		A new feature" },
-		{ value: "fix", name: "fix:		Bugs, typos, etc" },
-		{ value: "misc", name: "misc:		Other formats like tweaks and such" },
-		{ value: "tests", name: "tests:	Tests, jest, binTestCases, etc" },
-	]
+    allowBreakingChanges: ['ast'],
+    allowCustomScopes: true,
+    scopes: [],
+    // sort type values in asc
+    types: [
+        { value: 'ast', name: 'ast:		init, migrate, add, etc' },
+        { value: 'break', name: 'break:	Changes that break the behaviour of the cli' },
+        { value: 'chore', name: 'chore:	Updating deps, docs, linting, etc' },
+        { value: 'cli', name: 'cli:		Core CLI things' },
+        { value: 'docs', name: 'docs:		Documentation' },
+        { value: 'feat', name: 'feat:		A new feature' },
+        { value: 'fix', name: 'fix:		Bugs, typos, etc' },
+        { value: 'misc', name: 'misc:		Other formats like tweaks and such' },
+        { value: 'tests', name: 'tests:	Tests, jest, etc' },
+        { value: 'refactor', name: 'refactor:	A code change that neither fixes a bug nor adds a feature' },
+    ],
 };

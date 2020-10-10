@@ -19,7 +19,8 @@ To run the package programmatically, install it as a dependency. When using the 
 ### Node
 
 ```js
-const generateLoader = require("@webpack-cli/generate-loader").default;
+const generateLoader = require('@webpack-cli/generate-loader').default;
+
 generateLoader();
 ```
 

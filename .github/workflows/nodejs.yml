@@ -1,0 +1,120 @@
+name: webpack-cli
+
+on:
+  push:
+    branches:
+      - master
+      - next
+  pull_request:
+    branches:
+      - master
+      - next
+  workflow_dispatch:
+    inputs:
+      tags:
+        description: 'Test description'
+
+jobs:
+  lint:
+    name: Lint - ${{ matrix.os }} - Node v${{ matrix.node-version }}
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node-version: [12.x]
+        webpack-version: [latest]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Using Node v${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: |
+          yarn
+          yarn bootstrap
+
+      - name: Install webpack ${{ matrix.webpack-version }}
+        run: yarn add -W webpack@${{ matrix.webpack-version }}
+
+      - name: Build
+        run: yarn build
+
+      - name: Lint
+        run: yarn lint
+
+  build:
+    name: Tests - ${{ matrix.os }} - Node v${{ matrix.node-version }}, Webpack ${{ matrix.webpack-version }}
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: [10.x, 12.x, 14.x]
+        webpack-version: [next, latest]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Using Node v${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Restore lerna cache
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+          key: ${{ runner.os }}-${{ matrix.webpack-version }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          yarn
+          yarn bootstrap
+
+      - name: Install webpack ${{ matrix.webpack-version }}
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: yarn add -W webpack@${{ matrix.webpack-version }}
+
+      - name: Build
+        run: yarn build
+
+      - name: Run tests for webpack version ${{ matrix.webpack-version }}
+        run: |
+          yarn prepsuite
+          yarn test:ci
+        env:
+          CI: true
+
+      - name: Smoke Tests
+        # TODO fix for windows
+        if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
+        run: yarn test:smoke
+        env:
+          CI: true
+
+  commitlint:
+    name: Lint Commit Messages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      - run: npm install
+      - name: conventional-changelog-lint-config-cz
+        # $GITHUB_WORKSPACE is the path to your repository
+        run: echo "::set-env name=NODE_PATH::$GITHUB_WORKSPACE/node_modules"
+      - uses: wagoid/commitlint-github-action@v2
