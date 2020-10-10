@@ -22,7 +22,7 @@
     "yeoman-environment": "^2.10.3"
   },
   "peerDependencies": {
-    "webpack-cli": "3.x.x || 4.x.x"
+    "webpack-cli": "4.x.x"
   },
   "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9"
 }

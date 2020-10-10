@@ -23,7 +23,7 @@
   },
   "peerDependencies": {
     "webpack": "4.x.x || 5.x.x",
-    "webpack-cli": "3.x.x || 4.x.x"
+    "webpack-cli": "4.x.x"
   },
   "devDependencies": {
     "@types/mkdirp": "^1.0.0",
