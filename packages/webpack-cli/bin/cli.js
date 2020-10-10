@@ -6,7 +6,8 @@ const importLocal = require('import-local');
 const runCLI = require('../lib/bootstrap');
 const { yellow } = require('colorette');
 const { error, success } = require('../lib/utils/logger');
-const { packageExists, promptInstallation } = require('@webpack-cli/package-utils');
+const { packageExists } = require('../lib/utils/package-exists');
+const { promptInstallation } = require('../lib/utils/prompt-installation');
 
 // Prefer the local installation of webpack-cli
 if (importLocal(__filename)) {

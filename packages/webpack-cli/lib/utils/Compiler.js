@@ -1,4 +1,4 @@
-const { packageExists } = require('@webpack-cli/package-utils');
+const { packageExists } = require('./package-exists');
 const webpack = packageExists('webpack') ? require('webpack') : undefined;
 const logger = require('./logger');
 const { writeFileSync } = require('fs');

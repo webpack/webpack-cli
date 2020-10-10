@@ -2,7 +2,8 @@ import { bold } from 'colorette';
 import logger from 'webpack-cli/lib/utils/logger';
 import path from 'path';
 import { modifyHelperUtil } from './modify-config-helper';
-import { getPathToGlobalPackages, spawnChild } from '@webpack-cli/package-utils';
+import { getPathToGlobalPackages } from './global-packages-path';
+import { spawnChild } from './spawn-child';
 import { isLocalPath } from './path-utils';
 import { ExecaSyncReturnValue } from 'execa';
 

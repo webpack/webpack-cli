@@ -12,29 +12,41 @@
     "lib"
   ],
   "dependencies": {
-    "@webpack-cli/package-utils": "^1.0.1-rc.1",
     "colorette": "^1.2.1",
+    "cross-spawn": "^7.0.3",
+    "enquirer": "^2.3.6",
     "execa": "^4.0.0",
     "findup-sync": "^4.0.0",
+    "global-modules": "^2.0.0",
     "got": "^10.7.0",
     "jscodeshift": "^0.7.0",
     "p-each-series": "^2.1.0",
     "yeoman-environment": "^2.8.1",
     "yeoman-generator": "^4.7.2"
   },
-  "peerDependenciesMeta": {
-    "prettier": {
-      "optional": true
-    }
-  },
   "peerDependencies": {
     "webpack": "4.x.x || 5.x.x",
     "webpack-cli": "4.x.x"
   },
   "devDependencies": {
+    "@types/cross-spawn": "^6.0.2",
     "@types/got": "9.6.9",
     "@types/prettier": "1.19.0",
     "@types/yeoman-generator": "^4.11.2"
+  },
+  "peerDependenciesMeta": {
+    "@webpack-cli/info": {
+      "optional": true
+    },
+    "@webpack-cli/init": {
+      "optional": true
+    },
+    "@webpack-cli/serve": {
+      "optional": true
+    },
+    "prettier": {
+      "optional": true
+    }
   },
   "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9"
 }
