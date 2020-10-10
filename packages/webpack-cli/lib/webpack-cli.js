@@ -1,10 +1,8 @@
 const webpackMerge = require('webpack-merge');
-const GroupHelper = require('./utils/GroupHelper');
 const { Compiler } = require('./utils/Compiler');
-const { groups, core } = require('./utils/cli-flags');
+const { core } = require('./utils/cli-flags');
 const argParser = require('./utils/arg-parser');
 const { outputStrategy } = require('./utils/merge-strategies');
-const { toKebabCase } = require('./utils/helpers');
 const assignFlagDefaults = require('./utils/flag-defaults');
 
 // CLI arg resolvers
@@ -15,29 +13,11 @@ const resolveOutput = require('./groups/resolveOutput');
 const basicResolver = require('./groups/basicResolver');
 const resolveAdvanced = require('./groups/resolveAdvanced');
 
-class WebpackCLI extends GroupHelper {
+class WebpackCLI {
     constructor() {
-        super();
-        this.groupMap = new Map();
         this.compilation = new Compiler();
         this.compilerConfiguration = {};
         this.outputConfiguration = {};
-    }
-    setMappedGroups(args, inlineOptions) {
-        Object.keys(args).forEach((key) => {
-            this.setGroupMap(toKebabCase(key), args[key], inlineOptions);
-        });
-    }
-    setGroupMap(key, val, inlineOptions) {
-        if (val === undefined) return;
-        const opt = inlineOptions.find((opt) => opt.name === key);
-        const groupName = opt.group;
-        if (this.groupMap.has(groupName)) {
-            const pushToMap = this.groupMap.get(groupName);
-            pushToMap.push({ [opt.name]: val });
-        } else {
-            this.groupMap.set(groupName, [{ [opt.name]: val }]);
-        }
     }
 
     /**
@@ -77,24 +57,6 @@ class WebpackCLI extends GroupHelper {
 
     getCoreFlags() {
         return core;
-    }
-
-    /**
-     * Based on the parsed keys, the function will import and create
-     * a group that handles respective values
-     *
-     * @returns {void}
-     */
-    resolveGroups() {
-        for (const [key] of this.groupMap.entries()) {
-            switch (key) {
-                case groups.HELP_GROUP: {
-                    const HelpGroup = require('./groups/runHelp');
-                    this.helpGroup = new HelpGroup();
-                    break;
-                }
-            }
-        }
     }
 
     /**
@@ -202,21 +164,14 @@ class WebpackCLI extends GroupHelper {
             .then(() => this._handleGroupHelper(this.helpGroup));
     }
 
-    async processArgs(args, cliOptions) {
-        this.setMappedGroups(args, cliOptions);
-        this.resolveGroups(args);
-        const groupResult = await this.runOptionGroups(args);
-        return groupResult;
-    }
-
-    async getCompiler(args, cliOptions) {
-        await this.processArgs(args, cliOptions);
+    async getCompiler(args) {
+        await this.runOptionGroups(args);
         await this.compilation.createCompiler(this.compilerConfiguration);
         return this.compilation.compiler;
     }
 
-    async run(args, cliOptions) {
-        await this.processArgs(args, cliOptions);
+    async run(args) {
+        await this.runOptionGroups(args);
         await this.compilation.createCompiler(this.compilerConfiguration);
         const webpack = await this.compilation.webpackInstance({
             options: this.compilerConfiguration,
