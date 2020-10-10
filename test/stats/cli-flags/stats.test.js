@@ -1,4 +1,3 @@
-/* eslint-disable node/no-extraneous-require */
 /* eslint-disable node/no-unpublished-require */
 'use strict';
 

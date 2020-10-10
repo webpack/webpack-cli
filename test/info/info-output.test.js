@@ -1,4 +1,3 @@
-/* eslint-disable space-before-function-paren */
 'use strict';
 
 const { red } = require('colorette');

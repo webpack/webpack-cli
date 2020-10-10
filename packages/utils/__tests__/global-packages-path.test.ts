@@ -2,6 +2,7 @@
 jest.setMock('webpack-cli/lib/utils/get-package-manager', {
     getPackageManager: jest.fn(),
 });
+// eslint-disable-next-line node/no-missing-import
 import { getPathToGlobalPackages } from '../lib/global-packages-path';
 import { getPackageManager } from 'webpack-cli/lib/utils/get-package-manager';
 jest.mock('execa');
@@ -9,8 +10,8 @@ jest.mock('cross-spawn');
 const globalModulesNpmValue = 'test-npm';
 jest.setMock('global-modules', globalModulesNpmValue);
 
-import path from 'path';
-import spawn from 'cross-spawn';
+import * as path from 'path';
+import * as spawn from 'cross-spawn';
 
 describe('getPathToGlobalPackages', () => {
     it('uses global-modules if package manager is npm', () => {

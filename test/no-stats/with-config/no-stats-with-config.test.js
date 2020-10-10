@@ -1,7 +1,6 @@
 'use strict';
-// eslint-disable-next-line node/no-unpublished-require
+
 const { run } = require('../../utils/test-utils');
-// eslint-disable-next-line node/no-extraneous-require
 const { version } = require('webpack');
 
 describe('stats flag', () => {
