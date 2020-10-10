@@ -139,10 +139,7 @@ class Compiler {
             } else {
                 logger.error(`\n${err}`);
             }
-            console.log(err);
-            process.exit(1);
-            // eslint-disable-next-line no-unreachable
-            console.log('SHOULD BE NOT PRINTS');
+            process.exit(2);
         }
     }
 
