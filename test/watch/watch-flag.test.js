@@ -45,7 +45,7 @@ describe('--watch flag', () => {
             if (data.includes('Compilation  starting') || data.includes('Compilation  finished')) {
                 semaphore++;
             }
-            if (data.includes('index.js')) {
+            if (semaphore === 2 && data.includes('index.js')) {
                 if (isWebpack5) {
                     for (const word of wordsInStatsv5) {
                         expect(data).toContain(word);
@@ -55,10 +55,12 @@ describe('--watch flag', () => {
                         expect(data).toContain(word);
                     }
                 }
-                proc.kill();
-                done();
                 return;
             }
+            setTimeout(() => {
+                proc.kill();
+                done();
+            }, 2000);
         });
     });
 });
