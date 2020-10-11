@@ -28,6 +28,7 @@ describe('warnings', () => {
     it('should store json to a file', (done) => {
         const { stdout, exitCode } = run(__dirname, ['--json', 'stats.json']);
 
+        console.log(stdout);
         expect(stdout).toContain('stats are successfully stored as json to stats.json');
         expect(exitCode).toBe(0);
 

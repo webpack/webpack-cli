@@ -41,6 +41,8 @@ describe('errors', () => {
 
                 const json = JSON.parse(data);
 
+                console.log(json);
+
                 expect(json['hash']).toBeDefined();
                 expect(json['errorsCount']).toBe(1);
                 expect(json['errors'][0].message).toMatch(/Can't resolve/);
