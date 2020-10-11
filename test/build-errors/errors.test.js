@@ -22,7 +22,8 @@ describe('errors', () => {
 
         expect(json['hash']).toBeDefined();
         expect(json['errors']).toHaveLength(1);
-        expect(json['errors'][0].message).toMatch(/Can't resolve/);
+        // `message` for `webpack@5`
+        expect(json['errors'][0].message ? json['errors'][0].message : json['errors'][0]).toMatch(/Can't resolve/);
     });
 
     it('should store json to a file', (done) => {
@@ -43,7 +44,8 @@ describe('errors', () => {
 
                 expect(json['hash']).toBeDefined();
                 expect(json['errors']).toHaveLength(1);
-                expect(json['errors'][0].message).toMatch(/Can't resolve/);
+                // `message` for `webpack@5`
+                expect(json['errors'][0].message ? json['errors'][0].message : json['errors'][0]).toMatch(/Can't resolve/);
 
                 done();
             });

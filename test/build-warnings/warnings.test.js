@@ -7,8 +7,6 @@ describe('warnings', () => {
     it('should output by default', () => {
         const { stdout, exitCode } = run(__dirname);
 
-        console.log(stdout);
-
         expect(stdout).toMatch(/WARNING in/);
         expect(stdout).toMatch(/Error: Can't resolve/);
         expect(exitCode).toBe(0);
@@ -24,7 +22,8 @@ describe('warnings', () => {
 
         expect(json['hash']).toBeDefined();
         expect(json['warnings']).toHaveLength(1);
-        expect(json['warnings'][0].message).toMatch(/Can't resolve/);
+        // `message` for `webpack@5`
+        expect(json['warnings'][0].message ? json['warnings'][0].message : json['warnings'][0]).toMatch(/Can't resolve/);
     });
 
     it('should store json to a file', (done) => {
@@ -45,7 +44,8 @@ describe('warnings', () => {
 
                 expect(json['hash']).toBeDefined();
                 expect(json['warnings']).toHaveLength(1);
-                expect(json['warnings'][0].message).toMatch(/Can't resolve/);
+                // `message` for `webpack@5`
+                expect(json['warnings'][0].message ? json['warnings'][0].message : json['warnings'][0]).toMatch(/Can't resolve/);
 
                 done();
             });

@@ -1,9 +1,9 @@
-let module;
+let obj;
 
 try {
-  module = require('unknown');  
+  obj = require('unknown');  
 } catch (e) {
     // Ignore
 }
 
-export default module
+export default obj
