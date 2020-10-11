@@ -55,49 +55,38 @@ class Compiler {
         });
     }
 
-    generateOutput(outputOptions, stats) {
-        logger.raw(`${stats.toString(this.compilerOptions.stats)}\n`);
-        if (outputOptions.watch) {
-            logger.info('watching files for updates...');
-        }
-    }
-
-    compilerCallback(err, stats, lastHash, options, outputOptions) {
-        const statsErrors = [];
-
-        if (!outputOptions.watch || err) {
-            // Do not keep cache anymore
-            this.compiler.purgeInputFileSystem();
-        }
-        if (err) {
+    compilerCallback(error, stats, lastHash, options, outputOptions) {
+        if (error) {
             lastHash = null;
-            logger.error(err.stack || err);
+            logger.error(error);
             process.exit(1);
         }
+
         if (!outputOptions.watch && stats.hasErrors()) {
             process.exitCode = 1;
         }
-        if (outputOptions.json === true) {
-            process.stdout.write(JSON.stringify(stats.toJson(outputOptions), null, 2) + '\n');
-        } else if (stats.hash !== lastHash) {
+
+        if (stats.hash !== lastHash) {
             lastHash = stats.hash;
-            if (stats.compilation && stats.compilation.errors.length !== 0) {
-                const errors = stats.compilation.errors;
-                errors.forEach((statErr) => {
-                    const errLoc = statErr.module ? statErr.module.resource : null;
-                    statsErrors.push({ name: statErr.message, loc: errLoc });
-                });
-            }
-            const JSONStats = JSON.stringify(stats.toJson(outputOptions), null, 2);
-            if (typeof outputOptions.json === 'string') {
+
+            if (outputOptions.json === true) {
+                process.stdout.write(JSON.stringify(stats.toJson(outputOptions), null, 2) + '\n');
+            } else if (typeof outputOptions.json === 'string') {
+                const JSONStats = JSON.stringify(stats.toJson(outputOptions), null, 2);
+
                 try {
                     writeFileSync(outputOptions.json, JSONStats);
                     logger.success(`stats are successfully stored as json to ${outputOptions.json}`);
                 } catch (err) {
                     logger.error(err);
                 }
+            } else {
+                logger.raw(`${stats.toString(this.compilerOptions.stats)}\n`);
             }
-            return this.generateOutput(outputOptions, stats, statsErrors);
+
+            if (outputOptions.watch) {
+                logger.info('watching files for updates...');
+            }
         }
     }
 
@@ -107,12 +96,14 @@ class Compiler {
             await this.compiler.run((err, stats) => {
                 if (this.compiler.close) {
                     this.compiler.close(() => {
-                        const content = this.compilerCallback(err, stats, lastHash, options, outputOptions);
-                        resolve(content);
+                        this.compilerCallback(err, stats, lastHash, options, outputOptions);
+
+                        resolve();
                     });
                 } else {
-                    const content = this.compilerCallback(err, stats, lastHash, options, outputOptions);
-                    resolve(content);
+                    this.compilerCallback(err, stats, lastHash, options, outputOptions);
+
+                    resolve();
                 }
             });
         });
@@ -120,7 +111,7 @@ class Compiler {
 
     async invokeWatchInstance(lastHash, options, outputOptions, watchOptions) {
         return this.compiler.watch(watchOptions, (err, stats) => {
-            return this.compilerCallback(err, stats, lastHash, options, outputOptions);
+            this.compilerCallback(err, stats, lastHash, options, outputOptions);
         });
     }
 
