@@ -65,3 +65,4 @@ test/**/**/binary/**
 test/**/dist
 test/**/**/dist
 test/**/**/**/dist
+test/**/stats.json
