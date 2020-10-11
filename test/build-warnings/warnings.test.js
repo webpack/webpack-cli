@@ -3,7 +3,7 @@ const { run } = require('../utils/test-utils');
 const { stat, readFile } = require('fs');
 const { resolve } = require('path');
 
-describe('errors', () => {
+describe('warnings', () => {
     it('should output by default', () => {
         const { stdout, exitCode } = run(__dirname);
 
