@@ -20,21 +20,22 @@ describe('--config-name flag', () => {
     });
 
     it('should work with multiple values for --config-name', (done) => {
-        const { stderr, stdout } = run(__dirname, ['--config-name', 'first', '--config-name', 'third'], false);
+        const { stderr, stdout, exitCode } = run(__dirname, ['--config-name', 'first', '--config-name', 'third'], false);
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('first');
         expect(stdout).not.toContain('second');
         expect(stdout).toContain('third');
+        expect(exitCode).toBe(0);
 
-        stat(resolve(__dirname, './dist/dist-first.js'), (err, stats) => {
-            expect(err).toBe(null);
-            expect(stats.isFile()).toBe(true);
-            done();
-        });
         stat(resolve(__dirname, './dist/dist-third.js'), (err, stats) => {
             expect(err).toBe(null);
             expect(stats.isFile()).toBe(true);
-            done();
+
+            stat(resolve(__dirname, './dist/dist-first.js'), (err, stats) => {
+                expect(err).toBe(null);
+                expect(stats.isFile()).toBe(true);
+                done();
+            });
         });
     });
 

@@ -37,7 +37,7 @@ const run = (testCase, args = [], setOutput = true, nodeArgs = [], env) => {
     return result;
 };
 
-const runWatch = ({ testCase, args = [], setOutput = true, outputKillStr = 'Time' }) => {
+const runWatch = (testCase, args = [], setOutput = true, outputKillStr = 'watching files for updates...') => {
     const cwd = path.resolve(testCase);
 
     const outputPath = path.resolve(testCase, 'bin');
@@ -63,6 +63,7 @@ const runWatch = ({ testCase, args = [], setOutput = true, outputKillStr = 'Time
                 },
             }),
         );
+
         watchPromise
             .then((result) => {
                 resolve(result);
@@ -224,12 +225,7 @@ const runInstall = async (cwd) => {
 };
 
 const runServe = (args, testPath) => {
-    return runWatch({
-        testCase: testPath,
-        args: ['serve'].concat(args),
-        setOutput: false,
-        outputKillStr: 'main',
-    });
+    return runWatch(testPath, ['serve'].concat(args), false, 'main');
 };
 
 const runInfo = (args, testPath) => {
