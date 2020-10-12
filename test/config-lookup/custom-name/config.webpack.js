@@ -1,7 +1,7 @@
 const { resolve } = require('path');
 
 module.exports = {
-    entry: './a.js',
+    entry: resolve('./a.js'),
     output: {
         path: resolve(__dirname, 'binary'),
         filename: 'a.bundle.js',
