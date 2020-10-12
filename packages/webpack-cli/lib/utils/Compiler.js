@@ -112,7 +112,7 @@ class Compiler {
         };
 
         if (isWatchMode) {
-            const watchOptions = this.compiler.options.watchOptions || {};
+            const watchOptions = (this.compiler.options && this.compiler.options.watchOptions) || {};
 
             if (watchOptions.stdin) {
                 process.stdin.on('end', function () {
