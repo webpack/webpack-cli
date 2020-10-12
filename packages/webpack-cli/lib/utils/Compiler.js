@@ -115,9 +115,16 @@ class Compiler {
         });
     }
 
-    async createCompiler(options) {
+    async createCompiler(options, outputOptions) {
         try {
-            this.compiler = await webpack(options);
+            if (options.watch) {
+                this.compiler = await webpack(options, (err, stats) => {
+                    this.compilerCallback(err, stats, null, options, outputOptions);
+                });
+            } else {
+                this.compiler = await webpack(options);
+            }
+
             this.compilerOptions = options;
         } catch (err) {
             // https://github.com/webpack/webpack/blob/master/lib/index.js#L267
@@ -170,7 +177,6 @@ class Compiler {
                 process.stdin.resume();
             }
             watchInfo(this.compiler);
-            await this.invokeWatchInstance(lastHash, options, outputOptions, watchOptions);
         } else {
             return await this.invokeCompilerInstance(lastHash, options, outputOptions);
         }
