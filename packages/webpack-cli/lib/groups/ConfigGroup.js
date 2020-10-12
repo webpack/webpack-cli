@@ -1,5 +1,5 @@
 const { existsSync } = require('fs');
-const { resolve, sep, dirname, extname } = require('path');
+const { resolve, extname } = require('path');
 const webpackMerge = require('webpack-merge');
 const { extensions, jsVariants } = require('interpret');
 const rechoir = require('rechoir');
@@ -149,8 +149,9 @@ const finalize = async (moduleObj, args) => {
     if (!moduleObj) {
         return newOptionsObject;
     }
-    const configPath = moduleObj.path;
+
     const configOptions = moduleObj.content;
+
     if (typeof configOptions === 'function') {
         // when config is a function, pass the env from args to the config function
         let formattedEnv;
@@ -187,18 +188,6 @@ const finalize = async (moduleObj, args) => {
         newOptionsObject['options'] = configOptions;
     }
 
-    if (configOptions && configPath.includes('.webpack')) {
-        const currentPath = configPath;
-        const parentContext = dirname(currentPath).split(sep).slice(0, -1).join(sep);
-        if (Array.isArray(configOptions)) {
-            configOptions.forEach((config) => {
-                config.context = config.context || parentContext;
-            });
-        } else {
-            configOptions.context = configOptions.context || parentContext;
-        }
-        newOptionsObject['options'] = configOptions;
-    }
     return newOptionsObject;
 };
 
