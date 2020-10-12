@@ -15,9 +15,11 @@ describe('--watch flag', () => {
             const data = chunk.toString();
 
             if (semaphore === 0 && data.includes('watching files for updates')) {
-                writeFileSync(resolve(__dirname, './src/index.js'), `console.log('watch flag test');`);
+                process.nextTick(() => {
+                    writeFileSync(resolve(__dirname, './src/index.js'), `console.log('watch flag test');`);
 
-                semaphore++;
+                    semaphore++;
+                });
 
                 return;
             }
