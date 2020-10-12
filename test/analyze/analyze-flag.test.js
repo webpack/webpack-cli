@@ -11,8 +11,10 @@ describe('--analyze flag', () => {
         proc.stdout.on('data', (chunk) => {
             const data = chunk.toString();
             if (semaphore === 1 && data.includes('BundleAnalyzerPlugin')) {
-                writeFileSync(resolve(__dirname, './src/main.js'), `console.log('analyze flag test');`);
-                semaphore--;
+                process.nextTick(() => {
+                    writeFileSync(resolve(__dirname, './src/main.js'), `console.log('analyze flag test');`);
+                    semaphore--;
+                });
                 return;
             }
             if (semaphore === 0) {
