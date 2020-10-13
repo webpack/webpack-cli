@@ -20,8 +20,6 @@ describe('--watch flag', () => {
 
                     semaphore++;
                 });
-
-                return;
             }
 
             if (semaphore === 1 && data.includes('index.js')) {
@@ -36,15 +34,11 @@ describe('--watch flag', () => {
                 }
 
                 semaphore++;
-
-                return;
             }
 
             if (semaphore === 2 && data.includes('watching files for updates')) {
                 proc.kill();
                 done();
-
-                return;
             }
         });
     });
@@ -55,18 +49,12 @@ describe('--watch flag', () => {
         proc.stdout.on('data', (chunk) => {
             const data = chunk.toString();
 
-            console.log(semaphore, data);
-
             if (semaphore === 0 && data.includes('Compilation starting')) {
                 semaphore++;
-
-                return;
             }
 
             if (semaphore === 1 && data.includes('Compilation finished')) {
                 semaphore++;
-
-                return;
             }
 
             if (semaphore === 2 && data.includes('index.js')) {
@@ -81,8 +69,6 @@ describe('--watch flag', () => {
                 }
 
                 semaphore++;
-
-                return;
             }
 
             if (semaphore === 3 && data.includes('watching files for updates...')) {
@@ -90,8 +76,6 @@ describe('--watch flag', () => {
 
                 proc.kill();
                 done();
-
-                return;
             }
         });
     });
