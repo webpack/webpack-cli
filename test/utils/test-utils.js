@@ -2,6 +2,7 @@
 const path = require('path');
 const fs = require('fs');
 const execa = require('execa');
+const { exec } = require('child_process');
 const { sync: spawnSync, node: execaNode } = execa;
 const { Writable } = require('readable-stream');
 const concat = require('concat-stream');
@@ -11,6 +12,7 @@ const { hyphenToUpperCase } = require('../../packages/webpack-cli/lib/utils/arg-
 const WEBPACK_PATH = path.resolve(__dirname, '../../packages/webpack-cli/bin/cli.js');
 const ENABLE_LOG_COMPILATION = process.env.ENABLE_PIPE || false;
 const isWebpack5 = version.startsWith('5');
+const isWindows = process.platform === 'win32';
 
 /**
  * Run the webpack CLI for a test case.
@@ -44,19 +46,23 @@ const runWatch = (testCase, args = [], setOutput = true, outputKillStr = 'watchi
     const argsWithOutput = setOutput ? args.concat('--output-path', outputPath) : args;
 
     return new Promise((resolve, reject) => {
-        const watchPromise = execa(WEBPACK_PATH, argsWithOutput, {
+        const proc = execa(WEBPACK_PATH, argsWithOutput, {
             cwd,
             reject: false,
             stdio: 'pipe',
         });
 
-        watchPromise.stdout.pipe(
+        proc.stdout.pipe(
             new Writable({
                 write(chunk, encoding, callback) {
                     const output = chunk.toString('utf8');
 
                     if (output.includes(outputKillStr)) {
-                        watchPromise.kill();
+                        if (isWindows) {
+                            exec('taskkill /pid ' + proc.pid + ' /T /F');
+                        } else {
+                            proc.kill();
+                        }
                     }
 
                     callback();
@@ -64,13 +70,11 @@ const runWatch = (testCase, args = [], setOutput = true, outputKillStr = 'watchi
             }),
         );
 
-        watchPromise
-            .then((result) => {
-                resolve(result);
-            })
-            .catch((error) => {
-                reject(error);
-            });
+        proc.then((result) => {
+            resolve(result);
+        }).catch((error) => {
+            reject(error);
+        });
     });
 };
 
@@ -231,8 +235,6 @@ const runServe = (args, testPath) => {
 const runInfo = (args, testPath) => {
     return run(testPath, ['info'].concat(args), false);
 };
-
-const isWindows = process.platform === 'win32';
 
 module.exports = {
     run,
