@@ -1,6 +1,6 @@
 'use strict';
 
-const { runAndGetWatchProc, isWebpack5, isWindows } = require('../utils/test-utils');
+const { runAndGetWatchProc, isWebpack5 } = require('../utils/test-utils');
 const { writeFileSync } = require('fs');
 const { resolve } = require('path');
 
@@ -10,15 +10,19 @@ const wordsInStatsv5 = ['asset', 'index.js', 'compiled successfully'];
 describe('--watch flag', () => {
     it('should recompile upon file change', (done) => {
         const proc = runAndGetWatchProc(__dirname, ['--watch'], false, '', true);
-        let semaphore = 1;
+        let semaphore = 0;
         proc.stdout.on('data', (chunk) => {
             const data = chunk.toString();
-            if (data.includes('watching files for updates')) {
-                writeFileSync(resolve(__dirname, './src/index.js'), `console.log('watch flag test');`);
-                semaphore = 0;
-                return;
+
+            if (semaphore === 0 && data.includes('watching files for updates')) {
+                process.nextTick(() => {
+                    writeFileSync(resolve(__dirname, './src/index.js'), `console.log('watch flag test');`);
+
+                    semaphore++;
+                });
             }
-            if (semaphore === 0 && data.includes('index.js')) {
+
+            if (semaphore === 1 && data.includes('index.js')) {
                 if (isWebpack5) {
                     for (const word of wordsInStatsv5) {
                         expect(data).toContain(word);
@@ -28,10 +32,13 @@ describe('--watch flag', () => {
                         expect(data).toContain(word);
                     }
                 }
-                semaphore--;
+
+                semaphore++;
+            }
+
+            if (semaphore === 2 && data.includes('watching files for updates')) {
                 proc.kill();
                 done();
-                return;
             }
         });
     });
@@ -41,11 +48,16 @@ describe('--watch flag', () => {
         let semaphore = 0;
         proc.stdout.on('data', (chunk) => {
             const data = chunk.toString();
-            if (data.includes('Compilation  starting') || data.includes('Compilation  finished')) {
+
+            if (semaphore === 0 && data.includes('Compilation starting')) {
                 semaphore++;
             }
-            // TODO Fix on windows
-            if ((isWindows || semaphore === 2) && data.includes('index.js')) {
+
+            if (semaphore === 1 && data.includes('Compilation finished')) {
+                semaphore++;
+            }
+
+            if (semaphore === 2 && data.includes('index.js')) {
                 if (isWebpack5) {
                     for (const word of wordsInStatsv5) {
                         expect(data).toContain(word);
@@ -55,9 +67,15 @@ describe('--watch flag', () => {
                         expect(data).toContain(word);
                     }
                 }
+
+                semaphore++;
+            }
+
+            if (semaphore === 3 && data.includes('watching files for updates...')) {
+                semaphore++;
+
                 proc.kill();
                 done();
-                return;
             }
         });
     });

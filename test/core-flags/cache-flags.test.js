@@ -128,7 +128,6 @@ describe('cache related flags from core', () => {
         writeFileSync(resolve(__dirname, './webpack.test.config.js'), 'module.exports = {mode: "development"}');
         const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.test.config.js']);
         expect(stderr).toBeFalsy();
-        // modules should not be cached on first run
         expect(stdout).not.toContain('[cached] 1 module');
 
         // Running again should use the cache
