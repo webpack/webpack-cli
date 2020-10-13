@@ -92,6 +92,15 @@ const argParser = (options, args, argsOnly = false, name = '') => {
                 // a multiple argument parsing function
                 const multiArg = (value, previous = []) => previous.concat([value]);
                 parserInstance.option(flagsWithType, option.description, multiArg, option.defaultValue).action(() => {});
+            } else if (option.multipleType) {
+                // for options which accept multiple types like env
+                // so you can do `--env platform=staging --env production`
+                // { platform: "staging", production: true }
+                const multiArg = (value, previous = {}) => {
+                    const [key, val] = value.split('=');
+                    return { ...previous, [key]: val || true };
+                };
+                parserInstance.option(flagsWithType, option.description, multiArg, option.defaultValue).action(() => {});
             } else {
                 // Prevent default behavior for standalone options
                 parserInstance.option(flagsWithType, option.description, option.defaultValue).action(() => {});

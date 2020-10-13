@@ -205,7 +205,7 @@ const core = [
         name: 'env',
         usage: '--env',
         type: String,
-        multiple: true,
+        multipleType: true,
         description: 'Environment passed to the configuration when it is a function',
     },
     {
