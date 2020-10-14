@@ -74,7 +74,7 @@ jobs:
           path: |
             node_modules
             */*/node_modules
-          key: ${{ runner.os }}-${{ matrix.webpack-version }}-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-${{ matrix.webpack-version }}-${{ hashFiles('**/yarn.lock', './yarn.lock') }}
 
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
