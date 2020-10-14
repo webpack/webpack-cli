@@ -150,7 +150,9 @@ const finalize = async (moduleObj, args) => {
 
     const config = moduleObj.config;
 
-    console.log(config);
+    if (process.platform === 'win32') {
+        console.log(config);
+    }
 
     const isMultiCompilerMode = Array.isArray(config);
     const rawConfigs = isMultiCompilerMode ? config : [config];
