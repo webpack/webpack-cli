@@ -7,7 +7,7 @@ describe('errors', () => {
     it('should output by default', () => {
         const { stdout, exitCode } = run(__dirname);
 
-        expect(stdout).toMatch(/ERROR in/);
+        expect(stdout).toMatch(/ERROR/);
         expect(stdout).toMatch(/Error: Can't resolve/);
         expect(exitCode).toBe(1);
     });

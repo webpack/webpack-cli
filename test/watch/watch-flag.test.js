@@ -5,7 +5,7 @@ const { writeFileSync } = require('fs');
 const { resolve } = require('path');
 
 const wordsInStatsv4 = ['Hash', 'Version', 'Time', 'Built at:', 'main.js'];
-const wordsInStatsv5 = ['asset', 'index.js', 'compiled successfully'];
+const wordsInStatsv5 = ['asset', 'index.js', `compiled \u001b[1m\u001b[32msuccessfully\u001b[39m\u001b[22m`];
 
 describe('--watch flag', () => {
     it('should recompile upon file change', (done) => {

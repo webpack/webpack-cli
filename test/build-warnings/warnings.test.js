@@ -7,7 +7,7 @@ describe('warnings', () => {
     it('should output by default', () => {
         const { stdout, exitCode } = run(__dirname);
 
-        expect(stdout).toMatch(/WARNING in/);
+        expect(stdout).toMatch(/WARNING/);
         expect(stdout).toMatch(/Error: Can't resolve/);
         expect(exitCode).toBe(0);
     });
