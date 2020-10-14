@@ -1,3 +1,4 @@
+const { options: coloretteOptions } = require('colorette');
 const { packageExists } = require('./package-exists');
 const webpack = packageExists('webpack') ? require('webpack') : undefined;
 const logger = require('./logger');
@@ -85,9 +86,15 @@ class Compiler {
                 process.exitCode = 1;
             }
 
+            const getStatsOptions = (stats) => {
+                stats.colors = typeof stats.colors !== 'undefined' ? stats.colors : coloretteOptions.enabled;
+
+                return stats;
+            };
+
             const foundStats = this.compiler.compilers
-                ? { children: this.compiler.compilers.map((compiler) => compiler.options.stats) }
-                : this.compiler.options.stats;
+                ? { children: this.compiler.compilers.map((compiler) => getStatsOptions(compiler.options.stats)) }
+                : getStatsOptions(this.compiler.options.stats);
 
             if (outputOptions.json === true) {
                 process.stdout.write(JSON.stringify(stats.toJson(foundStats), null, 2) + '\n');
