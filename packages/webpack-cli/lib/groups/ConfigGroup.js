@@ -89,18 +89,31 @@ const requireConfig = (configModule) => {
 // else does a default config lookup and resolves it.
 const resolveConfigFiles = async (args) => {
     const { config, mode } = args;
+
+    if (process.platform === 'win32') {
+        console.log(config);
+    }
+
     if (config && config.length > 0) {
         const resolvedOptions = [];
         const finalizedConfigs = config.map(async (webpackConfig) => {
             const configPath = resolve(webpackConfig);
             const configFiles = getConfigInfoFromFileName(configPath);
+
             if (!configFiles.length) {
                 throw new ConfigError(`The specified config file doesn't exist in ${configPath}`);
             }
+
             const foundConfig = configFiles[0];
             const resolvedConfig = requireConfig(foundConfig);
+
+            if (process.platform === 'win32') {
+                console.log(resolvedConfig);
+            }
+
             return finalize(resolvedConfig, args);
         });
+
         // resolve all the configs
         for await (const resolvedOption of finalizedConfigs) {
             if (Array.isArray(resolvedOption.options)) {
@@ -109,10 +122,9 @@ const resolveConfigFiles = async (args) => {
                 resolvedOptions.push(resolvedOption.options);
             }
         }
-        // When the resolved configs are more than 1, then pass them as Array [{...}, {...}] else pass the first config object {...}
-        const finalOptions = resolvedOptions.length > 1 ? resolvedOptions : resolvedOptions[0] || {};
 
-        opts['options'] = finalOptions;
+        opts['options'] = resolvedOptions.length > 1 ? resolvedOptions : resolvedOptions[0] || {};
+
         return;
     }
 
@@ -125,12 +137,16 @@ const resolveConfigFiles = async (args) => {
     const configFiles = tmpConfigFiles.map(requireConfig);
     if (configFiles.length) {
         const defaultConfig = configFiles.find((p) => p.path.includes(mode) || p.path.includes(modeAlias[mode]));
+
         if (defaultConfig) {
             opts = await finalize(defaultConfig, args);
             return;
         }
+
         const foundConfig = configFiles.pop();
+
         opts = await finalize(foundConfig, args);
+
         return;
     }
 };
@@ -144,15 +160,15 @@ const finalize = async (moduleObj, args) => {
         options: {},
     };
 
+    if (process.platform === 'win32') {
+        console.log(moduleObj);
+    }
+
     if (!moduleObj) {
         return newOptionsObject;
     }
 
     const config = moduleObj.config;
-
-    if (process.platform === 'win32') {
-        console.log(config);
-    }
 
     const isMultiCompilerMode = Array.isArray(config);
     const rawConfigs = isMultiCompilerMode ? config : [config];
