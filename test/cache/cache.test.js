@@ -10,7 +10,7 @@ describe('cache related tests', () => {
 
         if (isWebpack5) {
             expect(stderr).toContain('starting to restore cache content');
-            expect(stdout).toContain('[cached] 1 module');
+            expect(stdout).toContain('[cached]');
         }
     });
 });

@@ -76,10 +76,10 @@ describe('cache related flags from core', () => {
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('buildDependencies');
         expect(stdout).toContain("config: [ './webpack.config.js' ]");
-        expect(stdout).not.toContain('[cached] 1 module');
+        expect(stdout).not.toContain('[cached]');
         // Run again to check for cache
         const newRun = run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.config.js']);
-        expect(newRun.stdout).toContain('[cached] 1 module');
+        expect(newRun.stdout).toContain('[cached]');
         expect(newRun.stderr).toBeFalsy();
         expect(newRun.exitCode).toEqual(0);
     });
@@ -94,7 +94,7 @@ describe('cache related flags from core', () => {
         expect(stdout).toContain("type: 'filesystem'");
         // Run again to check for cache
         const newRun = run(__dirname, ['-c', './webpack.cache.config.js']);
-        expect(newRun.stdout).toContain('[cached] 1 module');
+        expect(newRun.stdout).toContain('[cached]');
         expect(newRun.stderr).toBeFalsy();
         expect(newRun.exitCode).toEqual(0);
     });
@@ -128,18 +128,18 @@ describe('cache related flags from core', () => {
         writeFileSync(resolve(__dirname, './webpack.test.config.js'), 'module.exports = {mode: "development"}');
         const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.test.config.js']);
         expect(stderr).toBeFalsy();
-        expect(stdout).not.toContain('[cached] 1 module');
+        expect(stdout).not.toContain('[cached]');
 
         // Running again should use the cache
         const newRun = run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.test.config.js']);
-        expect(newRun.stdout).toContain('[cached] 1 module');
+        expect(newRun.stdout).toContain('[cached]');
 
         // Change config to invalidate cache
         writeFileSync(resolve(__dirname, './webpack.test.config.js'), 'module.exports = {mode: "production"}');
 
         const newRun2 = run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.test.config.js']);
         unlinkSync(resolve(__dirname, './webpack.test.config.js'));
-        expect(newRun2).not.toContain('[cached] 1 module');
+        expect(newRun2).not.toContain('[cached]');
         expect(newRun2.exitCode).toEqual(0);
     });
 });
