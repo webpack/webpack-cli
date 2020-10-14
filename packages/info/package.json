@@ -12,9 +12,7 @@
     "lib"
   ],
   "dependencies": {
-    "colorette": "^1.2.1",
-    "envinfo": "^7.5.0",
-    "prettyjson": "^1.2.1"
+    "envinfo": "^7.7.3"
   },
   "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9",
   "peerDependencies": {

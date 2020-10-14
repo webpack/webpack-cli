@@ -57,6 +57,9 @@
     },
     "webpack-bundle-analyzer": {
       "optional": true
+    },
+    "webpack-dev-server": {
+      "optional": true
     }
   },
   "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9"
