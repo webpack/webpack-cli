@@ -239,12 +239,13 @@ const resolveConfigMerging = async (args) => {
     }
 };
 
-const loadConfig = async (args) => {
+console.log('LOADED');
+
+module.exports = async (args) => {
     console.log(args);
 
     await resolveConfigFiles(args);
     await resolveConfigMerging(args);
+
     return opts;
 };
-
-module.exports = loadConfig;
