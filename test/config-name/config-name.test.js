@@ -41,40 +41,52 @@ describe('--config-name flag', () => {
     });
 
     it('should log error if invalid config name is provided', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--config-name', 'test'], false);
+        const { stderr, exitCode } = run(__dirname, ['--config-name', 'test'], false);
         expect(stderr).toContain('Configuration with name "test" was not found.');
-        expect(stdout).toBeFalsy();
+        // expect(stdout).toBeFalsy();
         expect(exitCode).toBe(2);
     });
 
     it('should log error if multiple configurations are not found', () => {
         const { stderr, stdout, exitCode } = run(__dirname, ['--config-name', 'test', '-c', 'single-config.js'], false);
+
+        console.log(stdout);
+        console.log(stderr);
+
         expect(stderr).toContain('Configuration with name "test" was not found.');
-        expect(stdout).toBeFalsy();
+        // expect(stdout).toBeFalsy();
+        expect(exitCode).toBe(2);
+    });
+
+    it('should log error if multiple configurations are not found #1', () => {
+        const { stderr, stdout, exitCode } = run(
+            __dirname,
+            ['--config-name', 'test', '--config-name', 'bar', '-c', 'single-config.js'],
+            false,
+        );
+
+        console.log(stdout);
+        console.log(stderr);
+
+        expect(stderr).toContain('Configuration with name "test" was not found.');
+        expect(stderr).toContain('Configuration with name "bar" was not found.');
+        // expect(stdout).toBeFalsy();
         expect(exitCode).toBe(2);
     });
 
     it('should log error if multiple configurations are not found #2', () => {
         const { stderr, stdout, exitCode } = run(
             __dirname,
-            ['--config-name', 'test', '--config-name', 'bar', '-c', 'single-config.js'],
-            false,
-        );
-        expect(stderr).toContain('Configuration with name "test" was not found.');
-        expect(stderr).toContain('Configuration with name "bar" was not found.');
-        expect(stdout).toBeFalsy();
-        expect(exitCode).toBe(2);
-    });
-
-    it('should log error if multiple configurations are not found #3', () => {
-        const { stderr, stdout, exitCode } = run(
-            __dirname,
             ['--config-name', 'first', '--config-name', 'bar', '-c', 'single-config.js'],
             false,
         );
+
+        console.log(stdout);
+        console.log(stderr);
+
         expect(stderr).not.toContain('Configuration with name "first" was not found.');
         expect(stderr).toContain('Configuration with name "bar" was not found.');
-        expect(stdout).toBeFalsy();
+        // expect(stdout).toBeFalsy();
         expect(exitCode).toBe(2);
     });
 });

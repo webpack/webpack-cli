@@ -240,9 +240,7 @@ const resolveConfigMerging = async (args) => {
 };
 
 const loadConfig = async (args) => {
-    if (process.platform === 'win32') {
-        console.log(args);
-    }
+    console.log(args);
 
     await resolveConfigFiles(args);
     await resolveConfigMerging(args);
