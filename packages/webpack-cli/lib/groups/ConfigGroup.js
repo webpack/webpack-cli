@@ -77,14 +77,12 @@ const requireConfig = (configModule) => {
     }
 
     let config = require(configModule.path);
+
     if (config.default) {
         config = config.default;
     }
 
-    return {
-        content: config,
-        path: configModule.path,
-    };
+    return { config, path: configModule.path };
 };
 
 // Responsible for reading user configuration files
@@ -150,49 +148,76 @@ const finalize = async (moduleObj, args) => {
         return newOptionsObject;
     }
 
-    const configOptions = moduleObj.content;
+    const config = moduleObj.config;
+    const isMultiCompilerMode = Array.isArray(config);
+    const rawConfigs = isMultiCompilerMode ? config : [config];
 
-    if (typeof configOptions === 'function') {
-        // when config is a function, pass the env from args to the config function
-        let formattedEnv;
-        if (Array.isArray(env)) {
-            formattedEnv = env.reduce((envObject, envOption) => {
-                envObject[envOption] = true;
-                return envObject;
-            }, {});
-        }
-        const newOptions = configOptions(formattedEnv, args);
-        // When config function returns a promise, resolve it, if not it's resolved by default
-        newOptionsObject['options'] = await Promise.resolve(newOptions);
-    } else if (configName) {
-        if (Array.isArray(configOptions) && configOptions.length > 1) {
-            // In case of exporting multiple configurations, If you pass a name to --config-name flag,
-            // webpack will only build that specific configuration.
-            const namedOptions = configOptions.filter((opt) => configName.includes(opt.name));
-            if (namedOptions.length === 0) {
-                logger.error(`Configuration with name "${configName}" was not found.`);
-                process.exit(2);
-            } else {
-                newOptionsObject['options'] = namedOptions;
+    let configs = await Promise.all(
+        rawConfigs.map(async (rawConfig) => {
+            const isPromise = typeof rawConfig.then === 'function';
+
+            if (isPromise) {
+                rawConfig = await rawConfig;
             }
-        } else {
-            logger.error('Multiple configurations not found. Please use "--config-name" with multiple configurations.');
+
+            // `Promise` may return `Function`
+            if (typeof rawConfig === 'function') {
+                // when config is a function, pass the env from args to the config function
+                let envs;
+
+                if (Array.isArray(env)) {
+                    envs = env.reduce((envObject, envOption) => {
+                        envObject[envOption] = true;
+
+                        return envObject;
+                    }, {});
+                }
+
+                rawConfig = await rawConfig(envs, args);
+            }
+
+            return rawConfig;
+        }),
+    );
+
+    if (configName) {
+        const foundConfigNames = [];
+
+        configs = configs.filter((options) => {
+            const found = configName.includes(options.name);
+
+            if (found) {
+                foundConfigNames.push(options.name);
+            }
+
+            return found;
+        });
+
+        if (foundConfigNames.length !== configName.length) {
+            // Configuration with name "test" was not found.
+            logger.error(
+                configName
+                    .filter((name) => !foundConfigNames.includes(name))
+                    .map((configName) => `Configuration with name "${configName}" was not found.`)
+                    .join('\n'),
+            );
             process.exit(2);
         }
-    } else {
-        if (Array.isArray(configOptions) && !configOptions.length) {
-            newOptionsObject['options'] = {};
-            return newOptionsObject;
-        }
-
-        newOptionsObject['options'] = configOptions;
     }
+
+    if (configs.length === 0) {
+        logger.error('No configurations found');
+        process.exit(2);
+    }
+
+    newOptionsObject['options'] = isMultiCompilerMode ? configs : configs[0];
 
     return newOptionsObject;
 };
 
 const resolveConfigMerging = async (args) => {
     const { merge } = args;
+
     if (merge) {
         // Get the current configuration options
         const { options: configOptions } = opts;
@@ -210,10 +235,10 @@ const resolveConfigMerging = async (args) => {
     }
 };
 
-const handleConfigResolution = async (args) => {
+const loadConfig = async (args) => {
     await resolveConfigFiles(args);
     await resolveConfigMerging(args);
     return opts;
 };
 
-module.exports = handleConfigResolution;
+module.exports = loadConfig;
