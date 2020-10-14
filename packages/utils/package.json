@@ -35,15 +35,6 @@
     "@types/yeoman-generator": "^4.11.2"
   },
   "peerDependenciesMeta": {
-    "@webpack-cli/info": {
-      "optional": true
-    },
-    "@webpack-cli/init": {
-      "optional": true
-    },
-    "@webpack-cli/serve": {
-      "optional": true
-    },
     "prettier": {
       "optional": true
     }
