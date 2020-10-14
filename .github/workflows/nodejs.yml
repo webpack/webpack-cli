@@ -92,7 +92,7 @@ jobs:
       - name: Run tests for webpack version ${{ matrix.webpack-version }}
         run: |
           yarn prepsuite
-          yarn test:ci
+          node_modules/.bin/jest test/config-name/
         env:
           CI: true
 

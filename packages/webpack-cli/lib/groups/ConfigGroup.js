@@ -63,17 +63,12 @@ const getConfigInfoFromFileName = (filename) => {
         .filter((e) => existsSync(e.path));
 };
 
-// Prepare rechoir environment to load multiple file formats
-const requireLoader = (extension, path) => {
-    rechoir.prepare(extensions, path, process.cwd());
-};
-
 // Reads a config file given the config metadata
 const requireConfig = (configModule) => {
     const extension = Object.keys(jsVariants).find((t) => configModule.ext.endsWith(t));
 
     if (extension) {
-        requireLoader(extension, configModule.path);
+        rechoir.prepare(extensions, configModule.path, process.cwd());
     }
 
     let config = require(configModule.path);
@@ -90,10 +85,6 @@ const requireConfig = (configModule) => {
 const resolveConfigFiles = async (args) => {
     const { config, mode } = args;
 
-    if (process.platform === 'win32') {
-        console.log(config);
-    }
-
     if (config && config.length > 0) {
         const resolvedOptions = [];
         const finalizedConfigs = config.map(async (webpackConfig) => {
@@ -106,10 +97,6 @@ const resolveConfigFiles = async (args) => {
 
             const foundConfig = configFiles[0];
             const resolvedConfig = requireConfig(foundConfig);
-
-            if (process.platform === 'win32') {
-                console.log(resolvedConfig);
-            }
 
             return finalize(resolvedConfig, args);
         });
@@ -159,10 +146,6 @@ const finalize = async (moduleObj, args) => {
         outputOptions: {},
         options: {},
     };
-
-    if (process.platform === 'win32') {
-        console.log(moduleObj);
-    }
 
     if (!moduleObj) {
         return newOptionsObject;
@@ -257,6 +240,10 @@ const resolveConfigMerging = async (args) => {
 };
 
 const loadConfig = async (args) => {
+    if (process.platform === 'win32') {
+        console.log(args);
+    }
+
     await resolveConfigFiles(args);
     await resolveConfigMerging(args);
     return opts;
