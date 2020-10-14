@@ -1,5 +1,5 @@
 'use strict';
-const { run } = require('../utils/test-utils');
+const { run, isWebpack5 } = require('../utils/test-utils');
 const { resolve } = require('path');
 const { options: coloretteOptions } = require('colorette');
 
@@ -8,7 +8,8 @@ describe('colorts', () => {
         const { stderr, stdout, exitCode } = run(__dirname);
 
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(coloretteOptions.enabled ? '\u001b[1m\u001b[32msuccessfully\u001b[39m\u001b[22m' : 'successfully');
+        const output = isWebpack5 ? 'successfully' : 'main.js';
+        expect(stdout).toContain(coloretteOptions.enabled ? `\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m` : output);
         expect(exitCode).toBe(0);
     });
 
@@ -16,7 +17,8 @@ describe('colorts', () => {
         const { stderr, stdout, exitCode } = run(__dirname, ['--stats=verbose']);
 
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(coloretteOptions.enabled ? '\u001b[1m\u001b[32msuccessfully\u001b[39m\u001b[22m' : 'successfully');
+        const output = isWebpack5 ? 'successfully' : 'main.js';
+        expect(stdout).toContain(coloretteOptions.enabled ? `\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m` : output);
         expect(exitCode).toBe(0);
     });
 
@@ -24,7 +26,8 @@ describe('colorts', () => {
         const { stderr, stdout, exitCode } = run(__dirname, [`--config=${resolve(__dirname, './stats-string.webpack.config.js')}`]);
 
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(coloretteOptions.enabled ? '\u001b[1m\u001b[32msuccessfully\u001b[39m\u001b[22m' : 'successfully');
+        const output = isWebpack5 ? 'successfully' : 'main.js';
+        expect(stdout).toContain(coloretteOptions.enabled ? `\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m` : output);
         expect(exitCode).toBe(0);
     });
 
@@ -32,7 +35,8 @@ describe('colorts', () => {
         const { stderr, stdout, exitCode } = run(__dirname, [`--config=${resolve(__dirname, './stats-boolean.webpack.config.js')}`]);
 
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(coloretteOptions.enabled ? '\u001b[1m\u001b[32msuccessfully\u001b[39m\u001b[22m' : 'successfully');
+        const output = isWebpack5 ? 'successfully' : 'main.js';
+        expect(stdout).toContain(coloretteOptions.enabled ? `\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m` : output);
         expect(exitCode).toBe(0);
     });
 
@@ -40,7 +44,8 @@ describe('colorts', () => {
         const { stderr, stdout, exitCode } = run(__dirname, [`--config=${resolve(__dirname, './no-stats.webpack.config.js')}`]);
 
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(coloretteOptions.enabled ? '\u001b[1m\u001b[32msuccessfully\u001b[39m\u001b[22m' : 'successfully');
+        const output = isWebpack5 ? 'successfully' : 'main.js';
+        expect(stdout).toContain(coloretteOptions.enabled ? `\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m` : output);
         expect(exitCode).toBe(0);
     });
 
@@ -48,7 +53,8 @@ describe('colorts', () => {
         const { stderr, stdout, exitCode } = run(__dirname, [`--config=${resolve(__dirname, './colors-true.webpack.config.js')}`]);
 
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(coloretteOptions.enabled ? '\u001b[1m\u001b[32msuccessfully\u001b[39m\u001b[22m' : 'successfully');
+        const output = isWebpack5 ? 'successfully' : 'main.js';
+        expect(stdout).toContain(coloretteOptions.enabled ? `\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m` : output);
         expect(exitCode).toBe(0);
     });
 
@@ -56,8 +62,10 @@ describe('colorts', () => {
         const { stderr, stdout, exitCode } = run(__dirname, [`--config=${resolve(__dirname, './colors-false.webpack.config.js')}`]);
 
         expect(stderr).toBeFalsy();
-        expect(stdout).not.toContain('\u001b[1m\u001b[32msuccessfully\u001b[39m\u001b[22m');
-        expect(stdout).toContain('successfully');
+        const output = isWebpack5 ? 'successfully' : 'main.js';
+        console.log(stdout);
+        expect(stdout).not.toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
+        expect(stdout).toContain(output);
         expect(exitCode).toBe(0);
     });
 });

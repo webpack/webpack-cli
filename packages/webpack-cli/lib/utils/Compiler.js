@@ -87,6 +87,15 @@ class Compiler {
             }
 
             const getStatsOptions = (stats) => {
+                // TODO remove after drop webpack@4
+                if (webpack.Stats && webpack.Stats.presetToOptions) {
+                    if (!stats) {
+                        stats = {};
+                    } else if (typeof stats === 'boolean' || typeof stats === 'string') {
+                        stats = webpack.Stats.presetToOptions(stats);
+                    }
+                }
+
                 stats.colors = typeof stats.colors !== 'undefined' ? stats.colors : coloretteOptions.enabled;
 
                 return stats;
