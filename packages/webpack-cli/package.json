@@ -28,7 +28,6 @@
   ],
   "dependencies": {
     "@webpack-cli/info": "^1.0.1",
-    "@webpack-cli/init": "^1.0.1",
     "@webpack-cli/serve": "^1.0.1",
     "ansi-escapes": "^4.3.1",
     "colorette": "^1.2.1",
@@ -46,6 +45,9 @@
     "webpack": "4.x.x || 5.x.x"
   },
   "peerDependenciesMeta": {
+    "@webpack-cli/init": {
+      "optional": true
+    },
     "@webpack-cli/generate-loader": {
       "optional": true
     },

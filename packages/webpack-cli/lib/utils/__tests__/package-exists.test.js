@@ -2,7 +2,7 @@ jest.setMock('../prompt-installation', {
     promptInstallation: jest.fn(),
 });
 
-const ExternalCommand = require('../../commands/resolveCommand');
+const ExternalCommand = require('../resolve-command');
 const { packageExists } = require('../package-exists');
 const { promptInstallation } = require('../prompt-installation');
 
