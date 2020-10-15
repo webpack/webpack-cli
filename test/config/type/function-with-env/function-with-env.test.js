@@ -4,6 +4,13 @@ const { resolve } = require('path');
 const { run } = require('../../../utils/test-utils');
 
 describe('function configuration', () => {
+    it('should throw when env is not supplied', () => {
+        const { stderr, stdout, exitCode } = run(__dirname, ['--env'], false);
+        expect(stdout).toBeFalsy();
+        expect(stderr).toBeTruthy();
+        expect(stderr).toContain(`option '--env <value>' argument missing`);
+        expect(exitCode).toEqual(1);
+    });
     it('is able to understand a configuration file as a function', () => {
         const { stderr, stdout } = run(__dirname, ['--env', 'isProd']);
         expect(stderr).toBeFalsy();
@@ -31,6 +38,20 @@ describe('function configuration', () => {
         expect(stdout).toBeTruthy();
         // Should generate the appropriate files
         expect(existsSync(resolve(__dirname, './bin/Luffy.js'))).toBeTruthy();
+    });
+    it('Supports long nested values in env', () => {
+        const { stderr, stdout } = run(__dirname, [
+            '--env',
+            'file.name.is.this=Atsumu',
+            '--env',
+            'environment=production',
+            '-c',
+            'webpack.env.config.js',
+        ]);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toBeTruthy();
+        // Should generate the appropriate files
+        expect(existsSync(resolve(__dirname, './bin/Atsumu.js'))).toBeTruthy();
     });
     it('is able to understand multiple env flags', (done) => {
         const { stderr, stdout } = run(__dirname, ['--env', 'isDev', '--env', 'verboseStats', '--env', 'envMessage']);
