@@ -14,7 +14,6 @@
   "dependencies": {
     "colorette": "^1.2.1",
     "cross-spawn": "^7.0.3",
-    "enquirer": "^2.3.6",
     "execa": "^4.0.0",
     "findup-sync": "^4.0.0",
     "global-modules": "^2.0.0",
