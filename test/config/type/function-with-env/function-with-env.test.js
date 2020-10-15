@@ -19,11 +19,18 @@ describe('function configuration', () => {
         expect(existsSync(resolve(__dirname, './bin/dev.js'))).toBeTruthy();
     });
     it('Supports passing string in env', () => {
-        const { stderr, stdout } = run(__dirname, ['--env', 'environment=production', '-c', 'webpack.env.config.js']);
+        const { stderr, stdout } = run(__dirname, [
+            '--env',
+            'environment=production',
+            '--env',
+            'app.title=Luffy',
+            '-c',
+            'webpack.env.config.js',
+        ]);
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
         // Should generate the appropriate files
-        expect(existsSync(resolve(__dirname, './bin/prod.js'))).toBeTruthy();
+        expect(existsSync(resolve(__dirname, './bin/Luffy.js'))).toBeTruthy();
     });
     it('is able to understand multiple env flags', (done) => {
         const { stderr, stdout } = run(__dirname, ['--env', 'isDev', '--env', 'verboseStats', '--env', 'envMessage']);

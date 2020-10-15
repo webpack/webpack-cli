@@ -1,10 +1,13 @@
 module.exports = (env) => {
-    const { environment } = env;
+    const {
+        environment,
+        app: { title },
+    } = env;
     if (environment === 'production') {
         return {
             entry: './a.js',
             output: {
-                filename: 'prod.js',
+                filename: `${title}.js`,
             },
         };
     }

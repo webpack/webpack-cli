@@ -97,8 +97,20 @@ const argParser = (options, args, argsOnly = false, name = '') => {
                 // so you can do `--env platform=staging --env production`
                 // { platform: "staging", production: true }
                 const multiArg = (value, previous = {}) => {
-                    const [key, val] = value.split('=');
-                    return { ...previous, [key]: val || true };
+                    const [allKeys, val] = value.split('=');
+                    const splitKeys = allKeys.split('.');
+                    let prevRef = previous;
+                    splitKeys.forEach((someKey, index) => {
+                        if (!prevRef[someKey]) prevRef[someKey] = {};
+                        if (index === splitKeys.length - 1) {
+                            prevRef[someKey] = val || true;
+                        } else {
+                            prevRef[someKey] = typeof prevRef[someKey] === 'string' ? {} : { ...prevRef[someKey] };
+                        }
+                        console.log({ prevRef, previous, someKey });
+                        prevRef = prevRef[someKey];
+                    });
+                    return previous;
                 };
                 parserInstance.option(flagsWithType, option.description, multiArg, option.defaultValue).action(() => {});
             } else {
