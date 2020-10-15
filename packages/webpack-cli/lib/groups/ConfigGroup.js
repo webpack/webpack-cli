@@ -3,7 +3,6 @@ const { resolve, extname } = require('path');
 const webpackMerge = require('webpack-merge');
 const { extensions, jsVariants } = require('interpret');
 const rechoir = require('rechoir');
-const ConfigError = require('../utils/errors/ConfigError');
 const logger = require('../utils/logger');
 
 // Order defines the priority, in increasing order
@@ -92,7 +91,8 @@ const resolveConfigFiles = async (args) => {
             const configFiles = getConfigInfoFromFileName(configPath);
 
             if (!configFiles.length) {
-                throw new ConfigError(`The specified config file doesn't exist in ${configPath}`);
+                logger.error(`The specified config file doesn't exist in ${configPath}`);
+                process.exit(2);
             }
 
             const foundConfig = configFiles[0];
@@ -230,12 +230,12 @@ const resolveConfigMerging = async (args) => {
         // either by passing multiple configs by flags or passing a
         // single config exporting an array
         if (!Array.isArray(configOptions)) {
-            throw new ConfigError('Atleast two configurations are required for merge.', 'MergeError');
+            logger.error('At least two configurations are required for merge.');
+            process.exit(2);
         }
 
         // We return a single config object which is passed to the compiler
-        const mergedOptions = configOptions.reduce((currentConfig, mergedConfig) => webpackMerge(currentConfig, mergedConfig), {});
-        opts['options'] = mergedOptions;
+        opts['options'] = configOptions.reduce((currentConfig, mergedConfig) => webpackMerge(currentConfig, mergedConfig), {});
     }
 };
 
