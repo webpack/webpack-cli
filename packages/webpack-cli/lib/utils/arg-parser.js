@@ -28,8 +28,10 @@ const argParser = (options, args, argsOnly = false, name = '') => {
             .allowUnknownOption(true)
             .action(async () => {
                 const cliArgs = args.slice(args.indexOf(cmd.name) + 1 || args.indexOf(cmd.alias) + 1);
-                return await require('../commands/resolveCommand')(defaultCommands[cmd.name], ...cliArgs);
+
+                return await require('./resolve-command')(defaultCommands[cmd.name], ...cliArgs);
             });
+
         return parser;
     }, parser);
 
