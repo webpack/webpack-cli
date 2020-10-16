@@ -253,7 +253,7 @@ class WebpackCLI extends GroupHelper {
         if (outputOptions.interactive) {
             const interactive = require('./utils/interactive');
 
-            return interactive(options, outputOptions);
+            return interactive(compiler, options, outputOptions);
         }
 
         const compilers = compiler.compilers ? compiler.compilers : [compiler];
