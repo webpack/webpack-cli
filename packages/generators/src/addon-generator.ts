@@ -54,8 +54,9 @@ const addonGenerator = (
                 const pathToProjectDir: string = this.destinationPath(this.props.name);
                 try {
                     mkdirp.sync(pathToProjectDir);
-                } catch (err) {
-                    logger.error('Failed to create directory', err);
+                } catch (error) {
+                    logger.error('Failed to create directory');
+                    logger.error(error);
                 }
                 this.destinationRoot(pathToProjectDir);
             }
