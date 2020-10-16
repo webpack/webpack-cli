@@ -91,7 +91,7 @@ jobs:
 
       - name: Run tests for webpack version ${{ matrix.webpack-version }}
         run: |
-          lerna bootstrap
+          yarn run lerna bootstrap
           yarn prepsuite
           yarn test:ci
         env:
