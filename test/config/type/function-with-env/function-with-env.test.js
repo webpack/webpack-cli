@@ -53,6 +53,34 @@ describe('function configuration', () => {
         // Should generate the appropriate files
         expect(existsSync(resolve(__dirname, './bin/Atsumu.js'))).toBeTruthy();
     });
+    it('Supports multiple equal in a string', () => {
+        const { stderr, stdout } = run(__dirname, [
+            '--env',
+            'file=name=is=Eren',
+            '--env',
+            'environment=multipleq',
+            '-c',
+            'webpack.env.config.js',
+        ]);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toBeTruthy();
+        // Should generate the appropriate files
+        expect(existsSync(resolve(__dirname, './bin/name=is=Eren.js'))).toBeTruthy();
+    });
+    it('Supports dot at the end', () => {
+        const { stderr, stdout } = run(__dirname, ['--env', 'name.=Hisoka', '--env', 'environment=dot', '-c', 'webpack.env.config.js']);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toBeTruthy();
+        // Should generate the appropriate files
+        expect(existsSync(resolve(__dirname, './bin/Hisoka.js'))).toBeTruthy();
+    });
+    it('Supports dot at the end', () => {
+        const { stderr, stdout } = run(__dirname, ['--env', 'name.', '--env', 'environment=dot', '-c', 'webpack.env.config.js']);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toBeTruthy();
+        // Should generate the appropriate files
+        expect(existsSync(resolve(__dirname, './bin/true.js'))).toBeTruthy();
+    });
     it('is able to understand multiple env flags', (done) => {
         const { stderr, stdout } = run(__dirname, ['--env', 'isDev', '--env', 'verboseStats', '--env', 'envMessage']);
         expect(stderr).toBeFalsy();

@@ -99,7 +99,7 @@ const argParser = (options, args, argsOnly = false, name = '') => {
                 const multiArg = (value, previous = {}) => {
                     // this ensures we're only splitting by the first `=`
                     const [allKeys, val] = value.split(/=(.+)/, 2);
-                    const splitKeys = allKeys.split('.');
+                    const splitKeys = allKeys.split(/\.(?!$)/);
                     let prevRef = previous;
                     splitKeys.forEach((someKey, index) => {
                         if (!prevRef[someKey]) prevRef[someKey] = {};
