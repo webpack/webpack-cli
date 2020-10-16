@@ -92,6 +92,28 @@ const argParser = (options, args, argsOnly = false, name = '') => {
                 // a multiple argument parsing function
                 const multiArg = (value, previous = []) => previous.concat([value]);
                 parserInstance.option(flagsWithType, option.description, multiArg, option.defaultValue).action(() => {});
+            } else if (option.multipleType) {
+                // for options which accept multiple types like env
+                // so you can do `--env platform=staging --env production`
+                // { platform: "staging", production: true }
+                const multiArg = (value, previous = {}) => {
+                    // this ensures we're only splitting by the first `=`
+                    const [allKeys, val] = value.split(/=(.+)/, 2);
+                    const splitKeys = allKeys.split(/\.(?!$)/);
+                    let prevRef = previous;
+                    splitKeys.forEach((someKey, index) => {
+                        if (!prevRef[someKey]) prevRef[someKey] = {};
+                        if ('string' === typeof prevRef[someKey]) {
+                            prevRef[someKey] = {};
+                        }
+                        if (index === splitKeys.length - 1) {
+                            prevRef[someKey] = val || true;
+                        }
+                        prevRef = prevRef[someKey];
+                    });
+                    return previous;
+                };
+                parserInstance.option(flagsWithType, option.description, multiArg, option.defaultValue).action(() => {});
             } else {
                 // Prevent default behavior for standalone options
                 parserInstance.option(flagsWithType, option.description, option.defaultValue).action(() => {});

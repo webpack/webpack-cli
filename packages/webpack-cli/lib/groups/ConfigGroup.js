@@ -167,17 +167,7 @@ const finalize = async (moduleObj, args) => {
             // `Promise` may return `Function`
             if (typeof rawConfig === 'function') {
                 // when config is a function, pass the env from args to the config function
-                let envs;
-
-                if (Array.isArray(env)) {
-                    envs = env.reduce((envObject, envOption) => {
-                        envObject[envOption] = true;
-
-                        return envObject;
-                    }, {});
-                }
-
-                rawConfig = await rawConfig(envs, args);
+                rawConfig = await rawConfig(env, args);
             }
 
             return rawConfig;
