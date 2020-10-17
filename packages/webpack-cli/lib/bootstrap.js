@@ -7,7 +7,9 @@ const logger = require('./utils/logger');
 const { isCommandUsed } = require('./utils/arg-utils');
 const cliExecuter = require('./utils/cli-executer');
 const argParser = require('./utils/arg-parser');
+
 require('./utils/process-log');
+
 process.title = 'webpack-cli';
 
 // Create a new instance of the CLI object
