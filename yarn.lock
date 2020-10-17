@@ -2612,9 +2612,9 @@
     rxjs ">=6.4.0"
 
 "@types/yeoman-test@^2.0.3":
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/@types/yeoman-test/-/yeoman-test-2.0.4.tgz#4c85e8cf95490411351e1bad57d1a2d6e71a5300"
-  integrity sha512-yUj8MGfEDFwhvUVy0JYdlYc+LMmx833am5iWcif2CYxh7L3qPmb+bMg+079i37WuGvvL8bifeDP+9ev4LDVAXA==
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/@types/yeoman-test/-/yeoman-test-2.0.5.tgz#91131a779237b599e477de555b607a2e850b4c71"
+  integrity sha512-BYJFfJ8o341YnOOkzm0Qw3v3C8t/3WSMXTYUepSa7IIBG+PFU14/v+X90llzaNBYjpvDCjhj16H7GY2R874IiQ==
   dependencies:
     "@types/yeoman-generator" "*"
 
