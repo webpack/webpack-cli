@@ -2600,9 +2600,9 @@
     rxjs ">=6.4.0"
 
 "@types/yeoman-generator@*", "@types/yeoman-generator@^4.11.2":
-  version "4.11.2"
-  resolved "https://registry.yarnpkg.com/@types/yeoman-generator/-/yeoman-generator-4.11.2.tgz#c46b294a46fc8b3a5c46dff8a8712eaad02a7665"
-  integrity sha512-9QYsdVTLlUHg+aiDT1uqWf63oQXedCT4ty5L4KC4nd8gsp1Ef9UdXxpcc4yBU9ciRf4DqE1pViqxc6LTSosdsg==
+  version "4.11.3"
+  resolved "https://registry.yarnpkg.com/@types/yeoman-generator/-/yeoman-generator-4.11.3.tgz#3b4c0040cf0c28237dd9f535a15c620d3f68c5f4"
+  integrity sha512-bZRBRahUEs10YhPC4zTKwX5h1mfoFT4Qvav+z0WyT37SgKK9IgIozn8/k6IF9h9PNkxpAhFcER5llwdzCyFZnw==
   dependencies:
     "@types/debug" "*"
     "@types/ejs" "*"
