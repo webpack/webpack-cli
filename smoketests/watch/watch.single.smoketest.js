@@ -22,7 +22,6 @@ const testEntryFiles = [
  */
 async function setup() {
     await testEntryFiles.forEach(async (file) => {
-        // eslint-disable-next-line
         file.cpFP = await copyFileAsync(__dirname, file.name);
     });
 }
@@ -43,7 +42,6 @@ async function teardown() {
     });
 }
 
-// eslint-disable-next-line
 (async () => {
     try {
         await setup();
@@ -81,7 +79,6 @@ async function teardown() {
         });
 
         // Buffer should have compiled equal amount of each compilation and have diff output directories
-        // eslint-disable-next-line
         webpackProc.stderr.on('close', async () => {
             assert.strictEqual(dataBuffer.length >= 1, true, 'expected single configuration to re-compile');
             await teardown();

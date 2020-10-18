@@ -1,4 +1,3 @@
-/* eslint-disable   node/no-missing-require */
 /* eslint-disable   node/no-unpublished-require */
 const { run, runInstall } = require('../../utils/test-utils');
 

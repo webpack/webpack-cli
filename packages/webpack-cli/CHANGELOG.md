@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.0.0-rc.1...webpack-cli@4.0.0) (2020-10-10)
+
+### Bug Fixes
+
+-   add compilation lifecycle in watch instance ([#1903](https://github.com/webpack/webpack-cli/issues/1903)) ([02b6d21](https://github.com/webpack/webpack-cli/commit/02b6d21eaa20166a7ed37816de716b8fc22b756a))
+-   cleanup `package-utils` package ([#1822](https://github.com/webpack/webpack-cli/issues/1822)) ([fd5b92b](https://github.com/webpack/webpack-cli/commit/fd5b92b3cd40361daec5bf4486e455a41f4c9738))
+-   cli-executer supplies args further up ([#1904](https://github.com/webpack/webpack-cli/issues/1904)) ([097564a](https://github.com/webpack/webpack-cli/commit/097564a851b36b63e0a6bf88144997ef65aa057a))
+-   exit code for validation errors ([59f6303](https://github.com/webpack/webpack-cli/commit/59f63037fcbdbb8934b578b9adf5725bc4ae1235))
+-   exit process in case of schema errors ([71e89b4](https://github.com/webpack/webpack-cli/commit/71e89b4092d953ea587cc4f606451ab78cbcdb93))
+
+### Features
+
+-   assign config paths in build dependencies in cache config ([#1900](https://github.com/webpack/webpack-cli/issues/1900)) ([7e90f11](https://github.com/webpack/webpack-cli/commit/7e90f110b119f36ef9def4f66cf4e17ccf1438cd))
+
 # [4.0.0-rc.1](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.0.0-beta.8...webpack-cli@4.0.0-rc.1) (2020-10-06)
 
 ### Bug Fixes

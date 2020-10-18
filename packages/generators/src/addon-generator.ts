@@ -2,8 +2,8 @@ import logger from 'webpack-cli/lib/utils/logger';
 import mkdirp from 'mkdirp';
 import path from 'path';
 import Generator from 'yeoman-generator';
-import { getPackageManager } from '@webpack-cli/package-utils';
 import { generatorCopy, generatorCopyTpl } from '@webpack-cli/utils';
+import { getPackageManager } from 'webpack-cli/lib/utils/get-package-manager';
 
 /**
  * Creates a Yeoman Generator that generates a project conforming
@@ -54,8 +54,9 @@ const addonGenerator = (
                 const pathToProjectDir: string = this.destinationPath(this.props.name);
                 try {
                     mkdirp.sync(pathToProjectDir);
-                } catch (err) {
-                    logger.error('Failed to create directory', err);
+                } catch (error) {
+                    logger.error('Failed to create directory');
+                    logger.error(error);
                 }
                 this.destinationRoot(pathToProjectDir);
             }

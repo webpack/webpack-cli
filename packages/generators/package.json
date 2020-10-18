@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/generators",
-  "version": "1.0.1-rc.1",
+  "version": "1.0.1",
   "description": "Webpack-CLI generators",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -9,10 +9,13 @@
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "lib",
+    "templates"
+  ],
   "dependencies": {
-    "@webpack-cli/package-utils": "^1.0.1-rc.1",
-    "@webpack-cli/utils": "^1.0.1-rc.1",
-    "@webpack-cli/webpack-scaffold": "^1.0.1-rc.1",
+    "@webpack-cli/utils": "^1.0.1",
+    "@webpack-cli/webpack-scaffold": "^1.0.1",
     "colorette": "^1.2.1",
     "log-symbols": "^4.0.0",
     "mkdirp": "^1.0.4",
@@ -20,7 +23,7 @@
   },
   "peerDependencies": {
     "webpack": "4.x.x || 5.x.x",
-    "webpack-cli": "3.x.x || 4.x.x"
+    "webpack-cli": "4.x.x"
   },
   "devDependencies": {
     "@types/mkdirp": "^1.0.0",

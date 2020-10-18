@@ -1,5 +1,4 @@
 const { gray, bold, white, cyan, yellow } = require('colorette');
-const webpack = require('./Compiler');
 const ansiEscapes = require('ansi-escapes');
 const readline = require('readline');
 
@@ -96,7 +95,7 @@ const ENTER_KEY = '\n';
 const B_KEY = 'b';
 const C_KEY = 'c';
 
-module.exports = async function (config, outputOptions) {
+module.exports = async function (compiler, config, outputOptions) {
     const stdin = process.stdin;
     stdin.setEncoding('utf-8');
     stdin.setRawMode(true);
@@ -104,11 +103,8 @@ module.exports = async function (config, outputOptions) {
 
     outputOptions.interactive = false;
 
-    const webpackCompilation = await webpack({ options: config, outputOptions });
-    /* if(errors) {
-	Hngggg
-} */
-    state.push(webpackCompilation);
+    state.push(compiler);
+
     setupInteractive();
 
     const isExitCtrl = (key) => key.ctrl && key.name === 'c';
@@ -164,8 +160,7 @@ module.exports = async function (config, outputOptions) {
                 if (state.length) {
                     state.pop();
                 }
-                const webpackCompilation = await webpack({ options: config, outputOptions });
-                state.push(webpackCompilation);
+                state.push(compiler);
                 informActions();
                 isSub = true;
                 return;

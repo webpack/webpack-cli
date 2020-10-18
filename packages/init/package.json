@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/init",
-  "version": "1.0.1-rc.1",
+  "version": "1.0.1",
   "description": "init command for webpack-cli",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -8,9 +8,12 @@
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "lib"
+  ],
   "dependencies": {
-    "@webpack-cli/generators": "^1.0.1-rc.1",
-    "@webpack-cli/utils": "^1.0.1-rc.1"
+    "@webpack-cli/generators": "^1.0.1",
+    "@webpack-cli/utils": "^1.0.1"
   },
   "peerDependencies": {
     "webpack": "4.x.x || 5.x.x",

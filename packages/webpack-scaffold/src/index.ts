@@ -136,7 +136,6 @@ export function Confirm(self: Generator, name: string, message: string, defaultC
 }
 
 // TODO: to understand this type
-// eslint-disable-next-line
 export function AutoComplete(name: string, message: string, options: object = {}): any {
     return Object.assign(
         {

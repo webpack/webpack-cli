@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/generate-loader",
-  "version": "1.0.1-rc.1",
+  "version": "1.0.1",
   "description": "A scaffold for generating a loader",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -13,12 +13,16 @@
   },
   "keywords": [],
   "license": "MIT",
+  "files": [
+    "lib",
+    "templates"
+  ],
   "dependencies": {
-    "@webpack-cli/generators": "^1.0.1-rc.1",
+    "@webpack-cli/generators": "^1.0.1",
     "yeoman-environment": "^2.10.3"
   },
   "peerDependencies": {
-    "webpack-cli": "3.x.x || 4.x.x"
+    "webpack-cli": "4.x.x"
   },
   "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9"
 }

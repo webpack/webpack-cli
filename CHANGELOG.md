@@ -1,3 +1,35 @@
+# [4.0.0](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.0.0-rc.1...webpack-cli@4.0.0) (2020-10-10)
+
+### Bug Fixes
+
+-   add compilation lifecycle in watch instance ([#1903](https://github.com/webpack/webpack-cli/issues/1903)) ([02b6d21](https://github.com/webpack/webpack-cli/commit/02b6d21eaa20166a7ed37816de716b8fc22b756a))
+-   cleanup `package-utils` package ([#1822](https://github.com/webpack/webpack-cli/issues/1822)) ([fd5b92b](https://github.com/webpack/webpack-cli/commit/fd5b92b3cd40361daec5bf4486e455a41f4c9738))
+-   cli-executer supplies args further up ([#1904](https://github.com/webpack/webpack-cli/issues/1904)) ([097564a](https://github.com/webpack/webpack-cli/commit/097564a851b36b63e0a6bf88144997ef65aa057a))
+-   exit code for validation errors ([59f6303](https://github.com/webpack/webpack-cli/commit/59f63037fcbdbb8934b578b9adf5725bc4ae1235))
+-   exit process in case of schema errors ([71e89b4](https://github.com/webpack/webpack-cli/commit/71e89b4092d953ea587cc4f606451ab78cbcdb93))
+
+### Features
+
+-   assign config paths in build dependencies in cache config ([#1900](https://github.com/webpack/webpack-cli/issues/1900)) ([7e90f11](https://github.com/webpack/webpack-cli/commit/7e90f110b119f36ef9def4f66cf4e17ccf1438cd))
+
+# [4.0.0-rc.1](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.0.0-beta.8...webpack-cli@4.0.0-rc.1) (2020-10-06)
+
+### Bug Fixes
+
+-   cache issue ([#1862](https://github.com/webpack/webpack-cli/issues/1862)) ([305c188](https://github.com/webpack/webpack-cli/commit/305c18816ca6c4275c2755ae6b48d90a8cc85bd1))
+-   check webpack installation before running cli ([#1827](https://github.com/webpack/webpack-cli/issues/1827)) ([be509fa](https://github.com/webpack/webpack-cli/commit/be509fac9a03e202e062229484bb10af7876968f))
+-   defer setting default entry to core ([#1856](https://github.com/webpack/webpack-cli/issues/1856)) ([5da1f81](https://github.com/webpack/webpack-cli/commit/5da1f81ed101b024249c5cd4e043ec1397338782))
+-   log error if --config-name is used without multiple configs ([#1874](https://github.com/webpack/webpack-cli/issues/1874)) ([f653409](https://github.com/webpack/webpack-cli/commit/f653409e3468849970dab354f84c5213da01122d))
+-   mode behaviour ([#1824](https://github.com/webpack/webpack-cli/issues/1824)) ([9e9c70b](https://github.com/webpack/webpack-cli/commit/9e9c70bc1f30d90cebd91341e865abb46f9c269e))
+-   only set output path on passing flag ([#1855](https://github.com/webpack/webpack-cli/issues/1855)) ([2f36b9d](https://github.com/webpack/webpack-cli/commit/2f36b9d858faedaf3a6adca10a529d9837c0dd24))
+-   show warning if bail and watch are used together ([#1804](https://github.com/webpack/webpack-cli/issues/1804)) ([6140b24](https://github.com/webpack/webpack-cli/commit/6140b24d08990aa807070f105d46a92e18855c9e))
+-   warning should not result in non-zero exit code ([#1872](https://github.com/webpack/webpack-cli/issues/1872)) ([ae9539d](https://github.com/webpack/webpack-cli/commit/ae9539d20eab2172118f61f7a9ba7e26541e16a2))
+
+### Features
+
+-   add --analyze flag ([#1853](https://github.com/webpack/webpack-cli/issues/1853)) ([e6d210a](https://github.com/webpack/webpack-cli/commit/e6d210a66b899023b1f39bb33cce7a9b83a5b803))
+-   allow users to store stats as json to a file ([#1835](https://github.com/webpack/webpack-cli/issues/1835)) ([3907517](https://github.com/webpack/webpack-cli/commit/3907517b6afff46ddab51e32ada0357fc9763117))
+
 <a name="4.0.0-beta.9"></a>
 
 # 4.0.0-beta.9 (2020-09-19)

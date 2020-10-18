@@ -13,7 +13,7 @@ const { defaultCommands } = require('./commands');
  * @param {boolean} argsOnly false if all of process.argv has been provided, true if
  * args is only a subset of process.argv that removes the first couple elements
  */
-function argParser(options, args, argsOnly = false, name = '') {
+const argParser = (options, args, argsOnly = false, name = '') => {
     const parser = new commander.Command();
     // Set parser name
     parser.name(name);
@@ -28,8 +28,10 @@ function argParser(options, args, argsOnly = false, name = '') {
             .allowUnknownOption(true)
             .action(async () => {
                 const cliArgs = args.slice(args.indexOf(cmd.name) + 1 || args.indexOf(cmd.alias) + 1);
-                return await require('../commands/resolveCommand')(defaultCommands[cmd.name], ...cliArgs);
+
+                return await require('./resolve-command')(defaultCommands[cmd.name], ...cliArgs);
             });
+
         return parser;
     }, parser);
 
@@ -89,6 +91,28 @@ function argParser(options, args, argsOnly = false, name = '') {
             if (option.multiple) {
                 // a multiple argument parsing function
                 const multiArg = (value, previous = []) => previous.concat([value]);
+                parserInstance.option(flagsWithType, option.description, multiArg, option.defaultValue).action(() => {});
+            } else if (option.multipleType) {
+                // for options which accept multiple types like env
+                // so you can do `--env platform=staging --env production`
+                // { platform: "staging", production: true }
+                const multiArg = (value, previous = {}) => {
+                    // this ensures we're only splitting by the first `=`
+                    const [allKeys, val] = value.split(/=(.+)/, 2);
+                    const splitKeys = allKeys.split(/\.(?!$)/);
+                    let prevRef = previous;
+                    splitKeys.forEach((someKey, index) => {
+                        if (!prevRef[someKey]) prevRef[someKey] = {};
+                        if ('string' === typeof prevRef[someKey]) {
+                            prevRef[someKey] = {};
+                        }
+                        if (index === splitKeys.length - 1) {
+                            prevRef[someKey] = val || true;
+                        }
+                        prevRef = prevRef[someKey];
+                    });
+                    return previous;
+                };
                 parserInstance.option(flagsWithType, option.description, multiArg, option.defaultValue).action(() => {});
             } else {
                 // Prevent default behavior for standalone options
@@ -155,6 +179,6 @@ function argParser(options, args, argsOnly = false, name = '') {
         unknownArgs,
         opts,
     };
-}
+};
 
 module.exports = argParser;

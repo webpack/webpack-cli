@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/webpack-scaffold",
-  "version": "1.0.1-rc.1",
+  "version": "1.0.1",
   "description": "Utility files for webpack-scaffold",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -8,6 +8,9 @@
     "access": "public"
   },
   "license": "MIT",
+  "files": [
+    "lib"
+  ],
   "dependencies": {
     "jscodeshift": "^0.7.0",
     "yeoman-generator": "^4.7.2"
