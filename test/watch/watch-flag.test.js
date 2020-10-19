@@ -1,5 +1,6 @@
 'use strict';
 
+const stripAnsi = require('strip-ansi');
 const { runAndGetWatchProc, isWebpack5 } = require('../utils/test-utils');
 const { writeFileSync } = require('fs');
 const { resolve } = require('path');
@@ -12,7 +13,7 @@ describe('--watch flag', () => {
         const proc = runAndGetWatchProc(__dirname, ['--watch'], false, '', true);
         let semaphore = 0;
         proc.stdout.on('data', (chunk) => {
-            const data = chunk.toString();
+            const data = stripAnsi(chunk.toString());
 
             if (semaphore === 0 && data.includes('watching files for updates')) {
                 process.nextTick(() => {
@@ -47,7 +48,7 @@ describe('--watch flag', () => {
         const proc = runAndGetWatchProc(__dirname, ['--watch'], false, '', true);
         let semaphore = 0;
         proc.stdout.on('data', (chunk) => {
-            const data = chunk.toString();
+            const data = stripAnsi(chunk.toString());
 
             if (semaphore === 0 && data.includes('Compilation starting')) {
                 semaphore++;
