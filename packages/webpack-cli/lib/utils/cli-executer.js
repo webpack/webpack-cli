@@ -18,9 +18,9 @@ const prompter = async () => {
     });
 
     const selections = await typePrompt.run();
-
     const boolArgs = [];
     const questions = [];
+
     selections.forEach((selection) => {
         const options = cliArgs.find((flag) => {
             return flag.name === selection.slice(2);
@@ -44,6 +44,7 @@ const prompter = async () => {
     // Create promise chain to force synchronous prompt of question
     for await (const question of questions) {
         const flagArgs = await question.run();
+
         args.push(...flagArgs);
     }
 
