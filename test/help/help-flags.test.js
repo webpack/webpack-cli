@@ -21,6 +21,14 @@ describe('commands help', () => {
         expect(stderr).toHaveLength(0);
     });
 
+    it('should show help for --mode', () => {
+        const { stdout, stderr } = run(__dirname, ['--mode', '--help'], false);
+        expect(stdout).not.toContain(helpHeader);
+        expect(stdout).toContain('webpack --mode <development | production | none>');
+        expect(stdout).toContain('Defines the mode to pass to webpack');
+        expect(stderr).toHaveLength(0);
+    });
+
     it('gives precedence to earlier flag in case of multiple flags', () => {
         const { stdout, stderr } = run(__dirname, ['--help', '--entry', '--merge'], false);
         expect(stdout).not.toContain(helpHeader);
