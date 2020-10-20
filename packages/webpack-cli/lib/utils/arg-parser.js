@@ -46,7 +46,7 @@ const argParser = (options, args, argsOnly = false, name = '') => {
     }
 
     // Use Customized version
-    if (args.includes('--version') || args.includes('vresion') || args.includes('-v')) {
+    if (args.includes('--version') || args.includes('version') || args.includes('-v')) {
         runVersion(args);
         process.exit(0);
     }
