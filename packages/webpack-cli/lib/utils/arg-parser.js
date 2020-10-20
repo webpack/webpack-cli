@@ -38,11 +38,11 @@ const argParser = (options, args, argsOnly = false, name = '') => {
     // Prevent default behavior
     parser.on('command:*', () => {});
 
-    // Use customized help output if available
-    parser.on('option:help', () => {
+    // Use customized help output
+    if (args.includes('--help')) {
         runHelp(args);
         process.exit(0);
-    });
+    }
 
     // Allow execution if unknown arguments are present
     parser.allowUnknownOption(true);
