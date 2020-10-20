@@ -2,6 +2,7 @@ const commander = require('commander');
 const logger = require('./logger');
 const { commands } = require('./cli-flags');
 const runHelp = require('../groups/runHelp');
+const runVersion = require('../groups/runVersion');
 const { defaultCommands } = require('./commands');
 
 /**
@@ -39,8 +40,14 @@ const argParser = (options, args, argsOnly = false, name = '') => {
     parser.on('command:*', () => {});
 
     // Use customized help output
-    if (args.includes('--help')) {
+    if (args.includes('--help') || args.includes('help')) {
         runHelp(args);
+        process.exit(0);
+    }
+
+    // Use Customized version
+    if (args.includes('--version') || args.includes('vresion') || args.includes('-v')) {
+        runVersion(args);
         process.exit(0);
     }
 
