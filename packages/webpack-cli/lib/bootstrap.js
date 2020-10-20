@@ -10,7 +10,6 @@ const runCLI = async (cliArgs) => {
     const parsedArgs = argParser(core, cliArgs, true, process.title);
 
     const commandIsUsed = isCommandUsed(cliArgs);
-    const parsedArgs = parseArgs(cliArgs);
     if (commandIsUsed) {
         return;
     }
