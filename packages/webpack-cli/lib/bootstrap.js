@@ -1,7 +1,5 @@
 const WebpackCLI = require('./webpack-cli');
 const { core } = require('./utils/cli-flags');
-const versionRunner = require('./groups/runVersion');
-const helpRunner = require('./groups/runHelp');
 const logger = require('./utils/logger');
 const { isCommandUsed } = require('./utils/arg-utils');
 const argParser = require('./utils/arg-parser');
@@ -11,18 +9,7 @@ process.title = 'webpack-cli';
 const runCLI = async (cliArgs) => {
     const parsedArgs = argParser(core, cliArgs, true, process.title);
 
-    if (parsedArgs.unknownArgs.includes('help') || parsedArgs.opts.help) {
-        helpRunner(cliArgs);
-        process.exit(0);
-    }
-
     const commandIsUsed = isCommandUsed(cliArgs);
-
-    if (parsedArgs.unknownArgs.includes('version') || parsedArgs.opts.version) {
-        versionRunner(cliArgs, commandIsUsed);
-        process.exit(0);
-    }
-
     if (commandIsUsed) {
         return;
     }
