@@ -1,7 +1,11 @@
 'use strict';
 
 const { run, isWindows } = require('../utils/test-utils');
-const { existsSync, writeFileSync, unlinkSync } = require('fs');
+const {
+    existsSync,
+    // writeFileSync,
+    // unlinkSync
+} = require('fs');
 const { resolve } = require('path');
 
 describe('cache related flags from core', () => {
@@ -121,25 +125,25 @@ describe('cache related flags from core', () => {
         expect(exitCode).toEqual(0);
     });
 
-    it('should invalidate cache when config changes', () => {
-        // TODO: Fix on windows
-        if (isWindows) return;
-        // Creating a temporary webpack config
-        writeFileSync(resolve(__dirname, './webpack.test.config.js'), 'module.exports = {mode: "development"}');
-        const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.test.config.js']);
-        expect(stderr).toBeFalsy();
-        expect(stdout).not.toContain('[cached]');
+    // it('should invalidate cache when config changes', () => {
+    //     // TODO: Fix on windows
+    //     if (isWindows) return;
+    //     // Creating a temporary webpack config
+    //     writeFileSync(resolve(__dirname, './webpack.test.config.js'), 'module.exports = {mode: "development"}');
+    //     const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.test.config.js']);
+    //     expect(stderr).toBeFalsy();
+    //     expect(stdout).not.toContain('[cached]');
 
-        // Running again should use the cache
-        const newRun = run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.test.config.js']);
-        expect(newRun.stdout).toContain('[cached]');
+    //     // Running again should use the cache
+    //     const newRun = run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.test.config.js']);
+    //     expect(newRun.stdout).toContain('[cached]');
 
-        // Change config to invalidate cache
-        writeFileSync(resolve(__dirname, './webpack.test.config.js'), 'module.exports = {mode: "production"}');
+    //     // Change config to invalidate cache
+    //     writeFileSync(resolve(__dirname, './webpack.test.config.js'), 'module.exports = {mode: "production"}');
 
-        const newRun2 = run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.test.config.js']);
-        unlinkSync(resolve(__dirname, './webpack.test.config.js'));
-        expect(newRun2).not.toContain('[cached]');
-        expect(newRun2.exitCode).toEqual(0);
-    });
+    //     const newRun2 = run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.test.config.js']);
+    //     unlinkSync(resolve(__dirname, './webpack.test.config.js'));
+    //     expect(newRun2).not.toContain('[cached]');
+    //     expect(newRun2.exitCode).toEqual(0);
+    // });
 });

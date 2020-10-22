@@ -212,25 +212,28 @@ class WebpackCLI extends GroupHelper {
         return this.runOptionGroups(args);
     }
 
-    createCompiler(options) {
+    handleError(error) {
+        // https://github.com/webpack/webpack/blob/master/lib/index.js#L267
+        // https://github.com/webpack/webpack/blob/v4.44.2/lib/webpack.js#L90
+        const ValidationError = webpack.ValidationError ? webpack.ValidationError : webpack.WebpackOptionsValidationError;
+
+        // In case of schema errors print and exit process
+        // For webpack@4 and webpack@5
+        if (error instanceof ValidationError) {
+            logger.error(error.message);
+        } else {
+            logger.error(error);
+        }
+    }
+
+    createCompiler(options, callback) {
         let compiler;
 
         try {
-            compiler = webpack(options);
+            compiler = webpack(options, callback);
         } catch (error) {
-            // https://github.com/webpack/webpack/blob/master/lib/index.js#L267
-            // https://github.com/webpack/webpack/blob/v4.44.2/lib/webpack.js#L90
-            const ValidationError = webpack.ValidationError ? webpack.ValidationError : webpack.WebpackOptionsValidationError;
-
-            // In case of schema errors print and exit process
-            // For webpack@4 and webpack@5
-            if (error instanceof ValidationError) {
-                logger.error(error.message);
-            } else {
-                logger.error(error);
-            }
-
-            process.exit(2);
+            this.handleError(error);
+            process.exit(1);
         }
 
         return compiler;
@@ -245,53 +248,73 @@ class WebpackCLI extends GroupHelper {
     async run(args, cliOptions) {
         await this.processArgs(args, cliOptions);
 
-        const compiler = this.createCompiler(this.compilerConfiguration);
+        let options = this.compilerConfiguration;
+        let outputOptions = this.outputConfiguration;
 
-        const options = this.compilerConfiguration;
-        const outputOptions = this.outputConfiguration;
+        let isWatchMode = false;
 
-        if (outputOptions.interactive) {
-            const interactive = require('./utils/interactive');
-
-            return interactive(compiler, options, outputOptions);
+        if (Array.isArray(options)) {
+            isWatchMode = options.some((options) => options.watch);
+        } else {
+            isWatchMode = options.watch;
         }
 
-        const compilers = compiler.compilers ? compiler.compilers : [compiler];
-        const isWatchMode = Boolean(compilers.find((compiler) => compiler.options.watch));
+        const PluginName = 'webpack-cli';
+
+        class WebpackCLIPlugin {
+            async apply(compiler) {
+                const compilers = compiler.compilers ? compiler.compilers : [compiler];
+
+                for (const compiler of compilers) {
+                    if (outputOptions.progress) {
+                        const { ProgressPlugin } = webpack;
+
+                        let progressPluginExists;
+
+                        if (compiler.options.plugins) {
+                            progressPluginExists = Boolean(compiler.options.plugins.find((e) => e instanceof ProgressPlugin));
+                        }
+
+                        if (!progressPluginExists) {
+                            new ProgressPlugin().apply(compiler);
+                        }
+                    }
+                }
+
+                compiler.hooks.watchRun.tap(PluginName, (compilation) => {
+                    if (compilation.options.bail && isWatchMode) {
+                        logger.warn('You are using "bail" with "watch". "bail" will still exit webpack when the first error is found.');
+                    }
+
+                    logger.success(`Compilation${compilation.name ? `${compilation.name}` : ''} starting...`);
+                });
+                compiler.hooks.done.tap(PluginName, (compilation) => {
+                    logger.success(`Compilation${compilation.name ? `${compilation.name}` : ''} finished`);
+                });
+            }
+        }
+
         const isRawOutput = typeof outputOptions.json === 'undefined';
 
         if (isRawOutput) {
-            for (const compiler of compilers) {
-                if (outputOptions.progress) {
-                    const { ProgressPlugin } = webpack;
+            const webpackCLIPlugin = new WebpackCLIPlugin();
 
-                    let progressPluginExists;
-
-                    if (compiler.options.plugins) {
-                        progressPluginExists = Boolean(compiler.options.plugins.find((e) => e instanceof ProgressPlugin));
-                    }
-
-                    if (!progressPluginExists) {
-                        new ProgressPlugin().apply(compiler);
-                    }
+            const addPlugin = (options) => {
+                if (!options.plugins) {
+                    options.plugins = [];
                 }
+                options.plugins.unshift(webpackCLIPlugin);
+            };
+            if (Array.isArray(options)) {
+                options.forEach(addPlugin);
+            } else {
+                addPlugin(options);
             }
-
-            compiler.hooks.watchRun.tap('watchInfo', (compilation) => {
-                if (compilation.options.bail && isWatchMode) {
-                    logger.warn('You are using "bail" with "watch". "bail" will still exit webpack when the first error is found.');
-                }
-
-                logger.success(`Compilation${compilation.name ? `${compilation.name}` : ''} starting...`);
-            });
-            compiler.hooks.done.tap('watchInfo', (compilation) => {
-                logger.success(`Compilation${compilation.name ? `${compilation.name}` : ''} finished`);
-            });
         }
 
         const callback = (error, stats) => {
             if (error) {
-                logger.error(error);
+                this.handleError(error);
                 process.exit(1);
             }
 
@@ -341,40 +364,15 @@ class WebpackCLI extends GroupHelper {
             }
         };
 
-        if (isWatchMode) {
-            const watchOptions = (compiler.options && compiler.options.watchOptions) || {};
+        const compiler = this.createCompiler(options, callback);
 
-            if (watchOptions.stdin) {
-                process.stdin.on('end', function () {
-                    process.exit();
-                });
-                process.stdin.resume();
-            }
+        if (compiler && outputOptions.interactive) {
+            const interactive = require('./utils/interactive');
 
-            return new Promise((resolve) => {
-                compiler.watch(watchOptions, (error, stats) => {
-                    callback(error, stats);
-
-                    resolve();
-                });
-            });
-        } else {
-            return new Promise((resolve) => {
-                compiler.run((error, stats) => {
-                    if (compiler.close) {
-                        compiler.close(() => {
-                            callback(error, stats);
-
-                            resolve();
-                        });
-                    } else {
-                        callback(error, stats);
-
-                        resolve();
-                    }
-                });
-            });
+            interactive(compiler, options, outputOptions);
         }
+
+        return Promise.resolve();
     }
 }
 

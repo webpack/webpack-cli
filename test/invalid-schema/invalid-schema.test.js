@@ -6,7 +6,7 @@ describe('invalid schema', () => {
         const { stderr, exitCode } = run(__dirname, ['--config', './webpack.config.mock.js']);
         expect(stderr).toContain('Invalid configuration object');
         if (!isWindows) {
-            expect(exitCode).toEqual(2);
+            expect(exitCode).toEqual(1);
         }
     });
 
@@ -14,7 +14,7 @@ describe('invalid schema', () => {
         const { stderr, exitCode } = run(__dirname, ['--mode', 'Yukihira']);
         expect(stderr).toContain('Invalid configuration object');
         if (!isWindows) {
-            expect(exitCode).toEqual(2);
+            expect(exitCode).toEqual(1);
         }
     });
 });

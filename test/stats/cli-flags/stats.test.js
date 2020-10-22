@@ -45,7 +45,7 @@ describe('stats flag', () => {
         }
         // TODO - Fix exitcode check on windows
         if (!isWindows) {
-            expect(exitCode).toEqual(2);
+            expect(exitCode).toEqual(1);
         }
     });
 });

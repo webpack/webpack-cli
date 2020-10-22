@@ -9,6 +9,6 @@ describe('invalid export', () => {
         expect(stderr).toBeTruthy();
         expect(stderr).toContain('Invalid configuration object');
 
-        expect(exitCode).toBe(2);
+        expect(exitCode).toBe(1);
     });
 });
