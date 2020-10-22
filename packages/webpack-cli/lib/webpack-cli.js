@@ -10,6 +10,7 @@ const { toKebabCase } = require('./utils/helpers');
 const assignFlagDefaults = require('./utils/flag-defaults');
 const { writeFileSync } = require('fs');
 const { options: coloretteOptions } = require('colorette');
+const WebpackCLIPlugin = require('./plugins/WebpackCLIPlugin');
 
 // CLI arg resolvers
 const handleConfigResolution = require('./groups/ConfigGroup');
@@ -248,56 +249,16 @@ class WebpackCLI extends GroupHelper {
     async run(args, cliOptions) {
         await this.processArgs(args, cliOptions);
 
+        let compiler;
         let options = this.compilerConfiguration;
         let outputOptions = this.outputConfiguration;
-
-        let isWatchMode = false;
-
-        if (Array.isArray(options)) {
-            isWatchMode = options.some((options) => options.watch);
-        } else {
-            isWatchMode = options.watch;
-        }
-
-        const PluginName = 'webpack-cli';
-
-        class WebpackCLIPlugin {
-            async apply(compiler) {
-                const compilers = compiler.compilers ? compiler.compilers : [compiler];
-
-                for (const compiler of compilers) {
-                    if (outputOptions.progress) {
-                        const { ProgressPlugin } = webpack;
-
-                        let progressPluginExists;
-
-                        if (compiler.options.plugins) {
-                            progressPluginExists = Boolean(compiler.options.plugins.find((e) => e instanceof ProgressPlugin));
-                        }
-
-                        if (!progressPluginExists) {
-                            new ProgressPlugin().apply(compiler);
-                        }
-                    }
-                }
-
-                compiler.hooks.watchRun.tap(PluginName, (compilation) => {
-                    if (compilation.options.bail && isWatchMode) {
-                        logger.warn('You are using "bail" with "watch". "bail" will still exit webpack when the first error is found.');
-                    }
-
-                    logger.success(`Compilation${compilation.name ? `${compilation.name}` : ''} starting...`);
-                });
-                compiler.hooks.done.tap(PluginName, (compilation) => {
-                    logger.success(`Compilation${compilation.name ? `${compilation.name}` : ''} finished`);
-                });
-            }
-        }
 
         const isRawOutput = typeof outputOptions.json === 'undefined';
 
         if (isRawOutput) {
-            const webpackCLIPlugin = new WebpackCLIPlugin();
+            const webpackCLIPlugin = new WebpackCLIPlugin({
+                progress: outputOptions.progress,
+            });
 
             const addPlugin = (options) => {
                 if (!options.plugins) {
@@ -359,12 +320,20 @@ class WebpackCLI extends GroupHelper {
                 logger.raw(`${stats.toString(foundStats)}`);
             }
 
+            let isWatchMode = false;
+
+            if (Array.isArray(options)) {
+                isWatchMode = options.some((options) => options.watch);
+            } else {
+                isWatchMode = options.watch;
+            }
+
             if (isWatchMode) {
                 logger.success('watching files for updates...');
             }
         };
 
-        const compiler = this.createCompiler(options, callback);
+        compiler = this.createCompiler(options, callback);
 
         if (compiler && outputOptions.interactive) {
             const interactive = require('./utils/interactive');
