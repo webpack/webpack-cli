@@ -35,8 +35,15 @@ class WebpackCLIPlugin {
 
             logger.success(`Compilation${compilation.name ? `${compilation.name}` : ''} starting...`);
         });
+
         compiler.hooks.done.tap(PluginName, (compilation) => {
             logger.success(`Compilation${compilation.name ? `${compilation.name}` : ''} finished`);
+
+            process.nextTick(() => {
+                if (compiler.watchMode) {
+                    logger.success('watching files for updates...');
+                }
+            });
         });
     }
 }

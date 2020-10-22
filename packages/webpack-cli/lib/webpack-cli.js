@@ -250,16 +250,9 @@ class WebpackCLI extends GroupHelper {
         await this.processArgs(args, cliOptions);
 
         let compiler;
+
         let options = this.compilerConfiguration;
         let outputOptions = this.outputConfiguration;
-
-        let isWatchMode;
-
-        if (Array.isArray(options)) {
-            isWatchMode = options.some((options) => options.watch);
-        } else {
-            isWatchMode = options.watch;
-        }
 
         const isRawOutput = typeof outputOptions.json === 'undefined';
 
@@ -326,10 +319,6 @@ class WebpackCLI extends GroupHelper {
                 }
             } else {
                 logger.raw(`${stats.toString(foundStats)}`);
-            }
-
-            if (isWatchMode) {
-                logger.success('watching files for updates...');
             }
         };
 
