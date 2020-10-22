@@ -13,7 +13,7 @@ class WebpackCLIPlugin {
 
         for (const compiler of compilers) {
             if (this.options.progress) {
-                const { ProgressPlugin } = webpack;
+                const { ProgressPlugin } = compiler.webpack || webpack;
 
                 let progressPluginExists;
 
