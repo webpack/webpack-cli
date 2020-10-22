@@ -9,6 +9,6 @@ describe('error', () => {
         expect(stderr).toContain('Error: test');
         expect(stderr).toMatch(/at .+ (.+)/);
         expect(stdout).toBeFalsy();
-        expect(exitCode).toBe(1);
+        expect(exitCode).toBe(2);
     });
 });

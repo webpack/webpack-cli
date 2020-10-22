@@ -234,7 +234,7 @@ class WebpackCLI extends GroupHelper {
             compiler = webpack(options, callback);
         } catch (error) {
             this.handleError(error);
-            process.exit(1);
+            process.exit(2);
         }
 
         return compiler;
@@ -276,7 +276,7 @@ class WebpackCLI extends GroupHelper {
         const callback = (error, stats) => {
             if (error) {
                 this.handleError(error);
-                process.exit(1);
+                process.exit(2);
             }
 
             if (stats.hasErrors()) {
