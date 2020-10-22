@@ -253,6 +253,14 @@ class WebpackCLI extends GroupHelper {
         let options = this.compilerConfiguration;
         let outputOptions = this.outputConfiguration;
 
+        let isWatchMode;
+
+        if (Array.isArray(options)) {
+            isWatchMode = options.some((options) => options.watch);
+        } else {
+            isWatchMode = options.watch;
+        }
+
         const isRawOutput = typeof outputOptions.json === 'undefined';
 
         if (isRawOutput) {
@@ -318,14 +326,6 @@ class WebpackCLI extends GroupHelper {
                 }
             } else {
                 logger.raw(`${stats.toString(foundStats)}`);
-            }
-
-            let isWatchMode = false;
-
-            if (Array.isArray(options)) {
-                isWatchMode = options.some((options) => options.watch);
-            } else {
-                isWatchMode = options.watch;
             }
 
             if (isWatchMode) {
