@@ -4,3 +4,4 @@ test/**/dist/
 test/**/bin/
 test/**/binary/
 test/**/index.js
+test/config/error/syntax-error.js
