@@ -11,6 +11,7 @@ describe('--analyze flag', () => {
 
             if (data.includes('Webpack Bundle Analyzer is started at')) {
                 expect(data).toContain('Webpack Bundle Analyzer is started at');
+
                 proc.kill();
                 done();
             }

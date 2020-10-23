@@ -8,8 +8,6 @@ const { resolve } = require('path');
 
 describe('cache related flags from core', () => {
     beforeEach((done) => {
-        if (isWindows) return;
-
         rimraf(path.join(__dirname, '../../node_modules/.cache/webpack/*'), () => {
             done();
         });
