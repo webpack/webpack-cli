@@ -8,15 +8,12 @@ describe('--analyze flag', () => {
 
         proc.stdout.on('data', (chunk) => {
             const data = chunk.toString();
-            // console.log(data)
 
             if (data.includes('Webpack Bundle Analyzer is started at')) {
                 expect(data).toContain('Webpack Bundle Analyzer is started at');
+                proc.kill();
+                done();
             }
-            // FIXME
-
-            proc.kill();
-            done();
         });
     });
 });
