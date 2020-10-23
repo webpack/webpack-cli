@@ -299,9 +299,11 @@ class WebpackCLI extends GroupHelper {
                 return stats;
             };
 
+            const getStatsOptionsFromCompiler = (compiler) => getStatsOptions(compiler.options ? compiler.options.stats : undefined);
+
             const foundStats = compiler.compilers
-                ? { children: compiler.compilers.map((compiler) => getStatsOptions(compiler.options.stats)) }
-                : getStatsOptions(compiler.options.stats);
+                ? { children: compiler.compilers.map(getStatsOptionsFromCompiler) }
+                : getStatsOptionsFromCompiler(compiler);
 
             if (outputOptions.json === true) {
                 process.stdout.write(JSON.stringify(stats.toJson(foundStats), null, 2) + '\n');
