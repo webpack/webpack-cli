@@ -9,7 +9,7 @@ class WebpackCLIPlugin {
         this.options = options;
     }
     async apply(compiler) {
-        const compilers = compiler.compilers ? compiler.compilers : [compiler];
+        const compilers = compiler.compilers || [compiler];
 
         for (const compiler of compilers) {
             if (this.options.progress) {
@@ -27,17 +27,19 @@ class WebpackCLIPlugin {
             }
         }
 
+        const compilationName = (compilation) => (compilation.name ? ` ${compilation.name}` : '');
+
         compiler.hooks.watchRun.tap(PluginName, (compilation) => {
             const { bail, watch } = compilation.options;
             if (bail && watch) {
                 logger.warn('You are using "bail" with "watch". "bail" will still exit webpack when the first error is found.');
             }
 
-            logger.success(`Compilation${compilation.name ? `${compilation.name}` : ''} starting...`);
+            logger.success(`Compilation${compilationName(compilation)} starting...`);
         });
 
         compiler.hooks.done.tap(PluginName, (compilation) => {
-            logger.success(`Compilation${compilation.name ? `${compilation.name}` : ''} finished`);
+            logger.success(`Compilation${compilationName(compilation)} finished`);
 
             process.nextTick(() => {
                 if (compiler.watchMode) {
