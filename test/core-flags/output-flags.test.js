@@ -91,7 +91,6 @@ describe('output config related flag', () => {
                 } else if (flag.name === 'output-enabled-library-types') {
                     stdout = run(__dirname, [`--${flag.name}`, 'var']).stdout;
 
-                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: [ 'var' ]`);
                 } else if (flag.name === 'output-path') {
                     expect(stdout).toContain('test');
