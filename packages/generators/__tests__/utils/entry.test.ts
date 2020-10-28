@@ -4,7 +4,6 @@ jest.setMock('@webpack-cli/webpack-scaffold', {
 });
 
 import { Input, InputValidate } from '@webpack-cli/webpack-scaffold';
-// eslint-disable-next-line node/no-missing-import
 import entry from '../../lib/utils/entry';
 
 describe('entry', () => {

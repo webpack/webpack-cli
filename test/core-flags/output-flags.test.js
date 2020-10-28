@@ -64,10 +64,6 @@ describe('output config related flag', () => {
                     stdout = run(__dirname, [`--${flag.name}`, 'commonjs']).stdout;
 
                     expect(stdout).toContain(`${propName}: 'commonjs'`);
-                } else if (flag.name === 'output-enabled-library-types') {
-                    stdout = run(__dirname, [`--${flag.name}`, 'global']).stdout;
-
-                    expect(stdout).toContain(`${propName}: [ 'global' ]`);
                 } else if (flag.name === 'output-chunk-loading') {
                     stdout = run(__dirname, [`--${flag.name}`, 'jsonp']).stdout;
 
@@ -102,12 +98,6 @@ describe('output config related flag', () => {
                 } else if (flag.name === 'output-worker-chunk-loading') {
                     stdout = run(__dirname, [`--${flag.name}`, 'async-node']).stdout;
                     expect(stdout).toContain(`${propName}: 'async-node'`);
-                } else if (flag.name === 'output-worker-chunk-loading') {
-                    stdout = run(__dirname, [`--${flag.name}`, 'async-node']).stdout;
-                    expect(stdout).toContain(`${propName}: 'async-node'`);
-                } else if (flag.name === 'output-chunk-format') {
-                    stdout = run(__dirname, [`--${flag.name}`, 'commonjs']).stdout;
-                    expect(stdout).toContain(`${propName}: 'commonjs'`);
                 } else if (flag.name.includes('wasm')) {
                     stdout = run(__dirname, [`--${flag.name}`, 'async-node']).stdout;
                     expect(stdout).toContain(`${propName}: 'async-node'`);
