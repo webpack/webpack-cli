@@ -2,7 +2,7 @@
 jest.setMock('webpack-cli/lib/utils/get-package-manager', {
     getPackageManager: jest.fn(),
 });
-// eslint-disable-next-line node/no-missing-import
+
 import { getPathToGlobalPackages } from '../lib/global-packages-path';
 import { getPackageManager } from 'webpack-cli/lib/utils/get-package-manager';
 jest.mock('execa');

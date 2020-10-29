@@ -1,6 +1,4 @@
-// eslint-disable-next-line node/no-missing-import
 import style, { StylingType } from '../../lib/utils/styleSupport';
-// eslint-disable-next-line node/no-missing-import
 import { CustomGenerator } from '../../lib/types';
 
 // TODO: enable after jest release

@@ -62,6 +62,8 @@ describe('optimization config related flag', () => {
                     expect(stdout).toContain(`usedExports: 'global'`);
                 } else if (flag.name === 'optimization-split-chunks-default-size-types') {
                     expect(stdout).toContain(`defaultSizeTypes: [Array]`);
+                } else if (flag.name === 'optimization-side-effects') {
+                    expect(stdout).toContain(`${propName}: 'flag'`);
                 } else {
                     expect(stdout).toContain(`${propName}: 'named'`);
                 }
