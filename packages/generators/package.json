@@ -25,7 +25,6 @@
     "webpack-cli": "4.x.x"
   },
   "devDependencies": {
-    "@types/mkdirp": "^1.0.1",
     "@types/yeoman-assert": "^3.1.1",
     "@types/yeoman-generator": "^4.11.3",
     "@types/yeoman-test": "^2.0.5",
