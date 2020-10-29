@@ -21,6 +21,14 @@ describe('progress flag', () => {
         expect(stdout).toContain('main.js');
     });
 
+    it('should not support invalid value', () => {
+        const { stderr, stdout, exitCode } = run(__dirname, ['--progress=unknown']);
+
+        expect(exitCode).toBe(2);
+        expect(stderr).toContain('[webpack-cli] Invalid unknown value for the profile option. Allowed value is profile.');
+        expect(stdout).toBeFalsy();
+    });
+
     it('should not add duplicate plugins', () => {
         const { stderr, stdout, exitCode } = run(__dirname, ['-c', 'webpack.progress.config.js', '--progress']);
 
