@@ -18,7 +18,6 @@
     "@webpack-cli/webpack-scaffold": "^1.0.2",
     "colorette": "^1.2.1",
     "log-symbols": "^4.0.0",
-    "mkdirp": "^1.0.4",
     "yeoman-generator": "^4.12.0"
   },
   "peerDependencies": {
@@ -26,10 +25,10 @@
     "webpack-cli": "4.x.x"
   },
   "devDependencies": {
-    "@types/mkdirp": "^1.0.0",
+    "@types/mkdirp": "^1.0.1",
     "@types/yeoman-assert": "^3.1.1",
-    "@types/yeoman-generator": "^4.11.2",
-    "@types/yeoman-test": "^2.0.3",
+    "@types/yeoman-generator": "^4.11.3",
+    "@types/yeoman-test": "^2.0.5",
     "rimraf": "^3.0.2",
     "yeoman-assert": "^3.1.1",
     "yeoman-test": "^2.3.0"
