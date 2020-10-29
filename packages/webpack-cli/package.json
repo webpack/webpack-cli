@@ -32,13 +32,13 @@
     "ansi-escapes": "^4.3.1",
     "colorette": "^1.2.1",
     "command-line-usage": "^6.1.0",
-    "commander": "^6.0.0",
-    "enquirer": "^2.3.4",
-    "execa": "^4.0.0",
+    "commander": "^6.2.0",
+    "enquirer": "^2.3.6",
+    "execa": "^4.1.0",
     "import-local": "^3.0.2",
-    "interpret": "^2.0.0",
+    "interpret": "^2.2.0",
     "rechoir": "^0.7.0",
-    "v8-compile-cache": "^2.1.0",
+    "v8-compile-cache": "^2.2.0",
     "webpack-merge": "^4.2.2"
   },
   "peerDependencies": {
