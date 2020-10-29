@@ -8,6 +8,7 @@ class WebpackCLIPlugin {
     constructor(options) {
         this.options = options;
     }
+
     async apply(compiler) {
         const compilers = compiler.compilers || [compiler];
 
@@ -18,11 +19,13 @@ class WebpackCLIPlugin {
                 let progressPluginExists;
 
                 if (compiler.options.plugins) {
-                    progressPluginExists = Boolean(compiler.options.plugins.find((e) => e instanceof ProgressPlugin));
+                    progressPluginExists = Boolean(compiler.options.plugins.find((plugin) => plugin instanceof ProgressPlugin));
                 }
 
                 if (!progressPluginExists) {
-                    new ProgressPlugin().apply(compiler);
+                    const isProfile = this.options.progress === 'profile';
+
+                    new ProgressPlugin({ profile: isProfile }).apply(compiler);
                 }
             }
         }
