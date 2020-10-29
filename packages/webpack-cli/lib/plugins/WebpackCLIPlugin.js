@@ -24,7 +24,7 @@ class WebpackCLIPlugin {
 
                 if (!progressPluginExists) {
                     if (typeof this.options.progress === 'string' && this.options.progress !== 'profile') {
-                        logger.error(`Invalid ${this.options.progress} value for the profile option. Allowed value is profile.`);
+                        logger.error(`Invalid ${this.options.progress} value for the progress option. Allowed value is profile.`);
                         process.exit(2);
                     }
 
