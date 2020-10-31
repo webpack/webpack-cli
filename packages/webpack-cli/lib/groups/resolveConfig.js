@@ -156,6 +156,8 @@ const finalize = async (moduleObj, args) => {
     const isMultiCompilerMode = Array.isArray(config);
     const rawConfigs = isMultiCompilerMode ? config : [config];
 
+    let isFunctionalConfig = false;
+
     let configs = await Promise.all(
         rawConfigs.map(async (rawConfig) => {
             const isPromise = typeof rawConfig.then === 'function';
@@ -166,6 +168,7 @@ const finalize = async (moduleObj, args) => {
 
             // `Promise` may return `Function`
             if (typeof rawConfig === 'function') {
+                isFunctionalConfig = true;
                 // when config is a function, pass the env from args to the config function
                 rawConfig = await rawConfig(env, args);
             }
@@ -176,8 +179,9 @@ const finalize = async (moduleObj, args) => {
 
     if (configName) {
         const foundConfigNames = [];
+        const configsToFilter = isFunctionalConfig ? configs[0] : configs;
 
-        configs = configs.filter((options) => {
+        configs = configsToFilter.filter((options) => {
             const found = configName.includes(options.name);
 
             if (found) {
@@ -204,7 +208,7 @@ const finalize = async (moduleObj, args) => {
         process.exit(2);
     }
 
-    newOptionsObject['options'] = isMultiCompilerMode ? configs : configs[0];
+    newOptionsObject['options'] = isMultiCompilerMode || isFunctionalConfig ? configs : configs[0];
 
     return newOptionsObject;
 };
