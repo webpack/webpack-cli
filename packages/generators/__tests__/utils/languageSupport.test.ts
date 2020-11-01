@@ -1,6 +1,4 @@
-// eslint-disable-next-line node/no-missing-import
 import language, { LangType, getBabelLoader, getTypescriptLoader } from '../../lib/utils/languageSupport';
-// eslint-disable-next-line node/no-missing-import
 import { CustomGenerator } from '../../lib/types';
 
 // TODO: enable after jest release

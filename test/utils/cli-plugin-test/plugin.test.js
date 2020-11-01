@@ -10,6 +10,6 @@ describe('webpack-cli-test-plugin Test', () => {
         if (typeof cli !== 'undefined') {
             expect(stdout).toContain(`alias: { alias: [ 'alias1', 'alias2' ] }`);
         }
-        expect(stdout).toContain('plugins: [ WebpackCLITestPlugin { opts: [Array], showAll: true } ]');
+        expect(stdout).toContain(`  WebpackCLITestPlugin { opts: [Array], showAll: true }`);
     });
 });

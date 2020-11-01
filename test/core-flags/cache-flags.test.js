@@ -1,10 +1,18 @@
 'use strict';
 
+const path = require('path');
+const rimraf = require('rimraf');
 const { run, isWindows } = require('../utils/test-utils');
 const { existsSync, writeFileSync, unlinkSync } = require('fs');
 const { resolve } = require('path');
 
 describe('cache related flags from core', () => {
+    beforeEach((done) => {
+        rimraf(path.join(__dirname, '../../node_modules/.cache/webpack/*'), () => {
+            done();
+        });
+    });
+
     it('should be successful with --cache ', () => {
         const { stderr, stdout } = run(__dirname, ['--cache']);
         expect(stderr).toBeFalsy();

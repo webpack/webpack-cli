@@ -2,6 +2,7 @@ const commander = require('commander');
 const logger = require('./logger');
 const { commands } = require('./cli-flags');
 const runHelp = require('../groups/runHelp');
+const runVersion = require('../groups/runVersion');
 const { defaultCommands } = require('./commands');
 
 /**
@@ -15,6 +16,7 @@ const { defaultCommands } = require('./commands');
  */
 const argParser = (options, args, argsOnly = false, name = '') => {
     const parser = new commander.Command();
+
     // Set parser name
     parser.name(name);
     parser.storeOptionsAsProperties(false);
@@ -38,11 +40,17 @@ const argParser = (options, args, argsOnly = false, name = '') => {
     // Prevent default behavior
     parser.on('command:*', () => {});
 
-    // Use customized help output if available
-    parser.on('option:help', () => {
+    // Use customized help output
+    if (args.includes('--help') || args.includes('help')) {
         runHelp(args);
         process.exit(0);
-    });
+    }
+
+    // Use Customized version
+    if (args.includes('--version') || args.includes('version') || args.includes('-v')) {
+        runVersion(args);
+        process.exit(0);
+    }
 
     // Allow execution if unknown arguments are present
     parser.allowUnknownOption(true);
@@ -51,6 +59,7 @@ const argParser = (options, args, argsOnly = false, name = '') => {
     options.reduce((parserInstance, option) => {
         let optionType = option.type;
         let isStringOrBool = false;
+
         if (Array.isArray(optionType)) {
             // filter out duplicate types
             optionType = optionType.filter((type, index) => {
@@ -77,7 +86,9 @@ const argParser = (options, args, argsOnly = false, name = '') => {
         }
 
         const flags = option.alias ? `-${option.alias}, --${option.name}` : `--${option.name}`;
+
         let flagsWithType = flags;
+
         if (isStringOrBool) {
             // commander recognizes [value] as an optional placeholder,
             // making this flag work either as a string or a boolean
@@ -100,17 +111,25 @@ const argParser = (options, args, argsOnly = false, name = '') => {
                     // this ensures we're only splitting by the first `=`
                     const [allKeys, val] = value.split(/=(.+)/, 2);
                     const splitKeys = allKeys.split(/\.(?!$)/);
+
                     let prevRef = previous;
+
                     splitKeys.forEach((someKey, index) => {
-                        if (!prevRef[someKey]) prevRef[someKey] = {};
+                        if (!prevRef[someKey]) {
+                            prevRef[someKey] = {};
+                        }
+
                         if ('string' === typeof prevRef[someKey]) {
                             prevRef[someKey] = {};
                         }
+
                         if (index === splitKeys.length - 1) {
                             prevRef[someKey] = val || true;
                         }
+
                         prevRef = prevRef[someKey];
                     });
+
                     return previous;
                 };
                 parserInstance.option(flagsWithType, option.description, multiArg, option.defaultValue).action(() => {});
@@ -144,8 +163,8 @@ const argParser = (options, args, argsOnly = false, name = '') => {
 
     const result = parser.parse(args, parseOptions);
     const opts = result.opts();
-
     const unknownArgs = result.args;
+
     args.forEach((arg) => {
         const flagName = arg.slice(5);
         const option = options.find((opt) => opt.name === flagName);
@@ -153,6 +172,7 @@ const argParser = (options, args, argsOnly = false, name = '') => {
         const flagUsed = args.includes(flag) && !unknownArgs.includes(flag);
         let alias = '';
         let aliasUsed = false;
+
         if (option && option.alias) {
             alias = `-${option.alias}`;
             aliasUsed = args.includes(alias) && !unknownArgs.includes(alias);

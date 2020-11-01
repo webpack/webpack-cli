@@ -108,7 +108,7 @@ const core = [
     {
         name: 'progress',
         usage: '--progress',
-        type: Boolean,
+        type: [Boolean, String],
         group: BASIC_GROUP,
         description: 'Print compilation progress during build',
     },

@@ -15,6 +15,7 @@ test/**/bin/
 test/**/binary/
 test/**/index.js
 test/typescript/webpack.config.ts
+test/config/error/syntax-error.js
 test/plugin/test-plugin/test/test-utils.js
 test/plugin/test-plugin/test/functional.test.js
 test/plugin/test-plugin/examples/simple/src/static-esm-module.js

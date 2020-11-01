@@ -22,7 +22,7 @@ describe('module config related flag', () => {
                     const option = propName.split('Reset')[0];
                     expect(stdout).toContain(`${option}: []`);
                 } else if (flag.name.includes('rules-')) {
-                    expect(stdout).toContain('sideEffects: true');
+                    expect(stdout).toContain("sideEffects: 'flag'");
                 } else {
                     expect(stdout).toContain(`${propName}: true`);
                 }

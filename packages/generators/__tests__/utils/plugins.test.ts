@@ -1,4 +1,3 @@
-// eslint-disable-next-line node/no-missing-import
 import { replaceAt, generatePluginName } from '../../lib/utils/plugins';
 
 describe('generate plugin name', () => {
