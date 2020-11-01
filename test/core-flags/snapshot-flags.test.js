@@ -13,9 +13,10 @@ describe('snapshot config related flags', () => {
 
         if (flag.type === Boolean) {
             it(`should config --${flag.name} correctly`, () => {
-                const { stderr, stdout } = run(__dirname, [`--${flag.name}`]);
+                const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`]);
 
                 expect(stderr).toBeFalsy();
+                expect(exitCode).toBe(0);
                 if (flag.name.includes('reset')) {
                     const option = propName.split('Reset')[0];
                     expect(stdout).toContain(`${option}: []`);
@@ -29,8 +30,10 @@ describe('snapshot config related flags', () => {
 
         if (flag.type === String) {
             it(`should config --${flag.name} correctly`, () => {
-                const { stderr, stdout } = run(__dirname, [`--${flag.name}`, 'test-snap-path']);
+                const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`, 'test-snap-path']);
+
                 expect(stderr).toBeFalsy();
+                expect(exitCode).toBe(0);
                 expect(stdout).toContain('test-snap-path');
             });
         }

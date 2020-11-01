@@ -16,11 +16,12 @@ describe('output config related flag', () => {
 
         if (flag.type === Boolean && !flag.name.includes('output-library')) {
             it(`should config --${flag.name} correctly`, () => {
-                let { stderr, stdout } = run(__dirname, [`--${flag.name}`]);
+                let { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`]);
 
                 if (flag.name === 'output-module') {
                     //'output.module: true' is only allowed when 'experiments.outputModule' is enabled
-                    stdout = run(__dirname, [`--${flag.name}`, '--experiments-output-module']).stdout;
+                    ({ stdout, exitCode } = run(__dirname, [`--${flag.name}`, '--experiments-output-module']));
+                    expect(exitCode).toBe(0);
                     expect(stdout).toContain('module: true');
                 } else if (flag.name.includes('-reset')) {
                     const option = propName.split('Reset')[0];
@@ -28,15 +29,17 @@ describe('output config related flag', () => {
                     expect(stdout).toContain(`${option}: []`);
                 } else {
                     expect(stderr).toBeFalsy();
+                    expect(exitCode).toBe(0);
                     expect(stdout).toContain(`${propName}: true`);
                 }
             });
 
             if (!flag.name.endsWith('-reset')) {
                 it(`should config --no-${flag.name} correctly`, () => {
-                    const { stderr, stdout } = run(__dirname, [`--no-${flag.name}`]);
+                    const { stderr, stdout, exitCode } = run(__dirname, [`--no-${flag.name}`]);
 
                     expect(stderr).toBeFalsy();
+                    expect(exitCode).toBe(0);
                     expect(stdout).toContain(`${propName}: false`);
                 });
             }
@@ -44,49 +47,56 @@ describe('output config related flag', () => {
 
         if (flag.type === Number) {
             it(`should config --${flag.name} correctly`, () => {
-                const { stderr, stdout } = run(__dirname, [`--${flag.name}`, '10']);
+                const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`, '10']);
 
                 expect(stderr).toBeFalsy();
+                expect(exitCode).toBe(0);
                 expect(stdout).toContain(`${propName}: 10`);
             });
         }
 
         if (flag.type === String && !flag.name.includes('output-library')) {
             it(`should config --${flag.name} correctly`, () => {
-                let { stderr, stdout } = run(__dirname, [`--${flag.name}`, 'test']);
+                let { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`, 'test']);
 
                 if (flag.name === 'output-cross-origin-loading') {
-                    stdout = run(__dirname, [`--${flag.name}`, 'anonymous']).stdout;
+                    ({ stdout, exitCode } = run(__dirname, [`--${flag.name}`, 'anonymous']));
 
                     expect(stderr).toBeFalsy();
+                    expect(exitCode).toBe(0);
                     expect(stdout).toContain(`${propName}: 'anonymous'`);
                 } else if (flag.name === 'output-chunk-format') {
-                    stdout = run(__dirname, [`--${flag.name}`, 'commonjs']).stdout;
+                    ({ stdout, exitCode } = run(__dirname, [`--${flag.name}`, 'commonjs']));
 
+                    expect(exitCode).toBe(0);
                     expect(stdout).toContain(`${propName}: 'commonjs'`);
                 } else if (flag.name === 'output-chunk-loading') {
-                    stdout = run(__dirname, [`--${flag.name}`, 'jsonp']).stdout;
+                    ({ stdout, exitCode } = run(__dirname, [`--${flag.name}`, 'jsonp']));
 
+                    expect(exitCode).toBe(0);
                     expect(stdout).toContain(`${propName}: 'jsonp'`);
                 } else if (flag.name === 'output-enabled-chunk-loading-types' || flag.name === 'output-enabled-wasm-loading-types') {
-                    stdout = run(__dirname, [`--${flag.name}`, 'async-node']).stdout;
+                    ({ stdout, exitCode } = run(__dirname, [`--${flag.name}`, 'async-node']));
 
+                    expect(exitCode).toBe(0);
                     expect(stdout).toContain(`${propName}: [ 'async-node' ]`);
                 } else if (flag.name === 'output-enabled-library-type') {
-                    stdout = run(__dirname, [`--${flag.name}`, 'amd']).stdout;
+                    ({ stdout, exitCode } = run(__dirname, [`--${flag.name}`, 'amd']));
 
                     expect(stderr).toBeFalsy();
+                    expect(exitCode).toBe(0);
                     expect(stdout).toContain(`${propName}: 'amd'`);
                 } else if (flag.name === 'output-hash-function') {
-                    stdout = run(__dirname, [`--${flag.name}`, 'sha256']).stdout;
-                    stderr = run(__dirname, [`--${flag.name}`, 'sha256']).stderr;
+                    ({ stdout, stderr, exitCode } = run(__dirname, [`--${flag.name}`, 'sha256']));
 
                     expect(stderr).toBeFalsy();
+                    expect(exitCode).toBe(0);
                     expect(stdout).toContain(`hashFunction: 'sha256'`);
                 } else if (flag.name === 'output-script-type') {
-                    stdout = run(__dirname, [`--${flag.name}`, 'module']).stdout;
+                    ({ stdout, exitCode } = run(__dirname, [`--${flag.name}`, 'module']));
 
                     expect(stderr).toBeFalsy();
+                    expect(exitCode).toBe(0);
                     expect(stdout).toContain(`${propName}: 'module'`);
                 } else if (flag.name === 'output-enabled-library-types') {
                     stdout = run(__dirname, [`--${flag.name}`, 'var']).stdout;
@@ -102,6 +112,7 @@ describe('output config related flag', () => {
                     expect(stdout).toContain(`${propName}: 'async-node'`);
                 } else {
                     expect(stderr).toBeFalsy();
+                    expect(exitCode).toBe(0);
                     expect(stdout).toContain(`${propName}: 'test'`);
                 }
             });
@@ -109,7 +120,7 @@ describe('output config related flag', () => {
 
         if (flag.name.includes('output-library')) {
             it(`should config name, type and export  correctly`, () => {
-                const { stderr, stdout } = run(__dirname, [
+                const { stderr, stdout, exitCode } = run(__dirname, [
                     '--output-library-name',
                     'myLibrary',
                     '--output-library-type',
@@ -122,6 +133,7 @@ describe('output config related flag', () => {
                 ]);
 
                 expect(stderr).toBeFalsy();
+                expect(exitCode).toBe(0);
                 expect(stdout).toContain('myLibrary');
                 expect(stdout).toContain(`type: 'var'`);
                 expect(stdout).toContain('export: [Array]');
@@ -130,9 +142,10 @@ describe('output config related flag', () => {
             });
 
             it('should be succesful with --output-library-reset correctly', () => {
-                const { stderr, stdout } = run(__dirname, ['--output-library-reset']);
+                const { stderr, stdout, exitCode } = run(__dirname, ['--output-library-reset']);
 
                 expect(stderr).toBeFalsy();
+                expect(exitCode).toBe(0);
                 expect(stdout).toContain('name: []');
             });
         }

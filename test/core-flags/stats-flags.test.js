@@ -13,9 +13,10 @@ describe('stats config related flag', () => {
 
         if (flag.type === Boolean) {
             it(`should config --${flag.name} correctly`, () => {
-                const { stderr, stdout } = run(__dirname, [`--${flag.name}`]);
+                const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`]);
 
                 expect(stderr).toBeFalsy();
+                expect(exitCode).toBe(0);
                 if (flag.name.includes('reset')) {
                     const option = propName.split('Reset')[0];
                     expect(stdout).toContain(`stats: { ${option}: [] }`);
@@ -26,9 +27,10 @@ describe('stats config related flag', () => {
 
             if (!flag.name.endsWith('-reset')) {
                 it(`should config --no-${flag.name} correctly`, () => {
-                    const { stderr, stdout } = run(__dirname, [`--no-${flag.name}`]);
+                    const { stderr, stdout, exitCode } = run(__dirname, [`--no-${flag.name}`]);
 
                     expect(stderr).toBeFalsy();
+                    expect(exitCode).toBe(0);
                     expect(stdout).toContain(`stats: { ${propName}: false }`);
                 });
             }
@@ -36,8 +38,10 @@ describe('stats config related flag', () => {
 
         if (flag.type === Number) {
             it(`should config --${flag.name} correctly`, () => {
-                const { stderr, stdout } = run(__dirname, [`--${flag.name}`, '10']);
+                const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`, '10']);
+
                 expect(stderr).toBeFalsy();
+                expect(exitCode).toBe(0);
                 expect(stdout).toContain(`stats: { ${propName}: 10 }`);
             });
         }
@@ -46,8 +50,10 @@ describe('stats config related flag', () => {
             const acceptsSingleValue = ['preset', 'modulesSort', 'logging', 'chunksSort', 'assetsSort'];
 
             it(`should config --${flag.name} correctly`, () => {
-                let { stderr, stdout } = run(__dirname, [`--${flag.name}`, 'log']);
+                let { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`, 'log']);
+
                 expect(stderr).toBeFalsy();
+                expect(exitCode).toBe(0);
                 if (flag.name.includes('stats-colors')) {
                     const option = flag.name.split('stats-colors-')[1];
                     stdout = run(__dirname, [`--${flag.name}`, 'u001b[32m']).stdout;
