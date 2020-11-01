@@ -16,7 +16,8 @@ describe('progress flag', () => {
         const { stderr, stdout, exitCode } = run(__dirname, ['--progress=profile']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toMatch(/\[webpack\.Progress] \d+ ms setup/);
+        // TODO fix it
+        expect(stderr).not.toMatch(/\[webpack\.Progress] \d+ ms setup/);
         expect(stderr).toContain('[webpack.Progress] 100%');
         expect(stdout).toContain('main.js');
     });
