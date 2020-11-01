@@ -6,4 +6,9 @@ describe('unknown behaviour', () => {
         expect(stderr).toBeTruthy();
         expect(stderr).toContain('Unknown argument: --unknown');
     });
+    it('suggests the closest match to an unknown flag', () => {
+        const { stderr, stdout } = run(__dirname, ['--entyr', './a.js']);
+        expect(stderr).toContain('Unknown argument: --entyr');
+        expect(stdout).toContain('Did you mean --entry?');
+    });
 });
