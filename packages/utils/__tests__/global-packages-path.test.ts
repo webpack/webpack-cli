@@ -1,7 +1,5 @@
 'use strict';
-jest.setMock('webpack-cli/lib/utils/get-package-manager', {
-    getPackageManager: jest.fn(),
-});
+jest.setMock('webpack-cli/lib/utils/get-package-manager', jest.fn());
 
 import { getPathToGlobalPackages } from '../lib/global-packages-path';
 import { getPackageManager } from 'webpack-cli';
