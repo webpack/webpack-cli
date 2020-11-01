@@ -10,7 +10,7 @@
   "bin": {
     "webpack-cli": "./bin/cli.js"
   },
-  "main": "./lib/webpack-cli.js",
+  "main": "./lib/index.js",
   "engines": {
     "node": ">=10.13.0"
   },
