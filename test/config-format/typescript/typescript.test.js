@@ -4,7 +4,7 @@ const { stat } = require('fs');
 const { resolve } = require('path');
 
 describe('webpack cli', () => {
-    it.skip(
+    it(
         'should support typescript file',
         async () => {
             await runInstall(__dirname);
