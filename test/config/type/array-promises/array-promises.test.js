@@ -5,9 +5,11 @@ const { run } = require('../../../utils/test-utils');
 
 describe('array of promises', () => {
     it('is able to understand a configuration file as a promise', (done) => {
-        const { stdout, stderr } = run(__dirname, ['-c', './webpack.config.js'], false);
+        const { stdout, stderr, exitCode } = run(__dirname, ['-c', './webpack.config.js'], false);
+
         expect(stdout).toBeTruthy();
         expect(stderr).toBeFalsy();
+        expect(exitCode).toBe(0);
 
         stat(resolve(__dirname, './binary/a-promise.js'), (err, stats) => {
             expect(err).toBe(null);

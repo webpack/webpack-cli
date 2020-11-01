@@ -7,9 +7,11 @@ const { run } = require('../../utils/test-utils');
 
 describe('dotfolder single config lookup', () => {
     it('should find a webpack configuration in a dotfolder', (done) => {
-        const { stdout, stderr } = run(__dirname, [], false);
+        const { stdout, stderr, exitCode } = run(__dirname, [], false);
+
         expect(stderr).not.toBeUndefined();
         expect(stdout).not.toBeUndefined();
+        expect(exitCode).toBe(0);
 
         expect(stdout).not.toContain('Module not found');
         stat(resolve(__dirname, './dist/main.js'), (err, stats) => {
