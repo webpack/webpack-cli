@@ -25,7 +25,7 @@ describe('progress flag', () => {
         const { stderr, stdout, exitCode } = run(__dirname, ['--progress=unknown']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain('Invalid unknown value for the progress option. Allowed value is profile.');
+        expect(stderr).toContain(`'unknown' is an invalid value for the --progress option. Only 'profile' is allowed.`);
         expect(stdout).toBeFalsy();
     });
 
