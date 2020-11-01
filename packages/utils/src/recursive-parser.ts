@@ -1,7 +1,7 @@
 import { parseTopScope, findRootNodesByName, addProperty, removeProperty, parseMerge, safeTraverse } from './ast-utils';
 import { JSCodeshift, Node, valueType } from './types/NodePath';
 
-import logger from 'webpack-cli/lib/utils/logger';
+import { logger } from 'webpack-cli';
 
 export function recursiveTransform(j: JSCodeshift, ast: Node, key: string, value: valueType, action: string): boolean | Node {
     if (key === 'topScope') {

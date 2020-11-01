@@ -3,11 +3,12 @@ const webpack = packageExists('webpack') ? require('webpack') : undefined;
 const logger = require('./utils/logger');
 const webpackMerge = require('webpack-merge');
 const GroupHelper = require('./utils/GroupHelper');
-const { groups, core } = require('./utils/cli-flags');
+const { groups, core, commands } = require('./utils/cli-flags');
 const argParser = require('./utils/arg-parser');
 const { outputStrategy } = require('./utils/merge-strategies');
 const { toKebabCase } = require('./utils/helpers');
 const assignFlagDefaults = require('./utils/flag-defaults');
+const getPackageManager = require('./utils/get-package-manager');
 const { writeFileSync } = require('fs');
 const { options: coloretteOptions } = require('colorette');
 const WebpackCLIPlugin = require('./plugins/WebpackCLIPlugin');
@@ -337,3 +338,7 @@ class WebpackCLI extends GroupHelper {
 }
 
 module.exports = WebpackCLI;
+// export additional utils used by other packages
+module.exports.logger = logger;
+module.exports.commands = commands;
+module.exports.getPackageManager = getPackageManager;

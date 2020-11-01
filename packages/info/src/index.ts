@@ -1,6 +1,6 @@
 import envinfo from 'envinfo';
-import logger from 'webpack-cli/lib/utils/logger';
-import { commands } from 'webpack-cli/lib/utils/cli-flags';
+import { logger } from 'webpack-cli';
+import { commands } from 'webpack-cli';
 import WebpackCLI from 'webpack-cli';
 
 interface Information {

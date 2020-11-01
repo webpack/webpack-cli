@@ -1,6 +1,6 @@
 import { loaderGenerator } from '@webpack-cli/generators';
 import yeoman from 'yeoman-environment';
-import logger from 'webpack-cli/lib/utils/logger';
+import { logger } from 'webpack-cli';
 
 /**
  * Runs a yeoman generator to create a new webpack loader project

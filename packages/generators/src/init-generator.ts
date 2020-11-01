@@ -1,8 +1,8 @@
 import { blue, green, bold } from 'colorette';
-import logger from 'webpack-cli/lib/utils/logger';
+import { logger } from 'webpack-cli';
 import logSymbols from 'log-symbols';
 import path from 'path';
-import { getPackageManager } from 'webpack-cli/lib/utils/get-package-manager';
+import { getPackageManager } from 'webpack-cli';
 import { Confirm, Input, List } from '@webpack-cli/webpack-scaffold';
 
 import {

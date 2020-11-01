@@ -1,5 +1,5 @@
 import fs from 'fs';
-import logger from 'webpack-cli/lib/utils/logger';
+import { logger } from 'webpack-cli';
 
 /**
  *

@@ -1,11 +1,11 @@
 import { green } from 'colorette';
 import fs from 'fs';
-import logger from 'webpack-cli/lib/utils/logger';
+import { logger } from 'webpack-cli';
 import path from 'path';
 import yeoman from 'yeoman-environment';
 import Generator from 'yeoman-generator';
 import { runTransform } from './scaffold';
-import { getPackageManager } from 'webpack-cli/lib/utils/get-package-manager';
+import { getPackageManager } from 'webpack-cli';
 
 export interface Config extends Object {
     item?: {

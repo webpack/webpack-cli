@@ -1,6 +1,6 @@
 import { red, underline } from 'colorette';
 
-import logger from 'webpack-cli/lib/utils/logger';
+import { logger } from 'webpack-cli';
 
 import { findPluginsByName, isType, safeTraverse } from '@webpack-cli/utils';
 

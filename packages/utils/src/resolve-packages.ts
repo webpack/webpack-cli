@@ -1,5 +1,5 @@
 import { bold } from 'colorette';
-import logger from 'webpack-cli/lib/utils/logger';
+import { logger } from 'webpack-cli';
 import path from 'path';
 import { modifyHelperUtil } from './modify-config-helper';
 import { getPathToGlobalPackages } from './global-packages-path';
