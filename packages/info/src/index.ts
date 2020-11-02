@@ -53,7 +53,8 @@ export default async function info(...args): Promise<string[]> {
                 envinfoConfig['json'] = true;
                 break;
             default:
-                logger.error(`${infoArgs.output} is not a valid value for output\n`);
+                logger.error(`'${infoArgs.output}' is not a valid value for output`);
+                process.exit(2);
         }
     }
 
