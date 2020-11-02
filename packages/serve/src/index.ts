@@ -10,6 +10,12 @@ import parseArgs from './parseArgs';
  * @returns {Function} invokes the devServer API
  */
 export default function serve(...args: string[]): void {
+    try {
+        // eslint-disable-next-line node/no-extraneous-require
+        require('webpack-dev-server');
+    } catch (err) {
+        throw new Error(`You need to install 'webpack-dev-server' for running 'webpack serve'.\n${err}`);
+    }
     const cli = new WebpackCLI();
 
     const { webpackArgs, devServerArgs } = parseArgs(cli, args);
