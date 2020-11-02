@@ -15,7 +15,7 @@ export function getDefaultOptimization(usingDefaults: boolean): WebpackOptions['
                 chunks: "'async'",
                 minChunks: 1,
                 minSize: 30000,
-                name: !usingDefaults,
+                name: false,
             },
         };
     } else {

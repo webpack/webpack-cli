@@ -32,6 +32,8 @@ describe('init generator', () => {
         expect(config.output).toEqual(undefined);
         // there are no special loaders, so rules should be empty
         expect(config.module.rules).toEqual([]);
+        // match config snapshot
+        expect(config).toMatchSnapshot();
     });
 
     it('generates a webpack config with custom entry and output', async () => {
@@ -61,6 +63,8 @@ describe('init generator', () => {
         expect(config.output.path).toEqual("path.resolve(__dirname, 'dist2')");
         // there are no special loaders, so rules should be empty
         expect(config.module.rules).toEqual([]);
+        //match config snapshot
+        expect(config).toMatchSnapshot();
     });
 
     it('generates a webpack config using CSS without mini-css-extract-plugin', async () => {
@@ -85,6 +89,8 @@ describe('init generator', () => {
         expect(config.module.rules[0].use.length).toEqual(2);
         expect(config.module.rules[0].use[0].loader).toEqual('"style-loader"');
         expect(config.module.rules[0].use[1].loader).toEqual('"css-loader"');
+        //match config snapshot
+        expect(config).toMatchSnapshot();
     });
 
     it('generates a webpack config using CSS with mini-css-extract-plugin', async () => {
@@ -111,6 +117,8 @@ describe('init generator', () => {
         expect(config.module.rules[0].use[0].loader).toEqual('MiniCssExtractPlugin.loader');
         expect(config.module.rules[0].use[1].loader).toEqual('"style-loader"');
         expect(config.module.rules[0].use[2].loader).toEqual('"css-loader"');
+        //match config snapshot
+        expect(config).toMatchSnapshot();
     });
 
     it('generates a webpack config with multiple entries', async () => {
@@ -140,6 +148,8 @@ describe('init generator', () => {
             test1: "'./dir1/test1.js'",
             test2: "'./dir2/test2.js'",
         });
+        //match config snapshot
+        expect(config).toMatchSnapshot();
     });
 
     it('generates a webpack config that uses ES6', async () => {
@@ -166,6 +176,8 @@ describe('init generator', () => {
                 loader: "'babel-loader'",
             },
         ]);
+        //match config snapshot
+        expect(config).toMatchSnapshot();
     });
 
     it('generates a webpack config that uses Typescript', async () => {
@@ -193,5 +205,7 @@ describe('init generator', () => {
                 exclude: ['/node_modules/'],
             },
         ]);
+        //match config snapshot
+        expect(config).toMatchSnapshot();
     });
 });
