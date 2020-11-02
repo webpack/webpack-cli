@@ -57,7 +57,7 @@ describe('resolveConfig', function () {
     });
 
     it('should handle different env formats', async () => {
-        const result = await ConfigGroup({
+        const result = await resolveConfig({
             env: { test: true, name: 'Hisoka' },
             config: [resolve(__dirname, './env.webpack.config.cjs')],
         });
