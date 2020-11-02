@@ -1,8 +1,7 @@
 import { blue, green, bold } from 'colorette';
-import logger from 'webpack-cli/lib/utils/logger';
+import { utils } from 'webpack-cli';
 import logSymbols from 'log-symbols';
 import path from 'path';
-import { getPackageManager } from 'webpack-cli/lib/utils/get-package-manager';
 import { Confirm, Input, List } from '@webpack-cli/webpack-scaffold';
 
 import {
@@ -16,6 +15,8 @@ import {
     entryQuestions,
 } from './utils';
 import { CustomGenerator } from './types';
+
+const { logger, getPackageManager } = utils;
 
 /**
  *
