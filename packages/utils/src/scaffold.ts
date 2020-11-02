@@ -1,9 +1,7 @@
 import { green } from 'colorette';
 import j from 'jscodeshift';
-import { logger } from 'webpack-cli';
 import pEachSeries = require('p-each-series');
 import path from 'path';
-import { getPackageManager } from 'webpack-cli';
 import { findProjectRoot } from './path-utils';
 import { Error } from './types';
 import { Config, TransformConfig } from './types';
@@ -11,6 +9,9 @@ import { PROP_TYPES } from './prop-types';
 import { recursiveTransform } from './recursive-parser';
 import { runPrettier } from './run-prettier';
 import { Node } from './types/NodePath';
+import { utils } from 'webpack-cli';
+
+const { logger, getPackageManager } = utils;
 
 /**
  *

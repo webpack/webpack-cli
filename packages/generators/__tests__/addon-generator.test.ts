@@ -5,8 +5,10 @@ jest.setMock('@webpack-cli/utils', {
 import fs from 'fs';
 import path from 'path';
 import rimraf from 'rimraf';
-import { getPackageManager } from 'webpack-cli';
+import { utils } from 'webpack-cli';
 import addonGenerator from '../src/addon-generator';
+
+const { getPackageManager } = utils;
 
 // TODO: enable after jest release
 describe.skip('addon generator', () => {

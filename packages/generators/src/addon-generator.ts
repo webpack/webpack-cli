@@ -1,9 +1,11 @@
-import { logger } from 'webpack-cli';
 import fs from 'fs';
 import path from 'path';
 import Generator from 'yeoman-generator';
 import { generatorCopy, generatorCopyTpl } from '@webpack-cli/utils';
-import { getPackageManager } from 'webpack-cli';
+
+import { utils } from 'webpack-cli';
+
+const { logger, getPackageManager } = utils;
 
 /**
  * Creates a Yeoman Generator that generates a project conforming

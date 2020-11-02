@@ -1,10 +1,12 @@
 import { red, underline } from 'colorette';
 
-import { logger } from 'webpack-cli';
-
 import { findPluginsByName, isType, safeTraverse } from '@webpack-cli/utils';
 
 import { JSCodeshift, Node } from '../types/NodePath';
+
+import { utils } from 'webpack-cli';
+
+const { logger } = utils;
 
 /**
  *

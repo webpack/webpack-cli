@@ -2,7 +2,6 @@ import { green, red } from 'colorette';
 import { Change, diffLines } from 'diff';
 import fs from 'fs';
 import inquirer from 'inquirer';
-import { logger } from 'webpack-cli';
 import Listr from 'listr';
 import pLazy = require('p-lazy');
 import path from 'path';
@@ -11,6 +10,9 @@ import { runPrettier } from '@webpack-cli/utils';
 import { transformations } from './migrate';
 import { Node } from './types/NodePath';
 import jscodeshift from 'jscodeshift';
+import { utils } from 'webpack-cli';
+
+const { logger } = utils;
 
 declare let process: {
     cwd: Function;

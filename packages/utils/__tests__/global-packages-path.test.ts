@@ -2,7 +2,10 @@
 jest.setMock('webpack-cli/lib/utils/get-package-manager', jest.fn());
 
 import { getPathToGlobalPackages } from '../lib/global-packages-path';
-import { getPackageManager } from 'webpack-cli';
+import { utils } from 'webpack-cli';
+
+const { getPackageManager } = utils;
+
 jest.mock('execa');
 jest.mock('cross-spawn');
 const globalModulesNpmValue = 'test-npm';

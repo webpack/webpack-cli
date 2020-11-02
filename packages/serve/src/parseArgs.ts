@@ -1,4 +1,6 @@
-import { logger } from 'webpack-cli';
+import { utils } from 'webpack-cli';
+
+const { logger } = utils;
 
 type WebpackCLIType = {
     getCoreFlags: Function;

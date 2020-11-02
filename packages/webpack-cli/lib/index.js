@@ -6,6 +6,8 @@ const getPackageManager = require('./utils/get-package-manager');
 module.exports = WebpackCLI;
 
 // export additional utils used by other packages
-module.exports.logger = logger;
-module.exports.commands = commands;
-module.exports.getPackageManager = getPackageManager;
+module.exports.utils = {
+    logger,
+    commands,
+    getPackageManager,
+};

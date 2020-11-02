@@ -1,7 +1,8 @@
 import envinfo from 'envinfo';
-import { logger } from 'webpack-cli';
-import { commands } from 'webpack-cli';
 import WebpackCLI from 'webpack-cli';
+import { utils } from 'webpack-cli';
+
+const { logger, commands } = utils;
 
 interface Information {
     Binaries?: string[];

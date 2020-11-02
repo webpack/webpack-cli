@@ -1,6 +1,8 @@
 import spawn from 'cross-spawn';
 import path from 'path';
-import { getPackageManager } from 'webpack-cli';
+import { utils } from 'webpack-cli';
+
+const { getPackageManager } = utils;
 
 /**
  *

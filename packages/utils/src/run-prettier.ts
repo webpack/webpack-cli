@@ -1,5 +1,7 @@
 import fs from 'fs';
-import { logger } from 'webpack-cli';
+import { utils } from 'webpack-cli';
+
+const { logger } = utils;
 
 /**
  *
