@@ -179,7 +179,7 @@ const finalize = async (moduleObj, args) => {
 
     if (configName) {
         const foundConfigNames = [];
-        const configsToFilter = isFunctionalConfig ? configs[0] : configs;
+        const configsToFilter = Array.isArray[configs[0]] ? configs[0] : configs;
 
         configs = configsToFilter.filter((options) => {
             const found = configName.includes(options.name);
