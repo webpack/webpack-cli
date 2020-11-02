@@ -1,13 +1,20 @@
 'use strict';
 
-const { run } = require('../utils/test-utils');
-const { existsSync } = require('fs');
+const path = require('path');
+const rimraf = require('rimraf');
+const { run, isWindows } = require('../utils/test-utils');
+const { existsSync, writeFileSync, unlinkSync } = require('fs');
 const { resolve } = require('path');
 
 describe('cache related flags from core', () => {
+    beforeEach((done) => {
+        rimraf(path.join(__dirname, '../../node_modules/.cache/webpack/*'), () => {
+            done();
+        });
+    });
+
     it('should be successful with --cache ', () => {
         const { stderr, stdout } = run(__dirname, ['--cache']);
-
         expect(stderr).toBeFalsy();
         expect(stdout).toContain(`type: 'memory'`);
     });
@@ -68,5 +75,79 @@ describe('cache related flags from core', () => {
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain(`version: '1.1.3'`);
+    });
+
+    it('should assign cache build dependencies correctly when cache type is filesystem', () => {
+        // TODO: Fix on windows
+        if (isWindows) return;
+        const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.config.js']);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('buildDependencies');
+        expect(stdout).toContain("config: [ './webpack.config.js' ]");
+        expect(stdout).not.toContain('[cached]');
+        // Run again to check for cache
+        const newRun = run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.config.js']);
+        expect(newRun.stdout).toContain('[cached]');
+        expect(newRun.stderr).toBeFalsy();
+        expect(newRun.exitCode).toEqual(0);
+    });
+
+    it('should assign cache build dependencies correctly when cache type is filesystem in config', () => {
+        // TODO: Fix on windows
+        if (isWindows) return;
+        const { stderr, stdout } = run(__dirname, ['-c', './webpack.cache.config.js']);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('buildDependencies');
+        expect(stdout).toContain("config: [ './webpack.cache.config.js' ]");
+        expect(stdout).toContain("type: 'filesystem'");
+        // Run again to check for cache
+        const newRun = run(__dirname, ['-c', './webpack.cache.config.js']);
+        expect(newRun.stdout).toContain('[cached]');
+        expect(newRun.stderr).toBeFalsy();
+        expect(newRun.exitCode).toEqual(0);
+    });
+
+    it('should assign cache build dependencies with multiple configs', () => {
+        // TODO: Fix on windows
+        if (isWindows) return;
+        const { stderr, stdout, exitCode } = run(__dirname, ['-c', './webpack.cache.config.js', '-c', './webpack.config.js']);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('buildDependencies');
+        expect(stdout).toContain("config: [ './webpack.cache.config.js', './webpack.config.js' ]");
+        expect(stdout).toContain("type: 'filesystem'");
+        expect(exitCode).toEqual(0);
+    });
+
+    it('should assign cache build dependencies with merged configs', () => {
+        // TODO: Fix on windows
+        if (isWindows) return;
+        const { stderr, stdout, exitCode } = run(__dirname, ['-c', './webpack.cache.config.js', '-c', './webpack.config.js', '--merge']);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('buildDependencies');
+        expect(stdout).toContain("config: [ './webpack.cache.config.js', './webpack.config.js' ]");
+        expect(stdout).toContain("type: 'filesystem'");
+        expect(exitCode).toEqual(0);
+    });
+
+    it('should invalidate cache when config changes', () => {
+        // TODO: Fix on windows
+        if (isWindows) return;
+        // Creating a temporary webpack config
+        writeFileSync(resolve(__dirname, './webpack.test.config.js'), 'module.exports = {mode: "development"}');
+        const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.test.config.js']);
+        expect(stderr).toBeFalsy();
+        expect(stdout).not.toContain('[cached]');
+
+        // Running again should use the cache
+        const newRun = run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.test.config.js']);
+        expect(newRun.stdout).toContain('[cached]');
+
+        // Change config to invalidate cache
+        writeFileSync(resolve(__dirname, './webpack.test.config.js'), 'module.exports = {mode: "production"}');
+
+        const newRun2 = run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.test.config.js']);
+        unlinkSync(resolve(__dirname, './webpack.test.config.js'));
+        expect(newRun2).not.toContain('[cached]');
+        expect(newRun2.exitCode).toEqual(0);
     });
 });

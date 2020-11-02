@@ -1,4 +1,4 @@
-const { packageExists } = require('@webpack-cli/package-utils');
+const { packageExists } = require('./package-exists');
 const cli = packageExists('webpack') ? require('webpack').cli : undefined;
 
 const HELP_GROUP = 'help';
@@ -108,7 +108,7 @@ const core = [
     {
         name: 'progress',
         usage: '--progress',
-        type: Boolean,
+        type: [Boolean, String],
         group: BASIC_GROUP,
         description: 'Print compilation progress during build',
     },
@@ -205,7 +205,7 @@ const core = [
         name: 'env',
         usage: '--env',
         type: String,
-        multiple: true,
+        multipleType: true,
         description: 'Environment passed to the configuration when it is a function',
     },
     {

@@ -1,4 +1,3 @@
-/* eslint-disable node/no-unpublished-require */
 'use strict';
 
 const { existsSync } = require('fs');
@@ -11,10 +10,6 @@ const firstPrompt = '? Loader name (my-loader)';
 const ENTER = '\x0D';
 const loaderName = 'test-loader';
 const loaderPath = join(__dirname, loaderName);
-
-// Since scaffolding is time consuming
-
-jest.setTimeout(60000);
 
 describe('loader command', () => {
     beforeAll(() => {

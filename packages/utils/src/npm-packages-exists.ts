@@ -4,7 +4,7 @@ import { red, bold } from 'colorette';
 import { npmExists } from './npm-exists';
 import { isLocalPath } from './path-utils';
 import { resolvePackages } from './resolve-packages';
-import { getPathToGlobalPackages } from '@webpack-cli/package-utils';
+import { getPathToGlobalPackages } from './global-packages-path';
 const WEBPACK_SCAFFOLD_PREFIX = 'webpack-scaffold';
 
 /**
@@ -60,7 +60,6 @@ export function npmPackagesExists(pkg: string[]): void {
             })
             .catch((err: Error): void => {
                 console.error(err.stack || err);
-                // eslint-disable-next-line no-process-exit
                 process.exit(2);
             })
             .then(resolvePackagesIfReady);

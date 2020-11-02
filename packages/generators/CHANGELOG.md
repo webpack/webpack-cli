@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.2](https://github.com/webpack/webpack-cli/compare/@webpack-cli/generators@1.0.1...@webpack-cli/generators@1.0.2) (2020-10-19)
+
+### Bug Fixes
+
+-   output stacktrace on errors ([#1949](https://github.com/webpack/webpack-cli/issues/1949)) ([9ba9d6f](https://github.com/webpack/webpack-cli/commit/9ba9d6f460fb25fb79d52f4360239b8c4b471451))
+
+## [1.0.1](https://github.com/webpack/webpack-cli/compare/@webpack-cli/generators@1.0.1-rc.1...@webpack-cli/generators@1.0.1) (2020-10-10)
+
+### Bug Fixes
+
+-   cleanup `package-utils` package ([#1822](https://github.com/webpack/webpack-cli/issues/1822)) ([fd5b92b](https://github.com/webpack/webpack-cli/commit/fd5b92b3cd40361daec5bf4486e455a41f4c9738))
+-   upgrade lock file ([#1885](https://github.com/webpack/webpack-cli/issues/1885)) ([8df291e](https://github.com/webpack/webpack-cli/commit/8df291eef0fad7c91d912b158b3c2915cddfacd1))
+
 ## [1.0.1-rc.1](https://github.com/webpack/webpack-cli/compare/@webpack-cli/generators@1.0.1-alpha.5...@webpack-cli/generators@1.0.1-rc.1) (2020-10-06)
 
 ### Bug Fixes

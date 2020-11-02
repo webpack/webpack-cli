@@ -1,6 +1,6 @@
 {
   "name": "webpack-cli",
-  "version": "4.0.0-rc.1",
+  "version": "4.1.0",
   "description": "CLI for webpack & friends",
   "license": "MIT",
   "repository": {
@@ -22,27 +22,32 @@
     "bundler",
     "web"
   ],
+  "files": [
+    "bin",
+    "lib"
+  ],
   "dependencies": {
-    "@webpack-cli/info": "^1.0.1-rc.1",
-    "@webpack-cli/init": "^1.0.1-rc.1",
-    "@webpack-cli/package-utils": "^1.0.1-rc.1",
-    "@webpack-cli/serve": "^1.0.1-rc.1",
+    "@webpack-cli/info": "^1.0.2",
+    "@webpack-cli/serve": "^1.0.1",
     "ansi-escapes": "^4.3.1",
     "colorette": "^1.2.1",
     "command-line-usage": "^6.1.0",
-    "commander": "^6.0.0",
-    "enquirer": "^2.3.4",
-    "execa": "^4.0.0",
+    "commander": "^6.2.0",
+    "enquirer": "^2.3.6",
+    "execa": "^4.1.0",
     "import-local": "^3.0.2",
-    "interpret": "^2.0.0",
+    "interpret": "^2.2.0",
     "rechoir": "^0.7.0",
-    "v8-compile-cache": "^2.1.0",
+    "v8-compile-cache": "^2.2.0",
     "webpack-merge": "^4.2.2"
   },
   "peerDependencies": {
     "webpack": "4.x.x || 5.x.x"
   },
   "peerDependenciesMeta": {
+    "@webpack-cli/init": {
+      "optional": true
+    },
     "@webpack-cli/generate-loader": {
       "optional": true
     },
@@ -53,6 +58,9 @@
       "optional": true
     },
     "webpack-bundle-analyzer": {
+      "optional": true
+    },
+    "webpack-dev-server": {
       "optional": true
     }
   },

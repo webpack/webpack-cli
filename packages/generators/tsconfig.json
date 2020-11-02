@@ -5,5 +5,5 @@
     "rootDir": "src"
   },
   "include": ["src"],
-  "references": [{ "path": "../package-utils" }, { "path": "../utils" }, { "path": "../webpack-scaffold" }]
+  "references": [{ "path": "../utils" }, { "path": "../webpack-scaffold" }]
 }

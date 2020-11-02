@@ -1,9 +1,8 @@
 const { existsSync } = require('fs');
-const { resolve, sep, dirname, extname } = require('path');
+const { resolve, extname } = require('path');
 const webpackMerge = require('webpack-merge');
 const { extensions, jsVariants } = require('interpret');
 const rechoir = require('rechoir');
-const ConfigError = require('../utils/errors/ConfigError');
 const logger = require('../utils/logger');
 
 // Order defines the priority, in increasing order
@@ -63,46 +62,45 @@ const getConfigInfoFromFileName = (filename) => {
         .filter((e) => existsSync(e.path));
 };
 
-// Prepare rechoir environment to load multiple file formats
-const requireLoader = (extension, path) => {
-    rechoir.prepare(extensions, path, process.cwd());
-};
-
 // Reads a config file given the config metadata
 const requireConfig = (configModule) => {
     const extension = Object.keys(jsVariants).find((t) => configModule.ext.endsWith(t));
 
     if (extension) {
-        requireLoader(extension, configModule.path);
+        rechoir.prepare(extensions, configModule.path, process.cwd());
     }
 
     let config = require(configModule.path);
+
     if (config.default) {
         config = config.default;
     }
 
-    return {
-        content: config,
-        path: configModule.path,
-    };
+    return { config, path: configModule.path };
 };
 
 // Responsible for reading user configuration files
 // else does a default config lookup and resolves it.
 const resolveConfigFiles = async (args) => {
     const { config, mode } = args;
+
     if (config && config.length > 0) {
         const resolvedOptions = [];
         const finalizedConfigs = config.map(async (webpackConfig) => {
             const configPath = resolve(webpackConfig);
             const configFiles = getConfigInfoFromFileName(configPath);
+
             if (!configFiles.length) {
-                throw new ConfigError(`The specified config file doesn't exist in ${configPath}`);
+                logger.error(`The specified config file doesn't exist in ${configPath}`);
+                process.exit(2);
             }
+
             const foundConfig = configFiles[0];
             const resolvedConfig = requireConfig(foundConfig);
+
             return finalize(resolvedConfig, args);
         });
+
         // resolve all the configs
         for await (const resolvedOption of finalizedConfigs) {
             if (Array.isArray(resolvedOption.options)) {
@@ -111,10 +109,9 @@ const resolveConfigFiles = async (args) => {
                 resolvedOptions.push(resolvedOption.options);
             }
         }
-        // When the resolved configs are more than 1, then pass them as Array [{...}, {...}] else pass the first config object {...}
-        const finalOptions = resolvedOptions.length > 1 ? resolvedOptions : resolvedOptions[0] || {};
 
-        opts['options'] = finalOptions;
+        opts['options'] = resolvedOptions.length > 1 ? resolvedOptions : resolvedOptions[0] || {};
+
         return;
     }
 
@@ -127,12 +124,16 @@ const resolveConfigFiles = async (args) => {
     const configFiles = tmpConfigFiles.map(requireConfig);
     if (configFiles.length) {
         const defaultConfig = configFiles.find((p) => p.path.includes(mode) || p.path.includes(modeAlias[mode]));
+
         if (defaultConfig) {
             opts = await finalize(defaultConfig, args);
             return;
         }
+
         const foundConfig = configFiles.pop();
+
         opts = await finalize(foundConfig, args);
+
         return;
     }
 };
@@ -149,61 +150,68 @@ const finalize = async (moduleObj, args) => {
     if (!moduleObj) {
         return newOptionsObject;
     }
-    const configPath = moduleObj.path;
-    const configOptions = moduleObj.content;
-    if (typeof configOptions === 'function') {
-        // when config is a function, pass the env from args to the config function
-        let formattedEnv;
-        if (Array.isArray(env)) {
-            formattedEnv = env.reduce((envObject, envOption) => {
-                envObject[envOption] = true;
-                return envObject;
-            }, {});
-        }
-        const newOptions = configOptions(formattedEnv, args);
-        // When config function returns a promise, resolve it, if not it's resolved by default
-        newOptionsObject['options'] = await Promise.resolve(newOptions);
-    } else if (configName) {
-        if (Array.isArray(configOptions) && configOptions.length > 1) {
-            // In case of exporting multiple configurations, If you pass a name to --config-name flag,
-            // webpack will only build that specific configuration.
-            const namedOptions = configOptions.filter((opt) => configName.includes(opt.name));
-            if (namedOptions.length === 0) {
-                logger.error(`Configuration with name "${configName}" was not found.`);
-                process.exit(2);
-            } else {
-                newOptionsObject['options'] = namedOptions;
+
+    const config = moduleObj.config;
+
+    const isMultiCompilerMode = Array.isArray(config);
+    const rawConfigs = isMultiCompilerMode ? config : [config];
+
+    let configs = await Promise.all(
+        rawConfigs.map(async (rawConfig) => {
+            const isPromise = typeof rawConfig.then === 'function';
+
+            if (isPromise) {
+                rawConfig = await rawConfig;
             }
-        } else {
-            logger.error('Multiple configurations not found. Please use "--config-name" with multiple configurations.');
+
+            // `Promise` may return `Function`
+            if (typeof rawConfig === 'function') {
+                // when config is a function, pass the env from args to the config function
+                rawConfig = await rawConfig(env, args);
+            }
+
+            return rawConfig;
+        }),
+    );
+
+    if (configName) {
+        const foundConfigNames = [];
+
+        configs = configs.filter((options) => {
+            const found = configName.includes(options.name);
+
+            if (found) {
+                foundConfigNames.push(options.name);
+            }
+
+            return found;
+        });
+
+        if (foundConfigNames.length !== configName.length) {
+            // Configuration with name "test" was not found.
+            logger.error(
+                configName
+                    .filter((name) => !foundConfigNames.includes(name))
+                    .map((configName) => `Configuration with name "${configName}" was not found.`)
+                    .join('\n'),
+            );
             process.exit(2);
         }
-    } else {
-        if (Array.isArray(configOptions) && !configOptions.length) {
-            newOptionsObject['options'] = {};
-            return newOptionsObject;
-        }
-
-        newOptionsObject['options'] = configOptions;
     }
 
-    if (configOptions && configPath.includes('.webpack')) {
-        const currentPath = configPath;
-        const parentContext = dirname(currentPath).split(sep).slice(0, -1).join(sep);
-        if (Array.isArray(configOptions)) {
-            configOptions.forEach((config) => {
-                config.context = config.context || parentContext;
-            });
-        } else {
-            configOptions.context = configOptions.context || parentContext;
-        }
-        newOptionsObject['options'] = configOptions;
+    if (configs.length === 0) {
+        logger.error('No configurations found');
+        process.exit(2);
     }
+
+    newOptionsObject['options'] = isMultiCompilerMode ? configs : configs[0];
+
     return newOptionsObject;
 };
 
 const resolveConfigMerging = async (args) => {
     const { merge } = args;
+
     if (merge) {
         // Get the current configuration options
         const { options: configOptions } = opts;
@@ -212,19 +220,18 @@ const resolveConfigMerging = async (args) => {
         // either by passing multiple configs by flags or passing a
         // single config exporting an array
         if (!Array.isArray(configOptions)) {
-            throw new ConfigError('Atleast two configurations are required for merge.', 'MergeError');
+            logger.error('At least two configurations are required for merge.');
+            process.exit(2);
         }
 
         // We return a single config object which is passed to the compiler
-        const mergedOptions = configOptions.reduce((currentConfig, mergedConfig) => webpackMerge(currentConfig, mergedConfig), {});
-        opts['options'] = mergedOptions;
+        opts['options'] = configOptions.reduce((currentConfig, mergedConfig) => webpackMerge(currentConfig, mergedConfig), {});
     }
 };
 
-const handleConfigResolution = async (args) => {
+module.exports = async (args) => {
     await resolveConfigFiles(args);
     await resolveConfigMerging(args);
+
     return opts;
 };
-
-module.exports = handleConfigResolution;

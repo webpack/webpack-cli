@@ -7,7 +7,6 @@ packages/generators/lib
 packages/info/lib
 packages/init/lib
 packages/migrate/lib
-packages/package-utils/lib
 packages/serve/lib
 packages/utils/lib
 packages/webpack-scaffold/lib
@@ -16,6 +15,7 @@ test/**/bin/
 test/**/binary/
 test/**/index.js
 test/typescript/webpack.config.ts
+test/config/error/syntax-error.js
 test/plugin/test-plugin/test/test-utils.js
 test/plugin/test-plugin/test/functional.test.js
 test/plugin/test-plugin/examples/simple/src/static-esm-module.js

@@ -1,8 +1,0 @@
-test/fixtures
-types
-templates/test
-**/__mocks__/**
-**/__tests__/**
-src
-tsconfig.json
-tsconfig.tsbuildinfo

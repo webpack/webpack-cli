@@ -1,10 +1,16 @@
+const { packageExists } = require('./utils/package-exists');
+const webpack = packageExists('webpack') ? require('webpack') : undefined;
+const logger = require('./utils/logger');
 const webpackMerge = require('webpack-merge');
 const GroupHelper = require('./utils/GroupHelper');
-const { Compiler } = require('./utils/Compiler');
 const { groups, core } = require('./utils/cli-flags');
 const argParser = require('./utils/arg-parser');
 const { outputStrategy } = require('./utils/merge-strategies');
 const { toKebabCase } = require('./utils/helpers');
+const assignFlagDefaults = require('./utils/flag-defaults');
+const { writeFileSync } = require('fs');
+const { options: coloretteOptions } = require('colorette');
+const WebpackCLIPlugin = require('./plugins/WebpackCLIPlugin');
 
 // CLI arg resolvers
 const handleConfigResolution = require('./groups/ConfigGroup');
@@ -18,7 +24,6 @@ class WebpackCLI extends GroupHelper {
     constructor() {
         super();
         this.groupMap = new Map();
-        this.compilation = new Compiler();
         this.compilerConfiguration = {};
         this.outputConfiguration = {};
     }
@@ -44,19 +49,20 @@ class WebpackCLI extends GroupHelper {
      * @private\
      * @returns {void}
      */
-    _handleCoreFlags() {
-        if (!this.groupMap.has('core')) {
-            return;
+    _handleCoreFlags(parsedArgs) {
+        if (this.groupMap.has('core')) {
+            const coreFlags = this.groupMap.get('core');
+
+            // convert all the flags from map to single object
+            const coreConfig = coreFlags.reduce((allFlag, curFlag) => ({ ...allFlag, ...curFlag }), {});
+            const coreCliHelper = require('webpack').cli;
+            const coreCliArgs = coreCliHelper.getArguments();
+            // Merge the core flag config with the compilerConfiguration
+            coreCliHelper.processArguments(coreCliArgs, this.compilerConfiguration, coreConfig);
+            // Assign some defaults to core flags
         }
-        const coreFlags = this.groupMap.get('core');
-
-        // convert all the flags from map to single object
-        const coreConfig = coreFlags.reduce((allFlag, curFlag) => ({ ...allFlag, ...curFlag }), {});
-
-        const coreCliHelper = require('webpack').cli;
-        const coreCliArgs = coreCliHelper.getArguments();
-        // Merge the core flag config with the compilerConfiguration
-        coreCliHelper.processArguments(coreCliArgs, this.compilerConfiguration, coreConfig);
+        const configWithDefaults = assignFlagDefaults(this.compilerConfiguration, parsedArgs);
+        this._mergeOptionsToConfiguration(configWithDefaults);
     }
 
     async _baseResolver(cb, parsedArgs, strategy) {
@@ -193,7 +199,7 @@ class WebpackCLI extends GroupHelper {
             .then(() => this._baseResolver(handleConfigResolution, parsedArgs))
             .then(() => this._baseResolver(resolveMode, parsedArgs))
             .then(() => this._baseResolver(resolveOutput, parsedArgs, outputStrategy))
-            .then(() => this._handleCoreFlags())
+            .then(() => this._handleCoreFlags(parsedArgs))
             .then(() => this._baseResolver(basicResolver, parsedArgs))
             .then(() => this._baseResolver(resolveAdvanced, parsedArgs))
             .then(() => this._baseResolver(resolveStats, parsedArgs))
@@ -203,24 +209,130 @@ class WebpackCLI extends GroupHelper {
     async processArgs(args, cliOptions) {
         this.setMappedGroups(args, cliOptions);
         this.resolveGroups(args);
-        const groupResult = await this.runOptionGroups(args);
-        return groupResult;
+
+        return this.runOptionGroups(args);
+    }
+
+    handleError(error) {
+        // https://github.com/webpack/webpack/blob/master/lib/index.js#L267
+        // https://github.com/webpack/webpack/blob/v4.44.2/lib/webpack.js#L90
+        const ValidationError = webpack.ValidationError || webpack.WebpackOptionsValidationError;
+
+        // In case of schema errors print and exit process
+        // For webpack@4 and webpack@5
+        if (error instanceof ValidationError) {
+            logger.error(error.message);
+        } else {
+            logger.error(error);
+        }
+    }
+
+    createCompiler(options, callback) {
+        let compiler;
+
+        try {
+            compiler = webpack(options, callback);
+        } catch (error) {
+            this.handleError(error);
+            process.exit(2);
+        }
+
+        return compiler;
     }
 
     async getCompiler(args, cliOptions) {
         await this.processArgs(args, cliOptions);
-        await this.compilation.createCompiler(this.compilerConfiguration);
-        return this.compilation.compiler;
+
+        return this.createCompiler(this.compilerConfiguration);
     }
 
     async run(args, cliOptions) {
         await this.processArgs(args, cliOptions);
-        await this.compilation.createCompiler(this.compilerConfiguration);
-        const webpack = await this.compilation.webpackInstance({
-            options: this.compilerConfiguration,
-            outputOptions: this.outputConfiguration,
-        });
-        return webpack;
+
+        let compiler;
+
+        let options = this.compilerConfiguration;
+        let outputOptions = this.outputConfiguration;
+
+        const isRawOutput = typeof outputOptions.json === 'undefined';
+
+        if (isRawOutput) {
+            const webpackCLIPlugin = new WebpackCLIPlugin({
+                progress: outputOptions.progress,
+            });
+
+            const addPlugin = (options) => {
+                if (!options.plugins) {
+                    options.plugins = [];
+                }
+                options.plugins.unshift(webpackCLIPlugin);
+            };
+            if (Array.isArray(options)) {
+                options.forEach(addPlugin);
+            } else {
+                addPlugin(options);
+            }
+        }
+
+        const callback = (error, stats) => {
+            if (error) {
+                this.handleError(error);
+                process.exit(2);
+            }
+
+            if (stats.hasErrors()) {
+                process.exitCode = 1;
+            }
+
+            const getStatsOptions = (stats) => {
+                // TODO remove after drop webpack@4
+                if (webpack.Stats && webpack.Stats.presetToOptions) {
+                    if (!stats) {
+                        stats = {};
+                    } else if (typeof stats === 'boolean' || typeof stats === 'string') {
+                        stats = webpack.Stats.presetToOptions(stats);
+                    }
+                }
+
+                stats.colors = typeof stats.colors !== 'undefined' ? stats.colors : coloretteOptions.enabled;
+
+                return stats;
+            };
+
+            const getStatsOptionsFromCompiler = (compiler) => getStatsOptions(compiler.options ? compiler.options.stats : undefined);
+
+            const foundStats = compiler.compilers
+                ? { children: compiler.compilers.map(getStatsOptionsFromCompiler) }
+                : getStatsOptionsFromCompiler(compiler);
+
+            if (outputOptions.json === true) {
+                process.stdout.write(JSON.stringify(stats.toJson(foundStats), null, 2) + '\n');
+            } else if (typeof outputOptions.json === 'string') {
+                const JSONStats = JSON.stringify(stats.toJson(foundStats), null, 2);
+
+                try {
+                    writeFileSync(outputOptions.json, JSONStats);
+
+                    logger.success(`stats are successfully stored as json to ${outputOptions.json}`);
+                } catch (error) {
+                    logger.error(error);
+
+                    process.exit(2);
+                }
+            } else {
+                logger.raw(`${stats.toString(foundStats)}`);
+            }
+        };
+
+        compiler = this.createCompiler(options, callback);
+
+        if (compiler && outputOptions.interactive) {
+            const interactive = require('./utils/interactive');
+
+            interactive(compiler, options, outputOptions);
+        }
+
+        return Promise.resolve();
     }
 }
 

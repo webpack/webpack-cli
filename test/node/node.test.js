@@ -29,7 +29,7 @@ describe('node flags', () => {
 
     it('throws an error if no values were supplied with --max-old-space-size', async () => {
         const { stderr, stdout } = await run(__dirname, [], false, ['--max-old-space-size']);
-        expect(stderr).toContain('missing value for flag --max-old-space-size');
+        expect(stderr).toContain('value for flag --max-old-space-size');
         expect(stdout).toBeFalsy();
     });
 

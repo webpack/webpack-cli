@@ -43,7 +43,7 @@ describe('--target flag', () => {
     it(`should throw error with invalid value for --target`, () => {
         const { stderr } = run(__dirname, ['--target', 'invalid']);
         if (isWebpack5) {
-            expect(stderr).toContain(`Error: Unknown target 'invalid'`);
+            expect(stderr).toContain(`Unknown target 'invalid'`);
         } else {
             expect(stderr).toContain('Invalid configuration object');
         }

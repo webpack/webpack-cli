@@ -8,9 +8,6 @@ const firstPrompt = '? Plugin name';
 const pluginName = 'test-plugin';
 const pluginPath = join(__dirname, pluginName);
 
-// Since scaffolding is time consuming
-jest.setTimeout(60000);
-
 describe('plugin command', () => {
     beforeAll(() => {
         rimraf.sync(pluginPath);

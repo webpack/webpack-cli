@@ -1,6 +1,5 @@
 const { existsSync } = require('fs');
 const { resolve } = require('path');
-// eslint-disable-next-line node/no-missing-require
 const { run } = require('../../utils/test-utils');
 
 describe('Multiple config flag: ', () => {

@@ -1,12 +1,11 @@
-jest.setMock('@webpack-cli/package-utils', {
+jest.setMock('@webpack-cli/utils', {
     getPackageManager: jest.fn(),
 });
 
 import fs from 'fs';
 import path from 'path';
-import mkdirp from 'mkdirp';
 import rimraf from 'rimraf';
-import { getPackageManager } from '@webpack-cli/package-utils';
+import { getPackageManager } from 'webpack-cli/lib/utils/get-package-manager';
 import addonGenerator from '../src/addon-generator';
 
 // TODO: enable after jest release
@@ -22,7 +21,7 @@ describe.skip('addon generator', () => {
 
     beforeAll(() => {
         rimraf.sync(testAssetsPath);
-        mkdirp.sync(genPath);
+        fs.mkdirSync(genPath, { recursive: true });
         // set the working directory to here so that the addon directory is
         // generated in ./test-assets/test-addon
         process.chdir(genPath);

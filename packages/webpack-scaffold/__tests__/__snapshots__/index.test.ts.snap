@@ -59,12 +59,17 @@ Collection {
       "value": Node {
         "end": 4,
         "errors": Array [],
+        "extra": undefined,
+        "innerComments": undefined,
+        "leadingComments": undefined,
         "loc": SourceLocation {
           "end": Object {
             "column": 4,
             "line": 1,
             "token": 1,
           },
+          "filename": undefined,
+          "identifierName": undefined,
           "indent": 0,
           "lines": Lines {
             "cachedSourceMap": null,
@@ -96,6 +101,8 @@ Collection {
                   "line": 1,
                   "token": 1,
                 },
+                "filename": undefined,
+                "identifierName": undefined,
                 "start": Position {
                   "column": 4,
                   "line": 1,
@@ -122,13 +129,18 @@ Collection {
         "program": Node {
           "body": Array [],
           "end": 4,
+          "extra": undefined,
+          "innerComments": undefined,
           "interpreter": null,
+          "leadingComments": undefined,
           "loc": SourceLocation {
             "end": Position {
               "column": 4,
               "line": 1,
               "token": 1,
             },
+            "filename": undefined,
+            "identifierName": undefined,
             "indent": 4,
             "lines": Lines {
               "cachedSourceMap": null,
@@ -160,6 +172,8 @@ Collection {
                     "line": 1,
                     "token": 1,
                   },
+                  "filename": undefined,
+                  "identifierName": undefined,
                   "start": Position {
                     "column": 4,
                     "line": 1,
@@ -183,10 +197,13 @@ Collection {
               },
             ],
           },
+          "range": undefined,
           "sourceType": "module",
           "start": 0,
+          "trailingComments": undefined,
           "type": "Program",
         },
+        "range": undefined,
         "start": 0,
         "tokens": Array [
           Token {
@@ -197,6 +214,8 @@ Collection {
                 "line": 1,
                 "token": 1,
               },
+              "filename": undefined,
+              "identifierName": undefined,
               "start": Position {
                 "column": 4,
                 "line": 1,
@@ -219,6 +238,7 @@ Collection {
             "value": "",
           },
         ],
+        "trailingComments": undefined,
         "type": "File",
       },
     },
@@ -242,12 +262,17 @@ Collection {
       "value": Node {
         "end": 5,
         "errors": Array [],
+        "extra": undefined,
+        "innerComments": undefined,
+        "leadingComments": undefined,
         "loc": SourceLocation {
           "end": Object {
             "column": 5,
             "line": 1,
             "token": 2,
           },
+          "filename": undefined,
+          "identifierName": undefined,
           "indent": 0,
           "lines": Lines {
             "cachedSourceMap": null,
@@ -279,6 +304,8 @@ Collection {
                   "line": 1,
                   "token": 2,
                 },
+                "filename": undefined,
+                "identifierName": undefined,
                 "start": Position {
                   "column": 0,
                   "line": 1,
@@ -308,6 +335,8 @@ Collection {
                   "column": 5,
                   "line": 1,
                 },
+                "filename": undefined,
+                "identifierName": undefined,
                 "start": Position {
                   "column": 5,
                   "line": 1,
@@ -337,12 +366,16 @@ Collection {
               "end": 5,
               "expression": Node {
                 "end": 5,
+                "extra": undefined,
+                "innerComments": undefined,
+                "leadingComments": undefined,
                 "loc": SourceLocation {
                   "end": Position {
                     "column": 5,
                     "line": 1,
                     "token": 2,
                   },
+                  "filename": undefined,
                   "identifierName": "hello",
                   "indent": 0,
                   "lines": Lines {
@@ -375,6 +408,8 @@ Collection {
                           "line": 1,
                           "token": 2,
                         },
+                        "filename": undefined,
+                        "identifierName": undefined,
                         "start": Position {
                           "column": 0,
                           "line": 1,
@@ -404,6 +439,8 @@ Collection {
                           "column": 5,
                           "line": 1,
                         },
+                        "filename": undefined,
+                        "identifierName": undefined,
                         "start": Position {
                           "column": 5,
                           "line": 1,
@@ -428,15 +465,22 @@ Collection {
                   ],
                 },
                 "name": "hello",
+                "range": undefined,
                 "start": 0,
+                "trailingComments": undefined,
                 "type": "Identifier",
               },
+              "extra": undefined,
+              "innerComments": undefined,
+              "leadingComments": undefined,
               "loc": SourceLocation {
                 "end": Position {
                   "column": 5,
                   "line": 1,
                   "token": 2,
                 },
+                "filename": undefined,
+                "identifierName": undefined,
                 "indent": 0,
                 "lines": Lines {
                   "cachedSourceMap": null,
@@ -468,6 +512,8 @@ Collection {
                         "line": 1,
                         "token": 2,
                       },
+                      "filename": undefined,
+                      "identifierName": undefined,
                       "start": Position {
                         "column": 0,
                         "line": 1,
@@ -497,6 +543,8 @@ Collection {
                         "column": 5,
                         "line": 1,
                       },
+                      "filename": undefined,
+                      "identifierName": undefined,
                       "start": Position {
                         "column": 5,
                         "line": 1,
@@ -520,18 +568,25 @@ Collection {
                   },
                 ],
               },
+              "range": undefined,
               "start": 0,
+              "trailingComments": undefined,
               "type": "ExpressionStatement",
             },
           ],
           "end": 5,
+          "extra": undefined,
+          "innerComments": undefined,
           "interpreter": null,
+          "leadingComments": undefined,
           "loc": SourceLocation {
             "end": Object {
               "column": 5,
               "line": 1,
               "token": 2,
             },
+            "filename": undefined,
+            "identifierName": undefined,
             "indent": 0,
             "lines": Lines {
               "cachedSourceMap": null,
@@ -563,6 +618,8 @@ Collection {
                     "line": 1,
                     "token": 2,
                   },
+                  "filename": undefined,
+                  "identifierName": undefined,
                   "start": Position {
                     "column": 0,
                     "line": 1,
@@ -592,6 +649,8 @@ Collection {
                     "column": 5,
                     "line": 1,
                   },
+                  "filename": undefined,
+                  "identifierName": undefined,
                   "start": Position {
                     "column": 5,
                     "line": 1,
@@ -615,10 +674,13 @@ Collection {
               },
             ],
           },
+          "range": undefined,
           "sourceType": "module",
           "start": 0,
+          "trailingComments": undefined,
           "type": "Program",
         },
+        "range": undefined,
         "start": 0,
         "tokens": Array [
           Token {
@@ -629,6 +691,8 @@ Collection {
                 "line": 1,
                 "token": 2,
               },
+              "filename": undefined,
+              "identifierName": undefined,
               "start": Position {
                 "column": 0,
                 "line": 1,
@@ -658,6 +722,8 @@ Collection {
                 "column": 5,
                 "line": 1,
               },
+              "filename": undefined,
+              "identifierName": undefined,
               "start": Position {
                 "column": 5,
                 "line": 1,
@@ -680,6 +746,7 @@ Collection {
             "value": "",
           },
         ],
+        "trailingComments": undefined,
         "type": "File",
       },
     },

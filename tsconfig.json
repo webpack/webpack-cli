@@ -26,7 +26,6 @@
     { "path": "packages/info" },
     { "path": "packages/init" },
     { "path": "packages/migrate" },
-    { "path": "packages/package-utils" },
     { "path": "packages/serve" },
     { "path": "packages/utils" },
     // { "path": "packages/webpack-cli" },
