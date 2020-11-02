@@ -3,6 +3,7 @@ const { core } = require('./utils/cli-flags');
 const logger = require('./utils/logger');
 const { isCommandUsed } = require('./utils/arg-utils');
 const argParser = require('./utils/arg-parser');
+const leven = require('leven');
 
 process.title = 'webpack-cli';
 
@@ -39,6 +40,11 @@ const runCLI = async (cliArgs) => {
         if (parsedArgs.unknownArgs.length > 0) {
             parsedArgs.unknownArgs.forEach(async (unknown) => {
                 logger.error(`Unknown argument: ${unknown}`);
+                const strippedFlag = unknown.substr(2);
+                const { name: suggestion } = core.find((flag) => leven(strippedFlag, flag.name) < 3);
+                if (suggestion) {
+                    logger.raw(`Did you mean --${suggestion}?`);
+                }
             });
 
             process.exit(2);
