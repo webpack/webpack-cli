@@ -1,8 +1,4 @@
 import { devServerOptionsType } from './types';
-// eslint-disable-next-line node/no-extraneous-import
-import { version } from 'webpack-dev-server/package.json';
-
-const isDevServer4 = version.startsWith('4');
 
 /**
  *
@@ -14,6 +10,10 @@ const isDevServer4 = version.startsWith('4');
  */
 export default function createConfig(args): devServerOptionsType {
     const options = { ...args };
+    // eslint-disable-next-line node/no-extraneous-require
+    const version = require('webpack-dev-server/package.json').version;
+
+    const isDevServer4 = version.startsWith('4');
 
     if (options.clientLogging) {
         options.client = {
