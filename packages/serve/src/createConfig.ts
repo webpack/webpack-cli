@@ -10,15 +10,15 @@ import { devServerOptionsType } from './types';
  */
 export default function createConfig(args): devServerOptionsType {
     const options = { ...args };
-    let isDevServer4 = false;
+    let isDevServer4 = false,
+        devServerVersion;
     try {
         // eslint-disable-next-line node/no-extraneous-require
-        const version = require('webpack-dev-server/package.json').version;
-
-        isDevServer4 = version.startsWith('4');
+        devServerVersion = require('webpack-dev-server/package.json').version;
     } catch (err) {
         throw new Error(`You need to install 'webpack-dev-server' for running 'webpack serve'.\n${err}`);
     }
+    isDevServer4 = devServerVersion.startsWith('4');
 
     if (options.clientLogging) {
         options.client = {
