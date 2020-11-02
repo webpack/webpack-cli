@@ -1,4 +1,8 @@
 import { devServerOptionsType } from './types';
+// eslint-disable-next-line node/no-extraneous-import
+import { version } from 'webpack-dev-server/package.json';
+
+const isDevServer4 = version.startsWith('4');
 
 /**
  *
@@ -18,10 +22,18 @@ export default function createConfig(args): devServerOptionsType {
         // clientLogging is not a valid devServer option
         delete options.clientLogging;
     }
-
-    // only apply hotOnly when both are supplied
-    if (options.hot && options.hotOnly) {
-        delete options.hot;
+    if (isDevServer4) {
+        if (options.hotOnly) {
+            options.hot = 'only';
+            // hotOnly is not a valid devServer option
+            delete options.hotOnly;
+        }
+    } else {
+        // only apply hotOnly when both are supplied
+        if (options.hot && options.hotOnly) {
+            delete options.hot;
+        }
     }
+
     return options;
 }
