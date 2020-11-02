@@ -5,7 +5,11 @@ const { run } = require('../../utils/test-utils');
 
 describe('source-map object', () => {
     it('should not write a source map for obj config', (done) => {
-        run(__dirname, ['-c', './webpack.eval.config.js']);
+        const { stderr, stdout, exitCode } = run(__dirname, ['-c', './webpack.eval.config.js']);
+
+        expect(stderr).toBeFalsy();
+        expect(stdout).toBeTruthy();
+        expect(exitCode).toBe(0);
         readdir(resolve(__dirname, 'bin'), (err, files) => {
             expect(files.length).toBeGreaterThanOrEqual(1);
             expect(err).toBe(null);
@@ -14,8 +18,11 @@ describe('source-map object', () => {
     });
 
     it('should write a sourcemap file', (done) => {
-        const { stderr } = run(__dirname, ['-c', './webpack.source.config.js'], false);
-        expect(stderr).toBe('');
+        const { stderr, stdout, exitCode } = run(__dirname, ['-c', './webpack.source.config.js'], false);
+
+        expect(stderr).toBeFalsy();
+        expect(stdout).toBeTruthy();
+        expect(exitCode).toBe(0);
         stat(resolve(__dirname, 'dist/dist-amd.js.map'), (err, stats) => {
             expect(err).toBe(null);
             expect(stats.isFile()).toBe(true);

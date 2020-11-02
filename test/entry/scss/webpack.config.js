@@ -1,4 +1,3 @@
-/* eslint-disable   node/no-missing-require */
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {

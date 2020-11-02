@@ -5,7 +5,10 @@ const { run } = require('../../../utils/test-utils');
 
 describe('default entry and config entry all exist', () => {
     it('should use config entry if config entry existed', () => {
-        const { stdout, stderr } = run(__dirname, [], false);
+        const { stdout, stderr, exitCode } = run(__dirname, [], false);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
         // Should contain the relevant entry
         expect(stdout).toContain('./src/app.js');
         expect(stdout).toContain('./src/print.js');
