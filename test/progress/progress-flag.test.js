@@ -1,6 +1,6 @@
 'use strict';
 
-const { run, isWebpack5} = require('../utils/test-utils');
+const { run, isWebpack5 } = require('../utils/test-utils');
 
 describe('progress flag', () => {
     it('should show progress', () => {
