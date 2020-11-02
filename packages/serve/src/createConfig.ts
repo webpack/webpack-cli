@@ -19,11 +19,9 @@ export default function createConfig(args): devServerOptionsType {
         delete options.clientLogging;
     }
 
-    if (options.hotOnly) {
-        options.hot = 'only';
-        // hotOnly is not a valid devServer option
-        delete options.hotOnly;
+    // only apply hotOnly when both are supplied
+    if (options.hot && options.hotOnly) {
+        delete options.hot;
     }
-
     return options;
 }

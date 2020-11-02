@@ -27,7 +27,7 @@ describe('createConfig', () => {
             hotOnly: true,
         };
         expect(createConfig(args)).toEqual({
-            hot: 'only',
+            hotOnly: true,
         });
     });
 
@@ -37,7 +37,7 @@ describe('createConfig', () => {
             hotOnly: true,
         };
         expect(createConfig(args)).toEqual({
-            hot: 'only',
+            hotOnly: true,
         });
     });
 });

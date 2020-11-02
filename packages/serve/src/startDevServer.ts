@@ -22,7 +22,6 @@ export default function startDevServer(compiler, devServerArgs): object[] {
     const usedPorts: number[] = [];
     devServerOptions.forEach((devServerOpts): void => {
         const options = mergeOptions(cliOptions, devServerOpts);
-
         options.host = options.host || 'localhost';
         options.port = options.port || 8080;
 
