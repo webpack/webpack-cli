@@ -7,7 +7,7 @@ const { version } = require('webpack');
 const wordsInStatsv4 = ['Hash', 'Version', 'Time', 'Built at:', 'main-first.js', 'main-second.js'];
 const wordsInStatsv5 = ['asset', 'index.js', 'compiled successfully'];
 
-describe('--interactive flag with multi compiler', () => {
+describe.skip('--interactive flag with multi compiler', () => {
     it('should output in interactive with --watch and --interactive', (done) => {
         const proc = runAndGetWatchProc(__dirname, ['--watch', '--interactive'], false, '', true);
         let semaphore = 2;
