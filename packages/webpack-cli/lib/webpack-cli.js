@@ -42,7 +42,6 @@ class WebpackCLI {
                 return acc;
             }, {});
         const coreCliArgs = coreCliHelper.getArguments();
-        console.log(coreCliArgs, coreCliHelper);
         // Merge the core flag config with the compilerConfiguration
         coreCliHelper.processArguments(coreCliArgs, this.compilerConfiguration, coreConfig);
         // Assign some defaults to core flags
