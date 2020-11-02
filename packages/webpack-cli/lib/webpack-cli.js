@@ -31,6 +31,8 @@ class WebpackCLI {
      * @returns {void}
      */
     _handleCoreFlags(parsedArgs) {
+        const coreCliHelper = require('webpack').cli;
+        if (!coreCliHelper) return;
         const coreConfig = Object.keys(parsedArgs)
             .filter((arg) => {
                 return coreFlagMap.has(toKebabCase(arg));
@@ -39,8 +41,8 @@ class WebpackCLI {
                 acc[toKebabCase(cur)] = parsedArgs[cur];
                 return acc;
             }, {});
-        const coreCliHelper = require('webpack').cli;
         const coreCliArgs = coreCliHelper.getArguments();
+        console.log(coreCliArgs, coreCliHelper);
         // Merge the core flag config with the compilerConfiguration
         coreCliHelper.processArguments(coreCliArgs, this.compilerConfiguration, coreConfig);
         // Assign some defaults to core flags
