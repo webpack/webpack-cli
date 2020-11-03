@@ -214,7 +214,7 @@ const finalize = async (moduleObj, args) => {
         process.exit(2);
     }
 
-    newOptionsObject['options'] = isMultiCompilerMode || Array.isArray(configs) ? configs : configs[0];
+    newOptionsObject['options'] = Array.isArray(configs) && configs.length > 1 ? configs : configs[0];
 
     return newOptionsObject;
 };
