@@ -1,7 +1,7 @@
 'use strict';
 
 const { resolve } = require('path');
-const { run, isWindows } = require('../utils/test-utils');
+const { run, isWindows, isWebpack5 } = require('../utils/test-utils');
 
 describe('--context flag', () => {
     it('should allow to set context', () => {
@@ -9,8 +9,8 @@ describe('--context flag', () => {
 
         expect(stderr).toBeFalsy();
         expect(exitCode).toBe(0);
-        if (isWindows) {
-            expect(stdout).toContain('core-flags');
+        if (isWindows && !isWebpack5) {
+            expect(stdout).toContain(`context: 'D:\\\\a\\\\webpack-cli\\\\webpack-cli\\\\test\\\\core-flags'`);
         } else {
             expect(stdout).toContain(`context: '${resolve(__dirname, './')}'`);
         }
