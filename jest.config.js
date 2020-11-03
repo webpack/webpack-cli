@@ -8,7 +8,7 @@ module.exports = {
     // transformIgnorePatterns: ['<rootDir>.*(node_modules)(?!.*webpack-cli.*).*$'],
     testEnvironment: 'node',
     collectCoverage: true,
-    coverageReporters: ['json', 'html', 'cobertura'],
+    coverageReporters: ['none'],
     transform: {
         '^.+\\.(ts)?$': 'ts-jest',
     },

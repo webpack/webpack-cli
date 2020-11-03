@@ -28,7 +28,6 @@
     { "path": "packages/migrate" },
     { "path": "packages/serve" },
     { "path": "packages/utils" },
-    // { "path": "packages/webpack-cli" },
     { "path": "packages/webpack-scaffold" }
   ]
 }

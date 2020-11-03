@@ -1,4 +1,4 @@
-comment: off
+comment: on
 
 parsers:
   javascript:
