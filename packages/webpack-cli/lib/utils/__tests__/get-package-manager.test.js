@@ -9,7 +9,7 @@ const syncMock = jest.fn(() => {
 jest.setMock('execa', {
     sync: syncMock,
 });
-const { getPackageManager } = require('../get-package-manager');
+const getPackageManager = require('../get-package-manager');
 
 jest.mock('cross-spawn');
 const globalModulesNpmValue = 'test-npm';

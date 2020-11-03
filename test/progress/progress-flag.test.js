@@ -18,9 +18,6 @@ describe('progress flag', () => {
         expect(exitCode).toBe(0);
         if (isWebpack5) {
             expect(stderr).toMatch(/\[webpack\.Progress] \d+ ms setup/);
-        } else {
-            // TODO fix it
-            expect(stderr).not.toMatch(/\[webpack\.Progress] \d+ ms setup/);
         }
         expect(stderr).toContain('[webpack.Progress] 100%');
         expect(stdout).toContain('main.js');
@@ -30,7 +27,7 @@ describe('progress flag', () => {
         const { stderr, stdout, exitCode } = run(__dirname, ['--progress=unknown']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain('Invalid unknown value for the progress option. Allowed value is profile.');
+        expect(stderr).toContain(`'unknown' is an invalid value for the --progress option. Only 'profile' is allowed.`);
         expect(stdout).toBeFalsy();
     });
 

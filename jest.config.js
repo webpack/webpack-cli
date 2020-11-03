@@ -17,5 +17,6 @@ module.exports = {
     watchPlugins: ['jest-watch-typeahead/filename', 'jest-watch-typeahead/testname'],
     setupFilesAfterEnv: ['<rootDir>/setupTest.js'],
     globalTeardown: '<rootDir>/scripts/cleanupTest.js',
+    globalSetup: '<rootDir>/scripts/globalSetup.js',
     modulePathIgnorePatterns: ['<rootDir>/test/loader/test-loader', '<rootDir>/test/plugin/test-plugin'],
 };

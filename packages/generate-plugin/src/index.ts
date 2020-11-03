@@ -1,6 +1,8 @@
 import { pluginGenerator } from '@webpack-cli/generators';
 import yeoman from 'yeoman-environment';
-import logger from 'webpack-cli/lib/utils/logger';
+import { utils } from 'webpack-cli';
+
+const { logger } = utils;
 
 /**
  * Runs a yeoman generator to create a new webpack plugin project

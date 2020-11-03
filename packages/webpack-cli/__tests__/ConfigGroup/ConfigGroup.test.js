@@ -55,4 +55,14 @@ describe('ConfigGroup', function () {
         expect(result.options).toEqual(expectedOptions);
         expect(result.outputOptions).toEqual({});
     });
+
+    it('should handle different env formats', async () => {
+        const result = await ConfigGroup({
+            env: { test: true, name: 'Hisoka' },
+            config: [resolve(__dirname, './env.webpack.config.cjs')],
+        });
+        const expectedOptions = { mode: 'staging', name: 'Hisoka' };
+        expect(result.options).toEqual(expectedOptions);
+        expect(result.outputOptions).toEqual({});
+    });
 });

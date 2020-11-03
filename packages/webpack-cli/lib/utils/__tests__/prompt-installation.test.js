@@ -16,11 +16,9 @@ jest.setMock('../package-exists', {
     packageExists: jest.fn(),
 });
 
-jest.setMock('../get-package-manager', {
-    getPackageManager: jest.fn(),
-});
+jest.setMock('../get-package-manager', jest.fn());
 
-const { getPackageManager } = require('../get-package-manager');
+const getPackageManager = require('../get-package-manager');
 const { packageExists } = require('../package-exists');
 const { promptInstallation } = require('../prompt-installation');
 const { runCommand } = require('../run-command');

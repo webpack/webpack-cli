@@ -1,7 +1,8 @@
 import envinfo from 'envinfo';
-import logger from 'webpack-cli/lib/utils/logger';
-import { commands } from 'webpack-cli/lib/utils/cli-flags';
 import WebpackCLI from 'webpack-cli';
+import { utils } from 'webpack-cli';
+
+const { logger, commands } = utils;
 
 interface Information {
     Binaries?: string[];
@@ -53,7 +54,8 @@ export default async function info(...args): Promise<string[]> {
                 envinfoConfig['json'] = true;
                 break;
             default:
-                logger.error(`${infoArgs.output} is not a valid value for output\n`);
+                logger.error(`'${infoArgs.output}' is not a valid value for output`);
+                process.exit(2);
         }
     }
 

@@ -30,6 +30,4 @@ function getPackageManager() {
     return 'npm';
 }
 
-module.exports = {
-    getPackageManager,
-};
+module.exports = getPackageManager;

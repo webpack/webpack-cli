@@ -4,7 +4,7 @@ const { runAndGetWatchProc } = require('../utils/test-utils');
 
 describe('--analyze flag', () => {
     it('should load webpack-bundle-analyzer plugin with --analyze flag', (done) => {
-        const proc = runAndGetWatchProc(__dirname, ['--analyze', '--watch'], false, '', true);
+        const proc = runAndGetWatchProc(__dirname, ['--analyze'], false, '', true);
 
         proc.stdout.on('data', (chunk) => {
             const data = chunk.toString();
