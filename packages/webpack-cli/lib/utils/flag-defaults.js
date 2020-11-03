@@ -10,7 +10,6 @@ const cacheDefaults = (finalConfig, parsedArgs, outputOptions) => {
         }
         return { cache: cacheConfig };
     }
-    console.log({ cacheConfig, outputOptions });
     return cacheConfig;
 };
 
