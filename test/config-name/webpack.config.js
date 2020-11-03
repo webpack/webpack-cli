@@ -6,7 +6,6 @@ module.exports = [
         name: 'first',
         entry: './src/first.js',
         mode: 'development',
-        stats: 'minimal',
     },
     {
         output: {
@@ -15,7 +14,6 @@ module.exports = [
         name: 'second',
         entry: './src/second.js',
         mode: 'production',
-        stats: 'minimal',
     },
     {
         output: {
