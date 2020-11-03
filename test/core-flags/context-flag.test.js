@@ -10,7 +10,8 @@ describe('--context flag', () => {
         expect(stderr).toBeFalsy();
         expect(exitCode).toBe(0);
         if (isWindows) {
-            expect(stdout).toContain(`context: 'D:\\\\a\\\\webpack-cli\\\\webpack-cli\\\\test\\\\core-flags'`);
+            const windowsPath = resolve(__dirname, './').replace(/\\/g, '\\\\');
+            expect(stdout).toContain(windowsPath);
         } else {
             expect(stdout).toContain(`context: '${resolve(__dirname, './')}'`);
         }
