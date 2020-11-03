@@ -158,7 +158,7 @@ const finalize = async (moduleObj, args) => {
 
     let configs = [];
 
-    await Promise.all(
+    const allConfigs = await Promise.all(
         rawConfigs.map(async (rawConfig) => {
             const isPromise = typeof rawConfig.then === 'function';
 
@@ -174,15 +174,15 @@ const finalize = async (moduleObj, args) => {
 
             return rawConfig;
         }),
-    ).then((allConfigs) => {
-        allConfigs.map((singleConfig) => {
-            if (Array.isArray(singleConfig)) {
-                singleConfig.map((conf) => configs.push(conf));
-            } else {
-                configs.push(singleConfig);
-            }
-        });
-    });
+    );
+
+    for (const singleConfig of allConfigs) {
+        if (Array.isArray(singleConfig)) {
+            configs.push(...singleConfig);
+        } else {
+            configs.push(singleConfig);
+        }
+    }
 
     if (configName) {
         const foundConfigNames = [];
