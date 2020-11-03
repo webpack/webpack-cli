@@ -1,4 +1,4 @@
-module.exports = [
+module.exports = () => [
     {
         output: {
             filename: './dist-first.js',
@@ -22,6 +22,5 @@ module.exports = [
         name: 'third',
         entry: './src/third.js',
         mode: 'none',
-        stats: 'verbose',
     },
 ];

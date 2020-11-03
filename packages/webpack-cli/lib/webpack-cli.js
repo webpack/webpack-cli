@@ -11,7 +11,7 @@ const { options: coloretteOptions } = require('colorette');
 const WebpackCLIPlugin = require('./plugins/WebpackCLIPlugin');
 
 // CLI arg resolvers
-const handleConfigResolution = require('./groups/ConfigGroup');
+const handleConfigResolution = require('./groups/resolveConfig');
 const resolveMode = require('./groups/resolveMode');
 const resolveStats = require('./groups/resolveStats');
 const resolveOutput = require('./groups/resolveOutput');

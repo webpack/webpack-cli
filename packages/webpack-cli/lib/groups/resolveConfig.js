@@ -156,7 +156,9 @@ const finalize = async (moduleObj, args) => {
     const isMultiCompilerMode = Array.isArray(config);
     const rawConfigs = isMultiCompilerMode ? config : [config];
 
-    let configs = await Promise.all(
+    let configs = [];
+
+    const allConfigs = await Promise.all(
         rawConfigs.map(async (rawConfig) => {
             const isPromise = typeof rawConfig.then === 'function';
 
@@ -173,6 +175,14 @@ const finalize = async (moduleObj, args) => {
             return rawConfig;
         }),
     );
+
+    for (const singleConfig of allConfigs) {
+        if (Array.isArray(singleConfig)) {
+            configs.push(...singleConfig);
+        } else {
+            configs.push(singleConfig);
+        }
+    }
 
     if (configName) {
         const foundConfigNames = [];
@@ -204,7 +214,7 @@ const finalize = async (moduleObj, args) => {
         process.exit(2);
     }
 
-    newOptionsObject['options'] = isMultiCompilerMode ? configs : configs[0];
+    newOptionsObject['options'] = configs.length > 1 ? configs : configs[0];
 
     return newOptionsObject;
 };
