@@ -1,17 +1,22 @@
 class CustomTestPlugin {
+    constructor(isInEnvironment) {
+        this.isInEnvironment = isInEnvironment;
+    }
     apply(compiler) {
-        compiler.hooks.beforeCompile.tap('testPlugin', () => {
-            if (process.env.WEPACK_SERVE) {
-                console.log('Variable Defined!');
+        compiler.hooks.done.tap('testPlugin', () => {
+            if (process.env.WEBPACK_SERVE && this.isInEnvironment) {
+                console.log('PASS');
             } else {
-                console.log('Not Defined');
+                console.log('FAIL');
             }
         });
     }
 }
 
-module.exports = {
-    mode: 'development',
-    devtool: false,
-    plugins: [new CustomTestPlugin()],
+module.exports = (env) => {
+    return {
+        mode: 'development',
+        devtool: false,
+        plugins: [new CustomTestPlugin(env.process.env.WEBPACK_SERVE)],
+    };
 };

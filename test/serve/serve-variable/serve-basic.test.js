@@ -28,6 +28,6 @@ describe('serve variable', () => {
         expect(stdout).toContain('main.js');
         expect(stdout).not.toContain('HotModuleReplacementPlugin');
         expect(stderr).toHaveLength(0);
-        expect(stdout).toContain('Variable Defined!');
+        expect(stdout).toContain('PASS');
     });
 });

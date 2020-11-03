@@ -12,6 +12,10 @@ import parseArgs from './parseArgs';
 export default function serve(...args: string[]): void {
     const cli = new WebpackCLI();
 
+    // add WEBPACK_SERVE to main process and compilation environment
+    process.env['WEBPACK_SERVE'] = JSON.stringify(true);
+    args = [...args, '--env', 'process.env.WEBPACK_SERVE=true'];
+
     const { webpackArgs, devServerArgs } = parseArgs(cli, args);
 
     cli.getCompiler(webpackArgs).then((compiler): void => {
