@@ -43,8 +43,8 @@ describe('entry flag', () => {
         });
     });
 
-    it('should resolve the path to src/a.js as ./src/a.js', (done) => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--entry', 'src/a.js']);
+    it('should resolve the path to /src/a.js as ./src/a.js', (done) => {
+        const { stderr, stdout, exitCode } = run(__dirname, ['--entry', '/src/a.js']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
