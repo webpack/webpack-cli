@@ -6,7 +6,7 @@ module.exports = () => {
     const config = {
         entry: './index.js',
         output: {
-            path: path.join(dirname, 'dist'),
+            path: path.join(dirname, 'bin'),
             filename: '[name].js',
         },
         optimization: {

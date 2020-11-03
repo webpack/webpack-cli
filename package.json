@@ -71,6 +71,7 @@
     "commitlint-config-cz": "^0.13.2",
     "concat-stream": "^2.0.0",
     "cz-customizable": "^6.3.0",
+    "del": "^6.0.0",
     "del-cli": "^3.0.1",
     "eslint": "^7.12.1",
     "eslint-config-prettier": "^6.15.0",
