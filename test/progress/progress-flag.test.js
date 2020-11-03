@@ -1,6 +1,6 @@
 'use strict';
 
-const { run } = require('../utils/test-utils');
+const { run, isWebpack5 } = require('../utils/test-utils');
 
 describe('progress flag', () => {
     it('should show progress', () => {
@@ -16,7 +16,9 @@ describe('progress flag', () => {
         const { stderr, stdout, exitCode } = run(__dirname, ['--progress=profile']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toMatch(/\[webpack\.Progress] \d+ ms setup/);
+        if (isWebpack5) {
+            expect(stderr).toMatch(/\[webpack\.Progress] \d+ ms setup/);
+        }
         expect(stderr).toContain('[webpack.Progress] 100%');
         expect(stdout).toContain('main.js');
     });
