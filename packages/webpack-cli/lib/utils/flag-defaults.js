@@ -5,8 +5,10 @@ const cacheDefaults = (finalConfig, parsedArgs, outputOptions) => {
     if (hasCache && (parsedArgs.config || outputOptions.defaultConfig)) {
         if (finalConfig.cache && finalConfig.cache.type === 'filesystem') {
             cacheConfig.buildDependencies = {
-                config: parsedArgs.config || outputOptions.defaultConfig,
+                config: parsedArgs.config || [outputOptions.defaultConfig],
             };
+        } else {
+            cacheConfig = finalConfig.cache;
         }
         return { cache: cacheConfig };
     }

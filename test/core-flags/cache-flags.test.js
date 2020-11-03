@@ -136,6 +136,17 @@ describe('cache related flags from core', () => {
         expect(exitCode).toEqual(0);
     });
 
+    it('should assign cache build dependencies with default config', () => {
+        // TODO: Fix on windows
+        if (isWindows) return;
+        const { stderr, stdout, exitCode } = run(__dirname, ['--cache-type', 'filesystem']);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('buildDependencies');
+        expect(stdout).toContain(`'${path.join(__dirname, './webpack.config.js')}'`);
+        expect(stdout).toContain("type: 'filesystem'");
+        expect(exitCode).toEqual(0);
+    });
+
     it('should assign cache build dependencies with merged configs', () => {
         // TODO: Fix on windows
         if (isWindows) return;
