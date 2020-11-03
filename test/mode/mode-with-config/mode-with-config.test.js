@@ -75,9 +75,8 @@ describe('mode flags with config', () => {
         expect(stdout).toBeTruthy();
 
         // Should generate the appropriate files
-        stat(resolve(__dirname, './bin/main.js.OTHER.LICENSE.txt'), (err, stats) => {
-            expect(err).toBe(null);
-            expect(stats.isFile()).toBe(true);
+        stat(resolve(__dirname, './bin/main.js.OTHER.LICENSE.txt'), (err) => {
+            expect(err).toBeTruthy();
         });
 
         stat(resolve(__dirname, './bin/main.js'), (err, stats) => {
