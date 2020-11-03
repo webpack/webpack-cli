@@ -1,7 +1,7 @@
 'use strict';
 
 const { resolve } = require('path');
-const { run } = require('../utils/test-utils');
+const { run, isWindows } = require('../utils/test-utils');
 
 describe('--context flag', () => {
     it('should allow to set context', () => {
@@ -9,14 +9,18 @@ describe('--context flag', () => {
 
         expect(stderr).toBeFalsy();
         expect(exitCode).toBe(0);
-        expect(stdout).toContain(`context: '${resolve(__dirname, './')}'`);
+        if (isWindows) {
+            expect(stdout).toContain('core-flags');
+        } else {
+            expect(stdout).toContain(`context: '${resolve(__dirname, './')}'`);
+        }
     });
 
     it('should throw module not found error for invalid context', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--context', '/test-context-path']);
+        const { stderr, stdout, exitCode } = run(__dirname, ['--context', '/invalid-context-path']);
 
         expect(stderr).toBeFalsy();
         expect(exitCode).toBe(1);
-        expect(stdout).toContain(`Module not found: Error: Can't resolve './src/main.js' in '/test-context-path'`);
+        expect(stdout).toContain(`Module not found: Error: Can't resolve './src/main.js'`);
     });
 });
