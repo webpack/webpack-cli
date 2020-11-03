@@ -1,3 +1,4 @@
+/***
 const { gray, bold, white, cyan, yellow } = require('colorette');
 const ansiEscapes = require('ansi-escapes');
 const readline = require('readline');
@@ -170,3 +171,5 @@ module.exports = async function (compiler, config, outputOptions) {
         }
     });
 };
+*
+***/

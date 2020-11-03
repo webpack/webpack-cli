@@ -29,7 +29,6 @@
   "dependencies": {
     "@webpack-cli/info": "^1.0.2",
     "@webpack-cli/serve": "^1.0.1",
-    "ansi-escapes": "^4.3.1",
     "colorette": "^1.2.1",
     "command-line-usage": "^6.1.0",
     "commander": "^6.2.0",
