@@ -1,10 +1,12 @@
+const isInProcess = process.env.WEBPACK_SERVE;
+
 class CustomTestPlugin {
     constructor(isInEnvironment) {
         this.isInEnvironment = isInEnvironment;
     }
     apply(compiler) {
         compiler.hooks.done.tap('testPlugin', () => {
-            if (process.env.WEBPACK_SERVE && this.isInEnvironment) {
+            if (isInProcess && this.isInEnvironment) {
                 console.log('PASS');
             } else {
                 console.log('FAIL');
