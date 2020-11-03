@@ -10,7 +10,7 @@
   "bin": {
     "webpack-cli": "./bin/cli.js"
   },
-  "main": "./lib/webpack-cli.js",
+  "main": "./lib/index.js",
   "engines": {
     "node": ">=10.13.0"
   },
@@ -29,7 +29,6 @@
   "dependencies": {
     "@webpack-cli/info": "^1.0.2",
     "@webpack-cli/serve": "^1.0.1",
-    "ansi-escapes": "^4.3.1",
     "colorette": "^1.2.1",
     "command-line-usage": "^6.1.0",
     "commander": "^6.2.0",
@@ -37,6 +36,7 @@
     "execa": "^4.1.0",
     "import-local": "^3.0.2",
     "interpret": "^2.2.0",
+    "leven": "^3.1.0",
     "rechoir": "^0.7.0",
     "v8-compile-cache": "^2.2.0",
     "webpack-merge": "^4.2.2"

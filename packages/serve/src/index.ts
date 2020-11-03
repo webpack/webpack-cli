@@ -11,11 +11,10 @@ import parseArgs from './parseArgs';
  */
 export default function serve(...args: string[]): void {
     const cli = new WebpackCLI();
-    const core = cli.getCoreFlags();
 
     const { webpackArgs, devServerArgs } = parseArgs(cli, args);
 
-    cli.getCompiler(webpackArgs, core).then((compiler): void => {
+    cli.getCompiler(webpackArgs).then((compiler): void => {
         startDevServer(compiler, devServerArgs);
     });
 }

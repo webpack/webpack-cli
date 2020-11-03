@@ -1,7 +1,7 @@
 const { prompt } = require('enquirer');
 const { green } = require('colorette');
 const { runCommand } = require('./run-command');
-const { getPackageManager } = require('./get-package-manager');
+const getPackageManager = require('./get-package-manager');
 const { packageExists } = require('./package-exists');
 
 /**
