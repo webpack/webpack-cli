@@ -4,12 +4,10 @@
     </a>
 </div>
 
-<h1 align="center">webpack CLI</h1>
+# webpack CLI
 
-<p align="center">
-  The official CLI of webpack
-</p>
-<br>
+The official CLI of webpack
+
 
 ## About
 
