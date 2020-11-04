@@ -45,7 +45,7 @@ class WebpackCLI {
         // Merge the core flag config with the compilerConfiguration
         coreCliHelper.processArguments(coreCliArgs, this.compilerConfiguration, coreConfig);
         // Assign some defaults to core flags
-        const configWithDefaults = assignFlagDefaults(this.compilerConfiguration, parsedArgs);
+        const configWithDefaults = assignFlagDefaults(this.compilerConfiguration, parsedArgs, this.outputConfiguration);
         this._mergeOptionsToConfiguration(configWithDefaults);
     }
 
