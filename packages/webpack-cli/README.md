@@ -1,4 +1,15 @@
-# `webpack-cli`
+<div align="center">
+    <a href="https://github.com/webpack/webpack-cli">
+        <img width="200" height="200" src="https://webpack.js.org/assets/icon-square-big.svg">
+    </a>
+</div>
+
+<h1 align="center">webpack CLI</h1>
+
+<p align="center">
+  The official CLI of webpack
+</p>
+<br>
 
 ## About
 
@@ -647,7 +658,3 @@ yarn add webpack-cli --dev
   --no-stats-warnings                                         Negates stats-warnings
   --no-watch-options-stdin                                    Negates watch-options-stdin
 ```
-
-## Defaults
-
-TODO: explain defaults
