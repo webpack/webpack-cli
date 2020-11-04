@@ -38,6 +38,13 @@ export default function parseArgs(cli: WebpackCLIType, args: string[]): ArgsType
     const parsedWebpackArgs = cli.argParser(core, parsedDevServerArgs.unknownArgs, true, process.title);
     const webpackArgs = parsedWebpackArgs.opts;
 
+    // Add WEBPACK_SERVE environment variable
+    if (webpackArgs.env) {
+        webpackArgs.env.WEBPACK_SERVE = true;
+    } else {
+        webpackArgs.env = { WEBPACK_SERVE: true };
+    }
+
     // pass along the 'hot' argument to the dev server if it exists
     if (webpackArgs && webpackArgs.hot !== undefined) {
         devServerArgs['hot'] = webpackArgs.hot;
