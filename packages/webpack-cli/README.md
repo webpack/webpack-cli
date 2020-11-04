@@ -41,7 +41,7 @@ yarn add webpack-cli --dev
   -c, --config string[]         Provide path to webpack configuration file(s)
   --config-name string[]        Name of the configuration to use
   -m, --merge                   Merge several configurations using webpack-merge
-  --progress                    Print compilation progress during build
+  --progress string, boolean    Print compilation progress during build
   --color                       Enables colors on console
   --no-color                    Disable colors on console
   --env string                  Environment passed to the configuration when it is a function

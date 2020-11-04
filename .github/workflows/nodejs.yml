@@ -49,7 +49,7 @@ jobs:
         run: yarn lint
 
   build:
-    name: Tests - ${{ matrix.os }} - Node v${{ matrix.node-version }}, Webpack ${{ matrix.webpack-version }}
+    name: Tests and Coverage - ${{ matrix.os }} - Node v${{ matrix.node-version }}, Webpack ${{ matrix.webpack-version }}
 
     runs-on: ${{ matrix.os }}
 
@@ -83,19 +83,16 @@ jobs:
           yarn bootstrap
 
       - name: Install webpack ${{ matrix.webpack-version }}
-        if: steps.cache.outputs.cache-hit != 'true'
         run: yarn add -W webpack@${{ matrix.webpack-version }}
 
       - name: Build
-        run: yarn build
+        run: yarn build:ci
 
-      - name: Run tests for webpack version ${{ matrix.webpack-version }}
+      - name: Test and Generate Coverage
         run: |
           yarn run lerna bootstrap
           yarn prepsuite
-          yarn test:ci
-        env:
-          CI: true
+          yarn test:coverage
 
       - name: Smoke Tests
         # TODO fix for windows
@@ -103,6 +100,9 @@ jobs:
         run: yarn test:smoke
         env:
           CI: true
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
 
   commitlint:
     name: Lint Commit Messages
