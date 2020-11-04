@@ -8,7 +8,9 @@ const targetValues = ['web', 'webworker', 'node', 'async-node', 'node-webkit', '
 describe('--target flag', () => {
     targetValues.forEach((val) => {
         it(`should accept ${val} with --target flag`, (done) => {
-            const { stdout, stderr } = run(__dirname, ['--target', `${val}`]);
+            const { stdout, stderr, exitCode } = run(__dirname, ['--target', `${val}`]);
+
+            expect(exitCode).toBe(0);
             expect(stderr).toBeFalsy();
             if (isWebpack5) {
                 expect(stdout).toContain(`target: [ '${val}' ]`);
@@ -24,7 +26,9 @@ describe('--target flag', () => {
         });
 
         it(`should accept ${val} with -t alias`, (done) => {
-            const { stdout, stderr } = run(__dirname, ['-t', `${val}`]);
+            const { stdout, stderr, exitCode } = run(__dirname, ['-t', `${val}`]);
+
+            expect(exitCode).toBe(0);
             expect(stderr).toBeFalsy();
             if (isWebpack5) {
                 expect(stdout).toContain(`target: [ '${val}' ]`);
@@ -41,7 +45,9 @@ describe('--target flag', () => {
     });
 
     it(`should throw error with invalid value for --target`, () => {
-        const { stderr } = run(__dirname, ['--target', 'invalid']);
+        const { stderr, exitCode } = run(__dirname, ['--target', 'invalid']);
+
+        expect(exitCode).toBe(2);
         if (isWebpack5) {
             expect(stderr).toContain(`Unknown target 'invalid'`);
         } else {
@@ -51,7 +57,9 @@ describe('--target flag', () => {
 
     if (isWebpack5) {
         it('should allow multiple targets', () => {
-            const { stderr, stdout } = run(__dirname, ['--target', 'node', '--target', 'async-node']);
+            const { stderr, stdout, exitCode } = run(__dirname, ['--target', 'node', '--target', 'async-node']);
+
+            expect(exitCode).toBe(0);
             expect(stderr).toBeFalsy();
             expect(stdout).toContain(`target: [ 'node', 'async-node' ]`);
         });
