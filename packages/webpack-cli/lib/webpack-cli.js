@@ -18,6 +18,7 @@ const resolveOutput = require('./groups/resolveOutput');
 const basicResolver = require('./groups/basicResolver');
 const resolveAdvanced = require('./groups/resolveAdvanced');
 const { toKebabCase } = require('./utils/helpers');
+const InteractiveModePlugin = require('./utils/InteractiveModePlugin').InteractiveModePlugin;
 
 class WebpackCLI {
     constructor() {
@@ -169,11 +170,21 @@ class WebpackCLI {
         }
     }
 
-    createCompiler(options, callback) {
+    createCompiler(options, callback, args) {
         let compiler;
-
         try {
+            // enforce watch on interactive
+            if (args.interactive) {
+                options.watch = true;
+            }
+
             compiler = webpack(options, callback);
+
+            // apply plugin is interactove is passed by user
+            if (args.interactive) {
+                const interactivePlugin = new InteractiveModePlugin();
+                interactivePlugin.apply(compiler);
+            }
         } catch (error) {
             this.handleError(error);
             process.exit(2);
@@ -265,7 +276,7 @@ class WebpackCLI {
             }
         };
 
-        compiler = this.createCompiler(options, callback);
+        compiler = this.createCompiler(options, callback, args);
         return Promise.resolve();
     }
 }

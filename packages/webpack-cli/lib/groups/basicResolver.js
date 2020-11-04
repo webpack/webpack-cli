@@ -1,5 +1,4 @@
 const { core, groups } = require('../utils/cli-flags');
-const { InteractiveModePlugin } = require('../utils/InteractiveModePlugin');
 
 const WEBPACK_OPTION_FLAGS = core
     .filter((coreFlag) => {
@@ -33,13 +32,6 @@ function resolveArgs(args) {
         }
         if (arg === 'entry') {
             finalOptions.options[arg] = args[arg];
-        }
-        if (arg === 'interactive') {
-            if (finalOptions.options.plugins) {
-                finalOptions.options.plugins.push(new InteractiveModePlugin());
-            } else {
-                finalOptions.options.plugins = [new InteractiveModePlugin()];
-            }
         }
     });
     return finalOptions;

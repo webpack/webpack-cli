@@ -36,6 +36,8 @@ const clrscr = () => {
 
 class InteractiveModePlugin {
     constructor() {
+        this.isMultiCompiler = false;
+        this.compilers = undefined;
         this.name = 'InteractiveModePlugin';
         this.keys = {
             quit: 'q',
@@ -74,26 +76,41 @@ class InteractiveModePlugin {
             this.handlers[action](compiler);
         });
 
-        // Clear for first run as well
-        clrscr();
+        if (compiler.compilers) {
+            this.isMultiCompiler = true;
+            this.compilers = compiler.compilers;
+        }
 
-        // Clear output on watch invalidate
-        compiler.hooks.beforeCompile.tap(this.name, () => {
-            clrscr();
-        });
+        // // Clear for first run as well
+        // clrscr();
 
-        if (version.startsWith('5')) {
-            compiler.hooks.afterDone.tap(this.name, () => {
-                setTimeout(() => {
-                    spawnCommand('compilation completed', true);
-                }, 1);
+        if (!this.isMultiCompiler) {
+            // Clear output on watch invalidate
+            compiler.hooks.beforeCompile.tap(this.name, () => {
+                clrscr();
             });
+
+            if (version.startsWith('5')) {
+                compiler.hooks.afterDone.tap(this.name, () => {
+                    setTimeout(() => {
+                        spawnCommand('compilation completed', true);
+                    }, 1);
+                });
+            } else {
+                compiler.hooks.done.tap(this.name, () => {
+                    setTimeout(() => {
+                        spawnCommand('compilation completed', true);
+                    }, 1);
+                });
+            }
         } else {
-            compiler.hooks.done.tap(this.name, () => {
-                setTimeout(() => {
-                    spawnCommand('compilation completed', true);
-                }, 1);
-            });
+            // Clear when any one of child watch invalidates
+            for (const childCompiler of this.compilers) {
+                childCompiler.hooks.beforeCompile.tap(this.name, () => {
+                    clrscr();
+                    console.log('Apple');
+                });
+            }
         }
     }
 
