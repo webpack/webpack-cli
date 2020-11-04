@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/serve@1.0.1...@webpack-cli/serve@1.1.0) (2020-11-04)
+
+### Bug Fixes
+
+-   resolve dev server hot options correctly ([#2022](https://github.com/webpack/webpack-cli/issues/2022)) ([7c5a2ba](https://github.com/webpack/webpack-cli/commit/7c5a2bae49625ee4982d7478b7e741968731cea2))
+
+### Features
+
+-   add WEBPACK_SERVE environment variable ([#2027](https://github.com/webpack/webpack-cli/issues/2027)) ([ea369a9](https://github.com/webpack/webpack-cli/commit/ea369a98ea5ec366b688caebcb1276d9fbe0c651))
+-   export utils from core for other packages ([#2011](https://github.com/webpack/webpack-cli/issues/2011)) ([3004549](https://github.com/webpack/webpack-cli/commit/3004549c06b3fe00708d8e1eecf42419e0f72f66))
+
 ## [1.0.1](https://github.com/webpack/webpack-cli/compare/@webpack-cli/serve@1.0.1-rc.1...@webpack-cli/serve@1.0.1) (2020-10-10)
 
 **Note:** Version bump only for package @webpack-cli/serve
