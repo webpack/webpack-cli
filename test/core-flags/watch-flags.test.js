@@ -13,9 +13,10 @@ describe('watch config related flag', () => {
 
         if (flag.type === Boolean) {
             it(`should config --${flag.name} correctly`, () => {
-                const { stderr, stdout } = run(__dirname, [`--${flag.name}`]);
+                const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`]);
 
                 expect(stderr).toBeFalsy();
+                expect(exitCode).toBe(0);
                 if (flag.name.includes('reset')) {
                     expect(stdout).toContain(`watchOptions: { ignored: [] }`);
                 } else {
@@ -25,9 +26,10 @@ describe('watch config related flag', () => {
 
             if (!flag.name.endsWith('-reset')) {
                 it(`should config --no-${flag.name} correctly`, () => {
-                    const { stderr, stdout } = run(__dirname, [`--no-${flag.name}`]);
+                    const { stderr, stdout, exitCode } = run(__dirname, [`--no-${flag.name}`]);
 
                     expect(stderr).toBeFalsy();
+                    expect(exitCode).toBe(0);
                     expect(stdout).toContain(`watchOptions: { ${propName}: false }`);
                 });
             }

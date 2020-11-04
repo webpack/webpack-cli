@@ -11,23 +11,29 @@ const descriptionText = 'Outputs information about your system and dependencies'
 
 describe('should print help for info command', () => {
     it('shows usage information on supplying help flag', () => {
-        const { stdout, stderr } = runInfo(['--help'], __dirname);
+        const { stdout, stderr, exitCode } = runInfo(['--help'], __dirname);
+
+        expect(exitCode).toBe(0);
         expect(stdout).toContain(usageText);
         expect(stdout).toContain(descriptionText);
         expect(stderr).toHaveLength(0);
     });
 
     it('should respect the --no-color flag', () => {
-        const { stdout, stderr } = runInfo(['--help', '--no-color'], __dirname);
+        const { stdout, stderr, exitCode } = runInfo(['--help', '--no-color'], __dirname);
         options.enabled = true;
+
+        expect(exitCode).toBe(0);
         expect(stdout).not.toContain(yellow(usageText));
         expect(stdout).toContain(descriptionText);
         expect(stderr).toHaveLength(0);
     });
 
     it('should output all cli flags', () => {
-        const { stdout, stderr } = runInfo(['--help'], __dirname);
+        const { stdout, stderr, exitCode } = runInfo(['--help'], __dirname);
+
         infoFlags.forEach((flag) => expect(stdout).toContain(`--${flag.name}`));
         expect(stderr).toHaveLength(0);
+        expect(exitCode).toBe(0);
     });
 });

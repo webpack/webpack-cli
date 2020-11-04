@@ -12,7 +12,9 @@ if (isWebpack5) {
 describe('stats flag', () => {
     for (const preset of presets) {
         it(`should accept --stats "${preset}"`, () => {
-            const { stderr, stdout } = run(__dirname, ['--stats', `${preset}`]);
+            const { stderr, stdout, exitCode } = run(__dirname, ['--stats', `${preset}`]);
+
+            expect(exitCode).toBe(0);
             expect(stderr).toBeFalsy();
             if (isWebpack5) {
                 expect(stdout).toContain(`stats: { preset: '${preset}' }`);
@@ -23,7 +25,9 @@ describe('stats flag', () => {
     }
 
     it('should accept stats as boolean', () => {
-        const { stderr, stdout } = run(__dirname, ['--stats']);
+        const { stderr, stdout, exitCode } = run(__dirname, ['--stats']);
+
+        expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         if (isWebpack5) {
             expect(stdout).toContain(`stats: { preset: 'normal' }`);
@@ -34,6 +38,7 @@ describe('stats flag', () => {
 
     it('should warn when an unknown flag stats value is passed', () => {
         const { stderr, exitCode } = run(__dirname, ['--stats', 'foo']);
+
         expect(stderr).toBeTruthy();
         expect(stderr).toContain('* configuration.stats should be one of these:');
         if (isWebpack5) {

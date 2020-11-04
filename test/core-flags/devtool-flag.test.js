@@ -4,15 +4,17 @@ const { run } = require('../utils/test-utils');
 
 describe('--devtool flag', () => {
     it('should set devtool option', () => {
-        const { stderr, stdout } = run(__dirname, ['--devtool', 'source-map']);
+        const { stderr, stdout, exitCode } = run(__dirname, ['--devtool', 'source-map']);
 
         expect(stderr).toBeFalsy();
+        expect(exitCode).toBe(0);
         expect(stdout).toContain(`devtool: 'source-map'`);
     });
 
     it('should throw error for invalid config', () => {
-        const { stderr } = run(__dirname, ['--devtool', 'invalid']);
+        const { stderr, exitCode } = run(__dirname, ['--devtool', 'invalid']);
 
+        expect(exitCode).toBe(2);
         expect(stderr).toContain('Invalid configuration object');
     });
 });

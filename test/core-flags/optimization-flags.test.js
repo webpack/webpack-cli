@@ -20,8 +20,10 @@ describe('optimization config related flag', () => {
 
         if (flag.type === Boolean) {
             it(`should config --${flag.name} correctly`, () => {
-                const { stderr, stdout } = run(__dirname, [`--${flag.name}`]);
+                const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`]);
+
                 expect(stderr).toBeFalsy();
+                expect(exitCode).toBe(0);
                 if (flag.name === 'optimization-split-chunks') {
                     expect(stdout).toContain(`chunks: 'async'`);
                     expect(stdout).toContain(`minChunks: 1`);
@@ -34,8 +36,10 @@ describe('optimization config related flag', () => {
 
             if (!flag.name.includes('reset')) {
                 it(`should config --no-${flag.name} correctly`, () => {
-                    const { stderr, stdout } = run(__dirname, [`--no-${flag.name}`]);
+                    const { stderr, stdout, exitCode } = run(__dirname, [`--no-${flag.name}`]);
+
                     expect(stderr).toBeFalsy();
+                    expect(exitCode).toBe(0);
                     if (flag.name === 'optimization-split-chunks') {
                         expect(stdout).toContain('splitChunks: false');
                     } else {
@@ -49,8 +53,10 @@ describe('optimization config related flag', () => {
         // need improve the plugin to log for multi-level options i.e, optimization.runtime
         if (flag.type === String && !flag.name.includes('runtime-') && !flag.name.includes('fallback-')) {
             it(`should config --${flag.name} correctly`, () => {
-                let { stderr, stdout } = run(__dirname, [`--${flag.name}`, 'named']);
+                let { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`, 'named']);
+
                 expect(stderr).toBeFalsy();
+                expect(exitCode).toBe(0);
                 if (flag.name === 'optimization-split-chunks-chunks') {
                     stdout = run(__dirname, [`--${flag.name}`, 'initial']).stdout;
                     expect(stdout).toContain(`chunks: 'initial'`);
@@ -72,7 +78,9 @@ describe('optimization config related flag', () => {
 
         if (flag.type === Number && !flag.name.includes('fallback-')) {
             it(`should config --${flag.name} correctly`, () => {
-                const { stderr, stdout } = run(__dirname, [`--${flag.name}`, '10']);
+                const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`, '10']);
+
+                expect(exitCode).toBe(0);
                 expect(stderr).toBeFalsy();
                 if (flag.name === 'optimization-split-chunks') {
                     expect(stdout).toContain(`chunks: 'async'`);

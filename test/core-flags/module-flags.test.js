@@ -16,8 +16,10 @@ describe('module config related flag', () => {
 
         if (flag.type === Boolean && !flag.name.includes('module-no-parse')) {
             it(`should config --${flag.name} correctly`, () => {
-                const { stderr, stdout } = run(__dirname, [`--${flag.name}`]);
+                const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`]);
+
                 expect(stderr).toBeFalsy();
+                expect(exitCode).toBe(0);
                 if (flag.name.includes('-reset')) {
                     const option = propName.split('Reset')[0];
                     expect(stdout).toContain(`${option}: []`);
@@ -30,7 +32,9 @@ describe('module config related flag', () => {
 
             if (!flag.name.endsWith('-reset')) {
                 it(`should config --no-${flag.name} correctly`, () => {
-                    const { stderr, stdout } = run(__dirname, [`--no-${flag.name}`]);
+                    const { stderr, stdout, exitCode } = run(__dirname, [`--no-${flag.name}`]);
+
+                    expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
                     if (flag.name.includes('rules-')) {
                         expect(stdout).toContain('sideEffects: false');
@@ -43,16 +47,20 @@ describe('module config related flag', () => {
 
         if (flag.type === String) {
             it(`should config --${flag.name} correctly`, () => {
-                let { stderr, stdout } = run(__dirname, [`--${flag.name}`, 'value']);
+                let { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`, 'value']);
+
                 if (flag.name === 'module-no-parse') {
                     expect(stderr).toBeFalsy();
                     expect(stdout).toContain('value');
                 } else if (flag.name.includes('reg-exp')) {
-                    stdout = run(__dirname, [`--${flag.name}`, '/ab?c*/']).stdout;
+                    ({ stdout, stderr, exitCode } = run(__dirname, [`--${flag.name}`, '/ab?c*/']));
+
                     expect(stderr).toBeFalsy();
+                    expect(exitCode).toBe(0);
                     expect(stdout).toContain(`${propName}: /ab?c*/`);
                 } else if (flag.name.includes('module-rules-')) {
-                    stdout = run(__dirname, [`--${flag.name}`, 'javascript/auto']).stdout;
+                    ({ stdout, stderr, exitCode } = run(__dirname, [`--${flag.name}`, 'javascript/auto']));
+
                     if (propName === 'use' || propName === 'type') {
                         expect(stdout).toContain(`${propName}: 'javascript/auto'`);
                     } else if (property.includes('use-')) {
@@ -67,6 +75,7 @@ describe('module config related flag', () => {
                     }
                 } else {
                     expect(stdout).toContain(`${propName}: 'value'`);
+                    expect(exitCode).toBe(0);
                 }
             });
         }

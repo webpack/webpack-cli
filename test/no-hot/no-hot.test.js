@@ -6,7 +6,9 @@ const { yellow } = require('colorette');
 
 describe('no-hot flag', () => {
     it('should be successful when --no-hot is passed', (done) => {
-        const { stderr, stdout } = run(__dirname, ['--no-hot']);
+        const { stderr, stdout, exitCode } = run(__dirname, ['--no-hot']);
+
+        expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
         expect(stdout).not.toContain('webpack/runtime/hot module replacement');
@@ -25,7 +27,9 @@ describe('no-hot flag', () => {
     });
 
     it('should warn when --hot and --no-hot both are passed', (done) => {
-        const { stderr, stdout } = run(__dirname, ['--hot', '--no-hot']);
+        const { stderr, stdout, exitCode } = run(__dirname, ['--hot', '--no-hot']);
+
+        expect(exitCode).toBe(0);
         expect(stderr).toContain(
             `[webpack-cli] ${yellow(
                 'You provided both --hot and --no-hot. We will use only the last of these flags that you provided in your CLI arguments',

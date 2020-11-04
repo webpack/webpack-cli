@@ -5,8 +5,11 @@ const { run } = require('../../utils/test-utils');
 
 describe('source-map object', () => {
     it('should treat source-map settings right', (done) => {
-        const { stderr } = run(__dirname, [], false);
-        expect(stderr).toBe('');
+        const { stderr, stdout, exitCode } = run(__dirname, [], false);
+
+        expect(stderr).toBeFalsy();
+        expect(stdout).toBeTruthy();
+        expect(exitCode).toBe(0);
         readdir(resolve(__dirname, 'dist'), (err, files) => {
             expect(err).toBe(null);
             expect(files.length).toBe(3);
@@ -14,8 +17,11 @@ describe('source-map object', () => {
         });
     });
     it('should override entire array on flag', (done) => {
-        const { stderr } = run(__dirname, ['--devtool', 'source-map', '--output-path', './binary'], false);
-        expect(stderr).toBe('');
+        const { stderr, stdout, exitCode } = run(__dirname, ['--devtool', 'source-map', '--output-path', './binary'], false);
+
+        expect(stderr).toBeFalsy();
+        expect(stdout).toBeTruthy();
+        expect(exitCode).toBe(0);
         readdir(resolve(__dirname, 'binary'), (err, files) => {
             expect(err).toBe(null);
             expect(files.length).toBe(4);
