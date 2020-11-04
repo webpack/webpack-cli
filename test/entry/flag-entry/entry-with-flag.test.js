@@ -46,7 +46,11 @@ describe('entry flag', () => {
     it('should resolve the path to /src/a.js as ./src/a.js for webpack-5 only', (done) => {
         const { stderr, stdout, exitCode } = run(__dirname, ['--entry', '/src/a.js']);
 
-        if (isWebpack5) {
+        if (!isWebpack5) {
+            expect(exitCode).toBe(1);
+            expect(stdout).toContain(`Module not found: Error: Can't resolve`);
+            done();
+        } else {
             expect(exitCode).toBe(0);
             expect(stderr).toBeFalsy();
             expect(stdout).toBeTruthy();
@@ -61,9 +65,6 @@ describe('entry flag', () => {
                 expect(data).toContain('Hello from a.js');
                 done();
             });
-        } else {
-            expect(exitCode).toBe(1);
-            expect(stdout).toContain(`Module not found: Error: Can't resolve`);
         }
     });
 
