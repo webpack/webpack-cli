@@ -26,7 +26,7 @@ describe(' multiple entries', () => {
     });
 
     it('should allow multiple entry flags', (done) => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--entry', 'src/a.js', '--entry', 'src/b.js']);
+        const { stderr, stdout, exitCode } = run(__dirname, ['--entry', './src/a.js', '--entry', './src/b.js']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();

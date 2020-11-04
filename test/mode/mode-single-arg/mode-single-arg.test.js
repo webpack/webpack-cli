@@ -45,7 +45,7 @@ describe('mode flags', () => {
     it('should throw error when --mode=abcd is passed', () => {
         const { stderr, exitCode } = run(__dirname, ['--mode', 'abcd']);
 
-        expect(exitCode).toBe(1);
+        expect(exitCode).toBe(2);
         expect(stderr).toContain('configuration.mode should be one of these');
         expect(stderr).toContain(`"development" | "production" | "none"`);
     });
