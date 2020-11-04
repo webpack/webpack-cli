@@ -1,6 +1,8 @@
-import WebpackCLI from 'webpack-cli';
+import WebpackCLI, { utils } from 'webpack-cli';
 import startDevServer from './startDevServer';
 import parseArgs from './parseArgs';
+
+const { logger } = utils;
 
 /**
  *
@@ -14,7 +16,8 @@ export default function serve(...args: string[]): void {
         // eslint-disable-next-line node/no-extraneous-require
         require('webpack-dev-server');
     } catch (err) {
-        throw new Error(`You need to install 'webpack-dev-server' for running 'webpack serve'.\n${err}`);
+        logger.error(`You need to install 'webpack-dev-server' for running 'webpack serve'.\n${err}`);
+        process.exit(2);
     }
     const cli = new WebpackCLI();
 

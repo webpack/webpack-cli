@@ -1,4 +1,8 @@
+import { utils } from 'webpack-cli';
+
 import { devServerOptionsType } from './types';
+
+const { logger } = utils;
 
 /**
  *
@@ -16,7 +20,8 @@ export default function createConfig(args): devServerOptionsType {
         // eslint-disable-next-line node/no-extraneous-require
         devServerVersion = require('webpack-dev-server/package.json').version;
     } catch (err) {
-        throw new Error(`You need to install 'webpack-dev-server' for running 'webpack serve'.\n${err}`);
+        logger.error(`You need to install 'webpack-dev-server' for running 'webpack serve'.\n${err}`);
+        process.exit(2);
     }
     isDevServer4 = devServerVersion.startsWith('4');
 

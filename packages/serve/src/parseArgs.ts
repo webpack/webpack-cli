@@ -28,7 +28,8 @@ export default function parseArgs(cli: WebpackCLIType, args: string[]): ArgsType
         // eslint-disable-next-line node/no-extraneous-require
         devServerFlags = require('webpack-dev-server/bin/cli-flags').devServer;
     } catch (err) {
-        throw new Error(`You need to install 'webpack-dev-server' for running 'webpack serve'.\n${err}`);
+        logger.error(`You need to install 'webpack-dev-server' for running 'webpack serve'.\n${err}`);
+        process.exit(2);
     }
 
     const core = cli.getCoreFlags();
