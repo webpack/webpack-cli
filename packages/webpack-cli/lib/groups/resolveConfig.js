@@ -140,7 +140,7 @@ const resolveConfigFiles = async (args) => {
 
 // Given config data, determines the type of config and
 // returns final config
-const finalize = async (moduleObj, args, isDefault = false) => {
+const finalize = async (moduleObj, args, isDefaultConfig = false) => {
     const { env, configName } = args;
     const newOptionsObject = {
         outputOptions: {},
@@ -151,7 +151,7 @@ const finalize = async (moduleObj, args, isDefault = false) => {
         return newOptionsObject;
     }
 
-    if (isDefault) {
+    if (isDefaultConfig) {
         newOptionsObject.outputOptions.defaultConfig = moduleObj.path;
     }
 
