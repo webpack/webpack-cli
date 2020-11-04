@@ -1,7 +1,6 @@
 {
   "include": [
-      "packages/**/src/**",
-      "packages/webpack-cli/**"
+      "packages/**"
   ],
   "reporter": [
       "html",
