@@ -1,7 +1,6 @@
 const readline = require('readline');
-const logger = require('./logger');
 const { version } = require('webpack');
-const { red, green } = require('colorette');
+const { red, green, cyanBright, bold } = require('colorette');
 
 /**
  * Displays command space at bottom of screen
@@ -14,7 +13,7 @@ const spawnCommand = (msg, status) => {
     readline.cursorTo(process.stdout, 0, totalRows - lines);
     readline.clearScreenDown(process.stdout);
 
-    logger.log(msg);
+    console.log(bold(cyanBright(`ⓘ  ${msg}`)));
     process.stdout.write('\n');
 
     readline.cursorTo(process.stdout, 0, totalRows - 2);
@@ -112,14 +111,16 @@ class InteractiveModePlugin {
             if (version.startsWith('5')) {
                 compiler.hooks.afterDone.tap(this.name, () => {
                     setTimeout(() => {
+                        console.log('\n\n');
                         spawnCommand('compilation completed', true);
                     }, 1);
                 });
             } else {
                 compiler.hooks.done.tap(this.name, () => {
                     setTimeout(() => {
+                        console.log('\n\n');
                         spawnCommand('compilation completed', true);
-                    }, 1);
+                    }, 100);
                 });
             }
         } else {
@@ -131,9 +132,16 @@ class InteractiveModePlugin {
             }
 
             compiler.hooks.done.tap(this.name, () => {
+                const allDone = this.compilers.reduce((result, childCompiler) => {
+                    return result && !childCompiler.watching.running;
+                }, true);
+
+                if (!allDone) return;
+
                 setTimeout(() => {
-                    spawnCommand('compilations completed', true);
-                }, 1);
+                    console.log('\n\n');
+                    spawnCommand('all compilations completed', true);
+                }, 100);
             });
         }
     }
@@ -146,13 +154,13 @@ class InteractiveModePlugin {
                     childCompiler.watching.close();
                 }
                 process.exit(0);
-            } else {
-                if (compiler.watching === undefined) return;
-                compiler.watching.close(() => {
-                    process.exit(0);
-                });
-                return;
             }
+
+            if (compiler.watching === undefined) return;
+            compiler.watching.close(() => {
+                process.exit(0);
+            });
+            return;
         }
         process.exit(0);
     }
@@ -169,7 +177,7 @@ class InteractiveModePlugin {
             }, true);
 
             if (allWatching) {
-                spawnCommand('already watching', true);
+                spawnCommand('all already watching', true);
                 return;
             }
 
@@ -194,6 +202,25 @@ class InteractiveModePlugin {
     stopHandler(compiler) {
         if (!version.startsWith('5')) {
             spawnCommand('stoping not supported', true);
+            return;
+        }
+
+        if (this.isMultiCompiler) {
+            const allSuspended = this.compilers.reduce((result, childCompiler) => {
+                return result && childCompiler.watching.suspended;
+            }, true);
+
+            if (allSuspended) {
+                spawnCommand('all already stoped', true);
+                return;
+            }
+
+            for (const childCompiler of this.compilers) {
+                if (!childCompiler.watching.suspended) {
+                    childCompiler.watching.suspend();
+                }
+            }
+            spawnCommand('all stoped watching', false);
             return;
         }
 
