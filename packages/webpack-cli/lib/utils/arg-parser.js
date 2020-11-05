@@ -15,6 +15,18 @@ const runVersion = require('../groups/runVersion');
  * args is only a subset of process.argv that removes the first couple elements
  */
 const argParser = (options, args, argsOnly = false, name = '') => {
+    // Use customized help output
+    if (args.includes('--help') || args.includes('help')) {
+        runHelp(args);
+        process.exit(0);
+    }
+
+    // Use Customized version
+    if (args.includes('--version') || args.includes('version') || args.includes('-v')) {
+        runVersion(args);
+        process.exit(0);
+    }
+
     const parser = new commander.Command();
     // Set parser name
     parser.name(name);
@@ -38,18 +50,6 @@ const argParser = (options, args, argsOnly = false, name = '') => {
 
     // Prevent default behavior
     parser.on('command:*', () => {});
-
-    // Use customized help output
-    if (args.includes('--help') || args.includes('help')) {
-        runHelp(args);
-        process.exit(0);
-    }
-
-    // Use Customized version
-    if (args.includes('--version') || args.includes('version') || args.includes('-v')) {
-        runVersion(args);
-        process.exit(0);
-    }
 
     // Allow execution if unknown arguments are present
     parser.allowUnknownOption(true);
