@@ -64,9 +64,9 @@ class InteractiveModePlugin {
             start: 'w',
         };
         this.handlers = {
-            quit: this.quitHandler,
-            stop: this.stopHandler,
-            start: this.startHandler,
+            quit: this.quitHandler.bind(this),
+            stop: this.stopHandler.bind(this),
+            start: this.startHandler.bind(this),
         };
     }
 
@@ -139,11 +139,20 @@ class InteractiveModePlugin {
     }
 
     quitHandler(compiler) {
-        if (version.startsWith(5) && compiler.watching !== undefined) {
-            compiler.watching.close(() => {
+        if (version.startsWith(5)) {
+            if (this.isMultiCompiler) {
+                for (const childCompiler of this.compilers) {
+                    if (childCompiler.watching === undefined) continue;
+                    childCompiler.watching.close();
+                }
                 process.exit(0);
-            });
-            return;
+            } else {
+                if (compiler.watching === undefined) return;
+                compiler.watching.close(() => {
+                    process.exit(0);
+                });
+                return;
+            }
         }
         process.exit(0);
     }
