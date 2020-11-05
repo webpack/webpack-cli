@@ -4,7 +4,6 @@ const logger = require('./utils/logger');
 const webpackMerge = require('webpack-merge');
 const { core, coreFlagMap } = require('./utils/cli-flags');
 const argParser = require('./utils/arg-parser');
-const { outputStrategy } = require('./utils/merge-strategies');
 const assignFlagDefaults = require('./utils/flag-defaults');
 const { writeFileSync } = require('fs');
 const { options: coloretteOptions } = require('colorette');
@@ -148,7 +147,7 @@ class WebpackCLI {
         await Promise.resolve()
             .then(() => this._baseResolver(handleConfigResolution, parsedArgs))
             .then(() => this._baseResolver(resolveMode, parsedArgs))
-            .then(() => this._baseResolver(resolveOutput, parsedArgs, outputStrategy))
+            .then(() => this._baseResolver(resolveOutput, parsedArgs))
             .then(() => this._handleCoreFlags(parsedArgs))
             .then(() => this._baseResolver(basicResolver, parsedArgs))
             .then(() => this._baseResolver(resolveAdvanced, parsedArgs))
