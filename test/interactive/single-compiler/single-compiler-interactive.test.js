@@ -5,11 +5,11 @@ const { resolve } = require('path');
 const { version } = require('webpack');
 
 const wordsInStatsv4 = ['Hash', 'Version', 'Time', 'Built at:', 'main.js'];
-const wordsInStatsv5 = ['asset', 'index.js', 'compiled successfully'];
+const wordsInStatsv5 = ['asset', 'index.js', 'compiled', 'webpack'];
 
 describe('--interactive flag with single compiler', () => {
-    it('should output in interactive with --watch and --interactive', (done) => {
-        const proc = runAndGetWatchProc(__dirname, ['--watch', '--interactive'], false, '', true);
+    it('should output in interactive with --interactive', (done) => {
+        const proc = runAndGetWatchProc(__dirname, ['--interactive'], false, '', true);
         let semaphore = 2;
         const clear = '\x1B[2J\x1B[3J\x1B[H';
         proc.stdout.on('data', (chunk) => {
@@ -20,11 +20,17 @@ describe('--interactive flag with single compiler', () => {
                 return;
             }
             if (semaphore === 1) {
+                if (data.includes('Compilation') || data.includes('watching files for updates')) {
+                    return;
+                }
                 expect(data).toBe(clear);
                 semaphore--;
                 return;
             }
             if (semaphore === 0) {
+                if (data.includes('Compilation') || data.includes('watching files for updates')) {
+                    return;
+                }
                 if (version.startsWith('5')) {
                     for (const word of wordsInStatsv5) {
                         expect(data).toContain(word);
@@ -53,6 +59,9 @@ describe('--interactive flag with single compiler', () => {
                 return;
             }
             if (semaphore === 0) {
+                if (data.includes('Compilation')) {
+                    return;
+                }
                 if (version.startsWith('5')) {
                     for (const word of wordsInStatsv5) {
                         expect(data).toContain(word);

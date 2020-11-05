@@ -4,12 +4,12 @@ const { writeFileSync } = require('fs');
 const { resolve } = require('path');
 const { version } = require('webpack');
 
-const wordsInStatsv4 = ['Hash', 'Version', 'Time', 'Built at:', 'main-first.js', 'main-second.js'];
-const wordsInStatsv5 = ['asset', 'index.js', 'compiled successfully'];
+const wordsInStatsv4 = ['Hash', 'Version', 'Time', 'Built at:'];
+const wordsInStatsv5 = ['asset', 'index.js', 'compiled', 'webpack'];
 
-describe.skip('--interactive flag with multi compiler', () => {
-    it('should output in interactive with --watch and --interactive', (done) => {
-        const proc = runAndGetWatchProc(__dirname, ['--watch', '--interactive'], false, '', true);
+describe('--interactive flag with multi compiler', () => {
+    it('should output in interactive with --interactive', (done) => {
+        const proc = runAndGetWatchProc(__dirname, ['--interactive'], false, '', true);
         let semaphore = 2;
         const clear = '\x1B[2J\x1B[3J\x1B[H';
         proc.stdout.on('data', (chunk) => {
@@ -20,11 +20,17 @@ describe.skip('--interactive flag with multi compiler', () => {
                 return;
             }
             if (semaphore === 1) {
+                if (data.includes('Compilation') || data.includes('watching files for updates')) {
+                    return;
+                }
                 expect(data).toBe(clear);
                 semaphore--;
                 return;
             }
             if (semaphore === 0) {
+                if (data.includes('Compilation') || data.includes('watching files for updates') || data.includes(clear)) {
+                    return;
+                }
                 if (version.startsWith('5')) {
                     for (const word of wordsInStatsv5) {
                         expect(data).toContain(word);
@@ -53,6 +59,9 @@ describe.skip('--interactive flag with multi compiler', () => {
                 return;
             }
             if (semaphore === 0) {
+                if (data.includes('Compilation') || data.includes('watching files for updates')) {
+                    return;
+                }
                 if (version.startsWith('5')) {
                     for (const word of wordsInStatsv5) {
                         expect(data).toContain(word);
