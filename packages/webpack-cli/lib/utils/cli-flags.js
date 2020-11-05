@@ -207,6 +207,7 @@ const core = [
         type: String,
         multipleType: true,
         description: 'Environment passed to the configuration when it is a function',
+        link: 'https://webpack.js.org/api/cli/#environment-options',
     },
     {
         name: 'name',
@@ -214,6 +215,7 @@ const core = [
         type: String,
         group: BASIC_GROUP,
         description: 'Name of the configuration. Used when loading multiple configurations.',
+        link: 'https://webpack.js.org/configuration/other-options/#name',
     },
     {
         name: 'config-name',
@@ -228,6 +230,7 @@ const core = [
         type: Boolean,
         multiple: false,
         description: 'It invokes webpack-bundle-analyzer plugin to get bundle information',
+        link: 'https://github.com/webpack-contrib/webpack-bundle-analyzer',
     },
     /* 		{
         name: "interactive",
