@@ -22,6 +22,7 @@ describe('packageUtils', () => {
     describe('getPackageManager', () => {
         const testYarnLockPath = path.resolve(__dirname, 'test-yarn-lock');
         const testNpmLockPath = path.resolve(__dirname, 'test-npm-lock');
+        const testPnpmLockPath = path.resolve(__dirname, 'test-pnpm-lock');
         const testBothPath = path.resolve(__dirname, 'test-both');
 
         const cwdSpy = jest.spyOn(process, 'cwd');
@@ -49,6 +50,12 @@ describe('packageUtils', () => {
         it('should find package-lock.json', () => {
             cwdSpy.mockReturnValue(testNpmLockPath);
             expect(getPackageManager()).toEqual('npm');
+            expect(syncMock.mock.calls.length).toEqual(0);
+        });
+
+        it('should find pnpm-lock.yaml', () => {
+            cwdSpy.mockReturnValue(testPnpmLockPath);
+            expect(getPackageManager()).toEqual('pnpm');
             expect(syncMock.mock.calls.length).toEqual(0);
         });
 
