@@ -1,7 +1,7 @@
 const { yellow, cyan } = require('colorette');
 const logger = require('./logger');
-const { packageExists } = require('./package-exists');
-const { promptInstallation } = require('./prompt-installation');
+const packageExists = require('./package-exists');
+const promptInstallation = require('./prompt-installation');
 
 const packagePrefix = '@webpack-cli';
 

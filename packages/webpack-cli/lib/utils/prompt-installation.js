@@ -1,8 +1,8 @@
 const { prompt } = require('enquirer');
 const { green } = require('colorette');
-const { runCommand } = require('./run-command');
+const runCommand = require('./run-command');
 const getPackageManager = require('./get-package-manager');
-const { packageExists } = require('./package-exists');
+const packageExists = require('./package-exists');
 
 /**
  *
@@ -34,6 +34,4 @@ async function promptInstallation(packageName, preMessage) {
     process.exitCode = 2;
 }
 
-module.exports = {
-    promptInstallation,
-};
+module.exports = promptInstallation;

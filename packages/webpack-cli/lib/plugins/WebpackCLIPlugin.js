@@ -1,4 +1,4 @@
-const { packageExists } = require('../utils/package-exists');
+const packageExists = require('../utils/package-exists');
 const webpack = packageExists('webpack') ? require('webpack') : undefined;
 const logger = require('../utils/logger');
 

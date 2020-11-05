@@ -1,4 +1,4 @@
-const { packageExists } = require('./package-exists');
+const packageExists = require('./package-exists');
 const cli = packageExists('webpack') ? require('webpack').cli : undefined;
 
 const HELP_GROUP = 'help';
@@ -273,10 +273,20 @@ const coreFlagMap = flagsFromCore.reduce((acc, cur) => {
     return acc;
 }, new Map());
 
+const defaultCommands = {
+    init: 'init',
+    loader: 'generate-loader',
+    plugin: 'generate-plugin',
+    info: 'info',
+    migrate: 'migrate',
+    serve: 'serve',
+};
+
 module.exports = {
     groups,
     commands,
     core: [...core, ...flagsFromCore],
     flagsFromCore,
     coreFlagMap,
+    defaultCommands,
 };
