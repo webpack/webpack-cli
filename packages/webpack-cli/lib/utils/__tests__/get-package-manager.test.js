@@ -23,6 +23,7 @@ describe('packageUtils', () => {
         const testYarnLockPath = path.resolve(__dirname, 'test-yarn-lock');
         const testNpmLockPath = path.resolve(__dirname, 'test-npm-lock');
         const testPnpmLockPath = path.resolve(__dirname, 'test-pnpm-lock');
+        const testNpmAndPnpmPath = path.resolve(__dirname, 'test-npm-and-pnpm');
         const testAllPath = path.resolve(__dirname, 'test-all-lock');
 
         const cwdSpy = jest.spyOn(process, 'cwd');
@@ -34,6 +35,7 @@ describe('packageUtils', () => {
                 fs.mkdirSync(testNpmLockPath);
             }
             fs.writeFileSync(path.resolve(testNpmLockPath, 'package-lock.json'), '');
+            fs.writeFileSync(path.resolve(testNpmAndPnpmPath, 'package-lock.json'), '');
             fs.writeFileSync(path.resolve(testAllPath, 'package-lock.json'), '');
         });
 
@@ -56,6 +58,12 @@ describe('packageUtils', () => {
         it('should find pnpm-lock.yaml', () => {
             cwdSpy.mockReturnValue(testPnpmLockPath);
             expect(getPackageManager()).toEqual('pnpm');
+            expect(syncMock.mock.calls.length).toEqual(0);
+        });
+
+        it('should prioritize npm over pnpm', () => {
+            cwdSpy.mockReturnValue(testNpmAndPnpmPath);
+            expect(getPackageManager()).toEqual('npm');
             expect(syncMock.mock.calls.length).toEqual(0);
         });
 
