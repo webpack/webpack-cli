@@ -1,6 +1,5 @@
 const commandNames = require('./commands').names;
 const flagNames = require('./core-flags').names;
-const logger = require('./logger');
 
 module.exports = {
     commands: [...commandNames],
