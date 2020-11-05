@@ -1,11 +1,9 @@
 const { packageExists } = require('./package-exists');
 const cli = packageExists('webpack') ? require('webpack').cli : undefined;
 
-const HELP_GROUP = 'help';
 const BASIC_GROUP = 'basic';
 
 const groups = {
-    HELP_GROUP,
     BASIC_GROUP,
 };
 
@@ -116,7 +114,6 @@ const core = [
         name: 'help',
         usage: '--help',
         type: Boolean,
-        group: HELP_GROUP,
         description: 'Outputs list of supported flags',
     },
     {
@@ -190,7 +187,6 @@ const core = [
         usage: '--version | --version <external-package>',
         alias: 'v',
         type: Boolean,
-        group: HELP_GROUP,
         description: 'Get current version',
     },
     {
