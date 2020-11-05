@@ -110,7 +110,8 @@ const outputHelp = (cliArgs) => {
     } else {
         logger.raw(printHelp());
     }
-    logger.raw('\n                  Made with ♥️  by the webpack team');
+
+    logger.raw('                  Made with ♥️  by the webpack team');
 };
 
 module.exports = outputHelp;

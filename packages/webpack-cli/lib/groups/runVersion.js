@@ -1,5 +1,4 @@
 const logger = require('../utils/logger');
-const { defaultCommands } = require('../utils/cli-flags');
 const { isCommandUsed } = require('../utils/arg-utils');
 const { commands, allNames, hasUnknownArgs } = require('../utils/unknown-args');
 
@@ -13,11 +12,11 @@ const outputVersion = (args) => {
     if (commandsUsed && commandsUsed.length === 1 && invalidArgs.length === 0) {
         try {
             if ([commandUsed.alias, commandUsed.name].some((pkg) => commandsUsed.includes(pkg))) {
-                const { name, version } = require(`@webpack-cli/${defaultCommands[commandUsed.name]}/package.json`);
-                logger.raw(`\n${name} ${version}`);
+                const { name, version } = require(`${commandUsed.packageName}/package.json`);
+                logger.raw(`${name} ${version}`);
             } else {
                 const { name, version } = require(`${commandUsed.name}/package.json`);
-                logger.raw(`\n${name} ${version}`);
+                logger.raw(`${name} ${version}`);
             }
         } catch (e) {
             logger.error('Error: External package not found.');
@@ -39,8 +38,9 @@ const outputVersion = (args) => {
 
     const pkgJSON = require('../../package.json');
     const webpack = require('webpack');
-    logger.raw(`\nwebpack-cli ${pkgJSON.version}`);
-    logger.raw(`\nwebpack ${webpack.version}\n`);
+
+    logger.raw(`webpack-cli ${pkgJSON.version}`);
+    logger.raw(`webpack ${webpack.version}`);
 };
 
 module.exports = outputVersion;

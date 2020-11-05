@@ -3,7 +3,6 @@ const logger = require('./logger');
 const { commands } = require('./cli-flags');
 const runHelp = require('../groups/runHelp');
 const runVersion = require('../groups/runVersion');
-const { defaultCommands } = require('./cli-flags');
 
 /**
  *  Creates Argument parser corresponding to the supplied options
@@ -12,6 +11,7 @@ const { defaultCommands } = require('./cli-flags');
  * @param {object[]} options Array of objects with details about flags
  * @param {string[]} args process.argv or it's subset
  * @param {boolean} argsOnly false if all of process.argv has been provided, true if
+ * @param {string} name Parser name
  * args is only a subset of process.argv that removes the first couple elements
  */
 const argParser = (options, args, argsOnly = false, name = '') => {
@@ -30,7 +30,7 @@ const argParser = (options, args, argsOnly = false, name = '') => {
             .action(async () => {
                 const cliArgs = args.slice(args.indexOf(cmd.name) + 1 || args.indexOf(cmd.alias) + 1);
 
-                return await require('./resolve-command')(defaultCommands[cmd.name], ...cliArgs);
+                return await require('./resolve-command')(cmd.packageName, ...cliArgs);
             });
 
         return parser;

@@ -9,6 +9,7 @@ const groups = {
 
 const commands = [
     {
+        packageName: '@webpack-cli/init',
         name: 'init',
         alias: 'c',
         type: String,
@@ -33,6 +34,7 @@ const commands = [
         ],
     },
     {
+        packageName: '@webpack-cli/migrate',
         name: 'migrate',
         alias: 'm',
         type: String,
@@ -40,6 +42,7 @@ const commands = [
         description: 'Migrate a configuration to a new version',
     },
     {
+        packageName: '@webpack-cli/generate-loader',
         name: 'loader',
         scope: 'external',
         alias: 'l',
@@ -48,6 +51,7 @@ const commands = [
         description: 'Scaffold a loader repository',
     },
     {
+        packageName: '@webpack-cli/generate-plugin',
         name: 'plugin',
         alias: 'p',
         scope: 'external',
@@ -56,6 +60,7 @@ const commands = [
         description: 'Scaffold a plugin repository',
     },
     {
+        packageName: '@webpack-cli/info',
         name: 'info',
         scope: 'external',
         alias: 'i',
@@ -76,6 +81,7 @@ const commands = [
         ],
     },
     {
+        packageName: '@webpack-cli/serve',
         name: 'serve',
         alias: 's',
         scope: 'external',
@@ -280,20 +286,10 @@ const coreFlagMap = flagsFromCore.reduce((acc, cur) => {
     return acc;
 }, new Map());
 
-const defaultCommands = {
-    init: 'init',
-    loader: 'generate-loader',
-    plugin: 'generate-plugin',
-    info: 'info',
-    migrate: 'migrate',
-    serve: 'serve',
-};
-
 module.exports = {
     groups,
     commands,
     core: [...core, ...flagsFromCore],
     flagsFromCore,
     coreFlagMap,
-    defaultCommands,
 };
