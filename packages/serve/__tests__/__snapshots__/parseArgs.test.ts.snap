@@ -22,7 +22,7 @@ Object {
 exports[`parseArgs handles unknown args 1`] = `
 Array [
   Array [
-    "Unknown argument: --unknown-arg,--unknown-arg-2",
+    "Unknown arguments: --unknown-arg,--unknown-arg-2",
   ],
 ]
 `;

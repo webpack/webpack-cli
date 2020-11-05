@@ -11,7 +11,7 @@ module.exports = {
         args.filter((e) => !names.includes(e) && !e.includes('color') && e !== 'version' && e !== '-v' && !e.includes('help')),
     handleUnknownArgs: (unknownArgs) => {
         if (unknownArgs.length > 0) {
-            logger.error(`Unknown argument: ${unknownArgs}`);
+            logger.error(`Unknown ${unknownArgs.length === 1 ? 'argument' : 'arguments'}: ${unknownArgs}`);
             process.exit(2);
         }
     },
