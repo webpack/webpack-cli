@@ -1,7 +1,8 @@
-import { devServer } from 'webpack-dev-server/bin/cli-flags';
-import WebpackCLI from 'webpack-cli';
-import logger from 'webpack-cli/lib/utils/logger';
+import WebpackCLI, { utils } from 'webpack-cli';
 import startDevServer from './startDevServer';
+import parseArgs from './parseArgs';
+
+const { logger } = utils;
 
 /**
  *
@@ -11,29 +12,18 @@ import startDevServer from './startDevServer';
  * @returns {Function} invokes the devServer API
  */
 export default function serve(...args: string[]): void {
+    try {
+        // eslint-disable-next-line node/no-extraneous-require
+        require('webpack-dev-server');
+    } catch (err) {
+        logger.error(`You need to install 'webpack-dev-server' for running 'webpack serve'.\n${err}`);
+        process.exit(2);
+    }
     const cli = new WebpackCLI();
-    const core = cli.getCoreFlags();
 
-    const parsedDevServerArgs = cli.argParser(devServer, args, true);
-    const devServerArgs = parsedDevServerArgs.opts;
-    const parsedWebpackArgs = cli.argParser(core, parsedDevServerArgs.unknownArgs, true, process.title);
-    const webpackArgs = parsedWebpackArgs.opts;
+    const { webpackArgs, devServerArgs } = parseArgs(cli, args);
 
-    // pass along the 'hot' argument to the dev server if it exists
-    if (webpackArgs && webpackArgs.hot !== undefined) {
-        devServerArgs['hot'] = webpackArgs.hot;
-    }
-
-    if (parsedWebpackArgs.unknownArgs.length > 0) {
-        parsedWebpackArgs.unknownArgs
-            .filter((e) => e)
-            .forEach((unknown) => {
-                logger.warn('Unknown argument:', unknown);
-            });
-        return;
-    }
-
-    cli.getCompiler(webpackArgs, core).then((compiler): void => {
+    cli.getCompiler(webpackArgs).then((compiler): void => {
         startDevServer(compiler, devServerArgs);
     });
 }

@@ -1,5 +1,3 @@
-import isEmpty = require('lodash/isEmpty');
-
 import { createOrUpdatePluginByName, findPluginsByName, safeTraverse } from '@webpack-cli/utils';
 
 import { JSCodeshift, Node } from '../types/NodePath';
@@ -8,6 +6,8 @@ interface LoaderOptions {
     debug?: boolean;
     minimize?: boolean;
 }
+
+const isEmpty = (obj: LoaderOptions): boolean => Object.keys(obj).length === 0;
 
 /**
  *

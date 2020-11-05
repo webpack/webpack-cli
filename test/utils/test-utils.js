@@ -2,12 +2,19 @@
 const path = require('path');
 const fs = require('fs');
 const execa = require('execa');
-const { sync: spawnSync } = execa;
+const { exec } = require('child_process');
+const { sync: spawnSync, node: execaNode } = execa;
 const { Writable } = require('readable-stream');
 const concat = require('concat-stream');
+const { version } = require('webpack');
+const { version: devServerVersion } = require('webpack-dev-server/package.json');
+const { hyphenToUpperCase } = require('../../packages/webpack-cli/lib/utils/arg-utils');
 
 const WEBPACK_PATH = path.resolve(__dirname, '../../packages/webpack-cli/bin/cli.js');
 const ENABLE_LOG_COMPILATION = process.env.ENABLE_PIPE || false;
+const isWebpack5 = version.startsWith('5');
+const isDevServer4 = devServerVersion.startsWith('4');
+const isWindows = process.platform === 'win32';
 
 /**
  * Run the webpack CLI for a test case.
@@ -15,63 +22,69 @@ const ENABLE_LOG_COMPILATION = process.env.ENABLE_PIPE || false;
  * @param {String} testCase The path to folder that contains the webpack.config.js
  * @param {Array} args Array of arguments to pass to webpack
  * @param {Boolean} setOutput Boolean that decides if a default output path will be set or not
- * @returns {Object} The webpack output
+ * @returns {Object} The webpack output or Promise when nodeOptions are present
  */
-function run(testCase, args = [], setOutput = true) {
+const run = (testCase, args = [], setOutput = true, nodeArgs = [], env) => {
     const cwd = path.resolve(testCase);
 
     const outputPath = path.resolve(testCase, 'bin');
-    const argsWithOutput = setOutput ? args.concat('--output', outputPath) : args;
-    const result = spawnSync(WEBPACK_PATH, argsWithOutput, {
+    const processExecutor = nodeArgs.length ? execaNode : spawnSync;
+    const argsWithOutput = setOutput ? args.concat('--output-path', outputPath) : args;
+    const result = processExecutor(WEBPACK_PATH, argsWithOutput, {
         cwd,
         reject: false,
+        nodeOptions: nodeArgs,
+        env,
         stdio: ENABLE_LOG_COMPILATION ? 'inherit' : 'pipe',
     });
 
     return result;
-}
+};
 
-function runWatch({ testCase, args = [], setOutput = true, outputKillStr = 'Time' }) {
+const runWatch = (testCase, args = [], setOutput = true, outputKillStr = 'watching files for updates...') => {
     const cwd = path.resolve(testCase);
 
     const outputPath = path.resolve(testCase, 'bin');
-    const argsWithOutput = setOutput ? args.concat('--output', outputPath) : args;
+    const argsWithOutput = setOutput ? args.concat('--output-path', outputPath) : args;
 
     return new Promise((resolve, reject) => {
-        const watchPromise = execa(WEBPACK_PATH, argsWithOutput, {
+        const proc = execa(WEBPACK_PATH, argsWithOutput, {
             cwd,
             reject: false,
             stdio: 'pipe',
         });
 
-        watchPromise.stdout.pipe(
+        proc.stdout.pipe(
             new Writable({
                 write(chunk, encoding, callback) {
                     const output = chunk.toString('utf8');
 
                     if (output.includes(outputKillStr)) {
-                        watchPromise.kill();
+                        if (isWindows) {
+                            exec('taskkill /pid ' + proc.pid + ' /T /F');
+                        } else {
+                            proc.kill();
+                        }
                     }
 
                     callback();
                 },
             }),
         );
-        watchPromise
-            .then((result) => {
-                resolve(result);
-            })
-            .catch((error) => {
-                reject(error);
-            });
-    });
-}
 
-function runAndGetWatchProc(testCase, args = [], setOutput = true, input = '', forcePipe = false) {
+        proc.then((result) => {
+            resolve(result);
+        }).catch((error) => {
+            reject(error);
+        });
+    });
+};
+
+const runAndGetWatchProc = (testCase, args = [], setOutput = true, input = '', forcePipe = false) => {
     const cwd = path.resolve(testCase);
 
     const outputPath = path.resolve(testCase, 'bin');
-    const argsWithOutput = setOutput ? args.concat('--output', outputPath) : args;
+    const argsWithOutput = setOutput ? args.concat('--output-path', outputPath) : args;
 
     const options = {
         cwd,
@@ -87,7 +100,7 @@ function runAndGetWatchProc(testCase, args = [], setOutput = true, input = '', f
     const webpackProc = execa(WEBPACK_PATH, argsWithOutput, options);
 
     return webpackProc;
-}
+};
 /**
  * runPromptWithAnswers
  * @param {string} location location of current working directory
@@ -181,14 +194,14 @@ const runPromptWithAnswers = (location, args, answers, waitForOutput = true) => 
  * @returns {undefined}
  * @throws - throw an Error if file does not exist
  */
-function appendDataIfFileExists(testCase, file, data) {
+const appendDataIfFileExists = (testCase, file, data) => {
     const filePath = path.resolve(testCase, file);
     if (fs.existsSync(filePath)) {
         fs.appendFileSync(filePath, data);
     } else {
         throw new Error(`Oops! ${filePath} does not exist!`);
     }
-}
+};
 
 /**
  * fs.copyFileSync was added in Added in: v8.5.0
@@ -198,7 +211,7 @@ function appendDataIfFileExists(testCase, file, data) {
  * @returns {String} - absolute file path of new file
  * @throws - throw an Error if file copy fails
  */
-async function copyFileAsync(testCase, file) {
+const copyFileAsync = async (testCase, file) => {
     const fileToChangePath = path.resolve(testCase, file);
     const fileMetaData = path.parse(file);
     const fileCopyName = fileMetaData.name.concat('_copy').concat(fileMetaData.ext);
@@ -209,43 +222,16 @@ async function copyFileAsync(testCase, file) {
     const data = fs.readFileSync(fileToChangePath);
     fs.writeFileSync(copyFilePath, data);
     return copyFilePath;
-}
+};
 
-/**
- * fs.copyFileSync was added in Added in: v8.5.0
- * We should refactor the below code once our minimal supported version is v8.5.0
- * @param {String} testCase - testCase directory
- * @param {String} file - file relative to testCase which is going to be copied
- * @returns {String} - absolute file path of new file
- * @throws - throw an Error if file copy fails
- */
-function copyFile(testCase, file) {
-    const fileToChangePath = path.resolve(testCase, file);
-    const fileMetaData = path.parse(file);
-    const fileCopyName = fileMetaData.name.concat('_copy').concat(fileMetaData.ext);
-    const copyFilePath = path.resolve(testCase, fileCopyName);
-    if (fs.existsSync(fileToChangePath)) {
-        const fileData = fs.readFileSync(fileToChangePath).toString();
-        fs.writeFileSync(copyFilePath, fileData);
-        return copyFilePath;
-    } else {
-        throw new Error(`Oops! ${fileToChangePath} does not exist!`);
-    }
-}
-
-async function runInstall(cwd) {
+const runInstall = async (cwd) => {
     await execa('yarn', {
         cwd,
     });
-}
+};
 
 const runServe = (args, testPath) => {
-    return runWatch({
-        testCase: testPath,
-        args: ['serve'].concat(args),
-        setOutput: false,
-        outputKillStr: 'main',
-    });
+    return runWatch(testPath, ['serve'].concat(args), false, 'main');
 };
 
 const runInfo = (args, testPath) => {
@@ -259,8 +245,11 @@ module.exports = {
     runAndGetWatchProc,
     runPromptWithAnswers,
     appendDataIfFileExists,
-    copyFile,
     copyFileAsync,
     runInstall,
     runInfo,
+    hyphenToUpperCase,
+    isWebpack5,
+    isDevServer4,
+    isWindows,
 };

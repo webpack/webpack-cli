@@ -29,6 +29,7 @@ Table of Contents
     -   [Further Work](#further-work)
 -   [Contributor License Agreement](#contributor-license-agreement)
 -   [Documentation](#documentation)
+-   [Releasing](#releasing)
 -   [Join The Development](#join-the-development)
 
 ## Issues
@@ -302,6 +303,10 @@ Run `git config user.email` to see your Git email, and verify it with [your GitH
 webpack is feature rich and documentation is a time sink. We
 greatly appreciate any time spent fixing typos or clarifying sections in the
 documentation.
+
+## Releasing
+
+Run `yarn publish:monorepo` to build all packages and bump versions, this will then get published on npm.
 
 ## Join the development
 

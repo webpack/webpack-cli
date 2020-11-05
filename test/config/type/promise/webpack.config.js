@@ -1,5 +1,5 @@
-module.exports = () => {
-    return new Promise((resolve) => {
+module.exports = () =>
+    new Promise((resolve) => {
         setTimeout(() => {
             resolve({
                 entry: './a',
@@ -8,6 +8,5 @@ module.exports = () => {
                     filename: 'promise.js',
                 },
             });
-        }, 500);
+        }, 0);
     });
-};

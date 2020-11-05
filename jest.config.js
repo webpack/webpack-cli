@@ -1,9 +1,14 @@
+const { cli } = require('webpack');
+
+//ignore core-flags test for webpack@4
+const ignorePattern = typeof cli !== 'undefined' ? ['<rootDir>/node_modules/'] : ['<rootDir>/node_modules/', '<rootDir>/test/core-flags'];
+
 module.exports = {
-    testPathIgnorePatterns: ['<rootDir>/node_modules/'],
+    testPathIgnorePatterns: ignorePattern,
     // transformIgnorePatterns: ['<rootDir>.*(node_modules)(?!.*webpack-cli.*).*$'],
     testEnvironment: 'node',
     collectCoverage: true,
-    coverageReporters: ['json', 'html', 'cobertura'],
+    coverageReporters: ['none'],
     transform: {
         '^.+\\.(ts)?$': 'ts-jest',
     },
@@ -12,4 +17,6 @@ module.exports = {
     watchPlugins: ['jest-watch-typeahead/filename', 'jest-watch-typeahead/testname'],
     setupFilesAfterEnv: ['<rootDir>/setupTest.js'],
     globalTeardown: '<rootDir>/scripts/cleanupTest.js',
+    globalSetup: '<rootDir>/scripts/globalSetup.js',
+    modulePathIgnorePatterns: ['<rootDir>/test/loader/test-loader', '<rootDir>/test/plugin/test-plugin'],
 };

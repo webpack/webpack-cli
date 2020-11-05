@@ -1,6 +1,0 @@
-*.js
-**/*.js
-!*.test.js
-!/**/*.test.js
-!/templates/*.js
-lib/

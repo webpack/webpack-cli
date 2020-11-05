@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+import { green, red } from 'colorette';
 import { Change, diffLines } from 'diff';
 import fs from 'fs';
 import inquirer from 'inquirer';
@@ -10,6 +10,9 @@ import { runPrettier } from '@webpack-cli/utils';
 import { transformations } from './migrate';
 import { Node } from './types/NodePath';
 import jscodeshift from 'jscodeshift';
+import { utils } from 'webpack-cli';
+
+const { logger } = utils;
 
 declare let process: {
     cwd: Function;
@@ -92,9 +95,9 @@ function runMigration(currentConfigPath: string, outputConfigPath: string): Prom
 
             diffOutput.forEach((diffLine: Change): void => {
                 if (diffLine.added) {
-                    process.stdout.write(chalk.green(`+ ${diffLine.value}`));
+                    process.stdout.write(green(`+ ${diffLine.value}`));
                 } else if (diffLine.removed) {
-                    process.stdout.write(chalk.red(`- ${diffLine.value}`));
+                    process.stdout.write(red(`- ${diffLine.value}`));
                 }
             });
 
@@ -121,7 +124,7 @@ function runMigration(currentConfigPath: string, outputConfigPath: string): Prom
                                 },
                             ]);
                         } else {
-                            console.error(chalk.red('✖ Migration aborted'));
+                            logger.error('✖ Migration aborted');
                         }
                     },
                 )
@@ -137,25 +140,24 @@ function runMigration(currentConfigPath: string, outputConfigPath: string): Prom
                             const outputConfig = (await import(outputConfigPath)).default;
                             // eslint-disable-next-line @typescript-eslint/no-explicit-any
                             const webpackOptionsValidationErrors: any = validate(outputConfig);
-                            if (webpackOptionsValidationErrors.length) {
-                                console.error(chalk.red("\n✖ Your configuration validation wasn't successful \n"));
+                            if (webpackOptionsValidationErrors && webpackOptionsValidationErrors.length) {
+                                logger.error("\n✖ Your configuration validation wasn't successful\n");
                                 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
                                 // @ts-ignore
-                                console.error(new WebpackOptionsValidationError(webpackOptionsValidationErrors));
+                                logger.error(new WebpackOptionsValidationError(webpackOptionsValidationErrors));
                             }
                         }
 
-                        console.info(chalk.green(`\n✔︎ New webpack config file is at ${outputConfigPath}.`));
-                        console.info(chalk.green('✔︎ Heads up! Updating to the latest version could contain breaking changes.'));
+                        logger.success(`\n✔︎ New webpack config file is at ${outputConfigPath}.`);
+                        logger.success('✔︎ Heads up! Updating to the latest version could contain breaking changes.');
 
-                        console.info(chalk.green('✔︎ Plugin and loader dependencies may need to be updated.'));
+                        logger.success('✔︎ Plugin and loader dependencies may need to be updated.');
                     },
                 );
         })
         .catch((err: object): void => {
-            const errMsg = '\n ✖ ︎Migration aborted due to some errors: \n';
-            console.error(chalk.red(errMsg));
-            console.error(err);
+            logger.error('\n ✖ ︎Migration aborted due to some errors:\n');
+            logger.error(err);
             process.exitCode = 1;
         });
 }
@@ -171,39 +173,37 @@ function runMigration(currentConfigPath: string, outputConfigPath: string): Prom
  * function.
  */
 
-export default function migrate(...args: string[]): void | Promise<void> {
+export default async function migrate(...args: string[]): Promise<void> {
     const filePaths = args;
     if (!filePaths.length) {
-        const errMsg = '\n ✖ Please specify a path to your webpack config \n ';
-        console.error(chalk.red(errMsg));
+        logger.error('\n ✖ Please specify a path to your webpack config\n');
         return;
     }
 
-    const currentConfigPath = path.resolve(process.cwd(), filePaths[0]);
+    const currentConfigPath = path.resolve(filePaths[0]);
     let outputConfigPath: string;
 
     if (!filePaths[1]) {
-        return inquirer
-            .prompt([
+        try {
+            const { confirmPath } = await inquirer.prompt([
                 {
                     default: 'Y',
-                    message: 'Migration output path not specified. ' + 'Do you want to use your existing webpack ' + 'configuration?',
+                    message: 'Migration output path not specified. Do you want to use your existing webpack configuration?',
                     name: 'confirmPath',
                     type: 'confirm',
                 },
-            ])
-            .then((ans: { confirmPath: boolean }): void | Promise<void> => {
-                if (!ans.confirmPath) {
-                    console.error(chalk.red('✖ ︎Migration aborted due to no output path'));
-                    return;
-                }
-                outputConfigPath = path.resolve(process.cwd(), filePaths[0]);
-                return runMigration(currentConfigPath, outputConfigPath);
-            })
-            .catch((err: object): void => {
-                console.error(err);
-            });
+            ]);
+            if (!confirmPath) {
+                logger.error('✖ ︎Migration aborted due to no output path');
+                return;
+            }
+            outputConfigPath = path.resolve(filePaths[0]);
+            return runMigration(currentConfigPath, outputConfigPath);
+        } catch (err) {
+            logger.error(err);
+            return;
+        }
     }
-    outputConfigPath = path.resolve(process.cwd(), filePaths[1]);
+    outputConfigPath = path.resolve(filePaths[1]);
     return runMigration(currentConfigPath, outputConfigPath);
 }

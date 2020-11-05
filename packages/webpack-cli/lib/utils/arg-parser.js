@@ -1,6 +1,8 @@
 const commander = require('commander');
 const logger = require('./logger');
-
+const { commands } = require('./cli-flags');
+const runHelp = require('../groups/runHelp');
+const runVersion = require('../groups/runVersion');
 const { defaultCommands } = require('./commands');
 
 /**
@@ -12,45 +14,42 @@ const { defaultCommands } = require('./commands');
  * @param {boolean} argsOnly false if all of process.argv has been provided, true if
  * args is only a subset of process.argv that removes the first couple elements
  */
-function argParser(options, args, argsOnly = false, name = '', helpFunction = undefined, versionFunction = undefined, commands) {
+const argParser = (options, args, argsOnly = false, name = '') => {
     const parser = new commander.Command();
+
     // Set parser name
     parser.name(name);
     parser.storeOptionsAsProperties(false);
 
-    if (commands) {
-        commands.reduce((parserInstance, cmd) => {
-            parser
-                .command(cmd.name)
-                .alias(cmd.alias)
-                .description(cmd.description)
-                .usage(cmd.usage)
-                .allowUnknownOption(true)
-                .action(async () => {
-                    const cliArgs = args.slice(args.indexOf(cmd.name) + 1 || args.indexOf(cmd.alias) + 1);
-                    return await require('../commands/ExternalCommand').run(defaultCommands[cmd.name], ...cliArgs);
-                });
-            return parser;
-        }, parser);
+    commands.reduce((parserInstance, cmd) => {
+        parser
+            .command(cmd.name)
+            .alias(cmd.alias)
+            .description(cmd.description)
+            .usage(cmd.usage)
+            .allowUnknownOption(true)
+            .action(async () => {
+                const cliArgs = args.slice(args.indexOf(cmd.name) + 1 || args.indexOf(cmd.alias) + 1);
 
-        // Prevent default behavior
-        parser.on('command:*', () => {});
+                return await require('./resolve-command')(defaultCommands[cmd.name], ...cliArgs);
+            });
+
+        return parser;
+    }, parser);
+
+    // Prevent default behavior
+    parser.on('command:*', () => {});
+
+    // Use customized help output
+    if (args.includes('--help') || args.includes('help')) {
+        runHelp(args);
+        process.exit(0);
     }
 
-    // Use customized version output if available
-    if (versionFunction) {
-        parser.on('option:version', () => {
-            versionFunction();
-            process.exit(0);
-        });
-    }
-
-    // Use customized help output if available
-    if (helpFunction) {
-        parser.on('option:help', () => {
-            helpFunction(args);
-            process.exit(0);
-        });
+    // Use Customized version
+    if (args.includes('--version') || args.includes('version') || args.includes('-v')) {
+        runVersion(args);
+        process.exit(0);
     }
 
     // Allow execution if unknown arguments are present
@@ -58,27 +57,94 @@ function argParser(options, args, argsOnly = false, name = '', helpFunction = un
 
     // Register options on the parser
     options.reduce((parserInstance, option) => {
-        const flags = option.alias ? `-${option.alias}, --${option.name}` : `--${option.name}`;
-        let flagsWithType = option.type !== Boolean ? flags + ' <value>' : flags;
-        if (option.type === Boolean || option.type === String) {
-            if (!option.multiple) {
-                // Prevent default behavior for standalone options
-                parserInstance.option(flagsWithType, option.description, option.defaultValue).action(() => {});
+        let optionType = option.type;
+        let isStringOrBool = false;
+
+        if (Array.isArray(optionType)) {
+            // filter out duplicate types
+            optionType = optionType.filter((type, index) => {
+                return optionType.indexOf(type) === index;
+            });
+
+            // the only multi type currently supported is String and Boolean,
+            // if there is a case where a different multi type is needed it
+            // must be added here
+            if (optionType.length === 0) {
+                // if no type is provided in the array fall back to Boolean
+                optionType = Boolean;
+            } else if (optionType.length === 1 || optionType.length > 2) {
+                // treat arrays with 1 or > 2 args as a single type
+                optionType = optionType[0];
             } else {
+                // only String and Boolean multi type is supported
+                if (optionType.includes(Boolean) && optionType.includes(String)) {
+                    isStringOrBool = true;
+                } else {
+                    optionType = optionType[0];
+                }
+            }
+        }
+
+        const flags = option.alias ? `-${option.alias}, --${option.name}` : `--${option.name}`;
+
+        let flagsWithType = flags;
+
+        if (isStringOrBool) {
+            // commander recognizes [value] as an optional placeholder,
+            // making this flag work either as a string or a boolean
+            flagsWithType = `${flags} [value]`;
+        } else if (optionType !== Boolean) {
+            // <value> is a required placeholder for any non-Boolean types
+            flagsWithType = `${flags} <value>`;
+        }
+
+        if (isStringOrBool || optionType === Boolean || optionType === String) {
+            if (option.multiple) {
+                // a multiple argument parsing function
                 const multiArg = (value, previous = []) => previous.concat([value]);
                 parserInstance.option(flagsWithType, option.description, multiArg, option.defaultValue).action(() => {});
+            } else if (option.multipleType) {
+                // for options which accept multiple types like env
+                // so you can do `--env platform=staging --env production`
+                // { platform: "staging", production: true }
+                const multiArg = (value, previous = {}) => {
+                    // this ensures we're only splitting by the first `=`
+                    const [allKeys, val] = value.split(/=(.+)/, 2);
+                    const splitKeys = allKeys.split(/\.(?!$)/);
+
+                    let prevRef = previous;
+
+                    splitKeys.forEach((someKey, index) => {
+                        if (!prevRef[someKey]) {
+                            prevRef[someKey] = {};
+                        }
+
+                        if ('string' === typeof prevRef[someKey]) {
+                            prevRef[someKey] = {};
+                        }
+
+                        if (index === splitKeys.length - 1) {
+                            prevRef[someKey] = val || true;
+                        }
+
+                        prevRef = prevRef[someKey];
+                    });
+
+                    return previous;
+                };
+                parserInstance.option(flagsWithType, option.description, multiArg, option.defaultValue).action(() => {});
+            } else {
+                // Prevent default behavior for standalone options
+                parserInstance.option(flagsWithType, option.description, option.defaultValue).action(() => {});
             }
-        } else if (option.type === Number) {
+        } else if (optionType === Number) {
+            // this will parse the flag as a number
             parserInstance.option(flagsWithType, option.description, Number, option.defaultValue);
         } else {
             // in this case the type is a parsing function
-            if (option.type.length > 1) {
-                flagsWithType = flags + ' [value]';
-                parserInstance.option(flagsWithType, option.description, option.type[0], option.defaultValue).action(() => {});
-            } else {
-                parserInstance.option(flagsWithType, option.description, option.type, option.defaultValue).action(() => {});
-            }
+            parserInstance.option(flagsWithType, option.description, optionType, option.defaultValue).action(() => {});
         }
+
         if (option.negative) {
             // commander requires explicitly adding the negated version of boolean flags
             const negatedFlag = `--no-${option.name}`;
@@ -97,7 +163,6 @@ function argParser(options, args, argsOnly = false, name = '', helpFunction = un
 
     const result = parser.parse(args, parseOptions);
     const opts = result.opts();
-
     const unknownArgs = result.args;
 
     args.forEach((arg) => {
@@ -107,6 +172,7 @@ function argParser(options, args, argsOnly = false, name = '', helpFunction = un
         const flagUsed = args.includes(flag) && !unknownArgs.includes(flag);
         let alias = '';
         let aliasUsed = false;
+
         if (option && option.alias) {
             alias = `-${option.alias}`;
             aliasUsed = args.includes(alias) && !unknownArgs.includes(alias);
@@ -133,6 +199,6 @@ function argParser(options, args, argsOnly = false, name = '', helpFunction = un
         unknownArgs,
         opts,
     };
-}
+};
 
 module.exports = argParser;

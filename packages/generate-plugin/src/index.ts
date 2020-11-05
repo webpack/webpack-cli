@@ -1,5 +1,8 @@
 import { pluginGenerator } from '@webpack-cli/generators';
 import yeoman from 'yeoman-environment';
+import { utils } from 'webpack-cli';
+
+const { logger } = utils;
 
 /**
  * Runs a yeoman generator to create a new webpack plugin project
@@ -12,5 +15,7 @@ export default function pluginCreator(): void {
 
     env.registerStub(pluginGenerator, generatorName);
 
-    env.run(generatorName);
+    env.run(generatorName, () => {
+        logger.success('Plugin template has been successfully scaffolded.');
+    });
 }

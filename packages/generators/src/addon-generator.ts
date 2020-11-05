@@ -1,8 +1,11 @@
-import mkdirp from 'mkdirp';
+import fs from 'fs';
 import path from 'path';
 import Generator from 'yeoman-generator';
-import { getPackageManager } from '@webpack-cli/package-utils';
 import { generatorCopy, generatorCopyTpl } from '@webpack-cli/utils';
+
+import { utils } from 'webpack-cli';
+
+const { logger, getPackageManager } = utils;
 
 /**
  * Creates a Yeoman Generator that generates a project conforming
@@ -31,7 +34,7 @@ const addonGenerator = (
     copyFiles: string[],
     copyTemplateFiles: string[],
     templateFn: Function,
-): typeof Generator => {
+): Generator.GeneratorConstructor => {
     return class extends Generator {
         public props: Generator.Question;
         public copy: (value: string, index: number, array: string[]) => void;
@@ -52,9 +55,10 @@ const addonGenerator = (
                 `);
                 const pathToProjectDir: string = this.destinationPath(this.props.name);
                 try {
-                    mkdirp.sync(pathToProjectDir);
-                } catch (err) {
-                    console.error('Failed to create directory', err);
+                    fs.mkdirSync(pathToProjectDir, { recursive: true });
+                } catch (error) {
+                    logger.error('Failed to create directory');
+                    logger.error(error);
                 }
                 this.destinationRoot(pathToProjectDir);
             }

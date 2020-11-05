@@ -6,12 +6,6 @@ module.exports = {
     commands: [...commandNames],
     flags: [...flagNames],
     allNames: [...commandNames, ...flagNames],
-    hasUnknownArgs: (args, ...names) =>
-        args.filter((e) => !names.includes(e) && !e.includes('--color') && e !== 'version' && e !== '-v' && !e.includes('help')),
-    handleUnknownArgs: (unknownArgs) => {
-        if (unknownArgs.length > 0) {
-            logger.error(`Unknown ${unknownArgs.length === 1 ? 'argument' : 'arguments'}: ${unknownArgs}`);
-            process.exit(2);
-        }
-    },
+    hasUnknownArgs: (args, names) =>
+        args.filter((e) => !names.includes(e) && !e.includes('color') && e !== 'version' && e !== '-v' && !e.includes('help')),
 };

@@ -9,3 +9,4 @@ export * from './run-prettier';
 export * from './scaffold';
 export * from './validate-identifier';
 export * from './prop-types';
+export * from './global-packages-path';

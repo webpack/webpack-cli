@@ -1,45 +1,58 @@
-const GroupHelper = require('./utils/GroupHelper');
-const { Compiler } = require('./utils/Compiler');
-const { groups, core } = require('./utils/cli-flags');
+const { packageExists } = require('./utils/package-exists');
+const webpack = packageExists('webpack') ? require('webpack') : undefined;
+const logger = require('./utils/logger');
 const webpackMerge = require('webpack-merge');
-const { toKebabCase } = require('./utils/helpers');
+const { core, coreFlagMap } = require('./utils/cli-flags');
 const argParser = require('./utils/arg-parser');
+const { outputStrategy } = require('./utils/merge-strategies');
+const assignFlagDefaults = require('./utils/flag-defaults');
+const { writeFileSync } = require('fs');
+const { options: coloretteOptions } = require('colorette');
+const WebpackCLIPlugin = require('./plugins/WebpackCLIPlugin');
 
-class WebpackCLI extends GroupHelper {
+// CLI arg resolvers
+const handleConfigResolution = require('./groups/resolveConfig');
+const resolveMode = require('./groups/resolveMode');
+const resolveStats = require('./groups/resolveStats');
+const resolveOutput = require('./groups/resolveOutput');
+const basicResolver = require('./groups/basicResolver');
+const resolveAdvanced = require('./groups/resolveAdvanced');
+const { toKebabCase } = require('./utils/helpers');
+
+class WebpackCLI {
     constructor() {
-        super();
-        this.groupMap = new Map();
-        this.groups = [];
-        this.processingMessageBuffer = [];
-        this.compilation = new Compiler();
-        this.defaultEntry = 'index';
-        this.possibleFileNames = [
-            `./${this.defaultEntry}`,
-            `./${this.defaultEntry}.js`,
-            `${this.defaultEntry}.js`,
-            this.defaultEntry,
-            `./src/${this.defaultEntry}`,
-            `./src/${this.defaultEntry}.js`,
-            `src/${this.defaultEntry}.js`,
-        ];
         this.compilerConfiguration = {};
         this.outputConfiguration = {};
     }
-    setMappedGroups(args, inlineOptions) {
-        Object.keys(args).forEach((key) => {
-            this.setGroupMap(toKebabCase(key), args[key], inlineOptions);
-        });
+
+    /**
+     * Responsible for handling flags coming from webpack/webpack
+     * @private\
+     * @returns {void}
+     */
+    _handleCoreFlags(parsedArgs) {
+        const coreCliHelper = require('webpack').cli;
+        if (!coreCliHelper) return;
+        const coreConfig = Object.keys(parsedArgs)
+            .filter((arg) => {
+                return coreFlagMap.has(toKebabCase(arg));
+            })
+            .reduce((acc, cur) => {
+                acc[toKebabCase(cur)] = parsedArgs[cur];
+                return acc;
+            }, {});
+        const coreCliArgs = coreCliHelper.getArguments();
+        // Merge the core flag config with the compilerConfiguration
+        coreCliHelper.processArguments(coreCliArgs, this.compilerConfiguration, coreConfig);
+        // Assign some defaults to core flags
+        const configWithDefaults = assignFlagDefaults(this.compilerConfiguration, parsedArgs, this.outputConfiguration);
+        this._mergeOptionsToConfiguration(configWithDefaults);
     }
-    setGroupMap(key, val, inlineOptions) {
-        if (val === undefined) return;
-        const opt = inlineOptions.find((opt) => opt.name === key);
-        const groupName = opt.group;
-        if (this.groupMap.has(groupName)) {
-            const pushToMap = this.groupMap.get(groupName);
-            pushToMap.push({ [opt.name]: val });
-        } else {
-            this.groupMap.set(groupName, [{ [opt.name]: val }]);
-        }
+
+    async _baseResolver(cb, parsedArgs, strategy) {
+        const resolvedConfig = await cb(parsedArgs, this.compilerConfiguration);
+        this._mergeOptionsToConfiguration(resolvedConfig.options, strategy);
+        this._mergeOptionsToOutputConfiguration(resolvedConfig.outputOptions);
     }
 
     /**
@@ -55,61 +68,6 @@ class WebpackCLI extends GroupHelper {
     }
 
     /**
-     * Based on the parsed keys, the function will import and create
-     * a group that handles respective values
-     *
-     * @returns {void}
-     */
-    resolveGroups() {
-        let mode;
-        // determine the passed mode for ConfigGroup
-        if (this.groupMap.has(groups.ZERO_CONFIG_GROUP)) {
-            const modePresent = this.groupMap.get(groups.ZERO_CONFIG_GROUP).find((t) => !!t.mode);
-            if (modePresent) mode = modePresent.mode;
-        }
-        for (const [key, value] of this.groupMap.entries()) {
-            switch (key) {
-                case groups.ZERO_CONFIG_GROUP: {
-                    const ZeroConfigGroup = require('./groups/ZeroConfigGroup');
-                    this.zeroConfigGroup = new ZeroConfigGroup(value);
-                    break;
-                }
-                case groups.BASIC_GROUP: {
-                    const BasicGroup = require('./groups/BasicGroup');
-                    this.basicGroup = new BasicGroup(value);
-                    break;
-                }
-                case groups.ADVANCED_GROUP: {
-                    const AdvancedGroup = require('./groups/AdvancedGroup');
-                    this.advancedGroup = new AdvancedGroup(value);
-                    break;
-                }
-                case groups.CONFIG_GROUP: {
-                    const ConfigGroup = require('./groups/ConfigGroup');
-                    this.configGroup = new ConfigGroup([...value, { mode }]);
-                    break;
-                }
-                case groups.DISPLAY_GROUP: {
-                    const StatsGroup = require('./groups/StatsGroup');
-                    this.statsGroup = new StatsGroup(value);
-                    break;
-                }
-                case groups.HELP_GROUP: {
-                    const HelpGroup = require('./groups/HelpGroup');
-                    this.helpGroup = new HelpGroup();
-                    break;
-                }
-                case groups.OUTPUT_GROUP: {
-                    const OutputGroup = require('./groups/OutputGroup');
-                    this.outputGroup = new OutputGroup(value);
-                    this.groups.push(this.outputGroup);
-                    break;
-                }
-            }
-        }
-    }
-
-    /**
      * Responsible to override webpack options.
      * @param {Object} options The options returned by a group helper
      * @param {Object} strategy The strategy to pass to webpack-merge. The strategy
@@ -118,6 +76,21 @@ class WebpackCLI extends GroupHelper {
      * @returns {void}
      */
     _mergeOptionsToConfiguration(options, strategy) {
+        /**
+         * options where they differ per config use this method to apply relevant option to relevant config
+         * eg mode flag applies per config
+         */
+        if (Array.isArray(options) && Array.isArray(this.compilerConfiguration)) {
+            this.compilerConfiguration = options.map((option, index) => {
+                const compilerConfig = this.compilerConfiguration[index];
+                if (strategy) {
+                    return webpackMerge.strategy(strategy)(compilerConfig, option);
+                }
+                return webpackMerge(compilerConfig, option);
+            });
+            return;
+        }
+
         /**
          * options is an array (multiple configuration) so we create a new
          * configuration where each element is individually merged
@@ -165,110 +138,142 @@ class WebpackCLI extends GroupHelper {
     }
 
     /**
-     * Responsible for updating the buffer
-     *
-     * @param {string[]} messageBuffer The current buffer message
-     * @private
-     * @returns {void}
-     */
-    _mergeProcessingMessageBuffer(messageBuffer) {
-        if (messageBuffer) {
-            this.processingMessageBuffer = this.processingMessageBuffer.concat(...messageBuffer);
-        }
-    }
-
-    /**
-     * It receives a group helper, it runs and it merges its result inside
-     * the file result that will be passed to the compiler
-     *
-     * @param {GroupHelper?} groupHelper A group helper
-     * @private
-     * @returns {void}
-     */
-    async _handleGroupHelper(groupHelper) {
-        if (groupHelper) {
-            const result = await groupHelper.run();
-            this._mergeOptionsToConfiguration(result.options, groupHelper.strategy);
-            this._mergeOptionsToOutputConfiguration(result.outputOptions);
-            this._mergeProcessingMessageBuffer(result.processingMessageBuffer);
-        }
-    }
-
-    /**
-     * Get the defaultEntry for merge with config rightly
-     * @private
-     * @returns {void}
-     */
-    _handleDefaultEntry() {
-        if (!this.basicGroup) {
-            const BasicGroup = require('./groups/BasicGroup');
-            this.basicGroup = new BasicGroup();
-        }
-        const defaultEntry = this.basicGroup.resolveFilePath(null, 'index.js');
-        const options = { entry: defaultEntry };
-        this._mergeOptionsToConfiguration(options);
-    }
-
-    /**
      * It runs in a fancy order all the expected groups.
      * Zero config and configuration goes first.
      *
      * The next groups will override existing parameters
      * @returns {Promise<void>} A Promise
      */
-    async runOptionGroups() {
+    async runOptionGroups(parsedArgs) {
         await Promise.resolve()
-            .then(() => this._handleGroupHelper(this.zeroConfigGroup))
-            .then(() => this._handleDefaultEntry())
-            .then(() => this._handleGroupHelper(this.configGroup))
-            .then(() => this._handleGroupHelper(this.outputGroup))
-            .then(() => this._handleGroupHelper(this.basicGroup))
-            .then(() => this._handleGroupHelper(this.advancedGroup))
-            .then(() => this._handleGroupHelper(this.statsGroup))
-            .then(() => this._handleGroupHelper(this.helpGroup));
+            .then(() => this._baseResolver(handleConfigResolution, parsedArgs))
+            .then(() => this._baseResolver(resolveMode, parsedArgs))
+            .then(() => this._baseResolver(resolveOutput, parsedArgs, outputStrategy))
+            .then(() => this._handleCoreFlags(parsedArgs))
+            .then(() => this._baseResolver(basicResolver, parsedArgs))
+            .then(() => this._baseResolver(resolveAdvanced, parsedArgs))
+            .then(() => this._baseResolver(resolveStats, parsedArgs));
     }
 
-    async processArgs(args, cliOptions) {
-        this.setMappedGroups(args, cliOptions);
-        this.resolveGroups();
-        const groupResult = await this.runOptionGroups();
-        return groupResult;
+    handleError(error) {
+        // https://github.com/webpack/webpack/blob/master/lib/index.js#L267
+        // https://github.com/webpack/webpack/blob/v4.44.2/lib/webpack.js#L90
+        const ValidationError = webpack.ValidationError || webpack.WebpackOptionsValidationError;
+
+        // In case of schema errors print and exit process
+        // For webpack@4 and webpack@5
+        if (error instanceof ValidationError) {
+            logger.error(error.message);
+        } else {
+            logger.error(error);
+        }
     }
 
-    async getCompiler(args, cliOptions) {
-        await this.processArgs(args, cliOptions);
-        await this.compilation.createCompiler(this.compilerConfiguration);
-        return this.compilation.compiler;
+    createCompiler(options, callback) {
+        let compiler;
+
+        try {
+            compiler = webpack(options, callback);
+        } catch (error) {
+            this.handleError(error);
+            process.exit(2);
+        }
+
+        return compiler;
     }
 
-    async run(args, cliOptions) {
-        await this.processArgs(args, cliOptions);
-        await this.compilation.createCompiler(this.compilerConfiguration);
-        const webpack = await this.compilation.webpackInstance({
-            options: this.compilerConfiguration,
-            outputOptions: this.outputConfiguration,
-            processingMessageBuffer: this.processingMessageBuffer,
-        });
-        return webpack;
+    async getCompiler(args) {
+        await this.runOptionGroups(args);
+        return this.createCompiler(this.compilerConfiguration);
     }
 
-    runHelp(args) {
-        const HelpGroup = require('./groups/HelpGroup');
-        const { commands, allNames, hasUnknownArgs } = require('./utils/unknown-args');
-        const subject = allNames.filter((name) => {
-            return args.includes(name);
-        })[0];
-        const invalidArgs = hasUnknownArgs(args.slice(2), ...allNames);
-        const isCommand = commands.includes(subject);
-        return new HelpGroup().outputHelp(isCommand, subject, invalidArgs);
-    }
+    async run(args) {
+        await this.runOptionGroups(args);
 
-    runVersion(args, externalPkg) {
-        const HelpGroup = require('./groups/HelpGroup');
-        const { commands, allNames, hasUnknownArgs } = require('./utils/unknown-args');
-        const commandsUsed = args.filter((val) => commands.includes(val));
-        const invalidArgs = hasUnknownArgs(args.slice(2), ...allNames);
-        return new HelpGroup().outputVersion(externalPkg, commandsUsed, invalidArgs);
+        let compiler;
+
+        let options = this.compilerConfiguration;
+        let outputOptions = this.outputConfiguration;
+
+        const isRawOutput = typeof outputOptions.json === 'undefined';
+
+        if (isRawOutput) {
+            const webpackCLIPlugin = new WebpackCLIPlugin({
+                progress: outputOptions.progress,
+            });
+
+            const addPlugin = (options) => {
+                if (!options.plugins) {
+                    options.plugins = [];
+                }
+                options.plugins.unshift(webpackCLIPlugin);
+            };
+            if (Array.isArray(options)) {
+                options.forEach(addPlugin);
+            } else {
+                addPlugin(options);
+            }
+        }
+
+        const callback = (error, stats) => {
+            if (error) {
+                this.handleError(error);
+                process.exit(2);
+            }
+
+            if (stats.hasErrors()) {
+                process.exitCode = 1;
+            }
+
+            const getStatsOptions = (stats) => {
+                // TODO remove after drop webpack@4
+                if (webpack.Stats && webpack.Stats.presetToOptions) {
+                    if (!stats) {
+                        stats = {};
+                    } else if (typeof stats === 'boolean' || typeof stats === 'string') {
+                        stats = webpack.Stats.presetToOptions(stats);
+                    }
+                }
+
+                stats.colors = typeof stats.colors !== 'undefined' ? stats.colors : coloretteOptions.enabled;
+
+                return stats;
+            };
+
+            const getStatsOptionsFromCompiler = (compiler) => getStatsOptions(compiler.options ? compiler.options.stats : undefined);
+
+            const foundStats = compiler.compilers
+                ? { children: compiler.compilers.map(getStatsOptionsFromCompiler) }
+                : getStatsOptionsFromCompiler(compiler);
+
+            if (outputOptions.json === true) {
+                process.stdout.write(JSON.stringify(stats.toJson(foundStats), null, 2) + '\n');
+            } else if (typeof outputOptions.json === 'string') {
+                const JSONStats = JSON.stringify(stats.toJson(foundStats), null, 2);
+
+                try {
+                    writeFileSync(outputOptions.json, JSONStats);
+
+                    logger.success(`stats are successfully stored as json to ${outputOptions.json}`);
+                } catch (error) {
+                    logger.error(error);
+
+                    process.exit(2);
+                }
+            } else {
+                logger.raw(`${stats.toString(foundStats)}`);
+            }
+        };
+
+        compiler = this.createCompiler(options, callback);
+
+        if (compiler && outputOptions.interactive) {
+            const interactive = require('./utils/interactive');
+
+            interactive(compiler, options, outputOptions);
+        }
+
+        return Promise.resolve();
     }
 }
 

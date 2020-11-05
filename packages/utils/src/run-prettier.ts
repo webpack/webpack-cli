@@ -1,6 +1,7 @@
-import chalk from 'chalk';
 import fs from 'fs';
-import prettier from 'prettier';
+import { utils } from 'webpack-cli';
+
+const { logger } = utils;
 
 /**
  *
@@ -13,6 +14,18 @@ import prettier from 'prettier';
 
 export function runPrettier(outputPath: string, source: string): void {
     let prettySource: string = source;
+
+    let prettier;
+    try {
+        // eslint-disable-next-line node/no-extraneous-require
+        prettier = require('prettier');
+    } catch (err) {
+        logger.warn(
+            "File is not properly formatted because you don't have prettier installed, you can either install it or format it manually",
+        );
+        return fs.writeFileSync(outputPath, source, 'utf8');
+    }
+
     try {
         prettySource = prettier.format(source, {
             filepath: outputPath,
@@ -22,13 +35,8 @@ export function runPrettier(outputPath: string, source: string): void {
             useTabs: true,
         });
     } catch (err) {
-        process.stdout.write(
-            `\n${chalk.yellow(
-                `WARNING: Could not apply prettier to ${outputPath}` + ' due validation error, but the file has been created\n',
-            )}`,
-        );
+        logger.warn(`\nWARNING: Could not apply prettier to ${outputPath} due to validation error, but the file has been created`);
         prettySource = source;
     }
-
     return fs.writeFileSync(outputPath, prettySource, 'utf8');
 }

@@ -4,3 +4,6 @@ test/**/dist/
 test/**/bin/
 test/**/binary/
 test/**/index.js
+test/config/error/syntax-error.js
+packages/webpack-cli/__tests__/test-assets/.yo-rc.json
+test/build-errors/stats.json

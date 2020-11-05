@@ -8,13 +8,12 @@ import { runPrettier } from '../src/run-prettier';
 
 const outputPath = path.join(__dirname, 'test-assets');
 const outputFile = path.join(outputPath, 'test.js');
-const stdoutSpy = jest.spyOn(process.stdout, 'write');
+const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
 
 describe('runPrettier', () => {
     beforeEach(() => {
         rimraf.sync(outputPath);
         fs.mkdirSync(outputPath);
-        stdoutSpy.mockClear();
     });
 
     afterAll(() => {
@@ -27,7 +26,7 @@ describe('runPrettier', () => {
         const data = fs.readFileSync(outputFile, 'utf8');
         expect(data).toContain("console.log('1');\n");
 
-        expect(stdoutSpy.mock.calls.length).toEqual(0);
+        expect(consoleSpy).toHaveBeenCalledTimes(0);
     });
 
     it('prettier should fail on invalid JS, with file still written', () => {
@@ -36,7 +35,7 @@ describe('runPrettier', () => {
         const data = fs.readFileSync(outputFile, 'utf8');
         expect(data).toContain('"');
 
-        expect(stdoutSpy.mock.calls.length).toEqual(1);
-        expect(stdoutSpy.mock.calls[0][0]).toContain('WARNING: Could not apply prettier');
+        expect(consoleSpy).toHaveBeenCalledTimes(1);
+        expect(consoleSpy.mock.calls[0][0]).toContain('WARNING: Could not apply prettier');
     });
 });

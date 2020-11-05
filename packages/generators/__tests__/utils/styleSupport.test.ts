@@ -1,7 +1,8 @@
 import style, { StylingType } from '../../lib/utils/styleSupport';
 import { CustomGenerator } from '../../lib/types';
 
-describe('styleSupport', () => {
+// TODO: enable after jest release
+describe.skip('styleSupport', () => {
     const getMockGenerator = (): CustomGenerator => {
         const gen = new CustomGenerator(null, null);
         gen.dependencies = [];

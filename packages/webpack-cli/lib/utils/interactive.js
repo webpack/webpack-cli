@@ -1,17 +1,17 @@
-const chalk = require('chalk');
-const webpack = require('./Compiler');
+/***
+const { gray, bold, white, cyan, yellow } = require('colorette');
 const ansiEscapes = require('ansi-escapes');
 const readline = require('readline');
 
 let isSub = false;
 const generateSingleOption = (option) => {
     const { key, description } = option;
-    const optionString = chalk.gray('> Press') + ` ${chalk.bold.white(key)} ` + chalk.gray(`${description}\n`);
+    const optionString = gray('> Press') + ` ${bold(white(key))} ` + gray(`${description}\n`);
     return optionString;
 };
 const generateConfigDescription = (config) => {
     let configDescString = '\n';
-    const headerString = chalk.bold.white('Interactive Usage');
+    const headerString = bold(white('Interactive Usage'));
     configDescString += headerString;
     configDescString += '\n';
     Object.keys(config).forEach((option) => {
@@ -48,12 +48,11 @@ const writeFilterConsole = () => {
             data.push({ [name]: chunksArr });
         }
         console.clear();
-        const orangeline = chalk.keyword('orange');
         data.forEach((chunk) => {
             Object.keys(chunk).forEach((mod) => {
-                console.log(chalk.bold.cyan(mod));
+                console.log(bold(cyan(mod)));
                 chunk[mod].forEach((sub) => {
-                    console.log('> ', orangeline(sub.path));
+                    console.log('> ', yellow(sub.path));
                 });
             });
         });
@@ -97,7 +96,7 @@ const ENTER_KEY = '\n';
 const B_KEY = 'b';
 const C_KEY = 'c';
 
-module.exports = async function (config, outputOptions, processingMessageBuffer) {
+module.exports = async function (compiler, config, outputOptions) {
     const stdin = process.stdin;
     stdin.setEncoding('utf-8');
     stdin.setRawMode(true);
@@ -105,11 +104,8 @@ module.exports = async function (config, outputOptions, processingMessageBuffer)
 
     outputOptions.interactive = false;
 
-    const webpackCompilation = await webpack({ options: config, outputOptions, processingMessageBuffer });
-    /* if(errors) {
-	Hngggg
-} */
-    state.push(webpackCompilation);
+    state.push(compiler);
+
     setupInteractive();
 
     const isExitCtrl = (key) => key.ctrl && key.name === 'c';
@@ -165,8 +161,7 @@ module.exports = async function (config, outputOptions, processingMessageBuffer)
                 if (state.length) {
                     state.pop();
                 }
-                const webpackCompilation = await webpack({ options: config, outputOptions, processingMessageBuffer });
-                state.push(webpackCompilation);
+                state.push(compiler);
                 informActions();
                 isSub = true;
                 return;
@@ -176,3 +171,5 @@ module.exports = async function (config, outputOptions, processingMessageBuffer)
         }
     });
 };
+*
+***/

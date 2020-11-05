@@ -1,7 +1,8 @@
-import chalk from 'chalk';
 import envinfo from 'envinfo';
-import options from './options';
 import WebpackCLI from 'webpack-cli';
+import { utils } from 'webpack-cli';
+
+const { logger, commands } = utils;
 
 interface Information {
     Binaries?: string[];
@@ -32,14 +33,14 @@ const DEFAULT_DETAILS: Information = {
 
 export default async function info(...args): Promise<string[]> {
     const cli = new WebpackCLI();
-    const parsedArgs = cli.argParser(options, args, true);
+    const { flags: infoFlags } = commands.find((cmd) => cmd.name === 'info');
+    const parsedArgs = cli.argParser(infoFlags, args, true);
     const infoArgs = parsedArgs.opts;
     const envinfoConfig = {};
 
-    if (parsedArgs.unknownArgs.some((arg) => ['help', 'version', 'color'].includes(arg))) return;
-
     if (parsedArgs.unknownArgs.length > 0) {
-        process.stderr.write(`Unknown argument: ${chalk.red(parsedArgs.unknownArgs)}\n`);
+        logger.error(`Unknown argument: ${parsedArgs.unknownArgs}`);
+        process.exit(2);
     }
 
     if (infoArgs.output) {
@@ -53,7 +54,8 @@ export default async function info(...args): Promise<string[]> {
                 envinfoConfig['json'] = true;
                 break;
             default:
-                process.stderr.write(`${chalk.red(infoArgs.output)} is not a valid value for output\n`);
+                logger.error(`'${infoArgs.output}' is not a valid value for output`);
+                process.exit(2);
         }
     }
 
@@ -62,6 +64,6 @@ export default async function info(...args): Promise<string[]> {
     output = output.replace(/npmGlobalPackages/g, 'Global Packages');
 
     const finalOutput = output;
-    process.stdout.write(finalOutput + '\n');
+    logger.raw(finalOutput);
     return finalOutput;
 }

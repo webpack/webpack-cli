@@ -1,15 +1,12 @@
 const { existsSync } = require('fs');
 const { join, resolve } = require('path');
 const rimraf = require('rimraf');
+const stripAnsi = require('strip-ansi');
 const { run, runPromptWithAnswers } = require('../utils/test-utils');
-
 const ENTER = '\x0D';
 const firstPrompt = '? Plugin name';
 const pluginName = 'test-plugin';
 const pluginPath = join(__dirname, pluginName);
-
-// Since scaffolding is time consuming
-jest.setTimeout(60000);
 
 describe('plugin command', () => {
     beforeAll(() => {
@@ -20,13 +17,13 @@ describe('plugin command', () => {
         const { stdout, stderr } = run(__dirname, ['plugin'], false);
         expect(stdout).toBeTruthy();
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(firstPrompt);
+        expect(stripAnsi(stdout)).toContain(firstPrompt);
     });
 
     it('should scaffold plugin template with a given name', async () => {
-        const { stdout } = await runPromptWithAnswers(__dirname, ['plugin'], [`${pluginName}${ENTER}`]);
+        let { stdout } = await runPromptWithAnswers(__dirname, ['plugin'], [`${pluginName}${ENTER}`]);
 
-        expect(stdout).toContain(firstPrompt);
+        expect(stripAnsi(stdout)).toContain(firstPrompt);
 
         // check if the output directory exists with the appropriate plugin name
         expect(existsSync(join(__dirname, pluginName))).toBeTruthy();
@@ -42,5 +39,9 @@ describe('plugin command', () => {
         files.forEach((file) => {
             expect(existsSync(join(__dirname, `${pluginName}/${file}`))).toBeTruthy();
         });
+
+        //check if the the generated plugin works successfully
+        stdout = run(__dirname, ['--config', './test-plugin/examples/simple/webpack.config.js'], false).stdout;
+        expect(stdout).toContain('Hello World!');
     });
 });

@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const nodeEnvironment = process.env.NODE_ENV;
-const _ = require("lodash");
 
 const config = {
 	entry: {

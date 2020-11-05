@@ -1,7 +1,7 @@
-import chalk from 'chalk';
+import { blue, green, bold } from 'colorette';
+import { utils } from 'webpack-cli';
 import logSymbols from 'log-symbols';
 import path from 'path';
-import { getPackageManager } from '@webpack-cli/package-utils';
 import { Confirm, Input, List } from '@webpack-cli/webpack-scaffold';
 
 import {
@@ -15,6 +15,8 @@ import {
     entryQuestions,
 } from './utils';
 import { CustomGenerator } from './types';
+
+const { logger, getPackageManager } = utils;
 
 /**
  *
@@ -74,12 +76,12 @@ export default class InitGenerator extends CustomGenerator {
 
         this.usingDefaults = true;
 
-        process.stdout.write(
-            `\n${logSymbols.info}${chalk.blue(' INFO ')} ` +
+        logger.log(
+            `\n${logSymbols.info}${blue(' INFO ')} ` +
                 'For more information and a detailed description of each question, have a look at: ' +
-                `${chalk.bold.green('https://github.com/webpack/webpack-cli/blob/master/INIT.md')}\n`,
+                `${bold(green('https://github.com/webpack/webpack-cli/blob/master/INIT.md'))}`,
         );
-        process.stdout.write(`${logSymbols.info}${chalk.blue(' INFO ')} ` + 'Alternatively, run "webpack(-cli) --help" for usage info\n\n');
+        logger.log(`${logSymbols.info}${blue(' INFO ')} ` + 'Alternatively, run "webpack(-cli) --help" for usage info\n');
 
         const { multiEntries } = await Confirm(
             self,

@@ -11,11 +11,6 @@
 </p>
 <br>
 
-> ## This is the documentation of the beta version (being maintained on branch next).
->
-> We are working on reducing the number of arguments passed to the CLI,
-> please leave your feedback [here](https://github.com/webpack/webpack-cli/issues/1222)
-
 [![npm][npm]][npm-url]
 [![Build Status][build-status]][build-status-url]
 [![Dependencies][deps]][deps-url]
@@ -32,6 +27,7 @@
     -   [Utilities](#utilities)
 -   [Getting started](#getting-started)
 -   [webpack CLI Scaffolds](#webpack-cli-scaffolds)
+-   [Exit codes and their meanings](#exit-codes-and-their-meanings)
 -   [Contributing and Internal Documentation](#contributing-and-internal-documentation)
 -   [Open Collective](#open-collective)
 
@@ -51,7 +47,7 @@ Get to know what are the available commands and arguments [here](./packages/webp
 
 ## Packages
 
-We organize webpack CLI as a multi-package repository using [lerna](https://github.com/lerna/lerna). Every command has a dedicated subfolder in the `packages` Folder. Here's a summary of commands provided by the CLI.
+We organize webpack CLI as a multi-package repository using [lerna](https://github.com/lerna/lerna). Every command has a dedicated subfolder in the `packages` folder. Here's a summary of commands provided by the CLI.
 
 ### Commands
 
@@ -96,6 +92,14 @@ With v3 of webpack CLI, we introduced scaffolding as an integral part of the CLI
 
 You can read more about [Scaffolding](https://webpack.js.org/guides/scaffolding), learn [How to compose a webpack-scaffold?](https://webpack.js.org/contribute/writing-a-scaffold) or generate one with [webpack-scaffold-starter](https://github.com/rishabh3112/webpack-scaffold-starter).
 
+## Exit codes and their meanings
+
+| Exit Code | Description                                        |
+| --------- | -------------------------------------------------- |
+| `0`       | Success                                            |
+| `1`       | Errors from webpack                                |
+| `2`       | Configuration/options problem or an internal error |
+
 ## Contributing and Internal Documentation
 
 The webpack family welcomes any contributor, small or big. We are happy to elaborate, guide you through the source code and find issues you might want to work on! To get started have a look at our [documentation on contributing](./.github/CONTRIBUTING.md).
@@ -106,11 +110,11 @@ If you like **webpack**, please consider donating to our [Open Collective](https
 
 [npm]: https://img.shields.io/npm/v/webpack-cli.svg
 [npm-url]: https://www.npmjs.com/package/webpack-cli
-[build-status]: https://github.com/webpack/webpack-cli/workflows/webpack-cli/badge.svg?branch=next
+[build-status]: https://github.com/webpack/webpack-cli/workflows/webpack-cli/badge.svg?branch=master
 [build-status-url]: https://github.com/webpack/webpack-cli/actions
 [deps]: https://img.shields.io/david/webpack/webpack.svg
 [deps-url]: https://david-dm.org/webpack/webpack-cli
-[size]: https://packagephobia.now.sh/badge?p=webpack-cli
-[size-url]: https://packagephobia.now.sh/result?p=webpack-cli
+[size]: https://packagephobia.com/badge?p=webpack-cli
+[size-url]: https://packagephobia.com/result?p=webpack-cli
 [chat]: https://badges.gitter.im/webpack/webpack.svg
 [chat-url]: https://gitter.im/webpack/webpack

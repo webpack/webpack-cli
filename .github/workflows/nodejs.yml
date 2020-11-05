@@ -9,6 +9,10 @@ on:
     branches:
       - master
       - next
+  workflow_dispatch:
+    inputs:
+      tags:
+        description: 'Test description'
 
 jobs:
   lint:
@@ -45,15 +49,15 @@ jobs:
         run: yarn lint
 
   build:
-    name: Tests - ${{ matrix.os }} - Node v${{ matrix.node-version }}, Webpack ${{ matrix.webpack-version }}
+    name: Tests and Coverage - ${{ matrix.os }} - Node v${{ matrix.node-version }}, Webpack ${{ matrix.webpack-version }}
 
     runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        node-version: [10.x, 12.x, 13.x]
-        webpack-version: [next, latest]
+        node-version: [10.x, 12.x, 14.x]
+        webpack-version: [webpack-4, latest]
 
     steps:
       - uses: actions/checkout@v2
@@ -63,7 +67,17 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - name: Restore lerna cache
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+          key: ${{ runner.os }}-${{ matrix.webpack-version }}-${{ hashFiles('**/yarn.lock', './yarn.lock') }}
+
       - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
         run: |
           yarn
           yarn bootstrap
@@ -72,14 +86,13 @@ jobs:
         run: yarn add -W webpack@${{ matrix.webpack-version }}
 
       - name: Build
-        run: yarn build
+        run: yarn build:ci
 
-      - name: Run tests for webpack version ${{ matrix.webpack-version }}
+      - name: Test and Generate Coverage
         run: |
+          yarn run lerna bootstrap
           yarn prepsuite
-          yarn test:ci
-        env:
-          CI: true
+          yarn test:coverage
 
       - name: Smoke Tests
         # TODO fix for windows
@@ -87,3 +100,22 @@ jobs:
         run: yarn test:smoke
         env:
           CI: true
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+
+  commitlint:
+    name: Lint Commit Messages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      - run: npm install
+      - name: conventional-changelog-lint-config-cz
+        # $GITHUB_WORKSPACE is the path to your repository
+        run: echo "::set-env name=NODE_PATH::$GITHUB_WORKSPACE/node_modules"
+      - uses: wagoid/commitlint-github-action@v2

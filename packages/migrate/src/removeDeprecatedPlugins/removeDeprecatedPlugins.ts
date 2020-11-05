@@ -1,8 +1,12 @@
-import chalk from 'chalk';
+import { red, underline } from 'colorette';
 
 import { findPluginsByName, isType, safeTraverse } from '@webpack-cli/utils';
 
 import { JSCodeshift, Node } from '../types/NodePath';
+
+import { utils } from 'webpack-cli';
+
+const { logger } = utils;
 
 /**
  *
@@ -34,9 +38,9 @@ export default function (j: JSCodeshift, ast: Node): Node {
                 j(path).remove();
             }
         } else {
-            process.stderr.write(`
-${chalk.red('Please remove deprecated plugins manually. ')}
-See ${chalk.underline('https://webpack.js.org/guides/migrating/')} for more information.`);
+            logger.log(`
+${red('Please remove deprecated plugins manually. ')}
+See ${underline('https://webpack.js.org/guides/migrating/')} for more information.`);
         }
     });
 }

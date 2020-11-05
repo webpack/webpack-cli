@@ -5,9 +5,11 @@ const { run } = require('../../utils/test-utils');
 
 describe('dotfolder array config lookup', () => {
     it('should find a webpack array configuration in a dotfolder', (done) => {
-        const { stdout, stderr } = run(__dirname, [], false);
+        const { stdout, stderr, exitCode } = run(__dirname, [], false);
+
         expect(stderr).not.toBeUndefined();
         expect(stdout).not.toBeUndefined();
+        expect(exitCode).toBe(0);
 
         stat(resolve(__dirname, './dist/dist-commonjs.js'), (err, stats) => {
             expect(err).toBe(null);
