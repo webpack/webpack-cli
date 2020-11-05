@@ -113,6 +113,23 @@ yarn add webpack-cli --dev
   --experiments-top-level-await                               Allow using top-level-await in EcmaScript Modules.
   --externals string[]                                        Every matched dependency becomes external. An exact matched dependency
                                                               becomes external. The same string is used as external dependency.
+  --externals-presets-electron                                Treat common electron built-in modules in main and preload context like 'electron',
+                                                              'ipc' or 'shell' as external and load them via require() when used.
+  --externals-presets-electron-main                           Treat electron built-in modules in the main context like 'app', 'ipc-main' or
+                                                              'shell' as external and load them via require() when used.
+  --externals-presets-electron-preload                        Treat electron built-in modules in the preload context like 'web-frame',
+                                                              'ipc-renderer' or 'shell' as external and load them via require() when used.
+  --externals-presets-electron-renderer                       Treat electron built-in modules in the renderer context like 'web-frame',
+                                                              'ipc-renderer' or 'shell' as external and load them via require() when used.
+  --externals-presets-node                                    Treat node.js built-in modules like fs, path or vm as external and load them via
+                                                              require() when used.
+  --externals-presets-nwjs                                    Treat NW.js legacy nw.gui module as external and load it via require() when used.
+  --externals-presets-web                                     Treat references to 'http(s)://...' and 'std:...' as external and load them via import
+                                                              when used (Note that this changes execution order as externals are executed before
+                                                              any other code in the chunk).
+  --externals-presets-web-async                               Treat references to 'http(s)://...' and 'std:...' as external and load them via async
+                                                              import() when used (Note that this external type is an async module, which has various
+                                                              effects on the execution).
   --externals-reset                                           Clear all items provided in configuration. Specify dependencies that
                                                               shouldn't be resolved by webpack, but should become dependencies of the
                                                               resulting bundle. The kind of the dependency depends on
@@ -557,6 +574,14 @@ yarn add webpack-cli --dev
   --no-experiments-output-module                              Negates experiments-output-module
   --no-experiments-sync-web-assembly                          Negates experiments-sync-web-assembly
   --no-experiments-top-level-await                            Negates experiments-top-level-await
+  --no-externals-presets-electron                             Negates externals-presets-electron
+  --no-externals-presets-electron-main                        Negates externals-presets-electron-main
+  --no-externals-presets-electron-preload                     Negates externals-presets-electron-preload
+  --no-externals-presets-electron-renderer                    Negates externals-presets-electron-renderer
+  --no-externals-presets-node                                 Negates externals-presets-node
+  --no-externals-presets-nwjs                                 Negates externals-presets-nwjs
+  --no-externals-presets-web                                  Negates externals-presets-web
+  --no-externals-presets-web-async                            Negates externals-presets-web-async
   --no-module-expr-context-critical                           Negates module-expr-context-critical
   --no-module-expr-context-recursive                          Negates module-expr-context-recursive
   --no-module-rules-side-effects                              Negates module-rules-side-effects
