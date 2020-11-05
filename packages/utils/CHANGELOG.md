@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/utils@1.0.2...@webpack-cli/utils@1.1.0) (2020-11-04)
+
+### Features
+
+-   export utils from core for other packages ([#2011](https://github.com/webpack/webpack-cli/issues/2011)) ([3004549](https://github.com/webpack/webpack-cli/commit/3004549c06b3fe00708d8e1eecf42419e0f72f66))
+
 ## [1.0.2](https://github.com/webpack/webpack-cli/compare/@webpack-cli/utils@1.0.1...@webpack-cli/utils@1.0.2) (2020-10-19)
 
 **Note:** Version bump only for package @webpack-cli/utils

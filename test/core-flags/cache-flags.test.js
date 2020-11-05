@@ -14,74 +14,90 @@ describe('cache related flags from core', () => {
     });
 
     it('should be successful with --cache ', () => {
-        const { stderr, stdout } = run(__dirname, ['--cache']);
+        const { stderr, stdout, exitCode } = run(__dirname, ['--cache']);
         expect(stderr).toBeFalsy();
+        expect(exitCode).toBe(0);
         expect(stdout).toContain(`type: 'memory'`);
     });
 
     it('should be successful with --no-cache ', () => {
-        const { stderr, stdout } = run(__dirname, ['--no-cache']);
+        const { stderr, stdout, exitCode } = run(__dirname, ['--no-cache']);
 
         expect(stderr).toBeFalsy();
+        expect(exitCode).toBe(0);
         expect(stdout).toContain('cache: false');
     });
 
     it('should set cache.type', () => {
-        const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem']);
+        const { stderr, stdout, exitCode } = run(__dirname, ['--cache-type', 'filesystem']);
 
         expect(stderr).toBeFalsy();
+        expect(exitCode).toBe(0);
         expect(stdout).toContain(`type: 'filesystem'`);
     });
 
     it('should set cache.cacheDirectory with --cache-cache-directory', () => {
-        const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '--cache-cache-directory', './test-cache-path']);
+        const { stderr, stdout, exitCode } = run(__dirname, ['--cache-type', 'filesystem', '--cache-cache-directory', './test-cache-path']);
 
         expect(stderr).toBeFalsy();
+        expect(exitCode).toBe(0);
         expect(stdout).toContain('test-cache-path');
         expect(existsSync(resolve(__dirname, './test-cache-path'))).toBeTruthy();
     });
 
     it('should set cache.cacheLocation with --cache-cache-locations', () => {
-        const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '--cache-cache-location', './test-locate-cache']);
+        const { stderr, stdout, exitCode } = run(__dirname, [
+            '--cache-type',
+            'filesystem',
+            '--cache-cache-location',
+            './test-locate-cache',
+        ]);
 
         expect(stderr).toBeFalsy();
+        expect(exitCode).toBe(0);
         expect(stdout).toContain('test-locate-cache');
         expect(existsSync(resolve(__dirname, './test-locate-cache'))).toBeTruthy();
     });
 
     it('should set cache.hashAlgorithm with --cache-hash-algorithm', () => {
-        const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '--cache-hash-algorithm', 'sha256']);
+        const { stderr, stdout, exitCode } = run(__dirname, ['--cache-type', 'filesystem', '--cache-hash-algorithm', 'sha256']);
 
         expect(stderr).toBeFalsy();
+        expect(exitCode).toBe(0);
         expect(stdout).toContain(`hashAlgorithm: 'sha256'`);
     });
 
     it('should set cache.name with --cache-name', () => {
-        const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '--cache-name', 'cli-test']);
+        const { stderr, stdout, exitCode } = run(__dirname, ['--cache-type', 'filesystem', '--cache-name', 'cli-test']);
 
         expect(stderr).toBeFalsy();
+        expect(exitCode).toBe(0);
         expect(stdout).toContain(`name: 'cli-test'`);
     });
 
     it('should set cache.store with --cache-store', () => {
-        const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '--cache-store', 'pack']);
+        const { stderr, stdout, exitCode } = run(__dirname, ['--cache-type', 'filesystem', '--cache-store', 'pack']);
 
         expect(stderr).toBeFalsy();
+        expect(exitCode).toBe(0);
         expect(stdout).toContain(`store: 'pack'`);
     });
 
     it('should set cache.version with --cache-version', () => {
-        const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '--cache-version', '1.1.3']);
+        const { stderr, stdout, exitCode } = run(__dirname, ['--cache-type', 'filesystem', '--cache-version', '1.1.3']);
 
         expect(stderr).toBeFalsy();
+        expect(exitCode).toBe(0);
         expect(stdout).toContain(`version: '1.1.3'`);
     });
 
     it('should assign cache build dependencies correctly when cache type is filesystem', () => {
         // TODO: Fix on windows
         if (isWindows) return;
-        const { stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.config.js']);
+        const { stderr, stdout, exitCode } = run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.config.js']);
+
         expect(stderr).toBeFalsy();
+        expect(exitCode).toBe(0);
         expect(stdout).toContain('buildDependencies');
         expect(stdout).toContain("config: [ './webpack.config.js' ]");
         expect(stdout).not.toContain('[cached]');
@@ -95,8 +111,10 @@ describe('cache related flags from core', () => {
     it('should assign cache build dependencies correctly when cache type is filesystem in config', () => {
         // TODO: Fix on windows
         if (isWindows) return;
-        const { stderr, stdout } = run(__dirname, ['-c', './webpack.cache.config.js']);
+        const { stderr, stdout, exitCode } = run(__dirname, ['-c', './webpack.cache.config.js']);
+
         expect(stderr).toBeFalsy();
+        expect(exitCode).toBe(0);
         expect(stdout).toContain('buildDependencies');
         expect(stdout).toContain("config: [ './webpack.cache.config.js' ]");
         expect(stdout).toContain("type: 'filesystem'");
@@ -114,6 +132,17 @@ describe('cache related flags from core', () => {
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('buildDependencies');
         expect(stdout).toContain("config: [ './webpack.cache.config.js', './webpack.config.js' ]");
+        expect(stdout).toContain("type: 'filesystem'");
+        expect(exitCode).toEqual(0);
+    });
+
+    it('should assign cache build dependencies with default config', () => {
+        // TODO: Fix on windows
+        if (isWindows) return;
+        const { stderr, stdout, exitCode } = run(__dirname, ['--cache-type', 'filesystem']);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('buildDependencies');
+        expect(stdout).toContain(`'${path.join(__dirname, './webpack.config.js')}'`);
         expect(stdout).toContain("type: 'filesystem'");
         expect(exitCode).toEqual(0);
     });

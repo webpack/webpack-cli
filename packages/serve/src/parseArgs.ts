@@ -23,12 +23,13 @@ type ArgsType = {
  * @returns {Object} parsed webpack args and dev server args objects
  */
 export default function parseArgs(cli: WebpackCLIType, args: string[]): ArgsType {
-    let devServerFlags: object[];
+    let devServerFlags;
     try {
         // eslint-disable-next-line node/no-extraneous-require
         devServerFlags = require('webpack-dev-server/bin/cli-flags').devServer;
     } catch (err) {
-        throw new Error(`You need to install 'webpack-dev-server' for running 'webpack serve'.\n${err}`);
+        logger.error(`You need to install 'webpack-dev-server' for running 'webpack serve'.\n${err}`);
+        process.exit(2);
     }
 
     const core = cli.getCoreFlags();
@@ -37,6 +38,13 @@ export default function parseArgs(cli: WebpackCLIType, args: string[]): ArgsType
     const devServerArgs = parsedDevServerArgs.opts;
     const parsedWebpackArgs = cli.argParser(core, parsedDevServerArgs.unknownArgs, true, process.title);
     const webpackArgs = parsedWebpackArgs.opts;
+
+    // Add WEBPACK_SERVE environment variable
+    if (webpackArgs.env) {
+        webpackArgs.env.WEBPACK_SERVE = true;
+    } else {
+        webpackArgs.env = { WEBPACK_SERVE: true };
+    }
 
     // pass along the 'hot' argument to the dev server if it exists
     if (webpackArgs && webpackArgs.hot !== undefined) {

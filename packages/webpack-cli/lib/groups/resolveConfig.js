@@ -126,13 +126,13 @@ const resolveConfigFiles = async (args) => {
         const defaultConfig = configFiles.find((p) => p.path.includes(mode) || p.path.includes(modeAlias[mode]));
 
         if (defaultConfig) {
-            opts = await finalize(defaultConfig, args);
+            opts = await finalize(defaultConfig, args, true);
             return;
         }
 
         const foundConfig = configFiles.pop();
 
-        opts = await finalize(foundConfig, args);
+        opts = await finalize(foundConfig, args, true);
 
         return;
     }
@@ -140,7 +140,7 @@ const resolveConfigFiles = async (args) => {
 
 // Given config data, determines the type of config and
 // returns final config
-const finalize = async (moduleObj, args) => {
+const finalize = async (moduleObj, args, isDefaultConfig = false) => {
     const { env, configName } = args;
     const newOptionsObject = {
         outputOptions: {},
@@ -149,6 +149,10 @@ const finalize = async (moduleObj, args) => {
 
     if (!moduleObj) {
         return newOptionsObject;
+    }
+
+    if (isDefaultConfig) {
+        newOptionsObject.outputOptions.defaultConfig = moduleObj.path;
     }
 
     const config = moduleObj.config;

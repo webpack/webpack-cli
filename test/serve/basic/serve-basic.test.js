@@ -3,7 +3,7 @@
 const { yellow, options } = require('colorette');
 const path = require('path');
 const getPort = require('get-port');
-const { runServe } = require('../../utils/test-utils');
+const { runServe, isDevServer4 } = require('../../utils/test-utils');
 
 const testPath = path.resolve(__dirname);
 
@@ -54,6 +54,13 @@ describe('basic serve usage', () => {
         expect(stdout).toContain('main.js');
         expect(stdout).toContain('HotModuleReplacementPlugin');
         expect(stderr).toHaveLength(0);
+    });
+
+    it('uses hot-only flag to alter bundle', async () => {
+        const { stdout, stderr } = await runServe(['--port', port, isDevServer4 ? '--hot only' : '--hot-only'], testPath);
+        expect(stdout).toContain('main.js');
+        expect(stdout).toContain('HotModuleReplacementPlugin');
+        expect(stderr).toBeFalsy();
     });
 
     it('uses no-hot flag', async () => {

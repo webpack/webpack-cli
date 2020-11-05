@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/generate-loader",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "A scaffold for generating a loader",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -18,7 +18,7 @@
     "templates"
   ],
   "dependencies": {
-    "@webpack-cli/generators": "^1.0.2",
+    "@webpack-cli/generators": "^1.1.0",
     "yeoman-environment": "^2.10.3"
   },
   "peerDependencies": {

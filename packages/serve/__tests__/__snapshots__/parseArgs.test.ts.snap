@@ -11,6 +11,9 @@ Object {
   },
   "webpackArgs": Object {
     "color": true,
+    "env": Object {
+      "WEBPACK_SERVE": true,
+    },
     "hot": true,
   },
 }
@@ -39,6 +42,9 @@ Object {
   },
   "webpackArgs": Object {
     "color": true,
+    "env": Object {
+      "WEBPACK_SERVE": true,
+    },
     "mode": "development",
   },
 }

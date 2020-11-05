@@ -7,9 +7,11 @@ const { run } = require('../../utils/test-utils');
 
 describe('single entry flag index present', () => {
     it('finds default index file and compiles successfully', (done) => {
-        const { stderr } = run(__dirname);
+        const { stderr, stdout, exitCode } = run(__dirname);
 
         expect(stderr).not.toContain('Module not found');
+        expect(exitCode).toBe(0);
+        expect(stdout).toBeTruthy();
         stat(resolve(__dirname, './bin/main.js'), (err, stats) => {
             expect(err).toBe(null);
             expect(stats.isFile()).toBe(true);

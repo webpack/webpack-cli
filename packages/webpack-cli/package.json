@@ -1,6 +1,6 @@
 {
   "name": "webpack-cli",
-  "version": "4.1.0",
+  "version": "4.2.0",
   "description": "CLI for webpack & friends",
   "license": "MIT",
   "repository": {
@@ -27,8 +27,8 @@
     "lib"
   ],
   "dependencies": {
-    "@webpack-cli/info": "^1.0.2",
-    "@webpack-cli/serve": "^1.0.1",
+    "@webpack-cli/info": "^1.1.0",
+    "@webpack-cli/serve": "^1.1.0",
     "colorette": "^1.2.1",
     "command-line-usage": "^6.1.0",
     "commander": "^6.2.0",

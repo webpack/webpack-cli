@@ -30,19 +30,21 @@ describe('resolve config related flags', () => {
 
         if (flag.type === String && !flag.name.includes('alias-') && !flag.name.includes('fallback-')) {
             it(`should config --${flag.name} correctly`, () => {
-                const { stderr, stdout } = run(__dirname, [`--${flag.name}`, 'browser']);
+                const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`, 'browser']);
+
                 expect(stderr).toBeFalsy();
                 if (propName === 'restrictions') {
                     expect(stdout).toContain('browser');
                 } else {
                     expect(stdout).toContain(`${propName}: [ 'browser' ]`);
+                    expect(exitCode).toBe(0);
                 }
             });
         }
 
         if (flag.name.includes('alias-') || flag.name.includes('fallback-')) {
             it(`should config --${flag.name} correctly`, () => {
-                const { stderr, stdout } = run(__dirname, [
+                const { stderr, stdout, exitCode } = run(__dirname, [
                     `--resolve-alias-alias`,
                     'alias',
                     '--resolve-alias-name',
@@ -64,7 +66,9 @@ describe('resolve config related flags', () => {
                     '--resolve-loader-fallback-name',
                     'loader-fall-name',
                 ]);
+
                 expect(stderr).toBeFalsy();
+                expect(exitCode).toBe(0);
                 expect(stdout).toContain(`alias: [ { alias: 'alias', name: 'name' } ]`);
                 expect(stdout).toContain(`aliasFields: [ 'aliasField' ]`);
                 expect(stdout).toContain(`alias: [ { alias: 'loaderAlias', name: 'loaderName' } ]`);
@@ -77,7 +81,7 @@ describe('resolve config related flags', () => {
 
             if (flag.name.includes('reset')) {
                 it(`should config --${flag.name} alias-reset flags correctly`, () => {
-                    const { stderr, stdout } = run(__dirname, [
+                    const { stderr, stdout, exitCode } = run(__dirname, [
                         '--resolve-alias-reset',
                         '--resolve-fallback-reset',
                         '--resolve-alias-fields-reset',
@@ -85,7 +89,9 @@ describe('resolve config related flags', () => {
                         '--resolve-loader-alias-fields-reset',
                         '--resolve-loader-fallback-reset',
                     ]);
+
                     expect(stderr).toBeFalsy();
+                    expect(exitCode).toBe(0);
                     expect(stdout).toContain(`alias: []`);
                     expect(stdout).toContain(`aliasFields: []`);
                     expect(stdout).toContain(`fallback: []`);

@@ -7,9 +7,10 @@ const performanceFlags = flagsFromCore.filter(({ name }) => name.startsWith('per
 
 describe('module config related flag', () => {
     it(`should config --performance option correctly`, () => {
-        const { stderr, stdout } = run(__dirname, [`--no-performance`]);
+        const { stderr, stdout, exitCode } = run(__dirname, [`--no-performance`]);
 
         expect(stderr).toBeFalsy();
+        expect(exitCode).toBe(0);
         expect(stdout).toContain('performance: false');
     });
 
@@ -20,17 +21,20 @@ describe('module config related flag', () => {
 
         if (flag.type === Number) {
             it(`should config --${flag.name} correctly`, () => {
-                const { stderr, stdout } = run(__dirname, [`--${flag.name}`, '10']);
+                const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`, '10']);
 
                 expect(stderr).toBeFalsy();
+                expect(exitCode).toBe(0);
                 expect(stdout).toContain(`${propName}: 10`);
             });
         }
 
         if (flag.type === String) {
             it(`should config --${flag.name} correctly`, () => {
-                const { stderr, stdout } = run(__dirname, [`--${flag.name}`, 'warning']);
+                const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`, 'warning']);
+
                 expect(stderr).toBeFalsy();
+                expect(exitCode).toBe(0);
                 expect(stdout).toContain(`${propName}: 'warning'`);
             });
         }

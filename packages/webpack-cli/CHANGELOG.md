@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.2.0](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.1.0...webpack-cli@4.2.0) (2020-11-04)
+
+### Bug Fixes
+
+-   --config-name behaviour for fuctional configs ([#2006](https://github.com/webpack/webpack-cli/issues/2006)) ([29ecf8d](https://github.com/webpack/webpack-cli/commit/29ecf8dbcd1c5c7d75fc7fb1634107697832d952))
+-   assign cache value for default configs ([#2013](https://github.com/webpack/webpack-cli/issues/2013)) ([d2e3c74](https://github.com/webpack/webpack-cli/commit/d2e3c74d32b0141c694259cf4f31e6c48b0f681d))
+-   callback deprecation ([#1977](https://github.com/webpack/webpack-cli/issues/1977)) ([2cb0c0e](https://github.com/webpack/webpack-cli/commit/2cb0c0e383670949ce31231edbfda514f47c3dfc))
+-   handle core flags for webpack 4 ([#2023](https://github.com/webpack/webpack-cli/issues/2023)) ([ea66a7e](https://github.com/webpack/webpack-cli/commit/ea66a7e3ec6eabcc439b96acb21e2a25be2e35e5))
+-   help and version functionality ([#1972](https://github.com/webpack/webpack-cli/issues/1972)) ([e8010b3](https://github.com/webpack/webpack-cli/commit/e8010b3aac695971e542ad4d3584ce534da39b8f))
+
+### Features
+
+-   export utils from core for other packages ([#2011](https://github.com/webpack/webpack-cli/issues/2011)) ([3004549](https://github.com/webpack/webpack-cli/commit/3004549c06b3fe00708d8e1eecf42419e0f72f66))
+-   progress supports string argument ([#2000](https://github.com/webpack/webpack-cli/issues/2000)) ([f13346e](https://github.com/webpack/webpack-cli/commit/f13346e6acb46e982a5d20fa1d2ae56fc52523dc))
+-   suggest the closest match based on the Levenshtein distance algorithm ([#2010](https://github.com/webpack/webpack-cli/issues/2010)) ([491a582](https://github.com/webpack/webpack-cli/commit/491a582620b64ed4acbccd04f687adc28a5e4cff))
+
 # [4.1.0](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.0.0...webpack-cli@4.1.0) (2020-10-19)
 
 ### Bug Fixes
