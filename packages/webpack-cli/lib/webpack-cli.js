@@ -175,7 +175,13 @@ class WebpackCLI {
         try {
             // enforce watch on interactive
             if (args.interactive) {
-                options.watch = true;
+                if (Array.isArray(options)) {
+                    for (const option of options) {
+                        option.watch = true;
+                    }
+                } else {
+                    options.watch = true;
+                }
             }
 
             compiler = webpack(options, callback);

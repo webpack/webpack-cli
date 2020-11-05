@@ -163,6 +163,25 @@ class InteractiveModePlugin {
             return;
         }
 
+        if (this.isMultiCompiler) {
+            const allWatching = this.compilers.reduce((result, childCompiler) => {
+                return result && !childCompiler.watching.suspended;
+            }, true);
+
+            if (allWatching) {
+                spawnCommand('already watching', true);
+                return;
+            }
+
+            clrscr();
+            for (const childCompiler of this.compilers) {
+                if (childCompiler.watching && childCompiler.watching.suspended) {
+                    childCompiler.watching.resume();
+                }
+            }
+            return;
+        }
+
         if (!compiler.watching.suspended) {
             spawnCommand('already watching', true);
             return;
