@@ -30,6 +30,9 @@ function resolveArgs(args) {
         if (arg === 'watch') {
             finalOptions.options.watch = true;
         }
+        if (arg === 'amd') {
+            finalOptions.options.amd = args[arg];
+        }
         if (arg === 'entry') {
             finalOptions.options[arg] = args[arg];
         }
