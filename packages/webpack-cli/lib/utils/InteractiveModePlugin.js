@@ -34,6 +34,25 @@ const clrscr = () => {
     process.stdout.write('\x1B[2J\x1B[3J\x1B[H');
 };
 
+/**
+ * Helper plugin for child compilers if MultiCompiler is supplied
+ */
+class InteractiveModeMultiCompilerHelperPlugin {
+    constructor() {
+        this.name = 'InteractiveModeMultiCompilerHelperPlugin';
+    }
+
+    apply(compiler) {
+        // clear terminal if any one of child starts compilation
+        compiler.hooks.beforeCompile.tap(this.name, () => {
+            clrscr();
+        });
+    }
+}
+
+/**
+ * Interactive Mode plugin
+ */
 class InteractiveModePlugin {
     constructor() {
         this.isMultiCompiler = false;
@@ -81,8 +100,8 @@ class InteractiveModePlugin {
             this.compilers = compiler.compilers;
         }
 
-        // // Clear for first run as well
-        // clrscr();
+        // Clear for first run as well
+        clrscr();
 
         if (!this.isMultiCompiler) {
             // Clear output on watch invalidate
@@ -104,20 +123,25 @@ class InteractiveModePlugin {
                 });
             }
         } else {
-            // Clear when any one of child watch invalidates
+            const helperPlugin = new InteractiveModeMultiCompilerHelperPlugin();
+
+            // Register helper plugin on each of child compiler
             for (const childCompiler of this.compilers) {
-                childCompiler.hooks.beforeCompile.tap(this.name, () => {
-                    clrscr();
-                    console.log('Apple');
-                });
+                helperPlugin.apply(childCompiler);
             }
+
+            compiler.hooks.done.tap(this.name, () => {
+                setTimeout(() => {
+                    spawnCommand('compilations completed', true);
+                }, 1);
+            });
         }
     }
 
     quitHandler(compiler) {
         if (version.startsWith(5) && compiler.watching !== undefined) {
             compiler.watching.close(() => {
-                process.exit();
+                process.exit(0);
             });
             return;
         }
