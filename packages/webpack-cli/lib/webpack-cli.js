@@ -11,11 +11,7 @@ const WebpackCLIPlugin = require('./plugins/WebpackCLIPlugin');
 
 // CLI arg resolvers
 const handleConfigResolution = require('./groups/resolveConfig');
-const resolveMode = require('./groups/resolveMode');
-const resolveStats = require('./groups/resolveStats');
-const resolveOutput = require('./groups/resolveOutput');
 const basicResolver = require('./groups/basicResolver');
-const resolveAdvanced = require('./groups/resolveAdvanced');
 const toKebabCase = require('./utils/to-kebab-case');
 
 class WebpackCLI {
@@ -146,12 +142,8 @@ class WebpackCLI {
     async runOptionGroups(parsedArgs) {
         await Promise.resolve()
             .then(() => this._baseResolver(handleConfigResolution, parsedArgs))
-            .then(() => this._baseResolver(resolveMode, parsedArgs))
-            .then(() => this._baseResolver(resolveOutput, parsedArgs))
             .then(() => this._handleCoreFlags(parsedArgs))
-            .then(() => this._baseResolver(basicResolver, parsedArgs))
-            .then(() => this._baseResolver(resolveAdvanced, parsedArgs))
-            .then(() => this._baseResolver(resolveStats, parsedArgs));
+            .then(() => this._baseResolver(basicResolver, parsedArgs));
     }
 
     handleError(error) {
