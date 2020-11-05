@@ -11,6 +11,4 @@ async function runCommand(command, args = []) {
     }
 }
 
-module.exports = {
-    runCommand,
-};
+module.exports = runCommand;

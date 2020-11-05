@@ -1,5 +1,5 @@
 const logger = require('../utils/logger');
-const { defaultCommands } = require('../utils/commands');
+const { defaultCommands } = require('../utils/cli-flags');
 const { isCommandUsed } = require('../utils/arg-utils');
 const { commands, allNames, hasUnknownArgs } = require('../utils/unknown-args');
 

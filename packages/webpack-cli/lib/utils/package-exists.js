@@ -7,6 +7,4 @@ function packageExists(packageName) {
     }
 }
 
-module.exports = {
-    packageExists,
-};
+module.exports = packageExists;

@@ -1,4 +1,4 @@
-const { packageExists } = require('./utils/package-exists');
+const packageExists = require('./utils/package-exists');
 const webpack = packageExists('webpack') ? require('webpack') : undefined;
 const logger = require('./utils/logger');
 const webpackMerge = require('webpack-merge');
@@ -16,7 +16,7 @@ const resolveStats = require('./groups/resolveStats');
 const resolveOutput = require('./groups/resolveOutput');
 const basicResolver = require('./groups/basicResolver');
 const resolveAdvanced = require('./groups/resolveAdvanced');
-const { toKebabCase } = require('./utils/helpers');
+const toKebabCase = require('./utils/to-kebab-case');
 
 class WebpackCLI {
     constructor() {

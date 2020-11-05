@@ -1,10 +1,8 @@
-jest.setMock('../prompt-installation', {
-    promptInstallation: jest.fn(),
-});
+jest.setMock('../prompt-installation', jest.fn());
 
 const ExternalCommand = require('../resolve-command');
-const { packageExists } = require('../package-exists');
-const { promptInstallation } = require('../prompt-installation');
+const packageExists = require('../package-exists');
+const promptInstallation = require('../prompt-installation');
 
 describe('@webpack-cli/utils', () => {
     it('should check existence of package', () => {
