@@ -74,7 +74,7 @@ const resolveArgs = async (args, configOptions) => {
         }
     });
     if (outputPath) {
-        finalOptions.options.output.path = path.resolve(outputPath);
+        finalOptions.options.output = { path: path.resolve(outputPath) };
     }
 
     if (stats !== undefined) {
