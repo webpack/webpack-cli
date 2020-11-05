@@ -6,7 +6,7 @@ const { writeFileSync, existsSync } = require('fs');
 const { options: coloretteOptions, yellow } = require('colorette');
 
 const logger = require('./utils/logger');
-const { core, groups, coreFlagMap } = require('./utils/cli-flags');
+const { core, flagsFromCore } = require('./utils/cli-flags');
 const argParser = require('./utils/arg-parser');
 const assignFlagDefaults = require('./utils/flag-defaults');
 const WebpackCLIPlugin = require('./plugins/WebpackCLIPlugin');
@@ -32,6 +32,10 @@ class WebpackCLI {
     _handleCoreFlags(parsedArgs) {
         const coreCliHelper = require('webpack').cli;
         if (!coreCliHelper) return;
+        const coreFlagMap = flagsFromCore.reduce((acc, cur) => {
+            acc.set(cur.name, cur);
+            return acc;
+        }, new Map());
         const coreConfig = Object.keys(parsedArgs)
             .filter((arg) => {
                 return coreFlagMap.has(toKebabCase(arg));
@@ -491,19 +495,6 @@ class WebpackCLI {
                     this.compilerConfiguration = webpackMerge(this.compilerConfiguration, options);
                 }
             }
-        }
-    }
-
-    /**
-     * Responsible for creating and updating the new  output configuration
-     *
-     * @param {Object} options Output options emitted by the group helper
-     * @private
-     * @returns {void}
-     */
-    _mergeOptionsToOutputConfiguration(options) {
-        if (options) {
-            this.outputConfiguration = Object.assign(this.outputConfiguration, options);
         }
     }
 

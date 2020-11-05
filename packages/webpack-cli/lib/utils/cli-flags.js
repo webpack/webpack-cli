@@ -281,15 +281,9 @@ const duplicateFlags = core.map((flag) => flag.name);
 // remove duplicate flags
 flagsFromCore = flagsFromCore.filter((flag) => !duplicateFlags.includes(flag.name));
 
-const coreFlagMap = flagsFromCore.reduce((acc, cur) => {
-    acc.set(cur.name, cur);
-    return acc;
-}, new Map());
-
 module.exports = {
     groups,
     commands,
     core: [...core, ...flagsFromCore],
     flagsFromCore,
-    coreFlagMap,
 };
