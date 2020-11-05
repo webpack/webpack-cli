@@ -2,7 +2,7 @@ import envinfo from 'envinfo';
 import WebpackCLI from 'webpack-cli';
 import { utils } from 'webpack-cli';
 
-const { logger, commands } = utils;
+const { logger, commands, handleUnknownArgs } = utils;
 
 interface Information {
     Binaries?: string[];
@@ -38,10 +38,7 @@ export default async function info(...args): Promise<string[]> {
     const infoArgs = parsedArgs.opts;
     const envinfoConfig = {};
 
-    if (parsedArgs.unknownArgs.length > 0) {
-        logger.error(`Unknown argument: ${parsedArgs.unknownArgs}`);
-        process.exit(2);
-    }
+    handleUnknownArgs(parsedArgs.unknownArgs);
 
     if (infoArgs.output) {
         // Remove quotes if exist

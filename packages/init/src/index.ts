@@ -4,7 +4,7 @@ import options from './options';
 import WebpackCLI from 'webpack-cli';
 import { utils } from 'webpack-cli';
 
-const { logger } = utils;
+const { handleUnknownArgs } = utils;
 
 /**
  *
@@ -23,10 +23,7 @@ export default function initializeInquirer(...args: string[]): Function | void {
     const { auto: includesDefaultPrefix, force: generateConfig } = opts;
 
     const unknownFlags = unknownArgs.filter((arg) => arg.startsWith('-'));
-    if (unknownFlags.length > 0) {
-        logger.error(`Unknown argument: ${unknownFlags}`);
-        process.exit(2);
-    }
+    handleUnknownArgs(unknownFlags);
 
     if (args.length === 0 || includesDefaultPrefix || generateConfig) {
         return modifyHelperUtil('init', initGenerator, null, null, includesDefaultPrefix, generateConfig);

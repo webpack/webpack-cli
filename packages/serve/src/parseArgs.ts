@@ -1,6 +1,6 @@
 import { utils } from 'webpack-cli';
 
-const { logger } = utils;
+const { logger, handleUnknownArgs } = utils;
 
 type WebpackCLIType = {
     getCoreFlags: Function;
@@ -51,14 +51,7 @@ export default function parseArgs(cli: WebpackCLIType, args: string[]): ArgsType
         devServerArgs['hot'] = webpackArgs.hot;
     }
 
-    if (parsedWebpackArgs.unknownArgs.length > 0) {
-        parsedWebpackArgs.unknownArgs
-            .filter((e) => e)
-            .forEach((unknown) => {
-                logger.error(`Unknown argument: ${unknown}`);
-            });
-        process.exit(2);
-    }
+    handleUnknownArgs(parsedWebpackArgs.unknownArgs);
 
     return {
         devServerArgs,
