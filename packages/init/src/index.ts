@@ -2,6 +2,9 @@ import { initGenerator } from '@webpack-cli/generators';
 import { modifyHelperUtil, npmPackagesExists } from '@webpack-cli/utils';
 import options from './options';
 import WebpackCLI from 'webpack-cli';
+import { utils } from 'webpack-cli';
+
+const { logger } = utils;
 
 /**
  *
@@ -19,8 +22,11 @@ export default function initializeInquirer(...args: string[]): Function | void {
     const { opts, unknownArgs } = cli.argParser(options, args, true);
     const { auto: includesDefaultPrefix, force: generateConfig } = opts;
 
-    // Filter out cli-flags from unknownArgs
-    const unknownFlags = unknownArgs.filter((arg) => arg.startsWith('--'));
+    const unknownFlags = unknownArgs.filter((arg) => arg.startsWith('-'));
+    if (unknownFlags.length > 0) {
+        logger.error(`Unknown argument: ${unknownFlags}`);
+        process.exit(2);
+    }
 
     if (args.length === 0 || includesDefaultPrefix || generateConfig) {
         return modifyHelperUtil('init', initGenerator, null, null, includesDefaultPrefix, generateConfig);

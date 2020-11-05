@@ -7,6 +7,7 @@ const firstPrompt = 'Will your application have multiple bundles?';
 describe('init with core flags', () => {
     it('should output help with --help flag', () => {
         const { stdout, stderr } = run(__dirname, ['init', '--help'], false);
+
         expect(stdout).toBeTruthy();
         expect(stderr).toBeFalsy();
         expect(stdout).not.toContain(firstPrompt);
@@ -14,6 +15,7 @@ describe('init with core flags', () => {
     });
     it('throws error on unknown flag', () => {
         const { stdout, stderr } = run(__dirname, ['init', '--unknown'], false);
+
         expect(stdout).toBeFalsy();
         expect(stderr).toContain('Unknown argument: --unknown');
     });
