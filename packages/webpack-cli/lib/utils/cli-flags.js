@@ -281,9 +281,15 @@ const duplicateFlags = core.map((flag) => flag.name);
 // remove duplicate flags
 flagsFromCore = flagsFromCore.filter((flag) => !duplicateFlags.includes(flag.name));
 
+const isCommandUsed = (args) =>
+    commands.find((cmd) => {
+        return args.includes(cmd.name) || args.includes(cmd.alias);
+    });
+
 module.exports = {
     groups,
     commands,
     core: [...core, ...flagsFromCore],
     flagsFromCore,
+    isCommandUsed,
 };

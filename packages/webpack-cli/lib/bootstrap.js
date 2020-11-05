@@ -1,7 +1,7 @@
 const WebpackCLI = require('./webpack-cli');
 const { core } = require('./utils/cli-flags');
 const logger = require('./utils/logger');
-const { isCommandUsed } = require('./utils/arg-utils');
+const { isCommandUsed } = require('./utils/cli-flags');
 const argParser = require('./utils/arg-parser');
 const leven = require('leven');
 const { options: coloretteOptions } = require('colorette');
