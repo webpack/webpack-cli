@@ -63,5 +63,21 @@ describe('--target flag', () => {
             expect(stderr).toBeFalsy();
             expect(stdout).toContain(`target: [ 'node', 'async-node' ]`);
         });
+
+        it('should reset target from node to async-node with --target-reset', () => {
+            const { stderr, stdout, exitCode } = run(__dirname, ['--target-reset', '--target', 'async-node']);
+
+            expect(exitCode).toBe(0);
+            expect(stderr).toBeFalsy();
+            expect(stdout).toContain(`target: [ 'async-node' ]`);
+        });
+
+        it('should thorw error if target is an empty array', () => {
+            const { stderr, stdout, exitCode } = run(__dirname, ['--target-reset']);
+
+            expect(exitCode).toBe(2);
+            expect(stderr).toContain('Invalid configuration object');
+            expect(stdout).toBeFalsy();
+        });
     }
 });

@@ -11,4 +11,12 @@ describe('--entry-reset flag', () => {
         expect(stdout).toContain('src/entry.js');
         expect(stdout).not.toContain('src/main.js');
     });
+
+    it('should thorw error if entry is an empty array', () => {
+        const { stderr, stdout, exitCode } = run(__dirname, ['--entry-reset']);
+
+        expect(stderr).toContain('Invalid configuration object');
+        expect(exitCode).toBe(2);
+        expect(stdout).toBeFalsy();
+    });
 });

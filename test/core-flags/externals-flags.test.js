@@ -1,6 +1,9 @@
 'use strict';
 
-const { run } = require('../utils/test-utils');
+const { run, hyphenToUpperCase } = require('../utils/test-utils');
+const { flagsFromCore } = require('../../packages/webpack-cli/lib/utils/cli-flags');
+
+const externalsPresetsFlags = flagsFromCore.filter(({ name }) => name.startsWith('externals-presets-'));
 
 describe('externals related flag', () => {
     it('should set externals properly', () => {
@@ -33,5 +36,27 @@ describe('externals related flag', () => {
         expect(stderr).toBeFalsy();
         expect(exitCode).toBe(0);
         expect(stdout).toContain(`externals: []`);
+    });
+
+    externalsPresetsFlags.forEach((flag) => {
+        // extract property name from flag name
+        const property = flag.name.split('externals-presets-')[1];
+        const propName = hyphenToUpperCase(property);
+
+        it(`should config --${flag.name} correctly`, () => {
+            const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`]);
+
+            expect(stderr).toBeFalsy();
+            expect(exitCode).toBe(0);
+            expect(stdout).toContain(`${propName}: true`);
+        });
+
+        it(`should config --no-${flag.name} correctly`, () => {
+            const { stderr, stdout, exitCode } = run(__dirname, [`--no-${flag.name}`]);
+
+            expect(stderr).toBeFalsy();
+            expect(exitCode).toBe(0);
+            expect(stdout).toContain(`${propName}: false`);
+        });
     });
 });
