@@ -1,7 +1,9 @@
 const { resolve } = require('path');
-const basicResolver = require('../lib/groups/basicResolver');
+const webpackCLI = require('../lib/webpack-cli');
 
 const targetValues = ['web', 'webworker', 'node', 'async-node', 'node-webkit', 'electron-main', 'electron-renderer', 'electron-preload'];
+
+const basicResolver = new webpackCLI().resolveArgs;
 
 describe('BasicResolver', () => {
     it('should handle the output option', async () => {
