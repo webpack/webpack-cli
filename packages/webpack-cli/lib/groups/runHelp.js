@@ -1,114 +1,129 @@
-const { yellow, bold, underline, options } = require('colorette');
+const { green, bold, underline } = require('colorette');
 const commandLineUsage = require('command-line-usage');
 
-const { core, commands } = require('../utils/cli-flags');
-const { hasUnknownArgs, allNames, commands: commandNames } = require('../utils/unknown-args');
+const { commands, flags } = require('../utils/cli-flags');
 const logger = require('../utils/logger');
 
-// This function prints a warning about invalid flag
-const printInvalidArgWarning = (args) => {
-    const invalidArgs = hasUnknownArgs(args, allNames);
+const outputHelp = (args) => {
+    const hasUnknownVersionArgs = (args, commands, flags) => {
+        return args.filter((arg) => {
+            if (arg === '--help' || arg === '-h' || arg === '--color') {
+                return false;
+            }
+
+            const foundCommand = commands.find((command) => {
+                return command.name === arg || command.alias === arg;
+            });
+            const foundFlag = flags.find((command) => {
+                return `--${command.name}` === arg || `-${command.alias}` === arg;
+            });
+
+            return !foundCommand && !foundFlag;
+        });
+    };
+
+    const invalidArgs = hasUnknownVersionArgs(args, commands, flags);
+
     if (invalidArgs.length > 0) {
         const argType = invalidArgs[0].startsWith('-') ? 'option' : 'command';
-        logger.warn(`You provided an invalid ${argType} '${invalidArgs[0]}'.`);
+        logger.error(`Error: Invalid ${argType} '${invalidArgs[0]}'.`);
+        logger.info('Run webpack --help to see available commands and arguments.');
+        process.exit(2);
     }
-};
 
-// This function is responsible for printing command/flag scoped help
-const printSubHelp = (subject, isCommand) => {
-    const info = isCommand ? commands : core;
-    // Contains object with details about given subject
-    const options = info.find((commandOrFlag) => {
-        if (isCommand) {
-            return commandOrFlag.name == subject || commandOrFlag.alias == subject;
+    const usedCommand = commands.filter((command) => {
+        return args.includes(command.name) || args.includes(command.alias);
+    });
+    const usedFlag = flags.filter((flag) => {
+        if (flag.name === 'help') {
+            return false;
         }
-        return commandOrFlag.name === subject.slice(2) || commandOrFlag.alias === subject.slice(1);
+
+        return args.includes(`--${flag.name}`) || args.includes(`-${flag.alias}`);
     });
 
-    const header = (head) => bold(underline(head));
-    const flagAlias = options.alias ? (isCommand ? ` ${options.alias} |` : ` -${options.alias},`) : '';
-    const usage = yellow(`webpack${flagAlias} ${options.usage}`);
-    const description = options.description;
-    const link = options.link;
+    const usedCommandOrFlag = [].concat(usedCommand).concat(usedFlag);
 
-    logger.raw(`${header('Usage')}: ${usage}`);
-    logger.raw(`${header('Description')}: ${description}`);
+    if (usedCommandOrFlag.length > 1) {
+        logger.error(
+            `You provided multiple commands or arguments - ${usedCommandOrFlag
+                .map((usedFlagOrCommand) => {
+                    const isCommand = usedFlagOrCommand.packageName;
 
-    if (link) {
-        logger.raw(`${header('Documentation')}: ${link}`);
-    }
-
-    if (options.flags) {
-        const flags = commandLineUsage({
-            header: 'Options',
-            optionList: options.flags,
-        });
-        logger.raw(flags);
-    }
-};
-
-const printHelp = () => {
-    const o = (s) => yellow(s);
-    const options = require('../utils/cli-flags');
-    const negatedFlags = options.core
-        .filter((flag) => flag.negative)
-        .reduce((allFlags, flag) => {
-            return [...allFlags, { name: `no-${flag.name}`, description: `Negates ${flag.name}`, type: Boolean }];
-        }, []);
-    const title = bold('⬡                     ') + underline('webpack') + bold('                     ⬡');
-    const desc = 'The build tool for modern web applications';
-    const websitelink = '         ' + underline('https://webpack.js.org');
-
-    const usage = bold('Usage') + ': ' + '`' + o('webpack [...options] | <command>') + '`';
-    const examples = bold('Example') + ': ' + '`' + o('webpack help --flag | <command>') + '`';
-
-    const hh = `          ${title}\n
-		${websitelink}\n
-		${desc}\n
-		${usage}\n
-		${examples}\n
-`;
-    return commandLineUsage([
-        {
-            content: hh,
-            raw: true,
-        },
-        {
-            header: 'Available Commands',
-            content: options.commands.map((cmd) => {
-                return { name: `${cmd.name} | ${cmd.alias}`, summary: cmd.description };
-            }),
-        },
-        {
-            header: 'Options',
-            optionList: options.core
-                .map((e) => {
-                    if (e.type.length > 1) e.type = e.type[0];
-                    // Here we replace special characters with chalk's escape
-                    // syntax (`\$&`) to avoid chalk trying to re-process our input.
-                    // This is needed because chalk supports a form of `{var}`
-                    // interpolation.
-                    e.description = e.description.replace(/[{}\\]/g, '\\$&');
-                    return e;
+                    return `${isCommand ? 'command ' : 'argument '}'${isCommand ? usedFlagOrCommand.name : `--${usedFlagOrCommand.name}`}'${
+                        usedFlagOrCommand.alias ? ` (alias '${isCommand ? usedFlagOrCommand.alias : `-${usedFlagOrCommand.alias}`}')` : ''
+                    }`;
                 })
-                .concat(negatedFlags),
-        },
-    ]);
-};
-
-const outputHelp = (cliArgs) => {
-    options.enabled = !cliArgs.includes('--no-color');
-    printInvalidArgWarning(cliArgs);
-    const flagOrCommandUsed = allNames.filter((name) => {
-        return cliArgs.includes(name);
-    })[0];
-    const isCommand = commandNames.includes(flagOrCommandUsed);
+                .join(', ')}. Please use only one command at a time.`,
+        );
+        process.exit(2);
+    }
 
     // Print full help when no flag or command is supplied with help
-    if (flagOrCommandUsed) {
-        printSubHelp(flagOrCommandUsed, isCommand);
+    if (usedCommandOrFlag.length === 1) {
+        const [item] = usedCommandOrFlag;
+        const isCommand = item.packageName;
+        const header = (head) => bold(underline(head));
+        const flagAlias = item.alias ? (isCommand ? ` ${item.alias} |` : ` -${item.alias},`) : '';
+        const usage = green(`webpack${flagAlias} ${item.usage}`);
+        const description = item.description;
+        const link = item.link;
+
+        logger.raw(`${header('Usage')}: ${usage}`);
+        logger.raw(`${header('Description')}: ${description}`);
+
+        if (link) {
+            logger.raw(`${header('Documentation')}: ${link}`);
+        }
+
+        if (item.flags) {
+            const flags = commandLineUsage({
+                header: 'Options',
+                optionList: item.flags,
+            });
+            logger.raw(flags);
+        }
     } else {
-        logger.raw(printHelp());
+        const negatedFlags = flags
+            .filter((flag) => flag.negative)
+            .reduce((allFlags, flag) => {
+                return [...allFlags, { name: `no-${flag.name}`, description: `Negates ${flag.name}`, type: Boolean }];
+            }, []);
+        const title = bold('⬡                     ') + underline('webpack') + bold('                     ⬡');
+        const desc = 'The build tool for modern web applications';
+        const websitelink = '         ' + underline('https://webpack.js.org');
+        const usage = bold('Usage') + ': ' + '`' + green('webpack [...options] | <command>') + '`';
+        const examples = bold('Example') + ': ' + '`' + green('webpack help --flag | <command>') + '`';
+        const hh = `          ${title}\n\n${websitelink}\n\n${desc}\n\n${usage}\n${examples}`;
+        const output = commandLineUsage([
+            { content: hh, raw: true },
+            {
+                header: 'Available Commands',
+                content: commands.map((cmd) => {
+                    return { name: `${cmd.name} | ${cmd.alias}`, summary: cmd.description };
+                }),
+            },
+            {
+                header: 'Options',
+                optionList: flags
+                    .map((e) => {
+                        if (e.type.length > 1) {
+                            e.type = e.type[0];
+                        }
+
+                        // Here we replace special characters with chalk's escape
+                        // syntax (`\$&`) to avoid chalk trying to re-process our input.
+                        // This is needed because chalk supports a form of `{var}`
+                        // interpolation.
+                        e.description = e.description.replace(/[{}\\]/g, '\\$&');
+
+                        return e;
+                    })
+                    .concat(negatedFlags),
+            },
+        ]);
+
+        logger.raw(output);
     }
 
     logger.raw('                  Made with ♥️  by the webpack team');

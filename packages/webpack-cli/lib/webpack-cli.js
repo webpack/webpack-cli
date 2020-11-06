@@ -6,7 +6,8 @@ const { writeFileSync, existsSync } = require('fs');
 const { options: coloretteOptions, yellow } = require('colorette');
 
 const logger = require('./utils/logger');
-const { core, flagsFromCore } = require('./utils/cli-flags');
+const webpackMerge = require('webpack-merge');
+const { flags, flagsFromCore } = require('./utils/cli-flags');
 const argParser = require('./utils/arg-parser');
 const assignFlagDefaults = require('./utils/flag-defaults');
 const WebpackCLIPlugin = require('./plugins/WebpackCLIPlugin');
@@ -438,7 +439,7 @@ class WebpackCLI {
     }
 
     getCoreFlags() {
-        return core;
+        return flags;
     }
 
     /**

@@ -91,7 +91,7 @@ const commands = [
     },
 ];
 
-const core = [
+const builtInFlags = [
     {
         name: 'entry',
         usage: '--entry <path to entry file> | --entry <path> --entry <path>',
@@ -276,7 +276,7 @@ let flagsFromCore =
         : [];
 
 // duplicate flags
-const duplicateFlags = core.map((flag) => flag.name);
+const duplicateFlags = builtInFlags.map((flag) => flag.name);
 
 // remove duplicate flags
 flagsFromCore = flagsFromCore.filter((flag) => !duplicateFlags.includes(flag.name));
@@ -289,7 +289,7 @@ const isCommandUsed = (args) =>
 module.exports = {
     groups,
     commands,
-    core: [...core, ...flagsFromCore],
     flagsFromCore,
+    flags: [...builtInFlags, ...flagsFromCore],
     isCommandUsed,
 };
