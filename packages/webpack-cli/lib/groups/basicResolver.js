@@ -1,7 +1,7 @@
 const path = require('path');
 const { core, groups } = require('../utils/cli-flags');
-const { packageExists } = require('../utils/package-exists');
-const { promptInstallation } = require('../utils/prompt-installation');
+const packageExists = require('../utils/package-exists');
+const promptInstallation = require('../utils/prompt-installation');
 const { yellow } = require('colorette');
 const { error, success } = require('../utils/logger');
 
@@ -49,7 +49,7 @@ const assignMode = (mode, configObject, options) => {
     options.mode = finalMode;
 };
 
-const resolveArgs = async (args, configOptions) => {
+const resolveArgs = async (args, configOptions = {}) => {
     const { outputPath, stats, json, mode, target, prefetch, hot, analyze } = args;
 
     const finalOptions = {
@@ -128,7 +128,9 @@ const resolveArgs = async (args, configOptions) => {
     }
 
     if (Array.isArray(configOptions)) {
-        configOptions.map((configObject) => assignMode(mode, configObject, finalOptions.options));
+        // Todo - handle multi config for all flags
+        finalOptions.options = new Array(configOptions.length).fill(finalOptions.options);
+        configOptions.map((configObject, index) => assignMode(mode, configObject, finalOptions.options[index]));
     } else assignMode(mode, configOptions, finalOptions.options);
 
     return finalOptions;
