@@ -16,50 +16,6 @@ const promptInstallation = require('./utils/prompt-installation');
 const handleConfigResolution = require('./groups/resolveConfig');
 const toKebabCase = require('./utils/to-kebab-case');
 
-const WEBPACK_OPTION_FLAGS = core
-    .filter((coreFlag) => {
-        return coreFlag.group === groups.BASIC_GROUP;
-    })
-    .reduce((result, flagObject) => {
-        result.push(flagObject.name);
-        if (flagObject.alias) {
-            result.push(flagObject.alias);
-        }
-        return result;
-    }, []);
-
-const PRODUCTION = 'production';
-const DEVELOPMENT = 'development';
-
-/*
-    Mode priority:
-        - Mode flag
-        - Mode from config
-        - Mode form NODE_ENV
-    */
-/**
- *
- * @param {string} mode - mode flag value
- * @param {Object} configObject - contains relevant loaded config
- */
-const assignMode = (mode, configObject) => {
-    const {
-        env: { NODE_ENV },
-    } = process;
-    const { mode: configMode } = configObject;
-    let finalMode;
-    if (mode) {
-        finalMode = mode;
-    } else if (configMode) {
-        finalMode = configMode;
-    } else if (NODE_ENV && (NODE_ENV === PRODUCTION || NODE_ENV === DEVELOPMENT)) {
-        finalMode = NODE_ENV;
-    } else {
-        finalMode = PRODUCTION;
-    }
-    return finalMode;
-};
-
 class WebpackCLI {
     constructor() {
         this.compilerConfiguration = {};
@@ -97,6 +53,52 @@ class WebpackCLI {
             options: {},
             outputOptions: {},
         };
+
+        const WEBPACK_OPTION_FLAGS = core
+            .filter((coreFlag) => {
+                return coreFlag.group === groups.BASIC_GROUP;
+            })
+            .reduce((result, flagObject) => {
+                result.push(flagObject.name);
+                if (flagObject.alias) {
+                    result.push(flagObject.alias);
+                }
+                return result;
+            }, []);
+
+        const PRODUCTION = 'production';
+        const DEVELOPMENT = 'development';
+
+        /*
+        Mode priority:
+            - Mode flag
+            - Mode from config
+            - Mode form NODE_ENV
+        */
+
+        /**
+         *
+         * @param {string} mode - mode flag value
+         * @param {Object} configObject - contains relevant loaded config
+         */
+        const assignMode = (mode, configObject) => {
+            const {
+                env: { NODE_ENV },
+            } = process;
+            const { mode: configMode } = configObject;
+            let finalMode;
+            if (mode) {
+                finalMode = mode;
+            } else if (configMode) {
+                finalMode = configMode;
+            } else if (NODE_ENV && (NODE_ENV === PRODUCTION || NODE_ENV === DEVELOPMENT)) {
+                finalMode = NODE_ENV;
+            } else {
+                finalMode = PRODUCTION;
+            }
+            return finalMode;
+        };
+
         Object.keys(args).forEach((arg) => {
             if (WEBPACK_OPTION_FLAGS.includes(arg)) {
                 finalOptions.outputOptions[arg] = args[arg];
