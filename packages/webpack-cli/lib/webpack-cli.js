@@ -49,7 +49,7 @@ class WebpackCLI {
     async resolveArgs(args, configOptions = {}) {
         // Since color flag has a default value, when there are no other args then exit
         // eslint-disable-next-line no-prototype-builtins
-        if (Object.keys(args).length === 1 && args.hasOwnProperty('color')) return {};
+        if (Object.keys(args).length === 1 && args.hasOwnProperty('color') && !process.env.NODE_ENV) return {};
 
         const { outputPath, stats, json, mode, target, prefetch, hot, analyze } = args;
         const finalOptions = {
@@ -89,6 +89,7 @@ class WebpackCLI {
                 env: { NODE_ENV },
             } = process;
             const { mode: configMode } = configObject;
+            console.log({ configMode, NODE_ENV, mode });
             let finalMode;
             if (mode) {
                 finalMode = mode;
