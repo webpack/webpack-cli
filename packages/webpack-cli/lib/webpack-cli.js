@@ -89,7 +89,6 @@ class WebpackCLI {
                 env: { NODE_ENV },
             } = process;
             const { mode: configMode } = configObject;
-            console.log({ configMode, NODE_ENV, mode });
             let finalMode;
             if (mode) {
                 finalMode = mode;
