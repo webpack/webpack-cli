@@ -3,6 +3,8 @@ import { modifyHelperUtil, npmPackagesExists } from '@webpack-cli/utils';
 
 const AUTO_PREFIX = '--auto';
 const CONFIG_PREFIX = '--force';
+const PATH_PREFIX = '--generate-path';
+
 /**
  *
  * First function to be called after running the init flag. This is a check,
@@ -18,8 +20,16 @@ export default function initializeInquirer(...args: string[]): Function | void {
     const packages = args;
     const includesDefaultPrefix = packages.includes(AUTO_PREFIX);
     const generateConfig = packages.includes(CONFIG_PREFIX);
-    if (packages.length === 0 || includesDefaultPrefix || generateConfig) {
-        return modifyHelperUtil('init', initGenerator, null, null, includesDefaultPrefix, generateConfig);
+    const genPathPrefix = packages.includes(PATH_PREFIX);
+
+    let generatePath: string;
+    if (genPathPrefix) {
+        const idx = packages.indexOf(PATH_PREFIX);
+        // Retrieve the path supplied along with --generate-path
+        generatePath = packages[idx + 1];
+    }
+    if (packages.length === 0 || includesDefaultPrefix || generateConfig || genPathPrefix) {
+        return modifyHelperUtil('init', initGenerator, null, null, includesDefaultPrefix, generateConfig, generatePath);
     }
     return npmPackagesExists(packages);
 }

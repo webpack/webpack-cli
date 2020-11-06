@@ -37,7 +37,7 @@ function mapOptionsToTransform(config: Config): string[] {
  * and writes the file
  */
 
-export function runTransform(transformConfig: TransformConfig, action: string, generateConfig: boolean): void {
+export function runTransform(transformConfig: TransformConfig, action: string, generateConfig: boolean, generatePath: string): void {
     // webpackOptions.name sent to nameTransform if match
     const webpackConfig = Object.keys(transformConfig).filter((p: string): boolean => {
         if (p == 'usingDefaults') {
@@ -80,7 +80,7 @@ export function runTransform(transformConfig: TransformConfig, action: string, g
                     } else {
                         configurationName = 'webpack.' + config.configName + '.js';
                     }
-                    const projectRoot = findProjectRoot();
+                    const projectRoot = findProjectRoot(generatePath);
                     const outputPath: string = initActionNotDefined
                         ? transformConfig.configPath
                         : path.join(projectRoot || process.cwd(), configurationName);
