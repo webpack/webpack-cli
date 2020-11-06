@@ -1,10 +1,10 @@
 const path = require('path');
+const packageExists = require('./utils/package-exists');
 const webpack = packageExists('webpack') ? require('webpack') : undefined;
 const webpackMerge = require('webpack-merge');
 const { writeFileSync } = require('fs');
 const { options: coloretteOptions, yellow } = require('colorette');
 
-const packageExists = require('./utils/package-exists');
 const logger = require('./utils/logger');
 const { core, groups, coreFlagMap } = require('./utils/cli-flags');
 const argParser = require('./utils/arg-parser');
@@ -47,8 +47,10 @@ class WebpackCLI {
     }
 
     async resolveArgs(args, configOptions = {}) {
-        const { outputPath, stats, json, mode, target, prefetch, hot, analyze } = args;
+        // Since color flag has a default value, when there are no other args then exit
+        if (Object.keys(args).length === 1) return {};
 
+        const { outputPath, stats, json, mode, target, prefetch, hot, analyze } = args;
         const finalOptions = {
             options: {},
             outputOptions: {},
