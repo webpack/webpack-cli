@@ -31,7 +31,7 @@ const DEVELOPMENT = 'development';
  * @param {string} mode - mode flag value
  * @param {Object} configObject - contains relevant loaded config
  */
-const assignMode = (mode, configObject, options) => {
+const assignMode = (mode, configObject) => {
     const {
         env: { NODE_ENV },
     } = process;
@@ -46,7 +46,7 @@ const assignMode = (mode, configObject, options) => {
     } else {
         finalMode = PRODUCTION;
     }
-    options.mode = finalMode;
+    return finalMode;
 };
 
 const resolveArgs = async (args, configOptions = {}) => {
@@ -129,10 +129,13 @@ const resolveArgs = async (args, configOptions = {}) => {
 
     if (Array.isArray(configOptions)) {
         // Todo - handle multi config for all flags
-        finalOptions.options = new Array(configOptions.length).fill(finalOptions.options);
-        configOptions.map((configObject, index) => assignMode(mode, configObject, finalOptions.options[index]));
-    } else assignMode(mode, configOptions, finalOptions.options);
-
+        finalOptions.options = configOptions.map(() => ({ ...finalOptions.options }));
+        configOptions.forEach((configObject, index) => {
+            finalOptions.options[index].mode = assignMode(mode, configObject);
+        });
+    } else {
+        finalOptions.options.mode = assignMode(mode, configOptions);
+    }
     return finalOptions;
 };
 
