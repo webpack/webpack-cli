@@ -11,6 +11,7 @@ const packageExists = require('./package-exists');
  */
 async function promptInstallation(packageName, preMessage) {
     const packageManager = getPackageManager();
+    // yarn uses 'add' command, rest npm and pnpm both use 'install'
     const options = [packageManager === 'yarn' ? 'add' : 'install', '-D', packageName];
 
     const commandToBeRun = `${packageManager} ${options.join(' ')}`;

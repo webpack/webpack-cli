@@ -12,11 +12,16 @@ const { sync } = require('execa');
 function getPackageManager() {
     const hasLocalYarn = fs.existsSync(path.resolve(process.cwd(), 'yarn.lock'));
     const hasLocalNpm = fs.existsSync(path.resolve(process.cwd(), 'package-lock.json'));
+    const hasLocalPnpm = fs.existsSync(path.resolve(process.cwd(), 'pnpm-lock.yaml'));
+
     if (hasLocalYarn) {
         return 'yarn';
     } else if (hasLocalNpm) {
         return 'npm';
+    } else if (hasLocalPnpm) {
+        return 'pnpm';
     }
+
     try {
         // if the sync function below fails because yarn is not installed,
         // an error will be thrown

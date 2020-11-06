@@ -60,6 +60,22 @@ describe('promptInstallation', () => {
         expect(runCommand.mock.calls[0][0]).toEqual('yarn add -D test-package');
     });
 
+    it('should prompt to install using pnpm if pnpm is package manager', async () => {
+        prompt.mockReturnValue({
+            installConfirm: true,
+        });
+        getPackageManager.mockReturnValue('pnpm');
+        const preMessage = jest.fn();
+        const promptResult = await promptInstallation('test-package', preMessage);
+        expect(promptResult).toBeTruthy();
+        expect(preMessage.mock.calls.length).toEqual(1);
+        expect(prompt.mock.calls.length).toEqual(1);
+        expect(runCommand.mock.calls.length).toEqual(1);
+        expect(prompt.mock.calls[0][0][0].message).toMatch(/Would you like to install test-package\?/);
+        // install the package using npm
+        expect(runCommand.mock.calls[0][0]).toEqual('pnpm install -D test-package');
+    });
+
     it('should not install if install is not confirmed', async () => {
         prompt.mockReturnValue({
             installConfirm: false,
