@@ -30,7 +30,7 @@ const { logger, getPackageManager } = utils;
 export default class InitGenerator extends CustomGenerator {
     public usingDefaults: boolean;
     public autoGenerateConfig: boolean;
-    public generatePath: string;
+    public generationPath: string;
     private langType: string;
 
     public constructor(args, opts) {
@@ -38,7 +38,7 @@ export default class InitGenerator extends CustomGenerator {
 
         this.usingDefaults = true;
         this.autoGenerateConfig = opts.autoSetDefaults ? true : false;
-        this.generatePath = opts.generatePath;
+        this.generationPath = opts.generationPath;
 
         this.dependencies = ['webpack', 'webpack-cli', 'babel-plugin-syntax-dynamic-import'];
 
@@ -245,7 +245,7 @@ export default class InitGenerator extends CustomGenerator {
             'save-dev'?: boolean;
         } = packager === 'yarn' ? { dev: true } : { 'save-dev': true };
 
-        this.scheduleInstallTask(packager, this.dependencies, opts, { cwd: this.generatePath });
+        this.scheduleInstallTask(packager, this.dependencies, opts, { cwd: this.generationPath });
     }
 
     public writing(): void {

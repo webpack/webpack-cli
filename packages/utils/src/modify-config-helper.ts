@@ -54,11 +54,11 @@ export function modifyHelperUtil(
     packages?: string[],
     autoSetDefaults = false,
     generateConfig = false,
-    generatePath = '.',
+    generationPath = '.',
 ): void {
     const configPath: string | null = null;
 
-    const env = yeoman.createEnv('webpack', { cwd: generatePath });
+    const env = yeoman.createEnv('webpack', { cwd: generationPath });
     const generatorName = 'webpack-init-generator';
 
     if (!generator) {
@@ -78,7 +78,7 @@ export function modifyHelperUtil(
     // see: https://github.com/yeoman/generator/blob/v4.5.0/lib/index.js#L773
     let packageName = '*';
     try {
-        const packagePath = path.resolve(generatePath, 'package.json');
+        const packagePath = path.resolve(generationPath, 'package.json');
         if (fs.existsSync(packagePath)) {
             // eslint-disable-next-line @typescript-eslint/no-var-requires
             const packageData = require(packagePath);
@@ -98,7 +98,7 @@ export function modifyHelperUtil(
         {
             configFile,
             autoSetDefaults,
-            generatePath,
+            generationPath,
         },
         () => {
             let configModule: object;
@@ -106,7 +106,7 @@ export function modifyHelperUtil(
                 config: {},
             };
             try {
-                const confPath = path.resolve(generatePath, '.yo-rc.json');
+                const confPath = path.resolve(generationPath, '.yo-rc.json');
                 configModule = require(confPath);
             } catch (err) {
                 logger.error('\nCould not find a yeoman configuration file (.yo-rc.json).\n');
@@ -148,7 +148,7 @@ export function modifyHelperUtil(
                 }
 
                 // scaffold webpack config file from using .yo-rc.json
-                return runTransform(transformConfig, 'init', generateConfig, generatePath);
+                return runTransform(transformConfig, 'init', generateConfig, generationPath);
             } catch (err) {
                 logger.error(err);
                 process.exitCode = 2;
