@@ -1,21 +1,19 @@
+const path = require('path');
 const packageExists = require('./utils/package-exists');
 const webpack = packageExists('webpack') ? require('webpack') : undefined;
-const logger = require('./utils/logger');
 const webpackMerge = require('webpack-merge');
-const { core, coreFlagMap } = require('./utils/cli-flags');
+const { writeFileSync } = require('fs');
+const { options: coloretteOptions, yellow } = require('colorette');
+
+const logger = require('./utils/logger');
+const { core, groups, coreFlagMap } = require('./utils/cli-flags');
 const argParser = require('./utils/arg-parser');
 const assignFlagDefaults = require('./utils/flag-defaults');
-const { writeFileSync } = require('fs');
-const { options: coloretteOptions } = require('colorette');
 const WebpackCLIPlugin = require('./plugins/WebpackCLIPlugin');
+const promptInstallation = require('./utils/prompt-installation');
 
 // CLI arg resolvers
 const handleConfigResolution = require('./groups/resolveConfig');
-const resolveMode = require('./groups/resolveMode');
-const resolveStats = require('./groups/resolveStats');
-const resolveOutput = require('./groups/resolveOutput');
-const basicResolver = require('./groups/basicResolver');
-const resolveAdvanced = require('./groups/resolveAdvanced');
 const toKebabCase = require('./utils/to-kebab-case');
 
 class WebpackCLI {
@@ -46,6 +44,145 @@ class WebpackCLI {
         // Assign some defaults to core flags
         const configWithDefaults = assignFlagDefaults(this.compilerConfiguration, parsedArgs, this.outputConfiguration);
         this._mergeOptionsToConfiguration(configWithDefaults);
+    }
+
+    async resolveArgs(args, configOptions = {}) {
+        // Since color flag has a default value, when there are no other args then exit
+        // eslint-disable-next-line no-prototype-builtins
+        if (Object.keys(args).length === 1 && args.hasOwnProperty('color') && !process.env.NODE_ENV) return {};
+
+        const { outputPath, stats, json, mode, target, prefetch, hot, analyze } = args;
+        const finalOptions = {
+            options: {},
+            outputOptions: {},
+        };
+
+        const WEBPACK_OPTION_FLAGS = core
+            .filter((coreFlag) => {
+                return coreFlag.group === groups.BASIC_GROUP;
+            })
+            .reduce((result, flagObject) => {
+                result.push(flagObject.name);
+                if (flagObject.alias) {
+                    result.push(flagObject.alias);
+                }
+                return result;
+            }, []);
+
+        const PRODUCTION = 'production';
+        const DEVELOPMENT = 'development';
+
+        /*
+        Mode priority:
+            - Mode flag
+            - Mode from config
+            - Mode form NODE_ENV
+        */
+
+        /**
+         *
+         * @param {string} mode - mode flag value
+         * @param {Object} configObject - contains relevant loaded config
+         */
+        const assignMode = (mode, configObject) => {
+            const {
+                env: { NODE_ENV },
+            } = process;
+            const { mode: configMode } = configObject;
+            let finalMode;
+            if (mode) {
+                finalMode = mode;
+            } else if (configMode) {
+                finalMode = configMode;
+            } else if (NODE_ENV && (NODE_ENV === PRODUCTION || NODE_ENV === DEVELOPMENT)) {
+                finalMode = NODE_ENV;
+            } else {
+                finalMode = PRODUCTION;
+            }
+            return finalMode;
+        };
+
+        Object.keys(args).forEach((arg) => {
+            if (WEBPACK_OPTION_FLAGS.includes(arg)) {
+                finalOptions.outputOptions[arg] = args[arg];
+            }
+            if (arg === 'devtool') {
+                finalOptions.options.devtool = args[arg];
+            }
+            if (arg === 'name') {
+                finalOptions.options.name = args[arg];
+            }
+            if (arg === 'watch') {
+                finalOptions.options.watch = true;
+            }
+            if (arg === 'entry') {
+                finalOptions.options[arg] = args[arg];
+            }
+        });
+        if (outputPath) {
+            finalOptions.options.output = { path: path.resolve(outputPath) };
+        }
+
+        if (stats !== undefined) {
+            finalOptions.options.stats = stats;
+        }
+        if (json) {
+            finalOptions.outputOptions.json = json;
+        }
+
+        if (hot) {
+            const { HotModuleReplacementPlugin } = require('webpack');
+            const hotModuleVal = new HotModuleReplacementPlugin();
+            if (finalOptions.options && finalOptions.options.plugins) {
+                finalOptions.options.plugins.unshift(hotModuleVal);
+            } else {
+                finalOptions.options.plugins = [hotModuleVal];
+            }
+        }
+        if (prefetch) {
+            const { PrefetchPlugin } = require('webpack');
+            const prefetchVal = new PrefetchPlugin(null, args.prefetch);
+            if (finalOptions.options && finalOptions.options.plugins) {
+                finalOptions.options.plugins.unshift(prefetchVal);
+            } else {
+                finalOptions.options.plugins = [prefetchVal];
+            }
+        }
+        if (analyze) {
+            if (packageExists('webpack-bundle-analyzer')) {
+                // eslint-disable-next-line node/no-extraneous-require
+                const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+                const bundleAnalyzerVal = new BundleAnalyzerPlugin();
+                if (finalOptions.options && finalOptions.options.plugins) {
+                    finalOptions.options.plugins.unshift(bundleAnalyzerVal);
+                } else {
+                    finalOptions.options.plugins = [bundleAnalyzerVal];
+                }
+            } else {
+                await promptInstallation('webpack-bundle-analyzer', () => {
+                    logger.error(`It looks like ${yellow('webpack-bundle-analyzer')} is not installed.`);
+                })
+                    .then(() => logger.success(`${yellow('webpack-bundle-analyzer')} was installed sucessfully.`))
+                    .catch(() => {
+                        logger.error(`Action Interrupted, Please try once again or install ${yellow('webpack-bundle-analyzer')} manually.`);
+                        process.exit(2);
+                    });
+            }
+        }
+        if (target) {
+            finalOptions.options.target = args.target;
+        }
+
+        if (Array.isArray(configOptions)) {
+            // Todo - handle multi config for all flags
+            finalOptions.options = configOptions.map(() => ({ ...finalOptions.options }));
+            configOptions.forEach((configObject, index) => {
+                finalOptions.options[index].mode = assignMode(mode, configObject);
+            });
+        } else {
+            finalOptions.options.mode = assignMode(mode, configOptions);
+        }
+        return finalOptions;
     }
 
     async _baseResolver(cb, parsedArgs, strategy) {
@@ -146,12 +283,8 @@ class WebpackCLI {
     async runOptionGroups(parsedArgs) {
         await Promise.resolve()
             .then(() => this._baseResolver(handleConfigResolution, parsedArgs))
-            .then(() => this._baseResolver(resolveMode, parsedArgs))
-            .then(() => this._baseResolver(resolveOutput, parsedArgs))
             .then(() => this._handleCoreFlags(parsedArgs))
-            .then(() => this._baseResolver(basicResolver, parsedArgs))
-            .then(() => this._baseResolver(resolveAdvanced, parsedArgs))
-            .then(() => this._baseResolver(resolveStats, parsedArgs));
+            .then(() => this._baseResolver(this.resolveArgs, parsedArgs));
     }
 
     handleError(error) {

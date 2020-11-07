@@ -16,7 +16,6 @@ const { defaultCommands } = require('./cli-flags');
  */
 const argParser = (options, args, argsOnly = false, name = '') => {
     const parser = new commander.Command();
-
     // Set parser name
     parser.name(name);
     parser.storeOptionsAsProperties(false);

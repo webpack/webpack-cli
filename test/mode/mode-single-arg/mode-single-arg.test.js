@@ -36,7 +36,6 @@ describe('mode flags', () => {
 
     it('should pick mode form NODE_ENV', () => {
         const { stderr, stdout, exitCode } = run(__dirname, [], false, [], { NODE_ENV: 'development' });
-
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).toContain(`mode: 'development'`);
