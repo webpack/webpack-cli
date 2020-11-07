@@ -156,7 +156,6 @@ const core = [
         usage: '--devtool <value>',
         type: String,
         alias: 'd',
-        defaultValue: undefined,
         group: BASIC_GROUP,
         description: 'Determine source maps to use',
         link: 'https://webpack.js.org/configuration/devtool/#devtool',
