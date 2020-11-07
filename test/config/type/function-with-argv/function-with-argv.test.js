@@ -9,7 +9,7 @@ describe('function configuration', () => {
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
         expect(exitCode).toBe(0);
-        expect(stdout).toContain("argv: { color: true, mode: 'development' }");
+        expect(stdout).toContain("argv: { mode: 'development' }");
         // Should generate the appropriate files
         expect(existsSync(resolve(__dirname, './dist/dev.js'))).toBeTruthy();
     });
