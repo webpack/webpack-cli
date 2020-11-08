@@ -177,8 +177,7 @@ export default class InitGenerator extends CustomGenerator {
                 );
                 if (cssBundleName.length !== 0) {
                     (this.configuration.config.webpackOptions.plugins as string[]).push(
-                        // TODO: use [contenthash] after it is supported
-                        `new MiniCssExtractPlugin({ filename:'${cssBundleName}.[chunkhash].css' })`,
+                        `new MiniCssExtractPlugin({ filename:'${cssBundleName}.[contenthash].css' })`,
                     );
                 } else {
                     (this.configuration.config.webpackOptions.plugins as string[]).push(

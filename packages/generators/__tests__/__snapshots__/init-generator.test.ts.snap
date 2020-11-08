@@ -128,7 +128,7 @@ Object {
   },
   "plugins": Array [
     "new webpack.ProgressPlugin()",
-    "new MiniCssExtractPlugin({ filename:'main.[chunkhash].css' })",
+    "new MiniCssExtractPlugin({ filename:'main.[contenthash].css' })",
   ],
 }
 `;
