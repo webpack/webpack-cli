@@ -20,8 +20,6 @@
     "declaration": true
   },
   "references": [
-    { "path": "packages/generate-loader" },
-    { "path": "packages/generate-plugin" },
     { "path": "packages/generators" },
     { "path": "packages/info" },
     { "path": "packages/init" },

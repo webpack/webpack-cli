@@ -1,6 +1,5 @@
 import path from 'path';
 import yeoman from 'yeoman-environment';
-import { loaderGenerator } from '@webpack-cli/generators';
 import { utils } from 'webpack-cli';
 import addonGenerator from './addon-generator';
 import { toKebabCase } from './utils/helpers';
