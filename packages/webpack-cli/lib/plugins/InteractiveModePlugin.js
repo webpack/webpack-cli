@@ -233,4 +233,4 @@ class InteractiveModePlugin {
         spawnCommand('stoped watching', false);
     }
 }
-module.exports = { InteractiveModePlugin };
+module.exports = InteractiveModePlugin;

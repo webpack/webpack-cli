@@ -10,7 +10,7 @@ const { core, groups, coreFlagMap } = require('./utils/cli-flags');
 const argParser = require('./utils/arg-parser');
 const assignFlagDefaults = require('./utils/flag-defaults');
 const WebpackCLIPlugin = require('./plugins/WebpackCLIPlugin');
-const InteractiveModePlugin = require('./utils/InteractiveModePlugin').InteractiveModePlugin;
+const InteractiveModePlugin = require('./plugins/InteractiveModePlugin');
 const promptInstallation = require('./utils/prompt-installation');
 
 // CLI arg resolvers
