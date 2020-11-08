@@ -9,8 +9,9 @@ const { logger } = utils;
  * @returns {void}
  */
 
-export default function loaderCreator(): void {
-    const env = yeoman.createEnv();
+export default function loaderCreator(...args: string[]): void {
+    const generationPath = args[0];
+    const env = yeoman.createEnv([], { cwd: generationPath });
     const generatorName = 'webpack-loader-generator';
 
     env.registerStub(loaderGenerator, generatorName);
