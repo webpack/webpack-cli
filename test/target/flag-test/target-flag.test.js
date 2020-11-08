@@ -72,7 +72,7 @@ describe('--target flag', () => {
             expect(stdout).toContain(`target: [ 'async-node' ]`);
         });
 
-        it('should thorw error if target is an empty array', () => {
+        it('should throw error if target is an empty array', () => {
             const { stderr, stdout, exitCode } = run(__dirname, ['--target-reset']);
 
             expect(exitCode).toBe(2);
