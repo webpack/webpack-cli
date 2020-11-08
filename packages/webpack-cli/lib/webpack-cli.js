@@ -12,8 +12,6 @@ const assignFlagDefaults = require('./utils/flag-defaults');
 const WebpackCLIPlugin = require('./plugins/WebpackCLIPlugin');
 const promptInstallation = require('./utils/prompt-installation');
 
-// CLI arg resolvers
-const handleConfigResolution = require('./groups/resolveConfig');
 const { toKebabCase } = require('./utils/arg-utils');
 
 class WebpackCLI {
@@ -185,6 +183,16 @@ class WebpackCLI {
         return finalOptions;
     }
 
+    async resolveConfig(args) {
+        const configOptions = {
+            options: {},
+            outputOptions: {},
+        };
+        await resolveConfigFiles(args, configOptions);
+        await resolveConfigMerging(args, configOptions);
+        return configOptions;
+    }
+
     async _baseResolver(cb, parsedArgs, strategy) {
         const resolvedConfig = await cb(parsedArgs, this.compilerConfiguration);
         this._mergeOptionsToConfiguration(resolvedConfig.options, strategy);
@@ -282,7 +290,7 @@ class WebpackCLI {
      */
     async runOptionGroups(parsedArgs) {
         await Promise.resolve()
-            .then(() => this._baseResolver(handleConfigResolution, parsedArgs))
+            .then(() => this._baseResolver(this.resolveConfig, parsedArgs))
             .then(() => this._handleCoreFlags(parsedArgs))
             .then(() => this._baseResolver(this.resolveArgs, parsedArgs));
     }
