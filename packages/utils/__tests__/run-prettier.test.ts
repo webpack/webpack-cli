@@ -5,10 +5,13 @@ import path from 'path';
 //eslint-disable-next-line node/no-extraneous-import
 import rimraf from 'rimraf';
 import { runPrettier } from '../src/run-prettier';
+import { utils } from 'webpack-cli';
 
+const { logger } = utils;
 const outputPath = path.join(__dirname, 'test-assets');
 const outputFile = path.join(outputPath, 'test.js');
-const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
+
+const consoleSpy = jest.spyOn(logger, 'warn').mockImplementation();
 
 describe('runPrettier', () => {
     beforeEach(() => {

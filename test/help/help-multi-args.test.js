@@ -10,11 +10,10 @@ describe('help cmd with multiple arguments', () => {
             const { stdout, stderr, exitCode } = run(__dirname, ['--help', `${cmd.name}`], false);
 
             expect(exitCode).toBe(0);
-            expect(stdout).not.toContain(helpHeader);
+            expect(stderr).not.toContain(helpHeader);
             expect(stdout).toContain(`${cmd.name}`);
             expect(stdout).toContain(`${cmd.usage}`);
             expect(stdout).toContain(`${cmd.description}`);
-            expect(stderr).toHaveLength(0);
         });
     });
 
@@ -22,8 +21,7 @@ describe('help cmd with multiple arguments', () => {
         const { stdout, stderr, exitCode } = run(__dirname, ['--help', '--version'], false);
 
         expect(exitCode).toBe(0);
-        expect(stdout).not.toContain(helpHeader);
+        expect(stderr).not.toContain(helpHeader);
         expect(stdout).toContain('webpack -v, --version');
-        expect(stderr).toHaveLength(0);
     });
 });

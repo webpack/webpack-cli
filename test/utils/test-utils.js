@@ -9,12 +9,19 @@ const concat = require('concat-stream');
 const { version } = require('webpack');
 const { version: devServerVersion } = require('webpack-dev-server/package.json');
 const { hyphenToUpperCase } = require('../../packages/webpack-cli/lib/utils/arg-utils');
+const stripAnsi = require('strip-ansi');
 
 const WEBPACK_PATH = path.resolve(__dirname, '../../packages/webpack-cli/bin/cli.js');
 const ENABLE_LOG_COMPILATION = process.env.ENABLE_PIPE || false;
 const isWebpack5 = version.startsWith('5');
 const isDevServer4 = devServerVersion.startsWith('4');
 const isWindows = process.platform === 'win32';
+
+const cliLogs = [
+    '<i> [webpack-cli] compilation starting...',
+    `<i> [webpack-cli] webpack ${version} compiled`,
+    '<i> [webpack-cli] watching files for updates...',
+];
 
 /**
  * Run the webpack CLI for a test case.
@@ -57,7 +64,25 @@ const runWatch = (testCase, args = [], setOutput = true, outputKillStr = 'watchi
         proc.stdout.pipe(
             new Writable({
                 write(chunk, encoding, callback) {
-                    const output = chunk.toString('utf8');
+                    const output = stripAnsi(chunk.toString('utf8'));
+
+                    if (output.includes(outputKillStr)) {
+                        if (isWindows) {
+                            exec('taskkill /pid ' + proc.pid + ' /T /F');
+                        } else {
+                            proc.kill();
+                        }
+                    }
+
+                    callback();
+                },
+            }),
+        );
+
+        proc.stderr.pipe(
+            new Writable({
+                write(chunk, encoding, callback) {
+                    const output = stripAnsi(chunk.toString('utf8'));
 
                     if (output.includes(outputKillStr)) {
                         if (isWindows) {
@@ -127,6 +152,7 @@ const runPromptWithAnswers = (location, args, answers, waitForOutput = true) => 
             new Writable({
                 write(chunk, encoding, callback) {
                     const output = chunk.toString('utf8');
+
                     if (output) {
                         if (outputTimeout) {
                             clearTimeout(outputTimeout);
@@ -252,4 +278,5 @@ module.exports = {
     isWebpack5,
     isDevServer4,
     isWindows,
+    cliLogs,
 };

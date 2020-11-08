@@ -15,7 +15,7 @@ describe('optimization option in config', () => {
             expect(stdout).toContain('mangleExports: false');
             // check that the output file exists
             expect(fs.existsSync(join(__dirname, '/dist/main.js'))).toBeTruthy();
-            expect(stderr).toBeFalsy();
+
             expect(exitCode).toBe(0);
         }
     });

@@ -14,9 +14,8 @@ describe('plugin command', () => {
     });
 
     it('Should ask the plugin name when invoked', () => {
-        const { stdout, stderr } = run(__dirname, ['plugin'], false);
-        expect(stdout).toBeTruthy();
-        expect(stderr).toBeFalsy();
+        const { stdout } = run(__dirname, ['plugin'], false);
+
         expect(stripAnsi(stdout)).toContain(firstPrompt);
     });
 

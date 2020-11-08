@@ -6,11 +6,11 @@ const { resolve } = require('path');
 
 describe('--config-name flag', () => {
     it('should select only the config whose name is passed with --config-name', (done) => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--config-name', 'first'], false);
-        expect(stderr).toBeFalsy();
-        expect(stdout).toContain('first');
-        expect(stdout).not.toContain('second');
-        expect(stdout).not.toContain('third');
+        const { stderr, exitCode } = run(__dirname, ['--config-name', 'first'], false);
+
+        expect(stderr).toContain('first');
+        expect(stderr).not.toContain('second');
+        expect(stderr).not.toContain('third');
         expect(exitCode).toBe(0);
 
         stat(resolve(__dirname, './dist/dist-first.js'), (err, stats) => {
@@ -21,11 +21,11 @@ describe('--config-name flag', () => {
     });
 
     it('should work with multiple values for --config-name', (done) => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--config-name', 'first', '--config-name', 'third'], false);
-        expect(stderr).toBeFalsy();
-        expect(stdout).toContain('first');
-        expect(stdout).not.toContain('second');
-        expect(stdout).toContain('third');
+        const { stderr, exitCode } = run(__dirname, ['--config-name', 'first', '--config-name', 'third'], false);
+
+        expect(stderr).toContain('first');
+        expect(stderr).not.toContain('second');
+        expect(stderr).toContain('third');
         expect(exitCode).toBe(0);
 
         stat(resolve(__dirname, './dist/dist-third.js'), (err, stats) => {
@@ -83,11 +83,11 @@ describe('--config-name flag', () => {
     });
 
     it('should work with config as a function', (done) => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--config', 'function-config.js', '--config-name', 'first'], false);
-        expect(stderr).toBeFalsy();
-        expect(stdout).toContain('first');
-        expect(stdout).not.toContain('second');
-        expect(stdout).not.toContain('third');
+        const { stderr, exitCode } = run(__dirname, ['--config', 'function-config.js', '--config-name', 'first'], false);
+
+        expect(stderr).toContain('first');
+        expect(stderr).not.toContain('second');
+        expect(stderr).not.toContain('third');
         expect(exitCode).toBe(0);
 
         stat(resolve(__dirname, './dist/dist-first.js'), (err, stats) => {
@@ -98,15 +98,15 @@ describe('--config-name flag', () => {
     });
 
     it('should work with multiple values for --config-name when the config is a function', (done) => {
-        const { stderr, stdout, exitCode } = run(
+        const { stderr, exitCode } = run(
             __dirname,
             ['--config', 'function-config.js', '--config-name', 'first', '--config-name', 'third'],
             false,
         );
-        expect(stderr).toBeFalsy();
-        expect(stdout).toContain('first');
-        expect(stdout).not.toContain('second');
-        expect(stdout).toContain('third');
+
+        expect(stderr).toContain('first');
+        expect(stderr).not.toContain('second');
+        expect(stderr).toContain('third');
         expect(exitCode).toBe(0);
 
         stat(resolve(__dirname, './dist/dist-third.js'), (err, stats) => {

@@ -8,7 +8,7 @@ const { run } = require('../utils/test-utils');
 // throws different error from what we manually see
 describe('node flags', () => {
     it('is able to pass the options flags to node js', async (done) => {
-        const { stdout, stderr, exitCode } = await run(__dirname, ['--output-path', './bin'], false, [
+        const { stdout, exitCode } = await run(__dirname, ['--output-path', './bin'], false, [
             `--require=${resolve(__dirname, 'bootstrap.js')}`,
             `--require=${resolve(__dirname, 'bootstrap2.js')}`,
         ]);
@@ -16,7 +16,7 @@ describe('node flags', () => {
         expect(exitCode).toBe(0);
         expect(stdout).toContain('---from bootstrap.js---');
         expect(stdout).toContain('---from bootstrap2.js---');
-        expect(stderr).toBeFalsy();
+
         stat(resolve(__dirname, './bin/main.bundle.js'), (err, stats) => {
             expect(err).toBe(null);
             expect(stats.isFile()).toBe(true);

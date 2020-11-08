@@ -3,18 +3,17 @@ const path = require('path');
 
 describe('Info', () => {
     it('should run with cli', () => {
-        const { stdout, stderr } = spawnSync(path.resolve(__dirname, '../bin/cli.js'), ['info'], {
+        const { stdout } = spawnSync(path.resolve(__dirname, '../bin/cli.js'), ['info'], {
             cwd: path.resolve(__dirname),
             reject: false,
         });
         expect(stdout).toContain('System');
         expect(stdout).toContain('Binaries');
         expect(stdout).toContain('OS');
-        expect(stderr).toBeFalsy();
     });
 
     it('should work with flags', () => {
-        const { stdout, stderr } = spawnSync(path.resolve(__dirname, '../bin/cli.js'), ['info', '--output=json'], {
+        const { stdout } = spawnSync(path.resolve(__dirname, '../bin/cli.js'), ['info', '--output=json'], {
             cwd: path.resolve(__dirname),
             reject: false,
         });
@@ -25,6 +24,5 @@ describe('Info', () => {
             expect(output['System']['OS']).toBeTruthy();
         };
         expect(testJSON).not.toThrow();
-        expect(stderr).toBeFalsy();
     });
 });

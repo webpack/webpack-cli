@@ -1,25 +1,20 @@
 'use strict';
 
-const { red } = require('colorette');
-
+const stripAnsi = require('strip-ansi');
 const { runInfo } = require('../utils/test-utils');
 
 describe('basic info usage', () => {
     it('gets info without flags', () => {
-        const { stdout, stderr } = runInfo([], __dirname);
-        // stdout should include many details which will be
-        // unique for each computer
+        const { stdout } = runInfo([], __dirname);
         expect(stdout).toContain('System:');
         expect(stdout).toContain('Node');
         expect(stdout).toContain('npm');
         expect(stdout).toContain('Yarn');
-        expect(stderr).toHaveLength(0);
     });
 
     it('gets info as json', () => {
-        const { stdout, stderr } = runInfo(['--output="json"'], __dirname);
+        const { stdout } = runInfo(['--output="json"'], __dirname);
         expect(stdout).toContain('"System":');
-        expect(stderr).toHaveLength(0);
 
         const parse = () => {
             const output = JSON.parse(stdout);
@@ -33,16 +28,15 @@ describe('basic info usage', () => {
     });
 
     it('gets info as markdown', () => {
-        const { stdout, stderr } = runInfo(['--output="markdown"'], __dirname);
+        const { stdout } = runInfo(['--output="markdown"'], __dirname);
         expect(stdout).toContain('## System:');
-        expect(stderr).toHaveLength(0);
     });
 
     it('shows a warning if an invalid value is supplied', () => {
         const { stdout, stderr, exitCode } = runInfo(['--output=unknown'], __dirname);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain(`[webpack-cli] ${red(`'unknown' is not a valid value for output`)}`);
+        expect(stripAnsi(stderr)).toContain("[webpack-cli] 'unknown' is not a valid value for output");
         expect(stdout).toBeFalsy();
     });
 });

@@ -5,8 +5,8 @@ const { run } = require('../../../utils/test-utils');
 
 describe('multiple config files', () => {
     it('Uses dev config when both dev and none are present', (done) => {
-        const { stdout, stderr, exitCode } = run(__dirname, [], false);
-        expect(stderr).toBeFalsy();
+        const { stdout, exitCode } = run(__dirname, [], false);
+
         expect(exitCode).toEqual(0);
         expect(stdout).not.toBe(undefined);
         stat(resolve(__dirname, './binary/dev.bundle.js'), (err, stats) => {

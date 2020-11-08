@@ -5,10 +5,10 @@ const { run } = require('../../../utils/test-utils');
 
 describe('default entry and config entry all exist', () => {
     it('should use config entry if config entry existed', () => {
-        const { stdout, stderr, exitCode } = run(__dirname, [], false);
+        const { stdout, exitCode } = run(__dirname, [], false);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toBeFalsy();
+
         // Should contain the relevant entry
         expect(stdout).toContain('./src/app.js');
         expect(stdout).toContain('./src/print.js');
@@ -22,6 +22,5 @@ describe('default entry and config entry all exist', () => {
         expect(existsSync(join(__dirname, '/dist/print.bundle.js'))).toBeTruthy();
         // index fallback should not be used even when the file is present
         expect(existsSync(join(__dirname, '/dist/index.bundle.js'))).toBeFalsy();
-        expect(stderr).toBeFalsy();
     });
 });

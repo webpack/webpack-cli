@@ -12,35 +12,30 @@ describe('single help flag', () => {
         options.enabled = true;
 
         expect(exitCode).toBe(0);
-        expect(stdout).not.toContain(yellow(usage));
-        expect(stdout).not.toContain(yellow(example));
+        expect(stderr).not.toContain(yellow(usage));
+        expect(stderr).not.toContain(yellow(example));
         expect(stdout).toContain(usage);
         expect(stdout).toContain(example);
-        expect(stderr).toHaveLength(0);
     });
 
     it('outputs help info with command syntax', () => {
-        const { stdout, stderr, exitCode } = run(__dirname, ['help'], false);
+        const { stdout, exitCode } = run(__dirname, ['help'], false);
 
         expect(exitCode).toBe(0);
         expect(stdout).toContain(helpHeader);
-        expect(stderr).toHaveLength(0);
     });
 
     it('outputs help info with dashed syntax', () => {
-        const { stdout, stderr, exitCode } = run(__dirname, ['--help'], false);
+        const { stdout, exitCode } = run(__dirname, ['--help'], false);
 
         expect(exitCode).toBe(0);
         expect(stdout).toContain(helpHeader);
-        expect(stderr).toHaveLength(0);
     });
 
     it('creates a readable snapshot', () => {
-        const { stderr } = run(__dirname, ['--help'], false);
+        run(__dirname, ['--help'], false);
 
         const serializer = require('jest-serializer-ansi');
         expect.addSnapshotSerializer(serializer);
-
-        expect(stderr).toHaveLength(0);
     });
 });

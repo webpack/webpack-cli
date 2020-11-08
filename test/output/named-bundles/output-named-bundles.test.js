@@ -5,34 +5,27 @@ const { run } = require('../../utils/test-utils');
 
 describe('output flag named bundles', () => {
     it('should output file given as flag instead of in configuration', () => {
-        const { stderr, exitCode } = run(__dirname, ['-c', resolve(__dirname, 'webpack.config.js'), '--output-path', './binary'], false);
+        const { exitCode } = run(__dirname, ['-c', resolve(__dirname, 'webpack.config.js'), '--output-path', './binary'], false);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toBeFalsy();
 
         const stats = statSync(resolve(__dirname, './binary/a.bundle.js'));
         expect(stats.isFile()).toBe(true);
     });
 
     it('should resolve the path to binary/a.bundle.js as ./binary/a.bundle.js', () => {
-        const { stderr, exitCode } = run(__dirname, ['-c', resolve(__dirname, 'webpack.config.js'), '--output-path', 'binary'], false);
+        const { exitCode } = run(__dirname, ['-c', resolve(__dirname, 'webpack.config.js'), '--output-path', 'binary'], false);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toBeFalsy();
 
         const stats = statSync(resolve(__dirname, './binary/a.bundle.js'));
         expect(stats.isFile()).toBe(true);
     });
 
     it('should create multiple bundles with an overriding flag', () => {
-        const { stderr, exitCode } = run(
-            __dirname,
-            ['-c', resolve(__dirname, 'webpack.single.config.js'), '--output-path', './bin'],
-            false,
-        );
+        const { exitCode } = run(__dirname, ['-c', resolve(__dirname, 'webpack.single.config.js'), '--output-path', './bin'], false);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toBeFalsy();
 
         let stats = statSync(resolve(__dirname, './bin/b.bundle.js'));
         expect(stats.isFile()).toBe(true);
@@ -41,10 +34,9 @@ describe('output flag named bundles', () => {
     });
 
     it('should successfully compile multiple entries', () => {
-        const { stderr, exitCode } = run(__dirname, ['-c', resolve(__dirname, 'webpack.multiple.config.js')], false);
+        const { exitCode } = run(__dirname, ['-c', resolve(__dirname, 'webpack.multiple.config.js')], false);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toBeFalsy();
 
         let stats = statSync(resolve(__dirname, './bin/b.bundle.js'));
         expect(stats.isFile()).toBe(true);

@@ -5,25 +5,23 @@ const pkgJSON = require('../../packages/webpack-cli/package.json');
 
 describe('version flag with multiple arguments', () => {
     it('does not output version with help command', () => {
-        const { stdout, stderr, exitCode } = run(__dirname, ['version', 'help'], false);
+        const { stdout, exitCode } = run(__dirname, ['version', 'help'], false);
 
         expect(stdout).not.toContain(pkgJSON.version);
         expect(exitCode).toBe(0);
 
         const uniqueIdentifier = 'The build tool for modern web applications';
         expect(stdout).toContain(uniqueIdentifier);
-        expect(stderr).toHaveLength(0);
     });
 
     it('does not output version with help dashed', () => {
-        const { stdout, stderr, exitCode } = run(__dirname, ['version', '--help'], false);
+        const { stdout, exitCode } = run(__dirname, ['version', '--help'], false);
 
         expect(stdout).not.toContain(pkgJSON.version);
         expect(exitCode).toBe(0);
 
         const uniqueIdentifier = 'The build tool for modern web applications';
         expect(stdout).toContain(uniqueIdentifier);
-        expect(stderr).toHaveLength(0);
     });
 
     it('throws error if invalid command is passed with version command', () => {

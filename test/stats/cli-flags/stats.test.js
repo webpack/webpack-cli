@@ -12,10 +12,10 @@ if (isWebpack5) {
 describe('stats flag', () => {
     for (const preset of presets) {
         it(`should accept --stats "${preset}"`, () => {
-            const { stderr, stdout, exitCode } = run(__dirname, ['--stats', `${preset}`]);
+            const { stdout, exitCode } = run(__dirname, ['--stats', `${preset}`]);
 
             expect(exitCode).toBe(0);
-            expect(stderr).toBeFalsy();
+
             if (isWebpack5) {
                 expect(stdout).toContain(`stats: { preset: '${preset}' }`);
             } else {
@@ -25,10 +25,10 @@ describe('stats flag', () => {
     }
 
     it('should accept stats as boolean', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--stats']);
+        const { stdout, exitCode } = run(__dirname, ['--stats']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toBeFalsy();
+
         if (isWebpack5) {
             expect(stdout).toContain(`stats: { preset: 'normal' }`);
         } else {

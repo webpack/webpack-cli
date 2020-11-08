@@ -5,9 +5,8 @@ const { version } = require('webpack');
 
 describe('stats flag', () => {
     it('should accept --no-stats as boolean', () => {
-        const { stderr, stdout } = run(__dirname, ['--no-stats']);
+        const { stdout } = run(__dirname, ['--no-stats']);
 
-        expect(stderr).toBeFalsy();
         if (version.startsWith('5')) {
             expect(stdout).toContain(`stats: { preset: 'none' }`);
         } else {

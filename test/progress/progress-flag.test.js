@@ -4,7 +4,7 @@ const { run, isWebpack5 } = require('../utils/test-utils');
 
 describe('progress flag', () => {
     it('should show progress', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--progress']);
+        const { stdout, stderr, exitCode } = run(__dirname, ['--progress']);
 
         expect(exitCode).toBe(0);
         expect(stderr).not.toMatch(/\[webpack\.Progress] \d+ ms setup/);
@@ -13,7 +13,7 @@ describe('progress flag', () => {
     });
 
     it('should support the "profile" value', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--progress=profile']);
+        const { stdout, stderr, exitCode } = run(__dirname, ['--progress=profile']);
 
         expect(exitCode).toBe(0);
         if (isWebpack5) {
@@ -32,7 +32,7 @@ describe('progress flag', () => {
     });
 
     it('should not add duplicate plugins', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['-c', 'webpack.progress.config.js', '--progress']);
+        const { stdout, stderr, exitCode } = run(__dirname, ['-c', 'webpack.progress.config.js', '--progress']);
 
         expect(exitCode).toEqual(0);
         expect(stdout.match(/ProgressPlugin/g)).toHaveLength(1);

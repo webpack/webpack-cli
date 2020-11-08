@@ -12,17 +12,15 @@ describe('experiments option related flag', () => {
         const propName = hyphenToUpperCase(property);
 
         it(`should config ${flag.name} correctly`, () => {
-            const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`]);
+            const { stdout, exitCode } = run(__dirname, [`--${flag.name}`]);
 
-            expect(stderr).toBeFalsy();
             expect(exitCode).toBe(0);
             expect(stdout).toContain(`${propName}: true`);
         });
 
         it(`should config --no-${flag.name} correctly`, () => {
-            const { stderr, stdout, exitCode } = run(__dirname, [`--no-${flag.name}`]);
+            const { stdout, exitCode } = run(__dirname, [`--no-${flag.name}`]);
 
-            expect(stderr).toBeFalsy();
             expect(exitCode).toBe(0);
             expect(stdout).toContain(`${propName}: false`);
         });

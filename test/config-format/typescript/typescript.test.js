@@ -8,10 +8,8 @@ describe('webpack cli', () => {
         'should support typescript file',
         async () => {
             await runInstall(__dirname);
-            const { stderr, stdout, exitCode } = run(__dirname, ['-c', './webpack.config.ts']);
+            const { exitCode } = run(__dirname, ['-c', './webpack.config.ts']);
 
-            expect(stderr).toBeFalsy();
-            expect(stdout).toBeTruthy();
             expect(exitCode).toBe(0);
             stat(resolve(__dirname, 'bin/foo.bundle.js'), (err, stats) => {
                 expect(err).toBe(null);

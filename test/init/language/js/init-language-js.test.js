@@ -19,7 +19,6 @@ describe('init with Typescript', () => {
     it('should use typescript', async () => {
         const { stdout } = await runPromptWithAnswers(genPath, ['init'], [`N${ENTER}`, ENTER, ENTER, `${DOWN}${DOWN}${ENTER}`, ENTER]);
 
-        expect(stdout).toBeTruthy();
         expect(stdout).toContain(firstPrompt);
 
         // Skip test in case installation fails

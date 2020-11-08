@@ -6,10 +6,9 @@ const { yellow } = require('colorette');
 
 describe('--hot flag', () => {
     it('should be successful when --hot is passed', (done) => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--hot']);
+        const { stdout, exitCode } = run(__dirname, ['--hot']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toBeFalsy();
         expect(stdout).toContain('HotModuleReplacementPlugin');
 
         stat(resolve(__dirname, './bin/main.js'), (err, stats) => {

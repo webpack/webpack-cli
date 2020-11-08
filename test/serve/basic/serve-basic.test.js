@@ -28,46 +28,40 @@ describe('basic serve usage', () => {
     }
 
     it('should respect the --no-color flag', async () => {
-        const { stdout, stderr } = await runServe(['--help', '--no-color'], __dirname);
+        const { stdout } = await runServe(['--help', '--no-color'], __dirname);
         options.enabled = true;
         expect(stdout).not.toContain(yellow(usageText));
         expect(stdout).toContain(descriptionText);
-        expect(stderr).toHaveLength(0);
     });
 
     it('should not invoke info subcommand', async () => {
-        const { stdout, stderr } = await runServe(['--client-log-level', 'info'], testPath);
+        const { stdout } = await runServe(['--client-log-level', 'info'], testPath);
         expect(stdout).toContain('main.js');
         expect(stdout).not.toContain('HotModuleReplacementPlugin');
-        expect(stderr).toHaveLength(0);
     });
 
     it('compiles without flags', async () => {
-        const { stdout, stderr } = await runServe(['--port', port], testPath);
+        const { stdout } = await runServe(['--port', port], testPath);
         expect(stdout).toContain('main.js');
         expect(stdout).not.toContain('HotModuleReplacementPlugin');
-        expect(stderr).toHaveLength(0);
     });
 
     it('uses hot flag to alter bundle', async () => {
-        const { stdout, stderr } = await runServe(['--port', port, '--hot'], testPath);
+        const { stdout } = await runServe(['--port', port, '--hot'], testPath);
         expect(stdout).toContain('main.js');
         expect(stdout).toContain('HotModuleReplacementPlugin');
-        expect(stderr).toHaveLength(0);
     });
 
     it('uses hot-only flag to alter bundle', async () => {
-        const { stdout, stderr } = await runServe(['--port', port, isDevServer4 ? '--hot only' : '--hot-only'], testPath);
+        const { stdout } = await runServe(['--port', port, isDevServer4 ? '--hot only' : '--hot-only'], testPath);
         expect(stdout).toContain('main.js');
         expect(stdout).toContain('HotModuleReplacementPlugin');
-        expect(stderr).toBeFalsy();
     });
 
     it('uses no-hot flag', async () => {
-        const { stdout, stderr } = await runServe(['--port', port, '--no-hot'], testPath);
+        const { stdout } = await runServe(['--port', port, '--no-hot'], testPath);
         expect(stdout).toContain('main.js');
         expect(stdout).not.toContain('HotModuleReplacementPlugin');
-        expect(stderr).toHaveLength(0);
     });
 
     it('uses hot flag and progress flag', async () => {

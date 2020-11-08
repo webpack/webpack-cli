@@ -17,9 +17,8 @@ describe('loader command', () => {
     });
 
     it('Should ask the loader name when invoked', () => {
-        const { stdout, stderr } = run(__dirname, ['loader'], false);
-        expect(stdout).toBeTruthy();
-        expect(stderr).toBeFalsy();
+        const { stdout } = run(__dirname, ['loader'], false);
+
         expect(stripAnsi(stdout)).toContain(firstPrompt);
     });
 

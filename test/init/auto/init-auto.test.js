@@ -15,16 +15,15 @@ describe('init auto flag', () => {
     });
 
     it('should prompt with w/o auto flag', () => {
-        const { stdout, stderr } = run(genPath, ['init'], false);
-        expect(stdout).toBeTruthy();
-        expect(stderr).toBeFalsy();
+        const { stdout } = run(genPath, ['init'], false);
+
         expect(stdout).toContain(firstPrompt);
     });
 
     it('should scaffold and not prompt with auto flag', () => {
         const { stdout } = run(genPath, ['init', '--auto'], false);
         // Test no prompts are present
-        expect(stdout).toBeTruthy();
+
         expect(stdout).not.toContain(firstPrompt);
 
         // Skip test in case installation fails

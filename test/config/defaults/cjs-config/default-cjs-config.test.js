@@ -4,7 +4,7 @@ const { run, isWebpack5 } = require('../../../utils/test-utils');
 
 describe('Default Config:', () => {
     it('Should be able to pick cjs config by default', () => {
-        const { stdout, stderr, exitCode } = run(__dirname, [], false);
+        const { stdout, exitCode } = run(__dirname, [], false);
         // default entry should be used
         expect(stdout).toContain('./src/index.js');
         // should pick up the output path from config
@@ -19,6 +19,5 @@ describe('Default Config:', () => {
         expect(exitCode).toEqual(0);
         // check that the output file exists
         expect(fs.existsSync(path.join(__dirname, '/dist/test-output.js'))).toBeTruthy();
-        expect(stderr).toBeFalsy();
     });
 });

@@ -13,9 +13,8 @@ describe('watch config related flag', () => {
 
         if (flag.type === Boolean) {
             it(`should config --${flag.name} correctly`, () => {
-                const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`]);
+                const { stdout, exitCode } = run(__dirname, [`--${flag.name}`]);
 
-                expect(stderr).toBeFalsy();
                 expect(exitCode).toBe(0);
                 if (flag.name.includes('reset')) {
                     expect(stdout).toContain(`watchOptions: { ignored: [] }`);
@@ -26,9 +25,8 @@ describe('watch config related flag', () => {
 
             if (!flag.name.endsWith('-reset')) {
                 it(`should config --no-${flag.name} correctly`, () => {
-                    const { stderr, stdout, exitCode } = run(__dirname, [`--no-${flag.name}`]);
+                    const { stdout, exitCode } = run(__dirname, [`--no-${flag.name}`]);
 
-                    expect(stderr).toBeFalsy();
                     expect(exitCode).toBe(0);
                     expect(stdout).toContain(`watchOptions: { ${propName}: false }`);
                 });
@@ -37,17 +35,16 @@ describe('watch config related flag', () => {
 
         if (flag.type === Number) {
             it(`should config --${flag.name} correctly`, () => {
-                const { stderr, stdout } = run(__dirname, [`--${flag.name}`, '10']);
+                const { stdout } = run(__dirname, [`--${flag.name}`, '10']);
 
-                expect(stderr).toBeFalsy();
                 expect(stdout).toContain(`watchOptions: { ${propName}: 10 }`);
             });
         }
 
         if (flag.type === String) {
             it(`should config --${flag.name} correctly`, () => {
-                let { stderr, stdout } = run(__dirname, [`--${flag.name}`, 'ignore.js']);
-                expect(stderr).toBeFalsy();
+                let { stdout } = run(__dirname, [`--${flag.name}`, 'ignore.js']);
+
                 if (propName === 'poll') {
                     stdout = run(__dirname, [`--${flag.name}`, '10']).stdout;
                     expect(stdout).toContain(`watchOptions: { ${propName}: 10 }`);

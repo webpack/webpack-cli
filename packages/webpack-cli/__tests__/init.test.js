@@ -18,12 +18,11 @@ describe('init', () => {
     });
 
     it('should work with cli', () => {
-        const { stdout, stderr } = spawnSync(path.resolve(__dirname, '../bin/cli.js'), ['init'], {
+        const { stdout } = spawnSync(path.resolve(__dirname, '../bin/cli.js'), ['init'], {
             cwd: genPath,
             reject: false,
         });
-        expect(stdout).toBeTruthy();
-        expect(stderr).toBeFalsy();
+
         expect(stdout).toContain(firstPrompt);
     });
     it('should run with cli when auto is supplied', () => {
@@ -32,7 +31,7 @@ describe('init', () => {
             reject: false,
         });
         // Test no prompts are present
-        expect(stdout).toBeTruthy();
+
         expect(stdout).not.toContain(firstPrompt);
 
         // Skip test in case installation fails

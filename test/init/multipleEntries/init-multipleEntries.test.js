@@ -21,8 +21,7 @@ describe('init with multiple entries', () => {
             ['init'],
             [`Y${ENTER}`, `a, b${ENTER}`, ENTER, ENTER, ENTER, ENTER, ENTER, ENTER],
         );
-
-        expect(stdout).toBeTruthy();
+        console.log(stdout);
         expect(stdout).toContain(firstPrompt);
 
         // Skip test in case installation fails

@@ -12,16 +12,14 @@ describe('Serve', () => {
     }
 
     it('should run with cli', async () => {
-        const { stdout, stderr } = await runServe([], __dirname);
+        const { stdout } = await runServe([], __dirname);
         expect(stdout).toContain('main.js');
         expect(stdout).not.toContain('HotModuleReplacementPlugin');
-        expect(stderr).toHaveLength(0);
     });
 
     it('should work with flags', async () => {
-        const { stdout, stderr } = await runServe(['--hot'], __dirname);
+        const { stdout } = await runServe(['--hot'], __dirname);
         expect(stdout).toContain('main.js');
         expect(stdout).toContain('HotModuleReplacementPlugin');
-        expect(stderr).toHaveLength(0);
     });
 });

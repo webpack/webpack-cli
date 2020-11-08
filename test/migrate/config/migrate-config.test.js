@@ -42,16 +42,10 @@ describe('migrate command', () => {
     });
 
     it('should generate an updated config file when an output path is provided', async () => {
-        const { stdout, stderr } = await runPromptWithAnswers(
-            __dirname,
-            ['migrate', 'webpack.config.js', outputFile],
-            [ENTER, ENTER],
-            true,
-        );
+        const { stdout } = await runPromptWithAnswers(__dirname, ['migrate', 'webpack.config.js', outputFile], [ENTER, ENTER], true);
         expect(stripAnsi(stdout)).toContain('? Do you want to validate your configuration?');
         // should show the diff of the config file
         expect(stdout).toContain('rules: [');
-        expect(stderr).toBeFalsy();
 
         expect(fs.existsSync(outputFilePath)).toBeTruthy();
         // the output file should be a valid config file

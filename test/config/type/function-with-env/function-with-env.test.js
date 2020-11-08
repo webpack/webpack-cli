@@ -12,38 +12,28 @@ describe('function configuration', () => {
         expect(exitCode).toEqual(1);
     });
     it('is able to understand a configuration file as a function', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--env', 'isProd']);
-        expect(stderr).toBeFalsy();
-        expect(stdout).toBeTruthy();
+        const { exitCode } = run(__dirname, ['--env', 'isProd']);
+
         expect(exitCode).toBe(0);
         // Should generate the appropriate files
         expect(existsSync(resolve(__dirname, './bin/prod.js'))).toBeTruthy();
     });
     it('is able to understand a configuration file as a function', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--env', 'isDev']);
-        expect(stderr).toBeFalsy();
-        expect(stdout).toBeTruthy();
+        const { exitCode } = run(__dirname, ['--env', 'isDev']);
+
         expect(exitCode).toBe(0);
         // Should generate the appropriate files
         expect(existsSync(resolve(__dirname, './bin/dev.js'))).toBeTruthy();
     });
     it('Supports passing string in env', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, [
-            '--env',
-            'environment=production',
-            '--env',
-            'app.title=Luffy',
-            '-c',
-            'webpack.env.config.js',
-        ]);
-        expect(stderr).toBeFalsy();
-        expect(stdout).toBeTruthy();
+        const { exitCode } = run(__dirname, ['--env', 'environment=production', '--env', 'app.title=Luffy', '-c', 'webpack.env.config.js']);
+
         expect(exitCode).toBe(0);
         // Should generate the appropriate files
         expect(existsSync(resolve(__dirname, './bin/Luffy.js'))).toBeTruthy();
     });
     it('Supports long nested values in env', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, [
+        const { exitCode } = run(__dirname, [
             '--env',
             'file.name.is.this=Atsumu',
             '--env',
@@ -51,14 +41,13 @@ describe('function configuration', () => {
             '-c',
             'webpack.env.config.js',
         ]);
-        expect(stderr).toBeFalsy();
-        expect(stdout).toBeTruthy();
+
         expect(exitCode).toBe(0);
         // Should generate the appropriate files
         expect(existsSync(resolve(__dirname, './bin/Atsumu.js'))).toBeTruthy();
     });
     it('Supports multiple equal in a string', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, [
+        const { exitCode } = run(__dirname, [
             '--env',
             'file=name=is=Eren',
             '--env',
@@ -66,39 +55,28 @@ describe('function configuration', () => {
             '-c',
             'webpack.env.config.js',
         ]);
-        expect(stderr).toBeFalsy();
-        expect(stdout).toBeTruthy();
+
         expect(exitCode).toBe(0);
         // Should generate the appropriate files
         expect(existsSync(resolve(__dirname, './bin/name=is=Eren.js'))).toBeTruthy();
     });
     it('Supports dot at the end', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, [
-            '--env',
-            'name.=Hisoka',
-            '--env',
-            'environment=dot',
-            '-c',
-            'webpack.env.config.js',
-        ]);
-        expect(stderr).toBeFalsy();
-        expect(stdout).toBeTruthy();
+        const { exitCode } = run(__dirname, ['--env', 'name.=Hisoka', '--env', 'environment=dot', '-c', 'webpack.env.config.js']);
+
         expect(exitCode).toBe(0);
         // Should generate the appropriate files
         expect(existsSync(resolve(__dirname, './bin/Hisoka.js'))).toBeTruthy();
     });
     it('Supports dot at the end', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--env', 'name.', '--env', 'environment=dot', '-c', 'webpack.env.config.js']);
-        expect(stderr).toBeFalsy();
-        expect(stdout).toBeTruthy();
+        const { exitCode } = run(__dirname, ['--env', 'name.', '--env', 'environment=dot', '-c', 'webpack.env.config.js']);
+
         expect(exitCode).toBe(0);
         // Should generate the appropriate files
         expect(existsSync(resolve(__dirname, './bin/true.js'))).toBeTruthy();
     });
     it('is able to understand multiple env flags', (done) => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--env', 'isDev', '--env', 'verboseStats', '--env', 'envMessage']);
-        expect(stderr).toBeFalsy();
-        expect(stdout).toBeTruthy();
+        const { stdout, exitCode } = run(__dirname, ['--env', 'isDev', '--env', 'verboseStats', '--env', 'envMessage']);
+
         expect(exitCode).toBe(0);
         // check that the verbose env is respected
         expect(stdout).toContain('LOG from webpack');

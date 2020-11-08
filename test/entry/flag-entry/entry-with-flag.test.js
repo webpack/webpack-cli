@@ -6,11 +6,9 @@ const { resolve } = require('path');
 
 describe('entry flag', () => {
     it('should resolve the path to src/index.cjs', (done) => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--entry', './src/index.cjs', '-o', './dist/'], false);
+        const { exitCode } = run(__dirname, ['--entry', './src/index.cjs', '-o', './dist/'], false);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toBeFalsy();
-        expect(stdout).toBeTruthy();
 
         stat(resolve(__dirname, './dist/main.js'), (err, stats) => {
             expect(err).toBe(null);
@@ -25,11 +23,9 @@ describe('entry flag', () => {
     });
 
     it('should load ./src/a.js as entry', (done) => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--entry', './src/a.js']);
+        const { exitCode } = run(__dirname, ['--entry', './src/a.js']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toBeFalsy();
-        expect(stdout).toBeTruthy();
 
         stat(resolve(__dirname, './bin/main.js'), (err, stats) => {
             expect(err).toBe(null);
@@ -44,7 +40,7 @@ describe('entry flag', () => {
     });
 
     it('should resolve the path to /src/a.js as ./src/a.js for webpack-5 only', (done) => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--entry', '/src/a.js']);
+        const { stdout, exitCode } = run(__dirname, ['--entry', '/src/a.js']);
 
         if (!isWebpack5) {
             expect(exitCode).toBe(1);
@@ -52,8 +48,6 @@ describe('entry flag', () => {
             done();
         } else {
             expect(exitCode).toBe(0);
-            expect(stderr).toBeFalsy();
-            expect(stdout).toBeTruthy();
 
             stat(resolve(__dirname, './bin/main.js'), (err, stats) => {
                 expect(err).toBe(null);
@@ -69,9 +63,8 @@ describe('entry flag', () => {
     });
 
     it('should throw error for invalid entry file', () => {
-        const { stdout, stderr, exitCode } = run(__dirname, ['--entry', './src/test.js']);
+        const { stdout, exitCode } = run(__dirname, ['--entry', './src/test.js']);
         expect(stdout).toContain("Module not found: Error: Can't resolve");
         expect(exitCode).toEqual(1);
-        expect(stderr).toBeFalsy();
     });
 });

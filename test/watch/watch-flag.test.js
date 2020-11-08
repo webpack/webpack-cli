@@ -1,7 +1,7 @@
 'use strict';
 
 const stripAnsi = require('strip-ansi');
-const { runAndGetWatchProc, isWebpack5 } = require('../utils/test-utils');
+const { runAndGetWatchProc, isWebpack5, cliLogs } = require('../utils/test-utils');
 const { writeFileSync } = require('fs');
 const { resolve } = require('path');
 
@@ -12,17 +12,9 @@ describe('--watch flag', () => {
     it('should recompile upon file change', (done) => {
         const proc = runAndGetWatchProc(__dirname, ['--watch'], false, '', true);
         let semaphore = 0;
+
         proc.stdout.on('data', (chunk) => {
             const data = stripAnsi(chunk.toString());
-
-            if (semaphore === 0 && data.includes('watching files for updates')) {
-                process.nextTick(() => {
-                    writeFileSync(resolve(__dirname, './src/index.js'), `console.log('watch flag test');`);
-
-                    semaphore++;
-                });
-            }
-
             if (semaphore === 1 && data.includes('index.js')) {
                 if (isWebpack5) {
                     for (const word of wordsInStatsv5) {
@@ -36,8 +28,20 @@ describe('--watch flag', () => {
 
                 semaphore++;
             }
+        });
 
-            if (semaphore === 2 && data.includes('watching files for updates')) {
+        proc.stderr.on('data', (chunk) => {
+            const data = stripAnsi(chunk.toString());
+
+            if (semaphore === 0 && data.includes(cliLogs[2])) {
+                process.nextTick(() => {
+                    writeFileSync(resolve(__dirname, './src/index.js'), `console.log('watch flag test');`);
+
+                    semaphore++;
+                });
+            }
+
+            if (semaphore === 2 && data.includes(cliLogs[2])) {
                 proc.kill();
                 done();
             }
@@ -47,17 +51,9 @@ describe('--watch flag', () => {
     it('should print compilation lifecycle', (done) => {
         const proc = runAndGetWatchProc(__dirname, ['--watch'], false, '', true);
         let semaphore = 0;
+
         proc.stdout.on('data', (chunk) => {
             const data = stripAnsi(chunk.toString());
-
-            if (semaphore === 0 && data.includes('Compilation starting')) {
-                semaphore++;
-            }
-
-            if (semaphore === 1 && data.includes('Compilation finished')) {
-                semaphore++;
-            }
-
             if (semaphore === 2 && data.includes('index.js')) {
                 if (isWebpack5) {
                     for (const word of wordsInStatsv5) {
@@ -71,8 +67,20 @@ describe('--watch flag', () => {
 
                 semaphore++;
             }
+        });
 
-            if (semaphore === 3 && data.includes('watching files for updates...')) {
+        proc.stderr.on('data', (chunk) => {
+            const data = stripAnsi(chunk.toString());
+
+            if (semaphore === 0 && data.includes(cliLogs[0])) {
+                semaphore++;
+            }
+
+            if (semaphore === 1 && data.includes(cliLogs[1])) {
+                semaphore++;
+            }
+
+            if (semaphore === 3 && data.includes(cliLogs[2])) {
                 semaphore++;
 
                 proc.kill();

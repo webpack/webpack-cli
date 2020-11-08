@@ -5,8 +5,8 @@ const { run } = require('../../../utils/test-utils');
 
 describe('multiple dev config files with webpack.config.js', () => {
     it('Uses webpack.config.development.js', (done) => {
-        const { stdout, stderr, exitCode } = run(__dirname, [], false);
-        expect(stderr).toBeFalsy();
+        const { stdout, exitCode } = run(__dirname, [], false);
+
         expect(exitCode).toEqual(0);
         expect(stdout).not.toBe(undefined);
         stat(resolve(__dirname, './binary/dev.folder.js'), (err, stats) => {

@@ -1,5 +1,6 @@
 'use strict';
 
+const stripAnsi = require('strip-ansi');
 const { runAndGetWatchProc } = require('../utils/test-utils');
 
 describe('--analyze flag', () => {
@@ -7,10 +8,11 @@ describe('--analyze flag', () => {
         const proc = runAndGetWatchProc(__dirname, ['--analyze'], false, '', true);
 
         proc.stdout.on('data', (chunk) => {
-            const data = chunk.toString();
+            const data = stripAnsi(chunk.toString());
+            const str = 'Webpack Bundle Analyzer is started at';
 
-            if (data.includes('Webpack Bundle Analyzer is started at')) {
-                expect(data).toContain('Webpack Bundle Analyzer is started at');
+            if (data.includes(str)) {
+                expect(data).toContain(str);
 
                 proc.kill();
                 done();

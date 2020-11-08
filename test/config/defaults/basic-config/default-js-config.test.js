@@ -4,7 +4,7 @@ const { run, isWebpack5 } = require('../../../utils/test-utils');
 
 describe('Zero Config', () => {
     it('runs when config is present but not supplied via flag', () => {
-        const { stdout, stderr, exitCode } = run(__dirname, [], false);
+        const { stdout, exitCode } = run(__dirname, [], false);
         // default entry should be used
         expect(stdout).toContain('./src/index.js');
         // should pick up the output path from config
@@ -19,6 +19,5 @@ describe('Zero Config', () => {
         expect(exitCode).toEqual(0);
         // check that the output file exists
         expect(fs.existsSync(path.join(__dirname, '/dist/test-output.js'))).toBeTruthy();
-        expect(stderr).toBeFalsy();
     });
 });

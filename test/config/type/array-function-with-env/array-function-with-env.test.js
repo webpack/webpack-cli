@@ -5,9 +5,8 @@ const { run } = require('../../../utils/test-utils');
 
 describe('array of functions with env', () => {
     it('is able to understand a configuration file as a function', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--mode', 'development'], false);
-        expect(stderr).toBeFalsy();
-        expect(stdout).toBeTruthy();
+        const { exitCode } = run(__dirname, ['--mode', 'development'], false);
+
         expect(exitCode).toBe(0);
 
         // Should generate the appropriate files

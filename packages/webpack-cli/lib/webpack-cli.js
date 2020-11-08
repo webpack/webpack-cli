@@ -3,7 +3,7 @@ const packageExists = require('./utils/package-exists');
 const webpack = packageExists('webpack') ? require('webpack') : undefined;
 const webpackMerge = require('webpack-merge');
 const { writeFileSync } = require('fs');
-const { options: coloretteOptions, yellow } = require('colorette');
+const { yellow } = require('colorette');
 
 const logger = require('./utils/logger');
 const { core, groups, coreFlagMap } = require('./utils/cli-flags');
@@ -11,6 +11,7 @@ const argParser = require('./utils/arg-parser');
 const assignFlagDefaults = require('./utils/flag-defaults');
 const WebpackCLIPlugin = require('./plugins/WebpackCLIPlugin');
 const promptInstallation = require('./utils/prompt-installation');
+const { getStatsOptions } = require('./utils/stats-options');
 
 // CLI arg resolvers
 const handleConfigResolution = require('./groups/resolveConfig');
@@ -327,9 +328,9 @@ class WebpackCLI {
         let options = this.compilerConfiguration;
         let outputOptions = this.outputConfiguration;
 
-        const isRawOutput = typeof outputOptions.json === 'undefined';
+        const isJsonOutput = typeof outputOptions.json !== 'undefined';
 
-        if (isRawOutput) {
+        if (!isJsonOutput) {
             const webpackCLIPlugin = new WebpackCLIPlugin({
                 progress: outputOptions.progress,
             });
@@ -357,43 +358,28 @@ class WebpackCLI {
                 process.exitCode = 1;
             }
 
-            const getStatsOptions = (stats) => {
-                // TODO remove after drop webpack@4
-                if (webpack.Stats && webpack.Stats.presetToOptions) {
-                    if (!stats) {
-                        stats = {};
-                    } else if (typeof stats === 'boolean' || typeof stats === 'string') {
-                        stats = webpack.Stats.presetToOptions(stats);
+            if (isJsonOutput) {
+                process.nextTick(() => {
+                    const statsOptions = compiler.compilers
+                        ? { children: compiler.compilers.map(getStatsOptions) }
+                        : getStatsOptions(compiler);
+
+                    const json = JSON.stringify(stats.toJson(statsOptions), null, 2);
+
+                    if (typeof outputOptions.json === 'string') {
+                        try {
+                            writeFileSync(outputOptions.json, json);
+
+                            logger.info(`stats are successfully stored as json to ${outputOptions.json}`);
+                        } catch (error) {
+                            logger.error(error);
+
+                            process.exit(2);
+                        }
+                    } else {
+                        process.stdout.write(json + '\n');
                     }
-                }
-
-                stats.colors = typeof stats.colors !== 'undefined' ? stats.colors : coloretteOptions.enabled;
-
-                return stats;
-            };
-
-            const getStatsOptionsFromCompiler = (compiler) => getStatsOptions(compiler.options ? compiler.options.stats : undefined);
-
-            const foundStats = compiler.compilers
-                ? { children: compiler.compilers.map(getStatsOptionsFromCompiler) }
-                : getStatsOptionsFromCompiler(compiler);
-
-            if (outputOptions.json === true) {
-                process.stdout.write(JSON.stringify(stats.toJson(foundStats), null, 2) + '\n');
-            } else if (typeof outputOptions.json === 'string') {
-                const JSONStats = JSON.stringify(stats.toJson(foundStats), null, 2);
-
-                try {
-                    writeFileSync(outputOptions.json, JSONStats);
-
-                    logger.success(`stats are successfully stored as json to ${outputOptions.json}`);
-                } catch (error) {
-                    logger.error(error);
-
-                    process.exit(2);
-                }
-            } else {
-                logger.raw(`${stats.toString(foundStats)}`);
+                });
             }
         };
 

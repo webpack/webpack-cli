@@ -23,7 +23,6 @@ describe('init with SCSS', () => {
             [`N${ENTER}`, ENTER, ENTER, ENTER, `${DOWN}${DOWN}${ENTER}`, `Y${ENTER}`, `apple${ENTER}`],
         );
 
-        expect(stdout).toBeTruthy();
         expect(stdout).toContain(firstPrompt);
 
         // Skip test in case installation fails

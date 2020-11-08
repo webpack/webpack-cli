@@ -24,10 +24,10 @@ describe('serve variable', () => {
     }
 
     it('compiles without flags and export variable', async () => {
-        const { stdout, stderr } = await runServe(['--port', port], testPath);
+        const { stdout } = await runServe(['--port', port], testPath);
         expect(stdout).toContain('main.js');
         expect(stdout).not.toContain('HotModuleReplacementPlugin');
-        expect(stderr).toHaveLength(0);
+
         expect(stdout).toContain('PASS');
     });
 });
