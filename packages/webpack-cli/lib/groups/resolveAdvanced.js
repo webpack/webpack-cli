@@ -1,5 +1,5 @@
-const { packageExists } = require('../utils/package-exists');
-const { promptInstallation } = require('../utils/prompt-installation');
+const packageExists = require('../utils/package-exists');
+const promptInstallation = require('../utils/prompt-installation');
 const { yellow } = require('colorette');
 const { error, success } = require('../utils/logger');
 

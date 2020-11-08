@@ -1,8 +1,8 @@
 const { prompt } = require('enquirer');
 const { green } = require('colorette');
-const { runCommand } = require('./run-command');
+const runCommand = require('./run-command');
 const getPackageManager = require('./get-package-manager');
-const { packageExists } = require('./package-exists');
+const packageExists = require('./package-exists');
 
 /**
  *
@@ -11,6 +11,7 @@ const { packageExists } = require('./package-exists');
  */
 async function promptInstallation(packageName, preMessage) {
     const packageManager = getPackageManager();
+    // yarn uses 'add' command, rest npm and pnpm both use 'install'
     const options = [packageManager === 'yarn' ? 'add' : 'install', '-D', packageName];
 
     const commandToBeRun = `${packageManager} ${options.join(' ')}`;
@@ -34,6 +35,4 @@ async function promptInstallation(packageName, preMessage) {
     process.exitCode = 2;
 }
 
-module.exports = {
-    promptInstallation,
-};
+module.exports = promptInstallation;

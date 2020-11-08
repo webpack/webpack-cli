@@ -3,7 +3,7 @@ const logger = require('./logger');
 const { commands } = require('./cli-flags');
 const runHelp = require('../groups/runHelp');
 const runVersion = require('../groups/runVersion');
-const { defaultCommands } = require('./commands');
+const { defaultCommands } = require('./cli-flags');
 
 /**
  *  Creates Argument parser corresponding to the supplied options
@@ -16,7 +16,6 @@ const { defaultCommands } = require('./commands');
  */
 const argParser = (options, args, argsOnly = false, name = '') => {
     const parser = new commander.Command();
-
     // Set parser name
     parser.name(name);
     parser.storeOptionsAsProperties(false);

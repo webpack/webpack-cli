@@ -8,20 +8,16 @@ jest.setMock('enquirer', {
     prompt: jest.fn(),
 });
 
-jest.setMock('../run-command', {
-    runCommand: jest.fn(),
-});
+jest.setMock('../run-command', jest.fn());
 
-jest.setMock('../package-exists', {
-    packageExists: jest.fn(),
-});
+jest.setMock('../package-exists', jest.fn());
 
 jest.setMock('../get-package-manager', jest.fn());
 
 const getPackageManager = require('../get-package-manager');
-const { packageExists } = require('../package-exists');
-const { promptInstallation } = require('../prompt-installation');
-const { runCommand } = require('../run-command');
+const packageExists = require('../package-exists');
+const promptInstallation = require('../prompt-installation');
+const runCommand = require('../run-command');
 const { prompt } = require('enquirer');
 
 describe('promptInstallation', () => {
@@ -62,6 +58,22 @@ describe('promptInstallation', () => {
         expect(prompt.mock.calls[0][0][0].message).toMatch(/Would you like to install test-package\?/);
         // install the package using yarn
         expect(runCommand.mock.calls[0][0]).toEqual('yarn add -D test-package');
+    });
+
+    it('should prompt to install using pnpm if pnpm is package manager', async () => {
+        prompt.mockReturnValue({
+            installConfirm: true,
+        });
+        getPackageManager.mockReturnValue('pnpm');
+        const preMessage = jest.fn();
+        const promptResult = await promptInstallation('test-package', preMessage);
+        expect(promptResult).toBeTruthy();
+        expect(preMessage.mock.calls.length).toEqual(1);
+        expect(prompt.mock.calls.length).toEqual(1);
+        expect(runCommand.mock.calls.length).toEqual(1);
+        expect(prompt.mock.calls[0][0][0].message).toMatch(/Would you like to install test-package\?/);
+        // install the package using npm
+        expect(runCommand.mock.calls[0][0]).toEqual('pnpm install -D test-package');
     });
 
     it('should not install if install is not confirmed', async () => {
