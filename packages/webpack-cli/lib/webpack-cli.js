@@ -14,7 +14,7 @@ const promptInstallation = require('./utils/prompt-installation');
 
 // CLI arg resolvers
 const handleConfigResolution = require('./groups/resolveConfig');
-const toKebabCase = require('./utils/to-kebab-case');
+const { toKebabCase } = require('./utils/arg-utils');
 
 class WebpackCLI {
     constructor() {
