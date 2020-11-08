@@ -15,7 +15,6 @@
   ],
   "dependencies": {
     "@webpack-cli/utils": "^1.1.0",
-    "@webpack-cli/webpack-scaffold": "^1.0.3",
     "colorette": "^1.2.1",
     "log-symbols": "^4.0.0",
     "yeoman-generator": "^4.12.0"
