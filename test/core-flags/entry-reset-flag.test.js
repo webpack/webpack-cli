@@ -12,7 +12,7 @@ describe('--entry-reset flag', () => {
         expect(stdout).not.toContain('src/main.js');
     });
 
-    it('should thorw error if entry is an empty array', () => {
+    it('should throw error if entry is an empty array', () => {
         const { stderr, stdout, exitCode } = run(__dirname, ['--entry-reset']);
 
         expect(stderr).toContain('Invalid configuration object');
