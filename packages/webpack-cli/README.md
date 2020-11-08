@@ -483,18 +483,24 @@ yarn add webpack-cli --dev
   --snapshot-resolve-timestamp                                Use timestamps of the files/directories to determine invalidation.
   --snapshot-resolve-build-dependencies-hash                  Use hashes of the content of the files/directories to determine invalidation.
   --snapshot-resolve-build-dependencies-timestamp             Use timestamps of the files/directories to determine invalidation.
+  --stats-all                                                 Fallback value for stats options when an option is not defined (has
+                                                              precedence over local webpack defaults).
   --stats-assets                                              Add assets information.
   --stats-assets-sort string                                  Sort the assets by that field.
+  --stats-assets-space number                                 Space to display assets (groups will be collapsed to fit this space).
   --stats-built-at                                            Add built at time information.
   --stats-cached                                              Add information about cached (not built) modules.
   --stats-cached-assets                                       Show cached assets (setting this to `false` only shows emitted files).
+  --stats-cached-modules                                      Add information about cached (not built) modules.
   --stats-children                                            Add children information.
+  --stats-chunk-group-auxiliary                               Display auxiliary assets in chunk groups.
+  --stats-chunk-group-children                                Display children of chunk groups.
+  --stats-chunk-group-max-assets number                       Limit of assets displayed in chunk groups.
   --stats-chunk-groups                                        Display all chunk groups with the corresponding bundles.
   --stats-chunk-modules                                       Add built modules information to chunk information.
   --stats-chunk-origins                                       Add the origins of chunks and chunk merging info.
   --stats-chunk-relations                                     Add information about parent, children and sibling chunks to chunk
                                                               information.
-  --stats-chunk-root-modules                                  Add root modules information to chunk information.
   --stats-chunks                                              Add chunk information.
   --stats-chunks-sort string                                  Sort the chunks by that field.
   --stats-colors                                              Enables/Disables colorful output.
@@ -505,12 +511,14 @@ yarn add webpack-cli --dev
   --stats-colors-red string                                   Custom color for red text.
   --stats-colors-yellow string                                Custom color for yellow text.
   --stats-context string                                      Context directory for request shortening.
+  --stats-dependent-modules                                   Show chunk modules that are dependencies of other modules of the chunk.
   --stats-depth                                               Add module depth in module graph.
-  --stats-entrypoints                                         Display the entry points with the corresponding bundles.
+  --stats-entrypoints string                                  Display the entry points with the corresponding bundles.
   --stats-env                                                 Add --env information.
   --stats-error-details                                       Add details to errors (like resolving log).
   --stats-error-stack                                         Add internal stack trace to errors.
   --stats-errors                                              Add errors.
+  --stats-errors-count                                        Add errors count.
   --stats-exclude-assets string[]                             Suppress assets that match the specified filters. Filters can be Strings,
                                                               RegExps or Functions.
   --stats-exclude-assets-reset                                Clear all items provided in configuration. Suppress assets that match the
@@ -519,6 +527,17 @@ yarn add webpack-cli --dev
                                                               RegExps, Booleans or Functions.
   --stats-exclude-modules-reset                               Clear all items provided in configuration. Suppress modules that match the
                                                               specified filters. Filters can be Strings, RegExps, Booleans or Functions.
+  --stats-group-assets-by-chunk                               Group assets by how their are related to chunks.
+  --stats-group-assets-by-emit-status                         Group assets by their status (emitted, compared for emit or cached).
+  --stats-group-assets-by-extension                           Group assets by their extension.
+  --stats-group-assets-by-info                                Group assets by their asset info (immutable, development,
+                                                              hotModuleReplacement, etc).
+  --stats-group-assets-by-path                                Group assets by their path.
+  --stats-group-modules-by-attributes                         Group modules by their attributes (errors, warnings, assets, optional,
+                                                              orphan, or dependent).
+  --stats-group-modules-by-cache-status                       Group modules by their status (cached or built and cacheable).
+  --stats-group-modules-by-extension                          Group modules by their extension.
+  --stats-group-modules-by-path                               Group modules by their path.
   --stats-hash                                                Add the hash of the compilation.
   --stats-ids                                                 Add ids.
   --stats-logging string                                      Specify log level of logging output. Enable/disable logging output (`true`:
@@ -530,11 +549,12 @@ yarn add webpack-cli --dev
                                                               loggers (i. e. for plugins or loaders). Filters can be Strings, RegExps or
                                                               Functions.
   --stats-logging-trace                                       Add stack traces to logging output.
-  --stats-max-modules number                                  Set the maximum number of modules to be shown.
   --stats-module-assets                                       Add information about assets inside modules.
   --stats-module-trace                                        Add dependencies and origin of warnings/errors.
   --stats-modules                                             Add built modules information.
   --stats-modules-sort string                                 Sort the modules by that field.
+  --stats-modules-space number                                Space to display modules (groups will be collapsed to fit this space, values
+                                                              is in number of modules/groups).
   --stats-nested-modules                                      Add information about modules nested in other modules (like with module
                                                               concatenation).
   --stats-optimization-bailout                                Show reasons why optimization bailed out for modules.
@@ -545,16 +565,20 @@ yarn add webpack-cli --dev
   --stats-provided-exports                                    Show exports provided by modules.
   --stats-public-path                                         Add public path information.
   --stats-reasons                                             Add information about the reasons why modules are included.
-  --stats-runtime                                             Add information about runtime modules.
-  --stats-source                                              Add the source code of modules.
+  --stats-related-assets                                      Add information about assets that are related to other assets (like
+                                                              SourceMaps for assets).
+  --stats-runtime-modules                                     Add information about runtime modules.
   --stats-timings                                             Add timing information.
-  --stats-used-exports                                        Show exports used by modules.
+  --stats-source                                              Add the source code of modules.
   --stats-version                                             Add webpack version information.
+  --stats-used-exports                                        Show exports used by modules.
+  --stats-warnings-count                                      Add warnings count.
   --stats-warnings                                            Add warnings.
-  --stats-warnings-filter string[]                            Suppress warnings that match the specified filters. Filters can be Strings,
-                                                              RegExps or Functions.
-  --stats-warnings-filter-reset                               Clear all items provided in configuration. Suppress warnings that match the
-                                                              specified filters. Filters can be Strings, RegExps or Functions.
+  --stats-warnings-filter string[]                            Suppress listing warnings that match the specified filters (they will still
+                                                              be counted). Filters can be Strings, RegExps or Functions.
+  --stats-warnings-filter-reset                               Clear all items provided in configuration. Suppress listing warnings that
+                                                              match the specified filters (they will still be counted). Filters can be
+                                                              Strings, RegExps or Functions.
   --watch-options-aggregate-timeout number                    Delay the rebuilt after the first change. Value is a time in ms.
   --watch-options-ignored string[]                            A glob pattern for files that should be ignored from watching.
   --watch-options-ignored-reset                               Clear all items provided in configuration. Ignore some files from watching
@@ -644,20 +668,32 @@ yarn add webpack-cli --dev
   --no-stats-built-at                                         Negates stats-built-at
   --no-stats-cached                                           Negates stats-cached
   --no-stats-cached-assets                                    Negates stats-cached-assets
+  --no-stats-cached-modules                                   Negates stats-cached-modules
   --no-stats-children                                         Negates stats-children
+  --no-stats-chunk-group-auxiliary                            Negates stats-chunk-group-auxiliary
+  --no-stats-chunk-group-children                             Negates stats-chunk-group-children
   --no-stats-chunk-groups                                     Negates stats-chunk-groups
   --no-stats-chunk-modules                                    Negates stats-chunk-modules
   --no-stats-chunk-origins                                    Negates stats-chunk-origins
   --no-stats-chunk-relations                                  Negates stats-chunk-relations
-  --no-stats-chunk-root-modules                               Negates stats-chunk-root-modules
   --no-stats-chunks                                           Negates stats-chunks
   --no-stats-colors                                           Negates stats-colors
+  --no-stats-dependent-modules                                Negates stats-dependent-modules
   --no-stats-depth                                            Negates stats-depth
-  --no-stats-entrypoints                                      Negates stats-entrypoints
   --no-stats-env                                              Negates stats-env
   --no-stats-error-details                                    Negates stats-error-details
   --no-stats-error-stack                                      Negates stats-error-stack
   --no-stats-errors                                           Negates stats-errors
+  --no-stats-errors-count                                     Negates stats-errors-count
+  --no-stats-group-assets-by-chunk                            Negates stats-group-assets-by-chunk
+  --no-stats-group-assets-by-emit-status                      Negates stats-group-assets-by-emit-status
+  --no-stats-group-assets-by-extension                        Negates stats-group-assets-by-extension
+  --no-stats-group-assets-by-info                             Negates stats-group-assets-by-info
+  --no-stats-group-assets-by-path                             Negates stats-group-assets-by-path
+  --no-stats-group-modules-by-attributes                      Negates stats-group-modules-by-attributes
+  --no-stats-group-modules-by-cache-status                    Negates stats-group-modules-by-cache-status
+  --no-stats-group-modules-by-extension                       Negates stats-group-modules-by-extension
+  --no-stats-group-modules-by-path                            Negates stats-group-modules-by-path
   --no-stats-hash                                             Negates stats-hash
   --no-stats-ids                                              Negates stats-ids
   --no-stats-logging-trace                                    Negates stats-logging-trace
@@ -672,11 +708,13 @@ yarn add webpack-cli --dev
   --no-stats-provided-exports                                 Negates stats-provided-exports
   --no-stats-public-path                                      Negates stats-public-path
   --no-stats-reasons                                          Negates stats-reasons
-  --no-stats-runtime                                          Negates stats-runtime
+  --no-stats-related-assets                                   Negates stats-related-assets
+  --no-stats-runtime-modules                                  Negates stats-runtime-modules
   --no-stats-source                                           Negates stats-source
   --no-stats-timings                                          Negates stats-timings
   --no-stats-used-exports                                     Negates stats-used-exports
   --no-stats-version                                          Negates stats-version
   --no-stats-warnings                                         Negates stats-warnings
+  --no-stats-warnings-count                                   Negates stats-warnings-count
   --no-watch-options-stdin                                    Negates watch-options-stdin
 ```
