@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`utils Inquirer should make an Input object with validation 1`] = `
+Object {
+  "message": "what is your plugin?",
+  "name": "plugins",
+  "type": "input",
+  "validate": [Function],
+}
+`;
+
+exports[`utils Inquirer should make an Input object with validation and default value 1`] = `
+Object {
+  "default": "my-plugin",
+  "message": "what is your plugin?",
+  "name": "plugins",
+  "type": "input",
+  "validate": [Function],
+}
+`;

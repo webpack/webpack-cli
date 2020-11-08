@@ -1,5 +1,5 @@
 import Generator from 'yeoman-generator';
-import { Input, InputValidate } from '@webpack-cli/webpack-scaffold';
+import { Input, InputValidate } from './scaffold-utils';
 
 import validate from './validate';
 
