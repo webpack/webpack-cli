@@ -1,6 +1,12 @@
 import path from 'path';
+import yeoman from 'yeoman-environment';
+import { loaderGenerator } from '@webpack-cli/generators';
+import { utils } from 'webpack-cli';
 import addonGenerator from './addon-generator';
 import { toKebabCase } from './utils/helpers';
+
+const { logger } = utils;
+
 /**
  * Formats a string into webpack loader format
  * (eg: 'style-loader', 'raw-loader')
@@ -25,7 +31,7 @@ export function makeLoaderName(name: string): string {
  * @extends {Generator}
  */
 
-const LoaderGenerator = addonGenerator(
+export const LoaderGenerator = addonGenerator(
     [
         {
             default: 'my-loader',
@@ -36,7 +42,7 @@ const LoaderGenerator = addonGenerator(
             validate: (str: string): boolean => str.length > 0,
         },
     ],
-    path.resolve(__dirname, '../../generate-loader/templates'),
+    path.resolve(__dirname, '../loader-template'),
     [
         'src/cjs.js.tpl',
         'test/test-utils.js.tpl',
@@ -52,4 +58,18 @@ const LoaderGenerator = addonGenerator(
     (gen): object => ({ name: gen.props.name }),
 );
 
-export default LoaderGenerator;
+/**
+ * Runs a yeoman generator to create a new webpack loader project
+ * @returns {void}
+ */
+
+export default function loaderCreator(): void {
+    const env = yeoman.createEnv();
+    const generatorName = 'webpack-loader-generator';
+
+    env.registerStub(LoaderGenerator, generatorName);
+
+    env.run(generatorName, () => {
+        logger.success('Loader template has been successfully scaffolded.');
+    });
+}
