@@ -14,6 +14,23 @@ const commands = [
         type: String,
         usage: 'init [scaffold]',
         description: 'Initialize a new webpack configuration',
+        flags: [
+            {
+                name: 'auto',
+                type: Boolean,
+                description: 'To generate default config',
+            },
+            {
+                name: 'force',
+                type: Boolean,
+                description: 'To force config generation',
+            },
+            {
+                name: 'generation-path',
+                type: String,
+                description: 'To scaffold in a specified path',
+            },
+        ],
     },
     {
         name: 'migrate',
