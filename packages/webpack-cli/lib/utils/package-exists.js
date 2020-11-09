@@ -1,6 +1,6 @@
 function packageExists(packageName) {
     try {
-        require(packageName);
+        require.resolve(packageName);
         return true;
     } catch (err) {
         return false;
