@@ -1,7 +1,14 @@
 const logger = require('../utils/logger');
 const { commands, flags } = require('../utils/cli-flags');
+const { options } = require('colorette');
 
 const outputVersion = (args) => {
+    if (args.includes('--color')) {
+        options.enabled = true;
+    } else if (args.includes('--no-color')) {
+        options.enabled = false;
+    }
+
     const hasUnknownVersionArgs = (args, commands, flags) => {
         return args.filter((arg) => {
             if (arg === 'version' || arg === '--version' || arg === '-v' || arg === '--color' || arg === '--no-color') {
@@ -23,7 +30,7 @@ const outputVersion = (args) => {
 
     if (invalidArgs.length > 0) {
         const argType = invalidArgs[0].startsWith('-') ? 'option' : 'command';
-        logger.error(`Error: Invalid ${argType} '${invalidArgs[0]}'.`);
+        logger.error(`Invalid ${argType} '${invalidArgs[0]}'.`);
         logger.error('Run webpack --help to see available commands and arguments.');
         process.exit(2);
     }

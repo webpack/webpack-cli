@@ -1,10 +1,16 @@
-const { green, bold, underline } = require('colorette');
+const { options, green, bold, underline } = require('colorette');
 const commandLineUsage = require('command-line-usage');
 
 const { commands, flags } = require('../utils/cli-flags');
 const logger = require('../utils/logger');
 
 const outputHelp = (args) => {
+    if (args.includes('--color')) {
+        options.enabled = true;
+    } else if (args.includes('--no-color')) {
+        options.enabled = false;
+    }
+
     const hasUnknownVersionArgs = (args, commands, flags) => {
         return args.filter((arg) => {
             if (arg === 'version' || arg === 'help' || arg === '--help' || arg === '-h' || arg === '--no-color') {

@@ -45,6 +45,7 @@ class WebpackCLI {
             .filter((arg) => coreFlagMap.has(toKebabCase(arg)))
             .reduce((acc, cur) => {
                 acc[toKebabCase(cur)] = parsedArgs[cur];
+
                 return acc;
             }, {});
         const coreCliArgs = coreCliHelper.getArguments();
@@ -74,9 +75,11 @@ class WebpackCLI {
             .filter((coreFlag) => coreFlag.group === groups.BASIC_GROUP)
             .reduce((result, flagObject) => {
                 result.push(flagObject.name);
+
                 if (flagObject.alias) {
                     result.push(flagObject.alias);
                 }
+
                 return result;
             }, []);
 

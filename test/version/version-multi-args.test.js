@@ -27,8 +27,8 @@ describe('version flag with multiple arguments', () => {
 
         expect(exitCode).toBe(2);
         expect(stdout).not.toContain(pkgJSON.version);
-        expect(stderr).toContain(`Error: Invalid command 'abc'`);
-        expect(stderr).toContain('Run webpack --help to see available commands and arguments');
+        expect(stderr).toContain(`[webpack-cli] Invalid command 'abc'`);
+        expect(stderr).toContain('[webpack-cli] Run webpack --help to see available commands and arguments');
     });
 
     it('throws error if invalid option is passed with version command', () => {
@@ -36,8 +36,8 @@ describe('version flag with multiple arguments', () => {
 
         expect(exitCode).toBe(2);
         expect(stdout).not.toContain(pkgJSON.version);
-        expect(stderr).toContain(`Error: Invalid option '--abc'`);
-        expect(stderr).toContain('Run webpack --help to see available commands and arguments');
+        expect(stderr).toContain(`[webpack-cli] Invalid option '--abc'`);
+        expect(stderr).toContain('[webpack-cli] Run webpack --help to see available commands and arguments');
     });
 
     it('throws error if invalid command is passed with --version flag', () => {
@@ -45,8 +45,8 @@ describe('version flag with multiple arguments', () => {
 
         expect(exitCode).toBe(2);
         expect(stdout).not.toContain(pkgJSON.version);
-        expect(stderr).toContain(`Error: Invalid command 'abc'`);
-        expect(stderr).toContain('Run webpack --help to see available commands and arguments');
+        expect(stderr).toContain(`[webpack-cli] Invalid command 'abc'`);
+        expect(stderr).toContain('[webpack-cli] Run webpack --help to see available commands and arguments');
     });
 
     it('throws error if invalid option is passed with --version flag', () => {
@@ -54,8 +54,8 @@ describe('version flag with multiple arguments', () => {
 
         expect(exitCode).toBe(2);
         expect(stdout).not.toContain(pkgJSON.version);
-        expect(stderr).toContain(`Error: Invalid option '--abc'`);
-        expect(stderr).toContain('Run webpack --help to see available commands and arguments');
+        expect(stderr).toContain(`[webpack-cli] Invalid option '--abc'`);
+        expect(stderr).toContain('[webpack-cli] Run webpack --help to see available commands and arguments');
     });
 
     it('throws error if invalid command is passed with -v alias', () => {
@@ -63,8 +63,8 @@ describe('version flag with multiple arguments', () => {
 
         expect(exitCode).toBe(2);
         expect(stdout).not.toContain(pkgJSON.version);
-        expect(stderr).toContain(`Error: Invalid command 'abc'`);
-        expect(stderr).toContain('Run webpack --help to see available commands and arguments');
+        expect(stderr).toContain(`[webpack-cli] Invalid command 'abc'`);
+        expect(stderr).toContain('[webpack-cli] Run webpack --help to see available commands and arguments');
     });
 
     it('throws error if invalid option is passed with -v alias', () => {
@@ -72,7 +72,7 @@ describe('version flag with multiple arguments', () => {
 
         expect(exitCode).toBe(2);
         expect(stdout).not.toContain(pkgJSON.version);
-        expect(stderr).toContain(`Error: Invalid option '--abc'`);
-        expect(stderr).toContain('Run webpack --help to see available commands and arguments');
+        expect(stderr).toContain(`[webpack-cli] Invalid option '--abc'`);
+        expect(stderr).toContain('[webpack-cli] Run webpack --help to see available commands and arguments');
     });
 });

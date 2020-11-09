@@ -28,6 +28,7 @@ const argParser = (options, args, argsOnly = false, name = '') => {
     }
 
     const parser = new commander.Command();
+
     // Set parser name
     parser.name(name);
     parser.storeOptionsAsProperties(false);
