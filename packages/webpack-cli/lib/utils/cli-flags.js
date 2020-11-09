@@ -12,7 +12,7 @@ const commands = [
         name: 'init',
         alias: 'c',
         type: String,
-        usage: 'init [scaffold]',
+        usage: 'init [scaffold] [options]',
         description: 'Initialize a new webpack configuration',
         flags: [
             {
@@ -44,7 +44,7 @@ const commands = [
         scope: 'external',
         alias: 'l',
         type: String,
-        usage: 'loader',
+        usage: 'loader [path]',
         description: 'Scaffold a loader repository',
     },
     {
@@ -52,7 +52,7 @@ const commands = [
         alias: 'p',
         scope: 'external',
         type: String,
-        usage: 'plugin',
+        usage: 'plugin [path]',
         description: 'Scaffold a plugin repository',
     },
     {
@@ -80,7 +80,7 @@ const commands = [
         alias: 's',
         scope: 'external',
         type: String,
-        usage: 'serve',
+        usage: 'serve [options]',
         description: 'Run the webpack Dev Server',
     },
 ];
