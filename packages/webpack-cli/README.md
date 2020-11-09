@@ -136,6 +136,11 @@ yarn add webpack-cli --dev
                                                               `output.libraryTarget`.
   --externals-type string                                     Specifies the default type of externals ('amd*', 'umd*', 'system' and 'jsonp'
                                                               depend on output.libraryTarget set to the same value).
+  --ignore-warnings string[]                                  A RegExp to select the warning message.
+  --ignore-warnings-file string[]                             A RegExp to select the origin file for the warning.
+  --ignore-warnings-message string[]                          A RegExp to select the warning message.
+  --ignore-warnings-module string[]                           A RegExp to select the origin module for the warning.
+  --ignore-warnings-reset                                     Clear all items provided in configuration. Ignore specific warnings.
   --infrastructure-logging-debug string[]                     Enable/Disable debug logging for all loggers. Enable debug logging for
                                                               specific loggers.
   --infrastructure-logging-debug-reset                        Clear all items provided in configuration. Enable debug logging for specific
