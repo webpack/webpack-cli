@@ -9,8 +9,9 @@ const { logger } = utils;
  * @returns {void}
  */
 
-export default function pluginCreator(): void {
-    const env = yeoman.createEnv();
+export default function pluginCreator(...args: string[]): void {
+    const generationPath = args[0];
+    const env = yeoman.createEnv([], { cwd: generationPath });
     const generatorName = 'webpack-plugin-generator';
 
     env.registerStub(pluginGenerator, generatorName);
