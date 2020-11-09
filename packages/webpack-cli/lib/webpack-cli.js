@@ -70,7 +70,7 @@ class WebpackCLI {
             outputOptions: {},
         };
 
-        const WEBPACK_OPTION_FLAGS = flagsFromCore
+        const WEBPACK_OPTION_FLAGS = flags
             .filter((coreFlag) => coreFlag.group === groups.BASIC_GROUP)
             .reduce((result, flagObject) => {
                 result.push(flagObject.name);
