@@ -27,7 +27,13 @@ generateLoader();
 ### CLI (via `webpack-cli`)
 
 ```bash
-npx webpack-cli generate-loader
+npx webpack-cli loader
+```
+
+> Optionally specify a path for generating the loader template.
+
+```bash
+npx webpack-cli loader [path]
 ```
 
 [downloads]: https://img.shields.io/npm/dm/@webpack-cli/generate-loader.svg
