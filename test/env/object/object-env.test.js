@@ -7,7 +7,7 @@ const { sync: spawnSync } = execa;
 const { run } = require('../../utils/test-utils');
 
 describe('env object', () => {
-    it('is able to set env for an object', async () => {
+    it('is able to set env for an object', () => {
         const { stderr, stdout, exitCode } = run(__dirname);
 
         expect(exitCode).toBe(0);

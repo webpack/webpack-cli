@@ -10,7 +10,7 @@ const devFile = path.join(__dirname, './bin/dev.js');
 const prodFile = path.join(__dirname, './bin/prod.js');
 
 describe('env array', () => {
-    it('is able to set two different environments for an array configuration', async () => {
+    it('is able to set two different environments for an array configuration', () => {
         const { stderr, stdout, exitCode } = run(__dirname);
 
         expect(exitCode).toBe(0);
