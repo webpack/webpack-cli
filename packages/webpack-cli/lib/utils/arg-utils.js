@@ -9,15 +9,13 @@ const hyphenToUpperCase = (name) => {
     });
 };
 
-const arrayToObject = (arr) => {
-    if (!arr) {
-        return;
-    }
-    return arr.reduce((result, currentItem) => {
-        const key = Object.keys(currentItem)[0];
-        result[hyphenToUpperCase(key)] = currentItem[key];
-        return result;
-    }, {});
+/**
+ * Convert camelCase to kebab-case
+ * @param {string} str input string in camelCase
+ * @returns {string} output string in kebab-case
+ */
+const toKebabCase = (str) => {
+    return str.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
 };
 
 const isCommandUsed = (args) =>
@@ -26,7 +24,7 @@ const isCommandUsed = (args) =>
     });
 
 module.exports = {
-    arrayToObject,
+    toKebabCase,
     hyphenToUpperCase,
     isCommandUsed,
 };
