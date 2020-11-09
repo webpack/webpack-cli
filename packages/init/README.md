@@ -48,6 +48,12 @@ npx webpack-cli init --auto
 npx webpack-cli init --force
 ```
 
+**To scaffold in a specified path**
+
+```bash
+npx webpack-cli init --generation-path [path]
+```
+
 **Via custom scaffold**
 
 1. Using package on `npm`
