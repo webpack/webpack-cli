@@ -399,12 +399,6 @@ class WebpackCLI {
 
         compiler = this.createCompiler(options, callback);
 
-        if (compiler && outputOptions.interactive) {
-            const interactive = require('./utils/interactive');
-
-            interactive(compiler, options, outputOptions);
-        }
-
         return Promise.resolve();
     }
 }
