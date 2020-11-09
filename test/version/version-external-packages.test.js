@@ -77,7 +77,9 @@ describe('version flag with external packages', () => {
         const { stderr, exitCode } = run(__dirname, ['init', 'migrate', '--version'], false);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain('You provided multiple commands.');
+        expect(stderr).toContain(
+            "You provided multiple commands - 'init' (alias 'c'), 'migrate' (alias 'm'). Please use only one command at a time.",
+        );
     });
 
     it(' should throw error if invalid argument is present with --version flag', () => {
@@ -85,7 +87,8 @@ describe('version flag with external packages', () => {
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain(`Error: Invalid command 'abc'`);
-        expect(stdout).toContain('Run webpack --help to see available commands and arguments');
+        expect(stderr).toContain('Run webpack --help to see available commands and arguments');
+        expect(stdout).toBe('');
     });
 
     it(' should throw error if invalid argument is present with version command', () => {
@@ -93,7 +96,8 @@ describe('version flag with external packages', () => {
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain(`Error: Invalid command 'abc'`);
-        expect(stdout).toContain('Run webpack --help to see available commands and arguments');
+        expect(stderr).toContain('Run webpack --help to see available commands and arguments');
+        expect(stdout).toBe('');
     });
 
     it(' should throw error if invalid argument is present with -v alias', () => {
@@ -101,6 +105,7 @@ describe('version flag with external packages', () => {
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain(`Error: Invalid command 'abc'`);
-        expect(stdout).toContain('Run webpack --help to see available commands and arguments');
+        expect(stderr).toContain('Run webpack --help to see available commands and arguments');
+        expect(stdout).toBe('');
     });
 });

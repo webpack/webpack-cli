@@ -7,7 +7,7 @@ const logger = require('../utils/logger');
 const outputHelp = (args) => {
     const hasUnknownVersionArgs = (args, commands, flags) => {
         return args.filter((arg) => {
-            if (arg === '--help' || arg === '-h' || arg === '--color') {
+            if (arg === 'version' || arg === 'help' || arg === '--help' || arg === '-h' || arg === '--no-color') {
                 return false;
             }
 
@@ -26,8 +26,8 @@ const outputHelp = (args) => {
 
     if (invalidArgs.length > 0) {
         const argType = invalidArgs[0].startsWith('-') ? 'option' : 'command';
-        logger.error(`Error: Invalid ${argType} '${invalidArgs[0]}'.`);
-        logger.info('Run webpack --help to see available commands and arguments.');
+        logger.error(`Invalid ${argType} '${invalidArgs[0]}'.`);
+        logger.error('Run webpack --help to see available commands and arguments.');
         process.exit(2);
     }
 
@@ -35,7 +35,7 @@ const outputHelp = (args) => {
         return args.includes(command.name) || args.includes(command.alias);
     });
     const usedFlag = flags.filter((flag) => {
-        if (flag.name === 'help') {
+        if (flag.name === 'help' || flag.name === 'color') {
             return false;
         }
 

@@ -1,6 +1,6 @@
 'use strict';
 
-const { yellow, options } = require('colorette');
+const { yellow } = require('colorette');
 const { runInfo } = require('../utils/test-utils');
 const { commands } = require('../../packages/webpack-cli/lib/utils/cli-flags');
 
@@ -19,9 +19,8 @@ describe('should print help for info command', () => {
         expect(stderr).toHaveLength(0);
     });
 
-    it('should respect the --no-color flag', () => {
+    it('should work and respect the --no-color flag', () => {
         const { stdout, stderr, exitCode } = runInfo(['--help', '--no-color'], __dirname);
-        options.enabled = true;
 
         expect(exitCode).toBe(0);
         expect(stdout).not.toContain(yellow(usageText));

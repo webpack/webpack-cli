@@ -4,7 +4,7 @@ const { commands, flags } = require('../utils/cli-flags');
 const outputVersion = (args) => {
     const hasUnknownVersionArgs = (args, commands, flags) => {
         return args.filter((arg) => {
-            if (arg === '--version' || arg === '-v' || arg === '--color') {
+            if (arg === 'version' || arg === '--version' || arg === '-v' || arg === '--color' || arg === '--no-color') {
                 return false;
             }
 
@@ -24,7 +24,7 @@ const outputVersion = (args) => {
     if (invalidArgs.length > 0) {
         const argType = invalidArgs[0].startsWith('-') ? 'option' : 'command';
         logger.error(`Error: Invalid ${argType} '${invalidArgs[0]}'.`);
-        logger.info('Run webpack --help to see available commands and arguments.');
+        logger.error('Run webpack --help to see available commands and arguments.');
         process.exit(2);
     }
 
