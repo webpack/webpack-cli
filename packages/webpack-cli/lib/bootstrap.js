@@ -25,7 +25,7 @@ const runCLI = async (cliArgs) => {
         let entry;
 
         // enable/disable colors
-        if (parsedArgs.opts.hasOwnProperty('color')) {
+        if (typeof parsedArgs.opts.color !== 'undefined') {
             coloretteOptions.enabled = Boolean(parsedArgs.opts.color);
         }
 
