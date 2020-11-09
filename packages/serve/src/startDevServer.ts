@@ -1,6 +1,10 @@
+import { utils } from 'webpack-cli';
+
 import createConfig from './createConfig';
 import getDevServerOptions from './getDevServerOptions';
 import mergeOptions from './mergeOptions';
+
+const { logger } = utils;
 
 /**
  *
@@ -12,8 +16,14 @@ import mergeOptions from './mergeOptions';
  * @returns {Object[]} array of resulting servers
  */
 export default function startDevServer(compiler, devServerArgs): object[] {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires, node/no-extraneous-require
-    const Server = require('webpack-dev-server/lib/Server');
+    let Server;
+    try {
+        // eslint-disable-next-line node/no-extraneous-require
+        Server = require('webpack-dev-server/lib/Server');
+    } catch (err) {
+        logger.error(`You need to install 'webpack-dev-server' for running 'webpack serve'.\n${err}`);
+        process.exit(2);
+    }
     const cliOptions = createConfig(devServerArgs);
     const devServerOptions = getDevServerOptions(compiler);
 
