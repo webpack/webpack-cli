@@ -139,11 +139,6 @@ export function modifyHelperUtil(
                     },
                     finalConfig,
                 ) as TransformConfig;
-                if (finalConfig.usingDefaults && finalConfig.usingDefaults === true) {
-                    const runCommand = getPackageManager() === 'yarn' ? 'yarn build' : 'npm run build';
-
-                    logger.log(`\nYou can now run ${green(runCommand)} to bundle your application!\n`);
-                }
 
                 // scaffold webpack config file from using .yo-rc.json
                 return runTransform(transformConfig, 'init', generateConfig);
