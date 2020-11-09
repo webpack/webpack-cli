@@ -1,7 +1,10 @@
-import { Input, InputValidate } from '../../src/utils/scaffold-utils';
-import entry from '../../lib/utils/entry';
+jest.setMock('../../src/utils/scaffold-utils', {
+    Input: jest.fn(),
+    InputValidate: jest.fn(),
+});
 
-jest.mock('../../src/utils/scaffold-utils');
+import { Input, InputValidate } from '../../src/utils/scaffold-utils';
+import entry from '../../src/utils/entry';
 
 describe('entry', () => {
     const InputMock = Input as jest.Mock;
