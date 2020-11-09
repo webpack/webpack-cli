@@ -87,6 +87,12 @@ webpack-cli init --auto
 webpack-cli init --force
 ```
 
+**To scaffold in a specified path**
+
+```bash
+webpack-cli init --generation-path [path]
+```
+
 **Via custom scaffold**
 
 ```bash
