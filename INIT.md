@@ -8,13 +8,14 @@
     -   [Local Setup](#local-setup)
     -   [Global Setup](#global-setup)
 -   [Usage](#usage)
-    -   [Running Globally](#running-globally)
     -   [Running Locally](#running-locally)
+    -   [Running Globally](#running-globally)
+    -   [CLI options](#cli-options)
     -   [Description of questions asked by generator](#description-of-questions-asked-by-generator)
 
 ## Initial Setup
 
-### a. Local Setup
+### Local Setup
 
 These are the steps necessary to set up `webpack-cli init` locally:
 
@@ -36,7 +37,7 @@ These are the steps necessary to set up `webpack-cli init` locally:
     npm install --save-dev @webpack-cli/init
     ```
 
-### b. Global Setup
+### Global Setup
 
 These are the steps necessary to set up `webpack-cli init` globally:
 
@@ -54,16 +55,42 @@ These are the steps necessary to set up `webpack-cli init` globally:
 
 ## Usage
 
-### a. Running Locally
+### Running Locally
 
-```shell
+```bash
 npx webpack-cli init
 ```
 
-### b. Running Globally
+### Running Globally
 
 ```shell
 webpack-cli init
+```
+
+### CLI options
+
+**Via defaults**
+
+```bash
+webpack-cli init
+```
+
+**To generate default configs**
+
+```bash
+webpack-cli init --auto
+```
+
+**To force config generation**
+
+```bash
+webpack-cli init --force
+```
+
+**Via custom scaffold**
+
+```bash
+webpack-cli init webpack-scaffold-[name]
 ```
 
 ### Description of questions asked by the generator
