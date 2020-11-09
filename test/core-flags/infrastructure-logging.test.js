@@ -2,7 +2,7 @@
 
 const { run } = require('../utils/test-utils');
 
-describe('externals related flag', () => {
+describe('infrastructure logging related flag', () => {
     it('should set infrastructureLogging.debug properly', () => {
         const { stderr, stdout, exitCode } = run(__dirname, ['--infrastructure-logging-debug', 'myPlugin']);
 
