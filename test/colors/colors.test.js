@@ -109,6 +109,27 @@ describe('colorts', () => {
         expect(exitCode).toBe(0);
     });
 
+    it('should prioritize --color over colors in config', () => {
+        const { stderr, stdout, exitCode } = run(__dirname, ['--config=colors-false.webpack.config.js', '--color']);
+
+        expect(stderr).toBeFalsy();
+        const output = isWebpack5 ? 'successfully' : 'main.js';
+
+        expect(stdout).toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
+        expect(exitCode).toBe(0);
+    });
+
+    it('should prioratize --no-color over colors in config', () => {
+        const { stderr, stdout, exitCode } = run(__dirname, ['--config=colors-true.webpack.config.js', '--no-color']);
+
+        expect(stderr).toBeFalsy();
+        const output = isWebpack5 ? 'successfully' : 'main.js';
+
+        expect(stdout).not.toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
+        expect(stdout).toContain(output);
+        expect(exitCode).toBe(0);
+    });
+
     it('should work in multicompiler mode', () => {
         const { stderr, stdout, exitCode } = run(__dirname, ['--config=multiple-configs.js', '--color']);
 
