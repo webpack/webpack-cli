@@ -52,11 +52,11 @@ yarn add webpack-cli --dev
   --progress string, boolean    Print compilation progress during build
   --color                       Enables colors on console
   --no-color                    Disable colors on console
-  --env string                  Environment passed to the configuration when it is a function
+  --env string[]                Environment passed to the configuration when it is a function
   --name string                 Name of the configuration. Used when loading multiple configurations
   --help                        Outputs list of supported flags
   -o, --output-path string      Output location of the generated bundle
-  -t, --target string           Sets the build target
+  -t, --target string[]         Sets the build target
   -w, --watch                   Watch for files changes
   -h, --hot                     Enables Hot Module Replacement
   --no-hot                      Disables Hot Module Replacement
