@@ -11,14 +11,14 @@ const prodFile = path.join(__dirname, './bin/prod.js');
 
 describe('env array', () => {
     it('is able to set two different environments for an array configuration', async () => {
-        const { stderr, stdout, exitCode } = await run(__dirname);
+        const { stderr, stdout, exitCode } = run(__dirname);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
 
-        const devScript = await spawnSync('node', [devFile]);
-        const prodScript = await spawnSync('node', [prodFile]);
+        const devScript = spawnSync('node', [devFile]);
+        const prodScript = spawnSync('node', [prodFile]);
 
         expect(devScript.stdout).toBe('environment is development');
         expect(prodScript.stdout).toBe('environment is production');
