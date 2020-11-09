@@ -1,6 +1,6 @@
 'use strict';
 
-const { yellow } = require('colorette');
+const { green } = require('colorette');
 const { runInfo } = require('../utils/test-utils');
 const { commands } = require('../../packages/webpack-cli/lib/utils/cli-flags');
 
@@ -23,7 +23,7 @@ describe('should print help for info command', () => {
         const { stdout, stderr, exitCode } = runInfo(['--help', '--no-color'], __dirname);
 
         expect(exitCode).toBe(0);
-        expect(stdout).not.toContain(yellow(usageText));
+        expect(stdout).not.toContain(green(usageText));
         expect(stdout).toContain(descriptionText);
         expect(stderr).toHaveLength(0);
     });
