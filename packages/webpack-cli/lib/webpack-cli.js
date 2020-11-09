@@ -367,7 +367,21 @@ class WebpackCLI {
                     }
                 }
 
-                stats.colors = typeof stats.colors !== 'undefined' ? stats.colors : coloretteOptions.enabled;
+                let colors;
+                // From flags
+                if (typeof args.color !== 'undefined') {
+                    colors = args.color;
+                }
+                // From stats
+                else if (typeof stats.colors !== 'undefined') {
+                    colors = stats.colors;
+                }
+                // Default
+                else {
+                    colors = coloretteOptions.enabled;
+                }
+
+                stats.colors = colors;
 
                 return stats;
             };
