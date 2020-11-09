@@ -14,6 +14,14 @@ describe('init generate-path flag', () => {
         rimraf.sync(genPath);
     });
 
+    it('throws an error on supplying an invalid value.', () => {
+        const { stdout, stderr, exitCode } = run(__dirname, ['init', '--generation-path', '--auto'], false);
+        expect(stdout).toBeFalsy();
+        expect(stderr).toBeTruthy();
+        expect(stderr).toContain('Please specify a valid path');
+        expect(exitCode).toBe(2);
+    });
+
     it('should scaffold in the specified path with --generation-path', () => {
         const { stdout } = run(__dirname, ['init', '--generation-path', 'test-assets', '--auto'], false);
         // Test no prompts are present

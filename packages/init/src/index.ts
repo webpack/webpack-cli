@@ -1,5 +1,8 @@
 import { initGenerator } from '@webpack-cli/generators';
 import { modifyHelperUtil, npmPackagesExists } from '@webpack-cli/utils';
+import { utils } from 'webpack-cli';
+
+const { logger } = utils;
 
 const AUTO_PREFIX = '--auto';
 const CONFIG_PREFIX = '--force';
@@ -27,6 +30,11 @@ export default function initializeInquirer(...args: string[]): Function | void {
         const idx = packages.indexOf(PATH_PREFIX);
         // Retrieve the path supplied along with --generation-path
         generationPath = packages[idx + 1];
+        // Throw an error in case an invalid value is supplied
+        if (generationPath.startsWith('-')) {
+            logger.error('Please specify a valid path');
+            process.exit(2);
+        }
     }
     if (packages.length === 0 || includesDefaultPrefix || generateConfig || genPathPrefix) {
         return modifyHelperUtil('init', initGenerator, null, null, includesDefaultPrefix, generateConfig, generationPath);
