@@ -369,7 +369,7 @@ class WebpackCLI {
 
                 let colors;
                 // From flags
-                if (typeof args.color !== 'undefined') {
+                if (args.hasOwnProperty('color')) {
                     colors = args.color;
                 }
                 // From stats
