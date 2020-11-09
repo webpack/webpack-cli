@@ -327,11 +327,6 @@ class WebpackCLI {
         let options = this.compilerConfiguration;
         let outputOptions = this.outputConfiguration;
 
-        // enable/disable colors
-        if (typeof args.color !== 'undefined') {
-            coloretteOptions.enabled = Boolean(args.color);
-        }
-
         const isRawOutput = typeof outputOptions.json === 'undefined';
 
         if (isRawOutput) {
