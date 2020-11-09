@@ -47,9 +47,9 @@ class WebpackCLI {
     }
 
     async resolveArgs(args, configOptions = {}) {
-        // Since color flag has a default value, when there are no other args then exit
+        // when there are no args then exit
         // eslint-disable-next-line no-prototype-builtins
-        if (Object.keys(args).length === 1 && args.hasOwnProperty('color') && !process.env.NODE_ENV) return {};
+        if (Object.keys(args).length === 0 && !process.env.NODE_ENV) return {};
 
         const { outputPath, stats, json, mode, target, prefetch, hot, analyze } = args;
         const finalOptions = {
@@ -367,7 +367,21 @@ class WebpackCLI {
                     }
                 }
 
-                stats.colors = typeof stats.colors !== 'undefined' ? stats.colors : coloretteOptions.enabled;
+                let colors;
+                // From flags
+                if (typeof args.color !== 'undefined') {
+                    colors = args.color;
+                }
+                // From stats
+                else if (typeof stats.colors !== 'undefined') {
+                    colors = stats.colors;
+                }
+                // Default
+                else {
+                    colors = coloretteOptions.enabled;
+                }
+
+                stats.colors = colors;
 
                 return stats;
             };

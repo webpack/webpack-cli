@@ -109,7 +109,6 @@ const core = [
         usage: '--color',
         type: Boolean,
         negative: true,
-        defaultValue: true,
         description: 'Enable/Disable colors on console',
     },
     {

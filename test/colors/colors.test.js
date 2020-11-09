@@ -43,6 +43,25 @@ describe('colorts', () => {
         expect(exitCode).toBe(0);
     });
 
+    it('should disable colored output with --no-color', () => {
+        const { stderr, stdout, exitCode } = run(__dirname, ['--stats=verbose', '--no-color']);
+
+        expect(stderr).toBeFalsy();
+        const output = isWebpack5 ? 'successfully' : 'main.js';
+        expect(stdout).not.toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
+        expect(stdout).toContain(output);
+        expect(exitCode).toBe(0);
+    });
+
+    it('should work with the "stats" option and --color flags', () => {
+        const { stderr, stdout, exitCode } = run(__dirname, ['--stats=verbose', '--color']);
+
+        expect(stderr).toBeFalsy();
+        const output = isWebpack5 ? 'successfully' : 'main.js';
+        expect(stdout).toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
+        expect(exitCode).toBe(0);
+    });
+
     it('should work with the "stats" option from the configuration', () => {
         const { stderr, stdout, exitCode } = run(__dirname, ['--config=stats-string.webpack.config.js']);
 
@@ -84,9 +103,43 @@ describe('colorts', () => {
 
         expect(stderr).toBeFalsy();
         const output = isWebpack5 ? 'successfully' : 'main.js';
-        console.log(stdout);
+
         expect(stdout).not.toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
         expect(stdout).toContain(output);
         expect(exitCode).toBe(0);
+    });
+
+    it('should prioritize --color over colors in config', () => {
+        const { stderr, stdout, exitCode } = run(__dirname, ['--config=colors-false.webpack.config.js', '--color']);
+
+        expect(stderr).toBeFalsy();
+        const output = isWebpack5 ? 'successfully' : 'main.js';
+
+        expect(stdout).toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
+        expect(exitCode).toBe(0);
+    });
+
+    it('should prioratize --no-color over colors in config', () => {
+        const { stderr, stdout, exitCode } = run(__dirname, ['--config=colors-true.webpack.config.js', '--no-color']);
+
+        expect(stderr).toBeFalsy();
+        const output = isWebpack5 ? 'successfully' : 'main.js';
+
+        expect(stdout).not.toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
+        expect(stdout).toContain(output);
+        expect(exitCode).toBe(0);
+    });
+
+    it('should work in multicompiler mode', () => {
+        const { stderr, stdout, exitCode } = run(__dirname, ['--config=multiple-configs.js', '--color']);
+
+        expect(stderr).toBeFalsy();
+        expect(exitCode).toBe(0);
+
+        if (isWebpack5) {
+            expect(stdout).toContain(`\u001b[1mfirst-config`);
+            expect(stdout).toContain(`\u001b[1msecond-config`);
+            expect(stdout).toContain(`\u001b[1m\u001b[32msuccessfully\u001b[39m\u001b[22m`);
+        }
     });
 });

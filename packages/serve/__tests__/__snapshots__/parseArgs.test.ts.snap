@@ -10,7 +10,6 @@ Object {
     "serveIndex": true,
   },
   "webpackArgs": Object {
-    "color": true,
     "env": Object {
       "WEBPACK_SERVE": true,
     },
@@ -41,7 +40,6 @@ Object {
     "serveIndex": true,
   },
   "webpackArgs": Object {
-    "color": true,
     "env": Object {
       "WEBPACK_SERVE": true,
     },
