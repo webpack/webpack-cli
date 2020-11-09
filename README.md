@@ -13,6 +13,7 @@
 
 [![npm][npm]][npm-url]
 [![Build Status][build-status]][build-status-url]
+[![codecov][codecov-badge]][codecov-url]
 [![Dependencies][deps]][deps-url]
 [![Install Size][size]][size-url]
 [![Chat on gitter][chat]][chat-url]
@@ -112,6 +113,8 @@ If you like **webpack**, please consider donating to our [Open Collective](https
 [npm-url]: https://www.npmjs.com/package/webpack-cli
 [build-status]: https://github.com/webpack/webpack-cli/workflows/webpack-cli/badge.svg?branch=master
 [build-status-url]: https://github.com/webpack/webpack-cli/actions
+[codecov-badge]: https://codecov.io/gh/webpack/webpack-cli/branch/master/graph/badge.svg?token=6B6NxtsZc3
+[codecov-url]: https://codecov.io/gh/webpack/webpack-cli
 [deps]: https://img.shields.io/david/webpack/webpack.svg
 [deps-url]: https://david-dm.org/webpack/webpack-cli
 [size]: https://packagephobia.com/badge?p=webpack-cli
