@@ -1,4 +1,3 @@
-import { green } from 'colorette';
 import fs from 'fs';
 import path from 'path';
 import yeoman from 'yeoman-environment';
@@ -6,7 +5,7 @@ import Generator from 'yeoman-generator';
 import { runTransform } from './scaffold';
 import { utils } from 'webpack-cli';
 
-const { logger, getPackageManager } = utils;
+const { logger } = utils;
 
 export interface Config extends Object {
     item?: {
@@ -141,11 +140,6 @@ export function modifyHelperUtil(
                     },
                     finalConfig,
                 ) as TransformConfig;
-                if (finalConfig.usingDefaults && finalConfig.usingDefaults === true) {
-                    const runCommand = getPackageManager() === 'yarn' ? 'yarn build' : 'npm run build';
-
-                    logger.log(`\nYou can now run ${green(runCommand)} to bundle your application!\n`);
-                }
 
                 // scaffold webpack config file from using .yo-rc.json
                 return runTransform(transformConfig, 'init', generateConfig, generationPath);
