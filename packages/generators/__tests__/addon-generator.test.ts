@@ -1,6 +1,4 @@
-jest.setMock('@webpack-cli/utils', {
-    getPackageManager: jest.fn(),
-});
+jest.mock('webpack-cli/lib/utils/get-package-manager', () => jest.fn());
 
 import fs from 'fs';
 import path from 'path';
@@ -10,8 +8,7 @@ import addonGenerator from '../src/addon-generator';
 
 const { getPackageManager } = utils;
 
-// TODO: enable after jest release
-describe.skip('addon generator', () => {
+describe('addon generator', () => {
     let gen, installMock, packageMock;
     const genName = 'test-addon';
     const testAssetsPath = path.join(__dirname, 'test-assets');

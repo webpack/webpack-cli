@@ -1,8 +1,7 @@
 import language, { LangType, getBabelLoader, getTypescriptLoader } from '../../lib/utils/languageSupport';
 import { CustomGenerator } from '../../lib/types';
 
-// TODO: enable after jest release
-describe.skip('languageSupport', () => {
+describe('languageSupport', () => {
     const getMockGenerator = (): CustomGenerator => {
         const gen = new CustomGenerator(null, null);
         gen.entryOption = "'./path/to/index.js'";
