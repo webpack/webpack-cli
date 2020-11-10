@@ -9,7 +9,6 @@ packages/init/lib
 packages/migrate/lib
 packages/serve/lib
 packages/utils/lib
-packages/webpack-scaffold/lib
 test/**/dist/
 test/**/bin/
 test/**/binary/
