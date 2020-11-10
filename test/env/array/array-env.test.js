@@ -4,7 +4,7 @@ const path = require('path');
 const execa = require('execa');
 
 const { sync: spawnSync } = execa;
-const { run } = require('../../utils/test-utils');
+const { run, isWebpack5 } = require('../../utils/test-utils');
 
 const devFile = path.join(__dirname, './bin/dev.js');
 const prodFile = path.join(__dirname, './bin/prod.js');
@@ -17,10 +17,12 @@ describe('env array', () => {
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
 
-        const devScript = spawnSync('node', [devFile]);
-        const prodScript = spawnSync('node', [prodFile]);
+        if (isWebpack5) {
+            const devScript = spawnSync('node', [devFile]);
+            const prodScript = spawnSync('node', [prodFile]);
 
-        expect(devScript.stdout).toBe('environment is development');
-        expect(prodScript.stdout).toBe('environment is production');
+            expect(devScript.stdout).toBe('environment is development');
+            expect(prodScript.stdout).toBe('environment is production');
+        }
     });
 });
