@@ -1,18 +1,4 @@
-import {
-    createArrowFunction,
-    createAssetFilterFunction,
-    createDynamicPromise,
-    createRegularFunction,
-    parseValue,
-    CheckList,
-    Confirm,
-    createExternalFunction,
-    createRequire,
-    List,
-    RawList,
-    InputValidate,
-    Input,
-} from '../src';
+import { Confirm, List, InputValidate, Input } from '../../src/utils/scaffold-utils';
 
 describe('utils', () => {
     beforeEach(() => {
@@ -22,47 +8,6 @@ describe('utils', () => {
                 return arg[0];
             },
         };
-    });
-    describe('createArrowFunction', () => {
-        it('should stringify an arrow function', () => {
-            expect(createArrowFunction('app.js')).toMatchSnapshot();
-        });
-    });
-    describe('createRegularFunction', () => {
-        it('should stringify a regular function', () => {
-            expect(createRegularFunction('app.js')).toMatchSnapshot();
-        });
-    });
-    describe('createDynamicPromise', () => {
-        it('should stringify an single value', () => {
-            expect(createDynamicPromise('app.js')).toMatchSnapshot();
-        });
-        it('should stringify an array', () => {
-            expect(createDynamicPromise(['app.js', 'index.js'])).toMatchSnapshot();
-        });
-    });
-    describe('createAssetFilterFunction', () => {
-        it('should stringify an assetFilterFunction', () => {
-            expect(createAssetFilterFunction('js')).toMatchSnapshot();
-        });
-    });
-    describe('parseValue', () => {
-        it('should parse value', () => {
-            expect(parseValue('\t')).toMatchSnapshot();
-        });
-        it('should parse value with raw value', () => {
-            expect(parseValue('hell\u{6F}')).toMatchSnapshot();
-        });
-    });
-    describe('createExternalFunction', () => {
-        it('should stringify an ExternalFunction', () => {
-            expect(createExternalFunction('js')).toMatchSnapshot();
-        });
-    });
-    describe('createRequire', () => {
-        it('should stringify a require statement', () => {
-            expect(createRequire('webpack')).toMatchSnapshot();
-        });
     });
     describe('Inquirer', () => {
         it('should emulate a prompt for List', () => {
@@ -78,22 +23,6 @@ describe('utils', () => {
         it('should make default value for a List', () => {
             expect(List(this.mockSelf, 'entry', 'does it work?', ['Yes', 'Maybe'], 'Yes', true)).toEqual({
                 entry: 'Yes',
-            });
-        });
-        it('should make a RawList object', () => {
-            expect(RawList('output', 'does it work?', ['Yes', 'Maybe'])).toEqual({
-                choices: ['Yes', 'Maybe'],
-                message: 'does it work?',
-                name: 'output',
-                type: 'rawlist',
-            });
-        });
-        it('should make a CheckList object', () => {
-            expect(CheckList('context', 'does it work?', ['Yes', 'Maybe'])).toEqual({
-                choices: ['Yes', 'Maybe'],
-                message: 'does it work?',
-                name: 'context',
-                type: 'checkbox',
             });
         });
         it('should emulate a prompt for list input', () => {

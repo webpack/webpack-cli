@@ -22,7 +22,6 @@ This folder is the collection of those packages.
 7. [serve](https://github.com/webpack/webpack-cli/tree/master/packages/serve)
 8. [utils](https://github.com/webpack/webpack-cli/tree/master/packages/utils)
 9. [webpack-cli](https://github.com/webpack/webpack-cli/tree/master/packages/webpack-cli)
-10. [webpack-scaffold](https://github.com/webpack/webpack-cli/tree/master/packages/webpack-scaffold)
 
 ## Generic Installation
 

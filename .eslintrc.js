@@ -6,7 +6,7 @@ module.exports = {
     plugins: ['node'],
     settings: {
         node: {
-            allowModules: ['@webpack-cli/generators', '@webpack-cli/webpack-scaffold', '@webpack-cli/utils'],
+            allowModules: ['@webpack-cli/generators', '@webpack-cli/utils'],
         },
     },
     env: {

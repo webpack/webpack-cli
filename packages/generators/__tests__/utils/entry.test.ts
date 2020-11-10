@@ -1,10 +1,10 @@
-jest.setMock('@webpack-cli/webpack-scaffold', {
+jest.setMock('../../src/utils/scaffold-utils', {
     Input: jest.fn(),
     InputValidate: jest.fn(),
 });
 
-import { Input, InputValidate } from '@webpack-cli/webpack-scaffold';
-import entry from '../../lib/utils/entry';
+import { Input, InputValidate } from '../../src/utils/scaffold-utils';
+import entry from '../../src/utils/entry';
 
 describe('entry', () => {
     const InputMock = Input as jest.Mock;
