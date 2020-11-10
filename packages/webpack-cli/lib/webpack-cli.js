@@ -112,8 +112,6 @@ class WebpackCLI {
                 finalMode = configMode;
             } else if (NODE_ENV && (NODE_ENV === PRODUCTION || NODE_ENV === DEVELOPMENT)) {
                 finalMode = NODE_ENV;
-            } else {
-                finalMode = PRODUCTION;
             }
 
             return finalMode;
@@ -208,10 +206,16 @@ class WebpackCLI {
             // Todo - handle multi config for all flags
             finalOptions.options = configOptions.map(() => ({ ...finalOptions.options }));
             configOptions.forEach((configObject, index) => {
-                finalOptions.options[index].mode = assignMode(mode, configObject);
+                const resolvedMode = assignMode(mode, configObject);
+                if (resolvedMode) {
+                    finalOptions.options[index].mode = resolvedMode;
+                }
             });
         } else {
-            finalOptions.options.mode = assignMode(mode, configOptions);
+            const resolvedMode = assignMode(mode, configOptions);
+            if (resolvedMode) {
+                finalOptions.options.mode = resolvedMode;
+            }
         }
 
         return finalOptions;
