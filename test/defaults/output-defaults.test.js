@@ -1,5 +1,5 @@
 'use strict';
-const { stat } = require('fs');
+const { existsSync } = require('fs');
 const { resolve } = require('path');
 const { run } = require('../utils/test-utils');
 
@@ -13,11 +13,7 @@ describe('output flag defaults', () => {
         // Should print warning about config fallback
         expect(stdout).toContain('option has not been set, webpack will fallback to');
 
-        stat(resolve(__dirname, './binary/main.js'), (err, stats) => {
-            expect(err).toBe(null);
-            expect(stats.isFile()).toBe(true);
-            done();
-        });
+        expect(existsSync(resolve(__dirname, './binary/main.js'))).toBeTruthy();
     });
 
     it('set default output directory on no output flag', (done) => {
@@ -27,12 +23,7 @@ describe('output flag defaults', () => {
         expect(stderr).toContain('Compilation starting...');
         expect(stderr).toContain('Compilation finished');
         expect(stdout).toBeTruthy();
-
-        stat(resolve(__dirname, './dist/main.js'), (err, stats) => {
-            expect(err).toBe(null);
-            expect(stats.isFile()).toBe(true);
-            done();
-        });
+        expect(existsSync(resolve(__dirname, './binary/main.js'))).toBeTruthy();
     });
 
     it('throw error on empty output flag', () => {

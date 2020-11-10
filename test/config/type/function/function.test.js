@@ -1,5 +1,5 @@
 'use strict';
-const { stat } = require('fs');
+const { existsSync } = require('fs');
 const { resolve } = require('path');
 const { run } = require('../../../utils/test-utils');
 
@@ -11,11 +11,6 @@ describe('function', () => {
         expect(stderr).toContain('Compilation starting...');
         expect(stderr).toContain('Compilation finished');
         expect(stdout).toBeTruthy();
-
-        stat(resolve(__dirname, './binary/functor.js'), (err, stats) => {
-            expect(err).toBe(null);
-            expect(stats.isFile()).toBe(true);
-            done();
-        });
+        expect(existsSync(resolve(__dirname, './binary/functor.js'))).toBeTruthy();
     });
 });

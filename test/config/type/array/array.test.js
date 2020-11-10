@@ -1,5 +1,5 @@
 'use strict';
-const { stat } = require('fs');
+const { existsSync } = require('fs');
 const { resolve } = require('path');
 const { run } = require('../../../utils/test-utils');
 
@@ -13,15 +13,7 @@ describe('array', () => {
         expect(stderr).toContain("Compilation 'commonjs' starting...");
         expect(stderr).toContain("Compilation 'commonjs' finished");
         expect(stdout).toBeTruthy();
-
-        stat(resolve(__dirname, './dist/dist-commonjs.js'), (err, stats) => {
-            expect(err).toBe(null);
-            expect(stats.isFile()).toBe(true);
-        });
-        stat(resolve(__dirname, './dist/dist-amd.js'), (err, stats) => {
-            expect(err).toBe(null);
-            expect(stats.isFile()).toBe(true);
-            done();
-        });
+        expect(existsSync(resolve(__dirname, './dist/dist-commonjs.js'))).toBeTruthy();
+        expect(existsSync(resolve(__dirname, './dist/dist-amd.js'))).toBeTruthy();
     });
 });
