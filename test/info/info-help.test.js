@@ -19,7 +19,7 @@ describe('should print help for info command', () => {
         expect(stderr).toHaveLength(0);
     });
 
-    it('should work and respect the --no-color flag', () => {
+    it.skip('should work and respect the --no-color flag', () => {
         const { stdout, stderr, exitCode } = runInfo(['--help', '--no-color'], __dirname);
 
         expect(exitCode).toBe(0);
