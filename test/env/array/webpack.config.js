@@ -3,7 +3,7 @@ const webpack = require('webpack');
 module.exports = [
     {
         output: {
-            filename: './prod.js',
+            filename: 'prod.js',
         },
         mode: 'production',
         devtool: 'eval-cheap-module-source-map',
@@ -16,7 +16,7 @@ module.exports = [
     },
     {
         output: {
-            filename: './dev.js',
+            filename: 'dev.js',
         },
         mode: 'development',
         target: 'node',
