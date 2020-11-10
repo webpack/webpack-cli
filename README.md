@@ -58,8 +58,8 @@ Thus, webpack CLI provides different commands for many common tasks.
 -   [`webpack-cli init`](./packages/init/README.md#webpack-cli-init) - Create a new webpack configuration.
 -   [`webpack-cli info`](./packages/info/README.md#webpack-cli-info) - Returns information related to the local environment.
 -   [`webpack-cli migrate`](./packages/migrate/README.md#webpack-cli-migrate) - Migrate project from one version to another.
--   [`webpack-cli generate-plugin`](./packages/generate-plugin/README.md#webpack-cli-generate-plugin) - Initiate new plugin project.
--   [`webpack-cli generate-loader`](./packages/generate-loader/README.md#webpack-cli-generate-loader) - Initiate new loader project.
+-   [`webpack-cli plugin`](./packages/generate-plugin/README.md#webpack-cli-generate-plugin) - Initiate new plugin project.
+-   [`webpack-cli loader`](./packages/generate-loader/README.md#webpack-cli-generate-loader) - Initiate new loader project.
 -   [`webpack-cli serve`](./packages/serve/README.md#webpack-cli-serve) - Use webpack with a development server that provides live reloading.
 
 > Removed commands since v3.3.3
