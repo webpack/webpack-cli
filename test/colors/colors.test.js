@@ -3,7 +3,7 @@ const { run, isWebpack5 } = require('../utils/test-utils');
 const { resolve } = require('path');
 const { options: coloretteOptions } = require('colorette');
 
-describe('colorts', () => {
+describe('colors related tests', () => {
     it('should output by default', () => {
         const { stderr, stdout, exitCode } = run(__dirname);
 
