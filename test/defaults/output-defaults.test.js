@@ -9,8 +9,8 @@ describe('output flag defaults', () => {
 
         expect(stderr).toBeFalsy();
         expect(exitCode).toBe(0);
-        // Should not print warning about config fallback, as we have production as default
-        expect(stdout).not.toContain('option has not been set, webpack will fallback to');
+        // Should print warning about config fallback
+        expect(stdout).toContain('option has not been set, webpack will fallback to');
         stat(resolve(__dirname, './binary/main.js'), (err, stats) => {
             expect(err).toBe(null);
             expect(stats.isFile()).toBe(true);

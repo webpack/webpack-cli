@@ -8,7 +8,7 @@ const { run } = require('../../utils/test-utils');
 describe('merge flag configuration', () => {
     it('merges two configurations together', () => {
         const { stdout, stderr, exitCode } = run(__dirname, ['--config', './1.js', '-c', './2.js', '--merge'], false);
-        expect(stdout).not.toContain('option has not been set, webpack will fallback to');
+        expect(stdout).toContain('option has not been set, webpack will fallback to');
         expect(existsSync(resolve(__dirname, './dist/merged.js'))).toBeTruthy();
         expect(stderr).toBeFalsy();
         expect(exitCode).toBe(0);

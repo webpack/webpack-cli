@@ -21,7 +21,7 @@ describe('warnings', () => {
         const json = JSON.parse(stdout);
 
         expect(json['hash']).toBeDefined();
-        expect(json['warnings']).toHaveLength(1);
+        expect(json['warnings']).toHaveLength(2);
         // `message` for `webpack@5`
         expect(json['warnings'][0].message ? json['warnings'][0].message : json['warnings'][0]).toMatch(/Can't resolve/);
     });
@@ -43,7 +43,7 @@ describe('warnings', () => {
                 const json = JSON.parse(data);
 
                 expect(json['hash']).toBeDefined();
-                expect(json['warnings']).toHaveLength(1);
+                expect(json['warnings']).toHaveLength(2);
                 // `message` for `webpack@5`
                 expect(json['warnings'][0].message ? json['warnings'][0].message : json['warnings'][0]).toMatch(/Can't resolve/);
 
