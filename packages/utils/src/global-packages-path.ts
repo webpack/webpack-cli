@@ -1,4 +1,4 @@
-import spawn from 'cross-spawn';
+import { sync } from 'execa';
 import path from 'path';
 import { utils } from 'webpack-cli';
 
@@ -16,7 +16,7 @@ export function getPathToGlobalPackages(): string {
     const manager: string = getPackageManager();
     if (manager === 'yarn') {
         try {
-            const yarnDir = spawn.sync('yarn', ['global', 'dir']).stdout.toString().trim();
+            const yarnDir = sync('yarn', ['global', 'dir']).stdout;
             return path.join(yarnDir, 'node_modules');
         } catch (e) {
             // Default to the global npm path below
