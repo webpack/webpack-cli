@@ -653,7 +653,7 @@ class WebpackCLI {
         compiler = this.createCompiler(options, callback);
 
         // TODO webpack@4 return Watching and MultiWathing instead Compiler and MultiCompiler, remove this after drop webpack@4
-        if (compiler.compiler) {
+        if (compiler && compiler.compiler) {
             compiler = compiler.compiler;
         }
 
