@@ -12,6 +12,7 @@ jest.setMock('execa', {
 const getPackageManager = require('../get-package-manager');
 
 jest.mock('cross-spawn');
+jest.mock('../get-package-manager', () => jest.fn());
 const globalModulesNpmValue = 'test-npm';
 jest.setMock('global-modules', globalModulesNpmValue);
 jest.setMock('enquirer', {
@@ -24,7 +25,10 @@ describe('packageUtils', () => {
         const testNpmLockPath = path.resolve(__dirname, 'test-npm-lock');
         const testPnpmLockPath = path.resolve(__dirname, 'test-pnpm-lock');
         const testNpmAndPnpmPath = path.resolve(__dirname, 'test-npm-and-pnpm');
+        const testNpmAndYarnPath = path.resolve(__dirname, 'test-npm-and-yarn');
+        const testYarnAndPnpmPath = path.resolve(__dirname, 'test-yarn-and-pnpm');
         const testAllPath = path.resolve(__dirname, 'test-all-lock');
+        const noLockPath = path.resolve(__dirname, 'no-lock-files');
 
         const cwdSpy = jest.spyOn(process, 'cwd');
 
@@ -36,6 +40,7 @@ describe('packageUtils', () => {
             }
             fs.writeFileSync(path.resolve(testNpmLockPath, 'package-lock.json'), '');
             fs.writeFileSync(path.resolve(testNpmAndPnpmPath, 'package-lock.json'), '');
+            fs.writeFileSync(path.resolve(testNpmAndYarnPath, 'package-lock.json'), '');
             fs.writeFileSync(path.resolve(testAllPath, 'package-lock.json'), '');
         });
 
@@ -67,27 +72,38 @@ describe('packageUtils', () => {
             expect(syncMock.mock.calls.length).toEqual(0);
         });
 
-        it('should prioritize yarn with many lock files', () => {
-            cwdSpy.mockReturnValue(testAllPath);
+        it('should prioritize npm over yarn', () => {
+            cwdSpy.mockReturnValue(testNpmAndYarnPath);
+            expect(getPackageManager()).toEqual('npm');
+            expect(syncMock.mock.calls.length).toEqual(0);
+        });
+
+        it('should prioritize yarn over pnpm', () => {
+            cwdSpy.mockReturnValue(testYarnAndPnpmPath);
             expect(getPackageManager()).toEqual('yarn');
             expect(syncMock.mock.calls.length).toEqual(0);
         });
 
-        it('should use yarn if yarn command works', () => {
-            // yarn should output a version number to stdout if
-            // it is installed
-            cwdSpy.mockReturnValue(path.resolve(__dirname));
-            expect(getPackageManager()).toEqual('yarn');
+        it('should prioritize npm with many lock files', () => {
+            cwdSpy.mockReturnValue(testAllPath);
+            expect(getPackageManager()).toEqual('npm');
+            expect(syncMock.mock.calls.length).toEqual(0);
+        });
+
+        it('should prioritize global npm over other package managers', () => {
+            cwdSpy.mockReturnValue(noLockPath);
+            expect(getPackageManager()).toEqual('npm');
             expect(syncMock.mock.calls.length).toEqual(1);
         });
 
-        it('should use npm if yarn command fails', () => {
+        it('should throw error if no package manager is found', () => {
             syncMock.mockImplementation(() => {
                 throw new Error();
             });
-            cwdSpy.mockReturnValue(path.resolve(__dirname));
-            expect(getPackageManager()).toEqual('npm');
-            expect(syncMock.mock.calls.length).toEqual(1);
+            const mockExit = jest.spyOn(process, 'exit').mockImplementation(() => {});
+            expect(getPackageManager()).toBeFalsy();
+            expect(mockExit).toBeCalledWith(2);
+            expect(syncMock.mock.calls.length).toEqual(3); // 3 calls for npm, yarn and pnpm
         });
     });
 });
