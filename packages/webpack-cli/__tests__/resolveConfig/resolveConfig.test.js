@@ -1,9 +1,11 @@
-const resolveConfig = require('../../lib/groups/resolveConfig.js');
 const { resolve } = require('path');
+const WebpackCLI = require('../../lib/webpack-cli');
 const config1 = require('./webpack.config1.cjs');
 const config2 = require('./webpack.config2.cjs');
 const arrayConfig = require('./webpack.config.cjs');
 const promiseConfig = require('./webpack.promise.config.cjs');
+
+const resolveConfig = new WebpackCLI().resolveConfig;
 
 describe('resolveConfig', function () {
     it('should handle merge properly', async () => {
