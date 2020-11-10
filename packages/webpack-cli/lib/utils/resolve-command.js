@@ -17,6 +17,7 @@ const run = async (name, ...args) => {
             });
         } catch (err) {
             logger.error(`Action Interrupted, use ${cyan('webpack-cli help')} to see possible commands.`);
+            process.exit(2);
         }
     }
 
