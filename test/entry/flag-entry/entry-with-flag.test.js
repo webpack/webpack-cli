@@ -1,7 +1,7 @@
 'use strict';
 
 const { run, isWebpack5 } = require('../../utils/test-utils');
-const { stat, readFile } = require('fs');
+const { existsSync, readFile } = require('fs');
 const { resolve } = require('path');
 
 describe('entry flag', () => {
@@ -37,12 +37,7 @@ describe('entry flag', () => {
             expect(stderr).toContain('Compilation starting...');
             expect(stderr).toContain('Compilation finished');
             expect(stdout).toBeTruthy();
-
-            stat(resolve(__dirname, './bin/main.js'), (err, stats) => {
-                expect(err).toBe(null);
-                expect(stats.isFile()).toBe(true);
-                done();
-            });
+            expect(existsSync(resolve(__dirname, './dist/main.js'))).toBeTruthy();
             readFile(resolve(__dirname, './bin/main.js'), 'utf-8', (err, data) => {
                 expect(err).toBe(null);
                 expect(data).toContain('Hello from a.js');

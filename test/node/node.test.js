@@ -1,5 +1,5 @@
 'use strict';
-
+const { existsSync } = require('fs');
 const { resolve } = require('path');
 const { run } = require('../utils/test-utils');
 

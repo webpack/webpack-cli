@@ -1,5 +1,5 @@
 'use strict';
-const { stat, readFile } = require('fs');
+const { existsSync, readFile } = require('fs');
 const { resolve } = require('path');
 // eslint-disable-next-line node/no-unpublished-require
 const { run } = require('../../utils/test-utils');
@@ -14,21 +14,9 @@ describe('mode flags with config', () => {
         expect(stdout).toBeTruthy();
 
         // Should generate the appropriate files
-        stat(resolve(__dirname, './bin/main.js.OTHER.LICENSE.txt'), (err, stats) => {
-            expect(err).toBe(null);
-            expect(stats.isFile()).toBe(true);
-        });
-
-        stat(resolve(__dirname, './bin/main.js'), (err, stats) => {
-            expect(err).toBe(null);
-            expect(stats.isFile()).toBe(true);
-        });
-
-        // Should not generate source maps when not specified
-        stat(resolve(__dirname, './bin/main.js.map'), (err) => {
-            expect(err).toBeTruthy();
-        });
-
+        expect(existsSync(resolve(__dirname, './bin/main.js.OTHER.LICENSE.txt'))).toBeTruthy();
+        expect(existsSync(resolve(__dirname, './bin/main.js'))).toBeTruthy();
+        expect(existsSync(resolve(__dirname, './bin/main.js.map'))).toBeFalsy();
         // Correct mode should be propagated to the compiler
         readFile(resolve(__dirname, './bin/main.js'), 'utf-8', (err, data) => {
             expect(err).toBe(null);
@@ -46,20 +34,9 @@ describe('mode flags with config', () => {
         expect(stdout).toBeTruthy();
 
         // Should generate the appropriate files
-        stat(resolve(__dirname, './bin/main.js.OTHER.LICENSE.txt'), (err, stats) => {
-            expect(err).toBe(null);
-            expect(stats.isFile()).toBe(true);
-        });
-
-        stat(resolve(__dirname, './bin/main.js'), (err, stats) => {
-            expect(err).toBe(null);
-            expect(stats.isFile()).toBe(true);
-        });
-
-        // Should not generate source maps when not specified
-        stat(resolve(__dirname, './bin/main.js.map'), (err) => {
-            expect(err).toBeTruthy();
-        });
+        expect(existsSync(resolve(__dirname, './bin/main.js.OTHER.LICENSE.txt'))).toBeTruthy();
+        expect(existsSync(resolve(__dirname, './bin/main.js'))).toBeTruthy();
+        expect(existsSync(resolve(__dirname, './bin/main.js.map'))).toBeFalsy();
 
         // Correct mode should be propagated to the compiler
         readFile(resolve(__dirname, './bin/main.js'), 'utf-8', (err, data) => {
@@ -78,20 +55,10 @@ describe('mode flags with config', () => {
         expect(stdout).toBeTruthy();
 
         // Should generate the appropriate files
-        stat(resolve(__dirname, './bin/main.js.OTHER.LICENSE.txt'), (err, stats) => {
-            expect(err).toBe(null);
-            expect(stats.isFile()).toBe(true);
-        });
-
-        stat(resolve(__dirname, './bin/main.js'), (err, stats) => {
-            expect(err).toBe(null);
-            expect(stats.isFile()).toBe(true);
-        });
-
-        // Should not generate source maps when not specified
-        stat(resolve(__dirname, './bin/main.js.map'), (err) => {
-            expect(err).toBeTruthy();
-        });
+        // Should generate the appropriate files
+        expect(existsSync(resolve(__dirname, './bin/main.js.OTHER.LICENSE.txt'))).toBeTruthy();
+        expect(existsSync(resolve(__dirname, './bin/main.js'))).toBeTruthy();
+        expect(existsSync(resolve(__dirname, './bin/main.js.map'))).toBeFalsy();
 
         // Correct mode should be propagated to the compiler
         readFile(resolve(__dirname, './bin/main.js'), 'utf-8', (err, data) => {

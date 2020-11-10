@@ -1,7 +1,7 @@
 'use strict';
 
 const { run } = require('../../utils/test-utils');
-const { stat, readFile } = require('fs');
+const { existsSync, readFile } = require('fs');
 const { resolve } = require('path');
 
 describe(' multiple entries', () => {
@@ -12,12 +12,7 @@ describe(' multiple entries', () => {
         expect(stderr).toContain('Compilation starting...');
         expect(stderr).toContain('Compilation finished');
         expect(stdout).toBeTruthy();
-
-        stat(resolve(__dirname, './bin/main.js'), (err, stats) => {
-            expect(err).toBe(null);
-            expect(stats.isFile()).toBe(true);
-            done();
-        });
+        expect(existsSync(resolve(__dirname, './dist/main.js'))).toBeTruthy();
         readFile(resolve(__dirname, './bin/main.js'), 'utf-8', (err, data) => {
             expect(err).toBe(null);
             expect(data).toContain('Hello from a.js');
@@ -33,12 +28,8 @@ describe(' multiple entries', () => {
         expect(stderr).toContain('Compilation starting...');
         expect(stderr).toContain('Compilation finished');
         expect(stdout).toBeTruthy();
+        expect(existsSync(resolve(__dirname, './dist/main.js'))).toBeTruthy();
 
-        stat(resolve(__dirname, './bin/main.js'), (err, stats) => {
-            expect(err).toBe(null);
-            expect(stats.isFile()).toBe(true);
-            done();
-        });
         readFile(resolve(__dirname, './bin/main.js'), 'utf-8', (err, data) => {
             expect(err).toBe(null);
             expect(data).toContain('Hello from a.js');
