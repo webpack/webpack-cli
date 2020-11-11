@@ -10,7 +10,7 @@ const wordsInStatsv5 = ['asset', 'index.js', 'compiled successfully'];
 
 describe('--watch flag', () => {
     it('should recompile upon file change', (done) => {
-        const proc = runAndGetWatchProc(__dirname, ['--watch'], false, '', true);
+        const proc = runAndGetWatchProc(__dirname, ['--watch', '--mode', 'production'], false, '', true);
         let semaphore = 0;
         proc.stdout.on('data', (chunk) => {
             const data = stripAnsi(chunk.toString());
@@ -45,7 +45,7 @@ describe('--watch flag', () => {
     });
 
     it('should print compilation lifecycle', (done) => {
-        const proc = runAndGetWatchProc(__dirname, ['--watch'], false, '', true);
+        const proc = runAndGetWatchProc(__dirname, ['--watch', '--mode', 'production'], false, '', true);
         let semaphore = 0;
         proc.stdout.on('data', (chunk) => {
             const data = stripAnsi(chunk.toString());
