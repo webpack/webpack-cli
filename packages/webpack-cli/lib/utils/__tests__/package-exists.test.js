@@ -15,6 +15,6 @@ describe('@webpack-cli/utils', () => {
         promptInstallation.mockImplementation(() => {
             throw new Error();
         });
-        await expect(ExternalCommand('info')).resolves.not.toThrow();
+        await expect(ExternalCommand('@webpack-cli/info')).resolves.not.toThrow();
     });
 });
