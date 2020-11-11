@@ -13,7 +13,7 @@ const processExitSpy = jest.spyOn(process, 'exit').mockImplementation(() => {});
 const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
 const argParser = require('../lib/utils/arg-parser');
-const { core } = require('../lib/utils/cli-flags');
+const { flags } = require('../lib/utils/cli-flags');
 
 const basicOptions = [
     {
@@ -362,7 +362,7 @@ describe('arg-parser', () => {
     });
 
     it('parses webpack args', () => {
-        const res = argParser(core, ['--entry', 'test.js', '--hot', '-o', './dist/', '--stats'], true);
+        const res = argParser(flags, ['--entry', 'test.js', '--hot', '-o', './dist/', '--stats'], true);
         expect(res.unknownArgs.length).toEqual(0);
         expect(res.opts.entry).toEqual(['test.js']);
         expect(res.opts.hot).toBeTruthy();

@@ -3,17 +3,13 @@ const logger = require('./logger');
 const packageExists = require('./package-exists');
 const promptInstallation = require('./prompt-installation');
 
-const packagePrefix = '@webpack-cli';
-
 const run = async (name, ...args) => {
-    const scopeName = packagePrefix + '/' + name;
+    let packageLocation = packageExists(name);
 
-    let pkgLoc = packageExists(scopeName);
-
-    if (!pkgLoc) {
+    if (!packageLocation) {
         try {
-            pkgLoc = await promptInstallation(`${scopeName}`, () => {
-                logger.error(`The command moved into a separate package: ${yellow(scopeName)}\n`);
+            packageLocation = await promptInstallation(`${name}`, () => {
+                logger.error(`The command moved into a separate package: ${yellow(name)}\n`);
             });
         } catch (err) {
             logger.error(`Action Interrupted, use ${cyan('webpack-cli help')} to see possible commands.`);
@@ -21,17 +17,17 @@ const run = async (name, ...args) => {
         }
     }
 
-    if (!pkgLoc) {
+    if (!packageLocation) {
         return;
     }
 
-    let mod = require(scopeName);
+    let loaded = require(name);
 
-    if (mod.default) {
-        mod = mod.default;
+    if (loaded.default) {
+        loaded = loaded.default;
     }
 
-    return mod(...args);
+    return loaded(...args);
 };
 
 module.exports = run;

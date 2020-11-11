@@ -11,10 +11,10 @@ describe('@webpack-cli/utils', () => {
         expect(packageExists('./nonexistent-package')).toBeFalsy();
     });
 
-    it('should not throw if the user interrupts', async () => {
+    it.skip('should not throw if the user interrupts', async () => {
         promptInstallation.mockImplementation(() => {
             throw new Error();
         });
-        await expect(ExternalCommand('info')).resolves.not.toThrow();
+        await expect(ExternalCommand('@webpack-cli/info')).resolves.not.toThrow();
     });
 });

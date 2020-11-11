@@ -1,10 +1,9 @@
 'use strict';
 
 const { run } = require('../utils/test-utils');
-const helpHeader = 'The build tool for modern web applications';
 
 describe('commands help', () => {
-    it('shows help for subcommands', () => {
+    it('log help for subcommands', () => {
         const { stderr, stdout, exitCode } = run(__dirname, ['serve', 'help'], false);
 
         expect(exitCode).toBe(0);
@@ -12,7 +11,7 @@ describe('commands help', () => {
         expect(stdout).toContain('webpack s | serve');
     });
 
-    it('shows help information with subcommands as an arg', () => {
+    it('log help information with subcommands as an arg', () => {
         const { stdout, stderr, exitCode } = run(__dirname, ['help', 'serve'], false);
 
         expect(exitCode).toBe(0);
@@ -20,28 +19,29 @@ describe('commands help', () => {
         expect(stderr).toHaveLength(0);
     });
 
-    it('shows warning for invalid command with --help flag', () => {
+    it('log error for invalid command with --help flag', () => {
         const { stderr, stdout, exitCode } = run(__dirname, ['--help', 'myCommand'], false);
 
-        expect(exitCode).toBe(0);
-        expect(stderr).toContain(`You provided an invalid command 'myCommand'`);
-        expect(stdout).toContain(helpHeader);
+        expect(exitCode).toBe(2);
+        expect(stderr).toContain("Invalid command 'myCommand'.");
+        expect(stderr).toContain('Run webpack --help to see available commands and arguments.');
+        expect(stdout).toHaveLength(0);
     });
 
-    it('shows warning for invalid command with help command', () => {
+    it('log error for invalid command with help command', () => {
         const { stderr, stdout, exitCode } = run(__dirname, ['help', 'myCommand'], false);
 
-        expect(exitCode).toBe(0);
-        expect(stderr).toContain(`You provided an invalid command 'myCommand'`);
-        expect(stdout).toContain(helpHeader);
+        expect(exitCode).toBe(2);
+        expect(stderr).toContain("Invalid command 'myCommand'.");
+        expect(stderr).toContain('Run webpack --help to see available commands and arguments.');
+        expect(stdout).toHaveLength(0);
     });
 
-    it('gives precedence to earlier command in case of multiple commands', () => {
+    it('log error for multiple commands', () => {
         const { stdout, stderr, exitCode } = run(__dirname, ['--help', 'init', 'info'], false);
 
-        expect(exitCode).toBe(0);
-        expect(stdout).not.toContain(helpHeader);
-        expect(stdout).toContain('webpack c | init [scaffold]');
-        expect(stderr).toHaveLength(0);
+        expect(exitCode).toBe(2);
+        expect(stderr).toContain("You provided multiple commands or arguments - command 'init' (alias 'c'), command 'info' (alias 'i').");
+        expect(stdout).toHaveLength(0);
     });
 });

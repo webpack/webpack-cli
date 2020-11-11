@@ -6,7 +6,7 @@ const { writeFileSync, existsSync } = require('fs');
 const { options: coloretteOptions, yellow } = require('colorette');
 
 const logger = require('./utils/logger');
-const { core, groups, coreFlagMap } = require('./utils/cli-flags');
+const { groups, flags, flagsFromCore } = require('./utils/cli-flags');
 const argParser = require('./utils/arg-parser');
 const assignFlagDefaults = require('./utils/flag-defaults');
 const WebpackCLIPlugin = require('./plugins/WebpackCLIPlugin');
@@ -14,7 +14,7 @@ const promptInstallation = require('./utils/prompt-installation');
 const { extensions, jsVariants } = require('interpret');
 const rechoir = require('rechoir');
 
-const { toKebabCase } = require('./utils/arg-utils');
+const toKebabCase = require('./utils/to-kebab-case');
 
 const { resolve, extname } = path;
 
@@ -31,27 +31,39 @@ class WebpackCLI {
      */
     _handleCoreFlags(parsedArgs) {
         const coreCliHelper = require('webpack').cli;
-        if (!coreCliHelper) return;
+
+        if (!coreCliHelper) {
+            return;
+        }
+
+        const coreFlagMap = flagsFromCore.reduce((acc, cur) => {
+            acc.set(cur.name, cur);
+
+            return acc;
+        }, new Map());
         const coreConfig = Object.keys(parsedArgs)
-            .filter((arg) => {
-                return coreFlagMap.has(toKebabCase(arg));
-            })
+            .filter((arg) => coreFlagMap.has(toKebabCase(arg)))
             .reduce((acc, cur) => {
                 acc[toKebabCase(cur)] = parsedArgs[cur];
+
                 return acc;
             }, {});
         const coreCliArgs = coreCliHelper.getArguments();
+
         // Merge the core flag config with the compilerConfiguration
         coreCliHelper.processArguments(coreCliArgs, this.compilerConfiguration, coreConfig);
+
         // Assign some defaults to core flags
         const configWithDefaults = assignFlagDefaults(this.compilerConfiguration, parsedArgs, this.outputConfiguration);
+
         this._mergeOptionsToConfiguration(configWithDefaults);
     }
 
     async resolveArgs(args, configOptions = {}) {
         // when there are no args then exit
-        // eslint-disable-next-line no-prototype-builtins
-        if (Object.keys(args).length === 0 && !process.env.NODE_ENV) return {};
+        if (Object.keys(args).length === 0 && !process.env.NODE_ENV) {
+            return {};
+        }
 
         const { outputPath, stats, json, mode, target, prefetch, hot, analyze } = args;
         const finalOptions = {
@@ -59,15 +71,15 @@ class WebpackCLI {
             outputOptions: {},
         };
 
-        const WEBPACK_OPTION_FLAGS = core
-            .filter((coreFlag) => {
-                return coreFlag.group === groups.BASIC_GROUP;
-            })
+        const WEBPACK_OPTION_FLAGS = flags
+            .filter((coreFlag) => coreFlag.group === groups.BASIC_GROUP)
             .reduce((result, flagObject) => {
                 result.push(flagObject.name);
+
                 if (flagObject.alias) {
                     result.push(flagObject.alias);
                 }
+
                 return result;
             }, []);
 
@@ -91,7 +103,9 @@ class WebpackCLI {
                 env: { NODE_ENV },
             } = process;
             const { mode: configMode } = configObject;
+
             let finalMode;
+
             if (mode) {
                 finalMode = mode;
             } else if (configMode) {
@@ -101,6 +115,7 @@ class WebpackCLI {
             } else {
                 finalMode = PRODUCTION;
             }
+
             return finalMode;
         };
 
@@ -108,19 +123,24 @@ class WebpackCLI {
             if (WEBPACK_OPTION_FLAGS.includes(arg)) {
                 finalOptions.outputOptions[arg] = args[arg];
             }
+
             if (arg === 'devtool') {
                 finalOptions.options.devtool = args[arg];
             }
+
             if (arg === 'name') {
                 finalOptions.options.name = args[arg];
             }
+
             if (arg === 'watch') {
                 finalOptions.options.watch = true;
             }
+
             if (arg === 'entry') {
                 finalOptions.options[arg] = args[arg];
             }
         });
+
         if (outputPath) {
             finalOptions.options.output = { path: path.resolve(outputPath) };
         }
@@ -128,6 +148,7 @@ class WebpackCLI {
         if (stats !== undefined) {
             finalOptions.options.stats = stats;
         }
+
         if (json) {
             finalOptions.outputOptions.json = json;
         }
@@ -135,42 +156,50 @@ class WebpackCLI {
         if (hot) {
             const { HotModuleReplacementPlugin } = require('webpack');
             const hotModuleVal = new HotModuleReplacementPlugin();
+
             if (finalOptions.options && finalOptions.options.plugins) {
                 finalOptions.options.plugins.unshift(hotModuleVal);
             } else {
                 finalOptions.options.plugins = [hotModuleVal];
             }
         }
+
         if (prefetch) {
             const { PrefetchPlugin } = require('webpack');
             const prefetchVal = new PrefetchPlugin(null, args.prefetch);
+
             if (finalOptions.options && finalOptions.options.plugins) {
                 finalOptions.options.plugins.unshift(prefetchVal);
             } else {
                 finalOptions.options.plugins = [prefetchVal];
             }
         }
+
         if (analyze) {
             if (packageExists('webpack-bundle-analyzer')) {
                 // eslint-disable-next-line node/no-extraneous-require
                 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
                 const bundleAnalyzerVal = new BundleAnalyzerPlugin();
+
                 if (finalOptions.options && finalOptions.options.plugins) {
                     finalOptions.options.plugins.unshift(bundleAnalyzerVal);
                 } else {
                     finalOptions.options.plugins = [bundleAnalyzerVal];
                 }
             } else {
-                await promptInstallation('webpack-bundle-analyzer', () => {
-                    logger.error(`It looks like ${yellow('webpack-bundle-analyzer')} is not installed.`);
-                })
-                    .then(() => logger.success(`${yellow('webpack-bundle-analyzer')} was installed sucessfully.`))
-                    .catch(() => {
-                        logger.error(`Action Interrupted, Please try once again or install ${yellow('webpack-bundle-analyzer')} manually.`);
-                        process.exit(2);
+                try {
+                    await promptInstallation('webpack-bundle-analyzer', () => {
+                        logger.error(`It looks like ${yellow('webpack-bundle-analyzer')} is not installed.`);
                     });
+                } catch (error) {
+                    logger.error(`Action Interrupted, Please try once again or install ${yellow('webpack-bundle-analyzer')} manually.`);
+                    process.exit(2);
+                }
+
+                logger.success(`${yellow('webpack-bundle-analyzer')} was installed successfully.`);
             }
         }
+
         if (target) {
             finalOptions.options.target = args.target;
         }
@@ -184,6 +213,7 @@ class WebpackCLI {
         } else {
             finalOptions.options.mode = assignMode(mode, configOptions);
         }
+
         return finalOptions;
     }
 
@@ -421,8 +451,12 @@ class WebpackCLI {
 
     async _baseResolver(cb, parsedArgs, strategy) {
         const resolvedConfig = await cb(parsedArgs, this.compilerConfiguration);
+
         this._mergeOptionsToConfiguration(resolvedConfig.options, strategy);
-        this._mergeOptionsToOutputConfiguration(resolvedConfig.outputOptions);
+
+        if (resolvedConfig.outputOptions) {
+            this.outputConfiguration = Object.assign(this.outputConfiguration, resolvedConfig.outputOptions);
+        }
     }
 
     /**
@@ -434,7 +468,7 @@ class WebpackCLI {
     }
 
     getCoreFlags() {
-        return core;
+        return flags;
     }
 
     /**
@@ -453,9 +487,11 @@ class WebpackCLI {
         if (Array.isArray(options) && Array.isArray(this.compilerConfiguration)) {
             this.compilerConfiguration = options.map((option, index) => {
                 const compilerConfig = this.compilerConfiguration[index];
+
                 if (strategy) {
                     return webpackMerge.strategy(strategy)(compilerConfig, option);
                 }
+
                 return webpackMerge(compilerConfig, option);
             });
             return;
@@ -482,6 +518,7 @@ class WebpackCLI {
                     if (strategy) {
                         return webpackMerge.strategy(strategy)(thisConfiguration, options);
                     }
+
                     return webpackMerge(thisConfiguration, options);
                 });
             } else {
@@ -491,19 +528,6 @@ class WebpackCLI {
                     this.compilerConfiguration = webpackMerge(this.compilerConfiguration, options);
                 }
             }
-        }
-    }
-
-    /**
-     * Responsible for creating and updating the new  output configuration
-     *
-     * @param {Object} options Output options emitted by the group helper
-     * @private
-     * @returns {void}
-     */
-    _mergeOptionsToOutputConfiguration(options) {
-        if (options) {
-            this.outputConfiguration = Object.assign(this.outputConfiguration, options);
         }
     }
 
@@ -602,6 +626,7 @@ class WebpackCLI {
                 }
 
                 let colors;
+
                 // From flags
                 if (typeof args.color !== 'undefined') {
                     colors = args.color;
