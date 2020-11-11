@@ -83,7 +83,7 @@ describe('version flag with external packages', () => {
     });
 
     it(' should throw error if invalid argument is present with --version flag', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['init', 'abc', '--version'], false);
+        const { stderr, stdout, exitCode } = run(__dirname, ['init', 'abc', '--version', '--no-color'], false);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain(`[webpack-cli] Invalid command 'abc'`);
@@ -92,7 +92,7 @@ describe('version flag with external packages', () => {
     });
 
     it(' should throw error if invalid argument is present with version command', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['init', 'abc', 'version'], false);
+        const { stderr, stdout, exitCode } = run(__dirname, ['init', 'abc', 'version', '--no-color'], false);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain(`[webpack-cli] Invalid command 'abc'`);
@@ -101,7 +101,7 @@ describe('version flag with external packages', () => {
     });
 
     it(' should throw error if invalid argument is present with -v alias', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['init', 'abc', '-v'], false);
+        const { stderr, stdout, exitCode } = run(__dirname, ['init', 'abc', '-v', '--no-color'], false);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain(`[webpack-cli] Invalid command 'abc'`);
