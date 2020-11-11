@@ -5740,9 +5740,9 @@ gh-got@^5.0.0:
     is-plain-obj "^1.1.0"
 
 git-cz@^4.7.1:
-  version "4.7.1"
-  resolved "https://registry.yarnpkg.com/git-cz/-/git-cz-4.7.1.tgz#90edaa8dba1ec8be689b22fbf8d006c44b21b31f"
-  integrity sha512-Emb/Xz/LcL3SGxA/PD6RUrhUT6m2v0O9nWTjwCBAoE2UXxj9HkJcfphL3RkePtiTNFkVZMk0q5EUfHnO7HAfiw==
+  version "4.7.2"
+  resolved "https://registry.yarnpkg.com/git-cz/-/git-cz-4.7.2.tgz#b541b43ef906cf96bfe22dad613649b8f6accc40"
+  integrity sha512-Ml7+M7rg/4kZfKJjsDBQdl4Zqp2qmJeTXoOtxOebT8r+fo5nYvEtSBT9aZoBAZX6O4v5hSTGjBNx0myjHxJz2g==
 
 git-raw-commits@2.0.0:
   version "2.0.0"
