@@ -2,12 +2,13 @@
 const { run } = require('../../utils/test-utils');
 
 describe('mode flags', () => {
-    it('should set mode=production by default', () => {
+    it('should not set mode=production by default', () => {
         const { stderr, stdout, exitCode } = run(__dirname);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(`mode: 'production'`);
+        expect(stdout).not.toContain(`mode: 'production'`);
+        expect(stdout).toContain(`The 'mode' option has not been set, webpack will fallback to 'production' for this value.`);
     });
 
     it('should load a development config when --mode=development is passed', () => {
