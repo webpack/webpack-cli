@@ -666,11 +666,22 @@ class WebpackCLI {
                     process.exit(2);
                 }
             } else {
-                logger.raw(`${stats.toString(foundStats)}`);
+                const printedStats = stats.toString(foundStats);
+
+                // Avoid extra empty line when `stats: 'none'`
+                if (printedStats) {
+                    logger.raw(`${stats.toString(foundStats)}`);
+                }
             }
         };
 
         compiler = this.createCompiler(options, callback);
+
+        // TODO webpack@4 return Watching and MultiWathing instead Compiler and MultiCompiler, remove this after drop webpack@4
+        if (compiler && compiler.compiler) {
+            compiler = compiler.compiler;
+        }
+
         return Promise.resolve();
     }
 }
