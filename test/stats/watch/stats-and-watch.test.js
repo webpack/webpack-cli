@@ -13,7 +13,7 @@ describe('stats and watch', () => {
     });
 
     it('should not log stats with the "none" value from the configuration and multi compiler mode', async () => {
-        const { stderr, stdout } = await runWatch(__dirname, ['-c', './multi-webpack.config.js']);
+        const { stderr, stdout } = await runWatch(__dirname, ['-c', './multi-webpack.config.js', '--color']);
 
         expect(stdout).toContain('[webpack-cli] [32mCompilation starting...[39m');
         expect(stdout).toContain('[webpack-cli] [32mCompilation finished[39m');
@@ -22,7 +22,7 @@ describe('stats and watch', () => {
     });
 
     it('should log stats with the "normal" value in arguments', async () => {
-        const { stderr, stdout } = await runWatch(__dirname, ['-c', './webpack.config.js', '--stats', 'normal']);
+        const { stderr, stdout } = await runWatch(__dirname, ['-c', './webpack.config.js', '--stats', 'normal', '--color']);
 
         const output = isWebpack5 ? 'successfully' : 'main.js';
 
