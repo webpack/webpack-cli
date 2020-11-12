@@ -5,6 +5,6 @@ module.exports = {
     },
     name: 'amd',
     entry: './init.js',
-    mode: 'production',
+    mode: 'development',
     devtool: 'eval-cheap-module-source-map',
 };
