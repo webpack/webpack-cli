@@ -5,6 +5,6 @@ module.exports = {
     },
     name: 'commonjs',
     entry: './init.js',
-    mode: 'production',
+    mode: 'development',
     target: 'node',
 };
