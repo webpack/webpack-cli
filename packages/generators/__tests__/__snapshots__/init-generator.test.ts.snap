@@ -85,6 +85,21 @@ Object {
 }
 `;
 
+exports[`init generator generates a webpack config that uses Typescript 2`] = `
+Object {
+  "compilerOptions": Object {
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "module": "es6",
+    "noImplicitAny": true,
+    "target": "es5",
+  },
+  "files": Array [
+    "src/index.ts",
+  ],
+}
+`;
+
 exports[`init generator generates a webpack config using CSS with mini-css-extract-plugin 1`] = `
 Object {
   "mode": "'development'",
