@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import Generator from 'yeoman-generator';
-import { generatorCopy, generatorCopyTpl } from '@webpack-cli/utils';
+import { generatorCopy, generatorCopyTpl } from './utils/copy-utils';
 
 import { utils } from 'webpack-cli';
 
