@@ -39,16 +39,21 @@ export default function startDevServer(compiler, devServerArgs): object[] {
     devServerOptions.forEach((devServerOpts): void => {
         const options = mergeOptions(cliOptions, devServerOpts);
         options.host = options.host || 'localhost';
-        options.port = options.port || 8080;
-
-        const portNum = +options.port;
-
-        if (usedPorts.find((port) => portNum === port)) {
-            throw new Error(
-                'Unique ports must be specified for each devServer option in your webpack configuration. Alternatively, run only 1 devServer config using the --config-name flag to specify your desired config.',
-            );
+        // devSever v4 handles the default port itself
+        if (!isDevServer4) {
+            options.port = options.port || 8080;
         }
-        usedPorts.push(portNum);
+
+        if (options.port) {
+            const portNum = +options.port;
+
+            if (usedPorts.find((port) => portNum === port)) {
+                throw new Error(
+                    'Unique ports must be specified for each devServer option in your webpack configuration. Alternatively, run only 1 devServer config using the --config-name flag to specify your desired config.',
+                );
+            }
+            usedPorts.push(portNum);
+        }
 
         const server = new Server(compiler, options);
         server.listen(options.port, options.host, (err): void => {
