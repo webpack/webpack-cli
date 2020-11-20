@@ -16,15 +16,21 @@ const { logger } = utils;
  * @returns {Object[]} array of resulting servers
  */
 export default function startDevServer(compiler, devServerArgs): object[] {
-    let Server;
+    let isDevServer4 = false,
+        devServerVersion,
+        Server;
     try {
+        // eslint-disable-next-line node/no-extraneous-require
+        devServerVersion = require('webpack-dev-server/package.json').version;
         // eslint-disable-next-line node/no-extraneous-require
         Server = require('webpack-dev-server/lib/Server');
     } catch (err) {
         logger.error(`You need to install 'webpack-dev-server' for running 'webpack serve'.\n${err}`);
         process.exit(2);
     }
-    const cliOptions = createConfig(devServerArgs);
+    isDevServer4 = devServerVersion.startsWith('4');
+
+    const cliOptions = createConfig(devServerArgs, isDevServer4);
     const devServerOptions = getDevServerOptions(compiler);
 
     const servers = [];
