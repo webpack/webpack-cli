@@ -16,16 +16,24 @@ describe('module config related flag', () => {
 
         if (flag.type === Boolean && !flag.name.includes('module-no-parse')) {
             it(`should config --${flag.name} correctly`, () => {
-                const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`]);
-
-                expect(stderr).toBeFalsy();
-                expect(exitCode).toBe(0);
                 if (flag.name.includes('-reset')) {
+                    const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`]);
                     const option = propName.split('Reset')[0];
+
+                    expect(exitCode).toBe(0);
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${option}: []`);
                 } else if (flag.name.includes('rules-')) {
+                    const { stderr, stdout, exitCode } = run(__dirname, [`--no-${flag.name}`]);
+
+                    expect(exitCode).toBe(0);
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain("sideEffects: 'flag'");
                 } else {
+                    const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`]);
+
+                    expect(exitCode).toBe(0);
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: true`);
                 }
             });

@@ -6,10 +6,9 @@ const { writeFileSync, existsSync } = require('fs');
 const { options: coloretteOptions, yellow } = require('colorette');
 
 const logger = require('./utils/logger');
-const { groups, flags, flagsFromCore } = require('./utils/cli-flags');
+const { flags, flagsFromCore } = require('./utils/cli-flags');
 const argParser = require('./utils/arg-parser');
-const assignFlagDefaults = require('./utils/flag-defaults');
-const WebpackCLIPlugin = require('./plugins/WebpackCLIPlugin');
+const CLIPlugin = require('./plugins/CLIPlugin');
 const promptInstallation = require('./utils/prompt-installation');
 const { extensions, jsVariants } = require('interpret');
 const rechoir = require('rechoir');
@@ -19,172 +18,209 @@ const toKebabCase = require('./utils/to-kebab-case');
 const { resolve, extname } = path;
 
 class WebpackCLI {
-    constructor() {
-        this.compilerConfiguration = {};
-        this.outputConfiguration = {};
-    }
+    constructor() {}
 
-    /**
-     * Responsible for handling flags coming from webpack/webpack
-     * @private\
-     * @returns {void}
-     */
-    _handleCoreFlags(parsedArgs) {
-        const coreCliHelper = require('webpack').cli;
+    async resolveConfig(args) {
+        const loadConfig = (configPath) => {
+            const ext = extname(configPath);
+            const interpreted = Object.keys(jsVariants).find((variant) => variant === ext);
 
-        if (!coreCliHelper) {
-            return;
+            if (interpreted) {
+                rechoir.prepare(extensions, configPath);
+            }
+
+            let options;
+
+            try {
+                options = require(configPath);
+            } catch (error) {
+                logger.error(`Failed to load '${configPath}'`);
+                logger.error(error);
+                process.exit(2);
+            }
+
+            if (options.default) {
+                options = options.default;
+            }
+
+            return { options, path: configPath };
+        };
+
+        const evaluateConfig = async (loadedConfig, args) => {
+            const isMultiCompiler = Array.isArray(loadedConfig.options);
+            const config = isMultiCompiler ? loadedConfig.options : [loadedConfig.options];
+
+            let evaluatedConfig = await Promise.all(
+                config.map(async (rawConfig) => {
+                    if (typeof rawConfig.then === 'function') {
+                        rawConfig = await rawConfig;
+                    }
+
+                    // `Promise` may return `Function`
+                    if (typeof rawConfig === 'function') {
+                        // when config is a function, pass the env from args to the config function
+                        rawConfig = await rawConfig(args.env, args);
+                    }
+
+                    return rawConfig;
+                }),
+            );
+
+            loadedConfig.options = isMultiCompiler ? evaluatedConfig : evaluatedConfig[0];
+
+            const isObject = (value) => typeof value === 'object' && value !== null;
+
+            if (!isObject(loadedConfig.options) && !Array.isArray(loadedConfig.options)) {
+                logger.error(`Invalid configuration in '${loadedConfig.path}'`);
+                process.exit(2);
+            }
+
+            return loadedConfig;
+        };
+
+        let config = { options: {}, path: new WeakMap() };
+
+        if (args.config && args.config.length > 0) {
+            const evaluatedConfigs = await Promise.all(
+                args.config.map(async (value) => {
+                    const configPath = resolve(value);
+
+                    if (!existsSync(configPath)) {
+                        logger.error(`The specified config file doesn't exist in '${configPath}'`);
+                        process.exit(2);
+                    }
+
+                    const loadedConfig = loadConfig(configPath);
+
+                    return evaluateConfig(loadedConfig, args);
+                }),
+            );
+
+            if (evaluatedConfigs.length > 1) {
+                config.options = [];
+
+                evaluatedConfigs.forEach((evaluatedConfig) => {
+                    if (Array.isArray(evaluatedConfig.options)) {
+                        evaluatedConfig.options.forEach((options) => {
+                            config.options.push(options);
+                            config.path.set(options, evaluatedConfig.path);
+                        });
+                    } else {
+                        config.options.push(evaluatedConfig.options);
+                        config.path.set(evaluatedConfig.options, evaluatedConfig.path);
+                    }
+                });
+            } else {
+                config.options = evaluatedConfigs[0].options;
+                config.path.set(evaluatedConfigs[0].options, evaluatedConfigs[0].path);
+            }
+        } else {
+            // Order defines the priority, in increasing order
+            const defaultConfigFiles = ['webpack.config', '.webpack/webpack.config', '.webpack/webpackfile']
+                // .filter((value) => value.includes(args.mode))
+                .map((filename) =>
+                    // Since .cjs is not available on interpret side add it manually to default config extension list
+                    [...Object.keys(extensions), '.cjs'].map((ext) => ({
+                        path: resolve(filename + ext),
+                        ext: ext,
+                        module: extensions[ext],
+                    })),
+                )
+                .reduce((accumulator, currentValue) => accumulator.concat(currentValue), []);
+
+            let foundDefaultConfigFile;
+
+            for (const defaultConfigFile of defaultConfigFiles) {
+                if (existsSync(defaultConfigFile.path)) {
+                    foundDefaultConfigFile = defaultConfigFile;
+                    break;
+                }
+            }
+
+            if (foundDefaultConfigFile) {
+                const loadedConfig = loadConfig(foundDefaultConfigFile.path);
+                const evaluatedConfig = await evaluateConfig(loadedConfig, args);
+
+                config.options = evaluatedConfig.options;
+                config.path.set(evaluatedConfig.options, evaluatedConfig.path);
+            }
         }
 
-        const coreFlagMap = flagsFromCore.reduce((acc, cur) => {
-            acc.set(cur.name, cur);
+        if (args.configName) {
+            // TODO refactor
+            const foundConfigNames = [];
 
-            return acc;
-        }, new Map());
-        const coreConfig = Object.keys(parsedArgs)
-            .filter((arg) => coreFlagMap.has(toKebabCase(arg)))
-            .reduce((acc, cur) => {
-                acc[toKebabCase(cur)] = parsedArgs[cur];
+            if (Array.isArray(config.options)) {
+                config.options = config.options.filter((options) => {
+                    let found;
 
-                return acc;
+                    if (args.configName.includes(options.name)) {
+                        found = config;
+                    }
+
+                    if (found) {
+                        foundConfigNames.push(options.name);
+
+                        return true;
+                    }
+
+                    return false;
+                });
+                config.options = config.options.length === 1 ? config.options[0] : config.options;
+            } else {
+                const found = args.configName.includes(config.options.name);
+
+                if (found) {
+                    foundConfigNames.push(config.options.name);
+                }
+            }
+
+            // TODO improve this for same names
+            if (foundConfigNames.length !== args.configName.length) {
+                logger.error(
+                    args.configName
+                        .filter((name) => !foundConfigNames.includes(name))
+                        .map((configName) => `Configuration with name "${configName}" was not found.`)
+                        .join('\n'),
+                );
+                process.exit(2);
+            }
+
+            if (config.options.length === 0) {
+                logger.error('No configurations found');
+                process.exit(2);
+            }
+        }
+
+        if (args.merge) {
+            // we can only merge when there are multiple configurations
+            // either by passing multiple configs by flags or passing a
+            // single config exporting an array
+            if (!Array.isArray(config.options) || config.options.length <= 1) {
+                logger.error('At least two configurations are required for merge.');
+                process.exit(2);
+            }
+
+            const mergedConfigPaths = [];
+
+            // TODO need to implement the `--merge-strategy` flag
+            config.options = config.options.reduce((accumulator, options) => {
+                const configPath = config.path.get(options);
+                const mergedOptions = webpackMerge(accumulator, options);
+
+                mergedConfigPaths.push(configPath);
+
+                return mergedOptions;
             }, {});
-        const coreCliArgs = coreCliHelper.getArguments();
+            config.path.set(config.options, mergedConfigPaths);
+        }
 
-        // Merge the core flag config with the compilerConfiguration
-        coreCliHelper.processArguments(coreCliArgs, this.compilerConfiguration, coreConfig);
-
-        // Assign some defaults to core flags
-        const configWithDefaults = assignFlagDefaults(this.compilerConfiguration, parsedArgs, this.outputConfiguration);
-
-        this._mergeOptionsToConfiguration(configWithDefaults);
+        return config;
     }
 
-    async resolveArgs(args, configOptions = {}) {
-        // when there are no args then exit
-        if (Object.keys(args).length === 0 && !process.env.NODE_ENV) {
-            return {};
-        }
-
-        const { outputPath, stats, json, mode, target, prefetch, hot, analyze } = args;
-        const finalOptions = {
-            options: {},
-            outputOptions: {},
-        };
-
-        const WEBPACK_OPTION_FLAGS = flags
-            .filter((coreFlag) => coreFlag.group === groups.BASIC_GROUP)
-            .reduce((result, flagObject) => {
-                result.push(flagObject.name);
-
-                if (flagObject.alias) {
-                    result.push(flagObject.alias);
-                }
-
-                return result;
-            }, []);
-
-        const PRODUCTION = 'production';
-        const DEVELOPMENT = 'development';
-
-        /*
-        Mode priority:
-            - Mode flag
-            - Mode from config
-            - Mode form NODE_ENV
-        */
-
-        /**
-         *
-         * @param {string} mode - mode flag value
-         * @param {Object} configObject - contains relevant loaded config
-         */
-        const assignMode = (mode, configObject) => {
-            const {
-                env: { NODE_ENV },
-            } = process;
-            const { mode: configMode } = configObject;
-
-            let finalMode;
-
-            if (mode) {
-                finalMode = mode;
-            } else if (configMode) {
-                finalMode = configMode;
-            } else if (NODE_ENV && (NODE_ENV === PRODUCTION || NODE_ENV === DEVELOPMENT)) {
-                finalMode = NODE_ENV;
-            }
-
-            return finalMode;
-        };
-
-        Object.keys(args).forEach((arg) => {
-            if (WEBPACK_OPTION_FLAGS.includes(arg)) {
-                finalOptions.outputOptions[arg] = args[arg];
-            }
-
-            if (arg === 'devtool') {
-                finalOptions.options.devtool = args[arg];
-            }
-
-            if (arg === 'name') {
-                finalOptions.options.name = args[arg];
-            }
-
-            if (arg === 'watch') {
-                finalOptions.options.watch = true;
-            }
-
-            if (arg === 'entry') {
-                finalOptions.options[arg] = args[arg];
-            }
-        });
-
-        if (outputPath) {
-            finalOptions.options.output = { path: path.resolve(outputPath) };
-        }
-
-        if (stats !== undefined) {
-            finalOptions.options.stats = stats;
-        }
-
-        if (json) {
-            finalOptions.outputOptions.json = json;
-        }
-
-        if (hot) {
-            const { HotModuleReplacementPlugin } = require('webpack');
-            const hotModuleVal = new HotModuleReplacementPlugin();
-
-            if (finalOptions.options && finalOptions.options.plugins) {
-                finalOptions.options.plugins.unshift(hotModuleVal);
-            } else {
-                finalOptions.options.plugins = [hotModuleVal];
-            }
-        }
-
-        if (prefetch) {
-            const { PrefetchPlugin } = require('webpack');
-            const prefetchVal = new PrefetchPlugin(null, args.prefetch);
-
-            if (finalOptions.options && finalOptions.options.plugins) {
-                finalOptions.options.plugins.unshift(prefetchVal);
-            } else {
-                finalOptions.options.plugins = [prefetchVal];
-            }
-        }
-
-        if (analyze) {
-            if (packageExists('webpack-bundle-analyzer')) {
-                // eslint-disable-next-line node/no-extraneous-require
-                const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-                const bundleAnalyzerVal = new BundleAnalyzerPlugin();
-
-                if (finalOptions.options && finalOptions.options.plugins) {
-                    finalOptions.options.plugins.unshift(bundleAnalyzerVal);
-                } else {
-                    finalOptions.options.plugins = [bundleAnalyzerVal];
-                }
-            } else {
+    async resolveArguments(config, args) {
+        if (args.analyze) {
+            if (!packageExists('webpack-bundle-analyzer')) {
                 try {
                     await promptInstallation('webpack-bundle-analyzer', () => {
                         logger.error(`It looks like ${yellow('webpack-bundle-analyzer')} is not installed.`);
@@ -198,269 +234,168 @@ class WebpackCLI {
             }
         }
 
-        if (target) {
-            finalOptions.options.target = args.target;
+        if (Object.keys(args).length === 0 && !process.env.NODE_ENV) {
+            return config;
         }
 
-        if (Array.isArray(configOptions)) {
-            // Todo - handle multi config for all flags
-            finalOptions.options = configOptions.map(() => ({ ...finalOptions.options }));
-            configOptions.forEach((configObject, index) => {
-                const resolvedMode = assignMode(mode, configObject);
-                if (resolvedMode) {
-                    finalOptions.options[index].mode = resolvedMode;
+        const coreCliHelper = require('webpack').cli;
+
+        // TODO bug in duplicate args from core + custom for v4
+        if (coreCliHelper) {
+            const processArguments = (options) => {
+                const coreFlagMap = flagsFromCore.reduce((accumulator, item) => {
+                    accumulator.set(item.name, item);
+
+                    return accumulator;
+                }, new Map());
+                const coreConfig = Object.keys(args)
+                    .filter((arg) => coreFlagMap.has(toKebabCase(arg)))
+                    .reduce((accumulator, current) => {
+                        accumulator[toKebabCase(current)] = args[current];
+
+                        return accumulator;
+                    }, {});
+                const coreCliArgs = coreCliHelper.getArguments();
+                const problems = coreCliHelper.processArguments(coreCliArgs, options, coreConfig);
+
+                if (problems) {
+                    problems.forEach((problem) => {
+                        // TODO better error
+                        logger.error(
+                            `Found the '${problem.type}' problem with the '--${problem.argument}' argument${
+                                problem.path ? ` by path '${problem.path}'` : ''
+                            }`,
+                        );
+                    });
+
+                    process.exit(2);
                 }
-            });
-        } else {
-            const resolvedMode = assignMode(mode, configOptions);
-            if (resolvedMode) {
-                finalOptions.options.mode = resolvedMode;
-            }
-        }
 
-        return finalOptions;
-    }
-
-    async resolveConfig(args) {
-        // Order defines the priority, in increasing order
-        // example - config file lookup will be in order of .webpack/webpack.config.development.js -> webpack.config.development.js -> webpack.config.js
-        const DEFAULT_CONFIG_LOC = [
-            'webpack.config',
-            'webpack.config.dev',
-            'webpack.config.development',
-            'webpack.config.prod',
-            'webpack.config.production',
-            '.webpack/webpack.config',
-            '.webpack/webpack.config.none',
-            '.webpack/webpack.config.dev',
-            '.webpack/webpack.config.development',
-            '.webpack/webpack.config.prod',
-            '.webpack/webpack.config.production',
-            '.webpack/webpackfile',
-        ];
-
-        const modeAlias = {
-            production: 'prod',
-            development: 'dev',
-        };
-
-        let opts = {
-            outputOptions: {},
-            options: {},
-        };
-
-        // Return a list of default configs in various formats
-        const getDefaultConfigFiles = () => {
-            return DEFAULT_CONFIG_LOC.map((filename) => {
-                // Since .cjs is not available on interpret side add it manually to default config extension list
-                return [...Object.keys(extensions), '.cjs'].map((ext) => {
-                    return {
-                        path: resolve(filename + ext),
-                        ext: ext,
-                        module: extensions[ext],
-                    };
-                });
-            }).reduce((a, i) => a.concat(i), []);
-        };
-
-        const getConfigInfoFromFileName = (filename) => {
-            const ext = extname(filename);
-            // since we support only one config for now
-            const allFiles = [filename];
-            // return all the file metadata
-            return allFiles
-                .map((file) => {
-                    return {
-                        path: resolve(file),
-                        ext: ext,
-                        module: extensions[ext] || null,
-                    };
-                })
-                .filter((e) => existsSync(e.path));
-        };
-
-        // Reads a config file given the config metadata
-        const requireConfig = (configModule) => {
-            const extension = Object.keys(jsVariants).find((t) => configModule.ext.endsWith(t));
-
-            if (extension) {
-                rechoir.prepare(extensions, configModule.path, process.cwd());
-            }
-
-            let config = require(configModule.path);
-
-            if (config.default) {
-                config = config.default;
-            }
-
-            return { config, path: configModule.path };
-        };
-
-        // Given config data, determines the type of config and
-        // returns final config
-        const finalize = async (moduleObj, args, isDefaultConfig = false) => {
-            const { env, configName } = args;
-            const newOptionsObject = {
-                outputOptions: {},
-                options: {},
+                return options;
             };
 
-            if (!moduleObj) {
-                return newOptionsObject;
-            }
+            config.options = Array.isArray(config.options)
+                ? config.options.map((options) => processArguments(options))
+                : processArguments(config.options);
+        }
 
-            if (isDefaultConfig) {
-                newOptionsObject.outputOptions.defaultConfig = moduleObj.path;
-            }
+        const setupDefaultOptions = (options) => {
+            if (options.cache && options.cache.type === 'filesystem' && config.path) {
+                const configPath = config.path.get(options);
 
-            const config = moduleObj.config;
-
-            const isMultiCompilerMode = Array.isArray(config);
-            const rawConfigs = isMultiCompilerMode ? config : [config];
-
-            let configs = [];
-
-            const allConfigs = await Promise.all(
-                rawConfigs.map(async (rawConfig) => {
-                    const isPromise = typeof rawConfig.then === 'function';
-
-                    if (isPromise) {
-                        rawConfig = await rawConfig;
+                if (configPath) {
+                    if (!options.cache.buildDependencies) {
+                        options.cache.buildDependencies = {};
                     }
 
-                    // `Promise` may return `Function`
-                    if (typeof rawConfig === 'function') {
-                        // when config is a function, pass the env from args to the config function
-                        rawConfig = await rawConfig(env, args);
+                    if (!options.cache.buildDependencies.config) {
+                        options.cache.buildDependencies.config = [];
                     }
 
-                    return rawConfig;
+                    if (Array.isArray(configPath)) {
+                        configPath.forEach((item) => {
+                            options.cache.buildDependencies.config.push(item);
+                        });
+                    } else {
+                        options.cache.buildDependencies.config.push(configPath);
+                    }
+                }
+            }
+
+            return options;
+        };
+
+        config.options = Array.isArray(config.options)
+            ? config.options.map((options) => setupDefaultOptions(options))
+            : setupDefaultOptions(config.options);
+
+        // Logic for webpack@4
+        // TODO remove after drop webpack@4
+        const processLegacyArguments = (options) => {
+            // TODO double check all flags
+            if (args.entry) {
+                options.entry = args.entry;
+            }
+
+            if (args.outputPath) {
+                options.output = { ...options.output, ...{ path: path.resolve(args.outputPath) } };
+            }
+
+            if (args.target) {
+                options.target = args.target;
+            }
+
+            if (args.watch) {
+                options.watch = args.watch;
+            }
+
+            if (args.mode) {
+                options.mode = args.mode;
+            } else if (
+                !options.mode &&
+                process.env &&
+                process.env.NODE_ENV &&
+                (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'node')
+            ) {
+                options.mode = process.env.NODE_ENV;
+            }
+
+            if (args.devtool) {
+                options.devtool = args.devtool;
+            }
+
+            if (typeof args.stats !== 'undefined') {
+                options.stats = args.stats;
+            }
+
+            if (args.name) {
+                options.name = args.name;
+            }
+
+            return options;
+        };
+
+        config.options = Array.isArray(config.options)
+            ? config.options.map((options) => processLegacyArguments(options))
+            : processLegacyArguments(config.options);
+
+        return config;
+    }
+
+    async resolveCLIPlugin(config, args) {
+        const addCLIPlugin = (options) => {
+            if (!options.plugins) {
+                options.plugins = [];
+            }
+
+            options.plugins.unshift(
+                new CLIPlugin({
+                    configPath: config.path,
+                    helpfulOutput: !args.json,
+                    hot: args.hot,
+                    progress: args.progress,
+                    prefetch: args.prefetch,
+                    analyze: args.analyze,
                 }),
             );
 
-            for (const singleConfig of allConfigs) {
-                if (Array.isArray(singleConfig)) {
-                    configs.push(...singleConfig);
-                } else {
-                    configs.push(singleConfig);
-                }
-            }
-
-            if (configName) {
-                const foundConfigNames = [];
-
-                configs = configs.filter((options) => {
-                    const found = configName.includes(options.name);
-
-                    if (found) {
-                        foundConfigNames.push(options.name);
-                    }
-
-                    return found;
-                });
-
-                if (foundConfigNames.length !== configName.length) {
-                    // Configuration with name "test" was not found.
-                    logger.error(
-                        configName
-                            .filter((name) => !foundConfigNames.includes(name))
-                            .map((configName) => `Configuration with name "${configName}" was not found.`)
-                            .join('\n'),
-                    );
-                    process.exit(2);
-                }
-            }
-
-            if (configs.length === 0) {
-                logger.error('No configurations found');
-                process.exit(2);
-            }
-
-            newOptionsObject['options'] = configs.length > 1 ? configs : configs[0];
-
-            return newOptionsObject;
+            return options;
         };
 
-        // Responsible for reading user configuration files
-        // else does a default config lookup and resolves it.
-        const { config, mode } = args;
+        config.options = Array.isArray(config.options)
+            ? config.options.map((options) => addCLIPlugin(options))
+            : addCLIPlugin(config.options);
 
-        if (config && config.length > 0) {
-            const resolvedOptions = [];
-            const finalizedConfigs = config.map(async (webpackConfig) => {
-                const configPath = resolve(webpackConfig);
-                const configFiles = getConfigInfoFromFileName(configPath);
-
-                if (!configFiles.length) {
-                    logger.error(`The specified config file doesn't exist in ${configPath}`);
-                    process.exit(2);
-                }
-
-                const foundConfig = configFiles[0];
-                const resolvedConfig = requireConfig(foundConfig);
-
-                return finalize(resolvedConfig, args);
-            });
-
-            // resolve all the configs
-            for await (const resolvedOption of finalizedConfigs) {
-                if (Array.isArray(resolvedOption.options)) {
-                    resolvedOptions.push(...resolvedOption.options);
-                } else {
-                    resolvedOptions.push(resolvedOption.options);
-                }
-            }
-
-            opts['options'] = resolvedOptions.length > 1 ? resolvedOptions : resolvedOptions[0] || {};
-        } else {
-            // When no config is supplied, lookup for default configs
-            const defaultConfigFiles = getDefaultConfigFiles();
-            const tmpConfigFiles = defaultConfigFiles.filter((file) => {
-                return existsSync(file.path);
-            });
-
-            const configFiles = tmpConfigFiles.map(requireConfig);
-            if (configFiles.length) {
-                const defaultConfig = configFiles.find((p) => p.path.includes(mode) || p.path.includes(modeAlias[mode]));
-                if (defaultConfig) {
-                    opts = await finalize(defaultConfig, args, true);
-                } else {
-                    const foundConfig = configFiles.pop();
-
-                    opts = await finalize(foundConfig, args, true);
-                }
-            }
-        }
-
-        const { merge } = args;
-
-        if (merge) {
-            // Get the current configuration options
-            const { options: configOptions } = opts;
-
-            // we can only merge when there are multiple configurations
-            // either by passing multiple configs by flags or passing a
-            // single config exporting an array
-            if (!Array.isArray(configOptions)) {
-                logger.error('At least two configurations are required for merge.');
-                process.exit(2);
-            }
-
-            // We return a single config object which is passed to the compiler
-            opts['options'] = configOptions.reduce((currentConfig, mergedConfig) => webpackMerge(currentConfig, mergedConfig), {});
-        }
-
-        return opts;
+        return config;
     }
 
-    async _baseResolver(cb, parsedArgs, strategy) {
-        const resolvedConfig = await cb(parsedArgs, this.compilerConfiguration);
+    async resolve(parsedArgs) {
+        let config = await this.resolveConfig(parsedArgs);
 
-        this._mergeOptionsToConfiguration(resolvedConfig.options, strategy);
+        config = await this.resolveArguments(config, parsedArgs);
+        config = await this.resolveCLIPlugin(config, parsedArgs);
 
-        if (resolvedConfig.outputOptions) {
-            this.outputConfiguration = Object.assign(this.outputConfiguration, resolvedConfig.outputOptions);
-        }
+        return config;
     }
 
     /**
@@ -473,80 +408,6 @@ class WebpackCLI {
 
     getCoreFlags() {
         return flags;
-    }
-
-    /**
-     * Responsible to override webpack options.
-     * @param {Object} options The options returned by a group helper
-     * @param {Object} strategy The strategy to pass to webpack-merge. The strategy
-     * is implemented inside the group helper
-     * @private
-     * @returns {void}
-     */
-    _mergeOptionsToConfiguration(options, strategy) {
-        /**
-         * options where they differ per config use this method to apply relevant option to relevant config
-         * eg mode flag applies per config
-         */
-        if (Array.isArray(options) && Array.isArray(this.compilerConfiguration)) {
-            this.compilerConfiguration = options.map((option, index) => {
-                const compilerConfig = this.compilerConfiguration[index];
-
-                if (strategy) {
-                    return webpackMerge.strategy(strategy)(compilerConfig, option);
-                }
-
-                return webpackMerge(compilerConfig, option);
-            });
-            return;
-        }
-
-        /**
-         * options is an array (multiple configuration) so we create a new
-         * configuration where each element is individually merged
-         */
-        if (Array.isArray(options)) {
-            this.compilerConfiguration = options.map((configuration) => {
-                if (strategy) {
-                    return webpackMerge.strategy(strategy)(this.compilerConfiguration, configuration);
-                }
-                return webpackMerge(this.compilerConfiguration, configuration);
-            });
-        } else {
-            /**
-             * The compiler configuration is already an array, so for each element
-             * we merge the options
-             */
-            if (Array.isArray(this.compilerConfiguration)) {
-                this.compilerConfiguration = this.compilerConfiguration.map((thisConfiguration) => {
-                    if (strategy) {
-                        return webpackMerge.strategy(strategy)(thisConfiguration, options);
-                    }
-
-                    return webpackMerge(thisConfiguration, options);
-                });
-            } else {
-                if (strategy) {
-                    this.compilerConfiguration = webpackMerge.strategy(strategy)(this.compilerConfiguration, options);
-                } else {
-                    this.compilerConfiguration = webpackMerge(this.compilerConfiguration, options);
-                }
-            }
-        }
-    }
-
-    /**
-     * It runs in a fancy order all the expected groups.
-     * Zero config and configuration goes first.
-     *
-     * The next groups will override existing parameters
-     * @returns {Promise<void>} A Promise
-     */
-    async runOptionGroups(parsedArgs) {
-        await Promise.resolve()
-            .then(() => this._baseResolver(this.resolveConfig, parsedArgs))
-            .then(() => this._handleCoreFlags(parsedArgs))
-            .then(() => this._baseResolver(this.resolveArgs, parsedArgs));
     }
 
     handleError(error) {
@@ -577,37 +438,14 @@ class WebpackCLI {
     }
 
     async getCompiler(args) {
-        await this.runOptionGroups(args);
-        return this.createCompiler(this.compilerConfiguration);
+        // TODO test with serve
+        const config = await this.resolve(args);
+
+        return this.createCompiler(config.options);
     }
 
     async run(args) {
-        await this.runOptionGroups(args);
-
         let compiler;
-
-        let options = this.compilerConfiguration;
-        let outputOptions = this.outputConfiguration;
-
-        const isRawOutput = typeof outputOptions.json === 'undefined';
-
-        if (isRawOutput) {
-            const webpackCLIPlugin = new WebpackCLIPlugin({
-                progress: outputOptions.progress,
-            });
-
-            const addPlugin = (options) => {
-                if (!options.plugins) {
-                    options.plugins = [];
-                }
-                options.plugins.unshift(webpackCLIPlugin);
-            };
-            if (Array.isArray(options)) {
-                options.forEach(addPlugin);
-            } else {
-                addPlugin(options);
-            }
-        }
 
         const callback = (error, stats) => {
             if (error) {
@@ -651,19 +489,23 @@ class WebpackCLI {
 
             const getStatsOptionsFromCompiler = (compiler) => getStatsOptions(compiler.options ? compiler.options.stats : undefined);
 
+            if (!compiler) {
+                return;
+            }
+
             const foundStats = compiler.compilers
                 ? { children: compiler.compilers.map(getStatsOptionsFromCompiler) }
                 : getStatsOptionsFromCompiler(compiler);
 
-            if (outputOptions.json === true) {
+            if (args.json === true) {
                 process.stdout.write(JSON.stringify(stats.toJson(foundStats), null, 2) + '\n');
-            } else if (typeof outputOptions.json === 'string') {
+            } else if (typeof args.json === 'string') {
                 const JSONStats = JSON.stringify(stats.toJson(foundStats), null, 2);
 
                 try {
-                    writeFileSync(outputOptions.json, JSONStats);
+                    writeFileSync(args.json, JSONStats);
 
-                    logger.success(`stats are successfully stored as json to ${outputOptions.json}`);
+                    logger.success(`stats are successfully stored as json to ${args.json}`);
                 } catch (error) {
                     logger.error(error);
 
@@ -679,7 +521,9 @@ class WebpackCLI {
             }
         };
 
-        compiler = this.createCompiler(options, callback);
+        const config = await this.resolve(args);
+
+        compiler = this.createCompiler(config.options, callback);
 
         // TODO webpack@4 return Watching and MultiWathing instead Compiler and MultiCompiler, remove this after drop webpack@4
         if (compiler && compiler.compiler) {

@@ -45,7 +45,7 @@ describe('commands help', () => {
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain(
-            `You provided multiple commands or arguments - argument '--entry', argument '--merge' (alias '-m'). Please use only one command at a time.`,
+            `You provided multiple commands or arguments - argument '--merge' (alias '-m'), argument '--entry'. Please use only one command at a time.`,
         );
         expect(stdout).toHaveLength(0);
     });

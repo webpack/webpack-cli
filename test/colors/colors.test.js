@@ -5,7 +5,7 @@ const { options: coloretteOptions } = require('colorette');
 
 describe('colors related tests', () => {
     it('should output by default', () => {
-        const { stderr, stdout, exitCode } = run(__dirname);
+        const { stderr, stdout, exitCode } = run(__dirname, [], true, [], { FORCE_COLOR: true });
 
         expect(stderr).toBeFalsy();
         const output = isWebpack5 ? 'successfully' : 'main.js';
@@ -14,7 +14,7 @@ describe('colors related tests', () => {
     });
 
     it('should work with the "stats" option from flags', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--stats=verbose']);
+        const { stderr, stdout, exitCode } = run(__dirname, ['--stats=verbose'], true, [], { FORCE_COLOR: true });
 
         expect(stderr).toBeFalsy();
         const output = isWebpack5 ? 'successfully' : 'main.js';
@@ -23,10 +23,13 @@ describe('colors related tests', () => {
     });
 
     it('should work with the "stats" option from flags and from configuration', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, [
-            '--stats=verbose',
-            `--config=${resolve(__dirname, './no-stats.webpack.config.js')}`,
-        ]);
+        const { stderr, stdout, exitCode } = run(
+            __dirname,
+            ['--stats=verbose', `--config=${resolve(__dirname, './no-stats.webpack.config.js')}`],
+            true,
+            [],
+            { FORCE_COLOR: true },
+        );
 
         expect(stderr).toBeFalsy();
         const output = isWebpack5 ? 'successfully' : 'main.js';
@@ -35,7 +38,9 @@ describe('colors related tests', () => {
     });
 
     it('should work with the "stats" option from flags and from configuration #2', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--stats=verbose', '--config=stats-string.webpack.config.js']);
+        const { stderr, stdout, exitCode } = run(__dirname, ['--stats=verbose', '--config=stats-string.webpack.config.js'], true, [], {
+            FORCE_COLOR: true,
+        });
 
         expect(stderr).toBeFalsy();
         const output = isWebpack5 ? 'successfully' : 'main.js';
@@ -63,7 +68,7 @@ describe('colors related tests', () => {
     });
 
     it('should work with the "stats" option from the configuration', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--config=stats-string.webpack.config.js']);
+        const { stderr, stdout, exitCode } = run(__dirname, ['--config=stats-string.webpack.config.js'], true, [], { FORCE_COLOR: true });
 
         expect(stderr).toBeFalsy();
         const output = isWebpack5 ? 'successfully' : 'main.js';
@@ -72,7 +77,7 @@ describe('colors related tests', () => {
     });
 
     it('should work with the "stats" option from the configuration #1', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--config=stats-boolean.webpack.config.js']);
+        const { stderr, stdout, exitCode } = run(__dirname, ['--config=stats-boolean.webpack.config.js'], true, [], { FORCE_COLOR: true });
 
         expect(stderr).toBeFalsy();
         const output = isWebpack5 ? 'successfully' : 'main.js';
@@ -81,7 +86,7 @@ describe('colors related tests', () => {
     });
 
     it('should work with the "stats" option from the configuration #2', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--config=no-stats.webpack.config.js']);
+        const { stderr, stdout, exitCode } = run(__dirname, ['--config=no-stats.webpack.config.js'], true, [], { FORCE_COLOR: true });
 
         expect(stderr).toBeFalsy();
         const output = isWebpack5 ? 'successfully' : 'main.js';

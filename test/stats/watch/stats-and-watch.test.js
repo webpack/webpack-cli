@@ -8,7 +8,7 @@ describe('stats and watch', () => {
 
         expect(stdout).toContain('[webpack-cli] [32mCompilation starting...[39m');
         expect(stdout).toContain('[webpack-cli] [32mCompilation finished[39m');
-        expect(stdout).toContain('[webpack-cli] [32mwatching files for updates...[39m');
+        expect(stdout).toContain('[webpack-cli] [32mCompilation is watching files for updates...[39m');
         expect(stderr).toBeFalsy();
     });
 
@@ -17,7 +17,7 @@ describe('stats and watch', () => {
 
         expect(stdout).toContain('[webpack-cli] [32mCompilation starting...[39m');
         expect(stdout).toContain('[webpack-cli] [32mCompilation finished[39m');
-        expect(stdout).toContain('[webpack-cli] [32mwatching files for updates...[39m');
+        expect(stdout).toContain('[webpack-cli] [32mCompilation is watching files for updates...[39m');
         expect(stderr).toBeFalsy();
     });
 
@@ -28,7 +28,7 @@ describe('stats and watch', () => {
 
         expect(stdout).toContain('[webpack-cli] [32mCompilation starting...[39m');
         expect(stdout).toContain('[webpack-cli] [32mCompilation finished[39m');
-        expect(stdout).toContain('[webpack-cli] [32mwatching files for updates...[39m');
+        expect(stdout).toContain('[webpack-cli] [32mCompilation is watching files for updates...[39m');
         expect(stdout).toContain(output);
         expect(stderr).toBeFalsy();
     });

@@ -142,12 +142,12 @@ describe('mode flags with config', () => {
     });
 
     it('only config where mode is absent pick up from NODE_ENV', () => {
-        const { stdout, stderr, exitCode } = run(__dirname, ['-c', './webpack.config3.js', '-c', './webpack.config2.js'], false, [], {
+        const { exitCode, stderr, stdout } = run(__dirname, ['-c', './webpack.config3.js', '-c', './webpack.config2.js'], false, [], {
             NODE_ENV: 'production',
         });
 
-        expect(stderr).toBeFalsy();
         expect(exitCode).toEqual(0);
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain(`mode: 'production'`);
         expect(stdout).toContain(`mode: 'development'`);
         expect(stdout.match(new RegExp("mode: 'production'", 'g')).length).toEqual(1);

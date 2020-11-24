@@ -46,12 +46,17 @@ describe('watch config related flag', () => {
 
         if (flag.type === String) {
             it(`should config --${flag.name} correctly`, () => {
-                let { stderr, stdout } = run(__dirname, [`--${flag.name}`, 'ignore.js']);
-                expect(stderr).toBeFalsy();
                 if (propName === 'poll') {
-                    stdout = run(__dirname, [`--${flag.name}`, '10']).stdout;
-                    expect(stdout).toContain(`watchOptions: { ${propName}: 10 }`);
+                    const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, '200']);
+
+                    expect(exitCode).toBe(0);
+                    expect(stderr).toBeFalsy();
+                    expect(stdout).toContain(`watchOptions: { ${propName}: 200 }`);
                 } else {
+                    const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'ignore.js']);
+
+                    expect(exitCode).toBe(0);
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`watchOptions: { ${propName}: [ 'ignore.js' ] }`);
                 }
             });

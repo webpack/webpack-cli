@@ -10,6 +10,7 @@ describe('source-map object', () => {
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
         expect(exitCode).toBe(0);
+
         readdir(resolve(__dirname, 'dist'), (err, files) => {
             expect(err).toBe(null);
             expect(files.length).toBe(3);
@@ -22,6 +23,7 @@ describe('source-map object', () => {
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
         expect(exitCode).toBe(0);
+
         readdir(resolve(__dirname, 'binary'), (err, files) => {
             expect(err).toBe(null);
             expect(files.length).toBe(4);

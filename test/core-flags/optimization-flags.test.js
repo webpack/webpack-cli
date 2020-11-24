@@ -20,16 +20,23 @@ describe('optimization config related flag', () => {
 
         if (flag.type === Boolean) {
             it(`should config --${flag.name} correctly`, () => {
-                const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`]);
-
-                expect(stderr).toBeFalsy();
-                expect(exitCode).toBe(0);
                 if (flag.name === 'optimization-split-chunks') {
-                    expect(stdout).toContain(`chunks: 'async'`);
-                    expect(stdout).toContain(`minChunks: 1`);
+                    const { exitCode, stderr, stdout } = run(__dirname, [`--no-${flag.name}`]);
+
+                    expect(exitCode).toBe(0);
+                    expect(stderr).toBeFalsy();
+                    expect(stdout).toContain(`splitChunks: false`);
                 } else if (flag.name.includes('reset')) {
+                    const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`]);
+
+                    expect(exitCode).toBe(0);
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: []`);
                 } else {
+                    const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`]);
+
+                    expect(exitCode).toBe(0);
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: true`);
                 }
             });
@@ -53,24 +60,41 @@ describe('optimization config related flag', () => {
         // need improve the plugin to log for multi-level options i.e, optimization.runtime
         if (flag.type === String && !flag.name.includes('runtime-') && !flag.name.includes('fallback-')) {
             it(`should config --${flag.name} correctly`, () => {
-                let { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`, 'named']);
-
-                expect(stderr).toBeFalsy();
-                expect(exitCode).toBe(0);
                 if (flag.name === 'optimization-split-chunks-chunks') {
-                    stdout = run(__dirname, [`--${flag.name}`, 'initial']).stdout;
+                    const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'initial']);
+
+                    expect(exitCode).toBe(0);
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`chunks: 'initial'`);
                 } else if (flag.name === 'optimization-mangle-exports') {
-                    stdout = run(__dirname, ['--optimization-mangle-exports', 'size']).stdout;
+                    const { exitCode, stderr, stdout } = run(__dirname, ['--optimization-mangle-exports', 'size']);
+
+                    expect(exitCode).toBe(0);
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`mangleExports: 'size'`);
                 } else if (flag.name === 'optimization-used-exports') {
-                    stdout = run(__dirname, ['--optimization-used-exports', 'global']).stdout;
+                    const { exitCode, stderr, stdout } = run(__dirname, ['--optimization-used-exports', 'global']);
+
+                    expect(exitCode).toBe(0);
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`usedExports: 'global'`);
                 } else if (flag.name === 'optimization-split-chunks-default-size-types') {
+                    const { exitCode, stderr, stdout } = run(__dirname, ['--optimization-split-chunks-default-size-types', 'global']);
+
+                    expect(exitCode).toBe(0);
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`defaultSizeTypes: [Array]`);
                 } else if (flag.name === 'optimization-side-effects') {
+                    const { exitCode, stderr, stdout } = run(__dirname, ['--optimization-side-effects', 'flag']);
+
+                    expect(exitCode).toBe(0);
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: 'flag'`);
                 } else {
+                    const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`, 'named']);
+
+                    expect(exitCode).toBe(0);
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: 'named'`);
                 }
             });

@@ -1,39 +1,26 @@
 'use strict';
 const { run } = require('../utils/test-utils');
-const { stat } = require('fs');
+const { readFileSync } = require('fs');
 const { resolve } = require('path');
-const { yellow } = require('colorette');
 
 describe('--hot flag', () => {
-    it('should be successful when --hot is passed', (done) => {
+    it('should be successful when --hot is passed', () => {
         const { stderr, stdout, exitCode } = run(__dirname, ['--hot']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain('HotModuleReplacementPlugin');
-
-        stat(resolve(__dirname, './bin/main.js'), (err, stats) => {
-            expect(err).toBe(null);
-            expect(stats.isFile()).toBe(true);
-            done();
-        });
+        expect(stdout).toBeTruthy();
+        expect(readFileSync(resolve(__dirname, './bin/main.js')).toString()).toContain('/* webpack/runtime/hot module replacement */');
     });
 
-    it('should warn when --hot and --no-hot both are passed', (done) => {
+    it('should warn when --hot and --no-hot both are passed', () => {
         const { stderr, stdout, exitCode } = run(__dirname, ['--no-hot', '--hot']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toContain(
-            `[webpack-cli] ${yellow(
-                'You provided both --hot and --no-hot. We will use only the last of these flags that you provided in your CLI arguments',
-            )}`,
+            `[webpack-cli] You provided both --hot and --no-hot. We will use only the last of these flags that you provided in your CLI arguments`,
         );
-        expect(stdout).toContain('HotModuleReplacementPlugin');
-
-        stat(resolve(__dirname, './bin/main.js'), (err, stats) => {
-            expect(err).toBe(null);
-            expect(stats.isFile()).toBe(true);
-            done();
-        });
+        expect(stdout).toBeTruthy();
+        expect(readFileSync(resolve(__dirname, './bin/main.js')).toString()).toContain('/* webpack/runtime/hot module replacement */');
     });
 });

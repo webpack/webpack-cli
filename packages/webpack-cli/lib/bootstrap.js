@@ -46,13 +46,13 @@ const runCLI = async (cliArgs) => {
 
         if (parsedArgs.unknownArgs.length > 0) {
             parsedArgs.unknownArgs.forEach((unknown) => {
-                logger.error(`Unknown argument: ${unknown}`);
+                logger.error(`Unknown argument: '${unknown}'`);
 
                 const strippedFlag = unknown.substr(2);
-                const { name: suggestion } = flags.find((flag) => leven(strippedFlag, flag.name) < 3);
+                const found = flags.find((flag) => leven(strippedFlag, flag.name) < 3);
 
-                if (suggestion) {
-                    logger.raw(`Did you mean --${suggestion}?`);
+                if (found) {
+                    logger.raw(`Did you mean '--${found.name}'?`);
                 }
             });
 
