@@ -16,15 +16,21 @@ const { logger } = utils;
  * @returns {Object[]} array of resulting servers
  */
 export default function startDevServer(compiler, devServerArgs): object[] {
-    let Server;
+    let isDevServer4 = false,
+        devServerVersion,
+        Server;
     try {
+        // eslint-disable-next-line node/no-extraneous-require
+        devServerVersion = require('webpack-dev-server/package.json').version;
         // eslint-disable-next-line node/no-extraneous-require
         Server = require('webpack-dev-server/lib/Server');
     } catch (err) {
         logger.error(`You need to install 'webpack-dev-server' for running 'webpack serve'.\n${err}`);
         process.exit(2);
     }
-    const cliOptions = createConfig(devServerArgs);
+    isDevServer4 = devServerVersion.startsWith('4');
+
+    const cliOptions = createConfig(devServerArgs, isDevServer4);
     const devServerOptions = getDevServerOptions(compiler);
 
     const servers = [];
@@ -33,16 +39,21 @@ export default function startDevServer(compiler, devServerArgs): object[] {
     devServerOptions.forEach((devServerOpts): void => {
         const options = mergeOptions(cliOptions, devServerOpts);
         options.host = options.host || 'localhost';
-        options.port = options.port || 8080;
-
-        const portNum = +options.port;
-
-        if (usedPorts.find((port) => portNum === port)) {
-            throw new Error(
-                'Unique ports must be specified for each devServer option in your webpack configuration. Alternatively, run only 1 devServer config using the --config-name flag to specify your desired config.',
-            );
+        // devSever v4 handles the default port itself
+        if (!isDevServer4) {
+            options.port = options.port || 8080;
         }
-        usedPorts.push(portNum);
+
+        if (options.port) {
+            const portNum = +options.port;
+
+            if (usedPorts.find((port) => portNum === port)) {
+                throw new Error(
+                    'Unique ports must be specified for each devServer option in your webpack configuration. Alternatively, run only 1 devServer config using the --config-name flag to specify your desired config.',
+                );
+            }
+            usedPorts.push(portNum);
+        }
 
         const server = new Server(compiler, options);
         server.listen(options.port, options.host, (err): void => {
