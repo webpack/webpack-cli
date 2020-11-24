@@ -325,7 +325,7 @@ class WebpackCLI {
                 options.target = args.target;
             }
 
-            if (args.watch) {
+            if (typeof args.watch !== 'undefined') {
                 options.watch = args.watch;
             }
 

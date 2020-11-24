@@ -210,15 +210,16 @@ const builtInFlags = [
         description: 'Sets the build target e.g. node',
         link: 'https://webpack.js.org/configuration/target/#target',
     },
-    // TODO implement `no-watch`
     {
         name: 'watch',
         usage: '--watch',
         type: Boolean,
+        negative: true,
         alias: 'w',
         description: 'Watch for files changes',
         link: 'https://webpack.js.org/configuration/watch/',
     },
+    // TODO `--no-devtool`
     {
         name: 'devtool',
         usage: '--devtool <value>',
