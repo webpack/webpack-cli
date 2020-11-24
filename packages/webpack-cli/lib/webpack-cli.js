@@ -255,6 +255,7 @@ class WebpackCLI {
 
                         return accumulator;
                     }, {});
+                // TODO avoid using extra `getArguments`, we already run it before
                 const coreCliArgs = coreCliHelper.getArguments();
                 const problems = coreCliHelper.processArguments(coreCliArgs, options, coreConfig);
 
