@@ -6,7 +6,7 @@ const { writeFileSync, existsSync } = require('fs');
 const { options: coloretteOptions, yellow } = require('colorette');
 
 const logger = require('./utils/logger');
-const { flags, flagsFromCore } = require('./utils/cli-flags');
+const { flags, flagsFromCore, cliArguments } = require('./utils/cli-flags');
 const argParser = require('./utils/arg-parser');
 const CLIPlugin = require('./plugins/CLIPlugin');
 const promptInstallation = require('./utils/prompt-installation');
@@ -254,9 +254,7 @@ class WebpackCLI {
 
                         return accumulator;
                     }, {});
-                // TODO avoid using extra `getArguments`, we already run it before
-                const coreCliArgs = coreCliHelper.getArguments();
-                const problems = coreCliHelper.processArguments(coreCliArgs, options, coreConfig);
+                const problems = coreCliHelper.processArguments(cliArguments, options, coreConfig);
 
                 if (problems) {
                     problems.forEach((problem) => {
