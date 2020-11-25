@@ -1,4 +1,4 @@
-const { run } = require('../utils/test-utils');
+const { run, isWebpack5 } = require('../utils/test-utils');
 
 describe('unknown behaviour', () => {
     it('should log error if an unknown flag is passed in', () => {
@@ -34,6 +34,9 @@ describe('unknown behaviour', () => {
         const { stderr, stdout, exitCode } = run(__dirname, ['--output-fileneme', '[name].js']);
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Unknown argument: '--output-fileneme'");
-        expect(stdout).toContain("Did you mean '--output-filename'?");
+
+        if (isWebpack5) {
+            expect(stdout).toContain("Did you mean '--output-filename'?");
+        }
     });
 });
