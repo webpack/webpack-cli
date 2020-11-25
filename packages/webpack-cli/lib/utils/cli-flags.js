@@ -210,11 +210,11 @@ const builtInFlags = [
         description: 'Sets the build target e.g. node',
         link: 'https://webpack.js.org/configuration/target/#target',
     },
-    // TODO `--no-devtool`
     {
         name: 'devtool',
         usage: '--devtool <value>',
         type: String,
+        negative: true,
         alias: 'd',
         description: 'Determine source maps to use',
         link: 'https://webpack.js.org/configuration/devtool/#devtool',
