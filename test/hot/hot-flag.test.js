@@ -10,7 +10,7 @@ describe('--hot flag', () => {
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
-        expect(readFileSync(resolve(__dirname, './bin/main.js')).toString()).toContain('/* webpack/runtime/hot module replacement */');
+        expect(readFileSync(resolve(__dirname, './bin/main.js')).toString()).toContain('webpackHotUpdate');
     });
 
     it('should warn when --hot and --no-hot both are passed', () => {
@@ -21,6 +21,6 @@ describe('--hot flag', () => {
             `[webpack-cli] You provided both --hot and --no-hot. We will use only the last of these flags that you provided in your CLI arguments`,
         );
         expect(stdout).toBeTruthy();
-        expect(readFileSync(resolve(__dirname, './bin/main.js')).toString()).toContain('/* webpack/runtime/hot module replacement */');
+        expect(readFileSync(resolve(__dirname, './bin/main.js')).toString()).toContain('webpackHotUpdate');
     });
 });

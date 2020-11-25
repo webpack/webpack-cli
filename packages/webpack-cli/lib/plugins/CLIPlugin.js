@@ -9,10 +9,11 @@ class CLIPlugin {
 
     setupHotPlugin(compiler) {
         const { HotModuleReplacementPlugin } = compiler.webpack || webpack;
+        const hotModuleReplacementPlugin = Boolean(compiler.options.plugins.find((plugin) => plugin instanceof HotModuleReplacementPlugin));
 
-        // TODO check exists
-        // TODO no negative
-        new HotModuleReplacementPlugin().apply(compiler);
+        if (!hotModuleReplacementPlugin) {
+            new HotModuleReplacementPlugin().apply(compiler);
+        }
     }
 
     setupPrefetchPlugin(compiler) {
@@ -24,30 +25,24 @@ class CLIPlugin {
     async setupBundleAnalyzerPlugin(compiler) {
         // eslint-disable-next-line node/no-extraneous-require
         const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+        const bundleAnalyzerPlugin = Boolean(compiler.options.plugins.find((plugin) => plugin instanceof BundleAnalyzerPlugin));
 
-        // TODO check exists
-        new BundleAnalyzerPlugin().apply(compiler);
+        if (!bundleAnalyzerPlugin) {
+            new BundleAnalyzerPlugin().apply(compiler);
+        }
     }
 
     setupProgressPlugin(compiler) {
         const { ProgressPlugin } = compiler.webpack || webpack;
+        const progressPlugin = Boolean(compiler.options.plugins.find((plugin) => plugin instanceof ProgressPlugin));
 
-        let progressPluginExists;
-
-        if (compiler.options.plugins) {
-            progressPluginExists = Boolean(compiler.options.plugins.find((plugin) => plugin instanceof ProgressPlugin));
-        }
-
-        if (!progressPluginExists) {
+        if (!progressPlugin) {
             if (typeof this.options.progress === 'string' && this.options.progress !== 'profile') {
                 logger.error(`'${this.options.progress}' is an invalid value for the --progress option. Only 'profile' is allowed.`);
                 process.exit(2);
             }
 
-            const isProfile = this.options.progress === 'profile';
-
-            // TODO need header for multi compiler mode
-            new ProgressPlugin({ profile: isProfile }).apply(compiler);
+            new ProgressPlugin({ profile: this.options.progress === 'profile' }).apply(compiler);
         }
     }
 
