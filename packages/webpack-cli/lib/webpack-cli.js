@@ -203,7 +203,6 @@ class WebpackCLI {
 
             const mergedConfigPaths = [];
 
-            // TODO need to implement the `--merge-strategy` flag
             config.options = config.options.reduce((accumulator, options) => {
                 const configPath = config.path.get(options);
                 const mergedOptions = webpackMerge(accumulator, options);
