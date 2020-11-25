@@ -1,6 +1,5 @@
 import { utils } from 'webpack-cli';
 
-import createConfig from './createConfig';
 import getDevServerOptions from './getDevServerOptions';
 import mergeOptions from './mergeOptions';
 
@@ -15,7 +14,7 @@ const { logger } = utils;
  *
  * @returns {Object[]} array of resulting servers
  */
-export default function startDevServer(compiler, devServerArgs): object[] {
+export default function startDevServer(compiler, cliOptions): object[] {
     let isDevServer4 = false,
         devServerVersion,
         Server;
@@ -30,7 +29,6 @@ export default function startDevServer(compiler, devServerArgs): object[] {
     }
     isDevServer4 = devServerVersion.startsWith('4');
 
-    const cliOptions = createConfig(devServerArgs, isDevServer4);
     const devServerOptions = getDevServerOptions(compiler);
 
     const servers = [];

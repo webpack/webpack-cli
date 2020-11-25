@@ -28,6 +28,7 @@ const argParser = (options, args, argsOnly = false, name = '') => {
     }
 
     const parser = new commander.Command();
+    const processors = {};
 
     // Set parser name
     parser.name(name);
@@ -151,6 +152,15 @@ const argParser = (options, args, argsOnly = false, name = '') => {
             parserInstance.option(negatedFlag, `negates ${option.name}`).action(() => {});
         }
 
+        if (option.processor) {
+            // camel-case
+            const attributeName = option.name.split('-').reduce((str, word) => {
+                return str + word[0].toUpperCase() + word.slice(1);
+            });
+
+            processors[attributeName] = option.processor;
+        }
+
         return parserInstance;
     }, parser);
 
@@ -192,6 +202,8 @@ const argParser = (options, args, argsOnly = false, name = '') => {
     Object.keys(opts).forEach((key) => {
         if (opts[key] === undefined) {
             delete opts[key];
+        } else if (processors[key]) {
+            processors[key](opts);
         }
     });
 

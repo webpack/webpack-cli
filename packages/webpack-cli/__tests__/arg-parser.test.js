@@ -96,6 +96,16 @@ const basicOptions = [
         multiple: true,
         description: 'multi flag',
     },
+    {
+        name: 'processor-flag',
+        usage: '--processor-flag',
+        type: Boolean,
+        description: 'flag with processor',
+        processor(opts) {
+            opts.processed = opts.processorFlag;
+            delete opts.processorFlag;
+        },
+    },
 ];
 
 const helpAndVersionOptions = basicOptions.slice(0);
@@ -417,6 +427,16 @@ describe('arg-parser', () => {
         const res = argParser(basicOptions, ['--unknown-flag'], true);
         expect(res.unknownArgs).toEqual(['--unknown-flag']);
         expect(res.opts).toEqual({
+            stringFlagWithDefault: 'default-value',
+        });
+        expect(warnMock.mock.calls.length).toEqual(0);
+    });
+
+    it('parses --processor-flag', () => {
+        const res = argParser(basicOptions, ['--processor-flag'], true);
+        expect(res.unknownArgs.length).toEqual(0);
+        expect(res.opts).toEqual({
+            processed: true,
             stringFlagWithDefault: 'default-value',
         });
         expect(warnMock.mock.calls.length).toEqual(0);
