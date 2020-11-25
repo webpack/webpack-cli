@@ -258,7 +258,6 @@ class WebpackCLI {
 
                 if (problems) {
                     problems.forEach((problem) => {
-                        // TODO better error
                         logger.error(
                             `Found the '${problem.type}' problem with the '--${problem.argument}' argument${
                                 problem.path ? ` by path '${problem.path}'` : ''
