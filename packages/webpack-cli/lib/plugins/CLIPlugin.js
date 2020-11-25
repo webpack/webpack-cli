@@ -75,7 +75,7 @@ class CLIPlugin {
             logger.log(`File '${filename}' was modified, changed time is ${date} (timestamp is ${changeTime})`);
         });
 
-        compiler.hooks.afterDone.tap(pluginName, (stats) => {
+        (compiler.webpack ? compiler.hooks.afterDone : compiler.hooks.done).tap(pluginName, (stats) => {
             logger.success(`Compilation${getCompilationName(stats.compilation)} finished`);
 
             process.nextTick(() => {
