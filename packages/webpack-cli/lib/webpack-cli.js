@@ -313,7 +313,6 @@ class WebpackCLI {
         // Logic for webpack@4
         // TODO remove after drop webpack@4
         const processLegacyArguments = (options) => {
-            // TODO double check all flags
             if (args.entry) {
                 options.entry = args.entry;
             }
@@ -326,8 +325,8 @@ class WebpackCLI {
                 options.target = args.target;
             }
 
-            if (typeof args.watch !== 'undefined') {
-                options.watch = args.watch;
+            if (args.devtool) {
+                options.devtool = args.devtool;
             }
 
             if (args.mode) {
@@ -341,16 +340,16 @@ class WebpackCLI {
                 options.mode = process.env.NODE_ENV;
             }
 
-            if (args.devtool) {
-                options.devtool = args.devtool;
+            if (args.name) {
+                options.name = args.name;
             }
 
             if (typeof args.stats !== 'undefined') {
                 options.stats = args.stats;
             }
 
-            if (args.name) {
-                options.name = args.name;
+            if (typeof args.watch !== 'undefined') {
+                options.watch = args.watch;
             }
 
             return options;

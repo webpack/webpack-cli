@@ -210,15 +210,6 @@ const builtInFlags = [
         description: 'Sets the build target e.g. node',
         link: 'https://webpack.js.org/configuration/target/#target',
     },
-    {
-        name: 'watch',
-        usage: '--watch',
-        type: Boolean,
-        negative: true,
-        alias: 'w',
-        description: 'Watch for files changes',
-        link: 'https://webpack.js.org/configuration/watch/',
-    },
     // TODO `--no-devtool`
     {
         name: 'devtool',
@@ -236,6 +227,13 @@ const builtInFlags = [
         link: 'https://webpack.js.org/concepts/#mode',
     },
     {
+        name: 'name',
+        usage: '--name',
+        type: String,
+        description: 'Name of the configuration. Used when loading multiple configurations.',
+        link: 'https://webpack.js.org/configuration/other-options/#name',
+    },
+    {
         name: 'stats',
         usage: '--stats <value>',
         type: [String, Boolean],
@@ -244,11 +242,13 @@ const builtInFlags = [
         link: 'https://webpack.js.org/configuration/stats/#stats',
     },
     {
-        name: 'name',
-        usage: '--name',
-        type: String,
-        description: 'Name of the configuration. Used when loading multiple configurations.',
-        link: 'https://webpack.js.org/configuration/other-options/#name',
+        name: 'watch',
+        usage: '--watch',
+        type: Boolean,
+        negative: true,
+        alias: 'w',
+        description: 'Watch for files changes',
+        link: 'https://webpack.js.org/configuration/watch/',
     },
 ];
 
