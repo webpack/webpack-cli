@@ -6,7 +6,7 @@ const { writeFileSync, existsSync } = require('fs');
 const { options: coloretteOptions, yellow } = require('colorette');
 
 const logger = require('./utils/logger');
-const { flags, cliArguments } = require('./utils/cli-flags');
+const { cli, flags } = require('./utils/cli-flags');
 const argParser = require('./utils/arg-parser');
 const CLIPlugin = require('./plugins/CLIPlugin');
 const promptInstallation = require('./utils/prompt-installation');
@@ -198,6 +198,7 @@ class WebpackCLI {
         return config;
     }
 
+    // TODO refactor
     async resolveArguments(config, args) {
         if (args.analyze) {
             if (!packageExists('webpack-bundle-analyzer')) {
@@ -218,27 +219,25 @@ class WebpackCLI {
             return config;
         }
 
-        const coreCliHelper = require('webpack').cli;
-
-        if (coreCliHelper) {
-            // TODO refactor code and avoid using `cliArguments`
+        if (cli) {
             const processArguments = (options) => {
                 const coreFlagMap = flags
                     .filter((flag) => flag.group === 'core')
-                    .reduce((accumulator, item) => {
-                        accumulator.set(item.name, item);
-
-                        return accumulator;
-                    }, new Map());
-                const coreConfig = Object.keys(args)
-                    .filter((arg) => coreFlagMap.has(toKebabCase(arg)))
-                    .reduce((accumulator, current) => {
-                        accumulator[toKebabCase(current)] = args[current];
+                    .reduce((accumulator, flag) => {
+                        accumulator[flag.name] = flag;
 
                         return accumulator;
                     }, {});
+                const coreConfig = Object.keys(args).reduce((accumulator, name) => {
+                    const kebabName = toKebabCase(name);
 
-                const problems = coreCliHelper.processArguments(cliArguments, options, coreConfig);
+                    if (coreFlagMap[kebabName]) {
+                        accumulator[kebabName] = args[name];
+                    }
+
+                    return accumulator;
+                }, {});
+                const problems = cli.processArguments(coreFlagMap, options, coreConfig);
 
                 if (problems) {
                     problems.forEach((problem) => {
