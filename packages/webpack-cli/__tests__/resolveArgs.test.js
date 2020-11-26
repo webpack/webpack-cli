@@ -71,9 +71,9 @@ describe('BasicResolver', () => {
     });
 
     it('should assign stats correctly', async () => {
-        const result = await basicResolver({ options: {} }, { stats: 'warning' });
+        const result = await basicResolver({ options: {} }, { stats: 'errors-warnings' });
 
-        expect(result.options.stats).toEqual('warning');
+        expect(result.options.stats).toEqual('errors-warnings');
     });
 
     targetValues.map((option) => {

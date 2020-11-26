@@ -1,5 +1,5 @@
 'use strict';
-const { run } = require('../../utils/test-utils');
+const { run, isWebpack5 } = require('../../utils/test-utils');
 
 describe('mode flags', () => {
     it('should not set mode=production by default', () => {
@@ -46,7 +46,12 @@ describe('mode flags', () => {
         const { stderr, exitCode } = run(__dirname, ['--mode', 'abcd']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain('configuration.mode should be one of these');
-        expect(stderr).toContain(`"development" | "production" | "none"`);
+
+        if (isWebpack5) {
+            expect(stderr).toContain("Found the 'invalid-value' problem with the '--mode' argument by path 'mode'");
+        } else {
+            expect(stderr).toContain('configuration.mode should be one of these');
+            expect(stderr).toContain(`"development" | "production" | "none"`);
+        }
     });
 });
