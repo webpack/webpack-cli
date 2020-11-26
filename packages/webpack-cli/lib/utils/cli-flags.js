@@ -268,6 +268,11 @@ const coreFlags = cli
               meta.usage = `--${flag}`;
           }
 
+          // TODO refactor it
+          if (flag === 'devtool' || flag === 'stats' || flag === 'watch') {
+              meta.negative = true;
+          }
+
           return { ...meta, name: flag, group: 'core' };
       })
     : [];
