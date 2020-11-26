@@ -18,7 +18,7 @@ describe('--hot flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toContain(
-            `[webpack-cli] You provided both --hot and --no-hot. We will use only the last of these flags that you provided in your CLI arguments`,
+            'You provided both --hot and --no-hot. We will use only the last of these flags that you provided in your CLI arguments',
         );
         expect(stdout).toBeTruthy();
         expect(readFileSync(resolve(__dirname, './bin/main.js')).toString()).toContain('webpackHotUpdate');
