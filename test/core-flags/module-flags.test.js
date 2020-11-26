@@ -1,9 +1,9 @@
 'use strict';
 
 const { run, hyphenToUpperCase } = require('../utils/test-utils');
-const { flagsFromCore } = require('../../packages/webpack-cli/lib/utils/cli-flags');
+const { flags } = require('../../packages/webpack-cli/lib/utils/cli-flags');
 
-const moduleFlags = flagsFromCore.filter(({ name }) => name.startsWith('module-'));
+const moduleFlags = flags.filter(({ name }) => name.startsWith('module-'));
 
 describe('module config related flag', () => {
     moduleFlags.forEach((flag) => {

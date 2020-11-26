@@ -1,9 +1,9 @@
 'use strict';
 
 const { run, hyphenToUpperCase } = require('../utils/test-utils');
-const { flagsFromCore } = require('../../packages/webpack-cli/lib/utils/cli-flags');
+const { flags } = require('../../packages/webpack-cli/lib/utils/cli-flags');
 
-const snapshotFlags = flagsFromCore.filter(({ name }) => name.startsWith('snapshot'));
+const snapshotFlags = flags.filter(({ name }) => name.startsWith('snapshot'));
 
 describe('snapshot config related flags', () => {
     snapshotFlags.forEach((flag) => {

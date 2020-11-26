@@ -1,9 +1,9 @@
 'use strict';
 
 const { run, hyphenToUpperCase } = require('../utils/test-utils');
-const { flagsFromCore } = require('../../packages/webpack-cli/lib/utils/cli-flags');
+const { flags } = require('../../packages/webpack-cli/lib/utils/cli-flags');
 
-const optimizationFlags = flagsFromCore.filter(({ name }) => name.startsWith('optimization-'));
+const optimizationFlags = flags.filter(({ name }) => name.startsWith('optimization-'));
 
 describe('optimization config related flag', () => {
     optimizationFlags.forEach((flag) => {
