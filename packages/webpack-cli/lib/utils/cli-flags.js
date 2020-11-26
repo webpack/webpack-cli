@@ -268,9 +268,10 @@ const coreFlags = cli
               meta.usage = `--${flag}`;
           }
 
-          // TODO refactor it
-          if (flag === 'devtool' || flag === 'stats' || flag === 'watch') {
-              meta.negative = true;
+          const inBuiltIn = builtInFlags.find((builtInFlag) => builtInFlag.name === flag);
+
+          if (inBuiltIn) {
+              return { ...meta, name: flag, group: 'core', ...inBuiltIn };
           }
 
           return { ...meta, name: flag, group: 'core' };
