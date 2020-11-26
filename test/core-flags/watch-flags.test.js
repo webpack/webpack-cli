@@ -11,12 +11,13 @@ describe('watch config related flag', () => {
         const property = flag.name.split('watch-options-')[1];
         const propName = hyphenToUpperCase(property);
 
-        if (flag.type === Boolean) {
+        if (flag.type === Boolean && flag.name !== 'watch') {
             it(`should config --${flag.name} correctly`, () => {
                 const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`]);
 
                 expect(stderr).toBeFalsy();
                 expect(exitCode).toBe(0);
+
                 if (flag.name.includes('reset')) {
                     expect(stdout).toContain(`watchOptions: { ignored: [] }`);
                 } else {
