@@ -6,7 +6,7 @@ const { writeFileSync, existsSync } = require('fs');
 const { options: coloretteOptions, yellow } = require('colorette');
 
 const logger = require('./utils/logger');
-const { flags, flagsFromCore, cliArguments } = require('./utils/cli-flags');
+const { flags, cliArguments } = require('./utils/cli-flags');
 const argParser = require('./utils/arg-parser');
 const CLIPlugin = require('./plugins/CLIPlugin');
 const promptInstallation = require('./utils/prompt-installation');
@@ -220,14 +220,16 @@ class WebpackCLI {
 
         const coreCliHelper = require('webpack').cli;
 
-        // TODO bug in duplicate args from core + custom for v4
         if (coreCliHelper) {
+            // TODO refactor code and avoid using `cliArguments`
             const processArguments = (options) => {
-                const coreFlagMap = flagsFromCore.reduce((accumulator, item) => {
-                    accumulator.set(item.name, item);
+                const coreFlagMap = flags
+                    .filter((flag) => flag.group === 'core')
+                    .reduce((accumulator, item) => {
+                        accumulator.set(item.name, item);
 
-                    return accumulator;
-                }, new Map());
+                        return accumulator;
+                    }, new Map());
                 const coreConfig = Object.keys(args)
                     .filter((arg) => coreFlagMap.has(toKebabCase(arg)))
                     .reduce((accumulator, current) => {
@@ -235,6 +237,7 @@ class WebpackCLI {
 
                         return accumulator;
                     }, {});
+
                 const problems = coreCliHelper.processArguments(cliArguments, options, coreConfig);
 
                 if (problems) {
