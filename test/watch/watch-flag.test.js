@@ -59,41 +59,4 @@ describe('--watch flag', () => {
             }
         });
     });
-
-    it('should print compilation lifecycle', (done) => {
-        const proc = runAndGetWatchProc(__dirname, ['--watch', '--mode', 'development'], false, '', true);
-        let semaphore = 0;
-        proc.stdout.on('data', (chunk) => {
-            const data = stripAnsi(chunk.toString());
-
-            if (semaphore === 0 && data.includes('Compilation starting')) {
-                semaphore++;
-            }
-
-            if (semaphore === 1 && data.includes('index.js')) {
-                if (isWebpack5) {
-                    for (const word of wordsInStatsv5) {
-                        expect(data).toContain(word);
-                    }
-                } else {
-                    for (const word of wordsInStatsv4) {
-                        expect(data).toContain(word);
-                    }
-                }
-
-                semaphore++;
-            }
-
-            if (semaphore === 2 && data.includes('Compilation finished')) {
-                semaphore++;
-            }
-
-            if (semaphore === 3 && data.includes('Compilation is watching files for updates...')) {
-                semaphore++;
-
-                proc.kill();
-                done();
-            }
-        });
-    });
 });
