@@ -147,47 +147,28 @@ class WebpackCLI {
         }
 
         if (args.configName) {
-            // TODO refactor
-            const foundConfigNames = [];
+            const notfoundConfigNames = [];
 
-            if (Array.isArray(config.options)) {
-                config.options = config.options.filter((options) => {
-                    let found;
+            config.options = args.configName.map((configName) => {
+                let found;
 
-                    if (args.configName.includes(options.name)) {
-                        found = config;
-                    }
-
-                    if (found) {
-                        foundConfigNames.push(options.name);
-
-                        return true;
-                    }
-
-                    return false;
-                });
-                config.options = config.options.length === 1 ? config.options[0] : config.options;
-            } else {
-                const found = args.configName.includes(config.options.name);
-
-                if (found) {
-                    foundConfigNames.push(config.options.name);
+                if (Array.isArray(config.options)) {
+                    found = config.options.find((options) => options.name === configName);
+                } else {
+                    found = config.options.name === configName ? config.options : undefined;
                 }
-            }
 
-            // TODO improve this for same names
-            if (foundConfigNames.length !== args.configName.length) {
+                if (!found) {
+                    notfoundConfigNames.push(configName);
+                }
+
+                return found;
+            });
+
+            if (notfoundConfigNames.length > 0) {
                 logger.error(
-                    args.configName
-                        .filter((name) => !foundConfigNames.includes(name))
-                        .map((configName) => `Configuration with name "${configName}" was not found.`)
-                        .join('\n'),
+                    notfoundConfigNames.map((configName) => `Configuration with the "${configName}" name was not found.`).join(' '),
                 );
-                process.exit(2);
-            }
-
-            if (config.options.length === 0) {
-                logger.error('No configurations found');
                 process.exit(2);
             }
         }
