@@ -36,9 +36,9 @@ export default function startDevServer(compiler, cliOptions): object[] {
     const usedPorts: number[] = [];
     devServerOptions.forEach((devServerOpts): void => {
         const options = mergeOptions(cliOptions, devServerOpts);
-        options.host = options.host || 'localhost';
-        // devSever v4 handles the default port itself
+        // devSever v4 handles the default host and port itself
         if (!isDevServer4) {
+            options.host = options.host || 'localhost';
             options.port = options.port || 8080;
         }
 
