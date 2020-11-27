@@ -75,7 +75,7 @@ class CLIPlugin {
 
             process.nextTick(() => {
                 if (compiler.watchMode) {
-                    logger.success(`Compilation${getCompilationName(stats.compilation)} is watching files for updates...`);
+                    logger.success(`Compiler${getCompilationName(stats.compilation)} is watching files for updates...`);
                 }
             });
         });

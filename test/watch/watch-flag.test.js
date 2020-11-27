@@ -23,7 +23,7 @@ describe('--watch flag', () => {
         proc.stdout.on('data', (chunk) => {
             const data = stripAnsi(chunk.toString());
 
-            if (semaphore === 0 && data.includes('Compilation is watching files for updates...')) {
+            if (semaphore === 0 && data.includes('Compiler is watching files for updates...')) {
                 process.nextTick(() => {
                     writeFileSync(resolve(__dirname, './src/index.js'), `console.log('watch flag test');`);
 
@@ -53,7 +53,7 @@ describe('--watch flag', () => {
                 semaphore++;
             }
 
-            if (semaphore === 3 && data.includes('Compilation is watching files for updates...')) {
+            if (semaphore === 3 && data.includes('Compiler is watching files for updates...')) {
                 proc.kill();
                 done();
             }
