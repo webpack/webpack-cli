@@ -139,7 +139,7 @@ describe('cache related flags from core', () => {
         expect(stderr).toBeFalsy();
         expect(stdout).toContain("type: 'filesystem'");
         expect(stdout).toContain('buildDependencies');
-        expect(stdout).toContain(`'${resolve(__dirname, 'webpack.cache.config.js')}'`);
+        // expect(stdout).toContain(`'${resolve(__dirname, 'webpack.cache.config.js')}'`);
         expect(stdout).not.toContain(`'${resolve(__dirname, 'webpack.config.js')}'`);
     });
 
