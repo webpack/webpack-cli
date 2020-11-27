@@ -1,9 +1,9 @@
 'use strict';
 
 const { run, hyphenToUpperCase } = require('../utils/test-utils');
-const { flagsFromCore } = require('../../packages/webpack-cli/lib/utils/cli-flags');
+const { flags } = require('../../packages/webpack-cli/lib/utils/cli-flags');
 
-const statsFlags = flagsFromCore.filter(({ name }) => name.startsWith('stats-'));
+const statsFlags = flags.filter(({ name }) => name.startsWith('stats-'));
 
 describe('stats config related flag', () => {
     statsFlags.forEach((flag) => {
@@ -17,6 +17,7 @@ describe('stats config related flag', () => {
 
                 expect(stderr).toBeFalsy();
                 expect(exitCode).toBe(0);
+
                 if (flag.name.includes('reset')) {
                     const option = propName.split('Reset')[0];
                     expect(stdout).toContain(`stats: { ${option}: [] }`);
@@ -50,23 +51,36 @@ describe('stats config related flag', () => {
             const acceptsSingleValue = ['preset', 'modulesSort', 'logging', 'chunksSort', 'assetsSort'];
 
             it(`should config --${flag.name} correctly`, () => {
-                let { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`, 'log']);
-
-                expect(stderr).toBeFalsy();
-                expect(exitCode).toBe(0);
                 if (flag.name.includes('stats-colors')) {
+                    const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`, 'u001b[32m']);
                     const option = flag.name.split('stats-colors-')[1];
-                    stdout = run(__dirname, [`--${flag.name}`, 'u001b[32m']).stdout;
 
+                    expect(stderr).toBeFalsy();
+                    expect(exitCode).toBe(0);
                     expect(stdout).toContain(`stats: { colors: { ${option}: 'u001b[32m' } }`);
                 } else if (acceptsSingleValue.includes(propName)) {
+                    const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`, 'log']);
+
+                    expect(stderr).toBeFalsy();
+                    expect(exitCode).toBe(0);
                     expect(stdout).toContain(`stats: { ${propName}: 'log' }`);
                 } else if (flag.name === 'stats-context') {
+                    const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`, 'log']);
+
+                    expect(stderr).toBeFalsy();
+                    expect(exitCode).toBe(0);
                     expect(stdout).toContain('log');
                 } else if (flag.name === 'stats-entrypoints') {
-                    stdout = run(__dirname, [`--${flag.name}`, 'auto']).stdout;
+                    const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`, 'auto']);
+
+                    expect(stderr).toBeFalsy();
+                    expect(exitCode).toBe(0);
                     expect(stdout).toContain(`stats: { ${propName}: 'auto' }`);
                 } else {
+                    const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`, 'log']);
+
+                    expect(stderr).toBeFalsy();
+                    expect(exitCode).toBe(0);
                     expect(stdout).toContain(`stats: { ${propName}: [ 'log' ] }`);
                 }
             });

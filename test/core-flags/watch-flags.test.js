@@ -1,9 +1,9 @@
 'use strict';
 
 const { run, hyphenToUpperCase } = require('../utils/test-utils');
-const { flagsFromCore } = require('../../packages/webpack-cli/lib/utils/cli-flags');
+const { flags } = require('../../packages/webpack-cli/lib/utils/cli-flags');
 
-const watchFlags = flagsFromCore.filter(({ name }) => name.startsWith('watch'));
+const watchFlags = flags.filter(({ name }) => name.startsWith('watch'));
 
 describe('watch config related flag', () => {
     watchFlags.forEach((flag) => {
@@ -11,12 +11,13 @@ describe('watch config related flag', () => {
         const property = flag.name.split('watch-options-')[1];
         const propName = hyphenToUpperCase(property);
 
-        if (flag.type === Boolean) {
+        if (flag.type === Boolean && flag.name !== 'watch') {
             it(`should config --${flag.name} correctly`, () => {
                 const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`]);
 
                 expect(stderr).toBeFalsy();
                 expect(exitCode).toBe(0);
+
                 if (flag.name.includes('reset')) {
                     expect(stdout).toContain(`watchOptions: { ignored: [] }`);
                 } else {
@@ -46,12 +47,17 @@ describe('watch config related flag', () => {
 
         if (flag.type === String) {
             it(`should config --${flag.name} correctly`, () => {
-                let { stderr, stdout } = run(__dirname, [`--${flag.name}`, 'ignore.js']);
-                expect(stderr).toBeFalsy();
                 if (propName === 'poll') {
-                    stdout = run(__dirname, [`--${flag.name}`, '10']).stdout;
-                    expect(stdout).toContain(`watchOptions: { ${propName}: 10 }`);
+                    const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, '200']);
+
+                    expect(exitCode).toBe(0);
+                    expect(stderr).toBeFalsy();
+                    expect(stdout).toContain(`watchOptions: { ${propName}: 200 }`);
                 } else {
+                    const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'ignore.js']);
+
+                    expect(exitCode).toBe(0);
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`watchOptions: { ${propName}: [ 'ignore.js' ] }`);
                 }
             });

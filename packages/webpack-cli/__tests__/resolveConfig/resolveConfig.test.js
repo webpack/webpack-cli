@@ -22,8 +22,8 @@ describe('resolveConfig', function () {
             devtool: 'eval-cheap-module-source-map',
             target: 'node',
         };
+
         expect(result.options).toEqual(expectedOptions);
-        expect(result.outputOptions).toEqual({});
     });
 
     it('should return array for multiple config', async () => {
@@ -31,21 +31,21 @@ describe('resolveConfig', function () {
             config: [resolve(__dirname, './webpack.config1.cjs'), resolve(__dirname, './webpack.config2.cjs')],
         });
         const expectedOptions = [config1, config2];
+
         expect(result.options).toEqual(expectedOptions);
-        expect(result.outputOptions).toEqual({});
     });
 
     it('should return config object for single config', async () => {
         const result = await resolveConfig({ config: [resolve(__dirname, './webpack.config1.cjs')] });
+
         expect(result.options).toEqual(config1);
-        expect(result.outputOptions).toEqual({});
     });
 
     it('should return resolved config object for promise config', async () => {
         const result = await resolveConfig({ config: [resolve(__dirname, './webpack.promise.config.cjs')] });
         const expectedOptions = await promiseConfig();
+
         expect(result.options).toEqual(expectedOptions);
-        expect(result.outputOptions).toEqual({});
     });
 
     it('should handle configs returning different types', async () => {
@@ -54,8 +54,8 @@ describe('resolveConfig', function () {
         });
         const resolvedPromiseConfig = await promiseConfig();
         const expectedOptions = [resolvedPromiseConfig, ...arrayConfig];
+
         expect(result.options).toEqual(expectedOptions);
-        expect(result.outputOptions).toEqual({});
     });
 
     it('should handle different env formats', async () => {
@@ -64,7 +64,7 @@ describe('resolveConfig', function () {
             config: [resolve(__dirname, './env.webpack.config.cjs')],
         });
         const expectedOptions = { mode: 'staging', name: 'Hisoka' };
+
         expect(result.options).toEqual(expectedOptions);
-        expect(result.outputOptions).toEqual({});
     });
 });

@@ -30,18 +30,20 @@ const hyphenToUpperCase = (name) => {
  * @param {String} testCase The path to folder that contains the webpack.config.js
  * @param {Array} args Array of arguments to pass to webpack
  * @param {Boolean} setOutput Boolean that decides if a default output path will be set or not
+ * @param {Array<string>} nodeOptions Boolean that decides if a default output path will be set or not
+ * @param {Record<string, any>} env Boolean that decides if a default output path will be set or not
  * @returns {Object} The webpack output or Promise when nodeOptions are present
  */
-const run = (testCase, args = [], setOutput = true, nodeArgs = [], env) => {
+const run = (testCase, args = [], setOutput = true, nodeOptions = [], env) => {
     const cwd = path.resolve(testCase);
 
     const outputPath = path.resolve(testCase, 'bin');
-    const processExecutor = nodeArgs.length ? execaNode : spawnSync;
+    const processExecutor = nodeOptions.length ? execaNode : spawnSync;
     const argsWithOutput = setOutput ? args.concat('--output-path', outputPath) : args;
     const result = processExecutor(WEBPACK_PATH, argsWithOutput, {
         cwd,
         reject: false,
-        nodeOptions: nodeArgs,
+        nodeOptions: nodeOptions,
         env,
         stdio: ENABLE_LOG_COMPILATION ? 'inherit' : 'pipe',
     });

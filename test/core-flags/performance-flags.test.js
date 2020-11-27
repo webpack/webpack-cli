@@ -1,9 +1,9 @@
 'use strict';
 
 const { run, hyphenToUpperCase } = require('../utils/test-utils');
-const { flagsFromCore } = require('../../packages/webpack-cli/lib/utils/cli-flags');
+const { flags } = require('../../packages/webpack-cli/lib/utils/cli-flags');
 
-const performanceFlags = flagsFromCore.filter(({ name }) => name.startsWith('performance-'));
+const performanceFlags = flags.filter(({ name }) => name.startsWith('performance-'));
 
 describe('module config related flag', () => {
     it(`should config --performance option correctly`, () => {

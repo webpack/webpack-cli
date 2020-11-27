@@ -1,1 +1,3 @@
-console.log('Prefetched code');
+console.log('HERE');
+
+module.exports = 'async-value';

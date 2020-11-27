@@ -1,7 +1,7 @@
 /* eslint-disable node/no-unpublished-require */
 'use strict';
 
-const { run, isWebpack5, isWindows } = require('../../utils/test-utils');
+const { run, isWebpack5 } = require('../../utils/test-utils');
 
 const presets = ['normal', 'detailed', 'errors-only', 'errors-warnings', 'minimal', 'verbose', 'none'];
 
@@ -16,6 +16,7 @@ describe('stats flag', () => {
 
             expect(exitCode).toBe(0);
             expect(stderr).toBeFalsy();
+
             if (isWebpack5) {
                 expect(stdout).toContain(`stats: { preset: '${preset}' }`);
             } else {
@@ -37,20 +38,16 @@ describe('stats flag', () => {
     });
 
     it('should warn when an unknown flag stats value is passed', () => {
-        const { stderr, exitCode } = run(__dirname, ['--stats', 'foo']);
+        const { exitCode, stderr } = run(__dirname, ['--stats', 'foo']);
 
+        expect(exitCode).toEqual(2);
         expect(stderr).toBeTruthy();
-        expect(stderr).toContain('* configuration.stats should be one of these:');
+
         if (isWebpack5) {
-            expect(stderr).toContain(
-                `"none" | "summary" | "errors-only" | "errors-warnings" | "minimal" | "normal" | "detailed" | "verbose"`,
-            );
+            expect(stderr).toContain("Found the 'invalid-value' problem with the '--stats' argument by path 'stats'");
         } else {
+            expect(stderr).toContain('* configuration.stats should be one of these:');
             expect(stderr).toContain('"none" | "errors-only" | "minimal" | "normal" | "detailed" | "verbose" | "errors-warnings"');
-        }
-        // TODO - Fix exitcode check on windows
-        if (!isWindows) {
-            expect(exitCode).toEqual(2);
         }
     });
 });
