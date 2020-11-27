@@ -44,7 +44,6 @@ describe('cache related flags from core', () => {
         expect(stderr).toBeFalsy();
         expect(stdout).toContain("type: 'filesystem'");
         expect(stdout).toContain('test-cache-path');
-        expect(existsSync(resolve(__dirname, './test-cache-path'))).toBeTruthy();
     });
 
     it('should set cache.cacheLocation with --cache-cache-locations', () => {
@@ -99,7 +98,7 @@ describe('cache related flags from core', () => {
     });
 
     it('should assign cache build dependencies correctly when cache type is filesystem', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.config.js']);
+        let { stderr, stdout, exitCode } = run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.config.js']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -109,11 +108,11 @@ describe('cache related flags from core', () => {
         expect(stdout).not.toContain('[cached]');
 
         // Run again to check for cache
-        const newRun = run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.config.js']);
+        ({ exitCode, stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.config.js']));
 
-        expect(newRun.exitCode).toEqual(0);
-        expect(newRun.stderr).toBeFalsy();
-        expect(newRun.stdout).toContain('[cached]');
+        expect(exitCode).toEqual(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('[cached]');
     });
 
     it('should assign cache build dependencies correctly when cache type is filesystem in config', () => {

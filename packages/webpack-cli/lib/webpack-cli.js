@@ -219,39 +219,6 @@ class WebpackCLI {
             }
         }
 
-        // No need to run for webpack@4
-        if (cli) {
-            const setupDefaultOptions = (options) => {
-                if (options.cache && options.cache.type === 'filesystem' && config.path) {
-                    const configPath = config.path.get(options);
-
-                    if (configPath) {
-                        if (!options.cache.buildDependencies) {
-                            options.cache.buildDependencies = {};
-                        }
-
-                        if (!options.cache.buildDependencies.config) {
-                            options.cache.buildDependencies.config = [];
-                        }
-
-                        if (Array.isArray(configPath)) {
-                            configPath.forEach((item) => {
-                                options.cache.buildDependencies.config.push(item);
-                            });
-                        } else {
-                            options.cache.buildDependencies.config.push(configPath);
-                        }
-                    }
-                }
-
-                return options;
-            };
-
-            config.options = Array.isArray(config.options)
-                ? config.options.map((options) => setupDefaultOptions(options))
-                : setupDefaultOptions(config.options);
-        }
-
         if (Object.keys(args).length === 0 && !process.env.NODE_ENV) {
             return config;
         }
@@ -295,6 +262,37 @@ class WebpackCLI {
                 ? config.options.map((options) => processArguments(options))
                 : processArguments(config.options);
         }
+
+        const setupDefaultOptions = (options) => {
+            // No need to run for webpack@4
+            if (cli && options.cache && options.cache.type === 'filesystem') {
+                const configPath = config.path.get(options);
+
+                if (configPath) {
+                    if (!options.cache.buildDependencies) {
+                        options.cache.buildDependencies = {};
+                    }
+
+                    if (!options.cache.buildDependencies.config) {
+                        options.cache.buildDependencies.config = [];
+                    }
+
+                    if (Array.isArray(configPath)) {
+                        configPath.forEach((item) => {
+                            options.cache.buildDependencies.config.push(item);
+                        });
+                    } else {
+                        options.cache.buildDependencies.config.push(configPath);
+                    }
+                }
+            }
+
+            return options;
+        };
+
+        config.options = Array.isArray(config.options)
+            ? config.options.map((options) => setupDefaultOptions(options))
+            : setupDefaultOptions(config.options);
 
         // Logic for webpack@4
         // TODO remove after drop webpack@4
