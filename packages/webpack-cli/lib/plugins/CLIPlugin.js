@@ -1,6 +1,5 @@
 const packageExists = require('../utils/package-exists');
 const webpack = packageExists('webpack') ? require('webpack') : undefined;
-const logger = require('../utils/logger');
 
 class CLIPlugin {
     constructor(options) {
@@ -37,11 +36,6 @@ class CLIPlugin {
         const progressPlugin = Boolean(compiler.options.plugins.find((plugin) => plugin instanceof ProgressPlugin));
 
         if (!progressPlugin) {
-            if (typeof this.options.progress === 'string' && this.options.progress !== 'profile') {
-                logger.error(`'${this.options.progress}' is an invalid value for the --progress option. Only 'profile' is allowed.`);
-                process.exit(2);
-            }
-
             new ProgressPlugin({ profile: this.options.progress === 'profile' }).apply(compiler);
         }
     }
@@ -51,37 +45,40 @@ class CLIPlugin {
         const getCompilationName = (compilation) => (compilation.name ? ` '${compilation.name}'` : '');
 
         compiler.hooks.run.tap(pluginName, (compiler) => {
-            logger.success(`Compilation${getCompilationName(compiler)} starting...`);
+            this.logger.info(`Compilation${getCompilationName(compiler)} starting...`);
         });
 
         compiler.hooks.watchRun.tap(pluginName, (compiler) => {
             const { bail, watch } = compiler.options;
 
             if (bail && watch) {
-                logger.warn('You are using "bail" with "watch". "bail" will still exit webpack when the first error is found.');
+                this.logger.warn('You are using "bail" with "watch". "bail" will still exit webpack when the first error is found.');
             }
 
-            logger.success(`Compilation${getCompilationName(compiler)} starting...`);
+            this.logger.info(`Compilation${getCompilationName(compiler)} starting...`);
         });
 
         compiler.hooks.invalid.tap(pluginName, (filename, changeTime) => {
             const date = new Date(changeTime * 1000);
 
-            logger.log(`File '${filename}' was modified, changed time is ${date} (timestamp is ${changeTime})`);
+            this.logger.info(`File '${filename}' was modified`);
+            this.logger.log(`Changed time is ${date} (timestamp is ${changeTime})`);
         });
 
         (compiler.webpack ? compiler.hooks.afterDone : compiler.hooks.done).tap(pluginName, (stats) => {
-            logger.success(`Compilation${getCompilationName(stats.compilation)} finished`);
+            this.logger.info(`Compilation${getCompilationName(stats.compilation)} finished`);
 
             process.nextTick(() => {
                 if (compiler.watchMode) {
-                    logger.success(`Compiler${getCompilationName(stats.compilation)} is watching files for updates...`);
+                    this.logger.info(`Compiler${getCompilationName(stats.compilation)} is watching files for updates...`);
                 }
             });
         });
     }
 
     apply(compiler) {
+        this.logger = compiler.getInfrastructureLogger('webpack-cli');
+
         if (this.options.progress && this.options.helpfulOutput) {
             this.setupProgressPlugin(compiler);
         }
