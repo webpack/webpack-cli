@@ -1,6 +1,6 @@
 export type devServerOptionsType = {
     bonjour?: boolean;
-    client?: object;
+    client?: devServerClientOptions;
     compress?: boolean;
     dev?: object;
     firewall?: boolean | string[];
@@ -28,3 +28,20 @@ export type devServerOptionsType = {
     transportMode?: object | string;
     useLocalIp?: boolean;
 };
+
+type devServerClientOptions = {
+    host?: string;
+    path?: string;
+    port?: string | number | null;
+    logging?: devServerClientLogging;
+    progress?: boolean;
+};
+
+export enum devServerClientLogging {
+    none = 'none',
+    error = 'error',
+    warn = 'warn',
+    info = 'info',
+    log = 'log',
+    verbose = 'verbose',
+}

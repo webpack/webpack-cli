@@ -14,7 +14,7 @@ describe('startDevServer', () => {
         DevServer.mockClear();
     });
 
-    it('should start dev server correctly for single compiler', () => {
+    it('should start dev server correctly for single compiler', async () => {
         const config = {
             devServer: {
                 port: 9000,
@@ -24,7 +24,7 @@ describe('startDevServer', () => {
         };
         const compiler = webpack(config);
 
-        const servers = startDevServer(compiler, {
+        const servers = await startDevServer(compiler, {
             host: 'my.host',
             hot: true,
             progress: true,
@@ -43,13 +43,13 @@ describe('startDevServer', () => {
         expect(DevServer.mock.instances[0].listen.mock.calls[0]).toMatchSnapshot();
     });
 
-    it('should set default port and host if not provided', () => {
+    it('should set default port and host if not provided', async () => {
         const config = {
             devServer: {},
         };
         const compiler = webpack(config);
 
-        const servers = startDevServer(compiler, {});
+        const servers = await startDevServer(compiler, {});
 
         expect(servers.length).toEqual(1);
         expect(servers).toEqual(DevServer.mock.instances);
@@ -64,7 +64,7 @@ describe('startDevServer', () => {
         expect(DevServer.mock.instances[0].listen.mock.calls[0]).toMatchSnapshot();
     });
 
-    it('should start dev server correctly for multi compiler with 1 devServer config', () => {
+    it('should start dev server correctly for multi compiler with 1 devServer config', async () => {
         const config = [
             {
                 devServer: {
@@ -77,7 +77,7 @@ describe('startDevServer', () => {
         ];
         const compiler = webpack(config);
 
-        const servers = startDevServer(compiler, {
+        const servers = await startDevServer(compiler, {
             host: 'my.host',
             hot: true,
             progress: true,
@@ -96,7 +96,7 @@ describe('startDevServer', () => {
         expect(DevServer.mock.instances[0].listen.mock.calls[0]).toMatchSnapshot();
     });
 
-    it('should start dev servers correctly for multi compiler with 2 devServer configs', () => {
+    it('should start dev servers correctly for multi compiler with 2 devServer configs', async () => {
         const config = [
             {
                 devServer: {
@@ -113,7 +113,7 @@ describe('startDevServer', () => {
         ];
         const compiler = webpack(config);
 
-        const servers = startDevServer(compiler, {
+        const servers = await startDevServer(compiler, {
             // this progress CLI flag should override progress: false above
             progress: true,
         });
@@ -137,8 +137,8 @@ describe('startDevServer', () => {
         expect(DevServer.mock.instances[1].listen.mock.calls[0]).toMatchSnapshot();
     });
 
-    it('should handle 2 multi compiler devServer configs with conflicting ports', () => {
-        expect(() => {
+    it('should handle 2 multi compiler devServer configs with conflicting ports', async () => {
+        await expect(async () => {
             const config = [
                 {
                     devServer: {
@@ -153,8 +153,8 @@ describe('startDevServer', () => {
             ];
             const compiler = webpack(config);
 
-            startDevServer(compiler, {});
-        }).toThrow(
+            await startDevServer(compiler, {});
+        }).rejects.toThrow(
             'Unique ports must be specified for each devServer option in your webpack configuration. Alternatively, run only 1 devServer config using the --config-name flag to specify your desired config.',
         );
     });
