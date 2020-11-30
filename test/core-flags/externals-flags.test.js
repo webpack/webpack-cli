@@ -7,34 +7,38 @@ const externalsPresetsFlags = flags.filter(({ name }) => name.startsWith('extern
 
 describe('externals related flag', () => {
     it('should set externals properly', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--externals', './main.js']);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--externals', './main.js']);
 
-        expect(stderr).toBeFalsy();
         expect(exitCode).toBe(0);
+        expect(stderr).toContain("Compilation 'compiler' starting...");
+        expect(stderr).toContain("Compilation 'compiler' finished");
         expect(stdout).toContain(`externals: [ './main.js' ]`);
     });
 
     it('should set externalsType properly', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--externals', 'var']);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--externals', 'var']);
 
-        expect(stderr).toBeFalsy();
         expect(exitCode).toBe(0);
+        expect(stderr).toContain("Compilation 'compiler' starting...");
+        expect(stderr).toContain("Compilation 'compiler' finished");
         expect(stdout).toContain(`externalsType: 'var'`);
     });
 
     it('should accept --external-type values', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--externals-type', 'var']);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--externals-type', 'var']);
 
-        expect(stderr).toBeFalsy();
         expect(exitCode).toBe(0);
+        expect(stderr).toContain("Compilation 'compiler' starting...");
+        expect(stderr).toContain("Compilation 'compiler' finished");
         expect(stdout).toContain(`externalsType: 'var'`);
     });
 
     it('should reset externals', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--externals-reset']);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--externals-reset']);
 
-        expect(stderr).toBeFalsy();
         expect(exitCode).toBe(0);
+        expect(stderr).toContain("Compilation 'compiler' starting...");
+        expect(stderr).toContain("Compilation 'compiler' finished");
         expect(stdout).toContain(`externals: []`);
     });
 
@@ -44,18 +48,20 @@ describe('externals related flag', () => {
         const propName = hyphenToUpperCase(property);
 
         it(`should config --${flag.name} correctly`, () => {
-            const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`]);
+            const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`]);
 
-            expect(stderr).toBeFalsy();
             expect(exitCode).toBe(0);
+            expect(stderr).toContain("Compilation 'compiler' starting...");
+            expect(stderr).toContain("Compilation 'compiler' finished");
             expect(stdout).toContain(`${propName}: true`);
         });
 
         it(`should config --no-${flag.name} correctly`, () => {
-            const { stderr, stdout, exitCode } = run(__dirname, [`--no-${flag.name}`]);
+            const { exitCode, stderr, stdout } = run(__dirname, [`--no-${flag.name}`]);
 
-            expect(stderr).toBeFalsy();
             expect(exitCode).toBe(0);
+            expect(stderr).toContain("Compilation 'compiler' starting...");
+            expect(stderr).toContain("Compilation 'compiler' finished");
             expect(stdout).toContain(`${propName}: false`);
         });
     });

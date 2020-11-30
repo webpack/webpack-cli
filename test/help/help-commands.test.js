@@ -4,7 +4,7 @@ const { run } = require('../utils/test-utils');
 
 describe('commands help', () => {
     it('log help for subcommands', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['serve', 'help'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['serve', 'help'], false);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -12,7 +12,7 @@ describe('commands help', () => {
     });
 
     it('log help information with subcommands as an arg', () => {
-        const { stdout, stderr, exitCode } = run(__dirname, ['help', 'serve'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['help', 'serve'], false);
 
         expect(exitCode).toBe(0);
         expect(stdout).toContain('webpack s | serve');
@@ -20,7 +20,7 @@ describe('commands help', () => {
     });
 
     it('log error for invalid command with --help flag', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--help', 'myCommand'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--help', 'myCommand'], false);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Invalid command 'myCommand'.");
@@ -29,7 +29,7 @@ describe('commands help', () => {
     });
 
     it('log error for invalid command with help command', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['help', 'myCommand'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['help', 'myCommand'], false);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Invalid command 'myCommand'.");
@@ -38,7 +38,7 @@ describe('commands help', () => {
     });
 
     it('log error for multiple commands', () => {
-        const { stdout, stderr, exitCode } = run(__dirname, ['--help', 'init', 'info'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--help', 'init', 'info'], false);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("You provided multiple commands or arguments - command 'init' (alias 'c'), command 'info' (alias 'i').");

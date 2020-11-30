@@ -1,62 +1,62 @@
 'use strict';
-const { statSync } = require('fs');
+
 const { resolve } = require('path');
 const { run } = require('../../utils/test-utils');
 
 describe('output flag named bundles', () => {
     it('should output file given as flag instead of in configuration', () => {
-        const { stderr, exitCode } = run(__dirname, ['-c', resolve(__dirname, 'webpack.config.js'), '--output-path', './binary'], false);
+        const { exitCode, stderr, stdout } = run(
+            __dirname,
+            ['-c', resolve(__dirname, 'webpack.config.js'), '--output-path', './binary'],
+            false,
+        );
 
         expect(exitCode).toBe(0);
-        expect(stderr).toBeFalsy();
-
-        const stats = statSync(resolve(__dirname, './binary/a.bundle.js'));
-        expect(stats.isFile()).toBe(true);
+        expect(stderr).toContain('Compilation starting...');
+        expect(stderr).toContain('Compilation finished');
+        expect(stdout).toBeTruthy();
     });
 
     it('should resolve the path to binary/a.bundle.js as ./binary/a.bundle.js', () => {
-        const { stderr, exitCode } = run(__dirname, ['-c', resolve(__dirname, 'webpack.config.js'), '--output-path', 'binary'], false);
+        const { exitCode, stderr, stdout } = run(
+            __dirname,
+            ['-c', resolve(__dirname, 'webpack.config.js'), '--output-path', 'binary'],
+            false,
+        );
 
         expect(exitCode).toBe(0);
-        expect(stderr).toBeFalsy();
-
-        const stats = statSync(resolve(__dirname, './binary/a.bundle.js'));
-        expect(stats.isFile()).toBe(true);
+        expect(stderr).toContain('Compilation starting...');
+        expect(stderr).toContain('Compilation finished');
+        expect(stdout).toBeTruthy();
     });
 
     it('should create multiple bundles with an overriding flag', () => {
-        const { stderr, exitCode } = run(
+        const { exitCode, stderr, stdout } = run(
             __dirname,
             ['-c', resolve(__dirname, 'webpack.single.config.js'), '--output-path', './bin'],
             false,
         );
 
         expect(exitCode).toBe(0);
-        expect(stderr).toBeFalsy();
-
-        let stats = statSync(resolve(__dirname, './bin/b.bundle.js'));
-        expect(stats.isFile()).toBe(true);
-        stats = statSync(resolve(__dirname, './bin/c.bundle.js'));
-        expect(stats.isFile()).toBe(true);
+        expect(stderr).toContain('Compilation starting...');
+        expect(stderr).toContain('Compilation finished');
+        expect(stdout).toBeTruthy();
     });
 
     it('should successfully compile multiple entries', () => {
-        const { stderr, exitCode } = run(__dirname, ['-c', resolve(__dirname, 'webpack.multiple.config.js')], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['-c', resolve(__dirname, 'webpack.multiple.config.js')], false);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toBeFalsy();
-
-        let stats = statSync(resolve(__dirname, './bin/b.bundle.js'));
-        expect(stats.isFile()).toBe(true);
-        stats = statSync(resolve(__dirname, './bin/c.bundle.js'));
-        expect(stats.isFile()).toBe(true);
+        expect(stderr).toContain('Compilation starting...');
+        expect(stderr).toContain('Compilation finished');
+        expect(stdout).toBeTruthy();
     });
 
     it('should output file in bin directory using default webpack config with warning for empty output value', () => {
-        const { stdout, stderr, exitCode } = run(__dirname, ['--output-path'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--output-path'], false);
 
-        expect(stderr).toEqual("error: option '-o, --output-path <value>' argument missing");
         expect(exitCode).toEqual(1);
+        expect(stderr).toEqual("error: option '-o, --output-path <value>' argument missing");
         expect(stdout).toBeFalsy();
     });
 });

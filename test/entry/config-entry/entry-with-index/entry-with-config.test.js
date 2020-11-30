@@ -1,14 +1,14 @@
 'use strict';
-const { join } = require('path');
-const { existsSync } = require('fs');
+
 const { run } = require('../../../utils/test-utils');
 
 describe('default entry and config entry all exist', () => {
     it('should use config entry if config entry existed', () => {
-        const { stdout, stderr, exitCode } = run(__dirname, [], false);
+        const { exitCode, stderr, stdout } = run(__dirname, [], false);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toBeFalsy();
+        expect(stderr).toContain('Compilation starting...');
+        expect(stderr).toContain('Compilation finished');
         // Should contain the relevant entry
         expect(stdout).toContain('./src/app.js');
         expect(stdout).toContain('./src/print.js');
@@ -17,11 +17,5 @@ describe('default entry and config entry all exist', () => {
         expect(stdout).toContain('app.bundle.js');
         expect(stdout).toContain('print.bundle.js');
         expect(stdout).not.toContain('index.js');
-        // Should only generate the files as per the entry in config
-        expect(existsSync(join(__dirname, '/dist/app.bundle.js'))).toBeTruthy();
-        expect(existsSync(join(__dirname, '/dist/print.bundle.js'))).toBeTruthy();
-        // index fallback should not be used even when the file is present
-        expect(existsSync(join(__dirname, '/dist/index.bundle.js'))).toBeFalsy();
-        expect(stderr).toBeFalsy();
     });
 });

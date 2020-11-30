@@ -220,7 +220,7 @@ class WebpackCLI {
         }
 
         if (typeof args.progress === 'string' && args.progress !== 'profile') {
-            logger.error(`'${this.options.progress}' is an invalid value for the --progress option. Only 'profile' is allowed.`);
+            logger.error(`'${args.progress}' is an invalid value for the --progress option. Only 'profile' is allowed.`);
             process.exit(2);
         }
 

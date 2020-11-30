@@ -12,7 +12,8 @@ describe('prefetch', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--prefetch', './src/p.js', '--mode', 'development'], false);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toBeFalsy();
+        expect(stderr).toContain('Compilation starting...');
+        expect(stderr).toContain('Compilation finished');
         expect(stdout).toBeTruthy();
 
         const content = fs.readFileSync(join(__dirname, '/dist/main.js'), 'utf-8');
@@ -21,20 +22,22 @@ describe('prefetch', () => {
     });
 
     it('should log error when the prefetched file is absent', () => {
-        const { stdout, stderr, exitCode } = run(__dirname, ['--prefetch', './src/somefile.js'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--prefetch', './src/somefile.js'], false);
+
+        expect(exitCode).toBe(1);
+        expect(stderr).toContain('Compilation starting...');
+        expect(stderr).toContain('Compilation finished');
         // Should contain the error message
         expect(stdout).toContain(`Error: Can't resolve './src/somefile.js'`);
-        expect(exitCode).toBe(1);
-        // check that the output file does not exist since prefetched file is not found
-        expect(fs.existsSync(join(__dirname, '/dist/main.js'))).toBeFalsy();
-        expect(stderr).toBeFalsy();
     });
 
     it('should log error when flag value is not supplied', () => {
-        const { stdout, stderr, exitCode } = run(__dirname, ['--prefetch'], false);
-        // Should contain the error message
+        const { exitCode, stderr, stdout } = run(__dirname, ['--prefetch'], false);
+
+        expect(exitCode).toBe(1);
+        expect(stderr).not.toContain('Compilation starting...');
+        expect(stderr).not.toContain('Compilation finished');
         expect(stderr).toContain(`error: option '--prefetch <value>' argument missing`);
         expect(stdout).toBeFalsy();
-        expect(exitCode).toBe(1);
     });
 });

@@ -12,18 +12,20 @@ describe('experiments option related flag', () => {
         const propName = hyphenToUpperCase(property);
 
         it(`should config ${flag.name} correctly`, () => {
-            const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`]);
+            const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`]);
 
-            expect(stderr).toBeFalsy();
             expect(exitCode).toBe(0);
+            expect(stderr).toContain("Compilation 'compiler' starting...");
+            expect(stderr).toContain("Compilation 'compiler' finished");
             expect(stdout).toContain(`${propName}: true`);
         });
 
         it(`should config --no-${flag.name} correctly`, () => {
-            const { stderr, stdout, exitCode } = run(__dirname, [`--no-${flag.name}`]);
+            const { exitCode, stderr, stdout } = run(__dirname, [`--no-${flag.name}`]);
 
-            expect(stderr).toBeFalsy();
             expect(exitCode).toBe(0);
+            expect(stderr).toContain("Compilation 'compiler' starting...");
+            expect(stderr).toContain("Compilation 'compiler' finished");
             expect(stdout).toContain(`${propName}: false`);
         });
     });

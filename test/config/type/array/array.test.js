@@ -5,11 +5,15 @@ const { run } = require('../../../utils/test-utils');
 
 describe('array', () => {
     it('is able to understand a configuration file in array format', (done) => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['-c', resolve(__dirname, 'webpack.config.js')], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['-c', resolve(__dirname, 'webpack.config.js')], false);
 
-        expect(stderr).toBeFalsy();
         expect(exitCode).toBe(0);
+        expect(stderr).toContain("Compilation 'amd' starting...");
+        expect(stderr).toContain("Compilation 'amd' finished");
+        expect(stderr).toContain("Compilation 'commonjs' starting...");
+        expect(stderr).toContain("Compilation 'commonjs' finished");
         expect(stdout).toBeTruthy();
+
         stat(resolve(__dirname, './dist/dist-commonjs.js'), (err, stats) => {
             expect(err).toBe(null);
             expect(stats.isFile()).toBe(true);

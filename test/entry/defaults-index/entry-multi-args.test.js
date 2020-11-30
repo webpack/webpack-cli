@@ -1,32 +1,24 @@
 'use strict';
 
-const { stat } = require('fs');
-const { resolve } = require('path');
-
 const { run } = require('../../utils/test-utils');
 
 describe('single entry flag index present', () => {
-    it('finds default index file and compiles successfully', (done) => {
-        const { stderr, stdout, exitCode } = run(__dirname);
+    it('finds default index file and compiles successfully', () => {
+        const { exitCode, stderr, stdout } = run(__dirname);
 
-        expect(stderr).not.toContain('Module not found');
         expect(exitCode).toBe(0);
+        expect(stderr).toContain('Compilation starting...');
+        expect(stderr).toContain('Compilation finished');
+        expect(stderr).not.toContain('Module not found');
         expect(stdout).toBeTruthy();
-        stat(resolve(__dirname, './bin/main.js'), (err, stats) => {
-            expect(err).toBe(null);
-            expect(stats.isFile()).toBe(true);
-            done();
-        });
     });
 
-    it('finds default index file, compiles and overrides with flags successfully', (done) => {
-        const { stderr } = run(__dirname, ['--output-path', 'bin']);
-        expect(stderr).toBeFalsy();
+    it('finds default index file, compiles and overrides with flags successfully', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['--output-path', 'bin']);
 
-        stat(resolve(__dirname, './bin/main.js'), (err, stats) => {
-            expect(err).toBe(null);
-            expect(stats.isFile()).toBe(true);
-            done();
-        });
+        expect(exitCode).toBe(0);
+        expect(stderr).toContain('Compilation starting...');
+        expect(stderr).toContain('Compilation finished');
+        expect(stdout).toBeTruthy();
     });
 });

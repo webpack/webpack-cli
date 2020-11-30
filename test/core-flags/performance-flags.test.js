@@ -7,10 +7,11 @@ const performanceFlags = flags.filter(({ name }) => name.startsWith('performance
 
 describe('module config related flag', () => {
     it(`should config --performance option correctly`, () => {
-        const { stderr, stdout, exitCode } = run(__dirname, [`--no-performance`]);
+        const { exitCode, stderr, stdout } = run(__dirname, [`--no-performance`]);
 
-        expect(stderr).toBeFalsy();
         expect(exitCode).toBe(0);
+        expect(stderr).toContain("Compilation 'compiler' starting...");
+        expect(stderr).toContain("Compilation 'compiler' finished");
         expect(stdout).toContain('performance: false');
     });
 
@@ -21,20 +22,22 @@ describe('module config related flag', () => {
 
         if (flag.type === Number) {
             it(`should config --${flag.name} correctly`, () => {
-                const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`, '10']);
+                const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, '10']);
 
-                expect(stderr).toBeFalsy();
                 expect(exitCode).toBe(0);
+                expect(stderr).toContain("Compilation 'compiler' starting...");
+                expect(stderr).toContain("Compilation 'compiler' finished");
                 expect(stdout).toContain(`${propName}: 10`);
             });
         }
 
         if (flag.type === String) {
             it(`should config --${flag.name} correctly`, () => {
-                const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`, 'warning']);
+                const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'warning']);
 
-                expect(stderr).toBeFalsy();
                 expect(exitCode).toBe(0);
+                expect(stderr).toContain("Compilation 'compiler' starting...");
+                expect(stderr).toContain("Compilation 'compiler' finished");
                 expect(stdout).toContain(`${propName}: 'warning'`);
             });
         }

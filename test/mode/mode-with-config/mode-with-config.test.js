@@ -6,10 +6,11 @@ const { run } = require('../../utils/test-utils');
 
 describe('mode flags with config', () => {
     it('should run in production mode when --mode=production is passed', (done) => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--mode', 'production', '--config', './webpack.config.js']);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--mode', 'production', '--config', './webpack.config.js']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toBeFalsy();
+        expect(stderr).toContain('Compilation starting...');
+        expect(stderr).toContain('Compilation finished');
         expect(stdout).toBeTruthy();
 
         // Should generate the appropriate files
@@ -37,10 +38,11 @@ describe('mode flags with config', () => {
     });
 
     it('should run in development mode when --mode=development is passed', (done) => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--mode', 'development', '--config', './webpack.config.js']);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--mode', 'development', '--config', './webpack.config.js']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toBeFalsy();
+        expect(stderr).toContain('Compilation starting...');
+        expect(stderr).toContain('Compilation finished');
         expect(stdout).toBeTruthy();
 
         // Should generate the appropriate files
@@ -68,10 +70,11 @@ describe('mode flags with config', () => {
     });
 
     it('should run in none mode when --mode=none is passed', (done) => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--mode', 'none', '--config', './webpack.config.js']);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--mode', 'none', '--config', './webpack.config.js']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toBeFalsy();
+        expect(stderr).toContain('Compilation starting...');
+        expect(stderr).toContain('Compilation finished');
         expect(stdout).toBeTruthy();
 
         // Should generate the appropriate files
@@ -99,44 +102,50 @@ describe('mode flags with config', () => {
     });
 
     it('should use mode flag over config', () => {
-        const { stdout, stderr, exitCode } = run(__dirname, ['--mode', 'production', '-c', 'webpack.config2.js']);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--mode', 'production', '-c', 'webpack.config2.js']);
 
-        expect(stderr).toBeFalsy();
         expect(exitCode).toEqual(0);
+        expect(stderr).toContain('Compilation starting...');
+        expect(stderr).toContain('Compilation finished');
         expect(stdout).toContain(`mode: 'production'`);
     });
 
     it('should use mode from flag over NODE_ENV', () => {
-        const { stdout, stderr, exitCode } = run(__dirname, ['--mode', 'none', '-c', 'webpack.config2.js'], false, [], {
+        const { exitCode, stderr, stdout } = run(__dirname, ['--mode', 'none', '-c', 'webpack.config2.js'], false, [], {
             NODE_ENV: 'production',
         });
 
-        expect(stderr).toBeFalsy();
         expect(exitCode).toEqual(0);
+        expect(stderr).toContain('Compilation starting...');
+        expect(stderr).toContain('Compilation finished');
         expect(stdout).toContain(`mode: 'none'`);
     });
 
     it('should use mode from config over NODE_ENV', () => {
-        const { stdout, stderr, exitCode } = run(__dirname, ['-c', 'webpack.config2.js']);
+        const { exitCode, stderr, stdout } = run(__dirname, ['-c', 'webpack.config2.js']);
 
-        expect(stderr).toBeFalsy();
         expect(exitCode).toEqual(0);
+        expect(stderr).toContain('Compilation starting...');
+        expect(stderr).toContain('Compilation finished');
         expect(stdout).toContain(`mode: 'development'`);
     });
 
     it('should use mode from config when multiple config are supplied', () => {
-        const { stdout, stderr } = run(__dirname, ['-c', 'webpack.config3.js', '-c', 'webpack.config2.js']);
+        const { exitCode, stdout, stderr } = run(__dirname, ['-c', 'webpack.config3.js', '-c', 'webpack.config2.js']);
 
-        expect(stderr).toBeFalsy();
+        expect(exitCode).toBe(0);
+        expect(stderr).toContain('Compilation starting...');
+        expect(stderr).toContain('Compilation finished');
         expect(stdout).toContain(`mode: 'development'`);
         expect(stdout.match(new RegExp("mode: 'development'", 'g')).length).toEqual(1);
     });
 
     it('mode flag should apply to all configs', () => {
-        const { stdout, stderr, exitCode } = run(__dirname, ['--mode', 'none', '-c', './webpack.config3.js', '-c', './webpack.config2.js']);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--mode', 'none', '-c', './webpack.config3.js', '-c', './webpack.config2.js']);
 
-        expect(stderr).toBeFalsy();
         expect(exitCode).toEqual(0);
+        expect(stderr).toContain('Compilation starting...');
+        expect(stderr).toContain('Compilation finished');
         expect(stdout).toContain(`mode: 'none'`);
         expect(stdout.match(new RegExp("mode: 'none'", 'g')).length).toEqual(2);
     });
@@ -147,7 +156,8 @@ describe('mode flags with config', () => {
         });
 
         expect(exitCode).toEqual(0);
-        expect(stderr).toBeFalsy();
+        expect(stderr).toContain('Compilation starting...');
+        expect(stderr).toContain('Compilation finished');
         expect(stdout).toContain(`mode: 'production'`);
         expect(stdout).toContain(`mode: 'development'`);
         expect(stdout.match(new RegExp("mode: 'production'", 'g')).length).toEqual(1);

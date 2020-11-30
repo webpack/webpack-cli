@@ -16,6 +16,9 @@ describe('cache', () => {
     it('should work', () => {
         let { exitCode, stderr, stdout } = run(__dirname, ['-c', './webpack.config.js', '--cache-name', 'test'], false);
 
+        expect(stderr).toContain('Compilation starting...');
+        expect(stderr).toContain('Compilation finished');
+
         if (isWebpack5) {
             expect(stderr).toContain('No pack exists at');
             expect(stderr).toContain('Stored pack');
@@ -25,6 +28,9 @@ describe('cache', () => {
         }
 
         ({ exitCode, stderr, stdout } = run(__dirname, ['-c', './webpack.config.js', '--cache-name', 'test'], false));
+
+        expect(stderr).toContain('Compilation starting...');
+        expect(stderr).toContain('Compilation finished');
 
         if (isWebpack5) {
             expect(exitCode).toEqual(0);
@@ -40,6 +46,9 @@ describe('cache', () => {
     it('should work with autoloading configuration', () => {
         let { exitCode, stderr, stdout } = run(__dirname, ['--cache-name', 'test-1'], false);
 
+        expect(stderr).toContain('Compilation starting...');
+        expect(stderr).toContain('Compilation finished');
+
         if (isWebpack5) {
             expect(stderr).toContain('No pack exists at');
             expect(stderr).toContain('Stored pack');
@@ -49,6 +58,9 @@ describe('cache', () => {
         }
 
         ({ exitCode, stderr, stdout } = run(__dirname, ['--cache-name', 'test-1'], false));
+
+        expect(stderr).toContain('Compilation starting...');
+        expect(stderr).toContain('Compilation finished');
 
         if (isWebpack5) {
             expect(exitCode).toEqual(0);

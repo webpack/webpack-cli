@@ -12,10 +12,11 @@ if (isWebpack5) {
 describe('stats flag', () => {
     for (const preset of presets) {
         it(`should accept --stats "${preset}"`, () => {
-            const { stderr, stdout, exitCode } = run(__dirname, ['--stats', `${preset}`]);
+            const { exitCode, stderr, stdout } = run(__dirname, ['--stats', `${preset}`]);
 
             expect(exitCode).toBe(0);
-            expect(stderr).toBeFalsy();
+            expect(stderr).toContain('Compilation starting...');
+            expect(stderr).toContain('Compilation finished');
 
             if (isWebpack5) {
                 expect(stdout).toContain(`stats: { preset: '${preset}' }`);
@@ -26,10 +27,12 @@ describe('stats flag', () => {
     }
 
     it('should accept stats as boolean', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--stats']);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--stats']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toBeFalsy();
+        expect(stderr).toContain('Compilation starting...');
+        expect(stderr).toContain('Compilation finished');
+
         if (isWebpack5) {
             expect(stdout).toContain(`stats: { preset: 'normal' }`);
         } else {
@@ -37,11 +40,10 @@ describe('stats flag', () => {
         }
     });
 
-    it('should warn when an unknown flag stats value is passed', () => {
-        const { exitCode, stderr } = run(__dirname, ['--stats', 'foo']);
+    it('should log error when an unknown flag stats value is passed', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['--stats', 'foo']);
 
         expect(exitCode).toEqual(2);
-        expect(stderr).toBeTruthy();
 
         if (isWebpack5) {
             expect(stderr).toContain("Found the 'invalid-value' problem with the '--stats' argument by path 'stats'");
@@ -49,5 +51,7 @@ describe('stats flag', () => {
             expect(stderr).toContain('* configuration.stats should be one of these:');
             expect(stderr).toContain('"none" | "errors-only" | "minimal" | "normal" | "detailed" | "verbose" | "errors-warnings"');
         }
+
+        expect(stdout).toBeFalsy();
     });
 });

@@ -5,7 +5,7 @@ const pkgJSON = require('../../packages/webpack-cli/package.json');
 
 describe('version flag with multiple arguments', () => {
     it('does not output version with help command', () => {
-        const { stdout, stderr, exitCode } = run(__dirname, ['version', 'help'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['version', 'help'], false);
 
         expect(exitCode).toBe(0);
         expect(stdout).not.toContain(pkgJSON.version);
@@ -14,7 +14,7 @@ describe('version flag with multiple arguments', () => {
     });
 
     it('does not output version with help dashed', () => {
-        const { stdout, stderr, exitCode } = run(__dirname, ['version', '--help'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['version', '--help'], false);
 
         expect(exitCode).toBe(0);
         expect(stdout).not.toContain(pkgJSON.version);
@@ -23,7 +23,7 @@ describe('version flag with multiple arguments', () => {
     });
 
     it('throws error if invalid command is passed with version command', () => {
-        const { stdout, stderr, exitCode } = run(__dirname, ['version', 'abc', '--no-color'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['version', 'abc', '--no-color'], false);
 
         expect(exitCode).toBe(2);
         expect(stdout).not.toContain(pkgJSON.version);
@@ -32,7 +32,7 @@ describe('version flag with multiple arguments', () => {
     });
 
     it('throws error if invalid option is passed with version command', () => {
-        const { stdout, stderr, exitCode } = run(__dirname, ['version', '--abc', '--no-color'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['version', '--abc', '--no-color'], false);
 
         expect(exitCode).toBe(2);
         expect(stdout).not.toContain(pkgJSON.version);
@@ -41,7 +41,7 @@ describe('version flag with multiple arguments', () => {
     });
 
     it('throws error if invalid command is passed with --version flag', () => {
-        const { stdout, stderr, exitCode } = run(__dirname, ['--version', 'abc', '--no-color'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--version', 'abc', '--no-color'], false);
 
         expect(exitCode).toBe(2);
         expect(stdout).not.toContain(pkgJSON.version);
@@ -50,7 +50,7 @@ describe('version flag with multiple arguments', () => {
     });
 
     it('throws error if invalid option is passed with --version flag', () => {
-        const { stdout, stderr, exitCode } = run(__dirname, ['--version', '--abc', '--no-color'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--version', '--abc', '--no-color'], false);
 
         expect(exitCode).toBe(2);
         expect(stdout).not.toContain(pkgJSON.version);
@@ -59,7 +59,7 @@ describe('version flag with multiple arguments', () => {
     });
 
     it('throws error if invalid command is passed with -v alias', () => {
-        const { stdout, stderr, exitCode } = run(__dirname, ['-v', 'abc', '--no-color'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['-v', 'abc', '--no-color'], false);
 
         expect(exitCode).toBe(2);
         expect(stdout).not.toContain(pkgJSON.version);
@@ -68,7 +68,7 @@ describe('version flag with multiple arguments', () => {
     });
 
     it('throws error if invalid option is passed with -v alias', () => {
-        const { stdout, stderr, exitCode } = run(__dirname, ['-v', '--abc', '--no-color'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['-v', '--abc', '--no-color'], false);
 
         expect(exitCode).toBe(2);
         expect(stdout).not.toContain(pkgJSON.version);
