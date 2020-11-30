@@ -69,14 +69,19 @@ describe('bail and watch warning', () => {
     });
 
     it('should log warning in case of multiple compilers', async () => {
-        const { stderr, stdout } = await runWatch(__dirname, ['-c', 'multi-webpack.config.js'], true, "Compilation 'second' finished");
+        const { stderr, stdout } = await runWatch(
+            __dirname,
+            ['-c', 'multi-webpack.config.js'],
+            true,
+            "Compiler 'second' is watching files for updates...",
+        );
 
         expect(stderr).toContain("Compilation 'first' starting...");
         expect(stderr).toContain("Compilation 'first' finished");
         expect(stderr).toContain("Compiler 'first' is watching files for updates...");
         expect(stderr).toContain("Compilation 'second' starting...");
         expect(stderr).toContain("Compilation 'second' finished");
-        expect(stderr).not.toContain("Compiler 'second' is watching files for updates...");
+        expect(stderr).toContain("Compiler 'second' is watching files for updates...");
         expect(stderr).toContain(`You are using "bail" with "watch". "bail" will still exit webpack when the first error is found.`);
         expect(stdout).toBeTruthy();
     });
