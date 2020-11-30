@@ -1,6 +1,8 @@
 'use strict';
 
 import startDevServer from '../src/startDevServer';
+// eslint-disable-next-line node/no-extraneous-import
+import { version as devServerVersion } from 'webpack-dev-server/package.json';
 
 jest.mock('webpack-dev-server/lib/Server');
 
@@ -43,7 +45,11 @@ describe('startDevServer', () => {
         expect(DevServer.mock.instances[0].listen.mock.calls[0]).toMatchSnapshot();
     });
 
-    it('should set default port and host if not provided', () => {
+    it('should set default port and host if not provided for v3 only', () => {
+        if (devServerVersion.startsWith('4')) {
+            expect(true).toBe(true);
+            return;
+        }
         const config = {
             devServer: {},
         };
@@ -57,11 +63,22 @@ describe('startDevServer', () => {
         // this is the constructor
         expect(DevServer.mock.calls.length).toEqual(1);
         // the 2nd argument is the options
-        expect(DevServer.mock.calls[0][1]).toMatchSnapshot();
+        expect(DevServer.mock.calls[0][1]).toMatchInlineSnapshot(`
+            Object {
+              "host": "localhost",
+              "port": 8080,
+            }
+        `);
 
         // the server should listen on correct host and port
         expect(DevServer.mock.instances[0].listen.mock.calls.length).toEqual(1);
-        expect(DevServer.mock.instances[0].listen.mock.calls[0]).toMatchSnapshot();
+        expect(DevServer.mock.instances[0].listen.mock.calls[0]).toMatchInlineSnapshot(`
+            Array [
+              8080,
+              "localhost",
+              [Function],
+            ]
+        `);
     });
 
     it('should start dev server correctly for multi compiler with 1 devServer config', () => {
@@ -100,6 +117,7 @@ describe('startDevServer', () => {
         const config = [
             {
                 devServer: {
+                    host: 'localhost',
                     port: 9000,
                     // here to show that it will be overridden
                     progress: false,
@@ -107,6 +125,7 @@ describe('startDevServer', () => {
             },
             {
                 devServer: {
+                    host: 'localhost',
                     port: 9001,
                 },
             },

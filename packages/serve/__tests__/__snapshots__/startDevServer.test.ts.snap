@@ -1,20 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`startDevServer should set default port and host if not provided 1`] = `
-Object {
-  "host": "localhost",
-  "port": 8080,
-}
-`;
-
-exports[`startDevServer should set default port and host if not provided 2`] = `
-Array [
-  8080,
-  "localhost",
-  [Function],
-]
-`;
-
 exports[`startDevServer should start dev server correctly for multi compiler with 1 devServer config 1`] = `
 Object {
   "bonjour": true,
