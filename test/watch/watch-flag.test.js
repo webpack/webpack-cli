@@ -26,7 +26,7 @@ describe('--watch flag', () => {
         proc.stdout.on('data', (chunk) => {
             const data = stripAnsi(chunk.toString());
 
-            if ((semaphore === 1 || semaphore === 6) && data.includes('index.js')) {
+            if (((isWebpack5 && semaphore === 1) || (!isWebpack5 && semaphore === 2) || semaphore === 6) && data.includes('index.js')) {
                 if (isWebpack5) {
                     for (const word of wordsInStatsv5) {
                         expect(data).toContain(word);
@@ -48,7 +48,7 @@ describe('--watch flag', () => {
                 semaphore++;
             }
 
-            if (semaphore === 2 && data.includes('Compilation finished')) {
+            if (((isWebpack5 && semaphore === 2) || (!isWebpack5 && semaphore === 1)) && data.includes('Compilation finished')) {
                 semaphore++;
             }
 
