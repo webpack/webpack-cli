@@ -1,7 +1,6 @@
 'use strict';
-
-// TODO: update snapshots once we update to webpack-dev-server@4
-
+// eslint-disable-next-line node/no-extraneous-import
+import { version as devServerVersion } from 'webpack-dev-server/package.json';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const errorMock: any = jest.fn();
 jest.mock('webpack-cli/lib/utils/logger', () => {
@@ -28,14 +27,82 @@ describe('parseArgs', () => {
 
     it('parses webpack and dev server args', () => {
         const args = parseArgs(cli, ['--bonjour', '--mode=development', '--port', '8080']);
-        expect(args).toMatchSnapshot();
+        if (devServerVersion.startsWith('4')) {
+            expect(args).toMatchInlineSnapshot(`
+                Object {
+                  "devServerArgs": Object {
+                    "bonjour": true,
+                    "port": 8080,
+                    "setupExitSignals": true,
+                  },
+                  "webpackArgs": Object {
+                    "env": Object {
+                      "WEBPACK_SERVE": true,
+                    },
+                    "mode": "development",
+                  },
+                }
+            `);
+        } else {
+            expect(args).toMatchInlineSnapshot(`
+                Object {
+                  "devServerArgs": Object {
+                    "bonjour": true,
+                    "clientLogLevel": "info",
+                    "inline": true,
+                    "liveReload": true,
+                    "port": 8080,
+                    "serveIndex": true,
+                  },
+                  "webpackArgs": Object {
+                    "env": Object {
+                      "WEBPACK_SERVE": true,
+                    },
+                    "mode": "development",
+                  },
+                }
+            `);
+        }
         expect(errorMock.mock.calls.length).toEqual(0);
         expect(processExitSpy.mock.calls.length).toEqual(0);
     });
 
     it('handles hot arg', () => {
         const args = parseArgs(cli, ['--hot']);
-        expect(args).toMatchSnapshot();
+        if (devServerVersion.startsWith('4')) {
+            expect(args).toMatchInlineSnapshot(`
+                Object {
+                  "devServerArgs": Object {
+                    "hot": true,
+                    "setupExitSignals": true,
+                  },
+                  "webpackArgs": Object {
+                    "env": Object {
+                      "WEBPACK_SERVE": true,
+                    },
+                    "hot": true,
+                  },
+                }
+            `);
+        } else {
+            expect(args).toMatchInlineSnapshot(`
+                Object {
+                  "devServerArgs": Object {
+                    "clientLogLevel": "info",
+                    "hot": true,
+                    "inline": true,
+                    "liveReload": true,
+                    "serveIndex": true,
+                  },
+                  "webpackArgs": Object {
+                    "env": Object {
+                      "WEBPACK_SERVE": true,
+                    },
+                    "hot": true,
+                  },
+                }
+            `);
+        }
         expect(errorMock.mock.calls.length).toEqual(0);
         expect(processExitSpy.mock.calls.length).toEqual(0);
     });

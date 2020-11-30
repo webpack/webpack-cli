@@ -49,7 +49,7 @@ jobs:
         run: yarn lint
 
   build:
-    name: Tests and Coverage - ${{ matrix.os }} - Node v${{ matrix.node-version }}, Webpack ${{ matrix.webpack-version }}
+    name: CI - ${{ matrix.os }} - Node v${{ matrix.node-version }}, Webpack ${{ matrix.webpack-version }}, devSever ${{ matrix.devServer-version }}
 
     runs-on: ${{ matrix.os }}
 
@@ -58,6 +58,7 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
         node-version: [10.x, 12.x, 14.x]
         webpack-version: [webpack-4, latest]
+        devServer-version: [latest, next]
 
     steps:
       - uses: actions/checkout@v2
@@ -84,6 +85,9 @@ jobs:
 
       - name: Install webpack ${{ matrix.webpack-version }}
         run: yarn add -W webpack@${{ matrix.webpack-version }}
+
+      - name: Install webpack-dev-server ${{ matrix.devServer-version }}
+        run: yarn add -W webpack-dev-server@${{ matrix.devServer-version }}
 
       - name: Build
         run: yarn build:ci
