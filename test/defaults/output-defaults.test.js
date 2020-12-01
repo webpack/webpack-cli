@@ -4,7 +4,7 @@ const { resolve } = require('path');
 const { run } = require('../utils/test-utils');
 
 describe('output flag defaults', () => {
-    it('should create default file for a given directory', (done) => {
+    it('should create default file for a given directory', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--entry', './a.js', '--output-path', './binary'], false);
 
         expect(exitCode).toBe(0);
@@ -16,7 +16,7 @@ describe('output flag defaults', () => {
         expect(existsSync(resolve(__dirname, './binary/main.js'))).toBeTruthy();
     });
 
-    it('set default output directory on no output flag', (done) => {
+    it('set default output directory on no output flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--entry', './a.js'], false);
 
         expect(exitCode).toBe(0);

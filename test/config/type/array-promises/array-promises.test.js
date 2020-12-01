@@ -4,7 +4,7 @@ const { resolve } = require('path');
 const { run } = require('../../../utils/test-utils');
 
 describe('array of promises', () => {
-    it('is able to understand a configuration file as a promise', (done) => {
+    it('is able to understand a configuration file as a promise', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['-c', './webpack.config.js'], false);
 
         expect(exitCode).toBe(0);
