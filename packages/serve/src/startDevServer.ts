@@ -14,15 +14,18 @@ const { logger } = utils;
  *
  * @returns {Object[]} array of resulting servers
  */
-export default function startDevServer(compiler, cliOptions): object[] {
+export default async function startDevServer(compiler, cliOptions): Promise<object[]> {
     let isDevServer4 = false,
         devServerVersion,
-        Server;
+        Server,
+        findPort;
     try {
         // eslint-disable-next-line node/no-extraneous-require
         devServerVersion = require('webpack-dev-server/package.json').version;
         // eslint-disable-next-line node/no-extraneous-require
         Server = require('webpack-dev-server/lib/Server');
+        // eslint-disable-next-line node/no-extraneous-require
+        findPort = require('webpack-dev-server/lib/utils/findPort');
     } catch (err) {
         logger.error(`You need to install 'webpack-dev-server' for running 'webpack serve'.\n${err}`);
         process.exit(2);
@@ -34,10 +37,14 @@ export default function startDevServer(compiler, cliOptions): object[] {
     const servers = [];
 
     const usedPorts: number[] = [];
-    devServerOptions.forEach((devServerOpts): void => {
+
+    for (const devServerOpts of devServerOptions) {
         const options = mergeOptions(cliOptions, devServerOpts);
-        // devSever v4 handles the default host and port itself
-        if (!isDevServer4) {
+        if (isDevServer4) {
+            options.port = await findPort(options.port);
+            options.client = options.client || {};
+            options.client.port = options.client.port || options.port;
+        } else {
             options.host = options.host || 'localhost';
             options.port = options.port || 8080;
         }
@@ -61,7 +68,7 @@ export default function startDevServer(compiler, cliOptions): object[] {
         });
 
         servers.push(server);
-    });
+    }
 
     return servers;
 }
