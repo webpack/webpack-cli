@@ -26,6 +26,9 @@ describe('--watch flag', () => {
         proc.stdout.on('data', (chunk) => {
             const data = stripAnsi(chunk.toString());
 
+            console.log(data);
+            console.log(semaphore);
+
             if (((isWebpack5 && semaphore === 1) || (!isWebpack5 && semaphore === 2) || semaphore === 6) && data.includes('index.js')) {
                 if (isWebpack5) {
                     for (const word of wordsInStatsv5) {
@@ -44,6 +47,9 @@ describe('--watch flag', () => {
         proc.stderr.on('data', (chunk) => {
             const data = stripAnsi(chunk.toString());
 
+            console.log(data);
+            console.log(semaphore);
+
             if (semaphore === 0 && data.includes('Compilation starting...')) {
                 semaphore++;
             }
@@ -55,17 +61,13 @@ describe('--watch flag', () => {
             if (semaphore === 3 && data.includes('Compiler is watching files for updates...')) {
                 process.nextTick(() => {
                     writeFileSync(resolve(__dirname, './src/index.js'), `console.log('watch flag test');`);
-
-                    semaphore++;
                 });
+
+                semaphore++;
             }
 
             if (semaphore === 4 && data.includes('was modified')) {
-                process.nextTick(() => {
-                    writeFileSync(resolve(__dirname, './src/index.js'), `console.log('watch flag test');`);
-
-                    semaphore++;
-                });
+                semaphore++;
             }
 
             if (semaphore === 5 && data.includes('Compilation starting...')) {
