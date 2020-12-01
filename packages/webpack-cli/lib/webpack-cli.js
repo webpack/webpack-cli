@@ -256,8 +256,6 @@ class WebpackCLI {
                             }`,
                         );
                     });
-
-                    process.exit(2);
                 }
 
                 return options;

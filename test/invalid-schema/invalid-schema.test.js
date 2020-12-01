@@ -21,10 +21,9 @@ describe('invalid schema', () => {
 
         if (isWebpack5) {
             expect(stderr).toContain("Found the 'invalid-value' problem with the '--mode' argument by path 'mode'");
-        } else {
-            expect(stderr).toContain('Invalid configuration object');
         }
 
+        expect(stderr).toContain('Invalid configuration object');
         expect(stdout).toBeFalsy();
     });
 });

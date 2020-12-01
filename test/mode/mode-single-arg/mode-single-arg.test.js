@@ -56,11 +56,9 @@ describe('mode flags', () => {
 
         if (isWebpack5) {
             expect(stderr).toContain("Found the 'invalid-value' problem with the '--mode' argument by path 'mode'");
-        } else {
-            expect(stderr).toContain('configuration.mode should be one of these');
-            expect(stderr).toContain(`"development" | "production" | "none"`);
         }
 
+        expect(stderr).toContain('Invalid configuration object');
         expect(stdout).toBeFalsy();
     });
 });

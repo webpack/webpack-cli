@@ -47,11 +47,9 @@ describe('stats flag', () => {
 
         if (isWebpack5) {
             expect(stderr).toContain("Found the 'invalid-value' problem with the '--stats' argument by path 'stats'");
-        } else {
-            expect(stderr).toContain('* configuration.stats should be one of these:');
-            expect(stderr).toContain('"none" | "errors-only" | "minimal" | "normal" | "detailed" | "verbose" | "errors-warnings"');
         }
 
+        expect(stderr).toContain('Invalid configuration object');
         expect(stdout).toBeFalsy();
     });
 });
