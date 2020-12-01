@@ -58,9 +58,11 @@ yarn add webpack-cli --dev
   -o, --output-path string      Output location of the generated bundle
   -t, --target string[]         Sets the build target
   -w, --watch                   Watch for files changes
+  --no-watch                    Negates watch
   -h, --hot                     Enables Hot Module Replacement
   --no-hot                      Disables Hot Module Replacement
   -d, --devtool string          Controls if and how source maps are generated.
+  --no-devtool                  Negates devtool
   --prefetch string             Prefetch this request
   -j, --json string, boolean    Prints result as JSON or store it in a file
   --mode string                 Defines the mode to pass to webpack
