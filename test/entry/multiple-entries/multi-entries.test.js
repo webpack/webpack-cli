@@ -12,7 +12,7 @@ describe(' multiple entries', () => {
         expect(stderr).toContain('Compilation starting...');
         expect(stderr).toContain('Compilation finished');
         expect(stdout).toBeTruthy();
-        expect(existsSync(resolve(__dirname, './dist/main.js'))).toBeTruthy();
+        expect(existsSync(resolve(__dirname, './bin/main.js'))).toBeTruthy();
         readFile(resolve(__dirname, './bin/main.js'), 'utf-8', (err, data) => {
             expect(err).toBe(null);
             expect(data).toContain('Hello from a.js');
@@ -28,7 +28,7 @@ describe(' multiple entries', () => {
         expect(stderr).toContain('Compilation starting...');
         expect(stderr).toContain('Compilation finished');
         expect(stdout).toBeTruthy();
-        expect(existsSync(resolve(__dirname, './dist/main.js'))).toBeTruthy();
+        expect(existsSync(resolve(__dirname, './bin/main.js'))).toBeTruthy();
 
         readFile(resolve(__dirname, './bin/main.js'), 'utf-8', (err, data) => {
             expect(err).toBe(null);
