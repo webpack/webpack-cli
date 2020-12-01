@@ -1,6 +1,5 @@
 'use strict';
 
-const { yellow, options } = require('colorette');
 const path = require('path');
 const getPort = require('get-port');
 const { runServe, isDevServer4 } = require('../../utils/test-utils');
@@ -29,58 +28,72 @@ describe('basic serve usage', () => {
 
     it('should respect the --no-color flag', async () => {
         const { stdout, stderr } = await runServe(['--help', '--no-color'], __dirname);
-        options.enabled = true;
-        expect(stdout).not.toContain(yellow(usageText));
+
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain(usageText);
         expect(stdout).toContain(descriptionText);
-        expect(stderr).toHaveLength(0);
     });
 
     it('should not invoke info subcommand', async () => {
         const { stdout, stderr } = await runServe(['--client-log-level', 'info'], testPath);
+
+        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toContain('Compilation starting...');
         expect(stdout).toContain('main.js');
         expect(stdout).not.toContain('HotModuleReplacementPlugin');
-        expect(stderr).toHaveLength(0);
     });
 
     it('compiles without flags', async () => {
         const { stdout, stderr } = await runServe(['--port', port], testPath);
+
+        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toContain('Compilation starting...');
         expect(stdout).toContain('main.js');
         expect(stdout).not.toContain('HotModuleReplacementPlugin');
-        expect(stderr).toHaveLength(0);
     });
 
     it('uses hot flag to alter bundle', async () => {
         const { stdout, stderr } = await runServe(['--port', port, '--hot'], testPath);
+
+        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toContain('Compilation starting...');
         expect(stdout).toContain('main.js');
         expect(stdout).toContain('HotModuleReplacementPlugin');
-        expect(stderr).toHaveLength(0);
     });
 
     it('uses hot-only flag to alter bundle', async () => {
         const { stdout, stderr } = await runServe(['--port', port, isDevServer4 ? '--hot only' : '--hot-only'], testPath);
+
+        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toContain('Compilation starting...');
         expect(stdout).toContain('main.js');
         expect(stdout).toContain('HotModuleReplacementPlugin');
-        expect(stderr).toBeFalsy();
     });
 
     it('uses no-hot flag', async () => {
         const { stdout, stderr } = await runServe(['--port', port, '--no-hot'], testPath);
+
         expect(stdout).toContain('main.js');
+        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toContain('Compilation starting...');
         expect(stdout).not.toContain('HotModuleReplacementPlugin');
-        expect(stderr).toHaveLength(0);
     });
 
     it('uses hot flag and progress flag', async () => {
         const { stdout, stderr } = await runServe(['--port', port, '--hot', '--progress'], testPath);
+
+        expect(stderr).toContain('webpack.Progress');
+        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toContain('Compilation starting...');
         expect(stdout).toContain('main.js');
         expect(stdout).toContain('HotModuleReplacementPlugin');
-        // progress flag makes use of stderr
-        expect(stderr).not.toHaveLength(0);
     });
 
     it('throws error on unknown flag', async () => {
-        const { stdout, stderr } = await runServe(['--port', port, '--unknown-flag'], testPath);
-        expect(stdout).toHaveLength(0);
+        const { exitCode, stdout, stderr } = await runServe(['--port', port, '--unknown-flag'], testPath);
+
+        expect(exitCode).toBe(2);
         expect(stderr).toContain('Unknown argument: --unknown-flag');
+        expect(stdout).toBeFalsy();
     });
 });

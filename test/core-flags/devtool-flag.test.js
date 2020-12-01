@@ -7,7 +7,8 @@ describe('--devtool flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--devtool', 'source-map']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toBeFalsy();
+        expect(stderr).toContain("Compilation 'compiler' starting...");
+        expect(stderr).toContain("Compilation 'compiler' finished");
         expect(stdout).toContain(`devtool: 'source-map'`);
     });
 
@@ -15,7 +16,8 @@ describe('--devtool flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--no-devtool']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toBeFalsy();
+        expect(stderr).toContain("Compilation 'compiler' starting...");
+        expect(stderr).toContain("Compilation 'compiler' finished");
         expect(stdout).toContain(`devtool: false`);
     });
 
@@ -23,6 +25,8 @@ describe('--devtool flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--devtool', 'invalid']);
 
         expect(exitCode).toBe(2);
+        expect(stderr).not.toContain("Compilation 'compiler' starting...");
+        expect(stderr).not.toContain("Compilation 'compiler' finished");
         expect(stderr).toContain('Invalid configuration object');
         expect(stdout).toBeFalsy();
     });

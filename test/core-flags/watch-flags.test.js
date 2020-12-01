@@ -13,10 +13,11 @@ describe('watch config related flag', () => {
 
         if (flag.type === Boolean && flag.name !== 'watch') {
             it(`should config --${flag.name} correctly`, () => {
-                const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`]);
+                const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`]);
 
-                expect(stderr).toBeFalsy();
                 expect(exitCode).toBe(0);
+                expect(stderr).toContain("Compilation 'compiler' starting...");
+                expect(stderr).toContain("Compilation 'compiler' finished");
 
                 if (flag.name.includes('reset')) {
                     expect(stdout).toContain(`watchOptions: { ignored: [] }`);
@@ -27,10 +28,11 @@ describe('watch config related flag', () => {
 
             if (!flag.name.endsWith('-reset')) {
                 it(`should config --no-${flag.name} correctly`, () => {
-                    const { stderr, stdout, exitCode } = run(__dirname, [`--no-${flag.name}`]);
+                    const { exitCode, stderr, stdout } = run(__dirname, [`--no-${flag.name}`]);
 
-                    expect(stderr).toBeFalsy();
                     expect(exitCode).toBe(0);
+                    expect(stderr).toContain("Compilation 'compiler' starting...");
+                    expect(stderr).toContain("Compilation 'compiler' finished");
                     expect(stdout).toContain(`watchOptions: { ${propName}: false }`);
                 });
             }
@@ -38,9 +40,11 @@ describe('watch config related flag', () => {
 
         if (flag.type === Number) {
             it(`should config --${flag.name} correctly`, () => {
-                const { stderr, stdout } = run(__dirname, [`--${flag.name}`, '10']);
+                const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, '10']);
 
-                expect(stderr).toBeFalsy();
+                expect(exitCode).toBe(0);
+                expect(stderr).toContain("Compilation 'compiler' starting...");
+                expect(stderr).toContain("Compilation 'compiler' finished");
                 expect(stdout).toContain(`watchOptions: { ${propName}: 10 }`);
             });
         }
@@ -51,13 +55,15 @@ describe('watch config related flag', () => {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, '200']);
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toBeFalsy();
+                    expect(stderr).toContain("Compilation 'compiler' starting...");
+                    expect(stderr).toContain("Compilation 'compiler' finished");
                     expect(stdout).toContain(`watchOptions: { ${propName}: 200 }`);
                 } else {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'ignore.js']);
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toBeFalsy();
+                    expect(stderr).toContain("Compilation 'compiler' starting...");
+                    expect(stderr).toContain("Compilation 'compiler' finished");
                     expect(stdout).toContain(`watchOptions: { ${propName}: [ 'ignore.js' ] }`);
                 }
             });

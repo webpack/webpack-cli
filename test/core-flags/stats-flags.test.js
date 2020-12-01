@@ -13,10 +13,11 @@ describe('stats config related flag', () => {
 
         if (flag.type === Boolean) {
             it(`should config --${flag.name} correctly`, () => {
-                const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`]);
+                const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`]);
 
-                expect(stderr).toBeFalsy();
                 expect(exitCode).toBe(0);
+                expect(stderr).toContain("Compilation 'compiler' starting...");
+                expect(stderr).toContain("Compilation 'compiler' finished");
 
                 if (flag.name.includes('reset')) {
                     const option = propName.split('Reset')[0];
@@ -28,10 +29,11 @@ describe('stats config related flag', () => {
 
             if (!flag.name.endsWith('-reset')) {
                 it(`should config --no-${flag.name} correctly`, () => {
-                    const { stderr, stdout, exitCode } = run(__dirname, [`--no-${flag.name}`]);
+                    const { exitCode, stderr, stdout } = run(__dirname, [`--no-${flag.name}`]);
 
-                    expect(stderr).toBeFalsy();
                     expect(exitCode).toBe(0);
+                    expect(stderr).toContain("Compilation 'compiler' starting...");
+                    expect(stderr).toContain("Compilation 'compiler' finished");
                     expect(stdout).toContain(`stats: { ${propName}: false }`);
                 });
             }
@@ -39,10 +41,11 @@ describe('stats config related flag', () => {
 
         if (flag.type === Number) {
             it(`should config --${flag.name} correctly`, () => {
-                const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`, '10']);
+                const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, '10']);
 
-                expect(stderr).toBeFalsy();
                 expect(exitCode).toBe(0);
+                expect(stderr).toContain("Compilation 'compiler' starting...");
+                expect(stderr).toContain("Compilation 'compiler' finished");
                 expect(stdout).toContain(`stats: { ${propName}: 10 }`);
             });
         }
@@ -52,35 +55,40 @@ describe('stats config related flag', () => {
 
             it(`should config --${flag.name} correctly`, () => {
                 if (flag.name.includes('stats-colors')) {
-                    const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`, 'u001b[32m']);
+                    const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'u001b[32m']);
                     const option = flag.name.split('stats-colors-')[1];
 
-                    expect(stderr).toBeFalsy();
                     expect(exitCode).toBe(0);
+                    expect(stderr).toContain("Compilation 'compiler' starting...");
+                    expect(stderr).toContain("Compilation 'compiler' finished");
                     expect(stdout).toContain(`stats: { colors: { ${option}: 'u001b[32m' } }`);
                 } else if (acceptsSingleValue.includes(propName)) {
-                    const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`, 'log']);
+                    const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'log']);
 
-                    expect(stderr).toBeFalsy();
                     expect(exitCode).toBe(0);
+                    expect(stderr).toContain("Compilation 'compiler' starting...");
+                    expect(stderr).toContain("Compilation 'compiler' finished");
                     expect(stdout).toContain(`stats: { ${propName}: 'log' }`);
                 } else if (flag.name === 'stats-context') {
-                    const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`, 'log']);
+                    const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'log']);
 
-                    expect(stderr).toBeFalsy();
                     expect(exitCode).toBe(0);
+                    expect(stderr).toContain("Compilation 'compiler' starting...");
+                    expect(stderr).toContain("Compilation 'compiler' finished");
                     expect(stdout).toContain('log');
                 } else if (flag.name === 'stats-entrypoints') {
-                    const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`, 'auto']);
+                    const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'auto']);
 
-                    expect(stderr).toBeFalsy();
                     expect(exitCode).toBe(0);
+                    expect(stderr).toContain("Compilation 'compiler' starting...");
+                    expect(stderr).toContain("Compilation 'compiler' finished");
                     expect(stdout).toContain(`stats: { ${propName}: 'auto' }`);
                 } else {
-                    const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`, 'log']);
+                    const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'log']);
 
-                    expect(stderr).toBeFalsy();
                     expect(exitCode).toBe(0);
+                    expect(stderr).toContain("Compilation 'compiler' starting...");
+                    expect(stderr).toContain("Compilation 'compiler' finished");
                     expect(stdout).toContain(`stats: { ${propName}: [ 'log' ] }`);
                 }
             });

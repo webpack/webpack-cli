@@ -11,10 +11,11 @@ const prodFile = path.join(__dirname, './bin/prod.js');
 
 describe('env array', () => {
     it('is able to set two different environments for an array configuration', () => {
-        const { stderr, stdout, exitCode } = run(__dirname);
+        const { exitCode, stderr, stdout } = run(__dirname);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toBeFalsy();
+        expect(stderr).toContain('Compilation starting...');
+        expect(stderr).toContain('Compilation finished');
         expect(stdout).toBeTruthy();
 
         if (isWebpack5) {

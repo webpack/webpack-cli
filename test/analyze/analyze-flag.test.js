@@ -22,7 +22,8 @@ describe('--analyze flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['-c', './analyze.config.js', '--analyze']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toBeFalsy();
+        expect(stderr).toContain('Compilation starting...');
+        expect(stderr).toContain('Compilation finished');
         expect(stdout).toContain('Webpack Bundle Analyzer saved report to');
         expect(stdout.match(/Webpack Bundle Analyzer saved report to/g)).toHaveLength(1);
     });

@@ -219,6 +219,11 @@ class WebpackCLI {
             }
         }
 
+        if (typeof args.progress === 'string' && args.progress !== 'profile') {
+            logger.error(`'${args.progress}' is an invalid value for the --progress option. Only 'profile' is allowed.`);
+            process.exit(2);
+        }
+
         if (Object.keys(args).length === 0 && !process.env.NODE_ENV) {
             return config;
         }

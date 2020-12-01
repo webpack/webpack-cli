@@ -17,6 +17,8 @@ describe('cache', () => {
         let { exitCode, stderr, stdout } = run(__dirname, ['-c', './webpack.config.js', '--cache-name', 'test'], false);
 
         if (isWebpack5) {
+            expect(stderr).toContain('Compilation starting...');
+            expect(stderr).toContain('Compilation finished');
             expect(stderr).toContain('No pack exists at');
             expect(stderr).toContain('Stored pack');
             expect(stdout).toBeTruthy();
@@ -28,6 +30,8 @@ describe('cache', () => {
 
         if (isWebpack5) {
             expect(exitCode).toEqual(0);
+            expect(stderr).toContain('Compilation starting...');
+            expect(stderr).toContain('Compilation finished');
             expect(stderr).toContain('restore cache container');
             expect(stderr).toContain('restore cache content metadata');
             expect(stderr).toContain('restore cache content');
@@ -41,6 +45,9 @@ describe('cache', () => {
         let { exitCode, stderr, stdout } = run(__dirname, ['--cache-name', 'test-1'], false);
 
         if (isWebpack5) {
+            expect(exitCode).toEqual(0);
+            expect(stderr).toContain('Compilation starting...');
+            expect(stderr).toContain('Compilation finished');
             expect(stderr).toContain('No pack exists at');
             expect(stderr).toContain('Stored pack');
             expect(stdout).toBeTruthy();
@@ -52,6 +59,8 @@ describe('cache', () => {
 
         if (isWebpack5) {
             expect(exitCode).toEqual(0);
+            expect(stderr).toContain('Compilation starting...');
+            expect(stderr).toContain('Compilation finished');
             expect(stderr).toContain('restore cache container');
             expect(stderr).toContain('restore cache content metadata');
             expect(stderr).toContain('restore cache content');

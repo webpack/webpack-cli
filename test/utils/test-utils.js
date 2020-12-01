@@ -51,7 +51,7 @@ const run = (testCase, args = [], setOutput = true, nodeOptions = [], env) => {
     return result;
 };
 
-const runWatch = (testCase, args = [], setOutput = true, outputKillStr = 'watching files for updates...') => {
+const runWatch = (testCase, args = [], setOutput = true, outputKillStr = 'Compiler is watching files for updates...') => {
     const cwd = path.resolve(testCase);
 
     const outputPath = path.resolve(testCase, 'bin');
@@ -64,7 +64,7 @@ const runWatch = (testCase, args = [], setOutput = true, outputKillStr = 'watchi
             stdio: 'pipe',
         });
 
-        proc.stdout.pipe(
+        proc.stderr.pipe(
             new Writable({
                 write(chunk, encoding, callback) {
                     const output = chunk.toString('utf8');
@@ -241,7 +241,7 @@ const runInstall = async (cwd) => {
 };
 
 const runServe = (args, testPath) => {
-    return runWatch(testPath, ['serve'].concat(args), false, 'main');
+    return runWatch(testPath, ['serve'].concat(args), false);
 };
 
 const runInfo = (args, testPath) => {

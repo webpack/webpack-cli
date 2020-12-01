@@ -39,7 +39,7 @@ describe('basic info usage', () => {
     });
 
     it('shows a warning if an invalid value is supplied', () => {
-        const { stdout, stderr, exitCode } = runInfo(['--output=unknown'], __dirname);
+        const { exitCode, stderr, stdout } = runInfo(['--output=unknown'], __dirname);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain(`[webpack-cli] ${red(`'unknown' is not a valid value for output`)}`);

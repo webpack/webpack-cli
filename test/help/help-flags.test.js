@@ -4,7 +4,7 @@ const { run } = require('../utils/test-utils');
 
 describe('commands help', () => {
     it('log error for invalid flag with --help flag', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--help', '--my-flag'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--help', '--my-flag'], false);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain(`Invalid option '--my-flag'`);
@@ -13,7 +13,7 @@ describe('commands help', () => {
     });
 
     it('log error for invalid flag with help command', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['help', '--my-flag'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['help', '--my-flag'], false);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain(`Invalid option '--my-flag'.`);
@@ -22,7 +22,7 @@ describe('commands help', () => {
     });
 
     it('log flag help with valid flag', () => {
-        const { stdout, stderr, exitCode } = run(__dirname, ['--help', '--merge'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--help', '--merge'], false);
 
         expect(exitCode).toBe(0);
         expect(stdout).not.toContain('The build tool for modern web applications');
@@ -31,7 +31,7 @@ describe('commands help', () => {
     });
 
     it('log show help for --mode', () => {
-        const { stdout, stderr, exitCode } = run(__dirname, ['--mode', '--help'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--mode', '--help'], false);
 
         expect(exitCode).toBe(0);
         expect(stdout).not.toContain('The build tool for modern web applications');
@@ -41,7 +41,7 @@ describe('commands help', () => {
     });
 
     it('log error for multiple flags', () => {
-        const { stdout, stderr, exitCode } = run(__dirname, ['--help', '--entry', '--merge'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--help', '--entry', '--merge'], false);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain(

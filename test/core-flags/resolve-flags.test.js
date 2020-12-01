@@ -9,16 +9,21 @@ describe('resolve config related flags', () => {
     resolveFlags.forEach((flag) => {
         // extract property name from flag name
         let property = flag.name.split('resolve-')[1];
+
         if (flag.name.startsWith('resolve-loader')) {
             property = flag.name.split('resolve-loader-')[1];
         }
+
         const propName = hyphenToUpperCase(property);
 
         if (flag.type === Boolean && !flag.name.includes('alias-') && !flag.name.includes('fallback-')) {
             it(`should config --${flag.name} correctly`, () => {
                 const { stderr, stdout } = run(__dirname, [`--${flag.name}`]);
 
-                expect(stderr).toBeFalsy();
+                // expect(exitCode).toBe(0);
+                expect(stderr).toContain("Compilation 'compiler' starting...");
+                expect(stderr).toContain("Compilation 'compiler' finished");
+
                 if (flag.name.includes('reset')) {
                     const option = propName.split('Reset')[0];
                     expect(stdout).toContain(`${option}: []`);
@@ -30,21 +35,23 @@ describe('resolve config related flags', () => {
 
         if (flag.type === String && !flag.name.includes('alias-') && !flag.name.includes('fallback-')) {
             it(`should config --${flag.name} correctly`, () => {
-                const { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`, 'browser']);
+                const { stderr, stdout } = run(__dirname, [`--${flag.name}`, 'browser']);
 
-                expect(stderr).toBeFalsy();
+                // expect(exitCode).toBe(0);
+                expect(stderr).toContain("Compilation 'compiler' starting...");
+                expect(stderr).toContain("Compilation 'compiler' finished");
+
                 if (propName === 'restrictions') {
                     expect(stdout).toContain('browser');
                 } else {
                     expect(stdout).toContain(`${propName}: [ 'browser' ]`);
-                    expect(exitCode).toBe(0);
                 }
             });
         }
 
         if (flag.name.includes('alias-') || flag.name.includes('fallback-')) {
             it(`should config --${flag.name} correctly`, () => {
-                const { stderr, stdout, exitCode } = run(__dirname, [
+                const { exitCode, stderr, stdout } = run(__dirname, [
                     `--resolve-alias-alias`,
                     'alias',
                     '--resolve-alias-name',
@@ -67,8 +74,9 @@ describe('resolve config related flags', () => {
                     'loader-fall-name',
                 ]);
 
-                expect(stderr).toBeFalsy();
                 expect(exitCode).toBe(0);
+                expect(stderr).toContain("Compilation 'compiler' starting...");
+                expect(stderr).toContain("Compilation 'compiler' finished");
                 expect(stdout).toContain(`alias: [ { alias: 'alias', name: 'name' } ]`);
                 expect(stdout).toContain(`aliasFields: [ 'aliasField' ]`);
                 expect(stdout).toContain(`alias: [ { alias: 'loaderAlias', name: 'loaderName' } ]`);
@@ -81,7 +89,7 @@ describe('resolve config related flags', () => {
 
             if (flag.name.includes('reset')) {
                 it(`should config --${flag.name} alias-reset flags correctly`, () => {
-                    const { stderr, stdout, exitCode } = run(__dirname, [
+                    const { exitCode, stderr, stdout } = run(__dirname, [
                         '--resolve-alias-reset',
                         '--resolve-fallback-reset',
                         '--resolve-alias-fields-reset',
@@ -90,8 +98,9 @@ describe('resolve config related flags', () => {
                         '--resolve-loader-fallback-reset',
                     ]);
 
-                    expect(stderr).toBeFalsy();
                     expect(exitCode).toBe(0);
+                    expect(stderr).toContain("Compilation 'compiler' starting...");
+                    expect(stderr).toContain("Compilation 'compiler' finished");
                     expect(stdout).toContain(`alias: []`);
                     expect(stdout).toContain(`aliasFields: []`);
                     expect(stdout).toContain(`fallback: []`);

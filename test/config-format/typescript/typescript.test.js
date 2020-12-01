@@ -8,7 +8,7 @@ describe('webpack cli', () => {
         'should support typescript file',
         async () => {
             await runInstall(__dirname);
-            const { stderr, stdout, exitCode } = run(__dirname, ['-c', './webpack.config.ts']);
+            const { exitCode, stderr, stdout } = run(__dirname, ['-c', './webpack.config.ts']);
 
             expect(stderr).toBeFalsy();
             expect(stdout).toBeTruthy();

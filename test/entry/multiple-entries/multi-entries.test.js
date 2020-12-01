@@ -6,10 +6,11 @@ const { resolve } = require('path');
 
 describe(' multiple entries', () => {
     it('should allow multiple entry files', (done) => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['./src/a.js', './src/b.js']);
+        const { exitCode, stderr, stdout } = run(__dirname, ['./src/a.js', './src/b.js']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toBeFalsy();
+        expect(stderr).toContain('Compilation starting...');
+        expect(stderr).toContain('Compilation finished');
         expect(stdout).toBeTruthy();
 
         stat(resolve(__dirname, './bin/main.js'), (err, stats) => {
@@ -26,10 +27,11 @@ describe(' multiple entries', () => {
     });
 
     it('should allow multiple entry flags', (done) => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--entry', './src/a.js', '--entry', './src/b.js']);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--entry', './src/a.js', '--entry', './src/b.js']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toBeFalsy();
+        expect(stderr).toContain('Compilation starting...');
+        expect(stderr).toContain('Compilation finished');
         expect(stdout).toBeTruthy();
 
         stat(resolve(__dirname, './bin/main.js'), (err, stats) => {

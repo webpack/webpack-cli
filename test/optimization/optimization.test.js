@@ -1,22 +1,21 @@
-const fs = require('fs');
-const { join } = require('path');
-const { version } = require('webpack');
-const { run } = require('../utils/test-utils');
+const { run, isWebpack5 } = require('../utils/test-utils');
 
 describe('optimization option in config', () => {
     it('should work with mangleExports disabled', () => {
-        const { stdout, stderr, exitCode } = run(__dirname, [], false);
+        const { exitCode, stderr, stdout } = run(__dirname, [], false);
+
         // Should throw when webpack is less than 5
-        if (!version.startsWith('5')) {
-            expect(stderr).toContain("configuration.optimization has an unknown property 'mangleExports'");
-            expect(exitCode).toBe(2);
-        } else {
-            // Should apply the provided optimization to the compiler
-            expect(stdout).toContain('mangleExports: false');
-            // check that the output file exists
-            expect(fs.existsSync(join(__dirname, '/dist/main.js'))).toBeTruthy();
-            expect(stderr).toBeFalsy();
+        if (isWebpack5) {
             expect(exitCode).toBe(0);
+            expect(stderr).toContain('Compilation starting...');
+            expect(stderr).toContain('Compilation finished');
+            expect(stdout).toContain('mangleExports: false');
+        } else {
+            expect(exitCode).toBe(2);
+            expect(stderr).not.toContain('Compilation starting...');
+            expect(stderr).not.toContain('Compilation finished');
+            expect(stderr).toContain("configuration.optimization has an unknown property 'mangleExports'");
+            expect(stdout).toBeFalsy();
         }
     });
 });
