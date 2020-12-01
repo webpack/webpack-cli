@@ -7,7 +7,6 @@ import { utils } from 'webpack-cli';
 const { getPackageManager } = utils;
 
 jest.mock('execa');
-jest.mock('cross-spawn');
 const globalModulesNpmValue = 'test-npm';
 jest.setMock('global-modules', globalModulesNpmValue);
 

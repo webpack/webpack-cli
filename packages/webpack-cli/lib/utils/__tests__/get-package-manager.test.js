@@ -11,7 +11,6 @@ jest.setMock('execa', {
 });
 const getPackageManager = require('../get-package-manager');
 
-jest.mock('cross-spawn');
 jest.mock('../get-package-manager', () => jest.fn());
 const globalModulesNpmValue = 'test-npm';
 jest.setMock('global-modules', globalModulesNpmValue);
