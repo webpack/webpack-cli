@@ -4,7 +4,7 @@ const { run } = require('../../utils/test-utils');
 
 describe('merge flag configuration', () => {
     it('merges two configurations together', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--config', './1.js', '-c', './2.js', '--merge'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--config', './1.js', '--config', './2.js', '--merge'], false);
 
         expect(exitCode).toBe(0);
         expect(stderr).toContain('Compilation starting...');
