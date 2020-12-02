@@ -6,7 +6,7 @@ const { writeFileSync, existsSync } = require('fs');
 const { options: coloretteOptions, yellow } = require('colorette');
 
 const logger = require('./utils/logger');
-const { cli, flags } = require('./utils/cli-flags');
+const { cli, flags, coreFlags } = require('./utils/cli-flags');
 const argParser = require('./utils/arg-parser');
 const CLIPlugin = require('./plugins/CLIPlugin');
 const promptInstallation = require('./utils/prompt-installation');
@@ -230,13 +230,11 @@ class WebpackCLI {
 
         if (cli) {
             const processArguments = (options) => {
-                const coreFlagMap = flags
-                    .filter((flag) => flag.group === 'core')
-                    .reduce((accumulator, flag) => {
-                        accumulator[flag.name] = flag;
+                const coreFlagMap = coreFlags.reduce((accumulator, flag) => {
+                    accumulator[flag.name] = flag;
 
-                        return accumulator;
-                    }, {});
+                    return accumulator;
+                }, {});
                 const coreConfig = Object.keys(args).reduce((accumulator, name) => {
                     const kebabName = toKebabCase(name);
 

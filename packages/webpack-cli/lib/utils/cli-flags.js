@@ -271,10 +271,10 @@ const coreFlags = cli
           const inBuiltIn = builtInFlags.find((builtInFlag) => builtInFlag.name === flag);
 
           if (inBuiltIn) {
-              return { ...meta, name: flag, group: 'core', ...inBuiltIn };
+              return { ...meta, name: flag, ...inBuiltIn };
           }
 
-          return { ...meta, name: flag, group: 'core' };
+          return { ...meta, name: flag };
       })
     : [];
 const flags = []
@@ -290,5 +290,6 @@ module.exports = {
     commands,
     cli,
     flags,
+    coreFlags,
     isCommandUsed,
 };
