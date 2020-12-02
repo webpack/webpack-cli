@@ -9,7 +9,7 @@ const wordsInStatsv5 = ['asset', 'index.js', 'compiled', 'webpack'];
 const clear = '\x1B[2J\x1B[3J\x1B[H';
 
 describe('--interactive flag with single compiler', () => {
-    it('should output in interactive with --interactive', async (done) => {
+    it('should output in interactive with --interactive', (done) => {
         const proc = runAndGetWatchProc(__dirname, ['--interactive'], false, '', true);
         const checker = [
             {
