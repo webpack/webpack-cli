@@ -70,7 +70,7 @@ describe('--interactive flag with single compiler', () => {
                     semaphore++;
                 } catch (err) {
                     proc.kill();
-                    done();
+                    done(err);
                 }
             }
         });
