@@ -3,7 +3,7 @@
 const { run } = require('../utils/test-utils');
 
 describe('invalid flag value', () => {
-    it('should thorw error for the invalid value passed', () => {
+    it('should throw an error for the invalid value passed', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--output-script-type', 'unknown']);
 
         expect(exitCode).toBe(2);
