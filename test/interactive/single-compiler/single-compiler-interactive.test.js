@@ -6,75 +6,72 @@ const { version } = require('webpack');
 
 const wordsInStatsv4 = ['Hash', 'Version', 'Time', 'Built at:', 'main.js'];
 const wordsInStatsv5 = ['asset', 'index.js', 'compiled', 'webpack'];
+const clear = '\x1B[2J\x1B[3J\x1B[H';
 
 describe('--interactive flag with single compiler', () => {
-    it('should output in interactive with --interactive', (done) => {
+    it('should output in interactive with --interactive', async (done) => {
         const proc = runAndGetWatchProc(__dirname, ['--interactive'], false, '', true);
-        let semaphore = 2;
-        const clear = '\x1B[2J\x1B[3J\x1B[H';
-        proc.stdout.on('data', (chunk) => {
-            const data = chunk.toString();
-            if (semaphore === 2 && data.includes('\u2B24')) {
-                writeFileSync(resolve(__dirname, './src/index.js'), `console.log('I am Batman');`);
-                semaphore--;
-                return;
-            }
-            if (semaphore === 1) {
-                if (data.includes('Compilation') || data.includes('watching files for updates')) {
-                    return;
-                }
-                expect(data).toBe(clear);
-                semaphore--;
-                return;
-            }
-            if (semaphore === 0) {
-                if (data.includes('Compilation') || data.includes('watching files for updates')) {
-                    return;
-                }
-                if (version.startsWith('5')) {
-                    for (const word of wordsInStatsv5) {
-                        expect(data).toContain(word);
+        const checker = [
+            {
+                check: (data) => {
+                    return data.includes('\u2B24');
+                },
+                perform: () => {
+                    writeFileSync(resolve(__dirname, './src/index.js'), `console.log('I am Batman');`);
+                },
+            },
+            {
+                check: (data) => {
+                    return data.includes(clear);
+                },
+                perform: (data) => {
+                    expect(data).toContain(clear);
+                },
+            },
+            {
+                check: (data) => {
+                    if (version.startsWith('5')) {
+                        return data.includes(wordsInStatsv5[0]);
+                    } else {
+                        return data.includes(wordsInStatsv4[0]);
                     }
-                } else {
-                    for (const word of wordsInStatsv4) {
-                        expect(data).toContain(word);
+                },
+                perform: (data) => {
+                    if (version.startsWith('5')) {
+                        for (const word of wordsInStatsv5) {
+                            expect(data).toContain(word);
+                        }
+                    } else {
+                        for (const word of wordsInStatsv4) {
+                            expect(data).toContain(word);
+                        }
                     }
-                }
-                semaphore--;
-                proc.kill();
-                done();
-                return;
-            }
-        });
-    });
+                },
+            },
+        ];
 
-    it('should output in standard with --watch only', (done) => {
-        const proc = runAndGetWatchProc(__dirname, ['--watch'], false, '', true);
-        let semaphore = 1;
-        proc.stdout.on('data', (chunk) => {
-            const data = chunk.toString();
-            if (semaphore === 1 && data.includes('watching files for updates')) {
-                writeFileSync(resolve(__dirname, './src/index.js'), `console.log('I am Batman');`);
-                semaphore--;
-                return;
-            }
-            if (semaphore === 0) {
-                if (data.includes('Compilation')) {
-                    return;
-                }
-                if (version.startsWith('5')) {
-                    for (const word of wordsInStatsv5) {
-                        expect(data).toContain(word);
-                    }
-                } else {
-                    for (const word of wordsInStatsv4) {
-                        expect(data).toContain(word);
-                    }
-                }
-                semaphore--;
+        let semaphore = 0;
+        proc.stdout.on('readable', () => {
+            if (semaphore >= checker.length) {
                 proc.kill();
                 done();
                 return;
+            }
+
+            let data = '';
+            let chunk;
+            while ((chunk = proc.stdout.read())) {
+                data += chunk.toString();
+            }
+
+            if (data && checker[semaphore].check(data.toString())) {
+                try {
+                    checker[semaphore].perform(data.toString());
+                    semaphore++;
+                } catch (err) {
+                    proc.kill();
+                    done();
+                }
             }
         });
     });

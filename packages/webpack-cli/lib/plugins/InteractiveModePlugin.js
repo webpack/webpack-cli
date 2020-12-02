@@ -49,6 +49,7 @@ class InteractiveModeMultiCompilerHelperPlugin {
     }
 }
 
+const isWebpack5 = version.startsWith('5');
 /**
  * Interactive Mode plugin
  */
@@ -108,7 +109,7 @@ class InteractiveModePlugin {
                 clrscr();
             });
 
-            if (version.startsWith('5')) {
+            if (isWebpack5) {
                 compiler.hooks.afterDone.tap(this.name, () => {
                     setTimeout(() => {
                         console.log('\n\n');
@@ -166,7 +167,7 @@ class InteractiveModePlugin {
     }
 
     startHandler(compiler) {
-        if (!version.startsWith('5')) {
+        if (!isWebpack5) {
             spawnCommand('starting not supported', true);
             return;
         }
@@ -200,7 +201,7 @@ class InteractiveModePlugin {
     }
 
     stopHandler(compiler) {
-        if (!version.startsWith('5')) {
+        if (!isWebpack5) {
             spawnCommand('stoping not supported', true);
             return;
         }

@@ -419,7 +419,7 @@ class WebpackCLI {
         let compiler;
         try {
             // enforce watch on interactive
-            if (args.interactive && !args.env.WEBPACK_SERVE) {
+            if (args.interactive) {
                 if (Array.isArray(options)) {
                     for (const option of options) {
                         option.watch = true;
