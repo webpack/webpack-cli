@@ -257,8 +257,7 @@ const builtInFlags = [
         alias: 'i',
         multiple: false,
         description: 'Use webpack interactive mode',
-        group: BASIC_GROUP,
-    }
+    },
 ];
 
 // Extract all the flags being exported from core.
