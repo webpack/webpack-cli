@@ -2,6 +2,7 @@ const path = require('path');
 
 module.exports = {
     mode: 'development',
+    name: 'cache-test-default',
     cache: {
         type: 'filesystem',
         buildDependencies: {
