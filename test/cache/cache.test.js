@@ -25,6 +25,7 @@ describe('cache', () => {
         expect(exitCode).toEqual(0);
 
         if (isWebpack5) {
+            console.log(stderr);
             expect(stderr).toContain("Compilation 'cache-test-default' starting...");
             expect(stderr).toContain("Compilation 'cache-test-default' finished");
             expect(stderr.match(/restore cache container:/g)).toHaveLength(1);
