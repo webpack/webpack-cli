@@ -1,5 +1,5 @@
 module.exports = {
     entry: './main.js',
-    mode: 'production',
+    mode: 'development',
     target: 'node',
 };

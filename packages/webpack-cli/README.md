@@ -52,15 +52,17 @@ yarn add webpack-cli --dev
   --progress string, boolean    Print compilation progress during build
   --color                       Enables colors on console
   --no-color                    Disable colors on console
-  --env string                  Environment passed to the configuration when it is a function
+  --env string[]                Environment passed to the configuration when it is a function
   --name string                 Name of the configuration. Used when loading multiple configurations
   --help                        Outputs list of supported flags
   -o, --output-path string      Output location of the generated bundle
-  -t, --target string           Sets the build target
+  -t, --target string[]         Sets the build target
   -w, --watch                   Watch for files changes
+  --no-watch                    Do not watch for file changes
   -h, --hot                     Enables Hot Module Replacement
   --no-hot                      Disables Hot Module Replacement
   -d, --devtool string          Controls if and how source maps are generated.
+  --no-devtool                  Do not generate source maps
   --prefetch string             Prefetch this request
   -j, --json string, boolean    Prints result as JSON or store it in a file
   --mode string                 Defines the mode to pass to webpack
@@ -136,6 +138,11 @@ yarn add webpack-cli --dev
                                                               `output.libraryTarget`.
   --externals-type string                                     Specifies the default type of externals ('amd*', 'umd*', 'system' and 'jsonp'
                                                               depend on output.libraryTarget set to the same value).
+  --ignore-warnings string[]                                  A RegExp to select the warning message.
+  --ignore-warnings-file string[]                             A RegExp to select the origin file for the warning.
+  --ignore-warnings-message string[]                          A RegExp to select the warning message.
+  --ignore-warnings-module string[]                           A RegExp to select the origin module for the warning.
+  --ignore-warnings-reset                                     Clear all items provided in configuration. Ignore specific warnings.
   --infrastructure-logging-debug string[]                     Enable/Disable debug logging for all loggers. Enable debug logging for
                                                               specific loggers.
   --infrastructure-logging-debug-reset                        Clear all items provided in configuration. Enable debug logging for specific

@@ -15,9 +15,11 @@ async function promptInstallation(packageName, preMessage) {
     const options = [packageManager === 'yarn' ? 'add' : 'install', '-D', packageName];
 
     const commandToBeRun = `${packageManager} ${options.join(' ')}`;
+
     if (preMessage) {
         preMessage();
     }
+
     const question = `Would you like to install ${packageName}? (That will run ${green(commandToBeRun)})`;
     const { installConfirm } = await prompt([
         {
@@ -27,8 +29,10 @@ async function promptInstallation(packageName, preMessage) {
             initial: 'Y',
         },
     ]);
+
     if (installConfirm) {
         await runCommand(commandToBeRun);
+
         return packageExists(packageName);
     }
 

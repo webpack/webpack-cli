@@ -1,4 +1,5 @@
 const execa = require('execa');
+const logger = require('./logger');
 
 async function runCommand(command, args = []) {
     try {
@@ -7,7 +8,8 @@ async function runCommand(command, args = []) {
             shell: true,
         });
     } catch (e) {
-        throw new Error(e);
+        logger.error(e);
+        process.exit(2);
     }
 }
 

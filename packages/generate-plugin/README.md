@@ -27,7 +27,13 @@ generatePlugin();
 ### CLI (via `webpack-cli`)
 
 ```bash
-npx webpack-cli generate-plugin
+npx webpack-cli plugin
+```
+
+> Optionally specify a path for generating the plugin template.
+
+```bash
+npx webpack-cli plugin [path]
 ```
 
 [downloads]: https://img.shields.io/npm/dm/@webpack-cli/generate-plugin.svg

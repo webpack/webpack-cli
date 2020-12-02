@@ -13,7 +13,6 @@
   ],
   "dependencies": {
     "colorette": "^1.2.1",
-    "cross-spawn": "^7.0.3",
     "execa": "^4.1.0",
     "findup-sync": "^4.0.0",
     "global-modules": "^2.0.0",
@@ -28,7 +27,6 @@
     "webpack-cli": "4.x.x"
   },
   "devDependencies": {
-    "@types/cross-spawn": "^6.0.2",
     "@types/got": "^9.6.11",
     "@types/prettier": "^2.1.5",
     "@types/yeoman-generator": "^4.11.3"

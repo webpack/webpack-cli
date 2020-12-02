@@ -1,21 +1,19 @@
 const path = require('path');
 
 module.exports = {
+    mode: 'development',
     cache: {
         type: 'filesystem',
-        name: 'cache-config-tests',
         buildDependencies: {
             config: [__filename],
         },
     },
     infrastructureLogging: {
-        debug: /webpack\.cache/,
+        debug: /cache/,
     },
     entry: {
         app: './src/main.js',
     },
-    devtool: 'inline-source-map',
-    plugins: [],
     output: {
         filename: '[name].bundle.js',
         chunkFilename: '[name].bundle.js',

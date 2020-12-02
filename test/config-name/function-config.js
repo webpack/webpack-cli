@@ -13,7 +13,7 @@ module.exports = () => [
         },
         name: 'second',
         entry: './src/second.js',
-        mode: 'production',
+        mode: 'development',
     },
     {
         output: {

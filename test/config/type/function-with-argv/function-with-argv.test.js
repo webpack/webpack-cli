@@ -1,16 +1,22 @@
 'use strict';
-const { existsSync } = require('fs');
+const { stat } = require('fs');
 const { resolve } = require('path');
 const { run } = require('../../../utils/test-utils');
 
 describe('function configuration', () => {
-    it('is able to understand a configuration file as a function', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--mode', 'development'], false);
-        expect(stderr).toBeFalsy();
-        expect(stdout).toBeTruthy();
+    it('is able to understand a configuration file as a function', (done) => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['--mode', 'development'], false);
+
         expect(exitCode).toBe(0);
-        expect(stdout).toContain("argv: { color: true, mode: 'development' }");
-        // Should generate the appropriate files
-        expect(existsSync(resolve(__dirname, './dist/dev.js'))).toBeTruthy();
+        expect(stderr).toContain('Compilation starting...');
+        expect(stderr).toContain('Compilation finished');
+        expect(stdout).toBeTruthy();
+        expect(stdout).toContain("argv: { mode: 'development' }");
+
+        stat(resolve(__dirname, './dist/dev.js'), (err, stats) => {
+            expect(err).toBe(null);
+            expect(stats.isFile()).toBe(true);
+            done();
+        });
     });
 });

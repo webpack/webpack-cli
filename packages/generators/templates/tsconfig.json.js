@@ -6,4 +6,5 @@ module.exports = {
         target: 'es5',
         allowJs: true,
     },
+    files: ['src/index.ts'],
 };

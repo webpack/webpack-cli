@@ -5,10 +5,12 @@ const { run, isWindows } = require('../utils/test-utils');
 
 describe('--context flag', () => {
     it('should allow to set context', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--context', './']);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--context', './']);
 
-        expect(stderr).toBeFalsy();
         expect(exitCode).toBe(0);
+        expect(stderr).toContain("Compilation 'compiler' starting...");
+        expect(stderr).toContain("Compilation 'compiler' finished");
+
         if (isWindows) {
             const windowsPath = resolve(__dirname, './').replace(/\\/g, '\\\\');
             expect(stdout).toContain(`context: '${windowsPath}'`);
@@ -18,10 +20,11 @@ describe('--context flag', () => {
     });
 
     it('should throw module not found error for invalid context', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--context', '/invalid-context-path']);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--context', '/invalid-context-path']);
 
-        expect(stderr).toBeFalsy();
         expect(exitCode).toBe(1);
+        expect(stderr).toContain("Compilation 'compiler' starting...");
+        expect(stderr).toContain("Compilation 'compiler' finished");
         expect(stdout).toContain(`Module not found: Error: Can't resolve './src/main.js'`);
     });
 });

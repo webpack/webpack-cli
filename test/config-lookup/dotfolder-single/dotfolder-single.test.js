@@ -1,23 +1,19 @@
 'use strict';
 
-const { stat } = require('fs');
+const { existsSync } = require('fs');
 const { resolve } = require('path');
 
 const { run } = require('../../utils/test-utils');
 
 describe('dotfolder single config lookup', () => {
-    it('should find a webpack configuration in a dotfolder', (done) => {
-        const { stdout, stderr, exitCode } = run(__dirname, [], false);
+    it('should find a webpack configuration in a dotfolder', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, [], false);
 
-        expect(stderr).not.toBeUndefined();
-        expect(stdout).not.toBeUndefined();
         expect(exitCode).toBe(0);
-
+        expect(stderr).toContain('Compilation starting...');
+        expect(stderr).toContain('Compilation finished');
         expect(stdout).not.toContain('Module not found');
-        stat(resolve(__dirname, './dist/main.js'), (err, stats) => {
-            expect(err).toBe(null);
-            expect(stats.isFile()).toBe(true);
-            done();
-        });
+        expect(stdout).toBeTruthy();
+        expect(existsSync(resolve(__dirname, './dist/main.js'))).toBeTruthy();
     });
 });

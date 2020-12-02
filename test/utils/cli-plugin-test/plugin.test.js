@@ -4,12 +4,17 @@ const { run } = require('../test-utils');
 
 describe('webpack-cli-test-plugin Test', () => {
     it('should log the webpack configuration', () => {
-        const { stderr, stdout } = run(__dirname);
-        expect(stderr).toBeFalsy();
+        const { exitCode, stderr, stdout } = run(__dirname);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toContain('Compilation starting...');
+        expect(stderr).toContain('Compilation finished');
         expect(stdout).toContain(`target: 'node'`);
+
         if (typeof cli !== 'undefined') {
             expect(stdout).toContain(`alias: { alias: [ 'alias1', 'alias2' ] }`);
         }
+
         expect(stdout).toContain(`  WebpackCLITestPlugin { opts: [Array], showAll: true }`);
     });
 });

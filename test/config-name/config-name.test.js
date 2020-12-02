@@ -1,131 +1,135 @@
 'use strict';
 
 const { run } = require('../utils/test-utils');
-const { stat } = require('fs');
-const { resolve } = require('path');
 
 describe('--config-name flag', () => {
-    it('should select only the config whose name is passed with --config-name', (done) => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--config-name', 'first'], false);
-        expect(stderr).toBeFalsy();
+    it('should select only the config whose name is passed with --config-name', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['--config-name', 'first'], false);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toContain("Compilation 'first' starting...");
+        expect(stderr).toContain("Compilation 'first' finished");
         expect(stdout).toContain('first');
         expect(stdout).not.toContain('second');
         expect(stdout).not.toContain('third');
-        expect(exitCode).toBe(0);
-
-        stat(resolve(__dirname, './dist/dist-first.js'), (err, stats) => {
-            expect(err).toBe(null);
-            expect(stats.isFile()).toBe(true);
-            done();
-        });
     });
 
-    it('should work with multiple values for --config-name', (done) => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--config-name', 'first', '--config-name', 'third'], false);
-        expect(stderr).toBeFalsy();
+    it('should work with multiple values for --config-name', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['--config-name', 'first', '--config-name', 'third'], false);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toContain("Compilation 'first' starting...");
+        expect(stderr).toContain("Compilation 'first' finished");
+        expect(stderr).toContain("Compilation 'third' starting...");
+        expect(stderr).toContain("Compilation 'third' finished");
         expect(stdout).toContain('first');
         expect(stdout).not.toContain('second');
         expect(stdout).toContain('third');
+    });
+
+    it('should work with multiple values for --config-name and multiple configurations', () => {
+        const { exitCode, stderr, stdout } = run(
+            __dirname,
+            ['-c', './function-config.js', '-c', './single-other-config.js', '--config-name', 'first', '--config-name', 'four'],
+            false,
+        );
+
         expect(exitCode).toBe(0);
-
-        stat(resolve(__dirname, './dist/dist-third.js'), (err, stats) => {
-            expect(err).toBe(null);
-            expect(stats.isFile()).toBe(true);
-
-            stat(resolve(__dirname, './dist/dist-first.js'), (err, stats) => {
-                expect(err).toBe(null);
-                expect(stats.isFile()).toBe(true);
-                done();
-            });
-        });
+        expect(stderr).toContain("Compilation 'first' starting...");
+        expect(stderr).toContain("Compilation 'first' finished");
+        expect(stderr).toContain("Compilation 'four' starting...");
+        expect(stderr).toContain("Compilation 'four' finished");
+        expect(stdout).toContain('first');
+        expect(stdout).not.toContain('second');
+        expect(stdout).not.toContain('third');
+        expect(stdout).toContain('four');
     });
 
     it('should log error if invalid config name is provided', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--config-name', 'test'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--config-name', 'test'], false);
 
-        expect(stderr).toContain('Configuration with name "test" was not found.');
-        expect(stdout).toBeFalsy();
         expect(exitCode).toBe(2);
+        expect(stderr).not.toContain('Compilation starting...');
+        expect(stderr).not.toContain('Compilation finished');
+        expect(stderr).toContain('Configuration with the "test" name was not found.');
+        expect(stdout).toBeFalsy();
     });
 
     it('should log error if multiple configurations are not found', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--config-name', 'test', '-c', 'single-config.js'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--config-name', 'test', '-c', 'single-config.js'], false);
 
-        expect(stderr).toContain('Configuration with name "test" was not found.');
-        expect(stdout).toBeFalsy();
         expect(exitCode).toBe(2);
+        expect(stderr).not.toContain('Compilation starting...');
+        expect(stderr).not.toContain('Compilation finished');
+        expect(stderr).toContain('Configuration with the "test" name was not found.');
+        expect(stdout).toBeFalsy();
     });
 
     it('should log error if multiple configurations are not found #1', () => {
-        const { stderr, stdout, exitCode } = run(
+        const { exitCode, stderr, stdout } = run(
             __dirname,
             ['--config-name', 'test', '--config-name', 'bar', '-c', 'single-config.js'],
             false,
         );
 
-        expect(stderr).toContain('Configuration with name "test" was not found.');
-        expect(stderr).toContain('Configuration with name "bar" was not found.');
-        expect(stdout).toBeFalsy();
         expect(exitCode).toBe(2);
+        expect(stderr).not.toContain('Compilation starting...');
+        expect(stderr).not.toContain('Compilation finished');
+        expect(stderr).toContain('Configuration with the "test" name was not found.');
+        expect(stderr).toContain('Configuration with the "bar" name was not found.');
+        expect(stdout).toBeFalsy();
     });
 
     it('should log error if multiple configurations are not found #2', () => {
-        const { stderr, stdout, exitCode } = run(
+        const { exitCode, stderr, stdout } = run(
             __dirname,
             ['--config-name', 'first', '--config-name', 'bar', '-c', 'single-config.js'],
             false,
         );
 
-        expect(stderr).not.toContain('Configuration with name "first" was not found.');
-        expect(stderr).toContain('Configuration with name "bar" was not found.');
-        expect(stdout).toBeFalsy();
         expect(exitCode).toBe(2);
+        expect(stderr).not.toContain('Compilation starting...');
+        expect(stderr).not.toContain('Compilation finished');
+        expect(stderr).not.toContain('Configuration with the "first" name was not found.');
+        expect(stderr).toContain('Configuration with the "bar" name was not found.');
+        expect(stdout).toBeFalsy();
     });
 
-    it('should work with config as a function', (done) => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--config', 'function-config.js', '--config-name', 'first'], false);
-        expect(stderr).toBeFalsy();
+    it('should work with config as a function', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['--config', 'function-config.js', '--config-name', 'first'], false);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toContain("Compilation 'first' starting...");
+        expect(stderr).toContain("Compilation 'first' finished");
         expect(stdout).toContain('first');
         expect(stdout).not.toContain('second');
         expect(stdout).not.toContain('third');
-        expect(exitCode).toBe(0);
-
-        stat(resolve(__dirname, './dist/dist-first.js'), (err, stats) => {
-            expect(err).toBe(null);
-            expect(stats.isFile()).toBe(true);
-            done();
-        });
     });
 
-    it('should work with multiple values for --config-name when the config is a function', (done) => {
-        const { stderr, stdout, exitCode } = run(
+    it('should work with multiple values for --config-name when the config is a function', () => {
+        const { exitCode, stderr, stdout } = run(
             __dirname,
             ['--config', 'function-config.js', '--config-name', 'first', '--config-name', 'third'],
             false,
         );
-        expect(stderr).toBeFalsy();
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toContain("Compilation 'first' starting...");
+        expect(stderr).toContain("Compilation 'first' finished");
+        expect(stderr).toContain("Compilation 'third' starting...");
+        expect(stderr).toContain("Compilation 'third' finished");
         expect(stdout).toContain('first');
         expect(stdout).not.toContain('second');
         expect(stdout).toContain('third');
-        expect(exitCode).toBe(0);
-
-        stat(resolve(__dirname, './dist/dist-third.js'), (err, stats) => {
-            expect(err).toBe(null);
-            expect(stats.isFile()).toBe(true);
-
-            stat(resolve(__dirname, './dist/dist-first.js'), (err, stats) => {
-                expect(err).toBe(null);
-                expect(stats.isFile()).toBe(true);
-                done();
-            });
-        });
     });
 
     it('should log error if invalid config name is provided ', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--config', 'function-config.js', '--config-name', 'test'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--config', 'function-config.js', '--config-name', 'test'], false);
 
-        expect(stderr).toContain('Configuration with name "test" was not found.');
-        expect(stdout).toBeFalsy();
         expect(exitCode).toBe(2);
+        expect(stderr).not.toContain('Compilation starting...');
+        expect(stderr).not.toContain('Compilation finished');
+        expect(stderr).toContain('Configuration with the "test" name was not found.');
+        expect(stdout).toBeFalsy();
     });
 });

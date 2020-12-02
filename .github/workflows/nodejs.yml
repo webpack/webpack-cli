@@ -117,5 +117,5 @@ jobs:
       - run: npm install
       - name: conventional-changelog-lint-config-cz
         # $GITHUB_WORKSPACE is the path to your repository
-        run: echo "::set-env name=NODE_PATH::$GITHUB_WORKSPACE/node_modules"
+        run: echo "NODE_PATH=$GITHUB_WORKSPACE/node_modules" >> $GITHUB_ENV
       - uses: wagoid/commitlint-github-action@v2

@@ -4,17 +4,30 @@ const { run } = require('../utils/test-utils');
 
 describe('--devtool flag', () => {
     it('should set devtool option', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--devtool', 'source-map']);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--devtool', 'source-map']);
 
-        expect(stderr).toBeFalsy();
         expect(exitCode).toBe(0);
+        expect(stderr).toContain("Compilation 'compiler' starting...");
+        expect(stderr).toContain("Compilation 'compiler' finished");
         expect(stdout).toContain(`devtool: 'source-map'`);
     });
 
-    it('should throw error for invalid config', () => {
-        const { stderr, exitCode } = run(__dirname, ['--devtool', 'invalid']);
+    it('should set devtool option to false', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['--no-devtool']);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toContain("Compilation 'compiler' starting...");
+        expect(stderr).toContain("Compilation 'compiler' finished");
+        expect(stdout).toContain(`devtool: false`);
+    });
+
+    it('should log error for invalid config', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['--devtool', 'invalid']);
 
         expect(exitCode).toBe(2);
+        expect(stderr).not.toContain("Compilation 'compiler' starting...");
+        expect(stderr).not.toContain("Compilation 'compiler' finished");
         expect(stderr).toContain('Invalid configuration object');
+        expect(stdout).toBeFalsy();
     });
 });

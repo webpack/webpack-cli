@@ -8,7 +8,6 @@ const { Writable } = require('readable-stream');
 const concat = require('concat-stream');
 const { version } = require('webpack');
 const { version: devServerVersion } = require('webpack-dev-server/package.json');
-const { hyphenToUpperCase } = require('../../packages/webpack-cli/lib/utils/arg-utils');
 
 const WEBPACK_PATH = path.resolve(__dirname, '../../packages/webpack-cli/bin/cli.js');
 const ENABLE_LOG_COMPILATION = process.env.ENABLE_PIPE || false;
@@ -16,24 +15,35 @@ const isWebpack5 = version.startsWith('5');
 const isDevServer4 = devServerVersion.startsWith('4');
 const isWindows = process.platform === 'win32';
 
+const hyphenToUpperCase = (name) => {
+    if (!name) {
+        return name;
+    }
+    return name.replace(/-([a-z])/g, function (g) {
+        return g[1].toUpperCase();
+    });
+};
+
 /**
  * Run the webpack CLI for a test case.
  *
  * @param {String} testCase The path to folder that contains the webpack.config.js
  * @param {Array} args Array of arguments to pass to webpack
  * @param {Boolean} setOutput Boolean that decides if a default output path will be set or not
+ * @param {Array<string>} nodeOptions Boolean that decides if a default output path will be set or not
+ * @param {Record<string, any>} env Boolean that decides if a default output path will be set or not
  * @returns {Object} The webpack output or Promise when nodeOptions are present
  */
-const run = (testCase, args = [], setOutput = true, nodeArgs = [], env) => {
+const run = (testCase, args = [], setOutput = true, nodeOptions = [], env) => {
     const cwd = path.resolve(testCase);
 
     const outputPath = path.resolve(testCase, 'bin');
-    const processExecutor = nodeArgs.length ? execaNode : spawnSync;
+    const processExecutor = nodeOptions.length ? execaNode : spawnSync;
     const argsWithOutput = setOutput ? args.concat('--output-path', outputPath) : args;
     const result = processExecutor(WEBPACK_PATH, argsWithOutput, {
         cwd,
         reject: false,
-        nodeOptions: nodeArgs,
+        nodeOptions: nodeOptions,
         env,
         stdio: ENABLE_LOG_COMPILATION ? 'inherit' : 'pipe',
     });
@@ -41,7 +51,7 @@ const run = (testCase, args = [], setOutput = true, nodeArgs = [], env) => {
     return result;
 };
 
-const runWatch = (testCase, args = [], setOutput = true, outputKillStr = 'watching files for updates...') => {
+const runWatch = (testCase, args = [], setOutput = true, outputKillStr = 'Compiler is watching files for updates...') => {
     const cwd = path.resolve(testCase);
 
     const outputPath = path.resolve(testCase, 'bin');
@@ -54,7 +64,7 @@ const runWatch = (testCase, args = [], setOutput = true, outputKillStr = 'watchi
             stdio: 'pipe',
         });
 
-        proc.stdout.pipe(
+        proc.stderr.pipe(
             new Writable({
                 write(chunk, encoding, callback) {
                     const output = chunk.toString('utf8');
@@ -231,7 +241,7 @@ const runInstall = async (cwd) => {
 };
 
 const runServe = (args, testPath) => {
-    return runWatch(testPath, ['serve'].concat(args), false, 'main');
+    return runWatch(testPath, ['serve'].concat(args), false);
 };
 
 const runInfo = (args, testPath) => {

@@ -1,16 +1,22 @@
+const { flags, isCommandUsed } = require('./utils/cli-flags');
 const WebpackCLI = require('./webpack-cli');
-const { core } = require('./utils/cli-flags');
 const logger = require('./utils/logger');
-const { isCommandUsed } = require('./utils/arg-utils');
 const argParser = require('./utils/arg-parser');
 const leven = require('leven');
+const { options: coloretteOptions } = require('colorette');
 
 process.title = 'webpack-cli';
 
 const runCLI = async (cliArgs) => {
-    const parsedArgs = argParser(core, cliArgs, true, process.title);
+    const parsedArgs = argParser(flags, cliArgs, true, process.title);
+
+    // Enable/Disable colors
+    if (typeof parsedArgs.opts.color !== 'undefined') {
+        coloretteOptions.enabled = Boolean(parsedArgs.opts.color);
+    }
 
     const commandIsUsed = isCommandUsed(cliArgs);
+
     if (commandIsUsed) {
         return;
     }
@@ -38,12 +44,14 @@ const runCLI = async (cliArgs) => {
         }
 
         if (parsedArgs.unknownArgs.length > 0) {
-            parsedArgs.unknownArgs.forEach(async (unknown) => {
-                logger.error(`Unknown argument: ${unknown}`);
+            parsedArgs.unknownArgs.forEach((unknown) => {
+                logger.error(`Unknown argument: '${unknown}'`);
+
                 const strippedFlag = unknown.substr(2);
-                const { name: suggestion } = core.find((flag) => leven(strippedFlag, flag.name) < 3);
-                if (suggestion) {
-                    logger.raw(`Did you mean --${suggestion}?`);
+                const found = flags.find((flag) => leven(strippedFlag, flag.name) < 3);
+
+                if (found) {
+                    logger.raw(`Did you mean '--${found.name}'?`);
                 }
             });
 
@@ -56,7 +64,7 @@ const runCLI = async (cliArgs) => {
             parsedArgsOpts.entry = entry;
         }
 
-        await cli.run(parsedArgsOpts, core);
+        await cli.run(parsedArgsOpts, flags);
     } catch (error) {
         logger.error(error);
         process.exit(2);

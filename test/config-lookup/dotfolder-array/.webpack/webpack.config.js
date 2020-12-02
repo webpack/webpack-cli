@@ -6,7 +6,7 @@ module.exports = [
         },
         name: 'amd',
         entry: './a.js',
-        mode: 'production',
+        mode: 'development',
         devtool: 'eval-cheap-module-source-map',
     },
     {
@@ -16,7 +16,7 @@ module.exports = [
         },
         name: 'commonjs',
         entry: './a.js',
-        mode: 'production',
+        mode: 'development',
         target: 'node',
     },
 ];

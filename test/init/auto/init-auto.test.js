@@ -1,5 +1,6 @@
 'use strict';
 
+const { green } = require('colorette');
 const fs = require('fs');
 const rimraf = require('rimraf');
 const { join, resolve } = require('path');
@@ -7,6 +8,8 @@ const { run } = require('../../utils/test-utils');
 
 const firstPrompt = 'Will your application have multiple bundles?';
 const genPath = join(__dirname, 'test-assets');
+
+const successLog = `You can now run ${green('yarn build')} to bundle your application!`;
 
 describe('init auto flag', () => {
     beforeAll(() => {
@@ -48,5 +51,8 @@ describe('init auto flag', () => {
             expect(pkgJson['scripts']['build'] == 'webpack').toBeTruthy();
         };
         expect(pkgJsonTests).not.toThrow();
+
+        // Check we are not logging twice
+        expect(stdout.split(successLog).length - 1).toBe(1);
     });
 });

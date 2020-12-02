@@ -2,7 +2,7 @@ import { blue, green, bold } from 'colorette';
 import { utils } from 'webpack-cli';
 import logSymbols from 'log-symbols';
 import path from 'path';
-import { Confirm, Input, List } from '@webpack-cli/webpack-scaffold';
+import { Confirm, Input, List } from './utils/scaffold-utils';
 
 import {
     getDefaultOptimization,
@@ -30,6 +30,7 @@ const { logger, getPackageManager } = utils;
 export default class InitGenerator extends CustomGenerator {
     public usingDefaults: boolean;
     public autoGenerateConfig: boolean;
+    public generationPath: string;
     private langType: string;
 
     public constructor(args, opts) {
@@ -37,6 +38,7 @@ export default class InitGenerator extends CustomGenerator {
 
         this.usingDefaults = true;
         this.autoGenerateConfig = opts.autoSetDefaults ? true : false;
+        this.generationPath = opts.generationPath;
 
         this.dependencies = ['webpack', 'webpack-cli', 'babel-plugin-syntax-dynamic-import'];
 
@@ -177,8 +179,7 @@ export default class InitGenerator extends CustomGenerator {
                 );
                 if (cssBundleName.length !== 0) {
                     (this.configuration.config.webpackOptions.plugins as string[]).push(
-                        // TODO: use [contenthash] after it is supported
-                        `new MiniCssExtractPlugin({ filename:'${cssBundleName}.[chunkhash].css' })`,
+                        `new MiniCssExtractPlugin({ filename:'${cssBundleName}.[contenthash].css' })`,
                     );
                 } else {
                     (this.configuration.config.webpackOptions.plugins as string[]).push(
@@ -243,7 +244,7 @@ export default class InitGenerator extends CustomGenerator {
             'save-dev'?: boolean;
         } = packager === 'yarn' ? { dev: true } : { 'save-dev': true };
 
-        this.scheduleInstallTask(packager, this.dependencies, opts);
+        this.scheduleInstallTask(packager, this.dependencies, opts, { cwd: this.generationPath });
     }
 
     public writing(): void {

@@ -4,18 +4,20 @@ const { run } = require('../utils/test-utils');
 
 describe('--bail flag', () => {
     it('should set bail to true', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--bail']);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--bail']);
 
-        expect(stderr).toBeFalsy();
         expect(exitCode).toBe(0);
+        expect(stderr).toContain("Compilation 'compiler' starting...");
+        expect(stderr).toContain("Compilation 'compiler' finished");
         expect(stdout).toContain('bail: true');
     });
 
     it('should set bail to false', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--no-bail']);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--no-bail']);
 
-        expect(stderr).toBeFalsy();
         expect(exitCode).toBe(0);
+        expect(stderr).toContain("Compilation 'compiler' starting...");
+        expect(stderr).toContain("Compilation 'compiler' finished");
         expect(stdout).toContain('bail: false');
     });
 });

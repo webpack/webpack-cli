@@ -4,18 +4,20 @@ const { run } = require('../utils/test-utils');
 
 describe('--dependencies and related flags', () => {
     it('should allow to set dependencies option', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--dependencies', 'lodash']);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--dependencies', 'lodash']);
 
-        expect(stderr).toBeFalsy();
         expect(exitCode).toBe(0);
+        expect(stderr).toContain("Compilation 'compiler' starting...");
+        expect(stderr).toContain("Compilation 'compiler' finished");
         expect(stdout).toContain(`dependencies: [ 'lodash' ]`);
     });
 
     it('should reset dependencies option', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--dependencies-reset']);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--dependencies-reset']);
 
-        expect(stderr).toBeFalsy();
         expect(exitCode).toBe(0);
+        expect(stderr).toContain("Compilation 'compiler' starting...");
+        expect(stderr).toContain("Compilation 'compiler' finished");
         expect(stdout).toContain('dependencies: []');
     });
 });

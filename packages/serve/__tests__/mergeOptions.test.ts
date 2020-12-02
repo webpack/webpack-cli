@@ -1,12 +1,13 @@
 'use strict';
 
 import mergeOptions from '../src/mergeOptions';
+import { devServerClientLogging } from '../src/types';
 
 describe('mergeOptions', () => {
     it('merges CLI and devServer options correctly', () => {
         const cliOptions = {
             client: {
-                logging: 'verbose',
+                logging: devServerClientLogging.verbose,
             },
             hot: true,
             bonjour: true,
@@ -14,7 +15,7 @@ describe('mergeOptions', () => {
         const devServerOptions = {
             client: {
                 host: 'localhost',
-                logging: 'none',
+                logging: devServerClientLogging.none,
             },
             hot: false,
             liveReload: false,

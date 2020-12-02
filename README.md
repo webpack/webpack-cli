@@ -13,6 +13,7 @@
 
 [![npm][npm]][npm-url]
 [![Build Status][build-status]][build-status-url]
+[![codecov][codecov-badge]][codecov-url]
 [![Dependencies][deps]][deps-url]
 [![Install Size][size]][size-url]
 [![Chat on gitter][chat]][chat-url]
@@ -57,8 +58,8 @@ Thus, webpack CLI provides different commands for many common tasks.
 -   [`webpack-cli init`](./packages/init/README.md#webpack-cli-init) - Create a new webpack configuration.
 -   [`webpack-cli info`](./packages/info/README.md#webpack-cli-info) - Returns information related to the local environment.
 -   [`webpack-cli migrate`](./packages/migrate/README.md#webpack-cli-migrate) - Migrate project from one version to another.
--   [`webpack-cli generate-plugin`](./packages/generate-plugin/README.md#webpack-cli-generate-plugin) - Initiate new plugin project.
--   [`webpack-cli generate-loader`](./packages/generate-loader/README.md#webpack-cli-generate-loader) - Initiate new loader project.
+-   [`webpack-cli plugin`](./packages/generate-plugin/README.md#webpack-cli-generate-plugin) - Initiate new plugin project.
+-   [`webpack-cli loader`](./packages/generate-loader/README.md#webpack-cli-generate-loader) - Initiate new loader project.
 -   [`webpack-cli serve`](./packages/serve/README.md#webpack-cli-serve) - Use webpack with a development server that provides live reloading.
 
 > Removed commands since v3.3.3
@@ -73,7 +74,6 @@ The project also has several utility packages which are used by other commands
 
 -   [`utils`](./packages/utils/README.md) - Several utilities used across webpack-cli.
 -   [`generators`](./packages/generators/README.md) - Contains all webpack-cli related yeoman generators.
--   [`webpack-scaffold`](./packages/webpack-scaffold/README.md) - Utilities to create a webpack scaffold.
 
 ## Getting started
 
@@ -112,6 +112,8 @@ If you like **webpack**, please consider donating to our [Open Collective](https
 [npm-url]: https://www.npmjs.com/package/webpack-cli
 [build-status]: https://github.com/webpack/webpack-cli/workflows/webpack-cli/badge.svg?branch=master
 [build-status-url]: https://github.com/webpack/webpack-cli/actions
+[codecov-badge]: https://codecov.io/gh/webpack/webpack-cli/branch/master/graph/badge.svg?token=6B6NxtsZc3
+[codecov-url]: https://codecov.io/gh/webpack/webpack-cli
 [deps]: https://img.shields.io/david/webpack/webpack.svg
 [deps-url]: https://david-dm.org/webpack/webpack-cli
 [size]: https://packagephobia.com/badge?p=webpack-cli

@@ -207,5 +207,9 @@ describe('init generator', () => {
         ]);
         //match config snapshot
         expect(config).toMatchSnapshot();
+
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        const tsconfigContents = require(join(outputDir, 'tsconfig.json'));
+        expect(tsconfigContents).toMatchSnapshot();
     });
 });

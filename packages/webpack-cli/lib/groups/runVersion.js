@@ -1,46 +1,68 @@
 const logger = require('../utils/logger');
-const { defaultCommands } = require('../utils/cli-flags');
-const { isCommandUsed } = require('../utils/arg-utils');
-const { commands, allNames, hasUnknownArgs } = require('../utils/unknown-args');
+const { commands, flags } = require('../utils/cli-flags');
+const { options } = require('colorette');
 
 const outputVersion = (args) => {
-    // This is used to throw err when there are multiple command along with version
-    const commandsUsed = args.filter((val) => commands.includes(val));
+    if (args.includes('--color')) {
+        options.enabled = true;
+    } else if (args.includes('--no-color')) {
+        options.enabled = false;
+    }
 
-    // The command with which version is invoked
-    const commandUsed = isCommandUsed(args);
-    const invalidArgs = hasUnknownArgs(args, allNames);
-    if (commandsUsed && commandsUsed.length === 1 && invalidArgs.length === 0) {
-        try {
-            if ([commandUsed.alias, commandUsed.name].some((pkg) => commandsUsed.includes(pkg))) {
-                const { name, version } = require(`@webpack-cli/${defaultCommands[commandUsed.name]}/package.json`);
-                logger.raw(`\n${name} ${version}`);
-            } else {
-                const { name, version } = require(`${commandUsed.name}/package.json`);
-                logger.raw(`\n${name} ${version}`);
+    const hasUnknownVersionArgs = (args, commands, flags) => {
+        return args.filter((arg) => {
+            if (arg === 'version' || arg === '--version' || arg === '-v' || arg === '--color' || arg === '--no-color') {
+                return false;
             }
+
+            const foundCommand = commands.find((command) => {
+                return command.name === arg || command.alias === arg;
+            });
+            const foundFlag = flags.find((command) => {
+                return `--${command.name}` === arg || `-${command.alias}` === arg;
+            });
+
+            return !foundCommand && !foundFlag;
+        });
+    };
+
+    const invalidArgs = hasUnknownVersionArgs(args, commands, flags);
+
+    if (invalidArgs.length > 0) {
+        const argType = invalidArgs[0].startsWith('-') ? 'option' : 'command';
+        logger.error(`Invalid ${argType} '${invalidArgs[0]}'.`);
+        logger.error('Run webpack --help to see available commands and arguments.');
+        process.exit(2);
+    }
+
+    const usedCommands = commands.filter((command) => {
+        return args.includes(command.name) || args.includes(command.alias);
+    });
+
+    if (usedCommands.length > 1) {
+        logger.error(
+            `You provided multiple commands - ${usedCommands
+                .map((command) => `'${command.name}'${command.alias ? ` (alias '${command.alias}')` : ''}`)
+                .join(', ')}. Please use only one command at a time.`,
+        );
+        process.exit(2);
+    }
+
+    if (usedCommands.length === 1) {
+        try {
+            const { name, version } = require(`${usedCommands[0].packageName}/package.json`);
+            logger.raw(`${name} ${version}`);
         } catch (e) {
             logger.error('Error: External package not found.');
             process.exit(2);
         }
     }
 
-    if (commandsUsed.length > 1) {
-        logger.error('You provided multiple commands. Please use only one command at a time.\n');
-        process.exit(2);
-    }
-
-    if (invalidArgs.length > 0) {
-        const argType = invalidArgs[0].startsWith('-') ? 'option' : 'command';
-        logger.error(`Error: Invalid ${argType} '${invalidArgs[0]}'.`);
-        logger.info('Run webpack --help to see available commands and arguments.\n');
-        process.exit(2);
-    }
-
     const pkgJSON = require('../../package.json');
     const webpack = require('webpack');
-    logger.raw(`\nwebpack-cli ${pkgJSON.version}`);
-    logger.raw(`\nwebpack ${webpack.version}\n`);
+
+    logger.raw(`webpack-cli ${pkgJSON.version}`);
+    logger.raw(`webpack ${webpack.version}`);
 };
 
 module.exports = outputVersion;

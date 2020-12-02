@@ -16,10 +16,7 @@ labels: 'Bug'
 
 Steps to reproduce the behavior:
 
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+<!-- See https://stackoverflow.com/help/minimal-reproducible-example for information on how to create good reproductions -->
 
 **Expected behavior**
 

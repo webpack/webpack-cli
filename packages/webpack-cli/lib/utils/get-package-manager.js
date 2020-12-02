@@ -1,29 +1,46 @@
 const fs = require('fs');
 const path = require('path');
+const logger = require('./logger');
 const { sync } = require('execa');
 
 /**
  *
  * Returns the name of package manager to use,
- * preferring yarn over npm if available
+ * preference order - npm > yarn > pnpm
  *
  * @returns {String} - The package manager name
  */
 function getPackageManager() {
-    const hasLocalYarn = fs.existsSync(path.resolve(process.cwd(), 'yarn.lock'));
     const hasLocalNpm = fs.existsSync(path.resolve(process.cwd(), 'package-lock.json'));
-    const hasLocalPnpm = fs.existsSync(path.resolve(process.cwd(), 'pnpm-lock.yaml'));
+
+    if (hasLocalNpm) {
+        return 'npm';
+    }
+
+    const hasLocalYarn = fs.existsSync(path.resolve(process.cwd(), 'yarn.lock'));
 
     if (hasLocalYarn) {
         return 'yarn';
-    } else if (hasLocalNpm) {
-        return 'npm';
-    } else if (hasLocalPnpm) {
+    }
+
+    const hasLocalPnpm = fs.existsSync(path.resolve(process.cwd(), 'pnpm-lock.yaml'));
+
+    if (hasLocalPnpm) {
         return 'pnpm';
     }
 
     try {
-        // if the sync function below fails because yarn is not installed,
+        // the sync function below will fail if npm is not installed,
+        // an error will be thrown
+        if (sync('npm', ['--version'])) {
+            return 'npm';
+        }
+    } catch (e) {
+        // Nothing
+    }
+
+    try {
+        // the sync function below will fail if yarn is not installed,
         // an error will be thrown
         if (sync('yarn', ['--version'])) {
             return 'yarn';
@@ -32,7 +49,16 @@ function getPackageManager() {
         // Nothing
     }
 
-    return 'npm';
+    try {
+        // the sync function below will fail if pnpm is not installed,
+        // an error will be thrown
+        if (sync('pnpm', ['--version'])) {
+            return 'pnpm';
+        }
+    } catch (e) {
+        logger.error('No package manager found.');
+        process.exit(2);
+    }
 }
 
 module.exports = getPackageManager;

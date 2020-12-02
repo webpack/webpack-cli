@@ -1,7 +1,5 @@
 'use strict';
 
-jest.mock('execa');
-jest.mock('cross-spawn');
 const globalModulesNpmValue = 'test-npm';
 jest.setMock('global-modules', globalModulesNpmValue);
 jest.setMock('enquirer', {

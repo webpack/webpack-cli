@@ -1,4 +1,3 @@
-import { green } from 'colorette';
 import fs from 'fs';
 import path from 'path';
 import yeoman from 'yeoman-environment';
@@ -6,7 +5,7 @@ import Generator from 'yeoman-generator';
 import { runTransform } from './scaffold';
 import { utils } from 'webpack-cli';
 
-const { logger, getPackageManager } = utils;
+const { logger } = utils;
 
 export interface Config extends Object {
     item?: {
@@ -54,10 +53,11 @@ export function modifyHelperUtil(
     packages?: string[],
     autoSetDefaults = false,
     generateConfig = false,
+    generationPath = '.',
 ): void {
     const configPath: string | null = null;
 
-    const env = yeoman.createEnv('webpack', null);
+    const env = yeoman.createEnv('webpack', { cwd: generationPath });
     const generatorName = 'webpack-init-generator';
 
     if (!generator) {
@@ -77,7 +77,7 @@ export function modifyHelperUtil(
     // see: https://github.com/yeoman/generator/blob/v4.5.0/lib/index.js#L773
     let packageName = '*';
     try {
-        const packagePath = path.resolve(process.cwd(), 'package.json');
+        const packagePath = path.resolve(generationPath, 'package.json');
         if (fs.existsSync(packagePath)) {
             // eslint-disable-next-line @typescript-eslint/no-var-requires
             const packageData = require(packagePath);
@@ -97,6 +97,7 @@ export function modifyHelperUtil(
         {
             configFile,
             autoSetDefaults,
+            generationPath,
         },
         () => {
             let configModule: object;
@@ -104,7 +105,7 @@ export function modifyHelperUtil(
                 config: {},
             };
             try {
-                const confPath = path.resolve(process.cwd(), '.yo-rc.json');
+                const confPath = path.resolve(generationPath, '.yo-rc.json');
                 configModule = require(confPath);
             } catch (err) {
                 logger.error('\nCould not find a yeoman configuration file (.yo-rc.json).\n');
@@ -139,14 +140,9 @@ export function modifyHelperUtil(
                     },
                     finalConfig,
                 ) as TransformConfig;
-                if (finalConfig.usingDefaults && finalConfig.usingDefaults === true) {
-                    const runCommand = getPackageManager() === 'yarn' ? 'yarn build' : 'npm run build';
-
-                    logger.log(`\nYou can now run ${green(runCommand)} to bundle your application!\n`);
-                }
 
                 // scaffold webpack config file from using .yo-rc.json
-                return runTransform(transformConfig, 'init', generateConfig);
+                return runTransform(transformConfig, 'init', generateConfig, generationPath);
             } catch (err) {
                 logger.error(err);
                 process.exitCode = 2;

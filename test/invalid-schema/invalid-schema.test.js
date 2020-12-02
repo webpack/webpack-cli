@@ -1,20 +1,30 @@
 'use strict';
-const { run, isWindows } = require('../utils/test-utils');
+const { run, isWebpack5 } = require('../utils/test-utils');
 
 describe('invalid schema', () => {
     it('should log webpack error and exit process on invalid config', () => {
-        const { stderr, exitCode } = run(__dirname, ['--config', './webpack.config.mock.js']);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--config', './webpack.config.mock.js']);
+
+        expect(exitCode).toEqual(2);
+        expect(stderr).not.toContain('Compilation starting...');
+        expect(stderr).not.toContain('Compilation finished');
         expect(stderr).toContain('Invalid configuration object');
-        if (!isWindows) {
-            expect(exitCode).toEqual(2);
-        }
+        expect(stdout).toBeFalsy();
     });
 
     it('should log webpack error and exit process on invalid flag', () => {
-        const { stderr, exitCode } = run(__dirname, ['--mode', 'Yukihira']);
-        expect(stderr).toContain('Invalid configuration object');
-        if (!isWindows) {
-            expect(exitCode).toEqual(2);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--mode', 'Yukihira']);
+
+        expect(exitCode).toEqual(2);
+        expect(stderr).not.toContain('Compilation starting...');
+        expect(stderr).not.toContain('Compilation finished');
+
+        if (isWebpack5) {
+            expect(stderr).toContain("Found the 'invalid-value' problem with the '--mode' argument by path 'mode'");
+        } else {
+            expect(stderr).toContain('Invalid configuration object');
         }
+
+        expect(stdout).toBeFalsy();
     });
 });
