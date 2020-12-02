@@ -488,19 +488,20 @@ class WebpackCLI {
 
             if (args.json === true) {
                 process.stdout.write(JSON.stringify(stats.toJson(foundStats), null, 2) + '\n');
-            } else if (typeof args.json === 'string') {
-                const JSONStats = JSON.stringify(stats.toJson(foundStats), null, 2);
-
-                try {
-                    writeFileSync(args.json, JSONStats);
-
-                    logger.success(`stats are successfully stored as json to ${args.json}`);
-                } catch (error) {
-                    logger.error(error);
-
-                    process.exit(2);
-                }
             } else {
+                if (typeof args.json === 'string') {
+                    const JSONStats = JSON.stringify(stats.toJson(foundStats), null, 2);
+
+                    try {
+                        writeFileSync(args.json, JSONStats);
+
+                        logger.success(`stats are successfully stored as json to ${args.json}`);
+                    } catch (error) {
+                        logger.error(error);
+
+                        process.exit(2);
+                    }
+                }
                 const printedStats = stats.toString(foundStats);
 
                 // Avoid extra empty line when `stats: 'none'`
