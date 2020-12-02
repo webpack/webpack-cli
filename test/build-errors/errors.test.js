@@ -1,6 +1,6 @@
 'use strict';
 const { run } = require('../utils/test-utils');
-const { stat, readFile } = require('fs');
+const { readFile } = require('fs');
 const { resolve } = require('path');
 
 describe('errors', () => {
@@ -38,23 +38,18 @@ describe('errors', () => {
         expect(stderr).not.toContain('Compilation finished');
         expect(stdout).toContain('stats are successfully stored as json to stats.json');
 
-        stat(resolve(__dirname, './stats.json'), (err, stats) => {
-            expect(err).toBe(null);
-            expect(stats.isFile()).toBe(true);
+        readFile(resolve(__dirname, 'stats.json'), 'utf-8', (error, data) => {
+            expect(error).toBe(null);
+            expect(() => JSON.parse(data)).not.toThrow();
 
-            readFile(resolve(__dirname, 'stats.json'), 'utf-8', (error, data) => {
-                expect(error).toBe(null);
-                expect(() => JSON.parse(data)).not.toThrow();
+            const json = JSON.parse(data);
 
-                const json = JSON.parse(data);
+            expect(json['hash']).toBeDefined();
+            expect(json['errors']).toHaveLength(1);
+            // `message` for `webpack@5`
+            expect(json['errors'][0].message ? json['errors'][0].message : json['errors'][0]).toMatch(/Can't resolve/);
 
-                expect(json['hash']).toBeDefined();
-                expect(json['errors']).toHaveLength(1);
-                // `message` for `webpack@5`
-                expect(json['errors'][0].message ? json['errors'][0].message : json['errors'][0]).toMatch(/Can't resolve/);
-
-                done();
-            });
+            done();
         });
     });
 });

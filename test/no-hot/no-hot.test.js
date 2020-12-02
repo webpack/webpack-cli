@@ -1,7 +1,7 @@
 'use strict';
 
 const { run } = require('../utils/test-utils');
-const { stat, readFile } = require('fs');
+const { existsSync, readFile } = require('fs');
 const { resolve } = require('path');
 
 describe('no-hot flag', () => {
@@ -13,12 +13,7 @@ describe('no-hot flag', () => {
         expect(stderr).toContain('Compilation finished');
         expect(stdout).toBeTruthy();
         expect(stdout).not.toContain('webpack/runtime/hot module replacement');
-
-        stat(resolve(__dirname, './bin/main.js'), (err, stats) => {
-            expect(err).toBe(null);
-            expect(stats.isFile()).toBe(true);
-            done();
-        });
+        expect(existsSync(resolve(__dirname, './bin/main.js'))).toBeTruthy();
         readFile(resolve(__dirname, './bin/main.js'), 'utf-8', (err, data) => {
             expect(err).toBe(null);
             // check for absence of special functions invoked by HMR plugin only
@@ -38,11 +33,8 @@ describe('no-hot flag', () => {
         );
         expect(stdout).toBeTruthy();
 
-        stat(resolve(__dirname, './bin/main.js'), (err, stats) => {
-            expect(err).toBe(null);
-            expect(stats.isFile()).toBe(true);
-            done();
-        });
+        expect(existsSync(resolve(__dirname, './bin/main.js'))).toBeTruthy();
+
         readFile(resolve(__dirname, './bin/main.js'), 'utf-8', (err, data) => {
             expect(err).toBe(null);
             // check for absence of special functions invoked by HMR plugin only

@@ -1,5 +1,4 @@
 'use strict';
-
 const { resolve } = require('path');
 const { run } = require('../utils/test-utils');
 

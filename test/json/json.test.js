@@ -1,6 +1,6 @@
 'use strict';
 const { run } = require('../utils/test-utils');
-const { stat, readFile } = require('fs');
+const { existsSync, readFile } = require('fs');
 const { resolve } = require('path');
 
 const successMessage = 'stats are successfully stored as json to stats.json';
@@ -18,19 +18,14 @@ describe('json flag', () => {
 
         expect(stdout).toContain(successMessage);
         expect(exitCode).toBe(0);
-
-        stat(resolve(__dirname, './stats.json'), (err, stats) => {
+        expect(existsSync(resolve(__dirname, './stats.json'))).toBeTruthy();
+        readFile(resolve(__dirname, 'stats.json'), 'utf-8', (err, data) => {
             expect(err).toBe(null);
-            expect(stats.isFile()).toBe(true);
-
-            readFile(resolve(__dirname, 'stats.json'), 'utf-8', (err, data) => {
-                expect(err).toBe(null);
-                expect(JSON.parse(data)['hash']).toBeTruthy();
-                expect(JSON.parse(data)['version']).toBeTruthy();
-                expect(JSON.parse(data)['time']).toBeTruthy();
-                expect(() => JSON.parse(data)).not.toThrow();
-                done();
-            });
+            expect(JSON.parse(data)['hash']).toBeTruthy();
+            expect(JSON.parse(data)['version']).toBeTruthy();
+            expect(JSON.parse(data)['time']).toBeTruthy();
+            expect(() => JSON.parse(data)).not.toThrow();
+            done();
         });
     });
 
@@ -40,18 +35,15 @@ describe('json flag', () => {
         expect(stdout).toContain(`[webpack-cli] \u001b[32m${successMessage}`);
         expect(exitCode).toBe(0);
 
-        stat(resolve(__dirname, './stats.json'), (err, stats) => {
-            expect(err).toBe(null);
-            expect(stats.isFile()).toBe(true);
+        expect(existsSync(resolve(__dirname, './stats.json'))).toBeTruthy();
 
-            readFile(resolve(__dirname, 'stats.json'), 'utf-8', (err, data) => {
-                expect(err).toBe(null);
-                expect(JSON.parse(data)['hash']).toBeTruthy();
-                expect(JSON.parse(data)['version']).toBeTruthy();
-                expect(JSON.parse(data)['time']).toBeTruthy();
-                expect(() => JSON.parse(data)).not.toThrow();
-                done();
-            });
+        readFile(resolve(__dirname, 'stats.json'), 'utf-8', (err, data) => {
+            expect(err).toBe(null);
+            expect(JSON.parse(data)['hash']).toBeTruthy();
+            expect(JSON.parse(data)['version']).toBeTruthy();
+            expect(JSON.parse(data)['time']).toBeTruthy();
+            expect(() => JSON.parse(data)).not.toThrow();
+            done();
         });
     });
 
@@ -62,17 +54,15 @@ describe('json flag', () => {
         expect(stdout).toContain(`[webpack-cli] ${successMessage}`);
         expect(exitCode).toBe(0);
 
-        stat(resolve(__dirname, './stats.json'), (err, stats) => {
+        expect(existsSync(resolve(__dirname, './stats.json'))).toBeTruthy();
+
+        readFile(resolve(__dirname, 'stats.json'), 'utf-8', (err, data) => {
             expect(err).toBe(null);
-            expect(stats.isFile()).toBe(true);
-            readFile(resolve(__dirname, 'stats.json'), 'utf-8', (err, data) => {
-                expect(err).toBe(null);
-                expect(JSON.parse(data)['hash']).toBeTruthy();
-                expect(JSON.parse(data)['version']).toBeTruthy();
-                expect(JSON.parse(data)['time']).toBeTruthy();
-                expect(() => JSON.parse(data)).not.toThrow();
-                done();
-            });
+            expect(JSON.parse(data)['hash']).toBeTruthy();
+            expect(JSON.parse(data)['version']).toBeTruthy();
+            expect(JSON.parse(data)['time']).toBeTruthy();
+            expect(() => JSON.parse(data)).not.toThrow();
+            done();
         });
     });
 

@@ -1,5 +1,4 @@
 'use strict';
-
 const { run } = require('../../utils/test-utils');
 
 describe('Node target', () => {

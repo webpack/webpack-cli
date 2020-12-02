@@ -1,5 +1,4 @@
 'use strict';
-
 const { run, isWebpack5 } = require('../../utils/test-utils');
 
 const targetValues = ['web', 'webworker', 'node', 'async-node', 'node-webkit', 'electron-main', 'electron-renderer', 'electron-preload'];

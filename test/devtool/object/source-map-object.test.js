@@ -1,5 +1,5 @@
 'use strict';
-const { readdir, stat } = require('fs');
+const { readdir, existsSync } = require('fs');
 const { resolve } = require('path');
 const { run } = require('../../utils/test-utils');
 
@@ -19,22 +19,17 @@ describe('source-map object', () => {
         });
     });
 
-    it('should write a sourcemap file', (done) => {
+    it('should write a sourcemap file', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['-c', './webpack.source.config.js'], false);
 
         expect(exitCode).toBe(0);
         expect(stderr).toContain("Compilation 'amd' starting...");
         expect(stderr).toContain("Compilation 'amd' finished");
         expect(stdout).toBeTruthy();
-
-        stat(resolve(__dirname, 'dist/dist-amd.js.map'), (err, stats) => {
-            expect(err).toBe(null);
-            expect(stats.isFile()).toBe(true);
-            done();
-        });
+        expect(existsSync(resolve(__dirname, 'dist/dist-amd.js.map'))).toBeTruthy();
     });
 
-    it('should override config with source-map', (done) => {
+    it('should override config with source-map', () => {
         const { exitCode, stderr, stdout } = run(
             __dirname,
             ['-c', './webpack.eval.config.js', '--devtool', 'source-map', '-o', './binary'],
@@ -45,11 +40,6 @@ describe('source-map object', () => {
         expect(stderr).toContain("Compilation 'amd' starting...");
         expect(stderr).toContain("Compilation 'amd' finished");
         expect(stdout).toBeTruthy();
-
-        stat(resolve(__dirname, 'binary/dist-amd.js.map'), (err, stats) => {
-            expect(err).toBe(null);
-            expect(stats.isFile()).toBe(true);
-            done();
-        });
+        expect(existsSync(resolve(__dirname, 'binary/dist-amd.js.map'))).toBeTruthy();
     });
 });

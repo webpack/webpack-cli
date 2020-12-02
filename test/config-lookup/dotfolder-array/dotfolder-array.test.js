@@ -1,5 +1,6 @@
 'use strict';
-
+const { existsSync } = require('fs');
+const { resolve } = require('path');
 const { run } = require('../../utils/test-utils');
 
 describe('dotfolder array config lookup', () => {
@@ -12,5 +13,7 @@ describe('dotfolder array config lookup', () => {
         expect(stderr).toContain("Compilation 'commonjs' starting...");
         expect(stderr).toContain("Compilation 'commonjs' finished");
         expect(stdout).toBeTruthy();
+        expect(existsSync(resolve(__dirname, './dist/dist-commonjs.js'))).toBeTruthy();
+        expect(existsSync(resolve(__dirname, './dist/dist-amd.js'))).toBeTruthy();
     });
 });
