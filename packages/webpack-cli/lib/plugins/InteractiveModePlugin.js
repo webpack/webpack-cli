@@ -58,6 +58,7 @@ class InteractiveModePlugin {
         this.isMultiCompiler = false;
         this.compilers = undefined;
         this.name = 'InteractiveModePlugin';
+        this.watching = undefined;
         this.keys = {
             quit: 'q',
             stop: 's',
@@ -94,6 +95,12 @@ class InteractiveModePlugin {
             const action = possibleActions[0];
             this.handlers[action](compiler);
         });
+
+        if (!isWebpack5) {
+            // Watching and MultiWatching is returned in version 4
+            this.watching = compiler;
+            compiler = compiler.compiler;
+        }
 
         if (compiler.compilers) {
             this.isMultiCompiler = true;
@@ -133,6 +140,15 @@ class InteractiveModePlugin {
             }
 
             compiler.hooks.done.tap(this.name, () => {
+                if (!isWebpack5) {
+                    if (!this.watching.running) {
+                        setTimeout(() => {
+                            console.log('\n\n');
+                            spawnCommand('all compilations completed', true);
+                        }, 100);
+                    }
+                    return;
+                }
                 const allDone = this.compilers.reduce((result, childCompiler) => {
                     return result && !childCompiler.watching.running;
                 }, true);
