@@ -2,8 +2,8 @@
 
 const { run } = require('../utils/test-utils');
 
-describe('--parallelism flag', () => {
-    it('should set parallelism to the value passed', () => {
+describe('invalid flag value', () => {
+    it('should throw an error for the invalid value passed', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--output-script-type', 'unknown']);
 
         expect(exitCode).toBe(2);
