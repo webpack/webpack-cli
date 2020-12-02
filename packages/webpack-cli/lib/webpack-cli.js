@@ -419,7 +419,7 @@ class WebpackCLI {
         let compiler;
         try {
             // enforce watch on interactive
-            if (args.interactive) {
+            if (args.interactive && !args.env.WEBPACK_SERVE) {
                 if (Array.isArray(options)) {
                     for (const option of options) {
                         option.watch = true;
@@ -448,7 +448,7 @@ class WebpackCLI {
         // TODO test with serve
         const config = await this.resolve(args);
 
-        return this.createCompiler(config.options);
+        return this.createCompiler(config.options, undefined, args);
     }
 
     async run(args) {
@@ -530,7 +530,7 @@ class WebpackCLI {
 
         const config = await this.resolve(args);
 
-        compiler = this.createCompiler(config.options, callback);
+        compiler = this.createCompiler(config.options, callback, args);
 
         // TODO webpack@4 return Watching and MultiWathing instead Compiler and MultiCompiler, remove this after drop webpack@4
         if (compiler && compiler.compiler) {
