@@ -64,7 +64,7 @@ const runCLI = async (cliArgs) => {
             parsedArgsOpts.entry = entry;
         }
 
-        await cli.run(parsedArgsOpts, flags);
+        await cli.run(parsedArgsOpts);
     } catch (error) {
         logger.error(error);
         process.exit(2);
