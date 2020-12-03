@@ -29,10 +29,26 @@ class WebpackCLI {
                 rechoir.prepare(extensions, configPath);
             }
 
-            let options;
-
+            const { pathToFileURL } = require('url');
+            let importESM;
             try {
-                options = require(configPath);
+                importESM = new Function('id', 'return import(id);');
+            } catch (e) {
+                importESM = null;
+            }
+
+            let options;
+            try {
+                try {
+                    options = require(configPath);
+                } catch (error) {
+                    if (pathToFileURL && importESM && error.code === 'ERR_REQUIRE_ESM') {
+                        let url = pathToFileURL(configPath);
+                        options = importESM(url);
+                        return;
+                    }
+                    throw error;
+                }
             } catch (error) {
                 logger.error(`Failed to load '${configPath}'`);
                 logger.error(error);
