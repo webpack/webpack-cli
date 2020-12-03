@@ -85,6 +85,20 @@ const commands = [
     },
 ];
 
+// Remove after webpack@4 support is dropped
+// These flags are added conditionally to the list of flags for webpack 4 since 5 already handles them at core
+const flagsForWebpack4 = [
+    {
+        name: 'devtool',
+        usage: '--devtool <value>',
+        type: String,
+        negative: true,
+        alias: 'd',
+        description: 'Determine source maps to use',
+        link: 'https://webpack.js.org/configuration/devtool/#devtool',
+    },
+];
+
 const builtInFlags = [
     // For configs
     {
@@ -255,6 +269,7 @@ const builtInFlags = [
         negatedDescription: 'Do not watch for file changes',
         link: 'https://webpack.js.org/configuration/watch/',
     },
+    ...(!cli ? flagsForWebpack4 : []),
 ];
 
 // Store mapping for custom properties to be supported in core flags
