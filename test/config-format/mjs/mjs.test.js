@@ -1,13 +1,12 @@
 const { run } = require('../../utils/test-utils');
-const { existsSync } = require('fs');
-const { resolve } = require('path');
 
 describe('webpack cli', () => {
     it('should support mjs config format', () => {
-        const { stderr, stdout } = run(__dirname, ['-c', 'webpack.config.mjs'], false);
-        console.log({ stderr, stdout });
-        expect(stderr).toBeFalsy();
+        const { exitCode, stderr, stdout } = run(__dirname, ['-c', 'webpack.config.mjs'], false, [], { DISABLE_V8_COMPILE_CACHE: true });
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toContain('Compilation starting...');
+        expect(stderr).toContain('Compilation finished');
         expect(stdout).toBeTruthy();
-        expect(existsSync(resolve(__dirname, 'dist/foo.bundle.js'))).toBeTruthy();
     });
 });

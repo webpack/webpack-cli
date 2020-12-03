@@ -44,10 +44,13 @@ class WebpackCLI {
                 } catch (error) {
                     if (pathToFileURL && importESM && error.code === 'ERR_REQUIRE_ESM') {
                         const urlForConfig = pathToFileURL(configPath);
+
                         options = await importESM(urlForConfig);
                         options = options.default;
-                        return;
+
+                        return { options, path: configPath };
                     }
+
                     throw error;
                 }
             } catch (error) {
