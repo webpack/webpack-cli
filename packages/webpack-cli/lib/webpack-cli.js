@@ -337,10 +337,6 @@ class WebpackCLI {
                 options.target = args.target;
             }
 
-            if (typeof args.devtool !== 'undefined') {
-                options.devtool = args.devtool;
-            }
-
             if (args.mode) {
                 options.mode = args.mode;
             } else if (

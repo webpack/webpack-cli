@@ -17,6 +17,7 @@ module.exports = {
     rules: {
         quotes: ['error', 'single', { avoidEscape: true, allowTemplateLiterals: false }],
         'no-process-exit': 'off',
+        'no-prototype-builtins': 'off',
         'no-template-curly-in-string': 'error',
         'no-caller': 'error',
         'no-extra-bind': 'error',
