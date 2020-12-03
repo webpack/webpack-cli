@@ -21,7 +21,7 @@ class WebpackCLI {
     constructor() {}
 
     async resolveConfig(args) {
-        const loadConfig = (configPath) => {
+        const loadConfig = async (configPath) => {
             const ext = extname(configPath);
             const interpreted = Object.keys(jsVariants).find((variant) => variant === ext);
 
@@ -43,8 +43,9 @@ class WebpackCLI {
                     options = require(configPath);
                 } catch (error) {
                     if (pathToFileURL && importESM && error.code === 'ERR_REQUIRE_ESM') {
-                        let url = pathToFileURL(configPath);
-                        options = importESM(url);
+                        const urlForConfig = pathToFileURL(configPath);
+                        options = await importESM(urlForConfig);
+                        options = options.default;
                         return;
                     }
                     throw error;
@@ -106,7 +107,7 @@ class WebpackCLI {
                         process.exit(2);
                     }
 
-                    const loadedConfig = loadConfig(configPath);
+                    const loadedConfig = await loadConfig(configPath);
 
                     return evaluateConfig(loadedConfig, args);
                 }),
@@ -151,7 +152,7 @@ class WebpackCLI {
             }
 
             if (foundDefaultConfigFile) {
-                const loadedConfig = loadConfig(foundDefaultConfigFile.path);
+                const loadedConfig = await loadConfig(foundDefaultConfigFile.path);
                 const evaluatedConfig = await evaluateConfig(loadedConfig, args);
 
                 config.options = evaluatedConfig.options;
