@@ -98,22 +98,6 @@ const flagsForWebpack4 = [
         link: 'https://webpack.js.org/configuration/devtool/#devtool',
     },
     {
-        name: 'target',
-        usage: '--target <value>',
-        alias: 't',
-        type: String,
-        multiple: cli !== undefined,
-        description: 'Sets the build target e.g. node',
-        link: 'https://webpack.js.org/configuration/target/#target',
-    },
-    {
-        name: 'mode',
-        usage: '--mode <development | production | none>',
-        type: String,
-        description: 'Defines the mode to pass to webpack',
-        link: 'https://webpack.js.org/concepts/#mode',
-    },
-    {
         name: 'name',
         usage: '--name',
         type: String,
@@ -254,6 +238,23 @@ const builtInFlags = [
         negative: true,
         description: 'Enable colors on console',
         negatedDescription: 'Disable colors on console',
+    },
+    {
+        name: 'target',
+        usage: '--target <value>',
+        alias: 't',
+        type: String,
+        multiple: cli !== undefined,
+        description: 'Sets the build target e.g. node',
+        link: 'https://webpack.js.org/configuration/target/#target',
+    },
+    // Todo (anshumanv) - move this to v4 flag list after fix
+    {
+        name: 'mode',
+        usage: '--mode <development | production | none>',
+        type: String,
+        description: 'Defines the mode to pass to webpack',
+        link: 'https://webpack.js.org/concepts/#mode',
     },
     // For webpack@4
     {
