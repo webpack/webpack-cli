@@ -26,7 +26,7 @@ describe('commands help', () => {
 
         expect(exitCode).toBe(0);
         expect(stdout).not.toContain('The build tool for modern web applications');
-        expect(stdout).toContain('webpack -m, --merge');
+        expect(stdout).toContain('webpack -m, --config <first-config> --config <second-config> --merge');
         expect(stderr).toHaveLength(0);
     });
 
