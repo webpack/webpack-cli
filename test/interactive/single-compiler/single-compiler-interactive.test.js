@@ -1,5 +1,5 @@
 'use strict';
-const { runAndGetWatchProc } = require('../../utils/test-utils');
+const { runAndGetWatchProc, isWebpack5 } = require('../../utils/test-utils');
 const { writeFileSync } = require('fs');
 const { resolve } = require('path');
 const { version } = require('webpack');
@@ -71,6 +71,71 @@ describe('--interactive flag with single compiler', () => {
                 } catch (err) {
                     proc.kill();
                     done(err);
+                }
+            }
+        });
+    });
+
+    it('should output in interactive and on s', (done) => {
+        const proc = runAndGetWatchProc(__dirname, ['--interactive'], false, '', true);
+        const checker = [
+            {
+                check: (data) => {
+                    return data.includes('\u2B24');
+                },
+                perform: () => {
+                    proc.stdin.write('s\n', (err) => {
+                        if (err) {
+                            proc.kill();
+                            done(err);
+                            return;
+                        }
+                    });
+                },
+            },
+            {
+                check: (data) => {
+                    if (!isWebpack5) {
+                        return data.includes('stoping');
+                    }
+                    return data.includes('stoped');
+                },
+                perform: (data) => {
+                    if (!isWebpack5) {
+                        expect(data).toContain('stoping');
+                        return;
+                    }
+                    expect(data).toContain('stoped');
+                },
+            },
+        ];
+
+        let semaphore = 0;
+        proc.stdout.on('readable', () => {
+            if (semaphore >= checker.length) {
+                proc.kill();
+                done();
+                return;
+            }
+
+            let data = '';
+            let chunk;
+            while ((chunk = proc.stdout.read())) {
+                data += chunk.toString();
+            }
+
+            if (data && checker[semaphore].check(data)) {
+                try {
+                    checker[semaphore].perform(data);
+                    semaphore++;
+                } catch (err) {
+                    proc.kill();
+                    done(err);
+                }
+
+                if (semaphore >= checker.length) {
+                    proc.kill();
+                    done();
                 }
             }
         });

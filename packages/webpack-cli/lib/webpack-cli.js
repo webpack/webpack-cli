@@ -431,7 +431,7 @@ class WebpackCLI {
 
             compiler = webpack(options, callback);
 
-            // apply plugin is interactove is passed by user
+            // apply plugin if interactive is passed by user
             if (args.interactive) {
                 const interactivePlugin = new InteractiveModePlugin();
                 interactivePlugin.apply(compiler);
