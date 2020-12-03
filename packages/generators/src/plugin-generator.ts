@@ -1,10 +1,6 @@
 import path from 'path';
-import yeoman from 'yeoman-environment';
-import { utils } from 'webpack-cli';
 import addonGenerator from './addon-generator';
 import { toKebabCase, toUpperCamelCase } from './utils/helpers';
-
-const { logger } = utils;
 
 /**
  * A yeoman generator class for creating a webpack
@@ -38,18 +34,4 @@ export const PluginGenerator = addonGenerator(
     (gen): object => ({ name: toUpperCamelCase(gen.props.name) }),
 );
 
-/**
- * Runs a yeoman generator to create a new webpack plugin project
- * @returns {void}
- */
-
-export default function pluginCreator(): void {
-    const env = yeoman.createEnv();
-    const generatorName = 'webpack-plugin-generator';
-
-    env.registerStub(PluginGenerator, generatorName);
-
-    env.run(generatorName, () => {
-        logger.success('Plugin template has been successfully scaffolded.');
-    });
-}
+export default PluginGenerator;

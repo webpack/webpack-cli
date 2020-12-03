@@ -16,7 +16,7 @@ export default (args: Array<string>, name: string): void => {
     if (name === 'loader') {
         const generatorName = 'webpack-loader-generator';
 
-        env.registerStub(loaderGenerator as any, generatorName);
+        env.registerStub(loaderGenerator, generatorName);
 
         env.run(generatorName, () => {
             logger.success('Loader template has been successfully scaffolded.');
@@ -25,7 +25,7 @@ export default (args: Array<string>, name: string): void => {
     if (name === 'plugin') {
         const generatorName = 'webpack-plugin-generator';
 
-        env.registerStub(pluginGenerator as any, generatorName);
+        env.registerStub(pluginGenerator, generatorName);
 
         env.run(generatorName, () => {
             logger.success('Plugin template has been successfully scaffolded.');
