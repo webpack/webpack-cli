@@ -338,13 +338,13 @@ class WebpackCLI {
             ) {
                 options.mode = process.env.NODE_ENV;
             }
+            if (args.entry) {
+                options.entry = args.entry;
+            }
             // No need to run for webpack 5 as it's handled at core
             if (!cli) {
                 if (typeof args.devtool !== 'undefined') {
                     options.devtool = args.devtool;
-                }
-                if (args.entry) {
-                    options.entry = args.entry;
                 }
                 if (args.name) {
                     options.name = args.name;
