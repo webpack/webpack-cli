@@ -360,6 +360,13 @@ class WebpackCLI {
                 options.watch = args.watch;
             }
 
+            // No need to run for webpack 5 as it's handled at core
+            if (!cli) {
+                if (typeof args.devtool !== 'undefined') {
+                    options.devtool = args.devtool;
+                }
+            }
+
             return options;
         };
 
