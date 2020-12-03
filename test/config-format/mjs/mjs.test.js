@@ -11,7 +11,7 @@ describe('webpack cli', () => {
             expect(stdout).toBeTruthy();
         } else {
             expect(exitCode).toBe(2);
-            expect(stderr).toContain('Unexpected token export');
+            expect(stderr).toContain('Unexpected token');
             expect(stdout).toBeFalsy();
         }
     });
