@@ -84,7 +84,7 @@ const commands = [
         description: 'Run the webpack Dev Server',
     },
     {
-        packageName: 'webpack-cli',
+        packageName: 'webpack-cli/lib/commands/bundle',
         name: 'bundle',
         alias: 'b',
         scope: 'external',

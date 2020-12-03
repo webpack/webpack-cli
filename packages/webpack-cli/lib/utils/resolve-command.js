@@ -21,12 +21,6 @@ const run = async (name, ...args) => {
         return;
     }
 
-    // For bundle command
-    if (name == 'webpack-cli') {
-        // eslint-disable-next-line node/no-extraneous-require
-        return require('webpack-cli/lib/bootstrap')(args);
-    }
-
     let loaded = require(name);
 
     if (loaded.default) {
