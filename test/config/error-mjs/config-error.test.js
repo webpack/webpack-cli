@@ -8,10 +8,16 @@ describe('config error', () => {
             DISABLE_V8_COMPILE_CACHE: true,
         });
 
-        expect(exitCode).toBe(2);
-        expect(stderr).toContain('Invalid configuration object');
-        expect(stderr).toContain(`"development" | "production" | "none"`);
-        expect(stdout).toBeFalsy();
+        if (/^v[1-9][2-9]/.test(process.version)) {
+            expect(exitCode).toBe(2);
+            expect(stderr).toContain('Invalid configuration object');
+            expect(stderr).toContain(`"development" | "production" | "none"`);
+            expect(stdout).toBeFalsy();
+        } else {
+            expect(exitCode).toBe(2);
+            expect(stderr).toContain('Unexpected token export');
+            expect(stdout).toBeFalsy();
+        }
     });
 
     it('should throw syntax error and exit with non-zero exit code', () => {
