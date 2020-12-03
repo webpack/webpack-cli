@@ -62,12 +62,6 @@ Thus, webpack CLI provides different commands for many common tasks.
 -   [`webpack-cli loader`](./packages/generate-loader/README.md#webpack-cli-generate-loader) - Initiate new loader project.
 -   [`webpack-cli serve`](./packages/serve/README.md#webpack-cli-serve) - Use webpack with a development server that provides live reloading.
 
-> Removed commands since v3.3.3
-
--   `webpack-cli add` - Add new properties to a webpack configuration file.
--   `webpack-cli remove` - Remove properties from a webpack configuration file.
--   `webpack-cli update` - Update properties in a webpack configuration file.
-
 ### Utilities
 
 The project also has several utility packages which are used by other commands
