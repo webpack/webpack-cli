@@ -83,6 +83,15 @@ const commands = [
         usage: 'serve [options]',
         description: 'Run the webpack Dev Server',
     },
+    {
+        packageName: 'webpack-cli',
+        name: 'bundle',
+        alias: 'b',
+        scope: 'external',
+        type: String,
+        usage: 'bundle [options]',
+        description: 'Bundle project using webpack-cli',
+    },
 ];
 
 const builtInFlags = [
