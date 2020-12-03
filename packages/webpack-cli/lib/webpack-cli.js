@@ -487,9 +487,9 @@ class WebpackCLI {
                 : getStatsOptionsFromCompiler(compiler);
 
             if (args.json === true) {
-                process.stdout.write(JSON.stringify(stats.toJson(foundStats), null, 2) + '\n');
+                process.stdout.write(JSON.stringify(stats.toJson(foundStats)) + '\n');
             } else if (typeof args.json === 'string') {
-                const JSONStats = JSON.stringify(stats.toJson(foundStats), null, 2);
+                const JSONStats = JSON.stringify(stats.toJson(foundStats));
 
                 try {
                     writeFileSync(args.json, JSONStats);
