@@ -325,48 +325,40 @@ class WebpackCLI {
         // Logic for webpack@4
         // TODO remove after drop webpack@4
         const processLegacyArguments = (options) => {
-            if (args.entry) {
-                options.entry = args.entry;
-            }
-
-            if (args.outputPath) {
-                options.output = { ...options.output, ...{ path: path.resolve(args.outputPath) } };
-            }
-
-            if (args.target) {
-                options.target = args.target;
-            }
-
-            if (args.mode) {
-                options.mode = args.mode;
-            } else if (
-                !options.mode &&
-                process.env &&
-                process.env.NODE_ENV &&
-                (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'node')
-            ) {
-                options.mode = process.env.NODE_ENV;
-            }
-
-            if (args.name) {
-                options.name = args.name;
-            }
-
-            if (typeof args.stats !== 'undefined') {
-                options.stats = args.stats;
-            }
-
-            if (typeof args.watch !== 'undefined') {
-                options.watch = args.watch;
-            }
-
             // No need to run for webpack 5 as it's handled at core
             if (!cli) {
                 if (typeof args.devtool !== 'undefined') {
                     options.devtool = args.devtool;
                 }
+                if (args.entry) {
+                    options.entry = args.entry;
+                }
+                if (args.name) {
+                    options.name = args.name;
+                }
+                if (args.outputPath) {
+                    options.output = { ...options.output, ...{ path: path.resolve(args.outputPath) } };
+                }
+                if (typeof args.stats !== 'undefined') {
+                    options.stats = args.stats;
+                }
+                if (args.target) {
+                    options.target = args.target;
+                }
+                if (typeof args.watch !== 'undefined') {
+                    options.watch = args.watch;
+                }
+                if (args.mode) {
+                    options.mode = args.mode;
+                } else if (
+                    !options.mode &&
+                    process.env &&
+                    process.env.NODE_ENV &&
+                    (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'node')
+                ) {
+                    options.mode = process.env.NODE_ENV;
+                }
             }
-
             return options;
         };
 
