@@ -5,8 +5,8 @@ const initPkgJSON = require('../../packages/init/package.json');
 const servePkgJSON = require('../../packages/serve/package.json');
 const migratePkgJSON = require('../../packages/migrate/package.json');
 const infoPkgJSON = require('../../packages/info/package.json');
-const pluginPkgJSON = require('../../packages/generate-plugin/package.json');
-const loaderPkgJSON = require('../../packages/generate-loader/package.json');
+const pluginPkgJSON = require('../../packages/generators/package.json');
+const loaderPkgJSON = require('../../packages/generators/package.json');
 const cliPkgJSON = require('../../packages/webpack-cli/package.json');
 
 describe('version flag with external packages', () => {

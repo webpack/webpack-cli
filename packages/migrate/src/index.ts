@@ -173,7 +173,7 @@ function runMigration(currentConfigPath: string, outputConfigPath: string): Prom
  * function.
  */
 
-export default async function migrate(...args: string[]): Promise<void> {
+export default async function migrate(args: string[]): Promise<void> {
     const filePaths = args;
     if (!filePaths.length) {
         logger.error('\n ✖ Please specify a path to your webpack config\n');

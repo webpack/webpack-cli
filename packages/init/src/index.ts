@@ -16,7 +16,7 @@ const PATH_PREFIX = '--generation-path';
  * followed up with a yeoman instance if there are packages. If not, it creates a defaultGenerator
  */
 
-export default function initializeInquirer(...args: string[]): Function | void {
+export default function initializeInquirer(args: string[]): Function | void {
     const packages = args;
     const includesDefaultPrefix = packages.includes(AUTO_PREFIX);
     const generateConfig = packages.includes(CONFIG_PREFIX);
