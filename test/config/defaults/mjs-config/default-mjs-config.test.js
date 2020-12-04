@@ -4,7 +4,7 @@ const { run, isWebpack5 } = require('../../../utils/test-utils');
 
 describe('Default Config:', () => {
     it('Should be able to pick mjs config by default', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, [], false, [], {});
+        const { exitCode, stderr, stdout } = run(__dirname, [], false, [], { DISABLE_V8_COMPILE_CACHE: true });
 
         console.log(process.version);
         console.log(exitCode);
