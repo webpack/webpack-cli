@@ -11,7 +11,7 @@ describe('webpack cli', () => {
             expect(stdout).toBeTruthy();
         } else {
             expect(exitCode).toBe(2);
-            expect(stderr).toContain('Unexpected token');
+            expect(/Cannot use import statement outside a module/.test(stderr) || /Unexpected token/.test(stderr)).toBe(true);
             expect(stdout).toBeFalsy();
         }
     });

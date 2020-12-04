@@ -4,7 +4,7 @@ const { run, isWebpack5 } = require('../../../utils/test-utils');
 
 describe('Default Config:', () => {
     it('Should be able to pick cjs config by default', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, [], false, [], { DISABLE_V8_COMPILE_CACHE: true });
+        const { exitCode, stderr, stdout } = run(__dirname, [], false, [], {});
 
         if (exitCode === 0) {
             expect(exitCode).toEqual(0);
@@ -26,7 +26,7 @@ describe('Default Config:', () => {
             expect(fs.existsSync(path.join(__dirname, '/dist/test-output.js'))).toBeTruthy();
         } else {
             expect(exitCode).toEqual(2);
-            expect(stderr).toContain('Unexpected token export');
+            expect(stderr).toContain('Unexpected token');
             expect(stdout).toBeFalsy();
         }
     });
