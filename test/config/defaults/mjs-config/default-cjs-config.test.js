@@ -6,7 +6,7 @@ describe('Default Config:', () => {
     it('Should be able to pick cjs config by default', () => {
         const { exitCode, stderr, stdout } = run(__dirname, [], false, [], { DISABLE_V8_COMPILE_CACHE: true });
 
-        if (/^v[1-9][2-9]/.test(process.version)) {
+        if (exitCode === 0) {
             expect(exitCode).toEqual(0);
             expect(stderr).toContain('Compilation starting...');
             expect(stderr).toContain('Compilation finished');
