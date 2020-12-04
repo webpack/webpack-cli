@@ -3,9 +3,10 @@ const path = require('path');
 const { run, isWebpack5 } = require('../../../utils/test-utils');
 
 describe('Default Config:', () => {
-    it('Should be able to pick cjs config by default', () => {
+    it('Should be able to pick mjs config by default', () => {
         const { exitCode, stderr, stdout } = run(__dirname, [], false, [], {});
 
+        console.log(process.version);
         console.log(exitCode);
         console.log(stderr);
         console.log(stdout);
