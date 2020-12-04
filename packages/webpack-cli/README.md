@@ -266,11 +266,16 @@ yarn add webpack-cli --dev
                                                               unused exports and generate more efficient code.
   --output-asset-module-filename string                       The filename of asset modules as relative path inside the `output.path`
                                                               directory.
-  --output-chunk-callback-name string                         The callback function name used by webpack for loading of chunks in
-                                                              WebWorkers.
-  --output-chunk-filename string                              The filename of non-entry chunks as relative path inside the `output.path`
+  --output-charset                                            Add charset attribute for script tag.
+  --output-chunk-filename string                              The filename of non-initial chunks as relative path inside the `output.path`
                                                               directory.
+  --output-chunk-format string                                The format of chunks (formats included by default are 'array-push'
+                                                              (web/WebWorker), 'commonjs' (node.js), but others might be added by plugins).
   --output-chunk-load-timeout number                          Number of milliseconds before chunk request expires.
+  --output-chunk-loading string                               The method of loading chunks (methods included by default are 'jsonp' (web),
+                                                              'importScripts' (WebWorker), 'require' (sync node.js), 'async-node' (async
+                                                              node.js), but others might be added by plugins).
+  --output-chunk-loading-global string                        The global variable used by webpack for loading of chunks.
   --output-compare-before-emit                                Check if to be emitted file already exists and have the same content before
                                                               writing to output filesystem.
   --output-cross-origin-loading string                        This option enables cross-origin loading of chunks.
@@ -282,11 +287,32 @@ yarn add webpack-cli --dev
                                                               sources array in a generated SourceMap. Defaults to `output.library` if not
                                                               set. It's useful for avoiding runtime collisions in sourcemaps from multiple
                                                               webpack projects built as libraries.
-  --output-ecma-version number                                The maximum EcmaScript version of the webpack generated code (doesn't include
-                                                              input source code from modules).
-  --output-enabled-library-types string[]                     Type of library.
+  --output-enabled-chunk-loading-types string[]               The method of loading chunks (methods included by default are 'jsonp' (web),
+                                                              'importScripts' (WebWorker), 'require' (sync node.js), 'async-node' (async
+                                                              node.js), but others might be added by plugins).
+  --output-enabled-chunk-loading-types-reset                  Clear all items provided in configuration. List of chunk loading types
+                                                              enabled for use by entry points.
+  --output-enabled-library-types string[]                     Type of library (types included by default are 'var', 'module', 'assign',
+                                                              'this', 'window', 'self', 'global', 'commonjs', 'commonjs2', 'commonjs-
+                                                              module', 'amd', 'amd-require', 'umd', 'umd2', 'jsonp', 'system', but others
+                                                              might be added by plugins).
   --output-enabled-library-types-reset                        Clear all items provided in configuration. List of library types enabled for
                                                               use by entry points.
+  --output-enabled-wasm-loading-types string[]                The method of loading WebAssembly Modules (methods included by default are
+                                                              'fetch' (web/WebWorker), 'async-node' (node.js), but others might be added by
+                                                              plugins).
+  --output-enabled-wasm-loading-types-reset                   Clear all items provided in configuration. List of wasm loading types enabled
+                                                              for use by entry points.
+  --output-environment-arrow-function                         The environment supports arrow functions ('() => { ... }').
+  --output-environment-big-int-literal                        The environment supports BigInt as literal (123n).
+  --output-environment-const                                  The environment supports const and let for variable declarations.
+  --output-environment-destructuring                          The environment supports destructuring ('{ a, b } = obj').
+  --output-environment-dynamic-import                         The environment supports an async import() function to import EcmaScript
+                                                              modules.
+  --output-environment-for-of                                 The environment supports 'for of' iteration ('for (const x of array) { ...
+                                                              }').
+  --output-environment-module                                 The environment supports EcmaScript Module syntax to import EcmaScript
+                                                              modules (import ... from '...').
   --output-filename string                                    Specifies the name of each output file on disk. You must **not** specify an
                                                               absolute path here! The `output.path` option determines the location on disk
                                                               the files are written to, filename is used solely for naming the individual
@@ -299,12 +325,12 @@ yarn add webpack-cli --dev
   --output-hash-salt string                                   Any string which is added to the hash to salt it.
   --output-hot-update-chunk-filename string                   The filename of the Hot Update Chunks. They are inside the output.path
                                                               directory.
-  --output-hot-update-function string                         The JSONP function used by webpack for async loading of hot update chunks.
+  --output-hot-update-global string                           The global variable used by webpack for loading of hot update chunks.
   --output-hot-update-main-filename string                    The filename of the Hot Update Main File. It is inside the `output.path`
                                                               directory.
   --output-iife                                               Wrap javascript code into IIFE's to avoid leaking into global scope.
   --output-import-function-name string                        The name of the native import() function (can be exchanged for a polyfill).
-  --output-jsonp-function string                              The JSONP function used by webpack for async loading of chunks.
+  --output-import-meta-name string                            The name of the native import.meta object (can be exchanged for a polyfill).
   --output-library string[]                                   A part of the library name.
   --output-library-reset                                      Clear all items provided in configuration. The name of the library (some
                                                               types allow unnamed libraries too).
@@ -329,11 +355,14 @@ yarn add webpack-cli --dev
   --output-library-name-root string[]                         Part of the name of the property exposed globally by a UMD library.
   --output-library-name-root-reset                            Clear all items provided in configuration. Name of the property exposed
                                                               globally by a UMD library.
-  --output-library-type string                                Type of library.
+  --output-library-type string                                Type of library (types included by default are 'var', 'module', 'assign',
+                                                              'this', 'window', 'self', 'global', 'commonjs', 'commonjs2', 'commonjs-
+                                                              module', 'amd', 'amd-require', 'umd', 'umd2', 'jsonp', 'system', but others
+                                                              might be added by plugins).
   --output-library-umd-named-define                           If `output.libraryTarget` is set to umd and `output.library` is set, setting
                                                               this to true will name the AMD module.
   --output-module                                             Output javascript files as module source type.
-  --output-path string                                        The output directory as **absolute path** (required).
+  -o, --output-path string                                    Output location of the file generated by webpack e.g. ./dist/
   --output-pathinfo                                           Include comments with information about the modules.
   --output-public-path string                                 The `publicPath` specifies the public URL address of the output files when
                                                               referenced in a browser.
@@ -345,8 +374,17 @@ yarn add webpack-cli --dev
   --output-strict-module-exception-handling                   Handles exceptions in module loading correctly at a performance cost.
   --output-unique-name string                                 A unique name of the webpack build to avoid multiple webpack runtimes to
                                                               conflict when using globals.
+  --output-wasm-loading string                                The method of loading WebAssembly Modules (methods included by default are
+                                                              'fetch' (web/WebWorker), 'async-node' (node.js), but others might be added by
+                                                              plugins).
   --output-webassembly-module-filename string                 The filename of WebAssembly modules as relative path inside the `output.path`
                                                               directory.
+  --output-worker-chunk-loading string                        The method of loading chunks (methods included by default are 'jsonp' (web),
+                                                              'importScripts' (WebWorker), 'require' (sync node.js), 'async-node' (async
+                                                              node.js), but others might be added by plugins).
+  --output-worker-wasm-loading string                         The method of loading WebAssembly Modules (methods included by default are
+                                                              'fetch' (web/WebWorker), 'async-node' (node.js), but others migby
+                                                              plugins).
   --parallelism number                                        The number of parallel processed modules in the compilation.
   --performance                                               Configuration for web performance recommendations.
   --performance-hints string                                  Sets the format of the hints: warnings, errors or nothing at all.
@@ -642,7 +680,15 @@ yarn add webpack-cli --dev
   --no-optimization-split-chunks                              Negates optimization-split-chunks
   --no-optimization-split-chunks-hide-path-info               Negates optimization-split-chunks-hide-path-info
   --no-optimization-used-exports                              Negates optimization-used-exports
+  --no-output-charset                                         Negates output-charset
   --no-output-compare-before-emit                             Negates output-compare-before-emit
+  --no-output-environment-arrow-function                      Negates output-environment-arrow-function
+  --no-output-environment-big-int-literal                     Negates output-environment-big-int-literal
+  --no-output-environment-const                               Negates output-environment-const
+  --no-output-environment-destructuring                       Negates output-environment-destructuring
+  --no-output-environment-dynamic-import                      Negates output-environment-dynamic-import
+  --no-output-environment-for-of                              Negates output-environment-for-of
+  --no-output-environment-module                              Negates output-environment-module
   --no-output-iife                                            Negates output-iife
   --no-output-library-umd-named-define                        Negates output-library-umd-named-define
   --no-output-module                                          Negates output-module
