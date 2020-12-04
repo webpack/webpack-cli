@@ -6,6 +6,10 @@ describe('Default Config:', () => {
     it('Should be able to pick cjs config by default', () => {
         const { exitCode, stderr, stdout } = run(__dirname, [], false, [], {});
 
+        console.log(exitCode);
+        console.log(stderr);
+        console.log(stdout);
+
         if (exitCode === 0) {
             expect(exitCode).toEqual(0);
             expect(stderr).toContain('Compilation starting...');
