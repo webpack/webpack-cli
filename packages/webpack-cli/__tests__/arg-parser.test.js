@@ -106,6 +106,13 @@ const basicOptions = [
             delete opts.processorFlag;
         },
     },
+    {
+        name: 'env',
+        usage: '--env',
+        type: String,
+        multipleType: true,
+        description: 'Environment passed to the configuration when it is a function',
+    },
 ];
 
 const helpAndVersionOptions = basicOptions.slice(0);
@@ -432,12 +439,12 @@ describe('arg-parser', () => {
         expect(warnMock.mock.calls.length).toEqual(0);
     });
 
-    it('parses --processor-flag', () => {
-        const res = argParser(basicOptions, ['--processor-flag'], true);
+    it('parses --env flag', () => {
+        const res = argParser(basicOptions, ['--env', 'production', '--env', 'platform=staging'], true);
         expect(res.unknownArgs.length).toEqual(0);
-        expect(res.opts).toEqual({
-            processed: true,
-            stringFlagWithDefault: 'default-value',
+        expect(res.opts.env).toEqual({
+            platform: 'staging',
+            production: true,
         });
         expect(warnMock.mock.calls.length).toEqual(0);
     });
