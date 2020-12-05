@@ -8,6 +8,39 @@ const wordsInStatsv4 = ['Hash', 'Version', 'Time', 'Built at:', 'main.js'];
 const wordsInStatsv5 = ['asset', 'index.js', 'compiled', 'webpack'];
 const clear = '\x1B[2J\x1B[3J\x1B[H';
 
+const runTest = (proc, checker, done) => {
+    let semaphore = 0;
+    proc.stdout.on('readable', () => {
+        if (semaphore >= checker.length) {
+            proc.kill();
+            done();
+            return;
+        }
+
+        // Construct chunk
+        let data = '';
+        let chunk;
+        while ((chunk = proc.stdout.read())) {
+            data += chunk.toString();
+        }
+
+        if (data && checker[semaphore].check(data)) {
+            try {
+                checker[semaphore].perform(data);
+                semaphore++;
+            } catch (err) {
+                proc.kill();
+                done(err);
+            }
+
+            if (semaphore >= checker.length) {
+                proc.kill();
+                done();
+            }
+        }
+    });
+};
+
 describe('--interactive flag with single compiler', () => {
     it('should output in interactive with --interactive', (done) => {
         const proc = runAndGetWatchProc(__dirname, ['--interactive'], false, '', true);
@@ -50,30 +83,7 @@ describe('--interactive flag with single compiler', () => {
             },
         ];
 
-        let semaphore = 0;
-        proc.stdout.on('readable', () => {
-            if (semaphore >= checker.length) {
-                proc.kill();
-                done();
-                return;
-            }
-
-            let data = '';
-            let chunk;
-            while ((chunk = proc.stdout.read())) {
-                data += chunk.toString();
-            }
-
-            if (data && checker[semaphore].check(data.toString())) {
-                try {
-                    checker[semaphore].perform(data.toString());
-                    semaphore++;
-                } catch (err) {
-                    proc.kill();
-                    done(err);
-                }
-            }
-        });
+        runTest(proc, checker, done);
     });
 
     it('should stop watching on s', (done) => {
@@ -110,35 +120,7 @@ describe('--interactive flag with single compiler', () => {
             },
         ];
 
-        let semaphore = 0;
-        proc.stdout.on('readable', () => {
-            if (semaphore >= checker.length) {
-                proc.kill();
-                done();
-                return;
-            }
-
-            let data = '';
-            let chunk;
-            while ((chunk = proc.stdout.read())) {
-                data += chunk.toString();
-            }
-
-            if (data && checker[semaphore].check(data)) {
-                try {
-                    checker[semaphore].perform(data);
-                    semaphore++;
-                } catch (err) {
-                    proc.kill();
-                    done(err);
-                }
-
-                if (semaphore >= checker.length) {
-                    proc.kill();
-                    done();
-                }
-            }
-        });
+        runTest(proc, checker, done);
     });
 
     it('should should start watching on w after stoping with s', (done) => {
@@ -198,35 +180,6 @@ describe('--interactive flag with single compiler', () => {
             },
         ];
 
-        let semaphore = 0;
-        proc.stdout.on('readable', () => {
-            if (semaphore >= checker.length) {
-                proc.kill();
-                done();
-                return;
-            }
-
-            // Construct chunk
-            let data = '';
-            let chunk;
-            while ((chunk = proc.stdout.read())) {
-                data += chunk.toString();
-            }
-
-            if (data && checker[semaphore].check(data)) {
-                try {
-                    checker[semaphore].perform(data);
-                    semaphore++;
-                } catch (err) {
-                    proc.kill();
-                    done(err);
-                }
-
-                if (semaphore >= checker.length) {
-                    proc.kill();
-                    done();
-                }
-            }
-        });
+        runTest(proc, checker, done);
     });
 });
