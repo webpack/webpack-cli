@@ -2,9 +2,9 @@
 
 const path = require('path');
 const rimraf = require('rimraf');
-const { run } = require('../utils/test-utils');
+const { isWindows, run } = require('../utils/test-utils');
 const { existsSync, writeFileSync, unlinkSync } = require('fs');
-const { resolve } = require('path');
+const { resolve, normalize } = require('path');
 
 describe('cache related flags from core', () => {
     it('should be successful with --cache ', () => {
@@ -24,7 +24,7 @@ describe('cache related flags from core', () => {
     });
 
     it('should set cache.type', () => {
-        const cacheLocation = path.resolve(__dirname, '../../node_modules/.cache/webpack/cache-core-flag-test-type');
+        const cacheLocation = resolve(__dirname, '../../node_modules/.cache/webpack/cache-core-flag-test-type');
 
         rimraf.sync(cacheLocation);
 
@@ -33,10 +33,12 @@ describe('cache related flags from core', () => {
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).toContain(`type: 'filesystem'`);
+        expect(stdout).toContain(`'${normalize(cacheLocation)}'`);
     });
 
     it('should set cache.cacheDirectory with --cache-cache-directory', () => {
-        const cacheLocation = path.resolve(__dirname, '../../node_modules/.cache/webpack/cache-core-flag-test-cache-directory');
+        const cacheLocation = resolve(__dirname, '../../node_modules/.cache/webpack/cache-core-flag-test-cache-directory');
+        const cacheDirectory = resolve(cacheLocation, './test-cache-path');
 
         rimraf.sync(cacheLocation);
 
@@ -44,7 +46,7 @@ describe('cache related flags from core', () => {
             '--cache-type',
             'filesystem',
             '--cache-cache-directory',
-            './test-cache-path',
+            cacheDirectory,
             '--cache-cache-location',
             cacheLocation,
         ]);
@@ -52,11 +54,12 @@ describe('cache related flags from core', () => {
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).toContain("type: 'filesystem'");
-        expect(stdout).toContain('test-cache-path');
+        expect(stdout).toContain(`'${normalize(cacheLocation)}'`);
+        expect(stdout).toContain(`'${normalize(cacheDirectory)}'`);
     });
 
     it('should set cache.cacheLocation with --cache-cache-locations', () => {
-        const cacheLocation = path.resolve(__dirname, '../../node_modules/.cache/webpack/cache-core-flag-test-cache-location');
+        const cacheLocation = resolve(__dirname, '../../node_modules/.cache/webpack/cache-core-flag-test-cache-location');
 
         rimraf.sync(cacheLocation);
 
@@ -65,12 +68,12 @@ describe('cache related flags from core', () => {
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).toContain("type: 'filesystem'");
-        expect(stdout).toContain('cache-core-flag-test-cache-location');
+        expect(stdout).toContain(`'${normalize(cacheLocation)}'`);
         expect(existsSync(cacheLocation)).toBeTruthy();
     });
 
     it('should set cache.hashAlgorithm with --cache-hash-algorithm', () => {
-        const cacheLocation = path.resolve(__dirname, '../../node_modules/.cache/webpack/cache-core-flag-test-hash-algorithm');
+        const cacheLocation = resolve(__dirname, '../../node_modules/.cache/webpack/cache-core-flag-test-hash-algorithm');
 
         rimraf.sync(cacheLocation);
 
@@ -87,10 +90,11 @@ describe('cache related flags from core', () => {
         expect(stderr).toBeFalsy();
         expect(stdout).toContain("type: 'filesystem'");
         expect(stdout).toContain(`hashAlgorithm: 'sha256'`);
+        expect(stdout).toContain(`'${normalize(cacheLocation)}'`);
     });
 
     it('should set cache.name with --cache-name', () => {
-        const cacheLocation = path.resolve(__dirname, '../../node_modules/.cache/webpack/cache-core-flag-test-name');
+        const cacheLocation = resolve(__dirname, '../../node_modules/.cache/webpack/cache-core-flag-test-name');
 
         rimraf.sync(cacheLocation);
 
@@ -107,10 +111,11 @@ describe('cache related flags from core', () => {
         expect(stderr).toBeFalsy();
         expect(stdout).toContain("type: 'filesystem'");
         expect(stdout).toContain(`name: 'cli-test'`);
+        expect(stdout).toContain(`'${normalize(cacheLocation)}'`);
     });
 
     it('should set cache.store with --cache-store', () => {
-        const cacheLocation = path.resolve(__dirname, '../../node_modules/.cache/webpack/cache-core-flag-test-store');
+        const cacheLocation = resolve(__dirname, '../../node_modules/.cache/webpack/cache-core-flag-test-store');
 
         rimraf.sync(cacheLocation);
 
@@ -127,10 +132,11 @@ describe('cache related flags from core', () => {
         expect(stderr).toBeFalsy();
         expect(stdout).toContain("type: 'filesystem'");
         expect(stdout).toContain(`store: 'pack'`);
+        expect(stdout).toContain(`'${normalize(cacheLocation)}'`);
     });
 
     it('should set cache.version with --cache-version', () => {
-        const cacheLocation = path.resolve(__dirname, '../../node_modules/.cache/webpack/cache-core-flag-test-version');
+        const cacheLocation = resolve(__dirname, '../../node_modules/.cache/webpack/cache-core-flag-test-version');
 
         rimraf.sync(cacheLocation);
 
@@ -147,10 +153,11 @@ describe('cache related flags from core', () => {
         expect(stderr).toBeFalsy();
         expect(stdout).toContain("type: 'filesystem'");
         expect(stdout).toContain(`version: '1.1.3'`);
+        expect(stdout).toContain(`'${normalize(cacheLocation)}'`);
     });
 
     it('should assign cache build dependencies correctly when cache type is filesystem', () => {
-        const cacheLocation = path.resolve(__dirname, '../../node_modules/.cache/webpack/cache-core-flag-test-build-dependencies');
+        const cacheLocation = resolve(__dirname, '../../node_modules/.cache/webpack/cache-core-flag-test-build-dependencies');
 
         rimraf.sync(cacheLocation);
 
@@ -169,6 +176,11 @@ describe('cache related flags from core', () => {
         expect(stdout).toContain('buildDependencies');
         // expect(stdout).toContain(`'${path.join(__dirname, './webpack.config.js')}'`);
         expect(stdout).not.toContain('[cached]');
+        if (isWindows) {
+            expect(stdout).toContain('cache-core-flag-test-build-dependencies');
+        } else {
+            expect(stdout).toContain(`'${cacheLocation}'`);
+        }
 
         // Run again to check for cache
         ({ exitCode, stderr, stdout } = run(__dirname, [
@@ -183,13 +195,11 @@ describe('cache related flags from core', () => {
         expect(exitCode).toEqual(0);
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('[cached]');
+        expect(stdout).toContain(`'${normalize(cacheLocation)}'`);
     });
 
     it('should assign cache build dependencies correctly when cache type is filesystem in config', () => {
-        const cacheLocation = path.resolve(
-            __dirname,
-            '../../node_modules/.cache/webpack/cache-core-flag-test-build-dependencies-in-config',
-        );
+        const cacheLocation = resolve(__dirname, '../../node_modules/.cache/webpack/cache-core-flag-test-build-dependencies-in-config');
 
         rimraf.sync(cacheLocation);
 
@@ -199,6 +209,7 @@ describe('cache related flags from core', () => {
         expect(stderr).toBeFalsy();
         expect(stdout).toContain("type: 'filesystem'");
         expect(stdout).toContain('buildDependencies');
+        expect(stdout).toContain(`'${normalize(cacheLocation)}'`);
         // expect(stdout).toContain(`'${path.join(__dirname, './webpack.cache.config.js')}'`);
 
         // Run again to check for cache
@@ -207,6 +218,7 @@ describe('cache related flags from core', () => {
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('[cached]');
+        expect(stdout).toContain(`'${normalize(cacheLocation)}'`);
     });
 
     it('should assign cache build dependencies with multiple configs', () => {
