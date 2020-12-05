@@ -131,6 +131,13 @@ describe('output config related flag', () => {
                     expect(stderr).toContain("Compilation 'compiler' starting...");
                     expect(stderr).toContain("Compilation 'compiler' finished");
                     expect(stdout).toContain('test');
+                } else if (flag.name === 'output-pathinfo') {
+                    const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'verbose']);
+
+                    expect(exitCode).toBe(0);
+                    expect(stderr).toContain("Compilation 'compiler' starting...");
+                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stdout).toContain(`pathinfo: 'verbose'`);
                 } else if (flag.name === 'output-worker-chunk-loading') {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'async-node']);
 
