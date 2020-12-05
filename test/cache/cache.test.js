@@ -47,7 +47,7 @@ describe('cache', () => {
             expect(stderr).toContain("Compilation 'cache-test-second' starting...");
             expect(stderr).toContain("Compilation 'cache-test-second' finished");
             expect(stderr.match(/No pack exists at/g)).toHaveLength(2);
-            expect(stderr.match(/Stored pack/g)).toHaveLength(2);
+            expect(stderr.match(/Stored pack/g).length).toBeGreaterThan(1);
             expect(stdout).toBeTruthy();
         }
 
