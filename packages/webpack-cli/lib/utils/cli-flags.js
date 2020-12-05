@@ -181,7 +181,7 @@ const builtInFlags = [
         usage: '--color',
         type: Boolean,
         negative: true,
-        description: 'Enable/Disable colors on console',
+        description: 'Enable colors on console',
     },
 
     // For webpack@4
