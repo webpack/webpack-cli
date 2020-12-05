@@ -39,6 +39,16 @@ const runTest = (proc, checker, done) => {
             }
         }
     });
+
+    proc.on('error', (error) => {
+        done(error);
+        proc.kill();
+    });
+
+    proc.on('exit', () => {
+        proc.kill();
+        done();
+    });
 };
 
 describe('--interactive flag with multi compiler', () => {
