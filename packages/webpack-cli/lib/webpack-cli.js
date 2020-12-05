@@ -2,8 +2,9 @@ const path = require('path');
 const packageExists = require('./utils/package-exists');
 const webpack = packageExists('webpack') ? require('webpack') : undefined;
 const webpackMerge = require('webpack-merge');
-const { writeFileSync, existsSync } = require('fs');
+const { createWriteStream, existsSync } = require('fs');
 const { options: coloretteOptions, yellow } = require('colorette');
+const { stringifyStream: createJsonStringifyStream } = require('@discoveryjs/json-ext');
 
 const logger = require('./utils/logger');
 const { cli, flags } = require('./utils/cli-flags');
@@ -485,21 +486,23 @@ class WebpackCLI {
             const foundStats = compiler.compilers
                 ? { children: compiler.compilers.map(getStatsOptionsFromCompiler) }
                 : getStatsOptionsFromCompiler(compiler);
+            const handleWriteError = (error) => {
+                logger.error(error);
+                process.exit(2);
+            };
 
             if (args.json === true) {
-                process.stdout.write(JSON.stringify(stats.toJson(foundStats)) + '\n');
+                createJsonStringifyStream(stats.toJson(foundStats))
+                    .on('error', handleWriteError)
+                    .pipe(process.stdout)
+                    .on('error', handleWriteError)
+                    .on('close', () => process.stdout.write('\n'));
             } else if (typeof args.json === 'string') {
-                const JSONStats = JSON.stringify(stats.toJson(foundStats));
-
-                try {
-                    writeFileSync(args.json, JSONStats);
-
-                    logger.success(`stats are successfully stored as json to ${args.json}`);
-                } catch (error) {
-                    logger.error(error);
-
-                    process.exit(2);
-                }
+                createJsonStringifyStream(stats.toJson(foundStats))
+                    .on('error', handleWriteError)
+                    .pipe(createWriteStream(args.json))
+                    .on('error', handleWriteError)
+                    .on('close', () => logger.success(`stats are successfully stored as json to ${args.json}`));
             } else {
                 const printedStats = stats.toString(foundStats);
 
