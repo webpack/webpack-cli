@@ -76,7 +76,7 @@ describe('--interactive flag with single compiler', () => {
         });
     });
 
-    it('should output in interactive and on s', (done) => {
+    it('should stop watching on s', (done) => {
         const proc = runAndGetWatchProc(__dirname, ['--interactive'], false, '', true);
         const checker = [
             {
@@ -118,6 +118,95 @@ describe('--interactive flag with single compiler', () => {
                 return;
             }
 
+            let data = '';
+            let chunk;
+            while ((chunk = proc.stdout.read())) {
+                data += chunk.toString();
+            }
+
+            if (data && checker[semaphore].check(data)) {
+                try {
+                    checker[semaphore].perform(data);
+                    semaphore++;
+                } catch (err) {
+                    proc.kill();
+                    done(err);
+                }
+
+                if (semaphore >= checker.length) {
+                    proc.kill();
+                    done();
+                }
+            }
+        });
+    });
+
+    it('should should start watching on w after stoping with s', (done) => {
+        const proc = runAndGetWatchProc(__dirname, ['--interactive'], false, '', true);
+        const checker = [
+            {
+                check: (data) => {
+                    return data.includes('\u2B24');
+                },
+                perform: () => {
+                    proc.stdin.write('s\n', (err) => {
+                        if (err) {
+                            proc.kill();
+                            done(err);
+                            return;
+                        }
+                    });
+                },
+            },
+            {
+                check: (data) => {
+                    if (!isWebpack5) {
+                        return data.includes('stoping');
+                    }
+                    return data.includes('stoped');
+                },
+                perform: (data) => {
+                    if (!isWebpack5) {
+                        expect(data).toContain('stoping');
+                    } else {
+                        expect(data).toContain('stoped');
+                    }
+                    proc.stdin.write('w\n', (err) => {
+                        if (err) {
+                            proc.kill();
+                            done(err);
+                            return;
+                        }
+                    });
+                },
+            },
+            {
+                check: (data) => {
+                    if (!isWebpack5) {
+                        return data.includes('starting not supported');
+                    } else {
+                        return data.includes('compilation completed');
+                    }
+                },
+                perform: (data) => {
+                    if (!isWebpack5) {
+                        expect(data).toContain('starting not supported');
+                    } else {
+                        expect(data).toContain('compilation completed');
+                    }
+                },
+            },
+        ];
+
+        let semaphore = 0;
+        proc.stdout.on('readable', () => {
+            if (semaphore >= checker.length) {
+                proc.kill();
+                done();
+                return;
+            }
+
+            // Construct chunk
             let data = '';
             let chunk;
             while ((chunk = proc.stdout.read())) {
