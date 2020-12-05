@@ -35,7 +35,7 @@ describe('cache', () => {
     });
 
     it('should work in multi compiler mode', () => {
-        rimraf.sync(path.join(__dirname, '../../node_modules/.cache/webpack/cache-test-{first,second}-development'));
+        rimraf.sync(path.join(__dirname, '../../node_modules/.cache/webpack/**'));
 
         let { exitCode, stderr, stdout } = run(__dirname, ['-c', './multi.config.js'], false);
 
@@ -47,7 +47,7 @@ describe('cache', () => {
             expect(stderr).toContain("Compilation 'cache-test-second' starting...");
             expect(stderr).toContain("Compilation 'cache-test-second' finished");
             expect(stderr.match(/No pack exists at/g)).toHaveLength(2);
-            expect(stderr.match(/Stored pack/g).length).toBeGreaterThan(1);
+            expect(stderr.match(/Stored pack/g)).toHaveLength(2);
             expect(stdout).toBeTruthy();
         }
 
