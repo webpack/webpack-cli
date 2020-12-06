@@ -230,6 +230,14 @@ to read on GitHub as well as in several git tools.
 For more information about what each part of the template mean, head up to the documentation in the
 [angular repo](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#commits)
 
+#### Example commit message
+
+```
+feat(webpack-cli): allow multiple values for --stats
+
+docs: update README.md
+```
+
 ## Migrate with the CLI
 
 ```sh
