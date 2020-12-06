@@ -141,7 +141,7 @@ const builtInFlags = [
     },
     {
         name: 'progress',
-        usage: '--progress',
+        usage: '--progress | --progress profile',
         type: [Boolean, String],
         description: 'Print compilation progress during build',
     },
@@ -171,7 +171,7 @@ const builtInFlags = [
     // Output options
     {
         name: 'json',
-        usage: '--json',
+        usage: '--json | --json <path-to-stats-file>',
         type: [String, Boolean],
         alias: 'j',
         description: 'Prints result as JSON or store it in a file',
@@ -235,7 +235,7 @@ const builtInFlags = [
     },
     {
         name: 'stats',
-        usage: '--stats <value>',
+        usage: '--stats | --stats <value>',
         type: [String, Boolean],
         negative: true,
         description: 'It instructs webpack on how to treat the stats e.g. verbose',
