@@ -439,12 +439,25 @@ describe('arg-parser', () => {
         expect(warnMock.mock.calls.length).toEqual(0);
     });
 
-    it('parses --env flag', () => {
+    it('parses multiType flag', () => {
         const res = argParser(basicOptions, ['--env', 'production', '--env', 'platform=staging'], true);
         expect(res.unknownArgs.length).toEqual(0);
         expect(res.opts.env).toEqual({
             platform: 'staging',
             production: true,
+        });
+        expect(warnMock.mock.calls.length).toEqual(0);
+    });
+
+    it('parses nested multiType flag', () => {
+        const res = argParser(basicOptions, ['--env', 'a.b=d', '--env', 'a.b.c=d'], true);
+        expect(res.unknownArgs.length).toEqual(0);
+        expect(res.opts.env).toEqual({
+            a: {
+                b: {
+                    c: 'd',
+                },
+            },
         });
         expect(warnMock.mock.calls.length).toEqual(0);
     });
