@@ -36,7 +36,7 @@ describe('node flags', () => {
     });
 
     it('throws an error if an illegal value was supplied with --max-old-space-size', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, [], true, ['--max_old_space_size=1024a']);
+        const { exitCode, stderr, stdout } = await run(__dirname, [], ['--max_old_space_size=1024a']);
 
         expect(exitCode).not.toBe(0);
         expect(stderr).toContain('Error: illegal value for flag --max_old_space_size=1024a of type size_t');
