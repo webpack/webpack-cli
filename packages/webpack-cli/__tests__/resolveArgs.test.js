@@ -1,7 +1,13 @@
 const { resolve } = require('path');
+const { version } = require('webpack');
 const webpackCLI = require('../lib/webpack-cli');
 
 const targetValues = ['web', 'webworker', 'node', 'async-node', 'node-webkit', 'electron-main', 'electron-renderer', 'electron-preload'];
+const statsPresets = ['normal', 'detailed', 'errors-only', 'errors-warnings', 'minimal', 'verbose', 'none'];
+
+if (version.startsWith('5')) {
+    statsPresets.push('summary');
+}
 
 const basicResolver = new webpackCLI().resolveArguments;
 
@@ -81,6 +87,14 @@ describe('BasicResolver', () => {
             const result = await basicResolver({ options: {} }, { target: option });
 
             expect(result.options.target).toEqual(option);
+        });
+    });
+
+    statsPresets.map((preset) => {
+        it(`should handle ${preset} preset`, async () => {
+            const result = await basicResolver({ options: {} }, { stats: preset });
+
+            expect(result.options.stats).toEqual(preset);
         });
     });
 });
