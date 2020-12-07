@@ -6,7 +6,6 @@ describe('info tests', () => {
 
         expect(envInfo).toContain('System');
         expect(envInfo).toContain('Binaries');
-        expect(envInfo).toContain('Monorepos');
         expect(envInfo).toContain('Browsers');
     });
 
@@ -17,7 +16,6 @@ describe('info tests', () => {
             const output = JSON.parse(envInfo);
             expect(output['System']).toBeTruthy();
             expect(output['Binaries']).toBeTruthy();
-            expect(output['Monorepos']).toBeTruthy();
             expect(output['System']['OS']).toBeTruthy();
             expect(output['System']['CPU']).toBeTruthy();
         };
@@ -30,7 +28,6 @@ describe('info tests', () => {
 
         expect(envInfo).toContain('## System');
         expect(envInfo).toContain('## Binaries');
-        expect(envInfo).toContain('## Monorepos');
         expect(envInfo).toContain('## Browsers');
     });
 });
