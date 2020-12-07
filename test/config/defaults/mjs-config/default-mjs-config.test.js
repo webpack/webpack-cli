@@ -6,11 +6,6 @@ describe('Default Config:', () => {
     it('Should be able to pick mjs config by default', () => {
         const { exitCode, stderr, stdout } = run(__dirname, [], false, [], { DISABLE_V8_COMPILE_CACHE: true });
 
-        console.log(process.version);
-        console.log(exitCode);
-        console.log(stderr);
-        console.log(stdout);
-
         if (exitCode === 0) {
             expect(exitCode).toEqual(0);
             expect(stderr).toContain('Compilation starting...');
