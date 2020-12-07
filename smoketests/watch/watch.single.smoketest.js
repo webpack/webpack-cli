@@ -33,11 +33,11 @@ async function setup() {
 async function teardown() {
     await testEntryFiles.forEach(async (file) => {
         try {
-            unlinkSync(file.fp);
+           await unlinkSync(file.fp);
         } catch (e) {
             console.warn('could not remove the file:' + file.fp + '\n' + e.message);
         } finally {
-            renameSync(file.cpFP, file.fp);
+           await renameSync(file.cpFP, file.fp);
         }
     });
 }
