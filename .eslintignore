@@ -14,5 +14,5 @@ test/**/bin/
 test/**/binary/
 test/**/index.js
 test/typescript/webpack.config.ts
-test/config/error/syntax-error.js
-test/config/error-array/webpack.config.js
+test/config/error-commonjs/syntax-error.js
+test/config/error-mjs/syntax-error.mjs

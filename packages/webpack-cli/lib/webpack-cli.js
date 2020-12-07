@@ -22,7 +22,7 @@ class WebpackCLI {
     constructor() {}
 
     async resolveConfig(args) {
-        const loadConfig = (configPath) => {
+        const loadConfig = async (configPath) => {
             const ext = extname(configPath);
             const interpreted = Object.keys(jsVariants).find((variant) => variant === ext);
 
@@ -30,10 +30,32 @@ class WebpackCLI {
                 rechoir.prepare(extensions, configPath);
             }
 
-            let options;
+            const { pathToFileURL } = require('url');
+
+            let importESM;
 
             try {
-                options = require(configPath);
+                importESM = new Function('id', 'return import(id);');
+            } catch (e) {
+                importESM = null;
+            }
+
+            let options;
+            try {
+                try {
+                    options = require(configPath);
+                } catch (error) {
+                    if (pathToFileURL && importESM && error.code === 'ERR_REQUIRE_ESM') {
+                        const urlForConfig = pathToFileURL(configPath);
+
+                        options = await importESM(urlForConfig);
+                        options = options.default;
+
+                        return { options, path: configPath };
+                    }
+
+                    throw error;
+                }
             } catch (error) {
                 logger.error(`Failed to load '${configPath}'`);
                 logger.error(error);
@@ -91,7 +113,7 @@ class WebpackCLI {
                         process.exit(2);
                     }
 
-                    const loadedConfig = loadConfig(configPath);
+                    const loadedConfig = await loadConfig(configPath);
 
                     return evaluateConfig(loadedConfig, args);
                 }),
@@ -136,7 +158,7 @@ class WebpackCLI {
             }
 
             if (foundDefaultConfigFile) {
-                const loadedConfig = loadConfig(foundDefaultConfigFile.path);
+                const loadedConfig = await loadConfig(foundDefaultConfigFile.path);
                 const evaluatedConfig = await evaluateConfig(loadedConfig, args);
 
                 config.options = evaluatedConfig.options;
