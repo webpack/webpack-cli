@@ -1046,6 +1046,11 @@
   resolved "https://registry.yarnpkg.com/@commitlint/types/-/types-11.0.0.tgz#719cf05fcc1abb6533610a2e0f5dd1e61eac14fe"
   integrity sha512-VoNqai1vR5anRF5Tuh/+SWDFk7xi7oMwHrHrbm1BprYXjB2RJsWLhUrStMssDxEl5lW/z3EUdg8RvH/IUBccSQ==
 
+"@discoveryjs/json-ext@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.0.tgz#d6cf8951ceb673db41861d544cef2f2e07ebcb4d"
+  integrity sha512-gX9Hx+2BMP5+yXfr4Agb+iBd9YiI729x38wbhfvRSkxQqfXnJUNy1nnyJWetYCvxnL1caWd1HqJnbQwVrgvgeA==
+
 "@eslint/eslintrc@^0.2.1":
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-0.2.1.tgz#f72069c330461a06684d119384435e12a5d76e3c"
