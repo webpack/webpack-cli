@@ -34,6 +34,20 @@ const commands = [
         type: String,
         usage: 'migrate <path-to-config> [output-path]',
         description: 'Migrate a configuration to a new version',
+        flags: [
+            {
+                name: 'config',
+                alias: 'c',
+                type: String,
+                description: 'Path for configuration to migrate',
+            },
+            {
+                name: 'output',
+                alias: 'o',
+                type: String,
+                description: 'Path where migrated configuration should be saved',
+            },
+        ],
     },
     {
         packageName: '@webpack-cli/generators',

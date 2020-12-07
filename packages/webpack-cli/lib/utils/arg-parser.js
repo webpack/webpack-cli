@@ -45,8 +45,13 @@ const argParser = (options, args, argsOnly = false, name = '') => {
             .allowUnknownOption(true)
             .action(async () => {
                 const cliArgs = args.slice(args.indexOf(cmd.name) + 1 || args.indexOf(cmd.alias) + 1);
-
-                return await require('./resolve-command')(cmd.packageName, cliArgs, cmd.name);
+                if (cmd.flags) {
+                    const parsedArgs = argParser(cmd.flags, cliArgs, true);
+                    const newArgs = { ...parsedArgs.opts, unknownArgs: parsedArgs.unknownArgs };
+                    console.log(newArgs);
+                    return await require('./resolve-command')(cmd.packageName, newArgs);
+                }
+                return await require('./resolve-command')(cmd.packageName, ...cliArgs);
             });
 
         return parser;
