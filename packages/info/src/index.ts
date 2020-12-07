@@ -35,7 +35,7 @@ const DEFAULT_DETAILS: Information = {
 export default async function info(args): Promise<string> {
     const envinfoConfig = {};
 
-    if (args.unknownArgs.length > 0) {
+    if (args.unknwownArgs && args.unknownArgs.length > 0) {
         logger.error(`Unknown argument: ${args.unknownArgs}`);
         process.exit(2);
     }

@@ -2,7 +2,7 @@ import info from '../src/index';
 
 describe('info tests', () => {
     it('should log environment info', async () => {
-        const envInfo = await info();
+        const envInfo = await info({});
 
         expect(envInfo).toContain('System');
         expect(envInfo).toContain('Binaries');
@@ -10,7 +10,7 @@ describe('info tests', () => {
     });
 
     it('should log environment info as json', async () => {
-        const envInfo = await info(['--output', 'json']);
+        const envInfo = await info({ output: 'json' });
 
         const parse = (): void => {
             const output = JSON.parse(envInfo);
@@ -24,7 +24,7 @@ describe('info tests', () => {
     });
 
     it('should log environment info as markdown', async () => {
-        const envInfo = await info(['--output', 'markdown']);
+        const envInfo = await info({ output: 'markdown' });
 
         expect(envInfo).toContain('## System');
         expect(envInfo).toContain('## Binaries');
