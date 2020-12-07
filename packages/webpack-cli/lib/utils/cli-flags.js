@@ -129,6 +129,7 @@ const builtInFlags = [
         type: Boolean,
         negative: true,
         description: 'Enables Hot Module Replacement',
+        negatedDescription: 'Disables Hot Module Replacement',
         link: 'https://webpack.js.org/concepts/hot-module-replacement/',
     },
     {
@@ -182,6 +183,7 @@ const builtInFlags = [
         type: Boolean,
         negative: true,
         description: 'Enable colors on console',
+        negatedDescription: 'Disable colors on console',
     },
 
     // For webpack@4
@@ -217,6 +219,7 @@ const builtInFlags = [
         negative: true,
         alias: 'd',
         description: 'Determine source maps to use',
+        negatedDescription: 'Do not generate source maps',
         link: 'https://webpack.js.org/configuration/devtool/#devtool',
     },
     {
@@ -239,6 +242,7 @@ const builtInFlags = [
         type: [String, Boolean],
         negative: true,
         description: 'It instructs webpack on how to treat the stats e.g. verbose',
+        negatedDescription: 'Disable stats output',
         link: 'https://webpack.js.org/configuration/stats/#stats',
     },
     {
@@ -248,6 +252,7 @@ const builtInFlags = [
         negative: true,
         alias: 'w',
         description: 'Watch for files changes',
+        negatedDescription: 'Do not watch for file changes',
         link: 'https://webpack.js.org/configuration/watch/',
     },
 ];

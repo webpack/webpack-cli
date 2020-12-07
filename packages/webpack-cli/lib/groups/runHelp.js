@@ -93,7 +93,9 @@ const outputHelp = (args) => {
         const negatedFlags = flags
             .filter((flag) => flag.negative)
             .reduce((allFlags, flag) => {
-                return [...allFlags, { name: `no-${flag.name}`, description: `Negates ${flag.name}`, type: Boolean }];
+                // Use available description for built-in negated flags
+                const description = flag.negatedDescription ? flag.negatedDescription : `Negates ${flag.name}`;
+                return [...allFlags, { name: `no-${flag.name}`, description, type: Boolean }];
             }, []);
         const title = bold('⬡                     ') + underline('webpack') + bold('                     ⬡');
         const desc = 'The build tool for modern web applications';
