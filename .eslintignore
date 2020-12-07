@@ -16,3 +16,4 @@ test/**/index.js
 test/typescript/webpack.config.ts
 test/config/error-commonjs/syntax-error.js
 test/config/error-mjs/syntax-error.mjs
+test/config/error-array/webpack.config.js
