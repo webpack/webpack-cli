@@ -144,11 +144,7 @@ const outputHelp = (args) => {
                     }, []);
                     flagType = allowedTypes.join(', ');
                 } else {
-                    flagType = flag.type.name.toLowerCase();
-
-                    if (flag.multiple) {
-                        flagType = `${flagType}[]`;
-                    }
+                    flagType = `${flag.type.name.toLowerCase()}${flag.multiple ? '[]' : ''}`;
                 }
 
                 logger.raw(`${underline(bold('Option'))}      : --${flag.name}`);
