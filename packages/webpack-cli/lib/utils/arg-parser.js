@@ -44,7 +44,7 @@ const argParser = (options, args, argsOnly = false, name = '') => {
             .action(async () => {
                 const cliArgs = args.slice(args.indexOf(cmd.name) + 1 || args.indexOf(cmd.alias) + 1);
 
-                return await require('./resolve-command')(cmd.packageName, ...cliArgs);
+                return await require('./resolve-command')(cmd.packageName, cliArgs, cmd.name);
             });
 
         return parser;

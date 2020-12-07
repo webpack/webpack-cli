@@ -3,7 +3,7 @@ const logger = require('./logger');
 const packageExists = require('./package-exists');
 const promptInstallation = require('./prompt-installation');
 
-const run = async (name, ...args) => {
+const run = async (name, args, commandName) => {
     let packageLocation = packageExists(name);
 
     if (!packageLocation) {
@@ -27,7 +27,7 @@ const run = async (name, ...args) => {
         loaded = loaded.default;
     }
 
-    return loaded(...args);
+    return loaded(args, commandName);
 };
 
 module.exports = run;

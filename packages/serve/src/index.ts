@@ -11,7 +11,7 @@ const { logger } = utils;
  * @param {String[]} args - args processed from the CLI
  * @returns {Function} invokes the devServer API
  */
-export default function serve(...args: string[]): void {
+export default function serve(args: string[]): void {
     try {
         // eslint-disable-next-line node/no-extraneous-require
         require('webpack-dev-server');

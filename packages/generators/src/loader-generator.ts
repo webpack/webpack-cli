@@ -1,6 +1,7 @@
 import path from 'path';
 import addonGenerator from './addon-generator';
 import { toKebabCase } from './utils/helpers';
+
 /**
  * Formats a string into webpack loader format
  * (eg: 'style-loader', 'raw-loader')
@@ -25,7 +26,7 @@ export function makeLoaderName(name: string): string {
  * @extends {Generator}
  */
 
-const LoaderGenerator = addonGenerator(
+export const LoaderGenerator = addonGenerator(
     [
         {
             default: 'my-loader',
@@ -36,7 +37,7 @@ const LoaderGenerator = addonGenerator(
             validate: (str: string): boolean => str.length > 0,
         },
     ],
-    path.resolve(__dirname, '../../generate-loader/templates'),
+    path.resolve(__dirname, '../loader-template'),
     [
         'src/cjs.js.tpl',
         'test/test-utils.js.tpl',

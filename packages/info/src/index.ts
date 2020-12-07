@@ -31,7 +31,7 @@ const DEFAULT_DETAILS: Information = {
     npmPackages: '*webpack*',
 };
 
-export default async function info(...args): Promise<string> {
+export default async function info(args = []): Promise<string> {
     const cli = new WebpackCLI();
     const { flags: infoFlags } = commands.find((cmd) => cmd.name === 'info');
     const parsedArgs = cli.argParser(infoFlags, args, true);

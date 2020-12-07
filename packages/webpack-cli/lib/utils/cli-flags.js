@@ -36,7 +36,7 @@ const commands = [
         description: 'Migrate a configuration to a new version',
     },
     {
-        packageName: '@webpack-cli/generate-loader',
+        packageName: '@webpack-cli/generators',
         name: 'loader',
         scope: 'external',
         alias: 'l',
@@ -45,7 +45,7 @@ const commands = [
         description: 'Scaffold a loader repository',
     },
     {
-        packageName: '@webpack-cli/generate-plugin',
+        packageName: '@webpack-cli/generators',
         name: 'plugin',
         alias: 'p',
         scope: 'external',
