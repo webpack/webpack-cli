@@ -18,7 +18,7 @@ export default function initializeInquirer(args): Function | void {
     const generateConfig = args.force;
     const generationPath = args.generationPath;
 
-    if (!packages || includesDefaultPrefix || generateConfig || generationPath) {
+    if (!packages || packages.length === 0 || includesDefaultPrefix || generateConfig || generationPath) {
         return modifyHelperUtil('init', initGenerator, null, null, includesDefaultPrefix, generateConfig, generationPath);
     }
     return npmPackagesExists(packages);
