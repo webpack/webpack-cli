@@ -48,7 +48,6 @@ const argParser = (options, args, argsOnly = false, name = '') => {
                 if (cmd.flags) {
                     const parsedArgs = argParser(cmd.flags, cliArgs, true);
                     const newArgs = { ...parsedArgs.opts, unknownArgs: parsedArgs.unknownArgs };
-                    console.log(newArgs);
                     return await require('./resolve-command')(cmd.packageName, newArgs);
                 }
                 return await require('./resolve-command')(cmd.packageName, ...cliArgs);
