@@ -194,7 +194,7 @@ class WebpackCLI {
 
             if (notfoundConfigNames.length > 0) {
                 logger.error(
-                    notfoundConfigNames.map((configName) => `Configuration with the "${configName}" name was not found.`).join(' '),
+                    notfoundConfigNames.map((configName) => `Configuration with the name "${configName}" was not found.`).join(' '),
                 );
                 process.exit(2);
             }
