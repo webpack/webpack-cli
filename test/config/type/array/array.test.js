@@ -3,7 +3,7 @@ const { existsSync } = require('fs');
 const { resolve } = require('path');
 const { run } = require('../../../utils/test-utils');
 
-describe('array', () => {
+describe('array config', () => {
     it('is able to understand a configuration file in array format', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['-c', resolve(__dirname, 'webpack.config.js')], false);
 
@@ -13,6 +13,20 @@ describe('array', () => {
         expect(stderr).toContain("Compilation 'commonjs' starting...");
         expect(stderr).toContain("Compilation 'commonjs' finished");
         expect(stdout).toBeTruthy();
+        expect(existsSync(resolve(__dirname, './dist/dist-commonjs.js'))).toBeTruthy();
+        expect(existsSync(resolve(__dirname, './dist/dist-amd.js'))).toBeTruthy();
+    });
+
+    it('respect cli args with config as an array', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['--stats', 'none'], false);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toContain("Compilation 'amd' starting...");
+        expect(stderr).toContain("Compilation 'amd' finished");
+        expect(stderr).toContain("Compilation 'commonjs' starting...");
+        expect(stderr).toContain("Compilation 'commonjs' finished");
+        // should not print anything because of stats: none
+        expect(stdout).toBeFalsy();
         expect(existsSync(resolve(__dirname, './dist/dist-commonjs.js'))).toBeTruthy();
         expect(existsSync(resolve(__dirname, './dist/dist-amd.js'))).toBeTruthy();
     });
