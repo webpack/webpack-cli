@@ -1,8 +1,7 @@
 import envinfo from 'envinfo';
-import WebpackCLI from 'webpack-cli';
 import { utils } from 'webpack-cli';
 
-const { logger, commands } = utils;
+const { logger } = utils;
 
 interface Information {
     Binaries?: string[];
@@ -33,21 +32,17 @@ const DEFAULT_DETAILS: Information = {
     npmPackages: '*webpack*',
 };
 
-export default async function info(args = []): Promise<string> {
-    const cli = new WebpackCLI();
-    const { flags: infoFlags } = commands.find((cmd) => cmd.name === 'info');
-    const parsedArgs = cli.argParser(infoFlags, args, true);
-    const infoArgs = parsedArgs.opts;
+export default async function info(args): Promise<string> {
     const envinfoConfig = {};
 
-    if (parsedArgs.unknownArgs.length > 0) {
-        logger.error(`Unknown argument: ${parsedArgs.unknownArgs}`);
+    if (args.unknownArgs.length > 0) {
+        logger.error(`Unknown argument: ${args.unknownArgs}`);
         process.exit(2);
     }
 
-    if (infoArgs.output) {
+    if (args.output) {
         // Remove quotes if exist
-        const output = infoArgs.output.replace(/['"]+/g, '');
+        const output = args.output.replace(/['"]+/g, '');
         switch (output) {
             case 'markdown':
                 envinfoConfig['markdown'] = true;
@@ -56,7 +51,7 @@ export default async function info(args = []): Promise<string> {
                 envinfoConfig['json'] = true;
                 break;
             default:
-                logger.error(`'${infoArgs.output}' is not a valid value for output`);
+                logger.error(`'${args.output}' is not a valid value for output`);
                 process.exit(2);
         }
     }
