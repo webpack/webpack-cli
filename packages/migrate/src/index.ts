@@ -167,23 +167,32 @@ function runMigration(currentConfigPath: string, outputConfigPath: string): Prom
  * Runs migration on a given configuration using AST's and promises
  * to sequentially transform a configuration file.
  *
- * @param {Array} args - Migrate arguments such as input and
+ * @param {object} args - Migrate arguments such as input and
  * output path
  * @returns {Function} Runs the migration using the 'runMigrate'
  * function.
  */
 
-export default async function migrate(args: string[]): Promise<void> {
-    const filePaths = args;
-    if (!filePaths.length) {
-        logger.error('\n ✖ Please specify a path to your webpack config\n');
-        return;
+export default async function migrate(args): Promise<void> {
+    let configurationPath = args.config;
+    let outputPath = args.output;
+    if (!configurationPath) {
+        if (args.unknownArgs && args.unknownArgs.length >= 1) {
+            configurationPath = args.unknownArgs[0];
+        } else {
+            logger.error('\n ✖ Please specify a path to your webpack config\n');
+            return;
+        }
     }
 
-    const currentConfigPath = path.resolve(filePaths[0]);
+    if (!outputPath && args.unknownArgs && args.unknownArgs.length >= 2) {
+        outputPath = args.unknownArgs[1];
+    }
+
+    const currentConfigPath = path.resolve(configurationPath);
     let outputConfigPath: string;
 
-    if (!filePaths[1]) {
+    if (!outputPath) {
         try {
             const { confirmPath } = await inquirer.prompt([
                 {
@@ -197,13 +206,13 @@ export default async function migrate(args: string[]): Promise<void> {
                 logger.error('✖ ︎Migration aborted due to no output path');
                 return;
             }
-            outputConfigPath = path.resolve(filePaths[0]);
+            outputConfigPath = path.resolve(configurationPath);
             return runMigration(currentConfigPath, outputConfigPath);
         } catch (err) {
             logger.error(err);
             return;
         }
     }
-    outputConfigPath = path.resolve(filePaths[1]);
+    outputConfigPath = path.resolve(outputPath);
     return runMigration(currentConfigPath, outputConfigPath);
 }
