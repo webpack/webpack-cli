@@ -51,7 +51,7 @@ describe('--config-name flag', () => {
         expect(exitCode).toBe(2);
         expect(stderr).not.toContain('Compilation starting...');
         expect(stderr).not.toContain('Compilation finished');
-        expect(stderr).toContain('Configuration with the "test" name was not found.');
+        expect(stderr).toContain('Configuration with the name "test" was not found.');
         expect(stdout).toBeFalsy();
     });
 
@@ -61,7 +61,7 @@ describe('--config-name flag', () => {
         expect(exitCode).toBe(2);
         expect(stderr).not.toContain('Compilation starting...');
         expect(stderr).not.toContain('Compilation finished');
-        expect(stderr).toContain('Configuration with the "test" name was not found.');
+        expect(stderr).toContain('Configuration with the name "test" was not found.');
         expect(stdout).toBeFalsy();
     });
 
@@ -75,8 +75,8 @@ describe('--config-name flag', () => {
         expect(exitCode).toBe(2);
         expect(stderr).not.toContain('Compilation starting...');
         expect(stderr).not.toContain('Compilation finished');
-        expect(stderr).toContain('Configuration with the "test" name was not found.');
-        expect(stderr).toContain('Configuration with the "bar" name was not found.');
+        expect(stderr).toContain('Configuration with the name "test" was not found.');
+        expect(stderr).toContain('Configuration with the name "bar" was not found.');
         expect(stdout).toBeFalsy();
     });
 
@@ -90,8 +90,8 @@ describe('--config-name flag', () => {
         expect(exitCode).toBe(2);
         expect(stderr).not.toContain('Compilation starting...');
         expect(stderr).not.toContain('Compilation finished');
-        expect(stderr).not.toContain('Configuration with the "first" name was not found.');
-        expect(stderr).toContain('Configuration with the "bar" name was not found.');
+        expect(stderr).not.toContain('Configuration with the name "first" was not found.');
+        expect(stderr).toContain('Configuration with the name "bar" was not found.');
         expect(stdout).toBeFalsy();
     });
 
@@ -129,7 +129,7 @@ describe('--config-name flag', () => {
         expect(exitCode).toBe(2);
         expect(stderr).not.toContain('Compilation starting...');
         expect(stderr).not.toContain('Compilation finished');
-        expect(stderr).toContain('Configuration with the "test" name was not found.');
+        expect(stderr).toContain('Configuration with the name "test" was not found.');
         expect(stdout).toBeFalsy();
     });
 });
