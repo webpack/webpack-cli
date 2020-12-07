@@ -25,6 +25,7 @@ describe('basic info usage', () => {
             const output = JSON.parse(stdout);
             expect(output['System']).toBeTruthy();
             expect(output['Binaries']).toBeTruthy();
+            expect(output['Monorepos']).toBeTruthy();
             expect(output['System']['OS']).toBeTruthy();
             expect(output['System']['CPU']).toBeTruthy();
         };

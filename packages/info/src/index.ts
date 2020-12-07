@@ -7,6 +7,7 @@ const { logger, commands } = utils;
 interface Information {
     Binaries?: string[];
     Browsers?: string[];
+    Monorepos?: string[];
     System?: string[];
     npmGlobalPackages?: string[];
     npmPackages?: string | string[];
@@ -26,6 +27,7 @@ const DEFAULT_DETAILS: Information = {
         'Safari',
         'Safari Technology Preview',
     ],
+    Monorepos: ['Yarn Workspaces', 'Lerna'],
     System: ['OS', 'CPU', 'Memory'],
     npmGlobalPackages: ['webpack', 'webpack-cli'],
     npmPackages: '*webpack*',
