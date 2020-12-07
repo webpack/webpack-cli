@@ -53,7 +53,7 @@ const outputVersion = (args) => {
             const { name, version } = require(`${usedCommands[0].packageName}/package.json`);
             logger.raw(`${name} ${version}`);
         } catch (e) {
-            logger.error('Error: External package not found.');
+            logger.error(`Error: package '${usedCommands[0].packageName}' not found.`);
             process.exit(2);
         }
     }
