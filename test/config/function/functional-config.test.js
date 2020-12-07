@@ -11,7 +11,7 @@ describe('functional config', () => {
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('./src/index.js');
-        expect(existsSync(resolve(__dirname, './bin/dist-single.js'))).toBeTruthy();
+        expect(existsSync(resolve(__dirname, './dist/dist-single.js'))).toBeTruthy();
     });
 
     it('should work as expected in case of multiple config', () => {
@@ -21,7 +21,7 @@ describe('functional config', () => {
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('first');
         expect(stdout).toContain('second');
-        expect(existsSync(resolve(__dirname, './bin/dist-first.js'))).toBeTruthy();
-        expect(existsSync(resolve(__dirname, './bin/dist-second.js'))).toBeTruthy();
+        expect(existsSync(resolve(__dirname, './dist/dist-first.js'))).toBeTruthy();
+        expect(existsSync(resolve(__dirname, './dist/dist-second.js'))).toBeTruthy();
     });
 });

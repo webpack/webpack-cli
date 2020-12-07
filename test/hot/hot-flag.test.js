@@ -10,7 +10,7 @@ describe('--hot flag', () => {
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
-        expect(readFileSync(resolve(__dirname, './bin/main.js')).toString()).toContain('webpackHotUpdate');
+        expect(readFileSync(resolve(__dirname, './dist/main.js')).toString()).toContain('webpackHotUpdate');
     });
 
     it('should be successful when --no-hot is passed', () => {

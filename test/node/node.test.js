@@ -7,10 +7,11 @@ const { run } = require('../utils/test-utils');
 // throws different error from what we manually see
 describe('node flags', () => {
     it('is able to pass the options flags to node js', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ['--output-path', './bin'], false, [
-            `--require=${resolve(__dirname, 'bootstrap.js')}`,
-            `--require=${resolve(__dirname, 'bootstrap2.js')}`,
-        ]);
+        const { exitCode, stderr, stdout } = await run(
+            __dirname,
+            ['--output-path', './bin'],
+            [`--require=${resolve(__dirname, 'bootstrap.js')}`, `--require=${resolve(__dirname, 'bootstrap2.js')}`],
+        );
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -19,7 +20,7 @@ describe('node flags', () => {
     });
 
     it('throws an error on supplying unknown flags', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, [], false, ['--unknown']);
+        const { exitCode, stderr, stdout } = await run(__dirname, [], ['--unknown']);
 
         expect(exitCode).not.toBe(0);
         expect(stderr).toContain('bad option');
@@ -27,7 +28,7 @@ describe('node flags', () => {
     });
 
     it('throws an error if no values were supplied with --max-old-space-size', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, [], false, ['--max-old-space-size']);
+        const { exitCode, stderr, stdout } = await run(__dirname, [], ['--max-old-space-size']);
 
         expect(exitCode).not.toBe(0);
         expect(stderr).toContain('value for flag --max-old-space-size');

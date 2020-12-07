@@ -6,7 +6,7 @@ const { resolve } = require('path');
 
 describe('entry flag', () => {
     it('should resolve the path to src/index.cjs', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--entry', './src/index.cjs', '-o', './dist/'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--entry', './src/index.cjs', '-o', './dist/']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -34,7 +34,7 @@ describe('entry flag', () => {
             expect(stderr).toBeFalsy();
             expect(stdout).toBeTruthy();
             expect(existsSync(resolve(__dirname, './dist/main.js'))).toBeTruthy();
-            readFile(resolve(__dirname, './bin/main.js'), 'utf-8', (err, data) => {
+            readFile(resolve(__dirname, './dist/main.js'), 'utf-8', (err, data) => {
                 expect(err).toBe(null);
                 expect(data).toContain('Hello from a.js');
                 done();

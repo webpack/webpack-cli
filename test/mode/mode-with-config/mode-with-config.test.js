@@ -13,11 +13,11 @@ describe('mode flags with config', () => {
         expect(stdout).toBeTruthy();
 
         // Should generate the appropriate files
-        expect(existsSync(resolve(__dirname, './bin/main.js.OTHER.LICENSE.txt'))).toBeTruthy();
-        expect(existsSync(resolve(__dirname, './bin/main.js'))).toBeTruthy();
-        expect(existsSync(resolve(__dirname, './bin/main.js.map'))).toBeFalsy();
+        expect(existsSync(resolve(__dirname, './dist/main.js.OTHER.LICENSE.txt'))).toBeTruthy();
+        expect(existsSync(resolve(__dirname, './dist/main.js'))).toBeTruthy();
+        expect(existsSync(resolve(__dirname, './dist/main.js.map'))).toBeFalsy();
         // Correct mode should be propagated to the compiler
-        readFile(resolve(__dirname, './bin/main.js'), 'utf-8', (err, data) => {
+        readFile(resolve(__dirname, './dist/main.js'), 'utf-8', (err, data) => {
             expect(err).toBe(null);
             expect(data).toContain('"production mode"');
             done();
@@ -32,12 +32,12 @@ describe('mode flags with config', () => {
         expect(stdout).toBeTruthy();
 
         // Should generate the appropriate files
-        expect(existsSync(resolve(__dirname, './bin/main.js.OTHER.LICENSE.txt'))).toBeTruthy();
-        expect(existsSync(resolve(__dirname, './bin/main.js'))).toBeTruthy();
-        expect(existsSync(resolve(__dirname, './bin/main.js.map'))).toBeFalsy();
+        expect(existsSync(resolve(__dirname, './dist/main.js.OTHER.LICENSE.txt'))).toBeTruthy();
+        expect(existsSync(resolve(__dirname, './dist/main.js'))).toBeTruthy();
+        expect(existsSync(resolve(__dirname, './dist/main.js.map'))).toBeFalsy();
 
         // Correct mode should be propagated to the compiler
-        readFile(resolve(__dirname, './bin/main.js'), 'utf-8', (err, data) => {
+        readFile(resolve(__dirname, './dist/main.js'), 'utf-8', (err, data) => {
             expect(err).toBe(null);
             expect(data).toContain('development mode');
             done();
@@ -53,12 +53,12 @@ describe('mode flags with config', () => {
 
         // Should generate the appropriate files
         // Should generate the appropriate files
-        expect(existsSync(resolve(__dirname, './bin/main.js.OTHER.LICENSE.txt'))).toBeTruthy();
-        expect(existsSync(resolve(__dirname, './bin/main.js'))).toBeTruthy();
-        expect(existsSync(resolve(__dirname, './bin/main.js.map'))).toBeFalsy();
+        expect(existsSync(resolve(__dirname, './dist/main.js.OTHER.LICENSE.txt'))).toBeTruthy();
+        expect(existsSync(resolve(__dirname, './dist/main.js'))).toBeTruthy();
+        expect(existsSync(resolve(__dirname, './dist/main.js.map'))).toBeFalsy();
 
         // Correct mode should be propagated to the compiler
-        readFile(resolve(__dirname, './bin/main.js'), 'utf-8', (err, data) => {
+        readFile(resolve(__dirname, './dist/main.js'), 'utf-8', (err, data) => {
             expect(err).toBe(null);
             expect(data).toContain('none mode');
             done();

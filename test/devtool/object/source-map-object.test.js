@@ -11,7 +11,7 @@ describe('source-map object', () => {
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
 
-        readdir(resolve(__dirname, 'bin'), (err, files) => {
+        readdir(resolve(__dirname, 'dist'), (err, files) => {
             expect(files.length).toBeGreaterThanOrEqual(1);
             expect(err).toBe(null);
             done();
