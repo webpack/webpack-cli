@@ -135,16 +135,20 @@ const outputHelp = (args) => {
             logger.raw(headerAndCommands);
             // print all options
             for (const flag of flagsToDisplay) {
-                let flagType = '';
+                let flagType;
+
                 if (Array.isArray(flag.type)) {
                     const allowedTypes = flag.type.reduce((allTypes, type) => {
-                        return [...allTypes, type.name.toLowerCase()];
+                        const currentType = flag.multiple ? `${type.name.toLowerCase()}[]` : type.name.toLowerCase();
+                        return [...allTypes, currentType];
                     }, []);
                     flagType = allowedTypes.join(', ');
-                } else if (flag.multiple) {
-                    flagType = `${flag.type.name.toLowerCase()}[]`;
                 } else {
                     flagType = flag.type.name.toLowerCase();
+
+                    if (flag.multiple) {
+                        flagType = `${flagType}[]`;
+                    }
                 }
 
                 logger.raw(`${underline(bold('Option'))}      : --${flag.name}`);
