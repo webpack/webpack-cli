@@ -7,8 +7,7 @@ describe('node option related flags', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--no-node']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'compiler' starting...");
-        expect(stderr).toContain("Compilation 'compiler' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain('node: false');
     });
 
@@ -16,8 +15,7 @@ describe('node option related flags', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--node-filename', 'mock']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'compiler' starting...");
-        expect(stderr).toContain("Compilation 'compiler' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain(`__filename: 'mock'`);
     });
 
@@ -25,8 +23,7 @@ describe('node option related flags', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--node-dirname', 'mock']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'compiler' starting...");
-        expect(stderr).toContain("Compilation 'compiler' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain(`__dirname: 'mock'`);
     });
 });

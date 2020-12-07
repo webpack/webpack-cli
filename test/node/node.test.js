@@ -13,8 +13,7 @@ describe('node flags', () => {
         ]);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain('---from bootstrap.js---');
         expect(stdout).toContain('---from bootstrap2.js---');
     });
@@ -23,8 +22,6 @@ describe('node flags', () => {
         const { exitCode, stderr, stdout } = await run(__dirname, [], false, ['--unknown']);
 
         expect(exitCode).not.toBe(0);
-        expect(stderr).not.toContain('Compilation starting...');
-        expect(stderr).not.toContain('Compilation finished');
         expect(stderr).toContain('bad option');
         expect(stdout).toBeFalsy();
     });
@@ -33,8 +30,6 @@ describe('node flags', () => {
         const { exitCode, stderr, stdout } = await run(__dirname, [], false, ['--max-old-space-size']);
 
         expect(exitCode).not.toBe(0);
-        expect(stderr).not.toContain('Compilation starting...');
-        expect(stderr).not.toContain('Compilation finished');
         expect(stderr).toContain('value for flag --max-old-space-size');
         expect(stdout).toBeFalsy();
     });
@@ -43,8 +38,6 @@ describe('node flags', () => {
         const { exitCode, stderr, stdout } = await run(__dirname, [], true, ['--max_old_space_size=1024a']);
 
         expect(exitCode).not.toBe(0);
-        expect(stderr).not.toContain('Compilation starting...');
-        expect(stderr).not.toContain('Compilation finished');
         expect(stderr).toContain('Error: illegal value for flag --max_old_space_size=1024a of type size_t');
         expect(stdout).toBeFalsy();
     });

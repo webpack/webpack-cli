@@ -51,7 +51,7 @@ const run = (testCase, args = [], setOutput = true, nodeOptions = [], env) => {
     return result;
 };
 
-const runWatch = (testCase, args = [], setOutput = true, outputKillStr = 'Compiler is watching files for updates...') => {
+const runWatch = (testCase, args = [], setOutput = true, outputKillStr = 'compiled') => {
     const cwd = path.resolve(testCase);
 
     const outputPath = path.resolve(testCase, 'bin');
@@ -64,7 +64,7 @@ const runWatch = (testCase, args = [], setOutput = true, outputKillStr = 'Compil
             stdio: 'pipe',
         });
 
-        proc.stderr.pipe(
+        proc.stdout.pipe(
             new Writable({
                 write(chunk, encoding, callback) {
                     const output = chunk.toString('utf8');

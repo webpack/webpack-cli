@@ -9,8 +9,7 @@ describe(' multiple entries', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['./src/a.js', './src/b.js']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
         expect(existsSync(resolve(__dirname, './bin/main.js'))).toBeTruthy();
         readFile(resolve(__dirname, './bin/main.js'), 'utf-8', (err, data) => {
@@ -25,8 +24,7 @@ describe(' multiple entries', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--entry', './src/a.js', '--entry', './src/b.js']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
         expect(existsSync(resolve(__dirname, './bin/main.js'))).toBeTruthy();
 

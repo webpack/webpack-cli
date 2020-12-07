@@ -8,10 +8,7 @@ describe('source-map object', () => {
         const { exitCode, stderr, stdout } = run(__dirname, [], false);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'commonjs' starting...");
-        expect(stderr).toContain("Compilation 'commonjs' finished");
-        expect(stderr).toContain("Compilation 'amd' starting...");
-        expect(stderr).toContain("Compilation 'amd' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
 
         readdir(resolve(__dirname, 'dist'), (err, files) => {
@@ -24,10 +21,7 @@ describe('source-map object', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--devtool', 'source-map', '--output-path', './binary'], false);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'commonjs' starting...");
-        expect(stderr).toContain("Compilation 'commonjs' finished");
-        expect(stderr).toContain("Compilation 'amd' starting...");
-        expect(stderr).toContain("Compilation 'amd' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
 
         readdir(resolve(__dirname, 'binary'), (err, files) => {

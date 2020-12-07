@@ -16,8 +16,7 @@ describe('stats config related flag', () => {
                 const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`]);
 
                 expect(exitCode).toBe(0);
-                expect(stderr).toContain("Compilation 'compiler' starting...");
-                expect(stderr).toContain("Compilation 'compiler' finished");
+                expect(stderr).toBeFalsy();
 
                 if (flag.name.includes('reset')) {
                     const option = propName.split('Reset')[0];
@@ -32,8 +31,7 @@ describe('stats config related flag', () => {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--no-${flag.name}`]);
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`stats: { ${propName}: false }`);
                 });
             }
@@ -44,8 +42,7 @@ describe('stats config related flag', () => {
                 const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, '10']);
 
                 expect(exitCode).toBe(0);
-                expect(stderr).toContain("Compilation 'compiler' starting...");
-                expect(stderr).toContain("Compilation 'compiler' finished");
+                expect(stderr).toBeFalsy();
                 expect(stdout).toContain(`stats: { ${propName}: 10 }`);
             });
         }
@@ -59,36 +56,31 @@ describe('stats config related flag', () => {
                     const option = flag.name.split('stats-colors-')[1];
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`stats: { colors: { ${option}: 'u001b[32m' } }`);
                 } else if (acceptsSingleValue.includes(propName)) {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'log']);
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`stats: { ${propName}: 'log' }`);
                 } else if (flag.name === 'stats-context') {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'log']);
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain('log');
                 } else if (flag.name === 'stats-entrypoints') {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'auto']);
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`stats: { ${propName}: 'auto' }`);
                 } else {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'log']);
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`stats: { ${propName}: [ 'log' ] }`);
                 }
             });

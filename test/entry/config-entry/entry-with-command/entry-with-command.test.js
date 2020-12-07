@@ -8,8 +8,7 @@ describe('config entry and command entry all exist', () => {
         const { stdout, stderr, exitCode } = run(__dirname, ['-c', '../1.js', './index.js'], false);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain('./index.js');
         expect(existsSync(resolve(__dirname, './binary/main.bundle.js'))).toBeTruthy();
     });

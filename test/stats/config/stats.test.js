@@ -16,8 +16,7 @@ describe('stats flag with config', () => {
         const { exitCode, stderr, stdout } = run(__dirname, []);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
 
         if (version.startsWith('5')) {
             expect(stdout).toContain(`stats: { preset: 'normal' }`);
@@ -31,8 +30,7 @@ describe('stats flag with config', () => {
             const { exitCode, stderr, stdout } = run(__dirname, ['--stats', `${preset}`]);
 
             expect(exitCode).toBe(0);
-            expect(stderr).toContain('Compilation starting...');
-            expect(stderr).toContain('Compilation finished');
+            expect(stderr).toBeFalsy();
 
             if (isWebpack5) {
                 expect(stdout).toContain(`stats: { preset: '${preset}' }`);
