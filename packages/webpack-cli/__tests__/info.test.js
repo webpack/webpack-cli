@@ -11,7 +11,6 @@ describe('Info', () => {
         expect(exitCode).toBe(0);
         expect(stdout).toContain('System');
         expect(stdout).toContain('Binaries');
-        expect(stdout).toContain('Monorepos');
         expect(stdout).toContain('OS');
         expect(stderr).toBeFalsy();
     });
@@ -26,7 +25,6 @@ describe('Info', () => {
         const testJSON = () => {
             const output = JSON.parse(stdout);
             expect(output['System']).toBeTruthy();
-            expect(output['Monorepos']).toBeTruthy();
             expect(output['System']['OS']).toBeTruthy();
         };
         expect(testJSON).not.toThrow();
@@ -42,7 +40,6 @@ describe('Info', () => {
         expect(exitCode).toBe(0);
         expect(stdout).toContain('## System');
         expect(stdout).toContain('## Binaries');
-        expect(stdout).toContain('## Monorepos');
         expect(stdout).toContain('## Browsers');
         expect(stderr).toBeFalsy();
     });
