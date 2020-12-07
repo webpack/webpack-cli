@@ -141,7 +141,7 @@ describe('--interactive flag with single compiler', () => {
                     return data.includes('\u2B24');
                 },
                 perform: () => {
-                    proc.stdin.write('s\n', (err) => {
+                    proc.stdin.write('q\n', (err) => {
                         if (err) {
                             proc.kill();
                             done(err);
@@ -191,5 +191,32 @@ describe('--interactive flag with single compiler', () => {
         ];
 
         runTest(proc, checker, done);
+    });
+
+    it('should quit in pressing q', (done) => {
+        const proc = runAndGetWatchProc(__dirname, ['--interactive'], false, '', true);
+        const checker = [
+            {
+                check: (data) => {
+                    return data.includes('\u2B24');
+                },
+                perform: () => {
+                    proc.stdin.write('q\n', (err) => {
+                        if (err) {
+                            proc.kill();
+                            done(err);
+                            return;
+                        }
+                    });
+                },
+            },
+        ];
+
+        const doneCallback = (error) => {
+            expect(error).toBeFalsy();
+            done();
+        };
+
+        runTest(proc, checker, doneCallback);
     });
 });
