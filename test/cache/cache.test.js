@@ -41,6 +41,7 @@ describe('cache', () => {
         expect(exitCode).toEqual(0);
 
         if (isWebpack5) {
+            console.log(stderr);
             expect(stderr.match(/No pack exists at/g)).toHaveLength(2);
             expect(stderr.match(/Stored pack/g)).toHaveLength(2);
             expect(stderr).toBeTruthy();
