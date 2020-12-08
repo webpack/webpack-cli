@@ -32,7 +32,7 @@ const commands = [
         name: 'migrate',
         alias: 'm',
         type: String,
-        usage: 'migrate',
+        usage: 'migrate <path-to-config> [output-path]',
         description: 'Migrate a configuration to a new version',
     },
     {
