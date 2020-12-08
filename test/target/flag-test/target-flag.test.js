@@ -58,6 +58,22 @@ describe('--target flag', () => {
             expect(stdout).toContain(`target: [ 'node', 'async-node' ]`);
         });
 
+        it('should throw an error for invalid target in multiple syntax', () => {
+            const { exitCode, stderr, stdout } = run(__dirname, ['--target', 'node', '--target', 'invalid']);
+
+            expect(exitCode).toBe(2);
+            expect(stderr).toContain(`Error: Unknown target 'invalid'`);
+            expect(stdout).toBeFalsy();
+        });
+
+        it('should throw an error for incompatible multiple targets', () => {
+            const { exitCode, stderr, stdout } = run(__dirname, ['--target', 'node', '--target', 'web']);
+
+            expect(exitCode).toBe(2);
+            expect(stderr).toContain('Error: Universal Chunk Loading is not implemented yet');
+            expect(stdout).toBeFalsy();
+        });
+
         it('should reset target from node to async-node with --target-reset', () => {
             const { exitCode, stderr, stdout } = run(__dirname, ['--target-reset', '--target', 'async-node']);
 
