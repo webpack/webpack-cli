@@ -7,7 +7,7 @@ const helpHeader = 'The build tool for modern web applications';
 describe('help cmd with multiple arguments', () => {
     commands.forEach((cmd) => {
         it(`shows cmd help with ${cmd.name}`, () => {
-            const { exitCode, stderr, stdout } = run(__dirname, ['--help', `${cmd.name}`], false);
+            const { exitCode, stderr, stdout } = run(__dirname, ['--help', cmd.name], false);
 
             expect(exitCode).toBe(0);
             expect(stderr).toBeFalsy();
@@ -15,6 +15,9 @@ describe('help cmd with multiple arguments', () => {
             expect(stdout).toContain(`${cmd.name}`);
             expect(stdout).toContain(`${cmd.usage}`);
             expect(stdout).toContain(`${cmd.description}`);
+            if (stdout.includes('Options')) {
+                cmd.flags.forEach(({ name }) => expect(stdout).toContain(name));
+            }
         });
     });
 
