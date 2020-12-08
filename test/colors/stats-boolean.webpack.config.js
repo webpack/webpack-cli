@@ -1,4 +1,4 @@
 module.exports = {
     stats: true,
-    mode: 'production',
+    mode: 'development',
 };

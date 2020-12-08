@@ -30,18 +30,22 @@ class WebpackCLI {
         this.program.name('webpack-cli');
         this.program.storeOptionsAsProperties(false);
 
+        let colorFromArguments;
+
         // Global options
         this.program.option('--color', 'Enable colors on console');
         this.program.on('option:color', function () {
             const { color } = this.opts();
 
-            coloretteOptions.enabled = Boolean(color);
+            colorFromArguments = color;
+            coloretteOptions.enabled = color;
         });
         this.program.option('--no-color', 'Enable colors on console');
         this.program.on('option:no-color', function () {
             const { color } = this.opts();
 
-            coloretteOptions.enabled = Boolean(color);
+            colorFromArguments = color;
+            coloretteOptions.enabled = color;
         });
 
         // TODO show possible flags only for command related
@@ -181,6 +185,10 @@ class WebpackCLI {
             if (entry.length > 0) {
                 // Handle the default webpack entry CLI argument, where instead of doing 'webpack --entry ./index.js' you can simply do 'webpack-cli ./index.js'
                 options.entry = entry;
+            }
+
+            if (typeof colorFromArguments !== 'undefined') {
+                options.color = colorFromArguments;
             }
 
             await this.bundleCommand(options);
@@ -689,7 +697,7 @@ class WebpackCLI {
 
                 let colors;
 
-                // From flags
+                // From arguments
                 if (typeof options.color !== 'undefined') {
                     colors = options.color;
                 }
