@@ -52,7 +52,7 @@ const run = (testCase, args = [], setOutput = true, nodeOptions = [], env) => {
     return result;
 };
 
-const runWatch = (testCase, args = [], setOutput = true, outputKillStr = 'webpack') => {
+const runWatch = (testCase, args = [], setOutput = true, outputKillStr = /webpack \d+\.\d+\.\d/) => {
     const cwd = path.resolve(testCase);
 
     const outputPath = path.resolve(testCase, 'bin');
@@ -70,7 +70,7 @@ const runWatch = (testCase, args = [], setOutput = true, outputKillStr = 'webpac
                 write(chunk, encoding, callback) {
                     const output = stripAnsi(chunk.toString('utf8'));
 
-                    if (output.includes(outputKillStr)) {
+                    if (outputKillStr.test(output)) {
                         if (isWindows) {
                             exec('taskkill /pid ' + proc.pid + ' /T /F');
                         } else {
