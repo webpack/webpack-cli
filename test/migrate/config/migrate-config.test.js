@@ -21,7 +21,7 @@ describe('migrate command', () => {
 
     it('should warn if the source config file is not specified', () => {
         const { stderr } = run(__dirname, ['migrate'], false);
-        expect(stderr).toContain('Please specify a path to your webpack config');
+        expect(stderr).toContain("missing required argument 'config-path'");
     });
 
     it('should prompt accordingly if an output path is not specified', () => {
@@ -31,7 +31,7 @@ describe('migrate command', () => {
 
     it('should throw an error if the user refused to overwrite the source file and no output path is provided', async () => {
         const { stderr } = await runAndGetWatchProc(__dirname, ['migrate', 'webpack.config.js'], false, 'n');
-        expect(stderr).toContain(`[webpack-cli] ${red('︎Migration aborted due to no output path')}`);
+        expect(stderr).toContain(`${red('︎Migration aborted due to no output path')}`);
     });
 
     it('should prompt for config validation when an output path is provided', async () => {

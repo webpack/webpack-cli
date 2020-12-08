@@ -10,7 +10,7 @@ const { logger } = utils;
  * Starts the devServer
  *
  * @param {Object} compiler - a webpack compiler
- * @param {Object} devServerArgs - devServer args
+ * @param {Object} cliOptions - devServer args
  *
  * @returns {Object[]} array of resulting servers
  */

@@ -194,14 +194,14 @@ class WebpackCLI {
             await this.bundleCommand(options);
         });
 
-        // TODO check on command exists
+        // TODO autoinstall command packages, how?
         // Register built-in commands
         const builtInCommands = [
             '@webpack-cli/generators',
             '@webpack-cli/info',
             '@webpack-cli/init',
             '@webpack-cli/migrate',
-            // '@webpack-cli/serve',
+            '@webpack-cli/serve',
         ];
 
         builtInCommands.forEach((builtInCommand) => {
@@ -210,8 +210,9 @@ class WebpackCLI {
             try {
                 loadedCommand = require(builtInCommand);
             } catch (error) {
-                logger.error(error);
-                process.exit(2);
+                // Ignore, command is not installed
+
+                return;
             }
 
             if (loadedCommand.default) {

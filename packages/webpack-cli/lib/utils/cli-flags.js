@@ -232,15 +232,6 @@ const isCommandUsed = (args) =>
 
 const commands = [
     {
-        packageName: '@webpack-cli/migrate',
-        name: 'migrate <config-path> [new-config-path]',
-        alias: 'm',
-        type: String,
-        usage: 'migrate <config-path> [new-config-path]',
-        description: 'Migrate a configuration to a new version',
-        flags: [],
-    },
-    {
         packageName: '@webpack-cli/serve',
         name: 'serve',
         alias: 's',
