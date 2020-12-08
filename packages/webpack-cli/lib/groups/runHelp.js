@@ -13,7 +13,15 @@ const outputHelp = (args) => {
 
     const hasUnknownVersionArgs = (args, commands, flags) => {
         return args.filter((arg) => {
-            if (arg === 'version' || arg === 'help' || arg === '--help' || arg === '-h' || arg === '--no-color') {
+            if (
+                arg === 'version' ||
+                arg === 'help' ||
+                arg === '--help' ||
+                arg === '-h' ||
+                arg === '--no-color' ||
+                arg === 'verbose' ||
+                arg === '--help=verbose'
+            ) {
                 return false;
             }
 
@@ -90,48 +98,91 @@ const outputHelp = (args) => {
             logger.raw(flags);
         }
     } else {
-        const negatedFlags = flags
-            .filter((flag) => flag.negative)
-            .reduce((allFlags, flag) => {
-                // Use available description for built-in negated flags
-                const description = flag.negatedDescription ? flag.negatedDescription : `Negates ${flag.name}`;
-                return [...allFlags, { name: `no-${flag.name}`, description, type: Boolean }];
-            }, []);
+        let flagsToDisplay = flags.filter(({ help }) => help === 'base'); // basic options only one word
+
+        const negatedFlags = (allFlags) => {
+            return allFlags
+                .filter((flag) => flag.negative)
+                .reduce((allFlags, flag) => {
+                    // Use available description for built-in negated flags
+                    const description = flag.negatedDescription ? flag.negatedDescription : `Negates ${flag.name}`;
+                    return [...allFlags, { name: `no-${flag.name}`, description, type: Boolean }];
+                }, []);
+        };
+
         const title = bold('⬡                     ') + underline('webpack') + bold('                     ⬡');
         const desc = 'The build tool for modern web applications';
         const websitelink = '         ' + underline('https://webpack.js.org');
         const usage = bold('Usage') + ': ' + '`' + green('webpack [...options] | <command>') + '`';
         const examples = bold('Example') + ': ' + '`' + green('webpack help --flag | <command>') + '`';
         const hh = `          ${title}\n\n${websitelink}\n\n${desc}\n\n${usage}\n${examples}`;
-        const output = commandLineUsage([
-            { content: hh, raw: true },
-            {
-                header: 'Available Commands',
-                content: commands.map((cmd) => {
-                    return { name: `${cmd.name} | ${cmd.alias}`, summary: cmd.description };
-                }),
-            },
-            {
-                header: 'Options',
-                optionList: flags
-                    .map((e) => {
-                        if (e.type.length > 1) {
-                            e.type = e.type[0];
-                        }
 
-                        // Here we replace special characters with chalk's escape
-                        // syntax (`\$&`) to avoid chalk trying to re-process our input.
-                        // This is needed because chalk supports a form of `{var}`
-                        // interpolation.
-                        e.description = e.description.replace(/[{}\\]/g, '\\$&');
+        if (args.includes('verbose') || args.includes('--help=verbose')) {
+            flagsToDisplay = [...flags, ...negatedFlags(flags)];
 
-                        return e;
-                    })
-                    .concat(negatedFlags),
-            },
-        ]);
+            const headerAndCommands = commandLineUsage([
+                { content: hh, raw: true },
+                {
+                    header: 'Commands',
+                    content: commands.map((cmd) => {
+                        return { name: `${cmd.name} | ${cmd.alias}`, summary: cmd.description };
+                    }),
+                },
+                { header: 'Options', raw: true },
+            ]);
 
-        logger.raw(output);
+            // print help-header & commands
+            logger.raw(headerAndCommands);
+            // print all options
+            for (const flag of flagsToDisplay) {
+                let flagType;
+
+                if (Array.isArray(flag.type)) {
+                    const allowedTypes = flag.type.reduce((allTypes, type) => {
+                        const currentType = flag.multiple ? `${type.name.toLowerCase()}[]` : type.name.toLowerCase();
+                        return [...allTypes, currentType];
+                    }, []);
+                    flagType = allowedTypes.join(', ');
+                } else {
+                    flagType = `${flag.type.name.toLowerCase()}${flag.multiple ? '[]' : ''}`;
+                }
+
+                logger.raw(`${underline(bold('Option'))}      : --${flag.name}`);
+                logger.raw(`${underline(bold('Type'))}        : ${flagType}`);
+                logger.raw(`${underline(bold('Description'))} : ${flag.description}\n`);
+            }
+        } else {
+            const output = commandLineUsage([
+                { content: hh, raw: true },
+                { header: "To see list of all supported commands and options run 'webpack-cli --help=verbose'" },
+                {
+                    header: 'Commands',
+                    content: commands.map((cmd) => {
+                        return { name: `${cmd.name} | ${cmd.alias}`, summary: cmd.description };
+                    }),
+                },
+                {
+                    header: 'Options',
+                    optionList: flagsToDisplay
+                        .map((e) => {
+                            if (e.type.length > 1) {
+                                e.type = e.type[0];
+                            }
+
+                            // Here we replace special characters with chalk's escape
+                            // syntax (`\$&`) to avoid chalk trying to re-process our input.
+                            // This is needed because chalk supports a form of `{var}`
+                            // interpolation.
+                            e.description = e.description.replace(/[{}\\]/g, '\\$&');
+
+                            return e;
+                        })
+                        .concat(negatedFlags(flagsToDisplay)),
+                },
+            ]);
+
+            logger.raw(output);
+        }
     }
 
     logger.raw('                  Made with ♥️  by the webpack team');

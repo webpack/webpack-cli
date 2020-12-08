@@ -30,6 +30,26 @@ yarn add webpack-cli --dev
 
 ## Supported arguments and commands
 
+### Help Usage
+
+You display basic commands and arguments -
+
+```bash
+npx webpack-cli --help
+```
+
+To display all supported commands and arguments -
+
+```bash
+npx webpack-cli --help=verbose
+```
+
+or
+
+```bash
+npx webpack-cli --help verbose
+```
+
 ### Available Commands
 
 ```
