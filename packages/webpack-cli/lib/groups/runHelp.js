@@ -110,12 +110,12 @@ const outputHelp = (args) => {
                 }, []);
         };
 
-        const title = bold('⬡                     ') + underline('webpack') + bold('                     ⬡');
+        const title = bold('⬡                ') + underline('webpack') + bold('                ⬡');
         const desc = 'The build tool for modern web applications';
-        const websitelink = '         ' + underline('https://webpack.js.org');
+        const websitelink = underline('https://webpack.js.org');
         const usage = bold('Usage') + ': ' + '`' + green('webpack [...options] | <command>') + '`';
         const examples = bold('Example') + ': ' + '`' + green('webpack help --flag | <command>') + '`';
-        const hh = `          ${title}\n\n${websitelink}\n\n${desc}\n\n${usage}\n${examples}`;
+        const hh = `${title}\n\n${websitelink}\n\n${desc}\n\n${usage}\n${examples}`;
 
         if (args.includes('verbose') || args.includes('--help=verbose')) {
             flagsToDisplay = [...flags, ...negatedFlags(flags)];
@@ -185,7 +185,7 @@ const outputHelp = (args) => {
         }
     }
 
-    logger.raw('                  Made with ♥️  by the webpack team');
+    logger.raw('\t\tMade with ♥️  by the webpack team');
 };
 
 module.exports = outputHelp;
