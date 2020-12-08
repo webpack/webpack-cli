@@ -19,6 +19,7 @@ export default async function startDevServer(compiler, cliOptions): Promise<obje
         devServerVersion,
         Server,
         findPort;
+
     try {
         // eslint-disable-next-line node/no-extraneous-require
         devServerVersion = require('webpack-dev-server/package.json').version;
@@ -30,16 +31,16 @@ export default async function startDevServer(compiler, cliOptions): Promise<obje
         logger.error(`You need to install 'webpack-dev-server' for running 'webpack serve'.\n${err}`);
         process.exit(2);
     }
+
     isDevServer4 = devServerVersion.startsWith('4');
 
     const devServerOptions = getDevServerOptions(compiler);
-
     const servers = [];
-
     const usedPorts: number[] = [];
 
     for (const devServerOpts of devServerOptions) {
         const options = mergeOptions(cliOptions, devServerOpts);
+
         if (isDevServer4) {
             options.port = await findPort(options.port);
             options.client = options.client || {};
@@ -57,10 +58,12 @@ export default async function startDevServer(compiler, cliOptions): Promise<obje
                     'Unique ports must be specified for each devServer option in your webpack configuration. Alternatively, run only 1 devServer config using the --config-name flag to specify your desired config.',
                 );
             }
+
             usedPorts.push(portNum);
         }
 
         const server = new Server(compiler, options);
+
         server.listen(options.port, options.host, (err): void => {
             if (err) {
                 throw err;

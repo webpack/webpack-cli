@@ -3,7 +3,8 @@ const logger = require('./logger');
 const packageExists = require('./package-exists');
 const promptInstallation = require('./prompt-installation');
 
-const run = async (name, args, commandName) => {
+// TODO need `requireOrImport` like we load configurations
+const loadCommand = async (name) => {
     let packageLocation = packageExists(name);
 
     if (!packageLocation) {
@@ -27,7 +28,7 @@ const run = async (name, args, commandName) => {
         loaded = loaded.default;
     }
 
-    return loaded(args, commandName);
+    return loaded;
 };
 
-module.exports = run;
+module.exports = loadCommand;

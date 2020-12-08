@@ -1,7 +1,4 @@
 import envinfo from 'envinfo';
-import { utils } from 'webpack-cli';
-
-const { logger } = utils;
 
 interface Information {
     Binaries?: string[];
@@ -32,33 +29,46 @@ const DEFAULT_DETAILS: Information = {
     npmPackages: '*webpack*',
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default async function info(options: { [key: string]: any } = []): Promise<void> {
-    const envinfoConfig = {};
+class InfoCommand {
+    apply(cli): void {
+        const { program, logger } = cli;
 
-    if (options.output) {
-        // Remove quotes if exist
-        const output = options.output.replace(/['"]+/g, '');
+        program
+            .command('info')
+            .alias('i')
+            .description('Outputs information about your system')
+            .usage('info [options]')
+            .option('-o,--output <format>')
+            .action(async (program) => {
+                let { output } = program.opts();
 
-        switch (output) {
-            case 'markdown':
-                envinfoConfig['markdown'] = true;
-                break;
-            case 'json':
-                envinfoConfig['json'] = true;
-                break;
-            default:
-                logger.error(`'${options.output}' is not a valid value for output`);
-                process.exit(2);
-        }
+                const envinfoConfig = {};
+
+                if (output) {
+                    // Remove quotes if exist
+                    output = output.replace(/['"]+/g, '');
+
+                    switch (output) {
+                        case 'markdown':
+                            envinfoConfig['markdown'] = true;
+                            break;
+                        case 'json':
+                            envinfoConfig['json'] = true;
+                            break;
+                        default:
+                            logger.error(`'${output}' is not a valid value for output`);
+                            process.exit(2);
+                    }
+                }
+
+                let info = await envinfo.run(DEFAULT_DETAILS, envinfoConfig);
+
+                info = info.replace(/npmPackages/g, 'Packages');
+                info = info.replace(/npmGlobalPackages/g, 'Global Packages');
+
+                logger.raw(info);
+            });
     }
-
-    let output = await envinfo.run(DEFAULT_DETAILS, envinfoConfig);
-
-    output = output.replace(/npmPackages/g, 'Packages');
-    output = output.replace(/npmGlobalPackages/g, 'Global Packages');
-
-    const finalOutput = output;
-
-    logger.raw(finalOutput);
 }
+
+export default InfoCommand;

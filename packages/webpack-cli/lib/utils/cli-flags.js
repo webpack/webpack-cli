@@ -1,89 +1,8 @@
 const packageExists = require('./package-exists');
 const cli = packageExists('webpack') ? require('webpack').cli : undefined;
 
-const commands = [
-    {
-        packageName: '@webpack-cli/init',
-        name: 'init',
-        alias: 'c',
-        type: String,
-        usage: 'init [scaffold] [options]',
-        description: 'Initialize a new webpack configuration',
-        flags: [
-            {
-                name: 'auto',
-                type: Boolean,
-                description: 'To generate default config',
-            },
-            {
-                name: 'force',
-                type: Boolean,
-                description: 'To force config generation',
-            },
-            {
-                name: 'generation-path',
-                type: String,
-                description: 'To scaffold in a specified path',
-            },
-        ],
-    },
-    {
-        packageName: '@webpack-cli/migrate',
-        name: 'migrate',
-        alias: 'm',
-        type: String,
-        usage: 'migrate <path-to-config> [output-path]',
-        description: 'Migrate a configuration to a new version',
-    },
-    {
-        packageName: '@webpack-cli/generators',
-        name: 'loader',
-        scope: 'external',
-        alias: 'l',
-        type: String,
-        usage: 'loader [path]',
-        description: 'Scaffold a loader repository',
-    },
-    {
-        packageName: '@webpack-cli/generators',
-        name: 'plugin',
-        alias: 'p',
-        scope: 'external',
-        type: String,
-        usage: 'plugin [path]',
-        description: 'Scaffold a plugin repository',
-    },
-    {
-        packageName: '@webpack-cli/info',
-        name: 'info',
-        scope: 'external',
-        alias: 'i',
-        type: String,
-        usage: 'info [options]',
-        description: 'Outputs information about your system and dependencies',
-        flags: [
-            {
-                name: 'output',
-                type: String,
-                description: 'To get the output in specified format ( accept json or markdown )',
-            },
-            {
-                name: 'version',
-                type: Boolean,
-                description: 'Print version information of info package',
-            },
-        ],
-    },
-    {
-        packageName: '@webpack-cli/serve',
-        name: 'serve',
-        alias: 's',
-        scope: 'external',
-        type: String,
-        usage: 'serve [options]',
-        description: 'Run the webpack Dev Server',
-    },
-];
+// eslint-disable-next-line node/no-extraneous-require
+const devServerFlags = packageExists('webpack-dev-server') ? require('webpack-dev-server/bin/cli-flags').devServer : undefined;
 
 const builtInFlags = [
     // For configs
@@ -310,6 +229,34 @@ const isCommandUsed = (args) =>
     commands.find((cmd) => {
         return args.includes(cmd.name) || args.includes(cmd.alias);
     });
+
+const commands = [
+    {
+        packageName: '@webpack-cli/migrate',
+        name: 'migrate <config-path> [new-config-path]',
+        alias: 'm',
+        type: String,
+        usage: 'migrate <config-path> [new-config-path]',
+        description: 'Migrate a configuration to a new version',
+        flags: [],
+    },
+    {
+        packageName: '@webpack-cli/serve',
+        name: 'serve',
+        alias: 's',
+        scope: 'external',
+        type: String,
+        usage: 'serve [options]',
+        description: 'Run the webpack Dev Server',
+        flags: [
+            ...(devServerFlags &&
+                devServerFlags.reduce((cliArgs, { name, type, describe }) => {
+                    return [...cliArgs, { name, type, description: describe }];
+                }, [])),
+            ...flags,
+        ],
+    },
+];
 
 module.exports = {
     commands,

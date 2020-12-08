@@ -34,18 +34,6 @@ export interface WebpackScaffoldObject extends Object {
 
 const DEFAULT_WEBPACK_CONFIG_FILENAME = 'webpack.config.js';
 
-/**
- *
- * Looks up the webpack.config in the user's path and runs a given
- * generator scaffold followed up by a transform
- *
- * @param {String} action — action to be done (add, remove, update, init)
- * @param {Class} generator - Yeoman generator class
- * @param {String} configFile - Name of the existing/default webpack configuration file
- * @param {Array} packages - List of packages to resolve
- * @returns {Function} runTransform - Returns a transformation instance
- */
-
 export function modifyHelperUtil(
     action: string,
     generator: Generator.GeneratorConstructor,
@@ -76,8 +64,10 @@ export function modifyHelperUtil(
     // to .yo-rc.json
     // see: https://github.com/yeoman/generator/blob/v4.5.0/lib/index.js#L773
     let packageName = '*';
+
     try {
         const packagePath = path.resolve(generationPath, 'package.json');
+
         if (fs.existsSync(packagePath)) {
             // eslint-disable-next-line @typescript-eslint/no-var-requires
             const packageData = require(packagePath);
@@ -86,7 +76,7 @@ export function modifyHelperUtil(
             }
         }
     } catch (err) {
-        logger.error('\nYour package.json was incorrectly formatted.\n');
+        logger.error('Your package.json was incorrectly formatted.');
         Error.stackTraceLimit = 0;
         process.exitCode = 2;
     }
@@ -108,9 +98,9 @@ export function modifyHelperUtil(
                 const confPath = path.resolve(generationPath, '.yo-rc.json');
                 configModule = require(confPath);
             } catch (err) {
-                logger.error('\nCould not find a yeoman configuration file (.yo-rc.json).\n');
+                logger.error('Could not find a yeoman configuration file (.yo-rc.json).');
                 logger.error(
-                    "\nPlease make sure to use 'this.config.set('configuration', this.configuration);' at the end of the generator.\n",
+                    "Please make sure to use 'this.config.set('configuration', this.configuration);' at the end of the generator.",
                 );
                 Error.stackTraceLimit = 0;
                 process.exitCode = 2;
@@ -143,8 +133,8 @@ export function modifyHelperUtil(
 
                 // scaffold webpack config file from using .yo-rc.json
                 return runTransform(transformConfig, 'init', generateConfig, generationPath);
-            } catch (err) {
-                logger.error(err);
+            } catch (error) {
+                logger.error(error);
                 process.exitCode = 2;
             }
         },

@@ -1,38 +1,30 @@
 import { initGenerator } from '@webpack-cli/generators';
 import { modifyHelperUtil, npmPackagesExists } from '@webpack-cli/utils';
 
-const AUTO_PREFIX = '--auto';
-const CONFIG_PREFIX = '--force';
-const PATH_PREFIX = '--generation-path';
+class InitCommand {
+    apply(cli): void {
+        const { program } = cli;
 
-/**
- *
- * First function to be called after running the init flag. This is a check,
- * if we are running the init command with no arguments or if we got dependencies
- *
- * @param	{String[]}		args - array of arguments such as
- * packages included when running the init command
- * @returns	{Function}	creator/npmPackagesExists - returns an installation of the package,
- * followed up with a yeoman instance if there are packages. If not, it creates a defaultGenerator
- */
+        program
+            .command('init [scaffold...]')
+            .alias('c')
+            .description('Initialize a new webpack configuration')
+            .usage('init [scaffold] [options]')
+            .option('--auto')
+            .option('--force')
+            .option('--generation-path <value>')
+            .action((scaffold, program) => {
+                const options = program.opts();
 
-export default function initializeInquirer(args: string[]): Function | void {
-    const packages = args;
-    const includesDefaultPrefix = packages.includes(AUTO_PREFIX);
-    const generateConfig = packages.includes(CONFIG_PREFIX);
-    const genPathPrefix = packages.includes(PATH_PREFIX);
+                if (Object.keys(options).length > 0) {
+                    modifyHelperUtil('init', initGenerator, null, null, options.auto, options.force, options.generationPath);
 
-    let generationPath: string;
+                    return;
+                }
 
-    if (genPathPrefix) {
-        const idx = packages.indexOf(PATH_PREFIX);
-        // Retrieve the path supplied along with --generation-path
-        generationPath = packages[idx + 1];
+                npmPackagesExists(scaffold);
+            });
     }
-
-    if (packages.length === 0 || includesDefaultPrefix || generateConfig || genPathPrefix) {
-        return modifyHelperUtil('init', initGenerator, null, null, includesDefaultPrefix, generateConfig, generationPath);
-    }
-
-    return npmPackagesExists(packages);
 }
+
+export default InitCommand;

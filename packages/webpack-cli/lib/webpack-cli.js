@@ -1,25 +1,245 @@
 const path = require('path');
+const { program } = require('commander');
 const packageExists = require('./utils/package-exists');
 const webpack = packageExists('webpack') ? require('webpack') : undefined;
 const webpackMerge = require('webpack-merge');
+const { extensions, jsVariants } = require('interpret');
+const rechoir = require('rechoir');
 const { createWriteStream, existsSync } = require('fs');
+const leven = require('leven');
 const { options: coloretteOptions, yellow } = require('colorette');
 const { stringifyStream: createJsonStringifyStream } = require('@discoveryjs/json-ext');
 
 const logger = require('./utils/logger');
 const { cli, flags } = require('./utils/cli-flags');
-const argParser = require('./utils/arg-parser');
 const CLIPlugin = require('./plugins/CLIPlugin');
 const promptInstallation = require('./utils/prompt-installation');
-const { extensions, jsVariants } = require('interpret');
-const rechoir = require('rechoir');
+const runHelp = require('./groups/runHelp');
+const runVersion = require('./groups/runVersion');
 
 const toKebabCase = require('./utils/to-kebab-case');
 
 const { resolve, extname } = path;
 
 class WebpackCLI {
-    constructor() {}
+    constructor() {
+        this.logger = logger;
+
+        // Init program
+        this.program = program;
+        this.program.name('webpack-cli');
+        this.program.storeOptionsAsProperties(false);
+
+        // Global options
+        this.program.option('--color', 'Enable colors on console');
+        this.program.on('option:color', function () {
+            const { color } = this.opts();
+
+            coloretteOptions.enabled = Boolean(color);
+        });
+        this.program.option('--no-color', 'Enable colors on console');
+        this.program.on('option:no-color', function () {
+            const { color } = this.opts();
+
+            coloretteOptions.enabled = Boolean(color);
+        });
+
+        // TODO show possible flags only for command related
+        // Register own exit
+        this.program.exitOverride((error) => {
+            if (error.code === 'commander.unknownOption') {
+                let name = error.message.match(/'(.+)'/);
+
+                if (name) {
+                    name = name[1].substr(2);
+
+                    if (name.includes('=')) {
+                        name = name.split('=')[0];
+                    }
+
+                    const found = flags.find((flag) => leven(name, flag.name) < 3);
+
+                    if (found) {
+                        logger.raw(`Did you mean '--${found.name}'?`);
+                    }
+                }
+            }
+
+            process.exit(2);
+        });
+
+        // Register default bundle command
+        const defaultCommand = this.program
+            .command('bundle [entry...]', { isDefault: true })
+            .alias('b')
+            .description('Run webpack')
+            .usage('bundle [options]');
+
+        // TODO refactor this terrible stuff
+        flags.forEach((flag) => {
+            let optionType = flag.type;
+            let isStringOrBool = false;
+
+            if (Array.isArray(optionType)) {
+                // filter out duplicate types
+                optionType = optionType.filter((type, index) => {
+                    return optionType.indexOf(type) === index;
+                });
+
+                // the only multi type currently supported is String and Boolean,
+                // if there is a case where a different multi type is needed it
+                // must be added here
+                if (optionType.length === 0) {
+                    // if no type is provided in the array fall back to Boolean
+                    optionType = Boolean;
+                } else if (optionType.length === 1 || optionType.length > 2) {
+                    // treat arrays with 1 or > 2 args as a single type
+                    optionType = optionType[0];
+                } else {
+                    // only String and Boolean multi type is supported
+                    if (optionType.includes(Boolean) && optionType.includes(String)) {
+                        isStringOrBool = true;
+                    } else {
+                        optionType = optionType[0];
+                    }
+                }
+            }
+
+            const flags = flag.alias ? `-${flag.alias}, --${flag.name}` : `--${flag.name}`;
+
+            let flagsWithType = flags;
+
+            if (isStringOrBool) {
+                // commander recognizes [value] as an optional placeholder,
+                // making this flag work either as a string or a boolean
+                flagsWithType = `${flags} [value]`;
+            } else if (optionType !== Boolean) {
+                // <value> is a required placeholder for any non-Boolean types
+                flagsWithType = `${flags} <value>`;
+            }
+
+            if (isStringOrBool || optionType === Boolean || optionType === String) {
+                if (flag.multiple) {
+                    // a multiple argument parsing function
+                    const multiArg = (value, previous = []) => previous.concat([value]);
+
+                    defaultCommand.option(flagsWithType, flag.description, multiArg, flag.defaultValue).action(() => {});
+                } else if (flag.multipleType) {
+                    // for options which accept multiple types like env
+                    // so you can do `--env platform=staging --env production`
+                    // { platform: "staging", production: true }
+                    const multiArg = (value, previous = {}) => {
+                        // this ensures we're only splitting by the first `=`
+                        const [allKeys, val] = value.split(/=(.+)/, 2);
+                        const splitKeys = allKeys.split(/\.(?!$)/);
+
+                        let prevRef = previous;
+
+                        splitKeys.forEach((someKey, index) => {
+                            if (!prevRef[someKey]) {
+                                prevRef[someKey] = {};
+                            }
+
+                            if ('string' === typeof prevRef[someKey]) {
+                                prevRef[someKey] = {};
+                            }
+
+                            if (index === splitKeys.length - 1) {
+                                prevRef[someKey] = val || true;
+                            }
+
+                            prevRef = prevRef[someKey];
+                        });
+
+                        return previous;
+                    };
+
+                    defaultCommand.option(flagsWithType, flag.description, multiArg, flag.defaultValue).action(() => {});
+                } else {
+                    // Prevent default behavior for standalone options
+                    defaultCommand.option(flagsWithType, flag.description, flag.defaultValue).action(() => {});
+                }
+            } else if (optionType === Number) {
+                // this will parse the flag as a number
+                defaultCommand.option(flagsWithType, flag.description, Number, flag.defaultValue);
+            } else {
+                // in this case the type is a parsing function
+                defaultCommand.option(flagsWithType, flag.description, optionType, flag.defaultValue).action(() => {});
+            }
+
+            if (flag.negative) {
+                // commander requires explicitly adding the negated version of boolean flags
+                const negatedFlag = `--no-${flag.name}`;
+
+                defaultCommand.option(negatedFlag, `negates ${flag.name}`).action(() => {});
+            }
+        });
+
+        defaultCommand.action(async (entry, program) => {
+            const options = program.opts();
+
+            if (entry.length > 0) {
+                // Handle the default webpack entry CLI argument, where instead of doing 'webpack --entry ./index.js' you can simply do 'webpack-cli ./index.js'
+                options.entry = entry;
+            }
+
+            await this.bundleCommand(options);
+        });
+
+        // TODO check on command exists
+        // Register built-in commands
+        const builtInCommands = [
+            '@webpack-cli/generators',
+            '@webpack-cli/info',
+            '@webpack-cli/init',
+            '@webpack-cli/migrate',
+            // '@webpack-cli/serve',
+        ];
+
+        builtInCommands.forEach((builtInCommand) => {
+            let loadedCommand;
+
+            try {
+                loadedCommand = require(builtInCommand);
+            } catch (error) {
+                logger.error(error);
+                process.exit(2);
+            }
+
+            if (loadedCommand.default) {
+                loadedCommand = loadedCommand.default;
+            }
+
+            let command;
+
+            try {
+                command = new loadedCommand();
+
+                command.apply(this);
+            } catch (error) {
+                logger.error(error);
+                process.exit(2);
+            }
+        });
+    }
+
+    async run(args) {
+        const showHelp = args.includes('--help') || args.includes('help') || args.includes('--help=verbose');
+
+        // allow --help=verbose and --help verbose
+        if (showHelp || (showHelp && args.includes('verbose'))) {
+            runHelp(args);
+            process.exit(0);
+        }
+
+        // Use Customized version
+        if (args.includes('--version') || args.includes('version') || args.includes('-v')) {
+            runVersion(args);
+            process.exit(0);
+        }
+
+        await this.program.parseAsync(args);
+    }
 
     async resolveConfig(args) {
         const loadConfig = async (configPath) => {
@@ -41,6 +261,7 @@ class WebpackCLI {
             }
 
             let options;
+
             try {
                 try {
                     options = require(configPath);
@@ -410,18 +631,6 @@ class WebpackCLI {
         return config;
     }
 
-    /**
-     * Expose commander argParser
-     * @param  {...any} args args for argParser
-     */
-    argParser(...args) {
-        return argParser(...args);
-    }
-
-    getCoreFlags() {
-        return flags;
-    }
-
     handleError(error) {
         // https://github.com/webpack/webpack/blob/master/lib/index.js#L267
         // https://github.com/webpack/webpack/blob/v4.44.2/lib/webpack.js#L90
@@ -449,14 +658,13 @@ class WebpackCLI {
         return compiler;
     }
 
-    async getCompiler(args) {
-        // TODO test with serve
-        const config = await this.resolve(args);
+    async getCompiler(options) {
+        const config = await this.resolve(options);
 
         return this.createCompiler(config.options);
     }
 
-    async run(args) {
+    async bundleCommand(options) {
         let compiler;
 
         const callback = (error, stats) => {
@@ -482,8 +690,8 @@ class WebpackCLI {
                 let colors;
 
                 // From flags
-                if (typeof args.color !== 'undefined') {
-                    colors = args.color;
+                if (typeof options.color !== 'undefined') {
+                    colors = options.color;
                 }
                 // From stats
                 else if (typeof stats.colors !== 'undefined') {
@@ -513,18 +721,18 @@ class WebpackCLI {
                 process.exit(2);
             };
 
-            if (args.json === true) {
+            if (options.json === true) {
                 createJsonStringifyStream(stats.toJson(foundStats))
                     .on('error', handleWriteError)
                     .pipe(process.stdout)
                     .on('error', handleWriteError)
                     .on('close', () => process.stdout.write('\n'));
-            } else if (typeof args.json === 'string') {
+            } else if (typeof options.json === 'string') {
                 createJsonStringifyStream(stats.toJson(foundStats))
                     .on('error', handleWriteError)
-                    .pipe(createWriteStream(args.json))
+                    .pipe(createWriteStream(options.json))
                     .on('error', handleWriteError)
-                    .on('close', () => logger.success(`stats are successfully stored as json to ${args.json}`));
+                    .on('close', () => logger.success(`stats are successfully stored as json to ${options.json}`));
             } else {
                 const printedStats = stats.toString(foundStats);
 
@@ -535,7 +743,7 @@ class WebpackCLI {
             }
         };
 
-        const config = await this.resolve(args);
+        const config = await this.resolve(options);
 
         compiler = this.createCompiler(config.options, callback);
 

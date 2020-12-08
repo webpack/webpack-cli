@@ -26,9 +26,9 @@ const { addonGenerator, initGenerator, loaderGenerator, pluginGenerator } = requ
 
 ## Generators
 
--   [**Plugin Generator**](https://github.com/webpack/webpack-cli/blob/master/packages/generators/src/plugin-generator.ts) : Creates a webpack plugin project, add starter plugin code and runs `webpack-defaults`
--   [**Loader Generator**](https://github.com/webpack/webpack-cli/blob/master/packages/generators/src/loader-generator.ts) : Creates a webpack loader project, add starter loader code and runs `webpack-defaults`
--   [**Init Generator**](https://github.com/webpack/webpack-cli/blob/master/packages/generators/src/init-generator.ts) : Generates new webapck configuration as per user requirements
+-   [**Plugin Generator**](https://github.com/webpack/webpack-cli/blob/master/packages/generators/src/plugin-generator.ts) : Creates a webpack plugin project, add starter plugin code
+-   [**Loader Generator**](https://github.com/webpack/webpack-cli/blob/master/packages/generators/src/loader-generator.ts) : Creates a webpack loader project, add starter loader code
+-   [**Init Generator**](https://github.com/webpack/webpack-cli/blob/master/packages/generators/src/init-generator.ts) : Generates new webpack configuration as per user requirements
 -   [**Addon Generator**](https://github.com/webpack/webpack-cli/blob/master/packages/generators/src/addon-generator.ts) : Generates a webpack project conforming to `webpack-defaults`
 
 ---

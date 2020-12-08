@@ -10,9 +10,6 @@ import { runPrettier } from '@webpack-cli/utils';
 import { transformations } from './migrate';
 import { Node } from './types/NodePath';
 import jscodeshift from 'jscodeshift';
-import { utils } from 'webpack-cli';
-
-const { logger } = utils;
 
 declare let process: {
     cwd: Function;
@@ -32,19 +29,8 @@ declare let process: {
     exitCode: number;
 };
 
-/**
- *
- * Runs migration on a given configuration using AST's and promises
- * to sequentially transform a configuration file.
- *
- * @param {String} currentConfigPath - input path for config
- * @param {String} outputConfigPath - output path for config
- * @returns {Promise} Runs the migration using a promise that
- * will throw any errors during each transform or output if the
- * user decides to abort the migration
- */
-
-function runMigration(currentConfigPath: string, outputConfigPath: string): Promise<void> | void {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function runMigration(currentConfigPath: string, outputConfigPath: string, logger: any): Promise<void> | void {
     const recastOptions: object = {
         quote: 'single',
     };
@@ -87,7 +73,7 @@ function runMigration(currentConfigPath: string, outputConfigPath: string): Prom
         },
     ]);
 
-    tasks
+    return tasks
         .run()
         .then((ctx: Node): void | Promise<void> => {
             const result: string = ctx.ast.toSource(recastOptions);
@@ -162,48 +148,49 @@ function runMigration(currentConfigPath: string, outputConfigPath: string): Prom
         });
 }
 
-/**
- *
- * Runs migration on a given configuration using AST's and promises
- * to sequentially transform a configuration file.
- *
- * @param {Array} args - Migrate arguments such as input and
- * output path
- * @returns {Function} Runs the migration using the 'runMigrate'
- * function.
- */
+class MigrationCommand {
+    apply(cli): void {
+        const { program, logger } = cli;
 
-export default async function migrate(args: string[]): Promise<void> {
-    const filePaths = args;
-    if (!filePaths.length) {
-        logger.error('Please specify a path to your webpack config');
-        return;
+        program
+            .command('migrate <config-path> [new-config-path]')
+            .alias('m')
+            .description('Migrate a configuration to a new version')
+            .usage('migrate <config-path> [new-config-path]')
+            .action(async (configPath: string, newConfigPath: string | undefined) => {
+                const currentConfigPath = path.resolve(configPath);
+                let outputConfigPath: string;
+
+                if (!newConfigPath) {
+                    try {
+                        const { confirmPath } = await inquirer.prompt([
+                            {
+                                default: 'Y',
+                                message: 'Migration output path not specified. Do you want to use your existing webpack configuration?',
+                                name: 'confirmPath',
+                                type: 'confirm',
+                            },
+                        ]);
+                        if (!confirmPath) {
+                            logger.error('︎Migration aborted due to no output path');
+                            return;
+                        }
+                        outputConfigPath = path.resolve(configPath);
+
+                        await runMigration(currentConfigPath, outputConfigPath, logger);
+                    } catch (err) {
+                        logger.error(err);
+                        return;
+                    }
+
+                    return;
+                }
+
+                outputConfigPath = path.resolve(newConfigPath);
+
+                await runMigration(currentConfigPath, outputConfigPath, logger);
+            });
     }
-
-    const currentConfigPath = path.resolve(filePaths[0]);
-    let outputConfigPath: string;
-
-    if (!filePaths[1]) {
-        try {
-            const { confirmPath } = await inquirer.prompt([
-                {
-                    default: 'Y',
-                    message: 'Migration output path not specified. Do you want to use your existing webpack configuration?',
-                    name: 'confirmPath',
-                    type: 'confirm',
-                },
-            ]);
-            if (!confirmPath) {
-                logger.error('︎Migration aborted due to no output path');
-                return;
-            }
-            outputConfigPath = path.resolve(filePaths[0]);
-            return runMigration(currentConfigPath, outputConfigPath);
-        } catch (err) {
-            logger.error(err);
-            return;
-        }
-    }
-    outputConfigPath = path.resolve(filePaths[1]);
-    return runMigration(currentConfigPath, outputConfigPath);
 }
+
+export default MigrationCommand;
