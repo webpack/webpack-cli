@@ -8,10 +8,7 @@ describe('array config', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['-c', resolve(__dirname, 'webpack.config.js')], false);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'amd' starting...");
-        expect(stderr).toContain("Compilation 'amd' finished");
-        expect(stderr).toContain("Compilation 'commonjs' starting...");
-        expect(stderr).toContain("Compilation 'commonjs' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
         expect(existsSync(resolve(__dirname, './dist/dist-commonjs.js'))).toBeTruthy();
         expect(existsSync(resolve(__dirname, './dist/dist-amd.js'))).toBeTruthy();
@@ -21,10 +18,7 @@ describe('array config', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--stats', 'none'], false);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'amd' starting...");
-        expect(stderr).toContain("Compilation 'amd' finished");
-        expect(stderr).toContain("Compilation 'commonjs' starting...");
-        expect(stderr).toContain("Compilation 'commonjs' finished");
+        expect(stderr).toBeFalsy();
         // should not print anything because of stats: none
         expect(stdout).toBeFalsy();
         expect(existsSync(resolve(__dirname, './dist/dist-commonjs.js'))).toBeTruthy();

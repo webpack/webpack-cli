@@ -8,8 +8,7 @@ describe('stats flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, []);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
 
         if (version.startsWith('5')) {
             expect(stdout).toContain(`stats: { preset: 'detailed' }`);
@@ -22,8 +21,7 @@ describe('stats flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--no-stats']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
 
         if (version.startsWith('5')) {
             expect(stdout).toContain(`stats: { preset: 'none' }`);

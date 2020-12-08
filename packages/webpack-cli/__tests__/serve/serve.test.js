@@ -14,8 +14,7 @@ describe('Serve', () => {
     it('should run with cli', async () => {
         const { stderr, stdout } = await runServe([], __dirname);
 
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain('main.js');
         expect(stdout).not.toContain('HotModuleReplacementPlugin');
     });
@@ -23,8 +22,7 @@ describe('Serve', () => {
     it('should work with flags', async () => {
         const { stderr, stdout } = await runServe(['--hot'], __dirname);
 
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain('main.js');
         expect(stdout).toContain('HotModuleReplacementPlugin');
     });

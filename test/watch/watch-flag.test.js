@@ -13,8 +13,7 @@ describe('--watch flag', () => {
         const { exitCode, stderr, stdout } = await run(__dirname, ['-c', './watch.config.js', '--no-watch']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
     });
 
@@ -36,13 +35,7 @@ describe('--watch flag', () => {
                         expect(data).toContain(word);
                     }
                 }
-            }
-        });
 
-        proc.stderr.on('data', (chunk) => {
-            const data = stripAnsi(chunk.toString());
-
-            if (data.includes('Compiler is watching files for updates...')) {
                 if (!modified) {
                     process.nextTick(() => {
                         writeFileSync(resolve(__dirname, './src/index.js'), `console.log('watch flag test');`);

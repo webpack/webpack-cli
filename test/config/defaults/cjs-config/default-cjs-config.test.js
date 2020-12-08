@@ -7,8 +7,7 @@ describe('Default Config:', () => {
         const { exitCode, stderr, stdout } = run(__dirname, [], false);
 
         expect(exitCode).toEqual(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         // default entry should be used
         expect(stdout).toContain('./src/index.js');
         // should pick up the output path from config

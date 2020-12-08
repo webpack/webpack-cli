@@ -9,8 +9,7 @@ describe('mode flags with config', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--mode', 'production', '--config', './webpack.config.js']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
 
         // Should generate the appropriate files
@@ -29,8 +28,7 @@ describe('mode flags with config', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--mode', 'development', '--config', './webpack.config.js']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
 
         // Should generate the appropriate files
@@ -50,8 +48,7 @@ describe('mode flags with config', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--mode', 'none', '--config', './webpack.config.js']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
 
         // Should generate the appropriate files
@@ -72,8 +69,7 @@ describe('mode flags with config', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--mode', 'production', '-c', 'webpack.config2.js']);
 
         expect(exitCode).toEqual(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain(`mode: 'production'`);
     });
 
@@ -83,8 +79,7 @@ describe('mode flags with config', () => {
         });
 
         expect(exitCode).toEqual(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain(`mode: 'none'`);
     });
 
@@ -92,8 +87,7 @@ describe('mode flags with config', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['-c', 'webpack.config2.js']);
 
         expect(exitCode).toEqual(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain(`mode: 'development'`);
     });
 
@@ -101,8 +95,7 @@ describe('mode flags with config', () => {
         const { exitCode, stdout, stderr } = run(__dirname, ['-c', 'webpack.config3.js', '-c', 'webpack.config2.js']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain(`mode: 'development'`);
         expect(stdout.match(new RegExp("mode: 'development'", 'g')).length).toEqual(1);
     });
@@ -111,8 +104,7 @@ describe('mode flags with config', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--mode', 'none', '-c', './webpack.config3.js', '-c', './webpack.config2.js']);
 
         expect(exitCode).toEqual(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain(`mode: 'none'`);
         expect(stdout.match(new RegExp("mode: 'none'", 'g')).length).toEqual(2);
     });
@@ -123,8 +115,7 @@ describe('mode flags with config', () => {
         });
 
         expect(exitCode).toEqual(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain(`mode: 'production'`);
         expect(stdout).toContain(`mode: 'development'`);
         expect(stdout.match(new RegExp("mode: 'production'", 'g')).length).toEqual(1);

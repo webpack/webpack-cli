@@ -8,8 +8,7 @@ describe('--hot flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--hot']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
         expect(readFileSync(resolve(__dirname, './bin/main.js')).toString()).toContain('webpackHotUpdate');
     });
@@ -18,8 +17,6 @@ describe('--hot flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--no-hot', '--hot']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
         expect(stderr).toContain(
             'You provided both --hot and --no-hot. We will use only the last of these flags that you provided in your CLI arguments',
         );

@@ -7,8 +7,7 @@ describe('--bail flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--bail']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'compiler' starting...");
-        expect(stderr).toContain("Compilation 'compiler' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain('bail: true');
     });
 
@@ -16,8 +15,7 @@ describe('--bail flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--no-bail']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'compiler' starting...");
-        expect(stderr).toContain("Compilation 'compiler' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain('bail: false');
     });
 });

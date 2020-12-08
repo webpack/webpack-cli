@@ -9,8 +9,7 @@ describe('entry flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--entry', './src/index.cjs', '-o', './dist/'], false);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
     });
 
@@ -18,8 +17,7 @@ describe('entry flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--entry', './src/a.js']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
     });
 
@@ -28,14 +26,12 @@ describe('entry flag', () => {
 
         if (!isWebpack5) {
             expect(exitCode).toBe(1);
-            expect(stderr).toContain('Compilation starting...');
-            expect(stderr).toContain('Compilation finished');
+            expect(stderr).toBeFalsy();
             expect(stdout).toContain(`Module not found: Error: Can't resolve`);
             done();
         } else {
             expect(exitCode).toBe(0);
-            expect(stderr).toContain('Compilation starting...');
-            expect(stderr).toContain('Compilation finished');
+            expect(stderr).toBeFalsy();
             expect(stdout).toBeTruthy();
             expect(existsSync(resolve(__dirname, './dist/main.js'))).toBeTruthy();
             readFile(resolve(__dirname, './bin/main.js'), 'utf-8', (err, data) => {
@@ -50,8 +46,7 @@ describe('entry flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--entry', './src/test.js']);
 
         expect(exitCode).toEqual(1);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain("Module not found: Error: Can't resolve");
     });
 });

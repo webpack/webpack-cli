@@ -9,8 +9,7 @@ describe('promise array', () => {
 
         expect(exitCode).toBe(0);
         expect(stdout).toBeTruthy();
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(existsSync(resolve(__dirname, './binary/a-promise.js'))).toBeTruthy();
         expect(existsSync(resolve(__dirname, './binary/a-promise.js'))).toBeTruthy();
     });

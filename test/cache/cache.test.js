@@ -13,10 +13,9 @@ describe('cache', () => {
         expect(exitCode).toEqual(0);
 
         if (isWebpack5) {
-            expect(stderr).toContain("Compilation 'cache-test-default' starting...");
-            expect(stderr).toContain("Compilation 'cache-test-default' finished");
             expect(stderr.match(/No pack exists at/g)).toHaveLength(1);
             expect(stderr.match(/Stored pack/g)).toHaveLength(1);
+            expect(stderr).toBeTruthy();
             expect(stdout).toBeTruthy();
         }
 
@@ -25,16 +24,15 @@ describe('cache', () => {
         expect(exitCode).toEqual(0);
 
         if (isWebpack5) {
-            expect(stderr).toContain("Compilation 'cache-test-default' starting...");
-            expect(stderr).toContain("Compilation 'cache-test-default' finished");
             expect(stderr.match(/restore cache container:/g)).toHaveLength(1);
             expect(stderr.match(/restore cache content metadata:/g)).toHaveLength(1);
             expect(stderr.match(/restore cache content \d+ \(.+\):/g)).toHaveLength(1);
+            expect(stderr).toBeTruthy();
             expect(stdout).toBeTruthy();
         }
     });
 
-    it.only('should work in multi compiler mode', () => {
+    it('should work in multi compiler mode', () => {
         rimraf.sync(path.join(__dirname, '../../node_modules/.cache/webpack/cache-test-first-development'));
         rimraf.sync(path.join(__dirname, '../../node_modules/.cache/webpack/cache-test-second-development'));
 
@@ -43,12 +41,10 @@ describe('cache', () => {
         expect(exitCode).toEqual(0);
 
         if (isWebpack5) {
-            expect(stderr).toContain("Compilation 'cache-test-first' starting...");
-            expect(stderr).toContain("Compilation 'cache-test-first' finished");
-            expect(stderr).toContain("Compilation 'cache-test-second' starting...");
-            expect(stderr).toContain("Compilation 'cache-test-second' finished");
+            console.log(stderr);
             expect(stderr.match(/No pack exists at/g)).toHaveLength(2);
             expect(stderr.match(/Stored pack/g)).toHaveLength(2);
+            expect(stderr).toBeTruthy();
             expect(stdout).toBeTruthy();
         }
 
@@ -57,13 +53,10 @@ describe('cache', () => {
         expect(exitCode).toEqual(0);
 
         if (isWebpack5) {
-            expect(stderr).toContain("Compilation 'cache-test-first' starting...");
-            expect(stderr).toContain("Compilation 'cache-test-first' finished");
-            expect(stderr).toContain("Compilation 'cache-test-second' starting...");
-            expect(stderr).toContain("Compilation 'cache-test-second' finished");
             expect(stderr.match(/restore cache container:/g)).toHaveLength(2);
             expect(stderr.match(/restore cache content metadata:/g)).toHaveLength(2);
             expect(stderr.match(/restore cache content \d+ \(.+\):/g)).toHaveLength(2);
+            expect(stderr).toBeTruthy();
             expect(stdout).toBeTruthy();
         }
     });
@@ -80,10 +73,9 @@ describe('cache', () => {
         expect(exitCode).toEqual(0);
 
         if (isWebpack5) {
-            expect(stderr).toContain("Compilation 'cache-test-third' starting...");
-            expect(stderr).toContain("Compilation 'cache-test-third' finished");
             expect(stderr.match(/No pack exists at/g)).toHaveLength(1);
             expect(stderr.match(/Stored pack/g)).toHaveLength(1);
+            expect(stderr).toBeTruthy();
             expect(stdout).toBeTruthy();
         }
 
@@ -96,11 +88,10 @@ describe('cache', () => {
         expect(exitCode).toEqual(0);
 
         if (isWebpack5) {
-            expect(stderr).toContain("Compilation 'cache-test-third' starting...");
-            expect(stderr).toContain("Compilation 'cache-test-third' finished");
             expect(stderr.match(/restore cache container:/g)).toHaveLength(1);
             expect(stderr.match(/restore cache content metadata:/g)).toHaveLength(1);
             expect(stderr.match(/restore cache content \d+ \(.+\):/g)).toHaveLength(1);
+            expect(stderr).toBeTruthy();
             expect(stdout).toBeTruthy();
         }
     });
@@ -117,10 +108,9 @@ describe('cache', () => {
         expect(exitCode).toEqual(0);
 
         if (isWebpack5) {
-            expect(stderr).toContain("Compilation 'cache-test-fourth' starting...");
-            expect(stderr).toContain("Compilation 'cache-test-fourth' finished");
             expect(stderr.match(/No pack exists at/g)).toHaveLength(1);
             expect(stderr.match(/Stored pack/g)).toHaveLength(1);
+            expect(stderr).toBeTruthy();
             expect(stdout).toBeTruthy();
         }
 
@@ -133,11 +123,10 @@ describe('cache', () => {
         expect(exitCode).toEqual(0);
 
         if (isWebpack5) {
-            expect(stderr).toContain("Compilation 'cache-test-fourth' starting...");
-            expect(stderr).toContain("Compilation 'cache-test-fourth' finished");
             expect(stderr.match(/restore cache container:/g)).toHaveLength(1);
             expect(stderr.match(/restore cache content metadata:/g)).toHaveLength(1);
             expect(stderr.match(/restore cache content \d+ \(.+\):/g)).toHaveLength(1);
+            expect(stderr).toBeTruthy();
             expect(stdout).toBeTruthy();
         }
     });
@@ -166,10 +155,9 @@ describe('cache', () => {
         expect(exitCode).toEqual(0);
 
         if (isWebpack5) {
-            expect(stderr).toContain("Compilation 'cache-test-fifth' starting...");
-            expect(stderr).toContain("Compilation 'cache-test-fifth' finished");
             expect(stderr.match(/No pack exists at/g)).toHaveLength(1);
             expect(stderr.match(/Stored pack/g)).toHaveLength(1);
+            expect(stderr).toBeTruthy();
             expect(stdout).toBeTruthy();
         }
 
@@ -194,11 +182,10 @@ describe('cache', () => {
         expect(exitCode).toEqual(0);
 
         if (isWebpack5) {
-            expect(stderr).toContain("Compilation 'cache-test-fifth' starting...");
-            expect(stderr).toContain("Compilation 'cache-test-fifth' finished");
             expect(stderr.match(/restore cache container:/g)).toHaveLength(1);
             expect(stderr.match(/restore cache content metadata:/g)).toHaveLength(1);
             expect(stderr.match(/restore cache content \d+ \(.+\):/g)).toHaveLength(1);
+            expect(stderr).toBeTruthy();
             expect(stdout).toBeTruthy();
         }
     });
@@ -211,10 +198,9 @@ describe('cache', () => {
         expect(exitCode).toEqual(0);
 
         if (isWebpack5) {
-            expect(stderr).toContain("Compilation 'cache-test-autoloading' starting...");
-            expect(stderr).toContain("Compilation 'cache-test-autoloading' finished");
             expect(stderr.match(/No pack exists at/g)).toHaveLength(1);
             expect(stderr.match(/Stored pack/g)).toHaveLength(1);
+            expect(stderr).toBeTruthy();
             expect(stdout).toBeTruthy();
         }
 
@@ -223,11 +209,10 @@ describe('cache', () => {
         expect(exitCode).toEqual(0);
 
         if (isWebpack5) {
-            expect(stderr).toContain("Compilation 'cache-test-autoloading' starting...");
-            expect(stderr).toContain("Compilation 'cache-test-autoloading' finished");
             expect(stderr.match(/restore cache container:/g)).toHaveLength(1);
             expect(stderr.match(/restore cache content metadata:/g)).toHaveLength(1);
             expect(stderr.match(/restore cache content \d+ \(.+\):/g)).toHaveLength(1);
+            expect(stderr).toBeTruthy();
             expect(stdout).toBeTruthy();
         }
     });

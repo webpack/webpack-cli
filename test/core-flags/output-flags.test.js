@@ -25,20 +25,17 @@ describe('output config related flag', () => {
                     ({ exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, '--experiments-output-module']));
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain('module: true');
                 } else if (flag.name.includes('-reset')) {
                     const option = propName.split('Reset')[0];
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${option}: []`);
                 } else {
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: true`);
                 }
             });
@@ -48,8 +45,7 @@ describe('output config related flag', () => {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--no-${flag.name}`]);
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: false`);
                 });
             }
@@ -60,8 +56,7 @@ describe('output config related flag', () => {
                 const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, '10']);
 
                 expect(exitCode).toBe(0);
-                expect(stderr).toContain("Compilation 'compiler' starting...");
-                expect(stderr).toContain("Compilation 'compiler' finished");
+                expect(stderr).toBeFalsy();
                 expect(stdout).toContain(`${propName}: 10`);
             });
         }
@@ -72,92 +67,79 @@ describe('output config related flag', () => {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'anonymous']);
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: 'anonymous'`);
                 } else if (flag.name === 'output-chunk-format') {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'commonjs']);
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: 'commonjs'`);
                 } else if (flag.name === 'output-chunk-loading') {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'jsonp']);
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: 'jsonp'`);
                 } else if (flag.name === 'output-enabled-chunk-loading-types' || flag.name === 'output-enabled-wasm-loading-types') {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'async-node']);
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: [ 'async-node' ]`);
                 } else if (flag.name === 'output-enabled-library-type') {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'amd']);
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: 'amd'`);
                 } else if (flag.name === 'output-hash-function') {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'sha256']);
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`hashFunction: 'sha256'`);
                 } else if (flag.name === 'output-script-type') {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'module']);
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: 'module'`);
                 } else if (flag.name === 'output-enabled-library-types') {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'var']);
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: [ 'var' ]`);
                 } else if (flag.name === 'output-path') {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'test']);
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain('test');
                 } else if (flag.name === 'output-pathinfo') {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'verbose']);
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`pathinfo: 'verbose'`);
                 } else if (flag.name === 'output-worker-chunk-loading') {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'async-node']);
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: 'async-node'`);
                 } else if (flag.name.includes('wasm')) {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'async-node']);
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: 'async-node'`);
                 } else {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'test']);
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: 'test'`);
                 }
             });
@@ -178,8 +160,7 @@ describe('output config related flag', () => {
                 ]);
 
                 expect(exitCode).toBe(0);
-                expect(stderr).toContain("Compilation 'compiler' starting...");
-                expect(stderr).toContain("Compilation 'compiler' finished");
+                expect(stderr).toBeFalsy();
                 expect(stdout).toContain('myLibrary');
                 expect(stdout).toContain(`type: 'var'`);
                 expect(stdout).toContain('export: [Array]');
@@ -191,8 +172,7 @@ describe('output config related flag', () => {
                 const { exitCode, stderr, stdout } = run(__dirname, ['--output-library-reset']);
 
                 expect(exitCode).toBe(0);
-                expect(stderr).toContain("Compilation 'compiler' starting...");
-                expect(stderr).toContain("Compilation 'compiler' finished");
+                expect(stderr).toBeFalsy();
                 expect(stdout).toContain('name: []');
             });
         }

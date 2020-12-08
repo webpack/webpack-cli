@@ -14,63 +14,63 @@ describe('version flag with external packages', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['init', '--version'], false);
 
         expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain(initPkgJSON.version);
         expect(stdout).toContain(cliPkgJSON.version);
-        expect(stderr).toHaveLength(0);
     });
 
     it('outputs version with the alias c for init', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['c', '--version'], false);
 
         expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain(initPkgJSON.version);
         expect(stdout).toContain(cliPkgJSON.version);
-        expect(stderr).toHaveLength(0);
     });
 
     it('outputs version with info', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['info', '--version'], false);
 
         expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain(infoPkgJSON.version);
         expect(stdout).toContain(cliPkgJSON.version);
-        expect(stderr).toHaveLength(0);
     });
 
     it('outputs version with serve', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['serve', '--version'], false);
 
         expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain(servePkgJSON.version);
         expect(stdout).toContain(cliPkgJSON.version);
-        expect(stderr).toHaveLength(0);
     });
 
     it('outputs version with migrate', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['migrate', '--version'], false);
 
         expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain(migratePkgJSON.version);
         expect(stdout).toContain(cliPkgJSON.version);
-        expect(stderr).toHaveLength(0);
     });
 
     it('outputs version with plugin', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['plugin', '--version'], false);
 
         expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain(pluginPkgJSON.version);
         expect(stdout).toContain(cliPkgJSON.version);
-        expect(stderr).toHaveLength(0);
     });
 
     it('outputs version with loader', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['loader', '--version'], false);
 
         expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain(loaderPkgJSON.version);
         expect(stdout).toContain(cliPkgJSON.version);
-        expect(stderr).toHaveLength(0);
     });
 
     it(' should throw error for multiple commands', () => {
@@ -89,7 +89,7 @@ describe('version flag with external packages', () => {
         expect(exitCode).toBe(2);
         expect(stderr).toContain(`[webpack-cli] Invalid command 'abc'`);
         expect(stderr).toContain('[webpack-cli] Run webpack --help to see available commands and arguments');
-        expect(stdout).toBe('');
+        expect(stdout).toBeFalsy();
     });
 
     it(' should throw error if invalid argument is present with version command', () => {
@@ -98,7 +98,7 @@ describe('version flag with external packages', () => {
         expect(exitCode).toBe(2);
         expect(stderr).toContain(`[webpack-cli] Invalid command 'abc'`);
         expect(stderr).toContain('[webpack-cli] Run webpack --help to see available commands and arguments');
-        expect(stdout).toBe('');
+        expect(stdout).toBeFalsy();
     });
 
     it(' should throw error if invalid argument is present with -v alias', () => {
@@ -107,6 +107,6 @@ describe('version flag with external packages', () => {
         expect(exitCode).toBe(2);
         expect(stderr).toContain(`[webpack-cli] Invalid command 'abc'`);
         expect(stderr).toContain('[webpack-cli] Run webpack --help to see available commands and arguments');
-        expect(stdout).toBe('');
+        expect(stdout).toBeFalsy();
     });
 });

@@ -17,8 +17,7 @@ describe('function configuration', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--env', 'isProd']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
         // Should generate the appropriate files
         expect(existsSync(resolve(__dirname, './bin/prod.js'))).toBeTruthy();
@@ -28,8 +27,7 @@ describe('function configuration', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--env', 'isDev']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
         // Should generate the appropriate files
         expect(existsSync(resolve(__dirname, './bin/dev.js'))).toBeTruthy();
@@ -46,8 +44,7 @@ describe('function configuration', () => {
         ]);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
         // Should generate the appropriate files
         expect(existsSync(resolve(__dirname, './bin/Luffy.js'))).toBeTruthy();
@@ -64,8 +61,7 @@ describe('function configuration', () => {
         ]);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
         // Should generate the appropriate files
         expect(existsSync(resolve(__dirname, './bin/Atsumu.js'))).toBeTruthy();
@@ -82,8 +78,7 @@ describe('function configuration', () => {
         ]);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
         // Should generate the appropriate files
         expect(existsSync(resolve(__dirname, './bin/name=is=Eren.js'))).toBeTruthy();
@@ -100,8 +95,7 @@ describe('function configuration', () => {
         ]);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
         // Should generate the appropriate files
         expect(existsSync(resolve(__dirname, './bin/Hisoka.js'))).toBeTruthy();
@@ -111,8 +105,7 @@ describe('function configuration', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--env', 'name.', '--env', 'environment=dot', '-c', 'webpack.env.config.js']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
         // Should generate the appropriate files
         expect(existsSync(resolve(__dirname, './bin/true.js'))).toBeTruthy();
@@ -122,8 +115,7 @@ describe('function configuration', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--env', 'isDev', '--env', 'verboseStats', '--env', 'envMessage']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
         // check that the verbose env is respected
         expect(stdout).toContain('LOG from webpack');
