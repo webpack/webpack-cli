@@ -73,19 +73,22 @@ const outputHelp = (args) => {
         process.exit(2);
     }
 
-    const updatedFlagEntries = flags.map((flag) => {
-        if (flag.type.length > 1) {
-            flag.type = flag.type[0];
-        }
+    const updateFlagEntries = (flags) =>
+        flags.map((flag) => {
+            if (flag.type.length > 1) {
+                flag.type = flag.type[0];
+            }
 
-        // Here we replace special characters with chalk's escape
-        // syntax (`\$&`) to avoid chalk trying to re-process our input.
-        // This is needed because chalk supports a form of `{var}`
-        // interpolation.
-        flag.description = flag.description.replace(/[{}\\]/g, '\\$&');
+            // Here we replace special characters with chalk's escape
+            // syntax (`\$&`) to avoid chalk trying to re-process our input.
+            // This is needed because chalk supports a form of `{var}`
+            // interpolation.
+            flag.description = flag.description.replace(/[{}\\]/g, '\\$&');
 
-        return flag;
-    });
+            return flag;
+        });
+
+    let flagsToDisplay = flags.filter(({ help }) => help === 'base'); // basic options only one word
 
     // Print full help when no flag or command is supplied with help
     if (usedCommandOrFlag.length === 1) {
@@ -107,17 +110,15 @@ const outputHelp = (args) => {
         if (item.flags) {
             // The serve command supports stand-alone flags
             const isServe = isCommand && item.name === 'serve';
-            const optionList = isServe ? [].concat(item.flags, updatedFlagEntries) : item.flags;
+            const optionList = isServe ? [].concat(item.flags, updateFlagEntries(flagsToDisplay)) : item.flags;
 
-            const flags = commandLineUsage({
+            const flagsSection = commandLineUsage({
                 header: 'Options',
                 optionList,
             });
-            logger.raw(flags);
+            logger.raw(flagsSection);
         }
     } else {
-        let flagsToDisplay = flags.filter(({ help }) => help === 'base'); // basic options only one word
-
         const negatedFlags = (allFlags) => {
             return allFlags
                 .filter((flag) => flag.negative)
@@ -181,7 +182,7 @@ const outputHelp = (args) => {
                 },
                 {
                     header: 'Options',
-                    optionList: [].concat(updatedFlagEntries, negatedFlags(flagsToDisplay)),
+                    optionList: [].concat(updateFlagEntries(flagsToDisplay), negatedFlags(flagsToDisplay)),
                 },
             ]);
 
