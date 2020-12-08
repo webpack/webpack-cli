@@ -1,3 +1,5 @@
+const webpack = require('webpack');
+
 module.exports = [
     {
         name: 'first',
@@ -7,7 +9,7 @@ module.exports = [
             {
                 apply(compiler) {
                     (compiler.webpack ? compiler.hooks.afterDone : compiler.hooks.done).tap('webpack-cli-test', () => {
-                        console.log(`first compiled`);
+                        console.log(`webpack ${webpack.version}`);
                     });
                 },
             },
@@ -21,7 +23,7 @@ module.exports = [
             {
                 apply(compiler) {
                     (compiler.webpack ? compiler.hooks.afterDone : compiler.hooks.done).tap('webpack-cli-test', () => {
-                        console.log(`second compiled`);
+                        console.log(`webpack ${webpack.version}`);
                     });
                 },
             },

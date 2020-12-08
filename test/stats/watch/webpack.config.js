@@ -1,3 +1,5 @@
+const webpack = require('webpack');
+
 module.exports = {
     watch: true,
     stats: 'none',
@@ -6,7 +8,7 @@ module.exports = {
         {
             apply(compiler) {
                 (compiler.webpack ? compiler.hooks.afterDone : compiler.hooks.done).tap('webpack-cli-test', () => {
-                    console.log(`compiled`);
+                    console.log(`webpack ${webpack.version}`);
                 });
             },
         },
