@@ -52,7 +52,7 @@ const run = (testCase, args = [], setOutput = true, nodeOptions = [], env) => {
     return result;
 };
 
-const runWatch = (testCase, args = [], setOutput = true, outputKillStr = 'compiled') => {
+const runWatch = (testCase, args = [], setOutput = true, outputKillStr = 'webpack') => {
     const cwd = path.resolve(testCase);
 
     const outputPath = path.resolve(testCase, 'bin');
