@@ -23,11 +23,6 @@ process.stdin.on('end', () => {
     process.exit(0);
 });
 
-// Exit process when stream closes
-process.stdin.on('close', () => {
-    process.exit(0);
-});
-
 process.stdin.resume();
 
 const [, , ...rawArgs] = process.argv;
