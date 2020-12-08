@@ -73,6 +73,20 @@ const outputHelp = (args) => {
         process.exit(2);
     }
 
+    const updatedFlagEntries = flags.map((flag) => {
+        if (flag.type.length > 1) {
+            flag.type = flag.type[0];
+        }
+
+        // Here we replace special characters with chalk's escape
+        // syntax (`\$&`) to avoid chalk trying to re-process our input.
+        // This is needed because chalk supports a form of `{var}`
+        // interpolation.
+        flag.description = flag.description.replace(/[{}\\]/g, '\\$&');
+
+        return flag;
+    });
+
     // Print full help when no flag or command is supplied with help
     if (usedCommandOrFlag.length === 1) {
         const [item] = usedCommandOrFlag;
@@ -91,9 +105,13 @@ const outputHelp = (args) => {
         }
 
         if (item.flags) {
+            // The serve command supports stand-alone flags
+            const isServe = isCommand && item.name === 'serve';
+            const optionList = isServe ? [].concat(item.flags, updatedFlagEntries) : item.flags;
+
             const flags = commandLineUsage({
                 header: 'Options',
-                optionList: item.flags,
+                optionList,
             });
             logger.raw(flags);
         }
@@ -163,21 +181,7 @@ const outputHelp = (args) => {
                 },
                 {
                     header: 'Options',
-                    optionList: flagsToDisplay
-                        .map((e) => {
-                            if (e.type.length > 1) {
-                                e.type = e.type[0];
-                            }
-
-                            // Here we replace special characters with chalk's escape
-                            // syntax (`\$&`) to avoid chalk trying to re-process our input.
-                            // This is needed because chalk supports a form of `{var}`
-                            // interpolation.
-                            e.description = e.description.replace(/[{}\\]/g, '\\$&');
-
-                            return e;
-                        })
-                        .concat(negatedFlags(flagsToDisplay)),
+                    optionList: [].concat(updatedFlagEntries, negatedFlags(flagsToDisplay)),
                 },
             ]);
 
