@@ -1,9 +1,6 @@
 const packageExists = require('./package-exists');
 const cli = packageExists('webpack') ? require('webpack').cli : undefined;
 
-// eslint-disable-next-line node/no-extraneous-require
-const devServerFlags = packageExists('webpack-dev-server') ? require('webpack-dev-server/bin/cli-flags').devServer : undefined;
-
 const builtInFlags = [
     // For configs
     {
@@ -225,33 +222,7 @@ const flags = []
     .concat(builtInFlags.filter((builtInFlag) => !coreFlags.find((coreFlag) => builtInFlag.name === coreFlag.name)))
     .concat(coreFlags);
 
-const isCommandUsed = (args) =>
-    commands.find((cmd) => {
-        return args.includes(cmd.name) || args.includes(cmd.alias);
-    });
-
-const commands = [
-    {
-        packageName: '@webpack-cli/serve',
-        name: 'serve',
-        alias: 's',
-        scope: 'external',
-        type: String,
-        usage: 'serve [options]',
-        description: 'Run the webpack Dev Server',
-        flags: [
-            ...(devServerFlags &&
-                devServerFlags.reduce((cliArgs, { name, type, describe }) => {
-                    return [...cliArgs, { name, type, description: describe }];
-                }, [])),
-            ...flags,
-        ],
-    },
-];
-
 module.exports = {
-    commands,
     cli,
     flags,
-    isCommandUsed,
 };

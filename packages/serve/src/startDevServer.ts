@@ -1,6 +1,5 @@
 import { utils } from 'webpack-cli';
 
-import getDevServerOptions from './getDevServerOptions';
 import mergeOptions from './mergeOptions';
 
 const { logger } = utils;
@@ -34,7 +33,20 @@ export default async function startDevServer(compiler, cliOptions): Promise<obje
 
     isDevServer4 = devServerVersion.startsWith('4');
 
-    const devServerOptions = getDevServerOptions(compiler);
+    const defaultOpts = {};
+    const devServerOptions = [];
+    const compilers = compiler.compilers || [compiler];
+
+    compilers.forEach((comp) => {
+        if (comp.options.devServer) {
+            devServerOptions.push(comp.options.devServer);
+        }
+    });
+
+    if (devServerOptions.length === 0) {
+        devServerOptions.push(defaultOpts);
+    }
+
     const servers = [];
     const usedPorts: number[] = [];
 
