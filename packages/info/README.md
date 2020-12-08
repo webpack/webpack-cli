@@ -23,6 +23,9 @@ yarn add @webpack-cli/info -D
 #npx
 npx webpack info [options]
 
+#local installation
+webpack info [options]
+
 ```
 
 ### Args / Flags
