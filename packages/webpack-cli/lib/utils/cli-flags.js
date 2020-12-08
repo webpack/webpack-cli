@@ -105,10 +105,10 @@ const builtInFlags = [
     },
     {
         name: 'merge',
-        usage: '--merge',
+        usage: '--config <first-config> --config <second-config> --merge',
         alias: 'm',
         type: Boolean,
-        description: 'Merge two or more configurations using webpack-merge e.g. -c ./webpack.config.js -c ./webpack.test.config.js --merge',
+        description: 'Merge two or more configurations using webpack-merge',
         link: 'https://github.com/survivejs/webpack-merge',
     },
     // Complex configs
