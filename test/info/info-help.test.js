@@ -2,9 +2,6 @@
 
 const { green } = require('colorette');
 const { runInfo } = require('../utils/test-utils');
-const { commands } = require('../../packages/webpack-cli/lib/utils/cli-flags');
-
-const infoFlags = commands.find((c) => c.name === 'info').flags;
 
 const usageText = 'webpack i | info [options]';
 const descriptionText = 'Outputs information about your system and dependencies';
@@ -42,7 +39,6 @@ describe('should print help for info command', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-
-        infoFlags.forEach((flag) => expect(stdout).toContain(`--${flag.name}`));
+        expect(stdout).toContain(`--output`);
     });
 });

@@ -27,7 +27,7 @@ describe('output flag defaults', () => {
     it('throw error on empty output flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--entry', './a.js', '--output-path'], false);
 
-        expect(exitCode).toBe(1);
+        expect(exitCode).toBe(2);
         expect(stderr).toContain("error: option '-o, --output-path <value>' argument missing");
         expect(stdout).toBeFalsy();
     });

@@ -7,8 +7,7 @@ describe('function configuration', () => {
     it('should throw when env is not supplied', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--env'], false);
 
-        // TODO Bug, need to fix
-        expect(exitCode).toBe(1);
+        expect(exitCode).toBe(2);
         expect(stderr).toContain(`option '--env <value>' argument missing`);
         expect(stdout).toBeFalsy();
     });

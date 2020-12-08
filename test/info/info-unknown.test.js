@@ -5,7 +5,7 @@ describe('should handle unknown args', () => {
         const { exitCode, stderr, stdout } = runInfo(['--unknown'], __dirname);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("Unknown option '--unknown'");
+        expect(stderr).toContain("unknown option '--unknown'");
         expect(stdout).toBeFalsy();
     });
 });
