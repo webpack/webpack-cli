@@ -18,6 +18,18 @@ if (importLocal(__filename)) {
 
 process.title = 'webpack';
 
+// Exit process when no data is to be consumed
+process.stdin.on('end', () => {
+    process.exit(0);
+});
+
+// Exit process when stream closes
+process.stdin.on('close', () => {
+    process.exit(0);
+});
+
+process.stdin.resume();
+
 const [, , ...rawArgs] = process.argv;
 
 if (packageExists('webpack')) {
