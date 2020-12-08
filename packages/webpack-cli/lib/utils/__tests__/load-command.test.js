@@ -1,6 +1,6 @@
 jest.setMock('../prompt-installation', jest.fn());
 
-const resolveCommand = require('../resolve-command');
+const loadCommand = require('../load-command');
 const promptInstallation = require('../prompt-installation');
 
 describe('resolve-command util', () => {
@@ -15,7 +15,8 @@ describe('resolve-command util', () => {
     it('should not throw error', async () => {
         promptInstallation.mockImplementation(() => {});
 
-        await expect(resolveCommand('info')).resolves.not.toThrow();
+        await loadCommand('@webpack-cli/info');
+
         expect(processExitSpy.mock.calls.length).toBe(0);
         expect(consoleErrorSpy.mock.calls.length).toBe(0);
     });
@@ -25,7 +26,8 @@ describe('resolve-command util', () => {
             throw new Error();
         });
 
-        await resolveCommand('invalid');
+        await loadCommand('invalid');
+
         expect(processExitSpy).toBeCalledWith(2);
         expect(consoleErrorSpy.mock.calls.length).toBe(1);
     });

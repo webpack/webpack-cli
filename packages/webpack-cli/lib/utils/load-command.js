@@ -7,6 +7,7 @@ const promptInstallation = require('./prompt-installation');
 const loadCommand = async (name) => {
     let packageLocation = packageExists(name);
 
+    // TODO remove this
     if (!packageLocation) {
         try {
             packageLocation = await promptInstallation(`${name}`, () => {
