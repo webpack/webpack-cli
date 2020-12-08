@@ -1,7 +1,7 @@
 'use strict';
 
 const { red } = require('colorette');
-
+const { join } = require('path');
 const { runInfo } = require('../utils/test-utils');
 
 describe('basic info usage', () => {
@@ -10,6 +10,19 @@ describe('basic info usage', () => {
         // stdout should include many details which will be
         // unique for each computer
         expect(stdout).toContain('System:');
+        expect(stdout).toContain('Node');
+        expect(stdout).toContain('npm');
+        expect(stdout).toContain('Yarn');
+        expect(stderr).toHaveLength(0);
+    });
+
+    it('gets more info in project root', () => {
+        const { stdout, stderr } = runInfo([], join(__dirname, '../../'));
+        // stdout should include many details which will be
+        // unique for each computer
+        expect(stdout).toContain('System:');
+        expect(stdout).toContain('Monorepos:');
+        expect(stdout).toContain('Packages:');
         expect(stdout).toContain('Node');
         expect(stdout).toContain('npm');
         expect(stdout).toContain('Yarn');
