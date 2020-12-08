@@ -5,6 +5,6 @@ module.exports = [
     },
     {
         name: 'config-error',
-        target: 'node'; // error eslint-ignore
-    }
-]
+        target: 'node', // error eslint-ignore
+    },
+];
