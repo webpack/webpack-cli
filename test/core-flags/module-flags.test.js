@@ -22,22 +22,19 @@ describe('module config related flag', () => {
                     const { stderr, stdout } = run(__dirname, [`--${flag.name}`]);
                     const option = propName.split('Reset')[0];
 
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${option}: []`);
                 } else if (flag.name.includes('rules-')) {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--no-${flag.name}`]);
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain("sideEffects: 'flag'");
                 } else {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`]);
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: true`);
                 }
             });
@@ -47,8 +44,7 @@ describe('module config related flag', () => {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--no-${flag.name}`]);
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
 
                     if (flag.name.includes('rules-')) {
                         expect(stdout).toContain('sideEffects: false');
@@ -65,15 +61,13 @@ describe('module config related flag', () => {
 
                 if (flag.name === 'module-no-parse') {
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain('value');
                 } else if (flag.name.includes('reg-exp')) {
                     ({ stdout, stderr, exitCode } = run(__dirname, [`--${flag.name}`, '/ab?c*/']));
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: /ab?c*/`);
                 } else if (flag.name.includes('module-rules-')) {
                     ({ stdout } = run(__dirname, [`--${flag.name}`, 'javascript/auto']));
@@ -92,9 +86,8 @@ describe('module config related flag', () => {
                     }
                 } else {
                     expect(exitCode).toBe(0);
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: 'value'`);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
                 }
             });
         }

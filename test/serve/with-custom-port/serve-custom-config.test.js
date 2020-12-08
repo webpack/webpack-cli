@@ -26,8 +26,7 @@ describe('serve with devServer in config', () => {
     it('Should pick up the host and port from config', async () => {
         const { stdout, stderr } = await runServe([], testPath);
 
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         // Should output the correct bundle file
         expect(stdout).toContain('main.js');
         expect(stdout).not.toContain('HotModuleReplacementPlugin');
@@ -38,8 +37,7 @@ describe('serve with devServer in config', () => {
     it('Port flag should override the config port', async () => {
         const { stdout, stderr } = await runServe(['--port', port], testPath);
 
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         // Should output the correct bundle file
         expect(stdout).toContain('main.js');
         expect(stdout).not.toContain('HotModuleReplacementPlugin');
@@ -50,8 +48,7 @@ describe('serve with devServer in config', () => {
     it('Passing hot flag works alongside other server config', async () => {
         const { stdout, stderr } = await runServe(['--port', port, '--hot'], testPath);
 
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         // Should output the correct bundle file
         expect(stdout).toContain('main.js');
         // HMR is being used
@@ -63,8 +60,7 @@ describe('serve with devServer in config', () => {
     it('works fine when no-hot flag is passed alongside other server config', async () => {
         const { stdout, stderr } = await runServe(['--port', port, '--no-hot'], testPath);
 
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         // Should output the correct bundle file
         expect(stdout).toContain('main.js');
         // HMR is not being used

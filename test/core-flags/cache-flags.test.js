@@ -11,8 +11,7 @@ describe('cache related flags from core', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--cache']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'compiler' starting...");
-        expect(stderr).toContain("Compilation 'compiler' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain(`type: 'memory'`);
     });
 
@@ -20,8 +19,7 @@ describe('cache related flags from core', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--no-cache']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'compiler' starting...");
-        expect(stderr).toContain("Compilation 'compiler' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain('cache: false');
     });
 
@@ -33,8 +31,7 @@ describe('cache related flags from core', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '--cache-cache-location', cacheLocation]);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'compiler' starting...");
-        expect(stderr).toContain("Compilation 'compiler' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain(`type: 'filesystem'`);
     });
 
@@ -53,8 +50,7 @@ describe('cache related flags from core', () => {
         ]);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'compiler' starting...");
-        expect(stderr).toContain("Compilation 'compiler' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain("type: 'filesystem'");
         expect(stdout).toContain('test-cache-path');
     });
@@ -67,8 +63,7 @@ describe('cache related flags from core', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '--cache-cache-location', cacheLocation]);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'compiler' starting...");
-        expect(stderr).toContain("Compilation 'compiler' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain("type: 'filesystem'");
         expect(stdout).toContain('cache-core-flag-test-cache-location');
         expect(existsSync(cacheLocation)).toBeTruthy();
@@ -89,8 +84,7 @@ describe('cache related flags from core', () => {
         ]);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'compiler' starting...");
-        expect(stderr).toContain("Compilation 'compiler' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain("type: 'filesystem'");
         expect(stdout).toContain(`hashAlgorithm: 'sha256'`);
     });
@@ -110,8 +104,7 @@ describe('cache related flags from core', () => {
         ]);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'compiler' starting...");
-        expect(stderr).toContain("Compilation 'compiler' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain("type: 'filesystem'");
         expect(stdout).toContain(`name: 'cli-test'`);
     });
@@ -131,8 +124,7 @@ describe('cache related flags from core', () => {
         ]);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'compiler' starting...");
-        expect(stderr).toContain("Compilation 'compiler' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain("type: 'filesystem'");
         expect(stdout).toContain(`store: 'pack'`);
     });
@@ -152,8 +144,7 @@ describe('cache related flags from core', () => {
         ]);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'compiler' starting...");
-        expect(stderr).toContain("Compilation 'compiler' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain("type: 'filesystem'");
         expect(stdout).toContain(`version: '1.1.3'`);
     });
@@ -173,8 +164,7 @@ describe('cache related flags from core', () => {
         ]);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'compiler' starting...");
-        expect(stderr).toContain("Compilation 'compiler' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain("type: 'filesystem'");
         expect(stdout).toContain('buildDependencies');
         // expect(stdout).toContain(`'${path.join(__dirname, './webpack.config.js')}'`);
@@ -191,8 +181,7 @@ describe('cache related flags from core', () => {
         ]));
 
         expect(exitCode).toEqual(0);
-        expect(stderr).toContain("Compilation 'compiler' starting...");
-        expect(stderr).toContain("Compilation 'compiler' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain('[cached]');
     });
 
@@ -207,8 +196,7 @@ describe('cache related flags from core', () => {
         let { exitCode, stderr, stdout } = run(__dirname, ['-c', './webpack.cache.config.js', '--cache-cache-location', cacheLocation]);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'compiler-cache' starting...");
-        expect(stderr).toContain("Compilation 'compiler-cache' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain("type: 'filesystem'");
         expect(stdout).toContain('buildDependencies');
         // expect(stdout).toContain(`'${path.join(__dirname, './webpack.cache.config.js')}'`);
@@ -217,8 +205,7 @@ describe('cache related flags from core', () => {
         ({ exitCode, stderr, stdout } = run(__dirname, ['-c', './webpack.cache.config.js', '--cache-cache-location', cacheLocation]));
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'compiler-cache' starting...");
-        expect(stderr).toContain("Compilation 'compiler-cache' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain('[cached]');
     });
 
@@ -228,8 +215,7 @@ describe('cache related flags from core', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['-c', './webpack.cache.config.js', '-c', './webpack.config.js']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'compiler' starting...");
-        expect(stderr).toContain("Compilation 'compiler' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain("type: 'filesystem'");
         expect(stdout).toContain('buildDependencies');
         // expect(stdout).toContain(`'${resolve(__dirname, 'webpack.cache.config.js')}'`);
@@ -242,8 +228,7 @@ describe('cache related flags from core', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '--name', 'cache-core-flag-test']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'cache-core-flag-test' starting...");
-        expect(stderr).toContain("Compilation 'cache-core-flag-test' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain('buildDependencies');
         // expect(stdout).toContain(`'${path.join(__dirname, './webpack.config.js')}'`);
         expect(stdout).toContain("type: 'filesystem'");
@@ -265,8 +250,7 @@ describe('cache related flags from core', () => {
         ]);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'compiler' starting...");
-        expect(stderr).toContain("Compilation 'compiler' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain("type: 'filesystem'");
         expect(stdout).toContain('buildDependencies');
         // expect(stdout).toContain(`'${path.join(__dirname, './webpack.cache.config.js')}'`);
@@ -283,16 +267,14 @@ describe('cache related flags from core', () => {
         let { exitCode, stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.test.config.js']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).not.toContain('[cached]');
 
         // Running again should use the cache
         ({ exitCode, stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.test.config.js']));
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain('[cached]');
 
         // Change config to invalidate cache
@@ -303,8 +285,7 @@ describe('cache related flags from core', () => {
         unlinkSync(resolve(__dirname, './webpack.test.config.js'));
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).not.toContain('[cached]');
     });
 });

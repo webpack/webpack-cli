@@ -12,8 +12,7 @@ describe('empty config', () => {
         );
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
     });
 });

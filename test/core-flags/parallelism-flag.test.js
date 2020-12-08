@@ -7,8 +7,7 @@ describe('--parallelism flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--parallelism', '50']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'compiler' starting...");
-        expect(stderr).toContain("Compilation 'compiler' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain('parallelism: 50');
     });
 
@@ -16,8 +15,6 @@ describe('--parallelism flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--parallelism', '0']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).not.toContain("Compilation 'compiler' starting...");
-        expect(stderr).not.toContain("Compilation 'compiler' finished");
         expect(stderr).toContain('configuration.parallelism should be >= 1');
         expect(stdout).toBeFalsy();
     });

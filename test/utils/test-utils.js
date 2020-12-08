@@ -7,6 +7,7 @@ const { sync: spawnSync, node: execaNode } = execa;
 const { Writable } = require('readable-stream');
 const concat = require('concat-stream');
 const { version } = require('webpack');
+const stripAnsi = require('strip-ansi');
 const { version: devServerVersion } = require('webpack-dev-server/package.json');
 
 const WEBPACK_PATH = path.resolve(__dirname, '../../packages/webpack-cli/bin/cli.js');
@@ -51,7 +52,7 @@ const run = (testCase, args = [], setOutput = true, nodeOptions = [], env) => {
     return result;
 };
 
-const runWatch = (testCase, args = [], setOutput = true, outputKillStr = 'Compiler is watching files for updates...') => {
+const runWatch = (testCase, args = [], setOutput = true, outputKillStr = /webpack \d+\.\d+\.\d/) => {
     const cwd = path.resolve(testCase);
 
     const outputPath = path.resolve(testCase, 'bin');
@@ -64,12 +65,12 @@ const runWatch = (testCase, args = [], setOutput = true, outputKillStr = 'Compil
             stdio: 'pipe',
         });
 
-        proc.stderr.pipe(
+        proc.stdout.pipe(
             new Writable({
                 write(chunk, encoding, callback) {
-                    const output = chunk.toString('utf8');
+                    const output = stripAnsi(chunk.toString('utf8'));
 
-                    if (output.includes(outputKillStr)) {
+                    if (outputKillStr.test(output)) {
                         if (isWindows) {
                             exec('taskkill /pid ' + proc.pid + ' /T /F');
                         } else {

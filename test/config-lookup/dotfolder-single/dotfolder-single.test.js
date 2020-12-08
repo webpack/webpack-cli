@@ -10,8 +10,7 @@ describe('dotfolder single config lookup', () => {
         const { exitCode, stderr, stdout } = run(__dirname, [], false);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).not.toContain('Module not found');
         expect(stdout).toBeTruthy();
         expect(existsSync(resolve(__dirname, './dist/main.js'))).toBeTruthy();

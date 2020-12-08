@@ -6,8 +6,7 @@ describe('webpack cli', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['-c', 'webpack.config.coffee'], false);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
     });
 
@@ -15,8 +14,7 @@ describe('webpack cli', () => {
         const { exitCode, stderr, stdout } = run(__dirname, [], false);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
     });
 });

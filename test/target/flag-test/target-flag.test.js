@@ -9,8 +9,7 @@ describe('--target flag', () => {
             const { exitCode, stderr, stdout } = run(__dirname, ['--target', `${val}`]);
 
             expect(exitCode).toBe(0);
-            expect(stderr).toContain('Compilation starting...');
-            expect(stderr).toContain('Compilation finished');
+            expect(stderr).toBeFalsy();
 
             if (isWebpack5) {
                 expect(stdout).toContain(`target: [ '${val}' ]`);
@@ -23,8 +22,7 @@ describe('--target flag', () => {
             const { exitCode, stderr, stdout } = run(__dirname, ['-t', `${val}`]);
 
             expect(exitCode).toBe(0);
-            expect(stderr).toContain('Compilation starting...');
-            expect(stderr).toContain('Compilation finished');
+            expect(stderr).toBeFalsy();
 
             if (isWebpack5) {
                 expect(stdout).toContain(`target: [ '${val}' ]`);
@@ -53,8 +51,7 @@ describe('--target flag', () => {
             const { exitCode, stderr, stdout } = run(__dirname, ['--target', 'node', '--target', 'async-node']);
 
             expect(exitCode).toBe(0);
-            expect(stderr).toContain('Compilation starting...');
-            expect(stderr).toContain('Compilation finished');
+            expect(stderr).toBeFalsy();
             expect(stdout).toContain(`target: [ 'node', 'async-node' ]`);
         });
 
@@ -78,8 +75,7 @@ describe('--target flag', () => {
             const { exitCode, stderr, stdout } = run(__dirname, ['--target-reset', '--target', 'async-node']);
 
             expect(exitCode).toBe(0);
-            expect(stderr).toContain('Compilation starting...');
-            expect(stderr).toContain('Compilation finished');
+            expect(stderr).toBeFalsy();
             expect(stdout).toContain(`target: [ 'async-node' ]`);
         });
 

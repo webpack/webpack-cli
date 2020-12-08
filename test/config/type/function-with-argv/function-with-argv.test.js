@@ -8,8 +8,7 @@ describe('function configuration', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--mode', 'development'], false);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
         expect(stdout).toContain("argv: { mode: 'development' }");
         expect(existsSync(resolve(__dirname, './dist/dev.js')));

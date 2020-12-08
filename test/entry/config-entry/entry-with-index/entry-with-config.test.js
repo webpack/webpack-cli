@@ -7,8 +7,7 @@ describe('default entry and config entry all exist', () => {
         const { exitCode, stderr, stdout } = run(__dirname, [], false);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         // Should contain the relevant entry
         expect(stdout).toContain('./src/app.js');
         expect(stdout).toContain('./src/print.js');

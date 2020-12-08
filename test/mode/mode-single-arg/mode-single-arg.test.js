@@ -7,8 +7,7 @@ describe('mode flags', () => {
         const { exitCode, stderr, stdout } = run(__dirname);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).not.toContain(`mode: 'production'`);
         expect(stdout).toContain(`The 'mode' option has not been set, webpack will fallback to 'production' for this value.`);
     });
@@ -17,8 +16,7 @@ describe('mode flags', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--mode', 'development']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain(`mode: 'development'`);
     });
 
@@ -26,8 +24,7 @@ describe('mode flags', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--mode', 'production']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain(`mode: 'production'`);
     });
 
@@ -35,8 +32,7 @@ describe('mode flags', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--mode', 'none']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain(`mode: 'none'`);
     });
 
@@ -44,8 +40,7 @@ describe('mode flags', () => {
         const { exitCode, stderr, stdout } = run(__dirname, [], false, [], { NODE_ENV: 'development' });
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain(`mode: 'development'`);
     });
 

@@ -5,8 +5,7 @@ describe('Zero Config tests', () => {
         const { exitCode, stderr, stdout } = run(__dirname, [], false);
 
         expect(exitCode).toBe(1);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         // Entry file is absent, should log the Error from the compiler
         expect(stdout).toContain("Error: Can't resolve './src'");
     });

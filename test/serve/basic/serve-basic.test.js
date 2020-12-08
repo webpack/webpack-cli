@@ -37,8 +37,7 @@ describe('basic serve usage', () => {
     it('should not invoke info subcommand', async () => {
         const { stdout, stderr } = await runServe(['--client-log-level', 'info'], testPath);
 
-        expect(stderr).toContain('Compilation finished');
-        expect(stderr).toContain('Compilation starting...');
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain('main.js');
         expect(stdout).not.toContain('HotModuleReplacementPlugin');
     });
@@ -46,8 +45,7 @@ describe('basic serve usage', () => {
     it('compiles without flags', async () => {
         const { stdout, stderr } = await runServe(['--port', port], testPath);
 
-        expect(stderr).toContain('Compilation finished');
-        expect(stderr).toContain('Compilation starting...');
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain('main.js');
         expect(stdout).not.toContain('HotModuleReplacementPlugin');
     });
@@ -55,8 +53,7 @@ describe('basic serve usage', () => {
     it('uses hot flag to alter bundle', async () => {
         const { stdout, stderr } = await runServe(['--port', port, '--hot'], testPath);
 
-        expect(stderr).toContain('Compilation finished');
-        expect(stderr).toContain('Compilation starting...');
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain('main.js');
         expect(stdout).toContain('HotModuleReplacementPlugin');
     });
@@ -64,8 +61,7 @@ describe('basic serve usage', () => {
     it('uses hot-only flag to alter bundle', async () => {
         const { stdout, stderr } = await runServe(['--port', port, isDevServer4 ? '--hot only' : '--hot-only'], testPath);
 
-        expect(stderr).toContain('Compilation finished');
-        expect(stderr).toContain('Compilation starting...');
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain('main.js');
         expect(stdout).toContain('HotModuleReplacementPlugin');
     });
@@ -73,9 +69,8 @@ describe('basic serve usage', () => {
     it('uses no-hot flag', async () => {
         const { stdout, stderr } = await runServe(['--port', port, '--no-hot'], testPath);
 
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain('main.js');
-        expect(stderr).toContain('Compilation finished');
-        expect(stderr).toContain('Compilation starting...');
         expect(stdout).not.toContain('HotModuleReplacementPlugin');
     });
 
@@ -83,8 +78,6 @@ describe('basic serve usage', () => {
         const { stdout, stderr } = await runServe(['--port', port, '--hot', '--progress'], testPath);
 
         expect(stderr).toContain('webpack.Progress');
-        expect(stderr).toContain('Compilation finished');
-        expect(stderr).toContain('Compilation starting...');
         expect(stdout).toContain('main.js');
         expect(stdout).toContain('HotModuleReplacementPlugin');
     });

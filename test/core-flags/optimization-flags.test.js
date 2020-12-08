@@ -26,22 +26,19 @@ describe('optimization config related flag', () => {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--no-${flag.name}`]);
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`splitChunks: false`);
                 } else if (flag.name.includes('reset')) {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`]);
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: []`);
                 } else {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`]);
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: true`);
                 }
             });
@@ -51,8 +48,7 @@ describe('optimization config related flag', () => {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--no-${flag.name}`]);
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
 
                     if (flag.name === 'optimization-split-chunks') {
                         expect(stdout).toContain('splitChunks: false');
@@ -71,43 +67,37 @@ describe('optimization config related flag', () => {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'initial']);
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`chunks: 'initial'`);
                 } else if (flag.name === 'optimization-mangle-exports') {
                     const { exitCode, stderr, stdout } = run(__dirname, ['--optimization-mangle-exports', 'size']);
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`mangleExports: 'size'`);
                 } else if (flag.name === 'optimization-used-exports') {
                     const { exitCode, stderr, stdout } = run(__dirname, ['--optimization-used-exports', 'global']);
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`usedExports: 'global'`);
                 } else if (flag.name === 'optimization-split-chunks-default-size-types') {
                     const { exitCode, stderr, stdout } = run(__dirname, ['--optimization-split-chunks-default-size-types', 'global']);
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`defaultSizeTypes: [Array]`);
                 } else if (flag.name === 'optimization-side-effects') {
                     const { exitCode, stderr, stdout } = run(__dirname, ['--optimization-side-effects', 'flag']);
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: 'flag'`);
                 } else {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'named']);
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: 'named'`);
                 }
             });
@@ -118,8 +108,7 @@ describe('optimization config related flag', () => {
                 const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, '10']);
 
                 expect(exitCode).toBe(0);
-                expect(stderr).toContain("Compilation 'compiler' starting...");
-                expect(stderr).toContain("Compilation 'compiler' finished");
+                expect(stderr).toBeFalsy();
 
                 if (flag.name === 'optimization-split-chunks') {
                     expect(stdout).toContain(`chunks: 'async'`);

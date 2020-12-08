@@ -7,8 +7,7 @@ describe('infrastructure logging related flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--infrastructure-logging-debug', 'myPlugin']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'compiler' starting...");
-        expect(stderr).toContain("Compilation 'compiler' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain(`debug: [ 'myPlugin' ]`);
     });
 
@@ -16,8 +15,7 @@ describe('infrastructure logging related flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--infrastructure-logging-debug-reset']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'compiler' starting...");
-        expect(stderr).toContain("Compilation 'compiler' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain(`debug: []`);
     });
 
