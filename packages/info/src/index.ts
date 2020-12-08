@@ -32,13 +32,18 @@ const DEFAULT_DETAILS: Information = {
     npmPackages: '*webpack*',
 };
 
-export default async function info(args): Promise<string> {
+export default async function info(args?): Promise<string> {
     const envinfoConfig = {};
+
+    // Support for passing empty options
+    if (args === undefined) {
+        args = {};
+    }
+
     if (args.unknownArgs && args.unknownArgs.length > 0) {
         logger.error(`Unknown argument: ${args.unknownArgs}`);
         process.exit(2);
     }
-
     if (args.output) {
         // Remove quotes if exist
         const output = args.output.replace(/['"]+/g, '');

@@ -2,7 +2,7 @@ import info from '../src/index';
 
 describe('info tests', () => {
     it('should log environment info', async () => {
-        const envInfo = await info({});
+        const envInfo = await info();
 
         expect(envInfo).toContain('System');
         expect(envInfo).toContain('Binaries');
