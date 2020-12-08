@@ -176,7 +176,7 @@ function runMigration(currentConfigPath: string, outputConfigPath: string): Prom
 export default async function migrate(args: string[]): Promise<void> {
     const filePaths = args;
     if (!filePaths.length) {
-        logger.error('\n ✖ Please specify a path to your webpack config\n');
+        logger.error('Please specify a path to your webpack config');
         return;
     }
 
@@ -194,7 +194,7 @@ export default async function migrate(args: string[]): Promise<void> {
                 },
             ]);
             if (!confirmPath) {
-                logger.error('✖ ︎Migration aborted due to no output path');
+                logger.error('︎Migration aborted due to no output path');
                 return;
             }
             outputConfigPath = path.resolve(filePaths[0]);

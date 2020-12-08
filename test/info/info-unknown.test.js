@@ -1,4 +1,3 @@
-const { red } = require('colorette');
 const { runInfo } = require('../utils/test-utils');
 
 describe('should handle unknown args', () => {
@@ -6,7 +5,7 @@ describe('should handle unknown args', () => {
         const { exitCode, stderr, stdout } = runInfo(['--unknown'], __dirname);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain(`[webpack-cli] ${red('Unknown argument: --unknown')}`);
+        expect(stderr).toContain("Unknown option '--unknown'");
         expect(stdout).toBeFalsy();
     });
 });

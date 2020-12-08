@@ -14,25 +14,35 @@ describe('should print help for info command', () => {
         const { exitCode, stderr, stdout } = runInfo(['--help'], __dirname);
 
         expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain(usageText);
         expect(stdout).toContain(descriptionText);
-        expect(stderr).toHaveLength(0);
     });
 
-    it.skip('should work and respect the --no-color flag', () => {
+    it('should work and respect the --no-color flag', () => {
         const { exitCode, stderr, stdout } = runInfo(['--help', '--no-color'], __dirname);
 
         expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
         expect(stdout).not.toContain(green(usageText));
         expect(stdout).toContain(descriptionText);
-        expect(stderr).toHaveLength(0);
+    });
+
+    it('should work and respect the --color flag', () => {
+        const { exitCode, stderr, stdout } = runInfo(['--help', '--color'], __dirname);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain(green(usageText));
+        expect(stdout).toContain(descriptionText);
     });
 
     it('should output all cli flags', () => {
         const { exitCode, stderr, stdout } = runInfo(['--help'], __dirname);
 
-        infoFlags.forEach((flag) => expect(stdout).toContain(`--${flag.name}`));
-        expect(stderr).toHaveLength(0);
         expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+
+        infoFlags.forEach((flag) => expect(stdout).toContain(`--${flag.name}`));
     });
 });

@@ -4,6 +4,113 @@ const { commands } = require('./cli-flags');
 const runHelp = require('../groups/runHelp');
 const runVersion = require('../groups/runVersion');
 
+function makeOption(command, option, processors) {
+    let optionType = option.type;
+    let isStringOrBool = false;
+
+    if (Array.isArray(optionType)) {
+        // filter out duplicate types
+        optionType = optionType.filter((type, index) => {
+            return optionType.indexOf(type) === index;
+        });
+
+        // the only multi type currently supported is String and Boolean,
+        // if there is a case where a different multi type is needed it
+        // must be added here
+        if (optionType.length === 0) {
+            // if no type is provided in the array fall back to Boolean
+            optionType = Boolean;
+        } else if (optionType.length === 1 || optionType.length > 2) {
+            // treat arrays with 1 or > 2 args as a single type
+            optionType = optionType[0];
+        } else {
+            // only String and Boolean multi type is supported
+            if (optionType.includes(Boolean) && optionType.includes(String)) {
+                isStringOrBool = true;
+            } else {
+                optionType = optionType[0];
+            }
+        }
+    }
+
+    const flags = option.alias ? `-${option.alias}, --${option.name}` : `--${option.name}`;
+
+    let flagsWithType = flags;
+
+    if (isStringOrBool) {
+        // commander recognizes [value] as an optional placeholder,
+        // making this flag work either as a string or a boolean
+        flagsWithType = `${flags} [value]`;
+    } else if (optionType !== Boolean) {
+        // <value> is a required placeholder for any non-Boolean types
+        flagsWithType = `${flags} <value>`;
+    }
+
+    if (isStringOrBool || optionType === Boolean || optionType === String) {
+        if (option.multiple) {
+            // a multiple argument parsing function
+            const multiArg = (value, previous = []) => previous.concat([value]);
+
+            command.option(flagsWithType, option.description, multiArg, option.defaultValue).action(() => {});
+        } else if (option.multipleType) {
+            // for options which accept multiple types like env
+            // so you can do `--env platform=staging --env production`
+            // { platform: "staging", production: true }
+            const multiArg = (value, previous = {}) => {
+                // this ensures we're only splitting by the first `=`
+                const [allKeys, val] = value.split(/=(.+)/, 2);
+                const splitKeys = allKeys.split(/\.(?!$)/);
+
+                let prevRef = previous;
+
+                splitKeys.forEach((someKey, index) => {
+                    if (!prevRef[someKey]) {
+                        prevRef[someKey] = {};
+                    }
+
+                    if ('string' === typeof prevRef[someKey]) {
+                        prevRef[someKey] = {};
+                    }
+
+                    if (index === splitKeys.length - 1) {
+                        prevRef[someKey] = val || true;
+                    }
+
+                    prevRef = prevRef[someKey];
+                });
+
+                return previous;
+            };
+            command.option(flagsWithType, option.description, multiArg, option.defaultValue).action(() => {});
+        } else {
+            // Prevent default behavior for standalone options
+            command.option(flagsWithType, option.description, option.defaultValue).action(() => {});
+        }
+    } else if (optionType === Number) {
+        // this will parse the flag as a number
+        command.option(flagsWithType, option.description, Number, option.defaultValue);
+    } else {
+        // in this case the type is a parsing function
+        command.option(flagsWithType, option.description, optionType, option.defaultValue).action(() => {});
+    }
+
+    if (option.negative) {
+        // commander requires explicitly adding the negated version of boolean flags
+        const negatedFlag = `--no-${option.name}`;
+
+        command.option(negatedFlag, `negates ${option.name}`).action(() => {});
+    }
+
+    if (option.processor && processors) {
+        // camel-case
+        const attributeName = option.name.split('-').reduce((str, word) => {
+            return str + word[0].toUpperCase() + word.slice(1);
+        });
+
+        processors[attributeName] = option.processor;
+    }
+}
+
 /**
  *  Creates Argument parser corresponding to the supplied options
  *  parse the args and return the result
@@ -30,27 +137,43 @@ const argParser = (options, args, argsOnly = false, name = '') => {
     }
 
     const parser = new commander.Command();
-    const processors = {};
 
     // Set parser name
     parser.name(name);
     parser.storeOptionsAsProperties(false);
 
-    commands.reduce((parserInstance, cmd) => {
-        parser
-            .command(cmd.name)
-            .alias(cmd.alias)
-            .description(cmd.description)
-            .usage(cmd.usage)
-            .allowUnknownOption(true)
-            .action(async () => {
-                const cliArgs = args.slice(args.indexOf(cmd.name) + 1 || args.indexOf(cmd.alias) + 1);
+    commands.forEach((command) => {
+        const subCommand = parser.command(command.name).alias(command.alias).description(command.description).usage(command.usage);
 
-                return await require('./resolve-command')(cmd.packageName, cliArgs, cmd.name);
+        if (command.flags) {
+            command.flags.forEach((flag) => {
+                makeOption(subCommand, flag);
             });
+            subCommand.unknownOption = function (flag) {
+                if (this._allowUnknownOption) {
+                    return;
+                }
 
-        return parser;
-    }, parser);
+                const message = `Unknown option '${flag}'`;
+                logger.error(message);
+                this._exit(2, 'commander.unknownOption', message);
+            };
+        } else {
+            subCommand.allowUnknownOption(Boolean(commands.flags));
+        }
+
+        subCommand.action(async (createdCommand) => {
+            let options;
+
+            if (command.flags) {
+                options = createdCommand.opts();
+            } else {
+                options = args.slice(args.indexOf(command.name) + 1 || args.indexOf(command.alias) + 1);
+            }
+
+            return await require('./resolve-command')(command.packageName, options, command.name);
+        });
+    });
 
     // Prevent default behavior
     parser.on('command:*', () => {});
@@ -58,113 +181,12 @@ const argParser = (options, args, argsOnly = false, name = '') => {
     // Allow execution if unknown arguments are present
     parser.allowUnknownOption(true);
 
+    const processors = {};
+
     // Register options on the parser
-    options.reduce((parserInstance, option) => {
-        let optionType = option.type;
-        let isStringOrBool = false;
-
-        if (Array.isArray(optionType)) {
-            // filter out duplicate types
-            optionType = optionType.filter((type, index) => {
-                return optionType.indexOf(type) === index;
-            });
-
-            // the only multi type currently supported is String and Boolean,
-            // if there is a case where a different multi type is needed it
-            // must be added here
-            if (optionType.length === 0) {
-                // if no type is provided in the array fall back to Boolean
-                optionType = Boolean;
-            } else if (optionType.length === 1 || optionType.length > 2) {
-                // treat arrays with 1 or > 2 args as a single type
-                optionType = optionType[0];
-            } else {
-                // only String and Boolean multi type is supported
-                if (optionType.includes(Boolean) && optionType.includes(String)) {
-                    isStringOrBool = true;
-                } else {
-                    optionType = optionType[0];
-                }
-            }
-        }
-
-        const flags = option.alias ? `-${option.alias}, --${option.name}` : `--${option.name}`;
-
-        let flagsWithType = flags;
-
-        if (isStringOrBool) {
-            // commander recognizes [value] as an optional placeholder,
-            // making this flag work either as a string or a boolean
-            flagsWithType = `${flags} [value]`;
-        } else if (optionType !== Boolean) {
-            // <value> is a required placeholder for any non-Boolean types
-            flagsWithType = `${flags} <value>`;
-        }
-
-        if (isStringOrBool || optionType === Boolean || optionType === String) {
-            if (option.multiple) {
-                // a multiple argument parsing function
-                const multiArg = (value, previous = []) => previous.concat([value]);
-                parserInstance.option(flagsWithType, option.description, multiArg, option.defaultValue).action(() => {});
-            } else if (option.multipleType) {
-                // for options which accept multiple types like env
-                // so you can do `--env platform=staging --env production`
-                // { platform: "staging", production: true }
-                const multiArg = (value, previous = {}) => {
-                    // this ensures we're only splitting by the first `=`
-                    const [allKeys, val] = value.split(/=(.+)/, 2);
-                    const splitKeys = allKeys.split(/\.(?!$)/);
-
-                    let prevRef = previous;
-
-                    splitKeys.forEach((someKey, index) => {
-                        if (!prevRef[someKey]) {
-                            prevRef[someKey] = {};
-                        }
-
-                        if ('string' === typeof prevRef[someKey]) {
-                            prevRef[someKey] = {};
-                        }
-
-                        if (index === splitKeys.length - 1) {
-                            prevRef[someKey] = val || true;
-                        }
-
-                        prevRef = prevRef[someKey];
-                    });
-
-                    return previous;
-                };
-                parserInstance.option(flagsWithType, option.description, multiArg, option.defaultValue).action(() => {});
-            } else {
-                // Prevent default behavior for standalone options
-                parserInstance.option(flagsWithType, option.description, option.defaultValue).action(() => {});
-            }
-        } else if (optionType === Number) {
-            // this will parse the flag as a number
-            parserInstance.option(flagsWithType, option.description, Number, option.defaultValue);
-        } else {
-            // in this case the type is a parsing function
-            parserInstance.option(flagsWithType, option.description, optionType, option.defaultValue).action(() => {});
-        }
-
-        if (option.negative) {
-            // commander requires explicitly adding the negated version of boolean flags
-            const negatedFlag = `--no-${option.name}`;
-            parserInstance.option(negatedFlag, `negates ${option.name}`).action(() => {});
-        }
-
-        if (option.processor) {
-            // camel-case
-            const attributeName = option.name.split('-').reduce((str, word) => {
-                return str + word[0].toUpperCase() + word.slice(1);
-            });
-
-            processors[attributeName] = option.processor;
-        }
-
-        return parserInstance;
-    }, parser);
+    options.forEach((option) => {
+        makeOption(parser, option, processors);
+    });
 
     // if we are parsing a subset of process.argv that includes
     // only the arguments themselves (e.g. ['--option', 'value'])

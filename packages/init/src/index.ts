@@ -23,13 +23,16 @@ export default function initializeInquirer(args: string[]): Function | void {
     const genPathPrefix = packages.includes(PATH_PREFIX);
 
     let generationPath: string;
+
     if (genPathPrefix) {
         const idx = packages.indexOf(PATH_PREFIX);
         // Retrieve the path supplied along with --generation-path
         generationPath = packages[idx + 1];
     }
+
     if (packages.length === 0 || includesDefaultPrefix || generateConfig || genPathPrefix) {
         return modifyHelperUtil('init', initGenerator, null, null, includesDefaultPrefix, generateConfig, generationPath);
     }
+
     return npmPackagesExists(packages);
 }
