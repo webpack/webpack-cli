@@ -15,7 +15,8 @@ describe('help cmd with multiple arguments', () => {
             expect(stdout).toContain(`${cmd.name}`);
             expect(stdout).toContain(`${cmd.usage}`);
             expect(stdout).toContain(`${cmd.description}`);
-            if (stdout.includes('Options')) {
+            if (cmd.flags) {
+                expect(stdout).toContain('Options');
                 cmd.flags.forEach(({ name }) => expect(stdout).toContain(name));
             }
         });
