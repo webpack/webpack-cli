@@ -34,8 +34,9 @@ describe('cache', () => {
         }
     });
 
-    it('should work in multi compiler mode', () => {
-        rimraf.sync(path.join(__dirname, '../../node_modules/.cache/webpack/cache-test-{first,second}-development'));
+    it.only('should work in multi compiler mode', () => {
+        rimraf.sync(path.join(__dirname, '../../node_modules/.cache/webpack/cache-test-first-development'));
+        rimraf.sync(path.join(__dirname, '../../node_modules/.cache/webpack/cache-test-second-development'));
 
         let { exitCode, stderr, stdout } = run(__dirname, ['-c', './multi.config.js'], false);
 
