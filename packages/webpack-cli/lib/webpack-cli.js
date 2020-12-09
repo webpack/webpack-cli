@@ -91,13 +91,15 @@ class WebpackCLI {
                 //     process.exit(2);
                 // }
 
-                try {
-                    const { name, version } = require(`${usedCommand.packageName}/package.json`);
+                if (usedCommand.name !== 'bundle') {
+                    try {
+                        const { name, version } = require(`${usedCommand.packageName}/package.json`);
 
-                    logger.raw(`${name} ${version}`);
-                } catch (e) {
-                    logger.error(`Error: External package '${usedCommand.packageName}' not found.`);
-                    process.exit(2);
+                        logger.raw(`${name} ${version}`);
+                    } catch (e) {
+                        logger.error(`Error: External package '${usedCommand.packageName}' not found.`);
+                        process.exit(2);
+                    }
                 }
             }
 
@@ -159,21 +161,15 @@ class WebpackCLI {
 
         this.makeCommand(
             {
-                name: 'bundle [entry...]',
+                name: 'bundle',
                 isDefault: true,
                 alias: 'b',
                 description: 'Run webpack',
                 usage: 'bundle [options]',
             },
             this.getBuiltInOptions(),
-            async (entry, program) => {
+            async (program) => {
                 const options = program.opts();
-
-                // TODO check exist to better output
-                if (entry.length > 0) {
-                    // Handle the default webpack entry CLI argument, where instead of doing 'webpack --entry ./index.js' you can simply do 'webpack-cli ./index.js'
-                    options.entry = entry;
-                }
 
                 if (typeof colorFromArguments !== 'undefined') {
                     options.color = colorFromArguments;
@@ -630,38 +626,38 @@ class WebpackCLI {
             config.options = Array.isArray(config.options)
                 ? config.options.map((options) => processArguments(options))
                 : processArguments(config.options);
-        }
 
-        const setupDefaultOptions = (configOptions) => {
-            // No need to run for webpack@4
-            if (cli && configOptions.cache && configOptions.cache.type === 'filesystem') {
-                const configPath = config.path.get(configOptions);
+            const setupDefaultOptions = (configOptions) => {
+                // No need to run for webpack@4
+                if (configOptions.cache && configOptions.cache.type === 'filesystem') {
+                    const configPath = config.path.get(configOptions);
 
-                if (configPath) {
-                    if (!configOptions.cache.buildDependencies) {
-                        configOptions.cache.buildDependencies = {};
-                    }
+                    if (configPath) {
+                        if (!configOptions.cache.buildDependencies) {
+                            configOptions.cache.buildDependencies = {};
+                        }
 
-                    if (!configOptions.cache.buildDependencies.config) {
-                        configOptions.cache.buildDependencies.config = [];
-                    }
+                        if (!configOptions.cache.buildDependencies.config) {
+                            configOptions.cache.buildDependencies.config = [];
+                        }
 
-                    if (Array.isArray(configPath)) {
-                        configPath.forEach((item) => {
-                            configOptions.cache.buildDependencies.config.push(item);
-                        });
-                    } else {
-                        configOptions.cache.buildDependencies.config.push(configPath);
+                        if (Array.isArray(configPath)) {
+                            configPath.forEach((item) => {
+                                configOptions.cache.buildDependencies.config.push(item);
+                            });
+                        } else {
+                            configOptions.cache.buildDependencies.config.push(configPath);
+                        }
                     }
                 }
-            }
 
-            return configOptions;
-        };
+                return configOptions;
+            };
 
-        config.options = Array.isArray(config.options)
-            ? config.options.map((options) => setupDefaultOptions(options))
-            : setupDefaultOptions(config.options);
+            config.options = Array.isArray(config.options)
+                ? config.options.map((options) => setupDefaultOptions(options))
+                : setupDefaultOptions(config.options);
+        }
 
         // Logic for webpack@4
         // TODO remove after drop webpack@4
@@ -859,8 +855,6 @@ class WebpackCLI {
         if (compiler && compiler.compiler) {
             compiler = compiler.compiler;
         }
-
-        return Promise.resolve();
     }
 }
 
