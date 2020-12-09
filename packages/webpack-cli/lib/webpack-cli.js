@@ -24,11 +24,10 @@ class WebpackCLI {
     constructor() {
         this.logger = logger;
 
-        // Init program
+        // Initialize program
         this.program = program;
         this.program.name('webpack-cli');
         this.program.storeOptionsAsProperties(false);
-        this.program.passCommandToAction(true);
 
         // Global options
 
@@ -113,6 +112,10 @@ class WebpackCLI {
 
         // Register fallbacks
         this.program.exitOverride((error) => {
+            if (error.exitCode === 0) {
+                return;
+            }
+
             // TODO show possible flags only for command related
             if (error.code === 'commander.unknownOption') {
                 let name = error.message.match(/'(.+)'/);
@@ -137,137 +140,38 @@ class WebpackCLI {
             }
 
             logger.error(error.message);
-            // Use `2` exit code for failed commands
-            process.exit(error.exitCode === 1 ? 2 : error.exitCode);
+            process.exit(2);
         });
 
-        // Register default bundle command
-        const defaultCommand = this.program
-            .command('bundle [entry...]', { isDefault: true })
-            .alias('b')
-            .description('Run webpack')
-            .usage('bundle [options]');
+        this.makeCommand(
+            'bundle [entry...]',
+            {
+                isDefault: true,
+                alias: 'b',
+                description: 'Run webpack',
+                usage: 'bundle [options]',
+                action: async (entry, program) => {
+                    const options = program.opts();
 
-        // TODO refactor this terrible stuff
-        flags.forEach((flag) => {
-            let optionType = flag.type;
-            let isStringOrBool = false;
-
-            if (Array.isArray(optionType)) {
-                // filter out duplicate types
-                optionType = optionType.filter((type, index) => {
-                    return optionType.indexOf(type) === index;
-                });
-
-                // the only multi type currently supported is String and Boolean,
-                // if there is a case where a different multi type is needed it
-                // must be added here
-                if (optionType.length === 0) {
-                    // if no type is provided in the array fall back to Boolean
-                    optionType = Boolean;
-                } else if (optionType.length === 1 || optionType.length > 2) {
-                    // treat arrays with 1 or > 2 args as a single type
-                    optionType = optionType[0];
-                } else {
-                    // only String and Boolean multi type is supported
-                    if (optionType.includes(Boolean) && optionType.includes(String)) {
-                        isStringOrBool = true;
-                    } else {
-                        optionType = optionType[0];
+                    // TODO check exist to better output
+                    if (entry.length > 0) {
+                        // Handle the default webpack entry CLI argument, where instead of doing 'webpack --entry ./index.js' you can simply do 'webpack-cli ./index.js'
+                        options.entry = entry;
                     }
-                }
-            }
 
-            const flags = flag.alias ? `-${flag.alias}, --${flag.name}` : `--${flag.name}`;
+                    if (typeof colorFromArguments !== 'undefined') {
+                        options.color = colorFromArguments;
+                    }
 
-            let flagsWithType = flags;
-
-            if (isStringOrBool) {
-                // commander recognizes [value] as an optional placeholder,
-                // making this flag work either as a string or a boolean
-                flagsWithType = `${flags} [value]`;
-            } else if (optionType !== Boolean) {
-                // <value> is a required placeholder for any non-Boolean types
-                flagsWithType = `${flags} <value>`;
-            }
-
-            if (isStringOrBool || optionType === Boolean || optionType === String) {
-                if (flag.multiple) {
-                    // a multiple argument parsing function
-                    const multiArg = (value, previous = []) => previous.concat([value]);
-
-                    defaultCommand.option(flagsWithType, flag.description, multiArg, flag.defaultValue).action(() => {});
-                } else if (flag.multipleType) {
-                    // for options which accept multiple types like env
-                    // so you can do `--env platform=staging --env production`
-                    // { platform: "staging", production: true }
-                    const multiArg = (value, previous = {}) => {
-                        // this ensures we're only splitting by the first `=`
-                        const [allKeys, val] = value.split(/=(.+)/, 2);
-                        const splitKeys = allKeys.split(/\.(?!$)/);
-
-                        let prevRef = previous;
-
-                        splitKeys.forEach((someKey, index) => {
-                            if (!prevRef[someKey]) {
-                                prevRef[someKey] = {};
-                            }
-
-                            if ('string' === typeof prevRef[someKey]) {
-                                prevRef[someKey] = {};
-                            }
-
-                            if (index === splitKeys.length - 1) {
-                                prevRef[someKey] = val || true;
-                            }
-
-                            prevRef = prevRef[someKey];
-                        });
-
-                        return previous;
-                    };
-
-                    defaultCommand.option(flagsWithType, flag.description, multiArg, flag.defaultValue).action(() => {});
-                } else {
-                    // Prevent default behavior for standalone options
-                    defaultCommand.option(flagsWithType, flag.description, flag.defaultValue).action(() => {});
-                }
-            } else if (optionType === Number) {
-                // this will parse the flag as a number
-                defaultCommand.option(flagsWithType, flag.description, Number, flag.defaultValue);
-            } else {
-                // in this case the type is a parsing function
-                defaultCommand.option(flagsWithType, flag.description, optionType, flag.defaultValue).action(() => {});
-            }
-
-            if (flag.negative) {
-                // commander requires explicitly adding the negated version of boolean flags
-                const negatedFlag = `--no-${flag.name}`;
-
-                defaultCommand.option(negatedFlag, `negates ${flag.name}`).action(() => {});
-            }
-        });
-
-        defaultCommand.action(async (entry, program) => {
-            const options = program.opts();
-
-            // TODO check exist to better output
-            if (entry.length > 0) {
-                // Handle the default webpack entry CLI argument, where instead of doing 'webpack --entry ./index.js' you can simply do 'webpack-cli ./index.js'
-                options.entry = entry;
-            }
-
-            if (typeof colorFromArguments !== 'undefined') {
-                options.color = colorFromArguments;
-            }
-
-            await this.bundleCommand(options);
-        });
-        defaultCommand.packageName = 'webpack-cli';
+                    await this.bundleCommand(options);
+                },
+            },
+            this.getBuiltInOptions(),
+        );
 
         // TODO autoinstall command packages, how?
         // Register built-in commands
-        const builtInCommands = [
+        const builtInPackages = [
             '@webpack-cli/generators',
             '@webpack-cli/info',
             '@webpack-cli/init',
@@ -275,11 +179,11 @@ class WebpackCLI {
             '@webpack-cli/serve',
         ];
 
-        builtInCommands.forEach((builtInCommand) => {
+        builtInPackages.forEach((builtInPackage) => {
             let loadedCommand;
 
             try {
-                loadedCommand = require(builtInCommand);
+                loadedCommand = require(builtInPackage);
             } catch (error) {
                 // Ignore, command is not installed
 
@@ -301,6 +205,136 @@ class WebpackCLI {
                 process.exit(2);
             }
         });
+    }
+
+    getBuiltInOptions() {
+        return flags;
+    }
+
+    makeCommand(nameAndArgs, commandOptions = {}, optionsForCommand = []) {
+        const command = program
+            .command(nameAndArgs, {
+                noHelp: commandOptions.noHelp,
+                hidden: commandOptions.hidden,
+                isDefault: commandOptions.isDefault,
+            })
+            .description(commandOptions.description)
+            .usage(commandOptions.usage);
+
+        if (Array.isArray(commandOptions.alias)) {
+            command.aliases(commandOptions.alias);
+        } else {
+            command.alias(commandOptions.alias);
+        }
+
+        optionsForCommand.forEach((optionForCommand) => {
+            this.makeOption(command, optionForCommand);
+        });
+
+        command.action(commandOptions.action);
+        command.packageName = commandOptions.packageName || 'webpack-cli';
+
+        return command;
+    }
+
+    // TODO refactor this terrible stuff
+    makeOption(command, option) {
+        let optionType = option.type;
+        let isStringOrBool = false;
+
+        if (Array.isArray(optionType)) {
+            // filter out duplicate types
+            optionType = optionType.filter((type, index) => {
+                return optionType.indexOf(type) === index;
+            });
+
+            // the only multi type currently supported is String and Boolean,
+            // if there is a case where a different multi type is needed it
+            // must be added here
+            if (optionType.length === 0) {
+                // if no type is provided in the array fall back to Boolean
+                optionType = Boolean;
+            } else if (optionType.length === 1 || optionType.length > 2) {
+                // treat arrays with 1 or > 2 args as a single type
+                optionType = optionType[0];
+            } else {
+                // only String and Boolean multi type is supported
+                if (optionType.includes(Boolean) && optionType.includes(String)) {
+                    isStringOrBool = true;
+                } else {
+                    optionType = optionType[0];
+                }
+            }
+        }
+
+        const flags = option.alias ? `-${option.alias}, --${option.name}` : `--${option.name}`;
+
+        let flagsWithType = flags;
+
+        if (isStringOrBool) {
+            // commander recognizes [value] as an optional placeholder,
+            // making this flag work either as a string or a boolean
+            flagsWithType = `${flags} [value]`;
+        } else if (optionType !== Boolean) {
+            // <value> is a required placeholder for any non-Boolean types
+            flagsWithType = `${flags} <value>`;
+        }
+
+        if (isStringOrBool || optionType === Boolean || optionType === String) {
+            if (option.multiple) {
+                // a multiple argument parsing function
+                const multiArg = (value, previous = []) => previous.concat([value]);
+
+                command.option(flagsWithType, option.description, multiArg, option.defaultValue).action(() => {});
+            } else if (option.multipleType) {
+                // for options which accept multiple types like env
+                // so you can do `--env platform=staging --env production`
+                // { platform: "staging", production: true }
+                const multiArg = (value, previous = {}) => {
+                    // this ensures we're only splitting by the first `=`
+                    const [allKeys, val] = value.split(/=(.+)/, 2);
+                    const splitKeys = allKeys.split(/\.(?!$)/);
+
+                    let prevRef = previous;
+
+                    splitKeys.forEach((someKey, index) => {
+                        if (!prevRef[someKey]) {
+                            prevRef[someKey] = {};
+                        }
+
+                        if ('string' === typeof prevRef[someKey]) {
+                            prevRef[someKey] = {};
+                        }
+
+                        if (index === splitKeys.length - 1) {
+                            prevRef[someKey] = val || true;
+                        }
+
+                        prevRef = prevRef[someKey];
+                    });
+
+                    return previous;
+                };
+
+                command.option(flagsWithType, option.description, multiArg, option.defaultValue).action(() => {});
+            } else {
+                // Prevent default behavior for standalone options
+                command.option(flagsWithType, option.description, option.defaultValue).action(() => {});
+            }
+        } else if (optionType === Number) {
+            // this will parse the flag as a number
+            command.option(flagsWithType, option.description, Number, option.defaultValue);
+        } else {
+            // in this case the type is a parsing function
+            command.option(flagsWithType, option.description, optionType, option.defaultValue).action(() => {});
+        }
+
+        if (option.negative) {
+            // commander requires explicitly adding the negated version of boolean flags
+            const negatedFlag = `--no-${option.name}`;
+
+            command.option(negatedFlag, `negates ${option.name}`).action(() => {});
+        }
     }
 
     async run(args) {
