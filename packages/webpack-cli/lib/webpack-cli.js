@@ -14,7 +14,6 @@ const logger = require('./utils/logger');
 const { cli, flags } = require('./utils/cli-flags');
 const CLIPlugin = require('./plugins/CLIPlugin');
 const promptInstallation = require('./utils/prompt-installation');
-const runHelp = require('./groups/runHelp');
 
 const toKebabCase = require('./utils/to-kebab-case');
 
@@ -50,7 +49,7 @@ class WebpackCLI {
         });
 
         // Default `-v, --version` options
-        this.program.option('-v, --version');
+        this.program.option('-v, --version, version');
         this.program.on('option:version', function () {
             const { commands, rawArgs } = this.program;
 
@@ -110,7 +109,12 @@ class WebpackCLI {
             process.exit();
         });
 
-        // Register fallbacks
+        // Default `-h, --help, help`
+        program.helpOption('-h, --help', 'Display help for command').on('--help', () => {
+            process.exit(0);
+        });
+
+        // Register own exit
         this.program.exitOverride((error) => {
             if (error.exitCode === 0) {
                 return;
@@ -212,14 +216,19 @@ class WebpackCLI {
     }
 
     makeCommand(commandOptions, optionsForCommand = [], action) {
-        const command = program
-            .command(commandOptions.name, {
-                noHelp: commandOptions.noHelp,
-                hidden: commandOptions.hidden,
-                isDefault: commandOptions.isDefault,
-            })
-            .description(commandOptions.description)
-            .usage(commandOptions.usage);
+        const command = program.command(commandOptions.name, {
+            noHelp: commandOptions.noHelp,
+            hidden: commandOptions.hidden,
+            isDefault: commandOptions.isDefault,
+        });
+
+        if (commandOptions.description) {
+            command.description(commandOptions.description);
+        }
+
+        if (commandOptions.usage) {
+            command.usage(commandOptions.usage);
+        }
 
         if (Array.isArray(commandOptions.alias)) {
             command.aliases(commandOptions.alias);
@@ -339,14 +348,6 @@ class WebpackCLI {
     }
 
     async run(args) {
-        const showHelp = args.includes('--help') || args.includes('help') || args.includes('--help=verbose');
-
-        // allow --help=verbose and --help verbose
-        if (showHelp || (showHelp && args.includes('verbose'))) {
-            runHelp(args);
-            process.exit(0);
-        }
-
         await this.program.parseAsync(args);
     }
 

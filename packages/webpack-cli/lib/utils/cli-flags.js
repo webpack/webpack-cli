@@ -78,15 +78,6 @@ const builtInFlags = [
         link: 'https://webpack.js.org/plugins/prefetch-plugin/',
     },
 
-    // Help and versions
-    {
-        name: 'help',
-        usage: '--help',
-        type: [Boolean, String],
-        help: 'base',
-        description: 'Outputs list of supported flags',
-    },
-
     // Output options
     {
         name: 'json',
