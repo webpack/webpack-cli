@@ -30,14 +30,14 @@ async function setup() {
  * Remove symlinks, restore file
  * @returns {void}
  */
-async function teardown() {
-    await testEntryFiles.forEach(async (file) => {
+ function teardown() {
+     testEntryFiles.forEach( (file) => {
         try {
-           await unlinkSync(file.fp);
+            unlinkSync(file.fp);
         } catch (e) {
             console.warn('could not remove the file:' + file.fp + '\n' + e.message);
         } finally {
-           await renameSync(file.cpFP, file.fp);
+            renameSync(file.cpFP, file.fp);
         }
     });
 }
@@ -79,9 +79,9 @@ async function teardown() {
         });
 
         // Buffer should have compiled equal amount of each compilation and have diff output directories
-        webpackProc.stderr.on('close', async () => {
+        webpackProc.stderr.on('close',  () => {
             assert.strictEqual(dataBuffer.length >= 1, true, 'expected single configuration to re-compile');
-            await teardown();
+             teardown();
             process.exit(0);
         });
     } catch (e) {
