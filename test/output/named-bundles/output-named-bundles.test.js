@@ -52,7 +52,8 @@ describe('output flag named bundles', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--output-path'], false);
 
         expect(exitCode).toEqual(2);
-        expect(stderr).toEqual("error: option '-o, --output-path <value>' argument missing");
+        expect(stderr).toContain("option '-o, --output-path <value>' argument missing");
+        expect(stderr).toContain('Run webpack --help to see available commands and arguments.');
         expect(stdout).toBeFalsy();
     });
 });

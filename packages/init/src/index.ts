@@ -5,10 +5,10 @@ class InitCommand {
     apply(cli): void {
         cli.makeCommand(
             {
-                name: 'init [scaffold]',
+                name: 'init [scaffold...]',
                 alias: 'c',
                 description: 'Initialize a new webpack configuration',
-                usage: 'init [scaffold] [options]',
+                usage: 'init [scaffold...] [options]',
                 packageName: '@webpack-cli/init',
             },
             [
@@ -31,7 +31,7 @@ class InitCommand {
             async (scaffold, program) => {
                 const options = program.opts();
 
-                if (scaffold) {
+                if (scaffold && scaffold.length > 0) {
                     await npmPackagesExists(scaffold);
 
                     return;

@@ -120,6 +120,12 @@ class WebpackCLI {
                 return;
             }
 
+            // TODO commander.executeSubCommandAsync
+            // TODO commander.missingArgument
+            // TODO commander.missingMandatoryOptionValue
+            // TODO commander.unknownCommand
+            // TODO commander.help
+
             // TODO show possible flags only for command related
             if (error.code === 'commander.unknownOption') {
                 let name = error.message.match(/'(.+)'/);
@@ -138,6 +144,10 @@ class WebpackCLI {
                     }
                 }
 
+                logger.error('Run webpack --help to see available commands and arguments.');
+
+                process.exit(2);
+            } else if (error.code === 'commander.optionMissingArgument') {
                 logger.error('Run webpack --help to see available commands and arguments.');
 
                 process.exit(2);
