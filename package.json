@@ -44,7 +44,7 @@
     "test:watch": "jest test/ packages/ --watch",
     "test:smoke": "smoketests/smoketests.sh",
     "publish:monorepo": "yarn build && lerna version && lerna publish from-git",
-    "update:docs": "node ./scripts/generateOptions"
+    "update:docs": "node ./scripts/updateDocs"
   },
   "config": {
     "commitizen": {
