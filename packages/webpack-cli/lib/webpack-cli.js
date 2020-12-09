@@ -315,7 +315,7 @@ class WebpackCLI {
         await this.program.parseAsync(args);
     }
 
-    async resolveConfig(args) {
+    async resolveConfig(options) {
         const loadConfig = async (configPath) => {
             const ext = extname(configPath);
             const interpreted = Object.keys(jsVariants).find((variant) => variant === ext);
@@ -398,9 +398,9 @@ class WebpackCLI {
 
         let config = { options: {}, path: new WeakMap() };
 
-        if (args.config && args.config.length > 0) {
+        if (options.config && options.config.length > 0) {
             const evaluatedConfigs = await Promise.all(
-                args.config.map(async (value) => {
+                options.config.map(async (value) => {
                     const configPath = resolve(value);
 
                     if (!existsSync(configPath)) {
@@ -410,7 +410,7 @@ class WebpackCLI {
 
                     const loadedConfig = await loadConfig(configPath);
 
-                    return evaluateConfig(loadedConfig, args);
+                    return evaluateConfig(loadedConfig, options);
                 }),
             );
 
@@ -454,7 +454,7 @@ class WebpackCLI {
 
             if (foundDefaultConfigFile) {
                 const loadedConfig = await loadConfig(foundDefaultConfigFile.path);
-                const evaluatedConfig = await evaluateConfig(loadedConfig, args);
+                const evaluatedConfig = await evaluateConfig(loadedConfig, options);
 
                 config.options = evaluatedConfig.options;
 
@@ -468,10 +468,10 @@ class WebpackCLI {
             }
         }
 
-        if (args.configName) {
+        if (options.configName) {
             const notfoundConfigNames = [];
 
-            config.options = args.configName.map((configName) => {
+            config.options = options.configName.map((configName) => {
                 let found;
 
                 if (Array.isArray(config.options)) {
@@ -495,7 +495,7 @@ class WebpackCLI {
             }
         }
 
-        if (args.merge) {
+        if (options.merge) {
             // we can only merge when there are multiple configurations
             // either by passing multiple configs by flags or passing a
             // single config exporting an array
@@ -696,11 +696,11 @@ class WebpackCLI {
         return config;
     }
 
-    async resolve(parsedArgs) {
-        let config = await this.resolveConfig(parsedArgs);
+    async resolve(options) {
+        let config = await this.resolveConfig(options);
 
-        config = await this.resolveArguments(config, parsedArgs);
-        config = await this.resolveCLIPlugin(config, parsedArgs);
+        config = await this.resolveArguments(config, options);
+        config = await this.resolveCLIPlugin(config, options);
 
         return config;
     }
