@@ -123,7 +123,6 @@ class WebpackCLI {
             }
 
             // TODO commander.executeSubCommandAsync
-            // TODO commander.missingArgument
             // TODO commander.missingMandatoryOptionValue
             // TODO commander.unknownCommand
             // TODO commander.help
@@ -146,16 +145,16 @@ class WebpackCLI {
                     }
                 }
 
-                logger.error('Run webpack --help to see available commands and arguments.');
-
-                process.exit(2);
-            } else if (error.code === 'commander.optionMissingArgument') {
-                logger.error('Run webpack --help to see available commands and arguments.');
+                logger.error('Run webpack --help to see available commands and arguments');
 
                 process.exit(2);
             }
 
-            logger.error(error.message);
+            // Codes:
+            // - commander.optionMissingArgument
+            // - commander.missingArgument
+
+            logger.error('Run webpack --help to see available commands and arguments');
             process.exit(2);
         });
 
