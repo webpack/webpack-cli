@@ -86,14 +86,6 @@ const builtInFlags = [
         help: 'base',
         description: 'Outputs list of supported flags',
     },
-    {
-        name: 'version',
-        usage: '--version | --version <external-package>',
-        alias: 'v',
-        type: Boolean,
-        help: 'base',
-        description: 'Get current version',
-    },
 
     // Output options
     {

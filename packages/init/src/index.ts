@@ -5,7 +5,7 @@ class InitCommand {
     apply(cli): void {
         const { program } = cli;
 
-        program
+        const initCommand = program
             .command('init [scaffold...]')
             .alias('c')
             .description('Initialize a new webpack configuration')
@@ -24,6 +24,8 @@ class InitCommand {
 
                 npmPackagesExists(scaffold);
             });
+
+        initCommand.packageName = '@webpack-cli/init';
     }
 }
 

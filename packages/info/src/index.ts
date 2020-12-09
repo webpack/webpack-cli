@@ -33,7 +33,7 @@ class InfoCommand {
     apply(cli): void {
         const { program, logger } = cli;
 
-        program
+        const command = program
             .command('info')
             .alias('i')
             .description('Outputs information about your system')
@@ -68,6 +68,8 @@ class InfoCommand {
 
                 logger.raw(info);
             });
+
+        command.packageName = '@webpack-cli/info';
     }
 }
 

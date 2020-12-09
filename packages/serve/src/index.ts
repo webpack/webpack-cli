@@ -16,7 +16,7 @@ class ServeCommand {
         // eslint-disable-next-line node/no-extraneous-require
         const devServerFlags = require('webpack-dev-server/bin/cli-flags').devServer;
 
-        program
+        const serveCommand = program
             .command('serve')
             .alias('s')
             .description('Run the webpack Dev Server')
@@ -41,6 +41,8 @@ class ServeCommand {
 
                 await startDevServer(compiler, options);
             });
+
+        serveCommand.packageName = '@webpack-cli/serve';
     }
 }
 

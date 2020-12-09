@@ -19,15 +19,6 @@ describe('version flag with external packages', () => {
         expect(stdout).toContain(cliPkgJSON.version);
     });
 
-    it('outputs version with the alias c for init', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['c', '--version'], false);
-
-        expect(exitCode).toBe(0);
-        expect(stderr).toBeFalsy();
-        expect(stdout).toContain(initPkgJSON.version);
-        expect(stdout).toContain(cliPkgJSON.version);
-    });
-
     it('outputs version with info', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['info', '--version'], false);
 
@@ -73,7 +64,16 @@ describe('version flag with external packages', () => {
         expect(stdout).toContain(cliPkgJSON.version);
     });
 
-    it(' should throw error for multiple commands', () => {
+    it('outputs version with the alias c for init', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['c', '--version'], false);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain(initPkgJSON.version);
+        expect(stdout).toContain(cliPkgJSON.version);
+    });
+
+    it('should log error for multiple commands', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['init', 'migrate', '--version'], false);
 
         expect(exitCode).toBe(2);
@@ -83,16 +83,16 @@ describe('version flag with external packages', () => {
         expect(stdout).toBeFalsy();
     });
 
-    it(' should throw error if invalid argument is present with --version flag', () => {
+    it('should log error if invalid argument is present with --version flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['init', 'abc', '--version', '--no-color'], false);
 
-        expect(exitCode).toBe(2);
+        expect(exitCode).toBe(0);
         expect(stderr).toContain(`[webpack-cli] Invalid command 'abc'`);
         expect(stderr).toContain('[webpack-cli] Run webpack --help to see available commands and arguments');
         expect(stdout).toBeFalsy();
     });
 
-    it(' should throw error if invalid argument is present with version command', () => {
+    it('should log error if invalid argument is present with version command', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['init', 'abc', 'version', '--no-color'], false);
 
         expect(exitCode).toBe(2);

@@ -152,7 +152,7 @@ class MigrationCommand {
     apply(cli): void {
         const { program, logger } = cli;
 
-        program
+        const migrateCommand = program
             .command('migrate <config-path> [new-config-path]')
             .alias('m')
             .description('Migrate a configuration to a new version')
@@ -190,6 +190,8 @@ class MigrationCommand {
 
                 await runMigration(currentConfigPath, outputConfigPath, logger);
             });
+
+        migrateCommand.packageName = '@webpack-cli/migrate';
     }
 }
 

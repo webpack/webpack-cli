@@ -8,7 +8,7 @@ class GeneratorsCommand {
     apply(cli): void {
         const { program, logger } = cli;
 
-        program
+        const loaderCommand = program
             .command('loader [output-path]')
             .alias('l')
             .description('Scaffold a loader')
@@ -24,7 +24,9 @@ class GeneratorsCommand {
                 });
             });
 
-        program
+        loaderCommand.packageName = '@webpack-cli/generators';
+
+        const pluginName = program
             .command('plugin [output-path]')
             .alias('p')
             .description('Scaffold a plugin')
@@ -39,6 +41,8 @@ class GeneratorsCommand {
                     logger.success('Plugin template has been successfully scaffolded.');
                 });
             });
+
+        pluginName.packageName = '@webpack-cli/generators';
     }
 }
 

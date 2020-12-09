@@ -32,7 +32,7 @@ describe('prefetch', () => {
     it('should log error when flag value is not supplied', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--prefetch'], false);
 
-        expect(exitCode).toBe(1);
+        expect(exitCode).toBe(2);
         expect(stderr).toContain(`error: option '--prefetch <value>' argument missing`);
         expect(stdout).toBeFalsy();
     });

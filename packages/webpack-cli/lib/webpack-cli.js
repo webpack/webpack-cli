@@ -15,7 +15,6 @@ const { cli, flags } = require('./utils/cli-flags');
 const CLIPlugin = require('./plugins/CLIPlugin');
 const promptInstallation = require('./utils/prompt-installation');
 const runHelp = require('./groups/runHelp');
-const runVersion = require('./groups/runVersion');
 
 const toKebabCase = require('./utils/to-kebab-case');
 
@@ -29,10 +28,13 @@ class WebpackCLI {
         this.program = program;
         this.program.name('webpack-cli');
         this.program.storeOptionsAsProperties(false);
-
-        let colorFromArguments;
+        this.program.passCommandToAction(true);
 
         // Global options
+
+        // Default `--color` and `--no-color` options
+        let colorFromArguments;
+
         this.program.option('--color', 'Enable colors on console');
         this.program.on('option:color', function () {
             const { color } = this.opts();
@@ -48,9 +50,70 @@ class WebpackCLI {
             coloretteOptions.enabled = color;
         });
 
-        // TODO show possible flags only for command related
-        // Register own exit
+        // Default `-v, --version` options
+        this.program.option('-v, --version');
+        this.program.on('option:version', function () {
+            const { commands, rawArgs } = this.program;
+
+            if (rawArgs.includes('--color')) {
+                coloretteOptions.enabled = true;
+            } else if (rawArgs.includes('--no-color')) {
+                coloretteOptions.enabled = false;
+            }
+
+            const availableCommands = commands.map((command) => ({
+                name: command.name(),
+                alias: command.alias(),
+                packageName: command.packageName,
+                options: command.options.map((options) => ({ name: options.name() })),
+            }));
+            const usedCommands = availableCommands.filter(
+                (availableCommand) => rawArgs.includes(availableCommand.name) || rawArgs.includes(availableCommand.alias),
+            );
+
+            if (usedCommands.length > 1) {
+                logger.error(
+                    `You provided multiple commands - ${usedCommands
+                        .map((command) => `'${command.name}'${command.alias ? ` (alias '${command.alias}')` : ''}`)
+                        .join(', ')}. Please use only one command at a time.`,
+                );
+                process.exit(2);
+            }
+
+            if (usedCommands.length === 1 && usedCommands[0].packageName) {
+                const [usedCommand] = usedCommands;
+                // TODO improve
+                // const unknownOptions = rawArgs.filter(
+                //     (option) => !rawArgs.includes(option.name) && !rawArgs.includes(option.alias) && !rawArgs.includes(usedCommands.name),
+                // );
+                //
+                // if (unknownOptions.length > 0) {
+                //     logger.error(`Invalid argument '${unknownOptions[0].name}'.`);
+                //     logger.error('Run webpack --help to see available commands and arguments.');
+                //     process.exit(2);
+                // }
+
+                try {
+                    const { name, version } = require(`${usedCommand.packageName}/package.json`);
+
+                    logger.raw(`${name} ${version}`);
+                } catch (e) {
+                    logger.error(`Error: External package '${usedCommand.packageName}' not found.`);
+                    process.exit(2);
+                }
+            }
+
+            const pkgJSON = require('../package.json');
+
+            logger.raw(`webpack-cli ${pkgJSON.version}`);
+            logger.raw(`webpack ${webpack.version}`);
+
+            process.exit();
+        });
+
+        // Register fallbacks
         this.program.exitOverride((error) => {
+            // TODO show possible flags only for command related
             if (error.code === 'commander.unknownOption') {
                 let name = error.message.match(/'(.+)'/);
 
@@ -67,9 +130,15 @@ class WebpackCLI {
                         logger.raw(`Did you mean '--${found.name}'?`);
                     }
                 }
+
+                logger.error('Run webpack --help to see available commands and arguments.');
+
+                process.exit(2);
             }
 
-            process.exit(2);
+            logger.error(error.message);
+            // Use `2` exit code for failed commands
+            process.exit(error.exitCode === 1 ? 2 : error.exitCode);
         });
 
         // Register default bundle command
@@ -182,6 +251,7 @@ class WebpackCLI {
         defaultCommand.action(async (entry, program) => {
             const options = program.opts();
 
+            // TODO check exist to better output
             if (entry.length > 0) {
                 // Handle the default webpack entry CLI argument, where instead of doing 'webpack --entry ./index.js' you can simply do 'webpack-cli ./index.js'
                 options.entry = entry;
@@ -193,6 +263,7 @@ class WebpackCLI {
 
             await this.bundleCommand(options);
         });
+        defaultCommand.packageName = 'webpack-cli';
 
         // TODO autoinstall command packages, how?
         // Register built-in commands
@@ -238,12 +309,6 @@ class WebpackCLI {
         // allow --help=verbose and --help verbose
         if (showHelp || (showHelp && args.includes('verbose'))) {
             runHelp(args);
-            process.exit(0);
-        }
-
-        // Use Customized version
-        if (args.includes('--version') || args.includes('version') || args.includes('-v')) {
-            runVersion(args);
             process.exit(0);
         }
 
