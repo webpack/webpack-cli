@@ -3,7 +3,7 @@
 const { green } = require('colorette');
 const { runInfo } = require('../utils/test-utils');
 
-const usageText = 'webpack i | info [options]';
+const usageText = 'webpack info|i [options]';
 const descriptionText = 'Outputs information about your system and dependencies';
 
 describe('should print help for info command', () => {

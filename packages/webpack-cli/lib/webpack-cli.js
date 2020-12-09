@@ -25,7 +25,7 @@ class WebpackCLI {
 
         // Initialize program
         this.program = program;
-        this.program.name('webpack-cli');
+        this.program.name('webpack');
         this.program.storeOptionsAsProperties(false);
 
         // Global options
@@ -144,17 +144,13 @@ class WebpackCLI {
                         logger.raw(`Did you mean '--${found.name}'?`);
                     }
                 }
-
-                logger.error('Run webpack --help to see available commands and arguments');
-
-                process.exit(2);
             }
 
             // Codes:
             // - commander.optionMissingArgument
             // - commander.missingArgument
 
-            logger.error('Run webpack --help to see available commands and arguments');
+            logger.error("Run 'webpack --help' to see available commands and arguments");
             process.exit(2);
         });
 
@@ -164,7 +160,7 @@ class WebpackCLI {
                 isDefault: true,
                 alias: 'b',
                 description: 'Run webpack',
-                usage: 'bundle [options]',
+                usage: '[options]',
             },
             this.getBuiltInOptions(),
             async (program) => {

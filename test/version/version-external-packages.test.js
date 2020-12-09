@@ -87,8 +87,8 @@ describe('version flag with external packages', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['init', 'abc', '--version', '--no-color'], false);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain(`[webpack-cli] Invalid command 'abc'`);
-        expect(stderr).toContain('[webpack-cli] Run webpack --help to see available commands and arguments');
+        expect(stderr).toContain(`Invalid command 'abc'`);
+        expect(stderr).toContain("Run 'webpack --help' to see available commands and arguments");
         expect(stdout).toBeFalsy();
     });
 
@@ -96,8 +96,8 @@ describe('version flag with external packages', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['init', 'abc', 'version', '--no-color'], false);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain(`[webpack-cli] Invalid command 'abc'`);
-        expect(stderr).toContain('[webpack-cli] Run webpack --help to see available commands and arguments');
+        expect(stderr).toContain(`Invalid command 'abc'`);
+        expect(stderr).toContain("Run 'webpack --help' to see available commands and arguments");
         expect(stdout).toBeFalsy();
     });
 
@@ -105,8 +105,8 @@ describe('version flag with external packages', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['init', 'abc', '-v', '--no-color'], false);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain(`[webpack-cli] Invalid command 'abc'`);
-        expect(stderr).toContain('[webpack-cli] Run webpack --help to see available commands and arguments');
+        expect(stderr).toContain(`Invalid command 'abc'`);
+        expect(stderr).toContain("Run 'webpack --help' to see available commands and arguments");
         expect(stdout).toBeFalsy();
     });
 });

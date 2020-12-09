@@ -6,8 +6,8 @@ const { runServe, isDevServer4 } = require('../../utils/test-utils');
 
 const testPath = path.resolve(__dirname);
 
-const usageText = 'webpack s | serve';
-const descriptionText = 'Run the webpack Dev Server';
+const usageText = 'serve|s serve [options]';
+const descriptionText = 'Run the webpack dev server';
 
 describe('basic serve usage', () => {
     let port;

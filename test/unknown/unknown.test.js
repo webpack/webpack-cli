@@ -14,7 +14,7 @@ describe('unknown behaviour', () => {
 
         expect(exitCode).toBe(2);
         // TODO need fix in future
-        // expect(stderr).toContain(`[webpack-cli] \u001b[31mUnknown argument: '--unknown'`);
+        // expect(stderr).toContain(`\u001b[31mUnknown argument: '--unknown'`);
         expect(stdout).toBeFalsy();
     });
 
@@ -22,7 +22,7 @@ describe('unknown behaviour', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--unknown', '--no-color']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).not.toContain(`[webpack-cli] \u001b[31munknown option '--unknown'`);
+        expect(stderr).not.toContain(`\u001b[31munknown option '--unknown'`);
         expect(stderr).toContain("unknown option '--unknown'");
         expect(stdout).toBeFalsy();
     });

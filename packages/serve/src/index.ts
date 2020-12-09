@@ -28,12 +28,14 @@ class ServeCommand {
                 name: 'serve',
                 alias: 's',
                 description: 'Run the webpack dev server',
-                usage: 'serve [options]',
+                usage: '[options]',
                 packageName: '@webpack-cli/serve',
             },
             [...builtInOptions, ...devServerOptions],
             async (program) => {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const filteredBuiltInOptions: Record<string, any> = {};
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const filteredDevServerOptions: Record<string, any> = {};
                 const options = program.opts();
 
