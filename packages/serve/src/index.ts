@@ -13,46 +13,53 @@ class ServeCommand {
         }
 
         const builtInOptions = cli.getBuiltInOptions();
-        // eslint-disable-next-line node/no-extraneous-require
-        const devServerOptions = require('webpack-dev-server/bin/cli-flags').devServer;
+
+        let devServerOptions = [];
+
+        try {
+            // eslint-disable-next-line node/no-extraneous-require
+            devServerOptions = require('webpack-dev-server/bin/cli-flags').devServer;
+        } catch (error) {
+            // Nothing, to prevent future major release without problems
+        }
 
         cli.makeCommand(
-            'serve',
             {
+                name: 'serve',
                 alias: 's',
                 description: 'Run the webpack dev server',
                 usage: 'serve [options]',
                 packageName: '@webpack-cli/serve',
-                action: async (program) => {
-                    const filteredBuiltInOptions: Record<string, any> = {};
-                    const filteredDevServerOptions: Record<string, any> = {};
-                    const options = program.opts();
-
-                    // TODO `clientLogLevel` and `hot`
-                    for (const property in options) {
-                        const isDevServerOption = devServerOptions.find((devServerOption) => devServerOption.name === property);
-
-                        if (isDevServerOption) {
-                            filteredDevServerOptions[property] = options[property];
-                        } else {
-                            filteredBuiltInOptions[property] = options[property];
-                        }
-                    }
-
-                    // TODO
-                    // // Add WEBPACK_SERVE environment variable
-                    // if (webpackArgs.env) {
-                    //     webpackArgs.env.WEBPACK_SERVE = true;
-                    // } else {
-                    //     webpackArgs.env = { WEBPACK_SERVE: true };
-                    // }
-
-                    const compiler = await cli.createCompiler(filteredBuiltInOptions);
-
-                    await startDevServer(compiler, filteredDevServerOptions);
-                },
             },
             [...builtInOptions, ...devServerOptions],
+            async (program) => {
+                const filteredBuiltInOptions: Record<string, any> = {};
+                const filteredDevServerOptions: Record<string, any> = {};
+                const options = program.opts();
+
+                // TODO `clientLogLevel` and `hot`
+                for (const property in options) {
+                    const isDevServerOption = devServerOptions.find((devServerOption) => devServerOption.name === property);
+
+                    if (isDevServerOption) {
+                        filteredDevServerOptions[property] = options[property];
+                    } else {
+                        filteredBuiltInOptions[property] = options[property];
+                    }
+                }
+
+                // TODO
+                // // Add WEBPACK_SERVE environment variable
+                // if (webpackArgs.env) {
+                //     webpackArgs.env.WEBPACK_SERVE = true;
+                // } else {
+                //     webpackArgs.env = { WEBPACK_SERVE: true };
+                // }
+
+                const compiler = await cli.createCompiler(filteredBuiltInOptions);
+
+                await startDevServer(compiler, filteredDevServerOptions);
+            },
         );
     }
 }

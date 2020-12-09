@@ -144,29 +144,29 @@ class WebpackCLI {
         });
 
         this.makeCommand(
-            'bundle [entry...]',
             {
+                name: 'bundle [entry...]',
                 isDefault: true,
                 alias: 'b',
                 description: 'Run webpack',
                 usage: 'bundle [options]',
-                action: async (entry, program) => {
-                    const options = program.opts();
-
-                    // TODO check exist to better output
-                    if (entry.length > 0) {
-                        // Handle the default webpack entry CLI argument, where instead of doing 'webpack --entry ./index.js' you can simply do 'webpack-cli ./index.js'
-                        options.entry = entry;
-                    }
-
-                    if (typeof colorFromArguments !== 'undefined') {
-                        options.color = colorFromArguments;
-                    }
-
-                    await this.bundleCommand(options);
-                },
             },
             this.getBuiltInOptions(),
+            async (entry, program) => {
+                const options = program.opts();
+
+                // TODO check exist to better output
+                if (entry.length > 0) {
+                    // Handle the default webpack entry CLI argument, where instead of doing 'webpack --entry ./index.js' you can simply do 'webpack-cli ./index.js'
+                    options.entry = entry;
+                }
+
+                if (typeof colorFromArguments !== 'undefined') {
+                    options.color = colorFromArguments;
+                }
+
+                await this.bundleCommand(options);
+            },
         );
 
         // TODO autoinstall command packages, how?
@@ -211,9 +211,9 @@ class WebpackCLI {
         return flags;
     }
 
-    makeCommand(nameAndArgs, commandOptions = {}, optionsForCommand = []) {
+    makeCommand(commandOptions, optionsForCommand = [], action) {
         const command = program
-            .command(nameAndArgs, {
+            .command(commandOptions.name, {
                 noHelp: commandOptions.noHelp,
                 hidden: commandOptions.hidden,
                 isDefault: commandOptions.isDefault,
@@ -231,8 +231,9 @@ class WebpackCLI {
             this.makeOption(command, optionForCommand);
         });
 
-        command.action(commandOptions.action);
         command.packageName = commandOptions.packageName || 'webpack-cli';
+
+        command.action(action);
 
         return command;
     }

@@ -150,14 +150,18 @@ function runMigration(currentConfigPath: string, outputConfigPath: string, logge
 
 class MigrationCommand {
     apply(cli): void {
-        const { program, logger } = cli;
+        const { logger } = cli;
 
-        const migrateCommand = program
-            .command('migrate <config-path> [new-config-path]')
-            .alias('m')
-            .description('Migrate a configuration to a new version')
-            .usage('migrate <config-path> [new-config-path]')
-            .action(async (configPath: string, newConfigPath: string | undefined) => {
+        cli.makeCommand(
+            {
+                name: 'migrate <config-path> [new-config-path]',
+                alias: 'm',
+                description: 'Migrate a configuration to a new version',
+                usage: 'migrate <config-path> [new-config-path]',
+                packageName: '@webpack-cli/migrate',
+            },
+            [],
+            async (configPath: string, newConfigPath: string | undefined) => {
                 const currentConfigPath = path.resolve(configPath);
                 let outputConfigPath: string;
 
@@ -189,9 +193,8 @@ class MigrationCommand {
                 outputConfigPath = path.resolve(newConfigPath);
 
                 await runMigration(currentConfigPath, outputConfigPath, logger);
-            });
-
-        migrateCommand.packageName = '@webpack-cli/migrate';
+            },
+        );
     }
 }
 

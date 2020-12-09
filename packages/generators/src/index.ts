@@ -6,14 +6,18 @@ import initGenerator from './init-generator';
 
 class GeneratorsCommand {
     apply(cli): void {
-        const { program, logger } = cli;
+        const { logger } = cli;
 
-        const loaderCommand = program
-            .command('loader [output-path]')
-            .alias('l')
-            .description('Scaffold a loader')
-            .usage('loader [output-path]')
-            .action(async (outputPath) => {
+        cli.makeCommand(
+            {
+                name: 'loader [output-path]',
+                alias: 'l',
+                description: 'Scaffold a loader',
+                usage: 'loader [output-path]',
+                packageName: '@webpack-cli/generators',
+            },
+            [],
+            async (outputPath) => {
                 const env = yeoman.createEnv([], { cwd: outputPath });
                 const generatorName = 'webpack-loader-generator';
 
@@ -22,16 +26,19 @@ class GeneratorsCommand {
                 env.run(generatorName, () => {
                     logger.success('Loader template has been successfully scaffolded.');
                 });
-            });
+            },
+        );
 
-        loaderCommand.packageName = '@webpack-cli/generators';
-
-        const pluginName = program
-            .command('plugin [output-path]')
-            .alias('p')
-            .description('Scaffold a plugin')
-            .usage('plugin [output-path]')
-            .action(async (outputPath) => {
+        cli.makeCommand(
+            {
+                name: 'plugin [output-path]',
+                alias: 'p',
+                description: 'Scaffold a plugin',
+                usage: 'plugin [output-path]',
+                packageName: '@webpack-cli/generators',
+            },
+            [],
+            async (outputPath) => {
                 const env = yeoman.createEnv([], { cwd: outputPath });
                 const generatorName = 'webpack-plugin-generator';
 
@@ -40,9 +47,8 @@ class GeneratorsCommand {
                 env.run(generatorName, () => {
                     logger.success('Plugin template has been successfully scaffolded.');
                 });
-            });
-
-        pluginName.packageName = '@webpack-cli/generators';
+            },
+        );
     }
 }
 

@@ -31,17 +31,25 @@ const DEFAULT_DETAILS: Information = {
 
 class InfoCommand {
     apply(cli): void {
-        const { program, logger } = cli;
-
-        const command = program
-            .command('info')
-            .alias('i')
-            .description('Outputs information about your system')
-            .usage('info [options]')
-            .option('-o,--output <format>')
-            .action(async (program) => {
+        cli.makeCommand(
+            {
+                name: 'info',
+                alias: 'i',
+                description: 'Outputs information about your system',
+                usage: 'info [options]',
+                packageName: '@webpack-cli/info',
+            },
+            [
+                {
+                    name: 'output',
+                    type: String,
+                    description: 'To get the output in specified format ( accept json or markdown )',
+                },
+            ],
+            async (program) => {
                 let { output } = program.opts();
 
+                const { logger } = cli;
                 const envinfoConfig = {};
 
                 if (output) {
@@ -67,9 +75,8 @@ class InfoCommand {
                 info = info.replace(/npmGlobalPackages/g, 'Global Packages');
 
                 logger.raw(info);
-            });
-
-        command.packageName = '@webpack-cli/info';
+            },
+        );
     }
 }
 

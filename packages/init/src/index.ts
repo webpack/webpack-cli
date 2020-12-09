@@ -3,29 +3,43 @@ import { modifyHelperUtil, npmPackagesExists } from '@webpack-cli/utils';
 
 class InitCommand {
     apply(cli): void {
-        const { program } = cli;
-
-        const initCommand = program
-            .command('init [scaffold...]')
-            .alias('c')
-            .description('Initialize a new webpack configuration')
-            .usage('init [scaffold] [options]')
-            .option('--auto')
-            .option('--force')
-            .option('--generation-path <value>')
-            .action((scaffold, program) => {
+        cli.makeCommand(
+            {
+                name: 'init [scaffold]',
+                alias: 'c',
+                description: 'Initialize a new webpack configuration',
+                usage: 'init [scaffold] [options]',
+                packageName: '@webpack-cli/init',
+            },
+            [
+                {
+                    name: 'auto',
+                    type: Boolean,
+                    description: 'To generate default config',
+                },
+                {
+                    name: 'force',
+                    type: Boolean,
+                    description: 'To force config generation',
+                },
+                {
+                    name: 'generation-path',
+                    type: String,
+                    description: 'To scaffold in a specified path',
+                },
+            ],
+            async (scaffold, program) => {
                 const options = program.opts();
 
-                if (Object.keys(options).length > 0) {
-                    modifyHelperUtil('init', initGenerator, null, null, options.auto, options.force, options.generationPath);
+                if (scaffold) {
+                    await npmPackagesExists(scaffold);
 
                     return;
                 }
 
-                npmPackagesExists(scaffold);
-            });
-
-        initCommand.packageName = '@webpack-cli/init';
+                modifyHelperUtil('init', initGenerator, null, null, options.auto, options.force, options.generationPath);
+            },
+        );
     }
 }
 

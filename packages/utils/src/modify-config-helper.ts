@@ -118,6 +118,7 @@ export function modifyHelperUtil(
                 logger.error(err);
                 logger.error(`${err.stack}\n`);
                 logger.error('Your yeoman configuration file (.yo-rc.json) was incorrectly formatted. Deleting it may fix the problem.\n');
+
                 Error.stackTraceLimit = 0;
                 process.exitCode = 2;
             }
