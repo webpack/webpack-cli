@@ -31,7 +31,7 @@ class ServeCommand {
                 usage: '[options]',
                 packageName: '@webpack-cli/serve',
             },
-            [...builtInOptions, ...devServerOptions],
+            [...devServerOptions, ...builtInOptions],
             async (program) => {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const filteredBuiltInOptions: Record<string, any> = {};

@@ -7,20 +7,20 @@ describe('commands help', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['help', 'serve'], false);
 
         expect(exitCode).toBe(0);
-        expect(stdout).toContain('webpack s | serve');
-        expect(stderr).toHaveLength(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('webpack serve|s [options]');
     });
 
     it('log error for invalid command with --help flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--help', 'myCommand'], false);
 
-        expect(exitCode).toBe(2);
+        expect(exitCode).toBe(0);
         expect(stderr).toContain("Invalid command 'myCommand'.");
         expect(stderr).toContain("Run 'webpack --help' to see available commands and arguments");
         expect(stdout).toHaveLength(0);
     });
 
-    it('log error for invalid command with help command', () => {
+    it.only('log error for invalid command with help command', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['help', 'myCommand'], false);
 
         expect(exitCode).toBe(2);
