@@ -1,11 +1,11 @@
 'use strict';
 
 const { join } = require('path');
-const { runInfo } = require('../utils/test-utils');
+const { run } = require('../utils/test-utils');
 
 describe('basic info usage', () => {
     it('gets info without flags', () => {
-        const { exitCode, stdout, stderr } = runInfo([], __dirname);
+        const { exitCode, stdout, stderr } = run(__dirname, ['info'], false);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -16,7 +16,7 @@ describe('basic info usage', () => {
     });
 
     it('gets more info in project root', () => {
-        const { exitCode, stderr, stdout } = runInfo([], join(__dirname, '../../'));
+        const { exitCode, stderr, stdout } = run(join(__dirname, '../../'), ['info'], false);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -29,7 +29,7 @@ describe('basic info usage', () => {
     });
 
     it('gets info as json', () => {
-        const { exitCode, stderr, stdout } = runInfo(['--output="json"'], __dirname);
+        const { exitCode, stderr, stdout } = run(__dirname, ['info', '--output=json'], false);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -47,7 +47,7 @@ describe('basic info usage', () => {
     });
 
     it('gets info as markdown', () => {
-        const { exitCode, stderr, stdout } = runInfo(['--output="markdown"'], __dirname);
+        const { exitCode, stderr, stdout } = run(__dirname, ['info', '--output', 'markdown'], false);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -55,7 +55,7 @@ describe('basic info usage', () => {
     });
 
     it('shows a warning if an invalid value is supplied', () => {
-        const { exitCode, stderr, stdout } = runInfo(['--output=unknown'], __dirname);
+        const { exitCode, stderr, stdout } = run(__dirname, ['info', '--output', 'unknown'], false);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain(`'unknown' is not a valid value for output`);
