@@ -38,6 +38,19 @@ describe('stats flag', () => {
         }
     });
 
+    it('should accept --no-stats as boolean', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['--no-stats']);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+
+        if (isWebpack5) {
+            expect(stdout).toContain(`stats: { preset: 'none' }`);
+        } else {
+            expect(stdout).toContain('stats: false');
+        }
+    });
+
     it('should log error when an unknown flag stats value is passed', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--stats', 'foo']);
 
