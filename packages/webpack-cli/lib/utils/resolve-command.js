@@ -27,7 +27,9 @@ const run = async (name, args, commandName) => {
         loaded = loaded.default;
     }
 
-    return loaded(args, commandName);
+    // For commands where entry function is asynchronous
+    await loaded(args, commandName);
+    process.exit(0);
 };
 
 module.exports = run;

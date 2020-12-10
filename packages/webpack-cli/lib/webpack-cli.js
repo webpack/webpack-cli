@@ -533,6 +533,10 @@ class WebpackCLI {
                     logger.raw(`${stats.toString(foundStats)}`);
                 }
             }
+
+            if (args.watch !== true) {
+                process.exit(0);
+            }
         };
 
         const config = await this.resolve(args);
