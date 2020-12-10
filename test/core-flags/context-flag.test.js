@@ -12,9 +12,9 @@ describe('--context flag', () => {
 
         if (isWindows) {
             const windowsPath = resolve(__dirname, './').replace(/\\/g, '\\\\');
-            expect(stdout).toContain(`context: '${windowsPath}'`);
+            expect(stdout).toContain(`'${windowsPath}'`);
         } else {
-            expect(stdout).toContain(`context: '${resolve(__dirname, './')}'`);
+            expect(stdout).toContain(`'${resolve(__dirname, './')}'`);
         }
     });
 
