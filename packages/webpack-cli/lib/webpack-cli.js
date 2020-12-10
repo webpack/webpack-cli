@@ -1,5 +1,5 @@
 const path = require('path');
-const { program } = require('commander');
+const { program, Command } = require('commander');
 const packageExists = require('./utils/package-exists');
 const webpack = packageExists('webpack') ? require('webpack') : undefined;
 const webpackMerge = require('webpack-merge');
@@ -28,8 +28,6 @@ class WebpackCLI {
         this.program.name('webpack');
         this.program.storeOptionsAsProperties(false);
 
-        // Global options
-
         // Default `--color` and `--no-color` options
         let colorFromArguments;
 
@@ -46,74 +44,6 @@ class WebpackCLI {
 
             colorFromArguments = color;
             coloretteOptions.enabled = color;
-        });
-
-        // Default `-v, --version` options
-        this.program.option('-v, --version, version');
-        this.program.on('option:version', function () {
-            const { commands, rawArgs } = this.program;
-
-            if (rawArgs.includes('--color')) {
-                coloretteOptions.enabled = true;
-            } else if (rawArgs.includes('--no-color')) {
-                coloretteOptions.enabled = false;
-            }
-
-            const availableCommands = commands.map((command) => ({
-                name: command.name(),
-                alias: command.alias(),
-                packageName: command.packageName,
-                options: command.options.map((options) => ({ name: options.name() })),
-            }));
-            const usedCommands = availableCommands.filter(
-                (availableCommand) => rawArgs.includes(availableCommand.name) || rawArgs.includes(availableCommand.alias),
-            );
-
-            if (usedCommands.length > 1) {
-                logger.error(
-                    `You provided multiple commands - ${usedCommands
-                        .map((command) => `'${command.name}'${command.alias ? ` (alias '${command.alias}')` : ''}`)
-                        .join(', ')}. Please use only one command at a time.`,
-                );
-                process.exit(2);
-            }
-
-            if (usedCommands.length === 1 && usedCommands[0].packageName) {
-                const [usedCommand] = usedCommands;
-                // TODO improve
-                // const unknownOptions = rawArgs.filter(
-                //     (option) => !rawArgs.includes(option.name) && !rawArgs.includes(option.alias) && !rawArgs.includes(usedCommands.name),
-                // );
-                //
-                // if (unknownOptions.length > 0) {
-                //     logger.error(`Invalid argument '${unknownOptions[0].name}'.`);
-                //     logger.error('Run webpack --help to see available commands and arguments.');
-                //     process.exit(2);
-                // }
-
-                if (usedCommand.name !== 'bundle') {
-                    try {
-                        const { name, version } = require(`${usedCommand.packageName}/package.json`);
-
-                        logger.raw(`${name} ${version}`);
-                    } catch (e) {
-                        logger.error(`Error: External package '${usedCommand.packageName}' not found.`);
-                        process.exit(2);
-                    }
-                }
-            }
-
-            const pkgJSON = require('../package.json');
-
-            logger.raw(`webpack-cli ${pkgJSON.version}`);
-            logger.raw(`webpack ${webpack.version}`);
-
-            process.exit();
-        });
-
-        // Default `-h, --help, help`
-        program.helpOption('-h, --help', 'Display help for command').on('--help', () => {
-            process.exit(0);
         });
 
         // Register own exit
@@ -141,7 +71,7 @@ class WebpackCLI {
                     const found = flags.find((flag) => leven(name, flag.name) < 3);
 
                     if (found) {
-                        logger.raw(`Did you mean '--${found.name}'?`);
+                        logger.error(`Did you mean '--${found.name}'?`);
                     }
                 }
             }
@@ -154,6 +84,7 @@ class WebpackCLI {
             process.exit(2);
         });
 
+        // TODO move from constructor
         this.makeCommand(
             {
                 name: 'bundle',
@@ -166,7 +97,7 @@ class WebpackCLI {
             async (program) => {
                 const options = program.opts();
 
-                if (typeof colorFromArguments !== 'undefined') {
+                if (colorFromArguments) {
                     options.color = colorFromArguments;
                 }
 
@@ -177,11 +108,11 @@ class WebpackCLI {
         // TODO autoinstall command packages, how?
         // Register built-in commands
         const builtInPackages = [
-            '@webpack-cli/generators',
+            '@webpack-cli/serve',
             '@webpack-cli/info',
             '@webpack-cli/init',
+            '@webpack-cli/generators',
             '@webpack-cli/migrate',
-            '@webpack-cli/serve',
         ];
 
         builtInPackages.forEach((builtInPackage) => {
@@ -209,6 +140,104 @@ class WebpackCLI {
                 logger.error(error);
                 process.exit(2);
             }
+        });
+
+        // Make `-v, --version` options
+        // Make `version [command]` command
+        const outputVersion = (possibleCommands) => {
+            // It is `-v, --version`
+            if (typeof possibleCommands === 'undefined') {
+                const { rawArgs } = this.program;
+
+                if (rawArgs.includes('--color')) {
+                    coloretteOptions.enabled = true;
+                } else if (rawArgs.includes('--no-color')) {
+                    coloretteOptions.enabled = false;
+                }
+
+                const pseudoCommand = new Command();
+
+                pseudoCommand.allowUnknownOption(true).parse(rawArgs);
+
+                possibleCommands = pseudoCommand.args;
+            }
+
+            possibleCommands = possibleCommands.filter(
+                (possibleCommand) =>
+                    possibleCommand !== 'bundle' &&
+                    possibleCommand !== 'b' &&
+                    possibleCommand !== 'version' &&
+                    possibleCommand !== 'v' &&
+                    possibleCommand !== '--version' &&
+                    possibleCommand !== '-v' &&
+                    possibleCommand !== '--color' &&
+                    possibleCommand !== '--no-color',
+            );
+
+            if (possibleCommands.length > 0) {
+                const availableCommands = this.program.commands.map((command) => ({
+                    name: command.name(),
+                    alias: command.alias(),
+                    packageName: command.packageName,
+                }));
+
+                const getCommandInfo = (name) => {
+                    return availableCommands.find((availableCommand) => availableCommand.name === name || availableCommand.alias === name);
+                };
+
+                for (const possibleCommand of possibleCommands) {
+                    const commandInfo = getCommandInfo(possibleCommand);
+
+                    if (commandInfo) {
+                        try {
+                            const { name, version } = require(`${commandInfo.packageName}/package.json`);
+
+                            logger.raw(`${name} ${version}`);
+                        } catch (e) {
+                            logger.error(`Error: External package '${commandInfo.packageName}' not found`);
+                            process.exit(2);
+                        }
+                    } else {
+                        const isOption = possibleCommand[0] === '-';
+
+                        if (isOption) {
+                            logger.error(`Invalid argument '${possibleCommand}'`);
+                            logger.error("Run 'webpack --help' to see available commands and arguments");
+                            process.exit(2);
+                        } else {
+                            logger.error(`Invalid command '${possibleCommand}'`);
+                            logger.error("Run 'webpack --help' to see available commands and arguments");
+                            process.exit(2);
+                        }
+                    }
+                }
+            }
+
+            const pkgJSON = require('../package.json');
+
+            logger.raw(`webpack ${webpack.version}`);
+            logger.raw(`webpack-cli ${pkgJSON.version}`);
+
+            if (packageExists('webpack-dev-server')) {
+                // eslint-disable-next-line node/no-extraneous-require
+                const { version } = require('webpack-dev-server/package.json');
+
+                logger.raw(`webpack-dev-server ${version}`);
+            }
+
+            process.exit(0);
+        };
+        this.makeCommand(
+            { name: 'version [commands...]', alias: 'v', description: 'Output the version number of command', usage: '[commands...]' },
+            [],
+            outputVersion,
+        );
+        this.program.option('-v, --version');
+        this.program.on('option:version', outputVersion);
+
+        // Default `-h, --help, help`
+        program.helpOption('-h, --help', 'Display help for command').on('--help', () => {
+            process.exit(0);
         });
     }
 
