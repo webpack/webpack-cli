@@ -27,7 +27,7 @@ if (packageExists('webpack')) {
         error(`It looks like ${yellow('webpack')} is not installed.`);
     })
         .then(() => {
-            success(`${yellow('webpack')} was installed sucessfully.`);
+            success(`${yellow('webpack')} was installed successfully.`);
 
             runCLI(rawArgs);
         })
