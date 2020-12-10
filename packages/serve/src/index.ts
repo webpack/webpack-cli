@@ -14,11 +14,11 @@ class ServeCommand {
 
         const builtInOptions = cli.getBuiltInOptions();
 
-        let devServerOptions = [];
+        let devServerFlags = [];
 
         try {
             // eslint-disable-next-line node/no-extraneous-require
-            devServerOptions = require('webpack-dev-server/bin/cli-flags').devServer;
+            devServerFlags = require('webpack-dev-server/bin/cli-flags').devServer;
         } catch (error) {
             // Nothing, to prevent future major release without problems
         }
@@ -31,36 +31,60 @@ class ServeCommand {
                 usage: '[options]',
                 packageName: '@webpack-cli/serve',
             },
-            [...devServerOptions, ...builtInOptions],
+            [...builtInOptions, ...devServerFlags],
             async (program) => {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const filteredBuiltInOptions: Record<string, any> = {};
+                const webpackOptions: Record<string, any> = {};
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const filteredDevServerOptions: Record<string, any> = {};
+                const devServerOptions: Record<string, any> = {};
                 const options = program.opts();
 
-                // TODO `clientLogLevel` and `hot`
-                for (const property in options) {
-                    const isDevServerOption = devServerOptions.find((devServerOption) => devServerOption.name === property);
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const processors: Array<(opts: Record<string, any>) => void> = [];
 
-                    if (isDevServerOption) {
-                        filteredDevServerOptions[property] = options[property];
+                for (const optionName in options) {
+                    if (optionName === 'hot' || optionName === 'progress') {
+                        devServerOptions[optionName] = options[optionName];
+                        webpackOptions[optionName] = options[optionName];
                     } else {
-                        filteredBuiltInOptions[property] = options[property];
+                        const kebabedOption = cli.utils.toKebabCase(optionName);
+                        const isBuiltInOption = builtInOptions.find((builtInOption) => builtInOption.name === kebabedOption);
+
+                        if (isBuiltInOption) {
+                            webpackOptions[optionName] = options[optionName];
+                        } else {
+                            const needToProcess = devServerFlags.find(
+                                (devServerOption) => devServerOption.name === kebabedOption && devServerOption.processor,
+                            );
+
+                            if (needToProcess) {
+                                processors.push(needToProcess.processor);
+                            }
+
+                            devServerOptions[optionName] = options[optionName];
+                        }
                     }
                 }
 
-                // TODO
-                // // Add WEBPACK_SERVE environment variable
-                // if (webpackArgs.env) {
-                //     webpackArgs.env.WEBPACK_SERVE = true;
-                // } else {
-                //     webpackArgs.env = { WEBPACK_SERVE: true };
-                // }
+                for (const processor of processors) {
+                    processor(devServerOptions);
+                }
 
-                const compiler = await cli.createCompiler(filteredBuiltInOptions);
+                webpackOptions.env = { WEBPACK_SERVE: true, ...options.env };
 
-                await startDevServer(compiler, filteredDevServerOptions);
+                const compiler = await cli.createCompiler(webpackOptions);
+
+                try {
+                    await startDevServer(compiler, devServerOptions, logger);
+                } catch (error) {
+                    if (error.name === 'ValidationError') {
+                        logger.error(error.message);
+                    } else {
+                        logger.error(error);
+                    }
+
+                    process.exit(2);
+                }
             },
         );
     }

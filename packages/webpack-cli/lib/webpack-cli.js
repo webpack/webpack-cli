@@ -26,6 +26,7 @@ class WebpackCLI {
         this.program = program;
         this.program.name('webpack');
         this.program.storeOptionsAsProperties(false);
+        this.utils = { toKebabCase };
     }
 
     makeCommand(commandOptions, optionsForCommand = [], action) {
@@ -513,7 +514,6 @@ class WebpackCLI {
         } else {
             // Order defines the priority, in increasing order
             const defaultConfigFiles = ['webpack.config', '.webpack/webpack.config', '.webpack/webpackfile']
-                // .filter((value) => value.includes(args.mode))
                 .map((filename) =>
                     // Since .cjs is not available on interpret side add it manually to default config extension list
                     [...Object.keys(extensions), '.cjs'].map((ext) => ({
@@ -887,6 +887,9 @@ class WebpackCLI {
                 }
             }
         };
+
+        // TODO need test
+        options.env = { WEBPACK_BUNDLE: true, ...options.env };
 
         compiler = await this.createCompiler(options, callback);
 

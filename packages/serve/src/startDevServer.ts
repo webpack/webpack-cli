@@ -2,18 +2,17 @@ import { utils } from 'webpack-cli';
 
 import mergeOptions from './mergeOptions';
 
-const { logger } = utils;
-
 /**
  *
  * Starts the devServer
  *
  * @param {Object} compiler - a webpack compiler
  * @param {Object} cliOptions - devServer args
+ * @param {Object} logger - logger
  *
  * @returns {Object[]} array of resulting servers
  */
-export default async function startDevServer(compiler, cliOptions): Promise<object[]> {
+export default async function startDevServer(compiler, cliOptions, logger): Promise<object[]> {
     let isDevServer4 = false,
         devServerVersion,
         Server,
@@ -37,9 +36,9 @@ export default async function startDevServer(compiler, cliOptions): Promise<obje
     const devServerOptions = [];
     const compilers = compiler.compilers || [compiler];
 
-    compilers.forEach((comp) => {
-        if (comp.options.devServer) {
-            devServerOptions.push(comp.options.devServer);
+    compilers.forEach((compiler) => {
+        if (compiler.options.devServer) {
+            devServerOptions.push(compiler.options.devServer);
         }
     });
 

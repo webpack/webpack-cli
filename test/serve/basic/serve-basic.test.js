@@ -6,7 +6,7 @@ const { runServe, isDevServer4 } = require('../../utils/test-utils');
 
 const testPath = path.resolve(__dirname);
 
-const usageText = 'serve|s serve [options]';
+const usageText = 'webpack serve|s [options]';
 const descriptionText = 'Run the webpack dev server';
 
 describe('basic serve usage', () => {
@@ -27,7 +27,7 @@ describe('basic serve usage', () => {
     }
 
     it('should work', async () => {
-        const { stderr, stdout } = await runServe([], __dirname);
+        const { stderr, stdout } = await runServe(['--no-hot'], __dirname);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('main.js');
