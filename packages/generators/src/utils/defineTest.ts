@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { JSCodeshift, Node } from '../src/types/NodePath';
+import { JSCodeshift, Node } from './types/NodePath';
 
 interface Module {
     (jscodeshift: JSCodeshift, ast: Node, initOptions: string | boolean | object, action: string, transformName?: string): Node;

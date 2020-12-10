@@ -15,8 +15,8 @@ import {
     getRequire,
     safeTraverse,
     safeTraverseAndGetType,
-} from '../src/ast-utils';
-import { Node } from '../src/types/NodePath';
+} from '../ast-utils';
+import { Node } from '../types/NodePath';
 
 describe('utils', () => {
     describe('createProperty', () => {

@@ -1,5 +1,5 @@
 'use strict';
-import { npmExists } from '../src/npm-exists';
+import { npmExists } from '../npm-exists';
 
 describe('npm-exists', () => {
     it('should successfully existence of a published module', () => {

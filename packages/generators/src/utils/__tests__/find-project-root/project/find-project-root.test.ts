@@ -1,5 +1,5 @@
 // eslint-disable-next-line node/no-unpublished-import
-import { findProjectRoot } from '../../../src/path-utils';
+import { findProjectRoot } from '../../../path-utils';
 import { join } from 'path';
 
 beforeAll(() => {
