@@ -1,8 +1,9 @@
 'use strict';
 
 const { run } = require('../utils/test-utils');
-const { commands } = require('../../packages/webpack-cli/lib/utils/cli-flags');
 const helpHeader = 'The build tool for modern web applications';
+
+const commands = ['bundle', 'loader', 'plugin', 'info', 'init', 'migrate', 'serve'];
 
 describe('help cmd with multiple arguments', () => {
     commands.forEach((cmd) => {

@@ -3,14 +3,6 @@
 const { run } = require('../utils/test-utils');
 
 describe('commands help', () => {
-    it('log help for subcommands', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['serve', 'help'], false);
-
-        expect(exitCode).toBe(0);
-        expect(stderr).toBeFalsy();
-        expect(stdout).toContain('webpack s | serve');
-    });
-
     it('log help information with subcommands as an arg', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['help', 'serve'], false);
 
