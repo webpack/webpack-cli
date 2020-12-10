@@ -1,4 +1,4 @@
-import { createOrUpdatePluginByName, findPluginsByName } from '@webpack-cli/utils';
+import { createOrUpdatePluginByName, findPluginsByName } from '@webpack-cli/generators';
 
 import { JSCodeshift, Node } from '../types/NodePath';
 

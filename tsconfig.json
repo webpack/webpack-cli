@@ -24,7 +24,6 @@
     { "path": "packages/info" },
     { "path": "packages/init" },
     { "path": "packages/migrate" },
-    { "path": "packages/serve" },
-    { "path": "packages/utils" }
+    { "path": "packages/serve" }
   ]
 }

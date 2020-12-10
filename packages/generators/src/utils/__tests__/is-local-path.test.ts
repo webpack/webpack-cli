@@ -1,7 +1,7 @@
 'use strict';
 
 import path from 'path';
-import { isLocalPath } from '../src/path-utils';
+import { isLocalPath } from '../path-utils';
 
 describe('is-local-path', () => {
     it('returns true for paths beginning in the current directory', () => {

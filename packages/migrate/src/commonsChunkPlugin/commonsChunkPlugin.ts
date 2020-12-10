@@ -5,7 +5,7 @@ import {
     findAndRemovePluginByName,
     findPluginsByName,
     findRootNodesByName,
-} from '@webpack-cli/utils';
+} from '@webpack-cli/generators';
 
 import { JSCodeshift, Node } from '../types/NodePath';
 

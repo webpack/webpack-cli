@@ -1,6 +1,6 @@
 import { red, underline } from 'colorette';
 
-import { findPluginsByName, isType, safeTraverse } from '@webpack-cli/utils';
+import { findPluginsByName, isType, safeTraverse } from '@webpack-cli/generators';
 
 import { JSCodeshift, Node } from '../types/NodePath';
 

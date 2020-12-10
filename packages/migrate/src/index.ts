@@ -6,7 +6,7 @@ import Listr from 'listr';
 import pLazy = require('p-lazy');
 import path from 'path';
 import { validate, WebpackOptionsValidationError } from 'webpack';
-import { runPrettier } from '@webpack-cli/utils';
+import { runPrettier } from '@webpack-cli/generators';
 import { transformations } from './migrate';
 import { Node } from './types/NodePath';
 import jscodeshift from 'jscodeshift';

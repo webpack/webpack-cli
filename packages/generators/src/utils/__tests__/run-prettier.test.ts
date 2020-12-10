@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 //eslint-disable-next-line node/no-extraneous-import
 import rimraf from 'rimraf';
-import { runPrettier } from '../src/run-prettier';
+import { runPrettier } from '../run-prettier';
 
 const outputPath = path.join(__dirname, 'test-assets');
 const outputFile = path.join(outputPath, 'test.js');

@@ -1,4 +1,4 @@
-import { createProperty, findPluginsArrayAndRemoveIfEmpty, findPluginsByName, getRequire, safeTraverse } from '@webpack-cli/utils';
+import { createProperty, findPluginsArrayAndRemoveIfEmpty, findPluginsByName, getRequire, safeTraverse } from '@webpack-cli/generators';
 
 import { JSCodeshift, Node } from '../types/NodePath';
 

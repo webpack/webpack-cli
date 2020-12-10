@@ -1,4 +1,4 @@
-import { createProperty, findVariableToPlugin, isType } from '@webpack-cli/utils';
+import { createProperty, findVariableToPlugin, isType } from '@webpack-cli/generators';
 
 import { JSCodeshift, Node } from '../types/NodePath';
 
