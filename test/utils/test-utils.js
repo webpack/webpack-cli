@@ -44,17 +44,16 @@ const hyphenToUpperCase = (name) => {
  * @param {Record<string, any>} env Boolean that decides if a default output path will be set or not
  * @returns {Object} The webpack output or Promise when nodeOptions are present
  */
-const run = (testCase, args = [], nodeOptions = [], env) => {
+const run = (testCase, args = [], options = {}) => {
     const cwd = path.resolve(testCase);
-
+    const { nodeOptions } = options;
     const processExecutor = nodeOptions.length ? execaNode : spawnSync;
     const result = processExecutor(WEBPACK_PATH, args, {
         cwd,
         reject: false,
-        nodeOptions: nodeOptions,
-        env,
         stdio: ENABLE_LOG_COMPILATION ? 'inherit' : 'pipe',
         maxBuffer: Infinity,
+        ...options,
     });
 
     return result;
