@@ -63,13 +63,6 @@ class WebpackCLI {
 
         command.action(action);
 
-        // command.helpOption(true);
-        // Default `-h, --help, help`
-        command.on('--help', () => {
-            console.log('COMMAND HELP');
-            console.log(commandOptions.name);
-        });
-
         return command;
     }
 
@@ -239,12 +232,12 @@ class WebpackCLI {
             coloretteOptions.enabled = color;
         });
 
-        this.makeCommand(
+        const bundleCommand = this.makeCommand(
             {
                 name: 'bundle',
                 isDefault: true,
                 alias: 'b',
-                description: 'Run webpack',
+                description: 'Run webpack (default command)',
                 usage: '[options]',
             },
             this.getBuiltInOptions(),
@@ -389,11 +382,15 @@ class WebpackCLI {
         this.program.option('-v, --version');
         this.program.on('option:version', outputVersion);
 
-        // Default `help` command
-        this.program.helpOption('-h, --help', 'Display help for command');
-        this.program.addHelpCommand('help [command]', 'Display help for command');
+        // Default global `help` command
+        this.program.usage('[options]\nAlternative usage: webpack --config <config> [options]');
         this.program.on('--help', () => {
-            console.log('GLOBAL HELP');
+            const bundleCommandHelpInformation = bundleCommand
+                .helpInformation()
+                .trim()
+                .replace(/Usage:.+Options:/s, '\nConfiguration options:');
+
+            logger.raw(bundleCommandHelpInformation);
         });
 
         await this.program.parseAsync(args);
