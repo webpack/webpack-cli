@@ -49,13 +49,26 @@ class WebpackCLI {
             command.alias(commandOptions.alias);
         }
 
-        optionsForCommand.forEach((optionForCommand) => {
-            this.makeOption(command, optionForCommand);
-        });
+        if (commandOptions.packageName) {
+            command.packageName = commandOptions.packageName;
+        } else {
+            command.packageName = 'webpack-cli';
+        }
 
-        command.packageName = commandOptions.packageName || 'webpack-cli';
+        if (optionsForCommand.length > 0) {
+            optionsForCommand.forEach((optionForCommand) => {
+                this.makeOption(command, optionForCommand);
+            });
+        }
 
         command.action(action);
+
+        // command.helpOption(true);
+        // Default `-h, --help, help`
+        command.on('--help', () => {
+            console.log('COMMAND HELP');
+            console.log(commandOptions.name);
+        });
 
         return command;
     }
@@ -376,9 +389,11 @@ class WebpackCLI {
         this.program.option('-v, --version');
         this.program.on('option:version', outputVersion);
 
-        // Default `-h, --help, help`
-        program.helpOption('-h, --help', 'Display help for command').on('--help', () => {
-            process.exit(0);
+        // Default `help` command
+        this.program.helpOption('-h, --help', 'Display help for command');
+        this.program.addHelpCommand('help [command]', 'Display help for command');
+        this.program.on('--help', () => {
+            console.log('GLOBAL HELP');
         });
 
         await this.program.parseAsync(args);
