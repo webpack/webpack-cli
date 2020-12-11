@@ -31,7 +31,7 @@ async function setup() {
  * @returns {void}
  */
 function teardown() {
-    testEntryFiles.forEach(async (file) => {
+    testEntryFiles.forEach((file) => {
         try {
             unlinkSync(file.fp);
         } catch (e) {
