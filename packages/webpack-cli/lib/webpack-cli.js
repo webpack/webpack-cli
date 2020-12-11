@@ -1,13 +1,13 @@
 const path = require('path');
 const { program, Command } = require('commander');
-const packageExists = require('./utils/package-exists');
-const webpack = packageExists('webpack') ? require('webpack') : undefined;
+const getPkg = require('./utils/package-exists');
+const webpack = getPkg('webpack') ? require('webpack') : undefined;
 const webpackMerge = require('webpack-merge');
 const { extensions, jsVariants } = require('interpret');
 const rechoir = require('rechoir');
 const { createWriteStream, existsSync } = require('fs');
 const leven = require('leven');
-const { options: coloretteOptions, yellow } = require('colorette');
+const { options: coloretteOptions, yellow, cyan, green } = require('colorette');
 const { stringifyStream: createJsonStringifyStream } = require('@discoveryjs/json-ext');
 
 const logger = require('./utils/logger');
@@ -26,7 +26,8 @@ class WebpackCLI {
         this.program = program;
         this.program.name('webpack');
         this.program.storeOptionsAsProperties(false);
-        this.utils = { toKebabCase };
+        this.program.allowUnknownOption(true);
+        this.utils = { toKebabCase, getPkg, promptInstallation };
     }
 
     makeCommand(commandOptions, optionsForCommand = [], action) {
@@ -50,10 +51,10 @@ class WebpackCLI {
             command.alias(commandOptions.alias);
         }
 
-        if (commandOptions.packageName) {
-            command.packageName = commandOptions.packageName;
+        if (commandOptions.pkg) {
+            command.pkg = commandOptions.pkg;
         } else {
-            command.packageName = 'webpack-cli';
+            command.pkg = 'webpack-cli';
         }
 
         if (optionsForCommand.length > 0) {
@@ -233,66 +234,62 @@ class WebpackCLI {
             coloretteOptions.enabled = color;
         });
 
-        const bundleCommand = this.makeCommand(
+        // Built-in external commands
+        const externalBuiltInCommands = [
             {
-                name: 'bundle',
-                isDefault: true,
-                alias: 'b',
-                description: 'Run webpack (default command)',
-                usage: '[options]',
+                name: 'serve',
+                alias: 's',
+                pkg: '@webpack-cli/serve',
             },
-            this.getBuiltInOptions(),
-            async (program) => {
-                const options = program.opts();
-
-                if (typeof colorFromArguments !== 'undefined') {
-                    options.color = colorFromArguments;
-                }
-
-                await this.bundleCommand(options);
+            {
+                name: 'info',
+                alias: 'i',
+                pkg: '@webpack-cli/info',
             },
-        );
-
-        // TODO autoinstall command packages, how?
-        // Register built-in commands
-        const builtInPackages = [
-            '@webpack-cli/serve',
-            '@webpack-cli/info',
-            '@webpack-cli/init',
-            '@webpack-cli/generators',
-            '@webpack-cli/migrate',
+            {
+                name: 'init',
+                alias: 'c',
+                pkg: '@webpack-cli/init',
+            },
+            {
+                name: 'loader',
+                alias: 'l',
+                pkg: '@webpack-cli/generators',
+            },
+            {
+                name: 'plugin',
+                alias: 'p',
+                pkg: '@webpack-cli/generators',
+            },
+            {
+                name: 'migrate',
+                alias: 'm',
+                pkg: '@webpack-cli/migrate',
+            },
         ];
 
-        builtInPackages.forEach((builtInPackage) => {
-            let loadedCommand;
+        // Make `bundle|b [options]` command
+        const bundleCommandOptions = {
+            name: 'bundle',
+            alias: 'b',
+            description: 'Run webpack (default command)',
+            usage: '[options]',
+        };
+        const bundleOptions = this.getBuiltInOptions();
 
-            try {
-                loadedCommand = require(builtInPackage);
-            } catch (error) {
-                // Ignore, command is not installed
+        this.makeCommand(bundleCommandOptions, bundleOptions, async (program) => {
+            const options = program.opts();
 
-                return;
+            if (typeof colorFromArguments !== 'undefined') {
+                options.color = colorFromArguments;
             }
 
-            if (loadedCommand.default) {
-                loadedCommand = loadedCommand.default;
-            }
-
-            let command;
-
-            try {
-                command = new loadedCommand();
-
-                command.apply(this);
-            } catch (error) {
-                logger.error(error);
-                process.exit(2);
-            }
+            await this.bundleCommand(options);
         });
 
         // Make `-v, --version` options
-        // Make `version [command]` command
-        const outputVersion = (possibleCommands) => {
+        // Make `version|v [command]` command
+        const outputVersion = async (possibleCommands) => {
             // It is `-v, --version`
             if (typeof possibleCommands === 'undefined') {
                 const { rawArgs } = this.program;
@@ -312,8 +309,8 @@ class WebpackCLI {
 
             possibleCommands = possibleCommands.filter(
                 (possibleCommand) =>
-                    possibleCommand !== 'bundle' &&
-                    possibleCommand !== 'b' &&
+                    possibleCommand !== bundleCommandOptions.name &&
+                    possibleCommand !== bundleCommandOptions.alias &&
                     possibleCommand !== 'version' &&
                     possibleCommand !== 'v' &&
                     possibleCommand !== '--version' &&
@@ -323,10 +320,25 @@ class WebpackCLI {
             );
 
             if (possibleCommands.length > 0) {
+                await Promise.all(
+                    possibleCommands.map((possibleCommand) => {
+                        const isExternalBuiltInCommand = externalBuiltInCommands.find(
+                            (externalBuiltInCommand) =>
+                                externalBuiltInCommand.name === possibleCommand || externalBuiltInCommand.alias === possibleCommand,
+                        );
+
+                        if (!isExternalBuiltInCommand) {
+                            return Promise.resolve();
+                        }
+
+                        return loadExternalCommand(isExternalBuiltInCommand.pkg);
+                    }),
+                );
+
                 const availableCommands = this.program.commands.map((command) => ({
                     name: command.name(),
                     alias: command.alias(),
-                    packageName: command.packageName,
+                    pkg: command.pkg,
                 }));
 
                 const getCommandInfo = (name) => {
@@ -338,11 +350,11 @@ class WebpackCLI {
 
                     if (commandInfo) {
                         try {
-                            const { name, version } = require(`${commandInfo.packageName}/package.json`);
+                            const { name, version } = require(`${commandInfo.pkg}/package.json`);
 
                             logger.raw(`${name} ${version}`);
                         } catch (e) {
-                            logger.error(`Error: External package '${commandInfo.packageName}' not found`);
+                            logger.error(`Error: External package '${commandInfo.pkg}' not found`);
                             process.exit(2);
                         }
                     } else {
@@ -366,7 +378,7 @@ class WebpackCLI {
             logger.raw(`webpack ${webpack.version}`);
             logger.raw(`webpack-cli ${pkgJSON.version}`);
 
-            if (packageExists('webpack-dev-server')) {
+            if (getPkg('webpack-dev-server')) {
                 // eslint-disable-next-line node/no-extraneous-require
                 const { version } = require('webpack-dev-server/package.json');
 
@@ -375,23 +387,96 @@ class WebpackCLI {
 
             process.exit(0);
         };
+        this.program.option('-v, --version');
+        this.program.on('option:version', outputVersion);
         this.makeCommand(
             { name: 'version [commands...]', alias: 'v', description: 'Output the version number of command', usage: '[commands...]' },
             [],
             outputVersion,
         );
-        this.program.option('-v, --version');
-        this.program.on('option:version', outputVersion);
 
         // Default global `help` command
-        this.program.usage('[options]\nAlternative usage: webpack --config <config> [options]');
-        this.program.on('--help', () => {
-            const bundleCommandHelpInformation = bundleCommand
-                .helpInformation()
-                .trim()
-                .replace(/Usage:.+Options:/s, '\nConfiguration options:');
+        // this.program.on('--help', () => {
+        //     const bundleCommandHelpInformation = bundleCommand
+        //         .helpInformation()
+        //         .trim()
+        //         .replace(/Usage:.+Options:/s, '\nConfiguration options:');
+        //
+        //     logger.raw(bundleCommandHelpInformation);
+        // });
 
-            logger.raw(bundleCommandHelpInformation);
+        const loadExternalCommand = async (pkg) => {
+            let loadedCommand;
+
+            try {
+                loadedCommand = require(pkg);
+            } catch (error) {
+                // Ignore, command is not installed
+
+                return;
+            }
+
+            if (loadedCommand.default) {
+                loadedCommand = loadedCommand.default;
+            }
+
+            let command;
+
+            try {
+                command = new loadedCommand();
+
+                await command.apply(this);
+            } catch (error) {
+                logger.error(error);
+                process.exit(2);
+            }
+        };
+
+        let isDefaultActionCalled = false;
+
+        // Default action
+        this.program.usage('[options]\nAlternative usage: webpack --config <config> [options]');
+        this.program.action(async (program) => {
+            if (!isDefaultActionCalled) {
+                isDefaultActionCalled = true;
+            } else {
+                logger.error('No commands found to run');
+                process.exit(2);
+            }
+
+            const { args } = program;
+            const commandToRun = args[0];
+
+            if (!commandToRun || (commandToRun === bundleCommandOptions.name && commandToRun === bundleCommandOptions.alias)) {
+                this.program.parseAsync(['bundle', ...args], { from: 'user' });
+            } else {
+                const externalBuiltInCommand = externalBuiltInCommands.find(
+                    (externalBuiltInCommand) =>
+                        externalBuiltInCommand.name === commandToRun || externalBuiltInCommand.alias === commandToRun,
+                );
+
+                if (!externalBuiltInCommand) {
+                    logger.error(`Unknown '${commandToRun}' comamnd`);
+                    process.exit(2);
+                }
+
+                let { pkg } = externalBuiltInCommand;
+
+                if (!getPkg(pkg)) {
+                    try {
+                        pkg = await promptInstallation(pkg, () => {
+                            logger.error(`For using this command you need to install: '${green(commandToRun)}' package`);
+                        });
+                    } catch (error) {
+                        logger.error(`Action Interrupted, use ${cyan('webpack-cli help')} to see possible commands.`);
+                        process.exit(2);
+                    }
+                }
+
+                await loadExternalCommand(pkg);
+
+                this.program.parseAsync(args, { from: 'user' });
+            }
         });
 
         await this.program.parseAsync(args);
@@ -604,7 +689,7 @@ class WebpackCLI {
     // TODO refactor
     async applyOptions(config, options) {
         if (options.analyze) {
-            if (!packageExists('webpack-bundle-analyzer')) {
+            if (!getPkg('webpack-bundle-analyzer')) {
                 try {
                     await promptInstallation('webpack-bundle-analyzer', () => {
                         logger.error(`It looks like ${yellow('webpack-bundle-analyzer')} is not installed.`);
@@ -649,10 +734,11 @@ class WebpackCLI {
 
                 if (problems) {
                     problems.forEach((problem) => {
+                        // TODO improve expected
                         logger.error(
                             `Found the '${problem.type}' problem with the '--${problem.argument}' argument${
                                 problem.path ? ` by path '${problem.path}'` : ''
-                            }`,
+                            }, expected '${problem.expected}'`,
                         );
                     });
 

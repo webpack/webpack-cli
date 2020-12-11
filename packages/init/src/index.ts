@@ -9,7 +9,7 @@ class InitCommand {
                 alias: 'c',
                 description: 'Initialize a new webpack configuration',
                 usage: '[scaffold...] [options]',
-                packageName: '@webpack-cli/init',
+                pkg: '@webpack-cli/init',
             },
             [
                 {

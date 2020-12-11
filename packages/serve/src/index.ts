@@ -1,12 +1,29 @@
 import startDevServer from './startDevServer';
 
 class ServeCommand {
-    apply(cli): void {
-        const { logger } = cli;
+    async apply(cli): Promise<void> {
+        const { logger, utils } = cli;
+        const isPackageExist = utils.getPkg('webpack-dev-server');
+
+        if (!isPackageExist) {
+            try {
+                await utils.promptInstallation('webpack-dev-server', () => {
+                    // TODO colors
+                    logger.error("For using this command you need to install: 'webpack-dev-server' package");
+                });
+            } catch (error) {
+                logger.error("Action Interrupted, use 'webpack-cli help' to see possible commands.");
+                process.exit(2);
+            }
+        }
+
+        let devServerFlags = [];
 
         try {
             // eslint-disable-next-line node/no-extraneous-require
             require('webpack-dev-server');
+            // eslint-disable-next-line node/no-extraneous-require
+            devServerFlags = require('webpack-dev-server/bin/cli-flags').devServer;
         } catch (err) {
             logger.error(`You need to install 'webpack-dev-server' for running 'webpack serve'.\n${err}`);
             process.exit(2);
@@ -14,22 +31,13 @@ class ServeCommand {
 
         const builtInOptions = cli.getBuiltInOptions();
 
-        let devServerFlags = [];
-
-        try {
-            // eslint-disable-next-line node/no-extraneous-require
-            devServerFlags = require('webpack-dev-server/bin/cli-flags').devServer;
-        } catch (error) {
-            // Nothing, to prevent future major release without problems
-        }
-
         cli.makeCommand(
             {
                 name: 'serve',
                 alias: 's',
                 description: 'Run the webpack dev server',
                 usage: '[options]',
-                packageName: '@webpack-cli/serve',
+                pkg: '@webpack-cli/serve',
             },
             [...builtInOptions, ...devServerFlags],
             async (program) => {

@@ -14,7 +14,7 @@ class GeneratorsCommand {
                 alias: 'l',
                 description: 'Scaffold a loader',
                 usage: 'loader [output-path]',
-                packageName: '@webpack-cli/generators',
+                pkg: '@webpack-cli/generators',
             },
             [],
             async (outputPath) => {
