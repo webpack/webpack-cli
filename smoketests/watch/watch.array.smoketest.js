@@ -35,7 +35,7 @@ async function setup() {
  * Remove symlinks, restore file
  * @returns {void}
  */
-async function teardown() {
+function teardown() {
     testEntryFiles.forEach((file) => {
         try {
             unlinkSync(file.fp);
@@ -104,7 +104,7 @@ async function teardown() {
             assert.strictEqual(nCompilationBufferOne.length > 1, true, 'expected first buffer of array compilation to be > 1');
             assert.strictEqual(nCompilationBufferTwo.length > 1, true, 'expected second buffer of array compilation to be > 1');
             assert.strictEqual(nCompilationBufferOne[1] !== nCompilationBufferTwo[1], true, 'expected buffer output dir to be different');
-            await teardown();
+            teardown();
             process.exit(0);
         });
     } catch (e) {
