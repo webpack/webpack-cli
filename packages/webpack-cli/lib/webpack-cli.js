@@ -888,7 +888,6 @@ class WebpackCLI {
             }
         };
 
-        // TODO need test
         options.env = { WEBPACK_BUNDLE: true, ...options.env };
 
         compiler = await this.createCompiler(options, callback);
