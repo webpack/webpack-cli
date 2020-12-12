@@ -30,8 +30,8 @@ async function setup() {
  * Remove symlinks, restore file
  * @returns {void}
  */
-async function teardown() {
-    await testEntryFiles.forEach(async (file) => {
+function teardown() {
+    testEntryFiles.forEach((file) => {
         try {
             unlinkSync(file.fp);
         } catch (e) {
@@ -81,7 +81,7 @@ async function teardown() {
         // Buffer should have compiled equal amount of each compilation and have diff output directories
         webpackProc.stderr.on('close', async () => {
             assert.strictEqual(dataBuffer.length >= 1, true, 'expected single configuration to re-compile');
-            await teardown();
+            teardown();
             process.exit(0);
         });
     } catch (e) {
