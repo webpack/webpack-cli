@@ -12,6 +12,12 @@ const logger = require('./logger');
  */
 async function promptInstallation(packageName, preMessage) {
     const packageManager = getPackageManager();
+
+    if (!packageManager) {
+        logger.error("Can't find package manager");
+        process.exit(2);
+    }
+
     // yarn uses 'add' command, rest npm and pnpm both use 'install'
     const options = [packageManager === 'yarn' ? 'add' : 'install', '-D', packageName];
 
