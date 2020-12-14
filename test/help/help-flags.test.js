@@ -8,7 +8,7 @@ describe('commands help', () => {
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain(`Invalid option '--my-flag'`);
-        expect(stderr).toContain("Run 'webpack --help' to see available commands and arguments");
+        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toHaveLength(0);
     });
 
@@ -17,7 +17,7 @@ describe('commands help', () => {
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain(`Invalid option '--my-flag'.`);
-        expect(stderr).toContain("Run 'webpack --help' to see available commands and arguments");
+        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toHaveLength(0);
     });
 

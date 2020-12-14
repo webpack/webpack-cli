@@ -27,17 +27,18 @@ async function promptInstallation(packageName, preMessage) {
         preMessage();
     }
 
-    const question = {
-        type: 'confirm',
-        name: 'installConfirm',
-        message: `Would you like to install '${packageName}' package? (That will run '${green(commandToBeRun)}')`,
-        initial: 'Y',
-    };
-
     let installConfirm;
 
     try {
-        ({ installConfirm } = await prompt([question]));
+        ({ installConfirm } = await prompt([
+            {
+                type: 'confirm',
+                name: 'installConfirm',
+                message: `Would you like to install '${packageName}' package? (That will run '${green(commandToBeRun)}')`,
+                initial: 'Y',
+                stdout: process.stderr,
+            },
+        ]));
     } catch (error) {
         logger.error(error);
         process.exit(2);

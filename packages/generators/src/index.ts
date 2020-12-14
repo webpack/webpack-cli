@@ -35,7 +35,7 @@ class GeneratorsCommand {
                 alias: 'p',
                 description: 'Scaffold a plugin',
                 usage: 'plugin [output-path]',
-                packageName: '@webpack-cli/generators',
+                pkg: '@webpack-cli/generators',
             },
             [],
             async (outputPath) => {
