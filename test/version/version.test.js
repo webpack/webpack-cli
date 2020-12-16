@@ -162,21 +162,21 @@ describe('single version flag', () => {
         expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
     });
 
-    it('should ask to install unknown command using command syntax', () => {
+    it('should log error when unknown command using command syntax', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['version', 'unknown'], false);
 
-        expect(exitCode).toBe(0);
-        expect(stderr).toContain("For using this command you need to install: 'unknown' package");
-        expect(stderr).toContain("Would you like to install 'unknown' package?");
+        expect(exitCode).toBe(2);
+        expect(stderr).toContain("Unknown 'unknown' command");
+        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
     });
 
-    it('should ask to install unknown command using command syntax with multi commands', () => {
+    it('should log error when command using command syntax with multi commands', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['version', 'info', 'unknown'], false);
 
-        expect(exitCode).toBe(0);
-        expect(stderr).toContain("For using this command you need to install: 'unknown' package");
-        expect(stderr).toContain("Would you like to install 'unknown' package?");
+        expect(exitCode).toBe(2);
+        expect(stderr).toContain("Unknown 'unknown' command");
+        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
     });
 
@@ -204,21 +204,21 @@ describe('single version flag', () => {
         expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
     });
 
-    it('should ask to install command when unknown command used with --version flag', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['init', 'abc', '--version', '--no-color'], false);
+    it('should log error when unknown command used with --version flag', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['init', 'abc', '--version'], false);
 
-        expect(exitCode).toBe(0);
-        expect(stderr).toContain("For using this command you need to install: 'abc' package");
-        expect(stderr).toContain("Would you like to install 'abc' package?");
+        expect(exitCode).toBe(2);
+        expect(stderr).toContain("Unknown 'abc' command");
+        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
     });
 
-    it('should ask to install command when unknown command used with -v alias', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['init', 'abc', '-v', '--no-color'], false);
+    it('should log error when unknown command used with -v alias', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['init', 'abc', '-v'], false);
 
-        expect(exitCode).toBe(0);
-        expect(stderr).toContain("For using this command you need to install: 'abc' package");
-        expect(stderr).toContain("Would you like to install 'abc' package?");
+        expect(exitCode).toBe(2);
+        expect(stderr).toContain("Unknown 'abc' command");
+        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
     });
 
@@ -226,7 +226,7 @@ describe('single version flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['version', 'help'], false);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain(`Invalid command 'help'`);
+        expect(stderr).toContain(`Unknown command 'help'`);
         expect(stderr).toContain(`Run 'webpack --help' to see available commands and options`);
         expect(stdout).toBeFalsy();
     });
@@ -279,17 +279,17 @@ describe('single version flag', () => {
         expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
     });
 
-    it('should ask to install command when unknown command used', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['version', 'abc', '--no-color'], false, []);
+    it('should log error when unknown command used', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['version', 'abc'], false, []);
 
-        expect(exitCode).toBe(0);
-        expect(stderr).toContain("For using this command you need to install: 'abc' package");
-        expect(stderr).toContain("Would you like to install 'abc' package?");
+        expect(exitCode).toBe(2);
+        expect(stderr).toContain("Unknown 'abc' command");
+        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
     });
 
     it('throws error if invalid option is passed with version command', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['version', '--abc', '--no-color'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['version', '--abc'], false);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain(`error: unknown option '--abc`);
@@ -297,38 +297,38 @@ describe('single version flag', () => {
         expect(stdout).toBeFalsy();
     });
 
-    it('should ask to install command when unknown command used with --version flag', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--version', 'abc', '--no-color'], false);
-
-        expect(exitCode).toBe(0);
-        expect(stderr).toContain("For using this command you need to install: 'abc' package");
-        expect(stderr).toContain("Would you like to install 'abc' package?");
-        expect(stdout).toBeFalsy();
-    });
-
-    it('throws error if invalid option is passed with --version flag', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--version', '--abc', '--no-color'], false);
+    it('should log error when unknown command used with --version flag', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['--version', 'abc'], false);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain(`Invalid option '--abc'`);
+        expect(stderr).toContain("Unknown 'abc' command");
         expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
     });
 
-    it('should ask to install command when unknown command used with -v alias', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['-v', 'abc', '--no-color'], false);
+    it('throws error if invalid option is passed with --version flag', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['--version', '--abc'], false);
 
-        expect(exitCode).toBe(0);
-        expect(stderr).toContain("For using this command you need to install: 'abc' package");
-        expect(stderr).toContain("Would you like to install 'abc' package?");
+        expect(exitCode).toBe(2);
+        expect(stderr).toContain(`Unknown option '--abc'`);
+        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
+        expect(stdout).toBeFalsy();
+    });
+
+    it('should log error when unknown command used with -v alias', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['-v', 'abc'], false);
+
+        expect(exitCode).toBe(2);
+        expect(stderr).toContain("Unknown 'abc' command");
+        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
     });
 
     it('throws error if invalid option is passed with -v alias', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['-v', '--abc', '--no-color'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['-v', '--abc'], false);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("Invalid option '--abc'");
+        expect(stderr).toContain("Unknown option '--abc'");
         expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
     });
@@ -337,7 +337,7 @@ describe('single version flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['version', 'version'], false);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain(`Invalid command 'version'`);
+        expect(stderr).toContain(`Unknown command 'version'`);
         expect(stderr).toContain(`Run 'webpack --help' to see available commands and options`);
         expect(stdout).toBeFalsy();
     });
