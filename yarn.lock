@@ -1046,9 +1046,9 @@
   integrity sha512-VoNqai1vR5anRF5Tuh/+SWDFk7xi7oMwHrHrbm1BprYXjB2RJsWLhUrStMssDxEl5lW/z3EUdg8RvH/IUBccSQ==
 
 "@discoveryjs/json-ext@^0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.0.tgz#d6cf8951ceb673db41861d544cef2f2e07ebcb4d"
-  integrity sha512-gX9Hx+2BMP5+yXfr4Agb+iBd9YiI729x38wbhfvRSkxQqfXnJUNy1nnyJWetYCvxnL1caWd1HqJnbQwVrgvgeA==
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.1.tgz#cf87081ac9b0f3eb3b5740415b50b7966bac8fc5"
+  integrity sha512-Oee4NT60Lxe90m7VTYBU4UbABNaz0N4Q3G62CPB+6mGE4KuLMsTACmH8q3PH5u9pSZCuOdE9JClJ9vBqsp6DQg==
 
 "@eslint/eslintrc@^0.2.2":
   version "0.2.2"
