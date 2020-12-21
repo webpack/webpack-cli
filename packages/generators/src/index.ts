@@ -12,7 +12,7 @@ class GeneratorsCommand {
             {
                 name: 'loader [output-path]',
                 alias: 'l',
-                description: 'Scaffold a loader',
+                description: 'Scaffold a loader.',
                 usage: 'loader [output-path]',
                 pkg: '@webpack-cli/generators',
             },
@@ -33,7 +33,7 @@ class GeneratorsCommand {
             {
                 name: 'plugin [output-path]',
                 alias: 'p',
-                description: 'Scaffold a plugin',
+                description: 'Scaffold a plugin.',
                 usage: 'plugin [output-path]',
                 pkg: '@webpack-cli/generators',
             },

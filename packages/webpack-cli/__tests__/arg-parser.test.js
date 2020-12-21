@@ -7,8 +7,6 @@ jest.mock('../lib/utils/logger', () => {
     };
 });
 
-const helpMock = jest.fn();
-jest.mock('../lib/groups/runHelp', () => helpMock);
 const processExitSpy = jest.spyOn(process, 'exit').mockImplementation(() => {});
 const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
@@ -370,12 +368,6 @@ describe.skip('arg-parser', () => {
             stringFlagWithDefault: 'default-value',
         });
         expect(warnMock.mock.calls.length).toEqual(0);
-    });
-
-    it('calls help callback on --help', () => {
-        argParser(helpAndVersionOptions, ['--help'], true, '');
-        expect(helpMock.mock.calls.length).toEqual(1);
-        expect(helpMock.mock.calls[0][0]).toEqual(['--help']);
     });
 
     it('parses webpack args', () => {

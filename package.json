@@ -37,10 +37,10 @@
     "prepsuite": "node scripts/prepareSuite.js",
     "pretest": "yarn build && yarn lint && yarn prepsuite",
     "test": "jest --reporters=default",
+    "test:coverage": "nyc jest --forceExit",
     "test:cli": "jest test --reporters=default --forceExit",
     "test:packages": "jest packages/ --reporters=default --forceExit",
     "test:ci": "yarn test:cli && yarn test:packages",
-    "test:coverage": "nyc jest --forceExit",
     "test:watch": "jest test/ packages/ --watch",
     "test:smoke": "smoketests/smoketests.sh",
     "publish:monorepo": "yarn build && lerna version && lerna publish from-git"

@@ -7,7 +7,8 @@ describe('invalid flag value', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--output-script-type', 'unknown']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("Found the 'invalid-value' problem with the '--output-script-type' argument by path 'output.scriptType'");
+        expect(stderr).toContain("Invalid value 'unknown' for the '--output-script-type' option");
+        expect(stderr).toContain("Expected: 'false | text/javascript | module'");
         expect(stdout).toBeFalsy();
     });
 });

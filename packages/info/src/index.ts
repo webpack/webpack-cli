@@ -35,7 +35,7 @@ class InfoCommand {
             {
                 name: 'info',
                 alias: 'i',
-                description: 'Outputs information about your system',
+                description: 'Outputs information about your system.',
                 usage: '[options]',
                 pkg: '@webpack-cli/info',
             },

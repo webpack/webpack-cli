@@ -1,3 +1,4 @@
+const stripAnsi = require('strip-ansi');
 const { run, isWebpack5 } = require('../utils/test-utils');
 
 describe('unknown behaviour', () => {
@@ -187,8 +188,8 @@ describe('unknown behaviour', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['qqq'], true, [], { TERM_PROGRAM: false });
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("For using this command you need to install: 'qqq' package");
-        expect(stderr).toContain("Would you like to install 'qqq' package?");
+        expect(stripAnsi(stderr)).toContain("For using this command you need to install: 'qqq' package");
+        expect(stripAnsi(stderr)).toContain("Would you like to install 'qqq' package? (That will run 'npm install -D qqq')");
         expect(stdout).toBeFalsy();
     });
 });

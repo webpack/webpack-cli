@@ -35,7 +35,7 @@ class ServeCommand {
             {
                 name: 'serve',
                 alias: 's',
-                description: 'Run the webpack dev server',
+                description: 'Run the webpack dev server.',
                 usage: '[options]',
                 pkg: '@webpack-cli/serve',
             },

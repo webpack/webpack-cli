@@ -156,7 +156,7 @@ class MigrationCommand {
             {
                 name: 'migrate <config-path> [new-config-path]',
                 alias: 'm',
-                description: 'Migrate a configuration to a new version',
+                description: 'Migrate a configuration to a new version.',
                 pkg: '@webpack-cli/migrate',
             },
             [],
