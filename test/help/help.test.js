@@ -1,7 +1,7 @@
 'use strict';
 
 const stripAnsi = require('strip-ansi');
-const { bold } = require('colorette');
+const { bold, enabled: coloretteEnabled } = require('colorette');
 const { run, isWebpack5 } = require('../utils/test-utils');
 
 const helpDefaultHeader = 'The build tool for modern web applications.';
@@ -21,7 +21,7 @@ describe('help', () => {
         expect(stdout).toContain('Commands:');
         expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
         expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
-        expect(stripAnsi(stdout)).toContain('Made with ♥ by the webpack team.');
+        expect(coloretteEnabled ? stripAnsi(stdout) : stdout).toContain('Made with ♥ by the webpack team.');
     });
 
     it('should show help information using the "--help" option with the "verbose" value', () => {
@@ -42,7 +42,7 @@ describe('help', () => {
         expect(stdout).toContain('Commands:');
         expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
         expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
-        expect(stripAnsi(stdout)).toContain('Made with ♥ by the webpack team.');
+        expect(coloretteEnabled ? stripAnsi(stdout) : stdout).toContain('Made with ♥ by the webpack team.');
     });
 
     it('should show help information using the "--help" option with the "verbose" value #2', () => {
@@ -63,7 +63,7 @@ describe('help', () => {
         expect(stdout).toContain('Commands:');
         expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
         expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
-        expect(stripAnsi(stdout)).toContain('Made with ♥ by the webpack team.');
+        expect(coloretteEnabled ? stripAnsi(stdout) : stdout).toContain('Made with ♥ by the webpack team.');
     });
 
     it('should show help information using command syntax', () => {
@@ -80,7 +80,7 @@ describe('help', () => {
         expect(stdout).toContain('Commands:');
         expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
         expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
-        expect(stripAnsi(stdout)).toContain('Made with ♥ by the webpack team.');
+        expect(coloretteEnabled ? stripAnsi(stdout) : stdout).toContain('Made with ♥ by the webpack team.');
     });
 
     it('should show the same information using the "--help" option and command syntax', () => {
@@ -112,7 +112,7 @@ describe('help', () => {
         expect(stdout).toContain('Commands:');
         expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
         expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
-        expect(stdout).toContain(bold('Made with ♥ by the webpack team'));
+        expect(stdout).toContain(coloretteEnabled ? bold('Made with ♥ by the webpack team') : 'Made with ♥ by the webpack team');
     });
 
     it('should show help information and respect the "--no-color" flag using the "--help" option', () => {
@@ -158,7 +158,7 @@ describe('help', () => {
             expect(exitCode).toBe(0);
             expect(stderr).toBeFalsy();
             expect(stdout).toContain(`webpack ${command === 'bundle' ? '' : command}`);
-            expect(stdout).toContain(bold('Made with ♥ by the webpack team'));
+            expect(stdout).toContain(coloretteEnabled ? bold('Made with ♥ by the webpack team') : 'Made with ♥ by the webpack team');
         });
 
         it('should show help information and respect the "--no-color" flag using the "--help" option', () => {
@@ -199,7 +199,7 @@ describe('help', () => {
         expect(stdout).toContain('Commands:');
         expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
         expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
-        expect(stripAnsi(stdout)).toContain('Made with ♥ by the webpack team.');
+        expect(coloretteEnabled ? stripAnsi(stdout) : stdout).toContain('Made with ♥ by the webpack team.');
     });
 
     it('should log error for invalid command using the "--help" option', () => {
