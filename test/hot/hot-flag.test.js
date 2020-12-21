@@ -10,7 +10,6 @@ describe('--hot flag', () => {
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
-        expect(stdout).toContain('webpack/runtime/hot module replacement');
         expect(readFileSync(resolve(__dirname, './bin/main.js')).toString()).toContain('webpackHotUpdate');
     });
 
@@ -20,7 +19,6 @@ describe('--hot flag', () => {
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
-        expect(stdout).not.toContain('webpack/runtime/hot module replacement');
         expect(readFileSync(resolve(__dirname, './bin/main.js')).toString()).not.toContain('webpackHotUpdate');
     });
 });
