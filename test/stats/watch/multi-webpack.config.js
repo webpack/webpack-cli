@@ -3,6 +3,7 @@ const webpack = require('webpack');
 module.exports = [
     {
         name: 'first',
+        mode: 'development',
         watch: true,
         stats: 'none',
         plugins: [
@@ -17,6 +18,7 @@ module.exports = [
     },
     {
         name: 'two',
+        mode: 'development',
         watch: true,
         stats: 'none',
         plugins: [

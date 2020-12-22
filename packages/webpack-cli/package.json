@@ -31,7 +31,6 @@
     "@webpack-cli/info": "^1.1.0",
     "@webpack-cli/serve": "^1.1.0",
     "colorette": "^1.2.1",
-    "command-line-usage": "^6.1.0",
     "commander": "^6.2.0",
     "enquirer": "^2.3.6",
     "execa": "^4.1.0",

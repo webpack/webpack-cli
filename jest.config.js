@@ -1,11 +1,10 @@
 const { cli } = require('webpack');
 
-//ignore core-flags test for webpack@4
+// Ignore core-flags test for webpack@4
 const ignorePattern = typeof cli !== 'undefined' ? ['<rootDir>/node_modules/'] : ['<rootDir>/node_modules/', '<rootDir>/test/core-flags'];
 
 module.exports = {
     testPathIgnorePatterns: ignorePattern,
-    // transformIgnorePatterns: ['<rootDir>.*(node_modules)(?!.*webpack-cli.*).*$'],
     testEnvironment: 'node',
     collectCoverage: true,
     coverageReporters: ['none'],
