@@ -25,7 +25,7 @@ const hyphenToUpperCase = (name) => {
     });
 };
 
-const DEFAULT_MAX_BUFFER = 1000 * 1000 * 100;
+const DEFAULT_MAX_BUFFER = 1000 * 1000 * 1000;
 
 /**
  * Run the webpack CLI for a test case.
