@@ -2,7 +2,7 @@ const { flags, isCommandUsed } = require('./utils/cli-flags');
 const WebpackCLI = require('./webpack-cli');
 const logger = require('./utils/logger');
 const argParser = require('./utils/arg-parser');
-const leven = require('leven');
+const { distance } = require('fastest-levenshtein');
 const { options: coloretteOptions } = require('colorette');
 
 process.title = 'webpack-cli';
@@ -48,7 +48,7 @@ const runCLI = async (cliArgs) => {
                 logger.error(`Unknown argument: '${unknown}'`);
 
                 const strippedFlag = unknown.substr(2);
-                const found = flags.find((flag) => leven(strippedFlag, flag.name) < 3);
+                const found = flags.find((flag) => distance(strippedFlag, flag.name) < 3);
 
                 if (found) {
                     logger.raw(`Did you mean '--${found.name}'?`);
