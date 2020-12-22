@@ -25,8 +25,6 @@ const hyphenToUpperCase = (name) => {
     });
 };
 
-const DEFAULT_MAX_BUFFER = 1000 * 1000 * 1000;
-
 /**
  * Run the webpack CLI for a test case.
  *
@@ -49,7 +47,7 @@ const run = (testCase, args = [], setOutput = true, nodeOptions = [], env) => {
         nodeOptions: nodeOptions,
         env,
         stdio: ENABLE_LOG_COMPILATION ? 'inherit' : 'pipe',
-        maxBuffer: DEFAULT_MAX_BUFFER,
+        maxBuffer: Infinity,
     });
 
     return result;
