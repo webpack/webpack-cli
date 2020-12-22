@@ -24,7 +24,7 @@ describe('help', () => {
         expect(coloretteEnabled ? stripAnsi(stdout) : stdout).toContain('Made with ♥ by the webpack team.');
     });
 
-    it('should show help information using the "--help" option with the "verbose" value', () => {
+    it.skip('should show help information using the "--help" option with the "verbose" value', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--help', 'verbose'], false);
 
         expect(exitCode).toBe(0);
@@ -45,7 +45,7 @@ describe('help', () => {
         expect(coloretteEnabled ? stripAnsi(stdout) : stdout).toContain('Made with ♥ by the webpack team.');
     });
 
-    it('should show help information using the "--help" option with the "verbose" value #2', () => {
+    it.skip('should show help information using the "--help" option with the "verbose" value #2', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--help=verbose'], false);
 
         expect(exitCode).toBe(0);
