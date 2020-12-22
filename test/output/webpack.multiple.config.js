@@ -9,4 +9,5 @@ module.exports = {
         path: resolve(__dirname, 'bin'),
         filename: '[name].bundle.js',
     },
+    mode: 'development',
 };

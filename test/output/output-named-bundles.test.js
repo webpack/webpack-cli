@@ -1,7 +1,7 @@
 'use strict';
 
 const { resolve } = require('path');
-const { run } = require('../../utils/test-utils');
+const { run } = require('../utils/test-utils');
 
 describe('output flag named bundles', () => {
     it('should output file given as flag instead of in configuration', () => {
@@ -51,8 +51,9 @@ describe('output flag named bundles', () => {
     it('should output file in bin directory using default webpack config with warning for empty output value', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--output-path'], false);
 
-        expect(exitCode).toEqual(1);
-        expect(stderr).toEqual("error: option '-o, --output-path <value>' argument missing");
+        expect(exitCode).toEqual(2);
+        expect(stderr).toContain("option '-o, --output-path <value>' argument missing");
+        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
     });
 });

@@ -3,6 +3,7 @@ const { green } = require('colorette');
 const runCommand = require('./run-command');
 const getPackageManager = require('./get-package-manager');
 const packageExists = require('./package-exists');
+const logger = require('./logger');
 
 /**
  *
@@ -11,6 +12,12 @@ const packageExists = require('./package-exists');
  */
 async function promptInstallation(packageName, preMessage) {
     const packageManager = getPackageManager();
+
+    if (!packageManager) {
+        logger.error("Can't find package manager");
+        process.exit(2);
+    }
+
     // yarn uses 'add' command, rest npm and pnpm both use 'install'
     const options = [packageManager === 'yarn' ? 'add' : 'install', '-D', packageName];
 
@@ -20,23 +27,35 @@ async function promptInstallation(packageName, preMessage) {
         preMessage();
     }
 
-    const question = `Would you like to install ${packageName}? (That will run ${green(commandToBeRun)})`;
-    const { installConfirm } = await prompt([
-        {
-            type: 'confirm',
-            name: 'installConfirm',
-            message: question,
-            initial: 'Y',
-        },
-    ]);
+    let installConfirm;
+
+    try {
+        ({ installConfirm } = await prompt([
+            {
+                type: 'confirm',
+                name: 'installConfirm',
+                message: `Would you like to install '${packageName}' package? (That will run '${green(commandToBeRun)}')`,
+                initial: 'Y',
+                stdout: process.stderr,
+            },
+        ]));
+    } catch (error) {
+        logger.error(error);
+        process.exit(2);
+    }
 
     if (installConfirm) {
-        await runCommand(commandToBeRun);
+        try {
+            await runCommand(commandToBeRun);
+        } catch (error) {
+            logger.error(error);
+            process.exit(2);
+        }
 
         return packageExists(packageName);
     }
 
-    process.exitCode = 2;
+    process.exit(2);
 }
 
 module.exports = promptInstallation;

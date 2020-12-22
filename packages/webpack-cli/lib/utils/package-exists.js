@@ -1,10 +1,9 @@
-function packageExists(packageName) {
+function getPkg(packageName) {
     try {
-        require.resolve(packageName);
-        return true;
-    } catch (err) {
+        return require.resolve(packageName);
+    } catch (error) {
         return false;
     }
 }
 
-module.exports = packageExists;
+module.exports = getPkg;

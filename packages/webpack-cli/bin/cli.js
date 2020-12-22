@@ -18,10 +18,8 @@ if (importLocal(__filename)) {
 
 process.title = 'webpack';
 
-const [, , ...rawArgs] = process.argv;
-
 if (packageExists('webpack')) {
-    runCLI(rawArgs);
+    runCLI(process.argv);
 } else {
     promptInstallation('webpack -W', () => {
         error(`It looks like ${yellow('webpack')} is not installed.`);
@@ -29,7 +27,7 @@ if (packageExists('webpack')) {
         .then(() => {
             success(`${yellow('webpack')} was installed sucessfully.`);
 
-            runCLI(rawArgs);
+            runCLI(process.argv);
         })
         .catch(() => {
             error(`Action Interrupted, Please try once again or install ${yellow('webpack')} manually.`);

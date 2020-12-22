@@ -50,7 +50,8 @@ describe('mode flags', () => {
         expect(exitCode).toBe(2);
 
         if (isWebpack5) {
-            expect(stderr).toContain("Found the 'invalid-value' problem with the '--mode' argument by path 'mode'");
+            expect(stderr).toContain("Invalid value 'abcd' for the '--mode' option");
+            expect(stderr).toContain("Expected: 'development | production | none'");
         } else {
             expect(stderr).toContain('configuration.mode should be one of these');
             expect(stderr).toContain(`"development" | "production" | "none"`);

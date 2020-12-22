@@ -1,88 +1,21 @@
 const packageExists = require('./package-exists');
 const cli = packageExists('webpack') ? require('webpack').cli : undefined;
 
-const commands = [
-    {
-        packageName: '@webpack-cli/init',
-        name: 'init',
-        alias: 'c',
-        type: String,
-        usage: 'init [scaffold] [options]',
-        description: 'Initialize a new webpack configuration',
-        flags: [
-            {
-                name: 'auto',
-                type: Boolean,
-                description: 'To generate default config',
-            },
-            {
-                name: 'force',
-                type: Boolean,
-                description: 'To force config generation',
-            },
-            {
-                name: 'generation-path',
-                type: String,
-                description: 'To scaffold in a specified path',
-            },
-        ],
-    },
-    {
-        packageName: '@webpack-cli/migrate',
-        name: 'migrate',
-        alias: 'm',
-        type: String,
-        usage: 'migrate <path-to-config> [output-path]',
-        description: 'Migrate a configuration to a new version',
-    },
-    {
-        packageName: '@webpack-cli/generators',
-        name: 'loader',
-        scope: 'external',
-        alias: 'l',
-        type: String,
-        usage: 'loader [path]',
-        description: 'Scaffold a loader repository',
-    },
-    {
-        packageName: '@webpack-cli/generators',
-        name: 'plugin',
-        alias: 'p',
-        scope: 'external',
-        type: String,
-        usage: 'plugin [path]',
-        description: 'Scaffold a plugin repository',
-    },
-    {
-        packageName: '@webpack-cli/info',
-        name: 'info',
-        scope: 'external',
-        alias: 'i',
-        type: String,
-        usage: 'info [options]',
-        description: 'Outputs information about your system and dependencies',
-        flags: [
-            {
-                name: 'output',
-                type: String,
-                description: 'To get the output in specified format ( accept json or markdown )',
-            },
-            {
-                name: 'version',
-                type: Boolean,
-                description: 'Print version information of info package',
-            },
-        ],
-    },
-    {
-        packageName: '@webpack-cli/serve',
-        name: 'serve',
-        alias: 's',
-        scope: 'external',
-        type: String,
-        usage: 'serve [options]',
-        description: 'Run the webpack Dev Server',
-    },
+const minimumHelpFlags = [
+    'config',
+    'config-name',
+    'merge',
+    'env',
+    'mode',
+    'watch',
+    'stats',
+    'devtool',
+    'entry',
+    'target',
+    'progress',
+    'json',
+    'name',
+    'output-path',
 ];
 
 const builtInFlags = [
@@ -92,37 +25,30 @@ const builtInFlags = [
         usage: '--config <path-to-config> | --config <path-to-config> --config <path-to-config>',
         alias: 'c',
         type: String,
-        help: 'base',
         multiple: true,
-        description: 'Provide path to a webpack configuration file e.g. ./webpack.config.js',
-        link: 'https://webpack.js.org/configuration/',
+        description: 'Provide path to a webpack configuration file e.g. ./webpack.config.js.',
     },
     {
         name: 'config-name',
         usage: '--config-name <name-of-config> | --config-name <name-of-config> --config-name <name-of-config>',
         type: String,
-        help: 'verbose',
         multiple: true,
-        description: 'Name of the configuration to use',
+        description: 'Name of the configuration to use.',
     },
     {
         name: 'merge',
         usage: '--config <first-config> --config <second-config> --merge',
         alias: 'm',
         type: Boolean,
-        help: 'base',
-        description: 'Merge two or more configurations using webpack-merge',
-        link: 'https://github.com/survivejs/webpack-merge',
+        description: "Merge two or more configurations using 'webpack-merge'.",
     },
     // Complex configs
     {
         name: 'env',
         usage: '--env <variable> | --env <variable> --env <variable=value>',
         type: String,
-        help: 'base',
         multipleType: true,
-        description: 'Environment passed to the configuration when it is a function',
-        link: 'https://webpack.js.org/api/cli/#environment-options',
+        description: 'Environment passed to the configuration when it is a function.',
     },
 
     // Adding more plugins
@@ -131,52 +57,28 @@ const builtInFlags = [
         usage: '--hot',
         alias: 'h',
         type: Boolean,
-        help: 'base',
         negative: true,
         description: 'Enables Hot Module Replacement',
-        negatedDescription: 'Disables Hot Module Replacement',
-        link: 'https://webpack.js.org/concepts/hot-module-replacement/',
+        negatedDescription: 'Disables Hot Module Replacement.',
     },
     {
         name: 'analyze',
         usage: '--analyze',
         type: Boolean,
-        help: 'base',
         multiple: false,
-        description: 'It invokes webpack-bundle-analyzer plugin to get bundle information',
-        link: 'https://github.com/webpack-contrib/webpack-bundle-analyzer',
+        description: 'It invokes webpack-bundle-analyzer plugin to get bundle information.',
     },
     {
         name: 'progress',
         usage: '--progress | --progress profile',
         type: [Boolean, String],
-        help: 'base',
-        description: 'Print compilation progress during build',
+        description: 'Print compilation progress during build.',
     },
     {
         name: 'prefetch',
         usage: '--prefetch <request>',
         type: String,
-        help: 'base',
-        description: 'Prefetch this request',
-        link: 'https://webpack.js.org/plugins/prefetch-plugin/',
-    },
-
-    // Help and versions
-    {
-        name: 'help',
-        usage: '--help',
-        type: [Boolean, String],
-        help: 'base',
-        description: 'Outputs list of supported flags',
-    },
-    {
-        name: 'version',
-        usage: '--version | --version <external-package>',
-        alias: 'v',
-        type: Boolean,
-        help: 'base',
-        description: 'Get current version',
+        description: 'Prefetch this request.',
     },
 
     // Output options
@@ -184,18 +86,8 @@ const builtInFlags = [
         name: 'json',
         usage: '--json | --json <path-to-stats-file>',
         type: [String, Boolean],
-        help: 'base',
         alias: 'j',
-        description: 'Prints result as JSON or store it in a file',
-    },
-    {
-        name: 'color',
-        usage: '--color',
-        type: Boolean,
-        help: 'base',
-        negative: true,
-        description: 'Enable colors on console',
-        negatedDescription: 'Disable colors on console',
+        description: 'Prints result as JSON or store it in a file.',
     },
 
     // For webpack@4
@@ -204,76 +96,60 @@ const builtInFlags = [
         usage: '--entry <path-to-entry-file> | --entry <path> --entry <path>',
         type: String,
         multiple: true,
-        help: 'base',
-        description: 'The entry point(s) of your application e.g. ./src/main.js',
-        link: 'https://webpack.js.org/concepts/#entry',
+        description: 'The entry point(s) of your application e.g. ./src/main.js.',
     },
     {
         name: 'output-path',
         usage: '--output-path <path-to-output-directory>',
         alias: 'o',
         type: String,
-        help: 'verbose',
-        description: 'Output location of the file generated by webpack e.g. ./dist/',
-        link: 'https://webpack.js.org/configuration/output/#outputpath',
+        description: 'Output location of the file generated by webpack e.g. ./dist/.',
     },
     {
         name: 'target',
         usage: '--target <value> | --target <value> --target <value>',
         alias: 't',
         type: String,
-        help: 'base',
         multiple: cli !== undefined,
-        description: 'Sets the build target e.g. node',
-        link: 'https://webpack.js.org/configuration/target/#target',
+        description: 'Sets the build target e.g. node.',
     },
     {
         name: 'devtool',
         usage: '--devtool <value>',
         type: String,
-        help: 'base',
         negative: true,
         alias: 'd',
-        description: 'Determine source maps to use',
-        negatedDescription: 'Do not generate source maps',
-        link: 'https://webpack.js.org/configuration/devtool/#devtool',
+        description: 'Determine source maps to use.',
+        negatedDescription: 'Do not generate source maps.',
     },
     {
         name: 'mode',
         usage: '--mode <development | production | none>',
-        help: 'base',
         type: String,
-        description: 'Defines the mode to pass to webpack',
-        link: 'https://webpack.js.org/concepts/#mode',
+        description: 'Defines the mode to pass to webpack.',
     },
     {
         name: 'name',
         usage: '--name',
         type: String,
-        help: 'base',
         description: 'Name of the configuration. Used when loading multiple configurations.',
-        link: 'https://webpack.js.org/configuration/other-options/#name',
     },
     {
         name: 'stats',
         usage: '--stats | --stats <value>',
         type: [String, Boolean],
         negative: true,
-        help: 'base',
-        description: 'It instructs webpack on how to treat the stats e.g. verbose',
-        negatedDescription: 'Disable stats output',
-        link: 'https://webpack.js.org/configuration/stats/#stats',
+        description: 'It instructs webpack on how to treat the stats e.g. verbose.',
+        negatedDescription: 'Disable stats output.',
     },
     {
         name: 'watch',
         usage: '--watch',
         type: Boolean,
-        help: 'base',
         negative: true,
         alias: 'w',
-        description: 'Watch for files changes',
-        negatedDescription: 'Do not watch for file changes',
-        link: 'https://webpack.js.org/configuration/watch/',
+        description: 'Watch for files changes.',
+        negatedDescription: 'Do not watch for file changes.',
     },
 ];
 
@@ -304,16 +180,11 @@ const coreFlags = cli
     : [];
 const flags = []
     .concat(builtInFlags.filter((builtInFlag) => !coreFlags.find((coreFlag) => builtInFlag.name === coreFlag.name)))
-    .concat(coreFlags);
+    .concat(coreFlags)
+    .map((option) => {
+        option.help = minimumHelpFlags.includes(option.name) ? 'minimum' : 'verbose';
 
-const isCommandUsed = (args) =>
-    commands.find((cmd) => {
-        return args.includes(cmd.name) || args.includes(cmd.alias);
+        return option;
     });
 
-module.exports = {
-    commands,
-    cli,
-    flags,
-    isCommandUsed,
-};
+module.exports = { cli, flags };

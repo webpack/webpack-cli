@@ -47,6 +47,7 @@ const run = (testCase, args = [], setOutput = true, nodeOptions = [], env) => {
         nodeOptions: nodeOptions,
         env,
         stdio: ENABLE_LOG_COMPILATION ? 'inherit' : 'pipe',
+        maxBuffer: Infinity,
     });
 
     return result;
@@ -245,10 +246,6 @@ const runServe = (args, testPath) => {
     return runWatch(testPath, ['serve'].concat(args), false);
 };
 
-const runInfo = (args, testPath) => {
-    return run(testPath, ['info'].concat(args), false);
-};
-
 module.exports = {
     run,
     runWatch,
@@ -258,7 +255,6 @@ module.exports = {
     appendDataIfFileExists,
     copyFileAsync,
     runInstall,
-    runInfo,
     hyphenToUpperCase,
     isWebpack5,
     isDevServer4,

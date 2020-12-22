@@ -1,38 +1,39 @@
 'use strict';
 
-const { red } = require('colorette');
 const { join } = require('path');
-const { runInfo } = require('../utils/test-utils');
+const { run } = require('../utils/test-utils');
 
 describe('basic info usage', () => {
     it('gets info without flags', () => {
-        const { stdout, stderr } = runInfo([], __dirname);
-        // stdout should include many details which will be
-        // unique for each computer
+        const { exitCode, stdout, stderr } = run(__dirname, ['info'], false);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain('System:');
         expect(stdout).toContain('Node');
         expect(stdout).toContain('npm');
         expect(stdout).toContain('Yarn');
-        expect(stderr).toHaveLength(0);
     });
 
     it('gets more info in project root', () => {
-        const { stdout, stderr } = runInfo([], join(__dirname, '../../'));
-        // stdout should include many details which will be
-        // unique for each computer
+        const { exitCode, stderr, stdout } = run(join(__dirname, '../../'), ['info'], false);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain('System:');
         expect(stdout).toContain('Monorepos:');
         expect(stdout).toContain('Packages:');
         expect(stdout).toContain('Node');
         expect(stdout).toContain('npm');
         expect(stdout).toContain('Yarn');
-        expect(stderr).toHaveLength(0);
     });
 
     it('gets info as json', () => {
-        const { stdout, stderr } = runInfo(['--output="json"'], __dirname);
+        const { exitCode, stderr, stdout } = run(__dirname, ['info', '--output=json'], false);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain('"System":');
-        expect(stderr).toHaveLength(0);
 
         const parse = () => {
             const output = JSON.parse(stdout);
@@ -46,16 +47,18 @@ describe('basic info usage', () => {
     });
 
     it('gets info as markdown', () => {
-        const { stdout, stderr } = runInfo(['--output="markdown"'], __dirname);
+        const { exitCode, stderr, stdout } = run(__dirname, ['info', '--output', 'markdown'], false);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain('## System:');
-        expect(stderr).toHaveLength(0);
     });
 
     it('shows a warning if an invalid value is supplied', () => {
-        const { exitCode, stderr, stdout } = runInfo(['--output=unknown'], __dirname);
+        const { exitCode, stderr, stdout } = run(__dirname, ['info', '--output', 'unknown'], false);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain(`[webpack-cli] ${red(`'unknown' is not a valid value for output`)}`);
+        expect(stderr).toContain(`'unknown' is not a valid value for output`);
         expect(stdout).toBeFalsy();
     });
 });
