@@ -24,11 +24,15 @@ describe('startDevServer', () => {
         };
         const compiler = webpack(config);
 
-        const servers = await startDevServer(compiler, {
-            host: 'my.host',
-            hot: true,
-            progress: true,
-        });
+        const servers = await startDevServer(
+            compiler,
+            {
+                host: 'my.host',
+                hot: true,
+                progress: true,
+            },
+            console,
+        );
 
         expect(servers.length).toEqual(1);
         expect(servers).toEqual(DevServer.mock.instances);
@@ -49,7 +53,7 @@ describe('startDevServer', () => {
         };
         const compiler = webpack(config);
 
-        const servers = await startDevServer(compiler, {});
+        const servers = await startDevServer(compiler, {}, console);
 
         expect(servers.length).toEqual(1);
         expect(servers).toEqual(DevServer.mock.instances);
@@ -77,11 +81,15 @@ describe('startDevServer', () => {
         ];
         const compiler = webpack(config);
 
-        const servers = await startDevServer(compiler, {
-            host: 'my.host',
-            hot: true,
-            progress: true,
-        });
+        const servers = await startDevServer(
+            compiler,
+            {
+                host: 'my.host',
+                hot: true,
+                progress: true,
+            },
+            console,
+        );
 
         expect(servers.length).toEqual(1);
         expect(servers).toEqual(DevServer.mock.instances);
@@ -113,10 +121,14 @@ describe('startDevServer', () => {
         ];
         const compiler = webpack(config);
 
-        const servers = await startDevServer(compiler, {
-            // this progress CLI flag should override progress: false above
-            progress: true,
-        });
+        const servers = await startDevServer(
+            compiler,
+            {
+                // this progress CLI flag should override progress: false above
+                progress: true,
+            },
+            console,
+        );
 
         // there are 2 devServer configs, so both are run
         expect(servers.length).toEqual(2);
@@ -153,7 +165,7 @@ describe('startDevServer', () => {
             ];
             const compiler = webpack(config);
 
-            await startDevServer(compiler, {});
+            await startDevServer(compiler, {}, console);
         }).rejects.toThrow(
             'Unique ports must be specified for each devServer option in your webpack configuration. Alternatively, run only 1 devServer config using the --config-name flag to specify your desired config.',
         );

@@ -132,7 +132,7 @@ describe('colors related tests', () => {
         expect(stdout).toContain(output);
     });
 
-    it('should work in multicompiler mode', () => {
+    it('should work in multi compiler mode', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--config=multiple-configs.js', '--color']);
 
         expect(exitCode).toBe(0);

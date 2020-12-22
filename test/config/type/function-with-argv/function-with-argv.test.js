@@ -10,7 +10,7 @@ describe('function configuration', () => {
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
-        expect(stdout).toContain("argv: { mode: 'development' }");
+        expect(stdout).toContain("{ argv: { mode: 'development', env: { WEBPACK_BUNDLE: true } } }");
         expect(existsSync(resolve(__dirname, './dist/dev.js')));
     });
 });

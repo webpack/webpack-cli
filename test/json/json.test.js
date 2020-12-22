@@ -32,7 +32,7 @@ describe('json flag', () => {
     it('should store json to a file and respect --color flag', (done) => {
         const { stdout, exitCode } = run(__dirname, ['--json', 'stats.json', '--color']);
 
-        expect(stdout).toContain(`[webpack-cli] \u001b[32m${successMessage}`);
+        expect(stdout).toContain(`\u001b[32m${successMessage}`);
         expect(exitCode).toBe(0);
 
         expect(existsSync(resolve(__dirname, './stats.json'))).toBeTruthy();
@@ -50,8 +50,8 @@ describe('json flag', () => {
     it('should store json to a file and respect --no-color', (done) => {
         const { stdout, exitCode } = run(__dirname, ['--json', 'stats.json', '--no-color']);
 
-        expect(stdout).not.toContain(`[webpack-cli] \u001b[32m${successMessage}`);
-        expect(stdout).toContain(`[webpack-cli] ${successMessage}`);
+        expect(stdout).not.toContain(`\u001b[32m${successMessage}`);
+        expect(stdout).toContain(`${successMessage}`);
         expect(exitCode).toBe(0);
 
         expect(existsSync(resolve(__dirname, './stats.json'))).toBeTruthy();

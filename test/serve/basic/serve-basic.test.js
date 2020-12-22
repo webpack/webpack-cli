@@ -6,8 +6,8 @@ const { runServe, isDevServer4 } = require('../../utils/test-utils');
 
 const testPath = path.resolve(__dirname);
 
-const usageText = 'webpack s | serve';
-const descriptionText = 'Run the webpack Dev Server';
+const usageText = 'webpack serve|s [options]';
+const descriptionText = 'Run the webpack dev server';
 
 describe('basic serve usage', () => {
     let port;
@@ -25,6 +25,22 @@ describe('basic serve usage', () => {
         });
         return;
     }
+
+    it('should work', async () => {
+        const { stderr, stdout } = await runServe(['--no-hot'], __dirname);
+
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('main.js');
+        expect(stdout).not.toContain('HotModuleReplacementPlugin');
+    });
+
+    it('should work with flags', async () => {
+        const { stderr, stdout } = await runServe(['--hot'], __dirname);
+
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('main.js');
+        expect(stdout).toContain('HotModuleReplacementPlugin');
+    });
 
     it('should respect the --no-color flag', async () => {
         const { stdout, stderr } = await runServe(['--help', '--no-color'], __dirname);
@@ -86,7 +102,7 @@ describe('basic serve usage', () => {
         const { exitCode, stdout, stderr } = await runServe(['--port', port, '--unknown-flag'], testPath);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain('Unknown argument: --unknown-flag');
+        expect(stderr).toContain("unknown option '--unknown-flag'");
         expect(stdout).toBeFalsy();
     });
 });

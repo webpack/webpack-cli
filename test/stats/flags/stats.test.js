@@ -38,13 +38,29 @@ describe('stats flag', () => {
         }
     });
 
+    it('should accept --no-stats as boolean', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['--no-stats']);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+
+        if (isWebpack5) {
+            expect(stdout).toContain(`stats: { preset: 'none' }`);
+        } else {
+            expect(stdout).toContain('stats: false');
+        }
+    });
+
     it('should log error when an unknown flag stats value is passed', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--stats', 'foo']);
 
         expect(exitCode).toEqual(2);
 
         if (isWebpack5) {
-            expect(stderr).toContain("Found the 'invalid-value' problem with the '--stats' argument by path 'stats'");
+            expect(stderr).toContain("Invalid value 'foo' for the '--stats' option");
+            expect(stderr).toContain("Expected: 'none | summary | errors-only | errors-warnings | minimal | normal | detailed | verbose'");
+            expect(stderr).toContain("Invalid value 'foo' for the '--stats' option");
+            expect(stderr).toContain("Expected: 'true | false'");
         } else {
             expect(stderr).toContain('* configuration.stats should be one of these:');
             expect(stderr).toContain('"none" | "errors-only" | "minimal" | "normal" | "detailed" | "verbose" | "errors-warnings"');
