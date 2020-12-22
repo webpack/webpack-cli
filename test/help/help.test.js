@@ -16,7 +16,7 @@ describe('help', () => {
         expect(stdout).toContain(helpDefaultHeader);
         expect(stdout).toContain('Options:');
         expect(stdout).toContain('--merge'); // minimum
-        expect(stdout).not.toContain('--node'); // verbose
+        expect(stdout).not.toContain('--cache-type'); // verbose
         expect(stdout).toContain('Global options:');
         expect(stdout).toContain('Commands:');
         expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
@@ -35,7 +35,7 @@ describe('help', () => {
         expect(stdout).toContain('--merge'); // minimum
 
         if (isWebpack5) {
-            expect(stdout).toContain('--node'); // verbose
+            expect(stdout).toContain('--cache-type'); // verbose
         }
 
         expect(stdout).toContain('Global options:');
@@ -56,7 +56,7 @@ describe('help', () => {
         expect(stdout).toContain('--merge'); // minimum
 
         if (isWebpack5) {
-            expect(stdout).toContain('--node'); // verbose
+            expect(stdout).toContain('--cache-type'); // verbose
         }
 
         expect(stdout).toContain('Global options:');
@@ -75,7 +75,7 @@ describe('help', () => {
         expect(stdout).toContain(helpDefaultHeader);
         expect(stdout).toContain('Options:');
         expect(stdout).toContain('--merge'); // minimum
-        expect(stdout).not.toContain('--node'); // verbose
+        expect(stdout).not.toContain('--cache-type'); // verbose
         expect(stdout).toContain('Global options:');
         expect(stdout).toContain('Commands:');
         expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
@@ -107,7 +107,7 @@ describe('help', () => {
         expect(stdout).toContain(helpDefaultHeader);
         expect(stdout).toContain('Options:');
         expect(stdout).toContain('--merge'); // minimum
-        expect(stdout).not.toContain('--node'); // verbose
+        expect(stdout).not.toContain('--cache-type'); // verbose
         expect(stdout).toContain('Global options:');
         expect(stdout).toContain('Commands:');
         expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
@@ -124,7 +124,7 @@ describe('help', () => {
         expect(stdout).toContain(helpDefaultHeader);
         expect(stdout).toContain('Options:');
         expect(stdout).toContain('--merge'); // minimum
-        expect(stdout).not.toContain('--node'); // verbose
+        expect(stdout).not.toContain('--cache-type'); // verbose
         expect(stdout).toContain('Global options:');
         expect(stdout).toContain('Commands:');
         expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
@@ -196,7 +196,7 @@ describe('help', () => {
         expect(stdout).toContain(helpDefaultHeader);
         expect(stdout).toContain('Options:');
         expect(stdout).toContain('--merge'); // minimum
-        expect(stdout).not.toContain('--node'); // verbose
+        expect(stdout).not.toContain('--cache-type'); // verbose
         expect(stdout).toContain('Global options:');
         expect(stdout).toContain('Commands:');
         expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
