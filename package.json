@@ -42,7 +42,6 @@
     "test:packages": "jest packages/ --reporters=default --forceExit",
     "test:ci": "yarn test:cli && yarn test:packages",
     "test:watch": "jest test/ packages/ --watch",
-    "test:smoke": "smoketests/smoketests.sh",
     "publish:monorepo": "yarn build && lerna version && lerna publish from-git"
   },
   "config": {

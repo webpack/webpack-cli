@@ -94,13 +94,6 @@ jobs:
           yarn prepsuite
           yarn test:coverage
 
-      - name: Smoke Tests
-        # TODO fix for windows
-        if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
-        run: yarn test:smoke
-        env:
-          CI: true
-
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
 
