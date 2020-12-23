@@ -6,7 +6,7 @@ const webpackMerge = require('webpack-merge');
 const { extensions, jsVariants } = require('interpret');
 const rechoir = require('rechoir');
 const { createWriteStream, existsSync } = require('fs');
-const leven = require('leven');
+const { distance } = require('fastest-levenshtein');
 const { options: coloretteOptions, yellow, cyan, green, bold } = require('colorette');
 const { stringifyStream: createJsonStringifyStream } = require('@discoveryjs/json-ext');
 
@@ -392,7 +392,7 @@ class WebpackCLI {
                             process.exit(2);
                         }
 
-                        const found = command.options.find((option) => leven(name, option.long.slice(2)) < 3);
+                        const found = command.options.find((option) => distance(name, option.long.slice(2)) < 3);
 
                         if (found) {
                             logger.error(`Did you mean '--${found.name()}'?`);
