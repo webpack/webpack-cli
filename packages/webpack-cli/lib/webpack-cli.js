@@ -1074,6 +1074,26 @@ class WebpackCLI {
 
         let compiler;
 
+        const needWatchStdin = (configOptions) => {
+            if (Array.isArray(configOptions)) {
+                const configsWithWatchingStdin = configOptions.filter(
+                    (oneOfConfigOptions) =>
+                        oneOfConfigOptions.watch && oneOfConfigOptions.watchOptions && oneOfConfigOptions.watchOptions.stdin,
+                );
+
+                return configsWithWatchingStdin.length > 0;
+            }
+
+            return configOptions.watch && configOptions.watchOptions && configOptions.watchOptions.stdin;
+        };
+
+        if (needWatchStdin(config.options)) {
+            process.stdin.on('end', () => {
+                process.exit(0);
+            });
+            process.stdin.resume();
+        }
+
         try {
             compiler = webpack(
                 config.options,
