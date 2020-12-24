@@ -1077,14 +1077,13 @@ class WebpackCLI {
         const needWatchStdin = (configOptions) => {
             if (Array.isArray(configOptions)) {
                 const configsWithWatchingStdin = configOptions.filter(
-                    (oneOfConfigOptions) =>
-                        oneOfConfigOptions.watch && oneOfConfigOptions.watchOptions && oneOfConfigOptions.watchOptions.stdin,
+                    (oneOfConfigOptions) => oneOfConfigOptions.watchOptions && oneOfConfigOptions.watchOptions.stdin,
                 );
 
                 return configsWithWatchingStdin.length > 0;
             }
 
-            return configOptions.watch && configOptions.watchOptions && configOptions.watchOptions.stdin;
+            return configOptions.watchOptions && configOptions.watchOptions.stdin;
         };
 
         if (needWatchStdin(config.options)) {
