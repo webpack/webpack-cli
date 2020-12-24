@@ -47,7 +47,7 @@ that include your `webpack.config.js` and relevant files. This way you help othe
 
 First of all, you will need to create an issue in Github for the feature or bugfix that you want to work on. When you open a new issue, there will be a template that will be automatically added to the text of the issue, which you would need to fill in. Doing this will help us to understand better what the ticket is about.
 
-After you've created the issue, we will have a look, and provide feedback to your ticket.
+After you've created an issue, we will have a look, and provide feedback to your ticket.
 
 In case it is a bug that you want to fix, we might help you with background information about the issue, so you can make an informed fix.
 
