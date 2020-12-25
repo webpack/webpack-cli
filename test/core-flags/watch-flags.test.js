@@ -11,7 +11,7 @@ describe('watch config related flag', () => {
         const property = flag.name.split('watch-options-')[1];
         const propName = hyphenToUpperCase(property);
 
-        if (flag.type === Boolean && flag.name !== 'watch') {
+        if (flag.type === Boolean && flag.name !== 'watch' && flag.name !== 'watch-options-stdin') {
             it(`should config --${flag.name} correctly`, () => {
                 const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`]);
 
