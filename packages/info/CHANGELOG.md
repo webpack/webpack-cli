@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/info@1.1.0...@webpack-cli/info@1.2.0) (2020-12-25)
+
+### Features
+
+-   display monorepos in info output ([#2203](https://github.com/webpack/webpack-cli/issues/2203)) ([d0acf30](https://github.com/webpack/webpack-cli/commit/d0acf3072edd8182c95e37997ac91789da899d66))
+
 # [1.1.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/info@1.0.2...@webpack-cli/info@1.1.0) (2020-11-04)
 
 ### Bug Fixes

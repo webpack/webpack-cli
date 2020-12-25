@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/init@1.0.3...@webpack-cli/init@1.1.0) (2020-12-25)
+
+### Features
+
+-   add `--generation-path` option ([#2050](https://github.com/webpack/webpack-cli/issues/2050)) ([413eb8c](https://github.com/webpack/webpack-cli/commit/413eb8cf2add4978763a4c9ee6b983582685768b))
+
 ## [1.0.3](https://github.com/webpack/webpack-cli/compare/@webpack-cli/init@1.0.2...@webpack-cli/init@1.0.3) (2020-11-04)
 
 **Note:** Version bump only for package @webpack-cli/init

@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/utils@1.1.0...@webpack-cli/utils@1.2.0) (2020-12-25)
+
+### Bug Fixes
+
+-   remove duplicate log ([#2079](https://github.com/webpack/webpack-cli/issues/2079)) ([112068d](https://github.com/webpack/webpack-cli/commit/112068dc5b962a773c5db00e4e1140e8733ea9ec))
+
+### Features
+
+-   **init:** add --generation-path flag ([#2050](https://github.com/webpack/webpack-cli/issues/2050)) ([413eb8c](https://github.com/webpack/webpack-cli/commit/413eb8cf2add4978763a4c9ee6b983582685768b))
+
 # [1.1.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/utils@1.0.2...@webpack-cli/utils@1.1.0) (2020-11-04)
 
 ### Features
