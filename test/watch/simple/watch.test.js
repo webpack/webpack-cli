@@ -1,7 +1,7 @@
 'use strict';
 
 const stripAnsi = require('strip-ansi');
-const { run, runAndGetWatchProc, isWebpack5 } = require('../utils/test-utils');
+const { run, runAndGetWatchProc, isWebpack5 } = require('../../utils/test-utils');
 const { writeFileSync } = require('fs');
 const { resolve } = require('path');
 
