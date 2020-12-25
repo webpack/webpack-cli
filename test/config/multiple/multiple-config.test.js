@@ -1,3 +1,5 @@
+const stripAnsi = require('strip-ansi');
+
 const { run } = require('../../utils/test-utils');
 
 describe('Multiple config flag: ', () => {
@@ -8,7 +10,7 @@ describe('Multiple config flag: ', () => {
         expect(exitCode).toEqual(0);
         expect(stderr).toBeFalsy();
         // Should spawn multiple compilers
-        expect(stdout).toContain('amd:');
-        expect(stdout).toContain('commonjs:');
+        expect(stripAnsi(stdout)).toContain('amd:');
+        expect(stripAnsi(stdout)).toContain('commonjs:');
     });
 });
