@@ -34,6 +34,33 @@ describe('basic serve usage', () => {
         expect(stdout).not.toContain('HotModuleReplacementPlugin');
     });
 
+    it('should work with the "--mode" option', async () => {
+        const { stderr, stdout } = await runServe([], __dirname);
+
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('development');
+        expect(stdout).toContain('main.js');
+        expect(stdout).not.toContain('HotModuleReplacementPlugin');
+    });
+
+    it('should work with the "--mode" option #2', async () => {
+        const { stderr, stdout } = await runServe(['--mode', 'production'], __dirname);
+
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('production');
+        expect(stdout).toContain('main.js');
+        expect(stdout).not.toContain('HotModuleReplacementPlugin');
+    });
+
+    it('should work with the "--mode" option #2', async () => {
+        const { stderr, stdout } = await runServe(['--mode', 'development'], __dirname);
+
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('development');
+        expect(stdout).toContain('main.js');
+        expect(stdout).not.toContain('HotModuleReplacementPlugin');
+    });
+
     it('should work with flags', async () => {
         const { stderr, stdout } = await runServe(['--hot'], __dirname);
 
