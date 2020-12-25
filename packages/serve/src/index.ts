@@ -82,8 +82,34 @@ class ServeCommand {
 
                 const compiler = await cli.createCompiler(webpackOptions);
 
+                let servers;
+
+                if (cli.needWatchStdin(compiler) || devServerOptions.stdin) {
+                    // TODO
+                    // Compatibility with old `stdin` option for `webpack-dev-server`
+                    // Should be removed for the next major release on both sides
+                    if (devServerOptions.stdin) {
+                        delete devServerOptions.stdin;
+                    }
+
+                    process.stdin.on('end', () => {
+                        Promise.all(
+                            servers.map((server) => {
+                                return new Promise((resolve) => {
+                                    server.close(() => {
+                                        resolve();
+                                    });
+                                });
+                            }),
+                        ).then(() => {
+                            process.exit(0);
+                        });
+                    });
+                    process.stdin.resume();
+                }
+
                 try {
-                    await startDevServer(compiler, devServerOptions, logger);
+                    servers = await startDevServer(compiler, devServerOptions, logger);
                 } catch (error) {
                     if (error.name === 'ValidationError') {
                         logger.error(error.message);

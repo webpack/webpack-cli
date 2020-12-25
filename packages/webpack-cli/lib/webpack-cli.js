@@ -1021,6 +1021,13 @@ class WebpackCLI {
                 configOptions.watch = options.watch;
             }
 
+            if (typeof options.watchOptionsStdin !== 'undefined') {
+                configOptions.watchOptions = {
+                    ...configOptions.watchOptions,
+                    ...{ stdin: options.watchOptionsStdin },
+                };
+            }
+
             return configOptions;
         };
 
@@ -1058,6 +1065,14 @@ class WebpackCLI {
         return config;
     }
 
+    needWatchStdin(compiler) {
+        if (compiler.compilers) {
+            return compiler.compilers.some((compiler) => compiler.options.watchOptions && compiler.options.watchOptions.stdin);
+        }
+
+        return compiler.options.watchOptions && compiler.options.watchOptions.stdin;
+    }
+
     async createCompiler(options, callback) {
         const isValidationError = (error) => {
             // https://github.com/webpack/webpack/blob/master/lib/index.js#L267
@@ -1073,25 +1088,6 @@ class WebpackCLI {
         config = await this.applyCLIPlugin(config, options);
 
         let compiler;
-
-        const needWatchStdin = (configOptions) => {
-            if (Array.isArray(configOptions)) {
-                const configsWithWatchingStdin = configOptions.filter(
-                    (oneOfConfigOptions) => oneOfConfigOptions.watchOptions && oneOfConfigOptions.watchOptions.stdin,
-                );
-
-                return configsWithWatchingStdin.length > 0;
-            }
-
-            return configOptions.watchOptions && configOptions.watchOptions.stdin;
-        };
-
-        if (needWatchStdin(config.options)) {
-            process.stdin.on('end', () => {
-                process.exit(0);
-            });
-            process.stdin.resume();
-        }
 
         try {
             compiler = webpack(
@@ -1133,9 +1129,11 @@ class WebpackCLI {
                 process.exitCode = 1;
             }
 
+            // TODO remove after drop webpack@4
+            const statsForWebpack4 = webpack.Stats && webpack.Stats.presetToOptions;
+
             const getStatsOptions = (stats) => {
-                // TODO remove after drop webpack@4
-                if (webpack.Stats && webpack.Stats.presetToOptions) {
+                if (statsForWebpack4) {
                     if (!stats) {
                         stats = {};
                     } else if (typeof stats === 'boolean' || typeof stats === 'string') {
@@ -1163,32 +1161,39 @@ class WebpackCLI {
                 return stats;
             };
 
-            const getStatsOptionsFromCompiler = (compiler) => getStatsOptions(compiler.options ? compiler.options.stats : undefined);
-
             if (!compiler) {
                 return;
             }
 
-            const foundStats = compiler.compilers
-                ? { children: compiler.compilers.map(getStatsOptionsFromCompiler) }
-                : getStatsOptionsFromCompiler(compiler);
-            const handleWriteError = (error) => {
-                logger.error(error);
-                process.exit(2);
-            };
+            // TODO webpack@4 doesn't support `{ children: options }` for stats
+            const foundStats =
+                compiler.compilers && !statsForWebpack4
+                    ? {
+                          children: compiler.compilers.map((compiler) =>
+                              getStatsOptions(compiler.options ? compiler.options.stats : undefined),
+                          ),
+                      }
+                    : getStatsOptions(compiler.options ? compiler.options.stats : undefined);
 
-            if (options.json === true) {
-                createJsonStringifyStream(stats.toJson(foundStats))
-                    .on('error', handleWriteError)
-                    .pipe(process.stdout)
-                    .on('error', handleWriteError)
-                    .on('close', () => process.stdout.write('\n'));
-            } else if (typeof options.json === 'string') {
-                createJsonStringifyStream(stats.toJson(foundStats))
-                    .on('error', handleWriteError)
-                    .pipe(createWriteStream(options.json))
-                    .on('error', handleWriteError)
-                    .on('close', () => logger.success(`stats are successfully stored as json to ${options.json}`));
+            if (options.json) {
+                const handleWriteError = (error) => {
+                    logger.error(error);
+                    process.exit(2);
+                };
+
+                if (options.json === true) {
+                    createJsonStringifyStream(stats.toJson(foundStats))
+                        .on('error', handleWriteError)
+                        .pipe(process.stdout)
+                        .on('error', handleWriteError)
+                        .on('close', () => process.stdout.write('\n'));
+                } else {
+                    createJsonStringifyStream(stats.toJson(foundStats))
+                        .on('error', handleWriteError)
+                        .pipe(createWriteStream(options.json))
+                        .on('error', handleWriteError)
+                        .on('close', () => logger.success(`stats are successfully stored as json to ${options.json}`));
+                }
             } else {
                 const printedStats = stats.toString(foundStats);
 
@@ -1203,9 +1208,19 @@ class WebpackCLI {
 
         compiler = await this.createCompiler(options, callback);
 
-        // TODO webpack@4 return Watching and MultiWathing instead Compiler and MultiCompiler, remove this after drop webpack@4
+        // TODO webpack@4 return Watching and MultiWatching instead Compiler and MultiCompiler, remove this after drop webpack@4
         if (compiler && compiler.compiler) {
             compiler = compiler.compiler;
+        }
+
+        const isWatch = (compiler) =>
+            compiler.compilers ? compiler.compilers.some((compiler) => compiler.options.watch) : compiler.options.watch;
+
+        if (isWatch(compiler) && this.needWatchStdin(compiler)) {
+            process.stdin.on('end', () => {
+                process.exit(0);
+            });
+            process.stdin.resume();
         }
     }
 }

@@ -1,7 +1,7 @@
 const { runAndGetWatchProc } = require('../../utils/test-utils');
 
 describe('--watch-options-stdin', () => {
-    it('should stop the process when stdin ends using "--watch" and "--watch-options-stdin" options', (done) => {
+    it.only('should stop the process when stdin ends using "--watch" and "--watch-options-stdin" options', (done) => {
         const proc = runAndGetWatchProc(__dirname, ['--watch', '--watch-options-stdin'], false, '', true);
 
         let semaphore = false;
@@ -57,6 +57,21 @@ describe('--watch-options-stdin', () => {
 
     it('should stop the process when stdin ends using the "serve" command and the "--watch-options-stdin" option', (done) => {
         const proc = runAndGetWatchProc(__dirname, ['serve', '--watch-options-stdin'], false, '', true);
+        let semaphore = false;
+
+        proc.on('exit', () => {
+            expect(semaphore).toBe(true);
+            proc.kill();
+            done();
+        });
+
+        proc.stdin.end(() => {
+            semaphore = true;
+        });
+    });
+
+    it('should stop the process when stdin ends using the "serve" command and the "--stdin" option', (done) => {
+        const proc = runAndGetWatchProc(__dirname, ['serve', '--stdin'], false, '', true);
         let semaphore = false;
 
         proc.on('exit', () => {

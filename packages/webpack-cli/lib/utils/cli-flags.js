@@ -8,6 +8,7 @@ const minimumHelpFlags = [
     'env',
     'mode',
     'watch',
+    'watch-options-stdin',
     'stats',
     'devtool',
     'entry',
@@ -150,6 +151,13 @@ const builtInFlags = [
         alias: 'w',
         description: 'Watch for files changes.',
         negatedDescription: 'Do not watch for file changes.',
+    },
+    {
+        name: 'watch-options-stdin',
+        usage: '--watch-options-stdin',
+        type: Boolean,
+        negative: true,
+        description: 'Stop watching when stdin stream has ended.',
     },
 ];
 
