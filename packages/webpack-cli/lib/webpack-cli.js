@@ -1113,6 +1113,11 @@ class WebpackCLI {
             process.exit(2);
         }
 
+        // TODO webpack@4 return Watching and MultiWatching instead Compiler and MultiCompiler, remove this after drop webpack@4
+        if (compiler && compiler.compiler) {
+            compiler = compiler.compiler;
+        }
+
         return compiler;
     }
 
@@ -1213,11 +1218,6 @@ class WebpackCLI {
 
         if (!compiler) {
             return;
-        }
-
-        // TODO webpack@4 return Watching and MultiWatching instead Compiler and MultiCompiler, remove this after drop webpack@4
-        if (compiler && compiler.compiler) {
-            compiler = compiler.compiler;
         }
 
         const isWatch = (compiler) =>

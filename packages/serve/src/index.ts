@@ -82,6 +82,10 @@ class ServeCommand {
 
                 const compiler = await cli.createCompiler(webpackOptions);
 
+                if (!compiler) {
+                    return;
+                }
+
                 let servers;
 
                 if (cli.needWatchStdin(compiler) || devServerOptions.stdin) {
