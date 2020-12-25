@@ -1174,7 +1174,7 @@ class WebpackCLI {
                 : getStatsOptions(compiler.options ? compiler.options.stats : undefined);
 
             // TODO webpack@4 doesn't support `{ children: [{ colors: true }, { colors: true }] }` for stats
-            if (statsForWebpack4) {
+            if (statsForWebpack4 && compiler.compilers) {
                 foundStats.colors = foundStats.children.some((child) => child.colors);
             }
 
