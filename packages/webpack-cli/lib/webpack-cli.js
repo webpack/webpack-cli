@@ -1165,15 +1165,18 @@ class WebpackCLI {
                 return;
             }
 
-            // TODO webpack@4 doesn't support `{ children: options }` for stats
-            const foundStats =
-                compiler.compilers && !statsForWebpack4
-                    ? {
-                          children: compiler.compilers.map((compiler) =>
-                              getStatsOptions(compiler.options ? compiler.options.stats : undefined),
-                          ),
-                      }
-                    : getStatsOptions(compiler.options ? compiler.options.stats : undefined);
+            const foundStats = compiler.compilers
+                ? {
+                      children: compiler.compilers.map((compiler) =>
+                          getStatsOptions(compiler.options ? compiler.options.stats : undefined),
+                      ),
+                  }
+                : getStatsOptions(compiler.options ? compiler.options.stats : undefined);
+
+            // TODO webpack@4 doesn't support `{ children: [{ colors: true }, { colors: true }] }` for stats
+            if (statsForWebpack4) {
+                foundStats.colors = foundStats.children.some((child) => child.colors);
+            }
 
             if (options.json) {
                 const handleWriteError = (error) => {
