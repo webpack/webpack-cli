@@ -1,6 +1,4 @@
-import { utils } from 'webpack-cli';
-
-import mergeOptions from './mergeOptions';
+import { devServerOptionsType } from './types';
 
 /**
  *
@@ -48,6 +46,19 @@ export default async function startDevServer(compiler, cliOptions, logger): Prom
 
     const servers = [];
     const usedPorts: number[] = [];
+    const mergeOptions = (cliOptions: devServerOptionsType, devServerOptions: devServerOptionsType): devServerOptionsType => {
+        // CLI options should take precedence over devServer options,
+        // and CLI options should have no default values included
+        const options = { ...devServerOptions, ...cliOptions };
+
+        if (devServerOptions.client && cliOptions.client) {
+            // the user could set some client options in their devServer config,
+            // then also specify client options on the CLI
+            options.client = { ...devServerOptions.client, ...cliOptions.client };
+        }
+
+        return options;
+    };
 
     for (const devServerOpts of devServerOptions) {
         const options = mergeOptions(cliOptions, devServerOpts);
