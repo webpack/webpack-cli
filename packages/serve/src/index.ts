@@ -51,7 +51,7 @@ class ServeCommand {
                 const processors: Array<(opts: Record<string, any>) => void> = [];
 
                 for (const optionName in options) {
-                    if (optionName === 'hot' || optionName === 'progress') {
+                    if (optionName === 'hot') {
                         devServerOptions[optionName] = options[optionName];
                         webpackOptions[optionName] = options[optionName];
                     } else {

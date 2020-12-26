@@ -61,6 +61,22 @@ describe('basic serve usage', () => {
         expect(stdout).not.toContain('HotModuleReplacementPlugin');
     });
 
+    it('should work with the "--progress" option', async () => {
+        const { stderr, stdout } = await runServe(['--progress'], __dirname);
+
+        expect(stderr).toContain('webpack.Progress');
+        expect(stdout).toContain('main.js');
+        expect(stdout).not.toContain('HotModuleReplacementPlugin');
+    });
+
+    it('should work with the "--progress" option using the "profile" value', async () => {
+        const { stderr, stdout } = await runServe(['--progress', 'profile'], __dirname);
+
+        expect(stderr).toContain('webpack.Progress');
+        expect(stdout).toContain('main.js');
+        expect(stdout).not.toContain('HotModuleReplacementPlugin');
+    });
+
     it('should work with flags', async () => {
         const { stderr, stdout } = await runServe(['--hot'], __dirname);
 
