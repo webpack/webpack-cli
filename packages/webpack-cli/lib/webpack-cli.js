@@ -29,7 +29,7 @@ class WebpackCLI {
         this.utils = { toKebabCase, getPkg, promptInstallation };
     }
 
-    makeCommand(commandOptions, optionsForCommand = [], action) {
+    makeCommand(commandOptions, options, action) {
         const command = program.command(commandOptions.name, {
             noHelp: commandOptions.noHelp,
             hidden: commandOptions.hidden,
@@ -56,13 +56,41 @@ class WebpackCLI {
             command.pkg = 'webpack-cli';
         }
 
-        if (optionsForCommand.length > 0) {
-            optionsForCommand.forEach((optionForCommand) => {
+        if (options) {
+            if (typeof options === 'function') {
+                options = options();
+            }
+
+            options.forEach((optionForCommand) => {
                 this.makeOption(command, optionForCommand);
             });
         }
 
-        command.action(action);
+        command.action(async (...args) => {
+            if (commandOptions.dependencies && commandOptions.dependencies.length > 0) {
+                for (const dependency of commandOptions.dependencies) {
+                    const isPkgExist = getPkg(dependency);
+
+                    if (isPkgExist) {
+                        continue;
+                    }
+
+                    try {
+                        await promptInstallation(dependency, () => {
+                            logger.error(
+                                `For using '${green(commandOptions.name)}' command you need to install: '${green(dependency)}' package`,
+                            );
+                        });
+                    } catch (error) {
+                        logger.error("Action Interrupted, use 'webpack-cli help' to see possible commands.");
+                        logger.error(error);
+                        process.exit(2);
+                    }
+                }
+            }
+
+            await action(...args);
+        });
 
         return command;
     }
@@ -271,29 +299,11 @@ class WebpackCLI {
                     await this.bundleCommand(options);
                 });
             } else if (commandName === helpCommandOptions.name || commandName === helpCommandOptions.alias) {
-                this.makeCommand(
-                    {
-                        name: 'help [command]',
-                        alias: 'h',
-                        description: 'Display help for commands and options',
-                        usage: '[command]',
-                    },
-                    [],
-                    // Stub for the `help` command
-                    () => {},
-                );
+                // Stub for the `help` command
+                this.makeCommand(helpCommandOptions, [], () => {});
             } else if (commandName === versionCommandOptions.name || commandName === helpCommandOptions.alias) {
-                this.makeCommand(
-                    {
-                        name: 'version [commands...]',
-                        alias: 'v',
-                        description: "Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands",
-                        usage: '[commands...]',
-                    },
-                    [],
-                    // Stub for the `help` command
-                    () => {},
-                );
+                // Stub for the `help` command
+                this.makeCommand(versionCommandOptions, [], () => {});
             } else {
                 const builtInExternalCommandInfo = externalBuiltInCommandsInfo.find(
                     (externalBuiltInCommandInfo) =>
@@ -310,11 +320,7 @@ class WebpackCLI {
 
                 if (pkg !== 'webpack-cli' && !getPkg(pkg)) {
                     if (!allowToInstall) {
-                        const isOptions = commandName.startsWith('-');
-
-                        logger.error(`Unknown ${isOptions ? 'option' : 'command'} '${commandName}'`);
-                        logger.error("Run 'webpack --help' to see available commands and options");
-                        process.exit(2);
+                        return;
                     }
 
                     try {
@@ -464,6 +470,12 @@ class WebpackCLI {
                         (command) => command.name() === possibleCommandName || command.alias() === possibleCommandName,
                     );
 
+                    if (!foundCommand) {
+                        logger.error(`Unknown command '${possibleCommandName}'`);
+                        logger.error("Run 'webpack --help' to see available commands and options");
+                        process.exit(2);
+                    }
+
                     try {
                         const { name, version } = require(`${foundCommand.pkg}/package.json`);
 
@@ -481,7 +493,7 @@ class WebpackCLI {
             logger.raw(`webpack-cli ${pkgJSON.version}`);
 
             if (getPkg('webpack-dev-server')) {
-                // eslint-disable-next-line node/no-extraneous-require
+                // eslint-disable-next-line
                 const { version } = require('webpack-dev-server/package.json');
 
                 logger.raw(`webpack-dev-server ${version}`);
@@ -546,6 +558,12 @@ class WebpackCLI {
                 logger.raw(helpInformation);
             } else {
                 const [name, ...optionsWithoutCommandName] = options;
+
+                if (name.startsWith('-')) {
+                    logger.error(`Unknown option '${name}'`);
+                    logger.error("Run 'webpack --help' to see available commands and options");
+                    process.exit(2);
+                }
 
                 optionsWithoutCommandName.forEach((option) => {
                     logger.error(`Unknown option '${option}'`);

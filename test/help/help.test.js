@@ -219,7 +219,7 @@ describe('help', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['help', 'myCommand'], false);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("Unknown command 'myCommand'");
+        expect(stderr).toContain("Can't find and load command 'myCommand'");
         expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
     });
@@ -228,7 +228,7 @@ describe('help', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['help', 'verbose'], false);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("Unknown command 'verbose'");
+        expect(stderr).toContain("Can't find and load command 'verbose'");
         expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
     });
