@@ -19,7 +19,7 @@ class ServeCommand {
                 try {
                     // eslint-disable-next-line
                     devServerFlags = require('webpack-dev-server/bin/cli-flags').devServer;
-                } catch (err) {
+                } catch (error) {
                     return [];
                 }
 
@@ -29,8 +29,7 @@ class ServeCommand {
             },
             async (program) => {
                 const builtInOptions = cli.getBuiltInOptions();
-
-                let devServerFlags;
+                let devServerFlags = [];
 
                 try {
                     // eslint-disable-next-line
