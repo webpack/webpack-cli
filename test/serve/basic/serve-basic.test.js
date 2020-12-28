@@ -141,7 +141,35 @@ describe('basic serve usage', () => {
         expect(stdout.match(/HotModuleReplacementPlugin/g)).toHaveLength(1);
     });
 
-    it.only('should work with the "--open" option', async () => {
+    // TODO uncomment for webpack-dev-server@4
+    it.skip('should work with the "--output-public-path" option', async () => {
+        const { stderr, stdout } = await runServe(['serve', '--output-public-path', '/my-public-path/'], __dirname);
+
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('main.js');
+        expect(stdout).toContain('/my-public-path/');
+        expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
+    });
+
+    it('should respect the "publicPath" option from configuration', async () => {
+        const { stderr, stdout } = await runServe(['serve', '--config', 'output-public-path.config.js'], __dirname);
+
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('main.js');
+        expect(stdout).toContain('/my-public-path/');
+        expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
+    });
+
+    it('should respect the "publicPath" option from configuration (from the "devServer" options)', async () => {
+        const { stderr, stdout } = await runServe(['serve', '--config', 'dev-server-output-public-path.config.js'], __dirname);
+
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('main.js');
+        expect(stdout).toContain('/dev-server-my-public-path/');
+        expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
+    });
+
+    it('should work with the "--open" option', async () => {
         const { stdout, stderr } = await runServe(['--open', '--port', port], testPath);
 
         expect(stderr).toBeFalsy();
