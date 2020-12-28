@@ -49,26 +49,23 @@ class ServeCommand {
                 const processors: Array<(opts: Record<string, any>) => void> = [];
 
                 for (const optionName in options) {
-                    if (optionName === 'hot') {
-                        devServerOptions[optionName] = options[optionName];
+                    const kebabedOption = cli.utils.toKebabCase(optionName);
+                    // `webpack-dev-server` has own logic for the `--hot` option
+                    const isBuiltInOption =
+                        kebabedOption !== 'hot' && builtInOptions.find((builtInOption) => builtInOption.name === kebabedOption);
+
+                    if (isBuiltInOption) {
                         webpackOptions[optionName] = options[optionName];
                     } else {
-                        const kebabedOption = cli.utils.toKebabCase(optionName);
-                        const isBuiltInOption = builtInOptions.find((builtInOption) => builtInOption.name === kebabedOption);
+                        const needToProcess = devServerFlags.find(
+                            (devServerOption) => devServerOption.name === kebabedOption && devServerOption.processor,
+                        );
 
-                        if (isBuiltInOption) {
-                            webpackOptions[optionName] = options[optionName];
-                        } else {
-                            const needToProcess = devServerFlags.find(
-                                (devServerOption) => devServerOption.name === kebabedOption && devServerOption.processor,
-                            );
-
-                            if (needToProcess) {
-                                processors.push(needToProcess.processor);
-                            }
-
-                            devServerOptions[optionName] = options[optionName];
+                        if (needToProcess) {
+                            processors.push(needToProcess.processor);
                         }
+
+                        devServerOptions[optionName] = options[optionName];
                     }
                 }
 

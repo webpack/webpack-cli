@@ -27,11 +27,11 @@ describe('basic serve usage', () => {
     }
 
     it('should work', async () => {
-        const { stderr, stdout } = await runServe(['--no-hot'], __dirname);
+        const { stderr, stdout } = await runServe([''], __dirname);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('main.js');
-        expect(stdout).not.toContain('HotModuleReplacementPlugin');
+        expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
     });
 
     it('should work with the "--mode" option', async () => {
@@ -40,7 +40,7 @@ describe('basic serve usage', () => {
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('development');
         expect(stdout).toContain('main.js');
-        expect(stdout).not.toContain('HotModuleReplacementPlugin');
+        expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
     });
 
     it('should work with the "--mode" option #2', async () => {
@@ -49,16 +49,16 @@ describe('basic serve usage', () => {
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('production');
         expect(stdout).toContain('main.js');
-        expect(stdout).not.toContain('HotModuleReplacementPlugin');
+        expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
     });
 
-    it('should work with the "--mode" option #2', async () => {
+    it('should work with the "--mode" option #3', async () => {
         const { stderr, stdout } = await runServe(['--mode', 'development'], __dirname);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('development');
         expect(stdout).toContain('main.js');
-        expect(stdout).not.toContain('HotModuleReplacementPlugin');
+        expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
     });
 
     it('should work with the "--progress" option', async () => {
@@ -66,7 +66,7 @@ describe('basic serve usage', () => {
 
         expect(stderr).toContain('webpack.Progress');
         expect(stdout).toContain('main.js');
-        expect(stdout).not.toContain('HotModuleReplacementPlugin');
+        expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
     });
 
     it('should work with the "--progress" option using the "profile" value', async () => {
@@ -74,18 +74,10 @@ describe('basic serve usage', () => {
 
         expect(stderr).toContain('webpack.Progress');
         expect(stdout).toContain('main.js');
-        expect(stdout).not.toContain('HotModuleReplacementPlugin');
+        expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
     });
 
-    it('should work with flags', async () => {
-        const { stderr, stdout } = await runServe(['--hot'], __dirname);
-
-        expect(stderr).toBeFalsy();
-        expect(stdout).toContain('main.js');
-        expect(stdout).toContain('HotModuleReplacementPlugin');
-    });
-
-    it('should respect the --no-color flag', async () => {
+    it('should log help information and respect the "--no-color" option', async () => {
         const { stdout, stderr } = await runServe(['--help', '--no-color'], __dirname);
 
         expect(stderr).toBeFalsy();
@@ -93,55 +85,63 @@ describe('basic serve usage', () => {
         expect(stdout).toContain(descriptionText);
     });
 
-    it('should not invoke info subcommand', async () => {
+    it('should work with the "--client-log-level" option', async () => {
         const { stdout, stderr } = await runServe(['--client-log-level', 'info'], testPath);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('main.js');
-        expect(stdout).not.toContain('HotModuleReplacementPlugin');
+        expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
     });
 
-    it('compiles without flags', async () => {
+    it('should work with the "--port" option', async () => {
         const { stdout, stderr } = await runServe(['--port', port], testPath);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('main.js');
-        expect(stdout).not.toContain('HotModuleReplacementPlugin');
+        expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
     });
 
-    it('uses hot flag to alter bundle', async () => {
-        const { stdout, stderr } = await runServe(['--port', port, '--hot'], testPath);
+    it('should work with the "--hot" option', async () => {
+        const { stderr, stdout } = await runServe(['--hot'], __dirname);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('main.js');
-        expect(stdout).toContain('HotModuleReplacementPlugin');
+        expect(stdout.match(/HotModuleReplacementPlugin/g)).toHaveLength(1);
     });
 
-    it('uses hot-only flag to alter bundle', async () => {
-        const { stdout, stderr } = await runServe(['--port', port, isDevServer4 ? '--hot only' : '--hot-only'], testPath);
-
-        expect(stderr).toBeFalsy();
-        expect(stdout).toContain('main.js');
-        expect(stdout).toContain('HotModuleReplacementPlugin');
-    });
-
-    it('uses no-hot flag', async () => {
+    it('should work with the "--no-hot" option', async () => {
         const { stdout, stderr } = await runServe(['--port', port, '--no-hot'], testPath);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('main.js');
-        expect(stdout).not.toContain('HotModuleReplacementPlugin');
+        expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
     });
 
-    it('uses hot flag and progress flag', async () => {
+    it('should work with the "--hot" option using the "only" value', async () => {
+        const { stdout, stderr } = await runServe(['--port', port, isDevServer4 ? '--hot only' : '--hot-only'], testPath);
+
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('main.js');
+        expect(stdout.match(/HotModuleReplacementPlugin/g)).toHaveLength(1);
+    });
+
+    it('should work with "--hot" and "--port" options', async () => {
+        const { stdout, stderr } = await runServe(['--port', port, '--hot'], testPath);
+
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('main.js');
+        expect(stdout.match(/HotModuleReplacementPlugin/g)).toHaveLength(1);
+    });
+
+    it('should work with the "--hot" and "--progress" options', async () => {
         const { stdout, stderr } = await runServe(['--port', port, '--hot', '--progress'], testPath);
 
         expect(stderr).toContain('webpack.Progress');
         expect(stdout).toContain('main.js');
-        expect(stdout).toContain('HotModuleReplacementPlugin');
+        expect(stdout.match(/HotModuleReplacementPlugin/g)).toHaveLength(1);
     });
 
-    it('throws error on unknown flag', async () => {
+    it('should log and error on unknown flag', async () => {
         const { exitCode, stdout, stderr } = await runServe(['--port', port, '--unknown-flag'], testPath);
 
         expect(exitCode).toBe(2);
