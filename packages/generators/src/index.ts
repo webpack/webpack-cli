@@ -5,10 +5,10 @@ import addonGenerator from './addon-generator';
 import initGenerator from './init-generator';
 
 class GeneratorsCommand {
-    apply(cli): void {
+    async apply(cli): Promise<void> {
         const { logger } = cli;
 
-        cli.makeCommand(
+        await cli.makeCommand(
             {
                 name: 'loader [output-path]',
                 alias: 'l',

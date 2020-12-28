@@ -4,7 +4,7 @@ class ServeCommand {
     async apply(cli): Promise<void> {
         const { logger } = cli;
 
-        cli.makeCommand(
+        await cli.makeCommand(
             {
                 name: 'serve',
                 alias: 's',
@@ -20,7 +20,8 @@ class ServeCommand {
                     // eslint-disable-next-line
                     devServerFlags = require('webpack-dev-server/bin/cli-flags').devServer;
                 } catch (error) {
-                    return [];
+                    logger.error(`You need to install 'webpack-dev-server' for running 'webpack serve'.\n${error}`);
+                    process.exit(2);
                 }
 
                 const builtInOptions = cli.getBuiltInOptions();

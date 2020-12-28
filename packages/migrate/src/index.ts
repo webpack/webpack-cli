@@ -149,10 +149,10 @@ function runMigration(currentConfigPath: string, outputConfigPath: string, logge
 }
 
 class MigrationCommand {
-    apply(cli): void {
+    async apply(cli): Promise<void> {
         const { logger } = cli;
 
-        cli.makeCommand(
+        await cli.makeCommand(
             {
                 name: 'migrate <config-path> [new-config-path]',
                 alias: 'm',

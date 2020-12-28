@@ -29,8 +29,8 @@ class WebpackCLI {
         this.utils = { toKebabCase, getPkg, promptInstallation };
     }
 
-    makeCommand(commandOptions, options, action) {
-        const command = program.command(commandOptions.name, {
+    async makeCommand(commandOptions, options, action) {
+        const command = this.program.command(commandOptions.name, {
             noHelp: commandOptions.noHelp,
             hidden: commandOptions.hidden,
             isDefault: commandOptions.isDefault,
@@ -56,9 +56,47 @@ class WebpackCLI {
             command.pkg = 'webpack-cli';
         }
 
+        const { forHelp } = this.program;
+
+        let allDependenciesInstalled = true;
+
+        if (commandOptions.dependencies && commandOptions.dependencies.length > 0) {
+            for (const dependency of commandOptions.dependencies) {
+                const isPkgExist = getPkg(dependency);
+
+                if (isPkgExist) {
+                    continue;
+                } else if (!isPkgExist && forHelp) {
+                    allDependenciesInstalled = false;
+                    continue;
+                }
+
+                try {
+                    await promptInstallation(dependency, () => {
+                        logger.error(
+                            `For using '${green(commandOptions.name)}' command you need to install: '${green(dependency)}' package`,
+                        );
+                    });
+                } catch (error) {
+                    logger.error("Action Interrupted, use 'webpack-cli help' to see possible commands.");
+                    logger.error(error);
+                    process.exit(2);
+                }
+            }
+        }
+
         if (options) {
             if (typeof options === 'function') {
-                options = options();
+                if (forHelp && !allDependenciesInstalled) {
+                    command.description(
+                        `${commandOptions.description} To see all available options you need to install ${commandOptions.dependencies
+                            .map((dependency) => `'${dependency}'`)
+                            .join(',')}.`,
+                    );
+                    options = [];
+                } else {
+                    options = options();
+                }
             }
 
             options.forEach((optionForCommand) => {
@@ -66,31 +104,7 @@ class WebpackCLI {
             });
         }
 
-        command.action(async (...args) => {
-            if (commandOptions.dependencies && commandOptions.dependencies.length > 0) {
-                for (const dependency of commandOptions.dependencies) {
-                    const isPkgExist = getPkg(dependency);
-
-                    if (isPkgExist) {
-                        continue;
-                    }
-
-                    try {
-                        await promptInstallation(dependency, () => {
-                            logger.error(
-                                `For using '${green(commandOptions.name)}' command you need to install: '${green(dependency)}' package`,
-                            );
-                        });
-                    } catch (error) {
-                        logger.error("Action Interrupted, use 'webpack-cli help' to see possible commands.");
-                        logger.error(error);
-                        process.exit(2);
-                    }
-                }
-            }
-
-            await action(...args);
-        });
+        command.action(action);
 
         return command;
     }
@@ -653,6 +667,8 @@ class WebpackCLI {
                         isVerbose = true;
                     }
                 }
+
+                this.program.forHelp = true;
 
                 const optionsForHelp = [].concat(opts.help && !isDefault ? [commandName] : []).concat(options);
 
