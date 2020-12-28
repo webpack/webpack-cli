@@ -14,6 +14,6 @@ describe('webpack-cli-test-plugin Test', () => {
             expect(stdout).toContain(`alias: { alias: [ 'alias1', 'alias2' ] }`);
         }
 
-        expect(stdout).toContain(`  WebpackCLITestPlugin { opts: [Array], showAll: true }`);
+        expect(stdout).toContain('WebpackCLITestPlugin');
     });
 });
