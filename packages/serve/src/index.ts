@@ -80,7 +80,7 @@ class ServeCommand {
 
                 webpackOptions.env = { WEBPACK_SERVE: true, ...options.env };
 
-                const compiler = await cli.createCompiler(webpackOptions);
+                const compiler = await cli.bundleCommand(webpackOptions);
 
                 if (!compiler) {
                     return;
