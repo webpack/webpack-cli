@@ -23,9 +23,7 @@ async function promptInstallation(packageName, preMessage) {
     }
 
     // yarn uses 'add' command, rest npm and pnpm both use 'install'
-    const commandToBeRun = `${packageManager} ${[packageManager === 'yarn' ? 'add' : 'install', '-D', packageName].join(
-        ' ',
-    )} --ignore-workspace-root-check`;
+    const commandToBeRun = `${packageManager} ${[packageManager === 'yarn' ? 'add' : 'install', '-D', packageName].join(' ')}`;
 
     let installConfirm;
 
