@@ -2,8 +2,8 @@ import { initGenerator } from '@webpack-cli/generators';
 import { modifyHelperUtil, npmPackagesExists } from '@webpack-cli/utils';
 
 class InitCommand {
-    apply(cli): void {
-        cli.makeCommand(
+    async apply(cli): Promise<void> {
+        await cli.makeCommand(
             {
                 name: 'init [scaffold...]',
                 alias: 'c',

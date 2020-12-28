@@ -18,14 +18,12 @@ async function promptInstallation(packageName, preMessage) {
         process.exit(2);
     }
 
-    // yarn uses 'add' command, rest npm and pnpm both use 'install'
-    const options = [packageManager === 'yarn' ? 'add' : 'install', '-D', packageName];
-
-    const commandToBeRun = `${packageManager} ${options.join(' ')}`;
-
     if (preMessage) {
         preMessage();
     }
+
+    // yarn uses 'add' command, rest npm and pnpm both use 'install'
+    const commandToBeRun = `${packageManager} ${[packageManager === 'yarn' ? 'add' : 'install', '-D', packageName].join(' ')}`;
 
     let installConfirm;
 
@@ -34,7 +32,7 @@ async function promptInstallation(packageName, preMessage) {
             {
                 type: 'confirm',
                 name: 'installConfirm',
-                message: `Would you like to install '${packageName}' package? (That will run '${green(commandToBeRun)}')`,
+                message: `Would you like to install '${green(packageName)}' package? (That will run '${green(commandToBeRun)}')`,
                 initial: 'Y',
                 stdout: process.stderr,
             },

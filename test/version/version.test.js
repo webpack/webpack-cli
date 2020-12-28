@@ -171,13 +171,13 @@ describe('single version flag', () => {
         expect(stdout).toBeFalsy();
     });
 
-    it('should log error when command using command syntax with multi commands', () => {
+    it('should log version for known command and log error for unknown command using command syntax with multi commands', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['version', 'info', 'unknown'], false);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Unknown command 'unknown'");
         expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
-        expect(stdout).toBeFalsy();
+        expect(stdout).toContain(`@webpack-cli/info ${infoPkgJSON.version}`);
     });
 
     it('should work for multiple commands', () => {
@@ -214,22 +214,22 @@ describe('single version flag', () => {
         expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
     });
 
-    it('should log error when unknown command used with --version flag', () => {
+    it('should log version for known command and log error for unknown command using the "--version" option', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['init', 'abc', '--version'], false);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Unknown command 'abc'");
         expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
-        expect(stdout).toBeFalsy();
+        expect(stdout).toContain(`@webpack-cli/init ${initPkgJSON.version}`);
     });
 
-    it('should log error when unknown command used with -v alias', () => {
+    it('should log version for known command and log error for unknown command using the "-v" option', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['init', 'abc', '-v'], false);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Unknown command 'abc'");
         expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
-        expect(stdout).toBeFalsy();
+        expect(stdout).toContain(`@webpack-cli/init ${initPkgJSON.version}`);
     });
 
     it('should not output version with help dashed', () => {

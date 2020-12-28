@@ -2,45 +2,43 @@ import startDevServer from './startDevServer';
 
 class ServeCommand {
     async apply(cli): Promise<void> {
-        const { logger, utils } = cli;
-        const isPackageExist = utils.getPkg('webpack-dev-server');
+        const { logger } = cli;
 
-        if (!isPackageExist) {
-            try {
-                await utils.promptInstallation('webpack-dev-server', () => {
-                    // TODO colors
-                    logger.error("For using this command you need to install: 'webpack-dev-server' package");
-                });
-            } catch (error) {
-                logger.error("Action Interrupted, use 'webpack-cli help' to see possible commands.");
-                process.exit(2);
-            }
-        }
-
-        let devServerFlags = [];
-
-        try {
-            // eslint-disable-next-line node/no-extraneous-require
-            require('webpack-dev-server');
-            // eslint-disable-next-line node/no-extraneous-require
-            devServerFlags = require('webpack-dev-server/bin/cli-flags').devServer;
-        } catch (err) {
-            logger.error(`You need to install 'webpack-dev-server' for running 'webpack serve'.\n${err}`);
-            process.exit(2);
-        }
-
-        const builtInOptions = cli.getBuiltInOptions();
-
-        cli.makeCommand(
+        await cli.makeCommand(
             {
                 name: 'serve',
                 alias: 's',
                 description: 'Run the webpack dev server.',
                 usage: '[options]',
                 pkg: '@webpack-cli/serve',
+                dependencies: ['webpack-dev-server'],
             },
-            [...builtInOptions, ...devServerFlags],
+            () => {
+                let devServerFlags = [];
+
+                try {
+                    // eslint-disable-next-line
+                    devServerFlags = require('webpack-dev-server/bin/cli-flags').devServer;
+                } catch (error) {
+                    logger.error(`You need to install 'webpack-dev-server' for running 'webpack serve'.\n${error}`);
+                    process.exit(2);
+                }
+
+                const builtInOptions = cli.getBuiltInOptions();
+
+                return [...builtInOptions, ...devServerFlags];
+            },
             async (program) => {
+                const builtInOptions = cli.getBuiltInOptions();
+                let devServerFlags = [];
+
+                try {
+                    // eslint-disable-next-line
+                    devServerFlags = require('webpack-dev-server/bin/cli-flags').devServer;
+                } catch (error) {
+                    // Nothing, to prevent future updates
+                }
+
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const webpackOptions: Record<string, any> = {};
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -89,7 +87,7 @@ class ServeCommand {
                 let servers;
 
                 if (cli.needWatchStdin(compiler) || devServerOptions.stdin) {
-                    // TODO
+                    // TODO remove in the next major release
                     // Compatibility with old `stdin` option for `webpack-dev-server`
                     // Should be removed for the next major release on both sides
                     if (devServerOptions.stdin) {

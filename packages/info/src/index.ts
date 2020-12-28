@@ -30,8 +30,8 @@ const DEFAULT_DETAILS: Information = {
 };
 
 class InfoCommand {
-    apply(cli): void {
-        cli.makeCommand(
+    async apply(cli): Promise<void> {
+        await cli.makeCommand(
             {
                 name: 'info',
                 alias: 'i',

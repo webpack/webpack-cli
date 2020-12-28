@@ -8,12 +8,22 @@ const { Writable } = require('readable-stream');
 const concat = require('concat-stream');
 const { version } = require('webpack');
 const stripAnsi = require('strip-ansi');
-const { version: devServerVersion } = require('webpack-dev-server/package.json');
+
+const isWebpack5 = version.startsWith('5');
+
+let devServerVersion;
+
+try {
+    // eslint-disable-next-line
+    devServerVersion = require('webpack-dev-server/package.json').version;
+} catch (error) {
+    // Nothing
+}
+
+const isDevServer4 = devServerVersion && devServerVersion.startsWith('4');
 
 const WEBPACK_PATH = path.resolve(__dirname, '../../packages/webpack-cli/bin/cli.js');
 const ENABLE_LOG_COMPILATION = process.env.ENABLE_PIPE || false;
-const isWebpack5 = version.startsWith('5');
-const isDevServer4 = devServerVersion.startsWith('4');
 const isWindows = process.platform === 'win32';
 
 const hyphenToUpperCase = (name) => {
