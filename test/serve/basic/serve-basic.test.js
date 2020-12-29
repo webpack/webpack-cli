@@ -2,7 +2,7 @@
 
 const path = require('path');
 const getPort = require('get-port');
-const { runServe, isDevServer4 } = require('../../utils/test-utils');
+const { runServe, isWebpack5, isDevServer4 } = require('../../utils/test-utils');
 
 const testPath = path.resolve(__dirname);
 
@@ -31,6 +31,29 @@ describe('basic serve usage', () => {
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('main.js');
+        expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
+    });
+
+    it('should work in multi compiler mode', async () => {
+        const { stderr, stdout } = await runServe(['serve', '--config', 'multi.config.js', '--port', port], __dirname);
+
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('one');
+        expect(stdout).toContain('first-output/main.js');
+        expect(stdout).toContain('two');
+        expect(stdout).toContain('second-output/main.js');
+        expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
+    });
+
+    // TODO need fix in future, edge case
+    it.skip('should work in multi compiler mode with multiple dev servers', async () => {
+        const { stderr, stdout } = await runServe(['serve', '--config', 'multi-dev-server.config.js'], __dirname);
+
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('one');
+        expect(stdout).toContain('first-output/main.js');
+        expect(stdout).toContain('two');
+        expect(stdout).toContain('second-output/main.js');
         expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
     });
 
@@ -153,10 +176,15 @@ describe('basic serve usage', () => {
     it('should work with the "--output-public-path" option', async () => {
         const { stderr, stdout } = await runServe(['serve', '--output-public-path', '/my-public-path/'], __dirname);
 
-        expect(stderr).toBeFalsy();
-        expect(stdout).toContain('main.js');
-        expect(stdout).toContain('/my-public-path/');
-        expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
+        if (isWebpack5) {
+            expect(stderr).toBeFalsy();
+            expect(stdout).toContain('main.js');
+            expect(stdout).toContain('/my-public-path/');
+            expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
+        } else {
+            expect(stderr).toContain("unknown option '--output-public-path'");
+            expect(stdout).toBeFalsy();
+        }
     });
 
     it('should respect the "publicPath" option from configuration', async () => {
@@ -164,6 +192,18 @@ describe('basic serve usage', () => {
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('main.js');
+        expect(stdout).toContain('/my-public-path/');
+        expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
+    });
+
+    it('should respect the "publicPath" option from configuration using multi compiler mode', async () => {
+        const { stderr, stdout } = await runServe(['serve', '--config', 'multi-output-public-path.config.js', '--port', port], __dirname);
+
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('one');
+        expect(stdout).toContain('first-output/main.js');
+        expect(stdout).toContain('two');
+        expect(stdout).toContain('second-output/main.js');
         expect(stdout).toContain('/my-public-path/');
         expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
     });
@@ -182,6 +222,22 @@ describe('basic serve usage', () => {
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('main.js');
+        expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
+    });
+
+    it('should respect the "publicPath" option from configuration using multi compiler mode (from the "devServer" options)', async () => {
+        const { stderr, stdout } = await runServe(
+            ['serve', '--config', 'multi-dev-server-output-public-path.config.js', '--port', port],
+            __dirname,
+        );
+
+        expect(stderr).toBeFalsy();
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('one');
+        expect(stdout).toContain('first-output/main.js');
+        expect(stdout).toContain('two');
+        expect(stdout).toContain('second-output/main.js');
+        expect(stdout).toContain('/dev-server-my-public-path/');
         expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
     });
 
