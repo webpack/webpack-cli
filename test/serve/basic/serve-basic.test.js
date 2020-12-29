@@ -141,8 +141,16 @@ describe('basic serve usage', () => {
         expect(stdout.match(/HotModuleReplacementPlugin/g)).toHaveLength(1);
     });
 
-    // TODO uncomment for webpack-dev-server@4
-    it.skip('should work with the "--output-public-path" option', async () => {
+    it('should work with the default "publicPath" option', async () => {
+        const { stderr, stdout } = await runServe(['serve'], __dirname);
+
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('main.js');
+        expect(stdout).toContain('from /');
+        expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
+    });
+
+    it('should work with the "--output-public-path" option', async () => {
         const { stderr, stdout } = await runServe(['serve', '--output-public-path', '/my-public-path/'], __dirname);
 
         expect(stderr).toBeFalsy();

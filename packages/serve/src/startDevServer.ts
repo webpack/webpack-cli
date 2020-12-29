@@ -68,6 +68,10 @@ export default async function startDevServer(compiler, cliOptions, logger): Prom
             options.client = options.client || {};
             options.client.port = options.client.port || options.port;
         } else {
+            if (!options.publicPath && compiler.options.output && compiler.options.output.publicPath) {
+                options.publicPath = compiler.options.output.publicPath === 'auto' ? '/' : compiler.options.output.publicPath;
+            }
+
             options.host = options.host || 'localhost';
             options.port = options.port || 8080;
         }
