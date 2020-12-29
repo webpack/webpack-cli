@@ -141,6 +141,14 @@ describe('basic serve usage', () => {
         expect(stdout.match(/HotModuleReplacementPlugin/g)).toHaveLength(1);
     });
 
+    it.only('should work with the "--open" option', async () => {
+        const { stdout, stderr } = await runServe(['--open', '--port', port], testPath);
+
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('main.js');
+        expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
+    });
+
     it('should log and error on unknown flag', async () => {
         const { exitCode, stdout, stderr } = await runServe(['--port', port, '--unknown-flag'], testPath);
 
