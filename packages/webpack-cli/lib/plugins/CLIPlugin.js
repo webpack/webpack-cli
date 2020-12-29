@@ -79,7 +79,7 @@ class CLIPlugin {
     apply(compiler) {
         this.logger = compiler.getInfrastructureLogger('webpack-cli');
 
-        if (this.options.progress && this.options.helpfulOutput) {
+        if (this.options.progress) {
             this.setupProgressPlugin(compiler);
         }
 
@@ -95,9 +95,7 @@ class CLIPlugin {
             this.setupBundleAnalyzerPlugin(compiler);
         }
 
-        if (this.options.helpfulOutput) {
-            this.setupHelpfulOutput(compiler);
-        }
+        this.setupHelpfulOutput(compiler);
     }
 }
 
