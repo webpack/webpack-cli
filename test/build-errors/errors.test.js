@@ -32,8 +32,8 @@ describe('errors', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--json', 'stats.json']);
 
         expect(exitCode).toBe(1);
-        expect(stderr).toBeFalsy();
-        expect(stdout).toContain('stats are successfully stored as json to stats.json');
+        expect(stderr).toContain('stats are successfully stored as json to stats.json');
+        expect(stdout).toBeFalsy();
 
         readFile(resolve(__dirname, 'stats.json'), 'utf-8', (error, data) => {
             expect(error).toBe(null);

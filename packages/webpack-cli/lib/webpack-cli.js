@@ -1234,7 +1234,10 @@ class WebpackCLI {
                         .on('error', handleWriteError)
                         .pipe(createWriteStream(options.json))
                         .on('error', handleWriteError)
-                        .on('close', () => logger.success(`stats are successfully stored as json to ${options.json}`));
+                        // Use stderr to logging
+                        .on('close', () =>
+                            process.stderr.write(`[webpack-cli] ${green(`stats are successfully stored as json to ${options.json}`)}\n`),
+                        );
                 }
             } else {
                 const printedStats = stats.toString(foundStats);
