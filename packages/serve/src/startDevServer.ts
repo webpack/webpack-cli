@@ -11,10 +11,7 @@ import { devServerOptionsType } from './types';
  * @returns {Object[]} array of resulting servers
  */
 export default async function startDevServer(compiler, cliOptions, logger): Promise<object[]> {
-    let isDevServer4 = false,
-        devServerVersion,
-        Server,
-        findPort;
+    let devServerVersion, Server, findPort;
 
     try {
         // eslint-disable-next-line node/no-extraneous-require
@@ -28,24 +25,6 @@ export default async function startDevServer(compiler, cliOptions, logger): Prom
         process.exit(2);
     }
 
-    isDevServer4 = devServerVersion.startsWith('4');
-
-    const defaultOpts = {};
-    const devServerOptions = [];
-    const compilers = compiler.compilers || [compiler];
-
-    compilers.forEach((compiler) => {
-        if (compiler.options.devServer) {
-            devServerOptions.push(compiler.options.devServer);
-        }
-    });
-
-    if (devServerOptions.length === 0) {
-        devServerOptions.push(defaultOpts);
-    }
-
-    const servers = [];
-    const usedPorts: number[] = [];
     const mergeOptions = (cliOptions: devServerOptionsType, devServerOptions: devServerOptionsType): devServerOptionsType => {
         // CLI options should take precedence over devServer options,
         // and CLI options should have no default values included
@@ -60,35 +39,69 @@ export default async function startDevServer(compiler, cliOptions, logger): Prom
         return options;
     };
 
-    for (const devServerOpts of devServerOptions) {
-        const options = mergeOptions(cliOptions, devServerOpts);
+    const isMultiCompiler = Boolean(compiler.compilers);
+
+    let compilersWithDevServerOption;
+
+    if (isMultiCompiler) {
+        compilersWithDevServerOption = compiler.compilers.filter((compiler) => compiler.options.devServer);
+
+        // No compilers found with the `devServer` option, let's use first compiler
+        if (compilersWithDevServerOption.length === 0) {
+            compilersWithDevServerOption = [compiler.compilers[0]];
+        }
+    } else {
+        compilersWithDevServerOption = [compiler];
+    }
+
+    const isDevServer4 = devServerVersion.startsWith('4');
+    const usedPorts = [];
+    const devServersOptions = [];
+
+    for (const compilerWithDevServerOption of compilersWithDevServerOption) {
+        const options = mergeOptions(cliOptions, compilerWithDevServerOption.options.devServer || {});
 
         if (isDevServer4) {
             options.port = await findPort(options.port);
             options.client = options.client || {};
             options.client.port = options.client.port || options.port;
         } else {
+            if (!options.publicPath) {
+                options.publicPath =
+                    typeof compilerWithDevServerOption.options.output.publicPath === 'undefined' ||
+                    compilerWithDevServerOption.options.output.publicPath === 'auto'
+                        ? '/'
+                        : compilerWithDevServerOption.options.output.publicPath;
+            }
+
             options.host = options.host || 'localhost';
             options.port = options.port || 8080;
         }
 
         if (options.port) {
-            const portNum = +options.port;
+            const portNumber = Number(options.port);
 
-            if (usedPorts.find((port) => portNum === port)) {
+            if (usedPorts.find((port) => portNumber === port)) {
                 throw new Error(
                     'Unique ports must be specified for each devServer option in your webpack configuration. Alternatively, run only 1 devServer config using the --config-name flag to specify your desired config.',
                 );
             }
 
-            usedPorts.push(portNum);
+            usedPorts.push(portNumber);
         }
 
+        devServersOptions.push({ compiler, options });
+    }
+
+    const servers = [];
+
+    for (const devServerOptions of devServersOptions) {
+        const { compiler, options } = devServerOptions;
         const server = new Server(compiler, options);
 
-        server.listen(options.port, options.host, (err): void => {
-            if (err) {
-                throw err;
+        server.listen(options.port, options.host, (error): void => {
+            if (error) {
+                throw error;
             }
         });
 
