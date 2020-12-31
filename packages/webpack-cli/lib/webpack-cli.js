@@ -273,6 +273,9 @@ class WebpackCLI {
             },
         ];
 
+        const knownCommands = [bundleCommandOptions, versionCommandOptions, helpCommandOptions, ...externalBuiltInCommandsInfo];
+        const isKnownCommand = (name) => knownCommands.find((command) => command.name === name || command.alias === name);
+
         const getCommandNameAndOptions = (args) => {
             let commandName;
             const options = [];
@@ -687,7 +690,20 @@ class WebpackCLI {
                 await outputVersion(optionsForVersion, program);
             }
 
-            await loadCommandByName(commandName, true);
+            if (isKnownCommand(commandName)) {
+                await loadCommandByName(commandName, true);
+            } else {
+                logger.error(`Unknown command '${commandName}'`);
+
+                const found = knownCommands.find((commandOptions) => distance(commandName, commandOptions.name) < 3);
+
+                if (found) {
+                    logger.error(`Did you mean '${found.name}' (alias '${found.alias}')?`);
+                }
+
+                logger.error("Run 'webpack --help' to see available commands and options");
+                process.exit(2);
+            }
 
             await this.program.parseAsync([commandName, ...options], { from: 'user' });
         });
