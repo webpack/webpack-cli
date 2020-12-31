@@ -184,12 +184,22 @@ describe('unknown behaviour', () => {
         expect(stdout).toBeFalsy();
     });
 
-    it('should ask to install command if an unknown command passed', () => {
+    it('should log error if an unknown command passed', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['qqq'], true, [], { TERM_PROGRAM: false });
 
-        expect(exitCode).toBe(0);
-        expect(stripAnsi(stderr)).toContain("For using this command you need to install: 'qqq' package");
-        expect(stripAnsi(stderr)).toContain("Would you like to install 'qqq' package? (That will run 'npm install -D qqq')");
+        expect(exitCode).toBe(2);
+        expect(stripAnsi(stderr)).toContain("Unknown command 'qqq'");
+        expect(stripAnsi(stderr)).toContain("Run 'webpack --help' to see available commands and options");
+        expect(stdout).toBeFalsy();
+    });
+
+    it('should log error and provide suggestion if an unknown command passed', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['server'], true, [], { TERM_PROGRAM: false });
+
+        expect(exitCode).toBe(2);
+        expect(stripAnsi(stderr)).toContain("Unknown command 'server'");
+        expect(stripAnsi(stderr)).toContain("Did you mean 'serve' (alias 's')?");
+        expect(stripAnsi(stderr)).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
     });
 });
