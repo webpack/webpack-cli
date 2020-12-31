@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.3.1](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.3.0...webpack-cli@4.3.1) (2020-12-31)
+
+### Bug Fixes
+
+-   error message on not installed module loaders for configuration ([#2282](https://github.com/webpack/webpack-cli/issues/2282)) ([29eaa8e](https://github.com/webpack/webpack-cli/commit/29eaa8e843510e020ac4b57a13622df40713fe27))
+-   peer dependencies ([#2284](https://github.com/webpack/webpack-cli/issues/2284)) ([083f2a0](https://github.com/webpack/webpack-cli/commit/083f2a069d6dc0a3b9492eb3f205474ba843acfd))
+-   provide useful error on unknown command ([d6380bb](https://github.com/webpack/webpack-cli/commit/d6380bb6c6756d2a00ac20f2ffc454481d97e4d3))
+-   the `--help` option is working without `webpack-dev-server` ([#2267](https://github.com/webpack/webpack-cli/issues/2267)) ([1dae54d](https://github.com/webpack/webpack-cli/commit/1dae54da94d3220437b9257efe512447023de1d3))
+-   the `--progress` option is working with `--json` ([#2276](https://github.com/webpack/webpack-cli/issues/2276)) ([0595603](https://github.com/webpack/webpack-cli/commit/05956030cbb1491a2e9313732470bcd4ebe5a36d))
+
 # [4.3.0](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.2.0...webpack-cli@4.3.0) (2020-12-25)
 
 ### Bug Fixes

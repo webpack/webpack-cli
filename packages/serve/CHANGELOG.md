@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/webpack/webpack-cli/compare/@webpack-cli/serve@1.2.0...@webpack-cli/serve@1.2.1) (2020-12-31)
+
+### Bug Fixes
+
+-   do not apply HotModuleReplacement plugin twice ([#2269](https://github.com/webpack/webpack-cli/issues/2269)) ([bb16d44](https://github.com/webpack/webpack-cli/commit/bb16d4481414a5f3c0cbeb18af690084b2ae4215))
+-   respect the `output.publicPath` option for the `serve`command ([#2271](https://github.com/webpack/webpack-cli/issues/2271)) ([a3092ef](https://github.com/webpack/webpack-cli/commit/a3092ef2b51ece30221f7dd7b30a686626c1fd7a))
+-   the `--help` option is working without `webpack-dev-server` ([#2267](https://github.com/webpack/webpack-cli/issues/2267)) ([1dae54d](https://github.com/webpack/webpack-cli/commit/1dae54da94d3220437b9257efe512447023de1d3))
+-   the `--progress` option with the `serve` command ([#2265](https://github.com/webpack/webpack-cli/issues/2265)) ([952a188](https://github.com/webpack/webpack-cli/commit/952a1883b1a18c4fb38e8eb7bbbdb2aefc7942f4))
+
 # [1.2.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/serve@1.1.0...@webpack-cli/serve@1.2.0) (2020-12-25)
 
 ### Bug Fixes
