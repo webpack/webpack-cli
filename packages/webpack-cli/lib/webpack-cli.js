@@ -701,7 +701,23 @@ class WebpackCLI {
             const interpreted = Object.keys(jsVariants).find((variant) => variant === ext);
 
             if (interpreted) {
-                rechoir.prepare(extensions, configPath);
+                try {
+                    rechoir.prepare(extensions, configPath);
+                } catch (error) {
+                    if (error.failures) {
+                        logger.error(`Unable load '${configPath}'`);
+                        logger.error(error.message);
+
+                        error.failures.forEach((failure) => {
+                            logger.error(failure.error.message);
+                        });
+                        logger.error('Please install one of them');
+                        process.exit(2);
+                    }
+
+                    logger.error(error);
+                    process.exit(2);
+                }
             }
 
             const { pathToFileURL } = require('url');
