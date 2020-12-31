@@ -47,8 +47,32 @@ const builtInFlags = [
     {
         name: 'env',
         usage: '--env <variable> | --env <variable> --env <variable=value>',
-        type: String,
-        multipleType: true,
+        type: (value, previous = {}) => {
+            // This ensures we're only splitting by the first `=`
+            const [allKeys, val] = value.split(/=(.+)/, 2);
+            const splitKeys = allKeys.split(/\.(?!$)/);
+
+            let prevRef = previous;
+
+            splitKeys.forEach((someKey, index) => {
+                if (!prevRef[someKey]) {
+                    prevRef[someKey] = {};
+                }
+
+                if (typeof prevRef[someKey] === 'string') {
+                    prevRef[someKey] = {};
+                }
+
+                if (index === splitKeys.length - 1) {
+                    prevRef[someKey] = val || true;
+                }
+
+                prevRef = prevRef[someKey];
+            });
+
+            return previous;
+        },
+        multiple: true,
         description: 'Environment passed to the configuration when it is a function.',
     },
 

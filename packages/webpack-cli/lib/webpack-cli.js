@@ -109,96 +109,102 @@ class WebpackCLI {
         return command;
     }
 
-    // TODO refactor this terrible stuff
     makeOption(command, option) {
-        let optionType = option.type;
-        let isStringOrBool = false;
+        let type = option.type;
+        let isMultipleTypes = Array.isArray(type);
+        let isOptional = false;
 
-        if (Array.isArray(optionType)) {
-            // filter out duplicate types
-            optionType = optionType.filter((type, index) => {
-                return optionType.indexOf(type) === index;
-            });
-
-            // the only multi type currently supported is String and Boolean,
-            // if there is a case where a different multi type is needed it
-            // must be added here
-            if (optionType.length === 0) {
-                // if no type is provided in the array fall back to Boolean
-                optionType = Boolean;
-            } else if (optionType.length === 1 || optionType.length > 2) {
-                // treat arrays with 1 or > 2 args as a single type
-                optionType = optionType[0];
+        if (isMultipleTypes) {
+            if (type.length === 1) {
+                type = type[0];
+                isMultipleTypes = false;
             } else {
-                // only String and Boolean multi type is supported
-                if (optionType.includes(Boolean) && optionType.includes(String)) {
-                    isStringOrBool = true;
-                } else {
-                    optionType = optionType[0];
-                }
+                isOptional = type.includes(Boolean);
             }
         }
 
-        const flags = option.alias ? `-${option.alias}, --${option.name}` : `--${option.name}`;
+        const isMultiple = option.multiple;
+        const isRequired = type !== Boolean && typeof type !== 'undefined';
 
-        let flagsWithType = flags;
+        let flags = option.alias ? `-${option.alias}, --${option.name}` : `--${option.name}`;
 
-        if (isStringOrBool) {
-            // commander recognizes [value] as an optional placeholder,
-            // making this flag work either as a string or a boolean
-            flagsWithType = `${flags} [value]`;
-        } else if (optionType !== Boolean) {
+        if (isOptional) {
+            // `commander.js` recognizes [value] as an optional placeholder, making this flag work either as a string or a boolean
+            flags = `${flags} [value${isMultiple ? '...' : ''}]`;
+        } else if (isRequired) {
             // <value> is a required placeholder for any non-Boolean types
-            flagsWithType = `${flags} <value>`;
+            flags = `${flags} <value${isMultiple ? '...' : ''}>`;
         }
 
-        if (isStringOrBool || optionType === Boolean || optionType === String) {
-            if (option.multiple) {
-                // a multiple argument parsing function
-                const multiArg = (value, previous = []) => previous.concat([value]);
+        // TODO need to fix on webpack-dev-server side
+        // `describe` used by `webpack-dev-server`
+        const description = option.description || option.describe || '';
+        const defaultValue = option.defaultValue;
 
-                command.option(flagsWithType, option.description, multiArg, option.defaultValue);
-            } else if (option.multipleType) {
-                // for options which accept multiple types like env
-                // so you can do `--env platform=staging --env production`
-                // { platform: "staging", production: true }
-                const multiArg = (value, previous = {}) => {
-                    // this ensures we're only splitting by the first `=`
-                    const [allKeys, val] = value.split(/=(.+)/, 2);
-                    const splitKeys = allKeys.split(/\.(?!$)/);
+        if (type === Boolean) {
+            command.option(flags, description, defaultValue);
+        } else if (type === Number) {
+            let skipDefault = true;
 
-                    let prevRef = previous;
+            command.option(
+                flags,
+                description,
+                (value, prev = []) => {
+                    if (defaultValue && isMultiple && skipDefault) {
+                        prev = [];
+                        skipDefault = false;
+                    }
 
-                    splitKeys.forEach((someKey, index) => {
-                        if (!prevRef[someKey]) {
-                            prevRef[someKey] = {};
+                    return isMultiple ? [].concat(prev).concat(Number(value)) : Number(value);
+                },
+                defaultValue,
+            );
+        } else if (type === String) {
+            let skipDefault = true;
+
+            command.option(
+                flags,
+                description,
+                (value, prev = []) => {
+                    if (defaultValue && isMultiple && skipDefault) {
+                        prev = [];
+                        skipDefault = false;
+                    }
+
+                    return isMultiple ? [].concat(prev).concat(value) : value;
+                },
+                defaultValue,
+            );
+        } else if (isMultipleTypes) {
+            let skipDefault = true;
+
+            command.option(
+                flags,
+                description,
+                (value, prev = []) => {
+                    if (defaultValue && isMultiple && skipDefault) {
+                        prev = [];
+                        skipDefault = false;
+                    }
+
+                    if (type.includes(Number)) {
+                        const numberValue = Number(value);
+
+                        if (!isNaN(numberValue)) {
+                            return isMultiple ? [].concat(prev).concat(numberValue) : numberValue;
                         }
+                    }
 
-                        if (typeof prevRef[someKey] === 'string') {
-                            prevRef[someKey] = {};
-                        }
+                    if (type.includes(String)) {
+                        return isMultiple ? [].concat(prev).concat(value) : value;
+                    }
 
-                        if (index === splitKeys.length - 1) {
-                            prevRef[someKey] = val || true;
-                        }
-
-                        prevRef = prevRef[someKey];
-                    });
-
-                    return previous;
-                };
-
-                command.option(flagsWithType, option.description, multiArg, option.defaultValue);
-            } else {
-                // Prevent default behavior for standalone options
-                command.option(flagsWithType, option.description, option.defaultValue);
-            }
-        } else if (optionType === Number) {
-            // this will parse the flag as a number
-            command.option(flagsWithType, option.description, Number, option.defaultValue);
+                    return value;
+                },
+                defaultValue,
+            );
         } else {
-            // in this case the type is a parsing function
-            command.option(flagsWithType, option.description, optionType, option.defaultValue);
+            command.option(flags, description, type, defaultValue);
         }
 
         if (option.negative) {
