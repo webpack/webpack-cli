@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { JSCodeshift, Node } from '../src/types/NodePath';
+import { JSCodeshift, Node } from './types/NodePath';
 
 interface Module {
     (jscodeshift: JSCodeshift, ast: Node, initOptions: string | boolean | object, action: string, transformName?: string): Node;
@@ -58,9 +58,9 @@ function runSingleTransform(
     let module: Module;
     // Assumes transform and test are on the same level
     if (action) {
-        module = require(path.join(dirName, '../../src', 'recursive-parser.ts'));
+        module = require(path.join(dirName, '../../', 'recursive-parser.ts'));
     } else {
-        module = require(path.join(dirName, '../../src', transformName, `${transformName}.ts`));
+        module = require(path.join(dirName, '../../src/', transformName, `${transformName}.ts`));
     }
     // Handle ES6 modules using default export for the transform
     const transform = module.default ? module.default : module;

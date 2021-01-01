@@ -1,6 +1,6 @@
 'use strict';
 
-import { isKeyword, isIdentifierChar, isIdentifierStart } from '../src/validate-identifier';
+import { isKeyword, isIdentifierChar, isIdentifierStart } from '../validate-identifier';
 
 describe('validate-identifier', () => {
     it('should return true for reserved keyword', () => {

@@ -1,5 +1,5 @@
-import style, { StylingType } from '../../lib/utils/styleSupport';
-import { CustomGenerator } from '../../lib/types';
+import style, { StylingType } from '../../src/utils/styleSupport';
+import { CustomGenerator } from '../../src/types';
 
 describe('styleSupport', () => {
     const getMockGenerator = (): CustomGenerator => {
