@@ -15,7 +15,7 @@ try {
     // create OPTIONS.md
     writeFileSync('OPTIONS.md', mdContent);
 
-    console.log('All options all sucessfylly stored in "OPTIONS.md"');
+    console.log('All options all successfully stored in "OPTIONS.md"');
 } catch (err) {
     console.error(err);
 }
