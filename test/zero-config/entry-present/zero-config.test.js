@@ -5,8 +5,7 @@ describe('Zero Config tests', () => {
         const { exitCode, stderr, stdout } = run(__dirname, [], false);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         // Should be able to find the entry file
         expect(stdout).toContain('./src/index.js');
         // Should output at the default output dir and filename

@@ -42,10 +42,10 @@ class CLIPlugin {
 
     setupHelpfulOutput(compiler) {
         const pluginName = 'webpack-cli';
-        const getCompilationName = (compilation) => (compilation.name ? ` '${compilation.name}'` : '');
+        const getCompilationName = () => (compiler.name ? ` '${compiler.name}'` : '');
 
-        compiler.hooks.run.tap(pluginName, (compiler) => {
-            this.logger.info(`Compilation${getCompilationName(compiler)} starting...`);
+        compiler.hooks.run.tap(pluginName, () => {
+            this.logger.log(`Compilation${getCompilationName()} starting...`);
         });
 
         compiler.hooks.watchRun.tap(pluginName, (compiler) => {
@@ -55,22 +55,22 @@ class CLIPlugin {
                 this.logger.warn('You are using "bail" with "watch". "bail" will still exit webpack when the first error is found.');
             }
 
-            this.logger.info(`Compilation${getCompilationName(compiler)} starting...`);
+            this.logger.log(`Compilation${getCompilationName()} starting...`);
         });
 
         compiler.hooks.invalid.tap(pluginName, (filename, changeTime) => {
             const date = new Date(changeTime * 1000);
 
-            this.logger.info(`File '${filename}' was modified`);
+            this.logger.log(`File '${filename}' was modified`);
             this.logger.log(`Changed time is ${date} (timestamp is ${changeTime})`);
         });
 
-        (compiler.webpack ? compiler.hooks.afterDone : compiler.hooks.done).tap(pluginName, (stats) => {
-            this.logger.info(`Compilation${getCompilationName(stats.compilation)} finished`);
+        (compiler.webpack ? compiler.hooks.afterDone : compiler.hooks.done).tap(pluginName, () => {
+            this.logger.log(`Compilation${getCompilationName()} finished`);
 
             process.nextTick(() => {
                 if (compiler.watchMode) {
-                    this.logger.info(`Compiler${getCompilationName(stats.compilation)} is watching files for updates...`);
+                    this.logger.log(`Compiler${getCompilationName()} is watching files for updates...`);
                 }
             });
         });
@@ -79,7 +79,7 @@ class CLIPlugin {
     apply(compiler) {
         this.logger = compiler.getInfrastructureLogger('webpack-cli');
 
-        if (this.options.progress && this.options.helpfulOutput) {
+        if (this.options.progress) {
             this.setupProgressPlugin(compiler);
         }
 
@@ -95,9 +95,7 @@ class CLIPlugin {
             this.setupBundleAnalyzerPlugin(compiler);
         }
 
-        if (this.options.helpfulOutput) {
-            this.setupHelpfulOutput(compiler);
-        }
+        this.setupHelpfulOutput(compiler);
     }
 }
 

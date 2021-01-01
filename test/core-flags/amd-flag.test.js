@@ -7,8 +7,7 @@ describe('--no-amd flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--no-amd']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'compiler' starting...");
-        expect(stderr).toContain("Compilation 'compiler' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain('amd: false');
     });
 });

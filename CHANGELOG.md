@@ -1,3 +1,69 @@
+## [4.3.1](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.3.0...webpack-cli@4.3.1) (2020-12-31)
+
+### Bug Fixes
+
+-   error message on not installed module loaders for configuration ([#2282](https://github.com/webpack/webpack-cli/issues/2282)) ([29eaa8e](https://github.com/webpack/webpack-cli/commit/29eaa8e843510e020ac4b57a13622df40713fe27))
+-   peer dependencies ([#2284](https://github.com/webpack/webpack-cli/issues/2284)) ([083f2a0](https://github.com/webpack/webpack-cli/commit/083f2a069d6dc0a3b9492eb3f205474ba843acfd))
+-   provide useful error on unknown command ([d6380bb](https://github.com/webpack/webpack-cli/commit/d6380bb6c6756d2a00ac20f2ffc454481d97e4d3))
+-   the `--help` option is working without `webpack-dev-server` ([#2267](https://github.com/webpack/webpack-cli/issues/2267)) ([1dae54d](https://github.com/webpack/webpack-cli/commit/1dae54da94d3220437b9257efe512447023de1d3))
+-   the `--progress` option is working with `--json` ([#2276](https://github.com/webpack/webpack-cli/issues/2276)) ([0595603](https://github.com/webpack/webpack-cli/commit/05956030cbb1491a2e9313732470bcd4ebe5a36d))
+
+# [4.3.0](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.2.0...webpack-cli@4.3.0) (2020-12-25)
+
+### Bug Fixes
+
+-   fix problems with `--mode` and config resolution, there are situations when we resolve an invalid config file, the `--mode` option does not affect on config resolution, if you faced with an error after updating, please use the `--config` option
+-   correct usage of cli-flags ([#2205](https://github.com/webpack/webpack-cli/issues/2205)) ([c8fc7d1](https://github.com/webpack/webpack-cli/commit/c8fc7d1f195800c4fbe54ed6533e694f40fa7a1b))
+-   defer setting default mode to core ([#2095](https://github.com/webpack/webpack-cli/issues/2095)) ([3eb410e](https://github.com/webpack/webpack-cli/commit/3eb410e5d8f8e2149910b65f4a028c85f8af5d28))
+-   respect the `--watch-options-stdin` option ([2d1e001](https://github.com/webpack/webpack-cli/commit/2d1e001e7f4f560c2b36607bd1b29dfe2aa32066))
+-   respect `--color`/`--no-color` option ([#2042](https://github.com/webpack/webpack-cli/issues/2042)) ([09bd812](https://github.com/webpack/webpack-cli/commit/09bd8126e95c9675b1f6862451f629cd4c439adb))
+-   stringify stats using streaming approach ([#2190](https://github.com/webpack/webpack-cli/issues/2190)) ([9bf4e92](https://github.com/webpack/webpack-cli/commit/9bf4e925757b02f7252073501562c95e762dc59b))
+-   use logger for error with proper exit code ([#2076](https://github.com/webpack/webpack-cli/issues/2076)) ([2c9069f](https://github.com/webpack/webpack-cli/commit/2c9069fd1f7c0fb70f019900e4b841c5ea33975e))
+-   reduce spammy logs ([#2206](https://github.com/webpack/webpack-cli/issues/2206)) ([9b3cc28](https://github.com/webpack/webpack-cli/commit/9b3cc283d7b74aa3bb26fe36c6110436b016e0d9))
+-   respect the `infrastructureLogging.level` option (logger uses `stderr`) ([#2144](https://github.com/webpack/webpack-cli/issues/2144)) ([7daccc7](https://github.com/webpack/webpack-cli/commit/7daccc786a0eb4eeae4c5b3632fc28240a696170))
+-   respect all options from command line for the `server` command
+-   `help` and `version` output
+-   respect `stats` from the config (webpack@4) ([#2098](https://github.com/webpack/webpack-cli/issues/2098)) ([2d6e5c6](https://github.com/webpack/webpack-cli/commit/2d6e5c6f4ed967368a81742bf347e39f24ee16c8))
+-   fixed colors work with multi compiler mode (webpack@4)
+
+### Features
+
+-   add `bundle` command (alias for `webpack [options]`)
+-   add `pnpm` support for package installation ([#2040](https://github.com/webpack/webpack-cli/issues/2040)) ([46cba36](https://github.com/webpack/webpack-cli/commit/46cba367f06a6354fe98fcb15e7771e819feeac0))
+
+# [4.2.0](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.1.0...webpack-cli@4.2.0) (2020-11-04)
+
+### Bug Fixes
+
+-   --config-name behaviour for fuctional configs ([#2006](https://github.com/webpack/webpack-cli/issues/2006)) ([29ecf8d](https://github.com/webpack/webpack-cli/commit/29ecf8dbcd1c5c7d75fc7fb1634107697832d952))
+-   assign cache value for default configs ([#2013](https://github.com/webpack/webpack-cli/issues/2013)) ([d2e3c74](https://github.com/webpack/webpack-cli/commit/d2e3c74d32b0141c694259cf4f31e6c48b0f681d))
+-   callback deprecation ([#1977](https://github.com/webpack/webpack-cli/issues/1977)) ([2cb0c0e](https://github.com/webpack/webpack-cli/commit/2cb0c0e383670949ce31231edbfda514f47c3dfc))
+-   handle core flags for webpack 4 ([#2023](https://github.com/webpack/webpack-cli/issues/2023)) ([ea66a7e](https://github.com/webpack/webpack-cli/commit/ea66a7e3ec6eabcc439b96acb21e2a25be2e35e5))
+-   help and version functionality ([#1972](https://github.com/webpack/webpack-cli/issues/1972)) ([e8010b3](https://github.com/webpack/webpack-cli/commit/e8010b3aac695971e542ad4d3584ce534da39b8f))
+
+### Features
+
+-   export utils from core for other packages ([#2011](https://github.com/webpack/webpack-cli/issues/2011)) ([3004549](https://github.com/webpack/webpack-cli/commit/3004549c06b3fe00708d8e1eecf42419e0f72f66))
+-   progress supports string argument ([#2000](https://github.com/webpack/webpack-cli/issues/2000)) ([f13346e](https://github.com/webpack/webpack-cli/commit/f13346e6acb46e982a5d20fa1d2ae56fc52523dc))
+-   suggest the closest match based on the Levenshtein distance algorithm ([#2010](https://github.com/webpack/webpack-cli/issues/2010)) ([491a582](https://github.com/webpack/webpack-cli/commit/491a582620b64ed4acbccd04f687adc28a5e4cff))
+
+# [4.1.0](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.0.0...webpack-cli@4.1.0) (2020-10-19)
+
+### Bug Fixes
+
+-   avoid unnecessary stringify ([#1920](https://github.com/webpack/webpack-cli/issues/1920)) ([5ef1e7b](https://github.com/webpack/webpack-cli/commit/5ef1e7b074390406b76cb3e25dd90f045e1bd8a2))
+-   colored output ([#1944](https://github.com/webpack/webpack-cli/issues/1944)) ([2bbbb14](https://github.com/webpack/webpack-cli/commit/2bbbb14ca9a404f2205c0f5a5515e73832ee6173))
+-   move init command to separate package ([#1950](https://github.com/webpack/webpack-cli/issues/1950)) ([92ad475](https://github.com/webpack/webpack-cli/commit/92ad475d4b9606b5db7c31dd3666658301c95597))
+-   output stacktrace on errors ([#1949](https://github.com/webpack/webpack-cli/issues/1949)) ([9ba9d6f](https://github.com/webpack/webpack-cli/commit/9ba9d6f460fb25fb79d52f4360239b8c4b471451))
+-   run CLI after webpack installation ([#1951](https://github.com/webpack/webpack-cli/issues/1951)) ([564279e](https://github.com/webpack/webpack-cli/commit/564279e5b634a399647bcdb21449e5e6a7f0637e))
+-   support any config name ([#1926](https://github.com/webpack/webpack-cli/issues/1926)) ([6f95b26](https://github.com/webpack/webpack-cli/commit/6f95b267bf6a3a3e71360f4de176a4ebbec3afa1))
+-   support array of functions and promises ([#1946](https://github.com/webpack/webpack-cli/issues/1946)) ([2ace39b](https://github.com/webpack/webpack-cli/commit/2ace39b06117f558c0d8528cea9248253cbdf593))
+-   watch mode and options ([#1931](https://github.com/webpack/webpack-cli/issues/1931)) ([258219a](https://github.com/webpack/webpack-cli/commit/258219a3bb606b228636e6373a3d20413c1f660e))
+
+### Features
+
+-   allow passing strings in env flag ([#1939](https://github.com/webpack/webpack-cli/issues/1939)) ([cc081a2](https://github.com/webpack/webpack-cli/commit/cc081a256181e34137a89d2e9d37b04280b3f180))
+
 # [4.0.0](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.0.0-rc.1...webpack-cli@4.0.0) (2020-10-10)
 
 ### Bug Fixes

@@ -14,20 +14,6 @@ npm i -D webpack-cli @webpack-cli/init
 
 ## Usage
 
-To run the package programmatically, install it as a dependency. When using the package programmatically, one does not have to install webpack-cli.
-
-### Node
-
-```js
-const init = require('@webpack-cli/init').default;
-
-// this will run the default init instance
-init();
-
-// we're slicing node.process, ...myPackages is a webpack-scaffold name/path
-init([null, null, ...myPackages]);
-```
-
 ### CLI (via `webpack-cli`)
 
 **Via defaults**

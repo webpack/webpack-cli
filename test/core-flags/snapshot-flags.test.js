@@ -16,8 +16,7 @@ describe('snapshot config related flags', () => {
                 const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`]);
 
                 expect(exitCode).toBe(0);
-                expect(stderr).toContain("Compilation 'compiler' starting...");
-                expect(stderr).toContain("Compilation 'compiler' finished");
+                expect(stderr).toBeFalsy();
 
                 if (flag.name.includes('reset')) {
                     const option = propName.split('Reset')[0];
@@ -35,8 +34,7 @@ describe('snapshot config related flags', () => {
                 const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'test-snap-path']);
 
                 expect(exitCode).toBe(0);
-                expect(stderr).toContain("Compilation 'compiler' starting...");
-                expect(stderr).toContain("Compilation 'compiler' finished");
+                expect(stderr).toBeFalsy();
                 expect(stdout).toContain('test-snap-path');
             });
         }

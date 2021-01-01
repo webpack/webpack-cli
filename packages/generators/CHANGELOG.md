@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/webpack/webpack-cli/compare/@webpack-cli/generators@1.2.0...@webpack-cli/generators@1.2.1) (2020-12-31)
+
+### Bug Fixes
+
+-   the `--help` option is working without `webpack-dev-server` ([#2267](https://github.com/webpack/webpack-cli/issues/2267)) ([1dae54d](https://github.com/webpack/webpack-cli/commit/1dae54da94d3220437b9257efe512447023de1d3))
+
+# [1.2.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/generators@1.1.0...@webpack-cli/generators@1.2.0) (2020-12-25)
+
+### Bug Fixes
+
+-   typos in options
+
+### Features
+
+-   union generators
+
 # [1.1.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/generators@1.0.2...@webpack-cli/generators@1.1.0) (2020-11-04)
 
 ### Bug Fixes

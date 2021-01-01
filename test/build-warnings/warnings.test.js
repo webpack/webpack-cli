@@ -8,8 +8,7 @@ describe('warnings', () => {
         const { exitCode, stderr, stdout } = run(__dirname);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toMatch(/WARNING/);
         expect(stdout).toMatch(/Error: Can't resolve/);
     });
@@ -18,8 +17,7 @@ describe('warnings', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--json']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).not.toContain('Compilation starting...');
-        expect(stderr).not.toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
 
         expect(() => JSON.parse(stdout)).not.toThrow();
 
@@ -35,10 +33,8 @@ describe('warnings', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--json', 'stats.json']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).not.toContain('Compilation starting...');
-        expect(stderr).not.toContain('Compilation finished');
-        expect(stdout).toContain('stats are successfully stored as json to stats.json');
-
+        expect(stderr).toContain('stats are successfully stored as json to stats.json');
+        expect(stdout).toBeFalsy();
         expect(existsSync(resolve(__dirname, './stats.json'))).toBeTruthy();
 
         readFile(resolve(__dirname, 'stats.json'), 'utf-8', (error, data) => {

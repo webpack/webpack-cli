@@ -9,8 +9,7 @@ describe('--target flag', () => {
             const { exitCode, stderr, stdout } = run(__dirname, ['--target', `${val}`]);
 
             expect(exitCode).toBe(0);
-            expect(stderr).toContain('Compilation starting...');
-            expect(stderr).toContain('Compilation finished');
+            expect(stderr).toBeFalsy();
 
             if (isWebpack5) {
                 expect(stdout).toContain(`target: [ '${val}' ]`);
@@ -23,8 +22,7 @@ describe('--target flag', () => {
             const { exitCode, stderr, stdout } = run(__dirname, ['-t', `${val}`]);
 
             expect(exitCode).toBe(0);
-            expect(stderr).toContain('Compilation starting...');
-            expect(stderr).toContain('Compilation finished');
+            expect(stderr).toBeFalsy();
 
             if (isWebpack5) {
                 expect(stdout).toContain(`target: [ '${val}' ]`);
@@ -53,17 +51,31 @@ describe('--target flag', () => {
             const { exitCode, stderr, stdout } = run(__dirname, ['--target', 'node', '--target', 'async-node']);
 
             expect(exitCode).toBe(0);
-            expect(stderr).toContain('Compilation starting...');
-            expect(stderr).toContain('Compilation finished');
+            expect(stderr).toBeFalsy();
             expect(stdout).toContain(`target: [ 'node', 'async-node' ]`);
+        });
+
+        it('should throw an error for invalid target in multiple syntax', () => {
+            const { exitCode, stderr, stdout } = run(__dirname, ['--target', 'node', '--target', 'invalid']);
+
+            expect(exitCode).toBe(2);
+            expect(stderr).toContain(`Error: Unknown target 'invalid'`);
+            expect(stdout).toBeFalsy();
+        });
+
+        it('should throw an error for incompatible multiple targets', () => {
+            const { exitCode, stderr, stdout } = run(__dirname, ['--target', 'node', '--target', 'web']);
+
+            expect(exitCode).toBe(2);
+            expect(stderr).toContain('Error: Universal Chunk Loading is not implemented yet');
+            expect(stdout).toBeFalsy();
         });
 
         it('should reset target from node to async-node with --target-reset', () => {
             const { exitCode, stderr, stdout } = run(__dirname, ['--target-reset', '--target', 'async-node']);
 
             expect(exitCode).toBe(0);
-            expect(stderr).toContain('Compilation starting...');
-            expect(stderr).toContain('Compilation finished');
+            expect(stderr).toBeFalsy();
             expect(stdout).toContain(`target: [ 'async-node' ]`);
         });
 

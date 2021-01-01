@@ -21,8 +21,7 @@ describe('resolve config related flags', () => {
                 const { stderr, stdout } = run(__dirname, [`--${flag.name}`]);
 
                 // expect(exitCode).toBe(0);
-                expect(stderr).toContain("Compilation 'compiler' starting...");
-                expect(stderr).toContain("Compilation 'compiler' finished");
+                expect(stderr).toBeFalsy();
 
                 if (flag.name.includes('reset')) {
                     const option = propName.split('Reset')[0];
@@ -38,8 +37,7 @@ describe('resolve config related flags', () => {
                 const { stderr, stdout } = run(__dirname, [`--${flag.name}`, 'browser']);
 
                 // expect(exitCode).toBe(0);
-                expect(stderr).toContain("Compilation 'compiler' starting...");
-                expect(stderr).toContain("Compilation 'compiler' finished");
+                expect(stderr).toBeFalsy();
 
                 if (propName === 'restrictions') {
                     expect(stdout).toContain('browser');
@@ -75,8 +73,7 @@ describe('resolve config related flags', () => {
                 ]);
 
                 expect(exitCode).toBe(0);
-                expect(stderr).toContain("Compilation 'compiler' starting...");
-                expect(stderr).toContain("Compilation 'compiler' finished");
+                expect(stderr).toBeFalsy();
                 expect(stdout).toContain(`alias: [ { alias: 'alias', name: 'name' } ]`);
                 expect(stdout).toContain(`aliasFields: [ 'aliasField' ]`);
                 expect(stdout).toContain(`alias: [ { alias: 'loaderAlias', name: 'loaderName' } ]`);
@@ -99,8 +96,7 @@ describe('resolve config related flags', () => {
                     ]);
 
                     expect(exitCode).toBe(0);
-                    expect(stderr).toContain("Compilation 'compiler' starting...");
-                    expect(stderr).toContain("Compilation 'compiler' finished");
+                    expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`alias: []`);
                     expect(stdout).toContain(`aliasFields: []`);
                     expect(stdout).toContain(`fallback: []`);

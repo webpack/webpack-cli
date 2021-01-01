@@ -7,8 +7,7 @@ describe('--config-name flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--config-name', 'first'], false);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'first' starting...");
-        expect(stderr).toContain("Compilation 'first' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain('first');
         expect(stdout).not.toContain('second');
         expect(stdout).not.toContain('third');
@@ -18,10 +17,7 @@ describe('--config-name flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--config-name', 'first', '--config-name', 'third'], false);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'first' starting...");
-        expect(stderr).toContain("Compilation 'first' finished");
-        expect(stderr).toContain("Compilation 'third' starting...");
-        expect(stderr).toContain("Compilation 'third' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain('first');
         expect(stdout).not.toContain('second');
         expect(stdout).toContain('third');
@@ -35,10 +31,7 @@ describe('--config-name flag', () => {
         );
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'first' starting...");
-        expect(stderr).toContain("Compilation 'first' finished");
-        expect(stderr).toContain("Compilation 'four' starting...");
-        expect(stderr).toContain("Compilation 'four' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain('first');
         expect(stdout).not.toContain('second');
         expect(stdout).not.toContain('third');
@@ -49,9 +42,7 @@ describe('--config-name flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--config-name', 'test'], false);
 
         expect(exitCode).toBe(2);
-        expect(stderr).not.toContain('Compilation starting...');
-        expect(stderr).not.toContain('Compilation finished');
-        expect(stderr).toContain('Configuration with the "test" name was not found.');
+        expect(stderr).toContain('Configuration with the name "test" was not found.');
         expect(stdout).toBeFalsy();
     });
 
@@ -59,9 +50,7 @@ describe('--config-name flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--config-name', 'test', '-c', 'single-config.js'], false);
 
         expect(exitCode).toBe(2);
-        expect(stderr).not.toContain('Compilation starting...');
-        expect(stderr).not.toContain('Compilation finished');
-        expect(stderr).toContain('Configuration with the "test" name was not found.');
+        expect(stderr).toContain('Configuration with the name "test" was not found.');
         expect(stdout).toBeFalsy();
     });
 
@@ -73,10 +62,8 @@ describe('--config-name flag', () => {
         );
 
         expect(exitCode).toBe(2);
-        expect(stderr).not.toContain('Compilation starting...');
-        expect(stderr).not.toContain('Compilation finished');
-        expect(stderr).toContain('Configuration with the "test" name was not found.');
-        expect(stderr).toContain('Configuration with the "bar" name was not found.');
+        expect(stderr).toContain('Configuration with the name "test" was not found.');
+        expect(stderr).toContain('Configuration with the name "bar" was not found.');
         expect(stdout).toBeFalsy();
     });
 
@@ -88,10 +75,7 @@ describe('--config-name flag', () => {
         );
 
         expect(exitCode).toBe(2);
-        expect(stderr).not.toContain('Compilation starting...');
-        expect(stderr).not.toContain('Compilation finished');
-        expect(stderr).not.toContain('Configuration with the "first" name was not found.');
-        expect(stderr).toContain('Configuration with the "bar" name was not found.');
+        expect(stderr).toContain('Configuration with the name "bar" was not found.');
         expect(stdout).toBeFalsy();
     });
 
@@ -99,8 +83,7 @@ describe('--config-name flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--config', 'function-config.js', '--config-name', 'first'], false);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'first' starting...");
-        expect(stderr).toContain("Compilation 'first' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain('first');
         expect(stdout).not.toContain('second');
         expect(stdout).not.toContain('third');
@@ -114,10 +97,7 @@ describe('--config-name flag', () => {
         );
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'first' starting...");
-        expect(stderr).toContain("Compilation 'first' finished");
-        expect(stderr).toContain("Compilation 'third' starting...");
-        expect(stderr).toContain("Compilation 'third' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain('first');
         expect(stdout).not.toContain('second');
         expect(stdout).toContain('third');
@@ -127,9 +107,7 @@ describe('--config-name flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--config', 'function-config.js', '--config-name', 'test'], false);
 
         expect(exitCode).toBe(2);
-        expect(stderr).not.toContain('Compilation starting...');
-        expect(stderr).not.toContain('Compilation finished');
-        expect(stderr).toContain('Configuration with the "test" name was not found.');
+        expect(stderr).toContain('Configuration with the name "test" was not found.');
         expect(stdout).toBeFalsy();
     });
 });

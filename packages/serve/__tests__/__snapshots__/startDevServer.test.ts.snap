@@ -4,6 +4,7 @@ exports[`startDevServer should set default port and host if not provided 1`] = `
 Object {
   "host": "localhost",
   "port": 8080,
+  "publicPath": "/",
 }
 `;
 
@@ -22,6 +23,7 @@ Object {
   "hot": true,
   "port": 9000,
   "progress": true,
+  "publicPath": "/",
 }
 `;
 
@@ -40,6 +42,7 @@ Object {
   "hot": true,
   "port": 9000,
   "progress": true,
+  "publicPath": "/",
 }
 `;
 
@@ -56,6 +59,7 @@ Object {
   "host": "localhost",
   "port": 9000,
   "progress": true,
+  "publicPath": "/",
 }
 `;
 
@@ -64,6 +68,7 @@ Object {
   "host": "localhost",
   "port": 9001,
   "progress": true,
+  "publicPath": "/",
 }
 `;
 

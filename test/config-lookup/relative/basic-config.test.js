@@ -7,8 +7,7 @@ describe('relative path to config', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['-c', 'webpack.config.js', '--output-path', './binary/a'], false);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
     });
 
@@ -16,8 +15,7 @@ describe('relative path to config', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['-c', './webpack.config.js', '--output-path', './binary/b'], false);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
     });
 });

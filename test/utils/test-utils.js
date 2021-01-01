@@ -7,12 +7,23 @@ const { sync: spawnSync, node: execaNode } = execa;
 const { Writable } = require('readable-stream');
 const concat = require('concat-stream');
 const { version } = require('webpack');
-const { version: devServerVersion } = require('webpack-dev-server/package.json');
+const stripAnsi = require('strip-ansi');
+
+const isWebpack5 = version.startsWith('5');
+
+let devServerVersion;
+
+try {
+    // eslint-disable-next-line
+    devServerVersion = require('webpack-dev-server/package.json').version;
+} catch (error) {
+    // Nothing
+}
+
+const isDevServer4 = devServerVersion && devServerVersion.startsWith('4');
 
 const WEBPACK_PATH = path.resolve(__dirname, '../../packages/webpack-cli/bin/cli.js');
 const ENABLE_LOG_COMPILATION = process.env.ENABLE_PIPE || false;
-const isWebpack5 = version.startsWith('5');
-const isDevServer4 = devServerVersion.startsWith('4');
 const isWindows = process.platform === 'win32';
 
 const hyphenToUpperCase = (name) => {
@@ -46,12 +57,13 @@ const run = (testCase, args = [], setOutput = true, nodeOptions = [], env) => {
         nodeOptions: nodeOptions,
         env,
         stdio: ENABLE_LOG_COMPILATION ? 'inherit' : 'pipe',
+        maxBuffer: Infinity,
     });
 
     return result;
 };
 
-const runWatch = (testCase, args = [], setOutput = true, outputKillStr = 'Compiler is watching files for updates...') => {
+const runWatch = (testCase, args = [], setOutput = true, outputKillStr = /webpack \d+\.\d+\.\d/) => {
     const cwd = path.resolve(testCase);
 
     const outputPath = path.resolve(testCase, 'bin');
@@ -64,12 +76,12 @@ const runWatch = (testCase, args = [], setOutput = true, outputKillStr = 'Compil
             stdio: 'pipe',
         });
 
-        proc.stderr.pipe(
+        proc.stdout.pipe(
             new Writable({
                 write(chunk, encoding, callback) {
-                    const output = chunk.toString('utf8');
+                    const output = stripAnsi(chunk.toString('utf8'));
 
-                    if (output.includes(outputKillStr)) {
+                    if (outputKillStr.test(output)) {
                         if (isWindows) {
                             exec('taskkill /pid ' + proc.pid + ' /T /F');
                         } else {
@@ -244,10 +256,6 @@ const runServe = (args, testPath) => {
     return runWatch(testPath, ['serve'].concat(args), false);
 };
 
-const runInfo = (args, testPath) => {
-    return run(testPath, ['info'].concat(args), false);
-};
-
 module.exports = {
     run,
     runWatch,
@@ -257,7 +265,6 @@ module.exports = {
     appendDataIfFileExists,
     copyFileAsync,
     runInstall,
-    runInfo,
     hyphenToUpperCase,
     isWebpack5,
     isDevServer4,

@@ -27,6 +27,7 @@ export type devServerOptionsType = {
     static?: boolean | string | object | (string | object)[];
     transportMode?: object | string;
     useLocalIp?: boolean;
+    publicPath?: undefined;
 };
 
 type devServerClientOptions = {

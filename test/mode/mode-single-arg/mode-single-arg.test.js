@@ -7,8 +7,7 @@ describe('mode flags', () => {
         const { exitCode, stderr, stdout } = run(__dirname);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).not.toContain(`mode: 'production'`);
         expect(stdout).toContain(`The 'mode' option has not been set, webpack will fallback to 'production' for this value.`);
     });
@@ -17,8 +16,7 @@ describe('mode flags', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--mode', 'development']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain(`mode: 'development'`);
     });
 
@@ -26,8 +24,7 @@ describe('mode flags', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--mode', 'production']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain(`mode: 'production'`);
     });
 
@@ -35,8 +32,7 @@ describe('mode flags', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--mode', 'none']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain(`mode: 'none'`);
     });
 
@@ -44,8 +40,7 @@ describe('mode flags', () => {
         const { exitCode, stderr, stdout } = run(__dirname, [], false, [], { NODE_ENV: 'development' });
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain(`mode: 'development'`);
     });
 
@@ -55,7 +50,8 @@ describe('mode flags', () => {
         expect(exitCode).toBe(2);
 
         if (isWebpack5) {
-            expect(stderr).toContain("Found the 'invalid-value' problem with the '--mode' argument by path 'mode'");
+            expect(stderr).toContain("Invalid value 'abcd' for the '--mode' option");
+            expect(stderr).toContain("Expected: 'development | production | none'");
         } else {
             expect(stderr).toContain('configuration.mode should be one of these');
             expect(stderr).toContain(`"development" | "production" | "none"`);

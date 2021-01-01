@@ -7,8 +7,7 @@ describe('merge flag configuration', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--config', './1.js', '--config', './2.js', '--merge'], false);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain('option has not been set, webpack will fallback to');
     });
 
@@ -16,8 +15,7 @@ describe('merge flag configuration', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--config', './1.js', '--config', './2.js', '-m'], false);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain('merged.js');
     });
 
@@ -25,8 +23,6 @@ describe('merge flag configuration', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--config', './1.js', '-m'], false);
 
         expect(exitCode).toBe(2);
-        expect(stderr).not.toContain('Compilation starting...');
-        expect(stderr).not.toContain('Compilation finished');
         expect(stderr).toContain('At least two configurations are required for merge.');
         expect(stdout).toBeFalsy();
     });

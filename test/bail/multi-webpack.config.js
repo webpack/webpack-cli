@@ -1,5 +1,6 @@
 module.exports = [
     {
+        devtool: false,
         output: {
             filename: './dist-first.js',
         },
@@ -10,11 +11,12 @@ module.exports = [
         watch: true,
     },
     {
+        devtool: false,
         output: {
             filename: './dist-second.js',
         },
         name: 'second',
         entry: './src/second.js',
-        mode: 'production',
+        mode: 'development',
     },
 ];

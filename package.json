@@ -37,12 +37,11 @@
     "prepsuite": "node scripts/prepareSuite.js",
     "pretest": "yarn build && yarn lint && yarn prepsuite",
     "test": "jest --reporters=default",
+    "test:coverage": "nyc jest --forceExit",
     "test:cli": "jest test --reporters=default --forceExit",
     "test:packages": "jest packages/ --reporters=default --forceExit",
     "test:ci": "yarn test:cli && yarn test:packages",
-    "test:coverage": "nyc jest --forceExit",
     "test:watch": "jest test/ packages/ --watch",
-    "test:smoke": "smoketests/smoketests.sh",
     "publish:monorepo": "yarn build && lerna version && lerna publish from-git"
   },
   "config": {
@@ -75,7 +74,7 @@
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^3.1.4",
-    "execa": "^4.1.0",
+    "execa": "^5.0.0",
     "get-port": "^5.1.1",
     "git-cz": "^4.7.1",
     "husky": "^4.3.0",
@@ -91,9 +90,9 @@
     "strip-ansi": "^6.0.0",
     "ts-jest": "^26.4.3",
     "typescript": "^3.9.7",
-    "webpack": "^5.10.0",
-    "webpack-bundle-analyzer": "^3.9.0",
-    "webpack-dev-server": "^3.11.0",
+    "webpack": "^5.11.0",
+    "webpack-bundle-analyzer": "^4.3.0",
+    "webpack-dev-server": "^3.11.1",
     "yeoman-test": "^2.7.0"
   }
 }

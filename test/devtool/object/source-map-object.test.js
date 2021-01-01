@@ -8,8 +8,7 @@ describe('source-map object', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['-c', './webpack.eval.config.js']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'amd' starting...");
-        expect(stderr).toContain("Compilation 'amd' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
 
         readdir(resolve(__dirname, 'bin'), (err, files) => {
@@ -23,8 +22,7 @@ describe('source-map object', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['-c', './webpack.source.config.js'], false);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'amd' starting...");
-        expect(stderr).toContain("Compilation 'amd' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
         expect(existsSync(resolve(__dirname, 'dist/dist-amd.js.map'))).toBeTruthy();
     });
@@ -37,8 +35,7 @@ describe('source-map object', () => {
         );
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'amd' starting...");
-        expect(stderr).toContain("Compilation 'amd' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
         expect(existsSync(resolve(__dirname, 'binary/dist-amd.js.map'))).toBeTruthy();
     });

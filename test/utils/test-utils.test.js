@@ -38,8 +38,7 @@ describe('run function', () => {
     it('should work correctly by default', () => {
         const { command, stdout, stderr } = run(__dirname);
 
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         // Executes the correct command
         expect(command).toContain('cli.js');
         // Should use apply a default output dir
@@ -67,8 +66,7 @@ describe('run function', () => {
 
         // execution command contains info command
         expect(command).not.toContain('--output-path');
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
     });
 });
@@ -82,8 +80,7 @@ describe('runAndGetWatchProc function', () => {
         // Should use apply a default output dir
         expect(command).toContain('--output-path');
         expect(command).toContain('bin');
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
     });
 
@@ -106,8 +103,7 @@ describe('runAndGetWatchProc function', () => {
 
         // execution command contains info command
         expect(command).not.toContain('--output-path');
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
     });
 

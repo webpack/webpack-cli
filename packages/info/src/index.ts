@@ -1,12 +1,9 @@
 import envinfo from 'envinfo';
-import WebpackCLI from 'webpack-cli';
-import { utils } from 'webpack-cli';
-
-const { logger, commands } = utils;
 
 interface Information {
     Binaries?: string[];
     Browsers?: string[];
+    Monorepos?: string[];
     System?: string[];
     npmGlobalPackages?: string[];
     npmPackages?: string | string[];
@@ -26,44 +23,61 @@ const DEFAULT_DETAILS: Information = {
         'Safari',
         'Safari Technology Preview',
     ],
+    Monorepos: ['Yarn Workspaces', 'Lerna'],
     System: ['OS', 'CPU', 'Memory'],
     npmGlobalPackages: ['webpack', 'webpack-cli'],
     npmPackages: '*webpack*',
 };
 
-export default async function info(...args): Promise<string> {
-    const cli = new WebpackCLI();
-    const { flags: infoFlags } = commands.find((cmd) => cmd.name === 'info');
-    const parsedArgs = cli.argParser(infoFlags, args, true);
-    const infoArgs = parsedArgs.opts;
-    const envinfoConfig = {};
+class InfoCommand {
+    async apply(cli): Promise<void> {
+        await cli.makeCommand(
+            {
+                name: 'info',
+                alias: 'i',
+                description: 'Outputs information about your system.',
+                usage: '[options]',
+                pkg: '@webpack-cli/info',
+            },
+            [
+                {
+                    name: 'output',
+                    type: String,
+                    description: 'To get the output in specified format ( accept json or markdown )',
+                },
+            ],
+            async (program) => {
+                let { output } = program.opts();
 
-    if (parsedArgs.unknownArgs.length > 0) {
-        logger.error(`Unknown argument: ${parsedArgs.unknownArgs}`);
-        process.exit(2);
+                const { logger } = cli;
+                const envinfoConfig = {};
+
+                if (output) {
+                    // Remove quotes if exist
+                    output = output.replace(/['"]+/g, '');
+
+                    switch (output) {
+                        case 'markdown':
+                            envinfoConfig['markdown'] = true;
+                            break;
+                        case 'json':
+                            envinfoConfig['json'] = true;
+                            break;
+                        default:
+                            logger.error(`'${output}' is not a valid value for output`);
+                            process.exit(2);
+                    }
+                }
+
+                let info = await envinfo.run(DEFAULT_DETAILS, envinfoConfig);
+
+                info = info.replace(/npmPackages/g, 'Packages');
+                info = info.replace(/npmGlobalPackages/g, 'Global Packages');
+
+                logger.raw(info);
+            },
+        );
     }
-
-    if (infoArgs.output) {
-        // Remove quotes if exist
-        const output = infoArgs.output.replace(/['"]+/g, '');
-        switch (output) {
-            case 'markdown':
-                envinfoConfig['markdown'] = true;
-                break;
-            case 'json':
-                envinfoConfig['json'] = true;
-                break;
-            default:
-                logger.error(`'${infoArgs.output}' is not a valid value for output`);
-                process.exit(2);
-        }
-    }
-
-    let output = await envinfo.run(DEFAULT_DETAILS, envinfoConfig);
-    output = output.replace(/npmPackages/g, 'Packages');
-    output = output.replace(/npmGlobalPackages/g, 'Global Packages');
-
-    const finalOutput = output;
-    logger.raw(finalOutput);
-    return finalOutput;
 }
+
+export default InfoCommand;

@@ -1,13 +1,12 @@
-'use strict';
-
 const { green } = require('colorette');
 const fs = require('fs');
+const path = require('path');
 const rimraf = require('rimraf');
 const { join, resolve } = require('path');
 const { run } = require('../../utils/test-utils');
 
+const genPath = path.resolve(__dirname, './test-assets');
 const firstPrompt = 'Will your application have multiple bundles?';
-const genPath = join(__dirname, 'test-assets');
 
 const successLog = `You can now run ${green('yarn build')} to bundle your application!`;
 

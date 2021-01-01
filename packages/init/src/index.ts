@@ -1,35 +1,46 @@
 import { initGenerator } from '@webpack-cli/generators';
 import { modifyHelperUtil, npmPackagesExists } from '@webpack-cli/utils';
 
-const AUTO_PREFIX = '--auto';
-const CONFIG_PREFIX = '--force';
-const PATH_PREFIX = '--generation-path';
+class InitCommand {
+    async apply(cli): Promise<void> {
+        await cli.makeCommand(
+            {
+                name: 'init [scaffold...]',
+                alias: 'c',
+                description: 'Initialize a new webpack configuration.',
+                usage: '[scaffold...] [options]',
+                pkg: '@webpack-cli/init',
+            },
+            [
+                {
+                    name: 'auto',
+                    type: Boolean,
+                    description: 'To generate default config',
+                },
+                {
+                    name: 'force',
+                    type: Boolean,
+                    description: 'To force config generation',
+                },
+                {
+                    name: 'generation-path',
+                    type: String,
+                    description: 'To scaffold in a specified path',
+                },
+            ],
+            async (scaffold, program) => {
+                const options = program.opts();
 
-/**
- *
- * First function to be called after running the init flag. This is a check,
- * if we are running the init command with no arguments or if we got dependencies
- *
- * @param	{String[]}		args - array of arguments such as
- * packages included when running the init command
- * @returns	{Function}	creator/npmPackagesExists - returns an installation of the package,
- * followed up with a yeoman instance if there are packages. If not, it creates a defaultGenerator
- */
+                if (scaffold && scaffold.length > 0) {
+                    await npmPackagesExists(scaffold);
 
-export default function initializeInquirer(...args: string[]): Function | void {
-    const packages = args;
-    const includesDefaultPrefix = packages.includes(AUTO_PREFIX);
-    const generateConfig = packages.includes(CONFIG_PREFIX);
-    const genPathPrefix = packages.includes(PATH_PREFIX);
+                    return;
+                }
 
-    let generationPath: string;
-    if (genPathPrefix) {
-        const idx = packages.indexOf(PATH_PREFIX);
-        // Retrieve the path supplied along with --generation-path
-        generationPath = packages[idx + 1];
+                modifyHelperUtil('init', initGenerator, null, null, options.auto, options.force, options.generationPath);
+            },
+        );
     }
-    if (packages.length === 0 || includesDefaultPrefix || generateConfig || genPathPrefix) {
-        return modifyHelperUtil('init', initGenerator, null, null, includesDefaultPrefix, generateConfig, generationPath);
-    }
-    return npmPackagesExists(packages);
 }
+
+export default InitCommand;

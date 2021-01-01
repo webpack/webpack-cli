@@ -15,8 +15,7 @@ describe('experiments option related flag', () => {
             const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`]);
 
             expect(exitCode).toBe(0);
-            expect(stderr).toContain("Compilation 'compiler' starting...");
-            expect(stderr).toContain("Compilation 'compiler' finished");
+            expect(stderr).toBeFalsy();
             expect(stdout).toContain(`${propName}: true`);
         });
 
@@ -24,8 +23,7 @@ describe('experiments option related flag', () => {
             const { exitCode, stderr, stdout } = run(__dirname, [`--no-${flag.name}`]);
 
             expect(exitCode).toBe(0);
-            expect(stderr).toContain("Compilation 'compiler' starting...");
-            expect(stderr).toContain("Compilation 'compiler' finished");
+            expect(stderr).toBeFalsy();
             expect(stdout).toContain(`${propName}: false`);
         });
     });

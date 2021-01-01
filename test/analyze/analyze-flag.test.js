@@ -1,5 +1,6 @@
 'use strict';
 
+const stripAnsi = require('strip-ansi');
 const { run, runAndGetWatchProc } = require('../utils/test-utils');
 
 describe('--analyze flag', () => {
@@ -22,9 +23,8 @@ describe('--analyze flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['-c', './analyze.config.js', '--analyze']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
-        expect(stdout).toContain('Webpack Bundle Analyzer saved report to');
-        expect(stdout.match(/Webpack Bundle Analyzer saved report to/g)).toHaveLength(1);
+        expect(stderr).toBeFalsy();
+        expect(stripAnsi(stdout)).toContain('Webpack Bundle Analyzer saved report to');
+        expect(stripAnsi(stdout).match(/Webpack Bundle Analyzer saved report to/g)).toHaveLength(1);
     });
 });

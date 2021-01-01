@@ -7,8 +7,7 @@ describe('single entry flag empty project', () => {
         const { exitCode, stderr, stdout } = run(__dirname);
 
         expect(exitCode).toBe(1);
-        expect(stderr).toContain('Compilation starting...');
-        expect(stderr).toContain('Compilation finished');
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain(`not found: Error: Can't resolve`);
     });
 });

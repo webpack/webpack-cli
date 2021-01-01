@@ -10,8 +10,7 @@ describe('externals related flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--externals', './main.js']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'compiler' starting...");
-        expect(stderr).toContain("Compilation 'compiler' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain(`externals: [ './main.js' ]`);
     });
 
@@ -19,8 +18,7 @@ describe('externals related flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--externals', 'var']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'compiler' starting...");
-        expect(stderr).toContain("Compilation 'compiler' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain(`externalsType: 'var'`);
     });
 
@@ -28,8 +26,7 @@ describe('externals related flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--externals-type', 'var']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'compiler' starting...");
-        expect(stderr).toContain("Compilation 'compiler' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain(`externalsType: 'var'`);
     });
 
@@ -37,8 +34,7 @@ describe('externals related flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--externals-reset']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'compiler' starting...");
-        expect(stderr).toContain("Compilation 'compiler' finished");
+        expect(stderr).toBeFalsy();
         expect(stdout).toContain(`externals: []`);
     });
 
@@ -51,8 +47,7 @@ describe('externals related flag', () => {
             const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`]);
 
             expect(exitCode).toBe(0);
-            expect(stderr).toContain("Compilation 'compiler' starting...");
-            expect(stderr).toContain("Compilation 'compiler' finished");
+            expect(stderr).toBeFalsy();
             expect(stdout).toContain(`${propName}: true`);
         });
 
@@ -60,8 +55,7 @@ describe('externals related flag', () => {
             const { exitCode, stderr, stdout } = run(__dirname, [`--no-${flag.name}`]);
 
             expect(exitCode).toBe(0);
-            expect(stderr).toContain("Compilation 'compiler' starting...");
-            expect(stderr).toContain("Compilation 'compiler' finished");
+            expect(stderr).toBeFalsy();
             expect(stdout).toContain(`${propName}: false`);
         });
     });

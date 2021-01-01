@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/webpack/webpack-cli/compare/@webpack-cli/serve@1.2.0...@webpack-cli/serve@1.2.1) (2020-12-31)
+
+### Bug Fixes
+
+-   do not apply HotModuleReplacement plugin twice ([#2269](https://github.com/webpack/webpack-cli/issues/2269)) ([bb16d44](https://github.com/webpack/webpack-cli/commit/bb16d4481414a5f3c0cbeb18af690084b2ae4215))
+-   respect the `output.publicPath` option for the `serve`command ([#2271](https://github.com/webpack/webpack-cli/issues/2271)) ([a3092ef](https://github.com/webpack/webpack-cli/commit/a3092ef2b51ece30221f7dd7b30a686626c1fd7a))
+-   the `--help` option is working without `webpack-dev-server` ([#2267](https://github.com/webpack/webpack-cli/issues/2267)) ([1dae54d](https://github.com/webpack/webpack-cli/commit/1dae54da94d3220437b9257efe512447023de1d3))
+-   the `--progress` option with the `serve` command ([#2265](https://github.com/webpack/webpack-cli/issues/2265)) ([952a188](https://github.com/webpack/webpack-cli/commit/952a1883b1a18c4fb38e8eb7bbbdb2aefc7942f4))
+
+# [1.2.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/serve@1.1.0...@webpack-cli/serve@1.2.0) (2020-12-25)
+
+### Bug Fixes
+
+-   respect `--watch-options-stdin` ([2d1e001](https://github.com/webpack/webpack-cli/commit/2d1e001e7f4f560c2b36607bd1b29dfe2aa32066))
+-   do not default host in webpack-dev-server v4 ([#2141](https://github.com/webpack/webpack-cli/issues/2141)) ([dbbe4d4](https://github.com/webpack/webpack-cli/commit/dbbe4d4bc93ff9147ba43fae2d2352fa3583558d))
+-   do not default port in webpack-dev-server v4 ([#2126](https://github.com/webpack/webpack-cli/issues/2126)) ([cda3047](https://github.com/webpack/webpack-cli/commit/cda30471f51db4631a0f54b852c553de270f7f64))
+-   set client port when using default port ([#2147](https://github.com/webpack/webpack-cli/issues/2147)) ([4b97348](https://github.com/webpack/webpack-cli/commit/4b973488a42c4e12d86e0324a4c7051d1380a6fa))
+-   catch dev server import during webpack serve ([#2070](https://github.com/webpack/webpack-cli/issues/2070)) ([70bf770](https://github.com/webpack/webpack-cli/commit/70bf7708c21dffe6521f1800b9dec2a62d21cfe2))
+-   respect `--color`/`--no-color` options ([#2042](https://github.com/webpack/webpack-cli/issues/2042)) ([09bd812](https://github.com/webpack/webpack-cli/commit/09bd8126e95c9675b1f6862451f629cd4c439adb))
+
 # [1.1.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/serve@1.0.1...@webpack-cli/serve@1.1.0) (2020-11-04)
 
 ### Bug Fixes

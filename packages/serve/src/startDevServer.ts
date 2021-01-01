@@ -1,24 +1,18 @@
-import { utils } from 'webpack-cli';
-
-import getDevServerOptions from './getDevServerOptions';
-import mergeOptions from './mergeOptions';
-
-const { logger } = utils;
+import { devServerOptionsType } from './types';
 
 /**
  *
  * Starts the devServer
  *
  * @param {Object} compiler - a webpack compiler
- * @param {Object} devServerArgs - devServer args
+ * @param {Object} cliOptions - devServer args
+ * @param {Object} logger - logger
  *
  * @returns {Object[]} array of resulting servers
  */
-export default async function startDevServer(compiler, cliOptions): Promise<object[]> {
-    let isDevServer4 = false,
-        devServerVersion,
-        Server,
-        findPort;
+export default async function startDevServer(compiler, cliOptions, logger): Promise<object[]> {
+    let devServerVersion, Server, findPort;
+
     try {
         // eslint-disable-next-line node/no-extraneous-require
         devServerVersion = require('webpack-dev-server/package.json').version;
@@ -30,40 +24,84 @@ export default async function startDevServer(compiler, cliOptions): Promise<obje
         logger.error(`You need to install 'webpack-dev-server' for running 'webpack serve'.\n${err}`);
         process.exit(2);
     }
-    isDevServer4 = devServerVersion.startsWith('4');
 
-    const devServerOptions = getDevServerOptions(compiler);
+    const mergeOptions = (cliOptions: devServerOptionsType, devServerOptions: devServerOptionsType): devServerOptionsType => {
+        // CLI options should take precedence over devServer options,
+        // and CLI options should have no default values included
+        const options = { ...devServerOptions, ...cliOptions };
 
-    const servers = [];
+        if (devServerOptions.client && cliOptions.client) {
+            // the user could set some client options in their devServer config,
+            // then also specify client options on the CLI
+            options.client = { ...devServerOptions.client, ...cliOptions.client };
+        }
 
-    const usedPorts: number[] = [];
+        return options;
+    };
 
-    for (const devServerOpts of devServerOptions) {
-        const options = mergeOptions(cliOptions, devServerOpts);
+    const isMultiCompiler = Boolean(compiler.compilers);
+
+    let compilersWithDevServerOption;
+
+    if (isMultiCompiler) {
+        compilersWithDevServerOption = compiler.compilers.filter((compiler) => compiler.options.devServer);
+
+        // No compilers found with the `devServer` option, let's use first compiler
+        if (compilersWithDevServerOption.length === 0) {
+            compilersWithDevServerOption = [compiler.compilers[0]];
+        }
+    } else {
+        compilersWithDevServerOption = [compiler];
+    }
+
+    const isDevServer4 = devServerVersion.startsWith('4');
+    const usedPorts = [];
+    const devServersOptions = [];
+
+    for (const compilerWithDevServerOption of compilersWithDevServerOption) {
+        const options = mergeOptions(cliOptions, compilerWithDevServerOption.options.devServer || {});
+
         if (isDevServer4) {
             options.port = await findPort(options.port);
             options.client = options.client || {};
             options.client.port = options.client.port || options.port;
         } else {
+            if (!options.publicPath) {
+                options.publicPath =
+                    typeof compilerWithDevServerOption.options.output.publicPath === 'undefined' ||
+                    compilerWithDevServerOption.options.output.publicPath === 'auto'
+                        ? '/'
+                        : compilerWithDevServerOption.options.output.publicPath;
+            }
+
             options.host = options.host || 'localhost';
             options.port = options.port || 8080;
         }
 
         if (options.port) {
-            const portNum = +options.port;
+            const portNumber = Number(options.port);
 
-            if (usedPorts.find((port) => portNum === port)) {
+            if (usedPorts.find((port) => portNumber === port)) {
                 throw new Error(
                     'Unique ports must be specified for each devServer option in your webpack configuration. Alternatively, run only 1 devServer config using the --config-name flag to specify your desired config.',
                 );
             }
-            usedPorts.push(portNum);
+
+            usedPorts.push(portNumber);
         }
 
+        devServersOptions.push({ compiler, options });
+    }
+
+    const servers = [];
+
+    for (const devServerOptions of devServersOptions) {
+        const { compiler, options } = devServerOptions;
         const server = new Server(compiler, options);
-        server.listen(options.port, options.host, (err): void => {
-            if (err) {
-                throw err;
+
+        server.listen(options.port, options.host, (error): void => {
+            if (error) {
+                throw error;
             }
         });
 
