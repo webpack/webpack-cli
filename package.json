@@ -42,7 +42,8 @@
     "test:packages": "jest packages/ --reporters=default --forceExit",
     "test:ci": "yarn test:cli && yarn test:packages",
     "test:watch": "jest test/ packages/ --watch",
-    "publish:monorepo": "yarn build && lerna version && lerna publish from-git"
+    "publish:monorepo": "yarn build && lerna version && lerna publish from-git",
+    "update:docs": "node ./scripts/updateDocs"
   },
   "config": {
     "commitizen": {
