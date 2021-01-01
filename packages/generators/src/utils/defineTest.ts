@@ -60,7 +60,7 @@ function runSingleTransform(
     if (action) {
         module = require(path.join(dirName, '../../', 'recursive-parser.ts'));
     } else {
-        module = require(path.join(dirName, '../../', transformName, `${transformName}.ts`));
+        module = require(path.join(dirName, '../../src/', transformName, `${transformName}.ts`));
     }
     // Handle ES6 modules using default export for the transform
     const transform = module.default ? module.default : module;
