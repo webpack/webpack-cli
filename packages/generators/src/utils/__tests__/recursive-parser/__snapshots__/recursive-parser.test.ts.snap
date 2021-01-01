@@ -105,7 +105,7 @@ exports[`recursive parser remove transforms correctly using "fixture-3" data 1`]
         symlinks: true
     },
     module: {
-        noParse: function(content) {
+        noParse: function (content) {
             return /jquery|lodash/.test(content);
         },
         rules: [
@@ -167,7 +167,7 @@ exports[`recursive parser remove transforms correctly using "fixture-3" data 2`]
         symlinks: true,
     },
     module: {
-        noParse: function(content) {
+        noParse: function (content) {
             return /jquery|lodash/.test(content);
         },
         rules: [
@@ -287,7 +287,7 @@ exports[`recursive parser remove transforms correctly using "fixture-3" data 4`]
         symlinks: true,
     },
     module: {
-        noParse: function(content) {
+        noParse: function (content) {
             return /jquery|lodash/.test(content);
         },
         rules: [
@@ -349,7 +349,7 @@ exports[`recursive parser remove transforms correctly using "fixture-3" data 5`]
         symlinks: true,
     },
     module: {
-        noParse: function(content) {
+        noParse: function (content) {
             return /jquery|lodash/.test(content);
         },
         rules: [{

@@ -1,8 +1,8 @@
 import { npmPackagesExists } from '../npm-packages-exists';
 import { resolvePackages } from '../resolve-packages';
 
-jest.mock('../src/npm-exists');
-jest.mock('../src/resolve-packages');
+jest.mock('../npm-exists');
+jest.mock('../resolve-packages');
 
 // TS is not aware that jest changes the type of resolvePackages
 const mockResolvePackages = resolvePackages as jest.Mock<typeof resolvePackages>;
