@@ -61,6 +61,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Using Node v${{ matrix.node-version }}
         uses: actions/setup-node@v1
