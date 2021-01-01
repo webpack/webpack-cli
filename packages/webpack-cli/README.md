@@ -30,6 +30,16 @@ yarn add webpack-cli --dev
 
 ## Supported arguments and commands
 
+### Usage
+
+All interactions with webpack-cli are of the form
+
+```bash
+npx webpack-cli [command] [options]
+```
+
+If no command is specified then `bundle` command is used by default
+
 ### Help Usage
 
 You display basic commands and arguments -
