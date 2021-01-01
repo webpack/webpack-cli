@@ -12,7 +12,9 @@ const { stringifyStream: createJsonStringifyStream } = require('@discoveryjs/jso
 
 const logger = require('./utils/logger');
 const { cli, flags } = require('./utils/cli-flags');
+
 const CLIPlugin = require('./plugins/CLIPlugin');
+const InteractiveModePlugin = require('./plugins/InteractiveModePlugin');
 
 const promptInstallation = require('./utils/prompt-installation');
 
@@ -1049,6 +1051,17 @@ class WebpackCLI {
                 : setupDefaultOptions(config.options);
         }
 
+        if (options.interactive) {
+            const applyInteractiveOptions = (configOptions) => {
+                configOptions.watch = true;
+                return configOptions;
+            };
+
+            config.options = Array.isArray(config.options)
+                ? config.options.map((options) => applyInteractiveOptions(options))
+                : applyInteractiveOptions(config.options);
+        }
+
         // Logic for webpack@4
         // TODO remove after drop webpack@4
         const processLegacyArguments = (configOptions) => {
@@ -1175,6 +1188,12 @@ class WebpackCLI {
                       }
                     : callback,
             );
+
+            // Apply interactive plugin on compiler
+            if (options.interactive) {
+                const interactivePlugin = new InteractiveModePlugin();
+                interactivePlugin.apply(compiler);
+            }
         } catch (error) {
             if (isValidationError(error)) {
                 logger.error(error.message);

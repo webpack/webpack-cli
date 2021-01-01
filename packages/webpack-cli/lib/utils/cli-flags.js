@@ -105,6 +105,14 @@ const builtInFlags = [
         type: String,
         description: 'Prefetch this request.',
     },
+    {
+        name: 'interactive',
+        usage: '--interactive',
+        type: Boolean,
+        alias: 'i',
+        multiple: false,
+        description: 'Use webpack interactive mode',
+    },
 
     // Output options
     {
@@ -182,14 +190,6 @@ const builtInFlags = [
         type: Boolean,
         negative: true,
         description: 'Stop watching when stdin stream has ended.',
-    },
-    {
-        name: 'interactive',
-        usage: '--interactive',
-        type: Boolean,
-        alias: 'i',
-        multiple: false,
-        description: 'Use webpack interactive mode',
     },
 ];
 
