@@ -9,11 +9,11 @@ const pathToPacakge = (pkg) => {
     return [...pathToBase, pkg].join(path.sep);
 };
 describe('missing webpack', () => {
-    beforeAll(() => {
+    beforeEach(() => {
         renameSync(pathToPacakge('webpack'), pathToPacakge('.webpack'));
     });
 
-    afterAll(() => {
+    afterEach(() => {
         renameSync(pathToPacakge('.webpack'), pathToPacakge('webpack'));
     });
 

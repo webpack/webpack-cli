@@ -10,11 +10,11 @@ const pathToPacakge = (pkg) => {
 };
 
 describe('missing webpack-dev-server', () => {
-    beforeAll(() => {
+    beforeEach(() => {
         renameSync(pathToPacakge('webpack-dev-server'), pathToPacakge('.webpack-dev-server'));
     });
 
-    afterAll(() => {
+    afterEach(() => {
         renameSync(pathToPacakge('.webpack-dev-server'), pathToPacakge('webpack-dev-server'));
     });
 
