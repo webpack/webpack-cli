@@ -80,6 +80,8 @@ In case you are suggesting a new feature, we will match your idea with our curre
     yarn build
     ```
 
+> If you are a Docker and Visual Studio Code user, you can quickstart development using [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) Extension
+
 ## Running Tests
 
 ### Using yarn
