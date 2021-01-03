@@ -732,7 +732,7 @@ class WebpackCLI {
                     }
 
                     logger.error(error);
-                    // process.exit(2);
+                    process.exit(2);
                 }
             }
 
