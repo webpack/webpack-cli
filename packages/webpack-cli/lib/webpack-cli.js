@@ -30,6 +30,14 @@ class WebpackCLI {
     }
 
     async makeCommand(commandOptions, options, action) {
+        const alreadyLoaded = this.program.commands.find(
+            (command) => command.name() === commandOptions.name || command.alias() === commandOptions.alias,
+        );
+
+        if (alreadyLoaded) {
+            return;
+        }
+
         const command = this.program.command(commandOptions.name, {
             noHelp: commandOptions.noHelp,
             hidden: commandOptions.hidden,
@@ -551,15 +559,11 @@ class WebpackCLI {
             };
 
             if (isGlobal) {
-                const commandsToLoad = []
-                    .concat(bundleCommandOptions)
-                    .concat(helpCommandOptions)
-                    .concat(versionCommandOptions)
-                    .concat(externalBuiltInCommandsInfo);
-
-                for (const commandToLoad of commandsToLoad) {
-                    await loadCommandByName(commandToLoad.name);
-                }
+                await Promise.all(
+                    knownCommands.map((knownCommand) => {
+                        return loadCommandByName(knownCommand.name);
+                    }),
+                );
 
                 const bundleCommand = this.program.commands.find(
                     (command) => command.name() === bundleCommandOptions.name || command.alias() === bundleCommandOptions.alias,
