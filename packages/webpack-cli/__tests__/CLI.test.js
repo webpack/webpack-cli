@@ -9,6 +9,8 @@ describe('CLI API', () => {
 
     describe('makeCommand', () => {
         it('should make command', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand({ name: 'command' }, [], (program) => {
                 expect(program.opts()).toEqual({});
 
@@ -19,6 +21,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with Boolean option by default', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -40,6 +44,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with Boolean option', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -62,6 +68,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with Boolean option and negative value', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -85,6 +93,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with Boolean option and negative value #2', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -108,6 +118,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with Boolean option and negative value #3', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -131,6 +143,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with Boolean option with default value', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -154,6 +168,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with String option', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -176,6 +192,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with String option with alias', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -199,6 +217,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with String option with default value', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -222,6 +242,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with String option with default value #2', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -245,6 +267,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with String option using "=" syntax', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -267,6 +291,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with multiple String option', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -290,6 +316,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with multiple String option with default value', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -314,6 +342,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with multiple String option with default value #2', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -338,6 +368,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with multiple String option #2', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -361,6 +393,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with Number option', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -383,6 +417,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with Number option with default value', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -406,6 +442,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with multiple Number option', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -429,6 +467,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with multiple Number option and default value', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -453,6 +493,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with multiple Number option and default value', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -477,6 +519,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with custom function type', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -501,6 +545,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with custom function type and default value', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -526,6 +572,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with multiple custom function type', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -551,6 +599,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with multiple custom function type and default value', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -577,6 +627,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with multiple custom function type and default value #2', async (done) => {
+            cli.program.commands = [];
+
             let skipDefault = true;
 
             const command = await cli.makeCommand(
@@ -610,6 +662,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with Boolean and String option', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -632,6 +686,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with Boolean and String option #2', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -654,6 +710,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with multiple Boolean and String option', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -677,6 +735,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with multiple Boolean and String option #2', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -700,6 +760,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with Boolean and String option and negative', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -723,6 +785,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with Boolean and String option and negative #2', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -746,6 +810,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with Boolean and String option and negative #3', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -769,6 +835,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with Boolean and Number option', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -791,6 +859,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with Boolean and Number option #2', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -813,6 +883,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with array Boolean type', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -835,6 +907,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with Boolean and Number and String type', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -857,6 +931,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with Boolean and Number and String type #2', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -879,6 +955,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with Boolean and Number and String type #3', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -901,6 +979,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with Boolean and Number and String type and default value', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -924,6 +1004,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with Boolean and Number and String type and default value #2', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -947,6 +1029,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with Boolean and Number and String type and default value #3', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -970,6 +1054,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with Boolean and Number and String type and default value #4', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -993,6 +1079,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with multiple Boolean and Number and String type', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -1016,6 +1104,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with multiple Boolean and Number and String type #2', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -1039,6 +1129,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with multiple Boolean and Number and String type #3', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -1062,6 +1154,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with multiple Boolean and Number and String type #4', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -1085,6 +1179,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with multiple Boolean and Number and String type #5', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -1108,6 +1204,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with multiple Boolean and Number and String and default value', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -1132,6 +1230,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with multiple Boolean and Number and String and default value #2', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -1156,6 +1256,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with multiple Boolean and Number and String and default value #3', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -1180,6 +1282,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with multiple Boolean and Number and String and default value #4', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
@@ -1204,6 +1308,8 @@ describe('CLI API', () => {
         });
 
         it('should make command with array of unknown types', async (done) => {
+            cli.program.commands = [];
+
             const command = await cli.makeCommand(
                 {
                     name: 'command',
