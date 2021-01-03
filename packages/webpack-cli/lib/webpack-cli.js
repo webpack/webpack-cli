@@ -227,7 +227,7 @@ class WebpackCLI {
         return flags;
     }
 
-    async run(args) {
+    async run(args, parseOptions) {
         // Built-in internal commands
         const bundleCommandOptions = {
             name: 'bundle',
@@ -712,7 +712,7 @@ class WebpackCLI {
             await this.program.parseAsync([commandName, ...options], { from: 'user' });
         });
 
-        await this.program.parseAsync(args);
+        await this.program.parseAsync(args, parseOptions);
     }
 
     async resolveConfig(options) {
