@@ -32,11 +32,42 @@ describe('init with SCSS', () => {
         }
 
         // Test regressively files are scaffolded
-        const files = ['./package.json', './.yo-rc.json', './src/index.js', 'webpack.config.js'];
+        const files = ['./package.json', './.yo-rc.json', './src/index.js', './webpack.config.js'];
 
         files.forEach((file) => {
             expect(fs.existsSync(resolve(genPath, file))).toBeTruthy();
         });
+
+        const webpackConfig = require(join(genPath, './webpack.config.js'));
+
+        expect(webpackConfig.module.rules).toEqual([
+            {
+                test: /.(scss|css)$/,
+
+                use: [
+                    {
+                        loader: MiniCssExtractPlugin.loader, // eslint-disable-line
+                    },
+                    {
+                        loader: 'style-loader',
+                    },
+                    {
+                        loader: 'css-loader',
+
+                        options: {
+                            sourceMap: true,
+                        },
+                    },
+                    {
+                        loader: 'sass-loader',
+
+                        options: {
+                            sourceMap: true,
+                        },
+                    },
+                ],
+            },
+        ]);
 
         // Check if package.json is correctly configured
         const pkgJsonTests = () => {
