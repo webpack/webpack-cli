@@ -8,7 +8,7 @@ class ConfigTestCommand {
             {
                 name: 'configtest <config-path>',
                 alias: 't',
-                description: 'Outputs information about your system.',
+                description: 'Test your webpack configuration against validation errors.',
                 usage: '[configs]',
                 pkg: '@webpack-cli/configtest',
             },
