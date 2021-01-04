@@ -20,11 +20,26 @@
     "declaration": true
   },
   "references": [
-    { "path": "packages/generators" },
-    { "path": "packages/info" },
-    { "path": "packages/init" },
-    { "path": "packages/migrate" },
-    { "path": "packages/serve" },
-    { "path": "packages/utils" }
+    {
+      "path": "packages/generators"
+    },
+    {
+      "path": "packages/info"
+    },
+    {
+      "path": "packages/init"
+    },
+    {
+      "path": "packages/migrate"
+    },
+    {
+      "path": "packages/serve"
+    },
+    {
+      "path": "packages/utils"
+    },
+    {
+      "path": "packages/configtest"
+    }
   ]
 }

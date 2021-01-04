@@ -279,6 +279,11 @@ class WebpackCLI {
                 alias: 'm',
                 pkg: '@webpack-cli/migrate',
             },
+            {
+                name: 'configtest',
+                alias: 't',
+                pkg: '@webpack-cli/configtest',
+            },
         ];
 
         const knownCommands = [bundleCommandOptions, versionCommandOptions, helpCommandOptions, ...externalBuiltInCommandsInfo];
