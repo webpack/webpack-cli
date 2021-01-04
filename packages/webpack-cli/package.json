@@ -54,6 +54,9 @@
     "@webpack-cli/migrate": {
       "optional": true
     },
+    "@webpack-cli/configtest": {
+      "optional": true
+    },
     "webpack-bundle-analyzer": {
       "optional": true
     },

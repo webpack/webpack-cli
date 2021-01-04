@@ -19,13 +19,12 @@ class ConfigTestCommand {
                     process.exit(2);
                 }
 
-                const { options, absolutePath } = await cli.resolveConfig({ config: [configPath] });
+                const { options } = await cli.resolveConfig({ config: [configPath] });
 
                 //eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const validationErrors: any = validate(options);
 
                 if (validationErrors) {
-                    logger.error("Your configuration validation wasn't successful");
                     logger.error(validationErrors);
                 }
 
