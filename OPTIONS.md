@@ -566,8 +566,6 @@ Commands:
   init|c [options] [scaffold...]             Initialize a new webpack configuration.
   loader|l [output-path]                     Scaffold a loader.
   plugin|p [output-path]                     Scaffold a plugin.
-  loader|l [output-path]                     Scaffold a loader.
-  plugin|p [output-path]                     Scaffold a plugin.
   migrate|m <config-path> [new-config-path]  Migrate a configuration to a new version.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
