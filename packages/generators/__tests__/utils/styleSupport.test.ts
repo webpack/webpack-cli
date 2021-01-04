@@ -34,7 +34,7 @@ describe('styleSupport', () => {
     it('generates SASS configuration', () => {
         const gen = getMockGenerator();
         const { ExtractUseProps, regExpForStyles } = style(gen, StylingType.SASS);
-        expect(regExpForStyles).toEqual('/.(scss|css)$/');
+        expect(regExpForStyles).toEqual('/.(sa|sc|c)ss$/');
         expect(gen.dependencies).toEqual(['node-sass', 'sass-loader', 'css-loader', 'style-loader']);
         expect(ExtractUseProps.length).toEqual(3);
     });
@@ -43,7 +43,7 @@ describe('styleSupport', () => {
         const gen = getMockGenerator();
         gen.isProd = true;
         const { ExtractUseProps, regExpForStyles } = style(gen, StylingType.SASS);
-        expect(regExpForStyles).toEqual('/.(scss|css)$/');
+        expect(regExpForStyles).toEqual('/.(sa|sc|c)ss$/');
         expect(gen.dependencies).toEqual(['node-sass', 'sass-loader', 'css-loader']);
         expect(ExtractUseProps.length).toEqual(2);
     });

@@ -36,6 +36,10 @@ describe('init force flag', () => {
             expect(fs.existsSync(resolve(genPath, file))).toBeTruthy();
         });
 
+        const webpackConfig = require(join(genPath, 'webpack.config.js'));
+
+        expect(webpackConfig.modules.rules).toEqual([]);
+
         // Check package json is correctly configured
         const pkgJsonTests = () => {
             const pkgJson = require(join(genPath, './package.json'));

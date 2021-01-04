@@ -34,6 +34,18 @@ describe('init with Typescript', () => {
             expect(fs.existsSync(resolve(genPath, file))).toBeTruthy();
         });
 
+        const webpackConfig = require(join(genPath, 'webpack.config.js'));
+
+        expect(webpackConfig.module.rules).toEqual([
+            {
+                test: /\.(ts|tsx)$/,
+                loader: 'ts-loader',
+                include: [path.resolve(__dirname, 'src')], // eslint-disable-line
+                exclude: [/node_modules/],
+            },
+        ]);
+        expect(webpackConfig.resolve.extensions).toEqual(['.tsx', '.ts', '.js']);
+
         // Check package json is correctly configured
         const pkgJsonTests = () => {
             const pkgJson = require(join(genPath, './package.json'));
