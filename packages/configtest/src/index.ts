@@ -6,15 +6,21 @@ class ConfigTestCommand {
 
         await cli.makeCommand(
             {
-                name: 'configtest',
+                name: 'configtest <config-path>',
                 alias: 't',
                 description: 'Outputs information about your system.',
                 usage: '[configs]',
                 pkg: '@webpack-cli/configtest',
             },
             [],
-            async (program) => {
-                const { options } = await cli.resolveConfig({ config: program.args });
+            async (configPath, program) => {
+                if (program.args.length > 1) {
+                    logger.error('Only one configuration can be validated at a time.');
+                    process.exit(2);
+                }
+
+                const { options, absolutePath } = await cli.resolveConfig({ config: [configPath] });
+
                 //eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const validationErrors: any = validate(options);
 
@@ -23,7 +29,7 @@ class ConfigTestCommand {
                     logger.error(validationErrors);
                 }
 
-                logger.success('No errors found');
+                logger.success('There are no validation errors in the given webpack configuration.');
             },
         );
     }
