@@ -42,7 +42,7 @@ describe('init with SCSS', () => {
 
         expect(webpackConfig.module.rules).toEqual([
             {
-                test: /.(scss|css)$/,
+                test: /.(sa|sc|c)ss$/,
 
                 use: [
                     {
