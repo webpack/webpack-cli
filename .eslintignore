@@ -1,14 +1,7 @@
 __testfixtures__
 coverage
 node_modules
-packages/generate-loader/lib
-packages/generate-plugin/lib
-packages/generators/lib
-packages/info/lib
-packages/init/lib
-packages/migrate/lib
-packages/serve/lib
-packages/utils/lib
+packages/**/lib
 test/**/dist/
 test/**/bin/
 test/**/binary/
