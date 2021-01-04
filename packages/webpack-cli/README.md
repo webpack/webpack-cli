@@ -106,4 +106,4 @@ npx webpack-cli --help verbose
 
 ### webpack 5
 
-Checkout [`OPTIONS.md`](../../OPTIONS.md) to see list of all available options.
+Checkout [`OPTIONS.md`](https://github.com/webpack/webpack-cli/blob/master/OPTIONS.md) to see list of all available options.
