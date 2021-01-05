@@ -15,7 +15,7 @@ describe('basic info usage', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['configtest', './error.config.js'], false);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain('ValidationError: Invalid configuration object.');
+        expect(stderr).toContain('Invalid configuration object.');
         expect(stderr).toContain('configuration.mode should be one of these:');
         expect(stdout).toBeFalsy();
     });
@@ -32,7 +32,7 @@ describe('basic info usage', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['t', './error.config.js'], false);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain('ValidationError: Invalid configuration object.');
+        expect(stderr).toContain('Invalid configuration object.');
         expect(stderr).toContain('configuration.mode should be one of these:');
         expect(stdout).toBeFalsy();
     });

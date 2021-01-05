@@ -1,5 +1,3 @@
-import webpack from 'webpack';
-
 class ConfigTestCommand {
     async apply(cli): Promise<void> {
         const { logger } = cli;
@@ -13,22 +11,33 @@ class ConfigTestCommand {
                 pkg: '@webpack-cli/configtest',
             },
             [],
-            async (configPath: string) => {
+            async (configPath: string): Promise<void> => {
+                //eslint-disable-next-line @typescript-eslint/no-var-requires
+                const { validate, version, ValidationError, WebpackOptionsValidationError } = require('webpack');
+
+                const isWebpack5: boolean = version.startsWith('5');
                 const { options } = await cli.resolveConfig({ config: [configPath] });
 
-                const isValidationError = (error) => {
+                const isValidationError = (error): boolean => {
                     // https://github.com/webpack/webpack/blob/master/lib/index.js#L267
                     // https://github.com/webpack/webpack/blob/v4.44.2/lib/webpack.js#L90
-                    const ValidationError: any = webpack.ValidationError || webpack.WebpackOptionsValidationError;
+                    //eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    const webpackValidationError: any = ValidationError || WebpackOptionsValidationError;
 
-                    return error instanceof ValidationError;
+                    return error instanceof webpackValidationError;
                 };
 
                 //eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const error: any = webpack.validate(options);
+                const error: any = validate(options);
 
-                if (error) {
-                    logger.error(isValidationError(error) ? error.message : error);
+                if (error && error.length) {
+                    if (isWebpack5) {
+                        logger.error(isValidationError(error) ? error.message : error);
+                    } else {
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+                        // @ts-ignore
+                        logger.error(new WebpackOptionsValidationError(error));
+                    }
                     process.exit(2);
                 }
 
