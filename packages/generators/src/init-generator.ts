@@ -183,7 +183,24 @@ export default class InitGenerator extends CustomGenerator {
                 use: ExtractUseProps,
             });
         }
-        if (this.usingDefaults) {
+
+        // webpack Dev Server
+        const { useDevServer } = await Confirm(self, 'useDevServer', 'Do you want to use webpack-dev-server', true, false);
+        if (useDevServer) {
+            this.dependencies.push('webpack-dev-server');
+            this.configuration.config.webpackOptions.devServer = {
+                open: true,
+            };
+        }
+
+        const { useHTMLPlugin } = await Confirm(
+            self,
+            'useHTMLPlugin',
+            'Do you want to use html-webpack-plugin to simplify creation of HTML files for your bundle?',
+            false,
+            false,
+        );
+        if (useHTMLPlugin) {
             // Html webpack Plugin
             this.dependencies.push('html-webpack-plugin');
             const htmlWebpackDependency = 'html-webpack-plugin';
@@ -196,14 +213,17 @@ export default class InitGenerator extends CustomGenerator {
             (this.configuration.config.webpackOptions.plugins as string[]).push(`new ${htmlwebpackPlugin}({
 					template: 'index.html'
 				})`);
+        }
 
-            // webpack Dev Server
-            this.dependencies.push('webpack-dev-server');
-            this.configuration.config.webpackOptions.devServer = {
-                open: true,
-            };
-
-            // PWA + offline support
+        const { useWorkboxPlugin } = await Confirm(
+            self,
+            'useDevServer',
+            'Do you want to use workbox-webpack-plugin for PWA support?',
+            true,
+            false,
+        );
+        // webpack Dev Server
+        if (useWorkboxPlugin) {
             this.configuration.config.topScope.push("const workboxPlugin = require('workbox-webpack-plugin');", '\n');
             this.dependencies.push('workbox-webpack-plugin');
             (this.configuration.config.webpackOptions.plugins as string[]).push(`new workboxPlugin.GenerateSW({
