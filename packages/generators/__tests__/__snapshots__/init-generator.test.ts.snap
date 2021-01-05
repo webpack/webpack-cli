@@ -14,23 +14,6 @@ Object {
       },
     ],
   },
-  "optimization": Object {
-    "minimizer": Array [
-      "new TerserPlugin()",
-    ],
-    "splitChunks": Object {
-      "cacheGroups": Object {
-        "vendors": Object {
-          "priority": -10,
-          "test": "/[\\\\\\\\/]node_modules[\\\\\\\\/]/",
-        },
-      },
-      "chunks": "'async'",
-      "minChunks": 1,
-      "minSize": 30000,
-      "name": false,
-    },
-  },
   "plugins": Array [
     "new webpack.ProgressPlugin()",
   ],
@@ -54,23 +37,6 @@ Object {
         "test": "/\\\\.(ts|tsx)$/",
       },
     ],
-  },
-  "optimization": Object {
-    "minimizer": Array [
-      "new TerserPlugin()",
-    ],
-    "splitChunks": Object {
-      "cacheGroups": Object {
-        "vendors": Object {
-          "priority": -10,
-          "test": "/[\\\\\\\\/]node_modules[\\\\\\\\/]/",
-        },
-      },
-      "chunks": "'async'",
-      "minChunks": 1,
-      "minSize": 30000,
-      "name": false,
-    },
   },
   "plugins": Array [
     "new webpack.ProgressPlugin()",
@@ -124,23 +90,6 @@ Object {
       },
     ],
   },
-  "optimization": Object {
-    "minimizer": Array [
-      "new TerserPlugin()",
-    ],
-    "splitChunks": Object {
-      "cacheGroups": Object {
-        "vendors": Object {
-          "priority": -10,
-          "test": "/[\\\\\\\\/]node_modules[\\\\\\\\/]/",
-        },
-      },
-      "chunks": "'async'",
-      "minChunks": 1,
-      "minSize": 30000,
-      "name": false,
-    },
-  },
   "plugins": Array [
     "new webpack.ProgressPlugin()",
     "new MiniCssExtractPlugin({ filename:'main.[contenthash].css' })",
@@ -169,23 +118,6 @@ Object {
       },
     ],
   },
-  "optimization": Object {
-    "minimizer": Array [
-      "new TerserPlugin()",
-    ],
-    "splitChunks": Object {
-      "cacheGroups": Object {
-        "vendors": Object {
-          "priority": -10,
-          "test": "/[\\\\\\\\/]node_modules[\\\\\\\\/]/",
-        },
-      },
-      "chunks": "'async'",
-      "minChunks": 1,
-      "minSize": 30000,
-      "name": false,
-    },
-  },
   "plugins": Array [
     "new webpack.ProgressPlugin()",
   ],
@@ -198,23 +130,6 @@ Object {
   "mode": "'development'",
   "module": Object {
     "rules": Array [],
-  },
-  "optimization": Object {
-    "minimizer": Array [
-      "new TerserPlugin()",
-    ],
-    "splitChunks": Object {
-      "cacheGroups": Object {
-        "vendors": Object {
-          "priority": -10,
-          "test": "/[\\\\\\\\/]node_modules[\\\\\\\\/]/",
-        },
-      },
-      "chunks": "'async'",
-      "minChunks": 1,
-      "minSize": 30000,
-      "name": false,
-    },
   },
   "output": Object {
     "path": "path.resolve(__dirname, 'dist2')",
@@ -233,14 +148,6 @@ Object {
   "mode": "'production'",
   "module": Object {
     "rules": Array [],
-  },
-  "optimization": Object {
-    "minimizer": Array [
-      "new TerserPlugin()",
-    ],
-    "splitChunks": Object {
-      "chunks": "'all'",
-    },
   },
   "plugins": Array [
     "new webpack.ProgressPlugin()",
@@ -265,23 +172,6 @@ Object {
   "mode": "'development'",
   "module": Object {
     "rules": Array [],
-  },
-  "optimization": Object {
-    "minimizer": Array [
-      "new TerserPlugin()",
-    ],
-    "splitChunks": Object {
-      "cacheGroups": Object {
-        "vendors": Object {
-          "priority": -10,
-          "test": "/[\\\\\\\\/]node_modules[\\\\\\\\/]/",
-        },
-      },
-      "chunks": "'async'",
-      "minChunks": 1,
-      "minSize": 30000,
-      "name": false,
-    },
   },
   "plugins": Array [
     "new webpack.ProgressPlugin()",

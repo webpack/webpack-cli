@@ -224,7 +224,6 @@ export default class InitGenerator extends CustomGenerator {
         this.configuration.config.topScope.push(tooltip.terser(), "const TerserPlugin = require('terser-webpack-plugin');", '\n');
 
         // Chunksplitting
-        this.configuration.config.webpackOptions.optimization = getDefaultOptimization(this.usingDefaults);
         this.configuration.config.webpackOptions.mode = this.usingDefaults ? "'production'" : "'development'";
     }
 
