@@ -49,9 +49,6 @@ describe('init with SCSS', () => {
                         loader: MiniCssExtractPlugin.loader, // eslint-disable-line
                     },
                     {
-                        loader: 'style-loader',
-                    },
-                    {
                         loader: 'css-loader',
 
                         options: {

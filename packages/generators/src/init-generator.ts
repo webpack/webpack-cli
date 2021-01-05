@@ -187,6 +187,9 @@ export default class InitGenerator extends CustomGenerator {
                     );
                 }
 
+                // Remove style-loader from the loader chain
+                ExtractUseProps.shift();
+
                 ExtractUseProps.unshift({
                     loader: 'MiniCssExtractPlugin.loader',
                 });
