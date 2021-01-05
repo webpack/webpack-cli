@@ -46,7 +46,7 @@ const hyphenToUpperCase = (name) => {
  */
 const run = (testCase, args = [], options = {}) => {
     const cwd = path.resolve(testCase);
-    const { nodeOptions } = options;
+    const { nodeOptions = [] } = options;
     const processExecutor = nodeOptions.length ? execaNode : spawnSync;
     const result = processExecutor(WEBPACK_PATH, args, {
         cwd,
