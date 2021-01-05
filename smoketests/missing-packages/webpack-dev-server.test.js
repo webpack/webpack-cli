@@ -1,6 +1,7 @@
 const path = require('path');
 const execa = require('execa');
 const { renameSync } = require('fs');
+const stripAnsi = require('strip-ansi');
 
 const CLI_ENTRY_PATH = path.resolve(__dirname, '../../packages/webpack-cli/bin/cli.js');
 const pathToPackage = require.resolve('webpack-dev-server').split(path.sep);
@@ -37,7 +38,7 @@ const runTest = () => {
             hasPassed = false;
 
         proc.stderr.on('data', (chunk) => {
-            let data = chunk.toString();
+            let data = stripAnsi(chunk.toString());
             console.log(`  stdout: ${data}`);
 
             if (data.includes(logMessage)) {

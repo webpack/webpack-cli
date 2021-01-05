@@ -1,6 +1,7 @@
 const path = require('path');
 const execa = require('execa');
 const { renameSync } = require('fs');
+const stripAnsi = require('strip-ansi');
 
 const CLI_ENTRY_PATH = path.resolve(__dirname, '../../packages/webpack-cli/bin/cli.js');
 const pathToPackage = require.resolve('webpack').split(path.sep);
@@ -19,7 +20,7 @@ const runTest = () => {
     // Simulate package missing
     swapPkgName('webpack', '.webpack');
 
-    const proc = execa(CLI_ENTRY_PATH, [''], {
+    const proc = execa(CLI_ENTRY_PATH, [], {
         cwd: __dirname,
     });
 
@@ -35,7 +36,7 @@ const runTest = () => {
             hasPrompt = false;
 
         proc.stderr.on('data', (chunk) => {
-            let data = chunk.toString();
+            let data = stripAnsi(chunk.toString());
             console.log(`  stdout: ${data}`);
 
             if (data.includes(logMessage)) {
