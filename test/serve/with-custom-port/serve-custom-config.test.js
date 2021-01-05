@@ -24,7 +24,7 @@ describe('serve with devServer in config', () => {
     }
 
     it('Should pick up the host and port from config', async () => {
-        const { stdout, stderr } = await runServe([], testPath);
+        const { stdout, stderr } = await runServe(testPath, []);
 
         expect(stderr).toBeFalsy();
         // Should output the correct bundle file
@@ -35,7 +35,7 @@ describe('serve with devServer in config', () => {
     });
 
     it('Port flag should override the config port', async () => {
-        const { stdout, stderr } = await runServe(['--port', port], testPath);
+        const { stdout, stderr } = await runServe(testPath, ['--port', port]);
 
         expect(stderr).toBeFalsy();
         // Should output the correct bundle file
@@ -46,7 +46,7 @@ describe('serve with devServer in config', () => {
     });
 
     it('Passing hot flag works alongside other server config', async () => {
-        const { stdout, stderr } = await runServe(['--port', port, '--hot'], testPath);
+        const { stdout, stderr } = await runServe(testPath, ['--port', port, '--hot']);
 
         expect(stderr).toBeFalsy();
         // Should output the correct bundle file
@@ -58,7 +58,7 @@ describe('serve with devServer in config', () => {
     });
 
     it('works fine when no-hot flag is passed alongside other server config', async () => {
-        const { stdout, stderr } = await runServe(['--port', port, '--no-hot'], testPath);
+        const { stdout, stderr } = await runServe(testPath, ['--port', port, '--no-hot']);
 
         expect(stderr).toBeFalsy();
         // Should output the correct bundle file

@@ -24,7 +24,7 @@ describe('serve variable', () => {
     }
 
     it('compiles without flags and export variable', async () => {
-        const { stdout, stderr } = await runServe(['--port', port], testPath);
+        const { stdout, stderr } = await runServe(testPath, ['--port', port]);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('main.js');
