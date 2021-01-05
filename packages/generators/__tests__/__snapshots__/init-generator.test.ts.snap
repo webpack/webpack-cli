@@ -112,9 +112,6 @@ Object {
             "loader": "MiniCssExtractPlugin.loader",
           },
           Object {
-            "loader": "\\"style-loader\\"",
-          },
-          Object {
             "loader": "\\"css-loader\\"",
             "options": Object {
               "sourceMap": true,
