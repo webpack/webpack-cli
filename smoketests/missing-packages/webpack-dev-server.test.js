@@ -23,6 +23,11 @@ const runTest = () => {
     });
 
     proc.stdin.setDefaultEncoding('utf-8');
+
+    proc.stdout.on('data', (chunk) => {
+        console.log(`  stdout: ${chunk.toString()}`);
+    });
+
     return new Promise((resolve) => {
         setTimeout(() => {
             console.log('  timeout: killing process');
@@ -37,7 +42,7 @@ const runTest = () => {
 
         proc.stderr.on('data', (chunk) => {
             let data = stripAnsi(chunk.toString());
-            console.log(`  stdout: ${data}`);
+            console.log(`  stderr: ${data}`);
 
             if (data.includes(logMessage)) {
                 hasLogMessage = true;
