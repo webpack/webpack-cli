@@ -197,7 +197,7 @@ export default class InitGenerator extends CustomGenerator {
         const { useHTMLPlugin } = await Confirm(
             self,
             'useHTMLPlugin',
-            'Do you want to use simplify creation of HTML files for your bundle?',
+            'Do you want to simplify the creation of HTML files for your bundle?',
             false,
             false,
         );

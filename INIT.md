@@ -142,7 +142,7 @@ If you indicate based on previous questions that you are using production, this 
 
 Adds a development server to serve webpack bundles and hence make development faster.
 
-8. `Do you want to use simplify creation of HTML files for your bundle?`
+8. `Do you want to simplify the creation of HTML files for your bundle?`
 
 Adds `html-webpack-plugin` that simplifies creation of HTML files to serve your bundles.
 
