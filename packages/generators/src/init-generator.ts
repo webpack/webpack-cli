@@ -60,15 +60,6 @@ export default class InitGenerator extends CustomGenerator {
 
         this.entryOption = './src/index.js';
 
-        // add splitChunks options for transparency
-        // defaults coming from: https://webpack.js.org/plugins/split-chunks-plugin/#optimization-splitchunks
-        this.configuration.config.topScope.push(
-            "const path = require('path');",
-            "const webpack = require('webpack');",
-            '\n',
-            tooltip.splitChunks(),
-        );
-
         (this.configuration.config.webpackOptions.plugins as string[]).push('new webpack.ProgressPlugin()');
     }
 
