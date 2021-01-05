@@ -66,6 +66,22 @@ describe('basic serve usage', () => {
         expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
     });
 
+    it('should work with the "--stats" option', async () => {
+        const { stderr, stdout } = await runServe(['--stats'], __dirname);
+
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain(isWebpack5 ? 'compiled successfully' : 'Version: webpack');
+        expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
+    });
+
+    it('should work with the "--stats detailed" option', async () => {
+        const { stderr, stdout } = await runServe(['--stats', 'verbose'], __dirname);
+
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain(isWebpack5 ? 'from webpack.Compiler' : 'webpack.buildChunkGraph.visitModules');
+        expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
+    });
+
     it('should work with the "--mode" option #2', async () => {
         const { stderr, stdout } = await runServe(['--mode', 'production'], __dirname);
 

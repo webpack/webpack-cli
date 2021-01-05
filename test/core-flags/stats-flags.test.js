@@ -20,9 +20,9 @@ describe('stats config related flag', () => {
 
                 if (flag.name.includes('reset')) {
                     const option = propName.split('Reset')[0];
-                    expect(stdout).toContain(`stats: { ${option}: [] }`);
+                    expect(stdout).toContain(`${option}: []`);
                 } else {
-                    expect(stdout).toContain(`stats: { ${propName}: true }`);
+                    expect(stdout).toContain(`${propName}: true`);
                 }
             });
 
@@ -32,7 +32,7 @@ describe('stats config related flag', () => {
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
-                    expect(stdout).toContain(`stats: { ${propName}: false }`);
+                    expect(stdout).toContain(`${propName}: false`);
                 });
             }
         }
@@ -43,7 +43,7 @@ describe('stats config related flag', () => {
 
                 expect(exitCode).toBe(0);
                 expect(stderr).toBeFalsy();
-                expect(stdout).toContain(`stats: { ${propName}: 10 }`);
+                expect(stdout).toContain(`${propName}: 10`);
             });
         }
 
@@ -57,13 +57,13 @@ describe('stats config related flag', () => {
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
-                    expect(stdout).toContain(`stats: { colors: { ${option}: 'u001b[32m' } }`);
+                    expect(stdout).toContain(`colors: { ${option}: 'u001b[32m' }`);
                 } else if (acceptsSingleValue.includes(propName)) {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'log']);
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
-                    expect(stdout).toContain(`stats: { ${propName}: 'log' }`);
+                    expect(stdout).toContain(`${propName}: 'log'`);
                 } else if (flag.name === 'stats-context') {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'log']);
 
@@ -75,13 +75,13 @@ describe('stats config related flag', () => {
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
-                    expect(stdout).toContain(`stats: { ${propName}: 'auto' }`);
+                    expect(stdout).toContain(`${propName}: 'auto'`);
                 } else {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'log']);
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
-                    expect(stdout).toContain(`stats: { ${propName}: [ 'log' ] }`);
+                    expect(stdout).toContain(`${propName}: [ 'log' ]`);
                 }
             });
         }

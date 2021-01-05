@@ -76,6 +76,7 @@ export default async function startDevServer(compiler, cliOptions, logger): Prom
 
             options.host = options.host || 'localhost';
             options.port = options.port || 8080;
+            options.stats = compilerWithDevServerOption.options.stats;
         }
 
         if (options.port) {
