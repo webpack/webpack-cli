@@ -4,11 +4,9 @@ const { renameSync } = require('fs');
 const stripAnsi = require('strip-ansi');
 
 const CLI_ENTRY_PATH = path.resolve(__dirname, '../../packages/webpack-cli/bin/cli.js');
-const pathToPackage = require.resolve('webpack').split(path.sep);
-const pathToBase = pathToPackage.slice(0, pathToPackage.indexOf('webpack'));
 
 const getPkgPath = (pkg) => {
-    return [...pathToBase, pkg].join(path.sep);
+    return path.resolve(__dirname, `../../node_modules/${pkg}`);
 };
 
 const swapPkgName = (current, next) => {
