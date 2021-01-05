@@ -1,4 +1,4 @@
-import { validate } from 'webpack';
+import webpack from 'webpack';
 
 class ConfigTestCommand {
     async apply(cli): Promise<void> {
@@ -16,15 +16,23 @@ class ConfigTestCommand {
             async (configPath: string) => {
                 const { options } = await cli.resolveConfig({ config: [configPath] });
 
-                //eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const validationErrors: any = validate(options);
+                const isValidationError = (error) => {
+                    // https://github.com/webpack/webpack/blob/master/lib/index.js#L267
+                    // https://github.com/webpack/webpack/blob/v4.44.2/lib/webpack.js#L90
+                    const ValidationError: any = webpack.ValidationError || webpack.WebpackOptionsValidationError;
 
-                if (validationErrors) {
-                    logger.error(validationErrors);
+                    return error instanceof ValidationError;
+                };
+
+                //eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const error: any = webpack.validate(options);
+
+                if (error) {
+                    logger.error(isValidationError(error) ? error.message : error);
                     process.exit(2);
                 }
 
-                logger.success('There are no validation errors in the given webpack configuration.');
+                logger.success('There are no errors in the given webpack configuration.');
             },
         );
     }
