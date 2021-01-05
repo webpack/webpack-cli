@@ -110,8 +110,10 @@ describe('mode flags with config', () => {
     });
 
     it('only config where mode is absent pick up from NODE_ENV', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['-c', './webpack.config3.js', '-c', './webpack.config2.js'], [], {
-            NODE_ENV: 'production',
+        const { exitCode, stderr, stdout } = run(__dirname, ['-c', './webpack.config3.js', '-c', './webpack.config2.js'], {
+            env: {
+                NODE_ENV: 'production',
+            },
         });
 
         expect(exitCode).toEqual(0);
