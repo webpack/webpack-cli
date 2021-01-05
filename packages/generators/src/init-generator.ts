@@ -4,16 +4,7 @@ import logSymbols from 'log-symbols';
 import path from 'path';
 import { Confirm, Input, List } from './utils/scaffold-utils';
 
-import {
-    getDefaultOptimization,
-    LangType,
-    langQuestionHandler,
-    tooltip,
-    generatePluginName,
-    StylingType,
-    styleQuestionHandler,
-    entryQuestions,
-} from './utils';
+import { LangType, langQuestionHandler, tooltip, generatePluginName, StylingType, styleQuestionHandler, entryQuestions } from './utils';
 import { CustomGenerator } from './types';
 
 const { logger, getPackageManager } = utils;
@@ -59,15 +50,6 @@ export default class InitGenerator extends CustomGenerator {
         };
 
         this.entryOption = './src/index.js';
-
-        // add splitChunks options for transparency
-        // defaults coming from: https://webpack.js.org/plugins/split-chunks-plugin/#optimization-splitchunks
-        this.configuration.config.topScope.push(
-            "const path = require('path');",
-            "const webpack = require('webpack');",
-            '\n',
-            tooltip.splitChunks(),
-        );
 
         (this.configuration.config.webpackOptions.plugins as string[]).push('new webpack.ProgressPlugin()');
     }
@@ -231,12 +213,6 @@ export default class InitGenerator extends CustomGenerator {
 			})`);
         }
 
-        // TerserPlugin
-        this.dependencies.push('terser-webpack-plugin');
-        this.configuration.config.topScope.push(tooltip.terser(), "const TerserPlugin = require('terser-webpack-plugin');", '\n');
-
-        // Chunksplitting
-        this.configuration.config.webpackOptions.optimization = getDefaultOptimization(this.usingDefaults);
         this.configuration.config.webpackOptions.mode = this.usingDefaults ? "'production'" : "'development'";
     }
 
