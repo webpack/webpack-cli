@@ -20,6 +20,7 @@
     "declaration": true
   },
   "references": [
+<<<<<<< HEAD
     {
       "path": "packages/generators"
     },
@@ -41,5 +42,12 @@
     {
       "path": "packages/configtest"
     }
+=======
+    { "path": "packages/generators" },
+    { "path": "packages/info" },
+    { "path": "packages/init" },
+    { "path": "packages/serve" },
+    { "path": "packages/utils" }
+>>>>>>> fix: deprecate migrate package
   ]
 }
