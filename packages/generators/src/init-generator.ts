@@ -4,16 +4,7 @@ import logSymbols from 'log-symbols';
 import path from 'path';
 import { Confirm, Input, List } from './utils/scaffold-utils';
 
-import {
-    getDefaultOptimization,
-    LangType,
-    langQuestionHandler,
-    tooltip,
-    generatePluginName,
-    StylingType,
-    styleQuestionHandler,
-    entryQuestions,
-} from './utils';
+import { LangType, langQuestionHandler, tooltip, generatePluginName, StylingType, styleQuestionHandler, entryQuestions } from './utils';
 import { CustomGenerator } from './types';
 
 const { logger, getPackageManager } = utils;
