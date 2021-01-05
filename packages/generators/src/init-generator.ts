@@ -210,11 +210,6 @@ export default class InitGenerator extends CustomGenerator {
 			})`);
         }
 
-        // TerserPlugin
-        this.dependencies.push('terser-webpack-plugin');
-        this.configuration.config.topScope.push(tooltip.terser(), "const TerserPlugin = require('terser-webpack-plugin');", '\n');
-
-        // Chunksplitting
         this.configuration.config.webpackOptions.mode = this.usingDefaults ? "'production'" : "'development'";
     }
 
