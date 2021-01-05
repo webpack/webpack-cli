@@ -13,12 +13,7 @@ class ConfigTestCommand {
                 pkg: '@webpack-cli/configtest',
             },
             [],
-            async (configPath, program) => {
-                if (program.args.length > 1) {
-                    logger.error('Only one configuration can be validated at a time.');
-                    process.exit(2);
-                }
-
+            async (configPath: string) => {
                 const { options } = await cli.resolveConfig({ config: [configPath] });
 
                 //eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -26,6 +21,7 @@ class ConfigTestCommand {
 
                 if (validationErrors) {
                     logger.error(validationErrors);
+                    process.exit(2);
                 }
 
                 logger.success('There are no validation errors in the given webpack configuration.');

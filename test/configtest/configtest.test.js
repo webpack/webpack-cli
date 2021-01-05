@@ -29,11 +29,19 @@ describe('basic info usage', () => {
         expect(stdout).toBeFalsy();
     });
 
-    it('should throw error when multiple configurations are provided simultaneously', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['configtest', './error.config.js', './webpack.config.js'], false);
+    it('should throw error if configuration does not exist', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['configtest', './a.js'], false);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain('Only one configuration can be validated at a time');
+        expect(stderr).toContain(`The specified config file doesn't exist`);
+        expect(stdout).toBeFalsy();
+    });
+
+    it('should throw error if no configuration was provided', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['configtest'], false);
+
+        expect(exitCode).toBe(2);
+        expect(stderr).toContain(`error: missing required argument 'config-path'`);
         expect(stdout).toBeFalsy();
     });
 });
