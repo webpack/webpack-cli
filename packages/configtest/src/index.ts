@@ -17,17 +17,21 @@ class ConfigTestCommand {
                 const config = await cli.resolveConfig({ config: [configPath] });
 
                 try {
-                    const error = webpack.validate(config.options);
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    const error: any = webpack.validate(config.options);
 
                     // TODO remove this after drop webpack@4
                     if (error && error.length > 0) {
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+                        // @ts-ignore
                         throw new webpack.WebpackOptionsValidationError(error);
                     }
                 } catch (error) {
                     const isValidationError = (error) => {
                         // https://github.com/webpack/webpack/blob/master/lib/index.js#L267
                         // https://github.com/webpack/webpack/blob/v4.44.2/lib/webpack.js#L90
-                        const ValidationError = webpack.ValidationError || webpack.WebpackOptionsValidationError;
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        const ValidationError = (webpack.ValidationError || webpack.WebpackOptionsValidationError) as any;
 
                         return error instanceof ValidationError;
                     };
