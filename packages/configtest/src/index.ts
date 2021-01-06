@@ -1,3 +1,5 @@
+import webpack from 'webpack';
+
 class ConfigTestCommand {
     async apply(cli): Promise<void> {
         const { logger } = cli;
@@ -12,32 +14,30 @@ class ConfigTestCommand {
             },
             [],
             async (configPath: string): Promise<void> => {
-                //eslint-disable-next-line @typescript-eslint/no-var-requires
-                const { validate, version, ValidationError, WebpackOptionsValidationError } = require('webpack');
+                const config = await cli.resolveConfig({ config: [configPath] });
 
-                const isWebpack5: boolean = version.startsWith('5');
-                const { options } = await cli.resolveConfig({ config: [configPath] });
+                try {
+                    const error = webpack.validate(config.options);
 
-                const isValidationError = (error): boolean => {
-                    // https://github.com/webpack/webpack/blob/master/lib/index.js#L267
-                    // https://github.com/webpack/webpack/blob/v4.44.2/lib/webpack.js#L90
-                    //eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    const webpackValidationError: any = ValidationError || WebpackOptionsValidationError;
-
-                    return error instanceof webpackValidationError;
-                };
-
-                //eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const error: any = validate(options);
-
-                if (error && error.length) {
-                    if (isWebpack5) {
-                        logger.error(isValidationError(error) ? error.message : error);
-                    } else {
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-                        // @ts-ignore
-                        logger.error(new WebpackOptionsValidationError(error));
+                    // TODO remove this after drop webpack@4
+                    if (error && error.length > 0) {
+                        throw new webpack.WebpackOptionsValidationError(error);
                     }
+                } catch (error) {
+                    const isValidationError = (error) => {
+                        // https://github.com/webpack/webpack/blob/master/lib/index.js#L267
+                        // https://github.com/webpack/webpack/blob/v4.44.2/lib/webpack.js#L90
+                        const ValidationError = webpack.ValidationError || webpack.WebpackOptionsValidationError;
+
+                        return error instanceof ValidationError;
+                    };
+
+                    if (isValidationError(error)) {
+                        logger.error(error.message);
+                    } else {
+                        logger.error(error);
+                    }
+
                     process.exit(2);
                 }
 
