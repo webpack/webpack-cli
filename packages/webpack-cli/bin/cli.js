@@ -21,7 +21,7 @@ process.title = 'webpack';
 if (packageExists('webpack')) {
     runCLI(process.argv);
 } else {
-    promptInstallation('webpack -W', () => {
+    promptInstallation('webpack', () => {
         error(`It looks like ${yellow('webpack')} is not installed.`);
     })
         .then(() => {
