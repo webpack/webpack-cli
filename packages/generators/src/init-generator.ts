@@ -51,6 +51,8 @@ export default class InitGenerator extends CustomGenerator {
 
         this.entryOption = './src/index.js';
 
+        this.configuration.config.topScope.push("const path = require('path');", "const webpack = require('webpack');", '\n');
+
         (this.configuration.config.webpackOptions.plugins as string[]).push('new webpack.ProgressPlugin()');
     }
 
@@ -190,7 +192,7 @@ export default class InitGenerator extends CustomGenerator {
             this.dependencies.push('webpack-dev-server');
             this.configuration.config.webpackOptions.devServer = {
                 open: true,
-                host: 'localhost',
+                host: "'localhost'",
             };
         }
 
@@ -216,7 +218,7 @@ export default class InitGenerator extends CustomGenerator {
 				})`);
         }
 
-        const { useWorkboxPlugin } = await Confirm(self, 'useDevServer', 'Do you want to add PWA support?', true, this.usingDefaults);
+        const { useWorkboxPlugin } = await Confirm(self, 'useWorkboxPlugin', 'Do you want to add PWA support?', true, this.usingDefaults);
         // webpack Dev Server
         if (useWorkboxPlugin) {
             this.configuration.config.topScope.push("const workboxPlugin = require('workbox-webpack-plugin');", '\n');
