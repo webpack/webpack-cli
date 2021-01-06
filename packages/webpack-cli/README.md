@@ -99,10 +99,10 @@ Options:
   --no-watch-options-stdin   Do not stop watching when stdin stream has ended.
 
 Global options:
-  --color                                    Enable colors on console.
-  --no-color                                 Disable colors on console.
-  -v, --version                              Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  -h, --help [verbose]                       Display help for commands and options.
+  --color                    Enable colors on console.
+  --no-color                 Disable colors on console.
+  -v, --version              Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]       Display help for commands and options.
 ```
 
 ### webpack 5
