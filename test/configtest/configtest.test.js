@@ -8,7 +8,7 @@ describe('basic info usage', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain('There are no errors in the given webpack configuration.');
+        expect(stdout).toContain('There are no validation errors in the given webpack configuration.');
     });
 
     it('should throw validation error', () => {

@@ -7,7 +7,7 @@ class ConfigTestCommand {
                 name: 'configtest <config-path>',
                 alias: 't',
                 description: 'Test your webpack configuration against validation errors.',
-                usage: '[configs]',
+                usage: '<config-path>',
                 pkg: '@webpack-cli/configtest',
             },
             [],
@@ -41,7 +41,7 @@ class ConfigTestCommand {
                     process.exit(2);
                 }
 
-                logger.success('There are no errors in the given webpack configuration.');
+                logger.success('There are no validation errors in the given webpack configuration.');
             },
         );
     }
