@@ -5,12 +5,13 @@ import { devServerOptionsType } from './types';
  * Starts the devServer
  *
  * @param {Object} compiler - a webpack compiler
- * @param {Object} cliOptions - devServer args
+ * @param {Object} devServerCliOptions - dev server CLI options
+ * @param {Object} cliOptions - CLI options
  * @param {Object} logger - logger
  *
  * @returns {Object[]} array of resulting servers
  */
-export default async function startDevServer(compiler, cliOptions, logger): Promise<object[]> {
+export default async function startDevServer(compiler, devServerCliOptions, cliOptions, logger): Promise<object[]> {
     let devServerVersion, Server, findPort;
 
     try {
@@ -25,15 +26,15 @@ export default async function startDevServer(compiler, cliOptions, logger): Prom
         process.exit(2);
     }
 
-    const mergeOptions = (cliOptions: devServerOptionsType, devServerOptions: devServerOptionsType): devServerOptionsType => {
+    const mergeOptions = (devServerOptions: devServerOptionsType, devServerCliOptions: devServerOptionsType): devServerOptionsType => {
         // CLI options should take precedence over devServer options,
         // and CLI options should have no default values included
-        const options = { ...devServerOptions, ...cliOptions };
+        const options = { ...devServerOptions, ...devServerCliOptions };
 
-        if (devServerOptions.client && cliOptions.client) {
+        if (devServerOptions.client && devServerCliOptions.client) {
             // the user could set some client options in their devServer config,
             // then also specify client options on the CLI
-            options.client = { ...devServerOptions.client, ...cliOptions.client };
+            options.client = { ...devServerOptions.client, ...devServerCliOptions.client };
         }
 
         return options;
@@ -59,24 +60,48 @@ export default async function startDevServer(compiler, cliOptions, logger): Prom
     const devServersOptions = [];
 
     for (const compilerWithDevServerOption of compilersWithDevServerOption) {
-        const options = mergeOptions(cliOptions, compilerWithDevServerOption.options.devServer || {});
+        const options = mergeOptions(compilerWithDevServerOption.options.devServer || {}, devServerCliOptions);
 
         if (isDevServer4) {
             options.port = await findPort(options.port);
             options.client = options.client || {};
             options.client.port = options.client.port || options.port;
         } else {
-            if (!options.publicPath) {
-                options.publicPath =
-                    typeof compilerWithDevServerOption.options.output.publicPath === 'undefined' ||
-                    compilerWithDevServerOption.options.output.publicPath === 'auto'
-                        ? '/'
-                        : compilerWithDevServerOption.options.output.publicPath;
-            }
+            const getPublicPathOption = () => {
+                const normalizePublicPath = (publicPath) => (typeof publicPath === 'undefined' || publicPath === 'auto' ? '/' : publicPath);
+
+                if (cliOptions.outputPublicPath) {
+                    return normalizePublicPath(compilerWithDevServerOption.options.output.publicPath);
+                }
+
+                // webpack-dev-server@3
+                if (options.publicPath) {
+                    return normalizePublicPath(options.publicPath);
+                }
+
+                // webpack-dev-server@4
+                if (options.dev && options.dev.publicPath) {
+                    return normalizePublicPath(options.dev.publicPath);
+                }
+
+                return normalizePublicPath(compilerWithDevServerOption.options.output.publicPath);
+            };
+            const getStatsOption = () => {
+                if (cliOptions.stats) {
+                    return compilerWithDevServerOption.options.stats;
+                }
+
+                if (options.stats) {
+                    return options.stats;
+                }
+
+                return compilerWithDevServerOption.options.stats;
+            };
 
             options.host = options.host || 'localhost';
             options.port = options.port || 8080;
-            options.stats = compilerWithDevServerOption.options.stats;
+            options.stats = getStatsOption();
+            options.publicPath = getPublicPathOption();
         }
 
         if (options.port) {

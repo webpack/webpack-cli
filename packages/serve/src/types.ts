@@ -2,7 +2,8 @@ export type devServerOptionsType = {
     bonjour?: boolean;
     client?: devServerClientOptions;
     compress?: boolean;
-    dev?: object;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    dev?: Record<string, any>;
     firewall?: boolean | string[];
     headers?: object;
     historyApiFallback?: boolean | object;

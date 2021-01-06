@@ -108,7 +108,7 @@ class ServeCommand {
                 }
 
                 try {
-                    servers = await startDevServer(compiler, devServerOptions, logger);
+                    servers = await startDevServer(compiler, devServerOptions, options, logger);
                 } catch (error) {
                     if (error.name === 'ValidationError') {
                         logger.error(error.message);
