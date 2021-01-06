@@ -1,4 +1,3 @@
-/* eslint-disable node/no-unpublished-require */
 'use strict';
 
 const { run, isWebpack5 } = require('../../utils/test-utils');
@@ -18,9 +17,38 @@ describe('stats flag', () => {
             expect(stderr).toBeFalsy();
 
             if (isWebpack5) {
-                expect(stdout).toContain(`stats: { preset: '${preset}' }`);
+                expect(stdout).toContain(`preset: '${preset}'`);
             } else {
-                expect(stdout).toContain(`stats: '${preset}'`);
+                switch (preset) {
+                    case 'normal':
+                        expect(stdout).toContain('stats:');
+                        break;
+                    case 'detailed':
+                        expect(stdout).toContain('entrypoints: true');
+                        expect(stdout).toContain('errorDetails: true');
+                        break;
+                    case 'errors-only':
+                        expect(stdout).toContain('all: false');
+                        expect(stdout).toContain('errors: true');
+                        break;
+                    case 'errors-warnings':
+                        expect(stdout).toContain('all: false');
+                        expect(stdout).toContain('errors: true');
+                        expect(stdout).toContain('warnings: true');
+                        break;
+                    case 'minimal':
+                        expect(stdout).toContain('modules: true');
+                        expect(stdout).toContain('maxModules: 0');
+                        break;
+                    case 'verbose':
+                        expect(stdout).toContain("logging: 'verbose'");
+                        break;
+                    case 'none':
+                        expect(stdout).toContain('all: false');
+                        break;
+                    default:
+                        expect(stdout).toContain(`preset: '${preset}'`);
+                }
             }
         });
     }
@@ -32,9 +60,9 @@ describe('stats flag', () => {
         expect(stderr).toBeFalsy();
 
         if (isWebpack5) {
-            expect(stdout).toContain(`stats: { preset: 'normal' }`);
+            expect(stdout).toContain("preset: 'normal'");
         } else {
-            expect(stdout).toContain('stats: true');
+            expect(stdout).toContain('stats:');
         }
     });
 
@@ -45,9 +73,9 @@ describe('stats flag', () => {
         expect(stderr).toBeFalsy();
 
         if (isWebpack5) {
-            expect(stdout).toContain(`stats: { preset: 'none' }`);
+            expect(stdout).toContain("preset: 'none'");
         } else {
-            expect(stdout).toContain('stats: false');
+            expect(stdout).toContain('all: false');
         }
     });
 
