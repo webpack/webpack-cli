@@ -549,7 +549,7 @@ Options:
   --watch-options-ignored-reset                                                      Clear all items provided in configuration. Ignore some files from watching (glob pattern or regexp).
   --watch-options-poll <value>                                                       `number`: use polling with specified interval. `true`: use polling.
   --watch-options-stdin                                                              Stop watching when stdin stream has ended.
-  --no-watch-options-stdin                                                           Negative 'watch-options-stdin' option.
+  --no-watch-options-stdin                                                           Do not stop watching when stdin stream has ended.
 
 Global options:
   --color                                    Enable colors on console.
