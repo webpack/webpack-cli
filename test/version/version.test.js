@@ -139,6 +139,15 @@ describe('single version flag', () => {
         expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
     });
 
+    it('outputs version with migrate', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['migrate', '--version'], false);
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
+        expect(stdout).toContain(`webpack ${webpack.version}`);
+        expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
+    });
+
     it('outputs version with the alias c for init', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['i', '--version'], false);
 

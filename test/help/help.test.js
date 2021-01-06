@@ -153,7 +153,7 @@ describe('help', () => {
         expect(stdout).toContain('Made with ♥ by the webpack team');
     });
 
-    const commands = ['bundle', 'loader', 'plugin', 'info', 'init', 'serve'];
+    const commands = ['bundle', 'loader', 'plugin', 'info', 'init', 'serve', 'migrate'];
 
     commands.forEach((command) => {
         it(`should show help information for '${command}' command using the "--help" option`, () => {
