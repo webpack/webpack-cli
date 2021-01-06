@@ -185,7 +185,7 @@ export default class InitGenerator extends CustomGenerator {
         }
 
         // webpack Dev Server
-        const { useDevServer } = await Confirm(self, 'useDevServer', 'Do you want to use webpack-dev-server?', true, false);
+        const { useDevServer } = await Confirm(self, 'useDevServer', 'Do you want to use webpack-dev-server?', true, this.usingDefaults);
         if (useDevServer) {
             this.dependencies.push('webpack-dev-server');
             this.configuration.config.webpackOptions.devServer = {
@@ -199,7 +199,7 @@ export default class InitGenerator extends CustomGenerator {
             'useHTMLPlugin',
             'Do you want to simplify the creation of HTML files for your bundle?',
             false,
-            false,
+            this.usingDefaults,
         );
         if (useHTMLPlugin) {
             // Html webpack Plugin
@@ -216,7 +216,7 @@ export default class InitGenerator extends CustomGenerator {
 				})`);
         }
 
-        const { useWorkboxPlugin } = await Confirm(self, 'useDevServer', 'Do you want to add PWA support?', true, false);
+        const { useWorkboxPlugin } = await Confirm(self, 'useDevServer', 'Do you want to add PWA support?', true, this.usingDefaults);
         // webpack Dev Server
         if (useWorkboxPlugin) {
             this.configuration.config.topScope.push("const workboxPlugin = require('workbox-webpack-plugin');", '\n');
