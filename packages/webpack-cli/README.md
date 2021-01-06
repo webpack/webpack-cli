@@ -63,15 +63,16 @@ npx webpack-cli --help verbose
 ### Available Commands
 
 ```
-  bundle | b    Run webpack
-  help | h      Display help for commands and options
-  version | v   Output version number of the 'webpack', 'webpack-cli' and other related packages
-  init | c      Initialize a new webpack configuration
-  migrate | m   Migrate a configuration to a new version
-  loader | l    Scaffold a loader repository
-  plugin | p    Scaffold a plugin repository
-  info | i      Outputs information about your system and dependencies
-  serve | s     Run the webpack Dev Server
+  bundle | b      Run webpack
+  help | h        Display help for commands and options
+  version | v     Output version number of the 'webpack', 'webpack-cli' and other related packages
+  init | c        Initialize a new webpack configuration
+  migrate | m     Migrate a configuration to a new version
+  loader | l      Scaffold a loader repository
+  plugin | p      Scaffold a plugin repository
+  info | i        Outputs information about your system and dependencies
+  serve | s       Run the webpack Dev Server
+  configtest | t  Tests webpack configuration against validation errors.
 ```
 
 ### webpack 4
