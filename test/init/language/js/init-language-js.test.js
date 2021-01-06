@@ -17,7 +17,11 @@ describe('init with Typescript', () => {
     });
 
     it('should use typescript', async () => {
-        const { stdout } = await runPromptWithAnswers(genPath, ['init'], [`N${ENTER}`, ENTER, ENTER, `${DOWN}${DOWN}${ENTER}`, ENTER]);
+        const { stdout } = await runPromptWithAnswers(
+            genPath,
+            ['init'],
+            [`N${ENTER}`, ENTER, ENTER, `${DOWN}${DOWN}${ENTER}`, ENTER, ENTER, ENTER, ENTER],
+        );
 
         expect(stdout).toBeTruthy();
         expect(stdout).toContain(firstPrompt);

@@ -19,7 +19,7 @@ describe('init', () => {
     });
 
     it('should scaffold when given answers', async () => {
-        const { stdout } = await runPromptWithAnswers(genPath, ['init'], [`N${ENTER}`, ENTER, ENTER, ENTER, ENTER]);
+        const { stdout } = await runPromptWithAnswers(genPath, ['init'], [`N${ENTER}`, ENTER, ENTER, ENTER, ENTER, ENTER, ENTER, ENTER]);
 
         expect(stdout).toBeTruthy();
         expect(stdout).toContain(firstPrompt);
