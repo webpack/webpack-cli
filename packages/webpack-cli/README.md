@@ -72,7 +72,7 @@ npx webpack-cli --help verbose
   plugin | p      Scaffold a plugin repository
   info | i        Outputs information about your system and dependencies
   serve | s       Run the webpack Dev Server
-  configtest | t  Test any webpack configuration against validation errors.
+  configtest | t  Tests webpack configuration against validation errors.
 ```
 
 ### webpack 4

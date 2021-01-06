@@ -6,7 +6,7 @@ class ConfigTestCommand {
             {
                 name: 'configtest <config-path>',
                 alias: 't',
-                description: 'Test any webpack configuration against validation errors.',
+                description: 'Tests webpack configuration against validation errors.',
                 usage: '<config-path>',
                 pkg: '@webpack-cli/configtest',
             },
