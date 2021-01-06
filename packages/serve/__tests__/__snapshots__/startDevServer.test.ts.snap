@@ -5,6 +5,7 @@ Object {
   "host": "localhost",
   "port": 8080,
   "publicPath": "/",
+  "stats": Object {},
 }
 `;
 
@@ -24,6 +25,7 @@ Object {
   "port": 9000,
   "progress": true,
   "publicPath": "/",
+  "stats": Object {},
 }
 `;
 
@@ -43,6 +45,7 @@ Object {
   "port": 9000,
   "progress": true,
   "publicPath": "/",
+  "stats": Object {},
 }
 `;
 
@@ -60,6 +63,7 @@ Object {
   "port": 9000,
   "progress": true,
   "publicPath": "/",
+  "stats": Object {},
 }
 `;
 
@@ -69,6 +73,7 @@ Object {
   "port": 9001,
   "progress": true,
   "publicPath": "/",
+  "stats": Object {},
 }
 `;
 
