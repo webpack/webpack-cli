@@ -135,3 +135,17 @@ If you use any sort of style in your project, such as [`.less`](http://lesscss.o
 6. `If you want to bundle your CSS files, what will you name the bundle? (press enter to skip)`
 
 If you indicate based on previous questions that you are using production, this will be enabled. The default value for your generated CSS file is `style.[contentHash].css`, which will collect all your `.less`, `.scss` or `.css` into one file. This will make your build faster in production.
+
+7. `Do you want to use webpack-dev-server?`
+
+> _Property/key resolved: [module.rules](https://webpack.js.org/configuration/dev-server/)_
+
+Adds a development server to serve webpack bundles and hence make development faster.
+
+8. `Do you want to simplify the creation of HTML files for your bundle?`
+
+Adds `html-webpack-plugin` that simplifies creation of HTML files to serve your bundles.
+
+9. `Do you want to add PWA support?`
+
+Adds `workbox-webpack-plugin` which generates a complete service worker for you and one that generates a list of assets to precache that is injected into a service worker file.

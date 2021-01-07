@@ -2,6 +2,10 @@
 
 exports[`init generator generates a webpack config that uses ES6 1`] = `
 Object {
+  "devServer": Object {
+    "host": "localhost",
+    "open": true,
+  },
   "mode": "'development'",
   "module": Object {
     "rules": Array [
@@ -14,23 +18,6 @@ Object {
       },
     ],
   },
-  "optimization": Object {
-    "minimizer": Array [
-      "new TerserPlugin()",
-    ],
-    "splitChunks": Object {
-      "cacheGroups": Object {
-        "vendors": Object {
-          "priority": -10,
-          "test": "/[\\\\\\\\/]node_modules[\\\\\\\\/]/",
-        },
-      },
-      "chunks": "'async'",
-      "minChunks": 1,
-      "minSize": 30000,
-      "name": false,
-    },
-  },
   "plugins": Array [
     "new webpack.ProgressPlugin()",
   ],
@@ -39,6 +26,10 @@ Object {
 
 exports[`init generator generates a webpack config that uses Typescript 1`] = `
 Object {
+  "devServer": Object {
+    "host": "localhost",
+    "open": true,
+  },
   "entry": "'./src/index.ts'",
   "mode": "'development'",
   "module": Object {
@@ -54,23 +45,6 @@ Object {
         "test": "/\\\\.(ts|tsx)$/",
       },
     ],
-  },
-  "optimization": Object {
-    "minimizer": Array [
-      "new TerserPlugin()",
-    ],
-    "splitChunks": Object {
-      "cacheGroups": Object {
-        "vendors": Object {
-          "priority": -10,
-          "test": "/[\\\\\\\\/]node_modules[\\\\\\\\/]/",
-        },
-      },
-      "chunks": "'async'",
-      "minChunks": 1,
-      "minSize": 30000,
-      "name": false,
-    },
   },
   "plugins": Array [
     "new webpack.ProgressPlugin()",
@@ -102,6 +76,10 @@ Object {
 
 exports[`init generator generates a webpack config using CSS with mini-css-extract-plugin 1`] = `
 Object {
+  "devServer": Object {
+    "host": "localhost",
+    "open": true,
+  },
   "mode": "'development'",
   "module": Object {
     "rules": Array [
@@ -112,9 +90,6 @@ Object {
             "loader": "MiniCssExtractPlugin.loader",
           },
           Object {
-            "loader": "\\"style-loader\\"",
-          },
-          Object {
             "loader": "\\"css-loader\\"",
             "options": Object {
               "sourceMap": true,
@@ -123,23 +98,6 @@ Object {
         ],
       },
     ],
-  },
-  "optimization": Object {
-    "minimizer": Array [
-      "new TerserPlugin()",
-    ],
-    "splitChunks": Object {
-      "cacheGroups": Object {
-        "vendors": Object {
-          "priority": -10,
-          "test": "/[\\\\\\\\/]node_modules[\\\\\\\\/]/",
-        },
-      },
-      "chunks": "'async'",
-      "minChunks": 1,
-      "minSize": 30000,
-      "name": false,
-    },
   },
   "plugins": Array [
     "new webpack.ProgressPlugin()",
@@ -150,6 +108,10 @@ Object {
 
 exports[`init generator generates a webpack config using CSS without mini-css-extract-plugin 1`] = `
 Object {
+  "devServer": Object {
+    "host": "localhost",
+    "open": true,
+  },
   "mode": "'development'",
   "module": Object {
     "rules": Array [
@@ -169,23 +131,6 @@ Object {
       },
     ],
   },
-  "optimization": Object {
-    "minimizer": Array [
-      "new TerserPlugin()",
-    ],
-    "splitChunks": Object {
-      "cacheGroups": Object {
-        "vendors": Object {
-          "priority": -10,
-          "test": "/[\\\\\\\\/]node_modules[\\\\\\\\/]/",
-        },
-      },
-      "chunks": "'async'",
-      "minChunks": 1,
-      "minSize": 30000,
-      "name": false,
-    },
-  },
   "plugins": Array [
     "new webpack.ProgressPlugin()",
   ],
@@ -194,27 +139,14 @@ Object {
 
 exports[`init generator generates a webpack config with custom entry and output 1`] = `
 Object {
+  "devServer": Object {
+    "host": "localhost",
+    "open": true,
+  },
   "entry": "'./src/index2.js'",
   "mode": "'development'",
   "module": Object {
     "rules": Array [],
-  },
-  "optimization": Object {
-    "minimizer": Array [
-      "new TerserPlugin()",
-    ],
-    "splitChunks": Object {
-      "cacheGroups": Object {
-        "vendors": Object {
-          "priority": -10,
-          "test": "/[\\\\\\\\/]node_modules[\\\\\\\\/]/",
-        },
-      },
-      "chunks": "'async'",
-      "minChunks": 1,
-      "minSize": 30000,
-      "name": false,
-    },
   },
   "output": Object {
     "path": "path.resolve(__dirname, 'dist2')",
@@ -228,36 +160,25 @@ Object {
 exports[`init generator generates a webpack config with default options 1`] = `
 Object {
   "devServer": Object {
+    "host": "localhost",
     "open": true,
   },
   "mode": "'production'",
   "module": Object {
     "rules": Array [],
   },
-  "optimization": Object {
-    "minimizer": Array [
-      "new TerserPlugin()",
-    ],
-    "splitChunks": Object {
-      "chunks": "'all'",
-    },
-  },
   "plugins": Array [
     "new webpack.ProgressPlugin()",
-    "new HtmlWebpackPlugin({
-					template: 'index.html'
-				})",
-    "new workboxPlugin.GenerateSW({
-				swDest: 'sw.js',
-				clientsClaim: true,
-				skipWaiting: false,
-			})",
   ],
 }
 `;
 
 exports[`init generator generates a webpack config with multiple entries 1`] = `
 Object {
+  "devServer": Object {
+    "host": "localhost",
+    "open": true,
+  },
   "entry": Object {
     "test1": "'./dir1/test1.js'",
     "test2": "'./dir2/test2.js'",
@@ -265,23 +186,6 @@ Object {
   "mode": "'development'",
   "module": Object {
     "rules": Array [],
-  },
-  "optimization": Object {
-    "minimizer": Array [
-      "new TerserPlugin()",
-    ],
-    "splitChunks": Object {
-      "cacheGroups": Object {
-        "vendors": Object {
-          "priority": -10,
-          "test": "/[\\\\\\\\/]node_modules[\\\\\\\\/]/",
-        },
-      },
-      "chunks": "'async'",
-      "minChunks": 1,
-      "minSize": 30000,
-      "name": false,
-    },
   },
   "plugins": Array [
     "new webpack.ProgressPlugin()",

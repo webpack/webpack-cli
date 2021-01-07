@@ -182,6 +182,7 @@ const builtInFlags = [
         type: Boolean,
         negative: true,
         description: 'Stop watching when stdin stream has ended.',
+        negatedDescription: 'Do not stop watching when stdin stream has ended.',
     },
 ];
 

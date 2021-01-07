@@ -19,6 +19,16 @@ describe('help', () => {
         expect(stdout).not.toContain('--cache-type'); // verbose
         expect(stdout).toContain('Global options:');
         expect(stdout).toContain('Commands:');
+        expect(stdout.match(/bundle\|b/g)).toHaveLength(1);
+        expect(stdout.match(/version\|v/g)).toHaveLength(1);
+        expect(stdout.match(/help\|h/g)).toHaveLength(1);
+        expect(stdout.match(/serve\|s/g)).toHaveLength(1);
+        expect(stdout.match(/info\|i/g)).toHaveLength(1);
+        expect(stdout.match(/init\|c/g)).toHaveLength(1);
+        expect(stdout.match(/loader\|l/g)).toHaveLength(1);
+        expect(stdout.match(/migrate\|m/g)).toHaveLength(1);
+        expect(stdout.match(/plugin\|p/g)).toHaveLength(1);
+        expect(stdout.match(/configtest\|t/g)).toHaveLength(1);
         expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
         expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
         // TODO buggy on windows
@@ -41,6 +51,15 @@ describe('help', () => {
 
         expect(stdout).toContain('Global options:');
         expect(stdout).toContain('Commands:');
+        expect(stdout.match(/bundle\|b/g)).toHaveLength(1);
+        expect(stdout.match(/version\|v/g)).toHaveLength(1);
+        expect(stdout.match(/help\|h/g)).toHaveLength(1);
+        expect(stdout.match(/serve\|s/g)).toHaveLength(1);
+        expect(stdout.match(/info\|i/g)).toHaveLength(1);
+        expect(stdout.match(/init\|c/g)).toHaveLength(1);
+        expect(stdout.match(/loader\|l/g)).toHaveLength(1);
+        expect(stdout.match(/migrate\|m/g)).toHaveLength(1);
+        expect(stdout.match(/plugin\|p/g)).toHaveLength(1);
         expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
         expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
         expect(coloretteEnabled ? stripAnsi(stdout) : stdout).toContain('Made with ♥ by the webpack team.');

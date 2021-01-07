@@ -4,16 +4,7 @@ import logSymbols from 'log-symbols';
 import path from 'path';
 import { Confirm, Input, List } from './utils/scaffold-utils';
 
-import {
-    getDefaultOptimization,
-    LangType,
-    langQuestionHandler,
-    tooltip,
-    generatePluginName,
-    StylingType,
-    styleQuestionHandler,
-    entryQuestions,
-} from './utils';
+import { LangType, langQuestionHandler, tooltip, generatePluginName, StylingType, styleQuestionHandler, entryQuestions } from './utils';
 import { CustomGenerator } from './types';
 
 const { logger, getPackageManager } = utils;
@@ -59,15 +50,6 @@ export default class InitGenerator extends CustomGenerator {
         };
 
         this.entryOption = './src/index.js';
-
-        // add splitChunks options for transparency
-        // defaults coming from: https://webpack.js.org/plugins/split-chunks-plugin/#optimization-splitchunks
-        this.configuration.config.topScope.push(
-            "const path = require('path');",
-            "const webpack = require('webpack');",
-            '\n',
-            tooltip.splitChunks(),
-        );
 
         (this.configuration.config.webpackOptions.plugins as string[]).push('new webpack.ProgressPlugin()');
     }
@@ -187,6 +169,9 @@ export default class InitGenerator extends CustomGenerator {
                     );
                 }
 
+                // Remove style-loader from the loader chain
+                ExtractUseProps.shift();
+
                 ExtractUseProps.unshift({
                     loader: 'MiniCssExtractPlugin.loader',
                 });
@@ -198,7 +183,25 @@ export default class InitGenerator extends CustomGenerator {
                 use: ExtractUseProps,
             });
         }
-        if (this.usingDefaults) {
+
+        // webpack Dev Server
+        const { useDevServer } = await Confirm(self, 'useDevServer', 'Do you want to use webpack-dev-server?', true, this.usingDefaults);
+        if (useDevServer) {
+            this.dependencies.push('webpack-dev-server');
+            this.configuration.config.webpackOptions.devServer = {
+                open: true,
+                host: 'localhost',
+            };
+        }
+
+        const { useHTMLPlugin } = await Confirm(
+            self,
+            'useHTMLPlugin',
+            'Do you want to simplify the creation of HTML files for your bundle?',
+            false,
+            this.usingDefaults,
+        );
+        if (useHTMLPlugin) {
             // Html webpack Plugin
             this.dependencies.push('html-webpack-plugin');
             const htmlWebpackDependency = 'html-webpack-plugin';
@@ -211,14 +214,11 @@ export default class InitGenerator extends CustomGenerator {
             (this.configuration.config.webpackOptions.plugins as string[]).push(`new ${htmlwebpackPlugin}({
 					template: 'index.html'
 				})`);
+        }
 
-            // webpack Dev Server
-            this.dependencies.push('webpack-dev-server');
-            this.configuration.config.webpackOptions.devServer = {
-                open: true,
-            };
-
-            // PWA + offline support
+        const { useWorkboxPlugin } = await Confirm(self, 'useDevServer', 'Do you want to add PWA support?', true, this.usingDefaults);
+        // webpack Dev Server
+        if (useWorkboxPlugin) {
             this.configuration.config.topScope.push("const workboxPlugin = require('workbox-webpack-plugin');", '\n');
             this.dependencies.push('workbox-webpack-plugin');
             (this.configuration.config.webpackOptions.plugins as string[]).push(`new workboxPlugin.GenerateSW({
@@ -228,12 +228,6 @@ export default class InitGenerator extends CustomGenerator {
 			})`);
         }
 
-        // TerserPlugin
-        this.dependencies.push('terser-webpack-plugin');
-        this.configuration.config.topScope.push(tooltip.terser(), "const TerserPlugin = require('terser-webpack-plugin');", '\n');
-
-        // Chunksplitting
-        this.configuration.config.webpackOptions.optimization = getDefaultOptimization(this.usingDefaults);
         this.configuration.config.webpackOptions.mode = this.usingDefaults ? "'production'" : "'development'";
     }
 

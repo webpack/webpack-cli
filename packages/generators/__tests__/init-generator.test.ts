@@ -113,10 +113,9 @@ describe('init generator', () => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const config = (Object.entries(output)[0][1] as any).configuration.config.webpackOptions;
         expect(config.module.rules[0].test).toEqual('/.css$/');
-        expect(config.module.rules[0].use.length).toEqual(3);
+        expect(config.module.rules[0].use.length).toEqual(2);
         expect(config.module.rules[0].use[0].loader).toEqual('MiniCssExtractPlugin.loader');
-        expect(config.module.rules[0].use[1].loader).toEqual('"style-loader"');
-        expect(config.module.rules[0].use[2].loader).toEqual('"css-loader"');
+        expect(config.module.rules[0].use[1].loader).toEqual('"css-loader"');
         //match config snapshot
         expect(config).toMatchSnapshot();
     });

@@ -18,7 +18,7 @@ export enum LoaderName {
 
 export enum StyleRegex {
     CSS = '/.css$/',
-    SASS = '/.(scss|css)$/',
+    SASS = '/.(sa|sc|c)ss$/',
     LESS = '/.(less|css)$/',
     PostCSS = '/.css$/',
 }

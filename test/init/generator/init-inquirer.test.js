@@ -19,7 +19,7 @@ describe('init', () => {
     });
 
     it('should scaffold when given answers', async () => {
-        const { stdout } = await runPromptWithAnswers(genPath, ['init'], [`N${ENTER}`, ENTER, ENTER, ENTER, ENTER, ENTER]);
+        const { stdout } = await runPromptWithAnswers(genPath, ['init'], [`N${ENTER}`, ENTER, ENTER, ENTER, ENTER, ENTER, ENTER, ENTER]);
 
         expect(stdout).toBeTruthy();
         expect(stdout).toContain(firstPrompt);
@@ -30,11 +30,15 @@ describe('init', () => {
         }
 
         // Test regressively files are scaffolded
-        const files = ['./sw.js', './package.json', './src/index.js'];
+        const files = ['./sw.js', './package.json', './src/index.js', './webpack.config.js'];
 
         files.forEach((file) => {
             expect(fs.existsSync(resolve(genPath, file))).toBeTruthy();
         });
+
+        const webpackConfig = require(join(genPath, 'webpack.config.js'));
+
+        expect(webpackConfig.modules.rules).toEqual([]);
 
         // Check package json is correctly configured
         const pkgJsonTests = () => {

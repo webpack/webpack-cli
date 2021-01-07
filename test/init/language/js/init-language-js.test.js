@@ -17,7 +17,11 @@ describe('init with Typescript', () => {
     });
 
     it('should use typescript', async () => {
-        const { stdout } = await runPromptWithAnswers(genPath, ['init'], [`N${ENTER}`, ENTER, ENTER, `${DOWN}${DOWN}${ENTER}`, ENTER]);
+        const { stdout } = await runPromptWithAnswers(
+            genPath,
+            ['init'],
+            [`N${ENTER}`, ENTER, ENTER, `${DOWN}${DOWN}${ENTER}`, ENTER, ENTER, ENTER, ENTER],
+        );
 
         expect(stdout).toBeTruthy();
         expect(stdout).toContain(firstPrompt);
@@ -33,6 +37,18 @@ describe('init with Typescript', () => {
         files.forEach((file) => {
             expect(fs.existsSync(resolve(genPath, file))).toBeTruthy();
         });
+
+        const webpackConfig = require(join(genPath, 'webpack.config.js'));
+
+        expect(webpackConfig.module.rules).toEqual([
+            {
+                test: /\.(ts|tsx)$/,
+                loader: 'ts-loader',
+                include: [path.resolve(__dirname, 'src')], // eslint-disable-line
+                exclude: [/node_modules/],
+            },
+        ]);
+        expect(webpackConfig.resolve.extensions).toEqual(['.tsx', '.ts', '.js']);
 
         // Check package json is correctly configured
         const pkgJsonTests = () => {

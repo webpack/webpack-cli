@@ -30,6 +30,14 @@ class WebpackCLI {
     }
 
     async makeCommand(commandOptions, options, action) {
+        const alreadyLoaded = this.program.commands.find(
+            (command) => command.name() === commandOptions.name || command.alias() === commandOptions.alias,
+        );
+
+        if (alreadyLoaded) {
+            return;
+        }
+
         const command = this.program.command(commandOptions.name, {
             noHelp: commandOptions.noHelp,
             hidden: commandOptions.hidden,
@@ -219,7 +227,7 @@ class WebpackCLI {
         return flags;
     }
 
-    async run(args) {
+    async run(args, parseOptions) {
         // Built-in internal commands
         const bundleCommandOptions = {
             name: 'bundle',
@@ -271,6 +279,11 @@ class WebpackCLI {
                 alias: 'm',
                 pkg: '@webpack-cli/migrate',
             },
+            {
+                name: 'configtest',
+                alias: 't',
+                pkg: '@webpack-cli/configtest',
+            },
         ];
 
         const knownCommands = [bundleCommandOptions, versionCommandOptions, helpCommandOptions, ...externalBuiltInCommandsInfo];
@@ -305,10 +318,6 @@ class WebpackCLI {
                 // Make `bundle|b [options]` command
                 this.makeCommand(bundleCommandOptions, this.getBuiltInOptions(), async (program) => {
                     const options = program.opts();
-
-                    if (typeof colorFromArguments !== 'undefined') {
-                        options.color = colorFromArguments;
-                    }
 
                     if (program.args.length > 0) {
                         const possibleCommands = [].concat([bundleCommandOptions.name]).concat(program.args);
@@ -441,21 +450,18 @@ class WebpackCLI {
         });
 
         // Default `--color` and `--no-color` options
-        // TODO doesn't work with `webpack serve` (never work, need fix), `--stats` doesn't work too, other options are fine
-        let colorFromArguments;
-
         this.program.option('--color', 'Enable colors on console.');
         this.program.on('option:color', function () {
             const { color } = this.opts();
 
-            colorFromArguments = color;
+            coloretteOptions.changed = true;
             coloretteOptions.enabled = color;
         });
         this.program.option('--no-color', 'Disable colors on console.');
         this.program.on('option:no-color', function () {
             const { color } = this.opts();
 
-            colorFromArguments = color;
+            coloretteOptions.changed = true;
             coloretteOptions.enabled = color;
         });
 
@@ -551,15 +557,11 @@ class WebpackCLI {
             };
 
             if (isGlobal) {
-                const commandsToLoad = []
-                    .concat(bundleCommandOptions)
-                    .concat(helpCommandOptions)
-                    .concat(versionCommandOptions)
-                    .concat(externalBuiltInCommandsInfo);
-
-                for (const commandToLoad of commandsToLoad) {
-                    await loadCommandByName(commandToLoad.name);
-                }
+                await Promise.all(
+                    knownCommands.map((knownCommand) => {
+                        return loadCommandByName(knownCommand.name);
+                    }),
+                );
 
                 const bundleCommand = this.program.commands.find(
                     (command) => command.name() === bundleCommandOptions.name || command.alias() === bundleCommandOptions.alias,
@@ -708,7 +710,7 @@ class WebpackCLI {
             await this.program.parseAsync([commandName, ...options], { from: 'user' });
         });
 
-        await this.program.parseAsync(args);
+        await this.program.parseAsync(args, parseOptions);
     }
 
     async resolveConfig(options) {
@@ -1107,6 +1109,63 @@ class WebpackCLI {
             ? config.options.map((options) => processLegacyArguments(options))
             : processLegacyArguments(config.options);
 
+        // Apply `stats` and `stats.colors` options
+        const applyStatsColors = (configOptions) => {
+            // TODO remove after drop webpack@4
+            const statsForWebpack4 = webpack.Stats && webpack.Stats.presetToOptions;
+
+            if (statsForWebpack4) {
+                if (typeof configOptions.stats === 'undefined') {
+                    configOptions.stats = {};
+                } else if (typeof configOptions.stats === 'boolean' || typeof configOptions.stats === 'string') {
+                    if (
+                        typeof configOptions.stats === 'string' &&
+                        configOptions.stats !== 'none' &&
+                        configOptions.stats !== 'verbose' &&
+                        configOptions.stats !== 'detailed' &&
+                        configOptions.stats !== 'minimal' &&
+                        configOptions.stats !== 'errors-only' &&
+                        configOptions.stats !== 'errors-warnings'
+                    ) {
+                        return configOptions;
+                    }
+
+                    configOptions.stats = webpack.Stats.presetToOptions(configOptions.stats);
+                }
+            } else {
+                if (typeof configOptions.stats === 'undefined') {
+                    configOptions.stats = { preset: 'normal' };
+                } else if (typeof configOptions.stats === 'boolean') {
+                    configOptions.stats = configOptions.stats ? { preset: 'normal' } : { preset: 'none' };
+                } else if (typeof configOptions.stats === 'string') {
+                    configOptions.stats = { preset: configOptions.stats };
+                }
+            }
+
+            let colors;
+
+            // From arguments
+            if (typeof coloretteOptions.changed !== 'undefined') {
+                colors = Boolean(coloretteOptions.enabled);
+            }
+            // From stats
+            else if (typeof configOptions.stats.colors !== 'undefined') {
+                colors = configOptions.stats.colors;
+            }
+            // Default
+            else {
+                colors = Boolean(coloretteOptions.enabled);
+            }
+
+            configOptions.stats.colors = colors;
+
+            return configOptions;
+        };
+
+        config.options = Array.isArray(config.options)
+            ? config.options.map((options) => applyStatsColors(options))
+            : applyStatsColors(config.options);
+
         return config;
     }
 
@@ -1206,53 +1265,19 @@ class WebpackCLI {
                 process.exitCode = 1;
             }
 
-            // TODO remove after drop webpack@4
-            const statsForWebpack4 = webpack.Stats && webpack.Stats.presetToOptions;
-
-            const getStatsOptions = (stats) => {
-                if (statsForWebpack4) {
-                    if (!stats) {
-                        stats = {};
-                    } else if (typeof stats === 'boolean' || typeof stats === 'string') {
-                        stats = webpack.Stats.presetToOptions(stats);
-                    }
-                }
-
-                let colors;
-
-                // From arguments
-                if (typeof options.color !== 'undefined') {
-                    colors = options.color;
-                }
-                // From stats
-                else if (typeof stats.colors !== 'undefined') {
-                    colors = stats.colors;
-                }
-                // Default
-                else {
-                    colors = coloretteOptions.enabled;
-                }
-
-                stats.colors = colors;
-
-                return stats;
-            };
-
             if (!compiler) {
                 return;
             }
 
-            const foundStats = compiler.compilers
-                ? {
-                      children: compiler.compilers.map((compiler) =>
-                          getStatsOptions(compiler.options ? compiler.options.stats : undefined),
-                      ),
-                  }
-                : getStatsOptions(compiler.options ? compiler.options.stats : undefined);
+            const statsOptions = compiler.compilers
+                ? { children: compiler.compilers.map((compiler) => (compiler.options ? compiler.options.stats : undefined)) }
+                : compiler.options
+                ? compiler.options.stats
+                : undefined;
 
             // TODO webpack@4 doesn't support `{ children: [{ colors: true }, { colors: true }] }` for stats
-            if (statsForWebpack4 && compiler.compilers) {
-                foundStats.colors = foundStats.children.some((child) => child.colors);
+            if (compiler.compilers && !compiler.compilers.find(oneOfCompiler => oneOfCompiler.webpack)) {
+                statsOptions.colors = statsOptions.children.some((child) => child.colors);
             }
 
             if (options.json) {
@@ -1262,13 +1287,13 @@ class WebpackCLI {
                 };
 
                 if (options.json === true) {
-                    createJsonStringifyStream(stats.toJson(foundStats))
+                    createJsonStringifyStream(stats.toJson(statsOptions))
                         .on('error', handleWriteError)
                         .pipe(process.stdout)
                         .on('error', handleWriteError)
                         .on('close', () => process.stdout.write('\n'));
                 } else {
-                    createJsonStringifyStream(stats.toJson(foundStats))
+                    createJsonStringifyStream(stats.toJson(statsOptions))
                         .on('error', handleWriteError)
                         .pipe(createWriteStream(options.json))
                         .on('error', handleWriteError)
@@ -1278,11 +1303,11 @@ class WebpackCLI {
                         );
                 }
             } else {
-                const printedStats = stats.toString(foundStats);
+                const printedStats = stats.toString(statsOptions);
 
                 // Avoid extra empty line when `stats: 'none'`
                 if (printedStats) {
-                    logger.raw(`${stats.toString(foundStats)}`);
+                    logger.raw(printedStats);
                 }
             }
         };

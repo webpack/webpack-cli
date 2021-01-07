@@ -8,3 +8,5 @@ test/config/error-commonjs/syntax-error.js
 test/config/error-mjs/syntax-error.mjs
 packages/webpack-cli/__tests__/test-assets/.yo-rc.json
 test/build-errors/stats.json
+packages/**/lib
+test/configtest/syntax-error.config.js

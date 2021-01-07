@@ -1,14 +1,7 @@
 __testfixtures__
 coverage
 node_modules
-packages/generate-loader/lib
-packages/generate-plugin/lib
-packages/generators/lib
-packages/info/lib
-packages/init/lib
-packages/migrate/lib
-packages/serve/lib
-packages/utils/lib
+packages/**/lib
 test/**/dist/
 test/**/bin/
 test/**/binary/
@@ -17,3 +10,4 @@ test/typescript/webpack.config.ts
 test/config/error-commonjs/syntax-error.js
 test/config/error-mjs/syntax-error.mjs
 test/config/error-array/webpack.config.js
+test/configtest/syntax-error.config.js
