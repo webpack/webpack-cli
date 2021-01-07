@@ -32,7 +32,7 @@ const runTest = () => {
         setTimeout(() => {
             console.log('  timeout: killing process');
             proc.kill();
-        }, 1000);
+        }, 5000);
 
         const logMessage = "For using 'serve' command you need to install: 'webpack-dev-server' package";
         const prompt = 'Would you like to install';

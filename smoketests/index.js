@@ -14,7 +14,11 @@ const tests = [require('./missing-packages/webpack-dev-server.test.js'), require
         }
     }
     if (!isAllPassed) {
+        console.log(require.resolve('webpack'));
+        console.log(require.resolve('webpack-dev-server'));
         process.exit(2);
     }
+    console.log(require.resolve('webpack'));
+    console.log(require.resolve('webpack-dev-server'));
     process.exit(0);
 })();
