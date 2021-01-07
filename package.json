@@ -27,6 +27,7 @@
     "prebuild": "yarn clean",
     "prebuild:ci": "yarn clean && node ./scripts/setupBuild.js",
     "build": "tsc --build",
+    "build:ci": "tsc --build",
     "watch": "tsc --build --watch",
     "commit": "git-cz",
     "lint:prettier": "prettier --list-different . \"!**/*.{js,ts}\" ",
