@@ -16,4 +16,36 @@ describe('CLIPluginResolver', () => {
             analyze: undefined,
         });
     });
+
+    it('should add CLI plugin to multi compiler object', async () => {
+        const result = await applyCLIPlugin({ options: [{}, {}] }, { hot: true, prefetch: true });
+        expect(result.options[0].plugins[0] instanceof CLIPlugin).toBeTruthy();
+        expect(result.options[1].plugins[0] instanceof CLIPlugin).toBeTruthy();
+        expect(result.options).toEqual([
+            {
+                plugins: [
+                    new CLIPlugin({
+                        configPath: undefined,
+                        helpfulOutput: true,
+                        hot: true,
+                        progress: undefined,
+                        prefetch: true,
+                        analyze: undefined,
+                    }),
+                ],
+            },
+            {
+                plugins: [
+                    new CLIPlugin({
+                        configPath: undefined,
+                        helpfulOutput: true,
+                        hot: true,
+                        progress: undefined,
+                        prefetch: true,
+                        analyze: undefined,
+                    }),
+                ],
+            },
+        ]);
+    });
 });
