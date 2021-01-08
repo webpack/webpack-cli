@@ -5,7 +5,7 @@ const { run } = require('../../../utils/test-utils');
 
 describe('function configuration', () => {
     it('should throw when env is not supplied', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--env'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--env']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain(`option '--env <value...>' argument missing`);
@@ -19,7 +19,7 @@ describe('function configuration', () => {
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
         // Should generate the appropriate files
-        expect(existsSync(resolve(__dirname, './bin/prod.js'))).toBeTruthy();
+        expect(existsSync(resolve(__dirname, './dist/prod.js'))).toBeTruthy();
     });
 
     it('is able to understand a configuration file as a function', () => {
@@ -29,7 +29,7 @@ describe('function configuration', () => {
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
         // Should generate the appropriate files
-        expect(existsSync(resolve(__dirname, './bin/dev.js'))).toBeTruthy();
+        expect(existsSync(resolve(__dirname, './dist/dev.js'))).toBeTruthy();
     });
 
     it('Supports passing string in env', () => {
@@ -46,7 +46,7 @@ describe('function configuration', () => {
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
         // Should generate the appropriate files
-        expect(existsSync(resolve(__dirname, './bin/Luffy.js'))).toBeTruthy();
+        expect(existsSync(resolve(__dirname, './dist/Luffy.js'))).toBeTruthy();
     });
 
     it('Supports long nested values in env', () => {
@@ -63,7 +63,7 @@ describe('function configuration', () => {
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
         // Should generate the appropriate files
-        expect(existsSync(resolve(__dirname, './bin/Atsumu.js'))).toBeTruthy();
+        expect(existsSync(resolve(__dirname, './dist/Atsumu.js'))).toBeTruthy();
     });
 
     it('Supports multiple equal in a string', () => {
@@ -80,7 +80,7 @@ describe('function configuration', () => {
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
         // Should generate the appropriate files
-        expect(existsSync(resolve(__dirname, './bin/name=is=Eren.js'))).toBeTruthy();
+        expect(existsSync(resolve(__dirname, './dist/name=is=Eren.js'))).toBeTruthy();
     });
 
     it('Supports dot at the end', () => {
@@ -97,7 +97,7 @@ describe('function configuration', () => {
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
         // Should generate the appropriate files
-        expect(existsSync(resolve(__dirname, './bin/Hisoka.js'))).toBeTruthy();
+        expect(existsSync(resolve(__dirname, './dist/Hisoka.js'))).toBeTruthy();
     });
 
     it('Supports dot at the end', () => {
@@ -107,7 +107,7 @@ describe('function configuration', () => {
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
         // Should generate the appropriate files
-        expect(existsSync(resolve(__dirname, './bin/true.js'))).toBeTruthy();
+        expect(existsSync(resolve(__dirname, './dist/true.js'))).toBeTruthy();
     });
 
     it('is able to understand multiple env flags', (done) => {
@@ -120,7 +120,7 @@ describe('function configuration', () => {
         expect(stdout).toContain('LOG from webpack');
 
         // check if the values from DefinePlugin make it to the compiled code
-        readFile(resolve(__dirname, './bin/dev.js'), 'utf-8', (err, data) => {
+        readFile(resolve(__dirname, './dist/dev.js'), 'utf-8', (err, data) => {
             expect(err).toBe(null);
             expect(data).toContain('env message present');
             done();

@@ -40,24 +40,20 @@ const hyphenToUpperCase = (name) => {
  *
  * @param {String} testCase The path to folder that contains the webpack.config.js
  * @param {Array} args Array of arguments to pass to webpack
- * @param {Boolean} setOutput Boolean that decides if a default output path will be set or not
  * @param {Array<string>} nodeOptions Boolean that decides if a default output path will be set or not
  * @param {Record<string, any>} env Boolean that decides if a default output path will be set or not
  * @returns {Object} The webpack output or Promise when nodeOptions are present
  */
-const run = (testCase, args = [], setOutput = true, nodeOptions = [], env) => {
+const run = (testCase, args = [], options = {}) => {
     const cwd = path.resolve(testCase);
-
-    const outputPath = path.resolve(testCase, 'bin');
+    const { nodeOptions = [] } = options;
     const processExecutor = nodeOptions.length ? execaNode : spawnSync;
-    const argsWithOutput = setOutput ? args.concat('--output-path', outputPath) : args;
-    const result = processExecutor(WEBPACK_PATH, argsWithOutput, {
+    const result = processExecutor(WEBPACK_PATH, args, {
         cwd,
         reject: false,
-        nodeOptions: nodeOptions,
-        env,
         stdio: ENABLE_LOG_COMPILATION ? 'inherit' : 'pipe',
         maxBuffer: Infinity,
+        ...options,
     });
 
     return result;
@@ -252,7 +248,7 @@ const runInstall = async (cwd) => {
     });
 };
 
-const runServe = (args, testPath) => {
+const runServe = (testPath, args) => {
     return runWatch(testPath, ['serve'].concat(args), false);
 };
 

@@ -6,8 +6,8 @@ const execa = require('execa');
 const { sync: spawnSync } = execa;
 const { run, isWebpack5 } = require('../../utils/test-utils');
 
-const devFile = path.join(__dirname, './bin/dev.js');
-const prodFile = path.join(__dirname, './bin/prod.js');
+const devFile = path.join(__dirname, './dist/dev.js');
+const prodFile = path.join(__dirname, './dist/prod.js');
 
 describe('env array', () => {
     it('is able to set two different environments for an array configuration', () => {
