@@ -87,16 +87,16 @@ jobs:
       - name: Install webpack ${{ matrix.webpack-version }}
         run: yarn add -W webpack@${{ matrix.webpack-version }}
 
-      - name: Build and Bootstrap
-        run: |
-          yarn build:ci
-          yarn run lerna bootstrap
-
       - name: Run Smoketests
         run: yarn test:smoketests
 
+      - name: Build
+        run: |
+          yarn build:ci
+
       - name: Test and Generate Coverage
         run: |
+          yarn run lerna bootstrap
           yarn prepsuite
           yarn test:coverage
 

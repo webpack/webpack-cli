@@ -3,10 +3,11 @@ const execa = require('execa');
 const { renameSync } = require('fs');
 const stripAnsi = require('strip-ansi');
 
-const CLI_ENTRY_PATH = path.resolve(__dirname, '../../packages/webpack-cli/bin/cli.js');
+const ROOT = process.env.GITHUB_WORKSPACE ? process.env.GITHUB_WORKSPACE : path.resolve(__dirname, '../../');
+const CLI_ENTRY_PATH = path.resolve(ROOT, './packages/webpack-cli/bin/cli.js');
 
 const getPkgPath = (pkg) => {
-    return path.resolve(__dirname, `../../node_modules/${pkg}`);
+    return path.resolve(ROOT, `./node_modules/${pkg}`);
 };
 
 const swapPkgName = (current, next) => {
