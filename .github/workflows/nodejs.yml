@@ -84,22 +84,21 @@ jobs:
           yarn
           yarn bootstrap
 
-      - name: Build
-        run: |
-          yarn bootstrap
-          yarn build:ci
-
-      - name: Run Smoketests
-        run: yarn test:smoketests
-
       - name: Install webpack ${{ matrix.webpack-version }}
         run: yarn add -W webpack@${{ matrix.webpack-version }}
+
+      - name: Build
+        run: |
+          yarn build:ci
 
       - name: Test and Generate Coverage
         run: |
           yarn run lerna bootstrap
           yarn prepsuite
           yarn test:coverage
+
+      - name: Run Smoketests
+        run: yarn test:smoketests
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
