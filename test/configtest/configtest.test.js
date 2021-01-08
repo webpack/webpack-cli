@@ -1,6 +1,7 @@
 'use strict';
 
 const { run } = require('../utils/test-utils');
+const path = require('path');
 
 describe('basic info usage', () => {
     it('should validate webpack config successfully', () => {
@@ -50,6 +51,14 @@ describe('basic info usage', () => {
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain(`error: missing required argument 'config-path'`);
+        expect(stdout).toBeFalsy();
+    });
+
+    it('should throw when non-existent config is provided', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['configtest', './no.js'], false);
+
+        expect(exitCode).toBe(2);
+        expect(stderr).toContain(`The specified config file doesn't exist in '${path.join(__dirname, './no.js')}'`);
         expect(stdout).toBeFalsy();
     });
 });
