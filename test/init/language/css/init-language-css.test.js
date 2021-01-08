@@ -20,7 +20,7 @@ describe('init with SCSS', () => {
         const { stdout } = await runPromptWithAnswers(
             genPath,
             ['init'],
-            [`N${ENTER}`, ENTER, ENTER, ENTER, `${DOWN}${DOWN}${ENTER}`, `Y${ENTER}`, `apple${ENTER}`],
+            [`N${ENTER}`, ENTER, ENTER, ENTER, `${DOWN}${DOWN}${ENTER}`, `Y${ENTER}`, `apple${ENTER}`, ENTER, ENTER, ENTER],
         );
 
         expect(stdout).toBeTruthy();

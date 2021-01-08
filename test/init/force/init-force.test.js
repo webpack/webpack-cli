@@ -19,7 +19,11 @@ describe('init force flag', () => {
     });
 
     it('should scaffold webpack config', async () => {
-        const { stdout } = await runPromptWithAnswers(genPath, ['init', '--force'], [`N${ENTER}`, ENTER, ENTER, ENTER, ENTER]);
+        const { stdout } = await runPromptWithAnswers(
+            genPath,
+            ['init', '--force'],
+            [`N${ENTER}`, ENTER, ENTER, ENTER, ENTER, ENTER, ENTER, ENTER],
+        );
 
         expect(stdout).toBeTruthy();
         expect(stdout).toContain(firstPrompt);

@@ -1,14 +1,7 @@
 const { resolve } = require('path');
-const { version } = require('webpack');
 const webpackCLI = require('../lib/webpack-cli');
 
 const targetValues = ['web', 'webworker', 'node', 'async-node', 'node-webkit', 'electron-main', 'electron-renderer', 'electron-preload'];
-const statsPresets = ['normal', 'detailed', 'errors-only', 'errors-warnings', 'minimal', 'verbose', 'none'];
-
-if (version.startsWith('5')) {
-    statsPresets.push('summary');
-}
-
 const applyOptions = new webpackCLI().applyOptions;
 
 describe('BasicResolver', () => {
@@ -76,25 +69,11 @@ describe('BasicResolver', () => {
         expect(result.options).toMatchObject({ mode: 'development' });
     });
 
-    it('should assign stats correctly', async () => {
-        const result = await applyOptions({ options: {} }, { stats: 'errors-warnings' });
-
-        expect(result.options.stats).toEqual('errors-warnings');
-    });
-
     targetValues.map((option) => {
         it(`should handle ${option} option`, async () => {
             const result = await applyOptions({ options: {} }, { target: option });
 
             expect(result.options.target).toEqual(option);
-        });
-    });
-
-    statsPresets.map((preset) => {
-        it(`should handle ${preset} preset`, async () => {
-            const result = await applyOptions({ options: {} }, { stats: preset });
-
-            expect(result.options.stats).toEqual(preset);
         });
     });
 });

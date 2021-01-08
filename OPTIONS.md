@@ -559,14 +559,15 @@ Global options:
 
 Commands:
   bundle|b [options]                         Run webpack (default command, can be omitted).
-  help|h                                     Display help for commands and options.
   version|v                                  Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  help|h                                     Display help for commands and options.
   serve|s [options]                          Run the webpack dev server.
   info|i [options]                           Outputs information about your system.
   init|c [options] [scaffold...]             Initialize a new webpack configuration.
   loader|l [output-path]                     Scaffold a loader.
-  plugin|p [output-path]                     Scaffold a plugin.
   migrate|m <config-path> [new-config-path]  Migrate a configuration to a new version.
+  configtest|t <config-path>                 Tests webpack configuration against validation errors.
+  plugin|p [output-path]                     Scaffold a plugin.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 

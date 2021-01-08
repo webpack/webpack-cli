@@ -28,6 +28,7 @@ describe('help', () => {
         expect(stdout.match(/loader\|l/g)).toHaveLength(1);
         expect(stdout.match(/migrate\|m/g)).toHaveLength(1);
         expect(stdout.match(/plugin\|p/g)).toHaveLength(1);
+        expect(stdout.match(/configtest\|t/g)).toHaveLength(1);
         expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
         expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
         // TODO buggy on windows

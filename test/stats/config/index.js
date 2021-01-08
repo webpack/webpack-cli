@@ -1,4 +1,1 @@
-require('react');
-require('react-dom');
-require('redux');
-require('react-redux');
+console.log('HERE');
