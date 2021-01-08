@@ -144,6 +144,7 @@ describe('single version flag', () => {
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
+        expect(stdout).toContain(`@webpack-cli/migrate`);
         expect(stdout).toContain(`webpack ${webpack.version}`);
         expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
     });

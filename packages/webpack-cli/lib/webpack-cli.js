@@ -349,6 +349,7 @@ class WebpackCLI {
                 } else {
                     pkg = commandName;
                 }
+
                 if (pkg !== 'webpack-cli' && !getPkg(pkg)) {
                     if (!allowToInstall) {
                         return;
