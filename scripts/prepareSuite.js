@@ -10,8 +10,6 @@ const getFoldersWithPackage = (stats, file) => {
     return stats.isFile() && file === PACKAGE;
 };
 
-console.log(`DEBUG: ${require('webpack').version}`);
-
 (async () => {
     try {
         const folders = collectTestFolders(getFoldersWithPackage);
@@ -22,6 +20,7 @@ console.log(`DEBUG: ${require('webpack').version}`);
             });
         }
         console.log(green(' Successfully prepared the test suite '));
+        console.log(`DEBUG: ${require('webpack').version}`);
     } catch (e) {
         console.error(red(' Unable to prepare the test suite '));
         console.error(e.stack);

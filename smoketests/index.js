@@ -20,6 +20,7 @@ const tests = [require('./missing-packages/webpack-dev-server.test.js'), require
     }
     console.log(process.env.GITHUB_WORKSPACE);
     console.log(require.resolve('webpack'));
+    console.log(require('webpack').version);
     console.log(require.resolve('webpack-dev-server'));
     process.exit(0);
 })();
