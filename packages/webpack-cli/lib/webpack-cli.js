@@ -1169,7 +1169,7 @@ class WebpackCLI {
         return config;
     }
 
-    async applyCLIPlugin(config, options) {
+    async applyCLIPlugin(config, cliOptions) {
         const addCLIPlugin = (configOptions) => {
             if (!configOptions.plugins) {
                 configOptions.plugins = [];
@@ -1178,17 +1178,16 @@ class WebpackCLI {
             configOptions.plugins.unshift(
                 new CLIPlugin({
                     configPath: config.path,
-                    helpfulOutput: !options.json,
-                    hot: options.hot,
-                    progress: options.progress,
-                    prefetch: options.prefetch,
-                    analyze: options.analyze,
+                    helpfulOutput: !cliOptions.json,
+                    hot: cliOptions.hot,
+                    progress: cliOptions.progress,
+                    prefetch: cliOptions.prefetch,
+                    analyze: cliOptions.analyze,
                 }),
             );
 
             return configOptions;
         };
-
         config.options = Array.isArray(config.options)
             ? config.options.map((options) => addCLIPlugin(options))
             : addCLIPlugin(config.options);
