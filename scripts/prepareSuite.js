@@ -10,6 +10,8 @@ const getFoldersWithPackage = (stats, file) => {
     return stats.isFile() && file === PACKAGE;
 };
 
+console.log(`DEBUG: ${require('webpack').version}`);
+
 (async () => {
     try {
         const folders = collectTestFolders(getFoldersWithPackage);
