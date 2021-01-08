@@ -84,20 +84,19 @@ jobs:
           yarn
           yarn bootstrap
 
-      - name: Build
+      - name: Install webpack ${{ matrix.webpack-version }}
+        run: yarn add -W webpack@${{ matrix.webpack-version }}
+
+      - name: Build and Bootstrap
         run: |
-          yarn bootstrap
           yarn build:ci
+          yarn run lerna bootstrap
 
       - name: Run Smoketests
         run: yarn test:smoketests
 
-      - name: Install webpack ${{ matrix.webpack-version }}
-        run: yarn add -W webpack@${{ matrix.webpack-version }}
-
       - name: Test and Generate Coverage
         run: |
-          yarn run lerna bootstrap
           yarn prepsuite
           yarn test:coverage
 
