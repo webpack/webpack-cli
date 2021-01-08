@@ -28,9 +28,8 @@ export type devServerOptionsType = {
     static?: boolean | string | object | (string | object)[];
     transportMode?: object | string;
     useLocalIp?: boolean;
-    publicPath?: undefined;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    stats?: any;
+    publicPath?: string | Function;
+    stats?: string | boolean;
 };
 
 type devServerClientOptions = {
