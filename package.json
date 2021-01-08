@@ -57,8 +57,6 @@
     "webpack": "4.x.x || 5.x.x"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.3",
-    "@babel/preset-env": "^7.12.1",
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-lerna-scopes": "^11.0.0",
     "@types/jest": "^26.0.15",
