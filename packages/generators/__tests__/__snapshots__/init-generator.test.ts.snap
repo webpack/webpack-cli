@@ -188,7 +188,7 @@ Object {
     "host": "'localhost'",
     "open": true,
   },
-  "mode": "'production'",
+  "mode": "'development'",
   "module": Object {
     "rules": Array [],
   },

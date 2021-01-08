@@ -34,7 +34,7 @@ describe('init force flag', () => {
         }
 
         // Test regressively files are scaffolded
-        const files = ['./sw.js', './package.json', './src/index.js', './webpack.config.js'];
+        const files = ['./package.json', './src/index.js', './webpack.config.js'];
 
         files.forEach((file) => {
             expect(fs.existsSync(resolve(genPath, file))).toBeTruthy();

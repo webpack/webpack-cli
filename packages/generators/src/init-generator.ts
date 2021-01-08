@@ -19,7 +19,6 @@ const { logger, getPackageManager } = utils;
  *
  */
 export default class InitGenerator extends CustomGenerator {
-    public usingDefaults: boolean;
     public autoGenerateConfig: boolean;
     public generationPath: string;
     private langType: string;
@@ -27,7 +26,6 @@ export default class InitGenerator extends CustomGenerator {
     public constructor(args, opts) {
         super(args, opts);
 
-        this.usingDefaults = true;
         this.autoGenerateConfig = opts.autoSetDefaults ? true : false;
         this.generationPath = opts.generationPath;
 
@@ -60,8 +58,6 @@ export default class InitGenerator extends CustomGenerator {
         // eslint-disable-next-line @typescript-eslint/no-this-alias
         const self: this = this;
 
-        this.usingDefaults = true;
-
         logger.log(
             `\n${logSymbols.info}${blue(' INFO ')} ` +
                 'For more information and a detailed description of each question, have a look at: ' +
@@ -80,14 +76,12 @@ export default class InitGenerator extends CustomGenerator {
         const entryOption: string | object = await entryQuestions(self, multiEntries, this.autoGenerateConfig);
 
         if (typeof entryOption === 'string') {
-            // single entry
+            // single entry apply when default is not used
             if (entryOption.length > 0 && entryOption !== "'./src/index.js'") {
-                this.usingDefaults = false;
                 this.configuration.config.webpackOptions.entry = entryOption;
             }
         } else if (typeof entryOption === 'object') {
             // multiple entries
-            this.usingDefaults = false;
             this.configuration.config.webpackOptions.entry = entryOption;
         }
 
@@ -101,10 +95,8 @@ export default class InitGenerator extends CustomGenerator {
             this.autoGenerateConfig,
         );
 
-        const defaultOutputDir = !outputDir || outputDir === 'dist';
-
-        if (!defaultOutputDir) {
-            this.usingDefaults = false;
+        // only apply when output dir is not default
+        if (outputDir !== 'dist') {
             this.configuration.config.webpackOptions.output = {
                 path: `path.resolve(__dirname, '${outputDir}')`,
             };
@@ -121,9 +113,6 @@ export default class InitGenerator extends CustomGenerator {
 
         langQuestionHandler(this, langType);
         this.langType = langType;
-        if (this.langType !== 'No') {
-            this.usingDefaults = false;
-        }
 
         const { stylingType } = await List(
             self,
@@ -134,9 +123,6 @@ export default class InitGenerator extends CustomGenerator {
             this.autoGenerateConfig,
         );
         const { ExtractUseProps, regExpForStyles } = styleQuestionHandler(self, stylingType);
-        if (stylingType !== 'No') {
-            this.usingDefaults = false;
-        }
 
         if (regExpForStyles) {
             // Ask if the user wants to use extractPlugin
@@ -187,7 +173,13 @@ export default class InitGenerator extends CustomGenerator {
         }
 
         // webpack Dev Server
-        const { useDevServer } = await Confirm(self, 'useDevServer', 'Do you want to use webpack-dev-server?', true, this.usingDefaults);
+        const { useDevServer } = await Confirm(
+            self,
+            'useDevServer',
+            'Do you want to use webpack-dev-server?',
+            true,
+            this.autoGenerateConfig,
+        );
         if (useDevServer) {
             this.dependencies.push('webpack-dev-server');
             this.configuration.config.webpackOptions.devServer = {
@@ -201,7 +193,7 @@ export default class InitGenerator extends CustomGenerator {
             'useHTMLPlugin',
             'Do you want to simplify the creation of HTML files for your bundle?',
             false,
-            this.usingDefaults,
+            this.autoGenerateConfig,
         );
         if (useHTMLPlugin) {
             // Html webpack Plugin
@@ -218,7 +210,13 @@ export default class InitGenerator extends CustomGenerator {
 				})`);
         }
 
-        const { useWorkboxPlugin } = await Confirm(self, 'useWorkboxPlugin', 'Do you want to add PWA support?', true, this.usingDefaults);
+        const { useWorkboxPlugin } = await Confirm(
+            self,
+            'useWorkboxPlugin',
+            'Do you want to add PWA support?',
+            true,
+            this.autoGenerateConfig,
+        );
         // webpack Dev Server
         if (useWorkboxPlugin) {
             this.configuration.config.topScope.push("const workboxPlugin = require('workbox-webpack-plugin');", '\n');
@@ -230,7 +228,7 @@ export default class InitGenerator extends CustomGenerator {
 			})`);
         }
 
-        this.configuration.config.webpackOptions.mode = this.usingDefaults ? "'production'" : "'development'";
+        this.configuration.config.webpackOptions.mode = this.autoGenerateConfig ? "'production'" : "'development'";
     }
 
     public installPlugins(): void {
@@ -244,12 +242,11 @@ export default class InitGenerator extends CustomGenerator {
     }
 
     public writing(): void {
-        this.configuration.usingDefaults = this.usingDefaults;
         this.config.set('configuration', this.configuration);
 
         const packageJsonTemplatePath = '../templates/package.json.js';
         // eslint-disable-next-line @typescript-eslint/no-var-requires
-        this.fs.extendJSON(this.destinationPath('package.json'), require(packageJsonTemplatePath)(this.usingDefaults));
+        this.fs.extendJSON(this.destinationPath('package.json'), require(packageJsonTemplatePath)(this.autoGenerateConfig));
 
         const generateEntryFile = (entryPath: string, name: string): void => {
             entryPath = entryPath.replace(/'/g, '');
@@ -268,10 +265,7 @@ export default class InitGenerator extends CustomGenerator {
         this.fs.copyTpl(path.resolve(__dirname, '../templates/README.md'), this.destinationPath('README.md'), {});
 
         // Generate HTML template file, copy the default service worker
-        if (this.usingDefaults) {
-            this.fs.copyTpl(path.resolve(__dirname, '../templates/template.html'), this.destinationPath('index.html'), {});
-            this.fs.copyTpl(path.resolve(__dirname, '../templates/sw.js'), this.destinationPath('sw.js'), {});
-        }
+        this.fs.copyTpl(path.resolve(__dirname, '../templates/template.html'), this.destinationPath('index.html'), {});
 
         if (this.langType === LangType.ES6) {
             this.fs.copyTpl(path.resolve(__dirname, '../templates/.babelrc'), this.destinationPath('.babelrc'), {});
