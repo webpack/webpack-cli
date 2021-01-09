@@ -68,15 +68,15 @@ describe('basic serve usage', () => {
     });
 
     it('should work with the "--stats" option', async () => {
-        const { stderr, stdout } = await runServe(['--stats'], __dirname);
+        const { stderr, stdout } = await runServe(__dirname, ['--stats']);
 
         expect(stderr).toBeFalsy();
         expect(stripAnsi(stdout)).toContain(isWebpack5 ? 'compiled successfully' : 'Version: webpack');
         expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
     });
 
-    it('should work with the "--stats detailed" option', async () => {
-        const { stderr, stdout } = await runServe(['--stats', 'verbose'], __dirname);
+    it('should work with the "--stats verbose" option', async () => {
+        const { stderr, stdout } = await runServe(__dirname, ['--stats', 'verbose']);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain(isWebpack5 ? 'from webpack.Compiler' : 'webpack.buildChunkGraph.visitModules');
