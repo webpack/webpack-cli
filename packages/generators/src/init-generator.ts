@@ -244,13 +244,13 @@ export default class InitGenerator extends CustomGenerator {
     public writing(): void {
         this.config.set('configuration', this.configuration);
 
-        const packageJsonTemplatePath = '../templates/package.json.js';
+        const packageJsonTemplatePath = '../init-template/package.json.js';
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         this.fs.extendJSON(this.destinationPath('package.json'), require(packageJsonTemplatePath)(this.autoGenerateConfig));
 
         const generateEntryFile = (entryPath: string, name: string): void => {
             entryPath = entryPath.replace(/'/g, '');
-            this.fs.copyTpl(path.resolve(__dirname, '../templates/index.js'), this.destinationPath(entryPath), { name });
+            this.fs.copyTpl(path.resolve(__dirname, '../init-template/index.js'), this.destinationPath(entryPath), { name });
         };
 
         // Generate entry file/files
@@ -262,16 +262,16 @@ export default class InitGenerator extends CustomGenerator {
         }
 
         // Generate README
-        this.fs.copyTpl(path.resolve(__dirname, '../templates/README.md'), this.destinationPath('README.md'), {});
+        this.fs.copyTpl(path.resolve(__dirname, '../init-template/README.md'), this.destinationPath('README.md'), {});
 
         // Generate HTML template file, copy the default service worker
-        this.fs.copyTpl(path.resolve(__dirname, '../templates/template.html'), this.destinationPath('index.html'), {});
+        this.fs.copyTpl(path.resolve(__dirname, '../init-template/template.html'), this.destinationPath('index.html'), {});
 
         if (this.langType === LangType.ES6) {
-            this.fs.copyTpl(path.resolve(__dirname, '../templates/.babelrc'), this.destinationPath('.babelrc'), {});
+            this.fs.copyTpl(path.resolve(__dirname, '../init-template/.babelrc'), this.destinationPath('.babelrc'), {});
         } else if (this.langType === LangType.Typescript) {
             // Generate tsconfig
-            const tsConfigTemplatePath = '../templates/tsconfig.json.js';
+            const tsConfigTemplatePath = '../init-template/tsconfig.json.js';
             // eslint-disable-next-line @typescript-eslint/no-var-requires
             this.fs.extendJSON(this.destinationPath('tsconfig.json'), require(tsConfigTemplatePath));
         }

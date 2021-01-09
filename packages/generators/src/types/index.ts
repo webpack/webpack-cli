@@ -247,4 +247,5 @@ export class CustomGenerator extends Generator {
     };
     public isProd: boolean;
     public dependencies: string[];
+    public getTemplatePath: (template: string) => string;
 }
