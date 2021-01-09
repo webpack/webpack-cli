@@ -16,7 +16,7 @@ This folder is the collection of those packages.
 1. [generators](https://github.com/webpack/webpack-cli/tree/master/packages/generators)
 2. [info](https://github.com/webpack/webpack-cli/tree/master/packages/info)
 3. [init](https://github.com/webpack/webpack-cli/tree/master/packages/init)
-4. [migrate](https://github.com/webpack/webpack-cli/tree/master/packages/migrate)
+4. [migrate](https://www.npmjs.com/package/@webpack-cli/migrate)
 5. [serve](https://github.com/webpack/webpack-cli/tree/master/packages/serve)
 6. [utils](https://github.com/webpack/webpack-cli/tree/master/packages/utils)
 7. [webpack-cli](https://github.com/webpack/webpack-cli/tree/master/packages/webpack-cli)

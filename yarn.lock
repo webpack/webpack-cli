@@ -1790,7 +1790,7 @@
   resolved "https://registry.yarnpkg.com/@types/debug/-/debug-4.1.5.tgz#b14efa8852b7768d898906613c23f688713e02cd"
   integrity sha512-Q1y515GcOdTHgagaVFhHnIFQ38ygs/kmxdNpvpou+raI9UO3YZcHDngBSYKQklcKlvA7iuQlmIKbzvmxcOE9CQ==
 
-"@types/diff@*", "@types/diff@^4.0.2":
+"@types/diff@*":
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/@types/diff/-/diff-4.0.2.tgz#2e9bb89f9acc3ab0108f0f3dc4dbdcf2fff8a99c"
   integrity sha512-mIenTfsIe586/yzsyfql69KRnA75S8SVXQbTLpDejRrjH0QSJcpu3AUOi/Vjnt9IOsXKxPhJfGpQUNMueIU1fQ==
@@ -1860,7 +1860,7 @@
   resolved "https://registry.yarnpkg.com/@types/http-cache-semantics/-/http-cache-semantics-4.0.0.tgz#9140779736aa2655635ee756e2467d787cfe8a2a"
   integrity sha512-c3Xy026kOF7QOTn00hbIllV1dLR9hG9NkSrLQgCVs8NF6sBU+VGWjD3wLPhmh1TYAc7ugCFsvHYMN4VcBN1U1A==
 
-"@types/inquirer@*", "@types/inquirer@^7.3.1":
+"@types/inquirer@*":
   version "7.3.1"
   resolved "https://registry.yarnpkg.com/@types/inquirer/-/inquirer-7.3.1.tgz#1f231224e7df11ccfaf4cf9acbcc3b935fea292d"
   integrity sha512-osD38QVIfcdgsPCT0V3lD7eH0OFurX71Jft18bZrsVQWVRt6TuxRzlr0GJLrxoHZR2V5ph7/qP8se/dcnI7o0g==
@@ -1906,14 +1906,6 @@
   integrity sha512-MPtoySlAZQ37VoLaPcTHCu1RWJ4llDkULYZIzOYxlhxBqYPB0RsRlmMU0R6tahtFe27mIdkHV+551ZWV4PLmVw==
   dependencies:
     "@types/node" "*"
-
-"@types/listr@^0.14.2":
-  version "0.14.2"
-  resolved "https://registry.yarnpkg.com/@types/listr/-/listr-0.14.2.tgz#2e5f80fbc3ca8dceb9940ce9bf8e3113ab452545"
-  integrity sha512-wCipMbQr3t2UHTm90LldVp+oTBj1TX6zvpkCJcWS4o8nn6kS8SN93oUvKJAgueIRZ5M36yOlFmScqBxYH8Ajig==
-  dependencies:
-    "@types/node" "*"
-    rxjs "^6.5.1"
 
 "@types/mem-fs-editor@*":
   version "7.0.0"
@@ -2238,6 +2230,20 @@
     "@webassemblyjs/ast" "1.9.1"
     "@webassemblyjs/wast-parser" "1.9.1"
     "@xtuc/long" "4.2.2"
+
+"@webpack-cli/migrate@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@webpack-cli/migrate/-/migrate-1.1.2.tgz#7bac28243c63a99f6fc809cff4585a5aa9c9b907"
+  integrity sha512-wbIaaL88LXAcExzp9iG09Pp3sf+FPPQb/g7qCLJAVYAkN8P5L3Km7dLix9K2VQpDfGvEBE0tbEK//ot86F35ZQ==
+  dependencies:
+    "@webpack-cli/utils" "^1.2.1"
+    colorette "^1.2.1"
+    diff "^4.0.2"
+    inquirer "^7.3.3"
+    jscodeshift "^0.11.0"
+    listr "^0.14.3"
+    p-each-series "^2.1.0"
+    p-lazy "^3.0.0"
 
 "@xtuc/ieee754@^1.2.0":
   version "1.2.0"
@@ -9485,7 +9491,7 @@ run-queue@^1.0.0, run-queue@^1.0.3:
   dependencies:
     aproba "^1.1.1"
 
-rxjs@>=6.4.0, rxjs@^6.3.3, rxjs@^6.4.0, rxjs@^6.5.1, rxjs@^6.6.0, rxjs@^6.6.3:
+rxjs@>=6.4.0, rxjs@^6.3.3, rxjs@^6.4.0, rxjs@^6.6.0, rxjs@^6.6.3:
   version "6.6.3"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.6.3.tgz#8ca84635c4daa900c0d3967a6ee7ac60271ee552"
   integrity sha512-trsQc+xYYXZ3urjOiJOuCOa5N3jAZ3eiSpQB5hIT8zGlL2QfnHLJ2r7GMkBGuIausdJN1OneaI6gQlsqNHHmZQ==
