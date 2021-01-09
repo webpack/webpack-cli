@@ -20,7 +20,6 @@ const getFoldersWithPackage = (stats, file) => {
             });
         }
         console.log(green(' Successfully prepared the test suite '));
-        console.log(`DEBUG: ${require('webpack').version}`);
     } catch (e) {
         console.error(red(' Unable to prepare the test suite '));
         console.error(e.stack);
