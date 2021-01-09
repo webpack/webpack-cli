@@ -4,7 +4,6 @@ import plugins, { replaceAt, generatePluginName } from './plugins';
 import styleQuestionHandler, { StylingType, LoaderName, StyleRegex, Loader } from './styleSupport';
 import tooltip from './tooltip';
 import validate from './validate';
-import { getDefaultOptimization } from './webpackConfig';
 
 export {
     entryQuestions,
@@ -22,5 +21,4 @@ export {
     Loader,
     tooltip,
     validate,
-    getDefaultOptimization,
 };
