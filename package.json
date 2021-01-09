@@ -37,6 +37,7 @@
     "prepsuite": "node scripts/prepareSuite.js",
     "pretest": "yarn build && yarn lint && yarn prepsuite",
     "test": "jest --reporters=default",
+    "test:smoketests": "nyc node smoketests",
     "test:coverage": "nyc jest --forceExit",
     "test:cli": "jest test --reporters=default --forceExit",
     "test:packages": "jest packages/ --reporters=default --forceExit",
