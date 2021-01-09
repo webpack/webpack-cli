@@ -1,4 +1,4 @@
-const { runServe } = require('../../utils/test-utils');
+const { runServe, isWebpack5 } = require('../../utils/test-utils');
 
 const usageText = 'webpack serve|s [options]';
 const descriptionText = 'Run the webpack dev server';
@@ -25,6 +25,8 @@ describe('serve help', () => {
         expect(stdout).toContain(descriptionText);
         expect(stdout).toContain(usageText);
         expect(stdout).toContain('Options:');
-        expect(stdout).toContain('--cache-type');
+        if (isWebpack5) {
+            expect(stdout).toContain('--cache-type');
+        }
     });
 });
