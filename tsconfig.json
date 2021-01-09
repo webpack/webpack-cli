@@ -30,9 +30,6 @@
       "path": "packages/init"
     },
     {
-      "path": "packages/migrate"
-    },
-    {
       "path": "packages/serve"
     },
     {

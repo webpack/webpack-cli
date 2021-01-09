@@ -188,7 +188,7 @@ Object {
     "host": "'localhost'",
     "open": true,
   },
-  "mode": "'production'",
+  "mode": "'development'",
   "module": Object {
     "rules": Array [],
   },
@@ -219,6 +219,30 @@ Object {
   },
   "plugins": Array [
     "new webpack.ProgressPlugin()",
+    "new workboxPlugin.GenerateSW({
+				swDest: 'sw.js',
+				clientsClaim: true,
+				skipWaiting: false,
+			})",
+  ],
+}
+`;
+
+exports[`init generator generates a webpack config with optional dependencies 1`] = `
+Object {
+  "devServer": Object {
+    "host": "'localhost'",
+    "open": true,
+  },
+  "mode": "'development'",
+  "module": Object {
+    "rules": Array [],
+  },
+  "plugins": Array [
+    "new webpack.ProgressPlugin()",
+    "new HtmlWebpackPlugin({
+					template: 'index.html'
+				})",
     "new workboxPlugin.GenerateSW({
 				swDest: 'sw.js',
 				clientsClaim: true,

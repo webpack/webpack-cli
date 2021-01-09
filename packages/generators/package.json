@@ -11,7 +11,10 @@
   },
   "files": [
     "lib",
-    "templates"
+    "addon-template",
+    "init-template",
+    "loader-template",
+    "plugin-template"
   ],
   "dependencies": {
     "@webpack-cli/utils": "^1.2.1",

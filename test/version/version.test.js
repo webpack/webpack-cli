@@ -6,7 +6,6 @@ const { run } = require('../utils/test-utils');
 const pkgJSON = require('../../packages/webpack-cli/package.json');
 const initPkgJSON = require('../../packages/init/package.json');
 const servePkgJSON = require('../../packages/serve/package.json');
-const migratePkgJSON = require('../../packages/migrate/package.json');
 const infoPkgJSON = require('../../packages/info/package.json');
 const generatorsPkgJSON = require('../../packages/generators/package.json');
 const webpackDevServerPkgJSON = require('webpack-dev-server/package.json');
@@ -142,11 +141,10 @@ describe('single version flag', () => {
 
     it('outputs version with migrate', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['migrate', '--version'], false);
-
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(`@webpack-cli/migrate ${migratePkgJSON.version}`);
         expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
+        expect(stdout).toContain(`@webpack-cli/migrate`);
         expect(stdout).toContain(`webpack ${webpack.version}`);
         expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
     });

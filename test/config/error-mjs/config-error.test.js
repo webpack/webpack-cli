@@ -4,7 +4,7 @@ const { run } = require('../../utils/test-utils');
 
 describe('config error', () => {
     it('should throw error with invalid configuration', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['-c', resolve(__dirname, 'webpack.config.mjs')], false, [], {
+        const { exitCode, stderr, stdout } = run(__dirname, ['-c', resolve(__dirname, 'webpack.config.mjs')], [], {
             DISABLE_V8_COMPILE_CACHE: true,
         });
 
@@ -14,7 +14,7 @@ describe('config error', () => {
     });
 
     it('should throw syntax error and exit with non-zero exit code', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['-c', resolve(__dirname, 'syntax-error.mjs')], false, [], {
+        const { exitCode, stderr, stdout } = run(__dirname, ['-c', resolve(__dirname, 'syntax-error.mjs')], [], {
             DISABLE_V8_COMPILE_CACHE: true,
         });
 

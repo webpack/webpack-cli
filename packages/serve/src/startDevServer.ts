@@ -67,8 +67,9 @@ export default async function startDevServer(compiler, devServerCliOptions, cliO
             options.client = options.client || {};
             options.client.port = options.client.port || options.port;
         } else {
-            const getPublicPathOption = () => {
-                const normalizePublicPath = (publicPath) => (typeof publicPath === 'undefined' || publicPath === 'auto' ? '/' : publicPath);
+            const getPublicPathOption = (): string => {
+                const normalizePublicPath = (publicPath): string =>
+                    typeof publicPath === 'undefined' || publicPath === 'auto' ? '/' : publicPath;
 
                 if (cliOptions.outputPublicPath) {
                     return normalizePublicPath(compilerWithDevServerOption.options.output.publicPath);
@@ -86,7 +87,7 @@ export default async function startDevServer(compiler, devServerCliOptions, cliO
 
                 return normalizePublicPath(compilerWithDevServerOption.options.output.publicPath);
             };
-            const getStatsOption = () => {
+            const getStatsOption = (): string | boolean => {
                 if (cliOptions.stats) {
                     return compilerWithDevServerOption.options.stats;
                 }
