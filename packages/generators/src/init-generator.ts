@@ -26,7 +26,7 @@ export default class InitGenerator extends CustomGenerator {
     public constructor(args, opts) {
         super(args, opts);
 
-        this.autoGenerateConfig = opts.autoSetDefaults ? true : false;
+        this.autoGenerateConfig = opts.autoSetDefaults;
         this.generationPath = opts.generationPath;
 
         this.dependencies = ['webpack', 'webpack-cli', 'babel-plugin-syntax-dynamic-import'];
