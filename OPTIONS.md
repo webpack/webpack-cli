@@ -47,6 +47,8 @@ Options:
   --no-experiments-asset                                                             Negative 'experiments-asset' option.
   --experiments-async-web-assembly                                                   Support WebAssembly as asynchronous EcmaScript Module.
   --no-experiments-async-web-assembly                                                Negative 'experiments-async-web-assembly' option.
+  --experiments-layers                                                               Enable module and chunk layers.
+  --no-experiments-layers                                                            Negative 'experiments-layers' option.
   --experiments-output-module                                                        Allow output javascript files as module source type.
   --no-experiments-output-module                                                     Negative 'experiments-output-module' option.
   --experiments-sync-web-assembly                                                    Support WebAssembly as synchronous EcmaScript Module (outdated).
@@ -87,14 +89,143 @@ Options:
   --no-module-expr-context-recursive                                                 Negative 'module-expr-context-recursive' option.
   --module-expr-context-reg-exp <value>                                              Sets the default regular expression for full dynamic dependencies.
   --module-expr-context-request <value>                                              Set the default request for full dynamic dependencies.
+  --module-generator-asset-data-url-encoding <value>                                 Asset encoding (defaults to base64).
+  --module-generator-asset-data-url-mimetype <value>                                 Asset mimetype (getting from file extension by default).
+  --module-generator-asset-filename <value>                                          Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
+  --module-generator-asset-inline-data-url-encoding <value>                          Asset encoding (defaults to base64).
+  --module-generator-asset-inline-data-url-mimetype <value>                          Asset mimetype (getting from file extension by default).
+  --module-generator-asset-resource-filename <value>                                 Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
   --module-no-parse <value...>                                                       A regular expression, when matched the module is not parsed. An absolute path, when the module starts with this path it is not parsed.
   --module-no-parse-reset                                                            Clear all items provided in configuration. Don't parse files matching. It's matched against the full resolved request.
+  --module-parser-asset-data-url-condition-max-size <value>                          Maximum size of asset that should be inline as modules. Default: 8kb.
+  --module-parser-javascript-amd                                                     You can pass `false` to disable AMD support.
+  --no-module-parser-javascript-amd                                                  Negative 'module-parser-javascript-amd' option.
+  --module-parser-javascript-browserify                                              Enable/disable special handling for browserify bundles.
+  --no-module-parser-javascript-browserify                                           Negative 'module-parser-javascript-browserify' option.
+  --module-parser-javascript-commonjs                                                Enable/disable parsing of CommonJs syntax.
+  --no-module-parser-javascript-commonjs                                             Negative 'module-parser-javascript-commonjs' option.
+  --module-parser-javascript-harmony                                                 Enable/disable parsing of EcmaScript Modules syntax.
+  --no-module-parser-javascript-harmony                                              Negative 'module-parser-javascript-harmony' option.
+  --module-parser-javascript-import                                                  Enable/disable parsing of import() syntax.
+  --no-module-parser-javascript-import                                               Negative 'module-parser-javascript-import' option.
+  --module-parser-javascript-node                                                    Include polyfills or mocks for various node stuff.
+  --no-module-parser-javascript-node                                                 Negative 'module-parser-javascript-node' option.
+  --module-parser-javascript-node-dirname <value>                                    Include a polyfill for the '__dirname' variable.
+  --module-parser-javascript-node-filename <value>                                   Include a polyfill for the '__filename' variable.
+  --module-parser-javascript-node-global                                             Include a polyfill for the 'global' variable.
+  --no-module-parser-javascript-node-global                                          Negative 'module-parser-javascript-node-global' option.
+  --module-parser-javascript-require-context                                         Enable/disable parsing of require.context syntax.
+  --no-module-parser-javascript-require-context                                      Negative 'module-parser-javascript-require-context' option.
+  --module-parser-javascript-require-ensure                                          Enable/disable parsing of require.ensure syntax.
+  --no-module-parser-javascript-require-ensure                                       Negative 'module-parser-javascript-require-ensure' option.
+  --module-parser-javascript-require-include                                         Enable/disable parsing of require.include syntax.
+  --no-module-parser-javascript-require-include                                      Negative 'module-parser-javascript-require-include' option.
+  --module-parser-javascript-require-js                                              Enable/disable parsing of require.js special syntax like require.config, requirejs.config, require.version and requirejs.onError.
+  --no-module-parser-javascript-require-js                                           Negative 'module-parser-javascript-require-js' option.
+  --module-parser-javascript-system                                                  Enable/disable parsing of System.js special syntax like System.import, System.get, System.set and System.register.
+  --no-module-parser-javascript-system                                               Negative 'module-parser-javascript-system' option.
+  --module-parser-javascript-url                                                     Enable/disable parsing of new URL() syntax.
+  --no-module-parser-javascript-url                                                  Negative 'module-parser-javascript-url' option.
+  --module-parser-javascript-worker <value...>                                       Specify a syntax that should be parsed as WebWorker reference. 'Abc' handles 'new Abc()', 'Abc from xyz' handles 'import { Abc } from "xyz"; new Abc()', 'abc()' handles 'abc()', and combinations are also possible. Disable or configure parsing of WebWorker syntax like new Worker() or navigator.serviceWorker.register().
+  --module-parser-javascript-worker-reset                                            Clear all items provided in configuration. Disable or configure parsing of WebWorker syntax like new Worker() or navigator.serviceWorker.register().
+  --module-parser-javascript-auto-amd                                                You can pass `false` to disable AMD support.
+  --no-module-parser-javascript-auto-amd                                             Negative 'module-parser-javascript-auto-amd' option.
+  --module-parser-javascript-auto-browserify                                         Enable/disable special handling for browserify bundles.
+  --no-module-parser-javascript-auto-browserify                                      Negative 'module-parser-javascript-auto-browserify' option.
+  --module-parser-javascript-auto-commonjs                                           Enable/disable parsing of CommonJs syntax.
+  --no-module-parser-javascript-auto-commonjs                                        Negative 'module-parser-javascript-auto-commonjs' option.
+  --module-parser-javascript-auto-harmony                                            Enable/disable parsing of EcmaScript Modules syntax.
+  --no-module-parser-javascript-auto-harmony                                         Negative 'module-parser-javascript-auto-harmony' option.
+  --module-parser-javascript-auto-import                                             Enable/disable parsing of import() syntax.
+  --no-module-parser-javascript-auto-import                                          Negative 'module-parser-javascript-auto-import' option.
+  --module-parser-javascript-auto-node                                               Include polyfills or mocks for various node stuff.
+  --no-module-parser-javascript-auto-node                                            Negative 'module-parser-javascript-auto-node' option.
+  --module-parser-javascript-auto-node-dirname <value>                               Include a polyfill for the '__dirname' variable.
+  --module-parser-javascript-auto-node-filename <value>                              Include a polyfill for the '__filename' variable.
+  --module-parser-javascript-auto-node-global                                        Include a polyfill for the 'global' variable.
+  --no-module-parser-javascript-auto-node-global                                     Negative 'module-parser-javascript-auto-node-global' option.
+  --module-parser-javascript-auto-require-context                                    Enable/disable parsing of require.context syntax.
+  --no-module-parser-javascript-auto-require-context                                 Negative 'module-parser-javascript-auto-require-context' option.
+  --module-parser-javascript-auto-require-ensure                                     Enable/disable parsing of require.ensure syntax.
+  --no-module-parser-javascript-auto-require-ensure                                  Negative 'module-parser-javascript-auto-require-ensure' option.
+  --module-parser-javascript-auto-require-include                                    Enable/disable parsing of require.include syntax.
+  --no-module-parser-javascript-auto-require-include                                 Negative 'module-parser-javascript-auto-require-include' option.
+  --module-parser-javascript-auto-require-js                                         Enable/disable parsing of require.js special syntax like require.config, requirejs.config, require.version and requirejs.onError.
+  --no-module-parser-javascript-auto-require-js                                      Negative 'module-parser-javascript-auto-require-js' option.
+  --module-parser-javascript-auto-system                                             Enable/disable parsing of System.js special syntax like System.import, System.get, System.set and System.register.
+  --no-module-parser-javascript-auto-system                                          Negative 'module-parser-javascript-auto-system' option.
+  --module-parser-javascript-auto-url                                                Enable/disable parsing of new URL() syntax.
+  --no-module-parser-javascript-auto-url                                             Negative 'module-parser-javascript-auto-url' option.
+  --module-parser-javascript-auto-worker <value...>                                  Specify a syntax that should be parsed as WebWorker reference. 'Abc' handles 'new Abc()', 'Abc from xyz' handles 'import { Abc } from "xyz"; new Abc()', 'abc()' handles 'abc()', and combinations are also possible. Disable or configure parsing of WebWorker syntax like new Worker() or navigator.serviceWorker.register().
+  --module-parser-javascript-auto-worker-reset                                       Clear all items provided in configuration. Disable or configure parsing of WebWorker syntax like new Worker() or navigator.serviceWorker.register().
+  --module-parser-javascript-dynamic-amd                                             You can pass `false` to disable AMD support.
+  --no-module-parser-javascript-dynamic-amd                                          Negative 'module-parser-javascript-dynamic-amd' option.
+  --module-parser-javascript-dynamic-browserify                                      Enable/disable special handling for browserify bundles.
+  --no-module-parser-javascript-dynamic-browserify                                   Negative 'module-parser-javascript-dynamic-browserify' option.
+  --module-parser-javascript-dynamic-commonjs                                        Enable/disable parsing of CommonJs syntax.
+  --no-module-parser-javascript-dynamic-commonjs                                     Negative 'module-parser-javascript-dynamic-commonjs' option.
+  --module-parser-javascript-dynamic-harmony                                         Enable/disable parsing of EcmaScript Modules syntax.
+  --no-module-parser-javascript-dynamic-harmony                                      Negative 'module-parser-javascript-dynamic-harmony' option.
+  --module-parser-javascript-dynamic-import                                          Enable/disable parsing of import() syntax.
+  --no-module-parser-javascript-dynamic-import                                       Negative 'module-parser-javascript-dynamic-import' option.
+  --module-parser-javascript-dynamic-node                                            Include polyfills or mocks for various node stuff.
+  --no-module-parser-javascript-dynamic-node                                         Negative 'module-parser-javascript-dynamic-node' option.
+  --module-parser-javascript-dynamic-node-dirname <value>                            Include a polyfill for the '__dirname' variable.
+  --module-parser-javascript-dynamic-node-filename <value>                           Include a polyfill for the '__filename' variable.
+  --module-parser-javascript-dynamic-node-global                                     Include a polyfill for the 'global' variable.
+  --no-module-parser-javascript-dynamic-node-global                                  Negative 'module-parser-javascript-dynamic-node-global' option.
+  --module-parser-javascript-dynamic-require-context                                 Enable/disable parsing of require.context syntax.
+  --no-module-parser-javascript-dynamic-require-context                              Negative 'module-parser-javascript-dynamic-require-context' option.
+  --module-parser-javascript-dynamic-require-ensure                                  Enable/disable parsing of require.ensure syntax.
+  --no-module-parser-javascript-dynamic-require-ensure                               Negative 'module-parser-javascript-dynamic-require-ensure' option.
+  --module-parser-javascript-dynamic-require-include                                 Enable/disable parsing of require.include syntax.
+  --no-module-parser-javascript-dynamic-require-include                              Negative 'module-parser-javascript-dynamic-require-include' option.
+  --module-parser-javascript-dynamic-require-js                                      Enable/disable parsing of require.js special syntax like require.config, requirejs.config, require.version and requirejs.onError.
+  --no-module-parser-javascript-dynamic-require-js                                   Negative 'module-parser-javascript-dynamic-require-js' option.
+  --module-parser-javascript-dynamic-system                                          Enable/disable parsing of System.js special syntax like System.import, System.get, System.set and System.register.
+  --no-module-parser-javascript-dynamic-system                                       Negative 'module-parser-javascript-dynamic-system' option.
+  --module-parser-javascript-dynamic-url                                             Enable/disable parsing of new URL() syntax.
+  --no-module-parser-javascript-dynamic-url                                          Negative 'module-parser-javascript-dynamic-url' option.
+  --module-parser-javascript-dynamic-worker <value...>                               Specify a syntax that should be parsed as WebWorker reference. 'Abc' handles 'new Abc()', 'Abc from xyz' handles 'import { Abc } from "xyz"; new Abc()', 'abc()' handles 'abc()', and combinations are also possible. Disable or configure parsing of WebWorker syntax like new Worker() or navigator.serviceWorker.register().
+  --module-parser-javascript-dynamic-worker-reset                                    Clear all items provided in configuration. Disable or configure parsing of WebWorker syntax like new Worker() or navigator.serviceWorker.register().
+  --module-parser-javascript-esm-amd                                                 You can pass `false` to disable AMD support.
+  --no-module-parser-javascript-esm-amd                                              Negative 'module-parser-javascript-esm-amd' option.
+  --module-parser-javascript-esm-browserify                                          Enable/disable special handling for browserify bundles.
+  --no-module-parser-javascript-esm-browserify                                       Negative 'module-parser-javascript-esm-browserify' option.
+  --module-parser-javascript-esm-commonjs                                            Enable/disable parsing of CommonJs syntax.
+  --no-module-parser-javascript-esm-commonjs                                         Negative 'module-parser-javascript-esm-commonjs' option.
+  --module-parser-javascript-esm-harmony                                             Enable/disable parsing of EcmaScript Modules syntax.
+  --no-module-parser-javascript-esm-harmony                                          Negative 'module-parser-javascript-esm-harmony' option.
+  --module-parser-javascript-esm-import                                              Enable/disable parsing of import() syntax.
+  --no-module-parser-javascript-esm-import                                           Negative 'module-parser-javascript-esm-import' option.
+  --module-parser-javascript-esm-node                                                Include polyfills or mocks for various node stuff.
+  --no-module-parser-javascript-esm-node                                             Negative 'module-parser-javascript-esm-node' option.
+  --module-parser-javascript-esm-node-dirname <value>                                Include a polyfill for the '__dirname' variable.
+  --module-parser-javascript-esm-node-filename <value>                               Include a polyfill for the '__filename' variable.
+  --module-parser-javascript-esm-node-global                                         Include a polyfill for the 'global' variable.
+  --no-module-parser-javascript-esm-node-global                                      Negative 'module-parser-javascript-esm-node-global' option.
+  --module-parser-javascript-esm-require-context                                     Enable/disable parsing of require.context syntax.
+  --no-module-parser-javascript-esm-require-context                                  Negative 'module-parser-javascript-esm-require-context' option.
+  --module-parser-javascript-esm-require-ensure                                      Enable/disable parsing of require.ensure syntax.
+  --no-module-parser-javascript-esm-require-ensure                                   Negative 'module-parser-javascript-esm-require-ensure' option.
+  --module-parser-javascript-esm-require-include                                     Enable/disable parsing of require.include syntax.
+  --no-module-parser-javascript-esm-require-include                                  Negative 'module-parser-javascript-esm-require-include' option.
+  --module-parser-javascript-esm-require-js                                          Enable/disable parsing of require.js special syntax like require.config, requirejs.config, require.version and requirejs.onError.
+  --no-module-parser-javascript-esm-require-js                                       Negative 'module-parser-javascript-esm-require-js' option.
+  --module-parser-javascript-esm-system                                              Enable/disable parsing of System.js special syntax like System.import, System.get, System.set and System.register.
+  --no-module-parser-javascript-esm-system                                           Negative 'module-parser-javascript-esm-system' option.
+  --module-parser-javascript-esm-url                                                 Enable/disable parsing of new URL() syntax.
+  --no-module-parser-javascript-esm-url                                              Negative 'module-parser-javascript-esm-url' option.
+  --module-parser-javascript-esm-worker <value...>                                   Specify a syntax that should be parsed as WebWorker reference. 'Abc' handles 'new Abc()', 'Abc from xyz' handles 'import { Abc } from "xyz"; new Abc()', 'abc()' handles 'abc()', and combinations are also possible. Disable or configure parsing of WebWorker syntax like new Worker() or navigator.serviceWorker.register().
+  --module-parser-javascript-esm-worker-reset                                        Clear all items provided in configuration. Disable or configure parsing of WebWorker syntax like new Worker() or navigator.serviceWorker.register().
   --module-rules-compiler <value...>                                                 Match the child compiler name.
   --module-rules-dependency <value...>                                               Match dependency type.
   --module-rules-enforce <value...>                                                  Enforce this rule as pre or post step.
   --module-rules-exclude <value...>                                                  Shortcut for resource.exclude.
   --module-rules-include <value...>                                                  Shortcut for resource.include.
   --module-rules-issuer <value...>                                                   Match the issuer of the module (The module pointing to this module).
+  --module-rules-issuer-layer <value...>                                             Match layer of the issuer of this module (The module pointing to this module).
+  --module-rules-layer <value...>                                                    Specifies the layer in which the module should be placed in.
   --module-rules-loader <value...>                                                   A loader request.
   --module-rules-mimetype <value...>                                                 Match module mimetype when load from Data URI.
   --module-rules-real-resource <value...>                                            Match the real resource path of the module.
@@ -194,10 +325,10 @@ Options:
   --optimization-split-chunks-used-exports                                           Compare used exports when checking common modules. Modules will only be put in the same chunk when exports are equal.
   --no-optimization-split-chunks-used-exports                                        Negative 'optimization-split-chunks-used-exports' option.
   --optimization-used-exports <value>                                                Figure out which exports are used by modules to mangle export names, omit unused exports and generate more efficient code (true: analyse used exports for each runtime, "global": analyse exports globally for all runtimes combined).
-  --output-asset-module-filename <value>                                             The filename of asset modules as relative path inside the `output.path` directory.
+  --output-asset-module-filename <value>                                             The filename of asset modules as relative path inside the 'output.path' directory.
   --output-charset                                                                   Add charset attribute for script tag.
   --no-output-charset                                                                Negative 'output-charset' option.
-  --output-chunk-filename <value>                                                    The filename of non-initial chunks as relative path inside the `output.path` directory.
+  --output-chunk-filename <value>                                                    Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
   --output-chunk-format <value>                                                      The format of chunks (formats included by default are 'array-push' (web/WebWorker), 'commonjs' (node.js), but others might be added by plugins).
   --output-chunk-load-timeout <value>                                                Number of milliseconds before chunk request expires.
   --output-chunk-loading <value>                                                     The method of loading chunks (methods included by default are 'jsonp' (web), 'importScripts' (WebWorker), 'require' (sync node.js), 'async-node' (async node.js), but others might be added by plugins).
@@ -228,7 +359,7 @@ Options:
   --no-output-environment-for-of                                                     Negative 'output-environment-for-of' option.
   --output-environment-module                                                        The environment supports EcmaScript Module syntax to import EcmaScript modules (import ... from '...').
   --no-output-environment-module                                                     Negative 'output-environment-module' option.
-  --output-filename <value>                                                          Specifies the name of each output file on disk. You must **not** specify an absolute path here! The `output.path` option determines the location on disk the files are written to, filename is used solely for naming the individual files.
+  --output-filename <value>                                                          Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
   --output-global-object <value>                                                     An expression which is used to address the global object/scope in runtime code.
   --output-hash-digest <value>                                                       Digest type used for the hash.
   --output-hash-digest-length <value>                                                Number of chars which are used for the hash.
@@ -236,7 +367,7 @@ Options:
   --output-hash-salt <value>                                                         Any string which is added to the hash to salt it.
   --output-hot-update-chunk-filename <value>                                         The filename of the Hot Update Chunks. They are inside the output.path directory.
   --output-hot-update-global <value>                                                 The global variable used by webpack for loading of hot update chunks.
-  --output-hot-update-main-filename <value>                                          The filename of the Hot Update Main File. It is inside the `output.path` directory.
+  --output-hot-update-main-filename <value>                                          The filename of the Hot Update Main File. It is inside the 'output.path' directory.
   --output-iife                                                                      Wrap javascript code into IIFE's to avoid leaking into global scope.
   --no-output-iife                                                                   Negative 'output-iife' option.
   --output-import-function-name <value>                                              The name of the native import() function (can be exchanged for a polyfill).
@@ -266,17 +397,16 @@ Options:
   --output-module                                                                    Output javascript files as module source type.
   --no-output-module                                                                 Negative 'output-module' option.
   -o, --output-path <value>                                                          Output location of the file generated by webpack e.g. ./dist/.
-  --output-pathinfo                                                                  Include comments with information about the modules.
-  --no-output-pathinfo                                                               Negative 'output-pathinfo' option.
+  --output-pathinfo <value>                                                          Include comments with information about the modules.
   --output-public-path <value>                                                       The `publicPath` specifies the public URL address of the output files when referenced in a browser.
   --output-script-type <value>                                                       This option enables loading async chunks via a custom script type, such as script type="module".
-  --output-source-map-filename <value>                                               The filename of the SourceMaps for the JavaScript files. They are inside the `output.path` directory.
+  --output-source-map-filename <value>                                               The filename of the SourceMaps for the JavaScript files. They are inside the 'output.path' directory.
   --output-source-prefix <value>                                                     Prefixes every line of the source in the bundle with this string.
   --output-strict-module-exception-handling                                          Handles exceptions in module loading correctly at a performance cost.
   --no-output-strict-module-exception-handling                                       Negative 'output-strict-module-exception-handling' option.
   --output-unique-name <value>                                                       A unique name of the webpack build to avoid multiple webpack runtimes to conflict when using globals.
   --output-wasm-loading <value>                                                      The method of loading WebAssembly Modules (methods included by default are 'fetch' (web/WebWorker), 'async-node' (node.js), but others might be added by plugins).
-  --output-webassembly-module-filename <value>                                       The filename of WebAssembly modules as relative path inside the `output.path` directory.
+  --output-webassembly-module-filename <value>                                       The filename of WebAssembly modules as relative path inside the 'output.path' directory.
   --output-worker-chunk-loading <value>                                              The method of loading chunks (methods included by default are 'jsonp' (web), 'importScripts' (WebWorker), 'require' (sync node.js), 'async-node' (async node.js), but others might be added by plugins).
   --output-worker-wasm-loading <value>                                               The method of loading WebAssembly Modules (methods included by default are 'fetch' (web/WebWorker), 'async-node' (node.js), but others might be added by plugins).
   --parallelism <value>                                                              The number of parallel processed modules in the compilation.
@@ -416,7 +546,7 @@ Options:
   --stats-assets-space <value>                                                       Space to display assets (groups will be collapsed to fit this space).
   --stats-built-at                                                                   Add built at time information.
   --no-stats-built-at                                                                Negative 'stats-built-at' option.
-  --stats-cached                                                                     Add information about cached (not built) modules.
+  --stats-cached                                                                     Add information about cached (not built) modules (deprecated: use 'cachedModules' instead).
   --no-stats-cached                                                                  Negative 'stats-cached' option.
   --stats-cached-assets                                                              Show cached assets (setting this to `false` only shows emitted files).
   --no-stats-cached-assets                                                           Negative 'stats-cached-assets' option.
@@ -484,6 +614,8 @@ Options:
   --no-stats-group-modules-by-cache-status                                           Negative 'stats-group-modules-by-cache-status' option.
   --stats-group-modules-by-extension                                                 Group modules by their extension.
   --no-stats-group-modules-by-extension                                              Negative 'stats-group-modules-by-extension' option.
+  --stats-group-modules-by-layer                                                     Group modules by their layer.
+  --no-stats-group-modules-by-layer                                                  Negative 'stats-group-modules-by-layer' option.
   --stats-group-modules-by-path                                                      Group modules by their path.
   --no-stats-group-modules-by-path                                                   Negative 'stats-group-modules-by-path' option.
   --stats-hash                                                                       Add the hash of the compilation.
@@ -502,9 +634,10 @@ Options:
   --stats-modules                                                                    Add built modules information.
   --no-stats-modules                                                                 Negative 'stats-modules' option.
   --stats-modules-sort <value>                                                       Sort the modules by that field.
-  --stats-modules-space <value>                                                      Space to display modules (groups will be collapsed to fit this space, values is in number of modules/groups).
+  --stats-modules-space <value>                                                      Space to display modules (groups will be collapsed to fit this space, value is in number of modules/groups).
   --stats-nested-modules                                                             Add information about modules nested in other modules (like with module concatenation).
   --no-stats-nested-modules                                                          Negative 'stats-nested-modules' option.
+  --stats-nested-modules-space <value>                                               Space to display modules nested within other modules (groups will be collapsed to fit this space, value is in number of modules/group).
   --stats-optimization-bailout                                                       Show reasons why optimization bailed out for modules.
   --no-stats-optimization-bailout                                                    Negative 'stats-optimization-bailout' option.
   --stats-orphan-modules                                                             Add information about orphan modules.
@@ -522,6 +655,8 @@ Options:
   --no-stats-reasons                                                                 Negative 'stats-reasons' option.
   --stats-related-assets                                                             Add information about assets that are related to other assets (like SourceMaps for assets).
   --no-stats-related-assets                                                          Negative 'stats-related-assets' option.
+  --stats-runtime                                                                    Add information about runtime modules (deprecated: use 'runtimeModules' instead).
+  --no-stats-runtime                                                                 Negative 'stats-runtime' option.
   --stats-runtime-modules                                                            Add information about runtime modules.
   --no-stats-runtime-modules                                                         Negative 'stats-runtime-modules' option.
   --stats-source                                                                     Add the source code of modules.

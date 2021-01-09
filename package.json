@@ -89,7 +89,7 @@
     "strip-ansi": "^6.0.0",
     "ts-jest": "^26.4.3",
     "typescript": "^3.9.7",
-    "webpack": "^5.11.1",
+    "webpack": "^5.12.2",
     "webpack-bundle-analyzer": "^4.3.0",
     "webpack-dev-server": "^3.11.1",
     "yeoman-test": "^2.7.0"
