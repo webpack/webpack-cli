@@ -3,7 +3,7 @@
 exports[`init generator generates a webpack config that uses ES6 1`] = `
 Object {
   "devServer": Object {
-    "host": "localhost",
+    "host": "'localhost'",
     "open": true,
   },
   "mode": "'development'",
@@ -20,6 +20,11 @@ Object {
   },
   "plugins": Array [
     "new webpack.ProgressPlugin()",
+    "new workboxPlugin.GenerateSW({
+				swDest: 'sw.js',
+				clientsClaim: true,
+				skipWaiting: false,
+			})",
   ],
 }
 `;
@@ -27,7 +32,7 @@ Object {
 exports[`init generator generates a webpack config that uses Typescript 1`] = `
 Object {
   "devServer": Object {
-    "host": "localhost",
+    "host": "'localhost'",
     "open": true,
   },
   "entry": "'./src/index.ts'",
@@ -48,6 +53,11 @@ Object {
   },
   "plugins": Array [
     "new webpack.ProgressPlugin()",
+    "new workboxPlugin.GenerateSW({
+				swDest: 'sw.js',
+				clientsClaim: true,
+				skipWaiting: false,
+			})",
   ],
   "resolve": Object {
     "extensions": Array [
@@ -77,7 +87,7 @@ Object {
 exports[`init generator generates a webpack config using CSS with mini-css-extract-plugin 1`] = `
 Object {
   "devServer": Object {
-    "host": "localhost",
+    "host": "'localhost'",
     "open": true,
   },
   "mode": "'development'",
@@ -102,6 +112,11 @@ Object {
   "plugins": Array [
     "new webpack.ProgressPlugin()",
     "new MiniCssExtractPlugin({ filename:'main.[contenthash].css' })",
+    "new workboxPlugin.GenerateSW({
+				swDest: 'sw.js',
+				clientsClaim: true,
+				skipWaiting: false,
+			})",
   ],
 }
 `;
@@ -109,7 +124,7 @@ Object {
 exports[`init generator generates a webpack config using CSS without mini-css-extract-plugin 1`] = `
 Object {
   "devServer": Object {
-    "host": "localhost",
+    "host": "'localhost'",
     "open": true,
   },
   "mode": "'development'",
@@ -133,6 +148,11 @@ Object {
   },
   "plugins": Array [
     "new webpack.ProgressPlugin()",
+    "new workboxPlugin.GenerateSW({
+				swDest: 'sw.js',
+				clientsClaim: true,
+				skipWaiting: false,
+			})",
   ],
 }
 `;
@@ -140,7 +160,7 @@ Object {
 exports[`init generator generates a webpack config with custom entry and output 1`] = `
 Object {
   "devServer": Object {
-    "host": "localhost",
+    "host": "'localhost'",
     "open": true,
   },
   "entry": "'./src/index2.js'",
@@ -153,6 +173,11 @@ Object {
   },
   "plugins": Array [
     "new webpack.ProgressPlugin()",
+    "new workboxPlugin.GenerateSW({
+				swDest: 'sw.js',
+				clientsClaim: true,
+				skipWaiting: false,
+			})",
   ],
 }
 `;
@@ -160,7 +185,7 @@ Object {
 exports[`init generator generates a webpack config with default options 1`] = `
 Object {
   "devServer": Object {
-    "host": "localhost",
+    "host": "'localhost'",
     "open": true,
   },
   "mode": "'production'",
@@ -169,6 +194,11 @@ Object {
   },
   "plugins": Array [
     "new webpack.ProgressPlugin()",
+    "new workboxPlugin.GenerateSW({
+				swDest: 'sw.js',
+				clientsClaim: true,
+				skipWaiting: false,
+			})",
   ],
 }
 `;
@@ -176,7 +206,7 @@ Object {
 exports[`init generator generates a webpack config with multiple entries 1`] = `
 Object {
   "devServer": Object {
-    "host": "localhost",
+    "host": "'localhost'",
     "open": true,
   },
   "entry": Object {
@@ -189,6 +219,11 @@ Object {
   },
   "plugins": Array [
     "new webpack.ProgressPlugin()",
+    "new workboxPlugin.GenerateSW({
+				swDest: 'sw.js',
+				clientsClaim: true,
+				skipWaiting: false,
+			})",
   ],
 }
 `;
