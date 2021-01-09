@@ -95,15 +95,35 @@ describe('module config related flag', () => {
         }
     });
 
-    it('should config module.parser and module.generators flag coorectly', () => {
+    it('should config module.generator flags coorectly', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, [
+            '--module-generator-asset-data-url-encoding',
+            'base64',
+            '--module-generator-asset-data-url-mimetype',
+            'application/node',
+        ]);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain(`generator: { asset: { dataUrl: [Object] } }`);
+    });
+
+    it('should config module.parser flags coorectly', () => {
         const { exitCode, stderr, stdout } = run(__dirname, [
             '--module-parser-javascript-browserify',
             '--module-parser-javascript-commonjs',
             '--module-parser-javascript-harmony',
+            '--module-parser-javascript-import',
+            '--no-module-parser-javascript-node',
+            '--module-parser-javascript-require-include',
         ]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('browserify: true');
+        expect(stdout).toContain('commonjs: true');
+        expect(stdout).toContain('harmony: true');
+        expect(stdout).toContain('import: true');
+        expect(stdout).toContain('node: false');
     });
 });
