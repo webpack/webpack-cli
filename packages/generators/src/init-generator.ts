@@ -264,7 +264,7 @@ export default class InitGenerator extends CustomGenerator {
         // Generate README
         this.fs.copyTpl(path.resolve(__dirname, '../init-template/README.md'), this.destinationPath('README.md'), {});
 
-        // Generate HTML template file, copy the default service worker
+        // Generate HTML template file
         this.fs.copyTpl(path.resolve(__dirname, '../init-template/template.html'), this.destinationPath('index.html'), {});
 
         if (this.langType === LangType.ES6) {
