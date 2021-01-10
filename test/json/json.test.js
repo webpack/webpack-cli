@@ -2,10 +2,18 @@
 const { run } = require('../utils/test-utils');
 const { existsSync, readFile } = require('fs');
 const { resolve } = require('path');
+const rimraf = require('rimraf');
 
 const successMessage = 'stats are successfully stored as json to stats.json';
+const warnMessage = `file 'stats.json' already exists and will be overwritten`;
 
 describe('json', () => {
+    beforeEach((done) => {
+        rimraf(resolve(__dirname, './stats.json'), () => {
+            done();
+        });
+    });
+
     it('should work and output json stats', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--json']);
 
@@ -20,6 +28,7 @@ describe('json', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toContain(successMessage);
+        expect(stderr).not.toContain(warnMessage);
         expect(stdout).toBeFalsy();
         expect(existsSync(resolve(__dirname, './stats.json'))).toBeTruthy();
 
@@ -38,6 +47,7 @@ describe('json', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toContain(`\u001b[32m${successMessage}`);
+        expect(stderr).not.toContain(warnMessage);
         expect(stdout).toBeFalsy();
         expect(existsSync(resolve(__dirname, './stats.json'))).toBeTruthy();
 
@@ -57,6 +67,7 @@ describe('json', () => {
         expect(exitCode).toBe(0);
         expect(stderr).not.toContain(`\u001b[32m${successMessage}`);
         expect(stderr).toContain(`${successMessage}`);
+        expect(stderr).not.toContain(warnMessage);
         expect(stdout).toBeFalsy();
         expect(existsSync(resolve(__dirname, './stats.json'))).toBeTruthy();
 
@@ -94,6 +105,7 @@ describe('json', () => {
         expect(exitCode).toBe(0);
         expect(stderr).toContain('webpack.Progress');
         expect(stderr).toContain(successMessage);
+        expect(stderr).not.toContain(warnMessage);
         expect(stdout).toBeFalsy();
         expect(existsSync(resolve(__dirname, './stats.json'))).toBeTruthy();
 
@@ -124,6 +136,7 @@ describe('json', () => {
         expect(stderr).toContain('Compilation starting');
         expect(stderr).toContain('Compilation finished');
         expect(stderr).toContain(successMessage);
+        expect(stderr).not.toContain(warnMessage);
         expect(stdout).toBeFalsy();
         expect(existsSync(resolve(__dirname, './stats.json'))).toBeTruthy();
 
@@ -135,5 +148,31 @@ describe('json', () => {
             expect(() => JSON.parse(data)).not.toThrow();
             done();
         });
+    });
+
+    it('should log warning if file already exists', (done) => {
+        let { exitCode, stderr, stdout } = run(__dirname, ['--json', 'stats.json']);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toContain(successMessage);
+        expect(stdout).toBeFalsy();
+        expect(existsSync(resolve(__dirname, './stats.json'))).toBeTruthy();
+
+        readFile(resolve(__dirname, 'stats.json'), 'utf-8', (err, data) => {
+            expect(err).toBe(null);
+            expect(JSON.parse(data)['hash']).toBeTruthy();
+            expect(JSON.parse(data)['version']).toBeTruthy();
+            expect(JSON.parse(data)['time']).toBeTruthy();
+            expect(() => JSON.parse(data)).not.toThrow();
+            done();
+        });
+
+        ({ exitCode, stderr, stdout } = run(__dirname, ['--json', 'stats.json']));
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toContain(successMessage);
+        expect(stderr).toContain(warnMessage);
+        expect(stdout).toBeFalsy();
+        expect(existsSync(resolve(__dirname, './stats.json'))).toBeTruthy();
     });
 });
