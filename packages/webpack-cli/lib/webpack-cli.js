@@ -1253,6 +1253,7 @@ class WebpackCLI {
 
     async bundleCommand(options) {
         let compiler;
+        let isFirstRun = true;
 
         const callback = (error, stats) => {
             if (error) {
@@ -1292,14 +1293,18 @@ class WebpackCLI {
                         .on('error', handleWriteError)
                         .on('close', () => process.stdout.write('\n'));
                 } else {
+                    if (isFirstRun && existsSync(options.json)) {
+                        logger.warn(`file '${options.json}' already exists and will be overwritten.`);
+                    }
                     createJsonStringifyStream(stats.toJson(statsOptions))
                         .on('error', handleWriteError)
                         .pipe(createWriteStream(options.json))
                         .on('error', handleWriteError)
                         // Use stderr to logging
-                        .on('close', () =>
-                            process.stderr.write(`[webpack-cli] ${green(`stats are successfully stored as json to ${options.json}`)}\n`),
-                        );
+                        .on('close', () =>{
+                            process.stderr.write(`[webpack-cli] ${green(`stats are successfully stored as json to ${options.json}`)}\n`);
+                            isFirstRun = false;
+                        });
                 }
             } else {
                 const printedStats = stats.toString(statsOptions);
