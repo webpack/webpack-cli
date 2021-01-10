@@ -37,7 +37,7 @@ class InitCommand {
                     return;
                 }
 
-                modifyHelperUtil('init', initGenerator, null, null, options.auto, options.force, options.generationPath);
+                modifyHelperUtil(initGenerator, null, null, options.auto, options.force, options.generationPath);
             },
         );
     }

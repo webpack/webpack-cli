@@ -47,7 +47,7 @@ export function resolvePackages(pkg: string[]): Function | void {
 
     function invokeGeneratorIfReady(): void {
         if (packageLocations.length === pkg.length) {
-            modifyHelperUtil('init', null, null, packageLocations);
+            modifyHelperUtil(null, null, packageLocations);
         }
     }
 
