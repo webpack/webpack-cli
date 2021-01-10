@@ -357,7 +357,7 @@ class WebpackCLI {
 
                     try {
                         pkg = await promptInstallation(pkg, () => {
-                            logger.error(`For using this command you need to install: '${green(commandName)}' package`);
+                            logger.error(`For using this command you need to install: '${green(pkg)}' package`);
                         });
                     } catch (error) {
                         logger.error(`Action Interrupted, use '${cyan('webpack-cli help')}' to see possible commands`);
