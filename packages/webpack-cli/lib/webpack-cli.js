@@ -5,7 +5,7 @@ const webpack = getPkg('webpack') ? require('webpack') : undefined;
 const webpackMerge = require('webpack-merge');
 const { extensions, jsVariants } = require('interpret');
 const rechoir = require('rechoir');
-const { createWriteStream, existsSync } = require('fs');
+const { createWriteStream, existsSync, access } = require('fs');
 const { distance } = require('fastest-levenshtein');
 const { options: coloretteOptions, yellow, cyan, green, bold } = require('colorette');
 const { stringifyStream: createJsonStringifyStream } = require('@discoveryjs/json-ext');
@@ -1255,7 +1255,7 @@ class WebpackCLI {
         let compiler;
         let isFirstRun = true;
 
-        const callback = (error, stats) => {
+        const callback = async (error, stats) => {
             if (error) {
                 logger.error(error);
                 process.exit(2);
@@ -1293,9 +1293,13 @@ class WebpackCLI {
                         .on('error', handleWriteError)
                         .on('close', () => process.stdout.write('\n'));
                 } else {
-                    if (isFirstRun && existsSync(options.json)) {
-                        logger.warn(`file '${options.json}' already exists and will be overwritten.`);
-                    }
+                    await access(options.json, (err) => {
+                        if (err) return;
+
+                        if (isFirstRun) {
+                            logger.warn(`file '${options.json}' already exists and will be overwritten.`);
+                        }
+                    });
                     createJsonStringifyStream(stats.toJson(statsOptions))
                         .on('error', handleWriteError)
                         .pipe(createWriteStream(options.json))
