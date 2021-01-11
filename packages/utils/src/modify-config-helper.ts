@@ -35,7 +35,6 @@ export interface WebpackScaffoldObject extends Object {
 const DEFAULT_WEBPACK_CONFIG_FILENAME = 'webpack.config.js';
 
 export function modifyHelperUtil(
-    action: string,
     generator: Generator.GeneratorConstructor,
     configFile: string = DEFAULT_WEBPACK_CONFIG_FILENAME,
     packages?: string[],
