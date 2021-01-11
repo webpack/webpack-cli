@@ -11,9 +11,11 @@ import { toKebabCase } from './utils/helpers';
  */
 export function makeLoaderName(name: string): string {
     name = toKebabCase(name);
+
     if (!/loader$/.test(name)) {
         name += '-loader';
     }
+
     return name;
 }
 
