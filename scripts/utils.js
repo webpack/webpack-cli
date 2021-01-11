@@ -18,6 +18,10 @@ function extractFolder(folderToRead, folders = [], folderStrategy) {
         return [];
     }
 
+    if (!files) {
+        return [];
+    }
+
     files.forEach((file) => {
         const filePath = path.resolve(path.join(folderToRead, file));
         const stats = fs.statSync(filePath);
