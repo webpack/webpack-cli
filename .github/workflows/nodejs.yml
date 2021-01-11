@@ -92,13 +92,13 @@ jobs:
           yarn build:ci
           yarn run lerna bootstrap
 
-      - name: Run Smoketests
-        run: yarn test:smoketests
-
       - name: Test and Generate Coverage
         run: |
           yarn prepsuite
           yarn test:coverage
+
+      - name: Run Smoketests
+        run: yarn test:smoketests
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
