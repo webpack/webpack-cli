@@ -1293,19 +1293,22 @@ class WebpackCLI {
                         .on('error', handleWriteError)
                         .on('close', () => process.stdout.write('\n'));
                 } else {
-                    await access(options.json, (err) => {
-                        if (err) return;
-
-                        if (isFirstRun) {
-                            logger.warn(`file '${options.json}' already exists and will be overwritten.`);
-                        }
-                    });
+                    if (isFirstRun) {
+                        await access(options.json, (err) => {
+                            if (err) {
+                                return;
+                            } else {
+                                logger.warn(`file '${options.json}' already exists and will be overwritten.`);
+                                return;
+                            }
+                        });
+                    }
                     createJsonStringifyStream(stats.toJson(statsOptions))
                         .on('error', handleWriteError)
                         .pipe(createWriteStream(options.json))
                         .on('error', handleWriteError)
                         // Use stderr to logging
-                        .on('close', () =>{
+                        .on('close', () => {
                             process.stderr.write(`[webpack-cli] ${green(`stats are successfully stored as json to ${options.json}`)}\n`);
                             isFirstRun = false;
                         });
