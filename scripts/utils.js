@@ -15,7 +15,7 @@ function extractFolder(folderToRead, folders = [], folderStrategy) {
     try {
         files = fs.readdirSync(folderToRead);
     } catch (error) {
-        // Ignore
+        return [];
     }
 
     files.forEach((file) => {
