@@ -35,7 +35,7 @@ module.exports = {
         symlinks: true,
     },
     module: {
-        noParse: function(content) {
+        noParse: function (content) {
             return /jquery|lodash/.test(content);
         },
         rules: [

@@ -17,11 +17,16 @@
     "plugin-template"
   ],
   "dependencies": {
-    "@webpack-cli/utils": "^1.2.1",
     "colorette": "^1.2.1",
     "log-symbols": "^4.0.0",
     "yeoman-environment": "^2.10.3",
-    "yeoman-generator": "^4.12.0"
+    "yeoman-generator": "^4.12.0",
+    "execa": "^4.1.0",
+    "findup-sync": "^4.0.0",
+    "global-modules": "^2.0.0",
+    "got": "^11.8.0",
+    "jscodeshift": "^0.11.0",
+    "p-each-series": "^2.1.0"
   },
   "peerDependencies": {
     "webpack": "4.x.x || 5.x.x",
@@ -33,7 +38,14 @@
     "@types/yeoman-test": "^2.0.5",
     "rimraf": "^3.0.2",
     "yeoman-assert": "^3.1.1",
-    "yeoman-test": "^2.3.0"
+    "yeoman-test": "^2.3.0",
+    "@types/got": "^9.6.11",
+    "@types/prettier": "^2.1.5"
+  },
+  "peerDependenciesMeta": {
+    "prettier": {
+      "optional": true
+    }
   },
   "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9"
 }
