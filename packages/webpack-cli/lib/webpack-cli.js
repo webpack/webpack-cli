@@ -867,7 +867,7 @@ class WebpackCLI {
 
             if (foundDefaultConfigFile) {
                 const loadedConfig = await loadConfig(foundDefaultConfigFile.path);
-                const evaluatedConfig = await evaluateConfig(loadedConfig, options);
+                const evaluatedConfig = await evaluateConfig(loadedConfig, options.argv || {});
 
                 config.options = evaluatedConfig.options;
 
