@@ -35,6 +35,52 @@ describe('basic serve usage', () => {
         expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
     });
 
+    it('should work with the "--config" option', async () => {
+        const { stderr, stdout } = await runServe(__dirname, ['serve', '--config', 'webpack.config.js', '--port', port]);
+
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('development');
+        expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
+    });
+
+    it('should work with the "--config" and "--env" options', async () => {
+        const { stderr, stdout } = await runServe(__dirname, [
+            'serve',
+            '--config',
+            'function-with-env.config.js',
+            '--env',
+            'foo=bar',
+            '--port',
+            port,
+        ]);
+
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('WEBPACK_SERVE: true');
+        expect(stdout).toContain("foo: 'bar'");
+        expect(stdout).toContain('development');
+        expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
+    });
+
+    it('should work with the "--config" and "--env" options and expose dev server options', async () => {
+        const { stderr, stdout } = await runServe(__dirname, [
+            'serve',
+            '--config',
+            'function-with-argv.config.js',
+            '--env',
+            'foo=bar',
+            '--hot',
+            '--port',
+            port,
+        ]);
+
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('hot: true');
+        expect(stdout).toContain('WEBPACK_SERVE: true');
+        expect(stdout).toContain("foo: 'bar'");
+        expect(stdout).toContain('development');
+        expect(stdout.match(/HotModuleReplacementPlugin/g)).toHaveLength(1);
+    });
+
     it('should work in multi compiler mode', async () => {
         const { stderr, stdout } = await runServe(__dirname, ['serve', '--config', 'multi.config.js', '--port', port]);
 
