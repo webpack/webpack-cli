@@ -824,7 +824,7 @@ class WebpackCLI {
 
                     const loadedConfig = await loadConfig(configPath);
 
-                    return evaluateConfig(loadedConfig, options.argv);
+                    return evaluateConfig(loadedConfig, options.argv || {});
                 }),
             );
 
