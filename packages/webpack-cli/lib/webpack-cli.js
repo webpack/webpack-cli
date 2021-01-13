@@ -288,6 +288,10 @@ class WebpackCLI {
 
         const knownCommands = [bundleCommandOptions, versionCommandOptions, helpCommandOptions, ...externalBuiltInCommandsInfo];
         const isKnownCommand = (name) => knownCommands.find((command) => command.name === name || command.alias === name);
+        const isBundleCommand = (name) => name === bundleCommandOptions.name || name === bundleCommandOptions.alias;
+        const isHelpCommand = (name) => name === helpCommandOptions.name || name === helpCommandOptions.alias;
+        const isVersionCommand = (name) => name === versionCommandOptions.name || name === versionCommandOptions.alias;
+        const findCommandByName = (name) => this.program.commands.find((command) => name === command.name() || name === command.alias());
 
         const getCommandNameAndOptions = (args) => {
             let commandName;
@@ -314,7 +318,7 @@ class WebpackCLI {
             return { commandName: isDefault ? bundleCommandOptions.name : commandName, options, isDefault };
         };
         const loadCommandByName = async (commandName, allowToInstall = false) => {
-            if (commandName === bundleCommandOptions.name || commandName === bundleCommandOptions.alias) {
+            if (isBundleCommand(commandName)) {
                 // Make `bundle|b [options]` command
                 await this.makeCommand(bundleCommandOptions, this.getBuiltInOptions(), async (program) => {
                     const options = program.opts();
@@ -330,10 +334,10 @@ class WebpackCLI {
 
                     await this.bundleCommand(options);
                 });
-            } else if (commandName === helpCommandOptions.name || commandName === helpCommandOptions.alias) {
+            } else if (isHelpCommand(commandName)) {
                 // Stub for the `help` command
                 this.makeCommand(helpCommandOptions, [], () => {});
-            } else if (commandName === versionCommandOptions.name || commandName === helpCommandOptions.alias) {
+            } else if (isVersionCommand(commandName)) {
                 // Stub for the `help` command
                 this.makeCommand(versionCommandOptions, [], () => {});
             } else {
@@ -420,9 +424,7 @@ class WebpackCLI {
                     const { commandName } = getCommandNameAndOptions(this.program.args);
 
                     if (commandName) {
-                        const command = this.program.commands.find(
-                            (command) => command.name() === commandName || command.alias() === commandName,
-                        );
+                        const command = findCommandByName(commandName);
 
                         if (!command) {
                             logger.error(`Can't find and load command '${commandName}'`);
@@ -470,13 +472,7 @@ class WebpackCLI {
         const outputVersion = async (options) => {
             // Filter `bundle`, `version` and `help` commands
             const possibleCommandNames = options.filter(
-                (options) =>
-                    options !== bundleCommandOptions.name &&
-                    options !== bundleCommandOptions.alias &&
-                    options !== versionCommandOptions.name &&
-                    options !== versionCommandOptions.alias &&
-                    options !== helpCommandOptions.name &&
-                    options !== helpCommandOptions.alias,
+                (option) => !isBundleCommand(option) && !isVersionCommand(option) && !isHelpCommand(option),
             );
 
             possibleCommandNames.forEach((possibleCommandName) => {
@@ -495,9 +491,7 @@ class WebpackCLI {
                 await Promise.all(possibleCommandNames.map((possibleCommand) => loadCommandByName(possibleCommand)));
 
                 for (const possibleCommandName of possibleCommandNames) {
-                    const foundCommand = this.program.commands.find(
-                        (command) => command.name() === possibleCommandName || command.alias() === possibleCommandName,
-                    );
+                    const foundCommand = findCommandByName(possibleCommandName);
 
                     if (!foundCommand) {
                         logger.error(`Unknown command '${possibleCommandName}'`);
@@ -563,9 +557,7 @@ class WebpackCLI {
                     }),
                 );
 
-                const bundleCommand = this.program.commands.find(
-                    (command) => command.name() === bundleCommandOptions.name || command.alias() === bundleCommandOptions.alias,
-                );
+                const bundleCommand = findCommandByName(bundleCommandOptions.name);
 
                 if (!isVerbose) {
                     hideVerboseOptions(bundleCommand);
@@ -598,7 +590,7 @@ class WebpackCLI {
 
                 await loadCommandByName(name);
 
-                const command = this.program.commands.find((command) => command.name() === name || command.alias() === name);
+                const command = findCommandByName(name);
 
                 if (!command) {
                     logger.error(`Can't find and load command '${name}'`);
@@ -612,7 +604,7 @@ class WebpackCLI {
 
                 let helpInformation = command.helpInformation().trimRight();
 
-                if (name === bundleCommandOptions.name || name === bundleCommandOptions.alias) {
+                if (isBundleCommand(name)) {
                     helpInformation = helpInformation
                         .replace(bundleCommandOptions.description, 'The build tool for modern web applications.')
                         .replace(
@@ -665,7 +657,7 @@ class WebpackCLI {
 
             const opts = program.opts();
 
-            if (opts.help || commandName === helpCommandOptions.name || commandName === helpCommandOptions.alias) {
+            if (opts.help || isHelpCommand(commandName)) {
                 let isVerbose = false;
 
                 if (opts.help) {
@@ -686,7 +678,7 @@ class WebpackCLI {
                 await outputHelp(optionsForHelp, isVerbose, program);
             }
 
-            if (opts.version || commandName === versionCommandOptions.name || commandName === versionCommandOptions.alias) {
+            if (opts.version || isVersionCommand(commandName)) {
                 const optionsForVersion = [].concat(opts.version ? [commandName] : []).concat(options);
 
                 await outputVersion(optionsForVersion, program);
