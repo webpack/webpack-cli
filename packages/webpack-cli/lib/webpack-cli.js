@@ -2,7 +2,7 @@ const path = require('path');
 const { program } = require('commander');
 const getPkg = require('./utils/package-exists');
 const webpack = getPkg('webpack') ? require('webpack') : undefined;
-const webpackMerge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 const { extensions, jsVariants } = require('interpret');
 const rechoir = require('rechoir');
 const { createWriteStream, existsSync } = require('fs');
@@ -921,7 +921,7 @@ class WebpackCLI {
 
             config.options = config.options.reduce((accumulator, options) => {
                 const configPath = config.path.get(options);
-                const mergedOptions = webpackMerge(accumulator, options);
+                const mergedOptions = merge(accumulator, options);
 
                 mergedConfigPaths.push(configPath);
 
