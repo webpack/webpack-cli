@@ -144,6 +144,21 @@ describe('unknown behaviour', () => {
         expect(stdout).toBeFalsy();
     });
 
+    it('should log an error if an unknown flag is passed and suggests the closest match to an unknown flag #3', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['--output-library-auxiliary-comment-commnjs']);
+
+        expect(exitCode).toBe(2);
+        expect(stderr).toContain("unknown option '--output-library-auxiliary-comment-commnjs'");
+
+        if (isWebpack5) {
+            expect(stderr).toContain("Did you mean '--output-library-auxiliary-comment-commonjs'?");
+            expect(stderr).toContain("Did you mean '--output-library-auxiliary-comment-commonjs2'?");
+        }
+
+        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
+        expect(stdout).toBeFalsy();
+    });
+
     it('should log an error if an unknown flag is passed and suggests the closest match to an unknown flag using "bundle" command', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['bundle', '--entyr', './a.js']);
 
