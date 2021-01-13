@@ -4,7 +4,7 @@ import logSymbols from 'log-symbols';
 import path from 'path';
 import { Confirm, Input, List } from './utils/scaffold-utils';
 
-import { LangType, langQuestionHandler, tooltip, generatePluginName, StylingType, styleQuestionHandler, entryQuestions } from './utils';
+import { LangType, langQuestionHandler, tooltip, StylingType, styleQuestionHandler, entryQuestions } from './utils';
 import { CustomGenerator } from './types';
 
 const { logger, getPackageManager } = utils;
@@ -59,7 +59,7 @@ export default class InitGenerator extends CustomGenerator {
         const self: this = this;
 
         logger.log(
-            `\n${logSymbols.info}${blue(' INFO ')} ` +
+            `${logSymbols.info}${blue(' INFO ')} ` +
                 'For more information and a detailed description of each question, have a look at: ' +
                 `${bold(green('https://github.com/webpack/webpack-cli/blob/master/INIT.md'))}`,
         );
@@ -195,17 +195,17 @@ export default class InitGenerator extends CustomGenerator {
             false,
             this.autoGenerateConfig,
         );
+
         if (useHTMLPlugin) {
             // Html webpack Plugin
             this.dependencies.push('html-webpack-plugin');
             const htmlWebpackDependency = 'html-webpack-plugin';
-            const htmlwebpackPlugin = generatePluginName(htmlWebpackDependency);
             (this.configuration.config.topScope as string[]).push(
-                `const ${htmlwebpackPlugin} = require('${htmlWebpackDependency}')`,
+                `const HtmlWebpackPlugin = require('${htmlWebpackDependency}')`,
                 '\n',
                 tooltip.html(),
             );
-            (this.configuration.config.webpackOptions.plugins as string[]).push(`new ${htmlwebpackPlugin}({
+            (this.configuration.config.webpackOptions.plugins as string[]).push(`new HtmlWebpackPlugin({
 					template: 'index.html'
 				})`);
         }
@@ -219,9 +219,9 @@ export default class InitGenerator extends CustomGenerator {
         );
         // webpack Dev Server
         if (useWorkboxPlugin) {
-            this.configuration.config.topScope.push("const workboxPlugin = require('workbox-webpack-plugin');", '\n');
+            this.configuration.config.topScope.push("const WorkboxWebpackPlugin = require('workbox-webpack-plugin');", '\n');
             this.dependencies.push('workbox-webpack-plugin');
-            (this.configuration.config.webpackOptions.plugins as string[]).push(`new workboxPlugin.GenerateSW({
+            (this.configuration.config.webpackOptions.plugins as string[]).push(`new WorkboxWebpackPlugin.GenerateSW({
 				swDest: 'sw.js',
 				clientsClaim: true,
 				skipWaiting: false,

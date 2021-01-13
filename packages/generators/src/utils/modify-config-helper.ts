@@ -93,8 +93,10 @@ export function modifyHelperUtil(
             let finalConfig: WebpackScaffoldObject = {
                 config: {},
             };
+
             try {
                 const confPath = path.resolve(generationPath, '.yo-rc.json');
+
                 configModule = require(confPath);
             } catch (err) {
                 logger.error('Could not find a yeoman configuration file (.yo-rc.json).');
@@ -104,6 +106,7 @@ export function modifyHelperUtil(
                 Error.stackTraceLimit = 0;
                 process.exitCode = 2;
             }
+
             try {
                 // the configuration stored in .yo-rc.json should already be in the correct
                 // WebpackScaffoldObject format

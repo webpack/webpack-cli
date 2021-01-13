@@ -20,7 +20,7 @@ Object {
   },
   "plugins": Array [
     "new webpack.ProgressPlugin()",
-    "new workboxPlugin.GenerateSW({
+    "new WorkboxWebpackPlugin.GenerateSW({
 				swDest: 'sw.js',
 				clientsClaim: true,
 				skipWaiting: false,
@@ -53,7 +53,7 @@ Object {
   },
   "plugins": Array [
     "new webpack.ProgressPlugin()",
-    "new workboxPlugin.GenerateSW({
+    "new WorkboxWebpackPlugin.GenerateSW({
 				swDest: 'sw.js',
 				clientsClaim: true,
 				skipWaiting: false,
@@ -112,7 +112,7 @@ Object {
   "plugins": Array [
     "new webpack.ProgressPlugin()",
     "new MiniCssExtractPlugin({ filename:'main.[contenthash].css' })",
-    "new workboxPlugin.GenerateSW({
+    "new WorkboxWebpackPlugin.GenerateSW({
 				swDest: 'sw.js',
 				clientsClaim: true,
 				skipWaiting: false,
@@ -148,7 +148,7 @@ Object {
   },
   "plugins": Array [
     "new webpack.ProgressPlugin()",
-    "new workboxPlugin.GenerateSW({
+    "new WorkboxWebpackPlugin.GenerateSW({
 				swDest: 'sw.js',
 				clientsClaim: true,
 				skipWaiting: false,
@@ -173,7 +173,7 @@ Object {
   },
   "plugins": Array [
     "new webpack.ProgressPlugin()",
-    "new workboxPlugin.GenerateSW({
+    "new WorkboxWebpackPlugin.GenerateSW({
 				swDest: 'sw.js',
 				clientsClaim: true,
 				skipWaiting: false,
@@ -194,7 +194,7 @@ Object {
   },
   "plugins": Array [
     "new webpack.ProgressPlugin()",
-    "new workboxPlugin.GenerateSW({
+    "new WorkboxWebpackPlugin.GenerateSW({
 				swDest: 'sw.js',
 				clientsClaim: true,
 				skipWaiting: false,
@@ -219,7 +219,7 @@ Object {
   },
   "plugins": Array [
     "new webpack.ProgressPlugin()",
-    "new workboxPlugin.GenerateSW({
+    "new WorkboxWebpackPlugin.GenerateSW({
 				swDest: 'sw.js',
 				clientsClaim: true,
 				skipWaiting: false,
@@ -243,7 +243,7 @@ Object {
     "new HtmlWebpackPlugin({
 					template: 'index.html'
 				})",
-    "new workboxPlugin.GenerateSW({
+    "new WorkboxWebpackPlugin.GenerateSW({
 				swDest: 'sw.js',
 				clientsClaim: true,
 				skipWaiting: false,

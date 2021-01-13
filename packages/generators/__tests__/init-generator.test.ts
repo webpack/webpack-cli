@@ -39,7 +39,7 @@ describe('init generator', () => {
             open: true,
         });
         expect(config.plugins.length).toBe(2);
-        expect(config.plugins[1]).toContain('workboxPlugin');
+        expect(config.plugins[1]).toContain('WorkboxWebpackPlugin');
 
         // match config snapshot
         expect(config).toMatchSnapshot();
@@ -245,7 +245,7 @@ describe('init generator', () => {
         });
         expect(config.plugins.length).toBe(3);
         expect(config.plugins[1]).toContain('HtmlWebpackPlugin');
-        expect(config.plugins[2]).toContain('workboxPlugin');
+        expect(config.plugins[2]).toContain('WorkboxWebpackPlugin');
 
         // match config snapshot
         expect(config).toMatchSnapshot();

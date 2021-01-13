@@ -1,9 +1,8 @@
 import { green } from 'colorette';
-import j from 'jscodeshift';
+import j, { Collection } from 'jscodeshift';
 import pEachSeries = require('p-each-series');
 import path from 'path';
 import { findProjectRoot } from './path-utils';
-import { Error } from './types';
 import { Config, TransformConfig } from './types';
 import { PROP_TYPES } from './prop-types';
 import { recursiveTransform } from './recursive-parser';
@@ -23,7 +22,10 @@ const { logger, getPackageManager } = utils;
  */
 
 function mapOptionsToTransform(config: Config): string[] {
-    if (!config.webpackOptions) return [];
+    if (!config.webpackOptions) {
+        return [];
+    }
+
     return Object.keys(config.webpackOptions).filter((k: string): boolean => PROP_TYPES.has(k));
 }
 
@@ -43,9 +45,10 @@ export function runTransform(transformConfig: TransformConfig, action: string, g
         if (p == 'usingDefaults') {
             return generateConfig;
         }
+
         return p !== 'configFile' && p !== 'configPath';
     });
-    const initActionNotDefined = action && action !== 'init' ? true : false;
+    const initActionNotDefined = action && action !== 'init';
 
     webpackConfig.forEach(
         (scaffoldPiece: string): Promise<void> => {
@@ -61,8 +64,8 @@ export function runTransform(transformConfig: TransformConfig, action: string, g
                 transformations.push('merge');
             }
 
-            const ast: Node = j(initActionNotDefined ? transformConfig.configFile : 'module.exports = {}');
-
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const ast: Collection<any> = j(initActionNotDefined ? transformConfig.configFile : 'module.exports = {}');
             const transformAction: string = action || null;
 
             return pEachSeries(transformations, (f: string): boolean | Node => {
@@ -99,10 +102,11 @@ export function runTransform(transformConfig: TransformConfig, action: string, g
 
     let successMessage: string =
         green('Congratulations! Your new webpack configuration file has been created!\n\n') +
-        `You can now run ${green(runCommand)} to bundle your application!\n\n`;
+        `You can now run '${green(runCommand)}' to bundle your application!\n`;
 
     if (initActionNotDefined && transformConfig.config.item) {
         successMessage = green(`Congratulations! ${transformConfig.config.item} has been ${action}ed!\n`);
     }
-    logger.log(`\n${successMessage}`);
+
+    logger.log(`${successMessage}`);
 }

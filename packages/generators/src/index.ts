@@ -58,7 +58,6 @@ export { addonGenerator, initGenerator };
 export * from './utils/ast-utils';
 export * from './utils/copy-utils';
 export * from './utils/modify-config-helper';
-export * from './utils/npm-exists';
 export * from './utils/npm-packages-exists';
 export * from './utils/recursive-parser';
 export * from './utils/resolve-packages';
