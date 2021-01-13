@@ -32,7 +32,7 @@ const runTest = () => {
     return new Promise((resolve) => {
         setTimeout(() => {
             proc.kill();
-        }, 5000);
+        }, 30000);
 
         const logMessage = 'It looks like webpack is not installed.';
         const prompt = 'Would you like to install';
