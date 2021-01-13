@@ -2245,6 +2245,21 @@
     p-each-series "^2.1.0"
     p-lazy "^3.0.0"
 
+"@webpack-cli/utils@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@webpack-cli/utils/-/utils-1.2.1.tgz#b3a847fc803e0ff661833b147b02f9f886a54d87"
+  integrity sha512-Q28u+uBYqmRGRhRNhBfi5jnlUBIEtvSsIhSIS81BCvc/nADNdNlYrqKn3FLJ2KgE7ZmEhKf0cvarcwLvy1BCOQ==
+  dependencies:
+    colorette "^1.2.1"
+    execa "^5.0.0"
+    findup-sync "^4.0.0"
+    global-modules "^2.0.0"
+    got "^11.8.0"
+    jscodeshift "^0.11.0"
+    p-each-series "^2.1.0"
+    yeoman-environment "^2.10.3"
+    yeoman-generator "^4.12.0"
+
 "@xtuc/ieee754@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@xtuc/ieee754/-/ieee754-1.2.0.tgz#eef014a3145ae477a1cbc00cd1e552336dceb790"

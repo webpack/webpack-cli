@@ -778,7 +778,7 @@ class WebpackCLI {
             return { options, path: configPath };
         };
 
-        const evaluateConfig = async (loadedConfig, args) => {
+        const evaluateConfig = async (loadedConfig, argv) => {
             const isMultiCompiler = Array.isArray(loadedConfig.options);
             const config = isMultiCompiler ? loadedConfig.options : [loadedConfig.options];
 
@@ -791,7 +791,7 @@ class WebpackCLI {
                     // `Promise` may return `Function`
                     if (typeof rawConfig === 'function') {
                         // when config is a function, pass the env from args to the config function
-                        rawConfig = await rawConfig(args.env, args);
+                        rawConfig = await rawConfig(argv.env, argv);
                     }
 
                     return rawConfig;
@@ -824,7 +824,7 @@ class WebpackCLI {
 
                     const loadedConfig = await loadConfig(configPath);
 
-                    return evaluateConfig(loadedConfig, options);
+                    return evaluateConfig(loadedConfig, options.argv || {});
                 }),
             );
 
@@ -867,7 +867,7 @@ class WebpackCLI {
 
             if (foundDefaultConfigFile) {
                 const loadedConfig = await loadConfig(foundDefaultConfigFile.path);
-                const evaluatedConfig = await evaluateConfig(loadedConfig, options);
+                const evaluatedConfig = await evaluateConfig(loadedConfig, options.argv || {});
 
                 config.options = evaluatedConfig.options;
 
@@ -1275,7 +1275,9 @@ class WebpackCLI {
                 : undefined;
 
             // TODO webpack@4 doesn't support `{ children: [{ colors: true }, { colors: true }] }` for stats
-            if (compiler.compilers && !compiler.compilers.find(oneOfCompiler => oneOfCompiler.webpack)) {
+            const statsForWebpack4 = webpack.Stats && webpack.Stats.presetToOptions;
+
+            if (compiler.compilers && statsForWebpack4) {
                 statsOptions.colors = statsOptions.children.some((child) => child.colors);
             }
 
@@ -1311,7 +1313,7 @@ class WebpackCLI {
             }
         };
 
-        options.env = { WEBPACK_BUNDLE: true, ...options.env };
+        options.argv = { ...options, env: { WEBPACK_BUNDLE: true, ...options.env } };
 
         compiler = await this.createCompiler(options, callback);
 

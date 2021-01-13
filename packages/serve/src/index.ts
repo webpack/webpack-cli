@@ -73,7 +73,7 @@ class ServeCommand {
                     processor(devServerOptions);
                 }
 
-                webpackOptions.env = { WEBPACK_SERVE: true, ...options.env };
+                webpackOptions.argv = { ...options, env: { WEBPACK_SERVE: true, ...options.env } };
 
                 const compiler = await cli.createCompiler(webpackOptions);
 

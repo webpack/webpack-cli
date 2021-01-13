@@ -11,6 +11,7 @@ describe('function configuration', () => {
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
         expect(stdout).toContain("{ argv: { mode: 'development', env: { WEBPACK_BUNDLE: true } } }");
+        expect(stdout).toContain("mode: 'development'");
         expect(existsSync(resolve(__dirname, './dist/dev.js')));
     });
 });
