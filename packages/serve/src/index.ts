@@ -94,7 +94,7 @@ class ServeCommand {
                     process.stdin.on('end', () => {
                         Promise.all(
                             servers.map((server) => {
-                                return new Promise((resolve) => {
+                                return new Promise<void>((resolve) => {
                                     server.close(() => {
                                         resolve();
                                     });

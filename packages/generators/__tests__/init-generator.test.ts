@@ -1,4 +1,5 @@
 import * as assert from 'yeoman-assert';
+// eslint-disable-next-line node/no-extraneous-import
 import { run } from 'yeoman-test';
 import { join } from 'path';
 
