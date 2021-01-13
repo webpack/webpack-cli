@@ -316,7 +316,7 @@ class WebpackCLI {
         const loadCommandByName = async (commandName, allowToInstall = false) => {
             if (commandName === bundleCommandOptions.name || commandName === bundleCommandOptions.alias) {
                 // Make `bundle|b [options]` command
-                this.makeCommand(bundleCommandOptions, this.getBuiltInOptions(), async (program) => {
+                await this.makeCommand(bundleCommandOptions, this.getBuiltInOptions(), async (program) => {
                     const options = program.opts();
 
                     if (program.args.length > 0) {
@@ -430,11 +430,11 @@ class WebpackCLI {
                             process.exit(2);
                         }
 
-                        const found = command.options.find((option) => distance(name, option.long.slice(2)) < 3);
-
-                        if (found) {
-                            logger.error(`Did you mean '--${found.name()}'?`);
-                        }
+                        command.options.forEach((option) => {
+                            if (distance(name, option.long.slice(2)) < 3) {
+                                logger.error(`Did you mean '--${option.name()}'?`);
+                            }
+                        });
                     }
                 }
             }
