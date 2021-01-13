@@ -92,8 +92,8 @@ jobs:
           yarn build:ci
           yarn run lerna bootstrap
 
-      # - name: Run Smoketests
-      #  run: yarn test:smoketests
+      - name: Run Smoketests
+        run: yarn test:smoketests
 
       - name: Test and Generate Coverage
         run: |
@@ -110,11 +110,15 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
+
       - uses: actions/setup-node@v1
         with:
           node-version: '12.x'
+
       - run: npm install
+
       - name: conventional-changelog-lint-config-cz
         # $GITHUB_WORKSPACE is the path to your repository
         run: echo "NODE_PATH=$GITHUB_WORKSPACE/node_modules" >> $GITHUB_ENV
+
       - uses: wagoid/commitlint-github-action@v2

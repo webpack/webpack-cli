@@ -456,12 +456,14 @@ Options:
   --resolve-main-files-reset                                                         Clear all items provided in configuration. Filenames used to find the default entry point if there is no description file or main field.
   --resolve-modules <value...>                                                       Folder name or directory path where to find modules.
   --resolve-modules-reset                                                            Clear all items provided in configuration. Folder names or directory paths where to find modules.
+  --resolve-prefer-absolute                                                          Prefer to resolve server-relative URLs (starting with '/') as absolute paths before falling back to resolve in 'resolve.roots'.
+  --no-resolve-prefer-absolute                                                       Negative 'resolve-prefer-absolute' option.
   --resolve-prefer-relative                                                          Prefer to resolve module requests as relative request and fallback to resolving as module.
   --no-resolve-prefer-relative                                                       Negative 'resolve-prefer-relative' option.
   --resolve-restrictions <value...>                                                  Resolve restriction. Resolve result must fulfill this restriction.
   --resolve-restrictions-reset                                                       Clear all items provided in configuration. A list of resolve restrictions. Resolve results must fulfill all of these restrictions to resolve successfully. Other resolve paths are taken when restrictions are not met.
   --resolve-roots <value...>                                                         Directory in which requests that are server-relative URLs (starting with '/') are resolved.
-  --resolve-roots-reset                                                              Clear all items provided in configuration. A list of directories in which requests that are server-relative URLs (starting with '/') are resolved. On non-windows system these requests are tried to resolve as absolute path first.
+  --resolve-roots-reset                                                              Clear all items provided in configuration. A list of directories in which requests that are server-relative URLs (starting with '/') are resolved.
   --resolve-symlinks                                                                 Enable resolving symlinks to the original location.
   --no-resolve-symlinks                                                              Negative 'resolve-symlinks' option.
   --resolve-unsafe-cache                                                             Enable caching of successfully resolved requests (cache entries are not revalidated).
@@ -504,12 +506,14 @@ Options:
   --resolve-loader-main-files-reset                                                  Clear all items provided in configuration. Filenames used to find the default entry point if there is no description file or main field.
   --resolve-loader-modules <value...>                                                Folder name or directory path where to find modules.
   --resolve-loader-modules-reset                                                     Clear all items provided in configuration. Folder names or directory paths where to find modules.
+  --resolve-loader-prefer-absolute                                                   Prefer to resolve server-relative URLs (starting with '/') as absolute paths before falling back to resolve in 'resolve.roots'.
+  --no-resolve-loader-prefer-absolute                                                Negative 'resolve-loader-prefer-absolute' option.
   --resolve-loader-prefer-relative                                                   Prefer to resolve module requests as relative request and fallback to resolving as module.
   --no-resolve-loader-prefer-relative                                                Negative 'resolve-loader-prefer-relative' option.
   --resolve-loader-restrictions <value...>                                           Resolve restriction. Resolve result must fulfill this restriction.
   --resolve-loader-restrictions-reset                                                Clear all items provided in configuration. A list of resolve restrictions. Resolve results must fulfill all of these restrictions to resolve successfully. Other resolve paths are taken when restrictions are not met.
   --resolve-loader-roots <value...>                                                  Directory in which requests that are server-relative URLs (starting with '/') are resolved.
-  --resolve-loader-roots-reset                                                       Clear all items provided in configuration. A list of directories in which requests that are server-relative URLs (starting with '/') are resolved. On non-windows system these requests are tried to resolve as absolute path first.
+  --resolve-loader-roots-reset                                                       Clear all items provided in configuration. A list of directories in which requests that are server-relative URLs (starting with '/') are resolved.
   --resolve-loader-symlinks                                                          Enable resolving symlinks to the original location.
   --no-resolve-loader-symlinks                                                       Negative 'resolve-loader-symlinks' option.
   --resolve-loader-unsafe-cache                                                      Enable caching of successfully resolved requests (cache entries are not revalidated).
