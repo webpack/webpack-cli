@@ -9,7 +9,9 @@ const replaceExt = (path: string, ext: string): string => path.substr(0, path.la
 
 function updateEntryExt(self: CustomGenerator, newExt: string): void {
     const jsEntryOption = self.entryOption;
+
     let tsEntryOption = {};
+
     if (typeof jsEntryOption === 'string') {
         tsEntryOption = replaceExt(jsEntryOption, newExt);
     } else if (typeof jsEntryOption === 'object') {
@@ -17,6 +19,7 @@ function updateEntryExt(self: CustomGenerator, newExt: string): void {
             tsEntryOption[entry] = replaceExt(jsEntryOption[entry], newExt);
         });
     }
+
     self.configuration.config.webpackOptions.entry = tsEntryOption;
 }
 
@@ -25,15 +28,23 @@ const getFolder = (path: string): string => path.replace("'./", '').split('/').s
 function getEntryFolders(self: CustomGenerator): string[] {
     const entryOption = self.entryOption;
     const entryFolders = {};
+
     if (typeof entryOption === 'string') {
         const folder = getFolder(entryOption);
-        if (folder.length > 0) entryFolders[folder] = true;
+
+        if (folder.length > 0) {
+            entryFolders[folder] = true;
+        }
     } else if (typeof entryOption === 'object') {
         Object.keys(entryOption).forEach((entry: string): void => {
             const folder = getFolder(entryOption[entry]);
-            if (folder.length > 0) entryFolders[folder] = true;
+
+            if (folder.length > 0) {
+                entryFolders[folder] = true;
+            }
         });
     }
+
     return Object.keys(entryFolders);
 }
 
@@ -45,11 +56,8 @@ function getEntryFolders(self: CustomGenerator): string[] {
  */
 export function getBabelLoader(includeFolders: string[]): Rule {
     const include = includeFolders.map((folder: string): string => `path.resolve(__dirname, '${folder}')`);
-    return {
-        test: '/\\.(js|jsx)$/',
-        include,
-        loader: "'babel-loader'",
-    };
+
+    return { test: '/\\.(js|jsx)$/', include, loader: "'babel-loader'" };
 }
 
 /**
@@ -60,16 +68,13 @@ export function getBabelLoader(includeFolders: string[]): Rule {
  */
 export function getTypescriptLoader(includeFolders: string[]): Rule {
     const include = includeFolders.map((folder: string): string => `path.resolve(__dirname, '${folder}')`);
-    return {
-        test: '/\\.(ts|tsx)$/',
-        loader: "'ts-loader'",
-        include,
-        exclude: ['/node_modules/'],
-    };
+
+    return { test: '/\\.(ts|tsx)$/', loader: "'ts-loader'", include, exclude: ['/node_modules/'] };
 }
 
 export default function language(self: CustomGenerator, langType: string): void {
     const entryFolders = getEntryFolders(self);
+
     switch (langType) {
         case LangType.ES6:
             self.dependencies.push('babel-loader', '@babel/core', '@babel/preset-env');

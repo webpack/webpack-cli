@@ -26,5 +26,6 @@ export function isLocalPath(str: string): boolean {
 export function findProjectRoot(cwd = process.cwd()): string {
     const rootFilePath = findup('package.json', { cwd });
     const projectRoot = path.dirname(rootFilePath);
+
     return projectRoot;
 }

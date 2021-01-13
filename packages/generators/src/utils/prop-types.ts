@@ -1,8 +1,7 @@
-import { isWebpack5 } from './isWebpack5';
-import { config } from 'webpack';
+import { config, version } from 'webpack';
 
 let configKeys;
-if (isWebpack5()) {
+if (version.startsWith('5')) {
     configKeys = Object.keys(config.getNormalizedWebpackOptions({}));
 } else {
     configKeys = [
