@@ -31,7 +31,7 @@ class WebpackCLI {
 
     async makeCommand(commandOptions, options, action) {
         const alreadyLoaded = this.program.commands.find(
-            (command) => command.name() === commandOptions.name || command.alias() === commandOptions.alias,
+            (command) => command.name() === commandOptions.name || command.aliases().includes(commandOptions.alias),
         );
 
         if (alreadyLoaded) {
@@ -229,9 +229,9 @@ class WebpackCLI {
 
     async run(args, parseOptions) {
         // Built-in internal commands
-        const bundleCommandOptions = {
-            name: 'bundle',
-            alias: 'b',
+        const buildCommandOptions = {
+            name: 'build',
+            alias: ['bundle', 'b'],
             description: 'Run webpack (default command, can be omitted).',
             usage: '[options]',
         };
@@ -286,12 +286,25 @@ class WebpackCLI {
             },
         ];
 
-        const knownCommands = [bundleCommandOptions, versionCommandOptions, helpCommandOptions, ...externalBuiltInCommandsInfo];
-        const isKnownCommand = (name) => knownCommands.find((command) => command.name === name || command.alias === name);
-        const isBundleCommand = (name) => name === bundleCommandOptions.name || name === bundleCommandOptions.alias;
-        const isHelpCommand = (name) => name === helpCommandOptions.name || name === helpCommandOptions.alias;
-        const isVersionCommand = (name) => name === versionCommandOptions.name || name === versionCommandOptions.alias;
-        const findCommandByName = (name) => this.program.commands.find((command) => name === command.name() || name === command.alias());
+        const knownCommands = [buildCommandOptions, versionCommandOptions, helpCommandOptions, ...externalBuiltInCommandsInfo];
+        const isKnownCommand = (name) =>
+            knownCommands.find(
+                (command) =>
+                    command.name === name || (Array.isArray(command.alias) ? command.alias.includes(name) : command.alias === name),
+            );
+        const isBuildCommand = (name) =>
+            buildCommandOptions.name === name ||
+            (Array.isArray(buildCommandOptions.alias) ? buildCommandOptions.alias.includes(name) : buildCommandOptions.alias === name);
+        const isHelpCommand = (name) =>
+            helpCommandOptions.name === name ||
+            (Array.isArray(helpCommandOptions.alias) ? helpCommandOptions.alias.includes(name) : helpCommandOptions.alias === name);
+        const isVersionCommand = (name) =>
+            versionCommandOptions.name === name ||
+            (Array.isArray(versionCommandOptions.alias)
+                ? versionCommandOptions.alias.includes(name)
+                : versionCommandOptions.alias === name);
+        const findCommandByName = (name) =>
+            this.program.commands.find((command) => name === command.name() || command.alias().includes(name));
 
         const getCommandNameAndOptions = (args) => {
             let commandName;
@@ -315,16 +328,15 @@ class WebpackCLI {
 
             const isDefault = typeof commandName === 'undefined';
 
-            return { commandName: isDefault ? bundleCommandOptions.name : commandName, options, isDefault };
+            return { commandName: isDefault ? buildCommandOptions.name : commandName, options, isDefault };
         };
         const loadCommandByName = async (commandName, allowToInstall = false) => {
-            if (isBundleCommand(commandName)) {
-                // Make `bundle|b [options]` command
-                await this.makeCommand(bundleCommandOptions, this.getBuiltInOptions(), async (program) => {
+            if (isBuildCommand(commandName)) {
+                await this.makeCommand(buildCommandOptions, this.getBuiltInOptions(), async (program) => {
                     const options = program.opts();
 
                     if (program.args.length > 0) {
-                        const possibleCommands = [].concat([bundleCommandOptions.name]).concat(program.args);
+                        const possibleCommands = [].concat([buildCommandOptions.name]).concat(program.args);
 
                         logger.error('Running multiple commands at the same time is not possible');
                         logger.error(`Found commands: ${possibleCommands.map((item) => `'${item}'`).join(', ')}`);
@@ -343,7 +355,10 @@ class WebpackCLI {
             } else {
                 const builtInExternalCommandInfo = externalBuiltInCommandsInfo.find(
                     (externalBuiltInCommandInfo) =>
-                        externalBuiltInCommandInfo.name === commandName || externalBuiltInCommandInfo.alias === commandName,
+                        externalBuiltInCommandInfo.name === commandName ||
+                        (typeof Array.isArray(externalBuiltInCommandInfo.alias)
+                            ? externalBuiltInCommandInfo.alias.includes(commandName)
+                            : externalBuiltInCommandInfo.alias === commandName),
                 );
 
                 let pkg;
@@ -472,7 +487,7 @@ class WebpackCLI {
         const outputVersion = async (options) => {
             // Filter `bundle`, `version` and `help` commands
             const possibleCommandNames = options.filter(
-                (option) => !isBundleCommand(option) && !isVersionCommand(option) && !isHelpCommand(option),
+                (option) => !isBuildCommand(option) && !isVersionCommand(option) && !isHelpCommand(option),
             );
 
             possibleCommandNames.forEach((possibleCommandName) => {
@@ -557,7 +572,7 @@ class WebpackCLI {
                     }),
                 );
 
-                const bundleCommand = findCommandByName(bundleCommandOptions.name);
+                const bundleCommand = findCommandByName(buildCommandOptions.name);
 
                 if (!isVerbose) {
                     hideVerboseOptions(bundleCommand);
@@ -566,10 +581,10 @@ class WebpackCLI {
                 let helpInformation = bundleCommand
                     .helpInformation()
                     .trimRight()
-                    .replace(bundleCommandOptions.description, 'The build tool for modern web applications.')
+                    .replace(buildCommandOptions.description, 'The build tool for modern web applications.')
                     .replace(
                         /Usage:.+/,
-                        'Usage: webpack [options]\nAlternative usage: webpack bundle [options]\nAlternative usage: webpack --config <config> [options]\nAlternative usage: webpack bundle --config <config> [options]',
+                        'Usage: webpack [options]\nAlternative usage: webpack --config <config> [options]\nAlternative usage: webpack build [options]\nAlternative usage: webpack bundle [options]\nAlternative usage: webpack b [options]\nAlternative usage: webpack build --config <config> [options]',
                     );
 
                 logger.raw(helpInformation);
@@ -604,30 +619,36 @@ class WebpackCLI {
 
                 let helpInformation = command.helpInformation().trimRight();
 
-                if (isBundleCommand(name)) {
+                if (isBuildCommand(name)) {
                     helpInformation = helpInformation
-                        .replace(bundleCommandOptions.description, 'The build tool for modern web applications.')
+                        .replace(buildCommandOptions.description, 'The build tool for modern web applications.')
                         .replace(
                             /Usage:.+/,
-                            'Usage: webpack [options]\nAlternative usage: webpack bundle [options]\nAlternative usage: webpack --config <config> [options]\nAlternative usage: webpack bundle --config <config> [options]',
+                            'Usage: webpack [options]\nAlternative usage: webpack --config <config> [options]\nAlternative usage: webpack build [options]\nAlternative usage: webpack bundle [options]\nAlternative usage: webpack b [options]\nAlternative usage: webpack build --config <config> [options]',
                         );
                 }
 
                 logger.raw(helpInformation);
             }
 
-            const globalOptions = program.helpInformation().match(/Options:\n(?<globalOptions>.+)\nCommands:\n/s);
+            const programHelpInformation = program.helpInformation();
+            const globalOptions = programHelpInformation.match(/Options:\n(?<globalOptions>.+)\nCommands:\n/s);
 
             if (globalOptions && globalOptions.groups.globalOptions) {
                 logger.raw('\nGlobal options:');
                 logger.raw(globalOptions.groups.globalOptions.trimRight());
             }
 
-            if (isGlobal) {
-                const globalCommands = program.helpInformation().match(/Commands:\n(?<globalCommands>.+)/s);
+            const globalCommands = programHelpInformation.match(/Commands:\n(?<globalCommands>.+)/s);
 
+            if (isGlobal && globalCommands.groups.globalCommands) {
                 logger.raw('\nCommands:');
-                logger.raw(globalCommands.groups.globalCommands.trimRight());
+                logger.raw(
+                    globalCommands.groups.globalCommands
+                        .trimRight()
+                        // `commander` doesn't support multiple alias in help
+                        .replace('build|bundle [options]  ', 'build|bundle|b [options]'),
+                );
             }
 
             logger.raw("\nTo see list of all supported commands and options run 'webpack --help=verbose'.\n");
@@ -692,7 +713,9 @@ class WebpackCLI {
                 const found = knownCommands.find((commandOptions) => distance(commandName, commandOptions.name) < 3);
 
                 if (found) {
-                    logger.error(`Did you mean '${found.name}' (alias '${found.alias}')?`);
+                    logger.error(
+                        `Did you mean '${found.name}' (alias '${Array.isArray(found.alias) ? found.alias.join(', ') : found.alias}')?`,
+                    );
                 }
 
                 logger.error("Run 'webpack --help' to see available commands and options");
@@ -1305,7 +1328,7 @@ class WebpackCLI {
             }
         };
 
-        options.argv = { ...options, env: { WEBPACK_BUNDLE: true, ...options.env } };
+        options.argv = { ...options, env: { WEBPACK_BUNDLE: true, WEBPACK_BUILD: true, ...options.env } };
 
         compiler = await this.createCompiler(options, callback);
 
