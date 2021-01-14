@@ -284,21 +284,21 @@ class WebpackCLI {
         ];
 
         const knownCommands = [buildCommandOptions, versionCommandOptions, helpCommandOptions, ...externalBuiltInCommandsInfo];
-        // TODO fix and test `webpack buil`
+        const getCommandName = (name) => name.split(' ')[0];
         const isKnownCommand = (name) =>
             knownCommands.find(
                 (command) =>
-                    command.name.split(' ')[0] === name ||
+                    getCommandName(command.name) === name ||
                     (Array.isArray(command.alias) ? command.alias.includes(name) : command.alias === name),
             );
         const isBuildCommand = (name) =>
-            buildCommandOptions.name.split(' ')[0] === name ||
+            getCommandName(buildCommandOptions.name) === name ||
             (Array.isArray(buildCommandOptions.alias) ? buildCommandOptions.alias.includes(name) : buildCommandOptions.alias === name);
         const isHelpCommand = (name) =>
-            helpCommandOptions.name.split(' ')[0] === name ||
+            getCommandName(helpCommandOptions.name) === name ||
             (Array.isArray(helpCommandOptions.alias) ? helpCommandOptions.alias.includes(name) : helpCommandOptions.alias === name);
         const isVersionCommand = (name) =>
-            versionCommandOptions.name.split(' ')[0] === name ||
+            getCommandName(versionCommandOptions.name) === name ||
             (Array.isArray(versionCommandOptions.alias)
                 ? versionCommandOptions.alias.includes(name)
                 : versionCommandOptions.alias === name);
@@ -600,7 +600,7 @@ class WebpackCLI {
             if (options.length === 0) {
                 await Promise.all(
                     knownCommands.map((knownCommand) => {
-                        return loadCommandByName(knownCommand.name);
+                        return loadCommandByName(getCommandName(knownCommand.name));
                     }),
                 );
 
@@ -784,11 +784,13 @@ class WebpackCLI {
             } else {
                 logger.error(`Unknown command '${commandName}'`);
 
-                const found = knownCommands.find((commandOptions) => distance(commandName, commandOptions.name) < 3);
+                const found = knownCommands.find((commandOptions) => distance(commandName, getCommandName(commandOptions.name)) < 3);
 
                 if (found) {
                     logger.error(
-                        `Did you mean '${found.name}' (alias '${Array.isArray(found.alias) ? found.alias.join(', ') : found.alias}')?`,
+                        `Did you mean '${getCommandName(found.name)}' (alias '${
+                            Array.isArray(found.alias) ? found.alias.join(', ') : found.alias
+                        }')?`,
                     );
                 }
 
