@@ -1,13 +1,16 @@
 'use strict';
 
-const { run } = require('../utils/test-utils');
+const path = require('path');
 
-describe('basic info usage', () => {
+const { run } = require('../../utils/test-utils');
+
+describe("'configtest' command with the configuration path option", () => {
     it('should validate webpack config successfully', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['configtest', './webpack.config.js'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['configtest', './basic.config.js'], false);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
+        expect(stdout).toContain(`Validate '${path.resolve(__dirname, 'basic.config.js')}'.`);
         expect(stdout).toContain('There are no validation errors in the given webpack configuration.');
     });
 
@@ -17,7 +20,7 @@ describe('basic info usage', () => {
         expect(exitCode).toBe(2);
         expect(stderr).toContain('Invalid configuration object.');
         expect(stderr).toContain('configuration.mode should be one of these:');
-        expect(stdout).toBeFalsy();
+        expect(stdout).toContain(`Validate '${path.resolve(__dirname, 'error.config.js')}'.`);
     });
 
     it('should throw syntax error', () => {
@@ -34,7 +37,7 @@ describe('basic info usage', () => {
         expect(exitCode).toBe(2);
         expect(stderr).toContain('Invalid configuration object.');
         expect(stderr).toContain('configuration.mode should be one of these:');
-        expect(stdout).toBeFalsy();
+        expect(stdout).toContain(`Validate '${path.resolve(__dirname, 'error.config.js')}'.`);
     });
 
     it('should throw error if configuration does not exist', () => {
@@ -42,14 +45,6 @@ describe('basic info usage', () => {
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain(`The specified config file doesn't exist`);
-        expect(stdout).toBeFalsy();
-    });
-
-    it('should throw error if no configuration was provided', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['configtest'], false);
-
-        expect(exitCode).toBe(2);
-        expect(stderr).toContain(`error: missing required argument 'config-path'`);
         expect(stdout).toBeFalsy();
     });
 });
