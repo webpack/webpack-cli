@@ -155,7 +155,7 @@ describe('help', () => {
         expect(stdout).toContain('Made with ♥ by the webpack team');
     });
 
-    const commands = ['bundle', 'loader', 'plugin', 'info', 'init', 'serve', 'migrate'];
+    const commands = ['build', 'bundle', 'loader', 'plugin', 'info', 'init', 'serve', 'migrate'];
 
     commands.forEach((command) => {
         it(`should show help information for '${command}' command using the "--help" option`, () => {
@@ -163,7 +163,7 @@ describe('help', () => {
 
             expect(exitCode).toBe(0);
             expect(stderr).toBeFalsy();
-            expect(stdout).toContain(`webpack ${command === 'bundle' ? '' : command}`);
+            expect(stdout).toContain(`webpack ${command === 'build' || command === 'bundle' ? '' : command}`);
         });
 
         it(`should show help information for '${command}' command using command syntax`, () => {
@@ -171,7 +171,7 @@ describe('help', () => {
 
             expect(exitCode).toBe(0);
             expect(stderr).toBeFalsy();
-            expect(stdout).toContain(`webpack ${command === 'bundle' ? '' : command}`);
+            expect(stdout).toContain(`webpack ${command === 'build' || command === 'bundle' ? '' : command}`);
         });
 
         it('should show help information and respect the "--color" flag using the "--help" option', () => {
@@ -179,7 +179,7 @@ describe('help', () => {
 
             expect(exitCode).toBe(0);
             expect(stderr).toBeFalsy();
-            expect(stdout).toContain(`webpack ${command === 'bundle' ? '' : command}`);
+            expect(stdout).toContain(`webpack ${command === 'build' || command === 'bundle' ? '' : command}`);
             expect(stdout).toContain(coloretteEnabled ? bold('Made with ♥ by the webpack team') : 'Made with ♥ by the webpack team');
         });
 
@@ -188,7 +188,7 @@ describe('help', () => {
 
             expect(exitCode).toBe(0);
             expect(stderr).toBeFalsy();
-            expect(stdout).toContain(`webpack ${command === 'bundle' ? '' : command}`);
+            expect(stdout).toContain(`webpack ${command === 'build' || command === 'bundle' ? '' : command}`);
             // TODO bug in tests
             // expect(stdout).not.toContain(bold('Made with ♥ by the webpack team'));
             expect(stdout).toContain('Made with ♥ by the webpack team');

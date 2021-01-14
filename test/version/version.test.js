@@ -85,6 +85,16 @@ describe('single version flag', () => {
         expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
     });
 
+    it('outputs version with build', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['build', '--version'], false);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
+        expect(stdout).toContain(`webpack ${webpack.version}`);
+        expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
+    });
+
     it('outputs version with bundle', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['bundle', '--version'], false);
 

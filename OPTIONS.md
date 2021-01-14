@@ -1,8 +1,10 @@
 ```
 Usage: webpack [options]
-Alternative usage: webpack bundle [options]
 Alternative usage: webpack --config <config> [options]
-Alternative usage: webpack bundle --config <config> [options]
+Alternative usage: webpack build [options]
+Alternative usage: webpack bundle [options]
+Alternative usage: webpack b [options]
+Alternative usage: webpack build --config <config> [options]
 
 The build tool for modern web applications.
 
@@ -697,7 +699,7 @@ Global options:
   -h, --help [verbose]                       Display help for commands and options.
 
 Commands:
-  bundle|b [options]                         Run webpack (default command, can be omitted).
+  build|bundle|b [options]                   Run webpack (default command, can be omitted).
   version|v                                  Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
   help|h                                     Display help for commands and options.
   serve|s [options]                          Run the webpack dev server.
