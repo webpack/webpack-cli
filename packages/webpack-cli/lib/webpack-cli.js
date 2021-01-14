@@ -284,19 +284,21 @@ class WebpackCLI {
         ];
 
         const knownCommands = [buildCommandOptions, versionCommandOptions, helpCommandOptions, ...externalBuiltInCommandsInfo];
+        // TODO fix and test `webpack buil`
         const isKnownCommand = (name) =>
             knownCommands.find(
                 (command) =>
-                    command.name.startsWith(name) || (Array.isArray(command.alias) ? command.alias.includes(name) : command.alias === name),
+                    command.name.split(' ')[0] === name ||
+                    (Array.isArray(command.alias) ? command.alias.includes(name) : command.alias === name),
             );
         const isBuildCommand = (name) =>
-            buildCommandOptions.name.startsWith(name) ||
+            buildCommandOptions.name.split(' ')[0] === name ||
             (Array.isArray(buildCommandOptions.alias) ? buildCommandOptions.alias.includes(name) : buildCommandOptions.alias === name);
         const isHelpCommand = (name) =>
-            helpCommandOptions.name.startsWith(name) ||
+            helpCommandOptions.name.split(' ')[0] === name ||
             (Array.isArray(helpCommandOptions.alias) ? helpCommandOptions.alias.includes(name) : helpCommandOptions.alias === name);
         const isVersionCommand = (name) =>
-            versionCommandOptions.name.startsWith(name) ||
+            versionCommandOptions.name.split(' ')[0] === name ||
             (Array.isArray(versionCommandOptions.alias)
                 ? versionCommandOptions.alias.includes(name)
                 : versionCommandOptions.alias === name);

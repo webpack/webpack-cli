@@ -27,6 +27,16 @@ describe('bundle command', () => {
         expect(stdout).toBeTruthy();
     });
 
+    it('should log error and suggest right name on the "buil" command', async () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['buil'], false);
+
+        expect(exitCode).toBe(2);
+        expect(stderr).toContain("Unknown command 'buil'");
+        expect(stderr).toContain("Did you mean 'build' (alias 'bundle, b')?");
+        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
+        expect(stdout).toBeFalsy();
+    });
+
     it('should log error with multi commands', async () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['bundle', 'info'], false);
 
