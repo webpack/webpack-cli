@@ -242,8 +242,15 @@ describe('help', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain('Usage: webpack --target <value...>');
-        expect(stdout).toContain('Short: webpack -t <value...>');
+
+        if (isWebpack5) {
+            expect(stdout).toContain('Usage: webpack --target <value...>');
+            expect(stdout).toContain('Short: webpack -t <value...>');
+        } else {
+            expect(stdout).toContain('Usage: webpack --target <value>');
+            expect(stdout).toContain('Short: webpack -t <value>');
+        }
+
         expect(stdout).toContain('Description: Sets the build target e.g. node.');
         expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
         expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
