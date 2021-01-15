@@ -362,7 +362,7 @@ class WebpackCLI {
             } else {
                 const builtInExternalCommandInfo = externalBuiltInCommandsInfo.find(
                     (externalBuiltInCommandInfo) =>
-                        externalBuiltInCommandInfo.name.split(' ')[0] === commandName ||
+                        getCommandName(externalBuiltInCommandInfo.name) === commandName ||
                         (typeof Array.isArray(externalBuiltInCommandInfo.alias)
                             ? externalBuiltInCommandInfo.alias.includes(commandName)
                             : externalBuiltInCommandInfo.alias === commandName),
