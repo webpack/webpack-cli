@@ -434,6 +434,15 @@ describe('help', () => {
         expect(stdout).toBeFalsy();
     });
 
+    it('should log error for unknown option using command syntax #4', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['help', 'bui', '--mode'], false);
+
+        expect(exitCode).toBe(2);
+        expect(stderr).toContain("Can't find and load command 'bui'");
+        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
+        expect(stdout).toBeFalsy();
+    });
+
     it('should log error for invalid command using command syntax #3', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['help', '--mode', 'serve'], false);
 
