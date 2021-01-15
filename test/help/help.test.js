@@ -19,7 +19,8 @@ describe('help', () => {
         expect(stdout).not.toContain('--cache-type'); // verbose
         expect(stdout).toContain('Global options:');
         expect(stdout).toContain('Commands:');
-        expect(stdout.match(/bundle\|b/g)).toHaveLength(1);
+        expect(stdout.match(/build\|bundle\|b/g)).toHaveLength(1);
+        expect(stdout.match(/watch\|w/g)).toHaveLength(1);
         expect(stdout.match(/version\|v/g)).toHaveLength(1);
         expect(stdout.match(/help\|h/g)).toHaveLength(1);
         expect(stdout.match(/serve\|s/g)).toHaveLength(1);
@@ -51,7 +52,8 @@ describe('help', () => {
 
         expect(stdout).toContain('Global options:');
         expect(stdout).toContain('Commands:');
-        expect(stdout.match(/bundle\|b/g)).toHaveLength(1);
+        expect(stdout.match(/build\|bundle\|b/g)).toHaveLength(1);
+        expect(stdout.match(/watch\|w/g)).toHaveLength(1);
         expect(stdout.match(/version\|v/g)).toHaveLength(1);
         expect(stdout.match(/help\|h/g)).toHaveLength(1);
         expect(stdout.match(/serve\|s/g)).toHaveLength(1);
@@ -155,7 +157,27 @@ describe('help', () => {
         expect(stdout).toContain('Made with ♥ by the webpack team');
     });
 
-    const commands = ['build', 'bundle', 'loader', 'plugin', 'info', 'init', 'serve', 'migrate'];
+    const commands = [
+        'build',
+        'bundle',
+        'b',
+        'watch',
+        'w',
+        'serve',
+        's',
+        'info',
+        'i',
+        'init',
+        'c',
+        'loader',
+        'l',
+        'plugin',
+        'p',
+        'configtest',
+        't',
+        'migrate',
+        'm',
+    ];
 
     commands.forEach((command) => {
         it(`should show help information for '${command}' command using the "--help" option`, () => {
@@ -163,7 +185,7 @@ describe('help', () => {
 
             expect(exitCode).toBe(0);
             expect(stderr).toBeFalsy();
-            expect(stdout).toContain(`webpack ${command === 'build' || command === 'bundle' ? '' : command}`);
+            expect(stdout).toContain(`webpack ${command === 'build' || command === 'bundle' || command === 'b' ? '' : command}`);
         });
 
         it(`should show help information for '${command}' command using command syntax`, () => {
@@ -171,7 +193,7 @@ describe('help', () => {
 
             expect(exitCode).toBe(0);
             expect(stderr).toBeFalsy();
-            expect(stdout).toContain(`webpack ${command === 'build' || command === 'bundle' ? '' : command}`);
+            expect(stdout).toContain(`webpack ${command === 'build' || command === 'bundle' || command === 'b' ? '' : command}`);
         });
 
         it('should show help information and respect the "--color" flag using the "--help" option', () => {
@@ -179,7 +201,7 @@ describe('help', () => {
 
             expect(exitCode).toBe(0);
             expect(stderr).toBeFalsy();
-            expect(stdout).toContain(`webpack ${command === 'build' || command === 'bundle' ? '' : command}`);
+            expect(stdout).toContain(`webpack ${command === 'build' || command === 'bundle' || command === 'b' ? '' : command}`);
             expect(stdout).toContain(coloretteEnabled ? bold('Made with ♥ by the webpack team') : 'Made with ♥ by the webpack team');
         });
 
@@ -188,7 +210,7 @@ describe('help', () => {
 
             expect(exitCode).toBe(0);
             expect(stderr).toBeFalsy();
-            expect(stdout).toContain(`webpack ${command === 'build' || command === 'bundle' ? '' : command}`);
+            expect(stdout).toContain(`webpack ${command === 'build' || command === 'bundle' || command === 'b' ? '' : command}`);
             // TODO bug in tests
             // expect(stdout).not.toContain(bold('Made with ♥ by the webpack team'));
             expect(stdout).toContain('Made with ♥ by the webpack team');

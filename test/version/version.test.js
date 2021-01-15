@@ -105,6 +105,36 @@ describe('single version flag', () => {
         expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
     });
 
+    it('outputs version with b', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['b', '--version'], false);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
+        expect(stdout).toContain(`webpack ${webpack.version}`);
+        expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
+    });
+
+    it('outputs version with watch', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['watch', '--version'], false);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
+        expect(stdout).toContain(`webpack ${webpack.version}`);
+        expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
+    });
+
+    it('outputs version with w', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['w', '--version'], false);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
+        expect(stdout).toContain(`webpack ${webpack.version}`);
+        expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
+    });
+
     it('outputs version with plugin', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['plugin', '--version'], false);
 
