@@ -234,6 +234,12 @@ class WebpackCLI {
             description: 'Run webpack (default command, can be omitted).',
             usage: '[options]',
         };
+        const watchCommandOptions = {
+            name: 'watch',
+            alias: 'w',
+            description: 'Run webpack and watch for files changes.',
+            usage: '[options]',
+        };
         const versionCommandOptions = {
             name: 'version [commands...]',
             alias: 'v',
@@ -283,7 +289,13 @@ class WebpackCLI {
             },
         ];
 
-        const knownCommands = [buildCommandOptions, versionCommandOptions, helpCommandOptions, ...externalBuiltInCommandsInfo];
+        const knownCommands = [
+            buildCommandOptions,
+            watchCommandOptions,
+            versionCommandOptions,
+            helpCommandOptions,
+            ...externalBuiltInCommandsInfo,
+        ];
         const getCommandName = (name) => name.split(' ')[0];
         const isKnownCommand = (name) =>
             knownCommands.find(
@@ -294,6 +306,9 @@ class WebpackCLI {
         const isBuildCommand = (name) =>
             getCommandName(buildCommandOptions.name) === name ||
             (Array.isArray(buildCommandOptions.alias) ? buildCommandOptions.alias.includes(name) : buildCommandOptions.alias === name);
+        const isWatchCommand = (name) =>
+            getCommandName(watchCommandOptions.name) === name ||
+            (Array.isArray(watchCommandOptions.alias) ? watchCommandOptions.alias.includes(name) : watchCommandOptions.alias === name);
         const isHelpCommand = (name) =>
             getCommandName(helpCommandOptions.name) === name ||
             (Array.isArray(helpCommandOptions.alias) ? helpCommandOptions.alias.includes(name) : helpCommandOptions.alias === name);
@@ -338,21 +353,34 @@ class WebpackCLI {
             return { commandName: isDefault ? buildCommandOptions.name : commandName, options, isDefault };
         };
         const loadCommandByName = async (commandName, allowToInstall = false) => {
-            if (isBuildCommand(commandName)) {
-                await this.makeCommand(buildCommandOptions, this.getBuiltInOptions(), async (program) => {
-                    const options = program.opts();
+            const isBuildCommandRun = isBuildCommand(commandName);
+            const isWatchCommandRun = isWatchCommand(commandName);
 
-                    if (program.args.length > 0) {
-                        const possibleCommands = [].concat([buildCommandOptions.name]).concat(program.args);
+            console.log(isWatchCommandRun);
 
-                        logger.error('Running multiple commands at the same time is not possible');
-                        logger.error(`Found commands: ${possibleCommands.map((item) => `'${item}'`).join(', ')}`);
-                        logger.error("Run 'webpack --help' to see available commands and options");
-                        process.exit(2);
-                    }
+            if (isBuildCommandRun || isWatchCommandRun) {
+                await this.makeCommand(
+                    isBuildCommandRun ? buildCommandOptions : watchCommandOptions,
+                    this.getBuiltInOptions(),
+                    async (program) => {
+                        const options = program.opts();
 
-                    await this.bundleCommand(options);
-                });
+                        if (program.args.length > 0) {
+                            const possibleCommands = [].concat([buildCommandOptions.name]).concat(program.args);
+
+                            logger.error('Running multiple commands at the same time is not possible');
+                            logger.error(`Found commands: ${possibleCommands.map((item) => `'${item}'`).join(', ')}`);
+                            logger.error("Run 'webpack --help' to see available commands and options");
+                            process.exit(2);
+                        }
+
+                        if (isWatchCommandRun) {
+                            options.watch = true;
+                        }
+
+                        await this.bundleCommand(options);
+                    },
+                );
             } else if (isHelpCommand(commandName)) {
                 // Stub for the `help` command
                 this.makeCommand(helpCommandOptions, [], () => {});
