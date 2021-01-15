@@ -310,7 +310,7 @@ class WebpackCLI {
             value === '--no-color' ||
             value === '-v' ||
             value === '--version' ||
-            value === '--h' ||
+            value === '-h' ||
             value === '--help';
 
         const getCommandNameAndOptions = (args) => {
