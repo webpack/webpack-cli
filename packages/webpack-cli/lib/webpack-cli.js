@@ -353,14 +353,12 @@ class WebpackCLI {
             return { commandName: isDefault ? buildCommandOptions.name : commandName, options, isDefault };
         };
         const loadCommandByName = async (commandName, allowToInstall = false) => {
-            const isBuildCommandRun = isBuildCommand(commandName);
-            const isWatchCommandRun = isWatchCommand(commandName);
+            const isBuildCommandUsed = isBuildCommand(commandName);
+            const isWatchCommandUsed = isWatchCommand(commandName);
 
-            console.log(isWatchCommandRun);
-
-            if (isBuildCommandRun || isWatchCommandRun) {
+            if (isBuildCommandUsed || isWatchCommandUsed) {
                 await this.makeCommand(
-                    isBuildCommandRun ? buildCommandOptions : watchCommandOptions,
+                    isBuildCommandUsed ? buildCommandOptions : watchCommandOptions,
                     this.getBuiltInOptions(),
                     async (program) => {
                         const options = program.opts();
@@ -374,7 +372,11 @@ class WebpackCLI {
                             process.exit(2);
                         }
 
-                        if (isWatchCommandRun) {
+                        if (isWatchCommandUsed) {
+                            if (options.watch) {
+                                logger.warn('No need to use the "--watch, -w" option together with the "watch" command');
+                            }
+
                             options.watch = true;
                         }
 
@@ -520,9 +522,9 @@ class WebpackCLI {
         // Make `-v, --version` options
         // Make `version|v [commands...]` command
         const outputVersion = async (options) => {
-            // Filter `bundle`, `version` and `help` commands
+            // Filter `bundle`, `watch`, `version` and `help` commands
             const possibleCommandNames = options.filter(
-                (option) => !isBuildCommand(option) && !isVersionCommand(option) && !isHelpCommand(option),
+                (option) => !isBuildCommand(option) && !isWatchCommand(option) && !isVersionCommand(option) && !isHelpCommand(option),
             );
 
             possibleCommandNames.forEach((possibleCommandName) => {
@@ -644,7 +646,7 @@ class WebpackCLI {
                     .replace(buildCommandOptions.description, 'The build tool for modern web applications.')
                     .replace(
                         /Usage:.+/,
-                        'Usage: webpack [options]\nAlternative usage: webpack --config <config> [options]\nAlternative usage: webpack build [options]\nAlternative usage: webpack bundle [options]\nAlternative usage: webpack b [options]\nAlternative usage: webpack build --config <config> [options]',
+                        'Usage: webpack [options]\nAlternative usage: webpack --config <config> [options]\nAlternative usage: webpack build [options]\nAlternative usage: webpack bundle [options]\nAlternative usage: webpack b [options]\nAlternative usage: webpack build --config <config> [options]\nAlternative usage: webpack bundle --config <config> [options]\nAlternative usage: webpack b --config <config> [options]',
                     );
 
                 logger.raw(helpInformation);
@@ -671,25 +673,21 @@ class WebpackCLI {
                 let helpInformation = command.helpInformation().trimRight();
 
                 if (isBuildCommand(name)) {
-                    helpInformation = helpInformation
-                        .replace(buildCommandOptions.description, 'The build tool for modern web applications.')
-                        .replace(
-                            /Usage:.+/,
-                            'Usage: webpack [options]\nAlternative usage: webpack --config <config> [options]\nAlternative usage: webpack build [options]\nAlternative usage: webpack bundle [options]\nAlternative usage: webpack b [options]\nAlternative usage: webpack build --config <config> [options]',
-                        );
+                    helpInformation = helpInformation.replace('build|bundle', 'build|bundle|b');
                 }
 
                 logger.raw(helpInformation);
 
                 outputGlobalOptions();
             } else if (isHelpCommandSyntax) {
-                let commandName;
+                let isCommandSpecified = false;
+                let commandName = buildCommandOptions.name;
                 let optionName;
 
                 if (options.length === 1) {
-                    commandName = buildCommandOptions.name;
                     optionName = options[0];
                 } else if (options.length === 2) {
+                    isCommandSpecified = true;
                     commandName = options[0];
                     optionName = options[1];
 
@@ -722,14 +720,10 @@ class WebpackCLI {
                     option.flags.replace(/^.+[[<]/, '').replace(/(\.\.\.)?[\]>].*$/, '') + (option.variadic === true ? '...' : '');
                 const value = option.required ? '<' + nameOutput + '>' : option.optional ? '[' + nameOutput + ']' : '';
 
-                logger.raw(
-                    `Usage: webpack${isBuildCommand(commandName) ? '' : ` ${commandName}`} ${option.long}${value ? ` ${value}` : ''}`,
-                );
+                logger.raw(`Usage: webpack${isCommandSpecified ? ` ${commandName}` : ''} ${option.long}${value ? ` ${value}` : ''}`);
 
                 if (option.short) {
-                    logger.raw(
-                        `Short: webpack${isBuildCommand(commandName) ? '' : ` ${commandName}`} ${option.short}${value ? ` ${value}` : ''}`,
-                    );
+                    logger.raw(`Short: webpack${isCommandSpecified ? ` ${commandName}` : ''} ${option.short}${value ? ` ${value}` : ''}`);
                 }
 
                 if (option.description) {
