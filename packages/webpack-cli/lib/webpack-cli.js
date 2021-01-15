@@ -1,31 +1,28 @@
-const path = require('path');
 const { program } = require('commander');
 const getPkg = require('./utils/package-exists');
 const webpack = getPkg('webpack') ? require('webpack') : undefined;
+const path = require('path');
 const { merge } = require('webpack-merge');
 const { extensions, jsVariants } = require('interpret');
 const rechoir = require('rechoir');
 const { createWriteStream, existsSync } = require('fs');
 const { distance } = require('fastest-levenshtein');
 const { options: coloretteOptions, yellow, cyan, green, bold } = require('colorette');
-const { stringifyStream: createJsonStringifyStream } = require('@discoveryjs/json-ext');
 
 const logger = require('./utils/logger');
 const { cli, flags } = require('./utils/cli-flags');
 const CLIPlugin = require('./plugins/CLIPlugin');
 const promptInstallation = require('./utils/prompt-installation');
-
 const toKebabCase = require('./utils/to-kebab-case');
-
-const { resolve, extname } = path;
 
 class WebpackCLI {
     constructor() {
-        this.logger = logger;
         // Initialize program
         this.program = program;
         this.program.name('webpack');
         this.program.storeOptionsAsProperties(false);
+        this.webpack = webpack;
+        this.logger = logger;
         this.utils = { toKebabCase, getPkg, promptInstallation };
     }
 
@@ -373,8 +370,12 @@ class WebpackCLI {
                         }
 
                         if (isWatchCommandUsed) {
-                            if (options.watch) {
-                                logger.warn('No need to use the "--watch, -w" option together with the "watch" command');
+                            if (typeof options.watch !== 'undefined') {
+                                logger.warn(
+                                    `No need to use the ${
+                                        options.watch ? "'--watch, -w'" : "'--no-watch'"
+                                    } option together with the 'watch' command, it does not make sense`,
+                                );
                             }
 
                             options.watch = true;
@@ -828,7 +829,7 @@ class WebpackCLI {
 
     async resolveConfig(options) {
         const loadConfig = async (configPath) => {
-            const ext = extname(configPath);
+            const ext = path.extname(configPath);
             const interpreted = Object.keys(jsVariants).find((variant) => variant === ext);
 
             if (interpreted) {
@@ -928,7 +929,7 @@ class WebpackCLI {
         if (options.config && options.config.length > 0) {
             const evaluatedConfigs = await Promise.all(
                 options.config.map(async (value) => {
-                    const configPath = resolve(value);
+                    const configPath = path.resolve(value);
 
                     if (!existsSync(configPath)) {
                         logger.error(`The specified config file doesn't exist in '${configPath}'`);
@@ -962,7 +963,7 @@ class WebpackCLI {
                 .map((filename) =>
                     // Since .cjs is not available on interpret side add it manually to default config extension list
                     [...Object.keys(extensions), '.cjs'].map((ext) => ({
-                        path: resolve(filename + ext),
+                        path: path.resolve(filename + ext),
                         ext: ext,
                         module: extensions[ext],
                     })),
@@ -1395,6 +1396,7 @@ class WebpackCLI {
             }
 
             if (options.json) {
+                const { stringifyStream: createJsonStringifyStream } = require('@discoveryjs/json-ext');
                 const handleWriteError = (error) => {
                     logger.error(error);
                     process.exit(2);
