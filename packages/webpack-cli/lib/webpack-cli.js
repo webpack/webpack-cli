@@ -277,7 +277,7 @@ class WebpackCLI {
                 pkg: '@webpack-cli/migrate',
             },
             {
-                name: 'configtest',
+                name: 'configtest [config-path]',
                 alias: 't',
                 pkg: '@webpack-cli/configtest',
             },
@@ -362,7 +362,7 @@ class WebpackCLI {
             } else {
                 const builtInExternalCommandInfo = externalBuiltInCommandsInfo.find(
                     (externalBuiltInCommandInfo) =>
-                        externalBuiltInCommandInfo.name === commandName ||
+                        getCommandName(externalBuiltInCommandInfo.name) === commandName ||
                         (typeof Array.isArray(externalBuiltInCommandInfo.alias)
                             ? externalBuiltInCommandInfo.alias.includes(commandName)
                             : externalBuiltInCommandInfo.alias === commandName),
