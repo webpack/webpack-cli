@@ -700,8 +700,8 @@ Global options:
 
 Commands:
   build|bundle|b [options]                   Run webpack (default command, can be omitted).
-  version|v                                  Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  help|h                                     Display help for commands and options.
+  version|v [commands...]                    Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  help|h [command] [option]                  Display help for commands and options.
   serve|s [options]                          Run the webpack dev server.
   info|i [options]                           Outputs information about your system.
   init|c [options] [scaffold...]             Initialize a new webpack configuration.

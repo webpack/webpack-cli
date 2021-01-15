@@ -208,7 +208,7 @@ describe('help', () => {
         expect(stdout).toContain('Made with ♥ by the webpack team');
     });
 
-    it('should show help information and taking precedence when "--help" and "--verison" option using together', () => {
+    it('should show help information and taking precedence when "--help" and "--version" option using together', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--help', '--version'], false);
 
         expect(exitCode).toBe(0);
@@ -226,6 +226,150 @@ describe('help', () => {
         // expect(coloretteEnabled ? stripAnsi(stdout) : stdout).toContain('Made with ♥ by the webpack team.');
     });
 
+    it('should show help information using the "help --mode" option', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['help', '--mode'], false);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('Usage: webpack --mode <value>');
+        expect(stdout).toContain('Description: Defines the mode to pass to webpack.');
+        expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
+        expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
+    });
+
+    it('should show help information using the "help --target" option', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['help', '--target'], false);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+
+        if (isWebpack5) {
+            expect(stdout).toContain('Usage: webpack --target <value...>');
+            expect(stdout).toContain('Short: webpack -t <value...>');
+        } else {
+            expect(stdout).toContain('Usage: webpack --target <value>');
+            expect(stdout).toContain('Short: webpack -t <value>');
+        }
+
+        expect(stdout).toContain('Description: Sets the build target e.g. node.');
+        expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
+        expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
+    });
+
+    it('should show help information using the "help --stats" option', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['help', '--stats'], false);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('Usage: webpack --stats [value]');
+        expect(stdout).toContain('Description: It instructs webpack on how to treat the stats e.g. verbose.');
+        expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
+        expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
+    });
+
+    it('should show help information using the "help --no-stats" option', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['help', '--no-stats'], false);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('Usage: webpack --no-stats');
+        expect(stdout).toContain('Description: Disable stats output.');
+        expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
+        expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
+    });
+
+    it('should show help information using the "help --mode" option', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['help', '--mode'], false);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('Usage: webpack --mode <value>');
+        expect(stdout).toContain('Description: Defines the mode to pass to webpack.');
+        expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
+        expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
+    });
+
+    it('should show help information using the "help serve --mode" option', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['help', 'serve', '--mode'], false);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('Usage: webpack serve --mode <value>');
+        expect(stdout).toContain('Description: Defines the mode to pass to webpack.');
+        expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
+        expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
+    });
+
+    it('should show help information using the "help --color" option', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['help', '--color'], false);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('Usage: webpack --color');
+        expect(stdout).toContain('Description: Enable colors on console.');
+        expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
+        expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
+    });
+
+    it('should show help information using the "help --no-color" option', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['help', '--no-color'], false);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('Usage: webpack --no-color');
+        expect(stdout).toContain('Description: Disable colors on console.');
+        expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
+        expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
+    });
+
+    it('should show help information using the "help serve --color" option', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['help', 'serve', '--color'], false);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('Usage: webpack serve --color');
+        expect(stdout).toContain('Description: Enable colors on console.');
+        expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
+        expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
+    });
+
+    it('should show help information using the "help serve --no-color" option', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['help', 'serve', '--no-color'], false);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('Usage: webpack serve --no-color');
+        expect(stdout).toContain('Description: Disable colors on console.');
+        expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
+        expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
+    });
+
+    it('should show help information using the "help --version" option', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['help', '--version'], false);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('Usage: webpack --version');
+        expect(stdout).toContain('Short: webpack -v');
+        expect(stdout).toContain(
+            "Description: Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.",
+        );
+        expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
+    });
+
+    it('should show help information using the "help -v" option', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['help', '-v'], false);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('Usage: webpack --version');
+        expect(stdout).toContain('Short: webpack -v');
+        expect(stdout).toContain(
+            "Description: Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.",
+        );
+        expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
+    });
+
     it('should log error for invalid command using the "--help" option', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--help', 'myCommand'], false);
 
@@ -234,7 +378,27 @@ describe('help', () => {
         expect(stdout).toBeFalsy();
     });
 
-    it('should log error for invalid command using command syntax', () => {
+    it('should log error for invalid command using the "--help" option #2', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['--flag', '--help'], false);
+
+        expect(exitCode).toBe(2);
+        expect(stderr).toContain('Incorrect use of help');
+        expect(stderr).toContain("Please use: 'webpack help [command] [option]' | 'webpack [command] --help'");
+        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
+        expect(stdout).toBeFalsy();
+    });
+
+    it('should log error for invalid command using the "--help" option #3', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['serve', '--flag', '--help'], false);
+
+        expect(exitCode).toBe(2);
+        expect(stderr).toContain('Incorrect use of help');
+        expect(stderr).toContain("Please use: 'webpack help [command] [option]' | 'webpack [command] --help'");
+        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
+        expect(stdout).toBeFalsy();
+    });
+
+    it('should log error for unknown command using command syntax', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['help', 'myCommand'], false);
 
         expect(exitCode).toBe(2);
@@ -243,7 +407,7 @@ describe('help', () => {
         expect(stdout).toBeFalsy();
     });
 
-    it('should log error for invalid command using command syntax #2', () => {
+    it('should log error for unknown command using command syntax #2', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['help', 'verbose'], false);
 
         expect(exitCode).toBe(2);
@@ -252,11 +416,59 @@ describe('help', () => {
         expect(stdout).toBeFalsy();
     });
 
+    it('should log error for unknown option using command syntax #2', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['help', '--made'], false);
+
+        expect(exitCode).toBe(2);
+        expect(stderr).toContain("Unknown option '--made'");
+        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
+        expect(stdout).toBeFalsy();
+    });
+
+    it('should log error for unknown option using command syntax #3', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['help', 'serve', '--made'], false);
+
+        expect(exitCode).toBe(2);
+        expect(stderr).toContain("Unknown option '--made'");
+        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
+        expect(stdout).toBeFalsy();
+    });
+
+    it('should log error for unknown option using command syntax #4', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['help', 'bui', '--mode'], false);
+
+        expect(exitCode).toBe(2);
+        expect(stderr).toContain("Can't find and load command 'bui'");
+        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
+        expect(stdout).toBeFalsy();
+    });
+
+    it('should log error for invalid command using command syntax #3', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['help', '--mode', 'serve'], false);
+
+        expect(exitCode).toBe(2);
+        expect(stderr).toContain('Incorrect use of help');
+        expect(stderr).toContain("Please use: 'webpack help [command] [option]' | 'webpack [command] --help'");
+        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
+        expect(stdout).toBeFalsy();
+    });
+
+    it('should log error for invalid command using command syntax #4', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['help', 'serve', '--mode', '--mode'], false);
+
+        expect(exitCode).toBe(2);
+        expect(stderr).toContain('Incorrect use of help');
+        expect(stderr).toContain("Please use: 'webpack help [command] [option]' | 'webpack [command] --help'");
+        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
+        expect(stdout).toBeFalsy();
+    });
+
     it('should log error for invalid flag with the "--help" option', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--help', '--my-flag'], false);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("Unknown option '--my-flag'");
+        expect(stderr).toContain('Incorrect use of help');
+        expect(stderr).toContain("Please use: 'webpack help [command] [option]' | 'webpack [command] --help'");
         expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
     });
