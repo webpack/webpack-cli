@@ -125,7 +125,7 @@ describe('basic', () => {
         });
     });
 
-    it('should recompile upon file change using the `command` option and the `--no-wwatch` option and log warning', (done) => {
+    it('should recompile upon file change using the `command` option and the `--no-watch` option and log warning', (done) => {
         const proc = runAndGetWatchProc(__dirname, ['watch', '--no-watch', '--mode', 'development'], false, '', true);
 
         let modified = false;
