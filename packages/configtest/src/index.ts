@@ -1,8 +1,6 @@
-import webpack from 'webpack';
-
 class ConfigTestCommand {
     async apply(cli): Promise<void> {
-        const { logger } = cli;
+        const { logger, webpack } = cli;
 
         await cli.makeCommand(
             {

@@ -1,31 +1,28 @@
-const path = require('path');
 const { program } = require('commander');
 const getPkg = require('./utils/package-exists');
 const webpack = getPkg('webpack') ? require('webpack') : undefined;
+const path = require('path');
 const { merge } = require('webpack-merge');
 const { extensions, jsVariants } = require('interpret');
 const rechoir = require('rechoir');
 const { createWriteStream, existsSync } = require('fs');
 const { distance } = require('fastest-levenshtein');
 const { options: coloretteOptions, yellow, cyan, green, bold } = require('colorette');
-const { stringifyStream: createJsonStringifyStream } = require('@discoveryjs/json-ext');
 
 const logger = require('./utils/logger');
 const { cli, flags } = require('./utils/cli-flags');
 const CLIPlugin = require('./plugins/CLIPlugin');
 const promptInstallation = require('./utils/prompt-installation');
-
 const toKebabCase = require('./utils/to-kebab-case');
-
-const { resolve, extname } = path;
 
 class WebpackCLI {
     constructor() {
-        this.logger = logger;
         // Initialize program
         this.program = program;
         this.program.name('webpack');
         this.program.storeOptionsAsProperties(false);
+        this.webpack = webpack;
+        this.logger = logger;
         this.utils = { toKebabCase, getPkg, promptInstallation };
     }
 
@@ -234,6 +231,12 @@ class WebpackCLI {
             description: 'Run webpack (default command, can be omitted).',
             usage: '[options]',
         };
+        const watchCommandOptions = {
+            name: 'watch',
+            alias: 'w',
+            description: 'Run webpack and watch for files changes.',
+            usage: '[options]',
+        };
         const versionCommandOptions = {
             name: 'version [commands...]',
             alias: 'v',
@@ -283,7 +286,13 @@ class WebpackCLI {
             },
         ];
 
-        const knownCommands = [buildCommandOptions, versionCommandOptions, helpCommandOptions, ...externalBuiltInCommandsInfo];
+        const knownCommands = [
+            buildCommandOptions,
+            watchCommandOptions,
+            versionCommandOptions,
+            helpCommandOptions,
+            ...externalBuiltInCommandsInfo,
+        ];
         const getCommandName = (name) => name.split(' ')[0];
         const isKnownCommand = (name) =>
             knownCommands.find(
@@ -294,6 +303,9 @@ class WebpackCLI {
         const isBuildCommand = (name) =>
             getCommandName(buildCommandOptions.name) === name ||
             (Array.isArray(buildCommandOptions.alias) ? buildCommandOptions.alias.includes(name) : buildCommandOptions.alias === name);
+        const isWatchCommand = (name) =>
+            getCommandName(watchCommandOptions.name) === name ||
+            (Array.isArray(watchCommandOptions.alias) ? watchCommandOptions.alias.includes(name) : watchCommandOptions.alias === name);
         const isHelpCommand = (name) =>
             getCommandName(helpCommandOptions.name) === name ||
             (Array.isArray(helpCommandOptions.alias) ? helpCommandOptions.alias.includes(name) : helpCommandOptions.alias === name);
@@ -338,21 +350,40 @@ class WebpackCLI {
             return { commandName: isDefault ? buildCommandOptions.name : commandName, options, isDefault };
         };
         const loadCommandByName = async (commandName, allowToInstall = false) => {
-            if (isBuildCommand(commandName)) {
-                await this.makeCommand(buildCommandOptions, this.getBuiltInOptions(), async (program) => {
-                    const options = program.opts();
+            const isBuildCommandUsed = isBuildCommand(commandName);
+            const isWatchCommandUsed = isWatchCommand(commandName);
 
-                    if (program.args.length > 0) {
-                        const possibleCommands = [].concat([buildCommandOptions.name]).concat(program.args);
+            if (isBuildCommandUsed || isWatchCommandUsed) {
+                await this.makeCommand(
+                    isBuildCommandUsed ? buildCommandOptions : watchCommandOptions,
+                    this.getBuiltInOptions(),
+                    async (program) => {
+                        const options = program.opts();
 
-                        logger.error('Running multiple commands at the same time is not possible');
-                        logger.error(`Found commands: ${possibleCommands.map((item) => `'${item}'`).join(', ')}`);
-                        logger.error("Run 'webpack --help' to see available commands and options");
-                        process.exit(2);
-                    }
+                        if (program.args.length > 0) {
+                            const possibleCommands = [].concat([buildCommandOptions.name]).concat(program.args);
 
-                    await this.bundleCommand(options);
-                });
+                            logger.error('Running multiple commands at the same time is not possible');
+                            logger.error(`Found commands: ${possibleCommands.map((item) => `'${item}'`).join(', ')}`);
+                            logger.error("Run 'webpack --help' to see available commands and options");
+                            process.exit(2);
+                        }
+
+                        if (isWatchCommandUsed) {
+                            if (typeof options.watch !== 'undefined') {
+                                logger.warn(
+                                    `No need to use the ${
+                                        options.watch ? "'--watch, -w'" : "'--no-watch'"
+                                    } option together with the 'watch' command, it does not make sense`,
+                                );
+                            }
+
+                            options.watch = true;
+                        }
+
+                        await this.bundleCommand(options);
+                    },
+                );
             } else if (isHelpCommand(commandName)) {
                 // Stub for the `help` command
                 this.makeCommand(helpCommandOptions, [], () => {});
@@ -492,9 +523,9 @@ class WebpackCLI {
         // Make `-v, --version` options
         // Make `version|v [commands...]` command
         const outputVersion = async (options) => {
-            // Filter `bundle`, `version` and `help` commands
+            // Filter `bundle`, `watch`, `version` and `help` commands
             const possibleCommandNames = options.filter(
-                (option) => !isBuildCommand(option) && !isVersionCommand(option) && !isHelpCommand(option),
+                (option) => !isBuildCommand(option) && !isWatchCommand(option) && !isVersionCommand(option) && !isHelpCommand(option),
             );
 
             possibleCommandNames.forEach((possibleCommandName) => {
@@ -616,7 +647,7 @@ class WebpackCLI {
                     .replace(buildCommandOptions.description, 'The build tool for modern web applications.')
                     .replace(
                         /Usage:.+/,
-                        'Usage: webpack [options]\nAlternative usage: webpack --config <config> [options]\nAlternative usage: webpack build [options]\nAlternative usage: webpack bundle [options]\nAlternative usage: webpack b [options]\nAlternative usage: webpack build --config <config> [options]',
+                        'Usage: webpack [options]\nAlternative usage: webpack --config <config> [options]\nAlternative usage: webpack build [options]\nAlternative usage: webpack bundle [options]\nAlternative usage: webpack b [options]\nAlternative usage: webpack build --config <config> [options]\nAlternative usage: webpack bundle --config <config> [options]\nAlternative usage: webpack b --config <config> [options]',
                     );
 
                 logger.raw(helpInformation);
@@ -643,25 +674,21 @@ class WebpackCLI {
                 let helpInformation = command.helpInformation().trimRight();
 
                 if (isBuildCommand(name)) {
-                    helpInformation = helpInformation
-                        .replace(buildCommandOptions.description, 'The build tool for modern web applications.')
-                        .replace(
-                            /Usage:.+/,
-                            'Usage: webpack [options]\nAlternative usage: webpack --config <config> [options]\nAlternative usage: webpack build [options]\nAlternative usage: webpack bundle [options]\nAlternative usage: webpack b [options]\nAlternative usage: webpack build --config <config> [options]',
-                        );
+                    helpInformation = helpInformation.replace('build|bundle', 'build|bundle|b');
                 }
 
                 logger.raw(helpInformation);
 
                 outputGlobalOptions();
             } else if (isHelpCommandSyntax) {
-                let commandName;
+                let isCommandSpecified = false;
+                let commandName = buildCommandOptions.name;
                 let optionName;
 
                 if (options.length === 1) {
-                    commandName = buildCommandOptions.name;
                     optionName = options[0];
                 } else if (options.length === 2) {
+                    isCommandSpecified = true;
                     commandName = options[0];
                     optionName = options[1];
 
@@ -694,14 +721,10 @@ class WebpackCLI {
                     option.flags.replace(/^.+[[<]/, '').replace(/(\.\.\.)?[\]>].*$/, '') + (option.variadic === true ? '...' : '');
                 const value = option.required ? '<' + nameOutput + '>' : option.optional ? '[' + nameOutput + ']' : '';
 
-                logger.raw(
-                    `Usage: webpack${isBuildCommand(commandName) ? '' : ` ${commandName}`} ${option.long}${value ? ` ${value}` : ''}`,
-                );
+                logger.raw(`Usage: webpack${isCommandSpecified ? ` ${commandName}` : ''} ${option.long}${value ? ` ${value}` : ''}`);
 
                 if (option.short) {
-                    logger.raw(
-                        `Short: webpack${isBuildCommand(commandName) ? '' : ` ${commandName}`} ${option.short}${value ? ` ${value}` : ''}`,
-                    );
+                    logger.raw(`Short: webpack${isCommandSpecified ? ` ${commandName}` : ''} ${option.short}${value ? ` ${value}` : ''}`);
                 }
 
                 if (option.description) {
@@ -806,7 +829,7 @@ class WebpackCLI {
 
     async resolveConfig(options) {
         const loadConfig = async (configPath) => {
-            const ext = extname(configPath);
+            const ext = path.extname(configPath);
             const interpreted = Object.keys(jsVariants).find((variant) => variant === ext);
 
             if (interpreted) {
@@ -906,7 +929,7 @@ class WebpackCLI {
         if (options.config && options.config.length > 0) {
             const evaluatedConfigs = await Promise.all(
                 options.config.map(async (value) => {
-                    const configPath = resolve(value);
+                    const configPath = path.resolve(value);
 
                     if (!existsSync(configPath)) {
                         logger.error(`The specified config file doesn't exist in '${configPath}'`);
@@ -940,7 +963,7 @@ class WebpackCLI {
                 .map((filename) =>
                     // Since .cjs is not available on interpret side add it manually to default config extension list
                     [...Object.keys(extensions), '.cjs'].map((ext) => ({
-                        path: resolve(filename + ext),
+                        path: path.resolve(filename + ext),
                         ext: ext,
                         module: extensions[ext],
                     })),
@@ -1373,6 +1396,7 @@ class WebpackCLI {
             }
 
             if (options.json) {
+                const { stringifyStream: createJsonStringifyStream } = require('@discoveryjs/json-ext');
                 const handleWriteError = (error) => {
                     logger.error(error);
                     process.exit(2);

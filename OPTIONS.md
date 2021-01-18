@@ -5,6 +5,8 @@ Alternative usage: webpack build [options]
 Alternative usage: webpack bundle [options]
 Alternative usage: webpack b [options]
 Alternative usage: webpack build --config <config> [options]
+Alternative usage: webpack bundle --config <config> [options]
+Alternative usage: webpack b --config <config> [options]
 
 The build tool for modern web applications.
 
@@ -700,6 +702,7 @@ Global options:
 
 Commands:
   build|bundle|b [options]                   Run webpack (default command, can be omitted).
+  watch|w [options]                          Run webpack and watch for files changes.
   version|v [commands...]                    Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
   help|h [command] [option]                  Display help for commands and options.
   serve|s [options]                          Run the webpack dev server.
@@ -707,7 +710,7 @@ Commands:
   init|c [options] [scaffold...]             Initialize a new webpack configuration.
   loader|l [output-path]                     Scaffold a loader.
   migrate|m <config-path> [new-config-path]  Migrate a configuration to a new version.
-  configtest|t <config-path>                 Tests webpack configuration against validation errors.
+  configtest|t [config-path]                 Tests webpack configuration against validation errors.
   plugin|p [output-path]                     Scaffold a plugin.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
