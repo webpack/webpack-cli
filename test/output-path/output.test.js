@@ -66,6 +66,18 @@ describe('basic', () => {
         expect(stats.isDirectory()).toBe(true);
     });
 
+    it('should respect the "-o" option (alias)', async () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['-o', './binary']);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toBeTruthy();
+
+        const stats = await fs.stat(resolve(__dirname, 'binary'));
+
+        expect(stats.isDirectory()).toBe(true);
+    });
+
     it('should output file in bin directory using default webpack config with warning for empty output value', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--output-path']);
 
