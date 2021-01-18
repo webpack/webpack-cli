@@ -1047,7 +1047,6 @@ class WebpackCLI {
         return config;
     }
 
-    // TODO refactor
     async applyOptions(config, options) {
         if (options.analyze) {
             if (!getPkg('webpack-bundle-analyzer')) {
@@ -1073,9 +1072,23 @@ class WebpackCLI {
             return config;
         }
 
+        const processModeOption = (configOptions) => {
+            if (
+                !configOptions.mode &&
+                process.env &&
+                process.env.NODE_ENV &&
+                (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'none')
+            ) {
+                configOptions.mode = process.env.NODE_ENV;
+            }
+
+            return configOptions;
+        };
+
         if (cli) {
             const processArguments = (configOptions) => {
                 const coreFlagMap = flags
+                    // TODO avoid extra filtering
                     .filter((flag) => flag.group === 'core')
                     .reduce((accumulator, flag) => {
                         accumulator[flag.name] = flag;
@@ -1156,6 +1169,8 @@ class WebpackCLI {
                     }
                 }
 
+                configOptions = processModeOption(configOptions);
+
                 return configOptions;
             };
 
@@ -1163,68 +1178,53 @@ class WebpackCLI {
                 ? config.options.map((options) => setupDefaultOptions(options))
                 : setupDefaultOptions(config.options);
         }
+        // TODO logic for webpack@4 remove after drop webpack@4
+        else {
+            const processLegacyArguments = (configOptions) => {
+                if (options.entry) {
+                    configOptions.entry = options.entry;
+                }
 
-        // Logic for webpack@4
-        // TODO remove after drop webpack@4
-        const processLegacyArguments = (configOptions) => {
-            if (options.entry) {
-                configOptions.entry = options.entry;
-            }
+                if (options.outputPath) {
+                    configOptions.output = { ...configOptions.output, ...{ path: options.outputPath } };
+                }
 
-            if (options.outputPath) {
-                configOptions.output = {
-                    ...configOptions.output,
-                    ...{ path: path.resolve(options.outputPath) },
-                };
-            }
+                if (options.target) {
+                    configOptions.target = options.target;
+                }
 
-            if (options.target) {
-                configOptions.target = options.target;
-            }
+                if (typeof options.devtool !== 'undefined') {
+                    configOptions.devtool = options.devtool;
+                }
 
-            if (typeof options.devtool !== 'undefined') {
-                configOptions.devtool = options.devtool;
-            }
+                configOptions = processModeOption(configOptions);
 
-            if (options.mode) {
-                configOptions.mode = options.mode;
-            } else if (
-                !configOptions.mode &&
-                process.env &&
-                process.env.NODE_ENV &&
-                (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'node')
-            ) {
-                configOptions.mode = process.env.NODE_ENV;
-            }
+                if (options.name) {
+                    configOptions.name = options.name;
+                }
 
-            if (options.name) {
-                configOptions.name = options.name;
-            }
+                if (typeof options.stats !== 'undefined') {
+                    configOptions.stats = options.stats;
+                }
 
-            if (typeof options.stats !== 'undefined') {
-                configOptions.stats = options.stats;
-            }
+                if (typeof options.watch !== 'undefined') {
+                    configOptions.watch = options.watch;
+                }
 
-            if (typeof options.watch !== 'undefined') {
-                configOptions.watch = options.watch;
-            }
+                if (typeof options.watchOptionsStdin !== 'undefined') {
+                    configOptions.watchOptions = { ...configOptions.watchOptions, ...{ stdin: options.watchOptionsStdin } };
+                }
 
-            if (typeof options.watchOptionsStdin !== 'undefined') {
-                configOptions.watchOptions = {
-                    ...configOptions.watchOptions,
-                    ...{ stdin: options.watchOptionsStdin },
-                };
-            }
+                return configOptions;
+            };
 
-            return configOptions;
-        };
-
-        config.options = Array.isArray(config.options)
-            ? config.options.map((options) => processLegacyArguments(options))
-            : processLegacyArguments(config.options);
+            config.options = Array.isArray(config.options)
+                ? config.options.map((options) => processLegacyArguments(options))
+                : processLegacyArguments(config.options);
+        }
 
         // Apply `stats` and `stats.colors` options
-        const applyStatsColors = (configOptions) => {
+        const processStatsOption = (configOptions) => {
             // TODO remove after drop webpack@4
             const statsForWebpack4 = webpack.Stats && webpack.Stats.presetToOptions;
 
@@ -1277,8 +1277,8 @@ class WebpackCLI {
         };
 
         config.options = Array.isArray(config.options)
-            ? config.options.map((options) => applyStatsColors(options))
-            : applyStatsColors(config.options);
+            ? config.options.map((options) => processStatsOption(options))
+            : processStatsOption(config.options);
 
         return config;
     }
