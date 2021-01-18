@@ -1,8 +1,10 @@
 const { resolve } = require('path');
+const webpack = require('webpack');
 const webpackCLI = require('../lib/webpack-cli');
 
 const targetValues = ['web', 'webworker', 'node', 'async-node', 'node-webkit', 'electron-main', 'electron-renderer', 'electron-preload'];
 const applyOptions = new webpackCLI().applyOptions;
+const isWebpack5 = webpack.version.startsWith('5');
 
 describe('BasicResolver', () => {
     it('should handle the output option', async () => {
@@ -73,7 +75,7 @@ describe('BasicResolver', () => {
         it(`should handle ${option} option`, async () => {
             const result = await applyOptions({ options: {} }, { target: option });
 
-            expect(result.options.target).toEqual(option);
+            expect(result.options.target).toEqual(isWebpack5 ? [option] : option);
         });
     });
 });
