@@ -6,7 +6,7 @@ describe('unknown behaviour', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--unknown']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("unknown option '--unknown'");
+        expect(stderr).toContain("Error: Unknown option '--unknown'");
         expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
     });
@@ -15,7 +15,7 @@ describe('unknown behaviour', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['-u']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("unknown option '-u'");
+        expect(stderr).toContain("Error: Unknown option '-u'");
         expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
     });
@@ -24,7 +24,7 @@ describe('unknown behaviour', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['-u', '--unknown']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("unknown option '-u'");
+        expect(stderr).toContain("Error: Unknown option '-u'");
         expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
     });
@@ -33,7 +33,7 @@ describe('unknown behaviour', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['-u', '-u']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("unknown option '-u'");
+        expect(stderr).toContain("Error: Unknown option '-u'");
         expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
     });
@@ -42,7 +42,7 @@ describe('unknown behaviour', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['-u', 'foo']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("unknown option '-u'");
+        expect(stderr).toContain("Error: Unknown option '-u'");
         expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
     });
@@ -51,7 +51,7 @@ describe('unknown behaviour', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['bundle', '--unknown']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("unknown option '--unknown'");
+        expect(stderr).toContain("Error: Unknown option '--unknown'");
         expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
     });
@@ -60,7 +60,7 @@ describe('unknown behaviour', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['b', '--unknown']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("unknown option '--unknown'");
+        expect(stderr).toContain("Error: Unknown option '--unknown'");
         expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
     });
@@ -69,7 +69,7 @@ describe('unknown behaviour', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--unknown', 'bundle']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("unknown option '--unknown'");
+        expect(stderr).toContain("Error: Unknown option '--unknown'");
         expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
     });
@@ -78,7 +78,7 @@ describe('unknown behaviour', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['info', '--unknown']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("unknown option '--unknown'");
+        expect(stderr).toContain("Error: Unknown option '--unknown'");
         expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
     });
@@ -87,7 +87,7 @@ describe('unknown behaviour', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['i', '--unknown']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("unknown option '--unknown'");
+        expect(stderr).toContain("Error: Unknown option '--unknown'");
         expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
     });
@@ -96,7 +96,7 @@ describe('unknown behaviour', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--unknown', 'i']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("unknown option '--unknown'");
+        expect(stderr).toContain("Error: Unknown option '--unknown'");
         expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
     });
@@ -105,7 +105,7 @@ describe('unknown behaviour', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--unknown', '--color']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("unknown option '--unknown'");
+        expect(stderr).toContain("Error: Unknown option '--unknown'");
         expect(stderr).toContain("\u001b[31mRun 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
     });
@@ -114,7 +114,7 @@ describe('unknown behaviour', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--unknown', '--no-color']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).not.toContain(`\u001b[31munknown option '--unknown'`);
+        expect(stderr).not.toContain(`\u001b[31mError: Unknown option '--unknown'`);
         expect(stderr).not.toContain("\u001b[31mRun 'webpack --help' to see available commands and options");
         expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
@@ -124,7 +124,7 @@ describe('unknown behaviour', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--entyr', './a.js']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("unknown option '--entyr'");
+        expect(stderr).toContain("Error: Unknown option '--entyr'");
         expect(stderr).toContain("Did you mean '--entry'?");
         expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
@@ -134,7 +134,7 @@ describe('unknown behaviour', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--output-fileneme', '[name].js']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("unknown option '--output-fileneme'");
+        expect(stderr).toContain("Error: Unknown option '--output-fileneme'");
 
         if (isWebpack5) {
             expect(stderr).toContain("Did you mean '--output-filename'?");
@@ -148,7 +148,7 @@ describe('unknown behaviour', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--output-library-auxiliary-comment-commnjs']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("unknown option '--output-library-auxiliary-comment-commnjs'");
+        expect(stderr).toContain("Error: Unknown option '--output-library-auxiliary-comment-commnjs'");
 
         if (isWebpack5) {
             expect(stderr).toContain("Did you mean '--output-library-auxiliary-comment-commonjs'?");
@@ -163,7 +163,7 @@ describe('unknown behaviour', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['bundle', '--entyr', './a.js']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("unknown option '--entyr'");
+        expect(stderr).toContain("Error: Unknown option '--entyr'");
         expect(stderr).toContain("Did you mean '--entry'?");
         expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
@@ -173,7 +173,7 @@ describe('unknown behaviour', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['b', '--entyr', './a.js']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("unknown option '--entyr'");
+        expect(stderr).toContain("Error: Unknown option '--entyr'");
         expect(stderr).toContain("Did you mean '--entry'?");
         expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
@@ -183,7 +183,7 @@ describe('unknown behaviour', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['info', '--outpyt']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("unknown option '--outpyt'");
+        expect(stderr).toContain("Error: Unknown option '--outpyt'");
         expect(stderr).toContain("Did you mean '--output'?");
         expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
@@ -193,7 +193,7 @@ describe('unknown behaviour', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['i', '--outpyt']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("unknown option '--outpyt'");
+        expect(stderr).toContain("Error: Unknown option '--outpyt'");
         expect(stderr).toContain("Did you mean '--output'?");
         expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();

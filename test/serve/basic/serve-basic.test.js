@@ -245,7 +245,7 @@ describe('basic serve usage', () => {
             expect(stdout).toContain('/my-public-path/');
             expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
         } else {
-            expect(stderr).toContain("unknown option '--output-public-path'");
+            expect(stderr).toContain("Error: Unknown option '--output-public-path'");
             expect(stdout).toBeFalsy();
         }
     });
@@ -311,7 +311,7 @@ describe('basic serve usage', () => {
         const { exitCode, stdout, stderr } = await runServe(testPath, ['--port', port, '--unknown-flag']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("unknown option '--unknown-flag'");
+        expect(stderr).toContain("Error: Unknown option '--unknown-flag'");
         expect(stdout).toBeFalsy();
     });
 });
