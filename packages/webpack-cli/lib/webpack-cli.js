@@ -10,6 +10,7 @@ const { distance } = require('fastest-levenshtein');
 const { options: coloretteOptions, yellow, cyan, green, bold } = require('colorette');
 
 const logger = require('./utils/logger');
+const capitalizeFirstLetter = require('./utils/capitalize-first-letter');
 const { cli, flags } = require('./utils/cli-flags');
 const CLIPlugin = require('./plugins/CLIPlugin');
 const promptInstallation = require('./utils/prompt-installation');
@@ -17,12 +18,18 @@ const toKebabCase = require('./utils/to-kebab-case');
 
 class WebpackCLI {
     constructor() {
-        // Initialize program
-        this.program = program;
-        this.program.name('webpack');
+        // Global
         this.webpack = webpack;
         this.logger = logger;
         this.utils = { toKebabCase, getPkg, promptInstallation };
+
+        // Initialize program
+        this.program = program;
+        this.program.name('webpack');
+        this.program.configureOutput({
+            writeErr: logger.error,
+            outputError: (str, write) => write(`Error: ${capitalizeFirstLetter(str.replace(/^error:/, '').trim())}`),
+        });
     }
 
     async makeCommand(commandOptions, options, action) {

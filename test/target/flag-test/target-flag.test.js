@@ -59,7 +59,7 @@ describe('--target flag', () => {
             const { exitCode, stderr, stdout } = run(__dirname, ['--target', 'node', '--target', 'invalid']);
 
             expect(exitCode).toBe(2);
-            expect(stderr).toContain(`Error: Unknown target 'invalid'`);
+            expect(stderr).toContain("Error: Unknown target 'invalid'");
             expect(stdout).toBeFalsy();
         });
 
