@@ -8,7 +8,7 @@ describe('function configuration', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--env']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain(`option '--env <value...>' argument missing`);
+        expect(stderr).toContain("Error: Option '--env <value...>' argument missing");
         expect(stdout).toBeFalsy();
     });
 

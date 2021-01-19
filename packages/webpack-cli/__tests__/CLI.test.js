@@ -11,8 +11,8 @@ describe('CLI API', () => {
         it('should make command', async (done) => {
             cli.program.commands = [];
 
-            const command = await cli.makeCommand({ name: 'command' }, [], (program) => {
-                expect(program.opts()).toEqual({});
+            const command = await cli.makeCommand({ name: 'command' }, [], (options) => {
+                expect(options).toEqual({});
 
                 done();
             });
@@ -33,8 +33,8 @@ describe('CLI API', () => {
                         description: 'description',
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ boolean: true });
+                (options) => {
+                    expect(options).toEqual({ boolean: true });
 
                     done();
                 },
@@ -57,8 +57,8 @@ describe('CLI API', () => {
                         description: 'description',
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ boolean: true });
+                (options) => {
+                    expect(options).toEqual({ boolean: true });
 
                     done();
                 },
@@ -82,8 +82,8 @@ describe('CLI API', () => {
                         negative: true,
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ boolean: false });
+                (options) => {
+                    expect(options).toEqual({ boolean: false });
 
                     done();
                 },
@@ -107,8 +107,8 @@ describe('CLI API', () => {
                         negative: true,
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ boolean: false });
+                (options) => {
+                    expect(options).toEqual({ boolean: false });
 
                     done();
                 },
@@ -132,8 +132,8 @@ describe('CLI API', () => {
                         negative: true,
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ boolean: true });
+                (options) => {
+                    expect(options).toEqual({ boolean: true });
 
                     done();
                 },
@@ -157,8 +157,8 @@ describe('CLI API', () => {
                         defaultValue: false,
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ boolean: false });
+                (options) => {
+                    expect(options).toEqual({ boolean: false });
 
                     done();
                 },
@@ -181,8 +181,8 @@ describe('CLI API', () => {
                         description: 'description',
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ string: 'bar' });
+                (options) => {
+                    expect(options).toEqual({ string: 'bar' });
 
                     done();
                 },
@@ -206,8 +206,8 @@ describe('CLI API', () => {
                         description: 'description',
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ string: 'foo' });
+                (options) => {
+                    expect(options).toEqual({ string: 'foo' });
 
                     done();
                 },
@@ -231,8 +231,8 @@ describe('CLI API', () => {
                         defaultValue: 'default-value',
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ string: 'default-value' });
+                (options) => {
+                    expect(options).toEqual({ string: 'default-value' });
 
                     done();
                 },
@@ -256,8 +256,8 @@ describe('CLI API', () => {
                         defaultValue: 'default-value',
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ string: 'foo' });
+                (options) => {
+                    expect(options).toEqual({ string: 'foo' });
 
                     done();
                 },
@@ -280,8 +280,8 @@ describe('CLI API', () => {
                         description: 'description',
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ string: 'bar' });
+                (options) => {
+                    expect(options).toEqual({ string: 'bar' });
 
                     done();
                 },
@@ -305,8 +305,8 @@ describe('CLI API', () => {
                         description: 'description',
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ string: ['foo', 'bar'] });
+                (options) => {
+                    expect(options).toEqual({ string: ['foo', 'bar'] });
 
                     done();
                 },
@@ -331,8 +331,8 @@ describe('CLI API', () => {
                         defaultValue: 'string',
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ string: 'string' });
+                (options) => {
+                    expect(options).toEqual({ string: 'string' });
 
                     done();
                 },
@@ -357,8 +357,8 @@ describe('CLI API', () => {
                         defaultValue: 'string',
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ string: ['foo', 'bar'] });
+                (options) => {
+                    expect(options).toEqual({ string: ['foo', 'bar'] });
 
                     done();
                 },
@@ -382,8 +382,8 @@ describe('CLI API', () => {
                         description: 'description',
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ string: ['foo', 'bar'] });
+                (options) => {
+                    expect(options).toEqual({ string: ['foo', 'bar'] });
 
                     done();
                 },
@@ -406,8 +406,8 @@ describe('CLI API', () => {
                         description: 'description',
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ number: 12 });
+                (options) => {
+                    expect(options).toEqual({ number: 12 });
 
                     done();
                 },
@@ -431,8 +431,8 @@ describe('CLI API', () => {
                         defaultValue: 20,
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ number: 20 });
+                (options) => {
+                    expect(options).toEqual({ number: 20 });
 
                     done();
                 },
@@ -456,8 +456,8 @@ describe('CLI API', () => {
                         description: 'description',
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ number: [1, 2] });
+                (options) => {
+                    expect(options).toEqual({ number: [1, 2] });
 
                     done();
                 },
@@ -482,8 +482,8 @@ describe('CLI API', () => {
                         defaultValue: 50,
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ number: [1, 2] });
+                (options) => {
+                    expect(options).toEqual({ number: [1, 2] });
 
                     done();
                 },
@@ -508,8 +508,8 @@ describe('CLI API', () => {
                         defaultValue: 50,
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ number: 50 });
+                (options) => {
+                    expect(options).toEqual({ number: 50 });
 
                     done();
                 },
@@ -534,8 +534,8 @@ describe('CLI API', () => {
                         description: 'description',
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ custom: 'function' });
+                (options) => {
+                    expect(options).toEqual({ custom: 'function' });
 
                     done();
                 },
@@ -561,8 +561,8 @@ describe('CLI API', () => {
                         defaultValue: 'default',
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ custom: 'default' });
+                (options) => {
+                    expect(options).toEqual({ custom: 'default' });
 
                     done();
                 },
@@ -588,8 +588,8 @@ describe('CLI API', () => {
                         multiple: true,
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ custom: ['value', 'other'] });
+                (options) => {
+                    expect(options).toEqual({ custom: ['value', 'other'] });
 
                     done();
                 },
@@ -616,8 +616,8 @@ describe('CLI API', () => {
                         defaultValue: 50,
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ custom: 50 });
+                (options) => {
+                    expect(options).toEqual({ custom: 50 });
 
                     done();
                 },
@@ -651,8 +651,8 @@ describe('CLI API', () => {
                         defaultValue: 50,
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ custom: ['foo'] });
+                (options) => {
+                    expect(options).toEqual({ custom: ['foo'] });
 
                     done();
                 },
@@ -675,8 +675,8 @@ describe('CLI API', () => {
                         description: 'description',
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ booleanAndString: true });
+                (options) => {
+                    expect(options).toEqual({ booleanAndString: true });
 
                     done();
                 },
@@ -699,8 +699,8 @@ describe('CLI API', () => {
                         description: 'description',
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ booleanAndString: 'value' });
+                (options) => {
+                    expect(options).toEqual({ booleanAndString: 'value' });
 
                     done();
                 },
@@ -724,8 +724,8 @@ describe('CLI API', () => {
                         multiple: true,
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ booleanAndString: true });
+                (options) => {
+                    expect(options).toEqual({ booleanAndString: true });
 
                     done();
                 },
@@ -749,8 +749,8 @@ describe('CLI API', () => {
                         multiple: true,
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ booleanAndString: ['bar', 'baz'] });
+                (options) => {
+                    expect(options).toEqual({ booleanAndString: ['bar', 'baz'] });
 
                     done();
                 },
@@ -774,8 +774,8 @@ describe('CLI API', () => {
                         negative: true,
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ booleanAndString: true });
+                (options) => {
+                    expect(options).toEqual({ booleanAndString: true });
 
                     done();
                 },
@@ -799,8 +799,8 @@ describe('CLI API', () => {
                         negative: true,
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ booleanAndString: 'foo' });
+                (options) => {
+                    expect(options).toEqual({ booleanAndString: 'foo' });
 
                     done();
                 },
@@ -824,8 +824,8 @@ describe('CLI API', () => {
                         negative: true,
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ booleanAndString: false });
+                (options) => {
+                    expect(options).toEqual({ booleanAndString: false });
 
                     done();
                 },
@@ -848,8 +848,8 @@ describe('CLI API', () => {
                         description: 'description',
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ booleanAndNumber: true });
+                (options) => {
+                    expect(options).toEqual({ booleanAndNumber: true });
 
                     done();
                 },
@@ -872,8 +872,8 @@ describe('CLI API', () => {
                         description: 'description',
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ booleanAndNumber: 12 });
+                (options) => {
+                    expect(options).toEqual({ booleanAndNumber: 12 });
 
                     done();
                 },
@@ -896,8 +896,8 @@ describe('CLI API', () => {
                         description: 'description',
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ boolean: true });
+                (options) => {
+                    expect(options).toEqual({ boolean: true });
 
                     done();
                 },
@@ -920,8 +920,8 @@ describe('CLI API', () => {
                         description: 'description',
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ booleanAndNumberAndString: true });
+                (options) => {
+                    expect(options).toEqual({ booleanAndNumberAndString: true });
 
                     done();
                 },
@@ -944,8 +944,8 @@ describe('CLI API', () => {
                         description: 'description',
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ booleanAndNumberAndString: 12 });
+                (options) => {
+                    expect(options).toEqual({ booleanAndNumberAndString: 12 });
 
                     done();
                 },
@@ -968,8 +968,8 @@ describe('CLI API', () => {
                         description: 'description',
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ booleanAndNumberAndString: 'bar' });
+                (options) => {
+                    expect(options).toEqual({ booleanAndNumberAndString: 'bar' });
 
                     done();
                 },
@@ -993,8 +993,8 @@ describe('CLI API', () => {
                         defaultValue: 'default',
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ booleanAndNumberAndString: 'default' });
+                (options) => {
+                    expect(options).toEqual({ booleanAndNumberAndString: 'default' });
 
                     done();
                 },
@@ -1018,8 +1018,8 @@ describe('CLI API', () => {
                         defaultValue: 'default',
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ booleanAndNumberAndString: 'foo' });
+                (options) => {
+                    expect(options).toEqual({ booleanAndNumberAndString: 'foo' });
 
                     done();
                 },
@@ -1043,8 +1043,8 @@ describe('CLI API', () => {
                         defaultValue: 'default',
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ booleanAndNumberAndString: 12 });
+                (options) => {
+                    expect(options).toEqual({ booleanAndNumberAndString: 12 });
 
                     done();
                 },
@@ -1068,8 +1068,8 @@ describe('CLI API', () => {
                         defaultValue: 'default',
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ booleanAndNumberAndString: 'default' });
+                (options) => {
+                    expect(options).toEqual({ booleanAndNumberAndString: 'default' });
 
                     done();
                 },
@@ -1093,8 +1093,8 @@ describe('CLI API', () => {
                         multiple: true,
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ booleanAndNumberAndString: true });
+                (options) => {
+                    expect(options).toEqual({ booleanAndNumberAndString: true });
 
                     done();
                 },
@@ -1118,8 +1118,8 @@ describe('CLI API', () => {
                         multiple: true,
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ booleanAndNumberAndString: ['foo'] });
+                (options) => {
+                    expect(options).toEqual({ booleanAndNumberAndString: ['foo'] });
 
                     done();
                 },
@@ -1143,8 +1143,8 @@ describe('CLI API', () => {
                         multiple: true,
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ booleanAndNumberAndString: [12] });
+                (options) => {
+                    expect(options).toEqual({ booleanAndNumberAndString: [12] });
 
                     done();
                 },
@@ -1168,8 +1168,8 @@ describe('CLI API', () => {
                         multiple: true,
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ booleanAndNumberAndString: ['foo', 'bar'] });
+                (options) => {
+                    expect(options).toEqual({ booleanAndNumberAndString: ['foo', 'bar'] });
 
                     done();
                 },
@@ -1193,8 +1193,8 @@ describe('CLI API', () => {
                         multiple: true,
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ booleanAndNumberAndString: ['foo', 12] });
+                (options) => {
+                    expect(options).toEqual({ booleanAndNumberAndString: ['foo', 12] });
 
                     done();
                 },
@@ -1219,8 +1219,8 @@ describe('CLI API', () => {
                         defaultValue: 'default',
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ booleanAndNumberAndString: 'default' });
+                (options) => {
+                    expect(options).toEqual({ booleanAndNumberAndString: 'default' });
 
                     done();
                 },
@@ -1245,8 +1245,8 @@ describe('CLI API', () => {
                         defaultValue: 'default',
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ booleanAndNumberAndString: ['foo'] });
+                (options) => {
+                    expect(options).toEqual({ booleanAndNumberAndString: ['foo'] });
 
                     done();
                 },
@@ -1271,8 +1271,8 @@ describe('CLI API', () => {
                         defaultValue: 'default',
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ booleanAndNumberAndString: [12] });
+                (options) => {
+                    expect(options).toEqual({ booleanAndNumberAndString: [12] });
 
                     done();
                 },
@@ -1297,8 +1297,8 @@ describe('CLI API', () => {
                         defaultValue: 'default',
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ booleanAndNumberAndString: ['foo', 12] });
+                (options) => {
+                    expect(options).toEqual({ booleanAndNumberAndString: ['foo', 12] });
 
                     done();
                 },
@@ -1321,8 +1321,8 @@ describe('CLI API', () => {
                         description: 'description',
                     },
                 ],
-                (program) => {
-                    expect(program.opts()).toEqual({ unknown: 'foo' });
+                (options) => {
+                    expect(options).toEqual({ unknown: 'foo' });
 
                     done();
                 },

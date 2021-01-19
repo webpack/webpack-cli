@@ -28,7 +28,7 @@ class ServeCommand {
 
                 return [...builtInOptions, ...devServerFlags];
             },
-            async (program) => {
+            async (options) => {
                 const builtInOptions = cli.getBuiltInOptions();
                 let devServerFlags = [];
 
@@ -43,7 +43,6 @@ class ServeCommand {
                 const webpackOptions: Record<string, any> = {};
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const devServerOptions: Record<string, any> = {};
-                const options = program.opts();
 
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const processors: Array<(opts: Record<string, any>) => void> = [];

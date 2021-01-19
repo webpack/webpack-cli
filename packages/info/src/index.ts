@@ -31,6 +31,8 @@ const DEFAULT_DETAILS: Information = {
 
 class InfoCommand {
     async apply(cli): Promise<void> {
+        const { logger } = cli;
+
         await cli.makeCommand(
             {
                 name: 'info',
@@ -46,10 +48,9 @@ class InfoCommand {
                     description: 'To get the output in specified format ( accept json or markdown )',
                 },
             ],
-            async (program) => {
-                let { output } = program.opts();
+            async (options) => {
+                let { output } = options;
 
-                const { logger } = cli;
                 const envinfoConfig = {};
 
                 if (output) {

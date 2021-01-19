@@ -27,9 +27,7 @@ class InitCommand {
                     description: 'To scaffold in a specified path',
                 },
             ],
-            async (scaffold, program) => {
-                const options = program.opts();
-
+            async (scaffold, options) => {
                 if (scaffold && scaffold.length > 0) {
                     await npmPackagesExists(scaffold);
 
