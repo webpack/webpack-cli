@@ -331,30 +331,6 @@ class WebpackCLI {
             value === '-h' ||
             value === '--help';
 
-        const getCommandNameAndOptions = (args) => {
-            let commandName;
-            const options = [];
-
-            let allowToSearchCommand = true;
-
-            args.forEach((arg) => {
-                if (!isOption(arg) && allowToSearchCommand) {
-                    commandName = arg;
-
-                    allowToSearchCommand = false;
-
-                    return;
-                }
-
-                allowToSearchCommand = false;
-
-                options.push(arg);
-            });
-
-            const isDefault = typeof commandName === 'undefined';
-
-            return { commandName: isDefault ? buildCommandOptions.name : commandName, options, isDefault };
-        };
         const loadCommandByName = async (commandName, allowToInstall = false) => {
             const isBuildCommandUsed = isBuildCommand(commandName);
             const isWatchCommandUsed = isWatchCommand(commandName);
@@ -478,13 +454,14 @@ class WebpackCLI {
                         name = name.split('=')[0];
                     }
 
-                    const { commandName } = getCommandNameAndOptions(this.program.args);
+                    const { operands } = this.program.parseOptions(this.program.args);
+                    const operand = typeof operands[0] !== 'undefined' ? operands[0] : 'build';
 
-                    if (commandName) {
-                        const command = findCommandByName(commandName);
+                    if (operand) {
+                        const command = findCommandByName(operand);
 
                         if (!command) {
-                            logger.error(`Can't find and load command '${commandName}'`);
+                            logger.error(`Can't find and load command '${operand}'`);
                             logger.error("Run 'webpack --help' to see available commands and options");
                             process.exit(2);
                         }
@@ -761,7 +738,7 @@ class WebpackCLI {
         // Default action
         this.program.usage('[options]');
         this.program.allowUnknownOption(true);
-        this.program.action(async (_, program) => {
+        this.program.action(async (options, program) => {
             if (!isInternalActionCalled) {
                 isInternalActionCalled = true;
             } else {
@@ -769,18 +746,19 @@ class WebpackCLI {
                 process.exit(2);
             }
 
-            const { commandName, options, isDefault } = getCommandNameAndOptions(program.args);
+            // Command and options
+            const { operands, unknown } = this.program.parseOptions(program.args);
+            const hasOperand = typeof operands[0] !== 'undefined';
+            const operand = hasOperand ? operands[0] : 'build';
 
-            const opts = program.opts();
+            const isHelpCommandSyntax = isHelpCommand(operand);
 
-            const isHelpCommandSyntax = isHelpCommand(commandName);
-
-            if (opts.help || isHelpCommandSyntax) {
+            if (options.help || isHelpCommandSyntax) {
                 let isVerbose = false;
 
-                if (opts.help) {
-                    if (typeof opts.help === 'string') {
-                        if (opts.help !== 'verbose') {
+                if (options.help) {
+                    if (typeof options.help === 'string') {
+                        if (options.help !== 'verbose') {
                             logger.error("Unknown value for '--help' option, please use '--help=verbose'");
                             process.exit(2);
                         }
@@ -792,26 +770,32 @@ class WebpackCLI {
                 this.program.forHelp = true;
 
                 const optionsForHelp = []
-                    .concat(opts.help && !isDefault ? [commandName] : [])
-                    .concat(options)
-                    .concat(isHelpCommandSyntax && typeof opts.color !== 'undefined' ? [opts.color ? '--color' : '--no-color'] : [])
-                    .concat(isHelpCommandSyntax && typeof opts.version !== 'undefined' ? ['--version'] : []);
+                    .concat(options.help && hasOperand ? [operand] : [])
+                    // Syntax `webpack help [command]`
+                    .concat(operands.slice(1))
+                    // Syntax `webpack help [option]`
+                    .concat(unknown)
+                    .concat(isHelpCommandSyntax && typeof options.color !== 'undefined' ? [options.color ? '--color' : '--no-color'] : [])
+                    .concat(isHelpCommandSyntax && typeof options.version !== 'undefined' ? ['--version'] : []);
 
                 await outputHelp(optionsForHelp, isVerbose, isHelpCommandSyntax, program);
             }
 
-            if (opts.version || isVersionCommand(commandName)) {
-                const optionsForVersion = [].concat(opts.version ? [commandName] : []).concat(options);
+            if (options.version || isVersionCommand(operand)) {
+                const optionsForVersion = []
+                    .concat(options.version ? [operand] : [])
+                    .concat(operands.slice(1))
+                    .concat(unknown);
 
                 await outputVersion(optionsForVersion, program);
             }
 
-            if (isKnownCommand(commandName)) {
-                await loadCommandByName(commandName, true);
+            if (isKnownCommand(operand)) {
+                await loadCommandByName(operand, true);
             } else {
-                logger.error(`Unknown command '${commandName}'`);
+                logger.error(`Unknown command '${operand}'`);
 
-                const found = knownCommands.find((commandOptions) => distance(commandName, getCommandName(commandOptions.name)) < 3);
+                const found = knownCommands.find((commandOptions) => distance(operand, getCommandName(commandOptions.name)) < 3);
 
                 if (found) {
                     logger.error(
@@ -825,7 +809,7 @@ class WebpackCLI {
                 process.exit(2);
             }
 
-            await this.program.parseAsync([commandName, ...options], { from: 'user' });
+            await this.program.parseAsync([operand, ...operands.slice(1), ...unknown], { from: 'user' });
         });
 
         await this.program.parseAsync(args, parseOptions);
