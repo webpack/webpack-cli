@@ -2,6 +2,7 @@ const { resolve } = require('path');
 
 module.exports = {
     entry: {
+        a: './a.js',
         b: './b.js',
         c: './c.js',
     },
