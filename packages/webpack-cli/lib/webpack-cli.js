@@ -20,7 +20,6 @@ class WebpackCLI {
         // Initialize program
         this.program = program;
         this.program.name('webpack');
-        this.program.storeOptionsAsProperties(false);
         this.webpack = webpack;
         this.logger = logger;
         this.utils = { toKebabCase, getPkg, promptInstallation };
@@ -357,9 +356,7 @@ class WebpackCLI {
                 await this.makeCommand(
                     isBuildCommandUsed ? buildCommandOptions : watchCommandOptions,
                     this.getBuiltInOptions(),
-                    async (program) => {
-                        const options = program.opts();
-
+                    async (options, program) => {
                         if (program.args.length > 0) {
                             const possibleCommands = [].concat([buildCommandOptions.name]).concat(program.args);
 
@@ -757,7 +754,7 @@ class WebpackCLI {
         // Default action
         this.program.usage('[options]');
         this.program.allowUnknownOption(true);
-        this.program.action(async (program) => {
+        this.program.action(async (_, program) => {
             if (!isInternalActionCalled) {
                 isInternalActionCalled = true;
             } else {
