@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/generators@1.2.1...@webpack-cli/generators@1.3.0) (2021-01-19)
+
+### Bug Fixes
+
+-   init generator ([#2324](https://github.com/webpack/webpack-cli/issues/2324)) ([016bb34](https://github.com/webpack/webpack-cli/commit/016bb348d7cc9cb299555ec8edd373130fb1b77c))
+-   regression with webpack config ([#2319](https://github.com/webpack/webpack-cli/issues/2319)) ([50bbe56](https://github.com/webpack/webpack-cli/commit/50bbe56c0ae9d72301c4ac51fdc2b04df7b66451))
+-   remove splitchunks ([#2310](https://github.com/webpack/webpack-cli/issues/2310)) ([e44e855](https://github.com/webpack/webpack-cli/commit/e44e855c7e302932a828fcedf7abfe205b47c716))
+-   remove style-loader from the loader chain ([#2309](https://github.com/webpack/webpack-cli/issues/2309)) ([19a25cf](https://github.com/webpack/webpack-cli/commit/19a25cf83dc2f680a5028f4b449d7f79895231f0))
+-   use worker from plugin and remove default ([#2340](https://github.com/webpack/webpack-cli/issues/2340)) ([9100137](https://github.com/webpack/webpack-cli/commit/9100137bc4e7d77915407aec554da25f0ae9e55c))
+
+### Features
+
+-   flexible init scaffolding ([#2311](https://github.com/webpack/webpack-cli/issues/2311)) ([9a74ad0](https://github.com/webpack/webpack-cli/commit/9a74ad08b984325a63d953c685496e48700a2caf))
+
 ## [1.2.1](https://github.com/webpack/webpack-cli/compare/@webpack-cli/generators@1.2.0...@webpack-cli/generators@1.2.1) (2020-12-31)
 
 ### Bug Fixes
