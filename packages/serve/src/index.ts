@@ -6,7 +6,7 @@ class ServeCommand {
 
         await cli.makeCommand(
             {
-                name: 'serve',
+                name: 'serve [entries...]',
                 alias: 's',
                 description: 'Run the webpack dev server.',
                 usage: '[options]',
@@ -28,7 +28,7 @@ class ServeCommand {
 
                 return [...builtInOptions, ...devServerFlags];
             },
-            async (options) => {
+            async (entries, options) => {
                 const builtInOptions = cli.getBuiltInOptions();
                 let devServerFlags = [];
 
@@ -70,6 +70,10 @@ class ServeCommand {
 
                 for (const processor of processors) {
                     processor(devServerOptions);
+                }
+
+                if (entries.length > 0) {
+                    webpackOptions.entry = entries;
                 }
 
                 webpackOptions.argv = { ...options, env: { WEBPACK_SERVE: true, ...options.env } };

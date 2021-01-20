@@ -231,14 +231,15 @@ class WebpackCLI {
 
     async run(args, parseOptions) {
         // Built-in internal commands
+        // TODO fix help
         const buildCommandOptions = {
-            name: 'build',
+            name: 'build [entries...]',
             alias: ['bundle', 'b'],
             description: 'Run webpack (default command, can be omitted).',
             usage: '[options]',
         };
         const watchCommandOptions = {
-            name: 'watch',
+            name: 'watch [entries...]',
             alias: 'w',
             description: 'Run webpack and watch for files changes.',
             usage: '[options]',
@@ -256,7 +257,7 @@ class WebpackCLI {
         // Built-in external commands
         const externalBuiltInCommandsInfo = [
             {
-                name: 'serve',
+                name: 'serve [entries...]',
                 alias: 's',
                 pkg: '@webpack-cli/serve',
             },
@@ -339,14 +340,9 @@ class WebpackCLI {
                 await this.makeCommand(
                     isBuildCommandUsed ? buildCommandOptions : watchCommandOptions,
                     this.getBuiltInOptions(),
-                    async (options, program) => {
-                        if (program.args.length > 0) {
-                            const possibleCommands = [].concat([buildCommandOptions.name]).concat(program.args);
-
-                            logger.error('Running multiple commands at the same time is not possible');
-                            logger.error(`Found commands: ${possibleCommands.map((item) => `'${item}'`).join(', ')}`);
-                            logger.error("Run 'webpack --help' to see available commands and options");
-                            process.exit(2);
+                    async (entries, options) => {
+                        if (entries.length > 0) {
+                            options.entry = entries;
                         }
 
                         if (isWatchCommandUsed) {
@@ -455,8 +451,8 @@ class WebpackCLI {
                     }
 
                     const { operands } = this.program.parseOptions(this.program.args);
-                    const operand = typeof operands[0] !== 'undefined' ? operands[0] : 'build';
-
+                    const operand = typeof operands[0] !== 'undefined' ? operands[0] : getCommandName(buildCommandOptions.name);
+                    
                     if (operand) {
                         const command = findCommandByName(operand);
 
@@ -614,7 +610,7 @@ class WebpackCLI {
                     }),
                 );
 
-                const buildCommand = findCommandByName(buildCommandOptions.name);
+                const buildCommand = findCommandByName(getCommandName(buildCommandOptions.name));
 
                 if (!isVerbose) {
                     hideVerboseOptions(buildCommand);
@@ -661,7 +657,7 @@ class WebpackCLI {
                 outputGlobalOptions();
             } else if (isHelpCommandSyntax) {
                 let isCommandSpecified = false;
-                let commandName = buildCommandOptions.name;
+                let commandName = getCommandName(buildCommandOptions.name);
                 let optionName;
 
                 if (options.length === 1) {
@@ -746,8 +742,9 @@ class WebpackCLI {
 
             // Command and options
             const { operands, unknown } = this.program.parseOptions(program.args);
+            const defaultCommandToRun = getCommandName(buildCommandOptions.name);
             const hasOperand = typeof operands[0] !== 'undefined';
-            const operand = hasOperand ? operands[0] : 'build';
+            const operand = hasOperand ? operands[0] : defaultCommandToRun;
 
             const isHelpCommandSyntax = isHelpCommand(operand);
 
@@ -788,26 +785,38 @@ class WebpackCLI {
                 await outputVersion(optionsForVersion, program);
             }
 
-            if (isKnownCommand(operand)) {
-                await loadCommandByName(operand, true);
+            let commandToRun = operand;
+            let commandOperands = operands.slice(1);
+
+            if (isKnownCommand(commandToRun)) {
+                await loadCommandByName(commandToRun, true);
             } else {
-                logger.error(`Unknown command '${operand}'`);
+                let isEntrySyntax = existsSync(operand);
 
-                const found = knownCommands.find((commandOptions) => distance(operand, getCommandName(commandOptions.name)) < 3);
+                if (isEntrySyntax) {
+                    commandToRun = defaultCommandToRun;
+                    commandOperands = operands;
 
-                if (found) {
-                    logger.error(
-                        `Did you mean '${getCommandName(found.name)}' (alias '${
-                            Array.isArray(found.alias) ? found.alias.join(', ') : found.alias
-                        }')?`,
-                    );
+                    await loadCommandByName(commandToRun);
+                } else {
+                    logger.error(`Unknown command '${operand}'`);
+
+                    const found = knownCommands.find((commandOptions) => distance(operand, getCommandName(commandOptions.name)) < 3);
+
+                    if (found) {
+                        logger.error(
+                            `Did you mean '${getCommandName(found.name)}' (alias '${
+                                Array.isArray(found.alias) ? found.alias.join(', ') : found.alias
+                            }')?`,
+                        );
+                    }
+
+                    logger.error("Run 'webpack --help' to see available commands and options");
+                    process.exit(2);
                 }
-
-                logger.error("Run 'webpack --help' to see available commands and options");
-                process.exit(2);
             }
 
-            await this.program.parseAsync([operand, ...operands.slice(1), ...unknown], { from: 'user' });
+            await this.program.parseAsync([commandToRun, ...commandOperands, ...unknown], { from: 'user' });
         });
 
         await this.program.parseAsync(args, parseOptions);
