@@ -361,7 +361,7 @@ class WebpackCLI {
                             options.watch = true;
                         }
 
-                        await this.bundleCommand(options);
+                        await this.buildCommand(options);
                     },
                 );
             } else if (isHelpCommand(commandName)) {
@@ -563,7 +563,7 @@ class WebpackCLI {
 
         const outputHelp = async (options, isVerbose, isHelpCommandSyntax, program) => {
             const hideVerboseOptions = (command) => {
-                command.options = command.options.filter((option) => {
+                command.options.forEach((option) => {
                     const foundOption = flags.find((flag) => {
                         if (option.negate && flag.negative) {
                             return `no-${flag.name}` === option.name();
@@ -572,11 +572,9 @@ class WebpackCLI {
                         return flag.name === option.name();
                     });
 
-                    if (foundOption && foundOption.help) {
-                        return foundOption.help === 'minimum';
+                    if (foundOption && foundOption.help !== 'minimum') {
+                        option.hidden = true;
                     }
-
-                    return true;
                 });
             };
             const outputGlobalOptions = () => {
@@ -616,13 +614,13 @@ class WebpackCLI {
                     }),
                 );
 
-                const bundleCommand = findCommandByName(buildCommandOptions.name);
+                const buildCommand = findCommandByName(buildCommandOptions.name);
 
                 if (!isVerbose) {
-                    hideVerboseOptions(bundleCommand);
+                    hideVerboseOptions(buildCommand);
                 }
 
-                let helpInformation = bundleCommand
+                let helpInformation = buildCommand
                     .helpInformation()
                     .trimRight()
                     .replace(buildCommandOptions.description, 'The build tool for modern web applications.')
@@ -1353,7 +1351,7 @@ class WebpackCLI {
         return compiler;
     }
 
-    async bundleCommand(options) {
+    async buildCommand(options) {
         let compiler;
 
         const callback = (error, stats) => {
