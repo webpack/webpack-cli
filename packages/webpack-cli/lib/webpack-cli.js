@@ -85,7 +85,9 @@ class WebpackCLI {
                 try {
                     await promptInstallation(dependency, () => {
                         logger.error(
-                            `For using '${green(commandOptions.name)}' command you need to install: '${green(dependency)}' package`,
+                            `For using '${green(commandOptions.name.split(' ')[0])}' command you need to install: '${green(
+                                dependency,
+                            )}' package`,
                         );
                     });
                 } catch (error) {
@@ -231,7 +233,6 @@ class WebpackCLI {
 
     async run(args, parseOptions) {
         // Built-in internal commands
-        // TODO fix help
         const buildCommandOptions = {
             name: 'build [entries...]',
             alias: ['bundle', 'b'],
@@ -452,7 +453,7 @@ class WebpackCLI {
 
                     const { operands } = this.program.parseOptions(this.program.args);
                     const operand = typeof operands[0] !== 'undefined' ? operands[0] : getCommandName(buildCommandOptions.name);
-                    
+
                     if (operand) {
                         const command = findCommandByName(operand);
 
@@ -592,7 +593,7 @@ class WebpackCLI {
                         globalCommands.groups.globalCommands
                             .trimRight()
                             // `commander` doesn't support multiple alias in help
-                            .replace('build|bundle [options]  ', 'build|bundle|b [options]'),
+                            .replace('build|bundle [options] [entries...]  ', 'build|bundle|b [options] [entries...]'),
                     );
                 }
             };
