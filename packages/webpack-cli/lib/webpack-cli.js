@@ -623,7 +623,7 @@ class WebpackCLI {
                     .replace(buildCommandOptions.description, 'The build tool for modern web applications.')
                     .replace(
                         /Usage:.+/,
-                        'Usage: webpack [options]\nAlternative usage: webpack --config <config> [options]\nAlternative usage: webpack build [options]\nAlternative usage: webpack bundle [options]\nAlternative usage: webpack b [options]\nAlternative usage: webpack build --config <config> [options]\nAlternative usage: webpack bundle --config <config> [options]\nAlternative usage: webpack b --config <config> [options]',
+                        'Usage: webpack [options]\nAlternative usage: webpack --config <config> [options] [entries...]\nAlternative usage: webpack build [options] [entries...]\nAlternative usage: webpack bundle [options] [entries...]\nAlternative usage: webpack b [options] [entries...]\nAlternative usage: webpack build --config <config> [options] [entries...]\nAlternative usage: webpack bundle --config <config> [options] [entries...]\nAlternative usage: webpack b --config <config> [options] [entries...]',
                     );
 
                 logger.raw(helpInformation);
