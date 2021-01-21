@@ -343,7 +343,7 @@ class WebpackCLI {
                     this.getBuiltInOptions(),
                     async (entries, options) => {
                         if (entries.length > 0) {
-                            options.entry = entries;
+                            options.entry = [...entries, ...(options.entry || [])];
                         }
 
                         if (isWatchCommandUsed) {

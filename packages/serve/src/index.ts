@@ -73,7 +73,7 @@ class ServeCommand {
                 }
 
                 if (entries.length > 0) {
-                    webpackOptions.entry = entries;
+                    webpackOptions.entry = [...entries, ...(webpackOptions.entry || [])];
                 }
 
                 webpackOptions.argv = { ...options, env: { WEBPACK_SERVE: true, ...options.env } };

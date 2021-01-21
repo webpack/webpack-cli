@@ -43,6 +43,22 @@ describe('bundle command', () => {
         expect(stdout).toBeTruthy();
     });
 
+    it('should work with multiple entries syntax without command with options #3 (default command)', async () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['./src/index.js', './src/other.js', '--entry', './src/again.js'], false);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toBeTruthy();
+    });
+
+    it('should work with and override entries from the configuration', async () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['./src/index.js', './src/other.js', '--config', './entry.config.js'], false);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toBeTruthy();
+    });
+
     it('should work with the "build" alias', async () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['build'], false);
 
