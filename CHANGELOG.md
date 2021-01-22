@@ -219,7 +219,7 @@
 
 ## Refactor
 
--   remove --dev and --prod flags ([#1693](https://github.com/webpack/webpack-cli/pull/1693))
+-   remove --dev and --prod flags and their aliases -d and -p ([#1693](https://github.com/webpack/webpack-cli/pull/1693))
 -   remove duplicate invocation ([#1790](https://github.com/webpack/webpack-cli/pull/1790))
 -   cliExecuter consumes runCLI ([#1754](https://github.com/webpack/webpack-cli/pull/1754))
 -   remove --mode flag validation ([#1744](https://github.com/webpack/webpack-cli/pull/1744))
