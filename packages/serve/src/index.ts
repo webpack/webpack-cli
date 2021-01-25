@@ -54,6 +54,11 @@ class ServeCommand {
                         kebabedOption !== 'hot' && builtInOptions.find((builtInOption) => builtInOption.name === kebabedOption);
 
                     if (isBuiltInOption) {
+                        // warn user about using '--watch' with serve
+                        if (optionName === 'watch') {
+                            logger.warn("Do not use '--watch' with 'serve'. It has no effect.");
+                        }
+
                         webpackOptions[optionName] = options[optionName];
                     } else {
                         const needToProcess = devServerFlags.find(

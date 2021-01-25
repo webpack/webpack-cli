@@ -296,7 +296,15 @@ describe('basic serve usage', () => {
         expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
     });
 
-    it('should log and error on unknown flag', async () => {
+    it("should log warning on using '--watch' flag with serve", async () => {
+        const { stdout, stderr } = await runServe(testPath, ['--watch']);
+
+        expect(stderr).toContain("Do not use '--watch' with 'serve'. It has no effect.");
+        expect(stdout).toContain('main.js');
+        expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
+    });
+
+    it('should log an error on unknown flag', async () => {
         const { exitCode, stdout, stderr } = await runServe(testPath, ['--port', port, '--unknown-flag']);
 
         expect(exitCode).toBe(2);
