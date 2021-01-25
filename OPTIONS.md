@@ -53,6 +53,11 @@ Options:
   --no-experiments-async-web-assembly                                                Negative 'experiments-async-web-assembly' option.
   --experiments-layers                                                               Enable module and chunk layers.
   --no-experiments-layers                                                            Negative 'experiments-layers' option.
+  --experiments-lazy-compilation                                                     Compile entrypoints and import()s only when they are accessed.
+  --no-experiments-lazy-compilation                                                  Negative 'experiments-lazy-compilation' option.
+  --experiments-lazy-compilation-client <value>                                      A custom client.
+  --experiments-lazy-compilation-entries                                             Enable/disable lazy compilation for entries.
+  --no-experiments-lazy-compilation-entries                                          Negative 'experiments-lazy-compilation-entries' option.
   --experiments-output-module                                                        Allow output javascript files as module source type.
   --no-experiments-output-module                                                     Negative 'experiments-output-module' option.
   --experiments-sync-web-assembly                                                    Support WebAssembly as synchronous EcmaScript Module (outdated).
@@ -89,10 +94,10 @@ Options:
   --mode <value>                                                                     Defines the mode to pass to webpack.
   --module-expr-context-critical                                                     Enable warnings for full dynamic dependencies.
   --no-module-expr-context-critical                                                  Negative 'module-expr-context-critical' option.
-  --module-expr-context-recursive                                                    Enable recursive directory lookup for full dynamic dependencies.
+  --module-expr-context-recursive                                                    Enable recursive directory lookup for full dynamic dependencies. Deprecated: This option has moved to 'module.parser.javascript.exprContextRecursive'.
   --no-module-expr-context-recursive                                                 Negative 'module-expr-context-recursive' option.
-  --module-expr-context-reg-exp <value>                                              Sets the default regular expression for full dynamic dependencies.
-  --module-expr-context-request <value>                                              Set the default request for full dynamic dependencies.
+  --module-expr-context-reg-exp <value>                                              Sets the default regular expression for full dynamic dependencies. Deprecated: This option has moved to 'module.parser.javascript.exprContextRegExp'.
+  --module-expr-context-request <value>                                              Set the default request for full dynamic dependencies. Deprecated: This option has moved to 'module.parser.javascript.exprContextRequest'.
   --module-generator-asset-data-url-encoding <value>                                 Asset encoding (defaults to base64).
   --module-generator-asset-data-url-mimetype <value>                                 Asset mimetype (getting from file extension by default).
   --module-generator-asset-filename <value>                                          Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
@@ -108,6 +113,14 @@ Options:
   --no-module-parser-javascript-browserify                                           Negative 'module-parser-javascript-browserify' option.
   --module-parser-javascript-commonjs                                                Enable/disable parsing of CommonJs syntax.
   --no-module-parser-javascript-commonjs                                             Negative 'module-parser-javascript-commonjs' option.
+  --module-parser-javascript-commonjs-magic-comments                                 Enable/disable parsing of magic comments in CommonJs syntax.
+  --no-module-parser-javascript-commonjs-magic-comments                              Negative 'module-parser-javascript-commonjs-magic-comments' option.
+  --module-parser-javascript-expr-context-critical                                   Enable warnings for full dynamic dependencies.
+  --no-module-parser-javascript-expr-context-critical                                Negative 'module-parser-javascript-expr-context-critical' option.
+  --module-parser-javascript-expr-context-recursive                                  Enable recursive directory lookup for full dynamic dependencies.
+  --no-module-parser-javascript-expr-context-recursive                               Negative 'module-parser-javascript-expr-context-recursive' option.
+  --module-parser-javascript-expr-context-reg-exp <value>                            Sets the default regular expression for full dynamic dependencies.
+  --module-parser-javascript-expr-context-request <value>                            Set the default request for full dynamic dependencies.
   --module-parser-javascript-harmony                                                 Enable/disable parsing of EcmaScript Modules syntax.
   --no-module-parser-javascript-harmony                                              Negative 'module-parser-javascript-harmony' option.
   --module-parser-javascript-import                                                  Enable/disable parsing of import() syntax.
@@ -126,18 +139,41 @@ Options:
   --no-module-parser-javascript-require-include                                      Negative 'module-parser-javascript-require-include' option.
   --module-parser-javascript-require-js                                              Enable/disable parsing of require.js special syntax like require.config, requirejs.config, require.version and requirejs.onError.
   --no-module-parser-javascript-require-js                                           Negative 'module-parser-javascript-require-js' option.
+  --module-parser-javascript-strict-export-presence                                  Emit errors instead of warnings when imported names don't exist in imported module.
+  --no-module-parser-javascript-strict-export-presence                               Negative 'module-parser-javascript-strict-export-presence' option.
+  --module-parser-javascript-strict-this-context-on-imports                          Handle the this context correctly according to the spec for namespace objects.
+  --no-module-parser-javascript-strict-this-context-on-imports                       Negative 'module-parser-javascript-strict-this-context-on-imports' option.
   --module-parser-javascript-system                                                  Enable/disable parsing of System.js special syntax like System.import, System.get, System.set and System.register.
   --no-module-parser-javascript-system                                               Negative 'module-parser-javascript-system' option.
+  --module-parser-javascript-unknown-context-critical                                Enable warnings when using the require function in a not statically analyse-able way.
+  --no-module-parser-javascript-unknown-context-critical                             Negative 'module-parser-javascript-unknown-context-critical' option.
+  --module-parser-javascript-unknown-context-recursive                               Enable recursive directory lookup when using the require function in a not statically analyse-able way.
+  --no-module-parser-javascript-unknown-context-recursive                            Negative 'module-parser-javascript-unknown-context-recursive' option.
+  --module-parser-javascript-unknown-context-reg-exp <value>                         Sets the regular expression when using the require function in a not statically analyse-able way.
+  --module-parser-javascript-unknown-context-request <value>                         Sets the request when using the require function in a not statically analyse-able way.
   --module-parser-javascript-url                                                     Enable/disable parsing of new URL() syntax.
   --no-module-parser-javascript-url                                                  Negative 'module-parser-javascript-url' option.
   --module-parser-javascript-worker <value...>                                       Specify a syntax that should be parsed as WebWorker reference. 'Abc' handles 'new Abc()', 'Abc from xyz' handles 'import { Abc } from "xyz"; new Abc()', 'abc()' handles 'abc()', and combinations are also possible. Disable or configure parsing of WebWorker syntax like new Worker() or navigator.serviceWorker.register().
   --module-parser-javascript-worker-reset                                            Clear all items provided in configuration. Disable or configure parsing of WebWorker syntax like new Worker() or navigator.serviceWorker.register().
+  --module-parser-javascript-wrapped-context-critical                                Enable warnings for partial dynamic dependencies.
+  --no-module-parser-javascript-wrapped-context-critical                             Negative 'module-parser-javascript-wrapped-context-critical' option.
+  --module-parser-javascript-wrapped-context-recursive                               Enable recursive directory lookup for partial dynamic dependencies.
+  --no-module-parser-javascript-wrapped-context-recursive                            Negative 'module-parser-javascript-wrapped-context-recursive' option.
+  --module-parser-javascript-wrapped-context-reg-exp <value>                         Set the inner regular expression for partial dynamic dependencies.
   --module-parser-javascript-auto-amd                                                You can pass `false` to disable AMD support.
   --no-module-parser-javascript-auto-amd                                             Negative 'module-parser-javascript-auto-amd' option.
   --module-parser-javascript-auto-browserify                                         Enable/disable special handling for browserify bundles.
   --no-module-parser-javascript-auto-browserify                                      Negative 'module-parser-javascript-auto-browserify' option.
   --module-parser-javascript-auto-commonjs                                           Enable/disable parsing of CommonJs syntax.
   --no-module-parser-javascript-auto-commonjs                                        Negative 'module-parser-javascript-auto-commonjs' option.
+  --module-parser-javascript-auto-commonjs-magic-comments                            Enable/disable parsing of magic comments in CommonJs syntax.
+  --no-module-parser-javascript-auto-commonjs-magic-comments                         Negative 'module-parser-javascript-auto-commonjs-magic-comments' option.
+  --module-parser-javascript-auto-expr-context-critical                              Enable warnings for full dynamic dependencies.
+  --no-module-parser-javascript-auto-expr-context-critical                           Negative 'module-parser-javascript-auto-expr-context-critical' option.
+  --module-parser-javascript-auto-expr-context-recursive                             Enable recursive directory lookup for full dynamic dependencies.
+  --no-module-parser-javascript-auto-expr-context-recursive                          Negative 'module-parser-javascript-auto-expr-context-recursive' option.
+  --module-parser-javascript-auto-expr-context-reg-exp <value>                       Sets the default regular expression for full dynamic dependencies.
+  --module-parser-javascript-auto-expr-context-request <value>                       Set the default request for full dynamic dependencies.
   --module-parser-javascript-auto-harmony                                            Enable/disable parsing of EcmaScript Modules syntax.
   --no-module-parser-javascript-auto-harmony                                         Negative 'module-parser-javascript-auto-harmony' option.
   --module-parser-javascript-auto-import                                             Enable/disable parsing of import() syntax.
@@ -156,18 +192,41 @@ Options:
   --no-module-parser-javascript-auto-require-include                                 Negative 'module-parser-javascript-auto-require-include' option.
   --module-parser-javascript-auto-require-js                                         Enable/disable parsing of require.js special syntax like require.config, requirejs.config, require.version and requirejs.onError.
   --no-module-parser-javascript-auto-require-js                                      Negative 'module-parser-javascript-auto-require-js' option.
+  --module-parser-javascript-auto-strict-export-presence                             Emit errors instead of warnings when imported names don't exist in imported module.
+  --no-module-parser-javascript-auto-strict-export-presence                          Negative 'module-parser-javascript-auto-strict-export-presence' option.
+  --module-parser-javascript-auto-strict-this-context-on-imports                     Handle the this context correctly according to the spec for namespace objects.
+  --no-module-parser-javascript-auto-strict-this-context-on-imports                  Negative 'module-parser-javascript-auto-strict-this-context-on-imports' option.
   --module-parser-javascript-auto-system                                             Enable/disable parsing of System.js special syntax like System.import, System.get, System.set and System.register.
   --no-module-parser-javascript-auto-system                                          Negative 'module-parser-javascript-auto-system' option.
+  --module-parser-javascript-auto-unknown-context-critical                           Enable warnings when using the require function in a not statically analyse-able way.
+  --no-module-parser-javascript-auto-unknown-context-critical                        Negative 'module-parser-javascript-auto-unknown-context-critical' option.
+  --module-parser-javascript-auto-unknown-context-recursive                          Enable recursive directory lookup when using the require function in a not statically analyse-able way.
+  --no-module-parser-javascript-auto-unknown-context-recursive                       Negative 'module-parser-javascript-auto-unknown-context-recursive' option.
+  --module-parser-javascript-auto-unknown-context-reg-exp <value>                    Sets the regular expression when using the require function in a not statically analyse-able way.
+  --module-parser-javascript-auto-unknown-context-request <value>                    Sets the request when using the require function in a not statically analyse-able way.
   --module-parser-javascript-auto-url                                                Enable/disable parsing of new URL() syntax.
   --no-module-parser-javascript-auto-url                                             Negative 'module-parser-javascript-auto-url' option.
   --module-parser-javascript-auto-worker <value...>                                  Specify a syntax that should be parsed as WebWorker reference. 'Abc' handles 'new Abc()', 'Abc from xyz' handles 'import { Abc } from "xyz"; new Abc()', 'abc()' handles 'abc()', and combinations are also possible. Disable or configure parsing of WebWorker syntax like new Worker() or navigator.serviceWorker.register().
   --module-parser-javascript-auto-worker-reset                                       Clear all items provided in configuration. Disable or configure parsing of WebWorker syntax like new Worker() or navigator.serviceWorker.register().
+  --module-parser-javascript-auto-wrapped-context-critical                           Enable warnings for partial dynamic dependencies.
+  --no-module-parser-javascript-auto-wrapped-context-critical                        Negative 'module-parser-javascript-auto-wrapped-context-critical' option.
+  --module-parser-javascript-auto-wrapped-context-recursive                          Enable recursive directory lookup for partial dynamic dependencies.
+  --no-module-parser-javascript-auto-wrapped-context-recursive                       Negative 'module-parser-javascript-auto-wrapped-context-recursive' option.
+  --module-parser-javascript-auto-wrapped-context-reg-exp <value>                    Set the inner regular expression for partial dynamic dependencies.
   --module-parser-javascript-dynamic-amd                                             You can pass `false` to disable AMD support.
   --no-module-parser-javascript-dynamic-amd                                          Negative 'module-parser-javascript-dynamic-amd' option.
   --module-parser-javascript-dynamic-browserify                                      Enable/disable special handling for browserify bundles.
   --no-module-parser-javascript-dynamic-browserify                                   Negative 'module-parser-javascript-dynamic-browserify' option.
   --module-parser-javascript-dynamic-commonjs                                        Enable/disable parsing of CommonJs syntax.
   --no-module-parser-javascript-dynamic-commonjs                                     Negative 'module-parser-javascript-dynamic-commonjs' option.
+  --module-parser-javascript-dynamic-commonjs-magic-comments                         Enable/disable parsing of magic comments in CommonJs syntax.
+  --no-module-parser-javascript-dynamic-commonjs-magic-comments                      Negative 'module-parser-javascript-dynamic-commonjs-magic-comments' option.
+  --module-parser-javascript-dynamic-expr-context-critical                           Enable warnings for full dynamic dependencies.
+  --no-module-parser-javascript-dynamic-expr-context-critical                        Negative 'module-parser-javascript-dynamic-expr-context-critical' option.
+  --module-parser-javascript-dynamic-expr-context-recursive                          Enable recursive directory lookup for full dynamic dependencies.
+  --no-module-parser-javascript-dynamic-expr-context-recursive                       Negative 'module-parser-javascript-dynamic-expr-context-recursive' option.
+  --module-parser-javascript-dynamic-expr-context-reg-exp <value>                    Sets the default regular expression for full dynamic dependencies.
+  --module-parser-javascript-dynamic-expr-context-request <value>                    Set the default request for full dynamic dependencies.
   --module-parser-javascript-dynamic-harmony                                         Enable/disable parsing of EcmaScript Modules syntax.
   --no-module-parser-javascript-dynamic-harmony                                      Negative 'module-parser-javascript-dynamic-harmony' option.
   --module-parser-javascript-dynamic-import                                          Enable/disable parsing of import() syntax.
@@ -186,18 +245,41 @@ Options:
   --no-module-parser-javascript-dynamic-require-include                              Negative 'module-parser-javascript-dynamic-require-include' option.
   --module-parser-javascript-dynamic-require-js                                      Enable/disable parsing of require.js special syntax like require.config, requirejs.config, require.version and requirejs.onError.
   --no-module-parser-javascript-dynamic-require-js                                   Negative 'module-parser-javascript-dynamic-require-js' option.
+  --module-parser-javascript-dynamic-strict-export-presence                          Emit errors instead of warnings when imported names don't exist in imported module.
+  --no-module-parser-javascript-dynamic-strict-export-presence                       Negative 'module-parser-javascript-dynamic-strict-export-presence' option.
+  --module-parser-javascript-dynamic-strict-this-context-on-imports                  Handle the this context correctly according to the spec for namespace objects.
+  --no-module-parser-javascript-dynamic-strict-this-context-on-imports               Negative 'module-parser-javascript-dynamic-strict-this-context-on-imports' option.
   --module-parser-javascript-dynamic-system                                          Enable/disable parsing of System.js special syntax like System.import, System.get, System.set and System.register.
   --no-module-parser-javascript-dynamic-system                                       Negative 'module-parser-javascript-dynamic-system' option.
+  --module-parser-javascript-dynamic-unknown-context-critical                        Enable warnings when using the require function in a not statically analyse-able way.
+  --no-module-parser-javascript-dynamic-unknown-context-critical                     Negative 'module-parser-javascript-dynamic-unknown-context-critical' option.
+  --module-parser-javascript-dynamic-unknown-context-recursive                       Enable recursive directory lookup when using the require function in a not statically analyse-able way.
+  --no-module-parser-javascript-dynamic-unknown-context-recursive                    Negative 'module-parser-javascript-dynamic-unknown-context-recursive' option.
+  --module-parser-javascript-dynamic-unknown-context-reg-exp <value>                 Sets the regular expression when using the require function in a not statically analyse-able way.
+  --module-parser-javascript-dynamic-unknown-context-request <value>                 Sets the request when using the require function in a not statically analyse-able way.
   --module-parser-javascript-dynamic-url                                             Enable/disable parsing of new URL() syntax.
   --no-module-parser-javascript-dynamic-url                                          Negative 'module-parser-javascript-dynamic-url' option.
   --module-parser-javascript-dynamic-worker <value...>                               Specify a syntax that should be parsed as WebWorker reference. 'Abc' handles 'new Abc()', 'Abc from xyz' handles 'import { Abc } from "xyz"; new Abc()', 'abc()' handles 'abc()', and combinations are also possible. Disable or configure parsing of WebWorker syntax like new Worker() or navigator.serviceWorker.register().
   --module-parser-javascript-dynamic-worker-reset                                    Clear all items provided in configuration. Disable or configure parsing of WebWorker syntax like new Worker() or navigator.serviceWorker.register().
+  --module-parser-javascript-dynamic-wrapped-context-critical                        Enable warnings for partial dynamic dependencies.
+  --no-module-parser-javascript-dynamic-wrapped-context-critical                     Negative 'module-parser-javascript-dynamic-wrapped-context-critical' option.
+  --module-parser-javascript-dynamic-wrapped-context-recursive                       Enable recursive directory lookup for partial dynamic dependencies.
+  --no-module-parser-javascript-dynamic-wrapped-context-recursive                    Negative 'module-parser-javascript-dynamic-wrapped-context-recursive' option.
+  --module-parser-javascript-dynamic-wrapped-context-reg-exp <value>                 Set the inner regular expression for partial dynamic dependencies.
   --module-parser-javascript-esm-amd                                                 You can pass `false` to disable AMD support.
   --no-module-parser-javascript-esm-amd                                              Negative 'module-parser-javascript-esm-amd' option.
   --module-parser-javascript-esm-browserify                                          Enable/disable special handling for browserify bundles.
   --no-module-parser-javascript-esm-browserify                                       Negative 'module-parser-javascript-esm-browserify' option.
   --module-parser-javascript-esm-commonjs                                            Enable/disable parsing of CommonJs syntax.
   --no-module-parser-javascript-esm-commonjs                                         Negative 'module-parser-javascript-esm-commonjs' option.
+  --module-parser-javascript-esm-commonjs-magic-comments                             Enable/disable parsing of magic comments in CommonJs syntax.
+  --no-module-parser-javascript-esm-commonjs-magic-comments                          Negative 'module-parser-javascript-esm-commonjs-magic-comments' option.
+  --module-parser-javascript-esm-expr-context-critical                               Enable warnings for full dynamic dependencies.
+  --no-module-parser-javascript-esm-expr-context-critical                            Negative 'module-parser-javascript-esm-expr-context-critical' option.
+  --module-parser-javascript-esm-expr-context-recursive                              Enable recursive directory lookup for full dynamic dependencies.
+  --no-module-parser-javascript-esm-expr-context-recursive                           Negative 'module-parser-javascript-esm-expr-context-recursive' option.
+  --module-parser-javascript-esm-expr-context-reg-exp <value>                        Sets the default regular expression for full dynamic dependencies.
+  --module-parser-javascript-esm-expr-context-request <value>                        Set the default request for full dynamic dependencies.
   --module-parser-javascript-esm-harmony                                             Enable/disable parsing of EcmaScript Modules syntax.
   --no-module-parser-javascript-esm-harmony                                          Negative 'module-parser-javascript-esm-harmony' option.
   --module-parser-javascript-esm-import                                              Enable/disable parsing of import() syntax.
@@ -216,12 +298,27 @@ Options:
   --no-module-parser-javascript-esm-require-include                                  Negative 'module-parser-javascript-esm-require-include' option.
   --module-parser-javascript-esm-require-js                                          Enable/disable parsing of require.js special syntax like require.config, requirejs.config, require.version and requirejs.onError.
   --no-module-parser-javascript-esm-require-js                                       Negative 'module-parser-javascript-esm-require-js' option.
+  --module-parser-javascript-esm-strict-export-presence                              Emit errors instead of warnings when imported names don't exist in imported module.
+  --no-module-parser-javascript-esm-strict-export-presence                           Negative 'module-parser-javascript-esm-strict-export-presence' option.
+  --module-parser-javascript-esm-strict-this-context-on-imports                      Handle the this context correctly according to the spec for namespace objects.
+  --no-module-parser-javascript-esm-strict-this-context-on-imports                   Negative 'module-parser-javascript-esm-strict-this-context-on-imports' option.
   --module-parser-javascript-esm-system                                              Enable/disable parsing of System.js special syntax like System.import, System.get, System.set and System.register.
   --no-module-parser-javascript-esm-system                                           Negative 'module-parser-javascript-esm-system' option.
+  --module-parser-javascript-esm-unknown-context-critical                            Enable warnings when using the require function in a not statically analyse-able way.
+  --no-module-parser-javascript-esm-unknown-context-critical                         Negative 'module-parser-javascript-esm-unknown-context-critical' option.
+  --module-parser-javascript-esm-unknown-context-recursive                           Enable recursive directory lookup when using the require function in a not statically analyse-able way.
+  --no-module-parser-javascript-esm-unknown-context-recursive                        Negative 'module-parser-javascript-esm-unknown-context-recursive' option.
+  --module-parser-javascript-esm-unknown-context-reg-exp <value>                     Sets the regular expression when using the require function in a not statically analyse-able way.
+  --module-parser-javascript-esm-unknown-context-request <value>                     Sets the request when using the require function in a not statically analyse-able way.
   --module-parser-javascript-esm-url                                                 Enable/disable parsing of new URL() syntax.
   --no-module-parser-javascript-esm-url                                              Negative 'module-parser-javascript-esm-url' option.
   --module-parser-javascript-esm-worker <value...>                                   Specify a syntax that should be parsed as WebWorker reference. 'Abc' handles 'new Abc()', 'Abc from xyz' handles 'import { Abc } from "xyz"; new Abc()', 'abc()' handles 'abc()', and combinations are also possible. Disable or configure parsing of WebWorker syntax like new Worker() or navigator.serviceWorker.register().
   --module-parser-javascript-esm-worker-reset                                        Clear all items provided in configuration. Disable or configure parsing of WebWorker syntax like new Worker() or navigator.serviceWorker.register().
+  --module-parser-javascript-esm-wrapped-context-critical                            Enable warnings for partial dynamic dependencies.
+  --no-module-parser-javascript-esm-wrapped-context-critical                         Negative 'module-parser-javascript-esm-wrapped-context-critical' option.
+  --module-parser-javascript-esm-wrapped-context-recursive                           Enable recursive directory lookup for partial dynamic dependencies.
+  --no-module-parser-javascript-esm-wrapped-context-recursive                        Negative 'module-parser-javascript-esm-wrapped-context-recursive' option.
+  --module-parser-javascript-esm-wrapped-context-reg-exp <value>                     Set the inner regular expression for partial dynamic dependencies.
   --module-rules-compiler <value...>                                                 Match the child compiler name.
   --module-rules-dependency <value...>                                               Match dependency type.
   --module-rules-enforce <value...>                                                  Enforce this rule as pre or post step.
@@ -245,23 +342,23 @@ Options:
   --module-rules-use-options <value...>                                              Options passed to a loader.
   --module-rules-use <value...>                                                      A loader request.
   --module-rules-reset                                                               Clear all items provided in configuration. A list of rules.
-  --module-strict-export-presence                                                    Emit errors instead of warnings when imported names don't exist in imported module.
+  --module-strict-export-presence                                                    Emit errors instead of warnings when imported names don't exist in imported module. Deprecated: This option has moved to 'module.parser.javascript.strictExportPresence'.
   --no-module-strict-export-presence                                                 Negative 'module-strict-export-presence' option.
-  --module-strict-this-context-on-imports                                            Handle the this context correctly according to the spec for namespace objects.
+  --module-strict-this-context-on-imports                                            Handle the this context correctly according to the spec for namespace objects. Deprecated: This option has moved to 'module.parser.javascript.strictThisContextOnImports'.
   --no-module-strict-this-context-on-imports                                         Negative 'module-strict-this-context-on-imports' option.
-  --module-unknown-context-critical                                                  Enable warnings when using the require function in a not statically analyse-able way.
+  --module-unknown-context-critical                                                  Enable warnings when using the require function in a not statically analyse-able way. Deprecated: This option has moved to 'module.parser.javascript.unknownContextCritical'.
   --no-module-unknown-context-critical                                               Negative 'module-unknown-context-critical' option.
-  --module-unknown-context-recursive                                                 Enable recursive directory lookup when using the require function in a not statically analyse-able way.
+  --module-unknown-context-recursive                                                 Enable recursive directory lookup when using the require function in a not statically analyse-able way. Deprecated: This option has moved to 'module.parser.javascript.unknownContextRecursive'.
   --no-module-unknown-context-recursive                                              Negative 'module-unknown-context-recursive' option.
-  --module-unknown-context-reg-exp <value>                                           Sets the regular expression when using the require function in a not statically analyse-able way.
-  --module-unknown-context-request <value>                                           Sets the request when using the require function in a not statically analyse-able way.
+  --module-unknown-context-reg-exp <value>                                           Sets the regular expression when using the require function in a not statically analyse-able way. Deprecated: This option has moved to 'module.parser.javascript.unknownContextRegExp'.
+  --module-unknown-context-request <value>                                           Sets the request when using the require function in a not statically analyse-able way. Deprecated: This option has moved to 'module.parser.javascript.unknownContextRequest'.
   --module-unsafe-cache                                                              Cache the resolving of module requests.
   --no-module-unsafe-cache                                                           Negative 'module-unsafe-cache' option.
-  --module-wrapped-context-critical                                                  Enable warnings for partial dynamic dependencies.
+  --module-wrapped-context-critical                                                  Enable warnings for partial dynamic dependencies. Deprecated: This option has moved to 'module.parser.javascript.wrappedContextCritical'.
   --no-module-wrapped-context-critical                                               Negative 'module-wrapped-context-critical' option.
-  --module-wrapped-context-recursive                                                 Enable recursive directory lookup for partial dynamic dependencies.
+  --module-wrapped-context-recursive                                                 Enable recursive directory lookup for partial dynamic dependencies. Deprecated: This option has moved to 'module.parser.javascript.wrappedContextRecursive'.
   --no-module-wrapped-context-recursive                                              Negative 'module-wrapped-context-recursive' option.
-  --module-wrapped-context-reg-exp <value>                                           Set the inner regular expression for partial dynamic dependencies.
+  --module-wrapped-context-reg-exp <value>                                           Set the inner regular expression for partial dynamic dependencies. Deprecated: This option has moved to 'module.parser.javascript.wrappedContextRegExp'.
   --name <value>                                                                     Name of the configuration. Used when loading multiple configurations.
   --node                                                                             Include polyfills or mocks for various node stuff.
   --no-node                                                                          Negative 'node' option.
@@ -345,7 +442,7 @@ Options:
   --output-devtool-namespace <value>                                                 Module namespace to use when interpolating filename template string for the sources array in a generated SourceMap. Defaults to `output.library` if not set. It's useful for avoiding runtime collisions in sourcemaps from multiple webpack projects built as libraries.
   --output-enabled-chunk-loading-types <value...>                                    The method of loading chunks (methods included by default are 'jsonp' (web), 'importScripts' (WebWorker), 'require' (sync node.js), 'async-node' (async node.js), but others might be added by plugins).
   --output-enabled-chunk-loading-types-reset                                         Clear all items provided in configuration. List of chunk loading types enabled for use by entry points.
-  --output-enabled-library-types <value...>                                          Type of library (types included by default are 'var', 'module', 'assign', 'this', 'window', 'self', 'global', 'commonjs', 'commonjs2', 'commonjs-module', 'amd', 'amd-require', 'umd', 'umd2', 'jsonp', 'system', but others might be added by plugins).
+  --output-enabled-library-types <value...>                                          Type of library (types included by default are 'var', 'module', 'assign', 'assign-properties', 'this', 'window', 'self', 'global', 'commonjs', 'commonjs2', 'commonjs-module', 'amd', 'amd-require', 'umd', 'umd2', 'jsonp', 'system', but others might be added by plugins).
   --output-enabled-library-types-reset                                               Clear all items provided in configuration. List of library types enabled for use by entry points.
   --output-enabled-wasm-loading-types <value...>                                     The method of loading WebAssembly Modules (methods included by default are 'fetch' (web/WebWorker), 'async-node' (node.js), but others might be added by plugins).
   --output-enabled-wasm-loading-types-reset                                          Clear all items provided in configuration. List of wasm loading types enabled for use by entry points.
@@ -395,7 +492,7 @@ Options:
   --output-library-name-commonjs <value>                                             Name of the exposed commonjs export in the UMD.
   --output-library-name-root <value...>                                              Part of the name of the property exposed globally by a UMD library.
   --output-library-name-root-reset                                                   Clear all items provided in configuration. Name of the property exposed globally by a UMD library.
-  --output-library-type <value>                                                      Type of library (types included by default are 'var', 'module', 'assign', 'this', 'window', 'self', 'global', 'commonjs', 'commonjs2', 'commonjs-module', 'amd', 'amd-require', 'umd', 'umd2', 'jsonp', 'system', but others might be added by plugins).
+  --output-library-type <value>                                                      Type of library (types included by default are 'var', 'module', 'assign', 'assign-properties', 'this', 'window', 'self', 'global', 'commonjs', 'commonjs2', 'commonjs-module', 'amd', 'amd-require', 'umd', 'umd2', 'jsonp', 'system', but others might be added by plugins).
   --output-library-umd-named-define                                                  If `output.libraryTarget` is set to umd and `output.library` is set, setting this to true will name the AMD module.
   --no-output-library-umd-named-define                                               Negative 'output-library-umd-named-define' option.
   --output-module                                                                    Output javascript files as module source type.
@@ -571,6 +668,7 @@ Options:
   --no-stats-chunk-groups                                                            Negative 'stats-chunk-groups' option.
   --stats-chunk-modules                                                              Add built modules information to chunk information.
   --no-stats-chunk-modules                                                           Negative 'stats-chunk-modules' option.
+  --stats-chunk-modules-space <value>                                                Space to display chunk modules (groups will be collapsed to fit this space, value is in number of modules/group).
   --stats-chunk-origins                                                              Add the origins of chunks and chunk merging info.
   --no-stats-chunk-origins                                                           Negative 'stats-chunk-origins' option.
   --stats-chunk-relations                                                            Add information about parent, children and sibling chunks to chunk information.
