@@ -7,9 +7,6 @@ const { runServe, isWebpack5, isDevServer4 } = require('../../utils/test-utils')
 
 const testPath = path.resolve(__dirname);
 
-const usageText = 'webpack serve|s [options]';
-const descriptionText = 'Run the webpack dev server';
-
 describe('basic serve usage', () => {
     let port;
 
@@ -159,14 +156,6 @@ describe('basic serve usage', () => {
         expect(stderr).toContain('webpack.Progress');
         expect(stdout).toContain('main.js');
         expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
-    });
-
-    it('should log help information and respect the "--no-color" option', async () => {
-        const { stdout, stderr } = await runServe(__dirname, ['--help', '--no-color']);
-
-        expect(stderr).toBeFalsy();
-        expect(stdout).toContain(usageText);
-        expect(stdout).toContain(descriptionText);
     });
 
     it('should work with the "--client-log-level" option', async () => {
