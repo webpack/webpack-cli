@@ -9,7 +9,7 @@ class ServeCommand {
                 name: 'serve [entries...]',
                 alias: 's',
                 description: 'Run the webpack dev server.',
-                usage: '[options]',
+                usage: '[entries...] [options]',
                 pkg: '@webpack-cli/serve',
                 dependencies: ['webpack-dev-server'],
             },

@@ -237,13 +237,13 @@ class WebpackCLI {
             name: 'build [entries...]',
             alias: ['bundle', 'b'],
             description: 'Run webpack (default command, can be omitted).',
-            usage: '[options]',
+            usage: '[entries...] [options]',
         };
         const watchCommandOptions = {
             name: 'watch [entries...]',
             alias: 'w',
             description: 'Run webpack and watch for files changes.',
-            usage: '[options]',
+            usage: '[entries...] [options]',
         };
         const versionCommandOptions = {
             name: 'version [commands...]',
@@ -308,20 +308,23 @@ class WebpackCLI {
                     getCommandName(command.name) === name ||
                     (Array.isArray(command.alias) ? command.alias.includes(name) : command.alias === name),
             );
-        const isBuildCommand = (name) =>
-            getCommandName(buildCommandOptions.name) === name ||
-            (Array.isArray(buildCommandOptions.alias) ? buildCommandOptions.alias.includes(name) : buildCommandOptions.alias === name);
-        const isWatchCommand = (name) =>
-            getCommandName(watchCommandOptions.name) === name ||
-            (Array.isArray(watchCommandOptions.alias) ? watchCommandOptions.alias.includes(name) : watchCommandOptions.alias === name);
-        const isHelpCommand = (name) =>
-            getCommandName(helpCommandOptions.name) === name ||
-            (Array.isArray(helpCommandOptions.alias) ? helpCommandOptions.alias.includes(name) : helpCommandOptions.alias === name);
-        const isVersionCommand = (name) =>
-            getCommandName(versionCommandOptions.name) === name ||
-            (Array.isArray(versionCommandOptions.alias)
-                ? versionCommandOptions.alias.includes(name)
-                : versionCommandOptions.alias === name);
+        const isCommand = (input, commandOptions) => {
+            const longName = getCommandName(commandOptions.name);
+
+            if (input === longName) {
+                return true;
+            }
+
+            if (commandOptions.alias) {
+                if (Array.isArray(commandOptions.alias)) {
+                    return commandOptions.alias.includes(input);
+                } else {
+                    return commandOptions.alias === input;
+                }
+            }
+
+            return false;
+        };
         const findCommandByName = (name) =>
             this.program.commands.find((command) => name === command.name() || command.alias().includes(name));
         const isOption = (value) => value.startsWith('-');
@@ -334,8 +337,8 @@ class WebpackCLI {
             value === '--help';
 
         const loadCommandByName = async (commandName, allowToInstall = false) => {
-            const isBuildCommandUsed = isBuildCommand(commandName);
-            const isWatchCommandUsed = isWatchCommand(commandName);
+            const isBuildCommandUsed = isCommand(commandName, buildCommandOptions);
+            const isWatchCommandUsed = isCommand(commandName, watchCommandOptions);
 
             if (isBuildCommandUsed || isWatchCommandUsed) {
                 await this.makeCommand(
@@ -361,10 +364,10 @@ class WebpackCLI {
                         await this.buildCommand(options);
                     },
                 );
-            } else if (isHelpCommand(commandName)) {
+            } else if (isCommand(commandName, helpCommandOptions)) {
                 // Stub for the `help` command
                 this.makeCommand(helpCommandOptions, [], () => {});
-            } else if (isVersionCommand(commandName)) {
+            } else if (isCommand(commandName, versionCommandOptions)) {
                 // Stub for the `help` command
                 this.makeCommand(versionCommandOptions, [], () => {});
             } else {
@@ -503,7 +506,11 @@ class WebpackCLI {
         const outputVersion = async (options) => {
             // Filter `bundle`, `watch`, `version` and `help` commands
             const possibleCommandNames = options.filter(
-                (option) => !isBuildCommand(option) && !isWatchCommand(option) && !isVersionCommand(option) && !isHelpCommand(option),
+                (option) =>
+                    !isCommand(option, buildCommandOptions) &&
+                    !isCommand(option, watchCommandOptions) &&
+                    !isCommand(option, versionCommandOptions) &&
+                    !isCommand(option, helpCommandOptions),
             );
 
             possibleCommandNames.forEach((possibleCommandName) => {
@@ -559,44 +566,6 @@ class WebpackCLI {
         );
 
         const outputHelp = async (options, isVerbose, isHelpCommandSyntax, program) => {
-            const hideVerboseOptions = (command) => {
-                command.options.forEach((option) => {
-                    const foundOption = flags.find((flag) => {
-                        if (option.negate && flag.negative) {
-                            return `no-${flag.name}` === option.name();
-                        }
-
-                        return flag.name === option.name();
-                    });
-
-                    if (foundOption && foundOption.help !== 'minimum') {
-                        option.hidden = true;
-                    }
-                });
-            };
-            const outputGlobalOptions = () => {
-                const programHelpInformation = program.helpInformation();
-                const globalOptions = programHelpInformation.match(/Options:\n(?<globalOptions>.+)\nCommands:\n/s);
-
-                if (globalOptions && globalOptions.groups.globalOptions) {
-                    logger.raw('\nGlobal options:');
-                    logger.raw(globalOptions.groups.globalOptions.trimRight());
-                }
-            };
-            const outputGlobalCommands = () => {
-                const programHelpInformation = program.helpInformation();
-                const globalCommands = programHelpInformation.match(/Commands:\n(?<globalCommands>.+)/s);
-
-                if (globalCommands.groups.globalCommands) {
-                    logger.raw('\nCommands:');
-                    logger.raw(
-                        globalCommands.groups.globalCommands
-                            .trimRight()
-                            // `commander` doesn't support multiple alias in help
-                            .replace('build|bundle [options] [entries...]  ', 'build|bundle|b [options] [entries...]'),
-                    );
-                }
-            };
             const outputIncorrectUsageOfHelp = () => {
                 logger.error('Incorrect use of help');
                 logger.error("Please use: 'webpack help [command] [option]' | 'webpack [command] --help'");
@@ -604,58 +573,170 @@ class WebpackCLI {
                 process.exit(2);
             };
 
-            if (options.length === 0) {
-                await Promise.all(
-                    knownCommands.map((knownCommand) => {
-                        return loadCommandByName(getCommandName(knownCommand.name));
-                    }),
-                );
+            const isGlobalHelp = options.length === 0;
+            const isCommandHelp = options.length === 1 && !isOption(options[0]);
 
-                const buildCommand = findCommandByName(getCommandName(buildCommandOptions.name));
+            if (isGlobalHelp || isCommandHelp) {
+                program.configureHelp({
+                    sortSubcommands: true,
+                    // Support multiple aliases
+                    commandUsage: (command) => {
+                        let parentCmdNames = '';
 
-                if (!isVerbose) {
-                    hideVerboseOptions(buildCommand);
-                }
+                        for (let parentCmd = command.parent; parentCmd; parentCmd = parentCmd.parent) {
+                            parentCmdNames = `${parentCmd.name()} ${parentCmdNames}`;
+                        }
 
-                let helpInformation = buildCommand
-                    .helpInformation()
-                    .trimRight()
-                    .replace(buildCommandOptions.description, 'The build tool for modern web applications.')
-                    .replace(
-                        /Usage:.+/,
-                        'Usage: webpack [options]\nAlternative usage: webpack --config <config> [options] [entries...]\nAlternative usage: webpack build [options] [entries...]\nAlternative usage: webpack bundle [options] [entries...]\nAlternative usage: webpack b [options] [entries...]\nAlternative usage: webpack build --config <config> [options] [entries...]\nAlternative usage: webpack bundle --config <config> [options] [entries...]\nAlternative usage: webpack b --config <config> [options] [entries...]',
+                        if (isGlobalHelp) {
+                            return `${parentCmdNames}[command] ${command.usage()}\n${bold(
+                                'Alternative usage to run commands:',
+                            )} ${parentCmdNames}[command] [options]`;
+                        }
+
+                        return `${parentCmdNames}${command.name()}|${command.aliases().join('|')} ${command.usage()}`;
+                    },
+                    // Support multiple aliases
+                    subcommandTerm: (command) => {
+                        const humanReadableArgumentName = (argument) => {
+                            const nameOutput = argument.name + (argument.variadic === true ? '...' : '');
+
+                            return argument.required ? '<' + nameOutput + '>' : '[' + nameOutput + ']';
+                        };
+                        const args = command._args.map((arg) => humanReadableArgumentName(arg)).join(' ');
+
+                        return `${command.name()}|${command.aliases().join('|')}${args ? ` ${args}` : ''}${
+                            command.options.length > 0 ? ' [options]' : ''
+                        }`;
+                    },
+                    visibleOptions: function visibleOptions(command) {
+                        return command.options.filter((option) => {
+                            if (option.hidden) {
+                                return false;
+                            }
+
+                            if (!isVerbose) {
+                                const foundOption = flags.find((flag) => {
+                                    if (option.negate && flag.negative) {
+                                        return `no-${flag.name}` === option.name();
+                                    }
+
+                                    return flag.name === option.name();
+                                });
+
+                                if (foundOption) {
+                                    return foundOption.help === 'minimum';
+                                }
+
+                                return true;
+                            }
+
+                            return true;
+                        });
+                    },
+                    padWidth(command, helper) {
+                        return Math.max(
+                            helper.longestArgumentTermLength(command, helper),
+                            helper.longestOptionTermLength(command, helper),
+                            // For global options
+                            helper.longestOptionTermLength(program, helper),
+                            helper.longestSubcommandTermLength(isGlobalHelp ? program : command, helper),
+                        );
+                    },
+                    formatHelp: (command, helper) => {
+                        const termWidth = helper.padWidth(command, helper);
+                        const helpWidth = helper.helpWidth || 80;
+                        const itemIndentWidth = 2;
+                        const itemSeparatorWidth = 2; // between term and description
+
+                        const formatItem = (term, description) => {
+                            if (description) {
+                                const fullText = `${term.padEnd(termWidth + itemSeparatorWidth)}${description}`;
+
+                                return helper.wrap(fullText, helpWidth - itemIndentWidth, termWidth + itemSeparatorWidth);
+                            }
+
+                            return term;
+                        };
+
+                        const formatList = (textArray) => textArray.join('\n').replace(/^/gm, ' '.repeat(itemIndentWidth));
+
+                        // Usage
+                        let output = [`${bold('Usage:')} ${helper.commandUsage(command)}`, ''];
+
+                        // Description
+                        const commandDescription = isGlobalHelp
+                            ? 'The build tool for modern web applications.'
+                            : helper.commandDescription(command);
+
+                        if (commandDescription.length > 0) {
+                            output = output.concat([commandDescription, '']);
+                        }
+
+                        // Arguments
+                        const argumentList = helper
+                            .visibleArguments(command)
+                            .map((argument) => formatItem(argument.term, argument.description));
+
+                        if (argumentList.length > 0) {
+                            output = output.concat([bold('Arguments:'), formatList(argumentList), '']);
+                        }
+
+                        // Options
+                        const optionList = helper
+                            .visibleOptions(command)
+                            .map((option) => formatItem(helper.optionTerm(option), helper.optionDescription(option)));
+
+                        if (optionList.length > 0) {
+                            output = output.concat([bold('Options:'), formatList(optionList), '']);
+                        }
+
+                        // Global options
+                        const globalOptionList = program.options.map((option) =>
+                            formatItem(helper.optionTerm(option), helper.optionDescription(option)),
+                        );
+
+                        if (globalOptionList.length > 0) {
+                            output = output.concat([bold('Global options:'), formatList(globalOptionList), '']);
+                        }
+
+                        // Commands
+                        const commandList = helper
+                            .visibleCommands(isGlobalHelp ? program : command)
+                            .map((command) => formatItem(helper.subcommandTerm(command), helper.subcommandDescription(command)));
+
+                        if (commandList.length > 0) {
+                            output = output.concat([bold('Commands:'), formatList(commandList), '']);
+                        }
+
+                        return output.join('\n');
+                    },
+                });
+
+                if (isGlobalHelp) {
+                    await Promise.all(
+                        knownCommands.map((knownCommand) => {
+                            return loadCommandByName(getCommandName(knownCommand.name));
+                        }),
                     );
 
-                logger.raw(helpInformation);
+                    const buildCommand = findCommandByName(getCommandName(buildCommandOptions.name));
 
-                outputGlobalOptions();
-                outputGlobalCommands();
-            } else if (options.length === 1 && !isOption(options[0])) {
-                const name = options[0];
+                    logger.raw(buildCommand.helpInformation());
+                } else {
+                    const name = options[0];
 
-                await loadCommandByName(name);
+                    await loadCommandByName(name);
 
-                const command = findCommandByName(name);
+                    const command = findCommandByName(name);
 
-                if (!command) {
-                    logger.error(`Can't find and load command '${name}'`);
-                    logger.error("Run 'webpack --help' to see available commands and options");
-                    process.exit(2);
+                    if (!command) {
+                        logger.error(`Can't find and load command '${name}'`);
+                        logger.error("Run 'webpack --help' to see available commands and options");
+                        process.exit(2);
+                    }
+
+                    logger.raw(command.helpInformation());
                 }
-
-                if (!isVerbose) {
-                    hideVerboseOptions(command);
-                }
-
-                let helpInformation = command.helpInformation().trimRight();
-
-                if (isBuildCommand(name)) {
-                    helpInformation = helpInformation.replace('build|bundle', 'build|bundle|b');
-                }
-
-                logger.raw(helpInformation);
-
-                outputGlobalOptions();
             } else if (isHelpCommandSyntax) {
                 let isCommandSpecified = false;
                 let commandName = getCommandName(buildCommandOptions.name);
@@ -677,7 +758,7 @@ class WebpackCLI {
 
                 await loadCommandByName(commandName);
 
-                const command = isGlobalOption(optionName) ? this.program : findCommandByName(commandName);
+                const command = isGlobalOption(optionName) ? program : findCommandByName(commandName);
 
                 if (!command) {
                     logger.error(`Can't find and load command '${commandName}'`);
@@ -697,19 +778,27 @@ class WebpackCLI {
                     option.flags.replace(/^.+[[<]/, '').replace(/(\.\.\.)?[\]>].*$/, '') + (option.variadic === true ? '...' : '');
                 const value = option.required ? '<' + nameOutput + '>' : option.optional ? '[' + nameOutput + ']' : '';
 
-                logger.raw(`Usage: webpack${isCommandSpecified ? ` ${commandName}` : ''} ${option.long}${value ? ` ${value}` : ''}`);
+                logger.raw(
+                    `${bold('Usage')}: webpack${isCommandSpecified ? ` ${commandName}` : ''} ${option.long}${value ? ` ${value}` : ''}`,
+                );
 
                 if (option.short) {
-                    logger.raw(`Short: webpack${isCommandSpecified ? ` ${commandName}` : ''} ${option.short}${value ? ` ${value}` : ''}`);
+                    logger.raw(
+                        `${bold('Short:')} webpack${isCommandSpecified ? ` ${commandName}` : ''} ${option.short}${
+                            value ? ` ${value}` : ''
+                        }`,
+                    );
                 }
 
                 if (option.description) {
-                    logger.raw(`Description: ${option.description}`);
+                    logger.raw(`${bold('Description:')} ${option.description}`);
                 }
 
                 if (!option.negate && options.defaultValue) {
-                    logger.raw(`Default value: ${JSON.stringify(option.defaultValue)}`);
+                    logger.raw(`${bold('Default value:')} ${JSON.stringify(option.defaultValue)}`);
                 }
+
+                logger.raw('');
 
                 // TODO implement this after refactor cli arguments
                 // logger.raw('Possible values: foo | bar');
@@ -718,9 +807,9 @@ class WebpackCLI {
                 outputIncorrectUsageOfHelp();
             }
 
-            logger.raw("\nTo see list of all supported commands and options run 'webpack --help=verbose'.\n");
-            logger.raw('Webpack documentation: https://webpack.js.org/.');
-            logger.raw('CLI documentation: https://webpack.js.org/api/cli/.');
+            logger.raw("To see list of all supported commands and options run 'webpack --help=verbose'.\n");
+            logger.raw(`${bold('Webpack documentation:')} https://webpack.js.org/.`);
+            logger.raw(`${bold('CLI documentation:')} https://webpack.js.org/api/cli/.`);
             logger.raw(`${bold('Made with ♥ by the webpack team')}.`);
             process.exit(0);
         };
@@ -747,7 +836,7 @@ class WebpackCLI {
             const hasOperand = typeof operands[0] !== 'undefined';
             const operand = hasOperand ? operands[0] : defaultCommandToRun;
 
-            const isHelpCommandSyntax = isHelpCommand(operand);
+            const isHelpCommandSyntax = isCommand(operand, helpCommandOptions);
 
             if (options.help || isHelpCommandSyntax) {
                 let isVerbose = false;
@@ -777,7 +866,7 @@ class WebpackCLI {
                 await outputHelp(optionsForHelp, isVerbose, isHelpCommandSyntax, program);
             }
 
-            if (options.version || isVersionCommand(operand)) {
+            if (options.version || isCommand(operand, versionCommandOptions)) {
                 const optionsForVersion = []
                     .concat(options.version ? [operand] : [])
                     .concat(operands.slice(1))
