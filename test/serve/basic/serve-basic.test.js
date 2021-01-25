@@ -304,6 +304,14 @@ describe('basic serve usage', () => {
         expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
     });
 
+    it("should log warning on using '-w' alias with serve", async () => {
+        const { stdout, stderr } = await runServe(testPath, ['-w']);
+
+        expect(stderr).toContain("Do not use '--watch' with 'serve'. It has no effect.");
+        expect(stdout).toContain('main.js');
+        expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
+    });
+
     it('should log an error on unknown flag', async () => {
         const { exitCode, stdout, stderr } = await runServe(testPath, ['--port', port, '--unknown-flag']);
 
