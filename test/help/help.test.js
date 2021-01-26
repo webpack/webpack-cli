@@ -12,7 +12,7 @@ describe('help', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain('webpack [command] [entries...] [options]');
+        expect(stdout).toContain('webpack [entries...] [options]');
         expect(stdout).toContain('webpack [command] [options]');
         expect(stdout).toContain(helpDefaultHeader);
         expect(stdout).toContain('Options:');
@@ -37,12 +37,12 @@ describe('help', () => {
         // expect(coloretteEnabled ? stripAnsi(stdout) : stdout).toContain('Made with ♥ by the webpack team.');
     });
 
-    it.skip('should show help information using the "--help" option with the "verbose" value', () => {
+    it('should show help information using the "--help" option with the "verbose" value', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--help', 'verbose']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain('webpack [command] [entries...] [options]');
+        expect(stdout).toContain('webpack [entries...] [options]');
         expect(stdout).toContain('webpack [command] [options]');
         expect(stdout).toContain(helpDefaultHeader);
         expect(stdout).toContain('Options:');
@@ -74,7 +74,7 @@ describe('help', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain('webpack [command] [entries...] [options]');
+        expect(stdout).toContain('webpack [entries...] [options]');
         expect(stdout).toContain('webpack [command] [options]');
         expect(stdout).toContain(helpDefaultHeader);
         expect(stdout).toContain('Options:');
@@ -96,7 +96,7 @@ describe('help', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain('webpack [command] [entries...] [options]');
+        expect(stdout).toContain('webpack [entries...] [options]');
         expect(stdout).toContain('webpack [command] [options]');
         expect(stdout).toContain(helpDefaultHeader);
         expect(stdout).toContain('Options:');
@@ -128,7 +128,7 @@ describe('help', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain('webpack [command] [entries...] [options]');
+        expect(stdout).toContain('webpack [entries...] [options]');
         expect(stdout).toContain('webpack [command] [options]');
         expect(stdout).toContain(helpDefaultHeader);
         expect(stdout).toContain('Options:');
@@ -146,7 +146,7 @@ describe('help', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain('webpack [command] [entries...] [options]');
+        expect(stdout).toContain('webpack [entries...] [options]');
         expect(stdout).toContain('webpack [command] [options]');
         expect(stdout).toContain(helpDefaultHeader);
         expect(stdout).toContain('Options:');
@@ -239,7 +239,7 @@ describe('help', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain('webpack [command] [entries...] [options]');
+        expect(stdout).toContain('webpack [entries...] [options]');
         expect(stdout).toContain('webpack [command] [options]');
         expect(stdout).toContain(helpDefaultHeader);
         expect(stdout).toContain('Options:');

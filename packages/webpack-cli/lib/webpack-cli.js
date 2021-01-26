@@ -588,7 +588,7 @@ class WebpackCLI {
                         }
 
                         if (isGlobalHelp) {
-                            return `${parentCmdNames}[command] ${command.usage()}\n${bold(
+                            return `${parentCmdNames}${command.usage()}\n${bold(
                                 'Alternative usage to run commands:',
                             )} ${parentCmdNames}[command] [options]`;
                         }
