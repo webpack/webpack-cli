@@ -1,11 +1,12 @@
+const fs = require('fs');
+const path = require('path');
+
 const { program } = require('commander');
 const getPkg = require('./utils/package-exists');
 const webpack = getPkg('webpack') ? require('webpack') : undefined;
-const path = require('path');
 const { merge } = require('webpack-merge');
 const { extensions, jsVariants } = require('interpret');
 const rechoir = require('rechoir');
-const { createWriteStream, existsSync } = require('fs');
 const { distance } = require('fastest-levenshtein');
 const { options: coloretteOptions, yellow, cyan, green, bold } = require('colorette');
 
@@ -881,7 +882,13 @@ class WebpackCLI {
             if (isKnownCommand(commandToRun)) {
                 await loadCommandByName(commandToRun, true);
             } else {
-                let isEntrySyntax = existsSync(operand);
+                let isEntrySyntax = true;
+
+                try {
+                    await fs.promises.access(operand, fs.constants.F_OK);
+                } catch (error) {
+                    isEntrySyntax = false;
+                }
 
                 if (isEntrySyntax) {
                     commandToRun = defaultCommandToRun;
@@ -889,7 +896,7 @@ class WebpackCLI {
 
                     await loadCommandByName(commandToRun);
                 } else {
-                    logger.error(`Unknown command '${operand}'`);
+                    logger.error(`Unknown command or entry '${operand}'`);
 
                     const found = knownCommands.find((commandOptions) => distance(operand, getCommandName(commandOptions.name)) < 3);
 
@@ -965,7 +972,7 @@ class WebpackCLI {
                     throw error;
                 }
             } catch (error) {
-                logger.error(`Failed to load '${configPath}'`);
+                logger.error(`Failed to load '${configPath}' config`);
                 logger.error(error);
                 process.exit(2);
             }
@@ -1013,18 +1020,7 @@ class WebpackCLI {
 
         if (options.config && options.config.length > 0) {
             const evaluatedConfigs = await Promise.all(
-                options.config.map(async (value) => {
-                    const configPath = path.resolve(value);
-
-                    if (!existsSync(configPath)) {
-                        logger.error(`The specified config file doesn't exist in '${configPath}'`);
-                        process.exit(2);
-                    }
-
-                    const loadedConfig = await loadConfig(configPath);
-
-                    return evaluateConfig(loadedConfig, options.argv || {});
-                }),
+                options.config.map(async (value) => evaluateConfig(await loadConfig(path.resolve(value)), options.argv || {})),
             );
 
             config.options = [];
@@ -1058,10 +1054,14 @@ class WebpackCLI {
             let foundDefaultConfigFile;
 
             for (const defaultConfigFile of defaultConfigFiles) {
-                if (existsSync(defaultConfigFile.path)) {
-                    foundDefaultConfigFile = defaultConfigFile;
-                    break;
+                try {
+                    await fs.promises.access(defaultConfigFile.path, fs.constants.F_OK);
+                } catch (error) {
+                    continue;
                 }
+
+                foundDefaultConfigFile = defaultConfigFile;
+                break;
             }
 
             if (foundDefaultConfigFile) {
@@ -1496,7 +1496,7 @@ class WebpackCLI {
                 } else {
                     createJsonStringifyStream(stats.toJson(statsOptions))
                         .on('error', handleWriteError)
-                        .pipe(createWriteStream(options.json))
+                        .pipe(fs.createWriteStream(options.json))
                         .on('error', handleWriteError)
                         // Use stderr to logging
                         .on('close', () =>
