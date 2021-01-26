@@ -1355,10 +1355,6 @@ class WebpackCLI {
             process.exit(2);
         }
 
-        if (Object.keys(options).length === 0 && !process.env.NODE_ENV) {
-            return config;
-        }
-
         if (this.webpack.cli) {
             const processArguments = (configOptions) => {
                 const coreFlagMap = this.getBuiltInOptions()
