@@ -32,7 +32,7 @@ describe('help', () => {
         expect(stdout.match(/migrate\|m/g)).toHaveLength(1);
         expect(stdout.match(/configtest\|t/g)).toHaveLength(1);
         expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
-        expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
+        expect(stdout).toContain('https://webpack.js.org/api/cli/.');
         // TODO buggy on windows
         // expect(coloretteEnabled ? stripAnsi(stdout) : stdout).toContain('Made with ♥ by the webpack team.');
     });
@@ -105,7 +105,7 @@ describe('help', () => {
         expect(stdout).toContain('Global options:');
         expect(stdout).toContain('Commands:');
         expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
-        expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
+        expect(stdout).toContain('https://webpack.js.org/api/cli/.');
         // TODO buggy on windows
         // expect(coloretteEnabled ? stripAnsi(stdout) : stdout).toContain('Made with ♥ by the webpack team.');
     });
@@ -155,7 +155,7 @@ describe('help', () => {
         expect(stdout).toContain('Global options:');
         expect(stdout).toContain('Commands:');
         expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
-        expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
+        expect(stdout).toContain('https://webpack.js.org/api/cli/.');
         // TODO bug in tests
         // expect(stdout).not.toContain(bold('Made with ♥ by the webpack team'));
         expect(stdout).toContain('Made with ♥ by the webpack team');
@@ -230,7 +230,7 @@ describe('help', () => {
         expect(stdout).toContain('Options:');
         expect(stdout).toContain('--output <value>');
         expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
-        expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
+        expect(stdout).toContain('https://webpack.js.org/api/cli/.');
         expect(stdout).toContain('Made with ♥ by the webpack team');
     });
 
@@ -248,7 +248,7 @@ describe('help', () => {
         expect(stdout).toContain('Global options:');
         expect(stdout).toContain('Commands:');
         expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
-        expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
+        expect(stdout).toContain('https://webpack.js.org/api/cli/.');
         // TODO buggy on windows
         // expect(coloretteEnabled ? stripAnsi(stdout) : stdout).toContain('Made with ♥ by the webpack team.');
     });
@@ -261,7 +261,7 @@ describe('help', () => {
         expect(stdout).toContain('Usage: webpack --mode <value>');
         expect(stdout).toContain('Description: Defines the mode to pass to webpack.');
         expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
-        expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
+        expect(stdout).toContain('https://webpack.js.org/api/cli/.');
     });
 
     it('should show help information using the "help --target" option', () => {
@@ -280,7 +280,7 @@ describe('help', () => {
 
         expect(stdout).toContain('Description: Sets the build target e.g. node.');
         expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
-        expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
+        expect(stdout).toContain('https://webpack.js.org/api/cli/.');
     });
 
     it('should show help information using the "help --stats" option', () => {
@@ -291,7 +291,7 @@ describe('help', () => {
         expect(stdout).toContain('Usage: webpack --stats [value]');
         expect(stdout).toContain('Description: It instructs webpack on how to treat the stats e.g. verbose.');
         expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
-        expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
+        expect(stdout).toContain('https://webpack.js.org/api/cli/.');
     });
 
     it('should show help information using the "help --no-stats" option', () => {
@@ -302,7 +302,7 @@ describe('help', () => {
         expect(stdout).toContain('Usage: webpack --no-stats');
         expect(stdout).toContain('Description: Disable stats output.');
         expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
-        expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
+        expect(stdout).toContain('https://webpack.js.org/api/cli/.');
     });
 
     it('should show help information using the "help --mode" option', () => {
@@ -313,7 +313,7 @@ describe('help', () => {
         expect(stdout).toContain('Usage: webpack --mode <value>');
         expect(stdout).toContain('Description: Defines the mode to pass to webpack.');
         expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
-        expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
+        expect(stdout).toContain('https://webpack.js.org/api/cli/.');
     });
 
     it('should show help information using the "help serve --mode" option', () => {
@@ -327,7 +327,7 @@ describe('help', () => {
         expect(pureStdout).toContain('Usage: webpack serve --mode <value>');
         expect(pureStdout).toContain('Description: Defines the mode to pass to webpack.');
         expect(pureStdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
-        expect(pureStdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
+        expect(pureStdout).toContain('https://webpack.js.org/api/cli/.');
     });
 
     it('should show help information using the "help --color" option', () => {
@@ -341,7 +341,7 @@ describe('help', () => {
         expect(pureStdout).toContain('Usage: webpack --color');
         expect(pureStdout).toContain('Description: Enable colors on console.');
         expect(pureStdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
-        expect(pureStdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
+        expect(pureStdout).toContain('https://webpack.js.org/api/cli/.');
     });
 
     it('should show help information using the "help --no-color" option', () => {
@@ -355,7 +355,7 @@ describe('help', () => {
         expect(pureStdout).toContain('Usage: webpack --no-color');
         expect(pureStdout).toContain('Description: Disable colors on console.');
         expect(pureStdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
-        expect(pureStdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
+        expect(pureStdout).toContain('https://webpack.js.org/api/cli/.');
     });
 
     it('should show help information using the "help serve --color" option', () => {
@@ -369,7 +369,7 @@ describe('help', () => {
         expect(pureStdout).toContain('Usage: webpack serve --color');
         expect(pureStdout).toContain('Description: Enable colors on console.');
         expect(pureStdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
-        expect(pureStdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
+        expect(pureStdout).toContain('https://webpack.js.org/api/cli/.');
     });
 
     it('should show help information using the "help serve --no-color" option', () => {
@@ -380,7 +380,7 @@ describe('help', () => {
         expect(stdout).toContain('Usage: webpack serve --no-color');
         expect(stdout).toContain('Description: Disable colors on console.');
         expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
-        expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
+        expect(stdout).toContain('https://webpack.js.org/api/cli/.');
     });
 
     it('should show help information using the "help --version" option', () => {
@@ -393,7 +393,7 @@ describe('help', () => {
         expect(stdout).toContain(
             "Description: Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.",
         );
-        expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
+        expect(stdout).toContain('https://webpack.js.org/api/cli/.');
     });
 
     it('should show help information using the "help -v" option', () => {
@@ -406,7 +406,7 @@ describe('help', () => {
         expect(stdout).toContain(
             "Description: Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.",
         );
-        expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
+        expect(stdout).toContain('https://webpack.js.org/api/cli/.');
     });
 
     it('should log error for invalid command using the "--help" option', () => {
