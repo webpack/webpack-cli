@@ -1357,28 +1357,31 @@ class WebpackCLI {
 
         if (this.webpack.cli) {
             const processArguments = (configOptions) => {
-                const coreFlagMap = this.getBuiltInOptions()
+                const args = this.getBuiltInOptions()
                     .filter((flag) => flag.group === 'core')
                     .reduce((accumulator, flag) => {
                         accumulator[flag.name] = flag;
 
                         return accumulator;
                     }, {});
-                const CLIoptions = Object.keys(options).reduce((accumulator, name) => {
+
+                const values = Object.keys(options).reduce((accumulator, name) => {
+                    if (name === 'argv') {
+                        return accumulator;
+                    }
+
                     const kebabName = toKebabCase(name);
 
-                    if (coreFlagMap[kebabName]) {
+                    if (args[kebabName]) {
                         accumulator[kebabName] = options[name];
                     }
 
                     return accumulator;
                 }, {});
-                const problems = this.webpack.cli.processArguments(coreFlagMap, configOptions, CLIoptions);
+
+                const problems = this.webpack.cli.processArguments(args, configOptions, values);
 
                 if (problems) {
-                    const capitalizeFirstLetter = (string) => {
-                        return string.charAt(0).toUpperCase() + string.slice(1);
-                    };
                     const groupBy = (xs, key) => {
                         return xs.reduce((rv, x) => {
                             (rv[x[key]] = rv[x[key]] || []).push(x);

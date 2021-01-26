@@ -203,7 +203,7 @@ describe('unknown behaviour', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['qqq'], true, [], { TERM_PROGRAM: false });
 
         expect(exitCode).toBe(2);
-        expect(stripAnsi(stderr)).toContain("Unknown command 'qqq'");
+        expect(stripAnsi(stderr)).toContain("Unknown command or entry 'qqq'");
         expect(stripAnsi(stderr)).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
     });
@@ -212,7 +212,7 @@ describe('unknown behaviour', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['server'], true, [], { TERM_PROGRAM: false });
 
         expect(exitCode).toBe(2);
-        expect(stripAnsi(stderr)).toContain("Unknown command 'server'");
+        expect(stripAnsi(stderr)).toContain("Unknown command or entry 'server'");
         expect(stripAnsi(stderr)).toContain("Did you mean 'serve' (alias 's')?");
         expect(stripAnsi(stderr)).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
