@@ -4,7 +4,7 @@ const path = require('path');
 const { program } = require('commander');
 const getPkg = require('./utils/package-exists');
 const webpack = getPkg('webpack') ? require('webpack') : undefined;
-const { extensions, jsVariants } = require('interpret');
+const interpret = require('interpret');
 const rechoir = require('rechoir');
 const { distance } = require('fastest-levenshtein');
 const { options: coloretteOptions, yellow, cyan, green, bold } = require('colorette');
@@ -1121,11 +1121,11 @@ class WebpackCLI {
     async resolveConfig(options) {
         const loadConfig = async (configPath) => {
             const ext = path.extname(configPath);
-            const interpreted = Object.keys(jsVariants).find((variant) => variant === ext);
+            const interpreted = Object.keys(interpret.jsVariants).find((variant) => variant === ext);
 
             if (interpreted) {
                 try {
-                    rechoir.prepare(extensions, configPath);
+                    rechoir.prepare(interpret.extensions, configPath);
                 } catch (error) {
                     if (error.failures) {
                         logger.error(`Unable load '${configPath}'`);
@@ -1242,10 +1242,10 @@ class WebpackCLI {
             const defaultConfigFiles = ['webpack.config', '.webpack/webpack.config', '.webpack/webpackfile']
                 .map((filename) =>
                     // Since .cjs is not available on interpret side add it manually to default config extension list
-                    [...Object.keys(extensions), '.cjs'].map((ext) => ({
+                    [...Object.keys(interpret.extensions), '.cjs'].map((ext) => ({
                         path: path.resolve(filename + ext),
                         ext: ext,
-                        module: extensions[ext],
+                        module: interpret.extensions[ext],
                     })),
                 )
                 .reduce((accumulator, currentValue) => accumulator.concat(currentValue), []);
