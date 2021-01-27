@@ -1,9 +1,10 @@
 'use strict';
 
 const { run, hyphenToUpperCase } = require('../utils/test-utils');
-const { flags } = require('../../packages/webpack-cli/lib/utils/cli-flags');
+const CLI = require('../../packages/webpack-cli/lib/index');
 
-const statsFlags = flags.filter(({ name }) => name.startsWith('stats-'));
+const cli = new CLI();
+const statsFlags = cli.getBuiltInOptions().filter(({ name }) => name.startsWith('stats-'));
 
 describe('stats config related flag', () => {
     statsFlags.forEach((flag) => {

@@ -1,9 +1,10 @@
 'use strict';
 
 const { run, hyphenToUpperCase } = require('../utils/test-utils');
-const { flags } = require('../../packages/webpack-cli/lib/utils/cli-flags');
+const CLI = require('../../packages/webpack-cli/lib/index');
 
-const resolveFlags = flags.filter(({ name }) => name.startsWith('resolve'));
+const cli = new CLI();
+const resolveFlags = cli.getBuiltInOptions().filter(({ name }) => name.startsWith('resolve'));
 
 describe('resolve config related flags', () => {
     resolveFlags.forEach((flag) => {

@@ -7,9 +7,6 @@ const { runServe, isWebpack5, isDevServer4 } = require('../../utils/test-utils')
 
 const testPath = path.resolve(__dirname);
 
-const usageText = 'webpack serve|s [options]';
-const descriptionText = 'Run the webpack dev server';
-
 describe('basic serve usage', () => {
     let port;
 
@@ -28,7 +25,7 @@ describe('basic serve usage', () => {
     }
 
     it('should work', async () => {
-        const { stderr, stdout } = await runServe(__dirname, ['']);
+        const { stderr, stdout } = await runServe(__dirname, []);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('main.js');
@@ -36,7 +33,7 @@ describe('basic serve usage', () => {
     });
 
     it('should work with the "--config" option', async () => {
-        const { stderr, stdout } = await runServe(__dirname, ['serve', '--config', 'webpack.config.js', '--port', port]);
+        const { stderr, stdout } = await runServe(__dirname, ['--config', 'serve.config.js', '--port', port]);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('development');
@@ -45,7 +42,6 @@ describe('basic serve usage', () => {
 
     it('should work with the "--config" and "--env" options', async () => {
         const { stderr, stdout } = await runServe(__dirname, [
-            'serve',
             '--config',
             'function-with-env.config.js',
             '--env',
@@ -63,7 +59,6 @@ describe('basic serve usage', () => {
 
     it('should work with the "--config" and "--env" options and expose dev server options', async () => {
         const { stderr, stdout } = await runServe(__dirname, [
-            'serve',
             '--config',
             'function-with-argv.config.js',
             '--env',
@@ -82,7 +77,7 @@ describe('basic serve usage', () => {
     });
 
     it('should work in multi compiler mode', async () => {
-        const { stderr, stdout } = await runServe(__dirname, ['serve', '--config', 'multi.config.js', '--port', port]);
+        const { stderr, stdout } = await runServe(__dirname, ['--config', 'multi.config.js', '--port', port]);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('one');
@@ -94,7 +89,7 @@ describe('basic serve usage', () => {
 
     // TODO need fix in future, edge case
     it.skip('should work in multi compiler mode with multiple dev servers', async () => {
-        const { stderr, stdout } = await runServe(__dirname, ['serve', '--config', 'multi-dev-server.config.js']);
+        const { stderr, stdout } = await runServe(__dirname, ['--config', 'multi-dev-server.config.js']);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('one');
@@ -163,14 +158,6 @@ describe('basic serve usage', () => {
         expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
     });
 
-    it('should log help information and respect the "--no-color" option', async () => {
-        const { stdout, stderr } = await runServe(__dirname, ['--help', '--no-color']);
-
-        expect(stderr).toBeFalsy();
-        expect(stdout).toContain(usageText);
-        expect(stdout).toContain(descriptionText);
-    });
-
     it('should work with the "--client-log-level" option', async () => {
         const { stdout, stderr } = await runServe(testPath, ['--client-log-level', 'info']);
 
@@ -228,7 +215,7 @@ describe('basic serve usage', () => {
     });
 
     it('should work with the default "publicPath" option', async () => {
-        const { stderr, stdout } = await runServe(__dirname, ['serve']);
+        const { stderr, stdout } = await runServe(__dirname, []);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('main.js');
@@ -237,7 +224,7 @@ describe('basic serve usage', () => {
     });
 
     it('should work with the "--output-public-path" option', async () => {
-        const { stderr, stdout } = await runServe(__dirname, ['serve', '--output-public-path', '/my-public-path/']);
+        const { stderr, stdout } = await runServe(__dirname, ['--output-public-path', '/my-public-path/']);
 
         if (isWebpack5) {
             expect(stderr).toBeFalsy();
@@ -251,7 +238,7 @@ describe('basic serve usage', () => {
     });
 
     it('should respect the "publicPath" option from configuration', async () => {
-        const { stderr, stdout } = await runServe(__dirname, ['serve', '--config', 'output-public-path.config.js']);
+        const { stderr, stdout } = await runServe(__dirname, ['--config', 'output-public-path.config.js']);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('main.js');
@@ -260,7 +247,7 @@ describe('basic serve usage', () => {
     });
 
     it('should respect the "publicPath" option from configuration using multi compiler mode', async () => {
-        const { stderr, stdout } = await runServe(__dirname, ['serve', '--config', 'multi-output-public-path.config.js', '--port', port]);
+        const { stderr, stdout } = await runServe(__dirname, ['--config', 'multi-output-public-path.config.js', '--port', port]);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('one');
@@ -272,7 +259,7 @@ describe('basic serve usage', () => {
     });
 
     it('should respect the "publicPath" option from configuration (from the "devServer" options)', async () => {
-        const { stderr, stdout } = await runServe(__dirname, ['serve', '--config', 'dev-server-output-public-path.config.js']);
+        const { stderr, stdout } = await runServe(__dirname, ['--config', 'dev-server-output-public-path.config.js']);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('main.js');
@@ -289,13 +276,7 @@ describe('basic serve usage', () => {
     });
 
     it('should respect the "publicPath" option from configuration using multi compiler mode (from the "devServer" options)', async () => {
-        const { stderr, stdout } = await runServe(__dirname, [
-            'serve',
-            '--config',
-            'multi-dev-server-output-public-path.config.js',
-            '--port',
-            port,
-        ]);
+        const { stderr, stdout } = await runServe(__dirname, ['--config', 'multi-dev-server-output-public-path.config.js', '--port', port]);
 
         expect(stderr).toBeFalsy();
         expect(stderr).toBeFalsy();
@@ -304,6 +285,14 @@ describe('basic serve usage', () => {
         expect(stdout).toContain('two');
         expect(stdout).toContain('second-output/main.js');
         expect(stdout).toContain('/dev-server-my-public-path/');
+        expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
+    });
+
+    it('should work with entries syntax', async () => {
+        const { stderr, stdout } = await runServe(__dirname, ['./src/entry.js', '--port', port]);
+
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('development');
         expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
     });
 

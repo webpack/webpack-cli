@@ -83,6 +83,41 @@ describe('basic', () => {
         });
     });
 
+    it('should recompile upon file change using the `watch` command and entries syntax', (done) => {
+        const proc = runAndGetWatchProc(__dirname, ['watch', './src/entry.js', '--mode', 'development'], false, '', true);
+
+        let modified = false;
+
+        const wordsInStatsv5Entries = ['asset', 'entry.js', 'compiled successfully'];
+
+        proc.stdout.on('data', (chunk) => {
+            const data = stripAnsi(chunk.toString());
+
+            if (data.includes('entry.js')) {
+                if (isWebpack5) {
+                    for (const word of wordsInStatsv5Entries) {
+                        expect(data).toContain(word);
+                    }
+                } else {
+                    for (const word of wordsInStatsv4) {
+                        expect(data).toContain(word);
+                    }
+                }
+
+                if (!modified) {
+                    process.nextTick(() => {
+                        writeFileSync(resolve(__dirname, './src/entry.js'), `console.log('watch flag test');`);
+                    });
+
+                    modified = true;
+                } else {
+                    proc.kill();
+                    done();
+                }
+            }
+        });
+    });
+
     it('should recompile upon file change using the `command` option and the `--watch` option and log warning', (done) => {
         const proc = runAndGetWatchProc(__dirname, ['watch', '--watch', '--mode', 'development'], false, '', true);
 

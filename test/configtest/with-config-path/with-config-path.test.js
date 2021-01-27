@@ -44,7 +44,7 @@ describe("'configtest' command with the configuration path option", () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['configtest', './a.js'], false);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain(`The specified config file doesn't exist`);
+        expect(stderr).toContain(`Failed to load '${path.resolve(__dirname, './a.js')}' config`);
         expect(stdout).toBeFalsy();
     });
 });

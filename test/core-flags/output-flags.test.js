@@ -1,9 +1,10 @@
 'use strict';
 
 const { run, hyphenToUpperCase } = require('../utils/test-utils');
-const { flags } = require('../../packages/webpack-cli/lib/utils/cli-flags');
+const CLI = require('../../packages/webpack-cli/lib/index');
 
-const outputFlags = flags.filter(({ name }) => name.startsWith('output-'));
+const cli = new CLI();
+const outputFlags = cli.getBuiltInOptions().filter(({ name }) => name.startsWith('output-'));
 
 describe('output config related flag', () => {
     outputFlags.forEach((flag) => {

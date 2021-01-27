@@ -1,12 +1,6 @@
 ```
-Usage: webpack [options]
-Alternative usage: webpack --config <config> [options]
-Alternative usage: webpack build [options]
-Alternative usage: webpack bundle [options]
-Alternative usage: webpack b [options]
-Alternative usage: webpack build --config <config> [options]
-Alternative usage: webpack bundle --config <config> [options]
-Alternative usage: webpack b --config <config> [options]
+Usage: webpack [entries...] [options]
+Alternative usage to run commands: webpack [command] [options]
 
 The build tool for modern web applications.
 
@@ -793,23 +787,23 @@ Options:
   --no-watch-options-stdin                                                           Do not stop watching when stdin stream has ended.
 
 Global options:
-  --color                                    Enable colors on console.
-  --no-color                                 Disable colors on console.
-  -v, --version                              Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  -h, --help [verbose]                       Display help for commands and options.
+  --color                                                                            Enable colors on console.
+  --no-color                                                                         Disable colors on console.
+  -v, --version                                                                      Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]                                                               Display help for commands and options.
 
 Commands:
-  build|bundle|b [options]                   Run webpack (default command, can be omitted).
-  watch|w [options]                          Run webpack and watch for files changes.
-  version|v [commands...]                    Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  help|h [command] [option]                  Display help for commands and options.
-  serve|s [options]                          Run the webpack dev server.
-  info|i [options]                           Outputs information about your system.
-  init|c [options] [scaffold...]             Initialize a new webpack configuration.
-  loader|l [output-path]                     Scaffold a loader.
-  migrate|m <config-path> [new-config-path]  Migrate a configuration to a new version.
-  configtest|t [config-path]                 Tests webpack configuration against validation errors.
-  plugin|p [output-path]                     Scaffold a plugin.
+  build|bundle|b [entries...] [options]                                              Run webpack (default command, can be omitted).
+  configtest|t [config-path]                                                         Tests webpack configuration against validation errors.
+  help|h [command] [option]                                                          Display help for commands and options.
+  info|i [options]                                                                   Outputs information about your system.
+  init|c [scaffold...] [options]                                                     Initialize a new webpack configuration.
+  loader|l [output-path]                                                             Scaffold a loader.
+  migrate|m <config-path> [new-config-path]                                          Migrate a configuration to a new version.
+  plugin|p [output-path]                                                             Scaffold a plugin.
+  serve|s [entries...] [options]                                                     Run the webpack dev server.
+  version|v [commands...]                                                            Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  watch|w [entries...] [options]                                                     Run webpack and watch for files changes.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 

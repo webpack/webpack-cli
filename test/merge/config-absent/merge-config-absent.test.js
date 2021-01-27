@@ -1,5 +1,7 @@
 'use strict';
 
+const path = require('path');
+
 const { run } = require('../../utils/test-utils');
 
 describe('merge flag configuration', () => {
@@ -11,6 +13,6 @@ describe('merge flag configuration', () => {
         // Since the process will exit, nothing on stdout
         expect(stdout).toBeFalsy();
         // Confirm that the user is notified
-        expect(stderr).toContain(`The specified config file doesn't exist`);
+        expect(stderr).toContain(`Failed to load '${path.resolve(__dirname, './2.js')}' config`);
     });
 });
