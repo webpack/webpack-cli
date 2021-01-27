@@ -425,12 +425,15 @@ describe('help', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain('Usage: webpack --version');
-        expect(stdout).toContain('Short: webpack -v');
-        expect(stdout).toContain(
+
+        const pureStdout = stripAnsi(stdout);
+
+        expect(pureStdout).toContain('Usage: webpack --version');
+        expect(pureStdout).toContain('Short: webpack -v');
+        expect(pureStdout).toContain(
             "Description: Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.",
         );
-        expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
+        expect(pureStdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
     });
 
     it('should show help information using the "help -v" option', () => {
@@ -438,12 +441,15 @@ describe('help', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain('Usage: webpack --version');
-        expect(stdout).toContain('Short: webpack -v');
-        expect(stdout).toContain(
+
+        const pureStdout = stripAnsi(stdout);
+
+        expect(pureStdout).toContain('Usage: webpack --version');
+        expect(pureStdout).toContain('Short: webpack -v');
+        expect(pureStdout).toContain(
             "Description: Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.",
         );
-        expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
+        expect(pureStdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
     });
 
     it('should log error for invalid command using the "--help" option', () => {
