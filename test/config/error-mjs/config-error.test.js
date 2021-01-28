@@ -7,8 +7,12 @@ describe('config error', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['-c', resolve(__dirname, 'webpack.config.mjs')]);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain('Invalid configuration object');
-        expect(stderr).toContain(`"development" | "production" | "none"`);
+
+        if (!/Unexpected token/.test(stderr)) {
+            expect(stderr).toContain('Invalid configuration object');
+            expect(stderr).toContain(`"development" | "production" | "none"`);
+        }
+
         expect(stdout).toBeFalsy();
     });
 

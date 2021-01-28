@@ -15,8 +15,13 @@ describe('custom config file', () => {
     it('should work with esm format', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--config', resolve(__dirname, 'config.webpack.mjs')], false);
 
-        expect(exitCode).toBe(0);
-        expect(stderr).toBeFalsy();
-        expect(stdout).toBeTruthy();
+        if (/Unexpected token/.test(stderr)) {
+            expect(exitCode).toBe(2);
+            expect(stdout).toBeFalsy();
+        } else {
+            expect(exitCode).toBe(0);
+            expect(stderr).toBeFalsy();
+            expect(stdout).toBeTruthy();
+        }
     });
 });
