@@ -570,7 +570,7 @@ class WebpackCLI {
                 const builtInExternalCommandInfo = externalBuiltInCommandsInfo.find(
                     (externalBuiltInCommandInfo) =>
                         getCommandName(externalBuiltInCommandInfo.name) === commandName ||
-                        (typeof Array.isArray(externalBuiltInCommandInfo.alias)
+                        (Array.isArray(externalBuiltInCommandInfo.alias)
                             ? externalBuiltInCommandInfo.alias.includes(commandName)
                             : externalBuiltInCommandInfo.alias === commandName),
                 );
@@ -1081,13 +1081,7 @@ class WebpackCLI {
             if (isKnownCommand(commandToRun)) {
                 await loadCommandByName(commandToRun, true);
             } else {
-                let isEntrySyntax = true;
-
-                try {
-                    await fs.promises.access(operand, fs.constants.F_OK);
-                } catch (error) {
-                    isEntrySyntax = false;
-                }
+                let isEntrySyntax = fs.existsSync(operand);
 
                 if (isEntrySyntax) {
                     commandToRun = defaultCommandToRun;
@@ -1259,9 +1253,7 @@ class WebpackCLI {
             let foundDefaultConfigFile;
 
             for (const defaultConfigFile of defaultConfigFiles) {
-                try {
-                    await fs.promises.access(defaultConfigFile.path, fs.constants.F_OK);
-                } catch (error) {
+                if (!fs.existsSync(defaultConfigFile.path)) {
                     continue;
                 }
 
