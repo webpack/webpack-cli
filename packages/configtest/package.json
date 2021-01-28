@@ -1,7 +1,7 @@
 {
   "name": "@webpack-cli/configtest",
   "version": "1.0.0",
-  "description": "Tests webpack configuration against validation errors.",
+  "description": "Validate a webpack configuration.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "license": "MIT",
