@@ -1172,7 +1172,13 @@ class WebpackCLI {
                 }
             } catch (error) {
                 logger.error(`Failed to load '${configPath}' config`);
-                logger.error(error);
+
+                if (this.isValidationError(error)) {
+                    logger.error(error.message);
+                } else {
+                    logger.error(error);
+                }
+
                 process.exit(2);
             }
 
@@ -1602,15 +1608,15 @@ class WebpackCLI {
         return compiler.options.watchOptions && compiler.options.watchOptions.stdin;
     }
 
+    isValidationError(error) {
+        // https://github.com/webpack/webpack/blob/master/lib/index.js#L267
+        // https://github.com/webpack/webpack/blob/v4.44.2/lib/webpack.js#L90
+        const ValidationError = this.webpack.ValidationError || this.webpack.WebpackOptionsValidationError;
+
+        return error instanceof ValidationError || error.name === 'ValidationError';
+    }
+
     async createCompiler(options, callback) {
-        const isValidationError = (error) => {
-            // https://github.com/webpack/webpack/blob/master/lib/index.js#L267
-            // https://github.com/webpack/webpack/blob/v4.44.2/lib/webpack.js#L90
-            const ValidationError = this.webpack.ValidationError || this.webpack.WebpackOptionsValidationError;
-
-            return error instanceof ValidationError;
-        };
-
         let config = await this.resolveConfig(options);
 
         config = await this.applyOptions(config, options);
@@ -1623,7 +1629,7 @@ class WebpackCLI {
                 config.options,
                 callback
                     ? (error, stats) => {
-                          if (isValidationError(error)) {
+                          if (this.isValidationError(error)) {
                               logger.error(error.message);
                               process.exit(2);
                           }
@@ -1633,7 +1639,7 @@ class WebpackCLI {
                     : callback,
             );
         } catch (error) {
-            if (isValidationError(error)) {
+            if (this.isValidationError(error)) {
                 logger.error(error.message);
             } else {
                 logger.error(error);
