@@ -63,17 +63,17 @@ npx webpack-cli --help verbose
 ### Available Commands
 
 ```
-  build|bundle|b [options]                   Run webpack (default command, can be omitted).
-  watch|w [options]                          Run webpack and watch for files changes.
-  version|v [commands...]                    Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  build|bundle|b [entries...] [options]      Run webpack (default command, can be omitted).
+  configtest|t [config-path]                 Validate a webpack configuration.
   help|h [command] [option]                  Display help for commands and options.
-  serve|s [options]                          Run the webpack dev server.
   info|i [options]                           Outputs information about your system.
-  init|c [options] [scaffold...]             Initialize a new webpack configuration.
+  init|c [scaffold...] [options]             Initialize a new webpack configuration.
   loader|l [output-path]                     Scaffold a loader.
   migrate|m <config-path> [new-config-path]  Migrate a configuration to a new version.
-  configtest|t [config-path]                 Tests webpack configuration against validation errors.
   plugin|p [output-path]                     Scaffold a plugin.
+  serve|s [entries...] [options]             Run the webpack dev server.
+  version|v [commands...]                    Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  watch|w [entries...] [options]             Run webpack and watch for files changes.
 ```
 
 ### webpack 4
