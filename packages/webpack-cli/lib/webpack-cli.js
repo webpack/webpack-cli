@@ -1629,7 +1629,7 @@ class WebpackCLI {
                 config.options,
                 callback
                     ? (error, stats) => {
-                          if (this.isValidationError(error)) {
+                          if (error && this.isValidationError(error)) {
                               logger.error(error.message);
                               process.exit(2);
                           }

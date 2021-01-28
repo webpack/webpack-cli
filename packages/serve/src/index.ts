@@ -113,7 +113,7 @@ class ServeCommand {
                 try {
                     servers = await startDevServer(compiler, devServerOptions, options, logger);
                 } catch (error) {
-                    if (error.name === 'ValidationError') {
+                    if (cli.isValidationError(error)) {
                         logger.error(error.message);
                     } else {
                         logger.error(error);
