@@ -547,11 +547,7 @@ class WebpackCLI {
                             options.entry = [...entries, ...(options.entry || [])];
                         }
 
-                        if (isWatchCommandUsed) {
-                            options.watch = true;
-                        }
-
-                        await this.buildCommand(options);
+                        await this.buildCommand(options, isWatchCommandUsed);
                     },
                 );
             } else if (isCommand(commandName, helpCommandOptions)) {
@@ -1660,7 +1656,7 @@ class WebpackCLI {
         return compiler;
     }
 
-    async buildCommand(options) {
+    async buildCommand(options, isWatchCommand) {
         let compiler;
 
         const callback = (error, stats) => {
@@ -1725,7 +1721,16 @@ class WebpackCLI {
             }
         };
 
-        options.argv = { ...options, env: { WEBPACK_BUNDLE: true, WEBPACK_BUILD: true, ...options.env } };
+        const env =
+            isWatchCommand || options.watch
+                ? { WEBPACK_WATCH: true, ...options.env }
+                : { WEBPACK_BUNDLE: true, WEBPACK_BUILD: true, ...options.env };
+
+        options.argv = { ...options, env };
+
+        if (isWatchCommand) {
+            options.watch = true;
+        }
 
         compiler = await this.createCompiler(options, callback);
 
