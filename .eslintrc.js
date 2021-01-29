@@ -21,6 +21,7 @@ module.exports = {
         'no-caller': 'error',
         'no-extra-bind': 'error',
         'no-loop-func': 'error',
+        'no-undef': 'error',
     },
     overrides: [
         {

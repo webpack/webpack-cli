@@ -1,4 +1,4 @@
-function getPkg(packageName) {
+function packageExists(packageName) {
     try {
         return require.resolve(packageName);
     } catch (error) {
@@ -6,4 +6,4 @@ function getPkg(packageName) {
     }
 }
 
-module.exports = getPkg;
+module.exports = packageExists;
