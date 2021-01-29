@@ -1,10 +1,6 @@
 #!/usr/bin/env node
 
 'use strict';
-
-console.time('BUILD');
-console.time('BEFORE_WEBPACK');
-console.time('AFTER_WEBPACK');
 require('v8-compile-cache');
 
 const importLocal = require('import-local');

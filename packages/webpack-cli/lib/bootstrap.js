@@ -1,5 +1,5 @@
 const WebpackCLI = require('./webpack-cli');
-const { logger } = require('./utils');
+const utils = require('./utils');
 
 const runCLI = async (args) => {
     try {
@@ -8,7 +8,7 @@ const runCLI = async (args) => {
 
         await cli.run(args);
     } catch (error) {
-        logger.error(error);
+        utils.logger.error(error);
         process.exit(2);
     }
 };

@@ -428,7 +428,6 @@ class WebpackCLI {
     }
 
     async run(args, parseOptions) {
-        console.time('RUN');
         // Built-in internal commands
         const buildCommandOptions = {
             name: 'build [entries...]',
@@ -558,7 +557,6 @@ class WebpackCLI {
                             options.watch = true;
                         }
 
-                        console.timeEnd('RUN');
                         await this.buildCommand(options);
                     },
                 );
@@ -1636,15 +1634,11 @@ class WebpackCLI {
 
         let compiler;
 
-        console.timeEnd('BEFORE_WEBPACK');
-
         try {
             compiler = this.webpack(
                 config.options,
                 callback
                     ? (error, stats) => {
-                          console.timeEnd('AFTER_WEBPACK');
-
                           if (error && this.isValidationError(error)) {
                               this.logger.error(error.message);
                               process.exit(2);
@@ -1734,8 +1728,6 @@ class WebpackCLI {
                 if (printedStats) {
                     this.logger.raw(printedStats);
                 }
-
-                console.timeEnd('BUILD');
             }
         };
 
