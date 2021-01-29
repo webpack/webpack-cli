@@ -547,6 +547,10 @@ class WebpackCLI {
                             options.entry = [...entries, ...(options.entry || [])];
                         }
 
+                        if (isWatchCommandUsed) {
+                            options.watch = true;
+                        }
+
                         await this.buildCommand(options);
                     },
                 );
