@@ -296,20 +296,20 @@ describe('basic serve usage', () => {
         expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
     });
 
-    it("should log warning on using '--watch' flag with serve", async () => {
+    it("should log error on using '--watch' flag with serve", async () => {
         const { stdout, stderr } = await runServe(testPath, ['--watch']);
 
-        expect(stderr).toContain("Do not use '--watch' with 'serve'. It has no effect.");
-        expect(stdout).toContain('main.js');
-        expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
+        expect(stderr).toContain("Error: Unknown option '--watch'");
+        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
+        expect(stdout).toBeFalsy();
     });
 
-    it("should log warning on using '-w' alias with serve", async () => {
+    it("should log error on using '-w' alias with serve", async () => {
         const { stdout, stderr } = await runServe(testPath, ['-w']);
 
-        expect(stderr).toContain("Do not use '--watch' with 'serve'. It has no effect.");
-        expect(stdout).toContain('main.js');
-        expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
+        expect(stderr).toContain("Error: Unknown option '-w'");
+        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
+        expect(stdout).toBeFalsy();
     });
 
     it('should log an error on unknown flag', async () => {

@@ -537,24 +537,14 @@ class WebpackCLI {
             const isWatchCommandUsed = isCommand(commandName, watchCommandOptions);
 
             if (isBuildCommandUsed || isWatchCommandUsed) {
+                const options = this.getBuiltInOptions();
+
                 await this.makeCommand(
                     isBuildCommandUsed ? buildCommandOptions : watchCommandOptions,
-                    this.getBuiltInOptions(),
+                    isWatchCommandUsed ? options.filter((option) => option.name !== 'watch') : options,
                     async (entries, options) => {
                         if (entries.length > 0) {
                             options.entry = [...entries, ...(options.entry || [])];
-                        }
-
-                        if (isWatchCommandUsed) {
-                            if (typeof options.watch !== 'undefined') {
-                                this.logger.warn(
-                                    `No need to use the ${
-                                        options.watch ? "'--watch, -w'" : "'--no-watch'"
-                                    } option together with the 'watch' command, it does not make sense`,
-                                );
-                            }
-
-                            options.watch = true;
                         }
 
                         await this.buildCommand(options);

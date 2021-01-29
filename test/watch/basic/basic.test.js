@@ -118,87 +118,21 @@ describe('basic', () => {
         });
     });
 
-    it('should recompile upon file change using the `command` option and the `--watch` option and log warning', (done) => {
-        const proc = runAndGetWatchProc(__dirname, ['watch', '--watch', '--mode', 'development'], false, '', true);
+    it('should recompile upon file change using the `command` option and the `--watch` option and log warning', async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, ['watch', '--watch', '--mode', 'development']);
 
-        let modified = false;
-        let hasWarning = false;
-
-        proc.stdout.on('data', (chunk) => {
-            const data = stripAnsi(chunk.toString());
-
-            if (data.includes('index.js')) {
-                if (isWebpack5) {
-                    for (const word of wordsInStatsv5) {
-                        expect(data).toContain(word);
-                    }
-                } else {
-                    for (const word of wordsInStatsv4) {
-                        expect(data).toContain(word);
-                    }
-                }
-
-                if (!modified && !hasWarning) {
-                    process.nextTick(() => {
-                        writeFileSync(resolve(__dirname, './src/index.js'), `console.log('watch flag test');`);
-                    });
-
-                    modified = true;
-                } else {
-                    proc.kill();
-                    done();
-                }
-            }
-        });
-
-        proc.stderr.on('data', (chunk) => {
-            const data = stripAnsi(chunk.toString());
-
-            hasWarning = true;
-
-            expect(data).toContain("No need to use the '--watch, -w' option together with the 'watch' command, it does not make sense");
-        });
+        expect(exitCode).toBe(2);
+        expect(stderr).toContain("Error: Unknown option '--watch'");
+        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
+        expect(stdout).toBeFalsy();
     });
 
-    it('should recompile upon file change using the `command` option and the `--no-watch` option and log warning', (done) => {
-        const proc = runAndGetWatchProc(__dirname, ['watch', '--no-watch', '--mode', 'development'], false, '', true);
+    it('should recompile upon file change using the `command` option and the `--no-watch` option and log warning', async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, ['watch', '--no-watch', '--mode', 'development']);
 
-        let modified = false;
-        let hasWarning = false;
-
-        proc.stdout.on('data', (chunk) => {
-            const data = stripAnsi(chunk.toString());
-
-            if (data.includes('index.js')) {
-                if (isWebpack5) {
-                    for (const word of wordsInStatsv5) {
-                        expect(data).toContain(word);
-                    }
-                } else {
-                    for (const word of wordsInStatsv4) {
-                        expect(data).toContain(word);
-                    }
-                }
-
-                if (!modified && !hasWarning) {
-                    process.nextTick(() => {
-                        writeFileSync(resolve(__dirname, './src/index.js'), `console.log('watch flag test');`);
-                    });
-
-                    modified = true;
-                } else {
-                    proc.kill();
-                    done();
-                }
-            }
-        });
-
-        proc.stderr.on('data', (chunk) => {
-            const data = stripAnsi(chunk.toString());
-
-            hasWarning = true;
-
-            expect(data).toContain("No need to use the '--no-watch' option together with the 'watch' command, it does not make sense");
-        });
+        expect(exitCode).toBe(2);
+        expect(stderr).toContain("Error: Unknown option '--no-watch'");
+        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
+        expect(stdout).toBeFalsy();
     });
 });
