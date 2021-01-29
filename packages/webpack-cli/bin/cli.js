@@ -2,14 +2,14 @@
 
 'use strict';
 
+console.time('BUILD');
+console.time('BEFORE_WEBPACK');
+console.time('AFTER_WEBPACK');
 require('v8-compile-cache');
 
 const importLocal = require('import-local');
 const runCLI = require('../lib/bootstrap');
-const { yellow } = require('colorette');
-const { error, success } = require('../lib/utils/logger');
-const packageExists = require('../lib/utils/package-exists');
-const promptInstallation = require('../lib/utils/prompt-installation');
+const utils = require('../lib/utils');
 
 // Prefer the local installation of `webpack-cli`
 if (importLocal(__filename)) {
@@ -18,19 +18,21 @@ if (importLocal(__filename)) {
 
 process.title = 'webpack';
 
-if (packageExists('webpack')) {
+if (utils.packageExists('webpack')) {
     runCLI(process.argv);
 } else {
+    const { promptInstallation, logger, colors } = utils;
+
     promptInstallation('webpack', () => {
-        error(`It looks like ${yellow('webpack')} is not installed.`);
+        utils.logger.error(`It looks like ${colors.bold('webpack')} is not installed.`);
     })
         .then(() => {
-            success(`${yellow('webpack')} was installed successfully.`);
+            logger.success(`${colors.bold('webpack')} was installed successfully.`);
 
             runCLI(process.argv);
         })
         .catch(() => {
-            error(`Action Interrupted, Please try once again or install ${yellow('webpack')} manually.`);
+            logger.error(`Action Interrupted, Please try once again or install ${colors.bold('webpack')} manually.`);
 
             process.exit(2);
         });

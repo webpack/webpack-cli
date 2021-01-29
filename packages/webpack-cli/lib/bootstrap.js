@@ -1,5 +1,5 @@
 const WebpackCLI = require('./webpack-cli');
-const logger = require('./utils/logger');
+const { logger } = require('./utils');
 
 const runCLI = async (args) => {
     try {

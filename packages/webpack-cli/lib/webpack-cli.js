@@ -2,38 +2,21 @@ const fs = require('fs');
 const path = require('path');
 
 const { program } = require('commander');
-const getPkg = require('./utils/package-exists');
-const webpack = getPkg('webpack') ? require('webpack') : undefined;
-const interpret = require('interpret');
-const rechoir = require('rechoir');
-const { distance } = require('fastest-levenshtein');
-const { options: coloretteOptions, yellow, cyan, green, bold } = require('colorette');
-
-const logger = require('./utils/logger');
-const capitalizeFirstLetter = require('./utils/capitalize-first-letter');
-const CLIPlugin = require('./plugins/CLIPlugin');
+const utils = require('./utils');
 
 class WebpackCLI {
     constructor() {
         // Global
-        this.webpack = webpack;
-        this.logger = logger;
-        this.utils = {
-            getPkg,
-            get toKebabCase() {
-                return require('./utils/to-kebab-case');
-            },
-            get promptInstallation() {
-                return require('./utils/prompt-installation');
-            },
-        };
+        this.webpack = require('webpack');
+        this.logger = utils.logger;
+        this.utils = utils;
 
         // Initialize program
         this.program = program;
         this.program.name('webpack');
         this.program.configureOutput({
             writeErr: this.logger.error,
-            outputError: (str, write) => write(`Error: ${capitalizeFirstLetter(str.replace(/^error:/, '').trim())}`),
+            outputError: (str, write) => write(`Error: ${this.utils.capitalizeFirstLetter(str.replace(/^error:/, '').trim())}`),
         });
     }
 
@@ -78,7 +61,8 @@ class WebpackCLI {
 
         if (commandOptions.dependencies && commandOptions.dependencies.length > 0) {
             for (const dependency of commandOptions.dependencies) {
-                const isPkgExist = getPkg(dependency);
+                const { packageExists } = this.utils;
+                const isPkgExist = packageExists(dependency);
 
                 if (isPkgExist) {
                     continue;
@@ -87,10 +71,12 @@ class WebpackCLI {
                     continue;
                 }
 
+                const { promptInstallation, colors } = this.utils;
+
                 try {
-                    await this.utils.promptInstallation(dependency, () => {
+                    await promptInstallation(dependency, () => {
                         this.logger.error(
-                            `For using '${green(commandOptions.name.split(' ')[0])}' command you need to install: '${green(
+                            `For using '${colors.green(commandOptions.name.split(' ')[0])}' command you need to install: '${colors.green(
                                 dependency,
                             )}' package`,
                         );
@@ -233,6 +219,10 @@ class WebpackCLI {
     }
 
     getBuiltInOptions() {
+        if (this.builtInOptionsCache) {
+            return this.builtInOptionsCache;
+        }
+
         const minimumHelpFlags = [
             'config',
             'config-name',
@@ -423,7 +413,7 @@ class WebpackCLI {
               })
             : [];
 
-        return []
+        const options = []
             .concat(builtInFlags.filter((builtInFlag) => !coreFlags.find((coreFlag) => builtInFlag.name === coreFlag.name)))
             .concat(coreFlags)
             .map((option) => {
@@ -431,9 +421,14 @@ class WebpackCLI {
 
                 return option;
             });
+
+        this.builtInOptionsCache = options;
+
+        return options;
     }
 
     async run(args, parseOptions) {
+        console.time('RUN');
         // Built-in internal commands
         const buildCommandOptions = {
             name: 'build [entries...]',
@@ -563,6 +558,7 @@ class WebpackCLI {
                             options.watch = true;
                         }
 
+                        console.timeEnd('RUN');
                         await this.buildCommand(options);
                     },
                 );
@@ -589,17 +585,19 @@ class WebpackCLI {
                     pkg = commandName;
                 }
 
-                if (pkg !== 'webpack-cli' && !getPkg(pkg)) {
+                if (pkg !== 'webpack-cli' && !this.utils.packageExists(pkg)) {
                     if (!allowToInstall) {
                         return;
                     }
 
+                    const { promptInstallation, colors } = this.utils;
+
                     try {
-                        pkg = await this.utils.promptInstallation(pkg, () => {
-                            this.logger.error(`For using this command you need to install: '${green(pkg)}' package`);
+                        pkg = await promptInstallation(pkg, () => {
+                            this.logger.error(`For using this command you need to install: '${colors.green(pkg)}' package`);
                         });
                     } catch (error) {
-                        this.logger.error(`Action Interrupted, use '${cyan('webpack-cli help')}' to see possible commands`);
+                        this.logger.error(`Action Interrupted, use '${colors.cyan('webpack-cli help')}' to see possible commands`);
                         process.exit(2);
                     }
                 }
@@ -669,7 +667,7 @@ class WebpackCLI {
                         }
 
                         command.options.forEach((option) => {
-                            if (distance(name, option.long.slice(2)) < 3) {
+                            if (this.utils.levenshtein.distance(name, option.long.slice(2)) < 3) {
                                 this.logger.error(`Did you mean '--${option.name()}'?`);
                             }
                         });
@@ -688,19 +686,20 @@ class WebpackCLI {
         });
 
         // Default `--color` and `--no-color` options
+        const cli = this;
         this.program.option('--color', 'Enable colors on console.');
         this.program.on('option:color', function () {
             const { color } = this.opts();
 
-            coloretteOptions.changed = true;
-            coloretteOptions.enabled = color;
+            cli.utils.colors.options.changed = true;
+            cli.utils.colors.options.enabled = color;
         });
         this.program.option('--no-color', 'Disable colors on console.');
         this.program.on('option:no-color', function () {
             const { color } = this.opts();
 
-            coloretteOptions.changed = true;
-            coloretteOptions.enabled = color;
+            cli.utils.colors.options.changed = true;
+            cli.utils.colors.options.enabled = color;
         });
 
         // Make `-v, --version` options
@@ -753,7 +752,7 @@ class WebpackCLI {
             this.logger.raw(`webpack ${this.webpack.version}`);
             this.logger.raw(`webpack-cli ${pkgJSON.version}`);
 
-            if (getPkg('webpack-dev-server')) {
+            if (this.utils.packageExists('webpack-dev-server')) {
                 // eslint-disable-next-line
                 const { version } = require('webpack-dev-server/package.json');
 
@@ -768,6 +767,8 @@ class WebpackCLI {
         );
 
         const outputHelp = async (options, isVerbose, isHelpCommandSyntax, program) => {
+            const { bold } = this.utils.colors;
+
             const outputIncorrectUsageOfHelp = () => {
                 this.logger.error('Incorrect use of help');
                 this.logger.error("Please use: 'webpack help [command] [option]' | 'webpack [command] --help'");
@@ -792,7 +793,7 @@ class WebpackCLI {
                         }
 
                         if (isGlobalHelp) {
-                            return `${parentCmdNames}${command.usage()}\n${bold(
+                            return `${parentCmdNames}${command.usage()}\n${this.utils.colors.bold(
                                 'Alternative usage to run commands:',
                             )} ${parentCmdNames}[command] [options]`;
                         }
@@ -1097,7 +1098,9 @@ class WebpackCLI {
                 } else {
                     this.logger.error(`Unknown command or entry '${operand}'`);
 
-                    const found = knownCommands.find((commandOptions) => distance(operand, getCommandName(commandOptions.name)) < 3);
+                    const found = knownCommands.find(
+                        (commandOptions) => this.utils.levenshtein.distance(operand, getCommandName(commandOptions.name)) < 3,
+                    );
 
                     if (found) {
                         this.logger.error(
@@ -1120,10 +1123,13 @@ class WebpackCLI {
 
     async resolveConfig(options) {
         const loadConfig = async (configPath) => {
+            const { interpret } = this.utils;
             const ext = path.extname(configPath);
             const interpreted = Object.keys(interpret.jsVariants).find((variant) => variant === ext);
 
             if (interpreted) {
+                const { rechoir } = this.utils;
+
                 try {
                     rechoir.prepare(interpret.extensions, configPath);
                 } catch (error) {
@@ -1244,6 +1250,8 @@ class WebpackCLI {
 
             config.options = config.options.length === 1 ? config.options[0] : config.options;
         } else {
+            const { interpret } = this.utils;
+
             // Order defines the priority, in increasing order
             const defaultConfigFiles = ['webpack.config', '.webpack/webpack.config', '.webpack/webpackfile']
                 .map((filename) =>
@@ -1340,19 +1348,21 @@ class WebpackCLI {
     // TODO refactor
     async applyOptions(config, options) {
         if (options.analyze) {
-            if (!getPkg('webpack-bundle-analyzer')) {
+            if (!this.utils.packageExists('webpack-bundle-analyzer')) {
+                const { promptInstallation, colors } = this.utils;
+
                 try {
-                    await this.utils.promptInstallation('webpack-bundle-analyzer', () => {
-                        this.logger.error(`It looks like ${yellow('webpack-bundle-analyzer')} is not installed.`);
+                    await promptInstallation('webpack-bundle-analyzer', () => {
+                        this.logger.error(`It looks like ${colors.yellow('webpack-bundle-analyzer')} is not installed.`);
                     });
                 } catch (error) {
                     this.logger.error(
-                        `Action Interrupted, Please try once again or install ${yellow('webpack-bundle-analyzer')} manually.`,
+                        `Action Interrupted, Please try once again or install ${colors.yellow('webpack-bundle-analyzer')} manually.`,
                     );
                     process.exit(2);
                 }
 
-                this.logger.success(`${yellow('webpack-bundle-analyzer')} was installed successfully.`);
+                this.logger.success(`${colors.yellow('webpack-bundle-analyzer')} was installed successfully.`);
             }
         }
 
@@ -1402,7 +1412,7 @@ class WebpackCLI {
 
                         problems.forEach((problem) => {
                             this.logger.error(
-                                `${capitalizeFirstLetter(problem.type.replace(/-/g, ' '))}${
+                                `${this.utils.capitalizeFirstLetter(problem.type.replace(/-/g, ' '))}${
                                     problem.value ? ` '${problem.value}'` : ''
                                 } for the '--${problem.argument}' option${problem.index ? ` by index '${problem.index}'` : ''}`,
                             );
@@ -1550,8 +1560,8 @@ class WebpackCLI {
             let colors;
 
             // From arguments
-            if (typeof coloretteOptions.changed !== 'undefined') {
-                colors = Boolean(coloretteOptions.enabled);
+            if (typeof this.utils.colors.options.changed !== 'undefined') {
+                colors = Boolean(this.utils.colors.options.enabled);
             }
             // From stats
             else if (typeof configOptions.stats.colors !== 'undefined') {
@@ -1559,7 +1569,7 @@ class WebpackCLI {
             }
             // Default
             else {
-                colors = Boolean(coloretteOptions.enabled);
+                colors = Boolean(this.utils.colors.options.enabled);
             }
 
             configOptions.stats.colors = colors;
@@ -1579,6 +1589,8 @@ class WebpackCLI {
             if (!configOptions.plugins) {
                 configOptions.plugins = [];
             }
+
+            const CLIPlugin = require('./plugins/CLIPlugin');
 
             configOptions.plugins.unshift(
                 new CLIPlugin({
@@ -1624,11 +1636,15 @@ class WebpackCLI {
 
         let compiler;
 
+        console.timeEnd('BEFORE_WEBPACK');
+
         try {
             compiler = this.webpack(
                 config.options,
                 callback
                     ? (error, stats) => {
+                          console.timeEnd('AFTER_WEBPACK');
+
                           if (error && this.isValidationError(error)) {
                               this.logger.error(error.message);
                               process.exit(2);
@@ -1706,7 +1722,9 @@ class WebpackCLI {
                         .on('error', handleWriteError)
                         // Use stderr to logging
                         .on('close', () =>
-                            process.stderr.write(`[webpack-cli] ${green(`stats are successfully stored as json to ${options.json}`)}\n`),
+                            process.stderr.write(
+                                `[webpack-cli] ${this.utils.colors.green(`stats are successfully stored as json to ${options.json}`)}\n`,
+                            ),
                         );
                 }
             } else {
@@ -1716,6 +1734,8 @@ class WebpackCLI {
                 if (printedStats) {
                     this.logger.raw(printedStats);
                 }
+
+                console.timeEnd('BUILD');
             }
         };
 

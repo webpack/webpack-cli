@@ -1,13 +1,10 @@
-const packageExists = require('../utils/package-exists');
-const webpack = packageExists('webpack') ? require('webpack') : undefined;
-
 class CLIPlugin {
     constructor(options) {
         this.options = options;
     }
 
     setupHotPlugin(compiler) {
-        const { HotModuleReplacementPlugin } = compiler.webpack || webpack;
+        const { HotModuleReplacementPlugin } = compiler.webpack || require('webpack');
         const hotModuleReplacementPlugin = Boolean(compiler.options.plugins.find((plugin) => plugin instanceof HotModuleReplacementPlugin));
 
         if (!hotModuleReplacementPlugin) {
@@ -16,7 +13,7 @@ class CLIPlugin {
     }
 
     setupPrefetchPlugin(compiler) {
-        const { PrefetchPlugin } = compiler.webpack || webpack;
+        const { PrefetchPlugin } = compiler.webpack || require('webpack');
 
         new PrefetchPlugin(null, this.options.prefetch).apply(compiler);
     }
@@ -32,7 +29,7 @@ class CLIPlugin {
     }
 
     setupProgressPlugin(compiler) {
-        const { ProgressPlugin } = compiler.webpack || webpack;
+        const { ProgressPlugin } = compiler.webpack || require('webpack');
         const progressPlugin = Boolean(compiler.options.plugins.find((plugin) => plugin instanceof ProgressPlugin));
 
         if (!progressPlugin) {
