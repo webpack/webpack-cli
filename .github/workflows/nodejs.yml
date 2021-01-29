@@ -98,7 +98,7 @@ jobs:
       - name: Test and Generate Coverage
         run: |
           yarn prepsuite
-          yarn test:coverage
+          node_modules/.bin/jest test/
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
