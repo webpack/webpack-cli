@@ -4,10 +4,6 @@ describe('webpack cli', () => {
     it('should support mjs config format', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['-c', 'webpack.config.mjs']);
 
-        console.log(exitCode);
-        console.log(stderr);
-        console.log(stdout);
-
         if (/Unexpected token/.test(stderr)) {
             expect(exitCode).toBe(2);
             expect(stdout).toBeFalsy();
