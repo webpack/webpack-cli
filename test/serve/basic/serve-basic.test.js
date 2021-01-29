@@ -296,6 +296,16 @@ describe('basic serve usage', () => {
         expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
     });
 
+    it('should work and log warning on the `watch option in a configuration', async () => {
+        const { stderr, stdout } = await runServe(__dirname, ['--config', './watch.config.js', '--port', port]);
+
+        expect(stderr).toContain(
+            "No need to use the 'serve' command together with '{ watch: true }' configuration, it does not make sense.",
+        );
+        expect(stdout).toContain('development');
+        expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
+    });
+
     it("should log error on using '--watch' flag with serve", async () => {
         const { stdout, stderr } = await runServe(testPath, ['--watch']);
 

@@ -1359,6 +1359,29 @@ class WebpackCLI {
             process.exit(2);
         }
 
+        const outputHints = (configOptions) => {
+            const isWatchCommand = options.argv.env['WEBPACK_WATCH'];
+            const isServeCommand = options.argv.env['WEBPACK_SERVE'];
+
+            if (configOptions.watch && (isWatchCommand || isServeCommand)) {
+                this.logger.warn(
+                    `No need to use the '${
+                        isWatchCommand ? 'watch' : 'serve'
+                    }' command together with '{ watch: true }' configuration, it does not make sense.`,
+                );
+
+                if (isServeCommand) {
+                    configOptions.watch = false;
+                }
+            }
+
+            return configOptions;
+        };
+
+        config.options = Array.isArray(config.options)
+            ? config.options.map((options) => outputHints(options))
+            : outputHints(config.options);
+
         if (this.webpack.cli) {
             const processArguments = (configOptions) => {
                 const args = this.getBuiltInOptions()
