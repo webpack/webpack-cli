@@ -1154,7 +1154,7 @@ class WebpackCLI {
                         Module.prototype._compile = this._originalModuleCompile;
                     }
 
-                    const dynamicImportLoader = require('./utils/dynamic-import-loader')();
+                    const dynamicImportLoader = this.utils.dynamicImportLoader();
 
                     if (this._originalModuleCompile) {
                         Module.prototype._compile = previousModuleCompile;
