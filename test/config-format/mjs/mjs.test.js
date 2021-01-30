@@ -8,6 +8,8 @@ describe('webpack cli', () => {
             expect(exitCode).toBe(2);
             expect(stdout).toBeFalsy();
         } else {
+            console.log(stderr);
+
             expect(exitCode).toBe(0);
             expect(stderr).toBeFalsy();
             expect(stdout).toBeTruthy();
