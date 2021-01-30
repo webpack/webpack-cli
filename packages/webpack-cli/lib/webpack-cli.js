@@ -1360,20 +1360,20 @@ class WebpackCLI {
         }
 
         const outputHints = (configOptions) => {
-            if (options.argv) {
-                const isWatchCommand = options.argv.env['WEBPACK_WATCH'];
-                const isServeCommand = options.argv.env['WEBPACK_SERVE'];
+            if (
+                configOptions.watch &&
+                options.argv &&
+                options.argv.env &&
+                (options.argv.env['WEBPACK_WATCH'] || options.argv.env['WEBPACK_SERVE'])
+            ) {
+                this.logger.warn(
+                    `No need to use the '${
+                        options.argv.env['WEBPACK_WATCH'] ? 'watch' : 'serve'
+                    }' command together with '{ watch: true }' configuration, it does not make sense.`,
+                );
 
-                if (configOptions.watch && (isWatchCommand || isServeCommand)) {
-                    this.logger.warn(
-                        `No need to use the '${
-                            isWatchCommand ? 'watch' : 'serve'
-                        }' command together with '{ watch: true }' configuration, it does not make sense.`,
-                    );
-
-                    if (isServeCommand) {
-                        configOptions.watch = false;
-                    }
+                if (options.argv.env['WEBPACK_SERVE']) {
+                    configOptions.watch = false;
                 }
             }
 
