@@ -10,8 +10,6 @@ const wordsInStatsv5 = ['asset', 'index.js', 'compiled successfully'];
 
 describe('watch variable', () => {
     it('should pass `WEBPACK_WATCH` env variable and recompile upon file change using the `watch` command', (done) => {
-        expect.assertions(10);
-
         const proc = runAndGetWatchProc(__dirname, ['watch', '--mode', 'development'], false, '', true);
 
         let modified = false;
@@ -47,8 +45,6 @@ describe('watch variable', () => {
     });
 
     it('should pass `WEBPACK_WATCH` env variable and recompile upon file change using the `--watch` option', (done) => {
-        expect.assertions(10);
-
         const proc = runAndGetWatchProc(__dirname, ['--watch', '--mode', 'development'], false, '', true);
 
         let modified = false;
