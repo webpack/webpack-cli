@@ -537,27 +537,17 @@ class WebpackCLI {
             const isWatchCommandUsed = isCommand(commandName, watchCommandOptions);
 
             if (isBuildCommandUsed || isWatchCommandUsed) {
+                const options = this.getBuiltInOptions();
+
                 await this.makeCommand(
                     isBuildCommandUsed ? buildCommandOptions : watchCommandOptions,
-                    this.getBuiltInOptions(),
+                    isWatchCommandUsed ? options.filter((option) => option.name !== 'watch') : options,
                     async (entries, options) => {
                         if (entries.length > 0) {
                             options.entry = [...entries, ...(options.entry || [])];
                         }
 
-                        if (isWatchCommandUsed) {
-                            if (typeof options.watch !== 'undefined') {
-                                this.logger.warn(
-                                    `No need to use the ${
-                                        options.watch ? "'--watch, -w'" : "'--no-watch'"
-                                    } option together with the 'watch' command, it does not make sense`,
-                                );
-                            }
-
-                            options.watch = true;
-                        }
-
-                        await this.buildCommand(options);
+                        await this.buildCommand(options, isWatchCommandUsed);
                     },
                 );
             } else if (isCommand(commandName, helpCommandOptions)) {
@@ -1369,6 +1359,31 @@ class WebpackCLI {
             process.exit(2);
         }
 
+        const outputHints = (configOptions) => {
+            if (
+                configOptions.watch &&
+                options.argv &&
+                options.argv.env &&
+                (options.argv.env['WEBPACK_WATCH'] || options.argv.env['WEBPACK_SERVE'])
+            ) {
+                this.logger.warn(
+                    `No need to use the '${
+                        options.argv.env['WEBPACK_WATCH'] ? 'watch' : 'serve'
+                    }' command together with '{ watch: true }' configuration, it does not make sense.`,
+                );
+
+                if (options.argv.env['WEBPACK_SERVE']) {
+                    configOptions.watch = false;
+                }
+            }
+
+            return configOptions;
+        };
+
+        config.options = Array.isArray(config.options)
+            ? config.options.map((options) => outputHints(options))
+            : outputHints(config.options);
+
         if (this.webpack.cli) {
             const processArguments = (configOptions) => {
                 const args = this.getBuiltInOptions()
@@ -1666,7 +1681,7 @@ class WebpackCLI {
         return compiler;
     }
 
-    async buildCommand(options) {
+    async buildCommand(options, isWatchCommand) {
         let compiler;
 
         const callback = (error, stats) => {
@@ -1731,7 +1746,16 @@ class WebpackCLI {
             }
         };
 
-        options.argv = { ...options, env: { WEBPACK_BUNDLE: true, WEBPACK_BUILD: true, ...options.env } };
+        const env =
+            isWatchCommand || options.watch
+                ? { WEBPACK_WATCH: true, ...options.env }
+                : { WEBPACK_BUNDLE: true, WEBPACK_BUILD: true, ...options.env };
+
+        options.argv = { ...options, env };
+
+        if (isWatchCommand) {
+            options.watch = true;
+        }
 
         compiler = await this.createCompiler(options, callback);
 

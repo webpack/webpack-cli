@@ -296,7 +296,33 @@ describe('basic serve usage', () => {
         expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
     });
 
-    it('should log and error on unknown flag', async () => {
+    it('should work and log warning on the `watch option in a configuration', async () => {
+        const { stderr, stdout } = await runServe(__dirname, ['--config', './watch.config.js', '--port', port]);
+
+        expect(stderr).toContain(
+            "No need to use the 'serve' command together with '{ watch: true }' configuration, it does not make sense.",
+        );
+        expect(stdout).toContain('development');
+        expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
+    });
+
+    it("should log error on using '--watch' flag with serve", async () => {
+        const { stdout, stderr } = await runServe(testPath, ['--watch']);
+
+        expect(stderr).toContain("Error: Unknown option '--watch'");
+        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
+        expect(stdout).toBeFalsy();
+    });
+
+    it("should log error on using '-w' alias with serve", async () => {
+        const { stdout, stderr } = await runServe(testPath, ['-w']);
+
+        expect(stderr).toContain("Error: Unknown option '-w'");
+        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
+        expect(stdout).toBeFalsy();
+    });
+
+    it('should log an error on unknown flag', async () => {
         const { exitCode, stdout, stderr } = await runServe(testPath, ['--port', port, '--unknown-flag']);
 
         expect(exitCode).toBe(2);

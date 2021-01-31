@@ -24,7 +24,7 @@ class ServeCommand {
                     process.exit(2);
                 }
 
-                const builtInOptions = cli.getBuiltInOptions();
+                const builtInOptions = cli.getBuiltInOptions().filter((option) => option.name !== 'watch');
 
                 return [...builtInOptions, ...devServerFlags];
             },
