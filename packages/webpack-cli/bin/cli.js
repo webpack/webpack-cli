@@ -1,6 +1,11 @@
 #!/usr/bin/env node
 
 'use strict';
+
+const Module = require('module');
+
+const originalModuleCompile = Module.prototype._compile;
+
 require('v8-compile-cache');
 
 const importLocal = require('import-local');
@@ -15,7 +20,7 @@ if (importLocal(__filename)) {
 process.title = 'webpack';
 
 if (utils.packageExists('webpack')) {
-    runCLI(process.argv);
+    runCLI(process.argv, originalModuleCompile);
 } else {
     const { promptInstallation, logger, colors } = utils;
 
@@ -25,7 +30,7 @@ if (utils.packageExists('webpack')) {
         .then(() => {
             logger.success(`${colors.bold('webpack')} was installed successfully.`);
 
-            runCLI(process.argv);
+            runCLI(process.argv, originalModuleCompile);
         })
         .catch(() => {
             logger.error(`Action Interrupted, Please try once again or install ${colors.bold('webpack')} manually.`);
