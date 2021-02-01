@@ -29,6 +29,7 @@
   "dependencies": {
     "@discoveryjs/json-ext": "^0.5.0",
     "@webpack-cli/configtest": "^1.0.0",
+    "@webpack-cli/info": "^1.2.1",
     "@webpack-cli/serve": "^1.2.2",
     "colorette": "^1.2.1",
     "commander": "^7.0.0",
