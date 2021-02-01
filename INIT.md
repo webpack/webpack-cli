@@ -81,12 +81,6 @@ webpack-cli init
 webpack-cli init --auto
 ```
 
-**To force config generation**
-
-```bash
-webpack-cli init --force
-```
-
 **To scaffold in a specified path**
 
 ```bash

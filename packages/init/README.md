@@ -28,12 +28,6 @@ npx webpack-cli init
 npx webpack-cli init --auto
 ```
 
-**To force config generation**
-
-```bash
-npx webpack-cli init --force
-```
-
 **To scaffold in a specified path**
 
 ```bash

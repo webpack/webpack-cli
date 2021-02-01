@@ -17,11 +17,6 @@ class InitCommand {
                     description: 'To generate default config',
                 },
                 {
-                    name: 'force',
-                    type: Boolean,
-                    description: 'To force config generation',
-                },
-                {
                     name: 'generation-path',
                     type: String,
                     description: 'To scaffold in a specified path',
@@ -34,7 +29,7 @@ class InitCommand {
                     return;
                 }
 
-                modifyHelperUtil(initGenerator, null, null, options.auto, options.force, options.generationPath);
+                modifyHelperUtil(initGenerator, null, null, options.auto, options.generationPath);
             },
         );
     }

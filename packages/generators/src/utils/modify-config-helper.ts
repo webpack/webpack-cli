@@ -39,7 +39,6 @@ export function modifyHelperUtil(
     configFile: string = DEFAULT_WEBPACK_CONFIG_FILENAME,
     packages?: string[],
     autoSetDefaults = false,
-    generateConfig = false,
     generationPath = '.',
 ): void {
     const configPath: string | null = null;
@@ -135,7 +134,7 @@ export function modifyHelperUtil(
                 ) as TransformConfig;
 
                 // scaffold webpack config file from using .yo-rc.json
-                return runTransform(transformConfig, 'init', generateConfig, generationPath);
+                return runTransform(transformConfig, 'init', generationPath);
             } catch (error) {
                 logger.error(error);
                 process.exitCode = 2;
