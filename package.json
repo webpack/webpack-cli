@@ -38,7 +38,7 @@
     "pretest": "yarn build && yarn lint && yarn prepsuite",
     "test": "jest --reporters=default",
     "test:smoketests": "nyc node smoketests",
-    "test:coverage": "nyc jest --forceExit",
+    "test:coverage": "nyc --require ts-node/register jest --forceExit",
     "test:cli": "jest test --reporters=default --forceExit",
     "test:packages": "jest packages/ --reporters=default --forceExit",
     "test:ci": "yarn test:cli && yarn test:packages",
