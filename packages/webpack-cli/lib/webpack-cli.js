@@ -1160,7 +1160,11 @@ class WebpackCLI {
                         Module.prototype._compile = previousModuleCompile;
                     }
 
-                    if (error.code === 'ERR_REQUIRE_ESM' && pathToFileURL && dynamicImportLoader) {
+                    if (
+                        (error.code === 'ERR_REQUIRE_ESM' || process.env.WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG) &&
+                        pathToFileURL &&
+                        dynamicImportLoader
+                    ) {
                         const urlForConfig = pathToFileURL(configPath);
 
                         options = await dynamicImportLoader(urlForConfig);

@@ -4,7 +4,7 @@ const { run, isWebpack5 } = require('../../../utils/test-utils');
 
 describe('Default Config:', () => {
     it('Should be able to pick mjs config by default', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, []);
+        const { exitCode, stderr, stdout } = run(__dirname, [], { env: { WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG: true } });
 
         if (/Unexpected token/.test(stderr)) {
             expect(exitCode).toEqual(2);
