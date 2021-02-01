@@ -466,7 +466,7 @@ class WebpackCLI {
             {
                 name: 'init',
                 alias: 'c',
-                pkg: '@webpack-cli/init',
+                pkg: '@webpack-cli/generators',
             },
             {
                 name: 'loader',
