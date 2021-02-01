@@ -10,7 +10,7 @@ describe('config error', () => {
 
         expect(exitCode).toBe(2);
 
-        if (!/Unexpected token/.test(stderr)) {
+        if (!/Error: Not supported/.test(stderr)) {
             expect(stderr).toContain('Invalid configuration object');
             expect(stderr).toContain(`"development" | "production" | "none"`);
         }
@@ -24,7 +24,11 @@ describe('config error', () => {
         });
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain('SyntaxError: Unexpected token');
+
+        if (!/Error: Not supported/.test(stderr)) {
+            expect(stderr).toContain('SyntaxError: Unexpected token');
+        }
+
         expect(stdout).toBeFalsy();
     });
 });

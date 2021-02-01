@@ -6,7 +6,7 @@ describe('Default Config:', () => {
     it('Should be able to pick mjs config by default', () => {
         const { exitCode, stderr, stdout } = run(__dirname, [], { env: { WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG: true } });
 
-        if (/Unexpected token/.test(stderr)) {
+        if (/Error: Not supported/.test(stderr)) {
             expect(exitCode).toEqual(2);
             expect(stdout).toBeFalsy();
         } else {

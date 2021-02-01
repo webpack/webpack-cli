@@ -17,7 +17,7 @@ describe('custom config file', () => {
             env: { WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG: true },
         });
 
-        if (/Unexpected token/.test(stderr)) {
+        if (/Error: Not supported/.test(stderr)) {
             expect(exitCode).toBe(2);
             expect(stdout).toBeFalsy();
         } else {
