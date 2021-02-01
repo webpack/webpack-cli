@@ -18,6 +18,9 @@ class GeneratorsCommand {
             },
             [],
             async (outputPath) => {
+                if (!outputPath) {
+                    outputPath = process.cwd();
+                }
                 const env = yeoman.createEnv([], { cwd: outputPath });
                 const generatorName = 'webpack-loader-generator';
 
@@ -39,6 +42,9 @@ class GeneratorsCommand {
             },
             [],
             async (outputPath) => {
+                if (!outputPath) {
+                    outputPath = process.cwd();
+                }
                 const env = yeoman.createEnv([], { cwd: outputPath });
                 const generatorName = 'webpack-plugin-generator';
 
