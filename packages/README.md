@@ -13,12 +13,12 @@ This folder is the collection of those packages.
 
 ## Packages
 
-1. [generators](https://github.com/webpack/webpack-cli/tree/master/packages/generators)
-2. [info](https://github.com/webpack/webpack-cli/tree/master/packages/info)
-3. [init](https://github.com/webpack/webpack-cli/tree/master/packages/init)
-4. [migrate](https://www.npmjs.com/package/@webpack-cli/migrate)
-5. [serve](https://github.com/webpack/webpack-cli/tree/master/packages/serve)
-6. [utils](https://github.com/webpack/webpack-cli/tree/master/packages/utils)
+1. [configtest](https://github.com/webpack/webpack-cli/tree/master/packages/configtest)
+2. [generators](https://github.com/webpack/webpack-cli/tree/master/packages/generators)
+3. [info](https://github.com/webpack/webpack-cli/tree/master/packages/info)
+4. [init](https://github.com/webpack/webpack-cli/tree/master/packages/init)
+5. [migrate](https://www.npmjs.com/package/@webpack-cli/migrate)
+6. [serve](https://github.com/webpack/webpack-cli/tree/master/packages/serve)
 7. [webpack-cli](https://github.com/webpack/webpack-cli/tree/master/packages/webpack-cli)
 
 ## Generic Installation
