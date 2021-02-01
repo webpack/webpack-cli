@@ -193,8 +193,6 @@ In case you've got a small change in most of the cases, your pull request would 
 
 Our commit messages format follows the [angular.js commits format](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#commits).
 
-You can use `yarn commit` script to have an interactive way of making commits that follow our guidelines.
-
 We don't use the scope. The template of a commit would look like this:
 
 ### Commit Message Format
