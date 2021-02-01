@@ -63,7 +63,7 @@ class GeneratorsCommand {
             },
         );
 
-        cli.makeCommand(
+        await cli.makeCommand(
             {
                 name: 'plugin [output-path]',
                 alias: 'p',
