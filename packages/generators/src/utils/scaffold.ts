@@ -39,13 +39,9 @@ function mapOptionsToTransform(config: Config): string[] {
  * and writes the file
  */
 
-export function runTransform(transformConfig: TransformConfig, action: string, generateConfig: boolean, generationPath: string): void {
+export function runTransform(transformConfig: TransformConfig, action: string, generationPath: string): void {
     // webpackOptions.name sent to nameTransform if match
     const webpackConfig = Object.keys(transformConfig).filter((p: string): boolean => {
-        if (p == 'usingDefaults') {
-            return generateConfig;
-        }
-
         return p !== 'configFile' && p !== 'configPath';
     });
     const initActionNotDefined = action && action !== 'init';
