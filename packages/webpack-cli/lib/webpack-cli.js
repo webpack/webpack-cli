@@ -1529,7 +1529,7 @@ class WebpackCLI {
                 !configOptions.mode &&
                 process.env &&
                 process.env.NODE_ENV &&
-                (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'node')
+                (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'none')
             ) {
                 configOptions.mode = process.env.NODE_ENV;
             }
