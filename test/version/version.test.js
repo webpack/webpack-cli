@@ -156,6 +156,17 @@ describe('single version flag', () => {
         expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
     });
 
+    it('outputs version with init', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['init', '--version'], false);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain(`@webpack-cli/generators ${generatorsPkgJSON.version}`);
+        expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
+        expect(stdout).toContain(`webpack ${webpack.version}`);
+        expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
+    });
+
     it('outputs version with serve', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['serve', '--version'], false);
 
@@ -173,6 +184,17 @@ describe('single version flag', () => {
         expect(stderr).toBeFalsy();
         expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
         expect(stdout).toContain(`@webpack-cli/migrate`);
+        expect(stdout).toContain(`webpack ${webpack.version}`);
+        expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
+    });
+
+    it('outputs version with the alias c for init', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['c', '--version'], false);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain(`@webpack-cli/generators ${generatorsPkgJSON.version}`);
+        expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
         expect(stdout).toContain(`webpack ${webpack.version}`);
         expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
     });

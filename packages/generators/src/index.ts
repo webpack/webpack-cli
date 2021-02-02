@@ -17,7 +17,7 @@ class GeneratorsCommand {
                 alias: 'c',
                 description: 'Initialize a new webpack configuration.',
                 usage: '[scaffold...] [options]',
-                pkg: '@webpack-cli/init',
+                pkg: '@webpack-cli/generators',
             },
             [
                 {
