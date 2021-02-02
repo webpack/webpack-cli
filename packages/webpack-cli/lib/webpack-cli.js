@@ -295,6 +295,12 @@ class WebpackCLI {
                 multiple: true,
                 description: 'Environment passed to the configuration when it is a function.',
             },
+            {
+                name: 'node-env',
+                type: String,
+                multiple: false,
+                description: 'Sets process.env.NODE_ENV to the specified value',
+            },
 
             // Adding more plugins
             {
@@ -427,6 +433,12 @@ class WebpackCLI {
         this.builtInOptionsCache = options;
 
         return options;
+    }
+
+    applyNodeEnv(options) {
+        if (typeof options.nodeEnv === 'string') {
+            process.env.NODE_ENV = options.nodeEnv;
+        }
     }
 
     async run(args, parseOptions) {
@@ -1517,7 +1529,7 @@ class WebpackCLI {
                 !configOptions.mode &&
                 process.env &&
                 process.env.NODE_ENV &&
-                (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'node')
+                (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'none')
             ) {
                 configOptions.mode = process.env.NODE_ENV;
             }
@@ -1653,6 +1665,8 @@ class WebpackCLI {
     }
 
     async createCompiler(options, callback) {
+        this.applyNodeEnv(options);
+
         let config = await this.resolveConfig(options);
 
         config = await this.applyOptions(config, options);
