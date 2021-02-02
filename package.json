@@ -45,20 +45,12 @@
     "publish:monorepo": "yarn build && lerna version && lerna publish from-git",
     "update:docs": "node ./scripts/updateDocs"
   },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-customizable"
-    },
-    "cz-customizable": {
-      "config": "./.cz-config.js"
-    }
-  },
   "peerDependencies": {
     "webpack": "4.x.x || 5.x.x"
   },
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",
-    "@commitlint/config-lerna-scopes": "^11.0.0",
+    "@commitlint/config-conventional": "^11.0.0",
     "@types/jest": "^26.0.15",
     "@types/node": "^14.14.6",
     "@typescript-eslint/eslint-plugin": "^2.34.0",
@@ -67,7 +59,6 @@
     "coffeescript": "^2.5.1",
     "colorette": "^1.2.1",
     "commitlint": "^11.0.0",
-    "commitlint-config-cz": "^0.13.2",
     "concat-stream": "^2.0.0",
     "cz-customizable": "^6.3.0",
     "del-cli": "^3.0.1",
