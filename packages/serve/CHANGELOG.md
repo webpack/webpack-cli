@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/serve@1.2.2...@webpack-cli/serve@1.3.0) (2021-02-02)
+
+### Bug Fixes
+
+-   avoid deprecation message ([9d6dbda](https://github.com/webpack/webpack-cli/commit/9d6dbda93da167a1aaad03f599105a4fe7849dc3))
+-   error message on invalid plugin options ([#2380](https://github.com/webpack/webpack-cli/issues/2380)) ([f9ce1d3](https://github.com/webpack/webpack-cli/commit/f9ce1d30b83bf0e0b4d91498d012c13c208e6e67))
+
+### Features
+
+-   entries syntax ([#2369](https://github.com/webpack/webpack-cli/issues/2369)) ([6b31614](https://github.com/webpack/webpack-cli/commit/6b3161479578f572f803f579c7e71073eb797184))
+
 ## [1.2.2](https://github.com/webpack/webpack-cli/compare/@webpack-cli/serve@1.2.1...@webpack-cli/serve@1.2.2) (2021-01-19)
 
 ### Bug Fixes

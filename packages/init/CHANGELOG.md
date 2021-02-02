@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.3](https://github.com/webpack/webpack-cli/compare/@webpack-cli/init@1.1.2...@webpack-cli/init@1.1.3) (2021-02-02)
+
+**Note:** Version bump only for package @webpack-cli/init
+
 ## [1.1.2](https://github.com/webpack/webpack-cli/compare/@webpack-cli/init@1.1.1...@webpack-cli/init@1.1.2) (2021-01-19)
 
 **Note:** Version bump only for package @webpack-cli/init

@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.5.0](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.4.0...webpack-cli@4.5.0) (2021-02-02)
+
+### Bug Fixes
+
+-   avoid deprecation message ([9d6dbda](https://github.com/webpack/webpack-cli/commit/9d6dbda93da167a1aaad03f599105a4fe7849dc3))
+-   error message on invalid plugin options ([#2380](https://github.com/webpack/webpack-cli/issues/2380)) ([f9ce1d3](https://github.com/webpack/webpack-cli/commit/f9ce1d30b83bf0e0b4d91498d012c13c208e6e67))
+-   improve description for 'configtest' command ([#2379](https://github.com/webpack/webpack-cli/issues/2379)) ([311bae3](https://github.com/webpack/webpack-cli/commit/311bae336d83424c800e553b6ef40242d967685c))
+
+### Features
+
+-   add the `--node-env` flag ([#2388](https://github.com/webpack/webpack-cli/issues/2388)) ([e5126f1](https://github.com/webpack/webpack-cli/commit/e5126f10b6622437c0541c25be2a610a82c1df04))
+-   entries syntax ([#2369](https://github.com/webpack/webpack-cli/issues/2369)) ([6b31614](https://github.com/webpack/webpack-cli/commit/6b3161479578f572f803f579c7e71073eb797184))
+-   support ES module configuration format ([#2381](https://github.com/webpack/webpack-cli/issues/2381)) ([aebdbbc](https://github.com/webpack/webpack-cli/commit/aebdbbc1f6e2761e7821cb3660bea686cce7b587))
+
 # [4.4.0](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.3.1...webpack-cli@4.4.0) (2021-01-19)
 
 ### Bug Fixes

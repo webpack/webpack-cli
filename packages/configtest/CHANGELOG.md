@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.1](https://github.com/webpack/webpack-cli/compare/@webpack-cli/configtest@1.0.0...@webpack-cli/configtest@1.0.1) (2021-02-02)
+
+### Bug Fixes
+
+-   improve description for 'configtest' command ([#2379](https://github.com/webpack/webpack-cli/issues/2379)) ([311bae3](https://github.com/webpack/webpack-cli/commit/311bae336d83424c800e553b6ef40242d967685c))
+
 # 1.0.0 (2021-01-19)
 
 ### Features
