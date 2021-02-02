@@ -1665,10 +1665,9 @@ class WebpackCLI {
     }
 
     async createCompiler(options, callback) {
-        let config = await this.resolveConfig(options);
-
-        // apply process.env.NODE_ENV with the help of --node-env
         this.applyNodeEnv(options);
+
+        let config = await this.resolveConfig(options);
 
         config = await this.applyOptions(config, options);
         config = await this.applyCLIPlugin(config, options);
