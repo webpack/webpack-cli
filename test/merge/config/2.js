@@ -1,6 +1,7 @@
 module.exports = {
-    entry: './some_entry.js',
+    entry: './second-entry.js',
+    target: 'node',
     output: {
-        filename: 'merged.js',
+        filename: 'second-output.js',
     },
 };
