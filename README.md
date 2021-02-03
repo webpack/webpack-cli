@@ -55,12 +55,17 @@ We organize webpack CLI as a multi-package repository using [lerna](https://gith
 Supporting developers is an important task for webpack CLI.
 Thus, webpack CLI provides different commands for many common tasks.
 
--   [`webpack-cli init`](./packages/init/README.md#webpack-cli-init) - Create a new webpack configuration.
--   [`webpack-cli info`](./packages/info/README.md#webpack-cli-info) - Returns information related to the local environment.
--   [`webpack-cli migrate`](https://www.npmjs.com/package/@webpack-cli/migrate) - Migrate project from one version to another.
--   [`webpack-cli plugin`](./packages/generators#generators) - Initiate new plugin project.
--   [`webpack-cli loader`](./packages/generators#generators) - Initiate new loader project.
--   [`webpack-cli serve`](./packages/serve/README.md#webpack-cli-serve) - Use webpack with a development server that provides live reloading.
+-   `build|bundle|b [entries...] [options]` - Run webpack (default command, can be omitted).
+-   [`configtest|t [config-path]`](./packages/configtest/README.md#webpack-cli-configtest) - Validate a webpack configuration.
+-   `help|h [command] [option]` - Display help for commands and options.
+-   [`init|c`](./packages/init/README.md#webpack-cli-init) - Create a new webpack configuration.
+-   [`info|i`](./packages/info/README.md#webpack-cli-info) - Returns information related to the local environment.
+-   [`migrate|m`](https://www.npmjs.com/package/@webpack-cli/migrate) - Migrate project from one version to another.
+-   [`plugin|p`](./packages/generators#generators) - Initiate new plugin project.
+-   [`loader|l`](./packages/generators#generators) - Initiate new loader project.
+-   [`serve|s`](./packages/serve/README.md#webpack-cli-serve) - Use webpack with a development server that provides live reloading.
+-   `version|v [commands...]` - Output the version number of `webpack`, `webpack-cli`, `webpack-dev-server`, and commands
+-   `watch|w [entries...] [options]` - Run webpack and watch for files changes.
 
 ### Utilities
 
