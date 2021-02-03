@@ -277,7 +277,7 @@ describe('single version flag', () => {
         expect(stdout).toContain('webpack version|v [commands...]');
     });
 
-    it('outputs versions with --color using command syntax', () => {
+    it('outputs versions with --color using option syntax', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--version', '--color'], false);
 
         expect(exitCode).toBe(0);
@@ -287,7 +287,7 @@ describe('single version flag', () => {
         expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
     });
 
-    it('outputs versions with --no-color using command syntax', () => {
+    it('outputs versions with --no-color using option syntax', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--version', '--no-color'], false);
 
         expect(exitCode).toBe(0);
