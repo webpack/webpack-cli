@@ -59,7 +59,7 @@ const run = (testCase, args = [], options = {}) => {
     return result;
 };
 
-const runWatch = (testCase, args = [], setOutput = true, outputKillStr = /webpack \d+\.\d+\.\d/) => {
+const runWatch = (testCase, args = [], setOutput = true, outputKillStr = /webpack \d+\.\d+\.\d/, options = {}) => {
     const cwd = path.resolve(testCase);
 
     const outputPath = path.resolve(testCase, 'bin');
@@ -70,6 +70,7 @@ const runWatch = (testCase, args = [], setOutput = true, outputKillStr = /webpac
             cwd,
             reject: false,
             stdio: 'pipe',
+            ...options,
         });
 
         proc.stdout.pipe(

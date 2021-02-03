@@ -3,26 +3,32 @@
 const { runWatch } = require('../../utils/test-utils');
 
 describe('stats and watch', () => {
-    beforeAll(() => {
-        process.env.FORCE_COLOR = true;
-    });
-
     it('should not log stats with the "none" value from the configuration', async () => {
-        const { stderr, stdout } = await runWatch(__dirname, ['-c', './webpack.config.js']);
+        const { stderr, stdout } = await runWatch(__dirname, ['-c', './webpack.config.js'], true, /webpack \d+\.\d+\.\d/, {
+            env: { FORCE_COLOR: true },
+        });
 
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
     });
 
     it('should not log stats with the "none" value from the configuration and multi compiler mode', async () => {
-        const { stderr, stdout } = await runWatch(__dirname, ['-c', './multi-webpack.config.js']);
+        const { stderr, stdout } = await runWatch(__dirname, ['-c', './multi-webpack.config.js'], true, /webpack \d+\.\d+\.\d/, {
+            env: { FORCE_COLOR: true },
+        });
 
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
     });
 
     it('should log stats with the "normal" value in arguments', async () => {
-        const { stderr, stdout } = await runWatch(__dirname, ['-c', './webpack.config.js', '--stats', 'normal']);
+        const { stderr, stdout } = await runWatch(
+            __dirname,
+            ['-c', './webpack.config.js', '--stats', 'normal'],
+            true,
+            /webpack \d+\.\d+\.\d/,
+            { env: { FORCE_COLOR: true } },
+        );
 
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
