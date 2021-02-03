@@ -1,5 +1,7 @@
 const fs = require('fs');
 const path = require('path');
+const { pathToFileURL } = require('url');
+const Module = require('module');
 
 const { program } = require('commander');
 const utils = require('./utils');
@@ -293,6 +295,12 @@ class WebpackCLI {
                 multiple: true,
                 description: 'Environment passed to the configuration when it is a function.',
             },
+            {
+                name: 'node-env',
+                type: String,
+                multiple: false,
+                description: 'Sets process.env.NODE_ENV to the specified value',
+            },
 
             // Adding more plugins
             {
@@ -425,6 +433,12 @@ class WebpackCLI {
         this.builtInOptionsCache = options;
 
         return options;
+    }
+
+    applyNodeEnv(options) {
+        if (typeof options.nodeEnv === 'string') {
+            process.env.NODE_ENV = options.nodeEnv;
+        }
     }
 
     async run(args, parseOptions) {
@@ -1137,26 +1151,35 @@ class WebpackCLI {
                 }
             }
 
-            const { pathToFileURL } = require('url');
-
-            let importESM;
-
-            try {
-                importESM = new Function('id', 'return import(id);');
-            } catch (e) {
-                importESM = null;
-            }
-
             let options;
 
             try {
                 try {
                     options = require(configPath);
                 } catch (error) {
-                    if (pathToFileURL && importESM && error.code === 'ERR_REQUIRE_ESM') {
+                    let previousModuleCompile;
+
+                    // TODO Workaround https://github.com/zertosh/v8-compile-cache/issues/30
+                    if (this._originalModuleCompile) {
+                        previousModuleCompile = Module.prototype._compile;
+
+                        Module.prototype._compile = this._originalModuleCompile;
+                    }
+
+                    const dynamicImportLoader = this.utils.dynamicImportLoader();
+
+                    if (this._originalModuleCompile) {
+                        Module.prototype._compile = previousModuleCompile;
+                    }
+
+                    if (
+                        (error.code === 'ERR_REQUIRE_ESM' || process.env.WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG) &&
+                        pathToFileURL &&
+                        dynamicImportLoader
+                    ) {
                         const urlForConfig = pathToFileURL(configPath);
 
-                        options = await importESM(urlForConfig);
+                        options = await dynamicImportLoader(urlForConfig);
                         options = options.default;
 
                         return { options, path: configPath };
@@ -1506,7 +1529,7 @@ class WebpackCLI {
                 !configOptions.mode &&
                 process.env &&
                 process.env.NODE_ENV &&
-                (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'node')
+                (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'none')
             ) {
                 configOptions.mode = process.env.NODE_ENV;
             }
@@ -1642,6 +1665,8 @@ class WebpackCLI {
     }
 
     async createCompiler(options, callback) {
+        this.applyNodeEnv(options);
+
         let config = await this.resolveConfig(options);
 
         config = await this.applyOptions(config, options);

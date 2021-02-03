@@ -211,16 +211,17 @@ format that includes a **type** and a **subject**:
 
 This is the list of _type_ of commits that we accept:
 
--   **ast** : Init, migrate, etc.
--   **break** : Changes that break the behaviour of the cli.
+-   **build** : Changes that affect the build system or external dependencies (example scopes: typescript, webpack, npm).
 -   **chore** : Updating deps, docs, linting, etc.
--   **cli** : Changes related to core CLI things.
+-   **ci** : Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)
 -   **docs** : Documentation only changes.
 -   **feat** : A new feature.
--   **fix** : A bug fix, typos, etc.
--   **misc** : Other formats like tweaks and such.
--   **tests** : Adding missing or correcting existing tests.
+-   **fix** : A bug fix.
+-   **perf** : A code change that improves performance.
 -   **refactor** : A code change that neither fixes a bug nor adds a feature.
+-   **revert** : Reverts the previous commit.
+-   **style** : Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc).
+-   **test** : Adding missing tests or correcting existing tests.
 
 The **header** is mandatory.
 

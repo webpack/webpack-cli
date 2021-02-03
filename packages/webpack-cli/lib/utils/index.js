@@ -19,6 +19,10 @@ module.exports = {
         return require('./capitalize-first-letter');
     },
 
+    get dynamicImportLoader() {
+        return require('./dynamic-import-loader');
+    },
+
     get getPackageManager() {
         return require('./get-package-manager');
     },

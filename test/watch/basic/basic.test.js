@@ -38,7 +38,7 @@ describe('basic', () => {
 
                 if (!modified) {
                     process.nextTick(() => {
-                        writeFileSync(resolve(__dirname, './src/index.js'), `console.log('watch flag test');`);
+                        writeFileSync(resolve(__dirname, './src/index.js'), `console.log('watch flag test');\n`);
                     });
 
                     modified = true;
@@ -71,7 +71,7 @@ describe('basic', () => {
 
                 if (!modified) {
                     process.nextTick(() => {
-                        writeFileSync(resolve(__dirname, './src/index.js'), `console.log('watch flag test');`);
+                        writeFileSync(resolve(__dirname, './src/index.js'), `console.log('watch flag test');\n`);
                     });
 
                     modified = true;
@@ -106,7 +106,7 @@ describe('basic', () => {
 
                 if (!modified) {
                     process.nextTick(() => {
-                        writeFileSync(resolve(__dirname, './src/entry.js'), `console.log('watch flag test');`);
+                        writeFileSync(resolve(__dirname, './src/entry.js'), `console.log('watch flag test');\n`);
                     });
 
                     modified = true;
@@ -139,7 +139,7 @@ describe('basic', () => {
 
                 if (!modified) {
                     process.nextTick(() => {
-                        writeFileSync(resolve(__dirname, './src/index.js'), `console.log('watch flag test');`);
+                        writeFileSync(resolve(__dirname, './src/index.js'), `console.log('watch flag test');\n`);
                     });
 
                     modified = true;
