@@ -241,6 +241,7 @@ class WebpackCLI {
             'json',
             'name',
             'output-path',
+            'node-env',
         ];
 
         const builtInFlags = [
@@ -299,7 +300,7 @@ class WebpackCLI {
                 name: 'node-env',
                 type: String,
                 multiple: false,
-                description: 'Sets process.env.NODE_ENV to the specified value',
+                description: 'Sets process.env.NODE_ENV to the specified value.',
             },
 
             // Adding more plugins
