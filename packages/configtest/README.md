@@ -13,7 +13,7 @@ This package validates a webpack configuration.
 npm i -D @webpack-cli/configtest
 
 #yarn
-yarn add @webpack-cli/configtest -D
+yarn add -D @webpack-cli/configtest
 
 ```
 
