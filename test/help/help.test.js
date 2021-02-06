@@ -191,6 +191,7 @@ describe('help', () => {
             expect(exitCode).toBe(0);
             expect(stderr).toBeFalsy();
             expect(stdout).toContain(`webpack ${command === 'build' || command === 'bundle' || command === 'b' ? '' : command}`);
+            expect(stdout).toMatchSnapshot();
         });
 
         it(`should show help information for '${command}' command using the "--help verbose" option`, () => {
