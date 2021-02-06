@@ -238,7 +238,8 @@ describe('help', () => {
 
             expect(exitCode).toBe(0);
             expect(stderr).toBeFalsy();
-            expect(stdout).toContain(helpOutput);
+            expect(stdout).toContain(`webpack ${name === 'build' || name === 'bundle' || name === 'b' ? '' : name}`);
+            expect(stdout).toMatchSnapshot();
         });
 
         it(`should show help information for '${name}' command using the "--help verbose" option`, () => {
