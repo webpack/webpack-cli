@@ -13,6 +13,8 @@ describe('output config related flag', () => {
 
         if (property.includes('environment-')) {
             property = property.split('environment-')[1];
+        } else if (property.includes('clean-')) {
+            property = property.split('clean-')[1];
         }
 
         const propName = hyphenToUpperCase(property);
