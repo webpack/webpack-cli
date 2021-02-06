@@ -1,5 +1,8 @@
+'use strict';
+
 const fs = require('fs');
 const { join } = require('path');
+const stripAnsi = require('strip-ansi');
 const { run } = require('../utils/test-utils');
 const rimraf = require('rimraf');
 
@@ -26,7 +29,7 @@ describe('prefetch', () => {
         expect(exitCode).toBe(1);
         expect(stderr).toBeFalsy();
         // Should contain the error message
-        expect(stdout).toContain(`Error: Can't resolve './src/somefile.js'`);
+        expect(stripAnsi(stdout)).toContain(`Error: Can't resolve './src/somefile.js'`);
     });
 
     it('should log error when flag value is not supplied', () => {

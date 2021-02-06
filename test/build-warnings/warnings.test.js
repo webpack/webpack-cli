@@ -1,4 +1,6 @@
 'use strict';
+
+const stripAnsi = require('strip-ansi');
 const { run } = require('../utils/test-utils');
 const { existsSync, readFile } = require('fs');
 const { resolve } = require('path');
@@ -10,7 +12,7 @@ describe('warnings', () => {
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).toMatch(/WARNING/);
-        expect(stdout).toMatch(/Error: Can't resolve/);
+        expect(stripAnsi(stdout)).toMatch(/Error: Can't resolve/);
     });
 
     it('should output JSON with the "json" flag', () => {
