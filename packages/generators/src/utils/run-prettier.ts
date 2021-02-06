@@ -12,7 +12,7 @@ const { logger } = utils;
  * @returns {void} Writes a file at given location
  */
 
-export function runPrettier(outputPath: string, source: string): void {
+export function runPrettier(outputPath: string, source: string, fileName: string): void {
     let prettySource: string = source;
 
     let prettier;
@@ -21,9 +21,7 @@ export function runPrettier(outputPath: string, source: string): void {
         // eslint-disable-next-line node/no-extraneous-require
         prettier = require('prettier');
     } catch (err) {
-        logger.warn(
-            "File is not properly formatted because you don't have prettier installed, you can either install it or format it manually",
-        );
+        logger.warn(`${fileName} is not formatted because prettier is not installed locally.`);
 
         return fs.writeFileSync(outputPath, source, 'utf8');
     }
