@@ -71,7 +71,7 @@ describe('stats config related flag', () => {
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
                     expect(stdout).toContain('log');
-                } else if (flag.name === 'stats-entrypoints') {
+                } else if (flag.name === 'stats-entrypoints' || flag.name === 'stats-error-details') {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'auto']);
 
                     expect(exitCode).toBe(0);
