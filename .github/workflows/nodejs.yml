@@ -85,6 +85,7 @@ jobs:
           yarn bootstrap
 
       - name: Install webpack ${{ matrix.webpack-version }}
+        if: matrix.webpack-version == 'webpack-4'
         run: yarn add -W webpack@${{ matrix.webpack-version }}
 
       - name: Build and Bootstrap
