@@ -20,7 +20,7 @@ describe('runPrettier', () => {
     });
 
     it('should run prettier on JS string and write file', () => {
-        runPrettier(outputFile, 'console.log("1");console.log("2");');
+        runPrettier(outputFile, 'console.log("1");console.log("2");', 'webpack.config.js');
 
         expect(fs.existsSync(outputFile)).toBeTruthy();
 
@@ -31,7 +31,7 @@ describe('runPrettier', () => {
     });
 
     it('prettier should fail on invalid JS, with file still written', () => {
-        runPrettier(outputFile, '"');
+        runPrettier(outputFile, '"', 'webpack.config.js');
 
         expect(fs.existsSync(outputFile)).toBeTruthy();
 
