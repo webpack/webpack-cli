@@ -9,6 +9,7 @@ Options:
   --config-name <value...>                                                           Name of the configuration to use.
   -m, --merge                                                                        Merge two or more configurations using 'webpack-merge'.
   --env <value...>                                                                   Environment passed to the configuration when it is a function.
+  --node-env <value>                                                                 Sets process.env.NODE_ENV to the specified value
   -h, --hot                                                                          Enables Hot Module Replacement
   --no-hot                                                                           Disables Hot Module Replacement.
   --analyze                                                                          It invokes webpack-bundle-analyzer plugin to get bundle information.
@@ -52,6 +53,9 @@ Options:
   --experiments-lazy-compilation-client <value>                                      A custom client.
   --experiments-lazy-compilation-entries                                             Enable/disable lazy compilation for entries.
   --no-experiments-lazy-compilation-entries                                          Negative 'experiments-lazy-compilation-entries' option.
+  --experiments-lazy-compilation-imports                                             Enable/disable lazy compilation for import() modules.
+  --no-experiments-lazy-compilation-imports                                          Negative 'experiments-lazy-compilation-imports' option.
+  --experiments-lazy-compilation-test <value>                                        Specify which entrypoints or import()ed modules should be lazily compiled. This is matched with the imported module and not the entrypoint name.
   --experiments-output-module                                                        Allow output javascript files as module source type.
   --no-experiments-output-module                                                     Negative 'experiments-output-module' option.
   --experiments-sync-web-assembly                                                    Support WebAssembly as synchronous EcmaScript Module (outdated).
@@ -428,6 +432,11 @@ Options:
   --output-chunk-load-timeout <value>                                                Number of milliseconds before chunk request expires.
   --output-chunk-loading <value>                                                     The method of loading chunks (methods included by default are 'jsonp' (web), 'importScripts' (WebWorker), 'require' (sync node.js), 'async-node' (async node.js), but others might be added by plugins).
   --output-chunk-loading-global <value>                                              The global variable used by webpack for loading of chunks.
+  --output-clean                                                                     Clean the output directory before emit.
+  --no-output-clean                                                                  Negative 'output-clean' option.
+  --output-clean-dry                                                                 Log the assets that should be removed instead of deleting them.
+  --no-output-clean-dry                                                              Negative 'output-clean-dry' option.
+  --output-clean-keep <value>                                                        Keep these assets.
   --output-compare-before-emit                                                       Check if to be emitted file already exists and have the same content before writing to output filesystem.
   --no-output-compare-before-emit                                                    Negative 'output-compare-before-emit' option.
   --output-cross-origin-loading <value>                                              This option enables cross-origin loading of chunks.
@@ -686,8 +695,7 @@ Options:
   --stats-entrypoints <value>                                                        Display the entry points with the corresponding bundles.
   --stats-env                                                                        Add --env information.
   --no-stats-env                                                                     Negative 'stats-env' option.
-  --stats-error-details                                                              Add details to errors (like resolving log).
-  --no-stats-error-details                                                           Negative 'stats-error-details' option.
+  --stats-error-details <value>                                                      Add details to errors (like resolving log).
   --stats-error-stack                                                                Add internal stack trace to errors.
   --no-stats-error-stack                                                             Negative 'stats-error-stack' option.
   --stats-errors                                                                     Add errors.
