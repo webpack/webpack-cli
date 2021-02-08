@@ -243,7 +243,6 @@ export class CustomGenerator extends Generator {
             topScope?: string[];
             webpackOptions?: WebpackOptions;
         };
-        usingDefaults?: boolean;
     };
     public isProd: boolean;
     public dependencies: string[];

@@ -29,7 +29,6 @@ export interface WebpackScaffoldObject extends Object {
         topScope?: string[];
         webpackOptions?: object;
     };
-    usingDefaults?: boolean;
 }
 
 const DEFAULT_WEBPACK_CONFIG_FILENAME = 'webpack.config.js';
