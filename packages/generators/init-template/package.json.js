@@ -1,9 +1,9 @@
-module.exports = (usingDefaults) => {
+module.exports = (isUsingDevServer) => {
     const scripts = {
         build: 'webpack',
     };
-    if (usingDefaults) {
-        scripts.start = 'webpack-dev-server';
+    if (isUsingDevServer) {
+        scripts.serve = 'webpack serve';
     }
 
     return {

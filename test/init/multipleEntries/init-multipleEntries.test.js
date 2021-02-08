@@ -51,8 +51,10 @@ describe('init with multiple entries', () => {
             expect(pkgJson).toBeTruthy();
             expect(pkgJson['devDependencies']).toBeTruthy();
             expect(pkgJson['devDependencies']['webpack']).toBeTruthy();
+            expect(pkgJson['devDependencies']['webpack-dev-server']).toBeTruthy();
             expect(pkgJson['devDependencies']['terser-webpack-plugin']).toBeTruthy();
             expect(pkgJson['scripts']['build'] == 'webpack').toBeTruthy();
+            expect(pkgJson['scripts']['serve'] == 'webpack-dev-server').toBeTruthy();
         };
         expect(pkgJsonTests).not.toThrow();
     });
