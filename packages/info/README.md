@@ -13,7 +13,7 @@ This package returns a set of information related to the local environment.
 npm i -D @webpack-cli/info
 
 #yarn
-yarn add @webpack-cli/info -D
+yarn add -D @webpack-cli/info
 
 ```
 
