@@ -85,6 +85,7 @@ npx webpack-cli --help verbose
   --config-name <value...>      Name of the configuration to use.
   -m, --merge                   Merge two or more configurations using 'webpack-merge'.
   --env <value...>              Environment passed to the configuration when it is a function.
+  --node-env <value>            Sets process.env.NODE_ENV to the specified value.
   --progress [value]            Print compilation progress during build.
   -j, --json [value]            Prints result as JSON or store it in a file.
   -d, --devtool <value>         Determine source maps to use.
