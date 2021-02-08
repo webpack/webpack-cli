@@ -1,6 +1,5 @@
 'use strict';
 
-const stripAnsi = require('strip-ansi');
 const { resolve } = require('path');
 const { run, isWindows } = require('../utils/test-utils');
 
@@ -24,6 +23,6 @@ describe('--context flag', () => {
 
         expect(exitCode).toBe(1);
         expect(stderr).toBeFalsy();
-        expect(stripAnsi(stdout)).toContain(`Module not found: Error: Can't resolve './src/main.js'`);
+        expect(stdout).toContain(`Module not found: Error: Can't resolve './src/main.js'`);
     });
 });
