@@ -3,7 +3,7 @@ module.exports = (isUsingDevServer) => {
         build: 'webpack',
     };
     if (isUsingDevServer) {
-        scripts.start = 'webpack serve';
+        scripts.serve = 'webpack serve';
     }
 
     return {

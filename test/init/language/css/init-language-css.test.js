@@ -76,7 +76,7 @@ describe('init with SCSS', () => {
             expect(pkgJson['devDependencies']['node-sass']).toBeTruthy();
             expect(pkgJson['devDependencies']['mini-css-extract-plugin']).toBeTruthy();
             expect(pkgJson['scripts']['build'] == 'webpack').toBeTruthy();
-            expect(pkgJson['scripts']['start'] == 'webpack serve').toBeTruthy();
+            expect(pkgJson['scripts']['serve'] == 'webpack serve').toBeTruthy();
         };
         expect(pkgJsonTests).not.toThrow();
     });

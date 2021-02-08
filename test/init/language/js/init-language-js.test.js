@@ -60,7 +60,7 @@ describe('init with Typescript', () => {
             expect(pkgJson['devDependencies']['typescript']).toBeTruthy();
             expect(pkgJson['devDependencies']['ts-loader']).toBeTruthy();
             expect(pkgJson['scripts']['build'] == 'webpack').toBeTruthy();
-            expect(pkgJson['scripts']['start'] == 'webpack serve').toBeTruthy();
+            expect(pkgJson['scripts']['serve'] == 'webpack serve').toBeTruthy();
         };
         expect(pkgJsonTests).not.toThrow();
     });
