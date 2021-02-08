@@ -86,7 +86,7 @@ export function runTransform(transformConfig: TransformConfig, action: string, g
                     const source: string = ast.toSource({
                         quote: 'single',
                     });
-                    runPrettier(outputPath, source);
+                    runPrettier(outputPath, source, configurationName);
                 })
                 .catch((err: Error): void => {
                     logger.error(err);
