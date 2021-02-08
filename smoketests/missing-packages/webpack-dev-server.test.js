@@ -1,3 +1,8 @@
+'use strict';
+
+//disable colors
+process.env.NO_COLOR = true;
+
 const path = require('path');
 const execa = require('execa');
 const { renameSync } = require('fs');
