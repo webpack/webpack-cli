@@ -5,7 +5,6 @@ dist
 packages/configtest/lib
 packages/generators/lib
 packages/info/lib
-packages/init/lib
 packages/serve/lib
 test/**/dist/
 test/**/bin/

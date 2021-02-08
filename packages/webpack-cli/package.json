@@ -49,9 +49,6 @@
     "@webpack-cli/generators": {
       "optional": true
     },
-    "@webpack-cli/init": {
-      "optional": true
-    },
     "@webpack-cli/migrate": {
       "optional": true
     },

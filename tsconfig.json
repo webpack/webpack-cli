@@ -27,9 +27,6 @@
       "path": "packages/info"
     },
     {
-      "path": "packages/init"
-    },
-    {
       "path": "packages/serve"
     },
     {
