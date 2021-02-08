@@ -244,9 +244,13 @@ export default class InitGenerator extends CustomGenerator {
     public writing(): void {
         this.config.set('configuration', this.configuration);
 
+        const isUsingDevServer = this.dependencies.includes('webpack-dev-server');
         const packageJsonTemplatePath = '../init-template/package.json.js';
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        this.fs.extendJSON(this.destinationPath('package.json'), require(packageJsonTemplatePath)(this.autoGenerateConfig));
+        this.fs.extendJSON(
+            this.destinationPath('package.json'),
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
+            require(packageJsonTemplatePath)(isUsingDevServer),
+        );
 
         const generateEntryFile = (entryPath: string, name: string): void => {
             entryPath = entryPath.replace(/'/g, '');
