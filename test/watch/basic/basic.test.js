@@ -1,6 +1,5 @@
 'use strict';
 
-const stripAnsi = require('strip-ansi');
 const { run, runAndGetWatchProc, isWebpack5 } = require('../../utils/test-utils');
 const { writeFileSync } = require('fs');
 const { resolve } = require('path');
@@ -23,7 +22,7 @@ describe('basic', () => {
         let modified = false;
 
         proc.stdout.on('data', (chunk) => {
-            const data = stripAnsi(chunk.toString());
+            const data = chunk.toString();
 
             if (data.includes('index.js')) {
                 if (isWebpack5) {
@@ -56,7 +55,7 @@ describe('basic', () => {
         let modified = false;
 
         proc.stdout.on('data', (chunk) => {
-            const data = stripAnsi(chunk.toString());
+            const data = chunk.toString();
 
             if (data.includes('index.js')) {
                 if (isWebpack5) {
@@ -91,7 +90,7 @@ describe('basic', () => {
         const wordsInStatsv5Entries = ['asset', 'entry.js', 'compiled successfully'];
 
         proc.stdout.on('data', (chunk) => {
-            const data = stripAnsi(chunk.toString());
+            const data = chunk.toString();
 
             if (data.includes('entry.js')) {
                 if (isWebpack5) {
@@ -124,7 +123,7 @@ describe('basic', () => {
         let modified = false;
 
         proc.stdout.on('data', (chunk) => {
-            const data = stripAnsi(chunk.toString());
+            const data = chunk.toString();
 
             if (data.includes('index.js')) {
                 if (isWebpack5) {
@@ -151,7 +150,7 @@ describe('basic', () => {
         });
 
         proc.stderr.on('data', (chunk) => {
-            const data = stripAnsi(chunk.toString());
+            const data = chunk.toString();
 
             expect(data).toContain(
                 "No need to use the 'watch' command together with '{ watch: true }' configuration, it does not make sense.",

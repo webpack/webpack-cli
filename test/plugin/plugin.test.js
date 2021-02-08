@@ -1,7 +1,6 @@
 const { existsSync, mkdirSync } = require('fs');
 const { join, resolve } = require('path');
 const rimraf = require('rimraf');
-const stripAnsi = require('strip-ansi');
 const { run, runPromptWithAnswers } = require('../utils/test-utils');
 
 const ENTER = '\x0D';
@@ -25,13 +24,13 @@ describe('plugin command', () => {
         const { stdout, stderr } = run(__dirname, ['plugin'], false);
         expect(stdout).toBeTruthy();
         expect(stderr).toBeFalsy();
-        expect(stripAnsi(stdout)).toContain(firstPrompt);
+        expect(stdout).toContain(firstPrompt);
     });
 
     it('should scaffold plugin with default name if no plugin name provided', async () => {
         let { stdout } = await runPromptWithAnswers(__dirname, ['plugin'], [`${ENTER}`]);
 
-        expect(stripAnsi(stdout)).toContain(firstPrompt);
+        expect(stdout).toContain(firstPrompt);
 
         // Check if the output directory exists with the appropriate plugin name
         expect(existsSync(defaultPluginPath)).toBeTruthy();
@@ -56,7 +55,7 @@ describe('plugin command', () => {
     it('should scaffold plugin template with a given name', async () => {
         let { stdout } = await runPromptWithAnswers(__dirname, ['plugin'], [`${pluginName}${ENTER}`]);
 
-        expect(stripAnsi(stdout)).toContain(firstPrompt);
+        expect(stdout).toContain(firstPrompt);
 
         // Check if the output directory exists with the appropriate plugin name
         expect(existsSync(pluginPath)).toBeTruthy();
@@ -81,7 +80,7 @@ describe('plugin command', () => {
     it('should scaffold plugin template in the specified path', async () => {
         let { stdout } = await runPromptWithAnswers(__dirname, ['plugin', 'test-assets'], [`${pluginName}${ENTER}`]);
 
-        expect(stripAnsi(stdout)).toContain(firstPrompt);
+        expect(stdout).toContain(firstPrompt);
 
         // Check if the output directory exists with the appropriate plugin name
         expect(existsSync(customPluginPath)).toBeTruthy();
@@ -109,7 +108,7 @@ describe('plugin command', () => {
 
         let { stdout } = await runPromptWithAnswers(genPath, ['plugin', './'], [`${pluginName}${ENTER}`]);
 
-        expect(stripAnsi(stdout)).toContain(firstPrompt);
+        expect(stdout).toContain(firstPrompt);
 
         // Check if the output directory exists with the appropriate plugin name
         expect(existsSync(customPluginPath)).toBeTruthy();
