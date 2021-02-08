@@ -1,6 +1,5 @@
 'use strict';
 
-const stripAnsi = require('strip-ansi');
 const { run, isWebpack5 } = require('../../utils/test-utils');
 
 describe('mode flags', () => {
@@ -9,11 +8,8 @@ describe('mode flags', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-
-        const pureStdout = stripAnsi(stdout);
-
-        expect(pureStdout).not.toContain(`mode: 'production'`);
-        expect(pureStdout).toContain(`The 'mode' option has not been set, webpack will fallback to 'production' for this value.`);
+        expect(stdout).not.toContain(`mode: 'production'`);
+        expect(stdout).toContain(`The 'mode' option has not been set, webpack will fallback to 'production' for this value.`);
     });
 
     it('should load a development config when --mode=development is passed', () => {
