@@ -1,7 +1,6 @@
 const path = require('path');
 const execa = require('execa');
 const { renameSync } = require('fs');
-const stripAnsi = require('strip-ansi');
 
 const ROOT = process.env.GITHUB_WORKSPACE ? process.env.GITHUB_WORKSPACE : path.resolve(__dirname, '../../');
 const CLI_ENTRY_PATH = path.resolve(ROOT, './packages/webpack-cli/bin/cli.js');
@@ -42,7 +41,7 @@ const runTest = () => {
             hasPassed = false;
 
         proc.stderr.on('data', (chunk) => {
-            let data = stripAnsi(chunk.toString());
+            let data = chunk.toString();
             console.log(`  stderr: ${data}`);
 
             if (data.includes(logMessage)) {
