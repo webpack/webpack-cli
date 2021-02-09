@@ -176,4 +176,20 @@ describe('basic', () => {
         expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
     });
+
+    it('should log supplied config with watch', async () => {
+        if (isWebpack5) {
+            const { stderr, stdout } = await run(__dirname, [
+                'watch',
+                '--config',
+                'watch.config.js',
+                '--infrastructure-logging-level',
+                'log',
+            ]);
+
+            const configPath = resolve(__dirname, './watch.config.js');
+            expect(stderr).toContain(`Using config ${configPath}`);
+            expect(stdout).toBeFalsy();
+        }
+    });
 });
