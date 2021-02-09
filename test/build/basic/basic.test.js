@@ -1,6 +1,6 @@
 'use strict';
 const { resolve } = require('path');
-const { run, isWebpack5 } = require('../../utils/test-utils');
+const { run } = require('../../utils/test-utils');
 
 describe('bundle command', () => {
     it('should work without command (default command)', async () => {
@@ -142,12 +142,10 @@ describe('bundle command', () => {
     });
 
     it('should log supplied config when logging level is log', () => {
-        if (isWebpack5) {
-            const { exitCode, stderr, stdout } = run(__dirname, ['--config', './entry.config.js', '--infrastructure-logging-level', 'log']);
-            expect(exitCode).toBe(0);
-            const configPath = resolve(__dirname, './entry.config.js');
-            expect(stderr).toContain(`Using config ${configPath}`);
-            expect(stdout).toBeFalsy();
-        }
+        const { exitCode, stderr, stdout } = run(__dirname, ['--config', './log.config.js']);
+        expect(exitCode).toBe(0);
+        const configPath = resolve(__dirname, './log.config.js');
+        expect(stderr).toContain(`Using config ${configPath}`);
+        expect(stdout).toBeTruthy();
     });
 });
