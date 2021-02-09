@@ -41,7 +41,12 @@ class CLIPlugin {
         const pluginName = 'webpack-cli';
         const getCompilationName = () => (compiler.name ? ` '${compiler.name}'` : '');
 
+        const { configPath } = this.options;
+
         compiler.hooks.run.tap(pluginName, () => {
+            if (configPath) {
+                this.logger.log(`Using config ${configPath}`);
+            }
             this.logger.log(`Compilation${getCompilationName()} starting...`);
         });
 
@@ -50,6 +55,10 @@ class CLIPlugin {
 
             if (bail && watch) {
                 this.logger.warn('You are using "bail" with "watch". "bail" will still exit webpack when the first error is found.');
+            }
+
+            if (configPath) {
+                this.logger.log(`Using config ${configPath}`);
             }
 
             this.logger.log(`Compilation${getCompilationName()} starting...`);
