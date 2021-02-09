@@ -10,47 +10,12 @@ describe('help', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        if (isWebpack5) {
-            expect(stdout).toMatchSnapshot();
-        } else {
-            expect(stdout).toContain('webpack [entries...] [options]');
-            expect(stdout).toContain('webpack [command] [options]');
-            expect(stdout).toContain(helpDefaultHeader);
-            expect(stdout).toContain('Options:');
-            expect(stdout).toContain('--merge');
-            expect(stdout).toContain('Global options:');
-            expect(stdout).toContain('Commands:');
-            expect(stdout.match(/build\|bundle\|b/g)).toHaveLength(1);
-            expect(stdout.match(/watch\|w/g)).toHaveLength(1);
-            expect(stdout.match(/version\|v/g)).toHaveLength(1);
-            expect(stdout.match(/help\|h/g)).toHaveLength(1);
-            expect(stdout.match(/serve\|s/g)).toHaveLength(1);
-            expect(stdout.match(/info\|i/g)).toHaveLength(1);
-            expect(stdout.match(/init\|c/g)).toHaveLength(1);
-            expect(stdout.match(/loader\|l/g)).toHaveLength(1);
-            expect(stdout.match(/plugin\|p/g)).toHaveLength(1);
-            expect(stdout.match(/migrate\|m/g)).toHaveLength(1);
-            expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
-            expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
-            expect(stdout).toContain('Made with ♥ by the webpack team.');
-        }
-    });
-
-    it('should show help information using the "--help" option with the "verbose" value', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--help', 'verbose']);
-
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('webpack [entries...] [options]');
         expect(stdout).toContain('webpack [command] [options]');
         expect(stdout).toContain(helpDefaultHeader);
         expect(stdout).toContain('Options:');
-        expect(stdout).toContain('--merge'); // minimum
-
-        if (isWebpack5) {
-            expect(stdout).toContain('--cache-type'); // verbose
-        }
-
         expect(stdout).toContain('Global options:');
         expect(stdout).toContain('Commands:');
         expect(stdout.match(/build\|bundle\|b/g)).toHaveLength(1);
@@ -68,6 +33,22 @@ describe('help', () => {
         expect(stdout).toContain('Made with ♥ by the webpack team.');
     });
 
+    it('should show help information using the "--help" option with the "verbose" value', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['--help', 'verbose']);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('webpack [entries...] [options]');
+        expect(stdout).toContain('webpack [command] [options]');
+        expect(stdout).toContain(helpDefaultHeader);
+        expect(stdout).toContain('Options:');
+        expect(stdout).toContain('--merge'); // minimum
+
+        if (isWebpack5) {
+            expect(stdout).toContain('--cache-type'); // verbose
+        }
+    });
+
     it('should show help information using the "--help" option with the "verbose" value #2', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--help=verbose']);
 
@@ -82,11 +63,6 @@ describe('help', () => {
         if (isWebpack5) {
             expect(stdout).toContain('--cache-type'); // verbose
         }
-        expect(stdout).toContain('Global options:');
-        expect(stdout).toContain('Commands:');
-        expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
-        expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
-        expect(stdout).toContain('Made with ♥ by the webpack team.');
     });
 
     it('should show help information using command syntax', () => {
@@ -94,30 +70,26 @@ describe('help', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        if (isWebpack5) {
-            expect(stdout).toMatchSnapshot();
-        } else {
-            expect(stdout).toContain('webpack [entries...] [options]');
-            expect(stdout).toContain('webpack [command] [options]');
-            expect(stdout).toContain(helpDefaultHeader);
-            expect(stdout).toContain('Options:');
-            expect(stdout).toContain('--merge');
-            expect(stdout).toContain('Global options:');
-            expect(stdout).toContain('Commands:');
-            expect(stdout.match(/build\|bundle\|b/g)).toHaveLength(1);
-            expect(stdout.match(/watch\|w/g)).toHaveLength(1);
-            expect(stdout.match(/version\|v/g)).toHaveLength(1);
-            expect(stdout.match(/help\|h/g)).toHaveLength(1);
-            expect(stdout.match(/serve\|s/g)).toHaveLength(1);
-            expect(stdout.match(/info\|i/g)).toHaveLength(1);
-            expect(stdout.match(/init\|c/g)).toHaveLength(1);
-            expect(stdout.match(/loader\|l/g)).toHaveLength(1);
-            expect(stdout.match(/plugin\|p/g)).toHaveLength(1);
-            expect(stdout.match(/migrate\|m/g)).toHaveLength(1);
-            expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
-            expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
-            expect(stdout).toContain('Made with ♥ by the webpack team.');
-        }
+        expect(stdout).toContain('webpack [entries...] [options]');
+        expect(stdout).toContain('webpack [command] [options]');
+        expect(stdout).toContain(helpDefaultHeader);
+        expect(stdout).toContain('Options:');
+        expect(stdout).toContain('--merge');
+        expect(stdout).toContain('Global options:');
+        expect(stdout).toContain('Commands:');
+        expect(stdout.match(/build\|bundle\|b/g)).toHaveLength(1);
+        expect(stdout.match(/watch\|w/g)).toHaveLength(1);
+        expect(stdout.match(/version\|v/g)).toHaveLength(1);
+        expect(stdout.match(/help\|h/g)).toHaveLength(1);
+        expect(stdout.match(/serve\|s/g)).toHaveLength(1);
+        expect(stdout.match(/info\|i/g)).toHaveLength(1);
+        expect(stdout.match(/init\|c/g)).toHaveLength(1);
+        expect(stdout.match(/loader\|l/g)).toHaveLength(1);
+        expect(stdout.match(/plugin\|p/g)).toHaveLength(1);
+        expect(stdout.match(/migrate\|m/g)).toHaveLength(1);
+        expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
+        expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
+        expect(stdout).toContain('Made with ♥ by the webpack team.');
     });
 
     it('should show the same information using the "--help" option and command syntax', () => {
@@ -138,17 +110,13 @@ describe('help', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        if (isWebpack5) {
-            expect(stdout).toMatchSnapshot();
-        } else {
-            expect(stdout).toContain('webpack [entries...] [options]');
-            expect(stdout).toContain('webpack [command] [options]');
-            expect(stdout).toContain(helpDefaultHeader);
-            // colorful stdout
-            expect(stdout).toContain('[1mWebpack documentation:[22m https://webpack.js.org/.');
-            expect(stdout).toContain('[1mCLI documentation:[22m https://webpack.js.org/api/cli/.');
-            expect(stdout).toContain(`[1mMade with ♥ by the webpack team[22m`);
-        }
+        expect(stdout).toContain('webpack [entries...] [options]');
+        expect(stdout).toContain('webpack [command] [options]');
+        expect(stdout).toContain(helpDefaultHeader);
+        // colorful stdout
+        expect(stdout).toContain('[1mWebpack documentation:[22m https://webpack.js.org/.');
+        expect(stdout).toContain('[1mCLI documentation:[22m https://webpack.js.org/api/cli/.');
+        expect(stdout).toContain(`[1mMade with ♥ by the webpack team[22m`);
     });
 
     it('should show help information and respect the "--no-color" flag using the "--help" option', () => {
@@ -156,16 +124,13 @@ describe('help', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        if (isWebpack5) {
-            expect(stdout).toMatchSnapshot();
-        } else {
-            expect(stdout).toContain('webpack [entries...] [options]');
-            expect(stdout).toContain('webpack [command] [options]');
-            expect(stdout).toContain(helpDefaultHeader);
-            expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
-            expect(stdout).not.toContain(`[1mMade with ♥ by the webpack team[22m`);
-            expect(stdout).toContain('Made with ♥ by the webpack team.');
-        }
+        expect(stdout).toContain('webpack [entries...] [options]');
+        expect(stdout).toContain('webpack [command] [options]');
+        expect(stdout).toContain(helpDefaultHeader);
+        expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
+        expect(stdout).toContain('Made with ♥ by the webpack team.');
+        expect(stdout).not.toContain('[1mWebpack documentation:[22m https://webpack.js.org/.');
+        expect(stdout).not.toContain(`[1mMade with ♥ by the webpack team[22m`);
     });
 
     const commands = [
@@ -240,14 +205,10 @@ describe('help', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        if (isWebpack5) {
-            expect(stdout).toMatchSnapshot();
-        } else {
-            expect(stdout).toContain('--serveIndex');
-            expect(stdout).toContain('--client-log-level <value>');
-            expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
-            expect(stdout).toContain('Made with ♥ by the webpack team.');
-        }
+        expect(stdout).toContain('--serveIndex');
+        expect(stdout).toContain('--client-log-level <value>');
+        expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
+        expect(stdout).toContain('Made with ♥ by the webpack team.');
     });
 
     it('should show help information and taking precedence when "--help" and "--version" option using together', () => {
