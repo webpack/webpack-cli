@@ -240,7 +240,12 @@ describe('help', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toMatchSnapshot();
+        if (isWebpack5) {
+            expect(stdout).toMatchSnapshot();
+        } else {
+            expect(stdout).toContain('--serveIndex');
+            expect(stdout).toContain('--client-log-level <value>');
+        }
     });
 
     it('should show help information and taking precedence when "--help" and "--version" option using together', () => {

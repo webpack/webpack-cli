@@ -1,5 +1,4 @@
-//eslint-disable-next-line node/no-extraneous-require
-const { jasmine } = require('@jest/globals');
+/*eslint-disable no-undef*/
 
 jest.setTimeout(240000);
 
