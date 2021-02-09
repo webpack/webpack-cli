@@ -162,17 +162,20 @@ describe('help', () => {
         });
     });
 
-    it('should show help information with options for sub commands', () => {
+    it('should show help information with options for "info" command', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['info', '--help']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain('webpack info|i [options]');
-        expect(stdout).toContain('Options:');
-        expect(stdout).toContain('--output <value>');
-        expect(stdout).toContain("To see list of all supported commands and options run 'webpack --help=verbose'.");
-        expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
-        expect(stdout).toContain('Made with ♥ by the webpack team');
+        expect(stdout).toMatchSnapshot();
+    });
+
+    it('should show help information with options for "serve" command', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['serve', '--help']);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toMatchSnapshot();
     });
 
     it('should show help information and taking precedence when "--help" and "--version" option using together', () => {
