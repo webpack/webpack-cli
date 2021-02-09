@@ -1,6 +1,6 @@
 'use strict';
 
-const { run, runWatch } = require('../utils/test-utils');
+const { run } = require('../utils/test-utils');
 const { resolve } = require('path');
 
 describe('infrastructure logging related flag', () => {
@@ -37,47 +37,6 @@ describe('infrastructure logging related flag', () => {
         expect(stderr).toContain("Compilation 'compiler' starting...");
         expect(stderr).toContain(`Using config ${configPath}`);
         expect(stderr).toContain("Compilation 'compiler' finished");
-        expect(stdout).toContain(`level: 'log'`);
-    });
-
-    it('should log used supplied config when level is log', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, [
-            '--config',
-            'webpack.cache.config.js',
-            '--infrastructure-logging-level',
-            'log',
-        ]);
-
-        expect(exitCode).toBe(0);
-        const configPath = resolve(__dirname, './webpack.cache.config.js');
-        expect(stderr).toContain(`Using config ${configPath}`);
-        expect(stdout).toContain(`level: 'log'`);
-    });
-
-    it('should log used supplied config with watch', async () => {
-        const { stderr, stdout } = await runWatch(__dirname, [
-            '--config',
-            'webpack.cache.config.js',
-            '--infrastructure-logging-level',
-            'log',
-        ]);
-
-        const configPath = resolve(__dirname, './webpack.cache.config.js');
-        expect(stderr).toContain(`Using config ${configPath}`);
-        expect(stdout).toContain(`level: 'log'`);
-    });
-
-    it('should log used supplied config with serve', async () => {
-        const { stderr, stdout } = await runWatch(__dirname, [
-            'serve',
-            '--config',
-            'webpack.cache.config.js',
-            '--infrastructure-logging-level',
-            'log',
-        ]);
-
-        const configPath = resolve(__dirname, './webpack.cache.config.js');
-        expect(stderr).toContain(`Using config ${configPath}`);
         expect(stdout).toContain(`level: 'log'`);
     });
 });

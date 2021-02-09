@@ -329,4 +329,19 @@ describe('basic serve usage', () => {
         expect(stderr).toContain("Error: Unknown option '--unknown-flag'");
         expect(stdout).toBeFalsy();
     });
+
+    it('should log used supplied config with serve', async () => {
+        if (isWebpack5) {
+            const { stderr, stdout } = await runServe(__dirname, [
+                '--config',
+                'webpack.config.js',
+                '--infrastructure-logging-level',
+                'log',
+            ]);
+
+            const configPath = path.resolve(__dirname, './webpack.cache.config.js');
+            expect(stderr).toContain(`Using config ${configPath}`);
+            expect(stdout).toBeFalsy();
+        }
+    });
 });
