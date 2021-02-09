@@ -245,6 +245,8 @@ describe('help', () => {
         } else {
             expect(stdout).toContain('--serveIndex');
             expect(stdout).toContain('--client-log-level <value>');
+            expect(stdout).toContain('CLI documentation: https://webpack.js.org/api/cli/.');
+            expect(stdout).toContain('Made with ♥ by the webpack team.');
         }
     });
 
