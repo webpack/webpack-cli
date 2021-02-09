@@ -331,17 +331,10 @@ describe('basic serve usage', () => {
     });
 
     it('should log used supplied config with serve', async () => {
-        if (isWebpack5) {
-            const { stderr, stdout } = await runServe(__dirname, [
-                '--config',
-                'webpack.config.js',
-                '--infrastructure-logging-level',
-                'log',
-            ]);
+        const { stderr, stdout } = await runServe(__dirname, ['--config', 'log.config.js']);
 
-            const configPath = path.resolve(__dirname, './webpack.cache.config.js');
-            expect(stderr).toContain(`Using config ${configPath}`);
-            expect(stdout).toBeFalsy();
-        }
+        const configPath = path.resolve(__dirname, './log.config.js');
+        expect(stderr).toContain(`Using config ${configPath}`);
+        expect(stdout).toBeTruthy();
     });
 });

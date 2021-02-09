@@ -178,18 +178,10 @@ describe('basic', () => {
     });
 
     it('should log supplied config with watch', async () => {
-        if (isWebpack5) {
-            const { stderr, stdout } = await run(__dirname, [
-                'watch',
-                '--config',
-                'watch.config.js',
-                '--infrastructure-logging-level',
-                'log',
-            ]);
+        const { stderr, stdout } = await run(__dirname, ['watch', '--config', 'log.config.js']);
 
-            const configPath = resolve(__dirname, './watch.config.js');
-            expect(stderr).toContain(`Using config ${configPath}`);
-            expect(stdout).toBeFalsy();
-        }
+        const configPath = resolve(__dirname, './log.config.js');
+        expect(stderr).toContain(`Using config ${configPath}`);
+        expect(stdout).toBeTruthy();
     });
 });
