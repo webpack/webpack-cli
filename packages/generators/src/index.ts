@@ -13,10 +13,10 @@ class GeneratorsCommand {
 
         await cli.makeCommand(
             {
-                name: 'init [scaffold...]',
+                name: 'init [template] [options]',
                 alias: 'c',
                 description: 'Initialize a new webpack configuration.',
-                usage: '[scaffold...] [options]',
+                usage: '[template] [options]',
                 pkg: '@webpack-cli/generators',
             },
             [
@@ -31,14 +31,15 @@ class GeneratorsCommand {
                     description: 'To scaffold in a specified path',
                 },
             ],
-            async (scaffold, options) => {
-                if (scaffold && scaffold.length > 0) {
-                    await npmPackagesExists(scaffold);
+            async (template, options) => {
+                const env = yeoman.createEnv([], { cwd: options.generationPath });
+                const generatorName = 'webpack-init-generator';
 
-                    return;
-                }
+                env.registerStub(initGenerator, generatorName);
 
-                modifyHelperUtil(initGenerator, null, null, options.auto, options.generationPath);
+                env.run(generatorName, { ...options, template }, () => {
+                    logger.success('Project has been initialised with webpack!');
+                });
             },
         );
 
