@@ -181,7 +181,7 @@ describe('basic', () => {
         const { stderr, stdout } = await run(__dirname, ['watch', '--config', 'log.config.js']);
 
         const configPath = resolve(__dirname, './log.config.js');
-        expect(stderr).toContain(`Using config ${configPath}`);
+        expect(stderr).toContain(`Using config '${configPath}'`);
         expect(stdout).toBeTruthy();
     });
 });

@@ -334,7 +334,7 @@ describe('basic serve usage', () => {
         const { stderr, stdout } = await runServe(__dirname, ['--config', 'log.config.js']);
 
         const configPath = path.resolve(__dirname, './log.config.js');
-        expect(stderr).toContain(`Using config ${configPath}`);
+        expect(stderr).toContain(`Using config '${configPath}'`);
         expect(stdout).toBeTruthy();
     });
 });

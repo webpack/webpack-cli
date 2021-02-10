@@ -45,7 +45,7 @@ class CLIPlugin {
 
         compiler.hooks.run.tap(pluginName, () => {
             if (configPath) {
-                this.logger.log(`Using config ${configPath}`);
+                this.logger.log(`Using config '${configPath}'`);
             }
             this.logger.log(`Compilation${getCompilationName()} starting...`);
         });

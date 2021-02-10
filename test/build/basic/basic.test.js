@@ -145,7 +145,7 @@ describe('bundle command', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--config', './log.config.js']);
         expect(exitCode).toBe(0);
         const configPath = resolve(__dirname, './log.config.js');
-        expect(stderr).toContain(`Using config ${configPath}`);
+        expect(stderr).toContain(`Using config '${configPath}'`);
         expect(stdout).toBeTruthy();
     });
 });
