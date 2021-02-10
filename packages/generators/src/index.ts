@@ -21,11 +21,6 @@ class GeneratorsCommand {
             },
             [
                 {
-                    name: 'auto',
-                    type: Boolean,
-                    description: 'To generate default config',
-                },
-                {
                     name: 'generation-path',
                     type: String,
                     description: 'To scaffold in a specified path',
