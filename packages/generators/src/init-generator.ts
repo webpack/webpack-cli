@@ -1,10 +1,9 @@
-import { blue, yellow, green, bold, options } from 'colorette';
+import { blue, yellow } from 'colorette';
 import { utils } from 'webpack-cli';
 import logSymbols from 'log-symbols';
 import path from 'path';
-import { Confirm, Input, List } from './utils/scaffold-utils';
+import { List } from './utils/scaffold-utils';
 
-import { LangType, langQuestionHandler, tooltip, StylingType, styleQuestionHandler, entryQuestions } from './utils';
 import { CustomGenerator } from './types';
 import { existsSync } from 'fs';
 

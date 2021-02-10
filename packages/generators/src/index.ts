@@ -4,9 +4,6 @@ import pluginGenerator from './plugin-generator';
 import addonGenerator from './addon-generator';
 import initGenerator from './init-generator';
 
-import { modifyHelperUtil } from './utils/modify-config-helper';
-import { npmPackagesExists } from './utils/npm-packages-exists';
-
 class GeneratorsCommand {
     async apply(cli): Promise<void> {
         const { logger } = cli;
