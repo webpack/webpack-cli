@@ -24,7 +24,6 @@ export default class InitGenerator extends CustomGenerator {
     public generationPath: string;
     public resolvedGenerationPath: string;
     public supportedTemplates: string[];
-    private langType: string;
 
     public constructor(args, options) {
         super(args, options);
@@ -33,7 +32,7 @@ export default class InitGenerator extends CustomGenerator {
         this.generationPath = options.generationPath;
         this.resolvedGenerationPath = path.resolve(process.cwd(), this.generationPath);
 
-        this.dependencies = ['webpack', 'webpack-cli', 'babel-plugin-syntax-dynamic-import'];
+        this.dependencies = ['webpack', 'webpack-cli'];
         this.supportedTemplates = ['default'];
     }
 
@@ -101,14 +100,5 @@ export default class InitGenerator extends CustomGenerator {
 
         // Generate HTML template file
         this.fs.copyTpl(path.resolve(__dirname, '../init-template/template.html'), this.destinationPath('index.html'), {});
-
-        if (this.langType === LangType.ES6) {
-            this.fs.copyTpl(path.resolve(__dirname, '../init-template/.babelrc'), this.destinationPath('.babelrc'), {});
-        } else if (this.langType === LangType.Typescript) {
-            // Generate tsconfig
-            const tsConfigTemplatePath = '../init-template/tsconfig.json.js';
-            // eslint-disable-next-line @typescript-eslint/no-var-requires
-            this.fs.extendJSON(this.destinationPath('tsconfig.json'), require(tsConfigTemplatePath));
-        }
     }
 }
