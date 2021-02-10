@@ -166,7 +166,7 @@ describe('basic', () => {
         let stderr = '';
 
         proc.stderr.on('data', (chunk) => {
-            const data = chunk.toString();
+            const data = stripAnsi(chunk.toString());
 
             stderr += stripAnsi(data);
 

@@ -1,4 +1,6 @@
 'use strict';
+
+const stripAnsi = require('strip-ansi');
 const { run } = require('../utils/test-utils');
 const { existsSync, readFile } = require('fs');
 const { resolve } = require('path');
@@ -121,9 +123,12 @@ describe('json', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--json', 'stats.json', '--config', 'logging.config.js']);
 
         expect(exitCode).toBe(0);
+
+        const pureStderr = stripAnsi(stderr);
+
         expect(stderr).toContain('Compiler starting...');
-        expect(stderr).toContain('Compiler finished');
-        expect(stderr).toContain(successMessage);
+        expect(pureStderr).toContain('Compiler finished');
+        expect(pureStderr).toContain(successMessage);
         expect(stdout).toBeFalsy();
         expect(existsSync(resolve(__dirname, './stats.json'))).toBeTruthy();
 

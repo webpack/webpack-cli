@@ -1,4 +1,6 @@
 'use strict';
+
+const stripAnsi = require('strip-ansi');
 const { resolve } = require('path');
 const { run } = require('../../utils/test-utils');
 
@@ -146,9 +148,12 @@ describe('bundle command', () => {
         const configPath = resolve(__dirname, './log.config.js');
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('Compiler starting...');
-        expect(stderr).toContain(`Compiler is using config: '${configPath}'`);
-        expect(stderr).toContain('Compiler finished');
+
+        const pureStderr = stripAnsi(stderr);
+
+        expect(pureStderr).toContain('Compiler starting...');
+        expect(pureStderr).toContain(`Compiler is using config: '${configPath}'`);
+        expect(pureStderr).toContain('Compiler finished');
         expect(stdout).toBeTruthy();
     });
 });
