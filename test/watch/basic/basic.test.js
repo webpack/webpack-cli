@@ -159,6 +159,28 @@ describe('basic', () => {
         });
     });
 
+    it('should log supplied config with watch', (done) => {
+        const proc = runAndGetWatchProc(__dirname, ['watch', '--config', 'log.config.js']);
+        const configPath = resolve(__dirname, './log.config.js');
+
+        let stderr = '';
+
+        proc.stderr.on('data', (chunk) => {
+            const data = chunk.toString();
+
+            stderr += stripAnsi(data);
+
+            if (/Compiler finished/.test(data)) {
+                expect(stderr).toContain('Compiler starting...');
+                expect(stderr).toContain(`Compiler is using config: '${configPath}'`);
+                expect(stderr).toContain('Compiler finished');
+
+                proc.kill();
+                done();
+            }
+        });
+    });
+
     it('should recompile upon file change using the `command` option and the `--watch` option and log warning', async () => {
         const { exitCode, stderr, stdout } = await run(__dirname, ['watch', '--watch', '--mode', 'development']);
 
@@ -175,13 +197,5 @@ describe('basic', () => {
         expect(stderr).toContain("Error: Unknown option '--no-watch'");
         expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
-    });
-
-    it('should log supplied config with watch', async () => {
-        const { stderr, stdout } = await run(__dirname, ['watch', '--config', 'log.config.js']);
-
-        const configPath = resolve(__dirname, './log.config.js');
-        expect(stderr).toContain(`Using config '${configPath}'`);
-        expect(stdout).toBeTruthy();
     });
 });

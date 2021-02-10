@@ -306,6 +306,16 @@ describe('basic serve usage', () => {
         expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
     });
 
+    it('should log used supplied config with serve', async () => {
+        const { stderr, stdout } = await runServe(__dirname, ['--config', 'log.config.js', '--port', port]);
+        const configPath = path.resolve(__dirname, './log.config.js');
+
+        expect(stderr).toContain('Compiler starting...');
+        expect(stderr).toContain(`Compiler is using config: '${configPath}'`);
+        expect(stderr).toContain('Compiler finished');
+        expect(stdout).toBeTruthy();
+    });
+
     it("should log error on using '--watch' flag with serve", async () => {
         const { stdout, stderr } = await runServe(testPath, ['--watch']);
 
@@ -328,13 +338,5 @@ describe('basic serve usage', () => {
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Error: Unknown option '--unknown-flag'");
         expect(stdout).toBeFalsy();
-    });
-
-    it('should log used supplied config with serve', async () => {
-        const { stderr, stdout } = await runServe(__dirname, ['--config', 'log.config.js']);
-
-        const configPath = path.resolve(__dirname, './log.config.js');
-        expect(stderr).toContain(`Using config '${configPath}'`);
-        expect(stdout).toBeTruthy();
     });
 });

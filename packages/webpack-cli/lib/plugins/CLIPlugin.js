@@ -39,15 +39,18 @@ class CLIPlugin {
 
     setupHelpfulOutput(compiler) {
         const pluginName = 'webpack-cli';
-        const getCompilationName = () => (compiler.name ? ` '${compiler.name}'` : '');
+        const getCompilationName = () => (compiler.name ? `'${compiler.name}'` : '');
 
         const { configPath } = this.options;
 
         compiler.hooks.run.tap(pluginName, () => {
+            const name = getCompilationName();
+
+            this.logger.log(`Compiler${name ? ` ${name}` : ''} starting...`);
+
             if (configPath) {
-                this.logger.log(`Using config '${configPath}'`);
+                this.logger.log(`Compiler${name ? ` ${name}` : ''} is using config: '${configPath}'`);
             }
-            this.logger.log(`Compilation${getCompilationName()} starting...`);
         });
 
         compiler.hooks.watchRun.tap(pluginName, (compiler) => {
@@ -57,11 +60,13 @@ class CLIPlugin {
                 this.logger.warn('You are using "bail" with "watch". "bail" will still exit webpack when the first error is found.');
             }
 
-            if (configPath) {
-                this.logger.log(`Using config ${configPath}`);
-            }
+            const name = getCompilationName();
 
-            this.logger.log(`Compilation${getCompilationName()} starting...`);
+            this.logger.log(`Compiler${name ? ` ${name}` : ''} starting...`);
+
+            if (configPath) {
+                this.logger.log(`Compiler${name ? ` ${name}` : ''} is using config: '${configPath}'`);
+            }
         });
 
         compiler.hooks.invalid.tap(pluginName, (filename, changeTime) => {
@@ -72,11 +77,13 @@ class CLIPlugin {
         });
 
         (compiler.webpack ? compiler.hooks.afterDone : compiler.hooks.done).tap(pluginName, () => {
-            this.logger.log(`Compilation${getCompilationName()} finished`);
+            const name = getCompilationName();
+
+            this.logger.log(`Compiler${name ? ` ${name}` : ''} finished`);
 
             process.nextTick(() => {
                 if (compiler.watchMode) {
-                    this.logger.log(`Compiler${getCompilationName()} is watching files for updates...`);
+                    this.logger.log(`Compiler${name ? `${name}` : ''} is watching files for updates...`);
                 }
             });
         });

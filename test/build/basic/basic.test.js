@@ -143,9 +143,12 @@ describe('bundle command', () => {
 
     it('should log supplied config when logging level is log', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--config', './log.config.js']);
-        expect(exitCode).toBe(0);
         const configPath = resolve(__dirname, './log.config.js');
-        expect(stderr).toContain(`Using config '${configPath}'`);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toContain('Compiler starting...');
+        expect(stderr).toContain(`Compiler is using config: '${configPath}'`);
+        expect(stderr).toContain('Compiler finished');
         expect(stdout).toBeTruthy();
     });
 });
