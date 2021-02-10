@@ -58,7 +58,7 @@ Thus, webpack CLI provides different commands for many common tasks.
 -   `build|bundle|b [entries...] [options]` - Run webpack (default command, can be omitted).
 -   [`configtest|t [config-path]`](./packages/configtest/README.md#webpack-cli-configtest) - Validate a webpack configuration.
 -   `help|h [command] [option]` - Display help for commands and options.
--   [`init|c [scaffold...] [options]`](./packages/init/README.md#webpack-cli-init) - Create a new webpack configuration.
+-   [`init|c [scaffold...] [options]`](./INIT.md#webpack-cli-init) - Create a new webpack configuration.
 -   [`info|i [options]`](./packages/info/README.md#webpack-cli-info) - Returns information related to the local environment.
 -   [`migrate|m <config-path> [new-config-path]`](https://www.npmjs.com/package/@webpack-cli/migrate) - Migrate project from one version to another.
 -   [`plugin|p [output-path]`](./packages/generators#generators) - Initiate new plugin project.
