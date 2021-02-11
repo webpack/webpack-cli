@@ -37,10 +37,7 @@ jobs:
       - name: Install dependencies
         run: |
           yarn
-          yarn bootstrap
-
-      - name: Install webpack ${{ matrix.webpack-version }}
-        run: yarn add -W webpack@${{ matrix.webpack-version }}
+          yarn run lerna bootstrap
 
       - name: Build
         run: yarn build
