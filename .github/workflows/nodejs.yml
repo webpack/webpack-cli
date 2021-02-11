@@ -35,9 +35,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
-        run: |
-          yarn
-          yarn run lerna bootstrap
+        run: yarn
 
       - name: Build
         run: yarn build
@@ -84,15 +82,13 @@ jobs:
         if: matrix.webpack-version == '4'
         run: yarn add -W webpack@${{ matrix.webpack-version }}
 
-      - name: Build and Bootstrap
-        run: |
-          yarn build:ci
-          yarn run lerna bootstrap
+      - name: Prepare environment for tests
+        run: yarn build:ci
 
-      - name: Run Smoketests
+      - name: Run smoketests
         run: yarn test:smoketests
 
-      - name: Test and Generate Coverage
+      - name: Run tests and generate coverage
         run: |
           yarn prepsuite
           yarn test:coverage
