@@ -57,7 +57,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         node-version: [10.x, 12.x, 14.x]
-        webpack-version: [webpack-4, latest]
+        webpack-version: [4, latest]
 
     steps:
       - uses: actions/checkout@v2
@@ -69,26 +69,22 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      #      - name: Restore lerna cache
-      #        id: cache
-      #        uses: actions/cache@v2
-      #        with:
-      #          path: |
-      #            node_modules
-      #            */*/node_modules
-      #          key: ${{ runner.OS }}-${{ matrix.node-version }}-${{ matrix.webpack-version }}-${{ hashFiles('**/yarn.lock', './yarn.lock') }}
-      #          restore-keys: |
-      #            ${{ runner.OS }}-${{ matrix.node-version }}-${{ matrix.webpack-version }}-
-      #            ${{ runner.OS }}-
+      - name: Restore lerna cache
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+          key: ${{ runner.os }}-${{ matrix.webpack-version }}-yarn-${{ hashFiles('**/yarn.lock', './yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.webpack-version }}-yarn-
 
       - name: Install dependencies
-        #        if: steps.cache.outputs.cache-hit != 'true'
-        run: |
-          yarn
-          yarn bootstrap
+        run: yarn
 
       - name: Install webpack ${{ matrix.webpack-version }}
-        if: matrix.webpack-version == 'webpack-4'
+        if: matrix.webpack-version == '4'
         run: yarn add -W webpack@${{ matrix.webpack-version }}
 
       - name: Build and Bootstrap
