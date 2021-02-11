@@ -35,12 +35,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
-        run: |
-          yarn
-          yarn bootstrap
-
-      - name: Install webpack ${{ matrix.webpack-version }}
-        run: yarn add -W webpack@${{ matrix.webpack-version }}
+        run: yarn
 
       - name: Build
         run: yarn build
@@ -57,7 +52,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         node-version: [10.x, 12.x, 14.x]
-        webpack-version: [webpack-4, latest]
+        webpack-version: [4, latest]
 
     steps:
       - uses: actions/checkout@v2
@@ -76,27 +71,24 @@ jobs:
           path: |
             node_modules
             */*/node_modules
-          key: ${{ runner.os }}-${{ matrix.webpack-version }}-${{ hashFiles('**/yarn.lock', './yarn.lock') }}
+          key: ${{ runner.os }}-${{ matrix.webpack-version }}-yarn-${{ hashFiles('**/yarn.lock', './yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.webpack-version }}-yarn-
 
       - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: |
-          yarn
-          yarn bootstrap
+        run: yarn
 
       - name: Install webpack ${{ matrix.webpack-version }}
-        if: matrix.webpack-version == 'webpack-4'
+        if: matrix.webpack-version == '4'
         run: yarn add -W webpack@${{ matrix.webpack-version }}
 
-      - name: Build and Bootstrap
-        run: |
-          yarn build:ci
-          yarn run lerna bootstrap
+      - name: Prepare environment for tests
+        run: yarn build:ci
 
-      - name: Run Smoketests
+      - name: Run smoketests
         run: yarn test:smoketests
 
-      - name: Test and Generate Coverage
+      - name: Run tests and generate coverage
         run: |
           yarn prepsuite
           yarn test:coverage

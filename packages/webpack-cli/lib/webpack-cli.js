@@ -1631,7 +1631,7 @@ class WebpackCLI {
 
             configOptions.plugins.unshift(
                 new CLIPlugin({
-                    configPath: config.path,
+                    configPath: config.path.get(configOptions),
                     helpfulOutput: !cliOptions.json,
                     hot: cliOptions.hot,
                     progress: cliOptions.progress,

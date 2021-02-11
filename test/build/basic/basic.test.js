@@ -1,5 +1,7 @@
 'use strict';
 
+const stripAnsi = require('strip-ansi');
+const { resolve } = require('path');
 const { run } = require('../../utils/test-utils');
 
 describe('bundle command', () => {
@@ -139,5 +141,19 @@ describe('bundle command', () => {
         expect(stderr).toContain("Did you mean 'build' (alias 'bundle, b')?");
         expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
+    });
+
+    it('should log supplied config when logging level is log', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['--config', './log.config.js']);
+        const configPath = resolve(__dirname, './log.config.js');
+
+        expect(exitCode).toBe(0);
+
+        const pureStderr = stripAnsi(stderr);
+
+        expect(pureStderr).toContain('Compiler starting...');
+        expect(pureStderr).toContain(`Compiler is using config: '${configPath}'`);
+        expect(pureStderr).toContain('Compiler finished');
+        expect(stdout).toBeTruthy();
     });
 });

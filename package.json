@@ -22,7 +22,6 @@
     "./packages/*"
   ],
   "scripts": {
-    "bootstrap": "lerna bootstrap",
     "clean": "del-cli \"*.tsbuildinfo\" \"packages/**/*.tsbuildinfo\" \"packages/!(webpack-cli)/lib/!(*.tpl)\" \"**/.yo-rc.json\"",
     "prebuild": "yarn clean",
     "prebuild:ci": "yarn clean && node ./scripts/setupBuild.js",
