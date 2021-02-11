@@ -103,7 +103,7 @@ describe('unknown behaviour', () => {
     });
 
     it('should log error and respect --color flag', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--unknown', '--color']);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--unknown', '--color'], { env: { FORCE_COLOR: true } });
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Error: Unknown option '--unknown'");
@@ -112,7 +112,7 @@ describe('unknown behaviour', () => {
     });
 
     it('should log error for unknown flag and respect --no-color', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--unknown', '--no-color']);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--unknown', '--no-color'], { env: { FORCE_COLOR: true } });
 
         expect(exitCode).toBe(2);
         expect(stderr).not.toContain(`\u001b[31mError: Unknown option '--unknown'`);

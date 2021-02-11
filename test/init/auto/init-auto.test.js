@@ -1,4 +1,3 @@
-const { green } = require('colorette');
 const fs = require('fs');
 const path = require('path');
 const rimraf = require('rimraf');
@@ -8,7 +7,7 @@ const { run } = require('../../utils/test-utils');
 const genPath = path.resolve(__dirname, './test-assets');
 const firstPrompt = 'Will your application have multiple bundles?';
 
-const successLog = `You can now run ${green('yarn build')} to bundle your application!`;
+const successLog = `You can now run 'yarn build' to bundle your application!`;
 
 describe('init auto flag', () => {
     beforeAll(() => {

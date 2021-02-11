@@ -1,13 +1,7 @@
-/*eslint-disable no-undef*/
+/*global jasmine*/
 
 jest.setTimeout(240000);
 
-jasmine.getEnv().addReporter({
-    specStarted: (result) => (jasmine.currentTest = result),
-    specDone: (result) => (jasmine.currentTest = result),
-});
-
-// disable colors by default except for tests on "colors" itself
 if (!jasmine.testPath.includes('colors.test.js')) {
     process.env.NO_COLOR = true;
 }

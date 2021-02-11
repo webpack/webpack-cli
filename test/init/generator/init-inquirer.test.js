@@ -1,6 +1,5 @@
 'use strict';
 
-const { green } = require('colorette');
 const fs = require('fs');
 const { join, resolve } = require('path');
 const rimraf = require('rimraf');
@@ -10,7 +9,7 @@ const firstPrompt = 'Will your application have multiple bundles?';
 const ENTER = '\x0D';
 const genPath = join(__dirname, 'test-assets');
 
-const successLog = `You can now run ${green('yarn build')} to bundle your application!`;
+const successLog = `You can now run 'yarn build' to bundle your application!`;
 
 describe('init', () => {
     beforeAll(() => {
@@ -47,8 +46,8 @@ describe('init', () => {
             expect(pkgJson['devDependencies']).toBeTruthy();
             expect(pkgJson['devDependencies']['webpack']).toBeTruthy();
             expect(pkgJson['devDependencies']['webpack-dev-server']).toBeTruthy();
-            expect(pkgJson['scripts']['build'] == 'webpack').toBeTruthy();
-            expect(pkgJson['scripts']['serve'] == 'webpack serve').toBeTruthy();
+            expect(pkgJson['scripts']['build'] === 'webpack').toBeTruthy();
+            expect(pkgJson['scripts']['serve'] === 'webpack serve').toBeTruthy();
         };
         expect(pkgJsonTests).not.toThrow();
 

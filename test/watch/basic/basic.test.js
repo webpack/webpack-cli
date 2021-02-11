@@ -165,9 +165,9 @@ describe('basic', () => {
         let stderr = '';
 
         proc.stderr.on('data', (chunk) => {
-            const data = stripAnsi(chunk.toString());
+            const data = chunk.toString();
 
-            stderr += stripAnsi(data);
+            stderr += data;
 
             if (/Compiler finished/.test(data)) {
                 expect(stderr).toContain('Compiler starting...');
