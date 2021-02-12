@@ -1160,12 +1160,12 @@ class WebpackCLI {
                 } catch (error) {
                     let previousModuleCompile;
 
-                    if (!this._originalModuleCompile) {
-                        console.log('HERE');
-                    }
-
                     // TODO Workaround https://github.com/zertosh/v8-compile-cache/issues/30
                     if (this._originalModuleCompile) {
+                        console.log(this._originalModuleCompile.toString());
+                        console.log('HERE');
+                        console.log(Module.prototype._compile.toString());
+
                         previousModuleCompile = Module.prototype._compile;
 
                         Module.prototype._compile = this._originalModuleCompile;
