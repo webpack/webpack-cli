@@ -193,6 +193,14 @@ describe('help', () => {
             expect(stdout).toContain(`webpack ${command === 'build' || command === 'bundle' || command === 'b' ? '' : command}`);
         });
 
+        it(`should show help information for '${command}' command using the "--help verbose" option`, () => {
+            const { exitCode, stderr, stdout } = run(__dirname, [command, '--help', 'verbose']);
+
+            expect(exitCode).toBe(0);
+            expect(stderr).toBeFalsy();
+            expect(stdout).toContain(`webpack ${command === 'build' || command === 'bundle' || command === 'b' ? '' : command}`);
+        });
+
         it(`should show help information for '${command}' command using command syntax`, () => {
             const { exitCode, stderr, stdout } = run(__dirname, ['help', command]);
 
