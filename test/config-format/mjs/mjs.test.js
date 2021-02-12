@@ -6,6 +6,10 @@ describe('webpack cli', () => {
             env: { WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG: true },
         });
 
+        console.log(exitCode);
+        console.log(stderr);
+        console.log(stdout);
+
         if (/Error: Not supported/.test(stderr)) {
             expect(exitCode).toBe(2);
             expect(stdout).toBeFalsy();
