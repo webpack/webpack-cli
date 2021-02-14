@@ -108,7 +108,7 @@ describe('runAndGetWatchProc function', () => {
     it('writes to stdin', async () => {
         const { stdout } = await runAndGetWatchProc(__dirname, ['init'], false, 'n');
 
-        expect(stdout).toContain('Which will be your application entry point?');
+        expect(stdout).toContain('Project has been initialised with webpack!');
     });
 });
 
