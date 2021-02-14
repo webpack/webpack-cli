@@ -29,7 +29,7 @@ export default class InitGenerator extends CustomGenerator {
         super(args, opts);
 
         const { options } = opts;
-        console.log(options);
+
         this.template = options.template;
         this.generationPath = options.generationPath;
         this.resolvedGenerationPath = path.resolve(process.cwd(), this.generationPath);
@@ -40,7 +40,7 @@ export default class InitGenerator extends CustomGenerator {
 
     public async prompting(): Promise<void | {}> {
         if (!existsSync(this.resolvedGenerationPath)) {
-            logger.log(`${logSymbols.info}${blue(' INFO ')} supplied generation path doesn't exists, required folders willbe created`);
+            logger.log(`${logSymbols.info}${blue(' INFO ')} supplied generation path doesn't exist, required folders will be created.`);
             try {
                 mkdirSync(this.resolvedGenerationPath, { recursive: true });
             } catch (err) {
