@@ -10,26 +10,34 @@ class GeneratorsCommand {
 
         await cli.makeCommand(
             {
-                name: 'init [template] [options]',
+                name: 'init',
                 alias: 'c',
                 description: 'Initialize a new webpack configuration.',
-                usage: '[template] [options]',
+                usage: '[options]',
                 pkg: '@webpack-cli/generators',
             },
             [
                 {
+                    name: 'template',
+                    type: String,
+                    description: 'Type of template',
+                    defaultValue: 'default',
+                },
+                {
                     name: 'generation-path',
                     type: String,
                     description: 'To scaffold in a specified path',
+                    defaultValue: '.',
                 },
             ],
-            async (template, options) => {
+            async (options) => {
+                console.log(options);
                 const env = yeoman.createEnv([], { cwd: options.generationPath });
                 const generatorName = 'webpack-init-generator';
 
                 env.registerStub(initGenerator, generatorName);
 
-                env.run(generatorName, { ...options, template }, () => {
+                env.run(generatorName, { options }, () => {
                     logger.success('Project has been initialised with webpack!');
                 });
             },

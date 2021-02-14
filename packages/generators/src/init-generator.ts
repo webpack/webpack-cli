@@ -5,7 +5,7 @@ import path from 'path';
 import { List } from './utils/scaffold-utils';
 
 import { CustomGenerator } from './types';
-import { existsSync } from 'fs';
+import { existsSync, mkdirSync } from 'fs';
 
 const { logger, getPackageManager } = utils;
 
@@ -24,24 +24,29 @@ export default class InitGenerator extends CustomGenerator {
     public resolvedGenerationPath: string;
     public supportedTemplates: string[];
 
-    public constructor(args, options) {
-        super(args, options);
+    public constructor(args, opts) {
+        super(args, opts);
 
+        const { options } = opts;
+        console.log(options);
         this.template = options.template;
         this.generationPath = options.generationPath;
         this.resolvedGenerationPath = path.resolve(process.cwd(), this.generationPath);
 
-        this.dependencies = ['webpack', 'webpack-cli'];
+        this.dependencies = ['webpack', 'webpack-cli', 'webpack-dev-server'];
         this.supportedTemplates = ['default'];
     }
 
     public async prompting(): Promise<void | {}> {
         if (!existsSync(this.resolvedGenerationPath)) {
             logger.log(`${logSymbols.info}${blue(' INFO ')} supplied generation path doesn't exists, required folders willbe created`);
-        }
-
-        if (!this.template) {
-            this.template = 'default';
+            try {
+                mkdirSync(this.resolvedGenerationPath, { recursive: true });
+            } catch (err) {
+                logger.error('Failed to create directory');
+                logger.error(err);
+                process.exit(1);
+            }
         }
 
         if (!this.supportedTemplates.includes(this.template)) {
@@ -71,33 +76,6 @@ export default class InitGenerator extends CustomGenerator {
     }
 
     public writing(): void {
-        this.config.set('configuration', this.configuration);
-
-        const isUsingDevServer = this.dependencies.includes('webpack-dev-server');
-        const packageJsonTemplatePath = '../init-template/package.json.js';
-        this.fs.extendJSON(
-            this.destinationPath('package.json'),
-            // eslint-disable-next-line @typescript-eslint/no-var-requires
-            require(packageJsonTemplatePath)(isUsingDevServer),
-        );
-
-        const generateEntryFile = (entryPath: string, name: string): void => {
-            entryPath = entryPath.replace(/'/g, '');
-            this.fs.copyTpl(path.resolve(__dirname, '../init-template/index.js'), this.destinationPath(entryPath), { name });
-        };
-
-        // Generate entry file/files
-        const entry = this.configuration.config.webpackOptions.entry || './src/index.js';
-        if (typeof entry === 'string') {
-            generateEntryFile(entry, 'your main file!');
-        } else if (typeof entry === 'object') {
-            Object.keys(entry).forEach((name: string): void => generateEntryFile(entry[name], `${name} main file!`));
-        }
-
-        // Generate README
-        this.fs.copyTpl(path.resolve(__dirname, '../init-template/README.md'), this.destinationPath('README.md'), {});
-
-        // Generate HTML template file
-        this.fs.copyTpl(path.resolve(__dirname, '../init-template/template.html'), this.destinationPath('index.html'), {});
+        logger.log(`${logSymbols.info}${blue(' INFO ')} Initialising project...`);
     }
 }

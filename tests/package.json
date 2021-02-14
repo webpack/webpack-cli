@@ -1,0 +1,16 @@
+{
+  "name": "my-webpack-project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "description": "My webpack project",
+  "scripts": {
+    "build": "webpack",
+    "serve": "webpack serve"
+  },
+  "devDependencies": {
+    "webpack": "^5.21.2",
+    "webpack-cli": "^4.5.0",
+    "webpack-dev-server": "^3.11.2"
+  }
+}
