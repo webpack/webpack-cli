@@ -6,6 +6,7 @@ import { List } from './utils/scaffold-utils';
 
 import { CustomGenerator } from './types';
 import { existsSync, mkdirSync } from 'fs';
+import handlers from './handlers';
 
 const { logger, getPackageManager } = utils;
 
@@ -77,5 +78,6 @@ export default class InitGenerator extends CustomGenerator {
 
     public writing(): void {
         logger.log(`${logSymbols.info}${blue(' INFO ')} Initialising project...`);
+        handlers[this.template](this);
     }
 }
