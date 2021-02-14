@@ -23,8 +23,8 @@ describe('infrastructure logging related flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--infrastructure-logging-level', 'log']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain("Compilation 'compiler' starting...");
-        expect(stderr).toContain("Compilation 'compiler' finished");
+        expect(stderr).toContain("Compiler 'compiler' starting...");
+        expect(stderr).toContain("Compiler 'compiler' finished");
         expect(stdout).toContain(`level: 'log'`);
     });
 });
