@@ -57,14 +57,20 @@ const run = (testCase, args = [], options = {}) => {
     return result;
 };
 
-const runWatch = (testCase, args = [], setOutput = true, outputKillStr = /webpack \d+\.\d+\.\d/, options = {}) => {
+/**
+ * Run the webpack CLI in watch mode for a test case.
+ *
+ * @param {String} testCase The path to folder that contains the webpack.config.js
+ * @param {Array} args Array of arguments to pass to webpack
+ * @param {Object<string, any>} options Boolean that decides if a default output path will be set or not
+ * @param {string} outputKillStr String to kill
+ * @returns {Object} The webpack output or Promise when nodeOptions are present
+ */
+const runWatch = (testCase, args = [], options, outputKillStr = /webpack \d+\.\d+\.\d/) => {
     const cwd = path.resolve(testCase);
 
-    const outputPath = path.resolve(testCase, 'bin');
-    const argsWithOutput = setOutput ? args.concat('--output-path', outputPath) : args;
-
     return new Promise((resolve, reject) => {
-        const proc = execa(WEBPACK_PATH, argsWithOutput, {
+        const proc = execa(WEBPACK_PATH, args, {
             cwd,
             reject: false,
             stdio: 'pipe',
@@ -127,10 +133,12 @@ const runAndGetWatchProc = (testCase, args = [], setOutput = true, input = '', f
  */
 const runPromptWithAnswers = (location, args, answers, waitForOutput = true) => {
     const runner = runAndGetWatchProc(location, args, false, '', true);
+
     runner.stdin.setDefaultEncoding('utf-8');
 
     const delay = 2000;
     let outputTimeout;
+
     if (waitForOutput) {
         let currentAnswer = 0;
         const writeAnswer = () => {
