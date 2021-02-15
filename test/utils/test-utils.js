@@ -7,7 +7,6 @@ const { sync: spawnSync, node: execaNode } = execa;
 const { Writable } = require('readable-stream');
 const concat = require('concat-stream');
 const { version } = require('webpack');
-const stripAnsi = require('strip-ansi');
 
 const isWebpack5 = version.startsWith('5');
 
@@ -59,7 +58,7 @@ const run = (testCase, args = [], options = {}) => {
     return result;
 };
 
-const runWatch = (testCase, args = [], setOutput = true, outputKillStr = /webpack \d+\.\d+\.\d/) => {
+const runWatch = (testCase, args = [], setOutput = true, outputKillStr = /webpack \d+\.\d+\.\d/, options = {}) => {
     const cwd = path.resolve(testCase);
 
     const outputPath = path.resolve(testCase, 'bin');
@@ -70,12 +69,13 @@ const runWatch = (testCase, args = [], setOutput = true, outputKillStr = /webpac
             cwd,
             reject: false,
             stdio: 'pipe',
+            ...options,
         });
 
         proc.stdout.pipe(
             new Writable({
                 write(chunk, encoding, callback) {
-                    const output = stripAnsi(chunk.toString('utf8'));
+                    const output = chunk.toString('utf8');
 
                     if (outputKillStr.test(output)) {
                         if (isWindows) {

@@ -3,7 +3,7 @@
 const { run, isWebpack5 } = require('../utils/test-utils');
 const { resolve } = require('path');
 
-describe('colors related tests', () => {
+describe('colors', () => {
     it('should output by default', () => {
         const { exitCode, stderr, stdout } = run(__dirname, [], { env: { FORCE_COLOR: true } });
 
@@ -46,6 +46,15 @@ describe('colors related tests', () => {
         expect(stdout).toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
     });
 
+    it('should work with the "stats" option and --color flags', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['--stats=verbose', '--color']);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        const output = isWebpack5 ? 'successfully' : 'main.js';
+        expect(stdout).toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
+    });
+
     it('should disable colored output with --no-color', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--stats=verbose', '--no-color']);
 
@@ -54,15 +63,6 @@ describe('colors related tests', () => {
         const output = isWebpack5 ? 'successfully' : 'main.js';
         expect(stdout).not.toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
         expect(stdout).toContain(output);
-    });
-
-    it('should work with the "stats" option and --color flags', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--stats=verbose', '--color']);
-
-        expect(exitCode).toBe(0);
-        expect(stderr).toBeFalsy();
-        const output = isWebpack5 ? 'successfully' : 'main.js';
-        expect(stdout).toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
     });
 
     it('should work with the "stats" option from the configuration', () => {
@@ -120,7 +120,7 @@ describe('colors related tests', () => {
         expect(stdout).toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
     });
 
-    it('should prioratize --no-color over colors in config', () => {
+    it('should prioritize --no-color over colors in config', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--config=colors-true.webpack.config.js', '--no-color']);
 
         expect(exitCode).toBe(0);

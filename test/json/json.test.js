@@ -1,6 +1,5 @@
 'use strict';
 
-const stripAnsi = require('strip-ansi');
 const { run } = require('../utils/test-utils');
 const { existsSync, readFile } = require('fs');
 const { resolve } = require('path');
@@ -36,7 +35,7 @@ describe('json', () => {
     });
 
     it('should work and store json to a file and respect --color flag', (done) => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--json', 'stats.json', '--color']);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--json', 'stats.json', '--color'], { env: { FORCE_COLOR: true } });
 
         expect(exitCode).toBe(0);
         expect(stderr).toContain(`\u001b[32m${successMessage}`);
@@ -123,12 +122,9 @@ describe('json', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--json', 'stats.json', '--config', 'logging.config.js']);
 
         expect(exitCode).toBe(0);
-
-        const pureStderr = stripAnsi(stderr);
-
         expect(stderr).toContain('Compiler starting...');
-        expect(pureStderr).toContain('Compiler finished');
-        expect(pureStderr).toContain(successMessage);
+        expect(stderr).toContain('Compiler finished');
+        expect(stderr).toContain(successMessage);
         expect(stdout).toBeFalsy();
         expect(existsSync(resolve(__dirname, './stats.json'))).toBeTruthy();
 

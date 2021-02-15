@@ -1,6 +1,5 @@
 'use strict';
 
-const stripAnsi = require('strip-ansi');
 const path = require('path');
 const getPort = require('get-port');
 const { runServe, isWebpack5, isDevServer4 } = require('../../utils/test-utils');
@@ -112,7 +111,7 @@ describe('basic serve usage', () => {
         const { stderr, stdout } = await runServe(__dirname, ['--stats']);
 
         expect(stderr).toBeFalsy();
-        expect(stripAnsi(stdout)).toContain(isWebpack5 ? 'compiled successfully' : 'Version: webpack');
+        expect(stdout).toContain(isWebpack5 ? 'compiled successfully' : 'Version: webpack');
         expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
     });
 
@@ -219,7 +218,7 @@ describe('basic serve usage', () => {
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('main.js');
-        expect(stripAnsi(stdout)).toContain('from /');
+        expect(stdout).toContain('from /');
         expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
     });
 

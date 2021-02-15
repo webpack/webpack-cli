@@ -1,6 +1,5 @@
 'use strict';
 
-const stripAnsi = require('strip-ansi');
 const { runAndGetWatchProc, isWebpack5 } = require('../../utils/test-utils');
 const { writeFileSync } = require('fs');
 const { resolve } = require('path');
@@ -15,7 +14,7 @@ describe('watch variable', () => {
         let modified = false;
 
         proc.stdout.on('data', (chunk) => {
-            const data = stripAnsi(chunk.toString());
+            const data = chunk.toString();
 
             expect(data).not.toContain('FAIL');
 
@@ -50,7 +49,7 @@ describe('watch variable', () => {
         let modified = false;
 
         proc.stdout.on('data', (chunk) => {
-            const data = stripAnsi(chunk.toString());
+            const data = chunk.toString();
 
             expect(data).not.toContain('FAIL');
 

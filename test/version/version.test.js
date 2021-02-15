@@ -11,7 +11,7 @@ const webpackDevServerPkgJSON = require('webpack-dev-server/package.json');
 
 describe('single version flag', () => {
     it('outputs versions with command syntax', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['version'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['version']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -21,7 +21,7 @@ describe('single version flag', () => {
     });
 
     it('outputs versions with dashed syntax', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--version'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--version']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -31,7 +31,7 @@ describe('single version flag', () => {
     });
 
     it('outputs versions with alias syntax', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['-v'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['-v']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -41,7 +41,7 @@ describe('single version flag', () => {
     });
 
     it('outputs version with info', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['info', '--version'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['info', '--version']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -52,7 +52,7 @@ describe('single version flag', () => {
     });
 
     it('outputs version with info using option alias', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['info', '-v'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['info', '-v']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -63,7 +63,7 @@ describe('single version flag', () => {
     });
 
     it('outputs version with info using command syntax', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['version', 'info'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['version', 'info']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -74,7 +74,7 @@ describe('single version flag', () => {
     });
 
     it('outputs version with info using command alias', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['v', 'info'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['v', 'info']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -85,7 +85,7 @@ describe('single version flag', () => {
     });
 
     it('outputs version with build', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['build', '--version'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['build', '--version']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -95,7 +95,7 @@ describe('single version flag', () => {
     });
 
     it('outputs version with bundle', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['bundle', '--version'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['bundle', '--version']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -105,7 +105,7 @@ describe('single version flag', () => {
     });
 
     it('outputs version with b', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['b', '--version'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['b', '--version']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -115,7 +115,7 @@ describe('single version flag', () => {
     });
 
     it('outputs version with watch', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['watch', '--version'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['watch', '--version']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -125,7 +125,7 @@ describe('single version flag', () => {
     });
 
     it('outputs version with w', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['w', '--version'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['w', '--version']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -135,7 +135,7 @@ describe('single version flag', () => {
     });
 
     it('outputs version with plugin', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['plugin', '--version'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['plugin', '--version']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -146,7 +146,7 @@ describe('single version flag', () => {
     });
 
     it('outputs version with loader', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['loader', '--version'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['loader', '--version']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -157,7 +157,7 @@ describe('single version flag', () => {
     });
 
     it('outputs version with init', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['init', '--version'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['init', '--version']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -168,7 +168,7 @@ describe('single version flag', () => {
     });
 
     it('outputs version with serve', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['serve', '--version'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['serve', '--version']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -179,7 +179,7 @@ describe('single version flag', () => {
     });
 
     it('outputs version with migrate', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['migrate', '--version'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['migrate', '--version']);
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
@@ -189,7 +189,7 @@ describe('single version flag', () => {
     });
 
     it('outputs version with the alias c for init', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['c', '--version'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['c', '--version']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -200,7 +200,7 @@ describe('single version flag', () => {
     });
 
     it('should log error when unknown command using command syntax', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['version', 'unknown'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['version', 'unknown']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Unknown command 'unknown'");
@@ -209,7 +209,7 @@ describe('single version flag', () => {
     });
 
     it('should log version for known command and log error for unknown command using command syntax with multi commands', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['version', 'info', 'unknown'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['version', 'info', 'unknown']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Unknown command 'unknown'");
@@ -218,7 +218,7 @@ describe('single version flag', () => {
     });
 
     it('should work for multiple commands', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['info', 'serve', '--version'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['info', 'serve', '--version']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -230,7 +230,7 @@ describe('single version flag', () => {
     });
 
     it('should output versions for multiple commands using command syntax', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['version', 'info', 'serve'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['version', 'info', 'serve']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -242,7 +242,7 @@ describe('single version flag', () => {
     });
 
     it('should output versions with help command using command syntax', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['version', 'help'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['version', 'help']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -252,7 +252,7 @@ describe('single version flag', () => {
     });
 
     it('should log version for known command and log error for unknown command using the "--version" option', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['serve', 'abc', '--version'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['serve', 'abc', '--version']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Unknown command 'abc'");
@@ -261,7 +261,7 @@ describe('single version flag', () => {
     });
 
     it('should log version for known command and log error for unknown command using the "-v" option', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['serve', 'abc', '-v'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['serve', 'abc', '-v']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Unknown command 'abc'");
@@ -270,15 +270,35 @@ describe('single version flag', () => {
     });
 
     it('should not output version with help dashed', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['version', '--help'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['version', '--help']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('webpack version|v [commands...]');
     });
 
+    it('outputs versions with --color using option syntax', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['--version', '--color'], { env: { FORCE_COLOR: true } });
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
+        expect(stdout).toContain(`webpack ${webpack.version}`);
+        expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
+    });
+
+    it('outputs versions with --no-color using option syntax', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['--version', '--no-color'], { env: { FORCE_COLOR: true } });
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
+        expect(stdout).toContain(`webpack ${webpack.version}`);
+        expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
+    });
+
     it('outputs versions with --color using command syntax', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--version', '--color'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['version', '--color']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -288,27 +308,7 @@ describe('single version flag', () => {
     });
 
     it('outputs versions with --no-color using command syntax', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--version', '--no-color'], false);
-
-        expect(exitCode).toBe(0);
-        expect(stderr).toBeFalsy();
-        expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
-        expect(stdout).toContain(`webpack ${webpack.version}`);
-        expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
-    });
-
-    it('outputs versions with --color using command syntax', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['version', '--color'], false);
-
-        expect(exitCode).toBe(0);
-        expect(stderr).toBeFalsy();
-        expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
-        expect(stdout).toContain(`webpack ${webpack.version}`);
-        expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
-    });
-
-    it('outputs versions with --no-color using command syntax', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['version', '--no-color'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['version', '--no-color']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -318,7 +318,7 @@ describe('single version flag', () => {
     });
 
     it('should log error when unknown command used', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['version', 'abc'], false, []);
+        const { exitCode, stderr, stdout } = run(__dirname, ['version', 'abc']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Unknown command 'abc'");
@@ -327,7 +327,7 @@ describe('single version flag', () => {
     });
 
     it('throws error if invalid option is passed with version command', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['version', '--abc'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['version', '--abc']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain(`Unknown option '--abc`);
@@ -336,7 +336,7 @@ describe('single version flag', () => {
     });
 
     it('should log error when unknown command used with --version flag', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--version', 'abc'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--version', 'abc']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Unknown command 'abc'");
@@ -345,7 +345,7 @@ describe('single version flag', () => {
     });
 
     it('throws error if invalid option is passed with --version flag', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--version', '--abc'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--version', '--abc']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain(`Unknown option '--abc'`);
@@ -354,7 +354,7 @@ describe('single version flag', () => {
     });
 
     it('should log error when unknown command used with -v alias', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['-v', 'abc'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['-v', 'abc']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Unknown command 'abc'");
@@ -363,7 +363,7 @@ describe('single version flag', () => {
     });
 
     it('throws error if invalid option is passed with -v alias', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['-v', '--abc'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['-v', '--abc']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Unknown option '--abc'");
@@ -372,7 +372,7 @@ describe('single version flag', () => {
     });
 
     it('should work using command syntax with the "version" value', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['version', 'version'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['version', 'version']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -382,7 +382,7 @@ describe('single version flag', () => {
     });
 
     it('should work using command syntax and the "--version" argument', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['version', '--version'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['version', '--version']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -392,7 +392,7 @@ describe('single version flag', () => {
     });
 
     it('should log an error using command syntax with unknown argument', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['version', '--unknown'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['version', '--unknown']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Unknown option '--unknown'");
@@ -401,7 +401,7 @@ describe('single version flag', () => {
     });
 
     it('should log an error using command syntax with unknown argument #2', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['version', 'info', '--unknown'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['version', 'info', '--unknown']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Unknown option '--unknown'");
@@ -410,7 +410,7 @@ describe('single version flag', () => {
     });
 
     it('should log an error using command syntax with multiple commands with unknown argument', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['version', 'info', 'serve', '--unknown'], false);
+        const { exitCode, stderr, stdout } = run(__dirname, ['version', 'info', 'serve', '--unknown']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Unknown option '--unknown'");

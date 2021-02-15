@@ -1,6 +1,5 @@
 'use strict';
 
-const stripAnsi = require('strip-ansi');
 const { run } = require('../../utils/test-utils');
 const { existsSync, readFile } = require('fs');
 const { resolve } = require('path');
@@ -40,6 +39,6 @@ describe('entry flag', () => {
 
         expect(exitCode).toEqual(1);
         expect(stderr).toBeFalsy();
-        expect(stripAnsi(stdout)).toContain("Module not found: Error: Can't resolve");
+        expect(stdout).toContain("Module not found: Error: Can't resolve");
     });
 });

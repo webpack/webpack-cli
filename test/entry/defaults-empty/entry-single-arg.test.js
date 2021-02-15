@@ -1,6 +1,5 @@
 'use strict';
 
-const stripAnsi = require('strip-ansi');
 const { run } = require('../../utils/test-utils');
 
 describe('single entry flag empty project', () => {
@@ -9,6 +8,6 @@ describe('single entry flag empty project', () => {
 
         expect(exitCode).toBe(1);
         expect(stderr).toBeFalsy();
-        expect(stripAnsi(stdout)).toContain(`not found: Error: Can't resolve`);
+        expect(stdout).toContain(`not found: Error: Can't resolve`);
     });
 });

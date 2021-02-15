@@ -3,7 +3,6 @@
 const { existsSync, mkdirSync } = require('fs');
 const { join, resolve } = require('path');
 const rimraf = require('rimraf');
-const stripAnsi = require('strip-ansi');
 const { run, runPromptWithAnswers } = require('../utils/test-utils');
 
 const firstPrompt = '? Loader name (my-loader)';
@@ -25,13 +24,13 @@ describe('loader command', () => {
         const { stdout, stderr } = run(__dirname, ['loader'], false);
         expect(stdout).toBeTruthy();
         expect(stderr).toBeFalsy();
-        expect(stripAnsi(stdout)).toContain(firstPrompt);
+        expect(stdout).toContain(firstPrompt);
     });
 
     it('should scaffold loader with default name if no loader name provided', async () => {
         let { stdout } = await runPromptWithAnswers(__dirname, ['loader'], [`${ENTER}`]);
 
-        expect(stripAnsi(stdout)).toContain(firstPrompt);
+        expect(stdout).toContain(firstPrompt);
 
         // Skip test in case installation fails
         if (!existsSync(resolve(defaultLoaderPath, './yarn.lock'))) {
@@ -57,7 +56,7 @@ describe('loader command', () => {
     it('should scaffold loader template with a given name', async () => {
         let { stdout } = await runPromptWithAnswers(__dirname, ['loader'], [`${loaderName}${ENTER}`]);
 
-        expect(stripAnsi(stdout)).toContain(firstPrompt);
+        expect(stdout).toContain(firstPrompt);
 
         // Skip test in case installation fails
         if (!existsSync(resolve(loaderPath, './yarn.lock'))) {
@@ -83,7 +82,7 @@ describe('loader command', () => {
     it('should scaffold loader template in the specified path', async () => {
         let { stdout } = await runPromptWithAnswers(__dirname, ['loader', 'test-assets'], [`${loaderName}${ENTER}`]);
 
-        expect(stripAnsi(stdout)).toContain(firstPrompt);
+        expect(stdout).toContain(firstPrompt);
 
         // Skip test in case installation fails
         if (!existsSync(resolve(customLoaderPath, './yarn.lock'))) {
@@ -112,7 +111,7 @@ describe('loader command', () => {
 
         let { stdout } = await runPromptWithAnswers(genPath, ['loader', './'], [`${loaderName}${ENTER}`]);
 
-        expect(stripAnsi(stdout)).toContain(firstPrompt);
+        expect(stdout).toContain(firstPrompt);
 
         // Skip test in case installation fails
         if (!existsSync(resolve(customLoaderPath, './yarn.lock'))) {
