@@ -248,14 +248,9 @@ const runInstall = async (cwd) => {
     });
 };
 
-const runServe = (testPath, args) => {
-    return runWatch(testPath, ['serve'].concat(args), false);
-};
-
 module.exports = {
     run,
     runWatch,
-    runServe,
     runAndGetWatchProc,
     runPromptWithAnswers,
     appendDataIfFileExists,
