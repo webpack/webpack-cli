@@ -39,8 +39,7 @@ const hyphenToUpperCase = (name) => {
  *
  * @param {String} testCase The path to folder that contains the webpack.config.js
  * @param {Array} args Array of arguments to pass to webpack
- * @param {Array<string>} nodeOptions Boolean that decides if a default output path will be set or not
- * @param {Record<string, any>} env Boolean that decides if a default output path will be set or not
+ * @param {Object<string, any>} options Boolean that decides if a default output path will be set or not
  * @returns {Object} The webpack output or Promise when nodeOptions are present
  */
 const run = (testCase, args = [], options = {}) => {
