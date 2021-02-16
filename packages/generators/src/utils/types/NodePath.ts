@@ -19,7 +19,7 @@ export interface Node extends Object {
         value?: string;
     };
     filter?: (p: (p: Node) => boolean) => Node;
-    find?: (objectExpression: object, filterExpression?: object) => Node;
+    find?: (objectExpression: ExpressionObject, filterExpression?: Record<string, unknown>) => Node;
     forEach?: (p: (p: Node) => void) => Node;
     get?: (property: string) => Node;
     remove?: () => void;
@@ -31,12 +31,12 @@ export interface Node extends Object {
     };
     node?: Node;
     name?: string;
-    object?: object;
+    object?: Record<string, unknown>;
     parent?: Node;
     properties?: Node[];
     property?: Node;
-    prune?: Function;
-    replaceWith?: (objectExpression: object) => Node;
+    prune?: () => void;
+    replaceWith?: (objectExpression: Node) => Node;
     size?: () => number;
     type?: string;
     value?: Node | string | Node[];
@@ -88,7 +88,7 @@ export interface JSCodeshift extends Object {
     Program?: ExpressionObject;
     filters?: {
         VariableDeclarator: {
-            requiresModule: Function;
+            requiresModule: (p: string) => (p: Node) => boolean;
         };
     };
 }

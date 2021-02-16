@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { devServerOptionsType } from './types';
 
 /**
@@ -11,7 +12,7 @@ import { devServerOptionsType } from './types';
  *
  * @returns {Object[]} array of resulting servers
  */
-export default async function startDevServer(compiler, devServerCliOptions, cliOptions, logger): Promise<object[]> {
+export default async function startDevServer(compiler, devServerCliOptions, cliOptions, logger): Promise<Record<string, unknown>[]> {
     let devServerVersion, Server, findPort;
 
     try {

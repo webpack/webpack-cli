@@ -31,7 +31,7 @@ export const generatorCopy = (generator, templateDir: string): ((filePath: strin
  * the template files.
  * @returns {Function} A curried function that takes a file path and copies it
  */
-export const generatorCopyTpl = (generator, templateDir: string, templateData: object): ((filePath: string) => void) => (
+export const generatorCopyTpl = (generator, templateDir: string, templateData: Record<string, unknown>): ((filePath: string) => void) => (
     filePath: string,
 ): void => {
     const sourceParts = templateDir.split(path.delimiter);

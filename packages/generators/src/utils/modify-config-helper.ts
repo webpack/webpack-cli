@@ -14,7 +14,7 @@ export interface Config extends Object {
     topScope?: string[];
     configName?: string;
     merge: string | string[];
-    webpackOptions: object;
+    webpackOptions: Record<string, unknown>;
 }
 
 export interface TransformConfig extends Object {
@@ -24,10 +24,10 @@ export interface TransformConfig extends Object {
 }
 
 export interface WebpackScaffoldObject extends Object {
-    config: {
+    config?: {
         configName?: string;
         topScope?: string[];
-        webpackOptions?: object;
+        webpackOptions?: Record<string, unknown>;
     };
 }
 
@@ -87,7 +87,7 @@ export function modifyHelperUtil(
             generationPath,
         },
         () => {
-            let configModule: object;
+            let configModule: Record<string, Record<string, unknown>>;
             let finalConfig: WebpackScaffoldObject = {
                 config: {},
             };

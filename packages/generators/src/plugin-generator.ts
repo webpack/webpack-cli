@@ -31,7 +31,7 @@ export const PluginGenerator = addonGenerator(
         'examples/simple/src/static-esm-module.js.tpl',
     ],
     ['src/_index.js.tpl', 'examples/simple/_webpack.config.js.tpl'],
-    (gen): object => ({ name: toUpperCamelCase(gen.props.name) }),
+    (gen): Record<string, unknown> => ({ name: toUpperCamelCase(gen.props.name) }),
 );
 
 export default PluginGenerator;

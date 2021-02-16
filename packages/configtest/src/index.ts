@@ -39,8 +39,7 @@ class ConfigTestCommand {
 
                     // TODO remove this after drop webpack@4
                     if (error && error.length > 0) {
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-                        // @ts-ignore
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                         throw new webpack.WebpackOptionsValidationError(error);
                     }
                 } catch (error) {
