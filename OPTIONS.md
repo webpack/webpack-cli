@@ -10,7 +10,7 @@ Options:
   -m, --merge                                                                        Merge two or more configurations using 'webpack-merge'.
   --env <value...>                                                                   Environment passed to the configuration when it is a function.
   --node-env <value>                                                                 Sets process.env.NODE_ENV to the specified value.
-  -h, --hot                                                                          Enables Hot Module Replacement
+  -h, --hot [value]                                                                  Enables Hot Module Replacement
   --no-hot                                                                           Disables Hot Module Replacement.
   --analyze                                                                          It invokes webpack-bundle-analyzer plugin to get bundle information.
   --progress [value]                                                                 Print compilation progress during build.
