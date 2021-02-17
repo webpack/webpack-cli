@@ -35,7 +35,7 @@ export function InputValidate(
     cb?: (input: string) => string | boolean,
     defaultChoice?: string,
     skip = false,
-): object | any {
+): Record<string, unknown> | any {
     if (skip) {
         return { [name]: defaultChoice };
     }

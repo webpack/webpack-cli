@@ -285,7 +285,7 @@ function findAndRemovePluginByName(j: JSCodeshift, node: Node, pluginName: strin
  * @returns {Void}
  */
 
-function createOrUpdatePluginByName(j: JSCodeshift, rootNodePath: Node, pluginName: string, options?: object): void {
+function createOrUpdatePluginByName(j: JSCodeshift, rootNodePath: Node, pluginName: string, options?: Record<string, unknown>): void {
     const pluginInstancePath: Node = findPluginsByName(j, j(rootNodePath), [pluginName]);
     let optionsProps: Node[];
     if (options) {

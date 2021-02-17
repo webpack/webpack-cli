@@ -13,7 +13,6 @@ const isWebpack5 = version.startsWith('5');
 let devServerVersion;
 
 try {
-    // eslint-disable-next-line
     devServerVersion = require('webpack-dev-server/package.json').version;
 } catch (error) {
     // Nothing

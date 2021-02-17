@@ -1,5 +1,6 @@
 class ConfigTestCommand {
-    async apply(cli): Promise<void> {
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+    async apply(cli: any): Promise<void> {
         const { logger, webpack } = cli;
 
         await cli.makeCommand(
@@ -39,8 +40,6 @@ class ConfigTestCommand {
 
                     // TODO remove this after drop webpack@4
                     if (error && error.length > 0) {
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-                        // @ts-ignore
                         throw new webpack.WebpackOptionsValidationError(error);
                     }
                 } catch (error) {

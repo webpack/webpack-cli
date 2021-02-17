@@ -8,7 +8,8 @@ import path from 'path';
  * @param {string} templateDir Absolute path to template directory
  * @returns {Function} A curried function that takes a file path and copies it
  */
-export const generatorCopy = (generator, templateDir: string): ((filePath: string) => void) => (filePath: string): void => {
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+export const generatorCopy = (generator: any, templateDir: string): ((filePath: string) => void) => (filePath: string): void => {
     const sourceParts = templateDir.split(path.delimiter);
 
     sourceParts.push(...filePath.split('/'));
@@ -31,9 +32,12 @@ export const generatorCopy = (generator, templateDir: string): ((filePath: strin
  * the template files.
  * @returns {Function} A curried function that takes a file path and copies it
  */
-export const generatorCopyTpl = (generator, templateDir: string, templateData: object): ((filePath: string) => void) => (
-    filePath: string,
-): void => {
+export const generatorCopyTpl = (
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+    generator: any,
+    templateDir: string,
+    templateData: Record<string, unknown>,
+): ((filePath: string) => void) => (filePath: string): void => {
     const sourceParts = templateDir.split(path.delimiter);
 
     sourceParts.push(...filePath.split('/'));

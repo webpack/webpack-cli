@@ -48,7 +48,7 @@ describe('recursive parser', () => {
             alias: null,
         });
 
-        defineTest(join(__dirname), 'remove', 'fixture-3', 'plugins', ['plugin2']);
+        defineTest(join(__dirname), 'remove', 'fixture-3', 'plugins', 'plugin2');
 
         defineTest(join(__dirname), 'remove', 'fixture-3', 'module', {
             noParse: null,

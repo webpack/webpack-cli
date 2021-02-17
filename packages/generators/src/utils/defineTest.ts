@@ -4,7 +4,13 @@ import * as path from 'path';
 import { JSCodeshift, Node } from './types/NodePath';
 
 interface Module {
-    (jscodeshift: JSCodeshift, ast: Node, initOptions: string | boolean | object, action: string, transformName?: string): Node;
+    (
+        jscodeshift: JSCodeshift,
+        ast: Node,
+        initOptions: string | boolean | Record<string, unknown>,
+        action: string,
+        transformName?: string,
+    ): Node;
     default: transformType;
     parser: string;
 }
@@ -12,8 +18,8 @@ interface Module {
 type transformType = (
     jscodeshift: JSCodeshift,
     ast: Node,
-    initOptions: string | boolean | object,
-    action: object | string,
+    initOptions: string | boolean | Record<string, unknown>,
+    action: Record<string, unknown> | string,
     transformName?: string,
 ) => Node;
 
@@ -45,8 +51,8 @@ function runSingleTransform(
     dirName: string,
     transformName: string,
     testFilePrefix: string,
-    initOptions: object | boolean | string,
-    action: object | string,
+    initOptions: Record<string, unknown> | boolean | string,
+    action: Record<string, unknown> | string,
 ): string {
     if (!testFilePrefix) {
         testFilePrefix = transformName;
@@ -104,8 +110,8 @@ export default function defineTest(
     dirName: string,
     transformName: string,
     testFilePrefix?: string,
-    transformObject?: object | string,
-    action?: object | string,
+    transformObject?: Record<string, unknown> | string,
+    action?: Record<string, unknown> | string,
 ): void {
     const testName: string = testFilePrefix ? `transforms correctly using "${testFilePrefix}" data` : 'transforms correctly';
     describe(transformName, () => {

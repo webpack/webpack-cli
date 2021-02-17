@@ -140,7 +140,7 @@ exports[`recursive parser remove transforms correctly using "fixture-3" data 2`]
         port: 9000,
     },
     devtool: 'eval',
-    plugins: ['plugin1', 'plugin3'],
+    plugins: ['plugin1', 'plugin2', 'plugin3'],
     resolve: {
         alias: {
             inject: \\"{{#if_eq build 'standalone'}}\\",

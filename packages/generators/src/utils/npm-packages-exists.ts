@@ -45,7 +45,7 @@ export function npmExists(moduleName: string): Promise<any> {
 export function npmPackagesExists(pkg: string[]): void {
     const acceptedPackages: string[] = [];
 
-    function resolvePackagesIfReady(): void | Function {
+    function resolvePackagesIfReady(): void | (() => void) {
         if (acceptedPackages.length === pkg.length) {
             return resolvePackages(acceptedPackages);
         }

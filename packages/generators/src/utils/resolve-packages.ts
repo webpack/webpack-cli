@@ -9,10 +9,6 @@ import { utils } from 'webpack-cli';
 
 const { logger } = utils;
 
-interface ChildProcess {
-    status: number;
-}
-
 /**
  *
  * Attaches a promise to the installation of the package
@@ -40,7 +36,7 @@ export function processPromise(child: ExecaSyncReturnValue): Promise<void> {
  * a webpack configuration through yeoman or throws an error
  */
 
-export function resolvePackages(pkg: string[]): Function | void {
+export function resolvePackages(pkg: string[]): (() => void) | void {
     Error.stackTraceLimit = 30;
 
     const packageLocations: string[] = [];

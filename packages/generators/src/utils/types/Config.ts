@@ -5,7 +5,7 @@ export interface Config extends Object {
     topScope?: string[];
     configName?: string;
     merge: string | string[];
-    webpackOptions: object;
+    webpackOptions: Record<string, unknown>;
 }
 
 export interface TransformConfig extends Object {

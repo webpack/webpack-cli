@@ -23,7 +23,8 @@ export default class InitGenerator extends CustomGenerator {
     public generationPath: string;
     private langType: string;
 
-    public constructor(args, opts) {
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+    public constructor(args: any, opts: any) {
         super(args, opts);
 
         this.autoGenerateConfig = opts.autoSetDefaults;
@@ -54,7 +55,7 @@ export default class InitGenerator extends CustomGenerator {
         (this.configuration.config.webpackOptions.plugins as string[]).push('new webpack.ProgressPlugin()');
     }
 
-    public async prompting(): Promise<void | {}> {
+    public async prompting(): Promise<void> {
         // eslint-disable-next-line @typescript-eslint/no-this-alias
         const self: this = this;
 
@@ -73,7 +74,7 @@ export default class InitGenerator extends CustomGenerator {
             this.autoGenerateConfig,
         );
 
-        const entryOption: string | object = await entryQuestions(self, multiEntries, this.autoGenerateConfig);
+        const entryOption: string | Record<string, string> = await entryQuestions(self, multiEntries, this.autoGenerateConfig);
 
         if (typeof entryOption === 'string') {
             // single entry apply when default is not used
