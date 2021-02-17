@@ -1,6 +1,5 @@
 'use strict';
 
-const stripAnsi = require('strip-ansi');
 const { run } = require('../../utils/test-utils');
 
 describe('Zero Config tests', () => {
@@ -10,6 +9,6 @@ describe('Zero Config tests', () => {
         expect(exitCode).toBe(1);
         expect(stderr).toBeFalsy();
         // Entry file is absent, should log the Error from the compiler
-        expect(stripAnsi(stdout)).toContain("Error: Can't resolve './src'");
+        expect(stdout).toContain("Error: Can't resolve './src'");
     });
 });

@@ -1,9 +1,8 @@
 'use strict';
 
-const stripAnsi = require('strip-ansi');
 const path = require('path');
 const getPort = require('get-port');
-const { runServe, isWebpack5, isDevServer4 } = require('../../utils/test-utils');
+const { runWatch, isWebpack5, isDevServer4 } = require('../../utils/test-utils');
 
 const testPath = path.resolve(__dirname);
 
@@ -25,7 +24,7 @@ describe('basic serve usage', () => {
     }
 
     it('should work', async () => {
-        const { stderr, stdout } = await runServe(__dirname, []);
+        const { stderr, stdout } = await runWatch(__dirname, ['serve']);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('main.js');
@@ -33,7 +32,7 @@ describe('basic serve usage', () => {
     });
 
     it('should work with the "--config" option', async () => {
-        const { stderr, stdout } = await runServe(__dirname, ['--config', 'serve.config.js', '--port', port]);
+        const { stderr, stdout } = await runWatch(__dirname, ['serve', '--config', 'serve.config.js', '--port', port]);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('development');
@@ -41,7 +40,8 @@ describe('basic serve usage', () => {
     });
 
     it('should work with the "--config" and "--env" options', async () => {
-        const { stderr, stdout } = await runServe(__dirname, [
+        const { stderr, stdout } = await runWatch(__dirname, [
+            'serve',
             '--config',
             'function-with-env.config.js',
             '--env',
@@ -58,7 +58,8 @@ describe('basic serve usage', () => {
     });
 
     it('should work with the "--config" and "--env" options and expose dev server options', async () => {
-        const { stderr, stdout } = await runServe(__dirname, [
+        const { stderr, stdout } = await runWatch(__dirname, [
+            'serve',
             '--config',
             'function-with-argv.config.js',
             '--env',
@@ -77,7 +78,7 @@ describe('basic serve usage', () => {
     });
 
     it('should work in multi compiler mode', async () => {
-        const { stderr, stdout } = await runServe(__dirname, ['--config', 'multi.config.js', '--port', port]);
+        const { stderr, stdout } = await runWatch(__dirname, ['serve', '--config', 'multi.config.js', '--port', port]);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('one');
@@ -89,7 +90,7 @@ describe('basic serve usage', () => {
 
     // TODO need fix in future, edge case
     it.skip('should work in multi compiler mode with multiple dev servers', async () => {
-        const { stderr, stdout } = await runServe(__dirname, ['--config', 'multi-dev-server.config.js']);
+        const { stderr, stdout } = await runWatch(__dirname, ['serve', '--config', 'multi-dev-server.config.js']);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('one');
@@ -100,7 +101,7 @@ describe('basic serve usage', () => {
     });
 
     it('should work with the "--mode" option', async () => {
-        const { stderr, stdout } = await runServe(__dirname, []);
+        const { stderr, stdout } = await runWatch(__dirname, ['serve']);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('development');
@@ -109,15 +110,15 @@ describe('basic serve usage', () => {
     });
 
     it('should work with the "--stats" option', async () => {
-        const { stderr, stdout } = await runServe(__dirname, ['--stats']);
+        const { stderr, stdout } = await runWatch(__dirname, ['serve', '--stats']);
 
         expect(stderr).toBeFalsy();
-        expect(stripAnsi(stdout)).toContain(isWebpack5 ? 'compiled successfully' : 'Version: webpack');
+        expect(stdout).toContain(isWebpack5 ? 'compiled successfully' : 'Version: webpack');
         expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
     });
 
     it('should work with the "--stats verbose" option', async () => {
-        const { stderr, stdout } = await runServe(__dirname, ['--stats', 'verbose']);
+        const { stderr, stdout } = await runWatch(__dirname, ['serve', '--stats', 'verbose']);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain(isWebpack5 ? 'from webpack.Compiler' : 'webpack.buildChunkGraph.visitModules');
@@ -125,7 +126,7 @@ describe('basic serve usage', () => {
     });
 
     it('should work with the "--mode" option #2', async () => {
-        const { stderr, stdout } = await runServe(__dirname, ['--mode', 'production']);
+        const { stderr, stdout } = await runWatch(__dirname, ['serve', '--mode', 'production']);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('production');
@@ -134,7 +135,7 @@ describe('basic serve usage', () => {
     });
 
     it('should work with the "--mode" option #3', async () => {
-        const { stderr, stdout } = await runServe(__dirname, ['--mode', 'development']);
+        const { stderr, stdout } = await runWatch(__dirname, ['serve', '--mode', 'development']);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('development');
@@ -143,7 +144,7 @@ describe('basic serve usage', () => {
     });
 
     it('should work with the "--progress" option', async () => {
-        const { stderr, stdout } = await runServe(__dirname, ['--progress']);
+        const { stderr, stdout } = await runWatch(__dirname, ['serve', '--progress']);
 
         expect(stderr).toContain('webpack.Progress');
         expect(stdout).toContain('main.js');
@@ -151,7 +152,7 @@ describe('basic serve usage', () => {
     });
 
     it('should work with the "--progress" option using the "profile" value', async () => {
-        const { stderr, stdout } = await runServe(__dirname, ['--progress', 'profile']);
+        const { stderr, stdout } = await runWatch(__dirname, ['serve', '--progress', 'profile']);
 
         expect(stderr).toContain('webpack.Progress');
         expect(stdout).toContain('main.js');
@@ -159,7 +160,7 @@ describe('basic serve usage', () => {
     });
 
     it('should work with the "--client-log-level" option', async () => {
-        const { stdout, stderr } = await runServe(testPath, ['--client-log-level', 'info']);
+        const { stdout, stderr } = await runWatch(testPath, ['serve', '--client-log-level', 'info']);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('main.js');
@@ -167,7 +168,7 @@ describe('basic serve usage', () => {
     });
 
     it('should work with the "--port" option', async () => {
-        const { stdout, stderr } = await runServe(testPath, ['--port', port]);
+        const { stdout, stderr } = await runWatch(testPath, ['serve', '--port', port]);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('main.js');
@@ -175,7 +176,7 @@ describe('basic serve usage', () => {
     });
 
     it('should work with the "--hot" option', async () => {
-        const { stderr, stdout } = await runServe(__dirname, ['--hot']);
+        const { stderr, stdout } = await runWatch(__dirname, ['serve', '--hot']);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('main.js');
@@ -183,7 +184,7 @@ describe('basic serve usage', () => {
     });
 
     it('should work with the "--no-hot" option', async () => {
-        const { stdout, stderr } = await runServe(testPath, ['--port', port, '--no-hot']);
+        const { stdout, stderr } = await runWatch(testPath, ['serve', '--port', port, '--no-hot']);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('main.js');
@@ -191,7 +192,7 @@ describe('basic serve usage', () => {
     });
 
     it('should work with the "--hot" option using the "only" value', async () => {
-        const { stdout, stderr } = await runServe(testPath, ['--port', port, isDevServer4 ? '--hot only' : '--hot-only']);
+        const { stdout, stderr } = await runWatch(testPath, ['serve', '--port', port, isDevServer4 ? '--hot only' : '--hot-only']);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('main.js');
@@ -199,7 +200,7 @@ describe('basic serve usage', () => {
     });
 
     it('should work with "--hot" and "--port" options', async () => {
-        const { stdout, stderr } = await runServe(testPath, ['--port', port, '--hot']);
+        const { stdout, stderr } = await runWatch(testPath, ['serve', '--port', port, '--hot']);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('main.js');
@@ -207,7 +208,7 @@ describe('basic serve usage', () => {
     });
 
     it('should work with the "--hot" and "--progress" options', async () => {
-        const { stdout, stderr } = await runServe(testPath, ['--port', port, '--hot', '--progress']);
+        const { stdout, stderr } = await runWatch(testPath, ['serve', '--port', port, '--hot', '--progress']);
 
         expect(stderr).toContain('webpack.Progress');
         expect(stdout).toContain('main.js');
@@ -215,16 +216,16 @@ describe('basic serve usage', () => {
     });
 
     it('should work with the default "publicPath" option', async () => {
-        const { stderr, stdout } = await runServe(__dirname, []);
+        const { stderr, stdout } = await runWatch(__dirname, ['serve']);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('main.js');
-        expect(stripAnsi(stdout)).toContain('from /');
+        expect(stdout).toContain('from /');
         expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
     });
 
     it('should work with the "--output-public-path" option', async () => {
-        const { stderr, stdout } = await runServe(__dirname, ['--output-public-path', '/my-public-path/']);
+        const { stderr, stdout } = await runWatch(__dirname, ['serve', '--output-public-path', '/my-public-path/']);
 
         if (isWebpack5) {
             expect(stderr).toBeFalsy();
@@ -238,7 +239,7 @@ describe('basic serve usage', () => {
     });
 
     it('should respect the "publicPath" option from configuration', async () => {
-        const { stderr, stdout } = await runServe(__dirname, ['--config', 'output-public-path.config.js']);
+        const { stderr, stdout } = await runWatch(__dirname, ['serve', '--config', 'output-public-path.config.js']);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('main.js');
@@ -247,7 +248,7 @@ describe('basic serve usage', () => {
     });
 
     it('should respect the "publicPath" option from configuration using multi compiler mode', async () => {
-        const { stderr, stdout } = await runServe(__dirname, ['--config', 'multi-output-public-path.config.js', '--port', port]);
+        const { stderr, stdout } = await runWatch(__dirname, ['serve', '--config', 'multi-output-public-path.config.js', '--port', port]);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('one');
@@ -259,7 +260,7 @@ describe('basic serve usage', () => {
     });
 
     it('should respect the "publicPath" option from configuration (from the "devServer" options)', async () => {
-        const { stderr, stdout } = await runServe(__dirname, ['--config', 'dev-server-output-public-path.config.js']);
+        const { stderr, stdout } = await runWatch(__dirname, ['serve', '--config', 'dev-server-output-public-path.config.js']);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('main.js');
@@ -268,7 +269,7 @@ describe('basic serve usage', () => {
     });
 
     it('should work with the "--open" option', async () => {
-        const { stdout, stderr } = await runServe(testPath, ['--open', '--port', port]);
+        const { stdout, stderr } = await runWatch(testPath, ['serve', '--open', '--port', port]);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('main.js');
@@ -276,7 +277,13 @@ describe('basic serve usage', () => {
     });
 
     it('should respect the "publicPath" option from configuration using multi compiler mode (from the "devServer" options)', async () => {
-        const { stderr, stdout } = await runServe(__dirname, ['--config', 'multi-dev-server-output-public-path.config.js', '--port', port]);
+        const { stderr, stdout } = await runWatch(__dirname, [
+            'serve',
+            '--config',
+            'multi-dev-server-output-public-path.config.js',
+            '--port',
+            port,
+        ]);
 
         expect(stderr).toBeFalsy();
         expect(stderr).toBeFalsy();
@@ -289,7 +296,7 @@ describe('basic serve usage', () => {
     });
 
     it('should work with entries syntax', async () => {
-        const { stderr, stdout } = await runServe(__dirname, ['./src/entry.js', '--port', port]);
+        const { stderr, stdout } = await runWatch(__dirname, ['serve', './src/entry.js', '--port', port]);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('development');
@@ -297,7 +304,7 @@ describe('basic serve usage', () => {
     });
 
     it('should work and log warning on the `watch option in a configuration', async () => {
-        const { stderr, stdout } = await runServe(__dirname, ['--config', './watch.config.js', '--port', port]);
+        const { stderr, stdout } = await runWatch(__dirname, ['serve', '--config', './watch.config.js', '--port', port]);
 
         expect(stderr).toContain(
             "No need to use the 'serve' command together with '{ watch: true }' configuration, it does not make sense.",
@@ -307,7 +314,7 @@ describe('basic serve usage', () => {
     });
 
     it('should log used supplied config with serve', async () => {
-        const { stderr, stdout } = await runServe(__dirname, ['--config', 'log.config.js', '--port', port]);
+        const { stderr, stdout } = await runWatch(__dirname, ['serve', '--config', 'log.config.js', '--port', port]);
         const configPath = path.resolve(__dirname, './log.config.js');
 
         expect(stderr).toContain('Compiler starting...');
@@ -317,7 +324,7 @@ describe('basic serve usage', () => {
     });
 
     it("should log error on using '--watch' flag with serve", async () => {
-        const { stdout, stderr } = await runServe(testPath, ['--watch']);
+        const { stdout, stderr } = await runWatch(testPath, ['serve', '--watch']);
 
         expect(stderr).toContain("Error: Unknown option '--watch'");
         expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
@@ -325,7 +332,7 @@ describe('basic serve usage', () => {
     });
 
     it("should log error on using '-w' alias with serve", async () => {
-        const { stdout, stderr } = await runServe(testPath, ['-w']);
+        const { stdout, stderr } = await runWatch(testPath, ['serve', '-w']);
 
         expect(stderr).toContain("Error: Unknown option '-w'");
         expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
@@ -333,7 +340,7 @@ describe('basic serve usage', () => {
     });
 
     it('should log an error on unknown flag', async () => {
-        const { exitCode, stdout, stderr } = await runServe(testPath, ['--port', port, '--unknown-flag']);
+        const { exitCode, stdout, stderr } = await runWatch(testPath, ['serve', '--port', port, '--unknown-flag']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Error: Unknown option '--unknown-flag'");

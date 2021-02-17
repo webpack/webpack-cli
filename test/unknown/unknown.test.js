@@ -1,4 +1,5 @@
-const stripAnsi = require('strip-ansi');
+'use strict';
+
 const { run, isWebpack5 } = require('../utils/test-utils');
 
 describe('unknown behaviour', () => {
@@ -102,7 +103,7 @@ describe('unknown behaviour', () => {
     });
 
     it('should log error and respect --color flag', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--unknown', '--color']);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--unknown', '--color'], { env: { FORCE_COLOR: true } });
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Error: Unknown option '--unknown'");
@@ -111,7 +112,7 @@ describe('unknown behaviour', () => {
     });
 
     it('should log error for unknown flag and respect --no-color', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--unknown', '--no-color']);
+        const { exitCode, stderr, stdout } = run(__dirname, ['--unknown', '--no-color'], { env: { FORCE_COLOR: true } });
 
         expect(exitCode).toBe(2);
         expect(stderr).not.toContain(`\u001b[31mError: Unknown option '--unknown'`);
@@ -203,8 +204,8 @@ describe('unknown behaviour', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['qqq'], true, [], { TERM_PROGRAM: false });
 
         expect(exitCode).toBe(2);
-        expect(stripAnsi(stderr)).toContain("Unknown command or entry 'qqq'");
-        expect(stripAnsi(stderr)).toContain("Run 'webpack --help' to see available commands and options");
+        expect(stderr).toContain("Unknown command or entry 'qqq'");
+        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
     });
 
@@ -212,9 +213,9 @@ describe('unknown behaviour', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['server'], true, [], { TERM_PROGRAM: false });
 
         expect(exitCode).toBe(2);
-        expect(stripAnsi(stderr)).toContain("Unknown command or entry 'server'");
-        expect(stripAnsi(stderr)).toContain("Did you mean 'serve' (alias 's')?");
-        expect(stripAnsi(stderr)).toContain("Run 'webpack --help' to see available commands and options");
+        expect(stderr).toContain("Unknown command or entry 'server'");
+        expect(stderr).toContain("Did you mean 'serve' (alias 's')?");
+        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
     });
 });
