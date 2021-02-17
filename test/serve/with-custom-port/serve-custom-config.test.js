@@ -2,7 +2,7 @@
 
 const path = require('path');
 const getPort = require('get-port');
-const { runServe } = require('../../utils/test-utils');
+const { runWatch } = require('../../utils/test-utils');
 
 const testPath = path.resolve(__dirname);
 
@@ -24,7 +24,7 @@ describe('serve with devServer in config', () => {
     }
 
     it('Should pick up the host and port from config', async () => {
-        const { stdout, stderr } = await runServe(testPath, []);
+        const { stdout, stderr } = await runWatch(testPath, ['serve']);
 
         expect(stderr).toBeFalsy();
         // Should output the correct bundle file
@@ -35,7 +35,7 @@ describe('serve with devServer in config', () => {
     });
 
     it('Port flag should override the config port', async () => {
-        const { stdout, stderr } = await runServe(testPath, ['--port', port]);
+        const { stdout, stderr } = await runWatch(testPath, ['serve', '--port', port]);
 
         expect(stderr).toBeFalsy();
         // Should output the correct bundle file
@@ -46,7 +46,7 @@ describe('serve with devServer in config', () => {
     });
 
     it('Passing hot flag works alongside other server config', async () => {
-        const { stdout, stderr } = await runServe(testPath, ['--port', port, '--hot']);
+        const { stdout, stderr } = await runWatch(testPath, ['serve', '--port', port, '--hot']);
 
         expect(stderr).toBeFalsy();
         // Should output the correct bundle file
@@ -58,7 +58,7 @@ describe('serve with devServer in config', () => {
     });
 
     it('works fine when no-hot flag is passed alongside other server config', async () => {
-        const { stdout, stderr } = await runServe(testPath, ['--port', port, '--no-hot']);
+        const { stdout, stderr } = await runWatch(testPath, ['serve', '--port', port, '--no-hot']);
 
         expect(stderr).toBeFalsy();
         // Should output the correct bundle file
