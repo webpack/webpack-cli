@@ -23,8 +23,7 @@ describe('addon generator', () => {
     });
 
     beforeEach(() => {
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        const Gen = addonGenerator([], '', [], [], () => {});
+        const Gen = addonGenerator([], '', [], [], () => ({}));
 
         gen = new Gen(null, null);
         gen.props = {

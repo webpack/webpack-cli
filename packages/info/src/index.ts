@@ -30,7 +30,8 @@ const DEFAULT_DETAILS: Information = {
 };
 
 class InfoCommand {
-    async apply(cli): Promise<void> {
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+    async apply(cli: any): Promise<void> {
         const { logger } = cli;
 
         await cli.makeCommand(

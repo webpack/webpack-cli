@@ -33,6 +33,7 @@ const addonGenerator = (
     templateDir: string,
     copyFiles: string[],
     copyTemplateFiles: string[],
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     templateFn: (instance: any) => Record<string, unknown>,
 ): Generator.GeneratorConstructor => {
     return class extends Generator {

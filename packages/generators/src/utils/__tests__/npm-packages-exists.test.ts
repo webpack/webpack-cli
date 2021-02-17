@@ -4,7 +4,8 @@ import { resolvePackages } from '../resolve-packages';
 jest.mock('../resolve-packages');
 
 // TS is not aware that jest changes the type of resolvePackages
-const mockResolvePackages = resolvePackages as jest.Mock<typeof resolvePackages>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const mockResolvePackages = resolvePackages as any;
 
 describe('npmPackagesExists', () => {
     test('resolves packages when they are available on the local filesystem', () => {

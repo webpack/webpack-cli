@@ -9,10 +9,6 @@ import { utils } from 'webpack-cli';
 
 const { logger } = utils;
 
-interface ChildProcess {
-    status: number;
-}
-
 /**
  *
  * Attaches a promise to the installation of the package

@@ -23,7 +23,8 @@ export default class InitGenerator extends CustomGenerator {
     public generationPath: string;
     private langType: string;
 
-    public constructor(args, opts) {
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+    public constructor(args: any, opts: any) {
         super(args, opts);
 
         this.autoGenerateConfig = opts.autoSetDefaults;

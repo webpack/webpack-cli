@@ -8,7 +8,8 @@ import { modifyHelperUtil } from './utils/modify-config-helper';
 import { npmPackagesExists } from './utils/npm-packages-exists';
 
 class GeneratorsCommand {
-    async apply(cli): Promise<void> {
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+    async apply(cli: any): Promise<void> {
         const { logger } = cli;
 
         await cli.makeCommand(
