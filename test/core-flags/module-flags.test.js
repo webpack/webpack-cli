@@ -120,7 +120,7 @@ describe('module config related flag', () => {
         expect(stdout).toContain(`generator: { asset: { dataUrl: [Object] } }`);
     });
 
-    it('should config module.parser flags coorectly', () => {
+    it('should config module.parser flags correctly', () => {
         const { exitCode, stderr, stdout } = run(__dirname, [
             '--module-parser-javascript-browserify',
             '--module-parser-javascript-commonjs',
@@ -137,5 +137,22 @@ describe('module config related flag', () => {
         expect(stdout).toContain('harmony: true');
         expect(stdout).toContain('import: true');
         expect(stdout).toContain('node: false');
+    });
+
+    it('should accept --module-parser-javascript-url=relative', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['--module-parser-javascript-url', 'relative']);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain(`url: 'relative'`);
+    });
+
+    it('should throw an error for an invalid value of --module-parser-javascript-url', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['--module-parser-javascript-url', 'test']);
+
+        expect(exitCode).toBe(2);
+        expect(stderr).toContain(`Invalid value 'test' for the '--module-parser-javascript-url' option`);
+        expect(stderr).toContain(`Expected: 'relative'`);
+        expect(stdout).toBeFalsy();
     });
 });
