@@ -39,7 +39,8 @@ export default class InitGenerator extends CustomGenerator {
         this.supportedTemplates = ['default'];
     }
 
-    public async prompting(): Promise<void | {}> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    public async prompting(): Promise<void | any> {
         if (!existsSync(this.resolvedGenerationPath)) {
             logger.log(`${logSymbols.info}${blue(' INFO ')} supplied generation path doesn't exist, required folders will be created.`);
             try {
