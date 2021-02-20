@@ -25,7 +25,8 @@ export default class InitGenerator extends CustomGenerator {
     public resolvedGenerationPath: string;
     public supportedTemplates: string[];
 
-    public constructor(args, opts) {
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+    public constructor(args: any, opts: any) {
         super(args, opts);
 
         const { options } = opts;

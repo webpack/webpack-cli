@@ -5,7 +5,6 @@ describe('utils', () => {
 
     beforeEach(() => {
         mockSelf = {
-            // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
             prompt: (arg) => {
                 return arg[0];
             },

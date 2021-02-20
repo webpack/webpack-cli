@@ -33,14 +33,15 @@ const addonGenerator = (
     templateDir: string,
     copyFiles: string[],
     copyTemplateFiles: string[],
-    templateFn: Function,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    templateFn: (instance: any) => Record<string, unknown>,
 ): Generator.GeneratorConstructor => {
     return class extends Generator {
         public props: Generator.Question;
         public copy: (value: string, index: number, array: string[]) => void;
         public copyTpl: (value: string, index: number, array: string[]) => void;
 
-        public prompting(): Promise<void | {}> {
+        public prompting(): Promise<void> {
             return this.prompt(prompts).then((props: Generator.Question): void => {
                 this.props = props;
             });

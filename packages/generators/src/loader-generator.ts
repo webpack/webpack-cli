@@ -52,7 +52,7 @@ export const LoaderGenerator = addonGenerator(
         'examples/simple/src/static-esm-module.js.tpl',
     ],
     ['src/_index.js.tpl'],
-    (gen): object => ({ name: gen.props.name }),
+    (gen): Record<string, unknown> => ({ name: gen.props.name }),
 );
 
 export default LoaderGenerator;
