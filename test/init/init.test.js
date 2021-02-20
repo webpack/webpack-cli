@@ -5,8 +5,8 @@ const { run, runPromptWithAnswers } = require('../utils/test-utils');
 
 const assetsPath = resolve(__dirname, './test-assets');
 const ENTER = '\x0D';
-// Skip for debug
-describe.skip('init', () => {
+
+describe('init', () => {
     beforeEach(() => {
         mkdirSync(assetsPath);
     });

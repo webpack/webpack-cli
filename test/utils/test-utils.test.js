@@ -108,8 +108,7 @@ describe('runAndGetWatchProc function', () => {
         expect(stdout).toBeTruthy();
     });
 
-    // Skip for debug
-    it.skip('writes to stdin', async () => {
+    it('writes to stdin', async () => {
         const assetsPath = resolve(__dirname, './test-assets');
         mkdirSync(assetsPath);
 

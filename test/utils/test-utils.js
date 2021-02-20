@@ -10,6 +10,8 @@ const { version } = require('webpack');
 
 const isWebpack5 = version.startsWith('5');
 
+console.log('DEBUG: ' + isWebpack5);
+
 let devServerVersion;
 
 try {
