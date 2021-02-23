@@ -8,7 +8,7 @@ const { Writable } = require('readable-stream');
 const concat = require('concat-stream');
 
 const rimraf = require('rimraf');
-rimraf(path.resolve(__dirname, './node_modules'));
+rimraf.sync(path.resolve(__dirname, './node_modules'));
 
 const { version } = require('webpack');
 const isWebpack5 = version.startsWith('5');
