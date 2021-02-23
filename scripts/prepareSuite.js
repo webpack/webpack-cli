@@ -14,6 +14,7 @@ const getFoldersWithPackage = (stats, file) => {
     try {
         const folders = collectTestFolders(getFoldersWithPackage);
         for (const folder of folders) {
+            console.log(folder);
             await execa('yarn', {
                 cwd: folder,
                 stdio: 'inherit',
