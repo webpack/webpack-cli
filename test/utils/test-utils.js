@@ -7,8 +7,7 @@ const { sync: spawnSync, node: execaNode } = execa;
 const { Writable } = require('readable-stream');
 const concat = require('concat-stream');
 
-const rimraf = require('rimraf');
-rimraf.sync(path.resolve(__dirname, './package.json'));
+console.log(fs.readFileSync(path.resolve(__dirname, './package.json')));
 
 const { version } = require('webpack');
 const isWebpack5 = version.startsWith('5');
