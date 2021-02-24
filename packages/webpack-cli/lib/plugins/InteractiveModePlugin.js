@@ -1,6 +1,14 @@
 const readline = require('readline');
-const { version } = require('webpack');
 const { red, green, cyanBright, bold } = require('colorette');
+const logger = require('../utils/logger');
+
+let version;
+try {
+    version = require('webpack').version;
+} catch (err) {
+    logger.error(err);
+    process.exit(2);
+}
 
 /**
  * Displays command space at bottom of screen

@@ -5,7 +5,6 @@ const Module = require('module');
 
 const { program } = require('commander');
 const utils = require('./utils');
-const InteractiveModePlugin = require('./plugins/InteractiveModePlugin');
 
 class WebpackCLI {
     constructor() {
@@ -1711,7 +1710,8 @@ class WebpackCLI {
 
             // Apply interactive plugin on compiler
             if (options.interactive) {
-                const interactivePlugin = new InteractiveModePlugin();
+                const InteractivePlugin = require('./plugins/InteractiveModePlugin');
+                const interactivePlugin = new InteractivePlugin();
                 interactivePlugin.apply(compiler);
             }
         } catch (error) {
