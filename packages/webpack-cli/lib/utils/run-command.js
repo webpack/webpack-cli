@@ -1,11 +1,11 @@
 const execa = require('execa');
-const logger = require('./logger');
+const utils = require('./index');
 
 async function runCommand(command, args = []) {
     try {
         await execa(command, args, { stdio: 'inherit', shell: true });
     } catch (error) {
-        logger.error(error.message);
+        utils.logger.error(error.message);
         process.exit(2);
     }
 }

@@ -26,11 +26,15 @@ describe('init generate-path flag', () => {
         }
 
         // Test regressively files are scaffolded
-        const files = ['./sw.js', './package.json', './src/index.js', './webpack.config.js'];
+        const files = ['./package.json', './src/index.js', './webpack.config.js'];
 
         files.forEach((file) => {
             expect(fs.existsSync(resolve(genPath, file))).toBeTruthy();
         });
+
+        const webpackConfig = require(join(genPath, 'webpack.config.js'));
+
+        expect(webpackConfig.modules.rules).toEqual([]);
 
         // Check package json is correctly configured
         const pkgJsonTests = () => {
@@ -38,7 +42,9 @@ describe('init generate-path flag', () => {
             expect(pkgJson).toBeTruthy();
             expect(pkgJson['devDependencies']).toBeTruthy();
             expect(pkgJson['devDependencies']['webpack']).toBeTruthy();
+            expect(pkgJson['devDependencies']['webpack-dev-server']).toBeTruthy();
             expect(pkgJson['scripts']['build'] == 'webpack').toBeTruthy();
+            expect(pkgJson['scripts']['serve'] == 'webpack serve').toBeTruthy();
         };
         expect(pkgJsonTests).not.toThrow();
     });
@@ -58,11 +64,15 @@ describe('init generate-path flag', () => {
         }
 
         // Test regressively files are scaffolded
-        const files = ['./sw.js', './package.json', './src/index.js', './webpack.config.js'];
+        const files = ['./package.json', './src/index.js', './webpack.config.js'];
 
         files.forEach((file) => {
             expect(fs.existsSync(resolve(genPath, file))).toBeTruthy();
         });
+
+        const webpackConfig = require(join(genPath, 'webpack.config.js'));
+
+        expect(webpackConfig.modules.rules).toEqual([]);
 
         // Check package json is correctly configured
         const pkgJsonTests = () => {
@@ -70,7 +80,9 @@ describe('init generate-path flag', () => {
             expect(pkgJson).toBeTruthy();
             expect(pkgJson['devDependencies']).toBeTruthy();
             expect(pkgJson['devDependencies']['webpack']).toBeTruthy();
+            expect(pkgJson['devDependencies']['webpack-dev-server']).toBeTruthy();
             expect(pkgJson['scripts']['build'] == 'webpack').toBeTruthy();
+            expect(pkgJson['scripts']['serve'] == 'webpack serve').toBeTruthy();
         };
         expect(pkgJsonTests).not.toThrow();
     });

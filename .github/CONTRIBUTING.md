@@ -23,10 +23,6 @@ Table of Contents
 -   [Submitting a good Pull Request](#submitting-a-good-pull-request)
 -   [Commit message](#commit-message)
     -   [Commit Message Format](#commit-message-format)
--   [Migrate with the CLI](#migrate-with-the-cli)
-    -   [How it's being done](#how-its-being-done)
-        -   [Structure of a transform](#structure-of-a-transform)
-    -   [Further Work](#further-work)
 -   [Contributor License Agreement](#contributor-license-agreement)
 -   [Documentation](#documentation)
 -   [Releasing](#releasing)
@@ -79,6 +75,8 @@ In case you are suggesting a new feature, we will match your idea with our curre
     yarn bootstrap
     yarn build
     ```
+
+> If you are a Docker and Visual Studio Code user, you can quickstart development using [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) Extension
 
 ## Running Tests
 
@@ -191,8 +189,6 @@ In case you've got a small change in most of the cases, your pull request would 
 
 Our commit messages format follows the [angular.js commits format](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#commits).
 
-You can use `yarn commit` script to have an interactive way of making commits that follow our guidelines.
-
 We don't use the scope. The template of a commit would look like this:
 
 ### Commit Message Format
@@ -211,16 +207,17 @@ format that includes a **type** and a **subject**:
 
 This is the list of _type_ of commits that we accept:
 
--   **ast** : Init, migrate, etc.
--   **break** : Changes that break the behaviour of the cli.
+-   **build** : Changes that affect the build system or external dependencies (example scopes: typescript, webpack, npm).
 -   **chore** : Updating deps, docs, linting, etc.
--   **cli** : Changes related to core CLI things.
+-   **ci** : Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)
 -   **docs** : Documentation only changes.
 -   **feat** : A new feature.
--   **fix** : A bug fix, typos, etc.
--   **misc** : Other formats like tweaks and such.
--   **tests** : Adding missing or correcting existing tests.
+-   **fix** : A bug fix.
+-   **perf** : A code change that improves performance.
 -   **refactor** : A code change that neither fixes a bug nor adds a feature.
+-   **revert** : Reverts the previous commit.
+-   **style** : Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc).
+-   **test** : Adding missing tests or correcting existing tests.
 
 The **header** is mandatory.
 
@@ -237,68 +234,6 @@ feat(webpack-cli): allow multiple values for --stats
 
 docs: update README.md
 ```
-
-## Migrate with the CLI
-
-```sh
-webpack migrate
-```
-
-The expected result of the above command is to take the mentioned `webpack` configuration and create a new configuration file which is compatible with webpack 2.
-It should be a valid new config and should keep intact all the features from the original config.
-The new config will be as readable as possible (may add some comments).
-
-With [#40](https://github.com/webpack/webpack-cli/pull/40), we have been able to add basic scaffolding and do many of the conversions recommended in the [docs](https://webpack.js.org/migrate).
-
-### How it's being done
-
-We use [`jscodeshift`](https://github.com/facebook/jscodeshift) transforms called `codemods` to accomplish this.
-We have written a bunch of transformations under [/lib/transformations](https://github.com/webpack/webpack-cli/tree/master/lib/transformations),divided logically.
-We convert the existing webpack config to [AST](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey/Parser_API). We then parse this tree for the specific features and modify it to conform to webpack v2.
-
-#### Structure of a transform
-
-The directory structure of a transform looks as follows -
-
-```sh
-│
-├──__snapshots__
-├──__testfixtures__
-│  │
-│  └───transform-name.input.js
-│
-├──transform-name.js
-├──transform-name.test.js
-```
-
-`transform-name.js`
-
-This file contains the actual transformation codemod. It applies specific transformation and parsing logic to accomplish its job.
-There are utilities available under `/lib/utils.js` which can help you with this.
-
-`transform-name.test.js`
-
-This is where you declare a new test case for your transformation.
-Each test will refer to an input webpack config snippet.
-Conventionally we write them in `\_\_testfixtures\_\_`.
-
-```js
-const defineTest = require('../defineTest');
-
-defineTest(__dirname, 'transform-name.input1.js');
-defineTest(__dirname, 'transform-name.input2.js');
-```
-
-`defineTest` is a helper test method which helps us to run tests on all the transforms uniformly.
-It takes the input file given as parameter and uses jest to create a snapshot of the output. This effectively tests the correctness of our transformation.
-
-### Further Work
-
-This is still in a very raw form. We'd like to take this as close to a truly useful tool as possible.
-We will still need to
-
--   Support all kinds of webpack configuration(made using merge tools)
--   Test these transforms against real-world configurations.
 
 ## Contributor License Agreement
 

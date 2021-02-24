@@ -1,0 +1,10 @@
+{
+  "name": "webpack-cli",
+  "dockerFile": "Dockerfile",
+  "runArgs": ["-u", "node"],
+  "settings": {
+    "terminal.integrated.shell.linux": "/bin/bash"
+  },
+  "postCreateCommand": "yarn install && yarn bootstrap && yarn build",
+  "extensions": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"]
+}

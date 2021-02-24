@@ -4,16 +4,7 @@ import logSymbols from 'log-symbols';
 import path from 'path';
 import { Confirm, Input, List } from './utils/scaffold-utils';
 
-import {
-    getDefaultOptimization,
-    LangType,
-    langQuestionHandler,
-    tooltip,
-    generatePluginName,
-    StylingType,
-    styleQuestionHandler,
-    entryQuestions,
-} from './utils';
+import { LangType, langQuestionHandler, tooltip, StylingType, styleQuestionHandler, entryQuestions } from './utils';
 import { CustomGenerator } from './types';
 
 const { logger, getPackageManager } = utils;
@@ -28,16 +19,15 @@ const { logger, getPackageManager } = utils;
  *
  */
 export default class InitGenerator extends CustomGenerator {
-    public usingDefaults: boolean;
     public autoGenerateConfig: boolean;
     public generationPath: string;
     private langType: string;
 
-    public constructor(args, opts) {
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+    public constructor(args: any, opts: any) {
         super(args, opts);
 
-        this.usingDefaults = true;
-        this.autoGenerateConfig = opts.autoSetDefaults ? true : false;
+        this.autoGenerateConfig = opts.autoSetDefaults;
         this.generationPath = opts.generationPath;
 
         this.dependencies = ['webpack', 'webpack-cli', 'babel-plugin-syntax-dynamic-import'];
@@ -60,26 +50,17 @@ export default class InitGenerator extends CustomGenerator {
 
         this.entryOption = './src/index.js';
 
-        // add splitChunks options for transparency
-        // defaults coming from: https://webpack.js.org/plugins/split-chunks-plugin/#optimization-splitchunks
-        this.configuration.config.topScope.push(
-            "const path = require('path');",
-            "const webpack = require('webpack');",
-            '\n',
-            tooltip.splitChunks(),
-        );
+        this.configuration.config.topScope.push("const path = require('path');", "const webpack = require('webpack');", '\n');
 
         (this.configuration.config.webpackOptions.plugins as string[]).push('new webpack.ProgressPlugin()');
     }
 
-    public async prompting(): Promise<void | {}> {
+    public async prompting(): Promise<void> {
         // eslint-disable-next-line @typescript-eslint/no-this-alias
         const self: this = this;
 
-        this.usingDefaults = true;
-
         logger.log(
-            `\n${logSymbols.info}${blue(' INFO ')} ` +
+            `${logSymbols.info}${blue(' INFO ')} ` +
                 'For more information and a detailed description of each question, have a look at: ' +
                 `${bold(green('https://github.com/webpack/webpack-cli/blob/master/INIT.md'))}`,
         );
@@ -93,17 +74,15 @@ export default class InitGenerator extends CustomGenerator {
             this.autoGenerateConfig,
         );
 
-        const entryOption: string | object = await entryQuestions(self, multiEntries, this.autoGenerateConfig);
+        const entryOption: string | Record<string, string> = await entryQuestions(self, multiEntries, this.autoGenerateConfig);
 
         if (typeof entryOption === 'string') {
-            // single entry
+            // single entry apply when default is not used
             if (entryOption.length > 0 && entryOption !== "'./src/index.js'") {
-                this.usingDefaults = false;
                 this.configuration.config.webpackOptions.entry = entryOption;
             }
         } else if (typeof entryOption === 'object') {
             // multiple entries
-            this.usingDefaults = false;
             this.configuration.config.webpackOptions.entry = entryOption;
         }
 
@@ -117,10 +96,8 @@ export default class InitGenerator extends CustomGenerator {
             this.autoGenerateConfig,
         );
 
-        const defaultOutputDir = !outputDir || outputDir === 'dist';
-
-        if (!defaultOutputDir) {
-            this.usingDefaults = false;
+        // only apply when output dir is not default
+        if (outputDir !== 'dist') {
             this.configuration.config.webpackOptions.output = {
                 path: `path.resolve(__dirname, '${outputDir}')`,
             };
@@ -137,9 +114,6 @@ export default class InitGenerator extends CustomGenerator {
 
         langQuestionHandler(this, langType);
         this.langType = langType;
-        if (this.langType !== 'No') {
-            this.usingDefaults = false;
-        }
 
         const { stylingType } = await List(
             self,
@@ -150,9 +124,6 @@ export default class InitGenerator extends CustomGenerator {
             this.autoGenerateConfig,
         );
         const { ExtractUseProps, regExpForStyles } = styleQuestionHandler(self, stylingType);
-        if (stylingType !== 'No') {
-            this.usingDefaults = false;
-        }
 
         if (regExpForStyles) {
             // Ask if the user wants to use extractPlugin
@@ -187,6 +158,9 @@ export default class InitGenerator extends CustomGenerator {
                     );
                 }
 
+                // Remove style-loader from the loader chain
+                ExtractUseProps.shift();
+
                 ExtractUseProps.unshift({
                     loader: 'MiniCssExtractPlugin.loader',
                 });
@@ -198,43 +172,64 @@ export default class InitGenerator extends CustomGenerator {
                 use: ExtractUseProps,
             });
         }
-        if (this.usingDefaults) {
-            // Html webpack Plugin
-            this.dependencies.push('html-webpack-plugin');
-            const htmlWebpackDependency = 'html-webpack-plugin';
-            const htmlwebpackPlugin = generatePluginName(htmlWebpackDependency);
-            (this.configuration.config.topScope as string[]).push(
-                `const ${htmlwebpackPlugin} = require('${htmlWebpackDependency}')`,
-                '\n',
-                tooltip.html(),
-            );
-            (this.configuration.config.webpackOptions.plugins as string[]).push(`new ${htmlwebpackPlugin}({
-					template: 'index.html'
-				})`);
 
-            // webpack Dev Server
+        // webpack Dev Server
+        const { useDevServer } = await Confirm(
+            self,
+            'useDevServer',
+            'Do you want to use webpack-dev-server?',
+            true,
+            this.autoGenerateConfig,
+        );
+        if (useDevServer) {
             this.dependencies.push('webpack-dev-server');
             this.configuration.config.webpackOptions.devServer = {
                 open: true,
+                host: "'localhost'",
             };
+        }
 
-            // PWA + offline support
-            this.configuration.config.topScope.push("const workboxPlugin = require('workbox-webpack-plugin');", '\n');
+        const { useHTMLPlugin } = await Confirm(
+            self,
+            'useHTMLPlugin',
+            'Do you want to simplify the creation of HTML files for your bundle?',
+            false,
+            this.autoGenerateConfig,
+        );
+
+        if (useHTMLPlugin) {
+            // Html webpack Plugin
+            this.dependencies.push('html-webpack-plugin');
+            const htmlWebpackDependency = 'html-webpack-plugin';
+            (this.configuration.config.topScope as string[]).push(
+                `const HtmlWebpackPlugin = require('${htmlWebpackDependency}')`,
+                '\n',
+                tooltip.html(),
+            );
+            (this.configuration.config.webpackOptions.plugins as string[]).push(`new HtmlWebpackPlugin({
+					template: 'index.html'
+				})`);
+        }
+
+        const { useWorkboxPlugin } = await Confirm(
+            self,
+            'useWorkboxPlugin',
+            'Do you want to add PWA support?',
+            true,
+            this.autoGenerateConfig,
+        );
+        // webpack Dev Server
+        if (useWorkboxPlugin) {
+            this.configuration.config.topScope.push("const WorkboxWebpackPlugin = require('workbox-webpack-plugin');", '\n');
             this.dependencies.push('workbox-webpack-plugin');
-            (this.configuration.config.webpackOptions.plugins as string[]).push(`new workboxPlugin.GenerateSW({
+            (this.configuration.config.webpackOptions.plugins as string[]).push(`new WorkboxWebpackPlugin.GenerateSW({
 				swDest: 'sw.js',
 				clientsClaim: true,
 				skipWaiting: false,
 			})`);
         }
 
-        // TerserPlugin
-        this.dependencies.push('terser-webpack-plugin');
-        this.configuration.config.topScope.push(tooltip.terser(), "const TerserPlugin = require('terser-webpack-plugin');", '\n');
-
-        // Chunksplitting
-        this.configuration.config.webpackOptions.optimization = getDefaultOptimization(this.usingDefaults);
-        this.configuration.config.webpackOptions.mode = this.usingDefaults ? "'production'" : "'development'";
+        this.configuration.config.webpackOptions.mode = this.autoGenerateConfig ? "'production'" : "'development'";
     }
 
     public installPlugins(): void {
@@ -248,16 +243,19 @@ export default class InitGenerator extends CustomGenerator {
     }
 
     public writing(): void {
-        this.configuration.usingDefaults = this.usingDefaults;
         this.config.set('configuration', this.configuration);
 
-        const packageJsonTemplatePath = '../templates/package.json.js';
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        this.fs.extendJSON(this.destinationPath('package.json'), require(packageJsonTemplatePath)(this.usingDefaults));
+        const isUsingDevServer = this.dependencies.includes('webpack-dev-server');
+        const packageJsonTemplatePath = '../init-template/package.json.js';
+        this.fs.extendJSON(
+            this.destinationPath('package.json'),
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
+            require(packageJsonTemplatePath)(isUsingDevServer),
+        );
 
         const generateEntryFile = (entryPath: string, name: string): void => {
             entryPath = entryPath.replace(/'/g, '');
-            this.fs.copyTpl(path.resolve(__dirname, '../templates/index.js'), this.destinationPath(entryPath), { name });
+            this.fs.copyTpl(path.resolve(__dirname, '../init-template/index.js'), this.destinationPath(entryPath), { name });
         };
 
         // Generate entry file/files
@@ -269,19 +267,16 @@ export default class InitGenerator extends CustomGenerator {
         }
 
         // Generate README
-        this.fs.copyTpl(path.resolve(__dirname, '../templates/README.md'), this.destinationPath('README.md'), {});
+        this.fs.copyTpl(path.resolve(__dirname, '../init-template/README.md'), this.destinationPath('README.md'), {});
 
-        // Generate HTML template file, copy the default service worker
-        if (this.usingDefaults) {
-            this.fs.copyTpl(path.resolve(__dirname, '../templates/template.html'), this.destinationPath('index.html'), {});
-            this.fs.copyTpl(path.resolve(__dirname, '../templates/sw.js'), this.destinationPath('sw.js'), {});
-        }
+        // Generate HTML template file
+        this.fs.copyTpl(path.resolve(__dirname, '../init-template/template.html'), this.destinationPath('index.html'), {});
 
         if (this.langType === LangType.ES6) {
-            this.fs.copyTpl(path.resolve(__dirname, '../templates/.babelrc'), this.destinationPath('.babelrc'), {});
+            this.fs.copyTpl(path.resolve(__dirname, '../init-template/.babelrc'), this.destinationPath('.babelrc'), {});
         } else if (this.langType === LangType.Typescript) {
             // Generate tsconfig
-            const tsConfigTemplatePath = '../templates/tsconfig.json.js';
+            const tsConfigTemplatePath = '../init-template/tsconfig.json.js';
             // eslint-disable-next-line @typescript-eslint/no-var-requires
             this.fs.extendJSON(this.destinationPath('tsconfig.json'), require(tsConfigTemplatePath));
         }

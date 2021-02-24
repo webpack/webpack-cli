@@ -1,3 +1,5 @@
+'use strict';
+
 const fs = require('fs');
 const { join } = require('path');
 const { run } = require('../utils/test-utils');
@@ -33,7 +35,7 @@ describe('prefetch', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--prefetch'], false);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain(`error: option '--prefetch <value>' argument missing`);
+        expect(stderr).toContain(`Error: Option '--prefetch <value>' argument missing`);
         expect(stdout).toBeFalsy();
     });
 });

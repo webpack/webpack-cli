@@ -3,6 +3,41 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.5.0](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.4.0...webpack-cli@4.5.0) (2021-02-02)
+
+### Bug Fixes
+
+-   avoid deprecation message ([9d6dbda](https://github.com/webpack/webpack-cli/commit/9d6dbda93da167a1aaad03f599105a4fe7849dc3))
+-   error message on invalid plugin options ([#2380](https://github.com/webpack/webpack-cli/issues/2380)) ([f9ce1d3](https://github.com/webpack/webpack-cli/commit/f9ce1d30b83bf0e0b4d91498d012c13c208e6e67))
+-   improve description for 'configtest' command ([#2379](https://github.com/webpack/webpack-cli/issues/2379)) ([311bae3](https://github.com/webpack/webpack-cli/commit/311bae336d83424c800e553b6ef40242d967685c))
+
+### Features
+
+-   add the `--node-env` flag ([#2388](https://github.com/webpack/webpack-cli/issues/2388)) ([e5126f1](https://github.com/webpack/webpack-cli/commit/e5126f10b6622437c0541c25be2a610a82c1df04))
+-   entries syntax ([#2369](https://github.com/webpack/webpack-cli/issues/2369)) ([6b31614](https://github.com/webpack/webpack-cli/commit/6b3161479578f572f803f579c7e71073eb797184))
+-   support ES module configuration format ([#2381](https://github.com/webpack/webpack-cli/issues/2381)) ([aebdbbc](https://github.com/webpack/webpack-cli/commit/aebdbbc1f6e2761e7821cb3660bea686cce7b587))
+
+# [4.4.0](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.3.1...webpack-cli@4.4.0) (2021-01-19)
+
+### Bug Fixes
+
+-   better description for --no-watch-options-stdin ([#2288](https://github.com/webpack/webpack-cli/issues/2288)) ([4ee8665](https://github.com/webpack/webpack-cli/commit/4ee8665e01e8dce16448e0a4d3dd2293731695ab))
+-   double commands output in help ([#2298](https://github.com/webpack/webpack-cli/issues/2298)) ([efe81e9](https://github.com/webpack/webpack-cli/commit/efe81e986a6dca5cc9b72a5c9312dc21409f65b1))
+-   pass all `argv` to configurations when `serve` command used ([#2345](https://github.com/webpack/webpack-cli/issues/2345)) ([5070b9b](https://github.com/webpack/webpack-cli/commit/5070b9bcbd5bdac00088d0c21486ad181a4df000))
+-   respect `--stats`, `--color` and `--no-color` option for serve c… ([#2312](https://github.com/webpack/webpack-cli/issues/2312)) ([73d3fec](https://github.com/webpack/webpack-cli/commit/73d3feced18b4e3708f958707326a6642a594cf2))
+-   show exact package name while prompting for installation ([#2338](https://github.com/webpack/webpack-cli/issues/2338)) ([ffc93e5](https://github.com/webpack/webpack-cli/commit/ffc93e556d784e2d4409cb0d3a92d737850996f4))
+-   webpack installation prompt message ([#2316](https://github.com/webpack/webpack-cli/issues/2316)) ([3659c5e](https://github.com/webpack/webpack-cli/commit/3659c5e529fe1319251ef1c713d6cc758f7f5353))
+
+### Features
+
+-   `configtest` validate default configuration ([#2354](https://github.com/webpack/webpack-cli/issues/2354)) ([487691a](https://github.com/webpack/webpack-cli/commit/487691abc8d817f5b3c1ab87743d7235ff15d956))
+-   added `build` command (aliases - 'bundle' and 'b') ([7590f66](https://github.com/webpack/webpack-cli/commit/7590f66663ce701d52d9276c3adf9dbdfd1a0fa4))
+-   added the `watch` command ([#2357](https://github.com/webpack/webpack-cli/issues/2357)) ([9693f7d](https://github.com/webpack/webpack-cli/commit/9693f7d9543a8fce610c4ef903ccca0d12d229a1))
+-   allow to pass parseOption to CLI class ([#2299](https://github.com/webpack/webpack-cli/issues/2299)) ([2af0801](https://github.com/webpack/webpack-cli/commit/2af08013852a95c6f6462c56a9994a4ee28c6ea1))
+-   allow to use `help` command to show option information ([#2353](https://github.com/webpack/webpack-cli/issues/2353)) ([15eb411](https://github.com/webpack/webpack-cli/commit/15eb411237dcdcf0db7a501c103fe53f9b82903f))
+-   new `configtest` command ([#2303](https://github.com/webpack/webpack-cli/issues/2303)) ([eb7b189](https://github.com/webpack/webpack-cli/commit/eb7b18937d045261a5b20ca8356e8b4ae4dfcaad))
+-   show multiple suggestions on unknown options ([#2349](https://github.com/webpack/webpack-cli/issues/2349)) ([7314d6c](https://github.com/webpack/webpack-cli/commit/7314d6ca927473da2f355a7d356a943471488606))
+
 ## [4.3.1](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.3.0...webpack-cli@4.3.1) (2020-12-31)
 
 ### Bug Fixes

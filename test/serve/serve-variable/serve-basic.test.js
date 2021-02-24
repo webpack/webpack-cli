@@ -2,7 +2,7 @@
 
 const path = require('path');
 const getPort = require('get-port');
-const { runServe } = require('../../utils/test-utils');
+const { runWatch } = require('../../utils/test-utils');
 
 const testPath = path.resolve(__dirname);
 
@@ -24,7 +24,7 @@ describe('serve variable', () => {
     }
 
     it('compiles without flags and export variable', async () => {
-        const { stdout, stderr } = await runServe(['--port', port], testPath);
+        const { stdout, stderr } = await runWatch(testPath, ['serve', '--port', port]);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('main.js');

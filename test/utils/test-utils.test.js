@@ -41,8 +41,6 @@ describe('run function', () => {
         expect(stderr).toBeFalsy();
         // Executes the correct command
         expect(command).toContain('cli.js');
-        // Should use apply a default output dir
-        expect(command).toContain('--output-path');
         expect(command).toContain('bin');
         expect(stdout).toBeTruthy();
     });

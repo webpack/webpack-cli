@@ -1,9 +1,10 @@
 'use strict';
 
 const { run, hyphenToUpperCase } = require('../utils/test-utils');
-const { flags } = require('../../packages/webpack-cli/lib/utils/cli-flags');
+const CLI = require('../../packages/webpack-cli/lib/index');
 
-const moduleFlags = flags.filter(({ name }) => name.startsWith('module-'));
+const cli = new CLI();
+const moduleFlags = cli.getBuiltInOptions().filter(({ name }) => name.startsWith('module-'));
 
 describe('module config related flag', () => {
     moduleFlags.forEach((flag) => {
@@ -16,7 +17,7 @@ describe('module config related flag', () => {
 
         const propName = hyphenToUpperCase(property);
 
-        if (flag.type === Boolean && !flag.name.includes('module-no-parse')) {
+        if (flag.type === Boolean && !flag.name.includes('module-no-parse') && !flag.name.includes('module-parser-')) {
             it(`should config --${flag.name} correctly`, () => {
                 if (flag.name.includes('-reset')) {
                     const { stderr, stdout } = run(__dirname, [`--${flag.name}`]);
@@ -55,7 +56,7 @@ describe('module config related flag', () => {
             }
         }
 
-        if (flag.type === String) {
+        if (flag.type === String && !(flag.name.includes('module-parser-') || flag.name.startsWith('module-generator'))) {
             it(`should config --${flag.name} correctly`, () => {
                 if (flag.name === 'module-no-parse') {
                     let { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`, 'value']);
@@ -93,5 +94,37 @@ describe('module config related flag', () => {
                 }
             });
         }
+    });
+
+    it('should config module.generator flags coorectly', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, [
+            '--module-generator-asset-data-url-encoding',
+            'base64',
+            '--module-generator-asset-data-url-mimetype',
+            'application/node',
+        ]);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain(`generator: { asset: { dataUrl: [Object] } }`);
+    });
+
+    it('should config module.parser flags coorectly', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, [
+            '--module-parser-javascript-browserify',
+            '--module-parser-javascript-commonjs',
+            '--module-parser-javascript-harmony',
+            '--module-parser-javascript-import',
+            '--no-module-parser-javascript-node',
+            '--module-parser-javascript-require-include',
+        ]);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('browserify: true');
+        expect(stdout).toContain('commonjs: true');
+        expect(stdout).toContain('harmony: true');
+        expect(stdout).toContain('import: true');
+        expect(stdout).toContain('node: false');
     });
 });

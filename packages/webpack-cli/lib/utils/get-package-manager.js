@@ -1,7 +1,8 @@
 const fs = require('fs');
 const path = require('path');
-const logger = require('./logger');
 const { sync } = require('execa');
+
+const utils = require('./index');
 
 /**
  *
@@ -56,7 +57,7 @@ function getPackageManager() {
             return 'pnpm';
         }
     } catch (e) {
-        logger.error('No package manager found.');
+        utils.logger.error('No package manager found.');
         process.exit(2);
     }
 }

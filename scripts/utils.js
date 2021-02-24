@@ -10,13 +10,26 @@ function collectTestFolders(strategy) {
 }
 
 function extractFolder(folderToRead, folders = [], folderStrategy) {
-    const files = fs.readdirSync(folderToRead);
+    let files;
+
+    try {
+        files = fs.readdirSync(folderToRead);
+    } catch (error) {
+        return [];
+    }
+
+    if (!files) {
+        return [];
+    }
+
     files.forEach((file) => {
         const filePath = path.resolve(path.join(folderToRead, file));
         const stats = fs.statSync(filePath);
+
         if (folderStrategy(stats, file)) {
             folders.push(folderToRead);
         }
+
         if (stats.isDirectory() && file !== 'node_modules') {
             extractFolder(filePath, folders, folderStrategy);
         }

@@ -11,9 +11,11 @@ import { toKebabCase } from './utils/helpers';
  */
 export function makeLoaderName(name: string): string {
     name = toKebabCase(name);
+
     if (!/loader$/.test(name)) {
         name += '-loader';
     }
+
     return name;
 }
 
@@ -50,7 +52,7 @@ export const LoaderGenerator = addonGenerator(
         'examples/simple/src/static-esm-module.js.tpl',
     ],
     ['src/_index.js.tpl'],
-    (gen): object => ({ name: gen.props.name }),
+    (gen): Record<string, unknown> => ({ name: gen.props.name }),
 );
 
 export default LoaderGenerator;

@@ -1,6 +1,10 @@
+const WebpackCLITestPlugin = require('../../utils/webpack-cli-test-plugin');
+
 module.exports = {
-    entry: './old_entry.js',
+    entry: './first-entry.js',
+    mode: 'development',
     output: {
-        filename: 'badfile.js',
+        filename: 'first-output.js',
     },
+    plugins: [new WebpackCLITestPlugin()],
 };

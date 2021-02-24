@@ -20,7 +20,7 @@ describe('init with SCSS', () => {
         const { stdout } = await runPromptWithAnswers(
             genPath,
             ['init'],
-            [`N${ENTER}`, ENTER, ENTER, ENTER, `${DOWN}${DOWN}${ENTER}`, `Y${ENTER}`, `apple${ENTER}`],
+            [`N${ENTER}`, ENTER, ENTER, ENTER, `${DOWN}${DOWN}${ENTER}`, `Y${ENTER}`, `apple${ENTER}`, ENTER, ENTER, ENTER],
         );
 
         expect(stdout).toBeTruthy();
@@ -32,11 +32,39 @@ describe('init with SCSS', () => {
         }
 
         // Test regressively files are scaffolded
-        const files = ['./package.json', './.yo-rc.json', './src/index.js', 'webpack.config.js'];
+        const files = ['./package.json', './.yo-rc.json', './src/index.js', './webpack.config.js'];
 
         files.forEach((file) => {
             expect(fs.existsSync(resolve(genPath, file))).toBeTruthy();
         });
+
+        const webpackConfig = require(join(genPath, './webpack.config.js'));
+
+        expect(webpackConfig.module.rules).toEqual([
+            {
+                test: /.(sa|sc|c)ss$/,
+
+                use: [
+                    {
+                        loader: MiniCssExtractPlugin.loader, // eslint-disable-line
+                    },
+                    {
+                        loader: 'css-loader',
+
+                        options: {
+                            sourceMap: true,
+                        },
+                    },
+                    {
+                        loader: 'sass-loader',
+
+                        options: {
+                            sourceMap: true,
+                        },
+                    },
+                ],
+            },
+        ]);
 
         // Check if package.json is correctly configured
         const pkgJsonTests = () => {
@@ -44,9 +72,11 @@ describe('init with SCSS', () => {
             expect(pkgJson).toBeTruthy();
             expect(pkgJson['devDependencies']).toBeTruthy();
             expect(pkgJson['devDependencies']['webpack']).toBeTruthy();
+            expect(pkgJson['devDependencies']['webpack-dev-server']).toBeTruthy();
             expect(pkgJson['devDependencies']['node-sass']).toBeTruthy();
             expect(pkgJson['devDependencies']['mini-css-extract-plugin']).toBeTruthy();
             expect(pkgJson['scripts']['build'] == 'webpack').toBeTruthy();
+            expect(pkgJson['scripts']['serve'] == 'webpack serve').toBeTruthy();
         };
         expect(pkgJsonTests).not.toThrow();
     });

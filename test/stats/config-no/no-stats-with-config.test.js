@@ -1,7 +1,6 @@
 'use strict';
 
-const { run } = require('../../utils/test-utils');
-const { version } = require('webpack');
+const { run, isWebpack5 } = require('../../utils/test-utils');
 
 describe('stats flag', () => {
     it(`should use stats 'detailed' as defined in webpack config`, () => {
@@ -10,10 +9,12 @@ describe('stats flag', () => {
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
 
-        if (version.startsWith('5')) {
-            expect(stdout).toContain(`stats: { preset: 'detailed' }`);
+        if (isWebpack5) {
+            expect(stdout).toContain("preset: 'detailed'");
         } else {
-            expect(stdout).toContain(`stats: 'detailed'`);
+            expect(stdout).toContain('entrypoints: true');
+            expect(stdout).toContain('logging: true');
+            expect(stdout).toContain('maxModules: Infinity');
         }
     });
 
@@ -23,10 +24,10 @@ describe('stats flag', () => {
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
 
-        if (version.startsWith('5')) {
-            expect(stdout).toContain(`stats: { preset: 'none' }`);
+        if (isWebpack5) {
+            expect(stdout).toContain("preset: 'none'");
         } else {
-            expect(stdout).toContain(`stats: false`);
+            expect(stdout).toContain('all: false');
         }
     });
 });

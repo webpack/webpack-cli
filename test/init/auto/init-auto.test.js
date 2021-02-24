@@ -1,4 +1,3 @@
-const { green } = require('colorette');
 const fs = require('fs');
 const path = require('path');
 const rimraf = require('rimraf');
@@ -8,7 +7,7 @@ const { run } = require('../../utils/test-utils');
 const genPath = path.resolve(__dirname, './test-assets');
 const firstPrompt = 'Will your application have multiple bundles?';
 
-const successLog = `You can now run ${green('yarn build')} to bundle your application!`;
+const successLog = `You can now run 'yarn build' to bundle your application!`;
 
 describe('init auto flag', () => {
     beforeAll(() => {
@@ -35,11 +34,15 @@ describe('init auto flag', () => {
         }
 
         // Test regressively files are scaffolded
-        const files = ['./sw.js', './package.json', './src/index.js'];
+        const files = ['./package.json', './src/index.js', './webpack.config.js'];
 
         files.forEach((file) => {
             expect(fs.existsSync(resolve(genPath, file))).toBeTruthy();
         });
+
+        const webpackConfig = require(join(genPath, 'webpack.config.js'));
+
+        expect(webpackConfig.modules.rules).toEqual([]);
 
         // Check package json is correctly configured
         const pkgJsonTests = () => {
@@ -47,7 +50,9 @@ describe('init auto flag', () => {
             expect(pkgJson).toBeTruthy();
             expect(pkgJson['devDependencies']).toBeTruthy();
             expect(pkgJson['devDependencies']['webpack']).toBeTruthy();
+            expect(pkgJson['devDependencies']['webpack-dev-server']).toBeTruthy();
             expect(pkgJson['scripts']['build'] == 'webpack').toBeTruthy();
+            expect(pkgJson['scripts']['serve'] == 'webpack serve').toBeTruthy();
         };
         expect(pkgJsonTests).not.toThrow();
 

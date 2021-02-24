@@ -1,30 +1,50 @@
 'use strict';
 
 const { run, hyphenToUpperCase } = require('../utils/test-utils');
-const { flags } = require('../../packages/webpack-cli/lib/utils/cli-flags');
+const CLI = require('../../packages/webpack-cli/lib/index');
 
-const experimentsFlags = flags.filter(({ name }) => name.startsWith('experiments-'));
+const cli = new CLI();
+const experimentsFlags = cli.getBuiltInOptions().filter(({ name }) => name.startsWith('experiments-'));
 
 describe('experiments option related flag', () => {
     experimentsFlags.forEach((flag) => {
         // extract property name from flag name
-        const property = flag.name.split('experiments-')[1];
+        let property;
+
+        if (flag.name.includes('-lazy-compilation-')) {
+            property = flag.name.split('experiments-lazy-compilation-')[1];
+        } else {
+            property = flag.name.split('experiments-')[1];
+        }
+
         const propName = hyphenToUpperCase(property);
 
-        it(`should config ${flag.name} correctly`, () => {
-            const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`]);
+        if (flag.type === Boolean) {
+            it(`should config --${flag.name} correctly`, () => {
+                const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`]);
 
-            expect(exitCode).toBe(0);
-            expect(stderr).toBeFalsy();
-            expect(stdout).toContain(`${propName}: true`);
-        });
+                expect(exitCode).toBe(0);
+                expect(stderr).toBeFalsy();
 
-        it(`should config --no-${flag.name} correctly`, () => {
-            const { exitCode, stderr, stdout } = run(__dirname, [`--no-${flag.name}`]);
+                if (flag.name.includes('-lazy-compilation-')) {
+                    expect(stdout).toContain(`lazyCompilation: { ${propName}: true }`);
+                } else {
+                    expect(stdout).toContain(`${propName}: true`);
+                }
+            });
 
-            expect(exitCode).toBe(0);
-            expect(stderr).toBeFalsy();
-            expect(stdout).toContain(`${propName}: false`);
-        });
+            it(`should config --no-${flag.name} correctly`, () => {
+                const { exitCode, stderr, stdout } = run(__dirname, [`--no-${flag.name}`]);
+
+                expect(exitCode).toBe(0);
+                expect(stderr).toBeFalsy();
+
+                if (flag.name.includes('-lazy-compilation-')) {
+                    expect(stdout).toContain(`lazyCompilation: { ${propName}: false }`);
+                } else {
+                    expect(stdout).toContain(`${propName}: false`);
+                }
+            });
+        }
     });
 });

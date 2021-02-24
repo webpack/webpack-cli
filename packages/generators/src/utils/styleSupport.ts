@@ -18,7 +18,7 @@ export enum LoaderName {
 
 export enum StyleRegex {
     CSS = '/.css$/',
-    SASS = '/.(scss|css)$/',
+    SASS = '/.(sa|sc|c)ss$/',
     LESS = '/.(less|css)$/',
     PostCSS = '/.css$/',
 }
@@ -47,12 +47,14 @@ export default function style(
             regExpForStyles = StyleRegex.CSS;
 
             self.dependencies.push(LoaderName.CSS);
+
             if (!self.isProd) {
                 self.dependencies.push(LoaderName.STYLE);
                 ExtractUseProps.push({
                     loader: `"${LoaderName.STYLE}"`,
                 });
             }
+
             ExtractUseProps.push({
                 loader: `"${LoaderName.CSS}"`,
                 options: {
@@ -65,12 +67,14 @@ export default function style(
             regExpForStyles = StyleRegex.SASS;
 
             self.dependencies.push('node-sass', LoaderName.SASS, LoaderName.CSS);
+
             if (!self.isProd) {
                 self.dependencies.push(LoaderName.STYLE);
                 ExtractUseProps.push({
                     loader: `"${LoaderName.STYLE}"`,
                 });
             }
+
             ExtractUseProps.push(
                 {
                     loader: `"${LoaderName.CSS}"`,
@@ -91,12 +95,14 @@ export default function style(
             regExpForStyles = StyleRegex.LESS;
 
             self.dependencies.push('less', LoaderName.LESS, LoaderName.CSS);
+
             if (!self.isProd) {
                 self.dependencies.push(LoaderName.STYLE);
                 ExtractUseProps.push({
                     loader: `"${LoaderName.STYLE}"`,
                 });
             }
+
             ExtractUseProps.push(
                 {
                     loader: `"${LoaderName.CSS}"`,
@@ -124,12 +130,14 @@ export default function style(
             );
 
             self.dependencies.push('precss', 'autoprefixer', LoaderName.CSS, LoaderName.POSTCSS);
+
             if (!self.isProd) {
                 self.dependencies.push(LoaderName.STYLE);
                 ExtractUseProps.push({
                     loader: `"${LoaderName.STYLE}"`,
                 });
             }
+
             ExtractUseProps.push(
                 {
                     loader: `"${LoaderName.CSS}"`,

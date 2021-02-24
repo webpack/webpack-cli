@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/serve@1.2.2...@webpack-cli/serve@1.3.0) (2021-02-02)
+
+### Bug Fixes
+
+-   avoid deprecation message ([9d6dbda](https://github.com/webpack/webpack-cli/commit/9d6dbda93da167a1aaad03f599105a4fe7849dc3))
+-   error message on invalid plugin options ([#2380](https://github.com/webpack/webpack-cli/issues/2380)) ([f9ce1d3](https://github.com/webpack/webpack-cli/commit/f9ce1d30b83bf0e0b4d91498d012c13c208e6e67))
+
+### Features
+
+-   entries syntax ([#2369](https://github.com/webpack/webpack-cli/issues/2369)) ([6b31614](https://github.com/webpack/webpack-cli/commit/6b3161479578f572f803f579c7e71073eb797184))
+
+## [1.2.2](https://github.com/webpack/webpack-cli/compare/@webpack-cli/serve@1.2.1...@webpack-cli/serve@1.2.2) (2021-01-19)
+
+### Bug Fixes
+
+-   pass all `argv` to configurations when `serve` command used ([#2345](https://github.com/webpack/webpack-cli/issues/2345)) ([5070b9b](https://github.com/webpack/webpack-cli/commit/5070b9bcbd5bdac00088d0c21486ad181a4df000))
+-   respect `--stats`, `--color` and `--no-color` option for serve c… ([#2312](https://github.com/webpack/webpack-cli/issues/2312)) ([73d3fec](https://github.com/webpack/webpack-cli/commit/73d3feced18b4e3708f958707326a6642a594cf2))
+
 ## [1.2.1](https://github.com/webpack/webpack-cli/compare/@webpack-cli/serve@1.2.0...@webpack-cli/serve@1.2.1) (2020-12-31)
 
 ### Bug Fixes

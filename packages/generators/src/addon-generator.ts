@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import Generator from 'yeoman-generator';
-import { generatorCopy, generatorCopyTpl } from '@webpack-cli/utils';
+import { generatorCopy, generatorCopyTpl } from './utils/copy-utils';
 
 import { utils } from 'webpack-cli';
 
@@ -33,14 +33,15 @@ const addonGenerator = (
     templateDir: string,
     copyFiles: string[],
     copyTemplateFiles: string[],
-    templateFn: Function,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    templateFn: (instance: any) => Record<string, unknown>,
 ): Generator.GeneratorConstructor => {
     return class extends Generator {
         public props: Generator.Question;
         public copy: (value: string, index: number, array: string[]) => void;
         public copyTpl: (value: string, index: number, array: string[]) => void;
 
-        public prompting(): Promise<void | {}> {
+        public prompting(): Promise<void> {
             return this.prompt(prompts).then((props: Generator.Question): void => {
                 this.props = props;
             });
@@ -65,7 +66,7 @@ const addonGenerator = (
         }
 
         public writing(): void {
-            const packageJsonTemplatePath = '../templates/addon-package.json.js';
+            const packageJsonTemplatePath = '../addon-template/package.json.js';
             // eslint-disable-next-line @typescript-eslint/no-var-requires
             this.fs.extendJSON(this.destinationPath('package.json'), require(packageJsonTemplatePath)(this.props.name));
 

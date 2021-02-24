@@ -1,16 +1,17 @@
 import Generator from 'yeoman-generator';
+import { Loader } from '../utils/styleSupport';
 
 export interface SchemaProperties {
     additionalProperties?: boolean;
-    definitions?: object;
-    properties?: object;
+    definitions?: Record<string, unknown>;
+    properties?: Record<string, unknown>;
     type?: string;
 }
 
 interface WebpackResolve {
-    alias?: object;
+    alias?: Record<string, unknown>;
     aliasFields?: string[];
-    cachePredicate?: Function;
+    cachePredicate?: () => void;
     cacheWithContext?: boolean;
     descriptionFiles?: string[];
     enforceExtension?: boolean;
@@ -20,19 +21,19 @@ interface WebpackResolve {
     mainFiles?: string[];
     moduleExtensions?: string[];
     modules?: string[];
-    plugins?: object[] | Function[];
+    plugins?: Record<string, unknown>[] | Array<() => void>;
     symlinks?: boolean;
     concord?: boolean;
-    unsafeCache?: boolean | object;
+    unsafeCache?: boolean | Record<string, unknown>;
     useSyncFileSystemCalls?: boolean;
 }
 
-type IRuleSetCondition = RegExp | string | Function | object;
+type IRuleSetCondition = RegExp | string | (() => void) | Record<string, string> | string[];
 
 export interface WebpackOptions {
     amd?: string;
     bail?: boolean;
-    cache?: boolean | object;
+    cache?: boolean | Record<string, unknown>;
     context?: string;
     devServer?: {
         hot?: boolean;
@@ -45,8 +46,8 @@ export interface WebpackOptions {
         publicPath?: string;
         port?: number | string;
         socket?: string;
-        watchOptions?: object;
-        headers?: object;
+        watchOptions?: Record<string, unknown>;
+        headers?: Record<string, unknown>;
         logLevel?: string;
         clientLogLevel?: string;
         overlay?:
@@ -65,50 +66,50 @@ export interface WebpackOptions {
         inline?: boolean;
         disableHostCheck?: boolean;
         public?: string;
-        https?: object | boolean;
+        https?: Record<string, unknown> | boolean;
         contentBase?: false | number | string | string[];
         watchContentBase?: boolean;
         open?: string | boolean;
         useLocalIp?: boolean;
         openPage?: string;
         compress?: boolean;
-        proxy?: object[] | Function[];
+        proxy?: Record<string, unknown>[] | Array<() => void>;
         historyApiFallback?:
             | boolean
             | {
-                  rewrites?: object[];
+                  rewrites?: Record<string, unknown>[];
                   disableDotRule?: boolean;
               };
-        staticOptions?: object;
-        setup?: Function;
-        before?: Function;
-        after?: Function;
-        stats?: boolean | object | string;
-        reporter?: Function;
+        staticOptions?: Record<string, unknown>;
+        setup?: () => void;
+        before?: () => void;
+        after?: () => void;
+        stats?: boolean | Record<string, unknown> | string;
+        reporter?: () => void;
         logTime?: boolean;
         noInfo?: boolean;
         quiet?: boolean;
         serverSideRender?: boolean;
         index?: string;
-        log?: Function;
-        warn?: Function;
+        log?: () => void;
+        warn?: () => void;
     };
     devtool?: string;
-    entry?: string | object | Function;
-    externals?: string | object | boolean | Function | RegExp;
+    entry?: string | Record<string, string> | (() => void);
+    externals?: string | Record<string, unknown> | boolean | (() => void) | RegExp;
     mode?: 'development' | 'production' | 'none' | string;
     module?: {
         exprContextCritical?: boolean;
         exprContextRecursive?: boolean;
         exprContextRegExp?: boolean | RegExp;
         exprContextRequest?: string;
-        noParse?: string | string[] | Function | RegExp | RegExp[];
+        noParse?: string | string[] | (() => void) | RegExp | RegExp[];
         rules?: Rule[];
         unknownContextCritical?: boolean;
         unknownContextRecursive?: boolean;
         unknownContextRegExp?: boolean | RegExp;
         unknownContextRequest?: string;
-        unsafeCache?: boolean | Function;
+        unsafeCache?: boolean | (() => void);
         wrappedContextCritical?: boolean;
         wrappedContextRecursive?: boolean;
         wrappedContextRegExp?: RegExp;
@@ -129,25 +130,25 @@ export interface WebpackOptions {
               setImmediate?: boolean | string;
           };
     output?: {
-        auxiliaryComment?: string | object;
+        auxiliaryComment?: string | Record<string, unknown>;
         chunkFilename?: string;
         chunkLoadTimeout?: number;
         crossOriginLoading?: boolean | string;
         jsonpScriptType?: string;
-        devtoolFallbackModuleFilenameTemplate?: string | Function;
-        devtoolLineToLine?: boolean | object;
-        devtoolModuleFilenameTemplate?: string | Function;
+        devtoolFallbackModuleFilenameTemplate?: string | (() => void);
+        devtoolLineToLine?: boolean | Record<string, unknown>;
+        devtoolModuleFilenameTemplate?: string | (() => void);
         devtoolNamespace?: string;
-        filename?: string | Function;
+        filename?: string | (() => void);
         hashDigest?: 'latin1' | string;
         hashDigestLength?: number;
-        hashFunction?: string | Function;
+        hashFunction?: string | (() => void);
         hashSalt?: string;
-        hotUpdateChunkFilename?: string | Function;
-        hotUpdateFunction?: Function;
-        hotUpdateMainFilename?: string | Function;
-        jsonpFunction?: string;
-        library?: string | object;
+        hotUpdateChunkFilename?: string | (() => void);
+        hotUpdateFunction?: () => void;
+        hotUpdateMainFilename?: string | (() => void);
+        jsonpFunctiion?: string;
+        library?: string | Record<string, unknown>;
         path?: string;
     };
     optimization?: {
@@ -167,7 +168,7 @@ export interface WebpackOptions {
             minChunks?: number;
             maxAsyncRequests?: number;
             maxInitialRequests?: number;
-            name?: boolean | Function | string;
+            name?: boolean | (() => void) | string;
             filename?: string;
             automaticNameDelimiter?: string;
             hidePathInfo?: boolean;
@@ -176,8 +177,8 @@ export interface WebpackOptions {
                 maxSize?: number;
                 automaticNameDelimiter?: number;
             };
-            cacheGroups?: number | boolean | string | Function | RegExp | object;
-            runtimeChunk?: boolean | string | object;
+            cacheGroups?: number | boolean | string | (() => void) | RegExp | Record<string, unknown>;
+            runtimeChunk?: boolean | string | Record<string, unknown>;
             noEmitOnErrors?: boolean;
             checkWasmTypes?: boolean;
             mangleWasmImports?: boolean;
@@ -186,7 +187,7 @@ export interface WebpackOptions {
             namedChunks?: boolean;
             portableRecords?: boolean;
             minimize?: boolean;
-            minimizer?: object[] | Function[];
+            minimizer?: Record<string, unknown>[] | Array<() => void>;
             nodeEnv?: false | string;
         };
     };
@@ -194,20 +195,20 @@ export interface WebpackOptions {
     performance?:
         | false
         | {
-              assetFilter?: Function;
+              assetFilter?: () => void;
               hints?: false | string;
               maxEntrypointSize?: number;
               maxAssetSize?: number;
           };
-    plugins?: object[] | Function[] | string[] | string;
+    plugins?: Record<string, unknown>[] | Array<() => void> | string[] | string;
     profile?: boolean;
     recordsInputPath?: string;
     recordsOutputPath?: string;
     recordsPath?: string;
     resolve?: WebpackResolve;
     resolveLoader?: WebpackResolve;
-    stats?: string | boolean | object;
-    target?: string | Function;
+    stats?: string | boolean | Record<string, unknown>;
+    target?: string | (() => void);
     watch?: boolean;
     watchOptions?: {
         aggregateTimeout?: number;
@@ -221,30 +222,30 @@ export interface Rule {
     exclude?: IRuleSetCondition;
     include?: IRuleSetCondition;
     issuer?: IRuleSetCondition;
-    loader?: string | Function | object;
-    loaders?: Function[] | object[];
-    options?: object;
-    parser?: object;
+    loader?: string | (() => void) | Record<string, unknown>;
+    loaders?: Array<() => void> | Record<string, unknown>[];
+    options?: Record<string, unknown>;
+    parser?: Record<string, unknown>;
     sideEffects?: boolean;
     type?: string;
     resource?: IRuleSetCondition;
     resourceQuery?: IRuleSetCondition;
     compiler?: IRuleSetCondition;
-    rules?: object[];
-    use?: object | object[] | Function;
+    rules?: Record<string, unknown>[];
+    use?: Loader[] | (() => void);
     test?: IRuleSetCondition;
 }
 
 export class CustomGenerator extends Generator {
-    public entryOption: string | object;
+    public entryOption: string | Record<string, string>;
     public configuration: {
         config: {
             configName?: string;
             topScope?: string[];
             webpackOptions?: WebpackOptions;
         };
-        usingDefaults?: boolean;
     };
     public isProd: boolean;
     public dependencies: string[];
+    public getTemplatePath: (template: string) => string;
 }

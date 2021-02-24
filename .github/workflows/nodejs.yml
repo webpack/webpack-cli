@@ -35,12 +35,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
-        run: |
-          yarn
-          yarn bootstrap
-
-      - name: Install webpack ${{ matrix.webpack-version }}
-        run: yarn add -W webpack@${{ matrix.webpack-version }}
+        run: yarn
 
       - name: Build
         run: yarn build
@@ -57,10 +52,12 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         node-version: [10.x, 12.x, 14.x]
-        webpack-version: [webpack-4, latest]
+        webpack-version: [4, latest]
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Using Node v${{ matrix.node-version }}
         uses: actions/setup-node@v1
@@ -74,23 +71,25 @@ jobs:
           path: |
             node_modules
             */*/node_modules
-          key: ${{ runner.os }}-${{ matrix.webpack-version }}-${{ hashFiles('**/yarn.lock', './yarn.lock') }}
+          key: ${{ runner.os }}-${{ matrix.webpack-version }}-yarn-${{ hashFiles('**/yarn.lock', './yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.webpack-version }}-yarn-
 
       - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: |
-          yarn
-          yarn bootstrap
+        run: yarn
 
       - name: Install webpack ${{ matrix.webpack-version }}
+        if: matrix.webpack-version == '4'
         run: yarn add -W webpack@${{ matrix.webpack-version }}
 
-      - name: Build
+      - name: Prepare environment for tests
         run: yarn build:ci
 
-      - name: Test and Generate Coverage
+      - name: Run smoketests
+        run: yarn test:smoketests
+
+      - name: Run tests and generate coverage
         run: |
-          yarn run lerna bootstrap
           yarn prepsuite
           yarn test:coverage
 
@@ -104,11 +103,15 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
+
       - uses: actions/setup-node@v1
         with:
           node-version: '12.x'
+
       - run: npm install
+
       - name: conventional-changelog-lint-config-cz
         # $GITHUB_WORKSPACE is the path to your repository
         run: echo "NODE_PATH=$GITHUB_WORKSPACE/node_modules" >> $GITHUB_ENV
+
       - uses: wagoid/commitlint-github-action@v2

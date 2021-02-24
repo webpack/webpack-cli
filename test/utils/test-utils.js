@@ -7,14 +7,12 @@ const { sync: spawnSync, node: execaNode } = execa;
 const { Writable } = require('readable-stream');
 const concat = require('concat-stream');
 const { version } = require('webpack');
-const stripAnsi = require('strip-ansi');
 
 const isWebpack5 = version.startsWith('5');
 
 let devServerVersion;
 
 try {
-    // eslint-disable-next-line
     devServerVersion = require('webpack-dev-server/package.json').version;
 } catch (error) {
     // Nothing
@@ -40,46 +38,48 @@ const hyphenToUpperCase = (name) => {
  *
  * @param {String} testCase The path to folder that contains the webpack.config.js
  * @param {Array} args Array of arguments to pass to webpack
- * @param {Boolean} setOutput Boolean that decides if a default output path will be set or not
- * @param {Array<string>} nodeOptions Boolean that decides if a default output path will be set or not
- * @param {Record<string, any>} env Boolean that decides if a default output path will be set or not
+ * @param {Object<string, any>} options Boolean that decides if a default output path will be set or not
  * @returns {Object} The webpack output or Promise when nodeOptions are present
  */
-const run = (testCase, args = [], setOutput = true, nodeOptions = [], env) => {
+const run = (testCase, args = [], options = {}) => {
     const cwd = path.resolve(testCase);
-
-    const outputPath = path.resolve(testCase, 'bin');
+    const { nodeOptions = [] } = options;
     const processExecutor = nodeOptions.length ? execaNode : spawnSync;
-    const argsWithOutput = setOutput ? args.concat('--output-path', outputPath) : args;
-    const result = processExecutor(WEBPACK_PATH, argsWithOutput, {
+    const result = processExecutor(WEBPACK_PATH, args, {
         cwd,
         reject: false,
-        nodeOptions: nodeOptions,
-        env,
         stdio: ENABLE_LOG_COMPILATION ? 'inherit' : 'pipe',
         maxBuffer: Infinity,
+        ...options,
     });
 
     return result;
 };
 
-const runWatch = (testCase, args = [], setOutput = true, outputKillStr = /webpack \d+\.\d+\.\d/) => {
+/**
+ * Run the webpack CLI in watch mode for a test case.
+ *
+ * @param {String} testCase The path to folder that contains the webpack.config.js
+ * @param {Array} args Array of arguments to pass to webpack
+ * @param {Object<string, any>} options Boolean that decides if a default output path will be set or not
+ * @param {string} outputKillStr String to kill
+ * @returns {Object} The webpack output or Promise when nodeOptions are present
+ */
+const runWatch = (testCase, args = [], options, outputKillStr = /webpack \d+\.\d+\.\d/) => {
     const cwd = path.resolve(testCase);
 
-    const outputPath = path.resolve(testCase, 'bin');
-    const argsWithOutput = setOutput ? args.concat('--output-path', outputPath) : args;
-
     return new Promise((resolve, reject) => {
-        const proc = execa(WEBPACK_PATH, argsWithOutput, {
+        const proc = execa(WEBPACK_PATH, args, {
             cwd,
             reject: false,
             stdio: 'pipe',
+            ...options,
         });
 
         proc.stdout.pipe(
             new Writable({
                 write(chunk, encoding, callback) {
-                    const output = stripAnsi(chunk.toString('utf8'));
+                    const output = chunk.toString('utf8');
 
                     if (outputKillStr.test(output)) {
                         if (isWindows) {
@@ -132,10 +132,12 @@ const runAndGetWatchProc = (testCase, args = [], setOutput = true, input = '', f
  */
 const runPromptWithAnswers = (location, args, answers, waitForOutput = true) => {
     const runner = runAndGetWatchProc(location, args, false, '', true);
+
     runner.stdin.setDefaultEncoding('utf-8');
 
     const delay = 2000;
     let outputTimeout;
+
     if (waitForOutput) {
         let currentAnswer = 0;
         const writeAnswer = () => {
@@ -252,14 +254,9 @@ const runInstall = async (cwd) => {
     });
 };
 
-const runServe = (args, testPath) => {
-    return runWatch(testPath, ['serve'].concat(args), false);
-};
-
 module.exports = {
     run,
     runWatch,
-    runServe,
     runAndGetWatchProc,
     runPromptWithAnswers,
     appendDataIfFileExists,

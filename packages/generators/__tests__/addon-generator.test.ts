@@ -18,22 +18,13 @@ describe('addon generator', () => {
     // we call this unwanted path doubleGenPath
     const doubleGenPath = path.join(genPath, genName);
 
-    beforeAll(() => {
-        rimraf.sync(testAssetsPath);
-        fs.mkdirSync(genPath, { recursive: true });
-        // set the working directory to here so that the addon directory is
-        // generated in ./test-assets/test-addon
-        process.chdir(genPath);
-        packageMock = getPackageManager as jest.Mock;
-    });
-
     afterAll(() => {
         rimraf.sync(testAssetsPath);
     });
 
     beforeEach(() => {
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        const Gen = addonGenerator([], '', [], [], () => {});
+        const Gen = addonGenerator([], '', [], [], () => ({}));
+
         gen = new Gen(null, null);
         gen.props = {
             name: genName,
@@ -43,9 +34,20 @@ describe('addon generator', () => {
     });
 
     it('schedules install using npm', () => {
+        const defaultCwd = process.cwd();
+
+        rimraf.sync(testAssetsPath);
+        fs.mkdirSync(genPath, { recursive: true });
+
+        // set the working directory to here so that the addon directory is
+        // generated in ./test-assets/test-addon
+        process.chdir(genPath);
+
+        packageMock = getPackageManager as jest.Mock;
         packageMock.mockReturnValue('npm');
 
         gen.install();
+
         expect(installMock.mock.calls.length).toEqual(1);
         expect(installMock.mock.calls[0]).toEqual([
             'npm',
@@ -54,12 +56,24 @@ describe('addon generator', () => {
                 'save-dev': true,
             },
         ]);
+
+        process.chdir(defaultCwd);
     });
 
     it('schedules install using yarn', () => {
+        const defaultCwd = process.cwd();
+
+        rimraf.sync(testAssetsPath);
+        fs.mkdirSync(genPath, { recursive: true });
+        // set the working directory to here so that the addon directory is
+        // generated in ./test-assets/test-addon
+        process.chdir(genPath);
+
+        packageMock = getPackageManager as jest.Mock;
         packageMock.mockReturnValue('yarn');
 
         gen.install();
+
         expect(installMock.mock.calls.length).toEqual(1);
         expect(installMock.mock.calls[0]).toEqual([
             'yarn',
@@ -68,11 +82,26 @@ describe('addon generator', () => {
                 dev: true,
             },
         ]);
+
+        process.chdir(defaultCwd);
     });
 
     it('does not create new directory when current directory matches addon name', () => {
+        const defaultCwd = process.cwd();
+
+        rimraf.sync(testAssetsPath);
+        fs.mkdirSync(genPath, { recursive: true });
+
+        // set the working directory to here so that the addon directory is
+        // generated in ./test-assets/test-addon
+        process.chdir(genPath);
+
+        packageMock = getPackageManager as jest.Mock;
+
         expect(fs.existsSync(genPath)).toBeTruthy();
+
         gen.default();
+
         expect(fs.existsSync(genPath)).toBeTruthy();
         expect(fs.existsSync(doubleGenPath)).toBeFalsy();
 
@@ -81,14 +110,26 @@ describe('addon generator', () => {
         // generator above
         // this is switching the working directory as follows:
         // ./test-assets/test-addon -> ./test-assets
-        process.chdir(testAssetsPath);
         rimraf.sync(genPath);
+
+        process.chdir(defaultCwd);
     });
 
     it('creates a new directory for the generated addon', () => {
-        expect(fs.existsSync(genPath)).toBeFalsy();
+        const defaultCwd = process.cwd();
+
+        rimraf.sync(testAssetsPath);
+        fs.mkdirSync(genPath, { recursive: true });
+
+        // set the working directory to here so that the addon directory is
+        // generated in ./test-assets/test-addon
+        process.chdir(genPath);
+
         gen.default();
+
         expect(fs.existsSync(genPath)).toBeTruthy();
         expect(fs.existsSync(doubleGenPath)).toBeFalsy();
+
+        process.chdir(defaultCwd);
     });
 });

@@ -55,7 +55,7 @@ describe('bail and watch warning', () => {
     });
 
     it('should log warning in case of multiple compilers', async () => {
-        const { stderr, stdout } = await runWatch(__dirname, ['-c', 'multi-webpack.config.js'], true);
+        const { stderr, stdout } = await runWatch(__dirname, ['-c', 'multi-webpack.config.js']);
 
         expect(stderr).toContain(`You are using "bail" with "watch". "bail" will still exit webpack when the first error is found.`);
         expect(stdout).toBeTruthy();

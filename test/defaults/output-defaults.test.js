@@ -1,4 +1,5 @@
 'use strict';
+
 const { existsSync } = require('fs');
 const { resolve } = require('path');
 const { run } = require('../utils/test-utils');
@@ -28,7 +29,7 @@ describe('output flag defaults', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--entry', './a.js', '--output-path'], false);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("error: option '-o, --output-path <value>' argument missing");
+        expect(stderr).toContain("Error: Option '-o, --output-path <value>' argument missing");
         expect(stdout).toBeFalsy();
     });
 });

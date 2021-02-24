@@ -55,18 +55,22 @@ We organize webpack CLI as a multi-package repository using [lerna](https://gith
 Supporting developers is an important task for webpack CLI.
 Thus, webpack CLI provides different commands for many common tasks.
 
--   [`webpack-cli init`](./packages/init/README.md#webpack-cli-init) - Create a new webpack configuration.
--   [`webpack-cli info`](./packages/info/README.md#webpack-cli-info) - Returns information related to the local environment.
--   [`webpack-cli migrate`](./packages/migrate/README.md#webpack-cli-migrate) - Migrate project from one version to another.
--   [`webpack-cli plugin`](./packages/generate-plugin/README.md#webpack-cli-generate-plugin) - Initiate new plugin project.
--   [`webpack-cli loader`](./packages/generate-loader/README.md#webpack-cli-generate-loader) - Initiate new loader project.
--   [`webpack-cli serve`](./packages/serve/README.md#webpack-cli-serve) - Use webpack with a development server that provides live reloading.
+-   `build|bundle|b [entries...] [options]` - Run webpack (default command, can be omitted).
+-   [`configtest|t [config-path]`](./packages/configtest/README.md#webpack-cli-configtest) - Validate a webpack configuration.
+-   `help|h [command] [option]` - Display help for commands and options.
+-   [`init|c [scaffold...] [options]`](./INIT.md#webpack-cli-init) - Create a new webpack configuration.
+-   [`info|i [options]`](./packages/info/README.md#webpack-cli-info) - Returns information related to the local environment.
+-   [`migrate|m <config-path> [new-config-path]`](https://www.npmjs.com/package/@webpack-cli/migrate) - Migrate project from one version to another.
+-   [`plugin|p [output-path]`](./packages/generators#generators) - Initiate new plugin project.
+-   [`loader|l [output-path]`](./packages/generators#generators) - Initiate new loader project.
+-   [`serve|s [entries...] [options]`](./packages/serve/README.md#webpack-cli-serve) - Use webpack with a development server that provides live reloading.
+-   `version|v [commands...]` - Output the version number of `webpack`, `webpack-cli`, `webpack-dev-server`, and commands
+-   `watch|w [entries...] [options]` - Run webpack and watch for files changes.
 
 ### Utilities
 
 The project also has several utility packages which are used by other commands
 
--   [`utils`](./packages/utils/README.md) - Several utilities used across webpack-cli.
 -   [`generators`](./packages/generators/README.md) - Contains all webpack-cli related yeoman generators.
 
 ## Getting started

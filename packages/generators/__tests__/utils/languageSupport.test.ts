@@ -1,5 +1,5 @@
-import language, { LangType, getBabelLoader, getTypescriptLoader } from '../../lib/utils/languageSupport';
-import { CustomGenerator } from '../../lib/types';
+import language, { LangType, getBabelLoader, getTypescriptLoader } from '../../src/utils/languageSupport';
+import { CustomGenerator } from '../../src/types';
 
 describe('languageSupport', () => {
     const getMockGenerator = (): CustomGenerator => {

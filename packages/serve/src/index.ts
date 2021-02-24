@@ -1,15 +1,16 @@
 import startDevServer from './startDevServer';
 
 class ServeCommand {
-    async apply(cli): Promise<void> {
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+    async apply(cli: any): Promise<void> {
         const { logger } = cli;
 
         await cli.makeCommand(
             {
-                name: 'serve',
+                name: 'serve [entries...]',
                 alias: 's',
                 description: 'Run the webpack dev server.',
-                usage: '[options]',
+                usage: '[entries...] [options]',
                 pkg: '@webpack-cli/serve',
                 dependencies: ['webpack-dev-server'],
             },
@@ -24,11 +25,11 @@ class ServeCommand {
                     process.exit(2);
                 }
 
-                const builtInOptions = cli.getBuiltInOptions();
+                const builtInOptions = cli.getBuiltInOptions().filter((option) => option.name !== 'watch');
 
                 return [...builtInOptions, ...devServerFlags];
             },
-            async (program) => {
+            async (entries, options) => {
                 const builtInOptions = cli.getBuiltInOptions();
                 let devServerFlags = [];
 
@@ -43,7 +44,6 @@ class ServeCommand {
                 const webpackOptions: Record<string, any> = {};
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const devServerOptions: Record<string, any> = {};
-                const options = program.opts();
 
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const processors: Array<(opts: Record<string, any>) => void> = [];
@@ -73,7 +73,11 @@ class ServeCommand {
                     processor(devServerOptions);
                 }
 
-                webpackOptions.env = { WEBPACK_SERVE: true, ...options.env };
+                if (entries.length > 0) {
+                    webpackOptions.entry = [...entries, ...(webpackOptions.entry || [])];
+                }
+
+                webpackOptions.argv = { ...options, env: { WEBPACK_SERVE: true, ...options.env } };
 
                 const compiler = await cli.createCompiler(webpackOptions);
 
@@ -94,7 +98,7 @@ class ServeCommand {
                     process.stdin.on('end', () => {
                         Promise.all(
                             servers.map((server) => {
-                                return new Promise((resolve) => {
+                                return new Promise<void>((resolve) => {
                                     server.close(() => {
                                         resolve();
                                     });
@@ -108,9 +112,9 @@ class ServeCommand {
                 }
 
                 try {
-                    servers = await startDevServer(compiler, devServerOptions, logger);
+                    servers = await startDevServer(compiler, devServerOptions, options, logger);
                 } catch (error) {
-                    if (error.name === 'ValidationError') {
+                    if (cli.isValidationError(error)) {
                         logger.error(error.message);
                     } else {
                         logger.error(error);

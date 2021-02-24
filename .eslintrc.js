@@ -6,7 +6,7 @@ module.exports = {
     plugins: ['node'],
     settings: {
         node: {
-            allowModules: ['@webpack-cli/generators', '@webpack-cli/utils'],
+            allowModules: ['@webpack-cli/generators'],
         },
     },
     env: {
@@ -21,6 +21,7 @@ module.exports = {
         'no-caller': 'error',
         'no-extra-bind': 'error',
         'no-loop-func': 'error',
+        'no-undef': 'error',
     },
     overrides: [
         {

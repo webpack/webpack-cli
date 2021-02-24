@@ -1,13 +1,5 @@
-const WebpackCLI = require('./webpack-cli');
-const { commands } = require('./utils/cli-flags');
-const logger = require('./utils/logger');
-const getPackageManager = require('./utils/get-package-manager');
+const CLI = require('./webpack-cli');
+const utils = require('./utils');
 
-module.exports = WebpackCLI;
-
-// export additional utils used by other packages
-module.exports.utils = {
-    logger,
-    commands,
-    getPackageManager,
-};
+module.exports = CLI;
+module.exports.utils = utils;

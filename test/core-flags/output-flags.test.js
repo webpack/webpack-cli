@@ -1,9 +1,10 @@
 'use strict';
 
 const { run, hyphenToUpperCase } = require('../utils/test-utils');
-const { flags } = require('../../packages/webpack-cli/lib/utils/cli-flags');
+const CLI = require('../../packages/webpack-cli/lib/index');
 
-const outputFlags = flags.filter(({ name }) => name.startsWith('output-'));
+const cli = new CLI();
+const outputFlags = cli.getBuiltInOptions().filter(({ name }) => name.startsWith('output-'));
 
 describe('output config related flag', () => {
     outputFlags.forEach((flag) => {
@@ -12,6 +13,8 @@ describe('output config related flag', () => {
 
         if (property.includes('environment-')) {
             property = property.split('environment-')[1];
+        } else if (property.includes('clean-')) {
+            property = property.split('clean-')[1];
         }
 
         const propName = hyphenToUpperCase(property);

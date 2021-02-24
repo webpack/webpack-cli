@@ -15,7 +15,7 @@ describe('env object', () => {
         expect(stdout).toBeTruthy();
 
         if (isWebpack5) {
-            const executable = path.join(__dirname, './bin/main.js');
+            const executable = path.join(__dirname, './dist/main.js');
             const bundledScript = spawnSync('node', [executable]);
             expect(bundledScript.stdout).toBe('environment is development');
         }

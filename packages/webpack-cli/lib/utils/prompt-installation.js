@@ -1,9 +1,5 @@
 const { prompt } = require('enquirer');
-const { green } = require('colorette');
-const runCommand = require('./run-command');
-const getPackageManager = require('./get-package-manager');
-const packageExists = require('./package-exists');
-const logger = require('./logger');
+const utils = require('./index');
 
 /**
  *
@@ -11,10 +7,10 @@ const logger = require('./logger');
  * @param preMessage Message to show before the question
  */
 async function promptInstallation(packageName, preMessage) {
-    const packageManager = getPackageManager();
+    const packageManager = utils.getPackageManager();
 
     if (!packageManager) {
-        logger.error("Can't find package manager");
+        utils.logger.error("Can't find package manager");
         process.exit(2);
     }
 
@@ -24,6 +20,7 @@ async function promptInstallation(packageName, preMessage) {
 
     // yarn uses 'add' command, rest npm and pnpm both use 'install'
     const commandToBeRun = `${packageManager} ${[packageManager === 'yarn' ? 'add' : 'install', '-D', packageName].join(' ')}`;
+    const { colors } = utils;
 
     let installConfirm;
 
@@ -32,25 +29,27 @@ async function promptInstallation(packageName, preMessage) {
             {
                 type: 'confirm',
                 name: 'installConfirm',
-                message: `Would you like to install '${green(packageName)}' package? (That will run '${green(commandToBeRun)}')`,
+                message: `Would you like to install '${colors.green(packageName)}' package? (That will run '${colors.green(
+                    commandToBeRun,
+                )}')`,
                 initial: 'Y',
                 stdout: process.stderr,
             },
         ]));
     } catch (error) {
-        logger.error(error);
+        utils.logger.error(error);
         process.exit(2);
     }
 
     if (installConfirm) {
         try {
-            await runCommand(commandToBeRun);
+            await utils.runCommand(commandToBeRun);
         } catch (error) {
-            logger.error(error);
+            utils.logger.error(error);
             process.exit(2);
         }
 
-        return packageExists(packageName);
+        return utils.packageExists(packageName);
     }
 
     process.exit(2);
