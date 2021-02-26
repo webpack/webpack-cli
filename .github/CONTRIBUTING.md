@@ -196,10 +196,9 @@ We don't use the scope. The template of a commit would look like this:
 Each commit message consists of a **header**, a **body** and a **footer**. The header has a special
 format that includes a **type** and a **subject**:
 
-```md
+```
 <type>: <subject>
 <BLANK LINE>
-
 <body>
 <BLANK LINE>
 <footer>
