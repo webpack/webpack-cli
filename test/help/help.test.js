@@ -276,9 +276,6 @@ describe('help', () => {
     it('should show help information using the "help --target" option', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['help', '--target']);
 
-        console.log(require('webpack').version);
-        console.log('DEBUG: path is ' + require.resolve('webpack'));
-
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
 
