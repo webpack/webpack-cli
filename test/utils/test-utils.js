@@ -7,7 +7,7 @@ const { sync: spawnSync, node: execaNode } = execa;
 const { Writable } = require('readable-stream');
 const concat = require('concat-stream');
 
-console.log(fs.readFileSync(path.resolve(__dirname, './package.json')));
+console.log(fs.readdirSync(__dirname));
 
 const { version } = require('webpack');
 const isWebpack5 = version.startsWith('5');
