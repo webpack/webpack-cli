@@ -99,9 +99,11 @@ Options:
   --no-module-expr-context-reg-exp                                                   Negative 'module-expr-context-reg-exp' option.
   --module-expr-context-request <value>                                              Set the default request for full dynamic dependencies. Deprecated: This option has moved to 'module.parser.javascript.exprContextRequest'.
   --module-generator-asset-data-url-encoding <value>                                 Asset encoding (defaults to base64).
+  --no-module-generator-asset-data-url-encoding                                      Negative 'module-generator-asset-data-url-encoding' option.
   --module-generator-asset-data-url-mimetype <value>                                 Asset mimetype (getting from file extension by default).
   --module-generator-asset-filename <value>                                          Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
   --module-generator-asset-inline-data-url-encoding <value>                          Asset encoding (defaults to base64).
+  --no-module-generator-asset-inline-data-url-encoding                               Negative 'module-generator-asset-inline-data-url-encoding' option.
   --module-generator-asset-inline-data-url-mimetype <value>                          Asset mimetype (getting from file extension by default).
   --module-generator-asset-resource-filename <value>                                 Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
   --module-no-parse <value...>                                                       A regular expression, when matched the module is not parsed. An absolute path, when the module starts with this path it is not parsed.
@@ -128,8 +130,10 @@ Options:
   --no-module-parser-javascript-import                                               Negative 'module-parser-javascript-import' option.
   --module-parser-javascript-node                                                    Include polyfills or mocks for various node stuff.
   --no-module-parser-javascript-node                                                 Negative 'module-parser-javascript-node' option.
-  --module-parser-javascript-node-dirname <value>                                    Include a polyfill for the '__dirname' variable.
-  --module-parser-javascript-node-filename <value>                                   Include a polyfill for the '__filename' variable.
+  --module-parser-javascript-node-dirname [value]                                    Include a polyfill for the '__dirname' variable.
+  --no-module-parser-javascript-node-dirname                                         Negative 'module-parser-javascript-node-dirname' option.
+  --module-parser-javascript-node-filename [value]                                   Include a polyfill for the '__filename' variable.
+  --no-module-parser-javascript-node-filename                                        Negative 'module-parser-javascript-node-filename' option.
   --module-parser-javascript-node-global                                             Include a polyfill for the 'global' variable.
   --no-module-parser-javascript-node-global                                          Negative 'module-parser-javascript-node-global' option.
   --module-parser-javascript-require-context                                         Enable/disable parsing of require.context syntax.
@@ -184,8 +188,10 @@ Options:
   --no-module-parser-javascript-auto-import                                          Negative 'module-parser-javascript-auto-import' option.
   --module-parser-javascript-auto-node                                               Include polyfills or mocks for various node stuff.
   --no-module-parser-javascript-auto-node                                            Negative 'module-parser-javascript-auto-node' option.
-  --module-parser-javascript-auto-node-dirname <value>                               Include a polyfill for the '__dirname' variable.
-  --module-parser-javascript-auto-node-filename <value>                              Include a polyfill for the '__filename' variable.
+  --module-parser-javascript-auto-node-dirname [value]                               Include a polyfill for the '__dirname' variable.
+  --no-module-parser-javascript-auto-node-dirname                                    Negative 'module-parser-javascript-auto-node-dirname' option.
+  --module-parser-javascript-auto-node-filename [value]                              Include a polyfill for the '__filename' variable.
+  --no-module-parser-javascript-auto-node-filename                                   Negative 'module-parser-javascript-auto-node-filename' option.
   --module-parser-javascript-auto-node-global                                        Include a polyfill for the 'global' variable.
   --no-module-parser-javascript-auto-node-global                                     Negative 'module-parser-javascript-auto-node-global' option.
   --module-parser-javascript-auto-require-context                                    Enable/disable parsing of require.context syntax.
@@ -240,8 +246,10 @@ Options:
   --no-module-parser-javascript-dynamic-import                                       Negative 'module-parser-javascript-dynamic-import' option.
   --module-parser-javascript-dynamic-node                                            Include polyfills or mocks for various node stuff.
   --no-module-parser-javascript-dynamic-node                                         Negative 'module-parser-javascript-dynamic-node' option.
-  --module-parser-javascript-dynamic-node-dirname <value>                            Include a polyfill for the '__dirname' variable.
-  --module-parser-javascript-dynamic-node-filename <value>                           Include a polyfill for the '__filename' variable.
+  --module-parser-javascript-dynamic-node-dirname [value]                            Include a polyfill for the '__dirname' variable.
+  --no-module-parser-javascript-dynamic-node-dirname                                 Negative 'module-parser-javascript-dynamic-node-dirname' option.
+  --module-parser-javascript-dynamic-node-filename [value]                           Include a polyfill for the '__filename' variable.
+  --no-module-parser-javascript-dynamic-node-filename                                Negative 'module-parser-javascript-dynamic-node-filename' option.
   --module-parser-javascript-dynamic-node-global                                     Include a polyfill for the 'global' variable.
   --no-module-parser-javascript-dynamic-node-global                                  Negative 'module-parser-javascript-dynamic-node-global' option.
   --module-parser-javascript-dynamic-require-context                                 Enable/disable parsing of require.context syntax.
@@ -296,8 +304,10 @@ Options:
   --no-module-parser-javascript-esm-import                                           Negative 'module-parser-javascript-esm-import' option.
   --module-parser-javascript-esm-node                                                Include polyfills or mocks for various node stuff.
   --no-module-parser-javascript-esm-node                                             Negative 'module-parser-javascript-esm-node' option.
-  --module-parser-javascript-esm-node-dirname <value>                                Include a polyfill for the '__dirname' variable.
-  --module-parser-javascript-esm-node-filename <value>                               Include a polyfill for the '__filename' variable.
+  --module-parser-javascript-esm-node-dirname [value]                                Include a polyfill for the '__dirname' variable.
+  --no-module-parser-javascript-esm-node-dirname                                     Negative 'module-parser-javascript-esm-node-dirname' option.
+  --module-parser-javascript-esm-node-filename [value]                               Include a polyfill for the '__filename' variable.
+  --no-module-parser-javascript-esm-node-filename                                    Negative 'module-parser-javascript-esm-node-filename' option.
   --module-parser-javascript-esm-node-global                                         Include a polyfill for the 'global' variable.
   --no-module-parser-javascript-esm-node-global                                      Negative 'module-parser-javascript-esm-node-global' option.
   --module-parser-javascript-esm-require-context                                     Enable/disable parsing of require.context syntax.
@@ -375,13 +385,16 @@ Options:
   --name <value>                                                                     Name of the configuration. Used when loading multiple configurations.
   --node                                                                             Include polyfills or mocks for various node stuff.
   --no-node                                                                          Negative 'node' option.
-  --node-dirname <value>                                                             Include a polyfill for the '__dirname' variable.
-  --node-filename <value>                                                            Include a polyfill for the '__filename' variable.
+  --node-dirname [value]                                                             Include a polyfill for the '__dirname' variable.
+  --no-node-dirname                                                                  Negative 'node-dirname' option.
+  --node-filename [value]                                                            Include a polyfill for the '__filename' variable.
+  --no-node-filename                                                                 Negative 'node-filename' option.
   --node-global                                                                      Include a polyfill for the 'global' variable.
   --no-node-global                                                                   Negative 'node-global' option.
   --optimization-check-wasm-types                                                    Check for incompatible wasm types when importing/exporting from/to ESM.
   --no-optimization-check-wasm-types                                                 Negative 'optimization-check-wasm-types' option.
   --optimization-chunk-ids <value>                                                   Define the algorithm to choose chunk ids (named: readable ids for better debugging, deterministic: numeric hash ids for better long term caching, size: numeric ids focused on minimal initial download size, total-size: numeric ids focused on minimal total download size, false: no algorithm used, as custom one can be provided via plugin).
+  --no-optimization-chunk-ids                                                        Negative 'optimization-chunk-ids' option.
   --optimization-concatenate-modules                                                 Concatenate modules when possible to generate less modules, more efficient code and enable more optimizations by the minimizer.
   --no-optimization-concatenate-modules                                              Negative 'optimization-concatenate-modules' option.
   --optimization-emit-on-errors                                                      Emit assets even when errors occur. Critical errors are emitted into the generated code and will cause errors at runtime.
@@ -399,7 +412,8 @@ Options:
   --optimization-minimize                                                            Enable minimizing the output. Uses optimization.minimizer.
   --no-optimization-minimize                                                         Negative 'optimization-minimize' option.
   --optimization-module-ids <value>                                                  Define the algorithm to choose module ids (natural: numeric ids in order of usage, named: readable ids for better debugging, hashed: (deprecated) short hashes as ids for better long term caching, deterministic: numeric hash ids for better long term caching, size: numeric ids focused on minimal initial download size, false: no algorithm used, as custom one can be provided via plugin).
-  --optimization-node-env [value]                                                    Set process.env.NODE_ENV to a specific value.
+  --no-optimization-module-ids                                                       Negative 'optimization-module-ids' option.
+  --optimization-node-env <value>                                                    Set process.env.NODE_ENV to a specific value.
   --no-optimization-node-env                                                         Negative 'optimization-node-env' option.
   --optimization-portable-records                                                    Generate records with relative paths to be able to move the context folder.
   --no-optimization-portable-records                                                 Negative 'optimization-portable-records' option.
@@ -439,7 +453,7 @@ Options:
   --optimization-split-chunks-min-chunks <value>                                     Minimum number of times a module has to be duplicated until it's considered for splitting.
   --optimization-split-chunks-min-remaining-size <value>                             Size of the javascript part of the chunk.
   --optimization-split-chunks-min-size <value>                                       Size of the javascript part of the chunk.
-  --optimization-split-chunks-name [value]                                           Give chunks created a name (chunks with equal name are merged).
+  --optimization-split-chunks-name <value>                                           Give chunks created a name (chunks with equal name are merged).
   --no-optimization-split-chunks-name                                                Negative 'optimization-split-chunks-name' option.
   --optimization-split-chunks-used-exports                                           Compare used exports when checking common modules. Modules will only be put in the same chunk when exports are equal.
   --no-optimization-split-chunks-used-exports                                        Negative 'optimization-split-chunks-used-exports' option.
@@ -449,9 +463,10 @@ Options:
   --output-charset                                                                   Add charset attribute for script tag.
   --no-output-charset                                                                Negative 'output-charset' option.
   --output-chunk-filename <value>                                                    Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
-  --output-chunk-format [value]                                                      The format of chunks (formats included by default are 'array-push' (web/WebWorker), 'commonjs' (node.js), but others might be added by plugins).
+  --output-chunk-format <value>                                                      The format of chunks (formats included by default are 'array-push' (web/WebWorker), 'commonjs' (node.js), but others might be added by plugins).
+  --no-output-chunk-format                                                           Negative 'output-chunk-format' option.
   --output-chunk-load-timeout <value>                                                Number of milliseconds before chunk request expires.
-  --output-chunk-loading [value]                                                     The method of loading chunks (methods included by default are 'jsonp' (web), 'importScripts' (WebWorker), 'require' (sync node.js), 'async-node' (async node.js), but others might be added by plugins).
+  --output-chunk-loading <value>                                                     The method of loading chunks (methods included by default are 'jsonp' (web), 'importScripts' (WebWorker), 'require' (sync node.js), 'async-node' (async node.js), but others might be added by plugins).
   --no-output-chunk-loading                                                          Negative 'output-chunk-loading' option.
   --output-chunk-loading-global <value>                                              The global variable used by webpack for loading of chunks.
   --output-clean                                                                     Clean the output directory before emit.
@@ -462,6 +477,7 @@ Options:
   --output-compare-before-emit                                                       Check if to be emitted file already exists and have the same content before writing to output filesystem.
   --no-output-compare-before-emit                                                    Negative 'output-compare-before-emit' option.
   --output-cross-origin-loading <value>                                              This option enables cross-origin loading of chunks.
+  --no-output-cross-origin-loading                                                   Negative 'output-cross-origin-loading' option.
   --output-devtool-fallback-module-filename-template <value>                         Similar to `output.devtoolModuleFilenameTemplate`, but used in the case of duplicate module identifiers.
   --output-devtool-module-filename-template <value>                                  Filename template string of function for the sources array in a generated SourceMap.
   --output-devtool-namespace <value>                                                 Module namespace to use when interpolating filename template string for the sources array in a generated SourceMap. Defaults to `output.library` if not set. It's useful for avoiding runtime collisions in sourcemaps from multiple webpack projects built as libraries.
@@ -527,33 +543,35 @@ Options:
   --no-output-pathinfo                                                               Negative 'output-pathinfo' option.
   --output-public-path <value>                                                       The `publicPath` specifies the public URL address of the output files when referenced in a browser.
   --output-script-type <value>                                                       This option enables loading async chunks via a custom script type, such as script type="module".
+  --no-output-script-type                                                            Negative 'output-script-type' option.
   --output-source-map-filename <value>                                               The filename of the SourceMaps for the JavaScript files. They are inside the 'output.path' directory.
   --output-source-prefix <value>                                                     Prefixes every line of the source in the bundle with this string.
   --output-strict-module-exception-handling                                          Handles exceptions in module loading correctly at a performance cost.
   --no-output-strict-module-exception-handling                                       Negative 'output-strict-module-exception-handling' option.
   --output-unique-name <value>                                                       A unique name of the webpack build to avoid multiple webpack runtimes to conflict when using globals.
-  --output-wasm-loading [value]                                                      The method of loading WebAssembly Modules (methods included by default are 'fetch' (web/WebWorker), 'async-node' (node.js), but others might be added by plugins).
+  --output-wasm-loading <value>                                                      The method of loading WebAssembly Modules (methods included by default are 'fetch' (web/WebWorker), 'async-node' (node.js), but others might be added by plugins).
   --no-output-wasm-loading                                                           Negative 'output-wasm-loading' option.
   --output-webassembly-module-filename <value>                                       The filename of WebAssembly modules as relative path inside the 'output.path' directory.
-  --output-worker-chunk-loading [value]                                              The method of loading chunks (methods included by default are 'jsonp' (web), 'importScripts' (WebWorker), 'require' (sync node.js), 'async-node' (async node.js), but others might be added by plugins).
+  --output-worker-chunk-loading <value>                                              The method of loading chunks (methods included by default are 'jsonp' (web), 'importScripts' (WebWorker), 'require' (sync node.js), 'async-node' (async node.js), but others might be added by plugins).
   --no-output-worker-chunk-loading                                                   Negative 'output-worker-chunk-loading' option.
-  --output-worker-wasm-loading [value]                                               The method of loading WebAssembly Modules (methods included by default are 'fetch' (web/WebWorker), 'async-node' (node.js), but others might be added by plugins).
+  --output-worker-wasm-loading <value>                                               The method of loading WebAssembly Modules (methods included by default are 'fetch' (web/WebWorker), 'async-node' (node.js), but others might be added by plugins).
   --no-output-worker-wasm-loading                                                    Negative 'output-worker-wasm-loading' option.
   --parallelism <value>                                                              The number of parallel processed modules in the compilation.
   --performance                                                                      Configuration for web performance recommendations.
   --no-performance                                                                   Negative 'performance' option.
   --performance-hints <value>                                                        Sets the format of the hints: warnings, errors or nothing at all.
+  --no-performance-hints                                                             Negative 'performance-hints' option.
   --performance-max-asset-size <value>                                               File size limit (in bytes) when exceeded, that webpack will provide performance hints.
   --performance-max-entrypoint-size <value>                                          Total size of an entry point (in bytes).
   --profile                                                                          Capture timing information for each module.
   --no-profile                                                                       Negative 'profile' option.
-  --records-input-path [value]                                                       Store compiler state to a json file.
+  --records-input-path <value>                                                       Store compiler state to a json file.
   --no-records-input-path                                                            Negative 'records-input-path' option.
-  --records-output-path [value]                                                      Load compiler state from a json file.
+  --records-output-path <value>                                                      Load compiler state from a json file.
   --no-records-output-path                                                           Negative 'records-output-path' option.
-  --records-path [value]                                                             Store/Load compiler state from/to a json file. This will result in persistent ids of modules and chunks. An absolute path is expected. `recordsPath` is used for `recordsInputPath` and `recordsOutputPath` if they left undefined.
+  --records-path <value>                                                             Store/Load compiler state from/to a json file. This will result in persistent ids of modules and chunks. An absolute path is expected. `recordsPath` is used for `recordsInputPath` and `recordsOutputPath` if they left undefined.
   --no-records-path                                                                  Negative 'records-path' option.
-  --resolve-alias-alias [value...]                                                   Ignore request (replace with empty module). New request.
+  --resolve-alias-alias <value...>                                                   Ignore request (replace with empty module). New request.
   --no-resolve-alias-alias                                                           Negative 'resolve-alias-alias' option.
   --resolve-alias-name <value...>                                                    Request to be redirected.
   --resolve-alias-only-module                                                        Redirect only exact matching request.
@@ -575,7 +593,7 @@ Options:
   --resolve-exports-fields-reset                                                     Clear all items provided in configuration. Field names from the description file (usually package.json) which are used to provide entry points of a package.
   --resolve-extensions <value...>                                                    Extension added to the request when trying to find the file.
   --resolve-extensions-reset                                                         Clear all items provided in configuration. Extensions added to the request when trying to find the file.
-  --resolve-fallback-alias [value...]                                                Ignore request (replace with empty module). New request.
+  --resolve-fallback-alias <value...>                                                Ignore request (replace with empty module). New request.
   --no-resolve-fallback-alias                                                        Negative 'resolve-fallback-alias' option.
   --resolve-fallback-name <value...>                                                 Request to be redirected.
   --resolve-fallback-only-module                                                     Redirect only exact matching request.
@@ -605,7 +623,7 @@ Options:
   --no-resolve-unsafe-cache                                                          Negative 'resolve-unsafe-cache' option.
   --resolve-use-sync-file-system-calls                                               Use synchronous filesystem calls for the resolver.
   --no-resolve-use-sync-file-system-calls                                            Negative 'resolve-use-sync-file-system-calls' option.
-  --resolve-loader-alias-alias [value...]                                            Ignore request (replace with empty module). New request.
+  --resolve-loader-alias-alias <value...>                                            Ignore request (replace with empty module). New request.
   --no-resolve-loader-alias-alias                                                    Negative 'resolve-loader-alias-alias' option.
   --resolve-loader-alias-name <value...>                                             Request to be redirected.
   --resolve-loader-alias-only-module                                                 Redirect only exact matching request.
@@ -627,7 +645,7 @@ Options:
   --resolve-loader-exports-fields-reset                                              Clear all items provided in configuration. Field names from the description file (usually package.json) which are used to provide entry points of a package.
   --resolve-loader-extensions <value...>                                             Extension added to the request when trying to find the file.
   --resolve-loader-extensions-reset                                                  Clear all items provided in configuration. Extensions added to the request when trying to find the file.
-  --resolve-loader-fallback-alias [value...]                                         Ignore request (replace with empty module). New request.
+  --resolve-loader-fallback-alias <value...>                                         Ignore request (replace with empty module). New request.
   --no-resolve-loader-fallback-alias                                                 Negative 'resolve-loader-fallback-alias' option.
   --resolve-loader-fallback-name <value...>                                          Request to be redirected.
   --resolve-loader-fallback-only-module                                              Redirect only exact matching request.
