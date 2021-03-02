@@ -16,7 +16,6 @@ Options:
   --progress [value]                                                                 Print compilation progress during build.
   --prefetch <value>                                                                 Prefetch this request.
   -j, --json [value]                                                                 Prints result as JSON or store it in a file.
-  --amd                                                                              You can pass `false` to disable AMD support.
   --no-amd                                                                           Negative 'amd' option.
   --bail                                                                             Report the first error as a hard error instead of tolerating it.
   --no-bail                                                                          Negative 'bail' option.
@@ -109,7 +108,6 @@ Options:
   --module-no-parse <value...>                                                       A regular expression, when matched the module is not parsed. An absolute path, when the module starts with this path it is not parsed.
   --module-no-parse-reset                                                            Clear all items provided in configuration. Don't parse files matching. It's matched against the full resolved request.
   --module-parser-asset-data-url-condition-max-size <value>                          Maximum size of asset that should be inline as modules. Default: 8kb.
-  --module-parser-javascript-amd                                                     You can pass `false` to disable AMD support.
   --no-module-parser-javascript-amd                                                  Negative 'module-parser-javascript-amd' option.
   --module-parser-javascript-browserify                                              Enable/disable special handling for browserify bundles.
   --no-module-parser-javascript-browserify                                           Negative 'module-parser-javascript-browserify' option.
@@ -128,7 +126,6 @@ Options:
   --no-module-parser-javascript-harmony                                              Negative 'module-parser-javascript-harmony' option.
   --module-parser-javascript-import                                                  Enable/disable parsing of import() syntax.
   --no-module-parser-javascript-import                                               Negative 'module-parser-javascript-import' option.
-  --module-parser-javascript-node                                                    Include polyfills or mocks for various node stuff.
   --no-module-parser-javascript-node                                                 Negative 'module-parser-javascript-node' option.
   --module-parser-javascript-node-dirname [value]                                    Include a polyfill for the '__dirname' variable.
   --no-module-parser-javascript-node-dirname                                         Negative 'module-parser-javascript-node-dirname' option.
@@ -167,7 +164,6 @@ Options:
   --module-parser-javascript-wrapped-context-recursive                               Enable recursive directory lookup for partial dynamic dependencies.
   --no-module-parser-javascript-wrapped-context-recursive                            Negative 'module-parser-javascript-wrapped-context-recursive' option.
   --module-parser-javascript-wrapped-context-reg-exp <value>                         Set the inner regular expression for partial dynamic dependencies.
-  --module-parser-javascript-auto-amd                                                You can pass `false` to disable AMD support.
   --no-module-parser-javascript-auto-amd                                             Negative 'module-parser-javascript-auto-amd' option.
   --module-parser-javascript-auto-browserify                                         Enable/disable special handling for browserify bundles.
   --no-module-parser-javascript-auto-browserify                                      Negative 'module-parser-javascript-auto-browserify' option.
@@ -186,7 +182,6 @@ Options:
   --no-module-parser-javascript-auto-harmony                                         Negative 'module-parser-javascript-auto-harmony' option.
   --module-parser-javascript-auto-import                                             Enable/disable parsing of import() syntax.
   --no-module-parser-javascript-auto-import                                          Negative 'module-parser-javascript-auto-import' option.
-  --module-parser-javascript-auto-node                                               Include polyfills or mocks for various node stuff.
   --no-module-parser-javascript-auto-node                                            Negative 'module-parser-javascript-auto-node' option.
   --module-parser-javascript-auto-node-dirname [value]                               Include a polyfill for the '__dirname' variable.
   --no-module-parser-javascript-auto-node-dirname                                    Negative 'module-parser-javascript-auto-node-dirname' option.
@@ -225,7 +220,6 @@ Options:
   --module-parser-javascript-auto-wrapped-context-recursive                          Enable recursive directory lookup for partial dynamic dependencies.
   --no-module-parser-javascript-auto-wrapped-context-recursive                       Negative 'module-parser-javascript-auto-wrapped-context-recursive' option.
   --module-parser-javascript-auto-wrapped-context-reg-exp <value>                    Set the inner regular expression for partial dynamic dependencies.
-  --module-parser-javascript-dynamic-amd                                             You can pass `false` to disable AMD support.
   --no-module-parser-javascript-dynamic-amd                                          Negative 'module-parser-javascript-dynamic-amd' option.
   --module-parser-javascript-dynamic-browserify                                      Enable/disable special handling for browserify bundles.
   --no-module-parser-javascript-dynamic-browserify                                   Negative 'module-parser-javascript-dynamic-browserify' option.
@@ -244,7 +238,6 @@ Options:
   --no-module-parser-javascript-dynamic-harmony                                      Negative 'module-parser-javascript-dynamic-harmony' option.
   --module-parser-javascript-dynamic-import                                          Enable/disable parsing of import() syntax.
   --no-module-parser-javascript-dynamic-import                                       Negative 'module-parser-javascript-dynamic-import' option.
-  --module-parser-javascript-dynamic-node                                            Include polyfills or mocks for various node stuff.
   --no-module-parser-javascript-dynamic-node                                         Negative 'module-parser-javascript-dynamic-node' option.
   --module-parser-javascript-dynamic-node-dirname [value]                            Include a polyfill for the '__dirname' variable.
   --no-module-parser-javascript-dynamic-node-dirname                                 Negative 'module-parser-javascript-dynamic-node-dirname' option.
@@ -283,7 +276,6 @@ Options:
   --module-parser-javascript-dynamic-wrapped-context-recursive                       Enable recursive directory lookup for partial dynamic dependencies.
   --no-module-parser-javascript-dynamic-wrapped-context-recursive                    Negative 'module-parser-javascript-dynamic-wrapped-context-recursive' option.
   --module-parser-javascript-dynamic-wrapped-context-reg-exp <value>                 Set the inner regular expression for partial dynamic dependencies.
-  --module-parser-javascript-esm-amd                                                 You can pass `false` to disable AMD support.
   --no-module-parser-javascript-esm-amd                                              Negative 'module-parser-javascript-esm-amd' option.
   --module-parser-javascript-esm-browserify                                          Enable/disable special handling for browserify bundles.
   --no-module-parser-javascript-esm-browserify                                       Negative 'module-parser-javascript-esm-browserify' option.
@@ -302,7 +294,6 @@ Options:
   --no-module-parser-javascript-esm-harmony                                          Negative 'module-parser-javascript-esm-harmony' option.
   --module-parser-javascript-esm-import                                              Enable/disable parsing of import() syntax.
   --no-module-parser-javascript-esm-import                                           Negative 'module-parser-javascript-esm-import' option.
-  --module-parser-javascript-esm-node                                                Include polyfills or mocks for various node stuff.
   --no-module-parser-javascript-esm-node                                             Negative 'module-parser-javascript-esm-node' option.
   --module-parser-javascript-esm-node-dirname [value]                                Include a polyfill for the '__dirname' variable.
   --no-module-parser-javascript-esm-node-dirname                                     Negative 'module-parser-javascript-esm-node-dirname' option.
@@ -383,7 +374,6 @@ Options:
   --no-module-wrapped-context-recursive                                              Negative 'module-wrapped-context-recursive' option.
   --module-wrapped-context-reg-exp <value>                                           Set the inner regular expression for partial dynamic dependencies. Deprecated: This option has moved to 'module.parser.javascript.wrappedContextRegExp'.
   --name <value>                                                                     Name of the configuration. Used when loading multiple configurations.
-  --node                                                                             Include polyfills or mocks for various node stuff.
   --no-node                                                                          Negative 'node' option.
   --node-dirname [value]                                                             Include a polyfill for the '__dirname' variable.
   --no-node-dirname                                                                  Negative 'node-dirname' option.
@@ -430,7 +420,6 @@ Options:
   --optimization-runtime-chunk-name <value>                                          The name or name factory for the runtime chunks.
   --optimization-side-effects [value]                                                Skip over modules which contain no side effects when exports are not used (false: disabled, 'flag': only use manually placed side effects flag, true: also analyse source code for side effects).
   --no-optimization-side-effects                                                     Negative 'optimization-side-effects' option.
-  --optimization-split-chunks                                                        Optimize duplication and caching by splitting chunks by shared modules and cache group.
   --no-optimization-split-chunks                                                     Negative 'optimization-split-chunks' option.
   --optimization-split-chunks-automatic-name-delimiter <value>                       Sets the name delimiter for created chunks.
   --optimization-split-chunks-chunks <value>                                         Select chunks for determining shared modules (defaults to "async", "initial" and "all" requires adding these chunks to the HTML).
@@ -557,7 +546,6 @@ Options:
   --output-worker-wasm-loading <value>                                               The method of loading WebAssembly Modules (methods included by default are 'fetch' (web/WebWorker), 'async-node' (node.js), but others might be added by plugins).
   --no-output-worker-wasm-loading                                                    Negative 'output-worker-wasm-loading' option.
   --parallelism <value>                                                              The number of parallel processed modules in the compilation.
-  --performance                                                                      Configuration for web performance recommendations.
   --no-performance                                                                   Negative 'performance' option.
   --performance-hints <value>                                                        Sets the format of the hints: warnings, errors or nothing at all.
   --no-performance-hints                                                             Negative 'performance-hints' option.
