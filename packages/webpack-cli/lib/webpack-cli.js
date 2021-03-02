@@ -3,7 +3,7 @@ const path = require('path');
 const { pathToFileURL } = require('url');
 const Module = require('module');
 
-const { program } = require('commander');
+const { program, Option } = require('commander');
 const utils = require('./utils');
 
 class WebpackCLI {
@@ -116,107 +116,182 @@ class WebpackCLI {
     }
 
     makeOption(command, option) {
-        let type = option.type;
-        let isMultipleTypes = Array.isArray(type);
-        let isOptional = false;
+        let mainOption;
+        let negativeOption;
 
-        if (isMultipleTypes) {
-            if (type.length === 1) {
-                type = type[0];
-                isMultipleTypes = false;
-            } else {
-                isOptional = type.includes(Boolean);
+        if (option.configs) {
+            let needNegativeOption = false;
+            let mainOptionType = new Set();
+
+            option.configs.forEach((config) => {
+                // Possible value: "enum" | "string" | "path" | "number" | "boolean" | "RegExp" | "reset"
+                switch (config.type) {
+                    case 'reset':
+                        mainOptionType.add(Boolean);
+                        break;
+                    case 'boolean':
+                        if (!needNegativeOption) {
+                            needNegativeOption = true;
+                        }
+
+                        mainOptionType.add(Boolean);
+                        break;
+                    case 'number':
+                        mainOptionType.add(Number);
+                        break;
+                    case 'string':
+                    case 'path':
+                    case 'RegExp':
+                        mainOptionType.add(String);
+                        break;
+                    case 'enum': {
+                        let hasFalseEnum = false;
+
+                        const enumTypes = config.values.map((value) => {
+                            switch (typeof value) {
+                                case 'string':
+                                    mainOptionType.add(String);
+                                    break;
+                                case 'number':
+                                    mainOptionType.add(Number);
+                                    break;
+                                case 'boolean':
+                                    if (!hasFalseEnum && value === false) {
+                                        hasFalseEnum = true;
+                                        break;
+                                    }
+
+                                    mainOptionType.add(Boolean);
+                                    break;
+                            }
+                        });
+
+                        if (!needNegativeOption) {
+                            needNegativeOption = hasFalseEnum;
+                        }
+
+                        return enumTypes;
+                    }
+                }
+            });
+
+            mainOption = {
+                flags: option.alias ? `-${option.alias}, --${option.name}` : `--${option.name}`,
+                description: option.description || '',
+                type: mainOptionType,
+                multiple: option.multiple,
+            };
+
+            if (needNegativeOption) {
+                negativeOption = {
+                    flags: `--no-${option.name}`,
+                    description: option.negatedDescription ? option.negatedDescription : `Negative '${option.name}' option.`,
+                };
+            }
+        } else if (option.type) {
+            mainOption = {
+                flags: option.alias ? `-${option.alias}, --${option.name}` : `--${option.name}`,
+                // TODO `describe` used by `webpack-dev-server@3`
+                description: option.description || option.describe || '',
+                type: new Set(Array.isArray(option.type) ? option.type : [option.type]),
+                multiple: option.multiple,
+                defaultValue: option.defaultValue,
+            };
+
+            if (option.negative) {
+                negativeOption = {
+                    flags: `--no-${option.name}`,
+                    description: option.negatedDescription ? option.negatedDescription : `Negative '${option.name}' option.`,
+                };
             }
         }
 
-        const isMultiple = option.multiple;
-        const isRequired = type !== Boolean && typeof type !== 'undefined';
-
-        let flags = option.alias ? `-${option.alias}, --${option.name}` : `--${option.name}`;
-
-        if (isOptional) {
-            // `commander.js` recognizes [value] as an optional placeholder, making this flag work either as a string or a boolean
-            flags = `${flags} [value${isMultiple ? '...' : ''}]`;
-        } else if (isRequired) {
-            // <value> is a required placeholder for any non-Boolean types
-            flags = `${flags} <value${isMultiple ? '...' : ''}>`;
+        if (mainOption.type.size > 1 && mainOption.type.has(Boolean)) {
+            mainOption.flags = `${mainOption.flags} [value${mainOption.multiple ? '...' : ''}]`;
+        } else if (mainOption.type.size > 0 && !mainOption.type.has(Boolean)) {
+            mainOption.flags = `${mainOption.flags} <value${mainOption.multiple ? '...' : ''}>`;
         }
 
-        // TODO `describe` used by `webpack-dev-server@3`
-        const description = option.description || option.describe || '';
-        const defaultValue = option.defaultValue;
+        if (mainOption.type.size === 1) {
+            if (mainOption.type.has(Number)) {
+                let skipDefault = true;
 
-        if (type === Boolean) {
-            command.option(flags, description, defaultValue);
-        } else if (type === Number) {
+                const optionForCommand = new Option(mainOption.flags, mainOption.description)
+                    .argParser((value, prev = []) => {
+                        if (mainOption.defaultValue && mainOption.multiple && skipDefault) {
+                            prev = [];
+                            skipDefault = false;
+                        }
+
+                        return mainOption.multiple ? [].concat(prev).concat(Number(value)) : Number(value);
+                    })
+                    .default(mainOption.defaultValue);
+
+                command.addOption(optionForCommand);
+            } else if (mainOption.type.has(String)) {
+                let skipDefault = true;
+
+                const optionForCommand = new Option(mainOption.flags, mainOption.description)
+                    .argParser((value, prev = []) => {
+                        if (mainOption.defaultValue && mainOption.multiple && skipDefault) {
+                            prev = [];
+                            skipDefault = false;
+                        }
+
+                        return mainOption.multiple ? [].concat(prev).concat(value) : value;
+                    })
+                    .default(mainOption.defaultValue);
+
+                command.addOption(optionForCommand);
+            } else if (mainOption.type.has(Boolean)) {
+                const optionForCommand = new Option(mainOption.flags, mainOption.description).default(mainOption.defaultValue);
+
+                command.addOption(optionForCommand);
+            } else {
+                const optionForCommand = new Option(mainOption.flags, mainOption.description)
+                    .argParser(Array.from(mainOption.type)[0])
+                    .default(mainOption.defaultValue);
+
+                command.addOption(optionForCommand);
+            }
+        } else if (mainOption.type.size > 1) {
             let skipDefault = true;
 
-            command.option(
-                flags,
-                description,
-                (value, prev = []) => {
-                    if (defaultValue && isMultiple && skipDefault) {
+            const optionForCommand = new Option(mainOption.flags, mainOption.description, mainOption.defaultValue)
+                .argParser((value, prev = []) => {
+                    if (mainOption.defaultValue && mainOption.multiple && skipDefault) {
                         prev = [];
                         skipDefault = false;
                     }
 
-                    return isMultiple ? [].concat(prev).concat(Number(value)) : Number(value);
-                },
-                defaultValue,
-            );
-        } else if (type === String) {
-            let skipDefault = true;
-
-            command.option(
-                flags,
-                description,
-                (value, prev = []) => {
-                    if (defaultValue && isMultiple && skipDefault) {
-                        prev = [];
-                        skipDefault = false;
-                    }
-
-                    return isMultiple ? [].concat(prev).concat(value) : value;
-                },
-                defaultValue,
-            );
-        } else if (isMultipleTypes) {
-            let skipDefault = true;
-
-            command.option(
-                flags,
-                description,
-                (value, prev = []) => {
-                    if (defaultValue && isMultiple && skipDefault) {
-                        prev = [];
-                        skipDefault = false;
-                    }
-
-                    if (type.includes(Number)) {
+                    if (mainOption.type.has(Number)) {
                         const numberValue = Number(value);
 
                         if (!isNaN(numberValue)) {
-                            return isMultiple ? [].concat(prev).concat(numberValue) : numberValue;
+                            return mainOption.multiple ? [].concat(prev).concat(numberValue) : numberValue;
                         }
                     }
 
-                    if (type.includes(String)) {
-                        return isMultiple ? [].concat(prev).concat(value) : value;
+                    if (mainOption.type.has(String)) {
+                        return mainOption.multiple ? [].concat(prev).concat(value) : value;
                     }
 
                     return value;
-                },
-                defaultValue,
-            );
-        } else {
-            command.option(flags, description, type, defaultValue);
+                })
+                .default(mainOption.defaultValue);
+
+            command.addOption(optionForCommand);
+        } else if (mainOption.type.size === 0 && negativeOption) {
+            const optionForCommand = new Option(mainOption.flags, mainOption.description);
+
+            // Hide stub option
+            optionForCommand.hideHelp();
+
+            command.addOption(optionForCommand);
         }
 
-        if (option.negative) {
-            // commander requires explicitly adding the negated version of boolean flags
-            const negatedFlag = `--no-${option.name}`;
-
-            command.option(negatedFlag, option.negatedDescription ? option.negatedDescription : `Negative '${option.name}' option.`);
+        if (negativeOption) {
+            command.addOption(new Option(negativeOption.flags, negativeOption.description));
         }
     }
 
@@ -399,57 +474,10 @@ class WebpackCLI {
             },
         ];
 
-        const normalizeType = (type, enumValues = []) => {
-            if (type === 'enum') {
-                const typeofValues = [];
-                enumValues.forEach((value) => {
-                    if (!typeofValues.includes(typeof value)) {
-                        typeofValues.push(typeof value);
-                    }
-                });
-                if (typeofValues.length === 1) {
-                    return normalizeType(typeofValues[0]);
-                } else {
-                    return [Boolean, String, Number];
-                }
-            } else if (type === 'string' || type === 'path') {
-                return String;
-            } else if (type === 'number') {
-                return Number;
-            } else if (type === 'boolean' || type === 'reset') {
-                return Boolean;
-            } else if (type === 'RegExp') {
-                return RegExp;
-            }
-        };
-
         // Extract all the flags being exported from core.
         // A list of cli flags generated by core can be found here https://github.com/webpack/webpack/blob/master/test/__snapshots__/Cli.test.js.snap
         const coreFlags = this.webpack.cli
             ? Object.entries(this.webpack.cli.getArguments()).map(([flag, meta]) => {
-                  if (meta.configs.length > 1) {
-                      meta.type = [];
-                      meta.configs.forEach((config) => {
-                          const type = normalizeType(config.type, config.values);
-                          if (type === Boolean) {
-                              meta.negative = true;
-                          }
-                          // collect all accepted types
-                          if (Array.isArray(type)) {
-                              meta.type = type;
-                          } else {
-                              if (!meta.type.includes(type)) {
-                                  meta.type.push(type);
-                              }
-                          }
-                      });
-                  } else {
-                      meta.type = normalizeType(meta.simpleType);
-                      if (meta.type === Boolean && !flag.endsWith('-reset')) {
-                          meta.negative = true;
-                      }
-                  }
-
                   const inBuiltIn = builtInFlags.find((builtInFlag) => builtInFlag.name === flag);
 
                   if (inBuiltIn) {
@@ -708,7 +736,7 @@ class WebpackCLI {
                         }
 
                         command.options.forEach((option) => {
-                            if (this.utils.levenshtein.distance(name, option.long.slice(2)) < 3) {
+                            if (!option.hidden && this.utils.levenshtein.distance(name, option.long.slice(2)) < 3) {
                                 this.logger.error(`Did you mean '--${option.name()}'?`);
                             }
                         });
@@ -1507,6 +1535,8 @@ class WebpackCLI {
 
                     process.exit(2);
                 }
+
+                console.log(configOptions);
 
                 return configOptions;
             };
