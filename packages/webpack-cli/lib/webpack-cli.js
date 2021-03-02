@@ -1536,8 +1536,6 @@ class WebpackCLI {
                     process.exit(2);
                 }
 
-                console.log(configOptions);
-
                 return configOptions;
             };
 
