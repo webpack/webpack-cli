@@ -42,7 +42,7 @@ If no command is specified then `bundle` command is used by default
 
 ### Help Usage
 
-You display basic commands and arguments -
+To display basic commands and arguments -
 
 ```bash
 npx webpack-cli --help
