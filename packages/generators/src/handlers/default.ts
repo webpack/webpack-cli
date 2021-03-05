@@ -28,8 +28,6 @@ export default function (self: CustomGenerator): void {
     const entry = './src/index.js';
     if (typeof entry === 'string') {
         generateEntryFile(entry, 'your main file!');
-    } else if (typeof entry === 'object') {
-        Object.keys(entry).forEach((name: string): void => generateEntryFile(entry[name], `${name} main file!`));
     }
 
     // Generate README
