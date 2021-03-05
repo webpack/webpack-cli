@@ -1,3 +1,4 @@
+// Generated using webpack-cli http://github.com/webpack-cli
 const path = require('path');
 
 module.exports = {
