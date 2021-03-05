@@ -80,6 +80,6 @@ export default class InitGenerator extends CustomGenerator {
 
     public writing(): void {
         logger.log(`${logSymbols.info}${blue(' INFO ')} Initialising project...`);
-        handlers[this.template](this);
+        handlers[this.template].generate(this);
     }
 }

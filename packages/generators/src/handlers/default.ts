@@ -10,7 +10,7 @@ const resolveFile = (file: string): string => {
  * Handles generation of default template
  * @param self Generator values
  */
-export default function (self: CustomGenerator): void {
+export function generate(self: CustomGenerator): void {
     const isUsingDevServer = self.dependencies.includes('webpack-dev-server');
     const packageJsonTemplatePath = resolveFile('package.json.js');
     self.fs.extendJSON(
