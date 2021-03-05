@@ -39,6 +39,20 @@ describe('init', () => {
         });
     });
 
+    it('should generate folders if non existing generation path is given', () => {
+        rimraf.sync(assetsPath);
+        const { stdout, stderr } = run(__dirname, ['init', `--generation-path=${assetsPath}`]);
+        expect(stdout).toContain("generation path doesn't exist, required folders will be created.");
+        expect(stdout).toContain('Project has been initialised with webpack!');
+        expect(stderr).toContain('webpack.config.js');
+
+        // Test files
+        const files = ['package.json', 'src', 'src/index.js', 'webpack.config.js'];
+        files.forEach((file) => {
+            expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+        });
+    });
+
     it('should ask question when wrong template is supplied', async () => {
         const { stdout, stderr } = await runPromptWithAnswers(assetsPath, ['init', '--template=apple'], [`${ENTER}`]);
         expect(stdout).toContain('Project has been initialised with webpack!');
