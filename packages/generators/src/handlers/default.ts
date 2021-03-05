@@ -7,6 +7,18 @@ const resolveFile = (file: string): string => {
 };
 
 /**
+ * Asks questions to the user used to modify generation
+ * @param self Generator values
+ * @param Question Contains questions
+ */
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
+export async function questions(self: CustomGenerator, Question: any[]): Promise<void> {
+    // TODO: implement it for css and js lang options
+    return;
+}
+
+/**
  * Handles generation of default template
  * @param self Generator values
  */

@@ -2,7 +2,7 @@ import { blue, yellow } from 'colorette';
 import { utils } from 'webpack-cli';
 import logSymbols from 'log-symbols';
 import path from 'path';
-import { List } from './utils/scaffold-utils';
+import * as Question from './utils/scaffold-utils';
 
 import { CustomGenerator } from './types';
 import { existsSync, mkdirSync } from 'fs';
@@ -55,7 +55,7 @@ export default class InitGenerator extends CustomGenerator {
         if (!this.supportedTemplates.includes(this.template)) {
             logger.log(`${logSymbols.warning}${yellow(`${this.template} is not a valid template, please select one from below`)}`);
 
-            const { selectedTemplate } = await List(
+            const { selectedTemplate } = await Question.List(
                 this,
                 'selectedTemplate',
                 'Select a valid template from below:',
@@ -66,6 +66,8 @@ export default class InitGenerator extends CustomGenerator {
 
             this.template = selectedTemplate;
         }
+
+        await handlers[this.template].questions(this, Question);
     }
 
     public installPlugins(): void {
