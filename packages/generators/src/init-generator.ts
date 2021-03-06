@@ -37,7 +37,7 @@ export default class InitGenerator extends CustomGenerator {
         this.generationPath = options.generationPath;
         this.resolvedGenerationPath = path.resolve(process.cwd(), this.generationPath);
         this.useDefaults = options.useDefaults;
-        this.dependencies = ['webpack', 'webpack-cli', 'webpack-dev-server'];
+        this.dependencies = ['webpack', 'webpack-cli'];
         this.supportedTemplates = Object.keys(handlers);
         this.answers = {};
     }
