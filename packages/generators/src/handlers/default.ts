@@ -21,7 +21,7 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
         'Which of the following JS solutions do you want to use?',
         ['none', 'ES6', 'Typescript'],
         'none',
-        false,
+        self.useDefaults,
     );
     self.answers = { ...self.answers, jsLang };
 }

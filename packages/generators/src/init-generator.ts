@@ -25,6 +25,7 @@ export default class InitGenerator extends CustomGenerator {
     public resolvedGenerationPath: string;
     public supportedTemplates: string[];
     public answers: Record<string, unknown>;
+    public useDefaults: boolean;
 
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
     public constructor(args: any, opts: any) {
@@ -35,7 +36,7 @@ export default class InitGenerator extends CustomGenerator {
         this.template = options.template;
         this.generationPath = options.generationPath;
         this.resolvedGenerationPath = path.resolve(process.cwd(), this.generationPath);
-
+        this.useDefaults = options.useDefaults;
         this.dependencies = ['webpack', 'webpack-cli', 'webpack-dev-server'];
         this.supportedTemplates = Object.keys(handlers);
         this.answers = {};

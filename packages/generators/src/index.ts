@@ -30,6 +30,11 @@ class GeneratorsCommand {
                     description: 'To scaffold in a specified path',
                     defaultValue: '.',
                 },
+                {
+                    name: 'use-defaults',
+                    type: Boolean,
+                    description: 'Generate using defaults, ideally without questions',
+                },
             ],
             async (options) => {
                 const env = yeoman.createEnv([], { cwd: options.generationPath });

@@ -243,7 +243,7 @@ export class CustomGenerator extends Generator {
             webpackOptions?: WebpackOptions;
         };
     };
-    public isProd: boolean;
+    public useDefaults: boolean;
     public dependencies: string[];
     public getTemplatePath: (template: string) => string;
     public answers: Record<string, unknown>;
