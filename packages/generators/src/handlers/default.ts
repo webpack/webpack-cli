@@ -47,12 +47,10 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
  * @param self Generator values
  */
 export function generate(self: CustomGenerator): void {
-    const isUsingDevServer = self.dependencies.includes('webpack-dev-server');
-    const packageJsonTemplatePath = resolveFile('package.json.js');
     self.fs.extendJSON(
         self.destinationPath('package.json'),
         // eslint-disable-next-line @typescript-eslint/no-var-requires
-        require(packageJsonTemplatePath)(isUsingDevServer),
+        require(resolveFile('package.json.js'))(self.answers.devServer),
     );
 
     const generateEntryFile = (entryPath: string): void => {
