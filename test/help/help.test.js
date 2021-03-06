@@ -1,5 +1,4 @@
 'use strict';
-const { bold, enabled: coloretteEnabled } = require('colorette');
 const { run } = require('../utils/test-utils');
 
 describe('help', () => {
