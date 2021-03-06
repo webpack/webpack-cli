@@ -11,20 +11,20 @@ module.exports = {
         // Learn more obout plugins from https://webpack.js.org/configuration/plugins/
     ],
     module: {
-        rules: [
-       <% if (lang == "ES6") { %>
+        rules: [<% if (lang) { %>
+<% if (lang == "ES6") { %>
             {
                 test: /\\.(js|jsx)$/,
                 loader: 'babel-loader'
             },
-       <% } %>
-       <% if (lang == "Typescript") { %>
+<% } %>
+<% if (lang == "Typescript") { %>
             {
                 test: /\\.(ts|tsx)$/,
                 loader: 'ts-loader',
                 exclude: ['/node_modules/']
             },
-       <% } %>
+<% } %><% } %>
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],

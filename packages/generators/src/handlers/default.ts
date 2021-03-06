@@ -49,5 +49,7 @@ export function generate(self: CustomGenerator): void {
     self.fs.copyTpl(resolveFile('template.html'), self.destinationPath('index.html'), {});
 
     // Generate webpack configuration
-    self.fs.copyTpl(resolveFile('webpack.config.ejs'), self.destinationPath('webpack.config.js'));
+    self.fs.copyTpl(resolveFile('webpack.configjs.tpl'), self.destinationPath('webpack.config.js'), {
+        lang: self.answers['lang'],
+    });
 }
