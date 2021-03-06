@@ -23,6 +23,7 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
         'none',
         self.useDefaults,
     );
+    // TODO: add dependencies for js lang
     self.answers = { ...self.answers, jsLang };
 }
 
@@ -39,20 +40,20 @@ export function generate(self: CustomGenerator): void {
         require(packageJsonTemplatePath)(isUsingDevServer),
     );
 
-    const generateEntryFile = (entryPath: string, name: string): void => {
+    const generateEntryFile = (entryPath: string): void => {
         entryPath = entryPath.replace(/'/g, '');
         if (self.answers.jsLang == 'Typescript') {
             entryPath += 'ts';
         } else {
             entryPath += 'js';
         }
-        self.fs.copyTpl(resolveFile('index.js'), self.destinationPath(entryPath), { name });
+        self.fs.copyTpl(resolveFile('index.js'), self.destinationPath(entryPath));
     };
 
     // Generate entry file/files
     const entry = './src/index.';
     if (typeof entry === 'string') {
-        generateEntryFile(entry, 'your main file!');
+        generateEntryFile(entry);
     }
 
     // Generate README
@@ -63,6 +64,16 @@ export function generate(self: CustomGenerator): void {
 
     // Generate webpack configuration
     self.fs.copyTpl(resolveFile('webpack.configjs.tpl'), self.destinationPath('webpack.config.js'), {
-        lang: self.answers['jsLang'],
+        lang: self.answers.jsLang,
     });
+
+    // Generate JS language essentials
+    switch (self.answers.jsLang) {
+        case 'ES6':
+            self.fs.copyTpl(resolveFile('.babelrc'), self.destinationPath('.babelrc'));
+            break;
+        case 'Typescript':
+            self.fs.copyTpl(resolveFile('tsconfig.json'), self.destinationPath('tsconfig.json'));
+            break;
+    }
 }
