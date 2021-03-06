@@ -12,10 +12,18 @@ const resolveFile = (file: string): string => {
  * @param Question Contains questions
  */
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
-export async function questions(self: CustomGenerator, Question: any[]): Promise<void> {
-    // TODO: implement it for css and js lang options
-    return;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function questions(self: CustomGenerator, Question: Record<string, any>): Promise<void> {
+    // TODO: implement it for css lang options
+    const { jsLang } = await Question.List(
+        self,
+        'jsLang',
+        'Which of the following JS solutions do you want to use?',
+        ['none', 'ES6', 'Typescript'],
+        'none',
+        false,
+    );
+    self.answers = { ...self.answers, jsLang };
 }
 
 /**
@@ -50,6 +58,6 @@ export function generate(self: CustomGenerator): void {
 
     // Generate webpack configuration
     self.fs.copyTpl(resolveFile('webpack.configjs.tpl'), self.destinationPath('webpack.config.js'), {
-        lang: self.answers['lang'],
+        lang: self.answers['jsLang'],
     });
 }
