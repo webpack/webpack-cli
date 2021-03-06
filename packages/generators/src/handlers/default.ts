@@ -41,11 +41,16 @@ export function generate(self: CustomGenerator): void {
 
     const generateEntryFile = (entryPath: string, name: string): void => {
         entryPath = entryPath.replace(/'/g, '');
+        if (self.answers.jsLang == 'Typescript') {
+            entryPath += 'ts';
+        } else {
+            entryPath += 'js';
+        }
         self.fs.copyTpl(resolveFile('index.js'), self.destinationPath(entryPath), { name });
     };
 
     // Generate entry file/files
-    const entry = './src/index.js';
+    const entry = './src/index.';
     if (typeof entry === 'string') {
         generateEntryFile(entry, 'your main file!');
     }
