@@ -23,7 +23,17 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
         'none',
         self.useDefaults,
     );
-    // TODO: add dependencies for js lang
+
+    // Add dependencies for js lang
+    switch (jsLang) {
+        case 'ES6':
+            self.dependencies = [...self.dependencies, 'babel-loader', '@babel/core', '@babel/preset-env'];
+            break;
+        case 'Typescript':
+            self.dependencies = [...self.dependencies, 'typescript', 'ts-loader'];
+            break;
+    }
+
     self.answers = { ...self.answers, jsLang };
 }
 
