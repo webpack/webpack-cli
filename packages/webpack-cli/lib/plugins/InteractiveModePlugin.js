@@ -80,6 +80,11 @@ class InteractiveModePlugin {
     }
 
     apply(compiler) {
+        if (!isWebpack5) {
+            logger.error('Interactive is not supported on webpack v4');
+            process.exit(1);
+        }
+
         // Configure stdin for keypress event
         const stdin = process.stdin;
         stdin.setEncoding('utf-8');
@@ -103,12 +108,6 @@ class InteractiveModePlugin {
             const action = possibleActions[0];
             this.handlers[action](compiler);
         });
-
-        if (!isWebpack5) {
-            // Watching and MultiWatching is returned in version 4
-            this.watching = compiler;
-            compiler = compiler.compiler;
-        }
 
         if (compiler.compilers) {
             this.isMultiCompiler = true;
