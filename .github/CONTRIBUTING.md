@@ -72,7 +72,7 @@ In case you are suggesting a new feature, we will match your idea with our curre
 -   Bootstrap all the submodules before building for the first time
 
     ```bash
-    yarn bootstrap
+    yarn lerna bootstrap
     yarn build
     ```
 
@@ -196,10 +196,9 @@ We don't use the scope. The template of a commit would look like this:
 Each commit message consists of a **header**, a **body** and a **footer**. The header has a special
 format that includes a **type** and a **subject**:
 
-```md
+```
 <type>: <subject>
 <BLANK LINE>
-
 <body>
 <BLANK LINE>
 <footer>
