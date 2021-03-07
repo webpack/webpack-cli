@@ -52,6 +52,11 @@ const runTest = (proc, checker, done) => {
 };
 
 describe('--interactive flag with single compiler', () => {
+    // webpack v4 should not be supported https://github.com/webpack/webpack-cli/pull/1796#pullrequestreview-605767369
+    if (!isWebpack5) {
+        expect(true).toBe(true);
+        return;
+    }
     it('should output in interactive with --interactive', (done) => {
         const proc = runAndGetWatchProc(__dirname, ['--interactive'], false, '', true);
         const checker = [
