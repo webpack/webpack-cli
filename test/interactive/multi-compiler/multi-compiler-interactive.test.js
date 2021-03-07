@@ -1,5 +1,5 @@
 'use strict';
-const { runAndGetWatchProc, isWebpack5 } = require('../../utils/test-utils');
+const { run, runAndGetWatchProc, isWebpack5 } = require('../../utils/test-utils');
 const { writeFileSync } = require('fs');
 const { resolve } = require('path');
 
@@ -52,7 +52,12 @@ const runTest = (proc, checker, done) => {
 describe('--interactive flag with multi compiler', () => {
     // webpack v4 should not be supported https://github.com/webpack/webpack-cli/pull/1796#pullrequestreview-605767369
     if (!isWebpack5) {
-        expect(true).toBe(true);
+        it('should throw error upon --interactive', () => {
+            const { stdout, stderr, exitCode } = run(__dirname, ['--interactive']);
+            expect(stdout).toBeFalsy();
+            expect(stderr).toContain('Interactive is not supported on webpack v4 and less');
+            expect(exitCode).toBe(1);
+        });
         return;
     }
     it('should output in interactive with --interactive', (done) => {
