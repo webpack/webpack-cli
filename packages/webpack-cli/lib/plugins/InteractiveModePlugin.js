@@ -58,6 +58,7 @@ class InteractiveModeMultiCompilerHelperPlugin {
 }
 
 const isWebpack5 = version.startsWith('5');
+
 /**
  * Interactive Mode plugin
  */
@@ -123,14 +124,12 @@ class InteractiveModePlugin {
                 clrscr();
             });
 
-            if (isWebpack5) {
-                compiler.hooks.afterDone.tap(this.name, () => {
-                    setTimeout(() => {
-                        console.log('\n\n');
-                        spawnCommand('compilation completed', true);
-                    }, 1);
-                });
-            }
+            compiler.hooks.afterDone.tap(this.name, () => {
+                setTimeout(() => {
+                    console.log('\n\n');
+                    spawnCommand('compilation completed', true);
+                }, 1);
+            });
         } else {
             const helperPlugin = new InteractiveModeMultiCompilerHelperPlugin();
 
