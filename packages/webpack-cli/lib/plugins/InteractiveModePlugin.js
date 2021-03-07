@@ -171,30 +171,22 @@ class InteractiveModePlugin {
     }
 
     quitHandler(compiler) {
-        if (version.startsWith(5)) {
-            if (this.isMultiCompiler) {
-                for (const childCompiler of this.compilers) {
-                    if (childCompiler.watching === undefined) continue;
-                    childCompiler.watching.close();
-                }
-                process.exit(0);
+        if (this.isMultiCompiler) {
+            for (const childCompiler of this.compilers) {
+                if (childCompiler.watching === undefined) continue;
+                childCompiler.watching.close();
             }
-
-            if (compiler.watching === undefined) return;
-            compiler.watching.close(() => {
-                process.exit(0);
-            });
-            return;
+            process.exit(0);
         }
-        process.exit(0);
+
+        if (compiler.watching === undefined) return;
+        compiler.watching.close(() => {
+            process.exit(0);
+        });
+        return;
     }
 
     startHandler(compiler) {
-        if (!isWebpack5) {
-            spawnCommand('starting not supported', true);
-            return;
-        }
-
         if (this.isMultiCompiler) {
             const allWatching = this.compilers.reduce((result, childCompiler) => {
                 return result && !childCompiler.watching.suspended;
@@ -224,11 +216,6 @@ class InteractiveModePlugin {
     }
 
     stopHandler(compiler) {
-        if (!isWebpack5) {
-            spawnCommand('stoping not supported', true);
-            return;
-        }
-
         if (this.isMultiCompiler) {
             const allSuspended = this.compilers.reduce((result, childCompiler) => {
                 return result && childCompiler.watching.suspended;
