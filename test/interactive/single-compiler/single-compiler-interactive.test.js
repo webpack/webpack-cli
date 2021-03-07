@@ -2,9 +2,6 @@
 const { runAndGetWatchProc, isWebpack5 } = require('../../utils/test-utils');
 const { writeFileSync } = require('fs');
 const { resolve } = require('path');
-const { version } = require('webpack');
-
-const wordsInStatsv4 = ['Hash', 'Version', 'Time', 'Built at:', 'main.js'];
 const wordsInStatsv5 = ['asset', 'index.js', 'compiled', 'webpack'];
 const clear = '\x1B[2J\x1B[3J\x1B[H';
 
@@ -78,21 +75,11 @@ describe('--interactive flag with single compiler', () => {
             },
             {
                 check: (data) => {
-                    if (version.startsWith('5')) {
-                        return data.includes(wordsInStatsv5[0]);
-                    } else {
-                        return data.includes(wordsInStatsv4[0]);
-                    }
+                    return data.includes(wordsInStatsv5[0]);
                 },
                 perform: (data) => {
-                    if (version.startsWith('5')) {
-                        for (const word of wordsInStatsv5) {
-                            expect(data).toContain(word);
-                        }
-                    } else {
-                        for (const word of wordsInStatsv4) {
-                            expect(data).toContain(word);
-                        }
+                    for (const word of wordsInStatsv5) {
+                        expect(data).toContain(word);
                     }
                 },
             },
@@ -120,16 +107,9 @@ describe('--interactive flag with single compiler', () => {
             },
             {
                 check: (data) => {
-                    if (!isWebpack5) {
-                        return data.includes('stoping');
-                    }
                     return data.includes('stoped');
                 },
                 perform: (data) => {
-                    if (!isWebpack5) {
-                        expect(data).toContain('stoping');
-                        return;
-                    }
                     expect(data).toContain('stoped');
                 },
             },
@@ -157,17 +137,10 @@ describe('--interactive flag with single compiler', () => {
             },
             {
                 check: (data) => {
-                    if (!isWebpack5) {
-                        return data.includes('stoping');
-                    }
                     return data.includes('stoped');
                 },
                 perform: (data) => {
-                    if (!isWebpack5) {
-                        expect(data).toContain('stoping');
-                    } else {
-                        expect(data).toContain('stoped');
-                    }
+                    expect(data).toContain('stoped');
                     proc.stdin.write('w\n', (err) => {
                         if (err) {
                             proc.kill();
@@ -179,18 +152,10 @@ describe('--interactive flag with single compiler', () => {
             },
             {
                 check: (data) => {
-                    if (!isWebpack5) {
-                        return data.includes('starting not supported');
-                    } else {
-                        return data.includes('compilation completed');
-                    }
+                    return data.includes('compilation completed');
                 },
                 perform: (data) => {
-                    if (!isWebpack5) {
-                        expect(data).toContain('starting not supported');
-                    } else {
-                        expect(data).toContain('compilation completed');
-                    }
+                    expect(data).toContain('compilation completed');
                 },
             },
         ];
