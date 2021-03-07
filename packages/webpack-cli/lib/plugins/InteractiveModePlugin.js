@@ -81,7 +81,7 @@ class InteractiveModePlugin {
 
     apply(compiler) {
         if (!isWebpack5) {
-            logger.error('Interactive is not supported on webpack v4');
+            logger.error('Interactive is not supported on webpack v4 and less');
             process.exit(1);
         }
 
@@ -130,13 +130,6 @@ class InteractiveModePlugin {
                         spawnCommand('compilation completed', true);
                     }, 1);
                 });
-            } else {
-                compiler.hooks.done.tap(this.name, () => {
-                    setTimeout(() => {
-                        console.log('\n\n');
-                        spawnCommand('compilation completed', true);
-                    }, 100);
-                });
             }
         } else {
             const helperPlugin = new InteractiveModeMultiCompilerHelperPlugin();
@@ -147,15 +140,6 @@ class InteractiveModePlugin {
             }
 
             compiler.hooks.done.tap(this.name, () => {
-                if (!isWebpack5) {
-                    if (!this.watching.running) {
-                        setTimeout(() => {
-                            console.log('\n\n');
-                            spawnCommand('all compilations completed', true);
-                        }, 100);
-                    }
-                    return;
-                }
                 const allDone = this.compilers.reduce((result, childCompiler) => {
                     return result && !childCompiler.watching.running;
                 }, true);
