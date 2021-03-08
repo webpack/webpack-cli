@@ -1,5 +1,8 @@
 // Generated using webpack-cli http://github.com/webpack-cli
 const path = require('path');
+<% if (htmlWebpackPlugin) %>
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+<% } %>
 
 module.exports = {
     entry: './src/index.js',
@@ -10,7 +13,11 @@ module.exports = {
         open: true,
         host: 'localhost',
     },<% } %>
-    plugins: [
+    plugins: [<% if (htmlWebpackPlugin) { %>
+        new HtmlWebpackPlugin({
+            template: 'index.html',
+        }),
+<% } <%>
         // Add your plugins here
         // Learn more obout plugins from https://webpack.js.org/configuration/plugins/
     ],
