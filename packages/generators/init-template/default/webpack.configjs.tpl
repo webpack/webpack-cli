@@ -1,8 +1,6 @@
 // Generated using webpack-cli http://github.com/webpack-cli
-const path = require('path');
-<% if (htmlWebpackPlugin) %>
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-<% } %>
+const path = require('path');<% if (htmlWebpackPlugin) { %>
+const HtmlWebpackPlugin = require('html-webpack-plugin');<% } %>
 
 module.exports = {
     entry: './src/index.js',
@@ -17,7 +15,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: 'index.html',
         }),
-<% } <%>
+<% } %>
         // Add your plugins here
         // Learn more obout plugins from https://webpack.js.org/configuration/plugins/
     ],
@@ -39,6 +37,6 @@ module.exports = {
         ],
     },<% if (lang == "Typescript") {%>
     resolve: {
-        extensions: ["'.tsx'", "'.ts'", "'.js'"],
+        extensions: ['.tsx', '.ts', '.js'],
     },<% } %>
 };
