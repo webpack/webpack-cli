@@ -15,6 +15,8 @@ const resolveFile = (file: string): string => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function questions(self: CustomGenerator, Question: Record<string, any>): Promise<void> {
     // TODO: implement it for css lang options
+
+    // Handle JS language solutions
     const { jsLang } = await Question.List(
         self,
         'jsLang',
@@ -24,7 +26,6 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
         self.useDefaults,
     );
 
-    // Add dependencies for js lang
     switch (jsLang) {
         case 'ES6':
             self.dependencies = [...self.dependencies, 'babel-loader', '@babel/core', '@babel/preset-env'];
@@ -34,11 +35,13 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
             break;
     }
 
+    // Configure devServer configuraion
     const { devServer } = await Question.Confirm(self, 'devServer', 'Do you want to webpack-dev-server?', true, self.useDefaults);
     if (devServer) {
         self.dependencies = [...self.dependencies, 'webpack-dev-server'];
     }
 
+    // Handle addition of html-webpack-plugin
     const { htmlWebpackPlugin } = await Question.Confirm(
         self,
         'htmlWebpackPlugin',
@@ -50,6 +53,7 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
         self.dependencies = [...self.dependencies, 'html-webpack-plugin'];
     }
 
+    // store all answers for generation
     self.answers = { ...self.answers, jsLang, devServer, htmlWebpackPlugin };
 }
 
