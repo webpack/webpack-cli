@@ -78,6 +78,7 @@ export function generate(self: CustomGenerator): void {
     // Generate webpack configuration
     self.fs.copyTpl(resolveFile('webpack.configjs.tpl'), self.destinationPath('webpack.config.js'), {
         lang: self.answers.jsLang,
+        devServer: self.answers.devServer,
     });
 
     // Generate JS language essentials

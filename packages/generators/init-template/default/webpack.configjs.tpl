@@ -5,7 +5,11 @@ module.exports = {
     entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
-    },
+    },<% if (devServer) { %>
+    devServer: {
+        open: true,
+        host: 'localhost',
+    },<% } %>
     plugins: [
         // Add your plugins here
         // Learn more obout plugins from https://webpack.js.org/configuration/plugins/
