@@ -52,7 +52,7 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
     }
 
     // Handle CSS solutions
-    const cssType = await Question.List(
+    const { cssType } = await Question.List(
         self,
         'cssType',
         'Which of the following CSS solutions do you want to use?',
