@@ -1,6 +1,6 @@
 const path = require('path');
 
-const compilers = ['1', '2', '3', '4', '5'].map((name) => {
+const compilers = ['shin-chan', 'misae', 'hiroshi', 'himawari', 'shiro'].map((name) => {
     return {
         name: name,
         mode: 'development',

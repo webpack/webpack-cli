@@ -329,7 +329,7 @@ class WebpackCLI {
                 type: Boolean,
                 alias: 'i',
                 multiple: false,
-                description: 'Use webpack interactive mode',
+                description: 'Enable webpack interactive mode',
             },
             {
                 name: 'prefetch',
