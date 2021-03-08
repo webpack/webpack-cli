@@ -39,7 +39,18 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
         self.dependencies = [...self.dependencies, 'webpack-dev-server'];
     }
 
-    self.answers = { ...self.answers, jsLang, devServer };
+    const { htmlWebpackPlugin } = await Question.Confirm(
+        self,
+        'htmlWebpackPlugin',
+        'Do you want to simplify the creation of HTML files for your bundle?',
+        true,
+        self.useDefaults,
+    );
+    if (htmlWebpackPlugin) {
+        self.dependencies = [...self.dependencies, 'html-webpack-plugin'];
+    }
+
+    self.answers = { ...self.answers, jsLang, devServer, htmlWebpackPlugin };
 }
 
 /**
@@ -79,6 +90,7 @@ export function generate(self: CustomGenerator): void {
     self.fs.copyTpl(resolveFile('webpack.configjs.tpl'), self.destinationPath('webpack.config.js'), {
         lang: self.answers.jsLang,
         devServer: self.answers.devServer,
+        htmlWebpackPlugin: self.answers.htmlWebpackPlugin,
     });
 
     // Generate JS language essentials
