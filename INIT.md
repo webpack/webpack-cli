@@ -13,45 +13,13 @@
     -   [CLI options](#cli-options)
     -   [Description of questions asked by generator](#description-of-questions-asked-by-generator)
 
-## Initial Setup
+## Setup
 
-### Local Setup
+Install `webpack` and `webpack-cli` as devDependencies
 
-These are the steps necessary to set up `webpack-cli init` locally:
-
-1. Create `package.json` through npm
-
-    ```shell
-    npm init
-    ```
-
-2. Install `webpack` and `webpack-cli` as devDependencies
-
-    ```shell
-    npm install --save-dev webpack webpack-cli
-    ```
-
-3. Install `@webpack-cli/init` package to add the init scaffold
-
-    ```shell
-    npm install --save-dev @webpack-cli/init
-    ```
-
-### Global Setup
-
-These are the steps necessary to set up `webpack-cli init` globally:
-
-1. Install `webpack` and `webpack-cli` globally
-
-    ```shell
-    npm install -g webpack webpack-cli
-    ```
-
-2. Install `@webpack-cli/init` package to add the create scaffold
-
-    ```shell
-    npm install -g @webpack-cli/init
-    ```
+```shell
+npm install --save-dev webpack webpack-cli
+```
 
 ## Usage
 
@@ -69,16 +37,16 @@ webpack-cli init
 
 ### CLI options
 
-**Via defaults**
+**To generate default template**
 
 ```bash
 webpack-cli init
 ```
 
-**To generate default configs**
+**To generate with default answers**
 
 ```bash
-webpack-cli init --auto
+webpack-cli init --use-defaults
 ```
 
 **To scaffold in a specified path**
@@ -87,10 +55,10 @@ webpack-cli init --auto
 webpack-cli init --generation-path [path]
 ```
 
-**Via custom scaffold**
+**To scaffold specified template**
 
 ```bash
-webpack-cli init webpack-scaffold-[name]
+webpack-cli init --template <template-name>
 ```
 
 ### Description of questions asked by the generator
