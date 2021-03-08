@@ -61,6 +61,12 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
         self.useDefaults,
     );
 
+    switch (cssType) {
+        case 'CSS':
+            self.dependencies = [...self.dependencies, 'style-loader', 'css-loader'];
+            break;
+    }
+
     // store all answers for generation
     self.answers = { ...self.answers, jsLang, devServer, htmlWebpackPlugin, cssType };
 }
@@ -103,6 +109,7 @@ export function generate(self: CustomGenerator): void {
         lang: self.answers.jsLang,
         devServer: self.answers.devServer,
         htmlWebpackPlugin: self.answers.htmlWebpackPlugin,
+        cssType: self.answers.cssType,
     });
 
     // Generate JS language essentials
