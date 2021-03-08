@@ -13,8 +13,6 @@ const folderStrategy = (stats, file) => {
     return stats.isDirectory() && snapshotDirs.includes(file);
 };
 
-console.log({ snapshotDirs });
-
 const cleanupOutputDirs = () => {
     for (const outputFolder of collectTestFolders(folderStrategy)) {
         snapshotDirs.forEach((dir) => rimraf.sync(join(outputFolder, dir)));
