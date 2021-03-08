@@ -58,7 +58,7 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
 }
 
 /**
- * Handles generation of default template
+ * Handles generation of project files
  * @param self Generator values
  */
 export function generate(self: CustomGenerator): void {
