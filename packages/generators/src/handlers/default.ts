@@ -14,8 +14,6 @@ const resolveFile = (file: string): string => {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function questions(self: CustomGenerator, Question: Record<string, any>): Promise<void> {
-    // TODO: implement it for css lang options
-
     // Handle JS language solutions
     const { jsLang } = await Question.List(
         self,
@@ -53,8 +51,18 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
         self.dependencies = [...self.dependencies, 'html-webpack-plugin'];
     }
 
+    // Handle CSS solutions
+    const cssType = await Question.List(
+        self,
+        'cssType',
+        'Which of the following CSS solutions do you want to use?',
+        ['none', 'CSS'],
+        'none',
+        self.useDefaults,
+    );
+
     // store all answers for generation
-    self.answers = { ...self.answers, jsLang, devServer, htmlWebpackPlugin };
+    self.answers = { ...self.answers, jsLang, devServer, htmlWebpackPlugin, cssType };
 }
 
 /**
