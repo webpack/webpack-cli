@@ -15,7 +15,10 @@ const folderStrategy = (stats, file) => {
 
 const cleanupOutputDirs = () => {
     for (const outputFolder of collectTestFolders(folderStrategy)) {
-        snapshotDirs.forEach((dir) => rimraf.sync(join(outputFolder, dir)));
+        snapshotDirs.forEach((dir) => {
+            console.log(`removed ${join(outputFolder, dir)}`);
+            rimraf.sync(join(outputFolder, dir));
+        });
     }
 };
 
