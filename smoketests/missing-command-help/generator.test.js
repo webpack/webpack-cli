@@ -37,7 +37,10 @@ const runTest = () => {
         }, 30000);
 
         const logMessage = "For using 'init' command you need to install '@webpack-cli/generators' package";
+        const undefinedLogMessage = "Can't find and load command";
+
         let hasLogMessage = false,
+            hasUndefinedLogMessage = false,
             hasPassed = false;
 
         proc.stderr.on('data', (chunk) => {
@@ -48,7 +51,11 @@ const runTest = () => {
                 hasLogMessage = true;
             }
 
-            if (hasLogMessage) {
+            if (data.includes(undefinedLogMessage)) {
+                hasUndefinedLogMessage = true;
+            }
+
+            if (hasLogMessage || hasUndefinedLogMessage) {
                 hasPassed = true;
                 proc.kill();
             }
