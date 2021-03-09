@@ -944,7 +944,7 @@ class WebpackCLI {
                             (command) => command.name.includes(name) || name === command.alias,
                         );
                         if (typeof builtInCommandUsed !== 'undefined') {
-                            this.logger.error(`For using '${name}' command you need to install '${builtInCommandUsed[0].pkg}' package`);
+                            this.logger.error(`For using '${name}' command you need to install '${builtInCommandUsed.pkg}' package`);
                         } else {
                             this.logger.error(`Can't find and load command '${name}'`);
                             this.logger.error("Run 'webpack --help' to see available commands and options");
