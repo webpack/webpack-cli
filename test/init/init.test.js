@@ -5,9 +5,18 @@ const { run, runPromptWithAnswers } = require('../utils/test-utils');
 
 const assetsPath = resolve(__dirname, './test-assets');
 const ENTER = '\x0D';
+const DOWN = '\x1B\x5B\x42';
 
 describe('init command', () => {
-    beforeEach(() => {
+    beforeEach(async () => {
+        await new Promise((resolve) => {
+            const interval = setInterval(() => {
+                if (!existsSync(assetsPath)) {
+                    clearInterval(interval);
+                    resolve();
+                }
+            }, 1000);
+        });
         mkdirSync(assetsPath);
     });
 
@@ -63,5 +72,16 @@ describe('init command', () => {
         files.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
+    });
+
+    it('should generate typescript project correctly', async () => {
+        const { stdout, stderr } = await runPromptWithAnswers(
+            assetsPath,
+            ['init'],
+            [`${DOWN}${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${ENTER}`],
+        );
+        expect(stdout).toContain('Project has been initialised with webpack!');
+        expect(stderr).toContain('webpack.config.js');
+        expect(stderr).toContain('tsconfig.json');
     });
 });
