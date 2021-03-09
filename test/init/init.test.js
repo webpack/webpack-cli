@@ -83,5 +83,11 @@ describe('init command', () => {
         expect(stdout).toContain('Project has been initialised with webpack!');
         expect(stderr).toContain('webpack.config.js');
         expect(stderr).toContain('tsconfig.json');
+
+        // Test files
+        const files = ['package.json', 'src', 'src/index.ts', 'webpack.config.js', 'tsconfig.json'];
+        files.forEach((file) => {
+            expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+        });
     });
 });
