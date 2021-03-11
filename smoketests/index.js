@@ -2,7 +2,7 @@
 const tests = [
     require('./missing-packages/webpack-dev-server.test.js'),
     require('./missing-packages/webpack.test.js'),
-    require('./missing-command-help/generator.test.js'),
+    require('./missing-command-packages/generator.test.js'),
 ];
 
 (async () => {
