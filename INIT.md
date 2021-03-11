@@ -11,7 +11,8 @@
     -   [Running Locally](#running-locally)
     -   [Running Globally](#running-globally)
     -   [CLI options](#cli-options)
-    -   [Description of questions asked by generator](#description-of-questions-asked-by-generator)
+-   [Description of questions asked by generator](#description-of-questions-asked-by-generator)
+    -   [Default Template](#default-template)
 
 ## Setup
 
@@ -61,9 +62,9 @@ webpack-cli init --generation-path [path]
 webpack-cli init --template <template-name>
 ```
 
-### Description of questions asked by the generator
+## Description of questions asked by the generator
 
-## Default template
+### Default template
 
 1. `Which of the following JS solutions do you want to use?`
 
