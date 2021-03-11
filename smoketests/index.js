@@ -9,7 +9,12 @@ const tests = [
     let isAllPassed = true;
     for await (const test of tests) {
         console.log(`\nRUN  ${test.name}`);
-        const isPass = await test.run();
+
+        let isPass = true;
+        for await (const testCase of test.run) {
+            isPass = isPass && (await testCase());
+        }
+
         if (!isPass) {
             console.log(`FAIL  ${test.name}`);
             isAllPassed = false;
