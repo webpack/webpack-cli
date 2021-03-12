@@ -31,6 +31,15 @@ describe('module config related flag', () => {
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
                     expect(stdout).toContain("sideEffects: 'flag'");
+                } else if (flag.name.startsWith('module-generator-')) {
+                    const { exitCode, stderr, stdout } = run(__dirname, [
+                        `--module-generator-asset-emit`,
+                        '--module-generator-asset-resource-emit',
+                    ]);
+
+                    expect(exitCode).toBe(0);
+                    expect(stderr).toBeFalsy();
+                    expect(stdout).toContain("generator: { asset: { emit: true }, 'asset/resource': { emit: true } }");
                 } else {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`]);
 
@@ -49,6 +58,8 @@ describe('module config related flag', () => {
 
                     if (flag.name.includes('rules-')) {
                         expect(stdout).toContain('sideEffects: false');
+                    } else if (flag.name.startsWith('module-generators-')) {
+                        expect(stdout).toContain('emit: false');
                     } else {
                         expect(stdout).toContain(`${propName}: false`);
                     }
