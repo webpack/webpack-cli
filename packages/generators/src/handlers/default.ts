@@ -83,7 +83,6 @@ export function generate(self: CustomGenerator): void {
     );
 
     const generateEntryFile = (entryPath: string): void => {
-        entryPath = entryPath.replace(/'/g, '');
         if (self.answers.langType == 'Typescript') {
             entryPath += 'ts';
         } else {
@@ -92,11 +91,9 @@ export function generate(self: CustomGenerator): void {
         self.fs.copyTpl(resolveFile('index.js'), self.destinationPath(entryPath));
     };
 
-    // Generate entry file/files
+    // Generate entry file
     const entry = './src/index.';
-    if (typeof entry === 'string') {
-        generateEntryFile(entry);
-    }
+    generateEntryFile(entry);
 
     // Generate README
     self.fs.copyTpl(resolveFile('README.md'), self.destinationPath('README.md'), {});
