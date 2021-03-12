@@ -19,7 +19,11 @@ describe('experiments option related flag', () => {
 
         const propName = hyphenToUpperCase(property);
 
-        if (flag.type === Boolean) {
+        if (propName === 'client' || propName === 'test') {
+            return false;
+        }
+
+        if (flag.configs.filter((config) => config.type === 'boolean').length > 0) {
             it(`should config --${flag.name} correctly`, () => {
                 const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`]);
 

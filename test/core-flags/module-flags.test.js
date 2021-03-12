@@ -17,7 +17,11 @@ describe('module config related flag', () => {
 
         const propName = hyphenToUpperCase(property);
 
-        if (flag.type === Boolean && !flag.name.includes('module-no-parse') && !flag.name.includes('module-parser-')) {
+        if (
+            flag.configs.filter((config) => config.type === 'boolean').length > 0 &&
+            !flag.name.includes('module-no-parse') &&
+            !flag.name.includes('module-parser-')
+        ) {
             it(`should config --${flag.name} correctly`, () => {
                 if (flag.name.includes('-reset')) {
                     const { stderr, stdout } = run(__dirname, [`--${flag.name}`]);
@@ -67,7 +71,10 @@ describe('module config related flag', () => {
             }
         }
 
-        if (flag.type === String && !(flag.name.includes('module-parser-') || flag.name.startsWith('module-generator'))) {
+        if (
+            flag.configs.filter((config) => config.type === 'string').length > 0 &&
+            !(flag.name.includes('module-parser-') || flag.name.startsWith('module-generator'))
+        ) {
             it(`should config --${flag.name} correctly`, () => {
                 if (flag.name === 'module-no-parse') {
                     let { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`, 'value']);

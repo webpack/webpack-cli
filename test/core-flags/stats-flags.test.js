@@ -12,14 +12,14 @@ describe('stats config related flag', () => {
         const property = flag.name.split('stats-')[1];
         const propName = hyphenToUpperCase(property);
 
-        if (flag.type === Boolean) {
+        if (flag.configs.filter((config) => config.type === 'boolean').length > 0) {
             it(`should config --${flag.name} correctly`, () => {
                 const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`]);
 
                 expect(exitCode).toBe(0);
                 expect(stderr).toBeFalsy();
 
-                if (flag.name.includes('reset')) {
+                if (flag.name.includes('-reset')) {
                     const option = propName.split('Reset')[0];
                     expect(stdout).toContain(`${option}: []`);
                 } else {
@@ -38,7 +38,7 @@ describe('stats config related flag', () => {
             }
         }
 
-        if (flag.type === Number) {
+        if (flag.configs.filter((config) => config.type === 'number').length > 0) {
             it(`should config --${flag.name} correctly`, () => {
                 const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, '10']);
 
@@ -48,7 +48,7 @@ describe('stats config related flag', () => {
             });
         }
 
-        if (flag.type === String) {
+        if (flag.configs.filter((config) => config.type === 'string').length > 0) {
             const acceptsSingleValue = ['preset', 'modulesSort', 'logging', 'chunksSort', 'assetsSort'];
 
             it(`should config --${flag.name} correctly`, () => {

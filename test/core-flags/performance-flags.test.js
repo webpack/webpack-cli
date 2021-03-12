@@ -20,7 +20,7 @@ describe('module config related flag', () => {
         const property = flag.name.split('performance-')[1];
         const propName = hyphenToUpperCase(property);
 
-        if (flag.type === Number) {
+        if (flag.configs.filter((config) => config.type === 'number').length > 0) {
             it(`should config --${flag.name} correctly`, () => {
                 const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, '10']);
 
@@ -30,7 +30,7 @@ describe('module config related flag', () => {
             });
         }
 
-        if (flag.type === String) {
+        if (flag.configs.filter((config) => config.type === 'string').length > 0) {
             it(`should config --${flag.name} correctly`, () => {
                 const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'warning']);
 
