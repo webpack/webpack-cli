@@ -58,7 +58,7 @@ describe('module config related flag', () => {
 
                     if (flag.name.includes('rules-')) {
                         expect(stdout).toContain('sideEffects: false');
-                    } else if (flag.name.startsWith('module-generators-')) {
+                    } else if (flag.name.startsWith('module-generator-')) {
                         expect(stdout).toContain('emit: false');
                     } else {
                         expect(stdout).toContain(`${propName}: false`);
