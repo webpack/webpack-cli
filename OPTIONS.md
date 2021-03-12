@@ -100,10 +100,14 @@ Options:
   --module-generator-asset-data-url-encoding <value>                                 Asset encoding (defaults to base64).
   --no-module-generator-asset-data-url-encoding                                      Negative 'module-generator-asset-data-url-encoding' option.
   --module-generator-asset-data-url-mimetype <value>                                 Asset mimetype (getting from file extension by default).
+  --module-generator-asset-emit                                                      Emit an output asset from this asset module. This can be set to 'false' to omit emitting e. g. for SSR.
+  --no-module-generator-asset-emit                                                   Negative 'module-generator-asset-emit' option.
   --module-generator-asset-filename <value>                                          Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
   --module-generator-asset-inline-data-url-encoding <value>                          Asset encoding (defaults to base64).
   --no-module-generator-asset-inline-data-url-encoding                               Negative 'module-generator-asset-inline-data-url-encoding' option.
   --module-generator-asset-inline-data-url-mimetype <value>                          Asset mimetype (getting from file extension by default).
+  --module-generator-asset-resource-emit                                             Emit an output asset from this asset module. This can be set to 'false' to omit emitting e. g. for SSR.
+  --no-module-generator-asset-resource-emit                                          Negative 'module-generator-asset-resource-emit' option.
   --module-generator-asset-resource-filename <value>                                 Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
   --module-no-parse <value...>                                                       A regular expression, when matched the module is not parsed. An absolute path, when the module starts with this path it is not parsed.
   --module-no-parse-reset                                                            Clear all items provided in configuration. Don't parse files matching. It's matched against the full resolved request.
@@ -535,7 +539,9 @@ Options:
   --no-output-script-type                                                            Negative 'output-script-type' option.
   --output-source-map-filename <value>                                               The filename of the SourceMaps for the JavaScript files. They are inside the 'output.path' directory.
   --output-source-prefix <value>                                                     Prefixes every line of the source in the bundle with this string.
-  --output-strict-module-exception-handling                                          Handles exceptions in module loading correctly at a performance cost.
+  --output-strict-module-error-handling                                              Handles error in module loading correctly at a performance cost. This will handle module error compatible with the EcmaScript Modules spec.
+  --no-output-strict-module-error-handling                                           Negative 'output-strict-module-error-handling' option.
+  --output-strict-module-exception-handling                                          Handles exceptions in module loading correctly at a performance cost (Deprecated). This will handle module error compatible with the Node.js CommonJS way.
   --no-output-strict-module-exception-handling                                       Negative 'output-strict-module-exception-handling' option.
   --output-unique-name <value>                                                       A unique name of the webpack build to avoid multiple webpack runtimes to conflict when using globals.
   --output-wasm-loading <value>                                                      The method of loading WebAssembly Modules (methods included by default are 'fetch' (web/WebWorker), 'async-node' (node.js), but others might be added by plugins).
