@@ -15,16 +15,16 @@ const resolveFile = (file: string): string => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function questions(self: CustomGenerator, Question: Record<string, any>): Promise<void> {
     // Handle JS language solutions
-    const { jsLang } = await Question.List(
+    const { langType } = await Question.List(
         self,
-        'jsLang',
+        'langType',
         'Which of the following JS solutions do you want to use?',
         ['none', 'ES6', 'Typescript'],
         'none',
         self.useDefaults,
     );
 
-    switch (jsLang) {
+    switch (langType) {
         case 'ES6':
             self.dependencies = [...self.dependencies, 'babel-loader', '@babel/core', '@babel/preset-env'];
             break;
@@ -68,7 +68,7 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
     }
 
     // store all answers for generation
-    self.answers = { ...self.answers, jsLang, devServer, htmlWebpackPlugin, cssType };
+    self.answers = { ...self.answers, langType, devServer, htmlWebpackPlugin, cssType };
 }
 
 /**
@@ -84,7 +84,7 @@ export function generate(self: CustomGenerator): void {
 
     const generateEntryFile = (entryPath: string): void => {
         entryPath = entryPath.replace(/'/g, '');
-        if (self.answers.jsLang == 'Typescript') {
+        if (self.answers.langType == 'Typescript') {
             entryPath += 'ts';
         } else {
             entryPath += 'js';
@@ -105,15 +105,10 @@ export function generate(self: CustomGenerator): void {
     self.fs.copyTpl(resolveFile('template.html'), self.destinationPath('index.html'), {});
 
     // Generate webpack configuration
-    self.fs.copyTpl(resolveFile('webpack.configjs.tpl'), self.destinationPath('webpack.config.js'), {
-        lang: self.answers.jsLang,
-        devServer: self.answers.devServer,
-        htmlWebpackPlugin: self.answers.htmlWebpackPlugin,
-        cssType: self.answers.cssType,
-    });
+    self.fs.copyTpl(resolveFile('webpack.configjs.tpl'), self.destinationPath('webpack.config.js'), self.answers);
 
     // Generate JS language essentials
-    switch (self.answers.jsLang) {
+    switch (self.answers.langType) {
         case 'ES6':
             self.fs.copyTpl(resolveFile('.babelrc'), self.destinationPath('.babelrc'));
             break;

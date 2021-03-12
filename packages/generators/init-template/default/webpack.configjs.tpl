@@ -20,12 +20,12 @@ module.exports = {
         // Learn more obout plugins from https://webpack.js.org/configuration/plugins/
     ],
     module: {
-        rules: [<% if (lang == "ES6") { %>
+        rules: [<% if (langType == "ES6") { %>
             {
                 test: /\\.(js|jsx)$/,
                 loader: 'babel-loader',
             },
-<% } %><% if (lang == "Typescript") { %>
+<% } %><% if (langType == "Typescript") { %>
             {
                 test: /\\.(ts|tsx)$/,
                 loader: 'ts-loader',
@@ -40,7 +40,7 @@ module.exports = {
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
-    },<% if (lang == "Typescript") {%>
+    },<% if (langType == "Typescript") {%>
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
     },<% } %>
