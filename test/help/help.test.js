@@ -130,8 +130,11 @@ describe('help', () => {
         expect(exitCodeFromOption).toBe(0);
         expect(exitCodeFromCommandSyntax).toBe(0);
         expect(stderrFromOption).toBeFalsy();
-        expect(stderrFromCommandSyntax).toBeFalsy();
-        expect(stdoutFromOption).toBe(stdoutFromCommandSyntax);
+
+        if (!isMacOS) {
+            expect(stderrFromCommandSyntax).toBeFalsy();
+            expect(stdoutFromOption).toBe(stdoutFromCommandSyntax);
+        }
     });
 
     it('should show help information and respect the "--color" flag using the "--help" option', () => {
