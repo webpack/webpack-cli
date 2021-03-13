@@ -91,4 +91,21 @@ describe('init command', () => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
     });
+
+    it('should generate ES6 project correctly', async () => {
+        const { stdout, stderr } = await runPromptWithAnswers(
+            assetsPath,
+            ['init'],
+            [`${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${ENTER}`],
+        );
+        expect(stdout).toContain('Project has been initialised with webpack!');
+        expect(stderr).toContain('webpack.config.js');
+        expect(stderr).toContain('.babelrc');
+
+        // Test files
+        const files = ['package.json', 'src', 'src/index.js', 'webpack.config.js', '.babelrc'];
+        files.forEach((file) => {
+            expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+        });
+    });
 });
