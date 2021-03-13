@@ -21,6 +21,56 @@ const runTest = () => {
     // Simulate package missing
     swapPkgName('generators', '.generators');
 
+    const proc = execa(CLI_ENTRY_PATH, ['init'], {
+        cwd: __dirname,
+    });
+
+    proc.stdin.setDefaultEncoding('utf-8');
+
+    proc.stdout.on('data', (chunk) => {
+        console.log(`  stdout: ${chunk.toString()}`);
+    });
+
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            proc.kill();
+        }, 30000);
+
+        const errorMessage = "For using this command you need to install: '@webpack-cli/generators' package";
+
+        let hasErrorMessage = false,
+            hasPassed = false;
+
+        proc.stderr.on('data', (chunk) => {
+            let data = stripAnsi(chunk.toString());
+            console.log(`  stderr: ${data}`);
+
+            if (data.includes(errorMessage)) {
+                hasErrorMessage = true;
+            }
+
+            if (hasErrorMessage) {
+                hasPassed = true;
+                proc.kill();
+            }
+        });
+
+        proc.on('exit', () => {
+            swapPkgName('.generators', 'generators');
+            resolve(hasPassed);
+        });
+
+        proc.on('error', () => {
+            swapPkgName('.generators', 'generators');
+            resolve(false);
+        });
+    });
+};
+
+const runTestWithHelp = () => {
+    // Simulate package missing
+    swapPkgName('generators', '.generators');
+
     const proc = execa(CLI_ENTRY_PATH, ['help', 'init'], {
         cwd: __dirname,
     });
@@ -73,5 +123,5 @@ const runTest = () => {
     });
 };
 
-module.exports.run = [runTest];
+module.exports.run = [runTest, runTestWithHelp];
 module.exports.name = 'Missing @webpack-cli/generators';
