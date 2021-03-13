@@ -34,6 +34,10 @@ describe('watch config related flag', () => {
                 it(`should config --no-${flag.name} correctly`, () => {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--no-${flag.name}`]);
 
+                    console.log(exitCode);
+                    console.log(stderr);
+                    console.log(stdout);
+
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`watchOptions: { ${propName}: false }`);
