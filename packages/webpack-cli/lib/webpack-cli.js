@@ -188,6 +188,11 @@ class WebpackCLI {
                     description: option.negatedDescription ? option.negatedDescription : `Negative '${option.name}' option.`,
                 };
             }
+
+            if (option.name.startsWith('watch')) {
+                console.log(mainOption);
+                console.log(negativeOption);
+            }
         } else {
             mainOption = {
                 flags: option.alias ? `-${option.alias}, --${option.name}` : `--${option.name}`,
@@ -619,12 +624,6 @@ class WebpackCLI {
 
             if (isBuildCommandUsed || isWatchCommandUsed) {
                 const options = this.getBuiltInOptions();
-
-                options
-                    .filter((item) => item.name.startsWith('watch'))
-                    .forEach((option) => {
-                        console.log(option);
-                    });
 
                 await this.makeCommand(
                     isBuildCommandUsed ? buildCommandOptions : watchCommandOptions,
