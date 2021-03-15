@@ -85,8 +85,8 @@ jobs:
       - name: Prepare environment for tests
         run: yarn build:ci
 
-      - name: Run smoketests
-        run: yarn test:smoketests
+      # - name: Run smoketests
+      #   run: yarn test:smoketests
 
       - name: Run tests and generate coverage
         run: |
