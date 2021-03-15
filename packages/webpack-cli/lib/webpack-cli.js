@@ -620,6 +620,12 @@ class WebpackCLI {
             if (isBuildCommandUsed || isWatchCommandUsed) {
                 const options = this.getBuiltInOptions();
 
+                options
+                    .filter((item) => item.name.startsWith('watch'))
+                    .forEach((option) => {
+                        console.log(option);
+                    });
+
                 await this.makeCommand(
                     isBuildCommandUsed ? buildCommandOptions : watchCommandOptions,
                     isWatchCommandUsed ? options.filter((option) => option.name !== 'watch') : options,
