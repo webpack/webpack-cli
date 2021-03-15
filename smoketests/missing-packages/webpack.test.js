@@ -72,5 +72,5 @@ const runTest = () => {
     });
 };
 
-module.exports.run = runTest;
+module.exports.run = [runTest];
 module.exports.name = 'Missing webpack';
