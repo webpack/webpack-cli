@@ -119,6 +119,8 @@ class WebpackCLI {
         let mainOption;
         let negativeOption;
 
+        console.log(option);
+
         if (option.configs) {
             let needNegativeOption = false;
             let mainOptionType = new Set();
@@ -187,11 +189,6 @@ class WebpackCLI {
                     flags: `--no-${option.name}`,
                     description: option.negatedDescription ? option.negatedDescription : `Negative '${option.name}' option.`,
                 };
-            }
-
-            if (option.name.startsWith('watch')) {
-                console.log(mainOption);
-                console.log(negativeOption);
             }
         } else {
             mainOption = {
