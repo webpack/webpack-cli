@@ -64,16 +64,16 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Restore lerna cache
-        id: cache
-        uses: actions/cache@v2
-        with:
-          path: |
-            node_modules
-            */*/node_modules
-          key: ${{ runner.os }}-${{ matrix.webpack-version }}-yarn-${{ hashFiles('**/yarn.lock', './yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-${{ matrix.webpack-version }}-yarn-
+      #      - name: Restore lerna cache
+      #        id: cache
+      #        uses: actions/cache@v2
+      #        with:
+      #          path: |
+      #            node_modules
+      #            */*/node_modules
+      #          key: ${{ runner.os }}-${{ matrix.webpack-version }}-yarn-${{ hashFiles('**/yarn.lock', './yarn.lock') }}
+      #          restore-keys: |
+      #            ${{ runner.os }}-${{ matrix.webpack-version }}-yarn-
 
       - name: Install dependencies
         run: yarn
