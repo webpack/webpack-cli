@@ -30,6 +30,12 @@ describe('output config related flag', () => {
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
                     expect(stdout).toContain('module: true');
+                } else if (flag.name === 'output-strict-module-error-handling') {
+                    ({ exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, '--hot']));
+
+                    expect(exitCode).toBe(0);
+                    expect(stderr).toBeFalsy();
+                    expect(stdout).toContain(`${propName}: true`);
                 } else if (flag.name.includes('-reset')) {
                     const option = propName.split('Reset')[0];
 
@@ -43,7 +49,7 @@ describe('output config related flag', () => {
                 }
             });
 
-            if (!flag.name.endsWith('-reset')) {
+            if (!flag.name.endsWith('-reset') && !flag.name.includes('output-strict-module-error-handling')) {
                 it(`should config --no-${flag.name} correctly`, () => {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--no-${flag.name}`]);
 
@@ -147,37 +153,35 @@ describe('output config related flag', () => {
                 }
             });
         }
+    });
 
-        if (flag.name.includes('output-library')) {
-            it(`should config name, type and export  correctly`, () => {
-                const { exitCode, stderr, stdout } = run(__dirname, [
-                    '--output-library-name',
-                    'myLibrary',
-                    '--output-library-type',
-                    'var',
-                    '--output-library-export',
-                    'myExport',
-                    '--output-library-auxiliary-comment',
-                    'comment',
-                    '--output-library-umd-named-define',
-                ]);
+    it(`should config name, type and export  correctly`, () => {
+        const { exitCode, stderr, stdout } = run(__dirname, [
+            '--output-library-name',
+            'myLibrary',
+            '--output-library-type',
+            'var',
+            '--output-library-export',
+            'myExport',
+            '--output-library-auxiliary-comment',
+            'comment',
+            '--output-library-umd-named-define',
+        ]);
 
-                expect(exitCode).toBe(0);
-                expect(stderr).toBeFalsy();
-                expect(stdout).toContain('myLibrary');
-                expect(stdout).toContain(`type: 'var'`);
-                expect(stdout).toContain('export: [Array]');
-                expect(stdout).toContain(`auxiliaryComment: 'comment'`);
-                expect(stdout).toContain('umdNamedDefine: true');
-            });
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('myLibrary');
+        expect(stdout).toContain(`type: 'var'`);
+        expect(stdout).toContain('export: [Array]');
+        expect(stdout).toContain(`auxiliaryComment: 'comment'`);
+        expect(stdout).toContain('umdNamedDefine: true');
+    });
 
-            it('should be succesful with --output-library-reset correctly', () => {
-                const { exitCode, stderr, stdout } = run(__dirname, ['--output-library-reset']);
+    it('should be succesful with --output-library-reset correctly', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['--output-library-reset', '--output-library', 'newLibrary']);
 
-                expect(exitCode).toBe(0);
-                expect(stderr).toBeFalsy();
-                expect(stdout).toContain('name: []');
-            });
-        }
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('newLibrary');
     });
 });
