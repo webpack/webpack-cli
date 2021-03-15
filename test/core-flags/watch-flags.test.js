@@ -1,6 +1,5 @@
 'use strict';
 
-const webpack = require('webpack');
 const { run, hyphenToUpperCase } = require('../utils/test-utils');
 const CLI = require('../../packages/webpack-cli/lib/index');
 
@@ -34,17 +33,6 @@ describe('watch config related flag', () => {
             if (!flag.name.endsWith('-reset')) {
                 it(`should config --no-${flag.name} correctly`, () => {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--no-${flag.name}`]);
-
-                    console.log(exitCode);
-                    console.log(stderr);
-                    console.log(watchFlags);
-                    console.log(webpack.version);
-
-                    const help = run(__dirname, [`--help`]);
-                    const version = run(__dirname, [`--version`]);
-
-                    console.log(help.stdout);
-                    console.log(version.stdout);
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
