@@ -91,7 +91,7 @@ jobs:
       - name: Run tests and generate coverage
         run: |
           yarn prepsuite
-          yarn test:coverage
+          yarn jest ./test/core-flags/watch-flags.test.js
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1

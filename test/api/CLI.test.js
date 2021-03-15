@@ -7,7 +7,7 @@ describe('CLI API', () => {
         cli = new CLI();
     });
 
-    describe.skip('makeCommand', () => {
+    describe('makeCommand', () => {
         it('should make command', async (done) => {
             cli.program.commands = [];
 
