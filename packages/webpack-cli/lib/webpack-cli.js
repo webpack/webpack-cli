@@ -23,8 +23,6 @@ class WebpackCLI {
     }
 
     async makeCommand(commandOptions, options, action) {
-        process.stdout.write(JSON.stringify(commandOptions));
-        process.stdout.write(JSON.stringify(options));
         const alreadyLoaded = this.program.commands.find(
             (command) => command.name() === commandOptions.name || command.aliases().includes(commandOptions.alias),
         );
@@ -120,8 +118,6 @@ class WebpackCLI {
     makeOption(command, option) {
         let mainOption;
         let negativeOption;
-
-        process.stdout.write(command.name());
 
         if (option.configs) {
             let needNegativeOption = false;
