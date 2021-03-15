@@ -91,7 +91,7 @@ npx webpack-cli --help verbose
   -d, --devtool <value>         Determine source maps to use.
   --no-devtool                  Do not generate source maps.
   --entry <value...>            The entry point(s) of your application e.g. ./src/main.js.
-  -h, --hot                     Enables Hot Module Replacement
+  -h, --hot [value]             Enables Hot Module Replacement
   --no-hot                      Disables Hot Module Replacement
   --mode <value>                Defines the mode to pass to webpack.
   --name <value>                Name of the configuration. Used when loading multiple configurations.

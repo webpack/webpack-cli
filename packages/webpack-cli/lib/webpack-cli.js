@@ -382,7 +382,7 @@ class WebpackCLI {
             {
                 name: 'hot',
                 alias: 'h',
-                type: Boolean,
+                type: [Boolean, String],
                 negative: true,
                 description: 'Enables Hot Module Replacement',
                 negatedDescription: 'Disables Hot Module Replacement.',
@@ -1453,6 +1453,11 @@ class WebpackCLI {
 
         if (typeof options.progress === 'string' && options.progress !== 'profile') {
             this.logger.error(`'${options.progress}' is an invalid value for the --progress option. Only 'profile' is allowed.`);
+            process.exit(2);
+        }
+
+        if (typeof options.hot === 'string' && options.hot !== 'only') {
+            this.logger.error(`'${options.hot}' is an invalid value for the --hot option. Use 'only' instead.`);
             process.exit(2);
         }
 
