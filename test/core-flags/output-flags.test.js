@@ -19,7 +19,7 @@ describe('output config related flag', () => {
 
         const propName = hyphenToUpperCase(property);
 
-        if (flag.type === Boolean && !flag.name.includes('output-library')) {
+        if (flag.configs.filter((config) => config.type === 'boolean').length > 0 && !flag.name.includes('output-library')) {
             it(`should config --${flag.name} correctly`, () => {
                 let { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`]);
 
@@ -60,7 +60,7 @@ describe('output config related flag', () => {
             }
         }
 
-        if (flag.type === Number) {
+        if (flag.configs.filter((config) => config.type === 'number').length > 0) {
             it(`should config --${flag.name} correctly`, () => {
                 const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, '10']);
 
@@ -70,7 +70,7 @@ describe('output config related flag', () => {
             });
         }
 
-        if (flag.type === String && !flag.name.includes('output-library')) {
+        if (flag.configs.filter((config) => config.type === 'string').length > 0 && !flag.name.includes('output-library')) {
             it(`should config --${flag.name} correctly`, () => {
                 if (flag.name === 'output-cross-origin-loading') {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'anonymous']);

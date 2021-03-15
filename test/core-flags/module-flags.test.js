@@ -17,7 +17,11 @@ describe('module config related flag', () => {
 
         const propName = hyphenToUpperCase(property);
 
-        if (flag.type === Boolean && !flag.name.includes('module-no-parse') && !flag.name.includes('module-parser-')) {
+        if (
+            flag.configs.filter((config) => config.type === 'boolean').length > 0 &&
+            !flag.name.includes('module-no-parse') &&
+            !flag.name.includes('module-parser-')
+        ) {
             it(`should config --${flag.name} correctly`, () => {
                 if (flag.name.includes('-reset')) {
                     const { stderr, stdout } = run(__dirname, [`--${flag.name}`]);
@@ -67,7 +71,10 @@ describe('module config related flag', () => {
             }
         }
 
-        if (flag.type === String && !(flag.name.includes('module-parser-') || flag.name.startsWith('module-generator'))) {
+        if (
+            flag.configs.filter((config) => config.type === 'string').length > 0 &&
+            !(flag.name.includes('module-parser-') || flag.name.startsWith('module-generator'))
+        ) {
             it(`should config --${flag.name} correctly`, () => {
                 if (flag.name === 'module-no-parse') {
                     let { stderr, stdout, exitCode } = run(__dirname, [`--${flag.name}`, 'value']);
@@ -120,7 +127,7 @@ describe('module config related flag', () => {
         expect(stdout).toContain(`generator: { asset: { dataUrl: [Object] } }`);
     });
 
-    it('should config module.parser flags coorectly', () => {
+    it('should config module.parser flags correctly', () => {
         const { exitCode, stderr, stdout } = run(__dirname, [
             '--module-parser-javascript-browserify',
             '--module-parser-javascript-commonjs',
@@ -137,5 +144,22 @@ describe('module config related flag', () => {
         expect(stdout).toContain('harmony: true');
         expect(stdout).toContain('import: true');
         expect(stdout).toContain('node: false');
+    });
+
+    it('should accept --module-parser-javascript-url=relative', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['--module-parser-javascript-url', 'relative']);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain(`url: 'relative'`);
+    });
+
+    it('should throw an error for an invalid value of --module-parser-javascript-url', () => {
+        const { exitCode, stderr, stdout } = run(__dirname, ['--module-parser-javascript-url', 'test']);
+
+        expect(exitCode).toBe(2);
+        expect(stderr).toContain(`Invalid value 'test' for the '--module-parser-javascript-url' option`);
+        expect(stderr).toContain(`Expected: 'relative'`);
+        expect(stdout).toBeFalsy();
     });
 });
