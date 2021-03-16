@@ -10,8 +10,8 @@ test/**/dist/
 test/**/bin/
 test/**/binary/
 test/**/index.js
-test/config/error-commonjs/syntax-error.js
-test/config/error-mjs/syntax-error.mjs
-test/config/error-array/webpack.config.js
-test/configtest/with-config-path/syntax-error.config.js
+test/build/config/error-commonjs/syntax-error.js
+test/build/config/error-mjs/syntax-error.mjs
+test/build/config/error-array/webpack.config.js
+test/build/configtest/with-config-path/syntax-error.config.js
 packages/generators/src/utils/__tests__/recursive-parser/__testfixtures__
