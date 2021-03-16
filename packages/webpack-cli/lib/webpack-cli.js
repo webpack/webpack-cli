@@ -402,6 +402,9 @@ class WebpackCLI {
                     {
                         type: 'string',
                     },
+                    {
+                        type: 'boolean',
+                    },
                 ],
                 negative: true,
                 description: 'Enables Hot Module Replacement',
@@ -457,7 +460,11 @@ class WebpackCLI {
             // For webpack@4
             {
                 name: 'entry',
-
+                configs: [
+                    {
+                        type: 'string',
+                    },
+                ],
                 multiple: true,
                 description: 'The entry point(s) of your application e.g. ./src/main.js.',
             },
