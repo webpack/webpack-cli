@@ -17,7 +17,11 @@ describe('resolve config related flags', () => {
 
         const propName = hyphenToUpperCase(property);
 
-        if (flag.type === Boolean && !flag.name.includes('alias-') && !flag.name.includes('fallback-')) {
+        if (
+            flag.configs.filter((config) => config.type === 'boolean').length > 0 &&
+            !flag.name.includes('alias-') &&
+            !flag.name.includes('fallback-')
+        ) {
             it(`should config --${flag.name} correctly`, () => {
                 const { stderr, stdout } = run(__dirname, [`--${flag.name}`]);
 
@@ -33,7 +37,11 @@ describe('resolve config related flags', () => {
             });
         }
 
-        if (flag.type === String && !flag.name.includes('alias-') && !flag.name.includes('fallback-')) {
+        if (
+            flag.configs.filter((config) => config.type === 'string').length > 0 &&
+            !flag.name.includes('alias-') &&
+            !flag.name.includes('fallback-')
+        ) {
             it(`should config --${flag.name} correctly`, () => {
                 const { stderr, stdout } = run(__dirname, [`--${flag.name}`, 'browser']);
 
