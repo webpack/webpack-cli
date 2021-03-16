@@ -12,9 +12,16 @@ describe('watch config related flag', () => {
         const property = flag.name.split('watch-options-')[1];
         const propName = hyphenToUpperCase(property);
 
-        if (flag.type === Boolean && flag.name !== 'watch' && flag.name !== 'watch-options-stdin') {
+        if (propName === 'stdin') {
+            return;
+        }
+
+        if (flag.configs.filter((config) => config.type === 'boolean').length > 0 && flag.name !== 'watch') {
             it(`should config --${flag.name} correctly`, () => {
                 const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`]);
+
+                console.log(stdout);
+                console.log(stderr);
 
                 expect(exitCode).toBe(0);
                 expect(stderr).toBeFalsy();
@@ -37,7 +44,7 @@ describe('watch config related flag', () => {
             }
         }
 
-        if (flag.type === Number) {
+        if (flag.configs.filter((config) => config.type === 'number').length > 0) {
             it(`should config --${flag.name} correctly`, () => {
                 const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, '10']);
 
@@ -47,7 +54,7 @@ describe('watch config related flag', () => {
             });
         }
 
-        if (flag.type === String) {
+        if (flag.configs.filter((config) => config.type === 'string').length > 0) {
             it(`should config --${flag.name} correctly`, () => {
                 if (propName === 'poll') {
                     const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, '200']);

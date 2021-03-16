@@ -12,7 +12,7 @@ describe('snapshot config related flags', () => {
         let property = flag.name.split('snapshot-')[1];
         const propName = hyphenToUpperCase(property);
 
-        if (flag.type === Boolean) {
+        if (flag.configs.filter((config) => config.type === 'boolean').length > 0) {
             it(`should config --${flag.name} correctly`, () => {
                 const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`]);
 
@@ -30,13 +30,13 @@ describe('snapshot config related flags', () => {
             });
         }
 
-        if (flag.type === String) {
+        if (flag.configs.filter((config) => config.type === 'string').length > 0) {
             it(`should config --${flag.name} correctly`, () => {
-                const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'test-snap-path']);
+                const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, './mock/mock.js']);
 
                 expect(exitCode).toBe(0);
                 expect(stderr).toBeFalsy();
-                expect(stdout).toContain('test-snap-path');
+                expect(stdout).toContain('./mock/mock.js');
             });
         }
     });
