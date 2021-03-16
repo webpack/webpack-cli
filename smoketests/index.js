@@ -4,6 +4,7 @@ const tests = [
     require('./missing-packages/webpack.test.js'),
     require('./missing-command-packages/generator.test.js'),
     require('./missing-command-packages/serve.test.js'),
+    require('./missing-command-packages/info.test.js'),
 ];
 
 (async () => {
