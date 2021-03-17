@@ -129,4 +129,22 @@ describe('init command', () => {
             "use: ['style-loader', 'css-loader', 'sass-loader'],",
         );
     });
+    it('should use less in project when selected', async () => {
+        const { stdout, stderr } = await runPromptWithAnswers(
+            assetsPath,
+            ['init'],
+            [`${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${DOWN}${DOWN}${DOWN}${ENTER}`],
+        );
+        expect(stdout).toContain('Project has been initialised with webpack!');
+        expect(stderr).toContain('webpack.config.js');
+
+        // Test files
+        const files = ['package.json', 'src', 'src/index.js', 'webpack.config.js'];
+        files.forEach((file) => {
+            expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+        });
+
+        // Check if loaders are added to webpack configuration
+        expect(readFileSync(resolve(assetsPath, 'webpack.config.js')).toString()).toContain("loader: 'less-loader',");
+    });
 });

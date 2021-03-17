@@ -44,7 +44,7 @@ module.exports = {
 <% } %><%  if (cssType == 'LESS') { %>
             {
                 test: /\.less$/i,
-                loader: "less-loader",
+                loader: 'less-loader',
             },
 <% } %>
             // Add your rules for custom modules here
