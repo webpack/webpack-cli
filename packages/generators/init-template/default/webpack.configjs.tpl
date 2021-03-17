@@ -41,6 +41,11 @@ module.exports = {
                 test: /\.s[ac]ss$/i,
                 use: ['style-loader', 'css-loader', 'sass-loader'],
             },
+<% } %><%  if (cssType == 'LESS') { %>
+            {
+                test: /\.less$/i,
+                loader: "less-loader",
+            },
 <% } %>
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
