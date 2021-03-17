@@ -56,7 +56,7 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
         self,
         'cssType',
         'Which of the following CSS solutions do you want to use?',
-        ['none', 'CSS'],
+        ['none', 'CSS', 'SASS'],
         'none',
         self.useDefaults,
     );
@@ -64,6 +64,9 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
     switch (cssType) {
         case 'CSS':
             self.dependencies = [...self.dependencies, 'style-loader', 'css-loader'];
+            break;
+        case 'SASS':
+            self.dependencies = [...self.dependencies, 'sass-loader', 'sass'];
             break;
     }
 
