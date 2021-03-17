@@ -11,7 +11,7 @@
     -   [Running Locally](#running-locally)
     -   [Running Globally](#running-globally)
     -   [CLI options](#cli-options)
--   [Description of questions asked by generator](#description-of-questions-asked-by-generator)
+-   [Description of questions asked by the generator](#description-of-questions-asked-by-the-generator)
     -   [Default Template](#default-template)
 
 ## Setup
@@ -68,7 +68,7 @@ webpack-cli init --template <template-name>
 
 1. `Which of the following JS solutions do you want to use?`
 
-> _Property/key resolved: [module.rules](https://webpack.js.org/configuration/module/#module-rules) (for .js, .ts and other related files files)_
+> _Property/key resolved: [module.rules](https://webpack.js.org/configuration/module/#module-rules) (for .js, .ts and other related files)_
 
 This enables webpack to parse [`ES2015`](https://babeljs.io/learn-es2015/) code or Typescript code as per choice.
 
