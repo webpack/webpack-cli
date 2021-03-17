@@ -11,10 +11,10 @@ class GeneratorsCommand {
 
         await cli.makeCommand(
             {
-                name: 'init',
+                name: 'init [generation-path]',
                 alias: 'c',
                 description: 'Initialize a new webpack configuration.',
-                usage: '[options]',
+                usage: '[generation-path] [options]',
                 pkg: '@webpack-cli/generators',
             },
             [
@@ -25,18 +25,14 @@ class GeneratorsCommand {
                     defaultValue: 'default',
                 },
                 {
-                    name: 'generation-path',
-                    type: String,
-                    description: 'To scaffold in a specified path',
-                    defaultValue: '.',
-                },
-                {
                     name: 'use-defaults',
                     type: Boolean,
                     description: 'Generate using defaults, ideally without questions',
                 },
             ],
-            async (options) => {
+            async (generationPath, options) => {
+                options.generationPath = generationPath || '.';
+
                 const env = yeoman.createEnv([], { cwd: options.generationPath });
                 const generatorName = 'webpack-init-generator';
 
