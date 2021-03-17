@@ -6,7 +6,7 @@ const { run, isWebpack5 } = require('../../utils/test-utils');
 
 describe('cache', () => {
     it('should work', () => {
-        rimraf.sync(path.join(__dirname, '../../node_modules/.cache/webpack/cache-test-default-development'));
+        rimraf.sync(path.join(__dirname, '../../../node_modules/.cache/webpack/cache-test-default-development'));
 
         let { exitCode, stderr, stdout } = run(__dirname, ['-c', './webpack.config.js']);
 
@@ -33,8 +33,8 @@ describe('cache', () => {
     });
 
     it('should work in multi compiler mode', () => {
-        rimraf.sync(path.join(__dirname, '../../node_modules/.cache/webpack/cache-test-first-development'));
-        rimraf.sync(path.join(__dirname, '../../node_modules/.cache/webpack/cache-test-second-development'));
+        rimraf.sync(path.join(__dirname, '../../../node_modules/.cache/webpack/cache-test-first-development'));
+        rimraf.sync(path.join(__dirname, '../../../node_modules/.cache/webpack/cache-test-second-development'));
 
         let { exitCode, stderr, stdout } = run(__dirname, ['-c', './multi.config.js']);
 
@@ -62,7 +62,7 @@ describe('cache', () => {
     });
 
     it('should work in multi compiler mode with the `--config-name` argument', () => {
-        rimraf.sync(path.join(__dirname, '../../node_modules/.cache/webpack/cache-test-third-development'));
+        rimraf.sync(path.join(__dirname, '../../../node_modules/.cache/webpack/cache-test-third-development'));
 
         let { exitCode, stderr, stdout } = run(__dirname, [
             '-c',
@@ -103,7 +103,7 @@ describe('cache', () => {
     });
 
     it('should work with the `--merge` argument', () => {
-        rimraf.sync(path.join(__dirname, '../../node_modules/.cache/webpack/cache-test-fourth-development'));
+        rimraf.sync(path.join(__dirname, '../../../node_modules/.cache/webpack/cache-test-fourth-development'));
 
         let { exitCode, stderr, stdout } = run(__dirname, [
             '-c',
@@ -146,7 +146,7 @@ describe('cache', () => {
     });
 
     it('should work with the `--config-name` and `--merge` argument', () => {
-        rimraf.sync(path.join(__dirname, '../../node_modules/.cache/webpack/cache-test-fifth-development'));
+        rimraf.sync(path.join(__dirname, '../../../node_modules/.cache/webpack/cache-test-fifth-development'));
 
         let { exitCode, stderr, stdout } = run(__dirname, [
             '-c',
@@ -197,7 +197,7 @@ describe('cache', () => {
     });
 
     it('should work with autoloading configuration', () => {
-        rimraf.sync(path.join(__dirname, '../../node_modules/.cache/webpack/cache-test-autoloading-development'));
+        rimraf.sync(path.join(__dirname, '../../../node_modules/.cache/webpack/cache-test-autoloading-development'));
 
         let { exitCode, stderr, stdout } = run(__dirname, ['--name', 'cache-test-autoloading']);
 
