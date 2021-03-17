@@ -1,4 +1,4 @@
-const { mkdirSync, existsSync } = require('fs');
+const { mkdirSync, existsSync, readFileSync } = require('fs');
 const { resolve } = require('path');
 const rimraf = require('rimraf');
 const { run, runPromptWithAnswers } = require('../utils/test-utils');
@@ -107,5 +107,26 @@ describe('init command', () => {
         files.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
+    });
+
+    it('should use sass in project when selected', async () => {
+        const { stdout, stderr } = await runPromptWithAnswers(
+            assetsPath,
+            ['init'],
+            [`${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${DOWN}${DOWN}${ENTER}`],
+        );
+        expect(stdout).toContain('Project has been initialised with webpack!');
+        expect(stderr).toContain('webpack.config.js');
+
+        // Test files
+        const files = ['package.json', 'src', 'src/index.js', 'webpack.config.js'];
+        files.forEach((file) => {
+            expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+        });
+
+        // Check if loaders are added to webpack configuration
+        expect(readFileSync(resolve(assetsPath, 'webpack.config.js')).toString()).toContain(
+            "use: ['style-loader', 'css-loader', 'sass-loader'],",
+        );
     });
 });
