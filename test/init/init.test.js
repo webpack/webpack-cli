@@ -129,6 +129,7 @@ describe('init command', () => {
             "use: ['style-loader', 'css-loader', 'sass-loader'],",
         );
     });
+
     it('should use less in project when selected', async () => {
         const { stdout, stderr } = await runPromptWithAnswers(
             assetsPath,

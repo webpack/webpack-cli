@@ -46,6 +46,11 @@ module.exports = {
                 test: /\.less$/i,
                 loader: 'less-loader',
             },
+<% } %><%  if (cssType == 'Stylus') { %>
+            {
+                test: /\.styl$/,
+                loader: 'stylus-loader',
+            },
 <% } %>
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
