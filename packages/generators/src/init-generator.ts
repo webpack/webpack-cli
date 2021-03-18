@@ -1,6 +1,5 @@
 import { blue, yellow } from 'colorette';
 import { utils } from 'webpack-cli';
-import logSymbols from 'log-symbols';
 import path from 'path';
 import * as Question from './utils/scaffold-utils';
 
@@ -45,7 +44,7 @@ export default class InitGenerator extends CustomGenerator {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public async prompting(): Promise<void | any> {
         if (!existsSync(this.resolvedGenerationPath)) {
-            logger.log(`${logSymbols.info}${blue(' INFO ')} supplied generation path doesn't exist, required folders will be created.`);
+            logger.log(`${blue('ℹ INFO ')} supplied generation path doesn't exist, required folders will be created.`);
             try {
                 mkdirSync(this.resolvedGenerationPath, { recursive: true });
             } catch (err) {
@@ -56,7 +55,7 @@ export default class InitGenerator extends CustomGenerator {
         }
 
         if (!this.supportedTemplates.includes(this.template)) {
-            logger.log(`${logSymbols.warning}${yellow(`${this.template} is not a valid template, please select one from below`)}`);
+            logger.log(`${yellow(`⚠ ${this.template} is not a valid template, please select one from below`)}`);
 
             const { selectedTemplate } = await Question.List(
                 this,
@@ -84,7 +83,7 @@ export default class InitGenerator extends CustomGenerator {
     }
 
     public writing(): void {
-        logger.log(`${logSymbols.info}${blue(' INFO ')} Initialising project...`);
+        logger.log(`${blue('ℹ INFO ')} Initialising project...`);
         handlers[this.template].generate(this);
     }
 }
