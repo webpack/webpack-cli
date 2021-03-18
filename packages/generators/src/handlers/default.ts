@@ -21,7 +21,7 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
         'Which of the following JS solutions do you want to use?',
         ['none', 'ES6', 'Typescript'],
         'none',
-        self.useDefaults,
+        self.force,
     );
 
     switch (langType) {
@@ -34,7 +34,7 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
     }
 
     // Configure devServer configuraion
-    const { devServer } = await Question.Confirm(self, 'devServer', 'Do you want to webpack-dev-server?', true, self.useDefaults);
+    const { devServer } = await Question.Confirm(self, 'devServer', 'Do you want to webpack-dev-server?', true, self.force);
     if (devServer) {
         self.dependencies = [...self.dependencies, 'webpack-dev-server'];
     }
@@ -45,7 +45,7 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
         'htmlWebpackPlugin',
         'Do you want to simplify the creation of HTML files for your bundle?',
         true,
-        self.useDefaults,
+        self.force,
     );
     if (htmlWebpackPlugin) {
         self.dependencies = [...self.dependencies, 'html-webpack-plugin'];
@@ -58,7 +58,7 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
         'Which of the following CSS solutions do you want to use?',
         ['none', 'CSS', 'SASS', 'LESS', 'Stylus'],
         'none',
-        self.useDefaults,
+        self.force,
     );
 
     switch (cssType) {
