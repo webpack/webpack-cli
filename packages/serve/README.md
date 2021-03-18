@@ -22,5 +22,9 @@ npm i -D webpack-cli @webpack-cli/serve
 npx webpack-cli serve
 ```
 
+### Options
+
+Checkout [`SERVE-OPTIONS.md`](../../SERVE-OPTIONS.md) to see list of all available options for `serve` command.
+
 [downloads]: https://img.shields.io/npm/dm/@webpack-cli/serve.svg
 [downloads-url]: https://www.npmjs.com/package/@webpack-cli/serve
