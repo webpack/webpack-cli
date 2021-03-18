@@ -25,9 +25,9 @@ class GeneratorsCommand {
                     defaultValue: 'default',
                 },
                 {
-                    name: 'use-defaults',
+                    name: 'force',
                     type: Boolean,
-                    description: 'Generate using defaults, ideally without questions',
+                    description: 'Generate without questions (ideally) using default answers',
                 },
             ],
             async (generationPath, options) => {

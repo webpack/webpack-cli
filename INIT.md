@@ -47,7 +47,7 @@ webpack-cli init
 **To generate with default answers**
 
 ```bash
-webpack-cli init --use-defaults
+webpack-cli init --force
 ```
 
 **To scaffold in a specified path**

@@ -25,7 +25,7 @@ describe('init command', () => {
     });
 
     it('should generate default project when nothing is passed', () => {
-        const { stdout, stderr } = run(assetsPath, ['init', '--use-defaults']);
+        const { stdout, stderr } = run(assetsPath, ['init', '--force']);
         expect(stdout).toContain('Project has been initialised with webpack!');
         expect(stderr).toContain('webpack.config.js');
 
@@ -37,7 +37,7 @@ describe('init command', () => {
     });
 
     it('should generate project when generationPath is supplied', () => {
-        const { stdout, stderr } = run(__dirname, ['init', assetsPath, '--use-defaults']);
+        const { stdout, stderr } = run(__dirname, ['init', assetsPath, '--force']);
         expect(stdout).toContain('Project has been initialised with webpack!');
         expect(stderr).toContain('webpack.config.js');
 
@@ -50,7 +50,7 @@ describe('init command', () => {
 
     it('should generate folders if non existing generation path is given', () => {
         rimraf.sync(assetsPath);
-        const { stdout, stderr } = run(__dirname, ['init', assetsPath, '--use-defaults']);
+        const { stdout, stderr } = run(__dirname, ['init', assetsPath, '--force']);
         expect(stdout).toContain("generation path doesn't exist, required folders will be created.");
         expect(stdout).toContain('Project has been initialised with webpack!');
         expect(stderr).toContain('webpack.config.js');
@@ -63,7 +63,7 @@ describe('init command', () => {
     });
 
     it('should ask question when wrong template is supplied', async () => {
-        const { stdout, stderr } = await runPromptWithAnswers(assetsPath, ['init', '--use-defaults', '--template=apple'], [`${ENTER}`]);
+        const { stdout, stderr } = await runPromptWithAnswers(assetsPath, ['init', '--force', '--template=apple'], [`${ENTER}`]);
         expect(stdout).toContain('Project has been initialised with webpack!');
         expect(stdout).toContain('apple is not a valid template, please select one from below');
         expect(stderr).toContain('webpack.config.js');

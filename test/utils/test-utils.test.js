@@ -112,7 +112,7 @@ describe('runAndGetWatchProc function', () => {
         const assetsPath = resolve(__dirname, './test-assets');
         mkdirSync(assetsPath);
 
-        const { stdout } = await runAndGetWatchProc(assetsPath, ['init', '--use-defaults', '--template=mango'], false, ENTER);
+        const { stdout } = await runAndGetWatchProc(assetsPath, ['init', '--force', '--template=mango'], false, ENTER);
         expect(stdout).toContain('Project has been initialised with webpack!');
 
         rimraf.sync(assetsPath);
