@@ -1,6 +1,6 @@
 'use strict';
 
-const { runAndGetWatchProc, isWebpack5 } = require('../../../utils/test-utils');
+const { runAndGetWatchProc, isWebpack5 } = require('../../utils/test-utils');
 const { writeFileSync } = require('fs');
 const { resolve } = require('path');
 

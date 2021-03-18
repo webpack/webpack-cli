@@ -1,6 +1,6 @@
 'use strict';
 
-const { run, isWebpack5 } = require('../utils/test-utils');
+const { run, isWebpack5 } = require('../../utils/test-utils');
 
 describe('unknown behaviour', () => {
     it('should log an error if an unknown flag is passed', () => {

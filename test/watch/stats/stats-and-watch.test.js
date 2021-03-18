@@ -1,6 +1,6 @@
 'use strict';
 
-const { runWatch } = require('../../../utils/test-utils');
+const { runWatch } = require('../../utils/test-utils');
 
 describe('stats and watch', () => {
     it('should not log stats with the "none" value from the configuration', async () => {

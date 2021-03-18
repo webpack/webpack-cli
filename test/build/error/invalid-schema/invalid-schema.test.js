@@ -1,5 +1,5 @@
 'use strict';
-const { run, isWebpack5 } = require('../../utils/test-utils');
+const { run, isWebpack5 } = require('../../../utils/test-utils');
 
 describe('invalid schema', () => {
     it('should log error on invalid config', () => {

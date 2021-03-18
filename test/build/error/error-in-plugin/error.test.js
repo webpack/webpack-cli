@@ -1,6 +1,6 @@
 'use strict';
 
-const { run } = require('../../utils/test-utils');
+const { run } = require('../../../utils/test-utils');
 
 describe('error', () => {
     it('should log error with stacktrace', async () => {
