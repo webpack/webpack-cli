@@ -1,25 +1,17 @@
 'use strict';
 
-const path = require('path');
 const execa = require('execa');
-const { renameSync } = require('fs');
+const path = require('path');
 const stripAnsi = require('strip-ansi');
 
-const ROOT = process.env.GITHUB_WORKSPACE ? process.env.GITHUB_WORKSPACE : path.resolve(__dirname, '../../');
-const CLI_ENTRY_PATH = path.resolve(ROOT, './packages/webpack-cli/bin/cli.js');
+const { getRootPath, swapPkgName } = require('../helpers');
 
-const getPkgPath = (pkg) => {
-    return path.resolve(ROOT, `./node_modules/${pkg}`);
-};
-
-const swapPkgName = (current, next) => {
-    console.log(`  swapping ${current} with ${next}`);
-    renameSync(getPkgPath(current), getPkgPath(next));
-};
+const ROOT_PATH = getRootPath();
+const CLI_ENTRY_PATH = path.resolve(ROOT_PATH, './packages/webpack-cli/bin/cli.js');
 
 const runTest = () => {
     // Simulate package missing
-    swapPkgName('webpack', '.webpack');
+    swapPkgName('webpack');
 
     const proc = execa(CLI_ENTRY_PATH, [], {
         cwd: __dirname,
@@ -61,12 +53,12 @@ const runTest = () => {
         });
 
         proc.on('exit', () => {
-            swapPkgName('.webpack', 'webpack');
+            swapPkgName('.webpack');
             resolve(hasPassed);
         });
 
         proc.on('error', () => {
-            swapPkgName('.webpack', 'webpack');
+            swapPkgName('.webpack');
             resolve(false);
         });
     });
