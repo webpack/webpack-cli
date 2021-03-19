@@ -18,8 +18,8 @@
   ],
   "dependencies": {
     "colorette": "^1.2.1",
-    "yeoman-environment": "^2.10.3",
-    "yeoman-generator": "^4.12.0"
+    "yeoman-environment": "^3.2.0",
+    "yeoman-generator": "^5.2.0"
   },
   "peerDependencies": {
     "webpack": "4.x.x || 5.x.x",
