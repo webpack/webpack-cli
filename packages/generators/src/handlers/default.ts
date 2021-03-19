@@ -34,7 +34,7 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
     }
 
     // Configure devServer configuraion
-    const { devServer } = await Question.Confirm(self, 'devServer', 'Do you want to webpack-dev-server?', true, self.force);
+    const { devServer } = await Question.Confirm(self, 'devServer', 'Do you want to use webpack-dev-server?', true, self.force);
     if (devServer) {
         self.dependencies = [...self.dependencies, 'webpack-dev-server'];
     }
