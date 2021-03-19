@@ -1,5 +1,4 @@
 import Generator from 'yeoman-generator';
-import { Loader } from '../utils/styleSupport';
 
 export interface SchemaProperties {
     additionalProperties?: boolean;
@@ -232,7 +231,6 @@ export interface Rule {
     resourceQuery?: IRuleSetCondition;
     compiler?: IRuleSetCondition;
     rules?: Record<string, unknown>[];
-    use?: Loader[] | (() => void);
     test?: IRuleSetCondition;
 }
 
@@ -245,7 +243,8 @@ export class CustomGenerator extends Generator {
             webpackOptions?: WebpackOptions;
         };
     };
-    public isProd: boolean;
+    public force: boolean;
     public dependencies: string[];
     public getTemplatePath: (template: string) => string;
+    public answers: Record<string, unknown>;
 }

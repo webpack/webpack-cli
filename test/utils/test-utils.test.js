@@ -1,8 +1,11 @@
 'use strict';
 
 const { appendDataIfFileExists, run, runAndGetWatchProc, hyphenToUpperCase } = require('./test-utils');
-const { writeFileSync, unlinkSync, readFileSync } = require('fs');
+const { writeFileSync, unlinkSync, readFileSync, mkdirSync } = require('fs');
 const { resolve } = require('path');
+const rimraf = require('rimraf');
+
+const ENTER = '\x0D';
 
 describe('appendFile', () => {
     describe('positive test-cases', () => {
@@ -106,9 +109,13 @@ describe('runAndGetWatchProc function', () => {
     });
 
     it('writes to stdin', async () => {
-        const { stdout } = await runAndGetWatchProc(__dirname, ['init'], false, 'n');
+        const assetsPath = resolve(__dirname, './test-assets');
+        mkdirSync(assetsPath);
 
-        expect(stdout).toContain('Which will be your application entry point?');
+        const { stdout } = await runAndGetWatchProc(assetsPath, ['init', '--force', '--template=mango'], false, ENTER);
+        expect(stdout).toContain('Project has been initialised with webpack!');
+
+        rimraf.sync(assetsPath);
     });
 });
 
