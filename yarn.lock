@@ -1940,7 +1940,7 @@
   resolved "https://registry.yarnpkg.com/@types/parse-json/-/parse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"
   integrity sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==
 
-"@types/prettier@^2.0.0", "@types/prettier@^2.1.5":
+"@types/prettier@^2.0.0":
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/@types/prettier/-/prettier-2.2.3.tgz#ef65165aea2924c9359205bf748865b8881753c0"
   integrity sha512-PijRCG/K3s3w1We6ynUKdxEc5AcuuH3NBmMDP8uvKVp6X43UY7NQlTzczakXP3DJR0F4dfNQIGjU2cUeRYs2AA==
@@ -2019,11 +2019,14 @@
     "@types/yeoman-environment" "*"
     rxjs ">=6.4.0"
 
-"@types/yeoman-test@^2.0.5":
-  version "2.0.5"
-  resolved "https://registry.yarnpkg.com/@types/yeoman-test/-/yeoman-test-2.0.5.tgz#91131a779237b599e477de555b607a2e850b4c71"
-  integrity sha512-BYJFfJ8o341YnOOkzm0Qw3v3C8t/3WSMXTYUepSa7IIBG+PFU14/v+X90llzaNBYjpvDCjhj16H7GY2R874IiQ==
+"@types/yeoman-test@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@types/yeoman-test/-/yeoman-test-4.0.0.tgz#0e9f3416f47c46e6f4bda65b0a267659b3e3ad77"
+  integrity sha512-MYemAFeNvw0L9WevKupRbFnJNjSGcSsYd7dElM/WPEBIN9uEGxRbiEHKLkFIF5i16dng8ABjTX20akX4TJA8sw==
   dependencies:
+    "@types/mem-fs" "*"
+    "@types/mem-fs-editor" "*"
+    "@types/yeoman-environment" "*"
     "@types/yeoman-generator" "*"
 
 "@typescript-eslint/eslint-plugin@^4.14.1":

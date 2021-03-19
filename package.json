@@ -85,8 +85,5 @@
     "webpack-bundle-analyzer": "^4.3.0",
     "webpack-dev-server": "^3.11.1",
     "yeoman-test": "^2.7.0"
-  },
-  "dependencies": {
-    "@types/yeoman-test": "^2.0.5"
   }
 }
