@@ -2019,14 +2019,11 @@
     "@types/yeoman-environment" "*"
     rxjs ">=6.4.0"
 
-"@types/yeoman-test@^4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@types/yeoman-test/-/yeoman-test-4.0.0.tgz#0e9f3416f47c46e6f4bda65b0a267659b3e3ad77"
-  integrity sha512-MYemAFeNvw0L9WevKupRbFnJNjSGcSsYd7dElM/WPEBIN9uEGxRbiEHKLkFIF5i16dng8ABjTX20akX4TJA8sw==
+"@types/yeoman-test@^2.0.5":
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/@types/yeoman-test/-/yeoman-test-2.0.5.tgz#91131a779237b599e477de555b607a2e850b4c71"
+  integrity sha512-BYJFfJ8o341YnOOkzm0Qw3v3C8t/3WSMXTYUepSa7IIBG+PFU14/v+X90llzaNBYjpvDCjhj16H7GY2R874IiQ==
   dependencies:
-    "@types/mem-fs" "*"
-    "@types/mem-fs-editor" "*"
-    "@types/yeoman-environment" "*"
     "@types/yeoman-generator" "*"
 
 "@typescript-eslint/eslint-plugin@^4.14.1":
