@@ -6,10 +6,11 @@ const stripAnsi = require('strip-ansi');
 const { getBinPath, swapPkgName } = require('../helpers');
 
 const CLI_ENTRY_PATH = getBinPath();
+const isSubPackage = true;
 
 const runTest = () => {
     // Simulate package missing
-    swapPkgName('serve');
+    swapPkgName('serve', isSubPackage);
 
     const proc = execa(CLI_ENTRY_PATH, ['serve'], {
         cwd: __dirname,
@@ -46,12 +47,12 @@ const runTest = () => {
         });
 
         proc.on('exit', () => {
-            swapPkgName('.serve');
+            swapPkgName('.serve', isSubPackage);
             resolve(hasPassed);
         });
 
         proc.on('error', () => {
-            swapPkgName('.serve');
+            swapPkgName('.serve', isSubPackage);
             resolve(false);
         });
     });
@@ -59,7 +60,7 @@ const runTest = () => {
 
 const runTestWithHelp = () => {
     // Simulate package missing
-    swapPkgName('serve');
+    swapPkgName('serve', isSubPackage);
 
     const proc = execa(CLI_ENTRY_PATH, ['help', 'serve'], {
         cwd: __dirname,
@@ -102,12 +103,12 @@ const runTestWithHelp = () => {
         });
 
         proc.on('exit', () => {
-            swapPkgName('.serve');
+            swapPkgName('.serve', isSubPackage);
             resolve(hasPassed);
         });
 
         proc.on('error', () => {
-            swapPkgName('.serve');
+            swapPkgName('.serve', isSubPackage);
             resolve(false);
         });
     });
