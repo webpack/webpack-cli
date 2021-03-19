@@ -1,13 +1,11 @@
 'use strict';
 
 const execa = require('execa');
-const path = require('path');
 const stripAnsi = require('strip-ansi');
 
-const { getRootPath, swapPkgName } = require('../helpers');
+const { getBinPath, swapPkgName } = require('../helpers');
 
-const ROOT_PATH = getRootPath();
-const CLI_ENTRY_PATH = path.resolve(ROOT_PATH, './packages/webpack-cli/bin/cli.js');
+const CLI_ENTRY_PATH = getBinPath();
 
 const runTest = () => {
     // Simulate package missing

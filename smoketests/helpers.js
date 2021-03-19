@@ -1,10 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 
-const getRootPath = () => (process.env.GITHUB_WORKSPACE ? process.env.GITHUB_WORKSPACE : path.resolve(__dirname, '..'));
+const ROOT_PATH = process.env.GITHUB_WORKSPACE ? process.env.GITHUB_WORKSPACE : path.resolve(__dirname, '..');
+
+const getBinPath = () => path.resolve(ROOT_PATH, './packages/webpack-cli/bin/cli.js');
 
 const getPkgPath = (pkg) => {
-    const ROOT_PATH = getRootPath();
     const pkgPath = pkg.includes('webpack') ? `./node_modules/${pkg}` : `./node_modules/@webpack-cli/${pkg}`;
     return path.resolve(ROOT_PATH, pkgPath);
 };
@@ -17,6 +18,6 @@ const swapPkgName = (current) => {
 };
 
 module.exports = {
-    getRootPath,
+    getBinPath,
     swapPkgName,
 };
