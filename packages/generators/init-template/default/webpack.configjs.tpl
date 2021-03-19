@@ -3,7 +3,7 @@ const path = require('path');<% if (htmlWebpackPlugin) { %>
 const HtmlWebpackPlugin = require('html-webpack-plugin');<% } %>
 
 module.exports = {
-    entry: './src/index.js',
+    entry: '<%= entry %>',
     output: {
         path: path.resolve(__dirname, 'dist'),
     },<% if (devServer) { %>

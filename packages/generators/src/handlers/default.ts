@@ -91,18 +91,14 @@ export function generate(self: CustomGenerator): void {
         require(resolveFile('package.json.js'))(self.answers.devServer),
     );
 
-    const generateEntryFile = (entryPath: string): void => {
-        if (self.answers.langType == 'Typescript') {
-            entryPath += 'ts';
-        } else {
-            entryPath += 'js';
-        }
-        self.fs.copyTpl(resolveFile('index.js'), self.destinationPath(entryPath));
-    };
-
     // Generate entry file
-    const entry = './src/index.';
-    generateEntryFile(entry);
+    let entry = './src/index.';
+    if (self.answers.langType == 'Typescript') {
+        entry += 'ts';
+    } else {
+        entry += 'js';
+    }
+    self.fs.copyTpl(resolveFile('index.js'), self.destinationPath(entry));
 
     // Generate README
     self.fs.copyTpl(resolveFile('README.md'), self.destinationPath('README.md'), {});
@@ -111,7 +107,7 @@ export function generate(self: CustomGenerator): void {
     self.fs.copyTpl(resolveFile('template.html'), self.destinationPath('index.html'), {});
 
     // Generate webpack configuration
-    self.fs.copyTpl(resolveFile('webpack.configjs.tpl'), self.destinationPath('webpack.config.js'), self.answers);
+    self.fs.copyTpl(resolveFile('webpack.configjs.tpl'), self.destinationPath('webpack.config.js'), { ...self.answers, entry });
 
     // Generate JS language essentials
     switch (self.answers.langType) {
