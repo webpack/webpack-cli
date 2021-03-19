@@ -76,20 +76,8 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
             break;
     }
 
-    // Handle asset modules
-    let assetsModules = false;
-    if (langType == 'none' && cssType == 'none') {
-        ({ assetsModules } = await Question.Confirm(
-            self,
-            'assetsModules',
-            'Will you be using assets like images and fonts?',
-            true,
-            self.force,
-        ));
-    }
-
     // store all answers for generation
-    self.answers = { ...self.answers, langType, devServer, htmlWebpackPlugin, cssType, assetsModules };
+    self.answers = { ...self.answers, langType, devServer, htmlWebpackPlugin, cssType };
 }
 
 /**
