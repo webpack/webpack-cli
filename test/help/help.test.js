@@ -185,72 +185,122 @@ describe('help', () => {
     });
 
     const commands = [
-        'build',
-        'bundle',
-        'b',
-        'watch',
-        'w',
-        'serve',
-        's',
-        'info',
-        'i',
-        'init',
-        'c',
-        'loader',
-        'l',
-        'plugin',
-        'p',
-        'configtest',
-        't',
-        'migrate',
-        'm',
+        {
+            name: 'init',
+            alias: 'c',
+            helpOutput: 'webpack init|c [generation-path] [options]',
+        },
+        {
+            name: 'info',
+            alias: 'i',
+            helpOutput: 'webpack info|i [options]',
+        },
+        {
+            name: 'loader',
+            alias: 'l',
+            helpOutput: 'webpack loader|l loader [output-path]',
+        },
+        {
+            name: 'migrate',
+            alias: 'm',
+            helpOutput: 'webpack migrate|m <config-path> [new-config-path]',
+        },
+        {
+            name: 'plugin',
+            alias: 'p',
+            helpOutput: 'webpack plugin|p plugin [output-path]',
+        },
+        {
+            name: 'configtest',
+            alias: 't',
+            helpOutput: 'webpack configtest|t [config-path]',
+        },
+        {
+            name: 'watch',
+            alias: 'w',
+            helpOutput: 'webpack watch|w [entries...] [options]',
+        },
+        {
+            name: 'serve',
+            alias: 's',
+            helpOutput: 'webpack serve|s [entries...] [options]',
+        },
+        {
+            name: 'build',
+            alias: 'b',
+            helpOutput: 'webpack build|bundle|b [entries...] [options]',
+        },
     ];
 
-    commands.forEach((command) => {
-        it(`should show help information for '${command}' command using the "--help" option`, () => {
-            const { exitCode, stderr, stdout } = run(__dirname, [command, '--help']);
+    commands.forEach(({ name, alias, helpOutput }) => {
+        it(`should show help information for '${name}' command using the "--help" option`, () => {
+            const { exitCode, stderr, stdout } = run(__dirname, [name, '--help']);
 
             expect(exitCode).toBe(0);
             expect(stderr).toBeFalsy();
-            expect(stdout).toContain(`webpack ${command === 'build' || command === 'bundle' || command === 'b' ? '' : command}`);
+            expect(stdout).toContain(helpOutput);
         });
 
-        it(`should show help information for '${command}' command using the "--help verbose" option`, () => {
-            const { exitCode, stderr, stdout } = run(__dirname, [command, '--help', 'verbose']);
+        it(`should show help information for '${name}' command using the "--help verbose" option`, () => {
+            const { exitCode, stderr, stdout } = run(__dirname, [name, '--help', 'verbose']);
 
             expect(exitCode).toBe(0);
             expect(stderr).toBeFalsy();
-            expect(stdout).toContain(`webpack ${command === 'build' || command === 'bundle' || command === 'b' ? '' : command}`);
+            expect(stdout).toContain(helpOutput);
         });
 
-        it(`should show help information for '${command}' command using command syntax`, () => {
-            const { exitCode, stderr, stdout } = run(__dirname, ['help', command]);
+        it(`should show help information for '${name}' command using command syntax`, () => {
+            const { exitCode, stderr, stdout } = run(__dirname, ['help', name]);
 
             expect(exitCode).toBe(0);
             expect(stderr).toBeFalsy();
-            expect(stdout).toContain(`webpack ${command === 'build' || command === 'bundle' || command === 'b' ? '' : command}`);
+            expect(stdout).toContain(helpOutput);
         });
 
-        it(`should show help information for '${command}' and respect the "--color" flag using the "--help" option`, () => {
-            const { exitCode, stderr, stdout } = run(__dirname, [command, '--help', '--color'], { env: { FORCE_COLOR: true } });
+        it(`should show help information for '${alias}' command using the "--help" option`, () => {
+            const { exitCode, stderr, stdout } = run(__dirname, [alias, '--help']);
+
+            expect(exitCode).toBe(0);
+            expect(stderr).toBeFalsy();
+            expect(stdout).toContain(helpOutput);
+        });
+
+        it(`should show help information for '${alias}' command using the "--help verbose" option`, () => {
+            const { exitCode, stderr, stdout } = run(__dirname, [alias, '--help', 'verbose']);
+
+            expect(exitCode).toBe(0);
+            expect(stderr).toBeFalsy();
+            expect(stdout).toContain(helpOutput);
+        });
+
+        it(`should show help information for '${alias}' command using command syntax`, () => {
+            const { exitCode, stderr, stdout } = run(__dirname, ['help', alias]);
+
+            expect(exitCode).toBe(0);
+            expect(stderr).toBeFalsy();
+            expect(stdout).toContain(helpOutput);
+        });
+
+        it(`should show help information for '${name}' and respect the "--color" flag using the "--help" option`, () => {
+            const { exitCode, stderr, stdout } = run(__dirname, [name, '--help', '--color'], { env: { FORCE_COLOR: true } });
 
             expect(exitCode).toBe(0);
             expect(stderr).toBeFalsy();
             expect(stdout).toContain('\x1b[1m');
-            expect(stdout).toContain(`webpack ${command === 'build' || command === 'bundle' || command === 'b' ? '' : command}`);
+            expect(stdout).toContain(helpOutput);
 
             if (!isMacOS) {
                 expect(stdout).toContain('Made with ♥ by the webpack team');
             }
         });
 
-        it(`should show help information for '${command}' and respect the "--no-color" flag using the "--help" option`, () => {
-            const { exitCode, stderr, stdout } = run(__dirname, [command, '--help', '--no-color'], { env: { FORCE_COLOR: true } });
+        it(`should show help information for '${name}' and respect the "--no-color" flag using the "--help" option`, () => {
+            const { exitCode, stderr, stdout } = run(__dirname, [name, '--help', '--no-color'], { env: { FORCE_COLOR: true } });
 
             expect(exitCode).toBe(0);
             expect(stderr).toBeFalsy();
             expect(stdout).not.toContain('\x1b[1m');
-            expect(stdout).toContain(`webpack ${command === 'build' || command === 'bundle' || command === 'b' ? '' : command}`);
+            expect(stdout).toContain(helpOutput);
 
             if (!isMacOS) {
                 expect(stdout).toContain('Made with ♥ by the webpack team');
