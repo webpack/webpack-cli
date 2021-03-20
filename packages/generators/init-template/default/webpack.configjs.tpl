@@ -52,6 +52,11 @@ module.exports = {
                 test: /\.styl$/,
                 loader: 'stylus-loader',
             },
+<% } %><%  if (cssType == 'PostCSS') { %>
+            {
+                test: /\.css$/i,
+                use: ["style-loader", "css-loader", "postcss-loader"],
+            },
 <% } %>
             {
                 test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/,
