@@ -13,7 +13,7 @@ class GeneratorsCommand {
             {
                 name: 'init [generation-path]',
                 alias: 'c',
-                description: 'Initialize a new webpack configuration.',
+                description: 'Initialize a new webpack project.',
                 usage: '[generation-path] [options]',
                 pkg: '@webpack-cli/generators',
             },
