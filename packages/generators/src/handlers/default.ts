@@ -105,7 +105,7 @@ export function generate(self: CustomGenerator): void {
     // Generate README
     self.fs.copyTpl(resolveFile('README.md'), self.destinationPath('README.md'), {});
 
-    // Generate HTML template file
+    // Generate HTML file
     self.fs.copyTpl(resolveFile('template.html'), self.destinationPath('index.html'), {});
 
     // Generate webpack configuration
@@ -118,6 +118,13 @@ export function generate(self: CustomGenerator): void {
             break;
         case 'Typescript':
             self.fs.copyTpl(resolveFile('tsconfig.json'), self.destinationPath('tsconfig.json'));
+            break;
+    }
+
+    // Generate CSS language essentials
+    switch (self.answers.cssType) {
+        case 'PostCSS':
+            self.fs.copyTpl(resolveFile('postcss.config.js'), self.destinationPath('postcss.config,js'));
             break;
     }
 }
