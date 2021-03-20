@@ -56,7 +56,7 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
         self,
         'cssType',
         'Which of the following CSS solutions do you want to use?',
-        ['none', 'CSS', 'SASS', 'LESS', 'Stylus'],
+        ['none', 'CSS', 'SASS', 'LESS', 'Stylus', 'PostCSS'],
         'none',
         self.force,
     );
@@ -74,6 +74,8 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
         case 'Stylus':
             self.dependencies = [...self.dependencies, 'stylus-loader', 'stylus'];
             break;
+        case 'PostCSS':
+            self.dependencies = [...self.dependencies, 'postcss-loader', 'postcss'];
     }
 
     // store all answers for generation
