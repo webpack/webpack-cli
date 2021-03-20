@@ -565,7 +565,7 @@ class WebpackCLI {
                   const inBuiltIn = builtInFlags.find((builtInFlag) => builtInFlag.name === flag);
 
                   if (inBuiltIn) {
-                      return { ...meta, name: flag, group: 'core', ...inBuiltIn };
+                      return { ...meta, name: flag, group: 'core', ...inBuiltIn, configs: meta.configs || [] };
                   }
 
                   return { ...meta, name: flag, group: 'core' };
