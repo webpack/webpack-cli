@@ -124,7 +124,7 @@ export function generate(self: CustomGenerator): void {
     // Generate CSS language essentials
     switch (self.answers.cssType) {
         case 'PostCSS':
-            self.fs.copyTpl(resolveFile('postcss.config.js'), self.destinationPath('postcss.config,js'));
+            self.fs.copyTpl(resolveFile('postcss.config.js'), self.destinationPath('postcss.config.js'));
             break;
     }
 }

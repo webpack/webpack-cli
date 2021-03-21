@@ -55,7 +55,7 @@ module.exports = {
 <% } %><%  if (cssType == 'PostCSS') { %>
             {
                 test: /\.css$/i,
-                use: ["style-loader", "css-loader", "postcss-loader"],
+                use: ['style-loader', 'css-loader', 'postcss-loader'],
             },
 <% } %>
             {
