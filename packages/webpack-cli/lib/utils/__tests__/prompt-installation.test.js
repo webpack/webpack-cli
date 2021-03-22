@@ -5,7 +5,7 @@ const stripAnsi = require('strip-ansi');
 const globalModulesNpmValue = 'test-npm';
 
 jest.setMock('global-modules', globalModulesNpmValue);
-jest.setMock('enquirer', { prompt: jest.fn() });
+jest.setMock('inquirer', { prompt: jest.fn() });
 jest.setMock('../run-command', jest.fn());
 jest.setMock('../package-exists', jest.fn());
 jest.setMock('../get-package-manager', jest.fn());
@@ -14,7 +14,7 @@ const getPackageManager = require('../get-package-manager');
 const packageExists = require('../package-exists');
 const promptInstallation = require('../prompt-installation');
 const runCommand = require('../run-command');
-const { prompt } = require('enquirer');
+const { prompt } = require('inquirer');
 
 describe('promptInstallation', () => {
     beforeAll(() => {
