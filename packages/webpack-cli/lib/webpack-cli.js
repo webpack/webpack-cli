@@ -180,6 +180,7 @@ class WebpackCLI {
                 description: option.description || '',
                 type: mainOptionType,
                 multiple: option.multiple,
+                defaultValue: option.defaultValue,
             };
 
             if (needNegativeOption) {
