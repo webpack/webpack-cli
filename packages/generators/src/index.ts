@@ -20,13 +20,13 @@ class GeneratorsCommand {
             [
                 {
                     name: 'template',
-                    type: String,
+                    configs: [{ type: 'string' }],
                     description: 'Type of template',
                     defaultValue: 'default',
                 },
                 {
                     name: 'force',
-                    type: Boolean,
+                    configs: [{ type: 'boolean' }],
                     description: 'Generate without questions (ideally) using default answers',
                 },
             ],

@@ -92,6 +92,34 @@ describe('CLI API', () => {
             command.parseAsync(['--no-boolean'], { from: 'user' });
         });
 
+        it('should make command with configs option', async (done) => {
+            cli.program.commands = [];
+
+            const command = await cli.makeCommand(
+                {
+                    name: 'command',
+                },
+                [
+                    {
+                        name: 'boolean',
+                        configs: [
+                            {
+                                type: 'boolean',
+                            },
+                        ],
+                        description: 'description',
+                    },
+                ],
+                (options) => {
+                    expect(options).toEqual({ boolean: false });
+
+                    done();
+                },
+            );
+
+            command.parseAsync(['--no-boolean'], { from: 'user' });
+        });
+
         it('should make command with Boolean option and negative value #2', async (done) => {
             cli.program.commands = [];
 
