@@ -75,7 +75,7 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
             self.dependencies = [...self.dependencies, 'stylus-loader', 'stylus'];
             break;
         case 'PostCSS':
-            self.dependencies = [...self.dependencies, 'postcss-loader', 'postcss'];
+            self.dependencies = [...self.dependencies, 'postcss-loader', 'postcss', 'autoprefixer'];
     }
 
     // store all answers for generation
