@@ -6,6 +6,7 @@ const tests = [
     require('./missing-command-packages/generator.test.js'),
     require('./missing-command-packages/serve.test.js'),
     require('./missing-command-packages/info.test.js'),
+    require('./missing-command-packages/configtest.test.js'),
 ];
 
 (async () => {
