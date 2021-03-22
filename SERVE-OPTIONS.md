@@ -10,7 +10,7 @@ Options:
   --env <value...>            Environment passed to the configuration when it is a function.
   --node-env <value>          Sets process.env.NODE_ENV to the specified value.
   --progress [value]          Print compilation progress during build.
-  -j, --json [value]          Prints result as JSON or store it in a file.s
+  -j, --json [value]          Prints result as JSON or store it in a file.
   -d, --devtool <value>       Determine source maps to use.
   --no-devtool                Do not generate source maps.
   --entry <value...>          The entry point(s) of your application e.g. ./src/main.js.
@@ -20,6 +20,7 @@ Options:
   --stats [value]             It instructs webpack on how to treat the stats e.g. verbose.
   --no-stats                  Disable stats output.
   -t, --target <value...>     Sets the build target e.g. node.
+  --no-target                 Negative 'target' option.
   --watch-options-stdin       Stop watching when stdin stream has ended.
   --no-watch-options-stdin    Do not stop watching when stdin stream has ended.
   --bonjour                   Broadcasts the server via ZeroConf networking on start
@@ -27,6 +28,7 @@ Options:
   --liveReload                Enables/Disables live reloading on changing files
   --serveIndex                Enables/Disables serveIndex middleware
   --inline                    Inline mode (set to false to disable including client scripts like livereload)
+  --profile                   Print compilation profile data for progress steps
   --progress                  Print compilation progress in percentage
   --hot-only                  Do not refresh page if HMR fails
   --stdin                     close when stdin ends
@@ -55,7 +57,7 @@ Options:
 Global options:
   --color                     Enable colors on console.
   --no-color                  Disable colors on console.
-  -v, --version               Output the version number of 'webpack' 'webpack-cli' and 'webpack-dev-server' and commands.
+  -v, --version               Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
   -h, --help [verbose]        Display help for commands and options.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
