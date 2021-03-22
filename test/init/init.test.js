@@ -1,5 +1,5 @@
 const { mkdirSync, existsSync, readFileSync } = require('fs');
-const { resolve } = require('path');
+const { join, resolve } = require('path');
 const rimraf = require('rimraf');
 const { run, runPromptWithAnswers } = require('../utils/test-utils');
 
@@ -34,6 +34,11 @@ describe('init command', () => {
         files.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
+
+        // Assert for package.json file content
+        const pkgJson = require(join(assetsPath, 'package.json'));
+        expect(pkgJson.scripts['build'] === 'webpack --mode=production').toBeTruthy();
+        expect(pkgJson.scripts['serve'] === 'webpack serve').toBeTruthy();
     });
 
     it('should generate project when generationPath is supplied', () => {
@@ -46,6 +51,11 @@ describe('init command', () => {
         files.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
+
+        // Assert for package.json file content
+        const pkgJson = require(join(assetsPath, 'package.json'));
+        expect(pkgJson.scripts['build'] === 'webpack --mode=production').toBeTruthy();
+        expect(pkgJson.scripts['serve'] === 'webpack serve').toBeTruthy();
     });
 
     it('should generate folders if non existing generation path is given', () => {
@@ -60,6 +70,11 @@ describe('init command', () => {
         files.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
+
+        // Assert for package.json file content
+        const pkgJson = require(join(assetsPath, 'package.json'));
+        expect(pkgJson.scripts['build'] === 'webpack --mode=production').toBeTruthy();
+        expect(pkgJson.scripts['serve'] === 'webpack serve').toBeTruthy();
     });
 
     it('should configure assets modules by default', () => {
@@ -74,6 +89,11 @@ describe('init command', () => {
         files.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
+
+        // Assert for package.json file content
+        const pkgJson = require(join(assetsPath, 'package.json'));
+        expect(pkgJson.scripts['build'] === 'webpack --mode=production').toBeTruthy();
+        expect(pkgJson.scripts['serve'] === 'webpack serve').toBeTruthy();
 
         const config = readFileSync(resolve(assetsPath, 'webpack.config.js')).toString();
         expect(config).toContain(`test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/,`);
@@ -91,6 +111,11 @@ describe('init command', () => {
         files.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
+
+        // Assert for package.json file content
+        const pkgJson = require(join(assetsPath, 'package.json'));
+        expect(pkgJson.scripts['build'] === 'webpack --mode=production').toBeTruthy();
+        expect(pkgJson.scripts['serve'] === 'webpack serve').toBeTruthy();
     });
 
     it('should generate typescript project correctly', async () => {
@@ -108,6 +133,22 @@ describe('init command', () => {
         files.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
+
+        // Check if package.json is correctly configured
+        const pkgJson = require(join(assetsPath, 'package.json'));
+        expect(pkgJson.scripts['build'] === 'webpack --mode=production').toBeTruthy();
+
+        expect(pkgJson.devDependencies['ts-loader']).toBeTruthy();
+        expect(pkgJson.devDependencies['typescript']).toBeTruthy();
+
+        // Check if webpack.config.js is correctly configured
+        const webpackConfig = require(join(assetsPath, 'webpack.config.js'));
+        expect(webpackConfig.module.rules[0]).toEqual({
+            test: /\\.(ts|tsx)$/,
+            loader: 'ts-loader',
+            exclude: ['/node_modules/'],
+        });
+        expect(webpackConfig.resolve.extensions).toEqual(['.tsx', '.ts', '.js']);
     });
 
     it('should generate ES6 project correctly', async () => {
@@ -125,6 +166,21 @@ describe('init command', () => {
         files.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
+
+        // Check if package.json is correctly configured
+        const pkgJson = require(join(assetsPath, 'package.json'));
+        expect(pkgJson.scripts['build'] === 'webpack --mode=production').toBeTruthy();
+
+        expect(pkgJson.devDependencies['@babel/core']).toBeTruthy();
+        expect(pkgJson.devDependencies['@babel/preset-env']).toBeTruthy();
+        expect(pkgJson.devDependencies['babel-loader']).toBeTruthy();
+
+        // Check if webpack.config.js is correctly configured
+        const webpackConfig = require(join(assetsPath, 'webpack.config.js'));
+        expect(webpackConfig.module.rules[0]).toEqual({
+            test: /\\.(js|jsx)$/,
+            loader: 'babel-loader',
+        });
     });
 
     it('should use sass in project when selected', async () => {
@@ -141,6 +197,13 @@ describe('init command', () => {
         files.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
+
+        // Check if package.json is correctly configured
+        const pkgJson = require(join(assetsPath, 'package.json'));
+        expect(pkgJson.scripts['build'] === 'webpack --mode=production').toBeTruthy();
+
+        expect(pkgJson.devDependencies['sass']).toBeTruthy();
+        expect(pkgJson.devDependencies['sass-loader']).toBeTruthy();
 
         // Check if loaders are added to webpack configuration
         expect(readFileSync(resolve(assetsPath, 'webpack.config.js')).toString()).toContain(
@@ -163,6 +226,13 @@ describe('init command', () => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
 
+        // Check if package.json is correctly configured
+        const pkgJson = require(join(assetsPath, 'package.json'));
+        expect(pkgJson.scripts['build'] === 'webpack --mode=production').toBeTruthy();
+
+        expect(pkgJson.devDependencies['less']).toBeTruthy();
+        expect(pkgJson.devDependencies['less-loader']).toBeTruthy();
+
         // Check if loaders are added to webpack configuration
         expect(readFileSync(resolve(assetsPath, 'webpack.config.js')).toString()).toContain("loader: 'less-loader',");
     });
@@ -182,6 +252,13 @@ describe('init command', () => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
 
+        // Check if package.json is correctly configured
+        const pkgJson = require(join(assetsPath, 'package.json'));
+        expect(pkgJson.scripts['build'] === 'webpack --mode=production').toBeTruthy();
+
+        expect(pkgJson.devDependencies['stylus']).toBeTruthy();
+        expect(pkgJson.devDependencies['stylus-loader']).toBeTruthy();
+
         // Check if loaders are added to webpack configuration
         expect(readFileSync(resolve(assetsPath, 'webpack.config.js')).toString()).toContain("loader: 'stylus-loader',");
     });
@@ -197,6 +274,13 @@ describe('init command', () => {
         files.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
+
+        // Check if package.json is correctly configured
+        const pkgJson = require(join(assetsPath, 'package.json'));
+        expect(pkgJson.scripts['build'] === 'webpack --mode=production').toBeTruthy();
+        expect(pkgJson.scripts['serve'] === 'webpack serve').toBeTruthy();
+
+        expect(pkgJson.devDependencies['webpack-dev-server']).toBeTruthy();
 
         // Check if devServer prop is set correctly in webpack configuration
         expect(require(resolve(assetsPath, 'webpack.config.js')).devServer).toEqual({ open: true, host: 'localhost' });
