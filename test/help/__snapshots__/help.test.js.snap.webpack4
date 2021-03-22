@@ -318,10 +318,9 @@ exports[`help should show help information for 'init' command using the "--help"
 Initialize a new webpack configuration.
 
 Options:
-  --template <value>    Type of template
+  --template <value>    Type of template (default: \\"default\\")
   --force               Generate without questions (ideally) using default
                         answers
-  --no-force            Negative 'force' option.
 
 Global options:
   --color               Enable colors on console.
