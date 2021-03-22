@@ -186,6 +186,22 @@ describe('init command', () => {
         expect(readFileSync(resolve(assetsPath, 'webpack.config.js')).toString()).toContain("loader: 'stylus-loader',");
     });
 
+    it('should configure WDS as opted', async () => {
+        const { stdout, stderr } = await runPromptWithAnswers(assetsPath, ['init'], [ENTER, ENTER, `n${ENTER}`, ENTER]);
+        expect(stdout).toContain('Do you want to use webpack-dev-server?');
+        expect(stdout).toContain('Project has been initialised with webpack!');
+        expect(stderr).toContain('webpack.config.js');
+
+        // Test files
+        const files = ['package.json', 'src', 'src/index.js', 'webpack.config.js'];
+        files.forEach((file) => {
+            expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+        });
+
+        // Check if devServer prop is set correctly in webpack configuration
+        expect(require(resolve(assetsPath, 'webpack.config.js')).devServer).toEqual({ open: true, host: 'localhost' });
+    });
+
     it('should use postcss in project when selected', async () => {
         const { stdout, stderr } = await runPromptWithAnswers(
             assetsPath,

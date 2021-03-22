@@ -1337,7 +1337,7 @@ class WebpackCLI {
         } else {
             const { interpret } = this.utils;
 
-            // Order defines the priority, in increasing order
+            // Order defines the priority, in decreasing order
             const defaultConfigFiles = ['webpack.config', '.webpack/webpack.config', '.webpack/webpackfile']
                 .map((filename) =>
                     // Since .cjs is not available on interpret side add it manually to default config extension list

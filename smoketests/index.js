@@ -2,6 +2,7 @@
 const tests = [
     require('./missing-packages/webpack-dev-server.test.js'),
     require('./missing-packages/webpack.test.js'),
+    require('./missing-packages/webpack-bundle-analyzer.test.js'),
     require('./missing-command-packages/generator.test.js'),
     require('./missing-command-packages/serve.test.js'),
     require('./missing-command-packages/info.test.js'),
