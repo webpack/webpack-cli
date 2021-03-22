@@ -1,7 +1,7 @@
 'use strict';
 
 const { resolve } = require('path');
-const { run, isWindows } = require('../../../utils/test-utils');
+const { run, isWindows } = require('../../../../utils/test-utils');
 
 describe('custom config file', () => {
     it('should work with cjs format', () => {

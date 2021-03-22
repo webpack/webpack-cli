@@ -1,4 +1,4 @@
-const { run } = require('../../../utils/test-utils');
+const { run } = require('../../../../utils/test-utils');
 const { existsSync } = require('fs');
 const { resolve } = require('path');
 

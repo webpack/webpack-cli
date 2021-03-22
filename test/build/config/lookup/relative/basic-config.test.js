@@ -1,6 +1,6 @@
 'use strict';
 
-const { run } = require('../../../utils/test-utils');
+const { run } = require('../../../../utils/test-utils');
 
 describe('relative path to config', () => {
     it('should work', () => {

@@ -3,7 +3,7 @@
 const { existsSync } = require('fs');
 const { resolve } = require('path');
 
-const { run } = require('../../../utils/test-utils');
+const { run } = require('../../../../utils/test-utils');
 
 describe('dotfolder single config lookup', () => {
     it('should find a webpack configuration in a dotfolder', () => {

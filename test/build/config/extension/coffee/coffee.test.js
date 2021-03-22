@@ -1,4 +1,4 @@
-const { run } = require('../../../utils/test-utils');
+const { run } = require('../../../../utils/test-utils');
 
 describe('webpack cli', () => {
     it('should support coffeescript file as flag', () => {

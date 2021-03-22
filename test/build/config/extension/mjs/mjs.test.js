@@ -1,4 +1,4 @@
-const { run, isWindows } = require('../../../utils/test-utils');
+const { run, isWindows } = require('../../../../utils/test-utils');
 
 describe('webpack cli', () => {
     it('should support mjs config format', () => {

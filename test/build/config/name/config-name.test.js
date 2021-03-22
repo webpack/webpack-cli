@@ -1,6 +1,6 @@
 'use strict';
 
-const { run } = require('../../utils/test-utils');
+const { run } = require('../../../utils/test-utils');
 
 describe('--config-name flag', () => {
     it('should select only the config whose name is passed with --config-name', () => {

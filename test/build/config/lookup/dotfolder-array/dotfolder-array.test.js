@@ -1,7 +1,7 @@
 'use strict';
 const { existsSync } = require('fs');
 const { resolve } = require('path');
-const { run } = require('../../../utils/test-utils');
+const { run } = require('../../../../utils/test-utils');
 
 describe('dotfolder array config lookup', () => {
     it('should find a webpack array configuration in a dotfolder', () => {
