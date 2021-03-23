@@ -67,7 +67,7 @@ npx webpack-cli --help verbose
   configtest|t [config-path]                 Validate a webpack configuration.
   help|h [command] [option]                  Display help for commands and options.
   info|i [options]                           Outputs information about your system.
-  init|c [scaffold...] [options]             Initialize a new webpack configuration.
+  init|c [generation-path] [options]         Initialize a new webpack project.
   loader|l [output-path]                     Scaffold a loader.
   migrate|m <config-path> [new-config-path]  Migrate a configuration to a new version.
   plugin|p [output-path]                     Scaffold a plugin.
