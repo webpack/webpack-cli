@@ -51,30 +51,32 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
         self.dependencies = [...self.dependencies, 'html-webpack-plugin'];
     }
 
+    // Store all answers for generation
+    self.answers = { ...self.answers, langType, devServer, htmlWebpackPlugin };
+
     // Handle CSS solutions
     const { cssType } = await Question.List(
         self,
         'cssType',
         'Which of the following CSS solutions do you want to use?',
-        ['none', 'CSS', 'SASS', 'LESS', 'Stylus', 'PostCSS'],
+        ['none', 'CSS only', 'SASS', 'LESS', 'Stylus'],
         'none',
         self.force,
     );
 
-    const { isCSS } = await Question.Confirm(
-        self,
-        'isCSS',
-        `Will you be using CSS styles with ${cssType} in your project?`,
-        true,
-        self.force,
-    );
+    if (cssType == 'none') {
+        self.answers = { ...self.answers, cssType };
+        return;
+    }
 
-    const { isPostCSS } = await Question.Confirm(self, 'isCSS', 'Will you be using PostCSS in your project?', true, self.force);
+    const { isCSS } =
+        cssType != 'CSS only'
+            ? await Question.Confirm(self, 'isCSS', `Will you be using CSS styles along with ${cssType} in your project?`, true, self.force)
+            : true;
+
+    const { isPostCSS } = await Question.Confirm(self, 'isPostCSS', 'Will you be using PostCSS in your project?', true, self.force);
 
     switch (cssType) {
-        case 'CSS':
-            self.dependencies = [...self.dependencies, 'style-loader', 'css-loader'];
-            break;
         case 'SASS':
             self.dependencies = [...self.dependencies, 'sass-loader', 'sass'];
             break;
@@ -84,12 +86,17 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
         case 'Stylus':
             self.dependencies = [...self.dependencies, 'stylus-loader', 'stylus'];
             break;
-        case 'PostCSS':
-            self.dependencies = [...self.dependencies, 'postcss-loader', 'postcss', 'autoprefixer'];
     }
 
-    // store all answers for generation
-    self.answers = { ...self.answers, langType, devServer, htmlWebpackPlugin };
+    if (isCSS) {
+        self.dependencies = [...self.dependencies, 'style-loader', 'css-loader'];
+    }
+
+    if (isPostCSS) {
+        self.dependencies = [...self.dependencies, 'postcss-loader', 'postcss', 'autoprefixer'];
+    }
+
+    self.answers = { ...self.answers, cssType, isCSS, isPostCSS };
 }
 
 /**
