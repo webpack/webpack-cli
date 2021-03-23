@@ -61,6 +61,16 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
         self.force,
     );
 
+    const { isCSS } = await Question.Confirm(
+        self,
+        'isCSS',
+        `Will you be using CSS styles with ${cssType} in your project?`,
+        true,
+        self.force,
+    );
+
+    const { isPostCSS } = await Question.Confirm(self, 'isCSS', 'Will you be using PostCSS in your project?', true, self.force);
+
     switch (cssType) {
         case 'CSS':
             self.dependencies = [...self.dependencies, 'style-loader', 'css-loader'];
@@ -79,7 +89,7 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
     }
 
     // store all answers for generation
-    self.answers = { ...self.answers, langType, devServer, htmlWebpackPlugin, cssType };
+    self.answers = { ...self.answers, langType, devServer, htmlWebpackPlugin };
 }
 
 /**
