@@ -228,6 +228,8 @@ class WebpackCLI {
                     })
                     .default(mainOption.defaultValue);
 
+                optionForCommand.helpLevel = option.helpLevel;
+
                 command.addOption(optionForCommand);
             } else if (mainOption.type.has(String)) {
                 let skipDefault = true;
@@ -243,15 +245,21 @@ class WebpackCLI {
                     })
                     .default(mainOption.defaultValue);
 
+                optionForCommand.helpLevel = option.helpLevel;
+
                 command.addOption(optionForCommand);
             } else if (mainOption.type.has(Boolean)) {
                 const optionForCommand = new Option(mainOption.flags, mainOption.description).default(mainOption.defaultValue);
+
+                optionForCommand.helpLevel = option.helpLevel;
 
                 command.addOption(optionForCommand);
             } else {
                 const optionForCommand = new Option(mainOption.flags, mainOption.description)
                     .argParser(Array.from(mainOption.type)[0])
                     .default(mainOption.defaultValue);
+
+                optionForCommand.helpLevel = option.helpLevel;
 
                 command.addOption(optionForCommand);
             }
@@ -281,18 +289,25 @@ class WebpackCLI {
                 })
                 .default(mainOption.defaultValue);
 
+            optionForCommand.helpLevel = option.helpLevel;
+
             command.addOption(optionForCommand);
         } else if (mainOption.type.size === 0 && negativeOption) {
             const optionForCommand = new Option(mainOption.flags, mainOption.description);
 
             // Hide stub option
             optionForCommand.hideHelp();
+            optionForCommand.helpLevel = option.helpLevel;
 
             command.addOption(optionForCommand);
         }
 
         if (negativeOption) {
-            command.addOption(new Option(negativeOption.flags, negativeOption.description));
+            const optionForCommand = new Option(negativeOption.flags, negativeOption.description);
+
+            optionForCommand.helpLevel = option.helpLevel;
+
+            command.addOption(optionForCommand);
         }
     }
 
@@ -577,7 +592,7 @@ class WebpackCLI {
             .concat(builtInFlags.filter((builtInFlag) => !coreFlags.find((coreFlag) => builtInFlag.name === coreFlag.name)))
             .concat(coreFlags)
             .map((option) => {
-                option.help = minimumHelpFlags.includes(option.name) ? 'minimum' : 'verbose';
+                option.helpLevel = minimumHelpFlags.includes(option.name) ? 'minimum' : 'verbose';
 
                 return option;
             });
@@ -934,8 +949,6 @@ class WebpackCLI {
             const isCommandHelp = options.length === 1 && !isOption(options[0]);
 
             if (isGlobalHelp || isCommandHelp) {
-                const cliAPI = this;
-
                 program.configureHelp({
                     sortSubcommands: true,
                     // Support multiple aliases
@@ -968,30 +981,18 @@ class WebpackCLI {
                         }`;
                     },
                     visibleOptions: function visibleOptions(command) {
-                        const options = cliAPI.getBuiltInOptions();
-
                         return command.options.filter((option) => {
                             if (option.hidden) {
                                 return false;
                             }
 
-                            if (!isVerbose) {
-                                const foundOption = options.find((flag) => {
-                                    if (option.negate && flag.negative) {
-                                        return `no-${flag.name}` === option.name();
-                                    }
-
-                                    return flag.name === option.name();
-                                });
-
-                                if (foundOption) {
-                                    return foundOption.help === 'minimum';
-                                }
-
-                                return true;
+                            switch (option.helpLevel) {
+                                case 'verbose':
+                                    return isVerbose;
+                                case 'minimum':
+                                default:
+                                    return true;
                             }
-
-                            return true;
                         });
                     },
                     padWidth(command, helper) {

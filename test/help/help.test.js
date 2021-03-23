@@ -198,7 +198,7 @@ describe('help', () => {
         {
             name: 'loader',
             alias: 'l',
-            helpOutput: 'webpack loader|l loader [output-path]',
+            helpOutput: 'webpack loader|l [output-path]',
         },
         {
             name: 'migrate',
@@ -208,7 +208,7 @@ describe('help', () => {
         {
             name: 'plugin',
             alias: 'p',
-            helpOutput: 'webpack plugin|p plugin [output-path]',
+            helpOutput: 'webpack plugin|p [output-path]',
         },
         {
             name: 'configtest',
