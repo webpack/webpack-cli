@@ -74,7 +74,13 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
             ? await Question.Confirm(self, 'isCSS', `Will you be using CSS styles along with ${cssType} in your project?`, true, self.force)
             : { isCSS: true };
 
-    const { isPostCSS } = await Question.Confirm(self, 'isPostCSS', 'Will you be using PostCSS in your project?', true, self.force);
+    const { isPostCSS } = await Question.Confirm(
+        self,
+        'isPostCSS',
+        'Will you be using PostCSS in your project?',
+        cssType == 'CSS only',
+        self.force,
+    );
 
     switch (cssType) {
         case 'SASS':

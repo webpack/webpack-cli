@@ -190,7 +190,7 @@ describe('init command', () => {
         const { stdout, stderr } = await runPromptWithAnswers(
             assetsPath,
             ['init'],
-            [`${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${DOWN}${DOWN}${ENTER}`],
+            [`${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${DOWN}${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`],
         );
         expect(stdout).toContain('Project has been initialised with webpack!');
         expect(stderr).toContain('webpack.config.js');
@@ -218,7 +218,7 @@ describe('init command', () => {
         const { stdout, stderr } = await runPromptWithAnswers(
             assetsPath,
             ['init'],
-            [`${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${DOWN}${DOWN}${DOWN}${ENTER}`],
+            [`${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${DOWN}${DOWN}${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`],
         );
         expect(stdout).toContain('Project has been initialised with webpack!');
         expect(stderr).toContain('webpack.config.js');
@@ -239,14 +239,14 @@ describe('init command', () => {
         // Check if loaders are added to webpack configuration
         const webpackConfig = readFileSync(join(assetsPath, 'webpack.config.js'), 'utf8');
         expect(webpackConfig).toContain('test: /\\.less$/i,');
-        expect(webpackConfig).toContain(`loader: 'less-loader',`);
+        expect(webpackConfig).toContain(`'less-loader'`);
     });
 
     it('should use stylus in project when selected', async () => {
         const { stdout, stderr } = await runPromptWithAnswers(
             assetsPath,
             ['init'],
-            [`${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${DOWN}${DOWN}${DOWN}${DOWN}${ENTER}`],
+            [`${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${DOWN}${DOWN}${DOWN}${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`],
         );
         expect(stdout).toContain('Project has been initialised with webpack!');
         expect(stderr).toContain('webpack.config.js');
@@ -267,7 +267,7 @@ describe('init command', () => {
         // Check if loaders are added to webpack configuration
         const webpackConfig = readFileSync(join(assetsPath, 'webpack.config.js'), 'utf8');
         expect(webpackConfig).toContain('test: /\\.styl$/,');
-        expect(webpackConfig).toContain(`loader: 'stylus-loader',`);
+        expect(webpackConfig).toContain(`'stylus-loader'`);
     });
 
     it('should configure WDS as opted', async () => {
@@ -305,7 +305,7 @@ describe('init command', () => {
         const { stdout, stderr } = await runPromptWithAnswers(
             assetsPath,
             ['init'],
-            [`${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${DOWN}${DOWN}${DOWN}${DOWN}${DOWN}${ENTER}`],
+            [`${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${DOWN}${ENTER}`, ENTER],
         );
         expect(stdout).toContain('Project has been initialised with webpack!');
         expect(stderr).toContain('webpack.config.js');
