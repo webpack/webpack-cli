@@ -35,49 +35,27 @@ module.exports = {
 <% } %><%  if (isCSS && !isPostCSS) { %>
             {
                 test: /\.css$/i,
-                use: [
-                    'style-loader',
-                    'css-loader',
-                ],
+                use: ['style-loader','css-loader'],
             },        
 <% } %><%  if (cssType == 'SASS') { %>
             {
                 test: /\.s[ac]ss$/i,
-                use: [
-                    'style-loader',
-                    'css-loader',<% if (isPostCSS) { %>
-                    'postcss-loader',<% } %>
-                    'sass-loader',
-                ],
+                use: ['style-loader', 'css-loader', <% if (isPostCSS) { %>'postcss-loader', <% } %>'sass-loader'],
             },
 <% } %><%  if (cssType == 'LESS') { %>
             {
                 test: /\.less$/i,
-                use: [<% if (isPostCSS) { %>
-                    'style-loader',
-                    'css-loader',
-                    'postcss-loader',<% } %>
-                    'less-loader',
-                ]
+                use: [<% if (isPostCSS) { %>'style-loader', 'css-loader', 'postcss-loader', <% } %>'less-loader'],
             },
 <% } %><%  if (cssType == 'Stylus') { %>
             {
                 test: /\.styl$/,
-                use: [<% if (isPostCSS) { %>
-                    'style-loader',
-                    'css-loader',
-                    'postcss-loader',<% } %>
-                    'stylus-loader',
-                ],
+                use: [<% if (isPostCSS) { %>'style-loader', 'css-loader', 'postcss-loader', <% } %>'stylus-loader'],
             },
 <% } %><%  if (isPostCSS && isCSS) { %>
             {
                 test: /\.css$/i,
-                use: [
-                    'style-loader',
-                    'css-loader',
-                    'postcss-loader',
-                ],
+                use: [ 'style-loader', 'css-loader', 'postcss-loader'],
             },
 <% } %>
             {
