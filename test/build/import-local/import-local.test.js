@@ -13,7 +13,6 @@ describe('import local', () => {
         const { exitCode, stderr, stdout } = run(__dirname, [], {
             env: { WEBPACK_CLI_SKIP_IMPORT_LOCAL: true },
         });
-        console.log({ exitCode, stderr, stdout });
         expect(importLocalMock).toHaveBeenCalledTimes(0);
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
