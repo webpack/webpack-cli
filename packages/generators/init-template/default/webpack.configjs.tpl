@@ -32,30 +32,52 @@ module.exports = {
                 loader: 'ts-loader',
                 exclude: ['/node_modules/'],
             },
-<% } %><%  if (cssType == 'CSS') { %>
+<% } %><%  if (isCSS && !isPostCSS) { %>
             {
                 test: /\.css$/i,
-                use: ['style-loader', 'css-loader'],
+                use: [
+                    'style-loader',
+                    'css-loader',
+                ],
             },        
 <% } %><%  if (cssType == 'SASS') { %>
             {
                 test: /\.s[ac]ss$/i,
-                use: ['style-loader', 'css-loader', 'sass-loader'],
+                use: [
+                    'style-loader',
+                    'css-loader',<% if (isPostCSS) { %>
+                    'postcss-loader',<% } %>
+                    'sass-loader',
+                ],
             },
 <% } %><%  if (cssType == 'LESS') { %>
             {
                 test: /\.less$/i,
-                loader: 'less-loader',
+                use: [<% if (isPostCSS) { %>
+                    'style-loader',
+                    'css-loader',
+                    'postcss-loader',<% } %>
+                    'less-loader',
+                ]
             },
 <% } %><%  if (cssType == 'Stylus') { %>
             {
                 test: /\.styl$/,
-                loader: 'stylus-loader',
+                use: [<% if (isPostCSS) { %>
+                    'style-loader',
+                    'css-loader',
+                    'postcss-loader',<% } %>
+                    'stylus-loader',
+                ],
             },
-<% } %><%  if (cssType == 'PostCSS') { %>
+<% } %><%  if (isPostCSS && isCSS) { %>
             {
                 test: /\.css$/i,
-                use: ['style-loader', 'css-loader', 'postcss-loader'],
+                use: [
+                    'style-loader',
+                    'css-loader',
+                    'postcss-loader',
+                ],
             },
 <% } %>
             {

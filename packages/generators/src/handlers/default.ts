@@ -138,10 +138,8 @@ export function generate(self: CustomGenerator): void {
             break;
     }
 
-    // Generate CSS language essentials
-    switch (self.answers.cssType) {
-        case 'PostCSS':
-            self.fs.copyTpl(resolveFile('postcss.config.js'), self.destinationPath('postcss.config.js'));
-            break;
+    // Generate postcss configuration
+    if (self.answers.isPostCSS) {
+        self.fs.copyTpl(resolveFile('postcss.config.js'), self.destinationPath('postcss.config.js'));
     }
 }
