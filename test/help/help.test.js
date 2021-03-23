@@ -1,5 +1,6 @@
 'use strict';
 const { run } = require('../utils/test-utils');
+const stripAnsi = require('strip-ansi');
 
 // TODO fix it
 const isMacOS = process.platform === 'darwin';
@@ -10,7 +11,7 @@ describe('help', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toMatchSnapshot();
+        expect(stripAnsi(stdout)).toMatchSnapshot();
     });
 
     it.skip('should show help information using the "--help" option with the "verbose" value', () => {
@@ -18,14 +19,14 @@ describe('help', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toMatchSnapshot();
+        expect(stripAnsi(stdout)).toMatchSnapshot();
     });
 
     it.skip('should show help information using the "--help" option with the "verbose" value #2', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--help=verbose']);
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toMatchSnapshot();
+        expect(stripAnsi(stdout)).toMatchSnapshot();
     });
 
     it('should show help information using command syntax', () => {
@@ -34,7 +35,7 @@ describe('help', () => {
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
 
-        expect(stdout).toMatchSnapshot();
+        expect(stripAnsi(stdout)).toMatchSnapshot();
     });
 
     it('should show the same information using the "--help" option and command syntax', () => {
@@ -60,7 +61,7 @@ describe('help', () => {
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('\x1b[1m');
 
-        expect(stdout).toMatchSnapshot();
+        expect(stripAnsi(stdout)).toMatchSnapshot();
     });
 
     it('should show help information and respect the "--no-color" flag using the "--help" option', () => {
@@ -69,7 +70,7 @@ describe('help', () => {
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
 
-        expect(stdout).toMatchSnapshot();
+        expect(stripAnsi(stdout)).toMatchSnapshot();
     });
 
     const commands = [
@@ -127,7 +128,7 @@ describe('help', () => {
             expect(exitCode).toBe(0);
             expect(stderr).toBeFalsy();
             expect(stdout).toContain(`webpack ${name === 'build' || name === 'bundle' || name === 'b' ? '' : name}`);
-            expect(stdout).toMatchSnapshot();
+            expect(stripAnsi(stdout)).toMatchSnapshot();
         });
 
         it(`should show help information for '${name}' command using the "--help verbose" option`, () => {
@@ -203,7 +204,7 @@ describe('help', () => {
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
 
-        expect(stdout).toMatchSnapshot();
+        expect(stripAnsi(stdout)).toMatchSnapshot();
     });
 
     it('should show help information and taking precedence when "--help" and "--version" option using together', () => {
@@ -212,7 +213,7 @@ describe('help', () => {
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
 
-        expect(stdout).toMatchSnapshot();
+        expect(stripAnsi(stdout)).toMatchSnapshot();
     });
 
     it('should show help information using the "help --mode" option', () => {
@@ -220,7 +221,7 @@ describe('help', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toMatchSnapshot();
+        expect(stripAnsi(stdout)).toMatchSnapshot();
     });
 
     it('should show help information using the "help --target" option', () => {
@@ -228,7 +229,7 @@ describe('help', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toMatchSnapshot();
+        expect(stripAnsi(stdout)).toMatchSnapshot();
     });
 
     it('should show help information using the "help --stats" option', () => {
@@ -236,7 +237,7 @@ describe('help', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toMatchSnapshot();
+        expect(stripAnsi(stdout)).toMatchSnapshot();
     });
 
     it('should show help information using the "help --no-stats" option', () => {
@@ -245,7 +246,7 @@ describe('help', () => {
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
 
-        expect(stdout).toMatchSnapshot();
+        expect(stripAnsi(stdout)).toMatchSnapshot();
     });
 
     it('should show help information using the "help --mode" option', () => {
@@ -254,7 +255,7 @@ describe('help', () => {
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
 
-        expect(stdout).toMatchSnapshot();
+        expect(stripAnsi(stdout)).toMatchSnapshot();
     });
 
     it('should show help information using the "help serve --mode" option', () => {
@@ -263,7 +264,7 @@ describe('help', () => {
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
 
-        expect(stdout).toMatchSnapshot();
+        expect(stripAnsi(stdout)).toMatchSnapshot();
     });
 
     it('should show help information using the "help --color" option', () => {
@@ -273,7 +274,7 @@ describe('help', () => {
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('\x1b[1m');
 
-        expect(stdout).toMatchSnapshot();
+        expect(stripAnsi(stdout)).toMatchSnapshot();
     });
 
     it('should show help information using the "help --no-color" option', () => {
@@ -281,7 +282,7 @@ describe('help', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toMatchSnapshot();
+        expect(stripAnsi(stdout)).toMatchSnapshot();
     });
 
     it('should show help information using the "help serve --color" option', () => {
@@ -289,7 +290,9 @@ describe('help', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toMatchSnapshot();
+        expect(stdout).toContain('\x1b[1m');
+
+        expect(stripAnsi(stdout)).toMatchSnapshot();
     });
 
     it('should show help information using the "help serve --no-color" option', () => {
@@ -297,7 +300,7 @@ describe('help', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toMatchSnapshot();
+        expect(stripAnsi(stdout)).toMatchSnapshot();
     });
 
     it('should show help information using the "help --version" option', () => {
@@ -306,7 +309,7 @@ describe('help', () => {
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
 
-        expect(stdout).toMatchSnapshot();
+        expect(stripAnsi(stdout)).toMatchSnapshot();
     });
 
     it('should show help information using the "help -v" option', () => {
@@ -315,7 +318,7 @@ describe('help', () => {
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
 
-        expect(stdout).toMatchSnapshot();
+        expect(stripAnsi(stdout)).toMatchSnapshot();
     });
 
     it('should log error for invalid command using the "--help" option', () => {
