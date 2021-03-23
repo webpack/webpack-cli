@@ -132,7 +132,6 @@ const runTestWithHelp = (package, cliArgs = [], logMessage, isSubPackage = false
 };
 
 module.exports = {
-    swapPkgName,
     runTest,
     runTestWithHelp,
 };
