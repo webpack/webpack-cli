@@ -214,6 +214,34 @@ describe('init command', () => {
         expect(webpackConfig).toContain(`use: ['style-loader', 'css-loader', 'sass-loader'],`);
     });
 
+    it('should use sass with postcss in project when selected', async () => {
+        const { stdout, stderr } = await runPromptWithAnswers(
+            assetsPath,
+            ['init'],
+            [`${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${DOWN}${DOWN}${ENTER}`, `n${ENTER}`, `${ENTER}`],
+        );
+        expect(stdout).toContain('Project has been initialised with webpack!');
+        expect(stderr).toContain('webpack.config.js');
+
+        // Test files
+        const files = ['package.json', 'src', 'src/index.js', 'webpack.config.js', 'postcss.config.js'];
+        files.forEach((file) => {
+            expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+        });
+
+        // Check if package.json is correctly configured
+        const pkgJSON = readFromPkgJSON(assetsPath);
+        expect(pkgJSON.scripts['build'] === 'webpack --mode=production').toBeTruthy();
+
+        expect(pkgJSON.devDependencies['sass']).toBeTruthy();
+        expect(pkgJSON.devDependencies['sass-loader']).toBeTruthy();
+
+        // Check if loaders are added to webpack configuration
+        const webpackConfig = readFileSync(join(assetsPath, 'webpack.config.js'), 'utf8');
+        expect(webpackConfig).toContain('test: /\\.s[ac]ss$/i,');
+        expect(webpackConfig).toContain(`use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],`);
+    });
+
     it('should use less in project when selected', async () => {
         const { stdout, stderr } = await runPromptWithAnswers(
             assetsPath,
