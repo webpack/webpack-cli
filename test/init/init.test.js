@@ -272,4 +272,28 @@ describe('init command', () => {
         // Check if the generated webpack configuration matches the snapshot
         expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
     });
+
+    it('should configure html-webpack-plugin as opted', async () => {
+        const { stdout, stderr } = await runPromptWithAnswers(assetsPath, ['init'], [ENTER, `n${ENTER}`, ENTER, ENTER]);
+        expect(stdout).toContain('Do you want to simplify the creation of HTML files for your bundle?');
+        expect(stdout).toContain('Project has been initialised with webpack!');
+        expect(stderr).toContain('webpack.config.js');
+
+        // Test files
+        const files = ['package.json', 'src', 'src/index.js', 'webpack.config.js'];
+        files.forEach((file) => {
+            expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+        });
+
+        // Check if package.json is correctly configured
+        const pkgJSON = readFromPkgJSON(assetsPath);
+        expect(pkgJSON.scripts['build'] === 'webpack --mode=production').toBeTruthy();
+
+        expect(pkgJSON.devDependencies['html-webpack-plugin']).toBeTruthy();
+
+        // Check if html-webpack-plugin is correctly configured
+        const webpackConfig = readFileSync(join(assetsPath, 'webpack.config.js'), 'utf8');
+        expect(webpackConfig).toContain(`const HtmlWebpackPlugin = require('html-webpack-plugin')`);
+        expect(webpackConfig).toContain(`new HtmlWebpackPlugin({`);
+    });
 });
