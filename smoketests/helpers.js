@@ -7,8 +7,6 @@ const stripAnsi = require('strip-ansi');
 
 const ROOT_PATH = process.env.GITHUB_WORKSPACE ? process.env.GITHUB_WORKSPACE : path.resolve(__dirname, '..');
 
-const getBinPath = () => path.resolve(ROOT_PATH, './packages/webpack-cli/bin/cli.js');
-
 const getPkgPath = (pkg, isSubPackage) => {
     const pkgPath = isSubPackage ? `./node_modules/@webpack-cli/${pkg}` : `./node_modules/${pkg}`;
     return path.resolve(ROOT_PATH, pkgPath);
@@ -21,7 +19,7 @@ const swapPkgName = (current, isSubPackage = false) => {
     fs.renameSync(getPkgPath(current, isSubPackage), getPkgPath(next, isSubPackage));
 };
 
-const CLI_ENTRY_PATH = getBinPath();
+const CLI_ENTRY_PATH = path.resolve(ROOT_PATH, './packages/webpack-cli/bin/cli.js');
 
 const runTest = (package, cliArgs = [], logMessage, isSubPackage = false) => {
     // Simulate package missing
@@ -134,7 +132,6 @@ const runTestWithHelp = (package, cliArgs = [], logMessage, isSubPackage = false
 };
 
 module.exports = {
-    getBinPath,
     swapPkgName,
     runTest,
     runTestWithHelp,
