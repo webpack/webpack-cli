@@ -56,7 +56,7 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
         self,
         'cssType',
         'Which of the following CSS solutions do you want to use?',
-        ['none', 'CSS', 'SASS', 'LESS', 'Stylus'],
+        ['none', 'CSS', 'SASS', 'LESS', 'Stylus', 'PostCSS'],
         'none',
         self.force,
     );
@@ -74,6 +74,8 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
         case 'Stylus':
             self.dependencies = [...self.dependencies, 'stylus-loader', 'stylus'];
             break;
+        case 'PostCSS':
+            self.dependencies = [...self.dependencies, 'postcss-loader', 'postcss', 'autoprefixer'];
     }
 
     // store all answers for generation
@@ -103,7 +105,7 @@ export function generate(self: CustomGenerator): void {
     // Generate README
     self.fs.copyTpl(resolveFile('README.md'), self.destinationPath('README.md'), {});
 
-    // Generate HTML template file
+    // Generate HTML file
     self.fs.copyTpl(resolveFile('template.html'), self.destinationPath('index.html'), {});
 
     // Generate webpack configuration
@@ -116,6 +118,13 @@ export function generate(self: CustomGenerator): void {
             break;
         case 'Typescript':
             self.fs.copyTpl(resolveFile('tsconfig.json'), self.destinationPath('tsconfig.json'));
+            break;
+    }
+
+    // Generate CSS language essentials
+    switch (self.answers.cssType) {
+        case 'PostCSS':
+            self.fs.copyTpl(resolveFile('postcss.config.js'), self.destinationPath('postcss.config.js'));
             break;
     }
 }

@@ -1,7 +1,7 @@
 const { mkdirSync, existsSync, readFileSync } = require('fs');
 const { resolve } = require('path');
 const rimraf = require('rimraf');
-const { run, runPromptWithAnswers } = require('../utils/test-utils');
+const { run, runPromptWithAnswers, isWindows } = require('../utils/test-utils');
 
 const assetsPath = resolve(__dirname, './test-assets');
 const ENTER = '\x0D';
@@ -192,6 +192,11 @@ describe('init command', () => {
         expect(stdout).toContain('Project has been initialised with webpack!');
         expect(stderr).toContain('webpack.config.js');
 
+        // TODO: Look into it later, skip for windows on Node v14
+        if (isWindows && process.version.startsWith('v14')) {
+            return;
+        }
+
         // Test files
         const files = ['package.json', 'src', 'src/index.js', 'webpack.config.js'];
         files.forEach((file) => {
@@ -200,5 +205,32 @@ describe('init command', () => {
 
         // Check if devServer prop is set correctly in webpack configuration
         expect(require(resolve(assetsPath, 'webpack.config.js')).devServer).toEqual({ open: true, host: 'localhost' });
+    });
+
+    it('should use postcss in project when selected', async () => {
+        const { stdout, stderr } = await runPromptWithAnswers(
+            assetsPath,
+            ['init'],
+            [`${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${DOWN}${DOWN}${DOWN}${DOWN}${DOWN}${ENTER}`],
+        );
+        expect(stdout).toContain('Project has been initialised with webpack!');
+        expect(stderr).toContain('webpack.config.js');
+
+        // TODO: Look into it later, skip for windows on Node v14
+        if (isWindows && process.version.startsWith('v14')) {
+            return;
+        }
+
+        // Test files
+        const files = ['package.json', 'src', 'src/index.js', 'webpack.config.js', 'postcss.config.js'];
+
+        files.forEach((file) => {
+            expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+        });
+
+        // Check if loaders are added to webpack configuration
+        expect(readFileSync(resolve(assetsPath, 'webpack.config.js')).toString()).toContain(
+            "use: ['style-loader', 'css-loader', 'postcss-loader'],",
+        );
     });
 });
