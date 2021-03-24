@@ -100,7 +100,7 @@ Commands:
   configtest|t [config-path]                 Validate a webpack configuration.
   help|h [command] [option]                  Display help for commands and options.
   info|i [options]                           Outputs information about your system.
-  init|c [generation-path] [options]         Initialize a new webpack configuration.
+  init|c [generation-path] [options]         Initialize a new webpack project.
   loader|l [output-path]                     Scaffold a loader.
   migrate|m <config-path> [new-config-path]  Migrate a configuration to a new version.
   plugin|p [output-path]                     Scaffold a plugin.
@@ -156,7 +156,7 @@ Commands:
   configtest|t [config-path]                 Validate a webpack configuration.
   help|h [command] [option]                  Display help for commands and options.
   info|i [options]                           Outputs information about your system.
-  init|c [generation-path] [options]         Initialize a new webpack configuration.
+  init|c [generation-path] [options]         Initialize a new webpack project.
   loader|l [output-path]                     Scaffold a loader.
   migrate|m <config-path> [new-config-path]  Migrate a configuration to a new version.
   plugin|p [output-path]                     Scaffold a plugin.
@@ -212,7 +212,7 @@ Commands:
   configtest|t [config-path]                 Validate a webpack configuration.
   help|h [command] [option]                  Display help for commands and options.
   info|i [options]                           Outputs information about your system.
-  init|c [generation-path] [options]         Initialize a new webpack configuration.
+  init|c [generation-path] [options]         Initialize a new webpack project.
   loader|l [output-path]                     Scaffold a loader.
   migrate|m <config-path> [new-config-path]  Migrate a configuration to a new version.
   plugin|p [output-path]                     Scaffold a plugin.
@@ -323,7 +323,7 @@ Made with ♥ by the webpack team."
 exports[`help should show help information for 'init' command using the "--help" option 1`] = `
 "Usage: webpack init|c [generation-path] [options]
 
-Initialize a new webpack configuration.
+Initialize a new webpack project.
 
 Options:
   --template <value>    Type of template (default: \\"default\\")
@@ -577,7 +577,7 @@ Commands:
   configtest|t [config-path]                 Validate a webpack configuration.
   help|h [command] [option]                  Display help for commands and options.
   info|i [options]                           Outputs information about your system.
-  init|c [generation-path] [options]         Initialize a new webpack configuration.
+  init|c [generation-path] [options]         Initialize a new webpack project.
   loader|l [output-path]                     Scaffold a loader.
   migrate|m <config-path> [new-config-path]  Migrate a configuration to a new version.
   plugin|p [output-path]                     Scaffold a plugin.
@@ -633,7 +633,7 @@ Commands:
   configtest|t [config-path]                 Validate a webpack configuration.
   help|h [command] [option]                  Display help for commands and options.
   info|i [options]                           Outputs information about your system.
-  init|c [generation-path] [options]         Initialize a new webpack configuration.
+  init|c [generation-path] [options]         Initialize a new webpack project.
   loader|l [output-path]                     Scaffold a loader.
   migrate|m <config-path> [new-config-path]  Migrate a configuration to a new version.
   plugin|p [output-path]                     Scaffold a plugin.
