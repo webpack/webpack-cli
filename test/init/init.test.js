@@ -269,7 +269,7 @@ describe('init command', () => {
         expect(webpackConfig).toContain('test: /\\.s[ac]ss$/i,');
         expect(webpackConfig).toContain('test: /\\.css$/i,');
         expect(webpackConfig).toContain(`use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],`);
-        expect(webpackConfig).toContain(`use: ['style-loader', 'css-loader', 'sass-loader'],`);
+        expect(webpackConfig).toContain(`use: ['style-loader', 'css-loader', 'postcss-loader'],`);
     });
 
     it('should use less in project when selected', async () => {
