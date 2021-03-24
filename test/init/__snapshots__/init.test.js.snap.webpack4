@@ -124,6 +124,56 @@ module.exports = {
 "
 `;
 
+exports[`init command should configure html-webpack-plugin as opted 1`] = `
+Object {
+  "description": "My webpack project",
+  "devDependencies": Object {
+    "html-webpack-plugin": "x.x.x",
+    "webpack": "x.x.x",
+    "webpack-cli": "x.x.x",
+  },
+  "name": "my-webpack-project",
+  "scripts": Object {
+    "build": "webpack --mode=production",
+  },
+  "version": "1.0.0",
+}
+`;
+
+exports[`init command should configure html-webpack-plugin as opted 2`] = `
+"// Generated using webpack-cli http://github.com/webpack-cli
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+module.exports = {
+    mode: 'development',
+    entry: './src/index.js',
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+    },
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: 'index.html',
+        }),
+
+        // Add your plugins here
+        // Learn more obout plugins from https://webpack.js.org/configuration/plugins/
+    ],
+    module: {
+        rules: [
+            {
+                test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/,
+                type: 'asset',
+            },
+
+            // Add your rules for custom modules here
+            // Learn more about loaders from https://webpack.js.org/loaders/
+        ],
+    },
+};
+"
+`;
+
 exports[`init command should generate ES6 project correctly 1`] = `
 Object {
   "description": "My webpack project",
