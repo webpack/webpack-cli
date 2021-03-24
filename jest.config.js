@@ -14,6 +14,7 @@ module.exports = {
     },
     testRegex: ['/__tests__/.*\\.(test.js|test.ts)$', '/test/.*\\.(test.js|test.ts)$'],
     moduleFileExtensions: ['ts', 'js', 'json'],
+    snapshotResolver: '<rootDir>/scripts/snapshotResolver.js',
     watchPlugins: ['jest-watch-typeahead/filename', 'jest-watch-typeahead/testname'],
     setupFilesAfterEnv: ['<rootDir>/setupTest.js'],
     globalTeardown: '<rootDir>/scripts/cleanupTest.js',
