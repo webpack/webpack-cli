@@ -285,15 +285,10 @@ describe('init command', () => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
 
-        // Check if package.json is correctly configured
-        const pkgJSON = readFromPkgJSON(assetsPath);
-        expect(pkgJSON.scripts['build'] === 'webpack --mode=production').toBeTruthy();
+        // Check if the generated package.json file content matches the snapshot
+        expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
 
-        expect(pkgJSON.devDependencies['html-webpack-plugin']).toBeTruthy();
-
-        // Check if html-webpack-plugin is correctly configured
-        const webpackConfig = readFileSync(join(assetsPath, 'webpack.config.js'), 'utf8');
-        expect(webpackConfig).toContain(`const HtmlWebpackPlugin = require('html-webpack-plugin')`);
-        expect(webpackConfig).toContain(`new HtmlWebpackPlugin({`);
+        // Check if the generated webpack configuration matches the snapshot
+        expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
     });
 });
