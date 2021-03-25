@@ -122,7 +122,11 @@ class WebpackCLI {
         if (option.configs) {
             let needNegativeOption = false;
             let mainOptionType = new Set();
-            const isBuiltInFlag = this.builtInFlags.map(({ name }) => name).includes(option.name);
+            let isBuiltInFlag = false;
+
+            if (this.builtInFlags) {
+                isBuiltInFlag = this.builtInFlags.map(({ name }) => name).includes(option.name);
+            }
 
             option.configs.forEach((config) => {
                 // Possible value: "enum" | "string" | "path" | "number" | "boolean" | "RegExp" | "reset"
