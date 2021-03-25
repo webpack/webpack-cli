@@ -9,7 +9,7 @@ const utils = require('./utils');
 class WebpackCLI {
     constructor() {
         // Global
-        this.webpack = require('webpack');
+        this.webpack = require(process.env.WEBPACK_PACKAGE || 'webpack');
         this.logger = utils.logger;
         this.utils = utils;
 
