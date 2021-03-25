@@ -25,39 +25,32 @@ module.exports = {
             {
                 test: /\\.(js|jsx)$/,
                 loader: 'babel-loader',
-            },
-<% } %><% if (langType == "Typescript") { %>
+            },<% } %><% if (langType == "Typescript") { %>
             {
                 test: /\\.(ts|tsx)$/,
                 loader: 'ts-loader',
                 exclude: ['/node_modules/'],
-            },
-<% } %><%  if (cssType == 'CSS') { %>
+            },<% } %><%  if (isCSS && !isPostCSS) { %>
             {
                 test: /\.css$/i,
-                use: ['style-loader', 'css-loader'],
-            },        
-<% } %><%  if (cssType == 'SASS') { %>
+                use: ['style-loader','css-loader'],
+            },<% } %><%  if (cssType == 'SASS') { %>
             {
                 test: /\.s[ac]ss$/i,
-                use: ['style-loader', 'css-loader', 'sass-loader'],
-            },
-<% } %><%  if (cssType == 'LESS') { %>
+                use: ['style-loader', 'css-loader', <% if (isPostCSS) { %>'postcss-loader', <% } %>'sass-loader'],
+            },<% } %><%  if (cssType == 'LESS') { %>
             {
                 test: /\.less$/i,
-                loader: 'less-loader',
-            },
-<% } %><%  if (cssType == 'Stylus') { %>
+                use: [<% if (isPostCSS) { %>'style-loader', 'css-loader', 'postcss-loader', <% } %>'less-loader'],
+            },<% } %><%  if (cssType == 'Stylus') { %>
             {
                 test: /\.styl$/,
-                loader: 'stylus-loader',
-            },
-<% } %><%  if (cssType == 'PostCSS') { %>
+                use: [<% if (isPostCSS) { %>'style-loader', 'css-loader', 'postcss-loader', <% } %>'stylus-loader'],
+            },<% } %><%  if (isPostCSS && isCSS) { %>
             {
                 test: /\.css$/i,
                 use: ['style-loader', 'css-loader', 'postcss-loader'],
-            },
-<% } %>
+            },<% } %>
             {
                 test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/,
                 type: 'asset',

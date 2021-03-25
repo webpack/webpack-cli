@@ -51,20 +51,38 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
         self.dependencies = [...self.dependencies, 'html-webpack-plugin'];
     }
 
+    // Store all answers for generation
+    self.answers = { ...self.answers, langType, devServer, htmlWebpackPlugin };
+
     // Handle CSS solutions
     const { cssType } = await Question.List(
         self,
         'cssType',
         'Which of the following CSS solutions do you want to use?',
-        ['none', 'CSS', 'SASS', 'LESS', 'Stylus', 'PostCSS'],
+        ['none', 'CSS only', 'SASS', 'LESS', 'Stylus'],
         'none',
         self.force,
     );
 
+    if (cssType == 'none') {
+        self.answers = { ...self.answers, cssType, isCSS: false, isPostCSS: false };
+        return;
+    }
+
+    const { isCSS } =
+        cssType != 'CSS only'
+            ? await Question.Confirm(self, 'isCSS', `Will you be using CSS styles along with ${cssType} in your project?`, true, self.force)
+            : { isCSS: true };
+
+    const { isPostCSS } = await Question.Confirm(
+        self,
+        'isPostCSS',
+        'Will you be using PostCSS in your project?',
+        cssType == 'CSS only',
+        self.force,
+    );
+
     switch (cssType) {
-        case 'CSS':
-            self.dependencies = [...self.dependencies, 'style-loader', 'css-loader'];
-            break;
         case 'SASS':
             self.dependencies = [...self.dependencies, 'sass-loader', 'sass'];
             break;
@@ -74,12 +92,17 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
         case 'Stylus':
             self.dependencies = [...self.dependencies, 'stylus-loader', 'stylus'];
             break;
-        case 'PostCSS':
-            self.dependencies = [...self.dependencies, 'postcss-loader', 'postcss', 'autoprefixer'];
     }
 
-    // store all answers for generation
-    self.answers = { ...self.answers, langType, devServer, htmlWebpackPlugin, cssType };
+    if (isCSS) {
+        self.dependencies = [...self.dependencies, 'style-loader', 'css-loader'];
+    }
+
+    if (isPostCSS) {
+        self.dependencies = [...self.dependencies, 'postcss-loader', 'postcss', 'autoprefixer'];
+    }
+
+    self.answers = { ...self.answers, cssType, isCSS, isPostCSS };
 }
 
 /**
@@ -121,10 +144,8 @@ export function generate(self: CustomGenerator): void {
             break;
     }
 
-    // Generate CSS language essentials
-    switch (self.answers.cssType) {
-        case 'PostCSS':
-            self.fs.copyTpl(resolveFile('postcss.config.js'), self.destinationPath('postcss.config.js'));
-            break;
+    // Generate postcss configuration
+    if (self.answers.isPostCSS) {
+        self.fs.copyTpl(resolveFile('postcss.config.js'), self.destinationPath('postcss.config.js'));
     }
 }

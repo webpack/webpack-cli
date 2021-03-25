@@ -172,7 +172,7 @@ describe('init command', () => {
         const { stdout, stderr } = await runPromptWithAnswers(
             assetsPath,
             ['init'],
-            [`${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${DOWN}${DOWN}${ENTER}`],
+            [`${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${DOWN}${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`],
         );
         expect(stdout).toContain('Project has been initialised with webpack!');
         expect(stderr).toContain('webpack.config.js');
@@ -190,11 +190,55 @@ describe('init command', () => {
         expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
     });
 
+    it('should use sass with postcss in project when selected', async () => {
+        const { stdout, stderr } = await runPromptWithAnswers(
+            assetsPath,
+            ['init'],
+            [`${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${DOWN}${DOWN}${ENTER}`, `n${ENTER}`, `y${ENTER}`],
+        );
+        expect(stdout).toContain('Project has been initialised with webpack!');
+        expect(stderr).toContain('webpack.config.js');
+
+        // Test files
+        const files = ['package.json', 'src', 'src/index.js', 'webpack.config.js', 'postcss.config.js'];
+        files.forEach((file) => {
+            expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+        });
+
+        // Check if the generated package.json file content matches the snapshot
+        expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
+
+        // Check if the generated webpack configuration matches the snapshot
+        expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
+    });
+
+    it('should use sass and css with postcss in project when selected', async () => {
+        const { stdout, stderr } = await runPromptWithAnswers(
+            assetsPath,
+            ['init'],
+            [`${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${DOWN}${DOWN}${ENTER}`, `y${ENTER}`, `y${ENTER}`],
+        );
+        expect(stdout).toContain('Project has been initialised with webpack!');
+        expect(stderr).toContain('webpack.config.js');
+
+        // Test files
+        const files = ['package.json', 'src', 'src/index.js', 'webpack.config.js', 'postcss.config.js'];
+        files.forEach((file) => {
+            expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+        });
+
+        // Check if the generated package.json file content matches the snapshot
+        expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
+
+        // Check if the generated webpack configuration matches the snapshot
+        expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
+    });
+
     it('should use less in project when selected', async () => {
         const { stdout, stderr } = await runPromptWithAnswers(
             assetsPath,
             ['init'],
-            [`${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${DOWN}${DOWN}${DOWN}${ENTER}`],
+            [`${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${DOWN}${DOWN}${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`],
         );
         expect(stdout).toContain('Project has been initialised with webpack!');
         expect(stderr).toContain('webpack.config.js');
@@ -216,7 +260,7 @@ describe('init command', () => {
         const { stdout, stderr } = await runPromptWithAnswers(
             assetsPath,
             ['init'],
-            [`${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${DOWN}${DOWN}${DOWN}${DOWN}${ENTER}`],
+            [`${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${DOWN}${DOWN}${DOWN}${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`],
         );
         expect(stdout).toContain('Project has been initialised with webpack!');
         expect(stderr).toContain('webpack.config.js');
@@ -257,7 +301,7 @@ describe('init command', () => {
         const { stdout, stderr } = await runPromptWithAnswers(
             assetsPath,
             ['init'],
-            [`${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${DOWN}${DOWN}${DOWN}${DOWN}${DOWN}${ENTER}`],
+            [`${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${DOWN}${ENTER}`, ENTER],
         );
         expect(stdout).toContain('Project has been initialised with webpack!');
         expect(stderr).toContain('webpack.config.js');
