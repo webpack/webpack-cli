@@ -23,7 +23,7 @@ yarn add -D @webpack-cli/info
 #npx
 npx webpack info [options]
 
-#local installation
+#global installation
 webpack info [options]
 
 ```
@@ -32,9 +32,9 @@ webpack info [options]
 
 #### Output format
 
-| Flag                            | Description                           | Type   |
-| ------------------------------- | ------------------------------------- | ------ |
-| `--output < json or markdown >` | To get the output in specified format | string |
+| Flag                            | Description                             | Type   |
+| ------------------------------- | --------------------------------------- | ------ |
+| `--output < json or markdown >` | To get the output in a specified format | string |
 
 _Not supported for config_
 

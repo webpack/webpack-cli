@@ -50,7 +50,7 @@ class InfoCommand {
                             type: 'string',
                         },
                     ],
-                    description: 'To get the output in specified format ( accept json or markdown )',
+                    description: 'To get the output in a specified format ( accept json or markdown )',
                 },
             ],
             async (options) => {
