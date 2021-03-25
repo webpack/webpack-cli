@@ -122,6 +122,7 @@ class WebpackCLI {
         if (option.configs) {
             let needNegativeOption = false;
             let mainOptionType = new Set();
+            const isBuiltInFlag = this.builtInFlags.map(({ name }) => name).includes(option.name);
 
             option.configs.forEach((config) => {
                 // Possible value: "enum" | "string" | "path" | "number" | "boolean" | "RegExp" | "reset"
@@ -130,8 +131,14 @@ class WebpackCLI {
                         mainOptionType.add(Boolean);
                         break;
                     case 'boolean':
-                        if (!needNegativeOption) {
-                            needNegativeOption = true;
+                        if (isBuiltInFlag) {
+                            if (option.negative) {
+                                needNegativeOption = true;
+                            }
+                        } else {
+                            if (!needNegativeOption) {
+                                needNegativeOption = true;
+                            }
                         }
 
                         mainOptionType.add(Boolean);
@@ -598,7 +605,7 @@ class WebpackCLI {
             });
 
         this.builtInOptionsCache = options;
-
+        this.builtInFlags = builtInFlags;
         return options;
     }
 
