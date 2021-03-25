@@ -122,11 +122,6 @@ class WebpackCLI {
         if (option.configs) {
             let needNegativeOption = false;
             let mainOptionType = new Set();
-            let isBuiltInFlag = false;
-
-            if (this.builtInFlags) {
-                isBuiltInFlag = this.builtInFlags.map(({ name }) => name).includes(option.name);
-            }
 
             option.configs.forEach((config) => {
                 // Possible value: "enum" | "string" | "path" | "number" | "boolean" | "RegExp" | "reset"
@@ -135,14 +130,8 @@ class WebpackCLI {
                         mainOptionType.add(Boolean);
                         break;
                     case 'boolean':
-                        if (isBuiltInFlag) {
-                            if (option.negative) {
-                                needNegativeOption = true;
-                            }
-                        } else {
-                            if (!needNegativeOption) {
-                                needNegativeOption = true;
-                            }
+                        if (!needNegativeOption) {
+                            needNegativeOption = true;
                         }
 
                         mainOptionType.add(Boolean);
@@ -374,7 +363,8 @@ class WebpackCLI {
                 alias: 'm',
                 configs: [
                     {
-                        type: 'boolean',
+                        type: 'enum',
+                        values: [true],
                     },
                 ],
                 description: "Merge two or more configurations using 'webpack-merge'.",
@@ -441,7 +431,8 @@ class WebpackCLI {
                 name: 'analyze',
                 configs: [
                     {
-                        type: 'boolean',
+                        type: 'enum',
+                        values: [true],
                     },
                 ],
                 multiple: false,
@@ -454,7 +445,8 @@ class WebpackCLI {
                         type: 'string',
                     },
                     {
-                        type: 'boolean',
+                        type: 'enum',
+                        values: [true],
                     },
                 ],
                 description: 'Print compilation progress during build.',
@@ -477,7 +469,8 @@ class WebpackCLI {
                         type: 'string',
                     },
                     {
-                        type: 'boolean',
+                        type: 'enum',
+                        values: [true],
                     },
                 ],
                 alias: 'j',
@@ -609,7 +602,7 @@ class WebpackCLI {
             });
 
         this.builtInOptionsCache = options;
-        this.builtInFlags = builtInFlags;
+
         return options;
     }
 

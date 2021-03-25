@@ -858,7 +858,7 @@ Commands:
   configtest|t [config-path]                                                         Validate a webpack configuration.
   help|h [command] [option]                                                          Display help for commands and options.
   info|i [options]                                                                   Outputs information about your system.
-  init|c [generation-path] [options]                                                 Initialize a new webpack project.
+  init|c [generation-path] [options]                                                 Initialize a new webpack configuration.
   loader|l [output-path]                                                             Scaffold a loader.
   migrate|m <config-path> [new-config-path]                                          Migrate a configuration to a new version.
   plugin|p [output-path]                                                             Scaffold a plugin.
