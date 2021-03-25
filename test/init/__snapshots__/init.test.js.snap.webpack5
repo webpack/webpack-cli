@@ -212,7 +212,6 @@ module.exports = {
                 test: /\\\\\\\\.(js|jsx)$/,
                 loader: 'babel-loader',
             },
-
             {
                 test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/,
                 type: 'asset',
@@ -318,7 +317,6 @@ module.exports = {
                 loader: 'ts-loader',
                 exclude: ['/node_modules/'],
             },
-
             {
                 test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/,
                 type: 'asset',
@@ -370,9 +368,8 @@ module.exports = {
         rules: [
             {
                 test: /\\\\.less$/i,
-                loader: 'less-loader',
+                use: ['less-loader'],
             },
-
             {
                 test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/,
                 type: 'asset',
@@ -406,7 +403,65 @@ module.exports = {
                 test: /\\\\.css$/i,
                 use: ['style-loader', 'css-loader', 'postcss-loader'],
             },
+            {
+                test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/,
+                type: 'asset',
+            },
 
+            // Add your rules for custom modules here
+            // Learn more about loaders from https://webpack.js.org/loaders/
+        ],
+    },
+};
+"
+`;
+
+exports[`init command should use sass and css with postcss in project when selected 1`] = `
+Object {
+  "description": "My webpack project",
+  "devDependencies": Object {
+    "autoprefixer": "x.x.x",
+    "css-loader": "x.x.x",
+    "postcss": "x.x.x",
+    "postcss-loader": "x.x.x",
+    "sass": "x.x.x",
+    "sass-loader": "x.x.x",
+    "style-loader": "x.x.x",
+    "webpack": "x.x.x",
+    "webpack-cli": "x.x.x",
+  },
+  "name": "my-webpack-project",
+  "scripts": Object {
+    "build": "webpack --mode=production",
+  },
+  "version": "1.0.0",
+}
+`;
+
+exports[`init command should use sass and css with postcss in project when selected 2`] = `
+"// Generated using webpack-cli http://github.com/webpack-cli
+const path = require('path');
+
+module.exports = {
+    mode: 'development',
+    entry: './src/index.js',
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+    },
+    plugins: [
+        // Add your plugins here
+        // Learn more obout plugins from https://webpack.js.org/configuration/plugins/
+    ],
+    module: {
+        rules: [
+            {
+                test: /\\\\.s[ac]ss$/i,
+                use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
+            },
+            {
+                test: /\\\\.css$/i,
+                use: ['style-loader', 'css-loader', 'postcss-loader'],
+            },
             {
                 test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/,
                 type: 'asset',
@@ -457,7 +512,59 @@ module.exports = {
                 test: /\\\\.s[ac]ss$/i,
                 use: ['style-loader', 'css-loader', 'sass-loader'],
             },
+            {
+                test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/,
+                type: 'asset',
+            },
 
+            // Add your rules for custom modules here
+            // Learn more about loaders from https://webpack.js.org/loaders/
+        ],
+    },
+};
+"
+`;
+
+exports[`init command should use sass with postcss in project when selected 1`] = `
+Object {
+  "description": "My webpack project",
+  "devDependencies": Object {
+    "autoprefixer": "x.x.x",
+    "postcss": "x.x.x",
+    "postcss-loader": "x.x.x",
+    "sass": "x.x.x",
+    "sass-loader": "x.x.x",
+    "webpack": "x.x.x",
+    "webpack-cli": "x.x.x",
+  },
+  "name": "my-webpack-project",
+  "scripts": Object {
+    "build": "webpack --mode=production",
+  },
+  "version": "1.0.0",
+}
+`;
+
+exports[`init command should use sass with postcss in project when selected 2`] = `
+"// Generated using webpack-cli http://github.com/webpack-cli
+const path = require('path');
+
+module.exports = {
+    mode: 'development',
+    entry: './src/index.js',
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+    },
+    plugins: [
+        // Add your plugins here
+        // Learn more obout plugins from https://webpack.js.org/configuration/plugins/
+    ],
+    module: {
+        rules: [
+            {
+                test: /\\\\.s[ac]ss$/i,
+                use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
+            },
             {
                 test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/,
                 type: 'asset',
@@ -506,9 +613,8 @@ module.exports = {
         rules: [
             {
                 test: /\\\\.styl$/,
-                loader: 'stylus-loader',
+                use: ['stylus-loader'],
             },
-
             {
                 test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/,
                 type: 'asset',

@@ -205,17 +205,11 @@ describe('init command', () => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
 
-        // Check if package.json is correctly configured
-        const pkgJSON = readFromPkgJSON(assetsPath);
-        expect(pkgJSON.scripts['build'] === 'webpack --mode=production').toBeTruthy();
+        // Check if the generated package.json file content matches the snapshot
+        expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
 
-        expect(pkgJSON.devDependencies['sass']).toBeTruthy();
-        expect(pkgJSON.devDependencies['sass-loader']).toBeTruthy();
-
-        // Check if loaders are added to webpack configuration
-        const webpackConfig = readFileSync(join(assetsPath, 'webpack.config.js'), 'utf8');
-        expect(webpackConfig).toContain('test: /\\.s[ac]ss$/i,');
-        expect(webpackConfig).toContain(`use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],`);
+        // Check if the generated webpack configuration matches the snapshot
+        expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
     });
 
     it('should use sass and css with postcss in project when selected', async () => {
@@ -233,19 +227,11 @@ describe('init command', () => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
 
-        // Check if package.json is correctly configured
-        const pkgJSON = readFromPkgJSON(assetsPath);
-        expect(pkgJSON.scripts['build'] === 'webpack --mode=production').toBeTruthy();
+        // Check if the generated package.json file content matches the snapshot
+        expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
 
-        expect(pkgJSON.devDependencies['sass']).toBeTruthy();
-        expect(pkgJSON.devDependencies['sass-loader']).toBeTruthy();
-
-        // Check if loaders are added to webpack configuration
-        const webpackConfig = readFileSync(join(assetsPath, 'webpack.config.js'), 'utf8');
-        expect(webpackConfig).toContain('test: /\\.s[ac]ss$/i,');
-        expect(webpackConfig).toContain('test: /\\.css$/i,');
-        expect(webpackConfig).toContain(`use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],`);
-        expect(webpackConfig).toContain(`use: ['style-loader', 'css-loader', 'postcss-loader'],`);
+        // Check if the generated webpack configuration matches the snapshot
+        expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
     });
 
     it('should use less in project when selected', async () => {
