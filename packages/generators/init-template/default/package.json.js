@@ -1,6 +1,9 @@
 module.exports = (isUsingDevServer) => {
     const scripts = {
         build: 'webpack --mode=production',
+        'build:dev': 'webpack --mode=development',
+        'build:prod': 'webpack --mode=production',
+        watch: 'webpack --watch',
     };
     if (isUsingDevServer) {
         scripts.serve = 'webpack serve';
