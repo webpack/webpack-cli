@@ -1,7 +1,7 @@
 const { mkdirSync, existsSync, readFileSync } = require('fs');
 const { join, resolve } = require('path');
 const rimraf = require('rimraf');
-const { run, runPromptWithAnswers, isWindows } = require('../utils/test-utils');
+const { run, runPromptWithAnswers } = require('../utils/test-utils');
 
 const assetsPath = resolve(__dirname, './test-assets');
 const ENTER = '\x0D';
@@ -13,8 +13,15 @@ const readFromPkgJSON = (path) => {
     if (!existsSync(pkgJSONPath)) {
         return {};
     }
-    return JSON.parse(readFileSync(pkgJSONPath, 'utf8'));
+    const pkgJSON = JSON.parse(readFileSync(pkgJSONPath, 'utf8'));
+    const { devDependencies: devDeps } = pkgJSON;
+    // Update devDeps versions to be x.x.x to prevent frequent snapshot updates
+    Object.keys(devDeps).forEach((dep) => (devDeps[dep] = 'x.x.x'));
+    return { ...pkgJSON, devDependencies: devDeps };
 };
+
+// Helper to read from webpack.config.js in a given path
+const readFromWebpackConfig = (path) => readFileSync(join(path, 'webpack.config.js'), 'utf8');
 
 describe('init command', () => {
     beforeEach(async () => {
@@ -44,10 +51,8 @@ describe('init command', () => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
 
-        // Assert for package.json file content
-        const pkgJSON = readFromPkgJSON(assetsPath);
-        expect(pkgJSON.scripts['build'] === 'webpack --mode=production').toBeTruthy();
-        expect(pkgJSON.scripts['serve'] === 'webpack serve').toBeTruthy();
+        // Check if the generated package.json file content matches the snapshot
+        expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
     });
     it('should generate project when generationPath is supplied', () => {
         const { stdout, stderr } = run(__dirname, ['init', assetsPath, '--force']);
@@ -60,10 +65,8 @@ describe('init command', () => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
 
-        // Assert for package.json file content
-        const pkgJSON = readFromPkgJSON(assetsPath);
-        expect(pkgJSON.scripts['build'] === 'webpack --mode=production').toBeTruthy();
-        expect(pkgJSON.scripts['serve'] === 'webpack serve').toBeTruthy();
+        // Check if the generated package.json file content matches the snapshot
+        expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
     });
 
     it('should generate folders if non existing generation path is given', () => {
@@ -79,10 +82,8 @@ describe('init command', () => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
 
-        // Assert for package.json file content
-        const pkgJSON = readFromPkgJSON(assetsPath);
-        expect(pkgJSON.scripts['build'] === 'webpack --mode=production').toBeTruthy();
-        expect(pkgJSON.scripts['serve'] === 'webpack serve').toBeTruthy();
+        // Check if the generated package.json file content matches the snapshot
+        expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
     });
 
     it('should configure assets modules by default', () => {
@@ -98,14 +99,11 @@ describe('init command', () => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
 
-        // Assert for package.json file content
-        const pkgJSON = readFromPkgJSON(assetsPath);
-        expect(pkgJSON.scripts['build'] === 'webpack --mode=production').toBeTruthy();
-        expect(pkgJSON.scripts['serve'] === 'webpack serve').toBeTruthy();
+        // Check if the generated package.json file content matches the snapshot
+        expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
 
-        const webpackConfig = readFileSync(join(assetsPath, 'webpack.config.js'), 'utf8');
-        expect(webpackConfig).toContain(`test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/,`);
-        expect(webpackConfig).toContain(`type: 'asset',`);
+        // Check if the generated webpack configuration matches the snapshot
+        expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
     });
 
     it('should ask question when wrong template is supplied', async () => {
@@ -120,10 +118,8 @@ describe('init command', () => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
 
-        // Assert for package.json file content
-        const pkgJSON = readFromPkgJSON(assetsPath);
-        expect(pkgJSON.scripts['build'] === 'webpack --mode=production').toBeTruthy();
-        expect(pkgJSON.scripts['serve'] === 'webpack serve').toBeTruthy();
+        // Check if the generated package.json file content matches the snapshot
+        expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
     });
 
     it('should generate typescript project correctly', async () => {
@@ -142,18 +138,11 @@ describe('init command', () => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
 
-        // Check if package.json is correctly configured
-        const pkgJSON = readFromPkgJSON(assetsPath);
-        expect(pkgJSON.scripts['build'] === 'webpack --mode=production').toBeTruthy();
+        // Check if the generated package.json file content matches the snapshot
+        expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
 
-        expect(pkgJSON.devDependencies['ts-loader']).toBeTruthy();
-        expect(pkgJSON.devDependencies['typescript']).toBeTruthy();
-
-        // Check if webpack.config.js is correctly configured
-        const webpackConfig = readFileSync(join(assetsPath, 'webpack.config.js'), 'utf8');
-        expect(webpackConfig).toContain('.(ts|tsx)$/,');
-        expect(webpackConfig).toContain(`loader: 'ts-loader',`);
-        expect(webpackConfig).toContain(`extensions: ['.tsx', '.ts', '.js'],`);
+        // Check if the generated webpack configuration matches the snapshot
+        expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
     });
 
     it('should generate ES6 project correctly', async () => {
@@ -172,18 +161,11 @@ describe('init command', () => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
 
-        // Check if package.json is correctly configured
-        const pkgJSON = readFromPkgJSON(assetsPath);
-        expect(pkgJSON.scripts['build'] === 'webpack --mode=production').toBeTruthy();
+        // Check if the generated package.json file content matches the snapshot
+        expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
 
-        expect(pkgJSON.devDependencies['@babel/core']).toBeTruthy();
-        expect(pkgJSON.devDependencies['@babel/preset-env']).toBeTruthy();
-        expect(pkgJSON.devDependencies['babel-loader']).toBeTruthy();
-
-        // Check if webpack.config.js is correctly configured
-        const webpackConfig = readFileSync(join(assetsPath, 'webpack.config.js'), 'utf8');
-        expect(webpackConfig).toContain('(js|jsx)$/,');
-        expect(webpackConfig).toContain(`loader: 'babel-loader',`);
+        // Check if the generated webpack configuration matches the snapshot
+        expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
     });
 
     it('should use sass in project when selected', async () => {
@@ -201,17 +183,11 @@ describe('init command', () => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
 
-        // Check if package.json is correctly configured
-        const pkgJSON = readFromPkgJSON(assetsPath);
-        expect(pkgJSON.scripts['build'] === 'webpack --mode=production').toBeTruthy();
+        // Check if the generated package.json file content matches the snapshot
+        expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
 
-        expect(pkgJSON.devDependencies['sass']).toBeTruthy();
-        expect(pkgJSON.devDependencies['sass-loader']).toBeTruthy();
-
-        // Check if loaders are added to webpack configuration
-        const webpackConfig = readFileSync(join(assetsPath, 'webpack.config.js'), 'utf8');
-        expect(webpackConfig).toContain('test: /\\.s[ac]ss$/i,');
-        expect(webpackConfig).toContain(`use: ['style-loader', 'css-loader', 'sass-loader'],`);
+        // Check if the generated webpack configuration matches the snapshot
+        expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
     });
 
     it('should use sass with postcss in project when selected', async () => {
@@ -287,17 +263,11 @@ describe('init command', () => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
 
-        // Check if package.json is correctly configured
-        const pkgJSON = readFromPkgJSON(assetsPath);
-        expect(pkgJSON.scripts['build'] === 'webpack --mode=production').toBeTruthy();
+        // Check if the generated package.json file content matches the snapshot
+        expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
 
-        expect(pkgJSON.devDependencies['less']).toBeTruthy();
-        expect(pkgJSON.devDependencies['less-loader']).toBeTruthy();
-
-        // Check if loaders are added to webpack configuration
-        const webpackConfig = readFileSync(join(assetsPath, 'webpack.config.js'), 'utf8');
-        expect(webpackConfig).toContain('test: /\\.less$/i,');
-        expect(webpackConfig).toContain(`'less-loader'`);
+        // Check if the generated webpack configuration matches the snapshot
+        expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
     });
 
     it('should use stylus in project when selected', async () => {
@@ -315,17 +285,11 @@ describe('init command', () => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
 
-        // Check if package.json is correctly configured
-        const pkgJSON = readFromPkgJSON(assetsPath);
-        expect(pkgJSON.scripts['build'] === 'webpack --mode=production').toBeTruthy();
+        // Check if the generated package.json file content matches the snapshot
+        expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
 
-        expect(pkgJSON.devDependencies['stylus']).toBeTruthy();
-        expect(pkgJSON.devDependencies['stylus-loader']).toBeTruthy();
-
-        // Check if loaders are added to webpack configuration
-        const webpackConfig = readFileSync(join(assetsPath, 'webpack.config.js'), 'utf8');
-        expect(webpackConfig).toContain('test: /\\.styl$/,');
-        expect(webpackConfig).toContain(`'stylus-loader'`);
+        // Check if the generated webpack configuration matches the snapshot
+        expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
     });
 
     it('should configure WDS as opted', async () => {
@@ -334,29 +298,17 @@ describe('init command', () => {
         expect(stdout).toContain('Project has been initialised with webpack!');
         expect(stderr).toContain('webpack.config.js');
 
-        // TODO: Look into it later, skip for windows on Node v14
-        if (isWindows && process.version.startsWith('v14')) {
-            return;
-        }
-
         // Test files
         const files = ['package.json', 'src', 'src/index.js', 'webpack.config.js'];
         files.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
 
-        // Check if package.json is correctly configured
-        const pkgJSON = readFromPkgJSON(assetsPath);
-        expect(pkgJSON.scripts['build'] === 'webpack --mode=production').toBeTruthy();
-        expect(pkgJSON.scripts['serve'] === 'webpack serve').toBeTruthy();
+        // Check if the generated package.json file content matches the snapshot
+        expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
 
-        expect(pkgJSON.devDependencies['webpack-dev-server']).toBeTruthy();
-
-        // Check if devServer prop is set correctly in webpack configuration
-        const webpackConfig = readFileSync(join(assetsPath, 'webpack.config.js'), 'utf8');
-        expect(webpackConfig).toContain(`devServer: {`);
-        expect(webpackConfig).toContain(`open: true,`);
-        expect(webpackConfig).toContain(`host: 'localhost',`);
+        // Check if the generated webpack configuration matches the snapshot
+        expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
     });
 
     it('should use postcss in project when selected', async () => {
@@ -368,11 +320,6 @@ describe('init command', () => {
         expect(stdout).toContain('Project has been initialised with webpack!');
         expect(stderr).toContain('webpack.config.js');
 
-        // TODO: Look into it later, skip for windows on Node v14
-        if (isWindows && process.version.startsWith('v14')) {
-            return;
-        }
-
         // Test files
         const files = ['package.json', 'src', 'src/index.js', 'webpack.config.js', 'postcss.config.js'];
 
@@ -380,9 +327,26 @@ describe('init command', () => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
 
-        // Check if loaders are added to webpack configuration
-        expect(readFileSync(resolve(assetsPath, 'webpack.config.js')).toString()).toContain(
-            "use: ['style-loader', 'css-loader', 'postcss-loader'],",
-        );
+        // Check if the generated webpack configuration matches the snapshot
+        expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
+    });
+
+    it('should configure html-webpack-plugin as opted', async () => {
+        const { stdout, stderr } = await runPromptWithAnswers(assetsPath, ['init'], [ENTER, `n${ENTER}`, ENTER, ENTER]);
+        expect(stdout).toContain('Do you want to simplify the creation of HTML files for your bundle?');
+        expect(stdout).toContain('Project has been initialised with webpack!');
+        expect(stderr).toContain('webpack.config.js');
+
+        // Test files
+        const files = ['package.json', 'src', 'src/index.js', 'webpack.config.js'];
+        files.forEach((file) => {
+            expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+        });
+
+        // Check if the generated package.json file content matches the snapshot
+        expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
+
+        // Check if the generated webpack configuration matches the snapshot
+        expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
     });
 });

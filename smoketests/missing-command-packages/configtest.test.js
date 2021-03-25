@@ -1,118 +1,23 @@
 'use strict';
 
-const execa = require('execa');
-const stripAnsi = require('strip-ansi');
+const { runTest, runTestWithHelp } = require('../helpers');
 
-const { getBinPath, swapPkgName } = require('../helpers');
-
-const CLI_ENTRY_PATH = getBinPath();
+const packageName = 'configtest';
 const isSubPackage = true;
 
-const runTest = () => {
-    // Simulate package missing
-    swapPkgName('configtest', isSubPackage);
+const configTest = () => {
+    const args = ['configtest'];
+    const logMessage = "For using this command you need to install: '@webpack-cli/configtest' package";
 
-    const proc = execa(CLI_ENTRY_PATH, ['configtest'], {
-        cwd: __dirname,
-    });
-
-    proc.stdin.setDefaultEncoding('utf-8');
-
-    proc.stdout.on('data', (chunk) => {
-        console.log(`  stdout: ${chunk.toString()}`);
-    });
-
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            proc.kill();
-        }, 30000);
-
-        const errorMessage = "For using this command you need to install: '@webpack-cli/configtest' package";
-
-        let hasErrorMessage = false,
-            hasPassed = false;
-
-        proc.stderr.on('data', (chunk) => {
-            let data = stripAnsi(chunk.toString());
-            console.log(`  stderr: ${data}`);
-
-            if (data.includes(errorMessage)) {
-                hasErrorMessage = true;
-            }
-
-            if (hasErrorMessage) {
-                hasPassed = true;
-                proc.kill();
-            }
-        });
-
-        proc.on('exit', () => {
-            swapPkgName('.configtest', isSubPackage);
-            resolve(hasPassed);
-        });
-
-        proc.on('error', () => {
-            swapPkgName('.configtest', isSubPackage);
-            resolve(false);
-        });
-    });
+    return runTest(packageName, args, logMessage, isSubPackage);
 };
 
-const runTestWithHelp = () => {
-    // Simulate package missing
-    swapPkgName('configtest', isSubPackage);
+const configTestWithHelp = () => {
+    const args = ['help', 'configtest'];
+    const logMessage = "For using 'configtest' command you need to install '@webpack-cli/configtest' package";
 
-    const proc = execa(CLI_ENTRY_PATH, ['help', 'configtest'], {
-        cwd: __dirname,
-    });
-
-    proc.stdin.setDefaultEncoding('utf-8');
-
-    proc.stdout.on('data', (chunk) => {
-        console.log(`  stdout: ${chunk.toString()}`);
-    });
-
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            proc.kill();
-        }, 30000);
-
-        const logMessage = "For using 'configtest' command you need to install '@webpack-cli/configtest' package";
-        const undefinedLogMessage = "Can't find and load command";
-
-        let hasLogMessage = false,
-            hasUndefinedLogMessage = false,
-            hasPassed = false;
-
-        proc.stderr.on('data', (chunk) => {
-            let data = stripAnsi(chunk.toString());
-            console.log(`  stderr: ${data}`);
-
-            if (data.includes(logMessage)) {
-                hasLogMessage = true;
-            }
-
-            if (data.includes(undefinedLogMessage)) {
-                hasUndefinedLogMessage = true;
-            }
-
-            if (hasLogMessage || hasUndefinedLogMessage) {
-                hasPassed = true;
-                proc.kill();
-            }
-        });
-
-        proc.on('exit', () => {
-            swapPkgName('.configtest', isSubPackage);
-            resolve(hasPassed);
-        });
-
-        proc.on('error', () => {
-            swapPkgName('.configtest', isSubPackage);
-            resolve(false);
-        });
-    });
+    return runTestWithHelp(packageName, args, logMessage, isSubPackage);
 };
 
-module.exports.run = [runTest, runTestWithHelp];
+module.exports.run = [configTest, configTestWithHelp];
 module.exports.name = 'Missing @webpack-cli/configtest';
