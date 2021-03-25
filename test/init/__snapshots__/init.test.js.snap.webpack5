@@ -12,7 +12,7 @@ Object {
   "name": "my-webpack-project",
   "scripts": Object {
     "build": "webpack --mode=production",
-    "build:dev": "webpack",
+    "build:dev": "webpack --mode=development",
     "build:prod": "webpack --mode=production",
     "serve": "webpack serve",
     "watch": "webpack --watch",
@@ -32,7 +32,7 @@ Object {
   "name": "my-webpack-project",
   "scripts": Object {
     "build": "webpack --mode=production",
-    "build:dev": "webpack",
+    "build:dev": "webpack --mode=development",
     "build:prod": "webpack --mode=production",
     "serve": "webpack serve",
     "watch": "webpack --watch",
@@ -86,7 +86,7 @@ Object {
   "name": "my-webpack-project",
   "scripts": Object {
     "build": "webpack --mode=production",
-    "build:dev": "webpack",
+    "build:dev": "webpack --mode=development",
     "build:prod": "webpack --mode=production",
     "serve": "webpack serve",
     "watch": "webpack --watch",
@@ -144,7 +144,7 @@ Object {
   "name": "my-webpack-project",
   "scripts": Object {
     "build": "webpack --mode=production",
-    "build:dev": "webpack",
+    "build:dev": "webpack --mode=development",
     "build:prod": "webpack --mode=production",
     "watch": "webpack --watch",
   },
@@ -199,7 +199,7 @@ Object {
   "name": "my-webpack-project",
   "scripts": Object {
     "build": "webpack --mode=production",
-    "build:dev": "webpack",
+    "build:dev": "webpack --mode=development",
     "build:prod": "webpack --mode=production",
     "watch": "webpack --watch",
   },
@@ -253,7 +253,7 @@ Object {
   "name": "my-webpack-project",
   "scripts": Object {
     "build": "webpack --mode=production",
-    "build:dev": "webpack",
+    "build:dev": "webpack --mode=development",
     "build:prod": "webpack --mode=production",
     "serve": "webpack serve",
     "watch": "webpack --watch",
@@ -274,7 +274,7 @@ Object {
   "name": "my-webpack-project",
   "scripts": Object {
     "build": "webpack --mode=production",
-    "build:dev": "webpack",
+    "build:dev": "webpack --mode=development",
     "build:prod": "webpack --mode=production",
     "serve": "webpack serve",
     "watch": "webpack --watch",
@@ -295,7 +295,7 @@ Object {
   "name": "my-webpack-project",
   "scripts": Object {
     "build": "webpack --mode=production",
-    "build:dev": "webpack",
+    "build:dev": "webpack --mode=development",
     "build:prod": "webpack --mode=production",
     "serve": "webpack serve",
     "watch": "webpack --watch",
@@ -316,7 +316,7 @@ Object {
   "name": "my-webpack-project",
   "scripts": Object {
     "build": "webpack --mode=production",
-    "build:dev": "webpack",
+    "build:dev": "webpack --mode=development",
     "build:prod": "webpack --mode=production",
     "watch": "webpack --watch",
   },
@@ -374,7 +374,7 @@ Object {
   "name": "my-webpack-project",
   "scripts": Object {
     "build": "webpack --mode=production",
-    "build:dev": "webpack",
+    "build:dev": "webpack --mode=development",
     "build:prod": "webpack --mode=production",
     "watch": "webpack --watch",
   },
@@ -462,7 +462,7 @@ Object {
   "name": "my-webpack-project",
   "scripts": Object {
     "build": "webpack --mode=production",
-    "build:dev": "webpack",
+    "build:dev": "webpack --mode=development",
     "build:prod": "webpack --mode=production",
     "watch": "webpack --watch",
   },
@@ -516,7 +516,7 @@ Object {
   "name": "my-webpack-project",
   "scripts": Object {
     "build": "webpack --mode=production",
-    "build:dev": "webpack",
+    "build:dev": "webpack --mode=development",
     "build:prod": "webpack --mode=production",
     "watch": "webpack --watch",
   },
