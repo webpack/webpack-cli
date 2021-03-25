@@ -14,7 +14,7 @@ describe('custom-webpack', () => {
         expect(stdout).toContain('main.js');
     });
 
-    it('should throw an erroe for invalid-webpack.js', () => {
+    it('should throw an error for invalid-webpack.js', () => {
         const { exitCode, stderr, stdout } = run(__dirname, [], {
             env: { WEBPACK_PACKAGE: resolve(__dirname, './invalid-webpack.js') },
         });
