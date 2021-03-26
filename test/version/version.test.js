@@ -1,14 +1,6 @@
 'use strict';
 
-const webpack = require('webpack');
-
 const { run } = require('../utils/test-utils');
-const pkgJSON = require('../../packages/webpack-cli/package.json');
-const servePkgJSON = require('../../packages/serve/package.json');
-const infoPkgJSON = require('../../packages/info/package.json');
-const generatorsPkgJSON = require('../../packages/generators/package.json');
-// eslint-disable-next-line node/no-unpublished-require
-const webpackDevServerPkgJSON = require('webpack-dev-server/package.json');
 
 describe('single version flag', () => {
     it('outputs versions with command syntax', () => {
@@ -16,9 +8,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
-        expect(stdout).toContain(`webpack ${webpack.version}`);
-        expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
+        expect(stdout).toMatchSnapshot();
     });
 
     it('outputs versions with dashed syntax', () => {
@@ -26,9 +16,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
-        expect(stdout).toContain(`webpack ${webpack.version}`);
-        expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
+        expect(stdout).toMatchSnapshot();
     });
 
     it('outputs versions with alias syntax', () => {
@@ -36,9 +24,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
-        expect(stdout).toContain(`webpack ${webpack.version}`);
-        expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
+        expect(stdout).toMatchSnapshot();
     });
 
     it('outputs version with info', () => {
@@ -46,10 +32,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(`@webpack-cli/info ${infoPkgJSON.version}`);
-        expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
-        expect(stdout).toContain(`webpack ${webpack.version}`);
-        expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
+        expect(stdout).toMatchSnapshot();
     });
 
     it('outputs version with info using option alias', () => {
@@ -57,10 +40,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(`@webpack-cli/info ${infoPkgJSON.version}`);
-        expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
-        expect(stdout).toContain(`webpack ${webpack.version}`);
-        expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
+        expect(stdout).toMatchSnapshot();
     });
 
     it('outputs version with info using command syntax', () => {
@@ -68,10 +48,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(`@webpack-cli/info ${infoPkgJSON.version}`);
-        expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
-        expect(stdout).toContain(`webpack ${webpack.version}`);
-        expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
+        expect(stdout).toMatchSnapshot();
     });
 
     it('outputs version with info using command alias', () => {
@@ -79,10 +56,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(`@webpack-cli/info ${infoPkgJSON.version}`);
-        expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
-        expect(stdout).toContain(`webpack ${webpack.version}`);
-        expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
+        expect(stdout).toMatchSnapshot();
     });
 
     it('outputs version with build', () => {
@@ -90,9 +64,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
-        expect(stdout).toContain(`webpack ${webpack.version}`);
-        expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
+        expect(stdout).toMatchSnapshot();
     });
 
     it('outputs version with bundle', () => {
@@ -100,9 +72,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
-        expect(stdout).toContain(`webpack ${webpack.version}`);
-        expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
+        expect(stdout).toMatchSnapshot();
     });
 
     it('outputs version with b', () => {
@@ -110,9 +80,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
-        expect(stdout).toContain(`webpack ${webpack.version}`);
-        expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
+        expect(stdout).toMatchSnapshot();
     });
 
     it('outputs version with watch', () => {
@@ -120,9 +88,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
-        expect(stdout).toContain(`webpack ${webpack.version}`);
-        expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
+        expect(stdout).toMatchSnapshot();
     });
 
     it('outputs version with w', () => {
@@ -130,9 +96,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
-        expect(stdout).toContain(`webpack ${webpack.version}`);
-        expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
+        expect(stdout).toMatchSnapshot();
     });
 
     it('outputs version with plugin', () => {
@@ -140,10 +104,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(`@webpack-cli/generators ${generatorsPkgJSON.version}`);
-        expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
-        expect(stdout).toContain(`webpack ${webpack.version}`);
-        expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
+        expect(stdout).toMatchSnapshot();
     });
 
     it('outputs version with loader', () => {
@@ -151,10 +112,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(`@webpack-cli/generators ${generatorsPkgJSON.version}`);
-        expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
-        expect(stdout).toContain(`webpack ${webpack.version}`);
-        expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
+        expect(stdout).toMatchSnapshot();
     });
 
     it('outputs version with init', () => {
@@ -162,10 +120,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(`@webpack-cli/generators ${generatorsPkgJSON.version}`);
-        expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
-        expect(stdout).toContain(`webpack ${webpack.version}`);
-        expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
+        expect(stdout).toMatchSnapshot();
     });
 
     it('outputs version with serve', () => {
@@ -173,20 +128,14 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(`@webpack-cli/serve ${servePkgJSON.version}`);
-        expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
-        expect(stdout).toContain(`webpack ${webpack.version}`);
-        expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
+        expect(stdout).toMatchSnapshot();
     });
 
     it('outputs version with migrate', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['migrate', '--version']);
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
-        expect(stdout).toContain(`@webpack-cli/migrate`);
-        expect(stdout).toContain(`webpack ${webpack.version}`);
-        expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
+        expect(stdout).toMatchSnapshot();
     });
 
     it('outputs version with the alias c for init', () => {
@@ -194,18 +143,15 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(`@webpack-cli/generators ${generatorsPkgJSON.version}`);
-        expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
-        expect(stdout).toContain(`webpack ${webpack.version}`);
-        expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
+        expect(stdout).toMatchSnapshot();
     });
 
     it('should log error when unknown command using command syntax', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['version', 'unknown']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("Unknown command 'unknown'");
-        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
+        expect(stderr).toMatchSnapshot();
+        expect(stderr).toMatchSnapshot();
         expect(stdout).toBeFalsy();
     });
 
@@ -213,9 +159,8 @@ describe('single version flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['version', 'info', 'unknown']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("Unknown command 'unknown'");
-        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
-        expect(stdout).toContain(`@webpack-cli/info ${infoPkgJSON.version}`);
+        expect(stderr).toMatchSnapshot();
+        expect(stdout).toMatchSnapshot();
     });
 
     it('should work for multiple commands', () => {
@@ -223,11 +168,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(`@webpack-cli/info ${infoPkgJSON.version}`);
-        expect(stdout).toContain(`@webpack-cli/serve ${servePkgJSON.version}`);
-        expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
-        expect(stdout).toContain(`webpack ${webpack.version}`);
-        expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
+        expect(stdout).toMatchSnapshot();
     });
 
     it('should output versions for multiple commands using command syntax', () => {
@@ -235,11 +176,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(`@webpack-cli/info ${infoPkgJSON.version}`);
-        expect(stdout).toContain(`@webpack-cli/serve ${servePkgJSON.version}`);
-        expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
-        expect(stdout).toContain(`webpack ${webpack.version}`);
-        expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
+        expect(stdout).toMatchSnapshot();
     });
 
     it('should output versions with help command using command syntax', () => {
@@ -247,27 +184,23 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
-        expect(stdout).toContain(`webpack ${webpack.version}`);
-        expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
+        expect(stdout).toMatchSnapshot();
     });
 
     it('should log version for known command and log error for unknown command using the "--version" option', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['serve', 'abc', '--version']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("Unknown command 'abc'");
-        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
-        expect(stdout).toContain(`@webpack-cli/serve ${servePkgJSON.version}`);
+        expect(stderr).toMatchSnapshot();
+        expect(stdout).toMatchSnapshot();
     });
 
     it('should log version for known command and log error for unknown command using the "-v" option', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['serve', 'abc', '-v']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("Unknown command 'abc'");
-        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
-        expect(stdout).toContain(`@webpack-cli/serve ${servePkgJSON.version}`);
+        expect(stderr).toMatchSnapshot();
+        expect(stdout).toMatchSnapshot();
     });
 
     it('should not output version with help dashed', () => {
@@ -275,7 +208,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain('webpack version|v [commands...]');
+        expect(stdout).toMatchSnapshot();
     });
 
     it('outputs versions with --color using option syntax', () => {
@@ -283,9 +216,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
-        expect(stdout).toContain(`webpack ${webpack.version}`);
-        expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
+        expect(stdout).toMatchSnapshot();
     });
 
     it('outputs versions with --no-color using option syntax', () => {
@@ -293,9 +224,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
-        expect(stdout).toContain(`webpack ${webpack.version}`);
-        expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
+        expect(stdout).toMatchSnapshot();
     });
 
     it('outputs versions with --color using command syntax', () => {
@@ -303,9 +232,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
-        expect(stdout).toContain(`webpack ${webpack.version}`);
-        expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
+        expect(stdout).toMatchSnapshot();
     });
 
     it('outputs versions with --no-color using command syntax', () => {
@@ -313,17 +240,14 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
-        expect(stdout).toContain(`webpack ${webpack.version}`);
-        expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
+        expect(stdout).toMatchSnapshot();
     });
 
     it('should log error when unknown command used', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['version', 'abc']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("Unknown command 'abc'");
-        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
+        expect(stderr).toMatchSnapshot();
         expect(stdout).toBeFalsy();
     });
 
@@ -331,8 +255,7 @@ describe('single version flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['version', '--abc']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain(`Unknown option '--abc`);
-        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
+        expect(stderr).toMatchSnapshot();
         expect(stdout).toBeFalsy();
     });
 
@@ -340,8 +263,7 @@ describe('single version flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--version', 'abc']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("Unknown command 'abc'");
-        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
+        expect(stderr).toMatchSnapshot();
         expect(stdout).toBeFalsy();
     });
 
@@ -349,8 +271,7 @@ describe('single version flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--version', '--abc']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain(`Unknown option '--abc'`);
-        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
+        expect(stderr).toMatchSnapshot();
         expect(stdout).toBeFalsy();
     });
 
@@ -358,8 +279,7 @@ describe('single version flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['-v', 'abc']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("Unknown command 'abc'");
-        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
+        expect(stderr).toMatchSnapshot();
         expect(stdout).toBeFalsy();
     });
 
@@ -367,8 +287,7 @@ describe('single version flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['-v', '--abc']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("Unknown option '--abc'");
-        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
+        expect(stderr).toMatchSnapshot();
         expect(stdout).toBeFalsy();
     });
 
@@ -377,9 +296,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
-        expect(stdout).toContain(`webpack ${webpack.version}`);
-        expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
+        expect(stdout).toMatchSnapshot();
     });
 
     it('should work using command syntax and the "--version" argument', () => {
@@ -387,17 +304,14 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(`webpack-cli ${pkgJSON.version}`);
-        expect(stdout).toContain(`webpack ${webpack.version}`);
-        expect(stdout).toContain(`webpack-dev-server ${webpackDevServerPkgJSON.version}`);
+        expect(stdout).toMatchSnapshot();
     });
 
     it('should log an error using command syntax with unknown argument', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['version', '--unknown']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("Unknown option '--unknown'");
-        expect(stderr).toContain(`Run 'webpack --help' to see available commands and options`);
+        expect(stderr).toMatchSnapshot();
         expect(stdout).toBeFalsy();
     });
 
@@ -405,8 +319,7 @@ describe('single version flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['version', 'info', '--unknown']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("Unknown option '--unknown'");
-        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
+        expect(stderr).toMatchSnapshot();
         expect(stdout).toBeFalsy();
     });
 
@@ -414,8 +327,7 @@ describe('single version flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['version', 'info', 'serve', '--unknown']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("Unknown option '--unknown'");
-        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
+        expect(stderr).toMatchSnapshot();
         expect(stdout).toBeFalsy();
     });
 });
