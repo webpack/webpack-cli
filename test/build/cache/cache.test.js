@@ -1,6 +1,7 @@
 'use strict';
 
 const path = require('path');
+// eslint-disable-next-line node/no-unpublished-require
 const rimraf = require('rimraf');
 const { run, isWebpack5 } = require('../../utils/test-utils');
 

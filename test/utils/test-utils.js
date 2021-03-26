@@ -1,3 +1,5 @@
+/* eslint-disable node/no-unpublished-require */
+
 'use strict';
 const path = require('path');
 const fs = require('fs');
