@@ -69,13 +69,10 @@ Options:
   -c, --config <value...>                    Provide path to a webpack configuration file e.g. ./webpack.config.js.
   --config-name <value...>                   Name of the configuration to use.
   -m, --merge                                Merge two or more configurations using 'webpack-merge'.
-  --no-merge                                 Negative 'merge' option.
   --env <value...>                           Environment passed to the configuration when it is a function.
   --node-env <value>                         Sets process.env.NODE_ENV to the specified value.
   --progress [value]                         Print compilation progress during build.
-  --no-progress                              Negative 'progress' option.
   -j, --json [value]                         Prints result as JSON or store it in a file.
-  --no-json                                  Negative 'json' option.
   -d, --devtool <value>                      Determine source maps to use.
   --no-devtool                               Do not generate source maps.
   --entry <value...>                         The entry point(s) of your application e.g. ./src/main.js.
@@ -127,13 +124,10 @@ Options:
   -c, --config <value...>                    Provide path to a webpack configuration file e.g. ./webpack.config.js.
   --config-name <value...>                   Name of the configuration to use.
   -m, --merge                                Merge two or more configurations using 'webpack-merge'.
-  --no-merge                                 Negative 'merge' option.
   --env <value...>                           Environment passed to the configuration when it is a function.
   --node-env <value>                         Sets process.env.NODE_ENV to the specified value.
   --progress [value]                         Print compilation progress during build.
-  --no-progress                              Negative 'progress' option.
   -j, --json [value]                         Prints result as JSON or store it in a file.
-  --no-json                                  Negative 'json' option.
   -d, --devtool <value>                      Determine source maps to use.
   --no-devtool                               Do not generate source maps.
   --entry <value...>                         The entry point(s) of your application e.g. ./src/main.js.
@@ -185,13 +179,10 @@ Options:
   -c, --config <value...>                    Provide path to a webpack configuration file e.g. ./webpack.config.js.
   --config-name <value...>                   Name of the configuration to use.
   -m, --merge                                Merge two or more configurations using 'webpack-merge'.
-  --no-merge                                 Negative 'merge' option.
   --env <value...>                           Environment passed to the configuration when it is a function.
   --node-env <value>                         Sets process.env.NODE_ENV to the specified value.
   --progress [value]                         Print compilation progress during build.
-  --no-progress                              Negative 'progress' option.
   -j, --json [value]                         Prints result as JSON or store it in a file.
-  --no-json                                  Negative 'json' option.
   -d, --devtool <value>                      Determine source maps to use.
   --no-devtool                               Do not generate source maps.
   --entry <value...>                         The entry point(s) of your application e.g. ./src/main.js.
@@ -244,14 +235,11 @@ Options:
   --config-name <value...>   Name of the configuration to use.
   -m, --merge                Merge two or more configurations using
                              'webpack-merge'.
-  --no-merge                 Negative 'merge' option.
   --env <value...>           Environment passed to the configuration when it is
                              a function.
   --node-env <value>         Sets process.env.NODE_ENV to the specified value.
   --progress [value]         Print compilation progress during build.
-  --no-progress              Negative 'progress' option.
   -j, --json [value]         Prints result as JSON or store it in a file.
-  --no-json                  Negative 'json' option.
   -d, --devtool <value>      Determine source maps to use.
   --no-devtool               Do not generate source maps.
   --entry <value...>         The entry point(s) of your application e.g.
@@ -421,14 +409,11 @@ Options:
   --config-name <value...>    Name of the configuration to use.
   -m, --merge                 Merge two or more configurations using
                               'webpack-merge'.
-  --no-merge                  Negative 'merge' option.
   --env <value...>            Environment passed to the configuration when it
                               is a function.
   --node-env <value>          Sets process.env.NODE_ENV to the specified value.
   --progress [value]          Print compilation progress during build.
-  --no-progress               Negative 'progress' option.
   -j, --json [value]          Prints result as JSON or store it in a file.
-  --no-json                   Negative 'json' option.
   -d, --devtool <value>       Determine source maps to use.
   --no-devtool                Do not generate source maps.
   --entry <value...>          The entry point(s) of your application e.g.
@@ -508,14 +493,11 @@ Options:
   --config-name <value...>   Name of the configuration to use.
   -m, --merge                Merge two or more configurations using
                              'webpack-merge'.
-  --no-merge                 Negative 'merge' option.
   --env <value...>           Environment passed to the configuration when it is
                              a function.
   --node-env <value>         Sets process.env.NODE_ENV to the specified value.
   --progress [value]         Print compilation progress during build.
-  --no-progress              Negative 'progress' option.
   -j, --json [value]         Prints result as JSON or store it in a file.
-  --no-json                  Negative 'json' option.
   -d, --devtool <value>      Determine source maps to use.
   --no-devtool               Do not generate source maps.
   --entry <value...>         The entry point(s) of your application e.g.
@@ -558,13 +540,10 @@ Options:
   -c, --config <value...>                    Provide path to a webpack configuration file e.g. ./webpack.config.js.
   --config-name <value...>                   Name of the configuration to use.
   -m, --merge                                Merge two or more configurations using 'webpack-merge'.
-  --no-merge                                 Negative 'merge' option.
   --env <value...>                           Environment passed to the configuration when it is a function.
   --node-env <value>                         Sets process.env.NODE_ENV to the specified value.
   --progress [value]                         Print compilation progress during build.
-  --no-progress                              Negative 'progress' option.
   -j, --json [value]                         Prints result as JSON or store it in a file.
-  --no-json                                  Negative 'json' option.
   -d, --devtool <value>                      Determine source maps to use.
   --no-devtool                               Do not generate source maps.
   --entry <value...>                         The entry point(s) of your application e.g. ./src/main.js.
@@ -616,13 +595,10 @@ Options:
   -c, --config <value...>                    Provide path to a webpack configuration file e.g. ./webpack.config.js.
   --config-name <value...>                   Name of the configuration to use.
   -m, --merge                                Merge two or more configurations using 'webpack-merge'.
-  --no-merge                                 Negative 'merge' option.
   --env <value...>                           Environment passed to the configuration when it is a function.
   --node-env <value>                         Sets process.env.NODE_ENV to the specified value.
   --progress [value]                         Print compilation progress during build.
-  --no-progress                              Negative 'progress' option.
   -j, --json [value]                         Prints result as JSON or store it in a file.
-  --no-json                                  Negative 'json' option.
   -d, --devtool <value>                      Determine source maps to use.
   --no-devtool                               Do not generate source maps.
   --entry <value...>                         The entry point(s) of your application e.g. ./src/main.js.

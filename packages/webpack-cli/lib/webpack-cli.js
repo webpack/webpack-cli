@@ -363,7 +363,8 @@ class WebpackCLI {
                 alias: 'm',
                 configs: [
                     {
-                        type: 'boolean',
+                        type: 'enum',
+                        values: [true],
                     },
                 ],
                 description: "Merge two or more configurations using 'webpack-merge'.",
@@ -430,7 +431,8 @@ class WebpackCLI {
                 name: 'analyze',
                 configs: [
                     {
-                        type: 'boolean',
+                        type: 'enum',
+                        values: [true],
                     },
                 ],
                 multiple: false,
@@ -443,7 +445,8 @@ class WebpackCLI {
                         type: 'string',
                     },
                     {
-                        type: 'boolean',
+                        type: 'enum',
+                        values: [true],
                     },
                 ],
                 description: 'Print compilation progress during build.',
@@ -466,7 +469,8 @@ class WebpackCLI {
                         type: 'string',
                     },
                     {
-                        type: 'boolean',
+                        type: 'enum',
+                        values: [true],
                     },
                 ],
                 alias: 'j',
