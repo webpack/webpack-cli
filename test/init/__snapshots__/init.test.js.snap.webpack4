@@ -463,6 +463,9 @@ Object {
   "name": "my-webpack-project",
   "scripts": Object {
     "build": "webpack --mode=production",
+    "build:dev": "webpack --mode=development",
+    "build:prod": "webpack --mode=production",
+    "watch": "webpack --watch",
   },
   "version": "1.0.0",
 }
@@ -573,6 +576,9 @@ Object {
   "name": "my-webpack-project",
   "scripts": Object {
     "build": "webpack --mode=production",
+    "build:dev": "webpack --mode=development",
+    "build:prod": "webpack --mode=production",
+    "watch": "webpack --watch",
   },
   "version": "1.0.0",
 }
