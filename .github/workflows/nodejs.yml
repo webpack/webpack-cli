@@ -82,7 +82,6 @@ jobs:
         run: yarn
 
       - name: Install webpack ${{ matrix.webpack-version }}
-        if: matrix.webpack-version == '4'
         run: yarn add -W webpack@${{ matrix.webpack-version }}
 
       - name: Prepare environment for tests
