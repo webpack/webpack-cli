@@ -7,7 +7,6 @@ lib
 .editorconfig
 .eslintignore
 __testfixtures__
-*/__tests__/*
 *.test.js
 *.input.js
 types.js
