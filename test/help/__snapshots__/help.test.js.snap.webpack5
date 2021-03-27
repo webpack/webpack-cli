@@ -299,8 +299,8 @@ exports[`help should show help information for 'info' command using the "--help"
 Outputs information about your system.
 
 Options:
-  --output <value>      To get the output in a specified format ( accept json
-                        or markdown )
+  --output <value>      To get the output in specified format ( accept json or
+                        markdown )
 
 Global options:
   --color               Enable colors on console.
@@ -646,6 +646,132 @@ CLI documentation: https://webpack.js.org/api/cli/.
 Made with ♥ by the webpack team."
 `;
 
+exports[`help should show help information using the "--help" option with the "verbose" value #2 1`] = `
+"Usage: webpack [entries...] [options]
+Alternative usage to run commands: webpack [command] [options]
+
+The build tool for modern web applications.
+
+Options:
+  -c, --config <value...>                                                            Provide path to a webpack configuration file e.g. ./webpack.config.js.
+  --config-name <value...>                                                           Name of the configuration to use.
+  -m, --merge                                                                        Merge two or more configurations using 'webpack-merge'.
+  --env <value...>                                                                   Environment passed to the configuration when it is a function.
+  --node-env <value>                                                                 Sets process.env.NODE_ENV to the specified value.
+  -h, --hot [value]                                                                  Enables Hot Module Replacement
+  --no-hot                                                                           Disables Hot Module Replacement.
+  --analyze                                                                          It invokes webpack-bundle-analyzer plugin to get bundle information.
+  --progress [value]                                                                 Print compilation progress during build.
+  --prefetch <value>                                                                 Prefetch this request.
+  -j, --json [value]                                                                 Prints result as JSON or store it in a file.
+  --no-amd                                                                           Negative 'amd' option.
+  --bail                                                                             Report the first error as a hard error instead of tolerating it.
+  --no-bail                                                                          Negative 'bail' option.
+  --cache                                                                            Enable in memory caching. Disable caching.
+  --no-cache                                                                         Negative 'cache' option.
+  --cache-type <value>                                                               In memory caching. Filesystem caching.
+  --cache-cache-directory <value>                                                    Base directory for the cache (defaults to node_modules/.cache/webpack).
+  --cache-cache-location <value>                                                     Locations for the cache (defaults to cacheDirectory / name).
+  --cache-hash-algorithm <value>                                                     Algorithm used for generation the hash (see node.js crypto package).
+  --cache-idle-timeout <value>                                                       Time in ms after which idle period the cache storing should happen (only for store: 'pack' or 'idle').
+  --cache-idle-timeout-for-initial-store <value>                                     Time in ms after which idle period the initial cache storing should happen (only for store: 'pack' or 'idle').
+  --cache-immutable-paths <value...>                                                 A path to a immutable directory (usually a package manager cache directory).
+  --cache-immutable-paths-reset                                                      Clear all items provided in configuration. List of paths that are managed by a package manager and contain a version or hash in its path so all files are immutable.
+  --cache-managed-paths <value...>                                                   A path to a managed directory (usually a node_modules directory).
+  --cache-managed-paths-reset                                                        Clear all items provided in configuration. List of paths that are managed by a package manager and can be trusted to not be modified otherwise.
+  --cache-name <value>                                                               Name for the cache. Different names will lead to different coexisting caches.
+  --cache-store <value>                                                              When to store data to the filesystem. (pack: Store data when compiler is idle in a single file).
+  --cache-version <value>                                                            Version of the cache data. Different versions won't allow to reuse the cache and override existing content. Update the version when config changed in a way which doesn't allow to reuse cache. This will invalidate the cache.
+  --context <value>                                                                  The base directory (absolute path!) for resolving the \`entry\` option. If \`output.pathinfo\` is set, the included pathinfo is shortened to this directory.
+  --dependencies <value...>                                                          References to another configuration to depend on.
+  --dependencies-reset                                                               Clear all items provided in configuration. References to other configurations to depend on.
+  -d, --devtool <value>                                                              Determine source maps to use.
+  --no-devtool                                                                       Do not generate source maps.
+  --entry <value...>                                                                 The entry point(s) of your application e.g. ./src/main.js.
+  --entry-reset                                                                      Clear all items provided in configuration. All modules are loaded upon startup. The last one is exported.
+  --experiments-asset                                                                Allow module type 'asset' to generate assets.
+  --no-experiments-asset                                                             Negative 'experiments-asset' option.
+  --experiments-async-web-assembly                                                   Support WebAssembly as asynchronous EcmaScript Module.
+  --no-experiments-async-web-assembly                                                Negative 'experiments-async-web-assembly' option.
+  --experiments-layers                                                               Enable module and chunk layers.
+  --no-experiments-layers                                                            Negative 'experiments-layers' option.
+  --experiments-lazy-compilation                                                     Compile entrypoints and import()s only when they are accessed.
+  --no-experiments-lazy-compilation                                                  Negative 'experiments-lazy-compilation' option.
+  --experiments-lazy-compilation-client <value>                                      A custom client.
+  --experiments-lazy-compilation-entries                                             Enable/disable lazy compilation for entries.
+  --no-experiments-lazy-compilation-entries                                          Negative 'experiments-lazy-compilation-entries' option.
+  --experiments-lazy-compilation-imports                                             Enable/disable lazy compilation for import() modules.
+  --no-experiments-lazy-compilation-imports                                          Negative 'experiments-lazy-compilation-imports' option.
+  --experiments-lazy-compilation-test <value>                                        Specify which entrypoints or import()ed modules should be lazily compiled. This is matched with the imported module and not the entrypoint name.
+  --experiments-output-module                                                        Allow output javascript files as module source type.
+  --no-experiments-output-module                                                     Negative 'experiments-output-module' option.
+  --experiments-sync-web-assembly                                                    Support WebAssembly as synchronous EcmaScript Module (outdated).
+  --no-experiments-sync-web-assembly                                                 Negative 'experiment"
+`;
+
+exports[`help should show help information using the "--help" option with the "verbose" value 1`] = `
+"Usage: webpack [entries...] [options]
+Alternative usage to run commands: webpack [command] [options]
+
+The build tool for modern web applications.
+
+Options:
+  -c, --config <value...>                                                            Provide path to a webpack configuration file e.g. ./webpack.config.js.
+  --config-name <value...>                                                           Name of the configuration to use.
+  -m, --merge                                                                        Merge two or more configurations using 'webpack-merge'.
+  --env <value...>                                                                   Environment passed to the configuration when it is a function.
+  --node-env <value>                                                                 Sets process.env.NODE_ENV to the specified value.
+  -h, --hot [value]                                                                  Enables Hot Module Replacement
+  --no-hot                                                                           Disables Hot Module Replacement.
+  --analyze                                                                          It invokes webpack-bundle-analyzer plugin to get bundle information.
+  --progress [value]                                                                 Print compilation progress during build.
+  --prefetch <value>                                                                 Prefetch this request.
+  -j, --json [value]                                                                 Prints result as JSON or store it in a file.
+  --no-amd                                                                           Negative 'amd' option.
+  --bail                                                                             Report the first error as a hard error instead of tolerating it.
+  --no-bail                                                                          Negative 'bail' option.
+  --cache                                                                            Enable in memory caching. Disable caching.
+  --no-cache                                                                         Negative 'cache' option.
+  --cache-type <value>                                                               In memory caching. Filesystem caching.
+  --cache-cache-directory <value>                                                    Base directory for the cache (defaults to node_modules/.cache/webpack).
+  --cache-cache-location <value>                                                     Locations for the cache (defaults to cacheDirectory / name).
+  --cache-hash-algorithm <value>                                                     Algorithm used for generation the hash (see node.js crypto package).
+  --cache-idle-timeout <value>                                                       Time in ms after which idle period the cache storing should happen (only for store: 'pack' or 'idle').
+  --cache-idle-timeout-for-initial-store <value>                                     Time in ms after which idle period the initial cache storing should happen (only for store: 'pack' or 'idle').
+  --cache-immutable-paths <value...>                                                 A path to a immutable directory (usually a package manager cache directory).
+  --cache-immutable-paths-reset                                                      Clear all items provided in configuration. List of paths that are managed by a package manager and contain a version or hash in its path so all files are immutable.
+  --cache-managed-paths <value...>                                                   A path to a managed directory (usually a node_modules directory).
+  --cache-managed-paths-reset                                                        Clear all items provided in configuration. List of paths that are managed by a package manager and can be trusted to not be modified otherwise.
+  --cache-name <value>                                                               Name for the cache. Different names will lead to different coexisting caches.
+  --cache-store <value>                                                              When to store data to the filesystem. (pack: Store data when compiler is idle in a single file).
+  --cache-version <value>                                                            Version of the cache data. Different versions won't allow to reuse the cache and override existing content. Update the version when config changed in a way which doesn't allow to reuse cache. This will invalidate the cache.
+  --context <value>                                                                  The base directory (absolute path!) for resolving the \`entry\` option. If \`output.pathinfo\` is set, the included pathinfo is shortened to this directory.
+  --dependencies <value...>                                                          References to another configuration to depend on.
+  --dependencies-reset                                                               Clear all items provided in configuration. References to other configurations to depend on.
+  -d, --devtool <value>                                                              Determine source maps to use.
+  --no-devtool                                                                       Do not generate source maps.
+  --entry <value...>                                                                 The entry point(s) of your application e.g. ./src/main.js.
+  --entry-reset                                                                      Clear all items provided in configuration. All modules are loaded upon startup. The last one is exported.
+  --experiments-asset                                                                Allow module type 'asset' to generate assets.
+  --no-experiments-asset                                                             Negative 'experiments-asset' option.
+  --experiments-async-web-assembly                                                   Support WebAssembly as asynchronous EcmaScript Module.
+  --no-experiments-async-web-assembly                                                Negative 'experiments-async-web-assembly' option.
+  --experiments-layers                                                               Enable module and chunk layers.
+  --no-experiments-layers                                                            Negative 'experiments-layers' option.
+  --experiments-lazy-compilation                                                     Compile entrypoints and import()s only when they are accessed.
+  --no-experiments-lazy-compilation                                                  Negative 'experiments-lazy-compilation' option.
+  --experiments-lazy-compilation-client <value>                                      A custom client.
+  --experiments-lazy-compilation-entries                                             Enable/disable lazy compilation for entries.
+  --no-experiments-lazy-compilation-entries                                          Negative 'experiments-lazy-compilation-entries' option.
+  --experiments-lazy-compilation-imports                                             Enable/disable lazy compilation for import() modules.
+  --no-experiments-lazy-compilation-imports                                          Negative 'experiments-lazy-compilation-imports' option.
+  --experiments-lazy-compilation-test <value>                                        Specify which entrypoints or import()ed modules should be lazily compiled. This is matched with the imported module and not the entrypoint name.
+  --experiments-output-module                                                        Allow output javascript files as module source type.
+  --no-experiments-output-module                                                     Negative 'experiments-output-module' option.
+  --experiments-sync-web-assembly                                                    Support WebAssembly as synchronous EcmaScript Module (outdated).
+  --no-experiments-sync-web-assembly                                                 Negative 'experiment"
+`;
+
 exports[`help should show help information using the "help --color" option 1`] = `
 "Usage: webpack --color
 Description: Enable colors on console.
@@ -787,8 +913,8 @@ exports[`help should show help information with options for sub commands 1`] = `
 Outputs information about your system.
 
 Options:
-  --output <value>      To get the output in a specified format ( accept json
-                        or markdown )
+  --output <value>      To get the output in specified format ( accept json or
+                        markdown )
 
 Global options:
   --color               Enable colors on console.
