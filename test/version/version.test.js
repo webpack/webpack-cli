@@ -2,13 +2,17 @@
 
 const { run } = require('../utils/test-utils');
 
+const serializeSnapshot = (output) => {
+    return output.replace(/\d+.\d+.\d+/g, 'x.x.x');
+};
+
 describe('single version flag', () => {
     it('outputs versions with command syntax', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['version']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toMatchSnapshot();
+        expect(serializeSnapshot(stdout)).toMatchSnapshot();
     });
 
     it('outputs versions with dashed syntax', () => {
@@ -16,7 +20,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toMatchSnapshot();
+        expect(serializeSnapshot(stdout)).toMatchSnapshot();
     });
 
     it('outputs versions with alias syntax', () => {
@@ -24,7 +28,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toMatchSnapshot();
+        expect(serializeSnapshot(stdout)).toMatchSnapshot();
     });
 
     it('outputs version with info', () => {
@@ -32,7 +36,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toMatchSnapshot();
+        expect(serializeSnapshot(stdout)).toMatchSnapshot();
     });
 
     it('outputs version with info using option alias', () => {
@@ -40,7 +44,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toMatchSnapshot();
+        expect(serializeSnapshot(stdout)).toMatchSnapshot();
     });
 
     it('outputs version with info using command syntax', () => {
@@ -48,7 +52,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toMatchSnapshot();
+        expect(serializeSnapshot(stdout)).toMatchSnapshot();
     });
 
     it('outputs version with info using command alias', () => {
@@ -56,7 +60,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toMatchSnapshot();
+        expect(serializeSnapshot(stdout)).toMatchSnapshot();
     });
 
     it('outputs version with build', () => {
@@ -64,7 +68,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toMatchSnapshot();
+        expect(serializeSnapshot(stdout)).toMatchSnapshot();
     });
 
     it('outputs version with bundle', () => {
@@ -72,7 +76,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toMatchSnapshot();
+        expect(serializeSnapshot(stdout)).toMatchSnapshot();
     });
 
     it('outputs version with b', () => {
@@ -80,7 +84,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toMatchSnapshot();
+        expect(serializeSnapshot(stdout)).toMatchSnapshot();
     });
 
     it('outputs version with watch', () => {
@@ -88,7 +92,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toMatchSnapshot();
+        expect(serializeSnapshot(stdout)).toMatchSnapshot();
     });
 
     it('outputs version with w', () => {
@@ -96,7 +100,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toMatchSnapshot();
+        expect(serializeSnapshot(stdout)).toMatchSnapshot();
     });
 
     it('outputs version with plugin', () => {
@@ -104,7 +108,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toMatchSnapshot();
+        expect(serializeSnapshot(stdout)).toMatchSnapshot();
     });
 
     it('outputs version with loader', () => {
@@ -112,7 +116,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toMatchSnapshot();
+        expect(serializeSnapshot(stdout)).toMatchSnapshot();
     });
 
     it('outputs version with init', () => {
@@ -120,7 +124,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toMatchSnapshot();
+        expect(serializeSnapshot(stdout)).toMatchSnapshot();
     });
 
     it('outputs version with serve', () => {
@@ -128,14 +132,14 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toMatchSnapshot();
+        expect(serializeSnapshot(stdout)).toMatchSnapshot();
     });
 
     it('outputs version with migrate', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['migrate', '--version']);
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toMatchSnapshot();
+        expect(serializeSnapshot(stdout)).toMatchSnapshot();
     });
 
     it('outputs version with the alias c for init', () => {
@@ -143,15 +147,14 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toMatchSnapshot();
+        expect(serializeSnapshot(stdout)).toMatchSnapshot();
     });
 
     it('should log error when unknown command using command syntax', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['version', 'unknown']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toMatchSnapshot();
-        expect(stderr).toMatchSnapshot();
+        expect(serializeSnapshot(stderr)).toMatchSnapshot();
         expect(stdout).toBeFalsy();
     });
 
@@ -159,8 +162,8 @@ describe('single version flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['version', 'info', 'unknown']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toMatchSnapshot();
-        expect(stdout).toMatchSnapshot();
+        expect(serializeSnapshot(stderr)).toMatchSnapshot();
+        expect(serializeSnapshot(stdout)).toMatchSnapshot();
     });
 
     it('should work for multiple commands', () => {
@@ -168,7 +171,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toMatchSnapshot();
+        expect(serializeSnapshot(stdout)).toMatchSnapshot();
     });
 
     it('should output versions for multiple commands using command syntax', () => {
@@ -176,7 +179,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toMatchSnapshot();
+        expect(serializeSnapshot(stdout)).toMatchSnapshot();
     });
 
     it('should output versions with help command using command syntax', () => {
@@ -184,23 +187,23 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toMatchSnapshot();
+        expect(serializeSnapshot(stdout)).toMatchSnapshot();
     });
 
     it('should log version for known command and log error for unknown command using the "--version" option', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['serve', 'abc', '--version']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toMatchSnapshot();
-        expect(stdout).toMatchSnapshot();
+        expect(serializeSnapshot(stderr)).toMatchSnapshot();
+        expect(serializeSnapshot(stdout)).toMatchSnapshot();
     });
 
     it('should log version for known command and log error for unknown command using the "-v" option', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['serve', 'abc', '-v']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toMatchSnapshot();
-        expect(stdout).toMatchSnapshot();
+        expect(serializeSnapshot(stderr)).toMatchSnapshot();
+        expect(serializeSnapshot(stdout)).toMatchSnapshot();
     });
 
     it('should not output version with help dashed', () => {
@@ -208,7 +211,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toMatchSnapshot();
+        expect(serializeSnapshot(stdout)).toMatchSnapshot();
     });
 
     it('outputs versions with --color using option syntax', () => {
@@ -216,7 +219,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toMatchSnapshot();
+        expect(serializeSnapshot(stdout)).toMatchSnapshot();
     });
 
     it('outputs versions with --no-color using option syntax', () => {
@@ -224,7 +227,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toMatchSnapshot();
+        expect(serializeSnapshot(stdout)).toMatchSnapshot();
     });
 
     it('outputs versions with --color using command syntax', () => {
@@ -232,7 +235,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toMatchSnapshot();
+        expect(serializeSnapshot(stdout)).toMatchSnapshot();
     });
 
     it('outputs versions with --no-color using command syntax', () => {
@@ -240,14 +243,14 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toMatchSnapshot();
+        expect(serializeSnapshot(stdout)).toMatchSnapshot();
     });
 
     it('should log error when unknown command used', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['version', 'abc']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toMatchSnapshot();
+        expect(serializeSnapshot(stderr)).toMatchSnapshot();
         expect(stdout).toBeFalsy();
     });
 
@@ -255,7 +258,7 @@ describe('single version flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['version', '--abc']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toMatchSnapshot();
+        expect(serializeSnapshot(stderr)).toMatchSnapshot();
         expect(stdout).toBeFalsy();
     });
 
@@ -263,7 +266,7 @@ describe('single version flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--version', 'abc']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toMatchSnapshot();
+        expect(serializeSnapshot(stderr)).toMatchSnapshot();
         expect(stdout).toBeFalsy();
     });
 
@@ -271,7 +274,7 @@ describe('single version flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['--version', '--abc']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toMatchSnapshot();
+        expect(serializeSnapshot(stderr)).toMatchSnapshot();
         expect(stdout).toBeFalsy();
     });
 
@@ -279,7 +282,7 @@ describe('single version flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['-v', 'abc']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toMatchSnapshot();
+        expect(serializeSnapshot(stderr)).toMatchSnapshot();
         expect(stdout).toBeFalsy();
     });
 
@@ -287,7 +290,7 @@ describe('single version flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['-v', '--abc']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toMatchSnapshot();
+        expect(serializeSnapshot(stderr)).toMatchSnapshot();
         expect(stdout).toBeFalsy();
     });
 
@@ -296,7 +299,7 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toMatchSnapshot();
+        expect(serializeSnapshot(stdout)).toMatchSnapshot();
     });
 
     it('should work using command syntax and the "--version" argument', () => {
@@ -304,14 +307,14 @@ describe('single version flag', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toMatchSnapshot();
+        expect(serializeSnapshot(stdout)).toMatchSnapshot();
     });
 
     it('should log an error using command syntax with unknown argument', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['version', '--unknown']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toMatchSnapshot();
+        expect(serializeSnapshot(stderr)).toMatchSnapshot();
         expect(stdout).toBeFalsy();
     });
 
@@ -319,7 +322,7 @@ describe('single version flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['version', 'info', '--unknown']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toMatchSnapshot();
+        expect(serializeSnapshot(stderr)).toMatchSnapshot();
         expect(stdout).toBeFalsy();
     });
 
@@ -327,7 +330,7 @@ describe('single version flag', () => {
         const { exitCode, stderr, stdout } = run(__dirname, ['version', 'info', 'serve', '--unknown']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toMatchSnapshot();
+        expect(serializeSnapshot(stderr)).toMatchSnapshot();
         expect(stdout).toBeFalsy();
     });
 });
