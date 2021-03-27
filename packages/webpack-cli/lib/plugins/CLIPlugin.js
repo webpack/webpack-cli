@@ -45,8 +45,11 @@ class CLIPlugin {
 
         compiler.hooks.run.tap(pluginName, () => {
             const name = getCompilationName();
-
-            this.logger.log(`Compiler${name ? ` ${name}` : ''} starting...`);
+            if (process.env.WEBPACK_CLI_START_FINISH_FORCE_LOG_FORCE) {
+                process.stderr.write(`Compiler${name ? ` ${name}` : ''} starting...`);
+            } else {
+                this.logger.log(`Compiler${name ? ` ${name}` : ''} starting...`);
+            }
 
             if (configPath) {
                 this.logger.log(`Compiler${name ? ` ${name}` : ''} is using config: '${configPath}'`);
@@ -78,8 +81,11 @@ class CLIPlugin {
 
         (compiler.webpack ? compiler.hooks.afterDone : compiler.hooks.done).tap(pluginName, () => {
             const name = getCompilationName();
-
-            this.logger.log(`Compiler${name ? ` ${name}` : ''} finished`);
+            if (process.env.WEBPACK_CLI_START_FINISH_FORCE_LOG_FORCE) {
+                process.stderr.write(`Compiler${name ? ` ${name}` : ''} finished`);
+            } else {
+                this.logger.log(`Compiler${name ? ` ${name}` : ''} finished`);
+            }
 
             process.nextTick(() => {
                 if (compiler.watchMode) {
