@@ -299,8 +299,8 @@ exports[`help should show help information for 'info' command using the "--help"
 Outputs information about your system.
 
 Options:
-  --output <value>      To get the output in specified format ( accept json or
-                        markdown )
+  --output <value>      To get the output in a specified format ( accept json
+                        or markdown )
 
 Global options:
   --color               Enable colors on console.
@@ -913,8 +913,8 @@ exports[`help should show help information with options for sub commands 1`] = `
 Outputs information about your system.
 
 Options:
-  --output <value>      To get the output in specified format ( accept json or
-                        markdown )
+  --output <value>      To get the output in a specified format ( accept json
+                        or markdown )
 
 Global options:
   --color               Enable colors on console.
