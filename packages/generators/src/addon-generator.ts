@@ -33,15 +33,14 @@ const addonGenerator = (
     templateFn: (instance: any) => Record<string, unknown>,
 ): Generator.GeneratorConstructor => {
     return class extends Generator {
-        public logger: Record<string, (string) => void>;
-        public getPackageManager: (val: void) => string;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        public utils: any;
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public constructor(args: any, opts: any) {
             super(args, opts);
-            const { cli } = opts;
-            this.logger = cli.utils.logger;
-            this.getPackageManager = cli.utils.getPackageManager;
+            const { cli = {} } = opts || {};
+            this.utils = cli && cli.utils;
         }
 
         public props: Generator.Question;
@@ -65,8 +64,8 @@ const addonGenerator = (
                 try {
                     fs.mkdirSync(pathToProjectDir, { recursive: true });
                 } catch (error) {
-                    this.logger.error('Failed to create directory');
-                    this.logger.error(error);
+                    this.utils.logger.error('Failed to create directory');
+                    this.utils.logger.error(error);
                 }
                 this.destinationRoot(pathToProjectDir);
             }
@@ -85,7 +84,7 @@ const addonGenerator = (
         }
 
         public install(): void {
-            const packager = this.getPackageManager();
+            const packager = this.utils.getPackageManager();
             const opts: {
                 dev?: boolean;
                 'save-dev'?: boolean;

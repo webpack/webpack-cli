@@ -4,13 +4,16 @@ import { run } from 'yeoman-test';
 import * as assert from 'yeoman-assert';
 
 import { makeLoaderName } from '../src/loader-generator';
+import utils from '../../webpack-cli/lib/utils';
 
 describe('loader generator', () => {
     it('generates a default loader', async () => {
         const loaderName = 'my-test-loader';
-        const outputDir = await run(join(__dirname, '../src/loader-generator.ts')).withPrompts({
-            name: loaderName,
-        });
+        const outputDir = await run(join(__dirname, '../src/loader-generator.ts'))
+            .withPrompts({
+                name: loaderName,
+            })
+            .withOptions({ cli: { utils } });
         const loaderDir = join(outputDir, loaderName);
         const srcFiles = ['cjs.js', 'index.js'];
         const testFiles = ['functional.test.js', 'test-utils.js', 'unit.test.js', 'fixtures/simple-file.js'];

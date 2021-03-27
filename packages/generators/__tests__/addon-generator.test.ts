@@ -5,7 +5,7 @@ import path from 'path';
 import rimraf from 'rimraf';
 import addonGenerator from '../src/addon-generator';
 
-import { getPackageManager } from '../../webpack-cli/lib/utils';
+import utils, { getPackageManager } from '../../webpack-cli/lib/utils';
 
 describe('addon generator', () => {
     let gen, installMock, packageMock;
@@ -24,7 +24,7 @@ describe('addon generator', () => {
     beforeEach(() => {
         const Gen = addonGenerator([], '', [], [], () => ({}));
 
-        gen = new Gen(null, null);
+        gen = new Gen(null, { cli: { utils } });
         gen.props = {
             name: genName,
         };

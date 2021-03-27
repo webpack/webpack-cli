@@ -22,8 +22,8 @@ export default class InitGenerator extends CustomGenerator {
     public supportedTemplates: string[];
     public answers: Record<string, unknown>;
     public force: boolean;
-    public logger: Record<string, (string) => void>;
-    public getPackageManager: (val: void) => string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    public utils: any;
 
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
     public constructor(args: any, opts: any) {
@@ -39,14 +39,13 @@ export default class InitGenerator extends CustomGenerator {
         this.supportedTemplates = Object.keys(handlers);
         this.answers = {};
         const { cli } = opts;
-        this.logger = cli.utils.this.logger;
-        this.getPackageManager = cli.utils.getPackageManager;
+        this.utils = cli.utils;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public async prompting(): Promise<void | any> {
         if (!existsSync(this.resolvedGenerationPath)) {
-            this.logger.log(`${blue('ℹ INFO ')} supplied generation path doesn't exist, required folders will be created.`);
+            this.utils.logger.log(`${blue('ℹ INFO ')} supplied generation path doesn't exist, required folders will be created.`);
             try {
                 mkdirSync(this.resolvedGenerationPath, { recursive: true });
             } catch (error) {
@@ -56,7 +55,7 @@ export default class InitGenerator extends CustomGenerator {
         }
 
         if (!this.supportedTemplates.includes(this.template)) {
-            this.logger.log(`${yellow(`⚠ ${this.template} is not a valid template, please select one from below`)}`);
+            this.utils.logger.log(`${yellow(`⚠ ${this.template} is not a valid template, please select one from below`)}`);
 
             const { selectedTemplate } = await Question.List(
                 this,
@@ -74,7 +73,7 @@ export default class InitGenerator extends CustomGenerator {
     }
 
     public installPlugins(): void {
-        const packager = this.getPackageManager();
+        const packager = this.utils.getPackageManager();
         const opts: {
             dev?: boolean;
             'save-dev'?: boolean;
@@ -84,7 +83,7 @@ export default class InitGenerator extends CustomGenerator {
     }
 
     public writing(): void {
-        this.logger.log(`${blue('ℹ INFO ')} Initialising project...`);
+        this.utils.logger.log(`${blue('ℹ INFO ')} Initialising project...`);
         handlers[this.template].generate(this);
     }
 }
