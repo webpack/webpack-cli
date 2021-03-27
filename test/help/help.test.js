@@ -1,5 +1,6 @@
 'use strict';
 const { run } = require('../utils/test-utils');
+// eslint-disable-next-line node/no-unpublished-require
 const serializer = require('jest-serializer-ansi');
 
 // TODO fix it

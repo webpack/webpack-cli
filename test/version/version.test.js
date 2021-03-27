@@ -7,6 +7,7 @@ const pkgJSON = require('../../packages/webpack-cli/package.json');
 const servePkgJSON = require('../../packages/serve/package.json');
 const infoPkgJSON = require('../../packages/info/package.json');
 const generatorsPkgJSON = require('../../packages/generators/package.json');
+// eslint-disable-next-line node/no-unpublished-require
 const webpackDevServerPkgJSON = require('webpack-dev-server/package.json');
 
 describe('single version flag', () => {

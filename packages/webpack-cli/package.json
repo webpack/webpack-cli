@@ -24,7 +24,8 @@
   ],
   "files": [
     "bin",
-    "lib"
+    "lib",
+    "!**/*__tests__"
   ],
   "dependencies": {
     "@discoveryjs/json-ext": "^0.5.0",

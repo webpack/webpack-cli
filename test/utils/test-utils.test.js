@@ -3,6 +3,7 @@
 const { appendDataIfFileExists, run, runAndGetWatchProc, hyphenToUpperCase } = require('./test-utils');
 const { writeFileSync, unlinkSync, readFileSync, mkdirSync } = require('fs');
 const { resolve } = require('path');
+// eslint-disable-next-line node/no-unpublished-require
 const rimraf = require('rimraf');
 
 const ENTER = '\x0D';

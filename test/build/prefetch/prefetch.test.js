@@ -3,6 +3,7 @@
 const fs = require('fs');
 const { join } = require('path');
 const { run } = require('../../utils/test-utils');
+// eslint-disable-next-line node/no-unpublished-require
 const rimraf = require('rimraf');
 
 describe('prefetch', () => {

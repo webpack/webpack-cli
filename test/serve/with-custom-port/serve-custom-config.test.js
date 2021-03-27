@@ -1,6 +1,7 @@
 'use strict';
 
 const path = require('path');
+// eslint-disable-next-line node/no-unpublished-require
 const getPort = require('get-port');
 const { runWatch } = require('../../utils/test-utils');
 

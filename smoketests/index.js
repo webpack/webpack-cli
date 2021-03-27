@@ -1,5 +1,3 @@
-/* eslint-disable node/no-unpublished-require */
-
 const tests = [
     require('./missing-packages/webpack-dev-server.test.js'),
     require('./missing-packages/webpack.test.js'),

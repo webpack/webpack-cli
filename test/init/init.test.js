@@ -1,5 +1,6 @@
 const { mkdirSync, existsSync, readFileSync } = require('fs');
 const { join, resolve } = require('path');
+// eslint-disable-next-line node/no-unpublished-require
 const rimraf = require('rimraf');
 const { run, runPromptWithAnswers } = require('../utils/test-utils');
 

@@ -1,6 +1,7 @@
 'use strict';
 
 const path = require('path');
+// eslint-disable-next-line node/no-unpublished-require
 const execa = require('execa');
 
 const { sync: spawnSync } = execa;
