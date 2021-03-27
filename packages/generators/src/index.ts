@@ -38,7 +38,7 @@ class GeneratorsCommand {
 
                 env.registerStub(initGenerator, generatorName);
 
-                env.run(generatorName, { options }, () => {
+                env.run(generatorName, { options, cli }, () => {
                     logger.success('Project has been initialised with webpack!');
                 });
             },
@@ -59,7 +59,7 @@ class GeneratorsCommand {
 
                 env.registerStub(loaderGenerator, generatorName);
 
-                env.run(generatorName, () => {
+                env.run(generatorName, { cli }, () => {
                     logger.success('Loader template has been successfully scaffolded.');
                 });
             },
@@ -80,7 +80,7 @@ class GeneratorsCommand {
 
                 env.registerStub(pluginGenerator, generatorName);
 
-                env.run(generatorName, () => {
+                env.run(generatorName, { cli }, () => {
                     logger.success('Plugin template has been successfully scaffolded.');
                 });
             },
