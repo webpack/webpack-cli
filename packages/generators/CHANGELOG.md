@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/generators@1.3.1...@webpack-cli/generators@2.0.0) (2021-03-27)
+
+### BREAKING CHANGES
+
+-   `--generation-path` option was removed, please use `webpack init ./path/to/generation`
+-   `--auto` option was removed in favor `--force`
+-   utils for ast transformations were removed
+
+### Bug Fixes
+
+-   description for `init` command ([#2528](https://github.com/webpack/webpack-cli/issues/2528)) ([0f0e403](https://github.com/webpack/webpack-cli/commit/0f0e403464711d5c7ddfe9537e00969fb3474685))
+-   update prompt message ([#2523](https://github.com/webpack/webpack-cli/issues/2523)) ([7b87485](https://github.com/webpack/webpack-cli/commit/7b87485c6b161d472422e7f86680a7e221223ec1))
+-   add serve script if opted for WDS with init ([#2424](https://github.com/webpack/webpack-cli/issues/2424)) ([78e2fa7](https://github.com/webpack/webpack-cli/commit/78e2fa7036e123beefe2010e0a6cc10697d14c4d))
+-   improve prettier message ([#2419](https://github.com/webpack/webpack-cli/issues/2419)) ([21a1a30](https://github.com/webpack/webpack-cli/commit/21a1a30c687cd800396a1c13abefc57bf42886f3))
+
+### Features
+
+-   add additional scripts to init template ([#2550](https://github.com/webpack/webpack-cli/issues/2550)) ([665d993](https://github.com/webpack/webpack-cli/commit/665d99378f272179e39236cb21773ef1b1907314))
+-   add postcss support to default template ([#2526](https://github.com/webpack/webpack-cli/issues/2526)) ([2627d0f](https://github.com/webpack/webpack-cli/commit/2627d0f9490be35f21ed0f55134d7851dd2e5cd0))
+-   allow all css possibilities for default template ([#2544](https://github.com/webpack/webpack-cli/issues/2544)) ([a141bbb](https://github.com/webpack/webpack-cli/commit/a141bbb1902ec9039d197f3b4b049e2e3eaff793))
+
 ## [1.3.1](https://github.com/webpack/webpack-cli/compare/@webpack-cli/generators@1.3.0...@webpack-cli/generators@1.3.1) (2021-02-02)
 
 **Note:** Version bump only for package @webpack-cli/generators

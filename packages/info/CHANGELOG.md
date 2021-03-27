@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.3](https://github.com/webpack/webpack-cli/compare/@webpack-cli/info@1.2.2...@webpack-cli/info@1.2.3) (2021-03-27)
+
+### Bug Fixes
+
+-   grammar in description of `--output` ([#2554](https://github.com/webpack/webpack-cli/issues/2554)) ([c6f781d](https://github.com/webpack/webpack-cli/commit/c6f781d741da3b07b25756c053427e5c358ad14f))
+
 ## [1.2.2](https://github.com/webpack/webpack-cli/compare/@webpack-cli/info@1.2.1...@webpack-cli/info@1.2.2) (2021-02-02)
 
 **Note:** Version bump only for package @webpack-cli/info

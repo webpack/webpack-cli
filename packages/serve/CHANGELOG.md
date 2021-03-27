@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.1](https://github.com/webpack/webpack-cli/compare/@webpack-cli/serve@1.3.0...@webpack-cli/serve@1.3.1) (2021-03-27)
+
+**Note:** Version bump only for package @webpack-cli/serve
+
 # [1.3.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/serve@1.2.2...@webpack-cli/serve@1.3.0) (2021-02-02)
 
 ### Bug Fixes
