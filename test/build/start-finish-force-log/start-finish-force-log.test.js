@@ -1,6 +1,6 @@
 'use strict';
 
-const { run } = require('../../utils/test-utils');
+const { run, runWatch } = require('../../utils/test-utils');
 
 describe('start finish force log', () => {
     it('start finish force log when env is set', () => {
@@ -20,6 +20,15 @@ describe('start finish force log', () => {
         expect(exitCode).toBe(0);
         expect(stderr).toContain("Compiler 'log config' starting...");
         expect(stderr).toContain("Compiler 'log config' finished");
+        expect(stdout).toBeTruthy();
+    });
+
+    it('should work with watch', async () => {
+        const { stderr, stdout } = await runWatch(__dirname, ['watch'], {
+            env: { WEBPACK_CLI_START_FINISH_FORCE_LOG: true },
+        });
+        expect(stderr).toContain('Compiler starting...');
+        expect(stderr).toContain('Compiler finished');
         expect(stdout).toBeTruthy();
     });
 
