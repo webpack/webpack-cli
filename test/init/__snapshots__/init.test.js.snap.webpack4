@@ -401,7 +401,7 @@ module.exports = {
                 use: ['less-loader'],
             },
             {
-                test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/,
+                test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: 'asset',
             },
 
@@ -434,7 +434,7 @@ module.exports = {
                 use: ['style-loader', 'css-loader', 'postcss-loader'],
             },
             {
-                test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/,
+                test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: 'asset',
             },
 
@@ -496,7 +496,7 @@ module.exports = {
                 use: ['style-loader', 'css-loader', 'postcss-loader'],
             },
             {
-                test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/,
+                test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: 'asset',
             },
 
@@ -549,7 +549,7 @@ module.exports = {
                 use: ['style-loader', 'css-loader', 'sass-loader'],
             },
             {
-                test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/,
+                test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: 'asset',
             },
 
@@ -605,7 +605,7 @@ module.exports = {
                 use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
             },
             {
-                test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/,
+                test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: 'asset',
             },
 
@@ -654,11 +654,11 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\\\\.styl$/,
+                test: /\\\\.styl$/i,
                 use: ['stylus-loader'],
             },
             {
-                test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/,
+                test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: 'asset',
             },
 
