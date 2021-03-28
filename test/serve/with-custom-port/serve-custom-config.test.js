@@ -20,9 +20,8 @@ describe('serve with devServer in config', () => {
         expect(normalizeStderr(stderr)).toMatchSnapshot('stderr');
         // Should output the correct bundle file
         expect(stdout).toContain('main.js');
-        expect(stdout).not.toContain('HotModuleReplacementPlugin');
         // Runs at correct host and port
-        expect(stdout).toContain('http://0.0.0.0:1234');
+        expect(stderr).toContain('http://localhost:1234');
     });
 
     it('Port flag should override the config port', async () => {
@@ -43,7 +42,7 @@ describe('serve with devServer in config', () => {
         // Should output the correct bundle file
         expect(stdout).toContain('main.js');
         // HMR is being used
-        expect(stdout).toContain('HotModuleReplacementPlugin');
+        expect(stdout).toContain('webpack/hot/dev-server.js');
         // Runs at correct host and port
         expect(stdout).toContain(`http://0.0.0.0:${port}`);
     });
@@ -55,7 +54,7 @@ describe('serve with devServer in config', () => {
         // Should output the correct bundle file
         expect(stdout).toContain('main.js');
         // HMR is not being used
-        expect(stdout).not.toContain('HotModuleReplacementPlugin');
+        expect(stdout).not.toContain('webpack/hot/dev-server.js');
         // Runs at correct host and port
         expect(stdout).toContain(`http://0.0.0.0:${port}`);
     });

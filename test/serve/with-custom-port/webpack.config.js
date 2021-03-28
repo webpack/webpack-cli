@@ -1,11 +1,9 @@
-const WebpackCLITestPlugin = require('../../utils/webpack-cli-test-plugin');
-
 module.exports = {
     mode: 'development',
     devtool: false,
+    stats: 'detailed',
     devServer: {
         port: 1234,
-        host: '0.0.0.0',
+        host: 'localhost',
     },
-    plugins: [new WebpackCLITestPlugin(['plugins'], false)],
 };

@@ -88,7 +88,7 @@ describe('basic serve usage', () => {
         expect(stdout).toContain('first-output/main.js');
         expect(stdout).toContain('two');
         expect(stdout).toContain('second-output/main.js');
-        expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
+        expect(stdout.match(/HotModuleReplacementPlugin/g)).toHaveLength(1);
     });
 
     it('should work with the "--mode" option', async () => {

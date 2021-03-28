@@ -13,7 +13,9 @@ module.exports = async () => [
         },
         devServer: {
             port: await getPort(),
-            publicPath: '/one-dev-server-my-public-path/',
+            dev: {
+                publicPath: '/dev-server-my-public-path/',
+            },
         },
         plugins: [new WebpackCLITestPlugin(['mode', 'output'], false, 'hooks.compilation.taps')],
     },
@@ -27,7 +29,9 @@ module.exports = async () => [
         },
         devServer: {
             port: await getPort(),
-            publicPath: '/two-dev-server-my-public-path/',
+            dev: {
+                publicPath: '/dev-server-my-public-path/',
+            },
         },
     },
 ];

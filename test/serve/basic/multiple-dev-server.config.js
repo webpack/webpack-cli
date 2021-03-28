@@ -9,7 +9,9 @@ module.exports = [
             filename: 'first-output/[name].js',
         },
         devServer: {
-            publicPath: '/dev-server-my-public-path/',
+            dev: {
+                publicPath: '/dev-server-my-public-path/',
+            },
         },
         plugins: [new WebpackCLITestPlugin(['mode', 'output'], false)],
     },
@@ -22,7 +24,9 @@ module.exports = [
             filename: 'first-output/[name].js',
         },
         devServer: {
-            publicPath: '/dev-server-my-public-path/',
+            dev: {
+                publicPath: '/dev-server-my-public-path/',
+            },
         },
         plugins: [new WebpackCLITestPlugin(['mode', 'output'], false)],
     },
