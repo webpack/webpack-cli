@@ -324,7 +324,7 @@ describe('init command', () => {
         const { stdout, stderr } = await runPromptWithAnswers(
             assetsPath,
             ['init'],
-            [`${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${DOWN}${ENTER}`, ENTER],
+            [`${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${DOWN}${ENTER}`, ENTER, `n${ENTER}`],
         );
         expect(stdout).toContain('Project has been initialised with webpack!');
         expect(stderr).toContain('webpack.config.js');
