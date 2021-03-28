@@ -47,10 +47,9 @@ export default class InitGenerator extends CustomGenerator {
             logger.log(`${blue('ℹ INFO ')} supplied generation path doesn't exist, required folders will be created.`);
             try {
                 mkdirSync(this.resolvedGenerationPath, { recursive: true });
-            } catch (err) {
-                logger.error('Failed to create directory');
-                logger.error(err);
-                process.exit(1);
+            } catch (error) {
+                logger.error(`Failed to create directory.\n ${error}`);
+                process.exit(2);
             }
         }
 
