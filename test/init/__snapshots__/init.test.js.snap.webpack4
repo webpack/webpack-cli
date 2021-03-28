@@ -62,7 +62,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/,
+                test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: 'asset',
             },
 
@@ -121,7 +121,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/,
+                test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: 'asset',
             },
 
@@ -174,7 +174,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/,
+                test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: 'asset',
             },
 
@@ -224,11 +224,11 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\\\\\\\\.(js|jsx)$/,
+                test: /\\\\\\\\.(js|jsx)$/i,
                 loader: 'babel-loader',
             },
             {
-                test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/,
+                test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: 'asset',
             },
 
@@ -340,12 +340,12 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\\\\\\\\.(ts|tsx)$/,
+                test: /\\\\\\\\.(ts|tsx)$/i,
                 loader: 'ts-loader',
                 exclude: ['/node_modules/'],
             },
             {
-                test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/,
+                test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: 'asset',
             },
 
