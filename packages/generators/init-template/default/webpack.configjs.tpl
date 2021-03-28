@@ -1,6 +1,6 @@
 // Generated using webpack-cli http://github.com/webpack-cli
 const path = require('path');<% if (htmlWebpackPlugin) { %>
-const HtmlWebpackPlugin = require('html-webpack-plugin');<% } %><% if (isExtractPlugin) %>
+const HtmlWebpackPlugin = require('html-webpack-plugin');<% } %><% if (isExtractPlugin) { %>
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');<% } %>
 
 module.exports = {
