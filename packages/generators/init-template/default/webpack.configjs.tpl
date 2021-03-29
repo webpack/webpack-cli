@@ -23,11 +23,11 @@ module.exports = {
     module: {
         rules: [<% if (langType == "ES6") { %>
             {
-                test: /\\.(js|jsx)$/i,
+                test: /\.(js|jsx)$/i,
                 loader: 'babel-loader',
             },<% } %><% if (langType == "Typescript") { %>
             {
-                test: /\\.(ts|tsx)$/i,
+                test: /\.(ts|tsx)$/i,
                 loader: 'ts-loader',
                 exclude: ['/node_modules/'],
             },<% } %><%  if (isCSS && !isPostCSS) { %>
