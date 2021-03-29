@@ -33,14 +33,20 @@ const addonGenerator = (
     templateFn: (instance: any) => Record<string, unknown>,
 ): Generator.GeneratorConstructor => {
     return class extends Generator {
+        public template: string;
+        public resolvedTemplatePath: string;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public utils: any;
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public constructor(args: any, opts: any) {
             super(args, opts);
-            const { cli = {} } = opts || {};
+
+            const { cli = {}, options } = opts || {};
+
             this.utils = cli && cli.utils;
+            this.template = options.template;
+            this.resolvedTemplatePath = path.join(templateDir, this.template);
         }
 
         public props: Generator.Question;
@@ -76,8 +82,8 @@ const addonGenerator = (
             // eslint-disable-next-line @typescript-eslint/no-var-requires
             this.fs.extendJSON(this.destinationPath('package.json'), require(packageJsonTemplatePath)(this.props.name));
 
-            this.copy = generatorCopy(this, templateDir);
-            this.copyTpl = generatorCopyTpl(this, templateDir, templateFn(this));
+            this.copy = generatorCopy(this, this.resolvedTemplatePath);
+            this.copyTpl = generatorCopyTpl(this, this.resolvedTemplatePath, templateFn(this));
 
             copyFiles.forEach(this.copy);
             copyTemplateFiles.forEach(this.copyTpl);
