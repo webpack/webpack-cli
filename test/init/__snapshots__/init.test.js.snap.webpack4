@@ -224,7 +224,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\\\\\\\\.(js|jsx)$/i,
+                test: /\\\\.(js|jsx)$/i,
                 loader: 'babel-loader',
             },
             {
@@ -340,7 +340,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\\\\\\\\.(ts|tsx)$/i,
+                test: /\\\\.(ts|tsx)$/i,
                 loader: 'ts-loader',
                 exclude: ['/node_modules/'],
             },
