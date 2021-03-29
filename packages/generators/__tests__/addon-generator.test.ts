@@ -3,10 +3,9 @@ jest.mock('webpack-cli/lib/utils/get-package-manager', () => jest.fn());
 import fs from 'fs';
 import path from 'path';
 import rimraf from 'rimraf';
-import { utils } from 'webpack-cli';
 import addonGenerator from '../src/addon-generator';
 
-const { getPackageManager } = utils;
+import utils, { getPackageManager } from '../../webpack-cli/lib/utils';
 
 describe('addon generator', () => {
     let gen, installMock, packageMock;
@@ -25,7 +24,7 @@ describe('addon generator', () => {
     beforeEach(() => {
         const Gen = addonGenerator([], '', [], [], () => ({}));
 
-        gen = new Gen(null, null);
+        gen = new Gen(null, { cli: { utils } });
         gen.props = {
             name: genName,
         };

@@ -2,13 +2,16 @@ import { join } from 'path';
 // eslint-disable-next-line node/no-extraneous-import
 import { run } from 'yeoman-test';
 import * as assert from 'yeoman-assert';
+import utils from '../../webpack-cli/lib/utils';
 
 describe('plugin generator', () => {
     it('generates a default plugin', async () => {
         const pluginName = 'my-test-plugin';
-        const outputDir = await run(join(__dirname, '../src/plugin-generator.ts')).withPrompts({
-            name: pluginName,
-        });
+        const outputDir = await run(join(__dirname, '../src/plugin-generator.ts'))
+            .withPrompts({
+                name: pluginName,
+            })
+            .withOptions({ cli: { utils } });
         const pluginDir = join(outputDir, pluginName);
         const srcFiles = ['cjs.js', 'index.js'];
         const testFiles = ['functional.test.js', 'test-utils.js'];

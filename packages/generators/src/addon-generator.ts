@@ -3,10 +3,6 @@ import path from 'path';
 import Generator from 'yeoman-generator';
 import { generatorCopy, generatorCopyTpl } from './utils/copy-utils';
 
-import { utils } from 'webpack-cli';
-
-const { logger, getPackageManager } = utils;
-
 /**
  * Creates a Yeoman Generator that generates a project conforming
  * to webpack-defaults.
@@ -37,6 +33,16 @@ const addonGenerator = (
     templateFn: (instance: any) => Record<string, unknown>,
 ): Generator.GeneratorConstructor => {
     return class extends Generator {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        public utils: any;
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        public constructor(args: any, opts: any) {
+            super(args, opts);
+            const { cli = {} } = opts || {};
+            this.utils = cli && cli.utils;
+        }
+
         public props: Generator.Question;
         public copy: (value: string, index: number, array: string[]) => void;
         public copyTpl: (value: string, index: number, array: string[]) => void;
@@ -58,8 +64,8 @@ const addonGenerator = (
                 try {
                     fs.mkdirSync(pathToProjectDir, { recursive: true });
                 } catch (error) {
-                    logger.error('Failed to create directory');
-                    logger.error(error);
+                    this.utils.logger.error('Failed to create directory');
+                    this.utils.logger.error(error);
                 }
                 this.destinationRoot(pathToProjectDir);
             }
@@ -78,7 +84,7 @@ const addonGenerator = (
         }
 
         public install(): void {
-            const packager = getPackageManager();
+            const packager = this.utils.getPackageManager();
             const opts: {
                 dev?: boolean;
                 'save-dev'?: boolean;

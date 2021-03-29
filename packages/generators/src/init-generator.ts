@@ -1,13 +1,10 @@
 import { blue, yellow } from 'colorette';
-import { utils } from 'webpack-cli';
 import path from 'path';
 import * as Question from './utils/scaffold-utils';
 
 import { CustomGenerator } from './types';
 import { existsSync, mkdirSync } from 'fs';
 import handlers from './handlers';
-
-const { logger, getPackageManager } = utils;
 
 /**
  *
@@ -25,6 +22,8 @@ export default class InitGenerator extends CustomGenerator {
     public supportedTemplates: string[];
     public answers: Record<string, unknown>;
     public force: boolean;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    public utils: any;
 
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
     public constructor(args: any, opts: any) {
@@ -39,22 +38,24 @@ export default class InitGenerator extends CustomGenerator {
         this.dependencies = ['webpack', 'webpack-cli'];
         this.supportedTemplates = Object.keys(handlers);
         this.answers = {};
+        const { cli } = opts;
+        this.utils = cli.utils;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public async prompting(): Promise<void | any> {
         if (!existsSync(this.resolvedGenerationPath)) {
-            logger.log(`${blue('ℹ INFO ')} supplied generation path doesn't exist, required folders will be created.`);
+            this.utils.logger.log(`${blue('ℹ INFO ')} supplied generation path doesn't exist, required folders will be created.`);
             try {
                 mkdirSync(this.resolvedGenerationPath, { recursive: true });
             } catch (error) {
-                logger.error(`Failed to create directory.\n ${error}`);
+                this.utils.logger.error(`Failed to create directory.\n ${error}`);
                 process.exit(2);
             }
         }
 
         if (!this.supportedTemplates.includes(this.template)) {
-            logger.log(`${yellow(`⚠ ${this.template} is not a valid template, please select one from below`)}`);
+            this.utils.logger.log(`${yellow(`⚠ ${this.template} is not a valid template, please select one from below`)}`);
 
             const { selectedTemplate } = await Question.List(
                 this,
@@ -72,7 +73,7 @@ export default class InitGenerator extends CustomGenerator {
     }
 
     public installPlugins(): void {
-        const packager = getPackageManager();
+        const packager = this.utils.getPackageManager();
         const opts: {
             dev?: boolean;
             'save-dev'?: boolean;
@@ -82,7 +83,7 @@ export default class InitGenerator extends CustomGenerator {
     }
 
     public writing(): void {
-        logger.log(`${blue('ℹ INFO ')} Initialising project...`);
+        this.utils.logger.log(`${blue('ℹ INFO ')} Initialising project...`);
         handlers[this.template].generate(this);
     }
 }
