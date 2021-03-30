@@ -13,7 +13,7 @@ describe('loader generator', () => {
             .withPrompts({
                 name: loaderName,
             })
-            .withOptions({ cli: { utils } });
+            .withOptions({ cli: { utils }, options: { template: 'default' } });
         const loaderDir = join(outputDir, loaderName);
         const srcFiles = ['cjs.js', 'index.js'];
         const testFiles = ['functional.test.js', 'test-utils.js', 'unit.test.js', 'fixtures/simple-file.js'];

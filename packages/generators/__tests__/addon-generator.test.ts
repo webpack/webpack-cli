@@ -24,7 +24,7 @@ describe('addon generator', () => {
     beforeEach(() => {
         const Gen = addonGenerator([], '', [], [], () => ({}));
 
-        gen = new Gen(null, { cli: { utils } });
+        gen = new Gen(null, { cli: { utils }, options: { template: 'default' } });
         gen.props = {
             name: genName,
         };

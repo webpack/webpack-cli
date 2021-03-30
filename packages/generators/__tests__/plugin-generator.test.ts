@@ -11,7 +11,7 @@ describe('plugin generator', () => {
             .withPrompts({
                 name: pluginName,
             })
-            .withOptions({ cli: { utils } });
+            .withOptions({ cli: { utils }, options: { template: 'default' } });
         const pluginDir = join(outputDir, pluginName);
         const srcFiles = ['cjs.js', 'index.js'];
         const testFiles = ['functional.test.js', 'test-utils.js'];
