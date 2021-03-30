@@ -1,7 +1,10 @@
+import { yellow } from 'colorette';
 import fs from 'fs';
 import path from 'path';
 import Generator from 'yeoman-generator';
+
 import { generatorCopy, generatorCopyTpl } from './utils/copy-utils';
+import { List } from './utils/scaffold-utils';
 
 /**
  * Creates a Yeoman Generator that generates a project conforming
@@ -35,6 +38,7 @@ const addonGenerator = (
     return class extends Generator {
         public template: string;
         public resolvedTemplatePath: string;
+        public supportedTemplates: string[];
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public utils: any;
 
@@ -46,14 +50,30 @@ const addonGenerator = (
 
             this.utils = cli && cli.utils;
             this.template = options.template;
-            this.resolvedTemplatePath = path.join(templateDir, this.template);
+            this.supportedTemplates = fs.readdirSync(templateDir);
         }
 
         public props: Generator.Question;
         public copy: (value: string, index: number, array: string[]) => void;
         public copyTpl: (value: string, index: number, array: string[]) => void;
 
-        public prompting(): Promise<void> {
+        public async prompting(): Promise<void> {
+            if (!this.supportedTemplates.includes(this.template)) {
+                this.utils.logger.log(`${yellow(`⚠ ${this.template} is not a valid template, please select one from below`)}`);
+
+                const { selectedTemplate } = await List(
+                    this,
+                    'selectedTemplate',
+                    'Select a valid template from below:',
+                    this.supportedTemplates,
+                    'default',
+                    false,
+                );
+
+                this.template = selectedTemplate;
+            }
+            this.resolvedTemplatePath = path.join(templateDir, this.template);
+
             return this.prompt(prompts).then((props: Generator.Question): void => {
                 this.props = props;
             });

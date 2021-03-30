@@ -130,4 +130,9 @@ describe('plugin command', () => {
         stdout = run(customPluginPath, ['--config', './examples/simple/webpack.config.js'], false).stdout;
         expect(stdout).toContain('Hello World!');
     });
+
+    it('should prompt on supplying an invalid template', () => {
+        const { stdout } = run(__dirname, ['plugin', '--template=unknown']);
+        expect(stdout).toContain('unknown is not a valid template');
+    });
 });

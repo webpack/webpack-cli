@@ -22,7 +22,7 @@ describe('addon generator', () => {
     });
 
     beforeEach(() => {
-        const Gen = addonGenerator([], '', [], [], () => ({}));
+        const Gen = addonGenerator([], path.join(__dirname, '..', 'loader-template'), [], [], () => ({}));
 
         gen = new Gen(null, { cli: { utils }, options: { template: 'default' } });
         gen.props = {
