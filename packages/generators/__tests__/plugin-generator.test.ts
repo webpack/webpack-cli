@@ -7,7 +7,7 @@ import utils from '../../webpack-cli/lib/utils';
 describe('plugin generator', () => {
     it('generates a default plugin', async () => {
         const pluginName = 'my-test-plugin';
-        const outputDir = await run(join(__dirname, '../src/plugin-generator.ts'))
+        const { cwd: outputDir } = await run(join(__dirname, '../src/plugin-generator.ts'))
             .withPrompts({
                 name: pluginName,
             })

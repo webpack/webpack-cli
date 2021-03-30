@@ -9,7 +9,7 @@ import utils from '../../webpack-cli/lib/utils';
 describe('loader generator', () => {
     it('generates a default loader', async () => {
         const loaderName = 'my-test-loader';
-        const outputDir = await run(join(__dirname, '../src/loader-generator.ts'))
+        const { cwd: outputDir } = await run(join(__dirname, '../src/loader-generator.ts'))
             .withPrompts({
                 name: loaderName,
             })
