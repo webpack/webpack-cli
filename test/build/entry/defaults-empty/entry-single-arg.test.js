@@ -1,10 +1,10 @@
 'use strict';
 
-const { run } = require('../../../utils/test-utils');
+const { runAsync } = require('../../../utils/test-utils');
 
 describe('single entry flag empty project', () => {
-    it('sets default entry, compiles but throw missing module error', () => {
-        const { exitCode, stderr, stdout } = run(__dirname);
+    it('sets default entry, compiles but throw missing module error', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname);
 
         expect(exitCode).toBe(1);
         expect(stderr).toBeFalsy();

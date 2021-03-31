@@ -1,14 +1,14 @@
 'use strict';
 
-const { run, hyphenToUpperCase } = require('../../utils/test-utils');
+const { runAsync, hyphenToUpperCase } = require('../../utils/test-utils');
 const CLI = require('../../../packages/webpack-cli/lib/index');
 
 const cli = new CLI();
 const performanceFlags = cli.getBuiltInOptions().filter(({ name }) => name.startsWith('performance-'));
 
 describe('module config related flag', () => {
-    it(`should config --performance option correctly`, () => {
-        const { exitCode, stderr, stdout } = run(__dirname, [`--no-performance`]);
+    it(`should config --performance option correctly`, async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, [`--no-performance`]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -21,8 +21,8 @@ describe('module config related flag', () => {
         const propName = hyphenToUpperCase(property);
 
         if (flag.configs.filter((config) => config.type === 'number').length > 0) {
-            it(`should config --${flag.name} correctly`, () => {
-                const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, '10']);
+            it(`should config --${flag.name} correctly`, async () => {
+                const { exitCode, stderr, stdout } = await runAsync(__dirname, [`--${flag.name}`, '10']);
 
                 expect(exitCode).toBe(0);
                 expect(stderr).toBeFalsy();
@@ -31,8 +31,8 @@ describe('module config related flag', () => {
         }
 
         if (flag.configs.filter((config) => config.type === 'string').length > 0) {
-            it(`should config --${flag.name} correctly`, () => {
-                const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'warning']);
+            it(`should config --${flag.name} correctly`, async () => {
+                const { exitCode, stderr, stdout } = await runAsync(__dirname, [`--${flag.name}`, 'warning']);
 
                 expect(exitCode).toBe(0);
                 expect(stderr).toBeFalsy();

@@ -2,11 +2,11 @@
 
 const { resolve } = require('path');
 const { existsSync } = require('fs');
-const { run } = require('../../../utils/test-utils');
+const { runAsync } = require('../../../utils/test-utils');
 
 describe('functional config', () => {
-    it('should work as expected in case of single config', () => {
-        const { stderr, stdout, exitCode } = run(__dirname, ['--config', resolve(__dirname, 'single-webpack.config.js')]);
+    it('should work as expected in case of single config', async () => {
+        const { stderr, stdout, exitCode } = await runAsync(__dirname, ['--config', resolve(__dirname, 'single-webpack.config.js')]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -14,8 +14,8 @@ describe('functional config', () => {
         expect(existsSync(resolve(__dirname, './dist/dist-single.js'))).toBeTruthy();
     });
 
-    it('should work as expected in case of multiple config', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--config', resolve(__dirname, 'multi-webpack.config.js')]);
+    it('should work as expected in case of multiple config', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--config', resolve(__dirname, 'multi-webpack.config.js')]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();

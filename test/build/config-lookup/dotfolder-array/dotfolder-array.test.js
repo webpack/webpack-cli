@@ -1,11 +1,11 @@
 'use strict';
 const { existsSync } = require('fs');
 const { resolve } = require('path');
-const { run } = require('../../../utils/test-utils');
+const { runAsync } = require('../../../utils/test-utils');
 
 describe('dotfolder array config lookup', () => {
-    it('should find a webpack array configuration in a dotfolder', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, [], false);
+    it('should find a webpack array configuration in a dotfolder', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, [], false);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();

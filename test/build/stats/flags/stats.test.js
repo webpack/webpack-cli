@@ -1,6 +1,6 @@
 'use strict';
 
-const { run, isWebpack5 } = require('../../../utils/test-utils');
+const { runAsync, isWebpack5 } = require('../../../utils/test-utils');
 
 const presets = ['normal', 'detailed', 'errors-only', 'errors-warnings', 'minimal', 'verbose', 'none'];
 
@@ -10,8 +10,8 @@ if (isWebpack5) {
 
 describe('stats flag', () => {
     for (const preset of presets) {
-        it(`should accept --stats "${preset}"`, () => {
-            const { exitCode, stderr, stdout } = run(__dirname, ['--stats', `${preset}`]);
+        it(`should accept --stats "${preset}"`, async () => {
+            const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--stats', `${preset}`]);
 
             expect(exitCode).toBe(0);
             expect(stderr).toBeFalsy();
@@ -53,8 +53,8 @@ describe('stats flag', () => {
         });
     }
 
-    it('should accept stats as boolean', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--stats']);
+    it('should accept stats as boolean', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--stats']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -66,8 +66,8 @@ describe('stats flag', () => {
         }
     });
 
-    it('should accept --no-stats as boolean', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--no-stats']);
+    it('should accept --no-stats as boolean', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--no-stats']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -79,8 +79,8 @@ describe('stats flag', () => {
         }
     });
 
-    it('should log error when an unknown flag stats value is passed', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--stats', 'foo']);
+    it('should log error when an unknown flag stats value is passed', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--stats', 'foo']);
 
         expect(exitCode).toEqual(2);
 

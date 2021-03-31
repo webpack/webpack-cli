@@ -1,33 +1,42 @@
 'use strict';
-const { readdir } = require('fs');
+
 const { resolve } = require('path');
-const { run } = require('../../../utils/test-utils');
+const { runAsync, readdir } = require('../../../utils/test-utils');
 
 describe('source-map object', () => {
-    it('should treat source-map settings right', (done) => {
-        const { exitCode, stderr, stdout } = run(__dirname, [], false);
+    it('should treat source-map settings right', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, [], false);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
 
-        readdir(resolve(__dirname, 'dist'), (err, files) => {
-            expect(err).toBe(null);
-            expect(files.length).toBe(3);
-            done();
-        });
+        let files;
+
+        try {
+            files = await readdir(resolve(__dirname, 'dist'));
+        } catch (error) {
+            expect(error).toBe(null);
+        }
+
+        expect(files.length).toBe(3);
     });
-    it('should override entire array on flag', (done) => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--devtool', 'source-map', '--output-path', './binary'], false);
+
+    it('should override entire array on flag', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--devtool', 'source-map', '--output-path', './binary'], false);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
 
-        readdir(resolve(__dirname, 'binary'), (err, files) => {
-            expect(err).toBe(null);
-            expect(files.length).toBe(4);
-            done();
-        });
+        let files;
+
+        try {
+            files = await readdir(resolve(__dirname, 'binary'));
+        } catch (error) {
+            expect(error).toBe(null);
+        }
+
+        expect(files.length).toBe(4);
     });
 });

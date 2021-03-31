@@ -40,6 +40,28 @@ const hyphenToUpperCase = (name) => {
  * @param {String} testCase The path to folder that contains the webpack.config.js
  * @param {Array} args Array of arguments to pass to webpack
  * @param {Object<string, any>} options Boolean that decides if a default output path will be set or not
+ * @returns {Promise}
+ */
+const runAsync = async (testCase, args = [], options = {}) => {
+    const cwd = path.resolve(testCase);
+    const { nodeOptions = [] } = options;
+    const processExecutor = nodeOptions.length ? execaNode : execa;
+
+    return processExecutor(WEBPACK_PATH, args, {
+        cwd,
+        reject: false,
+        stdio: ENABLE_LOG_COMPILATION ? 'inherit' : 'pipe',
+        maxBuffer: Infinity,
+        ...options,
+    });
+};
+
+/**
+ * Run the webpack CLI for a test case.
+ *
+ * @param {String} testCase The path to folder that contains the webpack.config.js
+ * @param {Array} args Array of arguments to pass to webpack
+ * @param {Object<string, any>} options Boolean that decides if a default output path will be set or not
  * @returns {Object} The webpack output or Promise when nodeOptions are present
  */
 const run = (testCase, args = [], options = {}) => {
@@ -255,8 +277,55 @@ const runInstall = async (cwd) => {
     });
 };
 
+const readFile = (path, options = {}) =>
+    new Promise((resolve, reject) => {
+        fs.readFile(path, options, (err, stats) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(stats);
+        });
+    });
+
+const readdir = (path) =>
+    new Promise((resolve, reject) => {
+        fs.readdir(path, (err, stats) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(stats);
+        });
+    });
+
+const mkdir = (path) => {
+    if (fs.existsSync(path)) {
+        return path;
+    }
+
+    new Promise((resolve) => {
+        const interval = setInterval(() => {
+            if (!fs.existsSync(path)) {
+                clearInterval(interval);
+                resolve();
+            }
+        }, 1000);
+    });
+    fs.mkdirSync(path);
+};
+
+const uniqueDirectoryForTest = async (assetsPath) => {
+    const localDir = Date.now().toString();
+
+    const result = path.resolve(assetsPath, localDir);
+
+    await mkdir(result);
+
+    return result;
+};
+
 module.exports = {
     run,
+    runAsync,
     runWatch,
     runAndGetWatchProc,
     runPromptWithAnswers,
@@ -264,6 +333,10 @@ module.exports = {
     copyFileAsync,
     runInstall,
     hyphenToUpperCase,
+    readFile,
+    readdir,
+    mkdir,
+    uniqueDirectoryForTest,
     isWebpack5,
     isDevServer4,
     isWindows,

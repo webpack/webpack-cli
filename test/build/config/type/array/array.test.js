@@ -1,11 +1,11 @@
 'use strict';
 const { existsSync } = require('fs');
 const { resolve } = require('path');
-const { run } = require('../../../../utils/test-utils');
+const { runAsync } = require('../../../../utils/test-utils');
 
 describe('array config', () => {
-    it('is able to understand a configuration file in array format', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['-c', resolve(__dirname, 'webpack.config.js')], false);
+    it('is able to understand a configuration file in array format', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['-c', resolve(__dirname, 'webpack.config.js')], false);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -14,8 +14,8 @@ describe('array config', () => {
         expect(existsSync(resolve(__dirname, './dist/dist-amd.js'))).toBeTruthy();
     });
 
-    it('respect cli args with config as an array', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--stats', 'none'], false);
+    it('respect cli args with config as an array', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--stats', 'none'], false);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();

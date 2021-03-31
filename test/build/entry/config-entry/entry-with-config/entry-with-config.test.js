@@ -1,11 +1,11 @@
 'use strict';
 const { existsSync } = require('fs');
 const { resolve } = require('path');
-const { run } = require('../../../../utils/test-utils');
+const { runAsync } = require('../../../../utils/test-utils');
 
 describe('default entry and config entry all exist', () => {
-    it('should use config entry if config entry existed', () => {
-        const { stdout, stderr, exitCode } = run(__dirname, ['-c', '../1.js'], false);
+    it('should use config entry if config entry existed', async () => {
+        const { stdout, stderr, exitCode } = await runAsync(__dirname, ['-c', '../1.js'], false);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();

@@ -1,10 +1,10 @@
 'use strict';
 
-const { run, isWebpack5 } = require('../../utils/test-utils');
+const { runAsync, isWebpack5 } = require('../../utils/test-utils');
 
 describe('unknown behaviour', () => {
-    it('should log an error if an unknown flag is passed', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--unknown']);
+    it('should log an error if an unknown flag is passed', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--unknown']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Error: Unknown option '--unknown'");
@@ -12,8 +12,8 @@ describe('unknown behaviour', () => {
         expect(stdout).toBeFalsy();
     });
 
-    it('should log an error if an unknown flag is passed #2', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['-u']);
+    it('should log an error if an unknown flag is passed #2', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['-u']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Error: Unknown option '-u'");
@@ -21,8 +21,8 @@ describe('unknown behaviour', () => {
         expect(stdout).toBeFalsy();
     });
 
-    it('should log an error if an unknown flag is passed #3', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['-u', '--unknown']);
+    it('should log an error if an unknown flag is passed #3', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['-u', '--unknown']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Error: Unknown option '-u'");
@@ -30,8 +30,8 @@ describe('unknown behaviour', () => {
         expect(stdout).toBeFalsy();
     });
 
-    it('should log an error if an unknown flag is passed #4', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['-u', '-u']);
+    it('should log an error if an unknown flag is passed #4', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['-u', '-u']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Error: Unknown option '-u'");
@@ -39,8 +39,8 @@ describe('unknown behaviour', () => {
         expect(stdout).toBeFalsy();
     });
 
-    it('should log an error if an unknown flag is passed #5', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['-u', 'foo']);
+    it('should log an error if an unknown flag is passed #5', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['-u', 'foo']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Error: Unknown option '-u'");
@@ -48,8 +48,8 @@ describe('unknown behaviour', () => {
         expect(stdout).toBeFalsy();
     });
 
-    it('should log an error if an unknown flag is passed using "bundle" command', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['bundle', '--unknown']);
+    it('should log an error if an unknown flag is passed using "bundle" command', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['bundle', '--unknown']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Error: Unknown option '--unknown'");
@@ -57,8 +57,8 @@ describe('unknown behaviour', () => {
         expect(stdout).toBeFalsy();
     });
 
-    it('should log an error if an unknown flag is passed using "b" command', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['b', '--unknown']);
+    it('should log an error if an unknown flag is passed using "b" command', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['b', '--unknown']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Error: Unknown option '--unknown'");
@@ -66,8 +66,8 @@ describe('unknown behaviour', () => {
         expect(stdout).toBeFalsy();
     });
 
-    it('should log an error if an unknown flag is passed using "bundle" command #2', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--unknown', 'bundle']);
+    it('should log an error if an unknown flag is passed using "bundle" command #2', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--unknown', 'bundle']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Error: Unknown option '--unknown'");
@@ -75,8 +75,8 @@ describe('unknown behaviour', () => {
         expect(stdout).toBeFalsy();
     });
 
-    it('should log an error if an unknown flag is passed using "info" command', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['info', '--unknown']);
+    it('should log an error if an unknown flag is passed using "info" command', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['info', '--unknown']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Error: Unknown option '--unknown'");
@@ -84,8 +84,8 @@ describe('unknown behaviour', () => {
         expect(stdout).toBeFalsy();
     });
 
-    it('should log an error if an unknown flag is passed using "i" command', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['i', '--unknown']);
+    it('should log an error if an unknown flag is passed using "i" command', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['i', '--unknown']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Error: Unknown option '--unknown'");
@@ -93,8 +93,8 @@ describe('unknown behaviour', () => {
         expect(stdout).toBeFalsy();
     });
 
-    it('should log an error if an unknown flag is passed using "i" command', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--unknown', 'i']);
+    it('should log an error if an unknown flag is passed using "i" command', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--unknown', 'i']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Error: Unknown option '--unknown'");
@@ -102,8 +102,8 @@ describe('unknown behaviour', () => {
         expect(stdout).toBeFalsy();
     });
 
-    it('should log error and respect --color flag', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--unknown', '--color'], { env: { FORCE_COLOR: true } });
+    it('should log error and respect --color flag', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--unknown', '--color'], { env: { FORCE_COLOR: true } });
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Error: Unknown option '--unknown'");
@@ -111,8 +111,8 @@ describe('unknown behaviour', () => {
         expect(stdout).toBeFalsy();
     });
 
-    it('should log error for unknown flag and respect --no-color', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--unknown', '--no-color'], { env: { FORCE_COLOR: true } });
+    it('should log error for unknown flag and respect --no-color', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--unknown', '--no-color'], { env: { FORCE_COLOR: true } });
 
         expect(exitCode).toBe(2);
         expect(stderr).not.toContain(`\u001b[31mError: Unknown option '--unknown'`);
@@ -121,8 +121,8 @@ describe('unknown behaviour', () => {
         expect(stdout).toBeFalsy();
     });
 
-    it('should log an error if an unknown flag is passed and suggests the closest match to an unknown flag', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--entyr', './a.js']);
+    it('should log an error if an unknown flag is passed and suggests the closest match to an unknown flag', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--entyr', './a.js']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Error: Unknown option '--entyr'");
@@ -131,8 +131,8 @@ describe('unknown behaviour', () => {
         expect(stdout).toBeFalsy();
     });
 
-    it('should log an error if an unknown flag is passed and suggests the closest match to an unknown flag #2', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--output-fileneme', '[name].js']);
+    it('should log an error if an unknown flag is passed and suggests the closest match to an unknown flag #2', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--output-fileneme', '[name].js']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Error: Unknown option '--output-fileneme'");
@@ -145,8 +145,8 @@ describe('unknown behaviour', () => {
         expect(stdout).toBeFalsy();
     });
 
-    it('should log an error if an unknown flag is passed and suggests the closest match to an unknown flag #3', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--output-library-auxiliary-comment-commnjs']);
+    it('should log an error if an unknown flag is passed and suggests the closest match to an unknown flag #3', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--output-library-auxiliary-comment-commnjs']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Error: Unknown option '--output-library-auxiliary-comment-commnjs'");
@@ -160,8 +160,8 @@ describe('unknown behaviour', () => {
         expect(stdout).toBeFalsy();
     });
 
-    it('should log an error if an unknown flag is passed and suggests the closest match to an unknown flag using "bundle" command', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['bundle', '--entyr', './a.js']);
+    it('should log an error if an unknown flag is passed and suggests the closest match to an unknown flag using "bundle" command', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['bundle', '--entyr', './a.js']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Error: Unknown option '--entyr'");
@@ -170,8 +170,8 @@ describe('unknown behaviour', () => {
         expect(stdout).toBeFalsy();
     });
 
-    it('should log an error if an unknown flag is passed and suggests the closest match to an unknown flag using "b" command', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['b', '--entyr', './a.js']);
+    it('should log an error if an unknown flag is passed and suggests the closest match to an unknown flag using "b" command', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['b', '--entyr', './a.js']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Error: Unknown option '--entyr'");
@@ -180,8 +180,8 @@ describe('unknown behaviour', () => {
         expect(stdout).toBeFalsy();
     });
 
-    it('should log an error if an unknown flag is passed and suggests the closest match to an unknown flag using "info" command', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['info', '--outpyt']);
+    it('should log an error if an unknown flag is passed and suggests the closest match to an unknown flag using "info" command', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['info', '--outpyt']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Error: Unknown option '--outpyt'");
@@ -190,8 +190,8 @@ describe('unknown behaviour', () => {
         expect(stdout).toBeFalsy();
     });
 
-    it('should log an error if an unknown flag is passed and suggests the closest match to an unknown flag using "i" command', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['i', '--outpyt']);
+    it('should log an error if an unknown flag is passed and suggests the closest match to an unknown flag using "i" command', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['i', '--outpyt']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Error: Unknown option '--outpyt'");
@@ -200,8 +200,8 @@ describe('unknown behaviour', () => {
         expect(stdout).toBeFalsy();
     });
 
-    it('should log error if an unknown command passed', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['qqq'], true, [], { TERM_PROGRAM: false });
+    it('should log error if an unknown command passed', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['qqq'], true, [], { TERM_PROGRAM: false });
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Unknown command or entry 'qqq'");
@@ -209,8 +209,8 @@ describe('unknown behaviour', () => {
         expect(stdout).toBeFalsy();
     });
 
-    it('should log error and provide suggestion if an unknown command passed', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['server'], true, [], { TERM_PROGRAM: false });
+    it('should log error and provide suggestion if an unknown command passed', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['server'], true, [], { TERM_PROGRAM: false });
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Unknown command or entry 'server'");

@@ -1,17 +1,17 @@
 'use strict';
-const { run, isWebpack5 } = require('../../utils/test-utils');
+const { runAsync, isWebpack5 } = require('../../utils/test-utils');
 
 describe('invalid schema', () => {
-    it('should log webpack error and exit process on invalid config', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['serve', '--config', './webpack.config.mock.js']);
+    it('should log webpack error and exit process on invalid config', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['serve', '--config', './webpack.config.mock.js']);
 
         expect(exitCode).toEqual(2);
         expect(stderr).toContain('Invalid configuration object');
         expect(stdout).toBeFalsy();
     });
 
-    it('should log webpack error and exit process on invalid flag', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['serve', '--mode', 'Yukihira']);
+    it('should log webpack error and exit process on invalid flag', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['serve', '--mode', 'Yukihira']);
 
         expect(exitCode).toEqual(2);
 

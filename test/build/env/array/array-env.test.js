@@ -5,14 +5,14 @@ const path = require('path');
 const execa = require('execa');
 
 const { sync: spawnSync } = execa;
-const { run, isWebpack5 } = require('../../../utils/test-utils');
+const { runAsync, isWebpack5 } = require('../../../utils/test-utils');
 
 const devFile = path.join(__dirname, './dist/dev.js');
 const prodFile = path.join(__dirname, './dist/prod.js');
 
 describe('env array', () => {
-    it('is able to set two different environments for an array configuration', () => {
-        const { exitCode, stderr, stdout } = run(__dirname);
+    it('is able to set two different environments for an array configuration', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();

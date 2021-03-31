@@ -1,11 +1,11 @@
 'use strict';
 
 const { join } = require('path');
-const { run } = require('../utils/test-utils');
+const { runAsync } = require('../utils/test-utils');
 
 describe('basic info usage', () => {
-    it('gets info without flags', () => {
-        const { exitCode, stdout, stderr } = run(__dirname, ['info'], false);
+    it('gets info without flags', async () => {
+        const { exitCode, stdout, stderr } = await runAsync(__dirname, ['info'], false);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -15,8 +15,8 @@ describe('basic info usage', () => {
         expect(stdout).toContain('Yarn');
     });
 
-    it('gets more info in project root', () => {
-        const { exitCode, stderr, stdout } = run(join(__dirname, '../../'), ['info'], false);
+    it('gets more info in project root', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(join(__dirname, '../../'), ['info'], false);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -28,8 +28,8 @@ describe('basic info usage', () => {
         expect(stdout).toContain('Yarn');
     });
 
-    it('gets info as json', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['info', '--output=json'], false);
+    it('gets info as json', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['info', '--output=json'], false);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -46,16 +46,16 @@ describe('basic info usage', () => {
         expect(parse).not.toThrow();
     });
 
-    it('gets info as markdown', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['info', '--output', 'markdown'], false);
+    it('gets info as markdown', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['info', '--output', 'markdown'], false);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('## System:');
     });
 
-    it('shows a warning if an invalid value is supplied', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['info', '--output', 'unknown'], false);
+    it('shows a warning if an invalid value is supplied', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['info', '--output', 'unknown'], false);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain(`'unknown' is not a valid value for output`);

@@ -1,6 +1,6 @@
 'use strict';
 
-const { appendDataIfFileExists, run, runAndGetWatchProc, hyphenToUpperCase } = require('./test-utils');
+const { appendDataIfFileExists, runAsync, runAndGetWatchProc, hyphenToUpperCase } = require('./test-utils');
 const { writeFileSync, unlinkSync, readFileSync, mkdirSync } = require('fs');
 const { resolve } = require('path');
 // eslint-disable-next-line node/no-unpublished-require
@@ -39,8 +39,8 @@ describe('appendFile', () => {
 });
 
 describe('run function', () => {
-    it('should work correctly by default', () => {
-        const { command, stdout, stderr } = run(__dirname);
+    it('should work correctly by default', async () => {
+        const { command, stdout, stderr } = await runAsync(__dirname);
 
         expect(stderr).toBeFalsy();
         // Executes the correct command
@@ -49,8 +49,8 @@ describe('run function', () => {
         expect(stdout).toBeTruthy();
     });
 
-    it('executes cli with passed commands and params', () => {
-        const { stdout, stderr, command } = run(__dirname, ['info', '--output', 'markdown'], false);
+    it('executes cli with passed commands and params', async () => {
+        const { stdout, stderr, command } = await runAsync(__dirname, ['info', '--output', 'markdown'], false);
 
         // execution command contains info command
         expect(command).toContain('info');
@@ -63,8 +63,8 @@ describe('run function', () => {
         expect(stderr).toBeFalsy();
     });
 
-    it('uses default output when output param is false', () => {
-        const { stdout, stderr, command } = run(__dirname, [], false);
+    it('uses default output when output param is false', async () => {
+        const { stdout, stderr, command } = await runAsync(__dirname, [], false);
 
         // execution command contains info command
         expect(command).not.toContain('--output-path');

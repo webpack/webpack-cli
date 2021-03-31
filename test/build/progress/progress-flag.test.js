@@ -1,10 +1,10 @@
 'use strict';
 
-const { run, isWebpack5 } = require('../../utils/test-utils');
+const { runAsync, isWebpack5 } = require('../../utils/test-utils');
 
 describe('progress flag', () => {
-    it('should show progress', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--progress']);
+    it('should show progress', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--progress']);
 
         expect(exitCode).toBe(0);
         expect(stderr).not.toMatch(/\[webpack\.Progress] \d+ ms setup/);
@@ -12,8 +12,8 @@ describe('progress flag', () => {
         expect(stdout).toContain('main.js');
     });
 
-    it('should support the "profile" value', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--progress=profile']);
+    it('should support the "profile" value', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--progress=profile']);
 
         expect(exitCode).toBe(0);
 
@@ -25,16 +25,16 @@ describe('progress flag', () => {
         expect(stdout).toContain('main.js');
     });
 
-    it('should not support invalid value', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--progress=unknown']);
+    it('should not support invalid value', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--progress=unknown']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain(`'unknown' is an invalid value for the --progress option. Only 'profile' is allowed.`);
         expect(stdout).toBeFalsy();
     });
 
-    it('should not add duplicate plugins', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['-c', 'webpack.progress.config.js', '--progress']);
+    it('should not add duplicate plugins', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['-c', 'webpack.progress.config.js', '--progress']);
 
         expect(exitCode).toEqual(0);
         expect(stderr).not.toMatch(/\[webpack\.Progress] \d+ ms setup/);

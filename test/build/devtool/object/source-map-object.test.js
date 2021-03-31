@@ -1,25 +1,29 @@
 'use strict';
-const { readdir, existsSync } = require('fs');
+const { existsSync } = require('fs');
 const { resolve } = require('path');
-const { run } = require('../../../utils/test-utils');
+const { runAsync, readdir } = require('../../../utils/test-utils');
 
 describe('source-map object', () => {
-    it('should not write a source map for obj config', (done) => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['-c', './webpack.eval.config.js']);
+    it('should not write a source map for obj config', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['-c', './webpack.eval.config.js']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
 
-        readdir(resolve(__dirname, 'dist'), (err, files) => {
-            expect(files.length).toBeGreaterThanOrEqual(1);
-            expect(err).toBe(null);
-            done();
-        });
+        let files;
+
+        try {
+            files = await readdir(resolve(__dirname, 'dist'));
+        } catch (error) {
+            expect(error).toBe(null);
+        }
+
+        expect(files.length).toBeGreaterThanOrEqual(1);
     });
 
-    it('should write a sourcemap file', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['-c', './webpack.source.config.js'], false);
+    it('should write a sourcemap file', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['-c', './webpack.source.config.js'], false);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -27,8 +31,8 @@ describe('source-map object', () => {
         expect(existsSync(resolve(__dirname, 'dist/dist-amd.js.map'))).toBeTruthy();
     });
 
-    it('should override config with source-map', () => {
-        const { exitCode, stderr, stdout } = run(
+    it('should override config with source-map', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(
             __dirname,
             ['-c', './webpack.eval.config.js', '--devtool', 'source-map', '-o', './binary'],
             false,

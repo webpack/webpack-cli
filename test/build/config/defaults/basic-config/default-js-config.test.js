@@ -1,10 +1,10 @@
 const fs = require('fs');
 const path = require('path');
-const { run, isWebpack5 } = require('../../../../utils/test-utils');
+const { runAsync, isWebpack5 } = require('../../../../utils/test-utils');
 
 describe('Zero Config', () => {
-    it('runs when config is present but not supplied via flag', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, [], false);
+    it('runs when config is present but not supplied via flag', async () => {
+        const { exitCode, stderr, stdout } = await runAsync(__dirname, [], false);
 
         expect(exitCode).toEqual(0);
         expect(stderr).toBeFalsy();
