@@ -136,7 +136,7 @@ describe('loader command', () => {
     });
 
     it('should prompt on supplying an invalid template', () => {
-        const { stdout } = run(__dirname, ['loader', '--template=unknown']);
-        expect(stdout).toContain('unknown is not a valid template');
+        const { stderr } = run(__dirname, ['loader', '--template=unknown']);
+        expect(stderr).toContain('unknown is not a valid template');
     });
 });

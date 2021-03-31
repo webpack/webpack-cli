@@ -132,7 +132,7 @@ describe('plugin command', () => {
     });
 
     it('should prompt on supplying an invalid template', () => {
-        const { stdout } = run(__dirname, ['plugin', '--template=unknown']);
-        expect(stdout).toContain('unknown is not a valid template');
+        const { stderr } = run(__dirname, ['plugin', '--template=unknown']);
+        expect(stderr).toContain('unknown is not a valid template');
     });
 });
