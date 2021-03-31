@@ -1,7 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 import Generator from 'yeoman-generator';
+
 import { generatorCopy, generatorCopyTpl } from './utils/copy-utils';
+import { List } from './utils/scaffold-utils';
 
 /**
  * Creates a Yeoman Generator that generates a project conforming
@@ -33,21 +35,44 @@ const addonGenerator = (
     templateFn: (instance: any) => Record<string, unknown>,
 ): Generator.GeneratorConstructor => {
     return class extends Generator {
+        public template: string;
+        public resolvedTemplatePath: string;
+        public supportedTemplates: string[];
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public utils: any;
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public constructor(args: any, opts: any) {
             super(args, opts);
-            const { cli = {} } = opts || {};
+
+            const { cli = {}, options } = opts || {};
+
             this.utils = cli && cli.utils;
+            this.template = options.template;
+            this.supportedTemplates = fs.readdirSync(templateDir);
         }
 
         public props: Generator.Question;
         public copy: (value: string, index: number, array: string[]) => void;
         public copyTpl: (value: string, index: number, array: string[]) => void;
 
-        public prompting(): Promise<void> {
+        public async prompting(): Promise<void> {
+            if (!this.supportedTemplates.includes(this.template)) {
+                this.utils.logger.warn(`⚠ ${this.template} is not a valid template, please select one from below`);
+
+                const { selectedTemplate } = await List(
+                    this,
+                    'selectedTemplate',
+                    'Select a valid template from below:',
+                    this.supportedTemplates,
+                    'default',
+                    false,
+                );
+
+                this.template = selectedTemplate;
+            }
+            this.resolvedTemplatePath = path.join(templateDir, this.template);
+
             return this.prompt(prompts).then((props: Generator.Question): void => {
                 this.props = props;
             });
@@ -76,8 +101,8 @@ const addonGenerator = (
             // eslint-disable-next-line @typescript-eslint/no-var-requires
             this.fs.extendJSON(this.destinationPath('package.json'), require(packageJsonTemplatePath)(this.props.name));
 
-            this.copy = generatorCopy(this, templateDir);
-            this.copyTpl = generatorCopyTpl(this, templateDir, templateFn(this));
+            this.copy = generatorCopy(this, this.resolvedTemplatePath);
+            this.copyTpl = generatorCopyTpl(this, this.resolvedTemplatePath, templateFn(this));
 
             copyFiles.forEach(this.copy);
             copyTemplateFiles.forEach(this.copyTpl);
