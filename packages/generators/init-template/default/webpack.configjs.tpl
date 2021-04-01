@@ -1,9 +1,9 @@
 // Generated using webpack-cli http://github.com/webpack-cli
 const path = require('path');<% if (htmlWebpackPlugin) { %>
 const HtmlWebpackPlugin = require('html-webpack-plugin');<% } %>
+const merge = require('webpack-merge');
 
-module.exports = {
-    mode: 'development',
+const base = {
     entry: '<%= entry %>',
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -64,3 +64,21 @@ module.exports = {
         extensions: ['.tsx', '.ts', '.js'],
     },<% } %>
 };
+
+// Add mode specific configurations below
+// Learn more about mode at https://webpack.js.org/configuration/mode/
+
+const production = {
+    mode: 'production',
+}
+
+const development = {
+    mode: 'development';
+}
+
+module.exports = function (env, argv) {
+    if (argv.mode == 'production') {
+        return merge(base, production);
+    }
+    return merge(base, development);
+}
