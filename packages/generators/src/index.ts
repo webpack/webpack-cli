@@ -38,7 +38,7 @@ class GeneratorsCommand {
 
                 env.registerStub(initGenerator, generatorName);
 
-                env.run(generatorName, { options }, () => {
+                env.run(generatorName, { cli, options }, () => {
                     logger.success('Project has been initialised with webpack!');
                 });
             },
@@ -49,17 +49,24 @@ class GeneratorsCommand {
                 name: 'loader [output-path]',
                 alias: 'l',
                 description: 'Scaffold a loader.',
-                usage: '[output-path]',
+                usage: '[output-path] [options]',
                 pkg: '@webpack-cli/generators',
             },
-            [],
-            async (outputPath) => {
+            [
+                {
+                    name: 'template',
+                    configs: [{ type: 'string' }],
+                    description: 'Type of template',
+                    defaultValue: 'default',
+                },
+            ],
+            async (outputPath, options) => {
                 const env = yeoman.createEnv([], { cwd: outputPath });
                 const generatorName = 'webpack-loader-generator';
 
                 env.registerStub(loaderGenerator, generatorName);
 
-                env.run(generatorName, () => {
+                env.run(generatorName, { cli, options }, () => {
                     logger.success('Loader template has been successfully scaffolded.');
                 });
             },
@@ -73,14 +80,21 @@ class GeneratorsCommand {
                 usage: '[output-path]',
                 pkg: '@webpack-cli/generators',
             },
-            [],
-            async (outputPath) => {
+            [
+                {
+                    name: 'template',
+                    configs: [{ type: 'string' }],
+                    description: 'Type of template',
+                    defaultValue: 'default',
+                },
+            ],
+            async (outputPath, options) => {
                 const env = yeoman.createEnv([], { cwd: outputPath });
                 const generatorName = 'webpack-plugin-generator';
 
                 env.registerStub(pluginGenerator, generatorName);
 
-                env.run(generatorName, () => {
+                env.run(generatorName, { cli, options }, () => {
                     logger.success('Plugin template has been successfully scaffolded.');
                 });
             },

@@ -100,9 +100,9 @@ Commands:
   help|h [command] [option]                  Display help for commands and options.
   info|i [options]                           Outputs information about your system.
   init|c [generation-path] [options]         Initialize a new webpack project.
-  loader|l [output-path]                     Scaffold a loader.
+  loader|l [output-path] [options]           Scaffold a loader.
   migrate|m <config-path> [new-config-path]  Migrate a configuration to a new version.
-  plugin|p [output-path]                     Scaffold a plugin.
+  plugin|p [output-path] [options]           Scaffold a plugin.
   serve|s [entries...] [options]             Run the webpack dev server.
   version|v [commands...]                    Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
   watch|w [entries...] [options]             Run webpack and watch for files changes.
@@ -155,9 +155,9 @@ Commands:
   help|h [command] [option]                  Display help for commands and options.
   info|i [options]                           Outputs information about your system.
   init|c [generation-path] [options]         Initialize a new webpack project.
-  loader|l [output-path]                     Scaffold a loader.
+  loader|l [output-path] [options]           Scaffold a loader.
   migrate|m <config-path> [new-config-path]  Migrate a configuration to a new version.
-  plugin|p [output-path]                     Scaffold a plugin.
+  plugin|p [output-path] [options]           Scaffold a plugin.
   serve|s [entries...] [options]             Run the webpack dev server.
   version|v [commands...]                    Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
   watch|w [entries...] [options]             Run webpack and watch for files changes.
@@ -210,9 +210,9 @@ Commands:
   help|h [command] [option]                  Display help for commands and options.
   info|i [options]                           Outputs information about your system.
   init|c [generation-path] [options]         Initialize a new webpack project.
-  loader|l [output-path]                     Scaffold a loader.
+  loader|l [output-path] [options]           Scaffold a loader.
   migrate|m <config-path> [new-config-path]  Migrate a configuration to a new version.
-  plugin|p [output-path]                     Scaffold a plugin.
+  plugin|p [output-path] [options]           Scaffold a plugin.
   serve|s [entries...] [options]             Run the webpack dev server.
   version|v [commands...]                    Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
   watch|w [entries...] [options]             Run webpack and watch for files changes.
@@ -342,9 +342,12 @@ Made with ♥ by the webpack team."
 `;
 
 exports[`help should show help information for 'loader' command using the "--help" option 1`] = `
-"Usage: webpack loader|l [output-path]
+"Usage: webpack loader|l [output-path] [options]
 
 Scaffold a loader.
+
+Options:
+  --template <value>    Type of template (default: \\"default\\")
 
 Global options:
   --color               Enable colors on console.
@@ -383,6 +386,9 @@ exports[`help should show help information for 'plugin' command using the "--hel
 "Usage: webpack plugin|p [output-path]
 
 Scaffold a plugin.
+
+Options:
+  --template <value>    Type of template (default: \\"default\\")
 
 Global options:
   --color               Enable colors on console.
@@ -571,9 +577,9 @@ Commands:
   help|h [command] [option]                  Display help for commands and options.
   info|i [options]                           Outputs information about your system.
   init|c [generation-path] [options]         Initialize a new webpack project.
-  loader|l [output-path]                     Scaffold a loader.
+  loader|l [output-path] [options]           Scaffold a loader.
   migrate|m <config-path> [new-config-path]  Migrate a configuration to a new version.
-  plugin|p [output-path]                     Scaffold a plugin.
+  plugin|p [output-path] [options]           Scaffold a plugin.
   serve|s [entries...] [options]             Run the webpack dev server.
   version|v [commands...]                    Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
   watch|w [entries...] [options]             Run webpack and watch for files changes.
@@ -626,9 +632,9 @@ Commands:
   help|h [command] [option]                  Display help for commands and options.
   info|i [options]                           Outputs information about your system.
   init|c [generation-path] [options]         Initialize a new webpack project.
-  loader|l [output-path]                     Scaffold a loader.
+  loader|l [output-path] [options]           Scaffold a loader.
   migrate|m <config-path> [new-config-path]  Migrate a configuration to a new version.
-  plugin|p [output-path]                     Scaffold a plugin.
+  plugin|p [output-path] [options]           Scaffold a plugin.
   serve|s [entries...] [options]             Run the webpack dev server.
   version|v [commands...]                    Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
   watch|w [entries...] [options]             Run webpack and watch for files changes.

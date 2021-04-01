@@ -26,11 +26,11 @@ module.exports = {
     module: {
         rules: [<% if (langType == "ES6") { %>
             {
-                test: /\\.(js|jsx)$/,
+                test: /\.(js|jsx)$/i,
                 loader: 'babel-loader',
             },<% } %><% if (langType == "Typescript") { %>
             {
-                test: /\\.(ts|tsx)$/,
+                test: /\.(ts|tsx)$/i,
                 loader: 'ts-loader',
                 exclude: ['/node_modules/'],
             },<% } %><%  if (isCSS && !isPostCSS) { %>
@@ -47,7 +47,7 @@ module.exports = {
                 use: [<% if (isPostCSS) { %><% if (isExtractPlugin) { %>MiniCssExtractPlugin.loader<% } else { %>'style-loader' <% } %>, 'css-loader', 'postcss-loader', <% } %>'less-loader'],
             },<% } %><%  if (cssType == 'Stylus') { %>
             {
-                test: /\.styl$/,
+                test: /\.styl$/i,
                 use: [<% if (isPostCSS) { %><% if (isExtractPlugin) { %>MiniCssExtractPlugin.loader<% } else { %>'style-loader' <% } %>, 'css-loader', 'postcss-loader', <% } %>'stylus-loader'],
             },<% } %><%  if (isPostCSS && isCSS) { %>
             {
@@ -55,7 +55,7 @@ module.exports = {
                 use: [<% if (isExtractPlugin) { %>MiniCssExtractPlugin.loader<% } else { %>'style-loader' <% } %>, 'css-loader', 'postcss-loader'],
             },<% } %>
             {
-                test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/,
+                test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: 'asset',
             },
 

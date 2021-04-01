@@ -2,7 +2,7 @@ const { mkdirSync, existsSync, readFileSync } = require('fs');
 const { join, resolve } = require('path');
 // eslint-disable-next-line node/no-unpublished-require
 const rimraf = require('rimraf');
-const { run, runPromptWithAnswers } = require('../utils/test-utils');
+const { isWindows, run, runPromptWithAnswers } = require('../utils/test-utils');
 
 const assetsPath = resolve(__dirname, './test-assets');
 const ENTER = '\x0D';
@@ -357,5 +357,17 @@ describe('init command', () => {
 
         // Check if the generated webpack configuration matches the snapshot
         expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
+    });
+
+    it('should throw if the current path is not writable', async () => {
+        const projectPath = join(assetsPath, 'non-writable-path');
+        mkdirSync(projectPath, 0o500);
+        const { exitCode, stderr } = await run(projectPath, ['init', 'my-app'], { reject: false });
+
+        if (isWindows) {
+            return;
+        }
+        expect(exitCode).toBe(2);
+        expect(stderr).toContain('Failed to create directory');
     });
 });
