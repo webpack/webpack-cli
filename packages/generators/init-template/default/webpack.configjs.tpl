@@ -1,7 +1,7 @@
 // Generated using webpack-cli http://github.com/webpack-cli
 const path = require('path');<% if (htmlWebpackPlugin) { %>
 const HtmlWebpackPlugin = require('html-webpack-plugin');<% } %>
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 
 const base = {
     entry: '<%= entry %>',
