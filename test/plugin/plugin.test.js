@@ -143,8 +143,10 @@ describe('plugin command', () => {
         expect(normalizeStdout(stdout2)).toContain('Hello World!');
     });
 
-    it('should prompt on supplying an invalid template', () => {
-        const { stderr } = run(__dirname, ['plugin', '--template=unknown']);
+    it('should prompt on supplying an invalid template', async () => {
+        const assetsPath = await uniqueDirectoryForTest(rootAssetsPath);
+        const { stderr } = await runPromptWithAnswers(assetsPath, ['plugin', '--template=unknown']);
+
         expect(stderr).toContain('unknown is not a valid template');
     });
 });
