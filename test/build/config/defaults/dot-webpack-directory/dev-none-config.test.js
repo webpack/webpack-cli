@@ -1,11 +1,11 @@
 'use strict';
 const { existsSync } = require('fs');
 const { resolve } = require('path');
-const { runAsync } = require('../../../../utils/test-utils');
+const { run } = require('../../../../utils/test-utils');
 
 describe('multiple config files', () => {
     it('Uses dev config when both dev and none are present', async () => {
-        const { stdout, stderr, exitCode } = await runAsync(__dirname, [], false);
+        const { stdout, stderr, exitCode } = await run(__dirname, [], false);
         expect(exitCode).toEqual(0);
         expect(stderr).toBeFalsy();
         expect(stdout).not.toBe(undefined);

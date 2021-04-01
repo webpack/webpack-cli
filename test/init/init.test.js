@@ -3,7 +3,7 @@ const { mkdirSync, existsSync, readFileSync } = require('fs');
 const { join, resolve } = require('path');
 // eslint-disable-next-line node/no-unpublished-require
 const rimraf = require('rimraf');
-const { isWindows, runAsync, runPromptWithAnswers, mkdir, uniqueDirectoryForTest } = require('../utils/test-utils');
+const { isWindows, run, runPromptWithAnswers, mkdir, uniqueDirectoryForTest } = require('../utils/test-utils');
 
 const rootAssetsPath = resolve(__dirname, './test-assets');
 const ENTER = '\x0D';
@@ -36,7 +36,7 @@ describe('init command', () => {
 
     it('should generate default project when nothing is passed', async () => {
         const assetsPath = await uniqueDirectoryForTest(rootAssetsPath);
-        const { stdout, stderr } = await runAsync(assetsPath, ['init', '--force']);
+        const { stdout, stderr } = await run(assetsPath, ['init', '--force']);
         expect(stdout).toContain('Project has been initialised with webpack!');
         expect(stderr).toContain('webpack.config.js');
 
@@ -52,7 +52,7 @@ describe('init command', () => {
 
     it('should generate project when generationPath is supplied', async () => {
         const assetsPath = await uniqueDirectoryForTest(rootAssetsPath);
-        const { stdout, stderr } = await runAsync(__dirname, ['init', assetsPath, '--force']);
+        const { stdout, stderr } = await run(__dirname, ['init', assetsPath, '--force']);
         expect(stdout).toContain('Project has been initialised with webpack!');
         expect(stderr).toContain('webpack.config.js');
 
@@ -68,7 +68,7 @@ describe('init command', () => {
 
     it('should generate folders if non existing generation path is given', async () => {
         const assetsPath = path.resolve(rootAssetsPath, 'nonExistingDir');
-        const { stdout, stderr } = await runAsync(__dirname, ['init', assetsPath, '--force']);
+        const { stdout, stderr } = await run(__dirname, ['init', assetsPath, '--force']);
         expect(stdout).toContain("generation path doesn't exist, required folders will be created.");
         expect(stdout).toContain('Project has been initialised with webpack!');
         expect(stderr).toContain('webpack.config.js');
@@ -85,7 +85,7 @@ describe('init command', () => {
 
     it('should configure assets modules by default', async () => {
         const assetsPath = path.resolve(rootAssetsPath, 'nonExistingDir2');
-        const { stdout, stderr } = await runAsync(__dirname, ['init', assetsPath, '--force']);
+        const { stdout, stderr } = await run(__dirname, ['init', assetsPath, '--force']);
         expect(stdout).toContain("generation path doesn't exist, required folders will be created.");
         expect(stdout).toContain('Project has been initialised with webpack!');
         expect(stderr).toContain('webpack.config.js');
@@ -345,14 +345,15 @@ describe('init command', () => {
     });
 
     it('should throw if the current path is not writable', async () => {
-        const assetsPath = await uniqueDirectoryForTest(rootAssetsPath);
-        const projectPath = join(assetsPath, 'non-writable-path');
-        mkdirSync(projectPath, 0o500);
-        const { exitCode, stderr } = await runAsync(projectPath, ['init', 'my-app'], { reject: false });
-
         if (isWindows) {
             return;
         }
+
+        const assetsPath = await uniqueDirectoryForTest(rootAssetsPath);
+        const projectPath = join(assetsPath, 'non-writable-path');
+        mkdirSync(projectPath, 0o500);
+        const { exitCode, stderr } = await run(projectPath, ['init', 'my-app'], { reject: false });
+
         expect(exitCode).toBe(2);
         expect(stderr).toContain('Failed to create directory');
     });

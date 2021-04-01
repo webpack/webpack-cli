@@ -1,10 +1,10 @@
 'use strict';
 
-const { runAsync } = require('../../../utils/test-utils');
+const { run } = require('../../../utils/test-utils');
 
 describe('error', () => {
     it('should log error with stacktrace', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname);
+        const { exitCode, stderr, stdout } = await run(__dirname);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain('Error: test');
@@ -13,7 +13,7 @@ describe('error', () => {
     });
 
     it('should log error with stacktrace using the "bundle" command', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['bundle']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['bundle']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain('Error: test');
@@ -22,7 +22,7 @@ describe('error', () => {
     });
 
     it('should log error with stacktrace using the "serve" command', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['serve']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['serve']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain('Error: test');

@@ -4,9 +4,7 @@ const { existsSync } = require('fs');
 const { join, resolve } = require('path');
 // eslint-disable-next-line node/no-unpublished-require
 const rimraf = require('rimraf');
-// eslint-disable-next-line node/no-unpublished-require
-const stripAnsi = require('strip-ansi');
-const { run, runAsync, runPromptWithAnswers, mkdir, uniqueDirectoryForTest } = require('../utils/test-utils');
+const { run, runPromptWithAnswers, mkdir, uniqueDirectoryForTest, normalizeStdout } = require('../utils/test-utils');
 
 const firstPrompt = '? Loader name (my-loader)';
 const ENTER = '\x0D';
@@ -30,11 +28,11 @@ describe('loader command', () => {
 
     it('should ask the loader name when invoked', async () => {
         const assetsPath = await uniqueDirectoryForTest(rootAssetsPath);
-        const { stdout, stderr } = await run(assetsPath, ['loader'], false);
+        const { stdout, stderr } = await runPromptWithAnswers(assetsPath, ['loader']);
 
         expect(stdout).toBeTruthy();
         expect(stderr).toBeFalsy();
-        expect(stripAnsi(stdout)).toContain(firstPrompt);
+        expect(normalizeStdout(stdout)).toContain(firstPrompt);
     });
 
     it('should scaffold loader with default name if no loader name provided', async () => {
@@ -42,7 +40,7 @@ describe('loader command', () => {
         const { defaultLoaderPath } = dataForTests(assetsPath);
         let { stdout } = await runPromptWithAnswers(assetsPath, ['loader'], [`${ENTER}`]);
 
-        expect(stripAnsi(stdout)).toContain(firstPrompt);
+        expect(normalizeStdout(stdout)).toContain(firstPrompt);
 
         // Skip test in case installation fails
         if (!existsSync(resolve(defaultLoaderPath, './yarn.lock'))) {
@@ -61,7 +59,7 @@ describe('loader command', () => {
 
         // Check if the the generated loader works successfully
         const path = resolve(__dirname, './my-loader/examples/simple/');
-        ({ stdout } = await runAsync(path, [], false));
+        ({ stdout } = await run(path, [], false));
         expect(stdout).toContain('my-loader');
     });
 
@@ -70,7 +68,7 @@ describe('loader command', () => {
         const { loaderName, loaderPath } = dataForTests(assetsPath);
         let { stdout } = await runPromptWithAnswers(assetsPath, ['loader'], [`${loaderName}${ENTER}`]);
 
-        expect(stripAnsi(stdout)).toContain(firstPrompt);
+        expect(normalizeStdout(stdout)).toContain(firstPrompt);
 
         // Skip test in case installation fails
         if (!existsSync(resolve(loaderPath, './yarn.lock'))) {
@@ -89,7 +87,7 @@ describe('loader command', () => {
 
         // Check if the the generated loader works successfully
         const path = resolve(__dirname, './test-loader/examples/simple/');
-        ({ stdout } = await runAsync(path, [], false));
+        ({ stdout } = await run(path, [], false));
         expect(stdout).toContain('test-loader');
     });
 
@@ -98,7 +96,7 @@ describe('loader command', () => {
         const { loaderName, customLoaderPath } = dataForTests(assetsPath);
         let { stdout } = await runPromptWithAnswers(assetsPath, ['loader', 'test-assets'], [`${loaderName}${ENTER}`]);
 
-        expect(stripAnsi(stdout)).toContain(firstPrompt);
+        expect(normalizeStdout(stdout)).toContain(firstPrompt);
 
         // Skip test in case installation fails
         if (!existsSync(resolve(customLoaderPath, './yarn.lock'))) {
@@ -117,7 +115,7 @@ describe('loader command', () => {
 
         // Check if the the generated loader works successfully
         const path = resolve(customLoaderPath, './examples/simple/');
-        ({ stdout } = await runAsync(path, [], false));
+        ({ stdout } = await run(path, [], false));
         expect(stdout).toContain('test-loader');
     });
 
@@ -127,7 +125,7 @@ describe('loader command', () => {
 
         let { stdout } = await runPromptWithAnswers(assetsPath, ['loader', './'], [`${loaderName}${ENTER}`]);
 
-        expect(stripAnsi(stdout)).toContain(firstPrompt);
+        expect(normalizeStdout(stdout)).toContain(firstPrompt);
 
         // Skip test in case installation fails
         if (!existsSync(resolve(customLoaderPath, './yarn.lock'))) {
@@ -146,7 +144,7 @@ describe('loader command', () => {
 
         // Check if the the generated loader works successfully
         const path = resolve(customLoaderPath, './examples/simple/');
-        ({ stdout } = await runAsync(path, [], false));
+        ({ stdout } = await run(path, [], false));
         expect(stdout).toContain('test-loader');
     });
 

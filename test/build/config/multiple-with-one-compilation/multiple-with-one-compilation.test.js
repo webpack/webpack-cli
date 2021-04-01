@@ -1,11 +1,11 @@
 'use strict';
 
 const { resolve } = require('path');
-const { runAsync } = require('../../../utils/test-utils');
+const { run } = require('../../../utils/test-utils');
 
 describe('basic config file', () => {
     it('is able to understand and parse a very basic configuration file', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(
+        const { exitCode, stderr, stdout } = await run(
             __dirname,
             ['-c', resolve(__dirname, 'webpack.config.js'), '--output-path', './binary'],
             false,

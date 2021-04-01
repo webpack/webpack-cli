@@ -1,10 +1,10 @@
 'use strict';
 
-const { runAsync } = require('../../../utils/test-utils');
+const { run } = require('../../../utils/test-utils');
 
 describe('Zero Config tests', () => {
     it('runs when config and entry are both absent', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, [], false);
+        const { exitCode, stderr, stdout } = await run(__dirname, [], false);
 
         expect(exitCode).toBe(1);
         expect(stderr).toBeFalsy();

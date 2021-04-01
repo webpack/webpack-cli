@@ -1,11 +1,11 @@
 'use strict';
 
 const { resolve } = require('path');
-const { runAsync, isWindows } = require('../../utils/test-utils');
+const { run, isWindows } = require('../../utils/test-utils');
 
 describe('--context flag', () => {
     it('should allow to set context', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--context', './']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--context', './']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -19,7 +19,7 @@ describe('--context flag', () => {
     });
 
     it('should throw module not found error for invalid context', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--context', '/invalid-context-path']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--context', '/invalid-context-path']);
 
         expect(exitCode).toBe(1);
         expect(stderr).toBeFalsy();

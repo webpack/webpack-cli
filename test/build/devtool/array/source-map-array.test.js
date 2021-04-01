@@ -1,11 +1,11 @@
 'use strict';
 
 const { resolve } = require('path');
-const { runAsync, readdir } = require('../../../utils/test-utils');
+const { run, readdir } = require('../../../utils/test-utils');
 
 describe('source-map object', () => {
     it('should treat source-map settings right', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, [], false);
+        const { exitCode, stderr, stdout } = await run(__dirname, [], false);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -23,7 +23,7 @@ describe('source-map object', () => {
     });
 
     it('should override entire array on flag', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--devtool', 'source-map', '--output-path', './binary'], false);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--devtool', 'source-map', '--output-path', './binary'], false);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();

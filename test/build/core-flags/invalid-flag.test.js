@@ -1,10 +1,10 @@
 'use strict';
 
-const { runAsync } = require('../../utils/test-utils');
+const { run } = require('../../utils/test-utils');
 
 describe('invalid flag value', () => {
     it('should throw an error for the invalid value passed', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--output-script-type', 'unknown']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--output-script-type', 'unknown']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Invalid value 'unknown' for the '--output-script-type' option");

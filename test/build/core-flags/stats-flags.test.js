@@ -1,6 +1,6 @@
 'use strict';
 
-const { runAsync, hyphenToUpperCase } = require('../../utils/test-utils');
+const { run, hyphenToUpperCase } = require('../../utils/test-utils');
 const CLI = require('../../../packages/webpack-cli/lib/index');
 
 const cli = new CLI();
@@ -14,7 +14,7 @@ describe('stats config related flag', () => {
 
         if (flag.configs.filter((config) => config.type === 'boolean').length > 0) {
             it(`should config --${flag.name} correctly`, async () => {
-                const { exitCode, stderr, stdout } = await runAsync(__dirname, [`--${flag.name}`]);
+                const { exitCode, stderr, stdout } = await run(__dirname, [`--${flag.name}`]);
 
                 expect(exitCode).toBe(0);
                 expect(stderr).toBeFalsy();
@@ -29,7 +29,7 @@ describe('stats config related flag', () => {
 
             if (!flag.name.endsWith('-reset')) {
                 it(`should config --no-${flag.name} correctly`, async () => {
-                    const { exitCode, stderr, stdout } = await runAsync(__dirname, [`--no-${flag.name}`]);
+                    const { exitCode, stderr, stdout } = await run(__dirname, [`--no-${flag.name}`]);
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
@@ -40,7 +40,7 @@ describe('stats config related flag', () => {
 
         if (flag.configs.filter((config) => config.type === 'number').length > 0) {
             it(`should config --${flag.name} correctly`, async () => {
-                const { exitCode, stderr, stdout } = await runAsync(__dirname, [`--${flag.name}`, '10']);
+                const { exitCode, stderr, stdout } = await run(__dirname, [`--${flag.name}`, '10']);
 
                 expect(exitCode).toBe(0);
                 expect(stderr).toBeFalsy();
@@ -53,32 +53,32 @@ describe('stats config related flag', () => {
 
             it(`should config --${flag.name} correctly`, async () => {
                 if (flag.name.includes('stats-colors')) {
-                    const { exitCode, stderr, stdout } = await runAsync(__dirname, [`--${flag.name}`, 'u001b[32m']);
+                    const { exitCode, stderr, stdout } = await run(__dirname, [`--${flag.name}`, 'u001b[32m']);
                     const option = flag.name.split('stats-colors-')[1];
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`colors: { ${option}: 'u001b[32m' }`);
                 } else if (acceptsSingleValue.includes(propName)) {
-                    const { exitCode, stderr, stdout } = await runAsync(__dirname, [`--${flag.name}`, 'log']);
+                    const { exitCode, stderr, stdout } = await run(__dirname, [`--${flag.name}`, 'log']);
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: 'log'`);
                 } else if (flag.name === 'stats-context') {
-                    const { exitCode, stderr, stdout } = await runAsync(__dirname, [`--${flag.name}`, 'log']);
+                    const { exitCode, stderr, stdout } = await run(__dirname, [`--${flag.name}`, 'log']);
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
                     expect(stdout).toContain('log');
                 } else if (flag.name === 'stats-entrypoints' || flag.name === 'stats-error-details') {
-                    const { exitCode, stderr, stdout } = await runAsync(__dirname, [`--${flag.name}`, 'auto']);
+                    const { exitCode, stderr, stdout } = await run(__dirname, [`--${flag.name}`, 'auto']);
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: 'auto'`);
                 } else {
-                    const { exitCode, stderr, stdout } = await runAsync(__dirname, [`--${flag.name}`, 'log']);
+                    const { exitCode, stderr, stdout } = await run(__dirname, [`--${flag.name}`, 'log']);
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();

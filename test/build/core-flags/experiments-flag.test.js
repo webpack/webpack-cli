@@ -1,6 +1,6 @@
 'use strict';
 
-const { runAsync, hyphenToUpperCase } = require('../../utils/test-utils');
+const { run, hyphenToUpperCase } = require('../../utils/test-utils');
 const CLI = require('../../../packages/webpack-cli/lib/index');
 
 const cli = new CLI();
@@ -25,7 +25,7 @@ describe('experiments option related flag', () => {
 
         if (flag.configs.filter((config) => config.type === 'boolean').length > 0) {
             it(`should config --${flag.name} correctly`, async () => {
-                const { exitCode, stderr, stdout } = await runAsync(__dirname, [`--${flag.name}`]);
+                const { exitCode, stderr, stdout } = await run(__dirname, [`--${flag.name}`]);
 
                 expect(exitCode).toBe(0);
                 expect(stderr).toBeFalsy();
@@ -38,7 +38,7 @@ describe('experiments option related flag', () => {
             });
 
             it(`should config --no-${flag.name} correctly`, async () => {
-                const { exitCode, stderr, stdout } = await runAsync(__dirname, [`--no-${flag.name}`]);
+                const { exitCode, stderr, stdout } = await run(__dirname, [`--no-${flag.name}`]);
 
                 expect(exitCode).toBe(0);
                 expect(stderr).toBeFalsy();

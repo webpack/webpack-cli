@@ -1,10 +1,10 @@
 const fs = require('fs');
 const path = require('path');
-const { runAsync, isWebpack5, isWindows } = require('../../../../utils/test-utils');
+const { run, isWebpack5, isWindows } = require('../../../../utils/test-utils');
 
 describe('Default Config:', () => {
     it('Should be able to pick mjs config by default', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, [], { env: { WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG: true } });
+        const { exitCode, stderr, stdout } = await run(__dirname, [], { env: { WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG: true } });
 
         if (/Error: Not supported/.test(stderr)) {
             expect(exitCode).toEqual(2);

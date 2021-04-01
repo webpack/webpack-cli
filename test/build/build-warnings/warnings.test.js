@@ -1,12 +1,12 @@
 'use strict';
 
-const { runAsync, readFile } = require('../../utils/test-utils');
+const { run, readFile } = require('../../utils/test-utils');
 const { existsSync } = require('fs');
 const { resolve } = require('path');
 
 describe('warnings', () => {
     it('should output by default', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname);
+        const { exitCode, stderr, stdout } = await run(__dirname);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -15,7 +15,7 @@ describe('warnings', () => {
     });
 
     it('should output JSON with the "json" flag', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--json']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--json']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -31,7 +31,7 @@ describe('warnings', () => {
     });
 
     it('should store json to a file', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--json', 'stats.json']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--json', 'stats.json']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toContain('stats are successfully stored as json to stats.json');

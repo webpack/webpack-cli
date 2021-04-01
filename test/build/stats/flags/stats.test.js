@@ -1,6 +1,6 @@
 'use strict';
 
-const { runAsync, isWebpack5 } = require('../../../utils/test-utils');
+const { run, isWebpack5 } = require('../../../utils/test-utils');
 
 const presets = ['normal', 'detailed', 'errors-only', 'errors-warnings', 'minimal', 'verbose', 'none'];
 
@@ -11,7 +11,7 @@ if (isWebpack5) {
 describe('stats flag', () => {
     for (const preset of presets) {
         it(`should accept --stats "${preset}"`, async () => {
-            const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--stats', `${preset}`]);
+            const { exitCode, stderr, stdout } = await run(__dirname, ['--stats', `${preset}`]);
 
             expect(exitCode).toBe(0);
             expect(stderr).toBeFalsy();
@@ -54,7 +54,7 @@ describe('stats flag', () => {
     }
 
     it('should accept stats as boolean', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--stats']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--stats']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -67,7 +67,7 @@ describe('stats flag', () => {
     });
 
     it('should accept --no-stats as boolean', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--no-stats']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--no-stats']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -80,7 +80,7 @@ describe('stats flag', () => {
     });
 
     it('should log error when an unknown flag stats value is passed', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--stats', 'foo']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--stats', 'foo']);
 
         expect(exitCode).toEqual(2);
 

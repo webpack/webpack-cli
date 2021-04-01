@@ -1,6 +1,6 @@
 'use strict';
 
-const { runAsync, runAndGetWatchProc, isWebpack5 } = require('../../utils/test-utils');
+const { run, runAndGetWatchProc, isWebpack5 } = require('../../utils/test-utils');
 const { writeFileSync } = require('fs');
 const { resolve } = require('path');
 
@@ -9,7 +9,7 @@ const wordsInStatsv5 = ['asset', 'index.js', 'compiled successfully'];
 
 describe('basic', () => {
     it('should work with negative value', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['-c', './watch.config.js', '--no-watch']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['-c', './watch.config.js', '--no-watch']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -181,7 +181,7 @@ describe('basic', () => {
     });
 
     it('should recompile upon file change using the `command` option and the `--watch` option and log warning', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['watch', '--watch', '--mode', 'development']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['watch', '--watch', '--mode', 'development']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Error: Unknown option '--watch'");
@@ -190,7 +190,7 @@ describe('basic', () => {
     });
 
     it('should recompile upon file change using the `command` option and the `--no-watch` option and log warning', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['watch', '--no-watch', '--mode', 'development']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['watch', '--no-watch', '--mode', 'development']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Error: Unknown option '--no-watch'");

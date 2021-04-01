@@ -1,11 +1,11 @@
 'use strict';
 const { existsSync } = require('fs');
 const { resolve } = require('path');
-const { runAsync, readdir } = require('../../../utils/test-utils');
+const { run, readdir } = require('../../../utils/test-utils');
 
 describe('source-map object', () => {
     it('should not write a source map for obj config', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['-c', './webpack.eval.config.js']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['-c', './webpack.eval.config.js']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -23,7 +23,7 @@ describe('source-map object', () => {
     });
 
     it('should write a sourcemap file', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['-c', './webpack.source.config.js'], false);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['-c', './webpack.source.config.js'], false);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -32,7 +32,7 @@ describe('source-map object', () => {
     });
 
     it('should override config with source-map', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(
+        const { exitCode, stderr, stdout } = await run(
             __dirname,
             ['-c', './webpack.eval.config.js', '--devtool', 'source-map', '-o', './binary'],
             false,

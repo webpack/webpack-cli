@@ -1,10 +1,10 @@
 'use strict';
 
-const { runAsync } = require('../../utils/test-utils');
+const { run } = require('../../utils/test-utils');
 
 describe('node option related flags', () => {
     it('should config node option to false', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--no-node']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--no-node']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -12,7 +12,7 @@ describe('node option related flags', () => {
     });
 
     it('should set node.filename correctly', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--node-filename', 'mock']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--node-filename', 'mock']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -20,7 +20,7 @@ describe('node option related flags', () => {
     });
 
     it('should set node.filename correctly', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--node-dirname', 'mock']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--node-dirname', 'mock']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();

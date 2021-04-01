@@ -1,10 +1,10 @@
 'use strict';
 
-const { runAsync } = require('../../../utils/test-utils');
+const { run } = require('../../../utils/test-utils');
 
 describe('Multiple config flag: ', () => {
     it('spawns multiple compilers for multiple configs', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(
+        const { exitCode, stderr, stdout } = await run(
             __dirname,
             ['--config', 'webpack1.config.js', '--config', 'webpack2.config.js'],
             false,

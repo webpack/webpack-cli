@@ -1,8 +1,8 @@
-const { runAsync } = require('../../../utils/test-utils');
+const { run } = require('../../../utils/test-utils');
 
 describe('webpack cli', () => {
     it('should support CommonJS file', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['-c', 'webpack.config.cjs'], false);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['-c', 'webpack.config.cjs'], false);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();

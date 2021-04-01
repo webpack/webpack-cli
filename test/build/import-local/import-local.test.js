@@ -1,6 +1,6 @@
 'use strict';
 
-const { runAsync } = require('../../utils/test-utils');
+const { run } = require('../../utils/test-utils');
 
 const importLocalMock = jest.fn();
 jest.setMock('import-local', importLocalMock);
@@ -10,7 +10,7 @@ describe('import local', () => {
         importLocalMock.mockClear();
     });
     it('should skip import local when supplied', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, [], {
+        const { exitCode, stderr, stdout } = await run(__dirname, [], {
             env: { WEBPACK_CLI_SKIP_IMPORT_LOCAL: true },
         });
         expect(importLocalMock).toHaveBeenCalledTimes(0);

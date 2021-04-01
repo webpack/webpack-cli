@@ -1,6 +1,6 @@
 'use strict';
 const { resolve } = require('path');
-const { runAsync, isWindows } = require('../../../utils/test-utils');
+const { run, isWindows } = require('../../../utils/test-utils');
 
 describe('config error', () => {
     // TODO fix on windows
@@ -12,7 +12,7 @@ describe('config error', () => {
     }
 
     it('should throw error with invalid configuration', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['-c', resolve(__dirname, 'webpack.config.mjs')], {
+        const { exitCode, stderr, stdout } = await run(__dirname, ['-c', resolve(__dirname, 'webpack.config.mjs')], {
             env: { WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG: true },
         });
 
@@ -27,7 +27,7 @@ describe('config error', () => {
     });
 
     it('should throw syntax error and exit with non-zero exit code', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['-c', resolve(__dirname, 'syntax-error.mjs')], {
+        const { exitCode, stderr, stdout } = await run(__dirname, ['-c', resolve(__dirname, 'syntax-error.mjs')], {
             env: { WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG: true },
         });
 

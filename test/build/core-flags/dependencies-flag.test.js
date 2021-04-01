@@ -1,10 +1,10 @@
 'use strict';
 
-const { runAsync } = require('../../utils/test-utils');
+const { run } = require('../../utils/test-utils');
 
 describe('--dependencies and related flags', () => {
     it('should allow to set dependencies option', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--dependencies', 'lodash']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--dependencies', 'lodash']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -12,7 +12,7 @@ describe('--dependencies and related flags', () => {
     });
 
     it('should reset dependencies option', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--dependencies-reset']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--dependencies-reset']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();

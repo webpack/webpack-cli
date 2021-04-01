@@ -1,10 +1,10 @@
 'use strict';
 
-const { runAsync } = require('../../utils/test-utils');
+const { run } = require('../../utils/test-utils');
 
 describe('--devtool flag', () => {
     it('should set devtool option', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--devtool', 'source-map']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--devtool', 'source-map']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -12,7 +12,7 @@ describe('--devtool flag', () => {
     });
 
     it('should set devtool option to false', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--no-devtool']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--no-devtool']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -20,7 +20,7 @@ describe('--devtool flag', () => {
     });
 
     it('should log error for invalid config', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--devtool', 'invalid']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--devtool', 'invalid']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain('Invalid configuration object');

@@ -2,11 +2,11 @@
 
 const path = require('path');
 
-const { runAsync } = require('../../utils/test-utils');
+const { run } = require('../../utils/test-utils');
 
 describe("'configtest' command with the configuration path option", () => {
     it('should validate webpack config successfully', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['configtest', './basic.config.js'], false);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['configtest', './basic.config.js'], false);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -15,7 +15,7 @@ describe("'configtest' command with the configuration path option", () => {
     });
 
     it('should throw validation error', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['configtest', './error.config.js'], false);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['configtest', './error.config.js'], false);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain('Invalid configuration object.');
@@ -24,7 +24,7 @@ describe("'configtest' command with the configuration path option", () => {
     });
 
     it('should throw syntax error', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['configtest', './syntax-error.config.js'], false);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['configtest', './syntax-error.config.js'], false);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain(`SyntaxError: Unexpected token ';'`);
@@ -32,7 +32,7 @@ describe("'configtest' command with the configuration path option", () => {
     });
 
     it(`should validate the config with alias 't'`, async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['t', './error.config.js'], false);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['t', './error.config.js'], false);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain('Invalid configuration object.');
@@ -41,7 +41,7 @@ describe("'configtest' command with the configuration path option", () => {
     });
 
     it('should throw error if configuration does not exist', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['configtest', './a.js'], false);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['configtest', './a.js'], false);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain(`Failed to load '${path.resolve(__dirname, './a.js')}' config`);

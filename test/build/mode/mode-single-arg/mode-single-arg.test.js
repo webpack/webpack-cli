@@ -1,10 +1,10 @@
 'use strict';
 
-const { runAsync, isWebpack5 } = require('../../../utils/test-utils');
+const { run, isWebpack5 } = require('../../../utils/test-utils');
 
 describe('mode flags', () => {
     it('should not set mode=production by default', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname);
+        const { exitCode, stderr, stdout } = await run(__dirname);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -13,7 +13,7 @@ describe('mode flags', () => {
     });
 
     it('should load a development config when --mode=development is passed', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--mode', 'development']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--mode', 'development']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -21,7 +21,7 @@ describe('mode flags', () => {
     });
 
     it('should load a production config when --mode=production is passed', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--mode', 'production']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--mode', 'production']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -29,7 +29,7 @@ describe('mode flags', () => {
     });
 
     it('should load a none config when --mode=none is passed', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--mode', 'none']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--mode', 'none']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -37,7 +37,7 @@ describe('mode flags', () => {
     });
 
     it('should pick mode form NODE_ENV', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, [], { env: { NODE_ENV: 'development' } });
+        const { exitCode, stderr, stdout } = await run(__dirname, [], { env: { NODE_ENV: 'development' } });
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -45,7 +45,7 @@ describe('mode flags', () => {
     });
 
     it('should throw error when --mode=abcd is passed', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--mode', 'abcd']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--mode', 'abcd']);
 
         expect(exitCode).toBe(2);
 

@@ -1,12 +1,12 @@
 'use strict';
 
-const { runAsync, readFile } = require('../../../utils/test-utils');
+const { run, readFile } = require('../../../utils/test-utils');
 const { existsSync } = require('fs');
 const { resolve } = require('path');
 
 describe(' multiple entries', () => {
     it('should allow multiple entry flags', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--entry', './src/a.js', '--entry', './src/b.js']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--entry', './src/a.js', '--entry', './src/b.js']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();

@@ -2,9 +2,7 @@ const { existsSync } = require('fs');
 const { join, resolve } = require('path');
 // eslint-disable-next-line node/no-unpublished-require
 const rimraf = require('rimraf');
-// eslint-disable-next-line node/no-unpublished-require
-const stripAnsi = require('strip-ansi');
-const { run, runAsync, runPromptWithAnswers, mkdir, uniqueDirectoryForTest } = require('../utils/test-utils');
+const { run, runPromptWithAnswers, mkdir, uniqueDirectoryForTest, normalizeStdout } = require('../utils/test-utils');
 
 const ENTER = '\x0D';
 
@@ -28,10 +26,10 @@ describe('plugin command', () => {
     });
 
     it('should ask the plugin name when invoked', async () => {
-        const { stdout, stderr } = await run(__dirname, ['plugin'], false);
+        const { stdout, stderr } = await runPromptWithAnswers(__dirname, ['plugin']);
         expect(stdout).toBeTruthy();
         expect(stderr).toBeFalsy();
-        expect(stripAnsi(stdout)).toContain(firstPrompt);
+        expect(normalizeStdout(stdout)).toContain(firstPrompt);
     });
 
     it('should scaffold plugin with default name if no plugin name provided', async () => {
@@ -39,7 +37,7 @@ describe('plugin command', () => {
         const { defaultPluginPath } = dataForTests(assetsPath);
         const { stdout } = await runPromptWithAnswers(assetsPath, ['plugin'], [`${ENTER}`]);
 
-        expect(stripAnsi(stdout)).toContain(firstPrompt);
+        expect(normalizeStdout(stdout)).toContain(firstPrompt);
 
         // Check if the output directory exists with the appropriate plugin name
         expect(existsSync(defaultPluginPath)).toBeTruthy();
@@ -57,8 +55,8 @@ describe('plugin command', () => {
         });
 
         // Check if the the generated plugin works successfully
-        const { stdout: stdout2 } = await runAsync(__dirname, ['--config', './my-webpack-plugin/examples/simple/webpack.config.js'], false);
-        expect(stripAnsi(stdout2)).toContain('Hello World!');
+        const { stdout: stdout2 } = await run(__dirname, ['--config', './my-webpack-plugin/examples/simple/webpack.config.js'], false);
+        expect(normalizeStdout(stdout2)).toContain('Hello World!');
     });
 
     it('should scaffold plugin template with a given name', async () => {
@@ -66,7 +64,7 @@ describe('plugin command', () => {
         const { pluginName, pluginPath } = dataForTests(assetsPath);
         const { stdout } = await runPromptWithAnswers(assetsPath, ['plugin'], [`${pluginName}${ENTER}`]);
 
-        expect(stripAnsi(stdout)).toContain(firstPrompt);
+        expect(normalizeStdout(stdout)).toContain(firstPrompt);
 
         // Check if the output directory exists with the appropriate plugin name
         expect(existsSync(pluginPath)).toBeTruthy();
@@ -84,8 +82,8 @@ describe('plugin command', () => {
         });
 
         // Check if the the generated plugin works successfully
-        const { stdout: stdout2 } = await runAsync(__dirname, ['--config', './test-plugin/examples/simple/webpack.config.js'], false);
-        expect(stripAnsi(stdout2)).toContain('Hello World!');
+        const { stdout: stdout2 } = await run(__dirname, ['--config', './test-plugin/examples/simple/webpack.config.js'], false);
+        expect(normalizeStdout(stdout2)).toContain('Hello World!');
     });
 
     it('should scaffold plugin template in the specified path', async () => {
@@ -93,7 +91,7 @@ describe('plugin command', () => {
         const { pluginName, customPluginPath } = dataForTests(assetsPath);
         const { stdout } = await runPromptWithAnswers(assetsPath, ['plugin', 'test-assets'], [`${pluginName}${ENTER}`]);
 
-        expect(stripAnsi(stdout)).toContain(firstPrompt);
+        expect(normalizeStdout(stdout)).toContain(firstPrompt);
 
         // Check if the output directory exists with the appropriate plugin name
         expect(existsSync(customPluginPath)).toBeTruthy();
@@ -111,8 +109,8 @@ describe('plugin command', () => {
         });
 
         // Check if the the generated plugin works successfully
-        const { stdout: stdout2 } = await runAsync(customPluginPath, ['--config', './examples/simple/webpack.config.js'], false);
-        expect(stripAnsi(stdout2)).toContain('Hello World!');
+        const { stdout: stdout2 } = await run(customPluginPath, ['--config', './examples/simple/webpack.config.js'], false);
+        expect(normalizeStdout(stdout2)).toContain('Hello World!');
     });
 
     it('should scaffold plugin template in the current directory', async () => {
@@ -123,7 +121,7 @@ describe('plugin command', () => {
 
         let { stdout } = await runPromptWithAnswers(genPath, ['plugin', './'], [`${pluginName}${ENTER}`]);
 
-        expect(stripAnsi(stdout)).toContain(firstPrompt);
+        expect(normalizeStdout(stdout)).toContain(firstPrompt);
 
         // Check if the output directory exists with the appropriate plugin name
         expect(existsSync(customPluginPath)).toBeTruthy();
@@ -141,8 +139,8 @@ describe('plugin command', () => {
         });
 
         // Check if the the generated plugin works successfully
-        const { stdout: stdout2 } = await runAsync(customPluginPath, ['--config', './examples/simple/webpack.config.js'], false);
-        expect(stripAnsi(stdout2)).toContain('Hello World!');
+        const { stdout: stdout2 } = await run(customPluginPath, ['--config', './examples/simple/webpack.config.js'], false);
+        expect(normalizeStdout(stdout2)).toContain('Hello World!');
     });
 
     it('should prompt on supplying an invalid template', () => {

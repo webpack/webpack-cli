@@ -1,6 +1,6 @@
 'use strict';
 
-const { runAsync, readFile } = require('../../utils/test-utils');
+const { run, readFile } = require('../../utils/test-utils');
 const { existsSync } = require('fs');
 const { resolve } = require('path');
 
@@ -8,7 +8,7 @@ const successMessage = 'stats are successfully stored as json to stats.json';
 
 describe('json', () => {
     it('should work and output json stats', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--json']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--json']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -17,7 +17,7 @@ describe('json', () => {
     });
 
     it('should work and store json to a file', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--json', 'stats.json']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--json', 'stats.json']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toContain(successMessage);
@@ -39,7 +39,7 @@ describe('json', () => {
     });
 
     it('should work and store json to a file and respect --color flag', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--json', 'stats.json', '--color'], { env: { FORCE_COLOR: true } });
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--json', 'stats.json', '--color'], { env: { FORCE_COLOR: true } });
 
         expect(exitCode).toBe(0);
         expect(stderr).toContain(`\u001b[32m${successMessage}`);
@@ -61,7 +61,7 @@ describe('json', () => {
     });
 
     it('should work and store json to a file and respect --no-color', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--json', 'stats.json', '--no-color']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--json', 'stats.json', '--no-color']);
 
         expect(exitCode).toBe(0);
         expect(stderr).not.toContain(`\u001b[32m${successMessage}`);
@@ -84,7 +84,7 @@ describe('json', () => {
     });
 
     it('should work using the "-j" option (alias)', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['-j']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['-j']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -93,7 +93,7 @@ describe('json', () => {
     });
 
     it('should work and output json stats with the "--progress" option', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--json', '--progress']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--json', '--progress']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toContain('webpack.Progress');
@@ -102,7 +102,7 @@ describe('json', () => {
     });
 
     it('should work and store json to a file with the "--progress" option', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--json', 'stats.json', '--progress']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--json', 'stats.json', '--progress']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toContain('webpack.Progress');
@@ -125,7 +125,7 @@ describe('json', () => {
     });
 
     it('should work and output json stats with cli logs', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--json', '--config', 'logging.config.js']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--json', '--config', 'logging.config.js']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toContain('Compiler starting...');
@@ -135,7 +135,7 @@ describe('json', () => {
     });
 
     it('should work and store json to a file with cli logs', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--json', 'stats.json', '--config', 'logging.config.js']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--json', 'stats.json', '--config', 'logging.config.js']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toContain('Compiler starting...');

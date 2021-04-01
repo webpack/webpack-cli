@@ -1,11 +1,11 @@
 'use strict';
 const { existsSync } = require('fs');
 const { resolve } = require('path');
-const { runAsync, readFile } = require('../../../../utils/test-utils');
+const { run, readFile } = require('../../../../utils/test-utils');
 
 describe('function configuration', () => {
     it('should throw when env is not supplied', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--env']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--env']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Error: Option '--env <value...>' argument missing");
@@ -13,7 +13,7 @@ describe('function configuration', () => {
     });
 
     it('is able to understand a configuration file as a function', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--env', 'isProd']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--env', 'isProd']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -23,7 +23,7 @@ describe('function configuration', () => {
     });
 
     it('is able to understand a configuration file as a function', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--env', 'isDev']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--env', 'isDev']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -33,7 +33,7 @@ describe('function configuration', () => {
     });
 
     it('Supports passing string in env', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, [
+        const { exitCode, stderr, stdout } = await run(__dirname, [
             '--env',
             'environment=production',
             '--env',
@@ -50,7 +50,7 @@ describe('function configuration', () => {
     });
 
     it('Supports long nested values in env', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, [
+        const { exitCode, stderr, stdout } = await run(__dirname, [
             '--env',
             'file.name.is.this=Atsumu',
             '--env',
@@ -67,7 +67,7 @@ describe('function configuration', () => {
     });
 
     it('Supports multiple equal in a string', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, [
+        const { exitCode, stderr, stdout } = await run(__dirname, [
             '--env',
             'file=name=is=Eren',
             '--env',
@@ -84,7 +84,7 @@ describe('function configuration', () => {
     });
 
     it('Supports dot at the end', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, [
+        const { exitCode, stderr, stdout } = await run(__dirname, [
             '--env',
             'name.=Hisoka',
             '--env',
@@ -101,7 +101,7 @@ describe('function configuration', () => {
     });
 
     it('Supports dot at the end', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, [
+        const { exitCode, stderr, stdout } = await run(__dirname, [
             '--env',
             'name.',
             '--env',
@@ -118,7 +118,7 @@ describe('function configuration', () => {
     });
 
     it('is able to understand multiple env flags', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--env', 'isDev', '--env', 'verboseStats', '--env', 'envMessage']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--env', 'isDev', '--env', 'verboseStats', '--env', 'envMessage']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();

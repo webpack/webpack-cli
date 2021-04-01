@@ -1,10 +1,10 @@
 'use strict';
 
-const { runAsync, runWatch, isWebpack5 } = require('../../utils/test-utils');
+const { run, runWatch, isWebpack5 } = require('../../utils/test-utils');
 
 describe('start finish force log', () => {
     it('start finish force log when env is set', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, [], {
+        const { exitCode, stderr, stdout } = await run(__dirname, [], {
             env: { WEBPACK_CLI_START_FINISH_FORCE_LOG: true },
         });
         expect(exitCode).toBe(0);
@@ -15,7 +15,7 @@ describe('start finish force log', () => {
     });
 
     it('should show name of the config', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--name', 'log config'], {
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--name', 'log config'], {
             env: { WEBPACK_CLI_START_FINISH_FORCE_LOG: true },
         });
         expect(exitCode).toBe(0);
@@ -36,7 +36,7 @@ describe('start finish force log', () => {
     });
 
     it('should work with multi compiler', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--config', './webpack.config.array.js'], {
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--config', './webpack.config.array.js'], {
             env: { WEBPACK_CLI_START_FINISH_FORCE_LOG: true },
         });
         expect(exitCode).toBe(0);

@@ -1,11 +1,11 @@
 'use strict';
 
 const { join } = require('path');
-const { runAsync } = require('../utils/test-utils');
+const { run } = require('../utils/test-utils');
 
 describe('basic info usage', () => {
     it('gets info without flags', async () => {
-        const { exitCode, stdout, stderr } = await runAsync(__dirname, ['info'], false);
+        const { exitCode, stdout, stderr } = await run(__dirname, ['info'], false);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -16,7 +16,7 @@ describe('basic info usage', () => {
     });
 
     it('gets more info in project root', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(join(__dirname, '../../'), ['info'], false);
+        const { exitCode, stderr, stdout } = await run(join(__dirname, '../../'), ['info'], false);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -29,7 +29,7 @@ describe('basic info usage', () => {
     });
 
     it('gets info as json', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['info', '--output=json'], false);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['info', '--output=json'], false);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -47,7 +47,7 @@ describe('basic info usage', () => {
     });
 
     it('gets info as markdown', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['info', '--output', 'markdown'], false);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['info', '--output', 'markdown'], false);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -55,7 +55,7 @@ describe('basic info usage', () => {
     });
 
     it('shows a warning if an invalid value is supplied', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['info', '--output', 'unknown'], false);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['info', '--output', 'unknown'], false);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain(`'unknown' is not a valid value for output`);

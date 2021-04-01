@@ -1,10 +1,10 @@
 'use strict';
 const { cli } = require('webpack');
-const { runAsync } = require('../test-utils');
+const { run } = require('../test-utils');
 
 describe('webpack-cli-test-plugin Test', () => {
     it('should log the webpack configuration', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname);
+        const { exitCode, stderr, stdout } = await run(__dirname);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();

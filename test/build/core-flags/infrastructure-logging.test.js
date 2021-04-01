@@ -1,10 +1,10 @@
 'use strict';
 
-const { runAsync } = require('../../utils/test-utils');
+const { run } = require('../../utils/test-utils');
 
 describe('infrastructure logging related flag', () => {
     it('should set infrastructureLogging.debug properly', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--infrastructure-logging-debug', 'myPlugin']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--infrastructure-logging-debug', 'myPlugin']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -12,7 +12,7 @@ describe('infrastructure logging related flag', () => {
     });
 
     it('should reset infrastructureLogging.debug to []', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--infrastructure-logging-debug-reset']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--infrastructure-logging-debug-reset']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -20,7 +20,7 @@ describe('infrastructure logging related flag', () => {
     });
 
     it('should set infrastructureLogging.level properly', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--infrastructure-logging-level', 'log']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--infrastructure-logging-level', 'log']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toContain("Compiler 'compiler' starting...");

@@ -1,11 +1,11 @@
 'use strict';
 
 const path = require('path');
-const { runAsync } = require('../../../utils/test-utils');
+const { run } = require('../../../utils/test-utils');
 
 describe('Config:', () => {
     it('supplied config file is absent', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['-c', path.resolve(__dirname, 'webpack.config.js')], false);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['-c', path.resolve(__dirname, 'webpack.config.js')], false);
 
         // should throw with correct exit code
         expect(exitCode).toBe(2);

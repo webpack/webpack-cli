@@ -3,11 +3,11 @@
 const { existsSync } = require('fs');
 const { resolve } = require('path');
 
-const { runAsync } = require('../../../utils/test-utils');
+const { run } = require('../../../utils/test-utils');
 
 describe('single entry flag index present', () => {
     it('finds default index file and compiles successfully', async () => {
-        const { stderr, stdout, exitCode } = await runAsync(__dirname);
+        const { stderr, stdout, exitCode } = await run(__dirname);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -16,7 +16,7 @@ describe('single entry flag index present', () => {
     });
 
     it('finds default index file, compiles and overrides with flags successfully', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--output-path', 'bin']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--output-path', 'bin']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();

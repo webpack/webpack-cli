@@ -1,11 +1,11 @@
 'use strict';
 
 const { resolve } = require('path');
-const { runAsync } = require('../../utils/test-utils');
+const { run } = require('../../utils/test-utils');
 
 describe('custom-webpack', () => {
     it('should use custom-webpack.js', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, [], {
+        const { exitCode, stderr, stdout } = await run(__dirname, [], {
             env: { WEBPACK_PACKAGE: resolve(__dirname, './custom-webpack.js') },
         });
 
@@ -15,7 +15,7 @@ describe('custom-webpack', () => {
     });
 
     it('should throw an error for invalid-webpack.js', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, [], {
+        const { exitCode, stderr, stdout } = await run(__dirname, [], {
             env: { WEBPACK_PACKAGE: resolve(__dirname, './invalid-webpack.js') },
         });
 

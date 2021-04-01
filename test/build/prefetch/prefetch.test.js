@@ -1,7 +1,7 @@
 'use strict';
 
 const { join } = require('path');
-const { runAsync, readFile } = require('../../utils/test-utils');
+const { run, readFile } = require('../../utils/test-utils');
 // eslint-disable-next-line node/no-unpublished-require
 const rimraf = require('rimraf');
 
@@ -11,7 +11,7 @@ describe('prefetch', () => {
     });
 
     it('should load the prefetched file', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--prefetch', './src/p.js', '--mode', 'development'], false);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--prefetch', './src/p.js', '--mode', 'development'], false);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -23,7 +23,7 @@ describe('prefetch', () => {
     });
 
     it('should log error when the prefetched file is absent', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--prefetch', './src/somefile.js'], false);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--prefetch', './src/somefile.js'], false);
 
         expect(exitCode).toBe(1);
         expect(stderr).toBeFalsy();
@@ -32,7 +32,7 @@ describe('prefetch', () => {
     });
 
     it('should log error when flag value is not supplied', async () => {
-        const { exitCode, stderr, stdout } = await runAsync(__dirname, ['--prefetch'], false);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--prefetch'], false);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain(`Error: Option '--prefetch <value>' argument missing`);

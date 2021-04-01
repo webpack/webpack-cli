@@ -1,11 +1,13 @@
 /* eslint-disable node/no-unpublished-require */
 
 'use strict';
+
+const stripAnsi = require('strip-ansi');
 const path = require('path');
 const fs = require('fs');
 const execa = require('execa');
 const { exec } = require('child_process');
-const { sync: spawnSync, node: execaNode } = execa;
+const { node: execaNode } = execa;
 const { Writable } = require('readable-stream');
 const concat = require('concat-stream');
 const { version } = require('webpack');
@@ -42,7 +44,7 @@ const hyphenToUpperCase = (name) => {
  * @param {Object<string, any>} options Boolean that decides if a default output path will be set or not
  * @returns {Promise}
  */
-const runAsync = async (testCase, args = [], options = {}) => {
+const run = async (testCase, args = [], options = {}) => {
     const cwd = path.resolve(testCase);
     const { nodeOptions = [] } = options;
     const processExecutor = nodeOptions.length ? execaNode : execa;
@@ -54,29 +56,6 @@ const runAsync = async (testCase, args = [], options = {}) => {
         maxBuffer: Infinity,
         ...options,
     });
-};
-
-/**
- * Run the webpack CLI for a test case.
- *
- * @param {String} testCase The path to folder that contains the webpack.config.js
- * @param {Array} args Array of arguments to pass to webpack
- * @param {Object<string, any>} options Boolean that decides if a default output path will be set or not
- * @returns {Object} The webpack output or Promise when nodeOptions are present
- */
-const run = (testCase, args = [], options = {}) => {
-    const cwd = path.resolve(testCase);
-    const { nodeOptions = [] } = options;
-    const processExecutor = nodeOptions.length ? execaNode : spawnSync;
-    const result = processExecutor(WEBPACK_PATH, args, {
-        cwd,
-        reject: false,
-        stdio: ENABLE_LOG_COMPILATION ? 'inherit' : 'pipe',
-        maxBuffer: Infinity,
-        ...options,
-    });
-
-    return result;
 };
 
 /**
@@ -163,7 +142,13 @@ const runPromptWithAnswers = (location, args, answers, waitForOutput = true) => 
 
     if (waitForOutput) {
         let currentAnswer = 0;
-        const writeAnswer = () => {
+        const writeAnswer = (output) => {
+            if (!answers) {
+                runner.stdin.write(output);
+                runner.kill();
+                return;
+            }
+
             if (currentAnswer < answers.length) {
                 runner.stdin.write(answers[currentAnswer]);
                 currentAnswer++;
@@ -180,7 +165,9 @@ const runPromptWithAnswers = (location, args, answers, waitForOutput = true) => 
                         }
                         // we must receive new stdout, then have 2 seconds
                         // without any stdout before writing the next answer
-                        outputTimeout = setTimeout(writeAnswer, delay);
+                        outputTimeout = setTimeout(() => {
+                            writeAnswer(output);
+                        }, delay);
                     }
 
                     callback();
@@ -323,9 +310,10 @@ const uniqueDirectoryForTest = async (assetsPath) => {
     return result;
 };
 
+const normalizeStdout = (string) => stripAnsi(string);
+
 module.exports = {
     run,
-    runAsync,
     runWatch,
     runAndGetWatchProc,
     runPromptWithAnswers,
@@ -337,6 +325,7 @@ module.exports = {
     readdir,
     mkdir,
     uniqueDirectoryForTest,
+    normalizeStdout,
     isWebpack5,
     isDevServer4,
     isWindows,
