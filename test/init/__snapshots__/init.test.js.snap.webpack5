@@ -8,6 +8,7 @@ Object {
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
     "webpack-dev-server": "x.x.x",
+    "webpack-merge": "x.x.x",
   },
   "name": "my-webpack-project",
   "scripts": Object {
@@ -28,6 +29,7 @@ Object {
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
     "webpack-dev-server": "x.x.x",
+    "webpack-merge": "x.x.x",
   },
   "name": "my-webpack-project",
   "scripts": Object {
@@ -44,16 +46,12 @@ Object {
 exports[`init command should configure WDS as opted 2`] = `
 "// Generated using webpack-cli http://github.com/webpack-cli
 const path = require('path');
+const { merge } = require('webpack-merge');
 
-module.exports = {
-    mode: 'development',
+const base = {
     entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
-    },
-    devServer: {
-        open: true,
-        host: 'localhost',
     },
     plugins: [
         // Add your plugins here
@@ -71,7 +69,28 @@ module.exports = {
         ],
     },
 };
-"
+
+// Add mode specific configurations below
+// Learn more about mode at https://webpack.js.org/configuration/mode/
+
+const production = {
+    mode: 'production',
+}
+
+const development = {
+    mode: 'development',
+    devServer: {
+        open: true,
+        host: 'localhost',
+    },
+}
+
+module.exports = function (env, argv) {
+    if (argv.mode == 'production') {
+        return merge(base, production);
+    }
+    return merge(base, development);
+}"
 `;
 
 exports[`init command should configure assets modules by default 1`] = `
@@ -82,6 +101,7 @@ Object {
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
     "webpack-dev-server": "x.x.x",
+    "webpack-merge": "x.x.x",
   },
   "name": "my-webpack-project",
   "scripts": Object {
@@ -99,16 +119,12 @@ exports[`init command should configure assets modules by default 2`] = `
 "// Generated using webpack-cli http://github.com/webpack-cli
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { merge } = require('webpack-merge');
 
-module.exports = {
-    mode: 'development',
+const base = {
     entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
-    },
-    devServer: {
-        open: true,
-        host: 'localhost',
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -130,7 +146,28 @@ module.exports = {
         ],
     },
 };
-"
+
+// Add mode specific configurations below
+// Learn more about mode at https://webpack.js.org/configuration/mode/
+
+const production = {
+    mode: 'production',
+}
+
+const development = {
+    mode: 'development',
+    devServer: {
+        open: true,
+        host: 'localhost',
+    },
+}
+
+module.exports = function (env, argv) {
+    if (argv.mode == 'production') {
+        return merge(base, production);
+    }
+    return merge(base, development);
+}"
 `;
 
 exports[`init command should configure html-webpack-plugin as opted 1`] = `
@@ -140,6 +177,7 @@ Object {
     "html-webpack-plugin": "x.x.x",
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
+    "webpack-merge": "x.x.x",
   },
   "name": "my-webpack-project",
   "scripts": Object {
@@ -156,9 +194,9 @@ exports[`init command should configure html-webpack-plugin as opted 2`] = `
 "// Generated using webpack-cli http://github.com/webpack-cli
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { merge } = require('webpack-merge');
 
-module.exports = {
-    mode: 'development',
+const base = {
     entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -183,7 +221,24 @@ module.exports = {
         ],
     },
 };
-"
+
+// Add mode specific configurations below
+// Learn more about mode at https://webpack.js.org/configuration/mode/
+
+const production = {
+    mode: 'production',
+}
+
+const development = {
+    mode: 'development',
+}
+
+module.exports = function (env, argv) {
+    if (argv.mode == 'production') {
+        return merge(base, production);
+    }
+    return merge(base, development);
+}"
 `;
 
 exports[`init command should generate ES6 project correctly 1`] = `
@@ -195,6 +250,7 @@ Object {
     "babel-loader": "x.x.x",
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
+    "webpack-merge": "x.x.x",
   },
   "name": "my-webpack-project",
   "scripts": Object {
@@ -210,9 +266,9 @@ Object {
 exports[`init command should generate ES6 project correctly 2`] = `
 "// Generated using webpack-cli http://github.com/webpack-cli
 const path = require('path');
+const { merge } = require('webpack-merge');
 
-module.exports = {
-    mode: 'development',
+const base = {
     entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -237,7 +293,24 @@ module.exports = {
         ],
     },
 };
-"
+
+// Add mode specific configurations below
+// Learn more about mode at https://webpack.js.org/configuration/mode/
+
+const production = {
+    mode: 'production',
+}
+
+const development = {
+    mode: 'development',
+}
+
+module.exports = function (env, argv) {
+    if (argv.mode == 'production') {
+        return merge(base, production);
+    }
+    return merge(base, development);
+}"
 `;
 
 exports[`init command should generate default project when nothing is passed 1`] = `
@@ -248,6 +321,7 @@ Object {
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
     "webpack-dev-server": "x.x.x",
+    "webpack-merge": "x.x.x",
   },
   "name": "my-webpack-project",
   "scripts": Object {
@@ -269,6 +343,7 @@ Object {
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
     "webpack-dev-server": "x.x.x",
+    "webpack-merge": "x.x.x",
   },
   "name": "my-webpack-project",
   "scripts": Object {
@@ -290,6 +365,7 @@ Object {
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
     "webpack-dev-server": "x.x.x",
+    "webpack-merge": "x.x.x",
   },
   "name": "my-webpack-project",
   "scripts": Object {
@@ -311,6 +387,7 @@ Object {
     "typescript": "x.x.x",
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
+    "webpack-merge": "x.x.x",
   },
   "name": "my-webpack-project",
   "scripts": Object {
@@ -326,9 +403,9 @@ Object {
 exports[`init command should generate typescript project correctly 2`] = `
 "// Generated using webpack-cli http://github.com/webpack-cli
 const path = require('path');
+const { merge } = require('webpack-merge');
 
-module.exports = {
-    mode: 'development',
+const base = {
     entry: './src/index.ts',
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -357,7 +434,24 @@ module.exports = {
         extensions: ['.tsx', '.ts', '.js'],
     },
 };
-"
+
+// Add mode specific configurations below
+// Learn more about mode at https://webpack.js.org/configuration/mode/
+
+const production = {
+    mode: 'production',
+}
+
+const development = {
+    mode: 'development',
+}
+
+module.exports = function (env, argv) {
+    if (argv.mode == 'production') {
+        return merge(base, production);
+    }
+    return merge(base, development);
+}"
 `;
 
 exports[`init command should use less in project when selected 1`] = `
@@ -368,6 +462,7 @@ Object {
     "less-loader": "x.x.x",
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
+    "webpack-merge": "x.x.x",
   },
   "name": "my-webpack-project",
   "scripts": Object {
@@ -383,9 +478,9 @@ Object {
 exports[`init command should use less in project when selected 2`] = `
 "// Generated using webpack-cli http://github.com/webpack-cli
 const path = require('path');
+const { merge } = require('webpack-merge');
 
-module.exports = {
-    mode: 'development',
+const base = {
     entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -410,15 +505,32 @@ module.exports = {
         ],
     },
 };
-"
+
+// Add mode specific configurations below
+// Learn more about mode at https://webpack.js.org/configuration/mode/
+
+const production = {
+    mode: 'production',
+}
+
+const development = {
+    mode: 'development',
+}
+
+module.exports = function (env, argv) {
+    if (argv.mode == 'production') {
+        return merge(base, production);
+    }
+    return merge(base, development);
+}"
 `;
 
 exports[`init command should use postcss in project when selected 1`] = `
 "// Generated using webpack-cli http://github.com/webpack-cli
 const path = require('path');
+const { merge } = require('webpack-merge');
 
-module.exports = {
-    mode: 'development',
+const base = {
     entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -443,7 +555,24 @@ module.exports = {
         ],
     },
 };
-"
+
+// Add mode specific configurations below
+// Learn more about mode at https://webpack.js.org/configuration/mode/
+
+const production = {
+    mode: 'production',
+}
+
+const development = {
+    mode: 'development',
+}
+
+module.exports = function (env, argv) {
+    if (argv.mode == 'production') {
+        return merge(base, production);
+    }
+    return merge(base, development);
+}"
 `;
 
 exports[`init command should use sass and css with postcss in project when selected 1`] = `
@@ -459,6 +588,7 @@ Object {
     "style-loader": "x.x.x",
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
+    "webpack-merge": "x.x.x",
   },
   "name": "my-webpack-project",
   "scripts": Object {
@@ -474,9 +604,9 @@ Object {
 exports[`init command should use sass and css with postcss in project when selected 2`] = `
 "// Generated using webpack-cli http://github.com/webpack-cli
 const path = require('path');
+const { merge } = require('webpack-merge');
 
-module.exports = {
-    mode: 'development',
+const base = {
     entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -505,7 +635,24 @@ module.exports = {
         ],
     },
 };
-"
+
+// Add mode specific configurations below
+// Learn more about mode at https://webpack.js.org/configuration/mode/
+
+const production = {
+    mode: 'production',
+}
+
+const development = {
+    mode: 'development',
+}
+
+module.exports = function (env, argv) {
+    if (argv.mode == 'production') {
+        return merge(base, production);
+    }
+    return merge(base, development);
+}"
 `;
 
 exports[`init command should use sass in project when selected 1`] = `
@@ -516,6 +663,7 @@ Object {
     "sass-loader": "x.x.x",
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
+    "webpack-merge": "x.x.x",
   },
   "name": "my-webpack-project",
   "scripts": Object {
@@ -531,9 +679,9 @@ Object {
 exports[`init command should use sass in project when selected 2`] = `
 "// Generated using webpack-cli http://github.com/webpack-cli
 const path = require('path');
+const { merge } = require('webpack-merge');
 
-module.exports = {
-    mode: 'development',
+const base = {
     entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -558,7 +706,24 @@ module.exports = {
         ],
     },
 };
-"
+
+// Add mode specific configurations below
+// Learn more about mode at https://webpack.js.org/configuration/mode/
+
+const production = {
+    mode: 'production',
+}
+
+const development = {
+    mode: 'development',
+}
+
+module.exports = function (env, argv) {
+    if (argv.mode == 'production') {
+        return merge(base, production);
+    }
+    return merge(base, development);
+}"
 `;
 
 exports[`init command should use sass with postcss in project when selected 1`] = `
@@ -572,6 +737,7 @@ Object {
     "sass-loader": "x.x.x",
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
+    "webpack-merge": "x.x.x",
   },
   "name": "my-webpack-project",
   "scripts": Object {
@@ -587,9 +753,9 @@ Object {
 exports[`init command should use sass with postcss in project when selected 2`] = `
 "// Generated using webpack-cli http://github.com/webpack-cli
 const path = require('path');
+const { merge } = require('webpack-merge');
 
-module.exports = {
-    mode: 'development',
+const base = {
     entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -614,7 +780,24 @@ module.exports = {
         ],
     },
 };
-"
+
+// Add mode specific configurations below
+// Learn more about mode at https://webpack.js.org/configuration/mode/
+
+const production = {
+    mode: 'production',
+}
+
+const development = {
+    mode: 'development',
+}
+
+module.exports = function (env, argv) {
+    if (argv.mode == 'production') {
+        return merge(base, production);
+    }
+    return merge(base, development);
+}"
 `;
 
 exports[`init command should use stylus in project when selected 1`] = `
@@ -625,6 +808,7 @@ Object {
     "stylus-loader": "x.x.x",
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
+    "webpack-merge": "x.x.x",
   },
   "name": "my-webpack-project",
   "scripts": Object {
@@ -640,9 +824,9 @@ Object {
 exports[`init command should use stylus in project when selected 2`] = `
 "// Generated using webpack-cli http://github.com/webpack-cli
 const path = require('path');
+const { merge } = require('webpack-merge');
 
-module.exports = {
-    mode: 'development',
+const base = {
     entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -667,5 +851,22 @@ module.exports = {
         ],
     },
 };
-"
+
+// Add mode specific configurations below
+// Learn more about mode at https://webpack.js.org/configuration/mode/
+
+const production = {
+    mode: 'production',
+}
+
+const development = {
+    mode: 'development',
+}
+
+module.exports = function (env, argv) {
+    if (argv.mode == 'production') {
+        return merge(base, production);
+    }
+    return merge(base, development);
+}"
 `;
