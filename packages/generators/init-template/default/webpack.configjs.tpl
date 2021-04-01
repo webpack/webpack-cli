@@ -7,11 +7,7 @@ const base = {
     entry: '<%= entry %>',
     output: {
         path: path.resolve(__dirname, 'dist'),
-    },<% if (devServer) { %>
-    devServer: {
-        open: true,
-        host: 'localhost',
-    },<% } %>
+    },
     plugins: [<% if (htmlWebpackPlugin) { %>
         new HtmlWebpackPlugin({
             template: 'index.html',
@@ -73,7 +69,11 @@ const production = {
 }
 
 const development = {
-    mode: 'development';
+    mode: 'development',<% if (devServer) { %>
+    devServer: {
+        open: true,
+        host: 'localhost',
+    },<% } %>
 }
 
 module.exports = function (env, argv) {
