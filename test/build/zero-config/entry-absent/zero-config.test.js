@@ -3,8 +3,8 @@
 const { run } = require('../../../utils/test-utils');
 
 describe('Zero Config tests', () => {
-    it('runs when config and entry are both absent', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, [], false);
+    it('runs when config and entry are both absent', async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, [], false);
 
         expect(exitCode).toBe(1);
         expect(stderr).toBeFalsy();

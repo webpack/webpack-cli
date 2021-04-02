@@ -1,11 +1,13 @@
 /* eslint-disable node/no-unpublished-require */
 
 'use strict';
+
+const stripAnsi = require('strip-ansi');
 const path = require('path');
 const fs = require('fs');
 const execa = require('execa');
 const { exec } = require('child_process');
-const { sync: spawnSync, node: execaNode } = execa;
+const { node: execaNode } = execa;
 const { Writable } = require('readable-stream');
 const concat = require('concat-stream');
 const { version } = require('webpack');
@@ -40,21 +42,20 @@ const hyphenToUpperCase = (name) => {
  * @param {String} testCase The path to folder that contains the webpack.config.js
  * @param {Array} args Array of arguments to pass to webpack
  * @param {Object<string, any>} options Boolean that decides if a default output path will be set or not
- * @returns {Object} The webpack output or Promise when nodeOptions are present
+ * @returns {Promise}
  */
-const run = (testCase, args = [], options = {}) => {
+const run = async (testCase, args = [], options = {}) => {
     const cwd = path.resolve(testCase);
     const { nodeOptions = [] } = options;
-    const processExecutor = nodeOptions.length ? execaNode : spawnSync;
-    const result = processExecutor(WEBPACK_PATH, args, {
+    const processExecutor = nodeOptions.length ? execaNode : execa;
+
+    return processExecutor(WEBPACK_PATH, args, {
         cwd,
         reject: false,
         stdio: ENABLE_LOG_COMPILATION ? 'inherit' : 'pipe',
         maxBuffer: Infinity,
         ...options,
     });
-
-    return result;
 };
 
 /**
@@ -141,7 +142,13 @@ const runPromptWithAnswers = (location, args, answers, waitForOutput = true) => 
 
     if (waitForOutput) {
         let currentAnswer = 0;
-        const writeAnswer = () => {
+        const writeAnswer = (output) => {
+            if (!answers) {
+                runner.stdin.write(output);
+                runner.kill();
+                return;
+            }
+
             if (currentAnswer < answers.length) {
                 runner.stdin.write(answers[currentAnswer]);
                 currentAnswer++;
@@ -158,7 +165,9 @@ const runPromptWithAnswers = (location, args, answers, waitForOutput = true) => 
                         }
                         // we must receive new stdout, then have 2 seconds
                         // without any stdout before writing the next answer
-                        outputTimeout = setTimeout(writeAnswer, delay);
+                        outputTimeout = setTimeout(() => {
+                            writeAnswer(output);
+                        }, delay);
                     }
 
                     callback();
@@ -255,6 +264,54 @@ const runInstall = async (cwd) => {
     });
 };
 
+const readFile = (path, options = {}) =>
+    new Promise((resolve, reject) => {
+        fs.readFile(path, options, (err, stats) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(stats);
+        });
+    });
+
+const readdir = (path) =>
+    new Promise((resolve, reject) => {
+        fs.readdir(path, (err, stats) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(stats);
+        });
+    });
+
+const mkdir = (path) => {
+    if (fs.existsSync(path)) {
+        return path;
+    }
+
+    new Promise((resolve) => {
+        const interval = setInterval(() => {
+            if (!fs.existsSync(path)) {
+                clearInterval(interval);
+                resolve();
+            }
+        }, 1000);
+    });
+    fs.mkdirSync(path);
+};
+
+const uniqueDirectoryForTest = async (assetsPath) => {
+    const localDir = Date.now().toString();
+
+    const result = path.resolve(assetsPath, localDir);
+
+    await mkdir(result);
+
+    return result;
+};
+
+const normalizeStdout = (string) => stripAnsi(string);
+
 module.exports = {
     run,
     runWatch,
@@ -264,6 +321,11 @@ module.exports = {
     copyFileAsync,
     runInstall,
     hyphenToUpperCase,
+    readFile,
+    readdir,
+    mkdir,
+    uniqueDirectoryForTest,
+    normalizeStdout,
     isWebpack5,
     isDevServer4,
     isWindows,

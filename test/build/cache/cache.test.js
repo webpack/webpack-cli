@@ -6,10 +6,10 @@ const rimraf = require('rimraf');
 const { run, isWebpack5 } = require('../../utils/test-utils');
 
 describe('cache', () => {
-    it('should work', () => {
+    it('should work', async () => {
         rimraf.sync(path.join(__dirname, '../../../node_modules/.cache/webpack/cache-test-default-development'));
 
-        let { exitCode, stderr, stdout } = run(__dirname, ['-c', './webpack.config.js']);
+        let { exitCode, stderr, stdout } = await run(__dirname, ['-c', './webpack.config.js']);
 
         expect(exitCode).toEqual(0);
 
@@ -20,7 +20,7 @@ describe('cache', () => {
             expect(stdout).toBeTruthy();
         }
 
-        ({ exitCode, stderr, stdout } = run(__dirname, ['-c', './webpack.config.js']));
+        ({ exitCode, stderr, stdout } = await run(__dirname, ['-c', './webpack.config.js']));
 
         expect(exitCode).toEqual(0);
 
@@ -33,11 +33,11 @@ describe('cache', () => {
         }
     });
 
-    it('should work in multi compiler mode', () => {
+    it('should work in multi compiler mode', async () => {
         rimraf.sync(path.join(__dirname, '../../../node_modules/.cache/webpack/cache-test-first-development'));
         rimraf.sync(path.join(__dirname, '../../../node_modules/.cache/webpack/cache-test-second-development'));
 
-        let { exitCode, stderr, stdout } = run(__dirname, ['-c', './multi.config.js']);
+        let { exitCode, stderr, stdout } = await run(__dirname, ['-c', './multi.config.js']);
 
         expect(exitCode).toEqual(0);
 
@@ -49,7 +49,7 @@ describe('cache', () => {
             expect(stdout).toBeTruthy();
         }
 
-        ({ exitCode, stderr, stdout } = run(__dirname, ['-c', './multi.config.js']));
+        ({ exitCode, stderr, stdout } = await run(__dirname, ['-c', './multi.config.js']));
 
         expect(exitCode).toEqual(0);
 
@@ -62,10 +62,10 @@ describe('cache', () => {
         }
     });
 
-    it('should work in multi compiler mode with the `--config-name` argument', () => {
+    it('should work in multi compiler mode with the `--config-name` argument', async () => {
         rimraf.sync(path.join(__dirname, '../../../node_modules/.cache/webpack/cache-test-third-development'));
 
-        let { exitCode, stderr, stdout } = run(__dirname, [
+        let { exitCode, stderr, stdout } = await run(__dirname, [
             '-c',
             './multi.config.js',
             '--config-name',
@@ -83,7 +83,7 @@ describe('cache', () => {
             expect(stdout).toBeTruthy();
         }
 
-        ({ exitCode, stderr, stdout } = run(__dirname, [
+        ({ exitCode, stderr, stdout } = await run(__dirname, [
             '-c',
             './multi.config.js',
             '--config-name',
@@ -103,10 +103,10 @@ describe('cache', () => {
         }
     });
 
-    it('should work with the `--merge` argument', () => {
+    it('should work with the `--merge` argument', async () => {
         rimraf.sync(path.join(__dirname, '../../../node_modules/.cache/webpack/cache-test-fourth-development'));
 
-        let { exitCode, stderr, stdout } = run(__dirname, [
+        let { exitCode, stderr, stdout } = await run(__dirname, [
             '-c',
             './multi.config.js',
             '-c',
@@ -125,7 +125,7 @@ describe('cache', () => {
             expect(stdout).toBeTruthy();
         }
 
-        ({ exitCode, stderr, stdout } = run(__dirname, [
+        ({ exitCode, stderr, stdout } = await run(__dirname, [
             '-c',
             './multi.config.js',
             '-c',
@@ -146,10 +146,10 @@ describe('cache', () => {
         }
     });
 
-    it('should work with the `--config-name` and `--merge` argument', () => {
+    it('should work with the `--config-name` and `--merge` argument', async () => {
         rimraf.sync(path.join(__dirname, '../../../node_modules/.cache/webpack/cache-test-fifth-development'));
 
-        let { exitCode, stderr, stdout } = run(__dirname, [
+        let { exitCode, stderr, stdout } = await run(__dirname, [
             '-c',
             './multi.config.js',
             '-c',
@@ -172,7 +172,7 @@ describe('cache', () => {
             expect(stdout).toBeTruthy();
         }
 
-        ({ exitCode, stderr, stdout } = run(__dirname, [
+        ({ exitCode, stderr, stdout } = await run(__dirname, [
             '-c',
             './multi.config.js',
             '-c',
@@ -197,10 +197,10 @@ describe('cache', () => {
         }
     });
 
-    it('should work with autoloading configuration', () => {
+    it('should work with autoloading configuration', async () => {
         rimraf.sync(path.join(__dirname, '../../../node_modules/.cache/webpack/cache-test-autoloading-development'));
 
-        let { exitCode, stderr, stdout } = run(__dirname, ['--name', 'cache-test-autoloading']);
+        let { exitCode, stderr, stdout } = await run(__dirname, ['--name', 'cache-test-autoloading']);
 
         expect(exitCode).toEqual(0);
 
@@ -211,7 +211,7 @@ describe('cache', () => {
             expect(stdout).toBeTruthy();
         }
 
-        ({ exitCode, stderr, stdout } = run(__dirname, ['--name', 'cache-test-autoloading']));
+        ({ exitCode, stderr, stdout } = await run(__dirname, ['--name', 'cache-test-autoloading']));
 
         expect(exitCode).toEqual(0);
 

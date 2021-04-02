@@ -10,8 +10,8 @@ if (isWebpack5) {
 }
 
 describe('stats flag with config', () => {
-    it('should compile without stats flag', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, []);
+    it('should compile without stats flag', async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, []);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -24,8 +24,8 @@ describe('stats flag with config', () => {
     });
 
     for (const preset of statsPresets) {
-        it(`should override 'noramal' value in config with "${preset}"`, () => {
-            const { exitCode, stderr, stdout } = run(__dirname, ['--stats', `${preset}`]);
+        it(`should override 'noramal' value in config with "${preset}"`, async () => {
+            const { exitCode, stderr, stdout } = await run(__dirname, ['--stats', `${preset}`]);
 
             expect(exitCode).toBe(0);
             expect(stderr).toBeFalsy();

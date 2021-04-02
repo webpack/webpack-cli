@@ -17,8 +17,8 @@ describe('watch config related flag', () => {
         }
 
         if (flag.configs.filter((config) => config.type === 'boolean').length > 0 && flag.name !== 'watch') {
-            it(`should config --${flag.name} correctly`, () => {
-                const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`]);
+            it(`should config --${flag.name} correctly`, async () => {
+                const { exitCode, stderr, stdout } = await run(__dirname, [`--${flag.name}`]);
 
                 console.log(stdout);
                 console.log(stderr);
@@ -34,8 +34,8 @@ describe('watch config related flag', () => {
             });
 
             if (!flag.name.endsWith('-reset')) {
-                it(`should config --no-${flag.name} correctly`, () => {
-                    const { exitCode, stderr, stdout } = run(__dirname, [`--no-${flag.name}`]);
+                it(`should config --no-${flag.name} correctly`, async () => {
+                    const { exitCode, stderr, stdout } = await run(__dirname, [`--no-${flag.name}`]);
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
@@ -45,8 +45,8 @@ describe('watch config related flag', () => {
         }
 
         if (flag.configs.filter((config) => config.type === 'number').length > 0) {
-            it(`should config --${flag.name} correctly`, () => {
-                const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, '10']);
+            it(`should config --${flag.name} correctly`, async () => {
+                const { exitCode, stderr, stdout } = await run(__dirname, [`--${flag.name}`, '10']);
 
                 expect(exitCode).toBe(0);
                 expect(stderr).toBeFalsy();
@@ -55,15 +55,15 @@ describe('watch config related flag', () => {
         }
 
         if (flag.configs.filter((config) => config.type === 'string').length > 0) {
-            it(`should config --${flag.name} correctly`, () => {
+            it(`should config --${flag.name} correctly`, async () => {
                 if (propName === 'poll') {
-                    const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, '200']);
+                    const { exitCode, stderr, stdout } = await run(__dirname, [`--${flag.name}`, '200']);
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`watchOptions: { ${propName}: 200 }`);
                 } else {
-                    const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, 'ignore.js']);
+                    const { exitCode, stderr, stdout } = await run(__dirname, [`--${flag.name}`, 'ignore.js']);
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();

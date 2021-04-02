@@ -4,16 +4,16 @@ const { resolve } = require('path');
 const { run, isWindows } = require('../../../utils/test-utils');
 
 describe('custom config file', () => {
-    it('should work with cjs format', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--config', resolve(__dirname, 'config.webpack.js')]);
+    it('should work with cjs format', async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--config', resolve(__dirname, 'config.webpack.js')]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
     });
 
-    it('should work with esm format', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--config', resolve(__dirname, 'config.webpack.mjs')], {
+    it('should work with esm format', async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--config', resolve(__dirname, 'config.webpack.mjs')], {
             env: { WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG: true },
         });
 

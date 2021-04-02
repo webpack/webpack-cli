@@ -4,8 +4,8 @@ const { resolve } = require('path');
 const { run } = require('../../utils/test-utils');
 
 describe('custom-webpack', () => {
-    it('should use custom-webpack.js', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, [], {
+    it('should use custom-webpack.js', async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, [], {
             env: { WEBPACK_PACKAGE: resolve(__dirname, './custom-webpack.js') },
         });
 
@@ -14,8 +14,8 @@ describe('custom-webpack', () => {
         expect(stdout).toContain('main.js');
     });
 
-    it('should throw an error for invalid-webpack.js', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, [], {
+    it('should throw an error for invalid-webpack.js', async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, [], {
             env: { WEBPACK_PACKAGE: resolve(__dirname, './invalid-webpack.js') },
         });
 

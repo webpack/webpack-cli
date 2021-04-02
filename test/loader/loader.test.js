@@ -1,37 +1,46 @@
 'use strict';
 
-const { existsSync, mkdirSync } = require('fs');
+const { existsSync } = require('fs');
 const { join, resolve } = require('path');
 // eslint-disable-next-line node/no-unpublished-require
 const rimraf = require('rimraf');
-const { run, runPromptWithAnswers } = require('../utils/test-utils');
+const { run, runPromptWithAnswers, mkdir, uniqueDirectoryForTest, normalizeStdout } = require('../utils/test-utils');
 
 const firstPrompt = '? Loader name (my-loader)';
 const ENTER = '\x0D';
-const loaderName = 'test-loader';
-const loaderPath = join(__dirname, loaderName);
-const defaultLoaderPath = join(__dirname, 'my-loader');
-const genPath = join(__dirname, 'test-assets');
-const customLoaderPath = join(genPath, loaderName);
+const rootAssetsPath = resolve(__dirname, './test-assets');
+const dataForTests = (rootAssetsPath) => ({
+    loaderName: 'test-loader',
+    loaderPath: join(rootAssetsPath, 'test-loader'),
+    defaultLoaderPath: join(rootAssetsPath, 'my-loader'),
+    genPath: join(rootAssetsPath, 'test-assets'),
+    customLoaderPath: join(rootAssetsPath, 'test-assets', 'loaderName'),
+});
 
 describe('loader command', () => {
-    beforeEach(() => {
-        rimraf.sync(defaultLoaderPath);
-        rimraf.sync(loaderPath);
-        rimraf.sync(genPath);
+    beforeAll(async () => {
+        await mkdir(rootAssetsPath);
     });
 
-    it('should ask the loader name when invoked', () => {
-        const { stdout, stderr } = run(__dirname, ['loader'], false);
+    afterAll(() => {
+        rimraf.sync(rootAssetsPath);
+    });
+
+    it('should ask the loader name when invoked', async () => {
+        const assetsPath = await uniqueDirectoryForTest(rootAssetsPath);
+        const { stdout, stderr } = await runPromptWithAnswers(assetsPath, ['loader']);
+
         expect(stdout).toBeTruthy();
         expect(stderr).toBeFalsy();
-        expect(stdout).toContain(firstPrompt);
+        expect(normalizeStdout(stdout)).toContain(firstPrompt);
     });
 
     it('should scaffold loader with default name if no loader name provided', async () => {
-        let { stdout } = await runPromptWithAnswers(__dirname, ['loader'], [`${ENTER}`]);
+        const assetsPath = await uniqueDirectoryForTest(rootAssetsPath);
+        const { defaultLoaderPath } = dataForTests(assetsPath);
+        let { stdout } = await runPromptWithAnswers(assetsPath, ['loader'], [`${ENTER}`]);
 
-        expect(stdout).toContain(firstPrompt);
+        expect(normalizeStdout(stdout)).toContain(firstPrompt);
 
         // Skip test in case installation fails
         if (!existsSync(resolve(defaultLoaderPath, './yarn.lock'))) {
@@ -50,14 +59,16 @@ describe('loader command', () => {
 
         // Check if the the generated loader works successfully
         const path = resolve(__dirname, './my-loader/examples/simple/');
-        ({ stdout } = run(path, [], false));
+        ({ stdout } = await run(path, [], false));
         expect(stdout).toContain('my-loader');
     });
 
     it('should scaffold loader template with a given name', async () => {
-        let { stdout } = await runPromptWithAnswers(__dirname, ['loader'], [`${loaderName}${ENTER}`]);
+        const assetsPath = await uniqueDirectoryForTest(rootAssetsPath);
+        const { loaderName, loaderPath } = dataForTests(assetsPath);
+        let { stdout } = await runPromptWithAnswers(assetsPath, ['loader'], [`${loaderName}${ENTER}`]);
 
-        expect(stdout).toContain(firstPrompt);
+        expect(normalizeStdout(stdout)).toContain(firstPrompt);
 
         // Skip test in case installation fails
         if (!existsSync(resolve(loaderPath, './yarn.lock'))) {
@@ -76,14 +87,16 @@ describe('loader command', () => {
 
         // Check if the the generated loader works successfully
         const path = resolve(__dirname, './test-loader/examples/simple/');
-        ({ stdout } = run(path, [], false));
+        ({ stdout } = await run(path, [], false));
         expect(stdout).toContain('test-loader');
     });
 
     it('should scaffold loader template in the specified path', async () => {
-        let { stdout } = await runPromptWithAnswers(__dirname, ['loader', 'test-assets'], [`${loaderName}${ENTER}`]);
+        const assetsPath = await uniqueDirectoryForTest(rootAssetsPath);
+        const { loaderName, customLoaderPath } = dataForTests(assetsPath);
+        let { stdout } = await runPromptWithAnswers(assetsPath, ['loader', 'test-assets'], [`${loaderName}${ENTER}`]);
 
-        expect(stdout).toContain(firstPrompt);
+        expect(normalizeStdout(stdout)).toContain(firstPrompt);
 
         // Skip test in case installation fails
         if (!existsSync(resolve(customLoaderPath, './yarn.lock'))) {
@@ -102,17 +115,17 @@ describe('loader command', () => {
 
         // Check if the the generated loader works successfully
         const path = resolve(customLoaderPath, './examples/simple/');
-        ({ stdout } = run(path, [], false));
+        ({ stdout } = await run(path, [], false));
         expect(stdout).toContain('test-loader');
     });
 
     it('should scaffold loader template in the current directory', async () => {
-        // Create test-assets directory
-        mkdirSync(genPath);
+        const assetsPath = await uniqueDirectoryForTest(rootAssetsPath);
+        const { loaderName, customLoaderPath } = dataForTests(assetsPath);
 
-        let { stdout } = await runPromptWithAnswers(genPath, ['loader', './'], [`${loaderName}${ENTER}`]);
+        let { stdout } = await runPromptWithAnswers(assetsPath, ['loader', './'], [`${loaderName}${ENTER}`]);
 
-        expect(stdout).toContain(firstPrompt);
+        expect(normalizeStdout(stdout)).toContain(firstPrompt);
 
         // Skip test in case installation fails
         if (!existsSync(resolve(customLoaderPath, './yarn.lock'))) {
@@ -131,12 +144,14 @@ describe('loader command', () => {
 
         // Check if the the generated loader works successfully
         const path = resolve(customLoaderPath, './examples/simple/');
-        ({ stdout } = run(path, [], false));
+        ({ stdout } = await run(path, [], false));
         expect(stdout).toContain('test-loader');
     });
 
-    it('should prompt on supplying an invalid template', () => {
-        const { stderr } = run(__dirname, ['loader', '--template=unknown']);
+    it('should prompt on supplying an invalid template', async () => {
+        const assetsPath = await uniqueDirectoryForTest(rootAssetsPath);
+        const { stderr } = await runPromptWithAnswers(assetsPath, ['loader', '--template=unknown']);
+
         expect(stderr).toContain('unknown is not a valid template');
     });
 });

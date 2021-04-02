@@ -3,8 +3,8 @@ const path = require('path');
 const { run } = require('../../../utils/test-utils');
 
 describe('failure', () => {
-    it('should log error on not installed registers', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['-c', 'webpack.config.iced']);
+    it('should log error on not installed registers', async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, ['-c', 'webpack.config.iced']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain(`Unable load '${path.resolve(__dirname, './webpack.config.iced')}'`);

@@ -3,8 +3,8 @@
 const { run } = require('../../../utils/test-utils');
 
 describe('ignore-warnings', () => {
-    it('should ignore the warning emitted', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--ignore-warnings', /Generated Warning/]);
+    it('should ignore the warning emitted', async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--ignore-warnings', /Generated Warning/]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -12,8 +12,8 @@ describe('ignore-warnings', () => {
         expect(stdout).not.toContain('Generated Warning');
     });
 
-    it('should reset options.ignoreWarnings', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--ignore-warnings', /Generated Warning/, '--ignore-warnings-reset']);
+    it('should reset options.ignoreWarnings', async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--ignore-warnings', /Generated Warning/, '--ignore-warnings-reset']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -21,8 +21,8 @@ describe('ignore-warnings', () => {
         expect(stdout).toContain('Generated Warning');
     });
 
-    it('should throw error for an invalid value', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--ignore-warnings', 'abc']);
+    it('should throw error for an invalid value', async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--ignore-warnings', 'abc']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain(`Invalid value 'abc' for the '--ignore-warnings' option`);

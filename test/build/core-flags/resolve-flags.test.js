@@ -22,8 +22,8 @@ describe('resolve config related flags', () => {
             !flag.name.includes('alias-') &&
             !flag.name.includes('fallback-')
         ) {
-            it(`should config --${flag.name} correctly`, () => {
-                const { stderr, stdout } = run(__dirname, [`--${flag.name}`]);
+            it(`should config --${flag.name} correctly`, async () => {
+                const { stderr, stdout } = await run(__dirname, [`--${flag.name}`]);
 
                 // expect(exitCode).toBe(0);
                 expect(stderr).toBeFalsy();
@@ -42,8 +42,8 @@ describe('resolve config related flags', () => {
             !flag.name.includes('alias-') &&
             !flag.name.includes('fallback-')
         ) {
-            it(`should config --${flag.name} correctly`, () => {
-                const { stderr, stdout } = run(__dirname, [`--${flag.name}`, 'browser']);
+            it(`should config --${flag.name} correctly`, async () => {
+                const { stderr, stdout } = await run(__dirname, [`--${flag.name}`, 'browser']);
 
                 // expect(exitCode).toBe(0);
                 expect(stderr).toBeFalsy();
@@ -57,8 +57,8 @@ describe('resolve config related flags', () => {
         }
 
         if (flag.name.includes('alias-') || flag.name.includes('fallback-')) {
-            it(`should config --${flag.name} correctly`, () => {
-                const { exitCode, stderr, stdout } = run(__dirname, [
+            it(`should config --${flag.name} correctly`, async () => {
+                const { exitCode, stderr, stdout } = await run(__dirname, [
                     `--resolve-alias-alias`,
                     'alias',
                     '--resolve-alias-name',
@@ -94,8 +94,8 @@ describe('resolve config related flags', () => {
             });
 
             if (flag.name.includes('reset')) {
-                it(`should config --${flag.name} alias-reset flags correctly`, () => {
-                    const { exitCode, stderr, stdout } = run(__dirname, [
+                it(`should config --${flag.name} alias-reset flags correctly`, async () => {
+                    const { exitCode, stderr, stdout } = await run(__dirname, [
                         '--resolve-alias-reset',
                         '--resolve-fallback-reset',
                         '--resolve-alias-fields-reset',
