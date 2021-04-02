@@ -5,7 +5,8 @@ const { resolve } = require('path');
 
 describe('webpack cli', () => {
     it('should support typescript esnext file', async () => {
-        if (process.version.slice(1, 3) < 14) {
+        const majorNodeVersion = process.version.slice(1, 3);
+        if (majorNodeVersion < 14) {
             expect(true).toBe(true);
 
             return;
