@@ -1,3 +1,4 @@
+jest.setTimeout(360000);
 // eslint-disable-next-line node/no-unpublished-require
 const { run } = require('../../../utils/test-utils');
 const { existsSync } = require('fs');
@@ -13,7 +14,7 @@ describe('webpack cli', () => {
         }
 
         const { exitCode, stderr, stdout } = await run(__dirname, ['-c', './webpack.config.ts'], {
-            nodeOptions: ['--loader=ts-node/esm', '--experimental-modules'],
+            nodeOptions: ['--loader=ts-node/esm'],
         });
 
         expect(stderr).not.toBeFalsy();
