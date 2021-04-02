@@ -16,6 +16,7 @@ describe('webpack cli', () => {
         const { exitCode, stderr, stdout } = await run(__dirname, ['-c', './webpack.config.ts'], {
             nodeOptions: ['--loader=ts-node/esm'],
         });
+        console.log({ exitCode, stderr, stdout });
 
         expect(stderr).not.toBeFalsy();
         expect(stdout).toBeTruthy();
