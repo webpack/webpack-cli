@@ -14,16 +14,6 @@ describe('basic serve usage', () => {
         port = await getPort();
     });
 
-    const isWindows = process.platform === 'win32';
-
-    // TODO fix me on windows
-    if (isWindows) {
-        it('TODO: Fix on windows', () => {
-            expect(true).toBe(true);
-        });
-        return;
-    }
-
     it('should work', async () => {
         const { stderr, stdout } = await runWatch(__dirname, ['serve']);
 
