@@ -215,6 +215,7 @@ describe('init command', () => {
     });
 
     it('should use mini-css-extract-plugin when selected', async () => {
+        const assetsPath = await uniqueDirectoryForTest(rootAssetsPath);
         const { stdout, stderr } = await runPromptWithAnswers(
             assetsPath,
             ['init'],
