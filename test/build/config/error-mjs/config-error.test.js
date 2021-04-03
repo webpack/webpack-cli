@@ -1,16 +1,8 @@
 'use strict';
 const { resolve } = require('path');
-const { run, isWindows } = require('../../../utils/test-utils');
+const { run } = require('../../../utils/test-utils');
 
 describe('config error', () => {
-    // TODO fix on windows
-    if (isWindows) {
-        it('TODO: ix on windows', () => {
-            expect(true).toBe(true);
-        });
-        return;
-    }
-
     it('should throw error with invalid configuration', async () => {
         const { exitCode, stderr, stdout } = await run(__dirname, ['-c', resolve(__dirname, 'webpack.config.mjs')], {
             env: { WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG: true },
