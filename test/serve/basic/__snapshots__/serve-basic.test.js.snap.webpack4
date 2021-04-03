@@ -1,0 +1,159 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`basic serve usage should respect the "publicPath" option from configuration (from the "devServer" options) 1`] = `
+"<i> [webpack-dev-server] Project is running at:
+<i> [webpack-dev-server] Local: http://localhost:<port>/
+<i> [webpack-dev-server] On Your Network: http://<network-ip-v4>:<port>/ (IPv4), http://[<network-ip-v6>]:<port>/ (IPv6)
+<i> [webpack-dev-server] webpack output is served from '/dev-server-my-public-path/' URL
+<i> [webpack-dev-server] Content not from webpack is served from '<cwd>/test/serve/basic/public' directory"
+`;
+
+exports[`basic serve usage should respect the "publicPath" option from configuration 1`] = `
+"<i> [webpack-dev-server] Project is running at:
+<i> [webpack-dev-server] Local: http://localhost:<port>/
+<i> [webpack-dev-server] On Your Network: http://<network-ip-v4>:<port>/ (IPv4), http://[<network-ip-v6>]:<port>/ (IPv6)
+<i> [webpack-dev-server] Content not from webpack is served from '<cwd>/test/serve/basic/public' directory"
+`;
+
+exports[`basic serve usage should respect the "publicPath" option from configuration using multi compiler mode (from the "devServer" options) 1`] = `
+"<i> [webpack-dev-server] Project is running at:
+<i> [webpack-dev-server] Local: http://localhost:<port>/
+<i> [webpack-dev-server] On Your Network: http://<network-ip-v4>:<port>/ (IPv4), http://[<network-ip-v6>]:<port>/ (IPv6)
+<i> [webpack-dev-server] webpack output is served from '/dev-server-my-public-path/' URL
+<i> [webpack-dev-server] Content not from webpack is served from '<cwd>/test/serve/basic/public' directory"
+`;
+
+exports[`basic serve usage should respect the "publicPath" option from configuration using multi compiler mode 1`] = `
+"<i> [webpack-dev-server] Project is running at:
+<i> [webpack-dev-server] Local: http://localhost:<port>/
+<i> [webpack-dev-server] On Your Network: http://<network-ip-v4>:<port>/ (IPv4), http://[<network-ip-v6>]:<port>/ (IPv6)
+<i> [webpack-dev-server] Content not from webpack is served from '<cwd>/test/serve/basic/public' directory"
+`;
+
+exports[`basic serve usage should work 1`] = `
+"<i> [webpack-dev-server] Project is running at:
+<i> [webpack-dev-server] Local: http://localhost:<port>/
+<i> [webpack-dev-server] On Your Network: http://<network-ip-v4>:<port>/ (IPv4), http://[<network-ip-v6>]:<port>/ (IPv6)
+<i> [webpack-dev-server] Content not from webpack is served from '<cwd>/test/serve/basic/public' directory"
+`;
+
+exports[`basic serve usage should work in multi compiler mode 1`] = `
+"<i> [webpack-dev-server] Project is running at:
+<i> [webpack-dev-server] Local: http://localhost:<port>/
+<i> [webpack-dev-server] On Your Network: http://<network-ip-v4>:<port>/ (IPv4), http://[<network-ip-v6>]:<port>/ (IPv6)
+<i> [webpack-dev-server] webpack output is served from '/dev-server-my-public-path/' URL
+<i> [webpack-dev-server] Content not from webpack is served from '<cwd>/test/serve/basic/public' directory"
+`;
+
+exports[`basic serve usage should work with "--hot" and "--port" options 1`] = `
+"<i> [webpack-dev-server] Project is running at:
+<i> [webpack-dev-server] Local: http://localhost:<port>/
+<i> [webpack-dev-server] On Your Network: http://<network-ip-v4>:<port>/ (IPv4), http://[<network-ip-v6>]:<port>/ (IPv6)
+<i> [webpack-dev-server] Content not from webpack is served from '<cwd>/test/serve/basic/public' directory"
+`;
+
+exports[`basic serve usage should work with entries syntax 1`] = `
+"<i> [webpack-dev-server] Project is running at:
+<i> [webpack-dev-server] Local: http://localhost:<port>/
+<i> [webpack-dev-server] On Your Network: http://<network-ip-v4>:<port>/ (IPv4), http://[<network-ip-v6>]:<port>/ (IPv6)
+<i> [webpack-dev-server] Content not from webpack is served from '<cwd>/test/serve/basic/public' directory"
+`;
+
+exports[`basic serve usage should work with the "--config" and "--env" options 1`] = `
+"<i> [webpack-dev-server] Project is running at:
+<i> [webpack-dev-server] Local: http://localhost:<port>/
+<i> [webpack-dev-server] On Your Network: http://<network-ip-v4>:<port>/ (IPv4), http://[<network-ip-v6>]:<port>/ (IPv6)
+<i> [webpack-dev-server] Content not from webpack is served from '<cwd>/test/serve/basic/public' directory"
+`;
+
+exports[`basic serve usage should work with the "--config" and "--env" options and expose dev server options 1`] = `
+"<i> [webpack-dev-server] Project is running at:
+<i> [webpack-dev-server] Local: http://localhost:<port>/
+<i> [webpack-dev-server] On Your Network: http://<network-ip-v4>:<port>/ (IPv4), http://[<network-ip-v6>]:<port>/ (IPv6)
+<i> [webpack-dev-server] Content not from webpack is served from '<cwd>/test/serve/basic/public' directory"
+`;
+
+exports[`basic serve usage should work with the "--config" option 1`] = `
+"<i> [webpack-dev-server] Project is running at:
+<i> [webpack-dev-server] Local: http://localhost:<port>/
+<i> [webpack-dev-server] On Your Network: http://<network-ip-v4>:<port>/ (IPv4), http://[<network-ip-v6>]:<port>/ (IPv6)
+<i> [webpack-dev-server] Content not from webpack is served from '<cwd>/test/serve/basic/public' directory"
+`;
+
+exports[`basic serve usage should work with the "--hot" option 1`] = `
+"<i> [webpack-dev-server] Project is running at:
+<i> [webpack-dev-server] Local: http://localhost:<port>/
+<i> [webpack-dev-server] On Your Network: http://<network-ip-v4>:<port>/ (IPv4), http://[<network-ip-v6>]:<port>/ (IPv6)
+<i> [webpack-dev-server] Content not from webpack is served from '<cwd>/test/serve/basic/public' directory"
+`;
+
+exports[`basic serve usage should work with the "--hot" option using the "only" value 1`] = `
+"<i> [webpack-dev-server] Project is running at:
+<i> [webpack-dev-server] Local: http://localhost:<port>/
+<i> [webpack-dev-server] On Your Network: http://<network-ip-v4>:<port>/ (IPv4), http://[<network-ip-v6>]:<port>/ (IPv6)
+<i> [webpack-dev-server] Content not from webpack is served from '<cwd>/test/serve/basic/public' directory"
+`;
+
+exports[`basic serve usage should work with the "--mode" option #2 1`] = `
+"<i> [webpack-dev-server] Project is running at:
+<i> [webpack-dev-server] Local: http://localhost:<port>/
+<i> [webpack-dev-server] On Your Network: http://<network-ip-v4>:<port>/ (IPv4), http://[<network-ip-v6>]:<port>/ (IPv6)
+<i> [webpack-dev-server] Content not from webpack is served from '<cwd>/test/serve/basic/public' directory"
+`;
+
+exports[`basic serve usage should work with the "--mode" option #3 1`] = `
+"<i> [webpack-dev-server] Project is running at:
+<i> [webpack-dev-server] Local: http://localhost:<port>/
+<i> [webpack-dev-server] On Your Network: http://<network-ip-v4>:<port>/ (IPv4), http://[<network-ip-v6>]:<port>/ (IPv6)
+<i> [webpack-dev-server] Content not from webpack is served from '<cwd>/test/serve/basic/public' directory"
+`;
+
+exports[`basic serve usage should work with the "--mode" option 1`] = `
+"<i> [webpack-dev-server] Project is running at:
+<i> [webpack-dev-server] Local: http://localhost:<port>/
+<i> [webpack-dev-server] On Your Network: http://<network-ip-v4>:<port>/ (IPv4), http://[<network-ip-v6>]:<port>/ (IPv6)
+<i> [webpack-dev-server] Content not from webpack is served from '<cwd>/test/serve/basic/public' directory"
+`;
+
+exports[`basic serve usage should work with the "--no-hot" option 1`] = `
+"<i> [webpack-dev-server] Project is running at:
+<i> [webpack-dev-server] Local: http://localhost:<port>/
+<i> [webpack-dev-server] On Your Network: http://<network-ip-v4>:<port>/ (IPv4), http://[<network-ip-v6>]:<port>/ (IPv6)
+<i> [webpack-dev-server] Content not from webpack is served from '<cwd>/test/serve/basic/public' directory"
+`;
+
+exports[`basic serve usage should work with the "--open" option 1`] = `
+"<i> [webpack-dev-server] Project is running at:
+<i> [webpack-dev-server] Local: http://localhost:<port>/
+<i> [webpack-dev-server] On Your Network: http://<network-ip-v4>:<port>/ (IPv4), http://[<network-ip-v6>]:<port>/ (IPv6)
+<i> [webpack-dev-server] Content not from webpack is served from '<cwd>/test/serve/basic/public' directory
+<i> [webpack-dev-middleware] wait until bundle finished: /"
+`;
+
+exports[`basic serve usage should work with the "--port" option 1`] = `
+"<i> [webpack-dev-server] Project is running at:
+<i> [webpack-dev-server] Local: http://localhost:<port>/
+<i> [webpack-dev-server] On Your Network: http://<network-ip-v4>:<port>/ (IPv4), http://[<network-ip-v6>]:<port>/ (IPv6)
+<i> [webpack-dev-server] Content not from webpack is served from '<cwd>/test/serve/basic/public' directory"
+`;
+
+exports[`basic serve usage should work with the "--stats verbose" option 1`] = `
+"<i> [webpack-dev-server] Project is running at:
+<i> [webpack-dev-server] Local: http://localhost:<port>/
+<i> [webpack-dev-server] On Your Network: http://<network-ip-v4>:<port>/ (IPv4), http://[<network-ip-v6>]:<port>/ (IPv6)
+<i> [webpack-dev-server] Content not from webpack is served from '<cwd>/test/serve/basic/public' directory"
+`;
+
+exports[`basic serve usage should work with the "--stats" option 1`] = `
+"<i> [webpack-dev-server] Project is running at:
+<i> [webpack-dev-server] Local: http://localhost:<port>/
+<i> [webpack-dev-server] On Your Network: http://<network-ip-v4>:<port>/ (IPv4), http://[<network-ip-v6>]:<port>/ (IPv6)
+<i> [webpack-dev-server] Content not from webpack is served from '<cwd>/test/serve/basic/public' directory"
+`;
+
+exports[`basic serve usage should work with the default "publicPath" option 1`] = `
+"<i> [webpack-dev-server] Project is running at:
+<i> [webpack-dev-server] Local: http://localhost:<port>/
+<i> [webpack-dev-server] On Your Network: http://<network-ip-v4>:<port>/ (IPv4), http://[<network-ip-v6>]:<port>/ (IPv6)
+<i> [webpack-dev-server] Content not from webpack is served from '<cwd>/test/serve/basic/public' directory"
+`;
