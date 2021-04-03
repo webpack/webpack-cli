@@ -66,7 +66,7 @@ const base = {
 
 const production = {
     mode: 'production',
-}
+};
 
 const development = {
     mode: 'development',<% if (devServer) { %>
@@ -74,11 +74,11 @@ const development = {
         open: true,
         host: 'localhost',
     },<% } %>
-}
+};
 
 module.exports = function (env, argv) {
     if (argv.mode == 'production') {
         return merge(base, production);
     }
     return merge(base, development);
-}
+};
