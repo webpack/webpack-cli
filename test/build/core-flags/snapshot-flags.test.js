@@ -13,8 +13,8 @@ describe('snapshot config related flags', () => {
         const propName = hyphenToUpperCase(property);
 
         if (flag.configs.filter((config) => config.type === 'boolean').length > 0) {
-            it(`should config --${flag.name} correctly`, () => {
-                const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`]);
+            it(`should config --${flag.name} correctly`, async () => {
+                const { exitCode, stderr, stdout } = await run(__dirname, [`--${flag.name}`]);
 
                 expect(exitCode).toBe(0);
                 expect(stderr).toBeFalsy();
@@ -31,8 +31,8 @@ describe('snapshot config related flags', () => {
         }
 
         if (flag.configs.filter((config) => config.type === 'string').length > 0) {
-            it(`should config --${flag.name} correctly`, () => {
-                const { exitCode, stderr, stdout } = run(__dirname, [`--${flag.name}`, './mock/mock.js']);
+            it(`should config --${flag.name} correctly`, async () => {
+                const { exitCode, stderr, stdout } = await run(__dirname, [`--${flag.name}`, './mock/mock.js']);
 
                 expect(exitCode).toBe(0);
                 expect(stderr).toBeFalsy();

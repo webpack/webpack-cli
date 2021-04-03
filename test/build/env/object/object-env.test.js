@@ -8,8 +8,8 @@ const { sync: spawnSync } = execa;
 const { run, isWebpack5 } = require('../../../utils/test-utils');
 
 describe('env object', () => {
-    it('is able to set env for an object', () => {
-        const { exitCode, stderr, stdout } = run(__dirname);
+    it('is able to set env for an object', async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();

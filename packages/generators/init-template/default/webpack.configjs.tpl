@@ -1,6 +1,7 @@
 // Generated using webpack-cli http://github.com/webpack-cli
 const path = require('path');<% if (htmlWebpackPlugin) { %>
-const HtmlWebpackPlugin = require('html-webpack-plugin');<% } %>
+const HtmlWebpackPlugin = require('html-webpack-plugin');<% } %><% if (isExtractPlugin) { %>
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');<% } %>
 const { merge } = require('webpack-merge');
 
 const base = {
@@ -12,6 +13,8 @@ const base = {
         new HtmlWebpackPlugin({
             template: 'index.html',
         }),
+<% } %><% if (isExtractPlugin) { %>
+        new MiniCssExtractPlugin(),
 <% } %>
         // Add your plugins here
         // Learn more obout plugins from https://webpack.js.org/configuration/plugins/
@@ -29,23 +32,23 @@ const base = {
             },<% } %><%  if (isCSS && !isPostCSS) { %>
             {
                 test: /\.css$/i,
-                use: ['style-loader','css-loader'],
+                use: [<% if (isExtractPlugin) { %>MiniCssExtractPlugin.loader<% } else { %>'style-loader' <% } %>,'css-loader'],
             },<% } %><%  if (cssType == 'SASS') { %>
             {
                 test: /\.s[ac]ss$/i,
-                use: ['style-loader', 'css-loader', <% if (isPostCSS) { %>'postcss-loader', <% } %>'sass-loader'],
+                use: [<% if (isExtractPlugin) { %>MiniCssExtractPlugin.loader<% } else { %>'style-loader' <% } %>, 'css-loader', <% if (isPostCSS) { %>'postcss-loader', <% } %>'sass-loader'],
             },<% } %><%  if (cssType == 'LESS') { %>
             {
                 test: /\.less$/i,
-                use: [<% if (isPostCSS) { %>'style-loader', 'css-loader', 'postcss-loader', <% } %>'less-loader'],
+                use: [<% if (isPostCSS) { %><% if (isExtractPlugin) { %>MiniCssExtractPlugin.loader<% } else { %>'style-loader' <% } %>, 'css-loader', 'postcss-loader', <% } %>'less-loader'],
             },<% } %><%  if (cssType == 'Stylus') { %>
             {
                 test: /\.styl$/i,
-                use: [<% if (isPostCSS) { %>'style-loader', 'css-loader', 'postcss-loader', <% } %>'stylus-loader'],
+                use: [<% if (isPostCSS) { %><% if (isExtractPlugin) { %>MiniCssExtractPlugin.loader<% } else { %>'style-loader' <% } %>, 'css-loader', 'postcss-loader', <% } %>'stylus-loader'],
             },<% } %><%  if (isPostCSS && isCSS) { %>
             {
                 test: /\.css$/i,
-                use: ['style-loader', 'css-loader', 'postcss-loader'],
+                use: [<% if (isExtractPlugin) { %>MiniCssExtractPlugin.loader<% } else { %>'style-loader' <% } %>, 'css-loader', 'postcss-loader'],
             },<% } %>
             {
                 test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,

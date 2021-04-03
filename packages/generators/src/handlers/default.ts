@@ -65,7 +65,7 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
     );
 
     if (cssType == 'none') {
-        self.answers = { ...self.answers, cssType, isCSS: false, isPostCSS: false };
+        self.answers = { ...self.answers, cssType, isCSS: false, isPostCSS: false, isExtractPlugin: false };
         return;
     }
 
@@ -79,6 +79,14 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
         'isPostCSS',
         'Will you be using PostCSS in your project?',
         cssType == 'CSS only',
+        self.force,
+    );
+
+    const { isExtractPlugin } = await Question.Confirm(
+        self,
+        'isExtractPlugin',
+        'Do you want to extract CSS for every file?',
+        true,
         self.force,
     );
 
@@ -102,7 +110,11 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
         self.dependencies = [...self.dependencies, 'postcss-loader', 'postcss', 'autoprefixer'];
     }
 
-    self.answers = { ...self.answers, cssType, isCSS, isPostCSS };
+    if (isExtractPlugin) {
+        self.dependencies = [...self.dependencies, 'mini-css-extract-plugin'];
+    }
+
+    self.answers = { ...self.answers, cssType, isCSS, isPostCSS, isExtractPlugin };
 }
 
 /**

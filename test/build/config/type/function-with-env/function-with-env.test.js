@@ -1,19 +1,19 @@
 'use strict';
-const { existsSync, readFile } = require('fs');
+const { existsSync } = require('fs');
 const { resolve } = require('path');
-const { run } = require('../../../../utils/test-utils');
+const { run, readFile } = require('../../../../utils/test-utils');
 
 describe('function configuration', () => {
-    it('should throw when env is not supplied', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--env']);
+    it('should throw when env is not supplied', async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--env']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Error: Option '--env <value...>' argument missing");
         expect(stdout).toBeFalsy();
     });
 
-    it('is able to understand a configuration file as a function', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--env', 'isProd']);
+    it('is able to understand a configuration file as a function', async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--env', 'isProd']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -22,8 +22,8 @@ describe('function configuration', () => {
         expect(existsSync(resolve(__dirname, './dist/prod.js'))).toBeTruthy();
     });
 
-    it('is able to understand a configuration file as a function', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--env', 'isDev']);
+    it('is able to understand a configuration file as a function', async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--env', 'isDev']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -32,8 +32,8 @@ describe('function configuration', () => {
         expect(existsSync(resolve(__dirname, './dist/dev.js'))).toBeTruthy();
     });
 
-    it('Supports passing string in env', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, [
+    it('Supports passing string in env', async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, [
             '--env',
             'environment=production',
             '--env',
@@ -49,8 +49,8 @@ describe('function configuration', () => {
         expect(existsSync(resolve(__dirname, './dist/Luffy.js'))).toBeTruthy();
     });
 
-    it('Supports long nested values in env', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, [
+    it('Supports long nested values in env', async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, [
             '--env',
             'file.name.is.this=Atsumu',
             '--env',
@@ -66,8 +66,8 @@ describe('function configuration', () => {
         expect(existsSync(resolve(__dirname, './dist/Atsumu.js'))).toBeTruthy();
     });
 
-    it('Supports multiple equal in a string', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, [
+    it('Supports multiple equal in a string', async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, [
             '--env',
             'file=name=is=Eren',
             '--env',
@@ -83,8 +83,8 @@ describe('function configuration', () => {
         expect(existsSync(resolve(__dirname, './dist/name=is=Eren.js'))).toBeTruthy();
     });
 
-    it('Supports dot at the end', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, [
+    it('Supports dot at the end', async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, [
             '--env',
             'name.=Hisoka',
             '--env',
@@ -100,8 +100,15 @@ describe('function configuration', () => {
         expect(existsSync(resolve(__dirname, './dist/Hisoka.js'))).toBeTruthy();
     });
 
-    it('Supports dot at the end', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--env', 'name.', '--env', 'environment=dot', '-c', 'webpack.env.config.js']);
+    it('Supports dot at the end', async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            '--env',
+            'name.',
+            '--env',
+            'environment=dot',
+            '-c',
+            'webpack.env.config.js',
+        ]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -110,8 +117,8 @@ describe('function configuration', () => {
         expect(existsSync(resolve(__dirname, './dist/true.js'))).toBeTruthy();
     });
 
-    it('is able to understand multiple env flags', (done) => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--env', 'isDev', '--env', 'verboseStats', '--env', 'envMessage']);
+    it('is able to understand multiple env flags', async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--env', 'isDev', '--env', 'verboseStats', '--env', 'envMessage']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -119,11 +126,15 @@ describe('function configuration', () => {
         // check that the verbose env is respected
         expect(stdout).toContain('LOG from webpack');
 
+        let data;
+
+        try {
+            data = await readFile(resolve(__dirname, './dist/dev.js'), 'utf-8');
+        } catch (error) {
+            expect(error).toBe(null);
+        }
+
         // check if the values from DefinePlugin make it to the compiled code
-        readFile(resolve(__dirname, './dist/dev.js'), 'utf-8', (err, data) => {
-            expect(err).toBe(null);
-            expect(data).toContain('env message present');
-            done();
-        });
+        expect(data).toContain('env message present');
     });
 });

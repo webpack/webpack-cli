@@ -9,8 +9,8 @@ describe('import local', () => {
     beforeEach(() => {
         importLocalMock.mockClear();
     });
-    it('should skip import local when supplied', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, [], {
+    it('should skip import local when supplied', async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, [], {
             env: { WEBPACK_CLI_SKIP_IMPORT_LOCAL: true },
         });
         expect(importLocalMock).toHaveBeenCalledTimes(0);

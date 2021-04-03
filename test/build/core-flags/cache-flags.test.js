@@ -8,40 +8,40 @@ const { existsSync, writeFileSync, unlinkSync } = require('fs');
 const { resolve } = require('path');
 
 describe('cache related flags from core', () => {
-    it('should be successful with --cache ', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--cache']);
+    it('should be successful with --cache ', async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--cache']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).toContain(`type: 'memory'`);
     });
 
-    it('should be successful with --no-cache ', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['--no-cache']);
+    it('should be successful with --no-cache ', async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--no-cache']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('cache: false');
     });
 
-    it('should set cache.type', () => {
+    it('should set cache.type', async () => {
         const cacheLocation = path.resolve(__dirname, '../../node_modules/.cache/webpack/cache-core-flag-test-type');
 
         rimraf.sync(cacheLocation);
 
-        const { exitCode, stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '--cache-cache-location', cacheLocation]);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--cache-type', 'filesystem', '--cache-cache-location', cacheLocation]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).toContain(`type: 'filesystem'`);
     });
 
-    it('should set cache.cacheDirectory with --cache-cache-directory', () => {
+    it('should set cache.cacheDirectory with --cache-cache-directory', async () => {
         const cacheLocation = path.resolve(__dirname, '../../node_modules/.cache/webpack/cache-core-flag-test-cache-directory');
 
         rimraf.sync(cacheLocation);
 
-        const { exitCode, stderr, stdout } = run(__dirname, [
+        const { exitCode, stderr, stdout } = await run(__dirname, [
             '--cache-type',
             'filesystem',
             '--cache-cache-directory',
@@ -56,12 +56,12 @@ describe('cache related flags from core', () => {
         expect(stdout).toContain('test-cache-path');
     });
 
-    it('should set cache.cacheLocation with --cache-cache-locations', () => {
+    it('should set cache.cacheLocation with --cache-cache-locations', async () => {
         const cacheLocation = path.resolve(__dirname, '../../node_modules/.cache/webpack/cache-core-flag-test-cache-location');
 
         rimraf.sync(cacheLocation);
 
-        const { exitCode, stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '--cache-cache-location', cacheLocation]);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--cache-type', 'filesystem', '--cache-cache-location', cacheLocation]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -70,12 +70,12 @@ describe('cache related flags from core', () => {
         expect(existsSync(cacheLocation)).toBeTruthy();
     });
 
-    it('should set cache.hashAlgorithm with --cache-hash-algorithm', () => {
+    it('should set cache.hashAlgorithm with --cache-hash-algorithm', async () => {
         const cacheLocation = path.resolve(__dirname, '../../node_modules/.cache/webpack/cache-core-flag-test-hash-algorithm');
 
         rimraf.sync(cacheLocation);
 
-        const { exitCode, stderr, stdout } = run(__dirname, [
+        const { exitCode, stderr, stdout } = await run(__dirname, [
             '--cache-type',
             'filesystem',
             '--cache-hash-algorithm',
@@ -90,12 +90,12 @@ describe('cache related flags from core', () => {
         expect(stdout).toContain(`hashAlgorithm: 'sha256'`);
     });
 
-    it('should set cache.name with --cache-name', () => {
+    it('should set cache.name with --cache-name', async () => {
         const cacheLocation = path.resolve(__dirname, '../../node_modules/.cache/webpack/cache-core-flag-test-name');
 
         rimraf.sync(cacheLocation);
 
-        const { exitCode, stderr, stdout } = run(__dirname, [
+        const { exitCode, stderr, stdout } = await run(__dirname, [
             '--cache-type',
             'filesystem',
             '--cache-name',
@@ -110,12 +110,12 @@ describe('cache related flags from core', () => {
         expect(stdout).toContain(`name: 'cli-test'`);
     });
 
-    it('should set cache.store with --cache-store', () => {
+    it('should set cache.store with --cache-store', async () => {
         const cacheLocation = path.resolve(__dirname, '../../node_modules/.cache/webpack/cache-core-flag-test-store');
 
         rimraf.sync(cacheLocation);
 
-        const { exitCode, stderr, stdout } = run(__dirname, [
+        const { exitCode, stderr, stdout } = await run(__dirname, [
             '--cache-type',
             'filesystem',
             '--cache-store',
@@ -130,12 +130,12 @@ describe('cache related flags from core', () => {
         expect(stdout).toContain(`store: 'pack'`);
     });
 
-    it('should set cache.version with --cache-version', () => {
+    it('should set cache.version with --cache-version', async () => {
         const cacheLocation = path.resolve(__dirname, '../../node_modules/.cache/webpack/cache-core-flag-test-version');
 
         rimraf.sync(cacheLocation);
 
-        const { exitCode, stderr, stdout } = run(__dirname, [
+        const { exitCode, stderr, stdout } = await run(__dirname, [
             '--cache-type',
             'filesystem',
             '--cache-version',
@@ -150,12 +150,12 @@ describe('cache related flags from core', () => {
         expect(stdout).toContain(`version: '1.1.3'`);
     });
 
-    it('should assign cache build dependencies correctly when cache type is filesystem', () => {
+    it('should assign cache build dependencies correctly when cache type is filesystem', async () => {
         const cacheLocation = path.resolve(__dirname, '../../node_modules/.cache/webpack/cache-core-flag-test-build-dependencies');
 
         rimraf.sync(cacheLocation);
 
-        let { stderr, stdout, exitCode } = run(__dirname, [
+        let { stderr, stdout, exitCode } = await run(__dirname, [
             '--cache-type',
             'filesystem',
             '-c',
@@ -172,7 +172,7 @@ describe('cache related flags from core', () => {
         expect(stdout).not.toContain('[cached]');
 
         // Run again to check for cache
-        ({ exitCode, stderr, stdout } = run(__dirname, [
+        ({ exitCode, stderr, stdout } = await run(__dirname, [
             '--cache-type',
             'filesystem',
             '-c',
@@ -186,7 +186,7 @@ describe('cache related flags from core', () => {
         expect(stdout).toContain('[cached]');
     });
 
-    it('should assign cache build dependencies correctly when cache type is filesystem in config', () => {
+    it('should assign cache build dependencies correctly when cache type is filesystem in config', async () => {
         const cacheLocation = path.resolve(
             __dirname,
             '../../node_modules/.cache/webpack/cache-core-flag-test-build-dependencies-in-config',
@@ -194,7 +194,12 @@ describe('cache related flags from core', () => {
 
         rimraf.sync(cacheLocation);
 
-        let { exitCode, stderr, stdout } = run(__dirname, ['-c', './webpack.cache.config.js', '--cache-cache-location', cacheLocation]);
+        let { exitCode, stderr, stdout } = await run(__dirname, [
+            '-c',
+            './webpack.cache.config.js',
+            '--cache-cache-location',
+            cacheLocation,
+        ]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -203,17 +208,17 @@ describe('cache related flags from core', () => {
         // expect(stdout).toContain(`'${path.join(__dirname, './webpack.cache.config.js')}'`);
 
         // Run again to check for cache
-        ({ exitCode, stderr, stdout } = run(__dirname, ['-c', './webpack.cache.config.js', '--cache-cache-location', cacheLocation]));
+        ({ exitCode, stderr, stdout } = await run(__dirname, ['-c', './webpack.cache.config.js', '--cache-cache-location', cacheLocation]));
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('[cached]');
     });
 
-    it('should assign cache build dependencies with multiple configs', () => {
+    it('should assign cache build dependencies with multiple configs', async () => {
         rimraf.sync(path.join(__dirname, '../../node_modules/.cache/webpack/config-cache'));
 
-        const { exitCode, stderr, stdout } = run(__dirname, ['-c', './webpack.cache.config.js', '-c', './webpack.config.js']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['-c', './webpack.cache.config.js', '-c', './webpack.config.js']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -223,10 +228,10 @@ describe('cache related flags from core', () => {
         expect(stdout).not.toContain(`'${resolve(__dirname, 'webpack.config.js')}'`);
     });
 
-    it('should assign cache build dependencies with default config', () => {
+    it('should assign cache build dependencies with default config', async () => {
         rimraf.sync(path.join(__dirname, '../../node_modules/.cache/webpack/cache-core-flag-test-development'));
 
-        const { exitCode, stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '--name', 'cache-core-flag-test']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--cache-type', 'filesystem', '--name', 'cache-core-flag-test']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -235,12 +240,12 @@ describe('cache related flags from core', () => {
         expect(stdout).toContain("type: 'filesystem'");
     });
 
-    it('should assign cache build dependencies with merged configs', () => {
+    it('should assign cache build dependencies with merged configs', async () => {
         const cacheLocation = path.resolve(__dirname, '../../node_modules/.cache/webpack/cache-core-flag-test-merge');
 
         rimraf.sync(cacheLocation);
 
-        const { exitCode, stderr, stdout } = run(__dirname, [
+        const { exitCode, stderr, stdout } = await run(__dirname, [
             '-c',
             './webpack.cache.config.js',
             '-c',
@@ -259,21 +264,21 @@ describe('cache related flags from core', () => {
     });
 
     // TODO: fix it later
-    it.skip('should invalidate cache when config changes', () => {
+    it.skip('should invalidate cache when config changes', async () => {
         rimraf.sync(path.join(__dirname, '../../node_modules/.cache/webpack/default-development'));
         rimraf.sync(path.join(__dirname, '../../node_modules/.cache/webpack/default-production'));
 
         // Creating a temporary webpack config
         writeFileSync(resolve(__dirname, './webpack.test.config.js'), 'module.exports = {mode: "development"}');
 
-        let { exitCode, stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.test.config.js']);
+        let { exitCode, stderr, stdout } = await run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.test.config.js']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).not.toContain('[cached]');
 
         // Running again should use the cache
-        ({ exitCode, stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.test.config.js']));
+        ({ exitCode, stderr, stdout } = await run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.test.config.js']));
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -282,7 +287,7 @@ describe('cache related flags from core', () => {
         // Change config to invalidate cache
         writeFileSync(resolve(__dirname, './webpack.test.config.js'), 'module.exports = {mode: "production"}');
 
-        ({ exitCode, stderr, stdout } = run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.test.config.js']));
+        ({ exitCode, stderr, stdout } = await run(__dirname, ['--cache-type', 'filesystem', '-c', './webpack.test.config.js']));
 
         unlinkSync(resolve(__dirname, './webpack.test.config.js'));
 

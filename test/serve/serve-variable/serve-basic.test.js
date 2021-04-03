@@ -14,16 +14,6 @@ describe('serve variable', () => {
         port = await getPort();
     });
 
-    const isWindows = process.platform === 'win32';
-
-    // TODO fix me on windows
-    if (isWindows) {
-        it('TODO: Fix on windows', () => {
-            expect(true).toBe(true);
-        });
-        return;
-    }
-
     it('compiles without flags and export variable', async () => {
         const { stdout, stderr } = await runWatch(testPath, ['serve', '--port', port]);
 
