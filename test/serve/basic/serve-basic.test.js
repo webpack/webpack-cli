@@ -313,16 +313,9 @@ describe('basic serve usage', () => {
         expect(normalizeStderr(stderr)).toMatchSnapshot('stderr');
 
         if (isWebpack5) {
-            if (isDevServer4) {
-                expect(normalizeStderr(stderr)).toMatchSnapshot();
-                expect(stdout).toContain('main.js');
-                expect(stdout.match(/HotModuleReplacementPlugin/g)).toHaveLength(1);
-            } else {
-                expect(stderr).toMatchSnapshot();
-                expect(stdout).toContain('main.js');
-                expect(stdout).toContain('/my-public-path/');
-                expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
-            }
+            expect(stdout).toContain('main.js');
+            expect(stdout).toContain('/my-public-path/');
+            expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
         } else {
             expect(stdout).toBeFalsy();
         }
@@ -431,6 +424,7 @@ describe('basic serve usage', () => {
 
         expect(normalizeStderr(stderr)).toMatchSnapshot('stderr');
         expect(stdout).toContain('development');
+        
         if (isDevServer4) {
             expect(stdout.match(/HotModuleReplacementPlugin/g)).toHaveLength(1);
         } else {
