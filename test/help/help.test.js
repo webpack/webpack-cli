@@ -3,9 +3,6 @@ const { run } = require('../utils/test-utils');
 // eslint-disable-next-line node/no-unpublished-require
 const serializer = require('jest-serializer-ansi');
 
-// TODO fix it
-const isMacOS = process.platform === 'darwin';
-
 describe('help', () => {
     expect.addSnapshotSerializer(serializer);
 
@@ -27,6 +24,7 @@ describe('help', () => {
 
     it.skip('should show help information using the "--help" option with the "verbose" value #2', async () => {
         const { exitCode, stderr, stdout } = await run(__dirname, ['--help=verbose']);
+
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).toMatchSnapshot();
@@ -37,7 +35,6 @@ describe('help', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-
         expect(stdout).toMatchSnapshot();
     });
 
@@ -52,11 +49,8 @@ describe('help', () => {
         expect(exitCodeFromOption).toBe(0);
         expect(exitCodeFromCommandSyntax).toBe(0);
         expect(stderrFromOption).toBeFalsy();
-
-        if (!isMacOS) {
-            expect(stderrFromCommandSyntax).toBeFalsy();
-            expect(stdoutFromOption).toBe(stdoutFromCommandSyntax);
-        }
+        expect(stderrFromCommandSyntax).toBeFalsy();
+        expect(stdoutFromOption).toBe(stdoutFromCommandSyntax);
     });
 
     it('should show help information and respect the "--color" flag using the "--help" option', async () => {
@@ -65,7 +59,6 @@ describe('help', () => {
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('\x1b[1m');
-
         expect(stdout).toMatchSnapshot();
     });
 
@@ -74,7 +67,6 @@ describe('help', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-
         expect(stdout).toMatchSnapshot();
     });
 
@@ -183,10 +175,7 @@ describe('help', () => {
             expect(stderr).toBeFalsy();
             expect(stdout).toContain('\x1b[1m');
             expect(stdout).toContain(usage);
-
-            if (!isMacOS) {
-                expect(stdout).toContain('Made with ♥ by the webpack team');
-            }
+            expect(stdout).toContain('Made with ♥ by the webpack team');
         });
 
         it(`should show help information for '${name}' and respect the "--no-color" flag using the "--help" option`, async () => {
@@ -196,10 +185,7 @@ describe('help', () => {
             expect(stderr).toBeFalsy();
             expect(stdout).not.toContain('\x1b[1m');
             expect(stdout).toContain(usage);
-
-            if (!isMacOS) {
-                expect(stdout).toContain('Made with ♥ by the webpack team');
-            }
+            expect(stdout).toContain('Made with ♥ by the webpack team');
         });
     });
 
@@ -208,7 +194,6 @@ describe('help', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-
         expect(stdout).toMatchSnapshot();
     });
 
@@ -217,7 +202,6 @@ describe('help', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-
         expect(stdout).toMatchSnapshot();
     });
 
@@ -250,7 +234,6 @@ describe('help', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-
         expect(stdout).toMatchSnapshot();
     });
 
@@ -259,7 +242,6 @@ describe('help', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-
         expect(stdout).toMatchSnapshot();
     });
 
@@ -268,7 +250,6 @@ describe('help', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-
         expect(stdout).toMatchSnapshot();
     });
 
@@ -278,7 +259,6 @@ describe('help', () => {
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('\x1b[1m');
-
         expect(stdout).toMatchSnapshot();
     });
 
@@ -296,7 +276,6 @@ describe('help', () => {
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('\x1b[1m');
-
         expect(stdout).toMatchSnapshot();
     });
 
@@ -313,7 +292,6 @@ describe('help', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-
         expect(stdout).toMatchSnapshot();
     });
 
@@ -322,7 +300,6 @@ describe('help', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-
         expect(stdout).toMatchSnapshot();
     });
 
