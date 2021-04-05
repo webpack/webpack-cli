@@ -1,4 +1,5 @@
 'use strict';
+
 const { run, normalizeStderr, normalizeStdout } = require('../utils/test-utils');
 
 describe('help', () => {
@@ -10,7 +11,7 @@ describe('help', () => {
         expect(normalizeStdout(stdout)).toMatchSnapshot('stdout');
     });
 
-    it.skip('should show help information using the "--help" option with the "verbose" value', async () => {
+    it('should show help information using the "--help" option with the "verbose" value', async () => {
         const { exitCode, stderr, stdout } = await run(__dirname, ['--help', 'verbose']);
 
         expect(exitCode).toBe(0);
@@ -18,7 +19,7 @@ describe('help', () => {
         expect(normalizeStdout(stdout)).toMatchSnapshot('stdout');
     });
 
-    it.skip('should show help information using the "--help" option with the "verbose" value #2', async () => {
+    it('should show help information using the "--help" option with the "verbose" value #2', async () => {
         const { exitCode, stderr, stdout } = await run(__dirname, ['--help=verbose']);
 
         expect(exitCode).toBe(0);
