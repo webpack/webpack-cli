@@ -26,8 +26,21 @@ const readFromPkgJSON = (path) => {
 const readFromWebpackConfig = (path) => readFileSync(join(path, 'webpack.config.js'), 'utf8');
 
 describe('init command', () => {
+    let assetsPath;
+
     beforeAll(async () => {
         await mkdir(rootAssetsPath);
+        assetsPath = await uniqueDirectoryForTest(rootAssetsPath);
+    });
+
+    beforeEach(() => {
+        rimraf.sync(`${assetsPath}/**/*`, {
+            glob: {
+                ignore: ['**/node_modules/**/*', '**/node_*'],
+                nosort: true,
+                silent: true,
+            },
+        });
     });
 
     afterAll(() => {
@@ -35,7 +48,6 @@ describe('init command', () => {
     });
 
     it('should generate default project when nothing is passed', async () => {
-        const assetsPath = await uniqueDirectoryForTest(rootAssetsPath);
         const { stdout, stderr } = await run(assetsPath, ['init', '--force']);
         expect(stdout).toContain('Project has been initialised with webpack!');
         expect(stderr).toContain('webpack.config.js');
@@ -51,7 +63,6 @@ describe('init command', () => {
     });
 
     it('should generate project when generationPath is supplied', async () => {
-        const assetsPath = await uniqueDirectoryForTest(rootAssetsPath);
         const { stdout, stderr } = await run(__dirname, ['init', assetsPath, '--force']);
         expect(stdout).toContain('Project has been initialised with webpack!');
         expect(stderr).toContain('webpack.config.js');
@@ -104,7 +115,6 @@ describe('init command', () => {
     });
 
     it('should ask question when wrong template is supplied', async () => {
-        const assetsPath = await uniqueDirectoryForTest(rootAssetsPath);
         const { stdout, stderr } = await runPromptWithAnswers(assetsPath, ['init', '--force', '--template=apple'], [`${ENTER}`]);
         expect(stdout).toContain('Project has been initialised with webpack!');
         expect(stdout).toContain('apple is not a valid template, please select one from below');
@@ -121,7 +131,6 @@ describe('init command', () => {
     });
 
     it('should generate typescript project correctly', async () => {
-        const assetsPath = await uniqueDirectoryForTest(rootAssetsPath);
         const { stdout, stderr } = await runPromptWithAnswers(
             assetsPath,
             ['init'],
@@ -145,7 +154,6 @@ describe('init command', () => {
     });
 
     it('should generate ES6 project correctly', async () => {
-        const assetsPath = await uniqueDirectoryForTest(rootAssetsPath);
         const { stdout, stderr } = await runPromptWithAnswers(
             assetsPath,
             ['init'],
@@ -169,7 +177,6 @@ describe('init command', () => {
     });
 
     it('should use sass in project when selected', async () => {
-        const assetsPath = await uniqueDirectoryForTest(rootAssetsPath);
         const { stdout, stderr } = await runPromptWithAnswers(
             assetsPath,
             ['init'],
@@ -192,7 +199,6 @@ describe('init command', () => {
     });
 
     it('should use sass with postcss in project when selected', async () => {
-        const assetsPath = await uniqueDirectoryForTest(rootAssetsPath);
         const { stdout, stderr } = await runPromptWithAnswers(
             assetsPath,
             ['init'],
@@ -215,7 +221,6 @@ describe('init command', () => {
     });
 
     it('should use mini-css-extract-plugin when selected', async () => {
-        const assetsPath = await uniqueDirectoryForTest(rootAssetsPath);
         const { stdout, stderr } = await runPromptWithAnswers(
             assetsPath,
             ['init'],
@@ -238,7 +243,6 @@ describe('init command', () => {
     });
 
     it('should use sass and css with postcss in project when selected', async () => {
-        const assetsPath = await uniqueDirectoryForTest(rootAssetsPath);
         const { stdout, stderr } = await runPromptWithAnswers(
             assetsPath,
             ['init'],
@@ -261,7 +265,6 @@ describe('init command', () => {
     });
 
     it('should use less in project when selected', async () => {
-        const assetsPath = await uniqueDirectoryForTest(rootAssetsPath);
         const { stdout, stderr } = await runPromptWithAnswers(
             assetsPath,
             ['init'],
@@ -284,7 +287,6 @@ describe('init command', () => {
     });
 
     it('should use stylus in project when selected', async () => {
-        const assetsPath = await uniqueDirectoryForTest(rootAssetsPath);
         const { stdout, stderr } = await runPromptWithAnswers(
             assetsPath,
             ['init'],
@@ -307,7 +309,6 @@ describe('init command', () => {
     });
 
     it('should configure WDS as opted', async () => {
-        const assetsPath = await uniqueDirectoryForTest(rootAssetsPath);
         const { stdout, stderr } = await runPromptWithAnswers(assetsPath, ['init'], [ENTER, ENTER, `n${ENTER}`, ENTER]);
         expect(stdout).toContain('Do you want to use webpack-dev-server?');
         expect(stdout).toContain('Project has been initialised with webpack!');
@@ -327,7 +328,6 @@ describe('init command', () => {
     });
 
     it('should use postcss in project when selected', async () => {
-        const assetsPath = await uniqueDirectoryForTest(rootAssetsPath);
         const { stdout, stderr } = await runPromptWithAnswers(
             assetsPath,
             ['init'],
@@ -348,7 +348,6 @@ describe('init command', () => {
     });
 
     it('should configure html-webpack-plugin as opted', async () => {
-        const assetsPath = await uniqueDirectoryForTest(rootAssetsPath);
         const { stdout, stderr } = await runPromptWithAnswers(assetsPath, ['init'], [ENTER, `n${ENTER}`, ENTER, ENTER]);
         expect(stdout).toContain('Do you want to simplify the creation of HTML files for your bundle?');
         expect(stdout).toContain('Project has been initialised with webpack!');
@@ -372,7 +371,6 @@ describe('init command', () => {
             return;
         }
 
-        const assetsPath = await uniqueDirectoryForTest(rootAssetsPath);
         const projectPath = join(assetsPath, 'non-writable-path');
         mkdirSync(projectPath, 0o500);
         const { exitCode, stderr } = await run(projectPath, ['init', 'my-app'], { reject: false });
