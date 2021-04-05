@@ -383,7 +383,7 @@ Made with ♥ by the webpack team."
 `;
 
 exports[`help should show help information for 'plugin' command using the "--help" option 1`] = `
-"Usage: webpack plugin|p [output-path]
+"Usage: webpack plugin|p [output-path] [options]
 
 Scaffold a plugin.
 

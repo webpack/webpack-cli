@@ -77,7 +77,7 @@ class GeneratorsCommand {
                 name: 'plugin [output-path]',
                 alias: 'p',
                 description: 'Scaffold a plugin.',
-                usage: '[output-path]',
+                usage: '[output-path] [options]',
                 pkg: '@webpack-cli/generators',
             },
             [
