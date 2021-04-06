@@ -13,8 +13,9 @@ const prompt = ({ message, defaultResponse, stdout }) => {
             // resolve with the input response
             if (response === 'y' || response === 'yes') {
                 resolve(true);
+            } else {
+                resolve(false);
             }
-            resolve(false);
         });
     });
 };
