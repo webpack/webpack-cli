@@ -9,7 +9,7 @@ describe('source-map object', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toBeTruthy();
+        expect(stdout).toContain("devtool: 'eval-cheap-module-source-map'");
 
         let files;
 
@@ -27,7 +27,7 @@ describe('source-map object', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toBeTruthy();
+        expect(stdout).toContain("devtool: 'source-map'");
         expect(existsSync(resolve(__dirname, 'dist/dist-amd.js.map'))).toBeTruthy();
     });
 
@@ -40,7 +40,20 @@ describe('source-map object', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toBeTruthy();
+        expect(stdout).toContain("devtool: 'source-map'");
+        expect(existsSync(resolve(__dirname, 'binary/dist-amd.js.map'))).toBeTruthy();
+    });
+
+    it('should override config with devtool false', async () => {
+        const { exitCode, stderr, stdout } = await run(
+            __dirname,
+            ['-c', './webpack.eval.config.js', '--no-devtool', '-o', './binary'],
+            false,
+        );
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('devtool: false');
         expect(existsSync(resolve(__dirname, 'binary/dist-amd.js.map'))).toBeTruthy();
     });
 });
