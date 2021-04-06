@@ -8,7 +8,8 @@ module.exports = {
     testPathIgnorePatterns: ignorePattern,
     testEnvironment: 'node',
     collectCoverage: true,
-    coverageReporters: ['none'],
+    coverageDirectory: '.nyc_output',
+    coverageReporters: ['json'],
     transform: {
         '^.+\\.(ts)?$': 'ts-jest',
     },
