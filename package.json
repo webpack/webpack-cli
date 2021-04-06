@@ -42,7 +42,8 @@
     "test:ci": "yarn test:cli && yarn test:packages",
     "test:watch": "jest test/ packages/ --watch",
     "publish:monorepo": "yarn build && lerna version && lerna publish from-git",
-    "update:docs": "node ./scripts/updateDocs"
+    "update:docs": "node ./scripts/updateDocs",
+    "webpack-cli": "node ./packages/webpack-cli/bin/cli.js"
   },
   "peerDependencies": {
     "webpack": "4.x.x || 5.x.x"
