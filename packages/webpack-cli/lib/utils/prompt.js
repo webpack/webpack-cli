@@ -9,8 +9,11 @@ const prompt = ({ message, defaultResponse, stdout }) => {
         rl.question(message, function (answer) {
             // close the stream
             rl.close();
+            const response = (answer || defaultResponse).toLowerCase();
             // resolve with the input response
-            if (['y', 'yes'].includes((answer || defaultResponse).toLowerCase())) resolve(true);
+            if (response === 'y' || response === 'yes') {
+                resolve(true);
+            }
             resolve(false);
         });
     });
