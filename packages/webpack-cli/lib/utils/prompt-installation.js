@@ -1,5 +1,5 @@
-const inquirer = require('inquirer');
 const utils = require('./index');
+const prompt = require('./prompt');
 
 /**
  *
@@ -25,17 +25,13 @@ async function promptInstallation(packageName, preMessage) {
     let installConfirm;
 
     try {
-        ({ installConfirm } = await inquirer.prompt([
-            {
-                type: 'confirm',
-                name: 'installConfirm',
-                message: `Would you like to install '${colors.green(packageName)}' package? (That will run '${colors.green(
-                    commandToBeRun,
-                )}')`,
-                default: 'Y',
-                stdout: process.stderr,
-            },
-        ]));
+        installConfirm = await prompt({
+            message: `Would you like to install '${colors.green(packageName)}' package? (That will run '${colors.green(
+                commandToBeRun,
+            )}') (${colors.yellow('Y/n')})`,
+            defaultResponse: 'Y',
+            stdout: process.stderr,
+        });
     } catch (error) {
         utils.logger.error(error);
         process.exit(2);
