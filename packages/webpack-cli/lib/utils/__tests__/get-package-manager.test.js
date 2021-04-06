@@ -14,9 +14,7 @@ const getPackageManager = require('../get-package-manager');
 jest.mock('../get-package-manager', () => jest.fn());
 const globalModulesNpmValue = 'test-npm';
 jest.setMock('global-modules', globalModulesNpmValue);
-jest.setMock('inquirer', {
-    prompt: jest.fn(),
-});
+jest.setMock('../prompt', jest.fn());
 
 describe('packageUtils', () => {
     describe('getPackageManager', () => {
