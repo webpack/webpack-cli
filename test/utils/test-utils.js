@@ -333,26 +333,6 @@ const readFile = (path, options = {}) =>
         });
     });
 
-const readdir = (path) =>
-    new Promise((resolve, reject) => {
-        fs.readdir(path, (err, stats) => {
-            if (err) {
-                reject(err);
-            }
-            resolve(stats);
-        });
-    });
-
-const uniqueDirectoryForTest = async () => {
-    const result = path.resolve(os.tmpdir(), Date.now().toString());
-
-    if (!fs.existsSync(result)) {
-        fs.mkdirSync(result);
-    }
-
-    return result;
-};
-
 const getWebpackCliArguments = (startWith) => {
     if (typeof startWith === 'undefined') {
         return cli.getArguments();
