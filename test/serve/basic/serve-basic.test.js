@@ -373,7 +373,21 @@ describe('basic serve usage', () => {
         const { stdout, stderr } = await runWatch(testPath, ['serve', '--open', '--port', port]);
 
         if (isDevServer4) {
-            expect(normalizeStderr(stderr)).toMatchSnapshot();
+            let normalizedStderr = normalizeStderr(stderr);
+
+            if (/wait until bundle finished/.test(normalizedStderr)) {
+                normalizedStderr = normalizedStderr.split('\n');
+
+                const waitIndex = normalizedStderr.findIndex((item) => /wait until bundle finished/.test(item));
+
+                if (waitIndex !== -1) {
+                    normalizedStderr.splice(waitIndex, 1);
+                }
+
+                normalizedStderr = normalizedStderr.join('\n');
+            }
+
+            expect(normalizedStderr).toMatchSnapshot();
             expect(stdout.match(/HotModuleReplacementPlugin/g)).toHaveLength(1);
         } else {
             expect(stderr).toMatchSnapshot();
