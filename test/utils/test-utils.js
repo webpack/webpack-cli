@@ -299,16 +299,28 @@ const normalizeStderr = (stderr) => {
 
         const ipv4MessageIndex = normalizedStderr.findIndex((item) => /On Your Network \(IPv4\)/.test(item));
 
-        normalizedStderr.splice(
-            ipv4MessageIndex + 1,
-            0,
-            '<i> [webpack-dev-server] On Your Network (IPv6): http://[<network-ip-v6>]:<port>/',
-        );
+        if (ipv4MessageIndex !== -1) {
+            normalizedStderr.splice(
+                ipv4MessageIndex + 1,
+                0,
+                '<i> [webpack-dev-server] On Your Network (IPv6): http://[<network-ip-v6>]:<port>/',
+            );
+        }
 
         normalizedStderr = normalizedStderr.join('\n');
     }
 
     return normalizedStderr;
+};
+
+const uniqueDirectoryForTest = async (assetsPath) => {
+    const localDir = Date.now().toString();
+
+    const result = path.resolve(assetsPath, localDir);
+
+    await mkdir(result);
+
+    return result;
 };
 
 const readFile = (path, options = {}) =>
