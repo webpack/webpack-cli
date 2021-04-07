@@ -1,5 +1,5 @@
-const { prompt } = require('enquirer');
 const utils = require('./index');
+const prompt = require('./prompt');
 
 /**
  *
@@ -25,17 +25,13 @@ async function promptInstallation(packageName, preMessage) {
     let installConfirm;
 
     try {
-        ({ installConfirm } = await prompt([
-            {
-                type: 'confirm',
-                name: 'installConfirm',
-                message: `Would you like to install '${colors.green(packageName)}' package? (That will run '${colors.green(
-                    commandToBeRun,
-                )}')`,
-                initial: 'Y',
-                stdout: process.stderr,
-            },
-        ]));
+        installConfirm = await prompt({
+            message: `[webpack-cli] Would you like to install '${colors.green(packageName)}' package? (That will run '${colors.green(
+                commandToBeRun,
+            )}') (${colors.yellow('Y/n')})`,
+            defaultResponse: 'Y',
+            stream: process.stderr,
+        });
     } catch (error) {
         utils.logger.error(error);
         process.exit(2);
