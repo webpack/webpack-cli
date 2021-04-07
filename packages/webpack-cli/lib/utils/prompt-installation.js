@@ -26,11 +26,11 @@ async function promptInstallation(packageName, preMessage) {
 
     try {
         installConfirm = await prompt({
-            message: `Would you like to install '${colors.green(packageName)}' package? (That will run '${colors.green(
+            message: `[webpack-cli] Would you like to install '${colors.green(packageName)}' package? (That will run '${colors.green(
                 commandToBeRun,
             )}') (${colors.yellow('Y/n')})`,
             defaultResponse: 'Y',
-            stdout: process.stderr,
+            stream: process.stderr,
         });
     } catch (error) {
         utils.logger.error(error);
