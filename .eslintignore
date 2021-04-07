@@ -15,3 +15,5 @@ test/build/config/error-mjs/syntax-error.mjs
 test/build/config/error-array/webpack.config.js
 test/configtest/with-config-path/syntax-error.config.js
 packages/generators/src/utils/__tests__/recursive-parser/__testfixtures__
+packages/interactive/build/webpack-interactive.js
+packages/interactive/webpack-interactive.js
