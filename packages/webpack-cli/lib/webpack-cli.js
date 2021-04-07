@@ -515,6 +515,10 @@ class WebpackCLI {
                     {
                         type: 'string',
                     },
+                    {
+                        type: 'enum',
+                        values: [false],
+                    },
                 ],
                 negative: true,
                 alias: 'd',

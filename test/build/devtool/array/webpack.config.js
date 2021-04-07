@@ -1,3 +1,5 @@
+const WebpackCLITestPlugin = require('../../../utils/webpack-cli-test-plugin');
+
 module.exports = [
     {
         output: {
@@ -8,6 +10,7 @@ module.exports = [
         entry: './index.js',
         mode: 'development',
         devtool: 'eval-cheap-module-source-map',
+        plugins: [new WebpackCLITestPlugin()],
     },
     {
         output: {
@@ -19,5 +22,6 @@ module.exports = [
         mode: 'development',
         devtool: 'source-map',
         target: 'node',
+        plugins: [new WebpackCLITestPlugin()],
     },
 ];

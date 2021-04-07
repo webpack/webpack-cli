@@ -9,7 +9,9 @@ describe('source-map object', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toBeTruthy();
+        // multi compilers
+        expect(stdout).toContain("devtool: 'source-map'");
+        expect(stdout).toContain("devtool: 'eval-cheap-module-source-map'");
 
         let files;
 
@@ -27,7 +29,7 @@ describe('source-map object', () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        expect(stdout).toBeTruthy();
+        expect(stdout).toContain("devtool: 'source-map'");
 
         let files;
 
