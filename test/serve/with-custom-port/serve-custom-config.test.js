@@ -24,7 +24,7 @@ describe('serve with devServer in config', () => {
             // Runs at correct host and port
             expect(stderr).toContain('http://localhost:1234');
         } else {
-            expect(stderr).toMatchSnapshot();
+            expect(normalizeStderr(stderr)).toMatchSnapshot();
             // Should output the correct bundle file
             expect(stdout).toContain('main.js');
             expect(stdout).not.toContain('HotModuleReplacementPlugin');

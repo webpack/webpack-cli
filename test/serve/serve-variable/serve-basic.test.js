@@ -23,7 +23,7 @@ describe('serve variable', () => {
             expect(stdout).not.toContain('HotModuleReplacementPlugin');
             expect(stdout).toContain('PASS');
         } else {
-            expect(stderr).toMatchSnapshot();
+            expect(normalizeStderr(stderr)).toMatchSnapshot();
             expect(stdout).toContain('main.js');
             expect(stdout).not.toContain('HotModuleReplacementPlugin');
             expect(stdout).toContain('PASS');
