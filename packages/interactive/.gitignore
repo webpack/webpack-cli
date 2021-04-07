@@ -1,0 +1,6 @@
+dist
+node_modules
+plugin.js
+webpack.config.js
+test.js
+stats.json

@@ -657,6 +657,10 @@ class WebpackCLI {
                 alias: 'c',
                 pkg: '@webpack-cli/generators',
             },
+            { 
+                name: 'interactive',
+                pkg: '@webpack-cli/interactive'
+            },
             {
                 name: 'loader',
                 alias: 'l',
