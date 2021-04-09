@@ -55,7 +55,7 @@ const processKill = (process) => {
  * @param {Object<string, any>} options Boolean that decides if a default output path will be set or not
  * @returns {Promise}
  */
-const run = async (testCase, args = [], options = {}) => {
+const createProcess = async (testCase, args = [], options = {}) => {
     const cwd = path.resolve(testCase);
     const { nodeOptions = [] } = options;
     const processExecutor = nodeOptions.length ? execaNode : execa;
