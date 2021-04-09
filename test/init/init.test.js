@@ -27,7 +27,9 @@ const readFromWebpackConfig = (path) => readFileSync(join(path, 'webpack.config.
 
 describe('init command', () => {
     beforeAll(() => {
-        if (!existsSync(rootAssetsPath)) mkdirSync(rootAssetsPath);
+        if (!existsSync(rootAssetsPath)) {
+            mkdirSync(rootAssetsPath);
+        }
     });
 
     afterAll(() => {

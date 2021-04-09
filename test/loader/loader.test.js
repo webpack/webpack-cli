@@ -19,7 +19,9 @@ const dataForTests = (rootAssetsPath) => ({
 
 describe('loader command', () => {
     beforeAll(() => {
-        if (!existsSync(rootAssetsPath)) mkdirSync(rootAssetsPath);
+        if (!existsSync(rootAssetsPath)) {
+            mkdirSync(rootAssetsPath);
+        }
     });
 
     afterAll(() => {

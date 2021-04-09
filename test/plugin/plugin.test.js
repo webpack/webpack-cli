@@ -18,7 +18,9 @@ const dataForTests = (rootAssetsPath) => ({
 
 describe('plugin command', () => {
     beforeAll(() => {
-        if (!existsSync(rootAssetsPath)) mkdirSync(rootAssetsPath);
+        if (!existsSync(rootAssetsPath)) {
+            mkdirSync(rootAssetsPath);
+        }
     });
 
     afterAll(() => {
@@ -117,7 +119,9 @@ describe('plugin command', () => {
         const assetsPath = await uniqueDirectoryForTest(rootAssetsPath);
         const { genPath, customPluginPath, pluginName } = dataForTests(assetsPath);
 
-        if (!existsSync(genPath)) mkdirSync(genPath);
+        if (!existsSync(genPath)) {
+            mkdirSync(genPath);
+        }
 
         let { stdout } = await runPromptWithAnswers(genPath, ['plugin', './'], [`${pluginName}${ENTER}`]);
 
