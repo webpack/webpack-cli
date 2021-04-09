@@ -10,7 +10,7 @@ module.exports = {
     collectCoverage: true,
     coverageDirectory: '.nyc_output',
     coverageReporters: ['json'],
-    coveragePathIgnorePatterns: ['test/utils/'],
+    coveragePathIgnorePatterns: ['<rootDir>/test/'],
     transform: {
         '^.+\\.(ts)?$': 'ts-jest',
     },
