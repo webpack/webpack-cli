@@ -4,6 +4,7 @@
 
 const stripAnsi = require('strip-ansi');
 const path = require('path');
+const fs = require('fs');
 const execa = require('execa');
 const { exec } = require('child_process');
 const { node: execaNode } = execa;
@@ -231,6 +232,10 @@ module.exports = {
     isWebpack5,
     isDevServer4,
     isWindows,
-    processKill,
-    hyphenToUpperCase
+    normalizeStdout,
+    readFile,
+    readdir,
+    uniqueDirectoryForTest,
+    hyphenToUpperCase,
+    processKill
 };
