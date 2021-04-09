@@ -1,10 +1,10 @@
 'use strict';
 
-const { existsSync } = require('fs');
+const { existsSync, mkdirSync } = require('fs');
 const { join, resolve } = require('path');
 // eslint-disable-next-line node/no-unpublished-require
 const rimraf = require('rimraf');
-const { run, runPromptWithAnswers, mkdir, uniqueDirectoryForTest, normalizeStdout } = require('../utils/test-utils');
+const { run, runPromptWithAnswers, uniqueDirectoryForTest, normalizeStdout } = require('../utils/test-utils');
 
 const firstPrompt = '? Loader name (my-loader)';
 const ENTER = '\x0D';
@@ -18,8 +18,8 @@ const dataForTests = (rootAssetsPath) => ({
 });
 
 describe('loader command', () => {
-    beforeAll(async () => {
-        await mkdir(rootAssetsPath);
+    beforeAll(() => {
+        if (!existsSync(rootAssetsPath)) mkdirSync(rootAssetsPath);
     });
 
     afterAll(() => {
