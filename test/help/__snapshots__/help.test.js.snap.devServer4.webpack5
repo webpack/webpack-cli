@@ -743,6 +743,10 @@ Options:
   --ignore-warnings-message <value...>                                               A RegExp to select the warning message.
   --ignore-warnings-module <value...>                                                A RegExp to select the origin module for the warning.
   --ignore-warnings-reset                                                            Clear all items provided in configuration. Ignore specific warnings.
+  --infrastructure-logging-append-only                                               Only appends lines to the output. Avoids updating existing output e. g. for status messages. This option is only used when no custom console is provided.
+  --no-infrastructure-logging-append-only                                            Negative 'infrastructure-logging-append-only' option.
+  --infrastructure-logging-colors                                                    Enables/Disables colorful output. This option is only used when no custom console is provided.
+  --no-infrastructure-logging-colors                                                 Negative 'infrastructure-logging-colors' option.
   --infrastructure-logging-debug [value...]                                          Enable/Disable debug logging for all loggers. Enable debug logging for specific loggers.
   --no-infrastructure-logging-debug                                                  Negative 'infrastructure-logging-debug' option.
   --infrastructure-logging-debug-reset                                               Clear all items provided in configuration. Enable debug logging for specific loggers.
@@ -1625,6 +1629,10 @@ Options:
   --ignore-warnings-message <value...>                                               A RegExp to select the warning message.
   --ignore-warnings-module <value...>                                                A RegExp to select the origin module for the warning.
   --ignore-warnings-reset                                                            Clear all items provided in configuration. Ignore specific warnings.
+  --infrastructure-logging-append-only                                               Only appends lines to the output. Avoids updating existing output e. g. for status messages. This option is only used when no custom console is provided.
+  --no-infrastructure-logging-append-only                                            Negative 'infrastructure-logging-append-only' option.
+  --infrastructure-logging-colors                                                    Enables/Disables colorful output. This option is only used when no custom console is provided.
+  --no-infrastructure-logging-colors                                                 Negative 'infrastructure-logging-colors' option.
   --infrastructure-logging-debug [value...]                                          Enable/Disable debug logging for all loggers. Enable debug logging for specific loggers.
   --no-infrastructure-logging-debug                                                  Negative 'infrastructure-logging-debug' option.
   --infrastructure-logging-debug-reset                                               Clear all items provided in configuration. Enable debug logging for specific loggers.
