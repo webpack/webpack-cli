@@ -341,7 +341,7 @@ describe('basic serve usage', () => {
     });
 
     it('should work with the "stats" option in config', async () => {
-        const { stderr, stdout } = await runWatch(__dirname, ['serve', '--config', 'stats.config.js']);
+        const { stderr, stdout } = await runWatch(__dirname, ['serve', '--config', 'stats.config.js'], {}, /Compiled successfully/);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toContain('Compiled successfully');
