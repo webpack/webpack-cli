@@ -76,7 +76,7 @@ const base = {
 
 const production = {
     mode: 'production',
-}
+};
 
 const development = {
     mode: 'development',
@@ -84,14 +84,15 @@ const development = {
         open: true,
         host: 'localhost',
     },
-}
+};
 
 module.exports = function (env, argv) {
     if (argv.mode == 'production') {
         return merge(base, production);
     }
     return merge(base, development);
-}"
+};
+"
 `;
 
 exports[`init command should configure assets modules by default 1`] = `
@@ -154,7 +155,7 @@ const base = {
 
 const production = {
     mode: 'production',
-}
+};
 
 const development = {
     mode: 'development',
@@ -162,14 +163,15 @@ const development = {
         open: true,
         host: 'localhost',
     },
-}
+};
 
 module.exports = function (env, argv) {
     if (argv.mode == 'production') {
         return merge(base, production);
     }
     return merge(base, development);
-}"
+};
+"
 `;
 
 exports[`init command should configure html-webpack-plugin as opted 1`] = `
@@ -230,18 +232,19 @@ const base = {
 
 const production = {
     mode: 'production',
-}
+};
 
 const development = {
     mode: 'development',
-}
+};
 
 module.exports = function (env, argv) {
     if (argv.mode == 'production') {
         return merge(base, production);
     }
     return merge(base, development);
-}"
+};
+"
 `;
 
 exports[`init command should generate ES6 project correctly 1`] = `
@@ -303,18 +306,19 @@ const base = {
 
 const production = {
     mode: 'production',
-}
+};
 
 const development = {
     mode: 'development',
-}
+};
 
 module.exports = function (env, argv) {
     if (argv.mode == 'production') {
         return merge(base, production);
     }
     return merge(base, development);
-}"
+};
+"
 `;
 
 exports[`init command should generate default project when nothing is passed 1`] = `
@@ -445,18 +449,19 @@ const base = {
 
 const production = {
     mode: 'production',
-}
+};
 
 const development = {
     mode: 'development',
-}
+};
 
 module.exports = function (env, argv) {
     if (argv.mode == 'production') {
         return merge(base, production);
     }
     return merge(base, development);
-}"
+};
+"
 `;
 
 exports[`init command should use less in project when selected 1`] = `
@@ -517,18 +522,19 @@ const base = {
 
 const production = {
     mode: 'production',
-}
+};
 
 const development = {
     mode: 'development',
-}
+};
 
 module.exports = function (env, argv) {
     if (argv.mode == 'production') {
         return merge(base, production);
     }
     return merge(base, development);
-}"
+};
+"
 `;
 
 exports[`init command should use mini-css-extract-plugin when selected 1`] = `
@@ -540,6 +546,7 @@ Object {
     "sass-loader": "x.x.x",
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
+    "webpack-merge": "x.x.x",
   },
   "name": "my-webpack-project",
   "scripts": Object {
@@ -557,9 +564,9 @@ exports[`init command should use mini-css-extract-plugin when selected 2`] = `
 
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { merge } = require('webpack-merge');
 
-module.exports = {
-    mode: 'development',
+const base = {
     entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -585,6 +592,24 @@ module.exports = {
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
     },
+};
+
+// Add mode specific configurations below
+// Learn more about mode at https://webpack.js.org/configuration/mode/
+
+const production = {
+    mode: 'production',
+};
+
+const development = {
+    mode: 'development',
+};
+
+module.exports = function (env, argv) {
+    if (argv.mode == 'production') {
+        return merge(base, production);
+    }
+    return merge(base, development);
 };
 "
 `;
@@ -626,18 +651,19 @@ const base = {
 
 const production = {
     mode: 'production',
-}
+};
 
 const development = {
     mode: 'development',
-}
+};
 
 module.exports = function (env, argv) {
     if (argv.mode == 'production') {
         return merge(base, production);
     }
     return merge(base, development);
-}"
+};
+"
 `;
 
 exports[`init command should use sass and css with postcss in project when selected 1`] = `
@@ -707,18 +733,19 @@ const base = {
 
 const production = {
     mode: 'production',
-}
+};
 
 const development = {
     mode: 'development',
-}
+};
 
 module.exports = function (env, argv) {
     if (argv.mode == 'production') {
         return merge(base, production);
     }
     return merge(base, development);
-}"
+};
+"
 `;
 
 exports[`init command should use sass in project when selected 1`] = `
@@ -779,18 +806,19 @@ const base = {
 
 const production = {
     mode: 'production',
-}
+};
 
 const development = {
     mode: 'development',
-}
+};
 
 module.exports = function (env, argv) {
     if (argv.mode == 'production') {
         return merge(base, production);
     }
     return merge(base, development);
-}"
+};
+"
 `;
 
 exports[`init command should use sass with postcss in project when selected 1`] = `
@@ -854,18 +882,19 @@ const base = {
 
 const production = {
     mode: 'production',
-}
+};
 
 const development = {
     mode: 'development',
-}
+};
 
 module.exports = function (env, argv) {
     if (argv.mode == 'production') {
         return merge(base, production);
     }
     return merge(base, development);
-}"
+};
+"
 `;
 
 exports[`init command should use stylus in project when selected 1`] = `
@@ -926,16 +955,17 @@ const base = {
 
 const production = {
     mode: 'production',
-}
+};
 
 const development = {
     mode: 'development',
-}
+};
 
 module.exports = function (env, argv) {
     if (argv.mode == 'production') {
         return merge(base, production);
     }
     return merge(base, development);
-}"
+};
+"
 `;
