@@ -286,17 +286,9 @@ const readdir = (path) =>
 
 const mkdir = (path) => {
     if (fs.existsSync(path)) {
-        return path;
+        return;
     }
 
-    new Promise((resolve) => {
-        const interval = setInterval(() => {
-            if (!fs.existsSync(path)) {
-                clearInterval(interval);
-                resolve();
-            }
-        }, 1000);
-    });
     fs.mkdirSync(path);
 };
 
