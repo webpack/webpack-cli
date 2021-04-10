@@ -315,16 +315,18 @@ describe('basic serve usage', () => {
     });
 
     it("should log error on using '--watch' flag with serve", async () => {
-        const { stdout, stderr } = await runWatch(testPath, ['serve', '--watch']);
+        const { exitCode, stdout, stderr } = await runWatch(testPath, ['serve', '--watch']);
 
+        expect(exitCode).toBe(2);
         expect(stderr).toContain("Error: Unknown option '--watch'");
         expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
     });
 
     it("should log error on using '-w' alias with serve", async () => {
-        const { stdout, stderr } = await runWatch(testPath, ['serve', '-w']);
+        const { exitCode, stdout, stderr } = await runWatch(testPath, ['serve', '-w']);
 
+        expect(exitCode).toBe(2);
         expect(stderr).toContain("Error: Unknown option '-w'");
         expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();

@@ -44,7 +44,8 @@ Object {
 `;
 
 exports[`init command should configure WDS as opted 2`] = `
-"// Generated using webpack-cli http://github.com/webpack-cli
+"// Generated using webpack-cli https://github.com/webpack/webpack-cli
+
 const path = require('path');
 const { merge } = require('webpack-merge');
 
@@ -116,7 +117,8 @@ Object {
 `;
 
 exports[`init command should configure assets modules by default 2`] = `
-"// Generated using webpack-cli http://github.com/webpack-cli
+"// Generated using webpack-cli https://github.com/webpack/webpack-cli
+
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { merge } = require('webpack-merge');
@@ -191,7 +193,8 @@ Object {
 `;
 
 exports[`init command should configure html-webpack-plugin as opted 2`] = `
-"// Generated using webpack-cli http://github.com/webpack-cli
+"// Generated using webpack-cli https://github.com/webpack/webpack-cli
+
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { merge } = require('webpack-merge');
@@ -264,7 +267,8 @@ Object {
 `;
 
 exports[`init command should generate ES6 project correctly 2`] = `
-"// Generated using webpack-cli http://github.com/webpack-cli
+"// Generated using webpack-cli https://github.com/webpack/webpack-cli
+
 const path = require('path');
 const { merge } = require('webpack-merge');
 
@@ -401,7 +405,8 @@ Object {
 `;
 
 exports[`init command should generate typescript project correctly 2`] = `
-"// Generated using webpack-cli http://github.com/webpack-cli
+"// Generated using webpack-cli https://github.com/webpack/webpack-cli
+
 const path = require('path');
 const { merge } = require('webpack-merge');
 
@@ -476,7 +481,8 @@ Object {
 `;
 
 exports[`init command should use less in project when selected 2`] = `
-"// Generated using webpack-cli http://github.com/webpack-cli
+"// Generated using webpack-cli https://github.com/webpack/webpack-cli
+
 const path = require('path');
 const { merge } = require('webpack-merge');
 
@@ -547,7 +553,8 @@ Object {
 `;
 
 exports[`init command should use mini-css-extract-plugin when selected 2`] = `
-"// Generated using webpack-cli http://github.com/webpack-cli
+"// Generated using webpack-cli https://github.com/webpack/webpack-cli
+
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
@@ -583,7 +590,8 @@ module.exports = {
 `;
 
 exports[`init command should use postcss in project when selected 1`] = `
-"// Generated using webpack-cli http://github.com/webpack-cli
+"// Generated using webpack-cli https://github.com/webpack/webpack-cli
+
 const path = require('path');
 const { merge } = require('webpack-merge');
 
@@ -659,7 +667,8 @@ Object {
 `;
 
 exports[`init command should use sass and css with postcss in project when selected 2`] = `
-"// Generated using webpack-cli http://github.com/webpack-cli
+"// Generated using webpack-cli https://github.com/webpack/webpack-cli
+
 const path = require('path');
 const { merge } = require('webpack-merge');
 
@@ -734,7 +743,8 @@ Object {
 `;
 
 exports[`init command should use sass in project when selected 2`] = `
-"// Generated using webpack-cli http://github.com/webpack-cli
+"// Generated using webpack-cli https://github.com/webpack/webpack-cli
+
 const path = require('path');
 const { merge } = require('webpack-merge');
 
@@ -808,7 +818,8 @@ Object {
 `;
 
 exports[`init command should use sass with postcss in project when selected 2`] = `
-"// Generated using webpack-cli http://github.com/webpack-cli
+"// Generated using webpack-cli https://github.com/webpack/webpack-cli
+
 const path = require('path');
 const { merge } = require('webpack-merge');
 
@@ -879,7 +890,8 @@ Object {
 `;
 
 exports[`init command should use stylus in project when selected 2`] = `
-"// Generated using webpack-cli http://github.com/webpack-cli
+"// Generated using webpack-cli https://github.com/webpack/webpack-cli
+
 const path = require('path');
 const { merge } = require('webpack-merge');
 

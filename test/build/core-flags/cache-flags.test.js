@@ -25,7 +25,7 @@ describe('cache related flags from core', () => {
     });
 
     it('should set cache.type', async () => {
-        const cacheLocation = path.resolve(__dirname, '../../node_modules/.cache/webpack/cache-core-flag-test-type');
+        const cacheLocation = path.resolve(__dirname, '../../../node_modules/.cache/webpack/cache-core-flag-test-type');
 
         rimraf.sync(cacheLocation);
 
@@ -37,7 +37,7 @@ describe('cache related flags from core', () => {
     });
 
     it('should set cache.cacheDirectory with --cache-cache-directory', async () => {
-        const cacheLocation = path.resolve(__dirname, '../../node_modules/.cache/webpack/cache-core-flag-test-cache-directory');
+        const cacheLocation = path.resolve(__dirname, '../../../node_modules/.cache/webpack/cache-core-flag-test-cache-directory');
 
         rimraf.sync(cacheLocation);
 
@@ -57,7 +57,7 @@ describe('cache related flags from core', () => {
     });
 
     it('should set cache.cacheLocation with --cache-cache-locations', async () => {
-        const cacheLocation = path.resolve(__dirname, '../../node_modules/.cache/webpack/cache-core-flag-test-cache-location');
+        const cacheLocation = path.resolve(__dirname, '../../../node_modules/.cache/webpack/cache-core-flag-test-cache-location');
 
         rimraf.sync(cacheLocation);
 
@@ -71,7 +71,7 @@ describe('cache related flags from core', () => {
     });
 
     it('should set cache.hashAlgorithm with --cache-hash-algorithm', async () => {
-        const cacheLocation = path.resolve(__dirname, '../../node_modules/.cache/webpack/cache-core-flag-test-hash-algorithm');
+        const cacheLocation = path.resolve(__dirname, '../../../node_modules/.cache/webpack/cache-core-flag-test-hash-algorithm');
 
         rimraf.sync(cacheLocation);
 
@@ -91,7 +91,7 @@ describe('cache related flags from core', () => {
     });
 
     it('should set cache.name with --cache-name', async () => {
-        const cacheLocation = path.resolve(__dirname, '../../node_modules/.cache/webpack/cache-core-flag-test-name');
+        const cacheLocation = path.resolve(__dirname, '../../../node_modules/.cache/webpack/cache-core-flag-test-name');
 
         rimraf.sync(cacheLocation);
 
@@ -111,7 +111,7 @@ describe('cache related flags from core', () => {
     });
 
     it('should set cache.store with --cache-store', async () => {
-        const cacheLocation = path.resolve(__dirname, '../../node_modules/.cache/webpack/cache-core-flag-test-store');
+        const cacheLocation = path.resolve(__dirname, '../../../node_modules/.cache/webpack/cache-core-flag-test-store');
 
         rimraf.sync(cacheLocation);
 
@@ -131,7 +131,7 @@ describe('cache related flags from core', () => {
     });
 
     it('should set cache.version with --cache-version', async () => {
-        const cacheLocation = path.resolve(__dirname, '../../node_modules/.cache/webpack/cache-core-flag-test-version');
+        const cacheLocation = path.resolve(__dirname, '../../../node_modules/.cache/webpack/cache-core-flag-test-version');
 
         rimraf.sync(cacheLocation);
 
@@ -151,7 +151,7 @@ describe('cache related flags from core', () => {
     });
 
     it('should assign cache build dependencies correctly when cache type is filesystem', async () => {
-        const cacheLocation = path.resolve(__dirname, '../../node_modules/.cache/webpack/cache-core-flag-test-build-dependencies');
+        const cacheLocation = path.resolve(__dirname, '../../../node_modules/.cache/webpack/cache-core-flag-test-build-dependencies');
 
         rimraf.sync(cacheLocation);
 
@@ -189,7 +189,7 @@ describe('cache related flags from core', () => {
     it('should assign cache build dependencies correctly when cache type is filesystem in config', async () => {
         const cacheLocation = path.resolve(
             __dirname,
-            '../../node_modules/.cache/webpack/cache-core-flag-test-build-dependencies-in-config',
+            '../../../node_modules/.cache/webpack/cache-core-flag-test-build-dependencies-in-config',
         );
 
         rimraf.sync(cacheLocation);
@@ -216,7 +216,7 @@ describe('cache related flags from core', () => {
     });
 
     it('should assign cache build dependencies with multiple configs', async () => {
-        rimraf.sync(path.join(__dirname, '../../node_modules/.cache/webpack/config-cache'));
+        rimraf.sync(path.join(__dirname, '../../../node_modules/.cache/webpack/config-cache'));
 
         const { exitCode, stderr, stdout } = await run(__dirname, ['-c', './webpack.cache.config.js', '-c', './webpack.config.js']);
 
@@ -229,7 +229,7 @@ describe('cache related flags from core', () => {
     });
 
     it('should assign cache build dependencies with default config', async () => {
-        rimraf.sync(path.join(__dirname, '../../node_modules/.cache/webpack/cache-core-flag-test-development'));
+        rimraf.sync(path.join(__dirname, '../../../node_modules/.cache/webpack/cache-core-flag-test-development'));
 
         const { exitCode, stderr, stdout } = await run(__dirname, ['--cache-type', 'filesystem', '--name', 'cache-core-flag-test']);
 
@@ -241,7 +241,7 @@ describe('cache related flags from core', () => {
     });
 
     it('should assign cache build dependencies with merged configs', async () => {
-        const cacheLocation = path.resolve(__dirname, '../../node_modules/.cache/webpack/cache-core-flag-test-merge');
+        const cacheLocation = path.resolve(__dirname, '../../../node_modules/.cache/webpack/cache-core-flag-test-merge');
 
         rimraf.sync(cacheLocation);
 
@@ -263,10 +263,9 @@ describe('cache related flags from core', () => {
         // expect(stdout).toContain(`'${path.join(__dirname, './webpack.config.js')}'`);
     });
 
-    // TODO: fix it later
-    it.skip('should invalidate cache when config changes', async () => {
-        rimraf.sync(path.join(__dirname, '../../node_modules/.cache/webpack/default-development'));
-        rimraf.sync(path.join(__dirname, '../../node_modules/.cache/webpack/default-production'));
+    it('should invalidate cache when config changes', async () => {
+        rimraf.sync(path.join(__dirname, '../../../node_modules/.cache/webpack/default-development'));
+        rimraf.sync(path.join(__dirname, '../../../node_modules/.cache/webpack/default-production'));
 
         // Creating a temporary webpack config
         writeFileSync(resolve(__dirname, './webpack.test.config.js'), 'module.exports = {mode: "development"}');
