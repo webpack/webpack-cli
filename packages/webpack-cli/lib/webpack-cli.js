@@ -654,7 +654,7 @@ class WebpackCLI {
             },
             {
                 name: 'init',
-                alias: 'c',
+                alias: ['c', 'create', 'new'],
                 pkg: '@webpack-cli/generators',
             },
             {
