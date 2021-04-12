@@ -36,6 +36,14 @@ const hyphenToUpperCase = (name) => {
     });
 };
 
+const processKill = (process) => {
+    if (isWindows) {
+        exec('taskkill /pid ' + process.pid + ' /T /F');
+    } else {
+        process.kill();
+    }
+};
+
 /**
  * Run the webpack CLI for a test case.
  *
@@ -84,11 +92,7 @@ const runWatch = (testCase, args = [], options, outputKillStr = /webpack \d+\.\d
                     const output = chunk.toString('utf8');
 
                     if (outputKillStr.test(output)) {
-                        if (isWindows) {
-                            exec('taskkill /pid ' + proc.pid + ' /T /F');
-                        } else {
-                            proc.kill();
-                        }
+                        processKill(proc);
                     }
 
                     callback();
@@ -321,4 +325,5 @@ module.exports = {
     isWebpack5,
     isDevServer4,
     isWindows,
+    processKill,
 };
