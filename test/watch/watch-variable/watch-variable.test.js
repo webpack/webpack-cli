@@ -1,6 +1,6 @@
 'use strict';
 
-const { runAndGetWatchProc, isWebpack5 } = require('../../utils/test-utils');
+const { runAndGetWatchProc, isWebpack5, processKill } = require('../../utils/test-utils');
 const { writeFileSync } = require('fs');
 const { resolve } = require('path');
 
@@ -36,7 +36,7 @@ describe('watch variable', () => {
 
                     modified = true;
                 } else {
-                    proc.kill();
+                    processKill(proc);
                     done();
                 }
             }
@@ -71,7 +71,7 @@ describe('watch variable', () => {
 
                     modified = true;
                 } else {
-                    proc.kill();
+                    processKill(proc);
                     done();
                 }
             }
