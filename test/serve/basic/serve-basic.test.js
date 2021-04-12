@@ -339,4 +339,19 @@ describe('basic serve usage', () => {
         expect(stderr).toContain("Error: Unknown option '--unknown-flag'");
         expect(stdout).toBeFalsy();
     });
+
+    it('should work with the "stats" option in config', async () => {
+        const { stderr, stdout } = await runWatch(__dirname, ['serve', '--config', 'stats.config.js'], {}, /Compiled successfully/);
+
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('Compiled successfully');
+        expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
+    });
+
+    it('should throw error when same ports in multicompiler', async () => {
+        const { stderr, stdout } = await runWatch(__dirname, ['serve', '--config', 'same-ports-dev-serever.config.js']);
+
+        expect(stdout).toBeFalsy();
+        expect(stderr).toContain('Unique ports must be specified for each devServer option in your webpack configuration');
+    });
 });
