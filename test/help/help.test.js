@@ -74,7 +74,7 @@ describe('help', () => {
         {
             name: 'init',
             alias: 'c',
-            usage: 'webpack init|c [generation-path] [options]',
+            usage: 'webpack init|c|create|new [generation-path] [options]',
         },
         {
             name: 'info',
