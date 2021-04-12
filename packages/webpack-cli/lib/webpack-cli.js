@@ -24,7 +24,10 @@ class WebpackCLI {
 
     async makeCommand(commandOptions, options, action) {
         const alreadyLoaded = this.program.commands.find(
-            (command) => command.name() === commandOptions.name || command.aliases().includes(commandOptions.alias),
+            (command) =>
+                command.name() === commandOptions.name ||
+                command.aliases().includes(commandOptions.alias) ||
+                JSON.stringify(command.aliases()) === JSON.stringify(commandOptions.alias),
         );
 
         if (alreadyLoaded) {
