@@ -73,8 +73,8 @@ describe('help', () => {
     const commands = [
         {
             name: 'init',
-            alias: 'c',
-            usage: 'webpack init|c|create|new [generation-path] [options]',
+            alias: ['create', 'new', 'c', 'n'],
+            usage: 'webpack init|create|new|c|n [generation-path] [options]',
         },
         {
             name: 'info',
@@ -144,30 +144,6 @@ describe('help', () => {
             expect(stdout).toContain(usage);
         });
 
-        it(`should show help information for '${alias}' command using the "--help" option`, async () => {
-            const { exitCode, stderr, stdout } = await run(__dirname, [alias, '--help']);
-
-            expect(exitCode).toBe(0);
-            expect(stderr).toBeFalsy();
-            expect(stdout).toContain(usage);
-        });
-
-        it(`should show help information for '${alias}' command using the "--help verbose" option`, async () => {
-            const { exitCode, stderr, stdout } = await run(__dirname, [alias, '--help', 'verbose']);
-
-            expect(exitCode).toBe(0);
-            expect(stderr).toBeFalsy();
-            expect(stdout).toContain(usage);
-        });
-
-        it(`should show help information for '${alias}' command using command syntax`, async () => {
-            const { exitCode, stderr, stdout } = await run(__dirname, ['help', alias]);
-
-            expect(exitCode).toBe(0);
-            expect(stderr).toBeFalsy();
-            expect(stdout).toContain(usage);
-        });
-
         it(`should show help information for '${name}' and respect the "--color" flag using the "--help" option`, async () => {
             const { exitCode, stderr, stdout } = await run(__dirname, [name, '--help', '--color'], { env: { FORCE_COLOR: true } });
 
@@ -186,6 +162,34 @@ describe('help', () => {
             expect(stdout).not.toContain('\x1b[1m');
             expect(stdout).toContain(usage);
             expect(stdout).toContain('Made with ♥ by the webpack team');
+        });
+
+        const alises = Array.isArray(alias) ? alias : [alias];
+
+        alises.forEach((alias) => {
+            it(`should show help information for '${alias}' command using the "--help" option`, async () => {
+                const { exitCode, stderr, stdout } = await run(__dirname, [alias, '--help']);
+
+                expect(exitCode).toBe(0);
+                expect(stderr).toBeFalsy();
+                expect(stdout).toContain(usage);
+            });
+
+            it(`should show help information for '${alias}' command using the "--help verbose" option`, async () => {
+                const { exitCode, stderr, stdout } = await run(__dirname, [alias, '--help', 'verbose']);
+
+                expect(exitCode).toBe(0);
+                expect(stderr).toBeFalsy();
+                expect(stdout).toContain(usage);
+            });
+
+            it(`should show help information for '${alias}' command using command syntax`, async () => {
+                const { exitCode, stderr, stdout } = await run(__dirname, ['help', alias]);
+
+                expect(exitCode).toBe(0);
+                expect(stderr).toBeFalsy();
+                expect(stdout).toContain(usage);
+            });
         });
     });
 
