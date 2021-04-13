@@ -321,7 +321,6 @@ Options:
   --template <value>    Type of template (default: \\"default\\")
   --force               Generate without questions (ideally) using default
                         answers
-  --no-force            Negative 'force' option.
 
 Global options:
   --color               Enable colors on console.
