@@ -24,7 +24,7 @@ class WebpackCLI {
 
     async makeCommand(commandOptions, options, action) {
         const alreadyLoaded = this.program.commands.find(
-            (command) => command.name() === commandOptions.name || command.aliases().includes(commandOptions.alias),
+            (command) => command.name() === commandOptions.name.split(' ')[0] || command.aliases().includes(commandOptions.alias),
         );
 
         if (alreadyLoaded) {
@@ -654,7 +654,7 @@ class WebpackCLI {
             },
             {
                 name: 'init',
-                alias: 'c',
+                alias: ['create', 'new', 'c', 'n'],
                 pkg: '@webpack-cli/generators',
             },
             {
@@ -711,7 +711,7 @@ class WebpackCLI {
             return false;
         };
         const findCommandByName = (name) =>
-            this.program.commands.find((command) => name === command.name() || command.alias().includes(name));
+            this.program.commands.find((command) => name === command.name() || command.aliases().includes(name));
         const isOption = (value) => value.startsWith('-');
         const isGlobalOption = (value) =>
             value === '--color' ||

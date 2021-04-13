@@ -12,7 +12,7 @@ class GeneratorsCommand {
         await cli.makeCommand(
             {
                 name: 'init [generation-path]',
-                alias: 'c',
+                alias: ['create', 'new', 'c', 'n'],
                 description: 'Initialize a new webpack project.',
                 usage: '[generation-path] [options]',
                 pkg: '@webpack-cli/generators',
