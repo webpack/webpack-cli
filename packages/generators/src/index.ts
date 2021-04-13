@@ -26,7 +26,12 @@ class GeneratorsCommand {
                 },
                 {
                     name: 'force',
-                    configs: [{ type: 'boolean' }],
+                    configs: [
+                        {
+                            type: 'enum',
+                            values: [true],
+                        },
+                    ],
                     description: 'Generate without questions (ideally) using default answers',
                 },
             ],
