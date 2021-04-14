@@ -30,7 +30,7 @@ class ServeCommand {
                 return [...builtInOptions, ...devServerFlags];
             },
             async (entries, options) => {
-                const builtInOptions = cli.getBuiltInOptions();
+                const { options: builtInOptions } = cli.getBuiltInOptions();
                 let devServerFlags = [];
 
                 try {
@@ -51,8 +51,7 @@ class ServeCommand {
                 for (const optionName in options) {
                     const kebabedOption = cli.utils.toKebabCase(optionName);
                     // `webpack-dev-server` has own logic for the `--hot` option
-                    const isBuiltInOption =
-                        kebabedOption !== 'hot' && builtInOptions.find((builtInOption) => builtInOption.name === kebabedOption);
+                    const isBuiltInOption = kebabedOption !== 'hot' && builtInOptions[kebabedOption];
 
                     if (isBuiltInOption) {
                         webpackOptions[optionName] = options[optionName];
