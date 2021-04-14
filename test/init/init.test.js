@@ -343,6 +343,9 @@ describe('init command', () => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
 
+        // Check if the generated package.json file content matches the snapshot
+        expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
+
         // Check if the generated webpack configuration matches the snapshot
         expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
     });
