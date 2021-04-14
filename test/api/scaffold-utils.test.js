@@ -1,4 +1,5 @@
-import { Confirm, List, InputValidate, Input } from '../../src/utils/scaffold-utils';
+// eslint-disable-next-line node/no-missing-require
+const { Confirm, List, InputValidate, Input } = require('../../packages/generators/src/utils/scaffold-utils');
 
 describe('utils', () => {
     let mockSelf;
