@@ -732,9 +732,16 @@ class WebpackCLI {
             if (isBuildCommandUsed || isWatchCommandUsed) {
                 const { options } = this.getBuiltInOptions();
 
+                const commandArgs = (() => {
+                    if (!isWatchCommandUsed) return options;
+                    // eslint-disable-next-line
+                    const { watch, ...withoutWatchOptions } = options;
+                    return withoutWatchOptions;
+                })();
+
                 await this.makeCommand(
                     isBuildCommandUsed ? buildCommandOptions : watchCommandOptions,
-                    isWatchCommandUsed ? options.filter((option) => option.name !== 'watch') : options,
+                    commandArgs,
                     async (entries, options) => {
                         if (entries.length > 0) {
                             options.entry = [...entries, ...(options.entry || [])];
