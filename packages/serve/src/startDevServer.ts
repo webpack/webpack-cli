@@ -77,10 +77,9 @@ export default async function startDevServer(
 
             const isModernClient = Boolean(devServerFlags.find((flag) => flag.name === 'client-web-socket-url'));
 
-            options.port = await findPort(options.port);
-            options.client = options.client || {};
-
             if (!isModernClient) {
+                options.port = await findPort(options.port);
+                options.client = options.client || {};
                 options.client.port = options.client.port || options.port;
             }
         } else {
