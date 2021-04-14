@@ -4,7 +4,7 @@ const { run, hyphenToUpperCase } = require('../../utils/test-utils');
 const CLI = require('../../../packages/webpack-cli/lib/index');
 
 const cli = new CLI();
-const resolveFlags = cli.getBuiltInOptions().filter(({ name }) => name.startsWith('resolve'));
+const resolveFlags = Object.values(cli.getBuiltInOptions().coreFlags).filter(({ name }) => name.startsWith('resolve'));
 
 describe('resolve config related flags', () => {
     resolveFlags.forEach((flag) => {

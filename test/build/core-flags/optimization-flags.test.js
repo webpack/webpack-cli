@@ -4,7 +4,7 @@ const { run, hyphenToUpperCase } = require('../../utils/test-utils');
 const CLI = require('../../../packages/webpack-cli/lib/index');
 
 const cli = new CLI();
-const optimizationFlags = cli.getBuiltInOptions().filter(({ name }) => name.startsWith('optimization-'));
+const optimizationFlags = Object.values(cli.getBuiltInOptions().coreFlags).filter(({ name }) => name.startsWith('optimization-'));
 
 describe('optimization config related flag', () => {
     optimizationFlags.forEach((flag) => {

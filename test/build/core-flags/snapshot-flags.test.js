@@ -4,7 +4,7 @@ const { run, hyphenToUpperCase } = require('../../utils/test-utils');
 const CLI = require('../../../packages/webpack-cli/lib/index');
 
 const cli = new CLI();
-const snapshotFlags = cli.getBuiltInOptions().filter(({ name }) => name.startsWith('snapshot'));
+const snapshotFlags = Object.values(cli.getBuiltInOptions().coreFlags).filter(({ name }) => name.startsWith('snapshot'));
 
 describe('snapshot config related flags', () => {
     snapshotFlags.forEach((flag) => {

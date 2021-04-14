@@ -4,7 +4,7 @@ const { run, hyphenToUpperCase, normalizeStdout } = require('../../utils/test-ut
 const CLI = require('../../../packages/webpack-cli/lib/index');
 
 const cli = new CLI();
-const moduleFlags = cli.getBuiltInOptions().filter(({ name }) => name.startsWith('module-'));
+const moduleFlags = Object.values(cli.getBuiltInOptions().coreFlags).filter(({ name }) => name.startsWith('module-'));
 
 describe('module config related flag', () => {
     moduleFlags.forEach((flag) => {

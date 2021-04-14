@@ -4,7 +4,7 @@ const { run, hyphenToUpperCase } = require('../../utils/test-utils');
 const CLI = require('../../../packages/webpack-cli/lib/index');
 
 const cli = new CLI();
-const statsFlags = cli.getBuiltInOptions().filter(({ name }) => name.startsWith('stats-'));
+const statsFlags = Object.values(cli.getBuiltInOptions().coreFlags).filter(({ name }) => name.startsWith('stats-'));
 
 describe('stats config related flag', () => {
     statsFlags.forEach((flag) => {

@@ -4,7 +4,7 @@ const { run, hyphenToUpperCase } = require('../../utils/test-utils');
 const CLI = require('../../../packages/webpack-cli/lib/index');
 
 const cli = new CLI();
-const watchFlags = cli.getBuiltInOptions().filter(({ name }) => name.startsWith('watch'));
+const watchFlags = Object.values(cli.getBuiltInOptions().coreFlags).filter(({ name }) => name.startsWith('watch'));
 
 describe('watch config related flag', () => {
     watchFlags.forEach((flag) => {
