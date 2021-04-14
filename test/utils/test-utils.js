@@ -4,7 +4,7 @@
 
 const stripAnsi = require('strip-ansi');
 const path = require('path');
-const fs = require('fs');
+const { existsSync, mkdirSync } = require('fs');
 const execa = require('execa');
 const { exec } = require('child_process');
 const { node: execaNode } = execa;
@@ -224,6 +224,18 @@ const runPromptWithAnswers = (location, args, answers, waitForOutput = true) => 
     });
 };
 
+const normalizeStdout = (string) => stripAnsi(string);
+
+const uniqueDirectoryForTest = async (assetsPath) => {
+    const localDir = Date.now().toString();
+
+    const result = path.resolve(assetsPath, localDir);
+
+    if (!existsSync(result)) mkdirSync(result);
+
+    return result;
+};
+
 module.exports = {
     run,
     runWatch,
@@ -233,9 +245,7 @@ module.exports = {
     isDevServer4,
     isWindows,
     normalizeStdout,
-    readFile,
-    readdir,
     uniqueDirectoryForTest,
     hyphenToUpperCase,
-    processKill
+    processKill,
 };
