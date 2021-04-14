@@ -73,8 +73,6 @@ export default async function startDevServer(
 
         if (isDevServer4) {
             options.port = await findPort(options.port);
-            options.client = options.client || {};
-            options.client.port = options.client.port || options.port;
         } else {
             const getPublicPathOption = (): string => {
                 const normalizePublicPath = (publicPath): string =>
