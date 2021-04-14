@@ -72,9 +72,17 @@ export default async function startDevServer(
         const options = mergeOptions(compilerWithDevServerOption.options.devServer || {}, devServerCliOptions);
 
         if (isDevServer4) {
+            // eslint-disable-next-line node/no-extraneous-require
+            const devServerFlags = require('webpack-dev-server/bin/cli-flags').devServer;
+
+            const isModernClient = Boolean(devServerFlags.find((flag) => flag.name === 'client-web-socket-url'));
+
             options.port = await findPort(options.port);
             options.client = options.client || {};
-            options.client.port = options.client.port || options.port;
+
+            if (!isModernClient) {
+                options.client.port = options.client.port || options.port;
+            }
         } else {
             const getPublicPathOption = (): string => {
                 const normalizePublicPath = (publicPath): string =>
