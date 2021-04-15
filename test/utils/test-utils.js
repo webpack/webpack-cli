@@ -236,6 +236,16 @@ const readFile = (path, options = {}) =>
         });
     });
 
+const readdir = (path) =>
+    new Promise((resolve, reject) => {
+        fs.readdir(path, (err, stats) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(stats);
+        });
+    });
+
 const uniqueDirectoryForTest = async (assetsPath) => {
     const localDir = Date.now().toString();
 
@@ -257,6 +267,7 @@ module.exports = {
     normalizeStdout,
     uniqueDirectoryForTest,
     readFile,
+    readdir,
     hyphenToUpperCase,
     processKill,
 };
