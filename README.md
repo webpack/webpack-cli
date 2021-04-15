@@ -63,7 +63,7 @@ Thus, webpack CLI provides different commands for many common tasks.
 -   [`migrate|m <config-path> [new-config-path]`](https://www.npmjs.com/package/@webpack-cli/migrate) - Migrate project from one version to another.
 -   [`plugin|p [output-path] [options]`](./packages/generators#generators) - Initiate new plugin project.
 -   [`loader|l [output-path] [options]`](./packages/generators#generators) - Initiate new loader project.
--   [`serve|s [entries...] [options]`](./packages/serve/README.md#webpack-cli-serve) - Use webpack with a development server that provides live reloading.
+-   [`serve|server|s [entries...] [options]`](./packages/serve/README.md#webpack-cli-serve) - Use webpack with a development server that provides live reloading.
 -   `version|v [commands...]` - Output the version number of `webpack`, `webpack-cli`, `webpack-dev-server`, and commands
 -   `watch|w [entries...] [options]` - Run webpack and watch for files changes.
 
