@@ -235,6 +235,10 @@ const normalizeCwd = (output) => {
     return output.replace(/\\/g, '/').replace(new RegExp(process.cwd().replace(/\\/g, '/'), 'g'), '<cwd>');
 };
 
+const normalizeError = (output) => {
+    return output.replace(/at (.+?)\(.+\)/g, 'at stack (file-and-position)');
+};
+
 const normalizeStdout = (stdout) => {
     if (typeof stdout !== 'string') {
         return stdout;
@@ -247,6 +251,7 @@ const normalizeStdout = (stdout) => {
     let normalizedStdout = stripAnsi(stdout);
     normalizedStdout = normalizeCwd(normalizedStdout);
     normalizedStdout = normalizeVersions(normalizedStdout);
+    normalizedStdout = normalizeError(normalizedStdout);
 
     return normalizedStdout;
 };
@@ -263,6 +268,7 @@ const normalizeStderr = (stderr) => {
     let normalizedStderr = stripAnsi(stderr);
     normalizedStderr = normalizeCwd(normalizedStderr);
     normalizedStderr = normalizeVersions(normalizedStderr);
+    normalizedStderr = normalizeError(normalizedStderr);
 
     return normalizedStderr;
 };
