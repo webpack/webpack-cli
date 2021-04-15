@@ -224,7 +224,42 @@ const runPromptWithAnswers = (location, args, answers, waitForOutput = true) => 
     });
 };
 
-const normalizeStdout = (string) => stripAnsi(string);
+const normalizerVersions = (output) => {
+    return output.replace(
+        /(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?/gi,
+        'x.x.x',
+    );
+};
+
+const normalizeStdout = (string) => {
+    if (typeof string !== 'string') {
+        return string;
+    }
+
+    if (string.length === 0) {
+        return string;
+    }
+
+    let normalizedStdout = stripAnsi(string);
+    normalizedStdout = normalizerVersions(normalizedStdout);
+
+    return normalizedStdout;
+};
+
+const normalizeStderr = (string) => {
+    if (typeof string !== 'string') {
+        return string;
+    }
+
+    if (string.length === 0) {
+        return string;
+    }
+
+    let normalizedStderr = stripAnsi(string);
+    normalizedStderr = normalizerVersions(normalizedStderr);
+
+    return normalizedStderr;
+};
 
 const readFile = (path, options = {}) =>
     new Promise((resolve, reject) => {
@@ -264,6 +299,7 @@ module.exports = {
     isWebpack5,
     isDevServer4,
     isWindows,
+    normalizeStderr,
     normalizeStdout,
     uniqueDirectoryForTest,
     readFile,
