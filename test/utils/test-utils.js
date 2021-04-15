@@ -236,7 +236,7 @@ const normalizeCwd = (output) => {
 };
 
 const normalizeError = (output) => {
-    return output.replace(/at (.+?)\(.+\)/g, 'at stack (file-and-position)');
+    return output.replace(/\s+at .+(}|\))/gs, '\n    at stack');
 };
 
 const normalizeStdout = (stdout) => {

@@ -27,15 +27,7 @@ exports[`invalid schema should log webpack-dev-server error and exit process on 
 
 exports[`invalid schema should log webpack-dev-server error and exit process on invalid flag: stderr 1`] = `
 "[webpack-cli] RangeError [ERR_SOCKET_BAD_PORT]: options.port should be >= 0 and < 65536. Received -1.
-    at stack (file-and-position)
-    at stack (file-and-position)
-    at stack (file-and-position)
-    at stack (file-and-position)
-    at stack (file-and-position)
-    at stack (file-and-position)
-    at stack (file-and-position) {
-  code: 'ERR_SOCKET_BAD_PORT'
-}"
+    at stack"
 `;
 
 exports[`invalid schema should log webpack-dev-server error and exit process on invalid flag: stdout 1`] = `""`;
