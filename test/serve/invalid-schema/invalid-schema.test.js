@@ -22,7 +22,7 @@ describe('invalid schema', () => {
         const { exitCode, stderr, stdout } = await run(__dirname, ['serve', '--port', '-1']);
 
         expect(exitCode).toEqual(2);
-        expect(normalizeStderr(stderr)).toMatchSnapshot('stderr');
+        expect(normalizeStderr(stderr).replace('Port', 'options.port')).toMatchSnapshot('stderr');
         expect(normalizeStdout(stdout)).toMatchSnapshot('stdout');
     });
 
