@@ -1,6 +1,5 @@
 module.exports = [
     (env, argv) => {
-        console.log({ argv });
         const { mode } = argv;
         return {
             entry: './a.js',
@@ -11,7 +10,6 @@ module.exports = [
         };
     },
     (env, argv) => {
-        console.log({ argv });
         const { mode } = argv;
         return {
             entry: './b.js',
