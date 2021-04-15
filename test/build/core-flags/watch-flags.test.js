@@ -20,9 +20,6 @@ describe('watch config related flag', () => {
             it(`should config --${flag.name} correctly`, async () => {
                 const { exitCode, stderr, stdout } = await run(__dirname, [`--${flag.name}`]);
 
-                console.log(stdout);
-                console.log(stderr);
-
                 expect(exitCode).toBe(0);
                 expect(stderr).toBeFalsy();
 
