@@ -873,7 +873,7 @@ Commands:
   loader|l [output-path] [options]                                                   Scaffold a loader.
   migrate|m <config-path> [new-config-path]                                          Migrate a configuration to a new version.
   plugin|p [output-path] [options]                                                   Scaffold a plugin.
-  webpack serve|server|s [entries...] [options]                                      Run the webpack dev server.
+  serve|server|s [entries...] [options]                                              Run the webpack dev server.
   version|v [commands...]                                                            Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
   watch|w [entries...] [options]                                                     Run webpack and watch for files changes.
 
