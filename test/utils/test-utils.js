@@ -224,39 +224,45 @@ const runPromptWithAnswers = (location, args, answers, waitForOutput = true) => 
     });
 };
 
-const normalizerVersions = (output) => {
+const normalizeVersions = (output) => {
     return output.replace(
         /(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?/gi,
         'x.x.x',
     );
 };
 
-const normalizeStdout = (string) => {
-    if (typeof string !== 'string') {
-        return string;
+const normalizeCwd = (output) => {
+    return output.replace(/\\/g, '/').replace(new RegExp(process.cwd().replace(/\\/g, '/'), 'g'), '<cwd>');
+};
+
+const normalizeStdout = (stdout) => {
+    if (typeof stdout !== 'string') {
+        return stdout;
     }
 
-    if (string.length === 0) {
-        return string;
+    if (stdout.length === 0) {
+        return stdout;
     }
 
-    let normalizedStdout = stripAnsi(string);
-    normalizedStdout = normalizerVersions(normalizedStdout);
+    let normalizedStdout = stripAnsi(stdout);
+    normalizedStdout = normalizeCwd(normalizedStdout);
+    normalizedStdout = normalizeVersions(normalizedStdout);
 
     return normalizedStdout;
 };
 
-const normalizeStderr = (string) => {
-    if (typeof string !== 'string') {
-        return string;
+const normalizeStderr = (stderr) => {
+    if (typeof stderr !== 'string') {
+        return stderr;
     }
 
-    if (string.length === 0) {
-        return string;
+    if (stderr.length === 0) {
+        return stderr;
     }
 
-    let normalizedStderr = stripAnsi(string);
-    normalizedStderr = normalizerVersions(normalizedStderr);
+    let normalizedStderr = stripAnsi(stderr);
+    normalizedStderr = normalizeCwd(normalizedStderr);
+    normalizedStderr = normalizeVersions(normalizedStderr);
 
     return normalizedStderr;
 };
