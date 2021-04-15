@@ -8,7 +8,11 @@ const config = {
     entry: '<%= entry %>',
     output: {
         path: path.resolve(__dirname, 'dist'),
-    },
+    },<% if (devServer) { %>
+    devServer: {
+        open: true,
+        host: 'localhost',
+    },<% } %>
     plugins: [<% if (htmlWebpackPlugin) { %>
         new HtmlWebpackPlugin({
             template: 'index.html',
@@ -68,11 +72,7 @@ module.exports = () => {
     if (process.env.NODE_ENV == 'production') {
         config.mode = 'production';
     } else {
-        config.mode = 'development';<% if (devServer) { %>
-        config.devServer = {
-            open: true,
-            host: 'localhost',
-        };<% } %>
+        config.mode = 'development';
     }
     return config;
 };
