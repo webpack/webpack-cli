@@ -108,8 +108,8 @@ describe('help', () => {
         },
         {
             name: 'serve',
-            alias: 's',
-            usage: 'webpack serve|s [entries...] [options]',
+            alias: ['server', 's'],
+            usage: 'webpack serve|server|s [entries...] [options]',
         },
         {
             name: 'build',
