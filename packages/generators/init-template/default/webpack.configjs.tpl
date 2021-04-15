@@ -4,8 +4,7 @@ const path = require('path');<% if (htmlWebpackPlugin) { %>
 const HtmlWebpackPlugin = require('html-webpack-plugin');<% } %><% if (isExtractPlugin) { %>
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');<% } %>
 
-module.exports = {
-    mode: 'development',
+const config = {
     entry: '<%= entry %>',
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -67,4 +66,13 @@ module.exports = {
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
     },<% } %>
+};
+
+module.exports = () => {
+    if (process.env.NODE_ENV == 'production') {
+        config.mode = 'production';
+    } else {
+        config.mode = 'development';
+    }
+    return config;
 };

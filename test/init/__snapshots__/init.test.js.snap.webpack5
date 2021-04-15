@@ -46,8 +46,7 @@ exports[`init command should configure WDS as opted 2`] = `
 
 const path = require('path');
 
-module.exports = {
-    mode: 'development',
+const config = {
     entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -71,6 +70,15 @@ module.exports = {
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
     },
+};
+
+module.exports = () => {
+    if (process.env.NODE_ENV == 'production') {
+        config.mode = 'production';
+    } else {
+        config.mode = 'development';
+    }
+    return config;
 };
 "
 `;
@@ -102,8 +110,7 @@ exports[`init command should configure assets modules by default 2`] = `
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-module.exports = {
-    mode: 'development',
+const config = {
     entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -131,6 +138,15 @@ module.exports = {
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
     },
+};
+
+module.exports = () => {
+    if (process.env.NODE_ENV == 'production') {
+        config.mode = 'production';
+    } else {
+        config.mode = 'development';
+    }
+    return config;
 };
 "
 `;
@@ -160,8 +176,7 @@ exports[`init command should configure html-webpack-plugin as opted 2`] = `
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-module.exports = {
-    mode: 'development',
+const config = {
     entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -185,6 +200,15 @@ module.exports = {
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
     },
+};
+
+module.exports = () => {
+    if (process.env.NODE_ENV == 'production') {
+        config.mode = 'production';
+    } else {
+        config.mode = 'development';
+    }
+    return config;
 };
 "
 `;
@@ -215,8 +239,7 @@ exports[`init command should generate ES6 project correctly 2`] = `
 
 const path = require('path');
 
-module.exports = {
-    mode: 'development',
+const config = {
     entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -240,6 +263,15 @@ module.exports = {
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
     },
+};
+
+module.exports = () => {
+    if (process.env.NODE_ENV == 'production') {
+        config.mode = 'production';
+    } else {
+        config.mode = 'development';
+    }
+    return config;
 };
 "
 `;
@@ -332,8 +364,7 @@ exports[`init command should generate typescript project correctly 2`] = `
 
 const path = require('path');
 
-module.exports = {
-    mode: 'development',
+const config = {
     entry: './src/index.ts',
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -361,6 +392,15 @@ module.exports = {
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
     },
+};
+
+module.exports = () => {
+    if (process.env.NODE_ENV == 'production') {
+        config.mode = 'production';
+    } else {
+        config.mode = 'development';
+    }
+    return config;
 };
 "
 `;
@@ -474,8 +514,7 @@ exports[`init command should use less in project when selected 2`] = `
 
 const path = require('path');
 
-module.exports = {
-    mode: 'development',
+const config = {
     entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -499,6 +538,15 @@ module.exports = {
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
     },
+};
+
+module.exports = () => {
+    if (process.env.NODE_ENV == 'production') {
+        config.mode = 'production';
+    } else {
+        config.mode = 'development';
+    }
+    return config;
 };
 "
 `;
@@ -530,8 +578,7 @@ exports[`init command should use mini-css-extract-plugin when selected 2`] = `
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-module.exports = {
-    mode: 'development',
+const config = {
     entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -557,6 +604,15 @@ module.exports = {
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
     },
+};
+
+module.exports = () => {
+    if (process.env.NODE_ENV == 'production') {
+        config.mode = 'production';
+    } else {
+        config.mode = 'development';
+    }
+    return config;
 };
 "
 `;
@@ -589,8 +645,7 @@ exports[`init command should use postcss in project when selected 2`] = `
 
 const path = require('path');
 
-module.exports = {
-    mode: 'development',
+const config = {
     entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -614,6 +669,15 @@ module.exports = {
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
     },
+};
+
+module.exports = () => {
+    if (process.env.NODE_ENV == 'production') {
+        config.mode = 'production';
+    } else {
+        config.mode = 'development';
+    }
+    return config;
 };
 "
 `;
@@ -648,8 +712,7 @@ exports[`init command should use sass and css with postcss in project when selec
 
 const path = require('path');
 
-module.exports = {
-    mode: 'development',
+const config = {
     entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -677,6 +740,15 @@ module.exports = {
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
     },
+};
+
+module.exports = () => {
+    if (process.env.NODE_ENV == 'production') {
+        config.mode = 'production';
+    } else {
+        config.mode = 'development';
+    }
+    return config;
 };
 "
 `;
@@ -706,8 +778,7 @@ exports[`init command should use sass in project when selected 2`] = `
 
 const path = require('path');
 
-module.exports = {
-    mode: 'development',
+const config = {
     entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -731,6 +802,15 @@ module.exports = {
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
     },
+};
+
+module.exports = () => {
+    if (process.env.NODE_ENV == 'production') {
+        config.mode = 'production';
+    } else {
+        config.mode = 'development';
+    }
+    return config;
 };
 "
 `;
@@ -763,8 +843,7 @@ exports[`init command should use sass with postcss in project when selected 2`] 
 
 const path = require('path');
 
-module.exports = {
-    mode: 'development',
+const config = {
     entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -788,6 +867,15 @@ module.exports = {
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
     },
+};
+
+module.exports = () => {
+    if (process.env.NODE_ENV == 'production') {
+        config.mode = 'production';
+    } else {
+        config.mode = 'development';
+    }
+    return config;
 };
 "
 `;
@@ -817,8 +905,7 @@ exports[`init command should use stylus in project when selected 2`] = `
 
 const path = require('path');
 
-module.exports = {
-    mode: 'development',
+const config = {
     entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -842,6 +929,15 @@ module.exports = {
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
     },
+};
+
+module.exports = () => {
+    if (process.env.NODE_ENV == 'production') {
+        config.mode = 'production';
+    } else {
+        config.mode = 'development';
+    }
+    return config;
 };
 "
 `;
