@@ -1,4 +1,4 @@
-const { runAndGetWatchProc } = require('../../utils/test-utils');
+const { runAndGetWatchProc, processKill } = require('../../utils/test-utils');
 
 describe('--watch-options-stdin', () => {
     it('should stop the process when stdin ends using "--watch" and "--watch-options-stdin" options', (done) => {
@@ -9,7 +9,7 @@ describe('--watch-options-stdin', () => {
         proc.on('exit', () => {
             expect(semaphore).toBe(true);
 
-            proc.kill();
+            processKill(proc);
 
             done();
         });
@@ -27,7 +27,7 @@ describe('--watch-options-stdin', () => {
         proc.on('exit', () => {
             expect(semaphore).toBe(true);
 
-            proc.kill();
+            processKill(proc);
 
             done();
         });
@@ -45,7 +45,7 @@ describe('--watch-options-stdin', () => {
         proc.on('exit', () => {
             expect(semaphore).toBe(true);
 
-            proc.kill();
+            processKill(proc);
 
             done();
         });
@@ -63,7 +63,7 @@ describe('--watch-options-stdin', () => {
         proc.on('exit', () => {
             expect(semaphore).toBe(true);
 
-            proc.kill();
+            processKill(proc);
 
             done();
         });
@@ -79,7 +79,7 @@ describe('--watch-options-stdin', () => {
 
         proc.on('exit', () => {
             expect(semaphore).toBe(true);
-            proc.kill();
+            processKill(proc);
             done();
         });
 
@@ -94,7 +94,7 @@ describe('--watch-options-stdin', () => {
 
         proc.on('exit', () => {
             expect(semaphore).toBe(true);
-            proc.kill();
+            processKill(proc);
             done();
         });
 
@@ -109,7 +109,7 @@ describe('--watch-options-stdin', () => {
 
         proc.on('exit', () => {
             expect(semaphore).toBe(true);
-            proc.kill();
+            processKill(proc);
             done();
         });
 
@@ -126,7 +126,7 @@ describe('--watch-options-stdin', () => {
         proc.on('exit', () => {
             expect(semaphore).toBe(true);
 
-            proc.kill();
+            processKill(proc);
 
             done();
         });

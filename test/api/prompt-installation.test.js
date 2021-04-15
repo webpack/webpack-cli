@@ -1,20 +1,23 @@
 'use strict';
 
-// eslint-disable-next-line node/no-extraneous-require
+const path = require('path');
+
+// eslint-disable-next-line node/no-extraneous-require,node/no-unpublished-require
 const stripAnsi = require('strip-ansi');
 const globalModulesNpmValue = 'test-npm';
+const utilsDirectory = path.resolve(__dirname, '../../packages/webpack-cli/lib/utils/');
 
 jest.setMock('global-modules', globalModulesNpmValue);
-jest.setMock('../prompt', jest.fn());
-jest.setMock('../run-command', jest.fn());
-jest.setMock('../package-exists', jest.fn());
-jest.setMock('../get-package-manager', jest.fn());
+jest.setMock(path.resolve(utilsDirectory, './prompt'), jest.fn());
+jest.setMock(path.resolve(utilsDirectory, './run-command'), jest.fn());
+jest.setMock(path.resolve(utilsDirectory, './package-exists'), jest.fn());
+jest.setMock(path.resolve(utilsDirectory, './get-package-manager'), jest.fn());
 
-const getPackageManager = require('../get-package-manager');
-const packageExists = require('../package-exists');
-const promptInstallation = require('../prompt-installation');
-const runCommand = require('../run-command');
-const prompt = require('../prompt');
+const getPackageManager = require(path.resolve(utilsDirectory, './get-package-manager'));
+const packageExists = require(path.resolve(utilsDirectory, './package-exists'));
+const promptInstallation = require(path.resolve(utilsDirectory, './prompt-installation'));
+const runCommand = require(path.resolve(utilsDirectory, './run-command'));
+const prompt = require(path.resolve(utilsDirectory, './prompt'));
 
 describe('promptInstallation', () => {
     beforeAll(() => {

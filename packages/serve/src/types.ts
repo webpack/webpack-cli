@@ -8,7 +8,7 @@ export type devServerOptionsType = {
     headers?: Record<string, unknown>;
     historyApiFallback?: boolean | Record<string, unknown>;
     host?: string | null;
-    hot?: boolean | string;
+    hot?: boolean | hotOptionEnum;
     http2?: boolean;
     https?: boolean | Record<string, unknown>;
     injectClient?: boolean | (() => void);
@@ -30,7 +30,12 @@ export type devServerOptionsType = {
     useLocalIp?: boolean;
     publicPath?: string | (() => void);
     stats?: string | boolean;
+    watchFiles?: string | Record<string, unknown>;
 };
+
+enum hotOptionEnum {
+    only = 'only',
+}
 
 type devServerClientOptions = {
     host?: string;
@@ -38,9 +43,17 @@ type devServerClientOptions = {
     port?: string | number | null;
     logging?: devServerClientLogging;
     progress?: boolean;
+    overlay?: boolean | clientOverlay;
+    needClientEntry?: boolean | (() => void);
+    needHotEntry?: boolean | (() => void);
 };
 
-export enum devServerClientLogging {
+type clientOverlay = {
+    errors?: boolean;
+    warnings?: boolean;
+};
+
+enum devServerClientLogging {
     none = 'none',
     error = 'error',
     warn = 'warn',

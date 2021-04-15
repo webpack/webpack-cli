@@ -1,6 +1,6 @@
 'use strict';
 
-const { runAndGetWatchProc, normalizeStdout } = require('../../utils/test-utils');
+const { runAndGetWatchProc, normalizeStdout, processKill } = require('../../utils/test-utils');
 
 describe('"analyze" option', () => {
     it('should load webpack-bundle-analyzer plugin with --analyze flag', (done) => {
@@ -12,7 +12,7 @@ describe('"analyze" option', () => {
             if (data.includes('Webpack Bundle Analyzer is started at')) {
                 expect(data).toContain('Webpack Bundle Analyzer is started at');
 
-                proc.kill();
+                processKill(proc);
                 done();
             }
         });

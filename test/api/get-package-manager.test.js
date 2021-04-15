@@ -9,12 +9,13 @@ const syncMock = jest.fn(() => {
 jest.setMock('execa', {
     sync: syncMock,
 });
-const getPackageManager = require('../get-package-manager');
+const utilsDirectory = path.resolve(__dirname, '../../packages/webpack-cli/lib/utils/');
+const getPackageManager = require(path.resolve(utilsDirectory, './get-package-manager'));
 
-jest.mock('../get-package-manager', () => jest.fn());
+jest.mock(path.resolve(utilsDirectory, './get-package-manager'), () => jest.fn());
 const globalModulesNpmValue = 'test-npm';
 jest.setMock('global-modules', globalModulesNpmValue);
-jest.setMock('../prompt', jest.fn());
+jest.setMock(path.resolve(utilsDirectory, './prompt'), jest.fn());
 
 describe('packageUtils', () => {
     describe('getPackageManager', () => {

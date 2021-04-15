@@ -21,6 +21,15 @@ describe('unknown behaviour', () => {
         expect(stdout).toBeFalsy();
     });
 
+    it('should log an error if an unknown flag is passed and includes =', async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--unknown=foo']);
+
+        expect(exitCode).toBe(2);
+        expect(stderr).toContain("Error: Unknown option '--unknown=foo'");
+        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
+        expect(stdout).toBeFalsy();
+    });
+
     it('should log an error if an unknown flag is passed #3', async () => {
         const { exitCode, stderr, stdout } = await run(__dirname, ['-u', '--unknown']);
 

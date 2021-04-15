@@ -24,4 +24,20 @@ describe('invalid schema', () => {
 
         expect(stdout).toBeFalsy();
     });
+
+    it('should log webpack-dev-server error and exit process on invalid flag', async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, ['serve', '--port', '-1']);
+
+        expect(exitCode).toEqual(2);
+        expect(stderr).toContain('RangeError');
+        expect(stdout).toBeFalsy();
+    });
+
+    it('should log webpack-dev-server error and exit process on invalid config', async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, ['serve', '--config', './webpack-dev-server.config.mock.js']);
+
+        expect(exitCode).toEqual(2);
+        expect(stderr).toContain('webpack Dev Server Invalid Options');
+        expect(stdout).toBeFalsy();
+    });
 });

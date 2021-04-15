@@ -12,7 +12,7 @@ class GeneratorsCommand {
         await cli.makeCommand(
             {
                 name: 'init [generation-path]',
-                alias: 'c',
+                alias: ['create', 'new', 'c', 'n'],
                 description: 'Initialize a new webpack project.',
                 usage: '[generation-path] [options]',
                 pkg: '@webpack-cli/generators',
@@ -26,7 +26,12 @@ class GeneratorsCommand {
                 },
                 {
                     name: 'force',
-                    configs: [{ type: 'boolean' }],
+                    configs: [
+                        {
+                            type: 'enum',
+                            values: [true],
+                        },
+                    ],
                     description: 'Generate without questions (ideally) using default answers',
                 },
             ],
