@@ -224,49 +224,7 @@ const runPromptWithAnswers = (location, args, answers, waitForOutput = true) => 
     });
 };
 
-/**
- *
- * @param {String} testCase - testCase directory
- * @param {String} file - file relative to testCase
- * @param {String} data - data to append
- * @returns {undefined}
- * @throws - throw an Error if file does not exist
- */
-const appendDataIfFileExists = (testCase, file, data) => {
-    const filePath = path.resolve(testCase, file);
-    if (fs.existsSync(filePath)) {
-        fs.appendFileSync(filePath, data);
-    } else {
-        throw new Error(`Oops! ${filePath} does not exist!`);
-    }
-};
-
-/**
- * fs.copyFileSync was added in Added in: v8.5.0
- * We should refactor the below code once our minimal supported version is v8.5.0
- * @param {String} testCase - testCase directory
- * @param {String} file - file relative to testCase which is going to be copied
- * @returns {String} - absolute file path of new file
- * @throws - throw an Error if file copy fails
- */
-const copyFileAsync = async (testCase, file) => {
-    const fileToChangePath = path.resolve(testCase, file);
-    const fileMetaData = path.parse(file);
-    const fileCopyName = fileMetaData.name.concat('_copy').concat(fileMetaData.ext);
-    const copyFilePath = path.resolve(testCase, fileCopyName);
-    fs.access(fileToChangePath, fs.F_OK, (accessErr) => {
-        if (accessErr) throw new Error(`Oops! ${fileToChangePath} does not exist!`);
-    });
-    const data = fs.readFileSync(fileToChangePath);
-    fs.writeFileSync(copyFilePath, data);
-    return copyFilePath;
-};
-
-const runInstall = async (cwd) => {
-    await execa('yarn', {
-        cwd,
-    });
-};
+const normalizeStdout = (string) => stripAnsi(string);
 
 const readFile = (path, options = {}) =>
     new Promise((resolve, reject) => {
@@ -288,42 +246,28 @@ const readdir = (path) =>
         });
     });
 
-const mkdir = (path) => {
-    if (fs.existsSync(path)) {
-        return;
-    }
-
-    fs.mkdirSync(path);
-};
-
 const uniqueDirectoryForTest = async (assetsPath) => {
     const localDir = Date.now().toString();
 
     const result = path.resolve(assetsPath, localDir);
 
-    await mkdir(result);
+    if (!fs.existsSync(result)) fs.mkdirSync(result);
 
     return result;
 };
-
-const normalizeStdout = (string) => stripAnsi(string);
 
 module.exports = {
     run,
     runWatch,
     runAndGetWatchProc,
     runPromptWithAnswers,
-    appendDataIfFileExists,
-    copyFileAsync,
-    runInstall,
-    hyphenToUpperCase,
-    readFile,
-    readdir,
-    mkdir,
-    uniqueDirectoryForTest,
-    normalizeStdout,
     isWebpack5,
     isDevServer4,
     isWindows,
+    normalizeStdout,
+    uniqueDirectoryForTest,
+    readFile,
+    readdir,
+    hyphenToUpperCase,
     processKill,
 };

@@ -1,7 +1,7 @@
 'use strict';
 
-const { appendDataIfFileExists, run, runAndGetWatchProc, hyphenToUpperCase } = require('./test-utils');
-const { writeFileSync, unlinkSync, readFileSync, mkdirSync } = require('fs');
+const { run, runAndGetWatchProc, hyphenToUpperCase } = require('./test-utils');
+const { writeFileSync, unlinkSync, mkdirSync } = require('fs');
 const { resolve } = require('path');
 // eslint-disable-next-line node/no-unpublished-require
 const rimraf = require('rimraf');
@@ -13,27 +13,12 @@ describe('appendFile', () => {
         const junkFile = 'junkFile.js';
         const junkFilePath = resolve(__dirname, junkFile);
         const initialJunkData = 'initial junk data';
-        const junkComment = '//junk comment';
 
         beforeEach(() => {
             writeFileSync(junkFilePath, initialJunkData);
         });
         afterEach(() => {
             unlinkSync(junkFilePath);
-        });
-
-        it('should append data to file if file exists', () => {
-            appendDataIfFileExists(__dirname, junkFile, junkComment);
-
-            const actualData = readFileSync(junkFilePath).toString();
-
-            expect(actualData).toBe(initialJunkData + junkComment);
-        });
-    });
-
-    describe('negative test-cases', () => {
-        it('should throw error if file does not exist', () => {
-            expect(() => appendDataIfFileExists(__dirname, 'does-not-exist.js', 'junk data')).toThrowError();
         });
     });
 });

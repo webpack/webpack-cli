@@ -1,10 +1,8 @@
 /* eslint-disable   node/no-unpublished-require */
-const { run, runInstall } = require('../../../utils/test-utils');
+const { run } = require('../../../utils/test-utils');
 
 describe('entry point', () => {
     it('should support SCSS files', async () => {
-        await runInstall(__dirname);
-
         const { stdout } = await run(__dirname);
 
         expect(stdout).toBeTruthy();

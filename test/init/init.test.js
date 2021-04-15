@@ -3,7 +3,7 @@ const { mkdirSync, existsSync, readFileSync } = require('fs');
 const { join, resolve } = require('path');
 // eslint-disable-next-line node/no-unpublished-require
 const rimraf = require('rimraf');
-const { isWindows, run, runPromptWithAnswers, mkdir, uniqueDirectoryForTest } = require('../utils/test-utils');
+const { isWindows, run, runPromptWithAnswers, uniqueDirectoryForTest } = require('../utils/test-utils');
 
 const rootAssetsPath = resolve(__dirname, './test-assets');
 const ENTER = '\x0D';
@@ -26,8 +26,10 @@ const readFromPkgJSON = (path) => {
 const readFromWebpackConfig = (path) => readFileSync(join(path, 'webpack.config.js'), 'utf8');
 
 describe('init command', () => {
-    beforeAll(async () => {
-        await mkdir(rootAssetsPath);
+    beforeAll(() => {
+        if (!existsSync(rootAssetsPath)) {
+            mkdirSync(rootAssetsPath);
+        }
     });
 
     afterAll(() => {
