@@ -3,9 +3,8 @@
 const path = require('path');<% if (htmlWebpackPlugin) { %>
 const HtmlWebpackPlugin = require('html-webpack-plugin');<% } %><% if (isExtractPlugin) { %>
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');<% } %>
-const { merge } = require('webpack-merge');
 
-const base = {
+const config = {
     entry: '<%= entry %>',
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -65,24 +64,15 @@ const base = {
     },<% } %>
 };
 
-// Add mode specific configurations below
-// Learn more about mode at https://webpack.js.org/configuration/mode/
-
-const production = {
-    mode: 'production',
-};
-
-const development = {
-    mode: 'development',<% if (devServer) { %>
-    devServer: {
-        open: true,
-        host: 'localhost',
-    },<% } %>
-};
-
-module.exports = function (env, argv) {
-    if (argv.mode == 'production') {
-        return merge(base, production);
+module.exports = () => {
+    if (process.env.NODE_ENV == 'production') {
+        config.mode = 'production';
+    } else {
+        config.mode = 'development';<% if (devServer) { %>
+        config.devServer = {
+            open: true,
+            host: 'localhost',
+        };<% } %>
     }
-    return merge(base, development);
+    return config;
 };
