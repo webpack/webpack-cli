@@ -51,6 +51,10 @@ const config = {
     output: {
         path: path.resolve(__dirname, 'dist'),
     },
+    devServer: {
+        open: true,
+        host: 'localhost',
+    },
     plugins: [
         // Add your plugins here
         // Learn more obout plugins from https://webpack.js.org/configuration/plugins/
@@ -73,10 +77,6 @@ module.exports = () => {
         config.mode = 'production';
     } else {
         config.mode = 'development';
-        config.devServer = {
-            open: true,
-            host: 'localhost',
-        };
     }
     return config;
 };
@@ -115,6 +115,10 @@ const config = {
     output: {
         path: path.resolve(__dirname, 'dist'),
     },
+    devServer: {
+        open: true,
+        host: 'localhost',
+    },
     plugins: [
         new HtmlWebpackPlugin({
             template: 'index.html',
@@ -141,10 +145,6 @@ module.exports = () => {
         config.mode = 'production';
     } else {
         config.mode = 'development';
-        config.devServer = {
-            open: true,
-            host: 'localhost',
-        };
     }
     return config;
 };
