@@ -72,18 +72,18 @@ webpack-cli init --template <template-name>
 
 This enables webpack to parse [`ES2015`](https://babeljs.io/learn-es2015/) code or Typescript code as per choice.
 
-2. `Which of the following CSS solutions do you want to use?`
-
-> _Property/key resolved: [module.rules](https://webpack.js.org/configuration/module/#module-rules) (for .css files)_
-
-If you use any sort of style in your project, such as [`.css`](https://developer.mozilla.org/en-US/docs/Web/CSS) you will need to select this here. If you don't use CSS, answer `none`.
-
-3. `Do you want to use webpack-dev-server?`
+2. `Do you want to use webpack-dev-server?`
 
 > _Property/key resolved: [module.rules](https://webpack.js.org/configuration/dev-server/)_
 
 Adds a development server to serve webpack bundles and hence make development faster.
 
-4. `Do you want to simplify the creation of HTML files for your bundle?`
+3. `Do you want to simplify the creation of HTML files for your bundle?`
 
 Adds `html-webpack-plugin` that simplifies creation of HTML files to serve your bundles.
+
+4. `Which of the following CSS solutions do you want to use?`
+
+> _Property/key resolved: [module.rules](https://webpack.js.org/configuration/module/#module-rules) (for .css files)_
+
+If you use any sort of style in your project, such as [`.css`](https://developer.mozilla.org/en-US/docs/Web/CSS) you will need to select this here. If you don't use CSS, answer `none`.
