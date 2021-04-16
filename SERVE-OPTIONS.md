@@ -1,5 +1,5 @@
 ```
-Usage: webpack serve|s [entries...] [options]
+Usage: webpack serve|server|s [entries...] [options]
 
 Run the webpack dev server.
 

@@ -644,7 +644,7 @@ class WebpackCLI {
         const externalBuiltInCommandsInfo = [
             {
                 name: 'serve [entries...]',
-                alias: 's',
+                alias: ['server', 's'],
                 pkg: '@webpack-cli/serve',
             },
             {

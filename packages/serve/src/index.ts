@@ -8,7 +8,7 @@ class ServeCommand {
         await cli.makeCommand(
             {
                 name: 'serve [entries...]',
-                alias: 's',
+                alias: ['server', 's'],
                 description: 'Run the webpack dev server.',
                 usage: '[entries...] [options]',
                 pkg: '@webpack-cli/serve',
