@@ -2,7 +2,6 @@ import fs from 'fs';
 import path from 'path';
 import Generator from 'yeoman-generator';
 
-import { generatorCopy, generatorCopyTpl } from './utils/copy-utils';
 import { List } from './utils/scaffold-utils';
 
 /**
@@ -101,11 +100,14 @@ const addonGenerator = (
             // eslint-disable-next-line @typescript-eslint/no-var-requires
             this.fs.extendJSON(this.destinationPath('package.json'), require(packageJsonTemplatePath)(this.props.name));
 
-            this.copy = generatorCopy(this, this.resolvedTemplatePath);
-            this.copyTpl = generatorCopyTpl(this, this.resolvedTemplatePath, templateFn(this));
+            copyFiles.forEach((filePath) =>
+                this.fs.copyTpl(path.join(this.resolvedTemplatePath, filePath), this.destinationPath(filePath.replace('.tpl', ''))),
+            );
 
-            copyFiles.forEach(this.copy);
-            copyTemplateFiles.forEach(this.copyTpl);
+            copyTemplateFiles.forEach((filePath) => {
+                const destFilePath = filePath.replace('_', '').replace('.tpl', '');
+                this.fs.copyTpl(path.join(this.resolvedTemplatePath, filePath), this.destinationPath(destFilePath), templateFn(this));
+            });
         }
 
         public install(): void {
