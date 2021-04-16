@@ -581,7 +581,6 @@ class WebpackCLI {
                 negatedDescription: 'Do not stop watching when stdin stream has ended.',
             },
         };
-        // console.log(this.webpack.cli.getArguments())
 
         // Assign help level to all flags
         Object.entries(builtInFlags).forEach(([flag, meta]) => {
@@ -593,7 +592,10 @@ class WebpackCLI {
         const coreFlags = (() => {
             if (!this.webpack.cli) return [];
             const defaultCoreFlags = this.webpack.cli.getArguments();
-            Object.entries(defaultCoreFlags).forEach(([flag, meta]) => (meta.name = flag));
+            Object.entries(defaultCoreFlags).forEach(([flag, meta]) => {
+                meta.name = flag;
+                meta.helpLevel = minimumHelpFlags.has(flag) ? 'minimum' : 'verbose';
+            });
             // This list is small so won't cause perf problems
             Object.entries(builtInFlags).forEach(([flag, meta]) => {
                 if (defaultCoreFlags[flag]) {
