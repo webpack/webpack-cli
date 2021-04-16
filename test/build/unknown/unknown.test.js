@@ -219,11 +219,11 @@ describe('unknown behaviour', () => {
     });
 
     it('should log error and provide suggestion if an unknown command passed', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ['server'], true, [], { TERM_PROGRAM: false });
+        const { exitCode, stderr, stdout } = await run(__dirname, ['serverr'], true, [], { TERM_PROGRAM: false });
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("Unknown command or entry 'server'");
-        expect(stderr).toContain("Did you mean 'serve' (alias 's')?");
+        expect(stderr).toContain("Unknown command or entry 'serverr'");
+        expect(stderr).toContain("Did you mean 'serve' (alias 'server, s')?");
         expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
     });
