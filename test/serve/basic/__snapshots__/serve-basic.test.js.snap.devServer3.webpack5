@@ -18,7 +18,8 @@ exports[`basic serve usage should log error on using '-w' alias with serve: stde
 exports[`basic serve usage should log used supplied config with serve: stderr 1`] = `
 "    [webpack-cli] Compiler starting... 
     [webpack-cli] Compiler is using config: '<cwd>/test/serve/basic/log.config.js'
-    [webpack-cli] Compiler finished"
+    [webpack-cli] Compiler finished
+    [webpack-cli] Compiler is watching files for updates..."
 `;
 
 exports[`basic serve usage should respect the "publicPath" option from configuration (from the "devServer" options): stderr 1`] = `""`;
