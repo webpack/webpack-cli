@@ -53,7 +53,7 @@ webpack-cli init --force
 **To scaffold in a specified path**
 
 ```bash
-webpack-cli init [path]
+webpack-cli init [generation-path]
 ```
 
 **To scaffold specified template**
