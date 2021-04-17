@@ -3,7 +3,7 @@ export type devServerOptionsType = {
     client?: devServerClientOptions;
     compress?: boolean;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    dev?: Record<string, any>;
+    devMiddleware?: Record<string, any>;
     firewall?: boolean | string[];
     headers?: Record<string, unknown>;
     historyApiFallback?: boolean | Record<string, unknown>;
@@ -17,8 +17,7 @@ export type devServerOptionsType = {
     onAfterSetupMiddleware?: () => void;
     onBeforeSetupMiddleware?: () => void;
     onListening?: () => void;
-    open?: string | boolean | Record<string, unknown>;
-    openPage?: string | string[];
+    open?: string | boolean | openOptionObject;
     overlay?: boolean | Record<string, unknown>;
     port?: number | string | null;
     profile?: boolean;
@@ -29,7 +28,6 @@ export type devServerOptionsType = {
     transportMode?: Record<string, unknown> | string;
     useLocalIp?: boolean;
     publicPath?: string | (() => void);
-    stats?: string | boolean;
     watchFiles?: string | Record<string, unknown>;
 };
 
@@ -46,6 +44,11 @@ type devServerClientOptions = {
     overlay?: boolean | clientOverlay;
     needClientEntry?: boolean | (() => void);
     needHotEntry?: boolean | (() => void);
+};
+
+type openOptionObject = {
+    target?: string;
+    app?: string;
 };
 
 type clientOverlay = {
