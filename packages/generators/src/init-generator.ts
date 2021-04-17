@@ -114,7 +114,7 @@ export default class InitGenerator extends CustomGenerator {
             // eslint-disable-next-line node/no-extraneous-require, @typescript-eslint/no-var-requires
             const prettier = require('prettier');
             const source = readFileSync(this.configurationPath, { encoding: 'utf8' });
-            const formattedSource = prettier.format(source);
+            const formattedSource = prettier.format(source, { parser: 'babel' });
             writeFileSync(this.configurationPath, formattedSource);
         } catch (err) {
             this.utils.logger.log(`${yellow(`⚠ Generated configuration may not be properly formatted as prettier is not installed.`)}`);
