@@ -145,6 +145,7 @@ export function generate(self: CustomGenerator): void {
 
     // Generate webpack configuration
     self.fs.copyTpl(resolveFile('webpack.configjs.tpl'), self.destinationPath('webpack.config.js'), { ...self.answers, entry });
+    self.configurationPath = self.destinationPath('webpack.config.js');
 
     // Generate JS language essentials
     switch (self.answers.langType) {

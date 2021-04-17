@@ -19,6 +19,7 @@ export default class InitGenerator extends CustomGenerator {
     public template: string;
     public generationPath: string;
     public resolvedGenerationPath: string;
+    public configurationPath: string;
     public supportedTemplates: string[];
     public answers: Record<string, unknown>;
     public force: boolean;
