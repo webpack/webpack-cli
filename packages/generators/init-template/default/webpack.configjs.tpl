@@ -21,7 +21,7 @@ const config = {
         new MiniCssExtractPlugin(),
 <% } %>
         // Add your plugins here
-        // Learn more obout plugins from https://webpack.js.org/configuration/plugins/
+        // Learn more about plugins from https://webpack.js.org/configuration/plugins/
     ],
     module: {
         rules: [<% if (langType == "ES6") { %>
