@@ -82,7 +82,7 @@ export default class InitGenerator extends CustomGenerator {
             const { installPrettier } = await Question.Confirm(
                 this,
                 'installPrettier',
-                'Do you like to install prettier to prettify generated configuration?',
+                'Do you like to install prettier to format generated configuration?',
                 true,
                 false,
             );
@@ -123,7 +123,7 @@ export default class InitGenerator extends CustomGenerator {
             });
             writeFileSync(this.configurationPath, formattedSource);
         } catch (err) {
-            this.utils.logger.log(`${yellow(`Generated configuration may not be properly formatted as prettier was not found.`)}`);
+            this.utils.logger.log(`${yellow(`⚠ Generated configuration may not be properly formatted as prettier is not installed.`)}`);
             return;
         }
     }
