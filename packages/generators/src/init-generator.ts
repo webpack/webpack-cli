@@ -6,6 +6,8 @@ import { CustomGenerator } from './types';
 import { existsSync, mkdirSync } from 'fs';
 import handlers from './handlers';
 
+import { readFileSync, writeFileSync } from 'fs';
+
 /**
  *
  * Generator for initializing a webpack config
@@ -104,7 +106,18 @@ export default class InitGenerator extends CustomGenerator {
     public writing(): void {
         this.utils.logger.log(`${blue('ℹ INFO ')} Initialising project...`);
         handlers[this.template].generate(this);
+    }
 
-        // TODO: prettify configuration here
+    public end(): void {
+        // Prettify configuration file if possible
+        try {
+            // eslint-disable-next-line node/no-extraneous-require, @typescript-eslint/no-var-requires
+            const prettier = require('prettier');
+            const source = readFileSync(this.configurationPath, { encoding: 'utf8' });
+            const formattedSource = prettier.format(source, { parser: 'babel' });
+            writeFileSync(this.configurationPath, formattedSource);
+        } catch (err) {
+            return;
+        }
     }
 }
