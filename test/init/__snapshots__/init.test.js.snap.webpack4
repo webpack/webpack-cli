@@ -57,7 +57,7 @@ const config = {
     },
     plugins: [
         // Add your plugins here
-        // Learn more obout plugins from https://webpack.js.org/configuration/plugins/
+        // Learn more about plugins from https://webpack.js.org/configuration/plugins/
     ],
     module: {
         rules: [
@@ -125,7 +125,7 @@ const config = {
         }),
 
         // Add your plugins here
-        // Learn more obout plugins from https://webpack.js.org/configuration/plugins/
+        // Learn more about plugins from https://webpack.js.org/configuration/plugins/
     ],
     module: {
         rules: [
@@ -187,7 +187,7 @@ const config = {
         }),
 
         // Add your plugins here
-        // Learn more obout plugins from https://webpack.js.org/configuration/plugins/
+        // Learn more about plugins from https://webpack.js.org/configuration/plugins/
     ],
     module: {
         rules: [
@@ -246,7 +246,7 @@ const config = {
     },
     plugins: [
         // Add your plugins here
-        // Learn more obout plugins from https://webpack.js.org/configuration/plugins/
+        // Learn more about plugins from https://webpack.js.org/configuration/plugins/
     ],
     module: {
         rules: [
@@ -371,7 +371,7 @@ const config = {
     },
     plugins: [
         // Add your plugins here
-        // Learn more obout plugins from https://webpack.js.org/configuration/plugins/
+        // Learn more about plugins from https://webpack.js.org/configuration/plugins/
     ],
     module: {
         rules: [
@@ -521,7 +521,7 @@ const config = {
     },
     plugins: [
         // Add your plugins here
-        // Learn more obout plugins from https://webpack.js.org/configuration/plugins/
+        // Learn more about plugins from https://webpack.js.org/configuration/plugins/
     ],
     module: {
         rules: [
@@ -587,7 +587,7 @@ const config = {
         new MiniCssExtractPlugin(),
 
         // Add your plugins here
-        // Learn more obout plugins from https://webpack.js.org/configuration/plugins/
+        // Learn more about plugins from https://webpack.js.org/configuration/plugins/
     ],
     module: {
         rules: [
@@ -652,7 +652,7 @@ const config = {
     },
     plugins: [
         // Add your plugins here
-        // Learn more obout plugins from https://webpack.js.org/configuration/plugins/
+        // Learn more about plugins from https://webpack.js.org/configuration/plugins/
     ],
     module: {
         rules: [
@@ -719,7 +719,7 @@ const config = {
     },
     plugins: [
         // Add your plugins here
-        // Learn more obout plugins from https://webpack.js.org/configuration/plugins/
+        // Learn more about plugins from https://webpack.js.org/configuration/plugins/
     ],
     module: {
         rules: [
@@ -785,7 +785,7 @@ const config = {
     },
     plugins: [
         // Add your plugins here
-        // Learn more obout plugins from https://webpack.js.org/configuration/plugins/
+        // Learn more about plugins from https://webpack.js.org/configuration/plugins/
     ],
     module: {
         rules: [
@@ -850,7 +850,7 @@ const config = {
     },
     plugins: [
         // Add your plugins here
-        // Learn more obout plugins from https://webpack.js.org/configuration/plugins/
+        // Learn more about plugins from https://webpack.js.org/configuration/plugins/
     ],
     module: {
         rules: [
@@ -912,7 +912,7 @@ const config = {
     },
     plugins: [
         // Add your plugins here
-        // Learn more obout plugins from https://webpack.js.org/configuration/plugins/
+        // Learn more about plugins from https://webpack.js.org/configuration/plugins/
     ],
     module: {
         rules: [
