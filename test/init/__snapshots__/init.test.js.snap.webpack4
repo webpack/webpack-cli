@@ -658,7 +658,7 @@ const config = {
         rules: [
             {
                 test: /\\\\.css$/i,
-                use: ['style-loader' , 'css-loader', 'postcss-loader'],
+                use: ['style-loader', 'css-loader', 'postcss-loader'],
             },
             {
                 test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
@@ -725,11 +725,11 @@ const config = {
         rules: [
             {
                 test: /\\\\.s[ac]ss$/i,
-                use: ['style-loader' , 'css-loader', 'postcss-loader', 'sass-loader'],
+                use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
             },
             {
                 test: /\\\\.css$/i,
-                use: ['style-loader' , 'css-loader', 'postcss-loader'],
+                use: ['style-loader', 'css-loader', 'postcss-loader'],
             },
             {
                 test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
@@ -791,7 +791,7 @@ const config = {
         rules: [
             {
                 test: /\\\\.s[ac]ss$/i,
-                use: ['style-loader' , 'css-loader', 'sass-loader'],
+                use: ['style-loader', 'css-loader', 'sass-loader'],
             },
             {
                 test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
@@ -856,7 +856,7 @@ const config = {
         rules: [
             {
                 test: /\\\\.s[ac]ss$/i,
-                use: ['style-loader' , 'css-loader', 'postcss-loader', 'sass-loader'],
+                use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
             },
             {
                 test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
