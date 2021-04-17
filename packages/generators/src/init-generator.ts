@@ -71,6 +71,24 @@ export default class InitGenerator extends CustomGenerator {
         }
 
         await handlers[this.template].questions(this, Question);
+
+        // Handle installation of prettier
+        try {
+            // eslint-disable-next-line node/no-extraneous-require
+            require.resolve('prettier');
+        } catch (err) {
+            const { installPrettier } = await Question.Confirm(
+                this,
+                'installPrettier',
+                'Do you like to install prettier to prettify generated configuration?',
+                true,
+                false,
+            );
+
+            if (installPrettier) {
+                this.dependencies = [...this.dependencies, 'prettier'];
+            }
+        }
     }
 
     public installPlugins(): void {
@@ -86,5 +104,7 @@ export default class InitGenerator extends CustomGenerator {
     public writing(): void {
         this.utils.logger.log(`${blue('ℹ INFO ')} Initialising project...`);
         handlers[this.template].generate(this);
+
+        // TODO: prettify configuration here
     }
 }
