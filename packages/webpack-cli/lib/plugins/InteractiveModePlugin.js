@@ -117,18 +117,13 @@ class InteractiveModePlugin {
             this.compilers = compiler.compilers;
         }
 
-        // Register Custom Hooks for printing after clrscr
+        // Register Custom Hook for printing after clrscr
         if (!compiler.hooks.beforeInteractiveStats) {
             compiler.hooks = {
                 ...compiler.hooks,
                 beforeInteractiveStats: new SyncHook(),
             };
         }
-
-        // Test custom hook
-        // compiler.hooks.beforeInteractiveStats.tap(this.name, () => {
-        //     console.log('Hello!!');
-        // });
 
         // Clear for first run as well
         clrscr();
