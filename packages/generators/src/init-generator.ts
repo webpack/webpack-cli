@@ -58,7 +58,7 @@ export default class InitGenerator extends CustomGenerator {
         }
 
         if (!this.supportedTemplates.includes(this.template)) {
-            this.utils.logger.warn(`⚠ ${this.template} is not a valid template, please select one from below`);
+            this.utils.logger.log(`${yellow(`⚠ ${this.template} is not a valid template, please select one from below`)}`);
 
             const { selectedTemplate } = await Question.List(
                 this,
@@ -117,7 +117,7 @@ export default class InitGenerator extends CustomGenerator {
             const formattedSource = prettier.format(source, { parser: 'babel' });
             writeFileSync(this.configurationPath, formattedSource);
         } catch (err) {
-            this.utils.logger.warn(`⚠ Generated configuration may not be properly formatted as prettier is not installed.`);
+            this.utils.logger.log(`${yellow(`⚠ Generated configuration may not be properly formatted as prettier is not installed.`)}`);
             return;
         }
     }
