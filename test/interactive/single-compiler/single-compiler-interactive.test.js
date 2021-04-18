@@ -51,8 +51,8 @@ const runTest = (proc, checker, done) => {
 describe('--interactive flag with single compiler', () => {
     // webpack v4 should not be supported https://github.com/webpack/webpack-cli/pull/1796#pullrequestreview-605767369
     if (!isWebpack5) {
-        it('should throw error upon --interactive', () => {
-            const { stdout, stderr, exitCode } = run(__dirname, ['--interactive']);
+        it('should throw error upon --interactive', async () => {
+            const { stdout, stderr, exitCode } = await run(__dirname, ['--interactive']);
             expect(stdout).toBeFalsy();
             expect(stderr).toContain('Interactive is not supported on webpack v4 and less');
             expect(exitCode).toBe(1);
