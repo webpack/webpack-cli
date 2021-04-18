@@ -1,13 +1,16 @@
+/* eslint-disable node/no-unpublished-require */
+
 'use strict';
+
+const stripAnsi = require('strip-ansi');
 const path = require('path');
 const fs = require('fs');
 const execa = require('execa');
 const { exec } = require('child_process');
-const { sync: spawnSync, node: execaNode } = execa;
+const { node: execaNode } = execa;
 const { Writable } = require('readable-stream');
 const concat = require('concat-stream');
 const { version } = require('webpack');
-
 const isWebpack5 = version.startsWith('5');
 
 let devServerVersion;
@@ -33,27 +36,34 @@ const hyphenToUpperCase = (name) => {
     });
 };
 
+const processKill = (process) => {
+    if (isWindows) {
+        exec('taskkill /pid ' + process.pid + ' /T /F');
+    } else {
+        process.kill();
+    }
+};
+
 /**
  * Run the webpack CLI for a test case.
  *
  * @param {String} testCase The path to folder that contains the webpack.config.js
  * @param {Array} args Array of arguments to pass to webpack
  * @param {Object<string, any>} options Boolean that decides if a default output path will be set or not
- * @returns {Object} The webpack output or Promise when nodeOptions are present
+ * @returns {Promise}
  */
-const run = (testCase, args = [], options = {}) => {
+const run = async (testCase, args = [], options = {}) => {
     const cwd = path.resolve(testCase);
     const { nodeOptions = [] } = options;
-    const processExecutor = nodeOptions.length ? execaNode : spawnSync;
-    const result = processExecutor(WEBPACK_PATH, args, {
+    const processExecutor = nodeOptions.length ? execaNode : execa;
+
+    return processExecutor(WEBPACK_PATH, args, {
         cwd,
         reject: false,
         stdio: ENABLE_LOG_COMPILATION ? 'inherit' : 'pipe',
         maxBuffer: Infinity,
         ...options,
     });
-
-    return result;
 };
 
 /**
@@ -82,11 +92,7 @@ const runWatch = (testCase, args = [], options, outputKillStr = /webpack \d+\.\d
                     const output = chunk.toString('utf8');
 
                     if (outputKillStr.test(output)) {
-                        if (isWindows) {
-                            exec('taskkill /pid ' + proc.pid + ' /T /F');
-                        } else {
-                            proc.kill();
-                        }
+                        processKill(proc);
                     }
 
                     callback();
@@ -140,7 +146,13 @@ const runPromptWithAnswers = (location, args, answers, waitForOutput = true) => 
 
     if (waitForOutput) {
         let currentAnswer = 0;
-        const writeAnswer = () => {
+        const writeAnswer = (output) => {
+            if (!answers) {
+                runner.stdin.write(output);
+                runner.kill();
+                return;
+            }
+
             if (currentAnswer < answers.length) {
                 runner.stdin.write(answers[currentAnswer]);
                 currentAnswer++;
@@ -157,7 +169,9 @@ const runPromptWithAnswers = (location, args, answers, waitForOutput = true) => 
                         }
                         // we must receive new stdout, then have 2 seconds
                         // without any stdout before writing the next answer
-                        outputTimeout = setTimeout(writeAnswer, delay);
+                        outputTimeout = setTimeout(() => {
+                            writeAnswer(output);
+                        }, delay);
                     }
 
                     callback();
@@ -210,48 +224,36 @@ const runPromptWithAnswers = (location, args, answers, waitForOutput = true) => 
     });
 };
 
-/**
- *
- * @param {String} testCase - testCase directory
- * @param {String} file - file relative to testCase
- * @param {String} data - data to append
- * @returns {undefined}
- * @throws - throw an Error if file does not exist
- */
-const appendDataIfFileExists = (testCase, file, data) => {
-    const filePath = path.resolve(testCase, file);
-    if (fs.existsSync(filePath)) {
-        fs.appendFileSync(filePath, data);
-    } else {
-        throw new Error(`Oops! ${filePath} does not exist!`);
-    }
-};
+const normalizeStdout = (string) => stripAnsi(string);
 
-/**
- * fs.copyFileSync was added in Added in: v8.5.0
- * We should refactor the below code once our minimal supported version is v8.5.0
- * @param {String} testCase - testCase directory
- * @param {String} file - file relative to testCase which is going to be copied
- * @returns {String} - absolute file path of new file
- * @throws - throw an Error if file copy fails
- */
-const copyFileAsync = async (testCase, file) => {
-    const fileToChangePath = path.resolve(testCase, file);
-    const fileMetaData = path.parse(file);
-    const fileCopyName = fileMetaData.name.concat('_copy').concat(fileMetaData.ext);
-    const copyFilePath = path.resolve(testCase, fileCopyName);
-    fs.access(fileToChangePath, fs.F_OK, (accessErr) => {
-        if (accessErr) throw new Error(`Oops! ${fileToChangePath} does not exist!`);
+const readFile = (path, options = {}) =>
+    new Promise((resolve, reject) => {
+        fs.readFile(path, options, (err, stats) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(stats);
+        });
     });
-    const data = fs.readFileSync(fileToChangePath);
-    fs.writeFileSync(copyFilePath, data);
-    return copyFilePath;
-};
 
-const runInstall = async (cwd) => {
-    await execa('yarn', {
-        cwd,
+const readdir = (path) =>
+    new Promise((resolve, reject) => {
+        fs.readdir(path, (err, stats) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(stats);
+        });
     });
+
+const uniqueDirectoryForTest = async (assetsPath) => {
+    const localDir = Date.now().toString();
+
+    const result = path.resolve(assetsPath, localDir);
+
+    if (!fs.existsSync(result)) fs.mkdirSync(result);
+
+    return result;
 };
 
 module.exports = {
@@ -259,11 +261,13 @@ module.exports = {
     runWatch,
     runAndGetWatchProc,
     runPromptWithAnswers,
-    appendDataIfFileExists,
-    copyFileAsync,
-    runInstall,
-    hyphenToUpperCase,
     isWebpack5,
     isDevServer4,
     isWindows,
+    normalizeStdout,
+    uniqueDirectoryForTest,
+    readFile,
+    readdir,
+    hyphenToUpperCase,
+    processKill,
 };

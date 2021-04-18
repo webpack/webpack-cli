@@ -21,6 +21,7 @@ Options:
   --no-bail                                                                          Negative 'bail' option.
   --cache                                                                            Enable in memory caching. Disable caching.
   --no-cache                                                                         Negative 'cache' option.
+  --cache-max-generations <value>                                                    Number of generations unused cache entries stay in memory cache at minimum (1 = may be removed after unused for a single compilation, ..., Infinity: kept forever).
   --cache-type <value>                                                               In memory caching. Filesystem caching.
   --cache-cache-directory <value>                                                    Base directory for the cache (defaults to node_modules/.cache/webpack).
   --cache-cache-location <value>                                                     Locations for the cache (defaults to cacheDirectory / name).
@@ -31,6 +32,8 @@ Options:
   --cache-immutable-paths-reset                                                      Clear all items provided in configuration. List of paths that are managed by a package manager and contain a version or hash in its path so all files are immutable.
   --cache-managed-paths <value...>                                                   A path to a managed directory (usually a node_modules directory).
   --cache-managed-paths-reset                                                        Clear all items provided in configuration. List of paths that are managed by a package manager and can be trusted to not be modified otherwise.
+  --cache-max-age <value>                                                            Time for which unused cache entries stay in the filesystem cache at minimum (in milliseconds).
+  --cache-max-memory-generations <value>                                             Number of generations unused cache entries stay in memory cache at minimum (0 = no memory cache used, 1 = may be removed after unused for a single compilation, ..., Infinity: kept forever). Cache entries will be deserialized from disk when removed from memory cache.
   --cache-name <value>                                                               Name for the cache. Different names will lead to different coexisting caches.
   --cache-store <value>                                                              When to store data to the filesystem. (pack: Store data when compiler is idle in a single file).
   --cache-version <value>                                                            Version of the cache data. Different versions won't allow to reuse the cache and override existing content. Update the version when config changed in a way which doesn't allow to reuse cache. This will invalidate the cache.
@@ -85,6 +88,10 @@ Options:
   --ignore-warnings-message <value...>                                               A RegExp to select the warning message.
   --ignore-warnings-module <value...>                                                A RegExp to select the origin module for the warning.
   --ignore-warnings-reset                                                            Clear all items provided in configuration. Ignore specific warnings.
+  --infrastructure-logging-append-only                                               Only appends lines to the output. Avoids updating existing output e. g. for status messages. This option is only used when no custom console is provided.
+  --no-infrastructure-logging-append-only                                            Negative 'infrastructure-logging-append-only' option.
+  --infrastructure-logging-colors                                                    Enables/Disables colorful output. This option is only used when no custom console is provided.
+  --no-infrastructure-logging-colors                                                 Negative 'infrastructure-logging-colors' option.
   --infrastructure-logging-debug [value...]                                          Enable/Disable debug logging for all loggers. Enable debug logging for specific loggers.
   --no-infrastructure-logging-debug                                                  Negative 'infrastructure-logging-debug' option.
   --infrastructure-logging-debug-reset                                               Clear all items provided in configuration. Enable debug logging for specific loggers.
@@ -103,12 +110,14 @@ Options:
   --module-generator-asset-emit                                                      Emit an output asset from this asset module. This can be set to 'false' to omit emitting e. g. for SSR.
   --no-module-generator-asset-emit                                                   Negative 'module-generator-asset-emit' option.
   --module-generator-asset-filename <value>                                          Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
+  --module-generator-asset-public-path <value>                                       The 'publicPath' specifies the public URL address of the output files when referenced in a browser.
   --module-generator-asset-inline-data-url-encoding <value>                          Asset encoding (defaults to base64).
   --no-module-generator-asset-inline-data-url-encoding                               Negative 'module-generator-asset-inline-data-url-encoding' option.
   --module-generator-asset-inline-data-url-mimetype <value>                          Asset mimetype (getting from file extension by default).
   --module-generator-asset-resource-emit                                             Emit an output asset from this asset module. This can be set to 'false' to omit emitting e. g. for SSR.
   --no-module-generator-asset-resource-emit                                          Negative 'module-generator-asset-resource-emit' option.
   --module-generator-asset-resource-filename <value>                                 Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
+  --module-generator-asset-resource-public-path <value>                              The 'publicPath' specifies the public URL address of the output files when referenced in a browser.
   --module-no-parse <value...>                                                       A regular expression, when matched the module is not parsed. An absolute path, when the module starts with this path it is not parsed.
   --module-no-parse-reset                                                            Clear all items provided in configuration. Don't parse files matching. It's matched against the full resolved request.
   --module-parser-asset-data-url-condition-max-size <value>                          Maximum size of asset that should be inline as modules. Default: 8kb.
@@ -534,7 +543,7 @@ Options:
   -o, --output-path <value>                                                          Output location of the file generated by webpack e.g. ./dist/.
   --output-pathinfo [value]                                                          Include comments with information about the modules.
   --no-output-pathinfo                                                               Negative 'output-pathinfo' option.
-  --output-public-path <value>                                                       The `publicPath` specifies the public URL address of the output files when referenced in a browser.
+  --output-public-path <value>                                                       The 'publicPath' specifies the public URL address of the output files when referenced in a browser.
   --output-script-type <value>                                                       This option enables loading async chunks via a custom script type, such as script type="module".
   --no-output-script-type                                                            Negative 'output-script-type' option.
   --output-source-map-filename <value>                                               The filename of the SourceMaps for the JavaScript files. They are inside the 'output.path' directory.
@@ -774,6 +783,8 @@ Options:
   --no-stats-group-modules-by-layer                                                  Negative 'stats-group-modules-by-layer' option.
   --stats-group-modules-by-path                                                      Group modules by their path.
   --no-stats-group-modules-by-path                                                   Negative 'stats-group-modules-by-path' option.
+  --stats-group-modules-by-type                                                      Group modules by their type.
+  --no-stats-group-modules-by-type                                                   Negative 'stats-group-modules-by-type' option.
   --stats-hash                                                                       Add the hash of the compilation.
   --no-stats-hash                                                                    Negative 'stats-hash' option.
   --stats-ids                                                                        Add ids.
@@ -858,11 +869,11 @@ Commands:
   configtest|t [config-path]                                                         Validate a webpack configuration.
   help|h [command] [option]                                                          Display help for commands and options.
   info|i [options]                                                                   Outputs information about your system.
-  init|c [scaffold...] [options]                                                     Initialize a new webpack configuration.
-  loader|l [output-path]                                                             Scaffold a loader.
+  init|create|new|c|n [generation-path] [options]                                    Initialize a new webpack project.
+  loader|l [output-path] [options]                                                   Scaffold a loader.
   migrate|m <config-path> [new-config-path]                                          Migrate a configuration to a new version.
-  plugin|p [output-path]                                                             Scaffold a plugin.
-  serve|s [entries...] [options]                                                     Run the webpack dev server.
+  plugin|p [output-path] [options]                                                   Scaffold a plugin.
+  serve|server|s [entries...] [options]                                              Run the webpack dev server.
   version|v [commands...]                                                            Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
   watch|w [entries...] [options]                                                     Run webpack and watch for files changes.
 

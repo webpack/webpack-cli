@@ -37,6 +37,9 @@ jobs:
       - name: Install dependencies
         run: yarn
 
+      - name: Bootstrap
+        run: yarn lerna bootstrap
+
       - name: Build
         run: yarn build
 
@@ -71,15 +74,14 @@ jobs:
           path: |
             node_modules
             */*/node_modules
-          key: a-${{ runner.os }}-${{ matrix.webpack-version }}-yarn-${{ hashFiles('**/yarn.lock', './yarn.lock') }}
+          key: b-${{ runner.os }}-${{ matrix.webpack-version }}-yarn-${{ hashFiles('**/yarn.lock', './yarn.lock') }}
           restore-keys: |
-            a-${{ runner.os }}-${{ matrix.webpack-version }}-yarn-
+            b-${{ runner.os }}-${{ matrix.webpack-version }}-yarn-
 
       - name: Install dependencies
         run: yarn
 
       - name: Install webpack ${{ matrix.webpack-version }}
-        if: matrix.webpack-version == '4'
         run: yarn add -W webpack@${{ matrix.webpack-version }}
 
       - name: Prepare environment for tests

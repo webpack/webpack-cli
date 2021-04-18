@@ -20,6 +20,8 @@ test/**/node_modules
 # Lock files
 test/**/yarn.lock
 test/**/package-json.lock
+!test/api/**/yarn.lock
+!test/api/**/package-lock.json
 
 # npm-debug log
 npm-debug.*
@@ -39,6 +41,7 @@ lerna-debug.log
 
 # package-lock file
 package-lock.json
+!test/api/**/package-lock.json
 
 junit.xml
 

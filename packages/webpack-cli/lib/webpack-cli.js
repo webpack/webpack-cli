@@ -9,7 +9,7 @@ const utils = require('./utils');
 class WebpackCLI {
     constructor() {
         // Global
-        this.webpack = require('webpack');
+        this.webpack = require(process.env.WEBPACK_PACKAGE || 'webpack');
         this.logger = utils.logger;
         this.utils = utils;
 
@@ -24,7 +24,7 @@ class WebpackCLI {
 
     async makeCommand(commandOptions, options, action) {
         const alreadyLoaded = this.program.commands.find(
-            (command) => command.name() === commandOptions.name || command.aliases().includes(commandOptions.alias),
+            (command) => command.name() === commandOptions.name.split(' ')[0] || command.aliases().includes(commandOptions.alias),
         );
 
         if (alreadyLoaded) {
@@ -180,6 +180,7 @@ class WebpackCLI {
                 description: option.description || '',
                 type: mainOptionType,
                 multiple: option.multiple,
+                defaultValue: option.defaultValue,
             };
 
             if (needNegativeOption) {
@@ -227,6 +228,8 @@ class WebpackCLI {
                     })
                     .default(mainOption.defaultValue);
 
+                optionForCommand.helpLevel = option.helpLevel;
+
                 command.addOption(optionForCommand);
             } else if (mainOption.type.has(String)) {
                 let skipDefault = true;
@@ -242,15 +245,21 @@ class WebpackCLI {
                     })
                     .default(mainOption.defaultValue);
 
+                optionForCommand.helpLevel = option.helpLevel;
+
                 command.addOption(optionForCommand);
             } else if (mainOption.type.has(Boolean)) {
                 const optionForCommand = new Option(mainOption.flags, mainOption.description).default(mainOption.defaultValue);
+
+                optionForCommand.helpLevel = option.helpLevel;
 
                 command.addOption(optionForCommand);
             } else {
                 const optionForCommand = new Option(mainOption.flags, mainOption.description)
                     .argParser(Array.from(mainOption.type)[0])
                     .default(mainOption.defaultValue);
+
+                optionForCommand.helpLevel = option.helpLevel;
 
                 command.addOption(optionForCommand);
             }
@@ -280,18 +289,25 @@ class WebpackCLI {
                 })
                 .default(mainOption.defaultValue);
 
+            optionForCommand.helpLevel = option.helpLevel;
+
             command.addOption(optionForCommand);
         } else if (mainOption.type.size === 0 && negativeOption) {
             const optionForCommand = new Option(mainOption.flags, mainOption.description);
 
             // Hide stub option
             optionForCommand.hideHelp();
+            optionForCommand.helpLevel = option.helpLevel;
 
             command.addOption(optionForCommand);
         }
 
         if (negativeOption) {
-            command.addOption(new Option(negativeOption.flags, negativeOption.description));
+            const optionForCommand = new Option(negativeOption.flags, negativeOption.description);
+
+            optionForCommand.helpLevel = option.helpLevel;
+
+            command.addOption(optionForCommand);
         }
     }
 
@@ -324,20 +340,33 @@ class WebpackCLI {
             {
                 name: 'config',
                 alias: 'c',
-                type: String,
+                configs: [
+                    {
+                        type: 'string',
+                    },
+                ],
                 multiple: true,
                 description: 'Provide path to a webpack configuration file e.g. ./webpack.config.js.',
             },
             {
                 name: 'config-name',
-                type: String,
+                configs: [
+                    {
+                        type: 'string',
+                    },
+                ],
                 multiple: true,
                 description: 'Name of the configuration to use.',
             },
             {
                 name: 'merge',
                 alias: 'm',
-                type: Boolean,
+                configs: [
+                    {
+                        type: 'enum',
+                        values: [true],
+                    },
+                ],
                 description: "Merge two or more configurations using 'webpack-merge'.",
             },
             // Complex configs
@@ -373,7 +402,11 @@ class WebpackCLI {
             },
             {
                 name: 'node-env',
-                type: String,
+                configs: [
+                    {
+                        type: 'string',
+                    },
+                ],
                 multiple: false,
                 description: 'Sets process.env.NODE_ENV to the specified value.',
             },
@@ -382,20 +415,40 @@ class WebpackCLI {
             {
                 name: 'hot',
                 alias: 'h',
-                type: [Boolean, String],
+                configs: [
+                    {
+                        type: 'string',
+                    },
+                    {
+                        type: 'boolean',
+                    },
+                ],
                 negative: true,
                 description: 'Enables Hot Module Replacement',
                 negatedDescription: 'Disables Hot Module Replacement.',
             },
             {
                 name: 'analyze',
-                type: Boolean,
+                configs: [
+                    {
+                        type: 'enum',
+                        values: [true],
+                    },
+                ],
                 multiple: false,
                 description: 'It invokes webpack-bundle-analyzer plugin to get bundle information.',
             },
             {
                 name: 'progress',
-                type: [Boolean, String],
+                configs: [
+                    {
+                        type: 'string',
+                    },
+                    {
+                        type: 'enum',
+                        values: [true],
+                    },
+                ],
                 description: 'Print compilation progress during build.',
             },
             {
@@ -408,14 +461,26 @@ class WebpackCLI {
             },
             {
                 name: 'prefetch',
-                type: String,
+                configs: [
+                    {
+                        type: 'string',
+                    },
+                ],
                 description: 'Prefetch this request.',
             },
 
             // Output options
             {
                 name: 'json',
-                type: [String, Boolean],
+                configs: [
+                    {
+                        type: 'string',
+                    },
+                    {
+                        type: 'enum',
+                        values: [true],
+                    },
+                ],
                 alias: 'j',
                 description: 'Prints result as JSON or store it in a file.',
             },
@@ -423,26 +488,46 @@ class WebpackCLI {
             // For webpack@4
             {
                 name: 'entry',
-                type: String,
+                configs: [
+                    {
+                        type: 'string',
+                    },
+                ],
                 multiple: true,
                 description: 'The entry point(s) of your application e.g. ./src/main.js.',
             },
             {
                 name: 'output-path',
                 alias: 'o',
-                type: String,
+                configs: [
+                    {
+                        type: 'string',
+                    },
+                ],
                 description: 'Output location of the file generated by webpack e.g. ./dist/.',
             },
             {
                 name: 'target',
                 alias: 't',
-                type: String,
+                configs: [
+                    {
+                        type: 'string',
+                    },
+                ],
                 multiple: this.webpack.cli !== undefined,
                 description: 'Sets the build target e.g. node.',
             },
             {
                 name: 'devtool',
-                type: String,
+                configs: [
+                    {
+                        type: 'string',
+                    },
+                    {
+                        type: 'enum',
+                        values: [false],
+                    },
+                ],
                 negative: true,
                 alias: 'd',
                 description: 'Determine source maps to use.',
@@ -450,24 +535,43 @@ class WebpackCLI {
             },
             {
                 name: 'mode',
-                type: String,
+                configs: [
+                    {
+                        type: 'string',
+                    },
+                ],
                 description: 'Defines the mode to pass to webpack.',
             },
             {
                 name: 'name',
-                type: String,
+                configs: [
+                    {
+                        type: 'string',
+                    },
+                ],
                 description: 'Name of the configuration. Used when loading multiple configurations.',
             },
             {
                 name: 'stats',
-                type: [String, Boolean],
+                configs: [
+                    {
+                        type: 'string',
+                    },
+                    {
+                        type: 'boolean',
+                    },
+                ],
                 negative: true,
                 description: 'It instructs webpack on how to treat the stats e.g. verbose.',
                 negatedDescription: 'Disable stats output.',
             },
             {
                 name: 'watch',
-                type: Boolean,
+                configs: [
+                    {
+                        type: 'boolean',
+                    },
+                ],
                 negative: true,
                 alias: 'w',
                 description: 'Watch for files changes.',
@@ -475,7 +579,11 @@ class WebpackCLI {
             },
             {
                 name: 'watch-options-stdin',
-                type: Boolean,
+                configs: [
+                    {
+                        type: 'boolean',
+                    },
+                ],
                 negative: true,
                 description: 'Stop watching when stdin stream has ended.',
                 negatedDescription: 'Do not stop watching when stdin stream has ended.',
@@ -489,7 +597,7 @@ class WebpackCLI {
                   const inBuiltIn = builtInFlags.find((builtInFlag) => builtInFlag.name === flag);
 
                   if (inBuiltIn) {
-                      return { ...meta, name: flag, group: 'core', ...inBuiltIn };
+                      return { ...meta, name: flag, group: 'core', ...inBuiltIn, configs: meta.configs || [] };
                   }
 
                   return { ...meta, name: flag, group: 'core' };
@@ -500,7 +608,7 @@ class WebpackCLI {
             .concat(builtInFlags.filter((builtInFlag) => !coreFlags.find((coreFlag) => builtInFlag.name === coreFlag.name)))
             .concat(coreFlags)
             .map((option) => {
-                option.help = minimumHelpFlags.includes(option.name) ? 'minimum' : 'verbose';
+                option.helpLevel = minimumHelpFlags.includes(option.name) ? 'minimum' : 'verbose';
 
                 return option;
             });
@@ -544,7 +652,7 @@ class WebpackCLI {
         const externalBuiltInCommandsInfo = [
             {
                 name: 'serve [entries...]',
-                alias: 's',
+                alias: ['server', 's'],
                 pkg: '@webpack-cli/serve',
             },
             {
@@ -554,7 +662,7 @@ class WebpackCLI {
             },
             {
                 name: 'init',
-                alias: 'c',
+                alias: ['create', 'new', 'c', 'n'],
                 pkg: '@webpack-cli/generators',
             },
             {
@@ -611,7 +719,7 @@ class WebpackCLI {
             return false;
         };
         const findCommandByName = (name) =>
-            this.program.commands.find((command) => name === command.name() || command.alias().includes(name));
+            this.program.commands.find((command) => name === command.name() || command.aliases().includes(name));
         const isOption = (value) => value.startsWith('-');
         const isGlobalOption = (value) =>
             value === '--color' ||
@@ -857,8 +965,6 @@ class WebpackCLI {
             const isCommandHelp = options.length === 1 && !isOption(options[0]);
 
             if (isGlobalHelp || isCommandHelp) {
-                const cliAPI = this;
-
                 program.configureHelp({
                     sortSubcommands: true,
                     // Support multiple aliases
@@ -891,30 +997,18 @@ class WebpackCLI {
                         }`;
                     },
                     visibleOptions: function visibleOptions(command) {
-                        const options = cliAPI.getBuiltInOptions();
-
                         return command.options.filter((option) => {
                             if (option.hidden) {
                                 return false;
                             }
 
-                            if (!isVerbose) {
-                                const foundOption = options.find((flag) => {
-                                    if (option.negate && flag.negative) {
-                                        return `no-${flag.name}` === option.name();
-                                    }
-
-                                    return flag.name === option.name();
-                                });
-
-                                if (foundOption) {
-                                    return foundOption.help === 'minimum';
-                                }
-
-                                return true;
+                            switch (option.helpLevel) {
+                                case 'verbose':
+                                    return isVerbose;
+                                case 'minimum':
+                                default:
+                                    return true;
                             }
-
-                            return true;
                         });
                     },
                     padWidth(command, helper) {
@@ -1345,7 +1439,7 @@ class WebpackCLI {
         } else {
             const { interpret } = this.utils;
 
-            // Order defines the priority, in increasing order
+            // Order defines the priority, in decreasing order
             const defaultConfigFiles = ['webpack.config', '.webpack/webpack.config', '.webpack/webpackfile']
                 .map((filename) =>
                     // Since .cjs is not available on interpret side add it manually to default config extension list

@@ -2,16 +2,16 @@
 const { run, isWebpack5 } = require('../../utils/test-utils');
 
 describe('invalid schema', () => {
-    it('should log webpack error and exit process on invalid config', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['serve', '--config', './webpack.config.mock.js']);
+    it('should log webpack error and exit process on invalid config', async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, ['serve', '--config', './webpack.config.mock.js']);
 
         expect(exitCode).toEqual(2);
         expect(stderr).toContain('Invalid configuration object');
         expect(stdout).toBeFalsy();
     });
 
-    it('should log webpack error and exit process on invalid flag', () => {
-        const { exitCode, stderr, stdout } = run(__dirname, ['serve', '--mode', 'Yukihira']);
+    it('should log webpack error and exit process on invalid flag', async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, ['serve', '--mode', 'Yukihira']);
 
         expect(exitCode).toEqual(2);
 
@@ -22,6 +22,22 @@ describe('invalid schema', () => {
             expect(stderr).toContain('Invalid configuration object');
         }
 
+        expect(stdout).toBeFalsy();
+    });
+
+    it('should log webpack-dev-server error and exit process on invalid flag', async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, ['serve', '--port', '-1']);
+
+        expect(exitCode).toEqual(2);
+        expect(stderr).toContain('RangeError');
+        expect(stdout).toBeFalsy();
+    });
+
+    it('should log webpack-dev-server error and exit process on invalid config', async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, ['serve', '--config', './webpack-dev-server.config.mock.js']);
+
+        expect(exitCode).toEqual(2);
+        expect(stderr).toContain('webpack Dev Server Invalid Options');
         expect(stdout).toBeFalsy();
     });
 });

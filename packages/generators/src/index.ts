@@ -4,9 +4,6 @@ import pluginGenerator from './plugin-generator';
 import addonGenerator from './addon-generator';
 import initGenerator from './init-generator';
 
-import { modifyHelperUtil } from './utils/modify-config-helper';
-import { npmPackagesExists } from './utils/npm-packages-exists';
-
 class GeneratorsCommand {
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
     async apply(cli: any): Promise<void> {
@@ -14,32 +11,41 @@ class GeneratorsCommand {
 
         await cli.makeCommand(
             {
-                name: 'init [scaffold...]',
-                alias: 'c',
-                description: 'Initialize a new webpack configuration.',
-                usage: '[scaffold...] [options]',
+                name: 'init [generation-path]',
+                alias: ['create', 'new', 'c', 'n'],
+                description: 'Initialize a new webpack project.',
+                usage: '[generation-path] [options]',
                 pkg: '@webpack-cli/generators',
             },
             [
                 {
-                    name: 'auto',
-                    type: Boolean,
-                    description: 'To generate default config',
+                    name: 'template',
+                    configs: [{ type: 'string' }],
+                    description: 'Type of template',
+                    defaultValue: 'default',
                 },
                 {
-                    name: 'generation-path',
-                    type: String,
-                    description: 'To scaffold in a specified path',
+                    name: 'force',
+                    configs: [
+                        {
+                            type: 'enum',
+                            values: [true],
+                        },
+                    ],
+                    description: 'Generate without questions (ideally) using default answers',
                 },
             ],
-            async (scaffold, options) => {
-                if (scaffold && scaffold.length > 0) {
-                    await npmPackagesExists(scaffold);
+            async (generationPath, options) => {
+                options.generationPath = generationPath || '.';
 
-                    return;
-                }
+                const env = yeoman.createEnv([], { cwd: options.generationPath });
+                const generatorName = 'webpack-init-generator';
 
-                modifyHelperUtil(initGenerator, null, null, options.auto, options.generationPath);
+                env.registerStub(initGenerator, generatorName);
+
+                env.run(generatorName, { cli, options }, () => {
+                    logger.success('Project has been initialised with webpack!');
+                });
             },
         );
 
@@ -48,17 +54,24 @@ class GeneratorsCommand {
                 name: 'loader [output-path]',
                 alias: 'l',
                 description: 'Scaffold a loader.',
-                usage: 'loader [output-path]',
+                usage: '[output-path] [options]',
                 pkg: '@webpack-cli/generators',
             },
-            [],
-            async (outputPath) => {
+            [
+                {
+                    name: 'template',
+                    configs: [{ type: 'string' }],
+                    description: 'Type of template',
+                    defaultValue: 'default',
+                },
+            ],
+            async (outputPath, options) => {
                 const env = yeoman.createEnv([], { cwd: outputPath });
                 const generatorName = 'webpack-loader-generator';
 
                 env.registerStub(loaderGenerator, generatorName);
 
-                env.run(generatorName, () => {
+                env.run(generatorName, { cli, options }, () => {
                     logger.success('Loader template has been successfully scaffolded.');
                 });
             },
@@ -69,17 +82,24 @@ class GeneratorsCommand {
                 name: 'plugin [output-path]',
                 alias: 'p',
                 description: 'Scaffold a plugin.',
-                usage: 'plugin [output-path]',
+                usage: '[output-path] [options]',
                 pkg: '@webpack-cli/generators',
             },
-            [],
-            async (outputPath) => {
+            [
+                {
+                    name: 'template',
+                    configs: [{ type: 'string' }],
+                    description: 'Type of template',
+                    defaultValue: 'default',
+                },
+            ],
+            async (outputPath, options) => {
                 const env = yeoman.createEnv([], { cwd: outputPath });
                 const generatorName = 'webpack-plugin-generator';
 
                 env.registerStub(pluginGenerator, generatorName);
 
-                env.run(generatorName, () => {
+                env.run(generatorName, { cli, options }, () => {
                     logger.success('Plugin template has been successfully scaffolded.');
                 });
             },
@@ -89,15 +109,3 @@ class GeneratorsCommand {
 
 export default GeneratorsCommand;
 export { addonGenerator, initGenerator };
-
-export * from './utils/ast-utils';
-export * from './utils/copy-utils';
-export * from './utils/modify-config-helper';
-export * from './utils/npm-packages-exists';
-export * from './utils/recursive-parser';
-export * from './utils/resolve-packages';
-export * from './utils/run-prettier';
-export * from './utils/scaffold';
-export * from './utils/validate-identifier';
-export * from './utils/prop-types';
-export * from './utils/global-packages-path';

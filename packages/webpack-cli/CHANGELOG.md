@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.6.0](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.5.0...webpack-cli@4.6.0) (2021-03-27)
+
+### Bug Fixes
+
+-   `negative` options ([#2555](https://github.com/webpack/webpack-cli/issues/2555)) ([f26ebc1](https://github.com/webpack/webpack-cli/commit/f26ebc105e140992639864fa01950454abd716ac))
+-   improve error message for help ([#2482](https://github.com/webpack/webpack-cli/issues/2482)) ([99ae2a3](https://github.com/webpack/webpack-cli/commit/99ae2a3b9f7ad8c1807839357360a1b4607865b1))
+-   show `--node-env` in minimum help output ([#2411](https://github.com/webpack/webpack-cli/issues/2411)) ([f5fc302](https://github.com/webpack/webpack-cli/commit/f5fc3023121f4d952a166879a46b2653c20b6349))
+
+### Features
+
+-   added `WEBPACK_PACKAGE` env var to use custom `webpack` package ([#2556](https://github.com/webpack/webpack-cli/issues/2556)) ([3d1e485](https://github.com/webpack/webpack-cli/commit/3d1e4855c55a6601d8a89dcb50d9d842009e3cda))
+-   added `WEBPACK_CLI_SKIP_IMPORT_LOCAL` env var to skip local import ([#2546](https://github.com/webpack/webpack-cli/issues/2546)) ([e130822](https://github.com/webpack/webpack-cli/commit/e13082221c2da01d8b8215ebc936474bf3ca1582))
+-   allow string value for the `--hot` option ([#2444](https://github.com/webpack/webpack-cli/issues/2444)) ([8656e78](https://github.com/webpack/webpack-cli/commit/8656e78d788bc8a504258d4dcc609767f63d60c4))
+-   display used config path when logging level=log ([#2431](https://github.com/webpack/webpack-cli/issues/2431)) ([f8406e1](https://github.com/webpack/webpack-cli/commit/f8406e1c5253849fad741eb45f1ece23a7c603f4))
+
 # [4.5.0](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.4.0...webpack-cli@4.5.0) (2021-02-02)
 
 ### Bug Fixes

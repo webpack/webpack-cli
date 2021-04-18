@@ -92,6 +92,233 @@ describe('CLI API', () => {
             command.parseAsync(['--no-boolean'], { from: 'user' });
         });
 
+        it('should make command with configs boolean option', async (done) => {
+            cli.program.commands = [];
+
+            const command = await cli.makeCommand(
+                {
+                    name: 'command',
+                },
+                [
+                    {
+                        name: 'configs-boolean',
+                        configs: [
+                            {
+                                type: 'boolean',
+                            },
+                        ],
+                        description: 'description',
+                    },
+                ],
+                (options) => {
+                    expect(options).toEqual({ configsBoolean: false });
+
+                    done();
+                },
+            );
+
+            command.parseAsync(['--no-configs-boolean'], { from: 'user' });
+        });
+
+        it('should make command with configs number option', async (done) => {
+            cli.program.commands = [];
+
+            const command = await cli.makeCommand(
+                {
+                    name: 'command',
+                },
+                [
+                    {
+                        name: 'configs-number',
+                        configs: [
+                            {
+                                type: 'number',
+                            },
+                        ],
+                        description: 'description',
+                    },
+                ],
+                (options) => {
+                    expect(options).toEqual({ configsNumber: 42 });
+
+                    done();
+                },
+            );
+
+            command.parseAsync(['--configs-number', '42'], { from: 'user' });
+        });
+
+        it('should make command with configs string option', async (done) => {
+            cli.program.commands = [];
+
+            const command = await cli.makeCommand(
+                {
+                    name: 'command',
+                },
+                [
+                    {
+                        name: 'configs-string',
+                        configs: [
+                            {
+                                type: 'string',
+                            },
+                        ],
+                        description: 'description',
+                    },
+                ],
+                (options) => {
+                    expect(options).toEqual({ configsString: 'foo' });
+
+                    done();
+                },
+            );
+
+            command.parseAsync(['--configs-string', 'foo'], { from: 'user' });
+        });
+
+        it('should make command with configs path option', async (done) => {
+            cli.program.commands = [];
+
+            const command = await cli.makeCommand(
+                {
+                    name: 'command',
+                },
+                [
+                    {
+                        name: 'configs-path',
+                        configs: [
+                            {
+                                type: 'path',
+                            },
+                        ],
+                        description: 'description',
+                    },
+                ],
+                (options) => {
+                    expect(options).toEqual({ configsPath: '/root/foo' });
+
+                    done();
+                },
+            );
+
+            command.parseAsync(['--configs-path', '/root/foo'], { from: 'user' });
+        });
+
+        it('should make command with configs RegExp option', async (done) => {
+            cli.program.commands = [];
+
+            const command = await cli.makeCommand(
+                {
+                    name: 'command',
+                },
+                [
+                    {
+                        name: 'configs-regexp',
+                        configs: [
+                            {
+                                type: 'RegExp',
+                            },
+                        ],
+                        description: 'description',
+                    },
+                ],
+                (options) => {
+                    expect(options).toEqual({ configsRegexp: '\\w+' });
+
+                    done();
+                },
+            );
+
+            command.parseAsync(['--configs-regexp', '\\w+'], { from: 'user' });
+        });
+
+        it('should make command with configs enum/string option', async (done) => {
+            cli.program.commands = [];
+
+            const command = await cli.makeCommand(
+                {
+                    name: 'command',
+                },
+                [
+                    {
+                        name: 'enum-string',
+                        configs: [
+                            {
+                                type: 'enum',
+                                values: ['foo'],
+                            },
+                        ],
+                        description: 'description',
+                    },
+                ],
+                (options) => {
+                    expect(options).toEqual({ enumString: 'foo' });
+
+                    done();
+                },
+            );
+
+            command.parseAsync(['--enum-string', 'foo'], { from: 'user' });
+        });
+
+        it('should make command with configs enum/number option', async (done) => {
+            cli.program.commands = [];
+
+            const command = await cli.makeCommand(
+                {
+                    name: 'command',
+                },
+                [
+                    {
+                        name: 'enum-number',
+                        configs: [
+                            {
+                                type: 'enum',
+                                values: [42],
+                            },
+                        ],
+                        description: 'description',
+                    },
+                ],
+                (options) => {
+                    expect(options).toEqual({ enumNumber: 42 });
+
+                    done();
+                },
+            );
+
+            command.parseAsync(['--enum-number', '42'], { from: 'user' });
+        });
+
+        it('should make command with configs enum/boolean option', async (done) => {
+            cli.program.commands = [];
+
+            const command = await cli.makeCommand(
+                {
+                    name: 'command',
+                },
+                [
+                    {
+                        name: 'enum-boolean',
+                        configs: [
+                            {
+                                type: 'boolean',
+                                values: [false],
+                            },
+                        ],
+                        description: 'description',
+                    },
+                ],
+                (options) => {
+                    expect(options).toEqual({ enumBoolean: false });
+
+                    done();
+                },
+            );
+
+            command.parseAsync(['--no-enum-boolean'], { from: 'user' });
+        });
+
         it('should make command with Boolean option and negative value #2', async (done) => {
             cli.program.commands = [];
 

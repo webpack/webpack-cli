@@ -1,6 +1,7 @@
 'use strict';
 
 const path = require('path');
+// eslint-disable-next-line node/no-unpublished-require
 const getPort = require('get-port');
 const { runWatch, isWebpack5, isDevServer4 } = require('../../utils/test-utils');
 
@@ -12,16 +13,6 @@ describe('basic serve usage', () => {
     beforeEach(async () => {
         port = await getPort();
     });
-
-    const isWindows = process.platform === 'win32';
-
-    // TODO fix me on windows
-    if (isWindows) {
-        it('TODO: Fix on windows', () => {
-            expect(true).toBe(true);
-        });
-        return;
-    }
 
     it('should work', async () => {
         const { stderr, stdout } = await runWatch(__dirname, ['serve']);
@@ -324,16 +315,18 @@ describe('basic serve usage', () => {
     });
 
     it("should log error on using '--watch' flag with serve", async () => {
-        const { stdout, stderr } = await runWatch(testPath, ['serve', '--watch']);
+        const { exitCode, stdout, stderr } = await runWatch(testPath, ['serve', '--watch']);
 
+        expect(exitCode).toBe(2);
         expect(stderr).toContain("Error: Unknown option '--watch'");
         expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
     });
 
     it("should log error on using '-w' alias with serve", async () => {
-        const { stdout, stderr } = await runWatch(testPath, ['serve', '-w']);
+        const { exitCode, stdout, stderr } = await runWatch(testPath, ['serve', '-w']);
 
+        expect(exitCode).toBe(2);
         expect(stderr).toContain("Error: Unknown option '-w'");
         expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
         expect(stdout).toBeFalsy();
@@ -345,5 +338,20 @@ describe('basic serve usage', () => {
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Error: Unknown option '--unknown-flag'");
         expect(stdout).toBeFalsy();
+    });
+
+    it('should work with the "stats" option in config', async () => {
+        const { stderr, stdout } = await runWatch(__dirname, ['serve', '--config', 'stats.config.js'], {}, /Compiled successfully/);
+
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('Compiled successfully');
+        expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
+    });
+
+    it('should throw error when same ports in multicompiler', async () => {
+        const { stderr, stdout } = await runWatch(__dirname, ['serve', '--config', 'same-ports-dev-serever.config.js']);
+
+        expect(stdout).toBeFalsy();
+        expect(stderr).toContain('Unique ports must be specified for each devServer option in your webpack configuration');
     });
 });

@@ -1,6 +1,6 @@
 'use strict';
 
-const { run, runAndGetWatchProc, isWebpack5 } = require('../../utils/test-utils');
+const { run, runAndGetWatchProc, isWebpack5, processKill } = require('../../utils/test-utils');
 const { writeFileSync } = require('fs');
 const { resolve } = require('path');
 
@@ -42,7 +42,7 @@ describe('basic', () => {
 
                     modified = true;
                 } else {
-                    proc.kill();
+                    processKill(proc);
                     done();
                 }
             }
@@ -75,7 +75,7 @@ describe('basic', () => {
 
                     modified = true;
                 } else {
-                    proc.kill();
+                    processKill(proc);
                     done();
                 }
             }
@@ -110,7 +110,7 @@ describe('basic', () => {
 
                     modified = true;
                 } else {
-                    proc.kill();
+                    processKill(proc);
                     done();
                 }
             }
@@ -143,7 +143,7 @@ describe('basic', () => {
 
                     modified = true;
                 } else {
-                    proc.kill();
+                    processKill(proc);
                     done();
                 }
             }
@@ -174,7 +174,7 @@ describe('basic', () => {
                 expect(stderr).toContain(`Compiler is using config: '${configPath}'`);
                 expect(stderr).toContain('Compiler finished');
 
-                proc.kill();
+                processKill(proc);
                 done();
             }
         });

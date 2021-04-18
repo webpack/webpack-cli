@@ -1,6 +1,7 @@
 'use strict';
 
 const path = require('path');
+// eslint-disable-next-line node/no-unpublished-require
 const getPort = require('get-port');
 const { runWatch } = require('../../utils/test-utils');
 
@@ -12,16 +13,6 @@ describe('serve with devServer in config', () => {
     beforeEach(async () => {
         port = await getPort();
     });
-
-    const isWindows = process.platform === 'win32';
-
-    // TODO fix me on windows
-    if (isWindows) {
-        it('TODO: Fix on windows', () => {
-            expect(true).toBe(true);
-        });
-        return;
-    }
 
     it('Should pick up the host and port from config', async () => {
         const { stdout, stderr } = await runWatch(testPath, ['serve']);

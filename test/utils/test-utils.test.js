@@ -1,15 +1,18 @@
 'use strict';
 
-const { appendDataIfFileExists, run, runAndGetWatchProc, hyphenToUpperCase } = require('./test-utils');
-const { writeFileSync, unlinkSync, readFileSync } = require('fs');
+const { run, runAndGetWatchProc, hyphenToUpperCase } = require('./test-utils');
+const { writeFileSync, unlinkSync, mkdirSync } = require('fs');
 const { resolve } = require('path');
+// eslint-disable-next-line node/no-unpublished-require
+const rimraf = require('rimraf');
+
+const ENTER = '\x0D';
 
 describe('appendFile', () => {
     describe('positive test-cases', () => {
         const junkFile = 'junkFile.js';
         const junkFilePath = resolve(__dirname, junkFile);
         const initialJunkData = 'initial junk data';
-        const junkComment = '//junk comment';
 
         beforeEach(() => {
             writeFileSync(junkFilePath, initialJunkData);
@@ -17,26 +20,12 @@ describe('appendFile', () => {
         afterEach(() => {
             unlinkSync(junkFilePath);
         });
-
-        it('should append data to file if file exists', () => {
-            appendDataIfFileExists(__dirname, junkFile, junkComment);
-
-            const actualData = readFileSync(junkFilePath).toString();
-
-            expect(actualData).toBe(initialJunkData + junkComment);
-        });
-    });
-
-    describe('negative test-cases', () => {
-        it('should throw error if file does not exist', () => {
-            expect(() => appendDataIfFileExists(__dirname, 'does-not-exist.js', 'junk data')).toThrowError();
-        });
     });
 });
 
 describe('run function', () => {
-    it('should work correctly by default', () => {
-        const { command, stdout, stderr } = run(__dirname);
+    it('should work correctly by default', async () => {
+        const { command, stdout, stderr } = await run(__dirname);
 
         expect(stderr).toBeFalsy();
         // Executes the correct command
@@ -45,8 +34,8 @@ describe('run function', () => {
         expect(stdout).toBeTruthy();
     });
 
-    it('executes cli with passed commands and params', () => {
-        const { stdout, stderr, command } = run(__dirname, ['info', '--output', 'markdown'], false);
+    it('executes cli with passed commands and params', async () => {
+        const { stdout, stderr, command } = await run(__dirname, ['info', '--output', 'markdown'], false);
 
         // execution command contains info command
         expect(command).toContain('info');
@@ -59,8 +48,8 @@ describe('run function', () => {
         expect(stderr).toBeFalsy();
     });
 
-    it('uses default output when output param is false', () => {
-        const { stdout, stderr, command } = run(__dirname, [], false);
+    it('uses default output when output param is false', async () => {
+        const { stdout, stderr, command } = await run(__dirname, [], false);
 
         // execution command contains info command
         expect(command).not.toContain('--output-path');
@@ -106,9 +95,13 @@ describe('runAndGetWatchProc function', () => {
     });
 
     it('writes to stdin', async () => {
-        const { stdout } = await runAndGetWatchProc(__dirname, ['init'], false, 'n');
+        const assetsPath = resolve(__dirname, './test-assets');
+        mkdirSync(assetsPath);
 
-        expect(stdout).toContain('Which will be your application entry point?');
+        const { stdout } = await runAndGetWatchProc(assetsPath, ['init', '--force', '--template=mango'], false, ENTER);
+        expect(stdout).toContain('Project has been initialised with webpack!');
+
+        rimraf.sync(assetsPath);
     });
 });
 

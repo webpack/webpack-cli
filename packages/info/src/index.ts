@@ -45,8 +45,12 @@ class InfoCommand {
             [
                 {
                     name: 'output',
-                    type: String,
-                    description: 'To get the output in specified format ( accept json or markdown )',
+                    configs: [
+                        {
+                            type: 'string',
+                        },
+                    ],
+                    description: 'To get the output in a specified format ( accept json or markdown )',
                 },
             ],
             async (options) => {

@@ -63,17 +63,17 @@ npx webpack-cli --help verbose
 ### Available Commands
 
 ```
-  build|bundle|b [entries...] [options]      Run webpack (default command, can be omitted).
-  configtest|t [config-path]                 Validate a webpack configuration.
-  help|h [command] [option]                  Display help for commands and options.
-  info|i [options]                           Outputs information about your system.
-  init|c [scaffold...] [options]             Initialize a new webpack configuration.
-  loader|l [output-path]                     Scaffold a loader.
-  migrate|m <config-path> [new-config-path]  Migrate a configuration to a new version.
-  plugin|p [output-path]                     Scaffold a plugin.
-  serve|s [entries...] [options]             Run the webpack dev server.
-  version|v [commands...]                    Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  watch|w [entries...] [options]             Run webpack and watch for files changes.
+  build|bundle|b [entries...] [options]                 Run webpack (default command, can be omitted).
+  configtest|t [config-path]                            Validate a webpack configuration.
+  help|h [command] [option]                             Display help for commands and options.
+  info|i [options]                                      Outputs information about your system.
+  init|create|new|c|n [generation-path] [options]       Initialize a new webpack project.
+  loader|l [output-path] [options]                      Scaffold a loader.
+  migrate|m <config-path> [new-config-path]             Migrate a configuration to a new version.
+  plugin|p [output-path] [options]                      Scaffold a plugin.
+  serve|server|s [entries...] [options]                 Run the webpack dev server.
+  version|v [commands...]                               Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  watch|w [entries...] [options]                        Run webpack and watch for files changes.
 ```
 
 ### webpack 4

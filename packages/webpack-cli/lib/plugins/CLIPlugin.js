@@ -40,14 +40,20 @@ class CLIPlugin {
     setupHelpfulOutput(compiler) {
         const pluginName = 'webpack-cli';
         const getCompilationName = () => (compiler.name ? `'${compiler.name}'` : '');
+        const logCompilation = (message) => {
+            if (process.env.WEBPACK_CLI_START_FINISH_FORCE_LOG) {
+                process.stderr.write(message);
+            } else {
+                this.logger.log(message);
+            }
+        };
 
         const { configPath } = this.options;
 
         compiler.hooks.run.tap(pluginName, () => {
             const name = getCompilationName();
 
-            this.logger.log(`Compiler${name ? ` ${name}` : ''} starting...`);
-
+            logCompilation(`Compiler${name ? ` ${name}` : ''} starting... `);
             if (configPath) {
                 this.logger.log(`Compiler${name ? ` ${name}` : ''} is using config: '${configPath}'`);
             }
@@ -62,7 +68,7 @@ class CLIPlugin {
 
             const name = getCompilationName();
 
-            this.logger.log(`Compiler${name ? ` ${name}` : ''} starting...`);
+            logCompilation(`Compiler${name ? ` ${name}` : ''} starting... `);
 
             if (configPath) {
                 this.logger.log(`Compiler${name ? ` ${name}` : ''} is using config: '${configPath}'`);
@@ -79,8 +85,7 @@ class CLIPlugin {
         (compiler.webpack ? compiler.hooks.afterDone : compiler.hooks.done).tap(pluginName, () => {
             const name = getCompilationName();
 
-            this.logger.log(`Compiler${name ? ` ${name}` : ''} finished`);
-
+            logCompilation(`Compiler${name ? ` ${name}` : ''} finished`);
             process.nextTick(() => {
                 if (compiler.watchMode) {
                     this.logger.log(`Compiler${name ? `${name}` : ''} is watching files for updates...`);
