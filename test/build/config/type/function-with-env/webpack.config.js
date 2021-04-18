@@ -9,6 +9,14 @@ module.exports = (env) => {
             },
         };
     }
+    if (env.foo === `''`) {
+        return {
+            entry: './a.js',
+            output: {
+                filename: 'empty-string.js',
+            },
+        };
+    }
     return {
         entry: './a.js',
         mode: 'development',
