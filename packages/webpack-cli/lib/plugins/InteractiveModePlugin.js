@@ -1,7 +1,7 @@
 const readline = require('readline');
 const { red, green, cyanBright, bold } = require('colorette');
 const logger = require('../utils/logger');
-
+const { SyncHook } = require('tapable');
 let version;
 try {
     version = require('webpack').version;
@@ -53,6 +53,7 @@ class InteractiveModeMultiCompilerHelperPlugin {
         // clear terminal if any one of child starts compilation
         compiler.hooks.beforeCompile.tap(this.name, () => {
             clrscr();
+            compiler.hooks.beforeInteractiveStats.call();
         });
     }
 }
@@ -89,6 +90,7 @@ class InteractiveModePlugin {
         // Configure stdin for keypress event
         const stdin = process.stdin;
         stdin.setEncoding('utf-8');
+        stdin.setRawMode(true);
         readline.emitKeypressEvents(stdin);
 
         // Configure keypress event for actions
@@ -115,13 +117,28 @@ class InteractiveModePlugin {
             this.compilers = compiler.compilers;
         }
 
+        // Register Custom Hooks for printing after clrscr
+        if (!compiler.hooks.beforeInteractiveStats) {
+            compiler.hooks = {
+                ...compiler.hooks,
+                beforeInteractiveStats: new SyncHook(),
+            };
+        }
+
+        // Test custom hook
+        // compiler.hooks.beforeInteractiveStats.tap(this.name, () => {
+        //     console.log('Hello!!');
+        // });
+
         // Clear for first run as well
         clrscr();
+        compiler.hooks.beforeInteractiveStats.call();
 
         if (!this.isMultiCompiler) {
             // Clear output on watch invalidate
             compiler.hooks.beforeCompile.tap(this.name, () => {
                 clrscr();
+                compiler.hooks.beforeInteractiveStats.call();
             });
 
             compiler.hooks.afterDone.tap(this.name, () => {
