@@ -374,10 +374,12 @@ class WebpackCLI {
                 name: 'env',
                 type: (value, previous = {}) => {
                     // for https://github.com/webpack/webpack-cli/issues/2642
-                    const regExpForSplitting = (value.match(/=/g) || []).length === 1 ? /=/ : /=(.+)/;
+                    if (value.endsWith('=')) {
+                        value.concat(`''`);
+                    }
 
                     // This ensures we're only splitting by the first `=`
-                    const [allKeys, val] = value.split(regExpForSplitting, 2);
+                    const [allKeys, val] = value.split(/=(.+)/, 2);
                     const splitKeys = allKeys.split(/\.(?!$)/);
 
                     let prevRef = previous;

@@ -17,6 +17,14 @@ module.exports = (env) => {
             },
         };
     }
+    if (env.foo === `bar=''`) {
+        return {
+            entry: './a.js',
+            output: {
+                filename: 'new-empty-string.js',
+            },
+        };
+    }
     return {
         entry: './a.js',
         mode: 'development',
