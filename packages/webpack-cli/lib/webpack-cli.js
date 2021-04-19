@@ -375,7 +375,7 @@ class WebpackCLI {
                 type: (value, previous = {}) => {
                     // for https://github.com/webpack/webpack-cli/issues/2642
                     if (value.endsWith('=')) {
-                        value.concat(`''`);
+                        value.concat('""');
                     }
 
                     // This ensures we're only splitting by the first `=`
