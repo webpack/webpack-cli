@@ -117,6 +117,36 @@ describe('function configuration', () => {
         expect(existsSync(resolve(__dirname, './dist/true.js'))).toBeTruthy();
     });
 
+    it('Supports empty string', async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--env', `foo=''`]);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toBeTruthy();
+        // Should generate the appropriate files
+        expect(existsSync(resolve(__dirname, './dist/empty-string.js'))).toBeTruthy();
+    });
+
+    it('Supports empty string with multiple "="', async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--env', `foo=bar=''`]);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toBeTruthy();
+        // Should generate the appropriate files
+        expect(existsSync(resolve(__dirname, './dist/new-empty-string.js'))).toBeTruthy();
+    });
+
+    it('Supports env variable with "=" at the end', async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--env', `foo=`]);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toBeTruthy();
+        // Should generate the appropriate files
+        expect(existsSync(resolve(__dirname, './dist/equal-at-the-end.js'))).toBeTruthy();
+    });
+
     it('is able to understand multiple env flags', async () => {
         const { exitCode, stderr, stdout } = await run(__dirname, ['--env', 'isDev', '--env', 'verboseStats', '--env', 'envMessage']);
 

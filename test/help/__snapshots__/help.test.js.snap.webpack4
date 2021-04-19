@@ -28,6 +28,8 @@ exports[`help should log error for invalid command using the "--help" option 1`]
 
 exports[`help should log error for invalid flag with the "--help" option #2 1`] = `"[webpack-cli] Unknown value for '--help' option, please use '--help=verbose'"`;
 
+exports[`help should log error for invalid flag with the "--help" option #2 2`] = `"[webpack-cli] Unknown value for '--help' option, please use '--help=verbose'"`;
+
 exports[`help should log error for invalid flag with the "--help" option 1`] = `
 "[webpack-cli] Incorrect use of help
 [webpack-cli] Please use: 'webpack help [command] [option]' | 'webpack [command] --help'
