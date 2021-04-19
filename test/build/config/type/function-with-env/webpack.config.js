@@ -25,6 +25,14 @@ module.exports = (env) => {
             },
         };
     }
+    if (env['foo=']) {
+        return {
+            entry: './a.js',
+            output: {
+                filename: 'equal-at-the-end.js',
+            },
+        };
+    }
     return {
         entry: './a.js',
         mode: 'development',
