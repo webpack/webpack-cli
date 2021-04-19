@@ -10,7 +10,7 @@ const isProduction = process.env.NODE_ENV == 'production';
 const stylesHandler = MiniCssExtractPlugin.loader;
 <% } else if (extractPlugin === "Only for Production") { %>
 const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader';
-<% else { %>
+<% } else { %>
 const stylesHandler = 'style-loader';
 <% } %>
 <% } %>
