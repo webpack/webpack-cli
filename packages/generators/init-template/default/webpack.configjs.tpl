@@ -1,8 +1,19 @@
 // Generated using webpack-cli https://github.com/webpack/webpack-cli
 
 const path = require('path');<% if (htmlWebpackPlugin) { %>
-const HtmlWebpackPlugin = require('html-webpack-plugin');<% } %><% if (isExtractPlugin) { %>
+const HtmlWebpackPlugin = require('html-webpack-plugin');<% } %><% if (extractPlugin !== 'No') { %>
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');<% } %>
+
+const isProduction = process.env.NODE_ENV == 'production';
+<% if (isCSS) { %>
+<% if (extractPlugin === "Yes") %>
+const stylesHandler = MiniCssExtractPlugin.loader;
+<% } else if (extractPlugin === "Only for Production") { %>
+const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader';
+<% else { %>
+const stylesHandler = 'style-loader';
+<% } %>
+<% } %>
 
 const config = {
     entry: '<%= entry %>',
@@ -17,7 +28,7 @@ const config = {
         new HtmlWebpackPlugin({
             template: 'index.html',
         }),
-<% } %><% if (isExtractPlugin) { %>
+<% } %><% if (extractPlugin === "Yes") { %>
         new MiniCssExtractPlugin(),
 <% } %>
         // Add your plugins here
@@ -36,23 +47,23 @@ const config = {
             },<% } %><%  if (isCSS && !isPostCSS) { %>
             {
                 test: /\.css$/i,
-                use: [<% if (isExtractPlugin) { %>MiniCssExtractPlugin.loader<% } else { %>'style-loader' <% } %>,'css-loader'],
+                use: [stylesHandler,'css-loader'],
             },<% } %><%  if (cssType == 'SASS') { %>
             {
                 test: /\.s[ac]ss$/i,
-                use: [<% if (isExtractPlugin) { %>MiniCssExtractPlugin.loader<% } else { %>'style-loader' <% } %>, 'css-loader', <% if (isPostCSS) { %>'postcss-loader', <% } %>'sass-loader'],
+                use: [stylesHandler, 'css-loader', <% if (isPostCSS) { %>'postcss-loader', <% } %>'sass-loader'],
             },<% } %><%  if (cssType == 'LESS') { %>
             {
                 test: /\.less$/i,
-                use: [<% if (isPostCSS) { %><% if (isExtractPlugin) { %>MiniCssExtractPlugin.loader<% } else { %>'style-loader' <% } %>, 'css-loader', 'postcss-loader', <% } %>'less-loader'],
+                use: [<% if (isPostCSS) { %>stylesHandler, 'css-loader', 'postcss-loader', <% } %>'less-loader'],
             },<% } %><%  if (cssType == 'Stylus') { %>
             {
                 test: /\.styl$/i,
-                use: [<% if (isPostCSS) { %><% if (isExtractPlugin) { %>MiniCssExtractPlugin.loader<% } else { %>'style-loader' <% } %>, 'css-loader', 'postcss-loader', <% } %>'stylus-loader'],
+                use: [<% if (isPostCSS) { %>stylesHandler, 'css-loader', 'postcss-loader', <% } %>'stylus-loader'],
             },<% } %><%  if (isPostCSS && isCSS) { %>
             {
                 test: /\.css$/i,
-                use: [<% if (isExtractPlugin) { %>MiniCssExtractPlugin.loader<% } else { %>'style-loader' <% } %>, 'css-loader', 'postcss-loader'],
+                use: [stylesHandler, 'css-loader', 'postcss-loader'],
             },<% } %>
             {
                 test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
@@ -69,8 +80,11 @@ const config = {
 };
 
 module.exports = () => {
-    if (process.env.NODE_ENV == 'production') {
+    if (isProduction) {
         config.mode = 'production';
+        <% if (extractPlugin === "Only for Production") { %>
+        config.plugins.push(new MiniCssExtractPlugin());
+        <% } %>
     } else {
         config.mode = 'development';
     }
