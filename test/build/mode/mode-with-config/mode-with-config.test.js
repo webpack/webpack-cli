@@ -1,8 +1,7 @@
 'use strict';
-const { existsSync } = require('fs');
-const { resolve } = require('path');
+
 // eslint-disable-next-line node/no-unpublished-require
-const { run, readFile } = require('../../../utils/test-utils');
+const { run } = require('../../../utils/test-utils');
 
 describe('mode flags with config', () => {
     it('should run in production mode when --mode=production is passed', async () => {
@@ -11,22 +10,7 @@ describe('mode flags with config', () => {
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
-
-        // Should generate the appropriate files
-        expect(existsSync(resolve(__dirname, './dist/main.js.OTHER.LICENSE.txt'))).toBeTruthy();
-        expect(existsSync(resolve(__dirname, './dist/main.js'))).toBeTruthy();
-        expect(existsSync(resolve(__dirname, './dist/main.js.map'))).toBeFalsy();
-
-        let data;
-
-        try {
-            // Correct mode should be propagated to the compiler
-            data = await readFile(resolve(__dirname, './dist/main.js'), 'utf-8');
-        } catch (error) {
-            expect(error).toBe(null);
-        }
-
-        expect(data).toContain('"production mode"');
+        expect(stdout).toContain(`mode: 'production'`);
     });
 
     it('should run in development mode when --mode=development is passed', async () => {
@@ -35,22 +19,7 @@ describe('mode flags with config', () => {
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
-
-        // Should generate the appropriate files
-        expect(existsSync(resolve(__dirname, './dist/main.js.OTHER.LICENSE.txt'))).toBeTruthy();
-        expect(existsSync(resolve(__dirname, './dist/main.js'))).toBeTruthy();
-        expect(existsSync(resolve(__dirname, './dist/main.js.map'))).toBeFalsy();
-
-        let data;
-
-        try {
-            // Correct mode should be propagated to the compiler
-            data = await readFile(resolve(__dirname, './dist/main.js'), 'utf-8');
-        } catch (error) {
-            expect(error).toBe(null);
-        }
-
-        expect(data).toContain('development mode');
+        expect(stdout).toContain(`mode: 'development'`);
     });
 
     it('should run in none mode when --mode=none is passed', async () => {
@@ -59,34 +28,10 @@ describe('mode flags with config', () => {
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
-
-        // Should generate the appropriate files
-        // Should generate the appropriate files
-        expect(existsSync(resolve(__dirname, './dist/main.js.OTHER.LICENSE.txt'))).toBeTruthy();
-        expect(existsSync(resolve(__dirname, './dist/main.js'))).toBeTruthy();
-        expect(existsSync(resolve(__dirname, './dist/main.js.map'))).toBeFalsy();
-
-        let data;
-
-        try {
-            // Correct mode should be propagated to the compiler
-            data = await readFile(resolve(__dirname, './dist/main.js'), 'utf-8');
-        } catch (error) {
-            expect(error).toBe(null);
-        }
-
-        expect(data).toContain('none mode');
+        expect(stdout).toContain(`mode: 'none'`);
     });
 
-    it('should use mode flag over config', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ['--mode', 'production', '-c', 'webpack.config2.js']);
-
-        expect(exitCode).toEqual(0);
-        expect(stderr).toBeFalsy();
-        expect(stdout).toContain(`mode: 'production'`);
-    });
-
-    it('should use mode from flag over NODE_ENV', async () => {
+    it('should use mode from flag over "process.env.NODE_ENV"', async () => {
         const { exitCode, stderr, stdout } = await run(__dirname, ['--mode', 'none', '-c', 'webpack.config2.js'], false, [], {
             NODE_ENV: 'production',
         });

@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "terser-webpack-plugin": "^3.0.1",
-    "react": "^16.13.0"
-  }
-}
