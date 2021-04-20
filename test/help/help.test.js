@@ -116,7 +116,7 @@ describe('help', () => {
             expect(normalizeStdout(stdout)).toMatchSnapshot('stdout');
         });
 
-        it(`should show help information for '${name}' command using the "--help verbose" option`, async () => {
+        it.skip(`should show help information for '${name}' command using the "--help verbose" option`, async () => {
             const { exitCode, stderr, stdout } = await run(__dirname, [name, '--help', 'verbose']);
 
             expect(exitCode).toBe(0);
@@ -161,7 +161,7 @@ describe('help', () => {
                 expect(normalizeStdout(stdout)).toMatchSnapshot('stdout');
             });
 
-            it(`should show help information for '${alias}' command using the "--help verbose" option`, async () => {
+            it.skip(`should show help information for '${alias}' command using the "--help verbose" option`, async () => {
                 const { exitCode, stderr, stdout } = await run(__dirname, [alias, '--help', 'verbose']);
 
                 expect(exitCode).toBe(0);
