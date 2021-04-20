@@ -4,7 +4,7 @@ const { run, hyphenToUpperCase } = require('../../utils/test-utils');
 const CLI = require('../../../packages/webpack-cli/lib/index');
 
 const cli = new CLI();
-const experimentsFlags = cli.getBuiltInOptions().filter(({ name }) => name.startsWith('experiments-'));
+const experimentsFlags = Object.values(cli.getBuiltInOptions().coreFlags).filter(({ name }) => name.startsWith('experiments-'));
 
 describe('experiments option related flag', () => {
     experimentsFlags.forEach((flag) => {
