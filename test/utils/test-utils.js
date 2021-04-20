@@ -62,6 +62,7 @@ const run = async (testCase, args = [], options = {}) => {
         reject: false,
         stdio: ENABLE_LOG_COMPILATION ? 'inherit' : 'pipe',
         maxBuffer: Infinity,
+        env: { WEBPACK_CLI_HELP_WIDTH: 1024 },
         ...options,
     });
 };
