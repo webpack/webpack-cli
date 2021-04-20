@@ -2,6 +2,7 @@
 
 'use strict';
 
+const os = require('os');
 const stripAnsi = require('strip-ansi');
 const path = require('path');
 const fs = require('fs');
@@ -306,9 +307,8 @@ const readdir = (path) =>
         });
     });
 
-const uniqueDirectoryForTest = async (assetsPath) => {
-    const testDir = Date.now().toString();
-    const result = path.resolve(assetsPath, testDir);
+const uniqueDirectoryForTest = async () => {
+    const result = path.resolve(os.tmpdir(), Date.now().toString());
 
     if (!fs.existsSync(result)) {
         fs.mkdirSync(result);
