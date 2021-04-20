@@ -17,7 +17,7 @@ describe('basic', () => {
     });
 
     it('should recompile upon file change using the `--watch` option', (done) => {
-        const proc = runAndGetWatchProc(__dirname, ['--watch', '--mode', 'development'], false, '', true);
+        const proc = runAndGetWatchProc(__dirname, ['--watch', '--mode', 'development'], '', true);
 
         let modified = false;
 
@@ -50,7 +50,7 @@ describe('basic', () => {
     });
 
     it('should recompile upon file change using the `watch` command', (done) => {
-        const proc = runAndGetWatchProc(__dirname, ['watch', '--mode', 'development'], false, '', true);
+        const proc = runAndGetWatchProc(__dirname, ['watch', '--mode', 'development'], '', true);
 
         let modified = false;
 
@@ -83,7 +83,7 @@ describe('basic', () => {
     });
 
     it('should recompile upon file change using the `watch` command and entries syntax', (done) => {
-        const proc = runAndGetWatchProc(__dirname, ['watch', './src/entry.js', '--mode', 'development'], false, '', true);
+        const proc = runAndGetWatchProc(__dirname, ['watch', './src/entry.js', '--mode', 'development'], '', true);
 
         let modified = false;
 
@@ -118,7 +118,7 @@ describe('basic', () => {
     });
 
     it('should log warning about the `watch` option in the configuration and recompile upon file change using the `watch` command', (done) => {
-        const proc = runAndGetWatchProc(__dirname, ['--watch', '--mode', 'development', '--config', './watch.config.js'], false, '', true);
+        const proc = runAndGetWatchProc(__dirname, ['--watch', '--mode', 'development', '--config', './watch.config.js'], '', true);
 
         let modified = false;
 

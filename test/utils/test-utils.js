@@ -123,12 +123,8 @@ const runWatch = (testCase, args = [], options, outputKillStr = /webpack \d+\.\d
     });
 };
 
-const runAndGetWatchProc = (testCase, args = [], setOutput = true, input = '', forcePipe = false) => {
+const runAndGetWatchProc = (testCase, args = [], input = '', forcePipe = false) => {
     const cwd = path.resolve(testCase);
-
-    const outputPath = path.resolve(testCase, 'bin');
-    const argsWithOutput = setOutput ? args.concat('--output-path', outputPath) : args;
-
     const options = {
         cwd,
         reject: false,
@@ -140,10 +136,9 @@ const runAndGetWatchProc = (testCase, args = [], setOutput = true, input = '', f
         options.input = input;
     }
 
-    const webpackProc = execa(WEBPACK_PATH, argsWithOutput, options);
-
-    return webpackProc;
+    return execa(WEBPACK_PATH, args, options);
 };
+
 /**
  * runPromptWithAnswers
  * @param {string} location location of current working directory

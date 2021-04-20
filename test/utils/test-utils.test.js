@@ -65,8 +65,6 @@ describe('runAndGetWatchProc function', () => {
         // Executes the correct command
         expect(command).toContain('cli.js');
         // Should use apply a default output dir
-        expect(command).toContain('--output-path');
-        expect(command).toContain('bin');
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
     });
@@ -86,19 +84,20 @@ describe('runAndGetWatchProc function', () => {
     });
 
     it('uses default output when output param is false', async () => {
-        const { stdout, stderr, command } = await runAndGetWatchProc(__dirname, [], false);
+        const { stdout, stderr } = await runAndGetWatchProc(__dirname, [], false);
 
         // execution command contains info command
-        expect(command).not.toContain('--output-path');
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
     });
 
     it('writes to stdin', async () => {
         const assetsPath = resolve(__dirname, './test-assets');
+
         mkdirSync(assetsPath);
 
-        const { stdout } = await runAndGetWatchProc(assetsPath, ['init', '--force', '--template=mango'], false, ENTER);
+        const { stdout } = await runAndGetWatchProc(assetsPath, ['init', '--force', '--template=mango'], ENTER);
+
         expect(stdout).toContain('Project has been initialised with webpack!');
 
         rimraf.sync(assetsPath);
