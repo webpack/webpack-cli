@@ -90,7 +90,21 @@ const runWatch = (testCase, args = [], options, outputKillStr = /webpack \d+\.\d
         proc.stdout.pipe(
             new Writable({
                 write(chunk, encoding, callback) {
-                    const output = chunk.toString('utf8');
+                    const output = stripAnsi(chunk.toString('utf8'));
+
+                    if (outputKillStr.test(output)) {
+                        processKill(proc);
+                    }
+
+                    callback();
+                },
+            }),
+        );
+
+        proc.stderr.pipe(
+            new Writable({
+                write(chunk, encoding, callback) {
+                    const output = stripAnsi(chunk.toString('utf8'));
 
                     if (outputKillStr.test(output)) {
                         processKill(proc);

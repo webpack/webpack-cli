@@ -302,7 +302,12 @@ describe('basic serve usage', () => {
     });
 
     it('should log used supplied config with serve', async () => {
-        const { stderr, stdout } = await runWatch(__dirname, ['serve', '--config', 'log.config.js', '--port', port]);
+        const { stderr, stdout } = await runWatch(
+            __dirname,
+            ['serve', '--config', 'log.config.js', '--port', port],
+            {},
+            /Compiler is watching files for updates\.\.\./,
+        );
 
         expect(normalizeStderr(stderr)).toMatchSnapshot('stderr');
         expect(stdout).toBeTruthy();
