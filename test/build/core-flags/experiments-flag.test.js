@@ -5,6 +5,7 @@ const experimentsFlags = getWebpackCliArguments('experiments-');
 
 describe('experiments option related flag', () => {
     for (const [name, value] of Object.entries(experimentsFlags)) {
+        // extract property name from flag name
         let property;
 
         if (name.includes('-lazy-compilation-')) {
