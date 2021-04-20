@@ -62,6 +62,7 @@ const run = async (testCase, args = [], options = {}) => {
         reject: false,
         stdio: ENABLE_LOG_COMPILATION ? 'inherit' : 'pipe',
         maxBuffer: Infinity,
+        env: { WEBPACK_CLI_HELP_WIDTH: 1024 },
         ...options,
     });
 };
@@ -89,7 +90,21 @@ const runWatch = (testCase, args = [], options, outputKillStr = /webpack \d+\.\d
         proc.stdout.pipe(
             new Writable({
                 write(chunk, encoding, callback) {
-                    const output = chunk.toString('utf8');
+                    const output = stripAnsi(chunk.toString('utf8'));
+
+                    if (outputKillStr.test(output)) {
+                        processKill(proc);
+                    }
+
+                    callback();
+                },
+            }),
+        );
+
+        proc.stderr.pipe(
+            new Writable({
+                write(chunk, encoding, callback) {
+                    const output = stripAnsi(chunk.toString('utf8'));
 
                     if (outputKillStr.test(output)) {
                         processKill(proc);
@@ -224,7 +239,54 @@ const runPromptWithAnswers = (location, args, answers, waitForOutput = true) => 
     });
 };
 
-const normalizeStdout = (string) => stripAnsi(string);
+const normalizeVersions = (output) => {
+    return output.replace(
+        /(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?/gi,
+        'x.x.x',
+    );
+};
+
+const normalizeCwd = (output) => {
+    return output.replace(/\\/g, '/').replace(new RegExp(process.cwd().replace(/\\/g, '/'), 'g'), '<cwd>');
+};
+
+const normalizeError = (output) => {
+    return output.replace(/\s+at .+(}|\))/gs, '\n    at stack');
+};
+
+const normalizeStdout = (stdout) => {
+    if (typeof stdout !== 'string') {
+        return stdout;
+    }
+
+    if (stdout.length === 0) {
+        return stdout;
+    }
+
+    let normalizedStdout = stripAnsi(stdout);
+    normalizedStdout = normalizeCwd(normalizedStdout);
+    normalizedStdout = normalizeVersions(normalizedStdout);
+    normalizedStdout = normalizeError(normalizedStdout);
+
+    return normalizedStdout;
+};
+
+const normalizeStderr = (stderr) => {
+    if (typeof stderr !== 'string') {
+        return stderr;
+    }
+
+    if (stderr.length === 0) {
+        return stderr;
+    }
+
+    let normalizedStderr = stripAnsi(stderr);
+    normalizedStderr = normalizeCwd(normalizedStderr);
+    normalizedStderr = normalizeVersions(normalizedStderr);
+    normalizedStderr = normalizeError(normalizedStderr);
+
+    return normalizedStderr;
+};
 
 const readFile = (path, options = {}) =>
     new Promise((resolve, reject) => {
@@ -264,6 +326,7 @@ module.exports = {
     isWebpack5,
     isDevServer4,
     isWindows,
+    normalizeStderr,
     normalizeStdout,
     uniqueDirectoryForTest,
     readFile,

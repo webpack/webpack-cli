@@ -1023,7 +1023,7 @@ class WebpackCLI {
                     },
                     formatHelp: (command, helper) => {
                         const termWidth = helper.padWidth(command, helper);
-                        const helpWidth = helper.helpWidth || 80;
+                        const helpWidth = helper.helpWidth || process.env.WEBPACK_CLI_HELP_WIDTH || 80;
                         const itemIndentWidth = 2;
                         const itemSeparatorWidth = 2; // between term and description
 
