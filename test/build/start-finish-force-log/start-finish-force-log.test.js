@@ -28,6 +28,7 @@ describe('start finish force log', () => {
     it('should work with watch', async () => {
         const { stderr, stdout } = await runWatch(__dirname, ['watch'], {
             env: { WEBPACK_CLI_START_FINISH_FORCE_LOG: true },
+            killString: /Compiler finished/,
         });
         expect(stderr).toContain('Compiler starting...');
         expect(stderr).toContain('Compiler finished');

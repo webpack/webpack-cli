@@ -1,27 +1,8 @@
 'use strict';
 
-const { run, runAndGetProcess, hyphenToUpperCase } = require('./test-utils');
-const { writeFileSync, unlinkSync, mkdirSync } = require('fs');
-const { resolve } = require('path');
-// eslint-disable-next-line node/no-unpublished-require
-const rimraf = require('rimraf');
+const { run, runAndGetProcess, hyphenToUpperCase, uniqueDirectoryForTest } = require('./test-utils');
 
 const ENTER = '\x0D';
-
-describe('appendFile', () => {
-    describe('positive test-cases', () => {
-        const junkFile = 'junkFile.js';
-        const junkFilePath = resolve(__dirname, junkFile);
-        const initialJunkData = 'initial junk data';
-
-        beforeEach(() => {
-            writeFileSync(junkFilePath, initialJunkData);
-        });
-        afterEach(() => {
-            unlinkSync(junkFilePath);
-        });
-    });
-});
 
 describe('run function', () => {
     it('should work correctly by default', async () => {
@@ -84,15 +65,10 @@ describe('runAndGetWatchProc function', () => {
     });
 
     it('writes to stdin', async () => {
-        const assetsPath = resolve(__dirname, './test-assets');
-
-        mkdirSync(assetsPath);
-
+        const assetsPath = await uniqueDirectoryForTest();
         const { stdout } = await runAndGetProcess(assetsPath, ['init', '--force', '--template=mango'], { input: ENTER });
 
         expect(stdout).toContain('Project has been initialised with webpack!');
-
-        rimraf.sync(assetsPath);
     });
 });
 
