@@ -326,6 +326,15 @@ const getWebpackCliArguments = (startWith) => {
     return result;
 };
 
+const getWebpackCliArguments = () =>
+    Object.entries(cli.getArguments()).map((flag) => {
+        const [name, value] = flag;
+
+        value.name = name;
+
+        return value;
+    });
+
 module.exports = {
     run,
     runAndGetProcess,
