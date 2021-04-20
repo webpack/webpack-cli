@@ -302,12 +302,9 @@ describe('basic serve usage', () => {
     });
 
     it('should log used supplied config with serve', async () => {
-        const { stderr, stdout } = await runWatch(
-            __dirname,
-            ['serve', '--config', 'log.config.js', '--port', port],
-            {},
-            /Compiler is watching files for updates\.\.\./,
-        );
+        const { stderr, stdout } = await runWatch(__dirname, ['serve', '--config', 'log.config.js', '--port', port], {
+            killString: /Compiler is watching files for updates\.\.\./,
+        });
 
         expect(normalizeStderr(stderr)).toMatchSnapshot('stderr');
         expect(stdout).toBeTruthy();
@@ -338,7 +335,9 @@ describe('basic serve usage', () => {
     });
 
     it('should work with the "stats" option in config', async () => {
-        const { stderr, stdout } = await runWatch(__dirname, ['serve', '--config', 'stats.config.js'], {}, /Compiled successfully/);
+        const { stderr, stdout } = await runWatch(__dirname, ['serve', '--config', 'stats.config.js'], {
+            killString: /Compiled successfully/,
+        });
 
         expect(normalizeStderr(stderr)).toMatchSnapshot('stderr');
         expect(stdout).toContain('Compiled successfully');

@@ -31,6 +31,7 @@ const hyphenToUpperCase = (name) => {
     if (!name) {
         return name;
     }
+
     return name.replace(/-([a-z])/g, function (g) {
         return g[1].toUpperCase();
     });
@@ -45,78 +46,71 @@ const processKill = (process) => {
 };
 
 /**
- * Run the webpack CLI for a test case.
+ * Webpack CLI test runner.
  *
- * @param {string} testCase The path to folder that contains the webpack.config.js
- * @param {Array<string>} args Array of arguments to pass to webpack
- * @param {Object<string, any>} options Boolean that decides if a default output path will be set or not
+ * @param {string} cwd The path to folder that contains test
+ * @param {Array<string>} args Array of arguments
+ * @param {Object<string, any>} options Options for tests
  * @returns {Promise}
  */
-const run = async (testCase, args = [], options = {}) => {
-    const cwd = path.resolve(testCase);
+const createProcess = (cwd, args, options) => {
     const { nodeOptions = [] } = options;
     const processExecutor = nodeOptions.length ? execaNode : execa;
 
     return processExecutor(WEBPACK_PATH, args, {
-        cwd,
+        cwd: path.resolve(cwd),
         reject: false,
         stdio: ENABLE_LOG_COMPILATION ? 'inherit' : 'pipe',
         maxBuffer: Infinity,
         env: { WEBPACK_CLI_HELP_WIDTH: 1024 },
         ...options,
     });
+};
+
+/**
+ * Run the webpack CLI for a test case.
+ *
+ * @param {string} cwd The path to folder that contains test
+ * @param {Array<string>} args Array of arguments
+ * @param {Object<string, any>} options Options for tests
+ * @returns {Promise}
+ */
+const run = async (cwd, args = [], options = {}) => {
+    return createProcess(cwd, args, options);
 };
 
 /**
  * Run the webpack CLI for a test case and get process.
  *
- * @param {string} testCase The path to folder that contains the webpack.config.js
- * @param {Array<string>} args Array of arguments to pass to webpack
- * @param {Object<string, any>} options Boolean that decides if a default output path will be set or not
+ * @param {string} cwd The path to folder that contains test
+ * @param {Array<string>} args Array of arguments
+ * @param {Object<string, any>} options Options for tests
  * @returns {Promise}
  */
-const runAndGetProcess = (testCase, args = [], options = {}) => {
-    const cwd = path.resolve(testCase);
-    const { nodeOptions = [] } = options;
-    const processExecutor = nodeOptions.length ? execaNode : execa;
-
-    return processExecutor(WEBPACK_PATH, args, {
-        cwd,
-        reject: false,
-        stdio: ENABLE_LOG_COMPILATION ? 'inherit' : 'pipe',
-        maxBuffer: Infinity,
-        env: { WEBPACK_CLI_HELP_WIDTH: 1024 },
-        ...options,
-    });
+const runAndGetProcess = (cwd, args = [], options = {}) => {
+    return createProcess(cwd, args, options);
 };
 
 /**
  * Run the webpack CLI in watch mode for a test case.
  *
- * @param {String} testCase The path to folder that contains the webpack.config.js
- * @param {Array} args Array of arguments to pass to webpack
- * @param {Object<string, any>} options Boolean that decides if a default output path will be set or not
- * @param {string} outputKillStr String to kill
+ * @param {string} cwd The path to folder that contains test
+ * @param {Array<string>} args Array of arguments
+ * @param {Object<string, any>} options Options for tests
  * @returns {Object} The webpack output or Promise when nodeOptions are present
  */
-const runWatch = (testCase, args = [], options, outputKillStr = /webpack \d+\.\d+\.\d/) => {
-    const cwd = path.resolve(testCase);
-
+const runWatch = (cwd, args = [], options = {}) => {
     return new Promise((resolve, reject) => {
-        const proc = execa(WEBPACK_PATH, args, {
-            cwd,
-            reject: false,
-            stdio: 'pipe',
-            ...options,
-        });
+        const process = createProcess(cwd, args, options);
+        const outputKillStr = options.killString || /webpack \d+\.\d+\.\d/;
 
-        proc.stdout.pipe(
+        process.stdout.pipe(
             new Writable({
                 write(chunk, encoding, callback) {
                     const output = stripAnsi(chunk.toString('utf8'));
 
                     if (outputKillStr.test(output)) {
-                        processKill(proc);
+                        processKill(process);
                     }
 
                     callback();
@@ -124,13 +118,13 @@ const runWatch = (testCase, args = [], options, outputKillStr = /webpack \d+\.\d
             }),
         );
 
-        proc.stderr.pipe(
+        process.stderr.pipe(
             new Writable({
                 write(chunk, encoding, callback) {
                     const output = stripAnsi(chunk.toString('utf8'));
 
                     if (outputKillStr.test(output)) {
-                        processKill(proc);
+                        processKill(process);
                     }
 
                     callback();
@@ -138,11 +132,13 @@ const runWatch = (testCase, args = [], options, outputKillStr = /webpack \d+\.\d
             }),
         );
 
-        proc.then((result) => {
-            resolve(result);
-        }).catch((error) => {
-            reject(error);
-        });
+        process
+            .then((result) => {
+                resolve(result);
+            })
+            .catch((error) => {
+                reject(error);
+            });
     });
 };
 
@@ -311,11 +307,12 @@ const readdir = (path) =>
     });
 
 const uniqueDirectoryForTest = async (assetsPath) => {
-    const localDir = Date.now().toString();
+    const testDir = Date.now().toString();
+    const result = path.resolve(assetsPath, testDir);
 
-    const result = path.resolve(assetsPath, localDir);
-
-    if (!fs.existsSync(result)) fs.mkdirSync(result);
+    if (!fs.existsSync(result)) {
+        fs.mkdirSync(result);
+    }
 
     return result;
 };
