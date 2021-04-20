@@ -148,90 +148,83 @@ const runWatch = (cwd, args = [], options = {}) => {
  * @param {string} location location of current working directory
  * @param {string[]} args CLI args to pass in
  * @param {string[]} answers answers to be passed to stdout for inquirer question
- * @param {boolean} waitForOutput whether to wait for stdout before writing the next answer
  */
-const runPromptWithAnswers = (location, args, answers, waitForOutput = true) => {
-    const runner = runAndGetProcess(location, args);
+const runPromptWithAnswers = (location, args, answers) => {
+    const process = runAndGetProcess(location, args);
 
-    runner.stdin.setDefaultEncoding('utf-8');
+    process.stdin.setDefaultEncoding('utf-8');
 
     const delay = 2000;
     let outputTimeout;
+    let currentAnswer = 0;
 
-    if (waitForOutput) {
-        let currentAnswer = 0;
-        const writeAnswer = (output) => {
-            if (!answers) {
-                runner.stdin.write(output);
-                runner.kill();
-                return;
-            }
+    const writeAnswer = (output) => {
+        if (!answers) {
+            process.stdin.write(output);
+            process.kill();
 
-            if (currentAnswer < answers.length) {
-                runner.stdin.write(answers[currentAnswer]);
-                currentAnswer++;
-            }
-        };
+            return;
+        }
 
-        runner.stdout.pipe(
-            new Writable({
-                write(chunk, encoding, callback) {
-                    const output = chunk.toString('utf8');
-                    if (output) {
-                        if (outputTimeout) {
-                            clearTimeout(outputTimeout);
-                        }
-                        // we must receive new stdout, then have 2 seconds
-                        // without any stdout before writing the next answer
-                        outputTimeout = setTimeout(() => {
-                            writeAnswer(output);
-                        }, delay);
+        if (currentAnswer < answers.length) {
+            process.stdin.write(answers[currentAnswer]);
+            currentAnswer++;
+        }
+    };
+
+    process.stdout.pipe(
+        new Writable({
+            write(chunk, encoding, callback) {
+                const output = chunk.toString('utf8');
+
+                if (output) {
+                    if (outputTimeout) {
+                        clearTimeout(outputTimeout);
                     }
 
-                    callback();
-                },
-            }),
-        );
-    } else {
-        // Simulate answers by sending the answers every 2s
-        answers.reduce((prevAnswer, answer) => {
-            return prevAnswer.then(() => {
-                return new Promise((resolvePromise) => {
-                    setTimeout(() => {
-                        runner.stdin.write(answer);
-                        resolvePromise();
+                    // we must receive new stdout, then have 2 seconds
+                    // without any stdout before writing the next answer
+                    outputTimeout = setTimeout(() => {
+                        writeAnswer(output);
                     }, delay);
-                });
-            });
-        }, Promise.resolve());
-    }
+                }
+
+                callback();
+            },
+        }),
+    );
 
     return new Promise((resolve) => {
         const obj = {};
+
         let stdoutDone = false;
         let stderrDone = false;
+
         const complete = () => {
             if (outputTimeout) {
                 clearTimeout(outputTimeout);
             }
+
             if (stdoutDone && stderrDone) {
-                runner.kill('SIGKILL');
+                process.kill('SIGKILL');
                 resolve(obj);
             }
         };
 
-        runner.stdout.pipe(
+        process.stdout.pipe(
             concat((result) => {
                 stdoutDone = true;
                 obj.stdout = result.toString();
+
                 complete();
             }),
         );
 
-        runner.stderr.pipe(
+        process.stderr.pipe(
             concat((result) => {
                 stderrDone = true;
                 obj.stderr = result.toString();
+
                 complete();
             }),
         );
