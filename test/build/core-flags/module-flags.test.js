@@ -1,10 +1,7 @@
 'use strict';
 
-const { run, hyphenToUpperCase, normalizeStdout } = require('../../utils/test-utils');
-const CLI = require('../../../packages/webpack-cli/lib/index');
-
-const cli = new CLI();
-const moduleFlags = cli.getBuiltInOptions().filter(({ name }) => name.startsWith('module-'));
+const { run, hyphenToUpperCase, normalizeStdout, getWebpackCliArguments } = require('../../utils/test-utils');
+const moduleFlags = getWebpackCliArguments().filter(({ name }) => name.startsWith('module-'));
 
 describe('module config related flag', () => {
     moduleFlags.forEach((flag) => {

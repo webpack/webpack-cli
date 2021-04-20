@@ -1,10 +1,7 @@
 'use strict';
 
-const { run, hyphenToUpperCase } = require('../../utils/test-utils');
-const CLI = require('../../../packages/webpack-cli/lib/index');
-
-const cli = new CLI();
-const watchFlags = cli.getBuiltInOptions().filter(({ name }) => name.startsWith('watch'));
+const { run, hyphenToUpperCase, getWebpackCliArguments } = require('../../utils/test-utils');
+const watchFlags = getWebpackCliArguments().filter(({ name }) => name.startsWith('watch'));
 
 describe('watch config related flag', () => {
     watchFlags.forEach((flag) => {

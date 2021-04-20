@@ -1,10 +1,7 @@
 'use strict';
 
-const { run, hyphenToUpperCase } = require('../../utils/test-utils');
-const CLI = require('../../../packages/webpack-cli/lib/index');
-
-const cli = new CLI();
-const experimentsFlags = cli.getBuiltInOptions().filter(({ name }) => name.startsWith('experiments-'));
+const { run, hyphenToUpperCase, getWebpackCliArguments } = require('../../utils/test-utils');
+const experimentsFlags = getWebpackCliArguments().filter(({ name }) => name.startsWith('experiments-'));
 
 describe('experiments option related flag', () => {
     experimentsFlags.forEach((flag) => {

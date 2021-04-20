@@ -10,7 +10,7 @@ const { exec } = require('child_process');
 const { node: execaNode } = execa;
 const { Writable } = require('readable-stream');
 const concat = require('concat-stream');
-const { version } = require('webpack');
+const { cli, version } = require('webpack');
 const isWebpack5 = version.startsWith('5');
 
 let devServerVersion;
@@ -256,6 +256,15 @@ const uniqueDirectoryForTest = async (assetsPath) => {
     return result;
 };
 
+const getWebpackCliArguments = () =>
+    Object.entries(cli.getArguments()).map((flag) => {
+        const [name, value] = flag;
+
+        value.name = name;
+
+        return value;
+    });
+
 module.exports = {
     run,
     runWatch,
@@ -270,4 +279,5 @@ module.exports = {
     readdir,
     hyphenToUpperCase,
     processKill,
+    getWebpackCliArguments,
 };

@@ -1,10 +1,7 @@
 'use strict';
 
-const { run, hyphenToUpperCase } = require('../../utils/test-utils');
-const CLI = require('../../../packages/webpack-cli/lib/index');
-
-const cli = new CLI();
-const externalsPresetsFlags = cli.getBuiltInOptions().filter(({ name }) => name.startsWith('externals-presets-'));
+const { run, hyphenToUpperCase, getWebpackCliArguments } = require('../../utils/test-utils');
+const externalsPresetsFlags = getWebpackCliArguments().filter(({ name }) => name.startsWith('externals-presets-'));
 
 describe('externals related flag', () => {
     it('should set externals properly', async () => {
