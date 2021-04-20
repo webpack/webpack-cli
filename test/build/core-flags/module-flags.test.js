@@ -1,38 +1,38 @@
 'use strict';
 
 const { run, hyphenToUpperCase, normalizeStdout, getWebpackCliArguments } = require('../../utils/test-utils');
-const moduleFlags = getWebpackCliArguments().filter(({ name }) => name.startsWith('module-'));
+const moduleFlags = getWebpackCliArguments('module-');
 
 describe('module config related flag', () => {
-    moduleFlags.forEach((flag) => {
+    for (const [name, value] of Object.entries(moduleFlags)) {
         // extract property name from flag name
-        let property = flag.name.split('module-')[1];
+        let property = name.split('module-')[1];
 
         if (property.includes('rules-') && property !== 'rules-reset') {
-            property = flag.name.split('rules-')[1];
+            property = name.split('rules-')[1];
         }
 
         const propName = hyphenToUpperCase(property);
 
         if (
-            flag.configs.filter((config) => config.type === 'boolean').length > 0 &&
-            !flag.name.includes('module-no-parse') &&
-            !flag.name.includes('module-parser-')
+            value.configs.filter((config) => config.type === 'boolean').length > 0 &&
+            !name.includes('module-no-parse') &&
+            !name.includes('module-parser-')
         ) {
-            it(`should config --${flag.name} correctly`, async () => {
-                if (flag.name.includes('-reset')) {
-                    const { stderr, stdout } = await run(__dirname, [`--${flag.name}`]);
+            it(`should config --${name} correctly`, async () => {
+                if (name.includes('-reset')) {
+                    const { stderr, stdout } = await run(__dirname, [`--${name}`]);
                     const option = propName.split('Reset')[0];
 
                     expect(stderr).toBeFalsy();
                     expect(normalizeStdout(stdout)).toContain(`${option}: []`);
-                } else if (flag.name.includes('rules-')) {
-                    const { exitCode, stderr, stdout } = await run(__dirname, [`--no-${flag.name}`]);
+                } else if (name.includes('rules-')) {
+                    const { exitCode, stderr, stdout } = await run(__dirname, [`--no-${name}`]);
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
                     expect(normalizeStdout(stdout)).toContain("sideEffects: 'flag'");
-                } else if (flag.name.startsWith('module-generator-')) {
+                } else if (name.startsWith('module-generator-')) {
                     const { exitCode, stderr, stdout } = await run(__dirname, [
                         `--module-generator-asset-emit`,
                         '--module-generator-asset-resource-emit',
@@ -42,7 +42,7 @@ describe('module config related flag', () => {
                     expect(stderr).toBeFalsy();
                     expect(normalizeStdout(stdout)).toContain("generator: { asset: { emit: true }, 'asset/resource': { emit: true } }");
                 } else {
-                    const { exitCode, stderr, stdout } = await run(__dirname, [`--${flag.name}`]);
+                    const { exitCode, stderr, stdout } = await run(__dirname, [`--${name}`]);
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
@@ -50,16 +50,16 @@ describe('module config related flag', () => {
                 }
             });
 
-            if (!flag.name.endsWith('-reset')) {
-                it(`should config --no-${flag.name} correctly`, async () => {
-                    const { exitCode, stderr, stdout } = await run(__dirname, [`--no-${flag.name}`]);
+            if (!name.endsWith('-reset')) {
+                it(`should config --no-${name} correctly`, async () => {
+                    const { exitCode, stderr, stdout } = await run(__dirname, [`--no-${name}`]);
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
 
-                    if (flag.name.includes('rules-')) {
+                    if (name.includes('rules-')) {
                         expect(normalizeStdout(stdout)).toContain('sideEffects: false');
-                    } else if (flag.name.startsWith('module-generator-')) {
+                    } else if (name.startsWith('module-generator-')) {
                         expect(normalizeStdout(stdout)).toContain('emit: false');
                     } else {
                         expect(normalizeStdout(stdout)).toContain(`${propName}: false`);
@@ -69,39 +69,39 @@ describe('module config related flag', () => {
         }
 
         if (
-            flag.configs.filter((config) => config.type === 'string').length > 0 &&
-            !(flag.name.includes('module-parser-') || flag.name.startsWith('module-generator'))
+            value.configs.filter((config) => config.type === 'string').length > 0 &&
+            !(name.includes('module-parser-') || name.startsWith('module-generator'))
         ) {
-            it(`should config --${flag.name} correctly`, async () => {
-                if (flag.name === 'module-no-parse') {
-                    let { stderr, stdout, exitCode } = await run(__dirname, [`--${flag.name}`, 'value']);
+            it(`should config --${name} correctly`, async () => {
+                if (name === 'module-no-parse') {
+                    let { stderr, stdout, exitCode } = await run(__dirname, [`--${name}`, 'value']);
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
                     expect(normalizeStdout(stdout)).toContain('value');
-                } else if (flag.name.includes('reg-exp')) {
-                    let { stdout, stderr, exitCode } = await run(__dirname, [`--${flag.name}`, '/ab?c*/']);
+                } else if (name.includes('reg-exp')) {
+                    let { stdout, stderr, exitCode } = await run(__dirname, [`--${name}`, '/ab?c*/']);
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
                     expect(normalizeStdout(stdout)).toContain(`${propName}: /ab?c*/`);
-                } else if (flag.name.includes('module-rules-')) {
+                } else if (name.includes('module-rules-')) {
                     if (propName === 'use' || propName === 'type') {
-                        let { stdout } = await run(__dirname, [`--${flag.name}`, 'javascript/auto']);
+                        let { stdout } = await run(__dirname, [`--${name}`, 'javascript/auto']);
 
                         expect(normalizeStdout(stdout)).toContain(`${propName}: 'javascript/auto'`);
                     } else if (property.includes('use-')) {
                         let { stdout } = await run(__dirname, ['--module-rules-use-loader', 'myLoader']);
                         expect(normalizeStdout(stdout)).toContain(`use: [Object]`);
                     } else if (propName === 'enforce') {
-                        let { stdout } = await run(__dirname, [`--${flag.name}`, 'pre', '--module-rules-use-loader', 'myLoader']);
+                        let { stdout } = await run(__dirname, [`--${name}`, 'pre', '--module-rules-use-loader', 'myLoader']);
                         expect(normalizeStdout(stdout)).toContain(`${propName}: 'pre'`);
                     } else {
-                        let { stdout } = await run(__dirname, [`--${flag.name}`, '/rules-value']);
+                        let { stdout } = await run(__dirname, [`--${name}`, '/rules-value']);
                         expect(normalizeStdout(stdout)).toContain('rules-value');
                     }
                 } else {
-                    let { stderr, stdout, exitCode } = await run(__dirname, [`--${flag.name}`, 'value']);
+                    let { stderr, stdout, exitCode } = await run(__dirname, [`--${name}`, 'value']);
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
@@ -109,7 +109,7 @@ describe('module config related flag', () => {
                 }
             });
         }
-    });
+    }
 
     it('should config module.generator flags coorectly', async () => {
         const { exitCode, stderr, stdout } = await run(__dirname, [

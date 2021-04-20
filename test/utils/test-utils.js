@@ -256,14 +256,21 @@ const uniqueDirectoryForTest = async (assetsPath) => {
     return result;
 };
 
-const getWebpackCliArguments = () =>
-    Object.entries(cli.getArguments()).map((flag) => {
-        const [name, value] = flag;
+const getWebpackCliArguments = (startWith) => {
+    if (typeof startWith === 'undefined') {
+        return cli.getArguments();
+    }
 
-        value.name = name;
+    const result = {};
 
-        return value;
-    });
+    for (const [name, value] of Object.entries(cli.getArguments())) {
+        if (name.startsWith(startWith)) {
+            result[name] = value;
+        }
+    }
+
+    return result;
+};
 
 module.exports = {
     run,

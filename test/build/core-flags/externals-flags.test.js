@@ -1,7 +1,7 @@
 'use strict';
 
 const { run, hyphenToUpperCase, getWebpackCliArguments } = require('../../utils/test-utils');
-const externalsPresetsFlags = getWebpackCliArguments().filter(({ name }) => name.startsWith('externals-presets-'));
+const externalsPresetsFlags = getWebpackCliArguments('externals-presets-');
 
 describe('externals related flag', () => {
     it('should set externals properly', async () => {
@@ -36,25 +36,25 @@ describe('externals related flag', () => {
         expect(stdout).toContain(`externals: []`);
     });
 
-    externalsPresetsFlags.forEach((flag) => {
+    for (const [name] of Object.entries(externalsPresetsFlags)) {
         // extract property name from flag name
-        const property = flag.name.split('externals-presets-')[1];
+        const property = name.split('externals-presets-')[1];
         const propName = hyphenToUpperCase(property);
 
-        it(`should config --${flag.name} correctly`, async () => {
-            const { exitCode, stderr, stdout } = await run(__dirname, [`--${flag.name}`]);
+        it(`should config --${name} correctly`, async () => {
+            const { exitCode, stderr, stdout } = await run(__dirname, [`--${name}`]);
 
             expect(exitCode).toBe(0);
             expect(stderr).toBeFalsy();
             expect(stdout).toContain(`${propName}: true`);
         });
 
-        it(`should config --no-${flag.name} correctly`, async () => {
-            const { exitCode, stderr, stdout } = await run(__dirname, [`--no-${flag.name}`]);
+        it(`should config --no-${name} correctly`, async () => {
+            const { exitCode, stderr, stdout } = await run(__dirname, [`--no-${name}`]);
 
             expect(exitCode).toBe(0);
             expect(stderr).toBeFalsy();
             expect(stdout).toContain(`${propName}: false`);
         });
-    });
+    }
 });
