@@ -1,6 +1,6 @@
 'use strict';
 
-const { run, runAndGetWatchProc, hyphenToUpperCase } = require('./test-utils');
+const { run, runAndGetProcess, hyphenToUpperCase } = require('./test-utils');
 const { writeFileSync, unlinkSync, mkdirSync } = require('fs');
 const { resolve } = require('path');
 // eslint-disable-next-line node/no-unpublished-require
@@ -60,7 +60,7 @@ describe('run function', () => {
 
 describe('runAndGetWatchProc function', () => {
     it('should work correctly by default', async () => {
-        const { command, stdout, stderr } = await runAndGetWatchProc(__dirname);
+        const { command, stdout, stderr } = await runAndGetProcess(__dirname);
 
         // Executes the correct command
         expect(command).toContain('cli.js');
@@ -70,7 +70,7 @@ describe('runAndGetWatchProc function', () => {
     });
 
     it('executes cli with passed commands and params', async () => {
-        const { stdout, stderr, command } = await runAndGetWatchProc(__dirname, ['info', '--output', 'markdown'], false);
+        const { stdout, stderr, command } = await runAndGetProcess(__dirname, ['info', '--output', 'markdown']);
 
         // execution command contains info command
         expect(command).toContain('info');
@@ -83,20 +83,12 @@ describe('runAndGetWatchProc function', () => {
         expect(stderr).toBeFalsy();
     });
 
-    it('uses default output when output param is false', async () => {
-        const { stdout, stderr } = await runAndGetWatchProc(__dirname, [], false);
-
-        // execution command contains info command
-        expect(stderr).toBeFalsy();
-        expect(stdout).toBeTruthy();
-    });
-
     it('writes to stdin', async () => {
         const assetsPath = resolve(__dirname, './test-assets');
 
         mkdirSync(assetsPath);
 
-        const { stdout } = await runAndGetWatchProc(assetsPath, ['init', '--force', '--template=mango'], ENTER);
+        const { stdout } = await runAndGetProcess(assetsPath, ['init', '--force', '--template=mango'], { input: ENTER });
 
         expect(stdout).toContain('Project has been initialised with webpack!');
 

@@ -1,6 +1,6 @@
 'use strict';
 
-const { run, runAndGetWatchProc, isWebpack5, processKill } = require('../../utils/test-utils');
+const { run, runAndGetProcess, isWebpack5, processKill } = require('../../utils/test-utils');
 const { writeFileSync } = require('fs');
 const { resolve } = require('path');
 
@@ -17,7 +17,7 @@ describe('basic', () => {
     });
 
     it('should recompile upon file change using the `--watch` option', (done) => {
-        const proc = runAndGetWatchProc(__dirname, ['--watch', '--mode', 'development'], '', true);
+        const proc = runAndGetProcess(__dirname, ['--watch', '--mode', 'development']);
 
         let modified = false;
 
@@ -50,7 +50,7 @@ describe('basic', () => {
     });
 
     it('should recompile upon file change using the `watch` command', (done) => {
-        const proc = runAndGetWatchProc(__dirname, ['watch', '--mode', 'development'], '', true);
+        const proc = runAndGetProcess(__dirname, ['watch', '--mode', 'development']);
 
         let modified = false;
 
@@ -83,7 +83,7 @@ describe('basic', () => {
     });
 
     it('should recompile upon file change using the `watch` command and entries syntax', (done) => {
-        const proc = runAndGetWatchProc(__dirname, ['watch', './src/entry.js', '--mode', 'development'], '', true);
+        const proc = runAndGetProcess(__dirname, ['watch', './src/entry.js', '--mode', 'development']);
 
         let modified = false;
 
@@ -118,7 +118,7 @@ describe('basic', () => {
     });
 
     it('should log warning about the `watch` option in the configuration and recompile upon file change using the `watch` command', (done) => {
-        const proc = runAndGetWatchProc(__dirname, ['--watch', '--mode', 'development', '--config', './watch.config.js'], '', true);
+        const proc = runAndGetProcess(__dirname, ['--watch', '--mode', 'development', '--config', './watch.config.js']);
 
         let modified = false;
 
@@ -159,7 +159,7 @@ describe('basic', () => {
     });
 
     it('should log supplied config with watch', (done) => {
-        const proc = runAndGetWatchProc(__dirname, ['watch', '--config', 'log.config.js']);
+        const proc = runAndGetProcess(__dirname, ['watch', '--config', 'log.config.js']);
         const configPath = resolve(__dirname, './log.config.js');
 
         let stderr = '';

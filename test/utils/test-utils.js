@@ -47,12 +47,35 @@ const processKill = (process) => {
 /**
  * Run the webpack CLI for a test case.
  *
- * @param {String} testCase The path to folder that contains the webpack.config.js
- * @param {Array} args Array of arguments to pass to webpack
+ * @param {string} testCase The path to folder that contains the webpack.config.js
+ * @param {Array<string>} args Array of arguments to pass to webpack
  * @param {Object<string, any>} options Boolean that decides if a default output path will be set or not
  * @returns {Promise}
  */
 const run = async (testCase, args = [], options = {}) => {
+    const cwd = path.resolve(testCase);
+    const { nodeOptions = [] } = options;
+    const processExecutor = nodeOptions.length ? execaNode : execa;
+
+    return processExecutor(WEBPACK_PATH, args, {
+        cwd,
+        reject: false,
+        stdio: ENABLE_LOG_COMPILATION ? 'inherit' : 'pipe',
+        maxBuffer: Infinity,
+        env: { WEBPACK_CLI_HELP_WIDTH: 1024 },
+        ...options,
+    });
+};
+
+/**
+ * Run the webpack CLI for a test case and get process.
+ *
+ * @param {string} testCase The path to folder that contains the webpack.config.js
+ * @param {Array<string>} args Array of arguments to pass to webpack
+ * @param {Object<string, any>} options Boolean that decides if a default output path will be set or not
+ * @returns {Promise}
+ */
+const runAndGetProcess = (testCase, args = [], options = {}) => {
     const cwd = path.resolve(testCase);
     const { nodeOptions = [] } = options;
     const processExecutor = nodeOptions.length ? execaNode : execa;
@@ -123,22 +146,6 @@ const runWatch = (testCase, args = [], options, outputKillStr = /webpack \d+\.\d
     });
 };
 
-const runAndGetWatchProc = (testCase, args = [], input = '', forcePipe = false) => {
-    const cwd = path.resolve(testCase);
-    const options = {
-        cwd,
-        reject: false,
-        stdio: ENABLE_LOG_COMPILATION && !forcePipe ? 'inherit' : 'pipe',
-    };
-
-    // some tests don't work if the input option is an empty string
-    if (input) {
-        options.input = input;
-    }
-
-    return execa(WEBPACK_PATH, args, options);
-};
-
 /**
  * runPromptWithAnswers
  * @param {string} location location of current working directory
@@ -147,7 +154,7 @@ const runAndGetWatchProc = (testCase, args = [], input = '', forcePipe = false) 
  * @param {boolean} waitForOutput whether to wait for stdout before writing the next answer
  */
 const runPromptWithAnswers = (location, args, answers, waitForOutput = true) => {
-    const runner = runAndGetWatchProc(location, args, false, '', true);
+    const runner = runAndGetProcess(location, args);
 
     runner.stdin.setDefaultEncoding('utf-8');
 
@@ -315,8 +322,8 @@ const uniqueDirectoryForTest = async (assetsPath) => {
 
 module.exports = {
     run,
+    runAndGetProcess,
     runWatch,
-    runAndGetWatchProc,
     runPromptWithAnswers,
     isWebpack5,
     isDevServer4,
