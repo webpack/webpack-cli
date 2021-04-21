@@ -326,22 +326,6 @@ const getWebpackCliArguments = (startWith) => {
     return result;
 };
 
-const getWebpackCliArguments = (startWith) => {
-    if (typeof startWith === 'undefined') {
-        return cli.getArguments();
-    }
-
-    const result = {};
-
-    for (const [name, value] of Object.entries(cli.getArguments())) {
-        if (name.startsWith(startWith)) {
-            result[name] = value;
-        }
-    }
-
-    return result;
-};
-
 module.exports = {
     run,
     runAndGetProcess,

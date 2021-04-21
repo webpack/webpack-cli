@@ -36,9 +36,9 @@ describe('basic', () => {
                 }
 
                 if (!modified) {
-                    process.nextTick(() => {
-                        writeFileSync(resolve(__dirname, './src/index.js'), `console.log('watch flag test');\n`);
-                    });
+                    setTimeout(() => {
+                        writeFileSync(resolve(__dirname, './src/index.js'), `console.log('watch flag test');`);
+                    }, 100);
 
                     modified = true;
                 } else {
@@ -69,9 +69,9 @@ describe('basic', () => {
                 }
 
                 if (!modified) {
-                    process.nextTick(() => {
-                        writeFileSync(resolve(__dirname, './src/index.js'), `console.log('watch flag test');\n`);
-                    });
+                    setTimeout(() => {
+                        writeFileSync(resolve(__dirname, './src/index.js'), `console.log('watch flag test');`);
+                    }, 100);
 
                     modified = true;
                 } else {
@@ -137,9 +137,9 @@ describe('basic', () => {
                 }
 
                 if (!modified) {
-                    process.nextTick(() => {
-                        writeFileSync(resolve(__dirname, './src/index.js'), `console.log('watch flag test');\n`);
-                    });
+                    setTimeout(() => {
+                        writeFileSync(resolve(__dirname, './src/index.js'), `console.log('watch flag test');`);
+                    }, 100);
 
                     modified = true;
                 } else {
