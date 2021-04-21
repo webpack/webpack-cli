@@ -18,8 +18,18 @@ class ServeCommand {
                 let devServerFlags = [];
 
                 try {
-                    // eslint-disable-next-line
-                    devServerFlags = require('webpack-dev-server/bin/cli-flags').devServer;
+                    devServerFlags = (() => {
+                        // eslint-disable-next-line
+                        const flags = require('webpack-dev-server/bin/cli-flags');
+                        // running the old format of flags
+                        // { devServer: [{...}, {}...] }
+                        if (flags.devServer) {
+                            return flags.devServer;
+                        }
+                        // new flag format
+                        // { flag1: {}, flag2: {} }
+                        return Object.values(flags);
+                    })();
                 } catch (error) {
                     logger.error(`You need to install 'webpack-dev-server' for running 'webpack serve'.\n${error}`);
                     process.exit(2);
@@ -34,8 +44,18 @@ class ServeCommand {
                 let devServerFlags = [];
 
                 try {
-                    // eslint-disable-next-line
-                    devServerFlags = require('webpack-dev-server/bin/cli-flags').devServer;
+                    devServerFlags = (() => {
+                        // eslint-disable-next-line
+                        const flags = require('webpack-dev-server/bin/cli-flags');
+                        // running the old format of flags
+                        // { devServer: [{...}, {}...] }
+                        if (flags.devServer) {
+                            return flags.devServer;
+                        }
+                        // new flag format
+                        // { flag1: {}, flag2: {} }
+                        return Object.values(flags);
+                    })();
                 } catch (error) {
                     // Nothing, to prevent future updates
                 }
