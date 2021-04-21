@@ -46,6 +46,9 @@ exports[`init command should configure WDS as opted 2`] = `
 
 const path = require('path');
 
+const isProduction = process.env.NODE_ENV == 'production';
+
+
 const config = {
     entry: './src/index.js',
     output: {
@@ -73,8 +76,9 @@ const config = {
 };
 
 module.exports = () => {
-    if (process.env.NODE_ENV == 'production') {
+    if (isProduction) {
         config.mode = 'production';
+        
     } else {
         config.mode = 'development';
     }
@@ -110,6 +114,9 @@ exports[`init command should configure assets modules by default 2`] = `
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+const isProduction = process.env.NODE_ENV == 'production';
+
+
 const config = {
     entry: './src/index.js',
     output: {
@@ -141,8 +148,9 @@ const config = {
 };
 
 module.exports = () => {
-    if (process.env.NODE_ENV == 'production') {
+    if (isProduction) {
         config.mode = 'production';
+        
     } else {
         config.mode = 'development';
     }
@@ -176,6 +184,9 @@ exports[`init command should configure html-webpack-plugin as opted 2`] = `
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+const isProduction = process.env.NODE_ENV == 'production';
+
+
 const config = {
     entry: './src/index.js',
     output: {
@@ -203,8 +214,9 @@ const config = {
 };
 
 module.exports = () => {
-    if (process.env.NODE_ENV == 'production') {
+    if (isProduction) {
         config.mode = 'production';
+        
     } else {
         config.mode = 'development';
     }
@@ -239,6 +251,9 @@ exports[`init command should generate ES6 project correctly 2`] = `
 
 const path = require('path');
 
+const isProduction = process.env.NODE_ENV == 'production';
+
+
 const config = {
     entry: './src/index.js',
     output: {
@@ -266,8 +281,9 @@ const config = {
 };
 
 module.exports = () => {
-    if (process.env.NODE_ENV == 'production') {
+    if (isProduction) {
         config.mode = 'production';
+        
     } else {
         config.mode = 'development';
     }
@@ -364,6 +380,9 @@ exports[`init command should generate typescript project correctly 2`] = `
 
 const path = require('path');
 
+const isProduction = process.env.NODE_ENV == 'production';
+
+
 const config = {
     entry: './src/index.ts',
     output: {
@@ -395,8 +414,9 @@ const config = {
 };
 
 module.exports = () => {
-    if (process.env.NODE_ENV == 'production') {
+    if (isProduction) {
         config.mode = 'production';
+        
     } else {
         config.mode = 'development';
     }
@@ -514,6 +534,9 @@ exports[`init command should use less in project when selected 2`] = `
 
 const path = require('path');
 
+const isProduction = process.env.NODE_ENV == 'production';
+
+
 const config = {
     entry: './src/index.js',
     output: {
@@ -541,8 +564,9 @@ const config = {
 };
 
 module.exports = () => {
-    if (process.env.NODE_ENV == 'production') {
+    if (isProduction) {
         config.mode = 'production';
+        
     } else {
         config.mode = 'development';
     }
@@ -555,7 +579,6 @@ exports[`init command should use mini-css-extract-plugin when selected 1`] = `
 Object {
   "description": "My webpack project",
   "devDependencies": Object {
-    "mini-css-extract-plugin": "x.x.x",
     "sass": "x.x.x",
     "sass-loader": "x.x.x",
     "webpack": "x.x.x",
@@ -576,7 +599,9 @@ exports[`init command should use mini-css-extract-plugin when selected 2`] = `
 "// Generated using webpack-cli https://github.com/webpack/webpack-cli
 
 const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
+const isProduction = process.env.NODE_ENV == 'production';
+
 
 const config = {
     entry: './src/index.js',
@@ -584,8 +609,6 @@ const config = {
         path: path.resolve(__dirname, 'dist'),
     },
     plugins: [
-        new MiniCssExtractPlugin(),
-
         // Add your plugins here
         // Learn more about plugins from https://webpack.js.org/configuration/plugins/
     ],
@@ -593,7 +616,7 @@ const config = {
         rules: [
             {
                 test: /\\\\.s[ac]ss$/i,
-                use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+                use: [stylesHandler, 'css-loader', 'sass-loader'],
             },
             {
                 test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
@@ -607,8 +630,9 @@ const config = {
 };
 
 module.exports = () => {
-    if (process.env.NODE_ENV == 'production') {
+    if (isProduction) {
         config.mode = 'production';
+        
     } else {
         config.mode = 'development';
     }
@@ -645,6 +669,13 @@ exports[`init command should use postcss in project when selected 2`] = `
 
 const path = require('path');
 
+const isProduction = process.env.NODE_ENV == 'production';
+
+
+const stylesHandler = 'style-loader';
+
+
+
 const config = {
     entry: './src/index.js',
     output: {
@@ -658,7 +689,7 @@ const config = {
         rules: [
             {
                 test: /\\\\.css$/i,
-                use: ['style-loader' , 'css-loader', 'postcss-loader'],
+                use: [stylesHandler, 'css-loader', 'postcss-loader'],
             },
             {
                 test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
@@ -672,8 +703,9 @@ const config = {
 };
 
 module.exports = () => {
-    if (process.env.NODE_ENV == 'production') {
+    if (isProduction) {
         config.mode = 'production';
+        
     } else {
         config.mode = 'development';
     }
@@ -712,6 +744,13 @@ exports[`init command should use sass and css with postcss in project when selec
 
 const path = require('path');
 
+const isProduction = process.env.NODE_ENV == 'production';
+
+
+const stylesHandler = 'style-loader';
+
+
+
 const config = {
     entry: './src/index.js',
     output: {
@@ -725,11 +764,11 @@ const config = {
         rules: [
             {
                 test: /\\\\.s[ac]ss$/i,
-                use: ['style-loader' , 'css-loader', 'postcss-loader', 'sass-loader'],
+                use: [stylesHandler, 'css-loader', 'postcss-loader', 'sass-loader'],
             },
             {
                 test: /\\\\.css$/i,
-                use: ['style-loader' , 'css-loader', 'postcss-loader'],
+                use: [stylesHandler, 'css-loader', 'postcss-loader'],
             },
             {
                 test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
@@ -743,8 +782,9 @@ const config = {
 };
 
 module.exports = () => {
-    if (process.env.NODE_ENV == 'production') {
+    if (isProduction) {
         config.mode = 'production';
+        
     } else {
         config.mode = 'development';
     }
@@ -778,6 +818,9 @@ exports[`init command should use sass in project when selected 2`] = `
 
 const path = require('path');
 
+const isProduction = process.env.NODE_ENV == 'production';
+
+
 const config = {
     entry: './src/index.js',
     output: {
@@ -791,7 +834,7 @@ const config = {
         rules: [
             {
                 test: /\\\\.s[ac]ss$/i,
-                use: ['style-loader' , 'css-loader', 'sass-loader'],
+                use: [stylesHandler, 'css-loader', 'sass-loader'],
             },
             {
                 test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
@@ -805,8 +848,9 @@ const config = {
 };
 
 module.exports = () => {
-    if (process.env.NODE_ENV == 'production') {
+    if (isProduction) {
         config.mode = 'production';
+        
     } else {
         config.mode = 'development';
     }
@@ -843,6 +887,9 @@ exports[`init command should use sass with postcss in project when selected 2`] 
 
 const path = require('path');
 
+const isProduction = process.env.NODE_ENV == 'production';
+
+
 const config = {
     entry: './src/index.js',
     output: {
@@ -856,7 +903,7 @@ const config = {
         rules: [
             {
                 test: /\\\\.s[ac]ss$/i,
-                use: ['style-loader' , 'css-loader', 'postcss-loader', 'sass-loader'],
+                use: [stylesHandler, 'css-loader', 'postcss-loader', 'sass-loader'],
             },
             {
                 test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
@@ -870,8 +917,9 @@ const config = {
 };
 
 module.exports = () => {
-    if (process.env.NODE_ENV == 'production') {
+    if (isProduction) {
         config.mode = 'production';
+        
     } else {
         config.mode = 'development';
     }
@@ -905,6 +953,9 @@ exports[`init command should use stylus in project when selected 2`] = `
 
 const path = require('path');
 
+const isProduction = process.env.NODE_ENV == 'production';
+
+
 const config = {
     entry: './src/index.js',
     output: {
@@ -932,8 +983,9 @@ const config = {
 };
 
 module.exports = () => {
-    if (process.env.NODE_ENV == 'production') {
+    if (isProduction) {
         config.mode = 'production';
+        
     } else {
         config.mode = 'development';
     }
