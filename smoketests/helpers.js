@@ -36,7 +36,7 @@ const runTest = (package, cliArgs = [], logMessage, isSubPackage = false) => {
     });
 
     return new Promise((resolve) => {
-        setTimeout(() => {
+        const timeout = setTimeout(() => {
             console.log('  timeout: killing process');
             proc.kill();
         }, 30000);
@@ -66,11 +66,13 @@ const runTest = (package, cliArgs = [], logMessage, isSubPackage = false) => {
 
         proc.on('exit', () => {
             swapPkgName(`.${package}`, isSubPackage);
+            clearTimeout(timeout);
             resolve(hasPassed);
         });
 
         proc.on('error', () => {
             swapPkgName(`.${package}`, isSubPackage);
+            clearTimeout(timeout);
             resolve(false);
         });
     });
