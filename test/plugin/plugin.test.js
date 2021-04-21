@@ -1,13 +1,10 @@
 const { existsSync, mkdirSync } = require('fs');
 const { join, resolve } = require('path');
-// eslint-disable-next-line node/no-unpublished-require
-const rimraf = require('rimraf');
 const { run, runPromptWithAnswers, uniqueDirectoryForTest, normalizeStdout } = require('../utils/test-utils');
 
 const ENTER = '\x0D';
 
 const firstPrompt = '? Plugin name';
-const rootAssetsPath = resolve(__dirname, './test-assets');
 const dataForTests = (rootAssetsPath) => ({
     pluginName: 'test-plugin',
     pluginPath: join(rootAssetsPath, 'test-plugin'),
@@ -17,16 +14,6 @@ const dataForTests = (rootAssetsPath) => ({
 });
 
 describe('plugin command', () => {
-    beforeAll(() => {
-        if (!existsSync(rootAssetsPath)) {
-            mkdirSync(rootAssetsPath);
-        }
-    });
-
-    afterAll(() => {
-        rimraf.sync(rootAssetsPath);
-    });
-
     it('should ask the plugin name when invoked', async () => {
         const { stdout, stderr } = await runPromptWithAnswers(__dirname, ['plugin']);
         expect(stdout).toBeTruthy();
@@ -35,7 +22,7 @@ describe('plugin command', () => {
     });
 
     it('should scaffold plugin with default name if no plugin name provided', async () => {
-        const assetsPath = await uniqueDirectoryForTest(rootAssetsPath);
+        const assetsPath = await uniqueDirectoryForTest();
         const { defaultPluginPath } = dataForTests(assetsPath);
         const { stdout } = await runPromptWithAnswers(assetsPath, ['plugin'], [`${ENTER}`]);
 
@@ -62,7 +49,7 @@ describe('plugin command', () => {
     });
 
     it('should scaffold plugin template with a given name', async () => {
-        const assetsPath = await uniqueDirectoryForTest(rootAssetsPath);
+        const assetsPath = await uniqueDirectoryForTest();
         const { pluginName, pluginPath } = dataForTests(assetsPath);
         const { stdout } = await runPromptWithAnswers(assetsPath, ['plugin'], [`${pluginName}${ENTER}`]);
 
@@ -89,7 +76,7 @@ describe('plugin command', () => {
     });
 
     it('should scaffold plugin template in the specified path', async () => {
-        const assetsPath = await uniqueDirectoryForTest(rootAssetsPath);
+        const assetsPath = await uniqueDirectoryForTest();
         const { pluginName, customPluginPath } = dataForTests(assetsPath);
         const { stdout } = await runPromptWithAnswers(assetsPath, ['plugin', 'test-assets'], [`${pluginName}${ENTER}`]);
 
@@ -116,7 +103,7 @@ describe('plugin command', () => {
     });
 
     it('should scaffold plugin template in the current directory', async () => {
-        const assetsPath = await uniqueDirectoryForTest(rootAssetsPath);
+        const assetsPath = await uniqueDirectoryForTest();
         const { genPath, customPluginPath, pluginName } = dataForTests(assetsPath);
 
         if (!existsSync(genPath)) {
@@ -148,7 +135,7 @@ describe('plugin command', () => {
     });
 
     it('should prompt on supplying an invalid template', async () => {
-        const assetsPath = await uniqueDirectoryForTest(rootAssetsPath);
+        const assetsPath = await uniqueDirectoryForTest();
         const { stderr } = await runPromptWithAnswers(assetsPath, ['plugin', '--template=unknown']);
 
         expect(stderr).toContain('unknown is not a valid template');

@@ -2,6 +2,7 @@
 
 'use strict';
 
+const os = require('os');
 const stripAnsi = require('strip-ansi');
 const path = require('path');
 const fs = require('fs');
@@ -31,6 +32,7 @@ const hyphenToUpperCase = (name) => {
     if (!name) {
         return name;
     }
+
     return name.replace(/-([a-z])/g, function (g) {
         return g[1].toUpperCase();
     });
@@ -45,20 +47,19 @@ const processKill = (process) => {
 };
 
 /**
- * Run the webpack CLI for a test case.
+ * Webpack CLI test runner.
  *
- * @param {String} testCase The path to folder that contains the webpack.config.js
- * @param {Array} args Array of arguments to pass to webpack
- * @param {Object<string, any>} options Boolean that decides if a default output path will be set or not
+ * @param {string} cwd The path to folder that contains test
+ * @param {Array<string>} args Array of arguments
+ * @param {Object<string, any>} options Options for tests
  * @returns {Promise}
  */
-const run = async (testCase, args = [], options = {}) => {
-    const cwd = path.resolve(testCase);
+const createProcess = (cwd, args, options) => {
     const { nodeOptions = [] } = options;
     const processExecutor = nodeOptions.length ? execaNode : execa;
 
     return processExecutor(WEBPACK_PATH, args, {
-        cwd,
+        cwd: path.resolve(cwd),
         reject: false,
         stdio: ENABLE_LOG_COMPILATION ? 'inherit' : 'pipe',
         maxBuffer: Infinity,
@@ -68,32 +69,49 @@ const run = async (testCase, args = [], options = {}) => {
 };
 
 /**
+ * Run the webpack CLI for a test case.
+ *
+ * @param {string} cwd The path to folder that contains test
+ * @param {Array<string>} args Array of arguments
+ * @param {Object<string, any>} options Options for tests
+ * @returns {Promise}
+ */
+const run = async (cwd, args = [], options = {}) => {
+    return createProcess(cwd, args, options);
+};
+
+/**
+ * Run the webpack CLI for a test case and get process.
+ *
+ * @param {string} cwd The path to folder that contains test
+ * @param {Array<string>} args Array of arguments
+ * @param {Object<string, any>} options Options for tests
+ * @returns {Promise}
+ */
+const runAndGetProcess = (cwd, args = [], options = {}) => {
+    return createProcess(cwd, args, options);
+};
+
+/**
  * Run the webpack CLI in watch mode for a test case.
  *
- * @param {String} testCase The path to folder that contains the webpack.config.js
- * @param {Array} args Array of arguments to pass to webpack
- * @param {Object<string, any>} options Boolean that decides if a default output path will be set or not
- * @param {string} outputKillStr String to kill
+ * @param {string} cwd The path to folder that contains test
+ * @param {Array<string>} args Array of arguments
+ * @param {Object<string, any>} options Options for tests
  * @returns {Object} The webpack output or Promise when nodeOptions are present
  */
-const runWatch = (testCase, args = [], options, outputKillStr = /webpack \d+\.\d+\.\d/) => {
-    const cwd = path.resolve(testCase);
-
+const runWatch = (cwd, args = [], options = {}) => {
     return new Promise((resolve, reject) => {
-        const proc = execa(WEBPACK_PATH, args, {
-            cwd,
-            reject: false,
-            stdio: 'pipe',
-            ...options,
-        });
+        const process = createProcess(cwd, args, options);
+        const outputKillStr = options.killString || /webpack \d+\.\d+\.\d/;
 
-        proc.stdout.pipe(
+        process.stdout.pipe(
             new Writable({
                 write(chunk, encoding, callback) {
                     const output = stripAnsi(chunk.toString('utf8'));
 
                     if (outputKillStr.test(output)) {
-                        processKill(proc);
+                        processKill(process);
                     }
 
                     callback();
@@ -101,13 +119,13 @@ const runWatch = (testCase, args = [], options, outputKillStr = /webpack \d+\.\d
             }),
         );
 
-        proc.stderr.pipe(
+        process.stderr.pipe(
             new Writable({
                 write(chunk, encoding, callback) {
                     const output = stripAnsi(chunk.toString('utf8'));
 
                     if (outputKillStr.test(output)) {
-                        processKill(proc);
+                        processKill(process);
                     }
 
                     callback();
@@ -115,124 +133,98 @@ const runWatch = (testCase, args = [], options, outputKillStr = /webpack \d+\.\d
             }),
         );
 
-        proc.then((result) => {
-            resolve(result);
-        }).catch((error) => {
-            reject(error);
-        });
+        process
+            .then((result) => {
+                resolve(result);
+            })
+            .catch((error) => {
+                reject(error);
+            });
     });
 };
 
-const runAndGetWatchProc = (testCase, args = [], setOutput = true, input = '', forcePipe = false) => {
-    const cwd = path.resolve(testCase);
-
-    const outputPath = path.resolve(testCase, 'bin');
-    const argsWithOutput = setOutput ? args.concat('--output-path', outputPath) : args;
-
-    const options = {
-        cwd,
-        reject: false,
-        stdio: ENABLE_LOG_COMPILATION && !forcePipe ? 'inherit' : 'pipe',
-    };
-
-    // some tests don't work if the input option is an empty string
-    if (input) {
-        options.input = input;
-    }
-
-    const webpackProc = execa(WEBPACK_PATH, argsWithOutput, options);
-
-    return webpackProc;
-};
 /**
  * runPromptWithAnswers
  * @param {string} location location of current working directory
  * @param {string[]} args CLI args to pass in
  * @param {string[]} answers answers to be passed to stdout for inquirer question
- * @param {boolean} waitForOutput whether to wait for stdout before writing the next answer
  */
-const runPromptWithAnswers = (location, args, answers, waitForOutput = true) => {
-    const runner = runAndGetWatchProc(location, args, false, '', true);
+const runPromptWithAnswers = (location, args, answers) => {
+    const process = runAndGetProcess(location, args);
 
-    runner.stdin.setDefaultEncoding('utf-8');
+    process.stdin.setDefaultEncoding('utf-8');
 
     const delay = 2000;
     let outputTimeout;
+    let currentAnswer = 0;
 
-    if (waitForOutput) {
-        let currentAnswer = 0;
-        const writeAnswer = (output) => {
-            if (!answers) {
-                runner.stdin.write(output);
-                runner.kill();
-                return;
-            }
+    const writeAnswer = (output) => {
+        if (!answers) {
+            process.stdin.write(output);
+            process.kill();
 
-            if (currentAnswer < answers.length) {
-                runner.stdin.write(answers[currentAnswer]);
-                currentAnswer++;
-            }
-        };
+            return;
+        }
 
-        runner.stdout.pipe(
-            new Writable({
-                write(chunk, encoding, callback) {
-                    const output = chunk.toString('utf8');
-                    if (output) {
-                        if (outputTimeout) {
-                            clearTimeout(outputTimeout);
-                        }
-                        // we must receive new stdout, then have 2 seconds
-                        // without any stdout before writing the next answer
-                        outputTimeout = setTimeout(() => {
-                            writeAnswer(output);
-                        }, delay);
+        if (currentAnswer < answers.length) {
+            process.stdin.write(answers[currentAnswer]);
+            currentAnswer++;
+        }
+    };
+
+    process.stdout.pipe(
+        new Writable({
+            write(chunk, encoding, callback) {
+                const output = chunk.toString('utf8');
+
+                if (output) {
+                    if (outputTimeout) {
+                        clearTimeout(outputTimeout);
                     }
 
-                    callback();
-                },
-            }),
-        );
-    } else {
-        // Simulate answers by sending the answers every 2s
-        answers.reduce((prevAnswer, answer) => {
-            return prevAnswer.then(() => {
-                return new Promise((resolvePromise) => {
-                    setTimeout(() => {
-                        runner.stdin.write(answer);
-                        resolvePromise();
+                    // we must receive new stdout, then have 2 seconds
+                    // without any stdout before writing the next answer
+                    outputTimeout = setTimeout(() => {
+                        writeAnswer(output);
                     }, delay);
-                });
-            });
-        }, Promise.resolve());
-    }
+                }
+
+                callback();
+            },
+        }),
+    );
 
     return new Promise((resolve) => {
         const obj = {};
+
         let stdoutDone = false;
         let stderrDone = false;
+
         const complete = () => {
             if (outputTimeout) {
                 clearTimeout(outputTimeout);
             }
+
             if (stdoutDone && stderrDone) {
-                runner.kill('SIGKILL');
+                process.kill('SIGKILL');
                 resolve(obj);
             }
         };
 
-        runner.stdout.pipe(
+        process.stdout.pipe(
             concat((result) => {
                 stdoutDone = true;
                 obj.stdout = result.toString();
+
                 complete();
             }),
         );
 
-        runner.stderr.pipe(
+        process.stderr.pipe(
             concat((result) => {
                 stderrDone = true;
                 obj.stderr = result.toString();
+
                 complete();
             }),
         );
@@ -308,20 +300,20 @@ const readdir = (path) =>
         });
     });
 
-const uniqueDirectoryForTest = async (assetsPath) => {
-    const localDir = Date.now().toString();
+const uniqueDirectoryForTest = async () => {
+    const result = path.resolve(os.tmpdir(), Date.now().toString());
 
-    const result = path.resolve(assetsPath, localDir);
-
-    if (!fs.existsSync(result)) fs.mkdirSync(result);
+    if (!fs.existsSync(result)) {
+        fs.mkdirSync(result);
+    }
 
     return result;
 };
 
 module.exports = {
     run,
+    runAndGetProcess,
     runWatch,
-    runAndGetWatchProc,
     runPromptWithAnswers,
     isWebpack5,
     isDevServer4,
