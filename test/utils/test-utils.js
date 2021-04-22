@@ -275,8 +275,6 @@ const normalizeStderr = (stderr) => {
 
     let normalizedStderr = stripAnsi(stderr);
     normalizedStderr = normalizeCwd(normalizedStderr);
-    normalizedStderr = normalizeVersions(normalizedStderr);
-    normalizedStderr = normalizeError(normalizedStderr);
 
     const networkIPv4 = internalIp.v4.sync();
 
@@ -308,6 +306,9 @@ const normalizeStderr = (stderr) => {
 
         normalizedStderr = normalizedStderr.join('\n');
     }
+
+    normalizedStderr = normalizeVersions(normalizedStderr);
+    normalizedStderr = normalizeError(normalizedStderr);
 
     return normalizedStderr;
 };

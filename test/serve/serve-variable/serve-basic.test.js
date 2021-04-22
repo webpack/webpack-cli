@@ -17,16 +17,15 @@ describe('serve variable', () => {
     it('compiles without flags and export variable', async () => {
         const { stdout, stderr } = await runWatch(testPath, ['serve', '--port', port]);
 
+        expect(normalizeStderr(stderr)).toMatchSnapshot();
+        expect(stdout).toContain('main.js');
+
         if (isDevServer4) {
-            expect(normalizeStderr(stderr)).toMatchSnapshot();
-            expect(stdout).toContain('main.js');
             expect(stdout).not.toContain('HotModuleReplacementPlugin');
-            expect(stdout).toContain('PASS');
         } else {
-            expect(normalizeStderr(stderr)).toMatchSnapshot();
-            expect(stdout).toContain('main.js');
             expect(stdout).not.toContain('HotModuleReplacementPlugin');
-            expect(stdout).toContain('PASS');
         }
+
+        expect(stdout).toContain('PASS');
     });
 });

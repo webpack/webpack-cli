@@ -17,77 +17,59 @@ describe('serve with devServer in config', () => {
     it('Should pick up the host and port from config', async () => {
         const { stdout, stderr } = await runWatch(testPath, ['serve']);
 
+        expect(normalizeStderr(stderr)).toMatchSnapshot('stderr');
+
         if (isDevServer4) {
-            expect(normalizeStderr(stderr)).toMatchSnapshot('stderr');
-            // Should output the correct bundle file
-            expect(stdout).toContain('main.js');
-            // Runs at correct host and port
-            expect(stderr).toContain('http://localhost:1234');
+            expect(stdout).toContain('HotModuleReplacementPlugin');
         } else {
-            expect(normalizeStderr(stderr)).toMatchSnapshot();
-            // Should output the correct bundle file
-            expect(stdout).toContain('main.js');
             expect(stdout).not.toContain('HotModuleReplacementPlugin');
-            // Runs at correct host and port
-            expect(stdout).toContain('http://localhost:1234');
+            expect(stdout).toContain('http://0.0.0.0:1234');
         }
+
+        expect(stdout).toContain('main.js');
     });
 
     it('Port flag should override the config port', async () => {
         const { stdout, stderr } = await runWatch(testPath, ['serve', '--port', port]);
 
+        expect(normalizeStderr(stderr)).toMatchSnapshot('stderr');
+
         if (isDevServer4) {
-            expect(normalizeStderr(stderr)).toMatchSnapshot('stderr');
-            // Should output the correct bundle file
-            expect(stdout).toContain('main.js');
-            // Runs at correct host and port
-            expect(stderr).toContain(`http://localhost:${port}`);
+            expect(stdout).toContain('HotModuleReplacementPlugin');
         } else {
-            expect(stderr).toMatchSnapshot();
-            // Should output the correct bundle file
-            expect(stdout).toContain('main.js');
             expect(stdout).not.toContain('HotModuleReplacementPlugin');
-            // Runs at correct host and port
-            expect(stdout).toContain(`http://localhost:${port}`);
+            expect(stdout).toContain(`http://0.0.0.0:${port}`);
         }
+
+        expect(stdout).toContain('main.js');
     });
 
     it('Passing hot flag works alongside other server config', async () => {
         const { stdout, stderr } = await runWatch(testPath, ['serve', '--port', port, '--hot']);
 
+        expect(normalizeStderr(stderr)).toMatchSnapshot('stderr');
+
         if (isDevServer4) {
-            expect(normalizeStderr(stderr)).toMatchSnapshot('stderr');
-            // Should output the correct bundle file
-            expect(stdout).toContain('main.js');
-            // HMR is being used
-            expect(stdout).toContain('webpack/hot/dev-server.js');
+            expect(stdout).toContain('HotModuleReplacementPlugin');
         } else {
-            expect(stderr).toBeFalsy();
-            // Runs at correct host and port
-            expect(stdout).toContain(`http://localhost:${port}`);
+            expect(stdout).toContain('HotModuleReplacementPlugin');
+            expect(stdout).toContain(`http://0.0.0.0:${port}`);
         }
 
-        // Should output the correct bundle file
         expect(stdout).toContain('main.js');
-        // HMR is being used
-        expect(stdout).toContain('webpack/hot/dev-server.js');
     });
 
     it('works fine when no-hot flag is passed alongside other server config', async () => {
         const { stdout, stderr } = await runWatch(testPath, ['serve', '--port', port, '--no-hot']);
 
         expect(normalizeStderr(stderr)).toMatchSnapshot('stderr');
-        // Should output the correct bundle file
-        expect(stdout).toContain('main.js');
+        expect(stdout).not.toContain('HotModuleReplacementPlugin');
 
-        if (isDevServer4) {
-            // HMR is not being used
-            expect(stdout).not.toContain('webpack/hot/dev-server.js');
-        } else {
-            // HMR is not being used
-            expect(stdout).not.toContain('HotModuleReplacementPlugin');
+        if (!isDevServer4) {
             // Runs at correct host and port
-            expect(stdout).toContain(`http://localhost:${port}`);
+            expect(stdout).toContain(`http://0.0.0.0:${port}`);
         }
+
+        expect(stdout).toContain('main.js');
     });
 });
