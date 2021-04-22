@@ -1,110 +1,138 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`help should log error for invalid command using command syntax #3 1`] = `
+exports[`help should log error for invalid command using command syntax #3: stderr 1`] = `
 "[webpack-cli] Incorrect use of help
 [webpack-cli] Please use: 'webpack help [command] [option]' | 'webpack [command] --help'
 [webpack-cli] Run 'webpack --help' to see available commands and options"
 `;
 
-exports[`help should log error for invalid command using command syntax #4 1`] = `
+exports[`help should log error for invalid command using command syntax #3: stdout 1`] = `""`;
+
+exports[`help should log error for invalid command using command syntax #4: stderr 1`] = `
 "[webpack-cli] Incorrect use of help
 [webpack-cli] Please use: 'webpack help [command] [option]' | 'webpack [command] --help'
 [webpack-cli] Run 'webpack --help' to see available commands and options"
 `;
 
-exports[`help should log error for invalid command using the "--help" option #2 1`] = `
+exports[`help should log error for invalid command using command syntax #4: stdout 1`] = `""`;
+
+exports[`help should log error for invalid command using the "--help" option #2: stderr 1`] = `
 "[webpack-cli] Incorrect use of help
 [webpack-cli] Please use: 'webpack help [command] [option]' | 'webpack [command] --help'
 [webpack-cli] Run 'webpack --help' to see available commands and options"
 `;
 
-exports[`help should log error for invalid command using the "--help" option #3 1`] = `
+exports[`help should log error for invalid command using the "--help" option #2: stdout 1`] = `""`;
+
+exports[`help should log error for invalid command using the "--help" option #3: stderr 1`] = `
 "[webpack-cli] Incorrect use of help
 [webpack-cli] Please use: 'webpack help [command] [option]' | 'webpack [command] --help'
 [webpack-cli] Run 'webpack --help' to see available commands and options"
 `;
 
-exports[`help should log error for invalid command using the "--help" option 1`] = `"[webpack-cli] Unknown value for '--help' option, please use '--help=verbose'"`;
+exports[`help should log error for invalid command using the "--help" option #3: stdout 1`] = `""`;
+
+exports[`help should log error for invalid command using the "--help" option: stderr 1`] = `"[webpack-cli] Unknown value for '--help' option, please use '--help=verbose'"`;
+
+exports[`help should log error for invalid command using the "--help" option: stdout 1`] = `""`;
 
 exports[`help should log error for invalid flag with the "--help" option #2 1`] = `"[webpack-cli] Unknown value for '--help' option, please use '--help=verbose'"`;
 
-exports[`help should log error for invalid flag with the "--help" option 1`] = `
+exports[`help should log error for invalid flag with the "--help" option #2: stderr 1`] = `"[webpack-cli] Unknown value for '--help' option, please use '--help=verbose'"`;
+
+exports[`help should log error for invalid flag with the "--help" option #2: stdout 1`] = `""`;
+
+exports[`help should log error for invalid flag with the "--help" option: stderr 1`] = `
 "[webpack-cli] Incorrect use of help
 [webpack-cli] Please use: 'webpack help [command] [option]' | 'webpack [command] --help'
 [webpack-cli] Run 'webpack --help' to see available commands and options"
 `;
 
-exports[`help should log error for unknown command using command syntax #2 1`] = `
+exports[`help should log error for invalid flag with the "--help" option: stdout 1`] = `""`;
+
+exports[`help should log error for unknown command using command syntax #2: stderr 1`] = `
 "[webpack-cli] Can't find and load command 'verbose'
 [webpack-cli] Run 'webpack --help' to see available commands and options"
 `;
 
-exports[`help should log error for unknown command using command syntax 1`] = `
+exports[`help should log error for unknown command using command syntax #2: stdout 1`] = `""`;
+
+exports[`help should log error for unknown command using command syntax: stderr 1`] = `
 "[webpack-cli] Can't find and load command 'myCommand'
 [webpack-cli] Run 'webpack --help' to see available commands and options"
 `;
 
-exports[`help should log error for unknown option using command syntax #2 1`] = `
+exports[`help should log error for unknown command using command syntax: stdout 1`] = `""`;
+
+exports[`help should log error for unknown option using command syntax #2: stderr 1`] = `
 "[webpack-cli] Unknown option '--made'
 [webpack-cli] Run 'webpack --help' to see available commands and options"
 `;
 
-exports[`help should log error for unknown option using command syntax #3 1`] = `
+exports[`help should log error for unknown option using command syntax #2: stdout 1`] = `""`;
+
+exports[`help should log error for unknown option using command syntax #3: stderr 1`] = `
 "[webpack-cli] Unknown option '--made'
 [webpack-cli] Run 'webpack --help' to see available commands and options"
 `;
 
-exports[`help should log error for unknown option using command syntax #4 1`] = `
+exports[`help should log error for unknown option using command syntax #3: stdout 1`] = `""`;
+
+exports[`help should log error for unknown option using command syntax #4: stderr 1`] = `
 "[webpack-cli] Can't find and load command 'bui'
 [webpack-cli] Run 'webpack --help' to see available commands and options"
 `;
 
-exports[`help should show help information and respect the "--color" flag using the "--help" option 1`] = `
+exports[`help should log error for unknown option using command syntax #4: stdout 1`] = `""`;
+
+exports[`help should show help information and respect the "--color" flag using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information and respect the "--color" flag using the "--help" option: stdout 1`] = `
 "Usage: webpack [entries...] [options]
 Alternative usage to run commands: webpack [command] [options]
 
 The build tool for modern web applications.
 
 Options:
-  -c, --config <value...>                    Provide path to a webpack configuration file e.g. ./webpack.config.js.
-  --config-name <value...>                   Name of the configuration to use.
-  -m, --merge                                Merge two or more configurations using 'webpack-merge'.
-  --env <value...>                           Environment passed to the configuration when it is a function.
-  --node-env <value>                         Sets process.env.NODE_ENV to the specified value.
-  --progress [value]                         Print compilation progress during build.
-  -j, --json [value]                         Prints result as JSON or store it in a file.
-  --entry <value...>                         The entry point(s) of your application e.g. ./src/main.js.
-  -o, --output-path <value>                  Output location of the file generated by webpack e.g. ./dist/.
-  -t, --target <value>                       Sets the build target e.g. node.
-  -d, --devtool <value>                      Determine source maps to use.
-  --no-devtool                               Do not generate source maps.
-  --mode <value>                             Defines the mode to pass to webpack.
-  --name <value>                             Name of the configuration. Used when loading multiple configurations.
-  --stats [value]                            It instructs webpack on how to treat the stats e.g. verbose.
-  --no-stats                                 Disable stats output.
-  -w, --watch                                Watch for files changes.
-  --no-watch                                 Do not watch for file changes.
-  --watch-options-stdin                      Stop watching when stdin stream has ended.
-  --no-watch-options-stdin                   Do not stop watching when stdin stream has ended.
+  -c, --config <value...>                          Provide path to a webpack configuration file e.g. ./webpack.config.js.
+  --config-name <value...>                         Name of the configuration to use.
+  -m, --merge                                      Merge two or more configurations using 'webpack-merge'.
+  --env <value...>                                 Environment passed to the configuration when it is a function.
+  --node-env <value>                               Sets process.env.NODE_ENV to the specified value.
+  --progress [value]                               Print compilation progress during build.
+  -j, --json [value]                               Prints result as JSON or store it in a file.
+  --entry <value...>                               The entry point(s) of your application e.g. ./src/main.js.
+  -o, --output-path <value>                        Output location of the file generated by webpack e.g. ./dist/.
+  -t, --target <value>                             Sets the build target e.g. node.
+  -d, --devtool <value>                            Determine source maps to use.
+  --no-devtool                                     Do not generate source maps.
+  --mode <value>                                   Defines the mode to pass to webpack.
+  --name <value>                                   Name of the configuration. Used when loading multiple configurations.
+  --stats [value]                                  It instructs webpack on how to treat the stats e.g. verbose.
+  --no-stats                                       Disable stats output.
+  -w, --watch                                      Watch for files changes.
+  --no-watch                                       Do not watch for file changes.
+  --watch-options-stdin                            Stop watching when stdin stream has ended.
+  --no-watch-options-stdin                         Do not stop watching when stdin stream has ended.
 
 Global options:
-  --color                                    Enable colors on console.
-  --no-color                                 Disable colors on console.
-  -v, --version                              Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  -h, --help [verbose]                       Display help for commands and options.
+  --color                                          Enable colors on console.
+  --no-color                                       Disable colors on console.
+  -v, --version                                    Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]                             Display help for commands and options.
 
 Commands:
-  build|bundle|b [entries...] [options]      Run webpack (default command, can be omitted).
-  configtest|t [config-path]                 Validate a webpack configuration.
-  help|h [command] [option]                  Display help for commands and options.
-  info|i [options]                           Outputs information about your system.
-  init|c [generation-path] [options]         Initialize a new webpack project.
-  loader|l [output-path] [options]           Scaffold a loader.
-  migrate|m <config-path> [new-config-path]  Migrate a configuration to a new version.
-  plugin|p [output-path] [options]           Scaffold a plugin.
-  serve|s [entries...] [options]             Run the webpack dev server.
-  version|v [commands...]                    Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  watch|w [entries...] [options]             Run webpack and watch for files changes.
+  build|bundle|b [entries...] [options]            Run webpack (default command, can be omitted).
+  configtest|t [config-path]                       Validate a webpack configuration.
+  help|h [command] [option]                        Display help for commands and options.
+  info|i [options]                                 Outputs information about your system.
+  init|create|new|c|n [generation-path] [options]  Initialize a new webpack project.
+  loader|l [output-path] [options]                 Scaffold a loader.
+  migrate|m <config-path> [new-config-path]        Migrate a configuration to a new version.
+  plugin|p [output-path] [options]                 Scaffold a plugin.
+  serve|server|s [entries...] [options]            Run the webpack dev server.
+  version|v [commands...]                          Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  watch|w [entries...] [options]                   Run webpack and watch for files changes.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -113,52 +141,54 @@ CLI documentation: https://webpack.js.org/api/cli/.
 Made with ♥ by the webpack team."
 `;
 
-exports[`help should show help information and respect the "--no-color" flag using the "--help" option 1`] = `
+exports[`help should show help information and respect the "--no-color" flag using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information and respect the "--no-color" flag using the "--help" option: stdout 1`] = `
 "Usage: webpack [entries...] [options]
 Alternative usage to run commands: webpack [command] [options]
 
 The build tool for modern web applications.
 
 Options:
-  -c, --config <value...>                    Provide path to a webpack configuration file e.g. ./webpack.config.js.
-  --config-name <value...>                   Name of the configuration to use.
-  -m, --merge                                Merge two or more configurations using 'webpack-merge'.
-  --env <value...>                           Environment passed to the configuration when it is a function.
-  --node-env <value>                         Sets process.env.NODE_ENV to the specified value.
-  --progress [value]                         Print compilation progress during build.
-  -j, --json [value]                         Prints result as JSON or store it in a file.
-  --entry <value...>                         The entry point(s) of your application e.g. ./src/main.js.
-  -o, --output-path <value>                  Output location of the file generated by webpack e.g. ./dist/.
-  -t, --target <value>                       Sets the build target e.g. node.
-  -d, --devtool <value>                      Determine source maps to use.
-  --no-devtool                               Do not generate source maps.
-  --mode <value>                             Defines the mode to pass to webpack.
-  --name <value>                             Name of the configuration. Used when loading multiple configurations.
-  --stats [value]                            It instructs webpack on how to treat the stats e.g. verbose.
-  --no-stats                                 Disable stats output.
-  -w, --watch                                Watch for files changes.
-  --no-watch                                 Do not watch for file changes.
-  --watch-options-stdin                      Stop watching when stdin stream has ended.
-  --no-watch-options-stdin                   Do not stop watching when stdin stream has ended.
+  -c, --config <value...>                          Provide path to a webpack configuration file e.g. ./webpack.config.js.
+  --config-name <value...>                         Name of the configuration to use.
+  -m, --merge                                      Merge two or more configurations using 'webpack-merge'.
+  --env <value...>                                 Environment passed to the configuration when it is a function.
+  --node-env <value>                               Sets process.env.NODE_ENV to the specified value.
+  --progress [value]                               Print compilation progress during build.
+  -j, --json [value]                               Prints result as JSON or store it in a file.
+  --entry <value...>                               The entry point(s) of your application e.g. ./src/main.js.
+  -o, --output-path <value>                        Output location of the file generated by webpack e.g. ./dist/.
+  -t, --target <value>                             Sets the build target e.g. node.
+  -d, --devtool <value>                            Determine source maps to use.
+  --no-devtool                                     Do not generate source maps.
+  --mode <value>                                   Defines the mode to pass to webpack.
+  --name <value>                                   Name of the configuration. Used when loading multiple configurations.
+  --stats [value]                                  It instructs webpack on how to treat the stats e.g. verbose.
+  --no-stats                                       Disable stats output.
+  -w, --watch                                      Watch for files changes.
+  --no-watch                                       Do not watch for file changes.
+  --watch-options-stdin                            Stop watching when stdin stream has ended.
+  --no-watch-options-stdin                         Do not stop watching when stdin stream has ended.
 
 Global options:
-  --color                                    Enable colors on console.
-  --no-color                                 Disable colors on console.
-  -v, --version                              Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  -h, --help [verbose]                       Display help for commands and options.
+  --color                                          Enable colors on console.
+  --no-color                                       Disable colors on console.
+  -v, --version                                    Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]                             Display help for commands and options.
 
 Commands:
-  build|bundle|b [entries...] [options]      Run webpack (default command, can be omitted).
-  configtest|t [config-path]                 Validate a webpack configuration.
-  help|h [command] [option]                  Display help for commands and options.
-  info|i [options]                           Outputs information about your system.
-  init|c [generation-path] [options]         Initialize a new webpack project.
-  loader|l [output-path] [options]           Scaffold a loader.
-  migrate|m <config-path> [new-config-path]  Migrate a configuration to a new version.
-  plugin|p [output-path] [options]           Scaffold a plugin.
-  serve|s [entries...] [options]             Run the webpack dev server.
-  version|v [commands...]                    Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  watch|w [entries...] [options]             Run webpack and watch for files changes.
+  build|bundle|b [entries...] [options]            Run webpack (default command, can be omitted).
+  configtest|t [config-path]                       Validate a webpack configuration.
+  help|h [command] [option]                        Display help for commands and options.
+  info|i [options]                                 Outputs information about your system.
+  init|create|new|c|n [generation-path] [options]  Initialize a new webpack project.
+  loader|l [output-path] [options]                 Scaffold a loader.
+  migrate|m <config-path> [new-config-path]        Migrate a configuration to a new version.
+  plugin|p [output-path] [options]                 Scaffold a plugin.
+  serve|server|s [entries...] [options]            Run the webpack dev server.
+  version|v [commands...]                          Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  watch|w [entries...] [options]                   Run webpack and watch for files changes.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -167,52 +197,54 @@ CLI documentation: https://webpack.js.org/api/cli/.
 Made with ♥ by the webpack team."
 `;
 
-exports[`help should show help information and taking precedence when "--help" and "--version" option using together 1`] = `
+exports[`help should show help information and taking precedence when "--help" and "--version" option using together: stderr 1`] = `""`;
+
+exports[`help should show help information and taking precedence when "--help" and "--version" option using together: stdout 1`] = `
 "Usage: webpack [entries...] [options]
 Alternative usage to run commands: webpack [command] [options]
 
 The build tool for modern web applications.
 
 Options:
-  -c, --config <value...>                    Provide path to a webpack configuration file e.g. ./webpack.config.js.
-  --config-name <value...>                   Name of the configuration to use.
-  -m, --merge                                Merge two or more configurations using 'webpack-merge'.
-  --env <value...>                           Environment passed to the configuration when it is a function.
-  --node-env <value>                         Sets process.env.NODE_ENV to the specified value.
-  --progress [value]                         Print compilation progress during build.
-  -j, --json [value]                         Prints result as JSON or store it in a file.
-  --entry <value...>                         The entry point(s) of your application e.g. ./src/main.js.
-  -o, --output-path <value>                  Output location of the file generated by webpack e.g. ./dist/.
-  -t, --target <value>                       Sets the build target e.g. node.
-  -d, --devtool <value>                      Determine source maps to use.
-  --no-devtool                               Do not generate source maps.
-  --mode <value>                             Defines the mode to pass to webpack.
-  --name <value>                             Name of the configuration. Used when loading multiple configurations.
-  --stats [value]                            It instructs webpack on how to treat the stats e.g. verbose.
-  --no-stats                                 Disable stats output.
-  -w, --watch                                Watch for files changes.
-  --no-watch                                 Do not watch for file changes.
-  --watch-options-stdin                      Stop watching when stdin stream has ended.
-  --no-watch-options-stdin                   Do not stop watching when stdin stream has ended.
+  -c, --config <value...>                          Provide path to a webpack configuration file e.g. ./webpack.config.js.
+  --config-name <value...>                         Name of the configuration to use.
+  -m, --merge                                      Merge two or more configurations using 'webpack-merge'.
+  --env <value...>                                 Environment passed to the configuration when it is a function.
+  --node-env <value>                               Sets process.env.NODE_ENV to the specified value.
+  --progress [value]                               Print compilation progress during build.
+  -j, --json [value]                               Prints result as JSON or store it in a file.
+  --entry <value...>                               The entry point(s) of your application e.g. ./src/main.js.
+  -o, --output-path <value>                        Output location of the file generated by webpack e.g. ./dist/.
+  -t, --target <value>                             Sets the build target e.g. node.
+  -d, --devtool <value>                            Determine source maps to use.
+  --no-devtool                                     Do not generate source maps.
+  --mode <value>                                   Defines the mode to pass to webpack.
+  --name <value>                                   Name of the configuration. Used when loading multiple configurations.
+  --stats [value]                                  It instructs webpack on how to treat the stats e.g. verbose.
+  --no-stats                                       Disable stats output.
+  -w, --watch                                      Watch for files changes.
+  --no-watch                                       Do not watch for file changes.
+  --watch-options-stdin                            Stop watching when stdin stream has ended.
+  --no-watch-options-stdin                         Do not stop watching when stdin stream has ended.
 
 Global options:
-  --color                                    Enable colors on console.
-  --no-color                                 Disable colors on console.
-  -v, --version                              Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  -h, --help [verbose]                       Display help for commands and options.
+  --color                                          Enable colors on console.
+  --no-color                                       Disable colors on console.
+  -v, --version                                    Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]                             Display help for commands and options.
 
 Commands:
-  build|bundle|b [entries...] [options]      Run webpack (default command, can be omitted).
-  configtest|t [config-path]                 Validate a webpack configuration.
-  help|h [command] [option]                  Display help for commands and options.
-  info|i [options]                           Outputs information about your system.
-  init|c [generation-path] [options]         Initialize a new webpack project.
-  loader|l [output-path] [options]           Scaffold a loader.
-  migrate|m <config-path> [new-config-path]  Migrate a configuration to a new version.
-  plugin|p [output-path] [options]           Scaffold a plugin.
-  serve|s [entries...] [options]             Run the webpack dev server.
-  version|v [commands...]                    Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  watch|w [entries...] [options]             Run webpack and watch for files changes.
+  build|bundle|b [entries...] [options]            Run webpack (default command, can be omitted).
+  configtest|t [config-path]                       Validate a webpack configuration.
+  help|h [command] [option]                        Display help for commands and options.
+  info|i [options]                                 Outputs information about your system.
+  init|create|new|c|n [generation-path] [options]  Initialize a new webpack project.
+  loader|l [output-path] [options]                 Scaffold a loader.
+  migrate|m <config-path> [new-config-path]        Migrate a configuration to a new version.
+  plugin|p [output-path] [options]                 Scaffold a plugin.
+  serve|server|s [entries...] [options]            Run the webpack dev server.
+  version|v [commands...]                          Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  watch|w [entries...] [options]                   Run webpack and watch for files changes.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -221,7 +253,93 @@ CLI documentation: https://webpack.js.org/api/cli/.
 Made with ♥ by the webpack team."
 `;
 
-exports[`help should show help information for 'build' command using the "--help" option 1`] = `
+exports[`help should show help information for 'b' command using command syntax: stderr 1`] = `""`;
+
+exports[`help should show help information for 'b' command using command syntax: stdout 1`] = `
+"Usage: webpack build|bundle|b [entries...] [options]
+
+Run webpack (default command, can be omitted).
+
+Options:
+  -c, --config <value...>    Provide path to a webpack configuration file e.g. ./webpack.config.js.
+  --config-name <value...>   Name of the configuration to use.
+  -m, --merge                Merge two or more configurations using 'webpack-merge'.
+  --env <value...>           Environment passed to the configuration when it is a function.
+  --node-env <value>         Sets process.env.NODE_ENV to the specified value.
+  --progress [value]         Print compilation progress during build.
+  -j, --json [value]         Prints result as JSON or store it in a file.
+  --entry <value...>         The entry point(s) of your application e.g. ./src/main.js.
+  -o, --output-path <value>  Output location of the file generated by webpack e.g. ./dist/.
+  -t, --target <value>       Sets the build target e.g. node.
+  -d, --devtool <value>      Determine source maps to use.
+  --no-devtool               Do not generate source maps.
+  --mode <value>             Defines the mode to pass to webpack.
+  --name <value>             Name of the configuration. Used when loading multiple configurations.
+  --stats [value]            It instructs webpack on how to treat the stats e.g. verbose.
+  --no-stats                 Disable stats output.
+  -w, --watch                Watch for files changes.
+  --no-watch                 Do not watch for file changes.
+  --watch-options-stdin      Stop watching when stdin stream has ended.
+  --no-watch-options-stdin   Do not stop watching when stdin stream has ended.
+
+Global options:
+  --color                    Enable colors on console.
+  --no-color                 Disable colors on console.
+  -v, --version              Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]       Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'b' command using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information for 'b' command using the "--help" option: stdout 1`] = `
+"Usage: webpack build|bundle|b [entries...] [options]
+
+Run webpack (default command, can be omitted).
+
+Options:
+  -c, --config <value...>    Provide path to a webpack configuration file e.g. ./webpack.config.js.
+  --config-name <value...>   Name of the configuration to use.
+  -m, --merge                Merge two or more configurations using 'webpack-merge'.
+  --env <value...>           Environment passed to the configuration when it is a function.
+  --node-env <value>         Sets process.env.NODE_ENV to the specified value.
+  --progress [value]         Print compilation progress during build.
+  -j, --json [value]         Prints result as JSON or store it in a file.
+  --entry <value...>         The entry point(s) of your application e.g. ./src/main.js.
+  -o, --output-path <value>  Output location of the file generated by webpack e.g. ./dist/.
+  -t, --target <value>       Sets the build target e.g. node.
+  -d, --devtool <value>      Determine source maps to use.
+  --no-devtool               Do not generate source maps.
+  --mode <value>             Defines the mode to pass to webpack.
+  --name <value>             Name of the configuration. Used when loading multiple configurations.
+  --stats [value]            It instructs webpack on how to treat the stats e.g. verbose.
+  --no-stats                 Disable stats output.
+  -w, --watch                Watch for files changes.
+  --no-watch                 Do not watch for file changes.
+  --watch-options-stdin      Stop watching when stdin stream has ended.
+  --no-watch-options-stdin   Do not stop watching when stdin stream has ended.
+
+Global options:
+  --color                    Enable colors on console.
+  --no-color                 Disable colors on console.
+  -v, --version              Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]       Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'build' and respect the "--color" flag using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information for 'build' and respect the "--color" flag using the "--help" option: stdout 1`] = `
 "Usage: webpack build|bundle|b [entries...] [options]
 
 Run webpack (default command, can be omitted).
@@ -270,7 +388,192 @@ CLI documentation: https://webpack.js.org/api/cli/.
 Made with ♥ by the webpack team."
 `;
 
-exports[`help should show help information for 'configtest' command using the "--help" option 1`] = `
+exports[`help should show help information for 'build' and respect the "--no-color" flag using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information for 'build' and respect the "--no-color" flag using the "--help" option: stdout 1`] = `
+"Usage: webpack build|bundle|b [entries...] [options]
+
+Run webpack (default command, can be omitted).
+
+Options:
+  -c, --config <value...>    Provide path to a webpack configuration file e.g.
+                             ./webpack.config.js.
+  --config-name <value...>   Name of the configuration to use.
+  -m, --merge                Merge two or more configurations using
+                             'webpack-merge'.
+  --env <value...>           Environment passed to the configuration when it is
+                             a function.
+  --node-env <value>         Sets process.env.NODE_ENV to the specified value.
+  --progress [value]         Print compilation progress during build.
+  -j, --json [value]         Prints result as JSON or store it in a file.
+  --entry <value...>         The entry point(s) of your application e.g.
+                             ./src/main.js.
+  -o, --output-path <value>  Output location of the file generated by webpack
+                             e.g. ./dist/.
+  -t, --target <value>       Sets the build target e.g. node.
+  -d, --devtool <value>      Determine source maps to use.
+  --no-devtool               Do not generate source maps.
+  --mode <value>             Defines the mode to pass to webpack.
+  --name <value>             Name of the configuration. Used when loading
+                             multiple configurations.
+  --stats [value]            It instructs webpack on how to treat the stats
+                             e.g. verbose.
+  --no-stats                 Disable stats output.
+  -w, --watch                Watch for files changes.
+  --no-watch                 Do not watch for file changes.
+  --watch-options-stdin      Stop watching when stdin stream has ended.
+  --no-watch-options-stdin   Do not stop watching when stdin stream has ended.
+
+Global options:
+  --color                    Enable colors on console.
+  --no-color                 Disable colors on console.
+  -v, --version              Output the version number of 'webpack',
+                             'webpack-cli' and 'webpack-dev-server' and
+                             commands.
+  -h, --help [verbose]       Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'build' command using command syntax: stderr 1`] = `""`;
+
+exports[`help should show help information for 'build' command using command syntax: stdout 1`] = `
+"Usage: webpack build|bundle|b [entries...] [options]
+
+Run webpack (default command, can be omitted).
+
+Options:
+  -c, --config <value...>    Provide path to a webpack configuration file e.g. ./webpack.config.js.
+  --config-name <value...>   Name of the configuration to use.
+  -m, --merge                Merge two or more configurations using 'webpack-merge'.
+  --env <value...>           Environment passed to the configuration when it is a function.
+  --node-env <value>         Sets process.env.NODE_ENV to the specified value.
+  --progress [value]         Print compilation progress during build.
+  -j, --json [value]         Prints result as JSON or store it in a file.
+  --entry <value...>         The entry point(s) of your application e.g. ./src/main.js.
+  -o, --output-path <value>  Output location of the file generated by webpack e.g. ./dist/.
+  -t, --target <value>       Sets the build target e.g. node.
+  -d, --devtool <value>      Determine source maps to use.
+  --no-devtool               Do not generate source maps.
+  --mode <value>             Defines the mode to pass to webpack.
+  --name <value>             Name of the configuration. Used when loading multiple configurations.
+  --stats [value]            It instructs webpack on how to treat the stats e.g. verbose.
+  --no-stats                 Disable stats output.
+  -w, --watch                Watch for files changes.
+  --no-watch                 Do not watch for file changes.
+  --watch-options-stdin      Stop watching when stdin stream has ended.
+  --no-watch-options-stdin   Do not stop watching when stdin stream has ended.
+
+Global options:
+  --color                    Enable colors on console.
+  --no-color                 Disable colors on console.
+  -v, --version              Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]       Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'build' command using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information for 'build' command using the "--help" option: stdout 1`] = `
+"Usage: webpack build|bundle|b [entries...] [options]
+
+Run webpack (default command, can be omitted).
+
+Options:
+  -c, --config <value...>    Provide path to a webpack configuration file e.g. ./webpack.config.js.
+  --config-name <value...>   Name of the configuration to use.
+  -m, --merge                Merge two or more configurations using 'webpack-merge'.
+  --env <value...>           Environment passed to the configuration when it is a function.
+  --node-env <value>         Sets process.env.NODE_ENV to the specified value.
+  --progress [value]         Print compilation progress during build.
+  -j, --json [value]         Prints result as JSON or store it in a file.
+  --entry <value...>         The entry point(s) of your application e.g. ./src/main.js.
+  -o, --output-path <value>  Output location of the file generated by webpack e.g. ./dist/.
+  -t, --target <value>       Sets the build target e.g. node.
+  -d, --devtool <value>      Determine source maps to use.
+  --no-devtool               Do not generate source maps.
+  --mode <value>             Defines the mode to pass to webpack.
+  --name <value>             Name of the configuration. Used when loading multiple configurations.
+  --stats [value]            It instructs webpack on how to treat the stats e.g. verbose.
+  --no-stats                 Disable stats output.
+  -w, --watch                Watch for files changes.
+  --no-watch                 Do not watch for file changes.
+  --watch-options-stdin      Stop watching when stdin stream has ended.
+  --no-watch-options-stdin   Do not stop watching when stdin stream has ended.
+
+Global options:
+  --color                    Enable colors on console.
+  --no-color                 Disable colors on console.
+  -v, --version              Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]       Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'c' command using command syntax: stderr 1`] = `""`;
+
+exports[`help should show help information for 'c' command using command syntax: stdout 1`] = `
+"Usage: webpack init|create|new|c|n [generation-path] [options]
+
+Initialize a new webpack project.
+
+Options:
+  --template <value>    Type of template (default: \\"default\\")
+  --force               Generate without questions (ideally) using default answers
+
+Global options:
+  --color               Enable colors on console.
+  --no-color            Disable colors on console.
+  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]  Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'c' command using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information for 'c' command using the "--help" option: stdout 1`] = `
+"Usage: webpack init|create|new|c|n [generation-path] [options]
+
+Initialize a new webpack project.
+
+Options:
+  --template <value>    Type of template (default: \\"default\\")
+  --force               Generate without questions (ideally) using default answers
+
+Global options:
+  --color               Enable colors on console.
+  --no-color            Disable colors on console.
+  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]  Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'configtest' and respect the "--color" flag using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information for 'configtest' and respect the "--color" flag using the "--help" option: stdout 1`] = `
 "Usage: webpack configtest|t [config-path]
 
 Validate a webpack configuration.
@@ -289,7 +592,164 @@ CLI documentation: https://webpack.js.org/api/cli/.
 Made with ♥ by the webpack team."
 `;
 
-exports[`help should show help information for 'info' command using the "--help" option 1`] = `
+exports[`help should show help information for 'configtest' and respect the "--no-color" flag using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information for 'configtest' and respect the "--no-color" flag using the "--help" option: stdout 1`] = `
+"Usage: webpack configtest|t [config-path]
+
+Validate a webpack configuration.
+
+Global options:
+  --color               Enable colors on console.
+  --no-color            Disable colors on console.
+  -v, --version         Output the version number of 'webpack', 'webpack-cli'
+                        and 'webpack-dev-server' and commands.
+  -h, --help [verbose]  Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'configtest' command using command syntax: stderr 1`] = `""`;
+
+exports[`help should show help information for 'configtest' command using command syntax: stdout 1`] = `
+"Usage: webpack configtest|t [config-path]
+
+Validate a webpack configuration.
+
+Global options:
+  --color               Enable colors on console.
+  --no-color            Disable colors on console.
+  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]  Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'configtest' command using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information for 'configtest' command using the "--help" option: stdout 1`] = `
+"Usage: webpack configtest|t [config-path]
+
+Validate a webpack configuration.
+
+Global options:
+  --color               Enable colors on console.
+  --no-color            Disable colors on console.
+  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]  Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'create' command using command syntax: stderr 1`] = `""`;
+
+exports[`help should show help information for 'create' command using command syntax: stdout 1`] = `
+"Usage: webpack init|create|new|c|n [generation-path] [options]
+
+Initialize a new webpack project.
+
+Options:
+  --template <value>    Type of template (default: \\"default\\")
+  --force               Generate without questions (ideally) using default answers
+
+Global options:
+  --color               Enable colors on console.
+  --no-color            Disable colors on console.
+  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]  Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'create' command using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information for 'create' command using the "--help" option: stdout 1`] = `
+"Usage: webpack init|create|new|c|n [generation-path] [options]
+
+Initialize a new webpack project.
+
+Options:
+  --template <value>    Type of template (default: \\"default\\")
+  --force               Generate without questions (ideally) using default answers
+
+Global options:
+  --color               Enable colors on console.
+  --no-color            Disable colors on console.
+  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]  Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'i' command using command syntax: stderr 1`] = `""`;
+
+exports[`help should show help information for 'i' command using command syntax: stdout 1`] = `
+"Usage: webpack info|i [options]
+
+Outputs information about your system.
+
+Options:
+  --output <value>      To get the output in a specified format ( accept json or markdown )
+
+Global options:
+  --color               Enable colors on console.
+  --no-color            Disable colors on console.
+  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]  Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'i' command using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information for 'i' command using the "--help" option: stdout 1`] = `
+"Usage: webpack info|i [options]
+
+Outputs information about your system.
+
+Options:
+  --output <value>      To get the output in a specified format ( accept json or markdown )
+
+Global options:
+  --color               Enable colors on console.
+  --no-color            Disable colors on console.
+  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]  Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'info' and respect the "--color" flag using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information for 'info' and respect the "--color" flag using the "--help" option: stdout 1`] = `
 "Usage: webpack info|i [options]
 
 Outputs information about your system.
@@ -312,16 +772,16 @@ CLI documentation: https://webpack.js.org/api/cli/.
 Made with ♥ by the webpack team."
 `;
 
-exports[`help should show help information for 'init' command using the "--help" option 1`] = `
-"Usage: webpack init|c [generation-path] [options]
+exports[`help should show help information for 'info' and respect the "--no-color" flag using the "--help" option: stderr 1`] = `""`;
 
-Initialize a new webpack project.
+exports[`help should show help information for 'info' and respect the "--no-color" flag using the "--help" option: stdout 1`] = `
+"Usage: webpack info|i [options]
+
+Outputs information about your system.
 
 Options:
-  --template <value>    Type of template (default: \\"default\\")
-  --force               Generate without questions (ideally) using default
-                        answers
-  --no-force            Negative 'force' option.
+  --output <value>      To get the output in a specified format ( accept json
+                        or markdown )
 
 Global options:
   --color               Enable colors on console.
@@ -337,7 +797,201 @@ CLI documentation: https://webpack.js.org/api/cli/.
 Made with ♥ by the webpack team."
 `;
 
-exports[`help should show help information for 'loader' command using the "--help" option 1`] = `
+exports[`help should show help information for 'info' command using command syntax: stderr 1`] = `""`;
+
+exports[`help should show help information for 'info' command using command syntax: stdout 1`] = `
+"Usage: webpack info|i [options]
+
+Outputs information about your system.
+
+Options:
+  --output <value>      To get the output in a specified format ( accept json or markdown )
+
+Global options:
+  --color               Enable colors on console.
+  --no-color            Disable colors on console.
+  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]  Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'info' command using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information for 'info' command using the "--help" option: stdout 1`] = `
+"Usage: webpack info|i [options]
+
+Outputs information about your system.
+
+Options:
+  --output <value>      To get the output in a specified format ( accept json or markdown )
+
+Global options:
+  --color               Enable colors on console.
+  --no-color            Disable colors on console.
+  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]  Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'init' and respect the "--color" flag using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information for 'init' and respect the "--color" flag using the "--help" option: stdout 1`] = `
+"Usage: webpack init|create|new|c|n [generation-path] [options]
+
+Initialize a new webpack project.
+
+Options:
+  --template <value>    Type of template (default: \\"default\\")
+  --force               Generate without questions (ideally) using default
+                        answers
+
+Global options:
+  --color               Enable colors on console.
+  --no-color            Disable colors on console.
+  -v, --version         Output the version number of 'webpack', 'webpack-cli'
+                        and 'webpack-dev-server' and commands.
+  -h, --help [verbose]  Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'init' and respect the "--no-color" flag using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information for 'init' and respect the "--no-color" flag using the "--help" option: stdout 1`] = `
+"Usage: webpack init|create|new|c|n [generation-path] [options]
+
+Initialize a new webpack project.
+
+Options:
+  --template <value>    Type of template (default: \\"default\\")
+  --force               Generate without questions (ideally) using default
+                        answers
+
+Global options:
+  --color               Enable colors on console.
+  --no-color            Disable colors on console.
+  -v, --version         Output the version number of 'webpack', 'webpack-cli'
+                        and 'webpack-dev-server' and commands.
+  -h, --help [verbose]  Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'init' command using command syntax: stderr 1`] = `""`;
+
+exports[`help should show help information for 'init' command using command syntax: stdout 1`] = `
+"Usage: webpack init|create|new|c|n [generation-path] [options]
+
+Initialize a new webpack project.
+
+Options:
+  --template <value>    Type of template (default: \\"default\\")
+  --force               Generate without questions (ideally) using default answers
+
+Global options:
+  --color               Enable colors on console.
+  --no-color            Disable colors on console.
+  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]  Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'init' command using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information for 'init' command using the "--help" option: stdout 1`] = `
+"Usage: webpack init|create|new|c|n [generation-path] [options]
+
+Initialize a new webpack project.
+
+Options:
+  --template <value>    Type of template (default: \\"default\\")
+  --force               Generate without questions (ideally) using default answers
+
+Global options:
+  --color               Enable colors on console.
+  --no-color            Disable colors on console.
+  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]  Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'l' command using command syntax: stderr 1`] = `""`;
+
+exports[`help should show help information for 'l' command using command syntax: stdout 1`] = `
+"Usage: webpack loader|l [output-path] [options]
+
+Scaffold a loader.
+
+Options:
+  --template <value>    Type of template (default: \\"default\\")
+
+Global options:
+  --color               Enable colors on console.
+  --no-color            Disable colors on console.
+  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]  Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'l' command using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information for 'l' command using the "--help" option: stdout 1`] = `
+"Usage: webpack loader|l [output-path] [options]
+
+Scaffold a loader.
+
+Options:
+  --template <value>    Type of template (default: \\"default\\")
+
+Global options:
+  --color               Enable colors on console.
+  --no-color            Disable colors on console.
+  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]  Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'loader' and respect the "--color" flag using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information for 'loader' and respect the "--color" flag using the "--help" option: stdout 1`] = `
 "Usage: webpack loader|l [output-path] [options]
 
 Scaffold a loader.
@@ -359,7 +1013,119 @@ CLI documentation: https://webpack.js.org/api/cli/.
 Made with ♥ by the webpack team."
 `;
 
-exports[`help should show help information for 'migrate' command using the "--help" option 1`] = `
+exports[`help should show help information for 'loader' and respect the "--no-color" flag using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information for 'loader' and respect the "--no-color" flag using the "--help" option: stdout 1`] = `
+"Usage: webpack loader|l [output-path] [options]
+
+Scaffold a loader.
+
+Options:
+  --template <value>    Type of template (default: \\"default\\")
+
+Global options:
+  --color               Enable colors on console.
+  --no-color            Disable colors on console.
+  -v, --version         Output the version number of 'webpack', 'webpack-cli'
+                        and 'webpack-dev-server' and commands.
+  -h, --help [verbose]  Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'loader' command using command syntax: stderr 1`] = `""`;
+
+exports[`help should show help information for 'loader' command using command syntax: stdout 1`] = `
+"Usage: webpack loader|l [output-path] [options]
+
+Scaffold a loader.
+
+Options:
+  --template <value>    Type of template (default: \\"default\\")
+
+Global options:
+  --color               Enable colors on console.
+  --no-color            Disable colors on console.
+  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]  Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'loader' command using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information for 'loader' command using the "--help" option: stdout 1`] = `
+"Usage: webpack loader|l [output-path] [options]
+
+Scaffold a loader.
+
+Options:
+  --template <value>    Type of template (default: \\"default\\")
+
+Global options:
+  --color               Enable colors on console.
+  --no-color            Disable colors on console.
+  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]  Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'm' command using command syntax: stderr 1`] = `""`;
+
+exports[`help should show help information for 'm' command using command syntax: stdout 1`] = `
+"Usage: webpack migrate|m <config-path> [new-config-path]
+
+Migrate a configuration to a new version.
+
+Global options:
+  --color               Enable colors on console.
+  --no-color            Disable colors on console.
+  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]  Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'm' command using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information for 'm' command using the "--help" option: stdout 1`] = `
+"Usage: webpack migrate|m <config-path> [new-config-path]
+
+Migrate a configuration to a new version.
+
+Global options:
+  --color               Enable colors on console.
+  --no-color            Disable colors on console.
+  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]  Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'migrate' and respect the "--color" flag using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information for 'migrate' and respect the "--color" flag using the "--help" option: stdout 1`] = `
 "Usage: webpack migrate|m <config-path> [new-config-path]
 
 Migrate a configuration to a new version.
@@ -378,7 +1144,212 @@ CLI documentation: https://webpack.js.org/api/cli/.
 Made with ♥ by the webpack team."
 `;
 
-exports[`help should show help information for 'plugin' command using the "--help" option 1`] = `
+exports[`help should show help information for 'migrate' and respect the "--no-color" flag using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information for 'migrate' and respect the "--no-color" flag using the "--help" option: stdout 1`] = `
+"Usage: webpack migrate|m <config-path> [new-config-path]
+
+Migrate a configuration to a new version.
+
+Global options:
+  --color               Enable colors on console.
+  --no-color            Disable colors on console.
+  -v, --version         Output the version number of 'webpack', 'webpack-cli'
+                        and 'webpack-dev-server' and commands.
+  -h, --help [verbose]  Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'migrate' command using command syntax: stderr 1`] = `""`;
+
+exports[`help should show help information for 'migrate' command using command syntax: stdout 1`] = `
+"Usage: webpack migrate|m <config-path> [new-config-path]
+
+Migrate a configuration to a new version.
+
+Global options:
+  --color               Enable colors on console.
+  --no-color            Disable colors on console.
+  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]  Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'migrate' command using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information for 'migrate' command using the "--help" option: stdout 1`] = `
+"Usage: webpack migrate|m <config-path> [new-config-path]
+
+Migrate a configuration to a new version.
+
+Global options:
+  --color               Enable colors on console.
+  --no-color            Disable colors on console.
+  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]  Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'n' command using command syntax: stderr 1`] = `""`;
+
+exports[`help should show help information for 'n' command using command syntax: stdout 1`] = `
+"Usage: webpack init|create|new|c|n [generation-path] [options]
+
+Initialize a new webpack project.
+
+Options:
+  --template <value>    Type of template (default: \\"default\\")
+  --force               Generate without questions (ideally) using default answers
+
+Global options:
+  --color               Enable colors on console.
+  --no-color            Disable colors on console.
+  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]  Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'n' command using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information for 'n' command using the "--help" option: stdout 1`] = `
+"Usage: webpack init|create|new|c|n [generation-path] [options]
+
+Initialize a new webpack project.
+
+Options:
+  --template <value>    Type of template (default: \\"default\\")
+  --force               Generate without questions (ideally) using default answers
+
+Global options:
+  --color               Enable colors on console.
+  --no-color            Disable colors on console.
+  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]  Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'new' command using command syntax: stderr 1`] = `""`;
+
+exports[`help should show help information for 'new' command using command syntax: stdout 1`] = `
+"Usage: webpack init|create|new|c|n [generation-path] [options]
+
+Initialize a new webpack project.
+
+Options:
+  --template <value>    Type of template (default: \\"default\\")
+  --force               Generate without questions (ideally) using default answers
+
+Global options:
+  --color               Enable colors on console.
+  --no-color            Disable colors on console.
+  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]  Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'new' command using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information for 'new' command using the "--help" option: stdout 1`] = `
+"Usage: webpack init|create|new|c|n [generation-path] [options]
+
+Initialize a new webpack project.
+
+Options:
+  --template <value>    Type of template (default: \\"default\\")
+  --force               Generate without questions (ideally) using default answers
+
+Global options:
+  --color               Enable colors on console.
+  --no-color            Disable colors on console.
+  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]  Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'p' command using command syntax: stderr 1`] = `""`;
+
+exports[`help should show help information for 'p' command using command syntax: stdout 1`] = `
+"Usage: webpack plugin|p [output-path] [options]
+
+Scaffold a plugin.
+
+Options:
+  --template <value>    Type of template (default: \\"default\\")
+
+Global options:
+  --color               Enable colors on console.
+  --no-color            Disable colors on console.
+  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]  Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'p' command using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information for 'p' command using the "--help" option: stdout 1`] = `
+"Usage: webpack plugin|p [output-path] [options]
+
+Scaffold a plugin.
+
+Options:
+  --template <value>    Type of template (default: \\"default\\")
+
+Global options:
+  --color               Enable colors on console.
+  --no-color            Disable colors on console.
+  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]  Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'plugin' and respect the "--color" flag using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information for 'plugin' and respect the "--color" flag using the "--help" option: stdout 1`] = `
 "Usage: webpack plugin|p [output-path] [options]
 
 Scaffold a plugin.
@@ -400,8 +1371,224 @@ CLI documentation: https://webpack.js.org/api/cli/.
 Made with ♥ by the webpack team."
 `;
 
-exports[`help should show help information for 'serve' command using the "--help" option 1`] = `
-"Usage: webpack serve|s [entries...] [options]
+exports[`help should show help information for 'plugin' and respect the "--no-color" flag using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information for 'plugin' and respect the "--no-color" flag using the "--help" option: stdout 1`] = `
+"Usage: webpack plugin|p [output-path] [options]
+
+Scaffold a plugin.
+
+Options:
+  --template <value>    Type of template (default: \\"default\\")
+
+Global options:
+  --color               Enable colors on console.
+  --no-color            Disable colors on console.
+  -v, --version         Output the version number of 'webpack', 'webpack-cli'
+                        and 'webpack-dev-server' and commands.
+  -h, --help [verbose]  Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'plugin' command using command syntax: stderr 1`] = `""`;
+
+exports[`help should show help information for 'plugin' command using command syntax: stdout 1`] = `
+"Usage: webpack plugin|p [output-path] [options]
+
+Scaffold a plugin.
+
+Options:
+  --template <value>    Type of template (default: \\"default\\")
+
+Global options:
+  --color               Enable colors on console.
+  --no-color            Disable colors on console.
+  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]  Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'plugin' command using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information for 'plugin' command using the "--help" option: stdout 1`] = `
+"Usage: webpack plugin|p [output-path] [options]
+
+Scaffold a plugin.
+
+Options:
+  --template <value>    Type of template (default: \\"default\\")
+
+Global options:
+  --color               Enable colors on console.
+  --no-color            Disable colors on console.
+  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]  Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 's' command using command syntax: stderr 1`] = `""`;
+
+exports[`help should show help information for 's' command using command syntax: stdout 1`] = `
+"Usage: webpack serve|server|s [entries...] [options]
+
+Run the webpack dev server.
+
+Options:
+  -c, --config <value...>    Provide path to a webpack configuration file e.g. ./webpack.config.js.
+  --config-name <value...>   Name of the configuration to use.
+  -m, --merge                Merge two or more configurations using 'webpack-merge'.
+  --env <value...>           Environment passed to the configuration when it is a function.
+  --node-env <value>         Sets process.env.NODE_ENV to the specified value.
+  --progress [value]         Print compilation progress during build.
+  -j, --json [value]         Prints result as JSON or store it in a file.
+  --entry <value...>         The entry point(s) of your application e.g. ./src/main.js.
+  -o, --output-path <value>  Output location of the file generated by webpack e.g. ./dist/.
+  -t, --target <value>       Sets the build target e.g. node.
+  -d, --devtool <value>      Determine source maps to use.
+  --no-devtool               Do not generate source maps.
+  --mode <value>             Defines the mode to pass to webpack.
+  --name <value>             Name of the configuration. Used when loading multiple configurations.
+  --stats [value]            It instructs webpack on how to treat the stats e.g. verbose.
+  --no-stats                 Disable stats output.
+  --watch-options-stdin      Stop watching when stdin stream has ended.
+  --no-watch-options-stdin   Do not stop watching when stdin stream has ended.
+  --host <value>             The hostname/ip address the server will bind to.
+  --port <value>             The port server will listen to.
+  --static [value...]        A directory to serve static content from.
+  --no-static                Negative 'static' option.
+  --live-reload              Enables live reloading on changing files.
+  --no-live-reload           Disables live reloading on changing files.
+  --https                    Use HTTPS protocol.
+  --no-https                 Do not use HTTPS protocol.
+  --http2                    Use HTTP/2, must be used with HTTPS.
+  --no-http2                 Do not use HTTP/2.
+  --bonjour                  Broadcasts the server via ZeroConf networking on start.
+  --no-bonjour               Do not broadcast the server via ZeroConf networking on start.
+  --client-progress          Print compilation progress in percentage in the browser.
+  --no-client-progress       Do not print compilation progress in percentage in the browser.
+  --client-overlay           Show a full-screen overlay in the browser when there are compiler errors or warnings.
+  --no-client-overlay        Do not show a full-screen overlay in the browser when there are compiler errors or warnings.
+  --setup-exit-signals       Close and exit the process on SIGINT and SIGTERM.
+  --no-setup-exit-signals    Do not close and exit the process on SIGNIT and SIGTERM.
+  --open [value...]          Open the default browser.
+  --no-open                  Do not open the default browser.
+  --open-app <value>         Open specified browser.
+  --open-target [value...]   Open specified route in browser.
+  --no-open-target           Do not open specified route in browser.
+  --client-logging <value>   Log level in the browser (none, error, warn, info, log, verbose).
+  --history-api-fallback     Fallback to /index.html for Single Page Applications.
+  --no-history-api-fallback  Do not fallback to /index.html for Single Page Applications.
+  --compress                 Enable gzip compression.
+  --no-compress              Disable gzip compression.
+  --public <value>           The public hostname/ip address of the server.
+  --firewall [value...]      Enable firewall or set hosts that are allowed to access the dev server.
+  --no-firewall              Disable firewall.
+  --watch-files <value...>   Watch static files for file changes.
+
+Global options:
+  --color                    Enable colors on console.
+  --no-color                 Disable colors on console.
+  -v, --version              Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]       Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 's' command using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information for 's' command using the "--help" option: stdout 1`] = `
+"Usage: webpack serve|server|s [entries...] [options]
+
+Run the webpack dev server.
+
+Options:
+  -c, --config <value...>    Provide path to a webpack configuration file e.g. ./webpack.config.js.
+  --config-name <value...>   Name of the configuration to use.
+  -m, --merge                Merge two or more configurations using 'webpack-merge'.
+  --env <value...>           Environment passed to the configuration when it is a function.
+  --node-env <value>         Sets process.env.NODE_ENV to the specified value.
+  --progress [value]         Print compilation progress during build.
+  -j, --json [value]         Prints result as JSON or store it in a file.
+  --entry <value...>         The entry point(s) of your application e.g. ./src/main.js.
+  -o, --output-path <value>  Output location of the file generated by webpack e.g. ./dist/.
+  -t, --target <value>       Sets the build target e.g. node.
+  -d, --devtool <value>      Determine source maps to use.
+  --no-devtool               Do not generate source maps.
+  --mode <value>             Defines the mode to pass to webpack.
+  --name <value>             Name of the configuration. Used when loading multiple configurations.
+  --stats [value]            It instructs webpack on how to treat the stats e.g. verbose.
+  --no-stats                 Disable stats output.
+  --watch-options-stdin      Stop watching when stdin stream has ended.
+  --no-watch-options-stdin   Do not stop watching when stdin stream has ended.
+  --host <value>             The hostname/ip address the server will bind to.
+  --port <value>             The port server will listen to.
+  --static [value...]        A directory to serve static content from.
+  --no-static                Negative 'static' option.
+  --live-reload              Enables live reloading on changing files.
+  --no-live-reload           Disables live reloading on changing files.
+  --https                    Use HTTPS protocol.
+  --no-https                 Do not use HTTPS protocol.
+  --http2                    Use HTTP/2, must be used with HTTPS.
+  --no-http2                 Do not use HTTP/2.
+  --bonjour                  Broadcasts the server via ZeroConf networking on start.
+  --no-bonjour               Do not broadcast the server via ZeroConf networking on start.
+  --client-progress          Print compilation progress in percentage in the browser.
+  --no-client-progress       Do not print compilation progress in percentage in the browser.
+  --client-overlay           Show a full-screen overlay in the browser when there are compiler errors or warnings.
+  --no-client-overlay        Do not show a full-screen overlay in the browser when there are compiler errors or warnings.
+  --setup-exit-signals       Close and exit the process on SIGINT and SIGTERM.
+  --no-setup-exit-signals    Do not close and exit the process on SIGNIT and SIGTERM.
+  --open [value...]          Open the default browser.
+  --no-open                  Do not open the default browser.
+  --open-app <value>         Open specified browser.
+  --open-target [value...]   Open specified route in browser.
+  --no-open-target           Do not open specified route in browser.
+  --client-logging <value>   Log level in the browser (none, error, warn, info, log, verbose).
+  --history-api-fallback     Fallback to /index.html for Single Page Applications.
+  --no-history-api-fallback  Do not fallback to /index.html for Single Page Applications.
+  --compress                 Enable gzip compression.
+  --no-compress              Disable gzip compression.
+  --public <value>           The public hostname/ip address of the server.
+  --firewall [value...]      Enable firewall or set hosts that are allowed to access the dev server.
+  --no-firewall              Disable firewall.
+  --watch-files <value...>   Watch static files for file changes.
+
+Global options:
+  --color                    Enable colors on console.
+  --no-color                 Disable colors on console.
+  -v, --version              Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]       Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'serve' and respect the "--color" flag using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information for 'serve' and respect the "--color" flag using the "--help" option: stdout 1`] = `
+"Usage: webpack serve|server|s [entries...] [options]
 
 Run the webpack dev server.
 
@@ -490,7 +1677,509 @@ CLI documentation: https://webpack.js.org/api/cli/.
 Made with ♥ by the webpack team."
 `;
 
-exports[`help should show help information for 'watch' command using the "--help" option 1`] = `
+exports[`help should show help information for 'serve' and respect the "--no-color" flag using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information for 'serve' and respect the "--no-color" flag using the "--help" option: stdout 1`] = `
+"Usage: webpack serve|server|s [entries...] [options]
+
+Run the webpack dev server.
+
+Options:
+  -c, --config <value...>    Provide path to a webpack configuration file e.g.
+                             ./webpack.config.js.
+  --config-name <value...>   Name of the configuration to use.
+  -m, --merge                Merge two or more configurations using
+                             'webpack-merge'.
+  --env <value...>           Environment passed to the configuration when it is
+                             a function.
+  --node-env <value>         Sets process.env.NODE_ENV to the specified value.
+  --progress [value]         Print compilation progress during build.
+  -j, --json [value]         Prints result as JSON or store it in a file.
+  --entry <value...>         The entry point(s) of your application e.g.
+                             ./src/main.js.
+  -o, --output-path <value>  Output location of the file generated by webpack
+                             e.g. ./dist/.
+  -t, --target <value>       Sets the build target e.g. node.
+  -d, --devtool <value>      Determine source maps to use.
+  --no-devtool               Do not generate source maps.
+  --mode <value>             Defines the mode to pass to webpack.
+  --name <value>             Name of the configuration. Used when loading
+                             multiple configurations.
+  --stats [value]            It instructs webpack on how to treat the stats
+                             e.g. verbose.
+  --no-stats                 Disable stats output.
+  --watch-options-stdin      Stop watching when stdin stream has ended.
+  --no-watch-options-stdin   Do not stop watching when stdin stream has ended.
+  --host <value>             The hostname/ip address the server will bind to.
+  --port <value>             The port server will listen to.
+  --static [value...]        A directory to serve static content from.
+  --no-static                Negative 'static' option.
+  --live-reload              Enables live reloading on changing files.
+  --no-live-reload           Disables live reloading on changing files.
+  --https                    Use HTTPS protocol.
+  --no-https                 Do not use HTTPS protocol.
+  --http2                    Use HTTP/2, must be used with HTTPS.
+  --no-http2                 Do not use HTTP/2.
+  --bonjour                  Broadcasts the server via ZeroConf networking on
+                             start.
+  --no-bonjour               Do not broadcast the server via ZeroConf
+                             networking on start.
+  --client-progress          Print compilation progress in percentage in the
+                             browser.
+  --no-client-progress       Do not print compilation progress in percentage in
+                             the browser.
+  --client-overlay           Show a full-screen overlay in the browser when
+                             there are compiler errors or warnings.
+  --no-client-overlay        Do not show a full-screen overlay in the browser
+                             when there are compiler errors or warnings.
+  --setup-exit-signals       Close and exit the process on SIGINT and SIGTERM.
+  --no-setup-exit-signals    Do not close and exit the process on SIGNIT and
+                             SIGTERM.
+  --open [value...]          Open the default browser.
+  --no-open                  Do not open the default browser.
+  --open-app <value>         Open specified browser.
+  --open-target [value...]   Open specified route in browser.
+  --no-open-target           Do not open specified route in browser.
+  --client-logging <value>   Log level in the browser (none, error, warn, info,
+                             log, verbose).
+  --history-api-fallback     Fallback to /index.html for Single Page
+                             Applications.
+  --no-history-api-fallback  Do not fallback to /index.html for Single Page
+                             Applications.
+  --compress                 Enable gzip compression.
+  --no-compress              Disable gzip compression.
+  --public <value>           The public hostname/ip address of the server.
+  --firewall [value...]      Enable firewall or set hosts that are allowed to
+                             access the dev server.
+  --no-firewall              Disable firewall.
+  --watch-files <value...>   Watch static files for file changes.
+
+Global options:
+  --color                    Enable colors on console.
+  --no-color                 Disable colors on console.
+  -v, --version              Output the version number of 'webpack',
+                             'webpack-cli' and 'webpack-dev-server' and
+                             commands.
+  -h, --help [verbose]       Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'serve' command using command syntax: stderr 1`] = `""`;
+
+exports[`help should show help information for 'serve' command using command syntax: stdout 1`] = `
+"Usage: webpack serve|server|s [entries...] [options]
+
+Run the webpack dev server.
+
+Options:
+  -c, --config <value...>    Provide path to a webpack configuration file e.g. ./webpack.config.js.
+  --config-name <value...>   Name of the configuration to use.
+  -m, --merge                Merge two or more configurations using 'webpack-merge'.
+  --env <value...>           Environment passed to the configuration when it is a function.
+  --node-env <value>         Sets process.env.NODE_ENV to the specified value.
+  --progress [value]         Print compilation progress during build.
+  -j, --json [value]         Prints result as JSON or store it in a file.
+  --entry <value...>         The entry point(s) of your application e.g. ./src/main.js.
+  -o, --output-path <value>  Output location of the file generated by webpack e.g. ./dist/.
+  -t, --target <value>       Sets the build target e.g. node.
+  -d, --devtool <value>      Determine source maps to use.
+  --no-devtool               Do not generate source maps.
+  --mode <value>             Defines the mode to pass to webpack.
+  --name <value>             Name of the configuration. Used when loading multiple configurations.
+  --stats [value]            It instructs webpack on how to treat the stats e.g. verbose.
+  --no-stats                 Disable stats output.
+  --watch-options-stdin      Stop watching when stdin stream has ended.
+  --no-watch-options-stdin   Do not stop watching when stdin stream has ended.
+  --host <value>             The hostname/ip address the server will bind to.
+  --port <value>             The port server will listen to.
+  --static [value...]        A directory to serve static content from.
+  --no-static                Negative 'static' option.
+  --live-reload              Enables live reloading on changing files.
+  --no-live-reload           Disables live reloading on changing files.
+  --https                    Use HTTPS protocol.
+  --no-https                 Do not use HTTPS protocol.
+  --http2                    Use HTTP/2, must be used with HTTPS.
+  --no-http2                 Do not use HTTP/2.
+  --bonjour                  Broadcasts the server via ZeroConf networking on start.
+  --no-bonjour               Do not broadcast the server via ZeroConf networking on start.
+  --client-progress          Print compilation progress in percentage in the browser.
+  --no-client-progress       Do not print compilation progress in percentage in the browser.
+  --client-overlay           Show a full-screen overlay in the browser when there are compiler errors or warnings.
+  --no-client-overlay        Do not show a full-screen overlay in the browser when there are compiler errors or warnings.
+  --setup-exit-signals       Close and exit the process on SIGINT and SIGTERM.
+  --no-setup-exit-signals    Do not close and exit the process on SIGNIT and SIGTERM.
+  --open [value...]          Open the default browser.
+  --no-open                  Do not open the default browser.
+  --open-app <value>         Open specified browser.
+  --open-target [value...]   Open specified route in browser.
+  --no-open-target           Do not open specified route in browser.
+  --client-logging <value>   Log level in the browser (none, error, warn, info, log, verbose).
+  --history-api-fallback     Fallback to /index.html for Single Page Applications.
+  --no-history-api-fallback  Do not fallback to /index.html for Single Page Applications.
+  --compress                 Enable gzip compression.
+  --no-compress              Disable gzip compression.
+  --public <value>           The public hostname/ip address of the server.
+  --firewall [value...]      Enable firewall or set hosts that are allowed to access the dev server.
+  --no-firewall              Disable firewall.
+  --watch-files <value...>   Watch static files for file changes.
+
+Global options:
+  --color                    Enable colors on console.
+  --no-color                 Disable colors on console.
+  -v, --version              Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]       Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'serve' command using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information for 'serve' command using the "--help" option: stdout 1`] = `
+"Usage: webpack serve|server|s [entries...] [options]
+
+Run the webpack dev server.
+
+Options:
+  -c, --config <value...>    Provide path to a webpack configuration file e.g. ./webpack.config.js.
+  --config-name <value...>   Name of the configuration to use.
+  -m, --merge                Merge two or more configurations using 'webpack-merge'.
+  --env <value...>           Environment passed to the configuration when it is a function.
+  --node-env <value>         Sets process.env.NODE_ENV to the specified value.
+  --progress [value]         Print compilation progress during build.
+  -j, --json [value]         Prints result as JSON or store it in a file.
+  --entry <value...>         The entry point(s) of your application e.g. ./src/main.js.
+  -o, --output-path <value>  Output location of the file generated by webpack e.g. ./dist/.
+  -t, --target <value>       Sets the build target e.g. node.
+  -d, --devtool <value>      Determine source maps to use.
+  --no-devtool               Do not generate source maps.
+  --mode <value>             Defines the mode to pass to webpack.
+  --name <value>             Name of the configuration. Used when loading multiple configurations.
+  --stats [value]            It instructs webpack on how to treat the stats e.g. verbose.
+  --no-stats                 Disable stats output.
+  --watch-options-stdin      Stop watching when stdin stream has ended.
+  --no-watch-options-stdin   Do not stop watching when stdin stream has ended.
+  --host <value>             The hostname/ip address the server will bind to.
+  --port <value>             The port server will listen to.
+  --static [value...]        A directory to serve static content from.
+  --no-static                Negative 'static' option.
+  --live-reload              Enables live reloading on changing files.
+  --no-live-reload           Disables live reloading on changing files.
+  --https                    Use HTTPS protocol.
+  --no-https                 Do not use HTTPS protocol.
+  --http2                    Use HTTP/2, must be used with HTTPS.
+  --no-http2                 Do not use HTTP/2.
+  --bonjour                  Broadcasts the server via ZeroConf networking on start.
+  --no-bonjour               Do not broadcast the server via ZeroConf networking on start.
+  --client-progress          Print compilation progress in percentage in the browser.
+  --no-client-progress       Do not print compilation progress in percentage in the browser.
+  --client-overlay           Show a full-screen overlay in the browser when there are compiler errors or warnings.
+  --no-client-overlay        Do not show a full-screen overlay in the browser when there are compiler errors or warnings.
+  --setup-exit-signals       Close and exit the process on SIGINT and SIGTERM.
+  --no-setup-exit-signals    Do not close and exit the process on SIGNIT and SIGTERM.
+  --open [value...]          Open the default browser.
+  --no-open                  Do not open the default browser.
+  --open-app <value>         Open specified browser.
+  --open-target [value...]   Open specified route in browser.
+  --no-open-target           Do not open specified route in browser.
+  --client-logging <value>   Log level in the browser (none, error, warn, info, log, verbose).
+  --history-api-fallback     Fallback to /index.html for Single Page Applications.
+  --no-history-api-fallback  Do not fallback to /index.html for Single Page Applications.
+  --compress                 Enable gzip compression.
+  --no-compress              Disable gzip compression.
+  --public <value>           The public hostname/ip address of the server.
+  --firewall [value...]      Enable firewall or set hosts that are allowed to access the dev server.
+  --no-firewall              Disable firewall.
+  --watch-files <value...>   Watch static files for file changes.
+
+Global options:
+  --color                    Enable colors on console.
+  --no-color                 Disable colors on console.
+  -v, --version              Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]       Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'server' command using command syntax: stderr 1`] = `""`;
+
+exports[`help should show help information for 'server' command using command syntax: stdout 1`] = `
+"Usage: webpack serve|server|s [entries...] [options]
+
+Run the webpack dev server.
+
+Options:
+  -c, --config <value...>    Provide path to a webpack configuration file e.g. ./webpack.config.js.
+  --config-name <value...>   Name of the configuration to use.
+  -m, --merge                Merge two or more configurations using 'webpack-merge'.
+  --env <value...>           Environment passed to the configuration when it is a function.
+  --node-env <value>         Sets process.env.NODE_ENV to the specified value.
+  --progress [value]         Print compilation progress during build.
+  -j, --json [value]         Prints result as JSON or store it in a file.
+  --entry <value...>         The entry point(s) of your application e.g. ./src/main.js.
+  -o, --output-path <value>  Output location of the file generated by webpack e.g. ./dist/.
+  -t, --target <value>       Sets the build target e.g. node.
+  -d, --devtool <value>      Determine source maps to use.
+  --no-devtool               Do not generate source maps.
+  --mode <value>             Defines the mode to pass to webpack.
+  --name <value>             Name of the configuration. Used when loading multiple configurations.
+  --stats [value]            It instructs webpack on how to treat the stats e.g. verbose.
+  --no-stats                 Disable stats output.
+  --watch-options-stdin      Stop watching when stdin stream has ended.
+  --no-watch-options-stdin   Do not stop watching when stdin stream has ended.
+  --host <value>             The hostname/ip address the server will bind to.
+  --port <value>             The port server will listen to.
+  --static [value...]        A directory to serve static content from.
+  --no-static                Negative 'static' option.
+  --live-reload              Enables live reloading on changing files.
+  --no-live-reload           Disables live reloading on changing files.
+  --https                    Use HTTPS protocol.
+  --no-https                 Do not use HTTPS protocol.
+  --http2                    Use HTTP/2, must be used with HTTPS.
+  --no-http2                 Do not use HTTP/2.
+  --bonjour                  Broadcasts the server via ZeroConf networking on start.
+  --no-bonjour               Do not broadcast the server via ZeroConf networking on start.
+  --client-progress          Print compilation progress in percentage in the browser.
+  --no-client-progress       Do not print compilation progress in percentage in the browser.
+  --client-overlay           Show a full-screen overlay in the browser when there are compiler errors or warnings.
+  --no-client-overlay        Do not show a full-screen overlay in the browser when there are compiler errors or warnings.
+  --setup-exit-signals       Close and exit the process on SIGINT and SIGTERM.
+  --no-setup-exit-signals    Do not close and exit the process on SIGNIT and SIGTERM.
+  --open [value...]          Open the default browser.
+  --no-open                  Do not open the default browser.
+  --open-app <value>         Open specified browser.
+  --open-target [value...]   Open specified route in browser.
+  --no-open-target           Do not open specified route in browser.
+  --client-logging <value>   Log level in the browser (none, error, warn, info, log, verbose).
+  --history-api-fallback     Fallback to /index.html for Single Page Applications.
+  --no-history-api-fallback  Do not fallback to /index.html for Single Page Applications.
+  --compress                 Enable gzip compression.
+  --no-compress              Disable gzip compression.
+  --public <value>           The public hostname/ip address of the server.
+  --firewall [value...]      Enable firewall or set hosts that are allowed to access the dev server.
+  --no-firewall              Disable firewall.
+  --watch-files <value...>   Watch static files for file changes.
+
+Global options:
+  --color                    Enable colors on console.
+  --no-color                 Disable colors on console.
+  -v, --version              Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]       Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'server' command using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information for 'server' command using the "--help" option: stdout 1`] = `
+"Usage: webpack serve|server|s [entries...] [options]
+
+Run the webpack dev server.
+
+Options:
+  -c, --config <value...>    Provide path to a webpack configuration file e.g. ./webpack.config.js.
+  --config-name <value...>   Name of the configuration to use.
+  -m, --merge                Merge two or more configurations using 'webpack-merge'.
+  --env <value...>           Environment passed to the configuration when it is a function.
+  --node-env <value>         Sets process.env.NODE_ENV to the specified value.
+  --progress [value]         Print compilation progress during build.
+  -j, --json [value]         Prints result as JSON or store it in a file.
+  --entry <value...>         The entry point(s) of your application e.g. ./src/main.js.
+  -o, --output-path <value>  Output location of the file generated by webpack e.g. ./dist/.
+  -t, --target <value>       Sets the build target e.g. node.
+  -d, --devtool <value>      Determine source maps to use.
+  --no-devtool               Do not generate source maps.
+  --mode <value>             Defines the mode to pass to webpack.
+  --name <value>             Name of the configuration. Used when loading multiple configurations.
+  --stats [value]            It instructs webpack on how to treat the stats e.g. verbose.
+  --no-stats                 Disable stats output.
+  --watch-options-stdin      Stop watching when stdin stream has ended.
+  --no-watch-options-stdin   Do not stop watching when stdin stream has ended.
+  --host <value>             The hostname/ip address the server will bind to.
+  --port <value>             The port server will listen to.
+  --static [value...]        A directory to serve static content from.
+  --no-static                Negative 'static' option.
+  --live-reload              Enables live reloading on changing files.
+  --no-live-reload           Disables live reloading on changing files.
+  --https                    Use HTTPS protocol.
+  --no-https                 Do not use HTTPS protocol.
+  --http2                    Use HTTP/2, must be used with HTTPS.
+  --no-http2                 Do not use HTTP/2.
+  --bonjour                  Broadcasts the server via ZeroConf networking on start.
+  --no-bonjour               Do not broadcast the server via ZeroConf networking on start.
+  --client-progress          Print compilation progress in percentage in the browser.
+  --no-client-progress       Do not print compilation progress in percentage in the browser.
+  --client-overlay           Show a full-screen overlay in the browser when there are compiler errors or warnings.
+  --no-client-overlay        Do not show a full-screen overlay in the browser when there are compiler errors or warnings.
+  --setup-exit-signals       Close and exit the process on SIGINT and SIGTERM.
+  --no-setup-exit-signals    Do not close and exit the process on SIGNIT and SIGTERM.
+  --open [value...]          Open the default browser.
+  --no-open                  Do not open the default browser.
+  --open-app <value>         Open specified browser.
+  --open-target [value...]   Open specified route in browser.
+  --no-open-target           Do not open specified route in browser.
+  --client-logging <value>   Log level in the browser (none, error, warn, info, log, verbose).
+  --history-api-fallback     Fallback to /index.html for Single Page Applications.
+  --no-history-api-fallback  Do not fallback to /index.html for Single Page Applications.
+  --compress                 Enable gzip compression.
+  --no-compress              Disable gzip compression.
+  --public <value>           The public hostname/ip address of the server.
+  --firewall [value...]      Enable firewall or set hosts that are allowed to access the dev server.
+  --no-firewall              Disable firewall.
+  --watch-files <value...>   Watch static files for file changes.
+
+Global options:
+  --color                    Enable colors on console.
+  --no-color                 Disable colors on console.
+  -v, --version              Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]       Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 't' command using command syntax: stderr 1`] = `""`;
+
+exports[`help should show help information for 't' command using command syntax: stdout 1`] = `
+"Usage: webpack configtest|t [config-path]
+
+Validate a webpack configuration.
+
+Global options:
+  --color               Enable colors on console.
+  --no-color            Disable colors on console.
+  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]  Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 't' command using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information for 't' command using the "--help" option: stdout 1`] = `
+"Usage: webpack configtest|t [config-path]
+
+Validate a webpack configuration.
+
+Global options:
+  --color               Enable colors on console.
+  --no-color            Disable colors on console.
+  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]  Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'w' command using command syntax: stderr 1`] = `""`;
+
+exports[`help should show help information for 'w' command using command syntax: stdout 1`] = `
+"Usage: webpack watch|w [entries...] [options]
+
+Run webpack and watch for files changes.
+
+Options:
+  -c, --config <value...>    Provide path to a webpack configuration file e.g. ./webpack.config.js.
+  --config-name <value...>   Name of the configuration to use.
+  -m, --merge                Merge two or more configurations using 'webpack-merge'.
+  --env <value...>           Environment passed to the configuration when it is a function.
+  --node-env <value>         Sets process.env.NODE_ENV to the specified value.
+  --progress [value]         Print compilation progress during build.
+  -j, --json [value]         Prints result as JSON or store it in a file.
+  --entry <value...>         The entry point(s) of your application e.g. ./src/main.js.
+  -o, --output-path <value>  Output location of the file generated by webpack e.g. ./dist/.
+  -t, --target <value>       Sets the build target e.g. node.
+  -d, --devtool <value>      Determine source maps to use.
+  --no-devtool               Do not generate source maps.
+  --mode <value>             Defines the mode to pass to webpack.
+  --name <value>             Name of the configuration. Used when loading multiple configurations.
+  --stats [value]            It instructs webpack on how to treat the stats e.g. verbose.
+  --no-stats                 Disable stats output.
+  --watch-options-stdin      Stop watching when stdin stream has ended.
+  --no-watch-options-stdin   Do not stop watching when stdin stream has ended.
+
+Global options:
+  --color                    Enable colors on console.
+  --no-color                 Disable colors on console.
+  -v, --version              Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]       Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'w' command using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information for 'w' command using the "--help" option: stdout 1`] = `
+"Usage: webpack watch|w [entries...] [options]
+
+Run webpack and watch for files changes.
+
+Options:
+  -c, --config <value...>    Provide path to a webpack configuration file e.g. ./webpack.config.js.
+  --config-name <value...>   Name of the configuration to use.
+  -m, --merge                Merge two or more configurations using 'webpack-merge'.
+  --env <value...>           Environment passed to the configuration when it is a function.
+  --node-env <value>         Sets process.env.NODE_ENV to the specified value.
+  --progress [value]         Print compilation progress during build.
+  -j, --json [value]         Prints result as JSON or store it in a file.
+  --entry <value...>         The entry point(s) of your application e.g. ./src/main.js.
+  -o, --output-path <value>  Output location of the file generated by webpack e.g. ./dist/.
+  -t, --target <value>       Sets the build target e.g. node.
+  -d, --devtool <value>      Determine source maps to use.
+  --no-devtool               Do not generate source maps.
+  --mode <value>             Defines the mode to pass to webpack.
+  --name <value>             Name of the configuration. Used when loading multiple configurations.
+  --stats [value]            It instructs webpack on how to treat the stats e.g. verbose.
+  --no-stats                 Disable stats output.
+  --watch-options-stdin      Stop watching when stdin stream has ended.
+  --no-watch-options-stdin   Do not stop watching when stdin stream has ended.
+
+Global options:
+  --color                    Enable colors on console.
+  --no-color                 Disable colors on console.
+  -v, --version              Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]       Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information for 'watch' and respect the "--color" flag using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information for 'watch' and respect the "--color" flag using the "--help" option: stdout 1`] = `
 "Usage: webpack watch|w [entries...] [options]
 
 Run webpack and watch for files changes.
@@ -537,52 +2226,47 @@ CLI documentation: https://webpack.js.org/api/cli/.
 Made with ♥ by the webpack team."
 `;
 
-exports[`help should show help information using command syntax 1`] = `
-"Usage: webpack [entries...] [options]
-Alternative usage to run commands: webpack [command] [options]
+exports[`help should show help information for 'watch' and respect the "--no-color" flag using the "--help" option: stderr 1`] = `""`;
 
-The build tool for modern web applications.
+exports[`help should show help information for 'watch' and respect the "--no-color" flag using the "--help" option: stdout 1`] = `
+"Usage: webpack watch|w [entries...] [options]
+
+Run webpack and watch for files changes.
 
 Options:
-  -c, --config <value...>                    Provide path to a webpack configuration file e.g. ./webpack.config.js.
-  --config-name <value...>                   Name of the configuration to use.
-  -m, --merge                                Merge two or more configurations using 'webpack-merge'.
-  --env <value...>                           Environment passed to the configuration when it is a function.
-  --node-env <value>                         Sets process.env.NODE_ENV to the specified value.
-  --progress [value]                         Print compilation progress during build.
-  -j, --json [value]                         Prints result as JSON or store it in a file.
-  --entry <value...>                         The entry point(s) of your application e.g. ./src/main.js.
-  -o, --output-path <value>                  Output location of the file generated by webpack e.g. ./dist/.
-  -t, --target <value>                       Sets the build target e.g. node.
-  -d, --devtool <value>                      Determine source maps to use.
-  --no-devtool                               Do not generate source maps.
-  --mode <value>                             Defines the mode to pass to webpack.
-  --name <value>                             Name of the configuration. Used when loading multiple configurations.
-  --stats [value]                            It instructs webpack on how to treat the stats e.g. verbose.
-  --no-stats                                 Disable stats output.
-  -w, --watch                                Watch for files changes.
-  --no-watch                                 Do not watch for file changes.
-  --watch-options-stdin                      Stop watching when stdin stream has ended.
-  --no-watch-options-stdin                   Do not stop watching when stdin stream has ended.
+  -c, --config <value...>    Provide path to a webpack configuration file e.g.
+                             ./webpack.config.js.
+  --config-name <value...>   Name of the configuration to use.
+  -m, --merge                Merge two or more configurations using
+                             'webpack-merge'.
+  --env <value...>           Environment passed to the configuration when it is
+                             a function.
+  --node-env <value>         Sets process.env.NODE_ENV to the specified value.
+  --progress [value]         Print compilation progress during build.
+  -j, --json [value]         Prints result as JSON or store it in a file.
+  --entry <value...>         The entry point(s) of your application e.g.
+                             ./src/main.js.
+  -o, --output-path <value>  Output location of the file generated by webpack
+                             e.g. ./dist/.
+  -t, --target <value>       Sets the build target e.g. node.
+  -d, --devtool <value>      Determine source maps to use.
+  --no-devtool               Do not generate source maps.
+  --mode <value>             Defines the mode to pass to webpack.
+  --name <value>             Name of the configuration. Used when loading
+                             multiple configurations.
+  --stats [value]            It instructs webpack on how to treat the stats
+                             e.g. verbose.
+  --no-stats                 Disable stats output.
+  --watch-options-stdin      Stop watching when stdin stream has ended.
+  --no-watch-options-stdin   Do not stop watching when stdin stream has ended.
 
 Global options:
-  --color                                    Enable colors on console.
-  --no-color                                 Disable colors on console.
-  -v, --version                              Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  -h, --help [verbose]                       Display help for commands and options.
-
-Commands:
-  build|bundle|b [entries...] [options]      Run webpack (default command, can be omitted).
-  configtest|t [config-path]                 Validate a webpack configuration.
-  help|h [command] [option]                  Display help for commands and options.
-  info|i [options]                           Outputs information about your system.
-  init|c [generation-path] [options]         Initialize a new webpack project.
-  loader|l [output-path] [options]           Scaffold a loader.
-  migrate|m <config-path> [new-config-path]  Migrate a configuration to a new version.
-  plugin|p [output-path] [options]           Scaffold a plugin.
-  serve|s [entries...] [options]             Run the webpack dev server.
-  version|v [commands...]                    Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  watch|w [entries...] [options]             Run webpack and watch for files changes.
+  --color                    Enable colors on console.
+  --no-color                 Disable colors on console.
+  -v, --version              Output the version number of 'webpack',
+                             'webpack-cli' and 'webpack-dev-server' and
+                             commands.
+  -h, --help [verbose]       Display help for commands and options.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -591,52 +2275,38 @@ CLI documentation: https://webpack.js.org/api/cli/.
 Made with ♥ by the webpack team."
 `;
 
-exports[`help should show help information using the "--help" option 1`] = `
-"Usage: webpack [entries...] [options]
-Alternative usage to run commands: webpack [command] [options]
+exports[`help should show help information for 'watch' command using command syntax: stderr 1`] = `""`;
 
-The build tool for modern web applications.
+exports[`help should show help information for 'watch' command using command syntax: stdout 1`] = `
+"Usage: webpack watch|w [entries...] [options]
+
+Run webpack and watch for files changes.
 
 Options:
-  -c, --config <value...>                    Provide path to a webpack configuration file e.g. ./webpack.config.js.
-  --config-name <value...>                   Name of the configuration to use.
-  -m, --merge                                Merge two or more configurations using 'webpack-merge'.
-  --env <value...>                           Environment passed to the configuration when it is a function.
-  --node-env <value>                         Sets process.env.NODE_ENV to the specified value.
-  --progress [value]                         Print compilation progress during build.
-  -j, --json [value]                         Prints result as JSON or store it in a file.
-  --entry <value...>                         The entry point(s) of your application e.g. ./src/main.js.
-  -o, --output-path <value>                  Output location of the file generated by webpack e.g. ./dist/.
-  -t, --target <value>                       Sets the build target e.g. node.
-  -d, --devtool <value>                      Determine source maps to use.
-  --no-devtool                               Do not generate source maps.
-  --mode <value>                             Defines the mode to pass to webpack.
-  --name <value>                             Name of the configuration. Used when loading multiple configurations.
-  --stats [value]                            It instructs webpack on how to treat the stats e.g. verbose.
-  --no-stats                                 Disable stats output.
-  -w, --watch                                Watch for files changes.
-  --no-watch                                 Do not watch for file changes.
-  --watch-options-stdin                      Stop watching when stdin stream has ended.
-  --no-watch-options-stdin                   Do not stop watching when stdin stream has ended.
+  -c, --config <value...>    Provide path to a webpack configuration file e.g. ./webpack.config.js.
+  --config-name <value...>   Name of the configuration to use.
+  -m, --merge                Merge two or more configurations using 'webpack-merge'.
+  --env <value...>           Environment passed to the configuration when it is a function.
+  --node-env <value>         Sets process.env.NODE_ENV to the specified value.
+  --progress [value]         Print compilation progress during build.
+  -j, --json [value]         Prints result as JSON or store it in a file.
+  --entry <value...>         The entry point(s) of your application e.g. ./src/main.js.
+  -o, --output-path <value>  Output location of the file generated by webpack e.g. ./dist/.
+  -t, --target <value>       Sets the build target e.g. node.
+  -d, --devtool <value>      Determine source maps to use.
+  --no-devtool               Do not generate source maps.
+  --mode <value>             Defines the mode to pass to webpack.
+  --name <value>             Name of the configuration. Used when loading multiple configurations.
+  --stats [value]            It instructs webpack on how to treat the stats e.g. verbose.
+  --no-stats                 Disable stats output.
+  --watch-options-stdin      Stop watching when stdin stream has ended.
+  --no-watch-options-stdin   Do not stop watching when stdin stream has ended.
 
 Global options:
-  --color                                    Enable colors on console.
-  --no-color                                 Disable colors on console.
-  -v, --version                              Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  -h, --help [verbose]                       Display help for commands and options.
-
-Commands:
-  build|bundle|b [entries...] [options]      Run webpack (default command, can be omitted).
-  configtest|t [config-path]                 Validate a webpack configuration.
-  help|h [command] [option]                  Display help for commands and options.
-  info|i [options]                           Outputs information about your system.
-  init|c [generation-path] [options]         Initialize a new webpack project.
-  loader|l [output-path] [options]           Scaffold a loader.
-  migrate|m <config-path> [new-config-path]  Migrate a configuration to a new version.
-  plugin|p [output-path] [options]           Scaffold a plugin.
-  serve|s [entries...] [options]             Run the webpack dev server.
-  version|v [commands...]                    Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  watch|w [entries...] [options]             Run webpack and watch for files changes.
+  --color                    Enable colors on console.
+  --no-color                 Disable colors on console.
+  -v, --version              Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]       Display help for commands and options.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -645,56 +2315,38 @@ CLI documentation: https://webpack.js.org/api/cli/.
 Made with ♥ by the webpack team."
 `;
 
-exports[`help should show help information using the "--help" option with the "verbose" value #2 1`] = `
-"Usage: webpack [entries...] [options]
-Alternative usage to run commands: webpack [command] [options]
+exports[`help should show help information for 'watch' command using the "--help" option: stderr 1`] = `""`;
 
-The build tool for modern web applications.
+exports[`help should show help information for 'watch' command using the "--help" option: stdout 1`] = `
+"Usage: webpack watch|w [entries...] [options]
+
+Run webpack and watch for files changes.
 
 Options:
-  -c, --config <value...>                    Provide path to a webpack configuration file e.g. ./webpack.config.js.
-  --config-name <value...>                   Name of the configuration to use.
-  -m, --merge                                Merge two or more configurations using 'webpack-merge'.
-  --env <value...>                           Environment passed to the configuration when it is a function.
-  --node-env <value>                         Sets process.env.NODE_ENV to the specified value.
-  -h, --hot [value]                          Enables Hot Module Replacement
-  --no-hot                                   Disables Hot Module Replacement.
-  --analyze                                  It invokes webpack-bundle-analyzer plugin to get bundle information.
-  --progress [value]                         Print compilation progress during build.
-  --prefetch <value>                         Prefetch this request.
-  -j, --json [value]                         Prints result as JSON or store it in a file.
-  --entry <value...>                         The entry point(s) of your application e.g. ./src/main.js.
-  -o, --output-path <value>                  Output location of the file generated by webpack e.g. ./dist/.
-  -t, --target <value>                       Sets the build target e.g. node.
-  -d, --devtool <value>                      Determine source maps to use.
-  --no-devtool                               Do not generate source maps.
-  --mode <value>                             Defines the mode to pass to webpack.
-  --name <value>                             Name of the configuration. Used when loading multiple configurations.
-  --stats [value]                            It instructs webpack on how to treat the stats e.g. verbose.
-  --no-stats                                 Disable stats output.
-  -w, --watch                                Watch for files changes.
-  --no-watch                                 Do not watch for file changes.
-  --watch-options-stdin                      Stop watching when stdin stream has ended.
-  --no-watch-options-stdin                   Do not stop watching when stdin stream has ended.
+  -c, --config <value...>    Provide path to a webpack configuration file e.g. ./webpack.config.js.
+  --config-name <value...>   Name of the configuration to use.
+  -m, --merge                Merge two or more configurations using 'webpack-merge'.
+  --env <value...>           Environment passed to the configuration when it is a function.
+  --node-env <value>         Sets process.env.NODE_ENV to the specified value.
+  --progress [value]         Print compilation progress during build.
+  -j, --json [value]         Prints result as JSON or store it in a file.
+  --entry <value...>         The entry point(s) of your application e.g. ./src/main.js.
+  -o, --output-path <value>  Output location of the file generated by webpack e.g. ./dist/.
+  -t, --target <value>       Sets the build target e.g. node.
+  -d, --devtool <value>      Determine source maps to use.
+  --no-devtool               Do not generate source maps.
+  --mode <value>             Defines the mode to pass to webpack.
+  --name <value>             Name of the configuration. Used when loading multiple configurations.
+  --stats [value]            It instructs webpack on how to treat the stats e.g. verbose.
+  --no-stats                 Disable stats output.
+  --watch-options-stdin      Stop watching when stdin stream has ended.
+  --no-watch-options-stdin   Do not stop watching when stdin stream has ended.
 
 Global options:
-  --color                                    Enable colors on console.
-  --no-color                                 Disable colors on console.
-  -v, --version                              Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  -h, --help [verbose]                       Display help for commands and options.
-
-Commands:
-  build|bundle|b [entries...] [options]      Run webpack (default command, can be omitted).
-  configtest|t [config-path]                 Validate a webpack configuration.
-  help|h [command] [option]                  Display help for commands and options.
-  info|i [options]                           Outputs information about your system.
-  init|c [generation-path] [options]         Initialize a new webpack project.
-  loader|l [output-path] [options]           Scaffold a loader.
-  migrate|m <config-path> [new-config-path]  Migrate a configuration to a new version.
-  plugin|p [output-path] [options]           Scaffold a plugin.
-  serve|s [entries...] [options]             Run the webpack dev server.
-  version|v [commands...]                    Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  watch|w [entries...] [options]             Run webpack and watch for files changes.
+  --color                    Enable colors on console.
+  --no-color                 Disable colors on console.
+  -v, --version              Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]       Display help for commands and options.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -703,56 +2355,54 @@ CLI documentation: https://webpack.js.org/api/cli/.
 Made with ♥ by the webpack team."
 `;
 
-exports[`help should show help information using the "--help" option with the "verbose" value 1`] = `
+exports[`help should show help information using command syntax: stderr 1`] = `""`;
+
+exports[`help should show help information using command syntax: stdout 1`] = `
 "Usage: webpack [entries...] [options]
 Alternative usage to run commands: webpack [command] [options]
 
 The build tool for modern web applications.
 
 Options:
-  -c, --config <value...>                    Provide path to a webpack configuration file e.g. ./webpack.config.js.
-  --config-name <value...>                   Name of the configuration to use.
-  -m, --merge                                Merge two or more configurations using 'webpack-merge'.
-  --env <value...>                           Environment passed to the configuration when it is a function.
-  --node-env <value>                         Sets process.env.NODE_ENV to the specified value.
-  -h, --hot [value]                          Enables Hot Module Replacement
-  --no-hot                                   Disables Hot Module Replacement.
-  --analyze                                  It invokes webpack-bundle-analyzer plugin to get bundle information.
-  --progress [value]                         Print compilation progress during build.
-  --prefetch <value>                         Prefetch this request.
-  -j, --json [value]                         Prints result as JSON or store it in a file.
-  --entry <value...>                         The entry point(s) of your application e.g. ./src/main.js.
-  -o, --output-path <value>                  Output location of the file generated by webpack e.g. ./dist/.
-  -t, --target <value>                       Sets the build target e.g. node.
-  -d, --devtool <value>                      Determine source maps to use.
-  --no-devtool                               Do not generate source maps.
-  --mode <value>                             Defines the mode to pass to webpack.
-  --name <value>                             Name of the configuration. Used when loading multiple configurations.
-  --stats [value]                            It instructs webpack on how to treat the stats e.g. verbose.
-  --no-stats                                 Disable stats output.
-  -w, --watch                                Watch for files changes.
-  --no-watch                                 Do not watch for file changes.
-  --watch-options-stdin                      Stop watching when stdin stream has ended.
-  --no-watch-options-stdin                   Do not stop watching when stdin stream has ended.
+  -c, --config <value...>                          Provide path to a webpack configuration file e.g. ./webpack.config.js.
+  --config-name <value...>                         Name of the configuration to use.
+  -m, --merge                                      Merge two or more configurations using 'webpack-merge'.
+  --env <value...>                                 Environment passed to the configuration when it is a function.
+  --node-env <value>                               Sets process.env.NODE_ENV to the specified value.
+  --progress [value]                               Print compilation progress during build.
+  -j, --json [value]                               Prints result as JSON or store it in a file.
+  --entry <value...>                               The entry point(s) of your application e.g. ./src/main.js.
+  -o, --output-path <value>                        Output location of the file generated by webpack e.g. ./dist/.
+  -t, --target <value>                             Sets the build target e.g. node.
+  -d, --devtool <value>                            Determine source maps to use.
+  --no-devtool                                     Do not generate source maps.
+  --mode <value>                                   Defines the mode to pass to webpack.
+  --name <value>                                   Name of the configuration. Used when loading multiple configurations.
+  --stats [value]                                  It instructs webpack on how to treat the stats e.g. verbose.
+  --no-stats                                       Disable stats output.
+  -w, --watch                                      Watch for files changes.
+  --no-watch                                       Do not watch for file changes.
+  --watch-options-stdin                            Stop watching when stdin stream has ended.
+  --no-watch-options-stdin                         Do not stop watching when stdin stream has ended.
 
 Global options:
-  --color                                    Enable colors on console.
-  --no-color                                 Disable colors on console.
-  -v, --version                              Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  -h, --help [verbose]                       Display help for commands and options.
+  --color                                          Enable colors on console.
+  --no-color                                       Disable colors on console.
+  -v, --version                                    Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]                             Display help for commands and options.
 
 Commands:
-  build|bundle|b [entries...] [options]      Run webpack (default command, can be omitted).
-  configtest|t [config-path]                 Validate a webpack configuration.
-  help|h [command] [option]                  Display help for commands and options.
-  info|i [options]                           Outputs information about your system.
-  init|c [generation-path] [options]         Initialize a new webpack project.
-  loader|l [output-path] [options]           Scaffold a loader.
-  migrate|m <config-path> [new-config-path]  Migrate a configuration to a new version.
-  plugin|p [output-path] [options]           Scaffold a plugin.
-  serve|s [entries...] [options]             Run the webpack dev server.
-  version|v [commands...]                    Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  watch|w [entries...] [options]             Run webpack and watch for files changes.
+  build|bundle|b [entries...] [options]            Run webpack (default command, can be omitted).
+  configtest|t [config-path]                       Validate a webpack configuration.
+  help|h [command] [option]                        Display help for commands and options.
+  info|i [options]                                 Outputs information about your system.
+  init|create|new|c|n [generation-path] [options]  Initialize a new webpack project.
+  loader|l [output-path] [options]                 Scaffold a loader.
+  migrate|m <config-path> [new-config-path]        Migrate a configuration to a new version.
+  plugin|p [output-path] [options]                 Scaffold a plugin.
+  serve|server|s [entries...] [options]            Run the webpack dev server.
+  version|v [commands...]                          Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  watch|w [entries...] [options]                   Run webpack and watch for files changes.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -761,7 +2411,65 @@ CLI documentation: https://webpack.js.org/api/cli/.
 Made with ♥ by the webpack team."
 `;
 
-exports[`help should show help information using the "help --color" option 1`] = `
+exports[`help should show help information using the "--help" option: stderr 1`] = `""`;
+
+exports[`help should show help information using the "--help" option: stdout 1`] = `
+"Usage: webpack [entries...] [options]
+Alternative usage to run commands: webpack [command] [options]
+
+The build tool for modern web applications.
+
+Options:
+  -c, --config <value...>                          Provide path to a webpack configuration file e.g. ./webpack.config.js.
+  --config-name <value...>                         Name of the configuration to use.
+  -m, --merge                                      Merge two or more configurations using 'webpack-merge'.
+  --env <value...>                                 Environment passed to the configuration when it is a function.
+  --node-env <value>                               Sets process.env.NODE_ENV to the specified value.
+  --progress [value]                               Print compilation progress during build.
+  -j, --json [value]                               Prints result as JSON or store it in a file.
+  --entry <value...>                               The entry point(s) of your application e.g. ./src/main.js.
+  -o, --output-path <value>                        Output location of the file generated by webpack e.g. ./dist/.
+  -t, --target <value>                             Sets the build target e.g. node.
+  -d, --devtool <value>                            Determine source maps to use.
+  --no-devtool                                     Do not generate source maps.
+  --mode <value>                                   Defines the mode to pass to webpack.
+  --name <value>                                   Name of the configuration. Used when loading multiple configurations.
+  --stats [value]                                  It instructs webpack on how to treat the stats e.g. verbose.
+  --no-stats                                       Disable stats output.
+  -w, --watch                                      Watch for files changes.
+  --no-watch                                       Do not watch for file changes.
+  --watch-options-stdin                            Stop watching when stdin stream has ended.
+  --no-watch-options-stdin                         Do not stop watching when stdin stream has ended.
+
+Global options:
+  --color                                          Enable colors on console.
+  --no-color                                       Disable colors on console.
+  -v, --version                                    Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]                             Display help for commands and options.
+
+Commands:
+  build|bundle|b [entries...] [options]            Run webpack (default command, can be omitted).
+  configtest|t [config-path]                       Validate a webpack configuration.
+  help|h [command] [option]                        Display help for commands and options.
+  info|i [options]                                 Outputs information about your system.
+  init|create|new|c|n [generation-path] [options]  Initialize a new webpack project.
+  loader|l [output-path] [options]                 Scaffold a loader.
+  migrate|m <config-path> [new-config-path]        Migrate a configuration to a new version.
+  plugin|p [output-path] [options]                 Scaffold a plugin.
+  serve|server|s [entries...] [options]            Run the webpack dev server.
+  version|v [commands...]                          Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  watch|w [entries...] [options]                   Run webpack and watch for files changes.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information using the "help --color" option: stderr 1`] = `""`;
+
+exports[`help should show help information using the "help --color" option: stdout 1`] = `
 "Usage: webpack --color
 Description: Enable colors on console.
 
@@ -772,7 +2480,11 @@ CLI documentation: https://webpack.js.org/api/cli/.
 Made with ♥ by the webpack team."
 `;
 
-exports[`help should show help information using the "help --mode" option 1`] = `
+exports[`help should show help information using the "help --mode" option: stderr 1`] = `""`;
+
+exports[`help should show help information using the "help --mode" option: stderr 2`] = `""`;
+
+exports[`help should show help information using the "help --mode" option: stdout 1`] = `
 "Usage: webpack --mode <value>
 Description: Defines the mode to pass to webpack.
 
@@ -783,7 +2495,7 @@ CLI documentation: https://webpack.js.org/api/cli/.
 Made with ♥ by the webpack team."
 `;
 
-exports[`help should show help information using the "help --mode" option 2`] = `
+exports[`help should show help information using the "help --mode" option: stdout 2`] = `
 "Usage: webpack --mode <value>
 Description: Defines the mode to pass to webpack.
 
@@ -794,7 +2506,9 @@ CLI documentation: https://webpack.js.org/api/cli/.
 Made with ♥ by the webpack team."
 `;
 
-exports[`help should show help information using the "help --no-color" option 1`] = `
+exports[`help should show help information using the "help --no-color" option: stderr 1`] = `""`;
+
+exports[`help should show help information using the "help --no-color" option: stdout 1`] = `
 "Usage: webpack --no-color
 Description: Disable colors on console.
 
@@ -805,7 +2519,9 @@ CLI documentation: https://webpack.js.org/api/cli/.
 Made with ♥ by the webpack team."
 `;
 
-exports[`help should show help information using the "help --no-stats" option 1`] = `
+exports[`help should show help information using the "help --no-stats" option: stderr 1`] = `""`;
+
+exports[`help should show help information using the "help --no-stats" option: stdout 1`] = `
 "Usage: webpack --no-stats
 Description: Disable stats output.
 
@@ -816,7 +2532,9 @@ CLI documentation: https://webpack.js.org/api/cli/.
 Made with ♥ by the webpack team."
 `;
 
-exports[`help should show help information using the "help --stats" option 1`] = `
+exports[`help should show help information using the "help --stats" option: stderr 1`] = `""`;
+
+exports[`help should show help information using the "help --stats" option: stdout 1`] = `
 "Usage: webpack --stats [value]
 Description: It instructs webpack on how to treat the stats e.g. verbose.
 
@@ -827,7 +2545,9 @@ CLI documentation: https://webpack.js.org/api/cli/.
 Made with ♥ by the webpack team."
 `;
 
-exports[`help should show help information using the "help --target" option 1`] = `
+exports[`help should show help information using the "help --target" option: stderr 1`] = `""`;
+
+exports[`help should show help information using the "help --target" option: stdout 1`] = `
 "Usage: webpack --target <value>
 Short: webpack -t <value>
 Description: Sets the build target e.g. node.
@@ -839,7 +2559,9 @@ CLI documentation: https://webpack.js.org/api/cli/.
 Made with ♥ by the webpack team."
 `;
 
-exports[`help should show help information using the "help --version" option 1`] = `
+exports[`help should show help information using the "help --version" option: stderr 1`] = `""`;
+
+exports[`help should show help information using the "help --version" option: stdout 1`] = `
 "Usage: webpack --version
 Short: webpack -v
 Description: Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
@@ -851,7 +2573,9 @@ CLI documentation: https://webpack.js.org/api/cli/.
 Made with ♥ by the webpack team."
 `;
 
-exports[`help should show help information using the "help -v" option 1`] = `
+exports[`help should show help information using the "help -v" option: stderr 1`] = `""`;
+
+exports[`help should show help information using the "help -v" option: stdout 1`] = `
 "Usage: webpack --version
 Short: webpack -v
 Description: Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
@@ -863,7 +2587,9 @@ CLI documentation: https://webpack.js.org/api/cli/.
 Made with ♥ by the webpack team."
 `;
 
-exports[`help should show help information using the "help serve --color" option 1`] = `
+exports[`help should show help information using the "help serve --color" option: stderr 1`] = `""`;
+
+exports[`help should show help information using the "help serve --color" option: stdout 1`] = `
 "Usage: webpack serve --color
 Description: Enable colors on console.
 
@@ -874,7 +2600,9 @@ CLI documentation: https://webpack.js.org/api/cli/.
 Made with ♥ by the webpack team."
 `;
 
-exports[`help should show help information using the "help serve --mode" option 1`] = `
+exports[`help should show help information using the "help serve --mode" option: stderr 1`] = `""`;
+
+exports[`help should show help information using the "help serve --mode" option: stdout 1`] = `
 "Usage: webpack serve --mode <value>
 Description: Defines the mode to pass to webpack.
 
@@ -885,7 +2613,9 @@ CLI documentation: https://webpack.js.org/api/cli/.
 Made with ♥ by the webpack team."
 `;
 
-exports[`help should show help information using the "help serve --no-color" option 1`] = `
+exports[`help should show help information using the "help serve --no-color" option: stderr 1`] = `""`;
+
+exports[`help should show help information using the "help serve --no-color" option: stdout 1`] = `
 "Usage: webpack serve --no-color
 Description: Disable colors on console.
 
@@ -896,21 +2626,133 @@ CLI documentation: https://webpack.js.org/api/cli/.
 Made with ♥ by the webpack team."
 `;
 
-exports[`help should show help information with options for sub commands 1`] = `
+exports[`help should show help information with options for sub commands: stderr 1`] = `""`;
+
+exports[`help should show help information with options for sub commands: stdout 1`] = `
 "Usage: webpack info|i [options]
 
 Outputs information about your system.
 
 Options:
-  --output <value>      To get the output in a specified format ( accept json
-                        or markdown )
+  --output <value>      To get the output in a specified format ( accept json or markdown )
 
 Global options:
   --color               Enable colors on console.
   --no-color            Disable colors on console.
-  -v, --version         Output the version number of 'webpack', 'webpack-cli'
-                        and 'webpack-dev-server' and commands.
+  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
   -h, --help [verbose]  Display help for commands and options.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show the same information using the "--help" option and command syntax: stderr from command syntax 1`] = `""`;
+
+exports[`help should show the same information using the "--help" option and command syntax: stderr from option 1`] = `""`;
+
+exports[`help should show the same information using the "--help" option and command syntax: stdout from command sytnax 1`] = `
+"Usage: webpack [entries...] [options]
+Alternative usage to run commands: webpack [command] [options]
+
+The build tool for modern web applications.
+
+Options:
+  -c, --config <value...>                          Provide path to a webpack configuration file e.g. ./webpack.config.js.
+  --config-name <value...>                         Name of the configuration to use.
+  -m, --merge                                      Merge two or more configurations using 'webpack-merge'.
+  --env <value...>                                 Environment passed to the configuration when it is a function.
+  --node-env <value>                               Sets process.env.NODE_ENV to the specified value.
+  --progress [value]                               Print compilation progress during build.
+  -j, --json [value]                               Prints result as JSON or store it in a file.
+  --entry <value...>                               The entry point(s) of your application e.g. ./src/main.js.
+  -o, --output-path <value>                        Output location of the file generated by webpack e.g. ./dist/.
+  -t, --target <value>                             Sets the build target e.g. node.
+  -d, --devtool <value>                            Determine source maps to use.
+  --no-devtool                                     Do not generate source maps.
+  --mode <value>                                   Defines the mode to pass to webpack.
+  --name <value>                                   Name of the configuration. Used when loading multiple configurations.
+  --stats [value]                                  It instructs webpack on how to treat the stats e.g. verbose.
+  --no-stats                                       Disable stats output.
+  -w, --watch                                      Watch for files changes.
+  --no-watch                                       Do not watch for file changes.
+  --watch-options-stdin                            Stop watching when stdin stream has ended.
+  --no-watch-options-stdin                         Do not stop watching when stdin stream has ended.
+
+Global options:
+  --color                                          Enable colors on console.
+  --no-color                                       Disable colors on console.
+  -v, --version                                    Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]                             Display help for commands and options.
+
+Commands:
+  build|bundle|b [entries...] [options]            Run webpack (default command, can be omitted).
+  configtest|t [config-path]                       Validate a webpack configuration.
+  help|h [command] [option]                        Display help for commands and options.
+  info|i [options]                                 Outputs information about your system.
+  init|create|new|c|n [generation-path] [options]  Initialize a new webpack project.
+  loader|l [output-path] [options]                 Scaffold a loader.
+  migrate|m <config-path> [new-config-path]        Migrate a configuration to a new version.
+  plugin|p [output-path] [options]                 Scaffold a plugin.
+  serve|server|s [entries...] [options]            Run the webpack dev server.
+  version|v [commands...]                          Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  watch|w [entries...] [options]                   Run webpack and watch for files changes.
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show the same information using the "--help" option and command syntax: stdout from option 1`] = `
+"Usage: webpack [entries...] [options]
+Alternative usage to run commands: webpack [command] [options]
+
+The build tool for modern web applications.
+
+Options:
+  -c, --config <value...>                          Provide path to a webpack configuration file e.g. ./webpack.config.js.
+  --config-name <value...>                         Name of the configuration to use.
+  -m, --merge                                      Merge two or more configurations using 'webpack-merge'.
+  --env <value...>                                 Environment passed to the configuration when it is a function.
+  --node-env <value>                               Sets process.env.NODE_ENV to the specified value.
+  --progress [value]                               Print compilation progress during build.
+  -j, --json [value]                               Prints result as JSON or store it in a file.
+  --entry <value...>                               The entry point(s) of your application e.g. ./src/main.js.
+  -o, --output-path <value>                        Output location of the file generated by webpack e.g. ./dist/.
+  -t, --target <value>                             Sets the build target e.g. node.
+  -d, --devtool <value>                            Determine source maps to use.
+  --no-devtool                                     Do not generate source maps.
+  --mode <value>                                   Defines the mode to pass to webpack.
+  --name <value>                                   Name of the configuration. Used when loading multiple configurations.
+  --stats [value]                                  It instructs webpack on how to treat the stats e.g. verbose.
+  --no-stats                                       Disable stats output.
+  -w, --watch                                      Watch for files changes.
+  --no-watch                                       Do not watch for file changes.
+  --watch-options-stdin                            Stop watching when stdin stream has ended.
+  --no-watch-options-stdin                         Do not stop watching when stdin stream has ended.
+
+Global options:
+  --color                                          Enable colors on console.
+  --no-color                                       Disable colors on console.
+  -v, --version                                    Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]                             Display help for commands and options.
+
+Commands:
+  build|bundle|b [entries...] [options]            Run webpack (default command, can be omitted).
+  configtest|t [config-path]                       Validate a webpack configuration.
+  help|h [command] [option]                        Display help for commands and options.
+  info|i [options]                                 Outputs information about your system.
+  init|create|new|c|n [generation-path] [options]  Initialize a new webpack project.
+  loader|l [output-path] [options]                 Scaffold a loader.
+  migrate|m <config-path> [new-config-path]        Migrate a configuration to a new version.
+  plugin|p [output-path] [options]                 Scaffold a plugin.
+  serve|server|s [entries...] [options]            Run the webpack dev server.
+  version|v [commands...]                          Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  watch|w [entries...] [options]                   Run webpack and watch for files changes.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 

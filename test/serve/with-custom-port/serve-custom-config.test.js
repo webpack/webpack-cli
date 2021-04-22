@@ -79,7 +79,7 @@ describe('serve with devServer in config', () => {
         expect(normalizeStderr(stderr)).toMatchSnapshot('stderr');
         // Should output the correct bundle file
         expect(stdout).toContain('main.js');
-        
+
         if (isDevServer4) {
             // HMR is not being used
             expect(stdout).not.toContain('webpack/hot/dev-server.js');

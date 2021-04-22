@@ -100,7 +100,7 @@ describe('basic serve usage', () => {
             expect(stderr).toMatchSnapshot();
             expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
         }
-        
+
         expect(stdout).toContain('one');
         expect(stdout).toContain('first-output/main.js');
         expect(stdout).toContain('two');
@@ -438,7 +438,7 @@ describe('basic serve usage', () => {
 
         expect(normalizeStderr(stderr)).toMatchSnapshot('stderr');
         expect(stdout).toContain('development');
-        
+
         if (isDevServer4) {
             expect(stdout.match(/HotModuleReplacementPlugin/g)).toHaveLength(1);
         } else {

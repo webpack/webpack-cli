@@ -48,20 +48,19 @@ const processKill = (process) => {
 };
 
 /**
- * Run the webpack CLI for a test case.
+ * Webpack CLI test runner.
  *
- * @param {String} testCase The path to folder that contains the webpack.config.js
- * @param {Array} args Array of arguments to pass to webpack
- * @param {Object<string, any>} options Boolean that decides if a default output path will be set or not
+ * @param {string} cwd The path to folder that contains test
+ * @param {Array<string>} args Array of arguments
+ * @param {Object<string, any>} options Options for tests
  * @returns {Promise}
  */
-const createProcess = async (testCase, args = [], options = {}) => {
-    const cwd = path.resolve(testCase);
+const createProcess = (cwd, args, options) => {
     const { nodeOptions = [] } = options;
     const processExecutor = nodeOptions.length ? execaNode : execa;
 
     return processExecutor(WEBPACK_PATH, args, {
-        cwd,
+        cwd: path.resolve(cwd),
         reject: false,
         stdio: ENABLE_LOG_COMPILATION ? 'inherit' : 'pipe',
         maxBuffer: Infinity,
@@ -313,12 +312,18 @@ const normalizeStderr = (stderr) => {
     return normalizedStderr;
 };
 
-const uniqueDirectoryForTest = async (assetsPath) => {
-    const localDir = Date.now().toString();
+const getWebpackCliArguments = (startWith) => {
+    if (typeof startWith === 'undefined') {
+        return cli.getArguments();
+    }
 
-    const result = path.resolve(assetsPath, localDir);
+    const result = {};
 
-    await mkdir(result);
+    for (const [name, value] of Object.entries(cli.getArguments())) {
+        if (name.startsWith(startWith)) {
+            result[name] = value;
+        }
+    }
 
     return result;
 };
@@ -333,17 +338,21 @@ const readFile = (path, options = {}) =>
         });
     });
 
-const getWebpackCliArguments = (startWith) => {
-    if (typeof startWith === 'undefined') {
-        return cli.getArguments();
-    }
+const readdir = (path) =>
+    new Promise((resolve, reject) => {
+        fs.readdir(path, (err, stats) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(stats);
+        });
+    });
 
-    const result = {};
+const uniqueDirectoryForTest = async () => {
+    const result = path.resolve(os.tmpdir(), Date.now().toString());
 
-    for (const [name, value] of Object.entries(cli.getArguments())) {
-        if (name.startsWith(startWith)) {
-            result[name] = value;
-        }
+    if (!fs.existsSync(result)) {
+        fs.mkdirSync(result);
     }
 
     return result;
