@@ -1,43 +1,36 @@
 'use strict';
-const { run, isWebpack5 } = require('../../utils/test-utils');
+const { run, normalizeStderr, normalizeStdout } = require('../../utils/test-utils');
 
 describe('invalid schema', () => {
     it('should log webpack error and exit process on invalid config', async () => {
         const { exitCode, stderr, stdout } = await run(__dirname, ['serve', '--config', './webpack.config.mock.js']);
 
         expect(exitCode).toEqual(2);
-        expect(stderr).toContain('Invalid configuration object');
-        expect(stdout).toBeFalsy();
+        expect(normalizeStderr(stderr)).toMatchSnapshot('stderr');
+        expect(normalizeStdout(stdout)).toMatchSnapshot('stdout');
     });
 
     it('should log webpack error and exit process on invalid flag', async () => {
         const { exitCode, stderr, stdout } = await run(__dirname, ['serve', '--mode', 'Yukihira']);
 
         expect(exitCode).toEqual(2);
-
-        if (isWebpack5) {
-            expect(stderr).toContain("Invalid value 'Yukihira' for the '--mode' option");
-            expect(stderr).toContain("Expected: 'development | production | none'");
-        } else {
-            expect(stderr).toContain('Invalid configuration object');
-        }
-
-        expect(stdout).toBeFalsy();
+        expect(normalizeStderr(stderr)).toMatchSnapshot('stderr');
+        expect(normalizeStdout(stdout)).toMatchSnapshot('stdout');
     });
 
     it('should log webpack-dev-server error and exit process on invalid flag', async () => {
         const { exitCode, stderr, stdout } = await run(__dirname, ['serve', '--port', '-1']);
 
         expect(exitCode).toEqual(2);
-        expect(stderr).toContain('RangeError');
-        expect(stdout).toBeFalsy();
+        expect(normalizeStderr(stderr).replace('Port', 'options.port')).toMatchSnapshot('stderr');
+        expect(normalizeStdout(stdout)).toMatchSnapshot('stdout');
     });
 
     it('should log webpack-dev-server error and exit process on invalid config', async () => {
         const { exitCode, stderr, stdout } = await run(__dirname, ['serve', '--config', './webpack-dev-server.config.mock.js']);
 
         expect(exitCode).toEqual(2);
-        expect(stderr).toContain('webpack Dev Server Invalid Options');
-        expect(stdout).toBeFalsy();
+        expect(normalizeStderr(stderr)).toMatchSnapshot('stderr');
+        expect(normalizeStdout(stdout)).toMatchSnapshot('stdout');
     });
 });

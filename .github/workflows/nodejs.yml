@@ -74,9 +74,9 @@ jobs:
           path: |
             node_modules
             */*/node_modules
-          key: b-${{ runner.os }}-${{ matrix.webpack-version }}-yarn-${{ hashFiles('**/yarn.lock', './yarn.lock') }}
+          key: c-${{ runner.os }}-${{ matrix.webpack-version }}-yarn-${{ hashFiles('**/yarn.lock', './yarn.lock') }}
           restore-keys: |
-            b-${{ runner.os }}-${{ matrix.webpack-version }}-yarn-
+            c-${{ runner.os }}-${{ matrix.webpack-version }}-yarn-
 
       - name: Install dependencies
         run: yarn

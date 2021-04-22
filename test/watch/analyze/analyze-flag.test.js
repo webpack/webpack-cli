@@ -1,10 +1,10 @@
 'use strict';
 
-const { runAndGetWatchProc, normalizeStdout, processKill } = require('../../utils/test-utils');
+const { runAndGetProcess, normalizeStdout, processKill } = require('../../utils/test-utils');
 
 describe('"analyze" option', () => {
     it('should load webpack-bundle-analyzer plugin with --analyze flag', (done) => {
-        const proc = runAndGetWatchProc(__dirname, ['--analyze'], false, '', true);
+        const proc = runAndGetProcess(__dirname, ['--analyze']);
 
         proc.stdout.on('data', (chunk) => {
             const data = normalizeStdout(chunk.toString());

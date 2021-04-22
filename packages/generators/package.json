@@ -9,6 +9,11 @@
   "publishConfig": {
     "access": "public"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/webpack/webpack-cli.git"
+  },
+  "homepage": "https://github.com/webpack/webpack-cli/tree/master/packages/generators",
   "files": [
     "lib",
     "addon-template",
@@ -31,10 +36,8 @@
     }
   },
   "devDependencies": {
-    "@types/yeoman-assert": "^3.1.1",
     "@types/yeoman-generator": "^4.11.3",
-    "rimraf": "^3.0.2",
-    "yeoman-assert": "^3.1.1"
+    "rimraf": "^3.0.2"
   },
   "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9"
 }

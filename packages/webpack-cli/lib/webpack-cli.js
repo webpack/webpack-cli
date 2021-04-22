@@ -373,6 +373,11 @@ class WebpackCLI {
             {
                 name: 'env',
                 type: (value, previous = {}) => {
+                    // for https://github.com/webpack/webpack-cli/issues/2642
+                    if (value.endsWith('=')) {
+                        value.concat('""');
+                    }
+
                     // This ensures we're only splitting by the first `=`
                     const [allKeys, val] = value.split(/=(.+)/, 2);
                     const splitKeys = allKeys.split(/\.(?!$)/);
@@ -389,7 +394,11 @@ class WebpackCLI {
                         }
 
                         if (index === splitKeys.length - 1) {
-                            prevRef[someKey] = val || true;
+                            if (typeof val === 'string') {
+                                prevRef[someKey] = val;
+                            } else {
+                                prevRef[someKey] = true;
+                            }
                         }
 
                         prevRef = prevRef[someKey];
@@ -1014,7 +1023,7 @@ class WebpackCLI {
                     },
                     formatHelp: (command, helper) => {
                         const termWidth = helper.padWidth(command, helper);
-                        const helpWidth = helper.helpWidth || 80;
+                        const helpWidth = helper.helpWidth || process.env.WEBPACK_CLI_HELP_WIDTH || 80;
                         const itemIndentWidth = 2;
                         const itemSeparatorWidth = 2; // between term and description
 
@@ -1212,13 +1221,13 @@ class WebpackCLI {
             const defaultCommandToRun = getCommandName(buildCommandOptions.name);
             const hasOperand = typeof operands[0] !== 'undefined';
             const operand = hasOperand ? operands[0] : defaultCommandToRun;
-
+            const isHelpOption = typeof options.help !== 'undefined';
             const isHelpCommandSyntax = isCommand(operand, helpCommandOptions);
 
-            if (options.help || isHelpCommandSyntax) {
+            if (isHelpOption || isHelpCommandSyntax) {
                 let isVerbose = false;
 
-                if (options.help) {
+                if (isHelpOption) {
                     if (typeof options.help === 'string') {
                         if (options.help !== 'verbose') {
                             this.logger.error("Unknown value for '--help' option, please use '--help=verbose'");
@@ -1232,7 +1241,7 @@ class WebpackCLI {
                 this.program.forHelp = true;
 
                 const optionsForHelp = []
-                    .concat(options.help && hasOperand ? [operand] : [])
+                    .concat(isHelpOption && hasOperand ? [operand] : [])
                     // Syntax `webpack help [command]`
                     .concat(operands.slice(1))
                     // Syntax `webpack help [option]`
@@ -1243,9 +1252,12 @@ class WebpackCLI {
                 await outputHelp(optionsForHelp, isVerbose, isHelpCommandSyntax, program);
             }
 
-            if (options.version || isCommand(operand, versionCommandOptions)) {
+            const isVersionOption = typeof options.version !== 'undefined';
+            const isVersionCommandSyntax = isCommand(operand, versionCommandOptions);
+
+            if (isVersionOption || isVersionCommandSyntax) {
                 const optionsForVersion = []
-                    .concat(options.version ? [operand] : [])
+                    .concat(isVersionOption ? [operand] : [])
                     .concat(operands.slice(1))
                     .concat(unknown);
 
