@@ -132,10 +132,10 @@ const runTestStdoutWithInput = ({ packageName, cliArgs, inputs, logMessage, isSu
     proc.stdin.setDefaultEncoding('utf-8');
 
     return new Promise((resolve) => {
-        setTimeout(() => {
+        const timeout = setTimeout(() => {
             console.log('  timeout: killing process');
             proc.kill();
-        }, 240000);
+        }, 300000);
 
         let hasPassed = false;
 
@@ -162,11 +162,13 @@ const runTestStdoutWithInput = ({ packageName, cliArgs, inputs, logMessage, isSu
 
         proc.on('exit', () => {
             swapPkgName(`.${packageName}`, isSubPackage);
+            clearTimeout(timeout);
             resolve(hasPassed);
         });
 
         proc.on('error', () => {
             swapPkgName(`.${packageName}`, isSubPackage);
+            clearTimeout(timeout);
             resolve(false);
         });
     });
