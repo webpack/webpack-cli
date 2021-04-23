@@ -244,7 +244,7 @@ const normalizeCwd = (output) => {
 };
 
 const normalizeError = (output) => {
-    return output.replace(/\s+at .+(}|\))/gs, '\n    at stack');
+    return output.replace(/\s+at .+(}|\)|\d)/gs, '\n    at stack');
 };
 
 const normalizeStdout = (stdout) => {

@@ -43,7 +43,7 @@ describe('watch variable', () => {
         });
     });
 
-    it('should pass `WEBPACK_WATCH` env variable and recompile upon file change using the `--watch` option', (done) => {
+    it.only('should pass `WEBPACK_WATCH` env variable and recompile upon file change using the `--watch` option', (done) => {
         const proc = runAndGetProcess(__dirname, ['--watch', '--mode', 'development']);
 
         let modified = false;

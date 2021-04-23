@@ -1,50 +1,45 @@
 'use strict';
 
-const path = require('path');
-
-const { run } = require('../../utils/test-utils');
+const { run, normalizeStderr, normalizeStdout } = require('../../utils/test-utils');
 
 describe("'configtest' command with the configuration path option", () => {
     it('should validate webpack config successfully', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ['configtest', './basic.config.js'], false);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['configtest', './basic.config.js']);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toBeFalsy();
-        expect(stdout).toContain(`Validate '${path.resolve(__dirname, 'basic.config.js')}'.`);
-        expect(stdout).toContain('There are no validation errors in the given webpack configuration.');
+        expect(normalizeStderr(stderr)).toMatchSnapshot('stderr');
+        expect(normalizeStdout(stdout)).toMatchSnapshot('stdout');
     });
 
     it('should throw validation error', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ['configtest', './error.config.js'], false);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['configtest', './error.config.js']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain('Invalid configuration object.');
-        expect(stderr).toContain('configuration.mode should be one of these:');
-        expect(stdout).toContain(`Validate '${path.resolve(__dirname, 'error.config.js')}'.`);
+        expect(normalizeStderr(stderr)).toMatchSnapshot('stderr');
+        expect(normalizeStdout(stdout)).toMatchSnapshot('stdout');
     });
 
     it('should throw syntax error', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ['configtest', './syntax-error.config.js'], false);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['configtest', './syntax-error.config.js']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain(`SyntaxError: Unexpected token ';'`);
-        expect(stdout).toBeFalsy();
+        expect(normalizeStderr(stderr)).toMatchSnapshot('stderr');
+        expect(normalizeStdout(stdout)).toMatchSnapshot('stdout');
     });
 
     it(`should validate the config with alias 't'`, async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ['t', './error.config.js'], false);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['t', './error.config.js']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain('Invalid configuration object.');
-        expect(stderr).toContain('configuration.mode should be one of these:');
-        expect(stdout).toContain(`Validate '${path.resolve(__dirname, 'error.config.js')}'.`);
+        expect(normalizeStderr(stderr)).toMatchSnapshot('stderr');
+        expect(normalizeStdout(stdout)).toMatchSnapshot('stdout');
     });
 
     it('should throw error if configuration does not exist', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ['configtest', './a.js'], false);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['configtest', './a.js']);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain(`Failed to load '${path.resolve(__dirname, './a.js')}' config`);
-        expect(stdout).toBeFalsy();
+        expect(normalizeStderr(stderr)).toMatchSnapshot('stderr');
+        expect(normalizeStdout(stdout)).toMatchSnapshot('stdout');
     });
 });
