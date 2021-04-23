@@ -8,7 +8,7 @@
     "version": {
       "message": "chore(release): publish new version",
       "conventionalCommits": true,
-      "allowBranch": ["master", "next"]
+      "allowBranch": ["master"]
     }
   }
 }
