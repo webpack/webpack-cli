@@ -290,7 +290,7 @@ const normalizeStderr = (stderr) => {
 
     normalizedStderr = normalizedStderr.replace(/:[0-9]+\//g, ':<port>/');
 
-    if (!networkIPv6) {
+    if (!/On Your Network \(IPv6\)/.test(stderr)) {
         // Github Actions doesnt' support IPv6 on ubuntu in some cases
         normalizedStderr = normalizedStderr.split('\n');
 
