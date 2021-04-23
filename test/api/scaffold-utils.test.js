@@ -27,6 +27,7 @@ describe('utils', () => {
                 entry: 'Yes',
             });
         });
+
         it('should emulate a prompt for list input', () => {
             expect(Input(mockSelf, 'plugins', 'what is your plugin?', 'openJSF')).toEqual({
                 type: 'input',
@@ -35,11 +36,13 @@ describe('utils', () => {
                 default: 'openJSF',
             });
         });
+
         it('should return a default Input object value', () => {
             expect(Input(mockSelf, 'plugins', 'what is your plugin?', 'my-plugin', true)).toEqual({
                 plugins: 'my-plugin',
             });
         });
+
         it('should emulate a prompt for confirm', () => {
             expect(Confirm(mockSelf, 'context', 'what is your context?')).toEqual({
                 name: 'context',
@@ -48,17 +51,21 @@ describe('utils', () => {
                 type: 'confirm',
             });
         });
+
         it('should make a Confirm object with yes as default', () => {
             expect(Confirm(mockSelf, 'context', 'what is your context?', true, true)).toEqual({
                 context: true,
             });
         });
+
         it('should make an Input object with validation', () => {
             expect(InputValidate(mockSelf, 'plugins', 'what is your plugin?', () => true)).toMatchSnapshot();
         });
+
         it('should make an Input object with validation and default value', () => {
             expect(InputValidate(mockSelf, 'plugins', 'what is your plugin?', () => true, 'my-plugin')).toMatchSnapshot();
         });
+
         it('should return a default Input object with validation and default value', () => {
             expect(InputValidate(mockSelf, 'plugins', 'what is your plugin?', () => true, 'my-plugin', true)).toEqual({
                 plugins: 'my-plugin',

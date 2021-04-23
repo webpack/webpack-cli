@@ -75,19 +75,13 @@ class WebpackCLI {
 
                 const { promptInstallation, colors } = this.utils;
 
-                try {
-                    await promptInstallation(dependency, () => {
-                        this.logger.error(
-                            `For using '${colors.green(commandOptions.name.split(' ')[0])}' command you need to install: '${colors.green(
-                                dependency,
-                            )}' package`,
-                        );
-                    });
-                } catch (error) {
-                    this.logger.error("Action Interrupted, use 'webpack-cli help' to see possible commands.");
-                    this.logger.error(error);
-                    process.exit(2);
-                }
+                await promptInstallation(dependency, () => {
+                    this.logger.error(
+                        `For using '${colors.green(commandOptions.name.split(' ')[0])}' command you need to install: '${colors.green(
+                            dependency,
+                        )}' package`,
+                    );
+                });
             }
         }
 
@@ -778,14 +772,9 @@ class WebpackCLI {
 
                     const { promptInstallation, colors } = this.utils;
 
-                    try {
-                        pkg = await promptInstallation(pkg, () => {
-                            this.logger.error(`For using this command you need to install: '${colors.green(pkg)}' package`);
-                        });
-                    } catch (error) {
-                        this.logger.error(`Action Interrupted, use '${colors.cyan('webpack-cli help')}' to see possible commands`);
-                        process.exit(2);
-                    }
+                    pkg = await promptInstallation(pkg, () => {
+                        this.logger.error(`For using this command you need to install: '${colors.green(pkg)}' package`);
+                    });
                 }
 
                 let loadedCommand;
@@ -1542,16 +1531,9 @@ class WebpackCLI {
             if (!this.utils.packageExists('webpack-bundle-analyzer')) {
                 const { promptInstallation, colors } = this.utils;
 
-                try {
-                    await promptInstallation('webpack-bundle-analyzer', () => {
-                        this.logger.error(`It looks like ${colors.yellow('webpack-bundle-analyzer')} is not installed.`);
-                    });
-                } catch (error) {
-                    this.logger.error(
-                        `Action Interrupted, Please try once again or install ${colors.yellow('webpack-bundle-analyzer')} manually.`,
-                    );
-                    process.exit(2);
-                }
+                await promptInstallation('webpack-bundle-analyzer', () => {
+                    this.logger.error(`It looks like ${colors.yellow('webpack-bundle-analyzer')} is not installed.`);
+                });
 
                 this.logger.success(`${colors.yellow('webpack-bundle-analyzer')} was installed successfully.`);
             }

@@ -36,7 +36,7 @@ const runTest = (package, cliArgs = [], logMessage, isSubPackage = false) => {
     });
 
     return new Promise((resolve) => {
-        setTimeout(() => {
+        const timeout = setTimeout(() => {
             console.log('  timeout: killing process');
             proc.kill();
         }, 30000);
@@ -66,11 +66,13 @@ const runTest = (package, cliArgs = [], logMessage, isSubPackage = false) => {
 
         proc.on('exit', () => {
             swapPkgName(`.${package}`, isSubPackage);
+            clearTimeout(timeout);
             resolve(hasPassed);
         });
 
         proc.on('error', () => {
             swapPkgName(`.${package}`, isSubPackage);
+            clearTimeout(timeout);
             resolve(false);
         });
     });
@@ -87,7 +89,7 @@ const runTestStdout = ({ packageName, cliArgs, logMessage, isSubPackage } = {}) 
     proc.stdin.setDefaultEncoding('utf-8');
 
     return new Promise((resolve) => {
-        setTimeout(() => {
+        const timeout = setTimeout(() => {
             console.log('  timeout: killing process');
             proc.kill();
         }, 30000);
@@ -111,11 +113,13 @@ const runTestStdout = ({ packageName, cliArgs, logMessage, isSubPackage } = {}) 
 
         proc.on('exit', () => {
             swapPkgName(`.${packageName}`, isSubPackage);
+            clearTimeout(timeout);
             resolve(hasPassed);
         });
 
         proc.on('error', () => {
             swapPkgName(`.${packageName}`, isSubPackage);
+            clearTimeout(timeout);
             resolve(false);
         });
     });
@@ -189,7 +193,8 @@ const runTestWithHelp = (package, cliArgs = [], logMessage, isSubPackage = false
     });
 
     return new Promise((resolve) => {
-        setTimeout(() => {
+        const timeout = setTimeout(() => {
+            console.log('  timeout: killing process');
             proc.kill();
         }, 30000);
 
@@ -219,11 +224,13 @@ const runTestWithHelp = (package, cliArgs = [], logMessage, isSubPackage = false
 
         proc.on('exit', () => {
             swapPkgName(`.${package}`, isSubPackage);
+            clearTimeout(timeout);
             resolve(hasPassed);
         });
 
         proc.on('error', () => {
             swapPkgName(`.${package}`, isSubPackage);
+            clearTimeout(timeout);
             resolve(false);
         });
     });

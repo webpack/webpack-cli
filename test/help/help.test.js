@@ -1,4 +1,5 @@
 'use strict';
+
 const { run, normalizeStderr, normalizeStdout } = require('../utils/test-utils');
 
 describe('help', () => {
