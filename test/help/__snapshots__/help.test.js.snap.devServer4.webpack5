@@ -539,6 +539,9 @@ exports[`help should show help information for 'c' command using command syntax:
 
 Initialize a new webpack project.
 
+Arguments:
+  generation-path       Path to the installation directory, e.g. ./projectName
+
 Options:
   --template <value>    Type of template (default: \\"default\\")
   --force               Generate without questions (ideally) using default answers
@@ -562,6 +565,9 @@ exports[`help should show help information for 'c' command using the "--help" op
 "Usage: webpack init|create|new|c|n [generation-path] [options]
 
 Initialize a new webpack project.
+
+Arguments:
+  generation-path       Path to the installation directory, e.g. ./projectName
 
 Options:
   --template <value>    Type of template (default: \\"default\\")
@@ -669,6 +675,9 @@ exports[`help should show help information for 'create' command using command sy
 
 Initialize a new webpack project.
 
+Arguments:
+  generation-path       Path to the installation directory, e.g. ./projectName
+
 Options:
   --template <value>    Type of template (default: \\"default\\")
   --force               Generate without questions (ideally) using default answers
@@ -692,6 +701,9 @@ exports[`help should show help information for 'create' command using the "--hel
 "Usage: webpack init|create|new|c|n [generation-path] [options]
 
 Initialize a new webpack project.
+
+Arguments:
+  generation-path       Path to the installation directory, e.g. ./projectName
 
 Options:
   --template <value>    Type of template (default: \\"default\\")
@@ -859,6 +871,9 @@ exports[`help should show help information for 'init' and respect the "--color" 
 
 Initialize a new webpack project.
 
+Arguments:
+  generation-path       Path to the installation directory, e.g. ./projectName
+
 Options:
   --template <value>    Type of template (default: \\"default\\")
   --force               Generate without questions (ideally) using default
@@ -884,6 +899,9 @@ exports[`help should show help information for 'init' and respect the "--no-colo
 "Usage: webpack init|create|new|c|n [generation-path] [options]
 
 Initialize a new webpack project.
+
+Arguments:
+  generation-path       Path to the installation directory, e.g. ./projectName
 
 Options:
   --template <value>    Type of template (default: \\"default\\")
@@ -911,6 +929,9 @@ exports[`help should show help information for 'init' command using command synt
 
 Initialize a new webpack project.
 
+Arguments:
+  generation-path       Path to the installation directory, e.g. ./projectName
+
 Options:
   --template <value>    Type of template (default: \\"default\\")
   --force               Generate without questions (ideally) using default answers
@@ -934,6 +955,9 @@ exports[`help should show help information for 'init' command using the "--help"
 "Usage: webpack init|create|new|c|n [generation-path] [options]
 
 Initialize a new webpack project.
+
+Arguments:
+  generation-path       Path to the installation directory, e.g. ./projectName
 
 Options:
   --template <value>    Type of template (default: \\"default\\")
@@ -959,6 +983,9 @@ exports[`help should show help information for 'l' command using command syntax:
 
 Scaffold a loader.
 
+Arguments:
+  output-path           Path to the output directory, e.g. ./loaderName
+
 Options:
   --template <value>    Type of template (default: \\"default\\")
 
@@ -982,6 +1009,9 @@ exports[`help should show help information for 'l' command using the "--help" op
 
 Scaffold a loader.
 
+Arguments:
+  output-path           Path to the output directory, e.g. ./loaderName
+
 Options:
   --template <value>    Type of template (default: \\"default\\")
 
@@ -1004,6 +1034,9 @@ exports[`help should show help information for 'loader' and respect the "--color
 "Usage: webpack loader|l [output-path] [options]
 
 Scaffold a loader.
+
+Arguments:
+  output-path           Path to the output directory, e.g. ./loaderName
 
 Options:
   --template <value>    Type of template (default: \\"default\\")
@@ -1029,6 +1062,9 @@ exports[`help should show help information for 'loader' and respect the "--no-co
 
 Scaffold a loader.
 
+Arguments:
+  output-path           Path to the output directory, e.g. ./loaderName
+
 Options:
   --template <value>    Type of template (default: \\"default\\")
 
@@ -1053,6 +1089,9 @@ exports[`help should show help information for 'loader' command using command sy
 
 Scaffold a loader.
 
+Arguments:
+  output-path           Path to the output directory, e.g. ./loaderName
+
 Options:
   --template <value>    Type of template (default: \\"default\\")
 
@@ -1075,6 +1114,9 @@ exports[`help should show help information for 'loader' command using the "--hel
 "Usage: webpack loader|l [output-path] [options]
 
 Scaffold a loader.
+
+Arguments:
+  output-path           Path to the output directory, e.g. ./loaderName
 
 Options:
   --template <value>    Type of template (default: \\"default\\")
@@ -1221,6 +1263,9 @@ exports[`help should show help information for 'n' command using command syntax:
 
 Initialize a new webpack project.
 
+Arguments:
+  generation-path       Path to the installation directory, e.g. ./projectName
+
 Options:
   --template <value>    Type of template (default: \\"default\\")
   --force               Generate without questions (ideally) using default answers
@@ -1244,6 +1289,9 @@ exports[`help should show help information for 'n' command using the "--help" op
 "Usage: webpack init|create|new|c|n [generation-path] [options]
 
 Initialize a new webpack project.
+
+Arguments:
+  generation-path       Path to the installation directory, e.g. ./projectName
 
 Options:
   --template <value>    Type of template (default: \\"default\\")
@@ -1269,6 +1317,9 @@ exports[`help should show help information for 'new' command using command synta
 
 Initialize a new webpack project.
 
+Arguments:
+  generation-path       Path to the installation directory, e.g. ./projectName
+
 Options:
   --template <value>    Type of template (default: \\"default\\")
   --force               Generate without questions (ideally) using default answers
@@ -1292,6 +1343,9 @@ exports[`help should show help information for 'new' command using the "--help" 
 "Usage: webpack init|create|new|c|n [generation-path] [options]
 
 Initialize a new webpack project.
+
+Arguments:
+  generation-path       Path to the installation directory, e.g. ./projectName
 
 Options:
   --template <value>    Type of template (default: \\"default\\")
@@ -1317,6 +1371,9 @@ exports[`help should show help information for 'p' command using command syntax:
 
 Scaffold a plugin.
 
+Arguments:
+  output-path           Path to the output directory, e.g. ./pluginName
+
 Options:
   --template <value>    Type of template (default: \\"default\\")
 
@@ -1340,6 +1397,9 @@ exports[`help should show help information for 'p' command using the "--help" op
 
 Scaffold a plugin.
 
+Arguments:
+  output-path           Path to the output directory, e.g. ./pluginName
+
 Options:
   --template <value>    Type of template (default: \\"default\\")
 
@@ -1362,6 +1422,9 @@ exports[`help should show help information for 'plugin' and respect the "--color
 "Usage: webpack plugin|p [output-path] [options]
 
 Scaffold a plugin.
+
+Arguments:
+  output-path           Path to the output directory, e.g. ./pluginName
 
 Options:
   --template <value>    Type of template (default: \\"default\\")
@@ -1387,6 +1450,9 @@ exports[`help should show help information for 'plugin' and respect the "--no-co
 
 Scaffold a plugin.
 
+Arguments:
+  output-path           Path to the output directory, e.g. ./pluginName
+
 Options:
   --template <value>    Type of template (default: \\"default\\")
 
@@ -1411,6 +1477,9 @@ exports[`help should show help information for 'plugin' command using command sy
 
 Scaffold a plugin.
 
+Arguments:
+  output-path           Path to the output directory, e.g. ./pluginName
+
 Options:
   --template <value>    Type of template (default: \\"default\\")
 
@@ -1433,6 +1502,9 @@ exports[`help should show help information for 'plugin' command using the "--hel
 "Usage: webpack plugin|p [output-path] [options]
 
 Scaffold a plugin.
+
+Arguments:
+  output-path           Path to the output directory, e.g. ./pluginName
 
 Options:
   --template <value>    Type of template (default: \\"default\\")
