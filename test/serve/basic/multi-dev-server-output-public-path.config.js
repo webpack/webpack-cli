@@ -1,4 +1,5 @@
 const WebpackCLITestPlugin = require('../../utils/webpack-cli-test-plugin');
+const { devServerConfig } = require('./helper/base-dev-server.config');
 
 module.exports = [
     {
@@ -14,13 +15,12 @@ module.exports = [
         name: 'two',
         mode: 'development',
         devtool: false,
+        stats: 'detailed',
         output: {
             publicPath: '/my-public-path/',
             filename: 'second-output/[name].js',
         },
-        devServer: {
-            publicPath: '/dev-server-my-public-path/',
-        },
+        devServer: devServerConfig,
         plugins: [new WebpackCLITestPlugin(['mode', 'output'], false, 'hooks.compilation.taps')],
     },
 ];
