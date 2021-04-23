@@ -38,7 +38,7 @@ class WebpackCLI {
         });
 
         if (commandOptions.description) {
-            command.description(commandOptions.description);
+            command.description(commandOptions.description, commandOptions.argsDescription);
         }
 
         if (commandOptions.usage) {
