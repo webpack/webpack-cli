@@ -39,7 +39,7 @@ describe("'configtest' command with the configuration path option", () => {
         const { exitCode, stderr, stdout } = await run(__dirname, ['configtest', './a.js']);
 
         expect(exitCode).toBe(2);
-        expect(normalizeStderr(stderr)).toMatchSnapshot('stderr');
+        expect(normalizeStderr(stderr).split('\n')[0]).toMatchSnapshot('stderr');
         expect(normalizeStdout(stdout)).toMatchSnapshot('stdout');
     });
 });

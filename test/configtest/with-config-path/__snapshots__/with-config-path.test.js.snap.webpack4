@@ -1,24 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`'configtest' command with the configuration path option should throw error if configuration does not exist: stderr 1`] = `
-"[webpack-cli] Failed to load '<cwd>/test/configtest/with-config-path/a.js' config
-[webpack-cli] Error: Cannot find module '<cwd>/test/configtest/with-config-path/a.js'
-Require stack:
-- <cwd>/packages/webpack-cli/lib/webpack-cli.js
-- <cwd>/packages/webpack-cli/lib/bootstrap.js
-- <cwd>/packages/webpack-cli/bin/cli.js
-    at stack"
-`;
+exports[`'configtest' command with the configuration path option should throw error if configuration does not exist: stderr 1`] = `"[webpack-cli] Failed to load '<cwd>/test/configtest/with-config-path/a.js' config"`;
 
 exports[`'configtest' command with the configuration path option should throw error if configuration does not exist: stdout 1`] = `""`;
 
 exports[`'configtest' command with the configuration path option should throw syntax error: stderr 1`] = `
 "[webpack-cli] Failed to load '<cwd>/test/configtest/with-config-path/syntax-error.config.js' config
-[webpack-cli] <cwd>/test/configtest/with-config-path/syntax-error.config.js:4
-    target: 'node'; //SyntaxError: Unexpected token ';'
+[webpack-cli] <cwd>/test/configtest/with-config-path/syntax-error.config.js:5
+    target: 'node';
                   ^
 
-SyntaxError: Unexpected token ';'
+SyntaxError: <error-message>
     at stack"
 `;
 
