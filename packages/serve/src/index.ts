@@ -5,6 +5,25 @@ class ServeCommand {
     async apply(cli: any): Promise<void> {
         const { logger } = cli;
 
+        const loadDevServerOptions = () => {
+            // eslint-disable-next-line @typescript-eslint/no-var-requires, node/no-extraneous-require
+            const options = require('webpack-dev-server/bin/cli-flags');
+
+            // Old options format
+            // { devServer: [{...}, {}...] }
+            if (options.devServer) {
+                return options.devServer;
+            }
+
+            // New options format
+            // { flag1: {}, flag2: {} }
+            return Object.keys(options).map((key) => {
+                options[key].name = key;
+
+                return options[key];
+            });
+        };
+
         await cli.makeCommand(
             {
                 name: 'serve [entries...]',
@@ -18,18 +37,7 @@ class ServeCommand {
                 let devServerFlags = [];
 
                 try {
-                    devServerFlags = (() => {
-                        // eslint-disable-next-line
-                        const flags = require('webpack-dev-server/bin/cli-flags');
-                        // running the old format of flags
-                        // { devServer: [{...}, {}...] }
-                        if (flags.devServer) {
-                            return flags.devServer;
-                        }
-                        // new flag format
-                        // { flag1: {}, flag2: {} }
-                        return Object.values(flags);
-                    })();
+                    devServerFlags = loadDevServerOptions();
                 } catch (error) {
                     logger.error(`You need to install 'webpack-dev-server' for running 'webpack serve'.\n${error}`);
                     process.exit(2);
@@ -44,18 +52,7 @@ class ServeCommand {
                 let devServerFlags = [];
 
                 try {
-                    devServerFlags = (() => {
-                        // eslint-disable-next-line
-                        const flags = require('webpack-dev-server/bin/cli-flags');
-                        // running the old format of flags
-                        // { devServer: [{...}, {}...] }
-                        if (flags.devServer) {
-                            return flags.devServer;
-                        }
-                        // new flag format
-                        // { flag1: {}, flag2: {} }
-                        return Object.values(flags);
-                    })();
+                    devServerFlags = loadDevServerOptions();
                 } catch (error) {
                     // Nothing, to prevent future updates
                 }
