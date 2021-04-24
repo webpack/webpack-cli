@@ -1,5 +1,5 @@
 export type devServerOptionsType = {
-    bonjour?: boolean;
+    bonjour?: boolean | Record<string, any>;
     client?: devServerClientOptions;
     compress?: boolean;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
