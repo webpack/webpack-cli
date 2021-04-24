@@ -3,6 +3,7 @@ export type devServerOptionsType = {
     client?: devServerClientOptions;
     compress?: boolean;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    dev?: Record<string, any>; // drop in dev-server v3
     devMiddleware?: Record<string, any>;
     firewall?: boolean | string[];
     headers?: Record<string, unknown>;
@@ -28,6 +29,7 @@ export type devServerOptionsType = {
     transportMode?: Record<string, unknown> | string;
     useLocalIp?: boolean;
     publicPath?: string | (() => void);
+    stats?: string | boolean;
     watchFiles?: string | Record<string, unknown>;
 };
 
