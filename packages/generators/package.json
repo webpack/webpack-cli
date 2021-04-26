@@ -30,6 +30,11 @@
     "webpack": "4.x.x || 5.x.x",
     "webpack-cli": "4.x.x"
   },
+  "peerDependenciesMeta": {
+    "prettier": {
+      "optional": true
+    }
+  },
   "devDependencies": {
     "@types/yeoman-generator": "^4.11.3",
     "rimraf": "^3.0.2"

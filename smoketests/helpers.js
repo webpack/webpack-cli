@@ -125,6 +125,59 @@ const runTestStdout = ({ packageName, cliArgs, logMessage, isSubPackage } = {}) 
     });
 };
 
+const runTestStdoutWithInput = ({ packageName, cliArgs, inputs, logMessage, isSubPackage } = {}) => {
+    // Simulate package missing
+    swapPkgName(packageName, isSubPackage);
+
+    const proc = execa(CLI_ENTRY_PATH, cliArgs, {
+        cwd: __dirname,
+    });
+
+    proc.stdin.setDefaultEncoding('utf-8');
+
+    return new Promise((resolve) => {
+        const timeout = setTimeout(() => {
+            console.log('  timeout: killing process');
+            proc.kill();
+        }, 300000);
+
+        let hasPassed = false;
+
+        proc.stdout.on('data', (chunk) => {
+            let data = stripAnsi(chunk.toString());
+            console.log(`  stdout: ${data}`);
+
+            if (data.includes(logMessage)) {
+                hasPassed = true;
+                proc.kill();
+            }
+
+            Object.keys(inputs).forEach((input) => {
+                if (data.includes(input)) {
+                    proc.stdin.write(inputs[input]);
+                }
+            });
+        });
+
+        proc.stderr.on('data', (chunk) => {
+            let data = stripAnsi(chunk.toString());
+            console.log(`  stderr: ${data}`);
+        });
+
+        proc.on('exit', () => {
+            swapPkgName(`.${packageName}`, isSubPackage);
+            clearTimeout(timeout);
+            resolve(hasPassed);
+        });
+
+        proc.on('error', () => {
+            swapPkgName(`.${packageName}`, isSubPackage);
+            clearTimeout(timeout);
+            resolve(false);
+        });
+    });
+};
+
 const runTestWithHelp = (package, cliArgs = [], logMessage, isSubPackage = false) => {
     // Simulate package missing
     swapPkgName(package, isSubPackage);
@@ -187,4 +240,5 @@ module.exports = {
     runTest,
     runTestStdout,
     runTestWithHelp,
+    runTestStdoutWithInput,
 };
