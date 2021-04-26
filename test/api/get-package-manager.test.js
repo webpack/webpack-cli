@@ -99,8 +99,11 @@ describe('packageUtils', () => {
                 throw new Error();
             });
             const mockExit = jest.spyOn(process, 'exit').mockImplementation(() => {});
+            // Do not print warning in CI
+            const consoleMock = jest.spyOn(console, 'error').mockImplementation(() => {});
             expect(getPackageManager()).toBeFalsy();
             expect(mockExit).toBeCalledWith(2);
+            expect(consoleMock).toHaveBeenCalledTimes(1);
             expect(syncMock.mock.calls.length).toEqual(3); // 3 calls for npm, yarn and pnpm
         });
     });
