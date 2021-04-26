@@ -1,6 +1,6 @@
 'use strict';
 
-const { run, isWebpack5 } = require('../../../utils/test-utils');
+const { run, isWebpack5, normalizeStderr, normalizeStdout } = require('../../../utils/test-utils');
 
 const presets = ['normal', 'detailed', 'errors-only', 'errors-warnings', 'minimal', 'verbose', 'none'];
 
@@ -83,17 +83,7 @@ describe('stats flag', () => {
         const { exitCode, stderr, stdout } = await run(__dirname, ['--stats', 'foo']);
 
         expect(exitCode).toEqual(2);
-
-        if (isWebpack5) {
-            expect(stderr).toContain("Invalid value 'foo' for the '--stats' option");
-            expect(stderr).toContain("Expected: 'none | summary | errors-only | errors-warnings | minimal | normal | detailed | verbose'");
-            expect(stderr).toContain("Invalid value 'foo' for the '--stats' option");
-            expect(stderr).toContain("Expected: 'true | false'");
-        } else {
-            expect(stderr).toContain('* configuration.stats should be one of these:');
-            expect(stderr).toContain('"none" | "errors-only" | "minimal" | "normal" | "detailed" | "verbose" | "errors-warnings"');
-        }
-
-        expect(stdout).toBeFalsy();
+        expect(normalizeStderr(stderr)).toMatchSnapshot('stderr');
+        expect(normalizeStdout(stdout)).toMatchSnapshot('stdout');
     });
 });
