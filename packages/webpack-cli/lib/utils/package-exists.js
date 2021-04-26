@@ -13,6 +13,8 @@ function packageExists(packageName) {
             encoding: 'utf8',
             cwd: process.cwd(),
         });
+
+        console.log(`node -e "${command}"`);
         return rootPath && rootPath !== 'Not Found';
     } catch (err) {
         return false;
