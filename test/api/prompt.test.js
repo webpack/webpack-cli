@@ -1,5 +1,5 @@
 const prompt = require('../../packages/webpack-cli/lib/utils/prompt');
-const Writable = require('stream').Writable;
+const { Writable } = require('stream');
 
 describe('prompt', () => {
     class MyWritable extends Writable {

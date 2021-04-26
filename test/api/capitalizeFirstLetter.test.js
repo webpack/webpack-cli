@@ -5,7 +5,7 @@ describe('capitalizeFirstLetter', () => {
         expect(capitalizeFirstLetter('webpack')).toEqual('Webpack');
     });
 
-    it('should return empty string, when passed not string value', () => {
+    it('should return an empty string on passing a non-string value', () => {
         expect(capitalizeFirstLetter(true)).toEqual('');
     });
 });
