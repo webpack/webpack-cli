@@ -3,7 +3,7 @@ export type devServerOptionsType = {
     client?: devServerClientOptions;
     compress?: boolean;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    dev?: Record<string, any>; // drop in dev-server v3
+    dev?: Record<string, any>; // drop in dev-server v4
     devMiddleware?: Record<string, any>;
     firewall?: boolean | string[];
     headers?: Record<string, unknown>;
@@ -19,6 +19,7 @@ export type devServerOptionsType = {
     onBeforeSetupMiddleware?: () => void;
     onListening?: () => void;
     open?: string | boolean | openOptionObject;
+    openPage?: string | string[];
     overlay?: boolean | Record<string, unknown>;
     port?: number | string | null;
     profile?: boolean;
