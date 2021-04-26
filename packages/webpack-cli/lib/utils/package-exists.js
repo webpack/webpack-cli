@@ -11,6 +11,7 @@ function packageExists(packageName) {
 
         const rootPath = execSync(`node -e "${command}"`, {
             encoding: 'utf8',
+            cwd: process.cwd(),
         });
         return rootPath && rootPath !== 'Not Found';
     } catch (err) {
