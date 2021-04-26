@@ -12,10 +12,8 @@ function packageExists(packageName) {
         const rootPath = execSync(`node -e "${command}"`, {
             encoding: 'utf8',
         });
-
-        console.log(rootPath);
-
-        return rootPath !== 'Not Found';
+        console.log(typeof rootPath);
+        return rootPath && rootPath !== 'Not Found';
     } catch (err) {
         console.log('BAD MANGO!!');
         console.log(err);
