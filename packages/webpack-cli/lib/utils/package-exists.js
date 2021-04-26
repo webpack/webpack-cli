@@ -9,10 +9,7 @@ async function packageExists(packageName) {
           console.log('Not Found');
         }`;
 
-        const { stdout: rootPath } = await execa(`node -e "${command}"`, {
-            encoding: 'utf8',
-            cwd: process.cwd(),
-        });
+        const { stdout: rootPath } = await execa('node', ['-e', command]);
 
         console.log(rootPath);
         return rootPath && rootPath !== 'Not Found';
