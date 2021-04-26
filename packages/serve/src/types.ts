@@ -1,9 +1,11 @@
 export type devServerOptionsType = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     bonjour?: boolean | Record<string, any>;
     client?: devServerClientOptions;
     compress?: boolean;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dev?: Record<string, any>; // drop in dev-server v4
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     devMiddleware?: Record<string, any>;
     firewall?: boolean | string[];
     headers?: Record<string, unknown>;
