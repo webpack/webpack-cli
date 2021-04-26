@@ -11,15 +11,12 @@ function packageExists(packageName) {
 
         const rootPath = execSync(`node -e "${command}"`, {
             encoding: 'utf8',
-        }).trimEnd();
+        });
 
-        console.log('MANGO!!');
         console.log(rootPath);
 
         return rootPath !== 'Not Found';
     } catch (err) {
-        console.log('BAD MANGO!!');
-        console.log(err);
         return false;
     }
 }
