@@ -39,7 +39,7 @@ const runTest = (package, cliArgs = [], logMessage, isSubPackage = false) => {
         const timeout = setTimeout(() => {
             console.log('  timeout: killing process');
             proc.kill();
-        }, 30000);
+        }, 240000);
 
         const prompt = 'Would you like to install';
         let hasLogMessage = false,
