@@ -1,6 +1,6 @@
-function packageExists(packageName) {
+async function packageExists(packageName) {
     try {
-        const { execSync } = require('child_process');
+        const execa = require('execa');
 
         const command = `
         try {
@@ -9,12 +9,12 @@ function packageExists(packageName) {
           console.log('Not Found');
         }`;
 
-        const rootPath = execSync(`node -e "${command}"`, {
+        const { stdout: rootPath } = await execa(`node -e "${command}"`, {
             encoding: 'utf8',
             cwd: process.cwd(),
         });
 
-        console.log(`node -e "${command}"`);
+        console.log(rootPath);
         return rootPath && rootPath !== 'Not Found';
     } catch (err) {
         return false;

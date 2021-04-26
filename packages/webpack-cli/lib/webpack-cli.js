@@ -64,7 +64,7 @@ class WebpackCLI {
         if (commandOptions.dependencies && commandOptions.dependencies.length > 0) {
             for (const dependency of commandOptions.dependencies) {
                 const { packageExists } = this.utils;
-                const isPkgExist = packageExists(dependency);
+                const isPkgExist = await packageExists(dependency);
 
                 if (isPkgExist) {
                     continue;
@@ -765,7 +765,7 @@ class WebpackCLI {
                     pkg = commandName;
                 }
 
-                if (pkg !== 'webpack-cli' && !this.utils.packageExists(pkg)) {
+                if (pkg !== 'webpack-cli' && !(await this.utils.packageExists(pkg))) {
                     if (!allowToInstall) {
                         return;
                     }
@@ -927,7 +927,7 @@ class WebpackCLI {
             this.logger.raw(`webpack ${this.webpack.version}`);
             this.logger.raw(`webpack-cli ${pkgJSON.version}`);
 
-            if (this.utils.packageExists('webpack-dev-server')) {
+            if (await this.utils.packageExists('webpack-dev-server')) {
                 // eslint-disable-next-line
                 const { version } = require('webpack-dev-server/package.json');
 
@@ -1528,7 +1528,7 @@ class WebpackCLI {
     // TODO refactor
     async applyOptions(config, options) {
         if (options.analyze) {
-            if (!this.utils.packageExists('webpack-bundle-analyzer')) {
+            if (!(await this.utils.packageExists('webpack-bundle-analyzer'))) {
                 const { promptInstallation, colors } = this.utils;
 
                 await promptInstallation('webpack-bundle-analyzer', () => {

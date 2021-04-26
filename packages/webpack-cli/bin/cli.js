@@ -21,22 +21,26 @@ if (!process.env.WEBPACK_CLI_SKIP_IMPORT_LOCAL) {
 
 process.title = 'webpack';
 
-if (utils.packageExists('webpack')) {
-    runCLI(process.argv, originalModuleCompile);
-} else {
-    const { promptInstallation, logger, colors } = utils;
+const main = async () => {
+    if (await utils.packageExists('webpack')) {
+        runCLI(process.argv, originalModuleCompile);
+    } else {
+        const { promptInstallation, logger, colors } = utils;
 
-    promptInstallation('webpack', () => {
-        utils.logger.error(`It looks like ${colors.bold('webpack')} is not installed.`);
-    })
-        .then(() => {
-            logger.success(`${colors.bold('webpack')} was installed successfully.`);
-
-            runCLI(process.argv, originalModuleCompile);
+        promptInstallation('webpack', () => {
+            utils.logger.error(`It looks like ${colors.bold('webpack')} is not installed.`);
         })
-        .catch(() => {
-            logger.error(`Action Interrupted, Please try once again or install ${colors.bold('webpack')} manually.`);
+            .then(() => {
+                logger.success(`${colors.bold('webpack')} was installed successfully.`);
 
-            process.exit(2);
-        });
-}
+                runCLI(process.argv, originalModuleCompile);
+            })
+            .catch(() => {
+                logger.error(`Action Interrupted, Please try once again or install ${colors.bold('webpack')} manually.`);
+
+                process.exit(2);
+            });
+    }
+};
+
+main();
