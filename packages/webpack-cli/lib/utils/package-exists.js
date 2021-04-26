@@ -17,6 +17,8 @@ function packageExists(packageName) {
 
         return rootPath !== 'Not Found';
     } catch (err) {
+        console.log('BAD MANGO!!');
+        console.log(err);
         return false;
     }
 }
