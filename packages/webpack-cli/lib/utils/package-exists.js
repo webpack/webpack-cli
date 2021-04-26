@@ -12,6 +12,8 @@ function packageExists(packageName) {
         encoding: 'utf8',
     }).trimEnd();
 
+    console.log(rootPath);
+
     return rootPath !== 'Not Found';
 }
 
