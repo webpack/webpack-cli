@@ -13,7 +13,7 @@ describe('prompt', () => {
         }
     }
 
-    it('Should work with default response', async () => {
+    it('should work with default response', async () => {
         const myWritable = new MyWritable('\r');
 
         const resultSuccess = await prompt({
@@ -32,7 +32,7 @@ describe('prompt', () => {
         expect(resultFail).toBe(false);
     });
 
-    it('Should work with "yes" && "y" response', async () => {
+    it('should work with "yes" && "y" response', async () => {
         const myWritable1 = new MyWritable('yes\r');
         const myWritable2 = new MyWritable('y\r');
 
@@ -52,15 +52,15 @@ describe('prompt', () => {
         expect(resultSuccess2).toBe(true);
     });
 
-    it('Should work with unknown response', async () => {
+    it('should work with unknown response', async () => {
         const myWritable = new MyWritable('unknown\r');
 
-        const resultSuccess = await prompt({
+        const result = await prompt({
             message: 'message',
             defaultResponse: 'yes',
             stream: myWritable,
         });
 
-        expect(resultSuccess).toBe(false);
+        expect(result).toBe(false);
     });
 });
