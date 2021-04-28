@@ -4,6 +4,16 @@ import Generator from 'yeoman-generator';
 
 import { List } from './utils/scaffold-utils';
 
+// Helper to get the template-directory content
+
+const getFiles = (dir) => {
+    return fs.readdirSync(dir).reduce((list, file) => {
+        const filePath = path.join(dir, file);
+        const isDir = fs.statSync(filePath).isDirectory();
+        return list.concat(isDir ? getFiles(filePath) : filePath);
+    }, []);
+};
+
 /**
  * Creates a Yeoman Generator that generates a project conforming
  * to webpack-defaults.
@@ -11,14 +21,6 @@ import { List } from './utils/scaffold-utils';
  * @param {Generator.Questions} prompts An array of Yeoman prompt objects
  *
  * @param {string} templateDir Absolute path to template directory
- *
- * @param {string[]} copyFiles An array of file paths (relative to `./templates`)
- * of files to be copied to the generated project. File paths should be of the
- * form `path/to/file.js.tpl`.
- *
- * @param {string[]} copyTemplateFiles An array of file paths (relative to
- * `./templates`) of files to be copied to the generated project. Template
- * file paths should be of the form `path/to/_file.js.tpl`.
  *
  * @param {Function} templateFn A function that is passed a generator instance and
  * returns an object containing data to be supplied to the template files.
@@ -28,8 +30,6 @@ import { List } from './utils/scaffold-utils';
 const addonGenerator = (
     prompts: Generator.Questions,
     templateDir: string,
-    copyFiles: string[],
-    copyTemplateFiles: string[],
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     templateFn: (instance: any) => Record<string, unknown>,
 ): Generator.GeneratorConstructor => {
@@ -100,13 +100,25 @@ const addonGenerator = (
             // eslint-disable-next-line @typescript-eslint/no-var-requires
             this.fs.extendJSON(this.destinationPath('package.json'), require(packageJsonTemplatePath)(this.props.name));
 
-            copyFiles.forEach((filePath) =>
-                this.fs.copyTpl(path.join(this.resolvedTemplatePath, filePath), this.destinationPath(filePath.replace('.tpl', ''))),
-            );
+            // An array of file paths (relative to `./templates`) of files to be copied to the generated project
+            const files = getFiles(this.resolvedTemplatePath);
+
+            // Template file paths should be of the form `path/to/_file.js.tpl`
+            const copyTemplateFiles = files.filter((filePath) => path.basename(filePath).startsWith('_'));
+
+            // File paths should be of the form `path/to/file.js.tpl`
+            const copyFiles = files.filter((filePath) => !copyTemplateFiles.includes(filePath));
+
+            copyFiles.forEach((filePath) => {
+                // `absolute-path/to/file.js.tpl` -> `destination-path/file.js`
+                const destFilePath = path.relative(this.resolvedTemplatePath, filePath).replace('.tpl', '');
+                this.fs.copyTpl(filePath, this.destinationPath(destFilePath));
+            });
 
             copyTemplateFiles.forEach((filePath) => {
-                const destFilePath = filePath.replace('_', '').replace('.tpl', '');
-                this.fs.copyTpl(path.join(this.resolvedTemplatePath, filePath), this.destinationPath(destFilePath), templateFn(this));
+                // `absolute-path/to/_file.js.tpl` -> `destination-path/file.js`
+                const destFilePath = path.relative(this.resolvedTemplatePath, filePath).replace('_', '').replace('.tpl', '');
+                this.fs.copyTpl(filePath, this.destinationPath(destFilePath), templateFn(this));
             });
         }
 
