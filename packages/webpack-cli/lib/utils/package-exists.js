@@ -8,7 +8,7 @@ async function packageExists(packageName) {
             // Fallback to require.resolve if no output
             return require.resolve(packageName);
         }
-        return rootPath === 'Not Found';
+        return rootPath !== 'Not Found';
     } catch (err) {
         return false;
     }
