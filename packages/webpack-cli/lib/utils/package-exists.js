@@ -7,6 +7,7 @@ async function packageExists(packageName) {
         if (!rootPath || rootPath === 'Not Found') {
             // Fallback to require resolve
             console.log('use fallback');
+            console.log(rootPath);
             return require.resolve(packageName);
         }
         return true;
