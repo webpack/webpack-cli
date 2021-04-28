@@ -4,13 +4,11 @@ async function packageExists(packageName) {
         const command = `try { console.log(require.resolve('${packageName}')); } catch (err) { console.log('Not Found');}`;
         const rootPath = execSync(`node -e "${command}"`, { encoding: 'utf8' }).trimEnd();
 
-        if (!rootPath || rootPath === 'Not Found') {
-            // Fallback to require resolve
-            console.log('use fallback');
-            console.log(rootPath);
+        if (!rootPath) {
+            // Fallback to require.resolve if no output
             return require.resolve(packageName);
         }
-        return true;
+        return rootPath === 'Not Found';
     } catch (err) {
         return false;
     }
