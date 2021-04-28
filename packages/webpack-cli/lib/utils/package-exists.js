@@ -1,23 +1,15 @@
 async function packageExists(packageName) {
     try {
-        const execa = require('execa');
-        const path = require('path');
-        const command = `
-        try {
-          console.log(require.resolve('${packageName}'));
-        } catch (err) {
-          console.log('Not Found');
-        }`;
+        const { execSync } = require('child_process');
+        const command = `try { console.log(require.resolve('${packageName}')); } catch (err) { console.log('Not Found');}`;
+        const rootPath = execSync(`node -e "${command}"`, { encoding: 'utf8' }).trimEnd();
 
-        const { stdout: rootPath } = await execa('node', ['-e', command], {
-            cwd: path.resolve(process.cwd()),
-            reject: false,
-            stdio: 'inherit',
-            maxBuffer: Infinity,
-        });
+        if (!rootPath || rootPath === 'Not Found') {
+            // Fallback to require resolve
+            return require.resolve(packageName);
+        }
 
-        console.log(rootPath);
-        return rootPath && rootPath !== 'Not Found';
+        return true;
     } catch (err) {
         return false;
     }
