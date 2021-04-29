@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`stats and watch should log stats with the "normal" value in arguments: stderr 1`] = `""`;
+
+exports[`stats and watch should log stats with the "normal" value in arguments: stdout 1`] = `"webpack x.x.x"`;
+
+exports[`stats and watch should not log stats with the "none" value from the configuration and multi compiler mode: stderr 1`] = `""`;
+
+exports[`stats and watch should not log stats with the "none" value from the configuration and multi compiler mode: stdout 1`] = `"webpack x.x.x"`;
+
+exports[`stats and watch should not log stats with the "none" value from the configuration: stderr 1`] = `""`;
+
+exports[`stats and watch should not log stats with the "none" value from the configuration: stdout 1`] = `"webpack x.x.x"`;

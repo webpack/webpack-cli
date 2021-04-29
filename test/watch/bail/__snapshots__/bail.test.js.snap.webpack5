@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`"bail" option should log warning in case of multiple compilers: stderr 1`] = `"<w> [webpack-cli] You are using \\"bail\\" with \\"watch\\". \\"bail\\" will still exit webpack when the first error is found."`;
+
+exports[`"bail" option should log warning in case of multiple compilers: stdout 1`] = `
+"first:
+  asset ./dist-first.js 217 bytes [emitted] (name: main)
+  ./src/first.js 50 bytes [built] [code generated]
+  first (webpack x.x.x) compiled successfully in <compiler time> ms
+
+second:
+  asset ./dist-second.js 221 bytes [emitted] (name: main)
+  ./src/second.js 51 bytes [built] [code generated]
+  second (webpack x.x.x) compiled successfully in <compiler time> ms"
+`;
+
+exports[`"bail" option should log warning in watch mode: stderr 1`] = `"<w> [webpack-cli] You are using \\"bail\\" with \\"watch\\". \\"bail\\" will still exit webpack when the first error is found."`;
+
+exports[`"bail" option should log warning in watch mode: stderr 2`] = `"<w> [webpack-cli] You are using \\"bail\\" with \\"watch\\". \\"bail\\" will still exit webpack when the first error is found."`;
+
+exports[`"bail" option should log warning in watch mode: stdout 1`] = `
+"asset main.js 217 bytes [compared for emit] (name: main)
+./src/first.js 50 bytes [built] [code generated]
+webpack x.x.x compiled successfully in <compiler time> ms"
+`;
+
+exports[`"bail" option should log warning in watch mode: stdout 2`] = `
+"asset main.js 217 bytes [compared for emit] (name: main)
+./src/first.js 50 bytes [built] [code generated]
+webpack x.x.x compiled successfully in <compiler time> ms"
+`;
+
+exports[`"bail" option should not log warning in not watch mode without the "watch" option: stderr 1`] = `""`;
+
+exports[`"bail" option should not log warning in not watch mode without the "watch" option: stdout 1`] = `
+"asset main.js 217 bytes [emitted] (name: main)
+./src/first.js 50 bytes [built] [code generated]
+webpack x.x.x compiled successfully in <compiler time> ms"
+`;
+
+exports[`"bail" option should not log warning without the "bail" option: stderr 1`] = `""`;
+
+exports[`"bail" option should not log warning without the "bail" option: stderr 2`] = `""`;
+
+exports[`"bail" option should not log warning without the "bail" option: stdout 1`] = `
+"asset main.js 217 bytes [compared for emit] (name: main)
+./src/first.js 50 bytes [built] [code generated]
+webpack x.x.x compiled successfully in <compiler time> ms"
+`;
+
+exports[`"bail" option should not log warning without the "bail" option: stdout 2`] = `
+"asset main.js 217 bytes [compared for emit] (name: main)
+./src/first.js 50 bytes [built] [code generated]
+webpack x.x.x compiled successfully in <compiler time> ms"
+`;

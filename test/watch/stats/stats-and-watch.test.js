@@ -1,20 +1,20 @@
 "use strict";
 
-const { runWatch } = require("../../utils/test-utils");
+const { runWatch, normalizeStderr, normalizeStdout } = require("../../utils/test-utils");
 
 describe("stats and watch", () => {
     it('should not log stats with the "none" value from the configuration', async () => {
         const { stderr, stdout } = await runWatch(__dirname, ["-c", "./webpack.config.js"]);
 
-        expect(stderr).toBeFalsy();
-        expect(stdout).toBeTruthy();
+        expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+        expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
     });
 
     it('should not log stats with the "none" value from the configuration and multi compiler mode', async () => {
         const { stderr, stdout } = await runWatch(__dirname, ["-c", "./multi-webpack.config.js"]);
 
-        expect(stderr).toBeFalsy();
-        expect(stdout).toBeTruthy();
+        expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+        expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
     });
 
     it('should log stats with the "normal" value in arguments', async () => {
@@ -25,7 +25,7 @@ describe("stats and watch", () => {
             "normal",
         ]);
 
-        expect(stderr).toBeFalsy();
-        expect(stdout).toBeTruthy();
+        expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+        expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
     });
 });

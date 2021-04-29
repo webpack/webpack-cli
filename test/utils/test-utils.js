@@ -251,6 +251,17 @@ const normalizeError = (output) => {
         .replace(/\s+at .+(}|\)|\d)/gs, "\n    at stack");
 };
 
+const normalizeCompileTime = (output) => {
+    return output.replace(/in \d+ ms/gm, "in <compile time> ms").replace();
+};
+
+const normalizeV4Output = (output) => {
+    return output
+        .replace(/Hash: .*/gm, "Hash: <hash>")
+        .replace(/Time: .*/gm, "Time: <compile time>")
+        .replace(/Built at: .*/gm, "Built at: <built time>");
+};
+
 const normalizeStdout = (stdout) => {
     if (typeof stdout !== "string") {
         return stdout;
@@ -264,6 +275,8 @@ const normalizeStdout = (stdout) => {
     normalizedStdout = normalizeCwd(normalizedStdout);
     normalizedStdout = normalizeVersions(normalizedStdout);
     normalizedStdout = normalizeError(normalizedStdout);
+    normalizedStdout = normalizeCompileTime(normalizedStdout);
+    normalizedStdout = normalizeV4Output(normalizedStdout);
 
     return normalizedStdout;
 };
