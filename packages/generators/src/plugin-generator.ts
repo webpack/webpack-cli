@@ -22,15 +22,6 @@ export const PluginGenerator = addonGenerator(
         },
     ],
     path.resolve(__dirname, '../plugin-template'),
-    [
-        'src/cjs.js.tpl',
-        'test/test-utils.js.tpl',
-        'test/functional.test.js.tpl',
-        'examples/simple/src/index.js.tpl',
-        'examples/simple/src/lazy-module.js.tpl',
-        'examples/simple/src/static-esm-module.js.tpl',
-    ],
-    ['src/_index.js.tpl', 'examples/simple/_webpack.config.js.tpl'],
     (gen): Record<string, unknown> => ({ name: toUpperCamelCase(gen.props.name) }),
 );
 
