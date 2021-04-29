@@ -1,0 +1,42 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "04:00"
+    timezone: Europe/Berlin
+  open-pull-requests-limit: 10
+  versioning-strategy: lockfile-only
+  ignore:
+  - dependency-name: "@types/node"
+    versions:
+    - 14.14.23
+    - 14.14.24
+    - 14.14.26
+    - 14.14.29
+    - 14.14.36
+    - 14.14.41
+    - 14.14.42
+  - dependency-name: webpack
+    versions:
+    - 5.20.0
+    - 5.20.1
+    - 5.20.2
+    - 5.21.0
+    - 5.21.1
+    - 5.24.0
+    - 5.24.1
+    - 5.24.4
+    - 5.25.0
+    - 5.27.0
+    - 5.31.1
+    - 5.31.2
+    - 5.34.0
+    - 5.35.0
+  - dependency-name: "@typescript-eslint/eslint-plugin"
+    versions:
+    - 4.16.0
+  - dependency-name: "@typescript-eslint/parser"
+    versions:
+    - 4.16.0
