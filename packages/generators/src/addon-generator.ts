@@ -100,8 +100,14 @@ const addonGenerator = (
             // eslint-disable-next-line @typescript-eslint/no-var-requires
             this.fs.extendJSON(this.destinationPath('package.json'), require(packageJsonTemplatePath)(this.props.name));
 
-            // An array of file paths (relative to `./templates`) of files to be copied to the generated project
-            const files = getFiles(this.resolvedTemplatePath);
+            let files = [];
+            try {
+                // An array of file paths (relative to `./templates`) of files to be copied to the generated project
+                files = getFiles(this.resolvedTemplatePath);
+            } catch (error) {
+                this.utils.logger.error(`Failed to generate starter template.\n ${error}`);
+                process.exit(2);
+            }
 
             // Template file paths should be of the form `path/to/_file.js.tpl`
             const copyTemplateFiles = files.filter((filePath) => path.basename(filePath).startsWith('_'));
