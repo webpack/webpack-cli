@@ -41,23 +41,6 @@ const clrscr = () => {
     process.stdout.write('\x1B[2J\x1B[3J\x1B[H');
 };
 
-/**
- * Helper plugin for child compilers if MultiCompiler is supplied
- */
-class InteractiveModeMultiCompilerHelperPlugin {
-    constructor() {
-        this.name = 'InteractiveModeMultiCompilerHelperPlugin';
-    }
-
-    apply(compiler) {
-        // clear terminal if any one of child starts compilation
-        compiler.hooks.beforeCompile.tap(this.name, () => {
-            clrscr();
-            compiler.hooks.beforeInteractiveStats.call();
-        });
-    }
-}
-
 const isWebpack5 = version.startsWith('5');
 
 /**
@@ -142,11 +125,13 @@ class InteractiveModePlugin {
                 });
             });
         } else {
-            const helperPlugin = new InteractiveModeMultiCompilerHelperPlugin();
-
             // Register helper plugin on each of child compiler
             for (const childCompiler of this.compilers) {
-                helperPlugin.apply(childCompiler);
+                childCompiler.hooks.beforeCompile.tap(this.name, () => {
+                    // TODO: configure semaphore for race condition
+                    clrscr();
+                    compiler.hooks.beforeInteractiveStats.call();
+                });
             }
 
             compiler.hooks.afterDone.tap(this.name, () => {
