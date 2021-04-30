@@ -27,7 +27,6 @@
     -   [Commands](#commands)
     -   [Utilities](#utilities)
 -   [Getting started](#getting-started)
--   [webpack CLI Scaffolds](#webpack-cli-scaffolds)
 -   [Exit codes and their meanings](#exit-codes-and-their-meanings)
 -   [Contributing and Internal Documentation](#contributing-and-internal-documentation)
 -   [Open Collective](#open-collective)
