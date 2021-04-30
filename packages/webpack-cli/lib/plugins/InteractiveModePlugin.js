@@ -120,7 +120,6 @@ class InteractiveModePlugin {
 
             compiler.hooks.afterDone.tap(this.name, () => {
                 process.nextTick(() => {
-                    console.log('\n\n');
                     spawnCommand('compilation completed', true);
                 });
             });
