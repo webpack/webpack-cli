@@ -1,12 +1,10 @@
 const readline = require('readline');
 const { red, green, cyanBright, bold } = require('colorette');
-const logger = require('../utils/logger');
 const { SyncHook } = require('tapable');
 let version;
 try {
     version = require('webpack').version;
 } catch (err) {
-    logger.error(err);
     process.exit(2);
 }
 
@@ -50,7 +48,7 @@ class InteractiveModePlugin {
     constructor() {
         this.isMultiCompiler = false;
         this.compilers = undefined;
-        this.name = 'InteractiveModePlugin';
+        this.name = 'webpack-cli-interactive-mode';
         this.keys = {
             quit: 'q',
             stop: 's',
@@ -61,11 +59,15 @@ class InteractiveModePlugin {
             stop: this.stopHandler.bind(this),
             start: this.startHandler.bind(this),
         };
+        this.logger = undefined;
     }
 
     apply(compiler) {
+        // Assign logger
+        this.logger = compiler.getInfrastructureLogger(this.name);
+
         if (!isWebpack5) {
-            logger.error('Interactive is not supported on webpack v4 and less');
+            this.logger.error('Interactive is not supported on webpack v4 and less');
             process.exit(1);
         }
 
@@ -100,10 +102,10 @@ class InteractiveModePlugin {
         }
 
         // Register Custom Hook for printing after clrscr
-        if (!compiler.hooks.beforeInteractiveStats) {
+        if (!compiler.hooks.beforeInteractiveOutput) {
             compiler.hooks = {
                 ...compiler.hooks,
-                beforeInteractiveStats: new SyncHook(),
+                beforeInteractiveOutput: new SyncHook(),
             };
         }
 
@@ -111,7 +113,7 @@ class InteractiveModePlugin {
             // Clear output on watch invalidate
             compiler.hooks.beforeCompile.tap(this.name, () => {
                 clrscr();
-                compiler.hooks.beforeInteractiveStats.call();
+                compiler.hooks.beforeInteractiveOutput.call();
             });
 
             compiler.hooks.afterDone.tap(this.name, () => {
@@ -125,7 +127,7 @@ class InteractiveModePlugin {
                 childCompiler.hooks.beforeCompile.tap(this.name, () => {
                     // TODO: configure semaphore for race condition
                     clrscr();
-                    compiler.hooks.beforeInteractiveStats.call();
+                    compiler.hooks.beforeInteractiveOutput.call();
                 });
             }
 
