@@ -107,10 +107,6 @@ class InteractiveModePlugin {
             };
         }
 
-        // Clear for first run as well
-        clrscr();
-        compiler.hooks.beforeInteractiveStats.call();
-
         if (!this.isMultiCompiler) {
             // Clear output on watch invalidate
             compiler.hooks.beforeCompile.tap(this.name, () => {
