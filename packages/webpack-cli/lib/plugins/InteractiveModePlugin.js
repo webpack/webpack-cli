@@ -137,10 +137,10 @@ class InteractiveModePlugin {
             });
 
             compiler.hooks.afterDone.tap(this.name, () => {
-                setTimeout(() => {
+                process.nextTick(() => {
                     console.log('\n\n');
                     spawnCommand('compilation completed', true);
-                }, 1);
+                });
             });
         } else {
             const helperPlugin = new InteractiveModeMultiCompilerHelperPlugin();
@@ -157,10 +157,10 @@ class InteractiveModePlugin {
 
                 if (!allDone) return;
 
-                setTimeout(() => {
+                process.nextTick(() => {
                     console.log('\n\n');
                     spawnCommand('all compilations completed', true);
-                }, 100);
+                });
             });
         }
     }
