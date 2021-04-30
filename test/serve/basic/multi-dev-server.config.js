@@ -2,6 +2,7 @@
 const getPort = require('get-port');
 
 const WebpackCLITestPlugin = require('../../utils/webpack-cli-test-plugin');
+const { devServerConfig } = require('./helper/base-dev-server.config');
 
 module.exports = async () => [
     {
@@ -12,8 +13,8 @@ module.exports = async () => [
             filename: 'first-output/[name].js',
         },
         devServer: {
+            ...devServerConfig,
             port: await getPort(),
-            publicPath: '/one-dev-server-my-public-path/',
         },
         plugins: [new WebpackCLITestPlugin(['mode', 'output'], false, 'hooks.compilation.taps')],
     },
@@ -26,8 +27,8 @@ module.exports = async () => [
             filename: 'second-output/[name].js',
         },
         devServer: {
+            ...devServerConfig,
             port: await getPort(),
-            publicPath: '/two-dev-server-my-public-path/',
         },
     },
 ];

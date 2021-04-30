@@ -1,26 +1,10 @@
 const path = require('path');
-const dirname = __dirname;
-const TerserPlugin = require('terser-webpack-plugin');
+const WebpackCLITestPlugin = require('../../../utils/webpack-cli-test-plugin');
 
-module.exports = () => {
-    const config = {
-        entry: './index.js',
-        output: {
-            path: path.join(dirname, 'dist'),
-            filename: '[name].js',
-        },
-        optimization: {
-            minimizer: [
-                new TerserPlugin({
-                    sourceMap: false,
-                    extractComments: {
-                        filename: (fileData) => {
-                            return `${fileData.filename}.OTHER.LICENSE.txt${fileData.query}`;
-                        },
-                    },
-                }),
-            ],
-        },
-    };
-    return config;
+module.exports = {
+    output: {
+        path: path.join(__dirname, 'dist'),
+        filename: '[name].js',
+    },
+    plugins: [new WebpackCLITestPlugin()],
 };

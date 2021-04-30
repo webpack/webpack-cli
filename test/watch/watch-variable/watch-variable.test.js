@@ -1,6 +1,6 @@
 'use strict';
 
-const { runAndGetWatchProc, isWebpack5, processKill } = require('../../utils/test-utils');
+const { runAndGetProcess, isWebpack5, processKill } = require('../../utils/test-utils');
 const { writeFileSync } = require('fs');
 const { resolve } = require('path');
 
@@ -9,7 +9,7 @@ const wordsInStatsv5 = ['asset', 'index.js', 'compiled successfully'];
 
 describe('watch variable', () => {
     it('should pass `WEBPACK_WATCH` env variable and recompile upon file change using the `watch` command', (done) => {
-        const proc = runAndGetWatchProc(__dirname, ['watch', '--mode', 'development'], false, '', true);
+        const proc = runAndGetProcess(__dirname, ['watch', '--mode', 'development']);
 
         let modified = false;
 
@@ -43,8 +43,8 @@ describe('watch variable', () => {
         });
     });
 
-    it('should pass `WEBPACK_WATCH` env variable and recompile upon file change using the `--watch` option', (done) => {
-        const proc = runAndGetWatchProc(__dirname, ['--watch', '--mode', 'development'], false, '', true);
+    it.only('should pass `WEBPACK_WATCH` env variable and recompile upon file change using the `--watch` option', (done) => {
+        const proc = runAndGetProcess(__dirname, ['--watch', '--mode', 'development']);
 
         let modified = false;
 

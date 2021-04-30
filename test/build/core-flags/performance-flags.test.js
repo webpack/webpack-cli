@@ -1,10 +1,7 @@
 'use strict';
 
-const { run, hyphenToUpperCase } = require('../../utils/test-utils');
-const CLI = require('../../../packages/webpack-cli/lib/index');
-
-const cli = new CLI();
-const performanceFlags = cli.getBuiltInOptions().filter(({ name }) => name.startsWith('performance-'));
+const { run, hyphenToUpperCase, getWebpackCliArguments } = require('../../utils/test-utils');
+const performanceFlags = getWebpackCliArguments('performance-');
 
 describe('module config related flag', () => {
     it(`should config --performance option correctly`, async () => {
@@ -15,14 +12,14 @@ describe('module config related flag', () => {
         expect(stdout).toContain('performance: false');
     });
 
-    performanceFlags.forEach((flag) => {
+    for (const [name, value] of Object.entries(performanceFlags)) {
         // extract property name from flag name
-        const property = flag.name.split('performance-')[1];
+        const property = name.split('performance-')[1];
         const propName = hyphenToUpperCase(property);
 
-        if (flag.configs.filter((config) => config.type === 'number').length > 0) {
-            it(`should config --${flag.name} correctly`, async () => {
-                const { exitCode, stderr, stdout } = await run(__dirname, [`--${flag.name}`, '10']);
+        if (value.configs.filter((config) => config.type === 'number').length > 0) {
+            it(`should config --${name} correctly`, async () => {
+                const { exitCode, stderr, stdout } = await run(__dirname, [`--${name}`, '10']);
 
                 expect(exitCode).toBe(0);
                 expect(stderr).toBeFalsy();
@@ -30,14 +27,14 @@ describe('module config related flag', () => {
             });
         }
 
-        if (flag.configs.filter((config) => config.type === 'string').length > 0) {
-            it(`should config --${flag.name} correctly`, async () => {
-                const { exitCode, stderr, stdout } = await run(__dirname, [`--${flag.name}`, 'warning']);
+        if (value.configs.filter((config) => config.type === 'string').length > 0) {
+            it(`should config --${name} correctly`, async () => {
+                const { exitCode, stderr, stdout } = await run(__dirname, [`--${name}`, 'warning']);
 
                 expect(exitCode).toBe(0);
                 expect(stderr).toBeFalsy();
                 expect(stdout).toContain(`${propName}: 'warning'`);
             });
         }
-    });
+    }
 });

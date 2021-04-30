@@ -1,27 +1,8 @@
 'use strict';
 
-const { run, runAndGetWatchProc, hyphenToUpperCase } = require('./test-utils');
-const { writeFileSync, unlinkSync, mkdirSync } = require('fs');
-const { resolve } = require('path');
-// eslint-disable-next-line node/no-unpublished-require
-const rimraf = require('rimraf');
+const { run, runAndGetProcess, hyphenToUpperCase, uniqueDirectoryForTest } = require('./test-utils');
 
 const ENTER = '\x0D';
-
-describe('appendFile', () => {
-    describe('positive test-cases', () => {
-        const junkFile = 'junkFile.js';
-        const junkFilePath = resolve(__dirname, junkFile);
-        const initialJunkData = 'initial junk data';
-
-        beforeEach(() => {
-            writeFileSync(junkFilePath, initialJunkData);
-        });
-        afterEach(() => {
-            unlinkSync(junkFilePath);
-        });
-    });
-});
 
 describe('run function', () => {
     it('should work correctly by default', async () => {
@@ -60,19 +41,17 @@ describe('run function', () => {
 
 describe('runAndGetWatchProc function', () => {
     it('should work correctly by default', async () => {
-        const { command, stdout, stderr } = await runAndGetWatchProc(__dirname);
+        const { command, stdout, stderr } = await runAndGetProcess(__dirname);
 
         // Executes the correct command
         expect(command).toContain('cli.js');
         // Should use apply a default output dir
-        expect(command).toContain('--output-path');
-        expect(command).toContain('bin');
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();
     });
 
     it('executes cli with passed commands and params', async () => {
-        const { stdout, stderr, command } = await runAndGetWatchProc(__dirname, ['info', '--output', 'markdown'], false);
+        const { stdout, stderr, command } = await runAndGetProcess(__dirname, ['info', '--output', 'markdown']);
 
         // execution command contains info command
         expect(command).toContain('info');
@@ -85,23 +64,11 @@ describe('runAndGetWatchProc function', () => {
         expect(stderr).toBeFalsy();
     });
 
-    it('uses default output when output param is false', async () => {
-        const { stdout, stderr, command } = await runAndGetWatchProc(__dirname, [], false);
-
-        // execution command contains info command
-        expect(command).not.toContain('--output-path');
-        expect(stderr).toBeFalsy();
-        expect(stdout).toBeTruthy();
-    });
-
     it('writes to stdin', async () => {
-        const assetsPath = resolve(__dirname, './test-assets');
-        mkdirSync(assetsPath);
+        const assetsPath = await uniqueDirectoryForTest();
+        const { stdout } = await runAndGetProcess(assetsPath, ['init', '--force', '--template=mango'], { input: ENTER });
 
-        const { stdout } = await runAndGetWatchProc(assetsPath, ['init', '--force', '--template=mango'], false, ENTER);
         expect(stdout).toContain('Project has been initialised with webpack!');
-
-        rimraf.sync(assetsPath);
     });
 });
 

@@ -14,6 +14,9 @@ class GeneratorsCommand {
                 name: 'init [generation-path]',
                 alias: ['create', 'new', 'c', 'n'],
                 description: 'Initialize a new webpack project.',
+                argsDescription: {
+                    'generation-path': 'Path to the installation directory, e.g. ./projectName',
+                },
                 usage: '[generation-path] [options]',
                 pkg: '@webpack-cli/generators',
             },
@@ -54,6 +57,9 @@ class GeneratorsCommand {
                 name: 'loader [output-path]',
                 alias: 'l',
                 description: 'Scaffold a loader.',
+                argsDescription: {
+                    'output-path': 'Path to the output directory, e.g. ./loaderName',
+                },
                 usage: '[output-path] [options]',
                 pkg: '@webpack-cli/generators',
             },
@@ -82,6 +88,9 @@ class GeneratorsCommand {
                 name: 'plugin [output-path]',
                 alias: 'p',
                 description: 'Scaffold a plugin.',
+                argsDescription: {
+                    'output-path': 'Path to the output directory, e.g. ./pluginName',
+                },
                 usage: '[output-path] [options]',
                 pkg: '@webpack-cli/generators',
             },

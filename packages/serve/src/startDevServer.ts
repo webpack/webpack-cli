@@ -21,15 +21,13 @@ export default async function startDevServer(
     cliOptions: any,
     logger: any,
 ): Promise<Record<string, unknown>[]> {
-    let devServerVersion, Server, findPort;
+    let devServerVersion, Server;
 
     try {
         // eslint-disable-next-line node/no-extraneous-require
         devServerVersion = require('webpack-dev-server/package.json').version;
         // eslint-disable-next-line node/no-extraneous-require
         Server = require('webpack-dev-server/lib/Server');
-        // eslint-disable-next-line node/no-extraneous-require
-        findPort = require('webpack-dev-server/lib/utils/findPort');
     } catch (err) {
         logger.error(`You need to install 'webpack-dev-server' for running 'webpack serve'.\n${err}`);
         process.exit(2);
@@ -71,9 +69,7 @@ export default async function startDevServer(
     for (const compilerWithDevServerOption of compilersWithDevServerOption) {
         const options = mergeOptions(compilerWithDevServerOption.options.devServer || {}, devServerCliOptions);
 
-        if (isDevServer4) {
-            options.port = await findPort(options.port);
-        } else {
+        if (!isDevServer4) {
             const getPublicPathOption = (): string => {
                 const normalizePublicPath = (publicPath): string =>
                     typeof publicPath === 'undefined' || publicPath === 'auto' ? '/' : publicPath;
@@ -85,11 +81,6 @@ export default async function startDevServer(
                 // webpack-dev-server@3
                 if (options.publicPath) {
                     return normalizePublicPath(options.publicPath);
-                }
-
-                // webpack-dev-server@4
-                if (options.dev && options.dev.publicPath) {
-                    return normalizePublicPath(options.dev.publicPath);
                 }
 
                 return normalizePublicPath(compilerWithDevServerOption.options.output.publicPath);

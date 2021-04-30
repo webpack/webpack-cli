@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`serve variable compiles without flags and export variable 1`] = `""`;

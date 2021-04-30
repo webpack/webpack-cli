@@ -54,6 +54,7 @@ class CLIPlugin {
             const name = getCompilationName();
 
             logCompilation(`Compiler${name ? ` ${name}` : ''} starting... `);
+
             if (configPath) {
                 this.logger.log(`Compiler${name ? ` ${name}` : ''} is using config: '${configPath}'`);
             }
@@ -86,6 +87,7 @@ class CLIPlugin {
             const name = getCompilationName();
 
             logCompilation(`Compiler${name ? ` ${name}` : ''} finished`);
+
             process.nextTick(() => {
                 if (compiler.watchMode) {
                     this.logger.log(`Compiler${name ? `${name}` : ''} is watching files for updates...`);

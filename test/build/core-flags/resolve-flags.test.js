@@ -1,34 +1,31 @@
 'use strict';
 
-const { run, hyphenToUpperCase } = require('../../utils/test-utils');
-const CLI = require('../../../packages/webpack-cli/lib/index');
-
-const cli = new CLI();
-const resolveFlags = cli.getBuiltInOptions().filter(({ name }) => name.startsWith('resolve'));
+const { run, hyphenToUpperCase, getWebpackCliArguments } = require('../../utils/test-utils');
+const resolveFlags = getWebpackCliArguments('resolve');
 
 describe('resolve config related flags', () => {
-    resolveFlags.forEach((flag) => {
+    for (const [name, value] of Object.entries(resolveFlags)) {
         // extract property name from flag name
-        let property = flag.name.split('resolve-')[1];
+        let property = name.split('resolve-')[1];
 
-        if (flag.name.startsWith('resolve-loader')) {
-            property = flag.name.split('resolve-loader-')[1];
+        if (name.startsWith('resolve-loader')) {
+            property = name.split('resolve-loader-')[1];
         }
 
         const propName = hyphenToUpperCase(property);
 
         if (
-            flag.configs.filter((config) => config.type === 'boolean').length > 0 &&
-            !flag.name.includes('alias-') &&
-            !flag.name.includes('fallback-')
+            value.configs.filter((config) => config.type === 'boolean').length > 0 &&
+            !name.includes('alias-') &&
+            !name.includes('fallback-')
         ) {
-            it(`should config --${flag.name} correctly`, async () => {
-                const { stderr, stdout } = await run(__dirname, [`--${flag.name}`]);
+            it(`should config --${name} correctly`, async () => {
+                const { stderr, stdout } = await run(__dirname, [`--${name}`]);
 
                 // expect(exitCode).toBe(0);
                 expect(stderr).toBeFalsy();
 
-                if (flag.name.includes('reset')) {
+                if (name.includes('reset')) {
                     const option = propName.split('Reset')[0];
                     expect(stdout).toContain(`${option}: []`);
                 } else {
@@ -38,12 +35,12 @@ describe('resolve config related flags', () => {
         }
 
         if (
-            flag.configs.filter((config) => config.type === 'string').length > 0 &&
-            !flag.name.includes('alias-') &&
-            !flag.name.includes('fallback-')
+            value.configs.filter((config) => config.type === 'string').length > 0 &&
+            !name.includes('alias-') &&
+            !name.includes('fallback-')
         ) {
-            it(`should config --${flag.name} correctly`, async () => {
-                const { stderr, stdout } = await run(__dirname, [`--${flag.name}`, 'browser']);
+            it(`should config --${name} correctly`, async () => {
+                const { stderr, stdout } = await run(__dirname, [`--${name}`, 'browser']);
 
                 // expect(exitCode).toBe(0);
                 expect(stderr).toBeFalsy();
@@ -56,8 +53,8 @@ describe('resolve config related flags', () => {
             });
         }
 
-        if (flag.name.includes('alias-') || flag.name.includes('fallback-')) {
-            it(`should config --${flag.name} correctly`, async () => {
+        if (name.includes('alias-') || name.includes('fallback-')) {
+            it(`should config --${name} correctly`, async () => {
                 const { exitCode, stderr, stdout } = await run(__dirname, [
                     `--resolve-alias-alias`,
                     'alias',
@@ -93,8 +90,8 @@ describe('resolve config related flags', () => {
                 expect(stdout).toContain('loader-fall-alias');
             });
 
-            if (flag.name.includes('reset')) {
-                it(`should config --${flag.name} alias-reset flags correctly`, async () => {
+            if (name.includes('reset')) {
+                it(`should config --${name} alias-reset flags correctly`, async () => {
                     const { exitCode, stderr, stdout } = await run(__dirname, [
                         '--resolve-alias-reset',
                         '--resolve-fallback-reset',
@@ -112,5 +109,5 @@ describe('resolve config related flags', () => {
                 });
             }
         }
-    });
+    }
 });

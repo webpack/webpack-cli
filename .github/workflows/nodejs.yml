@@ -47,7 +47,7 @@ jobs:
         run: yarn lint
 
   build:
-    name: Tests and Coverage - ${{ matrix.os }} - Node v${{ matrix.node-version }}, Webpack ${{ matrix.webpack-version }}
+    name: Tests and Coverage - ${{ matrix.os }} - Node v${{ matrix.node-version }}, Webpack ${{ matrix.webpack-version }}, DevServer ${{ matrix.dev-server-version }}
 
     runs-on: ${{ matrix.os }}
 
@@ -56,6 +56,7 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
         node-version: [10.x, 12.x, 14.x]
         webpack-version: [4, latest]
+        dev-server-version: [latest, next]
 
     steps:
       - uses: actions/checkout@v2
@@ -74,15 +75,18 @@ jobs:
           path: |
             node_modules
             */*/node_modules
-          key: b-${{ runner.os }}-${{ matrix.webpack-version }}-yarn-${{ hashFiles('**/yarn.lock', './yarn.lock') }}
+          key: c-${{ runner.os }}-${{ matrix.webpack-version }}-yarn-${{ hashFiles('**/yarn.lock', './yarn.lock') }}
           restore-keys: |
-            b-${{ runner.os }}-${{ matrix.webpack-version }}-yarn-
+            c-${{ runner.os }}-${{ matrix.webpack-version }}-yarn-
 
       - name: Install dependencies
         run: yarn
 
       - name: Install webpack ${{ matrix.webpack-version }}
         run: yarn add -W webpack@${{ matrix.webpack-version }}
+
+      - name: Install webpack-dev-server ${{ matrix.webpack-version }}
+        run: yarn add -W webpack-dev-server@${{ matrix.dev-server-version }}
 
       - name: Prepare environment for tests
         run: yarn build:ci

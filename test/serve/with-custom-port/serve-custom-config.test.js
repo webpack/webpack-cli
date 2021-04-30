@@ -3,7 +3,7 @@
 const path = require('path');
 // eslint-disable-next-line node/no-unpublished-require
 const getPort = require('get-port');
-const { runWatch } = require('../../utils/test-utils');
+const { runWatch, normalizeStderr, isDevServer4 } = require('../../utils/test-utils');
 
 const testPath = path.resolve(__dirname);
 
@@ -17,46 +17,59 @@ describe('serve with devServer in config', () => {
     it('Should pick up the host and port from config', async () => {
         const { stdout, stderr } = await runWatch(testPath, ['serve']);
 
-        expect(stderr).toBeFalsy();
-        // Should output the correct bundle file
+        expect(normalizeStderr(stderr)).toMatchSnapshot('stderr');
+
+        if (isDevServer4) {
+            expect(stdout).toContain('HotModuleReplacementPlugin');
+        } else {
+            expect(stdout).not.toContain('HotModuleReplacementPlugin');
+            expect(stdout).toContain('http://0.0.0.0:1234');
+        }
+
         expect(stdout).toContain('main.js');
-        expect(stdout).not.toContain('HotModuleReplacementPlugin');
-        // Runs at correct host and port
-        expect(stdout).toContain('http://0.0.0.0:1234');
     });
 
     it('Port flag should override the config port', async () => {
         const { stdout, stderr } = await runWatch(testPath, ['serve', '--port', port]);
 
-        expect(stderr).toBeFalsy();
-        // Should output the correct bundle file
+        expect(normalizeStderr(stderr)).toMatchSnapshot('stderr');
+
+        if (isDevServer4) {
+            expect(stdout).toContain('HotModuleReplacementPlugin');
+        } else {
+            expect(stdout).not.toContain('HotModuleReplacementPlugin');
+            expect(stdout).toContain(`http://0.0.0.0:${port}`);
+        }
+
         expect(stdout).toContain('main.js');
-        expect(stdout).not.toContain('HotModuleReplacementPlugin');
-        // Runs at correct host and port
-        expect(stdout).toContain(`http://0.0.0.0:${port}`);
     });
 
     it('Passing hot flag works alongside other server config', async () => {
         const { stdout, stderr } = await runWatch(testPath, ['serve', '--port', port, '--hot']);
 
-        expect(stderr).toBeFalsy();
-        // Should output the correct bundle file
+        expect(normalizeStderr(stderr)).toMatchSnapshot('stderr');
+
+        if (isDevServer4) {
+            expect(stdout).toContain('HotModuleReplacementPlugin');
+        } else {
+            expect(stdout).toContain('HotModuleReplacementPlugin');
+            expect(stdout).toContain(`http://0.0.0.0:${port}`);
+        }
+
         expect(stdout).toContain('main.js');
-        // HMR is being used
-        expect(stdout).toContain('HotModuleReplacementPlugin');
-        // Runs at correct host and port
-        expect(stdout).toContain(`http://0.0.0.0:${port}`);
     });
 
     it('works fine when no-hot flag is passed alongside other server config', async () => {
         const { stdout, stderr } = await runWatch(testPath, ['serve', '--port', port, '--no-hot']);
 
-        expect(stderr).toBeFalsy();
-        // Should output the correct bundle file
-        expect(stdout).toContain('main.js');
-        // HMR is not being used
+        expect(normalizeStderr(stderr)).toMatchSnapshot('stderr');
         expect(stdout).not.toContain('HotModuleReplacementPlugin');
-        // Runs at correct host and port
-        expect(stdout).toContain(`http://0.0.0.0:${port}`);
+
+        if (!isDevServer4) {
+            // Runs at correct host and port
+            expect(stdout).toContain(`http://0.0.0.0:${port}`);
+        }
+
+        expect(stdout).toContain('main.js');
     });
 });

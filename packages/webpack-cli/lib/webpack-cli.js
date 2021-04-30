@@ -38,7 +38,7 @@ class WebpackCLI {
         });
 
         if (commandOptions.description) {
-            command.description(commandOptions.description);
+            command.description(commandOptions.description, commandOptions.argsDescription);
         }
 
         if (commandOptions.usage) {
@@ -75,19 +75,13 @@ class WebpackCLI {
 
                 const { promptInstallation, colors } = this.utils;
 
-                try {
-                    await promptInstallation(dependency, () => {
-                        this.logger.error(
-                            `For using '${colors.green(commandOptions.name.split(' ')[0])}' command you need to install: '${colors.green(
-                                dependency,
-                            )}' package`,
-                        );
-                    });
-                } catch (error) {
-                    this.logger.error("Action Interrupted, use 'webpack-cli help' to see possible commands.");
-                    this.logger.error(error);
-                    process.exit(2);
-                }
+                await promptInstallation(dependency, () => {
+                    this.logger.error(
+                        `For using '${colors.green(commandOptions.name.split(' ')[0])}' command you need to install: '${colors.green(
+                            dependency,
+                        )}' package`,
+                    );
+                });
             }
         }
 
@@ -373,6 +367,11 @@ class WebpackCLI {
             {
                 name: 'env',
                 type: (value, previous = {}) => {
+                    // for https://github.com/webpack/webpack-cli/issues/2642
+                    if (value.endsWith('=')) {
+                        value.concat('""');
+                    }
+
                     // This ensures we're only splitting by the first `=`
                     const [allKeys, val] = value.split(/=(.+)/, 2);
                     const splitKeys = allKeys.split(/\.(?!$)/);
@@ -389,7 +388,11 @@ class WebpackCLI {
                         }
 
                         if (index === splitKeys.length - 1) {
-                            prevRef[someKey] = val || true;
+                            if (typeof val === 'string') {
+                                prevRef[someKey] = val;
+                            } else {
+                                prevRef[someKey] = true;
+                            }
                         }
 
                         prevRef = prevRef[someKey];
@@ -777,14 +780,9 @@ class WebpackCLI {
 
                     const { promptInstallation, colors } = this.utils;
 
-                    try {
-                        pkg = await promptInstallation(pkg, () => {
-                            this.logger.error(`For using this command you need to install: '${colors.green(pkg)}' package`);
-                        });
-                    } catch (error) {
-                        this.logger.error(`Action Interrupted, use '${colors.cyan('webpack-cli help')}' to see possible commands`);
-                        process.exit(2);
-                    }
+                    pkg = await promptInstallation(pkg, () => {
+                        this.logger.error(`For using this command you need to install: '${colors.green(pkg)}' package`);
+                    });
                 }
 
                 let loadedCommand;
@@ -1022,7 +1020,7 @@ class WebpackCLI {
                     },
                     formatHelp: (command, helper) => {
                         const termWidth = helper.padWidth(command, helper);
-                        const helpWidth = helper.helpWidth || 80;
+                        const helpWidth = helper.helpWidth || process.env.WEBPACK_CLI_HELP_WIDTH || 80;
                         const itemIndentWidth = 2;
                         const itemSeparatorWidth = 2; // between term and description
 
@@ -1220,13 +1218,13 @@ class WebpackCLI {
             const defaultCommandToRun = getCommandName(buildCommandOptions.name);
             const hasOperand = typeof operands[0] !== 'undefined';
             const operand = hasOperand ? operands[0] : defaultCommandToRun;
-
+            const isHelpOption = typeof options.help !== 'undefined';
             const isHelpCommandSyntax = isCommand(operand, helpCommandOptions);
 
-            if (options.help || isHelpCommandSyntax) {
+            if (isHelpOption || isHelpCommandSyntax) {
                 let isVerbose = false;
 
-                if (options.help) {
+                if (isHelpOption) {
                     if (typeof options.help === 'string') {
                         if (options.help !== 'verbose') {
                             this.logger.error("Unknown value for '--help' option, please use '--help=verbose'");
@@ -1240,7 +1238,7 @@ class WebpackCLI {
                 this.program.forHelp = true;
 
                 const optionsForHelp = []
-                    .concat(options.help && hasOperand ? [operand] : [])
+                    .concat(isHelpOption && hasOperand ? [operand] : [])
                     // Syntax `webpack help [command]`
                     .concat(operands.slice(1))
                     // Syntax `webpack help [option]`
@@ -1251,9 +1249,12 @@ class WebpackCLI {
                 await outputHelp(optionsForHelp, isVerbose, isHelpCommandSyntax, program);
             }
 
-            if (options.version || isCommand(operand, versionCommandOptions)) {
+            const isVersionOption = typeof options.version !== 'undefined';
+            const isVersionCommandSyntax = isCommand(operand, versionCommandOptions);
+
+            if (isVersionOption || isVersionCommandSyntax) {
                 const optionsForVersion = []
-                    .concat(options.version ? [operand] : [])
+                    .concat(isVersionOption ? [operand] : [])
                     .concat(operands.slice(1))
                     .concat(unknown);
 
@@ -1538,16 +1539,9 @@ class WebpackCLI {
             if (!this.utils.packageExists('webpack-bundle-analyzer')) {
                 const { promptInstallation, colors } = this.utils;
 
-                try {
-                    await promptInstallation('webpack-bundle-analyzer', () => {
-                        this.logger.error(`It looks like ${colors.yellow('webpack-bundle-analyzer')} is not installed.`);
-                    });
-                } catch (error) {
-                    this.logger.error(
-                        `Action Interrupted, Please try once again or install ${colors.yellow('webpack-bundle-analyzer')} manually.`,
-                    );
-                    process.exit(2);
-                }
+                await promptInstallation('webpack-bundle-analyzer', () => {
+                    this.logger.error(`It looks like ${colors.yellow('webpack-bundle-analyzer')} is not installed.`);
+                });
 
                 this.logger.success(`${colors.yellow('webpack-bundle-analyzer')} was installed successfully.`);
             }
