@@ -68,7 +68,6 @@ class InteractiveModePlugin {
         this.isMultiCompiler = false;
         this.compilers = undefined;
         this.name = 'InteractiveModePlugin';
-        this.watching = undefined;
         this.keys = {
             quit: 'q',
             stop: 's',
