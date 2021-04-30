@@ -149,7 +149,7 @@ class InteractiveModePlugin {
                 helperPlugin.apply(childCompiler);
             }
 
-            compiler.hooks.done.tap(this.name, () => {
+            compiler.hooks.afterDone.tap(this.name, () => {
                 const allDone = this.compilers.reduce((result, childCompiler) => {
                     return result && !childCompiler.watching.running;
                 }, true);
@@ -157,7 +157,6 @@ class InteractiveModePlugin {
                 if (!allDone) return;
 
                 process.nextTick(() => {
-                    console.log('\n\n');
                     spawnCommand('all compilations completed', true);
                 });
             });
