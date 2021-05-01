@@ -133,10 +133,14 @@ Checkout [`OPTIONS.md`](https://github.com/webpack/webpack-cli/blob/master/OPTIO
 | `WEBPACK_PACKAGE`                   | Use a custom webpack version in CLI.                                |
 | `WEBPACK_CLI_HELP_WIDTH`            | Use custom width for help output.                                   |
 
-## Config Environment Variables
+## Configuration Environment Variables
+
+You can use the following environment variables inside your webpack configuration:
 
 | Environment Variable | Description                                  |
 | -------------------- | -------------------------------------------- |
 | `WEBPACK_SERVE`      | `true` if `serve\|s` is being used.          |
 | `WEBPACK_BUILD`      | `true` if `build\|bundle\|b` is being used.  |
 | `WEBPACK_WATCH`      | `true` if `--watch\|watch\|w` is being used. |
+
+Checkout [webpack.js.org](https://webpack.js.org/api/cli/) for more detailed documentation of `webpack-cli`.
