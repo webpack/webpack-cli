@@ -115,3 +115,28 @@ Global options:
 ### webpack 5
 
 Checkout [`OPTIONS.md`](https://github.com/webpack/webpack-cli/blob/master/OPTIONS.md) to see list of all available options.
+
+## Exit codes and their meanings
+
+| Exit Code | Description                                        |
+| --------- | -------------------------------------------------- |
+| `0`       | Success                                            |
+| `1`       | Errors from webpack                                |
+| `2`       | Configuration/options problem or an internal error |
+
+## CLI Environment Variables
+
+| Environment Variable                | Description                                                         |
+| ----------------------------------- | ------------------------------------------------------------------- |
+| `WEBPACK_CLI_SKIP_IMPORT_LOCAL`     | when `true` it will skip using the local instance of `webpack-cli`. |
+| `WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG` | when `true` it will force load the ESM config.                      |
+| `WEBPACK_PACKAGE`                   | Use a custom webpack version in CLI.                                |
+| `WEBPACK_CLI_HELP_WIDTH`            | Use custom width for help output.                                   |
+
+## Config Environment Variables
+
+| Environment Variable | Description                                  |
+| -------------------- | -------------------------------------------- |
+| `WEBPACK_SERVE`      | `true` if `serve\|s` is being used.          |
+| `WEBPACK_BUILD`      | `true` if `build\|bundle\|b` is being used.  |
+| `WEBPACK_WATCH`      | `true` if `--watch\|watch\|w` is being used. |
