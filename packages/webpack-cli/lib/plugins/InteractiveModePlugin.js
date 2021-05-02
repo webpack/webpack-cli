@@ -153,10 +153,10 @@ class InteractiveModePlugin {
             return;
         }
 
-        clrscr();
         for (const childCompiler of compilers) {
             if (childCompiler.watching && childCompiler.watching.suspended) {
                 childCompiler.watching.resume();
+                childCompiler.watching.invalidate();
             }
         }
     }
