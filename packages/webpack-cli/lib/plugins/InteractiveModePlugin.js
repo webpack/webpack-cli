@@ -46,8 +46,6 @@ const isWebpack5 = version.startsWith('5');
  */
 class InteractiveModePlugin {
     constructor() {
-        this.isMultiCompiler = false;
-        this.compilers = undefined;
         this.name = 'webpack-cli-interactive-mode';
         this.keys = {
             quit: 'q',
@@ -65,6 +63,7 @@ class InteractiveModePlugin {
     apply(compiler) {
         // Assign logger
         this.logger = compiler.getInfrastructureLogger(this.name);
+        const compilers = compiler.compilers ? compiler.compilers : [compiler];
 
         if (!isWebpack5) {
             this.logger.error('Interactive is not supported on webpack v4 and less');
@@ -93,13 +92,8 @@ class InteractiveModePlugin {
             }
 
             const action = possibleActions[0];
-            this.handlers[action](compiler);
+            this.handlers[action](compiler, compilers);
         });
-
-        if (compiler.compilers) {
-            this.isMultiCompiler = true;
-            this.compilers = compiler.compilers;
-        }
 
         // Register Custom Hook for printing after clrscr
         if (!compiler.hooks.beforeInteractiveOutput) {
@@ -109,114 +103,72 @@ class InteractiveModePlugin {
             };
         }
 
-        if (!this.isMultiCompiler) {
-            // Clear output on watch invalidate
-            compiler.hooks.beforeCompile.tap(this.name, () => {
+        // Register helper plugin on each of child compiler
+        for (const childCompiler of compilers) {
+            childCompiler.hooks.beforeCompile.tap(this.name, () => {
+                // TODO: configure semaphore for race condition
                 clrscr();
                 compiler.hooks.beforeInteractiveOutput.call();
             });
-
-            compiler.hooks.afterDone.tap(this.name, () => {
-                process.nextTick(() => {
-                    spawnCommand('compilation completed', true);
-                });
-            });
-        } else {
-            // Register helper plugin on each of child compiler
-            for (const childCompiler of this.compilers) {
-                childCompiler.hooks.beforeCompile.tap(this.name, () => {
-                    // TODO: configure semaphore for race condition
-                    clrscr();
-                    compiler.hooks.beforeInteractiveOutput.call();
-                });
-            }
-
-            compiler.hooks.afterDone.tap(this.name, () => {
-                const allDone = this.compilers.reduce((result, childCompiler) => {
-                    return result && !childCompiler.watching.running;
-                }, true);
-
-                if (!allDone) return;
-
-                process.nextTick(() => {
-                    spawnCommand('all compilations completed', true);
-                });
-            });
-        }
-    }
-
-    quitHandler(compiler) {
-        if (this.isMultiCompiler) {
-            for (const childCompiler of this.compilers) {
-                if (childCompiler.watching === undefined) continue;
-                childCompiler.watching.close();
-            }
-            process.exit(0);
         }
 
-        if (compiler.watching === undefined) return;
-        compiler.watching.close(() => {
-            process.exit(0);
-        });
-        return;
-    }
-
-    startHandler(compiler) {
-        if (this.isMultiCompiler) {
-            const allWatching = this.compilers.reduce((result, childCompiler) => {
-                return result && !childCompiler.watching.suspended;
+        // TODO: remove using multicompiler and define semaphores for race condition
+        compiler.hooks.done.tap(this.name, () => {
+            const allDone = compilers.reduce((result, childCompiler) => {
+                return result && !childCompiler.watching.running;
             }, true);
 
-            if (allWatching) {
-                spawnCommand('all already watching', true);
-                return;
-            }
+            if (!allDone) return;
 
-            clrscr();
-            for (const childCompiler of this.compilers) {
-                if (childCompiler.watching && childCompiler.watching.suspended) {
-                    childCompiler.watching.resume();
-                }
-            }
-            return;
+            process.nextTick(() => {
+                spawnCommand('compilations completed', true);
+            });
+        });
+    }
+
+    quitHandler(compiler, compilers) {
+        for (const childCompiler of compilers) {
+            if (childCompiler.watching === undefined) continue;
+            childCompiler.watching.close();
         }
+        process.exit(0);
+    }
 
-        if (!compiler.watching.suspended) {
+    startHandler(compiler, compilers) {
+        const allWatching = compilers.reduce((result, childCompiler) => {
+            return result && !childCompiler.watching.suspended;
+        }, true);
+
+        if (allWatching) {
             spawnCommand('already watching', true);
             return;
         }
 
         clrscr();
-        compiler.watching.resume();
+        for (const childCompiler of compilers) {
+            if (childCompiler.watching && childCompiler.watching.suspended) {
+                childCompiler.watching.resume();
+            }
+        }
     }
 
-    stopHandler(compiler) {
-        if (this.isMultiCompiler) {
-            const allSuspended = this.compilers.reduce((result, childCompiler) => {
-                return result && childCompiler.watching.suspended;
-            }, true);
+    stopHandler(compiler, compilers) {
+        const allSuspended = compilers.reduce((result, childCompiler) => {
+            return result && childCompiler.watching.suspended;
+        }, true);
 
-            if (allSuspended) {
-                spawnCommand('all already stoped', true);
-                return;
-            }
-
-            for (const childCompiler of this.compilers) {
-                if (!childCompiler.watching.suspended) {
-                    childCompiler.watching.suspend();
-                }
-            }
-            spawnCommand('all stoped watching', false);
+        if (allSuspended) {
+            spawnCommand('already stoped', true);
             return;
         }
 
-        if (compiler.watching.suspended) {
-            spawnCommand('already stoped', false);
-            return;
+        for (const childCompiler of compilers) {
+            if (!childCompiler.watching.suspended) {
+                childCompiler.watching.suspend();
+            }
         }
-
-        compiler.watching.suspend();
         spawnCommand('stoped watching', false);
+        return;
     }
 }
 module.exports = InteractiveModePlugin;
