@@ -13,14 +13,16 @@ try {
  * @param {string} msg message to print with command
  * @param {boolean} status currently watching or not
  */
-const spawnCommand = (msg, status) => {
+const spawnCommand = (msg, status, toClear = false) => {
     const lines = 3;
     const totalRows = process.stdout.rows;
     readline.cursorTo(process.stdout, 0, totalRows - lines);
     readline.clearScreenDown(process.stdout);
 
-    console.log(bold(cyanBright(`ⓘ  ${msg}`)));
-    process.stdout.write('\n');
+    if (toClear) return;
+
+    process.stdout.write(bold(cyanBright(`ⓘ  ${msg}`)));
+    process.stdout.write('\n\n');
 
     readline.cursorTo(process.stdout, 0, totalRows - 2);
 
@@ -93,7 +95,7 @@ class InteractiveModePlugin {
             }
 
             const action = possibleActions[0];
-            this.handlers[action](compilers);
+            this.handlers[action](compilers, compiler);
         });
 
         // Register Custom Hook for printing after clrscr
@@ -110,8 +112,10 @@ class InteractiveModePlugin {
             childCompiler.hooks.beforeCompile.tap(this.name, () => {
                 beforeCompileCount += 1;
                 if (beforeCompileCount === 1) {
-                    clrscr();
-                    compiler.hooks.beforeInteractiveOutput.call();
+                    process.nextTick(() => {
+                        clrscr();
+                        compiler.hooks.beforeInteractiveOutput.call();
+                    });
                 }
                 if (beforeCompileCount === compilers.length) {
                     beforeCompileCount = 0;
@@ -135,13 +139,11 @@ class InteractiveModePlugin {
         }
     }
 
-    quitHandler(compilers) {
-        for (const childCompiler of compilers) {
-            if (childCompiler.watching === undefined) continue;
-            childCompiler.watching.close();
-            childCompiler.close(() => {});
-        }
-        process.exit(0);
+    quitHandler(_compilers, compiler) {
+        compiler.close(() => {
+            spawnCommand('', true, true);
+            process.exit(0);
+        });
     }
 
     startHandler(compilers) {
@@ -157,6 +159,7 @@ class InteractiveModePlugin {
         for (const childCompiler of compilers) {
             if (childCompiler.watching && childCompiler.watching.suspended) {
                 childCompiler.watching.resume();
+                childCompiler.compile(() => {});
             }
         }
     }
