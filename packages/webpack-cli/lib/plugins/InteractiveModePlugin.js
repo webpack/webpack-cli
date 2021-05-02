@@ -61,9 +61,10 @@ class InteractiveModePlugin {
     }
 
     apply(compiler) {
-        // Assign logger
-        this.logger = compiler.getInfrastructureLogger(this.name);
         const compilers = compiler.compilers ? compiler.compilers : [compiler];
+
+        // Assign logger
+        this.logger = compilers[0].getInfrastructureLogger(this.name);
 
         if (!isWebpack5) {
             this.logger.error('Interactive is not supported on webpack v4 and less');
@@ -156,7 +157,6 @@ class InteractiveModePlugin {
         for (const childCompiler of compilers) {
             if (childCompiler.watching && childCompiler.watching.suspended) {
                 childCompiler.watching.resume();
-                childCompiler.watching.invalidate();
             }
         }
     }
