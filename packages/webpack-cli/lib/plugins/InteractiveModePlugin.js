@@ -103,12 +103,17 @@ class InteractiveModePlugin {
             };
         }
 
+        let beforeCompileCount = 0;
         // Register helper plugin on each of child compiler
         for (const childCompiler of compilers) {
+            // eslint-disable-next-line no-loop-func
             childCompiler.hooks.beforeCompile.tap(this.name, () => {
-                // TODO: configure semaphore for race condition
-                clrscr();
-                compiler.hooks.beforeInteractiveOutput.call();
+                beforeCompileCount += 1;
+                if (beforeCompileCount === compilers.length) {
+                    clrscr();
+                    compiler.hooks.beforeInteractiveOutput.call();
+                    beforeCompileCount = 0;
+                }
             });
         }
 
