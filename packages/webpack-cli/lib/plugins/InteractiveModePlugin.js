@@ -92,7 +92,7 @@ class InteractiveModePlugin {
             }
 
             const action = possibleActions[0];
-            this.handlers[action](compiler, compilers);
+            this.handlers[action](compilers);
         });
 
         // Register Custom Hook for printing after clrscr
@@ -134,7 +134,7 @@ class InteractiveModePlugin {
         }
     }
 
-    quitHandler(compiler, compilers) {
+    quitHandler(compilers) {
         for (const childCompiler of compilers) {
             if (childCompiler.watching === undefined) continue;
             childCompiler.watching.close();
@@ -143,7 +143,7 @@ class InteractiveModePlugin {
         process.exit(0);
     }
 
-    startHandler(compiler, compilers) {
+    startHandler(compilers) {
         const allWatching = compilers.reduce((result, childCompiler) => {
             return result && !childCompiler.watching.suspended;
         }, true);
@@ -161,7 +161,7 @@ class InteractiveModePlugin {
         }
     }
 
-    stopHandler(compiler, compilers) {
+    stopHandler(compilers) {
         const allSuspended = compilers.reduce((result, childCompiler) => {
             return result && childCompiler.watching.suspended;
         }, true);
