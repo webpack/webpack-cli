@@ -2,21 +2,20 @@
 
 'use strict';
 
-const Module = require('module');
+import Module from 'module';
 
+// @ts-ignore
 const originalModuleCompile = Module.prototype._compile;
 
-require('v8-compile-cache');
+import 'v8-compile-cache';
 
-const importLocal = require('import-local');
-const runCLI = require('../lib/bootstrap');
-const utils = require('../lib/utils');
+import importLocal from 'import-local';
+import runCLI from '../lib/bootstrap';
+import utils from '../lib/utils';
 
 if (!process.env.WEBPACK_CLI_SKIP_IMPORT_LOCAL) {
     // Prefer the local installation of `webpack-cli`
-    if (importLocal(__filename)) {
-        return;
-    }
+    importLocal(__filename)
 }
 
 process.title = 'webpack';

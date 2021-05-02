@@ -1,12 +1,12 @@
-const utils = require('./index');
-const prompt = require('./prompt');
+import utils from './index';
+import prompt from './prompt';
 
 /**
  *
  * @param packageName
  * @param preMessage Message to show before the question
  */
-async function promptInstallation(packageName, preMessage) {
+async function promptInstallation(packageName: string, preMessage: Function): Promise<void> {
     const packageManager = utils.getPackageManager();
 
     if (!packageManager) {
@@ -51,4 +51,4 @@ async function promptInstallation(packageName, preMessage) {
     process.exit(2);
 }
 
-module.exports = promptInstallation;
+export default promptInstallation;

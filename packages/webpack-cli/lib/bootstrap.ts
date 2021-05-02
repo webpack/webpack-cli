@@ -1,7 +1,7 @@
-const WebpackCLI = require('./webpack-cli');
-const utils = require('./utils');
+import WebpackCLI from './webpack-cli';
+import utils from './utils';
 
-const runCLI = async (args, originalModuleCompile) => {
+const runCLI = async (args: Record<string, any>, originalModuleCompile: any): Promise<void> => {
     try {
         // Create a new instance of the CLI object
         const cli = new WebpackCLI();
@@ -15,4 +15,4 @@ const runCLI = async (args, originalModuleCompile) => {
     }
 };
 
-module.exports = runCLI;
+export default runCLI;

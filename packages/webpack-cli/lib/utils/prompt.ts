@@ -22,4 +22,4 @@ const prompt = ({ message, defaultResponse, stream }) => {
     });
 };
 
-module.exports = prompt;
+export default prompt;

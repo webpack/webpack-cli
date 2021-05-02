@@ -1,9 +1,13 @@
+import { Compiler } from 'webpack'
+
 class CLIPlugin {
+    options: Record<string, any>
+    logger: any
     constructor(options) {
         this.options = options;
     }
 
-    setupHotPlugin(compiler) {
+    setupHotPlugin(compiler: Compiler) {
         const { HotModuleReplacementPlugin } = compiler.webpack || require('webpack');
         const hotModuleReplacementPlugin = Boolean(compiler.options.plugins.find((plugin) => plugin instanceof HotModuleReplacementPlugin));
 
@@ -12,13 +16,13 @@ class CLIPlugin {
         }
     }
 
-    setupPrefetchPlugin(compiler) {
+    setupPrefetchPlugin(compiler: Compiler) {
         const { PrefetchPlugin } = compiler.webpack || require('webpack');
 
         new PrefetchPlugin(null, this.options.prefetch).apply(compiler);
     }
 
-    async setupBundleAnalyzerPlugin(compiler) {
+    async setupBundleAnalyzerPlugin(compiler: Compiler) {
         // eslint-disable-next-line node/no-extraneous-require
         const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
         const bundleAnalyzerPlugin = Boolean(compiler.options.plugins.find((plugin) => plugin instanceof BundleAnalyzerPlugin));
@@ -28,7 +32,7 @@ class CLIPlugin {
         }
     }
 
-    setupProgressPlugin(compiler) {
+    setupProgressPlugin(compiler: Compiler) {
         const { ProgressPlugin } = compiler.webpack || require('webpack');
         const progressPlugin = Boolean(compiler.options.plugins.find((plugin) => plugin instanceof ProgressPlugin));
 
@@ -37,7 +41,7 @@ class CLIPlugin {
         }
     }
 
-    setupHelpfulOutput(compiler) {
+    setupHelpfulOutput(compiler: Compiler) {
         const pluginName = 'webpack-cli';
         const getCompilationName = () => (compiler.name ? `'${compiler.name}'` : '');
         const logCompilation = (message) => {
@@ -60,7 +64,7 @@ class CLIPlugin {
             }
         });
 
-        compiler.hooks.watchRun.tap(pluginName, (compiler) => {
+        compiler.hooks.watchRun.tap(pluginName, (compiler: Compiler) => {
             const { bail, watch } = compiler.options;
 
             if (bail && watch) {
@@ -96,7 +100,7 @@ class CLIPlugin {
         });
     }
 
-    apply(compiler) {
+    apply(compiler: Compiler) {
         this.logger = compiler.getInfrastructureLogger('webpack-cli');
 
         if (this.options.progress) {

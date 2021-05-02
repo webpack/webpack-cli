@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.json",
+  "exclude": ["src/utils/__tests__"],
+  "allowJs": true,
+  "compilerOptions": {
+    "outDir": "build",
+    "rootDir": "./"
+  },
+  "include": ["lib", "bin"]
+}

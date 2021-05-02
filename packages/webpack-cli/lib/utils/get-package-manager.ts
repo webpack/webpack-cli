@@ -1,8 +1,8 @@
-const fs = require('fs');
-const path = require('path');
-const { sync } = require('execa');
+import fs from 'fs';
+import path from 'path';
+import { sync } from 'execa';
 
-const utils = require('./index');
+import utils from './index';
 
 /**
  *
@@ -11,7 +11,7 @@ const utils = require('./index');
  *
  * @returns {String} - The package manager name
  */
-function getPackageManager() {
+const getPackageManager = (): string => {
     const hasLocalNpm = fs.existsSync(path.resolve(process.cwd(), 'package-lock.json'));
 
     if (hasLocalNpm) {
@@ -62,4 +62,4 @@ function getPackageManager() {
     }
 }
 
-module.exports = getPackageManager;
+export default getPackageManager;

@@ -1,4 +1,4 @@
-function dynamicImportLoader() {
+const dynamicImportLoader = () => {
     let importESM;
 
     try {
@@ -10,4 +10,4 @@ function dynamicImportLoader() {
     return importESM;
 }
 
-module.exports = dynamicImportLoader;
+export default dynamicImportLoader

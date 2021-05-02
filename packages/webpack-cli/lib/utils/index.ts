@@ -1,4 +1,4 @@
-module.exports = {
+const utils = {
     get colors() {
         return require('colorette');
     },
@@ -47,3 +47,5 @@ module.exports = {
         return require('./to-kebab-case');
     },
 };
+
+export default utils

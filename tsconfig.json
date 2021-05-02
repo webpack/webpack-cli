@@ -21,6 +21,9 @@
   },
   "references": [
     {
+      "path": "packages/webpack-cli"
+    },
+    {
       "path": "packages/generators"
     },
     {

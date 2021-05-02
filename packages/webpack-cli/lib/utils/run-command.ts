@@ -1,7 +1,7 @@
-const execa = require('execa');
-const utils = require('./index');
+import execa from 'execa';
+import utils from './index';
 
-async function runCommand(command, args = []) {
+async function runCommand(command: string, args = []) {
     try {
         await execa(command, args, { stdio: 'inherit', shell: true });
     } catch (error) {
