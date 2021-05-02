@@ -104,37 +104,41 @@ class InteractiveModePlugin {
         }
 
         let beforeCompileCount = 0;
-        // Register helper plugin on each of child compiler
         for (const childCompiler of compilers) {
             // eslint-disable-next-line no-loop-func
             childCompiler.hooks.beforeCompile.tap(this.name, () => {
                 beforeCompileCount += 1;
-                if (beforeCompileCount === compilers.length) {
+                if (beforeCompileCount === 1) {
                     clrscr();
                     compiler.hooks.beforeInteractiveOutput.call();
+                }
+                if (beforeCompileCount === compilers.length) {
                     beforeCompileCount = 0;
                 }
             });
         }
 
-        // TODO: remove using multicompiler and define semaphores for race condition
-        compiler.hooks.done.tap(this.name, () => {
-            const allDone = compilers.reduce((result, childCompiler) => {
-                return result && !childCompiler.watching.running;
-            }, true);
-
-            if (!allDone) return;
-
-            process.nextTick(() => {
-                spawnCommand('compilations completed', true);
+        let afterDoneCount = 0;
+        for (const childCompiler of compilers) {
+            // eslint-disable-next-line no-loop-func
+            childCompiler.hooks.afterDone.tap(this.name, () => {
+                afterDoneCount += 1;
+                if (afterDoneCount === compilers.length) {
+                    afterDoneCount = 0;
+                    process.nextTick(() => {
+                        process.stdout.write('\n\n\n');
+                        spawnCommand('compilations completed', true);
+                    });
+                }
             });
-        });
+        }
     }
 
     quitHandler(compiler, compilers) {
         for (const childCompiler of compilers) {
             if (childCompiler.watching === undefined) continue;
             childCompiler.watching.close();
+            childCompiler.close(() => {});
         }
         process.exit(0);
     }
@@ -163,7 +167,7 @@ class InteractiveModePlugin {
         }, true);
 
         if (allSuspended) {
-            spawnCommand('already stoped', true);
+            spawnCommand('already stoped', false);
             return;
         }
 
