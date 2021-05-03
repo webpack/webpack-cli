@@ -16,7 +16,7 @@ describe('run function', () => {
     });
 
     it('executes cli with passed commands and params', async () => {
-        const { stdout, stderr, command } = await run(__dirname, ['info', '--output', 'markdown'], false);
+        const { stdout, stderr, command } = await run(__dirname, ['info', '--output', 'markdown']);
 
         // execution command contains info command
         expect(command).toContain('info');
@@ -30,7 +30,7 @@ describe('run function', () => {
     });
 
     it('uses default output when output param is false', async () => {
-        const { stdout, stderr, command } = await run(__dirname, [], false);
+        const { stdout, stderr, command } = await run(__dirname, []);
 
         // execution command contains info command
         expect(command).not.toContain('--output-path');

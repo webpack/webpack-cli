@@ -23,7 +23,7 @@ describe('source-map object', () => {
     });
 
     it('should write a sourcemap file', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ['-c', './webpack.source.config.js'], false);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['-c', './webpack.source.config.js']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();

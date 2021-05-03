@@ -5,7 +5,7 @@ const { run } = require('../../../../utils/test-utils');
 
 describe('promise array', () => {
     it('is able to understand a configuration file as a promise', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ['-c', './webpack.config.js'], false);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['-c', './webpack.config.js']);
 
         expect(exitCode).toBe(0);
         expect(stdout).toBeTruthy();

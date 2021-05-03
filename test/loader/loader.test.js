@@ -49,7 +49,7 @@ describe('loader command', () => {
         // Check if the the generated loader works successfully
         const path = resolve(__dirname, './my-loader/examples/simple/');
 
-        ({ stdout } = await run(path, [], false));
+        ({ stdout } = await run(path, []));
 
         expect(stdout).toContain('my-loader');
     });
@@ -79,7 +79,7 @@ describe('loader command', () => {
         // Check if the the generated loader works successfully
         const path = resolve(__dirname, './test-loader/examples/simple/');
 
-        ({ stdout } = await run(path, [], false));
+        ({ stdout } = await run(path, []));
 
         expect(stdout).toContain('test-loader');
     });
@@ -109,7 +109,7 @@ describe('loader command', () => {
         // Check if the the generated loader works successfully
         const path = resolve(customLoaderPath, './examples/simple/');
 
-        ({ stdout } = await run(path, [], false));
+        ({ stdout } = await run(path, []));
 
         expect(stdout).toContain('test-loader');
     });
@@ -140,7 +140,7 @@ describe('loader command', () => {
         // Check if the the generated loader works successfully
         const path = resolve(customLoaderPath, './examples/simple/');
 
-        ({ stdout } = await run(path, [], false));
+        ({ stdout } = await run(path, []));
 
         expect(stdout).toContain('test-loader');
     });
