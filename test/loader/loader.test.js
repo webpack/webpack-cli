@@ -147,8 +147,8 @@ describe('loader command', () => {
 
     it('should prompt on supplying an invalid template', async () => {
         const assetsPath = await uniqueDirectoryForTest();
-        const { stderr } = await runPromptWithAnswers(assetsPath, ['loader', '--template=unknown']);
+        const { stdout } = await runPromptWithAnswers(assetsPath, ['loader', '--template=unknown']);
 
-        expect(stderr).toContain('unknown is not a valid template');
+        expect(stdout).toContain('unknown is not a valid template');
     });
 });
