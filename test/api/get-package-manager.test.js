@@ -9,7 +9,7 @@ const syncMock = jest.fn(() => {
 jest.setMock('execa', {
     sync: syncMock,
 });
-const utilsDirectory = path.resolve(__dirname, '../../packages/webpack-cli/lib/utils/');
+const utilsDirectory = path.resolve(__dirname, '../../packages/webpack-cli/build/lib/utils/');
 const getPackageManager = require(path.resolve(utilsDirectory, './get-package-manager'));
 
 jest.mock(path.resolve(utilsDirectory, './get-package-manager'), () => jest.fn());

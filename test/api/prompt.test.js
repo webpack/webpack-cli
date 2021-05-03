@@ -1,4 +1,4 @@
-const prompt = require('../../packages/webpack-cli/lib/utils/prompt');
+const prompt = require('../../packages/webpack-cli/build/lib/utils/prompt');
 const { Writable } = require('stream');
 
 describe('prompt', () => {

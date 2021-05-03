@@ -5,7 +5,7 @@ const path = require('path');
 // eslint-disable-next-line node/no-unpublished-require
 const stripAnsi = require('strip-ansi');
 const globalModulesNpmValue = 'test-npm';
-const utilsDirectory = path.resolve(__dirname, '../../packages/webpack-cli/lib/utils/');
+const utilsDirectory = path.resolve(__dirname, '../../packages/webpack-cli/build/lib/utils/');
 
 jest.setMock('global-modules', globalModulesNpmValue);
 jest.setMock(path.resolve(utilsDirectory, './prompt'), jest.fn());

@@ -1,4 +1,4 @@
-const capitalizeFirstLetter = require('../../packages/webpack-cli/lib/utils/capitalize-first-letter');
+const capitalizeFirstLetter = require('../../packages/webpack-cli/build/lib/utils/capitalize-first-letter');
 
 describe('capitalizeFirstLetter', () => {
     it('should capitalize first letter', () => {

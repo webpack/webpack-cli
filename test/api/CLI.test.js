@@ -1,4 +1,4 @@
-const CLI = require('../../packages/webpack-cli/lib/webpack-cli');
+const CLI = require('../../packages/webpack-cli/build/lib/webpack-cli');
 
 describe('CLI API', () => {
     let cli;
