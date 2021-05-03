@@ -5,7 +5,7 @@ const { run } = require('../../../utils/test-utils');
 
 describe('Config:', () => {
     it('supplied config file is absent', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ['-c', path.resolve(__dirname, 'webpack.config.js')], false);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['-c', path.resolve(__dirname, 'webpack.config.js')]);
 
         // should throw with correct exit code
         expect(exitCode).toBe(2);

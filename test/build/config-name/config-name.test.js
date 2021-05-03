@@ -4,7 +4,7 @@ const { run } = require('../../utils/test-utils');
 
 describe('--config-name flag', () => {
     it('should select only the config whose name is passed with --config-name', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ['--config-name', 'first'], false);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--config-name', 'first']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -14,7 +14,7 @@ describe('--config-name flag', () => {
     });
 
     it('should work with multiple values for --config-name', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ['--config-name', 'first', '--config-name', 'third'], false);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--config-name', 'first', '--config-name', 'third']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -39,7 +39,7 @@ describe('--config-name flag', () => {
     });
 
     it('should log error if invalid config name is provided', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ['--config-name', 'test'], false);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--config-name', 'test']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain('Configuration with the name "test" was not found.');
@@ -47,7 +47,7 @@ describe('--config-name flag', () => {
     });
 
     it('should log error if multiple configurations are not found', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ['--config-name', 'test', '-c', 'single-config.js'], false);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--config-name', 'test', '-c', 'single-config.js']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain('Configuration with the name "test" was not found.');
@@ -80,7 +80,7 @@ describe('--config-name flag', () => {
     });
 
     it('should work with config as a function', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ['--config', 'function-config.js', '--config-name', 'first'], false);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--config', 'function-config.js', '--config-name', 'first']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -104,7 +104,7 @@ describe('--config-name flag', () => {
     });
 
     it('should log error if invalid config name is provided ', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ['--config', 'function-config.js', '--config-name', 'test'], false);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--config', 'function-config.js', '--config-name', 'test']);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain('Configuration with the name "test" was not found.');

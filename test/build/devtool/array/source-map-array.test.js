@@ -5,7 +5,7 @@ const { run, readdir } = require('../../../utils/test-utils');
 
 describe('source-map object', () => {
     it('should treat source-map settings right', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, [], false);
+        const { exitCode, stderr, stdout } = await run(__dirname, []);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -25,7 +25,7 @@ describe('source-map object', () => {
     });
 
     it('should override entire array on flag', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ['--devtool', 'source-map', '--output-path', './binary'], false);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--devtool', 'source-map', '--output-path', './binary']);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();

@@ -5,7 +5,7 @@ const { run } = require('../../../utils/test-utils');
 
 describe('dotfolder array config lookup', () => {
     it('should find a webpack array configuration in a dotfolder', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, [], false);
+        const { exitCode, stderr, stdout } = await run(__dirname, []);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
