@@ -4,6 +4,6 @@ const packageExists = (packageName: string): string | false => {
     } catch (error) {
         return false;
     }
-}
+};
 
 export default packageExists;

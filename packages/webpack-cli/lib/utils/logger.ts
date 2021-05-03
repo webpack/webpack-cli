@@ -10,4 +10,4 @@ const logger = {
     raw: (val: string): void => console.log(val),
 };
 
-export default logger
+export default logger;

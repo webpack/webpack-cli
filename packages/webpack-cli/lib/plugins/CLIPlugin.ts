@@ -1,8 +1,8 @@
-import { Compiler } from 'webpack'
+import { Compiler } from 'webpack';
 
 class CLIPlugin {
-    options: Record<string, any>
-    logger: any
+    options: Record<string, any>;
+    logger: any;
     constructor(options) {
         this.options = options;
     }
@@ -23,7 +23,7 @@ class CLIPlugin {
     }
 
     async setupBundleAnalyzerPlugin(compiler: Compiler) {
-        // eslint-disable-next-line node/no-extraneous-require
+        // eslint-disable-next-line node/no-extraneous-require, @typescript-eslint/no-var-requires
         const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
         const bundleAnalyzerPlugin = Boolean(compiler.options.plugins.find((plugin) => plugin instanceof BundleAnalyzerPlugin));
 

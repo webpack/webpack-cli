@@ -24,8 +24,7 @@
     "web"
   ],
   "files": [
-    "bin",
-    "lib",
+    "build",
     "!**/*__tests__"
   ],
   "dependencies": {

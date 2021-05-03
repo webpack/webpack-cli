@@ -1,4 +1,5 @@
-const prompt = require('../../packages/webpack-cli/build/lib/utils/prompt');
+// eslint-disable-next-line node/no-unpublished-require
+const prompt = require('../../packages/webpack-cli/build/lib/utils/prompt').default;
 const { Writable } = require('stream');
 
 describe('prompt', () => {

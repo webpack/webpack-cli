@@ -8,6 +8,6 @@ const dynamicImportLoader = () => {
     }
 
     return importESM;
-}
+};
 
-export default dynamicImportLoader
+export default dynamicImportLoader;

@@ -1,5 +1,5 @@
-import { Option } from 'commander'
+import { Option } from 'commander';
 
 export interface ICLIOption extends Option {
-    helpLevel?: string
+    helpLevel?: string;
 }

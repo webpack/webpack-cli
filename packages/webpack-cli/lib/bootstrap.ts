@@ -1,7 +1,8 @@
 import WebpackCLI from './webpack-cli';
 import utils from './utils';
 
-const runCLI = async (args: Record<string, any>, originalModuleCompile: any): Promise<void> => {
+// eslint-disable-next-line
+const runCLI = async (args: Record<string, any>, originalModuleCompile: boolean): Promise<void> => {
     try {
         // Create a new instance of the CLI object
         const cli = new WebpackCLI();

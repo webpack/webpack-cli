@@ -6,7 +6,7 @@ import prompt from './prompt';
  * @param packageName
  * @param preMessage Message to show before the question
  */
-async function promptInstallation(packageName: string, preMessage: Function): Promise<void | string | false> {
+async function promptInstallation(packageName: string, preMessage: () => void): Promise<void | string | false> {
     const packageManager = utils.getPackageManager();
 
     if (!packageManager) {

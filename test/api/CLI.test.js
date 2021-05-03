@@ -1,4 +1,5 @@
-const CLI = require('../../packages/webpack-cli/build/lib/webpack-cli');
+// eslint-disable-next-line node/no-unpublished-require
+const CLI = require('../../packages/webpack-cli/build/lib/webpack-cli').default;
 
 describe('CLI API', () => {
     let cli;

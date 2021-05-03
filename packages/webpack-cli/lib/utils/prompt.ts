@@ -1,5 +1,6 @@
+import readline from 'readline';
+
 const prompt = ({ message, defaultResponse, stream }) => {
-    const readline = require('readline');
     const rl = readline.createInterface({
         input: process.stdin,
         output: stream,

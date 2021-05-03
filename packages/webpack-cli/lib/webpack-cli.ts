@@ -1,4 +1,4 @@
-import fs  from 'fs';
+import fs from 'fs';
 import path from 'path';
 import { pathToFileURL } from 'url';
 import Module from 'module';
@@ -6,19 +6,19 @@ import Module from 'module';
 import { program, Option } from 'commander';
 import utils from './utils';
 
-import { ICLIOption } from './types'
+import { ICLIOption } from './types';
 
 class WebpackCLI {
-
-    webpack: any
-    logger: Record<string, Function>
-    utils: any
-    program: any
-    _originalModuleCompile: any
-    builtInOptionsCache: any
+    webpack: any;
+    logger: Record<string, (string) => void>;
+    utils: any;
+    program: any;
+    _originalModuleCompile: any;
+    builtInOptionsCache: any;
 
     constructor() {
         // Global
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
         this.webpack = require(process.env.WEBPACK_PACKAGE || 'webpack');
         this.logger = utils.logger;
         this.utils = utils;
@@ -125,7 +125,7 @@ class WebpackCLI {
 
         if (option.configs) {
             let needNegativeOption = false;
-            let mainOptionType = new Set();
+            const mainOptionType = new Set();
 
             option.configs.forEach((config) => {
                 // Possible value: "enum" | "string" | "path" | "number" | "boolean" | "RegExp" | "reset"
@@ -247,22 +247,25 @@ class WebpackCLI {
 
                         return mainOption.multiple ? [].concat(prev).concat(value) : value;
                     })
-                    .default(mainOption.defaultValue)  as ICLIOption;
+                    .default(mainOption.defaultValue) as ICLIOption;
 
                 optionForCommand.helpLevel = option.helpLevel;
 
                 command.addOption(optionForCommand);
             } else if (mainOption.type.has(Boolean)) {
-                const optionForCommand = new Option(mainOption.flags, mainOption.description).default(mainOption.defaultValue) as ICLIOption;
+                const optionForCommand = new Option(mainOption.flags, mainOption.description).default(
+                    mainOption.defaultValue,
+                ) as ICLIOption;
 
                 optionForCommand.helpLevel = option.helpLevel;
 
                 command.addOption(optionForCommand);
             } else {
                 const optionForCommand = new Option(mainOption.flags, mainOption.description)
+                    // eslint-disable-next-line
                     // @ts-ignore
                     .argParser(Array.from(mainOption.type)[0])
-                    .default(mainOption.defaultValue) as ICLIOption
+                    .default(mainOption.defaultValue) as ICLIOption;
 
                 optionForCommand.helpLevel = option.helpLevel;
 
@@ -755,9 +758,11 @@ class WebpackCLI {
                 );
             } else if (isCommand(commandName, helpCommandOptions)) {
                 // Stub for the `help` command
+                // eslint-disable-next-line @typescript-eslint/no-empty-function
                 this.makeCommand(helpCommandOptions, [], () => {});
             } else if (isCommand(commandName, versionCommandOptions)) {
                 // Stub for the `help` command
+                // eslint-disable-next-line @typescript-eslint/no-empty-function
                 this.makeCommand(versionCommandOptions, [], () => {});
             } else {
                 const builtInExternalCommandInfo = externalBuiltInCommandsInfo.find(
@@ -872,6 +877,7 @@ class WebpackCLI {
         });
 
         // Default `--color` and `--no-color` options
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
         const cli = this;
         this.program.option('--color', 'Enable colors on console.');
         this.program.on('option:color', function () {
@@ -923,6 +929,7 @@ class WebpackCLI {
                     }
 
                     try {
+                        // eslint-disable-next-line @typescript-eslint/no-var-requires
                         const { name, version } = require(`${foundCommand.pkg}/package.json`);
 
                         this.logger.raw(`${name} ${version}`);
@@ -933,13 +940,14 @@ class WebpackCLI {
                 }
             }
 
-            const pkgJSON = require('../package.json');
+            // eslint-disable-next-line @typescript-eslint/no-var-requires, node/no-missing-require
+            const pkgJSON = require('../../package.json');
 
             this.logger.raw(`webpack ${this.webpack.version}`);
             this.logger.raw(`webpack-cli ${pkgJSON.version}`);
 
             if (this.utils.packageExists('webpack-dev-server')) {
-                // eslint-disable-next-line
+                // eslint-disable-next-line @typescript-eslint/no-var-requires, node/no-extraneous-require
                 const { version } = require('webpack-dev-server/package.json');
 
                 this.logger.raw(`webpack-dev-server ${version}`);
@@ -1261,7 +1269,7 @@ class WebpackCLI {
                     .concat(operands.slice(1))
                     .concat(unknown);
 
-                await outputVersion(optionsForVersion)
+                await outputVersion(optionsForVersion);
             }
 
             let commandToRun = operand;
@@ -1270,7 +1278,7 @@ class WebpackCLI {
             if (isKnownCommand(commandToRun)) {
                 await loadCommandByName(commandToRun, true);
             } else {
-                let isEntrySyntax = fs.existsSync(operand);
+                const isEntrySyntax = fs.existsSync(operand);
 
                 if (isEntrySyntax) {
                     commandToRun = defaultCommandToRun;
@@ -1300,7 +1308,7 @@ class WebpackCLI {
             await this.program.parseAsync([commandToRun, ...commandOperands, ...unknown], { from: 'user' });
         });
 
-        await this.program.parseAsync(args)
+        await this.program.parseAsync(args);
     }
 
     async resolveConfig(options) {
@@ -1341,8 +1349,10 @@ class WebpackCLI {
 
                     // TODO Workaround https://github.com/zertosh/v8-compile-cache/issues/30
                     if (this._originalModuleCompile) {
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                         // @ts-ignore
                         previousModuleCompile = Module.prototype._compile;
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                         // @ts-ignore
                         Module.prototype._compile = this._originalModuleCompile;
                     }
@@ -1350,6 +1360,7 @@ class WebpackCLI {
                     const dynamicImportLoader = this.utils.dynamicImportLoader();
 
                     if (this._originalModuleCompile) {
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                         // @ts-ignore
                         Module.prototype._compile = previousModuleCompile;
                     }
@@ -1392,7 +1403,7 @@ class WebpackCLI {
             const isMultiCompiler = Array.isArray(loadedConfig.options);
             const config = isMultiCompiler ? loadedConfig.options : [loadedConfig.options];
 
-            let evaluatedConfig = await Promise.all(
+            const evaluatedConfig = await Promise.all(
                 config.map(async (rawConfig) => {
                     if (typeof rawConfig.then === 'function') {
                         rawConfig = await rawConfig;
@@ -1420,7 +1431,7 @@ class WebpackCLI {
             return loadedConfig;
         };
 
-        let config: { options: Record<string, any> | Array<any>, path: any } = { options: {}, path: new WeakMap() };
+        const config: { options: Record<string, any> | Array<any>; path: any } = { options: {}, path: new WeakMap() };
 
         if (options.config && options.config.length > 0) {
             const evaluatedConfigs: Array<Record<string, any | Array<any>>> = await Promise.all(
@@ -1512,6 +1523,7 @@ class WebpackCLI {
         }
 
         if (options.merge) {
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
             const { merge } = require('webpack-merge');
 
             // we can only merge when there are multiple configurations
@@ -1805,7 +1817,7 @@ class WebpackCLI {
             if (!configOptions.plugins) {
                 configOptions.plugins = [];
             }
-
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
             const CLIPlugin = require('./plugins/CLIPlugin');
 
             configOptions.plugins.unshift(
@@ -1887,6 +1899,7 @@ class WebpackCLI {
     }
 
     async buildCommand(options, isWatchCommand) {
+        // eslint-disable-next-line
         let compiler;
 
         const callback = (error, stats) => {
@@ -1917,6 +1930,7 @@ class WebpackCLI {
             }
 
             if (options.json) {
+                // eslint-disable-next-line
                 const { stringifyStream: createJsonStringifyStream } = require('@discoveryjs/json-ext');
                 const handleWriteError = (error) => {
                     this.logger.error(error);

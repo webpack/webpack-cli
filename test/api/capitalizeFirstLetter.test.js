@@ -1,4 +1,5 @@
-const capitalizeFirstLetter = require('../../packages/webpack-cli/build/lib/utils/capitalize-first-letter');
+// eslint-disable-next-line node/no-unpublished-require
+const capitalizeFirstLetter = require('../../packages/webpack-cli/build/lib/utils/capitalize-first-letter').default;
 
 describe('capitalizeFirstLetter', () => {
     it('should capitalize first letter', () => {

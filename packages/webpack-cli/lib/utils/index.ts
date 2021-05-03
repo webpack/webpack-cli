@@ -1,15 +1,15 @@
-import  colors from 'colorette'
-import  levenshtein from 'fastest-levenshtein'
-import  interpret from 'interpret'
-import  rechoir from 'rechoir'
-import  capitalizeFirstLetter from './capitalize-first-letter'
-import  dynamicImportLoader from './dynamic-import-loader'
-import  getPackageManager from './get-package-manager'
-import  logger from './logger'
-import  packageExists from './package-exists'
-import  promptInstallation from './prompt-installation'
-import  runCommand from './run-command'
-import  toKebabCase from './to-kebab-case'
+import colors from 'colorette';
+import levenshtein from 'fastest-levenshtein';
+import interpret from 'interpret';
+import rechoir from 'rechoir';
+import capitalizeFirstLetter from './capitalize-first-letter';
+import dynamicImportLoader from './dynamic-import-loader';
+import getPackageManager from './get-package-manager';
+import logger from './logger';
+import packageExists from './package-exists';
+import promptInstallation from './prompt-installation';
+import runCommand from './run-command';
+import toKebabCase from './to-kebab-case';
 
 export default {
     colors,
@@ -23,8 +23,8 @@ export default {
     packageExists,
     promptInstallation,
     runCommand,
-    toKebabCase
-}
+    toKebabCase,
+};
 
 // const utils = {
 //     get colors() {

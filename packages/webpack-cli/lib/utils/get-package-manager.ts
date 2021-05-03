@@ -60,6 +60,6 @@ const getPackageManager = (): string => {
         utils.logger.error('No package manager found.');
         process.exit(2);
     }
-}
+};
 
 export default getPackageManager;

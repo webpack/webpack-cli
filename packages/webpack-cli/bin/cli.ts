@@ -1,9 +1,6 @@
-#!/usr/bin/env node
-
-'use strict';
-
 import Module from 'module';
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 const originalModuleCompile = Module.prototype._compile;
 
@@ -13,9 +10,9 @@ import importLocal from 'import-local';
 import runCLI from '../lib/bootstrap';
 import utils from '../lib/utils';
 
+// Prefer the local installation of `webpack-cli`
 if (!process.env.WEBPACK_CLI_SKIP_IMPORT_LOCAL) {
-    // Prefer the local installation of `webpack-cli`
-    importLocal(__filename)
+    importLocal(__filename);
 }
 
 process.title = 'webpack';
