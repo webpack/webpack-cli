@@ -1,51 +1,79 @@
-const utils = {
-    get colors() {
-        return require('colorette');
-    },
+import  colors from 'colorette'
+import  levenshtein from 'fastest-levenshtein'
+import  interpret from 'interpret'
+import  rechoir from 'rechoir'
+import  capitalizeFirstLetter from './capitalize-first-letter'
+import  dynamicImportLoader from './dynamic-import-loader'
+import  getPackageManager from './get-package-manager'
+import  logger from './logger'
+import  packageExists from './package-exists'
+import  promptInstallation from './prompt-installation'
+import  runCommand from './run-command'
+import  toKebabCase from './to-kebab-case'
 
-    get levenshtein() {
-        return require('fastest-levenshtein');
-    },
+export default {
+    colors,
+    levenshtein,
+    interpret,
+    rechoir,
+    capitalizeFirstLetter,
+    dynamicImportLoader,
+    getPackageManager,
+    logger,
+    packageExists,
+    promptInstallation,
+    runCommand,
+    toKebabCase
+}
 
-    get interpret() {
-        return require('interpret');
-    },
+// const utils = {
+//     get colors() {
+//         return require('colorette');
+//     },
 
-    get rechoir() {
-        return require('rechoir');
-    },
+//     get levenshtein() {
+//         return require('fastest-levenshtein');
+//     },
 
-    get capitalizeFirstLetter() {
-        return require('./capitalize-first-letter');
-    },
+//     get interpret() {
+//         return require('interpret');
+//     },
 
-    get dynamicImportLoader() {
-        return require('./dynamic-import-loader');
-    },
+//     get rechoir() {
+//         return require('rechoir');
+//     },
 
-    get getPackageManager() {
-        return require('./get-package-manager');
-    },
+//     get capitalizeFirstLetter() {
+//         return require('./capitalize-first-letter');
+//     },
 
-    get logger() {
-        return require('./logger');
-    },
+//     get dynamicImportLoader() {
+//         return require('./dynamic-import-loader');
+//     },
 
-    get packageExists() {
-        return require('./package-exists');
-    },
+//     get getPackageManager() {
+//         return require('./get-package-manager');
+//     },
 
-    get promptInstallation() {
-        return require('./prompt-installation');
-    },
+//     get logger() {
+//         return require('./logger');
+//     },
 
-    get runCommand() {
-        return require('./run-command');
-    },
+//     get packageExists() {
+//         return require('./package-exists');
+//     },
 
-    get toKebabCase() {
-        return require('./to-kebab-case');
-    },
-};
+//     get promptInstallation() {
+//         return require('./prompt-installation');
+//     },
 
-export default utils
+//     get runCommand() {
+//         return require('./run-command');
+//     },
+
+//     get toKebabCase() {
+//         return require('./to-kebab-case');
+//     },
+// };
+
+// export default utils

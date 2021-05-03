@@ -10,4 +10,4 @@ async function runCommand(command: string, args = []) {
     }
 }
 
-module.exports = runCommand;
+export default runCommand;

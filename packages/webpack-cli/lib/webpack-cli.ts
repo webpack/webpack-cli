@@ -1,10 +1,12 @@
-const fs = require('fs');
-const path = require('path');
-const { pathToFileURL } = require('url');
-const Module = require('module');
+import fs  from 'fs';
+import path from 'path';
+import { pathToFileURL } from 'url';
+import Module from 'module';
 
-const { program, Option } = require('commander');
-const utils = require('./utils');
+import { program, Option } from 'commander';
+import utils from './utils';
+
+import { ICLIOption } from './types'
 
 class WebpackCLI {
 
@@ -228,7 +230,7 @@ class WebpackCLI {
 
                         return mainOption.multiple ? [].concat(prev).concat(Number(value)) : Number(value);
                     })
-                    .default(mainOption.defaultValue);
+                    .default(mainOption.defaultValue) as ICLIOption;
 
                 optionForCommand.helpLevel = option.helpLevel;
 
@@ -245,21 +247,22 @@ class WebpackCLI {
 
                         return mainOption.multiple ? [].concat(prev).concat(value) : value;
                     })
-                    .default(mainOption.defaultValue);
+                    .default(mainOption.defaultValue)  as ICLIOption;
 
                 optionForCommand.helpLevel = option.helpLevel;
 
                 command.addOption(optionForCommand);
             } else if (mainOption.type.has(Boolean)) {
-                const optionForCommand = new Option(mainOption.flags, mainOption.description).default(mainOption.defaultValue);
+                const optionForCommand = new Option(mainOption.flags, mainOption.description).default(mainOption.defaultValue) as ICLIOption;
 
                 optionForCommand.helpLevel = option.helpLevel;
 
                 command.addOption(optionForCommand);
             } else {
                 const optionForCommand = new Option(mainOption.flags, mainOption.description)
+                    // @ts-ignore
                     .argParser(Array.from(mainOption.type)[0])
-                    .default(mainOption.defaultValue);
+                    .default(mainOption.defaultValue) as ICLIOption
 
                 optionForCommand.helpLevel = option.helpLevel;
 
@@ -268,7 +271,7 @@ class WebpackCLI {
         } else if (mainOption.type.size > 1) {
             let skipDefault = true;
 
-            const optionForCommand = new Option(mainOption.flags, mainOption.description, mainOption.defaultValue)
+            const optionForCommand = new Option(mainOption.flags, mainOption.description)
                 .argParser((value, prev = []) => {
                     if (mainOption.defaultValue && mainOption.multiple && skipDefault) {
                         prev = [];
@@ -289,13 +292,13 @@ class WebpackCLI {
 
                     return value;
                 })
-                .default(mainOption.defaultValue);
+                .default(mainOption.defaultValue) as ICLIOption;
 
             optionForCommand.helpLevel = option.helpLevel;
 
             command.addOption(optionForCommand);
         } else if (mainOption.type.size === 0 && negativeOption) {
-            const optionForCommand = new Option(mainOption.flags, mainOption.description);
+            const optionForCommand = new Option(mainOption.flags, mainOption.description) as ICLIOption;
 
             // Hide stub option
             optionForCommand.hideHelp();
@@ -305,7 +308,7 @@ class WebpackCLI {
         }
 
         if (negativeOption) {
-            const optionForCommand = new Option(negativeOption.flags, negativeOption.description);
+            const optionForCommand: ICLIOption = new Option(negativeOption.flags, negativeOption.description) as ICLIOption;
 
             optionForCommand.helpLevel = option.helpLevel;
 
@@ -1338,14 +1341,16 @@ class WebpackCLI {
 
                     // TODO Workaround https://github.com/zertosh/v8-compile-cache/issues/30
                     if (this._originalModuleCompile) {
+                        // @ts-ignore
                         previousModuleCompile = Module.prototype._compile;
-
+                        // @ts-ignore
                         Module.prototype._compile = this._originalModuleCompile;
                     }
 
                     const dynamicImportLoader = this.utils.dynamicImportLoader();
 
                     if (this._originalModuleCompile) {
+                        // @ts-ignore
                         Module.prototype._compile = previousModuleCompile;
                     }
 
