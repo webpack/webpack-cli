@@ -85,6 +85,11 @@ class InteractiveModePlugin {
         // Configure keypress event for actions
         const actions = Object.keys(this.keys);
         stdin.on('keypress', (_, actionKey) => {
+            // Implement signal keypresses
+            if (actionKey && actionKey.ctrl && (actionKey.name === 'c' || actionKey.name === 'd')) {
+                this.handlers['quit'](compilers, compiler);
+            }
+
             const possibleActions = actions.filter((action) => {
                 return this.keys[action] === actionKey.name;
             });
