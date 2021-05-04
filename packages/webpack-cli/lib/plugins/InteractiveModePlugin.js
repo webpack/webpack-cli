@@ -1,5 +1,5 @@
 const readline = require('readline');
-const { red, green, cyanBright, bold } = require('colorette');
+const { red, green, cyanBright, bold, gray } = require('colorette');
 const { SyncHook } = require('tapable');
 const logger = require('../utils/logger');
 
@@ -15,7 +15,7 @@ try {
  * @param {string} msg message to print with command
  * @param {boolean} status currently watching or not
  */
-const spawnCommand = (msg, status, toClear = false) => {
+const spawnCommand = (msg, status, toClear = false, verbose = false) => {
     const lines = 3;
     const totalRows = process.stdout.rows;
     readline.cursorTo(process.stdout, 0, totalRows - lines);
@@ -23,8 +23,12 @@ const spawnCommand = (msg, status, toClear = false) => {
 
     if (toClear) return;
 
-    process.stdout.write(bold(cyanBright(`ⓘ  ${msg}`)));
-    process.stdout.write('\n\n');
+    if (verbose) {
+        process.stdout.write(`${bold(cyanBright(`ⓘ  ${msg}`))}\n`);
+        process.stdout.write(`\n${gray('q: quit  w: watch  s: pause')}`);
+    } else {
+        process.stdout.write('\n\n');
+    }
 
     readline.cursorTo(process.stdout, 0, totalRows - 2);
 
@@ -49,7 +53,7 @@ const isWebpack5 = version.startsWith('5');
  * Interactive Mode plugin
  */
 class InteractiveModePlugin {
-    constructor() {
+    constructor(mode = 'verbose') {
         this.name = 'webpack-cli-interactive-mode';
         this.keys = {
             quit: 'q',
@@ -62,6 +66,7 @@ class InteractiveModePlugin {
             start: this.startHandler.bind(this),
         };
         this.logger = undefined;
+        this.verbose = mode === 'verbose';
     }
 
     apply(compiler) {
@@ -140,7 +145,7 @@ class InteractiveModePlugin {
                     afterDoneCount = 0;
                     process.nextTick(() => {
                         process.stdout.write('\n\n\n');
-                        spawnCommand('compilations completed', true);
+                        spawnCommand('compilations completed', true, false, this.verbose);
                     });
                 }
             });
@@ -149,7 +154,7 @@ class InteractiveModePlugin {
 
     quitHandler(_compilers, compiler) {
         compiler.close(() => {
-            spawnCommand('', true, true);
+            spawnCommand('', true, true, this.verbose);
             process.exit(0);
         });
     }
@@ -160,7 +165,7 @@ class InteractiveModePlugin {
         }, true);
 
         if (allWatching) {
-            spawnCommand('already watching', true);
+            spawnCommand('already watching', true, false, this.verbose);
             return;
         }
 
@@ -178,7 +183,7 @@ class InteractiveModePlugin {
         }, true);
 
         if (allSuspended) {
-            spawnCommand('already stoped', false);
+            spawnCommand('already stoped', false, false, this.verbose);
             return;
         }
 
@@ -187,7 +192,7 @@ class InteractiveModePlugin {
                 childCompiler.watching.suspend();
             }
         }
-        spawnCommand('stoped watching', false);
+        spawnCommand('stoped watching', false, false, this.verbose);
         return;
     }
 }
