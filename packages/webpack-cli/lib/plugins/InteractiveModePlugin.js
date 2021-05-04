@@ -39,7 +39,7 @@ const spawnCommand = (msg, status, toClear = false, verbose = false) => {
         process.stdout.write(`${red('⬤')}  `);
     }
 
-    readline.cursorTo(process.stdout, 0, totalRows - 4);
+    readline.cursorTo(process.stdout, 0, totalRows - lines - 1);
 };
 
 /**
@@ -148,7 +148,7 @@ class InteractiveModePlugin {
                 if (afterDoneCount === compilers.length) {
                     afterDoneCount = 0;
                     process.nextTick(() => {
-                        process.stdout.write('\n\n\n');
+                        process.stdout.write(`${this.verbose ? '\n' : ''}\n\n`);
                         spawnCommand('compilations completed', true, false, this.verbose);
                     });
                 }
