@@ -1,6 +1,8 @@
 const readline = require('readline');
 const { red, green, cyanBright, bold } = require('colorette');
 const { SyncHook } = require('tapable');
+const logger = require('../utils/logger');
+
 let version;
 try {
     version = require('webpack').version;
@@ -63,15 +65,16 @@ class InteractiveModePlugin {
     }
 
     apply(compiler) {
+        if (!isWebpack5) {
+            // Use CLI logger as webpack v4 may not expose logger
+            logger.error('Interactive is not supported on webpack v4 and less');
+            process.exit(1);
+        }
+
         const compilers = compiler.compilers ? compiler.compilers : [compiler];
 
         // Assign logger
         this.logger = compilers[0].getInfrastructureLogger(this.name);
-
-        if (!isWebpack5) {
-            this.logger.error('Interactive is not supported on webpack v4 and less');
-            process.exit(1);
-        }
 
         // Configure stdin for keypress event
         const stdin = process.stdin;
