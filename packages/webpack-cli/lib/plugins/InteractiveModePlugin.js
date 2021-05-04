@@ -25,7 +25,7 @@ const spawnCommand = (msg, status, toClear = false, verbose = false) => {
 
     if (verbose) {
         process.stdout.write(`${bold(cyanBright(`ⓘ  ${msg}`))}\n`);
-        process.stdout.write(`\n${gray('q: quit  w: watch  s: pause')}`);
+        process.stdout.write(`${gray('   q: quit  w: watch  s: pause')}`);
     } else {
         process.stdout.write('\n\n');
     }
@@ -38,6 +38,8 @@ const spawnCommand = (msg, status, toClear = false, verbose = false) => {
     } else {
         process.stdout.write(`${red('⬤')}  `);
     }
+
+    readline.cursorTo(process.stdout, 0, totalRows - 4);
 };
 
 /**
@@ -67,6 +69,9 @@ class InteractiveModePlugin {
         };
         this.logger = undefined;
         this.verbose = mode === 'verbose';
+
+        // hide cursor
+        process.stdout.write('\u001B[?25l');
     }
 
     apply(compiler) {
@@ -123,13 +128,12 @@ class InteractiveModePlugin {
         for (const childCompiler of compilers) {
             // eslint-disable-next-line no-loop-func
             childCompiler.hooks.beforeCompile.tap(this.name, () => {
-                beforeCompileCount += 1;
-                if (beforeCompileCount === 1) {
-                    process.nextTick(() => {
-                        clrscr();
-                        compiler.hooks.beforeInteractiveOutput.call();
-                    });
+                if (beforeCompileCount === 0) {
+                    clrscr();
+                    compiler.hooks.beforeInteractiveOutput.call();
                 }
+
+                beforeCompileCount += 1;
                 if (beforeCompileCount === compilers.length) {
                     beforeCompileCount = 0;
                 }
@@ -155,6 +159,8 @@ class InteractiveModePlugin {
     quitHandler(_compilers, compiler) {
         compiler.close(() => {
             spawnCommand('', true, true, this.verbose);
+            // Show cursor
+            process.stdout.write('\u001B[?25h');
             process.exit(0);
         });
     }
