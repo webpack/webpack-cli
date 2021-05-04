@@ -457,7 +457,15 @@ class WebpackCLI {
             {
                 name: 'interactive',
                 usage: '--interactive',
-                type: Boolean,
+                configs: [
+                    {
+                        type: 'string',
+                    },
+                    {
+                        type: 'boolean',
+                        value: 'standard',
+                    },
+                ],
                 alias: 'i',
                 multiple: false,
                 description: 'Enable webpack interactive mode',
@@ -1877,7 +1885,7 @@ class WebpackCLI {
             // Apply interactive plugin on compiler
             if (options.interactive) {
                 const InteractivePlugin = require('./plugins/InteractiveModePlugin');
-                const interactivePlugin = new InteractivePlugin();
+                const interactivePlugin = new InteractivePlugin(options.interactive);
                 interactivePlugin.apply(compiler);
             }
         } catch (error) {

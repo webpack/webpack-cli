@@ -16,7 +16,7 @@ try {
  * @param {boolean} status currently watching or not
  */
 const spawnCommand = (msg, status, toClear = false, verbose = false) => {
-    const lines = 3;
+    const lines = verbose ? 3 : 2;
     const totalRows = process.stdout.rows;
     readline.cursorTo(process.stdout, 0, totalRows - lines);
     readline.clearScreenDown(process.stdout);
@@ -27,7 +27,7 @@ const spawnCommand = (msg, status, toClear = false, verbose = false) => {
         process.stdout.write(`${bold(cyanBright(`ⓘ  ${msg}`))}\n`);
         process.stdout.write(`${gray('   q: quit  w: watch  s: pause')}`);
     } else {
-        process.stdout.write('\n\n');
+        process.stdout.write('\n');
     }
 
     readline.cursorTo(process.stdout, 0, totalRows - 2);
