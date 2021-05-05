@@ -112,7 +112,7 @@ describe('init command', () => {
         const { stdout, stderr } = await runPromptWithAnswers(assetsPath, ['init', '--force', '--template=apple'], [`${ENTER}`]);
 
         expect(stdout).toContain('Project has been initialised with webpack!');
-        expect(stdout).toContain('apple is not a valid template, please select one from below');
+        expect(stderr).toContain('apple is not a valid template, please select one from below');
         expect(stderr).toContain('webpack.config.js');
 
         // Test files
