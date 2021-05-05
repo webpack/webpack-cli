@@ -65,7 +65,7 @@ describe('--interactive flag with multi compiler', () => {
         const checker = [
             {
                 check: (data) => {
-                    return data.includes('\u2B24');
+                    return data.includes('\u25B2');
                 },
                 perform: () => {
                     writeFileSync(resolve(__dirname, './src/index.js'), `console.log('I am Batman');`);
@@ -99,7 +99,7 @@ describe('--interactive flag with multi compiler', () => {
         const checker = [
             {
                 check: (data) => {
-                    return data.includes('\u2B24');
+                    return data.includes('\u25B2');
                 },
                 perform: () => {
                     proc.stdin.write('s\n', (err) => {
@@ -129,7 +129,7 @@ describe('--interactive flag with multi compiler', () => {
         const checker = [
             {
                 check: (data) => {
-                    return data.includes('\u2B24');
+                    return data.includes('\u25B2');
                 },
                 perform: () => {
                     proc.stdin.write('s\n', (err) => {
@@ -178,7 +178,7 @@ describe('--interactive flag with multi compiler', () => {
         const checker = [
             {
                 check: (data) => {
-                    return data.includes('\u2B24');
+                    return data.includes('\u25B2');
                 },
                 perform: () => {
                     proc.stdin.write('q\n', (err) => {

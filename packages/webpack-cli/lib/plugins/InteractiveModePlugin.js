@@ -24,7 +24,7 @@ const spawnCommand = (msg, status, toClear = false, verbose = false) => {
     if (toClear) return;
 
     if (verbose) {
-        process.stdout.write(`${bold(cyanBright(`ⓘ  ${msg}`))}\n`);
+        process.stdout.write(`${bold(cyanBright(`i  ${msg}`))}\n`);
         process.stdout.write(`${gray('   q: quit  w: watch  s: pause')}`);
     } else {
         process.stdout.write('\n');
@@ -34,9 +34,9 @@ const spawnCommand = (msg, status, toClear = false, verbose = false) => {
 
     // for current status
     if (status) {
-        process.stdout.write(`${green('⬤')}  `);
+        process.stdout.write(`${green('▲')}  `);
     } else {
-        process.stdout.write(`${red('⬤')}  `);
+        process.stdout.write(`${red('▲')}  `);
     }
 
     readline.cursorTo(process.stdout, 0, totalRows - lines - 1);
