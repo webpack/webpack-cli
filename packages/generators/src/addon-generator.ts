@@ -1,4 +1,3 @@
-import { yellow } from 'colorette';
 import fs from 'fs';
 import path from 'path';
 import Generator from 'yeoman-generator';
@@ -58,7 +57,7 @@ const addonGenerator = (
 
         public async prompting(): Promise<void> {
             if (!this.supportedTemplates.includes(this.template)) {
-                this.utils.logger.log(`${yellow(`⚠ ${this.template} is not a valid template, please select one from below`)}`);
+                this.utils.logger.warn(`⚠ ${this.template} is not a valid template, please select one from below`);
 
                 const { selectedTemplate } = await List(
                     this,
