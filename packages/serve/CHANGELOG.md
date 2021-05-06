@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/serve@1.3.1...@webpack-cli/serve@1.4.0) (2021-05-06)
+
+### Bug Fixes
+
+-   avoid unnecessary searching port ([#2648](https://github.com/webpack/webpack-cli/issues/2648)) ([5063ed7](https://github.com/webpack/webpack-cli/commit/5063ed7970cd12fd042308edfccca8dbf249f0fc))
+-   **serve:** do not set port client port directly ([#2624](https://github.com/webpack/webpack-cli/issues/2624)) ([ec18b8e](https://github.com/webpack/webpack-cli/commit/ec18b8e478ff1a5f8d85bbddc599001dfd69eba3))
+
+### Features
+
+-   add `server` alias for `serve` command ([#2631](https://github.com/webpack/webpack-cli/issues/2631)) ([c9ee947](https://github.com/webpack/webpack-cli/commit/c9ee947618c06447bc1f949e4d401e63f737f38d))
+
 ## [1.3.1](https://github.com/webpack/webpack-cli/compare/@webpack-cli/serve@1.3.0...@webpack-cli/serve@1.3.1) (2021-03-27)
 
 **Note:** Version bump only for package @webpack-cli/serve
