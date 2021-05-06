@@ -5,7 +5,7 @@ module.exports = {
     devtool: false,
     devServer: isDevServer4
         ? {
-              dev: {
+              devMiddleware: {
                   stats: 'minimal',
               },
           }
