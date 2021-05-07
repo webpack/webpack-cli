@@ -8,6 +8,9 @@ module.exports = {
               devMiddleware: {
                   stats: 'minimal',
               },
+              client: {
+                  logging: 'info',
+              },
           }
         : {
               stats: 'minimal',

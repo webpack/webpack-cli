@@ -1,4 +1,5 @@
 const WebpackCLITestPlugin = require('../../utils/webpack-cli-test-plugin');
+const { isDevServer4 } = require('../../utils/test-utils');
 
 module.exports = [
     {
@@ -10,6 +11,13 @@ module.exports = [
             filename: 'first-output/[name].js',
         },
         plugins: [new WebpackCLITestPlugin(['mode', 'output'], false, 'hooks.compilation.taps')],
+        devServer: isDevServer4
+            ? {
+                  client: {
+                      logging: 'info',
+                  },
+              }
+            : {},
     },
     {
         name: 'two',

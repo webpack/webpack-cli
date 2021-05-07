@@ -7,6 +7,9 @@ if (isDevServer4) {
         devMiddleware: {
             publicPath: '/dev-server-my-public-path/',
         },
+        client: {
+            logging: 'info',
+        },
     };
 } else {
     devServerConfig = {
