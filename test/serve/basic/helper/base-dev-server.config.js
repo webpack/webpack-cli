@@ -4,8 +4,11 @@ let devServerConfig = {};
 
 if (isDevServer4) {
     devServerConfig = {
-        dev: {
+        devMiddleware: {
             publicPath: '/dev-server-my-public-path/',
+        },
+        client: {
+            logging: 'info',
         },
     };
 } else {
