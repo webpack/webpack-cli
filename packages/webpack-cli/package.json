@@ -13,7 +13,7 @@
   },
   "main": "./lib/index.js",
   "engines": {
-    "node": ">=10.13.0"
+    "node": ">=12.13.0"
   },
   "keywords": [
     "webpack",

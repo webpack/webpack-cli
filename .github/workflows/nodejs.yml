@@ -54,12 +54,9 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        node-version: [10.x, 12.x, 14.x]
+        node-version: [12.x, 14.x]
         webpack-version: [4, latest]
         dev-server-version: [latest, next]
-        exclude:
-          - node-version: 10.x
-            dev-server-version: next
 
     steps:
       - uses: actions/checkout@v2
