@@ -27,7 +27,6 @@
     -   [Commands](#commands)
     -   [Utilities](#utilities)
 -   [Getting started](#getting-started)
--   [webpack CLI Scaffolds](#webpack-cli-scaffolds)
 -   [Exit codes and their meanings](#exit-codes-and-their-meanings)
 -   [Contributing and Internal Documentation](#contributing-and-internal-documentation)
 -   [Open Collective](#open-collective)
@@ -83,12 +82,6 @@ npx webpack-cli init
 ```
 
 You will be prompted for some questions about what how you want to generate your config file when running the `init` command so webpack CLI can provide the best fitting configuration.
-
-## webpack CLI Scaffolds
-
-With v3 of webpack CLI, we introduced scaffolding as an integral part of the CLI. Our goal is to simplify the creation of webpack configurations for different purposes. Additionally, sharing such solutions with the community is beneficial and with webpack, we want to allow this. We provide `webpack-scaffold` as a utility suite for creating these scaffolds. It contains functions that could be of use for creating a scaffold yourself.
-
-You can read more about [Scaffolding](https://webpack.js.org/guides/scaffolding), learn [How to compose a webpack-scaffold?](https://webpack.js.org/contribute/writing-a-scaffold) or generate one with [webpack-scaffold-starter](https://github.com/rishabh3112/webpack-scaffold-starter).
 
 ## Exit codes and their meanings
 

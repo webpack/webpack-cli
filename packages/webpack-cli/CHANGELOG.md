@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.7.0](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.6.0...webpack-cli@4.7.0) (2021-05-06)
+
+### Bug Fixes
+
+-   parsing of empty `--env` flags ([#2643](https://github.com/webpack/webpack-cli/issues/2643)) ([bc12f1a](https://github.com/webpack/webpack-cli/commit/bc12f1a2a833f09a0585050a0f5dd854da188f1d))
+-   update usage info ([#2594](https://github.com/webpack/webpack-cli/issues/2594)) ([9d07d67](https://github.com/webpack/webpack-cli/commit/9d07d67faf147cbaf0dddb95038403963e5f2afb))
+
+### Features
+
+-   add `create` and `new` alias for `init` ([#2616](https://github.com/webpack/webpack-cli/issues/2616)) ([5a9789d](https://github.com/webpack/webpack-cli/commit/5a9789db237b7696adfdc9826b0dda749fedfa9a))
+-   add `server` alias for `serve` command ([#2631](https://github.com/webpack/webpack-cli/issues/2631)) ([c9ee947](https://github.com/webpack/webpack-cli/commit/c9ee947618c06447bc1f949e4d401e63f737f38d))
+-   add flag to force start finish log ([#2566](https://github.com/webpack/webpack-cli/issues/2566)) ([281aad3](https://github.com/webpack/webpack-cli/commit/281aad3ee4961f1643453eb1a926e88e0b7f019c))
+-   added `--no-devtool` to webpack v4([#2603](https://github.com/webpack/webpack-cli/issues/2603)) ([7c6f390](https://github.com/webpack/webpack-cli/commit/7c6f390a1d64d562065ffc31d8b23d833813ee9d))
+-   added support arguments description ([#2659](https://github.com/webpack/webpack-cli/issues/2659)) ([4dfd166](https://github.com/webpack/webpack-cli/commit/4dfd166f757ce94130bf9b7580f2dbe2868b8f4f))
+
 # [4.6.0](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.5.0...webpack-cli@4.6.0) (2021-03-27)
 
 ### Bug Fixes

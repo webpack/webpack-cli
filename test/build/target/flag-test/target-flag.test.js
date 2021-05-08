@@ -1,5 +1,5 @@
 'use strict';
-const { run, isWebpack5 } = require('../../../utils/test-utils');
+const { run, isWebpack5, normalizeStdout, normalizeStderr } = require('../../../utils/test-utils');
 
 const targetValues = ['web', 'webworker', 'node', 'async-node', 'node-webkit', 'electron-main', 'electron-renderer', 'electron-preload'];
 
@@ -36,14 +36,8 @@ describe('--target flag', () => {
         const { exitCode, stderr, stdout } = await run(__dirname, ['--target', 'invalid']);
 
         expect(exitCode).toBe(2);
-
-        if (isWebpack5) {
-            expect(stderr).toContain(`Unknown target 'invalid'`);
-        } else {
-            expect(stderr).toContain('Invalid configuration object');
-        }
-
-        expect(stdout).toBeFalsy();
+        expect(normalizeStderr(stderr)).toMatchSnapshot('stderr');
+        expect(normalizeStdout(stdout)).toMatchSnapshot('stdout');
     });
 
     if (isWebpack5) {
@@ -59,23 +53,23 @@ describe('--target flag', () => {
             const { exitCode, stderr, stdout } = await run(__dirname, ['--target', 'node', '--target', 'invalid']);
 
             expect(exitCode).toBe(2);
-            expect(stderr).toContain("Error: Unknown target 'invalid'");
-            expect(stdout).toBeFalsy();
+            expect(normalizeStderr(stderr)).toMatchSnapshot('stderr');
+            expect(normalizeStdout(stdout)).toMatchSnapshot('stdout');
         });
 
         it('should throw an error for incompatible multiple targets', async () => {
             const { exitCode, stderr, stdout } = await run(__dirname, ['--target', 'node', '--target', 'web']);
 
             expect(exitCode).toBe(2);
-            expect(stderr).toContain('Error: Universal Chunk Loading is not implemented yet');
-            expect(stdout).toBeFalsy();
+            expect(normalizeStderr(stderr)).toMatchSnapshot('stderr');
+            expect(normalizeStdout(stdout)).toMatchSnapshot('stdout');
         });
 
         it('should reset target from node to async-node with --target-reset', async () => {
             const { exitCode, stderr, stdout } = await run(__dirname, ['--target-reset', '--target', 'async-node']);
 
             expect(exitCode).toBe(0);
-            expect(stderr).toBeFalsy();
+            expect(normalizeStderr(stderr)).toMatchSnapshot('stderr');
             expect(stdout).toContain(`target: [ 'async-node' ]`);
         });
 
@@ -83,8 +77,8 @@ describe('--target flag', () => {
             const { exitCode, stderr, stdout } = await run(__dirname, ['--target-reset']);
 
             expect(exitCode).toBe(2);
-            expect(stderr).toContain('Invalid configuration object');
-            expect(stdout).toBeFalsy();
+            expect(normalizeStderr(stderr)).toMatchSnapshot('stderr');
+            expect(normalizeStdout(stdout)).toMatchSnapshot('stdout');
         });
     }
 });

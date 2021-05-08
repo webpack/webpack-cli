@@ -2,7 +2,7 @@
 
 const path = require('path');
 
-// eslint-disable-next-line node/no-extraneous-require,node/no-unpublished-require
+// eslint-disable-next-line node/no-unpublished-require
 const stripAnsi = require('strip-ansi');
 const globalModulesNpmValue = 'test-npm';
 const utilsDirectory = path.resolve(__dirname, '../../packages/webpack-cli/lib/utils/');

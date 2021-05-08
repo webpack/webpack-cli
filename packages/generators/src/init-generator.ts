@@ -6,6 +6,8 @@ import { CustomGenerator } from './types';
 import { existsSync, mkdirSync } from 'fs';
 import handlers from './handlers';
 
+import { readFileSync, writeFileSync } from 'fs';
+
 /**
  *
  * Generator for initializing a webpack config
@@ -19,6 +21,7 @@ export default class InitGenerator extends CustomGenerator {
     public template: string;
     public generationPath: string;
     public resolvedGenerationPath: string;
+    public configurationPath: string;
     public supportedTemplates: string[];
     public answers: Record<string, unknown>;
     public force: boolean;
@@ -55,7 +58,7 @@ export default class InitGenerator extends CustomGenerator {
         }
 
         if (!this.supportedTemplates.includes(this.template)) {
-            this.utils.logger.log(`${yellow(`⚠ ${this.template} is not a valid template, please select one from below`)}`);
+            this.utils.logger.warn(`⚠ ${this.template} is not a valid template, please select one from below`);
 
             const { selectedTemplate } = await Question.List(
                 this,
@@ -70,6 +73,24 @@ export default class InitGenerator extends CustomGenerator {
         }
 
         await handlers[this.template].questions(this, Question);
+
+        // Handle installation of prettier
+        try {
+            // eslint-disable-next-line node/no-extraneous-require
+            require.resolve('prettier');
+        } catch (err) {
+            const { installPrettier } = await Question.Confirm(
+                this,
+                'installPrettier',
+                'Do you like to install prettier to format generated configuration?',
+                true,
+                false,
+            );
+
+            if (installPrettier) {
+                this.dependencies.push('prettier');
+            }
+        }
     }
 
     public installPlugins(): void {
@@ -85,5 +106,19 @@ export default class InitGenerator extends CustomGenerator {
     public writing(): void {
         this.utils.logger.log(`${blue('ℹ INFO ')} Initialising project...`);
         handlers[this.template].generate(this);
+    }
+
+    public end(): void {
+        // Prettify configuration file if possible
+        try {
+            // eslint-disable-next-line node/no-extraneous-require, @typescript-eslint/no-var-requires
+            const prettier = require('prettier');
+            const source = readFileSync(this.configurationPath, { encoding: 'utf8' });
+            const formattedSource = prettier.format(source, { parser: 'babel' });
+            writeFileSync(this.configurationPath, formattedSource);
+        } catch (err) {
+            this.utils.logger.log(`${yellow(`⚠ Generated configuration may not be properly formatted as prettier is not installed.`)}`);
+            return;
+        }
     }
 }

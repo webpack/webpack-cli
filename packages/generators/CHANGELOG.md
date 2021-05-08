@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/generators@2.0.0...@webpack-cli/generators@2.1.0) (2021-05-06)
+
+### Bug Fixes
+
+-   add node env as prod in default template ([#2614](https://github.com/webpack/webpack-cli/issues/2614)) ([5ea478c](https://github.com/webpack/webpack-cli/commit/5ea478ca9e8fda691e37fdd6d0ad8d1df074e224))
+-   broken URL in generated webpack.config.js ([#2600](https://github.com/webpack/webpack-cli/issues/2600)) ([6e207bc](https://github.com/webpack/webpack-cli/commit/6e207bc24886f7f8a87a19119924a682f66e575b))
+-   comment typo in webpack.config.js template file ([#2639](https://github.com/webpack/webpack-cli/issues/2639)) ([d2ab57d](https://github.com/webpack/webpack-cli/commit/d2ab57d2268d8cc8df628f35d75774c88330a5f8))
+-   correct webpack config for `babel-loader` and `ts-loader` ([#2577](https://github.com/webpack/webpack-cli/issues/2577)) ([177dca7](https://github.com/webpack/webpack-cli/commit/177dca7c20fff0708721426598fcd5a89384eb8e))
+-   send warning regarding invalid template to stderr ([#2687](https://github.com/webpack/webpack-cli/issues/2687)) ([dc0481b](https://github.com/webpack/webpack-cli/commit/dc0481becfde5553fa95a393d1167539b2e14ec2))
+-   update usage info ([#2594](https://github.com/webpack/webpack-cli/issues/2594)) ([9d07d67](https://github.com/webpack/webpack-cli/commit/9d07d67faf147cbaf0dddb95038403963e5f2afb))
+-   **generators:** use correct exit code ([#2569](https://github.com/webpack/webpack-cli/issues/2569)) ([9a18e7f](https://github.com/webpack/webpack-cli/commit/9a18e7f6cdf8524ecee3cfaf09595983eebf35b9))
+
+### Features
+
+-   add --template flag for addon generator ([#2576](https://github.com/webpack/webpack-cli/issues/2576)) ([c8f702a](https://github.com/webpack/webpack-cli/commit/c8f702ac399252b8e5da899e6014a2832321caa3))
+-   add `create` and `new` alias for `init` ([#2616](https://github.com/webpack/webpack-cli/issues/2616)) ([5a9789d](https://github.com/webpack/webpack-cli/commit/5a9789db237b7696adfdc9826b0dda749fedfa9a))
+-   add support for mini-css-extract-plugin on demand ([#2571](https://github.com/webpack/webpack-cli/issues/2571)) ([ed201c0](https://github.com/webpack/webpack-cli/commit/ed201c0744d08dc376a234ddafe32f6b5fe60082))
+-   add support for mode specific config ([#2585](https://github.com/webpack/webpack-cli/issues/2585)) ([993a7f0](https://github.com/webpack/webpack-cli/commit/993a7f02ec1546a7aca1ee537366faa8ac18de84))
+-   added support arguments description ([#2659](https://github.com/webpack/webpack-cli/issues/2659)) ([4dfd166](https://github.com/webpack/webpack-cli/commit/4dfd166f757ce94130bf9b7580f2dbe2868b8f4f))
+-   allow setup extract plugin ([#2644](https://github.com/webpack/webpack-cli/issues/2644)) ([71bfaa8](https://github.com/webpack/webpack-cli/commit/71bfaa8ef5e9de4d4f0cbee4ba7e57a5b1b69d90))
+-   make extention case insensitive ([#2572](https://github.com/webpack/webpack-cli/issues/2572)) ([67eeaaf](https://github.com/webpack/webpack-cli/commit/67eeaaf66ed5b6b3b705c2b595e3923f2cb725e6))
+-   prettify generated config ([#2640](https://github.com/webpack/webpack-cli/issues/2640)) ([c3c069e](https://github.com/webpack/webpack-cli/commit/c3c069e1cc7958a6f7b5d4cdb74acb12bc25d8c7))
+
 # [2.0.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/generators@1.3.1...@webpack-cli/generators@2.0.0) (2021-03-27)
 
 ### BREAKING CHANGES

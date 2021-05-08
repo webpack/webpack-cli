@@ -40,18 +40,6 @@ export const LoaderGenerator = addonGenerator(
         },
     ],
     path.resolve(__dirname, '../loader-template'),
-    [
-        'src/cjs.js.tpl',
-        'test/test-utils.js.tpl',
-        'test/unit.test.js.tpl',
-        'test/functional.test.js.tpl',
-        'test/fixtures/simple-file.js.tpl',
-        'examples/simple/webpack.config.js.tpl',
-        'examples/simple/src/index.js.tpl',
-        'examples/simple/src/lazy-module.js.tpl',
-        'examples/simple/src/static-esm-module.js.tpl',
-    ],
-    ['src/_index.js.tpl'],
     (gen): Record<string, unknown> => ({ name: gen.props.name }),
 );
 

@@ -1,6 +1,5 @@
 'use strict';
 
-// eslint-disable-next-line node/no-unpublished-require
 const { run } = require('../../../utils/test-utils');
 
 describe('mode flags with config', () => {
@@ -32,7 +31,7 @@ describe('mode flags with config', () => {
     });
 
     it('should use mode from flag over "process.env.NODE_ENV"', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ['--mode', 'none', '-c', 'webpack.config2.js'], false, [], {
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--mode', 'none', '-c', 'webpack.config2.js'], [], {
             NODE_ENV: 'production',
         });
 

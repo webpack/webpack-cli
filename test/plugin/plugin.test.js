@@ -44,7 +44,7 @@ describe('plugin command', () => {
         });
 
         // Check if the the generated plugin works successfully
-        const { stdout: stdout2 } = await run(__dirname, ['--config', './my-webpack-plugin/examples/simple/webpack.config.js'], false);
+        const { stdout: stdout2 } = await run(__dirname, ['--config', './my-webpack-plugin/examples/simple/webpack.config.js']);
         expect(normalizeStdout(stdout2)).toContain('Hello World!');
     });
 
@@ -71,7 +71,7 @@ describe('plugin command', () => {
         });
 
         // Check if the the generated plugin works successfully
-        const { stdout: stdout2 } = await run(__dirname, ['--config', './test-plugin/examples/simple/webpack.config.js'], false);
+        const { stdout: stdout2 } = await run(__dirname, ['--config', './test-plugin/examples/simple/webpack.config.js']);
         expect(normalizeStdout(stdout2)).toContain('Hello World!');
     });
 
@@ -98,7 +98,7 @@ describe('plugin command', () => {
         });
 
         // Check if the the generated plugin works successfully
-        const { stdout: stdout2 } = await run(customPluginPath, ['--config', './examples/simple/webpack.config.js'], false);
+        const { stdout: stdout2 } = await run(customPluginPath, ['--config', './examples/simple/webpack.config.js']);
         expect(normalizeStdout(stdout2)).toContain('Hello World!');
     });
 
@@ -130,7 +130,7 @@ describe('plugin command', () => {
         });
 
         // Check if the the generated plugin works successfully
-        const { stdout: stdout2 } = await run(customPluginPath, ['--config', './examples/simple/webpack.config.js'], false);
+        const { stdout: stdout2 } = await run(customPluginPath, ['--config', './examples/simple/webpack.config.js']);
         expect(normalizeStdout(stdout2)).toContain('Hello World!');
     });
 

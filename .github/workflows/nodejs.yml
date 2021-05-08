@@ -57,6 +57,9 @@ jobs:
         node-version: [10.x, 12.x, 14.x]
         webpack-version: [4, latest]
         dev-server-version: [latest, next]
+        exclude:
+          - node-version: 10.x
+            dev-server-version: next
 
     steps:
       - uses: actions/checkout@v2
