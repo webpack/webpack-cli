@@ -54,7 +54,7 @@ packages/**/*.map
 
 # build files
 packages/**/lib
-packages/**/build
+packages/**/build/**
 packages/**/yarn.lock
 !packages/webpack-cli/lib/utils/__tests__/**/yarn.lock
 !packages/webpack-cli/lib/utils/__tests__/**/package-lock.json
