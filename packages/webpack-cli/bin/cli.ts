@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import Module from 'module';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
