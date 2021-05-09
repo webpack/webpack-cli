@@ -639,4 +639,30 @@ describe("init command", () => {
         // Check if the generated package.json file content matches the snapshot
         expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
     });
+
+    it("should generate appropriate files for webpack template", async () => {
+        const assetsPath = await uniqueDirectoryForTest();
+        const { stdout, stderr } = await run(assetsPath, ["init", "--template", "webpack"]);
+
+        const files = [
+            ".gitignore",
+            ".husky",
+            ".editorconfig",
+            ".eslintrc.js",
+            "prettier.config.js",
+            "jest.config.js",
+            "LICENSE",
+            "lint-staged.config.js",
+        ];
+
+        expect(stdout).toContain("Project has been initialised with webpack!");
+
+        files.forEach((file) => {
+            expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+            expect(stderr).toContain(file);
+        });
+
+        // Check if the generated package.json file content matches the snapshot
+        expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
+    });
 });
