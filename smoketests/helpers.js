@@ -19,7 +19,7 @@ const swapPkgName = (current, isSubPackage = false) => {
     fs.renameSync(getPkgPath(current, isSubPackage), getPkgPath(next, isSubPackage));
 };
 
-const CLI_ENTRY_PATH = path.resolve(ROOT_PATH, './packages/webpack-cli/build/bin/cli.js');
+const CLI_ENTRY_PATH = path.resolve(ROOT_PATH, './packages/webpack-cli/bin/cli.js');
 
 const runTest = (package, cliArgs = [], logMessage, isSubPackage = false) => {
     // Simulate package missing

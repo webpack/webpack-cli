@@ -12,11 +12,11 @@ jest.setMock(path.resolve(utilsDirectory, './prompt'), jest.fn());
 jest.setMock(path.resolve(utilsDirectory, './run-command'), jest.fn());
 jest.setMock(path.resolve(utilsDirectory, './package-exists'), jest.fn());
 jest.setMock(path.resolve(utilsDirectory, './get-package-manager'), jest.fn());
-const getPackageManager = require(path.resolve(utilsDirectory, './get-package-manager')).default;
-const packageExists = require(path.resolve(utilsDirectory, './package-exists')).default;
+const getPackageManager = require(path.resolve(utilsDirectory, './get-package-manager'));
+const packageExists = require(path.resolve(utilsDirectory, './package-exists'));
 const promptInstallation = require(path.resolve(utilsDirectory, './prompt-installation')).default;
-const runCommand = require(path.resolve(utilsDirectory, './run-command')).default;
-const prompt = require(path.resolve(utilsDirectory, './prompt')).default;
+const runCommand = require(path.resolve(utilsDirectory, './run-command'));
+const prompt = require(path.resolve(utilsDirectory, './prompt'));
 
 describe('promptInstallation', () => {
     beforeAll(() => {

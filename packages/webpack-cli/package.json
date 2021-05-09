@@ -9,7 +9,7 @@
   },
   "homepage": "https://github.com/webpack/webpack-cli/tree/master/packages/webpack-cli",
   "bin": {
-    "webpack-cli": "./build/bin/cli.js"
+    "webpack-cli": "./bin/cli.js"
   },
   "main": "./lib/index.js",
   "engines": {
@@ -25,6 +25,7 @@
   ],
   "files": [
     "build",
+    "bin",
     "!**/*__tests__"
   ],
   "dependencies": {

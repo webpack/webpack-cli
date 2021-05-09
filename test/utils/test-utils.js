@@ -25,7 +25,7 @@ try {
 
 const isDevServer4 = devServerVersion && devServerVersion.startsWith('4');
 
-const WEBPACK_PATH = path.resolve(__dirname, '../../packages/webpack-cli/build/bin/cli.js');
+const WEBPACK_PATH = path.resolve(__dirname, '../../packages/webpack-cli/bin/cli.js');
 const ENABLE_LOG_COMPILATION = process.env.ENABLE_PIPE || false;
 const isWindows = process.platform === 'win32';
 
