@@ -22,6 +22,7 @@
     "plugin-template"
   ],
   "dependencies": {
+    "@webpack-contrib/defaults": "^6.3.0",
     "colorette": "^1.2.1",
     "yeoman-environment": "^2.10.3",
     "yeoman-generator": "^4.12.0"
