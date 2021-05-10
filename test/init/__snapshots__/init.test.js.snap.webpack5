@@ -965,3 +965,45 @@ module.exports = () => {
 };
 "
 `;
+
+exports[`init command recognizes '-f' as an alias for '--force' 1`] = `
+Object {
+  "description": "My webpack project",
+  "devDependencies": Object {
+    "html-webpack-plugin": "x.x.x",
+    "webpack": "x.x.x",
+    "webpack-cli": "x.x.x",
+    "webpack-dev-server": "x.x.x",
+  },
+  "name": "my-webpack-project",
+  "scripts": Object {
+    "build": "webpack --mode=production --node-env=production",
+    "build:dev": "webpack --mode=development",
+    "build:prod": "webpack --mode=production --node-env=production",
+    "serve": "webpack serve",
+    "watch": "webpack --watch",
+  },
+  "version": "1.0.0",
+}
+`;
+
+exports[`init command recognizes '-t' as an alias for '--template' 1`] = `
+Object {
+  "description": "My webpack project",
+  "devDependencies": Object {
+    "html-webpack-plugin": "x.x.x",
+    "webpack": "x.x.x",
+    "webpack-cli": "x.x.x",
+    "webpack-dev-server": "x.x.x",
+  },
+  "name": "my-webpack-project",
+  "scripts": Object {
+    "build": "webpack --mode=production --node-env=production",
+    "build:dev": "webpack --mode=development",
+    "build:prod": "webpack --mode=production --node-env=production",
+    "serve": "webpack serve",
+    "watch": "webpack --watch",
+  },
+  "version": "1.0.0",
+}
+`;

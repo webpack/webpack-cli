@@ -531,17 +531,17 @@ exports[`help should show help information for 'c' command using command syntax:
 Initialize a new webpack project.
 
 Arguments:
-  generation-path       Path to the installation directory, e.g. ./projectName
+  generation-path         Path to the installation directory, e.g. ./projectName
 
 Options:
-  --template <value>    Type of template (default: \\"default\\")
-  --force               Generate without questions (ideally) using default answers
+  -t, --template <value>  Type of template (default: \\"default\\")
+  -f, --force             Generate without questions (ideally) using default answers
 
 Global options:
-  --color               Enable colors on console.
-  --no-color            Disable colors on console.
-  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  -h, --help [verbose]  Display help for commands and options.
+  --color                 Enable colors on console.
+  --no-color              Disable colors on console.
+  -v, --version           Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]    Display help for commands and options.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -558,17 +558,17 @@ exports[`help should show help information for 'c' command using the "--help" op
 Initialize a new webpack project.
 
 Arguments:
-  generation-path       Path to the installation directory, e.g. ./projectName
+  generation-path         Path to the installation directory, e.g. ./projectName
 
 Options:
-  --template <value>    Type of template (default: \\"default\\")
-  --force               Generate without questions (ideally) using default answers
+  -t, --template <value>  Type of template (default: \\"default\\")
+  -f, --force             Generate without questions (ideally) using default answers
 
 Global options:
-  --color               Enable colors on console.
-  --no-color            Disable colors on console.
-  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  -h, --help [verbose]  Display help for commands and options.
+  --color                 Enable colors on console.
+  --no-color              Disable colors on console.
+  -v, --version           Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]    Display help for commands and options.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -667,17 +667,17 @@ exports[`help should show help information for 'create' command using command sy
 Initialize a new webpack project.
 
 Arguments:
-  generation-path       Path to the installation directory, e.g. ./projectName
+  generation-path         Path to the installation directory, e.g. ./projectName
 
 Options:
-  --template <value>    Type of template (default: \\"default\\")
-  --force               Generate without questions (ideally) using default answers
+  -t, --template <value>  Type of template (default: \\"default\\")
+  -f, --force             Generate without questions (ideally) using default answers
 
 Global options:
-  --color               Enable colors on console.
-  --no-color            Disable colors on console.
-  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  -h, --help [verbose]  Display help for commands and options.
+  --color                 Enable colors on console.
+  --no-color              Disable colors on console.
+  -v, --version           Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]    Display help for commands and options.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -694,17 +694,17 @@ exports[`help should show help information for 'create' command using the "--hel
 Initialize a new webpack project.
 
 Arguments:
-  generation-path       Path to the installation directory, e.g. ./projectName
+  generation-path         Path to the installation directory, e.g. ./projectName
 
 Options:
-  --template <value>    Type of template (default: \\"default\\")
-  --force               Generate without questions (ideally) using default answers
+  -t, --template <value>  Type of template (default: \\"default\\")
+  -f, --force             Generate without questions (ideally) using default answers
 
 Global options:
-  --color               Enable colors on console.
-  --no-color            Disable colors on console.
-  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  -h, --help [verbose]  Display help for commands and options.
+  --color                 Enable colors on console.
+  --no-color              Disable colors on console.
+  -v, --version           Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]    Display help for commands and options.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -863,19 +863,20 @@ exports[`help should show help information for 'init' and respect the "--color" 
 Initialize a new webpack project.
 
 Arguments:
-  generation-path       Path to the installation directory, e.g. ./projectName
+  generation-path         Path to the installation directory, e.g.
+                          ./projectName
 
 Options:
-  --template <value>    Type of template (default: \\"default\\")
-  --force               Generate without questions (ideally) using default
-                        answers
+  -t, --template <value>  Type of template (default: \\"default\\")
+  -f, --force             Generate without questions (ideally) using default
+                          answers
 
 Global options:
-  --color               Enable colors on console.
-  --no-color            Disable colors on console.
-  -v, --version         Output the version number of 'webpack', 'webpack-cli'
-                        and 'webpack-dev-server' and commands.
-  -h, --help [verbose]  Display help for commands and options.
+  --color                 Enable colors on console.
+  --no-color              Disable colors on console.
+  -v, --version           Output the version number of 'webpack', 'webpack-cli'
+                          and 'webpack-dev-server' and commands.
+  -h, --help [verbose]    Display help for commands and options.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -892,19 +893,20 @@ exports[`help should show help information for 'init' and respect the "--no-colo
 Initialize a new webpack project.
 
 Arguments:
-  generation-path       Path to the installation directory, e.g. ./projectName
+  generation-path         Path to the installation directory, e.g.
+                          ./projectName
 
 Options:
-  --template <value>    Type of template (default: \\"default\\")
-  --force               Generate without questions (ideally) using default
-                        answers
+  -t, --template <value>  Type of template (default: \\"default\\")
+  -f, --force             Generate without questions (ideally) using default
+                          answers
 
 Global options:
-  --color               Enable colors on console.
-  --no-color            Disable colors on console.
-  -v, --version         Output the version number of 'webpack', 'webpack-cli'
-                        and 'webpack-dev-server' and commands.
-  -h, --help [verbose]  Display help for commands and options.
+  --color                 Enable colors on console.
+  --no-color              Disable colors on console.
+  -v, --version           Output the version number of 'webpack', 'webpack-cli'
+                          and 'webpack-dev-server' and commands.
+  -h, --help [verbose]    Display help for commands and options.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -921,17 +923,17 @@ exports[`help should show help information for 'init' command using command synt
 Initialize a new webpack project.
 
 Arguments:
-  generation-path       Path to the installation directory, e.g. ./projectName
+  generation-path         Path to the installation directory, e.g. ./projectName
 
 Options:
-  --template <value>    Type of template (default: \\"default\\")
-  --force               Generate without questions (ideally) using default answers
+  -t, --template <value>  Type of template (default: \\"default\\")
+  -f, --force             Generate without questions (ideally) using default answers
 
 Global options:
-  --color               Enable colors on console.
-  --no-color            Disable colors on console.
-  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  -h, --help [verbose]  Display help for commands and options.
+  --color                 Enable colors on console.
+  --no-color              Disable colors on console.
+  -v, --version           Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]    Display help for commands and options.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -948,17 +950,17 @@ exports[`help should show help information for 'init' command using the "--help"
 Initialize a new webpack project.
 
 Arguments:
-  generation-path       Path to the installation directory, e.g. ./projectName
+  generation-path         Path to the installation directory, e.g. ./projectName
 
 Options:
-  --template <value>    Type of template (default: \\"default\\")
-  --force               Generate without questions (ideally) using default answers
+  -t, --template <value>  Type of template (default: \\"default\\")
+  -f, --force             Generate without questions (ideally) using default answers
 
 Global options:
-  --color               Enable colors on console.
-  --no-color            Disable colors on console.
-  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  -h, --help [verbose]  Display help for commands and options.
+  --color                 Enable colors on console.
+  --no-color              Disable colors on console.
+  -v, --version           Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]    Display help for commands and options.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -975,16 +977,16 @@ exports[`help should show help information for 'l' command using command syntax:
 Scaffold a loader.
 
 Arguments:
-  output-path           Path to the output directory, e.g. ./loaderName
+  output-path             Path to the output directory, e.g. ./loaderName
 
 Options:
-  --template <value>    Type of template (default: \\"default\\")
+  -t, --template <value>  Type of template (default: \\"default\\")
 
 Global options:
-  --color               Enable colors on console.
-  --no-color            Disable colors on console.
-  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  -h, --help [verbose]  Display help for commands and options.
+  --color                 Enable colors on console.
+  --no-color              Disable colors on console.
+  -v, --version           Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]    Display help for commands and options.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -1001,16 +1003,16 @@ exports[`help should show help information for 'l' command using the "--help" op
 Scaffold a loader.
 
 Arguments:
-  output-path           Path to the output directory, e.g. ./loaderName
+  output-path             Path to the output directory, e.g. ./loaderName
 
 Options:
-  --template <value>    Type of template (default: \\"default\\")
+  -t, --template <value>  Type of template (default: \\"default\\")
 
 Global options:
-  --color               Enable colors on console.
-  --no-color            Disable colors on console.
-  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  -h, --help [verbose]  Display help for commands and options.
+  --color                 Enable colors on console.
+  --no-color              Disable colors on console.
+  -v, --version           Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]    Display help for commands and options.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -1027,17 +1029,17 @@ exports[`help should show help information for 'loader' and respect the "--color
 Scaffold a loader.
 
 Arguments:
-  output-path           Path to the output directory, e.g. ./loaderName
+  output-path             Path to the output directory, e.g. ./loaderName
 
 Options:
-  --template <value>    Type of template (default: \\"default\\")
+  -t, --template <value>  Type of template (default: \\"default\\")
 
 Global options:
-  --color               Enable colors on console.
-  --no-color            Disable colors on console.
-  -v, --version         Output the version number of 'webpack', 'webpack-cli'
-                        and 'webpack-dev-server' and commands.
-  -h, --help [verbose]  Display help for commands and options.
+  --color                 Enable colors on console.
+  --no-color              Disable colors on console.
+  -v, --version           Output the version number of 'webpack', 'webpack-cli'
+                          and 'webpack-dev-server' and commands.
+  -h, --help [verbose]    Display help for commands and options.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -1054,17 +1056,17 @@ exports[`help should show help information for 'loader' and respect the "--no-co
 Scaffold a loader.
 
 Arguments:
-  output-path           Path to the output directory, e.g. ./loaderName
+  output-path             Path to the output directory, e.g. ./loaderName
 
 Options:
-  --template <value>    Type of template (default: \\"default\\")
+  -t, --template <value>  Type of template (default: \\"default\\")
 
 Global options:
-  --color               Enable colors on console.
-  --no-color            Disable colors on console.
-  -v, --version         Output the version number of 'webpack', 'webpack-cli'
-                        and 'webpack-dev-server' and commands.
-  -h, --help [verbose]  Display help for commands and options.
+  --color                 Enable colors on console.
+  --no-color              Disable colors on console.
+  -v, --version           Output the version number of 'webpack', 'webpack-cli'
+                          and 'webpack-dev-server' and commands.
+  -h, --help [verbose]    Display help for commands and options.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -1081,16 +1083,16 @@ exports[`help should show help information for 'loader' command using command sy
 Scaffold a loader.
 
 Arguments:
-  output-path           Path to the output directory, e.g. ./loaderName
+  output-path             Path to the output directory, e.g. ./loaderName
 
 Options:
-  --template <value>    Type of template (default: \\"default\\")
+  -t, --template <value>  Type of template (default: \\"default\\")
 
 Global options:
-  --color               Enable colors on console.
-  --no-color            Disable colors on console.
-  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  -h, --help [verbose]  Display help for commands and options.
+  --color                 Enable colors on console.
+  --no-color              Disable colors on console.
+  -v, --version           Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]    Display help for commands and options.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -1107,16 +1109,16 @@ exports[`help should show help information for 'loader' command using the "--hel
 Scaffold a loader.
 
 Arguments:
-  output-path           Path to the output directory, e.g. ./loaderName
+  output-path             Path to the output directory, e.g. ./loaderName
 
 Options:
-  --template <value>    Type of template (default: \\"default\\")
+  -t, --template <value>  Type of template (default: \\"default\\")
 
 Global options:
-  --color               Enable colors on console.
-  --no-color            Disable colors on console.
-  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  -h, --help [verbose]  Display help for commands and options.
+  --color                 Enable colors on console.
+  --no-color              Disable colors on console.
+  -v, --version           Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]    Display help for commands and options.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -1255,17 +1257,17 @@ exports[`help should show help information for 'n' command using command syntax:
 Initialize a new webpack project.
 
 Arguments:
-  generation-path       Path to the installation directory, e.g. ./projectName
+  generation-path         Path to the installation directory, e.g. ./projectName
 
 Options:
-  --template <value>    Type of template (default: \\"default\\")
-  --force               Generate without questions (ideally) using default answers
+  -t, --template <value>  Type of template (default: \\"default\\")
+  -f, --force             Generate without questions (ideally) using default answers
 
 Global options:
-  --color               Enable colors on console.
-  --no-color            Disable colors on console.
-  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  -h, --help [verbose]  Display help for commands and options.
+  --color                 Enable colors on console.
+  --no-color              Disable colors on console.
+  -v, --version           Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]    Display help for commands and options.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -1282,17 +1284,17 @@ exports[`help should show help information for 'n' command using the "--help" op
 Initialize a new webpack project.
 
 Arguments:
-  generation-path       Path to the installation directory, e.g. ./projectName
+  generation-path         Path to the installation directory, e.g. ./projectName
 
 Options:
-  --template <value>    Type of template (default: \\"default\\")
-  --force               Generate without questions (ideally) using default answers
+  -t, --template <value>  Type of template (default: \\"default\\")
+  -f, --force             Generate without questions (ideally) using default answers
 
 Global options:
-  --color               Enable colors on console.
-  --no-color            Disable colors on console.
-  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  -h, --help [verbose]  Display help for commands and options.
+  --color                 Enable colors on console.
+  --no-color              Disable colors on console.
+  -v, --version           Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]    Display help for commands and options.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -1309,17 +1311,17 @@ exports[`help should show help information for 'new' command using command synta
 Initialize a new webpack project.
 
 Arguments:
-  generation-path       Path to the installation directory, e.g. ./projectName
+  generation-path         Path to the installation directory, e.g. ./projectName
 
 Options:
-  --template <value>    Type of template (default: \\"default\\")
-  --force               Generate without questions (ideally) using default answers
+  -t, --template <value>  Type of template (default: \\"default\\")
+  -f, --force             Generate without questions (ideally) using default answers
 
 Global options:
-  --color               Enable colors on console.
-  --no-color            Disable colors on console.
-  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  -h, --help [verbose]  Display help for commands and options.
+  --color                 Enable colors on console.
+  --no-color              Disable colors on console.
+  -v, --version           Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]    Display help for commands and options.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -1336,17 +1338,17 @@ exports[`help should show help information for 'new' command using the "--help" 
 Initialize a new webpack project.
 
 Arguments:
-  generation-path       Path to the installation directory, e.g. ./projectName
+  generation-path         Path to the installation directory, e.g. ./projectName
 
 Options:
-  --template <value>    Type of template (default: \\"default\\")
-  --force               Generate without questions (ideally) using default answers
+  -t, --template <value>  Type of template (default: \\"default\\")
+  -f, --force             Generate without questions (ideally) using default answers
 
 Global options:
-  --color               Enable colors on console.
-  --no-color            Disable colors on console.
-  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  -h, --help [verbose]  Display help for commands and options.
+  --color                 Enable colors on console.
+  --no-color              Disable colors on console.
+  -v, --version           Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]    Display help for commands and options.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -1363,16 +1365,16 @@ exports[`help should show help information for 'p' command using command syntax:
 Scaffold a plugin.
 
 Arguments:
-  output-path           Path to the output directory, e.g. ./pluginName
+  output-path             Path to the output directory, e.g. ./pluginName
 
 Options:
-  --template <value>    Type of template (default: \\"default\\")
+  -t, --template <value>  Type of template (default: \\"default\\")
 
 Global options:
-  --color               Enable colors on console.
-  --no-color            Disable colors on console.
-  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  -h, --help [verbose]  Display help for commands and options.
+  --color                 Enable colors on console.
+  --no-color              Disable colors on console.
+  -v, --version           Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]    Display help for commands and options.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -1389,16 +1391,16 @@ exports[`help should show help information for 'p' command using the "--help" op
 Scaffold a plugin.
 
 Arguments:
-  output-path           Path to the output directory, e.g. ./pluginName
+  output-path             Path to the output directory, e.g. ./pluginName
 
 Options:
-  --template <value>    Type of template (default: \\"default\\")
+  -t, --template <value>  Type of template (default: \\"default\\")
 
 Global options:
-  --color               Enable colors on console.
-  --no-color            Disable colors on console.
-  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  -h, --help [verbose]  Display help for commands and options.
+  --color                 Enable colors on console.
+  --no-color              Disable colors on console.
+  -v, --version           Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]    Display help for commands and options.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -1415,17 +1417,17 @@ exports[`help should show help information for 'plugin' and respect the "--color
 Scaffold a plugin.
 
 Arguments:
-  output-path           Path to the output directory, e.g. ./pluginName
+  output-path             Path to the output directory, e.g. ./pluginName
 
 Options:
-  --template <value>    Type of template (default: \\"default\\")
+  -t, --template <value>  Type of template (default: \\"default\\")
 
 Global options:
-  --color               Enable colors on console.
-  --no-color            Disable colors on console.
-  -v, --version         Output the version number of 'webpack', 'webpack-cli'
-                        and 'webpack-dev-server' and commands.
-  -h, --help [verbose]  Display help for commands and options.
+  --color                 Enable colors on console.
+  --no-color              Disable colors on console.
+  -v, --version           Output the version number of 'webpack', 'webpack-cli'
+                          and 'webpack-dev-server' and commands.
+  -h, --help [verbose]    Display help for commands and options.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -1442,17 +1444,17 @@ exports[`help should show help information for 'plugin' and respect the "--no-co
 Scaffold a plugin.
 
 Arguments:
-  output-path           Path to the output directory, e.g. ./pluginName
+  output-path             Path to the output directory, e.g. ./pluginName
 
 Options:
-  --template <value>    Type of template (default: \\"default\\")
+  -t, --template <value>  Type of template (default: \\"default\\")
 
 Global options:
-  --color               Enable colors on console.
-  --no-color            Disable colors on console.
-  -v, --version         Output the version number of 'webpack', 'webpack-cli'
-                        and 'webpack-dev-server' and commands.
-  -h, --help [verbose]  Display help for commands and options.
+  --color                 Enable colors on console.
+  --no-color              Disable colors on console.
+  -v, --version           Output the version number of 'webpack', 'webpack-cli'
+                          and 'webpack-dev-server' and commands.
+  -h, --help [verbose]    Display help for commands and options.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -1469,16 +1471,16 @@ exports[`help should show help information for 'plugin' command using command sy
 Scaffold a plugin.
 
 Arguments:
-  output-path           Path to the output directory, e.g. ./pluginName
+  output-path             Path to the output directory, e.g. ./pluginName
 
 Options:
-  --template <value>    Type of template (default: \\"default\\")
+  -t, --template <value>  Type of template (default: \\"default\\")
 
 Global options:
-  --color               Enable colors on console.
-  --no-color            Disable colors on console.
-  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  -h, --help [verbose]  Display help for commands and options.
+  --color                 Enable colors on console.
+  --no-color              Disable colors on console.
+  -v, --version           Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]    Display help for commands and options.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -1495,16 +1497,16 @@ exports[`help should show help information for 'plugin' command using the "--hel
 Scaffold a plugin.
 
 Arguments:
-  output-path           Path to the output directory, e.g. ./pluginName
+  output-path             Path to the output directory, e.g. ./pluginName
 
 Options:
-  --template <value>    Type of template (default: \\"default\\")
+  -t, --template <value>  Type of template (default: \\"default\\")
 
 Global options:
-  --color               Enable colors on console.
-  --no-color            Disable colors on console.
-  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  -h, --help [verbose]  Display help for commands and options.
+  --color                 Enable colors on console.
+  --no-color              Disable colors on console.
+  -v, --version           Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]    Display help for commands and options.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
