@@ -47,7 +47,7 @@ webpack-cli init
 **To generate with default answers**
 
 ```bash
-webpack-cli init --force
+webpack-cli init -f, --force
 ```
 
 **To scaffold in a specified path**
@@ -59,7 +59,7 @@ webpack-cli init [generation-path]
 **To scaffold specified template**
 
 ```bash
-webpack-cli init --template <template-name>
+webpack-cli init -t, --template <template-name>
 ```
 
 ## Description of questions asked by the generator

@@ -483,4 +483,40 @@ describe('init command', () => {
         // Check if the generated package.json file content matches the snapshot
         expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
     });
+
+    it("recognizes '-t' as an alias for '--template'", async () => {
+        const assetsPath = await uniqueDirectoryForTest();
+        const { stdout, stderr } = await run(assetsPath, ['init', '-t', 'default', '--force']);
+
+        expect(stdout).toContain('Project has been initialised with webpack!');
+        expect(stderr).toContain('webpack.config.js');
+
+        // Test files
+        const files = ['package.json', 'src', 'src/index.js', 'webpack.config.js'];
+
+        files.forEach((file) => {
+            expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+        });
+
+        // Check if the generated package.json file content matches the snapshot
+        expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
+    });
+
+    it("recognizes '-f' as an alias for '--force'", async () => {
+        const assetsPath = await uniqueDirectoryForTest();
+        const { stdout, stderr } = await run(assetsPath, ['init', '-f']);
+
+        expect(stdout).toContain('Project has been initialised with webpack!');
+        expect(stderr).toContain('webpack.config.js');
+
+        // Test files
+        const files = ['package.json', 'src', 'src/index.js', 'webpack.config.js'];
+
+        files.forEach((file) => {
+            expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+        });
+
+        // Check if the generated package.json file content matches the snapshot
+        expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
+    });
 });

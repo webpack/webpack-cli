@@ -23,12 +23,14 @@ class GeneratorsCommand {
             [
                 {
                     name: 'template',
+                    alias: 't',
                     configs: [{ type: 'string' }],
                     description: 'Type of template',
                     defaultValue: 'default',
                 },
                 {
                     name: 'force',
+                    alias: 'f',
                     configs: [
                         {
                             type: 'enum',
@@ -66,6 +68,7 @@ class GeneratorsCommand {
             [
                 {
                     name: 'template',
+                    alias: 't',
                     configs: [{ type: 'string' }],
                     description: 'Type of template',
                     defaultValue: 'default',
@@ -97,6 +100,7 @@ class GeneratorsCommand {
             [
                 {
                     name: 'template',
+                    alias: 't',
                     configs: [{ type: 'string' }],
                     description: 'Type of template',
                     defaultValue: 'default',
