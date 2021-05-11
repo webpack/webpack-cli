@@ -1,5 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`--interactive flag with single compiler should throw error upon --interactive 1`] = `"[?25l"`;
+exports[`--interactive flag with single compiler should throw error upon --interactive 1`] = `"[?25l[?25h"`;
 
 exports[`--interactive flag with single compiler should throw error upon --interactive 2`] = `"[webpack-cli] Interactive is not supported on webpack v4 and less"`;

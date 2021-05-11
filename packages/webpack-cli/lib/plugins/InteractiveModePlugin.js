@@ -78,6 +78,8 @@ class InteractiveModePlugin {
         if (!isWebpack5) {
             // Use CLI logger as webpack v4 may not expose logger
             logger.error('Interactive is not supported on webpack v4 and less');
+            // Show cursor
+            process.stdout.write('\u001B[?25h');
             process.exit(1);
         }
 
