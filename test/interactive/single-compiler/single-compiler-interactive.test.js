@@ -1,5 +1,5 @@
 'use strict';
-const { run, runAndGetWatchProc, isWebpack5 } = require('../../utils/test-utils');
+const { run, runAndGetProcess, isWebpack5 } = require('../../utils/test-utils');
 const { writeFileSync } = require('fs');
 const { resolve } = require('path');
 const wordsInStatsv5 = ['asset', 'index.js', 'compiled', 'webpack'];
@@ -53,14 +53,14 @@ describe('--interactive flag with single compiler', () => {
     if (!isWebpack5) {
         it('should throw error upon --interactive', async () => {
             const { stdout, stderr, exitCode } = await run(__dirname, ['--interactive']);
-            expect(stdout).toBeFalsy();
-            expect(stderr).toContain('Interactive is not supported on webpack v4 and less');
+            expect(stdout).toMatchSnapshot();
+            expect(stderr).toMatchSnapshot();
             expect(exitCode).toBe(1);
         });
         return;
     }
     it('should output in interactive with --interactive', (done) => {
-        const proc = runAndGetWatchProc(__dirname, ['--interactive'], false, '', true);
+        const proc = runAndGetProcess(__dirname, ['--interactive'], false, '', true);
         const checker = [
             {
                 check: (data) => {
@@ -94,7 +94,7 @@ describe('--interactive flag with single compiler', () => {
     });
 
     it('should stop watching on s', (done) => {
-        const proc = runAndGetWatchProc(__dirname, ['--interactive'], false, '', true);
+        const proc = runAndGetProcess(__dirname, ['--interactive'], false, '', true);
         const checker = [
             {
                 check: (data) => {
@@ -124,7 +124,7 @@ describe('--interactive flag with single compiler', () => {
     });
 
     it('should should start watching on w after stoping with s', (done) => {
-        const proc = runAndGetWatchProc(__dirname, ['--interactive'], false, '', true);
+        const proc = runAndGetProcess(__dirname, ['--interactive'], false, '', true);
         const checker = [
             {
                 check: (data) => {
@@ -169,7 +169,7 @@ describe('--interactive flag with single compiler', () => {
     });
 
     it('should quit in pressing q', (done) => {
-        const proc = runAndGetWatchProc(__dirname, ['--interactive'], false, '', true);
+        const proc = runAndGetProcess(__dirname, ['--interactive'], false, '', true);
         const checker = [
             {
                 check: (data) => {
