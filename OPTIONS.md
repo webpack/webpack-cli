@@ -23,11 +23,13 @@ Options:
   --no-cache                                                                         Negative 'cache' option.
   --cache-max-generations <value>                                                    Number of generations unused cache entries stay in memory cache at minimum (1 = may be removed after unused for a single compilation, ..., Infinity: kept forever).
   --cache-type <value>                                                               In memory caching. Filesystem caching.
+  --cache-allow-collecting-memory                                                    Allows to collect unused memory allocated during deserialization. This requires copying data into smaller buffers and has a performance cost.
+  --no-cache-allow-collecting-memory                                                 Negative 'cache-allow-collecting-memory' option.
   --cache-cache-directory <value>                                                    Base directory for the cache (defaults to node_modules/.cache/webpack).
   --cache-cache-location <value>                                                     Locations for the cache (defaults to cacheDirectory / name).
   --cache-hash-algorithm <value>                                                     Algorithm used for generation the hash (see node.js crypto package).
-  --cache-idle-timeout <value>                                                       Time in ms after which idle period the cache storing should happen (only for store: 'pack' or 'idle').
-  --cache-idle-timeout-for-initial-store <value>                                     Time in ms after which idle period the initial cache storing should happen (only for store: 'pack' or 'idle').
+  --cache-idle-timeout <value>                                                       Time in ms after which idle period the cache storing should happen (only for store: 'pack').
+  --cache-idle-timeout-for-initial-store <value>                                     Time in ms after which idle period the initial cache storing should happen (only for store: 'pack').
   --cache-immutable-paths <value...>                                                 A path to a immutable directory (usually a package manager cache directory).
   --cache-immutable-paths-reset                                                      Clear all items provided in configuration. List of paths that are managed by a package manager and contain a version or hash in its path so all files are immutable.
   --cache-managed-paths <value...>                                                   A path to a managed directory (usually a node_modules directory).
@@ -35,6 +37,8 @@ Options:
   --cache-max-age <value>                                                            Time for which unused cache entries stay in the filesystem cache at minimum (in milliseconds).
   --cache-max-memory-generations <value>                                             Number of generations unused cache entries stay in memory cache at minimum (0 = no memory cache used, 1 = may be removed after unused for a single compilation, ..., Infinity: kept forever). Cache entries will be deserialized from disk when removed from memory cache.
   --cache-name <value>                                                               Name for the cache. Different names will lead to different coexisting caches.
+  --cache-profile                                                                    Track and log detailed timing information for individual cache items.
+  --no-cache-profile                                                                 Negative 'cache-profile' option.
   --cache-store <value>                                                              When to store data to the filesystem. (pack: Store data when compiler is idle in a single file).
   --cache-version <value>                                                            Version of the cache data. Different versions won't allow to reuse the cache and override existing content. Update the version when config changed in a way which doesn't allow to reuse cache. This will invalidate the cache.
   --context <value>                                                                  The base directory (absolute path!) for resolving the `entry` option. If `output.pathinfo` is set, the included pathinfo is shortened to this directory.
@@ -48,6 +52,8 @@ Options:
   --no-experiments-asset                                                             Negative 'experiments-asset' option.
   --experiments-async-web-assembly                                                   Support WebAssembly as asynchronous EcmaScript Module.
   --no-experiments-async-web-assembly                                                Negative 'experiments-async-web-assembly' option.
+  --experiments-execute-module                                                       Enable build-time execution of modules from the module graph for plugins and loaders.
+  --no-experiments-execute-module                                                    Negative 'experiments-execute-module' option.
   --experiments-layers                                                               Enable module and chunk layers.
   --no-experiments-layers                                                            Negative 'experiments-layers' option.
   --experiments-lazy-compilation                                                     Compile entrypoints and import()s only when they are accessed.
