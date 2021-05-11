@@ -412,7 +412,7 @@ describe('init command', () => {
         expect(stderr).toContain('Failed to create directory');
     });
 
-    it("should should work with 'new' alias", async () => {
+    it("should work with 'new' alias", async () => {
         const assetsPath = await uniqueDirectoryForTest();
         const { stdout, stderr } = await run(assetsPath, ['new', '--force']);
 
@@ -430,7 +430,7 @@ describe('init command', () => {
         expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
     });
 
-    it("should should work with 'create' alias", async () => {
+    it("should work with 'create' alias", async () => {
         const assetsPath = await uniqueDirectoryForTest();
         const { stdout, stderr } = await run(assetsPath, ['create', '--force']);
 
@@ -448,7 +448,7 @@ describe('init command', () => {
         expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
     });
 
-    it("should should work with 'c' alias", async () => {
+    it("should work with 'c' alias", async () => {
         const assetsPath = await uniqueDirectoryForTest();
         const { stdout, stderr } = await run(assetsPath, ['c', '--force']);
 
@@ -466,7 +466,7 @@ describe('init command', () => {
         expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
     });
 
-    it("should should work with 'n' alias", async () => {
+    it("should work with 'n' alias", async () => {
         const assetsPath = await uniqueDirectoryForTest();
         const { stdout, stderr } = await run(assetsPath, ['n', '--force']);
 
