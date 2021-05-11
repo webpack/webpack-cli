@@ -41,7 +41,7 @@ describe('output flag named bundles', () => {
     });
 
     it('should successfully compile multiple entries', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ['-c', resolve(__dirname, 'webpack.multiple.config.js')], false);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['-c', resolve(__dirname, 'webpack.multiple.config.js')]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -49,7 +49,7 @@ describe('output flag named bundles', () => {
     });
 
     it('should output file in bin directory using default webpack config with warning for empty output value', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ['--output-path'], false);
+        const { exitCode, stderr, stdout } = await run(__dirname, ['--output-path']);
 
         expect(exitCode).toEqual(2);
         expect(normalizeStderr(stderr)).toMatchSnapshot('stderr');

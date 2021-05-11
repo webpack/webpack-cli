@@ -58,7 +58,7 @@ export default class InitGenerator extends CustomGenerator {
         }
 
         if (!this.supportedTemplates.includes(this.template)) {
-            this.utils.logger.log(`${yellow(`⚠ ${this.template} is not a valid template, please select one from below`)}`);
+            this.utils.logger.warn(`⚠ ${this.template} is not a valid template, please select one from below`);
 
             const { selectedTemplate } = await Question.List(
                 this,
