@@ -415,7 +415,7 @@ module.exports = () => {
 "
 `;
 
-exports[`init command should should work with 'c' alias 1`] = `
+exports[`init command should work with 'c' alias 1`] = `
 Object {
   "description": "My webpack project",
   "devDependencies": Object {
@@ -436,7 +436,7 @@ Object {
 }
 `;
 
-exports[`init command should should work with 'create' alias 1`] = `
+exports[`init command should work with 'create' alias 1`] = `
 Object {
   "description": "My webpack project",
   "devDependencies": Object {
@@ -457,7 +457,7 @@ Object {
 }
 `;
 
-exports[`init command should should work with 'n' alias 1`] = `
+exports[`init command should work with 'n' alias 1`] = `
 Object {
   "description": "My webpack project",
   "devDependencies": Object {
@@ -478,7 +478,7 @@ Object {
 }
 `;
 
-exports[`init command should should work with 'new' alias 1`] = `
+exports[`init command should work with 'new' alias 1`] = `
 Object {
   "description": "My webpack project",
   "devDependencies": Object {
