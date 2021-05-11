@@ -552,6 +552,8 @@ Options:
   --no-output-strict-module-error-handling                                           Negative 'output-strict-module-error-handling' option.
   --output-strict-module-exception-handling                                          Handles exceptions in module loading correctly at a performance cost (Deprecated). This will handle module error compatible with the Node.js CommonJS way.
   --no-output-strict-module-exception-handling                                       Negative 'output-strict-module-exception-handling' option.
+  --output-trusted-types [value]                                                     Use a Trusted Types policy to create urls for chunks. 'output.uniqueName' is used a default policy name. Passing a string sets a custom policy name. The name of the TrustedTypes policy created by webpack to serve bundle chunks.
+  --output-trusted-types-policy-name <value>                                         The name of the Trusted Types policy created by webpack to serve bundle chunks.
   --output-unique-name <value>                                                       A unique name of the webpack build to avoid multiple webpack runtimes to conflict when using globals.
   --output-wasm-loading <value>                                                      The method of loading WebAssembly Modules (methods included by default are 'fetch' (web/WebWorker), 'async-node' (node.js), but others might be added by plugins).
   --no-output-wasm-loading                                                           Negative 'output-wasm-loading' option.

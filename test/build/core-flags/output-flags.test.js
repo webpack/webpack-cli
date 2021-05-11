@@ -141,6 +141,12 @@ describe('output config related flag', () => {
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: 'async-node'`);
+                } else if (name.includes('trusted-types')) {
+                    const { exitCode, stderr, stdout } = await run(__dirname, [`--${name}`, 'test']);
+
+                    expect(exitCode).toBe(0);
+                    expect(stderr).toBeFalsy();
+                    expect(stdout).toContain(`trustedTypes: { policyName: 'test' }`);
                 } else {
                     const { exitCode, stderr, stdout } = await run(__dirname, [`--${name}`, 'test']);
 
