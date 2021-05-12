@@ -122,7 +122,7 @@ export default async function startDevServer(
 
     for (const devServerOptions of devServersOptions) {
         const { compiler, options } = devServerOptions;
-        const server = new Server(compiler, options);
+        const server = new Server(options, compiler);
 
         server.listen(options.port, options.host, (error): void => {
             if (error) {
