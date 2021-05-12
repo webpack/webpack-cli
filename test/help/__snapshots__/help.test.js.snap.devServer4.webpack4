@@ -721,7 +721,7 @@ exports[`help should show help information for 'i' command using command syntax:
 Outputs information about your system.
 
 Options:
-  --output <value>      To get the output in a specified format ( accept json or markdown )
+  -o, --output <value>  To get the output in a specified format ( accept json or markdown )
 
 Global options:
   --color               Enable colors on console.
@@ -744,7 +744,7 @@ exports[`help should show help information for 'i' command using the "--help" op
 Outputs information about your system.
 
 Options:
-  --output <value>      To get the output in a specified format ( accept json or markdown )
+  -o, --output <value>  To get the output in a specified format ( accept json or markdown )
 
 Global options:
   --color               Enable colors on console.
@@ -767,7 +767,7 @@ exports[`help should show help information for 'info' and respect the "--color" 
 Outputs information about your system.
 
 Options:
-  --output <value>      To get the output in a specified format ( accept json
+  -o, --output <value>  To get the output in a specified format ( accept json
                         or markdown )
 
 Global options:
@@ -792,7 +792,7 @@ exports[`help should show help information for 'info' and respect the "--no-colo
 Outputs information about your system.
 
 Options:
-  --output <value>      To get the output in a specified format ( accept json
+  -o, --output <value>  To get the output in a specified format ( accept json
                         or markdown )
 
 Global options:
@@ -817,7 +817,7 @@ exports[`help should show help information for 'info' command using command synt
 Outputs information about your system.
 
 Options:
-  --output <value>      To get the output in a specified format ( accept json or markdown )
+  -o, --output <value>  To get the output in a specified format ( accept json or markdown )
 
 Global options:
   --color               Enable colors on console.
@@ -840,7 +840,7 @@ exports[`help should show help information for 'info' command using the "--help"
 Outputs information about your system.
 
 Options:
-  --output <value>      To get the output in a specified format ( accept json or markdown )
+  -o, --output <value>  To get the output in a specified format ( accept json or markdown )
 
 Global options:
   --color               Enable colors on console.
@@ -2812,7 +2812,7 @@ exports[`help should show help information with options for sub commands: stdout
 Outputs information about your system.
 
 Options:
-  --output <value>      To get the output in a specified format ( accept json or markdown )
+  -o, --output <value>  To get the output in a specified format ( accept json or markdown )
 
 Global options:
   --color               Enable colors on console.

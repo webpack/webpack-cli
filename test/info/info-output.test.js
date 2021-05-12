@@ -61,4 +61,12 @@ describe('basic info usage', () => {
         expect(stderr).toContain(`'unknown' is not a valid value for output`);
         expect(stdout).toBeFalsy();
     });
+
+    it("recognizes '-o' as an alias for '--output'", async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, ['info', '-o', 'markdown']);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain('## System:');
+    });
 });
