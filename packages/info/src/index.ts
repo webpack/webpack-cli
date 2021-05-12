@@ -45,6 +45,7 @@ class InfoCommand {
             [
                 {
                     name: 'output',
+                    alias: 'o',
                     configs: [
                         {
                             type: 'string',
