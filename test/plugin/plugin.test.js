@@ -140,4 +140,25 @@ describe('plugin command', () => {
 
         expect(stderr).toContain('unknown is not a valid template');
     });
+
+    it("recognizes '-t' as an alias for '--template'", async () => {
+        const assetsPath = await uniqueDirectoryForTest();
+        const { defaultPluginPath } = dataForTests(assetsPath);
+        const { stdout } = await runPromptWithAnswers(assetsPath, ['plugin', '-t', 'default'], [`${ENTER}`]);
+        expect(normalizeStdout(stdout)).toContain(firstPrompt);
+        // Check if the output directory exists with the appropriate plugin name
+        expect(existsSync(defaultPluginPath)).toBeTruthy();
+        // Skip test in case installation fails
+        if (!existsSync(resolve(defaultPluginPath, './yarn.lock'))) {
+            return;
+        }
+        // Test regressively files are scaffolded
+        const files = ['package.json', 'examples', 'src', 'test', 'src/index.js', 'examples/simple/webpack.config.js'];
+        files.forEach((file) => {
+            expect(existsSync(join(defaultPluginPath, file))).toBeTruthy();
+        });
+        // Check if the the generated plugin works successfully
+        const { stdout: stdout2 } = await run(__dirname, ['--config', './my-webpack-plugin/examples/simple/webpack.config.js']);
+        expect(normalizeStdout(stdout2)).toContain('Hello World!');
+    });
 });

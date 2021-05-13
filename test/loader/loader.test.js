@@ -151,4 +151,34 @@ describe('loader command', () => {
 
         expect(stderr).toContain('unknown is not a valid template');
     });
+
+    it("recognizes '-t' as an alias for '--template'", async () => {
+        const assetsPath = await uniqueDirectoryForTest();
+        const { defaultLoaderPath } = dataForTests(assetsPath);
+        let { stdout } = await runPromptWithAnswers(assetsPath, ['loader', '-t', 'default'], [`${ENTER}`]);
+
+        expect(normalizeStdout(stdout)).toContain(firstPrompt);
+
+        // Skip test in case installation fails
+        if (!existsSync(resolve(defaultLoaderPath, './yarn.lock'))) {
+            return;
+        }
+
+        // Check if the output directory exists with the appropriate loader name
+        expect(existsSync(defaultLoaderPath)).toBeTruthy();
+
+        // All test files are scaffolded
+        const files = ['package.json', 'examples', 'src', 'test', 'src/index.js', 'examples/simple/webpack.config.js'];
+
+        files.forEach((file) => {
+            expect(existsSync(defaultLoaderPath, file)).toBeTruthy();
+        });
+
+        // Check if the the generated loader works successfully
+        const path = resolve(__dirname, './my-loader/examples/simple/');
+
+        ({ stdout } = await run(path, []));
+
+        expect(stdout).toContain('my-loader');
+    });
 });
