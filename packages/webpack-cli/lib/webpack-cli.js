@@ -25,7 +25,7 @@ class WebpackCLI {
         });
     }
 
-    async tryRequireThenImport(module) {
+    async tryRequireThenImport(module, handleError = true) {
         let result;
 
         try {
@@ -59,12 +59,30 @@ class WebpackCLI {
                 return result;
             }
 
-            throw error;
+            if (handleError) {
+                this.logger.error(error);
+                process.exit(2);
+            } else {
+                throw error;
+            }
         }
 
         // For babel/typescript
         if (result.default) {
             result = result.default;
+        }
+
+        return result;
+    }
+
+    loadJSONFile(pathToFile) {
+        let result;
+
+        try {
+            result = require(pathToFile + 1);
+        } catch (error) {
+            this.logger.error(error);
+            process.exit(2);
         }
 
         return result;
@@ -873,7 +891,7 @@ class WebpackCLI {
                 let loadedCommand;
 
                 try {
-                    loadedCommand = await this.tryRequireThenImport(pkg);
+                    loadedCommand = await this.tryRequireThenImport(pkg, false);
                 } catch (error) {
                     // Ignore, command is not installed
 
@@ -1015,7 +1033,7 @@ class WebpackCLI {
                     }
 
                     try {
-                        const { name, version } = require(`${foundCommand.pkg}/package.json`);
+                        const { name, version } = this.loadJSONFile(`${foundCommand.pkg}/package.json`);
 
                         this.logger.raw(`${name} ${version}`);
                     } catch (e) {
@@ -1027,14 +1045,14 @@ class WebpackCLI {
                 }
             }
 
-            const pkgJSON = require("../package.json");
+            const pkgJSON = this.loadJSONFile('../package.json');
 
             this.logger.raw(`webpack ${this.webpack.version}`);
             this.logger.raw(`webpack-cli ${pkgJSON.version}`);
 
             if (this.utils.packageExists("webpack-dev-server")) {
                 // eslint-disable-next-line
-                const { version } = require("webpack-dev-server/package.json");
+                const { version } = this.loadJSONFile('webpack-dev-server/package.json');
 
                 this.logger.raw(`webpack-dev-server ${version}`);
             }
@@ -1513,7 +1531,7 @@ class WebpackCLI {
             let options;
 
             try {
-                options = await this.tryRequireThenImport(configPath);
+                options = await this.tryRequireThenImport(configPath, false);
             } catch (error) {
                 this.logger.error(`Failed to load '${configPath}' config`);
 
