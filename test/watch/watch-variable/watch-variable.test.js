@@ -30,9 +30,9 @@ describe('watch variable', () => {
                 }
 
                 if (!modified) {
-                    process.nextTick(() => {
+                    setTimeout(() => {
                         writeFileSync(resolve(__dirname, './src/index.js'), `console.log('watch flag test');`);
-                    });
+                    }, 100);
 
                     modified = true;
                 } else {
@@ -65,9 +65,9 @@ describe('watch variable', () => {
                 }
 
                 if (!modified) {
-                    process.nextTick(() => {
+                    setTimeout(() => {
                         writeFileSync(resolve(__dirname, './src/index.js'), `console.log('watch flag test');`);
-                    });
+                    }, 100);
 
                     modified = true;
                 } else {

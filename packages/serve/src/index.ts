@@ -33,7 +33,7 @@ class ServeCommand {
                 pkg: '@webpack-cli/serve',
                 dependencies: ['webpack-dev-server'],
             },
-            () => {
+            async () => {
                 let devServerFlags = [];
 
                 try {
@@ -43,12 +43,13 @@ class ServeCommand {
                     process.exit(2);
                 }
 
-                const builtInOptions = cli.getBuiltInOptions().filter((option) => option.name !== 'watch');
+                const allBuiltInOptions = await cli.getBuiltInOptions();
+                const builtInOptions = allBuiltInOptions.filter((option) => option.name !== 'watch');
 
                 return [...builtInOptions, ...devServerFlags];
             },
             async (entries, options) => {
-                const builtInOptions = cli.getBuiltInOptions();
+                const builtInOptions = await cli.getBuiltInOptions();
                 let devServerFlags = [];
 
                 try {
@@ -131,7 +132,7 @@ class ServeCommand {
                 try {
                     servers = await startDevServer(compiler, devServerOptions, options, logger);
                 } catch (error) {
-                    if (cli.isValidationError(error)) {
+                    if (await cli.isValidationError(error)) {
                         logger.error(error.message);
                     } else {
                         logger.error(error);
