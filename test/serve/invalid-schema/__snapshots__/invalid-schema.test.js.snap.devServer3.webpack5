@@ -24,10 +24,3 @@ options.bonjour should be {Boolean} (https://webpack.js.org/configuration/dev-se
 `;
 
 exports[`invalid schema should log webpack-dev-server error and exit process on invalid config: stdout 1`] = `""`;
-
-exports[`invalid schema should log webpack-dev-server error and exit process on invalid flag: stderr 1`] = `
-"[webpack-cli] RangeError [ERR_SOCKET_BAD_PORT]: options.port should be >= 0 and < 65536. Received -1.
-    at stack"
-`;
-
-exports[`invalid schema should log webpack-dev-server error and exit process on invalid flag: stdout 1`] = `""`;
