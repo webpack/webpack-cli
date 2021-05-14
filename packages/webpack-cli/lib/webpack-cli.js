@@ -79,7 +79,7 @@ class WebpackCLI {
         let result;
 
         try {
-            result = require(pathToFile + 1);
+            result = require(pathToFile);
         } catch (error) {
             this.logger.error(error);
             process.exit(2);
