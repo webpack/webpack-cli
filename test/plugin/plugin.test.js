@@ -21,8 +21,8 @@ const dataForTests = (rootAssetsPath) => ({
 describe("plugin command", () => {
     it("should ask the plugin name when invoked", async () => {
         const assetsPath = await uniqueDirectoryForTest();
-        const { stdout, stderr } = await runPromptWithAnswers(assetsPath, ['plugin']);
-        
+        const { stdout, stderr } = await runPromptWithAnswers(assetsPath, ["plugin"]);
+
         expect(stdout).toBeTruthy();
         expect(stderr).toBeFalsy();
         expect(normalizeStdout(stdout)).toContain(firstPrompt);

@@ -47,7 +47,8 @@ class WebpackCLI {
             }
 
             if (
-                (error.code === 'ERR_REQUIRE_ESM' || process.env.WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG) &&
+                (error.code === "ERR_REQUIRE_ESM" ||
+                    process.env.WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG) &&
                 pathToFileURL &&
                 dynamicImportLoader
             ) {
@@ -1033,7 +1034,9 @@ class WebpackCLI {
                     }
 
                     try {
-                        const { name, version } = this.loadJSONFile(`${foundCommand.pkg}/package.json`);
+                        const { name, version } = this.loadJSONFile(
+                            `${foundCommand.pkg}/package.json`,
+                        );
 
                         this.logger.raw(`${name} ${version}`);
                     } catch (e) {
@@ -1045,14 +1048,14 @@ class WebpackCLI {
                 }
             }
 
-            const pkgJSON = this.loadJSONFile('../package.json');
+            const pkgJSON = this.loadJSONFile("../package.json");
 
             this.logger.raw(`webpack ${this.webpack.version}`);
             this.logger.raw(`webpack-cli ${pkgJSON.version}`);
 
             if (this.utils.packageExists("webpack-dev-server")) {
                 // eslint-disable-next-line
-                const { version } = this.loadJSONFile('webpack-dev-server/package.json');
+                const { version } = this.loadJSONFile("webpack-dev-server/package.json");
 
                 this.logger.raw(`webpack-dev-server ${version}`);
             }
@@ -1682,7 +1685,7 @@ class WebpackCLI {
         }
 
         if (options.merge) {
-            const merge = await this.tryRequireThenImport('webpack-merge');
+            const merge = await this.tryRequireThenImport("webpack-merge");
 
             // we can only merge when there are multiple configurations
             // either by passing multiple configs by flags or passing a
@@ -1990,7 +1993,7 @@ class WebpackCLI {
     }
 
     async applyCLIPlugin(config, cliOptions) {
-        const CLIPlugin = await this.tryRequireThenImport('./plugins/CLIPlugin');
+        const CLIPlugin = await this.tryRequireThenImport("./plugins/CLIPlugin");
 
         const addCLIPlugin = (configOptions) => {
             if (!configOptions.plugins) {
@@ -2085,7 +2088,7 @@ class WebpackCLI {
         let createJsonStringifyStream;
 
         if (options.json) {
-            const jsonExt = await this.tryRequireThenImport('@discoveryjs/json-ext');
+            const jsonExt = await this.tryRequireThenImport("@discoveryjs/json-ext");
 
             createJsonStringifyStream = jsonExt.stringifyStream;
         }
