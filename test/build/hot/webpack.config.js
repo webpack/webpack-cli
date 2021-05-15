@@ -1,4 +1,4 @@
 module.exports = {
-    mode: 'development',
-    stats: 'verbose',
+    mode: "development",
+    stats: "verbose",
 };

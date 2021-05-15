@@ -1,25 +1,25 @@
-'use strict';
+"use strict";
 
-const path = require('path');
+const path = require("path");
 
 // eslint-disable-next-line node/no-unpublished-require
-const stripAnsi = require('strip-ansi');
-const globalModulesNpmValue = 'test-npm';
-const utilsDirectory = path.resolve(__dirname, '../../packages/webpack-cli/lib/utils/');
+const stripAnsi = require("strip-ansi");
+const globalModulesNpmValue = "test-npm";
+const utilsDirectory = path.resolve(__dirname, "../../packages/webpack-cli/lib/utils/");
 
-jest.setMock('global-modules', globalModulesNpmValue);
-jest.setMock(path.resolve(utilsDirectory, './prompt'), jest.fn());
-jest.setMock(path.resolve(utilsDirectory, './run-command'), jest.fn());
-jest.setMock(path.resolve(utilsDirectory, './package-exists'), jest.fn());
-jest.setMock(path.resolve(utilsDirectory, './get-package-manager'), jest.fn());
+jest.setMock("global-modules", globalModulesNpmValue);
+jest.setMock(path.resolve(utilsDirectory, "./prompt"), jest.fn());
+jest.setMock(path.resolve(utilsDirectory, "./run-command"), jest.fn());
+jest.setMock(path.resolve(utilsDirectory, "./package-exists"), jest.fn());
+jest.setMock(path.resolve(utilsDirectory, "./get-package-manager"), jest.fn());
 
-const getPackageManager = require(path.resolve(utilsDirectory, './get-package-manager'));
-const packageExists = require(path.resolve(utilsDirectory, './package-exists'));
-const promptInstallation = require(path.resolve(utilsDirectory, './prompt-installation'));
-const runCommand = require(path.resolve(utilsDirectory, './run-command'));
-const prompt = require(path.resolve(utilsDirectory, './prompt'));
+const getPackageManager = require(path.resolve(utilsDirectory, "./get-package-manager"));
+const packageExists = require(path.resolve(utilsDirectory, "./package-exists"));
+const promptInstallation = require(path.resolve(utilsDirectory, "./prompt-installation"));
+const runCommand = require(path.resolve(utilsDirectory, "./run-command"));
+const prompt = require(path.resolve(utilsDirectory, "./prompt"));
 
-describe('promptInstallation', () => {
+describe("promptInstallation", () => {
     beforeAll(() => {
         packageExists.mockReturnValue(true);
     });
@@ -28,13 +28,13 @@ describe('promptInstallation', () => {
         prompt.mockClear();
     });
 
-    it('should prompt to install using npm if npm is package manager', async () => {
+    it("should prompt to install using npm if npm is package manager", async () => {
         prompt.mockReturnValue(true);
 
-        getPackageManager.mockReturnValue('npm');
+        getPackageManager.mockReturnValue("npm");
 
         const preMessage = jest.fn();
-        const promptResult = await promptInstallation('test-package', preMessage);
+        const promptResult = await promptInstallation("test-package", preMessage);
 
         expect(promptResult).toBeTruthy();
         expect(preMessage.mock.calls.length).toEqual(1);
@@ -45,15 +45,15 @@ describe('promptInstallation', () => {
         );
 
         // install the package using npm
-        expect(runCommand.mock.calls[0][0]).toEqual('npm install -D test-package');
+        expect(runCommand.mock.calls[0][0]).toEqual("npm install -D test-package");
     });
 
-    it('should prompt to install using yarn if yarn is package manager', async () => {
+    it("should prompt to install using yarn if yarn is package manager", async () => {
         prompt.mockReturnValue({ installConfirm: true });
 
-        getPackageManager.mockReturnValue('yarn');
+        getPackageManager.mockReturnValue("yarn");
 
-        const promptResult = await promptInstallation('test-package');
+        const promptResult = await promptInstallation("test-package");
 
         expect(promptResult).toBeTruthy();
         expect(prompt.mock.calls.length).toEqual(1);
@@ -63,15 +63,15 @@ describe('promptInstallation', () => {
         );
 
         // install the package using yarn
-        expect(runCommand.mock.calls[0][0]).toEqual('yarn add -D test-package');
+        expect(runCommand.mock.calls[0][0]).toEqual("yarn add -D test-package");
     });
 
-    it('should prompt to install using pnpm if pnpm is package manager', async () => {
+    it("should prompt to install using pnpm if pnpm is package manager", async () => {
         prompt.mockReturnValue({ installConfirm: true });
 
-        getPackageManager.mockReturnValue('pnpm');
+        getPackageManager.mockReturnValue("pnpm");
 
-        const promptResult = await promptInstallation('test-package');
+        const promptResult = await promptInstallation("test-package");
 
         expect(promptResult).toBeTruthy();
         expect(prompt.mock.calls.length).toEqual(1);
@@ -81,16 +81,16 @@ describe('promptInstallation', () => {
         );
 
         // install the package using npm
-        expect(runCommand.mock.calls[0][0]).toEqual('pnpm install -D test-package');
+        expect(runCommand.mock.calls[0][0]).toEqual("pnpm install -D test-package");
     });
 
-    it('should support pre message', async () => {
+    it("should support pre message", async () => {
         prompt.mockReturnValue({ installConfirm: true });
 
-        getPackageManager.mockReturnValue('npm');
+        getPackageManager.mockReturnValue("npm");
 
         const preMessage = jest.fn();
-        const promptResult = await promptInstallation('test-package', preMessage);
+        const promptResult = await promptInstallation("test-package", preMessage);
 
         expect(promptResult).toBeTruthy();
         expect(preMessage.mock.calls.length).toEqual(1);
@@ -101,14 +101,14 @@ describe('promptInstallation', () => {
         );
 
         // install the package using npm
-        expect(runCommand.mock.calls[0][0]).toEqual('npm install -D test-package');
+        expect(runCommand.mock.calls[0][0]).toEqual("npm install -D test-package");
     });
 
-    it('should not install if install is not confirmed', async () => {
+    it("should not install if install is not confirmed", async () => {
         prompt.mockReturnValue(false);
 
-        const mockExit = jest.spyOn(process, 'exit').mockImplementation(() => {});
-        const promptResult = await promptInstallation('test-package');
+        const mockExit = jest.spyOn(process, "exit").mockImplementation(() => {});
+        const promptResult = await promptInstallation("test-package");
 
         expect(promptResult).toBeUndefined();
         expect(prompt.mock.calls.length).toEqual(1);

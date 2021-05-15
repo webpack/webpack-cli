@@ -1,1 +1,1 @@
-console.log('third config');
+console.log("third config");

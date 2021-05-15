@@ -1,4 +1,4 @@
-import envinfo from 'envinfo';
+import envinfo from "envinfo";
 
 interface Information {
     Binaries?: string[];
@@ -10,23 +10,23 @@ interface Information {
 }
 
 const DEFAULT_DETAILS: Information = {
-    Binaries: ['Node', 'Yarn', 'npm'],
+    Binaries: ["Node", "Yarn", "npm"],
     Browsers: [
-        'Brave Browser',
-        'Chrome',
-        'Chrome Canary',
-        'Edge',
-        'Firefox',
-        'Firefox Developer Edition',
-        'Firefox Nightly',
-        'Internet Explorer',
-        'Safari',
-        'Safari Technology Preview',
+        "Brave Browser",
+        "Chrome",
+        "Chrome Canary",
+        "Edge",
+        "Firefox",
+        "Firefox Developer Edition",
+        "Firefox Nightly",
+        "Internet Explorer",
+        "Safari",
+        "Safari Technology Preview",
     ],
-    Monorepos: ['Yarn Workspaces', 'Lerna'],
-    System: ['OS', 'CPU', 'Memory'],
-    npmGlobalPackages: ['webpack', 'webpack-cli'],
-    npmPackages: '*webpack*',
+    Monorepos: ["Yarn Workspaces", "Lerna"],
+    System: ["OS", "CPU", "Memory"],
+    npmGlobalPackages: ["webpack", "webpack-cli"],
+    npmPackages: "*webpack*",
 };
 
 class InfoCommand {
@@ -36,22 +36,23 @@ class InfoCommand {
 
         await cli.makeCommand(
             {
-                name: 'info',
-                alias: 'i',
-                description: 'Outputs information about your system.',
-                usage: '[options]',
-                pkg: '@webpack-cli/info',
+                name: "info",
+                alias: "i",
+                description: "Outputs information about your system.",
+                usage: "[options]",
+                pkg: "@webpack-cli/info",
             },
             [
                 {
-                    name: 'output',
-                    alias: 'o',
+                    name: "output",
+                    alias: "o",
                     configs: [
                         {
-                            type: 'string',
+                            type: "string",
                         },
                     ],
-                    description: 'To get the output in a specified format ( accept json or markdown )',
+                    description:
+                        "To get the output in a specified format ( accept json or markdown )",
                 },
             ],
             async (options) => {
@@ -61,14 +62,14 @@ class InfoCommand {
 
                 if (output) {
                     // Remove quotes if exist
-                    output = output.replace(/['"]+/g, '');
+                    output = output.replace(/['"]+/g, "");
 
                     switch (output) {
-                        case 'markdown':
-                            envinfoConfig['markdown'] = true;
+                        case "markdown":
+                            envinfoConfig["markdown"] = true;
                             break;
-                        case 'json':
-                            envinfoConfig['json'] = true;
+                        case "json":
+                            envinfoConfig["json"] = true;
                             break;
                         default:
                             logger.error(`'${output}' is not a valid value for output`);
@@ -78,8 +79,8 @@ class InfoCommand {
 
                 let info = await envinfo.run(DEFAULT_DETAILS, envinfoConfig);
 
-                info = info.replace(/npmPackages/g, 'Packages');
-                info = info.replace(/npmGlobalPackages/g, 'Global Packages');
+                info = info.replace(/npmPackages/g, "Packages");
+                info = info.replace(/npmGlobalPackages/g, "Global Packages");
 
                 logger.raw(info);
             },

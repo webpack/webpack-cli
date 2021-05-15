@@ -1,25 +1,28 @@
-'use strict';
+"use strict";
 
-const { resolve } = require('path');
-const { run, isWindows } = require('../../utils/test-utils');
+const { resolve } = require("path");
+const { run, isWindows } = require("../../utils/test-utils");
 
-describe('--context flag', () => {
-    it('should allow to set context', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ['--context', './']);
+describe("--context flag", () => {
+    it("should allow to set context", async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, ["--context", "./"]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
 
         if (isWindows) {
-            const windowsPath = resolve(__dirname, './').replace(/\\/g, '\\\\');
+            const windowsPath = resolve(__dirname, "./").replace(/\\/g, "\\\\");
             expect(stdout).toContain(`'${windowsPath}'`);
         } else {
-            expect(stdout).toContain(`'${resolve(__dirname, './')}'`);
+            expect(stdout).toContain(`'${resolve(__dirname, "./")}'`);
         }
     });
 
-    it('should throw module not found error for invalid context', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ['--context', '/invalid-context-path']);
+    it("should throw module not found error for invalid context", async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "--context",
+            "/invalid-context-path",
+        ]);
 
         expect(exitCode).toBe(1);
         expect(stderr).toBeFalsy();

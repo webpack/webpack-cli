@@ -2,10 +2,10 @@ module.exports = () => {
     return new Promise((resolve) => {
         setTimeout(() => {
             resolve({
-                entry: './a',
+                entry: "./a",
                 output: {
-                    path: __dirname + '/binary',
-                    filename: 'functor.js',
+                    path: __dirname + "/binary",
+                    filename: "functor.js",
                 },
             });
         });

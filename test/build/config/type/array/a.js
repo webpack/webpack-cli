@@ -1,1 +1,1 @@
-module.exports = 'a-array';
+module.exports = "a-array";

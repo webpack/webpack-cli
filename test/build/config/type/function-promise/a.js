@@ -1,1 +1,1 @@
-module.exports = 'a-function';
+module.exports = "a-function";

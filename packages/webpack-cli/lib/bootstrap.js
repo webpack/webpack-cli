@@ -1,5 +1,5 @@
-const WebpackCLI = require('./webpack-cli');
-const utils = require('./utils');
+const WebpackCLI = require("./webpack-cli");
+const utils = require("./utils");
 
 const runCLI = async (args, originalModuleCompile) => {
     try {

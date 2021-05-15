@@ -1,5 +1,5 @@
-const utils = require('./index');
-const prompt = require('./prompt');
+const utils = require("./index");
+const prompt = require("./prompt");
 
 /**
  *
@@ -19,17 +19,23 @@ async function promptInstallation(packageName, preMessage) {
     }
 
     // yarn uses 'add' command, rest npm and pnpm both use 'install'
-    const commandToBeRun = `${packageManager} ${[packageManager === 'yarn' ? 'add' : 'install', '-D', packageName].join(' ')}`;
+    const commandToBeRun = `${packageManager} ${[
+        packageManager === "yarn" ? "add" : "install",
+        "-D",
+        packageName,
+    ].join(" ")}`;
     const { colors } = utils;
 
     let installConfirm;
 
     try {
         installConfirm = await prompt({
-            message: `[webpack-cli] Would you like to install '${colors.green(packageName)}' package? (That will run '${colors.green(
-                commandToBeRun,
-            )}') (${colors.yellow('Y/n')})`,
-            defaultResponse: 'Y',
+            message: `[webpack-cli] Would you like to install '${colors.green(
+                packageName,
+            )}' package? (That will run '${colors.green(commandToBeRun)}') (${colors.yellow(
+                "Y/n",
+            )})`,
+            defaultResponse: "Y",
             stream: process.stderr,
         });
     } catch (error) {

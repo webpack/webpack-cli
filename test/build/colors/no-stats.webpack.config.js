@@ -1,4 +1,4 @@
 module.exports = {
-    name: 'test',
-    mode: 'development',
+    name: "test",
+    mode: "development",
 };

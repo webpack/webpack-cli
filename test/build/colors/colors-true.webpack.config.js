@@ -2,5 +2,5 @@ module.exports = {
     stats: {
         colors: true,
     },
-    mode: 'development',
+    mode: "development",
 };

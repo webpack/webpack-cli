@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const { run, isWebpack5 } = require('../../../utils/test-utils');
+const { run, isWebpack5 } = require("../../../utils/test-utils");
 
-describe('stats flag', () => {
+describe("stats flag", () => {
     it(`should use stats 'detailed' as defined in webpack config`, async () => {
         const { exitCode, stderr, stdout } = await run(__dirname, []);
 
@@ -12,14 +12,14 @@ describe('stats flag', () => {
         if (isWebpack5) {
             expect(stdout).toContain("preset: 'detailed'");
         } else {
-            expect(stdout).toContain('entrypoints: true');
-            expect(stdout).toContain('logging: true');
-            expect(stdout).toContain('maxModules: Infinity');
+            expect(stdout).toContain("entrypoints: true");
+            expect(stdout).toContain("logging: true");
+            expect(stdout).toContain("maxModules: Infinity");
         }
     });
 
     it(`should use --no-stats and override value in config`, async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ['--no-stats']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ["--no-stats"]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -27,7 +27,7 @@ describe('stats flag', () => {
         if (isWebpack5) {
             expect(stdout).toContain("preset: 'none'");
         } else {
-            expect(stdout).toContain('all: false');
+            expect(stdout).toContain("all: false");
         }
     });
 });

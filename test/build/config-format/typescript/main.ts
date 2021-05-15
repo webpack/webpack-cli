@@ -1,1 +1,1 @@
-console.log('Main typescript file');
+console.log("Main typescript file");

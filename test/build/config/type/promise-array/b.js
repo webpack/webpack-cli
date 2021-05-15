@@ -1,1 +1,1 @@
-module.exports = 'b-promise';
+module.exports = "b-promise";

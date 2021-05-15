@@ -5,10 +5,10 @@ class ConfigTestCommand {
 
         await cli.makeCommand(
             {
-                name: 'configtest [config-path]',
-                alias: 't',
-                description: 'Validate a webpack configuration.',
-                pkg: '@webpack-cli/configtest',
+                name: "configtest [config-path]",
+                alias: "t",
+                description: "Validate a webpack configuration.",
+                pkg: "@webpack-cli/configtest",
             },
             [],
             async (configPath: string | undefined): Promise<void> => {
@@ -28,11 +28,11 @@ class ConfigTestCommand {
                 }
 
                 if (configPaths.size === 0) {
-                    logger.error('No configuration found.');
+                    logger.error("No configuration found.");
                     process.exit(2);
                 }
 
-                logger.info(`Validate '${Array.from(configPaths).join(' ,')}'.`);
+                logger.info(`Validate '${Array.from(configPaths).join(" ,")}'.`);
 
                 try {
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -52,7 +52,9 @@ class ConfigTestCommand {
                     process.exit(2);
                 }
 
-                logger.success('There are no validation errors in the given webpack configuration.');
+                logger.success(
+                    "There are no validation errors in the given webpack configuration.",
+                );
             },
         );
     }

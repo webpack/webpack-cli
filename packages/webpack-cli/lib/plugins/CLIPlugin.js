@@ -4,8 +4,10 @@ class CLIPlugin {
     }
 
     setupHotPlugin(compiler) {
-        const { HotModuleReplacementPlugin } = compiler.webpack || require('webpack');
-        const hotModuleReplacementPlugin = Boolean(compiler.options.plugins.find((plugin) => plugin instanceof HotModuleReplacementPlugin));
+        const { HotModuleReplacementPlugin } = compiler.webpack || require("webpack");
+        const hotModuleReplacementPlugin = Boolean(
+            compiler.options.plugins.find((plugin) => plugin instanceof HotModuleReplacementPlugin),
+        );
 
         if (!hotModuleReplacementPlugin) {
             new HotModuleReplacementPlugin().apply(compiler);
@@ -13,15 +15,17 @@ class CLIPlugin {
     }
 
     setupPrefetchPlugin(compiler) {
-        const { PrefetchPlugin } = compiler.webpack || require('webpack');
+        const { PrefetchPlugin } = compiler.webpack || require("webpack");
 
         new PrefetchPlugin(null, this.options.prefetch).apply(compiler);
     }
 
     async setupBundleAnalyzerPlugin(compiler) {
         // eslint-disable-next-line node/no-extraneous-require
-        const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-        const bundleAnalyzerPlugin = Boolean(compiler.options.plugins.find((plugin) => plugin instanceof BundleAnalyzerPlugin));
+        const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
+        const bundleAnalyzerPlugin = Boolean(
+            compiler.options.plugins.find((plugin) => plugin instanceof BundleAnalyzerPlugin),
+        );
 
         if (!bundleAnalyzerPlugin) {
             new BundleAnalyzerPlugin().apply(compiler);
@@ -29,17 +33,21 @@ class CLIPlugin {
     }
 
     setupProgressPlugin(compiler) {
-        const { ProgressPlugin } = compiler.webpack || require('webpack');
-        const progressPlugin = Boolean(compiler.options.plugins.find((plugin) => plugin instanceof ProgressPlugin));
+        const { ProgressPlugin } = compiler.webpack || require("webpack");
+        const progressPlugin = Boolean(
+            compiler.options.plugins.find((plugin) => plugin instanceof ProgressPlugin),
+        );
 
         if (!progressPlugin) {
-            new ProgressPlugin({ profile: this.options.progress === 'profile' }).apply(compiler);
+            new ProgressPlugin({
+                profile: this.options.progress === "profile",
+            }).apply(compiler);
         }
     }
 
     setupHelpfulOutput(compiler) {
-        const pluginName = 'webpack-cli';
-        const getCompilationName = () => (compiler.name ? `'${compiler.name}'` : '');
+        const pluginName = "webpack-cli";
+        const getCompilationName = () => (compiler.name ? `'${compiler.name}'` : "");
         const logCompilation = (message) => {
             if (process.env.WEBPACK_CLI_START_FINISH_FORCE_LOG) {
                 process.stderr.write(message);
@@ -53,10 +61,12 @@ class CLIPlugin {
         compiler.hooks.run.tap(pluginName, () => {
             const name = getCompilationName();
 
-            logCompilation(`Compiler${name ? ` ${name}` : ''} starting... `);
+            logCompilation(`Compiler${name ? ` ${name}` : ""} starting... `);
 
             if (configPath) {
-                this.logger.log(`Compiler${name ? ` ${name}` : ''} is using config: '${configPath}'`);
+                this.logger.log(
+                    `Compiler${name ? ` ${name}` : ""} is using config: '${configPath}'`,
+                );
             }
         });
 
@@ -64,15 +74,19 @@ class CLIPlugin {
             const { bail, watch } = compiler.options;
 
             if (bail && watch) {
-                this.logger.warn('You are using "bail" with "watch". "bail" will still exit webpack when the first error is found.');
+                this.logger.warn(
+                    'You are using "bail" with "watch". "bail" will still exit webpack when the first error is found.',
+                );
             }
 
             const name = getCompilationName();
 
-            logCompilation(`Compiler${name ? ` ${name}` : ''} starting... `);
+            logCompilation(`Compiler${name ? ` ${name}` : ""} starting... `);
 
             if (configPath) {
-                this.logger.log(`Compiler${name ? ` ${name}` : ''} is using config: '${configPath}'`);
+                this.logger.log(
+                    `Compiler${name ? ` ${name}` : ""} is using config: '${configPath}'`,
+                );
             }
         });
 
@@ -86,18 +100,20 @@ class CLIPlugin {
         (compiler.webpack ? compiler.hooks.afterDone : compiler.hooks.done).tap(pluginName, () => {
             const name = getCompilationName();
 
-            logCompilation(`Compiler${name ? ` ${name}` : ''} finished`);
+            logCompilation(`Compiler${name ? ` ${name}` : ""} finished`);
 
             process.nextTick(() => {
                 if (compiler.watchMode) {
-                    this.logger.log(`Compiler${name ? `${name}` : ''} is watching files for updates...`);
+                    this.logger.log(
+                        `Compiler${name ? `${name}` : ""} is watching files for updates...`,
+                    );
                 }
             });
         });
     }
 
     apply(compiler) {
-        this.logger = compiler.getInfrastructureLogger('webpack-cli');
+        this.logger = compiler.getInfrastructureLogger("webpack-cli");
 
         if (this.options.progress) {
             this.setupProgressPlugin(compiler);

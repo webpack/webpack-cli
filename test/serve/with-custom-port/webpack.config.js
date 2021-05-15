@@ -1,12 +1,12 @@
-const WebpackCLITestPlugin = require('../../utils/webpack-cli-test-plugin');
+const WebpackCLITestPlugin = require("../../utils/webpack-cli-test-plugin");
 
 module.exports = {
-    mode: 'development',
+    mode: "development",
     devtool: false,
-    stats: 'detailed',
+    stats: "detailed",
     devServer: {
         port: 1234,
-        host: '0.0.0.0',
+        host: "0.0.0.0",
     },
-    plugins: [new WebpackCLITestPlugin(['mode'], false, 'hooks.compilation.taps')],
+    plugins: [new WebpackCLITestPlugin(["mode"], false, "hooks.compilation.taps")],
 };

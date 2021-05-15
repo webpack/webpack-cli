@@ -1,13 +1,13 @@
-const path = require('path');
+const path = require("path");
 
 module.exports = {
-    mode: 'development',
+    mode: "development",
     entry: {
-        app: './src/app.js',
-        print: './src/print.js',
+        app: "./src/app.js",
+        print: "./src/print.js",
     },
     output: {
-        filename: '[name].bundle.js',
-        path: path.resolve(__dirname, 'dist'),
+        filename: "[name].bundle.js",
+        path: path.resolve(__dirname, "dist"),
     },
 };

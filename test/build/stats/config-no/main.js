@@ -1,1 +1,1 @@
-console.log('--no-stats with config test');
+console.log("--no-stats with config test");
