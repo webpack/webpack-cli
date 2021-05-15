@@ -29,7 +29,10 @@ describe("snapshot config related flags", () => {
 
         if (value.configs.filter((config) => config.type === "string").length > 0) {
             it(`should config --${name} correctly`, async () => {
-                const { exitCode, stderr, stdout } = await run(__dirname, [`--${name}`, "./mock/mock.js"]);
+                const { exitCode, stderr, stdout } = await run(__dirname, [
+                    `--${name}`,
+                    "./mock/mock.js",
+                ]);
 
                 expect(exitCode).toBe(0);
                 expect(stderr).toBeFalsy();

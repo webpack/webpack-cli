@@ -100,7 +100,9 @@ describe("unknown behaviour", () => {
     });
 
     it("should log error and respect --color flag", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["--unknown", "--color"], { env: { FORCE_COLOR: true } });
+        const { exitCode, stderr, stdout } = await run(__dirname, ["--unknown", "--color"], {
+            env: { FORCE_COLOR: true },
+        });
 
         expect(exitCode).toBe(2);
         expect(stderr).toMatchSnapshot("stderr");
@@ -108,7 +110,9 @@ describe("unknown behaviour", () => {
     });
 
     it("should log error for unknown flag and respect --no-color", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["--unknown", "--no-color"], { env: { FORCE_COLOR: true } });
+        const { exitCode, stderr, stdout } = await run(__dirname, ["--unknown", "--no-color"], {
+            env: { FORCE_COLOR: true },
+        });
 
         expect(exitCode).toBe(2);
         expect(stderr).toMatchSnapshot("stderr");
@@ -124,7 +128,10 @@ describe("unknown behaviour", () => {
     });
 
     it("should log an error if an unknown flag is passed and suggests the closest match to an unknown flag #2", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["--output-fileneme", "[name].js"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "--output-fileneme",
+            "[name].js",
+        ]);
 
         expect(exitCode).toBe(2);
         expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
@@ -132,7 +139,9 @@ describe("unknown behaviour", () => {
     });
 
     it("should log an error if an unknown flag is passed and suggests the closest match to an unknown flag #3", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["--output-library-auxiliary-comment-commnjs"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "--output-library-auxiliary-comment-commnjs",
+        ]);
 
         expect(exitCode).toBe(2);
         expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
@@ -172,7 +181,9 @@ describe("unknown behaviour", () => {
     });
 
     it("should log error if an unknown command passed", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["qqq"], true, [], { TERM_PROGRAM: false });
+        const { exitCode, stderr, stdout } = await run(__dirname, ["qqq"], true, [], {
+            TERM_PROGRAM: false,
+        });
 
         expect(exitCode).toBe(2);
         expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
@@ -180,7 +191,9 @@ describe("unknown behaviour", () => {
     });
 
     it("should log error and provide suggestion if an unknown command passed", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["serverr"], true, [], { TERM_PROGRAM: false });
+        const { exitCode, stderr, stdout } = await run(__dirname, ["serverr"], true, [], {
+            TERM_PROGRAM: false,
+        });
 
         expect(exitCode).toBe(2);
         expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");

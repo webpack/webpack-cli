@@ -1,7 +1,12 @@
 module.exports = {
     root: true,
     reportUnusedDisableDirectives: true,
-    extends: ["eslint:recommended", "plugin:node/recommended", "plugin:prettier/recommended", "prettier"],
+    extends: [
+        "eslint:recommended",
+        "plugin:node/recommended",
+        "plugin:prettier/recommended",
+        "prettier",
+    ],
     parserOptions: { ecmaVersion: 2018, sourceType: "script" },
     plugins: ["node"],
     settings: {
@@ -30,11 +35,16 @@ module.exports = {
                 },
             },
             files: ["**/*.ts"],
-            extends: ["plugin:@typescript-eslint/eslint-recommended", "plugin:@typescript-eslint/recommended", "prettier"],
+            extends: [
+                "plugin:@typescript-eslint/eslint-recommended",
+                "plugin:@typescript-eslint/recommended",
+                "prettier",
+            ],
             parser: "@typescript-eslint/parser",
             plugins: ["@typescript-eslint"],
             rules: {
                 "node/no-unsupported-features/es-syntax": "off",
+                "max-len": [0, 100],
             },
         },
     ],

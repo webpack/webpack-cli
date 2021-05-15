@@ -4,7 +4,9 @@ const { run, isWebpack5 } = require("../../../../utils/test-utils");
 
 describe("Default Config:", () => {
     it("Should be able to pick mjs config by default", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, [], { env: { WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG: true } });
+        const { exitCode, stderr, stdout } = await run(__dirname, [], {
+            env: { WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG: true },
+        });
 
         if (/Error: Not supported/.test(stderr)) {
             expect(exitCode).toEqual(2);

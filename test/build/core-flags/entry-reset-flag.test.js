@@ -4,7 +4,11 @@ const { run } = require("../../utils/test-utils");
 
 describe("--entry-reset flag", () => {
     it("should reset entry correctly", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["--entry-reset", "--entry", "./src/entry.js"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "--entry-reset",
+            "--entry",
+            "./src/entry.js",
+        ]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();

@@ -2,7 +2,15 @@
 
 const { run, isWebpack5, normalizeStderr, normalizeStdout } = require("../../../utils/test-utils");
 
-const presets = ["normal", "detailed", "errors-only", "errors-warnings", "minimal", "verbose", "none"];
+const presets = [
+    "normal",
+    "detailed",
+    "errors-only",
+    "errors-warnings",
+    "minimal",
+    "verbose",
+    "none",
+];
 
 if (isWebpack5) {
     presets.push("summary");

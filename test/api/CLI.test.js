@@ -201,7 +201,9 @@ describe("CLI API", () => {
                 },
             );
 
-            command.parseAsync(["--configs-path", "/root/foo"], { from: "user" });
+            command.parseAsync(["--configs-path", "/root/foo"], {
+                from: "user",
+            });
         });
 
         it("should make command with configs RegExp option", async (done) => {
@@ -591,7 +593,9 @@ describe("CLI API", () => {
                 },
             );
 
-            command.parseAsync(["--string", "foo", "--string", "bar"], { from: "user" });
+            command.parseAsync(["--string", "foo", "--string", "bar"], {
+                from: "user",
+            });
         });
 
         it("should make command with multiple String option #2", async (done) => {
@@ -616,7 +620,9 @@ describe("CLI API", () => {
                 },
             );
 
-            command.parseAsync(["--string", "foo", "--string", "bar"], { from: "user" });
+            command.parseAsync(["--string", "foo", "--string", "bar"], {
+                from: "user",
+            });
         });
 
         it("should make command with Number option", async (done) => {
@@ -690,7 +696,9 @@ describe("CLI API", () => {
                 },
             );
 
-            command.parseAsync(["--number", "1", "--number", "2"], { from: "user" });
+            command.parseAsync(["--number", "1", "--number", "2"], {
+                from: "user",
+            });
         });
 
         it("should make command with multiple Number option and default value", async (done) => {
@@ -716,7 +724,9 @@ describe("CLI API", () => {
                 },
             );
 
-            command.parseAsync(["--number", "1", "--number", "2"], { from: "user" });
+            command.parseAsync(["--number", "1", "--number", "2"], {
+                from: "user",
+            });
         });
 
         it("should make command with multiple Number option and default value", async (done) => {
@@ -822,7 +832,9 @@ describe("CLI API", () => {
                 },
             );
 
-            command.parseAsync(["--custom", "value", "--custom", "other"], { from: "user" });
+            command.parseAsync(["--custom", "value", "--custom", "other"], {
+                from: "user",
+            });
         });
 
         it("should make command with multiple custom function type and default value", async (done) => {
@@ -933,7 +945,9 @@ describe("CLI API", () => {
                 },
             );
 
-            command.parseAsync(["--boolean-and-string", "value"], { from: "user" });
+            command.parseAsync(["--boolean-and-string", "value"], {
+                from: "user",
+            });
         });
 
         it("should make command with multiple Boolean and String option", async (done) => {
@@ -977,13 +991,17 @@ describe("CLI API", () => {
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ booleanAndString: ["bar", "baz"] });
+                    expect(options).toEqual({
+                        booleanAndString: ["bar", "baz"],
+                    });
 
                     done();
                 },
             );
 
-            command.parseAsync(["--boolean-and-string", "bar", "--boolean-and-string", "baz"], { from: "user" });
+            command.parseAsync(["--boolean-and-string", "bar", "--boolean-and-string", "baz"], {
+                from: "user",
+            });
         });
 
         it("should make command with Boolean and String option and negative", async (done) => {
@@ -1033,7 +1051,9 @@ describe("CLI API", () => {
                 },
             );
 
-            command.parseAsync(["--boolean-and-string", "foo"], { from: "user" });
+            command.parseAsync(["--boolean-and-string", "foo"], {
+                from: "user",
+            });
         });
 
         it("should make command with Boolean and String option and negative #3", async (done) => {
@@ -1106,7 +1126,9 @@ describe("CLI API", () => {
                 },
             );
 
-            command.parseAsync(["--boolean-and-number", "12"], { from: "user" });
+            command.parseAsync(["--boolean-and-number", "12"], {
+                from: "user",
+            });
         });
 
         it("should make command with array Boolean type", async (done) => {
@@ -1148,13 +1170,17 @@ describe("CLI API", () => {
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ booleanAndNumberAndString: true });
+                    expect(options).toEqual({
+                        booleanAndNumberAndString: true,
+                    });
 
                     done();
                 },
             );
 
-            command.parseAsync(["--boolean-and-number-and-string"], { from: "user" });
+            command.parseAsync(["--boolean-and-number-and-string"], {
+                from: "user",
+            });
         });
 
         it("should make command with Boolean and Number and String type #2", async (done) => {
@@ -1178,7 +1204,9 @@ describe("CLI API", () => {
                 },
             );
 
-            command.parseAsync(["--boolean-and-number-and-string", "12"], { from: "user" });
+            command.parseAsync(["--boolean-and-number-and-string", "12"], {
+                from: "user",
+            });
         });
 
         it("should make command with Boolean and Number and String type #3", async (done) => {
@@ -1196,13 +1224,17 @@ describe("CLI API", () => {
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ booleanAndNumberAndString: "bar" });
+                    expect(options).toEqual({
+                        booleanAndNumberAndString: "bar",
+                    });
 
                     done();
                 },
             );
 
-            command.parseAsync(["--boolean-and-number-and-string", "bar"], { from: "user" });
+            command.parseAsync(["--boolean-and-number-and-string", "bar"], {
+                from: "user",
+            });
         });
 
         it("should make command with Boolean and Number and String type and default value", async (done) => {
@@ -1221,7 +1253,9 @@ describe("CLI API", () => {
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ booleanAndNumberAndString: "default" });
+                    expect(options).toEqual({
+                        booleanAndNumberAndString: "default",
+                    });
 
                     done();
                 },
@@ -1246,13 +1280,17 @@ describe("CLI API", () => {
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ booleanAndNumberAndString: "foo" });
+                    expect(options).toEqual({
+                        booleanAndNumberAndString: "foo",
+                    });
 
                     done();
                 },
             );
 
-            command.parseAsync(["--boolean-and-number-and-string", "foo"], { from: "user" });
+            command.parseAsync(["--boolean-and-number-and-string", "foo"], {
+                from: "user",
+            });
         });
 
         it("should make command with Boolean and Number and String type and default value #3", async (done) => {
@@ -1277,7 +1315,9 @@ describe("CLI API", () => {
                 },
             );
 
-            command.parseAsync(["--boolean-and-number-and-string", "12"], { from: "user" });
+            command.parseAsync(["--boolean-and-number-and-string", "12"], {
+                from: "user",
+            });
         });
 
         it("should make command with Boolean and Number and String type and default value #4", async (done) => {
@@ -1296,13 +1336,17 @@ describe("CLI API", () => {
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ booleanAndNumberAndString: "default" });
+                    expect(options).toEqual({
+                        booleanAndNumberAndString: "default",
+                    });
 
                     done();
                 },
             );
 
-            command.parseAsync(["--boolean-and-number-and-string"], { from: "user" });
+            command.parseAsync(["--boolean-and-number-and-string"], {
+                from: "user",
+            });
         });
 
         it("should make command with multiple Boolean and Number and String type", async (done) => {
@@ -1321,13 +1365,17 @@ describe("CLI API", () => {
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ booleanAndNumberAndString: true });
+                    expect(options).toEqual({
+                        booleanAndNumberAndString: true,
+                    });
 
                     done();
                 },
             );
 
-            command.parseAsync(["--boolean-and-number-and-string"], { from: "user" });
+            command.parseAsync(["--boolean-and-number-and-string"], {
+                from: "user",
+            });
         });
 
         it("should make command with multiple Boolean and Number and String type #2", async (done) => {
@@ -1346,13 +1394,17 @@ describe("CLI API", () => {
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ booleanAndNumberAndString: ["foo"] });
+                    expect(options).toEqual({
+                        booleanAndNumberAndString: ["foo"],
+                    });
 
                     done();
                 },
             );
 
-            command.parseAsync(["--boolean-and-number-and-string", "foo"], { from: "user" });
+            command.parseAsync(["--boolean-and-number-and-string", "foo"], {
+                from: "user",
+            });
         });
 
         it("should make command with multiple Boolean and Number and String type #3", async (done) => {
@@ -1371,13 +1423,17 @@ describe("CLI API", () => {
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ booleanAndNumberAndString: [12] });
+                    expect(options).toEqual({
+                        booleanAndNumberAndString: [12],
+                    });
 
                     done();
                 },
             );
 
-            command.parseAsync(["--boolean-and-number-and-string", "12"], { from: "user" });
+            command.parseAsync(["--boolean-and-number-and-string", "12"], {
+                from: "user",
+            });
         });
 
         it("should make command with multiple Boolean and Number and String type #4", async (done) => {
@@ -1396,13 +1452,23 @@ describe("CLI API", () => {
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ booleanAndNumberAndString: ["foo", "bar"] });
+                    expect(options).toEqual({
+                        booleanAndNumberAndString: ["foo", "bar"],
+                    });
 
                     done();
                 },
             );
 
-            command.parseAsync(["--boolean-and-number-and-string", "foo", "--boolean-and-number-and-string", "bar"], { from: "user" });
+            command.parseAsync(
+                [
+                    "--boolean-and-number-and-string",
+                    "foo",
+                    "--boolean-and-number-and-string",
+                    "bar",
+                ],
+                { from: "user" },
+            );
         });
 
         it("should make command with multiple Boolean and Number and String type #5", async (done) => {
@@ -1421,13 +1487,18 @@ describe("CLI API", () => {
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ booleanAndNumberAndString: ["foo", 12] });
+                    expect(options).toEqual({
+                        booleanAndNumberAndString: ["foo", 12],
+                    });
 
                     done();
                 },
             );
 
-            command.parseAsync(["--boolean-and-number-and-string", "foo", "--boolean-and-number-and-string", "12"], { from: "user" });
+            command.parseAsync(
+                ["--boolean-and-number-and-string", "foo", "--boolean-and-number-and-string", "12"],
+                { from: "user" },
+            );
         });
 
         it("should make command with multiple Boolean and Number and String and default value", async (done) => {
@@ -1447,7 +1518,9 @@ describe("CLI API", () => {
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ booleanAndNumberAndString: "default" });
+                    expect(options).toEqual({
+                        booleanAndNumberAndString: "default",
+                    });
 
                     done();
                 },
@@ -1473,13 +1546,17 @@ describe("CLI API", () => {
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ booleanAndNumberAndString: ["foo"] });
+                    expect(options).toEqual({
+                        booleanAndNumberAndString: ["foo"],
+                    });
 
                     done();
                 },
             );
 
-            command.parseAsync(["--boolean-and-number-and-string", "foo"], { from: "user" });
+            command.parseAsync(["--boolean-and-number-and-string", "foo"], {
+                from: "user",
+            });
         });
 
         it("should make command with multiple Boolean and Number and String and default value #3", async (done) => {
@@ -1499,13 +1576,17 @@ describe("CLI API", () => {
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ booleanAndNumberAndString: [12] });
+                    expect(options).toEqual({
+                        booleanAndNumberAndString: [12],
+                    });
 
                     done();
                 },
             );
 
-            command.parseAsync(["--boolean-and-number-and-string", "12"], { from: "user" });
+            command.parseAsync(["--boolean-and-number-and-string", "12"], {
+                from: "user",
+            });
         });
 
         it("should make command with multiple Boolean and Number and String and default value #4", async (done) => {
@@ -1525,13 +1606,18 @@ describe("CLI API", () => {
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ booleanAndNumberAndString: ["foo", 12] });
+                    expect(options).toEqual({
+                        booleanAndNumberAndString: ["foo", 12],
+                    });
 
                     done();
                 },
             );
 
-            command.parseAsync(["--boolean-and-number-and-string", "foo", "--boolean-and-number-and-string", "12"], { from: "user" });
+            command.parseAsync(
+                ["--boolean-and-number-and-string", "foo", "--boolean-and-number-and-string", "12"],
+                { from: "user" },
+            );
         });
 
         it("should make command with array of unknown types", async (done) => {

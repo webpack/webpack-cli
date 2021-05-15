@@ -27,7 +27,9 @@ describe("warnings", () => {
         expect(json["hash"]).toBeDefined();
         expect(json["warnings"]).toHaveLength(2);
         // `message` for `webpack@5`
-        expect(json["warnings"][0].message ? json["warnings"][0].message : json["warnings"][0]).toMatch(/Can't resolve/);
+        expect(
+            json["warnings"][0].message ? json["warnings"][0].message : json["warnings"][0],
+        ).toMatch(/Can't resolve/);
     });
 
     it("should store json to a file", async () => {
@@ -53,6 +55,8 @@ describe("warnings", () => {
         expect(json["hash"]).toBeDefined();
         expect(json["warnings"]).toHaveLength(2);
         // `message` for `webpack@5`
-        expect(json["warnings"][0].message ? json["warnings"][0].message : json["warnings"][0]).toMatch(/Can't resolve/);
+        expect(
+            json["warnings"][0].message ? json["warnings"][0].message : json["warnings"][0],
+        ).toMatch(/Can't resolve/);
     });
 });

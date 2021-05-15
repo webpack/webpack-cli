@@ -1,7 +1,16 @@
 "use strict";
 const { run, isWebpack5, normalizeStdout, normalizeStderr } = require("../../../utils/test-utils");
 
-const targetValues = ["web", "webworker", "node", "async-node", "node-webkit", "electron-main", "electron-renderer", "electron-preload"];
+const targetValues = [
+    "web",
+    "webworker",
+    "node",
+    "async-node",
+    "node-webkit",
+    "electron-main",
+    "electron-renderer",
+    "electron-preload",
+];
 
 describe("--target flag", () => {
     targetValues.forEach((val) => {
@@ -42,7 +51,12 @@ describe("--target flag", () => {
 
     if (isWebpack5) {
         it("should allow multiple targets", async () => {
-            const { exitCode, stderr, stdout } = await run(__dirname, ["--target", "node", "--target", "async-node"]);
+            const { exitCode, stderr, stdout } = await run(__dirname, [
+                "--target",
+                "node",
+                "--target",
+                "async-node",
+            ]);
 
             expect(exitCode).toBe(0);
             expect(stderr).toBeFalsy();
@@ -50,7 +64,12 @@ describe("--target flag", () => {
         });
 
         it("should throw an error for invalid target in multiple syntax", async () => {
-            const { exitCode, stderr, stdout } = await run(__dirname, ["--target", "node", "--target", "invalid"]);
+            const { exitCode, stderr, stdout } = await run(__dirname, [
+                "--target",
+                "node",
+                "--target",
+                "invalid",
+            ]);
 
             expect(exitCode).toBe(2);
             expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
@@ -58,7 +77,12 @@ describe("--target flag", () => {
         });
 
         it("should throw an error for incompatible multiple targets", async () => {
-            const { exitCode, stderr, stdout } = await run(__dirname, ["--target", "node", "--target", "web"]);
+            const { exitCode, stderr, stdout } = await run(__dirname, [
+                "--target",
+                "node",
+                "--target",
+                "web",
+            ]);
 
             expect(exitCode).toBe(2);
             expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
@@ -66,7 +90,11 @@ describe("--target flag", () => {
         });
 
         it("should reset target from node to async-node with --target-reset", async () => {
-            const { exitCode, stderr, stdout } = await run(__dirname, ["--target-reset", "--target", "async-node"]);
+            const { exitCode, stderr, stdout } = await run(__dirname, [
+                "--target-reset",
+                "--target",
+                "async-node",
+            ]);
 
             expect(exitCode).toBe(0);
             expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");

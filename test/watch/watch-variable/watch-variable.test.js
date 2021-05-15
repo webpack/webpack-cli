@@ -31,7 +31,10 @@ describe("watch variable", () => {
 
                 if (!modified) {
                     process.nextTick(() => {
-                        writeFileSync(resolve(__dirname, "./src/index.js"), `console.log('watch flag test');`);
+                        writeFileSync(
+                            resolve(__dirname, "./src/index.js"),
+                            `console.log('watch flag test');`,
+                        );
                     });
 
                     modified = true;
@@ -66,7 +69,10 @@ describe("watch variable", () => {
 
                 if (!modified) {
                     process.nextTick(() => {
-                        writeFileSync(resolve(__dirname, "./src/index.js"), `console.log('watch flag test');`);
+                        writeFileSync(
+                            resolve(__dirname, "./src/index.js"),
+                            `console.log('watch flag test');`,
+                        );
                     });
 
                     modified = true;

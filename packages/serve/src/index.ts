@@ -39,11 +39,15 @@ class ServeCommand {
                 try {
                     devServerFlags = loadDevServerOptions();
                 } catch (error) {
-                    logger.error(`You need to install 'webpack-dev-server' for running 'webpack serve'.\n${error}`);
+                    logger.error(
+                        `You need to install 'webpack-dev-server' for running 'webpack serve'.\n${error}`,
+                    );
                     process.exit(2);
                 }
 
-                const builtInOptions = cli.getBuiltInOptions().filter((option) => option.name !== "watch");
+                const builtInOptions = cli
+                    .getBuiltInOptions()
+                    .filter((option) => option.name !== "watch");
 
                 return [...builtInOptions, ...devServerFlags];
             },
@@ -68,12 +72,19 @@ class ServeCommand {
                 for (const optionName in options) {
                     const kebabedOption = cli.utils.toKebabCase(optionName);
                     // `webpack-dev-server` has own logic for the `--hot` option
-                    const isBuiltInOption = kebabedOption !== "hot" && builtInOptions.find((builtInOption) => builtInOption.name === kebabedOption);
+                    const isBuiltInOption =
+                        kebabedOption !== "hot" &&
+                        builtInOptions.find(
+                            (builtInOption) => builtInOption.name === kebabedOption,
+                        );
 
                     if (isBuiltInOption) {
                         webpackOptions[optionName] = options[optionName];
                     } else {
-                        const needToProcess = devServerFlags.find((devServerOption) => devServerOption.name === kebabedOption && devServerOption.processor);
+                        const needToProcess = devServerFlags.find(
+                            (devServerOption) =>
+                                devServerOption.name === kebabedOption && devServerOption.processor,
+                        );
 
                         if (needToProcess) {
                             processors.push(needToProcess.processor);
@@ -91,7 +102,10 @@ class ServeCommand {
                     webpackOptions.entry = [...entries, ...(webpackOptions.entry || [])];
                 }
 
-                webpackOptions.argv = { ...options, env: { WEBPACK_SERVE: true, ...options.env } };
+                webpackOptions.argv = {
+                    ...options,
+                    env: { WEBPACK_SERVE: true, ...options.env },
+                };
 
                 const compiler = await cli.createCompiler(webpackOptions);
 

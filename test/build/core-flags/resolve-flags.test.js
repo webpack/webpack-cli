@@ -14,7 +14,11 @@ describe("resolve config related flags", () => {
 
         const propName = hyphenToUpperCase(property);
 
-        if (value.configs.filter((config) => config.type === "boolean").length > 0 && !name.includes("alias-") && !name.includes("fallback-")) {
+        if (
+            value.configs.filter((config) => config.type === "boolean").length > 0 &&
+            !name.includes("alias-") &&
+            !name.includes("fallback-")
+        ) {
             it(`should config --${name} correctly`, async () => {
                 const { stderr, stdout } = await run(__dirname, [`--${name}`]);
 
@@ -30,7 +34,11 @@ describe("resolve config related flags", () => {
             });
         }
 
-        if (value.configs.filter((config) => config.type === "string").length > 0 && !name.includes("alias-") && !name.includes("fallback-")) {
+        if (
+            value.configs.filter((config) => config.type === "string").length > 0 &&
+            !name.includes("alias-") &&
+            !name.includes("fallback-")
+        ) {
             it(`should config --${name} correctly`, async () => {
                 const { stderr, stdout } = await run(__dirname, [`--${name}`, "browser"]);
 

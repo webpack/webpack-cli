@@ -4,7 +4,10 @@ const { run } = require("../../../utils/test-utils");
 
 describe("ignore-warnings", () => {
     it("should ignore the warning emitted", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["--ignore-warnings", /Generated Warning/]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "--ignore-warnings",
+            /Generated Warning/,
+        ]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -13,7 +16,11 @@ describe("ignore-warnings", () => {
     });
 
     it("should reset options.ignoreWarnings", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["--ignore-warnings", /Generated Warning/, "--ignore-warnings-reset"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "--ignore-warnings",
+            /Generated Warning/,
+            "--ignore-warnings-reset",
+        ]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();

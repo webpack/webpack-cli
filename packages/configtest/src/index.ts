@@ -52,7 +52,9 @@ class ConfigTestCommand {
                     process.exit(2);
                 }
 
-                logger.success("There are no validation errors in the given webpack configuration.");
+                logger.success(
+                    "There are no validation errors in the given webpack configuration.",
+                );
             },
         );
     }

@@ -16,13 +16,19 @@ describe("output config related flag", () => {
 
         const propName = hyphenToUpperCase(property);
 
-        if (value.configs.filter((config) => config.type === "boolean").length > 0 && !name.includes("output-library")) {
+        if (
+            value.configs.filter((config) => config.type === "boolean").length > 0 &&
+            !name.includes("output-library")
+        ) {
             it(`should config --${name} correctly`, async () => {
                 let { stderr, stdout, exitCode } = await run(__dirname, [`--${name}`]);
 
                 if (name === "output-module") {
                     //'output.module: true' is only allowed when 'experiments.outputModule' is enabled
-                    ({ exitCode, stderr, stdout } = await run(__dirname, [`--${name}`, "--experiments-output-module"]));
+                    ({ exitCode, stderr, stdout } = await run(__dirname, [
+                        `--${name}`,
+                        "--experiments-output-module",
+                    ]));
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
@@ -67,28 +73,46 @@ describe("output config related flag", () => {
             });
         }
 
-        if (value.configs.filter((config) => config.type === "string").length > 0 && !name.includes("output-library")) {
+        if (
+            value.configs.filter((config) => config.type === "string").length > 0 &&
+            !name.includes("output-library")
+        ) {
             it(`should config --${name} correctly`, async () => {
                 if (name === "output-cross-origin-loading") {
-                    const { exitCode, stderr, stdout } = await run(__dirname, [`--${name}`, "anonymous"]);
+                    const { exitCode, stderr, stdout } = await run(__dirname, [
+                        `--${name}`,
+                        "anonymous",
+                    ]);
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: 'anonymous'`);
                 } else if (name === "output-chunk-format") {
-                    const { exitCode, stderr, stdout } = await run(__dirname, [`--${name}`, "commonjs"]);
+                    const { exitCode, stderr, stdout } = await run(__dirname, [
+                        `--${name}`,
+                        "commonjs",
+                    ]);
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: 'commonjs'`);
                 } else if (name === "output-chunk-loading") {
-                    const { exitCode, stderr, stdout } = await run(__dirname, [`--${name}`, "jsonp"]);
+                    const { exitCode, stderr, stdout } = await run(__dirname, [
+                        `--${name}`,
+                        "jsonp",
+                    ]);
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: 'jsonp'`);
-                } else if (name === "output-enabled-chunk-loading-types" || name === "output-enabled-wasm-loading-types") {
-                    const { exitCode, stderr, stdout } = await run(__dirname, [`--${name}`, "async-node"]);
+                } else if (
+                    name === "output-enabled-chunk-loading-types" ||
+                    name === "output-enabled-wasm-loading-types"
+                ) {
+                    const { exitCode, stderr, stdout } = await run(__dirname, [
+                        `--${name}`,
+                        "async-node",
+                    ]);
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
@@ -100,13 +124,19 @@ describe("output config related flag", () => {
                     expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: 'amd'`);
                 } else if (name === "output-hash-function") {
-                    const { exitCode, stderr, stdout } = await run(__dirname, [`--${name}`, "sha256"]);
+                    const { exitCode, stderr, stdout } = await run(__dirname, [
+                        `--${name}`,
+                        "sha256",
+                    ]);
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`hashFunction: 'sha256'`);
                 } else if (name === "output-script-type") {
-                    const { exitCode, stderr, stdout } = await run(__dirname, [`--${name}`, "module"]);
+                    const { exitCode, stderr, stdout } = await run(__dirname, [
+                        `--${name}`,
+                        "module",
+                    ]);
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
@@ -118,37 +148,55 @@ describe("output config related flag", () => {
                     expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: [ 'var' ]`);
                 } else if (name === "output-path") {
-                    const { exitCode, stderr, stdout } = await run(__dirname, [`--${name}`, "test"]);
+                    const { exitCode, stderr, stdout } = await run(__dirname, [
+                        `--${name}`,
+                        "test",
+                    ]);
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
                     expect(stdout).toContain("test");
                 } else if (name === "output-pathinfo") {
-                    const { exitCode, stderr, stdout } = await run(__dirname, [`--${name}`, "verbose"]);
+                    const { exitCode, stderr, stdout } = await run(__dirname, [
+                        `--${name}`,
+                        "verbose",
+                    ]);
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`pathinfo: 'verbose'`);
                 } else if (name === "output-worker-chunk-loading") {
-                    const { exitCode, stderr, stdout } = await run(__dirname, [`--${name}`, "async-node"]);
+                    const { exitCode, stderr, stdout } = await run(__dirname, [
+                        `--${name}`,
+                        "async-node",
+                    ]);
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: 'async-node'`);
                 } else if (name.includes("wasm")) {
-                    const { exitCode, stderr, stdout } = await run(__dirname, [`--${name}`, "async-node"]);
+                    const { exitCode, stderr, stdout } = await run(__dirname, [
+                        `--${name}`,
+                        "async-node",
+                    ]);
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`${propName}: 'async-node'`);
                 } else if (name.includes("trusted-types")) {
-                    const { exitCode, stderr, stdout } = await run(__dirname, [`--${name}`, "test"]);
+                    const { exitCode, stderr, stdout } = await run(__dirname, [
+                        `--${name}`,
+                        "test",
+                    ]);
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`trustedTypes: { policyName: 'test' }`);
                 } else {
-                    const { exitCode, stderr, stdout } = await run(__dirname, [`--${name}`, "test"]);
+                    const { exitCode, stderr, stdout } = await run(__dirname, [
+                        `--${name}`,
+                        "test",
+                    ]);
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
@@ -181,7 +229,11 @@ describe("output config related flag", () => {
     });
 
     it("should be succesful with --output-library-reset correctly", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["--output-library-reset", "--output-library", "newLibrary"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "--output-library-reset",
+            "--output-library",
+            "newLibrary",
+        ]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();

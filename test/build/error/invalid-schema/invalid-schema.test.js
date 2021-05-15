@@ -3,7 +3,10 @@ const { run, isWebpack5 } = require("../../../utils/test-utils");
 
 describe("invalid schema", () => {
     it("should log error on invalid config", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["--config", "./webpack.mock.config.js"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "--config",
+            "./webpack.mock.config.js",
+        ]);
 
         expect(exitCode).toEqual(2);
         expect(stderr).toContain("Invalid configuration object");
@@ -11,7 +14,10 @@ describe("invalid schema", () => {
     });
 
     it("should log error on invalid plugin options", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["--config", "./webpack.plugin-mock.config.js"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "--config",
+            "./webpack.plugin-mock.config.js",
+        ]);
 
         expect(exitCode).toEqual(2);
         expect(stderr).toContain(isWebpack5 ? "Invalid options object" : "Invalid Options");
@@ -19,7 +25,11 @@ describe("invalid schema", () => {
     });
 
     it('should log error on invalid config using the "bundle" command', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["bundle", "--config", "./webpack.mock.config.js"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "bundle",
+            "--config",
+            "./webpack.mock.config.js",
+        ]);
 
         expect(exitCode).toEqual(2);
         expect(stderr).toContain("Invalid configuration object");
@@ -27,7 +37,11 @@ describe("invalid schema", () => {
     });
 
     it('should log error on invalid config using the "serve" command', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["serve", "--config", "./webpack.mock.config.js"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "serve",
+            "--config",
+            "./webpack.mock.config.js",
+        ]);
 
         expect(exitCode).toEqual(2);
         expect(stderr).toContain("Invalid configuration object");

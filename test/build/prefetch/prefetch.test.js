@@ -11,7 +11,12 @@ describe("prefetch", () => {
     });
 
     it("should load the prefetched file", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["--prefetch", "./src/p.js", "--mode", "development"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "--prefetch",
+            "./src/p.js",
+            "--mode",
+            "development",
+        ]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -23,7 +28,10 @@ describe("prefetch", () => {
     });
 
     it("should log error when the prefetched file is absent", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["--prefetch", "./src/somefile.js"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "--prefetch",
+            "./src/somefile.js",
+        ]);
 
         expect(exitCode).toBe(1);
         expect(stderr).toBeFalsy();

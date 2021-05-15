@@ -57,9 +57,18 @@ const addonGenerator = (
 
         public async prompting(): Promise<void> {
             if (!this.supportedTemplates.includes(this.template)) {
-                this.utils.logger.warn(`⚠ ${this.template} is not a valid template, please select one from below`);
+                this.utils.logger.warn(
+                    `⚠ ${this.template} is not a valid template, please select one from below`,
+                );
 
-                const { selectedTemplate } = await List(this, "selectedTemplate", "Select a valid template from below:", this.supportedTemplates, "default", false);
+                const { selectedTemplate } = await List(
+                    this,
+                    "selectedTemplate",
+                    "Select a valid template from below:",
+                    this.supportedTemplates,
+                    "default",
+                    false,
+                );
 
                 this.template = selectedTemplate;
             }
@@ -90,8 +99,11 @@ const addonGenerator = (
 
         public writing(): void {
             const packageJsonTemplatePath = "../addon-template/package.json.js";
-            // eslint-disable-next-line @typescript-eslint/no-var-requires
-            this.fs.extendJSON(this.destinationPath("package.json"), require(packageJsonTemplatePath)(this.props.name));
+            this.fs.extendJSON(
+                this.destinationPath("package.json"),
+                // eslint-disable-next-line @typescript-eslint/no-var-requires
+                require(packageJsonTemplatePath)(this.props.name),
+            );
 
             let files = [];
             try {
@@ -103,20 +115,27 @@ const addonGenerator = (
             }
 
             // Template file paths should be of the form `path/to/_file.js.tpl`
-            const copyTemplateFiles = files.filter((filePath) => path.basename(filePath).startsWith("_"));
+            const copyTemplateFiles = files.filter((filePath) =>
+                path.basename(filePath).startsWith("_"),
+            );
 
             // File paths should be of the form `path/to/file.js.tpl`
             const copyFiles = files.filter((filePath) => !copyTemplateFiles.includes(filePath));
 
             copyFiles.forEach((filePath) => {
                 // `absolute-path/to/file.js.tpl` -> `destination-path/file.js`
-                const destFilePath = path.relative(this.resolvedTemplatePath, filePath).replace(".tpl", "");
+                const destFilePath = path
+                    .relative(this.resolvedTemplatePath, filePath)
+                    .replace(".tpl", "");
                 this.fs.copyTpl(filePath, this.destinationPath(destFilePath));
             });
 
             copyTemplateFiles.forEach((filePath) => {
                 // `absolute-path/to/_file.js.tpl` -> `destination-path/file.js`
-                const destFilePath = path.relative(this.resolvedTemplatePath, filePath).replace("_", "").replace(".tpl", "");
+                const destFilePath = path
+                    .relative(this.resolvedTemplatePath, filePath)
+                    .replace("_", "")
+                    .replace(".tpl", "");
                 this.fs.copyTpl(filePath, this.destinationPath(destFilePath), templateFn(this));
             });
         }

@@ -5,7 +5,14 @@ type CustomGeneratorBoolPrompt = { [x: string]: boolean } | Promise<{ [x: string
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-export function List(self: Generator, name: string, message: string, choices: string[], defaultChoice?: string, skip = false): CustomGeneratorStringPrompt {
+export function List(
+    self: Generator,
+    name: string,
+    message: string,
+    choices: string[],
+    defaultChoice?: string,
+    skip = false,
+): CustomGeneratorStringPrompt {
     if (skip) {
         return { [name]: defaultChoice };
     }
@@ -13,7 +20,13 @@ export function List(self: Generator, name: string, message: string, choices: st
     return self.prompt([{ choices, message, name, type: "list", default: defaultChoice }]);
 }
 
-export function Input(self: Generator, name: string, message: string, defaultChoice?: string, skip = false): CustomGeneratorStringPrompt {
+export function Input(
+    self: Generator,
+    name: string,
+    message: string,
+    defaultChoice?: string,
+    skip = false,
+): CustomGeneratorStringPrompt {
     if (skip) {
         return { [name]: defaultChoice };
     }
@@ -21,12 +34,24 @@ export function Input(self: Generator, name: string, message: string, defaultCho
     return self.prompt([{ default: defaultChoice, message, name, type: "input" }]);
 }
 
-export function InputValidate(self: Generator, name: string, message: string, cb?: (input: string) => string | boolean, defaultChoice?: string, skip = false): Record<string, unknown> | any {
+export function InputValidate(
+    self: Generator,
+    name: string,
+    message: string,
+    cb?: (input: string) => string | boolean,
+    defaultChoice?: string,
+    skip = false,
+): Record<string, unknown> | any {
     if (skip) {
         return { [name]: defaultChoice };
     }
 
-    const input: Generator.Question = { message, name, type: "input", validate: cb };
+    const input: Generator.Question = {
+        message,
+        name,
+        type: "input",
+        validate: cb,
+    };
 
     if (defaultChoice) {
         input.default = defaultChoice;
@@ -35,7 +60,13 @@ export function InputValidate(self: Generator, name: string, message: string, cb
     return self.prompt([input]);
 }
 
-export function Confirm(self: Generator, name: string, message: string, defaultChoice = true, skip = false): CustomGeneratorBoolPrompt {
+export function Confirm(
+    self: Generator,
+    name: string,
+    message: string,
+    defaultChoice = true,
+    skip = false,
+): CustomGeneratorBoolPrompt {
     if (skip) {
         return { [name]: defaultChoice };
     }

@@ -37,9 +37,13 @@ describe("start finish force log", () => {
     });
 
     it("should work with multi compiler", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["--config", "./webpack.config.array.js"], {
-            env: { WEBPACK_CLI_START_FINISH_FORCE_LOG: true },
-        });
+        const { exitCode, stderr, stdout } = await run(
+            __dirname,
+            ["--config", "./webpack.config.array.js"],
+            {
+                env: { WEBPACK_CLI_START_FINISH_FORCE_LOG: true },
+            },
+        );
         expect(exitCode).toBe(0);
         expect(stderr).toContain("Compiler 'Gojou' starting...");
         expect(stderr).toContain("Compiler 'Satoru' starting...");

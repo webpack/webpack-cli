@@ -1,6 +1,11 @@
 "use strict";
 
-const { run, hyphenToUpperCase, normalizeStdout, getWebpackCliArguments } = require("../../utils/test-utils");
+const {
+    run,
+    hyphenToUpperCase,
+    normalizeStdout,
+    getWebpackCliArguments,
+} = require("../../utils/test-utils");
 const moduleFlags = getWebpackCliArguments("module-");
 
 describe("module config related flag", () => {
@@ -14,7 +19,11 @@ describe("module config related flag", () => {
 
         const propName = hyphenToUpperCase(property);
 
-        if (value.configs.filter((config) => config.type === "boolean").length > 0 && !name.includes("module-no-parse") && !name.includes("module-parser-")) {
+        if (
+            value.configs.filter((config) => config.type === "boolean").length > 0 &&
+            !name.includes("module-no-parse") &&
+            !name.includes("module-parser-")
+        ) {
             it(`should config --${name} correctly`, async () => {
                 if (name.includes("-reset")) {
                     const { stderr, stdout } = await run(__dirname, [`--${name}`]);
@@ -29,11 +38,16 @@ describe("module config related flag", () => {
                     expect(stderr).toBeFalsy();
                     expect(normalizeStdout(stdout)).toContain("sideEffects: 'flag'");
                 } else if (name.startsWith("module-generator-")) {
-                    const { exitCode, stderr, stdout } = await run(__dirname, [`--module-generator-asset-emit`, "--module-generator-asset-resource-emit"]);
+                    const { exitCode, stderr, stdout } = await run(__dirname, [
+                        `--module-generator-asset-emit`,
+                        "--module-generator-asset-resource-emit",
+                    ]);
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
-                    expect(normalizeStdout(stdout)).toContain("generator: { asset: { emit: true }, 'asset/resource': { emit: true } }");
+                    expect(normalizeStdout(stdout)).toContain(
+                        "generator: { asset: { emit: true }, 'asset/resource': { emit: true } }",
+                    );
                 } else {
                     const { exitCode, stderr, stdout } = await run(__dirname, [`--${name}`]);
 
@@ -61,7 +75,10 @@ describe("module config related flag", () => {
             }
         }
 
-        if (value.configs.filter((config) => config.type === "string").length > 0 && !(name.includes("module-parser-") || name.startsWith("module-generator"))) {
+        if (
+            value.configs.filter((config) => config.type === "string").length > 0 &&
+            !(name.includes("module-parser-") || name.startsWith("module-generator"))
+        ) {
             it(`should config --${name} correctly`, async () => {
                 if (name === "module-no-parse") {
                     let { stderr, stdout, exitCode } = await run(__dirname, [`--${name}`, "value"]);
@@ -70,7 +87,10 @@ describe("module config related flag", () => {
                     expect(stderr).toBeFalsy();
                     expect(normalizeStdout(stdout)).toContain("value");
                 } else if (name.includes("reg-exp")) {
-                    let { stdout, stderr, exitCode } = await run(__dirname, [`--${name}`, "/ab?c*/"]);
+                    let { stdout, stderr, exitCode } = await run(__dirname, [
+                        `--${name}`,
+                        "/ab?c*/",
+                    ]);
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
@@ -81,10 +101,18 @@ describe("module config related flag", () => {
 
                         expect(normalizeStdout(stdout)).toContain(`${propName}: 'javascript/auto'`);
                     } else if (property.includes("use-")) {
-                        let { stdout } = await run(__dirname, ["--module-rules-use-loader", "myLoader"]);
+                        let { stdout } = await run(__dirname, [
+                            "--module-rules-use-loader",
+                            "myLoader",
+                        ]);
                         expect(normalizeStdout(stdout)).toContain(`use: [Object]`);
                     } else if (propName === "enforce") {
-                        let { stdout } = await run(__dirname, [`--${name}`, "pre", "--module-rules-use-loader", "myLoader"]);
+                        let { stdout } = await run(__dirname, [
+                            `--${name}`,
+                            "pre",
+                            "--module-rules-use-loader",
+                            "myLoader",
+                        ]);
                         expect(normalizeStdout(stdout)).toContain(`${propName}: 'pre'`);
                     } else {
                         let { stdout } = await run(__dirname, [`--${name}`, "/rules-value"]);
@@ -102,7 +130,12 @@ describe("module config related flag", () => {
     }
 
     it("should config module.generator flags coorectly", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["--module-generator-asset-data-url-encoding", "base64", "--module-generator-asset-data-url-mimetype", "application/node"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "--module-generator-asset-data-url-encoding",
+            "base64",
+            "--module-generator-asset-data-url-mimetype",
+            "application/node",
+        ]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -129,7 +162,10 @@ describe("module config related flag", () => {
     });
 
     it("should accept --module-parser-javascript-url=relative", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["--module-parser-javascript-url", "relative"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "--module-parser-javascript-url",
+            "relative",
+        ]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -137,10 +173,15 @@ describe("module config related flag", () => {
     });
 
     it("should throw an error for an invalid value of --module-parser-javascript-url", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["--module-parser-javascript-url", "test"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "--module-parser-javascript-url",
+            "test",
+        ]);
 
         expect(exitCode).toBe(2);
-        expect(normalizeStdout(stderr)).toContain(`Invalid value 'test' for the '--module-parser-javascript-url' option`);
+        expect(normalizeStdout(stderr)).toContain(
+            `Invalid value 'test' for the '--module-parser-javascript-url' option`,
+        );
         expect(normalizeStdout(stderr)).toContain(`Expected: 'relative'`);
         expect(stdout).toBeFalsy();
     });

@@ -40,7 +40,9 @@ describe("promptInstallation", () => {
         expect(preMessage.mock.calls.length).toEqual(1);
         expect(prompt.mock.calls.length).toEqual(1);
         expect(runCommand.mock.calls.length).toEqual(1);
-        expect(stripAnsi(prompt.mock.calls[0][0].message)).toContain("Would you like to install 'test-package' package? (That will run 'npm install -D test-package')");
+        expect(stripAnsi(prompt.mock.calls[0][0].message)).toContain(
+            "Would you like to install 'test-package' package? (That will run 'npm install -D test-package')",
+        );
 
         // install the package using npm
         expect(runCommand.mock.calls[0][0]).toEqual("npm install -D test-package");
@@ -56,7 +58,9 @@ describe("promptInstallation", () => {
         expect(promptResult).toBeTruthy();
         expect(prompt.mock.calls.length).toEqual(1);
         expect(runCommand.mock.calls.length).toEqual(1);
-        expect(stripAnsi(prompt.mock.calls[0][0].message)).toContain("Would you like to install 'test-package' package? (That will run 'yarn add -D test-package')");
+        expect(stripAnsi(prompt.mock.calls[0][0].message)).toContain(
+            "Would you like to install 'test-package' package? (That will run 'yarn add -D test-package')",
+        );
 
         // install the package using yarn
         expect(runCommand.mock.calls[0][0]).toEqual("yarn add -D test-package");
@@ -72,7 +76,9 @@ describe("promptInstallation", () => {
         expect(promptResult).toBeTruthy();
         expect(prompt.mock.calls.length).toEqual(1);
         expect(runCommand.mock.calls.length).toEqual(1);
-        expect(stripAnsi(prompt.mock.calls[0][0].message)).toContain("Would you like to install 'test-package' package? (That will run 'pnpm install -D test-package')");
+        expect(stripAnsi(prompt.mock.calls[0][0].message)).toContain(
+            "Would you like to install 'test-package' package? (That will run 'pnpm install -D test-package')",
+        );
 
         // install the package using npm
         expect(runCommand.mock.calls[0][0]).toEqual("pnpm install -D test-package");
@@ -90,7 +96,9 @@ describe("promptInstallation", () => {
         expect(preMessage.mock.calls.length).toEqual(1);
         expect(prompt.mock.calls.length).toEqual(1);
         expect(runCommand.mock.calls.length).toEqual(1);
-        expect(stripAnsi(prompt.mock.calls[0][0].message)).toContain("Would you like to install 'test-package' package? (That will run 'npm install -D test-package')");
+        expect(stripAnsi(prompt.mock.calls[0][0].message)).toContain(
+            "Would you like to install 'test-package' package? (That will run 'npm install -D test-package')",
+        );
 
         // install the package using npm
         expect(runCommand.mock.calls[0][0]).toEqual("npm install -D test-package");

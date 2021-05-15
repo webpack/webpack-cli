@@ -10,7 +10,9 @@ describe("--hot flag", () => {
         expect(exitCode).toBe(0);
         expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
         expect(stdout).toBeTruthy();
-        expect(readFileSync(resolve(__dirname, "./dist/main.js")).toString()).toContain("webpackHotUpdate");
+        expect(readFileSync(resolve(__dirname, "./dist/main.js")).toString()).toContain(
+            "webpackHotUpdate",
+        );
     });
 
     it("should be successful when --hot=only is passed", async () => {
@@ -19,7 +21,9 @@ describe("--hot flag", () => {
         expect(exitCode).toBe(0);
         expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
         expect(stdout).toBeTruthy();
-        expect(readFileSync(resolve(__dirname, "./dist/main.js")).toString()).toContain("webpackHotUpdate");
+        expect(readFileSync(resolve(__dirname, "./dist/main.js")).toString()).toContain(
+            "webpackHotUpdate",
+        );
     });
 
     it("should throw an error for invalid value", async () => {
@@ -36,6 +40,8 @@ describe("--hot flag", () => {
         expect(exitCode).toBe(0);
         expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
         expect(stdout).toBeTruthy();
-        expect(readFileSync(resolve(__dirname, "./dist/main.js")).toString()).not.toContain("webpackHotUpdate");
+        expect(readFileSync(resolve(__dirname, "./dist/main.js")).toString()).not.toContain(
+            "webpackHotUpdate",
+        );
     });
 });

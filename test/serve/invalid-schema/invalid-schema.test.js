@@ -3,7 +3,11 @@ const { run, normalizeStderr, normalizeStdout } = require("../../utils/test-util
 
 describe("invalid schema", () => {
     it("should log webpack error and exit process on invalid config", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["serve", "--config", "./webpack.config.mock.js"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "serve",
+            "--config",
+            "./webpack.config.mock.js",
+        ]);
 
         expect(exitCode).toEqual(2);
         expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
@@ -28,7 +32,11 @@ describe("invalid schema", () => {
     });
 
     it("should log webpack-dev-server error and exit process on invalid config", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["serve", "--config", "./webpack-dev-server.config.mock.js"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "serve",
+            "--config",
+            "./webpack-dev-server.config.mock.js",
+        ]);
 
         expect(exitCode).toEqual(2);
         expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");

@@ -9,7 +9,11 @@ const wordsInStatsv5 = ["asset", "index.js", "compiled successfully"];
 
 describe("basic", () => {
     it("should work with negative value", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["-c", "./watch.config.js", "--no-watch"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "-c",
+            "./watch.config.js",
+            "--no-watch",
+        ]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -37,7 +41,10 @@ describe("basic", () => {
 
                 if (!modified) {
                     process.nextTick(() => {
-                        writeFileSync(resolve(__dirname, "./src/index.js"), `console.log('watch flag test');\n`);
+                        writeFileSync(
+                            resolve(__dirname, "./src/index.js"),
+                            `console.log('watch flag test');\n`,
+                        );
                     });
 
                     modified = true;
@@ -70,7 +77,10 @@ describe("basic", () => {
 
                 if (!modified) {
                     process.nextTick(() => {
-                        writeFileSync(resolve(__dirname, "./src/index.js"), `console.log('watch flag test');\n`);
+                        writeFileSync(
+                            resolve(__dirname, "./src/index.js"),
+                            `console.log('watch flag test');\n`,
+                        );
                     });
 
                     modified = true;
@@ -83,7 +93,12 @@ describe("basic", () => {
     });
 
     it("should recompile upon file change using the `watch` command and entries syntax", (done) => {
-        const proc = runAndGetProcess(__dirname, ["watch", "./src/entry.js", "--mode", "development"]);
+        const proc = runAndGetProcess(__dirname, [
+            "watch",
+            "./src/entry.js",
+            "--mode",
+            "development",
+        ]);
 
         let modified = false;
 
@@ -105,7 +120,10 @@ describe("basic", () => {
 
                 if (!modified) {
                     process.nextTick(() => {
-                        writeFileSync(resolve(__dirname, "./src/entry.js"), `console.log('watch flag test');\n`);
+                        writeFileSync(
+                            resolve(__dirname, "./src/entry.js"),
+                            `console.log('watch flag test');\n`,
+                        );
                     });
 
                     modified = true;
@@ -118,7 +136,13 @@ describe("basic", () => {
     });
 
     it("should log warning about the `watch` option in the configuration and recompile upon file change using the `watch` command", (done) => {
-        const proc = runAndGetProcess(__dirname, ["--watch", "--mode", "development", "--config", "./watch.config.js"]);
+        const proc = runAndGetProcess(__dirname, [
+            "--watch",
+            "--mode",
+            "development",
+            "--config",
+            "./watch.config.js",
+        ]);
 
         let modified = false;
 
@@ -138,7 +162,10 @@ describe("basic", () => {
 
                 if (!modified) {
                     process.nextTick(() => {
-                        writeFileSync(resolve(__dirname, "./src/index.js"), `console.log('watch flag test');\n`);
+                        writeFileSync(
+                            resolve(__dirname, "./src/index.js"),
+                            `console.log('watch flag test');\n`,
+                        );
                     });
 
                     modified = true;
@@ -152,7 +179,9 @@ describe("basic", () => {
         proc.stderr.on("data", (chunk) => {
             const data = chunk.toString();
 
-            expect(data).toContain("No need to use the 'watch' command together with '{ watch: true }' configuration, it does not make sense.");
+            expect(data).toContain(
+                "No need to use the 'watch' command together with '{ watch: true }' configuration, it does not make sense.",
+            );
         });
     });
 
@@ -179,7 +208,12 @@ describe("basic", () => {
     });
 
     it("should recompile upon file change using the `command` option and the `--watch` option and log warning", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["watch", "--watch", "--mode", "development"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "watch",
+            "--watch",
+            "--mode",
+            "development",
+        ]);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Error: Unknown option '--watch'");
@@ -188,7 +222,12 @@ describe("basic", () => {
     });
 
     it("should recompile upon file change using the `command` option and the `--no-watch` option and log warning", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["watch", "--no-watch", "--mode", "development"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "watch",
+            "--no-watch",
+            "--mode",
+            "development",
+        ]);
 
         expect(exitCode).toBe(2);
         expect(stderr).toContain("Error: Unknown option '--no-watch'");

@@ -212,7 +212,9 @@ describe("single version flag", () => {
     });
 
     it("outputs versions with --color using option syntax", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["--version", "--color"], { env: { FORCE_COLOR: true } });
+        const { exitCode, stderr, stdout } = await run(__dirname, ["--version", "--color"], {
+            env: { FORCE_COLOR: true },
+        });
 
         expect(exitCode).toBe(0);
         expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
@@ -220,7 +222,9 @@ describe("single version flag", () => {
     });
 
     it("outputs versions with --no-color using option syntax", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["--version", "--no-color"], { env: { FORCE_COLOR: true } });
+        const { exitCode, stderr, stdout } = await run(__dirname, ["--version", "--no-color"], {
+            env: { FORCE_COLOR: true },
+        });
 
         expect(exitCode).toBe(0);
         expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
@@ -324,7 +328,12 @@ describe("single version flag", () => {
     });
 
     it("should log an error using command syntax with multiple commands with unknown argument", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["version", "info", "serve", "--unknown"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "version",
+            "info",
+            "serve",
+            "--unknown",
+        ]);
 
         expect(exitCode).toBe(2);
         expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");

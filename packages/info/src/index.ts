@@ -11,7 +11,18 @@ interface Information {
 
 const DEFAULT_DETAILS: Information = {
     Binaries: ["Node", "Yarn", "npm"],
-    Browsers: ["Brave Browser", "Chrome", "Chrome Canary", "Edge", "Firefox", "Firefox Developer Edition", "Firefox Nightly", "Internet Explorer", "Safari", "Safari Technology Preview"],
+    Browsers: [
+        "Brave Browser",
+        "Chrome",
+        "Chrome Canary",
+        "Edge",
+        "Firefox",
+        "Firefox Developer Edition",
+        "Firefox Nightly",
+        "Internet Explorer",
+        "Safari",
+        "Safari Technology Preview",
+    ],
     Monorepos: ["Yarn Workspaces", "Lerna"],
     System: ["OS", "CPU", "Memory"],
     npmGlobalPackages: ["webpack", "webpack-cli"],
@@ -40,7 +51,8 @@ class InfoCommand {
                             type: "string",
                         },
                     ],
-                    description: "To get the output in a specified format ( accept json or markdown )",
+                    description:
+                        "To get the output in a specified format ( accept json or markdown )",
                 },
             ],
             async (options) => {

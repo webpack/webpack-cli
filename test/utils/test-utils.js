@@ -233,15 +233,22 @@ const runPromptWithAnswers = (location, args, answers) => {
 };
 
 const normalizeVersions = (output) => {
-    return output.replace(/(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?/gi, "x.x.x");
+    return output.replace(
+        /(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?/gi,
+        "x.x.x",
+    );
 };
 
 const normalizeCwd = (output) => {
-    return output.replace(/\\/g, "/").replace(new RegExp(process.cwd().replace(/\\/g, "/"), "g"), "<cwd>");
+    return output
+        .replace(/\\/g, "/")
+        .replace(new RegExp(process.cwd().replace(/\\/g, "/"), "g"), "<cwd>");
 };
 
 const normalizeError = (output) => {
-    return output.replace(/SyntaxError: .+/, "SyntaxError: <error-message>").replace(/\s+at .+(}|\)|\d)/gs, "\n    at stack");
+    return output
+        .replace(/SyntaxError: .+/, "SyntaxError: <error-message>")
+        .replace(/\s+at .+(}|\)|\d)/gs, "\n    at stack");
 };
 
 const normalizeStdout = (stdout) => {
@@ -276,13 +283,19 @@ const normalizeStderr = (stderr) => {
     const networkIPv4 = internalIp.v4.sync();
 
     if (networkIPv4) {
-        normalizedStderr = normalizedStderr.replace(new RegExp(networkIPv4, "g"), "<network-ip-v4>");
+        normalizedStderr = normalizedStderr.replace(
+            new RegExp(networkIPv4, "g"),
+            "<network-ip-v4>",
+        );
     }
 
     const networkIPv6 = internalIp.v6.sync();
 
     if (networkIPv6) {
-        normalizedStderr = normalizedStderr.replace(new RegExp(networkIPv6, "g"), "<network-ip-v6>");
+        normalizedStderr = normalizedStderr.replace(
+            new RegExp(networkIPv6, "g"),
+            "<network-ip-v6>",
+        );
     }
 
     normalizedStderr = normalizedStderr.replace(/:[0-9]+\//g, ":<port>/");
@@ -291,10 +304,16 @@ const normalizeStderr = (stderr) => {
         // Github Actions doesnt' support IPv6 on ubuntu in some cases
         normalizedStderr = normalizedStderr.split("\n");
 
-        const ipv4MessageIndex = normalizedStderr.findIndex((item) => /On Your Network \(IPv4\)/.test(item));
+        const ipv4MessageIndex = normalizedStderr.findIndex((item) =>
+            /On Your Network \(IPv4\)/.test(item),
+        );
 
         if (ipv4MessageIndex !== -1) {
-            normalizedStderr.splice(ipv4MessageIndex + 1, 0, "<i> [webpack-dev-server] On Your Network (IPv6): http://[<network-ip-v6>]:<port>/");
+            normalizedStderr.splice(
+                ipv4MessageIndex + 1,
+                0,
+                "<i> [webpack-dev-server] On Your Network (IPv6): http://[<network-ip-v6>]:<port>/",
+            );
         }
 
         normalizedStderr = normalizedStderr.join("\n");

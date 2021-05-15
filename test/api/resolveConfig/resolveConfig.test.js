@@ -15,7 +15,10 @@ describe("resolveConfig", function () {
         });
 
         const expectedOptions = {
-            output: { filename: "./dist-commonjs.js", libraryTarget: "commonjs" },
+            output: {
+                filename: "./dist-commonjs.js",
+                libraryTarget: "commonjs",
+            },
             entry: "./a.js",
             name: "amd",
             mode: "production",
@@ -28,7 +31,10 @@ describe("resolveConfig", function () {
 
     it("should return array for multiple config", async () => {
         const result = await cli.resolveConfig({
-            config: [resolve(__dirname, "./webpack.config1.cjs"), resolve(__dirname, "./webpack.config2.cjs")],
+            config: [
+                resolve(__dirname, "./webpack.config1.cjs"),
+                resolve(__dirname, "./webpack.config2.cjs"),
+            ],
         });
         const expectedOptions = [config1, config2];
 
@@ -36,13 +42,17 @@ describe("resolveConfig", function () {
     });
 
     it("should return config object for single config", async () => {
-        const result = await cli.resolveConfig({ config: [resolve(__dirname, "./webpack.config1.cjs")] });
+        const result = await cli.resolveConfig({
+            config: [resolve(__dirname, "./webpack.config1.cjs")],
+        });
 
         expect(result.options).toEqual(config1);
     });
 
     it("should return resolved config object for promise config", async () => {
-        const result = await cli.resolveConfig({ config: [resolve(__dirname, "./webpack.promise.config.cjs")] });
+        const result = await cli.resolveConfig({
+            config: [resolve(__dirname, "./webpack.promise.config.cjs")],
+        });
         const expectedOptions = await promiseConfig();
 
         expect(result.options).toEqual(expectedOptions);
@@ -50,7 +60,10 @@ describe("resolveConfig", function () {
 
     it("should handle configs returning different types", async () => {
         const result = await cli.resolveConfig({
-            config: [resolve(__dirname, "./webpack.promise.config.cjs"), resolve(__dirname, "./webpack.config.cjs")],
+            config: [
+                resolve(__dirname, "./webpack.promise.config.cjs"),
+                resolve(__dirname, "./webpack.config.cjs"),
+            ],
         });
         const resolvedPromiseConfig = await promiseConfig();
         const expectedOptions = [resolvedPromiseConfig, ...arrayConfig];

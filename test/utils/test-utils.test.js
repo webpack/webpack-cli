@@ -1,6 +1,11 @@
 "use strict";
 
-const { run, runAndGetProcess, hyphenToUpperCase, uniqueDirectoryForTest } = require("./test-utils");
+const {
+    run,
+    runAndGetProcess,
+    hyphenToUpperCase,
+    uniqueDirectoryForTest,
+} = require("./test-utils");
 
 const ENTER = "\x0D";
 
@@ -51,7 +56,11 @@ describe("runAndGetWatchProc function", () => {
     });
 
     it("executes cli with passed commands and params", async () => {
-        const { stdout, stderr, command } = await runAndGetProcess(__dirname, ["info", "--output", "markdown"]);
+        const { stdout, stderr, command } = await runAndGetProcess(__dirname, [
+            "info",
+            "--output",
+            "markdown",
+        ]);
 
         // execution command contains info command
         expect(command).toContain("info");
@@ -66,7 +75,11 @@ describe("runAndGetWatchProc function", () => {
 
     it("writes to stdin", async () => {
         const assetsPath = await uniqueDirectoryForTest();
-        const { stdout } = await runAndGetProcess(assetsPath, ["init", "--force", "--template=mango"], { input: ENTER });
+        const { stdout } = await runAndGetProcess(
+            assetsPath,
+            ["init", "--force", "--template=mango"],
+            { input: ENTER },
+        );
 
         expect(stdout).toContain("Project has been initialised with webpack!");
     });

@@ -13,7 +13,10 @@ describe("watch config related flag", () => {
             return;
         }
 
-        if (value.configs.filter((config) => config.type === "boolean").length > 0 && name !== "watch") {
+        if (
+            value.configs.filter((config) => config.type === "boolean").length > 0 &&
+            name !== "watch"
+        ) {
             it(`should config --${name} correctly`, async () => {
                 const { exitCode, stderr, stdout } = await run(__dirname, [`--${name}`]);
 
@@ -57,7 +60,10 @@ describe("watch config related flag", () => {
                     expect(stderr).toBeFalsy();
                     expect(stdout).toContain(`watchOptions: { ${propName}: 200 }`);
                 } else {
-                    const { exitCode, stderr, stdout } = await run(__dirname, [`--${name}`, "ignore.js"]);
+                    const { exitCode, stderr, stdout } = await run(__dirname, [
+                        `--${name}`,
+                        "ignore.js",
+                    ]);
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();

@@ -4,7 +4,10 @@ const { run, normalizeStderr, normalizeStdout } = require("../../utils/test-util
 
 describe("'configtest' command with the configuration path option", () => {
     it("should validate webpack config successfully", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["configtest", "./basic.config.js"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "configtest",
+            "./basic.config.js",
+        ]);
 
         expect(exitCode).toBe(0);
         expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
@@ -12,7 +15,10 @@ describe("'configtest' command with the configuration path option", () => {
     });
 
     it("should throw validation error", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["configtest", "./error.config.js"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "configtest",
+            "./error.config.js",
+        ]);
 
         expect(exitCode).toBe(2);
         expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
@@ -20,7 +26,10 @@ describe("'configtest' command with the configuration path option", () => {
     });
 
     it("should throw syntax error", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["configtest", "./syntax-error.config.js"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "configtest",
+            "./syntax-error.config.js",
+        ]);
 
         expect(exitCode).toBe(2);
         expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");

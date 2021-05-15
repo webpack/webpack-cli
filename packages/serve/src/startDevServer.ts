@@ -15,7 +15,12 @@ import { devServerOptionsType } from "./types";
  * @returns {Object[]} array of resulting servers
  */
 
-export default async function startDevServer(compiler: any, devServerCliOptions: any, cliOptions: any, logger: any): Promise<Record<string, unknown>[]> {
+export default async function startDevServer(
+    compiler: any,
+    devServerCliOptions: any,
+    cliOptions: any,
+    logger: any,
+): Promise<Record<string, unknown>[]> {
     let devServerVersion, Server;
 
     try {
@@ -24,11 +29,16 @@ export default async function startDevServer(compiler: any, devServerCliOptions:
         // eslint-disable-next-line node/no-extraneous-require
         Server = require("webpack-dev-server/lib/Server");
     } catch (err) {
-        logger.error(`You need to install 'webpack-dev-server' for running 'webpack serve'.\n${err}`);
+        logger.error(
+            `You need to install 'webpack-dev-server' for running 'webpack serve'.\n${err}`,
+        );
         process.exit(2);
     }
 
-    const mergeOptions = (devServerOptions: devServerOptionsType, devServerCliOptions: devServerOptionsType): devServerOptionsType => {
+    const mergeOptions = (
+        devServerOptions: devServerOptionsType,
+        devServerCliOptions: devServerOptionsType,
+    ): devServerOptionsType => {
         // CLI options should take precedence over devServer options,
         // and CLI options should have no default values included
         const options = { ...devServerOptions, ...devServerCliOptions };
@@ -36,7 +46,10 @@ export default async function startDevServer(compiler: any, devServerCliOptions:
         if (devServerOptions.client && devServerCliOptions.client) {
             // the user could set some client options in their devServer config,
             // then also specify client options on the CLI
-            options.client = { ...devServerOptions.client, ...devServerCliOptions.client };
+            options.client = {
+                ...devServerOptions.client,
+                ...devServerCliOptions.client,
+            };
         }
 
         return options;
@@ -47,7 +60,9 @@ export default async function startDevServer(compiler: any, devServerCliOptions:
     let compilersWithDevServerOption;
 
     if (isMultiCompiler) {
-        compilersWithDevServerOption = compiler.compilers.filter((compiler) => compiler.options.devServer);
+        compilersWithDevServerOption = compiler.compilers.filter(
+            (compiler) => compiler.options.devServer,
+        );
 
         // No compilers found with the `devServer` option, let's use first compiler
         if (compilersWithDevServerOption.length === 0) {
@@ -62,14 +77,20 @@ export default async function startDevServer(compiler: any, devServerCliOptions:
     const devServersOptions = [];
 
     for (const compilerWithDevServerOption of compilersWithDevServerOption) {
-        const options = mergeOptions(compilerWithDevServerOption.options.devServer || {}, devServerCliOptions);
+        const options = mergeOptions(
+            compilerWithDevServerOption.options.devServer || {},
+            devServerCliOptions,
+        );
 
         if (!isDevServer4) {
             const getPublicPathOption = (): string => {
-                const normalizePublicPath = (publicPath): string => (typeof publicPath === "undefined" || publicPath === "auto" ? "/" : publicPath);
+                const normalizePublicPath = (publicPath): string =>
+                    typeof publicPath === "undefined" || publicPath === "auto" ? "/" : publicPath;
 
                 if (cliOptions.outputPublicPath) {
-                    return normalizePublicPath(compilerWithDevServerOption.options.output.publicPath);
+                    return normalizePublicPath(
+                        compilerWithDevServerOption.options.output.publicPath,
+                    );
                 }
 
                 // webpack-dev-server@3
@@ -101,7 +122,9 @@ export default async function startDevServer(compiler: any, devServerCliOptions:
             const portNumber = Number(options.port);
 
             if (usedPorts.find((port) => portNumber === port)) {
-                throw new Error("Unique ports must be specified for each devServer option in your webpack configuration. Alternatively, run only 1 devServer config using the --config-name flag to specify your desired config.");
+                throw new Error(
+                    "Unique ports must be specified for each devServer option in your webpack configuration. Alternatively, run only 1 devServer config using the --config-name flag to specify your desired config.",
+                );
             }
 
             usedPorts.push(portNumber);

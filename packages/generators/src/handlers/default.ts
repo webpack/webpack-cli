@@ -12,14 +12,29 @@ const resolveFile = (file: string): string => {
  * @param Question Contains questions
  */
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function questions(self: CustomGenerator, Question: Record<string, any>): Promise<void> {
+export async function questions(
+    self: CustomGenerator,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    Question: Record<string, any>,
+): Promise<void> {
     // Handle JS language solutions
-    const { langType } = await Question.List(self, "langType", "Which of the following JS solutions do you want to use?", ["none", "ES6", "Typescript"], "none", self.force);
+    const { langType } = await Question.List(
+        self,
+        "langType",
+        "Which of the following JS solutions do you want to use?",
+        ["none", "ES6", "Typescript"],
+        "none",
+        self.force,
+    );
 
     switch (langType) {
         case "ES6":
-            self.dependencies = [...self.dependencies, "babel-loader", "@babel/core", "@babel/preset-env"];
+            self.dependencies = [
+                ...self.dependencies,
+                "babel-loader",
+                "@babel/core",
+                "@babel/preset-env",
+            ];
             break;
         case "Typescript":
             self.dependencies = [...self.dependencies, "typescript", "ts-loader"];
@@ -27,13 +42,25 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
     }
 
     // Configure devServer configuraion
-    const { devServer } = await Question.Confirm(self, "devServer", "Do you want to use webpack-dev-server?", true, self.force);
+    const { devServer } = await Question.Confirm(
+        self,
+        "devServer",
+        "Do you want to use webpack-dev-server?",
+        true,
+        self.force,
+    );
     if (devServer) {
         self.dependencies = [...self.dependencies, "webpack-dev-server"];
     }
 
     // Handle addition of html-webpack-plugin
-    const { htmlWebpackPlugin } = await Question.Confirm(self, "htmlWebpackPlugin", "Do you want to simplify the creation of HTML files for your bundle?", true, self.force);
+    const { htmlWebpackPlugin } = await Question.Confirm(
+        self,
+        "htmlWebpackPlugin",
+        "Do you want to simplify the creation of HTML files for your bundle?",
+        true,
+        self.force,
+    );
     if (htmlWebpackPlugin) {
         self.dependencies = [...self.dependencies, "html-webpack-plugin"];
     }
@@ -42,18 +69,53 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
     self.answers = { ...self.answers, langType, devServer, htmlWebpackPlugin };
 
     // Handle CSS solutions
-    const { cssType } = await Question.List(self, "cssType", "Which of the following CSS solutions do you want to use?", ["none", "CSS only", "SASS", "LESS", "Stylus"], "none", self.force);
+    const { cssType } = await Question.List(
+        self,
+        "cssType",
+        "Which of the following CSS solutions do you want to use?",
+        ["none", "CSS only", "SASS", "LESS", "Stylus"],
+        "none",
+        self.force,
+    );
 
     if (cssType == "none") {
-        self.answers = { ...self.answers, cssType, isCSS: false, isPostCSS: false, extractPlugin: "No" };
+        self.answers = {
+            ...self.answers,
+            cssType,
+            isCSS: false,
+            isPostCSS: false,
+            extractPlugin: "No",
+        };
         return;
     }
 
-    const { isCSS } = cssType != "CSS only" ? await Question.Confirm(self, "isCSS", `Will you be using CSS styles along with ${cssType} in your project?`, true, self.force) : { isCSS: true };
+    const { isCSS } =
+        cssType != "CSS only"
+            ? await Question.Confirm(
+                  self,
+                  "isCSS",
+                  `Will you be using CSS styles along with ${cssType} in your project?`,
+                  true,
+                  self.force,
+              )
+            : { isCSS: true };
 
-    const { isPostCSS } = await Question.Confirm(self, "isPostCSS", "Will you be using PostCSS in your project?", cssType == "CSS only", self.force);
+    const { isPostCSS } = await Question.Confirm(
+        self,
+        "isPostCSS",
+        "Will you be using PostCSS in your project?",
+        cssType == "CSS only",
+        self.force,
+    );
 
-    const { extractPlugin } = await Question.List(self, "extractPlugin", "Do you want to extract CSS for every file?", ["No", "Only for Production", "Yes"], "No", self.force);
+    const { extractPlugin } = await Question.List(
+        self,
+        "extractPlugin",
+        "Do you want to extract CSS for every file?",
+        ["No", "Only for Production", "Yes"],
+        "No",
+        self.force,
+    );
 
     switch (cssType) {
         case "SASS":
@@ -79,7 +141,13 @@ export async function questions(self: CustomGenerator, Question: Record<string, 
         self.dependencies = [...self.dependencies, "mini-css-extract-plugin"];
     }
 
-    self.answers = { ...self.answers, cssType, isCSS, isPostCSS, extractPlugin };
+    self.answers = {
+        ...self.answers,
+        cssType,
+        isCSS,
+        isPostCSS,
+        extractPlugin,
+    };
 }
 
 /**
@@ -109,7 +177,11 @@ export function generate(self: CustomGenerator): void {
     self.fs.copyTpl(resolveFile("template.html"), self.destinationPath("index.html"), {});
 
     // Generate webpack configuration
-    self.fs.copyTpl(resolveFile("webpack.configjs.tpl"), self.destinationPath("webpack.config.js"), { ...self.answers, entry });
+    self.fs.copyTpl(
+        resolveFile("webpack.configjs.tpl"),
+        self.destinationPath("webpack.config.js"),
+        { ...self.answers, entry },
+    );
     self.configurationPath = self.destinationPath("webpack.config.js");
 
     // Generate JS language essentials
@@ -124,6 +196,9 @@ export function generate(self: CustomGenerator): void {
 
     // Generate postcss configuration
     if (self.answers.isPostCSS) {
-        self.fs.copyTpl(resolveFile("postcss.config.js"), self.destinationPath("postcss.config.js"));
+        self.fs.copyTpl(
+            resolveFile("postcss.config.js"),
+            self.destinationPath("postcss.config.js"),
+        );
     }
 }

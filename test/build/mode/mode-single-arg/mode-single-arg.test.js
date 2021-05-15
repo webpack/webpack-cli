@@ -9,7 +9,9 @@ describe("mode flags", () => {
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).not.toContain(`mode: 'production'`);
-        expect(stdout).toContain(`The 'mode' option has not been set, webpack will fallback to 'production' for this value.`);
+        expect(stdout).toContain(
+            `The 'mode' option has not been set, webpack will fallback to 'production' for this value.`,
+        );
     });
 
     it("should load a development config when --mode=development is passed", async () => {
@@ -37,7 +39,9 @@ describe("mode flags", () => {
     });
 
     it("should pick mode form NODE_ENV", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, [], { env: { NODE_ENV: "development" } });
+        const { exitCode, stderr, stdout } = await run(__dirname, [], {
+            env: { NODE_ENV: "development" },
+        });
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();

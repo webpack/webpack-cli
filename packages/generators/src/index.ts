@@ -43,7 +43,9 @@ class GeneratorsCommand {
             async (generationPath, options) => {
                 options.generationPath = generationPath || ".";
 
-                const env = yeoman.createEnv([], { cwd: options.generationPath });
+                const env = yeoman.createEnv([], {
+                    cwd: options.generationPath,
+                });
                 const generatorName = "webpack-init-generator";
 
                 env.registerStub(initGenerator, generatorName);

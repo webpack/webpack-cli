@@ -5,7 +5,11 @@ const { run, normalizeStdout, normalizeStderr } = require("../../utils/test-util
 
 describe("output flag named bundles", () => {
     it("should output file given as flag instead of in configuration", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["-c", resolve(__dirname, "webpack.config.js"), "--output-path", "./binary"], false);
+        const { exitCode, stderr, stdout } = await run(
+            __dirname,
+            ["-c", resolve(__dirname, "webpack.config.js"), "--output-path", "./binary"],
+            false,
+        );
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -13,7 +17,11 @@ describe("output flag named bundles", () => {
     });
 
     it("should resolve the path to binary/a.bundle.js as ./binary/a.bundle.js", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["-c", resolve(__dirname, "webpack.config.js"), "--output-path", "binary"], false);
+        const { exitCode, stderr, stdout } = await run(
+            __dirname,
+            ["-c", resolve(__dirname, "webpack.config.js"), "--output-path", "binary"],
+            false,
+        );
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -21,7 +29,11 @@ describe("output flag named bundles", () => {
     });
 
     it("should create multiple bundles with an overriding flag", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["-c", resolve(__dirname, "webpack.single.config.js"), "--output-path", "./bin"], false);
+        const { exitCode, stderr, stdout } = await run(
+            __dirname,
+            ["-c", resolve(__dirname, "webpack.single.config.js"), "--output-path", "./bin"],
+            false,
+        );
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -29,7 +41,10 @@ describe("output flag named bundles", () => {
     });
 
     it("should successfully compile multiple entries", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["-c", resolve(__dirname, "webpack.multiple.config.js")]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "-c",
+            resolve(__dirname, "webpack.multiple.config.js"),
+        ]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();

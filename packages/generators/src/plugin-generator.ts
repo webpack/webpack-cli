@@ -22,7 +22,9 @@ export const PluginGenerator = addonGenerator(
         },
     ],
     path.resolve(__dirname, "../plugin-template"),
-    (gen): Record<string, unknown> => ({ name: toUpperCamelCase(gen.props.name) }),
+    (gen): Record<string, unknown> => ({
+        name: toUpperCamelCase(gen.props.name),
+    }),
 );
 
 export default PluginGenerator;

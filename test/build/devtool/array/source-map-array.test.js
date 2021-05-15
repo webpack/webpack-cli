@@ -25,7 +25,12 @@ describe("source-map object", () => {
     });
 
     it("should override entire array on flag", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["--devtool", "source-map", "--output-path", "./binary"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "--devtool",
+            "source-map",
+            "--output-path",
+            "./binary",
+        ]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();

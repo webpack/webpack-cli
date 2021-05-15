@@ -2,7 +2,12 @@ const os = require("os");
 const path = require("path");
 const { mkdirSync, existsSync, readFileSync } = require("fs");
 const { join, resolve } = require("path");
-const { isWindows, run, runPromptWithAnswers, uniqueDirectoryForTest } = require("../utils/test-utils");
+const {
+    isWindows,
+    run,
+    runPromptWithAnswers,
+    uniqueDirectoryForTest,
+} = require("../utils/test-utils");
 
 jest.setTimeout(480000);
 
@@ -70,7 +75,9 @@ describe("init command", () => {
         const assetsPath = path.resolve(os.tmpdir(), Date.now().toString());
         const { stdout, stderr } = await run(__dirname, ["init", assetsPath, "--force"]);
 
-        expect(stdout).toContain("generation path doesn't exist, required folders will be created.");
+        expect(stdout).toContain(
+            "generation path doesn't exist, required folders will be created.",
+        );
         expect(stdout).toContain("Project has been initialised with webpack!");
         expect(stderr).toContain("webpack.config.js");
 
@@ -89,7 +96,9 @@ describe("init command", () => {
         const assetsPath = path.resolve(os.tmpdir(), Date.now().toString());
         const { stdout, stderr } = await run(__dirname, ["init", assetsPath, "--force"]);
 
-        expect(stdout).toContain("generation path doesn't exist, required folders will be created.");
+        expect(stdout).toContain(
+            "generation path doesn't exist, required folders will be created.",
+        );
         expect(stdout).toContain("Project has been initialised with webpack!");
         expect(stderr).toContain("webpack.config.js");
 
@@ -109,7 +118,11 @@ describe("init command", () => {
 
     it("should ask question when wrong template is supplied", async () => {
         const assetsPath = await uniqueDirectoryForTest();
-        const { stdout, stderr } = await runPromptWithAnswers(assetsPath, ["init", "--force", "--template=apple"], [`${ENTER}`]);
+        const { stdout, stderr } = await runPromptWithAnswers(
+            assetsPath,
+            ["init", "--force", "--template=apple"],
+            [`${ENTER}`],
+        );
 
         expect(stdout).toContain("Project has been initialised with webpack!");
         expect(stderr).toContain("apple is not a valid template, please select one from below");
@@ -128,7 +141,11 @@ describe("init command", () => {
 
     it("should generate typescript project correctly", async () => {
         const assetsPath = await uniqueDirectoryForTest();
-        const { stdout, stderr } = await runPromptWithAnswers(assetsPath, ["init"], [`${DOWN}${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${ENTER}`]);
+        const { stdout, stderr } = await runPromptWithAnswers(
+            assetsPath,
+            ["init"],
+            [`${DOWN}${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${ENTER}`],
+        );
 
         expect(stdout).toContain("Project has been initialised with webpack!");
         expect(stderr).toContain("webpack.config.js");
@@ -150,7 +167,11 @@ describe("init command", () => {
 
     it("should generate ES6 project correctly", async () => {
         const assetsPath = await uniqueDirectoryForTest();
-        const { stdout, stderr } = await runPromptWithAnswers(assetsPath, ["init"], [`${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${ENTER}`]);
+        const { stdout, stderr } = await runPromptWithAnswers(
+            assetsPath,
+            ["init"],
+            [`${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${ENTER}`],
+        );
 
         expect(stdout).toContain("Project has been initialised with webpack!");
         expect(stderr).toContain("webpack.config.js");
@@ -172,7 +193,19 @@ describe("init command", () => {
 
     it("should use sass in project when selected", async () => {
         const assetsPath = await uniqueDirectoryForTest();
-        const { stdout, stderr } = await runPromptWithAnswers(assetsPath, ["init"], [`${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${DOWN}${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`]);
+        const { stdout, stderr } = await runPromptWithAnswers(
+            assetsPath,
+            ["init"],
+            [
+                `${ENTER}`,
+                `n${ENTER}`,
+                `n${ENTER}`,
+                `${DOWN}${DOWN}${ENTER}`,
+                `n${ENTER}`,
+                `n${ENTER}`,
+                `n${ENTER}`,
+            ],
+        );
 
         expect(stdout).toContain("Project has been initialised with webpack!");
         expect(stderr).toContain("webpack.config.js");
@@ -193,13 +226,31 @@ describe("init command", () => {
 
     it("should use sass with postcss in project when selected", async () => {
         const assetsPath = await uniqueDirectoryForTest();
-        const { stdout, stderr } = await runPromptWithAnswers(assetsPath, ["init"], [`${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${DOWN}${DOWN}${ENTER}`, `n${ENTER}`, `y${ENTER}`, `n${ENTER}`]);
+        const { stdout, stderr } = await runPromptWithAnswers(
+            assetsPath,
+            ["init"],
+            [
+                `${ENTER}`,
+                `n${ENTER}`,
+                `n${ENTER}`,
+                `${DOWN}${DOWN}${ENTER}`,
+                `n${ENTER}`,
+                `y${ENTER}`,
+                `n${ENTER}`,
+            ],
+        );
 
         expect(stdout).toContain("Project has been initialised with webpack!");
         expect(stderr).toContain("webpack.config.js");
 
         // Test files
-        const files = ["package.json", "src", "src/index.js", "webpack.config.js", "postcss.config.js"];
+        const files = [
+            "package.json",
+            "src",
+            "src/index.js",
+            "webpack.config.js",
+            "postcss.config.js",
+        ];
 
         files.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
@@ -214,7 +265,19 @@ describe("init command", () => {
 
     it("should use mini-css-extract-plugin when selected", async () => {
         const assetsPath = await uniqueDirectoryForTest();
-        const { stdout, stderr } = await runPromptWithAnswers(assetsPath, ["init"], [`${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${DOWN}${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`, `y${ENTER}`]);
+        const { stdout, stderr } = await runPromptWithAnswers(
+            assetsPath,
+            ["init"],
+            [
+                `${ENTER}`,
+                `n${ENTER}`,
+                `n${ENTER}`,
+                `${DOWN}${DOWN}${ENTER}`,
+                `n${ENTER}`,
+                `n${ENTER}`,
+                `y${ENTER}`,
+            ],
+        );
 
         expect(stdout).toContain("Project has been initialised with webpack!");
         expect(stderr).toContain("webpack.config.js");
@@ -235,13 +298,31 @@ describe("init command", () => {
 
     it("should use sass and css with postcss in project when selected", async () => {
         const assetsPath = await uniqueDirectoryForTest();
-        const { stdout, stderr } = await runPromptWithAnswers(assetsPath, ["init"], [`${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${DOWN}${DOWN}${ENTER}`, `y${ENTER}`, `y${ENTER}`, `n${ENTER}`]);
+        const { stdout, stderr } = await runPromptWithAnswers(
+            assetsPath,
+            ["init"],
+            [
+                `${ENTER}`,
+                `n${ENTER}`,
+                `n${ENTER}`,
+                `${DOWN}${DOWN}${ENTER}`,
+                `y${ENTER}`,
+                `y${ENTER}`,
+                `n${ENTER}`,
+            ],
+        );
 
         expect(stdout).toContain("Project has been initialised with webpack!");
         expect(stderr).toContain("webpack.config.js");
 
         // Test files
-        const files = ["package.json", "src", "src/index.js", "webpack.config.js", "postcss.config.js"];
+        const files = [
+            "package.json",
+            "src",
+            "src/index.js",
+            "webpack.config.js",
+            "postcss.config.js",
+        ];
 
         files.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
@@ -256,7 +337,19 @@ describe("init command", () => {
 
     it("should use less in project when selected", async () => {
         const assetsPath = await uniqueDirectoryForTest();
-        const { stdout, stderr } = await runPromptWithAnswers(assetsPath, ["init"], [`${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${DOWN}${DOWN}${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`]);
+        const { stdout, stderr } = await runPromptWithAnswers(
+            assetsPath,
+            ["init"],
+            [
+                `${ENTER}`,
+                `n${ENTER}`,
+                `n${ENTER}`,
+                `${DOWN}${DOWN}${DOWN}${ENTER}`,
+                `n${ENTER}`,
+                `n${ENTER}`,
+                `n${ENTER}`,
+            ],
+        );
 
         expect(stdout).toContain("Project has been initialised with webpack!");
         expect(stderr).toContain("webpack.config.js");
@@ -277,7 +370,19 @@ describe("init command", () => {
 
     it("should use stylus in project when selected", async () => {
         const assetsPath = await uniqueDirectoryForTest();
-        const { stdout, stderr } = await runPromptWithAnswers(assetsPath, ["init"], [`${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${DOWN}${DOWN}${DOWN}${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`]);
+        const { stdout, stderr } = await runPromptWithAnswers(
+            assetsPath,
+            ["init"],
+            [
+                `${ENTER}`,
+                `n${ENTER}`,
+                `n${ENTER}`,
+                `${DOWN}${DOWN}${DOWN}${DOWN}${ENTER}`,
+                `n${ENTER}`,
+                `n${ENTER}`,
+                `n${ENTER}`,
+            ],
+        );
 
         expect(stdout).toContain("Project has been initialised with webpack!");
         expect(stderr).toContain("webpack.config.js");
@@ -298,7 +403,11 @@ describe("init command", () => {
 
     it("should configure WDS as opted", async () => {
         const assetsPath = await uniqueDirectoryForTest();
-        const { stdout, stderr } = await runPromptWithAnswers(assetsPath, ["init"], [ENTER, ENTER, `n${ENTER}`, ENTER]);
+        const { stdout, stderr } = await runPromptWithAnswers(
+            assetsPath,
+            ["init"],
+            [ENTER, ENTER, `n${ENTER}`, ENTER],
+        );
 
         expect(stdout).toContain("Do you want to use webpack-dev-server?");
         expect(stdout).toContain("Project has been initialised with webpack!");
@@ -319,13 +428,23 @@ describe("init command", () => {
 
     it("should use postcss in project when selected", async () => {
         const assetsPath = await uniqueDirectoryForTest();
-        const { stdout, stderr } = await runPromptWithAnswers(assetsPath, ["init"], [`${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${DOWN}${ENTER}`, ENTER, `n${ENTER}`]);
+        const { stdout, stderr } = await runPromptWithAnswers(
+            assetsPath,
+            ["init"],
+            [`${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${DOWN}${ENTER}`, ENTER, `n${ENTER}`],
+        );
 
         expect(stdout).toContain("Project has been initialised with webpack!");
         expect(stderr).toContain("webpack.config.js");
 
         // Test files
-        const files = ["package.json", "src", "src/index.js", "webpack.config.js", "postcss.config.js"];
+        const files = [
+            "package.json",
+            "src",
+            "src/index.js",
+            "webpack.config.js",
+            "postcss.config.js",
+        ];
 
         files.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
@@ -340,9 +459,15 @@ describe("init command", () => {
 
     it("should configure html-webpack-plugin as opted", async () => {
         const assetsPath = await uniqueDirectoryForTest();
-        const { stdout, stderr } = await runPromptWithAnswers(assetsPath, ["init"], [ENTER, `n${ENTER}`, ENTER, ENTER]);
+        const { stdout, stderr } = await runPromptWithAnswers(
+            assetsPath,
+            ["init"],
+            [ENTER, `n${ENTER}`, ENTER, ENTER],
+        );
 
-        expect(stdout).toContain("Do you want to simplify the creation of HTML files for your bundle?");
+        expect(stdout).toContain(
+            "Do you want to simplify the creation of HTML files for your bundle?",
+        );
         expect(stdout).toContain("Project has been initialised with webpack!");
         expect(stderr).toContain("webpack.config.js");
 

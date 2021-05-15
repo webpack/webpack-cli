@@ -4,9 +4,13 @@ const { run } = require("../../../utils/test-utils");
 
 describe("config error", () => {
     it("should throw error with invalid configuration", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["-c", resolve(__dirname, "webpack.config.mjs")], {
-            env: { WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG: true },
-        });
+        const { exitCode, stderr, stdout } = await run(
+            __dirname,
+            ["-c", resolve(__dirname, "webpack.config.mjs")],
+            {
+                env: { WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG: true },
+            },
+        );
 
         expect(exitCode).toBe(2);
 
@@ -19,9 +23,13 @@ describe("config error", () => {
     });
 
     it("should throw syntax error and exit with non-zero exit code", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["-c", resolve(__dirname, "syntax-error.mjs")], {
-            env: { WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG: true },
-        });
+        const { exitCode, stderr, stdout } = await run(
+            __dirname,
+            ["-c", resolve(__dirname, "syntax-error.mjs")],
+            {
+                env: { WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG: true },
+            },
+        );
 
         expect(exitCode).toBe(2);
 

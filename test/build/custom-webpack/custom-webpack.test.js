@@ -16,7 +16,9 @@ describe("custom-webpack", () => {
 
     it("should throw an error for invalid-webpack.js", async () => {
         const { exitCode, stderr, stdout } = await run(__dirname, [], {
-            env: { WEBPACK_PACKAGE: resolve(__dirname, "./invalid-webpack.js") },
+            env: {
+                WEBPACK_PACKAGE: resolve(__dirname, "./invalid-webpack.js"),
+            },
         });
 
         expect(exitCode).toBe(2);

@@ -18,7 +18,12 @@ describe("stats and watch", () => {
     });
 
     it('should log stats with the "normal" value in arguments', async () => {
-        const { stderr, stdout } = await runWatch(__dirname, ["-c", "./webpack.config.js", "--stats", "normal"]);
+        const { stderr, stdout } = await runWatch(__dirname, [
+            "-c",
+            "./webpack.config.js",
+            "--stats",
+            "normal",
+        ]);
 
         expect(stderr).toBeFalsy();
         expect(stdout).toBeTruthy();

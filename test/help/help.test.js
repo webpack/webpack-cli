@@ -36,20 +36,34 @@ describe("help", () => {
     });
 
     it('should show the same information using the "--help" option and command syntax', async () => {
-        const { exitCode: exitCodeFromOption, stderr: stderrFromOption, stdout: stdoutFromOption } = await run(__dirname, ["--help"]);
-        const { exitCode: exitCodeFromCommandSyntax, stderr: stderrFromCommandSyntax, stdout: stdoutFromCommandSyntax } = await run(__dirname, ["help"]);
+        const {
+            exitCode: exitCodeFromOption,
+            stderr: stderrFromOption,
+            stdout: stdoutFromOption,
+        } = await run(__dirname, ["--help"]);
+        const {
+            exitCode: exitCodeFromCommandSyntax,
+            stderr: stderrFromCommandSyntax,
+            stdout: stdoutFromCommandSyntax,
+        } = await run(__dirname, ["help"]);
 
         expect(exitCodeFromOption).toBe(0);
         expect(exitCodeFromCommandSyntax).toBe(0);
         expect(normalizeStderr(stderrFromOption)).toMatchSnapshot("stderr from option");
-        expect(normalizeStderr(stderrFromCommandSyntax)).toMatchSnapshot("stderr from command syntax");
+        expect(normalizeStderr(stderrFromCommandSyntax)).toMatchSnapshot(
+            "stderr from command syntax",
+        );
         expect(stdoutFromOption).toBe(stdoutFromCommandSyntax);
         expect(normalizeStdout(stdoutFromOption)).toMatchSnapshot("stdout from option");
-        expect(normalizeStdout(stdoutFromCommandSyntax)).toMatchSnapshot("stdout from command sytnax");
+        expect(normalizeStdout(stdoutFromCommandSyntax)).toMatchSnapshot(
+            "stdout from command sytnax",
+        );
     });
 
     it('should show help information and respect the "--color" flag using the "--help" option', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["--help", "--color"], { env: { FORCE_COLOR: true } });
+        const { exitCode, stderr, stdout } = await run(__dirname, ["--help", "--color"], {
+            env: { FORCE_COLOR: true },
+        });
 
         expect(exitCode).toBe(0);
         expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
@@ -58,7 +72,9 @@ describe("help", () => {
     });
 
     it('should show help information and respect the "--no-color" flag using the "--help" option', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["--help", "--no-color"], { env: { FORCE_COLOR: true } });
+        const { exitCode, stderr, stdout } = await run(__dirname, ["--help", "--no-color"], {
+            env: { FORCE_COLOR: true },
+        });
 
         expect(exitCode).toBe(0);
         expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
@@ -130,7 +146,9 @@ describe("help", () => {
         });
 
         it(`should show help information for '${name}' and respect the "--color" flag using the "--help" option`, async () => {
-            const { exitCode, stderr, stdout } = await run(__dirname, [name, "--help", "--color"], { env: { FORCE_COLOR: true } });
+            const { exitCode, stderr, stdout } = await run(__dirname, [name, "--help", "--color"], {
+                env: { FORCE_COLOR: true },
+            });
 
             expect(exitCode).toBe(0);
             expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
@@ -139,7 +157,11 @@ describe("help", () => {
         });
 
         it(`should show help information for '${name}' and respect the "--no-color" flag using the "--help" option`, async () => {
-            const { exitCode, stderr, stdout } = await run(__dirname, [name, "--help", "--no-color"], { env: { FORCE_COLOR: true } });
+            const { exitCode, stderr, stdout } = await run(
+                __dirname,
+                [name, "--help", "--no-color"],
+                { env: { FORCE_COLOR: true } },
+            );
 
             expect(exitCode).toBe(0);
             expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
@@ -159,7 +181,11 @@ describe("help", () => {
             });
 
             it.skip(`should show help information for '${alias}' command using the "--help verbose" option`, async () => {
-                const { exitCode, stderr, stdout } = await run(__dirname, [alias, "--help", "verbose"]);
+                const { exitCode, stderr, stdout } = await run(__dirname, [
+                    alias,
+                    "--help",
+                    "verbose",
+                ]);
 
                 expect(exitCode).toBe(0);
                 expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
@@ -241,7 +267,9 @@ describe("help", () => {
     });
 
     it('should show help information using the "help --color" option', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["help", "--color"], { env: { FORCE_COLOR: true } });
+        const { exitCode, stderr, stdout } = await run(__dirname, ["help", "--color"], {
+            env: { FORCE_COLOR: true },
+        });
 
         expect(exitCode).toBe(0);
         expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
@@ -250,7 +278,9 @@ describe("help", () => {
     });
 
     it('should show help information using the "help --no-color" option', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["help", "--no-color"], { env: { FORCE_COLOR: true } });
+        const { exitCode, stderr, stdout } = await run(__dirname, ["help", "--no-color"], {
+            env: { FORCE_COLOR: true },
+        });
 
         expect(exitCode).toBe(0);
         expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
@@ -258,7 +288,9 @@ describe("help", () => {
     });
 
     it('should show help information using the "help serve --color" option', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["help", "serve", "--color"], { env: { FORCE_COLOR: true } });
+        const { exitCode, stderr, stdout } = await run(__dirname, ["help", "serve", "--color"], {
+            env: { FORCE_COLOR: true },
+        });
 
         expect(exitCode).toBe(0);
         expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
@@ -363,7 +395,12 @@ describe("help", () => {
     });
 
     it("should log error for invalid command using command syntax #4", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["help", "serve", "--mode", "--mode"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "help",
+            "serve",
+            "--mode",
+            "--mode",
+        ]);
 
         expect(exitCode).toBe(2);
         expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");

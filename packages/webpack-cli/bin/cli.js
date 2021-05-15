@@ -35,7 +35,11 @@ if (utils.packageExists("webpack")) {
             runCLI(process.argv, originalModuleCompile);
         })
         .catch(() => {
-            logger.error(`Action Interrupted, Please try once again or install ${colors.bold("webpack")} manually.`);
+            logger.error(
+                `Action Interrupted, Please try once again or install ${colors.bold(
+                    "webpack",
+                )} manually.`,
+            );
 
             process.exit(2);
         });

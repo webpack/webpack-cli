@@ -28,7 +28,12 @@ describe("--node-env flag", () => {
     });
 
     it('should set "process.env.NODE_ENV" and the "mode" option to "development"', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["--node-env", "development", "--config", "./auto-mode.config.js"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "--node-env",
+            "development",
+            "--config",
+            "./auto-mode.config.js",
+        ]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -36,7 +41,12 @@ describe("--node-env flag", () => {
     });
 
     it('should set "process.env.NODE_ENV" and the "mode" option to "production"', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["--node-env", "production", "--config", "./auto-mode.config.js"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "--node-env",
+            "production",
+            "--config",
+            "./auto-mode.config.js",
+        ]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -44,7 +54,12 @@ describe("--node-env flag", () => {
     });
 
     it('should set "process.env.NODE_ENV" and the "mode" option to "none"', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["--node-env", "none", "--config", "./auto-mode.config.js"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "--node-env",
+            "none",
+            "--config",
+            "./auto-mode.config.js",
+        ]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();

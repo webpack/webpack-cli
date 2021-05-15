@@ -46,11 +46,20 @@ describe("stats config related flag", () => {
         }
 
         if (value.configs.filter((config) => config.type === "string").length > 0) {
-            const acceptsSingleValue = ["preset", "modulesSort", "logging", "chunksSort", "assetsSort"];
+            const acceptsSingleValue = [
+                "preset",
+                "modulesSort",
+                "logging",
+                "chunksSort",
+                "assetsSort",
+            ];
 
             it(`should config --${name} correctly`, async () => {
                 if (name.includes("stats-colors")) {
-                    const { exitCode, stderr, stdout } = await run(__dirname, [`--${name}`, "u001b[32m"]);
+                    const { exitCode, stderr, stdout } = await run(__dirname, [
+                        `--${name}`,
+                        "u001b[32m",
+                    ]);
                     const option = name.split("stats-colors-")[1];
 
                     expect(exitCode).toBe(0);
@@ -69,7 +78,10 @@ describe("stats config related flag", () => {
                     expect(stderr).toBeFalsy();
                     expect(stdout).toContain("log");
                 } else if (name === "stats-entrypoints" || name === "stats-error-details") {
-                    const { exitCode, stderr, stdout } = await run(__dirname, [`--${name}`, "auto"]);
+                    const { exitCode, stderr, stdout } = await run(__dirname, [
+                        `--${name}`,
+                        "auto",
+                    ]);
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();

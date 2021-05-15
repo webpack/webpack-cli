@@ -19,7 +19,10 @@ describe("--context flag", () => {
     });
 
     it("should throw module not found error for invalid context", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["--context", "/invalid-context-path"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "--context",
+            "/invalid-context-path",
+        ]);
 
         expect(exitCode).toBe(1);
         expect(stderr).toBeFalsy();

@@ -1,5 +1,10 @@
-// eslint-disable-next-line node/no-missing-require
-const { Confirm, List, InputValidate, Input } = require("../../packages/generators/src/utils/scaffold-utils");
+const {
+    Confirm,
+    List,
+    InputValidate,
+    Input,
+    // eslint-disable-next-line node/no-missing-require
+} = require("../../packages/generators/src/utils/scaffold-utils");
 
 describe("utils", () => {
     let mockSelf;
@@ -23,9 +28,11 @@ describe("utils", () => {
         });
 
         it("should make default value for a List", () => {
-            expect(List(mockSelf, "entry", "does it work?", ["Yes", "Maybe"], "Yes", true)).toEqual({
-                entry: "Yes",
-            });
+            expect(List(mockSelf, "entry", "does it work?", ["Yes", "Maybe"], "Yes", true)).toEqual(
+                {
+                    entry: "Yes",
+                },
+            );
         });
 
         it("should emulate a prompt for list input", () => {
@@ -59,15 +66,28 @@ describe("utils", () => {
         });
 
         it("should make an Input object with validation", () => {
-            expect(InputValidate(mockSelf, "plugins", "what is your plugin?", () => true)).toMatchSnapshot();
+            expect(
+                InputValidate(mockSelf, "plugins", "what is your plugin?", () => true),
+            ).toMatchSnapshot();
         });
 
         it("should make an Input object with validation and default value", () => {
-            expect(InputValidate(mockSelf, "plugins", "what is your plugin?", () => true, "my-plugin")).toMatchSnapshot();
+            expect(
+                InputValidate(mockSelf, "plugins", "what is your plugin?", () => true, "my-plugin"),
+            ).toMatchSnapshot();
         });
 
         it("should return a default Input object with validation and default value", () => {
-            expect(InputValidate(mockSelf, "plugins", "what is your plugin?", () => true, "my-plugin", true)).toEqual({
+            expect(
+                InputValidate(
+                    mockSelf,
+                    "plugins",
+                    "what is your plugin?",
+                    () => true,
+                    "my-plugin",
+                    true,
+                ),
+            ).toEqual({
                 plugins: "my-plugin",
             });
         });

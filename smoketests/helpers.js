@@ -5,7 +5,9 @@ const path = require("path");
 const execa = require("execa");
 const stripAnsi = require("strip-ansi");
 
-const ROOT_PATH = process.env.GITHUB_WORKSPACE ? process.env.GITHUB_WORKSPACE : path.resolve(__dirname, "..");
+const ROOT_PATH = process.env.GITHUB_WORKSPACE
+    ? process.env.GITHUB_WORKSPACE
+    : path.resolve(__dirname, "..");
 
 const getPkgPath = (pkg, isSubPackage) => {
     const pkgPath = isSubPackage ? `./node_modules/@webpack-cli/${pkg}` : `./node_modules/${pkg}`;
@@ -125,7 +127,13 @@ const runTestStdout = ({ packageName, cliArgs, logMessage, isSubPackage } = {}) 
     });
 };
 
-const runTestStdoutWithInput = ({ packageName, cliArgs, inputs, logMessage, isSubPackage } = {}) => {
+const runTestStdoutWithInput = ({
+    packageName,
+    cliArgs,
+    inputs,
+    logMessage,
+    isSubPackage,
+} = {}) => {
     // Simulate package missing
     swapPkgName(packageName, isSubPackage);
 

@@ -33,7 +33,14 @@ describe("function configuration", () => {
     });
 
     it("Supports passing string in env", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["--env", "environment=production", "--env", "app.title=Luffy", "-c", "webpack.env.config.js"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "--env",
+            "environment=production",
+            "--env",
+            "app.title=Luffy",
+            "-c",
+            "webpack.env.config.js",
+        ]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -43,7 +50,14 @@ describe("function configuration", () => {
     });
 
     it("Supports long nested values in env", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["--env", "file.name.is.this=Atsumu", "--env", "environment=production", "-c", "webpack.env.config.js"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "--env",
+            "file.name.is.this=Atsumu",
+            "--env",
+            "environment=production",
+            "-c",
+            "webpack.env.config.js",
+        ]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -53,7 +67,14 @@ describe("function configuration", () => {
     });
 
     it("Supports multiple equal in a string", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["--env", "file=name=is=Eren", "--env", "environment=multipleq", "-c", "webpack.env.config.js"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "--env",
+            "file=name=is=Eren",
+            "--env",
+            "environment=multipleq",
+            "-c",
+            "webpack.env.config.js",
+        ]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -63,7 +84,14 @@ describe("function configuration", () => {
     });
 
     it("Supports dot at the end", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["--env", "name.=Hisoka", "--env", "environment=dot", "-c", "webpack.env.config.js"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "--env",
+            "name.=Hisoka",
+            "--env",
+            "environment=dot",
+            "-c",
+            "webpack.env.config.js",
+        ]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -73,7 +101,14 @@ describe("function configuration", () => {
     });
 
     it("Supports dot at the end", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["--env", "name.", "--env", "environment=dot", "-c", "webpack.env.config.js"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "--env",
+            "name.",
+            "--env",
+            "environment=dot",
+            "-c",
+            "webpack.env.config.js",
+        ]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -113,7 +148,14 @@ describe("function configuration", () => {
     });
 
     it("is able to understand multiple env flags", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["--env", "isDev", "--env", "verboseStats", "--env", "envMessage"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "--env",
+            "isDev",
+            "--env",
+            "verboseStats",
+            "--env",
+            "envMessage",
+        ]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -134,7 +176,16 @@ describe("function configuration", () => {
     });
 
     it("is able to apply last flag with same name", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["--env", "name.=foo", "--env", "name.=baz", "--env", "environment=dot", "-c", "webpack.env.config.js"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "--env",
+            "name.=foo",
+            "--env",
+            "name.=baz",
+            "--env",
+            "environment=dot",
+            "-c",
+            "webpack.env.config.js",
+        ]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();

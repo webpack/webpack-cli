@@ -22,8 +22,14 @@ const prettierTestWithNoAnswer = async () => {
     const inputs = {
         "Do you like to install prettier to format generated configuration?": "n\n",
     };
-    const logMessage = "Generated configuration may not be properly formatted as prettier is not installed";
-    const status = await runTestStdoutWithInput({ packageName, cliArgs, inputs, logMessage });
+    const logMessage =
+        "Generated configuration may not be properly formatted as prettier is not installed";
+    const status = await runTestStdoutWithInput({
+        packageName,
+        cliArgs,
+        inputs,
+        logMessage,
+    });
     rimraf.sync(rootPath);
     return status;
 };

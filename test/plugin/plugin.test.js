@@ -1,6 +1,11 @@
 const { existsSync, mkdirSync } = require("fs");
 const { join, resolve } = require("path");
-const { run, runPromptWithAnswers, uniqueDirectoryForTest, normalizeStdout } = require("../utils/test-utils");
+const {
+    run,
+    runPromptWithAnswers,
+    uniqueDirectoryForTest,
+    normalizeStdout,
+} = require("../utils/test-utils");
 
 const ENTER = "\x0D";
 
@@ -37,21 +42,35 @@ describe("plugin command", () => {
         }
 
         // Test regressively files are scaffolded
-        const files = ["package.json", "examples", "src", "test", "src/index.js", "examples/simple/webpack.config.js"];
+        const files = [
+            "package.json",
+            "examples",
+            "src",
+            "test",
+            "src/index.js",
+            "examples/simple/webpack.config.js",
+        ];
 
         files.forEach((file) => {
             expect(existsSync(join(defaultPluginPath, file))).toBeTruthy();
         });
 
         // Check if the the generated plugin works successfully
-        const { stdout: stdout2 } = await run(__dirname, ["--config", "./my-webpack-plugin/examples/simple/webpack.config.js"]);
+        const { stdout: stdout2 } = await run(__dirname, [
+            "--config",
+            "./my-webpack-plugin/examples/simple/webpack.config.js",
+        ]);
         expect(normalizeStdout(stdout2)).toContain("Hello World!");
     });
 
     it("should scaffold plugin template with a given name", async () => {
         const assetsPath = await uniqueDirectoryForTest();
         const { pluginName, pluginPath } = dataForTests(assetsPath);
-        const { stdout } = await runPromptWithAnswers(assetsPath, ["plugin"], [`${pluginName}${ENTER}`]);
+        const { stdout } = await runPromptWithAnswers(
+            assetsPath,
+            ["plugin"],
+            [`${pluginName}${ENTER}`],
+        );
 
         expect(normalizeStdout(stdout)).toContain(firstPrompt);
 
@@ -64,21 +83,35 @@ describe("plugin command", () => {
         }
 
         // Test regressively files are scaffolded
-        const files = ["package.json", "examples", "src", "test", "src/index.js", "examples/simple/webpack.config.js"];
+        const files = [
+            "package.json",
+            "examples",
+            "src",
+            "test",
+            "src/index.js",
+            "examples/simple/webpack.config.js",
+        ];
 
         files.forEach((file) => {
             expect(existsSync(join(pluginPath, file))).toBeTruthy();
         });
 
         // Check if the the generated plugin works successfully
-        const { stdout: stdout2 } = await run(__dirname, ["--config", "./test-plugin/examples/simple/webpack.config.js"]);
+        const { stdout: stdout2 } = await run(__dirname, [
+            "--config",
+            "./test-plugin/examples/simple/webpack.config.js",
+        ]);
         expect(normalizeStdout(stdout2)).toContain("Hello World!");
     });
 
     it("should scaffold plugin template in the specified path", async () => {
         const assetsPath = await uniqueDirectoryForTest();
         const { pluginName, customPluginPath } = dataForTests(assetsPath);
-        const { stdout } = await runPromptWithAnswers(assetsPath, ["plugin", "test-assets"], [`${pluginName}${ENTER}`]);
+        const { stdout } = await runPromptWithAnswers(
+            assetsPath,
+            ["plugin", "test-assets"],
+            [`${pluginName}${ENTER}`],
+        );
 
         expect(normalizeStdout(stdout)).toContain(firstPrompt);
 
@@ -91,14 +124,24 @@ describe("plugin command", () => {
         }
 
         // Test regressively files are scaffolded
-        const files = ["package.json", "examples", "src", "test", "src/index.js", "examples/simple/webpack.config.js"];
+        const files = [
+            "package.json",
+            "examples",
+            "src",
+            "test",
+            "src/index.js",
+            "examples/simple/webpack.config.js",
+        ];
 
         files.forEach((file) => {
             expect(existsSync(join(customPluginPath, file))).toBeTruthy();
         });
 
         // Check if the the generated plugin works successfully
-        const { stdout: stdout2 } = await run(customPluginPath, ["--config", "./examples/simple/webpack.config.js"]);
+        const { stdout: stdout2 } = await run(customPluginPath, [
+            "--config",
+            "./examples/simple/webpack.config.js",
+        ]);
         expect(normalizeStdout(stdout2)).toContain("Hello World!");
     });
 
@@ -110,7 +153,11 @@ describe("plugin command", () => {
             mkdirSync(genPath);
         }
 
-        let { stdout } = await runPromptWithAnswers(genPath, ["plugin", "./"], [`${pluginName}${ENTER}`]);
+        let { stdout } = await runPromptWithAnswers(
+            genPath,
+            ["plugin", "./"],
+            [`${pluginName}${ENTER}`],
+        );
 
         expect(normalizeStdout(stdout)).toContain(firstPrompt);
 
@@ -123,14 +170,24 @@ describe("plugin command", () => {
         }
 
         // Test regressively files are scaffolded
-        const files = ["package.json", "examples", "src", "test", "src/index.js", "examples/simple/webpack.config.js"];
+        const files = [
+            "package.json",
+            "examples",
+            "src",
+            "test",
+            "src/index.js",
+            "examples/simple/webpack.config.js",
+        ];
 
         files.forEach((file) => {
             expect(existsSync(join(customPluginPath, file))).toBeTruthy();
         });
 
         // Check if the the generated plugin works successfully
-        const { stdout: stdout2 } = await run(customPluginPath, ["--config", "./examples/simple/webpack.config.js"]);
+        const { stdout: stdout2 } = await run(customPluginPath, [
+            "--config",
+            "./examples/simple/webpack.config.js",
+        ]);
         expect(normalizeStdout(stdout2)).toContain("Hello World!");
     });
 
@@ -144,7 +201,11 @@ describe("plugin command", () => {
     it("recognizes '-t' as an alias for '--template'", async () => {
         const assetsPath = await uniqueDirectoryForTest();
         const { defaultPluginPath } = dataForTests(assetsPath);
-        const { stdout } = await runPromptWithAnswers(assetsPath, ["plugin", "-t", "default"], [`${ENTER}`]);
+        const { stdout } = await runPromptWithAnswers(
+            assetsPath,
+            ["plugin", "-t", "default"],
+            [`${ENTER}`],
+        );
         expect(normalizeStdout(stdout)).toContain(firstPrompt);
         // Check if the output directory exists with the appropriate plugin name
         expect(existsSync(defaultPluginPath)).toBeTruthy();
@@ -153,12 +214,22 @@ describe("plugin command", () => {
             return;
         }
         // Test regressively files are scaffolded
-        const files = ["package.json", "examples", "src", "test", "src/index.js", "examples/simple/webpack.config.js"];
+        const files = [
+            "package.json",
+            "examples",
+            "src",
+            "test",
+            "src/index.js",
+            "examples/simple/webpack.config.js",
+        ];
         files.forEach((file) => {
             expect(existsSync(join(defaultPluginPath, file))).toBeTruthy();
         });
         // Check if the the generated plugin works successfully
-        const { stdout: stdout2 } = await run(__dirname, ["--config", "./my-webpack-plugin/examples/simple/webpack.config.js"]);
+        const { stdout: stdout2 } = await run(__dirname, [
+            "--config",
+            "./my-webpack-plugin/examples/simple/webpack.config.js",
+        ]);
         expect(normalizeStdout(stdout2)).toContain("Hello World!");
     });
 });

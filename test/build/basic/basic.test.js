@@ -21,7 +21,10 @@ describe("bundle command", () => {
     });
 
     it("should work with multiple entries syntax without command (default command)", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["./src/index.js", "./src/other.js"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "./src/index.js",
+            "./src/other.js",
+        ]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -29,7 +32,12 @@ describe("bundle command", () => {
     });
 
     it("should work with multiple entries syntax without command with options (default command)", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["./src/index.js", "./src/other.js", "--mode", "development"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "./src/index.js",
+            "./src/other.js",
+            "--mode",
+            "development",
+        ]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -37,7 +45,12 @@ describe("bundle command", () => {
     });
 
     it("should work with multiple entries syntax without command with options #2 (default command)", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["--mode", "development", "./src/index.js", "./src/other.js"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "--mode",
+            "development",
+            "./src/index.js",
+            "./src/other.js",
+        ]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -45,7 +58,12 @@ describe("bundle command", () => {
     });
 
     it("should work with multiple entries syntax without command with options #3 (default command)", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["./src/index.js", "./src/other.js", "--entry", "./src/again.js"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "./src/index.js",
+            "./src/other.js",
+            "--entry",
+            "./src/again.js",
+        ]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -53,7 +71,12 @@ describe("bundle command", () => {
     });
 
     it("should work with and override entries from the configuration", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["./src/index.js", "./src/other.js", "--config", "./entry.config.js"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "./src/index.js",
+            "./src/other.js",
+            "--config",
+            "./entry.config.js",
+        ]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -109,7 +132,11 @@ describe("bundle command", () => {
     });
 
     it('should work with multiple entries syntax using the "build" alias', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["build", "./src/index.js", "./src/other.js"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "build",
+            "./src/index.js",
+            "./src/other.js",
+        ]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -117,7 +144,13 @@ describe("bundle command", () => {
     });
 
     it('should work with multiple entries syntax using the "build" alias and options', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["build", "./src/index.js", "./src/other.js", "--mode", "development"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "build",
+            "./src/index.js",
+            "./src/other.js",
+            "--mode",
+            "development",
+        ]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -125,7 +158,13 @@ describe("bundle command", () => {
     });
 
     it('should work with multiple entries syntax using the "build" alias and options', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["build", "--mode", "development", "./src/index.js", "./src/other.js"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "build",
+            "--mode",
+            "development",
+            "./src/index.js",
+            "./src/other.js",
+        ]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
