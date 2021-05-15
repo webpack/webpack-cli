@@ -17,7 +17,7 @@ describe("experiments option related flag", () => {
         const propName = hyphenToUpperCase(property);
 
         if (propName === "client" || propName === "test") {
-            return false;
+            return;
         }
 
         if (value.configs.filter((config) => config.type === "boolean").length > 0) {
