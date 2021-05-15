@@ -44,7 +44,6 @@ module.exports = {
             plugins: ["@typescript-eslint"],
             rules: {
                 "node/no-unsupported-features/es-syntax": "off",
-                "max-len": [0, 100],
             },
         },
     ],
