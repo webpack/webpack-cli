@@ -2,17 +2,17 @@ module.exports = new Promise((resolve) => {
     setTimeout(() => {
         resolve([
             {
-                entry: './a',
+                entry: "./a",
                 output: {
-                    path: __dirname + '/binary',
-                    filename: 'a-promise.js',
+                    path: __dirname + "/binary",
+                    filename: "a-promise.js",
                 },
             },
             {
-                entry: './b',
+                entry: "./b",
                 output: {
-                    path: __dirname + '/binary',
-                    filename: 'b-promise.js',
+                    path: __dirname + "/binary",
+                    filename: "b-promise.js",
                 },
             },
         ]);

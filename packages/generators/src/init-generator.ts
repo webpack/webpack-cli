@@ -1,12 +1,12 @@
-import { blue, yellow } from 'colorette';
-import path from 'path';
-import * as Question from './utils/scaffold-utils';
+import { blue, yellow } from "colorette";
+import path from "path";
+import * as Question from "./utils/scaffold-utils";
 
-import { CustomGenerator } from './types';
-import { existsSync, mkdirSync } from 'fs';
-import handlers from './handlers';
+import { CustomGenerator } from "./types";
+import { existsSync, mkdirSync } from "fs";
+import handlers from "./handlers";
 
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync, writeFileSync } from "fs";
 
 /**
  *
@@ -38,7 +38,7 @@ export default class InitGenerator extends CustomGenerator {
         this.generationPath = options.generationPath;
         this.resolvedGenerationPath = path.resolve(process.cwd(), this.generationPath);
         this.force = options.force;
-        this.dependencies = ['webpack', 'webpack-cli'];
+        this.dependencies = ["webpack", "webpack-cli"];
         this.supportedTemplates = Object.keys(handlers);
         this.answers = {};
         const { cli } = opts;
@@ -48,7 +48,7 @@ export default class InitGenerator extends CustomGenerator {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public async prompting(): Promise<void | any> {
         if (!existsSync(this.resolvedGenerationPath)) {
-            this.utils.logger.log(`${blue('ℹ INFO ')} supplied generation path doesn't exist, required folders will be created.`);
+            this.utils.logger.log(`${blue("ℹ INFO ")} supplied generation path doesn't exist, required folders will be created.`);
             try {
                 mkdirSync(this.resolvedGenerationPath, { recursive: true });
             } catch (error) {
@@ -60,14 +60,7 @@ export default class InitGenerator extends CustomGenerator {
         if (!this.supportedTemplates.includes(this.template)) {
             this.utils.logger.warn(`⚠ ${this.template} is not a valid template, please select one from below`);
 
-            const { selectedTemplate } = await Question.List(
-                this,
-                'selectedTemplate',
-                'Select a valid template from below:',
-                this.supportedTemplates,
-                'default',
-                false,
-            );
+            const { selectedTemplate } = await Question.List(this, "selectedTemplate", "Select a valid template from below:", this.supportedTemplates, "default", false);
 
             this.template = selectedTemplate;
         }
@@ -77,18 +70,12 @@ export default class InitGenerator extends CustomGenerator {
         // Handle installation of prettier
         try {
             // eslint-disable-next-line node/no-extraneous-require
-            require.resolve('prettier');
+            require.resolve("prettier");
         } catch (err) {
-            const { installPrettier } = await Question.Confirm(
-                this,
-                'installPrettier',
-                'Do you like to install prettier to format generated configuration?',
-                true,
-                false,
-            );
+            const { installPrettier } = await Question.Confirm(this, "installPrettier", "Do you like to install prettier to format generated configuration?", true, false);
 
             if (installPrettier) {
-                this.dependencies.push('prettier');
+                this.dependencies.push("prettier");
             }
         }
     }
@@ -97,14 +84,14 @@ export default class InitGenerator extends CustomGenerator {
         const packager = this.utils.getPackageManager();
         const opts: {
             dev?: boolean;
-            'save-dev'?: boolean;
-        } = packager === 'yarn' ? { dev: true } : { 'save-dev': true };
+            "save-dev"?: boolean;
+        } = packager === "yarn" ? { dev: true } : { "save-dev": true };
 
         this.scheduleInstallTask(packager, this.dependencies, opts, { cwd: this.generationPath });
     }
 
     public writing(): void {
-        this.utils.logger.log(`${blue('ℹ INFO ')} Initialising project...`);
+        this.utils.logger.log(`${blue("ℹ INFO ")} Initialising project...`);
         handlers[this.template].generate(this);
     }
 
@@ -112,9 +99,9 @@ export default class InitGenerator extends CustomGenerator {
         // Prettify configuration file if possible
         try {
             // eslint-disable-next-line node/no-extraneous-require, @typescript-eslint/no-var-requires
-            const prettier = require('prettier');
-            const source = readFileSync(this.configurationPath, { encoding: 'utf8' });
-            const formattedSource = prettier.format(source, { parser: 'babel' });
+            const prettier = require("prettier");
+            const source = readFileSync(this.configurationPath, { encoding: "utf8" });
+            const formattedSource = prettier.format(source, { parser: "babel" });
             writeFileSync(this.configurationPath, formattedSource);
         } catch (err) {
             this.utils.logger.log(`${yellow(`⚠ Generated configuration may not be properly formatted as prettier is not installed.`)}`);

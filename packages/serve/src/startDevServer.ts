@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { devServerOptionsType } from './types';
+import { devServerOptionsType } from "./types";
 
 /**
  *
@@ -15,19 +15,14 @@ import { devServerOptionsType } from './types';
  * @returns {Object[]} array of resulting servers
  */
 
-export default async function startDevServer(
-    compiler: any,
-    devServerCliOptions: any,
-    cliOptions: any,
-    logger: any,
-): Promise<Record<string, unknown>[]> {
+export default async function startDevServer(compiler: any, devServerCliOptions: any, cliOptions: any, logger: any): Promise<Record<string, unknown>[]> {
     let devServerVersion, Server;
 
     try {
         // eslint-disable-next-line node/no-extraneous-require
-        devServerVersion = require('webpack-dev-server/package.json').version;
+        devServerVersion = require("webpack-dev-server/package.json").version;
         // eslint-disable-next-line node/no-extraneous-require
-        Server = require('webpack-dev-server/lib/Server');
+        Server = require("webpack-dev-server/lib/Server");
     } catch (err) {
         logger.error(`You need to install 'webpack-dev-server' for running 'webpack serve'.\n${err}`);
         process.exit(2);
@@ -62,7 +57,7 @@ export default async function startDevServer(
         compilersWithDevServerOption = [compiler];
     }
 
-    const isDevServer4 = devServerVersion.startsWith('4');
+    const isDevServer4 = devServerVersion.startsWith("4");
     const usedPorts = [];
     const devServersOptions = [];
 
@@ -71,8 +66,7 @@ export default async function startDevServer(
 
         if (!isDevServer4) {
             const getPublicPathOption = (): string => {
-                const normalizePublicPath = (publicPath): string =>
-                    typeof publicPath === 'undefined' || publicPath === 'auto' ? '/' : publicPath;
+                const normalizePublicPath = (publicPath): string => (typeof publicPath === "undefined" || publicPath === "auto" ? "/" : publicPath);
 
                 if (cliOptions.outputPublicPath) {
                     return normalizePublicPath(compilerWithDevServerOption.options.output.publicPath);
@@ -97,7 +91,7 @@ export default async function startDevServer(
                 return compilerWithDevServerOption.options.stats;
             };
 
-            options.host = options.host || 'localhost';
+            options.host = options.host || "localhost";
             options.port = options.port || 8080;
             options.stats = getStatsOption();
             options.publicPath = getPublicPathOption();
@@ -107,9 +101,7 @@ export default async function startDevServer(
             const portNumber = Number(options.port);
 
             if (usedPorts.find((port) => portNumber === port)) {
-                throw new Error(
-                    'Unique ports must be specified for each devServer option in your webpack configuration. Alternatively, run only 1 devServer config using the --config-name flag to specify your desired config.',
-                );
+                throw new Error("Unique ports must be specified for each devServer option in your webpack configuration. Alternatively, run only 1 devServer config using the --config-name flag to specify your desired config.");
             }
 
             usedPorts.push(portNumber);

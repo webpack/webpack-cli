@@ -1,11 +1,11 @@
-const path = require('path');
+const path = require("path");
 
 const config = {
-    mode: 'production',
-    entry: './main.js',
+    mode: "production",
+    entry: "./main.js",
     output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: 'foo.bundle.js',
+        path: path.resolve(__dirname, "dist"),
+        filename: "foo.bundle.js",
     },
 };
 

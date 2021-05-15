@@ -1,3 +1,3 @@
 module.exports = {
-    mode: 'Nishinoya Yuu',
+    mode: "Nishinoya Yuu",
 };

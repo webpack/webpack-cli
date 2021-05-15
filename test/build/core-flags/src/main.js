@@ -1,1 +1,1 @@
-console.log('core-flags tests');
+console.log("core-flags tests");

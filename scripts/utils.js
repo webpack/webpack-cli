@@ -1,7 +1,7 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const BASE_DIR = 'test/';
+const BASE_DIR = "test/";
 
 function collectTestFolders(strategy) {
     const testFolder = path.resolve(path.join(process.cwd(), BASE_DIR));
@@ -30,7 +30,7 @@ function extractFolder(folderToRead, folders = [], folderStrategy) {
             folders.push(folderToRead);
         }
 
-        if (stats.isDirectory() && file !== 'node_modules') {
+        if (stats.isDirectory() && file !== "node_modules") {
             extractFolder(filePath, folders, folderStrategy);
         }
     });

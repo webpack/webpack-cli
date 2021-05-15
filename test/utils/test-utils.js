@@ -1,33 +1,33 @@
 /* eslint-disable node/no-unpublished-require */
 
-'use strict';
+"use strict";
 
-const os = require('os');
-const stripAnsi = require('strip-ansi');
-const path = require('path');
-const fs = require('fs');
-const execa = require('execa');
-const internalIp = require('internal-ip');
-const { exec } = require('child_process');
+const os = require("os");
+const stripAnsi = require("strip-ansi");
+const path = require("path");
+const fs = require("fs");
+const execa = require("execa");
+const internalIp = require("internal-ip");
+const { exec } = require("child_process");
 const { node: execaNode } = execa;
-const { Writable } = require('readable-stream');
-const concat = require('concat-stream');
-const { cli, version } = require('webpack');
-const isWebpack5 = version.startsWith('5');
+const { Writable } = require("readable-stream");
+const concat = require("concat-stream");
+const { cli, version } = require("webpack");
+const isWebpack5 = version.startsWith("5");
 
 let devServerVersion;
 
 try {
-    devServerVersion = require('webpack-dev-server/package.json').version;
+    devServerVersion = require("webpack-dev-server/package.json").version;
 } catch (error) {
     // Nothing
 }
 
-const isDevServer4 = devServerVersion && devServerVersion.startsWith('4');
+const isDevServer4 = devServerVersion && devServerVersion.startsWith("4");
 
-const WEBPACK_PATH = path.resolve(__dirname, '../../packages/webpack-cli/bin/cli.js');
+const WEBPACK_PATH = path.resolve(__dirname, "../../packages/webpack-cli/bin/cli.js");
 const ENABLE_LOG_COMPILATION = process.env.ENABLE_PIPE || false;
-const isWindows = process.platform === 'win32';
+const isWindows = process.platform === "win32";
 
 const hyphenToUpperCase = (name) => {
     if (!name) {
@@ -41,7 +41,7 @@ const hyphenToUpperCase = (name) => {
 
 const processKill = (process) => {
     if (isWindows) {
-        exec('taskkill /pid ' + process.pid + ' /T /F');
+        exec("taskkill /pid " + process.pid + " /T /F");
     } else {
         process.kill();
     }
@@ -62,7 +62,7 @@ const createProcess = (cwd, args, options) => {
     return processExecutor(WEBPACK_PATH, args, {
         cwd: path.resolve(cwd),
         reject: false,
-        stdio: ENABLE_LOG_COMPILATION ? 'inherit' : 'pipe',
+        stdio: ENABLE_LOG_COMPILATION ? "inherit" : "pipe",
         maxBuffer: Infinity,
         env: { WEBPACK_CLI_HELP_WIDTH: 1024 },
         ...options,
@@ -109,7 +109,7 @@ const runWatch = (cwd, args = [], options = {}) => {
         process.stdout.pipe(
             new Writable({
                 write(chunk, encoding, callback) {
-                    const output = stripAnsi(chunk.toString('utf8'));
+                    const output = stripAnsi(chunk.toString("utf8"));
 
                     if (outputKillStr.test(output)) {
                         processKill(process);
@@ -123,7 +123,7 @@ const runWatch = (cwd, args = [], options = {}) => {
         process.stderr.pipe(
             new Writable({
                 write(chunk, encoding, callback) {
-                    const output = stripAnsi(chunk.toString('utf8'));
+                    const output = stripAnsi(chunk.toString("utf8"));
 
                     if (outputKillStr.test(output)) {
                         processKill(process);
@@ -153,7 +153,7 @@ const runWatch = (cwd, args = [], options = {}) => {
 const runPromptWithAnswers = (location, args, answers) => {
     const process = runAndGetProcess(location, args);
 
-    process.stdin.setDefaultEncoding('utf-8');
+    process.stdin.setDefaultEncoding("utf-8");
 
     const delay = 2000;
     let outputTimeout;
@@ -176,7 +176,7 @@ const runPromptWithAnswers = (location, args, answers) => {
     process.stdout.pipe(
         new Writable({
             write(chunk, encoding, callback) {
-                const output = chunk.toString('utf8');
+                const output = chunk.toString("utf8");
 
                 if (output) {
                     if (outputTimeout) {
@@ -207,7 +207,7 @@ const runPromptWithAnswers = (location, args, answers) => {
             }
 
             if (stdoutDone && stderrDone) {
-                process.kill('SIGKILL');
+                process.kill("SIGKILL");
                 resolve(obj);
             }
         };
@@ -233,22 +233,19 @@ const runPromptWithAnswers = (location, args, answers) => {
 };
 
 const normalizeVersions = (output) => {
-    return output.replace(
-        /(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?/gi,
-        'x.x.x',
-    );
+    return output.replace(/(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?/gi, "x.x.x");
 };
 
 const normalizeCwd = (output) => {
-    return output.replace(/\\/g, '/').replace(new RegExp(process.cwd().replace(/\\/g, '/'), 'g'), '<cwd>');
+    return output.replace(/\\/g, "/").replace(new RegExp(process.cwd().replace(/\\/g, "/"), "g"), "<cwd>");
 };
 
 const normalizeError = (output) => {
-    return output.replace(/SyntaxError: .+/, 'SyntaxError: <error-message>').replace(/\s+at .+(}|\)|\d)/gs, '\n    at stack');
+    return output.replace(/SyntaxError: .+/, "SyntaxError: <error-message>").replace(/\s+at .+(}|\)|\d)/gs, "\n    at stack");
 };
 
 const normalizeStdout = (stdout) => {
-    if (typeof stdout !== 'string') {
+    if (typeof stdout !== "string") {
         return stdout;
     }
 
@@ -265,7 +262,7 @@ const normalizeStdout = (stdout) => {
 };
 
 const normalizeStderr = (stderr) => {
-    if (typeof stderr !== 'string') {
+    if (typeof stderr !== "string") {
         return stderr;
     }
 
@@ -279,32 +276,28 @@ const normalizeStderr = (stderr) => {
     const networkIPv4 = internalIp.v4.sync();
 
     if (networkIPv4) {
-        normalizedStderr = normalizedStderr.replace(new RegExp(networkIPv4, 'g'), '<network-ip-v4>');
+        normalizedStderr = normalizedStderr.replace(new RegExp(networkIPv4, "g"), "<network-ip-v4>");
     }
 
     const networkIPv6 = internalIp.v6.sync();
 
     if (networkIPv6) {
-        normalizedStderr = normalizedStderr.replace(new RegExp(networkIPv6, 'g'), '<network-ip-v6>');
+        normalizedStderr = normalizedStderr.replace(new RegExp(networkIPv6, "g"), "<network-ip-v6>");
     }
 
-    normalizedStderr = normalizedStderr.replace(/:[0-9]+\//g, ':<port>/');
+    normalizedStderr = normalizedStderr.replace(/:[0-9]+\//g, ":<port>/");
 
     if (!/On Your Network \(IPv6\)/.test(stderr)) {
         // Github Actions doesnt' support IPv6 on ubuntu in some cases
-        normalizedStderr = normalizedStderr.split('\n');
+        normalizedStderr = normalizedStderr.split("\n");
 
         const ipv4MessageIndex = normalizedStderr.findIndex((item) => /On Your Network \(IPv4\)/.test(item));
 
         if (ipv4MessageIndex !== -1) {
-            normalizedStderr.splice(
-                ipv4MessageIndex + 1,
-                0,
-                '<i> [webpack-dev-server] On Your Network (IPv6): http://[<network-ip-v6>]:<port>/',
-            );
+            normalizedStderr.splice(ipv4MessageIndex + 1, 0, "<i> [webpack-dev-server] On Your Network (IPv6): http://[<network-ip-v6>]:<port>/");
         }
 
-        normalizedStderr = normalizedStderr.join('\n');
+        normalizedStderr = normalizedStderr.join("\n");
     }
 
     normalizedStderr = normalizeVersions(normalizedStderr);
@@ -314,7 +307,7 @@ const normalizeStderr = (stderr) => {
 };
 
 const getWebpackCliArguments = (startWith) => {
-    if (typeof startWith === 'undefined') {
+    if (typeof startWith === "undefined") {
         return cli.getArguments();
     }
 

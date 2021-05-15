@@ -1,7 +1,7 @@
 module.exports = {
-    entry: './src/first.js',
+    entry: "./src/first.js",
     devtool: false,
-    mode: 'development',
+    mode: "development",
     bail: true,
     watch: true,
 };

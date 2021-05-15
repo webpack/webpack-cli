@@ -1,1 +1,1 @@
-console.log('another-entry');
+console.log("another-entry");

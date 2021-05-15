@@ -1,3 +1,3 @@
-console.log('HERE');
+console.log("HERE");
 
-module.exports = 'async-value';
+module.exports = "async-value";

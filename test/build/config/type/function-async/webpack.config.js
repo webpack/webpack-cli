@@ -1,9 +1,9 @@
 module.exports = async () => {
     return {
-        entry: './a',
+        entry: "./a",
         output: {
-            path: __dirname + '/binary',
-            filename: 'functor.js',
+            path: __dirname + "/binary",
+            filename: "functor.js",
         },
     };
 };

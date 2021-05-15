@@ -1,4 +1,4 @@
-import startDevServer from './startDevServer';
+import startDevServer from "./startDevServer";
 
 class ServeCommand {
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
@@ -7,7 +7,7 @@ class ServeCommand {
 
         const loadDevServerOptions = () => {
             // eslint-disable-next-line @typescript-eslint/no-var-requires, node/no-extraneous-require
-            const options = require('webpack-dev-server/bin/cli-flags');
+            const options = require("webpack-dev-server/bin/cli-flags");
 
             // Old options format
             // { devServer: [{...}, {}...] }
@@ -26,12 +26,12 @@ class ServeCommand {
 
         await cli.makeCommand(
             {
-                name: 'serve [entries...]',
-                alias: ['server', 's'],
-                description: 'Run the webpack dev server.',
-                usage: '[entries...] [options]',
-                pkg: '@webpack-cli/serve',
-                dependencies: ['webpack-dev-server'],
+                name: "serve [entries...]",
+                alias: ["server", "s"],
+                description: "Run the webpack dev server.",
+                usage: "[entries...] [options]",
+                pkg: "@webpack-cli/serve",
+                dependencies: ["webpack-dev-server"],
             },
             () => {
                 let devServerFlags = [];
@@ -43,7 +43,7 @@ class ServeCommand {
                     process.exit(2);
                 }
 
-                const builtInOptions = cli.getBuiltInOptions().filter((option) => option.name !== 'watch');
+                const builtInOptions = cli.getBuiltInOptions().filter((option) => option.name !== "watch");
 
                 return [...builtInOptions, ...devServerFlags];
             },
@@ -68,15 +68,12 @@ class ServeCommand {
                 for (const optionName in options) {
                     const kebabedOption = cli.utils.toKebabCase(optionName);
                     // `webpack-dev-server` has own logic for the `--hot` option
-                    const isBuiltInOption =
-                        kebabedOption !== 'hot' && builtInOptions.find((builtInOption) => builtInOption.name === kebabedOption);
+                    const isBuiltInOption = kebabedOption !== "hot" && builtInOptions.find((builtInOption) => builtInOption.name === kebabedOption);
 
                     if (isBuiltInOption) {
                         webpackOptions[optionName] = options[optionName];
                     } else {
-                        const needToProcess = devServerFlags.find(
-                            (devServerOption) => devServerOption.name === kebabedOption && devServerOption.processor,
-                        );
+                        const needToProcess = devServerFlags.find((devServerOption) => devServerOption.name === kebabedOption && devServerOption.processor);
 
                         if (needToProcess) {
                             processors.push(needToProcess.processor);
@@ -112,7 +109,7 @@ class ServeCommand {
                         delete devServerOptions.stdin;
                     }
 
-                    process.stdin.on('end', () => {
+                    process.stdin.on("end", () => {
                         Promise.all(
                             servers.map((server) => {
                                 return new Promise<void>((resolve) => {

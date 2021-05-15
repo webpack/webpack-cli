@@ -1,6 +1,6 @@
-import path from 'path';
-import addonGenerator from './addon-generator';
-import { toKebabCase } from './utils/helpers';
+import path from "path";
+import addonGenerator from "./addon-generator";
+import { toKebabCase } from "./utils/helpers";
 
 /**
  * Formats a string into webpack loader format
@@ -13,7 +13,7 @@ export function makeLoaderName(name: string): string {
     name = toKebabCase(name);
 
     if (!/loader$/.test(name)) {
-        name += '-loader';
+        name += "-loader";
     }
 
     return name;
@@ -31,15 +31,15 @@ export function makeLoaderName(name: string): string {
 export const LoaderGenerator = addonGenerator(
     [
         {
-            default: 'my-loader',
+            default: "my-loader",
             filter: makeLoaderName,
-            message: 'Loader name',
-            name: 'name',
-            type: 'input',
+            message: "Loader name",
+            name: "name",
+            type: "input",
             validate: (str: string): boolean => str.length > 0,
         },
     ],
-    path.resolve(__dirname, '../loader-template'),
+    path.resolve(__dirname, "../loader-template"),
     (gen): Record<string, unknown> => ({ name: gen.props.name }),
 );
 

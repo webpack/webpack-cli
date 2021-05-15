@@ -1,15 +1,15 @@
-const webpack = require('webpack');
+const webpack = require("webpack");
 
 module.exports = [
     {
-        name: 'first',
-        mode: 'development',
+        name: "first",
+        mode: "development",
         watch: true,
-        stats: 'none',
+        stats: "none",
         plugins: [
             {
                 apply(compiler) {
-                    (compiler.webpack ? compiler.hooks.afterDone : compiler.hooks.done).tap('webpack-cli-test', () => {
+                    (compiler.webpack ? compiler.hooks.afterDone : compiler.hooks.done).tap("webpack-cli-test", () => {
                         console.log(`webpack ${webpack.version}`);
                     });
                 },
@@ -17,14 +17,14 @@ module.exports = [
         ],
     },
     {
-        name: 'two',
-        mode: 'development',
+        name: "two",
+        mode: "development",
         watch: true,
-        stats: 'none',
+        stats: "none",
         plugins: [
             {
                 apply(compiler) {
-                    (compiler.webpack ? compiler.hooks.afterDone : compiler.hooks.done).tap('webpack-cli-test', () => {
+                    (compiler.webpack ? compiler.hooks.afterDone : compiler.hooks.done).tap("webpack-cli-test", () => {
                         console.log(`webpack ${webpack.version}`);
                     });
                 },

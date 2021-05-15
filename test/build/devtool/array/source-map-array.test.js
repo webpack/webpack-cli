@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 
-const { resolve } = require('path');
-const { run, readdir } = require('../../../utils/test-utils');
+const { resolve } = require("path");
+const { run, readdir } = require("../../../utils/test-utils");
 
-describe('source-map object', () => {
-    it('should treat source-map settings right', async () => {
+describe("source-map object", () => {
+    it("should treat source-map settings right", async () => {
         const { exitCode, stderr, stdout } = await run(__dirname, []);
 
         expect(exitCode).toBe(0);
@@ -16,7 +16,7 @@ describe('source-map object', () => {
         let files;
 
         try {
-            files = await readdir(resolve(__dirname, 'dist'));
+            files = await readdir(resolve(__dirname, "dist"));
         } catch (error) {
             expect(error).toBe(null);
         }
@@ -24,8 +24,8 @@ describe('source-map object', () => {
         expect(files.length).toBe(3);
     });
 
-    it('should override entire array on flag', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ['--devtool', 'source-map', '--output-path', './binary']);
+    it("should override entire array on flag", async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, ["--devtool", "source-map", "--output-path", "./binary"]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -34,7 +34,7 @@ describe('source-map object', () => {
         let files;
 
         try {
-            files = await readdir(resolve(__dirname, 'binary'));
+            files = await readdir(resolve(__dirname, "binary"));
         } catch (error) {
             expect(error).toBe(null);
         }

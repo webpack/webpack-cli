@@ -1,1 +1,1 @@
-console.log('bail and watch warning test first');
+console.log("bail and watch warning test first");

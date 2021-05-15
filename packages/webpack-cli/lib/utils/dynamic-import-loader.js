@@ -2,7 +2,7 @@ function dynamicImportLoader() {
     let importESM;
 
     try {
-        importESM = new Function('id', 'return import(id);');
+        importESM = new Function("id", "return import(id);");
     } catch (e) {
         importESM = null;
     }

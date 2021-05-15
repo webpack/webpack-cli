@@ -1,13 +1,13 @@
-const { resolve } = require('path');
+const { resolve } = require("path");
 
 module.exports = {
     entry: {
-        b: './b.js',
-        c: './c.js',
+        b: "./b.js",
+        c: "./c.js",
     },
     output: {
-        path: resolve(__dirname, 'bin'),
-        filename: '[name].bundle.js',
+        path: resolve(__dirname, "bin"),
+        filename: "[name].bundle.js",
     },
-    mode: 'development',
+    mode: "development",
 };

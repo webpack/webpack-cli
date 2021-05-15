@@ -2,21 +2,21 @@ module.exports = [
     {
         devtool: false,
         output: {
-            filename: './dist-first.js',
+            filename: "./dist-first.js",
         },
-        name: 'first',
-        entry: './src/first.js',
-        mode: 'development',
+        name: "first",
+        entry: "./src/first.js",
+        mode: "development",
         bail: true,
         watch: true,
     },
     {
         devtool: false,
         output: {
-            filename: './dist-second.js',
+            filename: "./dist-second.js",
         },
-        name: 'second',
-        entry: './src/second.js',
-        mode: 'development',
+        name: "second",
+        entry: "./src/second.js",
+        mode: "development",
     },
 ];

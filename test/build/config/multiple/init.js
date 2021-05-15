@@ -1,1 +1,1 @@
-console.log('Monkey D Luffy');
+console.log("Monkey D Luffy");

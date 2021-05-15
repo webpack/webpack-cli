@@ -1,5 +1,5 @@
 const prompt = ({ message, defaultResponse, stream }) => {
-    const readline = require('readline');
+    const readline = require("readline");
     const rl = readline.createInterface({
         input: process.stdin,
         output: stream,
@@ -13,7 +13,7 @@ const prompt = ({ message, defaultResponse, stream }) => {
             const response = (answer || defaultResponse).toLowerCase();
 
             // Resolve with the input response
-            if (response === 'y' || response === 'yes') {
+            if (response === "y" || response === "yes") {
                 resolve(true);
             } else {
                 resolve(false);

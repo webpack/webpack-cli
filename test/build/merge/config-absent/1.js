@@ -1,3 +1,3 @@
 module.exports = {
-    entry: './some_entry.js',
+    entry: "./some_entry.js",
 };

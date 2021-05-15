@@ -37,7 +37,7 @@ export type devServerOptionsType = {
 };
 
 enum hotOptionEnum {
-    only = 'only',
+    only = "only",
 }
 
 type devServerClientOptions = {
@@ -62,10 +62,10 @@ type clientOverlay = {
 };
 
 enum devServerClientLogging {
-    none = 'none',
-    error = 'error',
-    warn = 'warn',
-    info = 'info',
-    log = 'log',
-    verbose = 'verbose',
+    none = "none",
+    error = "error",
+    warn = "warn",
+    info = "info",
+    log = "log",
+    verbose = "verbose",
 }

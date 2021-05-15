@@ -1,11 +1,11 @@
 /* eslint-disable node/no-unpublished-require */
 
-const fs = require('fs');
-const path = require('path');
-const execa = require('execa');
-const stripAnsi = require('strip-ansi');
+const fs = require("fs");
+const path = require("path");
+const execa = require("execa");
+const stripAnsi = require("strip-ansi");
 
-const ROOT_PATH = process.env.GITHUB_WORKSPACE ? process.env.GITHUB_WORKSPACE : path.resolve(__dirname, '..');
+const ROOT_PATH = process.env.GITHUB_WORKSPACE ? process.env.GITHUB_WORKSPACE : path.resolve(__dirname, "..");
 
 const getPkgPath = (pkg, isSubPackage) => {
     const pkgPath = isSubPackage ? `./node_modules/@webpack-cli/${pkg}` : `./node_modules/${pkg}`;
@@ -14,12 +14,12 @@ const getPkgPath = (pkg, isSubPackage) => {
 
 const swapPkgName = (current, isSubPackage = false) => {
     // info -> .info and vice-versa
-    const next = current.startsWith('.') ? current.substr(1) : `.${current}`;
+    const next = current.startsWith(".") ? current.substr(1) : `.${current}`;
     console.log(`  swapping ${current} with ${next}`);
     fs.renameSync(getPkgPath(current, isSubPackage), getPkgPath(next, isSubPackage));
 };
 
-const CLI_ENTRY_PATH = path.resolve(ROOT_PATH, './packages/webpack-cli/bin/cli.js');
+const CLI_ENTRY_PATH = path.resolve(ROOT_PATH, "./packages/webpack-cli/bin/cli.js");
 
 const runTest = (package, cliArgs = [], logMessage, isSubPackage = false) => {
     // Simulate package missing
@@ -29,24 +29,24 @@ const runTest = (package, cliArgs = [], logMessage, isSubPackage = false) => {
         cwd: __dirname,
     });
 
-    proc.stdin.setDefaultEncoding('utf-8');
+    proc.stdin.setDefaultEncoding("utf-8");
 
-    proc.stdout.on('data', (chunk) => {
+    proc.stdout.on("data", (chunk) => {
         console.log(`  stdout: ${chunk.toString()}`);
     });
 
     return new Promise((resolve) => {
         const timeout = setTimeout(() => {
-            console.log('  timeout: killing process');
+            console.log("  timeout: killing process");
             proc.kill();
         }, 30000);
 
-        const prompt = 'Would you like to install';
+        const prompt = "Would you like to install";
         let hasLogMessage = false,
             hasPrompt = false,
             hasPassed = false;
 
-        proc.stderr.on('data', (chunk) => {
+        proc.stderr.on("data", (chunk) => {
             let data = stripAnsi(chunk.toString());
             console.log(`  stderr: ${data}`);
 
@@ -64,13 +64,13 @@ const runTest = (package, cliArgs = [], logMessage, isSubPackage = false) => {
             }
         });
 
-        proc.on('exit', () => {
+        proc.on("exit", () => {
             swapPkgName(`.${package}`, isSubPackage);
             clearTimeout(timeout);
             resolve(hasPassed);
         });
 
-        proc.on('error', () => {
+        proc.on("error", () => {
             swapPkgName(`.${package}`, isSubPackage);
             clearTimeout(timeout);
             resolve(false);
@@ -86,17 +86,17 @@ const runTestStdout = ({ packageName, cliArgs, logMessage, isSubPackage } = {}) 
         cwd: __dirname,
     });
 
-    proc.stdin.setDefaultEncoding('utf-8');
+    proc.stdin.setDefaultEncoding("utf-8");
 
     return new Promise((resolve) => {
         const timeout = setTimeout(() => {
-            console.log('  timeout: killing process');
+            console.log("  timeout: killing process");
             proc.kill();
         }, 30000);
 
         let hasPassed = false;
 
-        proc.stdout.on('data', (chunk) => {
+        proc.stdout.on("data", (chunk) => {
             let data = stripAnsi(chunk.toString());
             console.log(`  stdout: ${data}`);
 
@@ -106,18 +106,18 @@ const runTestStdout = ({ packageName, cliArgs, logMessage, isSubPackage } = {}) 
             }
         });
 
-        proc.stderr.on('data', (chunk) => {
+        proc.stderr.on("data", (chunk) => {
             let data = stripAnsi(chunk.toString());
             console.log(`  stderr: ${data}`);
         });
 
-        proc.on('exit', () => {
+        proc.on("exit", () => {
             swapPkgName(`.${packageName}`, isSubPackage);
             clearTimeout(timeout);
             resolve(hasPassed);
         });
 
-        proc.on('error', () => {
+        proc.on("error", () => {
             swapPkgName(`.${packageName}`, isSubPackage);
             clearTimeout(timeout);
             resolve(false);
@@ -133,17 +133,17 @@ const runTestStdoutWithInput = ({ packageName, cliArgs, inputs, logMessage, isSu
         cwd: __dirname,
     });
 
-    proc.stdin.setDefaultEncoding('utf-8');
+    proc.stdin.setDefaultEncoding("utf-8");
 
     return new Promise((resolve) => {
         const timeout = setTimeout(() => {
-            console.log('  timeout: killing process');
+            console.log("  timeout: killing process");
             proc.kill();
         }, 300000);
 
         let hasPassed = false;
 
-        proc.stdout.on('data', (chunk) => {
+        proc.stdout.on("data", (chunk) => {
             let data = stripAnsi(chunk.toString());
             console.log(`  stdout: ${data}`);
 
@@ -159,18 +159,18 @@ const runTestStdoutWithInput = ({ packageName, cliArgs, inputs, logMessage, isSu
             });
         });
 
-        proc.stderr.on('data', (chunk) => {
+        proc.stderr.on("data", (chunk) => {
             let data = stripAnsi(chunk.toString());
             console.log(`  stderr: ${data}`);
         });
 
-        proc.on('exit', () => {
+        proc.on("exit", () => {
             swapPkgName(`.${packageName}`, isSubPackage);
             clearTimeout(timeout);
             resolve(hasPassed);
         });
 
-        proc.on('error', () => {
+        proc.on("error", () => {
             swapPkgName(`.${packageName}`, isSubPackage);
             clearTimeout(timeout);
             resolve(false);
@@ -186,15 +186,15 @@ const runTestWithHelp = (package, cliArgs = [], logMessage, isSubPackage = false
         cwd: __dirname,
     });
 
-    proc.stdin.setDefaultEncoding('utf-8');
+    proc.stdin.setDefaultEncoding("utf-8");
 
-    proc.stdout.on('data', (chunk) => {
+    proc.stdout.on("data", (chunk) => {
         console.log(`  stdout: ${chunk.toString()}`);
     });
 
     return new Promise((resolve) => {
         const timeout = setTimeout(() => {
-            console.log('  timeout: killing process');
+            console.log("  timeout: killing process");
             proc.kill();
         }, 30000);
 
@@ -204,7 +204,7 @@ const runTestWithHelp = (package, cliArgs = [], logMessage, isSubPackage = false
             hasUndefinedLogMessage = false,
             hasPassed = false;
 
-        proc.stderr.on('data', (chunk) => {
+        proc.stderr.on("data", (chunk) => {
             let data = stripAnsi(chunk.toString());
             console.log(`  stderr: ${data}`);
 
@@ -222,13 +222,13 @@ const runTestWithHelp = (package, cliArgs = [], logMessage, isSubPackage = false
             }
         });
 
-        proc.on('exit', () => {
+        proc.on("exit", () => {
             swapPkgName(`.${package}`, isSubPackage);
             clearTimeout(timeout);
             resolve(hasPassed);
         });
 
-        proc.on('error', () => {
+        proc.on("error", () => {
             swapPkgName(`.${package}`, isSubPackage);
             clearTimeout(timeout);
             resolve(false);
