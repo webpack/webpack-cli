@@ -65,8 +65,26 @@ export async function questions(
         self.dependencies = [...self.dependencies, "html-webpack-plugin"];
     }
 
+    // Handle addition of workbox-webpack-plugin
+    const { workboxWebpackPlugin } = await Question.Confirm(
+        self,
+        "workboxWebpackPlugin",
+        "Do you want to add PWA support?",
+        true,
+        self.force,
+    );
+    if (workboxWebpackPlugin) {
+        self.dependencies.push("workbox-webpack-plugin");
+    }
+
     // Store all answers for generation
-    self.answers = { ...self.answers, langType, devServer, htmlWebpackPlugin };
+    self.answers = {
+        ...self.answers,
+        langType,
+        devServer,
+        htmlWebpackPlugin,
+        workboxWebpackPlugin,
+    };
 
     // Handle CSS solutions
     const { cssType } = await Question.List(
