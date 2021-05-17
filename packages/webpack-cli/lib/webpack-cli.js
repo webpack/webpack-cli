@@ -25,6 +25,70 @@ class WebpackCLI {
         });
     }
 
+    async tryRequireThenImport(module, handleError = true) {
+        let result;
+
+        try {
+            result = require(module);
+        } catch (error) {
+            let previousModuleCompile;
+
+            // TODO Workaround https://github.com/zertosh/v8-compile-cache/issues/30
+            if (this._originalModuleCompile) {
+                previousModuleCompile = Module.prototype._compile;
+
+                Module.prototype._compile = this._originalModuleCompile;
+            }
+
+            const dynamicImportLoader = this.utils.dynamicImportLoader();
+
+            if (this._originalModuleCompile) {
+                Module.prototype._compile = previousModuleCompile;
+            }
+
+            if (
+                (error.code === "ERR_REQUIRE_ESM" ||
+                    process.env.WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG) &&
+                pathToFileURL &&
+                dynamicImportLoader
+            ) {
+                const urlForConfig = pathToFileURL(module);
+
+                result = await dynamicImportLoader(urlForConfig);
+                result = result.default;
+
+                return result;
+            }
+
+            if (handleError) {
+                this.logger.error(error);
+                process.exit(2);
+            } else {
+                throw error;
+            }
+        }
+
+        // For babel/typescript
+        if (result.default) {
+            result = result.default;
+        }
+
+        return result;
+    }
+
+    loadJSONFile(pathToFile) {
+        let result;
+
+        try {
+            result = require(pathToFile);
+        } catch (error) {
+            this.logger.error(error);
+            process.exit(2);
+        }
+
+        return result;
+    }
+
     async makeCommand(commandOptions, options, action) {
         const alreadyLoaded = this.program.commands.find(
             (command) =>
@@ -828,15 +892,11 @@ class WebpackCLI {
                 let loadedCommand;
 
                 try {
-                    loadedCommand = require(pkg);
+                    loadedCommand = await this.tryRequireThenImport(pkg, false);
                 } catch (error) {
                     // Ignore, command is not installed
 
                     return;
-                }
-
-                if (loadedCommand.default) {
-                    loadedCommand = loadedCommand.default;
                 }
 
                 let command;
@@ -974,7 +1034,9 @@ class WebpackCLI {
                     }
 
                     try {
-                        const { name, version } = require(`${foundCommand.pkg}/package.json`);
+                        const { name, version } = this.loadJSONFile(
+                            `${foundCommand.pkg}/package.json`,
+                        );
 
                         this.logger.raw(`${name} ${version}`);
                     } catch (e) {
@@ -986,14 +1048,14 @@ class WebpackCLI {
                 }
             }
 
-            const pkgJSON = require("../package.json");
+            const pkgJSON = this.loadJSONFile("../package.json");
 
             this.logger.raw(`webpack ${this.webpack.version}`);
             this.logger.raw(`webpack-cli ${pkgJSON.version}`);
 
             if (this.utils.packageExists("webpack-dev-server")) {
                 // eslint-disable-next-line
-                const { version } = require("webpack-dev-server/package.json");
+                const { version } = this.loadJSONFile("webpack-dev-server/package.json");
 
                 this.logger.raw(`webpack-dev-server ${version}`);
             }
@@ -1472,40 +1534,7 @@ class WebpackCLI {
             let options;
 
             try {
-                try {
-                    options = require(configPath);
-                } catch (error) {
-                    let previousModuleCompile;
-
-                    // TODO Workaround https://github.com/zertosh/v8-compile-cache/issues/30
-                    if (this._originalModuleCompile) {
-                        previousModuleCompile = Module.prototype._compile;
-
-                        Module.prototype._compile = this._originalModuleCompile;
-                    }
-
-                    const dynamicImportLoader = this.utils.dynamicImportLoader();
-
-                    if (this._originalModuleCompile) {
-                        Module.prototype._compile = previousModuleCompile;
-                    }
-
-                    if (
-                        (error.code === "ERR_REQUIRE_ESM" ||
-                            process.env.WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG) &&
-                        pathToFileURL &&
-                        dynamicImportLoader
-                    ) {
-                        const urlForConfig = pathToFileURL(configPath);
-
-                        options = await dynamicImportLoader(urlForConfig);
-                        options = options.default;
-
-                        return { options, path: configPath };
-                    }
-
-                    throw error;
-                }
+                options = await this.tryRequireThenImport(configPath, false);
             } catch (error) {
                 this.logger.error(`Failed to load '${configPath}' config`);
 
@@ -1516,10 +1545,6 @@ class WebpackCLI {
                 }
 
                 process.exit(2);
-            }
-
-            if (options.default) {
-                options = options.default;
             }
 
             return { options, path: configPath };
@@ -1660,7 +1685,7 @@ class WebpackCLI {
         }
 
         if (options.merge) {
-            const { merge } = require("webpack-merge");
+            const merge = await this.tryRequireThenImport("webpack-merge");
 
             // we can only merge when there are multiple configurations
             // either by passing multiple configs by flags or passing a
@@ -1968,12 +1993,12 @@ class WebpackCLI {
     }
 
     async applyCLIPlugin(config, cliOptions) {
+        const CLIPlugin = await this.tryRequireThenImport("./plugins/CLIPlugin");
+
         const addCLIPlugin = (configOptions) => {
             if (!configOptions.plugins) {
                 configOptions.plugins = [];
             }
-
-            const CLIPlugin = require("./plugins/CLIPlugin");
 
             configOptions.plugins.unshift(
                 new CLIPlugin({
@@ -1988,6 +2013,7 @@ class WebpackCLI {
 
             return configOptions;
         };
+
         config.options = Array.isArray(config.options)
             ? config.options.map((options) => addCLIPlugin(options))
             : addCLIPlugin(config.options);
@@ -2059,6 +2085,14 @@ class WebpackCLI {
     async buildCommand(options, isWatchCommand) {
         let compiler;
 
+        let createJsonStringifyStream;
+
+        if (options.json) {
+            const jsonExt = await this.tryRequireThenImport("@discoveryjs/json-ext");
+
+            createJsonStringifyStream = jsonExt.stringifyStream;
+        }
+
         const callback = (error, stats) => {
             if (error) {
                 this.logger.error(error);
@@ -2090,10 +2124,7 @@ class WebpackCLI {
                 statsOptions.colors = statsOptions.children.some((child) => child.colors);
             }
 
-            if (options.json) {
-                const {
-                    stringifyStream: createJsonStringifyStream,
-                } = require("@discoveryjs/json-ext");
+            if (options.json && createJsonStringifyStream) {
                 const handleWriteError = (error) => {
                     this.logger.error(error);
                     process.exit(2);

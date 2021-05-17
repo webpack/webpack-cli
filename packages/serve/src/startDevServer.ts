@@ -27,7 +27,7 @@ export default async function startDevServer(
         // eslint-disable-next-line node/no-extraneous-require
         devServerVersion = require("webpack-dev-server/package.json").version;
         // eslint-disable-next-line node/no-extraneous-require
-        Server = require("webpack-dev-server/lib/Server");
+        Server = require("webpack-dev-server");
     } catch (err) {
         logger.error(
             `You need to install 'webpack-dev-server' for running 'webpack serve'.\n${err}`,
