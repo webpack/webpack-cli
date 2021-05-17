@@ -8,6 +8,7 @@
         <h1>Hello world!</h1>
         <h2>Tip: Check your console</h2>
     </body>
+    <% if (workboxWebpackPlugin) { %>
     <script>
         if ("serviceWorker" in navigator) {
             window.addEventListener("load", () => {
@@ -21,5 +22,5 @@
                     });
             });
         }
-    </script>
+    </script><% } %>
 </html>

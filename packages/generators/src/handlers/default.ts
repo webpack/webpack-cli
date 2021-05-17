@@ -192,7 +192,11 @@ export function generate(self: CustomGenerator): void {
     self.fs.copyTpl(resolveFile("README.md"), self.destinationPath("README.md"), {});
 
     // Generate HTML file
-    self.fs.copyTpl(resolveFile("template.html"), self.destinationPath("index.html"), {});
+    self.fs.copyTpl(
+        resolveFile("template.html.tpl"),
+        self.destinationPath("index.html"),
+        self.answers,
+    );
 
     // Generate webpack configuration
     self.fs.copyTpl(

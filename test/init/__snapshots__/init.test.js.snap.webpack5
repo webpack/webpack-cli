@@ -175,8 +175,6 @@ const config = {
       template: \\"index.html\\",
     }),
 
-    new WorkboxWebpackPlugin.GenerateSW(),
-
     // Add your plugins here
     // Learn more about plugins from https://webpack.js.org/configuration/plugins/
   ],
@@ -196,6 +194,8 @@ const config = {
 module.exports = () => {
   if (isProduction) {
     config.mode = \\"production\\";
+
+    config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
   } else {
     config.mode = \\"development\\";
   }
@@ -307,8 +307,6 @@ const config = {
       template: \\"index.html\\",
     }),
 
-    new WorkboxWebpackPlugin.GenerateSW(),
-
     // Add your plugins here
     // Learn more about plugins from https://webpack.js.org/configuration/plugins/
   ],
@@ -328,6 +326,8 @@ const config = {
 module.exports = () => {
   if (isProduction) {
     config.mode = \\"production\\";
+
+    config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
   } else {
     config.mode = \\"development\\";
   }

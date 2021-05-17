@@ -29,8 +29,6 @@ const config = {
         new HtmlWebpackPlugin({
             template: 'index.html',
         }),
-<% } %><% if (workboxWebpackPlugin) { %>
-        new WorkboxWebpackPlugin.GenerateSW(),
 <% } %><% if (extractPlugin === "Yes") { %>
         new MiniCssExtractPlugin(),
 <% } %>
@@ -87,6 +85,9 @@ module.exports = () => {
         config.mode = 'production';
         <% if (extractPlugin === "Only for Production") { %>
         config.plugins.push(new MiniCssExtractPlugin());
+        <% } %>
+        <% if (workboxWebpackPlugin) { %>
+        config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
         <% } %>
     } else {
         config.mode = 'development';
