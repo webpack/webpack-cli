@@ -24,13 +24,7 @@ exports[`basic should recompile upon file change using the \`command\` option an
 exports[`basic should work with negative value: stderr 1`] = `""`;
 
 exports[`basic should work with negative value: stdout 1`] = `
-"asset main.js 31 bytes [emitted] [minimized] (name: main)
-./src/index.js 32 bytes [built] [code generated]
-
-WARNING in configuration
-The 'mode' option has not been set, webpack will fallback to 'production' for this value.
-Set 'mode' option to 'development' or 'production' to enable defaults for each environment.
-You can also set it to 'none' to disable any default behavior. Learn more: https://webpack.js.org/configuration/mode/
-
-webpack x.x.x compiled with 1 warning in <compiler time> ms"
+"asset main.js <size> <size-abbreviation> [emitted] (name: main)
+./src/index.js <size> <size-abbreviation> [built] [code generated]
+webpack x.x.x compiled successfully in <compile-time> ms"
 `;

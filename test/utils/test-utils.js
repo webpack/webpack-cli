@@ -251,8 +251,14 @@ const normalizeError = (output) => {
         .replace(/\s+at .+(}|\)|\d)/gs, "\n    at stack");
 };
 
-const normalizeCompileTime = (output) => {
-    return output.replace(/in \d+ ms/gm, "in <compile time> ms").replace();
+const normalizeTime = (output) => {
+    return output.replace(/[\d.]+ ms/gm, "<compile-time> ms").replace();
+};
+
+const normalizeSize = (output) => {
+    return output
+        .replace(/\d+(.\d+)? (bytes|KiB|MiB|GiB)/g, "<size> <size-abbreviation>")
+        .replace();
 };
 
 const normalizeV4Output = (output) => {
@@ -272,11 +278,13 @@ const normalizeStdout = (stdout) => {
     }
 
     let normalizedStdout = stripAnsi(stdout);
+
     normalizedStdout = normalizeCwd(normalizedStdout);
     normalizedStdout = normalizeVersions(normalizedStdout);
-    normalizedStdout = normalizeError(normalizedStdout);
-    normalizedStdout = normalizeCompileTime(normalizedStdout);
+    normalizedStdout = normalizeTime(normalizedStdout);
+    normalizedStdout = normalizeSize(normalizedStdout);
     normalizedStdout = normalizeV4Output(normalizedStdout);
+    normalizedStdout = normalizeError(normalizedStdout);
 
     return normalizedStdout;
 };
@@ -291,6 +299,7 @@ const normalizeStderr = (stderr) => {
     }
 
     let normalizedStderr = stripAnsi(stderr);
+
     normalizedStderr = normalizeCwd(normalizedStderr);
 
     const networkIPv4 = internalIp.v4.sync();

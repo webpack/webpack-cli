@@ -3,9 +3,9 @@
 exports[`stats and watch should log stats with the "normal" value in arguments: stderr 1`] = `""`;
 
 exports[`stats and watch should log stats with the "normal" value in arguments: stdout 1`] = `
-"asset main.js 1.19 KiB [compared for emit] (name: main)
-./src/index.js 20 bytes [built] [code generated]
-webpack x.x.x compiled successfully in <compiler time> ms"
+"asset main.js <size> <size-abbreviation> [compared for emit] (name: main)
+./src/index.js <size> <size-abbreviation> [built] [code generated]
+webpack x.x.x compiled successfully in <compile-time> ms"
 `;
 
 exports[`stats and watch should not log stats with the "none" value from the configuration and multi compiler mode: stderr 1`] = `""`;
