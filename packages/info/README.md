@@ -32,9 +32,9 @@ webpack info [options]
 
 #### Output format
 
-| Flag                            | Description                             | Type   |
-| ------------------------------- | --------------------------------------- | ------ |
-| `--output < json or markdown >` | To get the output in a specified format | string |
+| Flag                                | Description                             | Type   |
+| ----------------------------------- | --------------------------------------- | ------ |
+| `-o, --output < json or markdown >` | To get the output in a specified format | string |
 
 _Not supported for config_
 

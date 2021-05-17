@@ -1,10 +1,10 @@
-const webpack = require('webpack');
+const webpack = require("webpack");
 
 module.exports = {
-    mode: 'development',
+    mode: "development",
     plugins: [
         new webpack.BannerPlugin({
-            unknown: 'unknown',
+            unknown: "unknown",
         }),
     ],
 };

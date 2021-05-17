@@ -1,1 +1,1 @@
-module.exports = 'b-function';
+module.exports = "b-function";

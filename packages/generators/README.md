@@ -19,7 +19,12 @@ To run the package programmatically, install it as a dependency. When using the 
 ### Node
 
 ```js
-const { addonGenerator, initGenerator, loaderGenerator, pluginGenerator } = require('@webpack-cli/generators');
+const {
+    addonGenerator,
+    initGenerator,
+    loaderGenerator,
+    pluginGenerator,
+} = require("@webpack-cli/generators");
 
 // ... compose with yeoman env or add a generator to your own yeoman project
 ```

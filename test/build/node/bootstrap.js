@@ -1,1 +1,1 @@
-console.log('---from bootstrap.js---');
+console.log("---from bootstrap.js---");

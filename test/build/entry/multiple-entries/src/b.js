@@ -1,1 +1,1 @@
-console.log('Hello from b.js');
+console.log("Hello from b.js");

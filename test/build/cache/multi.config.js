@@ -1,11 +1,11 @@
-const path = require('path');
+const path = require("path");
 
 module.exports = [
     {
-        mode: 'development',
-        name: 'cache-test-first',
+        mode: "development",
+        name: "cache-test-first",
         cache: {
-            type: 'filesystem',
+            type: "filesystem",
             buildDependencies: {
                 config: [__filename],
             },
@@ -14,20 +14,20 @@ module.exports = [
             debug: /cache/,
         },
         entry: {
-            app: './src/main.js',
+            app: "./src/main.js",
         },
         output: {
-            filename: '[name].bundle.js',
-            chunkFilename: '[name].bundle.js',
-            path: path.resolve(__dirname, 'dist'),
-            publicPath: '/',
+            filename: "[name].bundle.js",
+            chunkFilename: "[name].bundle.js",
+            path: path.resolve(__dirname, "dist"),
+            publicPath: "/",
         },
     },
     {
-        mode: 'development',
-        name: 'cache-test-second',
+        mode: "development",
+        name: "cache-test-second",
         cache: {
-            type: 'filesystem',
+            type: "filesystem",
             buildDependencies: {
                 config: [__filename],
             },
@@ -36,13 +36,13 @@ module.exports = [
             debug: /cache/,
         },
         entry: {
-            app: './src/main.js',
+            app: "./src/main.js",
         },
         output: {
-            filename: '[name].bundle.js',
-            chunkFilename: '[name].bundle.js',
-            path: path.resolve(__dirname, 'dist'),
-            publicPath: '/',
+            filename: "[name].bundle.js",
+            chunkFilename: "[name].bundle.js",
+            path: path.resolve(__dirname, "dist"),
+            publicPath: "/",
         },
     },
 ];

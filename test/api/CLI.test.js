@@ -1,36 +1,36 @@
-const CLI = require('../../packages/webpack-cli/lib/webpack-cli');
+const CLI = require("../../packages/webpack-cli/lib/webpack-cli");
 
-describe('CLI API', () => {
+describe("CLI API", () => {
     let cli;
 
     beforeEach(() => {
         cli = new CLI();
     });
 
-    describe('makeCommand', () => {
-        it('should make command', async (done) => {
+    describe("makeCommand", () => {
+        it("should make command", async (done) => {
             cli.program.commands = [];
 
-            const command = await cli.makeCommand({ name: 'command' }, [], (options) => {
+            const command = await cli.makeCommand({ name: "command" }, [], (options) => {
                 expect(options).toEqual({});
 
                 done();
             });
 
-            command.parseAsync([], { from: 'user' });
+            command.parseAsync([], { from: "user" });
         });
 
-        it('should make command with Boolean option by default', async (done) => {
+        it("should make command with Boolean option by default", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'boolean',
-                        description: 'description',
+                        name: "boolean",
+                        description: "description",
                     },
                 ],
                 (options) => {
@@ -40,21 +40,21 @@ describe('CLI API', () => {
                 },
             );
 
-            command.parseAsync(['--boolean'], { from: 'user' });
+            command.parseAsync(["--boolean"], { from: "user" });
         });
 
-        it('should make command with Boolean option', async (done) => {
+        it("should make command with Boolean option", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'boolean',
+                        name: "boolean",
                         type: Boolean,
-                        description: 'description',
+                        description: "description",
                     },
                 ],
                 (options) => {
@@ -64,21 +64,21 @@ describe('CLI API', () => {
                 },
             );
 
-            command.parseAsync(['--boolean'], { from: 'user' });
+            command.parseAsync(["--boolean"], { from: "user" });
         });
 
-        it('should make command with Boolean option and negative value', async (done) => {
+        it("should make command with Boolean option and negative value", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'boolean',
+                        name: "boolean",
                         type: Boolean,
-                        description: 'description',
+                        description: "description",
                         negative: true,
                     },
                 ],
@@ -89,25 +89,25 @@ describe('CLI API', () => {
                 },
             );
 
-            command.parseAsync(['--no-boolean'], { from: 'user' });
+            command.parseAsync(["--no-boolean"], { from: "user" });
         });
 
-        it('should make command with configs boolean option', async (done) => {
+        it("should make command with configs boolean option", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'configs-boolean',
+                        name: "configs-boolean",
                         configs: [
                             {
-                                type: 'boolean',
+                                type: "boolean",
                             },
                         ],
-                        description: 'description',
+                        description: "description",
                     },
                 ],
                 (options) => {
@@ -117,25 +117,25 @@ describe('CLI API', () => {
                 },
             );
 
-            command.parseAsync(['--no-configs-boolean'], { from: 'user' });
+            command.parseAsync(["--no-configs-boolean"], { from: "user" });
         });
 
-        it('should make command with configs number option', async (done) => {
+        it("should make command with configs number option", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'configs-number',
+                        name: "configs-number",
                         configs: [
                             {
-                                type: 'number',
+                                type: "number",
                             },
                         ],
-                        description: 'description',
+                        description: "description",
                     },
                 ],
                 (options) => {
@@ -145,139 +145,141 @@ describe('CLI API', () => {
                 },
             );
 
-            command.parseAsync(['--configs-number', '42'], { from: 'user' });
+            command.parseAsync(["--configs-number", "42"], { from: "user" });
         });
 
-        it('should make command with configs string option', async (done) => {
+        it("should make command with configs string option", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'configs-string',
+                        name: "configs-string",
                         configs: [
                             {
-                                type: 'string',
+                                type: "string",
                             },
                         ],
-                        description: 'description',
+                        description: "description",
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ configsString: 'foo' });
+                    expect(options).toEqual({ configsString: "foo" });
 
                     done();
                 },
             );
 
-            command.parseAsync(['--configs-string', 'foo'], { from: 'user' });
+            command.parseAsync(["--configs-string", "foo"], { from: "user" });
         });
 
-        it('should make command with configs path option', async (done) => {
+        it("should make command with configs path option", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'configs-path',
+                        name: "configs-path",
                         configs: [
                             {
-                                type: 'path',
+                                type: "path",
                             },
                         ],
-                        description: 'description',
+                        description: "description",
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ configsPath: '/root/foo' });
+                    expect(options).toEqual({ configsPath: "/root/foo" });
 
                     done();
                 },
             );
 
-            command.parseAsync(['--configs-path', '/root/foo'], { from: 'user' });
+            command.parseAsync(["--configs-path", "/root/foo"], {
+                from: "user",
+            });
         });
 
-        it('should make command with configs RegExp option', async (done) => {
+        it("should make command with configs RegExp option", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'configs-regexp',
+                        name: "configs-regexp",
                         configs: [
                             {
-                                type: 'RegExp',
+                                type: "RegExp",
                             },
                         ],
-                        description: 'description',
+                        description: "description",
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ configsRegexp: '\\w+' });
+                    expect(options).toEqual({ configsRegexp: "\\w+" });
 
                     done();
                 },
             );
 
-            command.parseAsync(['--configs-regexp', '\\w+'], { from: 'user' });
+            command.parseAsync(["--configs-regexp", "\\w+"], { from: "user" });
         });
 
-        it('should make command with configs enum/string option', async (done) => {
+        it("should make command with configs enum/string option", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'enum-string',
+                        name: "enum-string",
                         configs: [
                             {
-                                type: 'enum',
-                                values: ['foo'],
+                                type: "enum",
+                                values: ["foo"],
                             },
                         ],
-                        description: 'description',
+                        description: "description",
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ enumString: 'foo' });
+                    expect(options).toEqual({ enumString: "foo" });
 
                     done();
                 },
             );
 
-            command.parseAsync(['--enum-string', 'foo'], { from: 'user' });
+            command.parseAsync(["--enum-string", "foo"], { from: "user" });
         });
 
-        it('should make command with configs enum/number option', async (done) => {
+        it("should make command with configs enum/number option", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'enum-number',
+                        name: "enum-number",
                         configs: [
                             {
-                                type: 'enum',
+                                type: "enum",
                                 values: [42],
                             },
                         ],
-                        description: 'description',
+                        description: "description",
                     },
                 ],
                 (options) => {
@@ -287,26 +289,26 @@ describe('CLI API', () => {
                 },
             );
 
-            command.parseAsync(['--enum-number', '42'], { from: 'user' });
+            command.parseAsync(["--enum-number", "42"], { from: "user" });
         });
 
-        it('should make command with configs enum/boolean option', async (done) => {
+        it("should make command with configs enum/boolean option", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'enum-boolean',
+                        name: "enum-boolean",
                         configs: [
                             {
-                                type: 'boolean',
+                                type: "boolean",
                                 values: [false],
                             },
                         ],
-                        description: 'description',
+                        description: "description",
                     },
                 ],
                 (options) => {
@@ -316,21 +318,21 @@ describe('CLI API', () => {
                 },
             );
 
-            command.parseAsync(['--no-enum-boolean'], { from: 'user' });
+            command.parseAsync(["--no-enum-boolean"], { from: "user" });
         });
 
-        it('should make command with Boolean option and negative value #2', async (done) => {
+        it("should make command with Boolean option and negative value #2", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'boolean',
+                        name: "boolean",
                         type: Boolean,
-                        description: 'description',
+                        description: "description",
                         negative: true,
                     },
                 ],
@@ -341,21 +343,21 @@ describe('CLI API', () => {
                 },
             );
 
-            command.parseAsync(['--boolean', '--no-boolean'], { from: 'user' });
+            command.parseAsync(["--boolean", "--no-boolean"], { from: "user" });
         });
 
-        it('should make command with Boolean option and negative value #3', async (done) => {
+        it("should make command with Boolean option and negative value #3", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'boolean',
+                        name: "boolean",
                         type: Boolean,
-                        description: 'description',
+                        description: "description",
                         negative: true,
                     },
                 ],
@@ -366,21 +368,21 @@ describe('CLI API', () => {
                 },
             );
 
-            command.parseAsync(['--no-boolean', '--boolean'], { from: 'user' });
+            command.parseAsync(["--no-boolean", "--boolean"], { from: "user" });
         });
 
-        it('should make command with Boolean option with default value', async (done) => {
+        it("should make command with Boolean option with default value", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'boolean',
+                        name: "boolean",
                         type: Boolean,
-                        description: 'description',
+                        description: "description",
                         defaultValue: false,
                     },
                 ],
@@ -391,106 +393,106 @@ describe('CLI API', () => {
                 },
             );
 
-            command.parseAsync([], { from: 'user' });
+            command.parseAsync([], { from: "user" });
         });
 
-        it('should make command with String option', async (done) => {
+        it("should make command with String option", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'string',
+                        name: "string",
                         type: String,
-                        description: 'description',
+                        description: "description",
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ string: 'bar' });
+                    expect(options).toEqual({ string: "bar" });
 
                     done();
                 },
             );
 
-            command.parseAsync(['--string', 'bar'], { from: 'user' });
+            command.parseAsync(["--string", "bar"], { from: "user" });
         });
 
-        it('should make command with String option with alias', async (done) => {
+        it("should make command with String option with alias", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'string',
-                        alias: 's',
+                        name: "string",
+                        alias: "s",
                         type: String,
-                        description: 'description',
+                        description: "description",
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ string: 'foo' });
+                    expect(options).toEqual({ string: "foo" });
 
                     done();
                 },
             );
 
-            command.parseAsync(['-s', 'foo'], { from: 'user' });
+            command.parseAsync(["-s", "foo"], { from: "user" });
         });
 
-        it('should make command with String option with default value', async (done) => {
+        it("should make command with String option with default value", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'string',
+                        name: "string",
                         type: String,
-                        description: 'description',
-                        defaultValue: 'default-value',
+                        description: "description",
+                        defaultValue: "default-value",
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ string: 'default-value' });
+                    expect(options).toEqual({ string: "default-value" });
 
                     done();
                 },
             );
 
-            command.parseAsync([], { from: 'user' });
+            command.parseAsync([], { from: "user" });
         });
 
-        it('should make command with String option with default value #2', async (done) => {
+        it("should make command with String option with default value #2", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'string',
+                        name: "string",
                         type: String,
-                        description: 'description',
-                        defaultValue: 'default-value',
+                        description: "description",
+                        defaultValue: "default-value",
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ string: 'foo' });
+                    expect(options).toEqual({ string: "foo" });
 
                     done();
                 },
             );
 
-            command.parseAsync(['--string', 'foo'], { from: 'user' });
+            command.parseAsync(["--string", "foo"], { from: "user" });
         });
 
         it('should make command with String option using "=" syntax', async (done) => {
@@ -498,139 +500,143 @@ describe('CLI API', () => {
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'string',
+                        name: "string",
                         type: String,
-                        description: 'description',
+                        description: "description",
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ string: 'bar' });
+                    expect(options).toEqual({ string: "bar" });
 
                     done();
                 },
             );
 
-            command.parseAsync(['--string=bar'], { from: 'user' });
+            command.parseAsync(["--string=bar"], { from: "user" });
         });
 
-        it('should make command with multiple String option', async (done) => {
+        it("should make command with multiple String option", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'string',
+                        name: "string",
                         multiple: true,
                         type: String,
-                        description: 'description',
+                        description: "description",
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ string: ['foo', 'bar'] });
+                    expect(options).toEqual({ string: ["foo", "bar"] });
 
                     done();
                 },
             );
 
-            command.parseAsync(['--string', 'foo', 'bar'], { from: 'user' });
+            command.parseAsync(["--string", "foo", "bar"], { from: "user" });
         });
 
-        it('should make command with multiple String option with default value', async (done) => {
+        it("should make command with multiple String option with default value", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'string',
+                        name: "string",
                         multiple: true,
                         type: String,
-                        description: 'description',
-                        defaultValue: 'string',
+                        description: "description",
+                        defaultValue: "string",
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ string: 'string' });
+                    expect(options).toEqual({ string: "string" });
 
                     done();
                 },
             );
 
-            command.parseAsync([], { from: 'user' });
+            command.parseAsync([], { from: "user" });
         });
 
-        it('should make command with multiple String option with default value #2', async (done) => {
+        it("should make command with multiple String option with default value #2", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'string',
+                        name: "string",
                         multiple: true,
                         type: String,
-                        description: 'description',
-                        defaultValue: 'string',
+                        description: "description",
+                        defaultValue: "string",
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ string: ['foo', 'bar'] });
+                    expect(options).toEqual({ string: ["foo", "bar"] });
 
                     done();
                 },
             );
 
-            command.parseAsync(['--string', 'foo', '--string', 'bar'], { from: 'user' });
+            command.parseAsync(["--string", "foo", "--string", "bar"], {
+                from: "user",
+            });
         });
 
-        it('should make command with multiple String option #2', async (done) => {
+        it("should make command with multiple String option #2", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'string',
+                        name: "string",
                         multiple: true,
                         type: String,
-                        description: 'description',
+                        description: "description",
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ string: ['foo', 'bar'] });
+                    expect(options).toEqual({ string: ["foo", "bar"] });
 
                     done();
                 },
             );
 
-            command.parseAsync(['--string', 'foo', '--string', 'bar'], { from: 'user' });
+            command.parseAsync(["--string", "foo", "--string", "bar"], {
+                from: "user",
+            });
         });
 
-        it('should make command with Number option', async (done) => {
+        it("should make command with Number option", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'number',
+                        name: "number",
                         type: Number,
-                        description: 'description',
+                        description: "description",
                     },
                 ],
                 (options) => {
@@ -640,21 +646,21 @@ describe('CLI API', () => {
                 },
             );
 
-            command.parseAsync(['--number', '12'], { from: 'user' });
+            command.parseAsync(["--number", "12"], { from: "user" });
         });
 
-        it('should make command with Number option with default value', async (done) => {
+        it("should make command with Number option with default value", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'number',
+                        name: "number",
                         type: Number,
-                        description: 'description',
+                        description: "description",
                         defaultValue: 20,
                     },
                 ],
@@ -665,22 +671,22 @@ describe('CLI API', () => {
                 },
             );
 
-            command.parseAsync([], { from: 'user' });
+            command.parseAsync([], { from: "user" });
         });
 
-        it('should make command with multiple Number option', async (done) => {
+        it("should make command with multiple Number option", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'number',
+                        name: "number",
                         multiple: true,
                         type: Number,
-                        description: 'description',
+                        description: "description",
                     },
                 ],
                 (options) => {
@@ -690,22 +696,24 @@ describe('CLI API', () => {
                 },
             );
 
-            command.parseAsync(['--number', '1', '--number', '2'], { from: 'user' });
+            command.parseAsync(["--number", "1", "--number", "2"], {
+                from: "user",
+            });
         });
 
-        it('should make command with multiple Number option and default value', async (done) => {
+        it("should make command with multiple Number option and default value", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'number',
+                        name: "number",
                         multiple: true,
                         type: Number,
-                        description: 'description',
+                        description: "description",
                         defaultValue: 50,
                     },
                 ],
@@ -716,22 +724,24 @@ describe('CLI API', () => {
                 },
             );
 
-            command.parseAsync(['--number', '1', '--number', '2'], { from: 'user' });
+            command.parseAsync(["--number", "1", "--number", "2"], {
+                from: "user",
+            });
         });
 
-        it('should make command with multiple Number option and default value', async (done) => {
+        it("should make command with multiple Number option and default value", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'number',
+                        name: "number",
                         multiple: true,
                         type: Number,
-                        description: 'description',
+                        description: "description",
                         defaultValue: 50,
                     },
                 ],
@@ -742,103 +752,105 @@ describe('CLI API', () => {
                 },
             );
 
-            command.parseAsync([], { from: 'user' });
+            command.parseAsync([], { from: "user" });
         });
 
-        it('should make command with custom function type', async (done) => {
+        it("should make command with custom function type", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'custom',
+                        name: "custom",
                         type: () => {
-                            return 'function';
+                            return "function";
                         },
-                        description: 'description',
+                        description: "description",
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ custom: 'function' });
+                    expect(options).toEqual({ custom: "function" });
 
                     done();
                 },
             );
 
-            command.parseAsync(['--custom', 'value'], { from: 'user' });
+            command.parseAsync(["--custom", "value"], { from: "user" });
         });
 
-        it('should make command with custom function type and default value', async (done) => {
+        it("should make command with custom function type and default value", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'custom',
+                        name: "custom",
                         type: () => {
-                            return 'function';
+                            return "function";
                         },
-                        description: 'description',
-                        defaultValue: 'default',
+                        description: "description",
+                        defaultValue: "default",
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ custom: 'default' });
+                    expect(options).toEqual({ custom: "default" });
 
                     done();
                 },
             );
 
-            command.parseAsync([], { from: 'user' });
+            command.parseAsync([], { from: "user" });
         });
 
-        it('should make command with multiple custom function type', async (done) => {
+        it("should make command with multiple custom function type", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'custom',
+                        name: "custom",
                         type: (value, previous = []) => {
                             return previous.concat([value]);
                         },
-                        description: 'description',
+                        description: "description",
                         multiple: true,
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ custom: ['value', 'other'] });
+                    expect(options).toEqual({ custom: ["value", "other"] });
 
                     done();
                 },
             );
 
-            command.parseAsync(['--custom', 'value', '--custom', 'other'], { from: 'user' });
+            command.parseAsync(["--custom", "value", "--custom", "other"], {
+                from: "user",
+            });
         });
 
-        it('should make command with multiple custom function type and default value', async (done) => {
+        it("should make command with multiple custom function type and default value", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'custom',
+                        name: "custom",
                         type: (value, previous = []) => {
                             return previous.concat([value]);
                         },
-                        description: 'description',
+                        description: "description",
                         multiple: true,
                         defaultValue: 50,
                     },
@@ -850,21 +862,21 @@ describe('CLI API', () => {
                 },
             );
 
-            command.parseAsync([], { from: 'user' });
+            command.parseAsync([], { from: "user" });
         });
 
-        it('should make command with multiple custom function type and default value #2', async (done) => {
+        it("should make command with multiple custom function type and default value #2", async (done) => {
             cli.program.commands = [];
 
             let skipDefault = true;
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'custom',
+                        name: "custom",
                         type: (value, previous = []) => {
                             if (skipDefault) {
                                 previous = [];
@@ -873,33 +885,33 @@ describe('CLI API', () => {
 
                             return [].concat(previous).concat([value]);
                         },
-                        description: 'description',
+                        description: "description",
                         multiple: true,
                         defaultValue: 50,
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ custom: ['foo'] });
+                    expect(options).toEqual({ custom: ["foo"] });
 
                     done();
                 },
             );
 
-            command.parseAsync(['--custom', 'foo'], { from: 'user' });
+            command.parseAsync(["--custom", "foo"], { from: "user" });
         });
 
-        it('should make command with Boolean and String option', async (done) => {
+        it("should make command with Boolean and String option", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'boolean-and-string',
+                        name: "boolean-and-string",
                         type: [Boolean, String],
-                        description: 'description',
+                        description: "description",
                     },
                 ],
                 (options) => {
@@ -909,45 +921,47 @@ describe('CLI API', () => {
                 },
             );
 
-            command.parseAsync(['--boolean-and-string'], { from: 'user' });
+            command.parseAsync(["--boolean-and-string"], { from: "user" });
         });
 
-        it('should make command with Boolean and String option #2', async (done) => {
+        it("should make command with Boolean and String option #2", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'boolean-and-string',
+                        name: "boolean-and-string",
                         type: [Boolean, String],
-                        description: 'description',
+                        description: "description",
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ booleanAndString: 'value' });
+                    expect(options).toEqual({ booleanAndString: "value" });
 
                     done();
                 },
             );
 
-            command.parseAsync(['--boolean-and-string', 'value'], { from: 'user' });
+            command.parseAsync(["--boolean-and-string", "value"], {
+                from: "user",
+            });
         });
 
-        it('should make command with multiple Boolean and String option', async (done) => {
+        it("should make command with multiple Boolean and String option", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'boolean-and-string',
+                        name: "boolean-and-string",
                         type: [Boolean, String],
-                        description: 'description',
+                        description: "description",
                         multiple: true,
                     },
                 ],
@@ -958,46 +972,50 @@ describe('CLI API', () => {
                 },
             );
 
-            command.parseAsync(['--boolean-and-string'], { from: 'user' });
+            command.parseAsync(["--boolean-and-string"], { from: "user" });
         });
 
-        it('should make command with multiple Boolean and String option #2', async (done) => {
+        it("should make command with multiple Boolean and String option #2", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'boolean-and-string',
+                        name: "boolean-and-string",
                         type: [Boolean, String],
-                        description: 'description',
+                        description: "description",
                         multiple: true,
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ booleanAndString: ['bar', 'baz'] });
+                    expect(options).toEqual({
+                        booleanAndString: ["bar", "baz"],
+                    });
 
                     done();
                 },
             );
 
-            command.parseAsync(['--boolean-and-string', 'bar', '--boolean-and-string', 'baz'], { from: 'user' });
+            command.parseAsync(["--boolean-and-string", "bar", "--boolean-and-string", "baz"], {
+                from: "user",
+            });
         });
 
-        it('should make command with Boolean and String option and negative', async (done) => {
+        it("should make command with Boolean and String option and negative", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'boolean-and-string',
+                        name: "boolean-and-string",
                         type: [Boolean, String],
-                        description: 'description',
+                        description: "description",
                         negative: true,
                     },
                 ],
@@ -1008,46 +1026,48 @@ describe('CLI API', () => {
                 },
             );
 
-            command.parseAsync(['--boolean-and-string'], { from: 'user' });
+            command.parseAsync(["--boolean-and-string"], { from: "user" });
         });
 
-        it('should make command with Boolean and String option and negative #2', async (done) => {
+        it("should make command with Boolean and String option and negative #2", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'boolean-and-string',
+                        name: "boolean-and-string",
                         type: [Boolean, String],
-                        description: 'description',
+                        description: "description",
                         negative: true,
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ booleanAndString: 'foo' });
+                    expect(options).toEqual({ booleanAndString: "foo" });
 
                     done();
                 },
             );
 
-            command.parseAsync(['--boolean-and-string', 'foo'], { from: 'user' });
+            command.parseAsync(["--boolean-and-string", "foo"], {
+                from: "user",
+            });
         });
 
-        it('should make command with Boolean and String option and negative #3', async (done) => {
+        it("should make command with Boolean and String option and negative #3", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'boolean-and-string',
+                        name: "boolean-and-string",
                         type: [Boolean, String],
-                        description: 'description',
+                        description: "description",
                         negative: true,
                     },
                 ],
@@ -1058,21 +1078,21 @@ describe('CLI API', () => {
                 },
             );
 
-            command.parseAsync(['--no-boolean-and-string'], { from: 'user' });
+            command.parseAsync(["--no-boolean-and-string"], { from: "user" });
         });
 
-        it('should make command with Boolean and Number option', async (done) => {
+        it("should make command with Boolean and Number option", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'boolean-and-number',
+                        name: "boolean-and-number",
                         type: [Boolean, Number],
-                        description: 'description',
+                        description: "description",
                     },
                 ],
                 (options) => {
@@ -1082,21 +1102,21 @@ describe('CLI API', () => {
                 },
             );
 
-            command.parseAsync(['--boolean-and-number'], { from: 'user' });
+            command.parseAsync(["--boolean-and-number"], { from: "user" });
         });
 
-        it('should make command with Boolean and Number option #2', async (done) => {
+        it("should make command with Boolean and Number option #2", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'boolean-and-number',
+                        name: "boolean-and-number",
                         type: [Boolean, Number],
-                        description: 'description',
+                        description: "description",
                     },
                 ],
                 (options) => {
@@ -1106,21 +1126,23 @@ describe('CLI API', () => {
                 },
             );
 
-            command.parseAsync(['--boolean-and-number', '12'], { from: 'user' });
+            command.parseAsync(["--boolean-and-number", "12"], {
+                from: "user",
+            });
         });
 
-        it('should make command with array Boolean type', async (done) => {
+        it("should make command with array Boolean type", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'boolean',
+                        name: "boolean",
                         type: [Boolean],
-                        description: 'description',
+                        description: "description",
                     },
                 ],
                 (options) => {
@@ -1130,144 +1152,49 @@ describe('CLI API', () => {
                 },
             );
 
-            command.parseAsync(['--boolean'], { from: 'user' });
+            command.parseAsync(["--boolean"], { from: "user" });
         });
 
-        it('should make command with Boolean and Number and String type', async (done) => {
+        it("should make command with Boolean and Number and String type", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'boolean-and-number-and-string',
+                        name: "boolean-and-number-and-string",
                         type: [Boolean, Number, String],
-                        description: 'description',
+                        description: "description",
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ booleanAndNumberAndString: true });
+                    expect(options).toEqual({
+                        booleanAndNumberAndString: true,
+                    });
 
                     done();
                 },
             );
 
-            command.parseAsync(['--boolean-and-number-and-string'], { from: 'user' });
+            command.parseAsync(["--boolean-and-number-and-string"], {
+                from: "user",
+            });
         });
 
-        it('should make command with Boolean and Number and String type #2', async (done) => {
+        it("should make command with Boolean and Number and String type #2", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'boolean-and-number-and-string',
+                        name: "boolean-and-number-and-string",
                         type: [Boolean, Number, String],
-                        description: 'description',
-                    },
-                ],
-                (options) => {
-                    expect(options).toEqual({ booleanAndNumberAndString: 12 });
-
-                    done();
-                },
-            );
-
-            command.parseAsync(['--boolean-and-number-and-string', '12'], { from: 'user' });
-        });
-
-        it('should make command with Boolean and Number and String type #3', async (done) => {
-            cli.program.commands = [];
-
-            const command = await cli.makeCommand(
-                {
-                    name: 'command',
-                },
-                [
-                    {
-                        name: 'boolean-and-number-and-string',
-                        type: [Boolean, Number, String],
-                        description: 'description',
-                    },
-                ],
-                (options) => {
-                    expect(options).toEqual({ booleanAndNumberAndString: 'bar' });
-
-                    done();
-                },
-            );
-
-            command.parseAsync(['--boolean-and-number-and-string', 'bar'], { from: 'user' });
-        });
-
-        it('should make command with Boolean and Number and String type and default value', async (done) => {
-            cli.program.commands = [];
-
-            const command = await cli.makeCommand(
-                {
-                    name: 'command',
-                },
-                [
-                    {
-                        name: 'boolean-and-number-and-string',
-                        type: [Boolean, Number, String],
-                        description: 'description',
-                        defaultValue: 'default',
-                    },
-                ],
-                (options) => {
-                    expect(options).toEqual({ booleanAndNumberAndString: 'default' });
-
-                    done();
-                },
-            );
-
-            command.parseAsync([], { from: 'user' });
-        });
-
-        it('should make command with Boolean and Number and String type and default value #2', async (done) => {
-            cli.program.commands = [];
-
-            const command = await cli.makeCommand(
-                {
-                    name: 'command',
-                },
-                [
-                    {
-                        name: 'boolean-and-number-and-string',
-                        type: [Boolean, Number, String],
-                        description: 'description',
-                        defaultValue: 'default',
-                    },
-                ],
-                (options) => {
-                    expect(options).toEqual({ booleanAndNumberAndString: 'foo' });
-
-                    done();
-                },
-            );
-
-            command.parseAsync(['--boolean-and-number-and-string', 'foo'], { from: 'user' });
-        });
-
-        it('should make command with Boolean and Number and String type and default value #3', async (done) => {
-            cli.program.commands = [];
-
-            const command = await cli.makeCommand(
-                {
-                    name: 'command',
-                },
-                [
-                    {
-                        name: 'boolean-and-number-and-string',
-                        type: [Boolean, Number, String],
-                        description: 'description',
-                        defaultValue: 'default',
+                        description: "description",
                     },
                 ],
                 (options) => {
@@ -1277,285 +1204,444 @@ describe('CLI API', () => {
                 },
             );
 
-            command.parseAsync(['--boolean-and-number-and-string', '12'], { from: 'user' });
+            command.parseAsync(["--boolean-and-number-and-string", "12"], {
+                from: "user",
+            });
         });
 
-        it('should make command with Boolean and Number and String type and default value #4', async (done) => {
+        it("should make command with Boolean and Number and String type #3", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'boolean-and-number-and-string',
+                        name: "boolean-and-number-and-string",
                         type: [Boolean, Number, String],
-                        description: 'description',
-                        defaultValue: 'default',
+                        description: "description",
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ booleanAndNumberAndString: 'default' });
+                    expect(options).toEqual({
+                        booleanAndNumberAndString: "bar",
+                    });
 
                     done();
                 },
             );
 
-            command.parseAsync(['--boolean-and-number-and-string'], { from: 'user' });
+            command.parseAsync(["--boolean-and-number-and-string", "bar"], {
+                from: "user",
+            });
         });
 
-        it('should make command with multiple Boolean and Number and String type', async (done) => {
+        it("should make command with Boolean and Number and String type and default value", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'boolean-and-number-and-string',
+                        name: "boolean-and-number-and-string",
                         type: [Boolean, Number, String],
-                        description: 'description',
+                        description: "description",
+                        defaultValue: "default",
+                    },
+                ],
+                (options) => {
+                    expect(options).toEqual({
+                        booleanAndNumberAndString: "default",
+                    });
+
+                    done();
+                },
+            );
+
+            command.parseAsync([], { from: "user" });
+        });
+
+        it("should make command with Boolean and Number and String type and default value #2", async (done) => {
+            cli.program.commands = [];
+
+            const command = await cli.makeCommand(
+                {
+                    name: "command",
+                },
+                [
+                    {
+                        name: "boolean-and-number-and-string",
+                        type: [Boolean, Number, String],
+                        description: "description",
+                        defaultValue: "default",
+                    },
+                ],
+                (options) => {
+                    expect(options).toEqual({
+                        booleanAndNumberAndString: "foo",
+                    });
+
+                    done();
+                },
+            );
+
+            command.parseAsync(["--boolean-and-number-and-string", "foo"], {
+                from: "user",
+            });
+        });
+
+        it("should make command with Boolean and Number and String type and default value #3", async (done) => {
+            cli.program.commands = [];
+
+            const command = await cli.makeCommand(
+                {
+                    name: "command",
+                },
+                [
+                    {
+                        name: "boolean-and-number-and-string",
+                        type: [Boolean, Number, String],
+                        description: "description",
+                        defaultValue: "default",
+                    },
+                ],
+                (options) => {
+                    expect(options).toEqual({ booleanAndNumberAndString: 12 });
+
+                    done();
+                },
+            );
+
+            command.parseAsync(["--boolean-and-number-and-string", "12"], {
+                from: "user",
+            });
+        });
+
+        it("should make command with Boolean and Number and String type and default value #4", async (done) => {
+            cli.program.commands = [];
+
+            const command = await cli.makeCommand(
+                {
+                    name: "command",
+                },
+                [
+                    {
+                        name: "boolean-and-number-and-string",
+                        type: [Boolean, Number, String],
+                        description: "description",
+                        defaultValue: "default",
+                    },
+                ],
+                (options) => {
+                    expect(options).toEqual({
+                        booleanAndNumberAndString: "default",
+                    });
+
+                    done();
+                },
+            );
+
+            command.parseAsync(["--boolean-and-number-and-string"], {
+                from: "user",
+            });
+        });
+
+        it("should make command with multiple Boolean and Number and String type", async (done) => {
+            cli.program.commands = [];
+
+            const command = await cli.makeCommand(
+                {
+                    name: "command",
+                },
+                [
+                    {
+                        name: "boolean-and-number-and-string",
+                        type: [Boolean, Number, String],
+                        description: "description",
                         multiple: true,
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ booleanAndNumberAndString: true });
+                    expect(options).toEqual({
+                        booleanAndNumberAndString: true,
+                    });
 
                     done();
                 },
             );
 
-            command.parseAsync(['--boolean-and-number-and-string'], { from: 'user' });
+            command.parseAsync(["--boolean-and-number-and-string"], {
+                from: "user",
+            });
         });
 
-        it('should make command with multiple Boolean and Number and String type #2', async (done) => {
+        it("should make command with multiple Boolean and Number and String type #2", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'boolean-and-number-and-string',
+                        name: "boolean-and-number-and-string",
                         type: [Boolean, Number, String],
-                        description: 'description',
+                        description: "description",
                         multiple: true,
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ booleanAndNumberAndString: ['foo'] });
+                    expect(options).toEqual({
+                        booleanAndNumberAndString: ["foo"],
+                    });
 
                     done();
                 },
             );
 
-            command.parseAsync(['--boolean-and-number-and-string', 'foo'], { from: 'user' });
+            command.parseAsync(["--boolean-and-number-and-string", "foo"], {
+                from: "user",
+            });
         });
 
-        it('should make command with multiple Boolean and Number and String type #3', async (done) => {
+        it("should make command with multiple Boolean and Number and String type #3", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'boolean-and-number-and-string',
+                        name: "boolean-and-number-and-string",
                         type: [Boolean, Number, String],
-                        description: 'description',
+                        description: "description",
                         multiple: true,
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ booleanAndNumberAndString: [12] });
+                    expect(options).toEqual({
+                        booleanAndNumberAndString: [12],
+                    });
 
                     done();
                 },
             );
 
-            command.parseAsync(['--boolean-and-number-and-string', '12'], { from: 'user' });
+            command.parseAsync(["--boolean-and-number-and-string", "12"], {
+                from: "user",
+            });
         });
 
-        it('should make command with multiple Boolean and Number and String type #4', async (done) => {
+        it("should make command with multiple Boolean and Number and String type #4", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'boolean-and-number-and-string',
+                        name: "boolean-and-number-and-string",
                         type: [Boolean, Number, String],
-                        description: 'description',
+                        description: "description",
                         multiple: true,
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ booleanAndNumberAndString: ['foo', 'bar'] });
+                    expect(options).toEqual({
+                        booleanAndNumberAndString: ["foo", "bar"],
+                    });
 
                     done();
                 },
             );
 
-            command.parseAsync(['--boolean-and-number-and-string', 'foo', '--boolean-and-number-and-string', 'bar'], { from: 'user' });
+            command.parseAsync(
+                [
+                    "--boolean-and-number-and-string",
+                    "foo",
+                    "--boolean-and-number-and-string",
+                    "bar",
+                ],
+                { from: "user" },
+            );
         });
 
-        it('should make command with multiple Boolean and Number and String type #5', async (done) => {
+        it("should make command with multiple Boolean and Number and String type #5", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'boolean-and-number-and-string',
+                        name: "boolean-and-number-and-string",
                         type: [Boolean, Number, String],
-                        description: 'description',
+                        description: "description",
                         multiple: true,
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ booleanAndNumberAndString: ['foo', 12] });
+                    expect(options).toEqual({
+                        booleanAndNumberAndString: ["foo", 12],
+                    });
 
                     done();
                 },
             );
 
-            command.parseAsync(['--boolean-and-number-and-string', 'foo', '--boolean-and-number-and-string', '12'], { from: 'user' });
+            command.parseAsync(
+                ["--boolean-and-number-and-string", "foo", "--boolean-and-number-and-string", "12"],
+                { from: "user" },
+            );
         });
 
-        it('should make command with multiple Boolean and Number and String and default value', async (done) => {
+        it("should make command with multiple Boolean and Number and String and default value", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'boolean-and-number-and-string',
+                        name: "boolean-and-number-and-string",
                         type: [Boolean, Number, String],
-                        description: 'description',
+                        description: "description",
                         multiple: true,
-                        defaultValue: 'default',
+                        defaultValue: "default",
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ booleanAndNumberAndString: 'default' });
+                    expect(options).toEqual({
+                        booleanAndNumberAndString: "default",
+                    });
 
                     done();
                 },
             );
 
-            command.parseAsync([], { from: 'user' });
+            command.parseAsync([], { from: "user" });
         });
 
-        it('should make command with multiple Boolean and Number and String and default value #2', async (done) => {
+        it("should make command with multiple Boolean and Number and String and default value #2", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'boolean-and-number-and-string',
+                        name: "boolean-and-number-and-string",
                         type: [Boolean, Number, String],
-                        description: 'description',
+                        description: "description",
                         multiple: true,
-                        defaultValue: 'default',
+                        defaultValue: "default",
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ booleanAndNumberAndString: ['foo'] });
+                    expect(options).toEqual({
+                        booleanAndNumberAndString: ["foo"],
+                    });
 
                     done();
                 },
             );
 
-            command.parseAsync(['--boolean-and-number-and-string', 'foo'], { from: 'user' });
+            command.parseAsync(["--boolean-and-number-and-string", "foo"], {
+                from: "user",
+            });
         });
 
-        it('should make command with multiple Boolean and Number and String and default value #3', async (done) => {
+        it("should make command with multiple Boolean and Number and String and default value #3", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'boolean-and-number-and-string',
+                        name: "boolean-and-number-and-string",
                         type: [Boolean, Number, String],
-                        description: 'description',
+                        description: "description",
                         multiple: true,
-                        defaultValue: 'default',
+                        defaultValue: "default",
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ booleanAndNumberAndString: [12] });
+                    expect(options).toEqual({
+                        booleanAndNumberAndString: [12],
+                    });
 
                     done();
                 },
             );
 
-            command.parseAsync(['--boolean-and-number-and-string', '12'], { from: 'user' });
+            command.parseAsync(["--boolean-and-number-and-string", "12"], {
+                from: "user",
+            });
         });
 
-        it('should make command with multiple Boolean and Number and String and default value #4', async (done) => {
+        it("should make command with multiple Boolean and Number and String and default value #4", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'boolean-and-number-and-string',
+                        name: "boolean-and-number-and-string",
                         type: [Boolean, Number, String],
-                        description: 'description',
+                        description: "description",
                         multiple: true,
-                        defaultValue: 'default',
+                        defaultValue: "default",
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ booleanAndNumberAndString: ['foo', 12] });
+                    expect(options).toEqual({
+                        booleanAndNumberAndString: ["foo", 12],
+                    });
 
                     done();
                 },
             );
 
-            command.parseAsync(['--boolean-and-number-and-string', 'foo', '--boolean-and-number-and-string', '12'], { from: 'user' });
+            command.parseAsync(
+                ["--boolean-and-number-and-string", "foo", "--boolean-and-number-and-string", "12"],
+                { from: "user" },
+            );
         });
 
-        it('should make command with array of unknown types', async (done) => {
+        it("should make command with array of unknown types", async (done) => {
             cli.program.commands = [];
 
             const command = await cli.makeCommand(
                 {
-                    name: 'command',
+                    name: "command",
                 },
                 [
                     {
-                        name: 'unknown',
+                        name: "unknown",
                         type: [Boolean, Symbol],
-                        description: 'description',
+                        description: "description",
                     },
                 ],
                 (options) => {
-                    expect(options).toEqual({ unknown: 'foo' });
+                    expect(options).toEqual({ unknown: "foo" });
 
                     done();
                 },
             );
 
-            command.parseAsync(['--unknown', 'foo'], { from: 'user' });
+            command.parseAsync(["--unknown", "foo"], { from: "user" });
         });
     });
 });

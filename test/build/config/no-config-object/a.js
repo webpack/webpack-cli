@@ -1,1 +1,1 @@
-module.exports = 'a.js';
+module.exports = "a.js";

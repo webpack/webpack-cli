@@ -1,6 +1,6 @@
 module.exports = [
     {
-        entry: './src/second.js',
+        entry: "./src/second.js",
     },
     {
         watch: true,

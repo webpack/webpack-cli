@@ -1,13 +1,13 @@
-const webpack = require('webpack');
+const webpack = require("webpack");
 
 module.exports = [
     {
         output: {
-            filename: 'prod.js',
+            filename: "prod.js",
         },
-        mode: 'production',
-        devtool: 'eval-cheap-module-source-map',
-        target: 'node',
+        mode: "production",
+        devtool: "eval-cheap-module-source-map",
+        target: "node",
         plugins: [
             new webpack.DefinePlugin({
                 PRODUCTION: JSON.stringify(true),
@@ -16,10 +16,10 @@ module.exports = [
     },
     {
         output: {
-            filename: 'dev.js',
+            filename: "dev.js",
         },
-        mode: 'development',
-        target: 'node',
+        mode: "development",
+        target: "node",
         plugins: [
             new webpack.DefinePlugin({
                 PRODUCTION: JSON.stringify(false),

@@ -1,18 +1,18 @@
-const { isDevServer4 } = require('../../utils/test-utils');
+const { isDevServer4 } = require("../../utils/test-utils");
 
 module.exports = {
-    mode: 'development',
+    mode: "development",
     devtool: false,
     devServer: isDevServer4
         ? {
               devMiddleware: {
-                  stats: 'minimal',
+                  stats: "minimal",
               },
               client: {
-                  logging: 'info',
+                  logging: "info",
               },
           }
         : {
-              stats: 'minimal',
+              stats: "minimal",
           },
 };

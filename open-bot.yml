@@ -1,4 +1,4 @@
-bot: 'webpack-bot'
+bot: "webpack-bot"
 rules:
   # Add ci-ok, ci-not-ok labels depending on travis status
   # comment to point the user to the results
@@ -8,16 +8,16 @@ rules:
       pull_request:
         mergeable: true
       status_1:
-        context: 'continuous-integration/travis-ci/pr'
+        context: "continuous-integration/travis-ci/pr"
       ensure_1:
-        value: '{{status_1.state}}'
-        equals: 'success'
+        value: "{{status_1.state}}"
+        equals: "success"
     actions:
       label:
-        add: 'PR: CI-ok'
-        remove: 'PR: CI-not-ok'
+        add: "PR: CI-ok"
+        remove: "PR: CI-not-ok"
       comment:
-        identifier: 'ci-result'
+        identifier: "ci-result"
         message: |-
           Thank you for your pull request! The most important CI builds succeeded, we’ll review the pull request soon.
   - filters:
@@ -25,15 +25,15 @@ rules:
       pull_request:
         mergeable: true
       status_1:
-        context: 'continuous-integration/travis-ci/pr'
+        context: "continuous-integration/travis-ci/pr"
       any:
         ensure_1:
-          value: '{{status_1.state}}'
-          equals: 'failure'
+          value: "{{status_1.state}}"
+          equals: "failure"
     actions:
       label:
-        add: 'PR: CI-not-ok'
-        remove: 'PR: CI-ok'
+        add: "PR: CI-not-ok"
+        remove: "PR: CI-ok"
       set:
         id: report_ci
         value: yep
@@ -41,27 +41,27 @@ rules:
   # Report specific error message if jest tests fails
   - filters:
       ensure:
-        value: '{{report_ci}}'
+        value: "{{report_ci}}"
         equals: yep
       commit: true
       status:
-        context: 'continuous-integration/travis-ci/pr'
+        context: "continuous-integration/travis-ci/pr"
       travis_job:
-        state: 'failed'
+        state: "failed"
         allow_failure: false
         config:
           env: JOB_PART=integration
       fetch: travis_job.log
       string_cleanup:
         id: logResult
-        value: '{{{fetch}}}'
+        value: "{{{fetch}}}"
         remove:
           - "^[\\s\\S]+?npm run travis:\\$JOB_PART\n*"
           - "npm ERR!.*\n"
           - "\n*=============================================================================\n[\\s\\S]*"
     actions:
       comment:
-        identifier: 'ci-result'
+        identifier: "ci-result"
         message: |-
           @{{commit.author.login}} Please review the following output log for errors:
 
@@ -77,26 +77,26 @@ rules:
   # Report specific error message if linting fails
   - filters:
       ensure:
-        value: '{{report_ci}}'
+        value: "{{report_ci}}"
         equals: yep
       commit: true
       status:
-        context: 'continuous-integration/travis-ci/pr'
+        context: "continuous-integration/travis-ci/pr"
       travis_job:
-        state: 'failed'
+        state: "failed"
         config:
           env: JOB_PART=lint
       fetch: travis_job.log
       string_cleanup:
         id: logResult
-        value: '{{{fetch}}}'
+        value: "{{{fetch}}}"
         remove:
           - "^[\\s\\S]+?npm run travis:\\$JOB_PART\n*"
           - "npm ERR!.*\n"
           - "\n*The command \"npm run travis:\\$JOB_PART\" exited [\\s\\S]*"
     actions:
       comment:
-        identifier: 'ci-result'
+        identifier: "ci-result"
         message: |-
           @{{commit.author.login}} The tests look fine, but there are code style issue in your Pull Request. Please review the following:
 
@@ -112,14 +112,14 @@ rules:
   # Report a general error message
   - filters:
       ensure:
-        value: '{{report_ci}}'
+        value: "{{report_ci}}"
         equals: yep
       commit: true
       status_1:
-        context: 'continuous-integration/travis-ci/pr'
+        context: "continuous-integration/travis-ci/pr"
     actions:
       comment:
-        identifier: 'ci-result'
+        identifier: "ci-result"
         message: |-
           @{{commit.author.login}} The most important CI builds failed. This way your PR can't be merged.
 
@@ -133,18 +133,18 @@ rules:
         mergeable: false
     actions:
       label:
-        add: 'PR: conflict'
+        add: "PR: conflict"
         remove:
-          - 'PR: tests-needed'
-          - 'PR: CI-ok'
-          - 'PR: CI-not-ok'
+          - "PR: tests-needed"
+          - "PR: CI-ok"
+          - "PR: CI-not-ok"
   - filters:
       open: true
       pull_request:
         mergeable: true
     actions:
       label:
-        remove: 'PR: conflict'
+        remove: "PR: conflict"
 
   # add unreviewed, reviewed, review-outdated labels
   # comment to ping reviewer
@@ -156,15 +156,15 @@ rules:
         review:
           state: APPROVED|CHANGES_REQUESTED
       ensure:
-        value: '{{review.state}}'
+        value: "{{review.state}}"
         equals: APPROVED
     actions:
       label:
-        add: 'PR: reviewed-approved'
+        add: "PR: reviewed-approved"
         remove:
-          - 'PR: review-outdated'
-          - 'PR: unreviewed'
-          - 'PR: reviewed'
+          - "PR: review-outdated"
+          - "PR: unreviewed"
+          - "PR: reviewed"
   - filters:
       open: true
       in_order:
@@ -172,15 +172,15 @@ rules:
         review:
           state: APPROVED|CHANGES_REQUESTED
       ensure:
-        value: '{{review.state}}'
+        value: "{{review.state}}"
         equals: CHANGES_REQUESTED
     actions:
       label:
-        add: 'PR: reviewed-changes-requested'
+        add: "PR: reviewed-changes-requested"
         remove:
-          - 'PR: review-outdated'
-          - 'PR: unreviewed'
-          - 'PR: reviewed'
+          - "PR: review-outdated"
+          - "PR: unreviewed"
+          - "PR: reviewed"
   - filters:
       open: true
       in_order:
@@ -188,20 +188,20 @@ rules:
           state: APPROVED|CHANGES_REQUESTED
         commit: true
       not:
-        label: 'review-outdated'
+        label: "review-outdated"
       ensure:
-        value: '{{commit.author.login}}'
-        notEquals: '{{review.user.login}}'
+        value: "{{commit.author.login}}"
+        notEquals: "{{review.user.login}}"
     actions:
       label:
-        add: 'PR: review-outdated'
+        add: "PR: review-outdated"
         remove:
-          - 'PR: reviewed-approved'
-          - 'PR: reviewed-changes-requested'
-          - 'PR: unreviewed'
-          - 'PR: reviewed'
+          - "PR: reviewed-approved"
+          - "PR: reviewed-changes-requested"
+          - "PR: unreviewed"
+          - "PR: reviewed"
       comment:
-        identifier: 'review-outdated'
+        identifier: "review-outdated"
         message: |-
           @{{commit.author.login}} Thanks for your update.
 
@@ -215,17 +215,17 @@ rules:
         review:
           state: APPROVED|CHANGES_REQUESTED
     actions:
-      label: 'PR: unreviewed'
+      label: "PR: unreviewed"
 
   # add small label to small pull requests
   - filters:
       open: true
       pull_request:
-        additions: '<= 10'
-        deletions: '<= 10'
-        changed_files: '<= 2'
+        additions: "<= 10"
+        deletions: "<= 10"
+        changed_files: "<= 2"
     actions:
-      label: 'PR: small'
+      label: "PR: small"
 
   # add non-master label to pull request to other branch
   - filters:
@@ -234,11 +234,11 @@ rules:
         minimum: 1d
         maximum: 1w
       pull_request:
-        head_ref: '^master$'
-      permission: 'read|none'
+        head_ref: "^master$"
+      permission: "read|none"
     actions:
       comment:
-        identifier: 'head-master'
+        identifier: "head-master"
         edit: true
         message: |-
           Hi @{{pull_request.user.login}}.
@@ -256,12 +256,12 @@ rules:
       not:
         comment_1:
           matching: "moved\\-by\\-bot"
-          author: '.'
+          author: "."
       permission:
-        user: '{{comment.actor.login}}'
+        user: "{{comment.actor.login}}"
     actions:
       new_issue:
-        target: '{{{comment_match.[1]}}}'
+        target: "{{{comment_match.[1]}}}"
         body: |-
           {{{issue.body}}}
 
@@ -284,8 +284,8 @@ rules:
       not:
         label: inactive
       ensure:
-        value: '{{issue.reactions.[+1]}}'
-        range: '< 10'
+        value: "{{issue.reactions.[+1]}}"
+        range: "< 10"
       last_action_age: 26w # half a year
     actions:
       comment:

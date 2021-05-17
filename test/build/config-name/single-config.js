@@ -1,8 +1,8 @@
 module.exports = {
     output: {
-        filename: './dist-single.js',
+        filename: "./dist-single.js",
     },
-    name: 'first',
-    entry: './src/first.js',
-    mode: 'development',
+    name: "first",
+    entry: "./src/first.js",
+    mode: "development",
 };

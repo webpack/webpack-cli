@@ -1,1 +1,1 @@
-module.export = 'output-flag-test';
+module.export = "output-flag-test";

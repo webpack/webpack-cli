@@ -1,6 +1,6 @@
 module.exports = {
-    mode: 'development',
+    mode: "development",
     output: {
-        filename: 'test-output.js',
+        filename: "test-output.js",
     },
 };

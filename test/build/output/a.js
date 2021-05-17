@@ -1,1 +1,1 @@
-module.export = 'output-flag-test-overwrite-a.js';
+module.export = "output-flag-test-overwrite-a.js";

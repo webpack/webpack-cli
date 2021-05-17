@@ -1,1 +1,1 @@
-console.log('second entry');
+console.log("second entry");

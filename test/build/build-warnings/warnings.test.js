@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 
-const { run, readFile } = require('../../utils/test-utils');
-const { existsSync } = require('fs');
-const { resolve } = require('path');
+const { run, readFile } = require("../../utils/test-utils");
+const { existsSync } = require("fs");
+const { resolve } = require("path");
 
-describe('warnings', () => {
-    it('should output by default', async () => {
+describe("warnings", () => {
+    it("should output by default", async () => {
         const { exitCode, stderr, stdout } = await run(__dirname);
 
         expect(exitCode).toBe(0);
@@ -15,7 +15,7 @@ describe('warnings', () => {
     });
 
     it('should output JSON with the "json" flag', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ['--json']);
+        const { exitCode, stderr, stdout } = await run(__dirname, ["--json"]);
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
@@ -24,24 +24,26 @@ describe('warnings', () => {
 
         const json = JSON.parse(stdout);
 
-        expect(json['hash']).toBeDefined();
-        expect(json['warnings']).toHaveLength(2);
+        expect(json["hash"]).toBeDefined();
+        expect(json["warnings"]).toHaveLength(2);
         // `message` for `webpack@5`
-        expect(json['warnings'][0].message ? json['warnings'][0].message : json['warnings'][0]).toMatch(/Can't resolve/);
+        expect(
+            json["warnings"][0].message ? json["warnings"][0].message : json["warnings"][0],
+        ).toMatch(/Can't resolve/);
     });
 
-    it('should store json to a file', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ['--json', 'stats.json']);
+    it("should store json to a file", async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, ["--json", "stats.json"]);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toContain('stats are successfully stored as json to stats.json');
+        expect(stderr).toContain("stats are successfully stored as json to stats.json");
         expect(stdout).toBeFalsy();
-        expect(existsSync(resolve(__dirname, './stats.json'))).toBeTruthy();
+        expect(existsSync(resolve(__dirname, "./stats.json"))).toBeTruthy();
 
         let data;
 
         try {
-            data = await readFile(resolve(__dirname, 'stats.json'), 'utf-8');
+            data = await readFile(resolve(__dirname, "stats.json"), "utf-8");
         } catch (error) {
             expect(error).toBe(null);
         }
@@ -50,9 +52,11 @@ describe('warnings', () => {
 
         const json = JSON.parse(data);
 
-        expect(json['hash']).toBeDefined();
-        expect(json['warnings']).toHaveLength(2);
+        expect(json["hash"]).toBeDefined();
+        expect(json["warnings"]).toHaveLength(2);
         // `message` for `webpack@5`
-        expect(json['warnings'][0].message ? json['warnings'][0].message : json['warnings'][0]).toMatch(/Can't resolve/);
+        expect(
+            json["warnings"][0].message ? json["warnings"][0].message : json["warnings"][0],
+        ).toMatch(/Can't resolve/);
     });
 });

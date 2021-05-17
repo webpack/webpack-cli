@@ -1,13 +1,13 @@
 // eslint-disable-next-line node/no-missing-require
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
-    mode: 'development',
+    mode: "development",
     entry: {
-        home: ['./home.js', './home.scss'],
+        home: ["./home.js", "./home.scss"],
     },
     output: {
-        filename: '[name].js',
+        filename: "[name].js",
     },
     module: {
         rules: [
@@ -16,15 +16,15 @@ module.exports = {
                 use: [
                     // fallback to style-loader in development
                     MiniCssExtractPlugin.loader,
-                    'css-loader',
-                    'sass-loader',
+                    "css-loader",
+                    "sass-loader",
                 ],
             },
         ],
     },
     plugins: [
         new MiniCssExtractPlugin({
-            filename: '[name].css',
+            filename: "[name].css",
         }),
     ],
 };

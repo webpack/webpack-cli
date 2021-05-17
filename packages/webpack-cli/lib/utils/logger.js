@@ -1,5 +1,5 @@
-const utils = require('./index');
-const util = require('util');
+const utils = require("./index");
+const util = require("util");
 
 module.exports = {
     error: (val) => console.error(`[webpack-cli] ${utils.colors.red(util.format(val))}`),

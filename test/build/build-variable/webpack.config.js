@@ -5,11 +5,11 @@ class CustomTestPlugin {
         this.isInEnvironment = isInEnvironment;
     }
     apply(compiler) {
-        compiler.hooks.done.tap('testPlugin', () => {
+        compiler.hooks.done.tap("testPlugin", () => {
             if (!isInProcess && this.isInEnvironment) {
-                console.log('PASS');
+                console.log("PASS");
             } else {
-                console.log('FAIL');
+                console.log("FAIL");
             }
         });
     }
@@ -17,7 +17,7 @@ class CustomTestPlugin {
 
 module.exports = (env) => {
     return {
-        mode: 'development',
+        mode: "development",
         devtool: false,
         plugins: [new CustomTestPlugin(env.WEBPACK_BUILD)],
     };

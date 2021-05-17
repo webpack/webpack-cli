@@ -1,4 +1,4 @@
-import Generator from 'yeoman-generator';
+import Generator from "yeoman-generator";
 
 type CustomGeneratorStringPrompt = { [x: string]: string } | Promise<{ [x: string]: string }>;
 type CustomGeneratorBoolPrompt = { [x: string]: boolean } | Promise<{ [x: string]: boolean }>;
@@ -17,15 +17,21 @@ export function List(
         return { [name]: defaultChoice };
     }
 
-    return self.prompt([{ choices, message, name, type: 'list', default: defaultChoice }]);
+    return self.prompt([{ choices, message, name, type: "list", default: defaultChoice }]);
 }
 
-export function Input(self: Generator, name: string, message: string, defaultChoice?: string, skip = false): CustomGeneratorStringPrompt {
+export function Input(
+    self: Generator,
+    name: string,
+    message: string,
+    defaultChoice?: string,
+    skip = false,
+): CustomGeneratorStringPrompt {
     if (skip) {
         return { [name]: defaultChoice };
     }
 
-    return self.prompt([{ default: defaultChoice, message, name, type: 'input' }]);
+    return self.prompt([{ default: defaultChoice, message, name, type: "input" }]);
 }
 
 export function InputValidate(
@@ -40,7 +46,12 @@ export function InputValidate(
         return { [name]: defaultChoice };
     }
 
-    const input: Generator.Question = { message, name, type: 'input', validate: cb };
+    const input: Generator.Question = {
+        message,
+        name,
+        type: "input",
+        validate: cb,
+    };
 
     if (defaultChoice) {
         input.default = defaultChoice;
@@ -49,10 +60,16 @@ export function InputValidate(
     return self.prompt([input]);
 }
 
-export function Confirm(self: Generator, name: string, message: string, defaultChoice = true, skip = false): CustomGeneratorBoolPrompt {
+export function Confirm(
+    self: Generator,
+    name: string,
+    message: string,
+    defaultChoice = true,
+    skip = false,
+): CustomGeneratorBoolPrompt {
     if (skip) {
         return { [name]: defaultChoice };
     }
 
-    return self.prompt([{ default: defaultChoice, message, name, type: 'confirm' }]);
+    return self.prompt([{ default: defaultChoice, message, name, type: "confirm" }]);
 }

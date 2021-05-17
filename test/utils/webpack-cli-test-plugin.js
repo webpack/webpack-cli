@@ -6,9 +6,9 @@ class WebpackCLITestPlugin {
     }
 
     apply(compiler) {
-        compiler.hooks.done.tap('webpack-cli Test Plugin', () => {
+        compiler.hooks.done.tap("webpack-cli Test Plugin", () => {
             if (this.showHooks) {
-                const identifiers = this.showHooks.split('.');
+                const identifiers = this.showHooks.split(".");
 
                 let shown = compiler;
 

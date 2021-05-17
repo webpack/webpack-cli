@@ -1,12 +1,12 @@
 /* eslint-disable node/no-unsupported-features/es-syntax */
-import * as path from 'path';
+import * as path from "path";
 
 const config = {
-    mode: 'production',
-    entry: './main.ts',
+    mode: "production",
+    entry: "./main.ts",
     output: {
-        path: path.resolve('dist'),
-        filename: 'foo.bundle.js',
+        path: path.resolve("dist"),
+        filename: "foo.bundle.js",
     },
 };
 

@@ -1,7 +1,7 @@
 module.exports = {
-    entry: './second-entry.js',
-    target: 'node',
+    entry: "./second-entry.js",
+    target: "node",
     output: {
-        filename: 'second-output.js',
+        filename: "second-output.js",
     },
 };

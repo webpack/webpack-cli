@@ -1,1 +1,1 @@
-console.log('Rimuru Tempest');
+console.log("Rimuru Tempest");

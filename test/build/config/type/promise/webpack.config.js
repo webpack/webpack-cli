@@ -2,10 +2,10 @@ module.exports = () =>
     new Promise((resolve) => {
         setTimeout(() => {
             resolve({
-                entry: './a',
+                entry: "./a",
                 output: {
-                    path: __dirname + '/binary',
-                    filename: 'promise.js',
+                    path: __dirname + "/binary",
+                    filename: "promise.js",
                 },
             });
         }, 0);

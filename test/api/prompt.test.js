@@ -1,7 +1,7 @@
-const prompt = require('../../packages/webpack-cli/lib/utils/prompt');
-const { Writable } = require('stream');
+const prompt = require("../../packages/webpack-cli/lib/utils/prompt");
+const { Writable } = require("stream");
 
-describe('prompt', () => {
+describe("prompt", () => {
     class MyWritable extends Writable {
         constructor(answer) {
             super();
@@ -13,18 +13,18 @@ describe('prompt', () => {
         }
     }
 
-    it('should work with default response', async () => {
-        const myWritable = new MyWritable('\r');
+    it("should work with default response", async () => {
+        const myWritable = new MyWritable("\r");
 
         const resultSuccess = await prompt({
-            message: 'message',
-            defaultResponse: 'yes',
+            message: "message",
+            defaultResponse: "yes",
             stream: myWritable,
         });
 
         const resultFail = await prompt({
-            message: 'message',
-            defaultResponse: 'no',
+            message: "message",
+            defaultResponse: "no",
             stream: myWritable,
         });
 
@@ -33,18 +33,18 @@ describe('prompt', () => {
     });
 
     it('should work with "yes" && "y" response', async () => {
-        const myWritable1 = new MyWritable('yes\r');
-        const myWritable2 = new MyWritable('y\r');
+        const myWritable1 = new MyWritable("yes\r");
+        const myWritable2 = new MyWritable("y\r");
 
         const resultSuccess1 = await prompt({
-            message: 'message',
-            defaultResponse: 'no',
+            message: "message",
+            defaultResponse: "no",
             stream: myWritable1,
         });
 
         const resultSuccess2 = await prompt({
-            message: 'message',
-            defaultResponse: 'no',
+            message: "message",
+            defaultResponse: "no",
             stream: myWritable2,
         });
 
@@ -52,12 +52,12 @@ describe('prompt', () => {
         expect(resultSuccess2).toBe(true);
     });
 
-    it('should work with unknown response', async () => {
-        const myWritable = new MyWritable('unknown\r');
+    it("should work with unknown response", async () => {
+        const myWritable = new MyWritable("unknown\r");
 
         const result = await prompt({
-            message: 'message',
-            defaultResponse: 'yes',
+            message: "message",
+            defaultResponse: "yes",
             stream: myWritable,
         });
 

@@ -1,7 +1,7 @@
 ---
 name: "[BUG]: \U0001F41EReport"
 about: "Template for \U0001F98E's you encounter with webpack-cli"
-labels: 'Bug'
+labels: "Bug"
 ---
 
 **Describe the bug**
