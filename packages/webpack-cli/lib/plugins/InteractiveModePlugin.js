@@ -1,11 +1,11 @@
-const readline = require('readline');
-const { red, green, cyanBright, bold, gray } = require('colorette');
-const { SyncHook } = require('tapable');
-const logger = require('../utils/logger');
+const readline = require("readline");
+const { red, green, cyanBright, bold, gray } = require("colorette");
+const { SyncHook } = require("tapable");
+const logger = require("../utils/logger");
 
 let version;
 try {
-    version = require('webpack').version;
+    version = require("webpack").version;
 } catch (err) {
     process.exit(2);
 }
@@ -25,18 +25,18 @@ const spawnCommand = (msg, status, toClear = false, verbose = false) => {
 
     if (verbose) {
         process.stdout.write(`${bold(cyanBright(`i  ${msg}`))}\n`);
-        process.stdout.write(`${gray('   q: quit  w: watch  s: pause')}`);
+        process.stdout.write(`${gray("   q: quit  w: watch  s: pause")}`);
     } else {
-        process.stdout.write('\n');
+        process.stdout.write("\n");
     }
 
     readline.cursorTo(process.stdout, 0, totalRows - 2);
 
     // for current status
     if (status) {
-        process.stdout.write(`${green('▲')}  `);
+        process.stdout.write(`${green("▲")}  `);
     } else {
-        process.stdout.write(`${red('▲')}  `);
+        process.stdout.write(`${red("▲")}  `);
     }
 
     readline.cursorTo(process.stdout, 0, totalRows - lines - 1);
@@ -46,21 +46,21 @@ const spawnCommand = (msg, status, toClear = false, verbose = false) => {
  * Clear the whole terminal
  */
 const clrscr = () => {
-    process.stdout.write('\x1B[2J\x1B[3J\x1B[H');
+    process.stdout.write("\x1B[2J\x1B[3J\x1B[H");
 };
 
-const isWebpack5 = version.startsWith('5');
+const isWebpack5 = version.startsWith("5");
 
 /**
  * Interactive Mode plugin
  */
 class InteractiveModePlugin {
-    constructor(mode = 'verbose') {
-        this.name = 'webpack-cli-interactive-mode';
+    constructor(mode = "verbose") {
+        this.name = "webpack-cli-interactive-mode";
         this.keys = {
-            quit: 'q',
-            stop: 's',
-            start: 'w',
+            quit: "q",
+            stop: "s",
+            start: "w",
         };
         this.handlers = {
             quit: this.quitHandler.bind(this),
@@ -68,18 +68,18 @@ class InteractiveModePlugin {
             start: this.startHandler.bind(this),
         };
         this.logger = undefined;
-        this.verbose = mode === 'verbose';
+        this.verbose = mode === "verbose";
 
         // hide cursor
-        process.stdout.write('\u001B[?25l');
+        process.stdout.write("\u001B[?25l");
     }
 
     apply(compiler) {
         if (!isWebpack5) {
             // Use CLI logger as webpack v4 may not expose logger
-            logger.error('Interactive is not supported on webpack v4 and less');
+            logger.error("Interactive is not supported on webpack v4 and less");
             // Show cursor
-            process.stdout.write('\u001B[?25h');
+            process.stdout.write("\u001B[?25h");
             process.exit(1);
         }
 
@@ -90,16 +90,16 @@ class InteractiveModePlugin {
 
         // Configure stdin for keypress event
         const stdin = process.stdin;
-        stdin.setEncoding('utf-8');
+        stdin.setEncoding("utf-8");
         stdin.setRawMode(true);
         readline.emitKeypressEvents(stdin);
 
         // Configure keypress event for actions
         const actions = Object.keys(this.keys);
-        stdin.on('keypress', (_, actionKey) => {
+        stdin.on("keypress", (_, actionKey) => {
             // Implement signal keypresses
-            if (actionKey && actionKey.ctrl && (actionKey.name === 'c' || actionKey.name === 'd')) {
-                this.handlers['quit'](compilers, compiler);
+            if (actionKey && actionKey.ctrl && (actionKey.name === "c" || actionKey.name === "d")) {
+                this.handlers["quit"](compilers, compiler);
             }
 
             const possibleActions = actions.filter((action) => {
@@ -111,7 +111,7 @@ class InteractiveModePlugin {
             }
 
             if (possibleActions.length > 1) {
-                throw new Error('Multiple actions are provided for same key');
+                throw new Error("Multiple actions are provided for same key");
             }
 
             const action = possibleActions[0];
@@ -150,8 +150,8 @@ class InteractiveModePlugin {
                 if (afterDoneCount === compilers.length) {
                     afterDoneCount = 0;
                     process.nextTick(() => {
-                        process.stdout.write(`${this.verbose ? '\n' : ''}\n\n`);
-                        spawnCommand('compilations completed', true, false, this.verbose);
+                        process.stdout.write(`${this.verbose ? "\n" : ""}\n\n`);
+                        spawnCommand("compilations completed", true, false, this.verbose);
                     });
                 }
             });
@@ -160,9 +160,9 @@ class InteractiveModePlugin {
 
     quitHandler(_compilers, compiler) {
         compiler.close(() => {
-            spawnCommand('', true, true, this.verbose);
+            spawnCommand("", true, true, this.verbose);
             // Show cursor
-            process.stdout.write('\u001B[?25h');
+            process.stdout.write("\u001B[?25h");
             process.exit(0);
         });
     }
@@ -173,7 +173,7 @@ class InteractiveModePlugin {
         }, true);
 
         if (allWatching) {
-            spawnCommand('already watching', true, false, this.verbose);
+            spawnCommand("already watching", true, false, this.verbose);
             return;
         }
 
@@ -191,7 +191,7 @@ class InteractiveModePlugin {
         }, true);
 
         if (allSuspended) {
-            spawnCommand('already stoped', false, false, this.verbose);
+            spawnCommand("already stoped", false, false, this.verbose);
             return;
         }
 
@@ -200,7 +200,7 @@ class InteractiveModePlugin {
                 childCompiler.watching.suspend();
             }
         }
-        spawnCommand('stoped watching', false, false, this.verbose);
+        spawnCommand("stoped watching", false, false, this.verbose);
         return;
     }
 }

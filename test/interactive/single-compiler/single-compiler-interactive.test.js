@@ -1,13 +1,13 @@
-'use strict';
-const { run, runAndGetProcess, isWebpack5 } = require('../../utils/test-utils');
-const { writeFileSync } = require('fs');
-const { resolve } = require('path');
-const wordsInStatsv5 = ['asset', 'index.js', 'compiled', 'webpack'];
-const clear = '\x1B[2J\x1B[3J\x1B[H';
+"use strict";
+const { run, runAndGetProcess, isWebpack5 } = require("../../utils/test-utils");
+const { writeFileSync } = require("fs");
+const { resolve } = require("path");
+const wordsInStatsv5 = ["asset", "index.js", "compiled", "webpack"];
+const clear = "\x1B[2J\x1B[3J\x1B[H";
 
 const runTest = (proc, checker, done) => {
     let semaphore = 0;
-    proc.stdout.on('readable', () => {
+    proc.stdout.on("readable", () => {
         if (semaphore >= checker.length) {
             proc.kill();
             done();
@@ -15,7 +15,7 @@ const runTest = (proc, checker, done) => {
         }
 
         // Construct chunk
-        let data = '';
+        let data = "";
         let chunk;
         while ((chunk = proc.stdout.read())) {
             data += chunk.toString();
@@ -37,37 +37,40 @@ const runTest = (proc, checker, done) => {
         }
     });
 
-    proc.on('error', (error) => {
+    proc.on("error", (error) => {
         done(error);
         proc.kill();
     });
 
-    proc.on('exit', () => {
+    proc.on("exit", () => {
         proc.kill();
         done();
     });
 };
 
-describe('--interactive flag with single compiler', () => {
+describe("--interactive flag with single compiler", () => {
     // webpack v4 should not be supported https://github.com/webpack/webpack-cli/pull/1796#pullrequestreview-605767369
     if (!isWebpack5) {
-        it('should throw error upon --interactive', async () => {
-            const { stdout, stderr, exitCode } = await run(__dirname, ['--interactive']);
+        it("should throw error upon --interactive", async () => {
+            const { stdout, stderr, exitCode } = await run(__dirname, ["--interactive"]);
             expect(stdout).toMatchSnapshot();
             expect(stderr).toMatchSnapshot();
             expect(exitCode).toBe(1);
         });
         return;
     }
-    it('should output in interactive with --interactive', (done) => {
-        const proc = runAndGetProcess(__dirname, ['--interactive'], false, '', true);
+    it("should output in interactive with --interactive", (done) => {
+        const proc = runAndGetProcess(__dirname, ["--interactive"], false, "", true);
         const checker = [
             {
                 check: (data) => {
-                    return data.includes('\u25B2');
+                    return data.includes("\u25B2");
                 },
                 perform: () => {
-                    writeFileSync(resolve(__dirname, './src/index.js'), `console.log('I am Batman');`);
+                    writeFileSync(
+                        resolve(__dirname, "./src/index.js"),
+                        `console.log('I am Batman');`,
+                    );
                 },
             },
             {
@@ -93,15 +96,15 @@ describe('--interactive flag with single compiler', () => {
         runTest(proc, checker, done);
     });
 
-    it('should stop watching on s', (done) => {
-        const proc = runAndGetProcess(__dirname, ['--interactive'], false, '', true);
+    it("should stop watching on s", (done) => {
+        const proc = runAndGetProcess(__dirname, ["--interactive"], false, "", true);
         const checker = [
             {
                 check: (data) => {
-                    return data.includes('\u25B2');
+                    return data.includes("\u25B2");
                 },
                 perform: () => {
-                    proc.stdin.write('s\n', (err) => {
+                    proc.stdin.write("s\n", (err) => {
                         if (err) {
                             proc.kill();
                             done(err);
@@ -112,10 +115,10 @@ describe('--interactive flag with single compiler', () => {
             },
             {
                 check: (data) => {
-                    return data.includes('stoped');
+                    return data.includes("stoped");
                 },
                 perform: (data) => {
-                    expect(data).toContain('stoped');
+                    expect(data).toContain("stoped");
                 },
             },
         ];
@@ -123,15 +126,15 @@ describe('--interactive flag with single compiler', () => {
         runTest(proc, checker, done);
     });
 
-    it('should should start watching on w after stoping with s', (done) => {
-        const proc = runAndGetProcess(__dirname, ['--interactive'], false, '', true);
+    it("should should start watching on w after stoping with s", (done) => {
+        const proc = runAndGetProcess(__dirname, ["--interactive"], false, "", true);
         const checker = [
             {
                 check: (data) => {
-                    return data.includes('\u25B2');
+                    return data.includes("\u25B2");
                 },
                 perform: () => {
-                    proc.stdin.write('q\n', (err) => {
+                    proc.stdin.write("q\n", (err) => {
                         if (err) {
                             proc.kill();
                             done(err);
@@ -142,11 +145,11 @@ describe('--interactive flag with single compiler', () => {
             },
             {
                 check: (data) => {
-                    return data.includes('stoped');
+                    return data.includes("stoped");
                 },
                 perform: (data) => {
-                    expect(data).toContain('stoped');
-                    proc.stdin.write('w\n', (err) => {
+                    expect(data).toContain("stoped");
+                    proc.stdin.write("w\n", (err) => {
                         if (err) {
                             proc.kill();
                             done(err);
@@ -157,10 +160,10 @@ describe('--interactive flag with single compiler', () => {
             },
             {
                 check: (data) => {
-                    return data.includes('compilation completed');
+                    return data.includes("compilation completed");
                 },
                 perform: (data) => {
-                    expect(data).toContain('compilation completed');
+                    expect(data).toContain("compilation completed");
                 },
             },
         ];
@@ -168,15 +171,15 @@ describe('--interactive flag with single compiler', () => {
         runTest(proc, checker, done);
     });
 
-    it('should quit in pressing q', (done) => {
-        const proc = runAndGetProcess(__dirname, ['--interactive'], false, '', true);
+    it("should quit in pressing q", (done) => {
+        const proc = runAndGetProcess(__dirname, ["--interactive"], false, "", true);
         const checker = [
             {
                 check: (data) => {
-                    return data.includes('\u25B2');
+                    return data.includes("\u25B2");
                 },
                 perform: () => {
-                    proc.stdin.write('q\n', (err) => {
+                    proc.stdin.write("q\n", (err) => {
                         if (err) {
                             proc.kill();
                             done(err);

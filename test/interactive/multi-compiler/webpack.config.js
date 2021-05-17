@@ -1,11 +1,11 @@
-const path = require('path');
+const path = require("path");
 
-const compilers = ['shin-chan', 'misae', 'hiroshi', 'himawari', 'shiro'].map((name) => {
+const compilers = ["shin-chan", "misae", "hiroshi", "himawari", "shiro"].map((name) => {
     return {
         name: name,
-        mode: 'development',
+        mode: "development",
         output: {
-            path: path.join(__dirname, 'dist'),
+            path: path.join(__dirname, "dist"),
             filename: `main-${name}.js`,
         },
     };
