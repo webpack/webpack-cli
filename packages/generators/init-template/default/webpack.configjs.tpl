@@ -2,7 +2,8 @@
 
 const path = require('path');<% if (htmlWebpackPlugin) { %>
 const HtmlWebpackPlugin = require('html-webpack-plugin');<% } %><% if (extractPlugin !== 'No') { %>
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');<% } %>
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');<% } %><% if (workboxWebpackPlugin) { %>
+const WorkboxWebpackPlugin = require('workbox-webpack-plugin');<% } %>
 
 const isProduction = process.env.NODE_ENV == 'production';
 <% if (isCSS) { %>
@@ -84,6 +85,9 @@ module.exports = () => {
         config.mode = 'production';
         <% if (extractPlugin === "Only for Production") { %>
         config.plugins.push(new MiniCssExtractPlugin());
+        <% } %>
+        <% if (workboxWebpackPlugin) { %>
+        config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
         <% } %>
     } else {
         config.mode = 'development';

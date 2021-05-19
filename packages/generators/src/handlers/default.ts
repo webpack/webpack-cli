@@ -65,8 +65,26 @@ export async function questions(
         self.dependencies = [...self.dependencies, "html-webpack-plugin"];
     }
 
+    // Handle addition of workbox-webpack-plugin
+    const { workboxWebpackPlugin } = await Question.Confirm(
+        self,
+        "workboxWebpackPlugin",
+        "Do you want to add PWA support?",
+        true,
+        self.force,
+    );
+    if (workboxWebpackPlugin) {
+        self.dependencies.push("workbox-webpack-plugin");
+    }
+
     // Store all answers for generation
-    self.answers = { ...self.answers, langType, devServer, htmlWebpackPlugin };
+    self.answers = {
+        ...self.answers,
+        langType,
+        devServer,
+        htmlWebpackPlugin,
+        workboxWebpackPlugin,
+    };
 
     // Handle CSS solutions
     const { cssType } = await Question.List(
@@ -174,7 +192,11 @@ export function generate(self: CustomGenerator): void {
     self.fs.copyTpl(resolveFile("README.md"), self.destinationPath("README.md"), {});
 
     // Generate HTML file
-    self.fs.copyTpl(resolveFile("template.html"), self.destinationPath("index.html"), {});
+    self.fs.copyTpl(
+        resolveFile("template.html.tpl"),
+        self.destinationPath("index.html"),
+        self.answers,
+    );
 
     // Generate webpack configuration
     self.fs.copyTpl(
