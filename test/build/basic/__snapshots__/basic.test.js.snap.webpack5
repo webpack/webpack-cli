@@ -1,0 +1,218 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`bundle command should log error and suggest right name on the "buil" command: stderr 1`] = `
+"[webpack-cli] Unknown command or entry 'buil'
+[webpack-cli] Did you mean 'build' (alias 'bundle, b')?
+[webpack-cli] Run 'webpack --help' to see available commands and options"
+`;
+
+exports[`bundle command should log error and suggest right name on the "buil" command: stdout 1`] = `""`;
+
+exports[`bundle command should log supplied config when logging level is log: stderr 1`] = `
+"    [webpack-cli] Compiler starting... 
+    [webpack-cli] Compiler is using config: '/tmp/u1dnly2fv/log.config.js'
+    [webpack-cli] Compiler finished"
+`;
+
+exports[`bundle command should log supplied config when logging level is log: stdout 1`] = `
+"asset main.js <size> <size-abbreviation> [emitted] (name: main)
+./src/index.js <size> <size-abbreviation> [built] [code generated]
+webpack x.x.x compiled successfully in <time> ms"
+`;
+
+exports[`bundle command should work with "bundle" alias: stderr 1`] = `""`;
+
+exports[`bundle command should work with "bundle" alias: stdout 1`] = `
+"asset main.js <size> <size-abbreviation> [emitted] [minimized] (name: main)
+./src/index.js <size> <size-abbreviation> [built] [code generated]
+
+WARNING in configuration
+The 'mode' option has not been set, webpack will fallback to 'production' for this value.
+Set 'mode' option to 'development' or 'production' to enable defaults for each environment.
+You can also set it to 'none' to disable any default behavior. Learn more: https://webpack.js.org/configuration/mode/
+
+webpack x.x.x compiled with 1 warning in <time> ms"
+`;
+
+exports[`bundle command should work with and override entries from the configuration: stderr 1`] = `""`;
+
+exports[`bundle command should work with and override entries from the configuration: stdout 1`] = `
+"asset main.js <size> <size-abbreviation> [emitted] (name: main)
+./src/index.js <size> <size-abbreviation> [built] [code generated]
+./src/other.js <size> <size-abbreviation> [built] [code generated]
+webpack x.x.x compiled successfully in <time> ms"
+`;
+
+exports[`bundle command should work with entries syntax using the "b" alias: stderr 1`] = `""`;
+
+exports[`bundle command should work with entries syntax using the "b" alias: stdout 1`] = `
+"asset main.js <size> <size-abbreviation> [emitted] [minimized] (name: main)
+./src/index.js <size> <size-abbreviation> [built] [code generated]
+
+WARNING in configuration
+The 'mode' option has not been set, webpack will fallback to 'production' for this value.
+Set 'mode' option to 'development' or 'production' to enable defaults for each environment.
+You can also set it to 'none' to disable any default behavior. Learn more: https://webpack.js.org/configuration/mode/
+
+webpack x.x.x compiled with 1 warning in <time> ms"
+`;
+
+exports[`bundle command should work with entries syntax using the "build" alias: stderr 1`] = `""`;
+
+exports[`bundle command should work with entries syntax using the "build" alias: stdout 1`] = `
+"asset main.js <size> <size-abbreviation> [emitted] [minimized] (name: main)
+./src/index.js <size> <size-abbreviation> [built] [code generated]
+
+WARNING in configuration
+The 'mode' option has not been set, webpack will fallback to 'production' for this value.
+Set 'mode' option to 'development' or 'production' to enable defaults for each environment.
+You can also set it to 'none' to disable any default behavior. Learn more: https://webpack.js.org/configuration/mode/
+
+webpack x.x.x compiled with 1 warning in <time> ms"
+`;
+
+exports[`bundle command should work with entries syntax using the "bundle" alias: stderr 1`] = `""`;
+
+exports[`bundle command should work with entries syntax using the "bundle" alias: stdout 1`] = `
+"asset main.js <size> <size-abbreviation> [emitted] [minimized] (name: main)
+./src/index.js <size> <size-abbreviation> [built] [code generated]
+
+WARNING in configuration
+The 'mode' option has not been set, webpack will fallback to 'production' for this value.
+Set 'mode' option to 'development' or 'production' to enable defaults for each environment.
+You can also set it to 'none' to disable any default behavior. Learn more: https://webpack.js.org/configuration/mode/
+
+webpack x.x.x compiled with 1 warning in <time> ms"
+`;
+
+exports[`bundle command should work with multiple entries syntax using the "build" alias and options: stderr 1`] = `""`;
+
+exports[`bundle command should work with multiple entries syntax using the "build" alias and options: stderr 2`] = `""`;
+
+exports[`bundle command should work with multiple entries syntax using the "build" alias and options: stdout 1`] = `
+"asset main.js <size> <size-abbreviation> [emitted] (name: main)
+./src/index.js <size> <size-abbreviation> [built] [code generated]
+./src/other.js <size> <size-abbreviation> [built] [code generated]
+webpack x.x.x compiled successfully in <time> ms"
+`;
+
+exports[`bundle command should work with multiple entries syntax using the "build" alias and options: stdout 2`] = `
+"asset main.js <size> <size-abbreviation> [emitted] (name: main)
+./src/index.js <size> <size-abbreviation> [built] [code generated]
+./src/other.js <size> <size-abbreviation> [built] [code generated]
+webpack x.x.x compiled successfully in <time> ms"
+`;
+
+exports[`bundle command should work with multiple entries syntax using the "build" alias: stderr 1`] = `""`;
+
+exports[`bundle command should work with multiple entries syntax using the "build" alias: stdout 1`] = `
+"asset main.js <size> <size-abbreviation> [emitted] [minimized] (name: main)
+./src/index.js <size> <size-abbreviation> [built] [code generated]
+./src/other.js <size> <size-abbreviation> [built] [code generated]
+
+WARNING in configuration
+The 'mode' option has not been set, webpack will fallback to 'production' for this value.
+Set 'mode' option to 'development' or 'production' to enable defaults for each environment.
+You can also set it to 'none' to disable any default behavior. Learn more: https://webpack.js.org/configuration/mode/
+
+webpack x.x.x compiled with 1 warning in <time> ms"
+`;
+
+exports[`bundle command should work with multiple entries syntax without command (default command): stderr 1`] = `""`;
+
+exports[`bundle command should work with multiple entries syntax without command (default command): stdout 1`] = `
+"asset main.js <size> <size-abbreviation> [emitted] [minimized] (name: main)
+./src/index.js <size> <size-abbreviation> [built] [code generated]
+./src/other.js <size> <size-abbreviation> [built] [code generated]
+
+WARNING in configuration
+The 'mode' option has not been set, webpack will fallback to 'production' for this value.
+Set 'mode' option to 'development' or 'production' to enable defaults for each environment.
+You can also set it to 'none' to disable any default behavior. Learn more: https://webpack.js.org/configuration/mode/
+
+webpack x.x.x compiled with 1 warning in <time> ms"
+`;
+
+exports[`bundle command should work with multiple entries syntax without command with options #2 (default command): stderr 1`] = `""`;
+
+exports[`bundle command should work with multiple entries syntax without command with options #2 (default command): stdout 1`] = `
+"asset main.js <size> <size-abbreviation> [emitted] (name: main)
+./src/index.js <size> <size-abbreviation> [built] [code generated]
+./src/other.js <size> <size-abbreviation> [built] [code generated]
+webpack x.x.x compiled successfully in <time> ms"
+`;
+
+exports[`bundle command should work with multiple entries syntax without command with options #3 (default command): stderr 1`] = `""`;
+
+exports[`bundle command should work with multiple entries syntax without command with options #3 (default command): stdout 1`] = `
+"asset main.js <size> <size-abbreviation> [emitted] [minimized] (name: main)
+./src/index.js <size> <size-abbreviation> [built] [code generated]
+./src/other.js <size> <size-abbreviation> [built] [code generated]
+./src/again.js <size> <size-abbreviation> [built] [code generated]
+
+WARNING in configuration
+The 'mode' option has not been set, webpack will fallback to 'production' for this value.
+Set 'mode' option to 'development' or 'production' to enable defaults for each environment.
+You can also set it to 'none' to disable any default behavior. Learn more: https://webpack.js.org/configuration/mode/
+
+webpack x.x.x compiled with 1 warning in <time> ms"
+`;
+
+exports[`bundle command should work with multiple entries syntax without command with options (default command): stderr 1`] = `""`;
+
+exports[`bundle command should work with multiple entries syntax without command with options (default command): stdout 1`] = `
+"asset main.js <size> <size-abbreviation> [emitted] (name: main)
+./src/index.js <size> <size-abbreviation> [built] [code generated]
+./src/other.js <size> <size-abbreviation> [built] [code generated]
+webpack x.x.x compiled successfully in <time> ms"
+`;
+
+exports[`bundle command should work with the "b" alias: stderr 1`] = `""`;
+
+exports[`bundle command should work with the "b" alias: stdout 1`] = `
+"asset main.js <size> <size-abbreviation> [emitted] [minimized] (name: main)
+./src/index.js <size> <size-abbreviation> [built] [code generated]
+
+WARNING in configuration
+The 'mode' option has not been set, webpack will fallback to 'production' for this value.
+Set 'mode' option to 'development' or 'production' to enable defaults for each environment.
+You can also set it to 'none' to disable any default behavior. Learn more: https://webpack.js.org/configuration/mode/
+
+webpack x.x.x compiled with 1 warning in <time> ms"
+`;
+
+exports[`bundle command should work with the "build" alias: stderr 1`] = `""`;
+
+exports[`bundle command should work with the "build" alias: stdout 1`] = `
+"asset main.js <size> <size-abbreviation> [emitted] [minimized] (name: main)
+./src/index.js <size> <size-abbreviation> [built] [code generated]
+
+WARNING in configuration
+The 'mode' option has not been set, webpack will fallback to 'production' for this value.
+Set 'mode' option to 'development' or 'production' to enable defaults for each environment.
+You can also set it to 'none' to disable any default behavior. Learn more: https://webpack.js.org/configuration/mode/
+
+webpack x.x.x compiled with 1 warning in <time> ms"
+`;
+
+exports[`bundle command should work without command (default command): stderr 1`] = `""`;
+
+exports[`bundle command should work without command (default command): stdout 1`] = `
+"asset main.js <size> <size-abbreviation> [emitted] [minimized] (name: main)
+./src/index.js <size> <size-abbreviation> [built] [code generated]
+
+WARNING in configuration
+The 'mode' option has not been set, webpack will fallback to 'production' for this value.
+Set 'mode' option to 'development' or 'production' to enable defaults for each environment.
+You can also set it to 'none' to disable any default behavior. Learn more: https://webpack.js.org/configuration/mode/
+
+webpack x.x.x compiled with 1 warning in <time> ms"
+`;
+
+exports[`bundle command should work without command and options (default command): stderr 1`] = `""`;
+
+exports[`bundle command should work without command and options (default command): stdout 1`] = `
+"asset main.js <size> <size-abbreviation> [emitted] (name: main)
+./src/index.js <size> <size-abbreviation> [built] [code generated]
+webpack x.x.x compiled successfully in <time> ms"
+`;

@@ -47,6 +47,23 @@ const processKill = (process) => {
     }
 };
 
+const getUniqueDirectory = () => path.resolve(os.tmpdir(), Math.random().toString(36).substr(2, 9));
+
+const copyRecursiveSync = function (src, dest) {
+    if (fs.existsSync(src) && fs.statSync(src).isDirectory()) {
+        fs.mkdirSync(dest);
+        fs.readdirSync(src).forEach((childItemName) => {
+            if (/(__snapshots__|\.test\.)/.test(childItemName)) {
+                return;
+            }
+
+            copyRecursiveSync(path.join(src, childItemName), path.join(dest, childItemName));
+        });
+    } else {
+        fs.copyFileSync(src, dest);
+    }
+};
+
 /**
  * Webpack CLI test runner.
  *
@@ -58,9 +75,12 @@ const processKill = (process) => {
 const createProcess = (cwd, args, options) => {
     const { nodeOptions = [] } = options;
     const processExecutor = nodeOptions.length ? execaNode : execa;
+    const uniqueDirectory = getUniqueDirectory();
+
+    copyRecursiveSync(path.resolve(cwd), uniqueDirectory);
 
     return processExecutor(WEBPACK_PATH, args, {
-        cwd: path.resolve(cwd),
+        cwd: uniqueDirectory,
         reject: false,
         stdio: ENABLE_LOG_COMPILATION ? "inherit" : "pipe",
         maxBuffer: Infinity,
@@ -251,6 +271,14 @@ const normalizeError = (output) => {
         .replace(/\s+at .+(}|\)|\d)/gs, "\n    at stack");
 };
 
+const normalizeSize = (output) => {
+    return output.replace(/\d+(.\d+)? (bytes|KiB|MiB|GiB)/g, "<size> <size-abbreviation>");
+};
+
+const normalizeTime = (output) => {
+    return output.replace(/[\d.]+ ms/gm, "<time> ms").replace();
+};
+
 const normalizeStdout = (stdout) => {
     if (typeof stdout !== "string") {
         return stdout;
@@ -261,9 +289,12 @@ const normalizeStdout = (stdout) => {
     }
 
     let normalizedStdout = stripAnsi(stdout);
+
     normalizedStdout = normalizeCwd(normalizedStdout);
     normalizedStdout = normalizeVersions(normalizedStdout);
     normalizedStdout = normalizeError(normalizedStdout);
+    normalizedStdout = normalizeSize(normalizedStdout);
+    normalizedStdout = normalizeTime(normalizedStdout);
 
     return normalizedStdout;
 };
@@ -361,8 +392,8 @@ const readdir = (path) =>
         });
     });
 
-const uniqueDirectoryForTest = async () => {
-    const result = path.resolve(os.tmpdir(), Date.now().toString());
+const uniqueDirectoryForTest = () => {
+    const result = getUniqueDirectory();
 
     if (!fs.existsSync(result)) {
         fs.mkdirSync(result);
