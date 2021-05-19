@@ -260,9 +260,12 @@ const normalizeVersions = (output) => {
 };
 
 const normalizeCwd = (output) => {
+    const tmp = os.tmpdir();
+
     return output
         .replace(/\\/g, "/")
-        .replace(new RegExp(process.cwd().replace(/\\/g, "/"), "g"), "<cwd>");
+        .replace(new RegExp(process.cwd().replace(/\\/g, "/"), "g"), "<cwd>")
+        .replace(new RegExp(`${tmp.replace(/\\/g, "/")}/[a-z0-9]{9}`), "<cwd>");
 };
 
 const normalizeError = (output) => {
