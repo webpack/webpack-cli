@@ -282,6 +282,13 @@ const normalizeTime = (output) => {
     return output.replace(/[\d.]+ ms/gm, "<time> ms").replace();
 };
 
+const normalizeV4Output = (output) => {
+    return output
+        .replace(/Hash: .*/gm, "Hash: <hash>")
+        .replace(/Time: .*/gm, "Time: <compile time>")
+        .replace(/Built at: .*/gm, "Built at: <built time>");
+};
+
 const normalizeStdout = (stdout) => {
     if (typeof stdout !== "string") {
         return stdout;
@@ -298,6 +305,7 @@ const normalizeStdout = (stdout) => {
     normalizedStdout = normalizeError(normalizedStdout);
     normalizedStdout = normalizeSize(normalizedStdout);
     normalizedStdout = normalizeTime(normalizedStdout);
+    normalizedStdout = normalizeV4Output(normalizedStdout);
 
     return normalizedStdout;
 };
