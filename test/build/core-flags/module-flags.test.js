@@ -81,13 +81,16 @@ describe("module config related flag", () => {
         ) {
             it(`should config --${name} correctly`, async () => {
                 if (name === "module-no-parse") {
-                    let { stderr, stdout, exitCode } = await run(__dirname, [`--${name}`, "value"]);
+                    const { stderr, stdout, exitCode } = await run(__dirname, [
+                        `--${name}`,
+                        "value",
+                    ]);
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
                     expect(normalizeStdout(stdout)).toContain("value");
                 } else if (name.includes("reg-exp")) {
-                    let { stdout, stderr, exitCode } = await run(__dirname, [
+                    const { stdout, stderr, exitCode } = await run(__dirname, [
                         `--${name}`,
                         "/ab?c*/",
                     ]);
@@ -97,17 +100,17 @@ describe("module config related flag", () => {
                     expect(normalizeStdout(stdout)).toContain(`${propName}: /ab?c*/`);
                 } else if (name.includes("module-rules-")) {
                     if (propName === "use" || propName === "type") {
-                        let { stdout } = await run(__dirname, [`--${name}`, "javascript/auto"]);
+                        const { stdout } = await run(__dirname, [`--${name}`, "javascript/auto"]);
 
                         expect(normalizeStdout(stdout)).toContain(`${propName}: 'javascript/auto'`);
                     } else if (property.includes("use-")) {
-                        let { stdout } = await run(__dirname, [
+                        const { stdout } = await run(__dirname, [
                             "--module-rules-use-loader",
                             "myLoader",
                         ]);
                         expect(normalizeStdout(stdout)).toContain(`use: [Object]`);
                     } else if (propName === "enforce") {
-                        let { stdout } = await run(__dirname, [
+                        const { stdout } = await run(__dirname, [
                             `--${name}`,
                             "pre",
                             "--module-rules-use-loader",
@@ -115,7 +118,7 @@ describe("module config related flag", () => {
                         ]);
                         expect(normalizeStdout(stdout)).toContain(`${propName}: 'pre'`);
                     } else if (name.includes("compiler")) {
-                        let { stdout } = await run(__dirname, [`--${name}`, "test-compiler"]);
+                        const { stdout } = await run(__dirname, [`--${name}`, "test-compiler"]);
                         if (name.endsWith("-not")) {
                             expect(normalizeStdout(stdout)).toContain(`compiler: [Object]`);
                         } else {
@@ -124,21 +127,21 @@ describe("module config related flag", () => {
                             );
                         }
                     } else if (name.includes("issuer-layer")) {
-                        let { stdout } = await run(__dirname, [`--${name}`, "test-layer"]);
+                        const { stdout } = await run(__dirname, [`--${name}`, "test-layer"]);
                         if (name.endsWith("-not")) {
                             expect(normalizeStdout(stdout)).toContain(`issuerLayer: [Object]`);
                         } else {
                             expect(normalizeStdout(stdout)).toContain(`${propName}: 'test-layer'`);
                         }
                     } else if (name.includes("dependency")) {
-                        let { stdout } = await run(__dirname, [`--${name}`, "test-dep"]);
+                        const { stdout } = await run(__dirname, [`--${name}`, "test-dep"]);
                         if (name.endsWith("-not")) {
                             expect(normalizeStdout(stdout)).toContain(`dependency: [Object]`);
                         } else {
                             expect(normalizeStdout(stdout)).toContain(`${propName}: 'test-dep'`);
                         }
                     } else if (name.includes("resource-fragment")) {
-                        let { stdout } = await run(__dirname, [`--${name}`, "test-fragment"]);
+                        const { stdout } = await run(__dirname, [`--${name}`, "test-fragment"]);
                         if (name.endsWith("-not")) {
                             expect(normalizeStdout(stdout)).toContain(`resourceFragment: [Object]`);
                         } else {
@@ -147,25 +150,28 @@ describe("module config related flag", () => {
                             );
                         }
                     } else if (name.includes("resource-query")) {
-                        let { stdout } = await run(__dirname, [`--${name}`, "test-query"]);
+                        const { stdout } = await run(__dirname, [`--${name}`, "test-query"]);
                         if (name.endsWith("-not")) {
                             expect(normalizeStdout(stdout)).toContain(`resourceQuery: [Object]`);
                         } else {
                             expect(normalizeStdout(stdout)).toContain(`${propName}: 'test-query'`);
                         }
                     } else if (name.includes("mimetype")) {
-                        let { stdout } = await run(__dirname, [`--${name}`, "test-mime"]);
+                        const { stdout } = await run(__dirname, [`--${name}`, "test-mime"]);
                         if (name.endsWith("-not")) {
                             expect(normalizeStdout(stdout)).toContain(`mimetype: [Object]`);
                         } else {
                             expect(normalizeStdout(stdout)).toContain(`${propName}: 'test-mime'`);
                         }
                     } else {
-                        let { stdout } = await run(__dirname, [`--${name}`, "/rules-value"]);
+                        const { stdout } = await run(__dirname, [`--${name}`, "/rules-value"]);
                         expect(normalizeStdout(stdout)).toContain("rules-value");
                     }
                 } else {
-                    let { stderr, stdout, exitCode } = await run(__dirname, [`--${name}`, "value"]);
+                    const { stderr, stdout, exitCode } = await run(__dirname, [
+                        `--${name}`,
+                        "value",
+                    ]);
 
                     expect(exitCode).toBe(0);
                     expect(stderr).toBeFalsy();
