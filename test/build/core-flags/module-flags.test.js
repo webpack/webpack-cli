@@ -114,6 +114,52 @@ describe("module config related flag", () => {
                             "myLoader",
                         ]);
                         expect(normalizeStdout(stdout)).toContain(`${propName}: 'pre'`);
+                    } else if (name.includes("compiler")) {
+                        let { stdout } = await run(__dirname, [`--${name}`, "test-compiler"]);
+                        if (name.endsWith("-not")) {
+                            expect(normalizeStdout(stdout)).toContain(`compiler: [Object]`);
+                        } else {
+                            expect(normalizeStdout(stdout)).toContain(
+                                `${propName}: 'test-compiler'`,
+                            );
+                        }
+                    } else if (name.includes("issuer-layer")) {
+                        let { stdout } = await run(__dirname, [`--${name}`, "test-layer"]);
+                        if (name.endsWith("-not")) {
+                            expect(normalizeStdout(stdout)).toContain(`issuerLayer: [Object]`);
+                        } else {
+                            expect(normalizeStdout(stdout)).toContain(`${propName}: 'test-layer'`);
+                        }
+                    } else if (name.includes("dependency")) {
+                        let { stdout } = await run(__dirname, [`--${name}`, "test-dep"]);
+                        if (name.endsWith("-not")) {
+                            expect(normalizeStdout(stdout)).toContain(`dependency: [Object]`);
+                        } else {
+                            expect(normalizeStdout(stdout)).toContain(`${propName}: 'test-dep'`);
+                        }
+                    } else if (name.includes("resource-fragment")) {
+                        let { stdout } = await run(__dirname, [`--${name}`, "test-fragment"]);
+                        if (name.endsWith("-not")) {
+                            expect(normalizeStdout(stdout)).toContain(`resourceFragment: [Object]`);
+                        } else {
+                            expect(normalizeStdout(stdout)).toContain(
+                                `${propName}: 'test-fragment'`,
+                            );
+                        }
+                    } else if (name.includes("resource-query")) {
+                        let { stdout } = await run(__dirname, [`--${name}`, "test-query"]);
+                        if (name.endsWith("-not")) {
+                            expect(normalizeStdout(stdout)).toContain(`resourceQuery: [Object]`);
+                        } else {
+                            expect(normalizeStdout(stdout)).toContain(`${propName}: 'test-query'`);
+                        }
+                    } else if (name.includes("mimetype")) {
+                        let { stdout } = await run(__dirname, [`--${name}`, "test-mime"]);
+                        if (name.endsWith("-not")) {
+                            expect(normalizeStdout(stdout)).toContain(`mimetype: [Object]`);
+                        } else {
+                            expect(normalizeStdout(stdout)).toContain(`${propName}: 'test-mime'`);
+                        }
                     } else {
                         let { stdout } = await run(__dirname, [`--${name}`, "/rules-value"]);
                         expect(normalizeStdout(stdout)).toContain("rules-value");
@@ -129,7 +175,7 @@ describe("module config related flag", () => {
         }
     }
 
-    it("should config module.generator flags coorectly", async () => {
+    it("should config module.generator flags corectly", async () => {
         const { exitCode, stderr, stdout } = await run(__dirname, [
             "--module-generator-asset-data-url-encoding",
             "base64",
