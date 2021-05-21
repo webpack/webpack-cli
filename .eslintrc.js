@@ -26,6 +26,7 @@ module.exports = {
         "no-extra-bind": "error",
         "no-loop-func": "error",
         "no-undef": "error",
+        "prefer-const": "error",
     },
     overrides: [
         {

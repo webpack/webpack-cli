@@ -6,7 +6,7 @@ const snapshotFlags = getWebpackCliArguments("snapshot");
 describe("snapshot config related flags", () => {
     for (const [name, value] of Object.entries(snapshotFlags)) {
         // extract property name from flag name
-        let property = name.split("snapshot-")[1];
+        const property = name.split("snapshot-")[1];
         const propName = hyphenToUpperCase(property);
 
         if (value.configs.filter((config) => config.type === "boolean").length > 0) {
