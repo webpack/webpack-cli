@@ -401,6 +401,27 @@ module.exports = () => {
 "
 `;
 
+exports[`init command should generate appropriate files for webpack template 1`] = `
+Object {
+  "author": "",
+  "description": "",
+  "devDependencies": Object {
+    "@commitlint/cli": "x.x.x",
+    "@commitlint/config-conventional": "x.x.x",
+    "eslint": "x.x.x",
+    "eslint-config-prettier": "x.x.x",
+    "eslint-plugin-prettier": "x.x.x",
+    "jest": "x.x.x",
+    "prettier": "x.x.x",
+  },
+  "keywords": Array [],
+  "license": "ISC",
+  "name": "webpack-template",
+  "scripts": Object {},
+  "version": "1.0.0",
+}
+`;
+
 exports[`init command should generate default project when nothing is passed 1`] = `
 Object {
   "description": "My webpack project",
