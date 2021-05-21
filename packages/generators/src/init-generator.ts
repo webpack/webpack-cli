@@ -119,6 +119,7 @@ export default class InitGenerator extends CustomGenerator {
     public end(): void {
         // Prettify configuration file if possible
         try {
+            if (!this.configurationPath) return;
             // eslint-disable-next-line node/no-extraneous-require, @typescript-eslint/no-var-requires
             const prettier = require("prettier");
             const source = readFileSync(this.configurationPath, {
