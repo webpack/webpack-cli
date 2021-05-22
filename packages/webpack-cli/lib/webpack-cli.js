@@ -1054,7 +1054,6 @@ class WebpackCLI {
             this.logger.raw(`webpack-cli ${pkgJSON.version}`);
 
             if (this.utils.packageExists("webpack-dev-server")) {
-                // eslint-disable-next-line
                 const { version } = this.loadJSONFile("webpack-dev-server/package.json");
 
                 this.logger.raw(`webpack-dev-server ${version}`);
