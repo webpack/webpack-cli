@@ -413,6 +413,8 @@ Object {
     "eslint-plugin-prettier": "x.x.x",
     "jest": "x.x.x",
     "prettier": "x.x.x",
+    "webpack": "x.x.x",
+    "webpack-cli": "x.x.x",
   },
   "keywords": Array [],
   "license": "ISC",
