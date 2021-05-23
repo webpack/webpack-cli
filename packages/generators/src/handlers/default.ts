@@ -29,15 +29,10 @@ export async function questions(
 
     switch (langType) {
         case "ES6":
-            self.dependencies = [
-                ...self.dependencies,
-                "babel-loader",
-                "@babel/core",
-                "@babel/preset-env",
-            ];
+            self.dependencies.push("babel-loader", "@babel/core", "@babel/preset-env");
             break;
         case "Typescript":
-            self.dependencies = [...self.dependencies, "typescript", "ts-loader"];
+            self.dependencies.push("typescript", "ts-loader");
             break;
     }
 
@@ -50,7 +45,7 @@ export async function questions(
         self.force,
     );
     if (devServer) {
-        self.dependencies = [...self.dependencies, "webpack-dev-server"];
+        self.dependencies.push("webpack-dev-server");
     }
 
     // Handle addition of html-webpack-plugin
@@ -62,7 +57,7 @@ export async function questions(
         self.force,
     );
     if (htmlWebpackPlugin) {
-        self.dependencies = [...self.dependencies, "html-webpack-plugin"];
+        self.dependencies.push("html-webpack-plugin");
     }
 
     // Handle addition of workbox-webpack-plugin
@@ -137,26 +132,26 @@ export async function questions(
 
     switch (cssType) {
         case "SASS":
-            self.dependencies = [...self.dependencies, "sass-loader", "sass"];
+            self.dependencies.push("sass-loader", "sass");
             break;
         case "LESS":
-            self.dependencies = [...self.dependencies, "less-loader", "less"];
+            self.dependencies.push("less-loader", "less");
             break;
         case "Stylus":
-            self.dependencies = [...self.dependencies, "stylus-loader", "stylus"];
+            self.dependencies.push("stylus-loader", "stylus");
             break;
     }
 
     if (isCSS) {
-        self.dependencies = [...self.dependencies, "style-loader", "css-loader"];
+        self.dependencies.push("style-loader", "css-loader");
     }
 
     if (isPostCSS) {
-        self.dependencies = [...self.dependencies, "postcss-loader", "postcss", "autoprefixer"];
+        self.dependencies.push("postcss-loader", "postcss", "autoprefixer");
     }
 
     if (extractPlugin !== "No") {
-        self.dependencies = [...self.dependencies, "mini-css-extract-plugin"];
+        self.dependencies.push("mini-css-extract-plugin");
     }
 
     self.answers = {

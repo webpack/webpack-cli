@@ -49,7 +49,7 @@ const runTest = (package, cliArgs = [], logMessage, isSubPackage = false) => {
             hasPassed = false;
 
         proc.stderr.on("data", (chunk) => {
-            let data = stripAnsi(chunk.toString());
+            const data = stripAnsi(chunk.toString());
             console.log(`  stderr: ${data}`);
 
             if (data.includes(logMessage)) {
@@ -99,7 +99,7 @@ const runTestStdout = ({ packageName, cliArgs, logMessage, isSubPackage } = {}) 
         let hasPassed = false;
 
         proc.stdout.on("data", (chunk) => {
-            let data = stripAnsi(chunk.toString());
+            const data = stripAnsi(chunk.toString());
             console.log(`  stdout: ${data}`);
 
             if (data.includes(logMessage)) {
@@ -109,7 +109,7 @@ const runTestStdout = ({ packageName, cliArgs, logMessage, isSubPackage } = {}) 
         });
 
         proc.stderr.on("data", (chunk) => {
-            let data = stripAnsi(chunk.toString());
+            const data = stripAnsi(chunk.toString());
             console.log(`  stderr: ${data}`);
         });
 
@@ -152,7 +152,7 @@ const runTestStdoutWithInput = ({
         let hasPassed = false;
 
         proc.stdout.on("data", (chunk) => {
-            let data = stripAnsi(chunk.toString());
+            const data = stripAnsi(chunk.toString());
             console.log(`  stdout: ${data}`);
 
             if (data.includes(logMessage)) {
@@ -168,7 +168,7 @@ const runTestStdoutWithInput = ({
         });
 
         proc.stderr.on("data", (chunk) => {
-            let data = stripAnsi(chunk.toString());
+            const data = stripAnsi(chunk.toString());
             console.log(`  stderr: ${data}`);
         });
 
@@ -213,7 +213,7 @@ const runTestWithHelp = (package, cliArgs = [], logMessage, isSubPackage = false
             hasPassed = false;
 
         proc.stderr.on("data", (chunk) => {
-            let data = stripAnsi(chunk.toString());
+            const data = stripAnsi(chunk.toString());
             console.log(`  stderr: ${data}`);
 
             if (data.includes(logMessage)) {

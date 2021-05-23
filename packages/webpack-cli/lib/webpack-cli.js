@@ -186,7 +186,7 @@ class WebpackCLI {
 
         if (option.configs) {
             let needNegativeOption = false;
-            let mainOptionType = new Set();
+            const mainOptionType = new Set();
 
             option.configs.forEach((config) => {
                 // Possible value: "enum" | "string" | "path" | "number" | "boolean" | "RegExp" | "reset"
@@ -1054,7 +1054,6 @@ class WebpackCLI {
             this.logger.raw(`webpack-cli ${pkgJSON.version}`);
 
             if (this.utils.packageExists("webpack-dev-server")) {
-                // eslint-disable-next-line
                 const { version } = this.loadJSONFile("webpack-dev-server/package.json");
 
                 this.logger.raw(`webpack-dev-server ${version}`);
@@ -1462,7 +1461,7 @@ class WebpackCLI {
             if (isKnownCommand(commandToRun)) {
                 await loadCommandByName(commandToRun, true);
             } else {
-                let isEntrySyntax = fs.existsSync(operand);
+                const isEntrySyntax = fs.existsSync(operand);
 
                 if (isEntrySyntax) {
                     commandToRun = defaultCommandToRun;
@@ -1554,7 +1553,7 @@ class WebpackCLI {
             const isMultiCompiler = Array.isArray(loadedConfig.options);
             const config = isMultiCompiler ? loadedConfig.options : [loadedConfig.options];
 
-            let evaluatedConfig = await Promise.all(
+            const evaluatedConfig = await Promise.all(
                 config.map(async (rawConfig) => {
                     if (typeof rawConfig.then === "function") {
                         rawConfig = await rawConfig;
@@ -1582,7 +1581,7 @@ class WebpackCLI {
             return loadedConfig;
         };
 
-        let config = { options: {}, path: new WeakMap() };
+        const config = { options: {}, path: new WeakMap() };
 
         if (options.config && options.config.length > 0) {
             const evaluatedConfigs = await Promise.all(
@@ -2083,8 +2082,8 @@ class WebpackCLI {
     }
 
     async buildCommand(options, isWatchCommand) {
+        // eslint-disable-next-line prefer-const
         let compiler;
-
         let createJsonStringifyStream;
 
         if (options.json) {

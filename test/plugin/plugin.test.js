@@ -155,7 +155,7 @@ describe("plugin command", () => {
             mkdirSync(genPath);
         }
 
-        let { stdout } = await runPromptWithAnswers(
+        const { stdout } = await runPromptWithAnswers(
             genPath,
             ["plugin", "./"],
             [`${pluginName}${ENTER}`],
