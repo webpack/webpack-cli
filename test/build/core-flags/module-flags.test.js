@@ -163,8 +163,8 @@ describe("module config related flag", () => {
                         } else {
                             expect(normalizeStdout(stdout)).toContain(`${propName}: 'test-mime'`);
                         }
-                    } else if (name.includes("scheme")) {
-                        const { stdout } = await run(__dirname, [`--${name}`, "test-mime"]);
+                    } else if (name.includes("scheme-")) {
+                        const { stdout } = await run(__dirname, [`--${name}`, "test-scheme"]);
                         expect(normalizeStdout(stdout)).toContain(`scheme: [Object]`);
                     } else {
                         const { stdout } = await run(__dirname, [`--${name}`, "/rules-value"]);
