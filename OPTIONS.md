@@ -352,22 +352,36 @@ Options:
   --no-module-parser-javascript-esm-wrapped-context-recursive                        Negative 'module-parser-javascript-esm-wrapped-context-recursive' option.
   --module-parser-javascript-esm-wrapped-context-reg-exp <value>                     Set the inner regular expression for partial dynamic dependencies.
   --module-rules-compiler <value...>                                                 Match the child compiler name.
+  --module-rules-compiler-not <value...>                                             Logical NOT.
   --module-rules-dependency <value...>                                               Match dependency type.
+  --module-rules-dependency-not <value...>                                           Logical NOT.
   --module-rules-enforce <value...>                                                  Enforce this rule as pre or post step.
   --module-rules-exclude <value...>                                                  Shortcut for resource.exclude.
+  --module-rules-exclude-not <value...>                                              Logical NOT.
   --module-rules-include <value...>                                                  Shortcut for resource.include.
+  --module-rules-include-not <value...>                                              Logical NOT.
   --module-rules-issuer <value...>                                                   Match the issuer of the module (The module pointing to this module).
+  --module-rules-issuer-not <value...>                                               Logical NOT.
   --module-rules-issuer-layer <value...>                                             Match layer of the issuer of this module (The module pointing to this module).
+  --module-rules-issuer-layer-not <value...>                                         Logical NOT.
   --module-rules-layer <value...>                                                    Specifies the layer in which the module should be placed in.
   --module-rules-loader <value...>                                                   A loader request.
   --module-rules-mimetype <value...>                                                 Match module mimetype when load from Data URI.
+  --module-rules-mimetype-not <value...>                                             Logical NOT.
   --module-rules-real-resource <value...>                                            Match the real resource path of the module.
+  --module-rules-real-resource-not <value...>                                        Logical NOT.
   --module-rules-resource <value...>                                                 Match the resource path of the module.
+  --module-rules-resource-not <value...>                                             Logical NOT.
   --module-rules-resource-fragment <value...>                                        Match the resource fragment of the module.
+  --module-rules-resource-fragment-not <value...>                                    Logical NOT.
   --module-rules-resource-query <value...>                                           Match the resource query of the module.
+  --module-rules-resource-query-not <value...>                                       Logical NOT.
+  --module-rules-scheme <value...>                                                   Match module scheme.
+  --module-rules-scheme-not <value...>                                               Logical NOT.
   --module-rules-side-effects                                                        Flags a module as with or without side effects.
   --no-module-rules-side-effects                                                     Negative 'module-rules-side-effects' option.
   --module-rules-test <value...>                                                     Shortcut for resource.test.
+  --module-rules-test-not <value...>                                                 Logical NOT.
   --module-rules-type <value...>                                                     Module type to use for the module.
   --module-rules-use-ident <value...>                                                Unique loader options identifier.
   --module-rules-use-loader <value...>                                               A loader request.
@@ -558,7 +572,7 @@ Options:
   --no-output-strict-module-error-handling                                           Negative 'output-strict-module-error-handling' option.
   --output-strict-module-exception-handling                                          Handles exceptions in module loading correctly at a performance cost (Deprecated). This will handle module error compatible with the Node.js CommonJS way.
   --no-output-strict-module-exception-handling                                       Negative 'output-strict-module-exception-handling' option.
-  --output-trusted-types [value]                                                     Use a Trusted Types policy to create urls for chunks. 'output.uniqueName' is used a default policy name. Passing a string sets a custom policy name. The name of the TrustedTypes policy created by webpack to serve bundle chunks.
+  --output-trusted-types [value]                                                     Use a Trusted Types policy to create urls for chunks. 'output.uniqueName' is used a default policy name. Passing a string sets a custom policy name. The name of the Trusted Types policy created by webpack to serve bundle chunks.
   --output-trusted-types-policy-name <value>                                         The name of the Trusted Types policy created by webpack to serve bundle chunks.
   --output-unique-name <value>                                                       A unique name of the webpack build to avoid multiple webpack runtimes to conflict when using globals.
   --output-wasm-loading <value>                                                      The method of loading WebAssembly Modules (methods included by default are 'fetch' (web/WebWorker), 'async-node' (node.js), but others might be added by plugins).
