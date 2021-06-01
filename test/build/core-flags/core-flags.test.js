@@ -3,7 +3,7 @@
 const { run } = require("../../utils/test-utils");
 
 describe("core flags", () => {
-    describe("boolean flags", () => {
+    describe("boolean", () => {
         it("should set bail to true", async () => {
             const { exitCode, stderr, stdout } = await run(__dirname, ["--bail"]);
 
@@ -21,7 +21,7 @@ describe("core flags", () => {
         });
     });
 
-    describe("RegExp flag", () => {
+    describe("RegExp", () => {
         it("should ignore the warning emitted", async () => {
             const { exitCode, stderr, stdout } = await run(__dirname, [
                 "--ignore-warnings",
@@ -57,6 +57,29 @@ describe("core flags", () => {
             expect(exitCode).toBe(2);
             expect(stderr).toContain(`Invalid value 'abc' for the '--ignore-warnings' option`);
             expect(stderr).toContain(`Expected: 'regular expression (example: /ab?c*/)'`);
+            expect(stdout).toBeFalsy();
+        });
+    });
+
+    describe("reset", () => {
+        it("should reset entry correctly", async () => {
+            const { exitCode, stderr, stdout } = await run(__dirname, [
+                "--entry-reset",
+                "--entry",
+                "./src/entry.js",
+            ]);
+
+            expect(exitCode).toBe(0);
+            expect(stderr).toBeFalsy();
+            expect(stdout).toContain("src/entry.js");
+            expect(stdout).not.toContain("src/main.js");
+        });
+
+        it("should throw error if entry is an empty array", async () => {
+            const { exitCode, stderr, stdout } = await run(__dirname, ["--entry-reset"]);
+
+            expect(exitCode).toBe(2);
+            expect(stderr).toContain("Invalid configuration object");
             expect(stdout).toBeFalsy();
         });
     });
