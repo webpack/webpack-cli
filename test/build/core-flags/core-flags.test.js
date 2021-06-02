@@ -108,9 +108,33 @@ describe("core flags", () => {
             const { exitCode, stderr, stdout } = await run(__dirname, ["--no-amd"]);
 
             expect(exitCode).toBe(0);
-            expect(stderr).toContain(`Invalid value 'true' for the '--amd' option`);
             expect(stderr).toBeFalsy();
             expect(stdout).toContain("amd: false");
+        });
+
+        it("should correctly set `infrastructureLogging.level`", async () => {
+            const { exitCode, stderr, stdout } = await run(__dirname, [
+                "--infrastructure-logging-level",
+                "verbose",
+            ]);
+
+            expect(exitCode).toBe(0);
+            expect(stderr).toContain(`Compiler 'compiler' starting...`);
+            expect(stdout).toContain("level: 'verbose'");
+        });
+
+        it("should throw error for invalid `infrastructureLogging.level`", async () => {
+            const { exitCode, stderr, stdout } = await run(__dirname, [
+                "--infrastructure-logging-level",
+                "test",
+            ]);
+
+            expect(exitCode).toBe(2);
+            expect(stderr).toContain(
+                `Invalid value 'test' for the '--infrastructure-logging-level' option`,
+            );
+            expect(stderr).toContain(`Expected: 'none | error | warn | info | log | verbose'`);
+            expect(stdout).toBeFalsy();
         });
     });
 });
