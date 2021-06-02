@@ -187,4 +187,40 @@ describe("core flags", () => {
             expect(stdout).toContain(`dependencies: [ 'lodash', 'react' ]`);
         });
     });
+
+    describe("flags with multiple types", () => {
+        it("should allow string value for `infrastructureLogging.debug`", async () => {
+            const { exitCode, stderr, stdout } = await run(__dirname, [
+                "--infrastructure-logging-debug",
+                "MyPlugin",
+            ]);
+
+            expect(exitCode).toBe(0);
+            expect(stderr).toBeFalsy();
+            expect(stdout).toContain(`debug: [ 'MyPlugin' ]`);
+        });
+
+        it("should allow RegExp value for `infrastructureLogging.debug`", async () => {
+            const { exitCode, stderr, stdout } = await run(__dirname, [
+                "--infrastructure-logging-debug",
+                /MyPlugin/,
+            ]);
+
+            expect(exitCode).toBe(0);
+            expect(stderr).toBeFalsy();
+            expect(stdout).toContain(`debug: [ /MyPlugin/ ],`);
+        });
+
+        it("should allow multiple values for `infrastructureLogging.debug`", async () => {
+            const { exitCode, stderr, stdout } = await run(__dirname, [
+                "--infrastructure-logging-debug",
+                "MyPlugin",
+                /MyAnotherPlugin/,
+            ]);
+
+            expect(exitCode).toBe(0);
+            expect(stderr).toBeFalsy();
+            expect(stdout).toContain(`debug: [ 'MyPlugin', /MyAnotherPlugin/ ]`);
+        });
+    });
 });
