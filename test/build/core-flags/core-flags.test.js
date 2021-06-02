@@ -1,9 +1,10 @@
 "use strict";
 
-const { run } = require("../../utils/test-utils");
+const { resolve } = require("path");
+const { run, isWindows } = require("../../utils/test-utils");
 
 describe("core flags", () => {
-    describe("boolean", () => {
+    describe("boolean type flags", () => {
         it("should set bail to true", async () => {
             const { exitCode, stderr, stdout } = await run(__dirname, ["--bail"]);
 
@@ -21,7 +22,7 @@ describe("core flags", () => {
         });
     });
 
-    describe("RegExp", () => {
+    describe("RegExp type flags", () => {
         it("should ignore the warning emitted", async () => {
             const { exitCode, stderr, stdout } = await run(__dirname, [
                 "--ignore-warnings",
@@ -61,7 +62,7 @@ describe("core flags", () => {
         });
     });
 
-    describe("reset", () => {
+    describe("reset type flags", () => {
         it("should reset entry correctly", async () => {
             const { exitCode, stderr, stdout } = await run(__dirname, [
                 "--entry-reset",
@@ -84,7 +85,7 @@ describe("core flags", () => {
         });
     });
 
-    describe("number", () => {
+    describe("number type flags", () => {
         it("should set parallelism option correctly", async () => {
             const { exitCode, stderr, stdout } = await run(__dirname, ["--parallelism", 10]);
 
@@ -94,7 +95,7 @@ describe("core flags", () => {
         });
     });
 
-    describe("enum", () => {
+    describe("enum type flags", () => {
         it("should not allow `true` for amd", async () => {
             const { exitCode, stderr, stdout } = await run(__dirname, ["--amd"]);
 
@@ -135,6 +136,55 @@ describe("core flags", () => {
             );
             expect(stderr).toContain(`Expected: 'none | error | warn | info | log | verbose'`);
             expect(stdout).toBeFalsy();
+        });
+    });
+
+    describe("path type flags", () => {
+        it("should set context option correctly", async () => {
+            const { exitCode, stderr, stdout } = await run(__dirname, ["--context", "./"]);
+
+            expect(exitCode).toBe(0);
+            expect(stderr).toBeFalsy();
+
+            if (isWindows) {
+                const windowsPath = resolve(__dirname, "./").replace(/\\/g, "\\\\");
+                expect(stdout).toContain(`'${windowsPath}'`);
+            } else {
+                expect(stdout).toContain(`'${resolve(__dirname, "./")}'`);
+            }
+        });
+
+        it("should throw module not found error for invalid context", async () => {
+            const { exitCode, stderr, stdout } = await run(__dirname, [
+                "--context",
+                "/invalid-context-path",
+            ]);
+
+            expect(exitCode).toBe(1);
+            expect(stderr).toBeFalsy();
+            expect(stdout).toContain(`Module not found: Error: Can't resolve './src/main.js'`);
+        });
+    });
+
+    describe("string type flags", () => {
+        it("should set dependencies option correctly", async () => {
+            const { exitCode, stderr, stdout } = await run(__dirname, ["--dependencies", "lodash"]);
+
+            expect(exitCode).toBe(0);
+            expect(stderr).toBeFalsy();
+            expect(stdout).toContain(`dependencies: [ 'lodash' ]`);
+        });
+
+        it("should allow to set multiple dependencies", async () => {
+            const { exitCode, stderr, stdout } = await run(__dirname, [
+                "--dependencies",
+                "lodash",
+                "react",
+            ]);
+
+            expect(exitCode).toBe(0);
+            expect(stderr).toBeFalsy();
+            expect(stdout).toContain(`dependencies: [ 'lodash', 'react' ]`);
         });
     });
 });
