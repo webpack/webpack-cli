@@ -9,7 +9,6 @@ const ignorePattern =
 module.exports = {
     testPathIgnorePatterns: ignorePattern,
     testEnvironment: "node",
-    testRunner: "jest-jasmine2",
     collectCoverage: true,
     coverageDirectory: ".nyc_output",
     coverageReporters: ["json"],
