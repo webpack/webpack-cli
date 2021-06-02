@@ -83,4 +83,34 @@ describe("core flags", () => {
             expect(stdout).toBeFalsy();
         });
     });
+
+    describe("number", () => {
+        it("should set parallelism option correctly", async () => {
+            const { exitCode, stderr, stdout } = await run(__dirname, ["--parallelism", 10]);
+
+            expect(exitCode).toBe(0);
+            expect(stderr).toBeFalsy();
+            expect(stdout).toContain("parallelism: 10");
+        });
+    });
+
+    describe("enum", () => {
+        it("should not allow `true` for amd", async () => {
+            const { exitCode, stderr, stdout } = await run(__dirname, ["--amd"]);
+
+            expect(exitCode).toBe(2);
+            expect(stderr).toContain(`Invalid value 'true' for the '--amd' option`);
+            expect(stderr).toContain(`Expected: 'false'`);
+            expect(stdout).toBeFalsy();
+        });
+
+        it("should allow `false` for amd", async () => {
+            const { exitCode, stderr, stdout } = await run(__dirname, ["--no-amd"]);
+
+            expect(exitCode).toBe(0);
+            expect(stderr).toContain(`Invalid value 'true' for the '--amd' option`);
+            expect(stderr).toBeFalsy();
+            expect(stdout).toContain("amd: false");
+        });
+    });
 });
