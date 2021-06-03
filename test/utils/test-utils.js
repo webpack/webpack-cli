@@ -245,6 +245,12 @@ const normalizeCwd = (output) => {
         .replace(new RegExp(process.cwd().replace(/\\/g, "/"), "g"), "<cwd>");
 };
 
+const normalizeTempDir = (output) => {
+    return output
+        .replace(/\\/g, "/")
+        .replace(new RegExp(os.tmpdir().replace(/\\/g, "/"), "g"), "<tmp>");
+};
+
 const normalizeError = (output) => {
     return output
         .replace(/SyntaxError: .+/, "SyntaxError: <error-message>")
@@ -262,6 +268,7 @@ const normalizeStdout = (stdout) => {
 
     let normalizedStdout = stripAnsi(stdout);
     normalizedStdout = normalizeCwd(normalizedStdout);
+    normalizedStdout = normalizeTempDir(normalizedStdout);
     normalizedStdout = normalizeVersions(normalizedStdout);
     normalizedStdout = normalizeError(normalizedStdout);
 
@@ -279,6 +286,7 @@ const normalizeStderr = (stderr) => {
 
     let normalizedStderr = stripAnsi(stderr);
     normalizedStderr = normalizeCwd(normalizedStderr);
+    normalizedStderr = normalizeTempDir(normalizedStderr);
 
     const networkIPv4 = internalIp.v4.sync();
 

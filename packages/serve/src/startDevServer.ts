@@ -1,6 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/no-var-requires */
+
+import { chmod, unlinkSync } from "fs";
+import net from "net";
+import os from "os";
+import { resolve } from "path";
+
 import { devServerOptionsType } from "./types";
 
 /**
@@ -82,6 +88,12 @@ export default async function startDevServer(
             devServerCliOptions,
         );
 
+        if (cliOptions.unixSocket) {
+            if (typeof cliOptions.unixSocket === "boolean") {
+                cliOptions.unixSocket = resolve(os.tmpdir(), "webpack-dev-server");
+            }
+        }
+
         if (!isDevServer4) {
             const getPublicPathOption = (): string => {
                 const normalizePublicPath = (publicPath): string =>
@@ -116,6 +128,7 @@ export default async function startDevServer(
             options.port = options.port || 8080;
             options.stats = getStatsOption();
             options.publicPath = getPublicPathOption();
+            options.socket = options.socket || cliOptions.unixSocket;
         }
 
         if (options.port) {
@@ -139,11 +152,53 @@ export default async function startDevServer(
         const { compiler, options } = devServerOptions;
         const server = new Server(compiler, options);
 
-        server.listen(options.port, options.host, (error): void => {
-            if (error) {
-                throw error;
-            }
-        });
+        if (isDevServer4) {
+            server.server.on("error", (e) => {
+                if (e.code === "EADDRINUSE") {
+                    const clientSocket = new net.Socket();
+
+                    clientSocket.on("error", (err: any) => {
+                        if (err.code === "ECONNREFUSED") {
+                            // No other server listening on this socket so it can be safely removed
+                            unlinkSync(cliOptions.unixSocket);
+
+                            server.listen(cliOptions.unixSocket, options.host, (error) => {
+                                if (error) {
+                                    throw error;
+                                }
+                            });
+                        }
+                    });
+
+                    clientSocket.connect({ path: cliOptions.unixSocket }, () => {
+                        throw new Error("This socket is already used");
+                    });
+                }
+            });
+
+            logger.info(`Listening to socket at ${cliOptions.unixSocket}`);
+
+            server.listen(cliOptions.unixSocket, options.host, (err) => {
+                if (err) {
+                    throw err;
+                }
+
+                // chmod 666 (rw rw rw)
+                const READ_WRITE = 438;
+
+                chmod(cliOptions.unixSocket, READ_WRITE, (err) => {
+                    if (err) {
+                        throw err;
+                    }
+                });
+            });
+        } else {
+            server.listen(options.port, options.host, (err) => {
+                if (err) {
+                    throw err;
+                }
+            });
+        }
 
         servers.push(server);
     }

@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`--unix-socket --unix-socket <value>: stderr 1`] = `""`;
+
+exports[`--unix-socket should default unix socket to <tmpDir>/webpack-dev-server: stderr 1`] = `""`;
+
+exports[`--unix-socket should throw error if \`--unix-socket\` is used without serve command: stderr 1`] = `"[webpack-cli] You must use '--unix-socket' with 'serve' command only."`;
+
+exports[`--unix-socket should throw error if \`--unix-socket\` is used without serve command: stdout 1`] = `""`;

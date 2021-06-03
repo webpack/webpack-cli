@@ -502,6 +502,19 @@ class WebpackCLI {
                 multiple: false,
                 description: "Sets process.env.NODE_ENV to the specified value.",
             },
+            {
+                name: "unix-socket",
+                configs: [
+                    {
+                        type: "boolean",
+                    },
+                    {
+                        type: "string",
+                    },
+                ],
+                multiple: false,
+                description: "Set unix socket to listen.",
+            },
 
             // Adding more plugins
             {
@@ -1741,6 +1754,11 @@ class WebpackCLI {
             this.logger.error(
                 `'${options.hot}' is an invalid value for the --hot option. Use 'only' instead.`,
             );
+            process.exit(2);
+        }
+
+        if (options.unixSocket && !options.argv.env["WEBPACK_SERVE"]) {
+            this.logger.error(`You must use '--unix-socket' with 'serve' command only.`);
             process.exit(2);
         }
 

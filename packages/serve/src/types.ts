@@ -33,6 +33,7 @@ export type devServerOptionsType = {
     useLocalIp?: boolean;
     publicPath?: string | (() => void);
     stats?: string | boolean;
+    socket?: string;
     watchFiles?: string | Record<string, unknown>;
 };
 
