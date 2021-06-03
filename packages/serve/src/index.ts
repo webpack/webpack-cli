@@ -3,11 +3,19 @@ import startDevServer from "./startDevServer";
 class ServeCommand {
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
     async apply(cli: any): Promise<void> {
-        const { logger } = cli;
+        const { logger, webpack } = cli;
 
         const loadDevServerOptions = () => {
             // eslint-disable-next-line @typescript-eslint/no-var-requires, node/no-extraneous-require
-            const options = require("webpack-dev-server/bin/cli-flags");
+            const devServer = require("webpack-dev-server");
+
+            // TODO only keep `getArguments` after drop webpack v4
+
+            const options =
+                typeof devServer.getArguments === "function"
+                    ? devServer.getArguments(webpack)
+                    : // eslint-disable-next-line node/no-extraneous-require
+                      require("webpack-dev-server/bin/cli-flags");
 
             // Old options format
             // { devServer: [{...}, {}...] }
@@ -64,7 +72,7 @@ class ServeCommand {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const webpackOptions: Record<string, any> = {};
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const devServerOptions: Record<string, any> = {};
+                let devServerOptions: Record<string, any> = {};
 
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const processors: Array<(opts: Record<string, any>) => void> = [];
@@ -137,6 +145,30 @@ class ServeCommand {
                         });
                     });
                     process.stdin.resume();
+                }
+
+                // eslint-disable-next-line @typescript-eslint/no-var-requires, node/no-extraneous-require
+                const devServer = require("webpack-dev-server");
+
+                if (typeof devServer.processArguments === "function") {
+                    const args = devServerFlags.reduce((accumulator, flag) => {
+                        accumulator[flag.name] = flag;
+
+                        return accumulator;
+                    }, {});
+                    const values = Object.keys(devServerOptions).reduce((accumulator, name) => {
+                        const kebabName = cli.utils.toKebabCase(name);
+
+                        if (args[kebabName]) {
+                            accumulator[kebabName] = options[name];
+                        }
+
+                        return accumulator;
+                    }, {});
+                    const result = { ...compiler.options.devServer };
+
+                    devServer.processArguments(cli.webpack, args, result, values);
+                    devServerOptions = result;
                 }
 
                 try {
