@@ -6,20 +6,31 @@ class ServeCommand {
         const { logger, webpack } = cli;
 
         const loadDevServerOptions = () => {
+            // TODO simplify this after drop webpack v4 and webpack-dev-server v3
             // eslint-disable-next-line @typescript-eslint/no-var-requires, node/no-extraneous-require
             const devServer = require("webpack-dev-server");
+            const isNewDevServerCLIAPI = typeof devServer.schema !== "undefined";
 
-            // TODO only keep `getArguments` after drop webpack v4
+            let options = {};
 
-            const options =
-                typeof devServer.getArguments === "function"
-                    ? devServer.getArguments(webpack)
-                    : // eslint-disable-next-line node/no-extraneous-require
-                      require("webpack-dev-server/bin/cli-flags");
+            if (isNewDevServerCLIAPI) {
+                if (typeof webpack.cli.getArguments === "function") {
+                    options = webpack.cli.getArguments(devServer.schema);
+                } else {
+                    options = devServer.cli.getArguments();
+                }
+            } else {
+                // eslint-disable-next-line node/no-extraneous-require
+                options = require("webpack-dev-server/bin/cli-flags");
+            }
 
             // Old options format
             // { devServer: [{...}, {}...] }
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             if (options.devServer) {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
                 return options.devServer;
             }
 
@@ -149,25 +160,26 @@ class ServeCommand {
 
                 // eslint-disable-next-line @typescript-eslint/no-var-requires, node/no-extraneous-require
                 const devServer = require("webpack-dev-server");
+                const isNewDevServerCLIAPI = typeof devServer.schema !== "undefined";
 
-                if (typeof devServer.processArguments === "function") {
+                if (isNewDevServerCLIAPI) {
                     const args = devServerFlags.reduce((accumulator, flag) => {
                         accumulator[flag.name] = flag;
-
                         return accumulator;
                     }, {});
                     const values = Object.keys(devServerOptions).reduce((accumulator, name) => {
                         const kebabName = cli.utils.toKebabCase(name);
-
                         if (args[kebabName]) {
                             accumulator[kebabName] = options[name];
                         }
-
                         return accumulator;
                     }, {});
-                    const result = { ...compiler.options.devServer };
-
-                    const problems = devServer.processArguments(cli.webpack, args, result, values);
+                    const result = Object.assign({}, compiler.options.devServer);
+                    const problems = (
+                        typeof webpack.cli.processArguments === "function"
+                            ? webpack.cli
+                            : devServer.cli
+                    ).processArguments(args, result, values);
 
                     if (problems) {
                         const groupBy = (xs, key) => {
@@ -177,11 +189,11 @@ class ServeCommand {
                                 return rv;
                             }, {});
                         };
+
                         const problemsByPath = groupBy(problems, "path");
 
                         for (const path in problemsByPath) {
                             const problems = problemsByPath[path];
-
                             problems.forEach((problem) => {
                                 cli.logger.error(
                                     `${cli.utils.capitalizeFirstLetter(
