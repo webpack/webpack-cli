@@ -222,5 +222,29 @@ describe("core flags", () => {
             expect(stderr).toBeFalsy();
             expect(stdout).toContain(`debug: [ 'MyPlugin', /MyAnotherPlugin/ ]`);
         });
+
+        it("should allow string value devtool option", async () => {
+            const { exitCode, stderr, stdout } = await run(__dirname, ["--devtool", "source-map"]);
+
+            expect(exitCode).toBe(0);
+            expect(stderr).toBeFalsy();
+            expect(stdout).toContain(`devtool: 'source-map'`);
+        });
+
+        it("should allow --no-devtool", async () => {
+            const { exitCode, stderr, stdout } = await run(__dirname, ["--no-devtool"]);
+
+            expect(exitCode).toBe(0);
+            expect(stderr).toBeFalsy();
+            expect(stdout).toContain(`devtool: false`);
+        });
+
+        it("should log error for invalid devtool value", async () => {
+            const { exitCode, stderr, stdout } = await run(__dirname, ["--devtool", "invalid"]);
+
+            expect(exitCode).toBe(2);
+            expect(stderr).toContain("Invalid configuration object");
+            expect(stdout).toBeFalsy();
+        });
     });
 });
