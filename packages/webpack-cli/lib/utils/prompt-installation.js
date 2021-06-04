@@ -22,6 +22,7 @@ async function promptInstallation(packageName, preMessage) {
     const commandToBeRun = `${packageManager} ${[
         packageManager === "yarn" ? "add" : "install",
         "-D",
+        "--ignore-workspace-root-check",
         packageName,
     ].join(" ")}`;
     const { colors } = utils;
@@ -51,7 +52,7 @@ async function promptInstallation(packageName, preMessage) {
             process.exit(2);
         }
 
-        return utils.packageExists(packageName);
+        return packageName;
     }
 
     process.exit(2);
