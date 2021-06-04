@@ -1,4 +1,4 @@
-const HAS_WEBPACK_SERVE = process.env.WEBPACK_SERVE;
+const HAS_WEBPACK_SERVE = process.env.WEBPACK_SERVE || process.env.WEBPACK_DEV_SERVER;
 
 class CustomTestPlugin {
     constructor(isInEnvironment) {
