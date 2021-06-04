@@ -167,7 +167,41 @@ class ServeCommand {
                     }, {});
                     const result = { ...compiler.options.devServer };
 
-                    devServer.processArguments(cli.webpack, args, result, values);
+                    const problems = devServer.processArguments(cli.webpack, args, result, values);
+
+                    if (problems) {
+                        const groupBy = (xs, key) => {
+                            return xs.reduce((rv, x) => {
+                                (rv[x[key]] = rv[x[key]] || []).push(x);
+
+                                return rv;
+                            }, {});
+                        };
+                        const problemsByPath = groupBy(problems, "path");
+
+                        for (const path in problemsByPath) {
+                            const problems = problemsByPath[path];
+
+                            problems.forEach((problem) => {
+                                cli.logger.error(
+                                    `${cli.utils.capitalizeFirstLetter(
+                                        problem.type.replace(/-/g, " "),
+                                    )}${problem.value ? ` '${problem.value}'` : ""} for the '--${
+                                        problem.argument
+                                    }' option${
+                                        problem.index ? ` by index '${problem.index}'` : ""
+                                    }`,
+                                );
+
+                                if (problem.expected) {
+                                    cli.logger.error(`Expected: '${problem.expected}'`);
+                                }
+                            });
+                        }
+
+                        process.exit(2);
+                    }
+
                     devServerOptions = result;
                 }
 
