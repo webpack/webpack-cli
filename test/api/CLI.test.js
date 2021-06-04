@@ -1643,5 +1643,60 @@ describe("CLI API", () => {
 
             command.parseAsync(["--unknown", "foo"], { from: "user" });
         });
+
+        it("should make command with Boolean option and use description", async () => {
+            expect.assertions(2);
+
+            cli.program.commands = [];
+
+            const command = await cli.makeCommand(
+                {
+                    name: "command",
+                },
+                [
+                    {
+                        name: "boolean",
+                        type: Boolean,
+                        description: "Description",
+                        negatedDescription: "Negated description",
+                    },
+                ],
+                (options) => {
+                    expect(options).toEqual({ boolean: true });
+                },
+            );
+
+            command.parseAsync(["--boolean"], { from: "user" });
+
+            expect(command.helpInformation()).toContain("--boolean   Description");
+        });
+
+        it("should make command with Boolean option and negative value and use negatedDescription", async () => {
+            expect.assertions(2);
+
+            cli.program.commands = [];
+
+            const command = await cli.makeCommand(
+                {
+                    name: "command",
+                },
+                [
+                    {
+                        name: "boolean",
+                        type: Boolean,
+                        description: "description",
+                        negative: true,
+                        negatedDescription: "Negated description",
+                    },
+                ],
+                (options) => {
+                    expect(options).toEqual({ boolean: false });
+                },
+            );
+
+            command.parseAsync(["--no-boolean"], { from: "user" });
+
+            expect(command.helpInformation()).toContain("--no-boolean  Negated description");
+        });
     });
 });
