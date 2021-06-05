@@ -260,7 +260,7 @@ const normalizeVersions = (output) => {
 };
 
 const normalizeCwd = (output) => {
-    const tmp = os.tmpdir();
+    const tmpDir = os.tmpdir()
 
     return output
         .replace(/\\/g, "/")
