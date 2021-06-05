@@ -57,7 +57,7 @@ const copyRecursiveSync = function (src, dest) {
                 return;
             }
 
-            copyRecursiveSync(path.join(src, childItemName), path.join(dest, childItemName));
+            copyRecursiveSync(path.join(src, childInode), path.join(dest, childInode));
         });
     } else {
         fs.copyFileSync(src, dest);
