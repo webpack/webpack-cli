@@ -265,7 +265,7 @@ const normalizeCwd = (output) => {
     return output
         .replace(/\\/g, "/")
         .replace(new RegExp(process.cwd().replace(/\\/g, "/"), "g"), "<cwd>")
-        .replace(new RegExp(`${tmp.replace(/\\/g, "/")}/[a-z0-9]{9}`), "<cwd>");
+        .replace(new RegExp(`${tmpDir.replace(/\\/g, "/")}/[a-z0-9]{9}`), "<cwd>");
 };
 
 const normalizeError = (output) => {
