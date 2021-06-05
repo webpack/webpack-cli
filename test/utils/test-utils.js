@@ -53,7 +53,7 @@ const copyRecursiveSync = function (src, dest) {
     if (fs.existsSync(src) && fs.statSync(src).isDirectory()) {
         fs.mkdirSync(dest);
         fs.readdirSync(src).forEach((childInode) => {
-            if (/(__snapshots__|\.test\.)/.test(childItemName)) {
+            if (/(__snapshots__|\.test\.)/.test(childInode)) {
                 return;
             }
 
