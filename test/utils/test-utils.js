@@ -52,7 +52,7 @@ const getUniqueDirectory = () => path.resolve(os.tmpdir(), Math.random().toStrin
 const copyRecursiveSync = function (src, dest) {
     if (fs.existsSync(src) && fs.statSync(src).isDirectory()) {
         fs.mkdirSync(dest);
-        fs.readdirSync(src).forEach((childItemName) => {
+        fs.readdirSync(src).forEach((childInode) => {
             if (/(__snapshots__|\.test\.)/.test(childItemName)) {
                 return;
             }
