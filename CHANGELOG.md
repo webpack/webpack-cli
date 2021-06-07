@@ -1,3 +1,7 @@
+## [4.7.2](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.7.1...webpack-cli@4.7.2) (2021-06-07)
+
+**Note:** Version bump only for package webpack-cli (due `@webpack-cli/serve`)
+
 ## [4.7.1](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.7.0...webpack-cli@4.7.1) (2021-06-07)
 
 ### Bug Fixes
