@@ -2,7 +2,7 @@ const { sync } = require("execa");
 
 const utils = require("./");
 
-function isPmInstalled(packageManager) {
+function hasPmInstalled(packageManager) {
     try {
         sync(packageManager, ["--version"]);
         return packageManager;
@@ -13,7 +13,7 @@ function isPmInstalled(packageManager) {
 
 function getAvailableInstallers() {
     const installers = ["npm", "yarn", "pnpm"];
-    const availableInstallers = installers.filter((installer) => isPmInstalled(installer));
+    const availableInstallers = installers.filter((installer) => hasPmInstalled(installer));
 
     if (!availableInstallers.length) {
         utils.logger.error("No package manager found.");
