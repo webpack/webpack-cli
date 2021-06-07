@@ -20,7 +20,9 @@ const dataForTests = (rootAssetsPath) => ({
 
 describe("plugin command", () => {
     it("should ask the plugin name when invoked", async () => {
-        const { stdout, stderr } = await runPromptWithAnswers(__dirname, ["plugin"]);
+        const assetsPath = await uniqueDirectoryForTest();
+        const { stdout, stderr } = await runPromptWithAnswers(assetsPath, ["plugin"]);
+
         expect(stdout).toBeTruthy();
         expect(stderr).toBeFalsy();
         expect(normalizeStdout(stdout)).toContain(firstPrompt);
@@ -153,7 +155,7 @@ describe("plugin command", () => {
             mkdirSync(genPath);
         }
 
-        let { stdout } = await runPromptWithAnswers(
+        const { stdout } = await runPromptWithAnswers(
             genPath,
             ["plugin", "./"],
             [`${pluginName}${ENTER}`],

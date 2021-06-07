@@ -82,7 +82,11 @@ Adds a development server to serve webpack bundles and hence make development fa
 
 Adds `html-webpack-plugin` that simplifies creation of HTML files to serve your bundles.
 
-4. `Which of the following CSS solutions do you want to use?`
+4. `Do you want to add PWA support?`
+
+Adds [`workbox-webpack-plugin`](https://developers.google.com/web/tools/workbox/modules/workbox-webpack-plugin) which generates a complete service worker for you.
+
+5. `Which of the following CSS solutions do you want to use?`
 
 > _Property/key resolved: [module.rules](https://webpack.js.org/configuration/module/#module-rules) (for .css files)_
 

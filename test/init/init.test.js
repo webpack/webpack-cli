@@ -144,7 +144,7 @@ describe("init command", () => {
         const { stdout, stderr } = await runPromptWithAnswers(
             assetsPath,
             ["init"],
-            [`${DOWN}${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${ENTER}`],
+            [`${DOWN}${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`, ENTER],
         );
 
         expect(stdout).toContain("Project has been initialised with webpack!");
@@ -170,7 +170,7 @@ describe("init command", () => {
         const { stdout, stderr } = await runPromptWithAnswers(
             assetsPath,
             ["init"],
-            [`${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${ENTER}`],
+            [`${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`, ENTER],
         );
 
         expect(stdout).toContain("Project has been initialised with webpack!");
@@ -198,6 +198,7 @@ describe("init command", () => {
             ["init"],
             [
                 `${ENTER}`,
+                `n${ENTER}`,
                 `n${ENTER}`,
                 `n${ENTER}`,
                 `${DOWN}${DOWN}${ENTER}`,
@@ -231,6 +232,7 @@ describe("init command", () => {
             ["init"],
             [
                 `${ENTER}`,
+                `n${ENTER}`,
                 `n${ENTER}`,
                 `n${ENTER}`,
                 `${DOWN}${DOWN}${ENTER}`,
@@ -272,6 +274,7 @@ describe("init command", () => {
                 `${ENTER}`,
                 `n${ENTER}`,
                 `n${ENTER}`,
+                `n${ENTER}`,
                 `${DOWN}${DOWN}${ENTER}`,
                 `n${ENTER}`,
                 `n${ENTER}`,
@@ -303,6 +306,7 @@ describe("init command", () => {
             ["init"],
             [
                 `${ENTER}`,
+                `n${ENTER}`,
                 `n${ENTER}`,
                 `n${ENTER}`,
                 `${DOWN}${DOWN}${ENTER}`,
@@ -344,6 +348,7 @@ describe("init command", () => {
                 `${ENTER}`,
                 `n${ENTER}`,
                 `n${ENTER}`,
+                `n${ENTER}`,
                 `${DOWN}${DOWN}${DOWN}${ENTER}`,
                 `n${ENTER}`,
                 `n${ENTER}`,
@@ -377,6 +382,7 @@ describe("init command", () => {
                 `${ENTER}`,
                 `n${ENTER}`,
                 `n${ENTER}`,
+                `n${ENTER}`,
                 `${DOWN}${DOWN}${DOWN}${DOWN}${ENTER}`,
                 `n${ENTER}`,
                 `n${ENTER}`,
@@ -406,7 +412,7 @@ describe("init command", () => {
         const { stdout, stderr } = await runPromptWithAnswers(
             assetsPath,
             ["init"],
-            [ENTER, ENTER, `n${ENTER}`, ENTER],
+            [ENTER, ENTER, `n${ENTER}`, `n${ENTER}`, ENTER],
         );
 
         expect(stdout).toContain("Do you want to use webpack-dev-server?");
@@ -431,7 +437,15 @@ describe("init command", () => {
         const { stdout, stderr } = await runPromptWithAnswers(
             assetsPath,
             ["init"],
-            [`${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${DOWN}${ENTER}`, ENTER, `n${ENTER}`],
+            [
+                `${ENTER}`,
+                `n${ENTER}`,
+                `n${ENTER}`,
+                `n${ENTER}`,
+                `${DOWN}${ENTER}`,
+                ENTER,
+                `n${ENTER}`,
+            ],
         );
 
         expect(stdout).toContain("Project has been initialised with webpack!");
@@ -462,12 +476,38 @@ describe("init command", () => {
         const { stdout, stderr } = await runPromptWithAnswers(
             assetsPath,
             ["init"],
-            [ENTER, `n${ENTER}`, ENTER, ENTER],
+            [ENTER, `n${ENTER}`, ENTER, `n${ENTER}`, ENTER],
         );
 
         expect(stdout).toContain(
             "Do you want to simplify the creation of HTML files for your bundle?",
         );
+        expect(stdout).toContain("Project has been initialised with webpack!");
+        expect(stderr).toContain("webpack.config.js");
+
+        // Test files
+        const files = ["package.json", "src", "src/index.js", "webpack.config.js"];
+
+        files.forEach((file) => {
+            expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+        });
+
+        // Check if the generated package.json file content matches the snapshot
+        expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
+
+        // Check if the generated webpack configuration matches the snapshot
+        expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
+    });
+
+    it("should configure workbox-webpack-plugin as opted", async () => {
+        const assetsPath = await uniqueDirectoryForTest();
+        const { stdout, stderr } = await runPromptWithAnswers(
+            assetsPath,
+            ["init"],
+            [ENTER, `n${ENTER}`, ENTER, ENTER, ENTER],
+        );
+
+        expect(stdout).toContain("Do you want to add PWA support?");
         expect(stdout).toContain("Project has been initialised with webpack!");
         expect(stderr).toContain("webpack.config.js");
 

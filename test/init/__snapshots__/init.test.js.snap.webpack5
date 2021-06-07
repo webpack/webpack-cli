@@ -1,5 +1,49 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`init command recognizes '-f' as an alias for '--force' 1`] = `
+Object {
+  "description": "My webpack project",
+  "devDependencies": Object {
+    "html-webpack-plugin": "x.x.x",
+    "webpack": "x.x.x",
+    "webpack-cli": "x.x.x",
+    "webpack-dev-server": "x.x.x",
+    "workbox-webpack-plugin": "x.x.x",
+  },
+  "name": "my-webpack-project",
+  "scripts": Object {
+    "build": "webpack --mode=production --node-env=production",
+    "build:dev": "webpack --mode=development",
+    "build:prod": "webpack --mode=production --node-env=production",
+    "serve": "webpack serve",
+    "watch": "webpack --watch",
+  },
+  "version": "1.0.0",
+}
+`;
+
+exports[`init command recognizes '-t' as an alias for '--template' 1`] = `
+Object {
+  "description": "My webpack project",
+  "devDependencies": Object {
+    "html-webpack-plugin": "x.x.x",
+    "webpack": "x.x.x",
+    "webpack-cli": "x.x.x",
+    "webpack-dev-server": "x.x.x",
+    "workbox-webpack-plugin": "x.x.x",
+  },
+  "name": "my-webpack-project",
+  "scripts": Object {
+    "build": "webpack --mode=production --node-env=production",
+    "build:dev": "webpack --mode=development",
+    "build:prod": "webpack --mode=production --node-env=production",
+    "serve": "webpack serve",
+    "watch": "webpack --watch",
+  },
+  "version": "1.0.0",
+}
+`;
+
 exports[`init command should ask question when wrong template is supplied 1`] = `
 Object {
   "description": "My webpack project",
@@ -8,6 +52,7 @@ Object {
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
     "webpack-dev-server": "x.x.x",
+    "workbox-webpack-plugin": "x.x.x",
   },
   "name": "my-webpack-project",
   "scripts": Object {
@@ -93,6 +138,7 @@ Object {
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
     "webpack-dev-server": "x.x.x",
+    "workbox-webpack-plugin": "x.x.x",
   },
   "name": "my-webpack-project",
   "scripts": Object {
@@ -111,6 +157,7 @@ exports[`init command should configure assets modules by default 2`] = `
 
 const path = require(\\"path\\");
 const HtmlWebpackPlugin = require(\\"html-webpack-plugin\\");
+const WorkboxWebpackPlugin = require(\\"workbox-webpack-plugin\\");
 
 const isProduction = process.env.NODE_ENV == \\"production\\";
 
@@ -147,6 +194,8 @@ const config = {
 module.exports = () => {
   if (isProduction) {
     config.mode = \\"production\\";
+
+    config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
   } else {
     config.mode = \\"development\\";
   }
@@ -211,6 +260,74 @@ const config = {
 module.exports = () => {
   if (isProduction) {
     config.mode = \\"production\\";
+  } else {
+    config.mode = \\"development\\";
+  }
+  return config;
+};
+"
+`;
+
+exports[`init command should configure workbox-webpack-plugin as opted 1`] = `
+Object {
+  "description": "My webpack project",
+  "devDependencies": Object {
+    "html-webpack-plugin": "x.x.x",
+    "webpack": "x.x.x",
+    "webpack-cli": "x.x.x",
+    "workbox-webpack-plugin": "x.x.x",
+  },
+  "name": "my-webpack-project",
+  "scripts": Object {
+    "build": "webpack --mode=production --node-env=production",
+    "build:dev": "webpack --mode=development",
+    "build:prod": "webpack --mode=production --node-env=production",
+    "watch": "webpack --watch",
+  },
+  "version": "1.0.0",
+}
+`;
+
+exports[`init command should configure workbox-webpack-plugin as opted 2`] = `
+"// Generated using webpack-cli https://github.com/webpack/webpack-cli
+
+const path = require(\\"path\\");
+const HtmlWebpackPlugin = require(\\"html-webpack-plugin\\");
+const WorkboxWebpackPlugin = require(\\"workbox-webpack-plugin\\");
+
+const isProduction = process.env.NODE_ENV == \\"production\\";
+
+const config = {
+  entry: \\"./src/index.js\\",
+  output: {
+    path: path.resolve(__dirname, \\"dist\\"),
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: \\"index.html\\",
+    }),
+
+    // Add your plugins here
+    // Learn more about plugins from https://webpack.js.org/configuration/plugins/
+  ],
+  module: {
+    rules: [
+      {
+        test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
+        type: \\"asset\\",
+      },
+
+      // Add your rules for custom modules here
+      // Learn more about loaders from https://webpack.js.org/loaders/
+    ],
+  },
+};
+
+module.exports = () => {
+  if (isProduction) {
+    config.mode = \\"production\\";
+
+    config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
   } else {
     config.mode = \\"development\\";
   }
@@ -292,6 +409,7 @@ Object {
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
     "webpack-dev-server": "x.x.x",
+    "workbox-webpack-plugin": "x.x.x",
   },
   "name": "my-webpack-project",
   "scripts": Object {
@@ -313,6 +431,7 @@ Object {
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
     "webpack-dev-server": "x.x.x",
+    "workbox-webpack-plugin": "x.x.x",
   },
   "name": "my-webpack-project",
   "scripts": Object {
@@ -334,6 +453,7 @@ Object {
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
     "webpack-dev-server": "x.x.x",
+    "workbox-webpack-plugin": "x.x.x",
   },
   "name": "my-webpack-project",
   "scripts": Object {
@@ -413,90 +533,6 @@ module.exports = () => {
   return config;
 };
 "
-`;
-
-exports[`init command should work with 'c' alias 1`] = `
-Object {
-  "description": "My webpack project",
-  "devDependencies": Object {
-    "html-webpack-plugin": "x.x.x",
-    "webpack": "x.x.x",
-    "webpack-cli": "x.x.x",
-    "webpack-dev-server": "x.x.x",
-  },
-  "name": "my-webpack-project",
-  "scripts": Object {
-    "build": "webpack --mode=production --node-env=production",
-    "build:dev": "webpack --mode=development",
-    "build:prod": "webpack --mode=production --node-env=production",
-    "serve": "webpack serve",
-    "watch": "webpack --watch",
-  },
-  "version": "1.0.0",
-}
-`;
-
-exports[`init command should work with 'create' alias 1`] = `
-Object {
-  "description": "My webpack project",
-  "devDependencies": Object {
-    "html-webpack-plugin": "x.x.x",
-    "webpack": "x.x.x",
-    "webpack-cli": "x.x.x",
-    "webpack-dev-server": "x.x.x",
-  },
-  "name": "my-webpack-project",
-  "scripts": Object {
-    "build": "webpack --mode=production --node-env=production",
-    "build:dev": "webpack --mode=development",
-    "build:prod": "webpack --mode=production --node-env=production",
-    "serve": "webpack serve",
-    "watch": "webpack --watch",
-  },
-  "version": "1.0.0",
-}
-`;
-
-exports[`init command should work with 'n' alias 1`] = `
-Object {
-  "description": "My webpack project",
-  "devDependencies": Object {
-    "html-webpack-plugin": "x.x.x",
-    "webpack": "x.x.x",
-    "webpack-cli": "x.x.x",
-    "webpack-dev-server": "x.x.x",
-  },
-  "name": "my-webpack-project",
-  "scripts": Object {
-    "build": "webpack --mode=production --node-env=production",
-    "build:dev": "webpack --mode=development",
-    "build:prod": "webpack --mode=production --node-env=production",
-    "serve": "webpack serve",
-    "watch": "webpack --watch",
-  },
-  "version": "1.0.0",
-}
-`;
-
-exports[`init command should work with 'new' alias 1`] = `
-Object {
-  "description": "My webpack project",
-  "devDependencies": Object {
-    "html-webpack-plugin": "x.x.x",
-    "webpack": "x.x.x",
-    "webpack-cli": "x.x.x",
-    "webpack-dev-server": "x.x.x",
-  },
-  "name": "my-webpack-project",
-  "scripts": Object {
-    "build": "webpack --mode=production --node-env=production",
-    "build:dev": "webpack --mode=development",
-    "build:prod": "webpack --mode=production --node-env=production",
-    "serve": "webpack serve",
-    "watch": "webpack --watch",
-  },
-  "version": "1.0.0",
-}
 `;
 
 exports[`init command should use less in project when selected 1`] = `
@@ -966,7 +1002,7 @@ module.exports = () => {
 "
 `;
 
-exports[`init command recognizes '-f' as an alias for '--force' 1`] = `
+exports[`init command should work with 'c' alias 1`] = `
 Object {
   "description": "My webpack project",
   "devDependencies": Object {
@@ -974,6 +1010,7 @@ Object {
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
     "webpack-dev-server": "x.x.x",
+    "workbox-webpack-plugin": "x.x.x",
   },
   "name": "my-webpack-project",
   "scripts": Object {
@@ -987,7 +1024,7 @@ Object {
 }
 `;
 
-exports[`init command recognizes '-t' as an alias for '--template' 1`] = `
+exports[`init command should work with 'create' alias 1`] = `
 Object {
   "description": "My webpack project",
   "devDependencies": Object {
@@ -995,6 +1032,51 @@ Object {
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
     "webpack-dev-server": "x.x.x",
+    "workbox-webpack-plugin": "x.x.x",
+  },
+  "name": "my-webpack-project",
+  "scripts": Object {
+    "build": "webpack --mode=production --node-env=production",
+    "build:dev": "webpack --mode=development",
+    "build:prod": "webpack --mode=production --node-env=production",
+    "serve": "webpack serve",
+    "watch": "webpack --watch",
+  },
+  "version": "1.0.0",
+}
+`;
+
+exports[`init command should work with 'n' alias 1`] = `
+Object {
+  "description": "My webpack project",
+  "devDependencies": Object {
+    "html-webpack-plugin": "x.x.x",
+    "webpack": "x.x.x",
+    "webpack-cli": "x.x.x",
+    "webpack-dev-server": "x.x.x",
+    "workbox-webpack-plugin": "x.x.x",
+  },
+  "name": "my-webpack-project",
+  "scripts": Object {
+    "build": "webpack --mode=production --node-env=production",
+    "build:dev": "webpack --mode=development",
+    "build:prod": "webpack --mode=production --node-env=production",
+    "serve": "webpack serve",
+    "watch": "webpack --watch",
+  },
+  "version": "1.0.0",
+}
+`;
+
+exports[`init command should work with 'new' alias 1`] = `
+Object {
+  "description": "My webpack project",
+  "devDependencies": Object {
+    "html-webpack-plugin": "x.x.x",
+    "webpack": "x.x.x",
+    "webpack-cli": "x.x.x",
+    "webpack-dev-server": "x.x.x",
+    "workbox-webpack-plugin": "x.x.x",
   },
   "name": "my-webpack-project",
   "scripts": Object {

@@ -3,15 +3,34 @@ import startDevServer from "./startDevServer";
 class ServeCommand {
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
     async apply(cli: any): Promise<void> {
-        const { logger } = cli;
+        const { logger, webpack } = cli;
 
         const loadDevServerOptions = () => {
+            // TODO simplify this after drop webpack v4 and webpack-dev-server v3
             // eslint-disable-next-line @typescript-eslint/no-var-requires, node/no-extraneous-require
-            const options = require("webpack-dev-server/bin/cli-flags");
+            const devServer = require("webpack-dev-server");
+            const isNewDevServerCLIAPI = typeof devServer.schema !== "undefined";
+
+            let options = {};
+
+            if (isNewDevServerCLIAPI) {
+                if (typeof webpack.cli.getArguments === "function") {
+                    options = webpack.cli.getArguments(devServer.schema);
+                } else {
+                    options = devServer.cli.getArguments();
+                }
+            } else {
+                // eslint-disable-next-line node/no-extraneous-require
+                options = require("webpack-dev-server/bin/cli-flags");
+            }
 
             // Old options format
             // { devServer: [{...}, {}...] }
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             if (options.devServer) {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
                 return options.devServer;
             }
 
@@ -64,7 +83,7 @@ class ServeCommand {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const webpackOptions: Record<string, any> = {};
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const devServerOptions: Record<string, any> = {};
+                let devServerOptions: Record<string, any> = {};
 
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const processors: Array<(opts: Record<string, any>) => void> = [];
@@ -137,6 +156,65 @@ class ServeCommand {
                         });
                     });
                     process.stdin.resume();
+                }
+
+                // eslint-disable-next-line @typescript-eslint/no-var-requires, node/no-extraneous-require
+                const devServer = require("webpack-dev-server");
+                const isNewDevServerCLIAPI = typeof devServer.schema !== "undefined";
+
+                if (isNewDevServerCLIAPI) {
+                    const args = devServerFlags.reduce((accumulator, flag) => {
+                        accumulator[flag.name] = flag;
+                        return accumulator;
+                    }, {});
+                    const values = Object.keys(devServerOptions).reduce((accumulator, name) => {
+                        const kebabName = cli.utils.toKebabCase(name);
+                        if (args[kebabName]) {
+                            accumulator[kebabName] = options[name];
+                        }
+                        return accumulator;
+                    }, {});
+                    const result = Object.assign({}, compiler.options.devServer);
+                    const problems = (
+                        typeof webpack.cli.processArguments === "function"
+                            ? webpack.cli
+                            : devServer.cli
+                    ).processArguments(args, result, values);
+
+                    if (problems) {
+                        const groupBy = (xs, key) => {
+                            return xs.reduce((rv, x) => {
+                                (rv[x[key]] = rv[x[key]] || []).push(x);
+
+                                return rv;
+                            }, {});
+                        };
+
+                        const problemsByPath = groupBy(problems, "path");
+
+                        for (const path in problemsByPath) {
+                            const problems = problemsByPath[path];
+                            problems.forEach((problem) => {
+                                cli.logger.error(
+                                    `${cli.utils.capitalizeFirstLetter(
+                                        problem.type.replace(/-/g, " "),
+                                    )}${problem.value ? ` '${problem.value}'` : ""} for the '--${
+                                        problem.argument
+                                    }' option${
+                                        problem.index ? ` by index '${problem.index}'` : ""
+                                    }`,
+                                );
+
+                                if (problem.expected) {
+                                    cli.logger.error(`Expected: '${problem.expected}'`);
+                                }
+                            });
+                        }
+
+                        process.exit(2);
+                    }
+
+                    devServerOptions = result;
                 }
 
                 try {

@@ -51,7 +51,7 @@ async function promptInstallation(packageName, preMessage) {
             process.exit(2);
         }
 
-        return utils.packageExists(packageName);
+        return packageName;
     }
 
     process.exit(2);
