@@ -23,6 +23,10 @@ module.exports = {
         return require("./dynamic-import-loader");
     },
 
+    get getAvailableInstallers() {
+        return require("./get-available-installers");
+    },
+
     get getPackageManager() {
         return require("./get-package-manager");
     },

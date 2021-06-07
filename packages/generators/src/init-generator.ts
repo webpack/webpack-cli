@@ -99,8 +99,15 @@ export default class InitGenerator extends CustomGenerator {
         }
     }
 
-    public installPlugins(): void {
-        const packager = this.utils.getPackageManager();
+    public async installPlugins(): Promise<void> {
+        const { packager } = await Question.List(
+            this,
+            "packager",
+            "Pick a package manager:",
+            this.utils.getAvailableInstallers(),
+            "npm",
+            false,
+        );
         const opts: {
             dev?: boolean;
             "save-dev"?: boolean;
