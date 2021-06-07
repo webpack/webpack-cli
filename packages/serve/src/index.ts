@@ -14,7 +14,7 @@ class ServeCommand {
             let options = {};
 
             if (isNewDevServerCLIAPI) {
-                if (typeof webpack.cli.getArguments === "function") {
+                if (webpack.cli && typeof webpack.cli.getArguments === "function") {
                     options = webpack.cli.getArguments(devServer.schema);
                 } else {
                     options = devServer.cli.getArguments();
@@ -176,7 +176,7 @@ class ServeCommand {
                     }, {});
                     const result = Object.assign({}, compiler.options.devServer);
                     const problems = (
-                        typeof webpack.cli.processArguments === "function"
+                        webpack.cli && typeof webpack.cli.processArguments === "function"
                             ? webpack.cli
                             : devServer.cli
                     ).processArguments(args, result, values);
