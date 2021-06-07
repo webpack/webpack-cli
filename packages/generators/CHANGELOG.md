@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/generators@2.1.0...@webpack-cli/generators@2.2.0) (2021-06-07)
+
+### Bug Fixes
+
+-   prettier config ([#2719](https://github.com/webpack/webpack-cli/issues/2719)) ([181295f](https://github.com/webpack/webpack-cli/commit/181295fb1b1973c201c221813562219d85b845ae))
+
+### Features
+
+-   **generators:** add aliases for options ([#2700](https://github.com/webpack/webpack-cli/issues/2700)) ([2172ad9](https://github.com/webpack/webpack-cli/commit/2172ad9f3e515b1b9a87558e80772bef1b6f42d6))
+-   **init-generator:** configure workbox-webpack-plugin as opted ([#2722](https://github.com/webpack/webpack-cli/issues/2722)) ([f229e29](https://github.com/webpack/webpack-cli/commit/f229e29ace0acf88dafef51d86c9671efff52c72))
+
 # [2.1.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/generators@2.0.0...@webpack-cli/generators@2.1.0) (2021-05-06)
 
 ### Bug Fixes

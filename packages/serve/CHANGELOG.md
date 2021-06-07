@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/serve@1.4.0...@webpack-cli/serve@1.5.0) (2021-06-07)
+
+### Bug Fixes
+
+-   prettier config ([#2719](https://github.com/webpack/webpack-cli/issues/2719)) ([181295f](https://github.com/webpack/webpack-cli/commit/181295fb1b1973c201c221813562219d85b845ae))
+
+### Features
+
+-   new CLI options API for serve ([#2754](https://github.com/webpack/webpack-cli/issues/2754)) ([bb7c9d3](https://github.com/webpack/webpack-cli/commit/bb7c9d3c9b0dca11242e2febcd41805c063e1317))
+
 # [1.4.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/serve@1.3.1...@webpack-cli/serve@1.4.0) (2021-05-06)
 
 ### Bug Fixes
