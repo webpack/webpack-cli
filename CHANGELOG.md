@@ -1,3 +1,10 @@
+## [4.7.1](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.7.0...webpack-cli@4.7.1) (2021-06-07)
+
+### Bug Fixes
+
+-   not found module after ask installation ([#2761](https://github.com/webpack/webpack-cli/issues/2761)) ([557ad05](https://github.com/webpack/webpack-cli/commit/557ad05ae8168255b57698bdd2d98cbc7b53812d))
+-   prettier config ([#2719](https://github.com/webpack/webpack-cli/issues/2719)) ([181295f](https://github.com/webpack/webpack-cli/commit/181295fb1b1973c201c221813562219d85b845ae))
+
 # [4.7.0](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.6.0...webpack-cli@4.7.0) (2021-05-06)
 
 ### Bug Fixes
