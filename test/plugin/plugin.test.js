@@ -31,7 +31,7 @@ describe("plugin command", () => {
     it("should scaffold plugin with default name if no plugin name provided", async () => {
         const assetsPath = await uniqueDirectoryForTest();
         const { defaultPluginPath } = dataForTests(assetsPath);
-        const { stdout } = await runPromptWithAnswers(assetsPath, ["plugin"], [`${ENTER}`]);
+        const { stdout } = await runPromptWithAnswers(assetsPath, ["plugin"], [ENTER, ENTER]);
 
         expect(normalizeStdout(stdout)).toContain(firstPrompt);
 
@@ -71,7 +71,7 @@ describe("plugin command", () => {
         const { stdout } = await runPromptWithAnswers(
             assetsPath,
             ["plugin"],
-            [`${pluginName}${ENTER}`],
+            [`${pluginName}${ENTER}`, ENTER],
         );
 
         expect(normalizeStdout(stdout)).toContain(firstPrompt);
@@ -112,7 +112,7 @@ describe("plugin command", () => {
         const { stdout } = await runPromptWithAnswers(
             assetsPath,
             ["plugin", "test-assets"],
-            [`${pluginName}${ENTER}`],
+            [`${pluginName}${ENTER}`, ENTER],
         );
 
         expect(normalizeStdout(stdout)).toContain(firstPrompt);
@@ -158,7 +158,7 @@ describe("plugin command", () => {
         const { stdout } = await runPromptWithAnswers(
             genPath,
             ["plugin", "./"],
-            [`${pluginName}${ENTER}`],
+            [`${pluginName}${ENTER}`, ENTER],
         );
 
         expect(normalizeStdout(stdout)).toContain(firstPrompt);
@@ -206,7 +206,7 @@ describe("plugin command", () => {
         const { stdout } = await runPromptWithAnswers(
             assetsPath,
             ["plugin", "-t", "default"],
-            [`${ENTER}`],
+            [`${ENTER}`, ENTER],
         );
         expect(normalizeStdout(stdout)).toContain(firstPrompt);
         // Check if the output directory exists with the appropriate plugin name

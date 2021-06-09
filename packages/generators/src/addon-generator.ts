@@ -34,9 +34,10 @@ const addonGenerator = (
     templateFn: (instance: any) => Record<string, unknown>,
 ): Generator.GeneratorConstructor => {
     return class extends Generator {
-        public template: string;
+        public packageManager: string;
         public resolvedTemplatePath: string;
         public supportedTemplates: string[];
+        public template: string;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         public utils: any;
 
@@ -74,9 +75,19 @@ const addonGenerator = (
             }
             this.resolvedTemplatePath = path.join(templateDir, this.template);
 
-            return this.prompt(prompts).then((props: Generator.Question): void => {
-                this.props = props;
-            });
+            this.props = await this.prompt(prompts);
+
+            // Prompt for the package manager of choice
+            const defaultPackager = this.utils.getPackageManager();
+            const { packager } = await List(
+                this,
+                "packager",
+                "Pick a package manager:",
+                this.utils.getAvailableInstallers(),
+                defaultPackager,
+                false,
+            );
+            this.packageManager = packager;
         }
 
         public default(): void {
@@ -141,13 +152,12 @@ const addonGenerator = (
         }
 
         public install(): void {
-            const packager = this.utils.getPackageManager();
             const opts: {
                 dev?: boolean;
                 "save-dev"?: boolean;
-            } = packager === "yarn" ? { dev: true } : { "save-dev": true };
+            } = this.packageManager === "yarn" ? { dev: true } : { "save-dev": true };
 
-            this.scheduleInstallTask(packager, ["webpack-defaults", "bluebird"], opts);
+            this.scheduleInstallTask(this.packageManager, ["webpack-defaults", "bluebird"], opts);
         }
     };
 };
