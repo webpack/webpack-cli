@@ -18,4 +18,4 @@ webpack CLI is currently supporting webpack v4 and webpack v5. Security fixes ar
 
 ## Reporting a Vulnerability
 
-To report a vulnerability, please contact one of webpack maintainers through the email provided from either npm, GitHub or reach out at other social media platforms. For third party security vulnerabilities, submitting an issue or Pull Request to fix the security vulnerability is much appreciated.
+To report a vulnerability, please contact one of webpack maintainers through the email provided from either npm, GitHub or reach out at other social media platforms. For third party security vulnerabilities, submitting an issue or Pull Request to fix the security vulnerability is much appreciated. We also use dependabot from GitHub to avoid vulnerabilities.

@@ -33,7 +33,9 @@
 
 ## About
 
-webpack CLI provides a flexible set of commands for developers to increase speed when setting up a custom webpack project. As of webpack v4, webpack is not expecting a configuration file, but often developers want to create a more custom webpack configuration based on their use-cases and needs. webpack CLI addresses these needs by providing a set of tools to improve the setup of custom webpack configuration.
+webpack CLI provides the interface of options webpack uses in its configuration file. The CLI options override options passed in the configuration file.
+
+The CLI provides a rich set of commands that helps you develop your application faster.
 
 ### How to install
 
@@ -47,7 +49,7 @@ Get to know what are the available commands and arguments [here](./packages/webp
 
 ## Packages
 
-We organize webpack CLI as a multi-package repository using [lerna](https://github.com/lerna/lerna). Every command has a dedicated subfolder in the `packages` folder. Here's a summary of commands provided by the CLI.
+We organize webpack CLI as a multi-package repository using [lerna](https://github.com/lerna/lerna). The main CLI logic resides in `packages/webpack-cli`, while commands supported by the CLI, has dedicated subfolders in the folder `packages`. A summary of supported commands is described below.
 
 ### Commands
 
@@ -68,20 +70,22 @@ Thus, webpack CLI provides different commands for many common tasks.
 
 ### Utilities
 
-The project also has several utility packages which are used by other commands
+The project has several utility packages which are used by other commands
 
 -   [`generators`](./packages/generators/README.md) - Contains all webpack-cli related yeoman generators.
 
 ## Getting started
 
-When you have followed the [Getting Started](https://webpack.js.org/guides/getting-started/) guide of webpack then webpack CLI is already installed! Otherwise, you would need to install webpack CLI and the packages you want to use. If you want to use the `init` command to create a new `webpack.config.js` configuration file:
+When you have followed the [Getting Started](https://webpack.js.org/guides/getting-started/) guide of webpack, then webpack CLI is already installed!
+
+Otherwise, you would need to install webpack CLI and the packages you want to use. If you want to use the `init` command to create a new configuration file:
 
 ```sh
 npm i webpack-cli @webpack-cli/init
 npx webpack-cli init
 ```
 
-You will be prompted for some questions about what how you want to generate your config file when running the `init` command so webpack CLI can provide the best fitting configuration.
+You will be prompted for some questions about which features you want to use, such as `scss`, PWA support or multiple entry-points.
 
 ## Exit codes and their meanings
 
@@ -93,7 +97,7 @@ You will be prompted for some questions about what how you want to generate your
 
 ## Contributing and Internal Documentation
 
-The webpack family welcomes any contributor, small or big. We are happy to elaborate, guide you through the source code and find issues you might want to work on! To get started have a look at our [documentation on contributing](./.github/CONTRIBUTING.md).
+The webpack family welcomes any contributor, small or big. We are happy to elaborate, guide you through the source code and find issues you might want to work on! To get started have a look at our [contribution documentation](./.github/CONTRIBUTING.md).
 
 ## Open Collective
 
