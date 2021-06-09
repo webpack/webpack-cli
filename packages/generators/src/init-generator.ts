@@ -108,7 +108,7 @@ export default class InitGenerator extends CustomGenerator {
             "Pick a package manager:",
             this.utils.getAvailableInstallers(),
             defaultPackager,
-            false,
+            this.force,
         );
         const opts: {
             dev?: boolean;
