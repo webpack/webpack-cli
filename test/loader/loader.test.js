@@ -32,7 +32,7 @@ describe("loader command", () => {
     it("should scaffold loader with default name if no loader name provided", async () => {
         const assetsPath = await uniqueDirectoryForTest();
         const { defaultLoaderPath } = dataForTests(assetsPath);
-        let { stdout } = await runPromptWithAnswers(assetsPath, ["loader"], [`${ENTER}`]);
+        let { stdout } = await runPromptWithAnswers(assetsPath, ["loader"], [ENTER, ENTER]);
 
         expect(normalizeStdout(stdout)).toContain(firstPrompt);
 
@@ -72,7 +72,7 @@ describe("loader command", () => {
         let { stdout } = await runPromptWithAnswers(
             assetsPath,
             ["loader"],
-            [`${loaderName}${ENTER}`],
+            [`${loaderName}${ENTER}`, ENTER],
         );
 
         expect(normalizeStdout(stdout)).toContain(firstPrompt);
@@ -113,7 +113,7 @@ describe("loader command", () => {
         let { stdout } = await runPromptWithAnswers(
             assetsPath,
             ["loader", "test-assets"],
-            [`${loaderName}${ENTER}`],
+            [`${loaderName}${ENTER}`, ENTER],
         );
 
         expect(normalizeStdout(stdout)).toContain(firstPrompt);
@@ -155,7 +155,7 @@ describe("loader command", () => {
         let { stdout } = await runPromptWithAnswers(
             assetsPath,
             ["loader", "./"],
-            [`${loaderName}${ENTER}`],
+            [`${loaderName}${ENTER}`, ENTER],
         );
 
         expect(normalizeStdout(stdout)).toContain(firstPrompt);
@@ -203,7 +203,7 @@ describe("loader command", () => {
         let { stdout } = await runPromptWithAnswers(
             assetsPath,
             ["loader", "-t", "default"],
-            [`${ENTER}`],
+            [`${ENTER}`, ENTER],
         );
 
         expect(normalizeStdout(stdout)).toContain(firstPrompt);
