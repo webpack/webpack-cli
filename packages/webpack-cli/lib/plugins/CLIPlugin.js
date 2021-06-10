@@ -20,7 +20,7 @@ class CLIPlugin {
         new PrefetchPlugin(null, this.options.prefetch).apply(compiler);
     }
 
-    async setupBundleAnalyzerPlugin(compiler) {
+    setupBundleAnalyzerPlugin(compiler) {
         // eslint-disable-next-line node/no-extraneous-require
         const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
         const bundleAnalyzerPlugin = Boolean(
