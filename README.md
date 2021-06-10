@@ -33,7 +33,9 @@
 
 ## About
 
-webpack CLI provides a flexible set of commands for developers to increase speed when setting up a custom webpack project. As of webpack v4, webpack is not expecting a configuration file, but often developers want to create a more custom webpack configuration based on their use-cases and needs. webpack CLI addresses these needs by providing a set of tools to improve the setup of custom webpack configuration.
+webpack CLI provides the interface of options webpack uses in its configuration file. The CLI options override options passed in the configuration file.
+
+The CLI provides a rich set of commands that helps you develop your application faster.
 
 ### How to install
 
@@ -47,7 +49,7 @@ Get to know what are the available commands and arguments [here](./packages/webp
 
 ## Packages
 
-We organize webpack CLI as a multi-package repository using [lerna](https://github.com/lerna/lerna). Every command has a dedicated subfolder in the `packages` folder. Here's a summary of commands provided by the CLI.
+We organize webpack CLI as a multi-package repository using [lerna](https://github.com/lerna/lerna). The main CLI logic resides in `packages/webpack-cli`, while commands supported by the CLI, has dedicated subfolders in the folder `packages`. A summary of supported commands is described below.
 
 ### Commands
 
@@ -57,7 +59,7 @@ Thus, webpack CLI provides different commands for many common tasks.
 -   `build|bundle|b [entries...] [options]` - Run webpack (default command, can be omitted).
 -   [`configtest|t [config-path]`](./packages/configtest/README.md#webpack-cli-configtest) - Validate a webpack configuration.
 -   `help|h [command] [option]` - Display help for commands and options.
--   [`init|create|new|c|n [generation-path] [options]`](./INIT.md#webpack-cli-init) - Create a new webpack project.
+-   [`init|create|new|c|n [generation-path] [options]`](./packages/generators/INIT.md#webpack-cli-init) - Create a new webpack project.
 -   [`info|i [options]`](./packages/info/README.md#webpack-cli-info) - Returns information related to the local environment.
 -   [`migrate|m <config-path> [new-config-path]`](https://www.npmjs.com/package/@webpack-cli/migrate) - Migrate project from one version to another.
 -   [`plugin|p [output-path] [options]`](./packages/generators#generators) - Initiate new plugin project.
@@ -68,20 +70,22 @@ Thus, webpack CLI provides different commands for many common tasks.
 
 ### Utilities
 
-The project also has several utility packages which are used by other commands
+The project has several utility packages which are used by other commands
 
 -   [`generators`](./packages/generators/README.md) - Contains all webpack-cli related yeoman generators.
 
 ## Getting started
 
-When you have followed the [Getting Started](https://webpack.js.org/guides/getting-started/) guide of webpack then webpack CLI is already installed! Otherwise, you would need to install webpack CLI and the packages you want to use. If you want to use the `init` command to create a new `webpack.config.js` configuration file:
+When you have followed the [Getting Started](https://webpack.js.org/guides/getting-started/) guide of webpack, then webpack CLI is already installed!
+
+Otherwise, you would need to install webpack CLI and the packages you want to use. If you want to use the `init` command to create a new configuration file:
 
 ```sh
 npm i webpack-cli @webpack-cli/init
 npx webpack-cli init
 ```
 
-You will be prompted for some questions about what how you want to generate your config file when running the `init` command so webpack CLI can provide the best fitting configuration.
+You will be prompted for some questions about which features you want to use, such as `scss`, PWA support or multiple entry-points.
 
 ## Exit codes and their meanings
 
@@ -93,7 +97,7 @@ You will be prompted for some questions about what how you want to generate your
 
 ## Contributing and Internal Documentation
 
-The webpack family welcomes any contributor, small or big. We are happy to elaborate, guide you through the source code and find issues you might want to work on! To get started have a look at our [documentation on contributing](./.github/CONTRIBUTING.md).
+The webpack family welcomes any contributor, small or big. We are happy to elaborate, guide you through the source code and find issues you might want to work on! To get started have a look at our [contribution documentation](./.github/CONTRIBUTING.md).
 
 ## Open Collective
 
@@ -111,3 +115,7 @@ If you like **webpack**, please consider donating to our [Open Collective](https
 [size-url]: https://packagephobia.com/result?p=webpack-cli
 [chat]: https://badges.gitter.im/webpack/webpack.svg
 [chat-url]: https://gitter.im/webpack/webpack
+
+## Code of Conduct
+
+Guidelines to how the webpack organization expects you to behave is documented under [Code of Conduct](./CODE_OF_CONDUCT.md)
