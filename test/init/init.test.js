@@ -144,7 +144,7 @@ describe("init command", () => {
         const { stdout, stderr } = await runPromptWithAnswers(
             assetsPath,
             ["init"],
-            [`${DOWN}${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`, ENTER],
+            [`${DOWN}${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`, ENTER, ENTER],
         );
 
         expect(stdout).toContain("Project has been initialised with webpack!");
@@ -170,7 +170,7 @@ describe("init command", () => {
         const { stdout, stderr } = await runPromptWithAnswers(
             assetsPath,
             ["init"],
-            [`${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`, ENTER],
+            [`${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`, ENTER, ENTER],
         );
 
         expect(stdout).toContain("Project has been initialised with webpack!");
@@ -205,6 +205,7 @@ describe("init command", () => {
                 `n${ENTER}`,
                 `n${ENTER}`,
                 `n${ENTER}`,
+                ENTER,
             ],
         );
 
@@ -239,6 +240,7 @@ describe("init command", () => {
                 `n${ENTER}`,
                 `y${ENTER}`,
                 `n${ENTER}`,
+                ENTER,
             ],
         );
 
@@ -279,6 +281,7 @@ describe("init command", () => {
                 `n${ENTER}`,
                 `n${ENTER}`,
                 `y${ENTER}`,
+                ENTER,
             ],
         );
 
@@ -313,6 +316,7 @@ describe("init command", () => {
                 `y${ENTER}`,
                 `y${ENTER}`,
                 `n${ENTER}`,
+                ENTER,
             ],
         );
 
@@ -353,6 +357,7 @@ describe("init command", () => {
                 `n${ENTER}`,
                 `n${ENTER}`,
                 `n${ENTER}`,
+                ENTER,
             ],
         );
 
@@ -387,6 +392,7 @@ describe("init command", () => {
                 `n${ENTER}`,
                 `n${ENTER}`,
                 `n${ENTER}`,
+                ENTER,
             ],
         );
 
@@ -412,7 +418,7 @@ describe("init command", () => {
         const { stdout, stderr } = await runPromptWithAnswers(
             assetsPath,
             ["init"],
-            [ENTER, ENTER, `n${ENTER}`, `n${ENTER}`, ENTER],
+            [ENTER, ENTER, `n${ENTER}`, `n${ENTER}`, ENTER, ENTER],
         );
 
         expect(stdout).toContain("Do you want to use webpack-dev-server?");
@@ -445,6 +451,7 @@ describe("init command", () => {
                 `${DOWN}${ENTER}`,
                 ENTER,
                 `n${ENTER}`,
+                ENTER,
             ],
         );
 
@@ -476,7 +483,7 @@ describe("init command", () => {
         const { stdout, stderr } = await runPromptWithAnswers(
             assetsPath,
             ["init"],
-            [ENTER, `n${ENTER}`, ENTER, `n${ENTER}`, ENTER],
+            [ENTER, `n${ENTER}`, ENTER, `n${ENTER}`, ENTER, ENTER],
         );
 
         expect(stdout).toContain(
@@ -504,7 +511,7 @@ describe("init command", () => {
         const { stdout, stderr } = await runPromptWithAnswers(
             assetsPath,
             ["init"],
-            [ENTER, `n${ENTER}`, ENTER, ENTER, ENTER],
+            [ENTER, `n${ENTER}`, ENTER, ENTER, ENTER, ENTER],
         );
 
         expect(stdout).toContain("Do you want to add PWA support?");

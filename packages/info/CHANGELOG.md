@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/info@1.2.4...@webpack-cli/info@1.3.0) (2021-06-07)
+
+### Bug Fixes
+
+-   prettier config ([#2719](https://github.com/webpack/webpack-cli/issues/2719)) ([181295f](https://github.com/webpack/webpack-cli/commit/181295fb1b1973c201c221813562219d85b845ae))
+
+### Features
+
+-   **info:** add alias for --output ([#2709](https://github.com/webpack/webpack-cli/issues/2709)) ([3453053](https://github.com/webpack/webpack-cli/commit/34530530f99750a5efc382293127753f05fc8064))
+
 ## [1.2.4](https://github.com/webpack/webpack-cli/compare/@webpack-cli/info@1.2.3...@webpack-cli/info@1.2.4) (2021-05-06)
 
 **Note:** Version bump only for package @webpack-cli/info

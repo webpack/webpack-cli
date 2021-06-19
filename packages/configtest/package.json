@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/configtest",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Validate a webpack configuration.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
