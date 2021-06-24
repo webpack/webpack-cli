@@ -24,13 +24,15 @@ class WebpackCLI {
                 ),
         });
     }
-
     async tryRequireThenImport(module, handleError = true) {
         let result;
 
         try {
+            delete require.cache[module];
             result = require(module);
+            console.log(result);
         } catch (error) {
+            console.log(error, "HEY");
             let previousModuleCompile;
 
             // TODO Workaround https://github.com/zertosh/v8-compile-cache/issues/30
@@ -67,7 +69,6 @@ class WebpackCLI {
                 throw error;
             }
         }
-
         // For babel/typescript
         if (result.default) {
             result = result.default;
@@ -1545,10 +1546,8 @@ class WebpackCLI {
 
                 process.exit(2);
             }
-
             return { options, path: configPath };
         };
-
         const evaluateConfig = async (loadedConfig, argv) => {
             const isMultiCompiler = Array.isArray(loadedConfig.options);
             const config = isMultiCompiler ? loadedConfig.options : [loadedConfig.options];
@@ -1581,7 +1580,7 @@ class WebpackCLI {
             return loadedConfig;
         };
 
-        const config = { options: {}, path: new WeakMap() };
+        const config = { options: {}, path: new Map() };
 
         if (options.config && options.config.length > 0) {
             const evaluatedConfigs = await Promise.all(
@@ -1638,9 +1637,7 @@ class WebpackCLI {
             if (foundDefaultConfigFile) {
                 const loadedConfig = await loadConfig(foundDefaultConfigFile.path);
                 const evaluatedConfig = await evaluateConfig(loadedConfig, options.argv || {});
-
                 config.options = evaluatedConfig.options;
-
                 if (Array.isArray(config.options)) {
                     config.options.forEach((options) => {
                         config.path.set(options, evaluatedConfig.path);
@@ -2041,9 +2038,7 @@ class WebpackCLI {
 
     async createCompiler(options, callback) {
         this.applyNodeEnv(options);
-
         let config = await this.resolveConfig(options);
-
         config = await this.applyOptions(config, options);
         config = await this.applyCLIPlugin(config, options);
 
@@ -2077,7 +2072,7 @@ class WebpackCLI {
         if (compiler && compiler.compiler) {
             compiler = compiler.compiler;
         }
-
+        compiler.config = config;
         return compiler;
     }
 
@@ -2171,7 +2166,15 @@ class WebpackCLI {
         }
 
         compiler = await this.createCompiler(options, callback);
-
+        if (options.watch) {
+            // eslint-disable-next-line
+            for (const [_, filePath] of compiler.config.path.entries()) {
+                // eslint-disable-next-line
+                fs.watchFile(filePath, async () => {
+                    compiler = await this.createCompiler(options, callback);
+                });
+            }
+        }
         if (!compiler) {
             return;
         }

@@ -33,6 +33,7 @@
     "@webpack-cli/configtest": "^1.0.4",
     "@webpack-cli/info": "^1.3.0",
     "@webpack-cli/serve": "^1.5.1",
+    "async-require": "^1.2.2",
     "colorette": "^1.2.1",
     "commander": "^7.0.0",
     "execa": "^5.0.0",
@@ -40,6 +41,7 @@
     "import-local": "^3.0.2",
     "interpret": "^2.2.0",
     "rechoir": "^0.7.0",
+    "require.async": "^0.1.1",
     "v8-compile-cache": "^2.2.0",
     "webpack-merge": "^5.7.3"
   },
