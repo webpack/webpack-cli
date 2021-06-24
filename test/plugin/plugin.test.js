@@ -39,7 +39,7 @@ describe("plugin command", () => {
         expect(existsSync(defaultPluginPath)).toBeTruthy();
 
         // Skip test in case installation fails
-        if (!existsSync(resolve(defaultPluginPath, "./yarn.lock"))) {
+        if (!existsSync(resolve(defaultPluginPath, "./package-lock.json"))) {
             return;
         }
 
@@ -58,9 +58,9 @@ describe("plugin command", () => {
         });
 
         // Check if the the generated plugin works successfully
-        const { stdout: stdout2 } = await run(__dirname, [
+        const { stdout: stdout2 } = await run(defaultPluginPath, [
             "--config",
-            "./my-webpack-plugin/examples/simple/webpack.config.js",
+            "./examples/simple/webpack.config.js",
         ]);
         expect(normalizeStdout(stdout2)).toContain("Hello World!");
     });
@@ -80,7 +80,7 @@ describe("plugin command", () => {
         expect(existsSync(pluginPath)).toBeTruthy();
 
         // Skip test in case installation fails
-        if (!existsSync(resolve(pluginPath, "./yarn.lock"))) {
+        if (!existsSync(resolve(pluginPath, "./package-lock.json"))) {
             return;
         }
 
@@ -99,9 +99,9 @@ describe("plugin command", () => {
         });
 
         // Check if the the generated plugin works successfully
-        const { stdout: stdout2 } = await run(__dirname, [
+        const { stdout: stdout2 } = await run(pluginPath, [
             "--config",
-            "./test-plugin/examples/simple/webpack.config.js",
+            "./examples/simple/webpack.config.js",
         ]);
         expect(normalizeStdout(stdout2)).toContain("Hello World!");
     });
@@ -121,7 +121,7 @@ describe("plugin command", () => {
         expect(existsSync(customPluginPath)).toBeTruthy();
 
         // Skip test in case installation fails
-        if (!existsSync(resolve(customPluginPath, "./yarn.lock"))) {
+        if (!existsSync(resolve(customPluginPath, "./package-lock.json"))) {
             return;
         }
 
@@ -167,7 +167,7 @@ describe("plugin command", () => {
         expect(existsSync(customPluginPath)).toBeTruthy();
 
         // Skip test in case installation fails
-        if (!existsSync(resolve(customPluginPath, "./yarn.lock"))) {
+        if (!existsSync(resolve(customPluginPath, "./package-lock.json"))) {
             return;
         }
 
@@ -208,13 +208,17 @@ describe("plugin command", () => {
             ["plugin", "-t", "default"],
             [`${ENTER}`, ENTER],
         );
+
         expect(normalizeStdout(stdout)).toContain(firstPrompt);
+
         // Check if the output directory exists with the appropriate plugin name
         expect(existsSync(defaultPluginPath)).toBeTruthy();
+
         // Skip test in case installation fails
-        if (!existsSync(resolve(defaultPluginPath, "./yarn.lock"))) {
+        if (!existsSync(resolve(defaultPluginPath, "./package-lock.json"))) {
             return;
         }
+
         // Test regressively files are scaffolded
         const files = [
             "package.json",
@@ -227,10 +231,11 @@ describe("plugin command", () => {
         files.forEach((file) => {
             expect(existsSync(join(defaultPluginPath, file))).toBeTruthy();
         });
+
         // Check if the the generated plugin works successfully
-        const { stdout: stdout2 } = await run(__dirname, [
+        const { stdout: stdout2 } = await run(defaultPluginPath, [
             "--config",
-            "./my-webpack-plugin/examples/simple/webpack.config.js",
+            "./examples/simple/webpack.config.js",
         ]);
         expect(normalizeStdout(stdout2)).toContain("Hello World!");
     });
