@@ -37,7 +37,7 @@ describe("loader command", () => {
         expect(normalizeStdout(stdout)).toContain(firstPrompt);
 
         // Skip test in case installation fails
-        if (!existsSync(resolve(defaultLoaderPath, "./yarn.lock"))) {
+        if (!existsSync(resolve(defaultLoaderPath, "./package-lock.json"))) {
             return;
         }
 
@@ -59,7 +59,7 @@ describe("loader command", () => {
         });
 
         // Check if the the generated loader works successfully
-        const path = resolve(__dirname, "./my-loader/examples/simple/");
+        const path = resolve(defaultLoaderPath, "./examples/simple/");
 
         ({ stdout } = await run(path, []));
 
@@ -78,7 +78,7 @@ describe("loader command", () => {
         expect(normalizeStdout(stdout)).toContain(firstPrompt);
 
         // Skip test in case installation fails
-        if (!existsSync(resolve(loaderPath, "./yarn.lock"))) {
+        if (!existsSync(resolve(loaderPath, "./package-lock.json"))) {
             return;
         }
 
@@ -100,7 +100,7 @@ describe("loader command", () => {
         });
 
         // Check if the the generated loader works successfully
-        const path = resolve(__dirname, "./test-loader/examples/simple/");
+        const path = resolve(loaderPath, "./examples/simple/");
 
         ({ stdout } = await run(path, []));
 
@@ -119,7 +119,7 @@ describe("loader command", () => {
         expect(normalizeStdout(stdout)).toContain(firstPrompt);
 
         // Skip test in case installation fails
-        if (!existsSync(resolve(customLoaderPath, "./yarn.lock"))) {
+        if (!existsSync(resolve(customLoaderPath, "./package-lock.json"))) {
             return;
         }
 
@@ -161,7 +161,7 @@ describe("loader command", () => {
         expect(normalizeStdout(stdout)).toContain(firstPrompt);
 
         // Skip test in case installation fails
-        if (!existsSync(resolve(customLoaderPath, "./yarn.lock"))) {
+        if (!existsSync(resolve(customLoaderPath, "./package-lock.json"))) {
             return;
         }
 
@@ -209,7 +209,7 @@ describe("loader command", () => {
         expect(normalizeStdout(stdout)).toContain(firstPrompt);
 
         // Skip test in case installation fails
-        if (!existsSync(resolve(defaultLoaderPath, "./yarn.lock"))) {
+        if (!existsSync(resolve(defaultLoaderPath, "./package-lock.json"))) {
             return;
         }
 
@@ -231,7 +231,7 @@ describe("loader command", () => {
         });
 
         // Check if the the generated loader works successfully
-        const path = resolve(__dirname, "./my-loader/examples/simple/");
+        const path = resolve(assetsPath, "./my-loader/examples/simple/");
 
         ({ stdout } = await run(path, []));
 
