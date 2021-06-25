@@ -655,4 +655,26 @@ describe("init command", () => {
         // Check if the generated package.json file content matches the snapshot
         expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
     });
+
+    it("uses yarn as the package manager when opted", async () => {
+        const assetsPath = await uniqueDirectoryForTest();
+        const { stdout, stderr } = await runPromptWithAnswers(
+            assetsPath,
+            ["init"],
+            [ENTER, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`, ENTER, `${DOWN}${ENTER}`],
+        );
+
+        expect(stdout).toContain("Project has been initialised with webpack!");
+        expect(stderr).toContain("webpack.config.js");
+
+        // Test files
+        const files = ["package.json", "src", "src/index.js", "webpack.config.js", "yarn.lock"];
+
+        files.forEach((file) => {
+            expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+        });
+
+        // Check if the generated package.json file content matches the snapshot
+        expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
+    });
 });
