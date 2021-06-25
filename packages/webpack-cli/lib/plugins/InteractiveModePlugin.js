@@ -176,6 +176,7 @@ class InteractiveModePlugin {
                 childCompiler.compile(() => {});
             }
         }
+        spawnCommand("started watching", true, true, this.verbose);
     }
 
     stopHandler(compilers) {
