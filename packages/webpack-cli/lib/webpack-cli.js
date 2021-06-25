@@ -1993,7 +1993,12 @@ class WebpackCLI {
             if (!configOptions.plugins) {
                 configOptions.plugins = [];
             }
-
+            const alreadyHasPLugin = configOptions.plugins.find(
+                (plugin) => plugin instanceof CLIPlugin,
+            );
+            if (alreadyHasPLugin) {
+                return configOptions;
+            }
             configOptions.plugins.unshift(
                 new CLIPlugin({
                     configPath: config.path.get(configOptions),
@@ -2039,7 +2044,7 @@ class WebpackCLI {
         let config = await this.resolveConfig(options);
         config = await this.applyOptions(config, options);
         config = await this.applyCLIPlugin(config, options);
-
+        console.log(config);
         let compiler;
 
         try {
@@ -2075,7 +2080,6 @@ class WebpackCLI {
     }
 
     async buildCommand(options, isWatchCommand) {
-        // eslint-disable-next-line prefer-const
         let compiler;
         let createJsonStringifyStream;
 
