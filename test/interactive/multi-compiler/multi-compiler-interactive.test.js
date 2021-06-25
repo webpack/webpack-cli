@@ -39,8 +39,8 @@ const runTest = (proc, checker, done) => {
     });
 
     proc.on("error", (error) => {
-        done(error);
         proc.kill();
+        done(error);
     });
 
     proc.on("exit", () => {
@@ -61,7 +61,7 @@ describe("--interactive flag with multi compiler", () => {
         return;
     }
     it("should output in interactive with --interactive", (done) => {
-        const proc = runAndGetProcess(__dirname, ["--interactive"], false, "", true);
+        const proc = runAndGetProcess(__dirname, ["--interactive"]);
         const checker = [
             {
                 check: (data) => {
@@ -98,7 +98,7 @@ describe("--interactive flag with multi compiler", () => {
     });
 
     it("should stop watching on s", (done) => {
-        const proc = runAndGetProcess(__dirname, ["--interactive"], false, "", true);
+        const proc = runAndGetProcess(__dirname, ["--interactive=verbose"]);
         const checker = [
             {
                 check: (data) => {
@@ -128,14 +128,14 @@ describe("--interactive flag with multi compiler", () => {
     });
 
     it("should should start watching on w after stoping with s", (done) => {
-        const proc = runAndGetProcess(__dirname, ["--interactive"], false, "", true);
+        const proc = runAndGetProcess(__dirname, ["--interactive=verbose"]);
         const checker = [
             {
                 check: (data) => {
                     return data.includes("\u25B2");
                 },
                 perform: () => {
-                    proc.stdin.write("s\n", (err) => {
+                    proc.stdin.write("s", (err) => {
                         if (err) {
                             proc.kill();
                             done(err);
@@ -149,12 +149,8 @@ describe("--interactive flag with multi compiler", () => {
                     return data.includes("stoped");
                 },
                 perform: (data) => {
-                    if (!isWebpack5) {
-                        expect(data).toContain("stoping");
-                    } else {
-                        expect(data).toContain("stoped");
-                    }
-                    proc.stdin.write("w\n", (err) => {
+                    expect(data).toContain("stoped");
+                    proc.stdin.write("w", (err) => {
                         if (err) {
                             proc.kill();
                             done(err);
@@ -165,10 +161,10 @@ describe("--interactive flag with multi compiler", () => {
             },
             {
                 check: (data) => {
-                    return data.includes("all compilations completed");
+                    return data.includes(clear);
                 },
                 perform: (data) => {
-                    expect(data).toContain("all compilations completed");
+                    expect(data).toContain(clear);
                 },
             },
         ];
@@ -177,14 +173,14 @@ describe("--interactive flag with multi compiler", () => {
     });
 
     it("should quit in pressing q", (done) => {
-        const proc = runAndGetProcess(__dirname, ["--interactive"], false, "", true);
+        const proc = runAndGetProcess(__dirname, ["--interactive=verbose"]);
         const checker = [
             {
                 check: (data) => {
                     return data.includes("\u25B2");
                 },
                 perform: () => {
-                    proc.stdin.write("q\n", (err) => {
+                    proc.stdin.write("q", (err) => {
                         if (err) {
                             proc.kill();
                             done(err);
