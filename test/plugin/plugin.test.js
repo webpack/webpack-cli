@@ -17,6 +17,14 @@ const dataForTests = (rootAssetsPath) => ({
     defaultPluginPath: join(rootAssetsPath, "my-webpack-plugin"),
     genPath: join(rootAssetsPath, "test-assets"),
     customPluginPath: join(rootAssetsPath, "test-assets", "test-plugin"),
+    defaultTemplateFiles: [
+        "package.json",
+        "examples",
+        "src",
+        "test",
+        "src/index.js",
+        "examples/simple/webpack.config.js",
+    ],
 });
 
 describe("plugin command", () => {
@@ -31,7 +39,7 @@ describe("plugin command", () => {
 
     it("should scaffold plugin with default name if no plugin name provided", async () => {
         const assetsPath = await uniqueDirectoryForTest();
-        const { defaultPluginPath } = dataForTests(assetsPath);
+        const { defaultPluginPath, defaultTemplateFiles } = dataForTests(assetsPath);
         const { stdout } = await runPromptWithAnswers(assetsPath, ["plugin"], [ENTER, ENTER]);
 
         expect(normalizeStdout(stdout)).toContain(firstPrompt);
@@ -45,16 +53,7 @@ describe("plugin command", () => {
         }
 
         // Test regressively files are scaffolded
-        const files = [
-            "package.json",
-            "examples",
-            "src",
-            "test",
-            "src/index.js",
-            "examples/simple/webpack.config.js",
-        ];
-
-        files.forEach((file) => {
+        defaultTemplateFiles.forEach((file) => {
             expect(existsSync(join(defaultPluginPath, file))).toBeTruthy();
         });
 
@@ -68,7 +67,7 @@ describe("plugin command", () => {
 
     it("should scaffold plugin template with a given name", async () => {
         const assetsPath = await uniqueDirectoryForTest();
-        const { pluginName, pluginPath } = dataForTests(assetsPath);
+        const { pluginName, pluginPath, defaultTemplateFiles } = dataForTests(assetsPath);
         const { stdout } = await runPromptWithAnswers(
             assetsPath,
             ["plugin"],
@@ -86,16 +85,7 @@ describe("plugin command", () => {
         }
 
         // Test regressively files are scaffolded
-        const files = [
-            "package.json",
-            "examples",
-            "src",
-            "test",
-            "src/index.js",
-            "examples/simple/webpack.config.js",
-        ];
-
-        files.forEach((file) => {
+        defaultTemplateFiles.forEach((file) => {
             expect(existsSync(join(pluginPath, file))).toBeTruthy();
         });
 
@@ -109,7 +99,7 @@ describe("plugin command", () => {
 
     it("should scaffold plugin template in the specified path", async () => {
         const assetsPath = await uniqueDirectoryForTest();
-        const { pluginName, customPluginPath } = dataForTests(assetsPath);
+        const { pluginName, customPluginPath, defaultTemplateFiles } = dataForTests(assetsPath);
         const { stdout } = await runPromptWithAnswers(
             assetsPath,
             ["plugin", "test-assets"],
@@ -127,16 +117,7 @@ describe("plugin command", () => {
         }
 
         // Test regressively files are scaffolded
-        const files = [
-            "package.json",
-            "examples",
-            "src",
-            "test",
-            "src/index.js",
-            "examples/simple/webpack.config.js",
-        ];
-
-        files.forEach((file) => {
+        defaultTemplateFiles.forEach((file) => {
             expect(existsSync(join(customPluginPath, file))).toBeTruthy();
         });
 
@@ -150,7 +131,8 @@ describe("plugin command", () => {
 
     it("should scaffold plugin template in the current directory", async () => {
         const assetsPath = await uniqueDirectoryForTest();
-        const { genPath, customPluginPath, pluginName } = dataForTests(assetsPath);
+        const { genPath, customPluginPath, pluginName, defaultTemplateFiles } =
+            dataForTests(assetsPath);
 
         if (!existsSync(genPath)) {
             mkdirSync(genPath);
@@ -173,16 +155,7 @@ describe("plugin command", () => {
         }
 
         // Test regressively files are scaffolded
-        const files = [
-            "package.json",
-            "examples",
-            "src",
-            "test",
-            "src/index.js",
-            "examples/simple/webpack.config.js",
-        ];
-
-        files.forEach((file) => {
+        defaultTemplateFiles.forEach((file) => {
             expect(existsSync(join(customPluginPath, file))).toBeTruthy();
         });
 
@@ -203,7 +176,7 @@ describe("plugin command", () => {
 
     it("recognizes '-t' as an alias for '--template'", async () => {
         const assetsPath = await uniqueDirectoryForTest();
-        const { defaultPluginPath } = dataForTests(assetsPath);
+        const { defaultPluginPath, defaultTemplateFiles } = dataForTests(assetsPath);
         const { stdout } = await runPromptWithAnswers(
             assetsPath,
             ["plugin", "-t", "default"],
@@ -221,15 +194,7 @@ describe("plugin command", () => {
         }
 
         // Test regressively files are scaffolded
-        const files = [
-            "package.json",
-            "examples",
-            "src",
-            "test",
-            "src/index.js",
-            "examples/simple/webpack.config.js",
-        ];
-        files.forEach((file) => {
+        defaultTemplateFiles.forEach((file) => {
             expect(existsSync(join(defaultPluginPath, file))).toBeTruthy();
         });
 
@@ -243,7 +208,7 @@ describe("plugin command", () => {
 
     it("uses yarn as the package manager when opted", async () => {
         const assetsPath = await uniqueDirectoryForTest();
-        const { defaultPluginPath } = dataForTests(assetsPath);
+        const { defaultPluginPath, defaultTemplateFiles } = dataForTests(assetsPath);
         const { stdout } = await runPromptWithAnswers(
             assetsPath,
             ["plugin"],
@@ -262,14 +227,10 @@ describe("plugin command", () => {
 
         // Test regressively files are scaffolded
         const files = [
-            "package.json",
-            "examples",
-            "src",
-            "test",
-            "src/index.js",
-            "examples/simple/webpack.config.js",
+            ...defaultTemplateFiles.filter((file) => file !== "package-lock.json"),
             "yarn.lock",
         ];
+
         files.forEach((file) => {
             expect(existsSync(join(defaultPluginPath, file))).toBeTruthy();
         });

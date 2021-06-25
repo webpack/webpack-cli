@@ -14,6 +14,14 @@ jest.setTimeout(480000);
 const ENTER = "\x0D";
 const DOWN = "\x1B\x5B\x42";
 
+const defaultTemplateFiles = [
+    "package.json",
+    "package-lock.json",
+    "src",
+    "src/index.js",
+    "webpack.config.js",
+];
+
 // Helper to read from package.json in a given path
 const readFromPkgJSON = (path) => {
     const pkgJSONPath = join(path, "package.json");
@@ -43,9 +51,7 @@ describe("init command", () => {
         expect(stderr).toContain("webpack.config.js");
 
         // Test files
-        const files = ["package.json", "src", "src/index.js", "webpack.config.js"];
-
-        files.forEach((file) => {
+        defaultTemplateFiles.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
 
@@ -61,9 +67,7 @@ describe("init command", () => {
         expect(stderr).toContain("webpack.config.js");
 
         // Test files
-        const files = ["package.json", "src", "src/index.js", "webpack.config.js"];
-
-        files.forEach((file) => {
+        defaultTemplateFiles.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
 
@@ -82,9 +86,7 @@ describe("init command", () => {
         expect(stderr).toContain("webpack.config.js");
 
         // Test files
-        const files = ["package.json", "src", "src/index.js", "webpack.config.js"];
-
-        files.forEach((file) => {
+        defaultTemplateFiles.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
 
@@ -103,9 +105,7 @@ describe("init command", () => {
         expect(stderr).toContain("webpack.config.js");
 
         // Test files
-        const files = ["package.json", "src", "src/index.js", "webpack.config.js"];
-
-        files.forEach((file) => {
+        defaultTemplateFiles.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
 
@@ -129,9 +129,7 @@ describe("init command", () => {
         expect(stderr).toContain("webpack.config.js");
 
         // Test files
-        const files = ["package.json", "src", "src/index.js", "webpack.config.js"];
-
-        files.forEach((file) => {
+        defaultTemplateFiles.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
 
@@ -152,7 +150,11 @@ describe("init command", () => {
         expect(stderr).toContain("tsconfig.json");
 
         // Test files
-        const files = ["package.json", "src", "src/index.ts", "webpack.config.js", "tsconfig.json"];
+        const files = [
+            ...defaultTemplateFiles.filter((file) => file !== "src/index.js"),
+            "src/index.ts",
+            "tsconfig.json",
+        ];
 
         files.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
@@ -178,7 +180,7 @@ describe("init command", () => {
         expect(stderr).toContain(".babelrc");
 
         // Test files
-        const files = ["package.json", "src", "src/index.js", "webpack.config.js", ".babelrc"];
+        const files = [...defaultTemplateFiles, ".babelrc"];
 
         files.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
@@ -213,9 +215,7 @@ describe("init command", () => {
         expect(stderr).toContain("webpack.config.js");
 
         // Test files
-        const files = ["package.json", "src", "src/index.js", "webpack.config.js"];
-
-        files.forEach((file) => {
+        defaultTemplateFiles.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
 
@@ -248,13 +248,7 @@ describe("init command", () => {
         expect(stderr).toContain("webpack.config.js");
 
         // Test files
-        const files = [
-            "package.json",
-            "src",
-            "src/index.js",
-            "webpack.config.js",
-            "postcss.config.js",
-        ];
+        const files = [...defaultTemplateFiles, "postcss.config.js"];
 
         files.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
@@ -289,9 +283,7 @@ describe("init command", () => {
         expect(stderr).toContain("webpack.config.js");
 
         // Test files
-        const files = ["package.json", "src", "src/index.js", "webpack.config.js"];
-
-        files.forEach((file) => {
+        defaultTemplateFiles.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
 
@@ -324,13 +316,7 @@ describe("init command", () => {
         expect(stderr).toContain("webpack.config.js");
 
         // Test files
-        const files = [
-            "package.json",
-            "src",
-            "src/index.js",
-            "webpack.config.js",
-            "postcss.config.js",
-        ];
+        const files = [...defaultTemplateFiles, "postcss.config.js"];
 
         files.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
@@ -365,9 +351,7 @@ describe("init command", () => {
         expect(stderr).toContain("webpack.config.js");
 
         // Test files
-        const files = ["package.json", "src", "src/index.js", "webpack.config.js"];
-
-        files.forEach((file) => {
+        defaultTemplateFiles.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
 
@@ -400,9 +384,7 @@ describe("init command", () => {
         expect(stderr).toContain("webpack.config.js");
 
         // Test files
-        const files = ["package.json", "src", "src/index.js", "webpack.config.js"];
-
-        files.forEach((file) => {
+        defaultTemplateFiles.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
 
@@ -426,8 +408,7 @@ describe("init command", () => {
         expect(stderr).toContain("webpack.config.js");
 
         // Test files
-        const files = ["package.json", "src", "src/index.js", "webpack.config.js"];
-        files.forEach((file) => {
+        defaultTemplateFiles.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
 
@@ -459,13 +440,7 @@ describe("init command", () => {
         expect(stderr).toContain("webpack.config.js");
 
         // Test files
-        const files = [
-            "package.json",
-            "src",
-            "src/index.js",
-            "webpack.config.js",
-            "postcss.config.js",
-        ];
+        const files = [...defaultTemplateFiles, "postcss.config.js"];
 
         files.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
@@ -493,9 +468,7 @@ describe("init command", () => {
         expect(stderr).toContain("webpack.config.js");
 
         // Test files
-        const files = ["package.json", "src", "src/index.js", "webpack.config.js"];
-
-        files.forEach((file) => {
+        defaultTemplateFiles.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
 
@@ -519,9 +492,7 @@ describe("init command", () => {
         expect(stderr).toContain("webpack.config.js");
 
         // Test files
-        const files = ["package.json", "src", "src/index.js", "webpack.config.js"];
-
-        files.forEach((file) => {
+        defaultTemplateFiles.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
 
@@ -556,9 +527,7 @@ describe("init command", () => {
         expect(stderr).toContain("webpack.config.js");
 
         // Test files
-        const files = ["package.json", "src", "src/index.js", "webpack.config.js"];
-
-        files.forEach((file) => {
+        defaultTemplateFiles.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
 
@@ -574,9 +543,7 @@ describe("init command", () => {
         expect(stderr).toContain("webpack.config.js");
 
         // Test files
-        const files = ["package.json", "src", "src/index.js", "webpack.config.js"];
-
-        files.forEach((file) => {
+        defaultTemplateFiles.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
 
@@ -592,9 +559,7 @@ describe("init command", () => {
         expect(stderr).toContain("webpack.config.js");
 
         // Test files
-        const files = ["package.json", "src", "src/index.js", "webpack.config.js"];
-
-        files.forEach((file) => {
+        defaultTemplateFiles.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
 
@@ -610,9 +575,7 @@ describe("init command", () => {
         expect(stderr).toContain("webpack.config.js");
 
         // Test files
-        const files = ["package.json", "src", "src/index.js", "webpack.config.js"];
-
-        files.forEach((file) => {
+        defaultTemplateFiles.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
 
@@ -628,9 +591,7 @@ describe("init command", () => {
         expect(stderr).toContain("webpack.config.js");
 
         // Test files
-        const files = ["package.json", "src", "src/index.js", "webpack.config.js"];
-
-        files.forEach((file) => {
+        defaultTemplateFiles.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
 
@@ -646,9 +607,7 @@ describe("init command", () => {
         expect(stderr).toContain("webpack.config.js");
 
         // Test files
-        const files = ["package.json", "src", "src/index.js", "webpack.config.js"];
-
-        files.forEach((file) => {
+        defaultTemplateFiles.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
         });
 
@@ -668,7 +627,10 @@ describe("init command", () => {
         expect(stderr).toContain("webpack.config.js");
 
         // Test files
-        const files = ["package.json", "src", "src/index.js", "webpack.config.js", "yarn.lock"];
+        const files = [
+            ...defaultTemplateFiles.filter((file) => file !== "package-lock.json"),
+            "yarn.lock",
+        ];
 
         files.forEach((file) => {
             expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
