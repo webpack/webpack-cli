@@ -3,13 +3,6 @@ const { red, green, cyanBright, bold, gray } = require("colorette");
 const { SyncHook } = require("tapable");
 const logger = require("../utils/logger");
 
-let version;
-try {
-    version = require("webpack").version;
-} catch (err) {
-    process.exit(2);
-}
-
 /**
  * Displays command space at bottom of screen
  * @param {string} msg message to print with command
@@ -49,8 +42,6 @@ const clrscr = () => {
     process.stdout.write("\x1B[2J\x1B[3J\x1B[H");
 };
 
-const isWebpack5 = version.startsWith("5");
-
 /**
  * Interactive Mode plugin
  */
@@ -75,7 +66,7 @@ class InteractiveModePlugin {
     }
 
     apply(compiler) {
-        if (!isWebpack5) {
+        if (!compiler.webpack) {
             // Use CLI logger as webpack v4 may not expose logger
             logger.error("Interactive is not supported on webpack v4 and less");
             // Show cursor
