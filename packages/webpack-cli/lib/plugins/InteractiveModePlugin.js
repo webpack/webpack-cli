@@ -66,7 +66,7 @@ class InteractiveModePlugin {
     }
 
     apply(compiler) {
-        if (!compiler.webpack) {
+        if (compiler.compilers ? !compiler.compilers[0].webpack : !compiler.webpack) {
             // Use CLI logger as webpack v4 may not expose logger
             logger.error("Interactive is not supported on webpack v4 and less");
             // Show cursor
@@ -82,7 +82,9 @@ class InteractiveModePlugin {
         // Configure stdin for keypress event
         const stdin = process.stdin;
         stdin.setEncoding("utf-8");
-        stdin.setRawMode(true);
+        if (stdin.setRawMode) {
+            stdin.setRawMode(true);
+        }
         readline.emitKeypressEvents(stdin);
 
         // Configure keypress event for actions
