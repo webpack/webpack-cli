@@ -30,9 +30,7 @@ class WebpackCLI {
         try {
             delete require.cache[module];
             result = require(module);
-            console.log(result);
         } catch (error) {
-            console.log(error, "HEY");
             let previousModuleCompile;
 
             // TODO Workaround https://github.com/zertosh/v8-compile-cache/issues/30
