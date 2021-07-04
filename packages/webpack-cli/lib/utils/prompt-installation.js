@@ -5,8 +5,9 @@ const prompt = require("./prompt");
  *
  * @param packageName
  * @param preMessage Message to show before the question
+ * @param forceInstallation Do not show prompt and force installation
  */
-async function promptInstallation(packageName, preMessage) {
+async function promptInstallation(packageName, preMessage, forceInstallation) {
     const packageManager = utils.getPackageManager();
 
     if (!packageManager) {
@@ -26,21 +27,23 @@ async function promptInstallation(packageName, preMessage) {
     ].join(" ")}`;
     const { colors } = utils;
 
-    let installConfirm;
+    let installConfirm = forceInstallation;
 
-    try {
-        installConfirm = await prompt({
-            message: `[webpack-cli] Would you like to install '${colors.green(
-                packageName,
-            )}' package? (That will run '${colors.green(commandToBeRun)}') (${colors.yellow(
-                "Y/n",
-            )})`,
-            defaultResponse: "Y",
-            stream: process.stderr,
-        });
-    } catch (error) {
-        utils.logger.error(error);
-        process.exit(2);
+    if (!forceInstallation) {
+        try {
+            installConfirm = await prompt({
+                message: `[webpack-cli] Would you like to install '${colors.green(
+                    packageName,
+                )}' package? (That will run '${colors.green(commandToBeRun)}') (${colors.yellow(
+                    "Y/n",
+                )})`,
+                defaultResponse: "Y",
+                stream: process.stderr,
+            });
+        } catch (error) {
+            utils.logger.error(error);
+            process.exit(2);
+        }
     }
 
     if (installConfirm) {
