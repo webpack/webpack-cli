@@ -1357,7 +1357,7 @@ class WebpackCLI {
                     this.logger.raw(`${bold("Description:")} ${option.description}`);
                 }
 
-                if (!option.negate && options.defaultValue) {
+                if (!option.negate && option.defaultValue) {
                     this.logger.raw(
                         `${bold("Default value:")} ${JSON.stringify(option.defaultValue)}`,
                     );
