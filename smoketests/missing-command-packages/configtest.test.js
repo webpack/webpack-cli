@@ -8,7 +8,7 @@ const isSubPackage = true;
 const configTest = () => {
     const args = ["configtest"];
     const logMessage =
-        "For using this command you need to install: '@webpack-cli/configtest' package";
+        "For using this command webpack-cli will need to install: '@webpack-cli/configtest' package";
 
     return runTest(packageName, args, logMessage, isSubPackage);
 };

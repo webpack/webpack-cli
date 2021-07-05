@@ -7,7 +7,8 @@ const isSubPackage = true;
 
 const infoTest = () => {
     const args = ["info"];
-    const logMessage = "For using this command you need to install: '@webpack-cli/info' package";
+    const logMessage =
+        "For using this command webpack-cli will need to install: '@webpack-cli/info' package";
 
     return runTest(packageName, args, logMessage, isSubPackage);
 };

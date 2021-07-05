@@ -17,8 +17,12 @@ const getPkgPath = (pkg, isSubPackage) => {
 const swapPkgName = (current, isSubPackage = false) => {
     // info -> .info and vice-versa
     const next = current.startsWith(".") ? current.substr(1) : `.${current}`;
+
     console.log(`  swapping ${current} with ${next}`);
-    fs.renameSync(getPkgPath(current, isSubPackage), getPkgPath(next, isSubPackage));
+
+    if (!fs.existsSync(getPkgPath(next, isSubPackage))) {
+        fs.renameSync(getPkgPath(current, isSubPackage), getPkgPath(next, isSubPackage));
+    }
 };
 
 const CLI_ENTRY_PATH = path.resolve(ROOT_PATH, "./packages/webpack-cli/bin/cli.js");
@@ -43,9 +47,7 @@ const runTest = (package, cliArgs = [], logMessage, isSubPackage = false) => {
             proc.kill();
         }, 30000);
 
-        const prompt = "Would you like to install";
         let hasLogMessage = false,
-            hasPrompt = false,
             hasPassed = false;
 
         proc.stderr.on("data", (chunk) => {
@@ -56,11 +58,7 @@ const runTest = (package, cliArgs = [], logMessage, isSubPackage = false) => {
                 hasLogMessage = true;
             }
 
-            if (data.includes(prompt)) {
-                hasPrompt = true;
-            }
-
-            if (hasLogMessage && hasPrompt) {
+            if (hasLogMessage) {
                 hasPassed = true;
                 proc.kill();
             }
