@@ -1367,18 +1367,22 @@ class WebpackCLI {
                     (flag) => option.long === `--${flag.name}`,
                 );
 
-                const possibleValues = flag.configs.reduce((accumulator, currentValue) => {
-                    if (currentValue.values) {
-                        return accumulator.concat(currentValue.values);
-                    } else {
-                        return accumulator;
-                    }
-                }, []);
+                if (flag && flag.configs) {
+                    const possibleValues = flag.configs.reduce((accumulator, currentValue) => {
+                        if (currentValue.values) {
+                            return accumulator.concat(currentValue.values);
+                        } else {
+                            return accumulator;
+                        }
+                    }, []);
 
-                if (possibleValues.length > 0) {
-                    this.logger.raw(
-                        `${bold("Possible values:")} ${JSON.stringify(possibleValues.join(" | "))}`,
-                    );
+                    if (possibleValues.length > 0) {
+                        this.logger.raw(
+                            `${bold("Possible values:")} ${JSON.stringify(
+                                possibleValues.join(" | "),
+                            )}`,
+                        );
+                    }
                 }
 
                 this.logger.raw("");

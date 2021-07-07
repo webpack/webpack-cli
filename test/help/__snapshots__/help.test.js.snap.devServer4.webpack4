@@ -2645,6 +2645,20 @@ CLI documentation: https://webpack.js.org/api/cli/.
 Made with ♥ by the webpack team."
 `;
 
+exports[`help should show help information using the "help --cache-type" option: stderr 1`] = `""`;
+
+exports[`help should show help information using the "help --cache-type" option: stdout 1`] = `
+"Usage: webpack --cache-type <value>
+Description: In memory caching. Filesystem caching.
+Possible values: \\"memory | filesystem\\"
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
 exports[`help should show help information using the "help --color" option: stderr 1`] = `""`;
 
 exports[`help should show help information using the "help --color" option: stdout 1`] = `
