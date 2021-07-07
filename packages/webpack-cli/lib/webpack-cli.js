@@ -1363,10 +1363,31 @@ class WebpackCLI {
                     );
                 }
 
+                const flag = this.getBuiltInOptions().find(
+                    (flag) => option.long === `--${flag.name}`,
+                );
+
+                if (flag && flag.configs) {
+                    const possibleValues = flag.configs.reduce((accumulator, currentValue) => {
+                        if (currentValue.values) {
+                            return accumulator.concat(currentValue.values);
+                        } else {
+                            return accumulator;
+                        }
+                    }, []);
+
+                    if (possibleValues.length > 0) {
+                        this.logger.raw(
+                            `${bold("Possible values:")} ${JSON.stringify(
+                                possibleValues.join(" | "),
+                            )}`,
+                        );
+                    }
+                }
+
                 this.logger.raw("");
 
                 // TODO implement this after refactor cli arguments
-                // logger.raw('Possible values: foo | bar');
                 // logger.raw('Documentation: https://webpack.js.org/option/name/');
             } else {
                 outputIncorrectUsageOfHelp();
