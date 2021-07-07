@@ -1,6 +1,6 @@
 "use strict";
 
-const { run, normalizeStderr, normalizeStdout } = require("../utils/test-utils");
+const { run, normalizeStderr, normalizeStdout, isWebpack5 } = require("../utils/test-utils");
 
 describe("help", () => {
     it('should show help information using the "--help" option', async () => {
@@ -245,9 +245,13 @@ describe("help", () => {
     it('should show help information using the "help --cache-type" option', async () => {
         const { exitCode, stderr, stdout } = await run(__dirname, ["help", "--cache-type"]);
 
-        expect(exitCode).toBe(0);
-        expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-        expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
+        if (isWebpack5) {
+            expect(exitCode).toBe(0);
+            expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+            expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
+        } else {
+            expect(exitCode).toBe(2);
+        }
     });
 
     it('should show help information using the "help --no-stats" option', async () => {
