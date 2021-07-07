@@ -2650,7 +2650,6 @@ exports[`help should show help information using the "help --cache-type" option:
 exports[`help should show help information using the "help --cache-type" option: stdout 1`] = `
 "Usage: webpack --cache-type <value>
 Description: In memory caching. Filesystem caching.
-Possible values: \\"memory | filesystem\\"
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -2679,7 +2678,6 @@ exports[`help should show help information using the "help --mode" option: stder
 exports[`help should show help information using the "help --mode" option: stdout 1`] = `
 "Usage: webpack --mode <value>
 Description: Defines the mode to pass to webpack.
-Possible values: \\"development | production | none\\"
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -2691,7 +2689,6 @@ Made with ♥ by the webpack team."
 exports[`help should show help information using the "help --mode" option: stdout 2`] = `
 "Usage: webpack --mode <value>
 Description: Defines the mode to pass to webpack.
-Possible values: \\"development | production | none\\"
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -2731,7 +2728,6 @@ exports[`help should show help information using the "help --stats" option: stde
 exports[`help should show help information using the "help --stats" option: stdout 1`] = `
 "Usage: webpack --stats [value]
 Description: It instructs webpack on how to treat the stats e.g. verbose.
-Possible values: \\"none | summary | errors-only | errors-warnings | minimal | normal | detailed | verbose\\"
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -2746,7 +2742,6 @@ exports[`help should show help information using the "help --target" option: std
 "Usage: webpack --target <value>
 Short: webpack -t <value>
 Description: Sets the build target e.g. node.
-Possible values: \\"false\\"
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -2801,7 +2796,6 @@ exports[`help should show help information using the "help serve --mode" option:
 exports[`help should show help information using the "help serve --mode" option: stdout 1`] = `
 "Usage: webpack serve --mode <value>
 Description: Defines the mode to pass to webpack.
-Possible values: \\"development | production | none\\"
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
