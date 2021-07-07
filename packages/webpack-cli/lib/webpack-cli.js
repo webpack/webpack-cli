@@ -1367,11 +1367,17 @@ class WebpackCLI {
                     (flag) => option.long === `--${flag.name}`,
                 );
 
-                if (flag && flag.configs[0].values) {
+                const possibleValues = flag.configs.reduce((accumulator, currentValue) => {
+                    if (currentValue.values) {
+                        return accumulator.concat(currentValue.values);
+                    } else {
+                        return accumulator;
+                    }
+                }, []);
+
+                if (possibleValues.length > 0) {
                     this.logger.raw(
-                        `${bold("Possible values:")} ${JSON.stringify(
-                            flag.configs[0].values.join(" | "),
-                        )}`,
+                        `${bold("Possible values:")} ${JSON.stringify(possibleValues.join(" | "))}`,
                     );
                 }
 
