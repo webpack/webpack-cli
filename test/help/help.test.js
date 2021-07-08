@@ -262,14 +262,6 @@ describe("help", () => {
         expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
     });
 
-    it('should show help information using the "help --mode" option', async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["help", "--mode"]);
-
-        expect(exitCode).toBe(0);
-        expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-        expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
-    });
-
     it('should show help information using the "help serve --mode" option', async () => {
         const { exitCode, stderr, stdout } = await run(__dirname, ["help", "serve", "--mode"]);
 

@@ -2569,21 +2569,7 @@ Made with ♥ by the webpack team."
 
 exports[`help should show help information using the "help --mode" option: stderr 1`] = `""`;
 
-exports[`help should show help information using the "help --mode" option: stderr 2`] = `""`;
-
 exports[`help should show help information using the "help --mode" option: stdout 1`] = `
-"Usage: webpack --mode <value>
-Description: Defines the mode to pass to webpack.
-Possible values: \\"development | production | none\\"
-
-To see list of all supported commands and options run 'webpack --help=verbose'.
-
-Webpack documentation: https://webpack.js.org/.
-CLI documentation: https://webpack.js.org/api/cli/.
-Made with ♥ by the webpack team."
-`;
-
-exports[`help should show help information using the "help --mode" option: stdout 2`] = `
 "Usage: webpack --mode <value>
 Description: Defines the mode to pass to webpack.
 Possible values: \\"development | production | none\\"
