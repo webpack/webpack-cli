@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const { pathToFileURL } = require("url");
 const Module = require("module");
+const watchTraverse = require("watch-traverse");
 
 const { program, Option } = require("commander");
 const utils = require("./utils");
@@ -2044,7 +2045,6 @@ class WebpackCLI {
         let config = await this.resolveConfig(options);
         config = await this.applyOptions(config, options);
         config = await this.applyCLIPlugin(config, options);
-        console.log(config);
         let compiler;
 
         try {
@@ -2172,7 +2172,7 @@ class WebpackCLI {
             // eslint-disable-next-line
             for (const [_, filePath] of compiler.config.path.entries()) {
                 // eslint-disable-next-line
-                fs.watchFile(filePath, async () => {
+                watchTraverse(filePath, async () => {
                     compiler = await this.createCompiler(options, callback);
                 });
             }
