@@ -29,6 +29,8 @@ Options:
   --no-cache-allow-collecting-memory                                                 Negative 'cache-allow-collecting-memory' option.
   --cache-cache-directory <value>                                                    Base directory for the cache (defaults to node_modules/.cache/webpack).
   --cache-cache-location <value>                                                     Locations for the cache (defaults to cacheDirectory / name).
+  --cache-compression <value>                                                        Compression type used for the cache files.
+  --no-cache-compression                                                             Negative 'cache-compression' option.
   --cache-hash-algorithm <value>                                                     Algorithm used for generation the hash (see node.js crypto package).
   --cache-idle-timeout <value>                                                       Time in ms after which idle period the cache storing should happen.
   --cache-idle-timeout-after-large-changes <value>                                   Time in ms after which idle period the cache storing should happen when larger changes has been detected (cumulative
@@ -556,12 +558,12 @@ Options:
   --output-chunk-filename <value>                                                    Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path
                                                                                      may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to
                                                                                      determine the location on disk.
-  --output-chunk-format <value>                                                      The format of chunks (formats included by default are 'array-push' (web/WebWorker), 'commonjs' (node.js), but others
-                                                                                     might be added by plugins).
+  --output-chunk-format <value>                                                      The format of chunks (formats included by default are 'array-push' (web/WebWorker), 'commonjs' (node.js), 'module'
+                                                                                     (ESM), but others might be added by plugins).
   --no-output-chunk-format                                                           Negative 'output-chunk-format' option.
   --output-chunk-load-timeout <value>                                                Number of milliseconds before chunk request expires.
-  --output-chunk-loading <value>                                                     The method of loading chunks (methods included by default are 'jsonp' (web), 'importScripts' (WebWorker), 'require'
-                                                                                     (sync node.js), 'async-node' (async node.js), but others might be added by plugins).
+  --output-chunk-loading <value>                                                     The method of loading chunks (methods included by default are 'jsonp' (web), 'import' (ESM), 'importScripts'
+                                                                                     (WebWorker), 'require' (sync node.js), 'async-node' (async node.js), but others might be added by plugins).
   --no-output-chunk-loading                                                          Negative 'output-chunk-loading' option.
   --output-chunk-loading-global <value>                                              The global variable used by webpack for loading of chunks.
   --output-clean                                                                     Clean the output directory before emit.
@@ -578,8 +580,8 @@ Options:
   --output-devtool-namespace <value>                                                 Module namespace to use when interpolating filename template string for the sources array in a generated SourceMap.
                                                                                      Defaults to `output.library` if not set. It's useful for avoiding runtime collisions in sourcemaps from multiple
                                                                                      webpack projects built as libraries.
-  --output-enabled-chunk-loading-types <value...>                                    The method of loading chunks (methods included by default are 'jsonp' (web), 'importScripts' (WebWorker), 'require'
-                                                                                     (sync node.js), 'async-node' (async node.js), but others might be added by plugins).
+  --output-enabled-chunk-loading-types <value...>                                    The method of loading chunks (methods included by default are 'jsonp' (web), 'import' (ESM), 'importScripts'
+                                                                                     (WebWorker), 'require' (sync node.js), 'async-node' (async node.js), but others might be added by plugins).
   --output-enabled-chunk-loading-types-reset                                         Clear all items provided in 'output.enabledChunkLoadingTypes' configuration. List of chunk loading types enabled for
                                                                                      use by entry points.
   --output-enabled-library-types <value...>                                          Type of library (types included by default are 'var', 'module', 'assign', 'assign-properties', 'this', 'window',
@@ -672,8 +674,8 @@ Options:
                                                                                      (node.js), but others might be added by plugins).
   --no-output-wasm-loading                                                           Negative 'output-wasm-loading' option.
   --output-webassembly-module-filename <value>                                       The filename of WebAssembly modules as relative path inside the 'output.path' directory.
-  --output-worker-chunk-loading <value>                                              The method of loading chunks (methods included by default are 'jsonp' (web), 'importScripts' (WebWorker), 'require'
-                                                                                     (sync node.js), 'async-node' (async node.js), but others might be added by plugins).
+  --output-worker-chunk-loading <value>                                              The method of loading chunks (methods included by default are 'jsonp' (web), 'import' (ESM), 'importScripts'
+                                                                                     (WebWorker), 'require' (sync node.js), 'async-node' (async node.js), but others might be added by plugins).
   --no-output-worker-chunk-loading                                                   Negative 'output-worker-chunk-loading' option.
   --output-worker-wasm-loading <value>                                               The method of loading WebAssembly Modules (methods included by default are 'fetch' (web/WebWorker), 'async-node'
                                                                                      (node.js), but others might be added by plugins).
