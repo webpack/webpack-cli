@@ -47,6 +47,23 @@ const processKill = (process) => {
     }
 };
 
+const getUniqueDirectory = () => path.resolve(os.tmpdir(), Math.random().toString(36).substr(2, 9));
+
+const copyRecursiveSync = function (src, dest) {
+    if (fs.existsSync(src) && fs.statSync(src).isDirectory()) {
+        fs.mkdirSync(dest);
+        fs.readdirSync(src).forEach((childInode) => {
+            if (/(__snapshots__|\.test\.)/.test(childInode)) {
+                return;
+            }
+
+            copyRecursiveSync(path.join(src, childInode), path.join(dest, childInode));
+        });
+    } else {
+        fs.copyFileSync(src, dest);
+    }
+};
+
 /**
  * Webpack CLI test runner.
  *
@@ -58,9 +75,12 @@ const processKill = (process) => {
 const createProcess = (cwd, args, options) => {
     const { nodeOptions = [] } = options;
     const processExecutor = nodeOptions.length ? execaNode : execa;
+    const uniqueDirectory = getUniqueDirectory();
+
+    copyRecursiveSync(path.resolve(cwd), uniqueDirectory);
 
     return processExecutor(WEBPACK_PATH, args, {
-        cwd: path.resolve(cwd),
+        cwd: uniqueDirectory,
         reject: false,
         stdio: ENABLE_LOG_COMPILATION ? "inherit" : "pipe",
         maxBuffer: Infinity,
@@ -240,15 +260,33 @@ const normalizeVersions = (output) => {
 };
 
 const normalizeCwd = (output) => {
+    const tmpDir = os.tmpdir()
+
     return output
         .replace(/\\/g, "/")
-        .replace(new RegExp(process.cwd().replace(/\\/g, "/"), "g"), "<cwd>");
+        .replace(new RegExp(process.cwd().replace(/\\/g, "/"), "g"), "<cwd>")
+        .replace(new RegExp(`${tmpDir.replace(/\\/g, "/")}/[a-z0-9]{9}`), "<cwd>");
 };
 
 const normalizeError = (output) => {
     return output
         .replace(/SyntaxError: .+/, "SyntaxError: <error-message>")
         .replace(/\s+at .+(}|\)|\d)/gs, "\n    at stack");
+};
+
+const normalizeSize = (output) => {
+    return output.replace(/\d+(.\d+)? (bytes|KiB|MiB|GiB)/g, "<size> <size-abbreviation>");
+};
+
+const normalizeTime = (output) => {
+    return output.replace(/[\d.]+ ms/gm, "<time> ms").replace();
+};
+
+const normalizeV4Output = (output) => {
+    return output
+        .replace(/Hash: .*/gm, "Hash: <hash>")
+        .replace(/Time: .*/gm, "Time: <compile time>")
+        .replace(/Built at: .*/gm, "Built at: <built time>");
 };
 
 const normalizeStdout = (stdout) => {
@@ -261,9 +299,13 @@ const normalizeStdout = (stdout) => {
     }
 
     let normalizedStdout = stripAnsi(stdout);
+
     normalizedStdout = normalizeCwd(normalizedStdout);
     normalizedStdout = normalizeVersions(normalizedStdout);
     normalizedStdout = normalizeError(normalizedStdout);
+    normalizedStdout = normalizeSize(normalizedStdout);
+    normalizedStdout = normalizeTime(normalizedStdout);
+    normalizedStdout = normalizeV4Output(normalizedStdout);
 
     return normalizedStdout;
 };
@@ -361,8 +403,8 @@ const readdir = (path) =>
         });
     });
 
-const uniqueDirectoryForTest = async () => {
-    const result = path.resolve(os.tmpdir(), Date.now().toString());
+const uniqueDirectoryForTest = () => {
+    const result = getUniqueDirectory();
 
     if (!fs.existsSync(result)) {
         fs.mkdirSync(result);
