@@ -41,6 +41,7 @@
     "interpret": "^2.2.0",
     "rechoir": "^0.7.0",
     "v8-compile-cache": "^2.2.0",
+    "watch-traverse": "^1.0.1",
     "webpack-merge": "^5.7.3"
   },
   "peerDependencies": {

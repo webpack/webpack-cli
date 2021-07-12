@@ -7,3 +7,5 @@ exports[`serve with devServer in config Port flag should override the config por
 exports[`serve with devServer in config Should pick up the host and port from config: stderr 1`] = `""`;
 
 exports[`serve with devServer in config works fine when no-hot flag is passed alongside other server config: stderr 1`] = `""`;
+
+exports[`serve with devServer in config works fine when no-hot flag is passed alongside other server config: stderr 2`] = `""`;

@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const { pathToFileURL } = require("url");
 const Module = require("module");
+const watchTraverse = require("watch-traverse");
 
 const { program, Option } = require("commander");
 const utils = require("./utils");
@@ -24,11 +25,11 @@ class WebpackCLI {
                 ),
         });
     }
-
     async tryRequireThenImport(module, handleError = true) {
         let result;
 
         try {
+            delete require.cache[module];
             result = require(module);
         } catch (error) {
             let previousModuleCompile;
@@ -67,7 +68,6 @@ class WebpackCLI {
                 throw error;
             }
         }
-
         // For babel/typescript
         if (result.default) {
             result = result.default;
@@ -1566,10 +1566,8 @@ class WebpackCLI {
 
                 process.exit(2);
             }
-
             return { options, path: configPath };
         };
-
         const evaluateConfig = async (loadedConfig, argv) => {
             const isMultiCompiler = Array.isArray(loadedConfig.options);
             const config = isMultiCompiler ? loadedConfig.options : [loadedConfig.options];
@@ -1602,7 +1600,7 @@ class WebpackCLI {
             return loadedConfig;
         };
 
-        const config = { options: {}, path: new WeakMap() };
+        const config = { options: {}, path: new Map() };
 
         if (options.config && options.config.length > 0) {
             const evaluatedConfigs = await Promise.all(
@@ -1659,9 +1657,7 @@ class WebpackCLI {
             if (foundDefaultConfigFile) {
                 const loadedConfig = await loadConfig(foundDefaultConfigFile.path);
                 const evaluatedConfig = await evaluateConfig(loadedConfig, options.argv || {});
-
                 config.options = evaluatedConfig.options;
-
                 if (Array.isArray(config.options)) {
                     config.options.forEach((options) => {
                         config.path.set(options, evaluatedConfig.path);
@@ -2019,7 +2015,12 @@ class WebpackCLI {
             if (!configOptions.plugins) {
                 configOptions.plugins = [];
             }
-
+            const alreadyHasPLugin = configOptions.plugins.find(
+                (plugin) => plugin instanceof CLIPlugin,
+            );
+            if (alreadyHasPLugin) {
+                return configOptions;
+            }
             configOptions.plugins.unshift(
                 new CLIPlugin({
                     configPath: config.path.get(configOptions),
@@ -2062,12 +2063,9 @@ class WebpackCLI {
 
     async createCompiler(options, callback) {
         this.applyNodeEnv(options);
-
         let config = await this.resolveConfig(options);
-
         config = await this.applyOptions(config, options);
         config = await this.applyCLIPlugin(config, options);
-
         let compiler;
 
         try {
@@ -2098,12 +2096,11 @@ class WebpackCLI {
         if (compiler && compiler.compiler) {
             compiler = compiler.compiler;
         }
-
+        compiler.config = config;
         return compiler;
     }
 
     async buildCommand(options, isWatchCommand) {
-        // eslint-disable-next-line prefer-const
         let compiler;
         let createJsonStringifyStream;
 
@@ -2192,7 +2189,15 @@ class WebpackCLI {
         }
 
         compiler = await this.createCompiler(options, callback);
-
+        if (options.watch) {
+            // eslint-disable-next-line
+            for (const [_, filePath] of compiler.config.path.entries()) {
+                // eslint-disable-next-line
+                watchTraverse(filePath, async () => {
+                    compiler = await this.createCompiler(options, callback);
+                });
+            }
+        }
         if (!compiler) {
             return;
         }
