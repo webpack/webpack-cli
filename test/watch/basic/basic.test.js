@@ -1,6 +1,13 @@
 "use strict";
 
-const { run, runAndGetProcess, isWebpack5, processKill } = require("../../utils/test-utils");
+const {
+    run,
+    runAndGetProcess,
+    isWebpack5,
+    processKill,
+    normalizeStderr,
+    normalizeStdout,
+} = require("../../utils/test-utils");
 const { writeFileSync } = require("fs");
 const { resolve } = require("path");
 
@@ -16,8 +23,8 @@ describe("basic", () => {
         ]);
 
         expect(exitCode).toBe(0);
-        expect(stderr).toBeFalsy();
-        expect(stdout).toBeTruthy();
+        expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+        expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
     });
 
     it("should recompile upon file change using the `--watch` option", (done) => {
@@ -187,7 +194,6 @@ describe("basic", () => {
 
     it("should log supplied config with watch", (done) => {
         const proc = runAndGetProcess(__dirname, ["watch", "--config", "log.config.js"]);
-        const configPath = resolve(__dirname, "./log.config.js");
 
         let stderr = "";
 
@@ -197,9 +203,7 @@ describe("basic", () => {
             stderr += data;
 
             if (/Compiler finished/.test(data)) {
-                expect(stderr).toContain("Compiler starting...");
-                expect(stderr).toContain(`Compiler is using config: '${configPath}'`);
-                expect(stderr).toContain("Compiler finished");
+                expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
 
                 processKill(proc);
                 done();
@@ -216,9 +220,8 @@ describe("basic", () => {
         ]);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("Error: Unknown option '--watch'");
-        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
-        expect(stdout).toBeFalsy();
+        expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+        expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
     });
 
     it("should recompile upon file change using the `command` option and the `--no-watch` option and log warning", async () => {
@@ -230,8 +233,7 @@ describe("basic", () => {
         ]);
 
         expect(exitCode).toBe(2);
-        expect(stderr).toContain("Error: Unknown option '--no-watch'");
-        expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
-        expect(stdout).toBeFalsy();
+        expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+        expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
     });
 });

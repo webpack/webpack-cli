@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`basic should log supplied config with watch: stderr 1`] = `
+"    [webpack-cli] Compiler starting... 
+    [webpack-cli] Compiler is using config: '<cwd>/test/watch/basic/log.config.js'
+    [webpack-cli] Compiler finished
+"
+`;
+
+exports[`basic should recompile upon file change using the \`command\` option and the \`--no-watch\` option and log warning: stderr 1`] = `
+"[webpack-cli] Error: Unknown option '--no-watch'
+[webpack-cli] Run 'webpack --help' to see available commands and options"
+`;
+
+exports[`basic should recompile upon file change using the \`command\` option and the \`--no-watch\` option and log warning: stdout 1`] = `""`;
+
+exports[`basic should recompile upon file change using the \`command\` option and the \`--watch\` option and log warning: stderr 1`] = `
+"[webpack-cli] Error: Unknown option '--watch'
+[webpack-cli] Run 'webpack --help' to see available commands and options"
+`;
+
+exports[`basic should recompile upon file change using the \`command\` option and the \`--watch\` option and log warning: stdout 1`] = `""`;
+
+exports[`basic should work with negative value: stderr 1`] = `""`;
+
+exports[`basic should work with negative value: stdout 1`] = `
+"Hash: <hash>
+Version: webpack x.x.x
+Time: <compile time>
+Built at: <built time>
+  Asset       Size  Chunks             Chunk Names
+main.js  960 bytes       0  [emitted]  main
+Entrypoint main = main.js
+[0] ./src/index.js 32 bytes {0} [built]
+
+WARNING in configuration
+The 'mode' option has not been set, webpack will fallback to 'production' for this value. Set 'mode' option to 'development' or 'production' to enable defaults for each environment.
+You can also set it to 'none' to disable any default behavior. Learn more: https://webpack.js.org/configuration/mode/"
+`;
