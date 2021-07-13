@@ -544,6 +544,22 @@ class WebpackCLI {
                 description: "Print compilation progress during build.",
             },
             {
+                name: "interactive",
+                usage: "--interactive",
+                configs: [
+                    {
+                        type: "string",
+                    },
+                    {
+                        type: "boolean",
+                        value: "standard",
+                    },
+                ],
+                alias: "i",
+                multiple: false,
+                description: "Enable webpack interactive mode",
+            },
+            {
                 name: "prefetch",
                 configs: [
                     {
@@ -1886,6 +1902,17 @@ class WebpackCLI {
                 : setupDefaultOptions(config.options);
         }
 
+        if (options.interactive) {
+            const applyInteractiveOptions = (configOptions) => {
+                configOptions.watch = true;
+                return configOptions;
+            };
+
+            config.options = Array.isArray(config.options)
+                ? config.options.map((options) => applyInteractiveOptions(options))
+                : applyInteractiveOptions(config.options);
+        }
+
         // Logic for webpack@4
         // TODO remove after drop webpack@4
         const processLegacyArguments = (configOptions) => {
@@ -2069,7 +2096,6 @@ class WebpackCLI {
         config = await this.applyCLIPlugin(config, options);
 
         let compiler;
-
         try {
             compiler = this.webpack(
                 config.options,
@@ -2084,6 +2110,13 @@ class WebpackCLI {
                       }
                     : callback,
             );
+
+            // Apply interactive plugin on compiler
+            if (options.interactive) {
+                const InteractivePlugin = require("./plugins/InteractiveModePlugin");
+                const interactivePlugin = new InteractivePlugin(options.interactive);
+                interactivePlugin.apply(compiler);
+            }
         } catch (error) {
             if (this.isValidationError(error)) {
                 this.logger.error(error.message);
