@@ -8,7 +8,7 @@ const isSubPackage = true;
 const initTest = () => {
     const args = ["init"];
     const logMessage =
-        "For using this command you need to install: '@webpack-cli/generators' package";
+        "For using this command webpack-cli will need to install: '@webpack-cli/generators' package";
 
     return runTest(packageName, args, logMessage, isSubPackage);
 };

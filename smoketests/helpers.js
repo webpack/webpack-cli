@@ -43,9 +43,7 @@ const runTest = (package, cliArgs = [], logMessage, isSubPackage = false) => {
             proc.kill();
         }, 30000);
 
-        const prompt = "Would you like to install";
         let hasLogMessage = false,
-            hasPrompt = false,
             hasPassed = false;
 
         proc.stderr.on("data", (chunk) => {
@@ -56,11 +54,7 @@ const runTest = (package, cliArgs = [], logMessage, isSubPackage = false) => {
                 hasLogMessage = true;
             }
 
-            if (data.includes(prompt)) {
-                hasPrompt = true;
-            }
-
-            if (hasLogMessage && hasPrompt) {
+            if (hasLogMessage) {
                 hasPassed = true;
                 proc.kill();
             }
