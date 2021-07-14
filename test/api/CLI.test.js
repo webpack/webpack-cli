@@ -1699,4 +1699,34 @@ describe("CLI API", () => {
             expect(command.helpInformation()).toContain("--no-boolean  Negated description");
         });
     });
+
+    describe("custom help output", () => {
+        let consoleSpy;
+        let exitSpy;
+
+        beforeEach(async () => {
+            consoleSpy = jest.spyOn(global.console, "log");
+            exitSpy = jest.spyOn(process, "exit").mockImplementation(() => {});
+
+            cli.program.option("--color [value]", "any color", "blue");
+            await new Promise((resolve, reject) => {
+                try {
+                    cli.run(["help", "--color"], { from: "user" });
+                    resolve();
+                } catch (error) {
+                    reject(error);
+                }
+            });
+        });
+
+        afterEach(async () => {
+            consoleSpy.mockRestore();
+            exitSpy.mockRestore();
+        });
+
+        it("should display help information", () => {
+            expect(exitSpy).toHaveBeenCalledWith(0);
+            expect(consoleSpy.mock.calls).toMatchSnapshot();
+        });
+    });
 });
