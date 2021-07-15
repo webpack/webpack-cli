@@ -3,7 +3,10 @@
 exports[`--target flag should reset target from node to async-node with --target-reset: stderr 1`] = `""`;
 
 exports[`--target flag should throw an error for incompatible multiple targets: stderr 1`] = `
-"[webpack-cli] Error: Universal Chunk Loading is not implemented yet
+"[webpack-cli] Error: For the selected environment is no default script chunk format available:
+JSONP Array push can be chosen when 'document' or 'importScripts' is available.
+CommonJs exports can be chosen when 'require' or node builtins are available.
+Select an appropriate 'target' to allow selecting one by default, or specify the 'output.chunkFormat' directly.
     at stack"
 `;
 

@@ -8,6 +8,7 @@ const {
 } = require("../utils/test-utils");
 
 const ENTER = "\x0D";
+const DOWN = "\x1B\x5B\x42";
 
 const firstPrompt = "? Plugin name";
 const dataForTests = (rootAssetsPath) => ({
@@ -16,6 +17,14 @@ const dataForTests = (rootAssetsPath) => ({
     defaultPluginPath: join(rootAssetsPath, "my-webpack-plugin"),
     genPath: join(rootAssetsPath, "test-assets"),
     customPluginPath: join(rootAssetsPath, "test-assets", "test-plugin"),
+    defaultTemplateFiles: [
+        "package.json",
+        "examples",
+        "src",
+        "test",
+        "src/index.js",
+        "examples/simple/webpack.config.js",
+    ],
 });
 
 describe("plugin command", () => {
@@ -30,7 +39,7 @@ describe("plugin command", () => {
 
     it("should scaffold plugin with default name if no plugin name provided", async () => {
         const assetsPath = await uniqueDirectoryForTest();
-        const { defaultPluginPath } = dataForTests(assetsPath);
+        const { defaultPluginPath, defaultTemplateFiles } = dataForTests(assetsPath);
         const { stdout } = await runPromptWithAnswers(assetsPath, ["plugin"], [ENTER, ENTER]);
 
         expect(normalizeStdout(stdout)).toContain(firstPrompt);
@@ -39,35 +48,26 @@ describe("plugin command", () => {
         expect(existsSync(defaultPluginPath)).toBeTruthy();
 
         // Skip test in case installation fails
-        if (!existsSync(resolve(defaultPluginPath, "./yarn.lock"))) {
+        if (!existsSync(resolve(defaultPluginPath, "./package-lock.json"))) {
             return;
         }
 
         // Test regressively files are scaffolded
-        const files = [
-            "package.json",
-            "examples",
-            "src",
-            "test",
-            "src/index.js",
-            "examples/simple/webpack.config.js",
-        ];
-
-        files.forEach((file) => {
+        defaultTemplateFiles.forEach((file) => {
             expect(existsSync(join(defaultPluginPath, file))).toBeTruthy();
         });
 
         // Check if the the generated plugin works successfully
-        const { stdout: stdout2 } = await run(__dirname, [
+        const { stdout: stdout2 } = await run(defaultPluginPath, [
             "--config",
-            "./my-webpack-plugin/examples/simple/webpack.config.js",
+            "./examples/simple/webpack.config.js",
         ]);
         expect(normalizeStdout(stdout2)).toContain("Hello World!");
     });
 
     it("should scaffold plugin template with a given name", async () => {
         const assetsPath = await uniqueDirectoryForTest();
-        const { pluginName, pluginPath } = dataForTests(assetsPath);
+        const { pluginName, pluginPath, defaultTemplateFiles } = dataForTests(assetsPath);
         const { stdout } = await runPromptWithAnswers(
             assetsPath,
             ["plugin"],
@@ -80,35 +80,26 @@ describe("plugin command", () => {
         expect(existsSync(pluginPath)).toBeTruthy();
 
         // Skip test in case installation fails
-        if (!existsSync(resolve(pluginPath, "./yarn.lock"))) {
+        if (!existsSync(resolve(pluginPath, "./package-lock.json"))) {
             return;
         }
 
         // Test regressively files are scaffolded
-        const files = [
-            "package.json",
-            "examples",
-            "src",
-            "test",
-            "src/index.js",
-            "examples/simple/webpack.config.js",
-        ];
-
-        files.forEach((file) => {
+        defaultTemplateFiles.forEach((file) => {
             expect(existsSync(join(pluginPath, file))).toBeTruthy();
         });
 
         // Check if the the generated plugin works successfully
-        const { stdout: stdout2 } = await run(__dirname, [
+        const { stdout: stdout2 } = await run(pluginPath, [
             "--config",
-            "./test-plugin/examples/simple/webpack.config.js",
+            "./examples/simple/webpack.config.js",
         ]);
         expect(normalizeStdout(stdout2)).toContain("Hello World!");
     });
 
     it("should scaffold plugin template in the specified path", async () => {
         const assetsPath = await uniqueDirectoryForTest();
-        const { pluginName, customPluginPath } = dataForTests(assetsPath);
+        const { pluginName, customPluginPath, defaultTemplateFiles } = dataForTests(assetsPath);
         const { stdout } = await runPromptWithAnswers(
             assetsPath,
             ["plugin", "test-assets"],
@@ -121,21 +112,12 @@ describe("plugin command", () => {
         expect(existsSync(customPluginPath)).toBeTruthy();
 
         // Skip test in case installation fails
-        if (!existsSync(resolve(customPluginPath, "./yarn.lock"))) {
+        if (!existsSync(resolve(customPluginPath, "./package-lock.json"))) {
             return;
         }
 
         // Test regressively files are scaffolded
-        const files = [
-            "package.json",
-            "examples",
-            "src",
-            "test",
-            "src/index.js",
-            "examples/simple/webpack.config.js",
-        ];
-
-        files.forEach((file) => {
+        defaultTemplateFiles.forEach((file) => {
             expect(existsSync(join(customPluginPath, file))).toBeTruthy();
         });
 
@@ -149,7 +131,8 @@ describe("plugin command", () => {
 
     it("should scaffold plugin template in the current directory", async () => {
         const assetsPath = await uniqueDirectoryForTest();
-        const { genPath, customPluginPath, pluginName } = dataForTests(assetsPath);
+        const { genPath, customPluginPath, pluginName, defaultTemplateFiles } =
+            dataForTests(assetsPath);
 
         if (!existsSync(genPath)) {
             mkdirSync(genPath);
@@ -167,21 +150,12 @@ describe("plugin command", () => {
         expect(existsSync(customPluginPath)).toBeTruthy();
 
         // Skip test in case installation fails
-        if (!existsSync(resolve(customPluginPath, "./yarn.lock"))) {
+        if (!existsSync(resolve(customPluginPath, "./package-lock.json"))) {
             return;
         }
 
         // Test regressively files are scaffolded
-        const files = [
-            "package.json",
-            "examples",
-            "src",
-            "test",
-            "src/index.js",
-            "examples/simple/webpack.config.js",
-        ];
-
-        files.forEach((file) => {
+        defaultTemplateFiles.forEach((file) => {
             expect(existsSync(join(customPluginPath, file))).toBeTruthy();
         });
 
@@ -202,35 +176,69 @@ describe("plugin command", () => {
 
     it("recognizes '-t' as an alias for '--template'", async () => {
         const assetsPath = await uniqueDirectoryForTest();
-        const { defaultPluginPath } = dataForTests(assetsPath);
+        const { defaultPluginPath, defaultTemplateFiles } = dataForTests(assetsPath);
         const { stdout } = await runPromptWithAnswers(
             assetsPath,
             ["plugin", "-t", "default"],
             [`${ENTER}`, ENTER],
         );
+
         expect(normalizeStdout(stdout)).toContain(firstPrompt);
+
         // Check if the output directory exists with the appropriate plugin name
         expect(existsSync(defaultPluginPath)).toBeTruthy();
+
+        // Skip test in case installation fails
+        if (!existsSync(resolve(defaultPluginPath, "./package-lock.json"))) {
+            return;
+        }
+
+        // Test regressively files are scaffolded
+        defaultTemplateFiles.forEach((file) => {
+            expect(existsSync(join(defaultPluginPath, file))).toBeTruthy();
+        });
+
+        // Check if the the generated plugin works successfully
+        const { stdout: stdout2 } = await run(defaultPluginPath, [
+            "--config",
+            "./examples/simple/webpack.config.js",
+        ]);
+        expect(normalizeStdout(stdout2)).toContain("Hello World!");
+    });
+
+    it("uses yarn as the package manager when opted", async () => {
+        const assetsPath = await uniqueDirectoryForTest();
+        const { defaultPluginPath, defaultTemplateFiles } = dataForTests(assetsPath);
+        const { stdout } = await runPromptWithAnswers(
+            assetsPath,
+            ["plugin"],
+            [`${ENTER}`, `${DOWN}${ENTER}`],
+        );
+
+        expect(normalizeStdout(stdout)).toContain(firstPrompt);
+
+        // Check if the output directory exists with the appropriate plugin name
+        expect(existsSync(defaultPluginPath)).toBeTruthy();
+
         // Skip test in case installation fails
         if (!existsSync(resolve(defaultPluginPath, "./yarn.lock"))) {
             return;
         }
+
         // Test regressively files are scaffolded
         const files = [
-            "package.json",
-            "examples",
-            "src",
-            "test",
-            "src/index.js",
-            "examples/simple/webpack.config.js",
+            ...defaultTemplateFiles.filter((file) => file !== "package-lock.json"),
+            "yarn.lock",
         ];
+
         files.forEach((file) => {
             expect(existsSync(join(defaultPluginPath, file))).toBeTruthy();
         });
+
         // Check if the the generated plugin works successfully
-        const { stdout: stdout2 } = await run(__dirname, [
+        const { stdout: stdout2 } = await run(defaultPluginPath, [
             "--config",
-            "./my-webpack-plugin/examples/simple/webpack.config.js",
+            "./examples/simple/webpack.config.js",
         ]);
         expect(normalizeStdout(stdout2)).toContain("Hello World!");
     });

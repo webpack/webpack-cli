@@ -18,13 +18,14 @@ import { readFileSync, writeFileSync } from "fs";
  *
  */
 export default class InitGenerator extends CustomGenerator {
-    public template: string;
-    public generationPath: string;
-    public resolvedGenerationPath: string;
-    public configurationPath: string;
-    public supportedTemplates: string[];
     public answers: Record<string, unknown>;
+    public configurationPath: string;
     public force: boolean;
+    public generationPath: string;
+    public packageManager: string;
+    public resolvedGenerationPath: string;
+    public supportedTemplates: string[];
+    public template: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public utils: any;
 
@@ -100,22 +101,30 @@ export default class InitGenerator extends CustomGenerator {
     }
 
     public async installPlugins(): Promise<void> {
-        // Prompt for the package manager of choice
-        const defaultPackager = this.utils.getPackageManager();
-        const { packager } = await Question.List(
-            this,
-            "packager",
-            "Pick a package manager:",
-            this.utils.getAvailableInstallers(),
-            defaultPackager,
-            this.force,
-        );
+        const installers = this.utils.getAvailableInstallers();
+
+        if (installers.length === 1) {
+            [this.packageManager] = installers;
+        } else {
+            // Prompt for the package manager of choice
+            const defaultPackager = this.utils.getPackageManager();
+            const { packager } = await Question.List(
+                this,
+                "packager",
+                "Pick a package manager:",
+                installers,
+                defaultPackager,
+                this.force,
+            );
+            this.packageManager = packager;
+        }
+
         const opts: {
             dev?: boolean;
             "save-dev"?: boolean;
-        } = packager === "yarn" ? { dev: true } : { "save-dev": true };
+        } = this.packageManager === "yarn" ? { dev: true } : { "save-dev": true };
 
-        this.scheduleInstallTask(packager, this.dependencies, opts, {
+        this.scheduleInstallTask(this.packageManager, this.dependencies, opts, {
             cwd: this.generationPath,
         });
     }

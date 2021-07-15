@@ -11,12 +11,23 @@ const {
 
 const firstPrompt = "? Loader name (my-loader)";
 const ENTER = "\x0D";
+const DOWN = "\x1B\x5B\x42";
+
 const dataForTests = (rootAssetsPath) => ({
     loaderName: "test-loader",
     loaderPath: join(rootAssetsPath, "test-loader"),
     defaultLoaderPath: join(rootAssetsPath, "my-loader"),
     genPath: join(rootAssetsPath, "test-assets"),
     customLoaderPath: join(rootAssetsPath, "test-assets", "loaderName"),
+    defaultTemplateFiles: [
+        "package.json",
+        "package-lock.json",
+        "examples",
+        "src",
+        "test",
+        "src/index.js",
+        "examples/simple/webpack.config.js",
+    ],
 });
 
 describe("loader command", () => {
@@ -31,13 +42,13 @@ describe("loader command", () => {
 
     it("should scaffold loader with default name if no loader name provided", async () => {
         const assetsPath = await uniqueDirectoryForTest();
-        const { defaultLoaderPath } = dataForTests(assetsPath);
+        const { defaultLoaderPath, defaultTemplateFiles } = dataForTests(assetsPath);
         let { stdout } = await runPromptWithAnswers(assetsPath, ["loader"], [ENTER, ENTER]);
 
         expect(normalizeStdout(stdout)).toContain(firstPrompt);
 
         // Skip test in case installation fails
-        if (!existsSync(resolve(defaultLoaderPath, "./yarn.lock"))) {
+        if (!existsSync(resolve(defaultLoaderPath, "./package-lock.json"))) {
             return;
         }
 
@@ -45,21 +56,12 @@ describe("loader command", () => {
         expect(existsSync(defaultLoaderPath)).toBeTruthy();
 
         // All test files are scaffolded
-        const files = [
-            "package.json",
-            "examples",
-            "src",
-            "test",
-            "src/index.js",
-            "examples/simple/webpack.config.js",
-        ];
-
-        files.forEach((file) => {
+        defaultTemplateFiles.forEach((file) => {
             expect(existsSync(defaultLoaderPath, file)).toBeTruthy();
         });
 
         // Check if the the generated loader works successfully
-        const path = resolve(__dirname, "./my-loader/examples/simple/");
+        const path = resolve(defaultLoaderPath, "./examples/simple/");
 
         ({ stdout } = await run(path, []));
 
@@ -68,7 +70,7 @@ describe("loader command", () => {
 
     it("should scaffold loader template with a given name", async () => {
         const assetsPath = await uniqueDirectoryForTest();
-        const { loaderName, loaderPath } = dataForTests(assetsPath);
+        const { loaderName, loaderPath, defaultTemplateFiles } = dataForTests(assetsPath);
         let { stdout } = await runPromptWithAnswers(
             assetsPath,
             ["loader"],
@@ -78,7 +80,7 @@ describe("loader command", () => {
         expect(normalizeStdout(stdout)).toContain(firstPrompt);
 
         // Skip test in case installation fails
-        if (!existsSync(resolve(loaderPath, "./yarn.lock"))) {
+        if (!existsSync(resolve(loaderPath, "./package-lock.json"))) {
             return;
         }
 
@@ -86,21 +88,12 @@ describe("loader command", () => {
         expect(existsSync(loaderPath)).toBeTruthy();
 
         // All test files are scaffolded
-        const files = [
-            "package.json",
-            "examples",
-            "src",
-            "test",
-            "src/index.js",
-            "examples/simple/webpack.config.js",
-        ];
-
-        files.forEach((file) => {
+        defaultTemplateFiles.forEach((file) => {
             expect(existsSync(loaderPath, file)).toBeTruthy();
         });
 
         // Check if the the generated loader works successfully
-        const path = resolve(__dirname, "./test-loader/examples/simple/");
+        const path = resolve(loaderPath, "./examples/simple/");
 
         ({ stdout } = await run(path, []));
 
@@ -109,7 +102,7 @@ describe("loader command", () => {
 
     it("should scaffold loader template in the specified path", async () => {
         const assetsPath = await uniqueDirectoryForTest();
-        const { loaderName, customLoaderPath } = dataForTests(assetsPath);
+        const { loaderName, customLoaderPath, defaultTemplateFiles } = dataForTests(assetsPath);
         let { stdout } = await runPromptWithAnswers(
             assetsPath,
             ["loader", "test-assets"],
@@ -119,7 +112,7 @@ describe("loader command", () => {
         expect(normalizeStdout(stdout)).toContain(firstPrompt);
 
         // Skip test in case installation fails
-        if (!existsSync(resolve(customLoaderPath, "./yarn.lock"))) {
+        if (!existsSync(resolve(customLoaderPath, "./package-lock.json"))) {
             return;
         }
 
@@ -127,16 +120,7 @@ describe("loader command", () => {
         expect(existsSync(customLoaderPath)).toBeTruthy();
 
         // All test files are scaffolded
-        const files = [
-            "package.json",
-            "examples",
-            "src",
-            "test",
-            "src/index.js",
-            "examples/simple/webpack.config.js",
-        ];
-
-        files.forEach((file) => {
+        defaultTemplateFiles.forEach((file) => {
             expect(existsSync(customLoaderPath, file)).toBeTruthy();
         });
 
@@ -150,7 +134,7 @@ describe("loader command", () => {
 
     it("should scaffold loader template in the current directory", async () => {
         const assetsPath = await uniqueDirectoryForTest();
-        const { loaderName, customLoaderPath } = dataForTests(assetsPath);
+        const { loaderName, customLoaderPath, defaultTemplateFiles } = dataForTests(assetsPath);
 
         let { stdout } = await runPromptWithAnswers(
             assetsPath,
@@ -161,7 +145,7 @@ describe("loader command", () => {
         expect(normalizeStdout(stdout)).toContain(firstPrompt);
 
         // Skip test in case installation fails
-        if (!existsSync(resolve(customLoaderPath, "./yarn.lock"))) {
+        if (!existsSync(resolve(customLoaderPath, "./package-lock.json"))) {
             return;
         }
 
@@ -169,16 +153,7 @@ describe("loader command", () => {
         expect(existsSync(customLoaderPath)).toBeTruthy();
 
         // All test files are scaffolded
-        const files = [
-            "package.json",
-            "examples",
-            "src",
-            "test",
-            "src/index.js",
-            "examples/simple/webpack.config.js",
-        ];
-
-        files.forEach((file) => {
+        defaultTemplateFiles.forEach((file) => {
             expect(existsSync(customLoaderPath, file)).toBeTruthy();
         });
 
@@ -199,11 +174,43 @@ describe("loader command", () => {
 
     it("recognizes '-t' as an alias for '--template'", async () => {
         const assetsPath = await uniqueDirectoryForTest();
-        const { defaultLoaderPath } = dataForTests(assetsPath);
+        const { defaultLoaderPath, defaultTemplateFiles } = dataForTests(assetsPath);
         let { stdout } = await runPromptWithAnswers(
             assetsPath,
             ["loader", "-t", "default"],
             [`${ENTER}`, ENTER],
+        );
+
+        expect(normalizeStdout(stdout)).toContain(firstPrompt);
+
+        // Skip test in case installation fails
+        if (!existsSync(resolve(defaultLoaderPath, "./package-lock.json"))) {
+            return;
+        }
+
+        // Check if the output directory exists with the appropriate loader name
+        expect(existsSync(defaultLoaderPath)).toBeTruthy();
+
+        // All test files are scaffolded
+        defaultTemplateFiles.forEach((file) => {
+            expect(existsSync(defaultLoaderPath, file)).toBeTruthy();
+        });
+
+        // Check if the the generated loader works successfully
+        const path = resolve(assetsPath, "./my-loader/examples/simple/");
+
+        ({ stdout } = await run(path, []));
+
+        expect(stdout).toContain("my-loader");
+    });
+
+    it("uses yarn as the package manager when opted", async () => {
+        const assetsPath = await uniqueDirectoryForTest();
+        const { defaultLoaderPath, defaultTemplateFiles } = dataForTests(assetsPath);
+        let { stdout } = await runPromptWithAnswers(
+            assetsPath,
+            ["loader", "-t", "default"],
+            [`${ENTER}`, `${DOWN}${ENTER}`],
         );
 
         expect(normalizeStdout(stdout)).toContain(firstPrompt);
@@ -218,12 +225,8 @@ describe("loader command", () => {
 
         // All test files are scaffolded
         const files = [
-            "package.json",
-            "examples",
-            "src",
-            "test",
-            "src/index.js",
-            "examples/simple/webpack.config.js",
+            ...defaultTemplateFiles.filter((file) => file !== "package-lock.json"),
+            "yarn.lock",
         ];
 
         files.forEach((file) => {
@@ -231,7 +234,7 @@ describe("loader command", () => {
         });
 
         // Check if the the generated loader works successfully
-        const path = resolve(__dirname, "./my-loader/examples/simple/");
+        const path = resolve(assetsPath, "./my-loader/examples/simple/");
 
         ({ stdout } = await run(path, []));
 
