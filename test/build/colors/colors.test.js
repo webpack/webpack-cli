@@ -1,6 +1,6 @@
 "use strict";
 
-const { run, isWebpack5 } = require("../../utils/test-utils");
+const { run } = require("../../utils/test-utils");
 const { resolve } = require("path");
 
 describe("colors", () => {
@@ -11,7 +11,7 @@ describe("colors", () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        const output = isWebpack5 ? "successfully" : "main.js";
+        const output = "successfully";
         expect(stdout).toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
     });
 
@@ -22,7 +22,7 @@ describe("colors", () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        const output = isWebpack5 ? "successfully" : "main.js";
+        const output = "successfully";
         expect(stdout).toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
     });
 
@@ -35,7 +35,7 @@ describe("colors", () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        const output = isWebpack5 ? "successfully" : "main.js";
+        const output = "successfully";
         expect(stdout).toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
     });
 
@@ -50,7 +50,7 @@ describe("colors", () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        const output = isWebpack5 ? "successfully" : "main.js";
+        const output = "successfully";
         expect(stdout).toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
     });
 
@@ -59,7 +59,7 @@ describe("colors", () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        const output = isWebpack5 ? "successfully" : "main.js";
+        const output = "successfully";
         expect(stdout).toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
     });
 
@@ -71,7 +71,7 @@ describe("colors", () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        const output = isWebpack5 ? "successfully" : "main.js";
+        const output = "successfully";
         expect(stdout).not.toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
         expect(stdout).toContain(output);
     });
@@ -87,7 +87,7 @@ describe("colors", () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        const output = isWebpack5 ? "successfully" : "main.js";
+        const output = "successfully";
         expect(stdout).toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
     });
 
@@ -102,7 +102,7 @@ describe("colors", () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        const output = isWebpack5 ? "successfully" : "main.js";
+        const output = "successfully";
         expect(stdout).toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
     });
 
@@ -117,7 +117,7 @@ describe("colors", () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        const output = isWebpack5 ? "successfully" : "main.js";
+        const output = "successfully";
         expect(stdout).toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
     });
 
@@ -128,7 +128,7 @@ describe("colors", () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        const output = isWebpack5 ? "successfully" : "main.js";
+        const output = "successfully";
         expect(stdout).toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
     });
 
@@ -139,7 +139,7 @@ describe("colors", () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        const output = isWebpack5 ? "successfully" : "main.js";
+        const output = "successfully";
         expect(stdout).not.toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
         expect(stdout).toContain(output);
     });
@@ -152,7 +152,7 @@ describe("colors", () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        const output = isWebpack5 ? "successfully" : "main.js";
+        const output = "successfully";
         expect(stdout).toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
     });
 
@@ -164,7 +164,7 @@ describe("colors", () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        const output = isWebpack5 ? "successfully" : "main.js";
+        const output = "successfully";
         expect(stdout).not.toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
         expect(stdout).toContain(output);
     });
@@ -177,11 +177,8 @@ describe("colors", () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-
-        if (isWebpack5) {
-            expect(stdout).toContain(`\u001b[1mfirst-config`);
-            expect(stdout).toContain(`\u001b[1msecond-config`);
-            expect(stdout).toContain(`\u001b[1m\u001b[32msuccessfully\u001b[39m\u001b[22m`);
-        }
+        expect(stdout).toContain(`\u001b[1mfirst-config`);
+        expect(stdout).toContain(`\u001b[1msecond-config`);
+        expect(stdout).toContain(`\u001b[1m\u001b[32msuccessfully\u001b[39m\u001b[22m`);
     });
 });

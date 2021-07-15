@@ -5,7 +5,6 @@ const path = require("path");
 const getPort = require("get-port");
 const {
     runWatch,
-    isWebpack5,
     normalizeStderr,
     normalizeStdout,
     isDevServer4,
@@ -175,7 +174,7 @@ describe("basic serve usage", () => {
             expect(stdout).not.toContain("HotModuleReplacementPlugin");
         }
 
-        expect(stdout).toContain(isWebpack5 ? "compiled successfully" : "Version: webpack");
+        expect(stdout).toContain("compiled successfully");
     });
 
     it('should work with the "--stats verbose" option', async () => {
@@ -189,9 +188,7 @@ describe("basic serve usage", () => {
             expect(stdout).not.toContain("HotModuleReplacementPlugin");
         }
 
-        expect(stdout).toContain(
-            isWebpack5 ? "from webpack.Compiler" : "webpack.buildChunkGraph.visitModules",
-        );
+        expect(stdout).toContain("from webpack.Compiler");
         expect(stdout).toContain("main.js");
     });
 
@@ -365,19 +362,14 @@ describe("basic serve usage", () => {
         ]);
 
         expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-
-        if (isWebpack5) {
-            if (isDevServer4) {
-                expect(stdout).toContain("HotModuleReplacementPlugin");
-            } else {
-                expect(stdout).toContain("/my-public-path/");
-                expect(stdout).not.toContain("HotModuleReplacementPlugin");
-            }
-
-            expect(stdout).toContain("main.js");
+        if (isDevServer4) {
+            expect(stdout).toContain("HotModuleReplacementPlugin");
         } else {
-            expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
+            expect(stdout).toContain("/my-public-path/");
+            expect(stdout).not.toContain("HotModuleReplacementPlugin");
         }
+
+        expect(stdout).toContain("main.js");
     });
 
     it('should respect the "publicPath" option from configuration', async () => {
@@ -593,7 +585,7 @@ describe("basic serve usage", () => {
         );
 
         expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-        expect(stdout).toContain(isWebpack5 ? "compiled successfully" : "modules");
+        expect(stdout).toContain("compiled successfully");
         expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
     });
 

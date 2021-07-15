@@ -1,6 +1,6 @@
 "use strict";
 
-const { run, runWatch, isWebpack5 } = require("../../utils/test-utils");
+const { run, runWatch } = require("../../utils/test-utils");
 
 describe("start finish force log", () => {
     it("start finish force log when env is set", async () => {
@@ -10,7 +10,7 @@ describe("start finish force log", () => {
         expect(exitCode).toBe(0);
         expect(stderr).toContain("Compiler starting...");
         expect(stderr).toContain("Compiler finished");
-        const output = isWebpack5 ? "compiled successfully" : "main.js";
+        const output = "compiled successfully";
         expect(stdout).toContain(output);
     });
 
@@ -21,7 +21,7 @@ describe("start finish force log", () => {
         expect(exitCode).toBe(0);
         expect(stderr).toContain("Compiler 'log config' starting...");
         expect(stderr).toContain("Compiler 'log config' finished");
-        const output = isWebpack5 ? "compiled successfully" : "main.js";
+        const output = "compiled successfully";
         expect(stdout).toContain(output);
     });
 
@@ -32,7 +32,7 @@ describe("start finish force log", () => {
         });
         expect(stderr).toContain("Compiler starting...");
         expect(stderr).toContain("Compiler finished");
-        const output = isWebpack5 ? "compiled successfully" : "main.js";
+        const output = "compiled successfully";
         expect(stdout).toContain(output);
     });
 
@@ -49,7 +49,7 @@ describe("start finish force log", () => {
         expect(stderr).toContain("Compiler 'Satoru' starting...");
         expect(stderr).toContain("Compiler 'Gojou' finished");
         expect(stderr).toContain("Compiler 'Satoru' finished");
-        const output = isWebpack5 ? "compiled successfully" : "main.js";
+        const output = "compiled successfully";
         expect(stdout).toContain(output);
     });
 });
