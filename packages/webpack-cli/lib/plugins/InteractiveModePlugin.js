@@ -4,38 +4,6 @@ const { SyncHook } = require("tapable");
 const logger = require("../utils/logger");
 
 /**
- * Displays command space at bottom of screen
- * @param {string} msg message to print with command
- * @param {boolean} status currently watching or not
- */
-const spawnCommand = (msg, status, toClear = false, verbose = false) => {
-    const lines = verbose ? 3 : 2;
-    const totalRows = process.stdout.rows;
-    readline.cursorTo(process.stdout, 0, totalRows - lines);
-    readline.clearScreenDown(process.stdout);
-
-    if (toClear) return;
-
-    if (verbose) {
-        process.stdout.write(`${bold(cyanBright(`i  ${msg}`))}\n`);
-        process.stdout.write(`${gray("   q: quit  w: watch  s: pause")}`);
-    } else {
-        process.stdout.write("\n");
-    }
-
-    readline.cursorTo(process.stdout, 0, totalRows - 2);
-
-    // for current status
-    if (status) {
-        process.stdout.write(`${green("▲")}  `);
-    } else {
-        process.stdout.write(`${red("▲")}  `);
-    }
-
-    readline.cursorTo(process.stdout, 0, totalRows - lines - 1);
-};
-
-/**
  * Clear the whole terminal
  */
 const clrscr = () => {
@@ -144,16 +112,48 @@ class InteractiveModePlugin {
                     afterDoneCount = 0;
                     process.nextTick(() => {
                         process.stdout.write(`${this.verbose ? "\n" : ""}\n\n`);
-                        spawnCommand("compilations completed", true, false, this.verbose);
+                        this.spawnCommand("compilations completed", true, false);
                     });
                 }
             });
         }
     }
 
+    /**
+     * Displays command space at bottom of screen
+     * @param {string} msg message to print with command
+     * @param {boolean} status currently watching or not
+     */
+    spawnCommand(msg, status, toClear = false) {
+        const lines = this.verbose ? 3 : 2;
+        const totalRows = process.stdout.rows;
+        readline.cursorTo(process.stdout, 0, totalRows - lines);
+        readline.clearScreenDown(process.stdout);
+
+        if (toClear) return;
+
+        if (this.verbose) {
+            process.stdout.write(`${bold(cyanBright(`i  ${msg}`))}\n`);
+            process.stdout.write(`${gray("   q: quit  w: watch  s: pause")}`);
+        } else {
+            process.stdout.write("\n");
+        }
+
+        readline.cursorTo(process.stdout, 0, totalRows - 2);
+
+        // for current status
+        if (status) {
+            process.stdout.write(`${green("▲")}  `);
+        } else {
+            process.stdout.write(`${red("▲")}  `);
+        }
+
+        readline.cursorTo(process.stdout, 0, totalRows - lines - 1);
+    }
+
     quitHandler(_compilers, compiler) {
         compiler.close(() => {
-            spawnCommand("", true, true, this.verbose);
+            this.spawnCommand("", true, true);
             // Show cursor
             process.stdout.write("\u001B[?25h");
             process.exit(0);
@@ -166,7 +166,7 @@ class InteractiveModePlugin {
         }, true);
 
         if (allWatching) {
-            spawnCommand("already watching", true, false, this.verbose);
+            this.spawnCommand("already watching", true, false);
             return;
         }
 
@@ -176,7 +176,7 @@ class InteractiveModePlugin {
                 childCompiler.compile(() => {});
             }
         }
-        spawnCommand("started watching", true, true, this.verbose);
+        this.spawnCommand("started watching", true, true);
     }
 
     stopHandler(compilers) {
@@ -185,7 +185,7 @@ class InteractiveModePlugin {
         }, true);
 
         if (allSuspended) {
-            spawnCommand("already stoped", false, false, this.verbose);
+            this.spawnCommand("already stoped", false, false);
             return;
         }
 
@@ -194,7 +194,7 @@ class InteractiveModePlugin {
                 childCompiler.watching.suspend();
             }
         }
-        spawnCommand("stoped watching", false, false, this.verbose);
+        this.spawnCommand("stoped watching", false, false);
         return;
     }
 }
