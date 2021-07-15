@@ -4,13 +4,6 @@ const { SyncHook } = require("tapable");
 const logger = require("../utils/logger");
 
 /**
- * Clear the whole terminal
- */
-const clrscr = () => {
-    process.stdout.write("\x1B[2J\x1B[3J\x1B[H");
-};
-
-/**
  * Interactive Mode plugin
  */
 class InteractiveModePlugin {
@@ -92,7 +85,7 @@ class InteractiveModePlugin {
             // eslint-disable-next-line no-loop-func
             childCompiler.hooks.beforeCompile.tap(this.name, () => {
                 if (beforeCompileCount === 0) {
-                    clrscr();
+                    this.clrscr();
                     compiler.hooks.beforeInteractiveOutput.call();
                 }
 
@@ -149,6 +142,13 @@ class InteractiveModePlugin {
         }
 
         readline.cursorTo(process.stdout, 0, totalRows - lines - 1);
+    }
+
+    /**
+     * Clear the whole terminal
+     */
+    clrscr() {
+        process.stdout.write("\x1B[2J\x1B[3J\x1B[H");
     }
 
     quitHandler(_compilers, compiler) {
