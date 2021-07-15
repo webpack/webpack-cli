@@ -1886,103 +1886,16 @@ class WebpackCLI {
                 : setupDefaultOptions(config.options);
         }
 
-        // Logic for webpack@4
-        // TODO remove after drop webpack@4
-        const processLegacyArguments = (configOptions) => {
-            if (options.entry) {
-                configOptions.entry = options.entry;
-            }
-
-            if (options.outputPath) {
-                configOptions.output = {
-                    ...configOptions.output,
-                    ...{ path: path.resolve(options.outputPath) },
-                };
-            }
-
-            if (options.target) {
-                configOptions.target = options.target;
-            }
-
-            if (typeof options.devtool !== "undefined") {
-                configOptions.devtool = options.devtool;
-            }
-
-            if (options.mode) {
-                configOptions.mode = options.mode;
-            } else if (
-                !configOptions.mode &&
-                process.env &&
-                process.env.NODE_ENV &&
-                (process.env.NODE_ENV === "development" ||
-                    process.env.NODE_ENV === "production" ||
-                    process.env.NODE_ENV === "none")
-            ) {
-                configOptions.mode = process.env.NODE_ENV;
-            }
-
-            if (options.name) {
-                configOptions.name = options.name;
-            }
-
-            if (typeof options.stats !== "undefined") {
-                configOptions.stats = options.stats;
-            }
-
-            if (typeof options.watch !== "undefined") {
-                configOptions.watch = options.watch;
-            }
-
-            if (typeof options.watchOptionsStdin !== "undefined") {
-                configOptions.watchOptions = {
-                    ...configOptions.watchOptions,
-                    ...{ stdin: options.watchOptionsStdin },
-                };
-            }
-
-            return configOptions;
-        };
-
-        config.options = Array.isArray(config.options)
-            ? config.options.map((options) => processLegacyArguments(options))
-            : processLegacyArguments(config.options);
-
         // Apply `stats` and `stats.colors` options
         const applyStatsColors = (configOptions) => {
-            // TODO remove after drop webpack@4
-            const statsForWebpack4 = this.webpack.Stats && this.webpack.Stats.presetToOptions;
-
-            if (statsForWebpack4) {
-                if (typeof configOptions.stats === "undefined") {
-                    configOptions.stats = {};
-                } else if (
-                    typeof configOptions.stats === "boolean" ||
-                    typeof configOptions.stats === "string"
-                ) {
-                    if (
-                        typeof configOptions.stats === "string" &&
-                        configOptions.stats !== "none" &&
-                        configOptions.stats !== "verbose" &&
-                        configOptions.stats !== "detailed" &&
-                        configOptions.stats !== "minimal" &&
-                        configOptions.stats !== "errors-only" &&
-                        configOptions.stats !== "errors-warnings"
-                    ) {
-                        return configOptions;
-                    }
-
-                    configOptions.stats = this.webpack.Stats.presetToOptions(configOptions.stats);
-                }
-            } else {
-                if (typeof configOptions.stats === "undefined") {
-                    configOptions.stats = { preset: "normal" };
-                } else if (typeof configOptions.stats === "boolean") {
-                    configOptions.stats = configOptions.stats
-                        ? { preset: "normal" }
-                        : { preset: "none" };
-                } else if (typeof configOptions.stats === "string") {
-                    configOptions.stats = { preset: configOptions.stats };
-                }
+            if (typeof configOptions.stats === "undefined") {
+                configOptions.stats = { preset: "normal" };
+            } else if (typeof configOptions.stats === "boolean") {
+                configOptions.stats = configOptions.stats
+                    ? { preset: "normal" }
+                    : { preset: "none" };
+            } else if (typeof configOptions.stats === "string") {
+                configOptions.stats = { preset: configOptions.stats };
             }
 
             let colors;
@@ -2094,11 +2007,6 @@ class WebpackCLI {
             process.exit(2);
         }
 
-        // TODO webpack@4 return Watching and MultiWatching instead Compiler and MultiCompiler, remove this after drop webpack@4
-        if (compiler && compiler.compiler) {
-            compiler = compiler.compiler;
-        }
-
         return compiler;
     }
 
@@ -2136,13 +2044,6 @@ class WebpackCLI {
                 : compiler.options
                 ? compiler.options.stats
                 : undefined;
-
-            // TODO webpack@4 doesn't support `{ children: [{ colors: true }, { colors: true }] }` for stats
-            const statsForWebpack4 = this.webpack.Stats && this.webpack.Stats.presetToOptions;
-
-            if (compiler.compilers && statsForWebpack4) {
-                statsOptions.colors = statsOptions.children.some((child) => child.colors);
-            }
 
             if (options.json && createJsonStringifyStream) {
                 const handleWriteError = (error) => {
