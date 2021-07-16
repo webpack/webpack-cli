@@ -4,7 +4,7 @@ const { SyncHook } = require("tapable");
 const logger = require("../utils/logger");
 
 class InteractiveModePlugin {
-    constructor(mode = "verbose") {
+    constructor(options = { mode: "verbose" }) {
         this.name = "webpack-cli-interactive-mode";
         this.keys = {
             quit: "q",
@@ -17,7 +17,7 @@ class InteractiveModePlugin {
             start: this.startHandler.bind(this),
         };
         this.logger = undefined;
-        this.verbose = mode === "verbose";
+        this.verbose = options.mode === "verbose";
     }
 
     apply(compiler) {

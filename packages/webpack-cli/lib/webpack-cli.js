@@ -2114,7 +2114,9 @@ class WebpackCLI {
             // Apply interactive plugin on compiler
             if (options.interactive) {
                 const InteractivePlugin = require("./plugins/InteractiveModePlugin");
-                const interactivePlugin = new InteractivePlugin(options.interactive);
+                const interactivePlugin = new InteractivePlugin({
+                    mode: options.interactive,
+                });
                 interactivePlugin.apply(compiler);
             }
         } catch (error) {
