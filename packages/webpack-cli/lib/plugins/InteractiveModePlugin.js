@@ -3,9 +3,6 @@ const { red, green, cyanBright, bold, gray } = require("colorette");
 const { SyncHook } = require("tapable");
 const logger = require("../utils/logger");
 
-/**
- * Interactive Mode plugin
- */
 class InteractiveModePlugin {
     constructor(mode = "verbose") {
         this.name = "webpack-cli-interactive-mode";
@@ -21,19 +18,17 @@ class InteractiveModePlugin {
         };
         this.logger = undefined;
         this.verbose = mode === "verbose";
-
-        // hide cursor
-        process.stdout.write("\u001B[?25l");
     }
 
     apply(compiler) {
         if (compiler.compilers ? !compiler.compilers[0].webpack : !compiler.webpack) {
             // Use CLI logger as webpack v4 may not expose logger
             logger.error("Interactive is not supported on webpack v4 and less");
-            // Show cursor
-            process.stdout.write("\u001B[?25h");
             process.exit(1);
         }
+
+        // hide cursor
+        process.stdout.write("\u001B[?25l");
 
         const compilers = compiler.compilers ? compiler.compilers : [compiler];
 
