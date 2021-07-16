@@ -21,14 +21,15 @@ class InteractiveModePlugin {
     }
 
     apply(compiler) {
+        // hide cursor
+        process.stdout.write("\u001B[?25l");
         if (compiler.compilers ? !compiler.compilers[0].webpack : !compiler.webpack) {
             // Use CLI logger as webpack v4 may not expose logger
             logger.error("Interactive is not supported on webpack v4 and less");
+            // Show cursor
+            process.stdout.write("\u001B[?25h");
             process.exit(1);
         }
-
-        // hide cursor
-        process.stdout.write("\u001B[?25l");
 
         const compilers = compiler.compilers ? compiler.compilers : [compiler];
 
