@@ -361,8 +361,22 @@ const readdir = (path) =>
         });
     });
 
+const urlAlphabet = "ModuleSymbhasOwnPr-0123456789ABCDEFGHNRVfgctiUvz_KqYTJkLxpZXIjQW";
+
+const uuid = (size = 21) => {
+    let id = "";
+    let i = size;
+
+    while (i--) {
+        // `| 0` is more compact and faster than `Math.floor()`.
+        id += urlAlphabet[(Math.random() * 64) | 0];
+    }
+
+    return id;
+};
+
 const uniqueDirectoryForTest = async () => {
-    const result = path.resolve(os.tmpdir(), Date.now().toString());
+    const result = path.resolve(os.tmpdir(), uuid());
 
     if (!fs.existsSync(result)) {
         fs.mkdirSync(result);
