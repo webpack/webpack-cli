@@ -356,21 +356,23 @@ describe("basic serve usage", () => {
         expect(stdout).toContain("main.js");
     });
 
-    // TODO bug on webpack-dev-server side, need respect `output.publicPath` too
     it('should work with the "--output-public-path" option', async () => {
         const { stderr, stdout } = await runWatch(__dirname, [
             "serve",
             "--output-public-path",
             "/my-public-path/",
+            "--stats",
+            "verbose",
         ]);
 
         expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
 
         if (isWebpack5) {
+            expect(stdout).toContain("/my-public-path/");
+
             if (isDevServer4) {
                 expect(stdout).toContain("HotModuleReplacementPlugin");
             } else {
-                expect(stdout).toContain("/my-public-path/");
                 expect(stdout).not.toContain("HotModuleReplacementPlugin");
             }
 
