@@ -77,7 +77,7 @@ export default async function startDevServer(
     const devServersOptions = [];
 
     for (const compilerWithDevServerOption of compilersWithDevServerOption) {
-        const options = mergeOptions(
+        const devServerOptions = mergeOptions(
             compilerWithDevServerOption.options.devServer || {},
             devServerCliOptions,
         );
@@ -94,8 +94,8 @@ export default async function startDevServer(
                 }
 
                 // webpack-dev-server@3
-                if (options.publicPath) {
-                    return normalizePublicPath(options.publicPath);
+                if (devServerOptions.publicPath) {
+                    return normalizePublicPath(devServerOptions.publicPath);
                 }
 
                 return normalizePublicPath(compilerWithDevServerOption.options.output.publicPath);
@@ -105,21 +105,21 @@ export default async function startDevServer(
                     return compilerWithDevServerOption.options.stats;
                 }
 
-                if (options.stats) {
-                    return options.stats;
+                if (devServerOptions.stats) {
+                    return devServerOptions.stats;
                 }
 
                 return compilerWithDevServerOption.options.stats;
             };
 
-            options.host = options.host || "localhost";
-            options.port = options.port || 8080;
-            options.stats = getStatsOption();
-            options.publicPath = getPublicPathOption();
+            devServerOptions.host = devServerOptions.host || "localhost";
+            devServerOptions.port = devServerOptions.port || 8080;
+            devServerOptions.stats = getStatsOption();
+            devServerOptions.publicPath = getPublicPathOption();
         }
 
-        if (options.port) {
-            const portNumber = Number(options.port);
+        if (devServerOptions.port) {
+            const portNumber = Number(devServerOptions.port);
 
             if (usedPorts.find((port) => portNumber === port)) {
                 throw new Error(
@@ -130,7 +130,7 @@ export default async function startDevServer(
             usedPorts.push(portNumber);
         }
 
-        devServersOptions.push({ compiler, options });
+        devServersOptions.push({ compiler, options: devServerOptions });
     }
 
     const servers = [];
