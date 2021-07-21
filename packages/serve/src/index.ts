@@ -174,7 +174,8 @@ class ServeCommand {
                         }
                         return accumulator;
                     }, {});
-                    const result = Object.assign({}, compiler.options.devServer);
+                    // TODO fix compatibility with multi compiler mode
+                    const result = Object.assign({}, (compiler.options || {}).devServer);
                     const problems = (
                         webpack.cli && typeof webpack.cli.processArguments === "function"
                             ? webpack.cli
