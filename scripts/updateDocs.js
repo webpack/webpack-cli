@@ -2,6 +2,10 @@
 const { sync } = require("execa");
 const { resolve } = require("path");
 const { writeFileSync } = require("fs");
+//eslint-disable-next-line node/no-unpublished-require
+const { version } = require("webpack-dev-server/package.json");
+
+const majorDevServerVersion = version.split(".")[0];
 
 try {
     const { stdout: cliOptions } = sync(
@@ -33,7 +37,7 @@ try {
     const serveContent = ["```\n", serveOptions, "\n```"].join("");
 
     // create SERVE.md
-    writeFileSync("SERVE-OPTIONS.md", serveContent);
+    writeFileSync(`SERVE-OPTIONS-v${majorDevServerVersion}.md`, serveContent);
 
     console.log('Successfully updated "OPTIONS.md" and "SERVE-OPTIONS.md"');
 } catch (err) {
