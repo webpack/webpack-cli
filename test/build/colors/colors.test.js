@@ -170,12 +170,13 @@ describe("colors", () => {
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
-        const output = isWebpack5 ? "successfully" : "main.js";
 
-        // red from first config
-        expect(stdout).toContain(`\u001b[31m${output}`);
-        // blue from second config
-        expect(stdout).toContain(`\u001b[34m${output}`);
+        if (isWebpack5) {
+            // red from first config
+            expect(stdout).toContain(`\u001b[31msuccessfully`);
+            // blue from second config
+            expect(stdout).toContain(`\u001b[34m$successfully`);
+        }
     });
 
     it("should prioritize --color over colors in config", async () => {
