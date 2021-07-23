@@ -175,7 +175,7 @@ describe("colors", () => {
             // red from first config
             expect(stdout).toContain(`\u001b[31msuccessfully`);
             // blue from second config
-            expect(stdout).toContain(`\u001b[34m$successfully`);
+            expect(stdout).toContain(`\u001b[34msuccessfully`);
         }
     });
 
