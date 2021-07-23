@@ -144,6 +144,41 @@ describe("colors", () => {
         expect(stdout).toContain(output);
     });
 
+    it('should work with the "stats" option from the configuration #5', async () => {
+        const { exitCode, stderr, stdout } = await run(
+            __dirname,
+            ["--config=stats-colors.webpack.config.js"],
+            {
+                env: { FORCE_COLOR: true },
+            },
+        );
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        const output = isWebpack5 ? "successfully" : "main.js";
+        expect(stdout).toContain(`\u001b[31m${output}\u001b[39m\u001b[22m`);
+    });
+
+    it('should work with the "stats" option from the configuration in multi compiler mode', async () => {
+        const { exitCode, stderr, stdout } = await run(
+            __dirname,
+            ["--config=multi-stats-colors.webpack.config.js"],
+            {
+                env: { FORCE_COLOR: true },
+            },
+        );
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+
+        if (isWebpack5) {
+            // red from first config
+            expect(stdout).toContain(`\u001b[31msuccessfully`);
+            // blue from second config
+            expect(stdout).toContain(`\u001b[34msuccessfully`);
+        }
+    });
+
     it("should prioritize --color over colors in config", async () => {
         const { exitCode, stderr, stdout } = await run(__dirname, [
             "--config=colors-false.webpack.config.js",
