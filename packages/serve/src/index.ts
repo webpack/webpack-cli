@@ -324,7 +324,14 @@ class ServeCommand {
                     }
 
                     try {
-                        const server = new DevServer(compiler, devServerOptions);
+                        let server;
+
+                        // TODO: remove after dropping webpack-dev-server@v3
+                        if (isDevServer4) {
+                            server = new DevServer(devServerOptions, compiler);
+                        } else {
+                            server = new DevServer(compiler, devServerOptions);
+                        }
 
                         server.listen(
                             devServerOptions.port,
