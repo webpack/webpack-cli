@@ -642,14 +642,17 @@ describe("init command", () => {
 
     it("should generate appropriate files for webpack template", async () => {
         const assetsPath = await uniqueDirectoryForTest();
-        const { stdout, stderr } = await run(assetsPath, ["init", "--template", "webpack"]);
+        const { stdout, stderr } = await runPromptWithAnswers(
+            assetsPath,
+            ["init", "--template", "webpack"],
+            [ENTER],
+        );
 
         const files = [
             ".gitignore",
             ".husky",
             ".editorconfig",
             ".eslintrc.js",
-            "prettier.config.js",
             "jest.config.js",
             "LICENSE",
             "lint-staged.config.js",

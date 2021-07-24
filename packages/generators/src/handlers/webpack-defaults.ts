@@ -18,7 +18,6 @@ const files = [
     ".husky",
     ".editorconfig",
     ".eslintrc.js",
-    "prettier.config.js",
     "jest.config.js",
     "LICENSE",
     "lint-staged.config.js",

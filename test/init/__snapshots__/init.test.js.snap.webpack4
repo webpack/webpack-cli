@@ -411,7 +411,9 @@ Object {
     "eslint": "x.x.x",
     "eslint-config-prettier": "x.x.x",
     "eslint-plugin-prettier": "x.x.x",
+    "husky": "x.x.x",
     "jest": "x.x.x",
+    "lint-staged": "x.x.x",
     "prettier": "x.x.x",
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
@@ -419,7 +421,9 @@ Object {
   "keywords": Array [],
   "license": "ISC",
   "name": "webpack-template",
-  "scripts": Object {},
+  "scripts": Object {
+    "prepare": "husky install",
+  },
   "version": "1.0.0",
 }
 `;
