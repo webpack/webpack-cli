@@ -20,8 +20,10 @@ const swapPkgName = (current, isSubPackage = false) => {
 
     console.log(`  swapping ${current} with ${next}`);
 
-    if (!fs.existsSync(getPkgPath(next, isSubPackage))) {
+    try {
         fs.renameSync(getPkgPath(current, isSubPackage), getPkgPath(next, isSubPackage));
+    } catch (error) {
+        console.error(error);
     }
 };
 
