@@ -37,7 +37,7 @@
     "test": "jest --reporters=default",
     "test:smoketests": "nyc node smoketests",
     "test:coverage": "nyc --no-clean --require ts-node/register jest",
-    "test:cli": "jest test --reporters=default --forceExit",
+    "test:cli": "jest test --reporters=default",
     "test:packages": "jest packages/ --reporters=default",
     "test:ci": "yarn test:cli && yarn test:packages",
     "test:watch": "jest test/ packages/ --watch",
