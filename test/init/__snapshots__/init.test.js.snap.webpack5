@@ -401,6 +401,92 @@ module.exports = () => {
 "
 `;
 
+exports[`init command should generate appropriate files for svelte template 1`] = `
+Object {
+  "devDependencies": Object {
+    "css-loader": "x.x.x",
+    "mini-css-extract-plugin": "x.x.x",
+    "svelte": "x.x.x",
+    "svelte-loader": "x.x.x",
+    "webpack": "x.x.x",
+    "webpack-cli": "x.x.x",
+    "webpack-dev-server": "x.x.x",
+  },
+  "name": "svelte-webpack-template",
+  "scripts": Object {
+    "build": "webpack --node-env production",
+    "dev": "webpack serve",
+  },
+  "version": "1.0.0",
+}
+`;
+
+exports[`init command should generate appropriate files for svelte template 2`] = `
+"const MiniCssExtractPlugin = require(\\"mini-css-extract-plugin\\");
+const path = require(\\"path\\");
+
+const mode = process.env.NODE_ENV || \\"development\\";
+const isProduction = mode === \\"production\\";
+
+module.exports = {
+    entry: {
+        \\"build/bundle\\": [\\"./src/main.js\\"],
+    },
+    resolve: {
+        alias: {
+            svelte: path.dirname(require.resolve(\\"svelte/package.json\\")),
+        },
+        extensions: [\\".mjs\\", \\".js\\", \\".svelte\\"],
+        mainFields: [\\"svelte\\", \\"browser\\", \\"module\\", \\"main\\"],
+    },
+    output: {
+        path: path.join(__dirname, \\"public\\"),
+        filename: \\"[name].js\\",
+        chunkFilename: \\"[name].[id].js\\",
+    },
+    module: {
+        rules: [
+            {
+                test: /\\\\.svelte$/,
+                use: {
+                    loader: \\"svelte-loader\\",
+                    options: {
+                        compilerOptions: {
+                            dev: !isProduction,
+                        },
+                        emitCss: isProduction,
+                        hotReload: !isProduction,
+                    },
+                },
+            },
+            {
+                test: /\\\\.css$/,
+                use: [MiniCssExtractPlugin.loader, \\"css-loader\\"],
+            },
+            {
+                // required to prevent errors from Svelte on Webpack 5+
+                test: /node_modules\\\\/svelte\\\\/.*\\\\.mjs$/,
+                resolve: {
+                    fullySpecified: false,
+                },
+            },
+        ],
+    },
+    mode,
+    plugins: [
+        new MiniCssExtractPlugin({
+            filename: \\"[name].css\\",
+        }),
+    ],
+    devtool: isProduction ? false : \\"source-map\\",
+    devServer: {
+        contentBase: path.join(__dirname, \\"public\\"),
+        hot: true,
+    },
+};
+"
+`;
+
 exports[`init command should generate default project when nothing is passed 1`] = `
 Object {
   "description": "My webpack project",

@@ -639,4 +639,30 @@ describe("init command", () => {
         // Check if the generated package.json file content matches the snapshot
         expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
     });
+
+    it("should generate appropriate files for svelte template", async () => {
+        const assetsPath = await uniqueDirectoryForTest();
+        const { stdout } = await runPromptWithAnswers(
+            assetsPath,
+            ["init", "--template", "svelte"],
+            [ENTER],
+        );
+
+        const files = [
+            ...defaultTemplateFiles.filter((file) => file !== "src/index.js"),
+            "src/App.svelte",
+        ];
+
+        expect(stdout).toContain("Project has been initialised with webpack!");
+
+        files.forEach((file) => {
+            expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+        });
+
+        // Check if the generated package.json file content matches the snapshot
+        expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
+
+        // Check if the generated webpack configuration matches the snapshot
+        expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
+    });
 });
