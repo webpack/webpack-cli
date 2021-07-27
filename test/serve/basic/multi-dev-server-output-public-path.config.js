@@ -18,6 +18,7 @@ module.exports = [
                   },
               }
             : {},
+        plugins: [new WebpackCLITestPlugin(["mode", "output"], false, "hooks.compilation.taps")],
     },
     {
         name: "two",

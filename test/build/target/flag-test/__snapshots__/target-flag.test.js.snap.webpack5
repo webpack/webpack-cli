@@ -28,7 +28,7 @@ exports[`--target flag should throw an error for invalid target in multiple synt
 
 exports[`--target flag should throw error if target is an empty array: stderr 1`] = `
 "[webpack-cli] Invalid configuration object. Webpack has been initialized using a configuration object that does not match the API schema.
- - configuration.target should be an non-empty array."
+ - configuration.target should be a non-empty array."
 `;
 
 exports[`--target flag should throw error if target is an empty array: stdout 1`] = `""`;

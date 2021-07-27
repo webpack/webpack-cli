@@ -4,7 +4,7 @@ const {
     InputValidate,
     Input,
     // eslint-disable-next-line node/no-missing-require
-} = require("../../packages/generators/src/utils/scaffold-utils");
+} = require("../../../packages/generators/src/utils/scaffold-utils");
 
 describe("utils", () => {
     let mockSelf;

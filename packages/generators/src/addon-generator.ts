@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import Generator from "yeoman-generator";
 
-import { List } from "./utils/scaffold-utils";
+import { getInstaller, getTemplate } from "./utils/helpers";
 
 // Helper to get the template-directory content
 
@@ -57,42 +57,12 @@ const addonGenerator = (
         public copyTpl: (value: string, index: number, array: string[]) => void;
 
         public async prompting(): Promise<void> {
-            if (!this.supportedTemplates.includes(this.template)) {
-                this.utils.logger.warn(
-                    `⚠ ${this.template} is not a valid template, please select one from below`,
-                );
-
-                const { selectedTemplate } = await List(
-                    this,
-                    "selectedTemplate",
-                    "Select a valid template from below:",
-                    this.supportedTemplates,
-                    "default",
-                    false,
-                );
-
-                this.template = selectedTemplate;
-            }
+            this.template = await getTemplate.call(this);
             this.resolvedTemplatePath = path.join(templateDir, this.template);
 
             this.props = await this.prompt(prompts);
 
-            const installers = this.utils.getAvailableInstallers();
-            if (installers.length === 1) {
-                return ([this.packageManager] = installers);
-            }
-
-            // Prompt for the package manager of choice
-            const defaultPackager = this.utils.getPackageManager();
-            const { packager } = await List(
-                this,
-                "packager",
-                "Pick a package manager:",
-                installers,
-                defaultPackager,
-                false,
-            );
-            this.packageManager = packager;
+            this.packageManager = await getInstaller.call(this);
         }
 
         public default(): void {

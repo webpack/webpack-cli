@@ -17,14 +17,14 @@ exports[`invalid schema should log webpack error and exit process on invalid fla
 exports[`invalid schema should log webpack error and exit process on invalid flag: stdout 1`] = `""`;
 
 exports[`invalid schema should log webpack-dev-server error and exit process on invalid config: stderr 1`] = `
-"[webpack-cli] Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.bonjour should be one of these:
+"[webpack-cli] Invalid options object. Dev Server has been initialized using an options object that does not match the API schema.
+ - options.bonjour should be one of these:
    boolean | object { … }
-   -> Broadcasts the server via ZeroConf networking on start. https://webpack.js.org/configuration/dev-server/#devserverbonjour
-   Details:
-    * configuration.bonjour should be a boolean.
-    * configuration.bonjour should be an object:
-      object { … }"
+   -> Allows to broadcasts dev server via ZeroConf networking on start.
+   -> Read more
+    at stack
+      -> Options for bonjour.
+      -> Read more at https://github.com/watson/bonjour#initializing"
 `;
 
 exports[`invalid schema should log webpack-dev-server error and exit process on invalid config: stdout 1`] = `""`;

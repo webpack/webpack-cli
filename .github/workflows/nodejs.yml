@@ -70,17 +70,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-
-      - name: Restore lerna cache
-        id: cache
-        uses: actions/cache@v2
-        with:
-          path: |
-            node_modules
-            */*/node_modules
-          key: c-${{ runner.os }}-${{ matrix.webpack-version }}-yarn-${{ hashFiles('**/yarn.lock', './yarn.lock') }}
-          restore-keys: |
-            c-${{ runner.os }}-${{ matrix.webpack-version }}-yarn-
+          cache: "yarn"
 
       - name: Install dependencies
         run: yarn
@@ -113,7 +103,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
           node-version: "12.x"
 
