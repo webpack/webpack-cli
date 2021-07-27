@@ -149,8 +149,19 @@ class InteractiveModePlugin {
         process.stdout.write("\x1B[2J\x1B[3J\x1B[H");
     }
 
-    quitHandler(_compilers, compiler) {
-        compiler.close(() => {
+    quitHandler(compilers) {
+        const allExits = [];
+        for (const compiler of compilers) {
+            allExits.push(
+                new Promise((resolve) => {
+                    compiler.close(() => {
+                        resolve();
+                    });
+                }),
+            );
+        }
+
+        Promise.all(allExits).then(() => {
             this.spawnCommand("", true, true);
             process.exit(0);
         });
