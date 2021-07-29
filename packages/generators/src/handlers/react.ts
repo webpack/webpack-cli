@@ -20,13 +20,16 @@ export async function questions(
     // Add webpack-dev-server always
     self.dependencies.push("webpack-dev-server");
 
+    // Add html-webpack-plugin always
+    self.dependencies.push("html-webpack-plugin");
+
     // Handle JS language solutions
     const { langType } = await Question.List(
         self,
         "langType",
         "Which of the following JS solutions do you want to use?",
-        ["none", "ES6", "Typescript"],
-        "none",
+        ["ES6"],
+        "ES6",
         self.force,
     );
 
