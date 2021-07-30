@@ -1,14 +1,16 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
-module.exports = {
+const isProduction = process.env.NODE_ENV == "production";
+
+const config = {
     entry: path.join(__dirname, "src", "index.js"),
     output: {
         path: path.resolve(__dirname, "dist"),
     },
     devServer: {
         open: true,
-        host: 'localhost',
+        host: "localhost",
     },
     module: {
         rules: [
@@ -24,7 +26,7 @@ module.exports = {
             },
             {
                 test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-                type: 'asset',
+                type: "asset",
             },
         ],
     },
@@ -33,4 +35,9 @@ module.exports = {
             template: path.join(__dirname, "src", "index.html"),
         }),
     ],
+};
+
+module.exports = () => {
+    config.mode = isProduction ? "production" : "development";
+    return config;
 };
