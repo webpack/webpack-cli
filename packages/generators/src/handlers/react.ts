@@ -53,7 +53,13 @@ export async function questions(
  * @param self Generator values
  */
 export function generate(self: CustomGenerator): void {
-    const files = ["./src/index.html", "./src/index.js", "./src/index.png", "webpack.config.js"];
+    const files = [
+        "./src/index.html",
+        "./src/index.js",
+        "./src/index.png",
+        "webpack.config.js",
+        "package.json",
+    ];
     for (const file of files) {
         self.fs.copyTpl(resolveFile(file + ".tpl"), self.destinationPath(file), self.answers);
     }
