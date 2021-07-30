@@ -17,6 +17,9 @@ export async function questions(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     Question: Record<string, any>,
 ): Promise<void> {
+    // Add react dependencies
+    self.dependencies.push("react", "react-dom");
+
     // Add webpack-dev-server always
     self.dependencies.push("webpack-dev-server");
 
