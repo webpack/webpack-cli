@@ -6,6 +6,10 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, "dist"),
     },
+    devServer: {
+        open: true,
+        host: 'localhost',
+    },
     module: {
         rules: [
             {
@@ -17,6 +21,10 @@ module.exports = {
                         presets: ["@babel/preset-env", "@babel/preset-react"],
                     },
                 },
+            },
+            {
+                test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
+                type: 'asset',
             },
         ],
     },

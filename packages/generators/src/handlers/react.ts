@@ -52,7 +52,9 @@ export async function questions(
  * Handles generation of project files
  * @param self Generator values
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function generate(self: CustomGenerator): void {
-    // TODO: generate files
+    const files = ["./src/index.html", "./src/index.js", "./src/index.png", "webpack.config.js"];
+    for (const file of files) {
+        self.fs.copyTpl(resolveFile(file + ".tpl"), self.destinationPath(file), self.answers);
+    }
 }
