@@ -401,6 +401,7 @@ class WebpackCLI {
         const minimumHelpFlags = [
             "config",
             "config-name",
+            "extends",
             "merge",
             "env",
             "mode",
@@ -451,6 +452,17 @@ class WebpackCLI {
                     },
                 ],
                 description: "Merge two or more configurations using 'webpack-merge'.",
+            },
+            {
+                name: "extends",
+                alias: "e",
+                configs: [
+                    {
+                        type: "string",
+                    },
+                ],
+                multiple: true,
+                description: "Extends a webpack configuration.",
             },
             // Complex configs
             {
@@ -1690,6 +1702,34 @@ class WebpackCLI {
                 }
             }
         }
+
+        let extendedConfigsOptions = [];
+
+        // extend configurations provided in webpack configuration file
+        if (config.options.extends) {
+            extendedConfigsOptions.push(config.options);
+        } else if (Array.isArray(config.options)) {
+            extendedConfigsOptions = config.options.filter((config) => config.extends);
+        }
+
+        // extend configurations provided via --extends
+        if (options.extends) {
+            extendedConfigsOptions.push({ extends: options.extends });
+            delete options.extends;
+        }
+
+        extendedConfigsOptions.forEach(async (configOptions) => {
+            if (configOptions.extends) {
+                options.config = [];
+                configOptions.extends.map(async (value) => {
+                    options.config.push(path.resolve(value));
+                });
+
+                delete configOptions.extends;
+
+                await this.resolveConfig(options);
+            }
+        });
 
         if (options.configName) {
             const notFoundConfigNames = [];
