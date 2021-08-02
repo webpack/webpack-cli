@@ -90,12 +90,9 @@ class ServeCommand {
 
                 for (const optionName in options) {
                     const kebabedOption = cli.utils.toKebabCase(optionName);
-                    // `webpack-dev-server` has own logic for the `--hot` option
-                    const isBuiltInOption =
-                        kebabedOption !== "hot" &&
-                        builtInOptions.find(
-                            (builtInOption) => builtInOption.name === kebabedOption,
-                        );
+                    const isBuiltInOption = builtInOptions.find(
+                        (builtInOption) => builtInOption.name === kebabedOption,
+                    );
 
                     if (isBuiltInOption) {
                         webpackCLIOptions[optionName] = options[optionName];
