@@ -13,6 +13,8 @@ const {
 
 const testPath = path.resolve(__dirname);
 
+const devServer4Test = isDevServer4 ? it : it.skip;
+
 describe("basic serve usage", () => {
     let port;
 
@@ -78,31 +80,26 @@ describe("basic serve usage", () => {
         expect(stdout).toContain("development");
     });
 
-    it('should work with the "--config" and "--env" options and expose dev server options', async () => {
-        const { stderr, stdout } = await runWatch(__dirname, [
-            "serve",
-            "--config",
-            "function-with-argv.config.js",
-            "--env",
-            "foo=bar",
-            "--hot",
-            "--port",
-            port,
-        ]);
+    devServer4Test(
+        'should work with the "--config" and "--env" options and expose dev server options',
+        async () => {
+            const { stderr, stdout } = await runWatch(__dirname, [
+                "serve",
+                "--config",
+                "function-with-argv.config.js",
+                "--env",
+                "foo=bar",
+                "--port",
+                port,
+            ]);
 
-        expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-
-        if (isDevServer4) {
+            expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
             expect(stdout).toContain("HotModuleReplacementPlugin");
-        } else {
-            expect(stdout).toContain("HotModuleReplacementPlugin");
-        }
-
-        expect(stdout).toContain("hot: true");
-        expect(stdout).toContain("WEBPACK_SERVE: true");
-        expect(stdout).toContain("foo: 'bar'");
-        expect(stdout).toContain("development");
-    });
+            expect(stdout).toContain("WEBPACK_SERVE: true");
+            expect(stdout).toContain("foo: 'bar'");
+            expect(stdout).toContain("development");
+        },
+    );
 
     it("should work in multi compiler mode", async () => {
         const { stderr, stdout } = await runWatch(__dirname, [
@@ -285,21 +282,16 @@ describe("basic serve usage", () => {
         expect(stdout).toContain("main.js");
     });
 
-    it('should work with the "--hot" option', async () => {
+    devServer4Test('should work with the "--hot" option', async () => {
         const { stderr, stdout } = await runWatch(__dirname, ["serve", "--hot"]);
 
         expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
 
-        if (isDevServer4) {
-            expect(stdout).toContain("HotModuleReplacementPlugin");
-        } else {
-            expect(stdout).toContain("HotModuleReplacementPlugin");
-        }
-
+        expect(stdout).toContain("HotModuleReplacementPlugin");
         expect(stdout).toContain("main.js");
     });
 
-    it('should work with the "--no-hot" option', async () => {
+    devServer4Test('should work with the "--no-hot" option', async () => {
         const { stdout, stderr } = await runWatch(testPath, ["serve", "--port", port, "--no-hot"]);
 
         expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
@@ -307,12 +299,12 @@ describe("basic serve usage", () => {
         expect(stdout).toContain("main.js");
     });
 
-    it('should work with the "--hot" option using the "only" value', async () => {
+    devServer4Test('should work with the "--hot" option using the "only" value', async () => {
         const { stdout, stderr } = await runWatch(testPath, [
             "serve",
             "--port",
             port,
-            isDevServer4 ? "--hot=only" : "--hot-only",
+            "--hot=only",
         ]);
 
         expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
@@ -320,7 +312,7 @@ describe("basic serve usage", () => {
         expect(stdout).toContain("main.js");
     });
 
-    it('should work with "--hot" and "--port" options', async () => {
+    devServer4Test('should work with "--hot" and "--port" options', async () => {
         const { stdout, stderr } = await runWatch(testPath, ["serve", "--port", port, "--hot"]);
 
         expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
@@ -328,7 +320,7 @@ describe("basic serve usage", () => {
         expect(stdout).toContain("main.js");
     });
 
-    it('should work with the "--hot" and "--progress" options', async () => {
+    devServer4Test('should work with the "--hot" and "--progress" options', async () => {
         const { stdout, stderr } = await runWatch(testPath, [
             "serve",
             "--port",

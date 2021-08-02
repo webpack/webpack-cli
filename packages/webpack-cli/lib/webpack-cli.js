@@ -505,21 +505,6 @@ class WebpackCLI {
 
             // Adding more plugins
             {
-                name: "hot",
-                alias: "h",
-                configs: [
-                    {
-                        type: "string",
-                    },
-                    {
-                        type: "boolean",
-                    },
-                ],
-                negative: true,
-                description: "Enables Hot Module Replacement",
-                negatedDescription: "Disables Hot Module Replacement.",
-            },
-            {
                 name: "analyze",
                 configs: [
                     {
@@ -1758,13 +1743,6 @@ class WebpackCLI {
             process.exit(2);
         }
 
-        if (typeof options.hot === "string" && options.hot !== "only") {
-            this.logger.error(
-                `'${options.hot}' is an invalid value for the --hot option. Use 'only' instead.`,
-            );
-            process.exit(2);
-        }
-
         const outputHints = (configOptions) => {
             if (
                 configOptions.watch &&
@@ -2024,7 +2002,6 @@ class WebpackCLI {
                 new CLIPlugin({
                     configPath: config.path.get(configOptions),
                     helpfulOutput: !cliOptions.json,
-                    hot: cliOptions.hot,
                     progress: cliOptions.progress,
                     prefetch: cliOptions.prefetch,
                     analyze: cliOptions.analyze,
