@@ -69,7 +69,6 @@ npx webpack-cli --help verbose
   info|i [options]                                      Outputs information about your system.
   init|create|new|c|n [generation-path] [options]       Initialize a new webpack project.
   loader|l [output-path] [options]                      Scaffold a loader.
-  migrate|m <config-path> [new-config-path]             Migrate a configuration to a new version.
   plugin|p [output-path] [options]                      Scaffold a plugin.
   serve|server|s [entries...] [options]                 Run the webpack dev server.
   version|v [commands...]                               Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.

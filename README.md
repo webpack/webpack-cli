@@ -61,7 +61,6 @@ Thus, webpack CLI provides different commands for many common tasks.
 -   `help|h [command] [option]` - Display help for commands and options.
 -   [`init|create|new|c|n [generation-path] [options]`](./packages/generators/INIT.md#webpack-cli-init) - Create a new webpack project.
 -   [`info|i [options]`](./packages/info/README.md#webpack-cli-info) - Returns information related to the local environment.
--   [`migrate|m <config-path> [new-config-path]`](https://www.npmjs.com/package/@webpack-cli/migrate) - Migrate project from one version to another.
 -   [`plugin|p [output-path] [options]`](./packages/generators#generators) - Initiate new plugin project.
 -   [`loader|l [output-path] [options]`](./packages/generators#generators) - Initiate new loader project.
 -   [`serve|server|s [entries...] [options]`](./packages/serve/README.md#webpack-cli-serve) - Use webpack with a development server that provides live reloading.
