@@ -1605,7 +1605,7 @@ class WebpackCLI {
         const config = { options: {}, path: new WeakMap() };
 
         if (options.config && options.config.length > 0) {
-            const loadedConfig = await Promise.all(
+            const loadedConfigs = await Promise.all(
                 options.config.map((configPath) =>
                     this.loadConfig(path.resolve(configPath), options.argv),
                 ),
@@ -1613,22 +1613,22 @@ class WebpackCLI {
 
             config.options = [];
 
-            loadedConfig.forEach((loadedConfig) => {
+            loadedConfigs.forEach((loadedConfig) => {
                 const isArray = Array.isArray(loadedConfig.options);
 
-                // TODO we should run webpack multiple times when the `--config` options has multiple values without `--merge`, need to solve for the next major release
+                // TODO we should run webpack multiple times when the `--config` options have multiple values with `--merge`, need to solve for the next major release
                 if (config.options.length === 0) {
                     config.options = loadedConfig.options;
                 } else {
+                    if (!Array.isArray(config.options)) {
+                        config.options = [config.options];
+                    }
+
                     if (isArray) {
                         loadedConfig.options.forEach((item) => {
                             config.options.push(item);
                         });
                     } else {
-                        if (!Array.isArray(config.options)) {
-                            config.options = [config.options];
-                        }
-
                         config.options.push(loadedConfig.options);
                     }
                 }
