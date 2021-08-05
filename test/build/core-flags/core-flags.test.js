@@ -93,6 +93,14 @@ describe("core flags", () => {
             expect(stderr).toBeFalsy();
             expect(stdout).toContain("parallelism: 10");
         });
+
+        it("should set parallelism option correctly using `=`", async () => {
+            const { exitCode, stderr, stdout } = await run(__dirname, ["--parallelism=10"]);
+
+            expect(exitCode).toBe(0);
+            expect(stderr).toBeFalsy();
+            expect(stdout).toContain("parallelism: 10");
+        });
     });
 
     describe("enum type flags", () => {
@@ -225,6 +233,22 @@ describe("core flags", () => {
 
         it("should allow string value devtool option", async () => {
             const { exitCode, stderr, stdout } = await run(__dirname, ["--devtool", "source-map"]);
+
+            expect(exitCode).toBe(0);
+            expect(stderr).toBeFalsy();
+            expect(stdout).toContain(`devtool: 'source-map'`);
+        });
+
+        it("should allow string value devtool option using alias", async () => {
+            const { exitCode, stderr, stdout } = await run(__dirname, ["-d", "source-map"]);
+
+            expect(exitCode).toBe(0);
+            expect(stderr).toBeFalsy();
+            expect(stdout).toContain(`devtool: 'source-map'`);
+        });
+
+        it("should allow string value devtool option using alias #1", async () => {
+            const { exitCode, stderr, stdout } = await run(__dirname, ["-dsource-map"]);
 
             expect(exitCode).toBe(0);
             expect(stderr).toBeFalsy();
