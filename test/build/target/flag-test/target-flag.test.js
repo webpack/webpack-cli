@@ -21,14 +21,6 @@ describe("--target flag", () => {
             expect(stderr).toBeFalsy();
             expect(stdout).toContain(`target: [ '${val}' ]`);
         });
-
-        it(`should accept ${val} with -t alias`, async () => {
-            const { exitCode, stderr, stdout } = await run(__dirname, ["-t", `${val}`]);
-
-            expect(exitCode).toBe(0);
-            expect(stderr).toBeFalsy();
-            expect(stdout).toContain(`target: [ '${val}' ]`);
-        });
     });
 
     it(`should throw error with invalid value for --target`, async () => {
@@ -78,23 +70,52 @@ describe("--target flag", () => {
         expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
     });
 
-    it("should reset target from node to async-node with --target-reset", async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, [
-            "--target-reset",
-            "--target",
-            "async-node",
-        ]);
-
-        expect(exitCode).toBe(0);
-        expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-        expect(stdout).toContain(`target: [ 'async-node' ]`);
-    });
-
     it("should throw error if target is an empty array", async () => {
         const { exitCode, stderr, stdout } = await run(__dirname, ["--target-reset"]);
 
         expect(exitCode).toBe(2);
         expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
         expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
+    });
+
+    it("should reset the `target` option when the `--target-reset` is used", async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "-c",
+            "target.config.js",
+            "--target-reset",
+            "--target",
+            "node",
+        ]);
+
+        expect(exitCode).toBe(0);
+        expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+        expect(stdout).toContain(`target: [ 'node' ]`);
+    });
+
+    it("should reset the `target` option when the `--target-reset` is used for multiple targets", async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "-c",
+            "multiple-target.config.js",
+            "--target-reset",
+            "--target",
+            "web",
+        ]);
+
+        expect(exitCode).toBe(0);
+        expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+        expect(stdout).toContain(`target: [ 'web' ]`);
+    });
+
+    it("should add the `target` option when the `--target-reset` is not used", async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "-c",
+            "target.config.js",
+            "--target",
+            "es5",
+        ]);
+
+        expect(exitCode).toBe(0);
+        expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+        expect(stdout).toContain(`target: [ 'web', 'es5' ]`);
     });
 });

@@ -40,26 +40,24 @@ describe("source-map object", () => {
     it("should override config with source-map", async () => {
         const { exitCode, stderr, stdout } = await run(
             __dirname,
-            ["-c", "./webpack.eval.config.js", "--devtool", "source-map", "-o", "./binary"],
+            ["-c", "./webpack.eval.config.js", "--devtool", "source-map"],
             false,
         );
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).toContain("devtool: 'source-map'");
-        expect(existsSync(resolve(__dirname, "binary/dist-amd.js.map"))).toBeTruthy();
     });
 
     it("should override config with devtool false", async () => {
         const { exitCode, stderr, stdout } = await run(
             __dirname,
-            ["-c", "./webpack.eval.config.js", "--no-devtool", "-o", "./binary"],
+            ["-c", "./webpack.eval.config.js", "--no-devtool"],
             false,
         );
 
         expect(exitCode).toBe(0);
         expect(stderr).toBeFalsy();
         expect(stdout).toContain("devtool: false");
-        expect(existsSync(resolve(__dirname, "binary/dist-amd.js.map"))).toBeTruthy();
     });
 });
