@@ -1944,9 +1944,9 @@
   integrity sha512-fZQQafSREFyuZcdWFAExYjBiCL7AUCdgsk80iO0q4yihYYdcIiH28CcuPTGFgLOCC8RlW49GSQxdHwZP+I7CNg==
 
 "@types/node@*", "@types/node@^15.0.3":
-  version "15.14.5"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-15.14.5.tgz#7b5b3532053fd14c771ad6598a4ee2c7a85aceca"
-  integrity sha512-6ewfMNmkumZieB/EeJ4cdP1bbJyOlOt5MTwbKMr7WKxyCt2j09H8YWRK6zOd/Jh35Vu/gls39ZUmeu4vHu1WKQ==
+  version "15.14.7"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-15.14.7.tgz#29fea9a5b14e2b75c19028e1c7a32edd1e89fe92"
+  integrity sha512-FA45p37/mLhpebgbPWWCKfOisTjxGK9lwcHlJ6XVLfu3NgfcazOJHdYUZCWPMK8QX4LhNZdmfo6iMz9FqpUbaw==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.0"
