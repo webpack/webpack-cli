@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Node target should emit the correct code: stderr 1`] = `""`;

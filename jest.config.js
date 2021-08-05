@@ -1,13 +1,5 @@
-const { cli } = require("webpack");
-
-// Ignore core-flags test for webpack@4
-const ignorePattern =
-    typeof cli !== "undefined"
-        ? ["<rootDir>/node_modules/"]
-        : ["<rootDir>/node_modules/", "<rootDir>/test/build/core-flags"];
-
 module.exports = {
-    testPathIgnorePatterns: ignorePattern,
+    testPathIgnorePatterns: ["<rootDir>/node_modules/"],
     testEnvironment: "node",
     collectCoverage: true,
     coverageDirectory: ".nyc_output",

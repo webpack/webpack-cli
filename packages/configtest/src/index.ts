@@ -35,13 +35,7 @@ class ConfigTestCommand {
                 logger.info(`Validate '${Array.from(configPaths).join(" ,")}'.`);
 
                 try {
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    const error: any = webpack.validate(config.options);
-
-                    // TODO remove this after drop webpack@4
-                    if (error && error.length > 0) {
-                        throw new webpack.WebpackOptionsValidationError(error);
-                    }
+                    webpack.validate(config.options);
                 } catch (error) {
                     if (cli.isValidationError(error)) {
                         logger.error(error.message);
