@@ -6,6 +6,9 @@
   "types": "lib/index.d.ts",
   "keywords": [],
   "license": "MIT",
+  "engines": {
+    "node": ">=12.13.0"
+  },
   "publishConfig": {
     "access": "public"
   },
