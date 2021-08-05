@@ -55,7 +55,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         node-version: [12.x, 14.x, 16.x]
-        webpack-version: [4, latest]
+        webpack-version: [latest]
         dev-server-version: [latest, next]
 
     steps:
@@ -71,9 +71,6 @@ jobs:
 
       - name: Install dependencies
         run: yarn
-
-      - name: Install webpack ${{ matrix.webpack-version }}
-        run: yarn add -W webpack@${{ matrix.webpack-version }}
 
       - name: Install webpack-dev-server ${{ matrix.webpack-version }}
         run: yarn add -W webpack-dev-server@${{ matrix.dev-server-version }}
