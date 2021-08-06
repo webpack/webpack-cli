@@ -93,7 +93,7 @@ jobs:
           yarn test:coverage
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v2
 
   commitlint:
     name: Lint Commit Messages
