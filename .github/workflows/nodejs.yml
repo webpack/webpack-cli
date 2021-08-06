@@ -113,4 +113,4 @@ jobs:
         # $GITHUB_WORKSPACE is the path to your repository
         run: echo "NODE_PATH=$GITHUB_WORKSPACE/node_modules" >> $GITHUB_ENV
 
-      - uses: wagoid/commitlint-github-action@v2
+      - uses: wagoid/commitlint-github-action@v4

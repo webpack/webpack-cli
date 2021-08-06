@@ -863,7 +863,7 @@ class WebpackCLI {
                             options.entry = [...entries, ...(options.entry || [])];
                         }
 
-                        await this.buildCommand(options, isWatchCommandUsed);
+                        await this.runWebpack(options, isWatchCommandUsed);
                     },
                 );
             } else if (isCommand(commandName, helpCommandOptions)) {
@@ -1537,107 +1537,124 @@ class WebpackCLI {
         await this.program.parseAsync(args, parseOptions);
     }
 
-    async resolveConfig(options) {
-        const loadConfig = async (configPath) => {
-            const { interpret } = this.utils;
-            const ext = path.extname(configPath);
-            const interpreted = Object.keys(interpret.jsVariants).find(
-                (variant) => variant === ext,
-            );
+    async loadConfig(configPath, argv = {}) {
+        const { interpret } = this.utils;
+        const ext = path.extname(configPath);
+        const interpreted = Object.keys(interpret.jsVariants).find((variant) => variant === ext);
 
-            if (interpreted) {
-                const { rechoir } = this.utils;
-
-                try {
-                    rechoir.prepare(interpret.extensions, configPath);
-                } catch (error) {
-                    if (error.failures) {
-                        this.logger.error(`Unable load '${configPath}'`);
-                        this.logger.error(error.message);
-
-                        error.failures.forEach((failure) => {
-                            this.logger.error(failure.error.message);
-                        });
-                        this.logger.error("Please install one of them");
-                        process.exit(2);
-                    }
-
-                    this.logger.error(error);
-                    process.exit(2);
-                }
-            }
-
-            let options;
+        if (interpreted) {
+            const { rechoir } = this.utils;
 
             try {
-                options = await this.tryRequireThenImport(configPath, false);
+                rechoir.prepare(interpret.extensions, configPath);
             } catch (error) {
-                this.logger.error(`Failed to load '${configPath}' config`);
-
-                if (this.isValidationError(error)) {
+                if (error.failures) {
+                    this.logger.error(`Unable load '${configPath}'`);
                     this.logger.error(error.message);
-                } else {
-                    this.logger.error(error);
+
+                    error.failures.forEach((failure) => {
+                        this.logger.error(failure.error.message);
+                    });
+                    this.logger.error("Please install one of them");
+                    process.exit(2);
                 }
 
+                this.logger.error(error);
                 process.exit(2);
             }
+        }
 
-            return { options, path: configPath };
-        };
+        let options;
 
-        const evaluateConfig = async (loadedConfig, argv) => {
-            const isMultiCompiler = Array.isArray(loadedConfig.options);
-            const config = isMultiCompiler ? loadedConfig.options : [loadedConfig.options];
+        try {
+            options = await this.tryRequireThenImport(configPath, false);
+        } catch (error) {
+            this.logger.error(`Failed to load '${configPath}' config`);
 
-            const evaluatedConfig = await Promise.all(
-                config.map(async (rawConfig) => {
-                    if (typeof rawConfig.then === "function") {
-                        rawConfig = await rawConfig;
+            if (this.isValidationError(error)) {
+                this.logger.error(error.message);
+            } else {
+                this.logger.error(error);
+            }
+
+            process.exit(2);
+        }
+
+        if (Array.isArray(options)) {
+            await Promise.all(
+                options.map(async (_, i) => {
+                    if (typeof options[i].then === "function") {
+                        options[i] = await options[i];
                     }
 
                     // `Promise` may return `Function`
-                    if (typeof rawConfig === "function") {
+                    if (typeof options[i] === "function") {
                         // when config is a function, pass the env from args to the config function
-                        rawConfig = await rawConfig(argv.env, argv);
+                        options[i] = await options[i](argv.env, argv);
                     }
-
-                    return rawConfig;
                 }),
             );
-
-            loadedConfig.options = isMultiCompiler ? evaluatedConfig : evaluatedConfig[0];
-
-            const isObject = (value) => typeof value === "object" && value !== null;
-
-            if (!isObject(loadedConfig.options) && !Array.isArray(loadedConfig.options)) {
-                this.logger.error(`Invalid configuration in '${loadedConfig.path}'`);
-                process.exit(2);
+        } else {
+            if (typeof options.then === "function") {
+                options = await options;
             }
 
-            return loadedConfig;
-        };
+            // `Promise` may return `Function`
+            if (typeof options === "function") {
+                // when config is a function, pass the env from args to the config function
+                options = await options(argv.env, argv);
+            }
+        }
 
+        const isObject = (value) => typeof value === "object" && value !== null;
+
+        if (!isObject(options) && !Array.isArray(options)) {
+            this.logger.error(`Invalid configuration in '${configPath}'`);
+
+            process.exit(2);
+        }
+
+        return { options, path: configPath };
+    }
+
+    async resolveConfig(options) {
         const config = { options: {}, path: new WeakMap() };
 
         if (options.config && options.config.length > 0) {
-            const evaluatedConfigs = await Promise.all(
-                options.config.map(async (value) =>
-                    evaluateConfig(await loadConfig(path.resolve(value)), options.argv || {}),
+            const loadedConfigs = await Promise.all(
+                options.config.map((configPath) =>
+                    this.loadConfig(path.resolve(configPath), options.argv),
                 ),
             );
 
             config.options = [];
 
-            evaluatedConfigs.forEach((evaluatedConfig) => {
-                if (Array.isArray(evaluatedConfig.options)) {
-                    evaluatedConfig.options.forEach((options) => {
-                        config.options.push(options);
-                        config.path.set(options, evaluatedConfig.path);
+            loadedConfigs.forEach((loadedConfig) => {
+                const isArray = Array.isArray(loadedConfig.options);
+
+                // TODO we should run webpack multiple times when the `--config` options have multiple values with `--merge`, need to solve for the next major release
+                if (config.options.length === 0) {
+                    config.options = loadedConfig.options;
+                } else {
+                    if (!Array.isArray(config.options)) {
+                        config.options = [config.options];
+                    }
+
+                    if (isArray) {
+                        loadedConfig.options.forEach((item) => {
+                            config.options.push(item);
+                        });
+                    } else {
+                        config.options.push(loadedConfig.options);
+                    }
+                }
+
+                if (isArray) {
+                    loadedConfig.options.forEach((options) => {
+                        config.path.set(options, loadedConfig.path);
                     });
                 } else {
-                    config.options.push(evaluatedConfig.options);
-                    config.path.set(evaluatedConfig.options, evaluatedConfig.path);
+                    config.path.set(loadedConfig.options, loadedConfig.path);
                 }
             });
 
@@ -1673,23 +1690,25 @@ class WebpackCLI {
             }
 
             if (foundDefaultConfigFile) {
-                const loadedConfig = await loadConfig(foundDefaultConfigFile.path);
-                const evaluatedConfig = await evaluateConfig(loadedConfig, options.argv || {});
+                const loadedConfig = await this.loadConfig(
+                    foundDefaultConfigFile.path,
+                    options.argv,
+                );
 
-                config.options = evaluatedConfig.options;
+                config.options = loadedConfig.options;
 
                 if (Array.isArray(config.options)) {
-                    config.options.forEach((options) => {
-                        config.path.set(options, evaluatedConfig.path);
+                    config.options.forEach((item) => {
+                        config.path.set(item, loadedConfig.path);
                     });
                 } else {
-                    config.path.set(evaluatedConfig.options, evaluatedConfig.path);
+                    config.path.set(loadedConfig.options, loadedConfig.path);
                 }
             }
         }
 
         if (options.configName) {
-            const notfoundConfigNames = [];
+            const notFoundConfigNames = [];
 
             config.options = options.configName.map((configName) => {
                 let found;
@@ -1701,15 +1720,15 @@ class WebpackCLI {
                 }
 
                 if (!found) {
-                    notfoundConfigNames.push(configName);
+                    notFoundConfigNames.push(configName);
                 }
 
                 return found;
             });
 
-            if (notfoundConfigNames.length > 0) {
+            if (notFoundConfigNames.length > 0) {
                 this.logger.error(
-                    notfoundConfigNames
+                    notFoundConfigNames
                         .map(
                             (configName) =>
                                 `Configuration with the name "${configName}" was not found.`,
@@ -1745,6 +1764,18 @@ class WebpackCLI {
         }
 
         return config;
+    }
+
+    runFunctionOnOptions(options, fn) {
+        if (Array.isArray(options)) {
+            for (let item of options) {
+                item = fn(item);
+            }
+        } else {
+            options = fn(options);
+        }
+
+        return options;
     }
 
     // TODO refactor
@@ -1802,9 +1833,7 @@ class WebpackCLI {
             return configOptions;
         };
 
-        config.options = Array.isArray(config.options)
-            ? config.options.map((options) => outputHints(options))
-            : outputHints(config.options);
+        this.runFunctionOnOptions(config.options, outputHints);
 
         if (this.webpack.cli) {
             const processArguments = (configOptions) => {
@@ -1866,9 +1895,7 @@ class WebpackCLI {
                 return configOptions;
             };
 
-            config.options = Array.isArray(config.options)
-                ? config.options.map((options) => processArguments(options))
-                : processArguments(config.options);
+            this.runFunctionOnOptions(config.options, processArguments);
 
             const setupDefaultOptions = (configOptions) => {
                 // No need to run for webpack@4
@@ -1897,9 +1924,7 @@ class WebpackCLI {
                 return configOptions;
             };
 
-            config.options = Array.isArray(config.options)
-                ? config.options.map((options) => setupDefaultOptions(options))
-                : setupDefaultOptions(config.options);
+            this.runFunctionOnOptions(config.options, setupDefaultOptions);
         }
 
         if (options.interactive) {
@@ -1970,12 +1995,10 @@ class WebpackCLI {
             return configOptions;
         };
 
-        config.options = Array.isArray(config.options)
-            ? config.options.map((options) => processLegacyArguments(options))
-            : processLegacyArguments(config.options);
+        this.runFunctionOnOptions(config.options, processLegacyArguments);
 
         // Apply `stats` and `stats.colors` options
-        const applyStatsColors = (configOptions) => {
+        const applyStatsOption = (configOptions) => {
             // TODO remove after drop webpack@4
             const statsForWebpack4 = this.webpack.Stats && this.webpack.Stats.presetToOptions;
 
@@ -2032,9 +2055,7 @@ class WebpackCLI {
             return configOptions;
         };
 
-        config.options = Array.isArray(config.options)
-            ? config.options.map((options) => applyStatsColors(options))
-            : applyStatsColors(config.options);
+        this.runFunctionOnOptions(config.options, applyStatsOption);
 
         return config;
     }
@@ -2042,14 +2063,14 @@ class WebpackCLI {
     async applyCLIPlugin(config, cliOptions) {
         const CLIPlugin = await this.tryRequireThenImport("./plugins/CLIPlugin");
 
-        const addCLIPlugin = (configOptions) => {
-            if (!configOptions.plugins) {
-                configOptions.plugins = [];
+        const addCLIPlugin = (options) => {
+            if (!options.plugins) {
+                options.plugins = [];
             }
 
-            configOptions.plugins.unshift(
+            options.plugins.unshift(
                 new CLIPlugin({
-                    configPath: config.path.get(configOptions),
+                    configPath: config.path.get(options),
                     helpfulOutput: !cliOptions.json,
                     hot: cliOptions.hot,
                     progress: cliOptions.progress,
@@ -2058,12 +2079,10 @@ class WebpackCLI {
                 }),
             );
 
-            return configOptions;
+            return options;
         };
 
-        config.options = Array.isArray(config.options)
-            ? config.options.map((options) => addCLIPlugin(options))
-            : addCLIPlugin(config.options);
+        this.runFunctionOnOptions(config.options, addCLIPlugin);
 
         return config;
     }
@@ -2137,7 +2156,7 @@ class WebpackCLI {
         return compiler;
     }
 
-    async buildCommand(options, isWatchCommand) {
+    async runWebpack(options, isWatchCommand) {
         // eslint-disable-next-line prefer-const
         let compiler;
         let createJsonStringifyStream;

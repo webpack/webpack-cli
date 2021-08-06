@@ -942,6 +942,8 @@ Options:
   --no-stats-group-modules-by-path                                                   Negative 'stats-group-modules-by-path' option.
   --stats-group-modules-by-type                                                      Group modules by their type.
   --no-stats-group-modules-by-type                                                   Negative 'stats-group-modules-by-type' option.
+  --stats-group-reasons-by-origin                                                    Group reasons by their origin module.
+  --no-stats-group-reasons-by-origin                                                 Negative 'stats-group-reasons-by-origin' option.
   --stats-hash                                                                       Add the hash of the compilation.
   --no-stats-hash                                                                    Negative 'stats-hash' option.
   --stats-ids                                                                        Add ids.
@@ -984,6 +986,7 @@ Options:
   --no-stats-public-path                                                             Negative 'stats-public-path' option.
   --stats-reasons                                                                    Add information about the reasons why modules are included.
   --no-stats-reasons                                                                 Negative 'stats-reasons' option.
+  --stats-reasons-space <value>                                                      Space to display reasons (groups will be collapsed to fit this space).
   --stats-related-assets                                                             Add information about assets that are related to other assets (like SourceMaps for assets).
   --no-stats-related-assets                                                          Negative 'stats-related-assets' option.
   --stats-runtime                                                                    Add information about runtime modules (deprecated: use 'runtimeModules' instead).
