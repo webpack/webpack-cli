@@ -399,6 +399,7 @@ class WebpackCLI {
         }
 
         const minimumHelpFlags = [
+            "analyze",
             "config",
             "config-name",
             "merge",
