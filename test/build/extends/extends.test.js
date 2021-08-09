@@ -62,6 +62,39 @@ describe("extends", () => {
         expect(stdout).toContain("two.webpack.config.js");
     });
 
+    it("should work with multiple --config flags", async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "--config",
+            "./simple-webpack.config.js",
+            "--config",
+            "./webpack.config.js",
+        ]);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain("simple-webpack.config.js");
+        expect(stdout).toContain("webpack.config.js");
+        expect(stdout).toContain("first-webpack.config.js");
+        expect(stdout).toContain("second-webpack.config.js");
+        expect(stdout).toContain("third-webpack.config.js");
+    });
+
+    it("should work with multiple --merge flag", async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "--config",
+            "./simple-webpack.config.js",
+            "--config",
+            "./second-webpack.config.js",
+            "--merge",
+        ]);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        expect(stdout).toContain("simple-webpack.config.js");
+        expect(stdout).toContain("second-webpack.config.js");
+        expect(stdout).toContain("third-webpack.config.js");
+    });
+
     it("should use extend multiple configurations with --extends flag #2", async () => {
         const { exitCode, stderr, stdout } = await run(__dirname, [
             "--config",
