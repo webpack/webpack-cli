@@ -1720,14 +1720,15 @@ class WebpackCLI {
 
         extendedConfigsOptions.forEach(async (configOptions) => {
             if (configOptions.extends) {
-                options.config = [];
+                const newOptions = { config: [] };
+
                 configOptions.extends.map(async (value) => {
-                    options.config.push(path.resolve(value));
+                    newOptions.config.push(path.resolve(value));
                 });
 
                 delete configOptions.extends;
 
-                await this.resolveConfig(options);
+                await this.resolveConfig(newOptions);
             }
         });
 

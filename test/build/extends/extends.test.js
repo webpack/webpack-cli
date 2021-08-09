@@ -62,6 +62,46 @@ describe("extends", () => {
         expect(stdout).toContain("two.webpack.config.js");
     });
 
+    it("should work in multi compiler mode", async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "--config",
+            "./multi-compiler.config.js",
+        ]);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        // config names
+        expect(stdout).toContain("multi-compiler.config.js");
+        expect(stdout).toContain("webpack.config.js");
+        expect(stdout).toContain("first-webpack.config.js");
+        expect(stdout).toContain("second-webpack.config.js");
+        expect(stdout).toContain("third-webpack.config.js");
+        // compiler names
+        expect(stdout).toContain("first-compiler");
+        expect(stdout).toContain("second-compiler");
+    });
+
+    it("should work in multi compiler mode with --config-name", async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, [
+            "--config",
+            "./multi-compiler.config.js",
+            "--config-name",
+            "second-compiler",
+        ]);
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toBeFalsy();
+        // config names
+        expect(stdout).toContain("multi-compiler.config.js");
+        expect(stdout).toContain("webpack.config.js");
+        expect(stdout).toContain("first-webpack.config.js");
+        expect(stdout).toContain("second-webpack.config.js");
+        expect(stdout).toContain("third-webpack.config.js");
+        // compiler names
+        expect(stdout).not.toContain("first-compiler");
+        expect(stdout).toContain("second-compiler");
+    });
+
     it("should work with multiple --config flags", async () => {
         const { exitCode, stderr, stdout } = await run(__dirname, [
             "--config",
