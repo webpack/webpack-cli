@@ -64,6 +64,17 @@ Options:
   --no-experiments-asset                                                             Negative 'experiments-asset' option.
   --experiments-async-web-assembly                                                   Support WebAssembly as asynchronous EcmaScript Module.
   --no-experiments-async-web-assembly                                                Negative 'experiments-async-web-assembly' option.
+  --experiments-build-http                                                           Build http(s): urls using a lockfile and resource content cache.
+  --no-experiments-build-http                                                        Negative 'experiments-build-http' option.
+  --experiments-build-http-cache-location <value>                                    Location where resource content is stored for lockfile entries. It's also possible to disable storing by passing
+                                                                                     false.
+  --no-experiments-build-http-cache-location                                         Negative 'experiments-build-http-cache-location' option.
+  --experiments-build-http-frozen                                                    When set, anything that would lead to a modification of the lockfile or any resource content, will result in an error.
+  --no-experiments-build-http-frozen                                                 Negative 'experiments-build-http-frozen' option.
+  --experiments-build-http-lockfile-location <value>                                 Location of the lockfile.
+  --experiments-build-http-upgrade                                                   When set, resources of existing lockfile entries will be fetched and entries will be upgraded when resource content
+                                                                                     has changed.
+  --no-experiments-build-http-upgrade                                                Negative 'experiments-build-http-upgrade' option.
   --experiments-execute-module                                                       Enable build-time execution of modules from the module graph for plugins and loaders.
   --no-experiments-execute-module                                                    Negative 'experiments-execute-module' option.
   --experiments-layers                                                               Enable module and chunk layers.
