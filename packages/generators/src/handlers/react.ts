@@ -1,6 +1,6 @@
 import path from "path";
 import { CustomGenerator } from "../types";
-
+import { questions as defaultQuestions } from "./default";
 const templatePath = path.resolve(__dirname, "../../init-template/react");
 const resolveFile = (file: string): string => {
     return path.resolve(templatePath, file);
@@ -17,6 +17,8 @@ export async function questions(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     Question: Record<string, any>,
 ): Promise<void> {
+    await defaultQuestions(self, Question);
+
     // Add react dependencies
     self.dependencies.push("react", "react-dom");
 
@@ -25,30 +27,6 @@ export async function questions(
 
     // Add html-webpack-plugin always
     self.dependencies.push("html-webpack-plugin");
-
-    // Handle JS language solutions
-    const { langType } = await Question.List(
-        self,
-        "langType",
-        "Which of the following JS solutions do you want to use?",
-        ["ES6"],
-        "ES6",
-        self.force,
-    );
-
-    switch (langType) {
-        case "ES6":
-            self.dependencies.push(
-                "babel-loader",
-                "@babel/core",
-                "@babel/preset-env",
-                "@babel/preset-react",
-            );
-            break;
-        case "Typescript":
-            self.dependencies.push("typescript", "ts-loader");
-            break;
-    }
 }
 
 /**
