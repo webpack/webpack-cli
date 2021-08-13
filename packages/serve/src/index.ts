@@ -145,6 +145,11 @@ class ServeCommand {
                     process.stdin.on("end", () => {
                         Promise.all(
                             servers.map((server) => {
+                                if (typeof server.stop === "function") {
+                                    return server.stop();
+                                }
+
+                                // TODO remove in the next major release
                                 return new Promise<void>((resolve) => {
                                     server.close(() => {
                                         resolve();
@@ -333,15 +338,20 @@ class ServeCommand {
                             server = new DevServer(compiler, devServerOptions);
                         }
 
-                        server.listen(
-                            devServerOptions.port,
-                            devServerOptions.host,
-                            (error): void => {
-                                if (error) {
-                                    throw error;
-                                }
-                            },
-                        );
+                        if (typeof server.start === "function") {
+                            await server.start();
+                        } else {
+                            // TODO remove in the next major release
+                            server.listen(
+                                devServerOptions.port,
+                                devServerOptions.host,
+                                (error): void => {
+                                    if (error) {
+                                        throw error;
+                                    }
+                                },
+                            );
+                        }
 
                         servers.push(server);
                     } catch (error) {
