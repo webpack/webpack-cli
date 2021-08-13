@@ -7,7 +7,7 @@ const resolveFile = (file: string): string => {
 };
 
 /**
- * Asks questions to the user used to modify generation
+ * Asks questions including default ones to the user used to modify generation
  * @param self Generator values
  * @param Question Contains questions
  */
