@@ -16,6 +16,7 @@ export async function questions(
     self: CustomGenerator,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     Question: Record<string, any>,
+    isSkip: Record<string, any> = {},
 ): Promise<void> {
     // Handle JS language solutions
     const { langType } = await Question.List(
@@ -24,7 +25,7 @@ export async function questions(
         "Which of the following JS solutions do you want to use?",
         ["none", "ES6", "Typescript"],
         "none",
-        self.force,
+        self.force || isSkip.langType,
     );
 
     switch (langType) {
@@ -42,7 +43,7 @@ export async function questions(
         "devServer",
         "Do you want to use webpack-dev-server?",
         true,
-        self.force,
+        self.force || isSkip.devServer,
     );
     if (devServer) {
         self.dependencies.push("webpack-dev-server");
@@ -54,7 +55,7 @@ export async function questions(
         "htmlWebpackPlugin",
         "Do you want to simplify the creation of HTML files for your bundle?",
         true,
-        self.force,
+        self.force || isSkip.htmlWebpackPlugin,
     );
     if (htmlWebpackPlugin) {
         self.dependencies.push("html-webpack-plugin");
@@ -66,7 +67,7 @@ export async function questions(
         "workboxWebpackPlugin",
         "Do you want to add PWA support?",
         true,
-        self.force,
+        self.force || isSkip.workboxWebpackPlugin,
     );
     if (workboxWebpackPlugin) {
         self.dependencies.push("workbox-webpack-plugin");
@@ -88,7 +89,7 @@ export async function questions(
         "Which of the following CSS solutions do you want to use?",
         ["none", "CSS only", "SASS", "LESS", "Stylus"],
         "none",
-        self.force,
+        self.force || isSkip.cssType,
     );
 
     if (cssType == "none") {
