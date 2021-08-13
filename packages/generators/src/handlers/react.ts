@@ -17,7 +17,7 @@ export async function questions(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     Question: Record<string, any>,
 ): Promise<void> {
-    await defaultQuestions(self, Question, {
+    await defaultQuestions(self, Question, true, {
         devServer: true,
         htmlWebpackPlugin: true,
     });
