@@ -1,3 +1,15 @@
+# [4.8.0](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.7.2...webpack-cli@4.8.0) (2021-08-15)
+
+### Bug Fixes
+
+-   show default value in help output if available ([#2814](https://github.com/webpack/webpack-cli/issues/2814)) ([7f50948](https://github.com/webpack/webpack-cli/commit/7f50948bb984821449277d6b5632b98a695eb029))
+-   support top multi compiler options ([#2874](https://github.com/webpack/webpack-cli/issues/2874)) ([82b1fb7](https://github.com/webpack/webpack-cli/commit/82b1fb7441f04595ac90626235d506f29e5bb107))
+
+### Features
+
+-   show possible values for option in help output ([#2819](https://github.com/webpack/webpack-cli/issues/2819)) ([828e5c9](https://github.com/webpack/webpack-cli/commit/828e5c923719982dfc828f9935f65384d6ede2d1))
+-   **init-generator:** add ability to specify a package manager of choice ([#2769](https://github.com/webpack/webpack-cli/issues/2769)) ([e53f164](https://github.com/webpack/webpack-cli/commit/e53f1645c729c3bbcb27ffd41c999ed321f86f9d))
+
 ## [4.7.2](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.7.1...webpack-cli@4.7.2) (2021-06-07)
 
 **Note:** Version bump only for package webpack-cli (due `@webpack-cli/serve`)
