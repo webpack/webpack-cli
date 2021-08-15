@@ -30,6 +30,15 @@ export async function questions(
 
     // Add html-webpack-plugin always
     self.dependencies.push("html-webpack-plugin");
+
+    switch (self.answers.langType) {
+        case "Typescript":
+            self.dependencies.push("@types/react", "@types/react-dom");
+            break;
+        case "ES6":
+            self.dependencies.push("@babel/preset-react");
+            break;
+    }
 }
 
 /**
