@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.2](https://github.com/webpack/webpack-cli/compare/@webpack-cli/serve@1.5.1...@webpack-cli/serve@1.5.2) (2021-08-15)
+
+### Bug Fixes
+
+-   ci for dev server next ([#2841](https://github.com/webpack/webpack-cli/issues/2841)) ([54d34b7](https://github.com/webpack/webpack-cli/commit/54d34b723cbeaf8cc13cff45398530be1db911e4))
+-   respect dev server CLI options for multi compiler mode ([de48278](https://github.com/webpack/webpack-cli/commit/de482784a4f8cbb9eacbbe1c6b6f3c62ef60567a))
+-   using new dev server API for v4 ([#2886](https://github.com/webpack/webpack-cli/issues/2886)) ([f66d01f](https://github.com/webpack/webpack-cli/commit/f66d01f0e382b0b3ffc753ac7549eb252e19e26c))
+
 ## [1.5.1](https://github.com/webpack/webpack-cli/compare/@webpack-cli/serve@1.5.0...@webpack-cli/serve@1.5.1) (2021-06-07)
 
 ### Bug Fixes

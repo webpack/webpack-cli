@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/generators@2.2.0...@webpack-cli/generators@2.3.0) (2021-08-15)
+
+### Features
+
+-   add prompt to select a package manager of choice ([#2779](https://github.com/webpack/webpack-cli/issues/2779)) ([5bd0df4](https://github.com/webpack/webpack-cli/commit/5bd0df42dea72203f3042405d6ff35b4422df763))
+-   **init-generator:** add ability to specify a package manager of choice ([#2769](https://github.com/webpack/webpack-cli/issues/2769)) ([e53f164](https://github.com/webpack/webpack-cli/commit/e53f1645c729c3bbcb27ffd41c999ed321f86f9d))
+
 # [2.2.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/generators@2.1.0...@webpack-cli/generators@2.2.0) (2021-06-07)
 
 ### Bug Fixes
