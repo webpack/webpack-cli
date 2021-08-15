@@ -50,7 +50,7 @@ export function generate(self: CustomGenerator): void {
         self.answers.langType === "Typescript" ? "./src/index.ts" : "./src/index.js";
 
     const files = [
-        "./src/index.html",
+        "./index.html",
         self.answers.entry,
         "./src/index.png",
         "webpack.config.js",
