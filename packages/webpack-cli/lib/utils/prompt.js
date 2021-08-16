@@ -20,11 +20,19 @@ const prompt = ({ message, defaultResponse, stream }) => {
                 resolve(false);
             }
         });
-        rl.on("SIGINT", () => {
+
+        const handleSIGINT = () => {
             rl.close();
             process.stdout.write("\n");
             utils.logger.warn("Operation canceled.");
             process.exit(0);
+        };
+
+        rl.on("SIGINT", () => {
+            handleSIGINT();
+        });
+        process.on("SIGINT", () => {
+            handleSIGINT();
         });
     });
 };

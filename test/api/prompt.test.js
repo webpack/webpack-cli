@@ -1,4 +1,7 @@
 const prompt = require("../../packages/webpack-cli/lib/utils/prompt");
+const { resolve } = require("path");
+// eslint-disable-next-line node/no-unpublished-require
+const execa = require("execa");
 const { Writable } = require("stream");
 
 describe("prompt", () => {
@@ -32,9 +35,10 @@ describe("prompt", () => {
         expect(resultFail).toBe(false);
     });
 
-    it('should work with "yes" && "y" response', async () => {
+    it('should work with "yes", "YES"," and y" response', async () => {
         const myWritable1 = new MyWritable("yes\r");
         const myWritable2 = new MyWritable("y\r");
+        const myWritable3 = new MyWritable("YES\r");
 
         const resultSuccess1 = await prompt({
             message: "message",
@@ -48,8 +52,15 @@ describe("prompt", () => {
             stream: myWritable2,
         });
 
+        const resultSuccess3 = await prompt({
+            message: "message",
+            defaultResponse: "no",
+            stream: myWritable3,
+        });
+
         expect(resultSuccess1).toBe(true);
         expect(resultSuccess2).toBe(true);
+        expect(resultSuccess3).toBe(true);
     });
 
     it("should work with unknown response", async () => {
@@ -62,5 +73,20 @@ describe("prompt", () => {
         });
 
         expect(result).toBe(false);
+    });
+
+    it("should respond to SIGINT", async () => {
+        const test = resolve(__dirname, "./helpers/runAndKillPrompt.js");
+
+        const { exitCode, stderr, stdout } = await execa("node", [test], {
+            cwd: resolve(__dirname),
+            reject: false,
+            maxBuffer: Infinity,
+            killSignal: "SIGINT",
+        });
+
+        expect(exitCode).toBe(0);
+        expect(stderr).toContain("[webpack-cli] Operation canceled.");
+        expect(stdout).toContain("Would you like to install package 'test'? (Yes/No):");
     });
 });
