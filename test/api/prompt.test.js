@@ -3,6 +3,7 @@ const { resolve } = require("path");
 // eslint-disable-next-line node/no-unpublished-require
 const execa = require("execa");
 const { Writable } = require("stream");
+const { isWindows } = require("../utils/test-utils");
 
 describe("prompt", () => {
     class MyWritable extends Writable {
@@ -76,16 +77,19 @@ describe("prompt", () => {
     });
 
     it("should respond to SIGINT", async () => {
-        const test = resolve(__dirname, "./helpers/runAndKillPrompt.js");
+        const runAndKillPrompt = resolve(__dirname, "./helpers/runAndKillPrompt.js");
 
-        const { exitCode, stderr, stdout } = await execa("node", [test], {
+        const { exitCode, stderr, stdout } = await execa("node", [runAndKillPrompt], {
             cwd: resolve(__dirname),
             reject: false,
             maxBuffer: Infinity,
-            killSignal: "SIGINT",
         });
 
-        expect(exitCode).toBe(0);
+        if (isWindows) {
+            expect(exitCode).toBe(1);
+        } else {
+            expect(exitCode).toBe(0);
+        }
         expect(stderr).toContain("[webpack-cli] Operation canceled.");
         expect(stdout).toContain("Would you like to install package 'test'? (Yes/No):");
     });
