@@ -16,7 +16,7 @@ export async function questions(
     self: CustomGenerator,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     Question: Record<string, any>,
-    forceCSS = false,
+    forceSelection = false,
     isSkip: Record<string, boolean> = {},
 ): Promise<void> {
     // Handle JS language solutions
@@ -24,8 +24,8 @@ export async function questions(
         self,
         "langType",
         "Which of the following JS solutions do you want to use?",
-        ["none", "ES6", "Typescript"],
-        "none",
+        [forceSelection ? "" : "none", "ES6", "Typescript"].filter((option) => option.length > 0),
+        forceSelection ? "ES6" : "none",
         self.force || isSkip.langType,
     );
 
@@ -88,10 +88,10 @@ export async function questions(
         self,
         "cssType",
         "Which of the following CSS solutions do you want to use?",
-        [forceCSS ? "" : "none", "CSS only", "SASS", "LESS", "Stylus"].filter(
+        [forceSelection ? "" : "none", "CSS only", "SASS", "LESS", "Stylus"].filter(
             (option) => option.length > 0,
         ),
-        forceCSS ? "CSS only" : "none",
+        forceSelection ? "CSS only" : "none",
         self.force || isSkip.cssType,
     );
 
