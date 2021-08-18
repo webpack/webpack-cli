@@ -60,7 +60,7 @@ export function generate(self: CustomGenerator): void {
     }
 
     switch (self.answers.cssType) {
-        case "CSS Only":
+        case "CSS only":
             files.push("./src/styles/global.css");
             break;
     }

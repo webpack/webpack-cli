@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import logo from "./index.png";
+import logo from "./index.png";<%  if (cssType == 'CSS only') { %>
+import "./styles/global.css"; <% } %>
 
 ReactDOM.render(
-    <>
-        <h1>Hello from webpack!</h1>
+    <div className="container">
+        <h1 className={"heading"}>Welcome to your React App!</h1>
         <img src={logo} alt="webpack logo" />
-    </>,
+    </div>,
     document.getElementById("root")
 );
