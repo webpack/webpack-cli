@@ -46,16 +46,19 @@ export async function questions(
  * @param self Generator values
  */
 export function generate(self: CustomGenerator): void {
-    self.answers.entry =
-        self.answers.langType === "Typescript" ? "./src/index.ts" : "./src/index.js";
+    const files = ["./index.html", "./src/index.png", "webpack.config.js", "package.json"];
 
-    const files = [
-        "./index.html",
-        self.answers.entry,
-        "./src/index.png",
-        "webpack.config.js",
-        "package.json",
-    ];
+    switch (self.answers.langType) {
+        case "Typescript":
+            self.answers.entry = "./src/index.ts";
+            files.push("tsconfig.json", self.answers.entry as string);
+            break;
+        case "ES6":
+            self.answers.entry = "./src/index.js";
+            files.push(self.answers.entry as string);
+            break;
+    }
+
     for (const file of files) {
         self.fs.copyTpl(
             resolveFile(file + ".tpl"),
