@@ -189,9 +189,13 @@ describe("basic serve usage", () => {
             expect(stdout).not.toContain("HotModuleReplacementPlugin");
         }
 
-        expect(stdout).toContain(
-            isWebpack5 ? "from webpack.Compiler" : "webpack.buildChunkGraph.visitModules",
-        );
+        const isMacOS = process.platform === "darwin";
+
+        if (!isMacOS) {
+            expect(stdout).toContain(
+                isWebpack5 ? "from webpack.Compiler" : "webpack.buildChunkGraph.visitModules",
+            );
+        }
         expect(stdout).toContain("main.js");
     });
 
