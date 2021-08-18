@@ -59,6 +59,12 @@ export function generate(self: CustomGenerator): void {
             break;
     }
 
+    switch (self.answers.cssType) {
+        case "CSS Only":
+            files.push("./src/styles/global.css");
+            break;
+    }
+
     for (const file of files) {
         self.fs.copyTpl(
             resolveFile(file + ".tpl"),
