@@ -1553,9 +1553,9 @@ Options:
   --no-watch-options-stdin    Do not stop watching when stdin stream has ended.
   --bonjour                   Broadcasts the server via ZeroConf networking on start
   --lazy                      Lazy
-  --liveReload                Enables/Disables live reloading on changing files
-  --serveIndex                Enables/Disables serveIndex middleware
-  --inline                    Inline mode (set to false to disable including client scripts like livereload)
+  --liveReload                Enables/Disables live reloading on changing files (default: true)
+  --serveIndex                Enables/Disables serveIndex middleware (default: true)
+  --inline                    Inline mode (set to false to disable including client scripts like livereload) (default: true)
   --profile                   Print compilation profile data for progress steps
   --progress                  Print compilation progress in percentage
   --hot-only                  Do not refresh page if HMR fails
@@ -1563,7 +1563,7 @@ Options:
   --open [value]              Open the default browser, or optionally specify a browser name
   --useLocalIp                Open default browser with local IP
   --open-page <value>         Open default browser with the specified page
-  --client-log-level <value>  Log level in the browser (trace, debug, info, warn, error or silent)
+  --client-log-level <value>  Log level in the browser (trace, debug, info, warn, error or silent) (default: "info")
   --https                     HTTPS
   --http2                     HTTP/2, must be used with HTTPS
   --key <value>               Path to a SSL key.
@@ -1624,9 +1624,9 @@ Options:
   --no-watch-options-stdin    Do not stop watching when stdin stream has ended.
   --bonjour                   Broadcasts the server via ZeroConf networking on start
   --lazy                      Lazy
-  --liveReload                Enables/Disables live reloading on changing files
-  --serveIndex                Enables/Disables serveIndex middleware
-  --inline                    Inline mode (set to false to disable including client scripts like livereload)
+  --liveReload                Enables/Disables live reloading on changing files (default: true)
+  --serveIndex                Enables/Disables serveIndex middleware (default: true)
+  --inline                    Inline mode (set to false to disable including client scripts like livereload) (default: true)
   --profile                   Print compilation profile data for progress steps
   --progress                  Print compilation progress in percentage
   --hot-only                  Do not refresh page if HMR fails
@@ -1634,7 +1634,7 @@ Options:
   --open [value]              Open the default browser, or optionally specify a browser name
   --useLocalIp                Open default browser with local IP
   --open-page <value>         Open default browser with the specified page
-  --client-log-level <value>  Log level in the browser (trace, debug, info, warn, error or silent)
+  --client-log-level <value>  Log level in the browser (trace, debug, info, warn, error or silent) (default: "info")
   --https                     HTTPS
   --http2                     HTTP/2, must be used with HTTPS
   --key <value>               Path to a SSL key.
@@ -1704,9 +1704,11 @@ Options:
                               start
   --lazy                      Lazy
   --liveReload                Enables/Disables live reloading on changing files
-  --serveIndex                Enables/Disables serveIndex middleware
+                              (default: true)
+  --serveIndex                Enables/Disables serveIndex middleware (default:
+                              true)
   --inline                    Inline mode (set to false to disable including
-                              client scripts like livereload)
+                              client scripts like livereload) (default: true)
   --profile                   Print compilation profile data for progress steps
   --progress                  Print compilation progress in percentage
   --hot-only                  Do not refresh page if HMR fails
@@ -1716,7 +1718,7 @@ Options:
   --useLocalIp                Open default browser with local IP
   --open-page <value>         Open default browser with the specified page
   --client-log-level <value>  Log level in the browser (trace, debug, info,
-                              warn, error or silent)
+                              warn, error or silent) (default: "info")
   --https                     HTTPS
   --http2                     HTTP/2, must be used with HTTPS
   --key <value>               Path to a SSL key.
@@ -1790,9 +1792,11 @@ Options:
                               start
   --lazy                      Lazy
   --liveReload                Enables/Disables live reloading on changing files
-  --serveIndex                Enables/Disables serveIndex middleware
+                              (default: true)
+  --serveIndex                Enables/Disables serveIndex middleware (default:
+                              true)
   --inline                    Inline mode (set to false to disable including
-                              client scripts like livereload)
+                              client scripts like livereload) (default: true)
   --profile                   Print compilation profile data for progress steps
   --progress                  Print compilation progress in percentage
   --hot-only                  Do not refresh page if HMR fails
@@ -1802,7 +1806,7 @@ Options:
   --useLocalIp                Open default browser with local IP
   --open-page <value>         Open default browser with the specified page
   --client-log-level <value>  Log level in the browser (trace, debug, info,
-                              warn, error or silent)
+                              warn, error or silent) (default: "info")
   --https                     HTTPS
   --http2                     HTTP/2, must be used with HTTPS
   --key <value>               Path to a SSL key.
@@ -1867,9 +1871,9 @@ Options:
   --no-watch-options-stdin    Do not stop watching when stdin stream has ended.
   --bonjour                   Broadcasts the server via ZeroConf networking on start
   --lazy                      Lazy
-  --liveReload                Enables/Disables live reloading on changing files
-  --serveIndex                Enables/Disables serveIndex middleware
-  --inline                    Inline mode (set to false to disable including client scripts like livereload)
+  --liveReload                Enables/Disables live reloading on changing files (default: true)
+  --serveIndex                Enables/Disables serveIndex middleware (default: true)
+  --inline                    Inline mode (set to false to disable including client scripts like livereload) (default: true)
   --profile                   Print compilation profile data for progress steps
   --progress                  Print compilation progress in percentage
   --hot-only                  Do not refresh page if HMR fails
@@ -1877,7 +1881,7 @@ Options:
   --open [value]              Open the default browser, or optionally specify a browser name
   --useLocalIp                Open default browser with local IP
   --open-page <value>         Open default browser with the specified page
-  --client-log-level <value>  Log level in the browser (trace, debug, info, warn, error or silent)
+  --client-log-level <value>  Log level in the browser (trace, debug, info, warn, error or silent) (default: "info")
   --https                     HTTPS
   --http2                     HTTP/2, must be used with HTTPS
   --key <value>               Path to a SSL key.
@@ -1938,9 +1942,9 @@ Options:
   --no-watch-options-stdin    Do not stop watching when stdin stream has ended.
   --bonjour                   Broadcasts the server via ZeroConf networking on start
   --lazy                      Lazy
-  --liveReload                Enables/Disables live reloading on changing files
-  --serveIndex                Enables/Disables serveIndex middleware
-  --inline                    Inline mode (set to false to disable including client scripts like livereload)
+  --liveReload                Enables/Disables live reloading on changing files (default: true)
+  --serveIndex                Enables/Disables serveIndex middleware (default: true)
+  --inline                    Inline mode (set to false to disable including client scripts like livereload) (default: true)
   --profile                   Print compilation profile data for progress steps
   --progress                  Print compilation progress in percentage
   --hot-only                  Do not refresh page if HMR fails
@@ -1948,7 +1952,7 @@ Options:
   --open [value]              Open the default browser, or optionally specify a browser name
   --useLocalIp                Open default browser with local IP
   --open-page <value>         Open default browser with the specified page
-  --client-log-level <value>  Log level in the browser (trace, debug, info, warn, error or silent)
+  --client-log-level <value>  Log level in the browser (trace, debug, info, warn, error or silent) (default: "info")
   --https                     HTTPS
   --http2                     HTTP/2, must be used with HTTPS
   --key <value>               Path to a SSL key.
@@ -2009,9 +2013,9 @@ Options:
   --no-watch-options-stdin    Do not stop watching when stdin stream has ended.
   --bonjour                   Broadcasts the server via ZeroConf networking on start
   --lazy                      Lazy
-  --liveReload                Enables/Disables live reloading on changing files
-  --serveIndex                Enables/Disables serveIndex middleware
-  --inline                    Inline mode (set to false to disable including client scripts like livereload)
+  --liveReload                Enables/Disables live reloading on changing files (default: true)
+  --serveIndex                Enables/Disables serveIndex middleware (default: true)
+  --inline                    Inline mode (set to false to disable including client scripts like livereload) (default: true)
   --profile                   Print compilation profile data for progress steps
   --progress                  Print compilation progress in percentage
   --hot-only                  Do not refresh page if HMR fails
@@ -2019,7 +2023,7 @@ Options:
   --open [value]              Open the default browser, or optionally specify a browser name
   --useLocalIp                Open default browser with local IP
   --open-page <value>         Open default browser with the specified page
-  --client-log-level <value>  Log level in the browser (trace, debug, info, warn, error or silent)
+  --client-log-level <value>  Log level in the browser (trace, debug, info, warn, error or silent) (default: "info")
   --https                     HTTPS
   --http2                     HTTP/2, must be used with HTTPS
   --key <value>               Path to a SSL key.
@@ -2080,9 +2084,9 @@ Options:
   --no-watch-options-stdin    Do not stop watching when stdin stream has ended.
   --bonjour                   Broadcasts the server via ZeroConf networking on start
   --lazy                      Lazy
-  --liveReload                Enables/Disables live reloading on changing files
-  --serveIndex                Enables/Disables serveIndex middleware
-  --inline                    Inline mode (set to false to disable including client scripts like livereload)
+  --liveReload                Enables/Disables live reloading on changing files (default: true)
+  --serveIndex                Enables/Disables serveIndex middleware (default: true)
+  --inline                    Inline mode (set to false to disable including client scripts like livereload) (default: true)
   --profile                   Print compilation profile data for progress steps
   --progress                  Print compilation progress in percentage
   --hot-only                  Do not refresh page if HMR fails
@@ -2090,7 +2094,7 @@ Options:
   --open [value]              Open the default browser, or optionally specify a browser name
   --useLocalIp                Open default browser with local IP
   --open-page <value>         Open default browser with the specified page
-  --client-log-level <value>  Log level in the browser (trace, debug, info, warn, error or silent)
+  --client-log-level <value>  Log level in the browser (trace, debug, info, warn, error or silent) (default: "info")
   --https                     HTTPS
   --http2                     HTTP/2, must be used with HTTPS
   --key <value>               Path to a SSL key.
