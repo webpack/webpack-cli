@@ -59,7 +59,7 @@ jobs:
         dev-server-version: [version-3, latest]
         exclude:
           - node-version: 10.x
-            dev-server-version: latest
+            dev-server-version: next
 
     steps:
       - uses: actions/checkout@v2
