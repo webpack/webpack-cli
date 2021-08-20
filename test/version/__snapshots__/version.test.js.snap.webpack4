@@ -3,24 +3,24 @@
 exports[`single version flag outputs version with b: stderr 1`] = `""`;
 
 exports[`single version flag outputs version with b: stdout 1`] = `
-"webpack x.x.x
-webpack-cli x.x.x
+"webpack: x.x.x
+webpack-cli: x.x.x
 webpack-dev-server x.x.x"
 `;
 
 exports[`single version flag outputs version with build: stderr 1`] = `""`;
 
 exports[`single version flag outputs version with build: stdout 1`] = `
-"webpack x.x.x
-webpack-cli x.x.x
+"webpack: x.x.x
+webpack-cli: x.x.x
 webpack-dev-server x.x.x"
 `;
 
 exports[`single version flag outputs version with bundle: stderr 1`] = `""`;
 
 exports[`single version flag outputs version with bundle: stdout 1`] = `
-"webpack x.x.x
-webpack-cli x.x.x
+"webpack: x.x.x
+webpack-cli: x.x.x
 webpack-dev-server x.x.x"
 `;
 
@@ -28,8 +28,8 @@ exports[`single version flag outputs version with info using command alias: stde
 
 exports[`single version flag outputs version with info using command alias: stdout 1`] = `
 "@webpack-cli/info x.x.x
-webpack x.x.x
-webpack-cli x.x.x
+webpack: x.x.x
+webpack-cli: x.x.x
 webpack-dev-server x.x.x"
 `;
 
@@ -37,8 +37,8 @@ exports[`single version flag outputs version with info using command syntax: std
 
 exports[`single version flag outputs version with info using command syntax: stdout 1`] = `
 "@webpack-cli/info x.x.x
-webpack x.x.x
-webpack-cli x.x.x
+webpack: x.x.x
+webpack-cli: x.x.x
 webpack-dev-server x.x.x"
 `;
 
@@ -46,8 +46,8 @@ exports[`single version flag outputs version with info using option alias: stder
 
 exports[`single version flag outputs version with info using option alias: stdout 1`] = `
 "@webpack-cli/info x.x.x
-webpack x.x.x
-webpack-cli x.x.x
+webpack: x.x.x
+webpack-cli: x.x.x
 webpack-dev-server x.x.x"
 `;
 
@@ -55,8 +55,8 @@ exports[`single version flag outputs version with info: stderr 1`] = `""`;
 
 exports[`single version flag outputs version with info: stdout 1`] = `
 "@webpack-cli/info x.x.x
-webpack x.x.x
-webpack-cli x.x.x
+webpack: x.x.x
+webpack-cli: x.x.x
 webpack-dev-server x.x.x"
 `;
 
@@ -64,8 +64,8 @@ exports[`single version flag outputs version with init: stderr 1`] = `""`;
 
 exports[`single version flag outputs version with init: stdout 1`] = `
 "@webpack-cli/generators x.x.x
-webpack x.x.x
-webpack-cli x.x.x
+webpack: x.x.x
+webpack-cli: x.x.x
 webpack-dev-server x.x.x"
 `;
 
@@ -73,8 +73,8 @@ exports[`single version flag outputs version with loader: stderr 1`] = `""`;
 
 exports[`single version flag outputs version with loader: stdout 1`] = `
 "@webpack-cli/generators x.x.x
-webpack x.x.x
-webpack-cli x.x.x
+webpack: x.x.x
+webpack-cli: x.x.x
 webpack-dev-server x.x.x"
 `;
 
@@ -82,8 +82,8 @@ exports[`single version flag outputs version with migrate: stderr 1`] = `""`;
 
 exports[`single version flag outputs version with migrate: stdout 1`] = `
 "@webpack-cli/migrate x.x.x
-webpack x.x.x
-webpack-cli x.x.x
+webpack: x.x.x
+webpack-cli: x.x.x
 webpack-dev-server x.x.x"
 `;
 
@@ -91,8 +91,8 @@ exports[`single version flag outputs version with plugin: stderr 1`] = `""`;
 
 exports[`single version flag outputs version with plugin: stdout 1`] = `
 "@webpack-cli/generators x.x.x
-webpack x.x.x
-webpack-cli x.x.x
+webpack: x.x.x
+webpack-cli: x.x.x
 webpack-dev-server x.x.x"
 `;
 
@@ -100,8 +100,8 @@ exports[`single version flag outputs version with serve: stderr 1`] = `""`;
 
 exports[`single version flag outputs version with serve: stdout 1`] = `
 "@webpack-cli/serve x.x.x
-webpack x.x.x
-webpack-cli x.x.x
+webpack: x.x.x
+webpack-cli: x.x.x
 webpack-dev-server x.x.x"
 `;
 
@@ -109,80 +109,80 @@ exports[`single version flag outputs version with the alias c for init: stderr 1
 
 exports[`single version flag outputs version with the alias c for init: stdout 1`] = `
 "@webpack-cli/generators x.x.x
-webpack x.x.x
-webpack-cli x.x.x
+webpack: x.x.x
+webpack-cli: x.x.x
 webpack-dev-server x.x.x"
 `;
 
 exports[`single version flag outputs version with w: stderr 1`] = `""`;
 
 exports[`single version flag outputs version with w: stdout 1`] = `
-"webpack x.x.x
-webpack-cli x.x.x
+"webpack: x.x.x
+webpack-cli: x.x.x
 webpack-dev-server x.x.x"
 `;
 
 exports[`single version flag outputs version with watch: stderr 1`] = `""`;
 
 exports[`single version flag outputs version with watch: stdout 1`] = `
-"webpack x.x.x
-webpack-cli x.x.x
+"webpack: x.x.x
+webpack-cli: x.x.x
 webpack-dev-server x.x.x"
 `;
 
 exports[`single version flag outputs versions with --color using command syntax: stderr 1`] = `""`;
 
 exports[`single version flag outputs versions with --color using command syntax: stdout 1`] = `
-"webpack x.x.x
-webpack-cli x.x.x
+"webpack: x.x.x
+webpack-cli: x.x.x
 webpack-dev-server x.x.x"
 `;
 
 exports[`single version flag outputs versions with --color using option syntax: stderr 1`] = `""`;
 
 exports[`single version flag outputs versions with --color using option syntax: stdout 1`] = `
-"webpack x.x.x
-webpack-cli x.x.x
+"webpack: x.x.x
+webpack-cli: x.x.x
 webpack-dev-server x.x.x"
 `;
 
 exports[`single version flag outputs versions with --no-color using command syntax: stderr 1`] = `""`;
 
 exports[`single version flag outputs versions with --no-color using command syntax: stdout 1`] = `
-"webpack x.x.x
-webpack-cli x.x.x
+"webpack: x.x.x
+webpack-cli: x.x.x
 webpack-dev-server x.x.x"
 `;
 
 exports[`single version flag outputs versions with --no-color using option syntax: stderr 1`] = `""`;
 
 exports[`single version flag outputs versions with --no-color using option syntax: stdout 1`] = `
-"webpack x.x.x
-webpack-cli x.x.x
+"webpack: x.x.x
+webpack-cli: x.x.x
 webpack-dev-server x.x.x"
 `;
 
 exports[`single version flag outputs versions with alias syntax: stderr 1`] = `""`;
 
 exports[`single version flag outputs versions with alias syntax: stdout 1`] = `
-"webpack x.x.x
-webpack-cli x.x.x
+"webpack: x.x.x
+webpack-cli: x.x.x
 webpack-dev-server x.x.x"
 `;
 
 exports[`single version flag outputs versions with command syntax: stderr 1`] = `""`;
 
 exports[`single version flag outputs versions with command syntax: stdout 1`] = `
-"webpack x.x.x
-webpack-cli x.x.x
+"webpack: x.x.x
+webpack-cli: x.x.x
 webpack-dev-server x.x.x"
 `;
 
 exports[`single version flag outputs versions with dashed syntax: stderr 1`] = `""`;
 
 exports[`single version flag outputs versions with dashed syntax: stdout 1`] = `
-"webpack x.x.x
-webpack-cli x.x.x
+"webpack: x.x.x
+webpack-cli: x.x.x
 webpack-dev-server x.x.x"
 `;
 
@@ -281,16 +281,16 @@ exports[`single version flag should output versions for multiple commands using 
 exports[`single version flag should output versions for multiple commands using command syntax: stdout 1`] = `
 "@webpack-cli/info x.x.x
 @webpack-cli/serve x.x.x
-webpack x.x.x
-webpack-cli x.x.x
+webpack: x.x.x
+webpack-cli: x.x.x
 webpack-dev-server x.x.x"
 `;
 
 exports[`single version flag should output versions with help command using command syntax: stderr 1`] = `""`;
 
 exports[`single version flag should output versions with help command using command syntax: stdout 1`] = `
-"webpack x.x.x
-webpack-cli x.x.x
+"webpack: x.x.x
+webpack-cli: x.x.x
 webpack-dev-server x.x.x"
 `;
 
@@ -299,24 +299,24 @@ exports[`single version flag should work for multiple commands: stderr 1`] = `""
 exports[`single version flag should work for multiple commands: stdout 1`] = `
 "@webpack-cli/info x.x.x
 @webpack-cli/serve x.x.x
-webpack x.x.x
-webpack-cli x.x.x
+webpack: x.x.x
+webpack-cli: x.x.x
 webpack-dev-server x.x.x"
 `;
 
 exports[`single version flag should work using command syntax and the "--version" argument: stderr 1`] = `""`;
 
 exports[`single version flag should work using command syntax and the "--version" argument: stdout 1`] = `
-"webpack x.x.x
-webpack-cli x.x.x
+"webpack: x.x.x
+webpack-cli: x.x.x
 webpack-dev-server x.x.x"
 `;
 
 exports[`single version flag should work using command syntax with the "version" value: stderr 1`] = `""`;
 
 exports[`single version flag should work using command syntax with the "version" value: stdout 1`] = `
-"webpack x.x.x
-webpack-cli x.x.x
+"webpack: x.x.x
+webpack-cli: x.x.x
 webpack-dev-server x.x.x"
 `;
 

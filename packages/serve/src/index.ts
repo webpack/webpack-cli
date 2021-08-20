@@ -3,9 +3,7 @@ import { devServerOptionsType } from "./types";
 class ServeCommand {
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
   async apply(cli: any): Promise<void> {
-    const { logger, webpack } = cli;
-
-    const loadDevServerOptions = () => {
+      const loadDevServerOptions = () => {
       // TODO simplify this after drop webpack v4 and webpack-dev-server v3
       // eslint-disable-next-line @typescript-eslint/no-var-requires, node/no-extraneous-require
       const devServer = require("webpack-dev-server");
@@ -14,8 +12,8 @@ class ServeCommand {
       let options = {};
 
       if (isNewDevServerCLIAPI) {
-        if (webpack.cli && typeof webpack.cli.getArguments === "function") {
-          options = webpack.cli.getArguments(devServer.schema);
+        if (cli.webpack.cli && typeof cli.webpack.cli.getArguments === "function") {
+          options = cli.webpack.cli.getArguments(devServer.schema);
         } else {
           options = devServer.cli.getArguments();
         }
@@ -50,7 +48,7 @@ class ServeCommand {
         description: "Run the webpack dev server.",
         usage: "[entries...] [options]",
         pkg: "@webpack-cli/serve",
-        dependencies: ["webpack-dev-server"],
+        dependencies: ["webpack", "webpack-dev-server"],
       },
       () => {
         let devServerFlags = [];
@@ -58,7 +56,7 @@ class ServeCommand {
         try {
           devServerFlags = loadDevServerOptions();
         } catch (error) {
-          logger.error(
+          cli.logger.error(
             `You need to install 'webpack-dev-server' for running 'webpack serve'.\n${error}`,
           );
           process.exit(2);
@@ -169,7 +167,7 @@ class ServeCommand {
           // eslint-disable-next-line node/no-extraneous-require, @typescript-eslint/no-var-requires
           devServerVersion = require("webpack-dev-server/package.json").version;
         } catch (err) {
-          logger.error(
+          cli.logger.error(
             `You need to install 'webpack-dev-server' for running 'webpack serve'.\n${err}`,
           );
           process.exit(2);
@@ -200,8 +198,8 @@ class ServeCommand {
             }, {});
             const result = { ...(compilerForDevServer.options.devServer || {}) };
             const problems = (
-              webpack.cli && typeof webpack.cli.processArguments === "function"
-                ? webpack.cli
+              cli.webpack.cli && typeof cli.webpack.cli.processArguments === "function"
+                ? cli.webpack.cli
                 : DevServer.cli
             ).processArguments(args, result, values);
 
@@ -335,9 +333,9 @@ class ServeCommand {
             servers.push(server);
           } catch (error) {
             if (cli.isValidationError(error)) {
-              logger.error(error.message);
+                cli.logger.error(error.message);
             } else {
-              logger.error(error);
+                cli.logger.error(error);
             }
 
             process.exit(2);

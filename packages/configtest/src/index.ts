@@ -1,14 +1,13 @@
 class ConfigTestCommand {
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
   async apply(cli: any): Promise<void> {
-    const { logger, webpack } = cli;
-
     await cli.makeCommand(
       {
         name: "configtest [config-path]",
         alias: "t",
         description: "Validate a webpack configuration.",
         pkg: "@webpack-cli/configtest",
+        dependencies: ["webpack"],
       },
       [],
       async (configPath: string | undefined): Promise<void> => {
@@ -28,12 +27,14 @@ class ConfigTestCommand {
         }
 
         if (configPaths.size === 0) {
-          logger.error("No configuration found.");
+          cli.logger.error("No configuration found.");
           process.exit(2);
         }
 
-        logger.info(`Validate '${Array.from(configPaths).join(" ,")}'.`);
+          cli.logger.info(`Validate '${Array.from(configPaths).join(" ,")}'.`);
 
+          const webpack = await cli.loadWebpack();
+        
         try {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const error: any = webpack.validate(config.options);
@@ -44,15 +45,15 @@ class ConfigTestCommand {
           }
         } catch (error) {
           if (cli.isValidationError(error)) {
-            logger.error(error.message);
+              cli.logger.error(error.message);
           } else {
-            logger.error(error);
+              cli.logger.error(error);
           }
 
           process.exit(2);
         }
 
-        logger.success("There are no validation errors in the given webpack configuration.");
+          cli.logger.success("There are no validation errors in the given webpack configuration.");
       },
     );
   }
