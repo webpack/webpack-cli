@@ -2,17 +2,7 @@ import fs from "fs";
 import path from "path";
 import Generator from "yeoman-generator";
 
-import { getInstaller, getTemplate } from "./utils/helpers";
-
-// Helper to get the template-directory content
-
-const getFiles = (dir) => {
-    return fs.readdirSync(dir).reduce((list, file) => {
-        const filePath = path.join(dir, file);
-        const isDir = fs.statSync(filePath).isDirectory();
-        return list.concat(isDir ? getFiles(filePath) : filePath);
-    }, []);
-};
+import { getFiles, getInstaller, getTemplate } from "./utils/helpers";
 
 /**
  * Creates a Yeoman Generator that generates a project conforming

@@ -1,3 +1,6 @@
+import fs from "fs";
+import path from "path";
+
 import { List } from "./scaffold-utils";
 
 const regex = /[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g;
@@ -21,6 +24,15 @@ export function toUpperCamelCase(str: string): string {
         .match(regex)
         .map((x) => x.slice(0, 1).toUpperCase() + x.slice(1).toLowerCase())
         .join("");
+}
+
+// Helper to get the template-directory content
+export function getFiles(dir: string): string[] {
+    return fs.readdirSync(dir).reduce((list, file) => {
+        const filePath = path.join(dir, file);
+        const isDir = fs.statSync(filePath).isDirectory();
+        return list.concat(isDir ? getFiles(filePath) : filePath);
+    }, []);
 }
 
 export async function getInstaller(): Promise<string> {
