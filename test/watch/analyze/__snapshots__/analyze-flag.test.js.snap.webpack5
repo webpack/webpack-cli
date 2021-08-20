@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`"analyze" option should load webpack-bundle-analyzer plugin with --analyze flag: stderr 1`] = `""`;
+
+exports[`"analyze" option should load webpack-bundle-analyzer plugin with --analyze flag: stdout 1`] = `
+"Webpack Bundle Analyzer is started
+    at stack
+Use Ctrl+C to close it"
+`;

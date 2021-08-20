@@ -251,6 +251,23 @@ const normalizeError = (output) => {
         .replace(/\s+at .+(}|\)|\d)/gs, "\n    at stack");
 };
 
+const normalizeTime = (output) => {
+    return output.replace(/[\d.]+ ms/gm, "<compile-time> ms").replace();
+};
+
+const normalizeSize = (output) => {
+    return output
+        .replace(/\d+(.\d+)? (bytes|KiB|MiB|GiB)/g, "<size> <size-abbreviation>")
+        .replace();
+};
+
+const normalizeV4Output = (output) => {
+    return output
+        .replace(/Hash: .*/gm, "Hash: <hash>")
+        .replace(/Time: .*/gm, "Time: <compile time>")
+        .replace(/Built at: .*/gm, "Built at: <built time>");
+};
+
 const normalizeStdout = (stdout) => {
     if (typeof stdout !== "string") {
         return stdout;
@@ -261,8 +278,12 @@ const normalizeStdout = (stdout) => {
     }
 
     let normalizedStdout = stripAnsi(stdout);
+
     normalizedStdout = normalizeCwd(normalizedStdout);
     normalizedStdout = normalizeVersions(normalizedStdout);
+    normalizedStdout = normalizeTime(normalizedStdout);
+    normalizedStdout = normalizeSize(normalizedStdout);
+    normalizedStdout = normalizeV4Output(normalizedStdout);
     normalizedStdout = normalizeError(normalizedStdout);
 
     return normalizedStdout;
@@ -278,6 +299,7 @@ const normalizeStderr = (stderr) => {
     }
 
     let normalizedStderr = stripAnsi(stderr);
+
     normalizedStderr = normalizeCwd(normalizedStderr);
 
     const networkIPv4 = internalIp.v4.sync();

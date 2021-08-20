@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`"bail" option should log warning in case of multiple compilers: stderr 1`] = `"<w> [webpack-cli] You are using \\"bail\\" with \\"watch\\". \\"bail\\" will still exit webpack when the first error is found."`;
+
+exports[`"bail" option should log warning in case of multiple compilers: stdout 1`] = `
+"Hash: <hash>
+Version: webpack x.x.x
+Child first:
+    Hash: <hash>
+    Time: <compile time>
+    Built at: <built time>
+              Asset      Size  Chunks             Chunk Names
+    ./dist-first.js  3.77 KiB    main  [emitted]  main
+    Entrypoint main = ./dist-first.js
+    [./src/first.js] 50 bytes {main} [built]
+Child second:
+    Hash: <hash>
+    Time: <compile time>
+    Built at: <built time>
+               Asset      Size  Chunks             Chunk Names
+    ./dist-second.js  3.77 KiB    main  [emitted]  main
+    Entrypoint main = ./dist-second.js
+    [./src/second.js] 51 bytes {main} [built]"
+`;
+
+exports[`"bail" option should log warning in watch mode: stderr 1`] = `"<w> [webpack-cli] You are using \\"bail\\" with \\"watch\\". \\"bail\\" will still exit webpack when the first error is found."`;
+
+exports[`"bail" option should log warning in watch mode: stderr 2`] = `"<w> [webpack-cli] You are using \\"bail\\" with \\"watch\\". \\"bail\\" will still exit webpack when the first error is found."`;
+
+exports[`"bail" option should log warning in watch mode: stdout 1`] = `
+"Hash: <hash>
+Version: webpack x.x.x
+Time: <compile time>
+Built at: <built time>
+  Asset      Size  Chunks             Chunk Names
+main.js  3.77 KiB    main  [emitted]  main
+Entrypoint main = main.js
+[./src/first.js] 50 bytes {main} [built]"
+`;
+
+exports[`"bail" option should log warning in watch mode: stdout 2`] = `
+"Hash: <hash>
+Version: webpack x.x.x
+Time: <compile time>
+Built at: <built time>
+  Asset      Size  Chunks             Chunk Names
+main.js  3.77 KiB    main  [emitted]  main
+Entrypoint main = main.js
+[./src/first.js] 50 bytes {main} [built]"
+`;
+
+exports[`"bail" option should not log warning in not watch mode without the "watch" option: stderr 1`] = `""`;
+
+exports[`"bail" option should not log warning in not watch mode without the "watch" option: stdout 1`] = `
+"Hash: <hash>
+Version: webpack x.x.x
+Time: <compile time>
+Built at: <built time>
+  Asset      Size  Chunks             Chunk Names
+main.js  3.77 KiB    main  [emitted]  main
+Entrypoint main = main.js
+[./src/first.js] 50 bytes {main} [built]"
+`;
+
+exports[`"bail" option should not log warning without the "bail" option: stderr 1`] = `""`;
+
+exports[`"bail" option should not log warning without the "bail" option: stderr 2`] = `""`;
+
+exports[`"bail" option should not log warning without the "bail" option: stdout 1`] = `
+"Hash: <hash>
+Version: webpack x.x.x
+Time: <compile time>
+Built at: <built time>
+  Asset      Size  Chunks             Chunk Names
+main.js  3.77 KiB    main  [emitted]  main
+Entrypoint main = main.js
+[./src/first.js] 50 bytes {main} [built]"
+`;
+
+exports[`"bail" option should not log warning without the "bail" option: stdout 2`] = `
+"Hash: <hash>
+Version: webpack x.x.x
+Time: <compile time>
+Built at: <built time>
+  Asset      Size  Chunks             Chunk Names
+main.js  3.77 KiB    main  [emitted]  main
+Entrypoint main = main.js
+[./src/first.js] 50 bytes {main} [built]"
+`;

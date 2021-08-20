@@ -1,6 +1,6 @@
 "use strict";
 
-const { runWatch } = require("../../utils/test-utils");
+const { runWatch, normalizeStderr, normalizeStdout } = require("../../utils/test-utils");
 
 describe('"analyze" option', () => {
     it("should load webpack-bundle-analyzer plugin with --analyze flag", async () => {
@@ -8,7 +8,7 @@ describe('"analyze" option', () => {
             killString: /Webpack Bundle Analyzer is started at/,
         });
 
-        expect(stderr).toBeFalsy();
-        expect(stdout).toContain("Webpack Bundle Analyzer is started at");
+        expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+        expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
     });
 });
