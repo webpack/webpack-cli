@@ -7,7 +7,8 @@ const isSubPackage = true;
 
 const serveTest = () => {
     const args = ["serve"];
-    const logMessage = "For using this command you need to install: '@webpack-cli/serve' package";
+    const logMessage =
+        "For using this command webpack-cli will need to install: '@webpack-cli/serve' package";
 
     return runTest(packageName, args, logMessage, isSubPackage);
 };

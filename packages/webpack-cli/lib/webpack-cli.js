@@ -880,13 +880,17 @@ class WebpackCLI {
 
                     const { promptInstallation, colors } = this.utils;
 
-                    pkg = await promptInstallation(pkg, () => {
-                        this.logger.error(
-                            `For using this command you need to install: '${colors.green(
-                                pkg,
-                            )}' package`,
-                        );
-                    });
+                    pkg = await promptInstallation(
+                        pkg,
+                        () => {
+                            this.logger.error(
+                                `For using this command webpack-cli will need to install: '${colors.green(
+                                    pkg,
+                                )}' package`,
+                            );
+                        },
+                        true,
+                    );
                 }
 
                 let loadedCommand;
