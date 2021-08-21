@@ -10,13 +10,13 @@ import { toKebabCase } from "./utils/helpers";
  * @returns {string} The formatted string
  */
 export function makeLoaderName(name: string): string {
-    name = toKebabCase(name);
+  name = toKebabCase(name);
 
-    if (!/loader$/.test(name)) {
-        name += "-loader";
-    }
+  if (!/loader$/.test(name)) {
+    name += "-loader";
+  }
 
-    return name;
+  return name;
 }
 
 /**
@@ -29,18 +29,18 @@ export function makeLoaderName(name: string): string {
  */
 
 export const LoaderGenerator = addonGenerator(
-    [
-        {
-            default: "my-loader",
-            filter: makeLoaderName,
-            message: "Loader name",
-            name: "name",
-            type: "input",
-            validate: (str: string): boolean => str.length > 0,
-        },
-    ],
-    path.resolve(__dirname, "../loader-template"),
-    (gen): Record<string, unknown> => ({ name: gen.props.name }),
+  [
+    {
+      default: "my-loader",
+      filter: makeLoaderName,
+      message: "Loader name",
+      name: "name",
+      type: "input",
+      validate: (str: string): boolean => str.length > 0,
+    },
+  ],
+  path.resolve(__dirname, "../loader-template"),
+  (gen): Record<string, unknown> => ({ name: gen.props.name }),
 );
 
 export default LoaderGenerator;

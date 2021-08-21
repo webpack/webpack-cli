@@ -1,9 +1,9 @@
 module.exports = {
-    plugins: [
-        {
-            apply() {
-                throw new Error("test");
-            },
-        },
-    ],
+  plugins: [
+    {
+      apply() {
+        throw new Error("test");
+      },
+    },
+  ],
 };

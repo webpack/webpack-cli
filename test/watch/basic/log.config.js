@@ -1,6 +1,6 @@
 module.exports = {
-    mode: "development",
-    infrastructureLogging: {
-        level: "log",
-    },
+  mode: "development",
+  infrastructureLogging: {
+    level: "log",
+  },
 };

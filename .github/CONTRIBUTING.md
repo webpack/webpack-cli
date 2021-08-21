@@ -7,26 +7,26 @@ work is not in vain.
 
 Table of Contents
 
--   [Issues](#issues)
--   [Your first Contribution](#your-first-contribution)
--   [Setup](#setup)
--   [Running Tests](#running-tests)
-    -   [Using yarn](#using-yarn)
--   [Editor Config](#editor-config)
--   [Dependencies](#dependencies)
--   [Branching Model](#branching-model)
--   [Naming a branch](#naming-a-branch)
-    -   [Features](#features)
-    -   [Fixes](#fixes)
--   [Testing](#testing)
--   [Pull Requests](#pull-requests)
--   [Submitting a good Pull Request](#submitting-a-good-pull-request)
--   [Commit message](#commit-message)
-    -   [Commit Message Format](#commit-message-format)
--   [Contributor License Agreement](#contributor-license-agreement)
--   [Documentation](#documentation)
--   [Releasing](#releasing)
--   [Join The Development](#join-the-development)
+- [Issues](#issues)
+- [Your first Contribution](#your-first-contribution)
+- [Setup](#setup)
+- [Running Tests](#running-tests)
+  - [Using yarn](#using-yarn)
+- [Editor Config](#editor-config)
+- [Dependencies](#dependencies)
+- [Branching Model](#branching-model)
+- [Naming a branch](#naming-a-branch)
+  - [Features](#features)
+  - [Fixes](#fixes)
+- [Testing](#testing)
+- [Pull Requests](#pull-requests)
+- [Submitting a good Pull Request](#submitting-a-good-pull-request)
+- [Commit message](#commit-message)
+  - [Commit Message Format](#commit-message-format)
+- [Contributor License Agreement](#contributor-license-agreement)
+- [Documentation](#documentation)
+- [Releasing](#releasing)
+- [Join The Development](#join-the-development)
 
 ## Issues
 
@@ -52,29 +52,29 @@ In case you are suggesting a new feature, we will match your idea with our curre
 
 ## Setup
 
--   Install [Node.js](https://nodejs.org/) if you don't have it already.
-    _Note: Node 6 or greater would be better for "best results"._
--   Fork the **webpack-cli** repo at [https://github.com/webpack/webpack-cli](https://github.com/webpack/webpack-cli).
--   `git clone <your-clone-url> && cd webpack-cli`
+- Install [Node.js](https://nodejs.org/) if you don't have it already.
+  _Note: Node 6 or greater would be better for "best results"._
+- Fork the **webpack-cli** repo at [https://github.com/webpack/webpack-cli](https://github.com/webpack/webpack-cli).
+- `git clone <your-clone-url> && cd webpack-cli`
 
--   We use [yarn](https://yarnpkg.com/lang/en/) workspaces, please install it:
+- We use [yarn](https://yarnpkg.com/lang/en/) workspaces, please install it:
 
-    Read the [Installation Guide](https://yarnpkg.com/en/docs/install) on their official website for detailed instructions on how to install Yarn.
+  Read the [Installation Guide](https://yarnpkg.com/en/docs/install) on their official website for detailed instructions on how to install Yarn.
 
 > Using yarn is not a requirement, [npm](https://www.npmjs.com/) is included in node.
 
--   Install the dependencies:
+- Install the dependencies:
 
-    ```bash
-    yarn install
-    ```
+  ```bash
+  yarn install
+  ```
 
--   Bootstrap all the submodules before building for the first time
+- Bootstrap all the submodules before building for the first time
 
-    ```bash
-    yarn lerna bootstrap
-    yarn build
-    ```
+  ```bash
+  yarn lerna bootstrap
+  yarn build
+  ```
 
 > If you are a Docker and Visual Studio Code user, you can quickstart development using [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) Extension
 
@@ -82,44 +82,44 @@ In case you are suggesting a new feature, we will match your idea with our curre
 
 ### Using yarn
 
--   Run all the tests with:
+- Run all the tests with:
 
-    ```bash
-    yarn test
-    ```
+  ```bash
+  yarn test
+  ```
 
--   Run CLI tests with:
+- Run CLI tests with:
 
-    ```bash
-    yarn test:cli
-    ```
+  ```bash
+  yarn test:cli
+  ```
 
--   Run tests of all packages:
+- Run tests of all packages:
 
-    ```bash
-    yarn test:packages
-    ```
+  ```bash
+  yarn test:packages
+  ```
 
--   Test a single CLI test case:
+- Test a single CLI test case:
 
-    > Must run from root of the project
+  > Must run from root of the project
 
-    ```bash
-    yarn jest path/to/my-test.js
-    ```
+  ```bash
+  yarn jest path/to/my-test.js
+  ```
 
--   You can also install jest globally and run tests without npx:
+- You can also install jest globally and run tests without npx:
 
-    ```bash
-    yarn global add jest
-    jest path/to/my-test.js
-    ```
+  ```bash
+  yarn global add jest
+  jest path/to/my-test.js
+  ```
 
--   You can run the linters:
+- You can run the linters:
 
-    ```bash
-    yarn lint
-    ```
+  ```bash
+  yarn lint
+  ```
 
 ## Editor Config
 
@@ -139,15 +139,15 @@ We base our branching model on [git flow](http://nvie.com/posts/a-successful-git
 
 Making a branch in your fork for your contribution is helpful in the following ways:
 
--   It allows you to submit more than one contribution in a single PR.
--   It allows us to identify what your contribution is about from the branch name.
+- It allows you to submit more than one contribution in a single PR.
+- It allows us to identify what your contribution is about from the branch name.
 
 You will want to checkout the `master` branch locally before creating your new branch.
 
 There are two types of branches:
 
--   Feature
--   Bugfix
+- Feature
+- Bugfix
 
 ### Features
 
@@ -178,12 +178,12 @@ In case you've got a small change in most of the cases, your pull request would 
 
 ## Submitting a good Pull Request
 
--   Write tests.
--   Follow the existing coding style.
--   Write a [good commit message](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
--   For a major bugfix/feature make sure your PR has an issue and if it doesn't, please create one. This would help discussion with the community, and polishing ideas in case of a new feature.
--   Make sure your PR's description contains GitHub's special keyword references that automatically close the related issue when the PR is merged. ([More info](https://github.com/blog/1506-closing-issues-via-pull-requests))
--   When you have lot of commits in your PR, it's good practice to squash all your commits in one single commit. ([Learn how to squash here](https://davidwalsh.name/squash-commits-git))
+- Write tests.
+- Follow the existing coding style.
+- Write a [good commit message](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
+- For a major bugfix/feature make sure your PR has an issue and if it doesn't, please create one. This would help discussion with the community, and polishing ideas in case of a new feature.
+- Make sure your PR's description contains GitHub's special keyword references that automatically close the related issue when the PR is merged. ([More info](https://github.com/blog/1506-closing-issues-via-pull-requests))
+- When you have lot of commits in your PR, it's good practice to squash all your commits in one single commit. ([Learn how to squash here](https://davidwalsh.name/squash-commits-git))
 
 ## Commit message
 
@@ -206,17 +206,17 @@ format that includes a **type** and a **subject**:
 
 This is the list of _type_ of commits that we accept:
 
--   **build** : Changes that affect the build system or external dependencies (example scopes: typescript, webpack, npm).
--   **chore** : Updating deps, docs, linting, etc.
--   **ci** : Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)
--   **docs** : Documentation only changes.
--   **feat** : A new feature.
--   **fix** : A bug fix.
--   **perf** : A code change that improves performance.
--   **refactor** : A code change that neither fixes a bug nor adds a feature.
--   **revert** : Reverts the previous commit.
--   **style** : Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc).
--   **test** : Adding missing tests or correcting existing tests.
+- **build** : Changes that affect the build system or external dependencies (example scopes: typescript, webpack, npm).
+- **chore** : Updating deps, docs, linting, etc.
+- **ci** : Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)
+- **docs** : Documentation only changes.
+- **feat** : A new feature.
+- **fix** : A bug fix.
+- **perf** : A code change that improves performance.
+- **refactor** : A code change that neither fixes a bug nor adds a feature.
+- **revert** : Reverts the previous commit.
+- **style** : Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc).
+- **test** : Adding missing tests or correcting existing tests.
 
 The **header** is mandatory.
 
@@ -252,8 +252,8 @@ Run `yarn publish:monorepo` to build all packages and bump versions, this will t
 
 ## Join the development
 
--   Before you join development, please set up the project on your local machine, run it and go through the application completely. Use any command you can find and see what it does. Explore.
+- Before you join development, please set up the project on your local machine, run it and go through the application completely. Use any command you can find and see what it does. Explore.
 
-    > Don't worry ... Nothing will happen to the project or to you due to the exploring. Only thing that will happen is, you'll be more familiar with what is where and might even get some cool ideas on how to improve various aspects of the project.
+  > Don't worry ... Nothing will happen to the project or to you due to the exploring. Only thing that will happen is, you'll be more familiar with what is where and might even get some cool ideas on how to improve various aspects of the project.
 
--   If you would like to work on an issue, drop in a comment at the issue. If it is already assigned to someone, but there is no sign of any work being done, please feel free to drop in a comment so that the issue can be assigned to you if the previous assignee has dropped it entirely.
+- If you would like to work on an issue, drop in a comment at the issue. If it is already assigned to someone, but there is no sign of any work being done, please feel free to drop in a comment so that the issue can be assigned to you if the previous assignee has dropped it entirely.

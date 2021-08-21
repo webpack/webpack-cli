@@ -1,4 +1,4 @@
 module.exports = {
-    mode: "development",
-    plugins: [],
+  mode: "development",
+  plugins: [],
 };

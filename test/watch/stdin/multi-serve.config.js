@@ -1,10 +1,10 @@
 module.exports = [
-    {
-        entry: "./src/second.js",
+  {
+    entry: "./src/second.js",
+  },
+  {
+    watchOptions: {
+      stdin: true,
     },
-    {
-        watchOptions: {
-            stdin: true,
-        },
-    },
+  },
 ];

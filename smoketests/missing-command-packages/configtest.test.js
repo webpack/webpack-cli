@@ -6,19 +6,19 @@ const packageName = "configtest";
 const isSubPackage = true;
 
 const configTest = () => {
-    const args = ["configtest"];
-    const logMessage =
-        "For using this command you need to install: '@webpack-cli/configtest' package";
+  const args = ["configtest"];
+  const logMessage =
+    "For using this command you need to install: '@webpack-cli/configtest' package";
 
-    return runTest(packageName, args, logMessage, isSubPackage);
+  return runTest(packageName, args, logMessage, isSubPackage);
 };
 
 const configTestWithHelp = () => {
-    const args = ["help", "configtest"];
-    const logMessage =
-        "For using 'configtest' command you need to install '@webpack-cli/configtest' package";
+  const args = ["help", "configtest"];
+  const logMessage =
+    "For using 'configtest' command you need to install '@webpack-cli/configtest' package";
 
-    return runTestWithHelp(packageName, args, logMessage, isSubPackage);
+  return runTestWithHelp(packageName, args, logMessage, isSubPackage);
 };
 
 module.exports.run = [configTest, configTestWithHelp];
