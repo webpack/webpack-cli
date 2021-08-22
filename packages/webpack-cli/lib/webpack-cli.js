@@ -521,6 +521,7 @@ class WebpackCLI {
             },
             {
                 name: "analyze",
+                alias: "a",
                 configs: [
                     {
                         type: "enum",
