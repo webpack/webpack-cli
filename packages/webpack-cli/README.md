@@ -80,7 +80,7 @@ npx webpack-cli --help verbose
 
 ```
   Options:
-  --analyze                     It invokes webpack-bundle-analyzer plugin to get bundle information
+  -a, --analyze                 It invokes webpack-bundle-analyzer plugin to get bundle information
   -c, --config <value...>       Provide path to a webpack configuration file e.g. ./webpack.config.js.
   --config-name <value...>      Name of the configuration to use.
   -m, --merge                   Merge two or more configurations using 'webpack-merge'.

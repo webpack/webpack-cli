@@ -12,7 +12,7 @@ Options:
   --node-env <value>                                                                 Sets process.env.NODE_ENV to the specified value.
   -h, --hot [value]                                                                  Enables Hot Module Replacement
   --no-hot                                                                           Disables Hot Module Replacement.
-  --analyze                                                                          It invokes webpack-bundle-analyzer plugin to get bundle information.
+  -a, --analyze                                                                      It invokes webpack-bundle-analyzer plugin to get bundle information.
   --progress [value]                                                                 Print compilation progress during build.
   --prefetch <value>                                                                 Prefetch this request.
   -j, --json [value]                                                                 Prints result as JSON or store it in a file.
