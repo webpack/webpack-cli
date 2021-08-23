@@ -2,9 +2,9 @@
 
 ## Table of content
 
--   [Description](#description)
--   [Packages](#packages)
--   [Generic Installation](#generic-installation)
+- [Description](#description)
+- [Packages](#packages)
+- [Generic Installation](#generic-installation)
 
 ## Description
 

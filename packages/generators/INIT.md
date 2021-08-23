@@ -4,15 +4,15 @@
 
 ## Table of Contents
 
--   [Initial Setup](#initial-setup)
-    -   [Local Setup](#local-setup)
-    -   [Global Setup](#global-setup)
--   [Usage](#usage)
-    -   [Running Locally](#running-locally)
-    -   [Running Globally](#running-globally)
-    -   [CLI options](#cli-options)
--   [Description of questions asked by the generator](#description-of-questions-asked-by-the-generator)
-    -   [Default Template](#default-template)
+- [Initial Setup](#initial-setup)
+  - [Local Setup](#local-setup)
+  - [Global Setup](#global-setup)
+- [Usage](#usage)
+  - [Running Locally](#running-locally)
+  - [Running Globally](#running-globally)
+  - [CLI options](#cli-options)
+- [Description of questions asked by the generator](#description-of-questions-asked-by-the-generator)
+  - [Default Template](#default-template)
 
 ## Setup
 

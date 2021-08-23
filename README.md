@@ -20,16 +20,16 @@
 
 ## Table of Contents
 
--   [About](#about)
-    -   [How to install](#how-to-install)
--   [Supported arguments and commands](#supported-arguments-and-commands)
--   [Packages](#packages)
-    -   [Commands](#commands)
-    -   [Utilities](#utilities)
--   [Getting started](#getting-started)
--   [Exit codes and their meanings](#exit-codes-and-their-meanings)
--   [Contributing and Internal Documentation](#contributing-and-internal-documentation)
--   [Open Collective](#open-collective)
+- [About](#about)
+  - [How to install](#how-to-install)
+- [Supported arguments and commands](#supported-arguments-and-commands)
+- [Packages](#packages)
+  - [Commands](#commands)
+  - [Utilities](#utilities)
+- [Getting started](#getting-started)
+- [Exit codes and their meanings](#exit-codes-and-their-meanings)
+- [Contributing and Internal Documentation](#contributing-and-internal-documentation)
+- [Open Collective](#open-collective)
 
 ## About
 
@@ -56,23 +56,23 @@ We organize webpack CLI as a multi-package repository using [lerna](https://gith
 Supporting developers is an important task for webpack CLI.
 Thus, webpack CLI provides different commands for many common tasks.
 
--   `build|bundle|b [entries...] [options]` - Run webpack (default command, can be omitted).
--   [`configtest|t [config-path]`](./packages/configtest/README.md#webpack-cli-configtest) - Validate a webpack configuration.
--   `help|h [command] [option]` - Display help for commands and options.
--   [`init|create|new|c|n [generation-path] [options]`](./packages/generators/INIT.md#webpack-cli-init) - Create a new webpack project.
--   [`info|i [options]`](./packages/info/README.md#webpack-cli-info) - Returns information related to the local environment.
--   [`migrate|m <config-path> [new-config-path]`](https://www.npmjs.com/package/@webpack-cli/migrate) - Migrate project from one version to another.
--   [`plugin|p [output-path] [options]`](./packages/generators#generators) - Initiate new plugin project.
--   [`loader|l [output-path] [options]`](./packages/generators#generators) - Initiate new loader project.
--   [`serve|server|s [entries...] [options]`](./packages/serve/README.md#webpack-cli-serve) - Use webpack with a development server that provides live reloading.
--   `version|v [commands...]` - Output the version number of `webpack`, `webpack-cli`, `webpack-dev-server`, and commands
--   `watch|w [entries...] [options]` - Run webpack and watch for files changes.
+- `build|bundle|b [entries...] [options]` - Run webpack (default command, can be omitted).
+- [`configtest|t [config-path]`](./packages/configtest/README.md#webpack-cli-configtest) - Validate a webpack configuration.
+- `help|h [command] [option]` - Display help for commands and options.
+- [`init|create|new|c|n [generation-path] [options]`](./packages/generators/INIT.md#webpack-cli-init) - Create a new webpack project.
+- [`info|i [options]`](./packages/info/README.md#webpack-cli-info) - Returns information related to the local environment.
+- [`migrate|m <config-path> [new-config-path]`](https://www.npmjs.com/package/@webpack-cli/migrate) - Migrate project from one version to another.
+- [`plugin|p [output-path] [options]`](./packages/generators#generators) - Initiate new plugin project.
+- [`loader|l [output-path] [options]`](./packages/generators#generators) - Initiate new loader project.
+- [`serve|server|s [entries...] [options]`](./packages/serve/README.md#webpack-cli-serve) - Use webpack with a development server that provides live reloading.
+- `version|v [commands...]` - Output the version number of `webpack`, `webpack-cli`, `webpack-dev-server`, and commands
+- `watch|w [entries...] [options]` - Run webpack and watch for files changes.
 
 ### Utilities
 
 The project has several utility packages which are used by other commands
 
--   [`generators`](./packages/generators/README.md) - Contains all webpack-cli related yeoman generators.
+- [`generators`](./packages/generators/README.md) - Contains all webpack-cli related yeoman generators.
 
 ## Getting started
 

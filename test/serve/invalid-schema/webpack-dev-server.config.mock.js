@@ -1,6 +1,6 @@
 module.exports = {
-    mode: "development",
-    devServer: {
-        bonjour: "",
-    },
+  mode: "development",
+  devServer: {
+    bonjour: "",
+  },
 };
