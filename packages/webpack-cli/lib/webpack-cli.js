@@ -6,6 +6,8 @@ const Module = require("module");
 const { program, Option } = require("commander");
 const utils = require("./utils");
 
+const WEBPACK_PACKAGE = process.env.WEBPACK_PACKAGE || "webpack";
+
 class WebpackCLI {
   constructor() {
     this.logger = utils.logger;
@@ -89,7 +91,7 @@ class WebpackCLI {
   }
 
   async loadWebpack(handleError = true) {
-    return this.tryRequireThenImport(process.env.WEBPACK_PACKAGE || "webpack", handleError);
+    return this.tryRequireThenImport(WEBPACK_PACKAGE, handleError);
   }
 
   async makeCommand(commandOptions, options, action) {
@@ -722,14 +724,14 @@ class WebpackCLI {
       alias: ["bundle", "b"],
       description: "Run webpack (default command, can be omitted).",
       usage: "[entries...] [options]",
-      dependencies: ["webpack"],
+      dependencies: [WEBPACK_PACKAGE],
     };
     const watchCommandOptions = {
       name: "watch [entries...]",
       alias: "w",
       description: "Run webpack and watch for files changes.",
       usage: "[entries...] [options]",
-      dependencies: ["webpack"],
+      dependencies: [WEBPACK_PACKAGE],
     };
     const versionCommandOptions = {
       name: "version [commands...]",

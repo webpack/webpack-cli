@@ -23,6 +23,7 @@ async function promptInstallation(packageName, preMessage) {
     packageManager === "yarn" ? "add" : "install",
     "-D",
     packageName,
+    "--ignore-workspace-root-check",
   ].join(" ")}`;
   const { colors } = utils;
 
