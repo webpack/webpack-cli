@@ -9,26 +9,6 @@ interface Information {
   npmPackages?: string | string[];
 }
 
-const DEFAULT_DETAILS: Information = {
-  Binaries: ["Node", "Yarn", "npm"],
-  Browsers: [
-    "Brave Browser",
-    "Chrome",
-    "Chrome Canary",
-    "Edge",
-    "Firefox",
-    "Firefox Developer Edition",
-    "Firefox Nightly",
-    "Internet Explorer",
-    "Safari",
-    "Safari Technology Preview",
-  ],
-  Monorepos: ["Yarn Workspaces", "Lerna"],
-  System: ["OS", "CPU", "Memory"],
-  npmGlobalPackages: ["webpack", "webpack-cli"],
-  npmPackages: "*webpack*",
-};
-
 class InfoCommand {
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
   async apply(cli: any): Promise<void> {
@@ -50,6 +30,13 @@ class InfoCommand {
             },
           ],
           description: "To get the output in a specified format ( accept json or markdown )",
+        },
+        {
+          name: "additional-package",
+          alias: "a",
+          configs: [{ type: "string" }],
+          multiple: true,
+          description: "Adds additional packages to the output",
         },
       ],
       async (options) => {
@@ -74,7 +61,37 @@ class InfoCommand {
           }
         }
 
-        let info = await envinfo.run(DEFAULT_DETAILS, envinfoConfig);
+        const defaultInformation: Information = {
+          Binaries: ["Node", "Yarn", "npm"],
+          Browsers: [
+            "Brave Browser",
+            "Chrome",
+            "Chrome Canary",
+            "Edge",
+            "Firefox",
+            "Firefox Developer Edition",
+            "Firefox Nightly",
+            "Internet Explorer",
+            "Safari",
+            "Safari Technology Preview",
+          ],
+          Monorepos: ["Yarn Workspaces", "Lerna"],
+          System: ["OS", "CPU", "Memory"],
+          npmGlobalPackages: ["webpack", "webpack-cli", "webpack-dev-server"],
+          npmPackages: "{*webpack*,*loader*}",
+        };
+
+        let defaultPackages: string[] = ["webpack", "loader"];
+
+        if (typeof options.additionalPackage !== "undefined") {
+          defaultPackages = [...defaultPackages, ...options.additionalPackage];
+        }
+
+        defaultInformation.npmPackages = `{${defaultPackages
+          .map((item) => `*${item}*`)
+          .join(",")}}`;
+
+        let info = await envinfo.run(defaultInformation, envinfoConfig);
 
         info = info.replace(/npmPackages/g, "Packages");
         info = info.replace(/npmGlobalPackages/g, "Global Packages");
