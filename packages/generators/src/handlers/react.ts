@@ -69,6 +69,9 @@ export function generate(self: CustomGenerator): void {
     case "LESS":
       files.push("./src/styles/global.less");
       break;
+    case "Stylus":
+      files.push("./src/styles/global.styl");
+      break;
   }
 
   for (const file of files) {
