@@ -7,6 +7,7 @@ const { program, Option } = require("commander");
 const utils = require("./utils");
 
 const WEBPACK_PACKAGE = process.env.WEBPACK_PACKAGE || "webpack";
+const WEBPACK_DEV_SERVER_PACKAGE = process.env.WEBPACK_DEV_SERVER_PACKAGE || "webpack-dev-server";
 
 class WebpackCLI {
   constructor() {
@@ -147,13 +148,27 @@ class WebpackCLI {
           continue;
         }
 
-        const { promptInstallation, colors } = this.utils;
+        let skipInstallation = false;
 
-        await promptInstallation(dependency, () => {
+        // Allow to use `./path/to/webpack.js` outside `node_modules`
+        if (dependency === WEBPACK_PACKAGE && fs.existsSync(WEBPACK_PACKAGE)) {
+          skipInstallation = true;
+        }
+
+        // Allow to use `./path/to/webpack-dev-server.js` outside `node_modules`
+        if (dependency === WEBPACK_DEV_SERVER_PACKAGE && fs.existsSync(WEBPACK_PACKAGE)) {
+          skipInstallation = true;
+        }
+
+        if (skipInstallation) {
+          continue;
+        }
+
+        await this.utils.promptInstallation(dependency, () => {
           this.logger.error(
-            `For using '${colors.green(
+            `For using '${this.utils.colors.green(
               commandOptions.name.split(" ")[0],
-            )}' command you need to install: '${colors.green(dependency)}' package.`,
+            )}' command you need to install: '${this.utils.colors.green(dependency)}' package.`,
           );
         });
       }
