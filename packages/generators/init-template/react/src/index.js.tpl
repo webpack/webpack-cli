@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import logo from "./index.png";<%  if (cssType == 'CSS only') { %>
-import "./styles/global.css"; <% } %>
+import "./styles/global.css"; <% } if (cssType == 'SASS') { %>
+import "./styles/global.scss"; <% } %>
 
 ReactDOM.render(
     <div className="container">
