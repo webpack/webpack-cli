@@ -10,28 +10,28 @@ const tests = [
 ];
 
 (async () => {
-    let isAllPassed = true;
+  let isAllPassed = true;
 
-    for await (const test of tests) {
-        console.log(`\nRUN  ${test.name}`);
+  for await (const test of tests) {
+    console.log(`\nRUN  ${test.name}`);
 
-        let isPass = true;
+    let isPass = true;
 
-        for await (const testCase of test.run) {
-            isPass = isPass && (await testCase());
-        }
-
-        if (!isPass) {
-            console.log(`FAIL  ${test.name}`);
-            isAllPassed = false;
-        } else {
-            console.log(`PASS  ${test.name}`);
-        }
+    for await (const testCase of test.run) {
+      isPass = isPass && (await testCase());
     }
 
-    if (!isAllPassed) {
-        process.exit(2);
+    if (!isPass) {
+      console.log(`FAIL  ${test.name}`);
+      isAllPassed = false;
+    } else {
+      console.log(`PASS  ${test.name}`);
     }
+  }
 
-    process.exit(0);
+  if (!isAllPassed) {
+    process.exit(2);
+  }
+
+  process.exit(0);
 })();

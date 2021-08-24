@@ -3,7 +3,7 @@ import { devServerOptionsType } from "./types";
 class ServeCommand {
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
   async apply(cli: any): Promise<void> {
-      const loadDevServerOptions = () => {
+    const loadDevServerOptions = () => {
       // TODO simplify this after drop webpack v4 and webpack-dev-server v3
       // eslint-disable-next-line @typescript-eslint/no-var-requires, node/no-extraneous-require
       const devServer = require("webpack-dev-server");
@@ -333,9 +333,9 @@ class ServeCommand {
             servers.push(server);
           } catch (error) {
             if (cli.isValidationError(error)) {
-                cli.logger.error(error.message);
+              cli.logger.error(error.message);
             } else {
-                cli.logger.error(error);
+              cli.logger.error(error);
             }
 
             process.exit(2);
