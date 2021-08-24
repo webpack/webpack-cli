@@ -66,6 +66,9 @@ export function generate(self: CustomGenerator): void {
     case "SASS":
       files.push("./src/styles/global.scss");
       break;
+    case "LESS":
+      files.push("./src/styles/global.less");
+      break;
   }
 
   for (const file of files) {
