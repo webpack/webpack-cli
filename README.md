@@ -57,14 +57,14 @@ Supporting developers is an important task for webpack CLI.
 Thus, webpack CLI provides different commands for many common tasks.
 
 - [`build|bundle|b [entries...] [options]`](https://webpack.js.org/api/cli/#build) - Run webpack (default command, can be omitted).
-- [`configtest|t [config-path]`](./packages/configtest/README.md#webpack-cli-configtest) - Validate a webpack configuration.
+- [`configtest|t [config-path]`](https://webpack.js.org/api/cli/#configtest) - Validate a webpack configuration.
 - [`help|h [command] [option]`](https://webpack.js.org/api/cli/#help) - Display help for commands and options.
-- [`init|create|new|c|n [generation-path] [options]`](./packages/generators/INIT.md#webpack-cli-init) - Create a new webpack project.
-- [`info|i [options]`](./packages/info/README.md#webpack-cli-info) - Returns information related to the local environment.
+- [`init|create|new|c|n [generation-path] [options]`](https://webpack.js.org/api/cli/#init) - Create a new webpack project.
+- [`info|i [options]`](https://webpack.js.org/api/cli/#info) - Returns information related to the local environment.
 - [`migrate|m <config-path> [new-config-path]`](https://www.npmjs.com/package/@webpack-cli/migrate) - Migrate project from one version to another.
-- [`plugin|p [output-path] [options]`](./packages/generators#generators) - Initiate new plugin project.
-- [`loader|l [output-path] [options]`](./packages/generators#generators) - Initiate new loader project.
-- [`serve|server|s [entries...] [options]`](./packages/serve/README.md#webpack-cli-serve) - Use webpack with a development server that provides live reloading.
+- [`plugin|p [output-path] [options]`](https://webpack.js.org/api/cli/#plugin) - Initiate new plugin project.
+- [`loader|l [output-path] [options]`](https://webpack.js.org/api/cli/#loader) - Initiate new loader project.
+- [`serve|server|s [entries...] [options]`](https://webpack.js.org/configuration/dev-server/) - Use webpack with a development server that provides live reloading.
 - [`version|v [commands...]`](https://webpack.js.org/api/cli/#version) - Output the version number of `webpack`, `webpack-cli`, `webpack-dev-server`, and commands.
 - [`watch|w [entries...] [options]`](https://webpack.js.org/api/cli/#watch) - Run webpack and watch for files changes.
 
