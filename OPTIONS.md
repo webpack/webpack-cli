@@ -21,11 +21,9 @@ Options:
   --no-bail                                                                          Negative 'bail' option.
   --cache                                                                            Enable in memory caching. Disable caching.
   --no-cache                                                                         Negative 'cache' option.
-  --cache-max-generations <value>                                                    Number of generations unused cache entries stay in memory cache at minimum (1 = may be removed after unused for a
-                                                                                     single compilation, ..., Infinity: kept forever).
+  --cache-max-generations <value>                                                    Number of generations unused cache entries stay in memory cache at minimum (1 = may be removed after unused for a single compilation, ..., Infinity: kept forever).
   --cache-type <value>                                                               In memory caching. Filesystem caching.
-  --cache-allow-collecting-memory                                                    Allows to collect unused memory allocated during deserialization. This requires copying data into smaller buffers and
-                                                                                     has a performance cost.
+  --cache-allow-collecting-memory                                                    Allows to collect unused memory allocated during deserialization. This requires copying data into smaller buffers and has a performance cost.
   --no-cache-allow-collecting-memory                                                 Negative 'cache-allow-collecting-memory' option.
   --cache-cache-directory <value>                                                    Base directory for the cache (defaults to node_modules/.cache/webpack).
   --cache-cache-location <value>                                                     Locations for the cache (defaults to cacheDirectory / name).
@@ -33,27 +31,20 @@ Options:
   --no-cache-compression                                                             Negative 'cache-compression' option.
   --cache-hash-algorithm <value>                                                     Algorithm used for generation the hash (see node.js crypto package).
   --cache-idle-timeout <value>                                                       Time in ms after which idle period the cache storing should happen.
-  --cache-idle-timeout-after-large-changes <value>                                   Time in ms after which idle period the cache storing should happen when larger changes has been detected (cumulative
-                                                                                     build time > 2 x avg cache store time).
+  --cache-idle-timeout-after-large-changes <value>                                   Time in ms after which idle period the cache storing should happen when larger changes has been detected (cumulative build time > 2 x avg cache store time).
   --cache-idle-timeout-for-initial-store <value>                                     Time in ms after which idle period the initial cache storing should happen.
   --cache-immutable-paths <value...>                                                 A path to a immutable directory (usually a package manager cache directory).
-  --cache-immutable-paths-reset                                                      Clear all items provided in 'cache.immutablePaths' configuration. List of paths that are managed by a package manager
-                                                                                     and contain a version or hash in its path so all files are immutable.
+  --cache-immutable-paths-reset                                                      Clear all items provided in 'cache.immutablePaths' configuration. List of paths that are managed by a package manager and contain a version or hash in its path so all files are immutable.
   --cache-managed-paths <value...>                                                   A path to a managed directory (usually a node_modules directory).
-  --cache-managed-paths-reset                                                        Clear all items provided in 'cache.managedPaths' configuration. List of paths that are managed by a package manager
-                                                                                     and can be trusted to not be modified otherwise.
+  --cache-managed-paths-reset                                                        Clear all items provided in 'cache.managedPaths' configuration. List of paths that are managed by a package manager and can be trusted to not be modified otherwise.
   --cache-max-age <value>                                                            Time for which unused cache entries stay in the filesystem cache at minimum (in milliseconds).
-  --cache-max-memory-generations <value>                                             Number of generations unused cache entries stay in memory cache at minimum (0 = no memory cache used, 1 = may be
-                                                                                     removed after unused for a single compilation, ..., Infinity: kept forever). Cache entries will be deserialized from
-                                                                                     disk when removed from memory cache.
+  --cache-max-memory-generations <value>                                             Number of generations unused cache entries stay in memory cache at minimum (0 = no memory cache used, 1 = may be removed after unused for a single compilation, ..., Infinity: kept forever). Cache entries will be deserialized from disk when removed from memory cache.
   --cache-name <value>                                                               Name for the cache. Different names will lead to different coexisting caches.
   --cache-profile                                                                    Track and log detailed timing information for individual cache items.
   --no-cache-profile                                                                 Negative 'cache-profile' option.
   --cache-store <value>                                                              When to store data to the filesystem. (pack: Store data when compiler is idle in a single file).
-  --cache-version <value>                                                            Version of the cache data. Different versions won't allow to reuse the cache and override existing content. Update the
-                                                                                     version when config changed in a way which doesn't allow to reuse cache. This will invalidate the cache.
-  --context <value>                                                                  The base directory (absolute path!) for resolving the `entry` option. If `output.pathinfo` is set, the included
-                                                                                     pathinfo is shortened to this directory.
+  --cache-version <value>                                                            Version of the cache data. Different versions won't allow to reuse the cache and override existing content. Update the version when config changed in a way which doesn't allow to reuse cache. This will invalidate the cache.
+  --context <value>                                                                  The base directory (absolute path!) for resolving the `entry` option. If `output.pathinfo` is set, the included pathinfo is shortened to this directory.
   --dependencies <value...>                                                          References to another configuration to depend on.
   --dependencies-reset                                                               Clear all items provided in 'dependencies' configuration. References to other configurations to depend on.
   -d, --devtool <value>                                                              Determine source maps to use.
@@ -64,6 +55,15 @@ Options:
   --no-experiments-asset                                                             Negative 'experiments-asset' option.
   --experiments-async-web-assembly                                                   Support WebAssembly as asynchronous EcmaScript Module.
   --no-experiments-async-web-assembly                                                Negative 'experiments-async-web-assembly' option.
+  --experiments-build-http                                                           Build http(s): urls using a lockfile and resource content cache.
+  --no-experiments-build-http                                                        Negative 'experiments-build-http' option.
+  --experiments-build-http-cache-location <value>                                    Location where resource content is stored for lockfile entries. It's also possible to disable storing by passing false.
+  --no-experiments-build-http-cache-location                                         Negative 'experiments-build-http-cache-location' option.
+  --experiments-build-http-frozen                                                    When set, anything that would lead to a modification of the lockfile or any resource content, will result in an error.
+  --no-experiments-build-http-frozen                                                 Negative 'experiments-build-http-frozen' option.
+  --experiments-build-http-lockfile-location <value>                                 Location of the lockfile.
+  --experiments-build-http-upgrade                                                   When set, resources of existing lockfile entries will be fetched and entries will be upgraded when resource content has changed.
+  --no-experiments-build-http-upgrade                                                Negative 'experiments-build-http-upgrade' option.
   --experiments-execute-module                                                       Enable build-time execution of modules from the module graph for plugins and loaders.
   --no-experiments-execute-module                                                    Negative 'experiments-execute-module' option.
   --experiments-layers                                                               Enable module and chunk layers.
@@ -75,49 +75,38 @@ Options:
   --no-experiments-lazy-compilation-entries                                          Negative 'experiments-lazy-compilation-entries' option.
   --experiments-lazy-compilation-imports                                             Enable/disable lazy compilation for import() modules.
   --no-experiments-lazy-compilation-imports                                          Negative 'experiments-lazy-compilation-imports' option.
-  --experiments-lazy-compilation-test <value>                                        Specify which entrypoints or import()ed modules should be lazily compiled. This is matched with the imported module
-                                                                                     and not the entrypoint name.
+  --experiments-lazy-compilation-test <value>                                        Specify which entrypoints or import()ed modules should be lazily compiled. This is matched with the imported module and not the entrypoint name.
   --experiments-output-module                                                        Allow output javascript files as module source type.
   --no-experiments-output-module                                                     Negative 'experiments-output-module' option.
   --experiments-sync-web-assembly                                                    Support WebAssembly as synchronous EcmaScript Module (outdated).
   --no-experiments-sync-web-assembly                                                 Negative 'experiments-sync-web-assembly' option.
   --experiments-top-level-await                                                      Allow using top-level-await in EcmaScript Modules.
   --no-experiments-top-level-await                                                   Negative 'experiments-top-level-await' option.
-  --externals <value...>                                                             Every matched dependency becomes external. An exact matched dependency becomes external. The same string is used as
-                                                                                     external dependency.
-  --externals-reset                                                                  Clear all items provided in 'externals' configuration. Specify dependencies that shouldn't be resolved by webpack, but
-                                                                                     should become dependencies of the resulting bundle. The kind of the dependency depends on `output.libraryTarget`.
-  --externals-presets-electron                                                       Treat common electron built-in modules in main and preload context like 'electron', 'ipc' or 'shell' as external and
-                                                                                     load them via require() when used.
+  --externals <value...>                                                             Every matched dependency becomes external. An exact matched dependency becomes external. The same string is used as external dependency.
+  --externals-reset                                                                  Clear all items provided in 'externals' configuration. Specify dependencies that shouldn't be resolved by webpack, but should become dependencies of the resulting bundle. The kind of the dependency depends on `output.libraryTarget`.
+  --externals-presets-electron                                                       Treat common electron built-in modules in main and preload context like 'electron', 'ipc' or 'shell' as external and load them via require() when used.
   --no-externals-presets-electron                                                    Negative 'externals-presets-electron' option.
-  --externals-presets-electron-main                                                  Treat electron built-in modules in the main context like 'app', 'ipc-main' or 'shell' as external and load them via
-                                                                                     require() when used.
+  --externals-presets-electron-main                                                  Treat electron built-in modules in the main context like 'app', 'ipc-main' or 'shell' as external and load them via require() when used.
   --no-externals-presets-electron-main                                               Negative 'externals-presets-electron-main' option.
-  --externals-presets-electron-preload                                               Treat electron built-in modules in the preload context like 'web-frame', 'ipc-renderer' or 'shell' as external and
-                                                                                     load them via require() when used.
+  --externals-presets-electron-preload                                               Treat electron built-in modules in the preload context like 'web-frame', 'ipc-renderer' or 'shell' as external and load them via require() when used.
   --no-externals-presets-electron-preload                                            Negative 'externals-presets-electron-preload' option.
-  --externals-presets-electron-renderer                                              Treat electron built-in modules in the renderer context like 'web-frame', 'ipc-renderer' or 'shell' as external and
-                                                                                     load them via require() when used.
+  --externals-presets-electron-renderer                                              Treat electron built-in modules in the renderer context like 'web-frame', 'ipc-renderer' or 'shell' as external and load them via require() when used.
   --no-externals-presets-electron-renderer                                           Negative 'externals-presets-electron-renderer' option.
   --externals-presets-node                                                           Treat node.js built-in modules like fs, path or vm as external and load them via require() when used.
   --no-externals-presets-node                                                        Negative 'externals-presets-node' option.
   --externals-presets-nwjs                                                           Treat NW.js legacy nw.gui module as external and load it via require() when used.
   --no-externals-presets-nwjs                                                        Negative 'externals-presets-nwjs' option.
-  --externals-presets-web                                                            Treat references to 'http(s)://...' and 'std:...' as external and load them via import when used (Note that this
-                                                                                     changes execution order as externals are executed before any other code in the chunk).
+  --externals-presets-web                                                            Treat references to 'http(s)://...' and 'std:...' as external and load them via import when used (Note that this changes execution order as externals are executed before any other code in the chunk).
   --no-externals-presets-web                                                         Negative 'externals-presets-web' option.
-  --externals-presets-web-async                                                      Treat references to 'http(s)://...' and 'std:...' as external and load them via async import() when used (Note that
-                                                                                     this external type is an async module, which has various effects on the execution).
+  --externals-presets-web-async                                                      Treat references to 'http(s)://...' and 'std:...' as external and load them via async import() when used (Note that this external type is an async module, which has various effects on the execution).
   --no-externals-presets-web-async                                                   Negative 'externals-presets-web-async' option.
-  --externals-type <value>                                                           Specifies the default type of externals ('amd*', 'umd*', 'system' and 'jsonp' depend on output.libraryTarget set to
-                                                                                     the same value).
+  --externals-type <value>                                                           Specifies the default type of externals ('amd*', 'umd*', 'system' and 'jsonp' depend on output.libraryTarget set to the same value).
   --ignore-warnings <value...>                                                       A RegExp to select the warning message.
   --ignore-warnings-file <value...>                                                  A RegExp to select the origin file for the warning.
   --ignore-warnings-message <value...>                                               A RegExp to select the warning message.
   --ignore-warnings-module <value...>                                                A RegExp to select the origin module for the warning.
   --ignore-warnings-reset                                                            Clear all items provided in 'ignoreWarnings' configuration. Ignore specific warnings.
-  --infrastructure-logging-append-only                                               Only appends lines to the output. Avoids updating existing output e. g. for status messages. This option is only used
-                                                                                     when no custom console is provided.
+  --infrastructure-logging-append-only                                               Only appends lines to the output. Avoids updating existing output e. g. for status messages. This option is only used when no custom console is provided.
   --no-infrastructure-logging-append-only                                            Negative 'infrastructure-logging-append-only' option.
   --infrastructure-logging-colors                                                    Enables/Disables colorful output. This option is only used when no custom console is provided.
   --no-infrastructure-logging-colors                                                 Negative 'infrastructure-logging-colors' option.
@@ -128,36 +117,27 @@ Options:
   --mode <value>                                                                     Defines the mode to pass to webpack.
   --module-expr-context-critical                                                     Enable warnings for full dynamic dependencies.
   --no-module-expr-context-critical                                                  Negative 'module-expr-context-critical' option.
-  --module-expr-context-recursive                                                    Enable recursive directory lookup for full dynamic dependencies. Deprecated: This option has moved to
-                                                                                     'module.parser.javascript.exprContextRecursive'.
+  --module-expr-context-recursive                                                    Enable recursive directory lookup for full dynamic dependencies. Deprecated: This option has moved to 'module.parser.javascript.exprContextRecursive'.
   --no-module-expr-context-recursive                                                 Negative 'module-expr-context-recursive' option.
-  --module-expr-context-reg-exp [value]                                              Sets the default regular expression for full dynamic dependencies. Deprecated: This option has moved to
-                                                                                     'module.parser.javascript.exprContextRegExp'.
+  --module-expr-context-reg-exp [value]                                              Sets the default regular expression for full dynamic dependencies. Deprecated: This option has moved to 'module.parser.javascript.exprContextRegExp'.
   --no-module-expr-context-reg-exp                                                   Negative 'module-expr-context-reg-exp' option.
-  --module-expr-context-request <value>                                              Set the default request for full dynamic dependencies. Deprecated: This option has moved to
-                                                                                     'module.parser.javascript.exprContextRequest'.
+  --module-expr-context-request <value>                                              Set the default request for full dynamic dependencies. Deprecated: This option has moved to 'module.parser.javascript.exprContextRequest'.
   --module-generator-asset-data-url-encoding <value>                                 Asset encoding (defaults to base64).
   --no-module-generator-asset-data-url-encoding                                      Negative 'module-generator-asset-data-url-encoding' option.
   --module-generator-asset-data-url-mimetype <value>                                 Asset mimetype (getting from file extension by default).
   --module-generator-asset-emit                                                      Emit an output asset from this asset module. This can be set to 'false' to omit emitting e. g. for SSR.
   --no-module-generator-asset-emit                                                   Negative 'module-generator-asset-emit' option.
-  --module-generator-asset-filename <value>                                          Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path
-                                                                                     may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to
-                                                                                     determine the location on disk.
+  --module-generator-asset-filename <value>                                          Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
   --module-generator-asset-public-path <value>                                       The 'publicPath' specifies the public URL address of the output files when referenced in a browser.
   --module-generator-asset-inline-data-url-encoding <value>                          Asset encoding (defaults to base64).
   --no-module-generator-asset-inline-data-url-encoding                               Negative 'module-generator-asset-inline-data-url-encoding' option.
   --module-generator-asset-inline-data-url-mimetype <value>                          Asset mimetype (getting from file extension by default).
   --module-generator-asset-resource-emit                                             Emit an output asset from this asset module. This can be set to 'false' to omit emitting e. g. for SSR.
   --no-module-generator-asset-resource-emit                                          Negative 'module-generator-asset-resource-emit' option.
-  --module-generator-asset-resource-filename <value>                                 Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path
-                                                                                     may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to
-                                                                                     determine the location on disk.
+  --module-generator-asset-resource-filename <value>                                 Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
   --module-generator-asset-resource-public-path <value>                              The 'publicPath' specifies the public URL address of the output files when referenced in a browser.
-  --module-no-parse <value...>                                                       A regular expression, when matched the module is not parsed. An absolute path, when the module starts with this path
-                                                                                     it is not parsed.
-  --module-no-parse-reset                                                            Clear all items provided in 'module.noParse' configuration. Don't parse files matching. It's matched against the full
-                                                                                     resolved request.
+  --module-no-parse <value...>                                                       A regular expression, when matched the module is not parsed. An absolute path, when the module starts with this path it is not parsed.
+  --module-no-parse-reset                                                            Clear all items provided in 'module.noParse' configuration. Don't parse files matching. It's matched against the full resolved request.
   --module-parser-asset-data-url-condition-max-size <value>                          Maximum size of asset that should be inline as modules. Default: 8kb.
   --no-module-parser-javascript-amd                                                  Negative 'module-parser-javascript-amd' option.
   --module-parser-javascript-browserify                                              Enable/disable special handling for browserify bundles.
@@ -190,8 +170,7 @@ Options:
   --no-module-parser-javascript-require-ensure                                       Negative 'module-parser-javascript-require-ensure' option.
   --module-parser-javascript-require-include                                         Enable/disable parsing of require.include syntax.
   --no-module-parser-javascript-require-include                                      Negative 'module-parser-javascript-require-include' option.
-  --module-parser-javascript-require-js                                              Enable/disable parsing of require.js special syntax like require.config, requirejs.config, require.version and
-                                                                                     requirejs.onError.
+  --module-parser-javascript-require-js                                              Enable/disable parsing of require.js special syntax like require.config, requirejs.config, require.version and requirejs.onError.
   --no-module-parser-javascript-require-js                                           Negative 'module-parser-javascript-require-js' option.
   --module-parser-javascript-strict-export-presence                                  Emit errors instead of warnings when imported names don't exist in imported module.
   --no-module-parser-javascript-strict-export-presence                               Negative 'module-parser-javascript-strict-export-presence' option.
@@ -208,12 +187,9 @@ Options:
   --module-parser-javascript-unknown-context-request <value>                         Sets the request when using the require function in a not statically analyse-able way.
   --module-parser-javascript-url [value]                                             Enable/disable parsing of new URL() syntax.
   --no-module-parser-javascript-url                                                  Negative 'module-parser-javascript-url' option.
-  --module-parser-javascript-worker [value...]                                       Specify a syntax that should be parsed as WebWorker reference. 'Abc' handles 'new Abc()', 'Abc from xyz' handles
-                                                                                     'import { Abc } from "xyz"; new Abc()', 'abc()' handles 'abc()', and combinations are also possible. Disable or
-                                                                                     configure parsing of WebWorker syntax like new Worker() or navigator.serviceWorker.register().
+  --module-parser-javascript-worker [value...]                                       Specify a syntax that should be parsed as WebWorker reference. 'Abc' handles 'new Abc()', 'Abc from xyz' handles 'import { Abc } from "xyz"; new Abc()', 'abc()' handles 'abc()', and combinations are also possible. Disable or configure parsing of WebWorker syntax like new Worker() or navigator.serviceWorker.register().
   --no-module-parser-javascript-worker                                               Negative 'module-parser-javascript-worker' option.
-  --module-parser-javascript-worker-reset                                            Clear all items provided in 'module.parser.javascript.worker' configuration. Disable or configure parsing of WebWorker
-                                                                                     syntax like new Worker() or navigator.serviceWorker.register().
+  --module-parser-javascript-worker-reset                                            Clear all items provided in 'module.parser.javascript.worker' configuration. Disable or configure parsing of WebWorker syntax like new Worker() or navigator.serviceWorker.register().
   --module-parser-javascript-wrapped-context-critical                                Enable warnings for partial dynamic dependencies.
   --no-module-parser-javascript-wrapped-context-critical                             Negative 'module-parser-javascript-wrapped-context-critical' option.
   --module-parser-javascript-wrapped-context-recursive                               Enable recursive directory lookup for partial dynamic dependencies.
@@ -250,8 +226,7 @@ Options:
   --no-module-parser-javascript-auto-require-ensure                                  Negative 'module-parser-javascript-auto-require-ensure' option.
   --module-parser-javascript-auto-require-include                                    Enable/disable parsing of require.include syntax.
   --no-module-parser-javascript-auto-require-include                                 Negative 'module-parser-javascript-auto-require-include' option.
-  --module-parser-javascript-auto-require-js                                         Enable/disable parsing of require.js special syntax like require.config, requirejs.config, require.version and
-                                                                                     requirejs.onError.
+  --module-parser-javascript-auto-require-js                                         Enable/disable parsing of require.js special syntax like require.config, requirejs.config, require.version and requirejs.onError.
   --no-module-parser-javascript-auto-require-js                                      Negative 'module-parser-javascript-auto-require-js' option.
   --module-parser-javascript-auto-strict-export-presence                             Emit errors instead of warnings when imported names don't exist in imported module.
   --no-module-parser-javascript-auto-strict-export-presence                          Negative 'module-parser-javascript-auto-strict-export-presence' option.
@@ -268,12 +243,9 @@ Options:
   --module-parser-javascript-auto-unknown-context-request <value>                    Sets the request when using the require function in a not statically analyse-able way.
   --module-parser-javascript-auto-url [value]                                        Enable/disable parsing of new URL() syntax.
   --no-module-parser-javascript-auto-url                                             Negative 'module-parser-javascript-auto-url' option.
-  --module-parser-javascript-auto-worker [value...]                                  Specify a syntax that should be parsed as WebWorker reference. 'Abc' handles 'new Abc()', 'Abc from xyz' handles
-                                                                                     'import { Abc } from "xyz"; new Abc()', 'abc()' handles 'abc()', and combinations are also possible. Disable or
-                                                                                     configure parsing of WebWorker syntax like new Worker() or navigator.serviceWorker.register().
+  --module-parser-javascript-auto-worker [value...]                                  Specify a syntax that should be parsed as WebWorker reference. 'Abc' handles 'new Abc()', 'Abc from xyz' handles 'import { Abc } from "xyz"; new Abc()', 'abc()' handles 'abc()', and combinations are also possible. Disable or configure parsing of WebWorker syntax like new Worker() or navigator.serviceWorker.register().
   --no-module-parser-javascript-auto-worker                                          Negative 'module-parser-javascript-auto-worker' option.
-  --module-parser-javascript-auto-worker-reset                                       Clear all items provided in 'module.parser.javascript/auto.worker' configuration. Disable or configure parsing of
-                                                                                     WebWorker syntax like new Worker() or navigator.serviceWorker.register().
+  --module-parser-javascript-auto-worker-reset                                       Clear all items provided in 'module.parser.javascript/auto.worker' configuration. Disable or configure parsing of WebWorker syntax like new Worker() or navigator.serviceWorker.register().
   --module-parser-javascript-auto-wrapped-context-critical                           Enable warnings for partial dynamic dependencies.
   --no-module-parser-javascript-auto-wrapped-context-critical                        Negative 'module-parser-javascript-auto-wrapped-context-critical' option.
   --module-parser-javascript-auto-wrapped-context-recursive                          Enable recursive directory lookup for partial dynamic dependencies.
@@ -310,8 +282,7 @@ Options:
   --no-module-parser-javascript-dynamic-require-ensure                               Negative 'module-parser-javascript-dynamic-require-ensure' option.
   --module-parser-javascript-dynamic-require-include                                 Enable/disable parsing of require.include syntax.
   --no-module-parser-javascript-dynamic-require-include                              Negative 'module-parser-javascript-dynamic-require-include' option.
-  --module-parser-javascript-dynamic-require-js                                      Enable/disable parsing of require.js special syntax like require.config, requirejs.config, require.version and
-                                                                                     requirejs.onError.
+  --module-parser-javascript-dynamic-require-js                                      Enable/disable parsing of require.js special syntax like require.config, requirejs.config, require.version and requirejs.onError.
   --no-module-parser-javascript-dynamic-require-js                                   Negative 'module-parser-javascript-dynamic-require-js' option.
   --module-parser-javascript-dynamic-strict-export-presence                          Emit errors instead of warnings when imported names don't exist in imported module.
   --no-module-parser-javascript-dynamic-strict-export-presence                       Negative 'module-parser-javascript-dynamic-strict-export-presence' option.
@@ -328,12 +299,9 @@ Options:
   --module-parser-javascript-dynamic-unknown-context-request <value>                 Sets the request when using the require function in a not statically analyse-able way.
   --module-parser-javascript-dynamic-url [value]                                     Enable/disable parsing of new URL() syntax.
   --no-module-parser-javascript-dynamic-url                                          Negative 'module-parser-javascript-dynamic-url' option.
-  --module-parser-javascript-dynamic-worker [value...]                               Specify a syntax that should be parsed as WebWorker reference. 'Abc' handles 'new Abc()', 'Abc from xyz' handles
-                                                                                     'import { Abc } from "xyz"; new Abc()', 'abc()' handles 'abc()', and combinations are also possible. Disable or
-                                                                                     configure parsing of WebWorker syntax like new Worker() or navigator.serviceWorker.register().
+  --module-parser-javascript-dynamic-worker [value...]                               Specify a syntax that should be parsed as WebWorker reference. 'Abc' handles 'new Abc()', 'Abc from xyz' handles 'import { Abc } from "xyz"; new Abc()', 'abc()' handles 'abc()', and combinations are also possible. Disable or configure parsing of WebWorker syntax like new Worker() or navigator.serviceWorker.register().
   --no-module-parser-javascript-dynamic-worker                                       Negative 'module-parser-javascript-dynamic-worker' option.
-  --module-parser-javascript-dynamic-worker-reset                                    Clear all items provided in 'module.parser.javascript/dynamic.worker' configuration. Disable or configure parsing of
-                                                                                     WebWorker syntax like new Worker() or navigator.serviceWorker.register().
+  --module-parser-javascript-dynamic-worker-reset                                    Clear all items provided in 'module.parser.javascript/dynamic.worker' configuration. Disable or configure parsing of WebWorker syntax like new Worker() or navigator.serviceWorker.register().
   --module-parser-javascript-dynamic-wrapped-context-critical                        Enable warnings for partial dynamic dependencies.
   --no-module-parser-javascript-dynamic-wrapped-context-critical                     Negative 'module-parser-javascript-dynamic-wrapped-context-critical' option.
   --module-parser-javascript-dynamic-wrapped-context-recursive                       Enable recursive directory lookup for partial dynamic dependencies.
@@ -370,8 +338,7 @@ Options:
   --no-module-parser-javascript-esm-require-ensure                                   Negative 'module-parser-javascript-esm-require-ensure' option.
   --module-parser-javascript-esm-require-include                                     Enable/disable parsing of require.include syntax.
   --no-module-parser-javascript-esm-require-include                                  Negative 'module-parser-javascript-esm-require-include' option.
-  --module-parser-javascript-esm-require-js                                          Enable/disable parsing of require.js special syntax like require.config, requirejs.config, require.version and
-                                                                                     requirejs.onError.
+  --module-parser-javascript-esm-require-js                                          Enable/disable parsing of require.js special syntax like require.config, requirejs.config, require.version and requirejs.onError.
   --no-module-parser-javascript-esm-require-js                                       Negative 'module-parser-javascript-esm-require-js' option.
   --module-parser-javascript-esm-strict-export-presence                              Emit errors instead of warnings when imported names don't exist in imported module.
   --no-module-parser-javascript-esm-strict-export-presence                           Negative 'module-parser-javascript-esm-strict-export-presence' option.
@@ -388,12 +355,9 @@ Options:
   --module-parser-javascript-esm-unknown-context-request <value>                     Sets the request when using the require function in a not statically analyse-able way.
   --module-parser-javascript-esm-url [value]                                         Enable/disable parsing of new URL() syntax.
   --no-module-parser-javascript-esm-url                                              Negative 'module-parser-javascript-esm-url' option.
-  --module-parser-javascript-esm-worker [value...]                                   Specify a syntax that should be parsed as WebWorker reference. 'Abc' handles 'new Abc()', 'Abc from xyz' handles
-                                                                                     'import { Abc } from "xyz"; new Abc()', 'abc()' handles 'abc()', and combinations are also possible. Disable or
-                                                                                     configure parsing of WebWorker syntax like new Worker() or navigator.serviceWorker.register().
+  --module-parser-javascript-esm-worker [value...]                                   Specify a syntax that should be parsed as WebWorker reference. 'Abc' handles 'new Abc()', 'Abc from xyz' handles 'import { Abc } from "xyz"; new Abc()', 'abc()' handles 'abc()', and combinations are also possible. Disable or configure parsing of WebWorker syntax like new Worker() or navigator.serviceWorker.register().
   --no-module-parser-javascript-esm-worker                                           Negative 'module-parser-javascript-esm-worker' option.
-  --module-parser-javascript-esm-worker-reset                                        Clear all items provided in 'module.parser.javascript/esm.worker' configuration. Disable or configure parsing of
-                                                                                     WebWorker syntax like new Worker() or navigator.serviceWorker.register().
+  --module-parser-javascript-esm-worker-reset                                        Clear all items provided in 'module.parser.javascript/esm.worker' configuration. Disable or configure parsing of WebWorker syntax like new Worker() or navigator.serviceWorker.register().
   --module-parser-javascript-esm-wrapped-context-critical                            Enable warnings for partial dynamic dependencies.
   --no-module-parser-javascript-esm-wrapped-context-critical                         Negative 'module-parser-javascript-esm-wrapped-context-critical' option.
   --module-parser-javascript-esm-wrapped-context-recursive                           Enable recursive directory lookup for partial dynamic dependencies.
@@ -436,33 +400,24 @@ Options:
   --module-rules-use-options <value...>                                              Options passed to a loader.
   --module-rules-use <value...>                                                      A loader request.
   --module-rules-reset                                                               Clear all items provided in 'module.rules' configuration. A list of rules.
-  --module-strict-export-presence                                                    Emit errors instead of warnings when imported names don't exist in imported module. Deprecated: This option has moved
-                                                                                     to 'module.parser.javascript.strictExportPresence'.
+  --module-strict-export-presence                                                    Emit errors instead of warnings when imported names don't exist in imported module. Deprecated: This option has moved to 'module.parser.javascript.strictExportPresence'.
   --no-module-strict-export-presence                                                 Negative 'module-strict-export-presence' option.
-  --module-strict-this-context-on-imports                                            Handle the this context correctly according to the spec for namespace objects. Deprecated: This option has moved to
-                                                                                     'module.parser.javascript.strictThisContextOnImports'.
+  --module-strict-this-context-on-imports                                            Handle the this context correctly according to the spec for namespace objects. Deprecated: This option has moved to 'module.parser.javascript.strictThisContextOnImports'.
   --no-module-strict-this-context-on-imports                                         Negative 'module-strict-this-context-on-imports' option.
-  --module-unknown-context-critical                                                  Enable warnings when using the require function in a not statically analyse-able way. Deprecated: This option has
-                                                                                     moved to 'module.parser.javascript.unknownContextCritical'.
+  --module-unknown-context-critical                                                  Enable warnings when using the require function in a not statically analyse-able way. Deprecated: This option has moved to 'module.parser.javascript.unknownContextCritical'.
   --no-module-unknown-context-critical                                               Negative 'module-unknown-context-critical' option.
-  --module-unknown-context-recursive                                                 Enable recursive directory lookup when using the require function in a not statically analyse-able way. Deprecated:
-                                                                                     This option has moved to 'module.parser.javascript.unknownContextRecursive'.
+  --module-unknown-context-recursive                                                 Enable recursive directory lookup when using the require function in a not statically analyse-able way. Deprecated: This option has moved to 'module.parser.javascript.unknownContextRecursive'.
   --no-module-unknown-context-recursive                                              Negative 'module-unknown-context-recursive' option.
-  --module-unknown-context-reg-exp [value]                                           Sets the regular expression when using the require function in a not statically analyse-able way. Deprecated: This
-                                                                                     option has moved to 'module.parser.javascript.unknownContextRegExp'.
+  --module-unknown-context-reg-exp [value]                                           Sets the regular expression when using the require function in a not statically analyse-able way. Deprecated: This option has moved to 'module.parser.javascript.unknownContextRegExp'.
   --no-module-unknown-context-reg-exp                                                Negative 'module-unknown-context-reg-exp' option.
-  --module-unknown-context-request <value>                                           Sets the request when using the require function in a not statically analyse-able way. Deprecated: This option has
-                                                                                     moved to 'module.parser.javascript.unknownContextRequest'.
+  --module-unknown-context-request <value>                                           Sets the request when using the require function in a not statically analyse-able way. Deprecated: This option has moved to 'module.parser.javascript.unknownContextRequest'.
   --module-unsafe-cache                                                              Cache the resolving of module requests.
   --no-module-unsafe-cache                                                           Negative 'module-unsafe-cache' option.
-  --module-wrapped-context-critical                                                  Enable warnings for partial dynamic dependencies. Deprecated: This option has moved to
-                                                                                     'module.parser.javascript.wrappedContextCritical'.
+  --module-wrapped-context-critical                                                  Enable warnings for partial dynamic dependencies. Deprecated: This option has moved to 'module.parser.javascript.wrappedContextCritical'.
   --no-module-wrapped-context-critical                                               Negative 'module-wrapped-context-critical' option.
-  --module-wrapped-context-recursive                                                 Enable recursive directory lookup for partial dynamic dependencies. Deprecated: This option has moved to
-                                                                                     'module.parser.javascript.wrappedContextRecursive'.
+  --module-wrapped-context-recursive                                                 Enable recursive directory lookup for partial dynamic dependencies. Deprecated: This option has moved to 'module.parser.javascript.wrappedContextRecursive'.
   --no-module-wrapped-context-recursive                                              Negative 'module-wrapped-context-recursive' option.
-  --module-wrapped-context-reg-exp <value>                                           Set the inner regular expression for partial dynamic dependencies. Deprecated: This option has moved to
-                                                                                     'module.parser.javascript.wrappedContextRegExp'.
+  --module-wrapped-context-reg-exp <value>                                           Set the inner regular expression for partial dynamic dependencies. Deprecated: This option has moved to 'module.parser.javascript.wrappedContextRegExp'.
   --name <value>                                                                     Name of the configuration. Used when loading multiple configurations.
   --no-node                                                                          Negative 'node' option.
   --node-dirname [value]                                                             Include a polyfill for the '__dirname' variable.
@@ -473,24 +428,17 @@ Options:
   --no-node-global                                                                   Negative 'node-global' option.
   --optimization-check-wasm-types                                                    Check for incompatible wasm types when importing/exporting from/to ESM.
   --no-optimization-check-wasm-types                                                 Negative 'optimization-check-wasm-types' option.
-  --optimization-chunk-ids <value>                                                   Define the algorithm to choose chunk ids (named: readable ids for better debugging, deterministic: numeric hash ids
-                                                                                     for better long term caching, size: numeric ids focused on minimal initial download size, total-size: numeric ids
-                                                                                     focused on minimal total download size, false: no algorithm used, as custom one can be provided via plugin).
+  --optimization-chunk-ids <value>                                                   Define the algorithm to choose chunk ids (named: readable ids for better debugging, deterministic: numeric hash ids for better long term caching, size: numeric ids focused on minimal initial download size, total-size: numeric ids focused on minimal total download size, false: no algorithm used, as custom one can be provided via plugin).
   --no-optimization-chunk-ids                                                        Negative 'optimization-chunk-ids' option.
-  --optimization-concatenate-modules                                                 Concatenate modules when possible to generate less modules, more efficient code and enable more optimizations by the
-                                                                                     minimizer.
+  --optimization-concatenate-modules                                                 Concatenate modules when possible to generate less modules, more efficient code and enable more optimizations by the minimizer.
   --no-optimization-concatenate-modules                                              Negative 'optimization-concatenate-modules' option.
-  --optimization-emit-on-errors                                                      Emit assets even when errors occur. Critical errors are emitted into the generated code and will cause errors at
-                                                                                     runtime.
+  --optimization-emit-on-errors                                                      Emit assets even when errors occur. Critical errors are emitted into the generated code and will cause errors at runtime.
   --no-optimization-emit-on-errors                                                   Negative 'optimization-emit-on-errors' option.
   --optimization-flag-included-chunks                                                Also flag chunks as loaded which contain a subset of the modules.
   --no-optimization-flag-included-chunks                                             Negative 'optimization-flag-included-chunks' option.
-  --optimization-inner-graph                                                         Creates a module-internal dependency graph for top level symbols, exports and imports, to improve unused exports
-                                                                                     detection.
+  --optimization-inner-graph                                                         Creates a module-internal dependency graph for top level symbols, exports and imports, to improve unused exports detection.
   --no-optimization-inner-graph                                                      Negative 'optimization-inner-graph' option.
-  --optimization-mangle-exports [value]                                              Rename exports when possible to generate shorter code (depends on optimization.usedExports and
-                                                                                     optimization.providedExports, true/"deterministic": generate short deterministic names optimized for caching, "size":
-                                                                                     generate the shortest possible names).
+  --optimization-mangle-exports [value]                                              Rename exports when possible to generate shorter code (depends on optimization.usedExports and optimization.providedExports, true/"deterministic": generate short deterministic names optimized for caching, "size": generate the shortest possible names).
   --no-optimization-mangle-exports                                                   Negative 'optimization-mangle-exports' option.
   --optimization-mangle-wasm-imports                                                 Reduce size of WASM by changing imports to shorter strings.
   --no-optimization-mangle-wasm-imports                                              Negative 'optimization-mangle-wasm-imports' option.
@@ -498,10 +446,7 @@ Options:
   --no-optimization-merge-duplicate-chunks                                           Negative 'optimization-merge-duplicate-chunks' option.
   --optimization-minimize                                                            Enable minimizing the output. Uses optimization.minimizer.
   --no-optimization-minimize                                                         Negative 'optimization-minimize' option.
-  --optimization-module-ids <value>                                                  Define the algorithm to choose module ids (natural: numeric ids in order of usage, named: readable ids for better
-                                                                                     debugging, hashed: (deprecated) short hashes as ids for better long term caching, deterministic: numeric hash ids for
-                                                                                     better long term caching, size: numeric ids focused on minimal initial download size, false: no algorithm used, as
-                                                                                     custom one can be provided via plugin).
+  --optimization-module-ids <value>                                                  Define the algorithm to choose module ids (natural: numeric ids in order of usage, named: readable ids for better debugging, hashed: (deprecated) short hashes as ids for better long term caching, deterministic: numeric hash ids for better long term caching, size: numeric ids focused on minimal initial download size, false: no algorithm used, as custom one can be provided via plugin).
   --no-optimization-module-ids                                                       Negative 'optimization-module-ids' option.
   --optimization-node-env <value>                                                    Set process.env.NODE_ENV to a specific value.
   --no-optimization-node-env                                                         Negative 'optimization-node-env' option.
@@ -518,16 +463,13 @@ Options:
   --optimization-runtime-chunk [value]                                               Create an additional chunk which contains only the webpack runtime and chunk hash maps.
   --no-optimization-runtime-chunk                                                    Negative 'optimization-runtime-chunk' option.
   --optimization-runtime-chunk-name <value>                                          The name or name factory for the runtime chunks.
-  --optimization-side-effects [value]                                                Skip over modules which contain no side effects when exports are not used (false: disabled, 'flag': only use manually
-                                                                                     placed side effects flag, true: also analyse source code for side effects).
+  --optimization-side-effects [value]                                                Skip over modules which contain no side effects when exports are not used (false: disabled, 'flag': only use manually placed side effects flag, true: also analyse source code for side effects).
   --no-optimization-side-effects                                                     Negative 'optimization-side-effects' option.
   --no-optimization-split-chunks                                                     Negative 'optimization-split-chunks' option.
   --optimization-split-chunks-automatic-name-delimiter <value>                       Sets the name delimiter for created chunks.
-  --optimization-split-chunks-chunks <value>                                         Select chunks for determining shared modules (defaults to "async", "initial" and "all" requires adding these chunks to
-                                                                                     the HTML).
+  --optimization-split-chunks-chunks <value>                                         Select chunks for determining shared modules (defaults to "async", "initial" and "all" requires adding these chunks to the HTML).
   --optimization-split-chunks-default-size-types <value...>                          Size type, like 'javascript', 'webassembly'.
-  --optimization-split-chunks-default-size-types-reset                               Clear all items provided in 'optimization.splitChunks.defaultSizeTypes' configuration. Sets the size types which are
-                                                                                     used when a number is used for sizes.
+  --optimization-split-chunks-default-size-types-reset                               Clear all items provided in 'optimization.splitChunks.defaultSizeTypes' configuration. Sets the size types which are used when a number is used for sizes.
   --optimization-split-chunks-enforce-size-threshold <value>                         Size of the javascript part of the chunk.
   --optimization-split-chunks-fallback-cache-group-automatic-name-delimiter <value>  Sets the name delimiter for created chunks.
   --optimization-split-chunks-fallback-cache-group-max-async-size <value>            Size of the javascript part of the chunk.
@@ -549,21 +491,16 @@ Options:
   --no-optimization-split-chunks-name                                                Negative 'optimization-split-chunks-name' option.
   --optimization-split-chunks-used-exports                                           Compare used exports when checking common modules. Modules will only be put in the same chunk when exports are equal.
   --no-optimization-split-chunks-used-exports                                        Negative 'optimization-split-chunks-used-exports' option.
-  --optimization-used-exports [value]                                                Figure out which exports are used by modules to mangle export names, omit unused exports and generate more efficient
-                                                                                     code (true: analyse used exports for each runtime, "global": analyse exports globally for all runtimes combined).
+  --optimization-used-exports [value]                                                Figure out which exports are used by modules to mangle export names, omit unused exports and generate more efficient code (true: analyse used exports for each runtime, "global": analyse exports globally for all runtimes combined).
   --no-optimization-used-exports                                                     Negative 'optimization-used-exports' option.
   --output-asset-module-filename <value>                                             The filename of asset modules as relative path inside the 'output.path' directory.
   --output-charset                                                                   Add charset attribute for script tag.
   --no-output-charset                                                                Negative 'output-charset' option.
-  --output-chunk-filename <value>                                                    Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path
-                                                                                     may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to
-                                                                                     determine the location on disk.
-  --output-chunk-format <value>                                                      The format of chunks (formats included by default are 'array-push' (web/WebWorker), 'commonjs' (node.js), 'module'
-                                                                                     (ESM), but others might be added by plugins).
+  --output-chunk-filename <value>                                                    Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
+  --output-chunk-format <value>                                                      The format of chunks (formats included by default are 'array-push' (web/WebWorker), 'commonjs' (node.js), 'module' (ESM), but others might be added by plugins).
   --no-output-chunk-format                                                           Negative 'output-chunk-format' option.
   --output-chunk-load-timeout <value>                                                Number of milliseconds before chunk request expires.
-  --output-chunk-loading <value>                                                     The method of loading chunks (methods included by default are 'jsonp' (web), 'import' (ESM), 'importScripts'
-                                                                                     (WebWorker), 'require' (sync node.js), 'async-node' (async node.js), but others might be added by plugins).
+  --output-chunk-loading <value>                                                     The method of loading chunks (methods included by default are 'jsonp' (web), 'import' (ESM), 'importScripts' (WebWorker), 'require' (sync node.js), 'async-node' (async node.js), but others might be added by plugins).
   --no-output-chunk-loading                                                          Negative 'output-chunk-loading' option.
   --output-chunk-loading-global <value>                                              The global variable used by webpack for loading of chunks.
   --output-clean                                                                     Clean the output directory before emit.
@@ -577,22 +514,13 @@ Options:
   --no-output-cross-origin-loading                                                   Negative 'output-cross-origin-loading' option.
   --output-devtool-fallback-module-filename-template <value>                         Similar to `output.devtoolModuleFilenameTemplate`, but used in the case of duplicate module identifiers.
   --output-devtool-module-filename-template <value>                                  Filename template string of function for the sources array in a generated SourceMap.
-  --output-devtool-namespace <value>                                                 Module namespace to use when interpolating filename template string for the sources array in a generated SourceMap.
-                                                                                     Defaults to `output.library` if not set. It's useful for avoiding runtime collisions in sourcemaps from multiple
-                                                                                     webpack projects built as libraries.
-  --output-enabled-chunk-loading-types <value...>                                    The method of loading chunks (methods included by default are 'jsonp' (web), 'import' (ESM), 'importScripts'
-                                                                                     (WebWorker), 'require' (sync node.js), 'async-node' (async node.js), but others might be added by plugins).
-  --output-enabled-chunk-loading-types-reset                                         Clear all items provided in 'output.enabledChunkLoadingTypes' configuration. List of chunk loading types enabled for
-                                                                                     use by entry points.
-  --output-enabled-library-types <value...>                                          Type of library (types included by default are 'var', 'module', 'assign', 'assign-properties', 'this', 'window',
-                                                                                     'self', 'global', 'commonjs', 'commonjs2', 'commonjs-module', 'amd', 'amd-require', 'umd', 'umd2', 'jsonp', 'system',
-                                                                                     but others might be added by plugins).
-  --output-enabled-library-types-reset                                               Clear all items provided in 'output.enabledLibraryTypes' configuration. List of library types enabled for use by entry
-                                                                                     points.
-  --output-enabled-wasm-loading-types <value...>                                     The method of loading WebAssembly Modules (methods included by default are 'fetch' (web/WebWorker), 'async-node'
-                                                                                     (node.js), but others might be added by plugins).
-  --output-enabled-wasm-loading-types-reset                                          Clear all items provided in 'output.enabledWasmLoadingTypes' configuration. List of wasm loading types enabled for use
-                                                                                     by entry points.
+  --output-devtool-namespace <value>                                                 Module namespace to use when interpolating filename template string for the sources array in a generated SourceMap. Defaults to `output.library` if not set. It's useful for avoiding runtime collisions in sourcemaps from multiple webpack projects built as libraries.
+  --output-enabled-chunk-loading-types <value...>                                    The method of loading chunks (methods included by default are 'jsonp' (web), 'import' (ESM), 'importScripts' (WebWorker), 'require' (sync node.js), 'async-node' (async node.js), but others might be added by plugins).
+  --output-enabled-chunk-loading-types-reset                                         Clear all items provided in 'output.enabledChunkLoadingTypes' configuration. List of chunk loading types enabled for use by entry points.
+  --output-enabled-library-types <value...>                                          Type of library (types included by default are 'var', 'module', 'assign', 'assign-properties', 'this', 'window', 'self', 'global', 'commonjs', 'commonjs2', 'commonjs-module', 'amd', 'amd-require', 'umd', 'umd2', 'jsonp', 'system', but others might be added by plugins).
+  --output-enabled-library-types-reset                                               Clear all items provided in 'output.enabledLibraryTypes' configuration. List of library types enabled for use by entry points.
+  --output-enabled-wasm-loading-types <value...>                                     The method of loading WebAssembly Modules (methods included by default are 'fetch' (web/WebWorker), 'async-node' (node.js), but others might be added by plugins).
+  --output-enabled-wasm-loading-types-reset                                          Clear all items provided in 'output.enabledWasmLoadingTypes' configuration. List of wasm loading types enabled for use by entry points.
   --output-environment-arrow-function                                                The environment supports arrow functions ('() => { ... }').
   --no-output-environment-arrow-function                                             Negative 'output-environment-arrow-function' option.
   --output-environment-big-int-literal                                               The environment supports BigInt as literal (123n).
@@ -607,9 +535,7 @@ Options:
   --no-output-environment-for-of                                                     Negative 'output-environment-for-of' option.
   --output-environment-module                                                        The environment supports EcmaScript Module syntax to import EcmaScript modules (import ... from '...').
   --no-output-environment-module                                                     Negative 'output-environment-module' option.
-  --output-filename <value>                                                          Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path
-                                                                                     may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to
-                                                                                     determine the location on disk.
+  --output-filename <value>                                                          Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
   --output-global-object <value>                                                     An expression which is used to address the global object/scope in runtime code.
   --output-hash-digest <value>                                                       Digest type used for the hash.
   --output-hash-digest-length <value>                                                Number of chars which are used for the hash.
@@ -623,13 +549,11 @@ Options:
   --output-import-function-name <value>                                              The name of the native import() function (can be exchanged for a polyfill).
   --output-import-meta-name <value>                                                  The name of the native import.meta object (can be exchanged for a polyfill).
   --output-library <value...>                                                        A part of the library name.
-  --output-library-reset                                                             Clear all items provided in 'output.library' configuration. The name of the library (some types allow unnamed
-                                                                                     libraries too).
+  --output-library-reset                                                             Clear all items provided in 'output.library' configuration. The name of the library (some types allow unnamed libraries too).
   --output-library-amd <value>                                                       Name of the exposed AMD library in the UMD.
   --output-library-commonjs <value>                                                  Name of the exposed commonjs export in the UMD.
   --output-library-root <value...>                                                   Part of the name of the property exposed globally by a UMD library.
-  --output-library-root-reset                                                        Clear all items provided in 'output.library.root' configuration. Name of the property exposed globally by a UMD
-                                                                                     library.
+  --output-library-root-reset                                                        Clear all items provided in 'output.library.root' configuration. Name of the property exposed globally by a UMD library.
   --output-library-auxiliary-comment <value>                                         Append the same comment above each import style.
   --output-library-auxiliary-comment-amd <value>                                     Set comment for `amd` section in UMD.
   --output-library-auxiliary-comment-commonjs <value>                                Set comment for `commonjs` (exports) section in UMD.
@@ -638,16 +562,12 @@ Options:
   --output-library-export <value...>                                                 Part of the export that should be exposed as library.
   --output-library-export-reset                                                      Clear all items provided in 'output.library.export' configuration. Specify which export should be exposed as library.
   --output-library-name <value...>                                                   A part of the library name.
-  --output-library-name-reset                                                        Clear all items provided in 'output.library.name' configuration. The name of the library (some types allow unnamed
-                                                                                     libraries too).
+  --output-library-name-reset                                                        Clear all items provided in 'output.library.name' configuration. The name of the library (some types allow unnamed libraries too).
   --output-library-name-amd <value>                                                  Name of the exposed AMD library in the UMD.
   --output-library-name-commonjs <value>                                             Name of the exposed commonjs export in the UMD.
   --output-library-name-root <value...>                                              Part of the name of the property exposed globally by a UMD library.
-  --output-library-name-root-reset                                                   Clear all items provided in 'output.library.name.root' configuration. Name of the property exposed globally by a UMD
-                                                                                     library.
-  --output-library-type <value>                                                      Type of library (types included by default are 'var', 'module', 'assign', 'assign-properties', 'this', 'window',
-                                                                                     'self', 'global', 'commonjs', 'commonjs2', 'commonjs-module', 'amd', 'amd-require', 'umd', 'umd2', 'jsonp', 'system',
-                                                                                     but others might be added by plugins).
+  --output-library-name-root-reset                                                   Clear all items provided in 'output.library.name.root' configuration. Name of the property exposed globally by a UMD library.
+  --output-library-type <value>                                                      Type of library (types included by default are 'var', 'module', 'assign', 'assign-properties', 'this', 'window', 'self', 'global', 'commonjs', 'commonjs2', 'commonjs-module', 'amd', 'amd-require', 'umd', 'umd2', 'jsonp', 'system', but others might be added by plugins).
   --output-library-umd-named-define                                                  If `output.libraryTarget` is set to umd and `output.library` is set, setting this to true will name the AMD module.
   --no-output-library-umd-named-define                                               Negative 'output-library-umd-named-define' option.
   --output-module                                                                    Output javascript files as module source type.
@@ -660,25 +580,19 @@ Options:
   --no-output-script-type                                                            Negative 'output-script-type' option.
   --output-source-map-filename <value>                                               The filename of the SourceMaps for the JavaScript files. They are inside the 'output.path' directory.
   --output-source-prefix <value>                                                     Prefixes every line of the source in the bundle with this string.
-  --output-strict-module-error-handling                                              Handles error in module loading correctly at a performance cost. This will handle module error compatible with the
-                                                                                     EcmaScript Modules spec.
+  --output-strict-module-error-handling                                              Handles error in module loading correctly at a performance cost. This will handle module error compatible with the EcmaScript Modules spec.
   --no-output-strict-module-error-handling                                           Negative 'output-strict-module-error-handling' option.
-  --output-strict-module-exception-handling                                          Handles exceptions in module loading correctly at a performance cost (Deprecated). This will handle module error
-                                                                                     compatible with the Node.js CommonJS way.
+  --output-strict-module-exception-handling                                          Handles exceptions in module loading correctly at a performance cost (Deprecated). This will handle module error compatible with the Node.js CommonJS way.
   --no-output-strict-module-exception-handling                                       Negative 'output-strict-module-exception-handling' option.
-  --output-trusted-types [value]                                                     Use a Trusted Types policy to create urls for chunks. 'output.uniqueName' is used a default policy name. Passing a
-                                                                                     string sets a custom policy name. The name of the Trusted Types policy created by webpack to serve bundle chunks.
+  --output-trusted-types [value]                                                     Use a Trusted Types policy to create urls for chunks. 'output.uniqueName' is used a default policy name. Passing a string sets a custom policy name. The name of the Trusted Types policy created by webpack to serve bundle chunks.
   --output-trusted-types-policy-name <value>                                         The name of the Trusted Types policy created by webpack to serve bundle chunks.
   --output-unique-name <value>                                                       A unique name of the webpack build to avoid multiple webpack runtimes to conflict when using globals.
-  --output-wasm-loading <value>                                                      The method of loading WebAssembly Modules (methods included by default are 'fetch' (web/WebWorker), 'async-node'
-                                                                                     (node.js), but others might be added by plugins).
+  --output-wasm-loading <value>                                                      The method of loading WebAssembly Modules (methods included by default are 'fetch' (web/WebWorker), 'async-node' (node.js), but others might be added by plugins).
   --no-output-wasm-loading                                                           Negative 'output-wasm-loading' option.
   --output-webassembly-module-filename <value>                                       The filename of WebAssembly modules as relative path inside the 'output.path' directory.
-  --output-worker-chunk-loading <value>                                              The method of loading chunks (methods included by default are 'jsonp' (web), 'import' (ESM), 'importScripts'
-                                                                                     (WebWorker), 'require' (sync node.js), 'async-node' (async node.js), but others might be added by plugins).
+  --output-worker-chunk-loading <value>                                              The method of loading chunks (methods included by default are 'jsonp' (web), 'import' (ESM), 'importScripts' (WebWorker), 'require' (sync node.js), 'async-node' (async node.js), but others might be added by plugins).
   --no-output-worker-chunk-loading                                                   Negative 'output-worker-chunk-loading' option.
-  --output-worker-wasm-loading <value>                                               The method of loading WebAssembly Modules (methods included by default are 'fetch' (web/WebWorker), 'async-node'
-                                                                                     (node.js), but others might be added by plugins).
+  --output-worker-wasm-loading <value>                                               The method of loading WebAssembly Modules (methods included by default are 'fetch' (web/WebWorker), 'async-node' (node.js), but others might be added by plugins).
   --no-output-worker-wasm-loading                                                    Negative 'output-worker-wasm-loading' option.
   --parallelism <value>                                                              The number of parallel processed modules in the compilation.
   --no-performance                                                                   Negative 'performance' option.
@@ -692,8 +606,7 @@ Options:
   --no-records-input-path                                                            Negative 'records-input-path' option.
   --records-output-path <value>                                                      Load compiler state from a json file.
   --no-records-output-path                                                           Negative 'records-output-path' option.
-  --records-path <value>                                                             Store/Load compiler state from/to a json file. This will result in persistent ids of modules and chunks. An absolute
-                                                                                     path is expected. `recordsPath` is used for `recordsInputPath` and `recordsOutputPath` if they left undefined.
+  --records-path <value>                                                             Store/Load compiler state from/to a json file. This will result in persistent ids of modules and chunks. An absolute path is expected. `recordsPath` is used for `recordsInputPath` and `recordsOutputPath` if they left undefined.
   --no-records-path                                                                  Negative 'records-path' option.
   --resolve-alias-alias <value...>                                                   Ignore request (replace with empty module). New request.
   --no-resolve-alias-alias                                                           Negative 'resolve-alias-alias' option.
@@ -702,8 +615,7 @@ Options:
   --no-resolve-alias-only-module                                                     Negative 'resolve-alias-only-module' option.
   --resolve-alias-reset                                                              Clear all items provided in 'resolve.alias' configuration. Redirect module requests.
   --resolve-alias-fields <value...>                                                  Field in the description file (usually package.json) which are used to redirect requests inside the module.
-  --resolve-alias-fields-reset                                                       Clear all items provided in 'resolve.aliasFields' configuration. Fields in the description file (usually package.json)
-                                                                                     which are used to redirect requests inside the module.
+  --resolve-alias-fields-reset                                                       Clear all items provided in 'resolve.aliasFields' configuration. Fields in the description file (usually package.json) which are used to redirect requests inside the module.
   --resolve-cache                                                                    Enable caching of successfully resolved requests (cache entries are revalidated).
   --no-resolve-cache                                                                 Negative 'resolve-cache' option.
   --resolve-cache-with-context                                                       Include the context information in the cache identifier when caching.
@@ -711,51 +623,37 @@ Options:
   --resolve-condition-names <value...>                                               Condition names for exports field entry point.
   --resolve-condition-names-reset                                                    Clear all items provided in 'resolve.conditionNames' configuration. Condition names for exports field entry point.
   --resolve-description-files <value...>                                             Filename used to find a description file (like a package.json).
-  --resolve-description-files-reset                                                  Clear all items provided in 'resolve.descriptionFiles' configuration. Filenames used to find a description file (like
-                                                                                     a package.json).
-  --resolve-enforce-extension                                                        Enforce the resolver to use one of the extensions from the extensions option (User must specify requests without
-                                                                                     extension).
+  --resolve-description-files-reset                                                  Clear all items provided in 'resolve.descriptionFiles' configuration. Filenames used to find a description file (like a package.json).
+  --resolve-enforce-extension                                                        Enforce the resolver to use one of the extensions from the extensions option (User must specify requests without extension).
   --no-resolve-enforce-extension                                                     Negative 'resolve-enforce-extension' option.
   --resolve-exports-fields <value...>                                                Field name from the description file (usually package.json) which is used to provide entry points of a package.
-  --resolve-exports-fields-reset                                                     Clear all items provided in 'resolve.exportsFields' configuration. Field names from the description file (usually
-                                                                                     package.json) which are used to provide entry points of a package.
+  --resolve-exports-fields-reset                                                     Clear all items provided in 'resolve.exportsFields' configuration. Field names from the description file (usually package.json) which are used to provide entry points of a package.
   --resolve-extensions <value...>                                                    Extension added to the request when trying to find the file.
-  --resolve-extensions-reset                                                         Clear all items provided in 'resolve.extensions' configuration. Extensions added to the request when trying to find
-                                                                                     the file.
+  --resolve-extensions-reset                                                         Clear all items provided in 'resolve.extensions' configuration. Extensions added to the request when trying to find the file.
   --resolve-fallback-alias <value...>                                                Ignore request (replace with empty module). New request.
   --no-resolve-fallback-alias                                                        Negative 'resolve-fallback-alias' option.
   --resolve-fallback-name <value...>                                                 Request to be redirected.
   --resolve-fallback-only-module                                                     Redirect only exact matching request.
   --no-resolve-fallback-only-module                                                  Negative 'resolve-fallback-only-module' option.
   --resolve-fallback-reset                                                           Clear all items provided in 'resolve.fallback' configuration. Redirect module requests.
-  --resolve-fully-specified                                                          Treats the request specified by the user as fully specified, meaning no extensions are added and the mainFiles in
-                                                                                     directories are not resolved (This doesn't affect requests from mainFields, aliasFields or aliases).
+  --resolve-fully-specified                                                          Treats the request specified by the user as fully specified, meaning no extensions are added and the mainFiles in directories are not resolved (This doesn't affect requests from mainFields, aliasFields or aliases).
   --no-resolve-fully-specified                                                       Negative 'resolve-fully-specified' option.
-  --resolve-imports-fields <value...>                                                Field name from the description file (usually package.json) which is used to provide internal request of a package
-                                                                                     (requests starting with # are considered as internal).
-  --resolve-imports-fields-reset                                                     Clear all items provided in 'resolve.importsFields' configuration. Field names from the description file (usually
-                                                                                     package.json) which are used to provide internal request of a package (requests starting with # are considered as
-                                                                                     internal).
+  --resolve-imports-fields <value...>                                                Field name from the description file (usually package.json) which is used to provide internal request of a package (requests starting with # are considered as internal).
+  --resolve-imports-fields-reset                                                     Clear all items provided in 'resolve.importsFields' configuration. Field names from the description file (usually package.json) which are used to provide internal request of a package (requests starting with # are considered as internal).
   --resolve-main-fields <value...>                                                   Field name from the description file (package.json) which are used to find the default entry point.
-  --resolve-main-fields-reset                                                        Clear all items provided in 'resolve.mainFields' configuration. Field names from the description file (package.json)
-                                                                                     which are used to find the default entry point.
+  --resolve-main-fields-reset                                                        Clear all items provided in 'resolve.mainFields' configuration. Field names from the description file (package.json) which are used to find the default entry point.
   --resolve-main-files <value...>                                                    Filename used to find the default entry point if there is no description file or main field.
-  --resolve-main-files-reset                                                         Clear all items provided in 'resolve.mainFiles' configuration. Filenames used to find the default entry point if there
-                                                                                     is no description file or main field.
+  --resolve-main-files-reset                                                         Clear all items provided in 'resolve.mainFiles' configuration. Filenames used to find the default entry point if there is no description file or main field.
   --resolve-modules <value...>                                                       Folder name or directory path where to find modules.
   --resolve-modules-reset                                                            Clear all items provided in 'resolve.modules' configuration. Folder names or directory paths where to find modules.
-  --resolve-prefer-absolute                                                          Prefer to resolve server-relative URLs (starting with '/') as absolute paths before falling back to resolve in
-                                                                                     'resolve.roots'.
+  --resolve-prefer-absolute                                                          Prefer to resolve server-relative URLs (starting with '/') as absolute paths before falling back to resolve in 'resolve.roots'.
   --no-resolve-prefer-absolute                                                       Negative 'resolve-prefer-absolute' option.
   --resolve-prefer-relative                                                          Prefer to resolve module requests as relative request and fallback to resolving as module.
   --no-resolve-prefer-relative                                                       Negative 'resolve-prefer-relative' option.
   --resolve-restrictions <value...>                                                  Resolve restriction. Resolve result must fulfill this restriction.
-  --resolve-restrictions-reset                                                       Clear all items provided in 'resolve.restrictions' configuration. A list of resolve restrictions. Resolve results must
-                                                                                     fulfill all of these restrictions to resolve successfully. Other resolve paths are taken when restrictions are not
-                                                                                     met.
+  --resolve-restrictions-reset                                                       Clear all items provided in 'resolve.restrictions' configuration. A list of resolve restrictions. Resolve results must fulfill all of these restrictions to resolve successfully. Other resolve paths are taken when restrictions are not met.
   --resolve-roots <value...>                                                         Directory in which requests that are server-relative URLs (starting with '/') are resolved.
-  --resolve-roots-reset                                                              Clear all items provided in 'resolve.roots' configuration. A list of directories in which requests that are
-                                                                                     server-relative URLs (starting with '/') are resolved.
+  --resolve-roots-reset                                                              Clear all items provided in 'resolve.roots' configuration. A list of directories in which requests that are server-relative URLs (starting with '/') are resolved.
   --resolve-symlinks                                                                 Enable resolving symlinks to the original location.
   --no-resolve-symlinks                                                              Negative 'resolve-symlinks' option.
   --resolve-unsafe-cache                                                             Enable caching of successfully resolved requests (cache entries are not revalidated).
@@ -769,62 +667,45 @@ Options:
   --no-resolve-loader-alias-only-module                                              Negative 'resolve-loader-alias-only-module' option.
   --resolve-loader-alias-reset                                                       Clear all items provided in 'resolveLoader.alias' configuration. Redirect module requests.
   --resolve-loader-alias-fields <value...>                                           Field in the description file (usually package.json) which are used to redirect requests inside the module.
-  --resolve-loader-alias-fields-reset                                                Clear all items provided in 'resolveLoader.aliasFields' configuration. Fields in the description file (usually
-                                                                                     package.json) which are used to redirect requests inside the module.
+  --resolve-loader-alias-fields-reset                                                Clear all items provided in 'resolveLoader.aliasFields' configuration. Fields in the description file (usually package.json) which are used to redirect requests inside the module.
   --resolve-loader-cache                                                             Enable caching of successfully resolved requests (cache entries are revalidated).
   --no-resolve-loader-cache                                                          Negative 'resolve-loader-cache' option.
   --resolve-loader-cache-with-context                                                Include the context information in the cache identifier when caching.
   --no-resolve-loader-cache-with-context                                             Negative 'resolve-loader-cache-with-context' option.
   --resolve-loader-condition-names <value...>                                        Condition names for exports field entry point.
-  --resolve-loader-condition-names-reset                                             Clear all items provided in 'resolveLoader.conditionNames' configuration. Condition names for exports field entry
-                                                                                     point.
+  --resolve-loader-condition-names-reset                                             Clear all items provided in 'resolveLoader.conditionNames' configuration. Condition names for exports field entry point.
   --resolve-loader-description-files <value...>                                      Filename used to find a description file (like a package.json).
-  --resolve-loader-description-files-reset                                           Clear all items provided in 'resolveLoader.descriptionFiles' configuration. Filenames used to find a description file
-                                                                                     (like a package.json).
-  --resolve-loader-enforce-extension                                                 Enforce the resolver to use one of the extensions from the extensions option (User must specify requests without
-                                                                                     extension).
+  --resolve-loader-description-files-reset                                           Clear all items provided in 'resolveLoader.descriptionFiles' configuration. Filenames used to find a description file (like a package.json).
+  --resolve-loader-enforce-extension                                                 Enforce the resolver to use one of the extensions from the extensions option (User must specify requests without extension).
   --no-resolve-loader-enforce-extension                                              Negative 'resolve-loader-enforce-extension' option.
   --resolve-loader-exports-fields <value...>                                         Field name from the description file (usually package.json) which is used to provide entry points of a package.
-  --resolve-loader-exports-fields-reset                                              Clear all items provided in 'resolveLoader.exportsFields' configuration. Field names from the description file
-                                                                                     (usually package.json) which are used to provide entry points of a package.
+  --resolve-loader-exports-fields-reset                                              Clear all items provided in 'resolveLoader.exportsFields' configuration. Field names from the description file (usually package.json) which are used to provide entry points of a package.
   --resolve-loader-extensions <value...>                                             Extension added to the request when trying to find the file.
-  --resolve-loader-extensions-reset                                                  Clear all items provided in 'resolveLoader.extensions' configuration. Extensions added to the request when trying to
-                                                                                     find the file.
+  --resolve-loader-extensions-reset                                                  Clear all items provided in 'resolveLoader.extensions' configuration. Extensions added to the request when trying to find the file.
   --resolve-loader-fallback-alias <value...>                                         Ignore request (replace with empty module). New request.
   --no-resolve-loader-fallback-alias                                                 Negative 'resolve-loader-fallback-alias' option.
   --resolve-loader-fallback-name <value...>                                          Request to be redirected.
   --resolve-loader-fallback-only-module                                              Redirect only exact matching request.
   --no-resolve-loader-fallback-only-module                                           Negative 'resolve-loader-fallback-only-module' option.
   --resolve-loader-fallback-reset                                                    Clear all items provided in 'resolveLoader.fallback' configuration. Redirect module requests.
-  --resolve-loader-fully-specified                                                   Treats the request specified by the user as fully specified, meaning no extensions are added and the mainFiles in
-                                                                                     directories are not resolved (This doesn't affect requests from mainFields, aliasFields or aliases).
+  --resolve-loader-fully-specified                                                   Treats the request specified by the user as fully specified, meaning no extensions are added and the mainFiles in directories are not resolved (This doesn't affect requests from mainFields, aliasFields or aliases).
   --no-resolve-loader-fully-specified                                                Negative 'resolve-loader-fully-specified' option.
-  --resolve-loader-imports-fields <value...>                                         Field name from the description file (usually package.json) which is used to provide internal request of a package
-                                                                                     (requests starting with # are considered as internal).
-  --resolve-loader-imports-fields-reset                                              Clear all items provided in 'resolveLoader.importsFields' configuration. Field names from the description file
-                                                                                     (usually package.json) which are used to provide internal request of a package (requests starting with # are
-                                                                                     considered as internal).
+  --resolve-loader-imports-fields <value...>                                         Field name from the description file (usually package.json) which is used to provide internal request of a package (requests starting with # are considered as internal).
+  --resolve-loader-imports-fields-reset                                              Clear all items provided in 'resolveLoader.importsFields' configuration. Field names from the description file (usually package.json) which are used to provide internal request of a package (requests starting with # are considered as internal).
   --resolve-loader-main-fields <value...>                                            Field name from the description file (package.json) which are used to find the default entry point.
-  --resolve-loader-main-fields-reset                                                 Clear all items provided in 'resolveLoader.mainFields' configuration. Field names from the description file
-                                                                                     (package.json) which are used to find the default entry point.
+  --resolve-loader-main-fields-reset                                                 Clear all items provided in 'resolveLoader.mainFields' configuration. Field names from the description file (package.json) which are used to find the default entry point.
   --resolve-loader-main-files <value...>                                             Filename used to find the default entry point if there is no description file or main field.
-  --resolve-loader-main-files-reset                                                  Clear all items provided in 'resolveLoader.mainFiles' configuration. Filenames used to find the default entry point if
-                                                                                     there is no description file or main field.
+  --resolve-loader-main-files-reset                                                  Clear all items provided in 'resolveLoader.mainFiles' configuration. Filenames used to find the default entry point if there is no description file or main field.
   --resolve-loader-modules <value...>                                                Folder name or directory path where to find modules.
-  --resolve-loader-modules-reset                                                     Clear all items provided in 'resolveLoader.modules' configuration. Folder names or directory paths where to find
-                                                                                     modules.
-  --resolve-loader-prefer-absolute                                                   Prefer to resolve server-relative URLs (starting with '/') as absolute paths before falling back to resolve in
-                                                                                     'resolve.roots'.
+  --resolve-loader-modules-reset                                                     Clear all items provided in 'resolveLoader.modules' configuration. Folder names or directory paths where to find modules.
+  --resolve-loader-prefer-absolute                                                   Prefer to resolve server-relative URLs (starting with '/') as absolute paths before falling back to resolve in 'resolve.roots'.
   --no-resolve-loader-prefer-absolute                                                Negative 'resolve-loader-prefer-absolute' option.
   --resolve-loader-prefer-relative                                                   Prefer to resolve module requests as relative request and fallback to resolving as module.
   --no-resolve-loader-prefer-relative                                                Negative 'resolve-loader-prefer-relative' option.
   --resolve-loader-restrictions <value...>                                           Resolve restriction. Resolve result must fulfill this restriction.
-  --resolve-loader-restrictions-reset                                                Clear all items provided in 'resolveLoader.restrictions' configuration. A list of resolve restrictions. Resolve
-                                                                                     results must fulfill all of these restrictions to resolve successfully. Other resolve paths are taken when
-                                                                                     restrictions are not met.
+  --resolve-loader-restrictions-reset                                                Clear all items provided in 'resolveLoader.restrictions' configuration. A list of resolve restrictions. Resolve results must fulfill all of these restrictions to resolve successfully. Other resolve paths are taken when restrictions are not met.
   --resolve-loader-roots <value...>                                                  Directory in which requests that are server-relative URLs (starting with '/') are resolved.
-  --resolve-loader-roots-reset                                                       Clear all items provided in 'resolveLoader.roots' configuration. A list of directories in which requests that are
-                                                                                     server-relative URLs (starting with '/') are resolved.
+  --resolve-loader-roots-reset                                                       Clear all items provided in 'resolveLoader.roots' configuration. A list of directories in which requests that are server-relative URLs (starting with '/') are resolved.
   --resolve-loader-symlinks                                                          Enable resolving symlinks to the original location.
   --no-resolve-loader-symlinks                                                       Negative 'resolve-loader-symlinks' option.
   --resolve-loader-unsafe-cache                                                      Enable caching of successfully resolved requests (cache entries are not revalidated).
@@ -836,11 +717,9 @@ Options:
   --snapshot-build-dependencies-timestamp                                            Use timestamps of the files/directories to determine invalidation.
   --no-snapshot-build-dependencies-timestamp                                         Negative 'snapshot-build-dependencies-timestamp' option.
   --snapshot-immutable-paths <value...>                                              A path to a immutable directory (usually a package manager cache directory).
-  --snapshot-immutable-paths-reset                                                   Clear all items provided in 'snapshot.immutablePaths' configuration. List of paths that are managed by a package
-                                                                                     manager and contain a version or hash in its path so all files are immutable.
+  --snapshot-immutable-paths-reset                                                   Clear all items provided in 'snapshot.immutablePaths' configuration. List of paths that are managed by a package manager and contain a version or hash in its path so all files are immutable.
   --snapshot-managed-paths <value...>                                                A path to a managed directory (usually a node_modules directory).
-  --snapshot-managed-paths-reset                                                     Clear all items provided in 'snapshot.managedPaths' configuration. List of paths that are managed by a package manager
-                                                                                     and can be trusted to not be modified otherwise.
+  --snapshot-managed-paths-reset                                                     Clear all items provided in 'snapshot.managedPaths' configuration. List of paths that are managed by a package manager and can be trusted to not be modified otherwise.
   --snapshot-module-hash                                                             Use hashes of the content of the files/directories to determine invalidation.
   --no-snapshot-module-hash                                                          Negative 'snapshot-module-hash' option.
   --snapshot-module-timestamp                                                        Use timestamps of the files/directories to determine invalidation.
@@ -914,12 +793,10 @@ Options:
   --stats-errors-count                                                               Add errors count.
   --no-stats-errors-count                                                            Negative 'stats-errors-count' option.
   --stats-exclude-assets <value...>                                                  Suppress assets that match the specified filters. Filters can be Strings, RegExps or Functions.
-  --stats-exclude-assets-reset                                                       Clear all items provided in 'stats.excludeAssets' configuration. Suppress assets that match the specified filters.
-                                                                                     Filters can be Strings, RegExps or Functions.
+  --stats-exclude-assets-reset                                                       Clear all items provided in 'stats.excludeAssets' configuration. Suppress assets that match the specified filters. Filters can be Strings, RegExps or Functions.
   --stats-exclude-modules [value...]                                                 Suppress modules that match the specified filters. Filters can be Strings, RegExps, Booleans or Functions.
   --no-stats-exclude-modules                                                         Negative 'stats-exclude-modules' option.
-  --stats-exclude-modules-reset                                                      Clear all items provided in 'stats.excludeModules' configuration. Suppress modules that match the specified filters.
-                                                                                     Filters can be Strings, RegExps, Booleans or Functions.
+  --stats-exclude-modules-reset                                                      Clear all items provided in 'stats.excludeModules' configuration. Suppress modules that match the specified filters. Filters can be Strings, RegExps, Booleans or Functions.
   --stats-group-assets-by-chunk                                                      Group assets by how their are related to chunks.
   --no-stats-group-assets-by-chunk                                                   Negative 'stats-group-assets-by-chunk' option.
   --stats-group-assets-by-emit-status                                                Group assets by their status (emitted, compared for emit or cached).
@@ -948,14 +825,11 @@ Options:
   --no-stats-hash                                                                    Negative 'stats-hash' option.
   --stats-ids                                                                        Add ids.
   --no-stats-ids                                                                     Negative 'stats-ids' option.
-  --stats-logging [value]                                                            Specify log level of logging output. Enable/disable logging output (`true`: shows normal logging output, loglevel:
-                                                                                     log).
+  --stats-logging [value]                                                            Specify log level of logging output. Enable/disable logging output (`true`: shows normal logging output, loglevel: log).
   --no-stats-logging                                                                 Negative 'stats-logging' option.
-  --stats-logging-debug [value...]                                                   Enable/Disable debug logging for all loggers. Include debug logging of specified loggers (i. e. for plugins or
-                                                                                     loaders). Filters can be Strings, RegExps or Functions.
+  --stats-logging-debug [value...]                                                   Enable/Disable debug logging for all loggers. Include debug logging of specified loggers (i. e. for plugins or loaders). Filters can be Strings, RegExps or Functions.
   --no-stats-logging-debug                                                           Negative 'stats-logging-debug' option.
-  --stats-logging-debug-reset                                                        Clear all items provided in 'stats.loggingDebug' configuration. Include debug logging of specified loggers (i. e. for
-                                                                                     plugins or loaders). Filters can be Strings, RegExps or Functions.
+  --stats-logging-debug-reset                                                        Clear all items provided in 'stats.loggingDebug' configuration. Include debug logging of specified loggers (i. e. for plugins or loaders). Filters can be Strings, RegExps or Functions.
   --stats-logging-trace                                                              Add stack traces to logging output.
   --no-stats-logging-trace                                                           Negative 'stats-logging-trace' option.
   --stats-module-assets                                                              Add information about assets inside modules.
@@ -968,8 +842,7 @@ Options:
   --stats-modules-space <value>                                                      Space to display modules (groups will be collapsed to fit this space, value is in number of modules/groups).
   --stats-nested-modules                                                             Add information about modules nested in other modules (like with module concatenation).
   --no-stats-nested-modules                                                          Negative 'stats-nested-modules' option.
-  --stats-nested-modules-space <value>                                               Space to display modules nested within other modules (groups will be collapsed to fit this space, value is in number
-                                                                                     of modules/group).
+  --stats-nested-modules-space <value>                                               Space to display modules nested within other modules (groups will be collapsed to fit this space, value is in number of modules/group).
   --stats-optimization-bailout                                                       Show reasons why optimization bailed out for modules.
   --no-stats-optimization-bailout                                                    Negative 'stats-optimization-bailout' option.
   --stats-orphan-modules                                                             Add information about orphan modules.
@@ -1005,24 +878,18 @@ Options:
   --no-stats-warnings                                                                Negative 'stats-warnings' option.
   --stats-warnings-count                                                             Add warnings count.
   --no-stats-warnings-count                                                          Negative 'stats-warnings-count' option.
-  --stats-warnings-filter <value...>                                                 Suppress listing warnings that match the specified filters (they will still be counted). Filters can be Strings,
-                                                                                     RegExps or Functions.
-  --stats-warnings-filter-reset                                                      Clear all items provided in 'stats.warningsFilter' configuration. Suppress listing warnings that match the specified
-                                                                                     filters (they will still be counted). Filters can be Strings, RegExps or Functions.
+  --stats-warnings-filter <value...>                                                 Suppress listing warnings that match the specified filters (they will still be counted). Filters can be Strings, RegExps or Functions.
+  --stats-warnings-filter-reset                                                      Clear all items provided in 'stats.warningsFilter' configuration. Suppress listing warnings that match the specified filters (they will still be counted). Filters can be Strings, RegExps or Functions.
   -t, --target <value...>                                                            Sets the build target e.g. node.
   --no-target                                                                        Negative 'target' option.
-  --target-reset                                                                     Clear all items provided in 'target' configuration. Environment to build for. An array of environments to build for
-                                                                                     all of them when possible.
+  --target-reset                                                                     Clear all items provided in 'target' configuration. Environment to build for. An array of environments to build for all of them when possible.
   -w, --watch                                                                        Watch for files changes.
   --no-watch                                                                         Do not watch for file changes.
   --watch-options-aggregate-timeout <value>                                          Delay the rebuilt after the first change. Value is a time in ms.
-  --watch-options-follow-symlinks                                                    Resolve symlinks and watch symlink and real file. This is usually not needed as webpack already resolves symlinks
-                                                                                     ('resolve.symlinks').
+  --watch-options-follow-symlinks                                                    Resolve symlinks and watch symlink and real file. This is usually not needed as webpack already resolves symlinks ('resolve.symlinks').
   --no-watch-options-follow-symlinks                                                 Negative 'watch-options-follow-symlinks' option.
-  --watch-options-ignored <value...>                                                 A glob pattern for files that should be ignored from watching. Ignore some files from watching (glob pattern or
-                                                                                     regexp).
-  --watch-options-ignored-reset                                                      Clear all items provided in 'watchOptions.ignored' configuration. Ignore some files from watching (glob pattern or
-                                                                                     regexp).
+  --watch-options-ignored <value...>                                                 A glob pattern for files that should be ignored from watching. Ignore some files from watching (glob pattern or regexp).
+  --watch-options-ignored-reset                                                      Clear all items provided in 'watchOptions.ignored' configuration. Ignore some files from watching (glob pattern or regexp).
   --watch-options-poll [value]                                                       `number`: use polling with specified interval. `true`: use polling.
   --no-watch-options-poll                                                            Negative 'watch-options-poll' option.
   --watch-options-stdin                                                              Stop watching when stdin stream has ended.

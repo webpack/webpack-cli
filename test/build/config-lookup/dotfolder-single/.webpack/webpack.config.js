@@ -1,3 +1,3 @@
 module.exports = {
-    entry: './index_two.js',
+  entry: "./index_two.js",
 };

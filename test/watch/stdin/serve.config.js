@@ -1,5 +1,5 @@
 module.exports = {
-    watchOptions: {
-        stdin: true,
-    },
+  watchOptions: {
+    stdin: true,
+  },
 };

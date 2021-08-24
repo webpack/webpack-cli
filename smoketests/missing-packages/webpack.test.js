@@ -3,11 +3,11 @@
 const { runTest } = require("../helpers");
 
 const webpackTest = () => {
-    const packageName = "webpack";
-    const args = [];
-    const logMessage = "It looks like webpack is not installed.";
+  const packageName = "webpack";
+  const args = [];
+  const logMessage = "It looks like webpack is not installed.";
 
-    return runTest(packageName, args, logMessage);
+  return runTest(packageName, args, logMessage);
 };
 
 module.exports.run = [webpackTest];

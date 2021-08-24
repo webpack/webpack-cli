@@ -1,6 +1,6 @@
 module.exports = {
-    devtool: false,
-    entry: "./src/first.js",
-    mode: "development",
-    watch: true,
+  devtool: false,
+  entry: "./src/first.js",
+  mode: "development",
+  watch: true,
 };

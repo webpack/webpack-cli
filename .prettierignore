@@ -15,4 +15,4 @@ test/build/config/error-array/webpack.config.js
 test/build/config/error-mjs/syntax-error.mjs
 test/configtest/with-config-path/syntax-error.config.js
 packages/webpack-cli/__tests__/test-assets/.yo-rc.json
-test/build-errors/stats.json
+test/build/build-errors/stats.json

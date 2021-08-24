@@ -6,17 +6,17 @@ const packageName = "info";
 const isSubPackage = true;
 
 const infoTest = () => {
-    const args = ["info"];
-    const logMessage = "For using this command you need to install: '@webpack-cli/info' package";
+  const args = ["info"];
+  const logMessage = "For using this command you need to install: '@webpack-cli/info' package";
 
-    return runTest(packageName, args, logMessage, isSubPackage);
+  return runTest(packageName, args, logMessage, isSubPackage);
 };
 
 const infoTestWithHelp = () => {
-    const args = ["help", "info"];
-    const logMessage = "For using 'info' command you need to install '@webpack-cli/info' package";
+  const args = ["help", "info"];
+  const logMessage = "For using 'info' command you need to install '@webpack-cli/info' package";
 
-    return runTestWithHelp(packageName, args, logMessage, isSubPackage);
+  return runTestWithHelp(packageName, args, logMessage, isSubPackage);
 };
 
 module.exports.run = [infoTest, infoTestWithHelp];

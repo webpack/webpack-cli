@@ -1,5 +1,5 @@
 module.exports = {
-    mode: "invalid",
-    target: "node",
-    stats: "verbose",
+  mode: "invalid",
+  target: "node",
+  stats: "verbose",
 };

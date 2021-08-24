@@ -1,5 +1,5 @@
 module.exports = {
-    mode: "dev", // error
-    target: "node",
-    stats: "normal",
+  mode: "dev", // error
+  target: "node",
+  stats: "normal",
 };
