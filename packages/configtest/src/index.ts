@@ -46,7 +46,7 @@ class ConfigTestCommand {
             throw new cli.webpack.WebpackOptionsValidationError(error);
           }
         } catch (error) {
-          if (error instanceof cli.webpack.ValidationError || error.name === "ValidationError") {
+          if (cli.isValidationError(error)) {
             cli.logger.error(error.message);
           } else {
             cli.logger.error(error);
