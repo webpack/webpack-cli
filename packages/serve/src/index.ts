@@ -132,6 +132,40 @@ class ServeCommand {
 
         const servers = [];
 
+        const stopAllServers = () => {
+          Promise.all(
+            servers.map((server) => {
+              if (typeof server.stop === "function") {
+                return server.stop();
+              }
+
+              // TODO remove in the next major release
+              return new Promise<void>((resolve) => {
+                server.close(() => {
+                  resolve();
+                });
+              });
+            }),
+          ).then(() => {
+            servers.map((server) => {
+              if (typeof server.stopCallback === "function") {
+                return server.stopCallback(() => {
+                  process.exit(0);
+                });
+              }
+
+              // TODO remove in the next major release
+              return server.close(() => {
+                process.exit(0);
+              });
+            });
+          });
+        };
+
+        process.on("SIGINT", () => {
+          stopAllServers();
+        });
+
         if (cli.needWatchStdin(compiler) || devServerCLIOptions.stdin) {
           // TODO remove in the next major release
           // Compatibility with old `stdin` option for `webpack-dev-server`
@@ -141,22 +175,7 @@ class ServeCommand {
           }
 
           process.stdin.on("end", () => {
-            Promise.all(
-              servers.map((server) => {
-                if (typeof server.stop === "function") {
-                  return server.stop();
-                }
-
-                // TODO remove in the next major release
-                return new Promise<void>((resolve) => {
-                  server.close(() => {
-                    resolve();
-                  });
-                });
-              }),
-            ).then(() => {
-              process.exit(0);
-            });
+            stopAllServers();
           });
           process.stdin.resume();
         }

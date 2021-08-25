@@ -2167,6 +2167,16 @@ class WebpackCLI {
       return;
     }
 
+    const isWebpack5 = this.webpack.version.startsWith("5");
+
+    if (isWebpack5) {
+      process.on("SIGINT", () => {
+        compiler.close(() => {
+          process.exit(0);
+        });
+      });
+    }
+
     const isWatch = (compiler) =>
       compiler.compilers
         ? compiler.compilers.some((compiler) => compiler.options.watch)
@@ -2174,7 +2184,13 @@ class WebpackCLI {
 
     if (isWatch(compiler) && this.needWatchStdin(compiler)) {
       process.stdin.on("end", () => {
-        process.exit(0);
+        if (isWebpack5) {
+          compiler.close(() => {
+            process.exit(0);
+          });
+        } else {
+          process.exit(0);
+        }
       });
       process.stdin.resume();
     }
