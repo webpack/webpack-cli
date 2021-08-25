@@ -7,8 +7,6 @@ import initGenerator from "./init-generator";
 class GeneratorsCommand {
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
   async apply(cli: any): Promise<void> {
-    const { logger } = cli;
-
     await cli.makeCommand(
       {
         name: "init [generation-path]",
@@ -51,7 +49,7 @@ class GeneratorsCommand {
         env.registerStub(initGenerator, generatorName);
 
         env.run(generatorName, { cli, options }, () => {
-          logger.success("Project has been initialised with webpack!");
+          cli.logger.success("Project has been initialised with webpack!");
         });
       },
     );
@@ -83,7 +81,7 @@ class GeneratorsCommand {
         env.registerStub(loaderGenerator, generatorName);
 
         env.run(generatorName, { cli, options }, () => {
-          logger.success("Loader template has been successfully scaffolded.");
+          cli.logger.success("Loader template has been successfully scaffolded.");
         });
       },
     );
@@ -115,7 +113,7 @@ class GeneratorsCommand {
         env.registerStub(pluginGenerator, generatorName);
 
         env.run(generatorName, { cli, options }, () => {
-          logger.success("Plugin template has been successfully scaffolded.");
+          cli.logger.success("Plugin template has been successfully scaffolded.");
         });
       },
     );

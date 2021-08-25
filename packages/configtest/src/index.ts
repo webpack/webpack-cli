@@ -1,17 +1,20 @@
+const WEBPACK_PACKAGE = process.env.WEBPACK_PACKAGE || "webpack";
+
 class ConfigTestCommand {
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
   async apply(cli: any): Promise<void> {
-    const { logger, webpack } = cli;
-
     await cli.makeCommand(
       {
         name: "configtest [config-path]",
         alias: "t",
         description: "Validate a webpack configuration.",
         pkg: "@webpack-cli/configtest",
+        dependencies: [WEBPACK_PACKAGE],
       },
       [],
       async (configPath: string | undefined): Promise<void> => {
+        cli.webpack = await cli.loadWebpack();
+
         const config = await cli.resolveConfig(configPath ? { config: [configPath] } : {});
         const configPaths = new Set<string>();
 
@@ -28,31 +31,31 @@ class ConfigTestCommand {
         }
 
         if (configPaths.size === 0) {
-          logger.error("No configuration found.");
+          cli.logger.error("No configuration found.");
           process.exit(2);
         }
 
-        logger.info(`Validate '${Array.from(configPaths).join(" ,")}'.`);
+        cli.logger.info(`Validate '${Array.from(configPaths).join(" ,")}'.`);
 
         try {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const error: any = webpack.validate(config.options);
+          const error: any = cli.webpack.validate(config.options);
 
           // TODO remove this after drop webpack@4
           if (error && error.length > 0) {
-            throw new webpack.WebpackOptionsValidationError(error);
+            throw new cli.webpack.WebpackOptionsValidationError(error);
           }
         } catch (error) {
           if (cli.isValidationError(error)) {
-            logger.error(error.message);
+            cli.logger.error(error.message);
           } else {
-            logger.error(error);
+            cli.logger.error(error);
           }
 
           process.exit(2);
         }
 
-        logger.success("There are no validation errors in the given webpack configuration.");
+        cli.logger.success("There are no validation errors in the given webpack configuration.");
       },
     );
   }

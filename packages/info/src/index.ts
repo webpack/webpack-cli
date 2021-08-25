@@ -32,8 +32,6 @@ const DEFAULT_DETAILS: Information = {
 class InfoCommand {
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
   async apply(cli: any): Promise<void> {
-    const { logger } = cli;
-
     await cli.makeCommand(
       {
         name: "info",
@@ -71,7 +69,7 @@ class InfoCommand {
               envinfoConfig["json"] = true;
               break;
             default:
-              logger.error(`'${output}' is not a valid value for output`);
+              cli.logger.error(`'${output}' is not a valid value for output`);
               process.exit(2);
           }
         }
@@ -81,7 +79,7 @@ class InfoCommand {
         info = info.replace(/npmPackages/g, "Packages");
         info = info.replace(/npmGlobalPackages/g, "Global Packages");
 
-        logger.raw(info);
+        cli.logger.raw(info);
       },
     );
   }

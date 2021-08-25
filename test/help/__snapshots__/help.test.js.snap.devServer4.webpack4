@@ -52,14 +52,14 @@ exports[`help should log error for invalid flag with the "--help" option: stdout
 
 exports[`help should log error for unknown command using command syntax #2: stderr 1`] = `
 "[webpack-cli] Can't find and load command 'verbose'
-[webpack-cli] Run 'webpack --help' to see available commands and options"
+[webpack-cli] Run 'webpack --help' to see available commands and options."
 `;
 
 exports[`help should log error for unknown command using command syntax #2: stdout 1`] = `""`;
 
 exports[`help should log error for unknown command using command syntax: stderr 1`] = `
 "[webpack-cli] Can't find and load command 'myCommand'
-[webpack-cli] Run 'webpack --help' to see available commands and options"
+[webpack-cli] Run 'webpack --help' to see available commands and options."
 `;
 
 exports[`help should log error for unknown command using command syntax: stdout 1`] = `""`;

@@ -11,10 +11,12 @@ const tests = [
 
 (async () => {
   let isAllPassed = true;
+
   for await (const test of tests) {
     console.log(`\nRUN  ${test.name}`);
 
     let isPass = true;
+
     for await (const testCase of test.run) {
       isPass = isPass && (await testCase());
     }
@@ -26,8 +28,10 @@ const tests = [
       console.log(`PASS  ${test.name}`);
     }
   }
+
   if (!isAllPassed) {
     process.exit(2);
   }
+
   process.exit(0);
 })();
