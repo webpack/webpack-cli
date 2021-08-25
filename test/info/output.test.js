@@ -1,28 +1,14 @@
 "use strict";
 
-const { join } = require("path");
 const { run } = require("../utils/test-utils");
 
-describe("basic info usage", () => {
-  it("gets info without flags", async () => {
+describe("'-o, --output <value>' usage", () => {
+  it("gets info text by default", async () => {
     const { exitCode, stdout, stderr } = await run(__dirname, ["info"]);
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
     expect(stdout).toContain("System:");
-    expect(stdout).toContain("Node");
-    expect(stdout).toContain("npm");
-    expect(stdout).toContain("Yarn");
-  });
-
-  it("gets more info in project root", async () => {
-    const { exitCode, stderr, stdout } = await run(join(__dirname, "../../"), ["info"]);
-
-    expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
-    expect(stdout).toContain("System:");
-    expect(stdout).toContain("Monorepos:");
-    expect(stdout).toContain("Packages:");
     expect(stdout).toContain("Node");
     expect(stdout).toContain("npm");
     expect(stdout).toContain("Yarn");
