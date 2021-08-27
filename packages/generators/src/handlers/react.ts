@@ -55,7 +55,7 @@ export function generate(self: CustomGenerator): void {
       break;
     case "ES6":
       self.answers.entry = "./src/index.js";
-      files.push(self.answers.entry as string);
+      files.push("./src/App.js", self.answers.entry as string);
       break;
   }
 
