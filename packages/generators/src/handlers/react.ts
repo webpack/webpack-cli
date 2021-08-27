@@ -51,7 +51,7 @@ export function generate(self: CustomGenerator): void {
   switch (self.answers.langType) {
     case "Typescript":
       self.answers.entry = "./src/index.tsx";
-      files.push("tsconfig.json", "index.d.ts", self.answers.entry as string);
+      files.push("tsconfig.json", "index.d.ts", "./src/App.tsx", self.answers.entry as string);
       break;
     case "ES6":
       self.answers.entry = "./src/index.js";
