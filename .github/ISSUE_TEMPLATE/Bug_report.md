@@ -26,7 +26,7 @@ Steps to reproduce the behavior:
 
 <!-- If applicable, add screenshots to help explain your problem. -->
 
-**Please paste the results of `webpack-cli info` here, and mention other relevant information**
+**Please paste the results of `npx webpack-cli info` here, and mention other relevant information**
 
 **Additional context**
 

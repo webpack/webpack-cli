@@ -6,10 +6,11 @@ const Module = require("module");
 const { program, Option } = require("commander");
 const utils = require("./utils");
 
+const WEBPACK_PACKAGE = process.env.WEBPACK_PACKAGE || "webpack";
+const WEBPACK_DEV_SERVER_PACKAGE = process.env.WEBPACK_DEV_SERVER_PACKAGE || "webpack-dev-server";
+
 class WebpackCLI {
   constructor() {
-    // Global
-    this.webpack = require(process.env.WEBPACK_PACKAGE || "webpack");
     this.logger = utils.logger;
     this.utils = utils;
 
@@ -73,17 +74,25 @@ class WebpackCLI {
     return result;
   }
 
-  loadJSONFile(pathToFile) {
+  loadJSONFile(pathToFile, handleError = true) {
     let result;
 
     try {
       result = require(pathToFile);
     } catch (error) {
-      this.logger.error(error);
-      process.exit(2);
+      if (handleError) {
+        this.logger.error(error);
+        process.exit(2);
+      } else {
+        throw error;
+      }
     }
 
     return result;
+  }
+
+  async loadWebpack(handleError = true) {
+    return this.tryRequireThenImport(WEBPACK_PACKAGE, handleError);
   }
 
   async makeCommand(commandOptions, options, action) {
@@ -139,13 +148,27 @@ class WebpackCLI {
           continue;
         }
 
-        const { promptInstallation, colors } = this.utils;
+        let skipInstallation = false;
 
-        await promptInstallation(dependency, () => {
+        // Allow to use `./path/to/webpack.js` outside `node_modules`
+        if (dependency === WEBPACK_PACKAGE && fs.existsSync(WEBPACK_PACKAGE)) {
+          skipInstallation = true;
+        }
+
+        // Allow to use `./path/to/webpack-dev-server.js` outside `node_modules`
+        if (dependency === WEBPACK_DEV_SERVER_PACKAGE && fs.existsSync(WEBPACK_PACKAGE)) {
+          skipInstallation = true;
+        }
+
+        if (skipInstallation) {
+          continue;
+        }
+
+        await this.utils.promptInstallation(dependency, () => {
           this.logger.error(
-            `For using '${colors.green(
+            `For using '${this.utils.colors.green(
               commandOptions.name.split(" ")[0],
-            )}' command you need to install: '${colors.green(dependency)}' package`,
+            )}' command you need to install: '${this.utils.colors.green(dependency)}' package.`,
           );
         });
       }
@@ -159,11 +182,11 @@ class WebpackCLI {
               commandOptions.description
             } To see all available options you need to install ${commandOptions.dependencies
               .map((dependency) => `'${dependency}'`)
-              .join(",")}.`,
+              .join(", ")}.`,
           );
           options = [];
         } else {
-          options = options();
+          options = await options();
         }
       }
 
@@ -716,12 +739,14 @@ class WebpackCLI {
       alias: ["bundle", "b"],
       description: "Run webpack (default command, can be omitted).",
       usage: "[entries...] [options]",
+      dependencies: [WEBPACK_PACKAGE],
     };
     const watchCommandOptions = {
       name: "watch [entries...]",
       alias: "w",
       description: "Run webpack and watch for files changes.",
       usage: "[entries...] [options]",
+      dependencies: [WEBPACK_PACKAGE],
     };
     const versionCommandOptions = {
       name: "version [commands...]",
@@ -822,11 +847,15 @@ class WebpackCLI {
       const isWatchCommandUsed = isCommand(commandName, watchCommandOptions);
 
       if (isBuildCommandUsed || isWatchCommandUsed) {
-        const options = this.getBuiltInOptions();
-
         await this.makeCommand(
           isBuildCommandUsed ? buildCommandOptions : watchCommandOptions,
-          isWatchCommandUsed ? options.filter((option) => option.name !== "watch") : options,
+          async () => {
+            this.webpack = await this.loadWebpack();
+
+            return isWatchCommandUsed
+              ? this.getBuiltInOptions().filter((option) => option.name !== "watch")
+              : this.getBuiltInOptions();
+          },
           async (entries, options) => {
             if (entries.length > 0) {
               options.entry = [...entries, ...(options.entry || [])];
@@ -839,7 +868,7 @@ class WebpackCLI {
         // Stub for the `help` command
         this.makeCommand(helpCommandOptions, [], () => {});
       } else if (isCommand(commandName, versionCommandOptions)) {
-        // Stub for the `help` command
+        // Stub for the `version` command
         this.makeCommand(versionCommandOptions, [], () => {});
       } else {
         const builtInExternalCommandInfo = externalBuiltInCommandsInfo.find(
@@ -867,7 +896,7 @@ class WebpackCLI {
 
           pkg = await promptInstallation(pkg, () => {
             this.logger.error(
-              `For using this command you need to install: '${colors.green(pkg)}' package`,
+              `For using this command you need to install: '${colors.green(pkg)}' package.`,
             );
           });
         }
@@ -1021,16 +1050,29 @@ class WebpackCLI {
         }
       }
 
+      let webpack;
+
+      try {
+        webpack = await this.loadWebpack(false);
+      } catch (_error) {
+        // Nothing
+      }
+
+      this.logger.raw(`webpack: ${webpack ? webpack.version : "not installed"}`);
+
       const pkgJSON = this.loadJSONFile("../package.json");
 
-      this.logger.raw(`webpack ${this.webpack.version}`);
-      this.logger.raw(`webpack-cli ${pkgJSON.version}`);
+      this.logger.raw(`webpack-cli: ${pkgJSON.version}`);
 
-      if (this.utils.packageExists("webpack-dev-server")) {
-        const { version } = this.loadJSONFile("webpack-dev-server/package.json");
+      let devServer;
 
-        this.logger.raw(`webpack-dev-server ${version}`);
+      try {
+        devServer = await this.loadJSONFile("webpack-dev-server/package.json", false);
+      } catch (_error) {
+        // Nothing
       }
+
+      this.logger.raw(`webpack-dev-server ${devServer ? devServer.version : "not installed"}`);
 
       process.exit(0);
     };
@@ -1214,11 +1256,11 @@ class WebpackCLI {
             );
             if (typeof builtInCommandUsed !== "undefined") {
               this.logger.error(
-                `For using '${name}' command you need to install '${builtInCommandUsed.pkg}' package`,
+                `For using '${name}' command you need to install '${builtInCommandUsed.pkg}' package.`,
               );
             } else {
               this.logger.error(`Can't find and load command '${name}'`);
-              this.logger.error("Run 'webpack --help' to see available commands and options");
+              this.logger.error("Run 'webpack --help' to see available commands and options.");
             }
             process.exit(2);
           }

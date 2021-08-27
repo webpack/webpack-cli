@@ -11,21 +11,24 @@ const ROOT_PATH = process.env.GITHUB_WORKSPACE
 
 const getPkgPath = (pkg, isSubPackage) => {
   const pkgPath = isSubPackage ? `./node_modules/@webpack-cli/${pkg}` : `./node_modules/${pkg}`;
+
   return path.resolve(ROOT_PATH, pkgPath);
 };
 
 const swapPkgName = (current, isSubPackage = false) => {
   // info -> .info and vice-versa
   const next = current.startsWith(".") ? current.substr(1) : `.${current}`;
+
   console.log(`  swapping ${current} with ${next}`);
+
   fs.renameSync(getPkgPath(current, isSubPackage), getPkgPath(next, isSubPackage));
 };
 
 const CLI_ENTRY_PATH = path.resolve(ROOT_PATH, "./packages/webpack-cli/bin/cli.js");
 
-const runTest = (package, cliArgs = [], logMessage, isSubPackage = false) => {
+const runTest = (pkg, cliArgs = [], logMessage, isSubPackage = false) => {
   // Simulate package missing
-  swapPkgName(package, isSubPackage);
+  swapPkgName(pkg, isSubPackage);
 
   const proc = execa(CLI_ENTRY_PATH, cliArgs, {
     cwd: __dirname,
@@ -50,6 +53,7 @@ const runTest = (package, cliArgs = [], logMessage, isSubPackage = false) => {
 
     proc.stderr.on("data", (chunk) => {
       const data = stripAnsi(chunk.toString());
+
       console.log(`  stderr: ${data}`);
 
       if (data.includes(logMessage)) {
@@ -67,13 +71,13 @@ const runTest = (package, cliArgs = [], logMessage, isSubPackage = false) => {
     });
 
     proc.on("exit", () => {
-      swapPkgName(`.${package}`, isSubPackage);
+      swapPkgName(`.${pkg}`, isSubPackage);
       clearTimeout(timeout);
       resolve(hasPassed);
     });
 
     proc.on("error", () => {
-      swapPkgName(`.${package}`, isSubPackage);
+      swapPkgName(`.${pkg}`, isSubPackage);
       clearTimeout(timeout);
       resolve(false);
     });
@@ -100,6 +104,7 @@ const runTestStdout = ({ packageName, cliArgs, logMessage, isSubPackage } = {}) 
 
     proc.stdout.on("data", (chunk) => {
       const data = stripAnsi(chunk.toString());
+
       console.log(`  stdout: ${data}`);
 
       if (data.includes(logMessage)) {
@@ -186,9 +191,9 @@ const runTestStdoutWithInput = ({
   });
 };
 
-const runTestWithHelp = (package, cliArgs = [], logMessage, isSubPackage = false) => {
+const runTestWithHelp = (pkg, cliArgs = [], logMessage, isSubPackage = false) => {
   // Simulate package missing
-  swapPkgName(package, isSubPackage);
+  swapPkgName(pkg, isSubPackage);
 
   const proc = execa(CLI_ENTRY_PATH, cliArgs, {
     cwd: __dirname,
@@ -214,6 +219,7 @@ const runTestWithHelp = (package, cliArgs = [], logMessage, isSubPackage = false
 
     proc.stderr.on("data", (chunk) => {
       const data = stripAnsi(chunk.toString());
+
       console.log(`  stderr: ${data}`);
 
       if (data.includes(logMessage)) {
@@ -231,13 +237,13 @@ const runTestWithHelp = (package, cliArgs = [], logMessage, isSubPackage = false
     });
 
     proc.on("exit", () => {
-      swapPkgName(`.${package}`, isSubPackage);
+      swapPkgName(`.${pkg}`, isSubPackage);
       clearTimeout(timeout);
       resolve(hasPassed);
     });
 
     proc.on("error", () => {
-      swapPkgName(`.${package}`, isSubPackage);
+      swapPkgName(`.${pkg}`, isSubPackage);
       clearTimeout(timeout);
       resolve(false);
     });
