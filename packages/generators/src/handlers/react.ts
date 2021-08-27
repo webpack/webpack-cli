@@ -46,7 +46,7 @@ export async function questions(
  * @param self Generator values
  */
 export function generate(self: CustomGenerator): void {
-  const files = ["./index.html", "./src/index.png", "webpack.config.js", "package.json"];
+  const files = ["./index.html", "./src/assets/webpack.png", "webpack.config.js", "package.json"];
 
   switch (self.answers.langType) {
     case "Typescript":

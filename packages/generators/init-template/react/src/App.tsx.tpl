@@ -1,11 +1,11 @@
 import React from "react";
-import logo from "./index.png";
+import webpackLogo from "./assets/webpack.png";
 
 function App() {
     return (
         <div className="container">
-            <h1 className={"heading"}>Welcome to your React App!</h1>
-            <img src={logo} alt="webpack logo" />
+            <h1 className="heading">Welcome to your React App!</h1>
+            <img src={webpackLogo} alt="webpack logo" />
         </div>
     );
 }
