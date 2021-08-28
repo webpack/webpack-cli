@@ -20,10 +20,10 @@ To run the package programmatically, install it as a dependency. When using the 
 
 ```js
 const {
-    addonGenerator,
-    initGenerator,
-    loaderGenerator,
-    pluginGenerator,
+  addonGenerator,
+  initGenerator,
+  loaderGenerator,
+  pluginGenerator,
 } = require("@webpack-cli/generators");
 
 // ... compose with yeoman env or add a generator to your own yeoman project
@@ -31,10 +31,10 @@ const {
 
 ## Generators
 
--   [**Plugin Generator**](https://github.com/webpack/webpack-cli/blob/master/packages/generators/src/plugin-generator.ts) : Creates a webpack plugin project, add starter plugin code
--   [**Loader Generator**](https://github.com/webpack/webpack-cli/blob/master/packages/generators/src/loader-generator.ts) : Creates a webpack loader project, add starter loader code
--   [**Init Generator**](https://github.com/webpack/webpack-cli/blob/master/packages/generators/src/init-generator.ts) : Generates new webpack configuration as per user requirements
--   [**Addon Generator**](https://github.com/webpack/webpack-cli/blob/master/packages/generators/src/addon-generator.ts) : Generates a webpack project conforming to `webpack-defaults`
+- [**Plugin Generator**](https://github.com/webpack/webpack-cli/blob/master/packages/generators/src/plugin-generator.ts) : Creates a webpack plugin project, add starter plugin code
+- [**Loader Generator**](https://github.com/webpack/webpack-cli/blob/master/packages/generators/src/loader-generator.ts) : Creates a webpack loader project, add starter loader code
+- [**Init Generator**](https://github.com/webpack/webpack-cli/blob/master/packages/generators/src/init-generator.ts) : Generates new webpack configuration as per user requirements
+- [**Addon Generator**](https://github.com/webpack/webpack-cli/blob/master/packages/generators/src/addon-generator.ts) : Generates a webpack project conforming to `webpack-defaults`
 
 ---
 

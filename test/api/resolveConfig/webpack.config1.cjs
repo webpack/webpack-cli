@@ -1,7 +1,7 @@
 module.exports = {
-    output: {
-        libraryTarget: "amd",
-    },
-    entry: "./a.js",
-    name: "amd",
+  output: {
+    libraryTarget: "amd",
+  },
+  entry: "./a.js",
+  name: "amd",
 };

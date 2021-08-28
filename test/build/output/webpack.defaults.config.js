@@ -1,7 +1,7 @@
 module.exports = {
-    entry: {
-        b: "./b.js",
-        c: "./c.js",
-    },
-    mode: "development",
+  entry: {
+    b: "./b.js",
+    c: "./c.js",
+  },
+  mode: "development",
 };

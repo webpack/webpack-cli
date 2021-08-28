@@ -1,6 +1,6 @@
 module.exports = {
-    stats: {
-        colors: false,
-    },
-    mode: "development",
+  stats: {
+    colors: false,
+  },
+  mode: "development",
 };

@@ -1,8 +1,8 @@
 module.exports = {
-    output: {
-        libraryTarget: "commonjs",
-    },
-    entry: "./a.js",
-    mode: "production",
-    target: "node",
+  output: {
+    libraryTarget: "commonjs",
+  },
+  entry: "./a.js",
+  mode: "production",
+  target: "node",
 };

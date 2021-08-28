@@ -1,91 +1,105 @@
 import envinfo from "envinfo";
 
 interface Information {
-    Binaries?: string[];
-    Browsers?: string[];
-    Monorepos?: string[];
-    System?: string[];
-    npmGlobalPackages?: string[];
-    npmPackages?: string | string[];
+  Binaries?: string[];
+  Browsers?: string[];
+  Monorepos?: string[];
+  System?: string[];
+  npmGlobalPackages?: string[];
+  npmPackages?: string | string[];
 }
 
-const DEFAULT_DETAILS: Information = {
-    Binaries: ["Node", "Yarn", "npm"],
-    Browsers: [
-        "Brave Browser",
-        "Chrome",
-        "Chrome Canary",
-        "Edge",
-        "Firefox",
-        "Firefox Developer Edition",
-        "Firefox Nightly",
-        "Internet Explorer",
-        "Safari",
-        "Safari Technology Preview",
-    ],
-    Monorepos: ["Yarn Workspaces", "Lerna"],
-    System: ["OS", "CPU", "Memory"],
-    npmGlobalPackages: ["webpack", "webpack-cli"],
-    npmPackages: "*webpack*",
-};
-
 class InfoCommand {
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-    async apply(cli: any): Promise<void> {
-        const { logger } = cli;
-
-        await cli.makeCommand(
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+  async apply(cli: any): Promise<void> {
+    await cli.makeCommand(
+      {
+        name: "info",
+        alias: "i",
+        description: "Outputs information about your system.",
+        usage: "[options]",
+        pkg: "@webpack-cli/info",
+      },
+      [
+        {
+          name: "output",
+          alias: "o",
+          configs: [
             {
-                name: "info",
-                alias: "i",
-                description: "Outputs information about your system.",
-                usage: "[options]",
-                pkg: "@webpack-cli/info",
+              type: "string",
             },
-            [
-                {
-                    name: "output",
-                    alias: "o",
-                    configs: [
-                        {
-                            type: "string",
-                        },
-                    ],
-                    description:
-                        "To get the output in a specified format ( accept json or markdown )",
-                },
-            ],
-            async (options) => {
-                let { output } = options;
+          ],
+          description: "To get the output in a specified format ( accept json or markdown )",
+        },
+        {
+          name: "additional-package",
+          alias: "a",
+          configs: [{ type: "string" }],
+          multiple: true,
+          description: "Adds additional packages to the output",
+        },
+      ],
+      async (options) => {
+        let { output } = options;
 
-                const envinfoConfig = {};
+        const envinfoConfig = {};
 
-                if (output) {
-                    // Remove quotes if exist
-                    output = output.replace(/['"]+/g, "");
+        if (output) {
+          // Remove quotes if exist
+          output = output.replace(/['"]+/g, "");
 
-                    switch (output) {
-                        case "markdown":
-                            envinfoConfig["markdown"] = true;
-                            break;
-                        case "json":
-                            envinfoConfig["json"] = true;
-                            break;
-                        default:
-                            logger.error(`'${output}' is not a valid value for output`);
-                            process.exit(2);
-                    }
-                }
+          switch (output) {
+            case "markdown":
+              envinfoConfig["markdown"] = true;
+              break;
+            case "json":
+              envinfoConfig["json"] = true;
+              break;
+            default:
+              cli.logger.error(`'${output}' is not a valid value for output`);
+              process.exit(2);
+          }
+        }
 
-                let info = await envinfo.run(DEFAULT_DETAILS, envinfoConfig);
+        const defaultInformation: Information = {
+          Binaries: ["Node", "Yarn", "npm"],
+          Browsers: [
+            "Brave Browser",
+            "Chrome",
+            "Chrome Canary",
+            "Edge",
+            "Firefox",
+            "Firefox Developer Edition",
+            "Firefox Nightly",
+            "Internet Explorer",
+            "Safari",
+            "Safari Technology Preview",
+          ],
+          Monorepos: ["Yarn Workspaces", "Lerna"],
+          System: ["OS", "CPU", "Memory"],
+          npmGlobalPackages: ["webpack", "webpack-cli", "webpack-dev-server"],
+          npmPackages: "{*webpack*,*loader*}",
+        };
 
-                info = info.replace(/npmPackages/g, "Packages");
-                info = info.replace(/npmGlobalPackages/g, "Global Packages");
+        let defaultPackages: string[] = ["webpack", "loader"];
 
-                logger.raw(info);
-            },
-        );
-    }
+        if (typeof options.additionalPackage !== "undefined") {
+          defaultPackages = [...defaultPackages, ...options.additionalPackage];
+        }
+
+        defaultInformation.npmPackages = `{${defaultPackages
+          .map((item) => `*${item}*`)
+          .join(",")}}`;
+
+        let info = await envinfo.run(defaultInformation, envinfoConfig);
+
+        info = info.replace(/npmPackages/g, "Packages");
+        info = info.replace(/npmGlobalPackages/g, "Global Packages");
+
+        cli.logger.raw(info);
+      },
+    );
+  }
 }
 
 export default InfoCommand;
