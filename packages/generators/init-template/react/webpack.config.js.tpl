@@ -80,10 +80,13 @@ const config = {
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
-    },<% if (langType == "Typescript") {%>
+    },
     resolve: {
-        extensions: ['.tsx', '.ts', '.js'],
-    },<% } %>
+        alias: {
+            "@": path.resolve(__dirname, "./src/"),
+        },<% if (langType == "Typescript") {%>
+        extensions: ['.tsx', '.ts', '.js'],<% } %>
+    },
 };
 
 module.exports = () => {
