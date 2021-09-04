@@ -71,12 +71,7 @@ class WebpackCLI {
       result = result.default;
     }
 
-    // Treat undefined configuration for zero-config
-    if (!result) {
-      result = {};
-    }
-
-    return result;
+    return result || {};
   }
 
   loadJSONFile(pathToFile, handleError = true) {
