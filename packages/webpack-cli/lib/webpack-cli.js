@@ -67,8 +67,16 @@ class WebpackCLI {
     }
 
     // For babel/typescript
-    if (result.default) {
+    if (result && result.default) {
       result = result.default;
+    }
+
+    // Treat undefined configuration for zero-config
+    if (!result) {
+      this.logger.info(
+        "Configuration file provided didn't export any configuration, using defaults to build.",
+      );
+      result = {};
     }
 
     return result;

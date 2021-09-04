@@ -9,8 +9,6 @@ describe("config flag with undefined export config file", () => {
       resolve(__dirname, "webpack.config.js"),
     ]);
 
-    console.log({ stdout, stderr, exitCode });
-
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
     expect(stdout).toBeTruthy();
