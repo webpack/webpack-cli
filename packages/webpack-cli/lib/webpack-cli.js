@@ -73,9 +73,6 @@ class WebpackCLI {
 
     // Treat undefined configuration for zero-config
     if (!result) {
-      this.logger.info(
-        "Configuration file provided didn't export any configuration, using defaults to build.",
-      );
       result = {};
     }
 
