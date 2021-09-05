@@ -3,7 +3,7 @@ const { resolve } = require("path");
 const { run } = require("../../../utils/test-utils");
 
 describe("config flag with undefined export config file", () => {
-  it("should throw error with no configuration or index file", async () => {
+  it("should not throw error with no configuration or index file", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, [
       "-c",
       resolve(__dirname, "webpack.config.js"),
