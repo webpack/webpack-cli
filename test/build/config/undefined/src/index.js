@@ -1,1 +1,1 @@
-console.log("Percy Weasley")
+console.log("Percy Weasley");
