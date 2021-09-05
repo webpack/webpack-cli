@@ -67,7 +67,7 @@ class WebpackCLI {
     }
 
     // For babel/typescript
-    if (result && "default" in result) {
+    if (result && typeof result === "object" && "default" in result) {
       result = result.default || {};
     }
 
