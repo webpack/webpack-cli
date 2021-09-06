@@ -6,7 +6,7 @@ function packageExists(packageName) {
     return true;
   }
 
-  let dir = __dirname;
+  let dir = process.cwd();
 
   do {
     try {
