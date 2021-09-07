@@ -67,11 +67,11 @@ class WebpackCLI {
     }
 
     // For babel/typescript
-    if (result.default) {
-      result = result.default;
+    if (result && typeof result === "object" && "default" in result) {
+      result = result.default || {};
     }
 
-    return result;
+    return result || {};
   }
 
   loadJSONFile(pathToFile, handleError = true) {
