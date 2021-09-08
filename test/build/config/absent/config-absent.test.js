@@ -3,8 +3,8 @@
 const path = require("path");
 const { run } = require("../../../utils/test-utils");
 
-describe("Config:", () => {
-  it("supplied config file is absent", async () => {
+describe("config flag with non existent file", () => {
+  it("should throw error with non-existent configuration file", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, [
       "-c",
       path.resolve(__dirname, "webpack.config.js"),
