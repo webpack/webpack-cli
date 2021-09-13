@@ -3,8 +3,8 @@ const { existsSync } = require("fs");
 const { resolve } = require("path");
 const { run } = require("../../../../utils/test-utils");
 
-describe("multiple dev config files with webpack.config.js", () => {
-  it("Uses webpack.config.development.js", async () => {
+describe(".webpack webpackfile", () => {
+  it("should build and not throw with .webpack webpackfile", async () => {
     const { stdout, stderr, exitCode } = await run(__dirname, []);
     expect(exitCode).toEqual(0);
     expect(stderr).toBeFalsy();
