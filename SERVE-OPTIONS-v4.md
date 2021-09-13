@@ -60,15 +60,23 @@ Options:
   --https-passphrase <value>                Passphrase for a pfx file.
   --https-request-cert                      Request for an SSL certificate.
   --no-https-request-cert                   Does not request for an SSL certificate.
-  --https-cacert <value>                    Path to an SSL CA certificate.
-  --https-key <value>                       Path to an SSL key.
-  --https-pfx <value>                       Path to an SSL pfx file.
-  --https-cert <value>                      Path to an SSL certificate.
+  --https-ca <value...>                     Path to an SSL CA certificate or content of an SSL CA certificate.
+  --https-ca-reset                          Clear all items provided in 'https.ca' configuration. Path to an SSL CA certificate or content of an SSL CA certificate.
+  --https-cacert <value...>                 Path to an SSL CA certificate or content of an SSL CA certificate.
+  --https-cacert-reset                      Clear all items provided in 'https.cacert' configuration. Path to an SSL CA certificate or content of an SSL CA certificate.
+  --https-key <value...>                    Path to an SSL key or content of an SSL key.
+  --https-key-reset                         Clear all items provided in 'https.key' configuration. Path to an SSL key or content of an SSL key.
+  --https-pfx <value...>                    Path to an SSL pfx file or content of an SSL pfx file.
+  --https-pfx-reset                         Clear all items provided in 'https.pfx' configuration. Path to an SSL pfx file or content of an SSL pfx file.
+  --https-cert <value...>                   Path to an SSL certificate or content of an SSL certificate.
+  --https-cert-reset                        Clear all items provided in 'https.cert' configuration. Path to an SSL certificate or content of an SSL certificate.
+  --https-crl <value...>                    Path to PEM formatted CRLs (Certificate Revocation Lists) or content of PEM formatted CRLs (Certificate Revocation Lists).
+  --https-crl-reset                         Clear all items provided in 'https.crl' configuration. Path to PEM formatted CRLs (Certificate Revocation Lists) or content of PEM formatted CRLs (Certificate Revocation Lists).
   --ipc [value]                             Listen to a unix socket.
   --live-reload                             Enables reload/refresh the page(s) when file changes are detected (enabled by default).
   --no-live-reload                          Disables reload/refresh the page(s) when file changes are detected (enabled by default)
-  --magic-html                              Enables/Disables magic HTML routes (enabled by default).
-  --no-magic-html                           Negative 'magic-html' option.
+  --magic-html                              Tells dev-server whether to enable magic HTML routes (routes corresponding to your webpack output, for example '/main' for 'main.js').
+  --no-magic-html                           Disables magic HTML routes (routes corresponding to your webpack output, for example '/main' for 'main.js').
   --open [value...]                         Allows to configure dev server to open the browser(s) and page(s) after server had been started (set it to true to open your default browser).
   --no-open                                 Does not open the default browser.
   --open-target <value...>                  Opens specified page in browser.
