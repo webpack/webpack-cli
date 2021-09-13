@@ -152,16 +152,7 @@ class ServeCommand {
         const usedPorts: number[] = [];
 
         for (const compilerForDevServer of compilersForDevServer) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const args = devServerFlags.reduce((accumulator: Record<string, any>, flag: any) => {
-            accumulator[flag.name] = flag;
-
-            return accumulator;
-          }, {});
-          const values = Object.keys(devServerCLIOptions).reduce(
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (accumulator: Record<string, any>, name: string) => {
-              const kebabName = cli.toKebabCase(name);
+          let devServerOptions: devServerOptionsType | false;
 
               if (args[kebabName]) {
                 accumulator[kebabName] = options[name];
@@ -210,7 +201,43 @@ class ServeCommand {
             process.exit(2);
           }
 
-          const devServerOptions: WebpackDevServerOptions = result as WebpackDevServerOptions;
+          if (devServerOptions === false) {
+            continue;
+          }
+
+          // TODO remove in the next major release
+          if (!isDevServer4) {
+            const getPublicPathOption = (): string => {
+              const normalizePublicPath = (publicPath): string =>
+                typeof publicPath === "undefined" || publicPath === "auto" ? "/" : publicPath;
+
+              if (options.outputPublicPath) {
+                return normalizePublicPath(compilerForDevServer.options.output.publicPath);
+              }
+
+              if (devServerOptions !== false && devServerOptions.publicPath) {
+                return normalizePublicPath(devServerOptions.publicPath);
+              }
+
+              return normalizePublicPath(compilerForDevServer.options.output.publicPath);
+            };
+            const getStatsOption = (): string | boolean => {
+              if (options.stats) {
+                return options.stats;
+              }
+
+              if (devServerOptions !== false && devServerOptions.stats) {
+                return devServerOptions.stats;
+              }
+
+              return compilerForDevServer.options.stats;
+            };
+
+            devServerOptions.host = devServerOptions.host || "localhost";
+            devServerOptions.port = devServerOptions.port || 8080;
+            devServerOptions.stats = getStatsOption();
+            devServerOptions.publicPath = getPublicPathOption();
+          }
 
           if (devServerOptions.port) {
             const portNumber = Number(devServerOptions.port);
