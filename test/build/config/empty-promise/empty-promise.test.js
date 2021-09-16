@@ -2,8 +2,8 @@
 const { resolve } = require("path");
 const { run } = require("../../../utils/test-utils");
 
-describe("config flag with empty config file", () => {
-  it("should throw error with no configuration or index file", async () => {
+describe("config file with promise resolving empty object", () => {
+  it("should build and not throw error with no configuration or index file", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, [
       "-c",
       resolve(__dirname, "webpack.config.js"),
