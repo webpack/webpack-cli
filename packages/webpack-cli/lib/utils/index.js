@@ -1,6 +1,22 @@
+let colorette = null;
+
 module.exports = {
+
   get colors() {
-    return require("colorette");
+    if (!colorette || colorette.options.changed) {
+      const col = require('colorette');
+      const options = {
+        changed: false,
+        enabled: colorette? colorette.options.enabled : true,
+      }
+
+      colorette = {
+        ...col.createColors({ useColor: options.enabled }),
+        options,
+      }
+    }
+
+    return colorette;
   },
 
   get levenshtein() {

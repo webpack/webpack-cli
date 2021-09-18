@@ -22,7 +22,7 @@
     "plugin-template"
   ],
   "dependencies": {
-    "colorette": "^1.2.1",
+    "colorette": "^2.0.2",
     "yeoman-environment": "^2.10.3",
     "yeoman-generator": "^4.12.0"
   },

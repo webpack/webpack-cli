@@ -1,9 +1,10 @@
 // eslint-disable-next-line node/no-unpublished-require
 const execa = require("execa");
 // eslint-disable-next-line node/no-unpublished-require
-const { red, green } = require("colorette");
+const { createColors } = require("colorette");
 const collectTestFolders = require("./utils");
 
+const { red, green } = createColors();
 const PACKAGE = "package.json";
 
 const getFoldersWithPackage = (stats, file) => {

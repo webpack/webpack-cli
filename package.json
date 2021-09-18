@@ -57,7 +57,7 @@
     "@typescript-eslint/parser": "^4.14.1",
     "@webpack-cli/migrate": "^1.1.2",
     "coffeescript": "^2.5.1",
-    "colorette": "^1.2.1",
+    "colorette": "^2.0.2",
     "concat-stream": "^2.0.0",
     "cz-customizable": "^6.3.0",
     "del-cli": "^3.0.1",

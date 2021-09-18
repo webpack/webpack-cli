@@ -1,4 +1,4 @@
-import { blue, yellow } from "colorette";
+import { createColors } from "colorette";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import path from "path";
 
@@ -6,6 +6,8 @@ import { CustomGenerator } from "./types";
 import { getInstaller, getTemplate } from "./utils/helpers";
 import * as Question from "./utils/scaffold-utils";
 import handlers from "./handlers";
+
+const { blue, yellow } = createColors();
 
 /**
  *
