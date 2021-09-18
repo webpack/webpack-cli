@@ -2,7 +2,7 @@
 const { resolve } = require("path");
 const { run } = require("../../../utils/test-utils");
 
-describe("config error", () => {
+describe("config with errors", () => {
   it("should throw error with invalid configuration", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, [
       "-c",
