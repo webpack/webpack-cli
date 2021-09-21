@@ -3,7 +3,7 @@ const { resolve } = require("path");
 const { run } = require("../../../utils/test-utils");
 
 describe("config flag with no code", () => {
-  it("should not throw error with no configuration or index file", async () => {
+  it("should build and not throw error with no configuration or index file", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, [
       "-c",
       resolve(__dirname, "webpack.config.js"),
