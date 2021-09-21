@@ -2,8 +2,8 @@
 
 const { run } = require("../../../utils/test-utils");
 
-describe("Multiple config flag: ", () => {
-  it("spawns multiple compilers for multiple configs", async () => {
+describe("multiple configuration files", () => {
+  it("should not throw error and spawn compilers for each configuration file", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, [
       "--config",
       "webpack1.config.js",
