@@ -3,9 +3,9 @@ const { existsSync } = require("fs");
 const { resolve } = require("path");
 const { run } = require("../../../../utils/test-utils");
 
-describe("multiple config files", () => {
-  it("Uses dev config when development mode is supplied", async () => {
-    const { stdout, stderr, exitCode } = await run(__dirname, ["--mode", "development"]);
+describe(".webpack configuration file", () => {
+  it("should build and not throw error when config is present in .webpack", async () => {
+    const { stdout, stderr, exitCode } = await run(__dirname, []);
     expect(exitCode).toEqual(0);
     expect(stderr).toBeFalsy();
     expect(stdout).not.toBe(undefined);

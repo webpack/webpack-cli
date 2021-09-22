@@ -5,7 +5,7 @@ const { existsSync } = require("fs");
 const { run } = require("../../../utils/test-utils");
 
 describe("functional config", () => {
-  it("should work as expected in case of single config", async () => {
+  it("should build and not throw error with single configuration", async () => {
     const { stderr, stdout, exitCode } = await run(__dirname, [
       "--config",
       resolve(__dirname, "single-webpack.config.js"),
@@ -17,7 +17,7 @@ describe("functional config", () => {
     expect(existsSync(resolve(__dirname, "./dist/dist-single.js"))).toBeTruthy();
   });
 
-  it("should work as expected in case of multiple config", async () => {
+  it("should build and not throw errors with multiple configurations", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, [
       "--config",
       resolve(__dirname, "multi-webpack.config.js"),
