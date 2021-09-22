@@ -296,7 +296,8 @@ class ServeCommand {
             };
 
             devServerOptions.host = devServerOptions.host || "localhost";
-            devServerOptions.port = devServerOptions.port || 8080;
+            devServerOptions.port =
+              typeof devServerOptions.port !== "undefined" ? devServerOptions.port : 8080;
             devServerOptions.stats = getStatsOption();
             devServerOptions.publicPath = getPublicPathOption();
           }
