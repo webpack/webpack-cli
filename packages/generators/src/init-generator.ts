@@ -1,4 +1,3 @@
-import { blue, yellow } from "colorette";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import path from "path";
 
@@ -49,7 +48,7 @@ export default class InitGenerator extends CustomGenerator {
   public async prompting(): Promise<void | any> {
     if (!existsSync(this.resolvedGenerationPath)) {
       this.utils.logger.log(
-        `${blue(
+        `${this.utils.colors.blue(
           "ℹ INFO ",
         )} supplied generation path doesn't exist, required folders will be created.`,
       );
@@ -98,7 +97,7 @@ export default class InitGenerator extends CustomGenerator {
   }
 
   public writing(): void {
-    this.utils.logger.log(`${blue("ℹ INFO ")} Initialising project...`);
+    this.utils.logger.log(`${this.utils.colors.blue("ℹ INFO ")} Initialising project...`);
     handlers[this.template].generate(this);
   }
 
@@ -116,7 +115,7 @@ export default class InitGenerator extends CustomGenerator {
       writeFileSync(this.configurationPath, formattedSource);
     } catch (err) {
       this.utils.logger.log(
-        `${yellow(
+        `${this.utils.colors.yellow(
           `⚠ Generated configuration may not be properly formatted as prettier is not installed.`,
         )}`,
       );
