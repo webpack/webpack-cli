@@ -7882,6 +7882,11 @@ nan@^2.12.1:
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.15.0.tgz#3f34a473ff18e15c1b5626b62903b5ad6e665fee"
   integrity sha512-8ZtvEnA2c5aYCZYd1cvgdnU6cqwixRoYg70xPLWUws5ORTa/lnw+u4amixRS/Ac5U5mQVgp9pnlSUnbNWFaWZQ==
 
+nanocolors@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/nanocolors/-/nanocolors-0.2.0.tgz#ed7ffda113a2a9e856c4f5c369d9c2d3c1d29890"
+  integrity sha512-QsgUbzc5JXjMF9Rm1LXbJ9mWtIPCZjv1leAzvQF4YiJNQQuJs8LTz8zELk6cMs6y9Qex+OcwQKnHvHotp5Wsyg==
+
 nanomatch@^1.2.9:
   version "1.2.13"
   resolved "https://registry.yarnpkg.com/nanomatch/-/nanomatch-1.2.13.tgz#b87a8aa4fc0de8fe6be88895b38983ff265bd119"
