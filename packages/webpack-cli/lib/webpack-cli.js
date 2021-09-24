@@ -992,15 +992,15 @@ class WebpackCLI {
     this.program.on("option:color", function () {
       const { color } = this.opts();
 
-      cli.utils.colors.options.changed = true;
-      cli.utils.colors.options.enabled = color;
+      cli.isColorSupportChanged = true;
+      cli.utils.colors.isColorSupported = color;
     });
     this.program.option("--no-color", "Disable colors on console.");
     this.program.on("option:no-color", function () {
       const { color } = this.opts();
 
-      cli.utils.colors.options.changed = true;
-      cli.utils.colors.options.enabled = color;
+      cli.isColorSupportChanged = true;
+      cli.utils.colors.isColorSupported = color;
     });
 
     // Make `-v, --version` options
@@ -1962,8 +1962,8 @@ class WebpackCLI {
       let colors;
 
       // From arguments
-      if (typeof this.utils.colors.options.changed !== "undefined") {
-        colors = Boolean(this.utils.colors.options.enabled);
+      if (typeof this.isColorSupportChanged !== "undefined") {
+        colors = Boolean(this.utils.colors.isColorSupported);
       }
       // From stats
       else if (typeof configOptions.stats.colors !== "undefined") {
@@ -1971,7 +1971,7 @@ class WebpackCLI {
       }
       // Default
       else {
-        colors = Boolean(this.utils.colors.options.enabled);
+        colors = Boolean(this.utils.colors.isColorSupported);
       }
 
       configOptions.stats.colors = colors;
