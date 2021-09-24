@@ -992,14 +992,14 @@ class WebpackCLI {
     this.program.on("option:color", function () {
       const { color } = this.opts();
 
-      this.isColorSupportChanged = true;
+      cli.isColorSupportChanged = true;
       cli.utils.colors.isColorSupported = color;
     });
     this.program.option("--no-color", "Disable colors on console.");
     this.program.on("option:no-color", function () {
       const { color } = this.opts();
 
-      this.isColorSupportChanged = true;
+      cli.isColorSupportChanged = true;
       cli.utils.colors.isColorSupported = color;
     });
 
