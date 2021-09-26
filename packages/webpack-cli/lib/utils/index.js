@@ -1,6 +1,6 @@
 module.exports = {
   get colors() {
-    return require("nanocolors");
+    return require("colorette");
   },
 
   get levenshtein() {
