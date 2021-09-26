@@ -313,6 +313,14 @@ const normalizeStderr = (stderr) => {
     normalizedStderr = normalizedStderr.join("\n");
   }
 
+  // the warning below is causing CI failiure on some jobs
+  if (/Gracefully shutting down/.test(stderr)) {
+    normalizedStderr = normalizedStderr.replace(
+      "\n<i> [webpack-dev-server] Gracefully shutting down. To force exit, press ^C again. Please wait...",
+      "",
+    );
+  }
+
   normalizedStderr = normalizeVersions(normalizedStderr);
   normalizedStderr = normalizeError(normalizedStderr);
 
