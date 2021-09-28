@@ -1082,7 +1082,9 @@ class WebpackCLI {
     );
 
     const outputHelp = async (options, isVerbose, isHelpCommandSyntax, program) => {
-      const { bold } = this.utils.colors;
+      const { bold } = this.utils.colors.createColors({
+        useColor: Boolean(this.utils.colors.isColorSupported),
+      });
 
       const outputIncorrectUsageOfHelp = () => {
         this.logger.error("Incorrect use of help");
@@ -1108,7 +1110,7 @@ class WebpackCLI {
             }
 
             if (isGlobalHelp) {
-              return `${parentCmdNames}${command.usage()}\n${this.utils.colors.bold(
+              return `${parentCmdNames}${command.usage()}\n${bold(
                 "Alternative usage to run commands:",
               )} ${parentCmdNames}[command] [options]`;
             }
@@ -2132,13 +2134,17 @@ class WebpackCLI {
             .pipe(fs.createWriteStream(options.json))
             .on("error", handleWriteError)
             // Use stderr to logging
-            .on("close", () =>
+            .on("close", () => {
+              const { green } = this.utils.colors.createColors({
+                useColor: Boolean(this.utils.colors.isColorSupported),
+              });
+
               process.stderr.write(
-                `[webpack-cli] ${this.utils.colors.green(
+                `[webpack-cli] ${green(
                   `stats are successfully stored as json to ${options.json}`,
                 )}\n`,
-              ),
-            );
+              );
+            });
         }
       } else {
         const printedStats = stats.toString(statsOptions);
