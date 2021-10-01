@@ -2036,6 +2036,8 @@ class WebpackCLI {
               }
             });
           }
+
+          process.exit(2);
         }
 
         // Setup default cache options
@@ -2157,7 +2159,7 @@ class WebpackCLI {
 
       item.plugins.unshift(
         new CLIPlugin({
-          configPath: config.path.get(options),
+          configPath: config.path.get(item),
           helpfulOutput: !options.json,
           hot: options.hot,
           progress: options.progress,
