@@ -992,15 +992,13 @@ class WebpackCLI {
     this.program.on("option:color", function () {
       const { color } = this.opts();
 
-      cli.isColorSupportChanged = true;
-      cli.utils.colors.isColorSupported = color;
+      cli.isColorSupportChanged = color;
     });
     this.program.option("--no-color", "Disable colors on console.");
     this.program.on("option:no-color", function () {
       const { color } = this.opts();
 
-      cli.isColorSupportChanged = true;
-      cli.utils.colors.isColorSupported = color;
+      cli.isColorSupportChanged = color;
     });
 
     // Make `-v, --version` options
@@ -1082,10 +1080,7 @@ class WebpackCLI {
     );
 
     const outputHelp = async (options, isVerbose, isHelpCommandSyntax, program) => {
-      const { bold } = this.utils.colors.createColors({
-        useColor: Boolean(this.utils.colors.isColorSupported),
-      });
-
+      const { bold } = this.utils.colors;
       const outputIncorrectUsageOfHelp = () => {
         this.logger.error("Incorrect use of help");
         this.logger.error(
@@ -1965,7 +1960,7 @@ class WebpackCLI {
 
       // From arguments
       if (typeof this.isColorSupportChanged !== "undefined") {
-        colors = Boolean(this.utils.colors.isColorSupported);
+        colors = Boolean(this.isColorSupportChanged);
       }
       // From stats
       else if (typeof configOptions.stats.colors !== "undefined") {
@@ -2135,12 +2130,8 @@ class WebpackCLI {
             .on("error", handleWriteError)
             // Use stderr to logging
             .on("close", () => {
-              const { green } = this.utils.colors.createColors({
-                useColor: Boolean(this.utils.colors.isColorSupported),
-              });
-
               process.stderr.write(
-                `[webpack-cli] ${green(
+                `[webpack-cli] ${this.utils.colors.green(
                   `stats are successfully stored as json to ${options.json}`,
                 )}\n`,
               );

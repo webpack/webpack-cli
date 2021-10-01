@@ -1,6 +1,16 @@
 module.exports = {
   get colors() {
-    return require("colorette");
+    const { createColors, isColorSupported } = require("colorette");
+
+    let useColors = isColorSupported;
+
+    if (process.argv.includes("--no-color")) {
+      useColors = false;
+    } else if (process.argv.includes("--color")) {
+      useColors = true;
+    }
+
+    return { ...createColors({ useColor: useColors }), isColorSupported: useColors };
   },
 
   get levenshtein() {
