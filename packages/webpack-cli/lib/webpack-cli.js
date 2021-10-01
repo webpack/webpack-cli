@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const { pathToFileURL } = require("url");
 const Module = require("module");
+const util = require("util");
 
 const { program, Option } = require("commander");
 const utils = require("./utils");
@@ -11,7 +12,8 @@ const WEBPACK_DEV_SERVER_PACKAGE = process.env.WEBPACK_DEV_SERVER_PACKAGE || "we
 
 class WebpackCLI {
   constructor() {
-    this.logger = utils.logger;
+    this.logger = this.getLogger();
+    this.colors = this.createColors();
     this.utils = utils;
 
     // Initialize program
@@ -22,6 +24,38 @@ class WebpackCLI {
       outputError: (str, write) =>
         write(`Error: ${this.utils.capitalizeFirstLetter(str.replace(/^error:/, "").trim())}`),
     });
+  }
+
+  createColors(useColor) {
+    const { createColors, isColorSupported } = require("colorette");
+
+    let shouldUseColor;
+
+    if (useColor) {
+      shouldUseColor = useColor;
+    } else {
+      shouldUseColor = isColorSupported;
+
+      // CLI may failed before parsing arguments, we should respect colors/no colors in logger
+      if (process.argv.includes("--no-color")) {
+        shouldUseColor = false;
+      } else if (process.argv.includes("--color")) {
+        shouldUseColor = true;
+      }
+    }
+
+    return { ...createColors({ useColor: shouldUseColor }), isColorSupported: shouldUseColor };
+  }
+
+  getLogger() {
+    return {
+      error: (val) => console.error(`[webpack-cli] ${this.colors.red(util.format(val))}`),
+      warn: (val) => console.warn(`[webpack-cli] ${this.colors.yellow(val)}`),
+      info: (val) => console.info(`[webpack-cli] ${this.colors.cyan(val)}`),
+      success: (val) => console.log(`[webpack-cli] ${this.colors.green(val)}`),
+      log: (val) => console.log(`[webpack-cli] ${val}`),
+      raw: (val) => console.log(val),
+    };
   }
 
   async tryRequireThenImport(module, handleError = true) {
@@ -166,9 +200,9 @@ class WebpackCLI {
 
         await this.utils.promptInstallation(dependency, () => {
           this.logger.error(
-            `For using '${this.utils.colors.green(
+            `For using '${this.colors.green(
               commandOptions.name.split(" ")[0],
-            )}' command you need to install: '${this.utils.colors.green(dependency)}' package.`,
+            )}' command you need to install: '${this.colors.green(dependency)}' package.`,
           );
         });
       }
@@ -892,11 +926,9 @@ class WebpackCLI {
             return;
           }
 
-          const { promptInstallation, colors } = this.utils;
-
-          pkg = await promptInstallation(pkg, () => {
+          pkg = await this.utils.promptInstallation(pkg, () => {
             this.logger.error(
-              `For using this command you need to install: '${colors.green(pkg)}' package.`,
+              `For using this command you need to install: '${this.colors.green(pkg)}' package.`,
             );
           });
         }
@@ -993,12 +1025,14 @@ class WebpackCLI {
       const { color } = this.opts();
 
       cli.isColorSupportChanged = color;
+      cli.colors = cli.createColors(color);
     });
     this.program.option("--no-color", "Disable colors on console.");
     this.program.on("option:no-color", function () {
       const { color } = this.opts();
 
       cli.isColorSupportChanged = color;
+      cli.colors = cli.createColors(color);
     });
 
     // Make `-v, --version` options
@@ -1080,7 +1114,7 @@ class WebpackCLI {
     );
 
     const outputHelp = async (options, isVerbose, isHelpCommandSyntax, program) => {
-      const { bold } = this.utils.colors;
+      const { bold } = this.colors;
       const outputIncorrectUsageOfHelp = () => {
         this.logger.error("Incorrect use of help");
         this.logger.error(
@@ -1718,16 +1752,14 @@ class WebpackCLI {
   async applyOptions(config, options) {
     if (options.analyze) {
       if (!this.utils.packageExists("webpack-bundle-analyzer")) {
-        const { promptInstallation, colors } = this.utils;
-
-        await promptInstallation("webpack-bundle-analyzer", () => {
+        await this.utils.promptInstallation("webpack-bundle-analyzer", () => {
           this.logger.error(
-            `It looks like ${colors.yellow("webpack-bundle-analyzer")} is not installed.`,
+            `It looks like ${this.colors.yellow("webpack-bundle-analyzer")} is not installed.`,
           );
         });
 
         this.logger.success(
-          `${colors.yellow("webpack-bundle-analyzer")} was installed successfully.`,
+          `${this.colors.yellow("webpack-bundle-analyzer")} was installed successfully.`,
         );
       }
     }
@@ -1968,7 +2000,7 @@ class WebpackCLI {
       }
       // Default
       else {
-        colors = Boolean(this.utils.colors.isColorSupported);
+        colors = Boolean(this.colors.isColorSupported);
       }
 
       configOptions.stats.colors = colors;
@@ -2131,7 +2163,7 @@ class WebpackCLI {
             // Use stderr to logging
             .on("close", () => {
               process.stderr.write(
-                `[webpack-cli] ${this.utils.colors.green(
+                `[webpack-cli] ${this.colors.green(
                   `stats are successfully stored as json to ${options.json}`,
                 )}\n`,
               );

@@ -1,18 +1,4 @@
 module.exports = {
-  get colors() {
-    const { createColors, isColorSupported } = require("colorette");
-
-    let useColors = isColorSupported;
-
-    if (process.argv.includes("--no-color")) {
-      useColors = false;
-    } else if (process.argv.includes("--color")) {
-      useColors = true;
-    }
-
-    return { ...createColors({ useColor: useColors }), isColorSupported: useColors };
-  },
-
   get levenshtein() {
     return require("fastest-levenshtein");
   },
@@ -39,10 +25,6 @@ module.exports = {
 
   get getPackageManager() {
     return require("./get-package-manager");
-  },
-
-  get logger() {
-    return require("./logger");
   },
 
   get packageExists() {
