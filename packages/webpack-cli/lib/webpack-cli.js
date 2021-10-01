@@ -312,10 +312,6 @@ class WebpackCLI {
     return result;
   }
 
-  async loadWebpack(handleError = true) {
-    return this.tryRequireThenImport(WEBPACK_PACKAGE, handleError);
-  }
-
   async makeCommand(commandOptions, options, action) {
     const alreadyLoaded = this.program.commands.find(
       (command) =>
@@ -946,6 +942,10 @@ class WebpackCLI {
     this.builtInOptionsCache = options;
 
     return options;
+  }
+
+  async loadWebpack(handleError = true) {
+    return this.tryRequireThenImport(WEBPACK_PACKAGE, handleError);
   }
 
   async run(args, parseOptions) {
@@ -2174,16 +2174,6 @@ class WebpackCLI {
     return config;
   }
 
-  needWatchStdin(compiler) {
-    if (compiler.compilers) {
-      return compiler.compilers.some(
-        (compiler) => compiler.options.watchOptions && compiler.options.watchOptions.stdin,
-      );
-    }
-
-    return compiler.options.watchOptions && compiler.options.watchOptions.stdin;
-  }
-
   isValidationError(error) {
     // https://github.com/webpack/webpack/blob/master/lib/index.js#L267
     // https://github.com/webpack/webpack/blob/v4.44.2/lib/webpack.js#L90
@@ -2233,6 +2223,16 @@ class WebpackCLI {
     }
 
     return compiler;
+  }
+
+  needWatchStdin(compiler) {
+    if (compiler.compilers) {
+      return compiler.compilers.some(
+        (compiler) => compiler.options.watchOptions && compiler.options.watchOptions.stdin,
+      );
+    }
+
+    return compiler.options.watchOptions && compiler.options.watchOptions.stdin;
   }
 
   async runWebpack(options, isWatchCommand) {
