@@ -1122,7 +1122,6 @@ class WebpackCLI {
         try {
           loadedCommand = await this.tryRequireThenImport(pkg, false);
         } catch (error) {
-          console.log(error);
           // Ignore, command is not installed
 
           return;
@@ -1920,20 +1919,19 @@ class WebpackCLI {
     return config;
   }
 
-  runFunctionOnOptions(options, fn) {
-    if (Array.isArray(options)) {
-      for (let item of options) {
-        item = fn(item);
-      }
-    } else {
-      options = fn(options);
-    }
-
-    return options;
-  }
-
-  // TODO refactor
   async buildConfig(config, options) {
+    const runFunctionOnEachConfig = (options, fn) => {
+      if (Array.isArray(options)) {
+        for (let item of options) {
+          item = fn(item);
+        }
+      } else {
+        options = fn(options);
+      }
+
+      return options;
+    };
+
     if (options.analyze) {
       if (!this.checkPackageExists("webpack-bundle-analyzer")) {
         await this.doInstall("webpack-bundle-analyzer", {
@@ -1964,9 +1962,12 @@ class WebpackCLI {
       process.exit(2);
     }
 
-    const outputHints = (configOptions) => {
+    const CLIPlugin = await this.tryRequireThenImport("./plugins/CLIPlugin");
+
+    const internalBuildConfig = (item) => {
+      // Output warnings
       if (
-        configOptions.watch &&
+        item.watch &&
         options.argv &&
         options.argv.env &&
         (options.argv.env["WEBPACK_WATCH"] || options.argv.env["WEBPACK_SERVE"])
@@ -1978,17 +1979,12 @@ class WebpackCLI {
         );
 
         if (options.argv.env["WEBPACK_SERVE"]) {
-          configOptions.watch = false;
+          item.watch = false;
         }
       }
 
-      return configOptions;
-    };
-
-    this.runFunctionOnOptions(config.options, outputHints);
-
-    if (this.webpack.cli) {
-      const processArguments = (configOptions) => {
+      // Apply options
+      if (this.webpack.cli) {
         const args = this.getBuiltInOptions()
           .filter((flag) => flag.group === "core")
           .reduce((accumulator, flag) => {
@@ -2011,7 +2007,7 @@ class WebpackCLI {
           return accumulator;
         }, {});
 
-        const problems = this.webpack.cli.processArguments(args, configOptions, values);
+        const problems = this.webpack.cli.processArguments(args, item, values);
 
         if (problems) {
           const groupBy = (xs, key) => {
@@ -2040,137 +2036,100 @@ class WebpackCLI {
               }
             });
           }
-
-          process.exit(2);
         }
 
-        return configOptions;
-      };
-
-      this.runFunctionOnOptions(config.options, processArguments);
-
-      const setupDefaultOptions = (configOptions) => {
-        // No need to run for webpack@4
-        if (configOptions.cache && configOptions.cache.type === "filesystem") {
-          const configPath = config.path.get(configOptions);
+        // Setup default cache options
+        if (item.cache && item.cache.type === "filesystem") {
+          const configPath = config.path.get(item);
 
           if (configPath) {
-            if (!configOptions.cache.buildDependencies) {
-              configOptions.cache.buildDependencies = {};
+            if (!item.cache.buildDependencies) {
+              item.cache.buildDependencies = {};
             }
 
-            if (!configOptions.cache.buildDependencies.defaultConfig) {
-              configOptions.cache.buildDependencies.defaultConfig = [];
+            if (!item.cache.buildDependencies.defaultConfig) {
+              item.cache.buildDependencies.defaultConfig = [];
             }
 
             if (Array.isArray(configPath)) {
               configPath.forEach((item) => {
-                configOptions.cache.buildDependencies.defaultConfig.push(item);
+                item.cache.buildDependencies.defaultConfig.push(item);
               });
             } else {
-              configOptions.cache.buildDependencies.defaultConfig.push(configPath);
+              item.cache.buildDependencies.defaultConfig.push(configPath);
             }
           }
         }
+      }
 
-        return configOptions;
-      };
-
-      this.runFunctionOnOptions(config.options, setupDefaultOptions);
-    }
-
-    // Logic for webpack@4
-    // TODO remove after drop webpack@4
-    const processLegacyArguments = (configOptions) => {
+      // Setup legacy logic for webpack@4
+      // TODO respect `--entry-reset` in th next major release
+      // TODO drop in the next major release
       if (options.entry) {
-        configOptions.entry = options.entry;
+        item.entry = options.entry;
       }
 
       if (options.outputPath) {
-        configOptions.output = {
-          ...configOptions.output,
-          ...{ path: path.resolve(options.outputPath) },
-        };
+        item.output = { ...item.output, ...{ path: path.resolve(options.outputPath) } };
       }
 
       if (options.target) {
-        configOptions.target = options.target;
+        item.target = options.target;
       }
 
       if (typeof options.devtool !== "undefined") {
-        configOptions.devtool = options.devtool;
+        item.devtool = options.devtool;
+      }
+
+      if (options.name) {
+        item.name = options.name;
+      }
+
+      if (typeof options.stats !== "undefined") {
+        item.stats = options.stats;
+      }
+
+      if (typeof options.watch !== "undefined") {
+        item.watch = options.watch;
+      }
+
+      if (typeof options.watchOptionsStdin !== "undefined") {
+        item.watchOptions = { ...item.watchOptions, ...{ stdin: options.watchOptionsStdin } };
       }
 
       if (options.mode) {
-        configOptions.mode = options.mode;
-      } else if (
-        !configOptions.mode &&
+        item.mode = options.mode;
+      }
+
+      // Respect `process.env.NODE_ENV`
+      if (
+        !item.mode &&
         process.env &&
         process.env.NODE_ENV &&
         (process.env.NODE_ENV === "development" ||
           process.env.NODE_ENV === "production" ||
           process.env.NODE_ENV === "none")
       ) {
-        configOptions.mode = process.env.NODE_ENV;
+        item.mode = process.env.NODE_ENV;
       }
 
-      if (options.name) {
-        configOptions.name = options.name;
-      }
-
-      if (typeof options.stats !== "undefined") {
-        configOptions.stats = options.stats;
-      }
-
-      if (typeof options.watch !== "undefined") {
-        configOptions.watch = options.watch;
-      }
-
-      if (typeof options.watchOptionsStdin !== "undefined") {
-        configOptions.watchOptions = {
-          ...configOptions.watchOptions,
-          ...{ stdin: options.watchOptionsStdin },
-        };
-      }
-
-      return configOptions;
-    };
-
-    this.runFunctionOnOptions(config.options, processLegacyArguments);
-
-    // Apply `stats` and `stats.colors` options
-    const applyStatsOption = (configOptions) => {
+      // Setup stats
       // TODO remove after drop webpack@4
       const statsForWebpack4 = this.webpack.Stats && this.webpack.Stats.presetToOptions;
 
       if (statsForWebpack4) {
-        if (typeof configOptions.stats === "undefined") {
-          configOptions.stats = {};
-        } else if (
-          typeof configOptions.stats === "boolean" ||
-          typeof configOptions.stats === "string"
-        ) {
-          if (
-            typeof configOptions.stats === "string" &&
-            configOptions.stats !== "none" &&
-            configOptions.stats !== "verbose" &&
-            configOptions.stats !== "detailed" &&
-            configOptions.stats !== "minimal" &&
-            configOptions.stats !== "errors-only" &&
-            configOptions.stats !== "errors-warnings"
-          ) {
-            return configOptions;
-          }
-
-          configOptions.stats = this.webpack.Stats.presetToOptions(configOptions.stats);
+        if (typeof item.stats === "undefined") {
+          item.stats = {};
+        } else if (typeof item.stats === "boolean" || typeof item.stats === "string") {
+          item.stats = this.webpack.Stats.presetToOptions(item.stats);
         }
       } else {
-        if (typeof configOptions.stats === "undefined") {
-          configOptions.stats = { preset: "normal" };
-        } else if (typeof configOptions.stats === "boolean") {
-          configOptions.stats = configOptions.stats ? { preset: "normal" } : { preset: "none" };
-        } else if (typeof configOptions.stats === "string") {
-          configOptions.stats = { preset: configOptions.stats };
+        if (typeof item.stats === "undefined") {
+          item.stats = { preset: "normal" };
+        } else if (typeof item.stats === "boolean") {
+          item.stats = item.stats ? { preset: "normal" } : { preset: "none" };
+        } else if (typeof item.stats === "string") {
+          item.stats = { preset: item.stats };
         }
       }
 
@@ -2181,29 +2140,22 @@ class WebpackCLI {
         colors = Boolean(this.isColorSupportChanged);
       }
       // From stats
-      else if (typeof configOptions.stats.colors !== "undefined") {
-        colors = configOptions.stats.colors;
+      else if (typeof item.stats.colors !== "undefined") {
+        colors = item.stats.colors;
       }
       // Default
       else {
         colors = Boolean(this.colors.isColorSupported);
       }
 
-      configOptions.stats.colors = colors;
+      item.stats.colors = colors;
 
-      return configOptions;
-    };
-
-    this.runFunctionOnOptions(config.options, applyStatsOption);
-
-    const CLIPlugin = await this.tryRequireThenImport("./plugins/CLIPlugin");
-
-    const addCLIPlugin = (options) => {
-      if (!options.plugins) {
-        options.plugins = [];
+      // Apply CLI plugin
+      if (!item.plugins) {
+        item.plugins = [];
       }
 
-      options.plugins.unshift(
+      item.plugins.unshift(
         new CLIPlugin({
           configPath: config.path.get(options),
           helpfulOutput: !options.json,
@@ -2217,7 +2169,7 @@ class WebpackCLI {
       return options;
     };
 
-    this.runFunctionOnOptions(config.options, addCLIPlugin);
+    runFunctionOnEachConfig(config.options, internalBuildConfig);
 
     return config;
   }
@@ -2248,7 +2200,9 @@ class WebpackCLI {
 
     let config = await this.resolveConfig(options);
 
+    console.time("build-config");
     config = await this.buildConfig(config, options);
+    console.timeEnd("build-config");
 
     let compiler;
 
