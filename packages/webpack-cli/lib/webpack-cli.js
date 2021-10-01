@@ -948,12 +948,6 @@ class WebpackCLI {
     return options;
   }
 
-  applyNodeEnv(options) {
-    if (typeof options.nodeEnv === "string") {
-      process.env.NODE_ENV = options.nodeEnv;
-    }
-  }
-
   async run(args, parseOptions) {
     // Built-in internal commands
     const buildCommandOptions = {
@@ -1939,7 +1933,7 @@ class WebpackCLI {
   }
 
   // TODO refactor
-  async applyOptions(config, options) {
+  async buildConfig(config, options) {
     if (options.analyze) {
       if (!this.checkPackageExists("webpack-bundle-analyzer")) {
         await this.doInstall("webpack-bundle-analyzer", {
@@ -2202,10 +2196,6 @@ class WebpackCLI {
 
     this.runFunctionOnOptions(config.options, applyStatsOption);
 
-    return config;
-  }
-
-  async applyCLIPlugin(config, cliOptions) {
     const CLIPlugin = await this.tryRequireThenImport("./plugins/CLIPlugin");
 
     const addCLIPlugin = (options) => {
@@ -2216,11 +2206,11 @@ class WebpackCLI {
       options.plugins.unshift(
         new CLIPlugin({
           configPath: config.path.get(options),
-          helpfulOutput: !cliOptions.json,
-          hot: cliOptions.hot,
-          progress: cliOptions.progress,
-          prefetch: cliOptions.prefetch,
-          analyze: cliOptions.analyze,
+          helpfulOutput: !options.json,
+          hot: options.hot,
+          progress: options.progress,
+          prefetch: options.prefetch,
+          analyze: options.analyze,
         }),
       );
 
@@ -2252,12 +2242,13 @@ class WebpackCLI {
   }
 
   async createCompiler(options, callback) {
-    this.applyNodeEnv(options);
+    if (typeof options.nodeEnv === "string") {
+      process.env.NODE_ENV = options.nodeEnv;
+    }
 
     let config = await this.resolveConfig(options);
 
-    config = await this.applyOptions(config, options);
-    config = await this.applyCLIPlugin(config, options);
+    config = await this.buildConfig(config, options);
 
     let compiler;
 
