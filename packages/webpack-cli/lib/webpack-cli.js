@@ -12,8 +12,8 @@ const WEBPACK_DEV_SERVER_PACKAGE = process.env.WEBPACK_DEV_SERVER_PACKAGE || "we
 
 class WebpackCLI {
   constructor() {
-    this.logger = this.getLogger();
     this.colors = this.createColors();
+    this.logger = this.getLogger();
     this.utils = utils;
 
     // Initialize program
