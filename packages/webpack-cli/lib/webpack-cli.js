@@ -68,6 +68,26 @@ class WebpackCLI {
     };
   }
 
+  checkPackageExists(packageName) {
+    if (process.versions.pnp) {
+      return true;
+    }
+
+    let dir = __dirname;
+
+    do {
+      try {
+        if (fs.statSync(path.join(dir, "node_modules", packageName)).isDirectory()) {
+          return true;
+        }
+      } catch (_error) {
+        // Nothing
+      }
+    } while (dir !== (dir = path.dirname(dir)));
+
+    return false;
+  }
+
   getAvailablePackageManagers() {
     const { sync } = require("execa");
     const installers = ["npm", "yarn", "pnpm"];
@@ -146,40 +166,7 @@ class WebpackCLI {
     }
   }
 
-  checkPackageExists(packageName) {
-    if (process.versions.pnp) {
-      return true;
-    }
-
-    let dir = __dirname;
-
-    do {
-      try {
-        if (fs.statSync(path.join(dir, "node_modules", packageName)).isDirectory()) {
-          return true;
-        }
-      } catch (_error) {
-        // Nothing
-      }
-    } while (dir !== (dir = path.dirname(dir)));
-
-    return false;
-  }
-
-  // TODO check we need these
-  async runCommand(command, args = []) {
-    const execa = require("execa");
-
-    try {
-      await execa(command, args, { stdio: "inherit", shell: true });
-    } catch (error) {
-      this.logger.error(error.message);
-
-      process.exit(2);
-    }
-  }
-
-  async doInstall(packageName, options) {
+  async doInstall(packageName, options = {}) {
     const packageManager = this.getDefaultPackageManager();
 
     if (!packageManager) {
@@ -223,10 +210,10 @@ class WebpackCLI {
       });
     };
 
-    let installConfirm;
+    let needInstall;
 
     try {
-      installConfirm = await prompt({
+      needInstall = await prompt({
         message: `[webpack-cli] Would you like to install '${this.colors.green(
           packageName,
         )}' package? (That will run '${this.colors.green(commandToBeRun)}') (${this.colors.yellow(
@@ -238,12 +225,14 @@ class WebpackCLI {
     } catch (error) {
       this.logger.error(error);
 
-      process.exit(2);
+      process.exit(error);
     }
 
-    if (installConfirm) {
+    if (needInstall) {
+      const execa = require("execa");
+
       try {
-        await this.runCommand(commandToBeRun);
+        await execa(commandToBeRun, [], { stdio: "inherit", shell: true });
       } catch (error) {
         this.logger.error(error);
 
@@ -395,12 +384,14 @@ class WebpackCLI {
           continue;
         }
 
-        await this.doInstall(dependency, () => {
-          this.logger.error(
-            `For using '${this.colors.green(
-              commandOptions.name.split(" ")[0],
-            )}' command you need to install: '${this.colors.green(dependency)}' package.`,
-          );
+        await this.doInstall(dependency, {
+          preMessage: () => {
+            this.logger.error(
+              `For using '${this.colors.green(
+                commandOptions.name.split(" ")[0],
+              )}' command you need to install: '${this.colors.green(dependency)}' package.`,
+            );
+          },
         });
       }
     }
@@ -1123,10 +1114,12 @@ class WebpackCLI {
             return;
           }
 
-          pkg = await this.doInstall(pkg, () => {
-            this.logger.error(
-              `For using this command you need to install: '${this.colors.green(pkg)}' package.`,
-            );
+          pkg = await this.doInstall(pkg, {
+            preMessage: () => {
+              this.logger.error(
+                `For using this command you need to install: '${this.colors.green(pkg)}' package.`,
+              );
+            },
           });
         }
 
@@ -1949,10 +1942,12 @@ class WebpackCLI {
   async applyOptions(config, options) {
     if (options.analyze) {
       if (!this.checkPackageExists("webpack-bundle-analyzer")) {
-        await this.doInstall("webpack-bundle-analyzer", () => {
-          this.logger.error(
-            `It looks like ${this.colors.yellow("webpack-bundle-analyzer")} is not installed.`,
-          );
+        await this.doInstall("webpack-bundle-analyzer", {
+          preMessage: () => {
+            this.logger.error(
+              `It looks like ${this.colors.yellow("webpack-bundle-analyzer")} is not installed.`,
+            );
+          },
         });
 
         this.logger.success(

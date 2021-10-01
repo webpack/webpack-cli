@@ -106,12 +106,8 @@ export default class InitGenerator extends CustomGenerator {
     try {
       // eslint-disable-next-line node/no-extraneous-require, @typescript-eslint/no-var-requires
       const prettier = require("prettier");
-      const source = readFileSync(this.configurationPath, {
-        encoding: "utf8",
-      });
-      const formattedSource = prettier.format(source, {
-        parser: "babel",
-      });
+      const source = readFileSync(this.configurationPath, { encoding: "utf8" });
+      const formattedSource = prettier.format(source, { parser: "babel" });
 
       writeFileSync(this.configurationPath, formattedSource);
     } catch (err) {

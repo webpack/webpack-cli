@@ -1,11 +1,15 @@
-const capitalizeFirstLetter = require("../../packages/webpack-cli/lib/utils/capitalize-first-letter");
+const CLI = require("../../packages/webpack-cli/lib/webpack-cli");
 
 describe("capitalizeFirstLetter", () => {
   it("should capitalize first letter", () => {
-    expect(capitalizeFirstLetter("webpack")).toEqual("Webpack");
+    const cli = new CLI();
+
+    expect(cli.capitalizeFirstLetter("webpack")).toEqual("Webpack");
   });
 
   it("should return an empty string on passing a non-string value", () => {
-    expect(capitalizeFirstLetter(true)).toEqual("");
+    const cli = new CLI();
+
+    expect(cli.capitalizeFirstLetter(true)).toEqual("");
   });
 });

@@ -31,7 +31,7 @@ export async function getInstaller(): Promise<string> {
   }
 
   // Prompt for the package manager of choice
-  const defaultPackager = this.cli.getPackageManager();
+  const defaultPackager = this.cli.getDefaultPackageManager();
   const { packager } = await List(
     this,
     "packager",
