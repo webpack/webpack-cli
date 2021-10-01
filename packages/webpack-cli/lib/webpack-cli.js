@@ -260,7 +260,7 @@ class WebpackCLI {
         Module.prototype._compile = this._originalModuleCompile;
       }
 
-      const dynamicImportLoader = require("./utils/dynamic-import-loader");
+      const dynamicImportLoader = require("./utils/dynamic-import-loader")();
 
       if (this._originalModuleCompile) {
         Module.prototype._compile = previousModuleCompile;
@@ -1128,6 +1128,7 @@ class WebpackCLI {
         try {
           loadedCommand = await this.tryRequireThenImport(pkg, false);
         } catch (error) {
+          console.log(error);
           // Ignore, command is not installed
 
           return;
@@ -1719,7 +1720,6 @@ class WebpackCLI {
         if (error.failures) {
           this.logger.error(`Unable load '${configPath}'`);
           this.logger.error(error.message);
-
           error.failures.forEach((failure) => {
             this.logger.error(failure.error.message);
           });
