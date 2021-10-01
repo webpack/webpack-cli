@@ -1699,91 +1699,93 @@ class WebpackCLI {
     await this.program.parseAsync(args, parseOptions);
   }
 
-  async loadConfig(configPath, argv = {}) {
-    const ext = path.extname(configPath);
+  async loadConfig(options) {
     const interpret = require("interpret");
-    const interpreted = Object.keys(interpret.jsVariants).find((variant) => variant === ext);
+    const loadConfigByPath = async (configPath, argv = {}) => {
+      const ext = path.extname(configPath);
+      const interpreted = Object.keys(interpret.jsVariants).find((variant) => variant === ext);
 
-    if (interpreted) {
-      const rechoir = require("rechoir");
+      if (interpreted) {
+        const rechoir = require("rechoir");
 
-      try {
-        rechoir.prepare(interpret.extensions, configPath);
-      } catch (error) {
-        if (error.failures) {
-          this.logger.error(`Unable load '${configPath}'`);
-          this.logger.error(error.message);
-          error.failures.forEach((failure) => {
-            this.logger.error(failure.error.message);
-          });
-          this.logger.error("Please install one of them");
+        try {
+          rechoir.prepare(interpret.extensions, configPath);
+        } catch (error) {
+          if (error.failures) {
+            this.logger.error(`Unable load '${configPath}'`);
+            this.logger.error(error.message);
+            error.failures.forEach((failure) => {
+              this.logger.error(failure.error.message);
+            });
+            this.logger.error("Please install one of them");
+            process.exit(2);
+          }
+
+          this.logger.error(error);
           process.exit(2);
         }
+      }
 
-        this.logger.error(error);
+      let options;
+
+      try {
+        options = await this.tryRequireThenImport(configPath, false);
+      } catch (error) {
+        this.logger.error(`Failed to load '${configPath}' config`);
+
+        if (this.isValidationError(error)) {
+          this.logger.error(error.message);
+        } else {
+          this.logger.error(error);
+        }
+
         process.exit(2);
       }
-    }
 
-    let options;
+      if (Array.isArray(options)) {
+        await Promise.all(
+          options.map(async (_, i) => {
+            if (typeof options[i].then === "function") {
+              options[i] = await options[i];
+            }
 
-    try {
-      options = await this.tryRequireThenImport(configPath, false);
-    } catch (error) {
-      this.logger.error(`Failed to load '${configPath}' config`);
-
-      if (this.isValidationError(error)) {
-        this.logger.error(error.message);
+            // `Promise` may return `Function`
+            if (typeof options[i] === "function") {
+              // when config is a function, pass the env from args to the config function
+              options[i] = await options[i](argv.env, argv);
+            }
+          }),
+        );
       } else {
-        this.logger.error(error);
+        if (typeof options.then === "function") {
+          options = await options;
+        }
+
+        // `Promise` may return `Function`
+        if (typeof options === "function") {
+          // when config is a function, pass the env from args to the config function
+          options = await options(argv.env, argv);
+        }
       }
 
-      process.exit(2);
-    }
+      const isObject = (value) => typeof value === "object" && value !== null;
 
-    if (Array.isArray(options)) {
-      await Promise.all(
-        options.map(async (_, i) => {
-          if (typeof options[i].then === "function") {
-            options[i] = await options[i];
-          }
+      if (!isObject(options) && !Array.isArray(options)) {
+        this.logger.error(`Invalid configuration in '${configPath}'`);
 
-          // `Promise` may return `Function`
-          if (typeof options[i] === "function") {
-            // when config is a function, pass the env from args to the config function
-            options[i] = await options[i](argv.env, argv);
-          }
-        }),
-      );
-    } else {
-      if (typeof options.then === "function") {
-        options = await options;
+        process.exit(2);
       }
 
-      // `Promise` may return `Function`
-      if (typeof options === "function") {
-        // when config is a function, pass the env from args to the config function
-        options = await options(argv.env, argv);
-      }
-    }
+      return { options, path: configPath };
+    };
 
-    const isObject = (value) => typeof value === "object" && value !== null;
-
-    if (!isObject(options) && !Array.isArray(options)) {
-      this.logger.error(`Invalid configuration in '${configPath}'`);
-
-      process.exit(2);
-    }
-
-    return { options, path: configPath };
-  }
-
-  async resolveConfig(options) {
     const config = { options: {}, path: new WeakMap() };
 
     if (options.config && options.config.length > 0) {
       const loadedConfigs = await Promise.all(
-        options.config.map((configPath) => this.loadConfig(path.resolve(configPath), options.argv)),
+        options.config.map((configPath) =>
+          loadConfigByPath(path.resolve(configPath), options.argv),
+        ),
       );
 
       config.options = [];
@@ -1819,8 +1821,6 @@ class WebpackCLI {
 
       config.options = config.options.length === 1 ? config.options[0] : config.options;
     } else {
-      const interpret = require("interpret");
-
       // Order defines the priority, in decreasing order
       const defaultConfigFiles = [
         "webpack.config",
@@ -1849,7 +1849,7 @@ class WebpackCLI {
       }
 
       if (foundDefaultConfigFile) {
-        const loadedConfig = await this.loadConfig(foundDefaultConfigFile.path, options.argv);
+        const loadedConfig = await loadConfigByPath(foundDefaultConfigFile.path, options.argv);
 
         config.options = loadedConfig.options;
 
@@ -2198,11 +2198,8 @@ class WebpackCLI {
       process.env.NODE_ENV = options.nodeEnv;
     }
 
-    let config = await this.resolveConfig(options);
-
-    console.time("build-config");
+    let config = await this.loadConfig(options);
     config = await this.buildConfig(config, options);
-    console.timeEnd("build-config");
 
     let compiler;
 
