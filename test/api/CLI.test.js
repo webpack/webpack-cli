@@ -1704,6 +1704,7 @@ describe("CLI API", () => {
       exitSpy = jest.spyOn(process, "exit").mockImplementation(() => {});
 
       cli.program.option("--color [value]", "any color", "blue");
+
       await new Promise((resolve, reject) => {
         try {
           cli.run(["help", "--color"], { from: "user" });

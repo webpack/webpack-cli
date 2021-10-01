@@ -10,6 +10,7 @@ const getFiles = (dir) => {
   return fs.readdirSync(dir).reduce((list, file) => {
     const filePath = path.join(dir, file);
     const isDir = fs.statSync(filePath).isDirectory();
+
     return list.concat(isDir ? getFiles(filePath) : filePath);
   }, []);
 };
@@ -39,7 +40,7 @@ const addonGenerator = (
     public supportedTemplates: string[];
     public template: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public utils: any;
+    public cli: any;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public constructor(args: any, opts: any) {
@@ -47,7 +48,7 @@ const addonGenerator = (
 
       const { cli = {}, options } = opts || {};
 
-      this.utils = cli && cli.utils;
+      this.cli = cli;
       this.template = options.template;
       this.supportedTemplates = fs.readdirSync(templateDir);
     }
@@ -72,13 +73,16 @@ const addonGenerator = (
 				Your project must be inside a folder named ${this.props.name}
 				I will create this folder for you.
                 `);
+
         const pathToProjectDir: string = this.destinationPath(this.props.name);
+
         try {
           fs.mkdirSync(pathToProjectDir, { recursive: true });
         } catch (error) {
-          this.utils.logger.error("Failed to create directory");
-          this.utils.logger.error(error);
+          this.cli.logger.error("Failed to create directory");
+          this.cli.logger.error(error);
         }
+
         this.destinationRoot(pathToProjectDir);
       }
     }
@@ -92,11 +96,13 @@ const addonGenerator = (
       );
 
       let files = [];
+
       try {
         // An array of file paths (relative to `./templates`) of files to be copied to the generated project
         files = getFiles(this.resolvedTemplatePath);
       } catch (error) {
-        this.utils.logger.error(`Failed to generate starter template.\n ${error}`);
+        this.cli.logger.error(`Failed to generate starter template.\n ${error}`);
+
         process.exit(2);
       }
 

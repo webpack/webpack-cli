@@ -2,17 +2,17 @@ const fs = require("fs");
 const path = require("path");
 const { pathToFileURL } = require("url");
 const Module = require("module");
+const util = require("util");
 
 const { program, Option } = require("commander");
-const utils = require("./utils");
 
 const WEBPACK_PACKAGE = process.env.WEBPACK_PACKAGE || "webpack";
 const WEBPACK_DEV_SERVER_PACKAGE = process.env.WEBPACK_DEV_SERVER_PACKAGE || "webpack-dev-server";
 
 class WebpackCLI {
   constructor() {
-    this.logger = utils.logger;
-    this.utils = utils;
+    this.colors = this.createColors();
+    this.logger = this.getLogger();
 
     // Initialize program
     this.program = program;
@@ -20,8 +20,229 @@ class WebpackCLI {
     this.program.configureOutput({
       writeErr: this.logger.error,
       outputError: (str, write) =>
-        write(`Error: ${this.utils.capitalizeFirstLetter(str.replace(/^error:/, "").trim())}`),
+        write(`Error: ${this.capitalizeFirstLetter(str.replace(/^error:/, "").trim())}`),
     });
+  }
+
+  capitalizeFirstLetter(str) {
+    if (typeof str !== "string") {
+      return "";
+    }
+
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  toKebabCase(str) {
+    return str.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
+  }
+
+  createColors(useColor) {
+    const { createColors, isColorSupported } = require("colorette");
+
+    let shouldUseColor;
+
+    if (useColor) {
+      shouldUseColor = useColor;
+    } else {
+      shouldUseColor = isColorSupported;
+
+      // CLI may failed before parsing arguments, we should respect colors/no colors in logger
+      if (process.argv.includes("--no-color")) {
+        shouldUseColor = false;
+      } else if (process.argv.includes("--color")) {
+        shouldUseColor = true;
+      }
+    }
+
+    return { ...createColors({ useColor: shouldUseColor }), isColorSupported: shouldUseColor };
+  }
+
+  getLogger() {
+    return {
+      error: (val) => console.error(`[webpack-cli] ${this.colors.red(util.format(val))}`),
+      warn: (val) => console.warn(`[webpack-cli] ${this.colors.yellow(val)}`),
+      info: (val) => console.info(`[webpack-cli] ${this.colors.cyan(val)}`),
+      success: (val) => console.log(`[webpack-cli] ${this.colors.green(val)}`),
+      log: (val) => console.log(`[webpack-cli] ${val}`),
+      raw: (val) => console.log(val),
+    };
+  }
+
+  checkPackageExists(packageName) {
+    if (process.versions.pnp) {
+      return true;
+    }
+
+    let dir = __dirname;
+
+    do {
+      try {
+        if (fs.statSync(path.join(dir, "node_modules", packageName)).isDirectory()) {
+          return true;
+        }
+      } catch (_error) {
+        // Nothing
+      }
+    } while (dir !== (dir = path.dirname(dir)));
+
+    return false;
+  }
+
+  getAvailablePackageManagers() {
+    const { sync } = require("execa");
+    const installers = ["npm", "yarn", "pnpm"];
+    const hasPackageManagerInstalled = (packageManager) => {
+      try {
+        sync(packageManager, ["--version"]);
+
+        return packageManager;
+      } catch (err) {
+        return false;
+      }
+    };
+    const availableInstallers = installers.filter((installer) =>
+      hasPackageManagerInstalled(installer),
+    );
+
+    if (!availableInstallers.length) {
+      this.logger.error("No package manager found.");
+
+      process.exit(2);
+    }
+
+    return availableInstallers;
+  }
+
+  getDefaultPackageManager() {
+    const { sync } = require("execa");
+    const hasLocalNpm = fs.existsSync(path.resolve(process.cwd(), "package-lock.json"));
+
+    if (hasLocalNpm) {
+      return "npm";
+    }
+
+    const hasLocalYarn = fs.existsSync(path.resolve(process.cwd(), "yarn.lock"));
+
+    if (hasLocalYarn) {
+      return "yarn";
+    }
+
+    const hasLocalPnpm = fs.existsSync(path.resolve(process.cwd(), "pnpm-lock.yaml"));
+
+    if (hasLocalPnpm) {
+      return "pnpm";
+    }
+
+    try {
+      // the sync function below will fail if npm is not installed,
+      // an error will be thrown
+      if (sync("npm", ["--version"])) {
+        return "npm";
+      }
+    } catch (e) {
+      // Nothing
+    }
+
+    try {
+      // the sync function below will fail if yarn is not installed,
+      // an error will be thrown
+      if (sync("yarn", ["--version"])) {
+        return "yarn";
+      }
+    } catch (e) {
+      // Nothing
+    }
+
+    try {
+      // the sync function below will fail if pnpm is not installed,
+      // an error will be thrown
+      if (sync("pnpm", ["--version"])) {
+        return "pnpm";
+      }
+    } catch (e) {
+      this.logger.error("No package manager found.");
+
+      process.exit(2);
+    }
+  }
+
+  async doInstall(packageName, options = {}) {
+    const packageManager = this.getDefaultPackageManager();
+
+    if (!packageManager) {
+      this.logger.error("Can't find package manager");
+
+      process.exit(2);
+    }
+
+    if (options.preMessage) {
+      options.preMessage();
+    }
+
+    // yarn uses 'add' command, rest npm and pnpm both use 'install'
+    const commandToBeRun = `${packageManager} ${[
+      packageManager === "yarn" ? "add" : "install",
+      "-D",
+      packageName,
+    ].join(" ")}`;
+
+    const prompt = ({ message, defaultResponse, stream }) => {
+      const readline = require("readline");
+      const rl = readline.createInterface({
+        input: process.stdin,
+        output: stream,
+      });
+
+      return new Promise((resolve) => {
+        rl.question(`${message} `, (answer) => {
+          // Close the stream
+          rl.close();
+
+          const response = (answer || defaultResponse).toLowerCase();
+
+          // Resolve with the input response
+          if (response === "y" || response === "yes") {
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        });
+      });
+    };
+
+    let needInstall;
+
+    try {
+      needInstall = await prompt({
+        message: `[webpack-cli] Would you like to install '${this.colors.green(
+          packageName,
+        )}' package? (That will run '${this.colors.green(commandToBeRun)}') (${this.colors.yellow(
+          "Y/n",
+        )})`,
+        defaultResponse: "Y",
+        stream: process.stderr,
+      });
+    } catch (error) {
+      this.logger.error(error);
+
+      process.exit(error);
+    }
+
+    if (needInstall) {
+      const execa = require("execa");
+
+      try {
+        await execa(commandToBeRun, [], { stdio: "inherit", shell: true });
+      } catch (error) {
+        this.logger.error(error);
+
+        process.exit(2);
+      }
+
+      return packageName;
+    }
+
+    process.exit(2);
   }
 
   async tryRequireThenImport(module, handleError = true) {
@@ -39,7 +260,7 @@ class WebpackCLI {
         Module.prototype._compile = this._originalModuleCompile;
       }
 
-      const dynamicImportLoader = this.utils.dynamicImportLoader();
+      const dynamicImportLoader = require("./utils/dynamic-import-loader")();
 
       if (this._originalModuleCompile) {
         Module.prototype._compile = previousModuleCompile;
@@ -138,8 +359,7 @@ class WebpackCLI {
 
     if (commandOptions.dependencies && commandOptions.dependencies.length > 0) {
       for (const dependency of commandOptions.dependencies) {
-        const { packageExists } = this.utils;
-        const isPkgExist = packageExists(dependency);
+        const isPkgExist = this.checkPackageExists(dependency);
 
         if (isPkgExist) {
           continue;
@@ -164,12 +384,14 @@ class WebpackCLI {
           continue;
         }
 
-        await this.utils.promptInstallation(dependency, () => {
-          this.logger.error(
-            `For using '${this.utils.colors.green(
-              commandOptions.name.split(" ")[0],
-            )}' command you need to install: '${this.utils.colors.green(dependency)}' package.`,
-          );
+        await this.doInstall(dependency, {
+          preMessage: () => {
+            this.logger.error(
+              `For using '${this.colors.green(
+                commandOptions.name.split(" ")[0],
+              )}' command you need to install: '${this.colors.green(dependency)}' package.`,
+            );
+          },
         });
       }
     }
@@ -887,17 +1109,17 @@ class WebpackCLI {
           pkg = commandName;
         }
 
-        if (pkg !== "webpack-cli" && !this.utils.packageExists(pkg)) {
+        if (pkg !== "webpack-cli" && !this.checkPackageExists(pkg)) {
           if (!allowToInstall) {
             return;
           }
 
-          const { promptInstallation, colors } = this.utils;
-
-          pkg = await promptInstallation(pkg, () => {
-            this.logger.error(
-              `For using this command you need to install: '${colors.green(pkg)}' package.`,
-            );
+          pkg = await this.doInstall(pkg, {
+            preMessage: () => {
+              this.logger.error(
+                `For using this command you need to install: '${this.colors.green(pkg)}' package.`,
+              );
+            },
           });
         }
 
@@ -906,6 +1128,7 @@ class WebpackCLI {
         try {
           loadedCommand = await this.tryRequireThenImport(pkg, false);
         } catch (error) {
+          console.log(error);
           // Ignore, command is not installed
 
           return;
@@ -964,11 +1187,10 @@ class WebpackCLI {
               process.exit(2);
             }
 
+            const levenshtein = require("fastest-levenshtein");
+
             command.options.forEach((option) => {
-              if (
-                !option.hidden &&
-                this.utils.levenshtein.distance(name, option.long.slice(2)) < 3
-              ) {
+              if (!option.hidden && levenshtein.distance(name, option.long.slice(2)) < 3) {
                 this.logger.error(`Did you mean '--${option.name()}'?`);
               }
             });
@@ -992,15 +1214,15 @@ class WebpackCLI {
     this.program.on("option:color", function () {
       const { color } = this.opts();
 
-      cli.utils.colors.options.changed = true;
-      cli.utils.colors.options.enabled = color;
+      cli.isColorSupportChanged = color;
+      cli.colors = cli.createColors(color);
     });
     this.program.option("--no-color", "Disable colors on console.");
     this.program.on("option:no-color", function () {
       const { color } = this.opts();
 
-      cli.utils.colors.options.changed = true;
-      cli.utils.colors.options.enabled = color;
+      cli.isColorSupportChanged = color;
+      cli.colors = cli.createColors(color);
     });
 
     // Make `-v, --version` options
@@ -1082,8 +1304,7 @@ class WebpackCLI {
     );
 
     const outputHelp = async (options, isVerbose, isHelpCommandSyntax, program) => {
-      const { bold } = this.utils.colors;
-
+      const { bold } = this.colors;
       const outputIncorrectUsageOfHelp = () => {
         this.logger.error("Incorrect use of help");
         this.logger.error(
@@ -1108,7 +1329,7 @@ class WebpackCLI {
             }
 
             if (isGlobalHelp) {
-              return `${parentCmdNames}${command.usage()}\n${this.utils.colors.bold(
+              return `${parentCmdNames}${command.usage()}\n${bold(
                 "Alternative usage to run commands:",
               )} ${parentCmdNames}[command] [options]`;
             }
@@ -1458,9 +1679,10 @@ class WebpackCLI {
         } else {
           this.logger.error(`Unknown command or entry '${operand}'`);
 
+          const levenshtein = require("fastest-levenshtein");
           const found = knownCommands.find(
             (commandOptions) =>
-              this.utils.levenshtein.distance(operand, getCommandName(commandOptions.name)) < 3,
+              levenshtein.distance(operand, getCommandName(commandOptions.name)) < 3,
           );
 
           if (found) {
@@ -1485,12 +1707,12 @@ class WebpackCLI {
   }
 
   async loadConfig(configPath, argv = {}) {
-    const { interpret } = this.utils;
     const ext = path.extname(configPath);
+    const interpret = require("interpret");
     const interpreted = Object.keys(interpret.jsVariants).find((variant) => variant === ext);
 
     if (interpreted) {
-      const { rechoir } = this.utils;
+      const rechoir = require("rechoir");
 
       try {
         rechoir.prepare(interpret.extensions, configPath);
@@ -1498,7 +1720,6 @@ class WebpackCLI {
         if (error.failures) {
           this.logger.error(`Unable load '${configPath}'`);
           this.logger.error(error.message);
-
           error.failures.forEach((failure) => {
             this.logger.error(failure.error.message);
           });
@@ -1605,7 +1826,7 @@ class WebpackCLI {
 
       config.options = config.options.length === 1 ? config.options[0] : config.options;
     } else {
-      const { interpret } = this.utils;
+      const interpret = require("interpret");
 
       // Order defines the priority, in decreasing order
       const defaultConfigFiles = [
@@ -1720,17 +1941,17 @@ class WebpackCLI {
   // TODO refactor
   async applyOptions(config, options) {
     if (options.analyze) {
-      if (!this.utils.packageExists("webpack-bundle-analyzer")) {
-        const { promptInstallation, colors } = this.utils;
-
-        await promptInstallation("webpack-bundle-analyzer", () => {
-          this.logger.error(
-            `It looks like ${colors.yellow("webpack-bundle-analyzer")} is not installed.`,
-          );
+      if (!this.checkPackageExists("webpack-bundle-analyzer")) {
+        await this.doInstall("webpack-bundle-analyzer", {
+          preMessage: () => {
+            this.logger.error(
+              `It looks like ${this.colors.yellow("webpack-bundle-analyzer")} is not installed.`,
+            );
+          },
         });
 
         this.logger.success(
-          `${colors.yellow("webpack-bundle-analyzer")} was installed successfully.`,
+          `${this.colors.yellow("webpack-bundle-analyzer")} was installed successfully.`,
         );
       }
     }
@@ -1787,7 +2008,7 @@ class WebpackCLI {
             return accumulator;
           }
 
-          const kebabName = this.utils.toKebabCase(name);
+          const kebabName = this.toKebabCase(name);
 
           if (args[kebabName]) {
             accumulator[kebabName] = options[name];
@@ -1813,7 +2034,7 @@ class WebpackCLI {
 
             problems.forEach((problem) => {
               this.logger.error(
-                `${this.utils.capitalizeFirstLetter(problem.type.replace(/-/g, " "))}${
+                `${this.capitalizeFirstLetter(problem.type.replace(/-/g, " "))}${
                   problem.value ? ` '${problem.value}'` : ""
                 } for the '--${problem.argument}' option${
                   problem.index ? ` by index '${problem.index}'` : ""
@@ -1962,8 +2183,8 @@ class WebpackCLI {
       let colors;
 
       // From arguments
-      if (typeof this.utils.colors.options.changed !== "undefined") {
-        colors = Boolean(this.utils.colors.options.enabled);
+      if (typeof this.isColorSupportChanged !== "undefined") {
+        colors = Boolean(this.isColorSupportChanged);
       }
       // From stats
       else if (typeof configOptions.stats.colors !== "undefined") {
@@ -1971,7 +2192,7 @@ class WebpackCLI {
       }
       // Default
       else {
-        colors = Boolean(this.utils.colors.options.enabled);
+        colors = Boolean(this.colors.isColorSupported);
       }
 
       configOptions.stats.colors = colors;
@@ -2132,13 +2353,13 @@ class WebpackCLI {
             .pipe(fs.createWriteStream(options.json))
             .on("error", handleWriteError)
             // Use stderr to logging
-            .on("close", () =>
+            .on("close", () => {
               process.stderr.write(
-                `[webpack-cli] ${this.utils.colors.green(
+                `[webpack-cli] ${this.colors.green(
                   `stats are successfully stored as json to ${options.json}`,
                 )}\n`,
-              ),
-            );
+              );
+            });
         }
       } else {
         const printedStats = stats.toString(statsOptions);
