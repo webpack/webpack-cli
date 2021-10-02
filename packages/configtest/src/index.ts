@@ -15,7 +15,7 @@ class ConfigTestCommand {
       async (configPath: string | undefined): Promise<void> => {
         cli.webpack = await cli.loadWebpack();
 
-        const config = await cli.resolveConfig(configPath ? { config: [configPath] } : {});
+        const config = await cli.loadConfig(configPath ? { config: [configPath] } : {});
         const configPaths = new Set<string>();
 
         if (Array.isArray(config.options)) {
