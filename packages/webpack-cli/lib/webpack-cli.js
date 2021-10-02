@@ -2122,7 +2122,18 @@ class WebpackCLI {
       if (statsForWebpack4) {
         if (typeof item.stats === "undefined") {
           item.stats = {};
-        } else if (typeof item.stats === "boolean" || typeof item.stats === "string") {
+        } else if (typeof item.stats === "boolean") {
+          item.stats = this.webpack.Stats.presetToOptions(item.stats);
+        } else if (
+          typeof item.stats === "string" &&
+          (item.stats === "none" ||
+            item.stats === "verbose" ||
+            item.stats === "detailed" ||
+            item.stats === "normal" ||
+            item.stats === "minimal" ||
+            item.stats === "errors-only" ||
+            item.stats === "errors-warnings")
+        ) {
           item.stats = this.webpack.Stats.presetToOptions(item.stats);
         }
       } else {
@@ -2150,7 +2161,10 @@ class WebpackCLI {
         colors = Boolean(this.colors.isColorSupported);
       }
 
-      item.stats.colors = colors;
+      // TODO remove after drop webpack v4
+      if (typeof item.stats === "object" && item.stats !== null) {
+        item.stats.colors = colors;
+      }
 
       // Apply CLI plugin
       if (!item.plugins) {
