@@ -2054,8 +2054,8 @@ class WebpackCLI {
             }
 
             if (Array.isArray(configPath)) {
-              configPath.forEach((item) => {
-                item.cache.buildDependencies.defaultConfig.push(item);
+              configPath.forEach((oneOfConfigPath) => {
+                item.cache.buildDependencies.defaultConfig.push(oneOfConfigPath);
               });
             } else {
               item.cache.buildDependencies.defaultConfig.push(configPath);
