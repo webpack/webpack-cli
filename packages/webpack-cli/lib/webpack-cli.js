@@ -45,13 +45,6 @@ class WebpackCLI {
       shouldUseColor = useColor;
     } else {
       shouldUseColor = isColorSupported;
-
-      // CLI may failed before parsing arguments, we should respect colors/no colors in logger
-      if (process.argv.includes("--no-color")) {
-        shouldUseColor = false;
-      } else if (process.argv.includes("--color")) {
-        shouldUseColor = true;
-      }
     }
 
     return { ...createColors({ useColor: shouldUseColor }), isColorSupported: shouldUseColor };
