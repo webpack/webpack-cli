@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/generators@2.3.0...@webpack-cli/generators@2.4.0) (2021-10-06)
+
+### Bug Fixes
+
+- npx init ([#2980](https://github.com/webpack/webpack-cli/issues/2980)) ([1d38499](https://github.com/webpack/webpack-cli/commit/1d38499b4d0cee5bfb0c02c92e691aa6702b91cc))
+
+### Features
+
+- allow to run commands without webpack installation where it is unnecessary ([#2907](https://github.com/webpack/webpack-cli/issues/2907)) ([603041d](https://github.com/webpack/webpack-cli/commit/603041d7e6a9b764bd79d1a8effd22a3e0f019cb))
+
 # [2.3.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/generators@2.2.0...@webpack-cli/generators@2.3.0) (2021-08-15)
 
 ### Features
