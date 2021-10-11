@@ -528,15 +528,6 @@ class WebpackCLI {
                 ],
                 description: "Print compilation progress during build.",
             },
-            {
-                name: "prefetch",
-                configs: [
-                    {
-                        type: "string",
-                    },
-                ],
-                description: "Prefetch this request.",
-            },
 
             // Output options
             {
@@ -1847,7 +1838,6 @@ class WebpackCLI {
                     configPath: config.path.get(options),
                     helpfulOutput: !cliOptions.json,
                     progress: cliOptions.progress,
-                    prefetch: cliOptions.prefetch,
                     analyze: cliOptions.analyze,
                 }),
             );
