@@ -6,8 +6,6 @@ const Module = require("module");
 
 const originalModuleCompile = Module.prototype._compile;
 
-require("v8-compile-cache");
-
 const importLocal = require("import-local");
 const runCLI = require("../lib/bootstrap");
 
