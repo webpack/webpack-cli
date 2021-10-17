@@ -2,10 +2,6 @@
 
 "use strict";
 
-const Module = require("module");
-
-const originalModuleCompile = Module.prototype._compile;
-
 const importLocal = require("import-local");
 const runCLI = require("../lib/bootstrap");
 
@@ -18,4 +14,4 @@ if (!process.env.WEBPACK_CLI_SKIP_IMPORT_LOCAL) {
 
 process.title = "webpack";
 
-runCLI(process.argv, originalModuleCompile);
+runCLI(process.argv);
