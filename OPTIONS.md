@@ -21,6 +21,8 @@ Options:
   --no-bail                                                                          Negative 'bail' option.
   --cache                                                                            Enable in memory caching. Disable caching.
   --no-cache                                                                         Negative 'cache' option.
+  --cache-cache-unaffected                                                           Additionally cache computation of modules that are unchanged and reference only unchanged modules.
+  --no-cache-cache-unaffected                                                        Negative 'cache-cache-unaffected' option.
   --cache-max-generations <value>                                                    Number of generations unused cache entries stay in memory cache at minimum (1 = may be removed after unused for a single compilation, ..., Infinity: kept forever).
   --cache-type <value>                                                               In memory caching. Filesystem caching.
   --cache-allow-collecting-memory                                                    Allows to collect unused memory allocated during deserialization. This requires copying data into smaller buffers and has a performance cost.
@@ -39,6 +41,8 @@ Options:
   --cache-managed-paths-reset                                                        Clear all items provided in 'cache.managedPaths' configuration. List of paths that are managed by a package manager and can be trusted to not be modified otherwise.
   --cache-max-age <value>                                                            Time for which unused cache entries stay in the filesystem cache at minimum (in milliseconds).
   --cache-max-memory-generations <value>                                             Number of generations unused cache entries stay in memory cache at minimum (0 = no memory cache used, 1 = may be removed after unused for a single compilation, ..., Infinity: kept forever). Cache entries will be deserialized from disk when removed from memory cache.
+  --cache-memory-cache-unaffected                                                    Additionally cache computation of modules that are unchanged and reference only unchanged modules in memory.
+  --no-cache-memory-cache-unaffected                                                 Negative 'cache-memory-cache-unaffected' option.
   --cache-name <value>                                                               Name for the cache. Different names will lead to different coexisting caches.
   --cache-profile                                                                    Track and log detailed timing information for individual cache items.
   --no-cache-profile                                                                 Negative 'cache-profile' option.
@@ -64,8 +68,10 @@ Options:
   --experiments-build-http-lockfile-location <value>                                 Location of the lockfile.
   --experiments-build-http-upgrade                                                   When set, resources of existing lockfile entries will be fetched and entries will be upgraded when resource content has changed.
   --no-experiments-build-http-upgrade                                                Negative 'experiments-build-http-upgrade' option.
-  --experiments-execute-module                                                       Enable build-time execution of modules from the module graph for plugins and loaders.
-  --no-experiments-execute-module                                                    Negative 'experiments-execute-module' option.
+  --experiments-cache-unaffected                                                     Enable additional in memory caching of modules that are unchanged and reference only unchanged modules.
+  --no-experiments-cache-unaffected                                                  Negative 'experiments-cache-unaffected' option.
+  --experiments-future-defaults                                                      Apply defaults of next major version.
+  --no-experiments-future-defaults                                                   Negative 'experiments-future-defaults' option.
   --experiments-layers                                                               Enable module and chunk layers.
   --no-experiments-layers                                                            Negative 'experiments-layers' option.
   --experiments-lazy-compilation                                                     Compile entrypoints and import()s only when they are accessed.
@@ -162,7 +168,7 @@ Options:
   --no-module-parser-javascript-node-dirname                                         Negative 'module-parser-javascript-node-dirname' option.
   --module-parser-javascript-node-filename [value]                                   Include a polyfill for the '__filename' variable.
   --no-module-parser-javascript-node-filename                                        Negative 'module-parser-javascript-node-filename' option.
-  --module-parser-javascript-node-global                                             Include a polyfill for the 'global' variable.
+  --module-parser-javascript-node-global [value]                                     Include a polyfill for the 'global' variable.
   --no-module-parser-javascript-node-global                                          Negative 'module-parser-javascript-node-global' option.
   --module-parser-javascript-require-context                                         Enable/disable parsing of require.context syntax.
   --no-module-parser-javascript-require-context                                      Negative 'module-parser-javascript-require-context' option.
@@ -218,7 +224,7 @@ Options:
   --no-module-parser-javascript-auto-node-dirname                                    Negative 'module-parser-javascript-auto-node-dirname' option.
   --module-parser-javascript-auto-node-filename [value]                              Include a polyfill for the '__filename' variable.
   --no-module-parser-javascript-auto-node-filename                                   Negative 'module-parser-javascript-auto-node-filename' option.
-  --module-parser-javascript-auto-node-global                                        Include a polyfill for the 'global' variable.
+  --module-parser-javascript-auto-node-global [value]                                Include a polyfill for the 'global' variable.
   --no-module-parser-javascript-auto-node-global                                     Negative 'module-parser-javascript-auto-node-global' option.
   --module-parser-javascript-auto-require-context                                    Enable/disable parsing of require.context syntax.
   --no-module-parser-javascript-auto-require-context                                 Negative 'module-parser-javascript-auto-require-context' option.
@@ -274,7 +280,7 @@ Options:
   --no-module-parser-javascript-dynamic-node-dirname                                 Negative 'module-parser-javascript-dynamic-node-dirname' option.
   --module-parser-javascript-dynamic-node-filename [value]                           Include a polyfill for the '__filename' variable.
   --no-module-parser-javascript-dynamic-node-filename                                Negative 'module-parser-javascript-dynamic-node-filename' option.
-  --module-parser-javascript-dynamic-node-global                                     Include a polyfill for the 'global' variable.
+  --module-parser-javascript-dynamic-node-global [value]                             Include a polyfill for the 'global' variable.
   --no-module-parser-javascript-dynamic-node-global                                  Negative 'module-parser-javascript-dynamic-node-global' option.
   --module-parser-javascript-dynamic-require-context                                 Enable/disable parsing of require.context syntax.
   --no-module-parser-javascript-dynamic-require-context                              Negative 'module-parser-javascript-dynamic-require-context' option.
@@ -330,7 +336,7 @@ Options:
   --no-module-parser-javascript-esm-node-dirname                                     Negative 'module-parser-javascript-esm-node-dirname' option.
   --module-parser-javascript-esm-node-filename [value]                               Include a polyfill for the '__filename' variable.
   --no-module-parser-javascript-esm-node-filename                                    Negative 'module-parser-javascript-esm-node-filename' option.
-  --module-parser-javascript-esm-node-global                                         Include a polyfill for the 'global' variable.
+  --module-parser-javascript-esm-node-global [value]                                 Include a polyfill for the 'global' variable.
   --no-module-parser-javascript-esm-node-global                                      Negative 'module-parser-javascript-esm-node-global' option.
   --module-parser-javascript-esm-require-context                                     Enable/disable parsing of require.context syntax.
   --no-module-parser-javascript-esm-require-context                                  Negative 'module-parser-javascript-esm-require-context' option.
@@ -424,7 +430,7 @@ Options:
   --no-node-dirname                                                                  Negative 'node-dirname' option.
   --node-filename [value]                                                            Include a polyfill for the '__filename' variable.
   --no-node-filename                                                                 Negative 'node-filename' option.
-  --node-global                                                                      Include a polyfill for the 'global' variable.
+  --node-global [value]                                                              Include a polyfill for the 'global' variable.
   --no-node-global                                                                   Negative 'node-global' option.
   --optimization-check-wasm-types                                                    Check for incompatible wasm types when importing/exporting from/to ESM.
   --no-optimization-check-wasm-types                                                 Negative 'optimization-check-wasm-types' option.
