@@ -1,7 +1,6 @@
 const fs = require("fs");
 const path = require("path");
 const { pathToFileURL } = require("url");
-const Module = require("module");
 const util = require("util");
 
 const { program, Option } = require("commander");
@@ -244,21 +243,7 @@ class WebpackCLI {
     try {
       result = require(module);
     } catch (error) {
-      let previousModuleCompile;
-
-      // TODO Workaround https://github.com/zertosh/v8-compile-cache/issues/30
-      if (this._originalModuleCompile) {
-        previousModuleCompile = Module.prototype._compile;
-
-        Module.prototype._compile = this._originalModuleCompile;
-      }
-
       const dynamicImportLoader = require("./utils/dynamic-import-loader")();
-
-      if (this._originalModuleCompile) {
-        Module.prototype._compile = previousModuleCompile;
-      }
-
       if (
         (error.code === "ERR_REQUIRE_ESM" || process.env.WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG) &&
         pathToFileURL &&
