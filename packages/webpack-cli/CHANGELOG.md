@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.9.1](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.9.0...webpack-cli@4.9.1) (2021-10-18)
+
+### Bug Fixes
+
+- compatibility with dynamic `import` ([#3006](https://github.com/webpack/webpack-cli/issues/3006)) ([6a9aac9](https://github.com/webpack/webpack-cli/commit/6a9aac99665f0d2f2f0c58c757c6befbc7734c8f))
+
 # [4.9.0](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.8.0...webpack-cli@4.9.0) (2021-10-06)
 
 ### Bug Fixes
