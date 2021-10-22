@@ -35,9 +35,9 @@ Options:
   --cache-idle-timeout <value>                                                       Time in ms after which idle period the cache storing should happen.
   --cache-idle-timeout-after-large-changes <value>                                   Time in ms after which idle period the cache storing should happen when larger changes has been detected (cumulative build time > 2 x avg cache store time).
   --cache-idle-timeout-for-initial-store <value>                                     Time in ms after which idle period the initial cache storing should happen.
-  --cache-immutable-paths <value...>                                                 A path to a immutable directory (usually a package manager cache directory).
+  --cache-immutable-paths <value...>                                                 A RegExp matching a immutable directory (usually a package manager cache directory, including the tailing slash) A path to a immutable directory (usually a package manager cache directory).
   --cache-immutable-paths-reset                                                      Clear all items provided in 'cache.immutablePaths' configuration. List of paths that are managed by a package manager and contain a version or hash in its path so all files are immutable.
-  --cache-managed-paths <value...>                                                   A path to a managed directory (usually a node_modules directory).
+  --cache-managed-paths <value...>                                                   A RegExp matching a managed directory (usually a node_modules directory, including the tailing slash) A path to a managed directory (usually a node_modules directory).
   --cache-managed-paths-reset                                                        Clear all items provided in 'cache.managedPaths' configuration. List of paths that are managed by a package manager and can be trusted to not be modified otherwise.
   --cache-max-age <value>                                                            Time for which unused cache entries stay in the filesystem cache at minimum (in milliseconds).
   --cache-max-memory-generations <value>                                             Number of generations unused cache entries stay in memory cache at minimum (0 = no memory cache used, 1 = may be removed after unused for a single compilation, ..., Infinity: kept forever). Cache entries will be deserialized from disk when removed from memory cache.
@@ -59,8 +59,8 @@ Options:
   --no-experiments-asset                                                             Negative 'experiments-asset' option.
   --experiments-async-web-assembly                                                   Support WebAssembly as asynchronous EcmaScript Module.
   --no-experiments-async-web-assembly                                                Negative 'experiments-async-web-assembly' option.
-  --experiments-build-http                                                           Build http(s): urls using a lockfile and resource content cache.
-  --no-experiments-build-http                                                        Negative 'experiments-build-http' option.
+  --experiments-build-http-allowed-uris <value...>                                   Allowed URI pattern. Allowed URI (resp. the beginning of it).
+  --experiments-build-http-allowed-uris-reset                                        Clear all items provided in 'experiments.buildHttp.allowedUris' configuration. List of allowed URIs (resp. the beginning of them).
   --experiments-build-http-cache-location <value>                                    Location where resource content is stored for lockfile entries. It's also possible to disable storing by passing false.
   --no-experiments-build-http-cache-location                                         Negative 'experiments-build-http-cache-location' option.
   --experiments-build-http-frozen                                                    When set, anything that would lead to a modification of the lockfile or any resource content, will result in an error.
@@ -482,6 +482,7 @@ Options:
   --optimization-split-chunks-fallback-cache-group-max-initial-size <value>          Size of the javascript part of the chunk.
   --optimization-split-chunks-fallback-cache-group-max-size <value>                  Size of the javascript part of the chunk.
   --optimization-split-chunks-fallback-cache-group-min-size <value>                  Size of the javascript part of the chunk.
+  --optimization-split-chunks-fallback-cache-group-min-size-reduction <value>        Size of the javascript part of the chunk.
   --optimization-split-chunks-filename <value>                                       Sets the template for the filename for created chunks.
   --optimization-split-chunks-hide-path-info                                         Prevents exposing path info when creating names for parts splitted by maxSize.
   --no-optimization-split-chunks-hide-path-info                                      Negative 'optimization-split-chunks-hide-path-info' option.
@@ -493,6 +494,7 @@ Options:
   --optimization-split-chunks-min-chunks <value>                                     Minimum number of times a module has to be duplicated until it's considered for splitting.
   --optimization-split-chunks-min-remaining-size <value>                             Size of the javascript part of the chunk.
   --optimization-split-chunks-min-size <value>                                       Size of the javascript part of the chunk.
+  --optimization-split-chunks-min-size-reduction <value>                             Size of the javascript part of the chunk.
   --optimization-split-chunks-name <value>                                           Give chunks created a name (chunks with equal name are merged).
   --no-optimization-split-chunks-name                                                Negative 'optimization-split-chunks-name' option.
   --optimization-split-chunks-used-exports                                           Compare used exports when checking common modules. Modules will only be put in the same chunk when exports are equal.
@@ -722,9 +724,9 @@ Options:
   --no-snapshot-build-dependencies-hash                                              Negative 'snapshot-build-dependencies-hash' option.
   --snapshot-build-dependencies-timestamp                                            Use timestamps of the files/directories to determine invalidation.
   --no-snapshot-build-dependencies-timestamp                                         Negative 'snapshot-build-dependencies-timestamp' option.
-  --snapshot-immutable-paths <value...>                                              A path to a immutable directory (usually a package manager cache directory).
+  --snapshot-immutable-paths <value...>                                              A RegExp matching a immutable directory (usually a package manager cache directory, including the tailing slash) A path to a immutable directory (usually a package manager cache directory).
   --snapshot-immutable-paths-reset                                                   Clear all items provided in 'snapshot.immutablePaths' configuration. List of paths that are managed by a package manager and contain a version or hash in its path so all files are immutable.
-  --snapshot-managed-paths <value...>                                                A path to a managed directory (usually a node_modules directory).
+  --snapshot-managed-paths <value...>                                                A RegExp matching a managed directory (usually a node_modules directory, including the tailing slash) A path to a managed directory (usually a node_modules directory).
   --snapshot-managed-paths-reset                                                     Clear all items provided in 'snapshot.managedPaths' configuration. List of paths that are managed by a package manager and can be trusted to not be modified otherwise.
   --snapshot-module-hash                                                             Use hashes of the content of the files/directories to determine invalidation.
   --no-snapshot-module-hash                                                          Negative 'snapshot-module-hash' option.
