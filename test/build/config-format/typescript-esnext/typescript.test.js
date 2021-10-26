@@ -7,7 +7,7 @@ describe("webpack cli", () => {
   it("should support typescript esnext file", async () => {
     const isMacOS = process.platform === "darwin";
     const majorNodeVersion = process.version.slice(1, 3);
-    if (majorNodeVersion < 14) {
+    if (!majorNodeVersion.startsWith(14)) {
       expect(true).toBe(true);
 
       return;
