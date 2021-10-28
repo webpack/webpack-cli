@@ -76,7 +76,11 @@ Options:
   --no-experiments-layers                                                            Negative 'experiments-layers' option.
   --experiments-lazy-compilation                                                     Compile entrypoints and import()s only when they are accessed.
   --no-experiments-lazy-compilation                                                  Negative 'experiments-lazy-compilation' option.
-  --experiments-lazy-compilation-client <value>                                      A custom client.
+  --experiments-lazy-compilation-backend-client <value>                              A custom client.
+  --experiments-lazy-compilation-backend-listen <value>                              A port.
+  --experiments-lazy-compilation-backend-listen-host <value>                         A host.
+  --experiments-lazy-compilation-backend-listen-port <value>                         A port.
+  --experiments-lazy-compilation-backend-protocol <value>                            Specifies the protocol the client should use to connect to the server.
   --experiments-lazy-compilation-entries                                             Enable/disable lazy compilation for entries.
   --no-experiments-lazy-compilation-entries                                          Negative 'experiments-lazy-compilation-entries' option.
   --experiments-lazy-compilation-imports                                             Enable/disable lazy compilation for import() modules.
