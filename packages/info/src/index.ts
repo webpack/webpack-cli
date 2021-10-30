@@ -32,7 +32,7 @@ class InfoCommand {
           description: "To get the output in a specified format ( accept json or markdown )",
         },
         {
-          name: "additional-package",
+          name: "additional-packages",
           alias: "a",
           configs: [{ type: "string" }],
           multiple: true,
@@ -83,8 +83,8 @@ class InfoCommand {
 
         let defaultPackages: string[] = ["webpack", "loader"];
 
-        if (typeof options.additionalPackage !== "undefined") {
-          defaultPackages = [...defaultPackages, ...options.additionalPackage];
+        if (typeof options.additionalPackages !== "undefined") {
+          defaultPackages = [...defaultPackages, ...options.additionalPackages];
         }
 
         defaultInformation.npmPackages = `{${defaultPackages

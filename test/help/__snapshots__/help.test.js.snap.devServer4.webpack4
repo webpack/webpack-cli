@@ -721,14 +721,14 @@ exports[`help should show help information for 'i' command using command syntax:
 Outputs information about your system.
 
 Options:
-  -o, --output <value>                 To get the output in a specified format ( accept json or markdown )
-  -a, --additional-package <value...>  Adds additional packages to the output
+  -o, --output <value>                  To get the output in a specified format ( accept json or markdown )
+  -a, --additional-packages <value...>  Adds additional packages to the output
 
 Global options:
-  --color                              Enable colors on console.
-  --no-color                           Disable colors on console.
-  -v, --version                        Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  -h, --help [verbose]                 Display help for commands and options.
+  --color                               Enable colors on console.
+  --no-color                            Disable colors on console.
+  -v, --version                         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]                  Display help for commands and options.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -745,14 +745,14 @@ exports[`help should show help information for 'i' command using the "--help" op
 Outputs information about your system.
 
 Options:
-  -o, --output <value>                 To get the output in a specified format ( accept json or markdown )
-  -a, --additional-package <value...>  Adds additional packages to the output
+  -o, --output <value>                  To get the output in a specified format ( accept json or markdown )
+  -a, --additional-packages <value...>  Adds additional packages to the output
 
 Global options:
-  --color                              Enable colors on console.
-  --no-color                           Disable colors on console.
-  -v, --version                        Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  -h, --help [verbose]                 Display help for commands and options.
+  --color                               Enable colors on console.
+  --no-color                            Disable colors on console.
+  -v, --version                         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]                  Display help for commands and options.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -769,17 +769,17 @@ exports[`help should show help information for 'info' and respect the "--color" 
 Outputs information about your system.
 
 Options:
-  -o, --output <value>                 To get the output in a specified format
-                                       ( accept json or markdown )
-  -a, --additional-package <value...>  Adds additional packages to the output
+  -o, --output <value>                  To get the output in a specified format
+                                        ( accept json or markdown )
+  -a, --additional-packages <value...>  Adds additional packages to the output
 
 Global options:
-  --color                              Enable colors on console.
-  --no-color                           Disable colors on console.
-  -v, --version                        Output the version number of 'webpack',
-                                       'webpack-cli' and 'webpack-dev-server'
-                                       and commands.
-  -h, --help [verbose]                 Display help for commands and options.
+  --color                               Enable colors on console.
+  --no-color                            Disable colors on console.
+  -v, --version                         Output the version number of 'webpack',
+                                        'webpack-cli' and 'webpack-dev-server'
+                                        and commands.
+  -h, --help [verbose]                  Display help for commands and options.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -796,17 +796,17 @@ exports[`help should show help information for 'info' and respect the "--no-colo
 Outputs information about your system.
 
 Options:
-  -o, --output <value>                 To get the output in a specified format
-                                       ( accept json or markdown )
-  -a, --additional-package <value...>  Adds additional packages to the output
+  -o, --output <value>                  To get the output in a specified format
+                                        ( accept json or markdown )
+  -a, --additional-packages <value...>  Adds additional packages to the output
 
 Global options:
-  --color                              Enable colors on console.
-  --no-color                           Disable colors on console.
-  -v, --version                        Output the version number of 'webpack',
-                                       'webpack-cli' and 'webpack-dev-server'
-                                       and commands.
-  -h, --help [verbose]                 Display help for commands and options.
+  --color                               Enable colors on console.
+  --no-color                            Disable colors on console.
+  -v, --version                         Output the version number of 'webpack',
+                                        'webpack-cli' and 'webpack-dev-server'
+                                        and commands.
+  -h, --help [verbose]                  Display help for commands and options.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -823,14 +823,14 @@ exports[`help should show help information for 'info' command using command synt
 Outputs information about your system.
 
 Options:
-  -o, --output <value>                 To get the output in a specified format ( accept json or markdown )
-  -a, --additional-package <value...>  Adds additional packages to the output
+  -o, --output <value>                  To get the output in a specified format ( accept json or markdown )
+  -a, --additional-packages <value...>  Adds additional packages to the output
 
 Global options:
-  --color                              Enable colors on console.
-  --no-color                           Disable colors on console.
-  -v, --version                        Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  -h, --help [verbose]                 Display help for commands and options.
+  --color                               Enable colors on console.
+  --no-color                            Disable colors on console.
+  -v, --version                         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]                  Display help for commands and options.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -847,14 +847,14 @@ exports[`help should show help information for 'info' command using the "--help"
 Outputs information about your system.
 
 Options:
-  -o, --output <value>                 To get the output in a specified format ( accept json or markdown )
-  -a, --additional-package <value...>  Adds additional packages to the output
+  -o, --output <value>                  To get the output in a specified format ( accept json or markdown )
+  -a, --additional-packages <value...>  Adds additional packages to the output
 
 Global options:
-  --color                              Enable colors on console.
-  --no-color                           Disable colors on console.
-  -v, --version                        Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  -h, --help [verbose]                 Display help for commands and options.
+  --color                               Enable colors on console.
+  --no-color                            Disable colors on console.
+  -v, --version                         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]                  Display help for commands and options.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -2103,14 +2103,14 @@ exports[`help should show help information with options for sub commands: stdout
 Outputs information about your system.
 
 Options:
-  -o, --output <value>                 To get the output in a specified format ( accept json or markdown )
-  -a, --additional-package <value...>  Adds additional packages to the output
+  -o, --output <value>                  To get the output in a specified format ( accept json or markdown )
+  -a, --additional-packages <value...>  Adds additional packages to the output
 
 Global options:
-  --color                              Enable colors on console.
-  --no-color                           Disable colors on console.
-  -v, --version                        Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  -h, --help [verbose]                 Display help for commands and options.
+  --color                               Enable colors on console.
+  --no-color                            Disable colors on console.
+  -v, --version                         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -h, --help [verbose]                  Display help for commands and options.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 

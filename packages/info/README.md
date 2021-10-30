@@ -32,10 +32,10 @@ webpack info [options]
 
 #### Output format
 
-| Flag                                  | Description                             | Type   |
-| ------------------------------------- | --------------------------------------- | ------ |
-| `-o, --output < json or markdown >`   | To get the output in a specified format | string |
-| `-a, --additional-package <value...>` | Adds additional packages to the output  | string |
+| Flag                                   | Description                             | Type   |
+| -------------------------------------- | --------------------------------------- | ------ |
+| `-o, --output < json or markdown >`    | To get the output in a specified format | string |
+| `-a, --additional-packages <value...>` | Adds additional packages to the output  | string |
 
 _Not supported for config_
 

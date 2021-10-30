@@ -3,11 +3,11 @@
 const { join } = require("path");
 const { run } = require("../utils/test-utils");
 
-describe("'-a, --additional-package <value...>' usage", () => {
+describe("'-a, --additional-packages <value...>' usage", () => {
   it("should work with only one package", async () => {
     const { exitCode, stdout, stderr } = await run(join(__dirname, "../../"), [
       "info",
-      "--additional-package",
+      "--additional-packages",
       "typescript",
     ]);
 
@@ -39,9 +39,8 @@ describe("'-a, --additional-package <value...>' usage", () => {
   it("should work with multiple packages", async () => {
     const { exitCode, stdout, stderr } = await run(join(__dirname, "../../"), [
       "info",
-      "--additional-package",
+      "--additional-packages",
       "typescript",
-      "--additional-package",
       "eslint",
     ]);
 
@@ -62,7 +61,6 @@ describe("'-a, --additional-package <value...>' usage", () => {
       "info",
       "-a",
       "typescript",
-      "-a",
       "eslint",
     ]);
 
@@ -81,11 +79,11 @@ describe("'-a, --additional-package <value...>' usage", () => {
   it("should throw an error on invalid usage", async () => {
     const { exitCode, stdout, stderr } = await run(join(__dirname, "../../"), [
       "info",
-      "--additional-package",
+      "--additional-packages",
     ]);
 
     expect(exitCode).toBe(2);
-    expect(stderr).toContain(`Option '-a, --additional-package <value...>' argument missing`);
+    expect(stderr).toContain(`Option '-a, --additional-packages <value...>' argument missing`);
     expect(stdout).toBeFalsy();
   });
 });
