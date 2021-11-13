@@ -35,7 +35,7 @@ Options:
   --cache-idle-timeout <value>                                                       Time in ms after which idle period the cache storing should happen.
   --cache-idle-timeout-after-large-changes <value>                                   Time in ms after which idle period the cache storing should happen when larger changes has been detected (cumulative build time > 2 x avg cache store time).
   --cache-idle-timeout-for-initial-store <value>                                     Time in ms after which idle period the initial cache storing should happen.
-  --cache-immutable-paths <value...>                                                 A RegExp matching a immutable directory (usually a package manager cache directory, including the tailing slash) A path to a immutable directory (usually a package manager cache directory).
+  --cache-immutable-paths <value...>                                                 A RegExp matching an immutable directory (usually a package manager cache directory, including the tailing slash) A path to an immutable directory (usually a package manager cache directory).
   --cache-immutable-paths-reset                                                      Clear all items provided in 'cache.immutablePaths' configuration. List of paths that are managed by a package manager and contain a version or hash in its path so all files are immutable.
   --cache-managed-paths <value...>                                                   A RegExp matching a managed directory (usually a node_modules directory, including the tailing slash) A path to a managed directory (usually a node_modules directory).
   --cache-managed-paths-reset                                                        Clear all items provided in 'cache.managedPaths' configuration. List of paths that are managed by a package manager and can be trusted to not be modified otherwise.
@@ -55,10 +55,10 @@ Options:
   --no-devtool                                                                       Do not generate source maps.
   --entry <value...>                                                                 The entry point(s) of your application e.g. ./src/main.js.
   --entry-reset                                                                      Clear all items provided in 'entry' configuration. All modules are loaded upon startup. The last one is exported.
-  --experiments-asset                                                                Allow module type 'asset' to generate assets.
-  --no-experiments-asset                                                             Negative 'experiments-asset' option.
   --experiments-async-web-assembly                                                   Support WebAssembly as asynchronous EcmaScript Module.
   --no-experiments-async-web-assembly                                                Negative 'experiments-async-web-assembly' option.
+  --experiments-back-compat                                                          Enable backward-compat layer with deprecation warnings for many webpack 4 APIs.
+  --no-experiments-back-compat                                                       Negative 'experiments-back-compat' option.
   --experiments-build-http-allowed-uris <value...>                                   Allowed URI pattern. Allowed URI (resp. the beginning of it).
   --experiments-build-http-allowed-uris-reset                                        Clear all items provided in 'experiments.buildHttp.allowedUris' configuration. List of allowed URIs (resp. the beginning of them).
   --experiments-build-http-cache-location <value>                                    Location where resource content is stored for lockfile entries. It's also possible to disable storing by passing false.
@@ -72,7 +72,7 @@ Options:
   --no-experiments-cache-unaffected                                                  Negative 'experiments-cache-unaffected' option.
   --experiments-future-defaults                                                      Apply defaults of next major version.
   --no-experiments-future-defaults                                                   Negative 'experiments-future-defaults' option.
-  --experiments-layers                                                               Enable module and chunk layers.
+  --experiments-layers                                                               Enable module layers.
   --no-experiments-layers                                                            Negative 'experiments-layers' option.
   --experiments-lazy-compilation                                                     Compile entrypoints and import()s only when they are accessed.
   --no-experiments-lazy-compilation                                                  Negative 'experiments-lazy-compilation' option.
@@ -156,6 +156,8 @@ Options:
   --no-module-parser-javascript-commonjs                                             Negative 'module-parser-javascript-commonjs' option.
   --module-parser-javascript-commonjs-magic-comments                                 Enable/disable parsing of magic comments in CommonJs syntax.
   --no-module-parser-javascript-commonjs-magic-comments                              Negative 'module-parser-javascript-commonjs-magic-comments' option.
+  --module-parser-javascript-exports-presence <value>                                Specifies the behavior of invalid export names in "import ... from ..." and "export ... from ...".
+  --no-module-parser-javascript-exports-presence                                     Negative 'module-parser-javascript-exports-presence' option.
   --module-parser-javascript-expr-context-critical                                   Enable warnings for full dynamic dependencies.
   --no-module-parser-javascript-expr-context-critical                                Negative 'module-parser-javascript-expr-context-critical' option.
   --module-parser-javascript-expr-context-recursive                                  Enable recursive directory lookup for full dynamic dependencies.
@@ -167,6 +169,8 @@ Options:
   --no-module-parser-javascript-harmony                                              Negative 'module-parser-javascript-harmony' option.
   --module-parser-javascript-import                                                  Enable/disable parsing of import() syntax.
   --no-module-parser-javascript-import                                               Negative 'module-parser-javascript-import' option.
+  --module-parser-javascript-import-exports-presence <value>                         Specifies the behavior of invalid export names in "import ... from ...".
+  --no-module-parser-javascript-import-exports-presence                              Negative 'module-parser-javascript-import-exports-presence' option.
   --no-module-parser-javascript-node                                                 Negative 'module-parser-javascript-node' option.
   --module-parser-javascript-node-dirname [value]                                    Include a polyfill for the '__dirname' variable.
   --no-module-parser-javascript-node-dirname                                         Negative 'module-parser-javascript-node-dirname' option.
@@ -174,6 +178,8 @@ Options:
   --no-module-parser-javascript-node-filename                                        Negative 'module-parser-javascript-node-filename' option.
   --module-parser-javascript-node-global [value]                                     Include a polyfill for the 'global' variable.
   --no-module-parser-javascript-node-global                                          Negative 'module-parser-javascript-node-global' option.
+  --module-parser-javascript-reexport-exports-presence <value>                       Specifies the behavior of invalid export names in "export ... from ...". This might be useful to disable during the migration from "export ... from ..." to "export type ... from ..." when reexporting types in TypeScript.
+  --no-module-parser-javascript-reexport-exports-presence                            Negative 'module-parser-javascript-reexport-exports-presence' option.
   --module-parser-javascript-require-context                                         Enable/disable parsing of require.context syntax.
   --no-module-parser-javascript-require-context                                      Negative 'module-parser-javascript-require-context' option.
   --module-parser-javascript-require-ensure                                          Enable/disable parsing of require.ensure syntax.
@@ -182,7 +188,7 @@ Options:
   --no-module-parser-javascript-require-include                                      Negative 'module-parser-javascript-require-include' option.
   --module-parser-javascript-require-js                                              Enable/disable parsing of require.js special syntax like require.config, requirejs.config, require.version and requirejs.onError.
   --no-module-parser-javascript-require-js                                           Negative 'module-parser-javascript-require-js' option.
-  --module-parser-javascript-strict-export-presence                                  Emit errors instead of warnings when imported names don't exist in imported module.
+  --module-parser-javascript-strict-export-presence                                  Deprecated in favor of "exportsPresence". Emit errors instead of warnings when imported names don't exist in imported module.
   --no-module-parser-javascript-strict-export-presence                               Negative 'module-parser-javascript-strict-export-presence' option.
   --module-parser-javascript-strict-this-context-on-imports                          Handle the this context correctly according to the spec for namespace objects.
   --no-module-parser-javascript-strict-this-context-on-imports                       Negative 'module-parser-javascript-strict-this-context-on-imports' option.
@@ -212,6 +218,8 @@ Options:
   --no-module-parser-javascript-auto-commonjs                                        Negative 'module-parser-javascript-auto-commonjs' option.
   --module-parser-javascript-auto-commonjs-magic-comments                            Enable/disable parsing of magic comments in CommonJs syntax.
   --no-module-parser-javascript-auto-commonjs-magic-comments                         Negative 'module-parser-javascript-auto-commonjs-magic-comments' option.
+  --module-parser-javascript-auto-exports-presence <value>                           Specifies the behavior of invalid export names in "import ... from ..." and "export ... from ...".
+  --no-module-parser-javascript-auto-exports-presence                                Negative 'module-parser-javascript-auto-exports-presence' option.
   --module-parser-javascript-auto-expr-context-critical                              Enable warnings for full dynamic dependencies.
   --no-module-parser-javascript-auto-expr-context-critical                           Negative 'module-parser-javascript-auto-expr-context-critical' option.
   --module-parser-javascript-auto-expr-context-recursive                             Enable recursive directory lookup for full dynamic dependencies.
@@ -223,6 +231,8 @@ Options:
   --no-module-parser-javascript-auto-harmony                                         Negative 'module-parser-javascript-auto-harmony' option.
   --module-parser-javascript-auto-import                                             Enable/disable parsing of import() syntax.
   --no-module-parser-javascript-auto-import                                          Negative 'module-parser-javascript-auto-import' option.
+  --module-parser-javascript-auto-import-exports-presence <value>                    Specifies the behavior of invalid export names in "import ... from ...".
+  --no-module-parser-javascript-auto-import-exports-presence                         Negative 'module-parser-javascript-auto-import-exports-presence' option.
   --no-module-parser-javascript-auto-node                                            Negative 'module-parser-javascript-auto-node' option.
   --module-parser-javascript-auto-node-dirname [value]                               Include a polyfill for the '__dirname' variable.
   --no-module-parser-javascript-auto-node-dirname                                    Negative 'module-parser-javascript-auto-node-dirname' option.
@@ -230,6 +240,8 @@ Options:
   --no-module-parser-javascript-auto-node-filename                                   Negative 'module-parser-javascript-auto-node-filename' option.
   --module-parser-javascript-auto-node-global [value]                                Include a polyfill for the 'global' variable.
   --no-module-parser-javascript-auto-node-global                                     Negative 'module-parser-javascript-auto-node-global' option.
+  --module-parser-javascript-auto-reexport-exports-presence <value>                  Specifies the behavior of invalid export names in "export ... from ...". This might be useful to disable during the migration from "export ... from ..." to "export type ... from ..." when reexporting types in TypeScript.
+  --no-module-parser-javascript-auto-reexport-exports-presence                       Negative 'module-parser-javascript-auto-reexport-exports-presence' option.
   --module-parser-javascript-auto-require-context                                    Enable/disable parsing of require.context syntax.
   --no-module-parser-javascript-auto-require-context                                 Negative 'module-parser-javascript-auto-require-context' option.
   --module-parser-javascript-auto-require-ensure                                     Enable/disable parsing of require.ensure syntax.
@@ -238,7 +250,7 @@ Options:
   --no-module-parser-javascript-auto-require-include                                 Negative 'module-parser-javascript-auto-require-include' option.
   --module-parser-javascript-auto-require-js                                         Enable/disable parsing of require.js special syntax like require.config, requirejs.config, require.version and requirejs.onError.
   --no-module-parser-javascript-auto-require-js                                      Negative 'module-parser-javascript-auto-require-js' option.
-  --module-parser-javascript-auto-strict-export-presence                             Emit errors instead of warnings when imported names don't exist in imported module.
+  --module-parser-javascript-auto-strict-export-presence                             Deprecated in favor of "exportsPresence". Emit errors instead of warnings when imported names don't exist in imported module.
   --no-module-parser-javascript-auto-strict-export-presence                          Negative 'module-parser-javascript-auto-strict-export-presence' option.
   --module-parser-javascript-auto-strict-this-context-on-imports                     Handle the this context correctly according to the spec for namespace objects.
   --no-module-parser-javascript-auto-strict-this-context-on-imports                  Negative 'module-parser-javascript-auto-strict-this-context-on-imports' option.
@@ -268,6 +280,8 @@ Options:
   --no-module-parser-javascript-dynamic-commonjs                                     Negative 'module-parser-javascript-dynamic-commonjs' option.
   --module-parser-javascript-dynamic-commonjs-magic-comments                         Enable/disable parsing of magic comments in CommonJs syntax.
   --no-module-parser-javascript-dynamic-commonjs-magic-comments                      Negative 'module-parser-javascript-dynamic-commonjs-magic-comments' option.
+  --module-parser-javascript-dynamic-exports-presence <value>                        Specifies the behavior of invalid export names in "import ... from ..." and "export ... from ...".
+  --no-module-parser-javascript-dynamic-exports-presence                             Negative 'module-parser-javascript-dynamic-exports-presence' option.
   --module-parser-javascript-dynamic-expr-context-critical                           Enable warnings for full dynamic dependencies.
   --no-module-parser-javascript-dynamic-expr-context-critical                        Negative 'module-parser-javascript-dynamic-expr-context-critical' option.
   --module-parser-javascript-dynamic-expr-context-recursive                          Enable recursive directory lookup for full dynamic dependencies.
@@ -279,6 +293,8 @@ Options:
   --no-module-parser-javascript-dynamic-harmony                                      Negative 'module-parser-javascript-dynamic-harmony' option.
   --module-parser-javascript-dynamic-import                                          Enable/disable parsing of import() syntax.
   --no-module-parser-javascript-dynamic-import                                       Negative 'module-parser-javascript-dynamic-import' option.
+  --module-parser-javascript-dynamic-import-exports-presence <value>                 Specifies the behavior of invalid export names in "import ... from ...".
+  --no-module-parser-javascript-dynamic-import-exports-presence                      Negative 'module-parser-javascript-dynamic-import-exports-presence' option.
   --no-module-parser-javascript-dynamic-node                                         Negative 'module-parser-javascript-dynamic-node' option.
   --module-parser-javascript-dynamic-node-dirname [value]                            Include a polyfill for the '__dirname' variable.
   --no-module-parser-javascript-dynamic-node-dirname                                 Negative 'module-parser-javascript-dynamic-node-dirname' option.
@@ -286,6 +302,8 @@ Options:
   --no-module-parser-javascript-dynamic-node-filename                                Negative 'module-parser-javascript-dynamic-node-filename' option.
   --module-parser-javascript-dynamic-node-global [value]                             Include a polyfill for the 'global' variable.
   --no-module-parser-javascript-dynamic-node-global                                  Negative 'module-parser-javascript-dynamic-node-global' option.
+  --module-parser-javascript-dynamic-reexport-exports-presence <value>               Specifies the behavior of invalid export names in "export ... from ...". This might be useful to disable during the migration from "export ... from ..." to "export type ... from ..." when reexporting types in TypeScript.
+  --no-module-parser-javascript-dynamic-reexport-exports-presence                    Negative 'module-parser-javascript-dynamic-reexport-exports-presence' option.
   --module-parser-javascript-dynamic-require-context                                 Enable/disable parsing of require.context syntax.
   --no-module-parser-javascript-dynamic-require-context                              Negative 'module-parser-javascript-dynamic-require-context' option.
   --module-parser-javascript-dynamic-require-ensure                                  Enable/disable parsing of require.ensure syntax.
@@ -294,7 +312,7 @@ Options:
   --no-module-parser-javascript-dynamic-require-include                              Negative 'module-parser-javascript-dynamic-require-include' option.
   --module-parser-javascript-dynamic-require-js                                      Enable/disable parsing of require.js special syntax like require.config, requirejs.config, require.version and requirejs.onError.
   --no-module-parser-javascript-dynamic-require-js                                   Negative 'module-parser-javascript-dynamic-require-js' option.
-  --module-parser-javascript-dynamic-strict-export-presence                          Emit errors instead of warnings when imported names don't exist in imported module.
+  --module-parser-javascript-dynamic-strict-export-presence                          Deprecated in favor of "exportsPresence". Emit errors instead of warnings when imported names don't exist in imported module.
   --no-module-parser-javascript-dynamic-strict-export-presence                       Negative 'module-parser-javascript-dynamic-strict-export-presence' option.
   --module-parser-javascript-dynamic-strict-this-context-on-imports                  Handle the this context correctly according to the spec for namespace objects.
   --no-module-parser-javascript-dynamic-strict-this-context-on-imports               Negative 'module-parser-javascript-dynamic-strict-this-context-on-imports' option.
@@ -324,6 +342,8 @@ Options:
   --no-module-parser-javascript-esm-commonjs                                         Negative 'module-parser-javascript-esm-commonjs' option.
   --module-parser-javascript-esm-commonjs-magic-comments                             Enable/disable parsing of magic comments in CommonJs syntax.
   --no-module-parser-javascript-esm-commonjs-magic-comments                          Negative 'module-parser-javascript-esm-commonjs-magic-comments' option.
+  --module-parser-javascript-esm-exports-presence <value>                            Specifies the behavior of invalid export names in "import ... from ..." and "export ... from ...".
+  --no-module-parser-javascript-esm-exports-presence                                 Negative 'module-parser-javascript-esm-exports-presence' option.
   --module-parser-javascript-esm-expr-context-critical                               Enable warnings for full dynamic dependencies.
   --no-module-parser-javascript-esm-expr-context-critical                            Negative 'module-parser-javascript-esm-expr-context-critical' option.
   --module-parser-javascript-esm-expr-context-recursive                              Enable recursive directory lookup for full dynamic dependencies.
@@ -335,6 +355,8 @@ Options:
   --no-module-parser-javascript-esm-harmony                                          Negative 'module-parser-javascript-esm-harmony' option.
   --module-parser-javascript-esm-import                                              Enable/disable parsing of import() syntax.
   --no-module-parser-javascript-esm-import                                           Negative 'module-parser-javascript-esm-import' option.
+  --module-parser-javascript-esm-import-exports-presence <value>                     Specifies the behavior of invalid export names in "import ... from ...".
+  --no-module-parser-javascript-esm-import-exports-presence                          Negative 'module-parser-javascript-esm-import-exports-presence' option.
   --no-module-parser-javascript-esm-node                                             Negative 'module-parser-javascript-esm-node' option.
   --module-parser-javascript-esm-node-dirname [value]                                Include a polyfill for the '__dirname' variable.
   --no-module-parser-javascript-esm-node-dirname                                     Negative 'module-parser-javascript-esm-node-dirname' option.
@@ -342,6 +364,8 @@ Options:
   --no-module-parser-javascript-esm-node-filename                                    Negative 'module-parser-javascript-esm-node-filename' option.
   --module-parser-javascript-esm-node-global [value]                                 Include a polyfill for the 'global' variable.
   --no-module-parser-javascript-esm-node-global                                      Negative 'module-parser-javascript-esm-node-global' option.
+  --module-parser-javascript-esm-reexport-exports-presence <value>                   Specifies the behavior of invalid export names in "export ... from ...". This might be useful to disable during the migration from "export ... from ..." to "export type ... from ..." when reexporting types in TypeScript.
+  --no-module-parser-javascript-esm-reexport-exports-presence                        Negative 'module-parser-javascript-esm-reexport-exports-presence' option.
   --module-parser-javascript-esm-require-context                                     Enable/disable parsing of require.context syntax.
   --no-module-parser-javascript-esm-require-context                                  Negative 'module-parser-javascript-esm-require-context' option.
   --module-parser-javascript-esm-require-ensure                                      Enable/disable parsing of require.ensure syntax.
@@ -350,7 +374,7 @@ Options:
   --no-module-parser-javascript-esm-require-include                                  Negative 'module-parser-javascript-esm-require-include' option.
   --module-parser-javascript-esm-require-js                                          Enable/disable parsing of require.js special syntax like require.config, requirejs.config, require.version and requirejs.onError.
   --no-module-parser-javascript-esm-require-js                                       Negative 'module-parser-javascript-esm-require-js' option.
-  --module-parser-javascript-esm-strict-export-presence                              Emit errors instead of warnings when imported names don't exist in imported module.
+  --module-parser-javascript-esm-strict-export-presence                              Deprecated in favor of "exportsPresence". Emit errors instead of warnings when imported names don't exist in imported module.
   --no-module-parser-javascript-esm-strict-export-presence                           Negative 'module-parser-javascript-esm-strict-export-presence' option.
   --module-parser-javascript-esm-strict-this-context-on-imports                      Handle the this context correctly according to the spec for namespace objects.
   --no-module-parser-javascript-esm-strict-this-context-on-imports                   Negative 'module-parser-javascript-esm-strict-this-context-on-imports' option.
@@ -482,6 +506,7 @@ Options:
   --optimization-split-chunks-default-size-types-reset                               Clear all items provided in 'optimization.splitChunks.defaultSizeTypes' configuration. Sets the size types which are used when a number is used for sizes.
   --optimization-split-chunks-enforce-size-threshold <value>                         Size of the javascript part of the chunk.
   --optimization-split-chunks-fallback-cache-group-automatic-name-delimiter <value>  Sets the name delimiter for created chunks.
+  --optimization-split-chunks-fallback-cache-group-chunks <value>                    Select chunks for determining shared modules (defaults to "async", "initial" and "all" requires adding these chunks to the HTML).
   --optimization-split-chunks-fallback-cache-group-max-async-size <value>            Size of the javascript part of the chunk.
   --optimization-split-chunks-fallback-cache-group-max-initial-size <value>          Size of the javascript part of the chunk.
   --optimization-split-chunks-fallback-cache-group-max-size <value>                  Size of the javascript part of the chunk.
@@ -506,6 +531,8 @@ Options:
   --optimization-used-exports [value]                                                Figure out which exports are used by modules to mangle export names, omit unused exports and generate more efficient code (true: analyse used exports for each runtime, "global": analyse exports globally for all runtimes combined).
   --no-optimization-used-exports                                                     Negative 'optimization-used-exports' option.
   --output-asset-module-filename <value>                                             The filename of asset modules as relative path inside the 'output.path' directory.
+  --output-async-chunks                                                              Enable/disable creating async chunks that are loaded on demand.
+  --no-output-async-chunks                                                           Negative 'output-async-chunks' option.
   --output-charset                                                                   Add charset attribute for script tag.
   --no-output-charset                                                                Negative 'output-charset' option.
   --output-chunk-filename <value>                                                    Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
@@ -728,7 +755,7 @@ Options:
   --no-snapshot-build-dependencies-hash                                              Negative 'snapshot-build-dependencies-hash' option.
   --snapshot-build-dependencies-timestamp                                            Use timestamps of the files/directories to determine invalidation.
   --no-snapshot-build-dependencies-timestamp                                         Negative 'snapshot-build-dependencies-timestamp' option.
-  --snapshot-immutable-paths <value...>                                              A RegExp matching a immutable directory (usually a package manager cache directory, including the tailing slash) A path to a immutable directory (usually a package manager cache directory).
+  --snapshot-immutable-paths <value...>                                              A RegExp matching an immutable directory (usually a package manager cache directory, including the tailing slash) A path to an immutable directory (usually a package manager cache directory).
   --snapshot-immutable-paths-reset                                                   Clear all items provided in 'snapshot.immutablePaths' configuration. List of paths that are managed by a package manager and contain a version or hash in its path so all files are immutable.
   --snapshot-managed-paths <value...>                                                A RegExp matching a managed directory (usually a node_modules directory, including the tailing slash) A path to a managed directory (usually a node_modules directory).
   --snapshot-managed-paths-reset                                                     Clear all items provided in 'snapshot.managedPaths' configuration. List of paths that are managed by a package manager and can be trusted to not be modified otherwise.
