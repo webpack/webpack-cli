@@ -46,8 +46,9 @@ Options:
   --client-web-socket-url-protocol <value>  Tells clients connected to devServer to use the provided protocol.
   --client-web-socket-url-username <value>  Tells clients connected to devServer to use the provided username to authenticate.
   --client-web-socket-url-password <value>  Tells clients connected to devServer to use the provided password to authenticate.
-  --web-socket-server <value>               Allows to set web socket server and options (by default 'ws').
+  --web-socket-server <value>               Deprecated: please use 'webSocketServer.type'/'--web-socket-server-type' option. Allows to set web socket server and options (by default 'ws').
   --no-web-socket-server                    Negative 'web-socket-server' option.
+  --web-socket-server-type <value>          Allows to set web socket server and options (by default 'ws').
   --compress                                Enables gzip compression for everything served.
   --no-compress                             Disables gzip compression for everything served.
   --history-api-fallback                    Allows to proxy requests through a specified index page (by default 'index.html'), useful for Single Page Applications that utilise the HTML5 History API.
@@ -55,9 +56,9 @@ Options:
   --host <value>                            Allows to specify a hostname to use.
   --hot [value]                             Enables Hot Module Replacement.
   --no-hot                                  Disables Hot Module Replacement.
-  --http2                                   Allows to serve over HTTP/2 using SPDY.
+  --http2                                   Allows to serve over HTTP/2 using SPDY. Deprecated, it will be removed in favor of the `server` option.
   --no-http2                                Does not serve over HTTP/2 using SPDY.
-  --https                                   Allows to configure the server's listening socket for TLS (by default, dev server will be served over HTTP).
+  --https                                   Allows to configure the server's listening socket for TLS (by default, dev server will be served over HTTP). Deprecated, it will be removed in favor of the `server` option.
   --no-https                                Disallows to configure the server's listening socket for TLS (by default, dev server will be served over HTTP).
   --https-passphrase <value>                Passphrase for a pfx file. Deprecated, it will be removed in favor of the `server.options.passphrase` option.
   --https-request-cert                      Request for an SSL certificate. Deprecated, it will be removed in favor of the `server.options.requestCert` option.
