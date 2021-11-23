@@ -2,7 +2,20 @@ const readline = require("readline");
 const { red, green, cyanBright, bold, gray } = require("colorette");
 const { SyncHook } = require("tapable");
 
+const compilerHooksMap = new WeakMap();
+
 class InteractiveModePlugin {
+  static getCompilerHooks(compiler) {
+    let hooks = compilerHooksMap.get(compiler);
+    if (hooks === undefined) {
+      hooks = {
+        beforeInteractiveOutput: new SyncHook(),
+      };
+      compilerHooksMap.set(compiler, hooks);
+    }
+    return hooks;
+  }
+
   constructor(options = { mode: "verbose" }) {
     this.name = "webpack-cli-interactive-mode";
     this.keys = {
@@ -25,6 +38,8 @@ class InteractiveModePlugin {
     process.on("exit", () => {
       process.stdout.write("\u001B[?25h");
     });
+
+    const hooks = InteractiveModePlugin.getCompilerHooks(compiler);
 
     if (compiler.compilers ? !compiler.compilers[0].webpack : !compiler.webpack) {
       // Use CLI logger as webpack v4 may not expose logger
@@ -69,21 +84,13 @@ class InteractiveModePlugin {
       this.handlers[action](compilers, compiler);
     });
 
-    // Register Custom Hook for printing after clrscr
-    if (!compiler.hooks.beforeInteractiveOutput) {
-      compiler.hooks = {
-        ...compiler.hooks,
-        beforeInteractiveOutput: new SyncHook(),
-      };
-    }
-
     let beforeCompileCount = 0;
     for (const childCompiler of compilers) {
       // eslint-disable-next-line no-loop-func
       childCompiler.hooks.beforeCompile.tap(this.name, () => {
         if (beforeCompileCount === 0) {
           this.clrscr();
-          compiler.hooks.beforeInteractiveOutput.call();
+          hooks.beforeInteractiveOutput.call();
         }
 
         beforeCompileCount += 1;
