@@ -37,6 +37,8 @@ Options:
   --no-client-overlay-errors                Negative 'client-overlay-errors' option.
   --client-overlay-warnings                 Enables a full-screen overlay in the browser when there are compiler warnings.
   --no-client-overlay-warnings              Negative 'client-overlay-warnings' option.
+  --client-reconnect [value]                Tells dev-server the number of times it should try to reconnect the client.
+  --no-client-reconnect                     Tells dev-server to not to try to connect the client.
   --client-web-socket-url <value>           Allows to specify URL to web socket server (useful when you're proxying dev server and client script does not always know where to connect to).
   --client-web-socket-url-hostname <value>  Tells clients connected to devServer to use the provided hostname.
   --client-web-socket-url-port <value>      Tells clients connected to devServer to use the provided port.
@@ -44,8 +46,9 @@ Options:
   --client-web-socket-url-protocol <value>  Tells clients connected to devServer to use the provided protocol.
   --client-web-socket-url-username <value>  Tells clients connected to devServer to use the provided username to authenticate.
   --client-web-socket-url-password <value>  Tells clients connected to devServer to use the provided password to authenticate.
-  --web-socket-server <value>               Allows to set web socket server and options (by default 'ws').
+  --web-socket-server <value>               Deprecated: please use 'webSocketServer.type'/'--web-socket-server-type' option. Allows to set web socket server and options (by default 'ws').
   --no-web-socket-server                    Negative 'web-socket-server' option.
+  --web-socket-server-type <value>          Allows to set web socket server and options (by default 'ws').
   --compress                                Enables gzip compression for everything served.
   --no-compress                             Disables gzip compression for everything served.
   --history-api-fallback                    Allows to proxy requests through a specified index page (by default 'index.html'), useful for Single Page Applications that utilise the HTML5 History API.
@@ -53,22 +56,30 @@ Options:
   --host <value>                            Allows to specify a hostname to use.
   --hot [value]                             Enables Hot Module Replacement.
   --no-hot                                  Disables Hot Module Replacement.
-  --http2                                   Allows to serve over HTTP/2 using SPDY.
+  --http2                                   Allows to serve over HTTP/2 using SPDY. Deprecated, it will be removed in favor of the `server` option.
   --no-http2                                Does not serve over HTTP/2 using SPDY.
-  --https                                   Allows to configure the server's listening socket for TLS (by default, dev server will be served over HTTP).
+  --https                                   Allows to configure the server's listening socket for TLS (by default, dev server will be served over HTTP). Deprecated, it will be removed in favor of the `server` option.
   --no-https                                Disallows to configure the server's listening socket for TLS (by default, dev server will be served over HTTP).
-  --https-passphrase <value>                Passphrase for a pfx file.
-  --https-request-cert                      Request for an SSL certificate.
+  --https-passphrase <value>                Passphrase for a pfx file. Deprecated, it will be removed in favor of the `server.options.passphrase` option.
+  --https-request-cert                      Request for an SSL certificate. Deprecated, it will be removed in favor of the `server.options.requestCert` option.
   --no-https-request-cert                   Does not request for an SSL certificate.
-  --https-cacert <value>                    Path to an SSL CA certificate.
-  --https-key <value>                       Path to an SSL key.
-  --https-pfx <value>                       Path to an SSL pfx file.
-  --https-cert <value>                      Path to an SSL certificate.
+  --https-ca <value...>                     Path to an SSL CA certificate or content of an SSL CA certificate. Deprecated, it will be removed in favor of the `server.options.ca` option.
+  --https-ca-reset                          Clear all items provided in 'https.ca' configuration. Path to an SSL CA certificate or content of an SSL CA certificate. Deprecated, it will be removed in favor of the `server.options.ca` option.
+  --https-cacert <value...>                 Path to an SSL CA certificate or content of an SSL CA certificate. Deprecated, it will be removed in favor of the `server.options.cacert` option.
+  --https-cacert-reset                      Clear all items provided in 'https.cacert' configuration. Path to an SSL CA certificate or content of an SSL CA certificate. Deprecated, it will be removed in favor of the `server.options.cacert` option.
+  --https-key <value...>                    Path to an SSL key or content of an SSL key. Deprecated, it will be removed in favor of the `server.options.key` option.
+  --https-key-reset                         Clear all items provided in 'https.key' configuration. Path to an SSL key or content of an SSL key. Deprecated, it will be removed in favor of the `server.options.key` option.
+  --https-pfx <value...>                    Path to an SSL pfx file or content of an SSL pfx file. Deprecated, it will be removed in favor of the `server.options.pfx` option.
+  --https-pfx-reset                         Clear all items provided in 'https.pfx' configuration. Path to an SSL pfx file or content of an SSL pfx file. Deprecated, it will be removed in favor of the `server.options.pfx` option.
+  --https-cert <value...>                   Path to an SSL certificate or content of an SSL certificate. Deprecated, it will be removed in favor of the `server.options.cert` option.
+  --https-cert-reset                        Clear all items provided in 'https.cert' configuration. Path to an SSL certificate or content of an SSL certificate. Deprecated, it will be removed in favor of the `server.options.cert` option.
+  --https-crl <value...>                    Path to PEM formatted CRLs (Certificate Revocation Lists) or content of PEM formatted CRLs (Certificate Revocation Lists). Deprecated, it will be removed in favor of the `server.options.crl` option.
+  --https-crl-reset                         Clear all items provided in 'https.crl' configuration. Path to PEM formatted CRLs (Certificate Revocation Lists) or content of PEM formatted CRLs (Certificate Revocation Lists). Deprecated, it will be removed in favor of the `server.options.crl` option.
   --ipc [value]                             Listen to a unix socket.
   --live-reload                             Enables reload/refresh the page(s) when file changes are detected (enabled by default).
   --no-live-reload                          Disables reload/refresh the page(s) when file changes are detected (enabled by default)
-  --magic-html                              Enables/Disables magic HTML routes (enabled by default).
-  --no-magic-html                           Negative 'magic-html' option.
+  --magic-html                              Tells dev-server whether to enable magic HTML routes (routes corresponding to your webpack output, for example '/main' for 'main.js').
+  --no-magic-html                           Disables magic HTML routes (routes corresponding to your webpack output, for example '/main' for 'main.js').
   --open [value...]                         Allows to configure dev server to open the browser(s) and page(s) after server had been started (set it to true to open your default browser).
   --no-open                                 Does not open the default browser.
   --open-target <value...>                  Opens specified page in browser.
@@ -78,6 +89,22 @@ Options:
   --open-target-reset                       Clear all items provided in 'open.target' configuration. Opens specified page in browser.
   --open-app-name-reset                     Clear all items provided in 'open.app.name' configuration. Open specified browser.
   --port <value>                            Allows to specify a port to use.
+  --server-options-ca <value...>            Path to an SSL CA certificate or content of an SSL CA certificate.
+  --server-options-ca-reset                 Clear all items provided in 'server.options.ca' configuration. Path to an SSL CA certificate or content of an SSL CA certificate.
+  --server-options-cacert <value...>        Path to an SSL CA certificate or content of an SSL CA certificate.
+  --server-options-cacert-reset             Clear all items provided in 'server.options.cacert' configuration. Path to an SSL CA certificate or content of an SSL CA certificate.
+  --server-options-cert <value...>          Path to an SSL certificate or content of an SSL certificate.
+  --server-options-cert-reset               Clear all items provided in 'server.options.cert' configuration. Path to an SSL certificate or content of an SSL certificate.
+  --server-options-crl <value...>           Path to PEM formatted CRLs (Certificate Revocation Lists) or content of PEM formatted CRLs (Certificate Revocation Lists).
+  --server-options-crl-reset                Clear all items provided in 'server.options.crl' configuration. Path to PEM formatted CRLs (Certificate Revocation Lists) or content of PEM formatted CRLs (Certificate Revocation Lists).
+  --server-options-key <value...>           Path to an SSL key or content of an SSL key.
+  --server-options-key-reset                Clear all items provided in 'server.options.key' configuration. Path to an SSL key or content of an SSL key.
+  --server-options-passphrase <value>       Passphrase for a pfx file.
+  --server-options-pfx <value...>           Path to an SSL pfx file or content of an SSL pfx file.
+  --server-options-pfx-reset                Clear all items provided in 'server.options.pfx' configuration. Path to an SSL pfx file or content of an SSL pfx file.
+  --server-options-request-cert             Request for an SSL certificate.
+  --no-server-options-request-cert          Negative 'server-options-request-cert' option.
+  --server-type <value>                     Allows to set server and options (by default 'http').
   --static [value...]                       Allows to configure options for serving static files from directory (by default 'public' directory).
   --no-static                               Negative 'static' option.
   --static-directory <value...>             Directory for static contents.

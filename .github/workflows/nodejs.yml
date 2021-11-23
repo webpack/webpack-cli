@@ -35,7 +35,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
-        run: yarn
+        run: yarn --frozen-lockfile
 
       - name: Bootstrap
         run: yarn lerna bootstrap
@@ -73,7 +73,7 @@ jobs:
           cache: "yarn"
 
       - name: Install dependencies
-        run: yarn
+        run: yarn --frozen-lockfile
 
       - name: Install webpack ${{ matrix.webpack-version }}
         run: yarn add -W webpack@${{ matrix.webpack-version }}

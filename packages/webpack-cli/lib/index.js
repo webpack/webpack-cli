@@ -1,5 +1,5 @@
 const CLI = require("./webpack-cli");
-const utils = require("./utils");
 
 module.exports = CLI;
-module.exports.utils = utils;
+// TODO remove after drop `@webpack-cli/migrate`
+module.exports.utils = { logger: console };

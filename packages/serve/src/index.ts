@@ -89,7 +89,7 @@ class ServeCommand {
         const processors: Array<(opts: Record<string, any>) => void> = [];
 
         for (const optionName in options) {
-          const kebabedOption = cli.utils.toKebabCase(optionName);
+          const kebabedOption = cli.toKebabCase(optionName);
           // `webpack-dev-server` has own logic for the `--hot` option
           const isBuiltInOption =
             kebabedOption !== "hot" &&
@@ -194,7 +194,7 @@ class ServeCommand {
               return accumulator;
             }, {});
             const values = Object.keys(devServerCLIOptions).reduce((accumulator, name) => {
-              const kebabName = cli.utils.toKebabCase(name);
+              const kebabName = cli.toKebabCase(name);
               if (args[kebabName]) {
                 accumulator[kebabName] = options[name];
               }
@@ -222,7 +222,7 @@ class ServeCommand {
                 const problems = problemsByPath[path];
                 problems.forEach((problem) => {
                   cli.logger.error(
-                    `${cli.utils.capitalizeFirstLetter(problem.type.replace(/-/g, " "))}${
+                    `${cli.capitalizeFirstLetter(problem.type.replace(/-/g, " "))}${
                       problem.value ? ` '${problem.value}'` : ""
                     } for the '--${problem.argument}' option${
                       problem.index ? ` by index '${problem.index}'` : ""
@@ -296,7 +296,8 @@ class ServeCommand {
             };
 
             devServerOptions.host = devServerOptions.host || "localhost";
-            devServerOptions.port = devServerOptions.port || 8080;
+            devServerOptions.port =
+              typeof devServerOptions.port !== "undefined" ? devServerOptions.port : 8080;
             devServerOptions.stats = getStatsOption();
             devServerOptions.publicPath = getPublicPathOption();
           }

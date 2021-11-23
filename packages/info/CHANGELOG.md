@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/info@1.3.0...@webpack-cli/info@1.4.0) (2021-10-06)
+
+### Features
+
+- **info:** added the `--additional-package` option ([06cd267](https://github.com/webpack/webpack-cli/commit/06cd267663955f64b70685c604105d051ffd6beb))
+- allow to run commands without webpack installation where it is unnecessary ([#2907](https://github.com/webpack/webpack-cli/issues/2907)) ([603041d](https://github.com/webpack/webpack-cli/commit/603041d7e6a9b764bd79d1a8effd22a3e0f019cb))
+
 # [1.3.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/info@1.2.4...@webpack-cli/info@1.3.0) (2021-06-07)
 
 ### Bug Fixes

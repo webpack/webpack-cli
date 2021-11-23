@@ -19,7 +19,7 @@ describe("stats flag with config", () => {
     if (isWebpack5) {
       expect(stdout).toContain("preset: 'normal'");
     } else {
-      expect(stdout).toContain("stats: 'normal'");
+      expect(stdout).toContain("stats: { colors: false }");
     }
   });
 

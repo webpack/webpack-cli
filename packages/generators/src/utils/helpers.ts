@@ -24,14 +24,14 @@ export function toUpperCamelCase(str: string): string {
 }
 
 export async function getInstaller(): Promise<string> {
-  const installers = this.utils.getAvailableInstallers();
+  const installers = this.cli.getAvailablePackageManagers();
 
   if (installers.length === 1) {
     return installers[0];
   }
 
   // Prompt for the package manager of choice
-  const defaultPackager = this.utils.getPackageManager();
+  const defaultPackager = this.cli.getDefaultPackageManager();
   const { packager } = await List(
     this,
     "packager",
@@ -48,9 +48,7 @@ export async function getTemplate(): Promise<string> {
     return this.template;
   }
 
-  this.utils.logger.warn(
-    `⚠ ${this.template} is not a valid template, please select one from below`,
-  );
+  this.cli.logger.warn(`⚠ ${this.template} is not a valid template, please select one from below`);
 
   const { selectedTemplate } = await List(
     this,

@@ -1,3 +1,19 @@
+## [4.9.1](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.9.0...webpack-cli@4.9.1) (2021-10-18)
+
+### Bug Fixes
+
+- compatibility with dynamic `import` ([#3006](https://github.com/webpack/webpack-cli/issues/3006)) ([6a9aac9](https://github.com/webpack/webpack-cli/commit/6a9aac99665f0d2f2f0c58c757c6befbc7734c8f))
+
+# [4.9.0](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.8.0...webpack-cli@4.9.0) (2021-10-06)
+
+### Bug Fixes
+
+- handle `undefined` and empty configuration export ([#2930](https://github.com/webpack/webpack-cli/issues/2930)) ([9b9040e](https://github.com/webpack/webpack-cli/commit/9b9040e97c1d7a68d0757c05a67fb0fc8184b827))
+
+### Features
+
+- allow to run commands without webpack installation where it is unnecessary ([#2907](https://github.com/webpack/webpack-cli/issues/2907)) ([603041d](https://github.com/webpack/webpack-cli/commit/603041d7e6a9b764bd79d1a8effd22a3e0f019cb))
+
 # [4.8.0](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.7.2...webpack-cli@4.8.0) (2021-08-15)
 
 ### Bug Fixes

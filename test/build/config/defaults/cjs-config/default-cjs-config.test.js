@@ -2,8 +2,8 @@ const fs = require("fs");
 const path = require("path");
 const { run, isWebpack5 } = require("../../../../utils/test-utils");
 
-describe("Default Config:", () => {
-  it("Should be able to pick cjs config by default", async () => {
+describe("default config with cjs extention", () => {
+  it("should build and not throw error with cjs config by default", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, []);
 
     expect(exitCode).toEqual(0);
