@@ -23,7 +23,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node-version: [12.x]
+        node-version: [16.x]
         webpack-version: [latest]
 
     steps:
@@ -35,7 +35,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
-        run: yarn
+        run: yarn --frozen-lockfile
 
       - name: Bootstrap
         run: yarn lerna bootstrap
@@ -73,7 +73,7 @@ jobs:
           cache: "yarn"
 
       - name: Install dependencies
-        run: yarn
+        run: yarn --frozen-lockfile
 
       - name: Install webpack ${{ matrix.webpack-version }}
         run: yarn add -W webpack@${{ matrix.webpack-version }}
@@ -105,9 +105,9 @@ jobs:
 
       - uses: actions/setup-node@v2
         with:
-          node-version: "12.x"
+          node-version: "16.x"
 
-      - run: npm install
+      - run: yarn --frozen-lockfile
 
       - name: conventional-changelog-lint-config-cz
         # $GITHUB_WORKSPACE is the path to your repository
