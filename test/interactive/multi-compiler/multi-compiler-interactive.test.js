@@ -56,7 +56,7 @@ describe("--interactive flag with multi compiler", () => {
       const { stdout, stderr, exitCode } = await run(__dirname, ["--watch --interactive"]);
       expect(stdout).toMatchSnapshot();
       expect(stderr).toMatchSnapshot();
-      expect(exitCode).toBe(1);
+      expect(exitCode).toBe(2);
     });
     return;
   }
