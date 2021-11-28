@@ -55,7 +55,7 @@ describe("--interactive flag with single compiler", () => {
       const { stdout, stderr, exitCode } = await run(__dirname, ["--interactive"]);
       expect(stdout).toMatchSnapshot();
       expect(stderr).toMatchSnapshot();
-      expect(exitCode).toBe(1);
+      expect(exitCode).toBe(2);
     });
     return;
   }
