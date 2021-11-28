@@ -1,8 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`--interactive flag with multi compiler should throw error upon --interactive 1`] = `""`;
+exports[`--interactive flag with multi compiler should throw error upon --interactive 1`] = `"[?25l[?25h"`;
 
-exports[`--interactive flag with multi compiler should throw error upon --interactive 2`] = `
-"[webpack-cli] Error: Unknown option '--watch --interactive'
-[webpack-cli] Run 'webpack --help' to see available commands and options"
-`;
+exports[`--interactive flag with multi compiler should throw error upon --interactive 2`] = `"Interactive is not supported on webpack v4 and less"`;

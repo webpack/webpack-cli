@@ -28,7 +28,11 @@ class InteractiveModePlugin {
       stop: this.stopHandler.bind(this),
       start: this.startHandler.bind(this),
     };
-    this.logger = undefined;
+    this.logger = {
+      error: (message) => {
+        process.stderr.write(message);
+      },
+    };
     this.verbose = options.mode === "verbose";
   }
 

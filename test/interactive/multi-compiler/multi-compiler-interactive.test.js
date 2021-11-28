@@ -53,10 +53,10 @@ describe("--interactive flag with multi compiler", () => {
   // webpack v4 should not be supported https://github.com/webpack/webpack-cli/pull/1796#pullrequestreview-605767369
   if (!isWebpack5) {
     it("should throw error upon --interactive", async () => {
-      const { stdout, stderr, exitCode } = await run(__dirname, ["--watch --interactive"]);
+      const { stdout, stderr, exitCode } = await run(__dirname, ["--interactive"]);
       expect(stdout).toMatchSnapshot();
       expect(stderr).toMatchSnapshot();
-      expect(exitCode).toBe(2);
+      expect(exitCode).toBe(1);
     });
     return;
   }

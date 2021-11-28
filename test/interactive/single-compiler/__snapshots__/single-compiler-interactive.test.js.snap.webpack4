@@ -2,12 +2,4 @@
 
 exports[`--interactive flag with single compiler should throw error upon --interactive 1`] = `"[?25l[?25h"`;
 
-exports[`--interactive flag with single compiler should throw error upon --interactive 2`] = `
-"[webpack-cli] TypeError: Cannot read property 'error' of undefined
-    at InteractiveModePlugin.apply (/home/rishabh/projects/webpack-cli/packages/webpack-cli/lib/plugins/InteractiveModePlugin.js:46:19)
-    at WebpackCLI.createCompiler (/home/rishabh/projects/webpack-cli/packages/webpack-cli/lib/webpack-cli.js:2238:27)
-    at async WebpackCLI.runWebpack (/home/rishabh/projects/webpack-cli/packages/webpack-cli/lib/webpack-cli.js:2357:16)
-    at async Command.<anonymous> (/home/rishabh/projects/webpack-cli/packages/webpack-cli/lib/webpack-cli.js:1074:13)
-    at async Promise.all (index 1)
-    at async Command.<anonymous> (/home/rishabh/projects/webpack-cli/packages/webpack-cli/lib/webpack-cli.js:1688:7)"
-`;
+exports[`--interactive flag with single compiler should throw error upon --interactive 2`] = `"Interactive is not supported on webpack v4 and less"`;
