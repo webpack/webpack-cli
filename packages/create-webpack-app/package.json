@@ -1,0 +1,31 @@
+{
+  "name": "create-webpack-app",
+  "version": "1.0.0",
+  "description": "Create new project with webpack",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/webpack/webpack-cli.git"
+  },
+  "files": [
+    "lib",
+    "template"
+  ],
+  "dependencies": {
+    "yeoman-environment": "^2.10.3",
+    "yeoman-generator": "^4.12.0"
+  },
+  "peerDependenciesMeta": {
+    "prettier": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/yeoman-generator": "^4.11.3"
+  }
+}
