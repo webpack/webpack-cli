@@ -18,7 +18,8 @@
   ],
   "dependencies": {
     "yeoman-environment": "^2.10.3",
-    "yeoman-generator": "^4.12.0"
+    "yeoman-generator": "^4.12.0",
+    "commander": "^7.0.0"
   },
   "peerDependenciesMeta": {
     "prettier": {
