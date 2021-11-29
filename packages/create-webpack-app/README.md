@@ -1,6 +1,6 @@
-# webpack-cli init
+# create-webpack-app
 
-`webpack-cli init` is used to initialize `webpack` projects quickly by scaffolding configuration and creating a runnable project with all the dependencies based on the user preferences.
+`create-webpack-app` is used to initialize `webpack` projects quickly by scaffolding configuration and creating a runnable project with all the dependencies based on the user preferences.
 
 ## Table of Contents
 
@@ -27,13 +27,13 @@ npm install --save-dev webpack webpack-cli
 ### Running Locally
 
 ```bash
-npx webpack-cli init
+npx create-webpack-app
 ```
 
 ### Running Globally
 
 ```shell
-webpack-cli init
+create-webpack-app
 ```
 
 ### CLI options
@@ -41,25 +41,25 @@ webpack-cli init
 **To generate default template**
 
 ```bash
-webpack-cli init
+create-webpack-app
 ```
 
 **To generate with default answers**
 
 ```bash
-webpack-cli init -f, --force
+create-webpack-app -f, --force
 ```
 
 **To scaffold in a specified path**
 
 ```bash
-webpack-cli init [generation-path]
+create-webpack-app [generation-path]
 ```
 
 **To scaffold specified template**
 
 ```bash
-webpack-cli init -t, --template <template-name>
+create-webpack-app -t, --template <template-name>
 ```
 
 ## Description of questions asked by the generator
