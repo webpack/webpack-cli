@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Create new project with webpack",
   "main": "lib/index.js",
+  "bin": "bin/index.js",
   "types": "lib/index.d.ts",
   "license": "MIT",
   "publishConfig": {
@@ -14,11 +15,13 @@
   },
   "files": [
     "lib",
-    "template"
+    "templates",
+    "bin"
   ],
   "dependencies": {
     "yeoman-environment": "^2.10.3",
     "yeoman-generator": "^4.12.0",
+    "colorette": "^2.0.14",
     "commander": "^7.0.0"
   },
   "peerDependenciesMeta": {
