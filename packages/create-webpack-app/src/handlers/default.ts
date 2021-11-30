@@ -1,7 +1,7 @@
 import path from "path";
 import { CustomGenerator } from "../types";
 
-const templatePath = path.resolve(__dirname, "../../init-template/default");
+const templatePath = path.resolve(__dirname, "../../templates/default");
 const resolveFile = (file: string): string => {
   return path.resolve(templatePath, file);
 };
