@@ -51,6 +51,10 @@ jobs:
 
     runs-on: ${{ matrix.os }}
 
+    needs:
+      - lint
+      - commitlint
+
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
