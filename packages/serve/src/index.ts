@@ -4,7 +4,7 @@ const WEBPACK_PACKAGE = process.env.WEBPACK_PACKAGE || "webpack";
 const WEBPACK_DEV_SERVER_PACKAGE = process.env.WEBPACK_DEV_SERVER_PACKAGE || "webpack-dev-server";
 
 class ServeCommand {
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async apply(cli: any): Promise<void> {
     const loadDevServerOptions = () => {
       // TODO simplify this after drop webpack v4 and webpack-dev-server v3

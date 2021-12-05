@@ -1,7 +1,7 @@
 const WEBPACK_PACKAGE = process.env.WEBPACK_PACKAGE || "webpack";
 
 class ConfigTestCommand {
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async apply(cli: any): Promise<void> {
     await cli.makeCommand(
       {
