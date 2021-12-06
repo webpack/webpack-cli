@@ -43,6 +43,7 @@ export type devServerOptionsType = {
     | false
     | string
     | transportModeEnum
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     | (() => any)
     | Record<string, unknown>
     | (Record<string, unknown> | (() => void))[];
