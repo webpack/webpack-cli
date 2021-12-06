@@ -77,9 +77,11 @@ jobs:
         run: yarn --frozen-lockfile
 
       - name: Install webpack ${{ matrix.webpack-version }}
+        if: matrix.webpack-version == '4'
         run: yarn add -W webpack@${{ matrix.webpack-version }}
 
       - name: Install webpack-dev-server ${{ matrix.webpack-version }}
+        if: matrix.dev-server-version == 'latest'
         run: yarn add -W webpack-dev-server@${{ matrix.dev-server-version }}
 
       - name: Prepare environment for tests
