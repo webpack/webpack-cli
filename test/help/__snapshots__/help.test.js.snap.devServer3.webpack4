@@ -2697,7 +2697,7 @@ exports[`help should show the same information using the "--help" option and com
 
 exports[`help should show the same information using the "--help" option and command syntax: stderr from option 1`] = `""`;
 
-exports[`help should show the same information using the "--help" option and command syntax: stdout from command sytnax 1`] = `
+exports[`help should show the same information using the "--help" option and command syntax: stdout from command syntax 1`] = `
 "Usage: webpack [entries...] [options]
 Alternative usage to run commands: webpack [command] [options]
 
