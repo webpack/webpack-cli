@@ -295,7 +295,7 @@ const normalizeStderr = (stderr) => {
   normalizedStderr = normalizedStderr.replace(/:[0-9]+\//g, ":<port>/");
 
   if (!/On Your Network \(IPv6\)/.test(stderr)) {
-    // Github Actions doesnt' support IPv6 on ubuntu in some cases
+    // Github Actions doesn't' support IPv6 on ubuntu in some cases
     normalizedStderr = normalizedStderr.split("\n");
 
     const ipv4MessageIndex = normalizedStderr.findIndex((item) =>
@@ -313,7 +313,7 @@ const normalizeStderr = (stderr) => {
     normalizedStderr = normalizedStderr.join("\n");
   }
 
-  // the warning below is causing CI failiure on some jobs
+  // the warning below is causing CI failure on some jobs
   if (/Gracefully shutting down/.test(stderr)) {
     normalizedStderr = normalizedStderr.replace(
       "\n<i> [webpack-dev-server] Gracefully shutting down. To force exit, press ^C again. Please wait...",

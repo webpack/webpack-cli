@@ -84,7 +84,7 @@ describe("runAndGetWatchProc function", () => {
 });
 
 describe("hyphenToUpperCase function", () => {
-  it("changes value from hypen to upperCase", () => {
+  it("changes value from hyphen to upperCase", () => {
     const result = hyphenToUpperCase("test-value");
 
     expect(result).toEqual("testValue");
