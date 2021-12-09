@@ -27,6 +27,11 @@ jobs:
         webpack-version: [latest]
 
     steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ secrets.GITHUB_TOKEN }}
+
       - uses: actions/checkout@v2
 
       - name: Using Node v${{ matrix.node-version }}
@@ -63,6 +68,11 @@ jobs:
             dev-server-version: latest
 
     steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ secrets.GITHUB_TOKEN }}
+
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -102,6 +112,11 @@ jobs:
     name: Lint Commit Messages
     runs-on: ubuntu-latest
     steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ secrets.GITHUB_TOKEN }}
+
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
