@@ -15,9 +15,11 @@
     "compat",
     "configjs",
     "configtest",
+    "CRLs",
     "deserialization",
     "discoveryjs",
     "dotfolder",
+    "entrypoint",
     "entrypoints",
     "envinfo",
     "Eren",
@@ -27,6 +29,7 @@
     "Hisoka",
     "Hoshiumi",
     "Ichigo",
+    "IIFE's",
     "iife",
     "Itadori",
     "Iwaizumi",
@@ -88,6 +91,7 @@
     "**/package.json",
     "**/dist/**",
     "**/__snapshots__/**",
-    "**/*.tsbuildinfo"
+    "**/*.tsbuildinfo",
+    "**/yarn.lock"
   ]
 }

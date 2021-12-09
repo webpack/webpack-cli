@@ -60,7 +60,7 @@
     "coffeescript": "^2.5.1",
     "colorette": "^2.0.14",
     "concat-stream": "^2.0.0",
-    "cspell": "^5.13.2",
+    "cspell": "^4.2.8",
     "cz-customizable": "^6.3.0",
     "del-cli": "^3.0.1",
     "eslint": "^7.12.1",
