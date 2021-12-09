@@ -168,6 +168,7 @@ describe("bundle command", () => {
     expect(stdout).toBeTruthy();
   });
 
+  // cSpell:ignore buil
   it('should log error and suggest right name on the "buil" command', async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["buil"]);
 
