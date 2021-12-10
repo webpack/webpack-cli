@@ -169,6 +169,7 @@ describe("colors", () => {
     expect(stderr).toBeFalsy();
 
     if (isWebpack5) {
+      // cSpell:ignore msuccessfully
       // red from first config
       expect(stdout).toContain(`\u001b[31msuccessfully`);
       // blue from second config
@@ -211,6 +212,7 @@ describe("colors", () => {
     expect(stderr).toBeFalsy();
 
     if (isWebpack5) {
+      // cSpell:ignore mfirst, msecond
       expect(stdout).toContain(`\u001b[1mfirst-config`);
       expect(stdout).toContain(`\u001b[1msecond-config`);
       expect(stdout).toContain(`\u001b[1m\u001b[32msuccessfully\u001b[39m\u001b[22m`);

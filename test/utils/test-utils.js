@@ -363,6 +363,7 @@ const readdir = (path) =>
     });
   });
 
+// cSpell:ignore Symbhas, ABCDEFGHNR, Vfgcti
 const urlAlphabet = "ModuleSymbhasOwnPr-0123456789ABCDEFGHNRVfgctiUvz_KqYTJkLxpZXIjQW";
 
 const uuid = (size = 21) => {

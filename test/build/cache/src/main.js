@@ -1,1 +1,1 @@
-console.log("tehghgst cache");
+console.log("the cache");
