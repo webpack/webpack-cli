@@ -1,6 +1,6 @@
 import yeoman from "yeoman-environment";
 import { Command } from "commander";
-import InitGenerator from "./init-generator";
+import InitGenerator from "./generator";
 import util from "util";
 import { createColors, isColorSupported } from "colorette";
 
