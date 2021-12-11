@@ -1,6 +1,6 @@
 import yeoman from "yeoman-environment";
 import { Command } from "commander";
-import InitGenerator from "./generator";
+import Generator from "./generator";
 import util from "util";
 import { createColors, isColorSupported } from "colorette";
 
@@ -18,7 +18,7 @@ function getLogger(colors: any) {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getColors(useColor?: any) {
-  let shouldUseColor;
+  let shouldUseColor: boolean;
 
   if (useColor) {
     shouldUseColor = useColor;
@@ -55,9 +55,9 @@ export default function (): void {
   const env = yeoman.createEnv([], {
     cwd: options.generationPath,
   });
-  const generatorName = "webpack-init-generator";
+  const generatorName = "create-webpack-app-generator";
 
-  env.registerStub(InitGenerator, generatorName);
+  env.registerStub(Generator, generatorName);
 
   env.run(generatorName, { cli: { colors, logger }, options }, () => {
     logger.success("Project has been initialised with webpack!");

@@ -10,12 +10,12 @@ import handlers from "./handlers";
  *
  * Generator for initializing a webpack config
  *
- * @class 	InitGenerator
+ * @class 	Generator
  * @extends CustomGenerator
  * @returns {Void} After execution, transforms are triggered
  *
  */
-export default class InitGenerator extends CustomGenerator {
+export default class Generator extends CustomGenerator {
   public answers: Record<string, unknown>;
   public configurationPath: string;
   public force: boolean;
