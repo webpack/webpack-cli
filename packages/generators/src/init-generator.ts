@@ -1,4 +1,3 @@
-import { blue, yellow } from "colorette";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import path from "path";
 
@@ -26,7 +25,7 @@ export default class InitGenerator extends CustomGenerator {
   public supportedTemplates: string[];
   public template: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public utils: any;
+  public cli: any;
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
   public constructor(args: any, opts: any) {
@@ -41,22 +40,21 @@ export default class InitGenerator extends CustomGenerator {
     this.dependencies = ["webpack", "webpack-cli"];
     this.supportedTemplates = Object.keys(handlers);
     this.answers = {};
-    const { cli } = opts;
-    this.utils = cli.utils;
+    this.cli = opts.cli;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async prompting(): Promise<void | any> {
     if (!existsSync(this.resolvedGenerationPath)) {
-      this.utils.logger.log(
-        `${blue(
+      this.cli.logger.log(
+        `${this.cli.colors.blue(
           "ℹ INFO ",
         )} supplied generation path doesn't exist, required folders will be created.`,
       );
       try {
         mkdirSync(this.resolvedGenerationPath, { recursive: true });
       } catch (error) {
-        this.utils.logger.error(`Failed to create directory.\n ${error}`);
+        this.cli.logger.error(`Failed to create directory.\n ${error}`);
         process.exit(2);
       }
     }
@@ -98,7 +96,8 @@ export default class InitGenerator extends CustomGenerator {
   }
 
   public writing(): void {
-    this.utils.logger.log(`${blue("ℹ INFO ")} Initialising project...`);
+    this.cli.logger.log(`${this.cli.colors.blue("ℹ INFO ")} Initialising project...`);
+
     handlers[this.template].generate(this);
   }
 
@@ -107,19 +106,17 @@ export default class InitGenerator extends CustomGenerator {
     try {
       // eslint-disable-next-line node/no-extraneous-require, @typescript-eslint/no-var-requires
       const prettier = require("prettier");
-      const source = readFileSync(this.configurationPath, {
-        encoding: "utf8",
-      });
-      const formattedSource = prettier.format(source, {
-        parser: "babel",
-      });
+      const source = readFileSync(this.configurationPath, { encoding: "utf8" });
+      const formattedSource = prettier.format(source, { parser: "babel" });
+
       writeFileSync(this.configurationPath, formattedSource);
     } catch (err) {
-      this.utils.logger.log(
-        `${yellow(
+      this.cli.logger.log(
+        `${this.cli.colors.yellow(
           `⚠ Generated configuration may not be properly formatted as prettier is not installed.`,
         )}`,
       );
+
       return;
     }
   }

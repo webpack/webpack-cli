@@ -289,7 +289,7 @@ rules:
       last_action_age: 26w # half a year
     actions:
       comment:
-        identifer: inactive-warning
+        identifier: inactive-warning
         message: |-
           **This issue had no activity for at least half a year.**
 
@@ -313,7 +313,7 @@ rules:
     actions:
       close: true
       comment:
-        identifer: inactive-close
+        identifier: inactive-close
         message: |-
           Issue was closed because of inactivity.
 

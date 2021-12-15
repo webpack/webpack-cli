@@ -131,6 +131,7 @@ Checkout [`OPTIONS.md`](https://github.com/webpack/webpack-cli/blob/master/OPTIO
 | `WEBPACK_CLI_SKIP_IMPORT_LOCAL`     | when `true` it will skip using the local instance of `webpack-cli`. |
 | `WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG` | when `true` it will force load the ESM config.                      |
 | `WEBPACK_PACKAGE`                   | Use a custom webpack version in CLI.                                |
+| `WEBPACK_DEV_SERVER_PACKAGE`        | Use a custom webpack-dev-server version in CLI.                     |
 | `WEBPACK_CLI_HELP_WIDTH`            | Use custom width for help output.                                   |
 
 ## Configuration Environment Variables

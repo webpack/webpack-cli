@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/serve@1.5.2...@webpack-cli/serve@1.6.0) (2021-10-06)
+
+### Bug Fixes
+
+- allow falsy values for `port` option ([#2962](https://github.com/webpack/webpack-cli/issues/2962)) ([da135dd](https://github.com/webpack/webpack-cli/commit/da135dd717e88b6aa9a0559c1e4e8acb4ee8f3c1))
+
+### Features
+
+- allow to run commands without webpack installation where it is unnecessary ([#2907](https://github.com/webpack/webpack-cli/issues/2907)) ([603041d](https://github.com/webpack/webpack-cli/commit/603041d7e6a9b764bd79d1a8effd22a3e0f019cb))
+
 ## [1.5.2](https://github.com/webpack/webpack-cli/compare/@webpack-cli/serve@1.5.1...@webpack-cli/serve@1.5.2) (2021-08-15)
 
 ### Bug Fixes

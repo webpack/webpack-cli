@@ -19,12 +19,12 @@ describe("stats flag with config", () => {
     if (isWebpack5) {
       expect(stdout).toContain("preset: 'normal'");
     } else {
-      expect(stdout).toContain("stats: 'normal'");
+      expect(stdout).toContain("stats: { colors: false }");
     }
   });
 
   for (const preset of statsPresets) {
-    it(`should override 'noramal' value in config with "${preset}"`, async () => {
+    it(`should override 'normal' value in config with "${preset}"`, async () => {
       const { exitCode, stderr, stdout } = await run(__dirname, ["--stats", `${preset}`]);
 
       expect(exitCode).toBe(0);

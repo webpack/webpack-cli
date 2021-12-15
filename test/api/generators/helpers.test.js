@@ -1,45 +1,55 @@
 const path = require("path");
+const CLI = require("../../../packages/webpack-cli/lib/webpack-cli");
 
 const utilsDirectory = {
   cli: "../../../packages/webpack-cli/lib/utils",
   generators: "../../../packages/generators/src/utils",
 };
 
-jest.setMock(path.join(utilsDirectory.cli, "get-available-installers"), jest.fn());
 jest.mock(path.join(utilsDirectory.generators, "scaffold-utils"), () => ({
   List: jest.fn(),
 }));
 
-const getAvailableInstallers = require(path.join(utilsDirectory.cli, "get-available-installers"));
-const getPackageManager = require(path.join(utilsDirectory.cli, "get-package-manager"));
-const logger = require(path.join(utilsDirectory.cli, "logger"));
-
 const { getInstaller, getTemplate } = require(path.join(utilsDirectory.generators, "helpers"));
 const { List } = require(path.join(utilsDirectory.generators, "scaffold-utils"));
 
-const context = {
-  prompt: () => {},
-  supportedTemplates: ["default"],
-  utils: {
-    getAvailableInstallers,
-    getPackageManager,
-    logger,
-  },
-};
-
 describe("helpers", () => {
+  let cli;
+  let getDefaultPackageManagerSpy;
+  let context;
+
+  beforeEach(() => {
+    cli = new CLI();
+    context = {
+      prompt: () => {},
+      supportedTemplates: ["default"],
+      cli: cli,
+    };
+    getDefaultPackageManagerSpy = jest.spyOn(cli, "getDefaultPackageManager");
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+
+    getDefaultPackageManagerSpy.mockRestore();
+  });
+
   it("getInstaller() returns the available installer", async () => {
     // Multiple installers are not available
-    getAvailableInstallers.mockReturnValue(["npm"]);
+    getDefaultPackageManagerSpy.mockReturnValue(["npm"]);
+
+    // User chose "pnpm"
+    List.mockReturnValue({ packager: "npm" });
 
     // Invoke the helper function
     const installer = await getInstaller.call(context);
+
     expect(installer).toBe("npm");
   });
 
   it("getInstaller() invokes a List prompt if multiple installers are available", async () => {
     // Multiple installers are available
-    getAvailableInstallers.mockReturnValue(["npm", "yarn", "pnpm"]);
+    getDefaultPackageManagerSpy.mockReturnValue(["npm", "yarn", "pnpm"]);
 
     // User chose "pnpm"
     List.mockReturnValue({ packager: "pnpm" });
@@ -54,6 +64,7 @@ describe("helpers", () => {
 
     // Invoke the helper function
     const template = await getTemplate.call(context);
+
     expect(template).toBe("default");
   });
 
@@ -63,10 +74,11 @@ describe("helpers", () => {
     // User chose "default"
     List.mockReturnValue({ selectedTemplate: "default" });
 
+    const { logger } = cli;
     const loggerMock = jest.spyOn(logger, "warn").mockImplementation(() => {});
-
     // Invoke the helper function`
     const template = await getTemplate.call(context);
+
     expect(template).toBe("default");
     expect(loggerMock).toHaveBeenCalled();
   });

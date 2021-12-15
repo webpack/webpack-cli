@@ -9,9 +9,8 @@ export type devServerOptionsType = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   devMiddleware?: Record<string, any>;
   firewall?: boolean | string[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   headers?:
-    | Record<string, unknown>
+    | Record<string, unknown> // eslint-disable-next-line @typescript-eslint/no-explicit-any
     | ((request: any, response: any, middlewareContext: any) => Record<string, any>);
   historyApiFallback?: boolean | Record<string, unknown>;
   host?: string | null | hostEnum;
@@ -44,6 +43,7 @@ export type devServerOptionsType = {
     | false
     | string
     | transportModeEnum
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     | (() => any)
     | Record<string, unknown>
     | (Record<string, unknown> | (() => void))[];

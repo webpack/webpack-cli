@@ -39,7 +39,7 @@ try {
   // create SERVE.md
   writeFileSync(`SERVE-OPTIONS-v${majorDevServerVersion}.md`, serveContent);
 
-  console.log('Successfully updated "OPTIONS.md" and "SERVE-OPTIONS.md"');
+  console.log(`Successfully updated "OPTIONS.md" and "SERVE-OPTIONS-v${majorDevServerVersion}.md"`);
 } catch (err) {
   console.error(err);
 }

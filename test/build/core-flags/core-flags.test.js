@@ -248,6 +248,7 @@ describe("core flags", () => {
     });
 
     it("should allow string value devtool option using alias #1", async () => {
+      // cSpell:ignore dsource
       const { exitCode, stderr, stdout } = await run(__dirname, ["-dsource-map"]);
 
       expect(exitCode).toBe(0);

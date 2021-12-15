@@ -38,7 +38,7 @@ export async function questions(
       break;
   }
 
-  // Configure devServer configuraion
+  // Configure devServer configuration
   const { devServer } = await Question.Confirm(
     self,
     "devServer",

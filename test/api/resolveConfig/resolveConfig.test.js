@@ -9,7 +9,7 @@ const cli = new WebpackCLI();
 
 describe("resolveConfig", function () {
   it("should handle merge properly", async () => {
-    const result = await cli.resolveConfig({
+    const result = await cli.loadConfig({
       merge: true,
       config: [resolve(__dirname, "./webpack.config.cjs")],
     });
@@ -30,7 +30,7 @@ describe("resolveConfig", function () {
   });
 
   it("should return array for multiple config", async () => {
-    const result = await cli.resolveConfig({
+    const result = await cli.loadConfig({
       config: [
         resolve(__dirname, "./webpack.config1.cjs"),
         resolve(__dirname, "./webpack.config2.cjs"),
@@ -42,7 +42,7 @@ describe("resolveConfig", function () {
   });
 
   it("should return config object for single config", async () => {
-    const result = await cli.resolveConfig({
+    const result = await cli.loadConfig({
       config: [resolve(__dirname, "./webpack.config1.cjs")],
     });
 
@@ -50,7 +50,7 @@ describe("resolveConfig", function () {
   });
 
   it("should return resolved config object for promise config", async () => {
-    const result = await cli.resolveConfig({
+    const result = await cli.loadConfig({
       config: [resolve(__dirname, "./webpack.promise.config.cjs")],
     });
     const expectedOptions = await promiseConfig();
@@ -59,7 +59,7 @@ describe("resolveConfig", function () {
   });
 
   it("should handle configs returning different types", async () => {
-    const result = await cli.resolveConfig({
+    const result = await cli.loadConfig({
       config: [
         resolve(__dirname, "./webpack.promise.config.cjs"),
         resolve(__dirname, "./webpack.config.cjs"),
@@ -72,7 +72,7 @@ describe("resolveConfig", function () {
   });
 
   it("should handle different env formats", async () => {
-    const result = await cli.resolveConfig({
+    const result = await cli.loadConfig({
       argv: { env: { test: true, name: "Hisoka" } },
       config: [resolve(__dirname, "./env.webpack.config.cjs")],
     });

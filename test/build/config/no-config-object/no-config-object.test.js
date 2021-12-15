@@ -4,7 +4,7 @@ const { resolve } = require("path");
 const { run } = require("../../../utils/test-utils");
 
 describe("empty config", () => {
-  it("should work", async () => {
+  it("should build and not throw error with empty object as configuration", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, [
       "-c",
       resolve(__dirname, "webpack.config.js"),

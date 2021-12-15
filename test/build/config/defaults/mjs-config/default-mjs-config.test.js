@@ -2,8 +2,8 @@ const fs = require("fs");
 const path = require("path");
 const { run, isWebpack5 } = require("../../../../utils/test-utils");
 
-describe("Default Config:", () => {
-  it("Should be able to pick mjs config by default", async () => {
+describe("default config with mjs extension", () => {
+  it("should build and not throw error with mjs config by default", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, [], {
       env: { WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG: true },
     });
