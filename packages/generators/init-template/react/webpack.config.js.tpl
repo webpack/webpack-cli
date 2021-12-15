@@ -85,7 +85,7 @@ const config = {
         alias: {
             "@": path.resolve(__dirname, "./src/"),
         },<% if (langType == "Typescript") {%>
-        extensions: ['.tsx', '.ts', '.js'],<% } %>
+        extensions: ['.tsx', '.ts', '.js', '...'],<% } %>
     },
 };
 
