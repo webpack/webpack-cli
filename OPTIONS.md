@@ -574,6 +574,10 @@ Options:
   --no-output-environment-for-of                                                     Negative 'output-environment-for-of' option.
   --output-environment-module                                                        The environment supports EcmaScript Module syntax to import EcmaScript modules (import ... from '...').
   --no-output-environment-module                                                     Negative 'output-environment-module' option.
+  --output-environment-optional-chaining                                             The environment supports optional chaining ('obj?.a' or 'obj?.()').
+  --no-output-environment-optional-chaining                                          Negative 'output-environment-optional-chaining' option.
+  --output-environment-template-literal                                              The environment supports template literals.
+  --no-output-environment-template-literal                                           Negative 'output-environment-template-literal' option.
   --output-filename <value>                                                          Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
   --output-global-object <value>                                                     An expression which is used to address the global object/scope in runtime code.
   --output-hash-digest <value>                                                       Digest type used for the hash.
