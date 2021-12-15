@@ -16,9 +16,12 @@ export async function questions(
   self: CustomGenerator,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Question: Record<string, any>,
-  forceSelection = false,
-  isSkip: Record<string, boolean> = {},
+  config: { forceSelection: boolean; skip: Record<string, boolean> } = {
+    forceSelection: false,
+    skip: {},
+  },
 ): Promise<void> {
+  const { forceSelection, skip: isSkip } = config;
   // Handle JS language solutions
   const { langType } = await Question.List(
     self,
