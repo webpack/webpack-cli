@@ -10,6 +10,7 @@ const resolveFile = (file: string): string => {
  * Asks questions to the user used to modify generation
  * @param self Generator values
  * @param Question Contains questions
+ * @param config Configuration for default handler
  */
 
 export async function questions(
