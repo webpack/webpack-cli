@@ -14,7 +14,6 @@
 [![npm][npm]][npm-url]
 [![Build Status][build-status]][build-status-url]
 [![codecov][codecov-badge]][codecov-url]
-[![Dependencies][deps]][deps-url]
 [![Install Size][size]][size-url]
 [![Chat on gitter][chat]][chat-url]
 
