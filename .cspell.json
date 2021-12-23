@@ -93,6 +93,8 @@
     "**/dist/**",
     "**/__snapshots__/**",
     "**/*.tsbuildinfo",
-    "**/yarn.lock"
+    "**/yarn.lock",
+    "**/package-lock.json",
+    "node_modules"
   ]
 }
