@@ -5,9 +5,4 @@ module.exports = {
   mode: "development",
   target: "node",
   plugins: [new WebpackCLITestPlugin()],
-  resolve: {
-    fallback: {
-      url: false,
-    },
-  },
 };

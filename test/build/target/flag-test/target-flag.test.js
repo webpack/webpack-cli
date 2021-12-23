@@ -17,8 +17,6 @@ describe("--target flag", () => {
     it(`should accept ${val} with --target flag`, async () => {
       const { exitCode, stderr, stdout } = await run(__dirname, ["--target", `${val}`]);
 
-      console.log(stderr);
-      console.log(stdout);
       expect(exitCode).toBe(0);
       expect(stderr).toBeFalsy();
 
