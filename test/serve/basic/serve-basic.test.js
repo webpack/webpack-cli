@@ -548,7 +548,23 @@ describe("basic serve usage", () => {
       },
     );
 
-    expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+    // sort logs for CI
+    let normalizedStderr = normalizeStderr(stderr).split("\n");
+    const lastString = normalizedStderr[normalizedStderr.length - 1];
+
+    if (lastString.includes("webpack-dev-middleware")) {
+      [
+        normalizedStderr[normalizedStderr.length - 1],
+        normalizedStderr[normalizedStderr.length - 2],
+      ] = [
+        normalizedStderr[normalizedStderr.length - 2],
+        normalizedStderr[normalizedStderr.length - 1],
+      ];
+    }
+
+    normalizedStderr = normalizedStderr.join("\n");
+
+    expect(normalizedStderr).toMatchSnapshot("stderr");
     expect(stdout).toBeTruthy();
   });
 
