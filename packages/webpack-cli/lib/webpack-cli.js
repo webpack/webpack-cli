@@ -46,14 +46,17 @@ const { program, Option } = require("commander");
  */
 
 /**
- * @typedef {Object & CommandOptions} CLICommandOptions
+ * @typedef {Object} BasicCLICommandOptions
  * @property {string} name
  * @property {string | string[]} [alias]
  * @property {string} [description]
  * @property {string} [usage]
  * @property {string} [pkg]
  * @property {string[]} [dependencies]
+ * @property {{ [argName: string]: string }} [argsDescription]
  */
+
+/** @typedef {import("commander").CommandOptions & BasicCLICommandOptions} CLICommandOptions */
 
 /** @typedef {import("commander").Command & { options?: Option[], pkg?: string, forHelp?: boolean }} CLICommand */
 
@@ -177,6 +180,10 @@ class WebpackCLI {
   getAvailablePackageManagers() {
     const { sync } = require("execa");
     const installers = ["npm", "yarn", "pnpm"];
+    /**
+     * @param {string} packageManager
+     * @returns {false | string}
+     */
     const hasPackageManagerInstalled = (packageManager) => {
       try {
         sync(packageManager, ["--version"]);
@@ -280,6 +287,10 @@ class WebpackCLI {
       packageName,
     ].join(" ")}`;
 
+    /**
+     * @param {{ message: TODO, defaultResponse: TODO, stream: TODO }} options
+     * @returns {Promise<boolean>}
+     */
     const prompt = ({ message, defaultResponse, stream }) => {
       const readline = require("readline");
       const rl = readline.createInterface({
@@ -304,6 +315,7 @@ class WebpackCLI {
       });
     };
 
+    /** @type {boolean | undefined} */
     let needInstall;
 
     try {
@@ -319,7 +331,7 @@ class WebpackCLI {
     } catch (error) {
       this.logger.error(error);
 
-      process.exit(error);
+      process.exit(2);
     }
 
     if (needInstall) {
@@ -408,14 +420,15 @@ class WebpackCLI {
    * @param {CLICommandOptions} commandOptions
    * @param {TODO} options
    * @param {(...args: any[]) => void | Promise<void>} action
-   * @returns {Promise<CLICommand>}
+   * @returns {Promise<CLICommand | undefined>}
    */
   async makeCommand(commandOptions, options, action) {
-    const alreadyLoaded = this.program.commands.find(
-      (command) =>
-        command.name() === commandOptions.name.split(" ")[0] ||
-        command.aliases().includes(commandOptions.alias),
-    );
+    const alreadyLoaded = this.program.commands.find((command) => {
+      command.name() === commandOptions.name.split(" ")[0] ||
+        (typeof commandOptions.alias === "string"
+          ? command.aliases().includes(commandOptions.alias)
+          : command.aliases().some((item) => commandOptions.alias.includes(item)));
+    });
 
     if (alreadyLoaded) {
       return;
@@ -522,7 +535,12 @@ class WebpackCLI {
    * @param {CLIOptionOptions} option
    */
   makeOption(command, option) {
+    /**
+     * @template T
+     * @type {{ flags: string, description: string, type: Set<BooleanConstructor | StringConstructor | NumberConstructor | ((value: string, previous: T) => T)>, multiple: boolean, defaultValue: any }}
+     */
     let mainOption;
+    /** @type {{ flags: string, description: string }} */
     let negativeOption;
 
     if (option.configs) {
@@ -637,7 +655,9 @@ class WebpackCLI {
               skipDefault = false;
             }
 
-            return mainOption.multiple ? [].concat(prev).concat(Number(value)) : Number(value);
+            return mainOption.multiple
+              ? /** @type {number[]} */ ([]).concat(prev).concat(Number(value))
+              : Number(value);
           })
           .default(mainOption.defaultValue);
 
@@ -655,7 +675,9 @@ class WebpackCLI {
               skipDefault = false;
             }
 
-            return mainOption.multiple ? [].concat(prev).concat(value) : value;
+            return mainOption.multiple
+              ? /** @type {string[]} */ ([]).concat(prev).concat(value)
+              : value;
           })
           .default(mainOption.defaultValue);
 
@@ -674,7 +696,7 @@ class WebpackCLI {
       } else {
         /** @type {CLIOption} */
         const optionForCommand = new Option(mainOption.flags, mainOption.description)
-          .argParser(Array.from(mainOption.type)[0])
+          .argParser(/** @type {TODO} */ (Array.from(mainOption.type)[0]))
           .default(mainOption.defaultValue);
 
         optionForCommand.helpLevel = option.helpLevel;
@@ -1047,19 +1069,25 @@ class WebpackCLI {
           )
         : [];
 
-    /** @type {CLIOptionOptions[]} */
-    const options = []
+    const options = /** @type {CLIOptionOptions[]} */ ([])
       .concat(
         builtInFlags.filter(
           (builtInFlag) => !coreFlags.find((coreFlag) => builtInFlag.name === coreFlag.name),
         ),
       )
       .concat(coreFlags)
-      .map((option) => {
-        option.helpLevel = minimumHelpFlags.includes(option.name) ? "minimum" : "verbose";
+      .map(
+        /**
+         * @param {CLIOption} option
+         * @returns {CLIOption}
+         */
+        (option) => {
+          // @ts-ignore
+          option.helpLevel = minimumHelpFlags.includes(option.name) ? "minimum" : "verbose";
 
-        return option;
-      });
+          return option;
+        },
+      );
 
     /**
      * @private
@@ -1260,6 +1288,10 @@ class WebpackCLI {
         this.makeCommand(versionCommandOptions, [], () => {});
       } else {
         const builtInExternalCommandInfo = externalBuiltInCommandsInfo.find(
+          /**
+           * @param {CLICommandOptions} externalBuiltInCommandInfo
+           * @returns {boolean}
+           */
           (externalBuiltInCommandInfo) =>
             getCommandName(externalBuiltInCommandInfo.name) === commandName ||
             (Array.isArray(externalBuiltInCommandInfo.alias)
@@ -1271,7 +1303,7 @@ class WebpackCLI {
         let pkg;
 
         if (builtInExternalCommandInfo) {
-          ({ pkg } = builtInExternalCommandInfo);
+          ({ pkg } = /** @type {CLICommandOptions} */ (builtInExternalCommandInfo));
         } else {
           pkg = commandName;
         }
@@ -1359,7 +1391,10 @@ class WebpackCLI {
             command.options.forEach((option) => {
               if (
                 !option.hidden &&
-                levenshtein.distance(/** @type {string} */ (name), option.long.slice(2)) < 3
+                levenshtein.distance(
+                  /** @type {string} */ (name),
+                  /** @type {CLIOption} */ (option).long.slice(2),
+                ) < 3
               ) {
                 this.logger.error(`Did you mean '--${option.name()}'?`);
               }
@@ -1409,6 +1444,10 @@ class WebpackCLI {
 
     // Make `-v, --version` options
     // Make `version|v [commands...]` command
+    /**
+     * @param {string[]} options
+     * @returns {Promise<void>}
+     */
     const outputVersion = async (options) => {
       // Filter `bundle`, `watch`, `version` and `help` commands
       /** @type {string[]} */
@@ -1489,10 +1528,10 @@ class WebpackCLI {
     );
 
     /**
-     * @param {TODO} options
+     * @param {string[]} options
      * @param {boolean} isVerbose
      * @param {boolean} isHelpCommandSyntax
-     * @param {Command} program
+     * @param {CLICommand} program
      * @returns {Promise<void>}
      */
     const outputHelp = async (options, isVerbose, isHelpCommandSyntax, program) => {
@@ -1541,7 +1580,7 @@ class WebpackCLI {
            */
           subcommandTerm: (command) => {
             /**
-             * @param {Option} argument
+             * @param {CLIOption} argument
              * @returns {string}
              */
             const humanReadableArgumentName = (argument) => {
@@ -1558,7 +1597,7 @@ class WebpackCLI {
           },
           /**
            * @param {CLICommand} command
-           * @returns {Option[]}
+           * @returns {CLIOption[]}
            */
           visibleOptions: function visibleOptions(command) {
             return command.options.filter((option) => {
@@ -1699,7 +1738,7 @@ class WebpackCLI {
 
           const buildCommand = findCommandByName(getCommandName(buildCommandOptions.name));
 
-          this.logger.raw(buildCommand.helpInformation());
+          this.logger.raw(/** @type {CLICommand} */ (buildCommand).helpInformation());
         } else {
           const name = options[0];
 
@@ -1728,7 +1767,7 @@ class WebpackCLI {
         let isCommandSpecified = false;
         /** @type {string} */
         let commandName = getCommandName(buildCommandOptions.name);
-        /** @type {string} */
+        /** @type {string | undefined} */
         let optionName;
 
         if (options.length === 1) {
@@ -1747,7 +1786,9 @@ class WebpackCLI {
 
         await loadCommandByName(commandName);
 
-        const command = isGlobalOption(optionName) ? program : findCommandByName(commandName);
+        const command = isGlobalOption(/** @type {string} */ (optionName))
+          ? program
+          : findCommandByName(commandName);
 
         if (!command) {
           this.logger.error(`Can't find and load command '${commandName}'`);
@@ -1876,8 +1917,7 @@ class WebpackCLI {
 
         this.program.forHelp = true;
 
-        /** @type {string[]} */
-        const optionsForHelp = []
+        const optionsForHelp = /** @type {string[]} */ ([])
           .concat(isHelpOption && hasOperand ? [operand] : [])
           // Syntax `webpack help [command]`
           .concat(operands.slice(1))
@@ -1899,7 +1939,7 @@ class WebpackCLI {
       const isVersionCommandSyntax = isCommand(operand, versionCommandOptions);
 
       if (isVersionOption || isVersionCommandSyntax) {
-        const optionsForVersion = []
+        const optionsForVersion = /** @type {string[]} */ ([])
           .concat(isVersionOption ? [operand] : [])
           .concat(operands.slice(1))
           .concat(unknown);
@@ -1990,6 +2030,7 @@ class WebpackCLI {
         }
       }
 
+      /** @type {TODO | undefined} */
       let options;
 
       try {

@@ -77,13 +77,13 @@ declare class WebpackCLI {
    * @param {CLICommandOptions} commandOptions
    * @param {TODO} options
    * @param {(...args: any[]) => void | Promise<void>} action
-   * @returns {Promise<CLICommand>}
+   * @returns {Promise<CLICommand | undefined>}
    */
   makeCommand(
     commandOptions: CLICommandOptions,
     options: TODO,
     action: (...args: any[]) => void | Promise<void>,
-  ): Promise<CLICommand>;
+  ): Promise<CLICommand | undefined>;
   /**
    * @param {CLICommand} command
    * @param {CLIOptionOptions} option
@@ -165,6 +165,7 @@ declare namespace WebpackCLI {
     LoadedConfiguration,
     BuiltConfiguration,
     Logger,
+    BasicCLICommandOptions,
     CLICommandOptions,
     CLICommand,
     CLIOptionOptions,
@@ -185,7 +186,7 @@ type CLICommand = import("commander").Command & {
   pkg?: string;
   forHelp?: boolean;
 };
-type CLICommandOptions = any & CommandOptions;
+type CLICommandOptions = import("commander").CommandOptions & BasicCLICommandOptions;
 type TODO = any;
 type CLIOptionOptions = Argument;
 type ParseOptions = import("commander").ParseOptions;
@@ -227,6 +228,17 @@ type MultiConfiguration = ReadonlyArray<Configuration> & {
   parallelism?: number;
 };
 type PossibleConfiguration = Configuration | MultiConfiguration;
+type BasicCLICommandOptions = {
+  name: string;
+  alias?: string | string[];
+  description?: string;
+  usage?: string;
+  pkg?: string;
+  dependencies?: string[];
+  argsDescription?: {
+    [argName: string]: string;
+  };
+};
 type CLIOption = import("commander").Option & {
   helpLevel?: "minimum" | "verbose";
 };

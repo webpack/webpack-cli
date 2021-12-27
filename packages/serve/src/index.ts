@@ -1,3 +1,5 @@
+// eslint-disable-next-line node/no-extraneous-import
+import type { Compiler } from "webpack";
 import { devServerOptionsType } from "./types";
 
 const WEBPACK_PACKAGE = process.env.WEBPACK_PACKAGE || "webpack";
@@ -12,7 +14,7 @@ class ServeCommand {
       const devServer = require(WEBPACK_DEV_SERVER_PACKAGE);
       const isNewDevServerCLIAPI = typeof devServer.schema !== "undefined";
 
-      let options = {};
+      let options: Record<string, any> = {};
 
       if (isNewDevServerCLIAPI) {
         if (cli.webpack.cli && typeof cli.webpack.cli.getArguments === "function") {
@@ -70,7 +72,7 @@ class ServeCommand {
 
         return [...builtInOptions, ...devServerFlags];
       },
-      async (entries, options) => {
+      async (entries: string[], options) => {
         const builtInOptions = cli.getBuiltInOptions();
         let devServerFlags = [];
 
@@ -179,7 +181,9 @@ class ServeCommand {
 
         const compilers =
           typeof compiler.compilers !== "undefined" ? compiler.compilers : [compiler];
-        const possibleCompilers = compilers.filter((compiler) => compiler.options.devServer);
+        const possibleCompilers = compilers.filter(
+          (compiler: Compiler) => compiler.options.devServer,
+        );
         const compilersForDevServer =
           possibleCompilers.length > 0 ? possibleCompilers : [compilers[0]];
         const isDevServer4 = devServerVersion.startsWith("4");
@@ -270,7 +274,7 @@ class ServeCommand {
           // TODO remove in the next major release
           if (!isDevServer4) {
             const getPublicPathOption = (): string => {
-              const normalizePublicPath = (publicPath): string =>
+              const normalizePublicPath = (publicPath: string): string =>
                 typeof publicPath === "undefined" || publicPath === "auto" ? "/" : publicPath;
 
               if (options.outputPublicPath) {
@@ -278,6 +282,8 @@ class ServeCommand {
               }
 
               if (devServerOptions.publicPath) {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
                 return normalizePublicPath(devServerOptions.publicPath);
               }
 
@@ -328,7 +334,7 @@ class ServeCommand {
               await server.start();
             } else {
               // TODO remove in the next major release
-              server.listen(devServerOptions.port, devServerOptions.host, (error): void => {
+              server.listen(devServerOptions.port, devServerOptions.host, (error: Error): void => {
                 if (error) {
                   throw error;
                 }

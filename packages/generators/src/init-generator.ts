@@ -6,21 +6,12 @@ import { getInstaller, getTemplate } from "./utils/helpers";
 import * as Question from "./utils/scaffold-utils";
 import handlers from "./handlers";
 
-/**
- *
- * Generator for initializing a webpack config
- *
- * @class 	InitGenerator
- * @extends CustomGenerator
- * @returns {Void} After execution, transforms are triggered
- *
- */
 export default class InitGenerator extends CustomGenerator {
   public answers: Record<string, unknown>;
-  public configurationPath: string;
+  public configurationPath: string | undefined;
   public force: boolean;
   public generationPath: string;
-  public packageManager: string;
+  public packageManager: string | undefined;
   public resolvedGenerationPath: string;
   public supportedTemplates: string[];
   public template: string;
@@ -77,7 +68,7 @@ export default class InitGenerator extends CustomGenerator {
       );
 
       if (installPrettier) {
-        this.dependencies.push("prettier");
+        (this.dependencies as string[]).push("prettier");
       }
     }
   }
@@ -106,10 +97,10 @@ export default class InitGenerator extends CustomGenerator {
     try {
       // eslint-disable-next-line node/no-extraneous-require, @typescript-eslint/no-var-requires
       const prettier = require("prettier");
-      const source = readFileSync(this.configurationPath, { encoding: "utf8" });
+      const source = readFileSync(this.configurationPath as string, { encoding: "utf8" });
       const formattedSource = prettier.format(source, { parser: "babel" });
 
-      writeFileSync(this.configurationPath, formattedSource);
+      writeFileSync(this.configurationPath as string, formattedSource);
     } catch (err) {
       this.cli.logger.log(
         `${this.cli.colors.yellow(

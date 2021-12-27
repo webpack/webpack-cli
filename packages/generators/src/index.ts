@@ -38,7 +38,7 @@ class GeneratorsCommand {
           description: "Generate without questions (ideally) using default answers",
         },
       ],
-      async (generationPath, options) => {
+      async (generationPath: string, options: { template?: string; generationPath?: string }) => {
         options.generationPath = generationPath || ".";
 
         const env = yeoman.createEnv([], {
@@ -76,7 +76,7 @@ class GeneratorsCommand {
           defaultValue: "default",
         },
       ],
-      async (outputPath, options) => {
+      async (outputPath: string, options: { template?: string; generationPath?: string }) => {
         const env = yeoman.createEnv([], { cwd: outputPath });
         const generatorName = "webpack-loader-generator";
 
@@ -110,7 +110,7 @@ class GeneratorsCommand {
           defaultValue: "default",
         },
       ],
-      async (outputPath, options) => {
+      async (outputPath: string, options: { template?: string; generationPath?: string }) => {
         const env = yeoman.createEnv([], { cwd: outputPath });
         const generatorName = "webpack-plugin-generator";
 

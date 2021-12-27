@@ -39,7 +39,7 @@ class InfoCommand {
           description: "Adds additional packages to the output",
         },
       ],
-      async (options) => {
+      async (options: { output: string; additionalPackage: string[] }) => {
         let { output } = options;
 
         const envinfoConfig: { [key: string]: boolean } = {};
